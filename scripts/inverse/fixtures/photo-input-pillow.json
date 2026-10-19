@@ -1,0 +1,81 @@
+{
+  "schema": "photo-input-pillow-fixtures-1",
+  "pillow": "11.1.0",
+  "reference": "scripts/inverse/datasets/real_annotations.py:photo_tensor",
+  "referenceSha256": "b505fb723dc45b644cb95a058ddf45317f6afb700c61fb88cb3d93571fb9e33c",
+  "rgbRecipe": "(x*17+y*31+c*53+(x*y)%251)%256",
+  "cases": [
+    {
+      "width": 440,
+      "height": 440,
+      "resolution": 256,
+      "sha256": "e2236b314ced573f33c42856330675235c8904af1288bd80447a5c4c369ff4b7"
+    },
+    {
+      "width": 743,
+      "height": 517,
+      "resolution": 256,
+      "sha256": "3361120a9cb8e736bf2875460d11ae09beb21a2cbba105670ca6ba281af8235c"
+    },
+    {
+      "width": 517,
+      "height": 743,
+      "resolution": 256,
+      "sha256": "1737c94db44d02a6cc88aec1615949600760270aa14c3322b07da2460569341e"
+    },
+    {
+      "width": 257,
+      "height": 255,
+      "resolution": 256,
+      "sha256": "f1f927a77f824ed50f3c4aa3d4cb9818f1bbc6dc95c9a23ae5b052b1437dd531"
+    },
+    {
+      "width": 255,
+      "height": 257,
+      "resolution": 256,
+      "sha256": "e9acbe9be0967680f4ef044b3f673a4b33498ba251140a2e62c011d3f909cca4"
+    },
+    {
+      "width": 13,
+      "height": 7,
+      "resolution": 32,
+      "sha256": "11b9ed8997cb074ecf782d2453ccdcf8608fc2d0cb72b1302d318230cab68d43"
+    },
+    {
+      "width": 1,
+      "height": 5,
+      "resolution": 16,
+      "sha256": "4bfce4e06a986b51a78a80250aa47cf998f787908cc1e4b6c319099f094659f9"
+    },
+    {
+      "width": 5,
+      "height": 1,
+      "resolution": 16,
+      "sha256": "df783adcb384e9353f399dc3c2ebdd2cc4dda6c8aa6eff9d4425f9978c82d7e8"
+    },
+    {
+      "width": 256,
+      "height": 256,
+      "resolution": 256,
+      "sha256": "8c9b93afdc09db201c770009571521820fa9d035f5fc88805861c68c60ae5f57"
+    },
+    {
+      "width": 1,
+      "height": 1,
+      "resolution": 1,
+      "sha256": "e1030897e273af417a3707fdac8c824164840d13de2447da15f7e4a04e091f44"
+    },
+    {
+      "width": 1920,
+      "height": 1081,
+      "resolution": 256,
+      "sha256": "266cb1c6a5988e30572581b8467810f39c5ffb8c6ca8d8d1863866bd08f84e92"
+    },
+    {
+      "width": 1000,
+      "height": 3,
+      "resolution": 256,
+      "sha256": "d5039cbfb3fb9a915614802a721cba155442563d36a6bbf73e582e65f5290890"
+    }
+  ]
+}

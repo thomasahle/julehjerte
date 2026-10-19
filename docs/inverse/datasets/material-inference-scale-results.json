@@ -1,0 +1,1441 @@
+{
+  "schema": "material-inference-scale-results-1",
+  "status": "complete-offline-inference-change-rejected",
+  "sourceCommit": "92b45d3e",
+  "scope": "Nineteen previously inspected development photographs, frozen original held-out checkpoints, no training or deployment. Partial-label metrics do not establish complete boundaries or cutting paths.",
+  "planSha256": "a9d5274c5eb83dd45283011de4ad926392b8459e99a29f3914f3e84080383e30",
+  "summary": {
+    "256": {
+      "bodyIoU": 0.8067843577675285,
+      "bodyPixelError": 0.07425562293860559,
+      "bodyFalseNegative": 0.03433405480771581,
+      "backgroundFalsePositive": 0.08501233389392034,
+      "materialPixelError": 0.17620958200661266,
+      "materialJointError": 0.18909673858559242,
+      "jointRegionPixelError": 0.11021704905807761,
+      "attempted": 19,
+      "supported": 3,
+      "proposals": 3,
+      "medianInferenceSeconds": 0.030654332999999312
+    },
+    "512": {
+      "bodyIoU": 0.6423946369225003,
+      "bodyPixelError": 0.20059769682487197,
+      "bodyFalseNegative": 0.03251279825628693,
+      "backgroundFalsePositive": 0.2727953735354571,
+      "materialPixelError": 0.20334041123901028,
+      "materialJointError": 0.21207132194270692,
+      "jointRegionPixelError": 0.26598270258204937,
+      "attempted": 19,
+      "supported": 1,
+      "proposals": 1,
+      "medianInferenceSeconds": 0.09562795899999976
+    }
+  },
+  "replay": {
+    "exactRGBInputs": 19,
+    "exactProbabilityReplays": 19,
+    "hardLabelDifferences": 0,
+    "maximumProbabilityDifference": 0.0
+  },
+  "paired": [
+    {
+      "id": "real-2044b1d98ed6f262-body-1",
+      "fold": "fold-7f1a81db164f",
+      "metrics": {
+        "256": {
+          "id": "real-2044b1d98ed6f262-body-1",
+          "knownBodyPixels": 47558,
+          "knownMaterialPixels": 10798,
+          "knownBackgroundPixels": 27475,
+          "knownBodyWithoutMaterialPixels": 9285,
+          "unknownBodyPixels": 17978,
+          "bodyIoU": 0.9287048874028911,
+          "bodyPixelError": 0.030489087009546237,
+          "bodyFalseNegative": 0.05950306229149031,
+          "backgroundFalsePositive": 0.009281164695177434,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.153824782367105,
+          "materialJointError": 0.17067975551027967,
+          "jointRegionPixelError": 0.05481671151987041,
+          "jointKnownPixels": 38273
+        },
+        "512": {
+          "id": "real-2044b1d98ed6f262-body-1",
+          "knownBodyPixels": 47558,
+          "knownMaterialPixels": 10798,
+          "knownBackgroundPixels": 27475,
+          "knownBodyWithoutMaterialPixels": 9285,
+          "unknownBodyPixels": 17978,
+          "bodyIoU": 0.7045103324348607,
+          "bodyPixelError": 0.17288363682240632,
+          "bodyFalseNegative": 0.023900811631728327,
+          "backgroundFalsePositive": 0.2817834394904459,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.28412669012780145,
+          "materialJointError": 0.28533061678088534,
+          "jointRegionPixelError": 0.2827842081885402,
+          "jointKnownPixels": 38273
+        }
+      },
+      "crops": {
+        "256": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        },
+        "512": {
+          "supported": false,
+          "status": "needs_selection",
+          "quad": null,
+          "maskSha256": null
+        }
+      }
+    },
+    {
+      "id": "real-45744a03afddccb1-body-1",
+      "fold": "fold-7f1a81db164f",
+      "metrics": {
+        "256": {
+          "id": "real-45744a03afddccb1-body-1",
+          "knownBodyPixels": 47619,
+          "knownMaterialPixels": 12071,
+          "knownBackgroundPixels": 27925,
+          "knownBodyWithoutMaterialPixels": 7623,
+          "unknownBodyPixels": 17917,
+          "bodyIoU": 0.8944524843222383,
+          "bodyPixelError": 0.04594804594804595,
+          "bodyFalseNegative": 0.058494973088250225,
+          "backgroundFalsePositive": 0.037099373321396595,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.003810786181757932,
+          "materialJointError": 0.02419020793637644,
+          "jointRegionPixelError": 0.0332033203320332,
+          "jointKnownPixels": 39996
+        },
+        "512": {
+          "id": "real-45744a03afddccb1-body-1",
+          "knownBodyPixels": 47619,
+          "knownMaterialPixels": 12071,
+          "knownBackgroundPixels": 27925,
+          "knownBodyWithoutMaterialPixels": 7623,
+          "unknownBodyPixels": 17917,
+          "bodyIoU": 0.8070486584811278,
+          "bodyPixelError": 0.0891030891030891,
+          "bodyFalseNegative": 0.09886259774550625,
+          "backgroundFalsePositive": 0.0822202327663384,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.0004970590671858172,
+          "materialJointError": 0.03346864385717836,
+          "jointRegionPixelError": 0.0675067506750675,
+          "jointKnownPixels": 39996
+        }
+      },
+      "crops": {
+        "512": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        },
+        "256": {
+          "supported": true,
+          "status": "needs_review",
+          "quad": [
+            [
+              1086.4698720098784,
+              1223.2696732549102
+            ],
+            [
+              2175.6755807919994,
+              2115.2323888154033
+            ],
+            [
+              1095.112707929951,
+              3279.0730487943283
+            ],
+            [
+              264.13811769355647,
+              2234.7907544052855
+            ]
+          ],
+          "maskSha256": "be3909dbdd7ee730a88ada1b3b183bc183c592b7f948fadfbace5f4c554a2a10"
+        }
+      }
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "fold": "fold-dd50f2256463",
+      "metrics": {
+        "256": {
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "knownBodyPixels": 62862,
+          "knownMaterialPixels": 15062,
+          "knownBackgroundPixels": 37026,
+          "knownBodyWithoutMaterialPixels": 10774,
+          "unknownBodyPixels": 2674,
+          "bodyIoU": 0.7871659709314727,
+          "bodyPixelError": 0.11111641373166618,
+          "bodyFalseNegative": 7.741136398823347e-05,
+          "backgroundFalsePositive": 0.18859720196618593,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.29265701766033725,
+          "materialJointError": 0.29265701766033725,
+          "jointRegionPixelError": 0.2186876055905391,
+          "jointKnownPixels": 52088
+        },
+        "512": {
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "knownBodyPixels": 62862,
+          "knownMaterialPixels": 15062,
+          "knownBackgroundPixels": 37026,
+          "knownBodyWithoutMaterialPixels": 10774,
+          "unknownBodyPixels": 2674,
+          "bodyIoU": 0.5196430010476267,
+          "bodyPixelError": 0.37929114568419714,
+          "bodyFalseNegative": 0.0016643443257470197,
+          "backgroundFalsePositive": 0.642791551882461,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.3224007435931483,
+          "materialJointError": 0.3224007435931483,
+          "jointRegionPixelError": 0.5501459069267394,
+          "jointKnownPixels": 52088
+        }
+      },
+      "crops": {
+        "256": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        },
+        "512": {
+          "supported": false,
+          "status": "needs_selection",
+          "quad": null,
+          "maskSha256": null
+        }
+      }
+    },
+    {
+      "id": "real-3f7b76e1a98e808f-body-1",
+      "fold": "fold-7f1a81db164f",
+      "metrics": {
+        "256": {
+          "id": "real-3f7b76e1a98e808f-body-1",
+          "knownBodyPixels": 45535,
+          "knownMaterialPixels": 10896,
+          "knownBackgroundPixels": 24047,
+          "knownBodyWithoutMaterialPixels": 10592,
+          "unknownBodyPixels": 20001,
+          "bodyIoU": 0.9182980702162288,
+          "bodyPixelError": 0.038585703305149884,
+          "bodyFalseNegative": 0.08097542814594193,
+          "backgroundFalsePositive": 0.0007069488917536491,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.2610132158590308,
+          "materialJointError": 0.27386196769456683,
+          "jointRegionPixelError": 0.08588272329221876,
+          "jointKnownPixels": 34943
+        },
+        "512": {
+          "id": "real-3f7b76e1a98e808f-body-1",
+          "knownBodyPixels": 45535,
+          "knownMaterialPixels": 10896,
+          "knownBackgroundPixels": 24047,
+          "knownBodyWithoutMaterialPixels": 10592,
+          "unknownBodyPixels": 20001,
+          "bodyIoU": 0.7406262079628914,
+          "bodyPixelError": 0.14735917426155704,
+          "bodyFalseNegative": 0.10833953834698436,
+          "backgroundFalsePositive": 0.18222647315673474,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.42410058737151246,
+          "materialJointError": 0.42630323054331865,
+          "jointRegionPixelError": 0.25833500271871335,
+          "jointKnownPixels": 34943
+        }
+      },
+      "crops": {
+        "512": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        },
+        "256": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        }
+      }
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "fold": "fold-dd50f2256463",
+      "metrics": {
+        "256": {
+          "id": "real-995899fe049540ed-body-1",
+          "knownBodyPixels": 53791,
+          "knownMaterialPixels": 15731,
+          "knownBackgroundPixels": 28584,
+          "knownBodyWithoutMaterialPixels": 9476,
+          "unknownBodyPixels": 11745,
+          "bodyIoU": 0.9578610532809007,
+          "bodyPixelError": 0.020319384283616217,
+          "bodyFalseNegative": 0.014361090173364541,
+          "backgroundFalsePositive": 0.025573747551077525,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.16604157396224017,
+          "materialJointError": 0.16782149895111564,
+          "jointRegionPixelError": 0.07606905111136184,
+          "jointKnownPixels": 44315
+        },
+        "512": {
+          "id": "real-995899fe049540ed-body-1",
+          "knownBodyPixels": 53791,
+          "knownMaterialPixels": 15731,
+          "knownBackgroundPixels": 28584,
+          "knownBodyWithoutMaterialPixels": 9476,
+          "unknownBodyPixels": 11745,
+          "bodyIoU": 0.6622609593164942,
+          "bodyPixelError": 0.2189957427822498,
+          "bodyFalseNegative": 0.0836275637719681,
+          "backgroundFalsePositive": 0.33837111670864817,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.18218803636132477,
+          "materialJointError": 0.2335515860403026,
+          "jointRegionPixelError": 0.3011621347173643,
+          "jointKnownPixels": 44315
+        }
+      },
+      "crops": {
+        "256": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        },
+        "512": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        }
+      }
+    },
+    {
+      "id": "real-b87b0b19f12724f3-body-1",
+      "fold": "fold-dd50f2256463",
+      "metrics": {
+        "256": {
+          "id": "real-b87b0b19f12724f3-body-1",
+          "knownBodyPixels": 42635,
+          "knownMaterialPixels": 3508,
+          "knownBackgroundPixels": 35305,
+          "knownBodyWithoutMaterialPixels": 3822,
+          "unknownBodyPixels": 22901,
+          "bodyIoU": 0.4989788972089857,
+          "bodyPixelError": 0.17262812243461945,
+          "bodyFalseNegative": 0.0,
+          "backgroundFalsePositive": 0.20846905537459284,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.009407069555302166,
+          "materialJointError": 0.009407069555302166,
+          "jointRegionPixelError": 0.19047741736016283,
+          "jointKnownPixels": 38813
+        },
+        "512": {
+          "id": "real-b87b0b19f12724f3-body-1",
+          "knownBodyPixels": 42635,
+          "knownMaterialPixels": 3508,
+          "knownBackgroundPixels": 35305,
+          "knownBodyWithoutMaterialPixels": 3822,
+          "unknownBodyPixels": 22901,
+          "bodyIoU": 0.33520830475145197,
+          "bodyPixelError": 0.3409639967163129,
+          "bodyFalseNegative": 0.0,
+          "backgroundFalsePositive": 0.41175470896473587,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.002565564424173318,
+          "materialJointError": 0.002565564424173318,
+          "jointRegionPixelError": 0.3747713394996522,
+          "jointKnownPixels": 38813
+        }
+      },
+      "crops": {
+        "512": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        },
+        "256": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        }
+      }
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "fold": "fold-dd50f2256463",
+      "metrics": {
+        "256": {
+          "id": "real-cf2d0fcff65d7386-body-1",
+          "knownBodyPixels": 54061,
+          "knownMaterialPixels": 18704,
+          "knownBackgroundPixels": 26390,
+          "knownBodyWithoutMaterialPixels": 8967,
+          "unknownBodyPixels": 11475,
+          "bodyIoU": 0.9726610604834454,
+          "bodyPixelError": 0.01437265311407484,
+          "bodyFalseNegative": 0.0009757507860214665,
+          "backgroundFalsePositive": 0.028419856006062904,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 5.3464499572284e-05,
+          "materialJointError": 5.3464499572284e-05,
+          "jointRegionPixelError": 0.01665410032376813,
+          "jointKnownPixels": 45094
+        },
+        "512": {
+          "id": "real-cf2d0fcff65d7386-body-1",
+          "knownBodyPixels": 54061,
+          "knownMaterialPixels": 18704,
+          "knownBackgroundPixels": 26390,
+          "knownBodyWithoutMaterialPixels": 8967,
+          "unknownBodyPixels": 11475,
+          "bodyIoU": 0.8504319488425001,
+          "bodyPixelError": 0.08999093616470284,
+          "bodyFalseNegative": 0.0003252502620071555,
+          "backgroundFalsePositive": 0.18400909435392193,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.10768616667405863,
+          "jointKnownPixels": 45094
+        }
+      },
+      "crops": {
+        "256": {
+          "supported": true,
+          "status": "needs_review",
+          "quad": [
+            [
+              269.6566235852156,
+              87.98097580989706
+            ],
+            [
+              522.2190583368354,
+              249.9246756115092
+            ],
+            [
+              331.5569886421618,
+              513.1140177033036
+            ],
+            [
+              91.43374025661117,
+              323.5791139234461
+            ]
+          ],
+          "maskSha256": "3b990d8aef3b681f058d99e8bb4584bf2c371950ff7cbdb413308956a9946c3d"
+        },
+        "512": {
+          "supported": true,
+          "status": "needs_review",
+          "quad": [
+            [
+              280.5463880156574,
+              77.56275978377928
+            ],
+            [
+              514.3477855572769,
+              260.3215390577145
+            ],
+            [
+              333.7829480093011,
+              511.15188383768634
+            ],
+            [
+              88.03855087572495,
+              323.2377938149353
+            ]
+          ],
+          "maskSha256": "1372bbfd57657e3beee7ba12bc24fae76898b1e3017db93765a9e9cb66e4b726"
+        }
+      }
+    },
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "fold": "fold-dd50f2256463",
+      "metrics": {
+        "256": {
+          "id": "real-cdae5c890b6933cd-body-1",
+          "knownBodyPixels": 39406,
+          "knownMaterialPixels": 6051,
+          "knownBackgroundPixels": 30624,
+          "knownBodyWithoutMaterialPixels": 2731,
+          "unknownBodyPixels": 26130,
+          "bodyIoU": 0.586865425568455,
+          "bodyPixelError": 0.1526163528396691,
+          "bodyFalseNegative": 0.027214757458437714,
+          "backgroundFalsePositive": 0.18857758620689655,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.421417947446703,
+          "materialJointError": 0.42852421087423564,
+          "jointRegionPixelError": 0.2281663258350375,
+          "jointKnownPixels": 36675
+        },
+        "512": {
+          "id": "real-cdae5c890b6933cd-body-1",
+          "knownBodyPixels": 39406,
+          "knownMaterialPixels": 6051,
+          "knownBackgroundPixels": 30624,
+          "knownBodyWithoutMaterialPixels": 2731,
+          "unknownBodyPixels": 26130,
+          "bodyIoU": 0.369300397597496,
+          "bodyPixelError": 0.3783941531746435,
+          "bodyFalseNegative": 0.005807333181507629,
+          "backgroundFalsePositive": 0.4852403343782654,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.47826805486696417,
+          "materialJointError": 0.4787638406874897,
+          "jointRegionPixelError": 0.4841717791411043,
+          "jointKnownPixels": 36675
+        }
+      },
+      "crops": {
+        "512": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        },
+        "256": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        }
+      }
+    },
+    {
+      "id": "real-68d8f25d8891df62-body-1",
+      "fold": "fold-dd50f2256463",
+      "metrics": {
+        "256": {
+          "id": "real-68d8f25d8891df62-body-1",
+          "knownBodyPixels": 46548,
+          "knownMaterialPixels": 12626,
+          "knownBackgroundPixels": 24337,
+          "knownBodyWithoutMaterialPixels": 9585,
+          "unknownBodyPixels": 18988,
+          "bodyIoU": 0.7778180062756457,
+          "bodyPixelError": 0.11865171435937097,
+          "bodyFalseNegative": 0.12948539012201163,
+          "backgroundFalsePositive": 0.1087644327567079,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.02114683985426897,
+          "materialJointError": 0.10708062727704737,
+          "jointRegionPixelError": 0.10818927035143251,
+          "jointKnownPixels": 36963
+        },
+        "512": {
+          "id": "real-68d8f25d8891df62-body-1",
+          "knownBodyPixels": 46548,
+          "knownMaterialPixels": 12626,
+          "knownBackgroundPixels": 24337,
+          "knownBodyWithoutMaterialPixels": 9585,
+          "unknownBodyPixels": 18988,
+          "bodyIoU": 0.7550779150994089,
+          "bodyPixelError": 0.1468806393400361,
+          "bodyFalseNegative": 0.05101076043401918,
+          "backgroundFalsePositive": 0.23437564202654396,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.21732932044986536,
+          "materialJointError": 0.2413274196103279,
+          "jointRegionPixelError": 0.2367502637772908,
+          "jointKnownPixels": 36963
+        }
+      },
+      "crops": {
+        "256": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        },
+        "512": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        }
+      }
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "fold": "fold-7f1a81db164f",
+      "metrics": {
+        "256": {
+          "id": "real-5330aa8b62176216-body-1",
+          "knownBodyPixels": 61149,
+          "knownMaterialPixels": 8137,
+          "knownBackgroundPixels": 28647,
+          "knownBodyWithoutMaterialPixels": 24365,
+          "unknownBodyPixels": 4387,
+          "bodyIoU": 0.9352107491257132,
+          "bodyPixelError": 0.03453858607663249,
+          "bodyFalseNegative": 0.06202695218755769,
+          "backgroundFalsePositive": 0.003351136244632946,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.23485313997787882,
+          "materialJointError": 0.23485313997787882,
+          "jointRegionPixelError": 0.05456176598521096,
+          "jointKnownPixels": 36784
+        },
+        "512": {
+          "id": "real-5330aa8b62176216-body-1",
+          "knownBodyPixels": 61149,
+          "knownMaterialPixels": 8137,
+          "knownBackgroundPixels": 28647,
+          "knownBodyWithoutMaterialPixels": 24365,
+          "unknownBodyPixels": 4387,
+          "bodyIoU": 0.9736631591902036,
+          "bodyPixelError": 0.013998593599241198,
+          "bodyFalseNegative": 0.02633684080979632,
+          "backgroundFalsePositive": 0.0,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.2445618778419565,
+          "materialJointError": 0.2445618778419565,
+          "jointRegionPixelError": 0.05409960852544585,
+          "jointKnownPixels": 36784
+        }
+      },
+      "crops": {
+        "512": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        },
+        "256": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        }
+      }
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "fold": "fold-7f1a81db164f",
+      "metrics": {
+        "256": {
+          "id": "real-abf590088db891f9-body-1",
+          "knownBodyPixels": 61162,
+          "knownMaterialPixels": 11135,
+          "knownBackgroundPixels": 29071,
+          "knownBodyWithoutMaterialPixels": 20956,
+          "unknownBodyPixels": 4374,
+          "bodyIoU": 0.9703671491582282,
+          "bodyPixelError": 0.01559792027729636,
+          "bodyFalseNegative": 0.026518338474961826,
+          "backgroundFalsePositive": 0.0035430497746895533,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.1417153120790301,
+          "materialJointError": 0.1417153120790301,
+          "jointRegionPixelError": 0.04180968014724171,
+          "jointKnownPixels": 40206
+        },
+        "512": {
+          "id": "real-abf590088db891f9-body-1",
+          "knownBodyPixels": 61162,
+          "knownMaterialPixels": 11135,
+          "knownBackgroundPixels": 29071,
+          "knownBodyWithoutMaterialPixels": 20956,
+          "unknownBodyPixels": 4374,
+          "bodyIoU": 0.9651046859421735,
+          "bodyPixelError": 0.018312023805630948,
+          "bodyFalseNegative": 0.03474494406531426,
+          "backgroundFalsePositive": 0.0001719927075092016,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.08091603053435115,
+          "materialJointError": 0.08091603053435115,
+          "jointRegionPixelError": 0.02253395015669303,
+          "jointKnownPixels": 40206
+        }
+      },
+      "crops": {
+        "256": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        },
+        "512": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        }
+      }
+    },
+    {
+      "id": "real-990ac34431be87fe-body-1",
+      "fold": "fold-dd50f2256463",
+      "metrics": {
+        "256": {
+          "id": "real-990ac34431be87fe-body-1",
+          "knownBodyPixels": 48358,
+          "knownMaterialPixels": 3000,
+          "knownBackgroundPixels": 39084,
+          "knownBodyWithoutMaterialPixels": 6274,
+          "unknownBodyPixels": 17178,
+          "bodyIoU": 0.6497582848735375,
+          "bodyPixelError": 0.10337482939741098,
+          "bodyFalseNegative": 0.0,
+          "backgroundFalsePositive": 0.1279040016374987,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.07033333333333333,
+          "materialJointError": 0.07033333333333333,
+          "jointRegionPixelError": 0.12380001900959985,
+          "jointKnownPixels": 42084
+        },
+        "512": {
+          "id": "real-990ac34431be87fe-body-1",
+          "knownBodyPixels": 48358,
+          "knownMaterialPixels": 3000,
+          "knownBackgroundPixels": 39084,
+          "knownBodyWithoutMaterialPixels": 6274,
+          "unknownBodyPixels": 17178,
+          "bodyIoU": 0.3903378778897451,
+          "bodyPixelError": 0.2977583853757393,
+          "bodyFalseNegative": 0.005930558550787147,
+          "backgroundFalsePositive": 0.3670044007778119,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.011666666666666667,
+          "materialJointError": 0.011666666666666667,
+          "jointRegionPixelError": 0.3416737952666096,
+          "jointKnownPixels": 42084
+        }
+      },
+      "crops": {
+        "512": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        },
+        "256": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        }
+      }
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "fold": "fold-dd50f2256463",
+      "metrics": {
+        "256": {
+          "id": "real-12ce3c9180f7f317-body-1",
+          "knownBodyPixels": 62394,
+          "knownMaterialPixels": 9116,
+          "knownBackgroundPixels": 33733,
+          "knownBodyWithoutMaterialPixels": 19545,
+          "unknownBodyPixels": 3142,
+          "bodyIoU": 0.9246081608359236,
+          "bodyPixelError": 0.03654197518992211,
+          "bodyFalseNegative": 0.024388541921077422,
+          "backgroundFalsePositive": 0.04686805205585035,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.4583150504607284,
+          "materialJointError": 0.4583150504607284,
+          "jointRegionPixelError": 0.13440220308525286,
+          "jointKnownPixels": 42849
+        },
+        "512": {
+          "id": "real-12ce3c9180f7f317-body-1",
+          "knownBodyPixels": 62394,
+          "knownMaterialPixels": 9116,
+          "knownBackgroundPixels": 33733,
+          "knownBodyWithoutMaterialPixels": 19545,
+          "unknownBodyPixels": 3142,
+          "bodyIoU": 0.8518154721582442,
+          "bodyPixelError": 0.07011892169118826,
+          "bodyFalseNegative": 0.12253585010990545,
+          "backgroundFalsePositive": 0.02558325675154893,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.2961825362000878,
+          "materialJointError": 0.3418165862220272,
+          "jointRegionPixelError": 0.09286097691894793,
+          "jointKnownPixels": 42849
+        }
+      },
+      "crops": {
+        "256": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        },
+        "512": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        }
+      }
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "fold": "fold-dd50f2256463",
+      "metrics": {
+        "256": {
+          "id": "real-d5b0aa8d4d2465ee-body-1",
+          "knownBodyPixels": 42469,
+          "knownMaterialPixels": 4055,
+          "knownBackgroundPixels": 29909,
+          "knownBodyWithoutMaterialPixels": 8505,
+          "unknownBodyPixels": 23067,
+          "bodyIoU": 0.7906332619916908,
+          "bodyPixelError": 0.07831594810332243,
+          "bodyFalseNegative": 0.0,
+          "backgroundFalsePositive": 0.1112039854224481,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.09001233045622688,
+          "materialJointError": 0.09001233045622688,
+          "jointRegionPixelError": 0.10867389000117772,
+          "jointKnownPixels": 33964
+        },
+        "512": {
+          "id": "real-d5b0aa8d4d2465ee-body-1",
+          "knownBodyPixels": 42469,
+          "knownMaterialPixels": 4055,
+          "knownBackgroundPixels": 29909,
+          "knownBodyWithoutMaterialPixels": 8505,
+          "unknownBodyPixels": 23067,
+          "bodyIoU": 0.6594179894179895,
+          "bodyPixelError": 0.15156938001836634,
+          "bodyFalseNegative": 0.0077229299363057325,
+          "backgroundFalsePositive": 0.21197632819552642,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.020468557336621455,
+          "materialJointError": 0.02096177558569667,
+          "jointRegionPixelError": 0.18917088682134026,
+          "jointKnownPixels": 33964
+        }
+      },
+      "crops": {
+        "512": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        },
+        "256": {
+          "supported": true,
+          "status": "needs_review",
+          "quad": [
+            [
+              424.01186903211675,
+              113.39774188701209
+            ],
+            [
+              551.6858722279059,
+              318.2460751691032
+            ],
+            [
+              346.58809564300515,
+              455.9101583222169
+            ],
+            [
+              217.24781562320555,
+              240.213944832005
+            ]
+          ],
+          "maskSha256": "e0ec3f16946c593492bf8570d4075e3da26970a3a6bf83fadce2a74d9eb73988"
+        }
+      }
+    },
+    {
+      "id": "real-39f3a1ba97852876-body-1",
+      "fold": "fold-dd50f2256463",
+      "metrics": {
+        "256": {
+          "id": "real-39f3a1ba97852876-body-1",
+          "knownBodyPixels": 41367,
+          "knownMaterialPixels": 2057,
+          "knownBackgroundPixels": 32025,
+          "knownBodyWithoutMaterialPixels": 7285,
+          "unknownBodyPixels": 24169,
+          "bodyIoU": 0.7469502407704655,
+          "bodyPixelError": 0.07622017550221191,
+          "bodyFalseNegative": 0.00374652108756155,
+          "backgroundFalsePositive": 0.09736143637782982,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.4035002430724356,
+          "materialJointError": 0.4035002430724356,
+          "jointRegionPixelError": 0.11583827240185435,
+          "jointKnownPixels": 34082
+        },
+        "512": {
+          "id": "real-39f3a1ba97852876-body-1",
+          "knownBodyPixels": 41367,
+          "knownMaterialPixels": 2057,
+          "knownBackgroundPixels": 32025,
+          "knownBodyWithoutMaterialPixels": 7285,
+          "unknownBodyPixels": 24169,
+          "bodyIoU": 0.45602892319718585,
+          "bodyPixelError": 0.2691517393091111,
+          "bodyFalseNegative": 0.0008563476771569257,
+          "backgroundFalsePositive": 0.34741608118657297,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.4190568789499271,
+          "materialJointError": 0.4190568789499271,
+          "jointRegionPixelError": 0.35173992136611704,
+          "jointKnownPixels": 34082
+        }
+      },
+      "crops": {
+        "256": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        },
+        "512": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        }
+      }
+    },
+    {
+      "id": "real-e936e08ac62db19b-body-1",
+      "fold": "fold-dd50f2256463",
+      "metrics": {
+        "256": {
+          "id": "real-e936e08ac62db19b-body-1",
+          "knownBodyPixels": 35652,
+          "knownMaterialPixels": 5879,
+          "knownBackgroundPixels": 25907,
+          "knownBodyWithoutMaterialPixels": 3866,
+          "unknownBodyPixels": 29884,
+          "bodyIoU": 0.7487080601619746,
+          "bodyPixelError": 0.09138337260181757,
+          "bodyFalseNegative": 0.0038994356080041047,
+          "backgroundFalsePositive": 0.1242907322345312,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.32267392413675794,
+          "materialJointError": 0.32267392413675794,
+          "jointRegionPixelError": 0.16098282262631347,
+          "jointKnownPixels": 31786
+        },
+        "512": {
+          "id": "real-e936e08ac62db19b-body-1",
+          "knownBodyPixels": 35652,
+          "knownMaterialPixels": 5879,
+          "knownBackgroundPixels": 25907,
+          "knownBodyWithoutMaterialPixels": 3866,
+          "unknownBodyPixels": 29884,
+          "bodyIoU": 0.46164779457052163,
+          "bodyPixelError": 0.3187198474138898,
+          "bodyFalseNegative": 0.0001026167265264238,
+          "backgroundFalsePositive": 0.4385687265989887,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.3927538697057323,
+          "materialJointError": 0.3927538697057323,
+          "jointRegionPixelError": 0.43009501038192915,
+          "jointKnownPixels": 31786
+        }
+      },
+      "crops": {
+        "512": {
+          "supported": false,
+          "status": "needs_selection",
+          "quad": null,
+          "maskSha256": null
+        },
+        "256": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        }
+      }
+    },
+    {
+      "id": "real-340f5e5b0f447889-body-1",
+      "fold": "fold-7f1a81db164f",
+      "metrics": {
+        "256": {
+          "id": "real-340f5e5b0f447889-body-1",
+          "knownBodyPixels": 44003,
+          "knownMaterialPixels": 6363,
+          "knownBackgroundPixels": 31527,
+          "knownBodyWithoutMaterialPixels": 6113,
+          "unknownBodyPixels": 21533,
+          "bodyIoU": 0.6791892589723728,
+          "bodyPixelError": 0.11294684453332728,
+          "bodyFalseNegative": 0.15662071176659187,
+          "backgroundFalsePositive": 0.09566403400260094,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.0022002200220022,
+          "materialJointError": 0.10215307245010215,
+          "jointRegionPixelError": 0.09675376088677752,
+          "jointKnownPixels": 37890
+        },
+        "512": {
+          "id": "real-340f5e5b0f447889-body-1",
+          "knownBodyPixels": 44003,
+          "knownMaterialPixels": 6363,
+          "knownBackgroundPixels": 31527,
+          "knownBodyWithoutMaterialPixels": 6113,
+          "unknownBodyPixels": 21533,
+          "bodyIoU": 0.4801243702770781,
+          "bodyPixelError": 0.30018407835829375,
+          "bodyFalseNegative": 0.022202629047771722,
+          "backgroundFalsePositive": 0.41018809274590035,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.000942951438000943,
+          "jointRegionPixelError": 0.34146212721034574,
+          "jointKnownPixels": 37890
+        }
+      },
+      "crops": {
+        "256": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        },
+        "512": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        }
+      }
+    },
+    {
+      "id": "real-710703159f609111-body-1",
+      "fold": "fold-dd50f2256463",
+      "metrics": {
+        "256": {
+          "id": "real-710703159f609111-body-1",
+          "knownBodyPixels": 42979,
+          "knownMaterialPixels": 5645,
+          "knownBackgroundPixels": 33714,
+          "knownBodyWithoutMaterialPixels": 3620,
+          "unknownBodyPixels": 22557,
+          "bodyIoU": 0.626479139901278,
+          "bodyPixelError": 0.1285278857116266,
+          "bodyFalseNegative": 0.0,
+          "backgroundFalsePositive": 0.1638488461766625,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.14034909423511777,
+          "jointKnownPixels": 39359
+        },
+        "512": {
+          "id": "real-710703159f609111-body-1",
+          "knownBodyPixels": 42979,
+          "knownMaterialPixels": 5645,
+          "knownBackgroundPixels": 33714,
+          "knownBodyWithoutMaterialPixels": 3620,
+          "unknownBodyPixels": 22557,
+          "bodyIoU": 0.40181281984560674,
+          "bodyPixelError": 0.32092417227017844,
+          "bodyFalseNegative": 0.0,
+          "backgroundFalsePositive": 0.40911787388028714,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.35044081404507227,
+          "jointKnownPixels": 39359
+        }
+      },
+      "crops": {
+        "512": {
+          "supported": false,
+          "status": "needs_selection",
+          "quad": null,
+          "maskSha256": null
+        },
+        "256": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        }
+      }
+    },
+    {
+      "id": "real-a414dfffbd2362ae-body-1",
+      "fold": "fold-dd50f2256463",
+      "metrics": {
+        "256": {
+          "id": "real-a414dfffbd2362ae-body-1",
+          "knownBodyPixels": 42187,
+          "knownMaterialPixels": 7749,
+          "knownBackgroundPixels": 24940,
+          "knownBodyWithoutMaterialPixels": 9498,
+          "unknownBodyPixels": 23349,
+          "bodyIoU": 0.9341926361015935,
+          "bodyPixelError": 0.028681821414179725,
+          "bodyFalseNegative": 0.0040586768713399436,
+          "backgroundFalsePositive": 0.04570970328789094,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.29500580720092917,
+          "materialJointError": 0.29500580720092917,
+          "jointRegionPixelError": 0.10480589800850439,
+          "jointKnownPixels": 32689
+        },
+        "512": {
+          "id": "real-a414dfffbd2362ae-body-1",
+          "knownBodyPixels": 42187,
+          "knownMaterialPixels": 7749,
+          "knownBackgroundPixels": 24940,
+          "knownBodyWithoutMaterialPixels": 9498,
+          "unknownBodyPixels": 23349,
+          "bodyIoU": 0.8214372835049032,
+          "bodyPixelError": 0.0867565837817337,
+          "bodyFalseNegative": 0.023772250246419668,
+          "backgroundFalsePositive": 0.13031275060144346,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.4863853400438766,
+          "materialJointError": 0.4929668344302491,
+          "jointRegionPixelError": 0.21628070604790603,
+          "jointKnownPixels": 32689
+        }
+      },
+      "crops": {
+        "256": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        },
+        "512": {
+          "supported": false,
+          "status": "needs_review",
+          "quad": null,
+          "maskSha256": null
+        }
+      }
+    }
+  ],
+  "storage": {
+    "newFiles": 50,
+    "newBytes": 44182301,
+    "rawFieldBytes": 39845888,
+    "newPhotoCopies": 0,
+    "newCheckpoints": 0
+  },
+  "validation": {
+    "pythonFocusedTests": 15,
+    "nodeFocusedTests": 16,
+    "focusedEslint": "pass",
+    "gitDiffCheck": "pass",
+    "svelteCheck": {
+      "errors": 0,
+      "existingWarnings": 6
+    },
+    "repositoryLint": {
+      "errors": 0,
+      "existingWarnings": 4
+    },
+    "staticBuild": "pass",
+    "archiveBrowser": "pass: both languages, mobile, search, filters, pagination and preserved PDF",
+    "artifactIntegrity": "all recorded files and original input/source hashes verified after checks",
+    "fullInverseSuite": "Not rerun for offline inference and archive-only changes; no solver code changed.",
+    "logs": [
+      {
+        "path": "tmp/material-scale-check.log",
+        "sha256": "b64b3b69752e90048e5aef73ba8f95170b6a94d5d980b21ae36897d80ece150f"
+      },
+      {
+        "path": "tmp/material-scale-lint.log",
+        "sha256": "5cb2343b55f4080bfac2e213462097e63588a3b9dc264259349c585f21f79815"
+      },
+      {
+        "path": "tmp/material-scale-build.log",
+        "sha256": "ff9852295757dd166fb52b5788f7540514b23e732f31b8cf9c771e643e3fd67b"
+      },
+      {
+        "path": "tmp/material-scale-archive-browser.log",
+        "sha256": "66defd0541028708258af053c54112165d06f04d445839b150e5e78dd6bf7c67"
+      }
+    ]
+  },
+  "visualReview": {
+    "inspected": 19,
+    "galleryPages": 5,
+    "proposedCropMasksInspected": 4,
+    "body": "Higher-resolution inference claims handles, textured background and detached patches; body IoU worsens on eighteen photos. Bicycle alone improves body IoU but has no supported crop and incomplete material detail.",
+    "material": "Eight observed material errors improve, ten worsen and one is unchanged. Rabbit and outdoor checker improve interior identity yet lose crops. Blue/yellow checker retains the only 512px crop, with irregular contacts and gaps at both sizes.",
+    "interpretation": "Failure begins in the frozen learned fields before solver search. Scale affects detail and semantic context together; this does not isolate a particular layer or establish what multiscale training would do."
+  },
+  "decision": "Do not integrate 512px inference or run template fitting as an improvement: no crop gains, two crop losses, worse foreground and material averages, visible mask defects. Keep geometric production pipeline.",
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/crops/real-45744a03afddccb1-body-1-256-mask.png",
+      "sha256": "e471f1608bddf4d80b6206ef8f01ca84df98abddd35e21511bab0bccaf062389",
+      "bytes": 4309
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/crops/real-cf2d0fcff65d7386-body-1-256-mask.png",
+      "sha256": "d5a4450349c6b022e8af1573693a85d7617b24a98f7b7da5816c7501bf48b4a9",
+      "bytes": 2972
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/crops/real-cf2d0fcff65d7386-body-1-512-mask.png",
+      "sha256": "09d79eee7106c1ce232ce1476e60385373c18d619cf8ff8dc4cb542543979f7c",
+      "bytes": 2982
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/crops/real-d5b0aa8d4d2465ee-body-1-256-mask.png",
+      "sha256": "8dd15df68a1e96427a3755d928d47e45b74358946b9cb8e4e47aa185844e1118",
+      "bytes": 3534
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/crops/report.json",
+      "sha256": "b6d3ff7f83c3537f97fb6e521633a012fe24313783505eb0ca9d9d1d6c0f3b18",
+      "bytes": 701715
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/gallery/crops.png",
+      "sha256": "ec88c54e495cb1503b3918d38b543b92879f219a1567665665793ff7c82c55d3",
+      "bytes": 693368
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/gallery/fields-1.png",
+      "sha256": "06400b07892eca3ac9f0fcbfd7ad92472e7c2a2dd040ab9bdd497632a6f57bba",
+      "bytes": 626985
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/gallery/fields-2.png",
+      "sha256": "1c7761ecdb3f237be8eb036a88671a8ee2251fe07ef46407d805787f2c788fbf",
+      "bytes": 554426
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/gallery/fields-3.png",
+      "sha256": "2a85908db92a79613d0a1eebd3bf1009daba4335531311bbb4fcd179719cbc4d",
+      "bytes": 591221
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/gallery/fields-4.png",
+      "sha256": "af8c92355cd016ca0236a4827e315f71d398b2a5525e33f55069ed83f1e5fbe5",
+      "bytes": 697867
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/gallery/fields-5.png",
+      "sha256": "1068c207f520a028474c3f4a66693fd6309c42d4278e03bc6c36ef85f15120ca",
+      "bytes": 372465
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-12ce3c9180f7f317-body-1-body.f32",
+      "sha256": "42b044d216b6deb4871e7fb3d6f8811de982bbb9555396b477af175d540824f3",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-12ce3c9180f7f317-body-1-material.f32",
+      "sha256": "6f7669e186e3f5da5d51f35e262f3347aa2f251cdb194385c2527733203ddd79",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-2044b1d98ed6f262-body-1-body.f32",
+      "sha256": "308ce36136a55de14219f65a52badddaf08bdd1a7a0841d25a52fdba4c245b50",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-2044b1d98ed6f262-body-1-material.f32",
+      "sha256": "96e1c7b781ee21a871846203190b9a855ab0f3cbb5a85561aa3c8b59fa984189",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-340f5e5b0f447889-body-1-body.f32",
+      "sha256": "a078eff9c33c8ff0b398ddbd97470d10350589e7534ec26bb84b6ad12d4bce9f",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-340f5e5b0f447889-body-1-material.f32",
+      "sha256": "a2813038b6db1d0b1f926703f538ad9dec0871cf26994a72105d9d3233c32ac1",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-39f3a1ba97852876-body-1-body.f32",
+      "sha256": "dff729910b73619d4ba7d4c00e979c0ddaf571faf33bc99301059619d333b040",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-39f3a1ba97852876-body-1-material.f32",
+      "sha256": "0e1347c4056db63cdd33987bd4971153c3b6a0134a099bd7676153098e8759d9",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-3f7b76e1a98e808f-body-1-body.f32",
+      "sha256": "e145e8abe17a8edadd9b99cf4a1de40caca3b31d33e037c6384933aa76831b21",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-3f7b76e1a98e808f-body-1-material.f32",
+      "sha256": "95cbec2c513865b1e05b5236f0bc935f561ee3908a30bc03ae32b8959523c271",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-45744a03afddccb1-body-1-body.f32",
+      "sha256": "8e485228c9211afdf61ab9b8a7fa2c55e4d2ac5a5465c47339e417ae60cf5218",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-45744a03afddccb1-body-1-material.f32",
+      "sha256": "6e1ee6222ce996128dc60b5c2c1f3256a6e67cae96ec7c6981c35b210da42607",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-5330aa8b62176216-body-1-body.f32",
+      "sha256": "7cbb9c60fd35b6b3f7fa1996f7ab5b33c2099feb6add306a3cff780176ccb8e2",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-5330aa8b62176216-body-1-material.f32",
+      "sha256": "2ab04d8b7d0e482c0e317c50a8472549c9d48f16a79cdac504add67cf7b228b4",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-68d8f25d8891df62-body-1-body.f32",
+      "sha256": "499ed76095839842ada5bb7d034624325c695929dd734ac563bc73fa22dd945f",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-68d8f25d8891df62-body-1-material.f32",
+      "sha256": "ccb0bdc01e75985bcb080c3897394beee14810ccd38fd2c5883bc01697005a9a",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-710703159f609111-body-1-body.f32",
+      "sha256": "c7f14f8c358dfbabf9a51d3c6a6ed373180f191ccffaf12142da87c90f843064",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-710703159f609111-body-1-material.f32",
+      "sha256": "a705f13dd733c2683a2c210f52a27ce2f70c42447f1ad91203299c129c3e222c",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-8c875dd0f298b5a4-body-1-body.f32",
+      "sha256": "16260daeff50ad0e75a415f73b3ff8aa76dcbde36e8843f9597b06eca945fb1e",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-8c875dd0f298b5a4-body-1-material.f32",
+      "sha256": "321e8f33d5e7cf4c58d2986b1b3a5a14f3b40e040c32f69c200aae34cdbfbfea",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-990ac34431be87fe-body-1-body.f32",
+      "sha256": "f407ffa9abb836bbbc874ea526d16fd05a2d97db32bf2bd79fafc798128d7a0a",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-990ac34431be87fe-body-1-material.f32",
+      "sha256": "c841b30f85babae92bd347e3852e12663e467dcfb4c7f51c995cf07932c1de26",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-995899fe049540ed-body-1-body.f32",
+      "sha256": "da717becf4c97a50c738fee458462fdf894da89c419433c86645325bbd31095b",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-995899fe049540ed-body-1-material.f32",
+      "sha256": "56b17c84ccb037b2416c6d3dc9bc948e1004b09b7904385457af4d37b61a8031",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-a414dfffbd2362ae-body-1-body.f32",
+      "sha256": "8af9594e6d8385806bf13408fafeeeef652c801c970147c5b0d6a18d960c9035",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-a414dfffbd2362ae-body-1-material.f32",
+      "sha256": "4bf8670162fdd7472cf1c3430037e7ff0b97ee44cb71ef0801a018a1c59c6737",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-abf590088db891f9-body-1-body.f32",
+      "sha256": "60c380a6df5f14929956fbfc1a661b2a539e8b6e132cd3b01a49949ee9116717",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-abf590088db891f9-body-1-material.f32",
+      "sha256": "620893ca41a184fc3bf411efd61267fb6f6d4043ba397228db3780d44d6bcb64",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-b87b0b19f12724f3-body-1-body.f32",
+      "sha256": "984b3eb8ba40a8ddb51dd26f29bf8d984fad5afb5de026cf0a080cadc630215c",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-b87b0b19f12724f3-body-1-material.f32",
+      "sha256": "5551712176a2081f35c215ca25b9a94f7a91f95dce485f89d4b86f3e4a2d5bea",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-cdae5c890b6933cd-body-1-body.f32",
+      "sha256": "e29729fd95d4c1281f41bc9753a66f4675a2708653515d4ba3316b75874528c8",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-cdae5c890b6933cd-body-1-material.f32",
+      "sha256": "ebdaf785a1283a29c881b3aaf318c72f9624ed1c1350cf30b130af1da1771c14",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-cf2d0fcff65d7386-body-1-body.f32",
+      "sha256": "eb34fcce4ec67dde8096fba23ab249abf0d680f52f6c5440e1ec1d59bee921e0",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-cf2d0fcff65d7386-body-1-material.f32",
+      "sha256": "c406f8cffea34118fe82ed5923803f939ba5964f05bf597a7f67a1d38c6ace2e",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-d5b0aa8d4d2465ee-body-1-body.f32",
+      "sha256": "a0fdfe805023cfa113db1fc968f652b6cfe77927970a7587d780abfd7427c8df",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-d5b0aa8d4d2465ee-body-1-material.f32",
+      "sha256": "f0b511c1b3a11ddc1856d7ace03c30b29437f4374799e9d5e0cd9d10ec20f22d",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-e936e08ac62db19b-body-1-body.f32",
+      "sha256": "719723e9cf4a6c1f852ddec3caa60278525cd166ebcab4e9925f5f18bfd9df2c",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/real-e936e08ac62db19b-body-1-material.f32",
+      "sha256": "ad4768c0b7645e0465269dfc2e16ed52fee41385a3028e5bda446841e4a087a8",
+      "bytes": 1048576
+    },
+    {
+      "path": "tmp/heart-learning/material-inference-scale-v1/report.json",
+      "sha256": "75e4968c62e92f907e2e553c7a9223a56cae28db8a8c46869242a4f6a702eed3",
+      "bytes": 84569
+    }
+  ]
+}

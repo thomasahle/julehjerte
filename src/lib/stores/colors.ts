@@ -3,9 +3,8 @@ import type { HeartColors } from '$lib/types/heart';
 import { readStorage, writeStorage } from '$lib/utils/safeStorage';
 import { toHexColor } from '$lib/utils/heartColors';
 
-// A heart's colours are a property of a design as much as of the site, so the
-// type lives with the other design types; it is re-exported here because most
-// callers reach for it next to getColors().
+// Paper colours are a site-wide viewing preference. A saved/exported design
+// may also carry an appearance snapshot, without changing its cutting pattern.
 export type { HeartColors };
 
 /**
@@ -109,7 +108,7 @@ export function setRightColor(color: string) {
   setColors({ ...currentColors, right: color });
 }
 
-/** Swap the two lobe colours. Used by the footer's swap button and the editor. */
+/** Swap the two paper colours: the header's red-and-white button and its colour dialog. */
 export function flipColors() {
   const { left, right } = getColors();
   setColors({ left: right, right: left });

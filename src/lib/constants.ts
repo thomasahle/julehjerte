@@ -23,7 +23,7 @@ export const MIN_GRID_SIZE = 2;
  * Single source of truth for every grid clamp; the editor hints that more than
  * PRECISION_GRID_SIZE strips are hard to cut and weave accurately.
  */
-export const MAX_GRID_SIZE = 12;
+export const MAX_GRID_SIZE = 20;
 
 /** Strip counts above this are still allowed but need very precise cutting. */
 export const PRECISION_GRID_SIZE = 8;

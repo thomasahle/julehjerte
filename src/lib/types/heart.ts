@@ -79,15 +79,39 @@ export interface HeartDesign {
   // Optional physical overlap width / height, independent of strip counts.
   // Fitted templates use 1; older designs retain their strip-sized rectangle.
   overlapAspectRatio?: number;
-  // The heart's own paper colours, as picked in the editor. Absent on gallery
-  // hearts and on everything saved before the editor could set them, and those
-  // follow the site-wide colour store instead ($lib/stores/colors).
+  // Appearance snapshot for saved/exported files. The site's live previews use
+  // the header's shared colours; changing that preference does not edit geometry.
   colors?: HeartColors;
+  // The tile the heart was drawn from in Tegn's Escher tab, when it was: the tab
+  // takes it up again when the heart is opened, as long as the cuts are still
+  // the ones it makes. Absent on every other heart.
+  pattern?: HeartPattern;
   fingers: Finger[];
 }
 
+/**
+ * A tile of Tegn's Escher tab as a heart keeps it ($lib/pattern/escherTab
+ * reads and writes it): the type by its key ('opposite:move:mirror', 'ih42', …),
+ * the size, the curves — each segment eight numbers, p0 to p3, in its side's own
+ * frame — how far the tiles lean (`offset`) and the pattern has moved (`pan`),
+ * and the lines of the tiling a moved pattern's heart cuts (`lines`, first and
+ * how many, each way).
+ */
+export interface HeartPattern {
+  rule: string;
+  cuts: number;
+  curves: Record<string, number[][]>;
+  offset?: [number, number];
+  pan?: [number, number];
+  lines?: { V: [number, number]; H: [number, number] };
+}
+
 // On-disk format for gallery hearts and shared designs.
-export type HeartDesignJson = Omit<HeartDesign, 'fingers'> & { fingers: FingerPathData[] };
+export type HeartDesignJson = Omit<HeartDesign, 'fingers'> & {
+  fingers: FingerPathData[];
+  /** Physical overlap proportions, independent of the number of strips. */
+  overlapAspectRatio?: number;
+};
 
 /**
  * The credit and facts the heart detail page shows beside the drawing.

@@ -8,12 +8,12 @@ can go back and forth: Find snit turns the mask into a heart, "Mal på hjertet" 
 Owner's decisions (2026-09-08, mockup https://claude.ai/code/artifact/cc56e263-9cfc-459d-9a6f-9ae00db680aa):
 
 1. The mask is a **fixed high-resolution image** (400 × 400 cells of the woven square, the engine's resolution).
-   No cell size setting, no visible grid. Brushes: fine / medium / coarse.
+   No cell size setting, no visible grid. Brush radius: an integer slider from 1–40 cells, default 6 (updated by the owner, 2026-10-19).
 2. **Symmetry belongs to Find snit**, using the editor's own three rows (Inden i kurve, Inden i lap, Mellem
    lapper; Fra / Sym / Anti). Symmetries found in the mask are switched on and tagged "fundet".
 3. **No search time setting.** Find snit runs until it has an answer or the visitor presses Afbryd.
 4. Mal has **two panels only**: left = Importér billede, Ryd, tools; right = Find snit. Farver and Hjertedetaljer
-   stay in Tegn. The tool panel's two swatches only choose which paper colour the pen paints.
+   stay in Tegn. The tool panel chooses either paper colour or XOR, which swaps the paper colour underneath.
 5. The mask is drawn **inside the heart**: the woven diamond carries the mask, the lobes show the paper colours,
    mirror lines are drawn in heart orientation.
 6. **Import is a dialog**: file, corners (found automatically, draggable), colour interpretation, a preview of the
@@ -58,9 +58,12 @@ of an overlay scrollbar until a gesture starts):
 - Row of two buttons: `Importér billede` (outline, opens the dialog) and `Ryd` (ghost, clears to all-0 after a
   confirm if the mask is not empty; uses the site `Modal`, no `confirm()`).
 - Panel "Værktøj": tools Pen, Viskelæder, Fyld, Linje, Rektangel, Markér as 40px icon buttons (lucide: pencil,
-  eraser, paint-bucket, minus (rotated 45°) or a simple line glyph, square, square-dashed); brush size segmented
-  control Fin / Mellem / Grov (radius 2 / 6 / 14 cells); "Maler med" two swatches (the current paper colours, the
-  chosen one ringed). Viskelæder always paints 0. Undo / redo (lucide undo-2 / redo-2) are two 40px icon buttons —
+  eraser, paint-bucket, minus (rotated 45°) or a simple line glyph, square, square-dashed); a labelled brush-radius
+  slider (1–40 cells, default 6) with its current value; "Maler med" offers the two paper swatches plus XOR.
+  XOR inverts each covered cell once per gesture, including overlapping dabs and mirrored copies; pen, line,
+  rectangle and fill support it, while Viskelæder always paints 0. The mask remains binary. A noninteractive
+  circular outline follows the brush over the diamond, at the current on-screen radius, and hides on leave,
+  cancellation and touch release. Choosing XOR does not change the paper colours. Undo / redo (lucide undo-2 / redo-2) are two 40px icon buttons —
   the tools' own square (`.tool-btn`, not the site's `.btn-icon`: the two differ by a glyph size, a ground and a
   disabled opacity, and two nearly-identical squares in one panel is worse than one local name), with the words in
   the same `Tooltip` the tools wear and in `aria-label` — set at the right-hand end of the swatches' row rather than
@@ -561,7 +564,7 @@ these rows (Family A, see the Symmetri-ikoner artifact) is a separate task and m
 
 All strings in `src/lib/i18n/translations.ts`, both languages, key prefix `paint` (e.g. `paintModeDraw` "Tegn" /
 "Draw", `paintModePaint` "Mal" / "Paint", `paintImportImage`, `paintClear`, `paintTools`, `paintPen`, `paintEraser`,
-`paintFill`, `paintLine`, `paintRect`, `paintBrush`, `paintBrushFine/Medium/Coarse`, `paintsWith`, `paintFindCuts`,
+`paintFill`, `paintLine`, `paintRect`, `paintBrush`, `paintBrushRadius`, `paintsWith`, `paintsWithXor`, `paintFindCuts`,
 `paintFindCutsHint`, `paintAdvanced`, `paintSearching`, `paintStage*`, `paintCancel`, `paintFound`,
 `paintFoundSummary` with `{left}`, `{right}`, `{clearance}`, `{mismatch}`, `paintOpenInDraw`, `paintBackToMask`,
 `paintFailedTimeout`, `paintFailedNoSolution`, `paintFailedEngine`, `paintTryAgain`, `paintEmptyHint`,
@@ -583,6 +586,14 @@ them.
   draw page's bundle must not grow because of Mal (dynamic import of the paint modules from the draw page's "Mal på
   hjertet" action is fine; the paint page itself may import them statically).
 - Prefers-reduced-motion: no animated progress bar sweep, a plain determinate/indeterminate bar.
+
+The XOR/slider regression suite includes `scripts/paint/brush-browser-test.mjs`.
+Run it against `PAINT_TEST_URL` with the repository's own Playwright/Chromium
+environment variables. It checks a retraced stroke across both paper colours,
+separate-stroke inversion, undo/redo, slider keyboard input, on-screen ring size,
+both languages and mobile layout. Pixel comparisons exclude antialiased edges
+that can change when Chromium switches canvas backends after readback; the unit
+tests separately require exact binary-mask restoration.
 
 ## 9. Retiring the old generator page
 

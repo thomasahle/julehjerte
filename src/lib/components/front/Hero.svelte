@@ -89,7 +89,7 @@
 					<ArrowRightIcon size={18} />
 					{t('heroSeeTemplates', lang)}
 				</a>
-				<a class="btn btn-outline" href={routeHref('editor', lang)}>
+				<a class="btn btn-outline" href={routeHref('generator', lang)}>
 					<PencilIcon size={18} />
 					{t('heroDesignHeart', lang)}
 				</a>

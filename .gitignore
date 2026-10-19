@@ -1,5 +1,8 @@
 node_modules
 tmp/
+# Original third-party preservation payloads with source-only public access.
+# Provenance/checksums are tracked under docs/inverse/datasets/.
+/archive-store/
 __pycache__/
 *.pyc
 

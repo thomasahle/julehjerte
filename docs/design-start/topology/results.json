@@ -1,0 +1,806 @@
+{
+  "date": "2026-10-13T12:56:33.354Z",
+  "method": "deterministic contour construction; no image solver",
+  "cfg": {
+    "algorithm": "trace",
+    "preferMatchingSheets": true,
+    "matchingErrorAllowance": 0.01,
+    "earlyStop": false,
+    "width": 100,
+    "maxImageError": 0.03,
+    "minWidth": 2,
+    "cutError": 0.25,
+    "kerf": 0,
+    "printShrinkPercent": 0.2,
+    "geometryTolerance": 0.01,
+    "sharpTurn": 60,
+    "sharpPenalty": 50,
+    "turnPenalty": 3,
+    "bendingPenalty": 0.15,
+    "acutePenalty": 30,
+    "maxTurn": 150,
+    "connectorPenalty": 2,
+    "junctionBalancePenalty": 0,
+    "gridPreference": 0,
+    "minRadius": 0.8,
+    "gridPortals": false,
+    "neighbors": 16,
+    "connectorVariants": 2,
+    "timeLimit": 60,
+    "relativeGap": 0.02,
+    "maxRounds": 12,
+    "localNeighborhoodFactor": 3,
+    "requireMaterialCore": true,
+    "materialResolution": 360,
+    "minFeatureArea": 0.25,
+    "roundHidden": false,
+    "trials": 0,
+    "registration": 0.4,
+    "rotation": 0.3,
+    "relativeScalePercent": 0.2,
+    "seed": 1729,
+    "symmetry": null,
+    "paperColors": [
+      "#bd1111",
+      "#ffffff"
+    ],
+    "nominalWidth": 2.50501002004008
+  },
+  "resolution": 512,
+  "rows": [
+    {
+      "id": "star-circle",
+      "name": "One silhouette · circle + four corner rays",
+      "topology": "1 component, 0 holes",
+      "recipe": "four-gate",
+      "frame": "circle",
+      "style": "rays",
+      "constructMs": 2.448541999999989,
+      "cutCounts": [
+        2,
+        2
+      ],
+      "edges": {
+        "visible": 84,
+        "shared": 4
+      },
+      "geometry": true,
+      "geometryIssues": [],
+      "legacyCombinedAudit": {
+        "passed": true,
+        "issues": []
+      },
+      "paper": "pass",
+      "pixelDifference": 0.000377655029296875,
+      "physicalAssemblyTested": false
+    },
+    {
+      "id": "star-diamond",
+      "name": "One silhouette · diamond + corner checker",
+      "topology": "1 component, 0 holes",
+      "recipe": "four-gate",
+      "frame": "diamond",
+      "style": "corner-checker",
+      "constructMs": 0.3262089999998352,
+      "cutCounts": [
+        2,
+        2
+      ],
+      "edges": {
+        "visible": 28,
+        "shared": 4
+      },
+      "geometry": true,
+      "geometryIssues": [],
+      "legacyCombinedAudit": {
+        "passed": false,
+        "issues": [
+          {
+            "type": "forward_sample_mismatch",
+            "pixels": 2
+          }
+        ]
+      },
+      "paper": "pass",
+      "pixelDifference": 0.000156402587890625,
+      "physicalAssemblyTested": false
+    },
+    {
+      "id": "star-hexagon",
+      "name": "One silhouette · hexagon + four corner rays",
+      "topology": "1 component, 0 holes",
+      "recipe": "four-gate",
+      "frame": "hexagon",
+      "style": "rays",
+      "constructMs": 0.29908399999999347,
+      "cutCounts": [
+        2,
+        2
+      ],
+      "edges": {
+        "visible": 32,
+        "shared": 4
+      },
+      "geometry": true,
+      "geometryIssues": [],
+      "legacyCombinedAudit": {
+        "passed": true,
+        "issues": []
+      },
+      "paper": "pass",
+      "pixelDifference": 0.000396728515625,
+      "physicalAssemblyTested": false
+    },
+    {
+      "id": "star-two-gates",
+      "name": "Same silhouette · two diagonal frame connections",
+      "topology": "1 component, 0 holes",
+      "recipe": "nested",
+      "frame": "circle",
+      "style": "rays",
+      "constructMs": 0.5217090000001008,
+      "cutCounts": [
+        1,
+        1
+      ],
+      "edges": {
+        "visible": 46,
+        "shared": 2
+      },
+      "geometry": true,
+      "geometryIssues": [],
+      "legacyCombinedAudit": {
+        "passed": true,
+        "issues": []
+      },
+      "paper": "pass",
+      "pixelDifference": 0.000263214111328125,
+      "physicalAssemblyTested": false
+    },
+    {
+      "id": "annulus",
+      "name": "A hole inside a figure",
+      "topology": "1 component, 1 hole",
+      "recipe": "nested",
+      "frame": "circle",
+      "style": "rays",
+      "constructMs": 1.300583000000188,
+      "cutCounts": [
+        1,
+        1
+      ],
+      "edges": {
+        "visible": 292,
+        "shared": 4
+      },
+      "geometry": true,
+      "geometryIssues": [],
+      "legacyCombinedAudit": {
+        "passed": false,
+        "issues": [
+          {
+            "type": "forward_sample_mismatch",
+            "pixels": 1
+          }
+        ]
+      },
+      "paper": "pass",
+      "pixelDifference": 0.00028228759765625,
+      "physicalAssemblyTested": false
+    },
+    {
+      "id": "nested-island",
+      "name": "An island inside a hole",
+      "topology": "2 components, 1 hole; nested",
+      "recipe": "nested",
+      "frame": "circle",
+      "style": "rays",
+      "constructMs": 1.8219160000003285,
+      "cutCounts": [
+        1,
+        1
+      ],
+      "edges": {
+        "visible": 420,
+        "shared": 6
+      },
+      "geometry": true,
+      "geometryIssues": [],
+      "legacyCombinedAudit": {
+        "passed": true,
+        "issues": []
+      },
+      "paper": "pass",
+      "pixelDifference": 0.0004425048828125,
+      "physicalAssemblyTested": false
+    },
+    {
+      "id": "two-islands",
+      "name": "Two separate components",
+      "topology": "2 components, 0 holes",
+      "recipe": "islands",
+      "frame": "circle",
+      "style": "rays",
+      "constructMs": 1.2053750000000036,
+      "cutCounts": [
+        1,
+        1
+      ],
+      "edges": {
+        "visible": 292,
+        "shared": 3
+      },
+      "geometry": true,
+      "geometryIssues": [],
+      "legacyCombinedAudit": {
+        "passed": true,
+        "issues": []
+      },
+      "paper": "pass",
+      "pixelDifference": 0.000186920166015625,
+      "physicalAssemblyTested": false
+    },
+    {
+      "id": "thin-annulus",
+      "name": "Same topology, insufficient clearance",
+      "topology": "1 component, 1 hole; 1 mm ring",
+      "recipe": "nested",
+      "frame": "circle",
+      "style": "rays",
+      "constructMs": 1.3677090000001044,
+      "cutCounts": [
+        1,
+        1
+      ],
+      "edges": {
+        "visible": 292,
+        "shared": 4
+      },
+      "geometry": false,
+      "geometryIssues": [
+        {
+          "type": "nonlocal_self_clearance",
+          "family": 0,
+          "slit": 0,
+          "edgeChain": [
+            223,
+            224,
+            225,
+            226,
+            227,
+            293,
+            131,
+            130
+          ],
+          "distanceLower": 2.493177620840731,
+          "point": [
+            34.55156715597228,
+            68.35989491265903
+          ]
+        },
+        {
+          "type": "nonlocal_self_clearance",
+          "family": 0,
+          "slit": 0,
+          "edgeChain": [
+            224,
+            225,
+            226,
+            227,
+            293,
+            131,
+            130,
+            129
+          ],
+          "distanceLower": 1.9774566409919117,
+          "point": [
+            34.77456118007251,
+            68.55225088070569
+          ]
+        },
+        {
+          "type": "nonlocal_self_clearance",
+          "family": 0,
+          "slit": 0,
+          "edgeChain": [
+            223,
+            224,
+            225,
+            226,
+            227,
+            293,
+            131,
+            130,
+            129
+          ],
+          "distanceLower": 2.2292929873875194,
+          "point": [
+            34.77456118007251,
+            68.55225088070569
+          ]
+        },
+        {
+          "type": "nonlocal_self_clearance",
+          "family": 0,
+          "slit": 0,
+          "edgeChain": [
+            226,
+            227,
+            293,
+            131,
+            130,
+            129,
+            128,
+            127
+          ],
+          "distanceLower": 2.4931776208407244,
+          "point": [
+            35.40895446423616,
+            67.77924042734296
+          ]
+        },
+        {
+          "type": "nonlocal_self_clearance",
+          "family": 1,
+          "slit": 0,
+          "edgeChain": [
+            148,
+            147,
+            146,
+            145,
+            144,
+            143,
+            142,
+            141,
+            140,
+            139,
+            138,
+            137,
+            136,
+            135,
+            134,
+            133,
+            132,
+            293,
+            228,
+            229,
+            230,
+            231,
+            232,
+            233,
+            234,
+            235,
+            236,
+            237,
+            238,
+            239,
+            240,
+            241,
+            242,
+            243
+          ],
+          "distanceLower": 0.9796988186962041,
+          "point": [
+            26.007227262768964,
+            49.70559395403549
+          ]
+        },
+        {
+          "type": "nonlocal_self_clearance",
+          "family": 1,
+          "slit": 0,
+          "edgeChain": [
+            148,
+            147,
+            146,
+            145,
+            144,
+            143,
+            142,
+            141,
+            140,
+            139,
+            138,
+            137,
+            136,
+            135,
+            134,
+            133,
+            132,
+            293,
+            228,
+            229,
+            230,
+            231,
+            232,
+            233,
+            234,
+            235,
+            236,
+            237,
+            238,
+            239,
+            240,
+            241,
+            242,
+            243,
+            244
+          ],
+          "distanceLower": 0.9796988186962041,
+          "point": [
+            26.007227262768964,
+            49.70559395403549
+          ]
+        },
+        {
+          "type": "nonlocal_self_clearance",
+          "family": 1,
+          "slit": 0,
+          "edgeChain": [
+            148,
+            147,
+            146,
+            145,
+            144,
+            143,
+            142,
+            141,
+            140,
+            139,
+            138,
+            137,
+            136,
+            135,
+            134,
+            133,
+            132,
+            293,
+            228,
+            229,
+            230,
+            231,
+            232,
+            233,
+            234,
+            235,
+            236,
+            237,
+            238,
+            239,
+            240,
+            241,
+            242
+          ],
+          "distanceLower": 1.506373594337136,
+          "point": [
+            26.007227262768964,
+            49.70559395403549
+          ]
+        },
+        {
+          "type": "nonlocal_self_clearance",
+          "family": 1,
+          "slit": 0,
+          "edgeChain": [
+            148,
+            147,
+            146,
+            145,
+            144,
+            143,
+            142,
+            141,
+            140,
+            139,
+            138,
+            137,
+            136,
+            135,
+            134,
+            133,
+            132,
+            293,
+            228,
+            229,
+            230,
+            231,
+            232,
+            233,
+            234,
+            235,
+            236,
+            237,
+            238,
+            239,
+            240,
+            241,
+            242,
+            243,
+            244,
+            245
+          ],
+          "distanceLower": 1.2980215485470983,
+          "point": [
+            26.007227262768964,
+            49.70559395403549
+          ]
+        }
+      ],
+      "legacyCombinedAudit": {
+        "passed": false,
+        "issues": [
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 0,
+            "edgeChain": [
+              223,
+              224,
+              225,
+              226,
+              227,
+              293,
+              131,
+              130
+            ],
+            "distanceLower": 2.493177620840731,
+            "point": [
+              34.55156715597228,
+              68.35989491265903
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 0,
+            "edgeChain": [
+              224,
+              225,
+              226,
+              227,
+              293,
+              131,
+              130,
+              129
+            ],
+            "distanceLower": 1.9774566409919117,
+            "point": [
+              34.77456118007251,
+              68.55225088070569
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 0,
+            "edgeChain": [
+              223,
+              224,
+              225,
+              226,
+              227,
+              293,
+              131,
+              130,
+              129
+            ],
+            "distanceLower": 2.2292929873875194,
+            "point": [
+              34.77456118007251,
+              68.55225088070569
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 0,
+            "slit": 0,
+            "edgeChain": [
+              226,
+              227,
+              293,
+              131,
+              130,
+              129,
+              128,
+              127
+            ],
+            "distanceLower": 2.4931776208407244,
+            "point": [
+              35.40895446423616,
+              67.77924042734296
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 0,
+            "edgeChain": [
+              148,
+              147,
+              146,
+              145,
+              144,
+              143,
+              142,
+              141,
+              140,
+              139,
+              138,
+              137,
+              136,
+              135,
+              134,
+              133,
+              132,
+              293,
+              228,
+              229,
+              230,
+              231,
+              232,
+              233,
+              234,
+              235,
+              236,
+              237,
+              238,
+              239,
+              240,
+              241,
+              242,
+              243
+            ],
+            "distanceLower": 0.9796988186962041,
+            "point": [
+              26.007227262768964,
+              49.70559395403549
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 0,
+            "edgeChain": [
+              148,
+              147,
+              146,
+              145,
+              144,
+              143,
+              142,
+              141,
+              140,
+              139,
+              138,
+              137,
+              136,
+              135,
+              134,
+              133,
+              132,
+              293,
+              228,
+              229,
+              230,
+              231,
+              232,
+              233,
+              234,
+              235,
+              236,
+              237,
+              238,
+              239,
+              240,
+              241,
+              242,
+              243,
+              244
+            ],
+            "distanceLower": 0.9796988186962041,
+            "point": [
+              26.007227262768964,
+              49.70559395403549
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 0,
+            "edgeChain": [
+              148,
+              147,
+              146,
+              145,
+              144,
+              143,
+              142,
+              141,
+              140,
+              139,
+              138,
+              137,
+              136,
+              135,
+              134,
+              133,
+              132,
+              293,
+              228,
+              229,
+              230,
+              231,
+              232,
+              233,
+              234,
+              235,
+              236,
+              237,
+              238,
+              239,
+              240,
+              241,
+              242
+            ],
+            "distanceLower": 1.506373594337136,
+            "point": [
+              26.007227262768964,
+              49.70559395403549
+            ]
+          },
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 0,
+            "edgeChain": [
+              148,
+              147,
+              146,
+              145,
+              144,
+              143,
+              142,
+              141,
+              140,
+              139,
+              138,
+              137,
+              136,
+              135,
+              134,
+              133,
+              132,
+              293,
+              228,
+              229,
+              230,
+              231,
+              232,
+              233,
+              234,
+              235,
+              236,
+              237,
+              238,
+              239,
+              240,
+              241,
+              242,
+              243,
+              244,
+              245
+            ],
+            "distanceLower": 1.2980215485470983,
+            "point": [
+              26.007227262768964,
+              49.70559395403549
+            ]
+          }
+        ]
+      },
+      "paper": "pass",
+      "pixelDifference": 0.000331878662109375,
+      "physicalAssemblyTested": false
+    }
+  ]
+}

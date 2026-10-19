@@ -1,0 +1,637 @@
+{
+  "schema": "photo-crop-fallback-results-1",
+  "status": "complete",
+  "date": "2026-10-19",
+  "sourceCommit": "dd707d16",
+  "evidence": {
+    "plan": {
+      "path": "docs/inverse/datasets/photo-crop-fallback-plan.json",
+      "sha256": "688b9cf8d9000000b1f65093d0b4f31d987c5501e30679df2384be4c3e7efde2"
+    },
+    "pipeline": {
+      "path": "tmp/heart-learning/photo-crop-fallback-v1/report.json",
+      "sha256": "2e0d4a7bb1038ffcbe43c268aa9bc67fff7fc30013eb4dbfff1e55bc60bb278b"
+    },
+    "editable": {
+      "path": "tmp/heart-learning/photo-crop-fallback-v1-editable/results.json",
+      "sha256": "7303e738782c3e80c049cb5fb1d632f9779790436b7e38a6dc5ffa4677d5377f"
+    },
+    "gallery": {
+      "path": "tmp/heart-learning/photo-crop-fallback-v1-gallery/manifest.json",
+      "sha256": "ee1f5d6716b9c67957c718894f3a1f4604bc16edce2e8e17d909f800c74473f5"
+    }
+  },
+  "protocol": {
+    "methods": [
+      "production",
+      "fallback"
+    ],
+    "timeLimitSeconds": 10,
+    "trials": 0,
+    "target": "rgb-to-mask",
+    "policy": "Keep the first production crop if supportedCropOutline passes. Otherwise request the held-out NN fields, run the unchanged locator, and use its first proposal only if supportedCropOutline passes and all four corners are observed. If it fails or errors, retain the original production result. No target error, manual ROI, template, annotation or image identity enters the selector.",
+    "unchangedFit": "When the selector retains production, reuse that exact crop and one fresh fit in both arms. This isolates the policy from unrelated timed-search variation and avoids duplicate CPU work. It is not an independent repeated benchmark.",
+    "changedFit": "When NN replaces the crop, fit both RGB targets afresh under the same ten-second settings; rotate their order by input index.",
+    "preserveObservation": true,
+    "thresholds": "Original template geometry/paper checks, original feature checks, independent image disagreement <=3%, then production editable conversion, SVG reload, editor geometry and physical audit. No thresholds relaxed.",
+    "visualReview": "Review every distinct exported crop/mask/weave; record border loss, thin seams, missing motifs and false checked results separately.",
+    "success": "More complete checked editable pairs, no lost production passes when the crop is retained. A positive result on these development cases is necessary to justify a new grouped evaluation, not a release claim.",
+    "runtimeScope": "Cached actual WASM fields. Record crop and solve times separately; do not claim browser end-to-end latency or include stored inference as zero cost."
+  },
+  "summary": {
+    "production": {
+      "attempted": 16,
+      "crops": 9,
+      "supported": 7,
+      "checkedPairs": 7,
+      "neuralSelected": 0,
+      "reusedFits": 0
+    },
+    "fallback": {
+      "attempted": 16,
+      "crops": 11,
+      "supported": 9,
+      "checkedPairs": 9,
+      "neuralSelected": 2,
+      "reusedFits": 14
+    }
+  },
+  "editableAudit": {
+    "convertedMethodCandidates": 20,
+    "distinctExportedPairs": 11,
+    "geometryPassed": 20,
+    "paperPassed": 20,
+    "checkedPairs": {
+      "production": 7,
+      "fallback": 9
+    },
+    "physicalAssemblyTested": false
+  },
+  "latency": {
+    "scope": "Cached held-out WASM predictions; excludes model initialization, source decoding, NN preprocessing and inference. Timed crop search and fitting use production behavior.",
+    "neuralAttempts": 9,
+    "combinedCropMedianSeconds": 5.5215143330000025,
+    "combinedCropMaxSeconds": 8.826905875,
+    "neuralLocatorMedianSecondsWhenAttempted": 2.2581804169999997,
+    "recoveries": [
+      {
+        "id": "real-990ac34431be87fe-body-1",
+        "combinedCropSeconds": 5.707852708000006,
+        "neuralLocatorSeconds": 0.5295539160000043,
+        "solveSeconds": 9.248957792
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "combinedCropSeconds": 8.560391291000007,
+        "neuralLocatorSeconds": 0.5492948340000002,
+        "solveSeconds": 4.5595250839999935
+      }
+    ]
+  },
+  "rows": [
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "selected": "production",
+      "supportedCrop": false,
+      "reusedProductionFit": false,
+      "engineImageError": 0.013225,
+      "editableImageError": 0.0132875,
+      "checkedEditablePair": true,
+      "missingFeatures": 0
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "method": "fallback",
+      "status": "checked-derived-mask",
+      "selected": "production",
+      "supportedCrop": false,
+      "reusedProductionFit": true,
+      "engineImageError": 0.013225,
+      "editableImageError": 0.0132875,
+      "checkedEditablePair": true,
+      "missingFeatures": 0
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "method": "production",
+      "status": "crop-unresolved",
+      "selected": "production",
+      "supportedCrop": false,
+      "reusedProductionFit": false,
+      "engineImageError": null,
+      "editableImageError": null,
+      "checkedEditablePair": false,
+      "missingFeatures": null
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "method": "fallback",
+      "status": "crop-unresolved",
+      "selected": "production",
+      "supportedCrop": false,
+      "reusedProductionFit": true,
+      "engineImageError": null,
+      "editableImageError": null,
+      "checkedEditablePair": false,
+      "missingFeatures": null
+    },
+    {
+      "id": "real-b87b0b19f12724f3-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "selected": "production",
+      "supportedCrop": true,
+      "reusedProductionFit": false,
+      "engineImageError": 0.00438125,
+      "editableImageError": 0.0041875,
+      "checkedEditablePair": true,
+      "missingFeatures": 0
+    },
+    {
+      "id": "real-b87b0b19f12724f3-body-1",
+      "method": "fallback",
+      "status": "checked-derived-mask",
+      "selected": "production",
+      "supportedCrop": true,
+      "reusedProductionFit": true,
+      "engineImageError": 0.00438125,
+      "editableImageError": 0.0041875,
+      "checkedEditablePair": true,
+      "missingFeatures": 0
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "selected": "production",
+      "supportedCrop": true,
+      "reusedProductionFit": false,
+      "engineImageError": 0.014749760738613973,
+      "editableImageError": 0.014799802335691543,
+      "checkedEditablePair": true,
+      "missingFeatures": 0
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "method": "fallback",
+      "status": "checked-derived-mask",
+      "selected": "production",
+      "supportedCrop": true,
+      "reusedProductionFit": true,
+      "engineImageError": 0.014749760738613973,
+      "editableImageError": 0.014799802335691543,
+      "checkedEditablePair": true,
+      "missingFeatures": 0
+    },
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "method": "production",
+      "status": "crop-unresolved",
+      "selected": "production",
+      "supportedCrop": false,
+      "reusedProductionFit": false,
+      "engineImageError": null,
+      "editableImageError": null,
+      "checkedEditablePair": false,
+      "missingFeatures": null
+    },
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "method": "fallback",
+      "status": "crop-unresolved",
+      "selected": "production",
+      "supportedCrop": false,
+      "reusedProductionFit": true,
+      "engineImageError": null,
+      "editableImageError": null,
+      "checkedEditablePair": false,
+      "missingFeatures": null
+    },
+    {
+      "id": "real-68d8f25d8891df62-body-1",
+      "method": "production",
+      "status": "crop-unresolved",
+      "selected": "production",
+      "supportedCrop": false,
+      "reusedProductionFit": false,
+      "engineImageError": null,
+      "editableImageError": null,
+      "checkedEditablePair": false,
+      "missingFeatures": null
+    },
+    {
+      "id": "real-68d8f25d8891df62-body-1",
+      "method": "fallback",
+      "status": "crop-unresolved",
+      "selected": "production",
+      "supportedCrop": false,
+      "reusedProductionFit": true,
+      "engineImageError": null,
+      "editableImageError": null,
+      "checkedEditablePair": false,
+      "missingFeatures": null
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "method": "production",
+      "status": "review-required",
+      "selected": "production",
+      "supportedCrop": true,
+      "reusedProductionFit": false,
+      "engineImageError": 0.07688,
+      "editableImageError": 0.07688,
+      "checkedEditablePair": false,
+      "missingFeatures": 3
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "method": "fallback",
+      "status": "review-required",
+      "selected": "production",
+      "supportedCrop": true,
+      "reusedProductionFit": true,
+      "engineImageError": 0.07688,
+      "editableImageError": 0.07688,
+      "checkedEditablePair": false,
+      "missingFeatures": 3
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "selected": "production",
+      "supportedCrop": true,
+      "reusedProductionFit": false,
+      "engineImageError": 0.015984,
+      "editableImageError": 0.016288,
+      "checkedEditablePair": true,
+      "missingFeatures": 0
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "method": "fallback",
+      "status": "checked-derived-mask",
+      "selected": "production",
+      "supportedCrop": true,
+      "reusedProductionFit": true,
+      "engineImageError": 0.015984,
+      "editableImageError": 0.016288,
+      "checkedEditablePair": true,
+      "missingFeatures": 0
+    },
+    {
+      "id": "real-990ac34431be87fe-body-1",
+      "method": "production",
+      "status": "crop-unresolved",
+      "selected": "learned",
+      "supportedCrop": false,
+      "reusedProductionFit": false,
+      "engineImageError": null,
+      "editableImageError": null,
+      "checkedEditablePair": false,
+      "missingFeatures": null
+    },
+    {
+      "id": "real-990ac34431be87fe-body-1",
+      "method": "fallback",
+      "status": "checked-derived-mask",
+      "selected": "learned",
+      "supportedCrop": true,
+      "reusedProductionFit": false,
+      "engineImageError": 0.012025,
+      "editableImageError": 0.0119125,
+      "checkedEditablePair": true,
+      "missingFeatures": 0
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "method": "fallback",
+      "status": "checked-derived-mask",
+      "selected": "learned",
+      "supportedCrop": true,
+      "reusedProductionFit": false,
+      "engineImageError": 0.007725,
+      "editableImageError": 0.00721875,
+      "checkedEditablePair": true,
+      "missingFeatures": 0
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "method": "production",
+      "status": "crop-unresolved",
+      "selected": "learned",
+      "supportedCrop": false,
+      "reusedProductionFit": false,
+      "engineImageError": null,
+      "editableImageError": null,
+      "checkedEditablePair": false,
+      "missingFeatures": null
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "selected": "production",
+      "supportedCrop": true,
+      "reusedProductionFit": false,
+      "engineImageError": 0.006175,
+      "editableImageError": 0.006025,
+      "checkedEditablePair": true,
+      "missingFeatures": 0
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "method": "fallback",
+      "status": "checked-derived-mask",
+      "selected": "production",
+      "supportedCrop": true,
+      "reusedProductionFit": true,
+      "engineImageError": 0.006175,
+      "editableImageError": 0.006025,
+      "checkedEditablePair": true,
+      "missingFeatures": 0
+    },
+    {
+      "id": "real-39f3a1ba97852876-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "selected": "production",
+      "supportedCrop": true,
+      "reusedProductionFit": false,
+      "engineImageError": 0.004333333333333333,
+      "editableImageError": 0.004111111111111111,
+      "checkedEditablePair": true,
+      "missingFeatures": 0
+    },
+    {
+      "id": "real-39f3a1ba97852876-body-1",
+      "method": "fallback",
+      "status": "checked-derived-mask",
+      "selected": "production",
+      "supportedCrop": true,
+      "reusedProductionFit": true,
+      "engineImageError": 0.004333333333333333,
+      "editableImageError": 0.004111111111111111,
+      "checkedEditablePair": true,
+      "missingFeatures": 0
+    },
+    {
+      "id": "real-e936e08ac62db19b-body-1",
+      "method": "production",
+      "status": "crop-unresolved",
+      "selected": "production",
+      "supportedCrop": false,
+      "reusedProductionFit": false,
+      "engineImageError": null,
+      "editableImageError": null,
+      "checkedEditablePair": false,
+      "missingFeatures": null
+    },
+    {
+      "id": "real-e936e08ac62db19b-body-1",
+      "method": "fallback",
+      "status": "crop-unresolved",
+      "selected": "production",
+      "supportedCrop": false,
+      "reusedProductionFit": true,
+      "engineImageError": null,
+      "editableImageError": null,
+      "checkedEditablePair": false,
+      "missingFeatures": null
+    },
+    {
+      "id": "real-340f5e5b0f447889-body-1",
+      "method": "production",
+      "status": "crop-unresolved",
+      "selected": "production",
+      "supportedCrop": false,
+      "reusedProductionFit": false,
+      "engineImageError": null,
+      "editableImageError": null,
+      "checkedEditablePair": false,
+      "missingFeatures": null
+    },
+    {
+      "id": "real-340f5e5b0f447889-body-1",
+      "method": "fallback",
+      "status": "crop-unresolved",
+      "selected": "production",
+      "supportedCrop": false,
+      "reusedProductionFit": true,
+      "engineImageError": null,
+      "editableImageError": null,
+      "checkedEditablePair": false,
+      "missingFeatures": null
+    },
+    {
+      "id": "real-710703159f609111-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "selected": "production",
+      "supportedCrop": true,
+      "reusedProductionFit": false,
+      "engineImageError": 0.00329375,
+      "editableImageError": 0.0030875,
+      "checkedEditablePair": true,
+      "missingFeatures": 0
+    },
+    {
+      "id": "real-710703159f609111-body-1",
+      "method": "fallback",
+      "status": "checked-derived-mask",
+      "selected": "production",
+      "supportedCrop": true,
+      "reusedProductionFit": true,
+      "engineImageError": 0.00329375,
+      "editableImageError": 0.0030875,
+      "checkedEditablePair": true,
+      "missingFeatures": 0
+    },
+    {
+      "id": "real-a414dfffbd2362ae-body-1",
+      "method": "production",
+      "status": "review-required",
+      "selected": "production",
+      "supportedCrop": false,
+      "reusedProductionFit": false,
+      "engineImageError": 0.01989794321134521,
+      "editableImageError": 0.01996055473812729,
+      "checkedEditablePair": false,
+      "missingFeatures": 3
+    },
+    {
+      "id": "real-a414dfffbd2362ae-body-1",
+      "method": "fallback",
+      "status": "review-required",
+      "selected": "production",
+      "supportedCrop": false,
+      "reusedProductionFit": true,
+      "engineImageError": 0.01989794321134521,
+      "editableImageError": 0.01996055473812729,
+      "checkedEditablePair": false,
+      "missingFeatures": 3
+    }
+  ],
+  "visualReview": {
+    "allDistinctExportsReviewed": true,
+    "pages": [
+      {
+        "path": "fits-1.png",
+        "sha256": "3534e6fab573d21b0bba032a9e5f593134a2b7061c655116263c4e9db17f933d"
+      },
+      {
+        "path": "fits-2.png",
+        "sha256": "1708021dfe47d2f7c61924e37423e0605237c2576c0405908b8f03d53cc278b1"
+      },
+      {
+        "path": "fits-3.png",
+        "sha256": "c4ce3adaac073f24f47ca02a818a3f58dd5461bac296de5e182cc0ff137edca3"
+      }
+    ],
+    "findings": [
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "imageError": 0.013225,
+        "page": 1,
+        "row": 1,
+        "description": "Printed hearts on checker",
+        "observation": "Recognizable overall arrangement, but conspicuous false white seams and distorted printed-heart shapes. Crop support fails; automated agreement is not faithful reconstruction.",
+        "suspectedStages": "crop-and-appearance"
+      },
+      {
+        "id": "real-b87b0b19f12724f3-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "imageError": 0.00438125,
+        "page": 1,
+        "row": 2,
+        "description": "Pink/red checker",
+        "observation": "Checker structure retained. Sagging cell boundaries follow the bent photograph; tiny isolated speck and border fragments remain.",
+        "suspectedStages": "photographic-deformation-and-refinement"
+      },
+      {
+        "id": "real-cf2d0fcff65d7386-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "imageError": 0.014749760738613973,
+        "page": 1,
+        "row": 3,
+        "description": "Blue/yellow checker",
+        "observation": "Right/bottom border contamination is present in the target and reproduced in the export. Rounded contacts and narrow false seams remain.",
+        "suspectedStages": "crop-classification-and-refinement"
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "method": "production",
+        "status": "review-required",
+        "imageError": 0.07688,
+        "page": 1,
+        "row": 4,
+        "description": "Bicycle",
+        "observation": "Plausible classified bicycle, but export loses major wheel/frame detail and deforms the silhouette. Correctly review-required.",
+        "suspectedStages": "fitting-topology"
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "imageError": 0.015984,
+        "page": 2,
+        "row": 1,
+        "description": "Sloth",
+        "observation": "Recognizable figure retained; fingers/arm detail distorted, with thin seams and minor border artifacts.",
+        "suspectedStages": "fitting-detail"
+      },
+      {
+        "id": "real-990ac34431be87fe-body-1",
+        "method": "fallback",
+        "status": "checked-derived-mask",
+        "imageError": 0.012025,
+        "page": 2,
+        "row": 2,
+        "description": "Red/white checker on pale background",
+        "observation": "NN recovers a plausible crop and recognizable checker from a production crop failure. Uneven boundaries, seams and border protrusions remain.",
+        "suspectedStages": "recovered-crop-imperfect-refinement"
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "method": "fallback",
+        "status": "checked-derived-mask",
+        "imageError": 0.007725,
+        "page": 2,
+        "row": 3,
+        "description": "Yellow/green checker on red background",
+        "observation": "NN recovers a plausible crop and recognizable checker. Bent grid lines follow the photograph; tiny notches and uneven contacts remain.",
+        "suspectedStages": "recovered-crop-photographic-deformation"
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "imageError": 0.006175,
+        "page": 2,
+        "row": 4,
+        "description": "Red/white checker on foliage",
+        "observation": "Checker arrangement retained; mild boundary unevenness and narrow gaps at some junctions remain.",
+        "suspectedStages": "refinement"
+      },
+      {
+        "id": "real-39f3a1ba97852876-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "imageError": 0.004333333333333333,
+        "page": 3,
+        "row": 1,
+        "description": "Curved checker",
+        "observation": "Curved alternating cells retained. Thin white separation near the bottom and some uneven contacts remain.",
+        "suspectedStages": "refinement"
+      },
+      {
+        "id": "real-710703159f609111-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "imageError": 0.00329375,
+        "page": 3,
+        "row": 2,
+        "description": "Red/green checker held in hand",
+        "observation": "Grid retained. Small protrusions and very narrow white seams occur near cell junctions and the outer left edge.",
+        "suspectedStages": "refinement"
+      },
+      {
+        "id": "real-a414dfffbd2362ae-body-1",
+        "method": "production",
+        "status": "review-required",
+        "imageError": 0.01989794321134521,
+        "page": 3,
+        "row": 3,
+        "description": "Hand-coloured folded checker",
+        "observation": "Strong perspective/fold and paper background contaminate the crop and target. Export carries severe outer-edge distortions and misses features despite under-2% target error; correctly review-required.",
+        "suspectedStages": "crop-classification-and-feature-retention"
+      }
+    ],
+    "interpretation": "Manual observations, not new ground-truth labels. Stage attributions are hypotheses unless isolated by the existing controlled experiments."
+  },
+  "limitations": [
+    "Sixteen repeatedly inspected development photographs; the policy was motivated by earlier results on these cases. No unseen generalization claim.",
+    "Fourteen unchanged crop selections intentionally share one production fit. This prevents timing variation from confounding the policy comparison; it is not repeated-trial timing evidence.",
+    "Automated checks compare against classified photographic masks. Some checked pairs still look visibly imperfect; original cutting artwork is unavailable.",
+    "Two evaluation checkpoints, not one trained production model. Models remain outside the website.",
+    "Strict prior WASM probability tolerance remains failed; the threshold was not relaxed. Full-photo browser preprocessing is still untested."
+  ],
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "pipelineBytes": 7692171,
+    "newSourcePhotoCopies": 0
+  },
+  "next": [
+    "Audit full-photo browser preprocessing, which was excluded from the runtime experiment.",
+    "Train one source-audited model and measure a predeclared policy on fresh source/motif groups.",
+    "Improve border/junction quality and shared-path refinement; do not use average pixel error as the sole success criterion."
+  ],
+  "releaseStatus": "Research only; no app change, push or deployment."
+}

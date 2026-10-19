@@ -6,7 +6,7 @@
 -->
 <script lang="ts">
 	import type { Vec } from '$lib/types/heart';
-	import type { TileRule } from '$lib/pattern/tiling';
+	import type { TileRule } from '$lib/pattern/rules';
 	import { CURVE_COLORS, templateOf } from '$lib/pattern/template';
 
 	interface Props {

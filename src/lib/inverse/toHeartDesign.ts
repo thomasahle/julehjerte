@@ -90,10 +90,11 @@ import {
 } from '$lib/utils/symmetry';
 import { MAX_GRID_SIZE } from '$lib/constants';
 import { FIT_TOLERANCE, isSharpJoin, simplifyCubicChain } from '$lib/inverse/simplifyCurves';
+import { createTranslatedCurveFitter } from '$lib/inverse/curveFitCache';
 import { NO_SYMMETRY, type SymmetryMode, type SymmetrySettings } from '$lib/paint/symmetry';
 import { maskMismatch } from '$lib/paint/mask';
 import { rasterizeDesign } from '$lib/paint/rasterize';
-import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
+import { fingerHasIntersectionIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { conversionFidelity, type ConversionFidelity, type ConversionReference } from './conversionFidelity';
 
@@ -141,6 +142,12 @@ export class CutGeometryError extends Error {
 export type { SymmetryMode, SymmetrySettings };
 
 export type CutGeometryOptions = {
+  overlapAspectRatio?: number;
+  /** Relative gap threshold; dense generated grids can use finer cuts. */
+  clearanceScale?: number;
+  /** Relative size of the smallest bend or loop of one cut; defaults to
+   * `clearanceScale`. A narrower spacing check keeps the usual resolution. */
+  resolutionScale?: number;
   name: string;
   author?: string;
   colors?: HeartColors;
@@ -155,11 +162,28 @@ export type CutGeometryOptions = {
   tolerance?: number;
   /** Keep common cutting spans exactly coincident while simplifying the rest. */
   preserveShared?: boolean;
+  /** Reuse repeated generated outline sections within this conversion. */
+  reuseTranslatedFits?: boolean;
+  /** Optional request-local reuse of exact outline fits across candidate layouts. */
+  curveFitter?: typeof simplifyCubicChain;
 };
 
 export type ValidatedCutGeometryOptions = CutGeometryOptions & {
   /** Original drawing and optional importance weights; free borders have zero weight. */
   reference?: ConversionReference;
+  /** Compare every simplification with the exact conversion's weave (the
+   * default). A caller that checks the finished picture itself, as the
+   * generator does against its artwork, may skip it. */
+  verifyFidelity?: boolean;
+  /** When the simplified cuts fail the checks, keep the exact ones at once
+   * rather than refitting more finely first. */
+  exactFallback?: boolean;
+  /** The fractions of `tolerance` tried in turn while the cuts fail the
+   * checks, 0 keeping the exact cuts: by default 1, 0.4, 0.1 and 0, or 1 and 0
+   * with `exactFallback`. */
+  refinements?: readonly number[];
+  /** Whether a cut fails the spacing checks; the editor's own by default. */
+  issues?: (finger: Finger, fingers: Finger[], margin: number, resolution: number) => boolean;
 };
 
 export type ConvertedHeart = {
@@ -178,7 +202,7 @@ export type ConvertedHeart = {
    */
   symmetryCost?: number;
   /** Present on results checked for use in the editor. */
-  editorValidation?: { passed: true; tolerance: number; fidelity: ConversionFidelity };
+  editorValidation?: { passed: true; tolerance: number; fidelity?: ConversionFidelity };
 };
 
 /** How far an endpoint may sit from its square edge, in the 0–100 frame. */
@@ -333,14 +357,15 @@ function snapToEdges(segments: BezierSegment[], axis: 'x' | 'y'): void {
 /** A curve used by both sheets is one piece of geometry. Refitting the two
  * surrounding chains independently can turn it into a gap or a crossing.
  * Keep those cubics, and simplify only runs between the common spans. */
-function simplifySharedChain(segments: BezierSegment[], shared: boolean[], tolerance: number): BezierSegment[] {
-  if (!shared.some(Boolean)) return simplifyCubicChain(segments, tolerance);
+function simplifySharedChain(segments: BezierSegment[], shared: boolean[], tolerance: number,
+  fit: typeof simplifyCubicChain): BezierSegment[] {
+  if (!shared.some(Boolean)) return fit(segments, tolerance);
   const result: BezierSegment[] = [];
   for (let i = 0; i < segments.length;) {
     if (shared[i]) { result.push(segments[i]!); i++; continue; }
     let end = i + 1;
     while (end < segments.length && !shared[end]) end++;
-    result.push(...simplifyCubicChain(segments.slice(i, end), tolerance));
+    result.push(...fit(segments.slice(i, end), tolerance));
     i = end;
   }
   return result;
@@ -497,6 +522,8 @@ export function convertCutGeometry(
 ): ConvertedHeart {
   const geometry = parseCutGeometry(json);
   const scale = SPAN / geometry.square_width_mm;
+  const baseFit = opts.curveFitter ?? simplifyCubicChain;
+  const fit = opts.reuseTranslatedFits ? createTranslatedCurveFitter(baseFit) : baseFit;
 
   const families: Array<{ paths: CutReference[][]; lobe: LobeId; axis: 'x' | 'y'; label: string }> = [
     { paths: geometry.A_overlap_paths, lobe: 'right', axis: 'y', label: 'A' },
@@ -528,8 +555,8 @@ export function convertCutGeometry(
       const chain = orientChain(resolved, family.axis, label);
       const shared = (chain === resolved ? cut : cut.slice().reverse()).map(ref => (uses.get(ref.curve) ?? 0) > 1);
       const simplified = opts.preserveShared === false
-        ? simplifyCubicChain(chain, opts.tolerance ?? FIT_TOLERANCE)
-        : simplifySharedChain(chain, shared, opts.tolerance ?? FIT_TOLERANCE);
+        ? fit(chain, opts.tolerance ?? FIT_TOLERANCE)
+        : simplifySharedChain(chain, shared, opts.tolerance ?? FIT_TOLERANCE, fit);
       snapToEdges(simplified, family.axis);
       return simplified;
     });
@@ -552,7 +579,7 @@ export function convertCutGeometry(
       author: opts.author ?? '',
       weaveParity: geometry.phase,
       gridSize: { x: right.length + 1, y: left.length + 1 },
-      overlapAspectRatio: 1,
+      overlapAspectRatio: opts.overlapAspectRatio ?? 1,
       colors,
       fingers: [
         ...left.map((segments, i) => toRawFinger(segments, 'left', i)),
@@ -632,7 +659,10 @@ export function convertValidatedCutGeometry(json: string | CutGeometry, opts: Va
   const tolerance = opts.tolerance ?? FIT_TOLERANCE;
   const legal = (value: ConvertedHeart): boolean => {
     const d = value.design;
-    return findFingersWithIssues(d.fingers, intersectionMarginPx(inferOverlapRect(d.fingers, d.gridSize))).size === 0;
+    const rect = inferOverlapRect(d.fingers, d.gridSize), margin = intersectionMarginPx(rect, opts.clearanceScale),
+      resolution = intersectionMarginPx(rect, opts.resolutionScale ?? opts.clearanceScale);
+    const issues = opts.issues ?? fingerHasIntersectionIssues;
+    return !d.fingers.some(finger => issues(finger, d.fingers, margin, resolution));
   };
   const raw = new Map<string, ConvertedHeart>();
   const checks = new Map<string, ReturnType<typeof conversionFidelity>>();
@@ -646,8 +676,10 @@ export function convertValidatedCutGeometry(json: string | CutGeometry, opts: Va
     }
     return value;
   };
+  const verify = opts.verifyFidelity !== false;
   const checked = (candidate: ConvertedHeart, precision: number): ConvertedHeart | null => {
     if (!legal(candidate)) return null;
+    if (!verify) return { ...candidate, editorValidation: { passed: true, tolerance: precision } };
     const id = key(candidate.honoured), baseline = original(candidate.honoured);
     // Compare the same symmetry correction at both precisions. A simplifier
     // must not make a correction appear cheap by distorting the source weave.
@@ -659,9 +691,10 @@ export function convertValidatedCutGeometry(json: string | CutGeometry, opts: Va
     const fidelity = check(candidate.design);
     return fidelity.passed ? { ...candidate, editorValidation: { passed: true, tolerance: precision, fidelity } } : null;
   };
-  const expected = key(original(opts.enforce ?? NO_SYMMETRY).honoured);
+  const expected = verify ? key(original(opts.enforce ?? NO_SYMMETRY).honoured) : key(opts.enforce ?? NO_SYMMETRY);
   let fallback: ConvertedHeart | null = null;
-  for (const precision of [...new Set([tolerance, tolerance * 0.4, tolerance * 0.1, 0])]) {
+  const refinements = opts.refinements ?? (opts.exactFallback ? [1, 0] : [1, 0.4, 0.1, 0]);
+  for (const precision of [...new Set(refinements.map(fraction => tolerance * fraction))]) {
     const options = { ...opts, tolerance: precision, preserveShared: true };
     const candidate = precision === 0 ? original(opts.enforce ?? NO_SYMMETRY) : convertCutGeometry(geometry, options);
     const result = checked(candidate, precision);

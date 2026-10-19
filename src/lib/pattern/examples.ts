@@ -10,8 +10,9 @@
 
 import type { BezierSegment, Vec } from '$lib/types/heart';
 import { reverseSegments, splitBezierAt } from '$lib/geometry/bezierSegments';
-import { freeSides, neighbours, opposite, type CurveKey, type PatternTile, type SideCurve, type SideLink, type TileRule } from './tiling';
-import { ruleStart } from './presets';
+import { freeSides, neighbours, opposite, type CurveKey, type SideLink, type TileRule } from './rules';
+import { type PatternTile, type SideCurve } from './tiling';
+import { ruleStart } from './starts';
 
 /** A hand-drawn tile, its rule and size, and its name. */
 export interface PatternExample {

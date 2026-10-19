@@ -1,0 +1,293 @@
+{
+  "schema": "preserved-material-runtime-study-1",
+  "date": "2026-10-19",
+  "status": "complete",
+  "scope": "Runtime packaging of the already tested preserved-body ablation. Two held-out fold models; no new training or reconstruction-quality claim. All sixteen source/motif-grouped photos are repeatedly inspected development inputs.",
+  "implementation": {
+    "modelCommit": "714d5d7c",
+    "sharedPrefixBlocks": 9,
+    "privateTailBlocksPerBranch": 3,
+    "parametersPerCombinedModel": 1570395,
+    "parametersPerSeparatePair": 1760915,
+    "trainingInvariant": "Only the material tail/decoder can train; shared encoder, foreground tail/decoder and all BatchNorm running statistics remain unchanged. Three unit tests cover exact composition, one execution of each shared block, optimizer updates, reload and rejection of incompatible shared weights.",
+    "sourceHashes": {
+      "scripts/inverse/learning/preserved_material.py": "caa7ffc256e38546b6bcaecd0cf002f0afc98cb87c58cbc5c533a803b4a4f8ad",
+      "scripts/inverse/learning/export-preserved-material.py": "0e7a3abaad406dda5d7c400755accbb49b8eb8cbba6205455a2422e91a83e836",
+      "scripts/inverse/learning/preserved-material-browser.mjs": "e624e2a75496949f38905e8b350c544b7bc0d3af47dd4c271e38a6f8dba03a8f",
+      "scripts/inverse/learning/material-export-crop-parity.mjs": "088602f84ef32eb961df15dd9c38ab73371df04d594451816e0c9647071937be"
+    }
+  },
+  "native": {
+    "record": {
+      "path": "tmp/heart-learning/preserved-material-onnx-v1/report.json",
+      "sha256": "989acc1085d8ad05114be10e87fac3138ce091483f9eb91e401d5701875aa1c9"
+    },
+    "passed": true,
+    "checks": {
+      "exactTorchComposition": true,
+      "archivedProbabilityParity": true,
+      "onnxProbabilityParity": true,
+      "onnxArchivedHalfThresholdParity": true
+    },
+    "runtime": {
+      "torch": "2.8.0",
+      "onnx": "1.19.1",
+      "onnxruntime": "1.19.2",
+      "python": "3.9.6",
+      "platform": "macOS-27.0-arm64-arm-64bit",
+      "threads": 1
+    },
+    "folds": [
+      {
+        "id": "fold-dd50f2256463",
+        "heldOutIds": [
+          "real-12ce3c9180f7f317-body-1",
+          "real-39f3a1ba97852876-body-1",
+          "real-68d8f25d8891df62-body-1",
+          "real-710703159f609111-body-1",
+          "real-8c875dd0f298b5a4-body-1",
+          "real-990ac34431be87fe-body-1",
+          "real-995899fe049540ed-body-1",
+          "real-a414dfffbd2362ae-body-1",
+          "real-b87b0b19f12724f3-body-1",
+          "real-cdae5c890b6933cd-body-1",
+          "real-cf2d0fcff65d7386-body-1",
+          "real-d5b0aa8d4d2465ee-body-1",
+          "real-e936e08ac62db19b-body-1"
+        ],
+        "onnx": {
+          "path": "fold-dd50f2256463.onnx",
+          "sha256": "75e90fb5ff904ccfe4825a04aee3fb1f7961041f79b0fde8046f30a69261ab6a",
+          "bytes": 6578836,
+          "irVersion": 8,
+          "nodes": 309,
+          "sessionStartupMilliseconds": 38.84162499999988
+        },
+        "warmInference": {
+          "torchSeparate": {
+            "medianMilliseconds": 58.32556249999943,
+            "p90Milliseconds": 62.82872049999835,
+            "runs": 20
+          },
+          "torchShared": {
+            "medianMilliseconds": 47.364749999999844,
+            "p90Milliseconds": 48.45685859999964,
+            "runs": 20
+          },
+          "onnxCpu": {
+            "medianMilliseconds": 37.201978999999774,
+            "p90Milliseconds": 39.130883099999814,
+            "runs": 20
+          }
+        }
+      },
+      {
+        "id": "fold-6fd50470fcff",
+        "heldOutIds": [
+          "real-340f5e5b0f447889-body-1",
+          "real-5330aa8b62176216-body-1",
+          "real-abf590088db891f9-body-1"
+        ],
+        "onnx": {
+          "path": "fold-6fd50470fcff.onnx",
+          "sha256": "c64359ecf9da467c374718351e3ae4ad5aa0d63df86217977bbdcb73e571d16d",
+          "bytes": 6578836,
+          "irVersion": 8,
+          "nodes": 309,
+          "sessionStartupMilliseconds": 11.964709000000795
+        },
+        "warmInference": {
+          "onnxCpu": {
+            "medianMilliseconds": 36.42358299999948,
+            "p90Milliseconds": 37.62735390000085,
+            "runs": 20
+          },
+          "torchShared": {
+            "medianMilliseconds": 48.38214599999979,
+            "p90Milliseconds": 50.027658900000205,
+            "runs": 20
+          },
+          "torchSeparate": {
+            "medianMilliseconds": 57.09964600000017,
+            "p90Milliseconds": 58.66521670000058,
+            "runs": 20
+          }
+        }
+      }
+    ],
+    "maximumProbabilityDifference": 7.539987564086914e-06,
+    "changedHalfThresholdPixels": 0
+  },
+  "browser": {
+    "record": {
+      "path": "tmp/heart-learning/preserved-material-browser-v1/report.json",
+      "sha256": "1312cb2c65b00c01c2f820723d240b6982430f63393a51af9d1e0814e5491e26"
+    },
+    "plan": {
+      "path": "docs/inverse/datasets/preserved-material-browser-plan.json",
+      "sha256": "4d19e393c60cc04d820521545cee3d7fd5f15bc622b3fbe5108c5e8441862c98"
+    },
+    "browser": "145.0.7632.6",
+    "passed": false,
+    "checks": {
+      "inputRgbExact": true,
+      "allPhotos": true,
+      "noBrowserErrors": true,
+      "probabilityParity": false,
+      "archivedHalfThresholdParity": true
+    },
+    "folds": [
+      {
+        "id": "fold-dd50f2256463",
+        "sessionStartupMilliseconds": 256.89999985694885,
+        "warmInference": {
+          "runs": 20,
+          "medianMilliseconds": 68.29999995231628,
+          "p90Milliseconds": 70.79999995231628
+        }
+      },
+      {
+        "id": "fold-6fd50470fcff",
+        "sessionStartupMilliseconds": 27.90000009536743,
+        "warmInference": {
+          "runs": 20,
+          "medianMilliseconds": 66.5,
+          "p90Milliseconds": 69.09999990463257
+        }
+      }
+    ],
+    "maximumProbabilityDifferenceVsTorch": 3.123283386230469e-05,
+    "predeclaredProbabilityTolerance": 2e-05,
+    "changedHalfThresholdPixels": 0,
+    "inputAudit": {
+      "path": "tmp/heart-learning/preserved-material-browser-v1/input-audit.json",
+      "sha256": "1a6d868a3291b06545cf8fa32c1eede996f33a4f3f7bacc6ae334417b945a125"
+    },
+    "allInputTensorsByteIdenticalToTorch": true,
+    "diagnosis": "All browser decoded RGB pixels and normalized float32 input tensors match the Python inputs exactly. The remaining probability differences arise during execution in different numerical backends. This does not isolate a particular operator or establish bitwise reproducibility. The predeclared numerical gate failed and was not relaxed."
+  },
+  "downstreamParity": {
+    "record": {
+      "path": "tmp/heart-learning/preserved-material-crop-parity-v2/report.json",
+      "sha256": "7d1fd26614b731872b2422269197604ed33e535d4325ee592f00c0a4be1d7750"
+    },
+    "summary": {
+      "native": {
+        "crops": 5,
+        "samePresenceAndSupport": true,
+        "maxCornerDisplacementPixels": 0,
+        "changedMaterialPixels": 0,
+        "changedRgbPixels": 0,
+        "sameCoverage": true
+      },
+      "browser": {
+        "crops": 5,
+        "samePresenceAndSupport": true,
+        "maxCornerDisplacementPixels": 0.0008680072220784136,
+        "changedMaterialPixels": 4,
+        "changedRgbPixels": 2,
+        "sameCoverage": true
+      }
+    },
+    "scope": "Numerical parity only, no solver or new quality measurement. Freeze performance.now during detection so every method can examine the same finite orientation list; this differs from the production two-second orientation deadline. No ROI, annotation corners or templates are supplied.",
+    "nonidenticalCases": [
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "comparisons": {
+          "native": {
+            "sameCropPresence": true,
+            "sameSupport": true,
+            "maxCornerDisplacementPixels": 0,
+            "changedMaterialPixels": 0,
+            "changedRgbPixels": 0,
+            "sameCoverage": true
+          },
+          "browser": {
+            "sameCropPresence": true,
+            "sameSupport": true,
+            "maxCornerDisplacementPixels": 0.0008680072220784136,
+            "changedMaterialPixels": 1,
+            "changedRgbPixels": 2,
+            "sameCoverage": true
+          }
+        }
+      },
+      {
+        "id": "real-39f3a1ba97852876-body-1",
+        "comparisons": {
+          "native": {
+            "sameCropPresence": true,
+            "sameSupport": true,
+            "maxCornerDisplacementPixels": 0,
+            "changedMaterialPixels": 0,
+            "changedRgbPixels": 0,
+            "sameCoverage": true
+          },
+          "browser": {
+            "sameCropPresence": true,
+            "sameSupport": true,
+            "maxCornerDisplacementPixels": 0,
+            "changedMaterialPixels": 3,
+            "changedRgbPixels": 0,
+            "sameCoverage": true
+          }
+        }
+      }
+    ],
+    "diagnosis": "All sixteen decisions retain the same five proposals and the same support/observation coverage. Native ONNX crops and both rectified masks are exact. WASM numerical differences move one corner by less than 0.001 source pixel and change four learned-mask pixels plus two RGB-mask pixels across five 400x400 crops. No new template fitting was run for this numerical comparison; downstream topology stability is not established."
+  },
+  "resources": {
+    "serialLowPriorityWorker": true,
+    "browserCount": 1,
+    "onnxCpuArtifactBytes": 21564712,
+    "browserArtifactBytes": 8407030,
+    "newSourcePhotoCopies": 0,
+    "isolatedNativeRuntimeDirectory": "tmp/heart-learning/onnx-runtime-env",
+    "isolatedNativeRuntimeApproxMiB": 128,
+    "browserRuntimeBytes": 11089670,
+    "runtimeNote": "Only the selected WASM files were retained; the 23.7 MB package archive was verified in memory and not saved. Chrome and its ephemeral server were closed."
+  },
+  "validation": {
+    "latestRemoteMainCI": {
+      "id": 39287794295,
+      "sha": "9cb11d030f22c7f806747a82c85c70ec29cf4b2d",
+      "conclusion": "success"
+    },
+    "ciFixCommit": "09bfc747",
+    "noPush": true,
+    "learningTestModules": 26,
+    "learningTests": 141,
+    "learningLog": {
+      "path": "tmp/heart-learning/preserved-material-learning-tests.log",
+      "sha256": "0b4f2f6a83cbcba899dc21d935d3be9549e8b8785b3561494090c0d0ac3f7092"
+    },
+    "targetedJavascriptLint": "passed",
+    "harnessCorrection": {
+      "issue": "The first downstream replay compared Python -0.0 window coordinates to JSON.stringify +0 using deepStrictEqual. They represent the same source edge.",
+      "change": "Require equal length and numeric coordinate equality, retaining all nonzero values exactly.",
+      "firstAttemptLog": {
+        "path": "tmp/heart-learning/preserved-material-crop-parity-v1.log",
+        "sha256": "0cc66f3284f7ae03fd142920e661238893d98f9aaf91a072f8224727b2d75ea6"
+      },
+      "freshCompleteReplay": "tmp/heart-learning/preserved-material-crop-parity-v2/report.json"
+    },
+    "siteQA": {
+      "path": "docs/inverse/datasets/preserved-material-site-qa.json",
+      "sha256": "d6b294c64faa70820a11487f9215851b7f9ca90cfd50601dd575712c22ba3738"
+    }
+  },
+  "limitations": [
+    "Not deployed or integrated with the website.",
+    "The material head and crop proposal failures from the preceding study remain; packaging does not improve their accuracy.",
+    "These two evaluation checkpoints are not one production-trained model.",
+    "Browser checks start from exact 256x256 prefiltered PNG inputs; full-resolution browser resizing/letterboxing still needs validation.",
+    "Warm timings exclude image loading and source preprocessing; first WASM session took about 257 ms on this desktop. No mobile, Safari, GPU or memory benchmark.",
+    "The original strict browser numerical tolerance failed on one photo; exact downstream masks also differ at a few pixels. Thresholds were retained.",
+    "An automatic NN-assisted fallback still needs a predefined selection rule and complete photo-to-editable-template evaluation on fresh grouped sources."
+  ],
+  "reproduction": {
+    "native": "PYTHONPATH=tmp/heart-learning/onnx-runtime-env /usr/bin/python3 scripts/inverse/learning/export-preserved-material.py --plan docs/inverse/datasets/preserved-material-onnx-plan.json --output <new-directory>",
+    "browser": "PLAYWRIGHT_MODULE=<module> CHROMIUM_EXECUTABLE=<browser> node scripts/inverse/learning/preserved-material-browser.mjs --plan=docs/inverse/datasets/preserved-material-browser-plan.json --output=<new-directory>",
+    "cropParity": "node scripts/inverse/learning/material-export-crop-parity.mjs --reference=tmp/heart-learning/material-encoder-tail-v1/preserved-probe --native=tmp/heart-learning/preserved-material-onnx-v1/probe --browser=tmp/heart-learning/preserved-material-browser-v1/probe --output=<new-directory>"
+  }
+}

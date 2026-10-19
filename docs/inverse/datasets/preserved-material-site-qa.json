@@ -1,0 +1,131 @@
+{
+  "schema": "preserved-material-site-qa-1",
+  "date": "2026-10-19",
+  "implementationCommits": [
+    "09bfc747",
+    "714d5d7c",
+    "5f5fbdae",
+    "1f5ec762"
+  ],
+  "siteChecks": {
+    "checks": [
+      {
+        "name": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 14.69216775,
+        "log": "tmp/heart-learning/preserved-material-runtime-qa/check.log",
+        "sha256": "b64b3b69752e90048e5aef73ba8f95170b6a94d5d980b21ae36897d80ece150f"
+      },
+      {
+        "name": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 9.590842666,
+        "log": "tmp/heart-learning/preserved-material-runtime-qa/lint.log",
+        "sha256": "5cb2343b55f4080bfac2e213462097e63588a3b9dc264259349c585f21f79815"
+      },
+      {
+        "name": "app-tests",
+        "command": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "--maxWorkers=1",
+          "--no-file-parallelism"
+        ],
+        "exitCode": 0,
+        "seconds": 117.24352758299999,
+        "log": "tmp/heart-learning/preserved-material-runtime-qa/app-tests.log",
+        "sha256": "1aa9a6d02b72b83a84760a2be915a43119d8304a66bc7e77afd36b7f92afab93"
+      },
+      {
+        "name": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 37.036807958,
+        "log": "tmp/heart-learning/preserved-material-runtime-qa/build.log",
+        "sha256": "10b10597fd044328863167dfa20ba48b9b0317f91cb23f59ddf1d0a4b395b309"
+      }
+    ],
+    "status": "complete"
+  },
+  "warnings": {
+    "svelte": {
+      "errors": 0,
+      "existingWarnings": 6
+    },
+    "eslint": {
+      "errors": 0,
+      "existingWarnings": 4
+    }
+  },
+  "applicationTests": {
+    "passed": 1599,
+    "skipped": 1,
+    "files": 115
+  },
+  "offlineLearningTests": {
+    "passed": 141,
+    "modules": 26
+  },
+  "archiveBrowser": {
+    "record": {
+      "path": "tmp/heart-learning/preserved-material-runtime-qa/archive-browser.json",
+      "sha256": "63bceae02f6c9931277c479887b1f48adb7151c7225eee9e36ddbd642b2a93aa"
+    },
+    "passed": true,
+    "results": [
+      {
+        "lang": "da",
+        "pagination": true,
+        "sourceAndAvailabilityFilters": true,
+        "fullIndexSearch": true,
+        "referenceOnlyAdditions": 3,
+        "savedPdfBytes": 181810
+      },
+      {
+        "lang": "en",
+        "pagination": true,
+        "sourceAndAvailabilityFilters": true,
+        "fullIndexSearch": true,
+        "referenceOnlyAdditions": 3,
+        "savedPdfBytes": 181810
+      }
+    ],
+    "mobileWidth": 390,
+    "maximumVisibleRecords": 60,
+    "remoteImageRequests": 0,
+    "scriptSha256": "bd6b66a99eda2f96648efc6c855c893c35bb4e19ff04da34089a683b9b4bb385",
+    "initialHarnessFailure": {
+      "record": {
+        "path": "tmp/heart-learning/preserved-material-runtime-qa/archive-browser-initial-failure.log",
+        "sha256": "08d68ac5396fb8781fcd98f6d627891f3893e9b964d76ddb6cfbdc73be011185"
+      },
+      "cause": "The initial assertion disallowed every action link, including the correctly labelled surviving Ovalt source photograph. Replaced with an exact allowlist for that photograph URL and its Danish/English source-image labels; nonexistent cutting templates remain forbidden."
+    }
+  },
+  "archiveFocusedChecks": {
+    "generatorPassed": 4,
+    "applicationPassed": 9,
+    "verifiedPrivateObjects": 129,
+    "privateBytes": 15993759
+  },
+  "inverseScope": "No solver implementation changed in this work cycle. Targeted deterministic/controlled-clock and five unchanged timed-quality replays are recorded in ci-timed-recovery-classification.json; the full inverse suite was not repeated here. Latest observed remote main CI run 39287794295 passed independently of these local commits.",
+  "neuralScope": "Site checks do not override the failed predeclared WASM numerical tolerance or establish improved neural reconstruction quality; see preserved-material-runtime-results.json.",
+  "preview": "http://localhost:4173/",
+  "resources": "Serial low-priority checks, one Chromium instance at a time, all QA browsers closed. Preview server remains running. Generated OG source artifact restored byte-for-byte after the build.",
+  "pushed": false
+}

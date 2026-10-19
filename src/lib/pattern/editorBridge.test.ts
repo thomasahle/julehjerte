@@ -3,34 +3,15 @@ import type { BezierSegment, Finger, Vec } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
 import { splitBezierAt } from '$lib/geometry/bezierSegments';
-import {
-	ALL_RULES,
-	cutCounts,
-	firstLine,
-	fitLines,
-	freeSides,
-	halfOf,
-	opposite,
-	patternCuts,
-	patternToDesign,
-	ruleRepeat,
-	ruleInfo,
-	ruleKey,
-	sourceCurve,
-	straightCurve,
-	stretchSource,
-	type CurveKey,
-	type PatternTile,
-	type SideCurve
-} from './tiling';
-import { ruleStart } from './presets';
+import { ALL_RULES, freeSides, halfOf, opposite, ruleRepeat, ruleInfo, ruleKey, stretchSource, type CurveKey, type TileRule } from './rules';
+import { cutCounts, firstLine, fitLines, patternCuts, patternToDesign, sourceCurve, straightCurve, type PatternTile, type SideCurve } from './tiling';
+import { ruleStart } from './starts';
 import { EXAMPLES, exampleTile, knobTile } from './examples';
 import {
-	anchorOfCrossing,
-	crossingAt,
 	cutOfFinger,
 	extractTile,
 	fitsTile,
+	followEdit,
 	generateEditorFingers,
 	anchorOfPlacedPoint,
 	dragPlacedPoint,
@@ -41,10 +22,21 @@ import {
 	slideCutEnd,
 	specialNodes,
 	stretchesOfCut,
-	straightTile,
 	tileAfterFingerEdit,
 	weaveParityOf
 } from './editorBridge';
+
+/** A tile with straight sides for every curve its rule reads. */
+const straightTile = (rule: TileRule, cuts: number): PatternTile => ({
+	rule,
+	cuts,
+	curves: Object.fromEntries(ruleInfo(rule).curves.map((key) => [key, straightCurve(!!halfOf(rule, key))]))
+});
+/** Whether Tegn's anchor `anchor` of cut `fingerId` is a crossing of the tiling. */
+const isCrossing = (tile: PatternTile, fingerId: string, anchor: number) => {
+	const point = placedPointAt(tile, fingerId, anchor);
+	return !!point && 'crossing' in point;
+};
 
 const near = (a: Vec, b: Vec, eps = 1e-6) => Math.abs(a.x - b.x) < eps && Math.abs(a.y - b.y) < eps;
 const sameCurve = (a: SideCurve, b: SideCurve, eps = 1e-6) =>
@@ -54,7 +46,7 @@ const problems = (tile: PatternTile) => {
 	return [...findFingersWithIssues(design.fingers, intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize)))];
 };
 
-describe('pattern row bridge', () => {
+describe("the bridge between a tile and Tegn's cuts", () => {
 	it('reads finger ids as cuts and leaves the square edges alone', () => {
 		expect(cutOfFinger('R-2', 3)).toEqual({ kind: 'V', index: 2 });
 		expect(cutOfFinger('L-1', 3)).toEqual({ kind: 'H', index: 1 });
@@ -73,7 +65,7 @@ describe('pattern row bridge', () => {
 		expect(near(r1.segments[0]!.p0, { x: rect.left + rect.width / 4, y: rect.bottom })).toBe(true);
 	});
 
-	// The row keeps the crossings on the plain grid, so it reads only the tiles that do.
+	// Reading a tile back from cuts keeps the crossings on the plain grid, so it reads only the tiles that do.
 	const plain = EXAMPLES.filter((p) => !p.offset);
 	it.each(plain.map((p) => [p.id, p] as const))('reads example %s back off the fingers it wrote', (_id, preset) => {
 		const tile = exampleTile(preset);
@@ -106,7 +98,7 @@ describe('pattern row bridge', () => {
 		const fingers = generateEditorFingers(birds, rect);
 		const back = extractTile(fingers, birds.rule, birds.cuts, rect);
 		expect(back === null || !fitsTile(fingers, back, rect)).toBe(true);
-		// one cut of a plain pattern bent by a tool the row does not know about
+		// one cut of a plain pattern bent by a tool the Escher tab does not know about
 		const leaf = exampleTile(EXAMPLES.find((p) => p.id === 'leaf')!);
 		const edited = generateEditorFingers(leaf, rect);
 		const first = edited[0]!;
@@ -147,7 +139,7 @@ describe('pattern row bridge', () => {
 		const raw = stretchesOfCut([], 'H', 2, tile.cuts);
 		expect(raw).toBeNull();
 		// the first inner crossing on the cut, with the handles on either side of it
-		const c = [...Array(before.segments.length).keys()].find((a) => a > 0 && crossingAt(tile, 'L-2', a))!;
+		const c = [...Array(before.segments.length).keys()].find((a) => a > 0 && isCrossing(tile, 'L-2', a))!;
 		const d = { x: 7, y: 5 };
 		const moved: BezierSegment[] = before.segments.map((s, k) => {
 			if (k === c - 1) return { ...s, p2: { x: s.p2.x + d.x, y: s.p2.y + d.y }, p3: { x: s.p3.x + d.x, y: s.p3.y + d.y } };
@@ -200,12 +192,12 @@ describe('pattern row bridge', () => {
 			const tile = exampleTile(EXAMPLES.find((p) => p.id === id)!);
 			const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
 			const [anchor] = [...specialNodes(tile, 'R-2').entries()].find(([, kind]) => kind === 'lean')!;
-			const crossing = crossingAt(tile, 'R-2', anchor)!;
+			const crossing = placedPointAt(tile, 'R-2', anchor)!;
 			const was = generateEditorFingers(tile, rect).find((f) => f.id === 'R-2')!.segments[anchor]!.p0;
 			const delta = { x: 6, y: -4 };
 			const next = leanTo(tile, 'R-2', anchor, delta, rect)!;
 			expect(next.offset).toBeDefined();
-			const after = anchorOfCrossing(next, 'R-2', crossing);
+			const after = anchorOfPlacedPoint(next, 'R-2', crossing);
 			expect(after, id).toBeGreaterThan(0);
 			const now = generateEditorFingers(next, rect).find((f) => f.id === 'R-2')!.segments[after]!.p0;
 			expect(near(now, { x: was.x + delta.x, y: was.y + delta.y }, 1e-6), id).toBe(true);
@@ -526,31 +518,29 @@ describe('a pattern moved within the heart', () => {
 		for (const rule of ALL_RULES) expect(fitLines(ruleStart(rule, 4)), ruleKey(rule)).toEqual(ruleStart(rule, 4));
 	});
 
-	it('moves without end when a point the rule fixes is dragged, the point staying under the pointer', () => {
+	it.each(['hearts', 'leaf', 'windmill'])('moves the %s pattern without end when a point the rule fixes is dragged, the point staying under the pointer', (id) => {
 		// on the way, the heart gains a strip where an edge strip grows wide, and loses it again
 		let reshaped = false;
-		for (const id of ['hearts', 'leaf', 'windmill']) {
-			const tile = { ...exampleTile(EXAMPLES.find((p) => p.id === id)!), cuts: 5 };
-			const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
-			const cell = rect.width / (tile.cuts + 1);
-			// a point the rule fixes on the middle cut, away from its ends
-			const middle = [...specialNodes(tile, 'R-3').entries()].filter(([, k]) => k === 'pan').map(([a]) => a);
-			const anchor = middle[Math.floor(middle.length / 2)]!;
-			const point = placedPointAt(tile, 'R-3', anchor)!;
-			const was = generateEditorFingers(tile, rect).find((f) => f.id === 'R-3')!.segments[anchor]!.p0;
-			for (let step = 1; step <= 12; step++) {
-				const delta = { x: step * 0.2 * cell, y: -step * 0.1 * cell };
-				const next = dragPlacedPoint(tile, 'R-3', anchor, delta, rect)!;
-				const where = `${id} moved ${step * 0.2} cells`;
-				reshaped ||= cutCounts(next).V !== tile.cuts || cutCounts(next).H !== tile.cuts;
-				expect(Math.abs(next.pan!.x), where).toBeLessThanOrEqual(1);
-				expect(problems(next), where).toEqual([]);
-				const pointer = { x: was.x + delta.x, y: was.y + delta.y };
-				const at = locatePlacedPoint(next, point, 'V', pointer, rect)!;
-				expect(at, where).not.toBeNull();
-				const segs = generateEditorFingers(next, rect).find((f) => f.id === at.fingerId)!.segments;
-				expect(near(segs[at.anchor]!.p0, pointer, 1e-6), where).toBe(true);
-			}
+		const tile = { ...exampleTile(EXAMPLES.find((p) => p.id === id)!), cuts: 5 };
+		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
+		const cell = rect.width / (tile.cuts + 1);
+		// a point the rule fixes on the middle cut, away from its ends
+		const middle = [...specialNodes(tile, 'R-3').entries()].filter(([, k]) => k === 'pan').map(([a]) => a);
+		const anchor = middle[Math.floor(middle.length / 2)]!;
+		const point = placedPointAt(tile, 'R-3', anchor)!;
+		const was = generateEditorFingers(tile, rect).find((f) => f.id === 'R-3')!.segments[anchor]!.p0;
+		for (let step = 1; step <= 12; step++) {
+			const delta = { x: step * 0.2 * cell, y: -step * 0.1 * cell };
+			const next = dragPlacedPoint(tile, 'R-3', anchor, delta, rect)!;
+			const where = `${id} moved ${step * 0.2} cells`;
+			reshaped ||= cutCounts(next).V !== tile.cuts || cutCounts(next).H !== tile.cuts;
+			expect(Math.abs(next.pan!.x), where).toBeLessThanOrEqual(1);
+			expect(problems(next), where).toEqual([]);
+			const pointer = { x: was.x + delta.x, y: was.y + delta.y };
+			const at = locatePlacedPoint(next, point, 'V', pointer, rect)!;
+			expect(at, where).not.toBeNull();
+			const segs = generateEditorFingers(next, rect).find((f) => f.id === at.fingerId)!.segments;
+			expect(near(segs[at.anchor]!.p0, pointer, 1e-6), where).toBe(true);
 		}
 		expect(reshaped).toBe(true);
 	});
@@ -569,5 +559,54 @@ describe('a pattern moved within the heart', () => {
 			// the parity flips exactly when the heart starts an odd number of lines further on
 			expect((firstLine(tile, 'V') + firstLine(tile, 'H') + parity) % 2).toBe(1);
 		}
+	});
+
+	/** On every cut of a moved pattern with a node the tile does not place, the one nearest the middle, nudged with its handles. */
+	function nudges(tile: PatternTile, d: Vec) {
+		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
+		return generateEditorFingers(tile, rect).flatMap((before) => {
+			const special = specialNodes(tile, before.id);
+			const middle = before.segments.length / 2;
+			const free = [...before.segments.keys()].filter((a) => a > 0 && !special.has(a));
+			if (!free.length) return [];
+			const k = free.reduce((best, a) => (Math.abs(a - middle) < Math.abs(best - middle) ? a : best));
+			const segments = before.segments.map((seg, a) => {
+				if (a === k - 1) return { ...seg, p2: { x: seg.p2.x + d.x, y: seg.p2.y + d.y }, p3: { x: seg.p3.x + d.x, y: seg.p3.y + d.y } };
+				if (a === k) return { ...seg, p0: { x: seg.p0.x + d.x, y: seg.p0.y + d.y }, p1: { x: seg.p1.x + d.x, y: seg.p1.y + d.y } };
+				return seg;
+			});
+			const next = tileAfterFingerEdit(tile, { ...before, segments }, rect);
+			const after = generateEditorFingers(next, rect).find((f) => f.id === before.id)!;
+			return [{ id: before.id, k, drawn: segments[k]!.p0, next, nodes: after.segments.map((s) => s.p0) }];
+		});
+	}
+
+	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))(
+		'finds a node dragged on the moved %s pattern again, where the edge now cuts off more or less of the curves before it',
+		(_key, rule) => {
+			const d = { x: 1.5, y: -1 };
+			for (const pan of [{ x: 0.37, y: -0.21 }, { x: -0.62, y: 0.44 }, { x: 1.6, y: -1.3 }]) {
+				const tile = fitLines({ ...ruleStart(rule, 4), pan });
+				const dragged = nudges(tile, d);
+				expect(dragged.length, `pan ${pan.x}, ${pan.y}`).toBeGreaterThan(0);
+				for (const { id, k, drawn, next, nodes } of dragged) {
+					const where = `${id} node ${k}, pan ${pan.x}, ${pan.y}`;
+					// The node found again is the one nearest where it was drawn, and there, unless the
+					// type keeps it on a mirror line: then the line took it no further.
+					const at = followEdit(tile, next, id).anchor(k);
+					const off = (a: number) => Math.hypot(nodes[a]!.x - drawn.x, nodes[a]!.y - drawn.y);
+					const nearest = nodes.reduce((best, _p, a) => (off(a) < off(best) ? a : best), 0);
+					expect(at, where).toBe(nearest);
+					expect(off(at), where).toBeLessThan(Math.hypot(d.x, d.y));
+				}
+			}
+		}
+	);
+
+	it('a node dragged where the edge cuts off a node before it is a node further along the cut made again', () => {
+		const tile = fitLines({ ...ruleStart(opposite('turn', 'move'), 4), pan: { x: 0.37, y: -0.21 } });
+		const moved = nudges(tile, { x: 1.5, y: -1 }).filter(({ id, k, next }) => followEdit(tile, next, id).anchor(k) !== k);
+		expect(moved.length).toBeGreaterThan(0);
+		for (const { id, k, drawn, next, nodes } of moved) expect(near(nodes[followEdit(tile, next, id).anchor(k)]!, drawn), `${id} node ${k}`).toBe(true);
 	});
 });

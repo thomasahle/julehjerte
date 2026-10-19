@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { andThen, edgeClasses, moveBy, neighbours, ofType, opposite, ruleMotions, stretchSource, type EdgeShape, type GridMotion, type TileRule, type TypeNumber } from './tiling';
+import { andThen, edgeClasses, moveBy, neighbours, ofType, opposite, ruleMotions, stretchSource, type EdgeShape, type GridMotion, type TileRule, type TypeNumber } from './rules';
 
 // Every type a woven heart can make has to be the type it says it is. Kaplan's Tactile lists, for
 // each of Grünbaum and Shephard's isohedral types, what each side of the tile can be (J any shape,

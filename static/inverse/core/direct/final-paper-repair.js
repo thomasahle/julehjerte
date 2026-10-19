@@ -10,6 +10,7 @@ import {auditFeatureFidelityChange} from '../feature-shapes.js';
 import {matchingSummary} from './matching.js';
 import {symmetryReport,orbitObjective,symmetryOrbit} from './symmetry.js';
 import {refineCurves} from './refine.js';
+import {paperRecoveryFamilies} from './paper-recovery.js';
 
 export function repairFinalPaper(solution,cfg,{deadline=Infinity,maxMilliseconds=1500,includeMaps=false}={}){
   if(!Number.isFinite(maxMilliseconds)||maxMilliseconds<=0)throw new RangeError('Paper repair needs a finite positive time allowance.');
@@ -26,13 +27,7 @@ export function repairFinalPaper(solution,cfg,{deadline=Infinity,maxMilliseconds
   const input=solution.graph.target,source=input.sourceImage;
   if(!source){report.rejected='no_source_image';return unchanged();}
   if(performance.now()>=limit-200){report.rejected='deadline';return unchanged();}
-  const width=input.width,foldFamilies=[],localFamilies=[];
-  for(const f of audit.families){
-    if(f.status==='pass')continue;
-    const floating=f.parts.filter(p=>!p.anchored&&p.significant);
-    if(floating.some(p=>p.bounds[1]<=width&&p.bounds[3]>=width)||f.foldIntervals.some(i=>i.anchoredCoreLength<=1e-8))foldFamilies.push(f.family);
-    if(floating.some(p=>p.bounds[3]<width||p.bounds[1]>width))localFamilies.push(f.family);
-  }
+  const width=input.width,paperRecovery=paperRecoveryFamilies(audit,width),{foldFamilies,localFamilies}=paperRecovery;
   if(!foldFamilies.length&&!localFamilies.length){report.rejected='unsupported_defect';return unchanged();}
   const paths=solution.paths.map((f,k)=>f.map((_,i)=>curvesOf(solution,k,i).map(c=>c.p))),graph=new CurveGraph(paths,width),original=graph.points.slice(),phase=input.phase?-1:1;
   const before=sampleWeave(solution,source.resolution),reconstructed=sampleWeave(graph.solution(original,phase,input),source.resolution);
@@ -40,7 +35,6 @@ export function repairFinalPaper(solution,cfg,{deadline=Infinity,maxMilliseconds
   const errorBefore=referenceError(source,before),matchingBefore=matchingSummary(solution);
   const symmetry=matchingBefore.identical?{...cfg.symmetry,transpose:true}:cfg.symmetry;
   const objective=orbitObjective(source.probability||Float64Array.from(source.mask),source.resolution,symmetryOrbit(symmetry),sourceWeights(source));
-  const paperRecovery={foldFamilies,localFamilies};
   const attempt={paperRecovery,errorBefore,accepted:false};report.attempted=true;report.attempts.push(attempt);
   // Cheap nominal offsets guide checkpoints. All radius probes and the old
   // lattice rule are reapplied to the selected candidate below.

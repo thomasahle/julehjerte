@@ -66,10 +66,11 @@
 		type MaskStep
 	} from '$lib/paint/history';
 	import {
-		BRUSH_RADII,
+		DEFAULT_BRUSH_SIZE,
 		stepBrush,
 		type BrushSize,
 		type PaintAction,
+		type PaintValue,
 		type PaintTool
 	} from '$lib/paint/toolset';
 	import { decodeImageFile, maskFromPrepared, type DecodedImage } from '$lib/paint/importImage';
@@ -124,8 +125,8 @@
 	let leftColumnCutTop = $state(false);
 
 	let tool = $state<PaintTool>('pen');
-	let brushSize = $state<BrushSize>('medium');
-	let paintValue = $state<0 | 1>(1);
+	let brushSize = $state<BrushSize>(DEFAULT_BRUSH_SIZE);
+	let paintValue = $state<PaintValue>(1);
 	let panelCollapsed = $state(false);
 	/**
 	 * Below 900px the page stacks: the heart, then the two panels under it. They
@@ -733,14 +734,14 @@
 	// ------------------------------------------------------------- the top bar
 
 	function openInDraw(): void {
-		const design = session.result?.design;
+		const design = session.result ? { ...session.result.design, colors: toHexColors(colors, DEFAULT_COLORS_HEX) } : undefined;
 		if (!design) return;
 		handoffToDraw(design);
 		void goto(editorHref(lang, '?from=session'));
 	}
 
 	async function downloadPdf(): Promise<void> {
-		const design = session.result?.design;
+		const design = session.result ? { ...session.result.design, colors: toHexColors(colors, DEFAULT_COLORS_HEX) } : undefined;
 		if (!design) return;
 		try {
 			const { downloadPDF } = await import('$lib/pdf/template');
@@ -752,7 +753,7 @@
 	}
 
 	function save(): void {
-		const design = session.result?.design;
+		const design = session.result ? { ...session.result.design, colors: toHexColors(colors, DEFAULT_COLORS_HEX) } : undefined;
 		if (!design) return;
 		try {
 			saveUserDesign(design);
@@ -840,7 +841,6 @@
 								initialFingers={session.result.design.fingers}
 								initialGridSize={session.result.design.gridSize}
 								initialWeaveParity={session.result.design.weaveParity ?? 0}
-								colors={session.result.design.colors}
 								size={520}
 							/>
 							{#if showMotif && session.result.report.motifMismatch !== undefined}
@@ -861,7 +861,7 @@
 									{colors}
 									symmetry={session.symmetry}
 									{tool}
-									brush={BRUSH_RADII[brushSize]}
+									brush={brushSize}
 									{paintValue}
 									{revision}
 									frame={session.frame}
@@ -881,7 +881,7 @@
 							{colors}
 							symmetry={session.symmetry}
 							{tool}
-							brush={BRUSH_RADII[brushSize]}
+							brush={brushSize}
 							{paintValue}
 							{revision}
 							frame={session.frame}
@@ -1149,7 +1149,7 @@
 	/* position: relative so <CanvasBackdrop> fills exactly the canvas area. */
 	.paint-top {
 		position: relative;
-		height: calc(100dvh - var(--paint-header-height));
+		height: calc(100dvh - var(--paint-header-height) - var(--site-footer-height, 100px));
 		min-height: 420px;
 		overflow: hidden;
 	}

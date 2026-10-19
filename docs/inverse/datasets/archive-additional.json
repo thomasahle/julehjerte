@@ -1,0 +1,3692 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-19T12:49:43.526834+00:00",
+  "manifest": "docs/inverse/datasets/archive-additional.json",
+  "counts": {
+    "uniquePayloads": 65,
+    "originalPayloadBytes": 14605521,
+    "pdfs": 48,
+    "pdfPages": 280,
+    "catalogEntries": 47,
+    "linkedExistingAssets": 131,
+    "linkedExistingPhotographs": 129,
+    "durablePayloadBytes": 14605521
+  },
+  "checks": {
+    "allSha256AndByteCountsPass": true,
+    "allPdfsParse": true,
+    "originalBytesUnmodified": true,
+    "newTrainingAssignments": 0,
+    "newPublishedAssets": 0
+  },
+  "payloads": [
+    {
+      "originalUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "finalUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "retrievedAt": "2026-10-19T12:43:35.675063+00:00",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 87375,
+      "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+      "path": "payloads/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html",
+      "kind": "page",
+      "lastModified": null,
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html",
+      "role": "evidence",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://www.bibelselskabet.dk/robots.txt",
+      "finalUrl": "https://www.bibelselskabet.dk/robots.txt",
+      "retrievedAt": "2026-10-19T12:43:36.278493+00:00",
+      "status": 200,
+      "contentType": "text/plain",
+      "bytes": 2486,
+      "sha256": "8f63f0ce2f43f7243bcc3a0511d28b72422ba23fdb55564e47b91272144e6984",
+      "path": "payloads/8f63f0ce2f43f7243bcc3a0511d28b72422ba23fdb55564e47b91272144e6984.txt",
+      "kind": "robots",
+      "lastModified": "Wed, 07 Aug 2024 08:25:47 GMT",
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/8f63f0ce2f43f7243bcc3a0511d28b72422ba23fdb55564e47b91272144e6984.txt",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/8f63f0ce2f43f7243bcc3a0511d28b72422ba23fdb55564e47b91272144e6984.txt",
+      "role": "evidence",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "finalUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "retrievedAt": "2026-10-19T12:43:36.776836+00:00",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 65541,
+      "sha256": "93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6",
+      "path": "payloads/93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6.html",
+      "kind": "page",
+      "lastModified": "Mon, 19 Oct 2026 06:04:09 GMT",
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6.html",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6.html",
+      "role": "evidence",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://spejderliv.dk/robots.txt",
+      "finalUrl": "https://spejderliv.dk/robots.txt",
+      "retrievedAt": "2026-10-19T12:43:37.344728+00:00",
+      "status": 200,
+      "contentType": "text/plain",
+      "bytes": 75,
+      "sha256": "a7eb5fca2371bbd625b697491de35ebe71f43902d735f96474b3328a8dc1af5c",
+      "path": "payloads/a7eb5fca2371bbd625b697491de35ebe71f43902d735f96474b3328a8dc1af5c.txt",
+      "kind": "robots",
+      "lastModified": "Fri, 02 Oct 2026 22:08:30 GMT",
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/a7eb5fca2371bbd625b697491de35ebe71f43902d735f96474b3328a8dc1af5c.txt",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/a7eb5fca2371bbd625b697491de35ebe71f43902d735f96474b3328a8dc1af5c.txt",
+      "role": "evidence",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://spejderliv.dk/haandvaerk/julehjerter",
+      "finalUrl": "https://spejderliv.dk/haandvaerk/julehjerter",
+      "retrievedAt": "2026-10-19T12:43:37.965424+00:00",
+      "status": 200,
+      "contentType": "text/html",
+      "bytes": 28935,
+      "sha256": "9918baf525fcf780f81706a8e8cb1ec5e10b84dde8ecfaf4bd5c1e83877d152d",
+      "path": "payloads/9918baf525fcf780f81706a8e8cb1ec5e10b84dde8ecfaf4bd5c1e83877d152d.html",
+      "kind": "page",
+      "lastModified": "Fri, 02 Oct 2026 22:08:30 GMT",
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/9918baf525fcf780f81706a8e8cb1ec5e10b84dde8ecfaf4bd5c1e83877d152d.html",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/9918baf525fcf780f81706a8e8cb1ec5e10b84dde8ecfaf4bd5c1e83877d152d.html",
+      "role": "evidence",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://flettedehjerter.dk/robots.txt",
+      "finalUrl": "https://flettedehjerter.dk/robots.txt",
+      "retrievedAt": "2026-10-19T12:43:38.604967+00:00",
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "bytes": 277,
+      "sha256": "9517979c753ec96cea6222532669e6e25df392767cd5dbdc239e598e88805497",
+      "path": "payloads/9517979c753ec96cea6222532669e6e25df392767cd5dbdc239e598e88805497.txt",
+      "kind": "robots",
+      "lastModified": null,
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/9517979c753ec96cea6222532669e6e25df392767cd5dbdc239e598e88805497.txt",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/9517979c753ec96cea6222532669e6e25df392767cd5dbdc239e598e88805497.txt",
+      "role": "evidence",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://flettedehjerter.dk/links/",
+      "finalUrl": "https://flettedehjerter.dk/links/",
+      "retrievedAt": "2026-10-19T12:43:39.234469+00:00",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 42954,
+      "sha256": "1fb66a374b71cbfdb0034d794dc6a4761c62b988851c676c98564ea4725e05e7",
+      "path": "payloads/1fb66a374b71cbfdb0034d794dc6a4761c62b988851c676c98564ea4725e05e7.html",
+      "kind": "page",
+      "lastModified": null,
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/1fb66a374b71cbfdb0034d794dc6a4761c62b988851c676c98564ea4725e05e7.html",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/1fb66a374b71cbfdb0034d794dc6a4761c62b988851c676c98564ea4725e05e7.html",
+      "role": "evidence",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://flettedehjerter.dk/about/",
+      "finalUrl": "https://flettedehjerter.dk/about/",
+      "retrievedAt": "2026-10-19T12:43:39.796731+00:00",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 60800,
+      "sha256": "515b8a640ed674535b741dfab96b2762692f9280ef405724fff9714cbe304ed6",
+      "path": "payloads/515b8a640ed674535b741dfab96b2762692f9280ef405724fff9714cbe304ed6.html",
+      "kind": "page",
+      "lastModified": null,
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/515b8a640ed674535b741dfab96b2762692f9280ef405724fff9714cbe304ed6.html",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/515b8a640ed674535b741dfab96b2762692f9280ef405724fff9714cbe304ed6.html",
+      "role": "evidence",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://julehjerter.wordpress.com/robots.txt",
+      "finalUrl": "https://julehjerter.wordpress.com/robots.txt",
+      "retrievedAt": "2026-10-19T12:43:40.407811+00:00",
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "bytes": 650,
+      "sha256": "ee8db83adb2994f2f0d485eecf6e34b4c4940859bf2dc3cb9bbf8cef58ca76c9",
+      "path": "payloads/ee8db83adb2994f2f0d485eecf6e34b4c4940859bf2dc3cb9bbf8cef58ca76c9.txt",
+      "kind": "robots",
+      "lastModified": null,
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/ee8db83adb2994f2f0d485eecf6e34b4c4940859bf2dc3cb9bbf8cef58ca76c9.txt",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/ee8db83adb2994f2f0d485eecf6e34b4c4940859bf2dc3cb9bbf8cef58ca76c9.txt",
+      "role": "evidence",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://julehjerter.wordpress.com/",
+      "finalUrl": "https://julehjerter.wordpress.com/",
+      "retrievedAt": "2026-10-19T12:43:41.028841+00:00",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 171770,
+      "sha256": "0632ac72cc8255f7cb9857e533f8815ec68fe233a098c71ef967ccfa737d2789",
+      "path": "payloads/0632ac72cc8255f7cb9857e533f8815ec68fe233a098c71ef967ccfa737d2789.html",
+      "kind": "page",
+      "lastModified": null,
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/0632ac72cc8255f7cb9857e533f8815ec68fe233a098c71ef967ccfa737d2789.html",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/0632ac72cc8255f7cb9857e533f8815ec68fe233a098c71ef967ccfa737d2789.html",
+      "role": "evidence",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://static.spejderliv.dk/14-haandvaerk/julehjerter.pdf",
+      "finalUrl": "https://static.spejderliv.dk/14-haandvaerk/julehjerter.pdf",
+      "retrievedAt": "2026-10-19T12:44:32.598478+00:00",
+      "status": 200,
+      "contentType": "application/pdf",
+      "bytes": 181810,
+      "sha256": "abb564cb92305abdff1b442366abda2cf659ae5841eed2ed3e331542d82e5c20",
+      "path": "payloads/abb564cb92305abdff1b442366abda2cf659ae5841eed2ed3e331542d82e5c20.pdf",
+      "kind": "cutting-template",
+      "lastModified": "Fri, 26 Jan 2024 22:40:19 GMT",
+      "contentDisposition": null,
+      "pdfPages": 6,
+      "localPath": "static/archive/templates/abb564cb92305abdff1b442366abda2cf659ae5841eed2ed3e331542d82e5c20.pdf",
+      "recommendedDurablePath": "static/archive/templates/abb564cb92305abdff1b442366abda2cf659ae5841eed2ed3e331542d82e5c20.pdf",
+      "role": "template",
+      "publicRedistribution": "explicit-license"
+    },
+    {
+      "originalUrl": "https://spejderliv.dk/images/14-haandvaerk/julehjerter/julehjerter.webp",
+      "finalUrl": "https://spejderliv.dk/images/14-haandvaerk/julehjerter/julehjerter.webp",
+      "retrievedAt": "2026-10-19T12:44:33.322624+00:00",
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 629010,
+      "sha256": "f2162cc6da90358dce059bdb2c94950cf4843079aef16966715212a0c90a974c",
+      "path": "payloads/f2162cc6da90358dce059bdb2c94950cf4843079aef16966715212a0c90a974c.bin",
+      "kind": "photo",
+      "lastModified": "Fri, 02 Oct 2026 22:08:24 GMT",
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/f2162cc6da90358dce059bdb2c94950cf4843079aef16966715212a0c90a974c.webp",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/f2162cc6da90358dce059bdb2c94950cf4843079aef16966715212a0c90a974c.webp",
+      "role": "photo",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=70&id=1710080830",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=70&id=1710080830",
+      "retrievedAt": "2026-10-19T12:44:34.660877+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 120956,
+      "sha256": "b73699a012f15e5c682d01c48092b84a3567e442cc2d71ab5d6775b49869b069",
+      "path": "payloads/b73699a012f15e5c682d01c48092b84a3567e442cc2d71ab5d6775b49869b069.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Krymmel_skjold.pdf\"",
+      "pdfPages": 3,
+      "localPath": "archive-store/heart-preservation/objects/b73699a012f15e5c682d01c48092b84a3567e442cc2d71ab5d6775b49869b069.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/b73699a012f15e5c682d01c48092b84a3567e442cc2d71ab5d6775b49869b069.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=86&id=1710080979",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=86&id=1710080979",
+      "retrievedAt": "2026-10-19T12:44:35.123094+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 108966,
+      "sha256": "fc324c9938d459caa7fb214df5eff3f2ee70d096416cf9e5945942ccea731635",
+      "path": "payloads/fc324c9938d459caa7fb214df5eff3f2ee70d096416cf9e5945942ccea731635.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Krone_i_cirkel_skabelon.pdf\"",
+      "pdfPages": 2,
+      "localPath": "archive-store/heart-preservation/objects/fc324c9938d459caa7fb214df5eff3f2ee70d096416cf9e5945942ccea731635.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/fc324c9938d459caa7fb214df5eff3f2ee70d096416cf9e5945942ccea731635.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=40&id=1710081184",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=40&id=1710081184",
+      "retrievedAt": "2026-10-19T12:44:35.584083+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 230069,
+      "sha256": "670a6dc7f6fe85c69b42a8040733c35515f7f4ea7512b295c3317fb400a54548",
+      "path": "payloads/670a6dc7f6fe85c69b42a8040733c35515f7f4ea7512b295c3317fb400a54548.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Anker_skabelon.pdf\"",
+      "pdfPages": 5,
+      "localPath": "archive-store/heart-preservation/objects/670a6dc7f6fe85c69b42a8040733c35515f7f4ea7512b295c3317fb400a54548.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/670a6dc7f6fe85c69b42a8040733c35515f7f4ea7512b295c3317fb400a54548.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=81&id=1710081553",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=81&id=1710081553",
+      "retrievedAt": "2026-10-19T12:44:36.068097+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 154035,
+      "sha256": "65d855a136521474a35f2aa9ca16ae6393cb715291884ec6387f10a119c6e3eb",
+      "path": "payloads/65d855a136521474a35f2aa9ca16ae6393cb715291884ec6387f10a119c6e3eb.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_cykel_i_cirkel_skabelon.pdf\"",
+      "pdfPages": 2,
+      "localPath": "archive-store/heart-preservation/objects/65d855a136521474a35f2aa9ca16ae6393cb715291884ec6387f10a119c6e3eb.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/65d855a136521474a35f2aa9ca16ae6393cb715291884ec6387f10a119c6e3eb.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=85&id=1733394863",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=85&id=1733394863",
+      "retrievedAt": "2026-10-19T12:44:36.559006+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 749458,
+      "sha256": "613d1a312e8777ee92c6d94d635071f83ded4228c5201dd3e225ea45d7396aa2",
+      "path": "payloads/613d1a312e8777ee92c6d94d635071f83ded4228c5201dd3e225ea45d7396aa2.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerter_dyr_skabeloner.pdf\"",
+      "pdfPages": 17,
+      "localPath": "archive-store/heart-preservation/objects/613d1a312e8777ee92c6d94d635071f83ded4228c5201dd3e225ea45d7396aa2.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/613d1a312e8777ee92c6d94d635071f83ded4228c5201dd3e225ea45d7396aa2.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=75&id=1710080909",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=75&id=1710080909",
+      "retrievedAt": "2026-10-19T12:44:37.127948+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 750109,
+      "sha256": "faf6edea6412c1355971b12a490188fa558338afbee30df7f80a0f3088c26033",
+      "path": "payloads/faf6edea6412c1355971b12a490188fa558338afbee30df7f80a0f3088c26033.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerter_Arktis.pdf\"",
+      "pdfPages": 16,
+      "localPath": "archive-store/heart-preservation/objects/faf6edea6412c1355971b12a490188fa558338afbee30df7f80a0f3088c26033.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/faf6edea6412c1355971b12a490188fa558338afbee30df7f80a0f3088c26033.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=69&id=1737023809",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=69&id=1737023809",
+      "retrievedAt": "2026-10-19T12:44:37.660934+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 634403,
+      "sha256": "3f5d73bd1f919205ef5d8b22d288b7188ad38f3d6faf336021e50f8493d8c5b3",
+      "path": "payloads/3f5d73bd1f919205ef5d8b22d288b7188ad38f3d6faf336021e50f8493d8c5b3.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerter_Firma_og_Forenings_logoer_skabeloner.pdf\"",
+      "pdfPages": 7,
+      "localPath": "archive-store/heart-preservation/objects/3f5d73bd1f919205ef5d8b22d288b7188ad38f3d6faf336021e50f8493d8c5b3.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/3f5d73bd1f919205ef5d8b22d288b7188ad38f3d6faf336021e50f8493d8c5b3.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=67&id=1710080799",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=67&id=1710080799",
+      "retrievedAt": "2026-10-19T12:44:38.221956+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 283642,
+      "sha256": "fd8f93ee23037d6b56c32acf01c5e7ab9651e0c76932235891446e4d1d70e7a1",
+      "path": "payloads/fd8f93ee23037d6b56c32acf01c5e7ab9651e0c76932235891446e4d1d70e7a1.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Fredslys_skabelon.pdf\"",
+      "pdfPages": 5,
+      "localPath": "archive-store/heart-preservation/objects/fd8f93ee23037d6b56c32acf01c5e7ab9651e0c76932235891446e4d1d70e7a1.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/fd8f93ee23037d6b56c32acf01c5e7ab9651e0c76932235891446e4d1d70e7a1.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=68&id=1710249487",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=68&id=1710249487",
+      "retrievedAt": "2026-10-19T12:44:38.749188+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 413338,
+      "sha256": "d05871b5fc127856065d704707107c6f521291c4e67f7adc0fab1c227bb5407b",
+      "path": "payloads/d05871b5fc127856065d704707107c6f521291c4e67f7adc0fab1c227bb5407b.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Fredssymboler_skabelon.pdf\"",
+      "pdfPages": 8,
+      "localPath": "archive-store/heart-preservation/objects/d05871b5fc127856065d704707107c6f521291c4e67f7adc0fab1c227bb5407b.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/d05871b5fc127856065d704707107c6f521291c4e67f7adc0fab1c227bb5407b.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=71&id=1710080849",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=71&id=1710080849",
+      "retrievedAt": "2026-10-19T12:44:39.264733+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 139386,
+      "sha256": "66630cf2977fa1898946f1a7187390ac537e66874a84efe040b12b7980b0dd43",
+      "path": "payloads/66630cf2977fa1898946f1a7187390ac537e66874a84efe040b12b7980b0dd43.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Hello Kitty_Skabelon.pdf\"",
+      "pdfPages": 2,
+      "localPath": "archive-store/heart-preservation/objects/66630cf2977fa1898946f1a7187390ac537e66874a84efe040b12b7980b0dd43.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/66630cf2977fa1898946f1a7187390ac537e66874a84efe040b12b7980b0dd43.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=172&id=1731057123",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=172&id=1731057123",
+      "retrievedAt": "2026-10-19T12:44:39.867515+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 241874,
+      "sha256": "46c54761fd552ec52ab1c3d40c336e1be3daf1fde81ea150a779958fd11e50a6",
+      "path": "payloads/46c54761fd552ec52ab1c3d40c336e1be3daf1fde81ea150a779958fd11e50a6.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerter_med_hjerter_skabeloner.pdf\"",
+      "pdfPages": 6,
+      "localPath": "archive-store/heart-preservation/objects/46c54761fd552ec52ab1c3d40c336e1be3daf1fde81ea150a779958fd11e50a6.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/46c54761fd552ec52ab1c3d40c336e1be3daf1fde81ea150a779958fd11e50a6.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=61&id=1710080780",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=61&id=1710080780",
+      "retrievedAt": "2026-10-19T12:44:40.494986+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 233344,
+      "sha256": "3f46f7d20690dc59e1a74ab0bbe5af46cc2a78cc045aa0ee79949c006261ebcf",
+      "path": "payloads/3f46f7d20690dc59e1a74ab0bbe5af46cc2a78cc045aa0ee79949c006261ebcf.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Linjer_skabeloner.pdf\"",
+      "pdfPages": 4,
+      "localPath": "archive-store/heart-preservation/objects/3f46f7d20690dc59e1a74ab0bbe5af46cc2a78cc045aa0ee79949c006261ebcf.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/3f46f7d20690dc59e1a74ab0bbe5af46cc2a78cc045aa0ee79949c006261ebcf.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=83&id=1710080946",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=83&id=1710080946",
+      "retrievedAt": "2026-10-19T12:44:41.016455+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 329375,
+      "sha256": "b78fe0badc1bd80d47d95774de144765636fb8dcb77450acb2f7aa5f1e1ae5d2",
+      "path": "payloads/b78fe0badc1bd80d47d95774de144765636fb8dcb77450acb2f7aa5f1e1ae5d2.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerter_toiletskilt.pdf\"",
+      "pdfPages": 6,
+      "localPath": "archive-store/heart-preservation/objects/b78fe0badc1bd80d47d95774de144765636fb8dcb77450acb2f7aa5f1e1ae5d2.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/b78fe0badc1bd80d47d95774de144765636fb8dcb77450acb2f7aa5f1e1ae5d2.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=47&id=1710081298",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=47&id=1710081298",
+      "retrievedAt": "2026-10-19T12:44:41.525968+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 509423,
+      "sha256": "0cc4ae4d3a16fb4423cc88d0b86985eeebd6e0c3577b8f995862b5f2821fb033",
+      "path": "payloads/0cc4ae4d3a16fb4423cc88d0b86985eeebd6e0c3577b8f995862b5f2821fb033.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerter_Hunde_skabeloner.pdf\"",
+      "pdfPages": 12,
+      "localPath": "archive-store/heart-preservation/objects/0cc4ae4d3a16fb4423cc88d0b86985eeebd6e0c3577b8f995862b5f2821fb033.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/0cc4ae4d3a16fb4423cc88d0b86985eeebd6e0c3577b8f995862b5f2821fb033.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=46&id=1710081253",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=46&id=1710081253",
+      "retrievedAt": "2026-10-19T12:44:42.076503+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 186044,
+      "sha256": "263381b8856209ddbb3fa58516e44f4ed6fea5b7b2536d112ef3b48399a4a61e",
+      "path": "payloads/263381b8856209ddbb3fa58516e44f4ed6fea5b7b2536d112ef3b48399a4a61e.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Juletrae_skabelon.pdf\"",
+      "pdfPages": 4,
+      "localPath": "archive-store/heart-preservation/objects/263381b8856209ddbb3fa58516e44f4ed6fea5b7b2536d112ef3b48399a4a61e.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/263381b8856209ddbb3fa58516e44f4ed6fea5b7b2536d112ef3b48399a4a61e.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=82&id=1710080426",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=82&id=1710080426",
+      "retrievedAt": "2026-10-19T12:44:42.568161+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 107682,
+      "sha256": "e43a42b6e53a7af255ee717958d492a319196b92b4f268c193154f2a9fc9066b",
+      "path": "payloads/e43a42b6e53a7af255ee717958d492a319196b92b4f268c193154f2a9fc9066b.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Madam_Blaa_i_cirkel_skabelon.pdf\"",
+      "pdfPages": 2,
+      "localPath": "archive-store/heart-preservation/objects/e43a42b6e53a7af255ee717958d492a319196b92b4f268c193154f2a9fc9066b.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/e43a42b6e53a7af255ee717958d492a319196b92b4f268c193154f2a9fc9066b.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=55&id=1710080729",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=55&id=1710080729",
+      "retrievedAt": "2026-10-19T12:44:43.061085+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 126104,
+      "sha256": "d5e31dcbda85b830cdb8df8cfe240098305263dbd03de2bb4302feda0e86c95d",
+      "path": "payloads/d5e31dcbda85b830cdb8df8cfe240098305263dbd03de2bb4302feda0e86c95d.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Katte_skabelon.pdf\"",
+      "pdfPages": 6,
+      "localPath": "archive-store/heart-preservation/objects/d5e31dcbda85b830cdb8df8cfe240098305263dbd03de2bb4302feda0e86c95d.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/d5e31dcbda85b830cdb8df8cfe240098305263dbd03de2bb4302feda0e86c95d.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=60&id=1710080740",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=60&id=1710080740",
+      "retrievedAt": "2026-10-19T12:44:43.557118+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 206668,
+      "sha256": "f5c1654d327b2ba4ce8fbf495b460e5757aad01f603a3eb315bc835446122ca6",
+      "path": "payloads/f5c1654d327b2ba4ce8fbf495b460e5757aad01f603a3eb315bc835446122ca6.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Klokker_skabelon.pdf\"",
+      "pdfPages": 2,
+      "localPath": "archive-store/heart-preservation/objects/f5c1654d327b2ba4ce8fbf495b460e5757aad01f603a3eb315bc835446122ca6.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/f5c1654d327b2ba4ce8fbf495b460e5757aad01f603a3eb315bc835446122ca6.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=51&id=1733407829",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=51&id=1733407829",
+      "retrievedAt": "2026-10-19T12:44:44.076766+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 753234,
+      "sha256": "edf6c42bee16be4f6ca5fe3cc47769b1cf8eb939665d43e9b8244550a63be5f5",
+      "path": "payloads/edf6c42bee16be4f6ca5fe3cc47769b1cf8eb939665d43e9b8244550a63be5f5.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Kors_og Kristne_symboler_skabelon.pdf\"",
+      "pdfPages": 16,
+      "localPath": "archive-store/heart-preservation/objects/edf6c42bee16be4f6ca5fe3cc47769b1cf8eb939665d43e9b8244550a63be5f5.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/edf6c42bee16be4f6ca5fe3cc47769b1cf8eb939665d43e9b8244550a63be5f5.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=49&id=1732188926",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=49&id=1732188926",
+      "retrievedAt": "2026-10-19T12:44:44.669657+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 2225811,
+      "sha256": "de99b7c9a019a9da070981a7bba00e428feb9ffb3cfcf8b9a21f4bc19f19a79c",
+      "path": "payloads/de99b7c9a019a9da070981a7bba00e428feb9ffb3cfcf8b9a21f4bc19f19a79c.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerter_Kristen_Jul.pdf\"",
+      "pdfPages": 43,
+      "localPath": "archive-store/heart-preservation/objects/de99b7c9a019a9da070981a7bba00e428feb9ffb3cfcf8b9a21f4bc19f19a79c.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/de99b7c9a019a9da070981a7bba00e428feb9ffb3cfcf8b9a21f4bc19f19a79c.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=41&id=1710081241",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=41&id=1710081241",
+      "retrievedAt": "2026-10-19T12:44:45.484242+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 85818,
+      "sha256": "6dbb907be7c3d3d6c17a962088b247e242e182d7c0d47f1cfc951fec7f21b76c",
+      "path": "payloads/6dbb907be7c3d3d6c17a962088b247e242e182d7c0d47f1cfc951fec7f21b76c.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Lys_skabelon.pdf\"",
+      "pdfPages": 4,
+      "localPath": "archive-store/heart-preservation/objects/6dbb907be7c3d3d6c17a962088b247e242e182d7c0d47f1cfc951fec7f21b76c.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/6dbb907be7c3d3d6c17a962088b247e242e182d7c0d47f1cfc951fec7f21b76c.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=79&id=1710080922",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=79&id=1710080922",
+      "retrievedAt": "2026-10-19T12:44:46.065070+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 116532,
+      "sha256": "9e8c514bd79ced2b096c654b0101702624ddac995ff8ca16e29f2e22a72d9b61",
+      "path": "payloads/9e8c514bd79ced2b096c654b0101702624ddac995ff8ca16e29f2e22a72d9b61.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Romer_skabelon.pdf\"",
+      "pdfPages": 2,
+      "localPath": "archive-store/heart-preservation/objects/9e8c514bd79ced2b096c654b0101702624ddac995ff8ca16e29f2e22a72d9b61.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/9e8c514bd79ced2b096c654b0101702624ddac995ff8ca16e29f2e22a72d9b61.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=53&id=1710080711",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=53&id=1710080711",
+      "retrievedAt": "2026-10-19T12:44:46.665171+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 479246,
+      "sha256": "d96830bd51372dde29f98c1baf9f1e7bca7b8ce431a7299dfdfebeaa83541a0a",
+      "path": "payloads/d96830bd51372dde29f98c1baf9f1e7bca7b8ce431a7299dfdfebeaa83541a0a.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerter_Stjerner_skabeloner.pdf\"",
+      "pdfPages": 13,
+      "localPath": "archive-store/heart-preservation/objects/d96830bd51372dde29f98c1baf9f1e7bca7b8ce431a7299dfdfebeaa83541a0a.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/d96830bd51372dde29f98c1baf9f1e7bca7b8ce431a7299dfdfebeaa83541a0a.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=80&id=1710081204",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=80&id=1710081204",
+      "retrievedAt": "2026-10-19T12:44:47.274186+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 195146,
+      "sha256": "fa325a4b1310eb5c740ccaf6dd5f920a50e6223432debe4bc7328ff1840c0f96",
+      "path": "payloads/fa325a4b1310eb5c740ccaf6dd5f920a50e6223432debe4bc7328ff1840c0f96.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Hjerteskabeloner_med_Tal_0_9.pdf\"",
+      "pdfPages": 21,
+      "localPath": "archive-store/heart-preservation/objects/fa325a4b1310eb5c740ccaf6dd5f920a50e6223432debe4bc7328ff1840c0f96.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/fa325a4b1310eb5c740ccaf6dd5f920a50e6223432debe4bc7328ff1840c0f96.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=48&id=1710080557",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=48&id=1710080557",
+      "retrievedAt": "2026-10-19T12:44:47.817713+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 336701,
+      "sha256": "376be2472bbf084801058a74b03573e7985b53b8b932829f06b7869e71f10f0d",
+      "path": "payloads/376be2472bbf084801058a74b03573e7985b53b8b932829f06b7869e71f10f0d.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Tekst_skabeloner.pdf\"",
+      "pdfPages": 5,
+      "localPath": "archive-store/heart-preservation/objects/376be2472bbf084801058a74b03573e7985b53b8b932829f06b7869e71f10f0d.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/376be2472bbf084801058a74b03573e7985b53b8b932829f06b7869e71f10f0d.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=50&id=1710081406",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=50&id=1710081406",
+      "retrievedAt": "2026-10-19T12:44:48.356421+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 429663,
+      "sha256": "c8aeedadce475441133db07d32d82cc05f1a983b135ed12fce92cea4c1965409",
+      "path": "payloads/c8aeedadce475441133db07d32d82cc05f1a983b135ed12fce92cea4c1965409.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Traktor_skabelon.pdf\"",
+      "pdfPages": 9,
+      "localPath": "archive-store/heart-preservation/objects/c8aeedadce475441133db07d32d82cc05f1a983b135ed12fce92cea4c1965409.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/c8aeedadce475441133db07d32d82cc05f1a983b135ed12fce92cea4c1965409.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=52&id=1710081458",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=52&id=1710081458",
+      "retrievedAt": "2026-10-19T12:44:48.866489+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 40291,
+      "sha256": "e54d95a3d7d69368a0e232ce30028703cfc43f801a9e5ba47112837758446310",
+      "path": "payloads/e54d95a3d7d69368a0e232ce30028703cfc43f801a9e5ba47112837758446310.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Oelflaske_skabelon.pdf\"",
+      "pdfPages": 2,
+      "localPath": "archive-store/heart-preservation/objects/e54d95a3d7d69368a0e232ce30028703cfc43f801a9e5ba47112837758446310.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/e54d95a3d7d69368a0e232ce30028703cfc43f801a9e5ba47112837758446310.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=44&id=1710081005",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=44&id=1710081005",
+      "retrievedAt": "2026-10-19T12:44:49.347193+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 205206,
+      "sha256": "0ff1e5ed469b9612387b1009588cf84442a83cb96a10cb47037329135078b245",
+      "path": "payloads/0ff1e5ed469b9612387b1009588cf84442a83cb96a10cb47037329135078b245.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_DK_flag_skabelon.pdf\"",
+      "pdfPages": 6,
+      "localPath": "archive-store/heart-preservation/objects/0ff1e5ed469b9612387b1009588cf84442a83cb96a10cb47037329135078b245.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/0ff1e5ed469b9612387b1009588cf84442a83cb96a10cb47037329135078b245.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=45&id=1710081018",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=45&id=1710081018",
+      "retrievedAt": "2026-10-19T12:44:49.860065+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 105678,
+      "sha256": "96cbf8513e3462f46649edf65ec15193385de5410bd6910a924609030b97459c",
+      "path": "payloads/96cbf8513e3462f46649edf65ec15193385de5410bd6910a924609030b97459c.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_GL_flag_skabelon.pdf\"",
+      "pdfPages": 4,
+      "localPath": "archive-store/heart-preservation/objects/96cbf8513e3462f46649edf65ec15193385de5410bd6910a924609030b97459c.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/96cbf8513e3462f46649edf65ec15193385de5410bd6910a924609030b97459c.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=57&id=1710081037",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=57&id=1710081037",
+      "retrievedAt": "2026-10-19T12:44:50.365639+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 23531,
+      "sha256": "f7583995611bcf8ffdc7f05c843cab61c147d806dafb14fbdff109ff33c92985",
+      "path": "payloads/f7583995611bcf8ffdc7f05c843cab61c147d806dafb14fbdff109ff33c92985.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_FO_flag_skabelon.pdf\"",
+      "pdfPages": 2,
+      "localPath": "archive-store/heart-preservation/objects/f7583995611bcf8ffdc7f05c843cab61c147d806dafb14fbdff109ff33c92985.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/f7583995611bcf8ffdc7f05c843cab61c147d806dafb14fbdff109ff33c92985.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=42&id=1710081058",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=42&id=1710081058",
+      "retrievedAt": "2026-10-19T12:44:50.805490+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 369050,
+      "sha256": "f53c59794cd0c2a5fb2ad28afd294daaba4652b749e86b3a2560ff67268369d4",
+      "path": "payloads/f53c59794cd0c2a5fb2ad28afd294daaba4652b749e86b3a2560ff67268369d4.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Kampfly_skabelon.pdf\"",
+      "pdfPages": 9,
+      "localPath": "archive-store/heart-preservation/objects/f53c59794cd0c2a5fb2ad28afd294daaba4652b749e86b3a2560ff67268369d4.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/f53c59794cd0c2a5fb2ad28afd294daaba4652b749e86b3a2560ff67268369d4.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=43&id=1710081074",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=43&id=1710081074",
+      "retrievedAt": "2026-10-19T12:44:51.344609+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 167715,
+      "sha256": "4aa71f77690e571fe6574bd86e0a9bcbc96a25576f77fa575892c4fc55977748",
+      "path": "payloads/4aa71f77690e571fe6574bd86e0a9bcbc96a25576f77fa575892c4fc55977748.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_Kampvogn_skabelon.pdf\"",
+      "pdfPages": 5,
+      "localPath": "archive-store/heart-preservation/objects/4aa71f77690e571fe6574bd86e0a9bcbc96a25576f77fa575892c4fc55977748.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/4aa71f77690e571fe6574bd86e0a9bcbc96a25576f77fa575892c4fc55977748.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=66&id=1710081092",
+      "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=66&id=1710081092",
+      "retrievedAt": "2026-10-19T12:44:51.875581+00:00",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 311379,
+      "sha256": "4a91deb23630e0804685101eaf564cb16d05796b341b992b6437afd42ff3f70b",
+      "path": "payloads/4a91deb23630e0804685101eaf564cb16d05796b341b992b6437afd42ff3f70b.pdf",
+      "kind": "cutting-template",
+      "lastModified": null,
+      "contentDisposition": "attachment; filename=\"Julehjerte_DK_skjold_skabelon.pdf\"",
+      "pdfPages": 10,
+      "localPath": "archive-store/heart-preservation/objects/4a91deb23630e0804685101eaf564cb16d05796b341b992b6437afd42ff3f70b.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/4a91deb23630e0804685101eaf564cb16d05796b341b992b6437afd42ff3f70b.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_1.pdf",
+      "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_1.pdf",
+      "retrievedAt": "2026-10-19T12:44:52.415972+00:00",
+      "status": 200,
+      "contentType": "application/pdf",
+      "bytes": 127819,
+      "sha256": "d4e15006e8a3fad530a779c70b156aa14c9c05ccd2f7fcf5ede7992bc2a117ba",
+      "path": "payloads/d4e15006e8a3fad530a779c70b156aa14c9c05ccd2f7fcf5ede7992bc2a117ba.pdf",
+      "kind": "cutting-template",
+      "lastModified": "Sat, 09 Sep 2023 17:32:11 GMT",
+      "contentDisposition": null,
+      "pdfPages": 1,
+      "localPath": "archive-store/heart-preservation/objects/d4e15006e8a3fad530a779c70b156aa14c9c05ccd2f7fcf5ede7992bc2a117ba.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/d4e15006e8a3fad530a779c70b156aa14c9c05ccd2f7fcf5ede7992bc2a117ba.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_2.pdf",
+      "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_2.pdf",
+      "retrievedAt": "2026-10-19T12:44:52.985494+00:00",
+      "status": 200,
+      "contentType": "application/pdf",
+      "bytes": 126637,
+      "sha256": "5cda85b6e053de3b162e77ce8a86188c55409d2f2fdffd81f063b65578b6ddcf",
+      "path": "payloads/5cda85b6e053de3b162e77ce8a86188c55409d2f2fdffd81f063b65578b6ddcf.pdf",
+      "kind": "cutting-template",
+      "lastModified": "Sat, 09 Sep 2023 17:32:11 GMT",
+      "contentDisposition": null,
+      "pdfPages": 1,
+      "localPath": "archive-store/heart-preservation/objects/5cda85b6e053de3b162e77ce8a86188c55409d2f2fdffd81f063b65578b6ddcf.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/5cda85b6e053de3b162e77ce8a86188c55409d2f2fdffd81f063b65578b6ddcf.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_3.pdf",
+      "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_3.pdf",
+      "retrievedAt": "2026-10-19T12:44:53.558724+00:00",
+      "status": 200,
+      "contentType": "application/pdf",
+      "bytes": 121153,
+      "sha256": "da4e3610c9963ba6ffae259c85469dc92edb545022db9c5dbbe27160ed9a23e8",
+      "path": "payloads/da4e3610c9963ba6ffae259c85469dc92edb545022db9c5dbbe27160ed9a23e8.pdf",
+      "kind": "cutting-template",
+      "lastModified": "Sat, 09 Sep 2023 17:32:12 GMT",
+      "contentDisposition": null,
+      "pdfPages": 1,
+      "localPath": "archive-store/heart-preservation/objects/da4e3610c9963ba6ffae259c85469dc92edb545022db9c5dbbe27160ed9a23e8.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/da4e3610c9963ba6ffae259c85469dc92edb545022db9c5dbbe27160ed9a23e8.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_4.pdf",
+      "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_4.pdf",
+      "retrievedAt": "2026-10-19T12:44:54.157694+00:00",
+      "status": 200,
+      "contentType": "application/pdf",
+      "bytes": 145826,
+      "sha256": "8c83fe1ca6d3a97cc0685fbdc329e311ada71bbdb76a13d3d269c7cc9ae3b946",
+      "path": "payloads/8c83fe1ca6d3a97cc0685fbdc329e311ada71bbdb76a13d3d269c7cc9ae3b946.pdf",
+      "kind": "cutting-template",
+      "lastModified": "Sat, 09 Sep 2023 17:32:11 GMT",
+      "contentDisposition": null,
+      "pdfPages": 1,
+      "localPath": "archive-store/heart-preservation/objects/8c83fe1ca6d3a97cc0685fbdc329e311ada71bbdb76a13d3d269c7cc9ae3b946.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/8c83fe1ca6d3a97cc0685fbdc329e311ada71bbdb76a13d3d269c7cc9ae3b946.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_5.pdf",
+      "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_5.pdf",
+      "retrievedAt": "2026-10-19T12:44:54.717749+00:00",
+      "status": 200,
+      "contentType": "application/pdf",
+      "bytes": 112366,
+      "sha256": "11c51054516a1bf9e258aceea12944dd032c0eb4de72eee3dd12e87c90cd10a1",
+      "path": "payloads/11c51054516a1bf9e258aceea12944dd032c0eb4de72eee3dd12e87c90cd10a1.pdf",
+      "kind": "cutting-template",
+      "lastModified": "Sat, 09 Sep 2023 17:32:12 GMT",
+      "contentDisposition": null,
+      "pdfPages": 1,
+      "localPath": "archive-store/heart-preservation/objects/11c51054516a1bf9e258aceea12944dd032c0eb4de72eee3dd12e87c90cd10a1.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/11c51054516a1bf9e258aceea12944dd032c0eb4de72eee3dd12e87c90cd10a1.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_6.pdf",
+      "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_6.pdf",
+      "retrievedAt": "2026-10-19T12:44:55.305109+00:00",
+      "status": 200,
+      "contentType": "application/pdf",
+      "bytes": 96355,
+      "sha256": "598c234b5876161402b784a8b93c03ca5e05a7c961bbc4a686ad9f6b27ff0e77",
+      "path": "payloads/598c234b5876161402b784a8b93c03ca5e05a7c961bbc4a686ad9f6b27ff0e77.pdf",
+      "kind": "cutting-template",
+      "lastModified": "Sat, 09 Sep 2023 17:32:11 GMT",
+      "contentDisposition": null,
+      "pdfPages": 1,
+      "localPath": "archive-store/heart-preservation/objects/598c234b5876161402b784a8b93c03ca5e05a7c961bbc4a686ad9f6b27ff0e77.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/598c234b5876161402b784a8b93c03ca5e05a7c961bbc4a686ad9f6b27ff0e77.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_7.pdf",
+      "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_7.pdf",
+      "retrievedAt": "2026-10-19T12:44:55.897026+00:00",
+      "status": 200,
+      "contentType": "application/pdf",
+      "bytes": 86154,
+      "sha256": "7f0ecb97a37aae85a03425648c2658e8f787c200df50d073f5fcb6f2f02acf8b",
+      "path": "payloads/7f0ecb97a37aae85a03425648c2658e8f787c200df50d073f5fcb6f2f02acf8b.pdf",
+      "kind": "cutting-template",
+      "lastModified": "Sat, 09 Sep 2023 17:32:11 GMT",
+      "contentDisposition": null,
+      "pdfPages": 1,
+      "localPath": "archive-store/heart-preservation/objects/7f0ecb97a37aae85a03425648c2658e8f787c200df50d073f5fcb6f2f02acf8b.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/7f0ecb97a37aae85a03425648c2658e8f787c200df50d073f5fcb6f2f02acf8b.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_8.pdf",
+      "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_8.pdf",
+      "retrievedAt": "2026-10-19T12:44:56.472274+00:00",
+      "status": 200,
+      "contentType": "application/pdf",
+      "bytes": 85691,
+      "sha256": "a4682c3cfc222f35045f0d6f12d6354417fe17e628efc04f0c4a4d0217d7fa88",
+      "path": "payloads/a4682c3cfc222f35045f0d6f12d6354417fe17e628efc04f0c4a4d0217d7fa88.pdf",
+      "kind": "cutting-template",
+      "lastModified": "Sat, 09 Sep 2023 17:32:11 GMT",
+      "contentDisposition": null,
+      "pdfPages": 1,
+      "localPath": "archive-store/heart-preservation/objects/a4682c3cfc222f35045f0d6f12d6354417fe17e628efc04f0c4a4d0217d7fa88.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/a4682c3cfc222f35045f0d6f12d6354417fe17e628efc04f0c4a4d0217d7fa88.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_9.pdf",
+      "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_9.pdf",
+      "retrievedAt": "2026-10-19T12:44:57.037690+00:00",
+      "status": 200,
+      "contentType": "application/pdf",
+      "bytes": 102359,
+      "sha256": "e5e8675ea80e8ef1be423946fb8518520d2ccd4863bacd8dbfceb891193cdcc9",
+      "path": "payloads/e5e8675ea80e8ef1be423946fb8518520d2ccd4863bacd8dbfceb891193cdcc9.pdf",
+      "kind": "cutting-template",
+      "lastModified": "Sat, 09 Sep 2023 17:32:12 GMT",
+      "contentDisposition": null,
+      "pdfPages": 1,
+      "localPath": "archive-store/heart-preservation/objects/e5e8675ea80e8ef1be423946fb8518520d2ccd4863bacd8dbfceb891193cdcc9.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/e5e8675ea80e8ef1be423946fb8518520d2ccd4863bacd8dbfceb891193cdcc9.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_10.pdf",
+      "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_10.pdf",
+      "retrievedAt": "2026-10-19T12:44:57.601822+00:00",
+      "status": 200,
+      "contentType": "application/pdf",
+      "bytes": 88138,
+      "sha256": "225e57b87d3f06044c67c960d01d45fdce7dbd2f7e614ae0a97da22330d6fde3",
+      "path": "payloads/225e57b87d3f06044c67c960d01d45fdce7dbd2f7e614ae0a97da22330d6fde3.pdf",
+      "kind": "cutting-template",
+      "lastModified": "Sat, 09 Sep 2023 17:32:11 GMT",
+      "contentDisposition": null,
+      "pdfPages": 1,
+      "localPath": "archive-store/heart-preservation/objects/225e57b87d3f06044c67c960d01d45fdce7dbd2f7e614ae0a97da22330d6fde3.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/225e57b87d3f06044c67c960d01d45fdce7dbd2f7e614ae0a97da22330d6fde3.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_11.pdf",
+      "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_11.pdf",
+      "retrievedAt": "2026-10-19T12:44:58.192780+00:00",
+      "status": 200,
+      "contentType": "application/pdf",
+      "bytes": 109351,
+      "sha256": "08ebccb203f1c729a6c3c999c171fd2801a7aa000b573e84a345ea0d09ac68a9",
+      "path": "payloads/08ebccb203f1c729a6c3c999c171fd2801a7aa000b573e84a345ea0d09ac68a9.pdf",
+      "kind": "cutting-template",
+      "lastModified": "Sat, 09 Sep 2023 17:32:12 GMT",
+      "contentDisposition": null,
+      "pdfPages": 1,
+      "localPath": "archive-store/heart-preservation/objects/08ebccb203f1c729a6c3c999c171fd2801a7aa000b573e84a345ea0d09ac68a9.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/08ebccb203f1c729a6c3c999c171fd2801a7aa000b573e84a345ea0d09ac68a9.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_12.pdf",
+      "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_12.pdf",
+      "retrievedAt": "2026-10-19T12:44:58.762069+00:00",
+      "status": 200,
+      "contentType": "application/pdf",
+      "bytes": 100920,
+      "sha256": "57bfd7c0ba0881d936716c738c284eeea21cc7edd36c5715813bb8c7abcb0b06",
+      "path": "payloads/57bfd7c0ba0881d936716c738c284eeea21cc7edd36c5715813bb8c7abcb0b06.pdf",
+      "kind": "cutting-template",
+      "lastModified": "Sat, 09 Sep 2023 17:32:12 GMT",
+      "contentDisposition": null,
+      "pdfPages": 1,
+      "localPath": "archive-store/heart-preservation/objects/57bfd7c0ba0881d936716c738c284eeea21cc7edd36c5715813bb8c7abcb0b06.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/57bfd7c0ba0881d936716c738c284eeea21cc7edd36c5715813bb8c7abcb0b06.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://creativecommons.org/robots.txt",
+      "finalUrl": "https://creativecommons.org/robots.txt",
+      "retrievedAt": "2026-10-19T12:46:36.036788+00:00",
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "bytes": 177,
+      "sha256": "d7a6362bab284aaa0b08d19dcbd455a2054914002c9859e14061e15e071f4705",
+      "path": "payloads/d7a6362bab284aaa0b08d19dcbd455a2054914002c9859e14061e15e071f4705.txt",
+      "kind": "robots",
+      "lastModified": "Mon, 19 Oct 2026 12:07:36 GMT",
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/d7a6362bab284aaa0b08d19dcbd455a2054914002c9859e14061e15e071f4705.txt",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/d7a6362bab284aaa0b08d19dcbd455a2054914002c9859e14061e15e071f4705.txt",
+      "role": "evidence",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "finalUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "retrievedAt": "2026-10-19T12:46:36.504307+00:00",
+      "status": 200,
+      "contentType": "text/html",
+      "bytes": 37146,
+      "sha256": "ca0597fd98c6fb2417993e867b5cbc91ebdc55e24839c38e4674e8c78d817f17",
+      "path": "payloads/ca0597fd98c6fb2417993e867b5cbc91ebdc55e24839c38e4674e8c78d817f17.html",
+      "kind": "history",
+      "lastModified": "Thu, 01 Oct 2026 17:09:54 GMT",
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/ca0597fd98c6fb2417993e867b5cbc91ebdc55e24839c38e4674e8c78d817f17.html",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/ca0597fd98c6fb2417993e867b5cbc91ebdc55e24839c38e4674e8c78d817f17.html",
+      "role": "evidence",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://papermatrix.wordpress.com/robots.txt",
+      "finalUrl": "https://papermatrix.wordpress.com/robots.txt",
+      "retrievedAt": "2026-10-19T12:46:36.951133+00:00",
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "bytes": 650,
+      "sha256": "755255de51b636d8b6b3386e9ba7d73533ac0cb8ee8c0fb3aa918e63abee9450",
+      "path": "payloads/755255de51b636d8b6b3386e9ba7d73533ac0cb8ee8c0fb3aa918e63abee9450.txt",
+      "kind": "robots",
+      "lastModified": null,
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/755255de51b636d8b6b3386e9ba7d73533ac0cb8ee8c0fb3aa918e63abee9450.txt",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/755255de51b636d8b6b3386e9ba7d73533ac0cb8ee8c0fb3aa918e63abee9450.txt",
+      "role": "evidence",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://papermatrix.wordpress.com/about/",
+      "finalUrl": "https://papermatrix.wordpress.com/about/",
+      "retrievedAt": "2026-10-19T12:46:37.557918+00:00",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 399945,
+      "sha256": "734df3a5abe22fb70f77eccce54044b97c86a6b0bafdbc9b4bffca8d0f2a1623",
+      "path": "payloads/734df3a5abe22fb70f77eccce54044b97c86a6b0bafdbc9b4bffca8d0f2a1623.html",
+      "kind": "history",
+      "lastModified": null,
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/734df3a5abe22fb70f77eccce54044b97c86a6b0bafdbc9b4bffca8d0f2a1623.html",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/734df3a5abe22fb70f77eccce54044b97c86a6b0bafdbc9b4bffca8d0f2a1623.html",
+      "role": "evidence",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://papermatrix.wordpress.com/2015/10/30/heart-054-ghosts/",
+      "finalUrl": "https://papermatrix.wordpress.com/2015/10/30/heart-054-ghosts/",
+      "retrievedAt": "2026-10-19T12:46:39.549478+00:00",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 144305,
+      "sha256": "d75afc67ba4e1d98e564a9438c2ce6955fa1fa7ce77b06cc57b844e2234d8910",
+      "path": "payloads/d75afc67ba4e1d98e564a9438c2ce6955fa1fa7ce77b06cc57b844e2234d8910.html",
+      "kind": "history",
+      "lastModified": null,
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/d75afc67ba4e1d98e564a9438c2ce6955fa1fa7ce77b06cc57b844e2234d8910.html",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/d75afc67ba4e1d98e564a9438c2ce6955fa1fa7ce77b06cc57b844e2234d8910.html",
+      "role": "evidence",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://papermatrix.wordpress.com/wp-content/uploads/2015/10/heart-054-cut-1-ghosts.pdf",
+      "finalUrl": "https://papermatrix.wordpress.com/wp-content/uploads/2015/10/heart-054-cut-1-ghosts.pdf",
+      "retrievedAt": "2026-10-19T12:46:40.586238+00:00",
+      "status": 200,
+      "contentType": "application/pdf",
+      "bytes": 15229,
+      "sha256": "8c182a55e5c87a355ca4c9a48c477bfc5bcd9eecf61c766d4ca84f96f6d46a63",
+      "path": "payloads/8c182a55e5c87a355ca4c9a48c477bfc5bcd9eecf61c766d4ca84f96f6d46a63.pdf",
+      "kind": "cutting-template",
+      "lastModified": "Thu, 29 Oct 2015 20:34:03 GMT",
+      "contentDisposition": null,
+      "pdfPages": 1,
+      "localPath": "archive-store/heart-preservation/objects/8c182a55e5c87a355ca4c9a48c477bfc5bcd9eecf61c766d4ca84f96f6d46a63.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/8c182a55e5c87a355ca4c9a48c477bfc5bcd9eecf61c766d4ca84f96f6d46a63.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://papermatrix.wordpress.com/wp-content/uploads/2015/10/heart-054-cut-2-ghosts.pdf",
+      "finalUrl": "https://papermatrix.wordpress.com/wp-content/uploads/2015/10/heart-054-cut-2-ghosts.pdf",
+      "retrievedAt": "2026-10-19T12:46:41.271464+00:00",
+      "status": 200,
+      "contentType": "application/pdf",
+      "bytes": 10882,
+      "sha256": "4e2460e8c7b19115eec9051615d683f087bed8103767da55cdd2eca48c3bbcc7",
+      "path": "payloads/4e2460e8c7b19115eec9051615d683f087bed8103767da55cdd2eca48c3bbcc7.pdf",
+      "kind": "cutting-template",
+      "lastModified": "Thu, 29 Oct 2015 20:34:05 GMT",
+      "contentDisposition": null,
+      "pdfPages": 1,
+      "localPath": "archive-store/heart-preservation/objects/4e2460e8c7b19115eec9051615d683f087bed8103767da55cdd2eca48c3bbcc7.pdf",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/4e2460e8c7b19115eec9051615d683f087bed8103767da55cdd2eca48c3bbcc7.pdf",
+      "role": "template",
+      "publicRedistribution": "not-cleared"
+    },
+    {
+      "originalUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.en",
+      "finalUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.en",
+      "retrievedAt": "2026-10-19T12:47:13.111510+00:00",
+      "status": 200,
+      "contentType": "text/html",
+      "bytes": 52858,
+      "sha256": "527c4e0e75a7aafe819a9ed481c227f27645736fa800f25d6d94ed37a362afd7",
+      "path": "payloads/527c4e0e75a7aafe819a9ed481c227f27645736fa800f25d6d94ed37a362afd7.html",
+      "kind": "license",
+      "lastModified": "Thu, 01 Oct 2026 17:09:54 GMT",
+      "contentDisposition": null,
+      "localPath": "archive-store/heart-preservation/objects/527c4e0e75a7aafe819a9ed481c227f27645736fa800f25d6d94ed37a362afd7.html",
+      "recommendedDurablePath": "archive-store/heart-preservation/objects/527c4e0e75a7aafe819a9ed481c227f27645736fa800f25d6d94ed37a362afd7.html",
+      "role": "evidence",
+      "publicRedistribution": "not-cleared"
+    }
+  ],
+  "entries": [
+    {
+      "id": "spejderliv-julehjerter",
+      "title": "Spejderliv Julehjerter",
+      "sourceUrl": "https://spejderliv.dk/haandvaerk/julehjerter",
+      "credit": "Kim G. L. Pedersen",
+      "creditEvidenceUrl": "https://spejderliv.dk/haandvaerk/julehjerter",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "CC BY-NC-SA 4.0",
+        "scope": "Spejderliv Julehjerter templates; photo licensing not explicitly established",
+        "evidenceUrl": "https://spejderliv.dk/haandvaerk/julehjerter",
+        "exactStatement": "Spejderliv Julehjerter af Kim G. L. Pedersen er frigivet under licensen CC BY-NC-SA 4.0",
+        "trainingStatus": "not-reviewed",
+        "republicationStatus": "license-requires-attribution-noncommercial-sharealike"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://static.spejderliv.dk/14-haandvaerk/julehjerter.pdf",
+          "finalUrl": "https://static.spejderliv.dk/14-haandvaerk/julehjerter.pdf",
+          "sha256": "abb564cb92305abdff1b442366abda2cf659ae5841eed2ed3e331542d82e5c20",
+          "bytes": 181810,
+          "pages": 6,
+          "retrievedAt": "2026-10-19T12:44:32.598478+00:00",
+          "localOriginalPath": "static/archive/templates/abb564cb92305abdff1b442366abda2cf659ae5841eed2ed3e331542d82e5c20.pdf",
+          "proposedPublicPath": "/archive/templates/abb564cb92305abdff1b442366abda2cf659ae5841eed2ed3e331542d82e5c20.pdf",
+          "publicRedistribution": "explicit-license",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://spejderliv.dk/haandvaerk/julehjerter",
+          "sha256": "9918baf525fcf780f81706a8e8cb1ec5e10b84dde8ecfaf4bd5c1e83877d152d",
+          "localPath": "archive-store/heart-preservation/objects/9918baf525fcf780f81706a8e8cb1ec5e10b84dde8ecfaf4bd5c1e83877d152d.html"
+        }
+      ],
+      "relatedExistingAssetIds": [],
+      "relatedExistingPhotoIds": [],
+      "relationshipStatus": "Source page explicitly associates the template files with the named design/collection."
+    },
+    {
+      "id": "krymmel-file-70",
+      "title": "1 Krümmel skjold",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=70&id=1710080830",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=70&id=1710080830",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=70&id=1710080830",
+          "sha256": "b73699a012f15e5c682d01c48092b84a3567e442cc2d71ab5d6775b49869b069",
+          "bytes": 120956,
+          "pages": 3,
+          "retrievedAt": "2026-10-19T12:44:34.660877+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/b73699a012f15e5c682d01c48092b84a3567e442cc2d71ab5d6775b49869b069.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=70&id=1710080830",
+          "sha256": "b73699a012f15e5c682d01c48092b84a3567e442cc2d71ab5d6775b49869b069",
+          "localPath": "archive-store/heart-preservation/objects/b73699a012f15e5c682d01c48092b84a3567e442cc2d71ab5d6775b49869b069.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-f090bdede63f8ded"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-f090bdede63f8ded"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-86",
+      "title": "2 Krone",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=86&id=1710080979",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=86&id=1710080979",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=86&id=1710080979",
+          "sha256": "fc324c9938d459caa7fb214df5eff3f2ee70d096416cf9e5945942ccea731635",
+          "bytes": 108966,
+          "pages": 2,
+          "retrievedAt": "2026-10-19T12:44:35.123094+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/fc324c9938d459caa7fb214df5eff3f2ee70d096416cf9e5945942ccea731635.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=86&id=1710080979",
+          "sha256": "fc324c9938d459caa7fb214df5eff3f2ee70d096416cf9e5945942ccea731635",
+          "localPath": "archive-store/heart-preservation/objects/fc324c9938d459caa7fb214df5eff3f2ee70d096416cf9e5945942ccea731635.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-8f3262159688c18f",
+        "real-798800eca9b023da"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-8f3262159688c18f",
+        "real-798800eca9b023da"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-40",
+      "title": "Anker",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=40&id=1710081184",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=40&id=1710081184",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=40&id=1710081184",
+          "sha256": "670a6dc7f6fe85c69b42a8040733c35515f7f4ea7512b295c3317fb400a54548",
+          "bytes": 230069,
+          "pages": 5,
+          "retrievedAt": "2026-10-19T12:44:35.584083+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/670a6dc7f6fe85c69b42a8040733c35515f7f4ea7512b295c3317fb400a54548.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=40&id=1710081184",
+          "sha256": "670a6dc7f6fe85c69b42a8040733c35515f7f4ea7512b295c3317fb400a54548",
+          "localPath": "archive-store/heart-preservation/objects/670a6dc7f6fe85c69b42a8040733c35515f7f4ea7512b295c3317fb400a54548.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-1b886933452cccb2",
+        "real-dfb51733abf2b539",
+        "real-4a82f009f1ec3d27"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-1b886933452cccb2",
+        "real-dfb51733abf2b539",
+        "real-4a82f009f1ec3d27"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-81",
+      "title": "Cykel",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=81&id=1710081553",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=81&id=1710081553",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=81&id=1710081553",
+          "sha256": "65d855a136521474a35f2aa9ca16ae6393cb715291884ec6387f10a119c6e3eb",
+          "bytes": 154035,
+          "pages": 2,
+          "retrievedAt": "2026-10-19T12:44:36.068097+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/65d855a136521474a35f2aa9ca16ae6393cb715291884ec6387f10a119c6e3eb.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=81&id=1710081553",
+          "sha256": "65d855a136521474a35f2aa9ca16ae6393cb715291884ec6387f10a119c6e3eb",
+          "localPath": "archive-store/heart-preservation/objects/65d855a136521474a35f2aa9ca16ae6393cb715291884ec6387f10a119c6e3eb.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-5330aa8b62176216"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-5330aa8b62176216"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-85",
+      "title": "Dyr",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=85&id=1733394863",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=85&id=1733394863",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=85&id=1733394863",
+          "sha256": "613d1a312e8777ee92c6d94d635071f83ded4228c5201dd3e225ea45d7396aa2",
+          "bytes": 749458,
+          "pages": 17,
+          "retrievedAt": "2026-10-19T12:44:36.559006+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/613d1a312e8777ee92c6d94d635071f83ded4228c5201dd3e225ea45d7396aa2.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=85&id=1733394863",
+          "sha256": "613d1a312e8777ee92c6d94d635071f83ded4228c5201dd3e225ea45d7396aa2",
+          "localPath": "archive-store/heart-preservation/objects/613d1a312e8777ee92c6d94d635071f83ded4228c5201dd3e225ea45d7396aa2.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-d5cfb1a11fa5d025",
+        "real-19473777888cf476",
+        "real-abf590088db891f9",
+        "real-a2aae4dd75b45a82",
+        "real-162824048cd59d7c",
+        "real-d2524d250057dee3",
+        "real-317b89c060e12394"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-d5cfb1a11fa5d025",
+        "real-19473777888cf476",
+        "real-abf590088db891f9",
+        "real-a2aae4dd75b45a82",
+        "real-162824048cd59d7c",
+        "real-d2524d250057dee3",
+        "real-317b89c060e12394"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-75",
+      "title": "Dyr i Arktis",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=75&id=1710080909",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=75&id=1710080909",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=75&id=1710080909",
+          "sha256": "faf6edea6412c1355971b12a490188fa558338afbee30df7f80a0f3088c26033",
+          "bytes": 750109,
+          "pages": 16,
+          "retrievedAt": "2026-10-19T12:44:37.127948+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/faf6edea6412c1355971b12a490188fa558338afbee30df7f80a0f3088c26033.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=75&id=1710080909",
+          "sha256": "faf6edea6412c1355971b12a490188fa558338afbee30df7f80a0f3088c26033",
+          "localPath": "archive-store/heart-preservation/objects/faf6edea6412c1355971b12a490188fa558338afbee30df7f80a0f3088c26033.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-32e0e6cb4927fc7d",
+        "real-d29c0f122b1ed0b2",
+        "real-6495a61c1ebd972c",
+        "real-36ed5be60357f4c9",
+        "real-6b7db7c9f4eef37d",
+        "real-0f3961782a183971",
+        "real-991d80adaf56496e",
+        "real-8a0e2c9902ae5548"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-32e0e6cb4927fc7d",
+        "real-d29c0f122b1ed0b2",
+        "real-6495a61c1ebd972c",
+        "real-36ed5be60357f4c9",
+        "real-6b7db7c9f4eef37d",
+        "real-0f3961782a183971",
+        "real-991d80adaf56496e",
+        "real-8a0e2c9902ae5548"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-69",
+      "title": "Firma og Foreningslogoer",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=69&id=1737023809",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=69&id=1737023809",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=69&id=1737023809",
+          "sha256": "3f5d73bd1f919205ef5d8b22d288b7188ad38f3d6faf336021e50f8493d8c5b3",
+          "bytes": 634403,
+          "pages": 7,
+          "retrievedAt": "2026-10-19T12:44:37.660934+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/3f5d73bd1f919205ef5d8b22d288b7188ad38f3d6faf336021e50f8493d8c5b3.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=69&id=1737023809",
+          "sha256": "3f5d73bd1f919205ef5d8b22d288b7188ad38f3d6faf336021e50f8493d8c5b3",
+          "localPath": "archive-store/heart-preservation/objects/3f5d73bd1f919205ef5d8b22d288b7188ad38f3d6faf336021e50f8493d8c5b3.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-8c772117f145ed34",
+        "real-c3c9f122aedc065e",
+        "real-eb3bdaafee8cf769"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-8c772117f145ed34",
+        "real-c3c9f122aedc065e",
+        "real-eb3bdaafee8cf769"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-67",
+      "title": "Fredslys / Peace Candle",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=67&id=1710080799",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=67&id=1710080799",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=67&id=1710080799",
+          "sha256": "fd8f93ee23037d6b56c32acf01c5e7ab9651e0c76932235891446e4d1d70e7a1",
+          "bytes": 283642,
+          "pages": 5,
+          "retrievedAt": "2026-10-19T12:44:38.221956+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/fd8f93ee23037d6b56c32acf01c5e7ab9651e0c76932235891446e4d1d70e7a1.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=67&id=1710080799",
+          "sha256": "fd8f93ee23037d6b56c32acf01c5e7ab9651e0c76932235891446e4d1d70e7a1",
+          "localPath": "archive-store/heart-preservation/objects/fd8f93ee23037d6b56c32acf01c5e7ab9651e0c76932235891446e4d1d70e7a1.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-455cb9790f390a06",
+        "real-b5183b8e0dcb77a9",
+        "real-81ec5670dddef396"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-455cb9790f390a06",
+        "real-b5183b8e0dcb77a9",
+        "real-81ec5670dddef396"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-68",
+      "title": "Fredssymboler / Peace symbols",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=68&id=1710249487",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=68&id=1710249487",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=68&id=1710249487",
+          "sha256": "d05871b5fc127856065d704707107c6f521291c4e67f7adc0fab1c227bb5407b",
+          "bytes": 413338,
+          "pages": 8,
+          "retrievedAt": "2026-10-19T12:44:38.749188+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/d05871b5fc127856065d704707107c6f521291c4e67f7adc0fab1c227bb5407b.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=68&id=1710249487",
+          "sha256": "d05871b5fc127856065d704707107c6f521291c4e67f7adc0fab1c227bb5407b",
+          "localPath": "archive-store/heart-preservation/objects/d05871b5fc127856065d704707107c6f521291c4e67f7adc0fab1c227bb5407b.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-e9ae918e3b43b84b",
+        "real-825713341ae39f3f",
+        "real-b609bc615e20a9f7",
+        "real-66cd888901958423"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-e9ae918e3b43b84b",
+        "real-825713341ae39f3f",
+        "real-b609bc615e20a9f7",
+        "real-66cd888901958423"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-71",
+      "title": "Hello Kitty",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=71&id=1710080849",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=71&id=1710080849",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=71&id=1710080849",
+          "sha256": "66630cf2977fa1898946f1a7187390ac537e66874a84efe040b12b7980b0dd43",
+          "bytes": 139386,
+          "pages": 2,
+          "retrievedAt": "2026-10-19T12:44:39.264733+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/66630cf2977fa1898946f1a7187390ac537e66874a84efe040b12b7980b0dd43.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=71&id=1710080849",
+          "sha256": "66630cf2977fa1898946f1a7187390ac537e66874a84efe040b12b7980b0dd43",
+          "localPath": "archive-store/heart-preservation/objects/66630cf2977fa1898946f1a7187390ac537e66874a84efe040b12b7980b0dd43.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-53dded4413b55e4c",
+        "real-6cd4e617528a9f9d"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-53dded4413b55e4c",
+        "real-6cd4e617528a9f9d"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-172",
+      "title": "Hjerter med hjerter",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=172&id=1731057123",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=172&id=1731057123",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=172&id=1731057123",
+          "sha256": "46c54761fd552ec52ab1c3d40c336e1be3daf1fde81ea150a779958fd11e50a6",
+          "bytes": 241874,
+          "pages": 6,
+          "retrievedAt": "2026-10-19T12:44:39.867515+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/46c54761fd552ec52ab1c3d40c336e1be3daf1fde81ea150a779958fd11e50a6.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=172&id=1731057123",
+          "sha256": "46c54761fd552ec52ab1c3d40c336e1be3daf1fde81ea150a779958fd11e50a6",
+          "localPath": "archive-store/heart-preservation/objects/46c54761fd552ec52ab1c3d40c336e1be3daf1fde81ea150a779958fd11e50a6.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-63b7839336a0c1f8",
+        "real-d679f49df92ac859",
+        "real-80c5cdd152bac7f7",
+        "real-19608d84bcfeb57e",
+        "real-300515c6d56430a2"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-63b7839336a0c1f8",
+        "real-d679f49df92ac859",
+        "real-80c5cdd152bac7f7",
+        "real-19608d84bcfeb57e",
+        "real-300515c6d56430a2"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-61",
+      "title": "Hjerter med linjer",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=61&id=1710080780",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=61&id=1710080780",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=61&id=1710080780",
+          "sha256": "3f46f7d20690dc59e1a74ab0bbe5af46cc2a78cc045aa0ee79949c006261ebcf",
+          "bytes": 233344,
+          "pages": 4,
+          "retrievedAt": "2026-10-19T12:44:40.494986+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/3f46f7d20690dc59e1a74ab0bbe5af46cc2a78cc045aa0ee79949c006261ebcf.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=61&id=1710080780",
+          "sha256": "3f46f7d20690dc59e1a74ab0bbe5af46cc2a78cc045aa0ee79949c006261ebcf",
+          "localPath": "archive-store/heart-preservation/objects/3f46f7d20690dc59e1a74ab0bbe5af46cc2a78cc045aa0ee79949c006261ebcf.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-8d89aef2cf9319e4",
+        "real-443fd4580ac92218",
+        "real-d679f49df92ac859"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-8d89aef2cf9319e4",
+        "real-443fd4580ac92218",
+        "real-d679f49df92ac859"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-83",
+      "title": "Hjerter til Toiletdøren",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=83&id=1710080946",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=83&id=1710080946",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=83&id=1710080946",
+          "sha256": "b78fe0badc1bd80d47d95774de144765636fb8dcb77450acb2f7aa5f1e1ae5d2",
+          "bytes": 329375,
+          "pages": 6,
+          "retrievedAt": "2026-10-19T12:44:41.016455+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/b78fe0badc1bd80d47d95774de144765636fb8dcb77450acb2f7aa5f1e1ae5d2.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=83&id=1710080946",
+          "sha256": "b78fe0badc1bd80d47d95774de144765636fb8dcb77450acb2f7aa5f1e1ae5d2",
+          "localPath": "archive-store/heart-preservation/objects/b78fe0badc1bd80d47d95774de144765636fb8dcb77450acb2f7aa5f1e1ae5d2.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-f24ff438abe468da",
+        "real-e2c589263382fcb8",
+        "real-49e3238ae786256b"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-f24ff438abe468da",
+        "real-e2c589263382fcb8",
+        "real-49e3238ae786256b"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-47",
+      "title": "Hunde",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=47&id=1710081298",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=47&id=1710081298",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=47&id=1710081298",
+          "sha256": "0cc4ae4d3a16fb4423cc88d0b86985eeebd6e0c3577b8f995862b5f2821fb033",
+          "bytes": 509423,
+          "pages": 12,
+          "retrievedAt": "2026-10-19T12:44:41.525968+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/0cc4ae4d3a16fb4423cc88d0b86985eeebd6e0c3577b8f995862b5f2821fb033.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=47&id=1710081298",
+          "sha256": "0cc4ae4d3a16fb4423cc88d0b86985eeebd6e0c3577b8f995862b5f2821fb033",
+          "localPath": "archive-store/heart-preservation/objects/0cc4ae4d3a16fb4423cc88d0b86985eeebd6e0c3577b8f995862b5f2821fb033.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-e6d811a4a91ab39c",
+        "real-b5e76d08e47db877",
+        "real-48b3afafe213aefa",
+        "real-67a28bb4f9846eca",
+        "real-8ca45e87f32fdf2a",
+        "real-5cde8a2fcecb1560"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-e6d811a4a91ab39c",
+        "real-b5e76d08e47db877",
+        "real-48b3afafe213aefa",
+        "real-67a28bb4f9846eca",
+        "real-8ca45e87f32fdf2a",
+        "real-5cde8a2fcecb1560"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-46",
+      "title": "Juletræ",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=46&id=1710081253",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=46&id=1710081253",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=46&id=1710081253",
+          "sha256": "263381b8856209ddbb3fa58516e44f4ed6fea5b7b2536d112ef3b48399a4a61e",
+          "bytes": 186044,
+          "pages": 4,
+          "retrievedAt": "2026-10-19T12:44:42.076503+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/263381b8856209ddbb3fa58516e44f4ed6fea5b7b2536d112ef3b48399a4a61e.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=46&id=1710081253",
+          "sha256": "263381b8856209ddbb3fa58516e44f4ed6fea5b7b2536d112ef3b48399a4a61e",
+          "localPath": "archive-store/heart-preservation/objects/263381b8856209ddbb3fa58516e44f4ed6fea5b7b2536d112ef3b48399a4a61e.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-87362e29fd6fe719",
+        "real-2e885c11898013f9"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-87362e29fd6fe719",
+        "real-2e885c11898013f9"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-82",
+      "title": "Kaffekande - Mandam blå",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=82&id=1710080426",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=82&id=1710080426",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=82&id=1710080426",
+          "sha256": "e43a42b6e53a7af255ee717958d492a319196b92b4f268c193154f2a9fc9066b",
+          "bytes": 107682,
+          "pages": 2,
+          "retrievedAt": "2026-10-19T12:44:42.568161+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/e43a42b6e53a7af255ee717958d492a319196b92b4f268c193154f2a9fc9066b.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=82&id=1710080426",
+          "sha256": "e43a42b6e53a7af255ee717958d492a319196b92b4f268c193154f2a9fc9066b",
+          "localPath": "archive-store/heart-preservation/objects/e43a42b6e53a7af255ee717958d492a319196b92b4f268c193154f2a9fc9066b.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-2938de6623d8af5f"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-2938de6623d8af5f"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-55",
+      "title": "Katte",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=55&id=1710080729",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=55&id=1710080729",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=55&id=1710080729",
+          "sha256": "d5e31dcbda85b830cdb8df8cfe240098305263dbd03de2bb4302feda0e86c95d",
+          "bytes": 126104,
+          "pages": 6,
+          "retrievedAt": "2026-10-19T12:44:43.061085+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/d5e31dcbda85b830cdb8df8cfe240098305263dbd03de2bb4302feda0e86c95d.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=55&id=1710080729",
+          "sha256": "d5e31dcbda85b830cdb8df8cfe240098305263dbd03de2bb4302feda0e86c95d",
+          "localPath": "archive-store/heart-preservation/objects/d5e31dcbda85b830cdb8df8cfe240098305263dbd03de2bb4302feda0e86c95d.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-84ba6c6cd43c793e",
+        "real-22a0d5b83abdd9d7",
+        "real-88262e6b471b9599"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-84ba6c6cd43c793e",
+        "real-22a0d5b83abdd9d7",
+        "real-88262e6b471b9599"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-60",
+      "title": "Klokker",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Krümmels hjemmeside (self-claimed template designer); number/text designs additionally credit Gerth Stølting Brodal’s generator",
+      "creditEvidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=60&id=1710080740",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=60&id=1710080740",
+          "sha256": "f5c1654d327b2ba4ce8fbf495b460e5757aad01f603a3eb315bc835446122ca6",
+          "bytes": 206668,
+          "pages": 2,
+          "retrievedAt": "2026-10-19T12:44:43.557118+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/f5c1654d327b2ba4ce8fbf495b460e5757aad01f603a3eb315bc835446122ca6.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-b85aea331c152056"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-b85aea331c152056"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-51",
+      "title": "Kors og kristne symboler",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=51&id=1733407829",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=51&id=1733407829",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=51&id=1733407829",
+          "sha256": "edf6c42bee16be4f6ca5fe3cc47769b1cf8eb939665d43e9b8244550a63be5f5",
+          "bytes": 753234,
+          "pages": 16,
+          "retrievedAt": "2026-10-19T12:44:44.076766+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/edf6c42bee16be4f6ca5fe3cc47769b1cf8eb939665d43e9b8244550a63be5f5.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=51&id=1733407829",
+          "sha256": "edf6c42bee16be4f6ca5fe3cc47769b1cf8eb939665d43e9b8244550a63be5f5",
+          "localPath": "archive-store/heart-preservation/objects/edf6c42bee16be4f6ca5fe3cc47769b1cf8eb939665d43e9b8244550a63be5f5.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-3e0237065f1b4d32",
+        "real-6354e25044ed8844",
+        "real-8c399f1b08896780",
+        "real-4782581e234b1a5c",
+        "real-13ae4cb788d7049c",
+        "real-7d308f63c3960b8a",
+        "real-317b89c060e12394"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-3e0237065f1b4d32",
+        "real-6354e25044ed8844",
+        "real-8c399f1b08896780",
+        "real-4782581e234b1a5c",
+        "real-13ae4cb788d7049c",
+        "real-7d308f63c3960b8a",
+        "real-317b89c060e12394"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-49",
+      "title": "Kristen Jul",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=49&id=1732188926",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=49&id=1732188926",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=49&id=1732188926",
+          "sha256": "de99b7c9a019a9da070981a7bba00e428feb9ffb3cfcf8b9a21f4bc19f19a79c",
+          "bytes": 2225811,
+          "pages": 43,
+          "retrievedAt": "2026-10-19T12:44:44.669657+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/de99b7c9a019a9da070981a7bba00e428feb9ffb3cfcf8b9a21f4bc19f19a79c.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=49&id=1732188926",
+          "sha256": "de99b7c9a019a9da070981a7bba00e428feb9ffb3cfcf8b9a21f4bc19f19a79c",
+          "localPath": "archive-store/heart-preservation/objects/de99b7c9a019a9da070981a7bba00e428feb9ffb3cfcf8b9a21f4bc19f19a79c.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-02548d9e23571522",
+        "real-6d22443c67af1459",
+        "real-132263222a727b1a",
+        "real-f60dd022f070b574",
+        "real-c2a91cbb1daec421",
+        "real-4d860a1f1ff0ae86",
+        "real-2c0bfa916e76bc12",
+        "real-373e98938a5f4b0c",
+        "real-7a6b9960f5cbbc27",
+        "real-a43c4b262b09b5ac",
+        "real-bc651d9cbd10cc10",
+        "real-ccc90af1cb1d9647",
+        "real-62c2d301dcaace10",
+        "real-8f69d2fb6351349d",
+        "real-a1c0cab1d0070feb",
+        "real-ab2ffb3500ad5ad5",
+        "real-6e77db2fadc5340c",
+        "real-3b3e64d320efaeab",
+        "real-6ba5d5f961f12ac4",
+        "real-85af2b25b9f63c48"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-02548d9e23571522",
+        "real-6d22443c67af1459",
+        "real-132263222a727b1a",
+        "real-f60dd022f070b574",
+        "real-c2a91cbb1daec421",
+        "real-4d860a1f1ff0ae86",
+        "real-2c0bfa916e76bc12",
+        "real-373e98938a5f4b0c",
+        "real-7a6b9960f5cbbc27",
+        "real-a43c4b262b09b5ac",
+        "real-bc651d9cbd10cc10",
+        "real-ccc90af1cb1d9647",
+        "real-62c2d301dcaace10",
+        "real-8f69d2fb6351349d",
+        "real-a1c0cab1d0070feb",
+        "real-ab2ffb3500ad5ad5",
+        "real-6e77db2fadc5340c",
+        "real-3b3e64d320efaeab",
+        "real-6ba5d5f961f12ac4",
+        "real-85af2b25b9f63c48"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-41",
+      "title": "Lys",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=41&id=1710081241",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=41&id=1710081241",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=41&id=1710081241",
+          "sha256": "6dbb907be7c3d3d6c17a962088b247e242e182d7c0d47f1cfc951fec7f21b76c",
+          "bytes": 85818,
+          "pages": 4,
+          "retrievedAt": "2026-10-19T12:44:45.484242+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/6dbb907be7c3d3d6c17a962088b247e242e182d7c0d47f1cfc951fec7f21b76c.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=41&id=1710081241",
+          "sha256": "6dbb907be7c3d3d6c17a962088b247e242e182d7c0d47f1cfc951fec7f21b76c",
+          "localPath": "archive-store/heart-preservation/objects/6dbb907be7c3d3d6c17a962088b247e242e182d7c0d47f1cfc951fec7f21b76c.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-ddd494ecfcc89e45",
+        "real-35c929165d73341b"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-ddd494ecfcc89e45",
+        "real-35c929165d73341b"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-79",
+      "title": "Romer",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=79&id=1710080922",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=79&id=1710080922",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=79&id=1710080922",
+          "sha256": "9e8c514bd79ced2b096c654b0101702624ddac995ff8ca16e29f2e22a72d9b61",
+          "bytes": 116532,
+          "pages": 2,
+          "retrievedAt": "2026-10-19T12:44:46.065070+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/9e8c514bd79ced2b096c654b0101702624ddac995ff8ca16e29f2e22a72d9b61.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=79&id=1710080922",
+          "sha256": "9e8c514bd79ced2b096c654b0101702624ddac995ff8ca16e29f2e22a72d9b61",
+          "localPath": "archive-store/heart-preservation/objects/9e8c514bd79ced2b096c654b0101702624ddac995ff8ca16e29f2e22a72d9b61.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-9c6c02096be0c9a9"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-9c6c02096be0c9a9"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-53",
+      "title": "Stjerner",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=53&id=1710080711",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=53&id=1710080711",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=53&id=1710080711",
+          "sha256": "d96830bd51372dde29f98c1baf9f1e7bca7b8ce431a7299dfdfebeaa83541a0a",
+          "bytes": 479246,
+          "pages": 13,
+          "retrievedAt": "2026-10-19T12:44:46.665171+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/d96830bd51372dde29f98c1baf9f1e7bca7b8ce431a7299dfdfebeaa83541a0a.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=53&id=1710080711",
+          "sha256": "d96830bd51372dde29f98c1baf9f1e7bca7b8ce431a7299dfdfebeaa83541a0a",
+          "localPath": "archive-store/heart-preservation/objects/d96830bd51372dde29f98c1baf9f1e7bca7b8ce431a7299dfdfebeaa83541a0a.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-d741b8d8b038595e",
+        "real-ff9403831b338eda",
+        "real-b02fde21a71866c9",
+        "real-1219fc5403d2b5ee",
+        "real-52fdf916669bb51a",
+        "real-d0716c8d605fb06d",
+        "real-a7b4266b988f32e8",
+        "real-c47477b2f4d3f812",
+        "real-eef5b70583ef2477"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-d741b8d8b038595e",
+        "real-ff9403831b338eda",
+        "real-b02fde21a71866c9",
+        "real-1219fc5403d2b5ee",
+        "real-52fdf916669bb51a",
+        "real-d0716c8d605fb06d",
+        "real-a7b4266b988f32e8",
+        "real-c47477b2f4d3f812",
+        "real-eef5b70583ef2477"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-80",
+      "title": "Tal, 0-10",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Krümmels hjemmeside (self-claimed template designer); number/text designs additionally credit Gerth Stølting Brodal’s generator",
+      "creditEvidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=80&id=1710081204",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=80&id=1710081204",
+          "sha256": "fa325a4b1310eb5c740ccaf6dd5f920a50e6223432debe4bc7328ff1840c0f96",
+          "bytes": 195146,
+          "pages": 21,
+          "retrievedAt": "2026-10-19T12:44:47.274186+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/fa325a4b1310eb5c740ccaf6dd5f920a50e6223432debe4bc7328ff1840c0f96.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-2d1979ea370b7c33",
+        "real-515d1f88bd2eac03"
+      ],
+      "relatedExistingPhotoIds": [],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-48",
+      "title": "Tekst, Jesus og Maria",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Krümmels hjemmeside (self-claimed template designer); number/text designs additionally credit Gerth Stølting Brodal’s generator",
+      "creditEvidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=48&id=1710080557",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=48&id=1710080557",
+          "sha256": "376be2472bbf084801058a74b03573e7985b53b8b932829f06b7869e71f10f0d",
+          "bytes": 336701,
+          "pages": 5,
+          "retrievedAt": "2026-10-19T12:44:47.817713+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/376be2472bbf084801058a74b03573e7985b53b8b932829f06b7869e71f10f0d.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-d8bb2e78acb17d4f",
+        "real-3932b5e8fa273080"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-d8bb2e78acb17d4f",
+        "real-3932b5e8fa273080"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-50",
+      "title": "Traktor og Bil",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=50&id=1710081406",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=50&id=1710081406",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=50&id=1710081406",
+          "sha256": "c8aeedadce475441133db07d32d82cc05f1a983b135ed12fce92cea4c1965409",
+          "bytes": 429663,
+          "pages": 9,
+          "retrievedAt": "2026-10-19T12:44:48.356421+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/c8aeedadce475441133db07d32d82cc05f1a983b135ed12fce92cea4c1965409.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=50&id=1710081406",
+          "sha256": "c8aeedadce475441133db07d32d82cc05f1a983b135ed12fce92cea4c1965409",
+          "localPath": "archive-store/heart-preservation/objects/c8aeedadce475441133db07d32d82cc05f1a983b135ed12fce92cea4c1965409.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-9d79c926e53cee08",
+        "real-68741178230a0234",
+        "real-f5c4b736b3b9ffbc",
+        "real-532f090e786401ed"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-9d79c926e53cee08",
+        "real-68741178230a0234",
+        "real-f5c4b736b3b9ffbc",
+        "real-532f090e786401ed"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-52",
+      "title": "Ølflaske",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=52&id=1710081458",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=52&id=1710081458",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=52&id=1710081458",
+          "sha256": "e54d95a3d7d69368a0e232ce30028703cfc43f801a9e5ba47112837758446310",
+          "bytes": 40291,
+          "pages": 2,
+          "retrievedAt": "2026-10-19T12:44:48.866489+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/e54d95a3d7d69368a0e232ce30028703cfc43f801a9e5ba47112837758446310.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=52&id=1710081458",
+          "sha256": "e54d95a3d7d69368a0e232ce30028703cfc43f801a9e5ba47112837758446310",
+          "localPath": "archive-store/heart-preservation/objects/e54d95a3d7d69368a0e232ce30028703cfc43f801a9e5ba47112837758446310.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-463ed687f707015c"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-463ed687f707015c"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-44",
+      "title": "Danmarks flag - Dannebrog",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=44&id=1710081005",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=44&id=1710081005",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=44&id=1710081005",
+          "sha256": "0ff1e5ed469b9612387b1009588cf84442a83cb96a10cb47037329135078b245",
+          "bytes": 205206,
+          "pages": 6,
+          "retrievedAt": "2026-10-19T12:44:49.347193+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/0ff1e5ed469b9612387b1009588cf84442a83cb96a10cb47037329135078b245.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=44&id=1710081005",
+          "sha256": "0ff1e5ed469b9612387b1009588cf84442a83cb96a10cb47037329135078b245",
+          "localPath": "archive-store/heart-preservation/objects/0ff1e5ed469b9612387b1009588cf84442a83cb96a10cb47037329135078b245.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-de26f0d277616b90",
+        "real-a96834d3b51db68a",
+        "real-c80723ef626d1711"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-de26f0d277616b90",
+        "real-a96834d3b51db68a",
+        "real-c80723ef626d1711"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-45",
+      "title": "Erfalasorput (Vores flag) - Grønlands flag",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=45&id=1710081018",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=45&id=1710081018",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=45&id=1710081018",
+          "sha256": "96cbf8513e3462f46649edf65ec15193385de5410bd6910a924609030b97459c",
+          "bytes": 105678,
+          "pages": 4,
+          "retrievedAt": "2026-10-19T12:44:49.860065+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/96cbf8513e3462f46649edf65ec15193385de5410bd6910a924609030b97459c.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=45&id=1710081018",
+          "sha256": "96cbf8513e3462f46649edf65ec15193385de5410bd6910a924609030b97459c",
+          "localPath": "archive-store/heart-preservation/objects/96cbf8513e3462f46649edf65ec15193385de5410bd6910a924609030b97459c.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-5d2a1fac137bc5c6",
+        "real-e32895008459266e"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-5d2a1fac137bc5c6",
+        "real-e32895008459266e"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-57",
+      "title": "Merkið (Mærket) - Færøernes flag",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Krümmels hjemmeside (self-claimed template designer); number/text designs additionally credit Gerth Stølting Brodal’s generator",
+      "creditEvidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=57&id=1710081037",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=57&id=1710081037",
+          "sha256": "f7583995611bcf8ffdc7f05c843cab61c147d806dafb14fbdff109ff33c92985",
+          "bytes": 23531,
+          "pages": 2,
+          "retrievedAt": "2026-10-19T12:44:50.365639+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/f7583995611bcf8ffdc7f05c843cab61c147d806dafb14fbdff109ff33c92985.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-0288b967b45347d0"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-0288b967b45347d0"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-42",
+      "title": "Kampfly",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=42&id=1710081058",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=42&id=1710081058",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=42&id=1710081058",
+          "sha256": "f53c59794cd0c2a5fb2ad28afd294daaba4652b749e86b3a2560ff67268369d4",
+          "bytes": 369050,
+          "pages": 9,
+          "retrievedAt": "2026-10-19T12:44:50.805490+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/f53c59794cd0c2a5fb2ad28afd294daaba4652b749e86b3a2560ff67268369d4.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=42&id=1710081058",
+          "sha256": "f53c59794cd0c2a5fb2ad28afd294daaba4652b749e86b3a2560ff67268369d4",
+          "localPath": "archive-store/heart-preservation/objects/f53c59794cd0c2a5fb2ad28afd294daaba4652b749e86b3a2560ff67268369d4.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-c3e2561e9bb70ba5",
+        "real-946f6040ef2bb6b1",
+        "real-c06854889c258f86",
+        "real-20d87dddda1a7185"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-c3e2561e9bb70ba5",
+        "real-946f6040ef2bb6b1",
+        "real-c06854889c258f86",
+        "real-20d87dddda1a7185"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-43",
+      "title": "Kampvogn",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=43&id=1710081074",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=43&id=1710081074",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=43&id=1710081074",
+          "sha256": "4aa71f77690e571fe6574bd86e0a9bcbc96a25576f77fa575892c4fc55977748",
+          "bytes": 167715,
+          "pages": 5,
+          "retrievedAt": "2026-10-19T12:44:51.344609+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/4aa71f77690e571fe6574bd86e0a9bcbc96a25576f77fa575892c4fc55977748.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=43&id=1710081074",
+          "sha256": "4aa71f77690e571fe6574bd86e0a9bcbc96a25576f77fa575892c4fc55977748",
+          "localPath": "archive-store/heart-preservation/objects/4aa71f77690e571fe6574bd86e0a9bcbc96a25576f77fa575892c4fc55977748.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-5d00ae8effa64bba",
+        "real-bf0751858cd907a6"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-5d00ae8effa64bba",
+        "real-bf0751858cd907a6"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "krymmel-file-66",
+      "title": "Våbenskjold",
+      "sourceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+      "credit": "Jan Krümmel",
+      "creditEvidenceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=66&id=1710081092",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+        "exactStatement": "Her ligger jeg skabeloner til flettede julehjerter som jeg selv har udarbejdet.",
+        "downloadInstructions": "De downloades (pdf fil) ved at klikke på navnet over hjerterne.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=66&id=1710081092",
+          "finalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=66&id=1710081092",
+          "sha256": "4a91deb23630e0804685101eaf564cb16d05796b341b992b6437afd42ff3f70b",
+          "bytes": 311379,
+          "pages": 10,
+          "retrievedAt": "2026-10-19T12:44:51.875581+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/4a91deb23630e0804685101eaf564cb16d05796b341b992b6437afd42ff3f70b.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+          "localPath": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html"
+        },
+        {
+          "url": "https://krymmel.dk/modules/download_gallery/dlc.php?file=66&id=1710081092",
+          "sha256": "4a91deb23630e0804685101eaf564cb16d05796b341b992b6437afd42ff3f70b",
+          "localPath": "archive-store/heart-preservation/objects/4a91deb23630e0804685101eaf564cb16d05796b341b992b6437afd42ff3f70b.pdf"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-7da5dabf2ba711d5",
+        "real-15652c418e0f2eed",
+        "real-1a0745e84e0fd8da"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-7da5dabf2ba711d5",
+        "real-15652c418e0f2eed",
+        "real-1a0745e84e0fd8da"
+      ],
+      "relationshipStatus": "same download section; individual PDF-page-to-photo mapping remains unverified"
+    },
+    {
+      "id": "bibelselskabet-1",
+      "title": "JULEHJERTE MED 2X2 TERN",
+      "sourceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "credit": "Bibelselskabet (publisher); individual designer not identified on source page",
+      "creditEvidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+        "exactStatement": "Her finder du skabeloner til 12 smukke julehjerter, som frit kan downloades og printes.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_1.pdf",
+          "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_1.pdf",
+          "sha256": "d4e15006e8a3fad530a779c70b156aa14c9c05ccd2f7fcf5ede7992bc2a117ba",
+          "bytes": 127819,
+          "pages": 1,
+          "retrievedAt": "2026-10-19T12:44:52.415972+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/d4e15006e8a3fad530a779c70b156aa14c9c05ccd2f7fcf5ede7992bc2a117ba.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+          "sha256": "93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6",
+          "localPath": "archive-store/heart-preservation/objects/93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6.html"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-69c50f3c310ce9d6"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-69c50f3c310ce9d6"
+      ],
+      "relationshipStatus": "numbered source-page card; template geometry not independently matched"
+    },
+    {
+      "id": "bibelselskabet-2",
+      "title": "JULEHJERTE MED 3X3 TERN",
+      "sourceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "credit": "Bibelselskabet (publisher); individual designer not identified on source page",
+      "creditEvidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+        "exactStatement": "Her finder du skabeloner til 12 smukke julehjerter, som frit kan downloades og printes.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_2.pdf",
+          "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_2.pdf",
+          "sha256": "5cda85b6e053de3b162e77ce8a86188c55409d2f2fdffd81f063b65578b6ddcf",
+          "bytes": 126637,
+          "pages": 1,
+          "retrievedAt": "2026-10-19T12:44:52.985494+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/5cda85b6e053de3b162e77ce8a86188c55409d2f2fdffd81f063b65578b6ddcf.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+          "sha256": "93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6",
+          "localPath": "archive-store/heart-preservation/objects/93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6.html"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-0e9743d59a854840"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-0e9743d59a854840"
+      ],
+      "relationshipStatus": "numbered source-page card; template geometry not independently matched"
+    },
+    {
+      "id": "bibelselskabet-3",
+      "title": "JULEHJERTE MED 4X4 TERN",
+      "sourceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "credit": "Bibelselskabet (publisher); individual designer not identified on source page",
+      "creditEvidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+        "exactStatement": "Her finder du skabeloner til 12 smukke julehjerter, som frit kan downloades og printes.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_3.pdf",
+          "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_3.pdf",
+          "sha256": "da4e3610c9963ba6ffae259c85469dc92edb545022db9c5dbbe27160ed9a23e8",
+          "bytes": 121153,
+          "pages": 1,
+          "retrievedAt": "2026-10-19T12:44:53.558724+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/da4e3610c9963ba6ffae259c85469dc92edb545022db9c5dbbe27160ed9a23e8.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+          "sha256": "93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6",
+          "localPath": "archive-store/heart-preservation/objects/93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6.html"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-12cc76f877b52302"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-12cc76f877b52302"
+      ],
+      "relationshipStatus": "numbered source-page card; template geometry not independently matched"
+    },
+    {
+      "id": "bibelselskabet-4",
+      "title": "JULEHJERTE: SMAL/BRED",
+      "sourceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "credit": "Bibelselskabet (publisher); individual designer not identified on source page",
+      "creditEvidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+        "exactStatement": "Her finder du skabeloner til 12 smukke julehjerter, som frit kan downloades og printes.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_4.pdf",
+          "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_4.pdf",
+          "sha256": "8c83fe1ca6d3a97cc0685fbdc329e311ada71bbdb76a13d3d269c7cc9ae3b946",
+          "bytes": 145826,
+          "pages": 1,
+          "retrievedAt": "2026-10-19T12:44:54.157694+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/8c83fe1ca6d3a97cc0685fbdc329e311ada71bbdb76a13d3d269c7cc9ae3b946.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+          "sha256": "93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6",
+          "localPath": "archive-store/heart-preservation/objects/93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6.html"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-d093c4df81a5cf99"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-d093c4df81a5cf99"
+      ],
+      "relationshipStatus": "numbered source-page card; template geometry not independently matched"
+    },
+    {
+      "id": "bibelselskabet-5",
+      "title": "JULEHJERTE MED STJERNE",
+      "sourceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "credit": "Bibelselskabet (publisher); individual designer not identified on source page",
+      "creditEvidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+        "exactStatement": "Her finder du skabeloner til 12 smukke julehjerter, som frit kan downloades og printes.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_5.pdf",
+          "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_5.pdf",
+          "sha256": "11c51054516a1bf9e258aceea12944dd032c0eb4de72eee3dd12e87c90cd10a1",
+          "bytes": 112366,
+          "pages": 1,
+          "retrievedAt": "2026-10-19T12:44:54.717749+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/11c51054516a1bf9e258aceea12944dd032c0eb4de72eee3dd12e87c90cd10a1.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+          "sha256": "93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6",
+          "localPath": "archive-store/heart-preservation/objects/93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6.html"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-e6f46dd07a8263b2"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-e6f46dd07a8263b2"
+      ],
+      "relationshipStatus": "numbered source-page card; template geometry not independently matched"
+    },
+    {
+      "id": "bibelselskabet-6",
+      "title": "JULEHJERTE MED STJERNE",
+      "sourceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "credit": "Bibelselskabet (publisher); individual designer not identified on source page",
+      "creditEvidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+        "exactStatement": "Her finder du skabeloner til 12 smukke julehjerter, som frit kan downloades og printes.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_6.pdf",
+          "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_6.pdf",
+          "sha256": "598c234b5876161402b784a8b93c03ca5e05a7c961bbc4a686ad9f6b27ff0e77",
+          "bytes": 96355,
+          "pages": 1,
+          "retrievedAt": "2026-10-19T12:44:55.305109+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/598c234b5876161402b784a8b93c03ca5e05a7c961bbc4a686ad9f6b27ff0e77.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+          "sha256": "93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6",
+          "localPath": "archive-store/heart-preservation/objects/93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6.html"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-15253d9a8c0c54c1"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-15253d9a8c0c54c1"
+      ],
+      "relationshipStatus": "numbered source-page card; template geometry not independently matched"
+    },
+    {
+      "id": "bibelselskabet-7",
+      "title": "JULEHJERTE MED STJERNE",
+      "sourceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "credit": "Bibelselskabet (publisher); individual designer not identified on source page",
+      "creditEvidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+        "exactStatement": "Her finder du skabeloner til 12 smukke julehjerter, som frit kan downloades og printes.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_7.pdf",
+          "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_7.pdf",
+          "sha256": "7f0ecb97a37aae85a03425648c2658e8f787c200df50d073f5fcb6f2f02acf8b",
+          "bytes": 86154,
+          "pages": 1,
+          "retrievedAt": "2026-10-19T12:44:55.897026+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/7f0ecb97a37aae85a03425648c2658e8f787c200df50d073f5fcb6f2f02acf8b.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+          "sha256": "93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6",
+          "localPath": "archive-store/heart-preservation/objects/93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6.html"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-36965c6835e08836"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-36965c6835e08836"
+      ],
+      "relationshipStatus": "numbered source-page card; template geometry not independently matched"
+    },
+    {
+      "id": "bibelselskabet-8",
+      "title": "JULEHJERTE MED KORS",
+      "sourceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "credit": "Bibelselskabet (publisher); individual designer not identified on source page",
+      "creditEvidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+        "exactStatement": "Her finder du skabeloner til 12 smukke julehjerter, som frit kan downloades og printes.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_8.pdf",
+          "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_8.pdf",
+          "sha256": "a4682c3cfc222f35045f0d6f12d6354417fe17e628efc04f0c4a4d0217d7fa88",
+          "bytes": 85691,
+          "pages": 1,
+          "retrievedAt": "2026-10-19T12:44:56.472274+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/a4682c3cfc222f35045f0d6f12d6354417fe17e628efc04f0c4a4d0217d7fa88.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+          "sha256": "93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6",
+          "localPath": "archive-store/heart-preservation/objects/93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6.html"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-d5973c76a3647bcf"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-d5973c76a3647bcf"
+      ],
+      "relationshipStatus": "numbered source-page card; template geometry not independently matched"
+    },
+    {
+      "id": "bibelselskabet-9",
+      "title": "JULEHJERTE MED HJERTE",
+      "sourceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "credit": "Bibelselskabet (publisher); individual designer not identified on source page",
+      "creditEvidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+        "exactStatement": "Her finder du skabeloner til 12 smukke julehjerter, som frit kan downloades og printes.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_9.pdf",
+          "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_9.pdf",
+          "sha256": "e5e8675ea80e8ef1be423946fb8518520d2ccd4863bacd8dbfceb891193cdcc9",
+          "bytes": 102359,
+          "pages": 1,
+          "retrievedAt": "2026-10-19T12:44:57.037690+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/e5e8675ea80e8ef1be423946fb8518520d2ccd4863bacd8dbfceb891193cdcc9.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+          "sha256": "93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6",
+          "localPath": "archive-store/heart-preservation/objects/93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6.html"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-25418cfe933334b9"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-25418cfe933334b9"
+      ],
+      "relationshipStatus": "numbered source-page card; template geometry not independently matched"
+    },
+    {
+      "id": "bibelselskabet-10",
+      "title": "JULEHJERTE MED HJERTE",
+      "sourceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "credit": "Bibelselskabet (publisher); individual designer not identified on source page",
+      "creditEvidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+        "exactStatement": "Her finder du skabeloner til 12 smukke julehjerter, som frit kan downloades og printes.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_10.pdf",
+          "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_10.pdf",
+          "sha256": "225e57b87d3f06044c67c960d01d45fdce7dbd2f7e614ae0a97da22330d6fde3",
+          "bytes": 88138,
+          "pages": 1,
+          "retrievedAt": "2026-10-19T12:44:57.601822+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/225e57b87d3f06044c67c960d01d45fdce7dbd2f7e614ae0a97da22330d6fde3.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+          "sha256": "93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6",
+          "localPath": "archive-store/heart-preservation/objects/93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6.html"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-1ee1b61353dcd8c1"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-1ee1b61353dcd8c1"
+      ],
+      "relationshipStatus": "numbered source-page card; template geometry not independently matched"
+    },
+    {
+      "id": "bibelselskabet-11",
+      "title": "DOBBELT JULEHJERTE",
+      "sourceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "credit": "Bibelselskabet (publisher); individual designer not identified on source page",
+      "creditEvidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+        "exactStatement": "Her finder du skabeloner til 12 smukke julehjerter, som frit kan downloades og printes.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_11.pdf",
+          "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_11.pdf",
+          "sha256": "08ebccb203f1c729a6c3c999c171fd2801a7aa000b573e84a345ea0d09ac68a9",
+          "bytes": 109351,
+          "pages": 1,
+          "retrievedAt": "2026-10-19T12:44:58.192780+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/08ebccb203f1c729a6c3c999c171fd2801a7aa000b573e84a345ea0d09ac68a9.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+          "sha256": "93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6",
+          "localPath": "archive-store/heart-preservation/objects/93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6.html"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-1bcc922200edde26"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-1bcc922200edde26"
+      ],
+      "relationshipStatus": "numbered source-page card; template geometry not independently matched"
+    },
+    {
+      "id": "bibelselskabet-12",
+      "title": "JULEHJERTE MED ENGEL",
+      "sourceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "credit": "Bibelselskabet (publisher); individual designer not identified on source page",
+      "creditEvidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "additionalCredits": [],
+      "history": null,
+      "rights": {
+        "license": "unknown",
+        "evidenceUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+        "exactStatement": "Her finder du skabeloner til 12 smukke julehjerter, som frit kan downloades og printes.",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_12.pdf",
+          "finalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_12.pdf",
+          "sha256": "57bfd7c0ba0881d936716c738c284eeea21cc7edd36c5715813bb8c7abcb0b06",
+          "bytes": 100920,
+          "pages": 1,
+          "retrievedAt": "2026-10-19T12:44:58.762069+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/57bfd7c0ba0881d936716c738c284eeea21cc7edd36c5715813bb8c7abcb0b06.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+          "sha256": "93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6",
+          "localPath": "archive-store/heart-preservation/objects/93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6.html"
+        }
+      ],
+      "relatedExistingAssetIds": [
+        "real-f02114c511211a38"
+      ],
+      "relatedExistingPhotoIds": [
+        "real-f02114c511211a38"
+      ],
+      "relationshipStatus": "numbered source-page card; template geometry not independently matched"
+    },
+    {
+      "id": "papermatrix-heart-054",
+      "title": "Heart #054 Ghosts",
+      "sourceUrl": "https://papermatrix.wordpress.com/2015/10/30/heart-054-ghosts/",
+      "credit": "Lene and Anna Schepper / PaperMatrix",
+      "creditEvidenceUrl": "https://papermatrix.wordpress.com/about/",
+      "additionalCredits": [],
+      "history": "Published 2015-10-30; author describes it as a variation of swirling Heart #003. Two-part heart with additional chain handle.",
+      "rights": {
+        "license": "custom-restriction",
+        "exactStatement": "© Do not commercialize pictures or models",
+        "evidenceUrl": "https://papermatrix.wordpress.com/about/",
+        "trainingStatus": "not-cleared",
+        "republicationStatus": "not-cleared"
+      },
+      "templates": [
+        {
+          "sourceUrl": "https://papermatrix.wordpress.com/wp-content/uploads/2015/10/heart-054-cut-1-ghosts.pdf",
+          "finalUrl": "https://papermatrix.wordpress.com/wp-content/uploads/2015/10/heart-054-cut-1-ghosts.pdf",
+          "sha256": "8c182a55e5c87a355ca4c9a48c477bfc5bcd9eecf61c766d4ca84f96f6d46a63",
+          "bytes": 15229,
+          "pages": 1,
+          "retrievedAt": "2026-10-19T12:46:40.586238+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/8c182a55e5c87a355ca4c9a48c477bfc5bcd9eecf61c766d4ca84f96f6d46a63.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        },
+        {
+          "sourceUrl": "https://papermatrix.wordpress.com/wp-content/uploads/2015/10/heart-054-cut-2-ghosts.pdf",
+          "finalUrl": "https://papermatrix.wordpress.com/wp-content/uploads/2015/10/heart-054-cut-2-ghosts.pdf",
+          "sha256": "4e2460e8c7b19115eec9051615d683f087bed8103767da55cdd2eca48c3bbcc7",
+          "bytes": 10882,
+          "pages": 1,
+          "retrievedAt": "2026-10-19T12:46:41.271464+00:00",
+          "localOriginalPath": "archive-store/heart-preservation/objects/4e2460e8c7b19115eec9051615d683f087bed8103767da55cdd2eca48c3bbcc7.pdf",
+          "proposedPublicPath": null,
+          "publicRedistribution": "source-link-only",
+          "availability": "archived"
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://papermatrix.wordpress.com/2015/10/30/heart-054-ghosts/",
+          "sha256": "d75afc67ba4e1d98e564a9438c2ce6955fa1fa7ce77b06cc57b844e2234d8910",
+          "localPath": "archive-store/heart-preservation/objects/d75afc67ba4e1d98e564a9438c2ce6955fa1fa7ce77b06cc57b844e2234d8910.html"
+        },
+        {
+          "url": "https://papermatrix.wordpress.com/about/",
+          "sha256": "734df3a5abe22fb70f77eccce54044b97c86a6b0bafdbc9b4bffca8d0f2a1623",
+          "localPath": "archive-store/heart-preservation/objects/734df3a5abe22fb70f77eccce54044b97c86a6b0bafdbc9b4bffca8d0f2a1623.html"
+        }
+      ],
+      "relatedExistingAssetIds": [],
+      "relatedExistingPhotoIds": [],
+      "relationshipStatus": "Source page explicitly associates the template files with the named design/collection."
+    }
+  ],
+  "history": [
+    {
+      "subject": "flettedehjerter.dk",
+      "event": "Site migration",
+      "date": "2018-11-01",
+      "oldUrl": "https://julehjerter.wordpress.com/",
+      "newUrl": "https://flettedehjerter.dk/",
+      "evidenceUrl": "https://julehjerter.wordpress.com/",
+      "authorHandle": "hellestevnhoved",
+      "note": "Source explicitly says site moved; no real-name expansion inferred from handle."
+    },
+    {
+      "subject": "Haabet julehjerter",
+      "sourceReference": "https://flettedehjerter.dk/links/",
+      "linkedUrl": "http://www.haabet.dk/users/julehjerter/",
+      "status": "See retrieval attempts; not assumed permanently lost from one failure."
+    },
+    {
+      "subject": "JulehjerteDesign.dk",
+      "sourceReference": "https://flettedehjerter.dk/about/",
+      "linkedUrl": "http://julehjertedesign.dk",
+      "credit": "Johan (self-identification in 2015 comment)",
+      "status": "See retrieval attempts; not assumed permanently lost from one failure."
+    }
+  ],
+  "unavailableLinks": [
+    {
+      "url": "http://www.haabet.dk/users/julehjerter/",
+      "at": "2026-10-19T12:46:42.312863+00:00",
+      "status": 404,
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://julehjertedesign.dk/",
+      "at": "2026-10-19T12:46:43.095492+00:00",
+      "status": null,
+      "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+    }
+  ],
+  "publicSubset": {
+    "pdfSha256": "abb564cb92305abdff1b442366abda2cf659ae5841eed2ed3e331542d82e5c20",
+    "title": "Spejderliv Julehjerter",
+    "author": "Kim G. L. Pedersen",
+    "copyright": "Copyright 2023 Kim G. L. Pedersen",
+    "license": "CC BY-NC-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+    "legalCodeUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.en",
+    "scope": "The complete six-page julehjerter.pdf template collection; source page explicitly licenses Spejderliv Julehjerter, and PDF first page repeats author, copyright and license. The source photograph is NOT included in this clearance.",
+    "changes": "None: original PDF bytes, including embedded notices, retained.",
+    "conditions": "Attribution and original-source/license links retained; noncommercial reuse; adaptations subject to ShareAlike.",
+    "evidenceUrls": [
+      "https://spejderliv.dk/haandvaerk/julehjerter",
+      "https://static.spejderliv.dk/14-haandvaerk/julehjerter.pdf"
+    ]
+  },
+  "nextTargets": [
+    {
+      "title": "PaperMatrix remaining woven-heart posts",
+      "url": "https://papermatrix.wordpress.com/category/woven-paper-hearts/",
+      "finding": "Index reports 62 posts. Current bounded batch only preserves Heart #054, not every post. Separate standard two-sheet hearts from joined, multilayer and triaxial designs."
+    },
+    {
+      "title": "Folkekirkens Nødhjælp — Giv en ged",
+      "url": "https://www.noedhjaelp.dk/genbrug/julehjerte",
+      "templateUrl": "https://www.noedhjaelp.dk/wp-content/uploads/sites/2/2021/05/geg-julehjerte-vejledning.pdf",
+      "finding": "Primary organization offers one goat-themed heart with assembly instructions. Source viewed; bytes not downloaded in this batch."
+    },
+    {
+      "title": "Gerth Stølting Brodal’s text generator",
+      "url": "https://brodal.dk/julehjerter/",
+      "finding": "Krümmel explicitly credits this generator for number/text templates. Preserve algorithm/software provenance as well as finite sample designs."
+    }
+  ],
+  "userHelp": [
+    "Old downloaded PDFs, saved HTML, printed pattern sheets or catalogues with original URLs/dates/credits, particularly Haabet, JulehjerteDesign and Permo.",
+    "Introductions to designers or their families to confirm authorship/history and obtain explicit archival republication permission. Jan Krümmel and PaperMatrix’s Lene and Anna Schepper have primary collections represented here.",
+    "A durable off-laptop storage location for original asset bytes; checksums/manifests alone do not preserve images or templates."
+  ],
+  "preservation": {
+    "promotedAt": "2026-10-19T12:51:45.421216+00:00",
+    "storageManifest": "docs/inverse/datasets/heart-archive-storage.json",
+    "originalBytesUnmodified": true,
+    "unknownPermissionObjectsPublic": false
+  }
+}

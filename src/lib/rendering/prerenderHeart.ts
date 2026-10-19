@@ -13,6 +13,7 @@
 import { render } from 'svelte/server';
 import PaperHeartSVG from '$lib/components/PaperHeartSVG.svelte';
 import type { HeartDesign } from '$lib/types/heart';
+import { DEFAULT_COLORS } from '$lib/stores/colors';
 
 /** `render()` wraps its output in the root fragment's hydration markers. */
 const OPEN = '<!--[-->';
@@ -30,7 +31,7 @@ export function renderHeartSvg(design: HeartDesign, idPrefix: string, size = 400
 			initialFingers: design.fingers,
 			initialGridSize: design.gridSize,
 			initialWeaveParity: design.weaveParity ?? 0,
-			colors: design.colors,
+			colors: DEFAULT_COLORS,
 			size
 		}
 	});

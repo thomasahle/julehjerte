@@ -88,9 +88,12 @@ describe('PageHeader', () => {
 		]);
 	});
 
-	it('leaves them out of the editor, which has its own', () => {
+	it('keeps them in the bar of the design tools, which have no colour controls of their own', () => {
 		const { target } = render('/editor/', 'da', undefined, 'editor');
-		expect(target.querySelector('.colors')).toBeNull();
+		const groups = [...target.querySelectorAll('[role="group"]')];
+		expect(groups).toHaveLength(1);
+		expect(target.querySelector('.nav-actions .colors-bar')).not.toBeNull();
+		expect(target.querySelector('.colors-menu')).toBeNull();
 		expect(target.querySelector('input[type="color"]')).toBeNull();
 	});
 });

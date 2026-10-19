@@ -1,0 +1,82 @@
+{
+  "schema": "preserved-material-onnx-plan-1",
+  "status": "predeclared",
+  "purpose": "Package the previously tested preserved-body ablation as one shared-prefix network. No new training or new quality claim. Verify both held-out checkpoints and fixed 256x256 CPU ONNX inference before any browser use.",
+  "training": {
+    "path": "tmp/heart-learning/material-encoder-tail-v1/tail/report.json",
+    "sha256": "6e334844ff846bbfa480c845f9c7963b3dc168b3ea6405865c3498078dfb8581"
+  },
+  "audit": {
+    "path": "tmp/heart-learning/material-encoder-tail-v1/tail-audit/audit.json",
+    "sha256": "f075e767af1709a988c60ff6904d80e73d84982967194129fb39d27f28dafaf2"
+  },
+  "foreground": {
+    "path": "tmp/heart-learning/foreground-scene-v1/scene-trained/report.json",
+    "sha256": "f3a71ff6de0cb0a00fe8db15051631d131b6cbd71bf607bd607acae5d101929c"
+  },
+  "sourceManifest": {
+    "path": "docs/inverse/datasets/real-manifest.json",
+    "sha256": "46986981cdbac3fbada54621014a7584a106576688b08807f52753507c8a6ff5"
+  },
+  "probe": {
+    "path": "tmp/heart-learning/material-encoder-tail-v1/preserved-probe/manifest.json",
+    "sha256": "89af6dea100150dc70a1eb8c55314416b3a60cdac4e11977a4fd4864fb2974b6"
+  },
+  "ids": [
+    "real-8c875dd0f298b5a4-body-1",
+    "real-995899fe049540ed-body-1",
+    "real-b87b0b19f12724f3-body-1",
+    "real-cf2d0fcff65d7386-body-1",
+    "real-cdae5c890b6933cd-body-1",
+    "real-68d8f25d8891df62-body-1",
+    "real-5330aa8b62176216-body-1",
+    "real-abf590088db891f9-body-1",
+    "real-990ac34431be87fe-body-1",
+    "real-12ce3c9180f7f317-body-1",
+    "real-d5b0aa8d4d2465ee-body-1",
+    "real-39f3a1ba97852876-body-1",
+    "real-e936e08ac62db19b-body-1",
+    "real-340f5e5b0f447889-body-1",
+    "real-710703159f609111-body-1",
+    "real-a414dfffbd2362ae-body-1"
+  ],
+  "protocol": {
+    "sharedPrefixBlocks": 9,
+    "inputShape": [
+      1,
+      3,
+      256,
+      256
+    ],
+    "input": "float32 sRGB in [0,1], NCHW, existing full-source continuous pixel-edge letterbox with gray 127 padding and prefiltered bilinear shrink",
+    "output": "float32 body and exchangeable paper-B probabilities, NCHW; no geometry or valid-template claim",
+    "opset": 17,
+    "exporter": "torch.onnx.export dynamo=False (installed Torch 2.8 legacy exporter); fixed shape avoids dynamic shape assumptions",
+    "onnx": "1.19.1",
+    "onnxruntime": "1.19.2",
+    "providers": [
+      "CPUExecutionProvider"
+    ],
+    "threads": 1,
+    "probabilityAtol": 1e-05,
+    "archiveAtol": 1e-06,
+    "threshold": 0.5,
+    "thresholdChanges": "Report every changed pixel per head; exact mask parity is a separate gate from probability tolerance.",
+    "warmupRuns": 3,
+    "timingRuns": 20,
+    "timingScope": "Warm inference only, two held-out checkpoints on this CPU; excludes downloads, decode, preprocessing and session startup."
+  },
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "newSourcePhotoCopies": 0,
+    "maxArtifactBytes": 33554432,
+    "isolatedOnnxDependenciesMaxBytes": 230686720
+  },
+  "limitations": [
+    "All sixteen photos are repeatedly inspected development cases; original complete-source/motif-held-out fold assignment is retained.",
+    "These remain two fold-specific models, not one deployable all-training checkpoint.",
+    "The combined graph preserves the original body branch and adapted material branch; it cannot fix their known crop or material failures by packaging alone.",
+    "No browser integration, publication, deployment or release approval is implied."
+  ]
+}

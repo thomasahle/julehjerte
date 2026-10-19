@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { MAX_GRID_SIZE } from '$lib/constants';
 import { detectSymmetryModes, mapSegments, reflectAcrossChordBisector } from '$lib/utils/symmetry';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { maskMismatch } from '$lib/paint/mask';
@@ -303,7 +304,7 @@ describe('cutGeometryToDesign', () => {
 
   describe('rejections', () => {
     it('refuses more cuts than the grid can hold', () => {
-      const tooMany = Array.from({ length: 12 }, (_, i) => 5 + i * 7);
+      const tooMany = Array.from({ length: MAX_GRID_SIZE }, (_, i) => (i + 1) * 100 / (MAX_GRID_SIZE + 1));
       expect(() => cutGeometryToDesign(syntheticGeometry(tooMany, [50], 0), { name: 'x' })).toThrow(
         CutGeometryError
       );
@@ -312,9 +313,9 @@ describe('cutGeometryToDesign', () => {
       } catch (error) {
         expect((error as CutGeometryError).key).toBe('paintErrorTooManyCuts');
       }
-      // One fewer fills the 12-strip grid exactly and is accepted.
+      // One fewer fills the maximum grid exactly and is accepted.
       const design = cutGeometryToDesign(syntheticGeometry(tooMany.slice(1), [50], 0), { name: 'x' });
-      expect(design.gridSize.x).toBe(12);
+      expect(design.gridSize.x).toBe(MAX_GRID_SIZE);
     });
 
     it('refuses a family with no cuts at all', () => {

@@ -126,7 +126,6 @@
 			{design}
 			{markup}
 			loadPaper={loadPaperHeart}
-			colors={heart.colors}
 			heartId={heart.id}
 			size={SIZE}
 			{ribbon}

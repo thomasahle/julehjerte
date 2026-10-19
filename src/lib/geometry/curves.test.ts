@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { closestPointOnBezier, closestPointsBetweenBeziers } from './curves';
+import { bezierBBox, closestPointOnBezier, closestPointsBetweenBeziers, intersectBezierCurves, isLinearBezier } from './curves';
 import type { CubicBezierSegment, Point } from '$lib/types';
 
 function cubicPointAt(seg: CubicBezierSegment, t: number): Point {
@@ -45,6 +45,65 @@ function lineBezier(a: Point, b: Point): CubicBezierSegment {
 		p3: b
 	};
 }
+
+describe('affine straight cuts', () => {
+	it('preserves parameters and distances under rotation, reversal and translation', () => {
+		for (let i = 0; i < 32; i++) {
+			const angle = i * Math.PI / 16;
+			const move = (x: number, y: number): Point => ({ x: 317 + x * Math.cos(angle) - y * Math.sin(angle), y: -123 + x * Math.sin(angle) + y * Math.cos(angle) });
+			const a = lineBezier(move(0, 0), move(10, 0));
+			const b = lineBezier(move(3, 8), move(3, 2));
+			expect(isLinearBezier(a)).toBe(true);
+			const hit = closestPointsBetweenBeziers(a, b);
+			expect(hit.u).toBeCloseTo(.3, 10);
+			expect(hit.v).toBe(1);
+			expect(hit.distance).toBeCloseTo(2, 10);
+			expect(dist(cubicPointAt(a, hit.u), hit.pointA)).toBeLessThan(1e-10);
+			expect(dist(cubicPointAt(b, hit.v), hit.pointB)).toBeLessThan(1e-10);
+			const crossing = lineBezier(move(7, -3), move(7, 1));
+			const cross = closestPointsBetweenBeziers(a, crossing);
+			expect(cross.u).toBeCloseTo(.7, 10);
+			expect(cross.v).toBeCloseTo(.75, 10);
+			expect(cross.distance).toBeLessThan(1e-10);
+			expect(intersectBezierCurves(a, crossing)).toHaveLength(1);
+		}
+	});
+	it('handles points, parallel overlaps and endpoint minima without iteration', () => {
+		for (const [from, to, expected] of [
+			[[3, 2], [3, 2], 2], [[3, 2], [7, 2], 2],
+			[[7, 0], [3, 0], 0], [[15, 0], [12, 0], 2]
+		] as [number[], number[], number][]) {
+			const a = lineBezier({ x: 0, y: 0 }, { x: 10, y: 0 });
+			const b = lineBezier({ x: from[0], y: from[1] }, { x: to[0], y: to[1] });
+			for (const [first, second] of [[a, b], [b, a]]) {
+				const hit = closestPointsBetweenBeziers(first, second);
+				expect(hit.distance).toBeCloseTo(expected, 10);
+				// UI callers may edit the returned point without editing the cut.
+				expect([first.p0, first.p3, second.p0, second.p3]).not.toContain(hit.pointA);
+				expect([first.p0, first.p3, second.p0, second.p3]).not.toContain(hit.pointB);
+			}
+		}
+		const point = lineBezier({ x: 3, y: 2 }, { x: 3, y: 2 });
+		expect(closestPointsBetweenBeziers(point, point).distance).toBe(0);
+		expect(closestPointOnBezier(point, { x: 6, y: 6 }).distance).toBe(5);
+		expect(bezierBBox(point)).toEqual({ x: 3, y: 2, width: 0, height: 0 });
+	});
+	it('keeps the cubic path for collinear handles that backtrack or change speed', () => {
+		const seg = lineBezier({ x: 0, y: 0 }, { x: 10, y: 0 });
+		seg.p1.x = 30;
+		seg.p2.x = 20;
+		expect(isLinearBezier(seg)).toBe(false);
+		expect(bezierBBox(seg).width).toBeGreaterThan(10);
+		const hit = closestPointOnBezier(seg, { x: 18, y: 1 });
+		expect(hit.distance).toBeCloseTo(1, 4);
+		expect(dist(cubicPointAt(seg, hit.t), hit.point)).toBeLessThan(1e-10);
+		seg.p1.x = 0;
+		seg.p2.x = 10;
+		expect(isLinearBezier(seg)).toBe(false);
+		const slow = closestPointOnBezier(seg, { x: 2, y: 1 });
+		expect(Math.abs(slow.t - .2)).toBeGreaterThan(.05);
+	});
+});
 
 describe('closestPointOnBezier', () => {
 	it('hits the orthogonal projection on a straight line', () => {

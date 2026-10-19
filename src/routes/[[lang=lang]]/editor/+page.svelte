@@ -6,7 +6,8 @@
   import PaperHeart from '$lib/components/PaperHeart.svelte';
   import { pageTitle } from '$lib/seo';
   import { langFromParam, t, tArray } from '$lib/i18n';
-  import { DEFAULT_COLORS, getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
+  import { toHexColors } from '$lib/utils/heartColors';
+  import { DEFAULT_COLORS, DEFAULT_COLORS_HEX, getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
   import { getUserCollection, loadStaticHeartById, saveUserDesign } from '$lib/stores/collection';
   import {
     clearDraft,
@@ -16,7 +17,7 @@
     type DraftSource,
     type EditorDraft
   } from '$lib/editor/draft';
-  import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
+  import type { Finger, GridSize, HeartDesign, HeartPattern } from '$lib/types/heart';
   import { normalizeHeartDesign, parseHeartFromSVGWithReport } from '$lib/utils/heartDesign';
   import { heartName as nameIn } from '$lib/utils/heartName';
   import { importSummary } from '$lib/utils/svgImportSummary';
@@ -129,9 +130,10 @@
     fromSession: boolean;
     isEditMode: boolean;
     returnToDetail: boolean;
+    escher: boolean;
   } {
     if (!browser) {
-      return { design: null, fromId: null, fromSession: false, isEditMode: false, returnToDetail: false };
+      return { design: null, fromId: null, fromSession: false, isEditMode: false, returnToDetail: false, escher: false };
     }
     const query = new URLSearchParams(window.location.search);
     const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
@@ -150,7 +152,9 @@
       fromId,
       fromSession,
       isEditMode: design !== null && get('edit') === 'true',
-      returnToDetail
+      returnToDetail,
+      // `?tab=escher`: the design start's Escher card opens Tegn on that tab.
+      escher: get('tab') === 'escher'
     };
   }
 
@@ -160,7 +164,8 @@
     fromId: urlFromId,
     fromSession: urlFromSession,
     isEditMode: urlEditMode,
-    returnToDetail: urlReturnToDetail
+    returnToDetail: urlReturnToDetail,
+    escher: urlEscher
   } = getEditorUrlInput();
 
   // The heart Mal found, taken exactly once, before the first render so the
@@ -191,17 +196,16 @@
   let currentFingers: Finger[] = $state(urlDesign?.fingers ?? []);
   let currentGridSize: GridSize = $state(urlDesign?.gridSize ?? { x: 3, y: 3 });
   let currentWeaveParity: 0 | 1 = $state((urlDesign?.weaveParity ?? 0) as 0 | 1);
+  // The Escher tab's tile, while the cuts are its own (HeartDesign.pattern).
+  let currentPattern: HeartPattern | undefined = $state(urlDesign?.pattern);
 
   // Form fields - initialize with URL design if available
   let heartName = $state('');
   let authorName = $state(urlDesign?.author ?? '');
   let description = $state(urlDesign?.description ?? '');
   let lang = $derived(langFromParam($page.params.lang));
-  // The site-wide pair, the colours this heart carries once the visitor has picked
-  // any (docs/redesign/DESIGN.md §7), and what the heart is actually drawn in.
-  let siteColors = $state<HeartColors>({ ...DEFAULT_COLORS });
-  let designColors = $state<HeartColors | null>(urlDesign?.colors ?? null);
-  let colors = $derived(designColors ?? siteColors);
+  // Viewing colours come from the header's shared controls and never schedule an edit.
+  let colors = $state<HeartColors>({ ...DEFAULT_COLORS });
   let editorEl: HTMLDivElement | null = $state(null);
   let headerEl: HTMLElement | null = $state(null);
   let importInput: HTMLInputElement | null = $state(null);
@@ -239,8 +243,8 @@
 
   onMount(() => {
     // Initialize colors
-    siteColors = getColors();
-    const unsubscribeColors = subscribeColors((c) => { siteColors = c; });
+    colors = getColors();
+    const unsubscribeColors = subscribeColors((c) => { colors = c; });
 
     // Set heart name (needs lang to be initialized)
     if (sessionDesign) {
@@ -327,17 +331,12 @@
     return () => mq.removeEventListener('change', sync);
   });
 
-  // Picking a colour is always a real edit, so it autosaves straight away — unlike
-  // the geometry, which PaperHeart also emits once on mount.
-  function handleColorsChange(next: HeartColors) {
-    designColors = next;
-    scheduleAutosave();
-  }
-
-  function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1) {
+  function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1, pattern: HeartPattern | null) {
     currentFingers = fingers;
     currentGridSize = gridSize;
     currentWeaveParity = weaveParity;
+    // The tile alone is not an edit: it comes and goes with the tab, and is saved with the next change.
+    currentPattern = pattern ?? undefined;
     // PaperHeart emits once on mount (with reconciled boundary curves). That is not a
     // user edit, so only autosave once the design actually differs from that baseline.
     if (!hasDesignEdits) {
@@ -369,7 +368,7 @@
     currentFingers = design.fingers;
     currentGridSize = design.gridSize;
     currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
-    designColors = design.colors ?? null;
+    currentPattern = design.pattern;
     heartName = `${nameIn(design, lang)} ${t('copy', lang)}`;
     authorName = design.author ?? '';
     description = design.description ?? '';
@@ -498,11 +497,11 @@
       // has its own name: a copy or a renamed heart is named once, by the visitor.
       names: initialDesign && sanitizeHtml(heartName) === initialDesign.name ? initialDesign.names : undefined,
       weaveParity: currentWeaveParity,
-      // A heart keeps only the colours the visitor picked; one that was never
-      // touched follows the site-wide pair, as the gallery hearts do.
-      colors: designColors ?? undefined,
+      // Preserve the appearance in exported files; site previews use the header's pair.
+      colors: toHexColors(colors, DEFAULT_COLORS_HEX),
       gridSize: currentGridSize,
       overlapAspectRatio: initialDesign?.overlapAspectRatio,
+      pattern: currentPattern,
       fingers: currentFingers
     };
   }
@@ -555,7 +554,7 @@
     currentFingers = design.fingers;
     currentGridSize = design.gridSize;
     currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
-    designColors = design.colors ?? null;
+    currentPattern = design.pattern;
     heartName = design.name;
     authorName = design.author ?? '';
     description = design.description ?? '';
@@ -616,20 +615,11 @@
     pendingDraft = null;
     savesToCollection = true;
 
-    // Back where the visitor came from. Arriving from a heart's page via
-    // "Rediger i editor" (?returnTo=detail), "Tilbage" returns to that heart —
-    // so "Gem" must not throw them out to the front page instead.
+    // Back where the visitor came from: arriving from a heart's page via
+    // "Rediger i editor" (?returnTo=detail), "Gem" returns to that heart
+    // rather than to the front page.
     const backId = returnToDetail ? getBackDetailId() : null;
     goto(backId ? heartHref(backId, lang) : homeAnchorHref(makeHeartAnchorId(design.id), lang));
-  }
-
-  function handleEditorBack(event: MouseEvent) {
-    if (!returnToDetail) return;
-    event.preventDefault();
-    flushAutosave();
-    const backId = getBackDetailId();
-    if (!backId) return;
-    goto(heartHref(backId, lang));
   }
 
   function handleImport(event: Event) {
@@ -655,7 +645,7 @@
         currentFingers = design.fingers;
         currentGridSize = design.gridSize;
         currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
-        designColors = design.colors ?? null;
+        currentPattern = design.pattern;
         heartName = design.name || t('importedHeart', lang);
         authorName = design.author || '';
         description = design.description || '';
@@ -817,11 +807,11 @@
 {/snippet}
 
 <div class="editor" bind:this={editorEl}>
-  <!-- variant="editor" is the back-link + logo bar; the site nav links and the
+  <!-- variant="editor" is the logo bar; the site nav links and the
        EN/GitHub pills belong on content pages, not in the full-screen tool. The
        `mode` switch is the other half of PAINT.md §2's ask of Tegn: with the
        paint route landed, the header carries the way back and forth. -->
-  <PageHeader bind:ref={headerEl} {lang} variant="editor" mode={{ current: 'draw' }} onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? heartHref(getBackDetailId()!, lang) : undefined) : undefined}>
+  <PageHeader bind:ref={headerEl} {lang} variant="editor" mode={{ current: 'draw' }}>
     <button
       type="button"
       class="btn btn-sm btn-ghost btn-icon icon-button"
@@ -868,11 +858,11 @@
         {lang}
         fullPage
         onFingersChange={handleFingersChange}
-        onColorsChange={handleColorsChange}
         initialGridSize={currentGridSize}
         initialFingers={currentFingers}
         initialWeaveParity={currentWeaveParity}
-        initialColors={designColors ?? undefined}
+        initialPattern={currentPattern}
+        initialEscherTab={urlEscher}
         panelExtra={isNarrow ? undefined : heartPanels}
         notice={pendingDraft ? draftNotice : undefined}
       />
@@ -1024,14 +1014,14 @@
     }
   }
 
-  /* Desktop: the tool fills the viewport, so the page itself never scrolls. */
+  /* Keep the shared colour footer visible below the desktop canvas. */
   @media (min-width: 900px) {
     .editor {
       padding-bottom: 0;
     }
 
     .editor-top {
-      height: calc(100dvh - var(--editor-header-height));
+      height: calc(100dvh - var(--editor-header-height) - var(--site-footer-height, 100px));
     }
   }
 

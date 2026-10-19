@@ -20,35 +20,8 @@
 import type { BezierSegment, Finger, NodeType, Vec } from '$lib/types/heart';
 import { reverseSegments, splitBezierAt } from '$lib/geometry/bezierSegments';
 import type { OverlapRect } from '$lib/utils/overlapRect';
-import {
-	canLean,
-	crossing,
-	cutCounts,
-	firstLine,
-	fitLines,
-	heartLines,
-	ruleRepeat,
-	fromFrame,
-	halfOf,
-	patternCuts,
-	ruleInfo,
-	rawToCells,
-	squareToStretch,
-	straightCurve,
-	stretchCurve,
-	stretchFrame,
-	stretchSource,
-	tileOffset,
-	toFrame,
-	tracedCut,
-	type CurveKey,
-	type CutPiece,
-	type PatternTile,
-	type SideCurve,
-	type StretchKind,
-	type StretchSource,
-	type TileRule
-} from './tiling';
+import { canLean, ruleRepeat, halfOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
+import { crossing, cutCounts, firstLine, fitLines, heartLines, fromFrame, patternCuts, rawToCells, squareToStretch, stretchCurve, stretchFrame, tileOffset, toFrame, tracedCut, type CutPiece, type PatternTile, type SideCurve } from './tiling';
 
 const mapSegs = (segs: BezierSegment[], f: (p: Vec) => Vec): BezierSegment[] =>
 	segs.map((s) => ({ p0: f(s.p0), p1: f(s.p1), p2: f(s.p2), p3: f(s.p3) }));
@@ -260,7 +233,7 @@ const sameCurve = (a: SideCurve, b: SideCurve, eps = 1e-6) =>
  * inner cut is the curve the tile puts there (to `tolerance`, in cells).
  * `extractTile` reads each curve off one stretch only, so it also finds a tile in
  * cuts that were never drawn from one — a leaning tile, or a free drawing with
- * nodes near the crossings. Turning the row on asks this first, and starts from
+ * nodes near the crossings. Opening the Escher tab asks this first, and starts from
  * straight sides when the answer is no.
  */
 export function fitsTile(fingers: Finger[], tile: PatternTile, rect: OverlapRect, tolerance = 1e-3): boolean {
@@ -296,7 +269,7 @@ const edgeAxis = (kind: StretchKind): 'x' | 'y' => (kind === 'V' ? 'x' : 'y');
 const MIN_SHOWN = 0.15;
 
 /** How far the tiles may lean, in cells. */
-export const MAX_LEAN = 1.2;
+const MAX_LEAN = 1.2;
 
 /** The crossing a cut reaches at the end of `piece`'s stretch. Odd crossings move with the lean, even ones against it. */
 function crossingAfter(piece: CutPiece): { i: number; j: number; odd: boolean } {
@@ -390,6 +363,27 @@ export function anchorOfPlacedPoint(tile: PatternTile, fingerId: string, point: 
 	return -1;
 }
 
+/**
+ * Tegn's indices on cut `fingerId` found again after an edit made `after` from
+ * `before` (curves edited, the same lines): a segment is the same segment of the
+ * same stretch, an anchor the start of the same segment, and the cut's ends stay
+ * its ends. The square's edge may now cut off more or less of a curve at the
+ * cut's ends, so the cut can have nodes more or fewer before them. -1 for what
+ * the cut does not show any more.
+ */
+export function followEdit(before: PatternTile, after: PatternTile, fingerId: string): { segment: (s: number) => number; anchor: (a: number) => number } {
+	const was = tracedFinger(before, fingerId)?.pieces ?? [];
+	const now = tracedFinger(after, fingerId)?.pieces ?? [];
+	// Tegn runs every cut the other way: its segment s is the raw segment m − 1 − s.
+	const segment = (s: number) => {
+		const piece = was[was.length - 1 - s];
+		const r = piece ? now.findIndex((p) => sameStretch(p, piece) && p.index === piece.index) : -1;
+		return r < 0 ? -1 : now.length - 1 - r;
+	};
+	const anchor = (a: number) => (a === 0 ? 0 : a === was.length ? now.length : segment(a));
+	return { segment, anchor };
+}
+
 /** A pan brought into one repeat of the tiling, [−repeat / 2, repeat / 2): moving the whole pattern a repeat changes nothing. */
 const withinRepeat = (v: number, repeat: number) => v - repeat * Math.floor((v + repeat / 2) / repeat);
 
@@ -400,7 +394,7 @@ const withinRepeat = (v: number, repeat: number) => v - repeat * Math.floor((v +
  * and the next one where an edge strip has grown wider than a cell (`fitLines`);
  * the pan is kept within one repeat of the pattern.
  */
-export function panTo(base: PatternTile, fingerId: string, anchor: number, delta: Vec, rect: OverlapRect): PatternTile | null {
+function panTo(base: PatternTile, fingerId: string, anchor: number, delta: Vec, rect: OverlapRect): PatternTile | null {
 	const traced = tracedFinger(base, fingerId);
 	if (!traced) return null;
 	const m = traced.pieces.length;
@@ -463,15 +457,8 @@ export function dragPlacedPoint(base: PatternTile, fingerId: string, anchor: num
 	return null;
 }
 
-/** The crossing at Tegn's anchor `anchor` of a cut the tile makes, or null when it is not one. */
-export function crossingAt(tile: PatternTile, fingerId: string, anchor: number): { i: number; j: number } | null {
-	const traced = tracedFinger(tile, fingerId);
-	const corner = traced ? cornerAt(traced.pieces, traced.pieces.length - anchor) : null;
-	return corner ? { i: corner.i, j: corner.j } : null;
-}
-
 /** Tegn's anchor index of a crossing on a cut the tile makes, or -1 when the cut does not show it. */
-export function anchorOfCrossing(tile: PatternTile, fingerId: string, crossing: { i: number; j: number }): number {
+function anchorOfCrossing(tile: PatternTile, fingerId: string, crossing: { i: number; j: number }): number {
 	const traced = tracedFinger(tile, fingerId);
 	if (!traced) return -1;
 	const m = traced.pieces.length;
@@ -679,9 +666,4 @@ export function tileAfterFingerEdit(tile: PatternTile, edited: Finger, rect: Ove
 	return now.length === traced.segments.length
 		? readMoves(tile, traced.segments, traced.pieces, now)
 		: readNodeChange(tile, traced.segments, traced.pieces, now);
-}
-
-/** Straight sides for every curve the rule reads. */
-export function straightTile(rule: TileRule, cuts: number): PatternTile {
-	return { rule, cuts, curves: Object.fromEntries(ruleInfo(rule).curves.map((k) => [k, straightCurve(!!halfOf(rule, k))])) };
 }

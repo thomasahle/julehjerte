@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Vec } from '$lib/types/heart';
-import { ALL_RULES, moveBy, ruleKey, ruleMotions, type SideLink, type StretchKind, type TileRule } from './tiling';
+import { ALL_RULES, moveBy, ruleKey, ruleMotions, type SideLink, type StretchKind, type TileRule } from './rules';
 import { arrowheadsOn, templateOf } from './template';
 
 // A template's half arrowheads say how the rule ties the red tile's sides. These tests hold them to

@@ -1,0 +1,344 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-19T16:19:34.993006+00:00",
+  "scope": "Three additional previously linked Haabet source designs; eight original GIF assets from three detail pages. Serial HTTP retrieval only, no recursive crawl.",
+  "summary": {
+    "designRecords": 3,
+    "designsWithRecoveredTemplates": 3,
+    "originalAssets": 8,
+    "assetBytes": 15941,
+    "newEvidenceFiles": 3,
+    "newEvidenceBytes": 2187,
+    "reusedEvidenceFiles": 2,
+    "downloadedPayloadBytes": 18128,
+    "newAssetLimitBytes": 2097152,
+    "exactDuplicatesInComparedManifestsOrStore": 0
+  },
+  "designs": [
+    {
+      "id": "haabet-klokke",
+      "title": "Klokke Julehjerte",
+      "collection": "Haabet / Flettede julehjerter",
+      "sourcePage": "http://www.haabet.dk/users/julehjerter/klokke.html",
+      "archivedSourcePage": "https://web.archive.org/web/20151025194235/http://www.haabet.dk/users/julehjerter/klokke.html",
+      "designer": "Peter Ole Kvint",
+      "sourceDeclaredDesignYear": 2001,
+      "dateType": "Year printed beside template signature; not independently established first publication.",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20130530135656id_/http://www.haabet.dk/users/julehjerter/klokke_.gif"
+      ],
+      "creditNote": "Template is signed PETER OLE KVINT 2001.",
+      "templateAssets": [
+        "a480c3257ce43f6933f6a36f0920e434567daa8cd254d2eaac5c7ba93da7b845"
+      ],
+      "previewAssets": [
+        "caa0dc206a2ac1f75f36f099017bfda0314c92c3444ce06f911c4092f0dc7f51"
+      ],
+      "preservationStatus": "original-templates-and-preview-preserved",
+      "rightsRef": "haabet-personal-printing"
+    },
+    {
+      "id": "haabet-freds-due",
+      "title": "Freds Due",
+      "collection": "Haabet / Flettede julehjerter",
+      "sourcePage": "http://www.haabet.dk/users/julehjerter/due.html",
+      "archivedSourcePage": "https://web.archive.org/web/20151025194146/http://www.haabet.dk/users/julehjerter/due.html",
+      "designer": null,
+      "sourceDeclaredDesignYear": null,
+      "dateType": null,
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20160515090304id_/http://haabet.dk/users/julehjerter/due1.gif",
+        "https://web.archive.org/web/20160515043212id_/http://haabet.dk/users/julehjerter/due2.gif"
+      ],
+      "creditNote": "No individual creator name or year appears on the inspected dove templates or detail page. The previously preserved Haabet figure index names Peter Ole Kvint as page author, which does not by itself establish authorship of this motif.",
+      "templateAssets": [
+        "bc77a62e13f12ef2492580a23ec513dc11e457d1f85a9c28c7c74f4d7fb68fc9",
+        "fa40c516d9807fd99ff4cccbe7e91069e40fc3707dd5a6600cb0c114fa5412b4"
+      ],
+      "previewAssets": [
+        "c33a08576227ded8bc949d02ced3e462a2d488fd090e0175132569f0fe39169c"
+      ],
+      "preservationStatus": "original-templates-and-preview-preserved",
+      "rightsRef": "haabet-personal-printing",
+      "historyNote": "The source suggests cutting a small slit at the beak to hold green paper. The template labels identify the first white outer piece and second inner piece."
+    },
+    {
+      "id": "haabet-haabets-anker",
+      "title": "Håbets Anker",
+      "collection": "Haabet / Flettede julehjerter",
+      "sourcePage": "http://www.haabet.dk/users/julehjerter/anker.html",
+      "archivedSourcePage": "https://web.archive.org/web/20151029022652/http://www.haabet.dk/users/julehjerter/anker.html",
+      "designer": "Peter Ole Kvint",
+      "sourceDeclaredDesignYear": 2001,
+      "dateType": "Year printed beside template signature; not independently established first publication.",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20130530181046id_/http://www.haabet.dk/users/julehjerter/anker_a.gif",
+        "https://web.archive.org/web/20130530171401id_/http://www.haabet.dk/users/julehjerter/anker_b.gif"
+      ],
+      "creditNote": "Both cutting templates are signed PETER OLE KVINT 2001.",
+      "templateAssets": [
+        "b8ca9bd41faa7df8a9034c642474b9a0df8c1aef91a05ea74d04ff543f392f4b",
+        "d43f985bf34cde214e417171c3bec48d7ec31dd553b6163942444bcbd753a42d"
+      ],
+      "previewAssets": [
+        "49d9e260ace92f237323180ae82c545dd6d7f922bd643d5ddae39e2776208b74"
+      ],
+      "preservationStatus": "original-templates-and-preview-preserved",
+      "rightsRef": "haabet-personal-printing",
+      "historyNote": "Source instructions specify starting with sheet 1 outside sheet 2. An anchor motif already occurs elsewhere in the archive; this is a separately preserved source, not a claim of an unprecedented motif."
+    }
+  ],
+  "assets": [
+    {
+      "localFile": "archive-store/heart-preservation/objects/caa0dc206a2ac1f75f36f099017bfda0314c92c3444ce06f911c4092f0dc7f51.gif",
+      "sha256": "caa0dc206a2ac1f75f36f099017bfda0314c92c3444ce06f911c4092f0dc7f51",
+      "bytes": 1049,
+      "mimeType": "image/gif",
+      "role": "woven-design-preview",
+      "originalUrl": "http://haabet.dk/users/julehjerter/klokke.gif",
+      "actualCaptureUrl": "https://web.archive.org/web/20160518070125id_/http://haabet.dk/users/julehjerter/klokke.gif",
+      "archiveCaptureTimestamp": "20160518070125",
+      "requestedUrl": "https://web.archive.org/web/20151025194235id_/http://www.haabet.dk/users/julehjerter/klokke.gif",
+      "retrievedAt": "2026-10-19T16:17:15.462908+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "width": 121,
+      "height": 111,
+      "review": "Original GIF decoded and visually inspected in full. No edits to original bytes."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/a480c3257ce43f6933f6a36f0920e434567daa8cd254d2eaac5c7ba93da7b845.gif",
+      "sha256": "a480c3257ce43f6933f6a36f0920e434567daa8cd254d2eaac5c7ba93da7b845",
+      "bytes": 3027,
+      "mimeType": "image/gif",
+      "role": "cutting-template",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/klokke_.gif",
+      "actualCaptureUrl": "https://web.archive.org/web/20130530135656id_/http://www.haabet.dk/users/julehjerter/klokke_.gif",
+      "archiveCaptureTimestamp": "20130530135656",
+      "requestedUrl": "https://web.archive.org/web/20151025194235id_/http://www.haabet.dk/users/julehjerter/klokke_.gif",
+      "retrievedAt": "2026-10-19T16:17:19.959151+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "width": 301,
+      "height": 453,
+      "review": "Original GIF decoded and visually inspected in full. No edits to original bytes."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/c33a08576227ded8bc949d02ced3e462a2d488fd090e0175132569f0fe39169c.gif",
+      "sha256": "c33a08576227ded8bc949d02ced3e462a2d488fd090e0175132569f0fe39169c",
+      "bytes": 1321,
+      "mimeType": "image/gif",
+      "role": "woven-design-preview",
+      "originalUrl": "http://haabet.dk/users/julehjerter/due.gif",
+      "actualCaptureUrl": "https://web.archive.org/web/20160518141252id_/http://haabet.dk/users/julehjerter/due.gif",
+      "archiveCaptureTimestamp": "20160518141252",
+      "requestedUrl": "https://web.archive.org/web/20151025194146id_/http://www.haabet.dk/users/julehjerter/due.gif",
+      "retrievedAt": "2026-10-19T16:17:24.772529+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "width": 121,
+      "height": 111,
+      "review": "Original GIF decoded and visually inspected in full. No edits to original bytes."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/bc77a62e13f12ef2492580a23ec513dc11e457d1f85a9c28c7c74f4d7fb68fc9.gif",
+      "sha256": "bc77a62e13f12ef2492580a23ec513dc11e457d1f85a9c28c7c74f4d7fb68fc9",
+      "bytes": 1822,
+      "mimeType": "image/gif",
+      "role": "cutting-template-white-outer",
+      "originalUrl": "http://haabet.dk/users/julehjerter/due1.gif",
+      "actualCaptureUrl": "https://web.archive.org/web/20160515090304id_/http://haabet.dk/users/julehjerter/due1.gif",
+      "archiveCaptureTimestamp": "20160515090304",
+      "requestedUrl": "https://web.archive.org/web/20151025194146id_/http://www.haabet.dk/users/julehjerter/due1.gif",
+      "retrievedAt": "2026-10-19T16:17:38.194759+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "width": 394,
+      "height": 261,
+      "review": "Original GIF decoded and visually inspected in full. No edits to original bytes."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/fa40c516d9807fd99ff4cccbe7e91069e40fc3707dd5a6600cb0c114fa5412b4.gif",
+      "sha256": "fa40c516d9807fd99ff4cccbe7e91069e40fc3707dd5a6600cb0c114fa5412b4",
+      "bytes": 2053,
+      "mimeType": "image/gif",
+      "role": "cutting-template-inner",
+      "originalUrl": "http://haabet.dk/users/julehjerter/due2.gif",
+      "actualCaptureUrl": "https://web.archive.org/web/20160515043212id_/http://haabet.dk/users/julehjerter/due2.gif",
+      "archiveCaptureTimestamp": "20160515043212",
+      "requestedUrl": "https://web.archive.org/web/20151025194146id_/http://www.haabet.dk/users/julehjerter/due2.gif",
+      "retrievedAt": "2026-10-19T16:17:30.067958+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "width": 261,
+      "height": 393,
+      "review": "Original GIF decoded and visually inspected in full. No edits to original bytes."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/49d9e260ace92f237323180ae82c545dd6d7f922bd643d5ddae39e2776208b74.gif",
+      "sha256": "49d9e260ace92f237323180ae82c545dd6d7f922bd643d5ddae39e2776208b74",
+      "bytes": 2058,
+      "mimeType": "image/gif",
+      "role": "woven-design-preview",
+      "originalUrl": "http://haabet.dk/users/julehjerter/anker.gif",
+      "actualCaptureUrl": "https://web.archive.org/web/20160519061422id_/http://haabet.dk/users/julehjerter/anker.gif",
+      "archiveCaptureTimestamp": "20160519061422",
+      "requestedUrl": "https://web.archive.org/web/20151029022652id_/http://www.haabet.dk/users/julehjerter/anker.gif",
+      "retrievedAt": "2026-10-19T16:17:44.840302+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "width": 115,
+      "height": 185,
+      "review": "Original GIF decoded and visually inspected in full. No edits to original bytes."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/b8ca9bd41faa7df8a9034c642474b9a0df8c1aef91a05ea74d04ff543f392f4b.gif",
+      "sha256": "b8ca9bd41faa7df8a9034c642474b9a0df8c1aef91a05ea74d04ff543f392f4b",
+      "bytes": 2640,
+      "mimeType": "image/gif",
+      "role": "cutting-template-sheet-1",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/anker_a.gif",
+      "actualCaptureUrl": "https://web.archive.org/web/20130530181046id_/http://www.haabet.dk/users/julehjerter/anker_a.gif",
+      "archiveCaptureTimestamp": "20130530181046",
+      "requestedUrl": "https://web.archive.org/web/20151029022652id_/http://www.haabet.dk/users/julehjerter/anker_a.gif",
+      "retrievedAt": "2026-10-19T16:17:48.572868+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "width": 301,
+      "height": 455,
+      "review": "Original GIF decoded and visually inspected in full. No edits to original bytes."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/d43f985bf34cde214e417171c3bec48d7ec31dd553b6163942444bcbd753a42d.gif",
+      "sha256": "d43f985bf34cde214e417171c3bec48d7ec31dd553b6163942444bcbd753a42d",
+      "bytes": 1971,
+      "mimeType": "image/gif",
+      "role": "cutting-template-sheet-2",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/anker_b.gif",
+      "actualCaptureUrl": "https://web.archive.org/web/20130530171401id_/http://www.haabet.dk/users/julehjerter/anker_b.gif",
+      "archiveCaptureTimestamp": "20130530171401",
+      "requestedUrl": "https://web.archive.org/web/20151029022652id_/http://www.haabet.dk/users/julehjerter/anker_b.gif",
+      "retrievedAt": "2026-10-19T16:17:53.166587+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "width": 455,
+      "height": 301,
+      "review": "Original GIF decoded and visually inspected in full. No edits to original bytes."
+    }
+  ],
+  "evidence": [
+    {
+      "localFile": "archive-store/heart-preservation/objects/dbd2d679a469e5ef91b49c7dd6a5821103fe3a5162161cdbdadb32a389de2400.html",
+      "sha256": "dbd2d679a469e5ef91b49c7dd6a5821103fe3a5162161cdbdadb32a389de2400",
+      "bytes": 533,
+      "mimeType": "text/html",
+      "role": "source-evidence",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/klokke.html",
+      "actualCaptureUrl": "https://web.archive.org/web/20151025194235id_/http://www.haabet.dk/users/julehjerter/klokke.html",
+      "archiveCaptureTimestamp": "20151025194235",
+      "requestedUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/klokke.html",
+      "retrievedAt": "2026-10-19T16:16:27.562753+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/0b8f06a2dd56f0b3cd60cf9209f94b3f8b6fc64bb128857d05bcaccba2cded1f.html",
+      "sha256": "0b8f06a2dd56f0b3cd60cf9209f94b3f8b6fc64bb128857d05bcaccba2cded1f",
+      "bytes": 920,
+      "mimeType": "text/html",
+      "role": "source-evidence",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/due.html",
+      "actualCaptureUrl": "https://web.archive.org/web/20151025194146id_/http://www.haabet.dk/users/julehjerter/due.html",
+      "archiveCaptureTimestamp": "20151025194146",
+      "requestedUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/due.html",
+      "retrievedAt": "2026-10-19T16:16:37.942889+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/fa590c82f983c5b0d9cddf0ad7943f1938ce1f8c8d442557954a8a2ad20b057b.html",
+      "sha256": "fa590c82f983c5b0d9cddf0ad7943f1938ce1f8c8d442557954a8a2ad20b057b",
+      "bytes": 734,
+      "mimeType": "text/html",
+      "role": "source-evidence",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/anker.html",
+      "actualCaptureUrl": "https://web.archive.org/web/20151029022652id_/http://www.haabet.dk/users/julehjerter/anker.html",
+      "archiveCaptureTimestamp": "20151029022652",
+      "requestedUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/anker.html",
+      "retrievedAt": "2026-10-19T16:16:41.255371+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    }
+  ],
+  "reusedEvidence": [
+    {
+      "localFile": "archive-store/heart-preservation/objects/5088431d744068dae28a07ac8fdc1bdff73d2bb079da7a6e88b31bfebf1eff85.html",
+      "role": "source-evidence",
+      "sha256": "5088431d744068dae28a07ac8fdc1bdff73d2bb079da7a6e88b31bfebf1eff85",
+      "bytes": 2672,
+      "mimeType": "text/html",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/figure.html",
+      "actualCaptureUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/figure.html",
+      "archiveCaptureTimestamp": "20150812154542",
+      "requestedUrl": "https://web.archive.org/web/20150101000000id_/http://haabet.dk/users/julehjerter/figure.html",
+      "retrievedAt": "2026-10-19T12:56:57.770256+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/a018d768c3cd79e61cb46d83969a435a9cc6cafdaf029765a19d7436a487acdc.html",
+      "role": "source-evidence",
+      "sha256": "a018d768c3cd79e61cb46d83969a435a9cc6cafdaf029765a19d7436a487acdc",
+      "bytes": 4526,
+      "mimeType": "text/html",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/index.html",
+      "actualCaptureUrl": "https://web.archive.org/web/20150812154558id_/http://www.haabet.dk/users/julehjerter/index.html",
+      "archiveCaptureTimestamp": "20150812154558",
+      "requestedUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/index.html",
+      "retrievedAt": "2026-10-19T12:58:57.210230+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    }
+  ],
+  "rights": [
+    {
+      "id": "haabet-personal-printing",
+      "status": "personal-downloading-and-printing-described",
+      "redistributionPermission": null,
+      "license": null,
+      "publicMirrorEligible": false,
+      "sourceEvidenceUrls": [
+        "https://web.archive.org/web/20150812154558/http://www.haabet.dk/users/julehjerter/index.html"
+      ],
+      "observedPermission": "Previously preserved index instructs visitors to save images and print templates for making hearts. No public redistribution permission found in inspected pages or images."
+    }
+  ],
+  "failures": [],
+  "validation": {
+    "sha256AndSizesVerified": true,
+    "allOriginalImagesDecodedAndViewed": true,
+    "duplicateManifestsCompared": [
+      "docs/inverse/datasets/real-manifest.json",
+      "docs/inverse/datasets/archive-permo.json",
+      "docs/inverse/datasets/archive-additional.json",
+      "docs/inverse/datasets/archive-dead-sites.json",
+      "docs/inverse/datasets/archive-haabet-patterns-2.json"
+    ],
+    "existingPrivateObjectsCompared": 113,
+    "scopeOfDeduplication": "Exact original-byte duplicate check; catalogue records are not asserted to be distinct motifs."
+  },
+  "limitations": [
+    "Small original web images are preserved at the available resolution. These are illustrations and templates, not newly collected photographs.",
+    "Template dates and archive capture timestamps describe different historical events.",
+    "Dove motif authorship remains unknown; page authorship is retained separately.",
+    "No public mirroring, creator contact, repository staging or commits were performed."
+  ],
+  "storage": {
+    "status": "promoted-and-hash-verified",
+    "manifest": "docs/inverse/datasets/heart-archive-storage.json",
+    "newUniqueObjects": 11,
+    "newOriginalBytes": 18128,
+    "reusedEvidenceObjects": 2,
+    "publicMirrorsAdded": 0
+  }
+}

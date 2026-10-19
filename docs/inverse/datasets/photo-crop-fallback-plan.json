@@ -1,0 +1,67 @@
+{
+  "schema": "photo-crop-fallback-plan-1",
+  "status": "predeclared",
+  "purpose": "Measure whether a fixed production-first NN fallback improves complete editable-template recovery over the current pipeline. Learned material fields guide localization only; final masks use the existing RGB classifier.",
+  "probe": {
+    "path": "tmp/heart-learning/preserved-material-browser-v1/probe/manifest.json",
+    "sha256": "74b2c0fa0b1c0380c0e920a88fdc5883723bfa5b06daf4871ccdf3538957cd91"
+  },
+  "runtimeEvidence": {
+    "path": "tmp/heart-learning/preserved-material-browser-v1/report.json",
+    "sha256": "1312cb2c65b00c01c2f820723d240b6982430f63393a51af9d1e0814e5491e26"
+  },
+  "training": {
+    "path": "tmp/heart-learning/material-encoder-tail-v1/tail/report.json",
+    "sha256": "6e334844ff846bbfa480c845f9c7963b3dc168b3ea6405865c3498078dfb8581"
+  },
+  "sourceManifest": {
+    "path": "docs/inverse/datasets/real-manifest.json",
+    "sha256": "46986981cdbac3fbada54621014a7584a106576688b08807f52753507c8a6ff5"
+  },
+  "ids": [
+    "real-8c875dd0f298b5a4-body-1",
+    "real-995899fe049540ed-body-1",
+    "real-b87b0b19f12724f3-body-1",
+    "real-cf2d0fcff65d7386-body-1",
+    "real-cdae5c890b6933cd-body-1",
+    "real-68d8f25d8891df62-body-1",
+    "real-5330aa8b62176216-body-1",
+    "real-abf590088db891f9-body-1",
+    "real-990ac34431be87fe-body-1",
+    "real-12ce3c9180f7f317-body-1",
+    "real-d5b0aa8d4d2465ee-body-1",
+    "real-39f3a1ba97852876-body-1",
+    "real-e936e08ac62db19b-body-1",
+    "real-340f5e5b0f447889-body-1",
+    "real-710703159f609111-body-1",
+    "real-a414dfffbd2362ae-body-1"
+  ],
+  "protocol": {
+    "methods": [
+      "production",
+      "fallback"
+    ],
+    "timeLimitSeconds": 10,
+    "trials": 0,
+    "target": "rgb-to-mask",
+    "policy": "Keep the first production crop if supportedCropOutline passes. Otherwise request the held-out NN fields, run the unchanged locator, and use its first proposal only if supportedCropOutline passes and all four corners are observed. If it fails or errors, retain the original production result. No target error, manual ROI, template, annotation or image identity enters the selector.",
+    "unchangedFit": "When the selector retains production, reuse that exact crop and one fresh fit in both arms. This isolates the policy from unrelated timed-search variation and avoids duplicate CPU work. It is not an independent repeated benchmark.",
+    "changedFit": "When NN replaces the crop, fit both RGB targets afresh under the same ten-second settings; rotate their order by input index.",
+    "preserveObservation": true,
+    "thresholds": "Original template geometry/paper checks, original feature checks, independent image disagreement <=3%, then production editable conversion, SVG reload, editor geometry and physical audit. No thresholds relaxed.",
+    "visualReview": "Review every distinct exported crop/mask/weave; record border loss, thin seams, missing motifs and false checked results separately.",
+    "success": "More complete checked editable pairs, no lost production passes when the crop is retained. A positive result on these development cases is necessary to justify a new grouped evaluation, not a release claim.",
+    "runtimeScope": "Cached actual WASM fields. Record crop and solve times separately; do not claim browser end-to-end latency or include stored inference as zero cost."
+  },
+  "knownEvidence": [
+    "The previous inspected crop ablation suggests two complementary recoveries. This fixed policy is informed by that development evidence; it is not an unseen test.",
+    "The strict WASM numerical tolerance failed on one photo. Full-resolution class maps remain equal but rectified fields differ at a few pixels. This run tests their downstream effect without silently relaxing that gate."
+  ],
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "newPhotoCopies": 0,
+    "artifactBudgetMiB": 48
+  },
+  "releaseStatus": "Offline research only; two held-out models, not one production model; no website change or deployment."
+}

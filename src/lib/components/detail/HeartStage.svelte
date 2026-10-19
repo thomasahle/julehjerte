@@ -91,7 +91,7 @@
 
 <div class="thumbs">
 	{#each views as v (v.id)}
-		{@const pair = v.id === 'heart' && design && !design.colors ? pairAttributes(design.id) : undefined}
+		{@const pair = v.id === 'heart' && design ? pairAttributes(design.id) : undefined}
 		<button
 			type="button"
 			class="thumb-btn"
@@ -116,7 +116,6 @@
 						initialFingers={design.fingers}
 						initialGridSize={design.gridSize}
 						initialWeaveParity={design.weaveParity ?? 0}
-						colors={design.colors}
 						size={200}
 					/>
 				{:else if v.id === 'photo' && photo}

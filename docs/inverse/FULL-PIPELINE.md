@@ -1,5 +1,65 @@
 # Photo-to-template diagnosis
 
+## Coordinated shared-path cleanup (2026-10-19)
+
+`direct/shared-shortening.js` can slide both junctions of a shared cut along
+the visible boundary at once. It splits the original cubics exactly and
+reassigns the consumed pieces between sheets. Both sheets reference the same
+new connector. It tries a straight shortcut and a deformation of the existing
+route, rejecting intersections, inadequate clearance, changed symmetry,
+changed woven masks, increased source error, or either paper-core failure.
+Pinned endpoints and independent coincident branches cannot move.
+
+The production finalizer runs this optional search only with more than two
+seconds of otherwise unused time, preserving the existing export reserve.
+The candidate search takes at most 400 ms; at most two candidates proceed to
+complete checks. An already started final paper audit must finish before a
+result is returned. This is a local improvement, not a shortest-path guarantee.
+
+The deterministic real Viking regression shortens a shared route from
+15.0751 mm to 14.7543 mm, with unchanged reported source error (1.761875%),
+passing geometry and both paper checks. Independent 800-pixel rendering has
+three antialiased threshold ties and mean coverage difference 0.00000451;
+exact cubic subdivision does not promise byte-identical raster antialiasing.
+Synthetic tests also cover curved boundaries and reversed shared paths.
+
+Ordinary polishing now uses the independent offset paper check and recovery
+forces, previously restricted to outline-detail polishing. On a separate saved
+rejected Viking fit, equal 160-step refinement changes independent error from
+1.7925% to 1.77625% and repairs the disconnected paper core. A finer lattice
+check can no longer override a known offset failure. Shared-run discovery and
+paper-defect classification are extracted into common helpers.
+
+Timed fresh comparisons against `9e68605d` did not establish an aggregate
+quality or speed improvement: both versions passed five of six template
+cases. The bicycle candidate lost refinement time in unchanged initialization
+stages under variable machine load and remained a feature failure in both.
+The fixed-work regressions establish the local improvements; broader timed
+benchmark misses remain recorded rather than relaxed.
+
+The October 19 full inverse run passed 1,140 of 1,150 tests, including the new
+fixed-work paper and shared-junction regressions. Seven time-limited benchmark
+assertions missed their existing thresholds (border-fragment routing, stacked
+motif retention, two feature-finalist cases, smoother photograph retry,
+photographed checker, and synthetic-control routing). Two real-clock admission
+tests subsequently passed an isolated five-test replay. The remaining failure
+was an old physical-crop assertion while the experimental inset default was
+enabled; that default was withheld and all 12 focused original-crop/helper
+checks pass. The [paired crop study](datasets/photo-edge-inset-study.md) records
+the reason. No benchmark thresholds were loosened and this is not a claim that
+the entire timed benchmark suite is green. Final application checks pass
+1,596 tests with one existing skip; type checking, lint, static build and the
+new Paint/archive Chromium workflows pass.
+
+Reproduce the focused geometry and paper checks with:
+
+```sh
+node --test --test-concurrency=1 scripts/inverse/shared-shortening.test.mjs \
+  scripts/inverse/shared-simplification.test.mjs scripts/inverse/polishing-offset.test.mjs
+```
+
+## Earlier photographic study
+
 This check follows source pixels through automatic crop detection, colour
 classification, cut-count initialization, refinement, template checks, export,
 and an independent resvg rendering of the exported curves. It covers eight

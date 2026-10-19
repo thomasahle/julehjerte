@@ -1,6 +1,6 @@
 # Data for learned heart reconstruction
 
-Release status reviewed on **2026-10-18**; dataset counts last audited on
+Neural release status reviewed on **2026-10-19**; dataset counts last audited on
 **2026-10-17**. **No neural network is ready for production or
 included in the website.** The collection, synthetic generator and learned
 prototypes are research tools; the existing geometric solver remains the
@@ -13,7 +13,7 @@ production path.
 | Real-image inventory | 1,254 files; 783 contain assembled-heart photographs; all files and decoded identities audited | File counts are not counts of independent motifs or fully labelled training examples |
 | Sabrina Danholm's Pinterest board | All 225 pins imported; 220 new image files, about 35 MiB | No new corner, material or cutting-path labels; the whole board is QA-reserved |
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
-| Small learned model | TorchVision ImageNet-pretrained MobileNetV3-Small with task-specific heads; offline experiments exist | No demonstrated overall reconstruction advantage, ONNX/browser validation or deployment |
+| Small learned model | TorchVision ImageNet-pretrained MobileNetV3-Small; offline crop fallback raises checked editable pairs from 7/16 to 9/16 development photos | No unseen generalization or deployment; visible defects remain and strict browser numerical parity missed on one photo |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
 | Solver | Current revision passes 1,109/1,109 inverse tests and 34 browser workflows; all 22 regular Hunodan designs finish under ten seconds | Some hard fits retain thin false seams; the earlier 27/31 photo benchmark has not been rerun |
 
@@ -129,13 +129,249 @@ a derived mask is not agreement with unavailable original artwork. The
 [MobileSAM foreground experiment](mobilesam-foreground-results.json) retain
 separate results and limitations.
 
+The October 19 [frozen-model resolution comparison](material-inference-scale.md)
+replays those nineteen held-out predictions exactly, then tests the same weights
+at 512 instead of 256 pixels. Mean body IoU falls from 80.68% to 64.24% and
+supported crop proposals fall from three to one. This higher-resolution inference
+change is rejected; source photos and checkpoints are reused, with no retraining
+or website change. The failure begins in foreground/material prediction before
+template search, and does not establish the outcome of multiscale training.
+
+The [context/detail follow-up](material-context-detail-results.json) retains
+256-pixel whole-heart features while using finer RGB detail. It avoids the large
+foreground regression, but supported crops still fall from three to one. Better
+average pixel scores do not compensate for losing crop support at the paper edges.
+
+### Encoder adaptation and separating crop errors from mask errors
+
+The [October 19 controlled study](material-encoder-tail-results.json) trains a
+fresh frozen-encoder control and a model with the last three MobileNet blocks
+unfrozen. Both use the same initialization, draws, 240 updates and two connected
+source/motif folds. Three historical photos now belong to the QA-reserved Sabrina
+group and were excluded before training; the remaining **16 development photos**
+are not directly comparable with the earlier nineteen-photo percentages.
+Independent audits reproduce every saved prediction exactly and verify that
+the frozen parameters and all BatchNorm statistics remain unchanged.
+
+Fine-tuning reduces observed paper-label error from **18.47% to 15.02%**, but
+both joint-training runs lose foreground accuracy relative to their starting
+model: body IoU falls from **85.11%** to **74.86% / 74.57%**. Two subsequent
+stage-isolation experiments retain the candidate material predictions while
+restoring the original foreground, then hold those crops fixed and replace
+the learned mask with the existing RGB classifier.
+
+| Method on the same 16 photos | Crop proposals | Checked editable pairs |
+| --- | ---: | ---: |
+| Existing production pipeline | 9 (7 supported) | 7 |
+| Fresh frozen-encoder control | 1 | 1 |
+| Fine-tuned encoder tail | 2 | 2 |
+| Original foreground + fine-tuned material | 5 | 3 |
+| Same five crops + production RGB classification | 5 | 5 |
+
+All **22 exported candidates** pass editable SVG conversion, editor geometry
+and physical paper checks. Four fail image/feature requirements and remain
+review-required. All field images and exported fits were visually inspected.
+The five-crop RGB comparison recovers recognizable sloth and curved-checker
+detail and sharper checker contacts. Learned checker masks can score perfectly
+on partial interior labels yet introduce rounded corners and false gaps at
+unlabelled junctions. The solver then reproduces those defects. Conversely,
+the production bicycle has a plausible mask but still loses features during
+fitting, so the remaining problems are not exclusively upstream.
+
+These are derived-mask checks on repeatedly inspected development photos, not
+exact artwork recovery or a measured automatic fallback policy. Crop/target
+changes prevent interpreting lower fitting error as a direct accuracy gain.
+The useful next direction is to preserve foreground predictions and test
+NN-assisted cropping with RGB classification on fresh grouped photos, while
+adding boundary/junction supervision. No model is integrated into the app.
+
+Type checking, lint, the static build, **1,598 application tests** (one skipped)
+and **10 focused material/export tests** pass. The full inverse suite was not
+repeated for these offline tools. Remote main's CI run `39277116968` completed
+successfully; its advisory timed tests still record 17 quality misses. That run
+does not validate these unpushed research commits. Training and evaluation used
+one serial low-priority worker. This study retains about **127 MiB**, exceeding
+its initial 100 MiB estimate after the extra ablations and audit figures;
+source photographs were reused, and editable inputs use hard links.
+
 The next deployment gate is improvement in complete photo-to-editable-template
 recovery on properly grouped real images, including feature retention and
-physical validity. Python/ONNX agreement, download/startup cost, memory and
-browser inference latency still need measurement. A better segmentation score
-alone does not meet that gate.
+physical validity. The following experiment measures export and desktop inference;
+full-resolution browser preprocessing, download cost, mobile latency and memory
+still need validation. A better segmentation score alone does not meet that gate.
+
+### Preserving foreground during adaptation and exporting to ONNX
+
+The [runtime study](preserved-material-runtime-results.json) packages the two
+previously audited held-out models with an immutable foreground branch. Both
+branches share the first nine encoder blocks; only the material tail and decoder
+can train. Unit tests verify that optimization changes material predictions while
+foreground output and all frozen parameters/buffers remain exact. All **141 tests
+in 26 offline learning modules** pass.
+
+Each combined graph has **1.57 million parameters** and exports to **6.58 MB**.
+Native ONNX inference takes **36–37 ms** per 256-pixel input on one CPU thread,
+versus **57–58 ms** for the two separate Torch networks in the same experiment.
+Both held-out models reproduce the archived classification on all sixteen photos;
+the largest native probability difference is **0.00000754**.
+
+Actual Chromium/WASM inference takes **67–68 ms**, also on one thread; the first
+local session takes about **257 ms** to initialize. Browser-decoded RGB and
+normalized input tensors are byte-identical to Python's. The largest output
+difference is **0.0000312**, exceeding the predeclared **0.00002** tolerance on
+one photograph. That numerical check remains **failed**, although no pixel changes
+class at the original prediction resolution. The threshold was not relaxed.
+
+A paired crop replay controls the finite orientation search independently of
+machine speed. Native ONNX reproduces all corners and rectified masks exactly.
+WASM retains the same five crop proposals across the sixteen photos, but moves
+one corner by **0.00087 source pixels**. Across the five 400-pixel learned targets,
+four mask pixels change; the corresponding RGB classifier targets change by two
+pixels. Observation coverage and crop support decisions remain unchanged. This
+does not establish downstream topology stability: fitting was not rerun for this
+numerical comparison.
+
+These are **two evaluation checkpoints**, not one production model. Packaging
+preserves the earlier model's successes and failures; it does not fix the material
+head's rounded checker contacts or establish a useful automatic fallback policy.
+Browser validation starts from the exact prefiltered RGB inputs and does not yet
+cover full-photo browser resizing. Models remain outside the website. Runtime
+dependencies and outputs occupy about **170 MiB**, with no new source-photo copies;
+the test browser and its temporary server were closed. Latest observed main CI
+run `39287794295` is green, independently of these unpushed research commits.
+
+The [final site checks](preserved-material-site-qa.json) pass type checking, lint,
+build and **1,599 application tests** (one skipped). Actual Chromium checks cover
+both archive languages, all three newly preserved reference records, pagination,
+filtering, a saved PDF and mobile overflow. The first browser assertion mistakenly
+forbade Ovalt's surviving source-photo link; the corrected check allows that exact
+photo and still forbids unavailable templates. The rebuilt local preview is at
+`http://localhost:4173/`. Nothing was pushed or deployed.
+
+### Production-first neural crop fallback
+
+The [fixed-policy experiment](photo-crop-fallback-results.json) keeps a supported
+production crop, otherwise tries the held-out WASM neural fields through the
+existing locator. A neural replacement must pass the original outline checks
+and have all four corners inside the photograph. Both arms use the existing RGB
+classifier and ten-second fitting allowance; no fitted error or annotation
+selects the crop.
+
+On the same sixteen development photographs, supported crops rise from **7 to 9**
+and checked editable template pairs from **7 to 9**. The two recovered checker
+photos have **1.19% and 0.72%** disagreement with their respective classified
+masks after editable SVG conversion. All twenty method-labelled exports pass
+geometry and paper checks; these represent eleven distinct pairs because fourteen
+unchanged selections share their production fit. This isolates the policy from
+timed-search variation and avoids duplicate computation. It is not a repeated
+timing benchmark or an unseen evaluation.
+
+All eleven distinct exports were visually reviewed. The recoveries retain the
+checker structure, but uneven contacts and small seams remain. Other numerical
+passes include distorted printed-heart decorations and contaminated borders.
+The bicycle retains a plausible target mask but loses major detail during
+fitting; it correctly remains review-required. The result therefore establishes
+two additional checked approximations, not exact original-artwork recovery.
+
+Crop detection takes **5.52 seconds median, 8.83 seconds maximum**, excluding
+cached neural inference. Nine photos request the neural fallback. Its two
+successful locator attempts take about **0.53–0.55 seconds**, after the ordinary
+search has already spent several seconds. The geometric search is a larger
+latency cost here than the previously measured 67–68 ms neural inference.
+Full-photo browser preprocessing and fresh grouped evaluation remain necessary;
+the earlier strict WASM numerical tolerance remains failed. No app change or
+deployment is included.
+
+### Matching photo preprocessing in the browser
+
+The [full-photo preprocessing audit](photo-preprocessing-results.json) found
+that Canvas high-quality resizing does not match the Python training transform.
+Across sixteen photos, the average difference is only **0.92 RGB levels per
+channel**, but **6,581 foreground pixels and 17,787 material pixels** change
+classification. The old Python-prefiltered input and its WASM output replay
+exactly in the same browser session, isolating this discrepancy to preprocessing.
+
+A small portable JavaScript implementation now reproduces the antialiased
+triangle prefilter, byte rounding and continuous letterbox transform. It passes
+**twelve independent Pillow fixtures** plus padding/input-validation regressions.
+In actual Chromium, all **sixteen full-photo RGB inputs, normalized tensors and
+both output fields match exactly**. The final audit hardlinks the identical
+prediction files to avoid duplicating them. Full source photos are reused.
+
+This preserves the inputs of the earlier fallback experiment; it is not another
+reconstruction gain. Original JPEG orientation/colour-profile handling, mobile
+browsers and a fresh grouped evaluation remain untested. The older WASM-versus-
+Torch numerical tolerance remains failed. No neural model is added to the site.
 
 ## Collected assets
+
+### Preservation archive, 2026-10-19
+
+The [preservation manifest](heart-archive-storage.json) records **133 unique
+original files, 15,995,754 bytes**, including 54 template PDFs (286 pages),
+seven recovered Permo images, sixteen Haabet images and source/history/license
+evidence. These are documents and photographs, not 129 independent designs or
+new training labels.
+[Additional collections](archive-additional.json) record Krümmel,
+Bibelselskabet, Spejderliv and PaperMatrix; the [Permo history](archive-permo.json)
+identifies five circle designs absent from Hunodan, plus an older anchor
+version and weaving instructions. Drawings and variations are credited to
+Per V. Mortensen, distinct from the earlier, unnamed pattern inventors.
+The [discontinued-site rescue](archive-dead-sites.json) preserves six
+JulehjerteDesign cutting templates and Haabet's polar bear, with primary
+credit evidence for Johan Rosenkilde, Carola Heesemann and Peter Ole Kvint.
+It also records a reference-only design whose template could not be recovered.
+A [second Haabet batch](archive-haabet-patterns-2.json) adds **Vintersol** and
+**9 hjerter / Firkløver**, both signed by Peter Ole Kvint. Seven new originals
+and evidence files add only **35,570 bytes**; two existing evidence objects are
+reused. The two names for 9 hjerter and the two Vintersol photographs do not
+become additional design records. Original URLs, actual capture timestamps,
+creator signatures and source history are retained. The year 2001 printed on
+Vintersol's template is not treated as a verified first-publication date.
+The attempted Damernes SVG replay also returned 404, so that design remains
+reference-only. None of this batch is mirrored as a public image.
+A [third Haabet batch](archive-haabet-patterns-3.json) adds **Klokke Julehjerte**,
+**Freds Due** and **Håbets Anker**. Eight original GIFs and three source pages
+add **18,128 bytes**, with two existing evidence objects reused. The bell and
+anchor templates are signed Peter Ole Kvint 2001. The dove's designer remains
+unknown: crediting the website's author would not establish motif authorship.
+Original template links, working archive captures and sheet order are retained;
+the preview illustrations are not counted as photographs or extra designs.
+A [geometric-pattern follow-up](archive-jhd-geometric-1.json) preserves Johan
+Rosenkilde's **Hexatriple**, **Ovalt Julehjerte** and **Square Twist** articles,
+plus the original Ovalt photograph: **four new files, 427,968 bytes**, reusing
+two existing evidence objects. All six linked PDF/SVG template replays returned
+404, so these are **reference-only records**, not recovered templates or solver
+ground truth. Hexatriple explicitly uses three sheets, outside the current
+two-sheet inverse model. Publication timestamps, advent-calendar appearances,
+variant descriptions and exact failed links remain separate source claims.
+The source index now contains **1,123 external records**, alongside the
+**56 published Juleflet hearts**. These batches add no public media mirrors.
+
+Original bytes were moved out of temporary work directories, not copied into
+another full dataset. The private originals live in
+`archive-store/heart-preservation/objects/`, named by SHA-256 and excluded from
+Git. The manifest, source links, capture dates, credits and checksums are
+tracked. Spejderliv's unchanged six-page collection by Kim G. L. Pedersen is
+also a public website asset under its explicit CC BY-NC-SA 4.0 terms, with
+attribution and source/license links. Other records link their original or
+Wayback sources; a local preservation copy does not imply a public mirror.
+
+The unlisted `/all/` and `/en/all/` pages combine the published catalog with
+the broader source index. Counts refer to records, which can be photographs,
+template bundles or historical references; they are not unique-design counts.
+No collected raw HTML executes under the website's origin.
+
+Verify originals after collection or restoring a backup:
+
+```sh
+node scripts/archive/verify-store.mjs --local
+```
+
+Without `--local`, missing private originals are reported so the public subset
+can also be checked in a clean checkout. The laptop remains the only verified
+copy of the new private store: back up that directory together with this
+repository's manifests to separate storage. Git alone does not back it up.
 
 The [real-photo collection](real-collection.md) explains collection and review.
 The [manifest](real-manifest.json) and [independent audit](real-validation.json)

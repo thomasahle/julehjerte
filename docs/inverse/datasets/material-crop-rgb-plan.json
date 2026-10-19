@@ -1,0 +1,46 @@
+{
+  "schema": "material-crop-rgb-ablation-plan-1",
+  "status": "predeclared",
+  "hypothesis": "The learned fields can propose useful crop geometry while the production RGB mixture retains sharper color contacts than the learned material mask. Hold every crop fixed to isolate classification from crop selection.",
+  "parentReport": {
+    "path": "tmp/heart-learning/material-encoder-tail-v1/preserved-pipeline/report.json",
+    "sha256": "c840b29a6eea00eabec35bc563b2110cc258b6c7a8c331204efad6fbcd5212df"
+  },
+  "probe": "tmp/heart-learning/material-encoder-tail-v1/preserved-probe",
+  "methods": [
+    "preserved-body"
+  ],
+  "target": "rgb",
+  "ids": [
+    "real-8c875dd0f298b5a4-body-1",
+    "real-995899fe049540ed-body-1",
+    "real-b87b0b19f12724f3-body-1",
+    "real-cf2d0fcff65d7386-body-1",
+    "real-cdae5c890b6933cd-body-1",
+    "real-68d8f25d8891df62-body-1",
+    "real-5330aa8b62176216-body-1",
+    "real-abf590088db891f9-body-1",
+    "real-990ac34431be87fe-body-1",
+    "real-12ce3c9180f7f317-body-1",
+    "real-d5b0aa8d4d2465ee-body-1",
+    "real-39f3a1ba97852876-body-1",
+    "real-e936e08ac62db19b-body-1",
+    "real-340f5e5b0f447889-body-1",
+    "real-710703159f609111-body-1",
+    "real-a414dfffbd2362ae-body-1"
+  ],
+  "fixedProposals": 5,
+  "rules": [
+    "No new detection, adjusted corners, annotation use, threshold changes or per-photo method selection.",
+    "Replay all sixteen rows, including the eleven absent proposals; fit each of the five saved crops once with the same ten-second allowance.",
+    "Use production prepare plus hardPhotoTarget mask conversion, retaining observed pixels.",
+    "Check editable conversion, source-mask agreement, feature retention and paper geometry.",
+    "This is a development-stage isolation experiment, not an unseen test or an automatic production fallback policy."
+  ],
+  "resources": {
+    "workers": 1,
+    "priority": "nice 15",
+    "newWeights": 0,
+    "newSourcePhotos": 0
+  }
+}

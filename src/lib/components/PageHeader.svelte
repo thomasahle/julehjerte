@@ -5,16 +5,18 @@
     site   (default) logo · Skabeloner / Sådan gør du / Om · paper colours ·
            EN pill · GitHub pill, collapsing to a 44px burger with a drop-down
            menu under 900px, where the paper colours are a row of their own.
-    editor logo with a back link at the left and the page's own buttons
-           (passed as children) at the right — no nav links, no pills.
+    editor logo at the left and the page's own buttons (passed as
+           children) at the right, then the paper colours and the EN pill —
+           no nav links, no GitHub, no back link: the logo leads home, and
+           the browser's own back button works. The design tools have no
+           colour controls of their own, so the bar keeps the paper colours
+           (Tegn and Mal only from 900px, where there is room beside the
+           Tegn / Mal switch).
 
   Every page mounts this component, so keep the prop names stable:
     lang      the page language
     active    which nav link is current: 'templates' | 'howto' | 'about'
     variant   'site' | 'editor'
-    backHref  editor variant: where the back link goes (default: the gallery)
-    onBack    editor variant: intercept the back click (the editor returns to
-              the detail page it came from)
     mode      editor variant: which of the editor's two modes this page is, and
               with it the Tegn / Mal switch in the middle of the bar
     children  right-hand slot, rendered in both variants
@@ -26,7 +28,7 @@
 	import { afterNavigate } from '$app/navigation';
 	import { t, type Language } from '$lib/i18n';
 	import { href as routeHref, otherLanguageUrl } from '$lib/i18n/routes';
-	import { ArrowLeftIcon, ImageIcon, MenuIcon, CloseIcon, PencilIcon } from '$lib/components/icons';
+	import { ImageIcon, MenuIcon, CloseIcon, PencilIcon } from '$lib/components/icons';
 	import GitHubLink from '$lib/components/GitHubLink.svelte';
 	import ColorControls from '$lib/components/ColorControls.svelte';
 
@@ -42,8 +44,8 @@
 		lang: Language;
 		active?: NavSection;
 		variant?: 'site' | 'editor';
-		backHref?: string;
-		onBack?: (event: MouseEvent) => void;
+		/** Override for tools whose current inputs live in a shallow URL hash. */
+		languageUrl?: string;
 		/**
 		 * Editor variant only: renders the Tegn / Mal switch in the middle of the
 		 * bar. Absent on every other page, which has no second mode to switch to.
@@ -62,8 +64,7 @@
 		lang,
 		active = undefined,
 		variant = 'site',
-		backHref = undefined,
-		onBack = undefined,
+		languageUrl = undefined,
 		mode = undefined,
 		ref = $bindable(null),
 		children
@@ -86,7 +87,7 @@
 
 	// The same page in the other language. Query and hash only exist client-side.
 	let languageHref = $derived(
-		otherLanguageUrl(
+		languageUrl ?? otherLanguageUrl(
 			$page.url.pathname,
 			browser ? $page.url.search : '',
 			browser ? $page.url.hash : ''
@@ -112,16 +113,6 @@
 		menuOpen = false;
 	});
 
-	function handleBack(e: MouseEvent) {
-		if (onBack) {
-			onBack(e);
-			return;
-		}
-		if (browser && window.history.length > 1 && document.referrer.startsWith(window.location.origin)) {
-			e.preventDefault();
-			window.history.back();
-		}
-	}
 
 	function onKeydown(e: KeyboardEvent) {
 		if (e.key !== 'Escape' || !menuOpen) return;
@@ -153,19 +144,6 @@
 		/>
 	{/if}
 	<div class="nav-start">
-		{#if variant === 'editor'}
-			<!-- The label is a span so the editor bar can drop it on a phone, where
-			     the mode switch takes the middle and the arrow still says "back". -->
-			<a
-				class="back-link"
-				href={backHref ?? homeHref}
-				onclick={handleBack}
-				aria-label={t('back', lang)}
-			>
-				<ArrowLeftIcon size={16} />
-				<span>{t('back', lang)}</span>
-			</a>
-		{/if}
 		<a class="nav-logo" href={homeHref}>{t('siteWordmark', lang)}</a>
 	</div>
 
@@ -209,11 +187,10 @@
 		{#if children}
 			{@render children()}
 		{/if}
-		<!-- The site's paper colours and the colourful mode (ColorControls).
-		     Not on the editor, which has its own colour controls in its panel. -->
-		{#if variant === 'site'}
-			<ColorControls {lang} variant="bar" />
-		{/if}
+		<!-- The site's paper colours and the colourful mode (ColorControls), on
+		     every page: the design tools (Tegn, Mal, the designer) have no colour
+		     controls of their own, so this is where their paper is chosen too. -->
+		<ColorControls {lang} variant="bar" />
 		<!-- The language toggle belongs on every page type, the editor included:
 		     /editor/ and /en/editor/ both exist, and the editor has neither nav
 		     links nor a footer to reach the other one from. Below 900px the site
@@ -323,17 +300,6 @@
 
 	.nav-logo:hover {
 		color: var(--green);
-	}
-
-	.back-link {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		text-decoration: none;
-		color: var(--green);
-		font-size: 14px;
-		font-weight: 500;
-		white-space: nowrap;
 	}
 
 	.nav-links {
@@ -496,7 +462,15 @@
 		.nav-links,
 		.nav:not(.editor) .pill,
 		.nav-actions :global(.nav-github),
-		.nav-actions :global(.colors-bar) {
+		.nav:not(.editor) .nav-actions :global(.colors-bar) {
+			display: none;
+		}
+
+		/* Tegn and Mal: below 900px their tools, the language pill and the
+		   Tegn / Mal switch fill the bar, and the paper colours would push the
+		   switch over the wordmark (and crush it on a phone). The designer's bar
+		   has neither switch nor tools, and keeps them. */
+		.editor:has(.mode-switch) .nav-actions :global(.colors-bar) {
 			display: none;
 		}
 
@@ -566,8 +540,5 @@
 			display: none;
 		}
 
-		.editor:has(.mode-switch) .back-link span {
-			display: none;
-		}
 	}
 </style>

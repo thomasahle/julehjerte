@@ -11,7 +11,7 @@
 	import type { PaintTool } from '$lib/paint/toolset';
 	import MaskCanvas from './MaskCanvas.svelte';
 
-	let { tool, ...rest }: ComponentProps<typeof MaskCanvas> = $props();
+	let { tool, brush, disabled = false, ...rest }: ComponentProps<typeof MaskCanvas> = $props();
 
 	let canvas = $state.raw<ReturnType<typeof MaskCanvas> | null>(null);
 
@@ -19,6 +19,13 @@
 	// afterwards — so capturing it once is exactly what is wanted here.
 	// svelte-ignore state_referenced_locally
 	let current = $state<PaintTool>(tool);
+	// svelte-ignore state_referenced_locally
+	let currentBrush = $state(brush);
+	// svelte-ignore state_referenced_locally
+	let currentDisabled = $state(disabled);
+
+	export function setBrush(next: number): void { currentBrush = next; }
+	export function setDisabled(next: boolean): void { currentDisabled = next; }
 
 	/** Pick another tool, as the panel's buttons do on the page. */
 	export function setTool(next: PaintTool): void {
@@ -31,4 +38,4 @@
 	}
 </script>
 
-<MaskCanvas bind:this={canvas} {...rest} tool={current} />
+<MaskCanvas bind:this={canvas} {...rest} tool={current} brush={currentBrush} disabled={currentDisabled} />

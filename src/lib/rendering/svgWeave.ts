@@ -105,7 +105,7 @@ function buildStrips(
  * For the left lobe: ear is on the left side (semi-circle facing left)
  * For the right lobe: ear is on the top (semi-circle facing up)
  */
-function buildLobeClipPath(
+export function buildLobeClipPath(
 	lobe: LobeId,
 	overlap: OverlapRect
 ): string {

@@ -52,6 +52,14 @@ const children = createRawSnippet(() => ({ render: () => '<div></div>' }));
 const head = (selector: string) => [...document.head.querySelectorAll(selector)];
 
 describe('layout head', () => {
+	it('gives the unadvertised archive its own description and language alternates', () => {
+		setPage({ url: new URL('https://juleflet.dk/en/all/'), route: { id: '/en/all' }, status: 200, error: null });
+		render(Layout, { children });
+		expect(head('meta[name="description"]')).toHaveLength(1);
+		expect(head('meta[name="description"]')[0].getAttribute('content')).toContain('An archive of woven Christmas hearts');
+		expect(head('link[rel="alternate"][hreflang="da"]')[0].getAttribute('href')).toBe('https://juleflet.dk/all/');
+	});
+
 	it('gives an ordinary page a canonical, alternates and index', () => {
 		setPage({ url: new URL('https://juleflet.dk/om/'), route: { id: '/[[lang=lang]]/om' }, status: 200, error: null });
 		render(Layout, { children });

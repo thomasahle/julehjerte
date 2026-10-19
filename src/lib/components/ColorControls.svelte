@@ -27,8 +27,10 @@
   PageHeader renders this twice: compact in the bar from 900px up (`bar`,
   22px circles), and as a labelled row in the burger menu below that (`menu`,
   28px circles). Every button has a 44px hit area. Both copies are in the DOM,
-  so the dialog's ids carry the variant. The editor's header has neither: the
-  editor has its own colour controls in its right-hand panel.
+  so the dialog's ids carry the variant. The editor-style header (Tegn, Mal,
+  the designer) has no burger and carries only the `bar` copy, since the
+  design tools have no colour controls of their own; Tegn and Mal drop it
+  below 900px, where their bar is full.
 -->
 <script lang="ts">
 	import { onMount, tick } from 'svelte';

@@ -1,0 +1,2346 @@
+{
+  "version": 1,
+  "createdAt": "2026-10-19T12:51:45.421216+00:00",
+  "objects": [
+    {
+      "sha256": "e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7",
+      "bytes": 87375,
+      "path": "archive-store/heart-preservation/objects/e722ac40cdf0baacbfb0aaf38bea13da0c4056cced883149de98f573dde28fc7.html",
+      "contentType": "text/html; charset=utf-8",
+      "role": "evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "retrievedUrl": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+          "retrievedAt": "2026-10-19T12:43:35.675063+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "8f63f0ce2f43f7243bcc3a0511d28b72422ba23fdb55564e47b91272144e6984",
+      "bytes": 2486,
+      "path": "archive-store/heart-preservation/objects/8f63f0ce2f43f7243bcc3a0511d28b72422ba23fdb55564e47b91272144e6984.txt",
+      "contentType": "text/plain",
+      "role": "evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://www.bibelselskabet.dk/robots.txt",
+          "retrievedUrl": "https://www.bibelselskabet.dk/robots.txt",
+          "retrievedAt": "2026-10-19T12:43:36.278493+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6",
+      "bytes": 65541,
+      "path": "archive-store/heart-preservation/objects/93d269f15eb15d73835c4c9437fc08c4019b928c0a76a6a0b1be7698c87871f6.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+          "retrievedUrl": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+          "retrievedAt": "2026-10-19T12:43:36.776836+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "a7eb5fca2371bbd625b697491de35ebe71f43902d735f96474b3328a8dc1af5c",
+      "bytes": 75,
+      "path": "archive-store/heart-preservation/objects/a7eb5fca2371bbd625b697491de35ebe71f43902d735f96474b3328a8dc1af5c.txt",
+      "contentType": "text/plain",
+      "role": "evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://spejderliv.dk/robots.txt",
+          "retrievedUrl": "https://spejderliv.dk/robots.txt",
+          "retrievedAt": "2026-10-19T12:43:37.344728+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "9918baf525fcf780f81706a8e8cb1ec5e10b84dde8ecfaf4bd5c1e83877d152d",
+      "bytes": 28935,
+      "path": "archive-store/heart-preservation/objects/9918baf525fcf780f81706a8e8cb1ec5e10b84dde8ecfaf4bd5c1e83877d152d.html",
+      "contentType": "text/html",
+      "role": "evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://spejderliv.dk/haandvaerk/julehjerter",
+          "retrievedUrl": "https://spejderliv.dk/haandvaerk/julehjerter",
+          "retrievedAt": "2026-10-19T12:43:37.965424+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "9517979c753ec96cea6222532669e6e25df392767cd5dbdc239e598e88805497",
+      "bytes": 277,
+      "path": "archive-store/heart-preservation/objects/9517979c753ec96cea6222532669e6e25df392767cd5dbdc239e598e88805497.txt",
+      "contentType": "text/plain; charset=utf-8",
+      "role": "evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://flettedehjerter.dk/robots.txt",
+          "retrievedUrl": "https://flettedehjerter.dk/robots.txt",
+          "retrievedAt": "2026-10-19T12:43:38.604967+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "1fb66a374b71cbfdb0034d794dc6a4761c62b988851c676c98564ea4725e05e7",
+      "bytes": 42954,
+      "path": "archive-store/heart-preservation/objects/1fb66a374b71cbfdb0034d794dc6a4761c62b988851c676c98564ea4725e05e7.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://flettedehjerter.dk/links/",
+          "retrievedUrl": "https://flettedehjerter.dk/links/",
+          "retrievedAt": "2026-10-19T12:43:39.234469+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "515b8a640ed674535b741dfab96b2762692f9280ef405724fff9714cbe304ed6",
+      "bytes": 60800,
+      "path": "archive-store/heart-preservation/objects/515b8a640ed674535b741dfab96b2762692f9280ef405724fff9714cbe304ed6.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://flettedehjerter.dk/about/",
+          "retrievedUrl": "https://flettedehjerter.dk/about/",
+          "retrievedAt": "2026-10-19T12:43:39.796731+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "ee8db83adb2994f2f0d485eecf6e34b4c4940859bf2dc3cb9bbf8cef58ca76c9",
+      "bytes": 650,
+      "path": "archive-store/heart-preservation/objects/ee8db83adb2994f2f0d485eecf6e34b4c4940859bf2dc3cb9bbf8cef58ca76c9.txt",
+      "contentType": "text/plain; charset=utf-8",
+      "role": "evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://julehjerter.wordpress.com/robots.txt",
+          "retrievedUrl": "https://julehjerter.wordpress.com/robots.txt",
+          "retrievedAt": "2026-10-19T12:43:40.407811+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "0632ac72cc8255f7cb9857e533f8815ec68fe233a098c71ef967ccfa737d2789",
+      "bytes": 171770,
+      "path": "archive-store/heart-preservation/objects/0632ac72cc8255f7cb9857e533f8815ec68fe233a098c71ef967ccfa737d2789.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://julehjerter.wordpress.com/",
+          "retrievedUrl": "https://julehjerter.wordpress.com/",
+          "retrievedAt": "2026-10-19T12:43:41.028841+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "abb564cb92305abdff1b442366abda2cf659ae5841eed2ed3e331542d82e5c20",
+      "bytes": 181810,
+      "path": "static/archive/templates/abb564cb92305abdff1b442366abda2cf659ae5841eed2ed3e331542d82e5c20.pdf",
+      "contentType": "application/pdf",
+      "role": "template",
+      "publicUrl": "/archive/templates/abb564cb92305abdff1b442366abda2cf659ae5841eed2ed3e331542d82e5c20.pdf",
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://static.spejderliv.dk/14-haandvaerk/julehjerter.pdf",
+          "retrievedUrl": "https://static.spejderliv.dk/14-haandvaerk/julehjerter.pdf",
+          "retrievedAt": "2026-10-19T12:44:32.598478+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ],
+      "rights": {
+        "pdfSha256": "abb564cb92305abdff1b442366abda2cf659ae5841eed2ed3e331542d82e5c20",
+        "title": "Spejderliv Julehjerter",
+        "author": "Kim G. L. Pedersen",
+        "copyright": "Copyright 2023 Kim G. L. Pedersen",
+        "license": "CC BY-NC-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+        "legalCodeUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.en",
+        "scope": "The complete six-page julehjerter.pdf template collection; source page explicitly licenses Spejderliv Julehjerter, and PDF first page repeats author, copyright and license. The source photograph is NOT included in this clearance.",
+        "changes": "None: original PDF bytes, including embedded notices, retained.",
+        "conditions": "Attribution and original-source/license links retained; noncommercial reuse; adaptations subject to ShareAlike.",
+        "evidenceUrls": [
+          "https://spejderliv.dk/haandvaerk/julehjerter",
+          "https://static.spejderliv.dk/14-haandvaerk/julehjerter.pdf"
+        ]
+      }
+    },
+    {
+      "sha256": "f2162cc6da90358dce059bdb2c94950cf4843079aef16966715212a0c90a974c",
+      "bytes": 629010,
+      "path": "archive-store/heart-preservation/objects/f2162cc6da90358dce059bdb2c94950cf4843079aef16966715212a0c90a974c.webp",
+      "contentType": "image/webp",
+      "role": "photo",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://spejderliv.dk/images/14-haandvaerk/julehjerter/julehjerter.webp",
+          "retrievedUrl": "https://spejderliv.dk/images/14-haandvaerk/julehjerter/julehjerter.webp",
+          "retrievedAt": "2026-10-19T12:44:33.322624+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "b73699a012f15e5c682d01c48092b84a3567e442cc2d71ab5d6775b49869b069",
+      "bytes": 120956,
+      "path": "archive-store/heart-preservation/objects/b73699a012f15e5c682d01c48092b84a3567e442cc2d71ab5d6775b49869b069.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=70&id=1710080830",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=70&id=1710080830",
+          "retrievedAt": "2026-10-19T12:44:34.660877+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "fc324c9938d459caa7fb214df5eff3f2ee70d096416cf9e5945942ccea731635",
+      "bytes": 108966,
+      "path": "archive-store/heart-preservation/objects/fc324c9938d459caa7fb214df5eff3f2ee70d096416cf9e5945942ccea731635.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=86&id=1710080979",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=86&id=1710080979",
+          "retrievedAt": "2026-10-19T12:44:35.123094+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "670a6dc7f6fe85c69b42a8040733c35515f7f4ea7512b295c3317fb400a54548",
+      "bytes": 230069,
+      "path": "archive-store/heart-preservation/objects/670a6dc7f6fe85c69b42a8040733c35515f7f4ea7512b295c3317fb400a54548.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=40&id=1710081184",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=40&id=1710081184",
+          "retrievedAt": "2026-10-19T12:44:35.584083+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "65d855a136521474a35f2aa9ca16ae6393cb715291884ec6387f10a119c6e3eb",
+      "bytes": 154035,
+      "path": "archive-store/heart-preservation/objects/65d855a136521474a35f2aa9ca16ae6393cb715291884ec6387f10a119c6e3eb.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=81&id=1710081553",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=81&id=1710081553",
+          "retrievedAt": "2026-10-19T12:44:36.068097+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "613d1a312e8777ee92c6d94d635071f83ded4228c5201dd3e225ea45d7396aa2",
+      "bytes": 749458,
+      "path": "archive-store/heart-preservation/objects/613d1a312e8777ee92c6d94d635071f83ded4228c5201dd3e225ea45d7396aa2.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=85&id=1733394863",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=85&id=1733394863",
+          "retrievedAt": "2026-10-19T12:44:36.559006+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "faf6edea6412c1355971b12a490188fa558338afbee30df7f80a0f3088c26033",
+      "bytes": 750109,
+      "path": "archive-store/heart-preservation/objects/faf6edea6412c1355971b12a490188fa558338afbee30df7f80a0f3088c26033.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=75&id=1710080909",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=75&id=1710080909",
+          "retrievedAt": "2026-10-19T12:44:37.127948+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "3f5d73bd1f919205ef5d8b22d288b7188ad38f3d6faf336021e50f8493d8c5b3",
+      "bytes": 634403,
+      "path": "archive-store/heart-preservation/objects/3f5d73bd1f919205ef5d8b22d288b7188ad38f3d6faf336021e50f8493d8c5b3.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=69&id=1737023809",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=69&id=1737023809",
+          "retrievedAt": "2026-10-19T12:44:37.660934+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "fd8f93ee23037d6b56c32acf01c5e7ab9651e0c76932235891446e4d1d70e7a1",
+      "bytes": 283642,
+      "path": "archive-store/heart-preservation/objects/fd8f93ee23037d6b56c32acf01c5e7ab9651e0c76932235891446e4d1d70e7a1.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=67&id=1710080799",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=67&id=1710080799",
+          "retrievedAt": "2026-10-19T12:44:38.221956+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "d05871b5fc127856065d704707107c6f521291c4e67f7adc0fab1c227bb5407b",
+      "bytes": 413338,
+      "path": "archive-store/heart-preservation/objects/d05871b5fc127856065d704707107c6f521291c4e67f7adc0fab1c227bb5407b.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=68&id=1710249487",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=68&id=1710249487",
+          "retrievedAt": "2026-10-19T12:44:38.749188+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "66630cf2977fa1898946f1a7187390ac537e66874a84efe040b12b7980b0dd43",
+      "bytes": 139386,
+      "path": "archive-store/heart-preservation/objects/66630cf2977fa1898946f1a7187390ac537e66874a84efe040b12b7980b0dd43.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=71&id=1710080849",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=71&id=1710080849",
+          "retrievedAt": "2026-10-19T12:44:39.264733+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "46c54761fd552ec52ab1c3d40c336e1be3daf1fde81ea150a779958fd11e50a6",
+      "bytes": 241874,
+      "path": "archive-store/heart-preservation/objects/46c54761fd552ec52ab1c3d40c336e1be3daf1fde81ea150a779958fd11e50a6.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=172&id=1731057123",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=172&id=1731057123",
+          "retrievedAt": "2026-10-19T12:44:39.867515+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "3f46f7d20690dc59e1a74ab0bbe5af46cc2a78cc045aa0ee79949c006261ebcf",
+      "bytes": 233344,
+      "path": "archive-store/heart-preservation/objects/3f46f7d20690dc59e1a74ab0bbe5af46cc2a78cc045aa0ee79949c006261ebcf.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=61&id=1710080780",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=61&id=1710080780",
+          "retrievedAt": "2026-10-19T12:44:40.494986+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "b78fe0badc1bd80d47d95774de144765636fb8dcb77450acb2f7aa5f1e1ae5d2",
+      "bytes": 329375,
+      "path": "archive-store/heart-preservation/objects/b78fe0badc1bd80d47d95774de144765636fb8dcb77450acb2f7aa5f1e1ae5d2.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=83&id=1710080946",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=83&id=1710080946",
+          "retrievedAt": "2026-10-19T12:44:41.016455+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "0cc4ae4d3a16fb4423cc88d0b86985eeebd6e0c3577b8f995862b5f2821fb033",
+      "bytes": 509423,
+      "path": "archive-store/heart-preservation/objects/0cc4ae4d3a16fb4423cc88d0b86985eeebd6e0c3577b8f995862b5f2821fb033.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=47&id=1710081298",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=47&id=1710081298",
+          "retrievedAt": "2026-10-19T12:44:41.525968+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "263381b8856209ddbb3fa58516e44f4ed6fea5b7b2536d112ef3b48399a4a61e",
+      "bytes": 186044,
+      "path": "archive-store/heart-preservation/objects/263381b8856209ddbb3fa58516e44f4ed6fea5b7b2536d112ef3b48399a4a61e.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=46&id=1710081253",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=46&id=1710081253",
+          "retrievedAt": "2026-10-19T12:44:42.076503+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "e43a42b6e53a7af255ee717958d492a319196b92b4f268c193154f2a9fc9066b",
+      "bytes": 107682,
+      "path": "archive-store/heart-preservation/objects/e43a42b6e53a7af255ee717958d492a319196b92b4f268c193154f2a9fc9066b.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=82&id=1710080426",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=82&id=1710080426",
+          "retrievedAt": "2026-10-19T12:44:42.568161+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "d5e31dcbda85b830cdb8df8cfe240098305263dbd03de2bb4302feda0e86c95d",
+      "bytes": 126104,
+      "path": "archive-store/heart-preservation/objects/d5e31dcbda85b830cdb8df8cfe240098305263dbd03de2bb4302feda0e86c95d.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=55&id=1710080729",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=55&id=1710080729",
+          "retrievedAt": "2026-10-19T12:44:43.061085+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "f5c1654d327b2ba4ce8fbf495b460e5757aad01f603a3eb315bc835446122ca6",
+      "bytes": 206668,
+      "path": "archive-store/heart-preservation/objects/f5c1654d327b2ba4ce8fbf495b460e5757aad01f603a3eb315bc835446122ca6.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=60&id=1710080740",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=60&id=1710080740",
+          "retrievedAt": "2026-10-19T12:44:43.557118+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "edf6c42bee16be4f6ca5fe3cc47769b1cf8eb939665d43e9b8244550a63be5f5",
+      "bytes": 753234,
+      "path": "archive-store/heart-preservation/objects/edf6c42bee16be4f6ca5fe3cc47769b1cf8eb939665d43e9b8244550a63be5f5.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=51&id=1733407829",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=51&id=1733407829",
+          "retrievedAt": "2026-10-19T12:44:44.076766+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "de99b7c9a019a9da070981a7bba00e428feb9ffb3cfcf8b9a21f4bc19f19a79c",
+      "bytes": 2225811,
+      "path": "archive-store/heart-preservation/objects/de99b7c9a019a9da070981a7bba00e428feb9ffb3cfcf8b9a21f4bc19f19a79c.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=49&id=1732188926",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=49&id=1732188926",
+          "retrievedAt": "2026-10-19T12:44:44.669657+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "6dbb907be7c3d3d6c17a962088b247e242e182d7c0d47f1cfc951fec7f21b76c",
+      "bytes": 85818,
+      "path": "archive-store/heart-preservation/objects/6dbb907be7c3d3d6c17a962088b247e242e182d7c0d47f1cfc951fec7f21b76c.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=41&id=1710081241",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=41&id=1710081241",
+          "retrievedAt": "2026-10-19T12:44:45.484242+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "9e8c514bd79ced2b096c654b0101702624ddac995ff8ca16e29f2e22a72d9b61",
+      "bytes": 116532,
+      "path": "archive-store/heart-preservation/objects/9e8c514bd79ced2b096c654b0101702624ddac995ff8ca16e29f2e22a72d9b61.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=79&id=1710080922",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=79&id=1710080922",
+          "retrievedAt": "2026-10-19T12:44:46.065070+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "d96830bd51372dde29f98c1baf9f1e7bca7b8ce431a7299dfdfebeaa83541a0a",
+      "bytes": 479246,
+      "path": "archive-store/heart-preservation/objects/d96830bd51372dde29f98c1baf9f1e7bca7b8ce431a7299dfdfebeaa83541a0a.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=53&id=1710080711",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=53&id=1710080711",
+          "retrievedAt": "2026-10-19T12:44:46.665171+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "fa325a4b1310eb5c740ccaf6dd5f920a50e6223432debe4bc7328ff1840c0f96",
+      "bytes": 195146,
+      "path": "archive-store/heart-preservation/objects/fa325a4b1310eb5c740ccaf6dd5f920a50e6223432debe4bc7328ff1840c0f96.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=80&id=1710081204",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=80&id=1710081204",
+          "retrievedAt": "2026-10-19T12:44:47.274186+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "376be2472bbf084801058a74b03573e7985b53b8b932829f06b7869e71f10f0d",
+      "bytes": 336701,
+      "path": "archive-store/heart-preservation/objects/376be2472bbf084801058a74b03573e7985b53b8b932829f06b7869e71f10f0d.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=48&id=1710080557",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=48&id=1710080557",
+          "retrievedAt": "2026-10-19T12:44:47.817713+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "c8aeedadce475441133db07d32d82cc05f1a983b135ed12fce92cea4c1965409",
+      "bytes": 429663,
+      "path": "archive-store/heart-preservation/objects/c8aeedadce475441133db07d32d82cc05f1a983b135ed12fce92cea4c1965409.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=50&id=1710081406",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=50&id=1710081406",
+          "retrievedAt": "2026-10-19T12:44:48.356421+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "e54d95a3d7d69368a0e232ce30028703cfc43f801a9e5ba47112837758446310",
+      "bytes": 40291,
+      "path": "archive-store/heart-preservation/objects/e54d95a3d7d69368a0e232ce30028703cfc43f801a9e5ba47112837758446310.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=52&id=1710081458",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=52&id=1710081458",
+          "retrievedAt": "2026-10-19T12:44:48.866489+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "0ff1e5ed469b9612387b1009588cf84442a83cb96a10cb47037329135078b245",
+      "bytes": 205206,
+      "path": "archive-store/heart-preservation/objects/0ff1e5ed469b9612387b1009588cf84442a83cb96a10cb47037329135078b245.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=44&id=1710081005",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=44&id=1710081005",
+          "retrievedAt": "2026-10-19T12:44:49.347193+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "96cbf8513e3462f46649edf65ec15193385de5410bd6910a924609030b97459c",
+      "bytes": 105678,
+      "path": "archive-store/heart-preservation/objects/96cbf8513e3462f46649edf65ec15193385de5410bd6910a924609030b97459c.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=45&id=1710081018",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=45&id=1710081018",
+          "retrievedAt": "2026-10-19T12:44:49.860065+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "f7583995611bcf8ffdc7f05c843cab61c147d806dafb14fbdff109ff33c92985",
+      "bytes": 23531,
+      "path": "archive-store/heart-preservation/objects/f7583995611bcf8ffdc7f05c843cab61c147d806dafb14fbdff109ff33c92985.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=57&id=1710081037",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=57&id=1710081037",
+          "retrievedAt": "2026-10-19T12:44:50.365639+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "f53c59794cd0c2a5fb2ad28afd294daaba4652b749e86b3a2560ff67268369d4",
+      "bytes": 369050,
+      "path": "archive-store/heart-preservation/objects/f53c59794cd0c2a5fb2ad28afd294daaba4652b749e86b3a2560ff67268369d4.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=42&id=1710081058",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=42&id=1710081058",
+          "retrievedAt": "2026-10-19T12:44:50.805490+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "4aa71f77690e571fe6574bd86e0a9bcbc96a25576f77fa575892c4fc55977748",
+      "bytes": 167715,
+      "path": "archive-store/heart-preservation/objects/4aa71f77690e571fe6574bd86e0a9bcbc96a25576f77fa575892c4fc55977748.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=43&id=1710081074",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=43&id=1710081074",
+          "retrievedAt": "2026-10-19T12:44:51.344609+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "4a91deb23630e0804685101eaf564cb16d05796b341b992b6437afd42ff3f70b",
+      "bytes": 311379,
+      "path": "archive-store/heart-preservation/objects/4a91deb23630e0804685101eaf564cb16d05796b341b992b6437afd42ff3f70b.pdf",
+      "contentType": "application/octet-stream",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=66&id=1710081092",
+          "retrievedUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=66&id=1710081092",
+          "retrievedAt": "2026-10-19T12:44:51.875581+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "d4e15006e8a3fad530a779c70b156aa14c9c05ccd2f7fcf5ede7992bc2a117ba",
+      "bytes": 127819,
+      "path": "archive-store/heart-preservation/objects/d4e15006e8a3fad530a779c70b156aa14c9c05ccd2f7fcf5ede7992bc2a117ba.pdf",
+      "contentType": "application/pdf",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_1.pdf",
+          "retrievedUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_1.pdf",
+          "retrievedAt": "2026-10-19T12:44:52.415972+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "5cda85b6e053de3b162e77ce8a86188c55409d2f2fdffd81f063b65578b6ddcf",
+      "bytes": 126637,
+      "path": "archive-store/heart-preservation/objects/5cda85b6e053de3b162e77ce8a86188c55409d2f2fdffd81f063b65578b6ddcf.pdf",
+      "contentType": "application/pdf",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_2.pdf",
+          "retrievedUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_2.pdf",
+          "retrievedAt": "2026-10-19T12:44:52.985494+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "da4e3610c9963ba6ffae259c85469dc92edb545022db9c5dbbe27160ed9a23e8",
+      "bytes": 121153,
+      "path": "archive-store/heart-preservation/objects/da4e3610c9963ba6ffae259c85469dc92edb545022db9c5dbbe27160ed9a23e8.pdf",
+      "contentType": "application/pdf",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_3.pdf",
+          "retrievedUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_3.pdf",
+          "retrievedAt": "2026-10-19T12:44:53.558724+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "8c83fe1ca6d3a97cc0685fbdc329e311ada71bbdb76a13d3d269c7cc9ae3b946",
+      "bytes": 145826,
+      "path": "archive-store/heart-preservation/objects/8c83fe1ca6d3a97cc0685fbdc329e311ada71bbdb76a13d3d269c7cc9ae3b946.pdf",
+      "contentType": "application/pdf",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_4.pdf",
+          "retrievedUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_4.pdf",
+          "retrievedAt": "2026-10-19T12:44:54.157694+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "11c51054516a1bf9e258aceea12944dd032c0eb4de72eee3dd12e87c90cd10a1",
+      "bytes": 112366,
+      "path": "archive-store/heart-preservation/objects/11c51054516a1bf9e258aceea12944dd032c0eb4de72eee3dd12e87c90cd10a1.pdf",
+      "contentType": "application/pdf",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_5.pdf",
+          "retrievedUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_5.pdf",
+          "retrievedAt": "2026-10-19T12:44:54.717749+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "598c234b5876161402b784a8b93c03ca5e05a7c961bbc4a686ad9f6b27ff0e77",
+      "bytes": 96355,
+      "path": "archive-store/heart-preservation/objects/598c234b5876161402b784a8b93c03ca5e05a7c961bbc4a686ad9f6b27ff0e77.pdf",
+      "contentType": "application/pdf",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_6.pdf",
+          "retrievedUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_6.pdf",
+          "retrievedAt": "2026-10-19T12:44:55.305109+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "7f0ecb97a37aae85a03425648c2658e8f787c200df50d073f5fcb6f2f02acf8b",
+      "bytes": 86154,
+      "path": "archive-store/heart-preservation/objects/7f0ecb97a37aae85a03425648c2658e8f787c200df50d073f5fcb6f2f02acf8b.pdf",
+      "contentType": "application/pdf",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_7.pdf",
+          "retrievedUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_7.pdf",
+          "retrievedAt": "2026-10-19T12:44:55.897026+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "a4682c3cfc222f35045f0d6f12d6354417fe17e628efc04f0c4a4d0217d7fa88",
+      "bytes": 85691,
+      "path": "archive-store/heart-preservation/objects/a4682c3cfc222f35045f0d6f12d6354417fe17e628efc04f0c4a4d0217d7fa88.pdf",
+      "contentType": "application/pdf",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_8.pdf",
+          "retrievedUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_8.pdf",
+          "retrievedAt": "2026-10-19T12:44:56.472274+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "e5e8675ea80e8ef1be423946fb8518520d2ccd4863bacd8dbfceb891193cdcc9",
+      "bytes": 102359,
+      "path": "archive-store/heart-preservation/objects/e5e8675ea80e8ef1be423946fb8518520d2ccd4863bacd8dbfceb891193cdcc9.pdf",
+      "contentType": "application/pdf",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_9.pdf",
+          "retrievedUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_9.pdf",
+          "retrievedAt": "2026-10-19T12:44:57.037690+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "225e57b87d3f06044c67c960d01d45fdce7dbd2f7e614ae0a97da22330d6fde3",
+      "bytes": 88138,
+      "path": "archive-store/heart-preservation/objects/225e57b87d3f06044c67c960d01d45fdce7dbd2f7e614ae0a97da22330d6fde3.pdf",
+      "contentType": "application/pdf",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_10.pdf",
+          "retrievedUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_10.pdf",
+          "retrievedAt": "2026-10-19T12:44:57.601822+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "08ebccb203f1c729a6c3c999c171fd2801a7aa000b573e84a345ea0d09ac68a9",
+      "bytes": 109351,
+      "path": "archive-store/heart-preservation/objects/08ebccb203f1c729a6c3c999c171fd2801a7aa000b573e84a345ea0d09ac68a9.pdf",
+      "contentType": "application/pdf",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_11.pdf",
+          "retrievedUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_11.pdf",
+          "retrievedAt": "2026-10-19T12:44:58.192780+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "57bfd7c0ba0881d936716c738c284eeea21cc7edd36c5715813bb8c7abcb0b06",
+      "bytes": 100920,
+      "path": "archive-store/heart-preservation/objects/57bfd7c0ba0881d936716c738c284eeea21cc7edd36c5715813bb8c7abcb0b06.pdf",
+      "contentType": "application/pdf",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_12.pdf",
+          "retrievedUrl": "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_12.pdf",
+          "retrievedAt": "2026-10-19T12:44:58.762069+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "d7a6362bab284aaa0b08d19dcbd455a2054914002c9859e14061e15e071f4705",
+      "bytes": 177,
+      "path": "archive-store/heart-preservation/objects/d7a6362bab284aaa0b08d19dcbd455a2054914002c9859e14061e15e071f4705.txt",
+      "contentType": "text/plain; charset=utf-8",
+      "role": "evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://creativecommons.org/robots.txt",
+          "retrievedUrl": "https://creativecommons.org/robots.txt",
+          "retrievedAt": "2026-10-19T12:46:36.036788+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "ca0597fd98c6fb2417993e867b5cbc91ebdc55e24839c38e4674e8c78d817f17",
+      "bytes": 37146,
+      "path": "archive-store/heart-preservation/objects/ca0597fd98c6fb2417993e867b5cbc91ebdc55e24839c38e4674e8c78d817f17.html",
+      "contentType": "text/html",
+      "role": "evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+          "retrievedUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+          "retrievedAt": "2026-10-19T12:46:36.504307+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "755255de51b636d8b6b3386e9ba7d73533ac0cb8ee8c0fb3aa918e63abee9450",
+      "bytes": 650,
+      "path": "archive-store/heart-preservation/objects/755255de51b636d8b6b3386e9ba7d73533ac0cb8ee8c0fb3aa918e63abee9450.txt",
+      "contentType": "text/plain; charset=utf-8",
+      "role": "evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://papermatrix.wordpress.com/robots.txt",
+          "retrievedUrl": "https://papermatrix.wordpress.com/robots.txt",
+          "retrievedAt": "2026-10-19T12:46:36.951133+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "734df3a5abe22fb70f77eccce54044b97c86a6b0bafdbc9b4bffca8d0f2a1623",
+      "bytes": 399945,
+      "path": "archive-store/heart-preservation/objects/734df3a5abe22fb70f77eccce54044b97c86a6b0bafdbc9b4bffca8d0f2a1623.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://papermatrix.wordpress.com/about/",
+          "retrievedUrl": "https://papermatrix.wordpress.com/about/",
+          "retrievedAt": "2026-10-19T12:46:37.557918+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "d75afc67ba4e1d98e564a9438c2ce6955fa1fa7ce77b06cc57b844e2234d8910",
+      "bytes": 144305,
+      "path": "archive-store/heart-preservation/objects/d75afc67ba4e1d98e564a9438c2ce6955fa1fa7ce77b06cc57b844e2234d8910.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://papermatrix.wordpress.com/2015/10/30/heart-054-ghosts/",
+          "retrievedUrl": "https://papermatrix.wordpress.com/2015/10/30/heart-054-ghosts/",
+          "retrievedAt": "2026-10-19T12:46:39.549478+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "8c182a55e5c87a355ca4c9a48c477bfc5bcd9eecf61c766d4ca84f96f6d46a63",
+      "bytes": 15229,
+      "path": "archive-store/heart-preservation/objects/8c182a55e5c87a355ca4c9a48c477bfc5bcd9eecf61c766d4ca84f96f6d46a63.pdf",
+      "contentType": "application/pdf",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://papermatrix.wordpress.com/wp-content/uploads/2015/10/heart-054-cut-1-ghosts.pdf",
+          "retrievedUrl": "https://papermatrix.wordpress.com/wp-content/uploads/2015/10/heart-054-cut-1-ghosts.pdf",
+          "retrievedAt": "2026-10-19T12:46:40.586238+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "4e2460e8c7b19115eec9051615d683f087bed8103767da55cdd2eca48c3bbcc7",
+      "bytes": 10882,
+      "path": "archive-store/heart-preservation/objects/4e2460e8c7b19115eec9051615d683f087bed8103767da55cdd2eca48c3bbcc7.pdf",
+      "contentType": "application/pdf",
+      "role": "template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://papermatrix.wordpress.com/wp-content/uploads/2015/10/heart-054-cut-2-ghosts.pdf",
+          "retrievedUrl": "https://papermatrix.wordpress.com/wp-content/uploads/2015/10/heart-054-cut-2-ghosts.pdf",
+          "retrievedAt": "2026-10-19T12:46:41.271464+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "527c4e0e75a7aafe819a9ed481c227f27645736fa800f25d6d94ed37a362afd7",
+      "bytes": 52858,
+      "path": "archive-store/heart-preservation/objects/527c4e0e75a7aafe819a9ed481c227f27645736fa800f25d6d94ed37a362afd7.html",
+      "contentType": "text/html",
+      "role": "evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "additional",
+          "originalUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.en",
+          "retrievedUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.en",
+          "retrievedAt": "2026-10-19T12:47:13.111510+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "efde355a59412953afdfb946ca62e95645391ab9ad6665dddd431982401eb350",
+      "bytes": 17778,
+      "path": "archive-store/heart-preservation/objects/efde355a59412953afdfb946ca62e95645391ab9ad6665dddd431982401eb350.jpg",
+      "contentType": "image/jpeg",
+      "role": "mixed-photo-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "http://permo.homepage.dk:80/hjcir-01.jpg",
+          "retrievedUrl": "https://web.archive.org/web/20010824162934id_/http://permo.homepage.dk:80/hjcir-01.jpg",
+          "retrievedAt": "2026-10-19T12:44:16.812768+00:00",
+          "archiveCaptureTimestamp": "20010824162934"
+        }
+      ]
+    },
+    {
+      "sha256": "b97d8609e278633efce7b0950b9176c0993a7a63de3dce762ba640f41ad3a586",
+      "bytes": 17903,
+      "path": "archive-store/heart-preservation/objects/b97d8609e278633efce7b0950b9176c0993a7a63de3dce762ba640f41ad3a586.jpg",
+      "contentType": "image/jpeg",
+      "role": "mixed-photo-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "http://permo.homepage.dk:80/hjcir-02.jpg",
+          "retrievedUrl": "https://web.archive.org/web/20020312232502id_/http://permo.homepage.dk:80/hjcir-02.jpg",
+          "retrievedAt": "2026-10-19T12:44:21.720938+00:00",
+          "archiveCaptureTimestamp": "20020312232502"
+        }
+      ]
+    },
+    {
+      "sha256": "c745a250487b118391e5474a7c29947520c63192efc2cfb53432ae56e993a524",
+      "bytes": 17214,
+      "path": "archive-store/heart-preservation/objects/c745a250487b118391e5474a7c29947520c63192efc2cfb53432ae56e993a524.jpg",
+      "contentType": "image/jpeg",
+      "role": "mixed-photo-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "http://permo.homepage.dk:80/hjcir-03.jpg",
+          "retrievedUrl": "https://web.archive.org/web/20010824171852id_/http://permo.homepage.dk:80/hjcir-03.jpg",
+          "retrievedAt": "2026-10-19T12:44:26.383950+00:00",
+          "archiveCaptureTimestamp": "20010824171852"
+        }
+      ]
+    },
+    {
+      "sha256": "9f09ae819b828677e3b5c3f194fe584ec3a6a7f600dd0d0e44caec37a2f6b2b3",
+      "bytes": 17844,
+      "path": "archive-store/heart-preservation/objects/9f09ae819b828677e3b5c3f194fe584ec3a6a7f600dd0d0e44caec37a2f6b2b3.jpg",
+      "contentType": "image/jpeg",
+      "role": "mixed-photo-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "http://permo.homepage.dk:80/hjcir-04.jpg",
+          "retrievedUrl": "https://web.archive.org/web/20021023180532id_/http://permo.homepage.dk:80/hjcir-04.jpg",
+          "retrievedAt": "2026-10-19T12:44:34.102437+00:00",
+          "archiveCaptureTimestamp": "20021023180532"
+        }
+      ]
+    },
+    {
+      "sha256": "219e5958208e86e84a31b85846a969f58471f62b4abbb4b3da1e9aeee69dab54",
+      "bytes": 21577,
+      "path": "archive-store/heart-preservation/objects/219e5958208e86e84a31b85846a969f58471f62b4abbb4b3da1e9aeee69dab54.jpg",
+      "contentType": "image/jpeg",
+      "role": "mixed-photo-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "http://permo.homepage.dk:80/hjcir-05.jpg",
+          "retrievedUrl": "https://web.archive.org/web/20010824181858id_/http://permo.homepage.dk:80/hjcir-05.jpg",
+          "retrievedAt": "2026-10-19T12:44:37.975720+00:00",
+          "archiveCaptureTimestamp": "20010824181858"
+        }
+      ]
+    },
+    {
+      "sha256": "592c636447cbd32fcd313c7b58342eb3edb9ea481e1fd880eaace6ff589af09e",
+      "bytes": 35998,
+      "path": "archive-store/heart-preservation/objects/592c636447cbd32fcd313c7b58342eb3edb9ea481e1fd880eaace6ff589af09e.jpg",
+      "contentType": "image/jpeg",
+      "role": "mixed-photo-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "http://permo.homepage.dk:80/hjfig-05.jpg",
+          "retrievedUrl": "https://web.archive.org/web/20010824222949id_/http://permo.homepage.dk:80/hjfig-05.jpg",
+          "retrievedAt": "2026-10-19T12:45:00.622433+00:00",
+          "archiveCaptureTimestamp": "20010824222949"
+        }
+      ]
+    },
+    {
+      "sha256": "8d66c0fcf0e193b47ad9e56902aef12e43458dfe854285ae46f3bca3f4a9cc17",
+      "bytes": 62284,
+      "path": "archive-store/heart-preservation/objects/8d66c0fcf0e193b47ad9e56902aef12e43458dfe854285ae46f3bca3f4a9cc17.jpg",
+      "contentType": "image/jpeg",
+      "role": "weaving-instructions",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "http://permo.homepage.dk:80/tegning1.jpg",
+          "retrievedUrl": "https://web.archive.org/web/20021008161449id_/http://permo.homepage.dk:80/tegning1.jpg",
+          "retrievedAt": "2026-10-19T12:44:43.520834+00:00",
+          "archiveCaptureTimestamp": "20021008161449"
+        }
+      ]
+    },
+    {
+      "sha256": "dc5a6b3017ffff7d5e7124e526987113db47db2ec233c6285e2385903f9597f6",
+      "bytes": 8548,
+      "path": "archive-store/heart-preservation/objects/dc5a6b3017ffff7d5e7124e526987113db47db2ec233c6285e2385903f9597f6.json",
+      "contentType": "application/json",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "https://web.archive.org/cdx/search/cdx?url=permo.homepage.dk%2F*&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp,original,mimetype,digest,length&filter=mimetype%3Atext%2Fhtml&limit=80",
+          "retrievedUrl": "https://web.archive.org/cdx/search/cdx?url=permo.homepage.dk%2F*&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp,original,mimetype,digest,length&filter=mimetype%3Atext%2Fhtml&limit=80",
+          "retrievedAt": "2026-10-19T12:42:34.420109+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "38f981674656e6c7e9afef1739985ff764ba11f6f5060e13da87fd91422b6b31",
+      "bytes": 20092,
+      "path": "archive-store/heart-preservation/objects/38f981674656e6c7e9afef1739985ff764ba11f6f5060e13da87fd91422b6b31.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "https://web.archive.org/web/20010308150206id_/http://permo.homepage.dk:80/",
+          "retrievedUrl": "https://web.archive.org/web/20010308150206id_/http://permo.homepage.dk:80/",
+          "retrievedAt": "2026-10-19T12:43:20.597243+00:00",
+          "archiveCaptureTimestamp": "20010308150206"
+        }
+      ]
+    },
+    {
+      "sha256": "c3cb3278dc8431f8b50ee7ba696627c155c24ea5a0516fd1e04288c3bbf20ada",
+      "bytes": 12721,
+      "path": "archive-store/heart-preservation/objects/c3cb3278dc8431f8b50ee7ba696627c155c24ea5a0516fd1e04288c3bbf20ada.htm",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "https://web.archive.org/web/20010310083053id_/http://permo.homepage.dk:80/xmsheart.htm",
+          "retrievedUrl": "https://web.archive.org/web/20010310083053id_/http://permo.homepage.dk:80/xmsheart.htm",
+          "retrievedAt": "2026-10-19T12:43:24.858365+00:00",
+          "archiveCaptureTimestamp": "20010310083053"
+        }
+      ]
+    },
+    {
+      "sha256": "46ef7df2b4e66acc78e78fa24213f291247e6df1c905eb06e5f5277e7672b8d1",
+      "bytes": 1269,
+      "path": "archive-store/heart-preservation/objects/46ef7df2b4e66acc78e78fa24213f291247e6df1c905eb06e5f5277e7672b8d1.htm",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "https://web.archive.org/web/20010310080403id_/http://permo.homepage.dk:80/hjcir-01.htm",
+          "retrievedUrl": "https://web.archive.org/web/20010310080403id_/http://permo.homepage.dk:80/hjcir-01.htm",
+          "retrievedAt": "2026-10-19T12:43:29.617661+00:00",
+          "archiveCaptureTimestamp": "20010310080403"
+        }
+      ]
+    },
+    {
+      "sha256": "7e1e26c71d4398c269e98f5ee76e4657f0636116130f53ff0885eb9e45b37788",
+      "bytes": 1275,
+      "path": "archive-store/heart-preservation/objects/7e1e26c71d4398c269e98f5ee76e4657f0636116130f53ff0885eb9e45b37788.htm",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "https://web.archive.org/web/20010310080949id_/http://permo.homepage.dk:80/hjfig-01.htm",
+          "retrievedUrl": "https://web.archive.org/web/20010310080949id_/http://permo.homepage.dk:80/hjfig-01.htm",
+          "retrievedAt": "2026-10-19T12:43:34.967268+00:00",
+          "archiveCaptureTimestamp": "20010310080949"
+        }
+      ]
+    },
+    {
+      "sha256": "e8b54e7752a6003f22622ec5dde82946222a756e7c9f9bae2fb79a5ac9d4f489",
+      "bytes": 5079,
+      "path": "archive-store/heart-preservation/objects/e8b54e7752a6003f22622ec5dde82946222a756e7c9f9bae2fb79a5ac9d4f489.htm",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "https://web.archive.org/web/20010808034856id_/http://permo.homepage.dk:80/forside.htm",
+          "retrievedUrl": "https://web.archive.org/web/20010808034856id_/http://permo.homepage.dk:80/forside.htm",
+          "retrievedAt": "2026-10-19T12:43:41.004263+00:00",
+          "archiveCaptureTimestamp": "20010808034856"
+        }
+      ]
+    },
+    {
+      "sha256": "71c5abecfb5887b6667fa94c52e4a98028feba8f3614779c4e296d3d6f7f53ce",
+      "bytes": 20279,
+      "path": "archive-store/heart-preservation/objects/71c5abecfb5887b6667fa94c52e4a98028feba8f3614779c4e296d3d6f7f53ce.json",
+      "contentType": "application/json",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "https://web.archive.org/cdx/search/cdx?url=permo.homepage.dk%2F*&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp,original,mimetype,digest,length&filter=!mimetype%3Atext%2Fhtml&limit=400",
+          "retrievedUrl": "https://web.archive.org/cdx/search/cdx?url=permo.homepage.dk%2F*&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp,original,mimetype,digest,length&filter=!mimetype%3Atext%2Fhtml&limit=400",
+          "retrievedAt": "2026-10-19T12:43:45.850980+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "6e0700824aefecdab2b9212424f48be2420d5d168f1c1bbb5459dde68939e78b",
+      "bytes": 923,
+      "path": "archive-store/heart-preservation/objects/6e0700824aefecdab2b9212424f48be2420d5d168f1c1bbb5459dde68939e78b.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "https://web.archive.org/web/20090409113140id_/http://permo.homepage.dk/",
+          "retrievedUrl": "https://web.archive.org/web/20090409113140id_/http://permo.homepage.dk/",
+          "retrievedAt": "2026-10-19T12:44:55.008724+00:00",
+          "archiveCaptureTimestamp": "20090409113140"
+        }
+      ]
+    },
+    {
+      "sha256": "2a37f107fc3795fafc3c3ff61c938723d96d9305c6222083ac1f771d72826e1e",
+      "bytes": 230,
+      "path": "archive-store/heart-preservation/objects/2a37f107fc3795fafc3c3ff61c938723d96d9305c6222083ac1f771d72826e1e.htm",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "https://web.archive.org/web/20090409113140id_/http://permo.homepage.dk/body-eng.htm",
+          "retrievedUrl": "https://web.archive.org/web/20070728152013id_/http://permo.homepage.dk/body-eng.htm",
+          "retrievedAt": "2026-10-19T12:45:16.476384+00:00",
+          "archiveCaptureTimestamp": "20070728152013"
+        }
+      ]
+    },
+    {
+      "sha256": "cd3169db546f454c027a813b9ffcde8d7ce0d790baed1adf69df299a73d9ed30",
+      "bytes": 1548,
+      "path": "archive-store/heart-preservation/objects/cd3169db546f454c027a813b9ffcde8d7ce0d790baed1adf69df299a73d9ed30.htm",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "https://web.archive.org/web/20090409113140id_/http://permo.homepage.dk/bund-eng.htm",
+          "retrievedUrl": "https://web.archive.org/web/20070728152027id_/http://permo.homepage.dk/bund-eng.htm",
+          "retrievedAt": "2026-10-19T12:45:25.663419+00:00",
+          "archiveCaptureTimestamp": "20070728152027"
+        }
+      ]
+    },
+    {
+      "sha256": "fb7b69fe8e0347b90237b13d562f3f441493b8c0282826596bda1ccf11af4d13",
+      "bytes": 10588,
+      "path": "archive-store/heart-preservation/objects/fb7b69fe8e0347b90237b13d562f3f441493b8c0282826596bda1ccf11af4d13.htm",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "https://web.archive.org/web/20090409113140id_/http://permo.homepage.dk/xmsheart.htm",
+          "retrievedUrl": "https://web.archive.org/web/20090416050805id_/http://permo.homepage.dk/xmsheart.htm",
+          "retrievedAt": "2026-10-19T12:45:37.556004+00:00",
+          "archiveCaptureTimestamp": "20090416050805"
+        }
+      ]
+    },
+    {
+      "sha256": "2ae6bb7aa7a0012155e4b3dc2f5313d42fde3b903cf72276a8eeeec85be55b04",
+      "bytes": 956,
+      "path": "archive-store/heart-preservation/objects/2ae6bb7aa7a0012155e4b3dc2f5313d42fde3b903cf72276a8eeeec85be55b04.htm",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "https://web.archive.org/web/20090409113140id_/http://permo.homepage.dk/hjcir-01.htm",
+          "retrievedUrl": "https://web.archive.org/web/20090330053657id_/http://permo.homepage.dk/hjcir-01.htm",
+          "retrievedAt": "2026-10-19T12:46:22.862567+00:00",
+          "archiveCaptureTimestamp": "20090330053657"
+        }
+      ]
+    },
+    {
+      "sha256": "39ff3e8686c9c0801977e43f21f5797396f2f4b3a3a6e6aa78d697f81c150a31",
+      "bytes": 962,
+      "path": "archive-store/heart-preservation/objects/39ff3e8686c9c0801977e43f21f5797396f2f4b3a3a6e6aa78d697f81c150a31.htm",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "https://web.archive.org/web/20090409113140id_/http://permo.homepage.dk/hjfig-01.htm",
+          "retrievedUrl": "https://web.archive.org/web/20090415230840id_/http://permo.homepage.dk/hjfig-01.htm",
+          "retrievedAt": "2026-10-19T12:46:34.323342+00:00",
+          "archiveCaptureTimestamp": "20090415230840"
+        }
+      ]
+    },
+    {
+      "sha256": "72846a0200f5fe6996ba88749fd0ff0de92356935897792e49383723704c2fab",
+      "bytes": 4457,
+      "path": "archive-store/heart-preservation/objects/72846a0200f5fe6996ba88749fd0ff0de92356935897792e49383723704c2fab.json",
+      "contentType": "application/json",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "permo",
+          "originalUrl": "https://web.archive.org/cdx/search/cdx?url=permo.homepage.dk%2Fhj*&output=json&filter=statuscode%3A200&filter=mimetype%3Aimage%2Fjpeg&collapse=digest&fl=timestamp,original,mimetype,digest,length&to=2009&limit=300",
+          "retrievedUrl": "https://web.archive.org/cdx/search/cdx?url=permo.homepage.dk%2Fhj*&output=json&filter=statuscode%3A200&filter=mimetype%3Aimage%2Fjpeg&collapse=digest&fl=timestamp,original,mimetype,digest,length&to=2009&limit=300",
+          "retrievedAt": "2026-10-19T12:47:03.516362+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "4c3db2d2e93feda4ec60c038d79c199a8bad33d47c8ca35e67eb5d25c1f0ea5c",
+      "bytes": 27070,
+      "path": "archive-store/heart-preservation/objects/4c3db2d2e93feda4ec60c038d79c199a8bad33d47c8ca35e67eb5d25c1f0ea5c.pdf",
+      "contentType": "application/pdf",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/contrib/carola_super_nova.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170112125847id_/http://julehjertedesign.dk/diagrams/contrib/carola_super_nova.pdf",
+          "retrievedAt": "2026-10-19T12:57:20.261568+00:00",
+          "archiveCaptureTimestamp": "20170112125847"
+        }
+      ]
+    },
+    {
+      "sha256": "b12267c57c991798a776f1e5df9dc030bfac7bb9dcc7042f3751180fde91037b",
+      "bytes": 43097,
+      "path": "archive-store/heart-preservation/objects/b12267c57c991798a776f1e5df9dc030bfac7bb9dcc7042f3751180fde91037b.pdf",
+      "contentType": "application/pdf",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/darth_vader.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170112130334id_/http://julehjertedesign.dk/diagrams/darth_vader.pdf",
+          "retrievedAt": "2026-10-19T12:57:26.016446+00:00",
+          "archiveCaptureTimestamp": "20170112130334"
+        }
+      ]
+    },
+    {
+      "sha256": "b53c957305fec4da92b232bd1d6632e415bd3352ea2ca65df61777493301dc9d",
+      "bytes": 42573,
+      "path": "archive-store/heart-preservation/objects/b53c957305fec4da92b232bd1d6632e415bd3352ea2ca65df61777493301dc9d.pdf",
+      "contentType": "application/pdf",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/heart_of_heart.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170114063322id_/http://julehjertedesign.dk/diagrams/heart_of_heart.pdf",
+          "retrievedAt": "2026-10-19T12:57:31.398766+00:00",
+          "archiveCaptureTimestamp": "20170114063322"
+        }
+      ]
+    },
+    {
+      "sha256": "135d196c820fb1300d5d2dde855d568ca57dfd273b8de6200ac8085e62efd453",
+      "bytes": 32831,
+      "path": "archive-store/heart-preservation/objects/135d196c820fb1300d5d2dde855d568ca57dfd273b8de6200ac8085e62efd453.pdf",
+      "contentType": "application/pdf",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/node.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170114005929id_/http://julehjertedesign.dk/diagrams/node.pdf",
+          "retrievedAt": "2026-10-19T12:57:37.316274+00:00",
+          "archiveCaptureTimestamp": "20170114005929"
+        }
+      ]
+    },
+    {
+      "sha256": "c64bbc3beeb401044b4fe99741feb9eecfc2117e1f56b4f282a9aa476412abb2",
+      "bytes": 51243,
+      "path": "archive-store/heart-preservation/objects/c64bbc3beeb401044b4fe99741feb9eecfc2117e1f56b4f282a9aa476412abb2.pdf",
+      "contentType": "application/pdf",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/sundays_fourth.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170112122538id_/http://julehjertedesign.dk/diagrams/sundays_fourth.pdf",
+          "retrievedAt": "2026-10-19T12:57:42.360118+00:00",
+          "archiveCaptureTimestamp": "20170112122538"
+        }
+      ]
+    },
+    {
+      "sha256": "2cf8d8ef04d2389146ba30482ebb2bf7642de286487f2c8674ffafb85d4f1406",
+      "bytes": 33551,
+      "path": "archive-store/heart-preservation/objects/2cf8d8ef04d2389146ba30482ebb2bf7642de286487f2c8674ffafb85d4f1406.pdf",
+      "contentType": "application/pdf",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/diagrams/venus.pdf",
+          "retrievedUrl": "https://web.archive.org/web/20170112121201id_/http://julehjertedesign.dk/diagrams/venus.pdf",
+          "retrievedAt": "2026-10-19T12:57:48.276865+00:00",
+          "archiveCaptureTimestamp": "20170112121201"
+        }
+      ]
+    },
+    {
+      "sha256": "12ac7354491c2f5176d7909d152793e6d424cf4fda37dae9752666a0f7028dc1",
+      "bytes": 2148,
+      "path": "archive-store/heart-preservation/objects/12ac7354491c2f5176d7909d152793e6d424cf4fda37dae9752666a0f7028dc1.gif",
+      "contentType": "image/gif",
+      "role": "woven-design-preview",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/bjoern.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160621202204id_/http://www.haabet.dk/users/julehjerter/bjoern.gif",
+          "retrievedAt": "2026-10-19T12:59:35.896246+00:00",
+          "archiveCaptureTimestamp": "20160621202204"
+        }
+      ]
+    },
+    {
+      "sha256": "8626e2717cfbfcc468f8080b46ea6d0cf9642f5542bc517b085a227d1ecf4e5b",
+      "bytes": 2362,
+      "path": "archive-store/heart-preservation/objects/8626e2717cfbfcc468f8080b46ea6d0cf9642f5542bc517b085a227d1ecf4e5b.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template-white-outer",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://haabet.dk/users/julehjerter/bjoernl.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160515040536id_/http://haabet.dk/users/julehjerter/bjoernl.gif",
+          "retrievedAt": "2026-10-19T12:59:47.057570+00:00",
+          "archiveCaptureTimestamp": "20160515040536"
+        }
+      ]
+    },
+    {
+      "sha256": "c2568c89d5033ff851588707b1787f74ed2d985f94c052ae75b9fdb9090f4a37",
+      "bytes": 1946,
+      "path": "archive-store/heart-preservation/objects/c2568c89d5033ff851588707b1787f74ed2d985f94c052ae75b9fdb9090f4a37.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template-blue-inner",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://haabet.dk/users/julehjerter/bjoernv.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160418074218id_/http://haabet.dk/users/julehjerter/bjoernv.gif",
+          "retrievedAt": "2026-10-19T12:59:56.559502+00:00",
+          "archiveCaptureTimestamp": "20160418074218"
+        }
+      ]
+    },
+    {
+      "sha256": "c1322e96ce1fb8fe497a3dc9a4c45713f58750ee4ecd57fb4601d7bb65e38787",
+      "bytes": 19044,
+      "path": "archive-store/heart-preservation/objects/c1322e96ce1fb8fe497a3dc9a4c45713f58750ee4ecd57fb4601d7bb65e38787.json",
+      "contentType": "application/json",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": null,
+          "retrievedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2F*&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp,original,mimetype,digest,length&limit=150",
+          "retrievedAt": "2026-10-19T12:55:55.946045+00:00",
+          "archiveCaptureTimestamp": null
+        },
+        {
+          "collection": "jhd-geometric-1",
+          "originalUrl": null,
+          "retrievedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2F*&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp,original,mimetype,digest,length&limit=150",
+          "retrievedAt": "2026-10-19T12:55:55.946045+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "5088431d744068dae28a07ac8fdc1bdff73d2bb079da7a6e88b31bfebf1eff85",
+      "bytes": 2672,
+      "path": "archive-store/heart-preservation/objects/5088431d744068dae28a07ac8fdc1bdff73d2bb079da7a6e88b31bfebf1eff85.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/figure.html",
+          "retrievedUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/figure.html",
+          "retrievedAt": "2026-10-19T12:56:57.770256+00:00",
+          "archiveCaptureTimestamp": "20150812154542"
+        },
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/figure.html",
+          "retrievedUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/figure.html",
+          "retrievedAt": "2026-10-19T12:56:57.770256+00:00",
+          "archiveCaptureTimestamp": "20150812154542"
+        },
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/figure.html",
+          "retrievedUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/figure.html",
+          "retrievedAt": "2026-10-19T12:56:57.770256+00:00",
+          "archiveCaptureTimestamp": "20150812154542"
+        }
+      ]
+    },
+    {
+      "sha256": "9e8d1800d030a6680bb5563aa5ee0849c9e970f611c46952392b1f898ada080b",
+      "bytes": 40602,
+      "path": "archive-store/heart-preservation/objects/9e8d1800d030a6680bb5563aa5ee0849c9e970f611c46952392b1f898ada080b.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/damernes-julehjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20170112105628id_/http://julehjertedesign.dk/damernes-julehjerte/",
+          "retrievedAt": "2026-10-19T12:57:08.101089+00:00",
+          "archiveCaptureTimestamp": "20170112105628"
+        }
+      ]
+    },
+    {
+      "sha256": "a2ee66b6971b05f3597e0970781a6b6b93aac68c50aa35708f95ed511980510b",
+      "bytes": 48707,
+      "path": "archive-store/heart-preservation/objects/a2ee66b6971b05f3597e0970781a6b6b93aac68c50aa35708f95ed511980510b.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/darth-vader-julehjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20160405032756id_/http://julehjertedesign.dk/darth-vader-julehjerte/",
+          "retrievedAt": "2026-10-19T12:57:14.596436+00:00",
+          "archiveCaptureTimestamp": "20160405032756"
+        }
+      ]
+    },
+    {
+      "sha256": "08ecf225b77960c4288de4e4ba240b8e169a2f2847143bdc01eb6f1b5d7ab840",
+      "bytes": 41874,
+      "path": "archive-store/heart-preservation/objects/08ecf225b77960c4288de4e4ba240b8e169a2f2847143bdc01eb6f1b5d7ab840.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/fjerde-soendag-i-advent/",
+          "retrievedUrl": "https://web.archive.org/web/20160405032316id_/http://julehjertedesign.dk/fjerde-soendag-i-advent/",
+          "retrievedAt": "2026-10-19T12:57:53.928314+00:00",
+          "archiveCaptureTimestamp": "20160405032316"
+        }
+      ]
+    },
+    {
+      "sha256": "b9058f5a2d5ab3e302fd090df1c4bf17fecc92eb6f943460846213302df1eeb8",
+      "bytes": 44736,
+      "path": "archive-store/heart-preservation/objects/b9058f5a2d5ab3e302fd090df1c4bf17fecc92eb6f943460846213302df1eeb8.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/julehjertets-hjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20160405033512id_/http://julehjertedesign.dk/julehjertets-hjerte/",
+          "retrievedAt": "2026-10-19T12:57:59.936109+00:00",
+          "archiveCaptureTimestamp": "20160405033512"
+        }
+      ]
+    },
+    {
+      "sha256": "b929495060aeecd7c88af123793460f325d7c4ce7d0cf5158792d1ea973f428f",
+      "bytes": 39771,
+      "path": "archive-store/heart-preservation/objects/b929495060aeecd7c88af123793460f325d7c4ce7d0cf5158792d1ea973f428f.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/node-julehjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20160405033449id_/http://julehjertedesign.dk/node-julehjerte/",
+          "retrievedAt": "2026-10-19T12:58:09.158252+00:00",
+          "archiveCaptureTimestamp": "20160405033449"
+        }
+      ]
+    },
+    {
+      "sha256": "8138af5cc46fdc1ff6ba4d4c5480173d9d8d2022def042112acb7451dc8e2b9c",
+      "bytes": 68282,
+      "path": "archive-store/heart-preservation/objects/8138af5cc46fdc1ff6ba4d4c5480173d9d8d2022def042112acb7451dc8e2b9c.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/om/",
+          "retrievedUrl": "https://web.archive.org/web/20160405091838id_/http://julehjertedesign.dk/om/",
+          "retrievedAt": "2026-10-19T12:58:15.877666+00:00",
+          "archiveCaptureTimestamp": "20160405091838"
+        },
+        {
+          "collection": "jhd-geometric-1",
+          "originalUrl": "http://julehjertedesign.dk/om/",
+          "retrievedUrl": "https://web.archive.org/web/20160405091838id_/http://julehjertedesign.dk/om/",
+          "retrievedAt": "2026-10-19T12:58:15.877666+00:00",
+          "archiveCaptureTimestamp": "20160405091838"
+        }
+      ]
+    },
+    {
+      "sha256": "77a24eb2a914096963fc9fdeb5b1a0cf8b29c4c582aa7af4b27bb85825394cc5",
+      "bytes": 39044,
+      "path": "archive-store/heart-preservation/objects/77a24eb2a914096963fc9fdeb5b1a0cf8b29c4c582aa7af4b27bb85825394cc5.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/super-nova/",
+          "retrievedUrl": "https://web.archive.org/web/20160405032131id_/http://julehjertedesign.dk/super-nova/",
+          "retrievedAt": "2026-10-19T12:58:22.659099+00:00",
+          "archiveCaptureTimestamp": "20160405032131"
+        }
+      ]
+    },
+    {
+      "sha256": "71a3db0da9ecf36f22a079012bf4ef4a371bdf686ccff6d7b9a25fbf161206ef",
+      "bytes": 731,
+      "path": "archive-store/heart-preservation/objects/71a3db0da9ecf36f22a079012bf4ef4a371bdf686ccff6d7b9a25fbf161206ef.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/bjoern.html",
+          "retrievedUrl": "https://web.archive.org/web/20151025194126id_/http://www.haabet.dk/users/julehjerter/bjoern.html",
+          "retrievedAt": "2026-10-19T12:58:45.873890+00:00",
+          "archiveCaptureTimestamp": "20151025194126"
+        }
+      ]
+    },
+    {
+      "sha256": "a018d768c3cd79e61cb46d83969a435a9cc6cafdaf029765a19d7436a487acdc",
+      "bytes": 4526,
+      "path": "archive-store/heart-preservation/objects/a018d768c3cd79e61cb46d83969a435a9cc6cafdaf029765a19d7436a487acdc.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/index.html",
+          "retrievedUrl": "https://web.archive.org/web/20150812154558id_/http://www.haabet.dk/users/julehjerter/index.html",
+          "retrievedAt": "2026-10-19T12:58:57.210230+00:00",
+          "archiveCaptureTimestamp": "20150812154558"
+        },
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/index.html",
+          "retrievedUrl": "https://web.archive.org/web/20150812154558id_/http://www.haabet.dk/users/julehjerter/index.html",
+          "retrievedAt": "2026-10-19T12:58:57.210230+00:00",
+          "archiveCaptureTimestamp": "20150812154558"
+        },
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/index.html",
+          "retrievedUrl": "https://web.archive.org/web/20150812154558id_/http://www.haabet.dk/users/julehjerter/index.html",
+          "retrievedAt": "2026-10-19T12:58:57.210230+00:00",
+          "archiveCaptureTimestamp": "20150812154558"
+        }
+      ]
+    },
+    {
+      "sha256": "99f8774b55be6a24b502584cca886399338399c4118be6ffbdd9354bc1f9f3ba",
+      "bytes": 40237,
+      "path": "archive-store/heart-preservation/objects/99f8774b55be6a24b502584cca886399338399c4118be6ffbdd9354bc1f9f3ba.html",
+      "contentType": "text/html; charset=UTF-8",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "dead-sites",
+          "originalUrl": "http://julehjertedesign.dk/venus-julehjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20161018014112id_/http://julehjertedesign.dk/venus-julehjerte/",
+          "retrievedAt": "2026-10-19T12:59:05.972077+00:00",
+          "archiveCaptureTimestamp": "20161018014112"
+        }
+      ]
+    },
+    {
+      "sha256": "0bb0b36737c442445835b3b43d77eac227ccc5892eedf1eed97cffc26ffd6ff3",
+      "bytes": 3742,
+      "path": "archive-store/heart-preservation/objects/0bb0b36737c442445835b3b43d77eac227ccc5892eedf1eed97cffc26ffd6ff3.gif",
+      "contentType": "image/gif",
+      "role": "woven-design-preview",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://haabet.dk/users/julehjerter/g.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160518110845id_/http://haabet.dk/users/julehjerter/g.gif",
+          "retrievedAt": "2026-10-19T13:51:11.530817+00:00",
+          "archiveCaptureTimestamp": "20160518110845"
+        }
+      ]
+    },
+    {
+      "sha256": "744cd3f39e688fd18db79462d2f57c99de847bd58c72d31d066547b2bfa34ce9",
+      "bytes": 2078,
+      "path": "archive-store/heart-preservation/objects/744cd3f39e688fd18db79462d2f57c99de847bd58c72d31d066547b2bfa34ce9.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/g_.gif",
+          "retrievedUrl": "https://web.archive.org/web/20130530125527id_/http://www.haabet.dk/users/julehjerter/g_.gif",
+          "retrievedAt": "2026-10-19T13:51:29.549114+00:00",
+          "archiveCaptureTimestamp": "20130530125527"
+        }
+      ]
+    },
+    {
+      "sha256": "49b03f934333cd30d57fbbfc232a02630c5779b37c6b98946706dad10ba18dab",
+      "bytes": 6538,
+      "path": "archive-store/heart-preservation/objects/49b03f934333cd30d57fbbfc232a02630c5779b37c6b98946706dad10ba18dab.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://haabet.dk/users/julehjerter/hvirvel.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160418065353id_/http://haabet.dk/users/julehjerter/hvirvel.gif",
+          "retrievedAt": "2026-10-19T13:51:44.895888+00:00",
+          "archiveCaptureTimestamp": "20160418065353"
+        }
+      ]
+    },
+    {
+      "sha256": "3694e6b91ce62190371c4e3b93ab13497da2eaefa7b646295f47c233a0e82d07",
+      "bytes": 13980,
+      "path": "archive-store/heart-preservation/objects/3694e6b91ce62190371c4e3b93ab13497da2eaefa7b646295f47c233a0e82d07.jpg",
+      "contentType": "image/jpeg",
+      "role": "assembled-heart-photo",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://haabet.dk/users/julehjerter/hvirvel.jpg",
+          "retrievedUrl": "https://web.archive.org/web/20160418062910id_/http://haabet.dk/users/julehjerter/hvirvel.jpg",
+          "retrievedAt": "2026-10-19T13:51:58.852619+00:00",
+          "archiveCaptureTimestamp": "20160418062910"
+        }
+      ]
+    },
+    {
+      "sha256": "ba1360872092588a6a75921b46febad67950aa9e95da53bac35c88f507a3486d",
+      "bytes": 7303,
+      "path": "archive-store/heart-preservation/objects/ba1360872092588a6a75921b46febad67950aa9e95da53bac35c88f507a3486d.jpg",
+      "contentType": "image/jpeg",
+      "role": "assembled-heart-photo",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://haabet.dk/users/julehjerter/hvirvel2.jpg",
+          "retrievedUrl": "https://web.archive.org/web/20160518163412id_/http://haabet.dk/users/julehjerter/hvirvel2.jpg",
+          "retrievedAt": "2026-10-19T13:52:11.921779+00:00",
+          "archiveCaptureTimestamp": "20160518163412"
+        }
+      ]
+    },
+    {
+      "sha256": "dc21f2052baaa09884a49e3a546b5fc4becfaddf9d2878b75a7f8b730bc175cf",
+      "bytes": 531,
+      "path": "archive-store/heart-preservation/objects/dc21f2052baaa09884a49e3a546b5fc4becfaddf9d2878b75a7f8b730bc175cf.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/g.html",
+          "retrievedUrl": "https://web.archive.org/web/20151025194203id_/http://www.haabet.dk/users/julehjerter/g.html",
+          "retrievedAt": "2026-10-19T13:50:21.114283+00:00",
+          "archiveCaptureTimestamp": "20151025194203"
+        }
+      ]
+    },
+    {
+      "sha256": "1654d16344d732322f11ec5f9ba9e3ea7b73a7540ffb0c4c33d13ada59c3459b",
+      "bytes": 1398,
+      "path": "archive-store/heart-preservation/objects/1654d16344d732322f11ec5f9ba9e3ea7b73a7540ffb0c4c33d13ada59c3459b.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/hvirvel.html",
+          "retrievedUrl": "https://web.archive.org/web/20151029024736id_/http://www.haabet.dk/users/julehjerter/hvirvel.html",
+          "retrievedAt": "2026-10-19T13:50:35.376785+00:00",
+          "archiveCaptureTimestamp": "20151029024736"
+        }
+      ]
+    },
+    {
+      "sha256": "caa0dc206a2ac1f75f36f099017bfda0314c92c3444ce06f911c4092f0dc7f51",
+      "bytes": 1049,
+      "path": "archive-store/heart-preservation/objects/caa0dc206a2ac1f75f36f099017bfda0314c92c3444ce06f911c4092f0dc7f51.gif",
+      "contentType": "image/gif",
+      "role": "woven-design-preview",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://haabet.dk/users/julehjerter/klokke.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160518070125id_/http://haabet.dk/users/julehjerter/klokke.gif",
+          "retrievedAt": "2026-10-19T16:17:15.462908+00:00",
+          "archiveCaptureTimestamp": "20160518070125"
+        }
+      ]
+    },
+    {
+      "sha256": "a480c3257ce43f6933f6a36f0920e434567daa8cd254d2eaac5c7ba93da7b845",
+      "bytes": 3027,
+      "path": "archive-store/heart-preservation/objects/a480c3257ce43f6933f6a36f0920e434567daa8cd254d2eaac5c7ba93da7b845.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/klokke_.gif",
+          "retrievedUrl": "https://web.archive.org/web/20130530135656id_/http://www.haabet.dk/users/julehjerter/klokke_.gif",
+          "retrievedAt": "2026-10-19T16:17:19.959151+00:00",
+          "archiveCaptureTimestamp": "20130530135656"
+        }
+      ]
+    },
+    {
+      "sha256": "c33a08576227ded8bc949d02ced3e462a2d488fd090e0175132569f0fe39169c",
+      "bytes": 1321,
+      "path": "archive-store/heart-preservation/objects/c33a08576227ded8bc949d02ced3e462a2d488fd090e0175132569f0fe39169c.gif",
+      "contentType": "image/gif",
+      "role": "woven-design-preview",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://haabet.dk/users/julehjerter/due.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160518141252id_/http://haabet.dk/users/julehjerter/due.gif",
+          "retrievedAt": "2026-10-19T16:17:24.772529+00:00",
+          "archiveCaptureTimestamp": "20160518141252"
+        }
+      ]
+    },
+    {
+      "sha256": "bc77a62e13f12ef2492580a23ec513dc11e457d1f85a9c28c7c74f4d7fb68fc9",
+      "bytes": 1822,
+      "path": "archive-store/heart-preservation/objects/bc77a62e13f12ef2492580a23ec513dc11e457d1f85a9c28c7c74f4d7fb68fc9.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template-white-outer",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://haabet.dk/users/julehjerter/due1.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160515090304id_/http://haabet.dk/users/julehjerter/due1.gif",
+          "retrievedAt": "2026-10-19T16:17:38.194759+00:00",
+          "archiveCaptureTimestamp": "20160515090304"
+        }
+      ]
+    },
+    {
+      "sha256": "fa40c516d9807fd99ff4cccbe7e91069e40fc3707dd5a6600cb0c114fa5412b4",
+      "bytes": 2053,
+      "path": "archive-store/heart-preservation/objects/fa40c516d9807fd99ff4cccbe7e91069e40fc3707dd5a6600cb0c114fa5412b4.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template-inner",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://haabet.dk/users/julehjerter/due2.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160515043212id_/http://haabet.dk/users/julehjerter/due2.gif",
+          "retrievedAt": "2026-10-19T16:17:30.067958+00:00",
+          "archiveCaptureTimestamp": "20160515043212"
+        }
+      ]
+    },
+    {
+      "sha256": "49d9e260ace92f237323180ae82c545dd6d7f922bd643d5ddae39e2776208b74",
+      "bytes": 2058,
+      "path": "archive-store/heart-preservation/objects/49d9e260ace92f237323180ae82c545dd6d7f922bd643d5ddae39e2776208b74.gif",
+      "contentType": "image/gif",
+      "role": "woven-design-preview",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://haabet.dk/users/julehjerter/anker.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160519061422id_/http://haabet.dk/users/julehjerter/anker.gif",
+          "retrievedAt": "2026-10-19T16:17:44.840302+00:00",
+          "archiveCaptureTimestamp": "20160519061422"
+        }
+      ]
+    },
+    {
+      "sha256": "b8ca9bd41faa7df8a9034c642474b9a0df8c1aef91a05ea74d04ff543f392f4b",
+      "bytes": 2640,
+      "path": "archive-store/heart-preservation/objects/b8ca9bd41faa7df8a9034c642474b9a0df8c1aef91a05ea74d04ff543f392f4b.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template-sheet-1",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/anker_a.gif",
+          "retrievedUrl": "https://web.archive.org/web/20130530181046id_/http://www.haabet.dk/users/julehjerter/anker_a.gif",
+          "retrievedAt": "2026-10-19T16:17:48.572868+00:00",
+          "archiveCaptureTimestamp": "20130530181046"
+        }
+      ]
+    },
+    {
+      "sha256": "d43f985bf34cde214e417171c3bec48d7ec31dd553b6163942444bcbd753a42d",
+      "bytes": 1971,
+      "path": "archive-store/heart-preservation/objects/d43f985bf34cde214e417171c3bec48d7ec31dd553b6163942444bcbd753a42d.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template-sheet-2",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/anker_b.gif",
+          "retrievedUrl": "https://web.archive.org/web/20130530171401id_/http://www.haabet.dk/users/julehjerter/anker_b.gif",
+          "retrievedAt": "2026-10-19T16:17:53.166587+00:00",
+          "archiveCaptureTimestamp": "20130530171401"
+        }
+      ]
+    },
+    {
+      "sha256": "dbd2d679a469e5ef91b49c7dd6a5821103fe3a5162161cdbdadb32a389de2400",
+      "bytes": 533,
+      "path": "archive-store/heart-preservation/objects/dbd2d679a469e5ef91b49c7dd6a5821103fe3a5162161cdbdadb32a389de2400.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/klokke.html",
+          "retrievedUrl": "https://web.archive.org/web/20151025194235id_/http://www.haabet.dk/users/julehjerter/klokke.html",
+          "retrievedAt": "2026-10-19T16:16:27.562753+00:00",
+          "archiveCaptureTimestamp": "20151025194235"
+        }
+      ]
+    },
+    {
+      "sha256": "0b8f06a2dd56f0b3cd60cf9209f94b3f8b6fc64bb128857d05bcaccba2cded1f",
+      "bytes": 920,
+      "path": "archive-store/heart-preservation/objects/0b8f06a2dd56f0b3cd60cf9209f94b3f8b6fc64bb128857d05bcaccba2cded1f.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/due.html",
+          "retrievedUrl": "https://web.archive.org/web/20151025194146id_/http://www.haabet.dk/users/julehjerter/due.html",
+          "retrievedAt": "2026-10-19T16:16:37.942889+00:00",
+          "archiveCaptureTimestamp": "20151025194146"
+        }
+      ]
+    },
+    {
+      "sha256": "fa590c82f983c5b0d9cddf0ad7943f1938ce1f8c8d442557954a8a2ad20b057b",
+      "bytes": 734,
+      "path": "archive-store/heart-preservation/objects/fa590c82f983c5b0d9cddf0ad7943f1938ce1f8c8d442557954a8a2ad20b057b.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-3",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/anker.html",
+          "retrievedUrl": "https://web.archive.org/web/20151029022652id_/http://www.haabet.dk/users/julehjerter/anker.html",
+          "retrievedAt": "2026-10-19T16:16:41.255371+00:00",
+          "archiveCaptureTimestamp": "20151029022652"
+        }
+      ]
+    },
+    {
+      "sha256": "503862607b1f6eb671feefdc5b4a5e1f9ddc42909c25b744f59b4dff211a004f",
+      "bytes": 305305,
+      "path": "archive-store/heart-preservation/objects/503862607b1f6eb671feefdc5b4a5e1f9ddc42909c25b744f59b4dff211a004f.png",
+      "contentType": "image/png",
+      "role": "woven-heart-photo",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-geometric-1",
+          "originalUrl": "http://julehjertedesign.dk/wp-content/uploads/oval.png",
+          "retrievedUrl": "https://web.archive.org/web/20161203133004id_/http://julehjertedesign.dk/wp-content/uploads/oval.png",
+          "retrievedAt": "2026-10-19T16:58:21.409763+00:00",
+          "archiveCaptureTimestamp": "20161203133004"
+        }
+      ]
+    },
+    {
+      "sha256": "04709d93dc4e69deda435520a1fc65965e297a7196f100caeac1778290642766",
+      "bytes": 40895,
+      "path": "archive-store/heart-preservation/objects/04709d93dc4e69deda435520a1fc65965e297a7196f100caeac1778290642766.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-geometric-1",
+          "originalUrl": "http://julehjertedesign.dk/hexatriple-julehjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20170112121410id_/http://julehjertedesign.dk/hexatriple-julehjerte/",
+          "retrievedAt": "2026-10-19T16:55:51.553730+00:00",
+          "archiveCaptureTimestamp": "20170112121410"
+        }
+      ]
+    },
+    {
+      "sha256": "e4af64292b10937939d0d5f798a2e04dd8292ad725cbc8c2e8c516b603c8c8a9",
+      "bytes": 42555,
+      "path": "archive-store/heart-preservation/objects/e4af64292b10937939d0d5f798a2e04dd8292ad725cbc8c2e8c516b603c8c8a9.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-geometric-1",
+          "originalUrl": "http://julehjertedesign.dk/ovalt-julehjerte/",
+          "retrievedUrl": "https://web.archive.org/web/20170112060010id_/http://julehjertedesign.dk/ovalt-julehjerte/",
+          "retrievedAt": "2026-10-19T16:55:54.392556+00:00",
+          "archiveCaptureTimestamp": "20170112060010"
+        }
+      ]
+    },
+    {
+      "sha256": "9e8ba55a5051953d656dcebce1070a3415619c4a0a579d1c313dece5c376cb0f",
+      "bytes": 39213,
+      "path": "archive-store/heart-preservation/objects/9e8ba55a5051953d656dcebce1070a3415619c4a0a579d1c313dece5c376cb0f.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-geometric-1",
+          "originalUrl": "http://julehjertedesign.dk/square-twist/",
+          "retrievedUrl": "https://web.archive.org/web/20170112092310id_/http://julehjertedesign.dk/square-twist/",
+          "retrievedAt": "2026-10-19T16:55:56.973562+00:00",
+          "archiveCaptureTimestamp": "20170112092310"
+        }
+      ]
+    },
+    {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "path": "archive-store/heart-preservation/objects/37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570.json",
+      "contentType": "application/json",
+      "role": "archive-lookup-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-geometric-recovery-1",
+          "originalUrl": null,
+          "retrievedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json&filter=original%3A.*%28hexatriple%7Coval%7Cinner_square%29%5C.%28pdf%7Csvg%29.*&collapse=digest&fl=timestamp,original,mimetype,statuscode,digest,length&limit=100",
+          "retrievedAt": "2026-10-19T17:24:06.531528+00:00",
+          "archiveCaptureTimestamp": null
+        },
+        {
+          "collection": "jhd-geometric-recovery-1",
+          "originalUrl": null,
+          "retrievedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2Fhexatriple.pdf&output=json&fl=timestamp,original,mimetype,statuscode,digest,length&limit=30",
+          "retrievedAt": "2026-10-19T17:24:42.253758+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "4e994b94a2c826382abad108c0067c0b344d25259fb4b2204d33e21db5785822",
+      "bytes": 1758,
+      "path": "archive-store/heart-preservation/objects/4e994b94a2c826382abad108c0067c0b344d25259fb4b2204d33e21db5785822.json",
+      "contentType": "application/json",
+      "role": "archive-lookup-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-geometric-recovery-1",
+          "originalUrl": null,
+          "retrievedUrl": "https://web.archive.org/cdx/search/cdx?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json&collapse=urlkey&fl=timestamp,original,mimetype,statuscode,digest,length&limit=200",
+          "retrievedAt": "2026-10-19T17:24:33.380650+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "77740b547b1535ca184cd49375b955403700ee04a920259885de539f3aab5b3c",
+      "bytes": 67,
+      "path": "archive-store/heart-preservation/objects/77740b547b1535ca184cd49375b955403700ee04a920259885de539f3aab5b3c.json",
+      "contentType": "application/json",
+      "role": "archive-lookup-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-geometric-recovery-1",
+          "originalUrl": null,
+          "retrievedUrl": "https://index.commoncrawl.org/CC-MAIN-2017-04-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+          "retrievedAt": "2026-10-19T17:25:32.468972+00:00",
+          "archiveCaptureTimestamp": null
+        },
+        {
+          "collection": "jhd-geometric-recovery-1",
+          "originalUrl": null,
+          "retrievedUrl": "https://index.commoncrawl.org/CC-MAIN-2018-05-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+          "retrievedAt": "2026-10-19T17:25:57.736908+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    },
+    {
+      "sha256": "6e3320dd0edf2904352e442a19f5e412ea5af5d6547124b87f1a1ecd05746185",
+      "bytes": 167,
+      "path": "archive-store/heart-preservation/objects/6e3320dd0edf2904352e442a19f5e412ea5af5d6547124b87f1a1ecd05746185.html",
+      "contentType": "text/html",
+      "role": "archive-lookup-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "jhd-geometric-recovery-1",
+          "originalUrl": null,
+          "retrievedUrl": "https://index.commoncrawl.org/CC-MAIN-2016-40-index?url=julehjertedesign.dk%2Fdiagrams%2F*&output=json",
+          "retrievedAt": "2026-10-19T17:25:46.189005+00:00",
+          "archiveCaptureTimestamp": null
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "objects": 133,
+    "originalBytes": 15995754,
+    "publicObjects": 1
+  },
+  "scope": "Original source documents and evidence, retained once by SHA-256. Public template copies require recorded redistribution terms. Other originals are kept in archive-store, outside tmp and outside Git/public assets. A second off-device backup is still needed.",
+  "updatedAt": "2026-10-19T17:28:51.663711+00:00"
+}

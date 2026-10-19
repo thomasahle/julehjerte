@@ -3,9 +3,12 @@
   line with the copyright. The paper colours, the language toggle and GitHub
   are in the header (PageHeader, ColorControls).
 
-  Rendered once by the root layout, on every page except the editor.
+  Rendered once by the root layout on every page, including the design tools,
+  which size their full-height workspaces around it through
+  --site-footer-height (measured here).
 -->
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
 	import { t, langFromPathname } from '$lib/i18n';
@@ -18,9 +21,26 @@
 	const seasons = year > FIRST_SEASON ? `${FIRST_SEASON}, ${year}` : `${FIRST_SEASON}`;
 
 	let lang = $derived(langFromPathname($page.url.pathname, base));
+	let footer: HTMLElement;
+
+	onMount(() => {
+		const measure = () =>
+			document.documentElement.style.setProperty(
+				'--site-footer-height',
+				`${footer.getBoundingClientRect().height}px`
+			);
+		measure();
+		// Absent in some test environments; the measured height then stays.
+		const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure);
+		observer?.observe(footer);
+		return () => {
+			observer?.disconnect();
+			document.documentElement.style.removeProperty('--site-footer-height');
+		};
+	});
 </script>
 
-<footer class="site-footer">
+<footer class="site-footer" bind:this={footer}>
 	<p class="made-by">
 		{t('madeBy', lang)}
 		<a href="https://thomasahle.com" target="_blank" rel="noopener">Thomas Ahle</a>,
@@ -31,6 +51,7 @@
 
 <style>
 	.site-footer {
+		flex: none;
 		background: var(--cream2);
 		color: var(--muted);
 		font-size: 13px;
