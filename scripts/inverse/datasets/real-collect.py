@@ -248,7 +248,7 @@ def discover(args, seeds, fetcher):
 def pinterest_runs(output=DEFAULT_OUTPUT):
     """Only explicitly authorized collection ledgers, not arbitrary caches."""
     result=[]
-    for folder in ('pinterest','pinterest-expanded','sabrina-board'):
+    for folder in ('pinterest','pinterest-expanded','sabrina-board','conni-board'):
         path=output/folder/'imports.json'
         if path.exists():result.append({'path':str(path.relative_to(ROOT)),**json.loads(path.read_text())})
     return result
@@ -258,7 +258,10 @@ def pinterest_inventory(output=DEFAULT_OUTPUT):
     runs=pinterest_runs(output);pins={}
     for run in runs:
         for row in run['pins']:
-            ident=re.search(r'(\d+)/?$',urlsplit(row['url']).path).group(1)
+            numeric=re.search(r'^/pin/(\d+)/?$',urlsplit(row['url']).path)
+            # Some observed cards have opaque IDs. Preserve their literal URL
+            # instead of rejecting them or inventing a numeric pin identity.
+            ident=numeric.group(1) if numeric else row['url']
             old=pins.get(ident)
             if old is None or (old['status']!='downloaded' and row['status']=='downloaded'):
                 pins[ident]={**row,'runReferences':[] if old is None else old['runReferences']}
@@ -351,10 +354,15 @@ def collect(args, fetcher):
                 info = metadata(data)
                 if min(info['width'], info['height']) < 100 or info['width']*info['height'] < 30000:
                     continue
-                suffix = {'JPEG': '.jpg', 'PNG': '.png', 'WEBP': '.webp'}.get(info['format'], '.img')
+                suffix = {'JPEG': '.jpg', 'PNG': '.png', 'GIF': '.gif', 'WEBP': '.webp'}.get(info['format'], '.img')
                 file = 'assets/' + sha + suffix
                 (args.output / 'assets').mkdir(exist_ok=True)
-                (args.output / file).write_bytes(data)
+                target = args.output / file
+                if target.exists():
+                    if digest(target.read_bytes()) != sha:
+                        raise ValueError('Existing content-addressed asset checksum mismatch')
+                else:
+                    target.write_bytes(data)
                 by_hash[sha] = {'id': 'real-' + sha[:16], 'sha256': sha, 'file': file, 'bytes': len(data),
                                 **info, 'kind': 'unknown', 'reviewStatus': 'pending-visual-review', 'origins': []}
             row = by_hash[sha]
@@ -406,6 +414,19 @@ def review(args):
     print(json.dumps({'assets':len(assets),'kinds':dict(Counter(a['kind'] for a in assets)), 'nearDuplicateCandidates':len(pairs)},indent=2))
 
 
+def template_page_links(assets):
+    """Same-page leads are unverified; a Pinterest board is not a template pair."""
+    def pages(row):
+        return {page for origin in row['origins'] for page in origin['sourcePages']
+                if 'pinterest.' not in urlsplit(page).netloc or urlsplit(page).path.startswith('/pin/')}
+    by_page = {}
+    for row in assets:
+        if row['kind'] == 'template-render':
+            for page in pages(row):
+                by_page.setdefault(page, set()).add(row['id'])
+    return {row['id']: sorted({id for page in pages(row) for id in by_page.get(page, ())}) for row in assets}
+
+
 def export(args):
     review(args)
     assets = json.loads((args.output / 'review-assets.json').read_text())
@@ -436,10 +457,11 @@ def export(args):
     assign_split_groups(assets)
     discovery = json.loads((args.output / 'discovery.json').read_text())
     pages = {p['url']: p for p in discovery['pages']}
+    template_links = template_page_links(assets)
     for row in assets:
         links = {link for o in row['origins'] for page in o['sourcePages'] for link in pages.get(page, {}).get('referenceLinks', [])}
         row['unverifiedTemplateLinks'] = sorted(links)
-        row['samePageTemplateAssetIds'] = sorted({other['id'] for other in assets if other['kind'] == 'template-render' and any(set(o['sourcePages']) & set(p['sourcePages']) for o in row['origins'] for p in other['origins'])})
+        row['samePageTemplateAssetIds'] = template_links[row['id']]
     result = {'version':1, 'generatedAt':now(), 'assetRoot':str(args.output.relative_to(ROOT)),
               'description':'Original public-source files and existing fixtures; photographs are individually visually reviewed. Not a count of independent designs or labeled heart instances.',
               'counts':{'uniqueFileHashes':len(assets),'kinds':dict(Counter(a['kind'] for a in assets)),

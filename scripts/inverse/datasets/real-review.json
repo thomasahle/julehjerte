@@ -1220,7 +1220,8 @@
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-874e5a5e2cd2e9ce"
   },
   "real-c1b478dfafde80bf": {
     "kind": "template-render",
@@ -4138,13 +4139,15 @@
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-812a9dc206fc08ba"
   },
   "real-874e5a5e2cd2e9ce": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "qaReserved": true
   },
   "real-c4a9ee6e2d0a4185": {
     "kind": "photo",
@@ -5118,7 +5121,8 @@
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
-    "nearDuplicateGroup": "real-6599bf9afb0a05e2"
+    "nearDuplicateGroup": "real-6599bf9afb0a05e2",
+    "qaReserved": true
   },
   "real-3346ede51fb9b467": {
     "kind": "template-render",
@@ -5910,7 +5914,8 @@
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
-    "nearDuplicateGroup": "real-296731914436783e"
+    "nearDuplicateGroup": "real-296731914436783e",
+    "qaReserved": true
   },
   "real-71cbab9bdd68b70e": {
     "kind": "photo-other-material",
@@ -7711,5 +7716,631 @@
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Reviewed original-file thumbnail in the five 1200px Sabrina board contact sheets on 2026-10-17. No instance, corner, mask or cutting-path annotation implied.",
     "nearDuplicateGroup": "real-8a9c703f7f29fd14"
+  },
+  "real-8dee9008c42ca55a": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Instruction/print promotional image with small template thumbnail.",
+    "nearDuplicateGroup": "real-8dee9008c42ca55a",
+    "qaReserved": true
+  },
+  "real-f91d71bfdfdb6d02": {
+    "kind": "photo-process",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Owl cutting template laid on red paper; no assembled heart.",
+    "nearDuplicateGroup": "real-f91d71bfdfdb6d02",
+    "qaReserved": true
+  },
+  "real-3545741859f83f94": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Generic PDF/scissors icon, not a design or template.",
+    "nearDuplicateGroup": "real-3545741859f83f94",
+    "qaReserved": true
+  },
+  "real-36dbf85641eda5c4": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-36dbf85641eda5c4",
+    "qaReserved": true
+  },
+  "real-71c005a02e6963c7": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Only 197x200 pixels; assembled green/dark heart.",
+    "nearDuplicateGroup": "real-71c005a02e6963c7",
+    "qaReserved": true
+  },
+  "real-8ec1f392c57254bb": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-8ec1f392c57254bb",
+    "qaReserved": true
+  },
+  "real-927ac6f9c92ff088": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-927ac6f9c92ff088",
+    "qaReserved": true
+  },
+  "real-79cf74bfd2b42670": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-79cf74bfd2b42670",
+    "qaReserved": true
+  },
+  "real-fd8e205d79e04fff": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-fd8e205d79e04fff",
+    "qaReserved": true
+  },
+  "real-98df5565b6e22e1d": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Only 200x198 pixels; assembled green/white heart.",
+    "nearDuplicateGroup": "real-98df5565b6e22e1d",
+    "qaReserved": true
+  },
+  "real-b34a9cf2d5cec423": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-b34a9cf2d5cec423",
+    "qaReserved": true
+  },
+  "real-852251a5dc97d040": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-852251a5dc97d040",
+    "qaReserved": true
+  },
+  "real-78b3f70c3efd410c": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-78b3f70c3efd410c",
+    "qaReserved": true
+  },
+  "real-497adfa20b093bf5": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-497adfa20b093bf5",
+    "qaReserved": true
+  },
+  "real-e604d0729008466e": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-e604d0729008466e",
+    "qaReserved": true
+  },
+  "real-3a619ca380e4d7ef": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-3a619ca380e4d7ef",
+    "qaReserved": true
+  },
+  "real-5324a75f506c6fa2": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-5324a75f506c6fa2",
+    "qaReserved": true
+  },
+  "real-76129ef26182091e": {
+    "kind": "photo-other-material",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Paper animal ornaments; not woven hearts.",
+    "nearDuplicateGroup": "real-76129ef26182091e",
+    "qaReserved": true
+  },
+  "real-8f990a3c2f9b0625": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-8f990a3c2f9b0625",
+    "qaReserved": true
+  },
+  "real-7ce32d90c811c466": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-7ce32d90c811c466",
+    "qaReserved": true
+  },
+  "real-0e8dc16323f514b7": {
+    "kind": "photo-process",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-0e8dc16323f514b7",
+    "qaReserved": true
+  },
+  "real-5df55781b30e3494": {
+    "kind": "photo-multiple",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Several woven animal-shaped hearts in a craft scene.",
+    "nearDuplicateGroup": "real-5df55781b30e3494",
+    "qaReserved": true
+  },
+  "real-519ee71c8519d9e3": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-a055202166ff0bdd",
+    "qaReserved": true
+  },
+  "real-d3f562a4a38f1dcc": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-7a4e2cf93d71c23e",
+    "qaReserved": true
+  },
+  "real-a58f0fe5b717bfac": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-95eb58b4312cda4d",
+    "qaReserved": true
+  },
+  "real-b16b054bc06f6dc1": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-b16b054bc06f6dc1",
+    "qaReserved": true
+  },
+  "real-40e01d91c10d8b75": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Scanned printed article with assembled heart photograph and overlaid cutting diagram.",
+    "nearDuplicateGroup": "real-40e01d91c10d8b75",
+    "qaReserved": true
+  },
+  "real-8abd060fc0d21531": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Scanned printed article with photograph and several cutting diagrams.",
+    "nearDuplicateGroup": "real-8abd060fc0d21531",
+    "qaReserved": true
+  },
+  "real-d73a88785370d667": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Scanned sheet with multiple overlaid colored cutting paths.",
+    "nearDuplicateGroup": "real-d73a88785370d667",
+    "qaReserved": true
+  },
+  "real-b3bfe1360bf1fe4a": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Scanned sheet with multiple overlaid colored cutting paths.",
+    "nearDuplicateGroup": "real-b3bfe1360bf1fe4a",
+    "qaReserved": true
+  },
+  "real-12aa26eff6a09b6b": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-71a290452cfd00c8",
+    "qaReserved": true
+  },
+  "real-c7d5e83cfafedf70": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-7a4e2cf93d71c23e",
+    "qaReserved": true
+  },
+  "real-baf1b2c72f46cce7": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-3550f13c15483964",
+    "qaReserved": true
+  },
+  "real-53afe7d33a9ad3f9": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-53afe7d33a9ad3f9",
+    "qaReserved": true
+  },
+  "real-4835be090cf7eac9": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-3550f13c15483964",
+    "qaReserved": true
+  },
+  "real-2c557be09f75eabd": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-71a290452cfd00c8",
+    "qaReserved": true
+  },
+  "real-d56582fcd0d134f4": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-fee6583ba3012cfe",
+    "qaReserved": true
+  },
+  "real-15a5892040b7a274": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-15a5892040b7a274",
+    "qaReserved": true
+  },
+  "real-fdb6b852f8c46fa7": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-3550f13c15483964",
+    "qaReserved": true
+  },
+  "real-e022304403634ea6": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-e022304403634ea6",
+    "qaReserved": true
+  },
+  "real-45bfc09adacae597": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Photograph of a four-lobed woven shape, not a standard heart outline; visible copyright watermark, name not reliably transcribed.",
+    "nearDuplicateGroup": "real-45bfc09adacae597",
+    "qaReserved": true
+  },
+  "real-5a12ec655992735a": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-5a12ec655992735a",
+    "qaReserved": true
+  },
+  "real-10445736ece26760": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-5004b729f43b4e72",
+    "qaReserved": true
+  },
+  "real-dee47a224142d577": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-63c81e65e8340c2d",
+    "qaReserved": true
+  },
+  "real-cdd46e737b648380": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-164378298f6be2e8",
+    "qaReserved": true
+  },
+  "real-5e9b4816e6aeb6c5": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-812a9dc206fc08ba",
+    "qaReserved": true
+  },
+  "real-0ced2e86fb0adcf5": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-83055bbd92514af9",
+    "qaReserved": true
+  },
+  "real-743301f4f9f4fbde": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-c0f1835bf1cf2982",
+    "qaReserved": true
+  },
+  "real-d5e458289d4d5b0c": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-d5e458289d4d5b0c",
+    "qaReserved": true
+  },
+  "real-a0c0c00d1d1b0003": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-a0c0c00d1d1b0003",
+    "qaReserved": true
+  },
+  "real-beffb4d1385ccba1": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-beffb4d1385ccba1",
+    "qaReserved": true
+  },
+  "real-f0f4d62732e88cd1": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-f0f4d62732e88cd1",
+    "qaReserved": true
+  },
+  "real-3a61a1f5a9db57f3": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-3a61a1f5a9db57f3",
+    "qaReserved": true
+  },
+  "real-539c74349269734d": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-539c74349269734d",
+    "qaReserved": true
+  },
+  "real-fe924eab1307bfd7": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-fe924eab1307bfd7",
+    "qaReserved": true
+  },
+  "real-448ab852c2f2eab3": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-874e5a5e2cd2e9ce",
+    "qaReserved": true
+  },
+  "real-2bdc39cab0811250": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-296731914436783e",
+    "qaReserved": true
+  },
+  "real-6e04b96a80fed697": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-6e04b96a80fed697",
+    "qaReserved": true
+  },
+  "real-64b51faaef694431": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-a055202166ff0bdd",
+    "qaReserved": true
+  },
+  "real-28e4b59a5a954cca": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-28e4b59a5a954cca",
+    "qaReserved": true
+  },
+  "real-c23ca989c8b2373e": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-c23ca989c8b2373e",
+    "qaReserved": true
+  },
+  "real-5a064beeec675f78": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-5a064beeec675f78",
+    "qaReserved": true
+  },
+  "real-47229e8f6b61a501": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-47229e8f6b61a501",
+    "qaReserved": true
+  },
+  "real-0ad0a2453ee546b0": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-164378298f6be2e8",
+    "qaReserved": true
+  },
+  "real-3f2032cde2fcfedf": {
+    "kind": "photo-other-material",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Paper star ornament with instructions, not a heart.",
+    "nearDuplicateGroup": "real-3f2032cde2fcfedf",
+    "qaReserved": true
+  },
+  "real-6b8a2cd8e304ce14": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-296731914436783e",
+    "qaReserved": true
+  },
+  "real-d27121d8a525d3ce": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-d27121d8a525d3ce",
+    "qaReserved": true
+  },
+  "real-3862e238633b9a6b": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-4cfd9b27abdcc1f4",
+    "qaReserved": true
+  },
+  "real-c4f50e2d24a08330": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-c4f50e2d24a08330",
+    "qaReserved": true
+  },
+  "real-a2eb331cd6d81238": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-c5d2c4465ca58e36",
+    "qaReserved": true
+  },
+  "real-dddcd94b4401597b": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-dddcd94b4401597b",
+    "qaReserved": true
+  },
+  "real-e797004e753abcc9": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-e797004e753abcc9",
+    "qaReserved": true
+  },
+  "real-088e91a070f1c895": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Historical printed illustration/template sheet; publication/date/creator not verified.",
+    "nearDuplicateGroup": "real-088e91a070f1c895",
+    "qaReserved": true
+  },
+  "real-df80903c09a3464f": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Historical printed illustration/template sheet with JULETRÆET heading; not a source photograph of modern assembled hearts.",
+    "nearDuplicateGroup": "real-df80903c09a3464f",
+    "qaReserved": true
+  },
+  "real-1da41808a04b4311": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-812a9dc206fc08ba",
+    "qaReserved": true
+  },
+  "real-3c1824d90fcfad7e": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Photograph of assembled candle motif on removed/black background; inspected individually.",
+    "nearDuplicateGroup": "real-3c1824d90fcfad7e",
+    "qaReserved": true
+  },
+  "real-1864c2c7f582ab29": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-1864c2c7f582ab29",
+    "qaReserved": true
+  },
+  "real-e674f983cf5d3dd4": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-e674f983cf5d3dd4",
+    "qaReserved": true
+  },
+  "real-a6b3b42fc9fcad03": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-164378298f6be2e8",
+    "qaReserved": true
+  },
+  "real-1a4904dfca64f16a": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-5004b729f43b4e72",
+    "qaReserved": true
+  },
+  "real-876d0e6079b8bb14": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-63c81e65e8340c2d",
+    "qaReserved": true
+  },
+  "real-66e8e0cc7aa9e853": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-eeaf37d2a40af624",
+    "qaReserved": true
+  },
+  "real-598eef9250b42a65": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-598eef9250b42a65",
+    "qaReserved": true
+  },
+  "real-842302fff9f96ef4": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-842302fff9f96ef4",
+    "qaReserved": true
+  },
+  "real-9656088835537b14": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-9656088835537b14",
+    "qaReserved": true
+  },
+  "real-fc37dbf46c3dbdaa": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "reviewNotes": "Photographed owl template, classified as template-render because the design content is the cutting outline.",
+    "nearDuplicateGroup": "real-fc37dbf46c3dbdaa",
+    "qaReserved": true
+  },
+  "real-609545009ea5ecc7": {
+    "kind": "mixed-photo-template",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Three 1250x1500 contact sheets inspected; items 41,77,79 also inspected individually. These are source-file labels, not heart instances or verified geometry.",
+    "nearDuplicateGroup": "real-609545009ea5ecc7",
+    "qaReserved": true
   }
 }

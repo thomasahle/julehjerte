@@ -1,7 +1,7 @@
 # Data for learned heart reconstruction
 
 Neural release status reviewed on **2026-10-19**; dataset counts last audited on
-**2026-10-17**. **No neural network is ready for production or
+**2026-10-19**. **No neural network is ready for production or
 included in the website.** The collection, synthetic generator and learned
 prototypes are research tools; the existing geometric solver remains the
 production path.
@@ -10,8 +10,9 @@ production path.
 
 | Area | Verified evidence | Remaining limitation |
 | --- | --- | --- |
-| Real-image inventory | 1,254 files; 783 contain assembled-heart photographs; all files and decoded identities audited | File counts are not counts of independent motifs or fully labelled training examples |
+| Real-image inventory | 1,341 files; 811 contain assembled-heart photographs; all files and decoded identities audited | File counts are not counts of independent motifs or fully labelled training examples |
 | Sabrina Danholm's Pinterest board | All 225 pins imported; 220 new image files, about 35 MiB | No new corner, material or cutting-path labels; the whole board is QA-reserved |
+| Conni’s heart-template board | [All 122 pins preserved](conni-board.md); 90 distinct files, 87 new, 12.5 MiB downloaded; 23 photo/template composites | Whole board QA-reserved; 42 visual duplicate links grouped; creators and cutting geometry mostly unverified |
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
 | Small learned model | Earlier MobileNetV3-Small fallback raises checked editable pairs from 7/16 to 9/16 on its development cohort; a newer fixed candidate stays at 7/16 on separately selected Sabrina photos | These are different cohorts; no deployment or established source generalization |
 | Saliency models | Frozen U2NETP raises checked derived-mask pairs from 10/32 to 12/32; adapted browser model adds three checked pairs over fresh current-main controls (9/32 to 12/32) | Raw numerical parity still fails; printed paper, missing body regions, timed-search variation and false seams remain; no production integration |

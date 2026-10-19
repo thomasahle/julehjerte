@@ -18,6 +18,28 @@ This board is particularly useful for preserving cutting sheets. All three conta
 
 These are file counts, not 90 independent motifs or verified cutting-template pairs. Some designs have nonstandard outlines, and one single-object photograph shows a four-lobed woven shape. Composites retain their photographic and template content together. Historical printed sheets are preserved as scans; their publication dates and creators have not been established. Low-resolution originals remain low resolution.
 
+
+## Integrated collection
+
+The [adoption audit](conni-board-adoption.json) verifies integration into
+`/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-training-real/assets/`.
+All 87 new files are hardlinked, so adoption adds no second copy of the image
+bytes. The unified catalog now has **1,341 files**, including **811 files with
+assembled-heart photographs**. These remain file counts, not independent motifs.
+
+All [42 similarity pairs were visually confirmed](conni-board-duplicate-review.json)
+as variants of the same source image or plate and grouped accordingly. Three
+previously unassigned files now join QA; the entire board is QA-reserved. The
+16-photo U2NETP training groups are unchanged and remain separate from the
+32-photo evaluation groups under the updated source graph. Motif independence
+beyond these reviewed links is not established.
+
+All 1,341 files passed the full byte, decoded-pixel, dimension and grouping
+audit; 23 offline collector tests pass. The collector now retains opaque pin
+URLs and GIF originals. Shared membership in a Pinterest board no longer creates
+misleading photo/template pair suggestions. The original staging records below
+are retained as acquisition evidence.
+
 ## Provenance and dataset separation
 
 The [observed selection](../../../scripts/inverse/datasets/real-conni-board.json) preserves card titles as source text, not creator attribution. “Conni” is the board owner's displayed name; it is not assigned as designer, photographer or rights holder. Rights remain **not cleared**. No source file was added to public website assets.
@@ -32,7 +54,7 @@ The exact existing connections are:
 | `real-e9600478525b9218` | `real-split-03b70ea1e7075716` | QA reserved |
 | `real-874e5a5e2cd2e9ce` | `real-split-03b70ea1e7075716` | QA reserved |
 
-The [results](conni-board-results.json) list their source groups. No additional file matches the existing decoded RGB bytes and dimensions exactly. A 256-bit difference-hash screen found **42 similarity links involving 31 staged files** at Hamming distance ≤12. These are [unreviewed candidates](conni-board-near-duplicate-candidates.json), not duplicate assertions. Three links reach currently unassigned source groups. Existing groups must therefore be audited before these source relationships are merged. The entire board is conservatively held for QA because its exact matches already connect to QA. Byte novelty does not establish independent training data.
+The [results](conni-board-results.json) list their source groups. No additional file matches the existing decoded RGB bytes and dimensions exactly. A 256-bit difference-hash screen found **42 similarity links involving 31 staged files** at Hamming distance ≤12. These were initially [unreviewed candidates](conni-board-near-duplicate-candidates.json); the subsequent visual review and integration are recorded above. Three links reached then-unassigned source groups. The entire board is conservatively held for QA because its exact matches already connect to QA. Byte novelty does not establish independent training data.
 
 ## Files and verification
 
@@ -40,7 +62,7 @@ The import-ready [staged manifest](conni-board-staged-manifest.json) includes so
 
 `/Users/ahle/repos/julehjerte-pinterest-skabelon/tmp/pinterest-skabelon/staging/`
 
-No write was made to the pinned parent inventory or its original photos. An independent audit checked all 90 files' bytes, decoded pixels and dimensions, and verified all three hardlinks. All 122 records replayed offline without new image downloads. Seven new acquisition-invariant tests and the fourteen existing collector tests pass. Application checks were not rerun: this isolated sparse branch changes data collection tooling and metadata only.
+During acquisition, no write was made to the pinned parent inventory or its original photos; integration followed after the benchmark completed. An independent audit checked all 90 files' bytes, decoded pixels and dimensions, and verified all three hardlinks. All 122 records replayed offline without new image downloads. Seven new acquisition-invariant tests and the fourteen existing collector tests pass. Application checks were not rerun: this isolated sparse branch changes data collection tooling and metadata only.
 
 The bounded staging command is:
 
@@ -53,7 +75,7 @@ nice -n 15 /usr/bin/python3 scripts/inverse/datasets/real-board-stage.py \
 
 Add `--offline` for the verified no-network replay. The importer verifies its selection and existing-manifest pins on resume, caps new image downloads across resumes, stops after rate limiting, retains one staged content-addressed file per hash, and refuses staging inside the existing dataset's worktree.
 
-For adoption **after the parent's active benchmark completes**:
+The completed adoption used this procedure after the parent's benchmark finished:
 
 1. Cherry-pick this branch's metadata/tooling commit; retain the old catalog snapshot and experiment pins.
 2. Verify the staged manifest and each source file's SHA-256. Hardlink the 87 new files into the parent's asset store; reuse the three existing files. Do not copy or overwrite original bytes.
