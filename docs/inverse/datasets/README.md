@@ -316,11 +316,11 @@ to the site.
 
 ### Preservation archive, 2026-10-19
 
-The [preservation manifest](heart-archive-storage.json) records **138 unique
-original files, 16,498,711 bytes**, including 54 template PDFs (286 pages),
+The [preservation manifest](heart-archive-storage.json) records **147 unique
+original files, 16,507,399 bytes**, including 54 template PDFs (286 pages),
 five editable SVG originals,
-seven recovered Permo images, sixteen Haabet images and source/history/license
-evidence. These are documents and photographs, not 138 independent designs or
+seven recovered Permo images, nineteen Haabet images and source/history/license
+evidence. These are documents and photographs, not 147 independent designs or
 new training labels.
 [Additional collections](archive-additional.json) record Krümmel,
 Bibelselskabet, Spejderliv and PaperMatrix; the [Permo history](archive-permo.json)
@@ -362,7 +362,16 @@ add **502,957 bytes** and no additional designs. Their original layers remain
 intact; SHA-256 checks and historical archive digests identify the source bytes.
 The public records gain working source links while keeping one PDF template
 action, so the editable original does not appear to be another cutting sheet.
-The source index now contains **1,123 external records**, alongside the
+A [fourth Haabet batch](archive-haabet-figures-4.json) adds **Stjerne, af Cirkler**,
+**8 Spisser Julehjerte** and **4 4kanter Julehjerte**, preserving the source names
+and Peter Ole Kvint signatures. Three original GIF templates, three source
+pages and three archive-index responses add **8,688 bytes**. Capture dates
+establish availability only; invention and first-publication dates remain unknown.
+The 8 Spisser template has irregular interior/side-entry cuts and is excluded
+from automatic regular-solver benchmarking. The other two are visual candidates
+for that model, not independently validated templates. Linked previews were not
+retrieved and are not presented as saved photographs.
+The source index now contains **1,126 external records**, alongside the
 **56 published Juleflet hearts**. These batches add no public media mirrors.
 
 Original bytes were moved out of temporary work directories, not copied into
