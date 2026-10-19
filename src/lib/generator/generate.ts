@@ -92,8 +92,10 @@ export type GeneratorRequest = {
 	/** The strips per side of the board a construction must lie on. */
 	board?: number;
 	/** For the figure in the checks: how far down the heart's middle the
-	 * visitor put the motif; otherwise its default size chooses. */
+	 * visitor put the motif, and how far across it; otherwise its default
+	 * size chooses, on the middle. */
 	place?: number;
+	side?: number;
 };
 /** The choice a motif on a board (small motifs, equal squares) made at its
  * default size: which of its `frameAlternatives`, on a board of how many
@@ -565,14 +567,14 @@ function stripsAt(request: GeneratorRequest, key: string, scale: number,
 	});
 	let rejected: Parameters<typeof hardToCutResult>[1] = [], places = 0;
 	let last: unknown = new ConstructionError('topology', NO_WHOLE_STRIPS);
-	for (const construction of stripFigures(contours, request.board ?? STRIPS, scale, 4000, keep, where)) {
+	for (const construction of stripFigures(contours, request.board ?? STRIPS, scale, 4000, keep, where, request.side ?? 0)) {
 		if (construction.shift !== shift) {
 			// Nothing at the last place finished cleanly: as hard to cut, if it
 			// can be, before the next place.
 			const hard = hardToCutResult(request, rejected, curveFitter);
 			if (hard) return named(hard);
 			if (++places > 4) break;
-			if (shift === undefined && scale === .7 && request.place === undefined) stripShifts.set(key, construction.shift);
+			if (shift === undefined && scale === .7 && request.place === undefined && !request.side) stripShifts.set(key, construction.shift);
 			[shift, rejected] = [construction.shift, []];
 		}
 		try {

@@ -27,7 +27,8 @@
 	import { picture, type Picture } from '$lib/generator/picture';
 	import { handoffToDraw } from '$lib/editor/handoff';
 	import { saveUserDesign } from '$lib/stores/collection';
-	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, stripCount, stripPlace, PLACE_RANGE, largestScale, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
+	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, stripCount, stripPlace, stripSide, largestScale, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
+	import { clampPlace } from '$lib/generator/stripFigure';
 	import type {
 		GeneratorResult,
 		GeneratorRequest
@@ -134,36 +135,44 @@
 	 * in the same framing; on screen the middle is vertical. */
 	let draggable = $derived(config.mode === 'figure' && config.style === 'strips');
 	const PICTURE_SIDE = Number(computeHeartViewBoxFromOverlap({ left: 0, top: 0, width: 100, height: 100 }).viewBox.split(' ')[3]);
-	let dragging = $state<{ pointer: number; y: number; place: number; unitsPerPx: number; range: [number, number] } | null>(null);
+	let dragging = $state<{ pointer: number; x: number; y: number; place: number; side: number; unitsPerPx: number } | null>(null);
 	function startDrag(event: PointerEvent) {
-		if (!draggable || event.button !== 0 || !sketch?.range) return;
+		if (!draggable || event.button !== 0 || !sketch?.bounds) return;
 		const art = event.currentTarget as HTMLElement, box = art.getBoundingClientRect();
-		const shown = busy ? sketch.place : displayed?.place ?? sketch.place;
-		// As far as the motif keeps its size, within the range a link may ask for.
-		dragging = { pointer: event.pointerId, y: event.clientY, place: config.place ?? shown ?? 0, unitsPerPx: PICTURE_SIDE / box.height, range: placeRange };
+		dragging = { pointer: event.pointerId, x: event.clientX, y: event.clientY, place: shownPlace, side: config.side ?? 0, unitsPerPx: PICTURE_SIDE / box.height };
 		art.setPointerCapture(event.pointerId);
+	}
+	/** Moves the figure in the checks as near `place` and `side` as it keeps
+	 * its size, in quarter steps, so moving back finds the hearts already made. */
+	function moveTo(place: number, side: number) {
+		if (!sketch?.bounds) return;
+		const [nextPlace, nextSide] = clampPlace(sketch.bounds, place, side, .25);
+		if (nextPlace !== config.place || nextSide !== (config.side ?? 0)) [config.place, config.side] = [nextPlace, nextSide];
 	}
 	function drag(event: PointerEvent) {
 		if (!dragging || event.pointerId !== dragging.pointer) return;
-		const [low, high] = dragging.range, place = dragging.place + (event.clientY - dragging.y) * dragging.unitsPerPx;
-		// Quarter units, so moving back finds the hearts already made.
-		const next = Math.round(Math.max(low, Math.min(high, place)) * 4) / 4;
-		if (next !== config.place && low <= high) config.place = next;
+		// On screen the heart's middle is vertical, its width horizontal.
+		moveTo(dragging.place + (event.clientY - dragging.y) * dragging.unitsPerPx, dragging.side + (event.clientX - dragging.x) * dragging.unitsPerPx);
 	}
 	function endDrag(event: PointerEvent) {
 		if (dragging?.pointer === event.pointerId) dragging = null;
 	}
-	/** Where the figure in the checks is shown, and how far it can move. */
+	/** Where the figure in the checks is shown, and how far up and down it can
+	 * move at its side. */
 	let shownPlace = $derived(config.place ?? (busy ? sketch?.place : displayed?.place ?? sketch?.place) ?? 0);
-	let placeRange = $derived<[number, number]>(sketch?.range
-		? [Math.ceil(Math.max(-PLACE_RANGE, sketch.range[0]) * 4) / 4, Math.floor(Math.min(PLACE_RANGE, sketch.range[1]) * 4) / 4] : [0, 0]);
-	/** The arrow keys move the figure a unit up or down the middle, five with Shift. */
+	let placeRange = $derived.by<[number, number]>(() => {
+		if (!sketch?.bounds) return [0, 0];
+		const { sum, difference } = sketch.bounds, side = config.side ?? 0;
+		return [Math.max(sum[0] - side, difference[0] + side), Math.min(sum[1] - side, difference[1] + side)]
+			.map(n => Math.round(n * 100) / 100) as [number, number];
+	});
+	/** The arrow keys move the figure a unit, five with Shift. */
 	function nudgePlace(event: KeyboardEvent) {
-		const step = event.key === 'ArrowUp' ? -1 : event.key === 'ArrowDown' ? 1 : 0;
-		if (!draggable || !step || !sketch?.range) return;
+		const step = ({ ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] } as Record<string, [number, number]>)[event.key];
+		if (!draggable || !step || !sketch?.bounds) return;
 		event.preventDefault();
-		const [low, high] = placeRange, place = shownPlace + step * (event.shiftKey ? 5 : 1);
-		if (low <= high) config.place = Math.round(Math.max(low, Math.min(high, place)) * 4) / 4;
+		const by = event.shiftKey ? 5 : 1;
+		moveTo(shownPlace + step[0] * by, (config.side ?? 0) + step[1] * by);
 	}
 	const currentDesign = () =>
 		result
@@ -289,7 +298,8 @@
 			fittedCells: fittedCells(snapshot),
 			gap: frameGap(snapshot),
 			board: stripCount(snapshot),
-			place: stripPlace(snapshot)
+			place: stripPlace(snapshot),
+			side: stripSide(snapshot)
 		};
 		// A motif on a board keeps the choice its default size made.
 		if (snapshot.mode === 'figure' && BOARD_STYLES.includes(snapshot.style))
@@ -392,7 +402,7 @@
 			.then((request) => {
 				if (token !== revision) return;
 				// What the default size's heart, once made, tells the picture.
-				const made = cache.get(geometryKey({ ...snapshot, scale: defaults.scale, place: undefined }));
+				const made = cache.get(geometryKey({ ...snapshot, scale: defaults.scale, place: undefined, side: undefined }));
 				sketch = picture(request, { place: made?.place, board: made?.design.gridSize.x, circle: boardCircles.get(snapshot.motif) }) ?? null;
 				if (!cached && !failed) queueJob({ request, key, token, motif: snapshot.motif });
 			})
@@ -417,7 +427,8 @@
 			scale: defaults.scale,
 			spacing: defaults.spacing,
 			strips: defaults.strips,
-			place: undefined
+			place: undefined,
+			side: undefined
 		})
 	);
 	// A place dragged to belongs to its motif and board: another starts at its own.
@@ -425,7 +436,7 @@
 	$effect(() => {
 		if (!mounted) return;
 		const key = [config.mode, config.motif, config.style, config.strips].join('|');
-		if (placeKey !== null && key !== placeKey) untrack(() => (config.place = undefined));
+		if (placeKey !== null && key !== placeKey) untrack(() => [config.place, config.side] = [undefined, undefined]);
 		placeKey = key;
 	});
 	$effect(() => {
@@ -518,7 +529,8 @@
 			fittedCells: fittedCells(state),
 			gap: frameGap(state),
 			board: stripCount(state),
-			place: stripPlace(state)
+			place: stripPlace(state),
+			side: stripSide(state)
 		};
 	}
 	function chooseMode(mode: GeneratorState['mode']) {
@@ -734,8 +746,8 @@
 					{hardToCutText(result.hardToCut.letters)}
 				</div>{/if}
 			{#if draggable && preview}<p class="drag-hint">
-					{t('generatorDragFigure', lang)}{#if config.place !== undefined}
-						<button class="place-back" onclick={() => (config.place = undefined)}>{t('generatorPlaceBack', lang)}</button>{/if}
+					{t('generatorDragFigure', lang)}{#if config.place !== undefined || config.side !== undefined}
+						<button class="place-back" onclick={() => ([config.place, config.side] = [undefined, undefined])}>{t('generatorPlaceBack', lang)}</button>{/if}
 				</p>{/if}
 			{#if displayed}<p class="cut-note">
 					{t('generatorPureWeave', lang)}
