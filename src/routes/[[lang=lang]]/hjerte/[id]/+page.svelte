@@ -40,6 +40,7 @@
   } from "$lib/config";
   import { heartMetaDescription, heartPageTitle, socialImage } from "$lib/seo";
   import { langFromParam, stripsLabel as formatStrips, t } from "$lib/i18n";
+  import { slugify } from "$lib/utils/slug";
   import { editorHref, heartPath, homeAnchorHref, href as routeHref } from "$lib/i18n/routes";
   import { lobesShareTemplate } from "$lib/utils/symmetry";
   import { calculateDifficulty } from "$lib/utils/difficulty";
@@ -499,6 +500,7 @@
       designs={[design]}
       {heartId}
       heartName={info.name}
+      fileStem={isShared ? slugify(info.name) : undefined}
       {lang}
       open={downloadOpen}
       onClose={handleDownloadClose}

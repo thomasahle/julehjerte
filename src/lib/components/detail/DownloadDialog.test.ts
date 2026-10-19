@@ -96,12 +96,17 @@ async function release(): Promise<void> {
 }
 
 /** One heart, as the heart's page opens it, or several, as the front page does. */
-async function render(design: HeartDesign | HeartDesign[] = loadHeart('classic-3x3'), lang: 'da' | 'en' = 'da') {
+async function render(
+	design: HeartDesign | HeartDesign[] = loadHeart('classic-3x3'),
+	lang: 'da' | 'en' = 'da',
+	/** Props in place of the heart page's own, as /hjerte/delt/ passes them. */
+	overrides: { heartId?: string; heartName?: string; fileStem?: string } = {}
+) {
 	const target = document.createElement('div');
 	document.body.appendChild(target);
 	const props = Array.isArray(design)
 		? { designs: design, lang, open: true, onClose: () => {} }
-		: { designs: [design], heartId: design.id, heartName: 'Klassisk', lang, open: true, onClose: () => {} };
+		: { designs: [design], heartId: design.id, heartName: 'Klassisk', lang, open: true, onClose: () => {}, ...overrides };
 	const component = mount(DownloadDialog, { target, props });
 	let disposed = false;
 	const dispose = () => {
@@ -344,6 +349,25 @@ describe('DownloadDialog', () => {
 		expect(downloadTemplatesPDF).not.toHaveBeenCalled();
 		vi.advanceTimersByTime(1000);
 		expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:test/1');
+	});
+
+	it("names a shared heart's PDF and laser file after its name, and keeps the analytics ids", async () => {
+		// /hjerte/delt/: the page's id is "delt", the design has an id of its own.
+		const design = { ...loadHeart('classic-3x3'), id: 'heart-1792272797949-6k19sf2' };
+		const view = await render(design, 'da', { heartId: 'delt', heartName: 'Mit hjerte', fileStem: 'mit-hjerte' });
+
+		view.button('Hent PDF')!.click();
+		await vi.dynamicImportSettled();
+		await settle();
+		expect(vi.mocked(downloadTemplatesPDF).mock.calls[0]![1].fileStem).toBe('mit-hjerte');
+		expect(trackHeartDownload).toHaveBeenCalledWith('heart-1792272797949-6k19sf2', 'Mit hjerte');
+		await release();
+
+		await view.choose('Laserskærer');
+		view.button('Hent SVG')!.click();
+		await settle();
+		expect(downloads.map((d) => d.name)).toEqual(['mit-hjerte-laser-80mm.svg']);
+		expect(trackLaserDownload).toHaveBeenCalledWith('delt', 'Mit hjerte', 'svg', 80);
 	});
 
 	it('downloads a DXF once DXF is chosen', async () => {

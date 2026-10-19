@@ -91,17 +91,27 @@
 		 */
 		heartId?: string;
 		heartName?: string;
+		/**
+		 * The single heart's file names' stem, when it is not `heartId`. A heart
+		 * received by link (/hjerte/delt/) has the page's id "delt", which says
+		 * nothing, and a design id the visitor never sees; its page passes the
+		 * slug of its name, so its PDF and laser file are named alike. The
+		 * analytics keep `heartId` (laser) and the design's id (PDF).
+		 */
+		fileStem?: string;
 		lang: Language;
 		open: boolean;
 		/** The page returns focus to whatever opened the dialog. */
 		onClose: () => void;
 	}
 
-	let { designs, heartId: idProp, heartName: nameProp, lang, open, onClose }: Props = $props();
+	let { designs, heartId: idProp, heartName: nameProp, fileStem: stemProp, lang, open, onClose }: Props = $props();
 
 	const design = $derived(designs[0]!);
 	const several = $derived(designs.length > 1);
 	const heartId = $derived(idProp ?? design.id);
+	/** What a single heart's PDF and laser file are named after. */
+	const fileStem = $derived(stemProp ?? heartId);
 	const heartName = $derived(
 		several ? designs.map((d) => nameIn(d, lang)).join(', ') : (nameProp ?? nameIn(design, lang))
 	);
@@ -430,7 +440,14 @@
 		else trackHeartDownload(design.id, heartName);
 		try {
 			const { downloadTemplatesPDF } = await import('$lib/pdf/template');
-			await downloadTemplatesPDF([...designs], { widthMm, hearts: 1, sheet, lang, previewImage });
+			await downloadTemplatesPDF([...designs], {
+				widthMm,
+				hearts: 1,
+				sheet,
+				lang,
+				previewImage,
+				fileStem: several ? undefined : stemProp
+			});
 			failure = null;
 		} catch (err) {
 			// Without this the download simply did nothing, with no sign of why.
@@ -458,7 +475,7 @@
 		try {
 			const content = laserFileContent(laserPlan, format, fileInfo);
 			const name = laserFileName(
-				several ? t('laserMultiFilename', lang, { n: laserHearts.length }) : heartId,
+				several ? t('laserMultiFilename', lang, { n: laserHearts.length }) : fileStem,
 				widthMm,
 				format,
 				laserPlan.shared ? undefined : lobeName(laserPlan.lobe)
