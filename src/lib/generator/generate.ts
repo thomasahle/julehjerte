@@ -1,6 +1,6 @@
 import { createExactCurveFitter } from '$lib/inverse/curveFitCache';
 import { generateLayeredFigure } from './layers';
-import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
+import { CORNER_GAP, generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { generateFittedFigure, mirrorSymmetric, type GateTies } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid, roomOf, squareCellScale } from './textGrid';
@@ -660,10 +660,15 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
 	// The frame keeps the space asked for, cut cleanly or else as hard to cut,
 	// so it only moves one way with the slider. Only where nothing at all can
 	// be finished there do the legs of a frame without a centre panel move
-	// nearer the motif, until they touch it, and a circle move out, and then
-	// keep the frame's own size.
+	// nearer the motif, until they touch it, a circle move out, and then keep
+	// the frame's own size, and the checked tips, which come nearest at no
+	// space, move away from the motif.
 	const style = request.style ?? 'rays';
-	if (style === 'wedges' || request.gap && ['silhouette', 'corners', 'fitted'].includes(style)) {
+	if (style === 'corners') {
+		const gap = request.gap ?? CORNER_GAP;
+		return [...new Set([gap, Math.max(gap, 3), Math.max(gap, 6)])].map((gap, i) => ({ request: { ...request, gap }, retries: true, lastResort: i > 0 }));
+	}
+	if (style === 'wedges' || request.gap && ['silhouette', 'fitted'].includes(style)) {
 		const gap = request.gap ?? WEDGES.gap;
 		return [...new Set([gap, gap / 2, 0])].map((gap, i) => ({ request: fillSquare({ ...request, gap }), retries: true, lastResort: i > 0 }));
 	}

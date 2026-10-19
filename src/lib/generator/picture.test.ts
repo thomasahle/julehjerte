@@ -3,7 +3,8 @@ import { slow } from './slow.test-helpers';
 import { generate, type GeneratorRequest } from './generate';
 import { picture } from './picture';
 import { clampPlace } from './stripFigure';
-import { inside, type Ring } from './geometry';
+import { checkedTips } from './cornerChecks';
+import { inside, uprightToSheet, type Ring } from './geometry';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import star from '../../../static/generator/motifs/star.json';
 import heart from '../../../static/generator/motifs/heart.json';
@@ -142,8 +143,15 @@ describe('the picture drawn before the cuts are found', () => {
 		expect(mismatch({ ...request, name: 'Tree', contours: tree.contours as Ring[], scale: .8 })).toBeLessThan(.01);
 	});
 
-	it('is the checks in the tips the cuts make', () => {
-		expect(mismatch({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'corners' })).toBeLessThan(.01);
+	it('is the checks in the tips the cuts make, at any space around the motif', () => {
+		for (const gap of [0, 3, 15])
+			expect(mismatch({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'corners', gap }), `${gap}`).toBeLessThan(.01);
+		// The tips come as near as cutting allows at no space: the star's top
+		// point stands just clear of the middle lane's corner (s, s).
+		const placed = star.contours.map(r => r.map(([x, y]) => uprightToSheet([x * 49, y * 49]))) as Ring[];
+		const tips = checkedTips(placed), nearest = Math.min(...placed.flat().map(([x, y]) => Math.max(x, y)));
+		expect(nearest - tips.s).toBeGreaterThan(1);
+		expect(nearest - tips.s).toBeLessThan(1.2);
 	});
 
 	it('has none yet for letters in a circle', () => {
