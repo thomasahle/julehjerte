@@ -1,6 +1,6 @@
 import {progressReporter,hasCandidateObserver} from './progress.js';
-/** Two-sheet binary MILP, translated from the Python commodity-flow model.
- * Connectivity and continuous slit labels allow nonmonotone hooked paths.
+/** Two-sheet binary MILP with commodity-flow or path-step connectivity.
+ * Continuous connectivity variables and slit labels allow nonmonotone cuts.
  * HiGHS is an unmodified, locally vendored WebAssembly dependency. */
 import loadHighs from '../vendor/highs.mjs';
 import {dot,mul,angle} from './bezier.js';
@@ -47,27 +47,44 @@ export function visibleMarginIssue(graph,cfg){
   }
   return null;
 }
-export function formulate(graph,cfg,{onProgress=()=>{}}={}){
-  const E=graph.edges.length,V=graph.points.length,w=graph.target.width,tol=cfg.geometryTolerance,endpoints=boundaryEndpoints(graph),m=new LinearModel(),x=[[],[]],z=[[],[]],flow=[[],[]],labels=[[],[]],lines=graph.edges.map(e=>e.curve.flatten(tol));
+export function formulate(graph,cfg,{onProgress=()=>{},connectivity='commodity-flow'}={}){
+  if(!['commodity-flow','path-step-order'].includes(connectivity))throw new Error('Unknown routing connectivity formulation.');
+  const pathSteps=connectivity==='path-step-order';
+  const E=graph.edges.length,V=graph.points.length,w=graph.target.width,tol=cfg.geometryTolerance,endpoints=boundaryEndpoints(graph),m=new LinearModel(),x=[[],[]],z=[[],[]],flow=[[],[]],order=[[],[]],labels=[[],[]],lines=graph.edges.map(e=>e.curve.flatten(tol));
   const balance=graph.edges.map(edge=>{if(edge.visible)return 0;const on=p=>graph.guides?.some(g=>Math.abs(dot(p,g.normal)-g.offset)<2*tol),aligned=graph.guides?.some(g=>edge.curve.p.every(p=>Math.abs(dot(p,g.normal)-g.offset)<2*tol));let gridCost=(on(edge.curve.p[0])||on(edge.curve.p[3]))&&!aligned?cfg.gridPreference/2:0;let sum=0;for(const v of [edge.u,edge.v]){if(on(graph.points[v]))continue;const visible=graph.incident[v].filter(e=>graph.edges[e].visible);if(visible.length!==2)continue;const h=edge.u===v?edge.curve.tangent(0):mul(edge.curve.tangent(1),-1),angles=visible.map(e=>{const c=graph.edges[e];return angle(h,c.u===v?c.curve.tangent(0):mul(c.curve.tangent(1),-1));});sum+=((angles[0]-angles[1])/90)**2;}return gridCost+cfg.junctionBalancePenalty*sum/2;});
   for(const k of[0,1]){const K=endpoints[k].sources.length,M=Math.max(1,K),sources=new Set(endpoints[k].sources),sinks=new Set(endpoints[k].sinks);
-    for(let v=0;v<V;v++)labels[k][v]=m.variable({hi:Math.max(0,K-1)});for(const verts of[endpoints[k].sources,endpoints[k].sinks])verts.forEach((v,i)=>{m.lb[labels[k][v]]=i;m.ub[labels[k][v]]=i;});
+    for(let v=0;v<V;v++){labels[k][v]=m.variable({hi:Math.max(0,K-1)});if(pathSteps)order[k][v]=m.variable({hi:sources.has(v)?0:Math.max(0,V-1)});}for(const verts of[endpoints[k].sources,endpoints[k].sinks])verts.forEach((v,i)=>{m.lb[labels[k][v]]=i;m.ub[labels[k][v]]=i;});
     for(let e=0;e<E;e++){const edge=graph.edges[e],c=edge.curve,cost=balance[e]+c.length()+cfg.bendingPenalty*Math.min(c.bending(),1e4)+(edge.visible?0:cfg.connectorPenalty/2),side=sheetClearance(c,k,w);x[k][e]=m.variable({cost,binary:true,hi:K>0&&side>=cfg.nominalWidth?1:0});z[k][e]=[];flow[k][e]=[];
-      for(const d of[0,1]){z[k][e][d]=m.variable({binary:true});flow[k][e][d]=m.variable({hi:Math.max(1,V)});m.row([[flow[k][e][d],1],[z[k][e][d],-Math.max(1,V)]],-Infinity,0);}m.row([[z[k][e][0],1],[z[k][e][1],1],[x[k][e],-1]],0,0);
+      for(const d of[0,1]){
+        z[k][e][d]=m.variable({binary:true});
+        if(pathSteps){
+          const advance=[[order[k][d?edge.u:edge.v],1],[order[k][d?edge.v:edge.u],-1]];
+          // A selected directed edge advances exactly one path step. Together
+          // with degree 0/2 internally and source/sink degree 1, these equations
+          // forbid detached directed cycles: summing around one gives 0=length.
+          // Conversely every simple source-to-sink path has ranks 0..V-1, so
+          // no valid routing is lost. Ranks need no integer variables: selected
+          // edges propagate the source's zero rank. Inactive edges impose no
+          // restriction on ranks in [0,V-1]. These are combinatorial positions,
+          // not x/y coordinates; backward-running cuts remain possible.
+          m.row([...advance,[z[k][e][d],-V]],1-V,Infinity);
+          m.row([...advance,[z[k][e][d],V]],-Infinity,1+V);
+        }else{flow[k][e][d]=m.variable({hi:Math.max(1,V)});m.row([[flow[k][e][d],1],[z[k][e][d],-Math.max(1,V)]],-Infinity,0);}
+      }m.row([[z[k][e][0],1],[z[k][e][1],1],[x[k][e],-1]],0,0);
       for(const sign of[-1,1])m.row([[labels[k][edge.u],sign],[labels[k][edge.v],-sign],[x[k][e],M]],-Infinity,M);
     }
-    graph.points.forEach((p,v)=>{const ins=[],outs=[],fi=[],fo=[];for(const e of graph.incident[v]){const d=graph.edges[e].u===v?0:1;outs.push(z[k][e][d]);ins.push(z[k][e][1-d]);fo.push(flow[k][e][d]);fi.push(flow[k][e][1-d]);}const ones=a=>a.map(j=>[j,1]);if(sources.has(v)){m.row(ones(ins),0,0);m.row(ones(outs),1,1);}else if(sinks.has(v)){m.row(ones(ins),1,1);m.row(ones(outs),0,0);}else if(Math.min(...p)<1e-5||Math.max(...p)>w-1e-5)m.row(ones([...ins,...outs]),0,0);else{m.row([...ones(ins),...outs.map(j=>[j,-1])],0,0);m.row(ones(ins),-Infinity,1);}if(!sources.has(v))m.row([...ones(fi),...fo.map(j=>[j,-1]),...ins.map(j=>[j,-1])],0,0);});
+    graph.points.forEach((p,v)=>{const ins=[],outs=[],fi=[],fo=[];for(const e of graph.incident[v]){const d=graph.edges[e].u===v?0:1;outs.push(z[k][e][d]);ins.push(z[k][e][1-d]);if(!pathSteps){fo.push(flow[k][e][d]);fi.push(flow[k][e][1-d]);}}const ones=a=>a.map(j=>[j,1]);if(sources.has(v)){m.row(ones(ins),0,0);m.row(ones(outs),1,1);}else if(sinks.has(v)){m.row(ones(ins),1,1);m.row(ones(outs),0,0);}else if(Math.min(...p)<1e-5||Math.max(...p)>w-1e-5)m.row(ones([...ins,...outs]),0,0);else{m.row([...ones(ins),...outs.map(j=>[j,-1])],0,0);m.row(ones(ins),-Infinity,1);}if(!pathSteps&&!sources.has(v))m.row([...ones(fi),...fo.map(j=>[j,-1]),...ins.map(j=>[j,-1])],0,0);});
   }
   graph.edges.forEach((edge,e)=>m.row([[x[0][e],1],[x[1][e],edge.visible?1:-1]],edge.visible?1:0,edge.visible?1:0));
   if(graph.transpose)graph.transpose.forEach((j,e)=>m.row([[x[0][e],1],[x[1][j],-1]],0,0));
   let turns=0,crossings=0,widthPairs=0;graph.incident.forEach((incident,v)=>{if(Math.min(...graph.points[v])<1e-5||Math.max(...graph.points[v])>w-1e-5)return;const turnCosts=[0,1].map(()=>m.variable({cost:1,hi:Infinity}));turns+=2;for(let i=0;i<incident.length;i++)for(let j=i+1;j<incident.length;j++){const a=incident[i],b=incident[j],ea=graph.edges[a],eb=graph.edges[b],ta=ea.u===v?ea.curve.tangent(0):mul(ea.curve.tangent(1),-1),tb=eb.u===v?eb.curve.tangent(0):mul(eb.curve.tangent(1),-1),theta=angle(mul(ta,-1),tb),cost=cfg.turnPenalty*(theta/90)**2+cfg.sharpPenalty*Number(theta>cfg.sharpTurn)+cfg.acutePenalty*(Math.max(0,theta-100)/25)**2;for(const k of[0,1])if(theta>cfg.maxTurn)m.row([[x[k][a],1],[x[k][b],1]],-Infinity,1);else if(cost>1e-10){constrainTurnCost(m,turnCosts[k],x[k][a],x[k][b],cost);}}});
   for(const[a,b]of nearbyPairs(lines,cfg.nominalWidth+2*tol)){const ea=graph.edges[a],eb=graph.edges[b],shared=[ea.u,ea.v].filter(v=>v===eb.u||v===eb.v),improper=improperIntersection(lines[a],lines[b],shared.map(v=>graph.points[v]),3*tol);if(improper){for(const k of[0,1])m.row([[x[k][a],1],[x[k][b],1]],-Infinity,1);crossings++;}else if(!shared.length&&lineDistance(lines[a],lines[b],cfg.nominalWidth+2*tol)<cfg.nominalWidth+2*tol){for(const k of[0,1]){const M=Math.max(1,endpoints[k].sources.length);for(const sign of[-1,1])m.row([[labels[k][ea.u],sign],[labels[k][eb.u],-sign],[x[k][a],M],[x[k][b],M]],-Infinity,2*M);}widthPairs++;}}
-  if(m.cost.length>80000||m.rows.length>200000)throw new Error('MILP exceeds the browser memory guard. Reduce image detail or connector candidates.');onProgress({stage:'model',variables:m.cost.length,constraints:m.rows.length});return{m,x,z,endpoints,metadata:{binaryVariables:m.integer.reduce((a,b)=>a+b,0),continuousVariables:m.integer.filter(x=>!x).length,linearConstraints:m.rows.length,turnAuxiliaries:turns,crossingConflicts:crossings,widthPairs}};
+  if(m.cost.length>80000||m.rows.length>200000)throw new Error('MILP exceeds the browser memory guard. Reduce image detail or connector candidates.');onProgress({stage:'model',variables:m.cost.length,constraints:m.rows.length});return{m,x,z,order,endpoints,metadata:{connectivity,binaryVariables:m.integer.reduce((a,b)=>a+b,0),continuousVariables:m.integer.filter(x=>!x).length,linearConstraints:m.rows.length,turnAuxiliaries:turns,crossingConflicts:crossings,widthPairs}};
 }
 function extract(graph,x,z,values,endpoints){return[0,1].map(k=>{const next=new Map(),chosen=new Set();graph.edges.forEach((edge,e)=>{if(values[x[k][e]]>.5){const fw=values[z[k][e][0]]>.5,a=fw?edge.u:edge.v,b=fw?edge.v:edge.u;if(next.has(a))throw new Error('MILP produced a branching path.');next.set(a,{b,e,fw});chosen.add(e);}});const seen=new Set(),paths=[];for(const source of endpoints[k].sources){const path=[],visited=new Set();let v=source;while(next.has(v)){if(visited.has(v))throw new Error('MILP produced a cycle.');visited.add(v);const{b,e,fw}=next.get(v);path.push([e,fw]);seen.add(e);v=b;}if(!endpoints[k].sinks.includes(v))throw new Error('A slit does not reach the opposite border.');paths.push(path);}if(seen.size!==chosen.size)throw new Error('Detached cut loop in the MILP solution.');return paths;});}
-export async function solveGraph(graph,cfg,{onProgress=()=>{},coreGate=null,coefficientQuantum=0,stopAfterValidated=false,relaxationOnly=false,onRejectedCandidate=null}={}){
+export async function solveGraph(graph,cfg,{onProgress=()=>{},coreGate=null,coefficientQuantum=0,stopAfterValidated=false,relaxationOnly=false,onRejectedCandidate=null,connectivity='commodity-flow'}={}){
   onProgress=progressReporter(onProgress,cfg.progressGeometry);
-  const start=performance.now(),highs=await solverRuntime(),form=formulate(graph,cfg,{onProgress}),{m,x,z,endpoints}=form;let native=null,best=null,bestObj=Infinity,lower=-Infinity,rejectionObserverStopped=false;const history=[],nogoods=new Set();
+  const start=performance.now(),highs=await solverRuntime(),form=formulate(graph,cfg,{onProgress,connectivity}),{m,x,z,endpoints}=form;let native=null,best=null,bestObj=Infinity,lower=-Infinity,rejectionObserverStopped=false;const history=[],nogoods=new Set();
   if(!graph.edges.length){const sol={graph,paths:[[],[]],report:{status:'uniform',physicalAssemblyTested:false}};sol.report.validation=validate(sol,cfg);return sol;}
   // Sub-ulp curve arithmetic differs across JavaScript engines. For recovery,
   // normalize the linear model below its validation tolerance before search.

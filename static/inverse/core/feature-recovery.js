@@ -91,8 +91,11 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{},{
           }catch(error){observation.reason='repair_error';attempt.continuousProbeError=error.message;return false;}
         };
         try{
+          // These smoothed recovery graphs benefit from a smaller path-step model.
+          // Ordinary exact-boundary routing retains commodity flow: the two
+          // equivalent formulations have different branch-and-bound behaviour.
           // This recovery phase already announced graph work before tracing.
-          solution=await solveBoundary(target,{...graphCfg,timeLimit:budget},{expandNeighbors:false,announceGraph:false,onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,onRejectedCandidate:observeRejected,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
+          solution=await solveBoundary(target,{...graphCfg,timeLimit:budget},{expandNeighbors:false,announceGraph:false,onProgress,connectivity:'path-step-order',coefficientQuantum:1e-7,stopAfterValidated:true,onRejectedCandidate:observeRejected,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
           attempt.solver=solution.report;break;
         }catch(error){
           attempt.error=error.message;attempt.solver=error.report;report.solver=error.report;
