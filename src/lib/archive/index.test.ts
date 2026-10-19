@@ -84,6 +84,29 @@ describe('the complete heart archive', () => {
 		for (const record of records.filter(r => r.history === 'permo')) expect(record.templateUrls).toHaveLength(1);
 	});
 
+	it('preserves two further Haabet designs without counting alternate names or photos as designs', () => {
+		const records = archiveRecords('en');
+		const nine = records.find(r => r.id === 'haabet-nine-hearts')!;
+		const winter = records.find(r => r.id === 'haabet-vintersol')!;
+		expect(nine.title).toBe('9 hjerter / Firkløver');
+		expect(winter.title).toBe('Vintersol');
+		expect(nine.imageUrls).toHaveLength(1);
+		expect(winter.imageUrls).toHaveLength(2);
+		for (const record of [nine, winter]) {
+			expect(records.filter(r => r.id === record.id)).toHaveLength(1);
+			expect(record.credits).toEqual(['Peter Ole Kvint']);
+			expect(record.license).toBe('unknown');
+			expect(record.preservedTemplates).toBeUndefined();
+			expect(record.thumbnail).toBeUndefined();
+			expect(record.templateUrls).toHaveLength(1);
+			expect(record.templateUrls[0]).toMatch(/^https:\/\/web\.archive\.org\/web\/\d{14}id_\/http:\/\/.*\.gif$/);
+			const original = record.templateUrls[0].replace(/^https:\/\/web\.archive\.org\/web\/[^/]+\//, '');
+			expect(record.sourceUrls).toContain(original);
+		}
+		expect(nine.templateUrls[0]).toContain('/20130530125527id_/');
+		expect(winter.templateUrls[0]).toContain('/20160418065353id_/');
+	});
+
 	it('searches recorded credits and combines filters without case or accent surprises', () => {
 		const records = archiveRecords('en');
 		const mortensen = filterArchive(records, 'PER mortensen', '', 'templates');

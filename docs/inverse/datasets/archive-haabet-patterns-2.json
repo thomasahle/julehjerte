@@ -1,0 +1,266 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-19T13:53:47.702553+00:00",
+  "scope": "Two additional original Haabet patterns from explicitly linked archived detail pages; bounded serial retrieval, no recursive crawl.",
+  "summary": {
+    "designRecords": 2,
+    "designsWithRecoveredTemplates": 2,
+    "originalAssets": 5,
+    "assetBytes": 33641,
+    "newEvidenceFiles": 2,
+    "newEvidenceBytes": 1929,
+    "reusedEvidenceFiles": 2,
+    "downloadedPayloadBytes": 35570,
+    "payloadLimitBytes": 5000000,
+    "exactDuplicatesInComparedManifests": 0
+  },
+  "designs": [
+    {
+      "id": "haabet-nine-hearts",
+      "title": "9 hjerter",
+      "alternativeSourceTitle": "Firkløver",
+      "collection": "Haabet / Flettede julehjerter",
+      "sourcePage": "http://www.haabet.dk/users/julehjerter/g.html",
+      "archivedSourcePage": "https://web.archive.org/web/20151025194203/http://www.haabet.dk/users/julehjerter/g.html",
+      "designer": "Peter Ole Kvint",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20130530125527id_/http://www.haabet.dk/users/julehjerter/g_.gif"
+      ],
+      "creditNote": "The recovered cutting template is signed PETER OLE KVINT. No year is printed on this template.",
+      "sourceDeclaredDesignYear": null,
+      "historyNote": "The detail page title says 9 hjerter, while the earlier preserved figure index image alt text says Firkløver. Preserve both labels; this is one source record, not two distinct designs.",
+      "templateAssets": [
+        "744cd3f39e688fd18db79462d2f57c99de847bd58c72d31d066547b2bfa34ce9"
+      ],
+      "previewAssets": [
+        "0bb0b36737c442445835b3b43d77eac227ccc5892eedf1eed97cffc26ffd6ff3"
+      ],
+      "preservationStatus": "original-template-and-preview-preserved",
+      "rightsRef": "haabet-personal-printing"
+    },
+    {
+      "id": "haabet-vintersol",
+      "title": "Vintersol",
+      "collection": "Haabet / Flettede julehjerter",
+      "sourcePage": "http://www.haabet.dk/users/julehjerter/hvirvel.html",
+      "archivedSourcePage": "https://web.archive.org/web/20151029024736/http://www.haabet.dk/users/julehjerter/hvirvel.html",
+      "designer": "Peter Ole Kvint",
+      "creditEvidenceUrls": [
+        "https://web.archive.org/web/20160418065353id_/http://haabet.dk/users/julehjerter/hvirvel.gif"
+      ],
+      "creditNote": "The complete original cutting template is signed PETER OLE KVINT 2001.",
+      "sourceDeclaredDesignYear": 2001,
+      "dateType": "Year printed on template; not independently established first publication.",
+      "historyNote": "The source describes success on the third attempt and stresses orientation and accurate folding. Both small original photographs are retained as linked views of this source design; they are not counted as independent designs.",
+      "templateAssets": [
+        "49b03f934333cd30d57fbbfc232a02630c5779b37c6b98946706dad10ba18dab"
+      ],
+      "photoAssets": [
+        "3694e6b91ce62190371c4e3b93ab13497da2eaefa7b646295f47c233a0e82d07",
+        "ba1360872092588a6a75921b46febad67950aa9e95da53bac35c88f507a3486d"
+      ],
+      "preservationStatus": "original-template-and-two-photos-preserved",
+      "rightsRef": "haabet-personal-printing"
+    }
+  ],
+  "assets": [
+    {
+      "localFile": "archive-store/heart-preservation/objects/0bb0b36737c442445835b3b43d77eac227ccc5892eedf1eed97cffc26ffd6ff3.gif",
+      "sha256": "0bb0b36737c442445835b3b43d77eac227ccc5892eedf1eed97cffc26ffd6ff3",
+      "bytes": 3742,
+      "mimeType": "image/gif",
+      "role": "woven-design-preview",
+      "originalUrl": "http://haabet.dk/users/julehjerter/g.gif",
+      "actualCaptureUrl": "https://web.archive.org/web/20160518110845id_/http://haabet.dk/users/julehjerter/g.gif",
+      "archiveCaptureTimestamp": "20160518110845",
+      "requestedUrl": "https://web.archive.org/web/20151025194203id_/http://www.haabet.dk/users/julehjerter/g.gif",
+      "retrievedAt": "2026-10-19T13:51:11.530817+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "width": 200,
+      "height": 317,
+      "review": "Decoded and visually inspected original file; no edits."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/744cd3f39e688fd18db79462d2f57c99de847bd58c72d31d066547b2bfa34ce9.gif",
+      "sha256": "744cd3f39e688fd18db79462d2f57c99de847bd58c72d31d066547b2bfa34ce9",
+      "bytes": 2078,
+      "mimeType": "image/gif",
+      "role": "cutting-template",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/g_.gif",
+      "actualCaptureUrl": "https://web.archive.org/web/20130530125527id_/http://www.haabet.dk/users/julehjerter/g_.gif",
+      "archiveCaptureTimestamp": "20130530125527",
+      "requestedUrl": "https://web.archive.org/web/20151025194203id_/http://www.haabet.dk/users/julehjerter/g_.gif",
+      "retrievedAt": "2026-10-19T13:51:29.549114+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "width": 193,
+      "height": 291,
+      "review": "Decoded and visually inspected original file; no edits."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/49b03f934333cd30d57fbbfc232a02630c5779b37c6b98946706dad10ba18dab.gif",
+      "sha256": "49b03f934333cd30d57fbbfc232a02630c5779b37c6b98946706dad10ba18dab",
+      "bytes": 6538,
+      "mimeType": "image/gif",
+      "role": "cutting-template",
+      "originalUrl": "http://haabet.dk/users/julehjerter/hvirvel.gif",
+      "actualCaptureUrl": "https://web.archive.org/web/20160418065353id_/http://haabet.dk/users/julehjerter/hvirvel.gif",
+      "archiveCaptureTimestamp": "20160418065353",
+      "requestedUrl": "https://web.archive.org/web/20151029024736id_/http://www.haabet.dk/users/julehjerter/hvirvel.gif",
+      "retrievedAt": "2026-10-19T13:51:44.895888+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "width": 353,
+      "height": 1061,
+      "review": "Decoded and visually inspected original file; no edits."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/3694e6b91ce62190371c4e3b93ab13497da2eaefa7b646295f47c233a0e82d07.jpg",
+      "sha256": "3694e6b91ce62190371c4e3b93ab13497da2eaefa7b646295f47c233a0e82d07",
+      "bytes": 13980,
+      "mimeType": "image/jpeg",
+      "role": "assembled-heart-photo",
+      "originalUrl": "http://haabet.dk/users/julehjerter/hvirvel.jpg",
+      "actualCaptureUrl": "https://web.archive.org/web/20160418062910id_/http://haabet.dk/users/julehjerter/hvirvel.jpg",
+      "archiveCaptureTimestamp": "20160418062910",
+      "requestedUrl": "https://web.archive.org/web/20151029024736id_/http://www.haabet.dk/users/julehjerter/hvirvel.jpg",
+      "retrievedAt": "2026-10-19T13:51:58.852619+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "width": 190,
+      "height": 270,
+      "review": "Decoded and visually inspected original file; no edits."
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/ba1360872092588a6a75921b46febad67950aa9e95da53bac35c88f507a3486d.jpg",
+      "sha256": "ba1360872092588a6a75921b46febad67950aa9e95da53bac35c88f507a3486d",
+      "bytes": 7303,
+      "mimeType": "image/jpeg",
+      "role": "assembled-heart-photo",
+      "originalUrl": "http://haabet.dk/users/julehjerter/hvirvel2.jpg",
+      "actualCaptureUrl": "https://web.archive.org/web/20160518163412id_/http://haabet.dk/users/julehjerter/hvirvel2.jpg",
+      "archiveCaptureTimestamp": "20160518163412",
+      "requestedUrl": "https://web.archive.org/web/20151029024736id_/http://www.haabet.dk/users/julehjerter/hvirvel2.jpg",
+      "retrievedAt": "2026-10-19T13:52:11.921779+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false,
+      "width": 122,
+      "height": 184,
+      "review": "Decoded and visually inspected original file; no edits."
+    }
+  ],
+  "evidence": [
+    {
+      "localFile": "archive-store/heart-preservation/objects/dc21f2052baaa09884a49e3a546b5fc4becfaddf9d2878b75a7f8b730bc175cf.html",
+      "sha256": "dc21f2052baaa09884a49e3a546b5fc4becfaddf9d2878b75a7f8b730bc175cf",
+      "bytes": 531,
+      "mimeType": "text/html",
+      "role": "source-evidence",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/g.html",
+      "actualCaptureUrl": "https://web.archive.org/web/20151025194203id_/http://www.haabet.dk/users/julehjerter/g.html",
+      "archiveCaptureTimestamp": "20151025194203",
+      "requestedUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/g.html",
+      "retrievedAt": "2026-10-19T13:50:21.114283+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/1654d16344d732322f11ec5f9ba9e3ea7b73a7540ffb0c4c33d13ada59c3459b.html",
+      "sha256": "1654d16344d732322f11ec5f9ba9e3ea7b73a7540ffb0c4c33d13ada59c3459b",
+      "bytes": 1398,
+      "mimeType": "text/html",
+      "role": "source-evidence",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/hvirvel.html",
+      "actualCaptureUrl": "https://web.archive.org/web/20151029024736id_/http://www.haabet.dk/users/julehjerter/hvirvel.html",
+      "archiveCaptureTimestamp": "20151029024736",
+      "requestedUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/hvirvel.html",
+      "retrievedAt": "2026-10-19T13:50:35.376785+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    }
+  ],
+  "reusedEvidence": [
+    {
+      "localFile": "archive-store/heart-preservation/objects/5088431d744068dae28a07ac8fdc1bdff73d2bb079da7a6e88b31bfebf1eff85.html",
+      "role": "source-evidence",
+      "sha256": "5088431d744068dae28a07ac8fdc1bdff73d2bb079da7a6e88b31bfebf1eff85",
+      "bytes": 2672,
+      "mimeType": "text/html",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/figure.html",
+      "actualCaptureUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/figure.html",
+      "archiveCaptureTimestamp": "20150812154542",
+      "requestedUrl": "https://web.archive.org/web/20150101000000id_/http://haabet.dk/users/julehjerter/figure.html",
+      "retrievedAt": "2026-10-19T12:56:57.770256+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    },
+    {
+      "localFile": "archive-store/heart-preservation/objects/a018d768c3cd79e61cb46d83969a435a9cc6cafdaf029765a19d7436a487acdc.html",
+      "role": "source-evidence",
+      "sha256": "a018d768c3cd79e61cb46d83969a435a9cc6cafdaf029765a19d7436a487acdc",
+      "bytes": 4526,
+      "mimeType": "text/html",
+      "originalUrl": "http://www.haabet.dk/users/julehjerter/index.html",
+      "actualCaptureUrl": "https://web.archive.org/web/20150812154558id_/http://www.haabet.dk/users/julehjerter/index.html",
+      "archiveCaptureTimestamp": "20150812154558",
+      "requestedUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/index.html",
+      "retrievedAt": "2026-10-19T12:58:57.210230+00:00",
+      "publicMirrorEligible": false,
+      "existingByteDuplicate": false
+    }
+  ],
+  "rights": [
+    {
+      "id": "haabet-personal-printing",
+      "status": "personal-downloading-and-printing-described",
+      "redistributionPermission": null,
+      "license": null,
+      "publicMirrorEligible": false,
+      "sourceEvidenceUrls": [
+        "https://web.archive.org/web/20150812154558/http://www.haabet.dk/users/julehjerter/index.html"
+      ],
+      "observedPermission": "Previously preserved index instructs visitors to save images and print templates for making hearts. No public redistribution permission found in inspected pages or new images."
+    }
+  ],
+  "failures": [
+    {
+      "url": "https://web.archive.org/web/20170112105628id_/http://julehjertedesign.dk/diagrams/contrib/carola_damerne.svg",
+      "retrievedAt": "2026-10-19T13:50:48.800118+00:00",
+      "error": "HTTP Error 404: NOT FOUND"
+    }
+  ],
+  "referenceUpdates": [
+    {
+      "id": "jhd-damernes",
+      "status": "reference-only",
+      "note": "The previously untested original SVG replay also returned 404. The earlier missing PDF result still stands. No template recovery is claimed.",
+      "attemptUrl": "https://web.archive.org/web/20170112105628id_/http://julehjertedesign.dk/diagrams/contrib/carola_damerne.svg"
+    }
+  ],
+  "validation": {
+    "sha256AndSizesVerified": true,
+    "allOriginalImagesDecodedAndViewed": true,
+    "duplicateManifestsCompared": [
+      "docs/inverse/datasets/real-manifest.json",
+      "docs/inverse/datasets/archive-permo.json",
+      "docs/inverse/datasets/archive-additional.json",
+      "docs/inverse/datasets/archive-dead-sites.json"
+    ],
+    "scopeOfDeduplication": "Exact original-byte duplicate check, not proof of unique motif or separate photograph."
+  },
+  "limitations": [
+    "The pictures are small original web assets, preserved at their available resolution.",
+    "Archive capture times are later than any dates printed on artwork; these are different kinds of evidence.",
+    "No public mirroring is enabled by local preservation.",
+    "No creator was contacted and no access restrictions were bypassed."
+  ],
+  "storage": {
+    "status": "promoted-and-hash-verified",
+    "manifest": "docs/inverse/datasets/heart-archive-storage.json",
+    "newUniqueObjects": 7,
+    "newOriginalBytes": 35570,
+    "reusedEvidenceObjects": 2,
+    "publicMirrorsAdded": 0
+  }
+}

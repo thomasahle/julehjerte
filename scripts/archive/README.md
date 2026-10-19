@@ -40,6 +40,11 @@ metadata files. The October 19 additions were checked against
   Heesemann, Johan Rosenkilde and Peter Ole Kvint, as identified by their sources.
   Carola's Damernes julehjerte remains reference-only: its archived PDF failed,
   so the article is retained without claiming a recovered cutting template.
+- A further [Haabet recovery](../../docs/inverse/datasets/archive-haabet-patterns-2.json)
+  adds Peter Ole Kvint's Vintersol and 9 hjerter / Firkløver. The latter's detail
+  page and figure index use different names for the same design. Vintersol's
+  two small photographs remain views of one record. The signed template's 2001
+  date and the later archive capture dates stay separate in the source manifest.
 
 Template availability is explicit: printable Juleflet template, publicly preserved
 original, verified source-template link, or reference only. Links discovered on

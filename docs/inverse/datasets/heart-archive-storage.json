@@ -1664,6 +1664,13 @@
           "retrievedUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/figure.html",
           "retrievedAt": "2026-10-19T12:56:57.770256+00:00",
           "archiveCaptureTimestamp": "20150812154542"
+        },
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/figure.html",
+          "retrievedUrl": "https://web.archive.org/web/20150812154542id_/http://www.haabet.dk/users/julehjerter/figure.html",
+          "retrievedAt": "2026-10-19T12:56:57.770256+00:00",
+          "archiveCaptureTimestamp": "20150812154542"
         }
       ]
     },
@@ -1817,6 +1824,13 @@
           "retrievedUrl": "https://web.archive.org/web/20150812154558id_/http://www.haabet.dk/users/julehjerter/index.html",
           "retrievedAt": "2026-10-19T12:58:57.210230+00:00",
           "archiveCaptureTimestamp": "20150812154558"
+        },
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/index.html",
+          "retrievedUrl": "https://web.archive.org/web/20150812154558id_/http://www.haabet.dk/users/julehjerter/index.html",
+          "retrievedAt": "2026-10-19T12:58:57.210230+00:00",
+          "archiveCaptureTimestamp": "20150812154558"
         }
       ]
     },
@@ -1836,12 +1850,132 @@
           "archiveCaptureTimestamp": "20161018014112"
         }
       ]
+    },
+    {
+      "sha256": "0bb0b36737c442445835b3b43d77eac227ccc5892eedf1eed97cffc26ffd6ff3",
+      "bytes": 3742,
+      "path": "archive-store/heart-preservation/objects/0bb0b36737c442445835b3b43d77eac227ccc5892eedf1eed97cffc26ffd6ff3.gif",
+      "contentType": "image/gif",
+      "role": "woven-design-preview",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://haabet.dk/users/julehjerter/g.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160518110845id_/http://haabet.dk/users/julehjerter/g.gif",
+          "retrievedAt": "2026-10-19T13:51:11.530817+00:00",
+          "archiveCaptureTimestamp": "20160518110845"
+        }
+      ]
+    },
+    {
+      "sha256": "744cd3f39e688fd18db79462d2f57c99de847bd58c72d31d066547b2bfa34ce9",
+      "bytes": 2078,
+      "path": "archive-store/heart-preservation/objects/744cd3f39e688fd18db79462d2f57c99de847bd58c72d31d066547b2bfa34ce9.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/g_.gif",
+          "retrievedUrl": "https://web.archive.org/web/20130530125527id_/http://www.haabet.dk/users/julehjerter/g_.gif",
+          "retrievedAt": "2026-10-19T13:51:29.549114+00:00",
+          "archiveCaptureTimestamp": "20130530125527"
+        }
+      ]
+    },
+    {
+      "sha256": "49b03f934333cd30d57fbbfc232a02630c5779b37c6b98946706dad10ba18dab",
+      "bytes": 6538,
+      "path": "archive-store/heart-preservation/objects/49b03f934333cd30d57fbbfc232a02630c5779b37c6b98946706dad10ba18dab.gif",
+      "contentType": "image/gif",
+      "role": "cutting-template",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://haabet.dk/users/julehjerter/hvirvel.gif",
+          "retrievedUrl": "https://web.archive.org/web/20160418065353id_/http://haabet.dk/users/julehjerter/hvirvel.gif",
+          "retrievedAt": "2026-10-19T13:51:44.895888+00:00",
+          "archiveCaptureTimestamp": "20160418065353"
+        }
+      ]
+    },
+    {
+      "sha256": "3694e6b91ce62190371c4e3b93ab13497da2eaefa7b646295f47c233a0e82d07",
+      "bytes": 13980,
+      "path": "archive-store/heart-preservation/objects/3694e6b91ce62190371c4e3b93ab13497da2eaefa7b646295f47c233a0e82d07.jpg",
+      "contentType": "image/jpeg",
+      "role": "assembled-heart-photo",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://haabet.dk/users/julehjerter/hvirvel.jpg",
+          "retrievedUrl": "https://web.archive.org/web/20160418062910id_/http://haabet.dk/users/julehjerter/hvirvel.jpg",
+          "retrievedAt": "2026-10-19T13:51:58.852619+00:00",
+          "archiveCaptureTimestamp": "20160418062910"
+        }
+      ]
+    },
+    {
+      "sha256": "ba1360872092588a6a75921b46febad67950aa9e95da53bac35c88f507a3486d",
+      "bytes": 7303,
+      "path": "archive-store/heart-preservation/objects/ba1360872092588a6a75921b46febad67950aa9e95da53bac35c88f507a3486d.jpg",
+      "contentType": "image/jpeg",
+      "role": "assembled-heart-photo",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://haabet.dk/users/julehjerter/hvirvel2.jpg",
+          "retrievedUrl": "https://web.archive.org/web/20160518163412id_/http://haabet.dk/users/julehjerter/hvirvel2.jpg",
+          "retrievedAt": "2026-10-19T13:52:11.921779+00:00",
+          "archiveCaptureTimestamp": "20160518163412"
+        }
+      ]
+    },
+    {
+      "sha256": "dc21f2052baaa09884a49e3a546b5fc4becfaddf9d2878b75a7f8b730bc175cf",
+      "bytes": 531,
+      "path": "archive-store/heart-preservation/objects/dc21f2052baaa09884a49e3a546b5fc4becfaddf9d2878b75a7f8b730bc175cf.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/g.html",
+          "retrievedUrl": "https://web.archive.org/web/20151025194203id_/http://www.haabet.dk/users/julehjerter/g.html",
+          "retrievedAt": "2026-10-19T13:50:21.114283+00:00",
+          "archiveCaptureTimestamp": "20151025194203"
+        }
+      ]
+    },
+    {
+      "sha256": "1654d16344d732322f11ec5f9ba9e3ea7b73a7540ffb0c4c33d13ada59c3459b",
+      "bytes": 1398,
+      "path": "archive-store/heart-preservation/objects/1654d16344d732322f11ec5f9ba9e3ea7b73a7540ffb0c4c33d13ada59c3459b.html",
+      "contentType": "text/html",
+      "role": "source-evidence",
+      "publicUrl": null,
+      "sources": [
+        {
+          "collection": "haabet-patterns-2",
+          "originalUrl": "http://www.haabet.dk/users/julehjerter/hvirvel.html",
+          "retrievedUrl": "https://web.archive.org/web/20151029024736id_/http://www.haabet.dk/users/julehjerter/hvirvel.html",
+          "retrievedAt": "2026-10-19T13:50:35.376785+00:00",
+          "archiveCaptureTimestamp": "20151029024736"
+        }
+      ]
     }
   ],
   "counts": {
-    "objects": 107,
-    "originalBytes": 15512093,
+    "objects": 114,
+    "originalBytes": 15547663,
     "publicObjects": 1
   },
-  "scope": "Original source documents and evidence, retained once by SHA-256. Public template copies require recorded redistribution terms. Other originals are kept in archive-store, outside tmp and outside Git/public assets. A second off-device backup is still needed."
+  "scope": "Original source documents and evidence, retained once by SHA-256. Public template copies require recorded redistribution terms. Other originals are kept in archive-store, outside tmp and outside Git/public assets. A second off-device backup is still needed.",
+  "updatedAt": "2026-10-19T13:55:56.714592+00:00"
 }

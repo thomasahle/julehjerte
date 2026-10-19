@@ -989,5 +989,55 @@
     "templateUrls": [],
     "relatedTemplateUrls": [],
     "license": "unknown"
+  },
+  {
+    "id": "haabet-nine-hearts",
+    "title": "9 hjerter / Firkløver",
+    "kind": "document",
+    "source": "haabet.dk",
+    "sourceUrls": [
+      "https://web.archive.org/web/20151025194203/http://www.haabet.dk/users/julehjerter/g.html",
+      "http://www.haabet.dk/users/julehjerter/g.html",
+      "https://web.archive.org/web/20130530125527id_/http://www.haabet.dk/users/julehjerter/g_.gif",
+      "http://www.haabet.dk/users/julehjerter/g_.gif",
+      "http://haabet.dk/users/julehjerter/g.gif"
+    ],
+    "imageUrls": [
+      "https://web.archive.org/web/20160518110845id_/http://haabet.dk/users/julehjerter/g.gif"
+    ],
+    "credits": [
+      "Peter Ole Kvint"
+    ],
+    "templateUrls": [
+      "https://web.archive.org/web/20130530125527id_/http://www.haabet.dk/users/julehjerter/g_.gif"
+    ],
+    "relatedTemplateUrls": [],
+    "license": "unknown"
+  },
+  {
+    "id": "haabet-vintersol",
+    "title": "Vintersol",
+    "kind": "document",
+    "source": "haabet.dk",
+    "sourceUrls": [
+      "https://web.archive.org/web/20151029024736/http://www.haabet.dk/users/julehjerter/hvirvel.html",
+      "http://www.haabet.dk/users/julehjerter/hvirvel.html",
+      "https://web.archive.org/web/20160418065353id_/http://haabet.dk/users/julehjerter/hvirvel.gif",
+      "http://haabet.dk/users/julehjerter/hvirvel.gif",
+      "http://haabet.dk/users/julehjerter/hvirvel.jpg",
+      "http://haabet.dk/users/julehjerter/hvirvel2.jpg"
+    ],
+    "imageUrls": [
+      "https://web.archive.org/web/20160418062910id_/http://haabet.dk/users/julehjerter/hvirvel.jpg",
+      "https://web.archive.org/web/20160518163412id_/http://haabet.dk/users/julehjerter/hvirvel2.jpg"
+    ],
+    "credits": [
+      "Peter Ole Kvint"
+    ],
+    "templateUrls": [
+      "https://web.archive.org/web/20160418065353id_/http://haabet.dk/users/julehjerter/hvirvel.gif"
+    ],
+    "relatedTemplateUrls": [],
+    "license": "unknown"
   }
 ]

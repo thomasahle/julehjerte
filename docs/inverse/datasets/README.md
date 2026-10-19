@@ -139,10 +139,10 @@ alone does not meet that gate.
 
 ### Preservation archive, 2026-10-19
 
-The [preservation manifest](heart-archive-storage.json) records **107 unique
-original files, 15,512,093 bytes**, including 54 template PDFs (286 pages),
-seven recovered Permo images, three Haabet images and source/history/license
-evidence. These are documents and photographs, not 107 independent designs or
+The [preservation manifest](heart-archive-storage.json) records **114 unique
+original files, 15,547,663 bytes**, including 54 template PDFs (286 pages),
+seven recovered Permo images, eight Haabet images and source/history/license
+evidence. These are documents and photographs, not 114 independent designs or
 new training labels.
 [Additional collections](archive-additional.json) record Krümmel,
 Bibelselskabet, Spejderliv and PaperMatrix; the [Permo history](archive-permo.json)
@@ -153,6 +153,15 @@ The [discontinued-site rescue](archive-dead-sites.json) preserves six
 JulehjerteDesign cutting templates and Haabet's polar bear, with primary
 credit evidence for Johan Rosenkilde, Carola Heesemann and Peter Ole Kvint.
 It also records a reference-only design whose template could not be recovered.
+A [second Haabet batch](archive-haabet-patterns-2.json) adds **Vintersol** and
+**9 hjerter / Firkløver**, both signed by Peter Ole Kvint. Seven new originals
+and evidence files add only **35,570 bytes**; two existing evidence objects are
+reused. The two names for 9 hjerter and the two Vintersol photographs do not
+become additional design records. Original URLs, actual capture timestamps,
+creator signatures and source history are retained. The year 2001 printed on
+Vintersol's template is not treated as a verified first-publication date.
+The attempted Damernes SVG replay also returned 404, so that design remains
+reference-only. None of this batch is mirrored as a public image.
 
 Original bytes were moved out of temporary work directories, not copied into
 another full dataset. The private originals live in
