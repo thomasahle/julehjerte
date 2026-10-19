@@ -60,6 +60,9 @@ test('an expired ordinary polish cannot declare a lattice-only Viking safe',asyn
   assert.equal(after.paper.offset.status,'fail');
   assert.equal(verifyCandidatePaper(after,input,cfg,{recheckFailed:true}),false,'A finer lattice cannot waive a known offset failure.');
   assert.equal(after.paperPassed,false);
+  after.paperPassed=true;
+  assert.equal(verifyCandidatePaper(after,input,cfg,{recheckFailed:true}),false);
+  assert.equal(after.paperPassed,false,'A stale positive flag cannot override these coordinates’ offset failure.');
 });
 
 test('offset guidance preserves an already valid grid at equal optimization work',async t=>{
