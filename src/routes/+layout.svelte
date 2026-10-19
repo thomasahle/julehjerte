@@ -135,7 +135,9 @@
 	     event of the page load. The config sends the first page view only:
 	     the stream's history-based page views are off (each ?selected= rewrite
 	     counted as one), and later page views come from afterNavigate above,
-	     one per change of pathname. -->
+	     one per change of pathname. Automated browsers and browsers marked
+	     with localStorage juleflet:internal = "1" send traffic_type =
+	     "internal", which the property's internal-traffic filter excludes. -->
 	{#if GA_MEASUREMENT_ID && !dev}
 		{@html `<script>
 			window.dataLayer = window.dataLayer || [];
@@ -161,6 +163,14 @@
 				};
 				var tag = new URLSearchParams(location.search).get('ref');
 				if (tag) { params.ref_tag = tag; }
+				// Our own traffic: browsers driven by automation (Playwright and the
+				// like set navigator.webdriver) and browsers the owner has marked
+				// with localStorage "juleflet:internal". GA4's internal-traffic data
+				// filter drops events that carry traffic_type = "internal", so QA
+				// runs and development visits stay out of the reports.
+				var internal = navigator.webdriver === true;
+				try { internal = internal || localStorage.getItem('juleflet:internal') === '1'; } catch (_e) {}
+				if (internal) { params.traffic_type = 'internal'; }
 				return params;
 			})());
 		</script>`}
