@@ -98,6 +98,15 @@ describe('the picture drawn before the cuts are found', () => {
 			expect(mismatch({ mode: 'text', name: text, text, font: nunito as unknown as Font, colors, textFrame: 'woven', fittedCells: false }), text).toBeLessThan(.015);
 	}, 30000);
 
+	it('is the open frames the cuts make: wedges, the fitted strips and the large silhouette', () => {
+		for (const style of ['wedges', 'fitted', 'silhouette'] as const)
+			expect(mismatch({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style }), style).toBeLessThan(.01);
+	});
+
+	it('is the motif in the centre square the cuts make', () => {
+		expect(mismatch({ mode: 'figure', name: 'Tree', contours: tree.contours as Ring[], colors, style: 'squares' })).toBeLessThan(.01);
+	});
+
 	it('has none yet for the other frames', () => {
 		expect(picture({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'corners' })).toBeUndefined();
 	});

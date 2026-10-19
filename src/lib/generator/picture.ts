@@ -9,8 +9,9 @@
  * Frames without a picture here return none.
  */
 import type { GeneratorRequest } from './generate';
-import { arc, frameRing, outerFrame, uprightToSheet, type Font, type Point, type Ring } from './geometry';
-import { fitCircle } from './frameFit';
+import { arc, frameRing, outerFrame, uprightToSheet, FITTED, SILHOUETTE, WEDGES, type Font, type Point, type Ring } from './geometry';
+import { fillSquare, fitCircle } from './frameFit';
+import { fittedPicture } from './fitted';
 import { normalizeContours } from './contours';
 import { STRIPS, boardChecks, placeMotif, placeRange, shifts, slidePlace } from './stripFigure';
 import { checkeredLayout, checkeredLetters } from './checkeredGrid';
@@ -46,11 +47,28 @@ export function picture(request: GeneratorRequest, known: Known = {}): Picture |
 			const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } };
 			return checkered(MOTIF_PATTERNS[request.layout?.alternative ?? 0], font, boardScale(request));
 		}
+		if (request.mode === 'figure' && request.style === 'squares' && request.contours?.length && (known.board ?? 3) === 3) {
+			// The motif as the one letter of the woven frame, in the centre square
+			// of a board of three strips: as the default size chose, up to a
+			// tenth larger in it, or in the airy frame (see `frameAlternatives`).
+			const contours = normalizeContours(request.contours), alternative = request.layout?.alternative ?? 0;
+			if (!contours.length || alternative > 3) return;
+			const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } };
+			return woven(MOTIF, font, alternative === 3, Math.min(1.1, boardScale(request) * [1, 1.05, 1.1, 1][alternative]));
+		}
 		if (request.mode === 'figure' && request.style === 'strips') return stripsPicture(request, known.place);
 		// A motif that needs panels gets a finer board, which crosses the
 		// corners its frame turns over with more stripes.
 		if (request.mode === 'figure' && (request.style === 'rays' || request.style === 'check') && (known.board ?? 3) === 3)
 			return circlePicture(request);
+		if (request.mode === 'figure' && (request.style === 'wedges' || request.style === 'fitted' || request.style === 'silhouette') && request.contours?.length
+			&& (known.board ?? (request.style === 'fitted' ? 5 : 3)) === (request.style === 'fitted' ? 5 : 3)) {
+			// The open frames' legs, as their first construction draws them, on
+			// its board: three strips, five with the fitted frame's outer strips.
+			const sized = fillSquare(request), frame = { wedges: WEDGES, fitted: FITTED, silhouette: SILHOUETTE }[request.style];
+			const rings = fittedPicture(normalizeContours(request.contours), sized.frameSize ?? 70, sized.scale ?? .7, { ...frame, gap: request.gap ?? frame.gap });
+			return rings.length ? { rings } : undefined;
+		}
 	} catch {
 		// A character the font lacks, say: the generator reports it.
 	}
@@ -89,7 +107,7 @@ function circlePicture(request: GeneratorRequest): Picture | undefined {
  * frames (see `generateTextGrid`): a board of columns + rows + 1 strips,
  * every cell a diamond around one of its squares that reaches the centres of
  * the four beside it, the checks cleared inside it and its letter drawn. */
-function woven(text: string, font: Font, air: boolean): Picture {
+function woven(text: string, font: Font, air: boolean, letterScale = 1): Picture {
 	const { matrix, rows, cols, cy, cellHeight, widths, span, fullHeight, scale } = measureTextGrid(text, font, air, undefined, { fittedCells: false });
 	const n = cols + rows + 1, side = 100 / n, rings: Ring[] = [];
 	const square = (i: number, j: number): Ring => [[i * side, j * side], [(i + 1) * side, j * side], [(i + 1) * side, (j + 1) * side], [i * side, (j + 1) * side]];
@@ -112,7 +130,7 @@ function woven(text: string, font: Font, air: boolean): Picture {
 				rings.push([[mid[0] - dy * side / 2, mid[1] - dx * side / 2], [mid[0] + dy * side / 2, mid[1] + dx * side / 2], [cx0 + dx * side, cy0 + dy * side]]);
 			}
 			const xs = glyph.contours.flat().map(p => p[0]), cx = (Math.min(...xs) + Math.max(...xs)) / 2;
-			rings.push(...glyph.contours.map(ring => ring.map(([px, py]) => uprightToSheet([x + (px - cx) * scale, y + (py - cy) * scale]))));
+			rings.push(...glyph.contours.map(ring => ring.map(([px, py]) => uprightToSheet([x + (px - cx) * scale * letterScale, y + (py - cy) * scale * letterScale]))));
 		}
 	}
 	return { rings };
