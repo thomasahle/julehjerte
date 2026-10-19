@@ -119,7 +119,11 @@ describe('the picture drawn before the cuts are found', () => {
 		expect(mismatch({ ...request, name: 'Tree', contours: tree.contours as Ring[], scale: .8 })).toBeLessThan(.01);
 	});
 
-	it('has none yet for the other frames', () => {
-		expect(picture({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'corners' })).toBeUndefined();
+	it('is the checks in the tips the cuts make', () => {
+		expect(mismatch({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'corners' })).toBeLessThan(.01);
+	});
+
+	it('has none yet for letters in a circle', () => {
+		expect(picture({ mode: 'text', name: 'JUL', text: 'JUL', font: oswald as unknown as Font, colors, textFrame: 'circle' })).toBeUndefined();
 	});
 });

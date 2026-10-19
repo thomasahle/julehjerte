@@ -63,6 +63,7 @@ export function picture(request: GeneratorRequest, known: Known = {}): Picture |
 			return circlePicture(request);
 		if (request.mode === 'figure' && request.style === 'sunburst' && (known.board ?? 5) === 5) return sunburstPicture(request);
 		if (request.mode === 'figure' && request.style === 'layers' && (known.board ?? 7) === 7) return layersPicture(request);
+		if (request.mode === 'figure' && request.style === 'corners' && (known.board ?? 6) === 6) return cornersPicture(request);
 		if (request.mode === 'figure' && request.style === 'board') return boardPicture(request, known.circle);
 		if (request.mode === 'figure' && (request.style === 'wedges' || request.style === 'fitted' || request.style === 'silhouette') && request.contours?.length
 			&& (known.board ?? (request.style === 'fitted' ? 5 : 3)) === (request.style === 'fitted' ? 5 : 3)) {
@@ -172,6 +173,25 @@ function layersPicture(request: GeneratorRequest): Picture | undefined {
 	const disc: Ring = Array.from({ length: 96 }, (_, i) => [.5 * Math.cos(i * Math.PI / 48), .5 * Math.sin(i * Math.PI / 48)]);
 	const rings = fittedPicture([disc, ...contours.map(r => r.map(([x, y]): Point => [x * scale, y * scale]))], size, 1, FITTED);
 	const inset = (100 - size) / 2 - 8;
+	rings.push([[0, 0], [inset, 0], [inset, 100], [0, 100]], [[100 - inset, 0], [100, 0], [100, 100], [100 - inset, 100]],
+		[[0, 0], [100, 0], [100, inset], [0, inset]], [[0, 100 - inset], [100, 100 - inset], [100, 100], [0, 100]]);
+	return { rings };
+}
+
+/** Checks in the tips: three lanes across the motif, each starting at a cut
+ * from the top and one from the left edge that meet, and ending at a pair
+ * from the bottom and right edges; each pair turns the rectangle it cuts off
+ * its corner over, so the three make the checked tips. Two strips each way
+ * run along the edges (see `generateCornerChecks`). */
+function cornersPicture(request: GeneratorRequest): Picture | undefined {
+	const contours = normalizeContours(request.contours ?? []);
+	if (!contours.length) return;
+	const size = request.frameSize ?? 70, scale = request.scale ?? .7, gap = request.gap ?? 0, inset = 6;
+	const rings = contours.map(r => r.map(([x, y]) => uprightToSheet([x * size * scale, y * size * scale])));
+	for (let col = 0; col < 3; col++) {
+		const start: Point = [18 - gap + col * 6, 30 - gap - col * 6], end: Point = [70 + gap + col * 6, 82 + gap - col * 6];
+		rings.push([[0, 0], [start[0], 0], start, [0, start[1]]], [end, [end[0], 100], [100, 100], [100, end[1]]]);
+	}
 	rings.push([[0, 0], [inset, 0], [inset, 100], [0, 100]], [[100 - inset, 0], [100, 0], [100, 100], [100 - inset, 100]],
 		[[0, 0], [100, 0], [100, inset], [0, inset]], [[0, 100 - inset], [100, 100 - inset], [100, 100], [0, 100]]);
 	return { rings };
