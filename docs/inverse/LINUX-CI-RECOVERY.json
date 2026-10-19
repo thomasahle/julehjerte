@@ -1663,6 +1663,356 @@
       "build": "passed",
       "logPrefix": "/tmp/julehjerte-path-recovery-"
     },
-    "decision": "Retain the formulation as an explicit experimental solver option and in its benchmark; restore commodity flow for production feature recovery. The six-graph local gain did not generalize to the full Linux run: shifted x-plus-1 routing timed out and additional boundary-recovery tests failed. A valid alternative y-minus-1 route also exposed a test tied to its older paper-resolution requirement; inspect that independently rather than weakening paper checks."
+    "decision": "Retain the formulation as an explicit experimental solver option and in its benchmark; restore commodity flow for production feature recovery. The six-graph local gain did not generalize to the full Linux run: shifted x-plus-1 routing timed out and additional boundary-recovery tests failed. A valid alternative y-minus-1 route also exposed a test tied to its older paper-resolution requirement; inspect that independently rather than weakening paper checks.",
+    "alternateRoutingPaperCheck": {
+      "fixture": "sloth-clearance-routing/y-minus-1",
+      "artifact": "path-step-full-linux/shard-4/inverse-test-failures/fit-uJI3pP",
+      "solverResolution": 360,
+      "independentChecks": [
+        {
+          "resolution": 360,
+          "geometry": true,
+          "paper": "pass",
+          "seconds": 0.412883208
+        },
+        {
+          "resolution": 700,
+          "geometry": true,
+          "paper": "pass",
+          "seconds": 0.5943006660000001
+        },
+        {
+          "resolution": 1000,
+          "geometry": true,
+          "paper": "pass",
+          "seconds": 0.8059702499999999
+        }
+      ],
+      "testCorrection": "Fresh fits may choose different geometry. Keep the configured minimum and existing exported-paper check; if a new fit uses less than the saved routing required, independently audit that export at the saved higher resolution as well. Saved-routing repair tests retain their original resolution expectations."
+    }
+  },
+  "gridLossAcceleration": {
+    "releaseReady": false,
+    "change": "Factor the unchanged ordered-grid pixel objective out of grid.js and provide an optional float64 Wasm implementation. Import the same JavaScript Math.tanh, preserve operation and accumulation order, and retain the JS implementation. Choose a backend only after two ordered pairs of exact-equality and speed checks; cache at most eight bounded workload records.",
+    "scope": "Pixel loss, pooled loss and sampled-cut derivatives only. Spline controls, smoothing, clearance penalties, optimizer, image targets, validity tests and caller deadlines remain unchanged. Shared Wasm grows from 8470 to 12006 bytes; per-call grid workspace is capped at 64 MiB and returned arrays are copied.",
+    "benchmark": {
+      "command": "node scripts/inverse/grid-loss-kernel-benchmark.mjs",
+      "sourceHashes": {
+        "static/inverse/core/direct/grid.js": "bc4f800abfb4c1499e7899462039b5eb3ad0ce6b404672ca0e3f8045678c9bef",
+        "static/inverse/core/direct/grid-pixels.js": "843b1472d997edcdc8587f49ac84f0982221a10b817a82edd7c7220a669a66d9",
+        "static/inverse/core/direct/native-grid.js": "b6bf36c43af429c587ce208ff53cd65045a9bbf42d1c298d3354232717c8da38",
+        "static/inverse/core/direct/native/boundary.c": "dca3601f55800b0aebf0f569ac19f6e923a12c2c2d8892aebe06e189b2fbdf03",
+        "static/inverse/core/direct/native/boundary.wasm": "7395c2e0114615f5fbd3b9bf527eac353724981d3e21c8e096027a0892ae850f"
+      },
+      "node": "v22.21.1",
+      "platform": "darwin",
+      "scope": "Same models and targets with forced JavaScript/Wasm pixel loss; four alternating-order rounds of twelve calls after warmup. Every result must match exactly. Excludes complete fitting, backend calibration and validation.",
+      "rows": [
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "resolution": 96,
+          "weighted": false,
+          "epsilon": 0.03,
+          "javascriptMs": 1.274881958333335,
+          "wasmMs": 1.7325243333333327
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "resolution": 96,
+          "weighted": false,
+          "epsilon": 0.008,
+          "javascriptMs": 0.8899548333333342,
+          "wasmMs": 0.751194458333335
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "resolution": 96,
+          "weighted": true,
+          "epsilon": 0.03,
+          "javascriptMs": 1.5399583749999999,
+          "wasmMs": 1.7176249583333338
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "resolution": 96,
+          "weighted": true,
+          "epsilon": 0.008,
+          "javascriptMs": 1.0729513750000024,
+          "wasmMs": 0.8002535000000061
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "resolution": 160,
+          "weighted": false,
+          "epsilon": 0.03,
+          "javascriptMs": 4.143326375000001,
+          "wasmMs": 4.4270902916666675
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "resolution": 160,
+          "weighted": false,
+          "epsilon": 0.008,
+          "javascriptMs": 2.7762864583333355,
+          "wasmMs": 2.0355503749999952
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "resolution": 160,
+          "weighted": true,
+          "epsilon": 0.03,
+          "javascriptMs": 4.291614541666661,
+          "wasmMs": 4.59856075
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "resolution": 160,
+          "weighted": true,
+          "epsilon": 0.008,
+          "javascriptMs": 3.077385416666668,
+          "wasmMs": 2.1883958333333453
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "resolution": 96,
+          "weighted": false,
+          "epsilon": 0.03,
+          "javascriptMs": 2.4852343750000045,
+          "wasmMs": 3.0945035000000116
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "resolution": 96,
+          "weighted": false,
+          "epsilon": 0.008,
+          "javascriptMs": 1.510800333333331,
+          "wasmMs": 1.1981337083333492
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "resolution": 96,
+          "weighted": true,
+          "epsilon": 0.03,
+          "javascriptMs": 2.5459218333333338,
+          "wasmMs": 3.086986083333348
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "resolution": 96,
+          "weighted": true,
+          "epsilon": 0.008,
+          "javascriptMs": 1.60627949999999,
+          "wasmMs": 1.2890416666666813
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "resolution": 160,
+          "weighted": false,
+          "epsilon": 0.03,
+          "javascriptMs": 6.892423625000011,
+          "wasmMs": 8.379888875000006
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "resolution": 160,
+          "weighted": false,
+          "epsilon": 0.008,
+          "javascriptMs": 4.1919669999999964,
+          "wasmMs": 3.2881075833333475
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "resolution": 160,
+          "weighted": true,
+          "epsilon": 0.03,
+          "javascriptMs": 7.1573437499999955,
+          "wasmMs": 8.685869791666656
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "resolution": 160,
+          "weighted": true,
+          "epsilon": 0.008,
+          "javascriptMs": 4.323241333333347,
+          "wasmMs": 3.4707517500000145
+        },
+        {
+          "counts": [
+            10,
+            11
+          ],
+          "resolution": 96,
+          "weighted": false,
+          "epsilon": 0.03,
+          "javascriptMs": 4.123795124999978,
+          "wasmMs": 5.106243083333349
+        },
+        {
+          "counts": [
+            10,
+            11
+          ],
+          "resolution": 96,
+          "weighted": false,
+          "epsilon": 0.008,
+          "javascriptMs": 2.4116024166666725,
+          "wasmMs": 2.3113090416666564
+        },
+        {
+          "counts": [
+            10,
+            11
+          ],
+          "resolution": 96,
+          "weighted": true,
+          "epsilon": 0.03,
+          "javascriptMs": 4.22441841666667,
+          "wasmMs": 5.4048246666666655
+        },
+        {
+          "counts": [
+            10,
+            11
+          ],
+          "resolution": 96,
+          "weighted": true,
+          "epsilon": 0.008,
+          "javascriptMs": 2.035909750000011,
+          "wasmMs": 2.099927083333303
+        },
+        {
+          "counts": [
+            10,
+            11
+          ],
+          "resolution": 160,
+          "weighted": false,
+          "epsilon": 0.03,
+          "javascriptMs": 11.426366333333286,
+          "wasmMs": 14.469848999999993
+        },
+        {
+          "counts": [
+            10,
+            11
+          ],
+          "resolution": 160,
+          "weighted": false,
+          "epsilon": 0.008,
+          "javascriptMs": 5.302534750000026,
+          "wasmMs": 6.1120434166666655
+        },
+        {
+          "counts": [
+            10,
+            11
+          ],
+          "resolution": 160,
+          "weighted": true,
+          "epsilon": 0.03,
+          "javascriptMs": 11.505123291666603,
+          "wasmMs": 14.480970458333331
+        },
+        {
+          "counts": [
+            10,
+            11
+          ],
+          "resolution": 160,
+          "weighted": true,
+          "epsilon": 0.008,
+          "javascriptMs": 5.506194416666707,
+          "wasmMs": 5.409944416666653
+        }
+      ],
+      "interpretation": "Narrow surrogate on smaller grids improves; wide surrogates and dense grids can be slower in Wasm. This is why measured dispatch and the JS fallback remain mandatory."
+    },
+    "localNumerics": {
+      "passed": 48,
+      "failed": 0,
+      "logs": [
+        "/tmp/julehjerte-grid-loss-kernel-tests.log",
+        "/tmp/julehjerte-grid-loss-photo-tests.log"
+      ],
+      "coverage": "43 existing gradient/weighted-image/paper/row/mask kernel tests plus five new tests. New exact comparison covers 288 count/resolution/weight/width/phase combinations, zero-factor finite differences, memory reuse/growth and dimensional guards."
+    },
+    "localPhotoFits": {
+      "focused": {
+        "passed": 18,
+        "failed": 1,
+        "log": "/tmp/julehjerte-grid-loss-photo-tests.log",
+        "failure": "partial-photo bauble still returns invalid geometry"
+      },
+      "broader": {
+        "passed": 31,
+        "failed": 1,
+        "log": "/tmp/julehjerte-grid-loss-extended-tests.log",
+        "failure": "y-minus-1 returned a different valid route at a lower paper resolution; independent 360/700/1000 checks pass and the fresh-fit test is corrected separately"
+      },
+      "qualification": "These runs initially included experimental path-step recovery; that production opt-in is now reverted after the full Linux comparison."
+    },
+    "partialBaubleBaseline": {
+      "failedWithoutGridKernel": true,
+      "log": "/tmp/julehjerte-partial-photo-fallback-baseline.log",
+      "failureArtifacts": [
+        "tmp/inverse-test-failures/fit-74E9vU",
+        "tmp/inverse-test-failures/fit-ABHwE0"
+      ],
+      "diagnosis": "Feature-weighted 4+6 grid enters free-curve refinement with invalid spacing; no valid checkpoint is retained before the deadline. Later curve motion creates a local self-crossing and short self-clearances. Final sharing rejects changes and does not cause the original defect."
+    },
+    "appChecks": {
+      "status": "pending on the new kernel source"
+    },
+    "linux": {
+      "status": "not yet run on the new kernel source"
+    }
   }
 }

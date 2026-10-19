@@ -149,8 +149,16 @@ bounded timing records.
 
 The complete suite passes **718 application tests and 217 engine tests**.
 Svelte checking reports zero errors and seven existing warnings; lint is clear
-and the production build succeeds. The freestanding kernel rebuild is
-byte-identical with Homebrew LLVM 22.1.6 and has no imports.
+and the production build succeeds. At that revision, the freestanding kernel
+rebuild is byte-identical with Homebrew LLVM 22.1.6 and has no imports.
+
+The later ordered-grid loss kernel adds one `math.tanh` import, supplied by
+JavaScript `Math.tanh`, to preserve the reference arithmetic. It accelerates
+the pixel surrogate when paired measurements show a gain and identical losses,
+predictions and gradients; other workloads retain JavaScript. Current numerical
+comparisons and the still-failing Linux photo regressions are recorded under
+`gridLossAcceleration` in [LINUX-CI-RECOVERY.json](LINUX-CI-RECOVERY.json).
+The historical browser results below do not validate this later change.
 
 All **24 production browser workflows** pass in Chromium 145, Firefox 146 and
 WebKit 26. They import masks or photographs, solve through the real worker,

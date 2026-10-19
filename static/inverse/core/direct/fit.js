@@ -19,6 +19,7 @@ import {auditFeatureFidelity,auditFeatureFidelityChange} from '../feature-shapes
 import {recoverImageFeatures} from '../feature-recovery.js';
 import {loadBoundaryKernel} from './native.js';
 import {boundaryKernelChoices} from './boundary.js';
+import {gridLossKernelChoices} from './grid-pixels.js';
 import {maskDisagreement} from './prefer-matching.js';
 import {initializeTopology,initializeCoarseTopology} from './topology.js';
 import {curvesOf} from '../graph.js';
@@ -65,6 +66,7 @@ export async function fitDirect(input,cfg,onProgress=()=>{},{countSearch=initial
   // for the individual operations, including a faster JavaScript fallback.
   selected.report.paperKernels=paperKernelChoices();
   selected.report.boundaryKernels=boundaryKernelChoices();
+  selected.report.gridLossKernels=gridLossKernelChoices();
   return selected;
 }
 async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,matchingRequested){
