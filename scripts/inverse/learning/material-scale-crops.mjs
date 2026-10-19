@@ -18,7 +18,7 @@ assert.equal(hash(raw),study.plan.probeManifestSha256);const manifest=JSON.parse
 const byId=new Map(study.rows.map(r=>[r.id,r]));
 assert.deepEqual(manifest.rows.map(r=>r.id),study.plan.ids);
 await fs.mkdir(output,{recursive:false});
-const report={schema:'material-inference-scale-crops-1',status:'running',studyReportSha256:hash(bytes),rows:[],sourceHashes:{},
+const report={schema:'material-inference-scale-crops-1',status:'running',studyReportSha256:hash(bytes),fineMode:study.fineMode??'native',rows:[],sourceHashes:{},
   scope:'Same nineteen full photographs, original held-out weights, 256px versus 512px inference, unchanged geometric support gates. No annotations or target masks enter cropping. Crops are proposals, not physical ground truth. No template fitting or app integration.',
   order:'Rotate inference-size arm order by photograph index. Existing two-second orientation retry budget retained; elapsed time is not a causal latency benchmark.'};
 for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/foreground-crop.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/learning/locator-field-source.mjs',

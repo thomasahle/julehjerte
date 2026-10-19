@@ -16,6 +16,7 @@ import torch
 
 from material_metrics import material_metrics
 from material_scale import scaled_transform, at_label_centres
+from material_context import context_detail_logits
 from real_annotations import photo_tensor
 from real_materials_learning import MaterialNet
 
@@ -31,6 +32,8 @@ def main():
     plan_bytes = args.plan.read_bytes(); plan = json.loads(plan_bytes)
     assert plan['schema'] == 'material-inference-scale-plan-1'
     assert plan['sizes'] == [256, 512] and plan['threads'] == 1
+    fine_mode = plan.get('fineMode', 'native')
+    assert fine_mode in ['native', 'context-detail']
     assert shutil.disk_usage(ROOT).free >= 10*1024**3, 'Keep at least 10 GiB free'
     torch.set_num_threads(1); torch.set_num_interop_threads(1)
     torch.manual_seed(0)
@@ -74,11 +77,12 @@ def main():
     assert set(assignments) == set(items)
     args.output.mkdir(parents=True, exist_ok=False)
     report = {'schema': 'material-inference-scale-1', 'status': 'running', 'plan': plan,
-              'planSha256': digest(plan_bytes), 'inputHashes': pins, 'rows': [],
+              'planSha256': digest(plan_bytes), 'fineMode': fine_mode, 'inputHashes': pins, 'rows': [],
               'runtime': {'torch': torch.__version__, 'device': 'cpu', 'threads': 1},
               'artifacts': {}, 'sourceHashes': {}}
     for file in [Path(__file__), ROOT/'scripts/inverse/learning/material_scale.py',
                  ROOT/'scripts/inverse/learning/material_metrics.py',
+                 ROOT/'scripts/inverse/learning/material_context.py',
                  ROOT/'scripts/inverse/datasets/real_annotations.py']:
         report['sourceHashes'][str(file.relative_to(ROOT))] = digest(file.read_bytes())
     def save():
@@ -104,6 +108,7 @@ def main():
                 asset = row['assets']['candidate'][channel]
                 reference.append(np.frombuffer(checked(probe/asset['path'], asset['sha256']), dtype='<f4').reshape(256,256))
             reference = np.stack(reference)
+            context_tensor = torch.from_numpy(item['rgb'].transpose(2,0,1).copy())[None].float()/255
             entry = {'id': identity, 'fold': fold, 'inferenceSeconds': {}, 'fields': {},
                      'source': str(source.relative_to(ROOT)), 'sourceWindow': row['window']}
             # Rotate order; recorded single-call CPU timings are descriptive, not a latency benchmark.
@@ -113,7 +118,9 @@ def main():
                 if resolution == 256: np.testing.assert_array_equal(rgb, item['rgb'])
                 tensor = torch.from_numpy(rgb.transpose(2,0,1).copy())[None].float()/255
                 started = time.perf_counter()
-                with torch.inference_mode(): probability = model(tensor).sigmoid()[0].numpy()
+                with torch.inference_mode():
+                    logits = context_detail_logits(model,context_tensor,tensor) if fine_mode == 'context-detail' else model(tensor)
+                    probability = logits.sigmoid()[0].numpy()
                 entry['inferenceSeconds'][str(resolution)] = time.perf_counter()-started
                 if resolution == 256:
                     entry['replayMaxDifference'] = float(np.max(np.abs(probability-reference)))
