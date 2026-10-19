@@ -683,7 +683,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
       const retained=fidelity.regions.every(r=>r.retainedFraction>=fidelity.minimumRetention);
       return 4*Number(fidelity.passed)+2*Number(retained)+Number(valid);
     };
-    const clear=stage('directClearance',()=>fitGrid(clearanceProb,n,selected.model.counts,selected.phase,{k:selected.model.k,optimizationTarget:protectedObjective?null:gridTarget,optimizationObjective:protectedObjective?null:gridObjective,weights:clearanceWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15),preferCheckpoint:clearancePreference}));
+    const clear=stage('directClearance',()=>fitGrid(clearanceProb,n,selected.model.counts,selected.phase,{k:selected.model.k,optimizationTarget:protectedObjective?null:gridTarget,optimizationObjective:protectedObjective?null:gridObjective,weights:clearanceWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15),preferCheckpoint:clearancePreference,maximumCheckpointPriority:7}));
     attempts.push({stage:'clearance',counts:clear.model.counts,controlPoints:clear.model.k,phase:clear.phase,error:protectedObjective?mismatch(gridMask(clear.model,n,clear.phase,clear.floor),prob,fitWeights):clear.error,steps:clear.steps,refinementResolution,...(protectedObjective?{weightedError:clear.error}:{})});
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
     const prepared={clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementResolution,refinementCfg,verification};

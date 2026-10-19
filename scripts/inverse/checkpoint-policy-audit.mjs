@@ -53,6 +53,9 @@ for(const [index,stage]of record.clearance.entries()){
   });
   const select=key=>row.checkpoints.reduce((best,c)=>!best||c[key]>best[key]||c[key]===best[key]&&c.error<best.error?c:best,null);
   row.oldSelected=select('oldPriority');row.newSelected=select('newPriority');
+  row.actualSha256=createHash('sha256').update(new Uint8Array(stage.result.model.z.buffer)).digest('hex');
+  row.matchesOldFixedSelection=row.actualSha256===row.oldSelected.sha256;
+  row.matchesNewFixedSelection=row.actualSha256===row.newSelected.sha256;
  }
  result.clearance.push(row);
 }

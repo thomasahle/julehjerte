@@ -22,4 +22,18 @@ test('clearance fitting can retain legal spacing even when a narrower checkpoint
   assert.ok(safe.error<.05);
   assert.deepEqual(safeProgress,baseProgress,'Checkpoint choice must not alter the gradient trajectory.');
   assert.deepEqual(probability,before);assert.equal(safe.steps,ordinary.steps);
+  const deferredProgress=[];
+  const deferred=fitGrid(probability,n,counts,1,{...options,onProgress:p=>deferredProgress.push(p),preferCheckpoint:p=>valid(p)?3:1,maximumCheckpointPriority:3});
+  assert.deepEqual(deferred.model.z,safe.model.z,'Deferred validation must select exactly the same legal checkpoint.');
+  assert.deepEqual(deferredProgress,safeProgress,'Postponing validation cannot alter the gradient trajectory.');
+});
+
+test('a bounded checkpoint preference checks the lowest-error maximum-priority iterate only once',()=>{
+  const n=32,model=gridModel([2,2],4,7),probability=Float64Array.from(gridMask(model,n,1));
+  let eagerCalls=0,deferredCalls=0;
+  const options={k:4,steps:65,resolution:n};
+  const eager=fitGrid(probability,n,[2,2],1,{...options,preferCheckpoint:()=>{eagerCalls++;return true;}});
+  const deferred=fitGrid(probability,n,[2,2],1,{...options,preferCheckpoint:()=>{deferredCalls++;return true;},maximumCheckpointPriority:1});
+  assert.ok(eagerCalls>1);assert.equal(deferredCalls,1);assert.deepEqual(deferred.model.z,eager.model.z);assert.equal(deferred.error,eager.error);
+  assert.throws(()=>fitGrid(probability,n,[2,2],1,{...options,preferCheckpoint:()=>2,maximumCheckpointPriority:1}),/exceeds its declared bound/);
 });

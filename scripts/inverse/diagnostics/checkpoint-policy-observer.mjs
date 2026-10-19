@@ -58,7 +58,10 @@ registerHooks({load(url,context,next){
   source=replace(source,marker,`  const observation=clearance?globalThis.__checkpointBegin({prob,size,counts,phase,steps,k,initial,seed,floor,clearance,resolution,optimizationTarget,optimizationObjective,weights}):null;\n${marker}`);
   const old='const preferred=()=>!preferCheckpoint||preferCheckpoint({model,phase,floor});';
   if(source.includes(old))source=replace(source,old,`const preferred=()=>{const at=globalThis.__checkpointNow(),value=!preferCheckpoint||preferCheckpoint({model,phase,floor});globalThis.__checkpointRecord(observation,model,phase,floor,value,at);return value;};`);
-  else{
+  else if(source.includes('const preferred=(candidate=model)=>{')){
+   source=replace(source,'const preferred=(candidate=model)=>{','const preferred=(candidate=model)=>{const at=globalThis.__checkpointNow();');
+   source=replace(source,'return Number(value);','globalThis.__checkpointRecord(observation,candidate,phase,floor,value,at);return Number(value);');
+  }else{
    source=replace(source,'const preferred=()=>{','const preferred=()=>{const at=globalThis.__checkpointNow();');
    source=replace(source,'return Number(value);','globalThis.__checkpointRecord(observation,model,phase,floor,value,at);return Number(value);');
   }
