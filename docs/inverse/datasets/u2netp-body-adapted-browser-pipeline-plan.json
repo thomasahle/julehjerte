@@ -1,0 +1,77 @@
+{
+  "schema": "saliency-photo-crop-fallback-plan-1",
+  "study": {
+    "path": "docs/inverse/datasets/u2netp-body-adapted-browser-study-plan.json",
+    "sha256": "83f718cdcffca9f23b5a18573be82b813d954a5935bf8c50eb2071fe8755e29d"
+  },
+  "purpose": "Development follow-up on the previously inspected 32-photo cohort, source-separated from training. Actual browser WASM model fields with fresh current-main production controls and fresh 10-second fits; no historical fit reuse across engine changes. All numerical gate failures remain recorded. Not a new prospective evaluation.",
+  "runtimeStage": "browser",
+  "probe": {
+    "path": "tmp/heart-learning/u2netp-body-adapted-browser-v1/manifest.json",
+    "sha256": "15e2eb8c9953ae12c1d0f62eebe5b3bf2865cf35e07e6b672ae66da429a1fc17"
+  },
+  "runtimeEvidence": {
+    "path": "tmp/heart-learning/u2netp-body-adapted-browser-v1/report.json",
+    "sha256": "3cd032d25dc15df72e899c3a22da8dd03baf673edbc79c062a23bf21e2ac493b"
+  },
+  "adaptationAudit": {
+    "path": "tmp/heart-learning/u2netp-body-adaptation-v1/audit.json",
+    "sha256": "17c41815cb650034ce1bf85a33e8325ca72137acd5d319e8b330875d55020afb"
+  },
+  "ids": [
+    "real-1bcc922200edde26-body-1",
+    "real-80a649a21ea938ae-body-1",
+    "real-f6e5e128449e3cb9-body-1",
+    "real-fcbcc23efea92b93-body-1",
+    "real-55704c6e2911bebc-body-1",
+    "real-24b5ed49c9411b11-body-1",
+    "real-589f606a9d9899f2-body-1",
+    "real-dfa7e4b71b43aa86-body-1",
+    "real-2b0550dd86d23b40-body-1",
+    "real-2502cdec0720f4ea-body-1",
+    "real-d3f063052599e167-body-1",
+    "real-a126ed5d62adfd92-body-1",
+    "real-5088a58018c3aa28-body-1",
+    "real-1a7cfc6be8b164b5-body-1",
+    "real-fe7fb089d1cd86b4-body-1",
+    "real-8b91ecf546833a3f-body-1",
+    "real-b5317080eec610dc-body-1",
+    "real-c7d1e0ad5050db71-body-1",
+    "real-45ad148d9ec045be-body-1",
+    "real-702942779385436c-body-1",
+    "real-03bddab9c8f384c4-body-1",
+    "real-eb60ff94dfc6e2f8-body-1",
+    "real-af21a4ef38355dfa-body-1",
+    "real-f4bd8d13fc7e68d0-body-1",
+    "real-f05cf91c134daea9-body-1",
+    "real-12f272f48ed09d51-body-1",
+    "real-28a87a8be083f16c-body-1",
+    "real-ce66f9634c2c613b-body-1",
+    "real-52e732b98f9b14f1-body-1",
+    "real-7e9f6f83ae43ec2a-body-1",
+    "real-d4f6e3c76cf08ea8-body-1",
+    "real-41b7c3e0b79f1265-body-1"
+  ],
+  "protocol": {
+    "policy": "retain-production-reviewed-partial-fallback-v1",
+    "selection": "Keep every production crop. Only if none exists, accept an outline-supported neural proposal with observed rectified overlap >=99% and maximum axis-normalized extrapolation <=5%, always needs_review. Use analytic projective coverage; no mask score or template selects the crop.",
+    "observedFraction": 0.99,
+    "maximumExtrapolation": 0.05,
+    "timeLimitSeconds": 10,
+    "trials": 0,
+    "target": "mask",
+    "methods": [
+      "production",
+      "fallback"
+    ],
+    "classifier": "Unchanged RGB mixture classifier",
+    "fits": "Reuse the exact production fit if the crop is unchanged. Fit new neural proposals independently; retain all failures. Do not change masks, corners, model or thresholds per image.",
+    "validation": "Independent exported weave error <=3%, original feature checks, geometry/paper checks, production editable conversion and independent editable-paper audit. Visual review of all photos/crops and distinct outputs.",
+    "missing": "No manual rescue or result-dependent replacement. Record photo eligibility misclassifications and possible irregular weaving separately without removing them from primary denominators."
+  },
+  "resources": {
+    "artifactBudgetMiB": 40,
+    "workers": 1,
+    "newSourcePhotoCopies": 0
+  }
+}
