@@ -1,16 +1,20 @@
 /** Independently inspect records made by diagnostics/checkpoint-policy-observer.
- * Usage: node scripts/inverse/checkpoint-policy-audit.mjs RECORD.json.gz [--fixed]
+ * Usage: node scripts/inverse/checkpoint-policy-audit.mjs RECORD.json.gz [--fixed] [--refine]
  * Fixed-work mode replays every clearance trajectory for all 150 requested
  * steps, then compares policies on the exact same coordinates, outside timers.
+ * --refine additionally gives their different starting points 320 local curve
+ * steps against the captured objective. This isolates initialization effects;
+ * it is not a fresh end-to-end fit or a performance/acceptance certificate.
  */
 import fs from 'node:fs/promises';
 import {gunzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
 import {fitGrid,gridMask,gridPaths,mismatch} from '../../static/inverse/core/direct/grid.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
+import {refineCurves} from '../../static/inverse/core/direct/refine.js';
 import {loadBoundaryKernel} from '../../static/inverse/core/direct/native.js';
-import {loadSolutionJSON} from '../../static/inverse/core/graph.js';
-import {validate} from '../../static/inverse/core/validate.js';
+import {loadSolutionJSON,solutionJSON} from '../../static/inverse/core/graph.js';
+import {validate,sampleWeave} from '../../static/inverse/core/validate.js';
 import {referenceError} from '../../static/inverse/core/image-reference.js';
 import {imageFeatures,auditImageFeatures} from '../../static/inverse/core/image-features.js';
 import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
@@ -56,6 +60,22 @@ for(const [index,stage]of record.clearance.entries()){
   row.actualSha256=createHash('sha256').update(new Uint8Array(stage.result.model.z.buffer)).digest('hex');
   row.matchesOldFixedSelection=row.actualSha256===row.oldSelected.sha256;
   row.matchesNewFixedSelection=row.actualSha256===row.newSelected.sha256;
+  if(process.argv.includes('--refine')&&row.oldSelected.sha256!==row.newSelected.sha256){
+   row.fixedRefinement=[];
+   for(const [policy,chosen]of [['old',row.oldSelected],['new',row.newSelected]]){
+    const p=snapshots[chosen.checkpoint],graph=new CurveGraph(gridPaths(p.model,cfg.width,p.floor),cfg.width),input={sourceImage:source};
+    const featureSeed=['feature-weighted-grid','feature-preserving-grid','feature-sampling-grid','fitted-boundary-rerouting'].includes(selected.seed);
+    const fitted=refineCurves(graph,prob,size,p.phase,{...cfg,preferMatchingSheets:false},{steps:320,input,weights:rest.weights,
+     skipRepeatedRollbacks:true,resolvePaperBeforeRollback:true,retryPaperSeparation:true,paperSeparationErrorThreshold:cfg.maxImageError,
+     rate:counts[0]+counts[1]>4?.05:.035,
+     preferCheckpoint:featureSeed?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,features).passed:null});
+    const solution=fitted.graph.solution(fitted.points,p.phase,input);solution.report={paperVerification:fitted.paperVerification};
+    const checked=verifiedPaperSettings(solution,cfg),rendered=await renderExportedWeave(solutionJSON(solution),source.resolution);
+    row.fixedRefinement.push({policy,steps:fitted.steps,error:referenceError(source,rendered.mask).mismatchFraction,
+     geometry:validate(solution,checked,{checkImage:false,finalGeometry:true}).passed,paper:finalMaterialAudit(solution,checked).status,
+     features:auditFeatureFidelity(source,rendered.mask,cfg,features).passed});
+   }
+  }
  }
  result.clearance.push(row);
 }
