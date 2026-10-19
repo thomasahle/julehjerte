@@ -137,6 +137,43 @@ alone does not meet that gate.
 
 ## Collected assets
 
+### Preservation archive, 2026-10-19
+
+The [preservation manifest](heart-archive-storage.json) records **86 unique
+original files, 14,885,046 bytes**, including 48 template PDFs (280 pages),
+seven recovered Permo images and source/history/license evidence. These are
+documents and photographs, not 86 independent designs or new training labels.
+[Additional collections](archive-additional.json) record Krümmel,
+Bibelselskabet, Spejderliv and PaperMatrix; the [Permo history](archive-permo.json)
+identifies five circle designs absent from Hunodan, plus an older anchor
+version and weaving instructions. Drawings and variations are credited to
+Per V. Mortensen, distinct from the earlier, unnamed pattern inventors.
+
+Original bytes were moved out of temporary work directories, not copied into
+another full dataset. The private originals live in
+`archive-store/heart-preservation/objects/`, named by SHA-256 and excluded from
+Git. The manifest, source links, capture dates, credits and checksums are
+tracked. Spejderliv's unchanged six-page collection by Kim G. L. Pedersen is
+also a public website asset under its explicit CC BY-NC-SA 4.0 terms, with
+attribution and source/license links. Other records link their original or
+Wayback sources; a local preservation copy does not imply a public mirror.
+
+The unlisted `/all/` and `/en/all/` pages combine the published catalog with
+the broader source index. Counts refer to records, which can be photographs,
+template bundles or historical references; they are not unique-design counts.
+No collected raw HTML executes under the website's origin.
+
+Verify originals after collection or restoring a backup:
+
+```sh
+node scripts/archive/verify-store.mjs --local
+```
+
+Without `--local`, missing private originals are reported so the public subset
+can also be checked in a clean checkout. The laptop remains the only verified
+copy of the new private store: back up that directory together with this
+repository's manifests to separate storage. Git alone does not back it up.
+
 The [real-photo collection](real-collection.md) explains collection and review.
 The [manifest](real-manifest.json) and [independent audit](real-validation.json)
 record source URLs, hashes, decoded identities, dimensions, image kinds and
