@@ -1,0 +1,77 @@
+{
+  "schema": "body-evaluation-extension-1",
+  "status": "predeclared-before-expanded-inference",
+  "date": "2026-10-20",
+  "selection": {
+    "path": "docs/inverse/datasets/u2netp-expanded-qa-selection.json",
+    "sha256": "213b4a3a23d2a8913f1d2e8c9f3b02c048be8b1f9eaf7b6ea9554a52ef5cf9d2"
+  },
+  "trainingPlan": {
+    "path": "docs/inverse/datasets/u2netp-body-adaptation-plan.json",
+    "sha256": "488a318debdf2be64fe3570668ef0661385108b96b06a8d3b03c4c7408f9b704"
+  },
+  "originalEvaluation": {
+    "path": "docs/inverse/datasets/u2netp-fresh-selection.json",
+    "sha256": "44cbdfb7babdfc6c606315694562b898c1220b525948c442c179831fc240f8e6"
+  },
+  "model": {
+    "path": "tmp/heart-learning/u2netp-body-adaptation-v1/model.pt",
+    "sha256": "ff4b56456aa17a40d4b4daed98cd384dc309933d2d5585da5ebeece843dd1e4f"
+  },
+  "onnx": {
+    "path": "tmp/heart-learning/u2netp-body-adapted-onnx-v1/model.onnx",
+    "sha256": "1033a25b9105ac1386e21f99271d3f9edaa5a6727ba6b3aa94f7add2e7668a9d"
+  },
+  "adaptation": {
+    "path": "tmp/heart-learning/u2netp-body-adaptation-v1/report.json",
+    "sha256": "8957773143a429a0be49093191d65c6c9e5f68f512fd99e352541ee9951ce6e3"
+  },
+  "adaptationAudit": {
+    "path": "tmp/heart-learning/u2netp-body-adaptation-v1/audit.json",
+    "sha256": "17c41815cb650034ce1bf85a33e8325ca72137acd5d319e8b330875d55020afb"
+  },
+  "policy": {
+    "policy": "retain-production-reviewed-partial-fallback-v1",
+    "selection": "Keep every production crop. Only if none exists, accept an outline-supported neural proposal with observed rectified overlap >=99% and maximum axis-normalized extrapolation <=5%, always needs_review. Use analytic projective coverage; no mask score or template selects the crop.",
+    "observedFraction": 0.99,
+    "maximumExtrapolation": 0.05,
+    "timeLimitSeconds": 10,
+    "trials": 0,
+    "target": "mask",
+    "methods": [
+      "production",
+      "fallback"
+    ],
+    "classifier": "Unchanged RGB mixture classifier",
+    "fits": "Fresh production controls on all 18 additional photos; share a fit only for identical source/crop/settings. Fresh-fit each neural addition. On the original 32 photos, reuse pinned production controls and freshly fit each neural crop for this fixed policy.",
+    "validation": "Independent exported weave error <=3%, original feature checks, geometry/paper checks, production editable conversion and independent editable-paper audit. Visual review of all photos/crops and distinct outputs.",
+    "missing": "No manual rescue or result-dependent replacement. Record photo eligibility misclassifications and possible irregular weaving separately without removing them from primary denominators.",
+    "fieldPalette": "confidence-weighted",
+    "outerBoundarySampling": true
+  },
+  "modelChoice": "Existing 16-photo, 120-update decoder model already tested through real browser WASM. Fixed model; no choice based on the expanded photos.",
+  "sequence": [
+    "Audit expanded source separation, fixed complete selection and unchanged checkpoint.",
+    "Infer all 18 original photos natively and inspect all predictions.",
+    "Recheck the combined continuous-palette/outer-sampling policy on all original 32 browser fields, retaining all original successful cases.",
+    "Run fresh production and NN-fallback pipelines on all 18 photos, including unresolved and failed cases.",
+    "Reuse the exact ONNX graph; verify new original-photo browser inputs and outputs, then downstream crop and editable-template behavior.",
+    "Evaluate browser loading, failure handling and end-user integration before production promotion."
+  ],
+  "numericalAssessment": {
+    "originalProbabilityAtol": 2e-05,
+    "originalThresholdParity": "Exact >0.5 mask agreement; failures remain failures.",
+    "functionalAssessment": "Record crop-support/selection agreement and corner movement separately from raw numerical gates. Do not relabel failed raw parity as passed. No new release tolerance is selected from these outcomes."
+  },
+  "scope": "Expanded development evaluation, not untouched holdout or independent motif proof. Compare one fixed NN/crop policy with production. No claim of better template quality from training metrics or lower error against a changed target.",
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "numericalThreads": 1,
+    "minimumFreeGiB": 10,
+    "maxNewArtifactMiB": 160,
+    "newPhotoDownloads": 0,
+    "newSourcePhotoCopies": 0,
+    "simultaneousBrowsers": 1
+  }
+}

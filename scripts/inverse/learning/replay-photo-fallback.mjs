@@ -45,10 +45,20 @@ if(saliency){
   assert.deepEqual(audit.report,manifest.fieldOrigin.adaptation);
   assert.equal(adaptation.schema,'u2netp-body-adaptation-1');assert.equal(adaptation.status,'complete');
   assert.ok(adaptation.frozenStateUnchanged&&adaptation.sourceSeparation.sourceAndDuplicateSeparationPassed);
-  assert.deepEqual(training.evaluation,study.selection);
+  if(study.evaluationExtension){
+   const extension=await pinned(study.evaluationExtension),evaluated=runtime.evaluationAudit;
+   assert.equal(extension.schema,'body-evaluation-extension-1');
+   assert.deepEqual(extension.trainingPlan,adaptation.plan);assert.deepEqual(extension.originalEvaluation,training.evaluation);
+   assert.deepEqual(extension.selection,study.selection);
+   assert.ok(evaluated?.passed&&evaluated.allEligiblePhotosIncluded&&evaluated.sourceAndDuplicateSeparationPassed);
+   assert.deepEqual(evaluated.extension,study.evaluationExtension);assert.deepEqual(evaluated.selection,study.selection);
+   assert.deepEqual(evaluated.trainingPlan,adaptation.plan);
+   assert.equal(hash(await fs.readFile('scripts/inverse/learning/body_evaluation.py')),runtime.evaluationAuditSourceSha256);
+  }else assert.deepEqual(training.evaluation,study.selection);
   assert.equal(runtime.checkpointSha256,adaptation.checkpointSha256);
   assert.equal(runtime.checkpointSha256,study.model.sha256);
   const nativePlan=await pinned(runtime.plan);assert.deepEqual(nativePlan.selection,study.selection);
+  if(study.evaluationExtension)assert.deepEqual(nativePlan.evaluationExtension,study.evaluationExtension);
   assert.deepEqual(runtime.rows.map(r=>r.id),plan.ids);
  }
  const assets=new Map(catalog.assets.map(r=>[r.id,r]));

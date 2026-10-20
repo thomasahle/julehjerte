@@ -15,6 +15,7 @@ from PIL import Image, ImageOps
 import torch
 
 from data import digest
+from body_evaluation import verify_body_evaluation
 
 
 def checked(asset):
@@ -40,13 +41,15 @@ def main():
     checkpoint = checked(plan['checkpoint'])
     selected = json.loads(checked(plan['selection']).read_bytes())
     origin = {'kind': 'frozen-upstream-saliency', 'checkpointSha256': plan['checkpoint']['sha256']}
+    evaluation_audit = None
     if 'adaptation' in plan:
         adaptation = json.loads(checked(plan['adaptation']).read_bytes())
         assert adaptation['schema'] == 'u2netp-body-adaptation-1' and adaptation['status'] == 'complete'
         assert adaptation['checkpointSha256'] == plan['checkpoint']['sha256']
         assert adaptation['frozenStateUnchanged'] and adaptation['sourceSeparation']['sourceAndDuplicateSeparationPassed']
         training = json.loads(checked(adaptation['plan']).read_bytes())
-        assert training['evaluation'] == plan['selection'] and training['source'] == plan['source']
+        assert training['source'] == plan['source']
+        evaluation_audit = verify_body_evaluation(training, adaptation, selected, plan['selection'], plan.get('evaluationExtension'))
         origin.update(kind='whole-paper-adapted-saliency', adaptation=plan['adaptation'],
                       initialCheckpointSha256=training['checkpoint']['sha256'])
     if 'control' in plan:
@@ -72,6 +75,9 @@ def main():
               'sourceSha256': digest(Path(__file__).read_bytes()),
               'runtime': {'torch': torch.__version__, 'skimage': skimage.__version__, 'threads': 1},
               'rows': [], 'scope': plan['scope']}
+    if evaluation_audit is not None:
+        result['evaluationAudit'] = evaluation_audit
+        result['evaluationAuditSourceSha256'] = digest(Path(__file__).with_name('body_evaluation.py').read_bytes())
     probe = {'schema': 'woven-heart-foreground-probe-1', 'status': 'running', 'resolution': resolution,
              'fieldOrigin': origin,
              'rows': [], 'scope': plan['scope']}
