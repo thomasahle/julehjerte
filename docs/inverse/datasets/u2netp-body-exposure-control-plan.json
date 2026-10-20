@@ -1,0 +1,80 @@
+{
+  "schema": "u2netp-body-adaptation-plan-1",
+  "status": "predeclared",
+  "source": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-source-v1/u2netp.pth",
+    "sha256": "e7567cde013fb64813973ce6e1ecc25a80c05c3ca7adbc5a54f3c3d90991b854"
+  },
+  "sourceManifest": {
+    "path": "docs/inverse/datasets/real-manifest.json",
+    "sha256": "999544ef30b1d71095e1630d7f834e162e2aa6145181df10107a831aa2eda350"
+  },
+  "annotations": {
+    "path": "scripts/inverse/datasets/real-materials-encoder-tail.json",
+    "sha256": "b245c23fb51691a4db2000ca5226f6ab400511c612d8414fbc50ff4ab4e80374"
+  },
+  "evaluation": {
+    "path": "docs/inverse/datasets/u2netp-continuous-selection.json",
+    "sha256": "6d4e0e7550fedf5c13333bdc90db28a98eb5ff9ce2de260f32e2d015f5128f52"
+  },
+  "syntheticParent": {
+    "path": "tmp/heart-learning/foreground-scene-v1/scene-trained/report.json",
+    "sha256": "f3a71ff6de0cb0a00fe8db15051631d131b6cbd71bf607bd607acae5d101929c"
+  },
+  "trainIds": [
+    "real-8c875dd0f298b5a4-body-1",
+    "real-995899fe049540ed-body-1",
+    "real-b87b0b19f12724f3-body-1",
+    "real-cf2d0fcff65d7386-body-1",
+    "real-cdae5c890b6933cd-body-1",
+    "real-68d8f25d8891df62-body-1",
+    "real-5330aa8b62176216-body-1",
+    "real-abf590088db891f9-body-1",
+    "real-990ac34431be87fe-body-1",
+    "real-12ce3c9180f7f317-body-1",
+    "real-d5b0aa8d4d2465ee-body-1",
+    "real-39f3a1ba97852876-body-1",
+    "real-e936e08ac62db19b-body-1",
+    "real-340f5e5b0f447889-body-1",
+    "real-710703159f609111-body-1",
+    "real-a414dfffbd2362ae-body-1"
+  ],
+  "protocol": {
+    "resolution": 320,
+    "skimage": "0.24.0",
+    "threads": 1,
+    "seed": 20261020,
+    "updates": 180,
+    "batchSize": 2,
+    "realPerBatch": 1,
+    "syntheticGeometries": 32,
+    "learningRate": 0.0001,
+    "weightDecay": 0.0001,
+    "input": "Unmodified publisher RescaleT(320) and ToTensorLab(flag=0), full original EXIF-oriented RGB. No corner, mask or ROI input.",
+    "target": "Whole selected paper body. Real polygons rasterized directly at stretched source pixel centres, retaining source-pixel uncertainty and occlusions. Synthetic labels from saved geometry, same across original/scene pairs. Material and corner annotations never enter loss.",
+    "architecture": "Original 1,131,181-parameter U2NETP. Freeze stages 1 through 6 and every BatchNorm statistic; train decoder stages 1d through 5d, side heads and fused output.",
+    "loss": "Existing per-image masked BCE-with-logits plus Dice on the fused raw logit; unknown pixels have zero gradient.",
+    "augmentation": "Independent horizontal and vertical reflection of input and target together.",
+    "checkpointSelection": "Final update only; no early stopping, held-out loss, alternative hyperparameters or per-photo checkpoint choices.",
+    "inference": "Keep the publisher fused sigmoid head and per-image min/max normalization. No change of threshold, preprocessing or crop policy.",
+    "evaluation": "Audit both final checkpoints and inspect all training outputs, then run both on the same 32-photo development cohort through the direct weighted-palette fallback, unchanged RGB classifier, ten-second fitter and independent editable/paper checks. No per-photo choices or quality gate changes.",
+    "scheduleArm": "control",
+    "exposure": "Every original 120-update control draw retained in order; add 60 interleaved updates. Added updates use old photos in control and the eight added photos in candidate. Synthetic draws and reflections match at every step."
+  },
+  "resources": {
+    "minimumFreeGiB": 10,
+    "maxArtifactMiB": 40,
+    "workers": 1,
+    "newSourcePhotoCopies": 0,
+    "newPhotoDownloads": 0
+  },
+  "scope": "Paired added-exposure experiment, not an exposure-only causal proof. Both arms have equal 180-update compute and preserve all old 120 visits; one allocates the added real visits to new data, the other to old data. Compare with prior 120-update results while acknowledging more optimizer updates and synthetic exposure.",
+  "drawSchedule": {
+    "path": "docs/inverse/datasets/u2netp-body-exposure-schedule.json",
+    "sha256": "7e2d5b7f4ec044cbb3093ee9086c6916e7c493fbdc9ab2d77ccc54e977308176"
+  }
+}

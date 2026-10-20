@@ -1,0 +1,131 @@
+{
+  "schema": "whole-body-first-policy-results-1",
+  "date": "2026-10-20",
+  "codeCommit": "de57b46f",
+  "plan": {
+    "path": "docs/inverse/datasets/u2netp-whole-body-crop-plan.json",
+    "sha256": "f3322d75067a326dbe0ce38652a084fbc01894cb0041be2016908ac3411a633c"
+  },
+  "status": "not-promoted",
+  "reason": "The first policy recovers the angel but rejects the previously passing checker because the evidence weighting treats uncertain paper as background. Preserve both cohorts and diagnose rather than loosening a threshold.",
+  "cohorts": {
+    "regression": {
+      "pipeline": {
+        "path": "tmp/heart-learning/u2netp-whole-body-regression-pipeline-v1/report.json",
+        "sha256": "41139c892cb21bed22b67995c1110be30617b5d795ad4c71c0e7f8867fdf69f1"
+      },
+      "editable": {
+        "path": "tmp/heart-learning/u2netp-whole-body-regression-editable-v1/results.json",
+        "sha256": "4db225712db5baff3cbbfe2120c6841726652c078a8403fdbb7d728c4ae73aa6"
+      },
+      "summary": {
+        "production": {
+          "attempted": 32,
+          "crops": 21,
+          "supported": 16,
+          "checkedPairs": 9,
+          "neuralSelected": 0,
+          "reusedFits": 32
+        },
+        "fallback": {
+          "attempted": 32,
+          "crops": 25,
+          "supported": 20,
+          "checkedPairs": 11,
+          "neuralSelected": 4,
+          "reusedFits": 28
+        }
+      },
+      "freshEditable": [
+        {
+          "id": "real-24b5ed49c9411b11-body-1-fallback",
+          "passed": true,
+          "error": 0.02974375,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "id": "real-dfa7e4b71b43aa86-body-1-fallback",
+          "passed": false,
+          "error": 0.08524375,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "id": "real-f05cf91c134daea9-body-1-fallback",
+          "passed": false,
+          "error": 0.03720625,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "id": "real-28a87a8be083f16c-body-1-fallback",
+          "passed": true,
+          "error": 0.00565088295046101,
+          "geometry": true,
+          "paper": "pass"
+        }
+      ]
+    },
+    "expanded": {
+      "pipeline": {
+        "path": "tmp/heart-learning/u2netp-whole-body-expanded-pipeline-v1/report.json",
+        "sha256": "d6b6aa20279be8e022652465c4f84c33449fb1d25f790497f208e2eac4a76c30"
+      },
+      "editable": {
+        "path": "tmp/heart-learning/u2netp-whole-body-expanded-editable-v1/results.json",
+        "sha256": "60a6be7e977adf5e45aa134d0abc0ef8129ccd41c28e4f5f83c3ba8689474d52"
+      },
+      "summary": {
+        "production": {
+          "attempted": 18,
+          "crops": 6,
+          "supported": 5,
+          "checkedPairs": 3,
+          "neuralSelected": 0,
+          "reusedFits": 18
+        },
+        "fallback": {
+          "attempted": 18,
+          "crops": 8,
+          "supported": 8,
+          "checkedPairs": 4,
+          "neuralSelected": 3,
+          "reusedFits": 15
+        }
+      },
+      "freshEditable": [
+        {
+          "id": "real-1fa372c6288da69f-body-1-fallback",
+          "passed": false,
+          "error": 0.04743125,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "id": "real-4066fe9f9aafb3e4-body-1-fallback",
+          "passed": true,
+          "error": 0.008975,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "id": "real-867f0e5852ebeba9-body-1-fallback",
+          "passed": false,
+          "error": 0.0307625,
+          "geometry": true,
+          "paper": "fail"
+        }
+      ]
+    }
+  },
+  "diagnosticImage": {
+    "path": "tmp/heart-learning/whole-body-checker-diagnostic.png",
+    "sha256": "f769af48e2056835d089e88879f4419794f77bf297fd2ab575ba9d49b876749f"
+  },
+  "tests": {
+    "path": "tmp/heart-learning/whole-body-crop-tests-fixed.log",
+    "sha256": "9d33bf34ff848f78648f81cb0c6b9f65401ef4ef9f4c935f21a2088904454166"
+  },
+  "scope": "Offline crop policy; no network retraining or application change. First policy counts are derived-mask counts and still include the retained, now flagged fragmentary bird crop."
+}

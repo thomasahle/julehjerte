@@ -12,9 +12,12 @@ from PIL import Image, ImageDraw, ImageOps
 import torch
 
 from data import digest
+from body_schedule import training_draws
+from body_trainable import configure_trainable, optimizer_parameters
+from body_outline import prepare_outline, outline_bce, outline_metrics, outline_options
 from preserved_candidate import pinned
 from real_foreground import masked_foreground_loss, known_region_metrics
-from u2netp_adaptation import (freeze_encoder, frozen_hash, fused_logits, normalize_scores,
+from u2netp_adaptation import (frozen_hash, fused_logits, normalize_scores,
                               real_training, synthetic_training)
 
 
@@ -61,23 +64,25 @@ def main():
     for row in source['files']: pinned({'path': str(upstream/row['path']), 'sha256': row['sha256']})
     import skimage
     if skimage.__version__ != p['skimage']: raise ValueError('Changed upstream input implementation')
+    import scipy
+    if outline_options(p) and scipy.__version__ != p['scipy']:
+        raise ValueError('Changed outline-distance implementation version')
     loader = module(upstream/'data_loader.py', 'u2netp_body_data')
     architecture = module(upstream/'model/u2net.py', 'u2netp_body_model')
     rescale, normalize = loader.RescaleT(320), loader.ToTensorLab(flag=0)
     model = architecture.U2NETP(3, 1)
     model.load_state_dict(torch.load(pinned(plan['checkpoint']), map_location='cpu', weights_only=True), strict=True)
-    trainable = freeze_encoder(model); initial_frozen = frozen_hash(model)
+    trainable = configure_trainable(model, p); initial_frozen = frozen_hash(model)
     real, separation = real_training(plan, rescale, normalize)
     synthetic = synthetic_training(plan, rescale, normalize)
+    outline = prepare_outline(real+synthetic, p)
     initial = predict(model, real)
     source = Path(__file__).parent
     dependencies = [Path(__file__)]+[source/f for f in ['u2netp_adaptation.py', 'preserved_candidate.py',
-        'real_foreground.py', 'foreground.py', 'data.py']]
+        'real_foreground.py', 'foreground.py', 'data.py', 'body_schedule.py', 'body_trainable.py', 'body_outline.py']]
     dependencies += [source.parent/'datasets'/f for f in ['real_annotations.py', 'real_materials.py']]
     hashes = {str(f): digest(f.read_bytes()) for f in dependencies}
-    rng = np.random.default_rng(p['seed'])
-    draws = [{'synthetic': int(rng.integers(len(synthetic))), 'real': int(rng.integers(len(real))),
-              'flips': (rng.random(2) < .5).tolist()} for _ in range(p['updates'])]
+    draws = training_draws(plan, len(synthetic), len(real))
     report = {'schema': 'u2netp-body-adaptation-1', 'status': 'training',
               'plan': {'path': str(args.plan), 'sha256': digest(plan_bytes)}, 'sourceHashes': hashes,
               'sourceCommit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
@@ -87,15 +92,19 @@ def main():
               'trainingInputs': [{'id': i['id'], **i['evidence'], 'inputTensorSha256': digest(i['input'].numpy().tobytes())}
                                  for i in real+synthetic], 'draws': draws, 'history': [], 'sampledIds': [],
               'scope': plan['scope']}
+    if outline:
+        report['outlineSupervision'] = outline
+        report['runtime']['scipy'] = scipy.__version__
     args.output.mkdir(parents=True, exist_ok=False)
     def save():
         for file, expected in hashes.items(): pinned({'path': file, 'sha256': expected})
         if digest(args.plan.read_bytes()) != report['plan']['sha256']: raise ValueError('Training plan changed')
         for key in ['sourceManifest', 'annotations', 'evaluation', 'syntheticParent', 'source', 'checkpoint']:
             pinned(plan[key])
+        if 'drawSchedule' in plan: pinned(plan['drawSchedule'])
         temporary = args.output/'report.writing.json'
         temporary.write_text(json.dumps(report, indent=2)+'\n'); temporary.replace(args.output/'report.json')
-    optimizer = torch.optim.AdamW([x for x in model.parameters() if x.requires_grad], lr=p['learningRate'], weight_decay=p['weightDecay'])
+    optimizer = torch.optim.AdamW(optimizer_parameters(model, p), lr=p['learningRate'], weight_decay=p['weightDecay'])
     started = time.perf_counter(); save()
     try:
         for step, draw in enumerate(draws):
@@ -104,18 +113,22 @@ def main():
             labels = np.stack([i['labels'] for i in batch])[:, None]
             target = torch.from_numpy((labels == 1).astype(np.float32))
             weight = torch.from_numpy((labels != 255).astype(np.float32))
+            band = torch.from_numpy(np.stack([i['outlineBand'] for i in batch])[:, None].astype(np.float32)) if outline else None
             for enabled, axis in zip(draw['flips'], [-1, -2]):
                 if enabled: rgb, target, weight = rgb.flip(axis), target.flip(axis), weight.flip(axis)
+                if enabled and band is not None: band = band.flip(axis)
             optimizer.zero_grad(set_to_none=True)
-            loss = masked_foreground_loss(fused_logits(model, rgb), target, weight)
+            logits = fused_logits(model, rgb)
+            loss = masked_foreground_loss(logits, target, weight)
+            if band is not None: loss = loss+p['outlineLoss']['weight']*outline_bce(logits, target, weight, band)
             if not torch.isfinite(loss): raise ValueError('Nonfinite training loss')
             loss.backward(); torch.nn.utils.clip_grad_norm_([x for x in model.parameters() if x.requires_grad], 5)
             optimizer.step(); report['history'].append(float(loss.detach()))
             report['sampledIds'].append([i['id'] for i in batch])
             if (step+1) % 20 == 0:
-                if frozen_hash(model) != initial_frozen: raise ValueError('Frozen encoder or statistics changed')
+                if frozen_hash(model) != initial_frozen: raise ValueError('Frozen weights or statistics changed')
                 save(); print(json.dumps({'step': step+1, 'loss': report['history'][-1], 'seconds': time.perf_counter()-started}), flush=True)
-        if frozen_hash(model) != initial_frozen: raise ValueError('Frozen encoder or statistics changed')
+        if frozen_hash(model) != initial_frozen: raise ValueError('Frozen weights or statistics changed')
         final = predict(model, real)
         if np.array_equal(initial, final): raise ValueError('Decoder did not learn')
         metrics_items = [{'id': i['id'], 'target': (i['labels'] == 1).astype(np.float32),
@@ -127,6 +140,8 @@ def main():
                       frozenStateUnchanged=True, trainingMetrics={'initial': known_region_metrics(initial, metrics_items),
                                                                  'final': known_region_metrics(final, metrics_items)},
                       checkpointSha256=digest((args.output/'model.pt').read_bytes()))
+        if outline:
+            report['trainingOutlineMetrics'] = {'initial': outline_metrics(initial, real), 'final': outline_metrics(final, real)}
         report['artifacts'] = {f.name: digest(f.read_bytes()) for f in args.output.iterdir() if f.is_file() and f.name != 'report.json'}
         report['artifactBytes'] = sum(f.stat().st_size for f in args.output.iterdir() if f.is_file())
         if report['artifactBytes'] > plan['resources']['maxArtifactMiB']*1024**2: raise ValueError('Artifact budget exceeded')

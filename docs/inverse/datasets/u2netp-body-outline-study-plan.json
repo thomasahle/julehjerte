@@ -1,0 +1,64 @@
+{
+  "schema": "saliency-fresh-study-1",
+  "status": "predeclared-development",
+  "selection": {
+    "path": "docs/inverse/datasets/u2netp-continuous-selection.json",
+    "sha256": "6d4e0e7550fedf5c13333bdc90db28a98eb5ff9ce2de260f32e2d015f5128f52"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-body-outline-v1/model.pt",
+    "sha256": "e73f785d935e1f763ef23f2a625b930373c991b95478253d6b05a7e3cbc33625"
+  },
+  "model": {
+    "path": "tmp/heart-learning/u2netp-body-outline-v1/model.pt",
+    "sha256": "e73f785d935e1f763ef23f2a625b930373c991b95478253d6b05a7e3cbc33625"
+  },
+  "upstreamSource": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "pipeline": {
+    "policy": "retain-production-reviewed-partial-fallback-v1",
+    "selection": "Keep every production crop. Only if none exists, accept an outline-supported neural proposal with observed rectified overlap >=99% and maximum axis-normalized extrapolation <=5%, always needs_review. Use analytic projective coverage; no mask score or template selects the crop.",
+    "observedFraction": 0.99,
+    "maximumExtrapolation": 0.05,
+    "timeLimitSeconds": 10,
+    "trials": 0,
+    "target": "mask",
+    "methods": [
+      "production",
+      "fallback"
+    ],
+    "classifier": "Unchanged RGB mixture classifier",
+    "fits": "Reuse unchanged pinned production controls. Fit every neural crop selected by the new fixed model, retaining all 32 photos, unresolved crops and failed fits. Compare with saved audited decoder-only outputs without selecting checkpoints or methods per photo.",
+    "validation": "Independent exported weave error <=3%, original feature checks, geometry/paper checks, production editable conversion and independent editable-paper audit. Visual review of all photos/crops and distinct outputs.",
+    "missing": "No manual rescue or result-dependent replacement. Record photo eligibility misclassifications and possible irregular weaving separately without removing them from primary denominators.",
+    "fieldPalette": "confidence-weighted"
+  },
+  "sourcePins": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/partial-photo-crop.mjs": "69d3b078258e6c43296f7dec37bd40a875728aa3bd2e4ec2fb50ffcd6ec9c349",
+    "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/u2netp-probe.py": "300c7c3c43188528eac7b96f06bdf124b4336e0215f94204c96318d8d4903a6d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/replay-photo-fallback.mjs": "ec842919ff25c998c4d09ca3cb64fc39fdf00ca3e7ea41fcbc0be57f98dab112",
+    "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/continuous-foreground.mjs": "ebdf2b4e7c463ded9ef6e192c4f98855ef677220d04d02e7e1f28bdc4abdaa23",
+    "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/foreground-crop.mjs": "b67e2e99acfd4bfcf2cceaa84dd90fc64433e9ef1b7dd1709851ce055dc34ca8"
+  },
+  "scope": "Fixed-budget outline-supervision experiment on the same 24 reviewed training photos. Same fresh publisher initialization, 180 draws, synthetic data, optimizer, late-encoder adaptation, normalization and final checkpoint as the saved encoder model. Only an explicit known-outline auxiliary loss is added. Additional loss computation means this is not an exactly equal-compute trial. Training-band metrics are diagnostic and do not establish crop or reconstruction improvement. Native development only; no browser parity or production-release claim.",
+  "pairedStudy": {
+    "path": "docs/inverse/datasets/u2netp-body-outline-evaluation-plan.json",
+    "sha256": "f7c686cd1174c623bc44b0b9392836a32660c079e89f3242af1210c0b1313dbf"
+  },
+  "trainingSeparation": {
+    "report": {
+      "path": "tmp/heart-learning/u2netp-body-outline-v1/report.json",
+      "sha256": "ad8dc95c811d7291bd2504ab65b954ea96b18296cc03b387abd63470eaa60c1c"
+    },
+    "plan": {
+      "path": "docs/inverse/datasets/u2netp-body-outline-plan.json",
+      "sha256": "a155452e938f5e394497cfc92690eb0d0e73364be87435a63437698660e873b3"
+    }
+  },
+  "generatedBy": {
+    "path": "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/pin-body-evaluation.py",
+    "sha256": "98d855b20ffc41b28851f1a70196b0fe759b66f4b8a6aaccf3e3df7e12ce0403"
+  }
+}

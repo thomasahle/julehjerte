@@ -1,0 +1,98 @@
+{
+  "schema": "paired-body-exposure-preflight-1",
+  "status": "passed",
+  "schedule": {
+    "path": "docs/inverse/datasets/u2netp-body-exposure-schedule.json",
+    "sha256": "7e2d5b7f4ec044cbb3093ee9086c6916e7c493fbdc9ab2d77ccc54e977308176"
+  },
+  "retainedOldDrawsPerArm": 120,
+  "insertedDrawsPerArm": 60,
+  "sameSyntheticAndReflectionsEveryUpdate": true,
+  "visits": {
+    "control": {
+      "0": 16,
+      "1": 13,
+      "2": 10,
+      "3": 11,
+      "4": 10,
+      "5": 14,
+      "6": 15,
+      "7": 11,
+      "8": 11,
+      "9": 10,
+      "10": 8,
+      "11": 15,
+      "12": 9,
+      "13": 8,
+      "14": 10,
+      "15": 9
+    },
+    "candidate": {
+      "0": 12,
+      "1": 9,
+      "2": 7,
+      "3": 8,
+      "4": 6,
+      "5": 10,
+      "6": 12,
+      "7": 7,
+      "8": 7,
+      "9": 6,
+      "10": 4,
+      "11": 11,
+      "12": 5,
+      "13": 5,
+      "14": 6,
+      "15": 5,
+      "16": 7,
+      "17": 7,
+      "18": 7,
+      "19": 8,
+      "20": 8,
+      "21": 7,
+      "22": 8,
+      "23": 8
+    }
+  },
+  "focusedTests": {
+    "passed": 11,
+    "failed": 0,
+    "log": {
+      "path": "tmp/heart-learning/body-exposure-focused-tests-executed.log",
+      "sha256": "cd6986db8f87a486a1cf5df11dabf93b353d1a811b7544e04e8385ee42166e03"
+    }
+  },
+  "historicalReplay": {
+    "audit": {
+      "path": "tmp/heart-learning/u2netp-body-expanded-control-v1/audit-exposure-compatibility.json",
+      "sha256": "3a33b72adbbd580239f2863a06198eae9071d18b98e9906f8a96e0c9d3baad9c"
+    },
+    "passed": true,
+    "probabilityComparisons": {
+      "initial": {
+        "exact": false,
+        "maximumAbsoluteDifference": 1.1920928955078125e-07,
+        "absoluteTolerance": 1.1920928955078125e-07,
+        "changedHalfThresholdPixels": 0,
+        "passed": true,
+        "metricsExact": true
+      },
+      "final": {
+        "exact": false,
+        "maximumAbsoluteDifference": 1.1920928955078125e-07,
+        "absoluteTolerance": 1.1920928955078125e-07,
+        "changedHalfThresholdPixels": 0,
+        "passed": true,
+        "metricsExact": true
+      }
+    },
+    "historicalProducer": [
+      {
+        "path": "scripts/inverse/learning/train-u2netp-body.py",
+        "commit": "3720bb9bf3c3d3dab6cc7f05ae4f6f7cb614600c",
+        "sha256": "5e5d1ba71b9a7492a42a34dcb042eb77bea61d01a9aab3d945281478a3edc5fc"
+      }
+    ]
+  },
+  "scope": "Only the historical trainer may differ, with exact Git-byte provenance. Current numerical, input, label and loss code still must match historical hashes."
+}

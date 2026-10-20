@@ -1,7 +1,7 @@
 # Data for learned heart reconstruction
 
-Neural release status reviewed on **2026-10-19**; dataset counts last audited on
-**2026-10-19**. **No neural network is ready for production or
+Neural release status reviewed on **2026-10-20**; dataset counts last audited on
+**2026-10-20**. **No neural network is ready for production or
 included in the website.** The collection, synthetic generator and learned
 prototypes are research tools; the existing geometric solver remains the
 production path.
@@ -16,18 +16,310 @@ production path.
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
 | Small learned model | Earlier MobileNetV3-Small fallback raises checked editable pairs from 7/16 to 9/16 on its development cohort; a newer fixed candidate stays at 7/16 on separately selected Sabrina photos | These are different cohorts; no deployment or established source generalization |
 | Saliency models | Frozen U2NETP raises checked derived-mask pairs from 10/32 to 12/32; adapted browser model adds three checked pairs over fresh current-main controls (9/32 to 12/32) | Raw numerical parity still fails; printed paper, missing body regions, timed-search variation and false seams remain; no production integration |
+| Expanded body supervision | Initial 120-update comparison gives 12/32 versus 10/32; preserving old-photo visits in a 180-update comparison restores both to 12/32 before editable rendering | Final raw editable counts are 11/32 versus 12/32, with the difference traced to a borderline rasterization artifact; no extra design coverage established |
+| Late encoder adaptation | Training-pixel error falls from 2.91% to 1.78%, but full editable recovery stays at the same 12/32 designs | No new crop-support decisions or recovered designs; not promoted |
+| Broader photo evaluation | Whole-body crop selection retains 12/32 and recovers the angel on the additional set: 4/18 checked editable pairs, three also supported by full-body evidence | The fourth fits only a small fragment and is now flagged. Printed paper, crop assumptions and feature loss remain separate problems |
+| Paper-colour calibration | Original-resolution colour mixtures restore detail lost by raw neural masks; fresh fixed-crop comparison gives 11/32 checked pairs with learned palettes versus 13/32 with RGB clustering | No learned-only checked gain; print confusion and unsuitable crops remain; these are derived-mask checks, not artwork ground truth |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
-| Solver | Current revision passes 1,109/1,109 inverse tests and 34 browser workflows; all 22 regular Hunodan designs finish under ten seconds | Some hard fits retain thin false seams; the earlier 27/31 photo benchmark has not been rerun |
+| Solver | Latest full release QA passes 1,207 inverse tests; earlier dedicated runs solve all 22 regular Hunodan designs under ten seconds | Some hard fits retain thin false seams; 19/77 CI timing targets miss; the earlier 27/31 photo benchmark has not been rerun |
+
+The [whole-body selection comparison](u2netp-balanced-body-results.json) now
+allows a supported neural crop to replace a weak existing proposal when it
+substantially improves coverage of the predicted paper. It recovers the angel:
+the new full-overlap crop produces **0.87% exported / 0.90% editable disagreement**
+and passes nominal paper checks, whereas the old crop failed them. Those errors
+refer to different crop-derived targets, not identical pixels or original
+cutting ground truth. All 12 checked cases on the original 32-photo cohort
+remain. The additional set rises from three to four checked derived masks;
+**three also pass the new whole-body evidence check**. The remaining bird crop
+contains only 17.9% of the predicted paper and remains an editable, flagged
+failure rather than a whole-heart success.
+
+The [first whole-body score](u2netp-whole-body-first-results.json) incorrectly
+rejected the checker: it discounted uncertain foreground but counted the entire
+outline area as certain background. The corrected metric treats foreground and
+background confidence symmetrically, without changing thresholds. Both complete
+cohorts were rerun. All 15 distinct exports across the two versions pass editable
+conversion and geometry; the printed swan paper fails paper checks in both.
+Every comparison page was inspected. The ten focused tests pass. This is still
+offline research: the next step is replacing source injection with an explicit
+locator field-provider API and checking model loading, cancellation and the
+actual user flow before production integration.
+
+The initial [expanded photo evaluation](u2netp-expanded-evaluation-results.json) tests
+the existing 16-photo-adapted checkpoint without further training. All 18
+eligible additional photos remain in the denominator, including two variants
+of the Santa photograph already assigned to the same duplicate group. This is
+development evaluation, not an untouched holdout. The original 32-photo
+regression retains all 12 checked editable pairs. The additional set retains
+three with or without neural assistance; the two new crops fail later checks.
+
+Visual inspection exposes an important false success: the green-and-gold bird
+crop contains only a small part of the heart. Its **2.47% derived-mask error is
+not successful whole-heart reconstruction**. The current fallback keeps every
+production crop, so it cannot repair that selection. A separate neural-only
+diagnostic also fails on the bird. On the miscropped angel, it instead proposes
+a visually plausible full overlap; the subsequent comparison above fits it.
+These observations motivate checking whole-heart coverage and considering
+neural alternatives to weak existing crops, without weakening geometry or
+image-fidelity checks. The Santa variants lose enclosed features despite less
+than 3% error; printed decorations are mistaken for cuts in both new neural
+targets. Better cropping alone cannot resolve those downstream failures.
+
+All 13 distinct new exports were audited through editable conversion; reused
+audits require matching source, geometry and mask hashes. Every comparison page
+was inspected. Actual one-thread browser inference takes a **1.073 s warm
+median** on this machine. Browser RGB and input tensors are exact, and both
+additional neural crops, masks and fitted geometries match the native run
+exactly. The original raw numerical gates still fail (maximum probability
+difference 0.0001524 and one changed half-threshold pixel against PyTorch).
+This remains an offline experiment; no model is included in the website.
+
+The [latest palette-to-template comparison](u2netp-material-palette-pipeline-results.json)
+holds all 25 crops fixed and retains seven unresolved inputs. Both colour methods
+use original photograph pixels, then the unchanged fitter with a ten-second search
+allowance. All 50 exported candidates pass editable conversion and geometry;
+48 pass nominal paper checks and two remain uncertain. The learned palette loses
+the shaded checker and printed-tree designs relative to RGB clustering and adds
+no checked pair. All eight comparison pages were reviewed. Neither method fixes
+bad crops, and both still mistake some printed ink for paper boundaries.
+
+The nativity case exposes a separate deterministic search problem: **59 of
+160,000 mask pixels change**, yet the three-slot shortlist drops the six-cut
+grid for a four-cut grid. Replaying fixed initialization and gradient steps in
+ABBA order exactly reproduces the divergence. The omitted six-cut grid still
+preserves the source regions' colours on both targets; the remaining grids do
+not. This isolates a scheduling weakness before timed curve refinement, without
+claiming the omitted grid is a valid template or the original cutting design.
+No production code or acceptance limit changes in this experiment. The diagnostic
+now accepts `--reference-method` and `--candidate-method` for paired runs.
+
+The [discarded-grid follow-up](displaced-finalist-results.json) exactly replays
+968 coarse scores and 150 initial fine-grid scores across all 50 targets, including
+the ten partially observed crops. A bounded extra-grid rule triggers on 14 targets.
+Fresh baseline/proposal fits improve the nativity from **6.89% to 2.85%** mask
+disagreement and restore recognizable figures, but two small openings still join
+the exterior. Seven targets get lower error, two get higher error, five are
+unchanged, and **neither arm produces a fully checked pair on these 14 targets**.
+All 28 exports pass conversion and geometry; three paper-support results remain
+uncertain. Every comparison was inspected. This stays an isolated experiment,
+with no production scheduling change or added disagreement allowance.
+
+The [reviewed label expansion](diverse-paper-label-expansion.json) adds eight
+photographs to the earlier 16, giving **24 instances and nine approximate
+overlap references**. It includes pale printed paper, low-contrast red/pink paper,
+dense checks and decorative motifs. All six sources in this batch already occur
+in the earlier subset: it adds photographs within the same 14 source groups,
+not independent sources. These remain separate from the five source groups in
+the 32-photo development evaluation. Every new body/material overlay was inspected
+at 256 and 768 pixels; uncertain boundaries and unlabelled material stay unknown.
+These are assistant annotations without independent human review, exact artwork
+or cutting-path labels. Both the original and expanded pools have now trained
+fresh U2NETP body models under the same predeclared 120-update budget.
+
+The [fixed-model probe on those eight photos](diverse-paper-probe-results.json)
+separates two problems. The body model often includes handles, a detached paper
+strip, pinecones or chocolates. The material head rounds checker cells and loses
+small openings, even where its sparse labelled patches score perfectly. Existing
+colour calibration restores much of that detail, but increases observed paper
+error from **9.45% to about 24%** on the floral/striped photo by treating printed
+ink as material changes. All four comparison pages were inspected, and saved
+probability fields reproduce every reported metric exactly. These photos share
+sources with training; they are development diagnostics, not generalization
+results or template successes.
+
+The [completed paired body experiment](u2netp-body-expanded-results.json) uses
+the same pretrained initialization, synthetic inputs/draws and reflections;
+every real photo is visited. Both checkpoint audits reproduce initial and final
+predictions exactly and verify unchanged frozen encoder weights and BatchNorm
+statistics. On the original 16 labelled training photos, body pixel error worsens
+from **2.57% to 2.83%**; on the additional eight it improves from **4.36% to
+3.63%**. These training diagnostics do not establish generalization. With a fixed
+budget, 33 candidate draws visit new photos and only 87 visit the original pool,
+so this does not show that more labels are intrinsically harmful.
+
+Full reconstruction on all 32 development photos gives **12 checked pairs for
+the control versus 10 for the expanded candidate**, with nine unchanged
+production-only pairs. The candidate loses blue/gold checkerboard and star crops.
+It adds a green/black motif crop, but its fit fails the image-quality gate. All
+six training pages, eleven evaluation-body pages and both fit pages were reviewed.
+Handles, printed-paper confusion, glare and false seams remain. A decorated
+blue/gold training photo already loses 37% of labelled paper in the control and
+49% in the candidate; unseen sources alone cannot explain that failure.
+
+The comparison also exposed a concrete preprocessing bug: the supposedly
+continuous palette still ran only after an older `p > .95` colour-sampling gate
+succeeded. The offline adapter can now construct weighted fields directly.
+All **63 previously admitted field sets remain exactly equal**; the remaining
+checkerboard field set is recovered. However, its crop then fails the physical
+outline check. Fresh full replays retain **12/32 versus 10/32**, with all seven
+selected crop coordinates and input masks unchanged. All fourteen pre/post-fix
+exports pass editable conversion, geometry and nominal paper checks, and the
+same four pass image/feature checks in each replay. Both new fit pages were
+inspected; numerical acceptance still allows visible seams in the stacked hearts.
+
+Untimed intervention tests isolate the two lost crops further. Both candidate
+crops still fail after all 19 alternate orientations. Replacing only the binary
+paper mask and its distance field with the control's fields restores outline
+support on both; replacing colour fields does not. These mixed fields are
+diagnostic probes, not deployable predictions or newly validated templates.
+This motivated a follow-up separating reduced training exposure from
+representation/loss limitations. No network, support threshold or solver change
+was deployed from that study; the ten focused palette/crop regression tests pass.
+
+The [completed added-exposure comparison](u2netp-body-exposure-results.json)
+preserves every original 120-update control draw, then inserts 60 updates.
+The 16-photo control spends the added real visits on old photos; the 24-photo
+candidate spends them on the new eight. Both use identical synthetic inputs and
+reflections, and both train for 180 updates from the same pretrained weights.
+The candidate recovers the two lost metallic-paper crops, so both arms reach
+**12/32 exported-image passes**, matching the earlier control. Its training
+error improves on both the original and added photos, but it adds no previously
+unrecovered design. All ten new exports pass conversion, geometry and nominal
+paper checks. Six paired training pages, eleven evaluation-body pages and four
+fit pages were inspected. Eleven scheduling/provenance/audit tests pass.
+
+The final editable counts are **11/32 for the control and 12/32 for the
+candidate**, but this is not strong evidence for ranking the candidate higher.
+One control fit moves from **2.95875%** exported-SVG disagreement to **3.0075%**
+in the editor's mask renderer—only twelve pixels beyond the 3% cutoff. The
+unsimplified and simplified editable masks are identical at 400 and 800 pixels.
+An isolated diagnostic keeps the curves fixed and tightens only the editor's
+quarter-pixel flattening: disagreement falls to about **2.97%**, consistent with
+supersampled SVG centre tests. This is a renderer-precision threshold artifact,
+not a demonstrated simplification defect. Original scores and failures remain
+recorded; no production rasterizer or acceptance limit was changed. The next
+comparison needs consistent rendering precision before selecting models on
+borderline scores. These models have not undergone browser/runtime release QA.
+
+A [31-output precision replay](u2netp-body-renderer-cohort-results.json) now
+covers all 21 production exports and ten fresh neural exports from that study.
+Every saved editable mask is reproduced exactly before changing precision;
+editor intersections and paper/geometry checks are rerun. The stacked-heart
+control is the only classification change across four fixed tolerances.
+At the two finest tolerances, masks differ by at most four pixels and no
+classification changes. Both models therefore recover the same twelve designs
+in this diagnostic; the original benchmark counts remain recorded separately.
+
+The [completed late-encoder experiment](u2netp-body-encoder-results.json) tests
+whether fixed pretrained features limit whole-paper recognition. It trains
+encoder stages 4–6 at one quarter the decoder learning rate, retaining the same
+24 photos, all 180 draws, synthetic examples, loss and publisher initialization.
+Early encoder weights and every normalization statistic stay frozen. The
+checkpoint audit and 14 focused tests pass. Training-pixel error drops from
+**2.91% to 1.78%**, but the complete reconstruction pipeline still recovers the
+same **12/32 checked editable pairs**. No outline-support eligibility changes.
+All five fresh exports pass editable geometry and nominal paper checks; their
+mask/feature checks retain the same three passes and two failures. All six
+training, eleven evaluation-body and two new fit contact sheets were reviewed.
+
+Across the full cohort, six photos still have no accepted crop, twelve fitted
+outputs exceed 3% target disagreement, one loses a motif feature despite low
+aggregate error, and one fails nominal paper-core checks despite low error.
+These are stage outcomes, not proofs that the artwork is impossible. Printed
+paper and glare also corrupt some classified targets, while dark/metallic body
+omissions persist. Better training segmentation alone has not fixed those
+problems. This candidate is retained as an experiment, without browser export
+or production promotion.
+
+The [known-outline-loss follow-up](u2netp-body-outline-results.json) keeps that
+training setup fixed and adds balanced supervision near known paper/background
+boundaries, excluding uncertain pixels. The independent audit regenerates all
+88 real/synthetic outline fields. Training-band error falls from **5.34% to
+4.80%**, but whole-mask error rises from **1.78% to 2.14%**. Full reconstruction
+still yields the same **12/32 checked editable pairs**, and accepted crops fall
+from 26 to 25. All four new exports pass conversion, geometry and nominal paper
+checks; the printed-tree fit still fails image fidelity. All training,
+evaluation and new-fit galleries were inspected. This candidate is not promoted.
+
+A [replayable sampling diagnostic](../../../scripts/inverse/learning/body-outline-crop-diagnostic.mjs)
+isolates the lost green/black crop: a larger false hole in the NN's body mask
+causes 84 of 178 scanlines to stop inside the paper, more than ten working pixels
+from their previous endpoint. Right-edge support drops from **87.08% to 52.81%**,
+below the unchanged 65% requirement, although the proposed corners move by at
+most 19.62 pixels in the 2048-pixel photograph. Swapping only the two models'
+binary masks reproduces the opposite edge evidence exactly in both directions.
+The next crop experiment should distinguish enclosed gaps from the outer
+silhouette while retaining photograph evidence and lobe checks. No acceptance
+threshold was relaxed. Better segmentation scores alone have not established
+better usable templates; broader evaluation is also needed beyond this
+repeatedly inspected development cohort.
+
+The [outer-boundary sampling replay](u2netp-outer-boundary-results.json) now tests
+that fix on both saved models. It ignores enclosed background holes only while
+sampling the lower edges; original probabilities, distance fields, foreground
+selection, colour evidence and cutting targets remain unchanged. Open and
+diagonal gaps remain open. Nineteen focused tests pass, and the default mode
+reproduces all 22 saved neural detections exactly. The new mode restores the
+lost green/black crop with both lower-edge support scores at 100%, without
+lowering the 65% threshold. Both models now return 26 crops and retain the same
+**12/32 checked editable pairs**. All ten fresh exports pass conversion and
+nominal geometry/paper checks; the restored motif still exceeds the image-error
+limit. Four fit contact sheets were inspected. This fixes a crop sensitivity,
+but is still an offline option rather than a deployed NN or a new template
+success. Small differences between fresh fits of identical targets are recorded
+separately from crop changes.
+
+The [fixed expanded evaluation selection](u2netp-expanded-qa-selection.json)
+includes all 18 reserved single-object photos with a shortest side of at least
+160 pixels outside the source/duplicate groups of the 24 training and 32 current
+development photos. They span 17 split groups. Fifteen already appear in prior
+probe manifests, and all were classified during dataset review, so this is an
+expanded development evaluation, not an untouched holdout. Original bytes and
+decoded RGB are pinned; no photographs were copied or train/test groups changed.
+Inference and full reconstruction on this extension remain to be run before
+claiming a broader improvement from the browser-tested NN candidate.
+
+The [complete balanced-epoch follow-up](u2netp-material-complete-epochs-results.json)
+adds 384 updates to the fixed relative-colour head, visiting every synthetic
+view four times. Known-region real training error falls from **5.06% to 2.78%**.
+However, boundary-band error increases on all three synthetic groups: clean
+views **8.25% → 11.15%**, printed views **22.42% → 23.68%**, and scenes
+**21.93% → 22.63%**. Printed/scene interiors improve; clean-view interiors do not.
+All training, worst-synthetic and 32-photo evaluation galleries were inspected.
+Print confusion, lost checker squares and rounded/disconnected joins remain.
+This head is rejected for integration; these are development diagnostics, not
+held-out reconstruction scores.
+
+The [paired boundary-weighted continuation](u2netp-material-boundary-results.json)
+keeps those inputs, initial weights and all 384 draws fixed, giving known paper
+boundaries four times the loss weight. Boundary error improves to **9.38%** on
+clean views, **21.54%** on printed views and **19.55%** in scenes. Scene interiors
+and real partial training error regress; the shorter 120-update parent still
+has lower clean-view boundary error. All 32 real evaluation photos were reviewed:
+print confusion, lost shaded checker squares and near-erasure of the stacked-heart
+motif remain. These full-photo material failures precede cropping and fitting.
+No new template fits, browser export or production changes were justified.
+Fifteen focused tests pass, and historical checkpoint reloads reproduce both
+older models' stored predictions exactly.
 
 ### Latest solver and browser validation
 
 The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and
-hover outline) and archive are **deployed**. The [19 October release record](oct19-release-qa.json)
-contains live Danish/English and mobile QA, 2,216 application tests and 1,122
-inverse correctness checks. Ten of 77 advisory timed quality targets still miss;
-these are retained separately from correctness. Subsequent main commit
-`7c6e232a` also passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39309081068).
-The local preview is at `http://localhost:4173/editor/mal/`.
+hover outline) and archive are **deployed**. The [latest release record](conni-release-qa.json)
+contains live Danish/English and mobile QA, 2,371 application tests and 1,207
+inverse checks. Nineteen of 77 advisory timed quality targets still miss;
+these are retained separately from correctness. Main commit `d0b882b5` passed
+[CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39324904486),
+rechecked on 20 October. No neural network is deployed in that release.
+
+The [upload integration audit](u2netp-upload-integration-results.json) records
+the next application change, currently under release QA. It packages the same
+4.62 MB adapted U2NETP model and a pinned local ONNX Runtime Web, runs on one
+WASM thread, and shares the tested whole-body crop policy with the offline
+experiments through an explicit locator API. No photo upload is involved.
+Manual regions stay authoritative; model failures retain the existing editable
+crop. Suggested neural corners still require user review.
+
+All 50 saved browser-field cases reproduce their selected corners exactly after
+migration. Actual built-site tests pass for upload, mask preview, angel template
+generation, unavailable model, cancellation/reopen, and a crowded frame. The
+angel's UI fit passes geometry and nominal paper checks at 0.649375% mask
+disagreement. This measures the classified crop, not original cutting paths;
+small photographic edge irregularities remain visible. The historical strict
+WASM-versus-Torch probability tolerance remains failed and has not been relaxed.
+Output-level parity is checked separately; the development cohorts and desktop
+browser checks do not establish mobile performance or unseen-photo accuracy.
 
 #### Latest neural experiments
 
@@ -67,6 +359,104 @@ but two printed-paper images shift corners by up to 1.94 pixels and change
 their classified masks. Other crop outputs, including the three gains, agree
 exactly. The numerical gates remain failed. These remain development results on an
 already inspected cohort, not a production release.
+
+The [causal crop-drift diagnostic](u2netp-crop-drift-results.json) reproduces
+those two differences before substituting individual intermediate fields.
+In one photo, a single resampled sample crosses the 95% palette cutoff;
+replacing only the resulting chroma field restores the reference crop exactly.
+In the other, one foreground pixel changes 589 paper-distance samples;
+replacing only that distance field restores the reference crop. Component-mask
+and colour-field substitutions do not. Continuous palette weighting and subpixel
+distance geometry were then [tested separately and together](u2netp-continuous-fields-results.json).
+Confidence-weighted colour sampling preserves all original crop/support decisions
+and reduces maximum export-induced corner drift from 1.94 to 0.19 pixels.
+Distance-only processing worsens it to 7.47 pixels; the combined variant loses
+one existing crop. Both unsuccessful variants are retained. Colour weighting
+also changes some corners by 5–9 pixels relative to the old algorithm.
+
+The [fresh original-versus-weighted reconstruction comparison](u2netp-continuous-pipeline-results.json)
+is now complete: both retain **12/32** formally checked pairs. All eight new
+exports pass editable conversion, geometry and nominal paper checks; six pass
+the image/feature checks. All eight were visually inspected. The three accepted
+neural fits have slightly higher mask error with weighting, while the printed
+tree-paper case still fails. Improved numerical stability is therefore **not**
+an established reconstruction-quality improvement, and the NN stays outside
+production.
+
+The red/gold checker heart exposes another source of sensitivity: a **61-pixel
+change out of 160,000** switches the selected counts from 8-by-8 to 7-by-3,
+although the crop moves less than 0.05 source pixels. A fixed-work ABBA replay
+exactly reproduces every initialized and fine-grid score. The simpler candidate's
+worst retained region changes from 35.9% to 60.9%, crossing the 60% scheduling
+gate. The cut-count preference then puts it ahead of the better-fitting 8-by-8
+grid. This upstream change is independent of the later wall-clock refinement;
+both final results still visibly distort the small checker squares. The
+diagnostic is `scripts/inverse/learning/crop-count-sensitivity.mjs`; inputs and
+checksums are in the linked result. Candidate scheduling and printed-paper
+identity remain separate problems to address before release.
+
+A [fresh cut-count capacity check](u2netp-count-alternative-results.json)
+confirms that the overlooked 8-by-8 layout improves the **same** weighted-crop
+mask from 2.69% to 2.20% exported disagreement. All eight comparison exports
+pass editable geometry and paper checks. Their small squares remain distorted,
+however. Restricting the count search is an oracle experiment, not a new
+automatic selection rule; production scheduling remains unchanged.
+
+The subsequent [paper-identity head pilot](u2netp-material-results.json) adds
+18,193 trainable parameters to the frozen adapted U2NETP. It trains for 120
+updates on 16 real photos and 96 synthetic original/scene/printed views from
+32 geometries, in 106 seconds on one CPU thread. All 32 evaluation input tensors
+and body predictions exactly match the prior native body probe. The saved new
+head is 77 KB; no second body checkpoint is stored.
+
+This material head is **rejected for integration**. Known-region training
+identity error drops from 44.8% to 11.3%, but two non-white training palettes
+still have 46–48% error. All four training and eight evaluation gallery pages
+were inspected: many dark/metallic hearts collapse into one paper class, and
+printed stripes, dots and flowers still appear as weave boundaries. The three
+body-crop gains would lose their motifs. These native results do not justify
+browser export or template-quality claims.
+
+The [paired relative-colour experiment](u2netp-relative-material-results.json)
+keeps the body, head size, initial weights, training inputs, sampling order and
+120-update budget identical. Its fresh raw control exactly reproduces the
+earlier head checkpoint, training losses and all 32 evaluation fields. Centring
+RGB on the predicted heart and using one common colour scale reduces known-region
+training error from **11.26% to 5.06%**. Under a fixed contrast-compression
+intervention, errors are **23.73% versus 5.41%**. These are training-photo
+diagnostics, not held-out accuracy.
+
+All 16 training and 32 separate-source evaluation photos were visually reviewed.
+Several previously lost metallic/coloured motifs reappear, including the star
+and dark/gold checker. The shaded red/gold checker still loses its small squares;
+printed decoration remains confused with cuts. The unchanged body still misses
+parts of the house and candlestick. This native experiment remains **outside
+production** pending reconstruction checks and browser validation.
+Cached normalized body fields have small cross-process differences (maximum
+1.20e-7, no changes at 0.5); fresh body outputs match their parent exactly in each
+probe. No numerical gate has been relaxed.
+
+The subsequent [fixed-crop reconstruction check](u2netp-material-fixed-crop-results.json)
+keeps all 25 crop selections and seven unresolved cases unchanged. It yields
+**14/32 checked derived-mask pairs**, versus 12 for historical RGB fits at those
+same crops. All 25 exports pass editable geometry; 24 pass the nominal paper
+check. However, inspection of all 32 cases **rejects this as a reconstruction
+improvement**: six newly passing cases include unsuitable crops and simplified
+motifs, while four previous passes regress. Printed ink becomes cut geometry,
+the shaded checker disappears, and narrow joins/grid corners are altered before
+fitting. Original-artwork ground truth is unavailable; neither mask's own fit
+error settles which reconstruction is better.
+
+The fixed-crop audit also corrected a small-photo resolution mismatch and a
+black/white-preview reader in the offline comparison tooling. Only the affected
+229-pixel photo was refitted; 24 unchanged, source-verified exports were reused.
+Every final comparison reproduces the independent renderer's own mask error.
+The retained synthetic diagnostic finds **1.91% paper error on plain views,
+11.17% on printed counterparts**, already in the training pool. The short pilot
+sampled only 23 of 32 printed views; some sampled views fail too. Crowded scenes
+also hurt the frozen body detector. These observations motivate better training
+coverage and preservation of original RGB boundaries, rather than longer fitting
+against an incorrect neural mask.
 
 The original [fresh 32-photo evaluation](u2netp-fresh-results.json) freezes the model and
 crop policy before inference. It keeps every existing production crop and adds
@@ -522,8 +912,8 @@ The [manifest](real-manifest.json) and [independent audit](real-validation.json)
 record source URLs, hashes, decoded identities, dimensions, image kinds and
 groups. Image bytes remain under `tmp/heart-training-real/`, outside Git.
 
-Current inventory: **783 photo-containing files**, **670 near-duplicate photo
-groups**, **748 QA-reserved files**, and **695 downloaded / 712 selected
+Current inventory: **811 photo-containing files**, **697 near-duplicate photo
+groups**, **838 QA-reserved files**, and **817 downloaded / 834 selected
 Pinterest pins**. Near-duplicate groups are not verified motif families.
 A collage remains one file until its individual hearts are annotated.
 

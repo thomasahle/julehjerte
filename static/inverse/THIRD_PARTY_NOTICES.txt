@@ -45,3 +45,13 @@ with the inverse engine, without a remote service or CDN.
 
 - Clipper2: https://github.com/AngusJohnson/Clipper2
 - WASM wrapper: https://github.com/ErikSom/Clipper2-WASM
+
+## U2NETP / ONNX Runtime Web
+
+Automatic photo cropping lazily loads a locally adapted U2NETP paper-body
+model and ONNX Runtime Web 1.19.2. Inference runs in the image worker, on one
+WASM thread; photographs are not uploaded. U2NETP is licensed under Apache 2.0;
+ONNX Runtime is licensed under MIT. See `neural/NOTICE.txt`,
+`neural/U2NET-LICENSE`, and `vendor/onnxruntime-1.19.2/` for the licenses,
+third-party notices, package integrity and file hashes. The model estimates
+the paper outline; it does not generate or certify cutting templates.

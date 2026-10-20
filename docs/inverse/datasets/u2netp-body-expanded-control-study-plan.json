@@ -1,0 +1,73 @@
+{
+  "schema": "saliency-fresh-study-1",
+  "status": "predeclared-development-followup",
+  "selection": {
+    "path": "docs/inverse/datasets/u2netp-continuous-selection.json",
+    "sha256": "6d4e0e7550fedf5c13333bdc90db28a98eb5ff9ce2de260f32e2d015f5128f52"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-body-expanded-control-v1/model.pt",
+    "sha256": "f191aa81b448ab8cbf64f2b8c657bfaeb85a52c7777e5161e4cd5a8c12d11a35"
+  },
+  "upstreamSource": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "model": {
+    "path": "tmp/heart-learning/u2netp-body-expanded-control-v1/model.pt",
+    "sha256": "f191aa81b448ab8cbf64f2b8c657bfaeb85a52c7777e5161e4cd5a8c12d11a35"
+  },
+  "runtimeProtocol": {
+    "stage": "native-development",
+    "inputParity": "Compare all 32 tensor hashes between the two native arms; no browser parity inferred."
+  },
+  "pipeline": {
+    "policy": "retain-production-reviewed-partial-fallback-v1",
+    "selection": "Keep every production crop. Only if none exists, accept an outline-supported neural proposal with observed rectified overlap >=99% and maximum axis-normalized extrapolation <=5%, always needs_review. Use analytic projective coverage; no mask score or template selects the crop.",
+    "observedFraction": 0.99,
+    "maximumExtrapolation": 0.05,
+    "timeLimitSeconds": 10,
+    "trials": 0,
+    "target": "mask",
+    "methods": [
+      "production",
+      "fallback"
+    ],
+    "classifier": "Unchanged RGB mixture classifier",
+    "fits": "Both native arms use the same pinned production detections/fits. Freshly fit each selected neural crop with the unchanged 10-second production fitter. No per-photo choice between model outputs; retain all 32 photos and all unresolved/failed fits.",
+    "validation": "Independent exported weave error <=3%, original feature checks, geometry/paper checks, production editable conversion and independent editable-paper audit. Visual review of all photos/crops and distinct outputs.",
+    "missing": "No manual rescue or result-dependent replacement. Record photo eligibility misclassifications and possible irregular weaving separately without removing them from primary denominators.",
+    "postprocess": "weighted-palette"
+  },
+  "resources": {
+    "workers": 1,
+    "newPhotoDownloads": 0,
+    "newSourcePhotoCopies": 0,
+    "maxTotalArtifactMiB": 140,
+    "probeMiB": 16,
+    "nativeMiB": 72,
+    "browserMiB": 16,
+    "pipelineMiB": 30
+  },
+  "sourcePins": {
+    "scripts/inverse/learning/partial-photo-crop.mjs": "69d3b078258e6c43296f7dec37bd40a875728aa3bd2e4ec2fb50ffcd6ec9c349",
+    "scripts/inverse/learning/u2netp-probe.py": "300c7c3c43188528eac7b96f06bdf124b4336e0215f94204c96318d8d4903a6d",
+    "scripts/inverse/learning/replay-photo-fallback.mjs": "0a981f18911f92527b70bfb1e489ab1b5a6794eb77a5056c692c2b925f3a05a6",
+    "scripts/inverse/learning/continuous-foreground.mjs": "ebdf2b4e7c463ded9ef6e192c4f98855ef677220d04d02e7e1f28bdc4abdaa23"
+  },
+  "scope": "Fixed-budget supervision comparison. Both arms are newly trained from the same pretrained U2NETP initialization. No crop, palette, fitter, loss or acceptance-threshold tuning per photo. All added source groups already occur in training; the 32 evaluation photos remain source/duplicate separated. Native control reconstruction.",
+  "pairedStudy": {
+    "path": "docs/inverse/datasets/u2netp-body-expanded-evaluation-plan.json",
+    "sha256": "37c38a0dc32473da91d24df49bb6bbd7d3710f1062e88263e19594ebe8b14537"
+  },
+  "trainingSeparation": {
+    "report": {
+      "path": "tmp/heart-learning/u2netp-body-expanded-control-v1/report.json",
+      "sha256": "57b914d00f30aa9a4252b4c90d419d98db365681af0a7fd639a3b0c4e39080a7"
+    },
+    "plan": {
+      "path": "docs/inverse/datasets/u2netp-body-expanded-control-plan.json",
+      "sha256": "288214b358c3ebf5d344e69432a49a08acd70683a911e413d319e835e6913300"
+    }
+  }
+}

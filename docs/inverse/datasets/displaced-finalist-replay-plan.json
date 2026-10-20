@@ -1,0 +1,80 @@
+{
+  "schema": "displaced-finalist-replay-plan-1",
+  "date": "2026-10-20",
+  "status": "predeclared",
+  "screen": {
+    "path": "tmp/heart-learning/displaced-finalist-probe-v3.json",
+    "sha256": "01eaa413ce73742b9f49fa34b22fb8d17ff82b4d18349715a201b4ef56a4dcd5"
+  },
+  "implementationSha256": "52689b4351a3cc0aa7d5da1491e4e1c904a8e4ba174cd985900523367cb5a348",
+  "timeLimit": 10,
+  "targets": [
+    [
+      "real-f6e5e128449e3cb9-body-1",
+      "learned"
+    ],
+    [
+      "real-f6e5e128449e3cb9-body-1",
+      "rgb"
+    ],
+    [
+      "real-55704c6e2911bebc-body-1",
+      "learned"
+    ],
+    [
+      "real-55704c6e2911bebc-body-1",
+      "rgb"
+    ],
+    [
+      "real-589f606a9d9899f2-body-1",
+      "learned"
+    ],
+    [
+      "real-589f606a9d9899f2-body-1",
+      "rgb"
+    ],
+    [
+      "real-dfa7e4b71b43aa86-body-1",
+      "rgb"
+    ],
+    [
+      "real-dfa7e4b71b43aa86-body-1",
+      "learned"
+    ],
+    [
+      "real-2502cdec0720f4ea-body-1",
+      "learned"
+    ],
+    [
+      "real-1a7cfc6be8b164b5-body-1",
+      "learned"
+    ],
+    [
+      "real-fe7fb089d1cd86b4-body-1",
+      "learned"
+    ],
+    [
+      "real-fe7fb089d1cd86b4-body-1",
+      "rgb"
+    ],
+    [
+      "real-52e732b98f9b14f1-body-1",
+      "learned"
+    ],
+    [
+      "real-52e732b98f9b14f1-body-1",
+      "rgb"
+    ]
+  ],
+  "protocol": "Every triggering target receives a fresh baseline and candidate fit, rotating order by target index. Keep the current three finalists, add at most one discarded top-three seed if all initial fine grids lose source colours and remain poor, and retain the existing hard search deadline. Skip the extra fit when fewer than 1.7 seconds remain. Do not restrict cut counts or alter masks. All export, feature and geometry checks unchanged.",
+  "validation": "Independent exported raster then editable conversion and paper/geometry checks; visually review all pairs. Any timing or image gain is developmental and must be tested across unaffected cases and perturbations before production integration.",
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "maxArtifactMiB": 60,
+    "newPhotoCopies": 0,
+    "newModelWeights": 0,
+    "minimumFreeGiB": 10
+  },
+  "productionChanges": false
+}

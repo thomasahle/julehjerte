@@ -1,0 +1,378 @@
+{
+  "schema": "u2netp-material-results-1",
+  "date": "2026-10-20",
+  "status": "native-pilot-complete-rejected-for-integration",
+  "evidence": [
+    {
+      "path": "docs/inverse/datasets/u2netp-material-training-plan.json",
+      "sha256": "9d7f4284d9d733e11d708588828c0fe1709959e67ba0b77e1f031b0d320c9221"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-v1/report.json",
+      "sha256": "7e3e705291efd8f7c161c6b1f2abac849384d2c08fe62b689f62c473b3b629c0"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-probe-v1/report.json",
+      "sha256": "888a7cdee08a75a64a98166155c0a98ced10282fc7182503e45392dc333bee21"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-checks-v1.json",
+      "sha256": "3712ab06e5288f73276445d98324783495d5e62b5c8e02aff473a0df13dcef19"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-checks-v2.json",
+      "sha256": "50c64bcda97a677cdfe70bde09d5948b4734f82547c80041c5182f9f058ee228"
+    }
+  ],
+  "architecture": {
+    "pretrainedParent": "Whole-paper-adapted U2NETP, original publisher input transforms",
+    "frozenParameters": 1131181,
+    "newTrainableParameters": 18193,
+    "totalParameters": 1149374,
+    "headCheckpointBytes": 77393,
+    "bodyUpdated": false,
+    "featureReuse": "Existing decoder stages 1d, 2d and 3d; parent forward is evaluated once. No new photo-body labeling, crop or threshold tuning."
+  },
+  "training": {
+    "realPhotos": 16,
+    "realSourceGroups": 14,
+    "syntheticViews": 96,
+    "syntheticGeometries": 32,
+    "variants": "Original, scene and printed counterpart of each geometry; paper coverage and camera unchanged.",
+    "updates": 120,
+    "seconds": 105.737280334,
+    "threads": 1,
+    "knownRegionMetricsOnly": true,
+    "initialMetrics": {
+      "bodyIoU": 0.9220370264229887,
+      "bodyPixelError": 0.02772860746760552,
+      "bodyFalseNegative": 0.0284759940848502,
+      "backgroundFalsePositive": 0.019533635632991684,
+      "materialPixelError": 0.4484968207564637,
+      "materialJointError": 0.48074045042078173,
+      "jointRegionPixelError": 0.12092992321451279,
+      "balancedMaterialJointError": 0.5270450519963847
+    },
+    "finalMetrics": {
+      "bodyIoU": 0.9220370264229887,
+      "bodyPixelError": 0.02772860746760552,
+      "bodyFalseNegative": 0.0284759940848502,
+      "backgroundFalsePositive": 0.019533635632991684,
+      "materialPixelError": 0.11264163767971465,
+      "materialJointError": 0.13953287820067173,
+      "jointRegionPixelError": 0.050551089572054946,
+      "balancedMaterialJointError": 0.13860516113692725
+    },
+    "frozenBodyExact": true,
+    "separation": {
+      "trainPhotos": 16,
+      "evaluationPhotos": 32,
+      "trainSourceGroups": 14,
+      "evaluationSourceGroups": 5,
+      "sourceAndDuplicateSeparationPassed": true
+    },
+    "remainingTrainingFailures": [
+      {
+        "id": "real-710703159f609111-body-1",
+        "materialPixelError": 0.4751552795031056
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "materialPixelError": 0.46021681325424424
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "materialPixelError": 0.2507713404182379
+      },
+      {
+        "id": "real-b87b0b19f12724f3-body-1",
+        "materialPixelError": 0.2130047578382335
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "materialPixelError": 0.17674017783696971
+      },
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "materialPixelError": 0.09407325758860438
+      }
+    ]
+  },
+  "evaluation": {
+    "photos": 32,
+    "sourceGroups": 5,
+    "alreadyInspectedDevelopmentCohort": true,
+    "allInputTensorsExactToPriorBodyProbe": true,
+    "allParentBodiesExact": true,
+    "maximumReferenceBodyDifference": 0.0,
+    "nativeMedianInferenceSeconds": 0.27506166649999986,
+    "browserInferenceTested": false,
+    "completePaperIdentityGroundTruthAvailable": false,
+    "reconstructionFitsRun": false,
+    "rows": [
+      {
+        "id": "real-1bcc922200edde26-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.06548045130722296,
+        "minorityMaterialFraction": 0.06548045130722296
+      },
+      {
+        "id": "real-80a649a21ea938ae-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.31759912899940296,
+        "minorityMaterialFraction": 0.31759912899940296
+      },
+      {
+        "id": "real-f6e5e128449e3cb9-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.41542643938027934,
+        "minorityMaterialFraction": 0.41542643938027934
+      },
+      {
+        "id": "real-fcbcc23efea92b93-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.02483764082173625,
+        "minorityMaterialFraction": 0.02483764082173625
+      },
+      {
+        "id": "real-55704c6e2911bebc-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.21826522393808873,
+        "minorityMaterialFraction": 0.21826522393808873
+      },
+      {
+        "id": "real-24b5ed49c9411b11-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.02418547331125318,
+        "minorityMaterialFraction": 0.02418547331125318
+      },
+      {
+        "id": "real-589f606a9d9899f2-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.057498604402805756,
+        "minorityMaterialFraction": 0.057498604402805756
+      },
+      {
+        "id": "real-dfa7e4b71b43aa86-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.45363408521303256,
+        "minorityMaterialFraction": 0.45363408521303256
+      },
+      {
+        "id": "real-2b0550dd86d23b40-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.004314107298730947,
+        "minorityMaterialFraction": 0.004314107298730947
+      },
+      {
+        "id": "real-2502cdec0720f4ea-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.04559283919044049,
+        "minorityMaterialFraction": 0.04559283919044049
+      },
+      {
+        "id": "real-d3f063052599e167-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.666411595246669,
+        "minorityMaterialFraction": 0.33358840475333096
+      },
+      {
+        "id": "real-a126ed5d62adfd92-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.02079507786230415,
+        "minorityMaterialFraction": 0.02079507786230415
+      },
+      {
+        "id": "real-5088a58018c3aa28-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.42581659915539083,
+        "minorityMaterialFraction": 0.42581659915539083
+      },
+      {
+        "id": "real-1a7cfc6be8b164b5-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.0003323584153150758,
+        "minorityMaterialFraction": 0.0003323584153150758
+      },
+      {
+        "id": "real-fe7fb089d1cd86b4-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.2743131636608798,
+        "minorityMaterialFraction": 0.2743131636608798
+      },
+      {
+        "id": "real-8b91ecf546833a3f-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.4563074070953063,
+        "minorityMaterialFraction": 0.4563074070953063
+      },
+      {
+        "id": "real-b5317080eec610dc-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.6799113059435212,
+        "minorityMaterialFraction": 0.3200886940564788
+      },
+      {
+        "id": "real-c7d1e0ad5050db71-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.16586932750136688,
+        "minorityMaterialFraction": 0.16586932750136688
+      },
+      {
+        "id": "real-45ad148d9ec045be-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.23714540073626716,
+        "minorityMaterialFraction": 0.23714540073626716
+      },
+      {
+        "id": "real-702942779385436c-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.42112498142368854,
+        "minorityMaterialFraction": 0.42112498142368854
+      },
+      {
+        "id": "real-03bddab9c8f384c4-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.5270343005333464,
+        "minorityMaterialFraction": 0.47296569946665357
+      },
+      {
+        "id": "real-eb60ff94dfc6e2f8-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.02742081880284718,
+        "minorityMaterialFraction": 0.02742081880284718
+      },
+      {
+        "id": "real-af21a4ef38355dfa-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.4241136381039896,
+        "minorityMaterialFraction": 0.4241136381039896
+      },
+      {
+        "id": "real-f4bd8d13fc7e68d0-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.08446972808674937,
+        "minorityMaterialFraction": 0.08446972808674937
+      },
+      {
+        "id": "real-f05cf91c134daea9-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.04277970086865652,
+        "minorityMaterialFraction": 0.04277970086865652
+      },
+      {
+        "id": "real-12f272f48ed09d51-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.8510092918936238,
+        "minorityMaterialFraction": 0.14899070810637616
+      },
+      {
+        "id": "real-28a87a8be083f16c-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.08072323153393675,
+        "minorityMaterialFraction": 0.08072323153393675
+      },
+      {
+        "id": "real-ce66f9634c2c613b-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.015029045128480764,
+        "minorityMaterialFraction": 0.015029045128480764
+      },
+      {
+        "id": "real-52e732b98f9b14f1-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.35404988525638614,
+        "minorityMaterialFraction": 0.35404988525638614
+      },
+      {
+        "id": "real-7e9f6f83ae43ec2a-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.00835520325638691,
+        "minorityMaterialFraction": 0.00835520325638691
+      },
+      {
+        "id": "real-d4f6e3c76cf08ea8-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.05391365651843194,
+        "minorityMaterialFraction": 0.05391365651843194
+      },
+      {
+        "id": "real-41b7c3e0b79f1265-body-1",
+        "bodyParentExact": true,
+        "referenceBodyMaximumDifference": 0.0,
+        "materialBWithinPredictedBodyFraction": 0.4320794148380355,
+        "minorityMaterialFraction": 0.4320794148380355
+      }
+    ]
+  },
+  "visualReview": {
+    "reviewer": "assistant",
+    "trainingPagesInspected": 4,
+    "evaluationPagesInspected": 8,
+    "all48PhotographsInspected": true,
+    "trainingGallery": "tmp/heart-learning/u2netp-material-v1/training-*.jpg",
+    "evaluationGallery": "tmp/heart-learning/u2netp-material-probe-v1/photos-*.jpg",
+    "findings": [
+      "Plain white/red hearts often retain recognizable checker or motif boundaries. Some red/gold examples show only partial patterns.",
+      "Many dark or metallic two-paper hearts are assigned almost entirely to one class. This includes all three cases gained by the body fallback: red/gold checker hearts, dark/gold checker silhouettes and the outlined star.",
+      "Printed stripes, dots, trees and flowers remain visible in material masks instead of consistently staying within one paper identity.",
+      "The house and candlestick still have missing body regions; preserving the old body exactly also preserves those failures.",
+      "Two simple non-white training palettes remain near chance on the known identity regions: red/green 47.52%, turquoise/yellow 46.02%. This is already a training-fit problem, not only a held-out generalization failure."
+    ]
+  },
+  "decision": {
+    "productionEnabled": false,
+    "exportForBrowser": false,
+    "reason": "The new head demonstrably learns and preserves its body parent, but its paper identities destroy useful patterns on many evaluation photos. Running reconstruction against those wrong masks would not establish a quality improvement.",
+    "nextExperiment": "Test image-relative colour conditioning with the same training sources, seed and budget. The apparent brightness dependence is a hypothesis; use controlled palette/illumination perturbations and unchanged body outputs to test it. Retain printed-paper failures separately."
+  },
+  "resources": {
+    "workers": 1,
+    "trainingArtifactBytes": 12347391,
+    "probeLogicalBytes": 27711111,
+    "newOriginalPhotoCopies": 0,
+    "bodyReferenceFiles": "All 32 exact body fields hardlinked to prior native probe."
+  },
+  "validation": {
+    "newModelAndLabelTests": 4,
+    "existingBodyAdaptationTests": 4,
+    "existingMaterialMetricTests": 8,
+    "existingMaterialLabelTests": "Passed real_materials.test.py; see retained log",
+    "lintErrors": 0,
+    "lintWarnings": 7,
+    "initialCheckFailure": "The first check driver named a nonexistent real_materials_learning.test.py. It was corrected to the existing real_materials.test.py and passed. Both driver logs are retained.",
+    "productionChanged": false,
+    "fullApplicationChecks": "Unchanged production application has the full check/lint/test/build and live archive browser evidence in conni-release-qa.json. This follow-up changes only offline research and documentation."
+  }
+}

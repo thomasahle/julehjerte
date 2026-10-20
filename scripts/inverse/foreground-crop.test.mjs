@@ -36,3 +36,16 @@ test('known foreground reaches correct physical corners through the injected loc
   const quad=result.candidates[0].quad,expected=[[190,80],[275,155],[190,230],[105,155]];
   assert.ok(Math.max(...quad.map((p,i)=>Math.hypot(p[0]-expected[i][0],p[1]-expected[i][1])))<6);
 });
+
+test('weighted locator receives a supported heart whose body confidence stays below 95 percent',async()=>{
+  const input=heartPhoto({background:'transparent'}),canvas=createCanvas(256,256),ctx=canvas.getContext('2d');
+  ctx.drawImage(input.canvas,0,0,256,256);
+  const rgba=ctx.getImageData(0,0,256,256).data,probability=Float32Array.from({length:256*256},(_,i)=>.94*rgba[4*i+3]/255);
+  const window=[0,0,input.imageWidth,input.imageHeight];
+  const legacy=await detectForegroundCrop(input,{probability,window});
+  assert.equal(legacy.candidates.length,0);
+  const result=await detectForegroundCrop(input,{probability,window,paletteMode:'confidence-weighted'});
+  assert.equal(result.candidates.length,1);
+  const expected=[[190,80],[275,155],[190,230],[105,155]];
+  assert.ok(Math.max(...result.candidates[0].quad.map((p,i)=>Math.hypot(p[0]-expected[i][0],p[1]-expected[i][1])))<6);
+});

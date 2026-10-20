@@ -1,0 +1,380 @@
+{
+  "schema": "paired-outer-boundary-sampling-results-1",
+  "date": "2026-10-20",
+  "status": "complete-development-comparison",
+  "plan": {
+    "path": "docs/inverse/datasets/u2netp-outer-boundary-plan.json",
+    "sha256": "6adcc325f1f2ec72e3cb489f6ec645a93f608e025fd3c7166998d6114c4606e4"
+  },
+  "scope": "Native development. Same model outputs, photos, fitting configuration and acceptance gates per arm. No training, new photo downloads or ONNX/browser release.",
+  "evidence": {
+    "productionEditable": {
+      "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+      "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+    },
+    "focusedTests": {
+      "path": "tmp/heart-learning/body-outer-sampling-tests.log",
+      "sha256": "b8fb2d3b9532163c9626e31cd148793f4fa299a89ea777ae18c123d8adc6df03"
+    },
+    "lint": {
+      "path": "tmp/heart-learning/body-outer-sampling-lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "defaultReplayLint": {
+      "path": "tmp/heart-learning/body-default-crop-replay-lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "arms": {
+    "encoder": {
+      "evidence": {
+        "pipeline": {
+          "path": "tmp/heart-learning/u2netp-body-encoder-outer-pipeline-v1/report.json",
+          "sha256": "316f0a7bfd4b9a33984204774c55dd76db59816c8f58a4f70addd633993bad66"
+        },
+        "controlPipeline": {
+          "path": "tmp/heart-learning/u2netp-body-encoder-pipeline-v1/report.json",
+          "sha256": "b857de355965d46d6153d00e9ac749347458098d413aa4e60e7a60b2c4639a2f"
+        },
+        "editable": {
+          "path": "tmp/heart-learning/u2netp-body-encoder-outer-editable-v1/results.json",
+          "sha256": "bd6b5b9099cf30cf0aa072cd661a369b77de61711ffdb31c9c2b0133c0c110b2"
+        },
+        "controlEditable": {
+          "path": "tmp/heart-learning/u2netp-body-encoder-editable-v1/results.json",
+          "sha256": "cbae50c16480549e1db4f1cde3c89a6b2b60c9e922ed6c212bc193b0111ee0d1"
+        },
+        "defaultReplay": {
+          "path": "tmp/heart-learning/u2netp-body-encoder-default-crop-replay-v1/report.json",
+          "sha256": "4157188f1f099bed160be895fb45922b5a82cb34300abb390468e804ba16223a"
+        },
+        "gallery": {
+          "path": "tmp/heart-learning/u2netp-body-encoder-outer-fit-gallery-v1/manifest.json",
+          "sha256": "b830c44adbb1562497a19a3995d280870b1cb65f50e6749041c183f9bccbb16b"
+        }
+      },
+      "before": {
+        "production": {
+          "attempted": 32,
+          "crops": 21,
+          "supported": 16,
+          "checkedPairs": 9,
+          "neuralSelected": 0,
+          "reusedFits": 32
+        },
+        "fallback": {
+          "attempted": 32,
+          "crops": 26,
+          "supported": 21,
+          "checkedPairs": 12,
+          "neuralSelected": 5,
+          "reusedFits": 27
+        }
+      },
+      "after": {
+        "production": {
+          "attempted": 32,
+          "crops": 21,
+          "supported": 16,
+          "checkedPairs": 9,
+          "neuralSelected": 0,
+          "reusedFits": 32
+        },
+        "fallback": {
+          "attempted": 32,
+          "crops": 26,
+          "supported": 21,
+          "checkedPairs": 12,
+          "neuralSelected": 5,
+          "reusedFits": 27
+        }
+      },
+      "checkedEditable": 12,
+      "newCheckedDesigns": 0,
+      "lostCheckedDesigns": 0,
+      "changedCrops": [
+        {
+          "id": "real-f05cf91c134daea9-body-1",
+          "hadCrop": true,
+          "hasCrop": true,
+          "maxCornerMovementPixels": 48.61000006509572,
+          "priorSupport": [
+            1,
+            0.8707865168539326
+          ],
+          "newSupport": [
+            1,
+            1
+          ]
+        }
+      ],
+      "freshFits": [
+        {
+          "id": "real-24b5ed49c9411b11-body-1",
+          "exportedMismatch": 0.028225,
+          "editableMismatch": 0.0285875,
+          "checkedEditable": true,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        {
+          "id": "real-dfa7e4b71b43aa86-body-1",
+          "exportedMismatch": 0.09273125,
+          "editableMismatch": 0.09305625,
+          "checkedEditable": false,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        {
+          "id": "real-c7d1e0ad5050db71-body-1",
+          "exportedMismatch": 0.007069677895223748,
+          "editableMismatch": 0.007075928715643928,
+          "checkedEditable": true,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        {
+          "id": "real-f05cf91c134daea9-body-1",
+          "exportedMismatch": 0.0426,
+          "editableMismatch": 0.0425625,
+          "checkedEditable": false,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        {
+          "id": "real-28a87a8be083f16c-body-1",
+          "exportedMismatch": 0.006769638515055101,
+          "editableMismatch": 0.006613368004550597,
+          "checkedEditable": true,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        }
+      ],
+      "primaryFailureStages": {
+        "unresolvedCrop": 6,
+        "imageAboveThreePercent": 12,
+        "checked": 12,
+        "featureLossDespiteLowImageError": 1,
+        "paperFailureDespiteLowImageError": 1
+      },
+      "unchangedTargetRepeatVariations": [
+        {
+          "id": "real-24b5ed49c9411b11-body-1",
+          "sameTargetSha256": "d51ee905dc550cdecc0c0f98b5e0d47bc9cc50c44095dc02c3f3c71ae8e61f18",
+          "priorMismatch": 0.02818125,
+          "newMismatch": 0.028225
+        },
+        {
+          "id": "real-dfa7e4b71b43aa86-body-1",
+          "sameTargetSha256": "b280d8651698656902155f49652947df3d67eb325a4a1e1d370a4d3c330344a4",
+          "priorMismatch": 0.0927875,
+          "newMismatch": 0.09273125
+        }
+      ],
+      "repeatScope": "Fresh fits on some identical targets have slightly different error. The fitter uses a wall-clock search budget. These repeat variations are not attributed to the sampler; no success classification changes."
+    },
+    "outline": {
+      "evidence": {
+        "pipeline": {
+          "path": "tmp/heart-learning/u2netp-body-outline-outer-pipeline-v1/report.json",
+          "sha256": "e22e5a821d952c06bb15b9e367506e882e3371f411a4ca42ebcdee46e7ccd04c"
+        },
+        "controlPipeline": {
+          "path": "tmp/heart-learning/u2netp-body-outline-pipeline-v1/report.json",
+          "sha256": "82e4980fd9dad416fc885a40190f911f6fcec306ea9dc92435dd67f279f97269"
+        },
+        "editable": {
+          "path": "tmp/heart-learning/u2netp-body-outline-outer-editable-v1/results.json",
+          "sha256": "fd523e486d86dc7354f7d29bbbecbf176bc75bb8decc9b154bf1aafd4aa2edaf"
+        },
+        "controlEditable": {
+          "path": "tmp/heart-learning/u2netp-body-outline-editable-v1/results.json",
+          "sha256": "5d948ab2363d785697981e6148143c3503b6ef0e17777155cb98e09cbafb58ef"
+        },
+        "defaultReplay": {
+          "path": "tmp/heart-learning/u2netp-body-outline-default-crop-replay-v1/report.json",
+          "sha256": "c73d842ae0860fe06056b0d87967b5d3a1f56f3fff6abbd464a7d42e3a239ffd"
+        },
+        "gallery": {
+          "path": "tmp/heart-learning/u2netp-body-outline-outer-fit-gallery-v1/manifest.json",
+          "sha256": "eca436b765f83a2dd9e973280494997e339f7a96964178a75d7ec4c8e95fbde6"
+        }
+      },
+      "before": {
+        "production": {
+          "attempted": 32,
+          "crops": 21,
+          "supported": 16,
+          "checkedPairs": 9,
+          "neuralSelected": 0,
+          "reusedFits": 32
+        },
+        "fallback": {
+          "attempted": 32,
+          "crops": 25,
+          "supported": 20,
+          "checkedPairs": 12,
+          "neuralSelected": 4,
+          "reusedFits": 28
+        }
+      },
+      "after": {
+        "production": {
+          "attempted": 32,
+          "crops": 21,
+          "supported": 16,
+          "checkedPairs": 9,
+          "neuralSelected": 0,
+          "reusedFits": 32
+        },
+        "fallback": {
+          "attempted": 32,
+          "crops": 26,
+          "supported": 21,
+          "checkedPairs": 12,
+          "neuralSelected": 5,
+          "reusedFits": 27
+        }
+      },
+      "checkedEditable": 12,
+      "newCheckedDesigns": 0,
+      "lostCheckedDesigns": 0,
+      "changedCrops": [
+        {
+          "id": "real-f05cf91c134daea9-body-1",
+          "hadCrop": false,
+          "hasCrop": true,
+          "maxCornerMovementPixels": null,
+          "priorSupport": null,
+          "newSupport": [
+            1,
+            1
+          ]
+        },
+        {
+          "id": "real-28a87a8be083f16c-body-1",
+          "hadCrop": true,
+          "hasCrop": true,
+          "maxCornerMovementPixels": 32.89063522196062,
+          "priorSupport": [
+            0.8391608391608392,
+            0.9230769230769231
+          ],
+          "newSupport": [
+            0.8811188811188811,
+            0.9230769230769231
+          ]
+        }
+      ],
+      "freshFits": [
+        {
+          "id": "real-24b5ed49c9411b11-body-1",
+          "exportedMismatch": 0.0284625,
+          "editableMismatch": 0.0289375,
+          "checkedEditable": true,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        {
+          "id": "real-dfa7e4b71b43aa86-body-1",
+          "exportedMismatch": 0.0828625,
+          "editableMismatch": 0.08325,
+          "checkedEditable": false,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        {
+          "id": "real-c7d1e0ad5050db71-body-1",
+          "exportedMismatch": 0.0076447533738803215,
+          "editableMismatch": 0.007626000912619781,
+          "checkedEditable": true,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        {
+          "id": "real-f05cf91c134daea9-body-1",
+          "exportedMismatch": 0.0342125,
+          "editableMismatch": 0.03444375,
+          "checkedEditable": false,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        {
+          "id": "real-28a87a8be083f16c-body-1",
+          "exportedMismatch": 0.0039626485993224745,
+          "editableMismatch": 0.003868895083565634,
+          "checkedEditable": true,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        }
+      ],
+      "primaryFailureStages": {
+        "unresolvedCrop": 6,
+        "imageAboveThreePercent": 12,
+        "checked": 12,
+        "featureLossDespiteLowImageError": 1,
+        "paperFailureDespiteLowImageError": 1
+      },
+      "unchangedTargetRepeatVariations": [
+        {
+          "id": "real-dfa7e4b71b43aa86-body-1",
+          "sameTargetSha256": "9f4bca199e58ef3ca28c6cc4baa6c59dbbbccc6217fb5888ea99386de2641cc0",
+          "priorMismatch": 0.08271875,
+          "newMismatch": 0.0828625
+        },
+        {
+          "id": "real-c7d1e0ad5050db71-body-1",
+          "sameTargetSha256": "02581375cce1d9400d20c1b08804a0aa167175cbaa4445fe79f9f1922fa88e05",
+          "priorMismatch": 0.007663505835140862,
+          "newMismatch": 0.0076447533738803215
+        }
+      ],
+      "repeatScope": "Fresh fits on some identical targets have slightly different error. The fitter uses a wall-clock search budget. These repeat variations are not attributed to the sampler; no success classification changes."
+    }
+  },
+  "visualReview": {
+    "pages": 4,
+    "allTenFreshFitsAndChangedCropsInspected": true,
+    "findings": [
+      "Green/black crop follows the physical lower edges, but specular highlights still corrupt the material mask and the fitted motif loses detail.",
+      "The outline-model star crop changes slightly; its result is recognizable with small residual boundary defects.",
+      "Printed trees are still interpreted as cutting boundaries and fail image fidelity.",
+      "Stacked hearts retain visible false seams and merges despite passing the existing aggregate/feature criteria."
+    ]
+  },
+  "validation": {
+    "focusedTestsPassed": 19,
+    "focusedTestsFailed": 0,
+    "productionCodeChanged": false,
+    "allExistingCheckedEditableIdsRetained": true,
+    "defaultCropReplays": 22,
+    "defaultAllCornersStatusesEvidenceExact": true,
+    "freshExports": 10,
+    "allFreshConversionsGeometryAndNominalPaperChecksPass": true,
+    "broaderApplicationQA": "Production src/ and static/ unchanged from cc79e22f04dfac466df53f8528d9265da33ea300. Prior full release checks are conni-release-qa.json. This comparison uses focused tests, exact default-crop replays and full fresh-fit editable audits; it does not claim another broad app suite."
+  },
+  "decision": {
+    "retainExperimentalSampler": true,
+    "productionPromotion": false,
+    "conclusion": "Outer-edge sampling becomes insensitive to enclosed NN-mask holes without relaxing gates. The lost crop is restored, but checked reconstruction remains 12/32 for both models. This is a crop robustness fix, not a new successful-template result.",
+    "next": "Broaden the existing browser-tested NN candidate to the fixed 18-photo extension, including functional runtime and end-user integration checks. Further training-score improvements on the same 32 cases alone are not release evidence."
+  },
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "newSourcePhotoCopies": 0,
+    "newDownloads": 0,
+    "logicalMiB": 49.67291831970215,
+    "scope": "Logical bytes include hardlinks to reused production fits; not physical disk growth."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "paired-outer-boundary-sampling-plan-1",
+  "status": "predeclared-before-cohort-replay",
+  "date": "2026-10-20",
+  "purpose": "Test whether sampling the outer body silhouette, without changing NN predictions or distance fields, removes enclosed-hole sensitivity in automatic cropping.",
+  "change": "For lower-edge sampling only, flood the binary mask background from the image border with eight-neighbour connectivity, treating remaining enclosed zeros as inside. Preserve original foreground selection, RGB, colour fields, paper probabilities, distance fields, thresholds, orientation budget and template targets.",
+  "models": [
+    "encoder",
+    "outline"
+  ],
+  "checkpointSelection": "Two saved final checkpoints; no retraining, checkpoint tuning or per-photo model selection.",
+  "denominatorPerModel": 32,
+  "evaluationSelection": {
+    "path": "docs/inverse/datasets/u2netp-continuous-selection.json",
+    "sha256": "6d4e0e7550fedf5c13333bdc90db28a98eb5ff9ce2de260f32e2d015f5128f52"
+  },
+  "sequence": [
+    "Verify existing default crop decisions against all cached detections for both models, without repeating template fits.",
+    "Replay every photo with outer sampling enabled and the same production-control reuse. Fresh-fit every selected neural crop.",
+    "Run independent editable conversion, geometry/paper and original image/feature checks; inspect all changed crops and new fits."
+  ],
+  "promotion": "Require original checked editable designs retained for each model and inspect new crop decisions. Restoring a previously rejected crop alone is not a new reconstruction success. No production or NN release without broader evaluation and ONNX/browser/user-flow QA.",
+  "scope": "Two comparisons on the same repeatedly inspected 32-photo development cohort. Native inference cached, no fresh generalization claim. The 10-second setting is the existing solver search budget, not an end-to-end wall-clock guarantee.",
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "numericalThreads": 1,
+    "newPhotos": 0,
+    "newSourcePhotoCopies": 0,
+    "maxNewArtifactMiB": 100,
+    "minimumFreeGiB": 10,
+    "browserJobs": 0
+  },
+  "controls": {
+    "encoder": {
+      "path": "tmp/heart-learning/u2netp-body-encoder-pipeline-v1/report.json",
+      "sha256": "b857de355965d46d6153d00e9ac749347458098d413aa4e60e7a60b2c4639a2f"
+    },
+    "outline": {
+      "path": "tmp/heart-learning/u2netp-body-outline-pipeline-v1/report.json",
+      "sha256": "82e4980fd9dad416fc885a40190f911f6fcec306ea9dc92435dd67f279f97269"
+    }
+  },
+  "implementationPins": {
+    "scripts/inverse/learning/outer-boundary-fields.mjs": "c1a3f149c908f324b692252e4c50744749a7f22fa313c3467bd8c9993a3d8695",
+    "scripts/inverse/learning/foreground-crop.mjs": "43e02a52e6e12b52295c3f95d6426e7231564cdd4f6599e00fe1f57aea12c10b",
+    "scripts/inverse/learning/replay-photo-fallback.mjs": "062a6ceeb39b3266b06f5831728b40839459a9e3a708b3bedd1cab59a66485cd",
+    "scripts/inverse/outer-boundary-fields.test.mjs": "6fb23514b6a047d0de36caeb7c3fbe66eb0eb398d19ed099112d6feb9a9c8db2"
+  }
+}

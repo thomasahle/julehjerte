@@ -1,0 +1,101 @@
+{
+  "schema": "u2netp-material-calibration-results-1",
+  "date": "2026-10-20",
+  "status": "complete-not-approved-for-integration",
+  "evidence": [
+    {
+      "path": "tmp/heart-learning/u2netp-material-calibration-v1/report.json",
+      "sha256": "a6344186de6fb7ef62f9a419a7124ca04a144ac05a30aa2522c79d383f5316d0"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-palette-parity-v1.json",
+      "sha256": "d9f1403088331c91874889b7c5556f7e748faa8634b0de08d4f9a9cfb568592c"
+    }
+  ],
+  "scope": "Fixed 504-update boundary-weighted head. Compare original neural fields with neural-seeded and RGB-clustered paper palettes using the existing illumination-aware mixture helper. All 16 real training photos and 96 synthetic original/scene/printed views scored at 320; same 32 source-separated development photos reviewed at source-resolution colour classification. Body, model, annotations and source/crop data unchanged. No training, per-photo winners or deployment.",
+  "networkMetricsReproducedExactly": true,
+  "training": {
+    "real-training": {
+      "network": {
+        "overall": 0.03000523653956784,
+        "boundaryError": null,
+        "interiorError": 0.03000523653956784
+      },
+      "learned": {
+        "overall": 0.021746052253161376,
+        "boundaryError": null,
+        "interiorError": 0.021746052253161376
+      },
+      "rgb": {
+        "overall": 0.027163180309370344,
+        "boundaryError": null,
+        "interiorError": 0.027163180309370344
+      }
+    },
+    "synthetic-original": {
+      "network": {
+        "overall": 0.02123436002029799,
+        "boundaryError": 0.09383699066953238,
+        "interiorError": 0.0009818836802269232
+      },
+      "learned": {
+        "overall": 0.012803313721951919,
+        "boundaryError": 0.05884020227215692,
+        "interiorError": 0.00026526997702323206
+      },
+      "rgb": {
+        "overall": 0.012569877990888361,
+        "boundaryError": 0.05836367492474158,
+        "interiorError": 0.0001376212662752106
+      }
+    },
+    "synthetic-printed": {
+      "network": {
+        "overall": 0.09248590689129747,
+        "boundaryError": 0.21544177615969873,
+        "interiorError": 0.06003817297298356
+      },
+      "learned": {
+        "overall": 0.09361191357355444,
+        "boundaryError": 0.155775013822398,
+        "interiorError": 0.07693170069838402
+      },
+      "rgb": {
+        "overall": 0.09035186095160828,
+        "boundaryError": 0.15094396286182232,
+        "interiorError": 0.07416922404109116
+      }
+    },
+    "synthetic-scene": {
+      "network": {
+        "overall": 0.06988160718908262,
+        "boundaryError": 0.19554255337727183,
+        "interiorError": 0.036297352297486665
+      },
+      "learned": {
+        "overall": 0.048149221676887455,
+        "boundaryError": 0.12161289915616202,
+        "interiorError": 0.030114384312322343
+      },
+      "rgb": {
+        "overall": 0.04691194973023098,
+        "boundaryError": 0.123651886687176,
+        "interiorError": 0.029853037111631255
+      }
+    }
+  },
+  "native": {
+    "photos": 32,
+    "allEightGalleryPagesReviewed": true,
+    "bodyUnchanged": true,
+    "learnedApplied": 32,
+    "rgbApplied": 32,
+    "newPhotoCopies": 0,
+    "newCheckpoints": 0,
+    "review": "Both palette methods restore the stacked-heart structure, shaded red/gold checker, fine web joins, nativity figures, dragonfly wings and sharper star rays. RGB clustering also recovers the blue/red printed-tree checker that neural-selected colours classify by ink. Other printed stripes/dots/flowers still become false cuts. RGB clustering loses the blue printed heart held in a hand by separating the hand instead of its papers. Neither fixes frozen body omissions on the house and candlestick."
+  },
+  "interpretation": "Colour calibration sharpens boundaries compared with raw neural fields, but learned palette selection does not beat the RGB-cluster control consistently. The fixed-crop pipeline gives 11/32 checked derived-mask pairs for learned palettes versus 13/32 for RGB, with no learned-only checked gains. Printed interiors remain confused, fixed crop failures remain, and small mask changes can alter count scheduling. No full boundary ground truth exists for this development cohort.",
+  "next": "Improve count-shortlist stability and body localization before more material-head training. Do not deploy this candidate or interpret agreement with its own mask as original-artwork recovery.",
+  "productionChanges": false,
+  "pipelineResults": "docs/inverse/datasets/u2netp-material-palette-pipeline-results.json"
+}

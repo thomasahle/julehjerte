@@ -1,0 +1,17 @@
+Heart paper-body model
+
+Based on U2NETP by Xuebin Qin and the U-2-Net contributors.
+Upstream: https://github.com/xuebinqin/U-2-Net
+Source revision: ac7e1c817ecab7c7dff5ce6b1abba61cd213ff29
+See U2NET-LICENSE for the Apache 2.0 license.
+
+Modified for Juleflet: the decoder was adapted using 16 annotated photographs
+and synthetic hearts; the encoder was frozen. Exported to ONNX opset 17.
+This model estimates paper-body probabilities, not cutting paths or material
+strength. The original RGB image and independent geometry checks determine
+the templates. Training and evaluation records are in the repository under
+docs/inverse/datasets/u2netp-body-adaptation-plan.json and
+docs/inverse/datasets/u2netp-balanced-body-results.json.
+
+ONNX Runtime Web 1.19.2 is distributed separately under the MIT license.
+See ../vendor/onnxruntime-1.19.2/LICENSE and ThirdPartyNotices.txt.

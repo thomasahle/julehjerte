@@ -1,0 +1,41 @@
+{
+  "schema": "u2netp-probe-plan-1",
+  "status": "predeclared",
+  "source": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-body-adaptation-v1/model.pt",
+    "sha256": "ff4b56456aa17a40d4b4daed98cd384dc309933d2d5585da5ebeece843dd1e4f"
+  },
+  "selection": {
+    "path": "docs/inverse/datasets/u2netp-expanded-qa-selection.json",
+    "sha256": "213b4a3a23d2a8913f1d2e8c9f3b02c048be8b1f9eaf7b6ea9554a52ef5cf9d2"
+  },
+  "protocol": {
+    "resolution": 320,
+    "skimage": "0.24.0",
+    "threads": 1,
+    "input": "Unmodified publisher RescaleT(320) and ToTensorLab(flag=0): stretch the complete RGB image, image-maximum scaling and ImageNet channel normalization. EXIF orientation applied before source hash checks.",
+    "output": "Publisher fused saliency head with per-image minimum/maximum normalization, threshold .5 for locator; constant field becomes zero.",
+    "pipeline": "Keep every production crop. Only if none exists, accept an outline-supported neural proposal with observed rectified overlap >=99% and maximum axis-normalized extrapolation <=5%, always needs_review. Use analytic projective coverage; no mask score or template selects the crop.",
+    "selection": "All 18 fixed expanded source-separated photos; no outcome-based selection.",
+    "pairedControl": "fresh-production"
+  },
+  "resources": {
+    "maxProbeMiB": 16,
+    "workers": 1,
+    "newSourcePhotoCopies": 0,
+    "newPhotoDownloads": 0
+  },
+  "scope": "Expanded development evaluation, not untouched holdout or independent motif proof. Compare one fixed NN/crop policy with production. No claim of better template quality from training metrics or lower error against a changed target.",
+  "adaptation": {
+    "path": "tmp/heart-learning/u2netp-body-adaptation-v1/report.json",
+    "sha256": "8957773143a429a0be49093191d65c6c9e5f68f512fd99e352541ee9951ce6e3"
+  },
+  "evaluationExtension": {
+    "path": "docs/inverse/datasets/u2netp-expanded-evaluation-plan.json",
+    "sha256": "51e26bcd964ff25fc287b84fa1e17bd2e7d247fc08ea37f20e2797a4a84680f0"
+  }
+}

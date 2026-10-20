@@ -1,0 +1,667 @@
+{
+  "schema": "u2netp-material-palette-pipeline-results-1",
+  "date": "2026-10-20",
+  "status": "complete-not-approved-for-integration",
+  "evidence": [
+    {
+      "path": "docs/inverse/datasets/u2netp-material-palette-pipeline-plan.json",
+      "sha256": "68f293299405f19bba0324f70edc651db15c55d0ae9ef2687be2df2c4a27887f"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-palette-pipeline-v1/report.json",
+      "sha256": "9eb949c3b9203146e2b8c7a65d4f58366ccd1a41d83448be85a3cea3d2ba062f"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-palette-comparison-v1/report.json",
+      "sha256": "2770ba43279f62bf11ad7048a6bab43c7b9dbf664a6366a1900765133ca2afd0"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-palette-editable-v1/results.json",
+      "sha256": "88e2072fde9730f39942579f2b9df38f52d0bf126e1294fc60d9efb4cf2e60ed"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-palette-checks-v1.json",
+      "sha256": "dff88586c2ed6243f492fff3be600b750d00b5e9786384a404e5c4876c8aea86"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-palette-count-sensitivity-v1.json",
+      "sha256": "6129c3598d53694588f8a9908303048bf3f889fbb14cc3c66a1ad9801304930f"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-palette-parity-v1.json",
+      "sha256": "d9f1403088331c91874889b7c5556f7e748faa8634b0de08d4f9a9cfb568592c"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-count-sensitivity-compatibility-v2.json",
+      "sha256": "43029c60a858c4cfd6e84c3d80154933f09680982af4033f8baeaa8ed9ff0037"
+    }
+  ],
+  "protocol": {
+    "photos": 32,
+    "fixedCrops": 25,
+    "unresolvedCrops": 7,
+    "freshFits": 50,
+    "secondsPerSearch": 10,
+    "searchAllowanceExcludes": "Crop detection and final export audit. One RGB solve including export reached 10.80 seconds.",
+    "workers": 1,
+    "order": "Rotate learned/RGB order by photo index.",
+    "bodyAndCrops": "Identical frozen NN-assisted crops and observed-pixel coverage; this is not a comparison against a fresh production-only crop finder.",
+    "palette": "Neural paper identities select source RGB colours versus RGB median clustering; both use the same original-resolution illumination-aware mixture. All 32 palettes available for both methods.",
+    "cohort": "Same previously inspected, source-separated development photos. Neither target is original-artwork ground truth."
+  },
+  "reconstruction": {
+    "learned": {
+      "attempted": 32,
+      "crops": 25,
+      "supported": 20,
+      "checkedPairs": 11,
+      "exports": 25,
+      "editableConversionsPassed": 25,
+      "editableGeometryPassed": 25,
+      "editableFidelityPassed": 25,
+      "editablePaperPassed": 25,
+      "editablePaperUncertain": [],
+      "editableCompleteCandidates": 11,
+      "fitSeconds": {
+        "sum": 209.91981250399982,
+        "median": 9.114123749999969,
+        "max": 9.976682083
+      }
+    },
+    "rgb": {
+      "attempted": 32,
+      "crops": 25,
+      "supported": 20,
+      "checkedPairs": 13,
+      "exports": 25,
+      "editableConversionsPassed": 25,
+      "editableGeometryPassed": 25,
+      "editableFidelityPassed": 25,
+      "editablePaperPassed": 23,
+      "editablePaperUncertain": [
+        "real-55704c6e2911bebc-body-1-rgb",
+        "real-03bddab9c8f384c4-body-1-rgb"
+      ],
+      "editableCompleteCandidates": 13,
+      "fitSeconds": {
+        "sum": 204.32768070899982,
+        "median": 8.958942249999993,
+        "max": 10.797224375000006
+      }
+    }
+  },
+  "pairedComparison": {
+    "learnedOnlyChecked": [],
+    "rgbOnlyChecked": [
+      "real-24b5ed49c9411b11-body-1",
+      "real-1a7cfc6be8b164b5-body-1"
+    ],
+    "qualification": "Checks measure each derived mask plus geometry and nominal paper support. They do not establish original motif or cutting-template recovery. The 12/32 historical RGB result is context, not a fresh causal control."
+  },
+  "visualReview": {
+    "reviewer": "assistant",
+    "allEightComparisonPagesReviewed": true,
+    "all32PhotosRetained": true,
+    "directory": "tmp/heart-learning/u2netp-material-palette-comparison-v1",
+    "findings": [
+      "The RGB control equals or beats learned palettes overall: 13 versus 11 checked pairs, no learned-only checked gain. Both methods restore details that raw low-resolution neural masks erased.",
+      "Printed red trees: RGB clustering recovers the coarse paper checker (0.474% fit error); neural-selected colours follow printed ink instead (3.180%). The masks differ by 34.3106%, so this is a material-target failure before fitting.",
+      "Shaded red/gold checker: masks differ by 3.90125%, RGB fit error 2.48375%, learned 4.89375%. Learned palette seeds mix shaded paper colours; this is not merely numerical roundoff or an isolated solver defect.",
+      "Printed stripes, dots, lettering and floral ink remain mistaken for cut boundaries. The printed central flower is neither recovered nor shown to be a physically woven motif.",
+      "Candy basket and rotated house have unsuitable fixed crops. Palette changes cannot repair their selection. The guitar crop includes background below the lower border. Seven unresolved crops remain unresolved.",
+      "Flower, moon, cat, dinosaurs, paired hearts, dragonfly, bird and star retain recognizable motifs, but false thin joins, altered central checks or rounded cell boundaries remain on several.",
+      "Nativity, blue/gold figure, and black/red silhouette still lose important details during fitting even when their targets visibly retain them. Pixel agreement alone does not resolve routing.",
+      "One stacked-heart target differs by only 37/160000 pixels while fit error changes from 1.0325% to 2.554375%; this separate case has not yet had a deterministic search diagnosis."
+    ]
+  },
+  "rootCause": {
+    "caseId": "real-2502cdec0720f4ea-body-1",
+    "changedPixels": 59,
+    "maskChangeFraction": 0.00036875,
+    "sameCropCoordinates": true,
+    "allCoarseAndFineScoresReproducedExactly": true,
+    "replayOrder": [
+      0,
+      1,
+      1,
+      0
+    ],
+    "rgbShortlist": [
+      "5,5:-1",
+      "6,6:-1",
+      "3,3:-1"
+    ],
+    "learnedShortlist": [
+      "5,5:-1",
+      "4,4:1",
+      "3,3:-1"
+    ],
+    "rgbFirstCounts": [
+      6,
+      6
+    ],
+    "learnedFirstCounts": [
+      3,
+      3
+    ],
+    "omittedLearnedSixCutGrid": {
+      "counts": [
+        6,
+        6
+      ],
+      "phase": -1,
+      "error": 0.055908203125,
+      "colourRetentionPassed": true,
+      "minimumRegionRetention": 0.7421875
+    },
+    "mechanism": "Both arms initialize all 16 count/phase hypotheses. The three-slot shortlist reserves 3x3 for opposing-border evidence. On the learned target, the complexity-based simpler-grid reservation replaces 6x6 with 4x4 phase +1. All three remaining fine grids lose a source region. On RGB, 6x6 survives and colour retention promotes it. Thus the scheduling divergence precedes any timed free-curve refinement.",
+    "qualification": "The post-hoc omitted 6x6 grid also passes colour retention on the learned target after the same 150 gradient steps. It is not a validated cutting template and still has 5.59% grid mismatch. No claim that six cuts is the original design; no production count rule has changed."
+  },
+  "validation": {
+    "comparisonAndEditableDriversExitZero": true,
+    "crossLanguagePalettePixels": 20000,
+    "crossLanguagePalettes": 20,
+    "crossLanguageFloat32Exact": true,
+    "crossLanguageThresholdChanges": 0,
+    "physicalAssemblyTested": false,
+    "productionChanges": false,
+    "diagnosticBackwardCompatibility": "Existing original-versus-weighted crop comparison also passes four deterministic replays, reproducing every recorded coarse/fine score and preference. Its 61-pixel count-selection failure remains unchanged.",
+    "focusedChecks": {
+      "paletteTargetTests": 3,
+      "diagnosticActualDataReplays": 8,
+      "changedJavaScriptLint": 0,
+      "scope": "Offline tooling and reports only. The unchanged application previously passed check/lint/test/build in conni-release-qa.json; its full suite was not repeated for this diagnostic extension."
+    }
+  },
+  "decision": "Do not deploy this material head or select per-photo winners. Learned palette selection provides no established gain over the RGB control. Prioritize robust finalist scheduling and body/instance localization; printed-paper identity needs better labels or a representation beyond two global colours.",
+  "rows": [
+    {
+      "id": "real-1bcc922200edde26-body-1",
+      "referenceStatus": "crop-unresolved",
+      "candidateStatus": "crop-unresolved",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": null,
+      "candidateOwnMaskError": null
+    },
+    {
+      "id": "real-80a649a21ea938ae-body-1",
+      "referenceStatus": "crop-unresolved",
+      "candidateStatus": "crop-unresolved",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": null,
+      "candidateOwnMaskError": null
+    },
+    {
+      "id": "real-f6e5e128449e3cb9-body-1",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.0445125,
+      "candidateOwnMaskError": 0.04524375,
+      "targetsDisagreement": {
+        "fraction": 0.00123125,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.045175,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-fcbcc23efea92b93-body-1",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.041780286417116376,
+      "candidateOwnMaskError": 0.043382086535344484,
+      "targetsDisagreement": {
+        "fraction": 0.001639938216281154,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.04406857230029938,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-55704c6e2911bebc-body-1",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.11986875,
+      "candidateOwnMaskError": 0.11565,
+      "targetsDisagreement": {
+        "fraction": 0.06055625,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.15648125,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-24b5ed49c9411b11-body-1",
+      "referenceStatus": "checked-derived-mask",
+      "candidateStatus": "review-required",
+      "referenceChecked": true,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.0248375,
+      "candidateOwnMaskError": 0.0489375,
+      "targetsDisagreement": {
+        "fraction": 0.0390125,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.0774375,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-589f606a9d9899f2-body-1",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.07025,
+      "candidateOwnMaskError": 0.07024375,
+      "targetsDisagreement": {
+        "fraction": 0.0001375000000000126,
+        "phaseExchanged": true
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.07025625000000002,
+        "phaseExchanged": true
+      }
+    },
+    {
+      "id": "real-dfa7e4b71b43aa86-body-1",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.08464375,
+      "candidateOwnMaskError": 0.08811875,
+      "targetsDisagreement": {
+        "fraction": 0.00125625,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.08805,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-2b0550dd86d23b40-body-1",
+      "referenceStatus": "crop-unresolved",
+      "candidateStatus": "crop-unresolved",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": null,
+      "candidateOwnMaskError": null
+    },
+    {
+      "id": "real-2502cdec0720f4ea-body-1",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.025275,
+      "candidateOwnMaskError": 0.06885,
+      "targetsDisagreement": {
+        "fraction": 0.00036875,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.06898125,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-d3f063052599e167-body-1",
+      "referenceStatus": "checked-derived-mask",
+      "candidateStatus": "checked-derived-mask",
+      "referenceChecked": true,
+      "candidateChecked": true,
+      "referenceOwnMaskError": 0.01153125,
+      "candidateOwnMaskError": 0.0120625,
+      "targetsDisagreement": {
+        "fraction": 0.00014375,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.01210625,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-a126ed5d62adfd92-body-1",
+      "referenceStatus": "checked-derived-mask",
+      "candidateStatus": "checked-derived-mask",
+      "referenceChecked": true,
+      "candidateChecked": true,
+      "referenceOwnMaskError": 0.01898742099004944,
+      "candidateOwnMaskError": 0.019062519556918456,
+      "targetsDisagreement": {
+        "fraction": 0.00019400463107829025,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.019068777770824205,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-5088a58018c3aa28-body-1",
+      "referenceStatus": "checked-derived-mask",
+      "candidateStatus": "checked-derived-mask",
+      "referenceChecked": true,
+      "candidateChecked": true,
+      "referenceOwnMaskError": 0.029001087540782778,
+      "candidateOwnMaskError": 0.028813580509269097,
+      "targetsDisagreement": {
+        "fraction": 1.2500468767578784e-05,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.028826080978036676,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-1a7cfc6be8b164b5-body-1",
+      "referenceStatus": "checked-derived-mask",
+      "candidateStatus": "review-required",
+      "referenceChecked": true,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.0047375,
+      "candidateOwnMaskError": 0.0318,
+      "targetsDisagreement": {
+        "fraction": 0.34310624999999995,
+        "phaseExchanged": true
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.35503125,
+        "phaseExchanged": true
+      }
+    },
+    {
+      "id": "real-fe7fb089d1cd86b4-body-1",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.0774375,
+      "candidateOwnMaskError": 0.050325,
+      "targetsDisagreement": {
+        "fraction": 0.03871875,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.07531875,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-8b91ecf546833a3f-body-1",
+      "referenceStatus": "checked-derived-mask",
+      "candidateStatus": "checked-derived-mask",
+      "referenceChecked": true,
+      "candidateChecked": true,
+      "referenceOwnMaskError": 0.01311875,
+      "candidateOwnMaskError": 0.01703125,
+      "targetsDisagreement": {
+        "fraction": 3.75e-05,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.01703125,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-b5317080eec610dc-body-1",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.12089375,
+      "candidateOwnMaskError": 0.1245125,
+      "targetsDisagreement": {
+        "fraction": 0.03391875,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.11338125,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-c7d1e0ad5050db71-body-1",
+      "referenceStatus": "checked-derived-mask",
+      "candidateStatus": "checked-derived-mask",
+      "referenceChecked": true,
+      "candidateChecked": true,
+      "referenceOwnMaskError": 0.008619558083570334,
+      "candidateOwnMaskError": 0.008932087383192174,
+      "targetsDisagreement": {
+        "fraction": 0.004756695940244398,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.010926024314779511,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-45ad148d9ec045be-body-1",
+      "referenceStatus": "checked-derived-mask",
+      "candidateStatus": "checked-derived-mask",
+      "referenceChecked": true,
+      "candidateChecked": true,
+      "referenceOwnMaskError": 0.01136875,
+      "candidateOwnMaskError": 0.0151125,
+      "targetsDisagreement": {
+        "fraction": 8.75e-05,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.0151125,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-702942779385436c-body-1",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.0783125,
+      "candidateOwnMaskError": 0.07153125,
+      "targetsDisagreement": {
+        "fraction": 0.00201875,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.0709875,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-03bddab9c8f384c4-body-1",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.03846941518297132,
+      "candidateOwnMaskError": 0.03206317918261292,
+      "targetsDisagreement": {
+        "fraction": 0.001241568215853674,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.032728762143689125,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-eb60ff94dfc6e2f8-body-1",
+      "referenceStatus": "checked-derived-mask",
+      "candidateStatus": "checked-derived-mask",
+      "referenceChecked": true,
+      "candidateChecked": true,
+      "referenceOwnMaskError": 0.00586875,
+      "candidateOwnMaskError": 0.00608125,
+      "targetsDisagreement": {
+        "fraction": 0.00018125,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.0061,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-af21a4ef38355dfa-body-1",
+      "referenceStatus": "checked-derived-mask",
+      "candidateStatus": "checked-derived-mask",
+      "referenceChecked": true,
+      "candidateChecked": true,
+      "referenceOwnMaskError": 0.010325,
+      "candidateOwnMaskError": 0.02554375,
+      "targetsDisagreement": {
+        "fraction": 0.00023125,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.0255125,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-f4bd8d13fc7e68d0-body-1",
+      "referenceStatus": "crop-unresolved",
+      "candidateStatus": "crop-unresolved",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": null,
+      "candidateOwnMaskError": null
+    },
+    {
+      "id": "real-f05cf91c134daea9-body-1",
+      "referenceStatus": "crop-unresolved",
+      "candidateStatus": "crop-unresolved",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": null,
+      "candidateOwnMaskError": null
+    },
+    {
+      "id": "real-12f272f48ed09d51-body-1",
+      "referenceStatus": "crop-unresolved",
+      "candidateStatus": "crop-unresolved",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": null,
+      "candidateOwnMaskError": null
+    },
+    {
+      "id": "real-28a87a8be083f16c-body-1",
+      "referenceStatus": "checked-derived-mask",
+      "candidateStatus": "checked-derived-mask",
+      "referenceChecked": true,
+      "candidateChecked": true,
+      "referenceOwnMaskError": 0.010632911392405063,
+      "candidateOwnMaskError": 0.010339115486794812,
+      "targetsDisagreement": {
+        "fraction": 0.0011001719018596656,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.010826691670573527,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-ce66f9634c2c613b-body-1",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.05206875,
+      "candidateOwnMaskError": 0.0521,
+      "targetsDisagreement": {
+        "fraction": 8.125e-05,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.05208125,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-52e732b98f9b14f1-body-1",
+      "referenceStatus": "review-required",
+      "candidateStatus": "review-required",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": 0.06750625,
+      "candidateOwnMaskError": 0.06896875,
+      "targetsDisagreement": {
+        "fraction": 0.000225,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.06891875,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-7e9f6f83ae43ec2a-body-1",
+      "referenceStatus": "crop-unresolved",
+      "candidateStatus": "crop-unresolved",
+      "referenceChecked": false,
+      "candidateChecked": false,
+      "referenceOwnMaskError": null,
+      "candidateOwnMaskError": null
+    },
+    {
+      "id": "real-d4f6e3c76cf08ea8-body-1",
+      "referenceStatus": "checked-derived-mask",
+      "candidateStatus": "checked-derived-mask",
+      "referenceChecked": true,
+      "candidateChecked": true,
+      "referenceOwnMaskError": 0.0042125,
+      "candidateOwnMaskError": 0.00418125,
+      "targetsDisagreement": {
+        "fraction": 0.00071875,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.0044,
+        "phaseExchanged": false
+      }
+    },
+    {
+      "id": "real-41b7c3e0b79f1265-body-1",
+      "referenceStatus": "checked-derived-mask",
+      "candidateStatus": "checked-derived-mask",
+      "referenceChecked": true,
+      "candidateChecked": true,
+      "referenceOwnMaskError": 0.01124375,
+      "candidateOwnMaskError": 0.01124375,
+      "targetsDisagreement": {
+        "fraction": 0.0,
+        "phaseExchanged": false
+      },
+      "candidateWeaveToReferenceMask": {
+        "fraction": 0.01124375,
+        "phaseExchanged": false
+      }
+    }
+  ]
+}

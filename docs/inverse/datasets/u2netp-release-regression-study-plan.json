@@ -1,0 +1,78 @@
+{
+  "schema": "saliency-fresh-study-1",
+  "status": "predeclared-continuous-palette-development-comparison",
+  "selection": {
+    "path": "docs/inverse/datasets/u2netp-continuous-selection.json",
+    "sha256": "6d4e0e7550fedf5c13333bdc90db28a98eb5ff9ce2de260f32e2d015f5128f52"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-body-adaptation-v1/model.pt",
+    "sha256": "ff4b56456aa17a40d4b4daed98cd384dc309933d2d5585da5ebeece843dd1e4f"
+  },
+  "upstreamSource": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "model": {
+    "path": "tmp/heart-learning/u2netp-body-adapted-onnx-v1/model.onnx",
+    "sha256": "1033a25b9105ac1386e21f99271d3f9edaa5a6727ba6b3aa94f7add2e7668a9d"
+  },
+  "runtimeProtocol": {
+    "stage": "browser",
+    "inputParity": "Original JPEG RGB and all 32 input tensors exactly match the native probe. Raw probability and half-threshold parity gates failed and remain failed; measure downstream behavior separately."
+  },
+  "pipeline": {
+    "policy": "retain-production-reviewed-partial-fallback-v1",
+    "selection": "Keep every production crop. Only if none exists, accept an outline-supported neural proposal with observed rectified overlap >=99% and maximum axis-normalized extrapolation <=5%, always needs_review. Use analytic projective coverage; no mask score or template selects the crop.",
+    "observedFraction": 0.99,
+    "maximumExtrapolation": 0.05,
+    "timeLimitSeconds": 10,
+    "trials": 0,
+    "target": "mask",
+    "methods": [
+      "production",
+      "fallback"
+    ],
+    "classifier": "Unchanged RGB mixture classifier",
+    "fits": "Fresh production controls on all 18 additional photos; share a fit only for identical source/crop/settings. Fresh-fit each neural addition. On the original 32 photos, reuse pinned production controls and freshly fit each neural crop for this fixed policy.",
+    "validation": "Independent exported weave error <=3%, original feature checks, geometry/paper checks, production editable conversion and independent editable-paper audit. Visual review of all photos/crops and distinct outputs.",
+    "missing": "No manual rescue or result-dependent replacement. Record photo eligibility misclassifications and possible irregular weaving separately without removing them from primary denominators.",
+    "fieldPalette": "confidence-weighted",
+    "outerBoundarySampling": true
+  },
+  "resources": {
+    "workers": 1,
+    "newPhotoDownloads": 0,
+    "newSourcePhotoCopies": 0,
+    "maxTotalArtifactMiB": 140,
+    "probeMiB": 16,
+    "nativeMiB": 72,
+    "browserMiB": 16,
+    "pipelineMiB": 30
+  },
+  "sourcePins": {
+    "scripts/inverse/learning/partial-photo-crop.mjs": "69d3b078258e6c43296f7dec37bd40a875728aa3bd2e4ec2fb50ffcd6ec9c349",
+    "scripts/inverse/learning/u2netp-probe.py": "bf3974dd48257400fef4193bc90b4307e8486291e18b68f3a766d871fe096aba",
+    "scripts/inverse/learning/replay-photo-fallback.mjs": "05a939a7ef1b095c93d760a5dd321d5e973c941e51a373e7fe605e38d3bf55f8",
+    "scripts/inverse/learning/continuous-foreground.mjs": "ebdf2b4e7c463ded9ef6e192c4f98855ef677220d04d02e7e1f28bdc4abdaa23",
+    "scripts/inverse/learning/body_evaluation.py": "6578f8a038826ad01c8a147b1fcc5098f775ff570763f8494fd711b0590d9697",
+    "scripts/inverse/learning/foreground-crop.mjs": "43e02a52e6e12b52295c3f95d6426e7231564cdd4f6599e00fe1f57aea12c10b",
+    "scripts/inverse/learning/outer-boundary-fields.mjs": "c1a3f149c908f324b692252e4c50744749a7f22fa313c3467bd8c9993a3d8695"
+  },
+  "scope": "Original 32-photo regression replay of the fixed expanded-evaluation policy. Same browser model outputs, production implementation and controls; fresh neural fits.",
+  "implementationRevision": "8f22315db16510599ed03cd67be3308a1aee087b",
+  "trainingSeparation": {
+    "report": {
+      "path": "tmp/heart-learning/u2netp-body-adaptation-v1/report.json",
+      "sha256": "8957773143a429a0be49093191d65c6c9e5f68f512fd99e352541ee9951ce6e3"
+    },
+    "plan": {
+      "path": "docs/inverse/datasets/u2netp-body-adaptation-plan.json",
+      "sha256": "488a318debdf2be64fe3570668ef0661385108b96b06a8d3b03c4c7408f9b704"
+    }
+  },
+  "expandedStudy": {
+    "path": "docs/inverse/datasets/u2netp-expanded-evaluation-plan.json",
+    "sha256": "51e26bcd964ff25fc287b84fa1e17bd2e7d247fc08ea37f20e2797a4a84680f0"
+  }
+}

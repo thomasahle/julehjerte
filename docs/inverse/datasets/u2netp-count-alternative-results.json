@@ -1,0 +1,152 @@
+{
+  "schema": "count-alternative-probe-results-1",
+  "date": "2026-10-19",
+  "status": "complete-development-only",
+  "evidence": [
+    {
+      "path": "docs/inverse/datasets/u2netp-count-alternative-plan.json",
+      "sha256": "8d4b4c75dfe934146d625a602e121bc7794e7247042c40e7d634934d42680c62"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-count-alternatives-v1/report.json",
+      "sha256": "697f42b02a9b9ccd44cf74774e879fd421c6144633e6ec914a163f8ed4dd93b4"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-count-alternatives-v1-editable/results.json",
+      "sha256": "047e5ed430fb16f87acb2f1f092098fda3085dad2c60597de9987824140bd9fc"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-count-alternatives-v1-gallery/manifest.json",
+      "sha256": "cb2602f1cad4a83d19e111ee936ae3fe4fa6795154ab488bb6bef668975860fc"
+    }
+  ],
+  "rows": [
+    {
+      "method": "0-original-all",
+      "counts": [
+        8,
+        8
+      ],
+      "maskSha256": "6847bed06addc8b40a08b8e7a62f6755c489849ed6107376bc2f6fdb258370d5",
+      "error": 0.0214625,
+      "editableError": 0.02181875,
+      "converted": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "completeCandidatePassed": true,
+      "solveSeconds": 10.528404334000001
+    },
+    {
+      "method": "1-weighted-all",
+      "counts": [
+        7,
+        3
+      ],
+      "maskSha256": "dc033050608515e3b30e95929c9e5ba5fe95ddd09d61f41a7582157c153b93cd",
+      "error": 0.02688125,
+      "editableError": 0.0270875,
+      "converted": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "completeCandidatePassed": true,
+      "solveSeconds": 10.473003291000001
+    },
+    {
+      "method": "2-weighted-8x8",
+      "counts": [
+        8,
+        8
+      ],
+      "maskSha256": "dc033050608515e3b30e95929c9e5ba5fe95ddd09d61f41a7582157c153b93cd",
+      "error": 0.02199375,
+      "editableError": 0.0226375,
+      "converted": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "completeCandidatePassed": true,
+      "solveSeconds": 10.564860499999998
+    },
+    {
+      "method": "3-original-8x8",
+      "counts": [
+        8,
+        8
+      ],
+      "maskSha256": "6847bed06addc8b40a08b8e7a62f6755c489849ed6107376bc2f6fdb258370d5",
+      "error": 0.02103125,
+      "editableError": 0.02141875,
+      "converted": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "completeCandidatePassed": true,
+      "solveSeconds": 10.662266458000001
+    },
+    {
+      "method": "4-original-7x7",
+      "counts": [
+        7,
+        7
+      ],
+      "maskSha256": "6847bed06addc8b40a08b8e7a62f6755c489849ed6107376bc2f6fdb258370d5",
+      "error": 0.0288,
+      "editableError": 0.0292875,
+      "converted": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "completeCandidatePassed": true,
+      "solveSeconds": 10.253035875000002
+    },
+    {
+      "method": "5-weighted-7x7",
+      "counts": [
+        7,
+        7
+      ],
+      "maskSha256": "dc033050608515e3b30e95929c9e5ba5fe95ddd09d61f41a7582157c153b93cd",
+      "error": 0.02741875,
+      "editableError": 0.02815625,
+      "converted": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "completeCandidatePassed": true,
+      "solveSeconds": 10.670588166000002
+    },
+    {
+      "method": "6-weighted-all",
+      "counts": [
+        7,
+        3
+      ],
+      "maskSha256": "dc033050608515e3b30e95929c9e5ba5fe95ddd09d61f41a7582157c153b93cd",
+      "error": 0.02688125,
+      "editableError": 0.0270875,
+      "converted": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "completeCandidatePassed": true,
+      "solveSeconds": 10.400240291999994
+    },
+    {
+      "method": "7-original-all",
+      "counts": [
+        8,
+        8
+      ],
+      "maskSha256": "6847bed06addc8b40a08b8e7a62f6755c489849ed6107376bc2f6fdb258370d5",
+      "error": 0.02101875,
+      "editableError": 0.0214375,
+      "converted": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "completeCandidatePassed": true,
+      "solveSeconds": 10.661754874999998
+    }
+  ],
+  "visualReview": {
+    "allEightFitsInspected": true,
+    "pages": 2,
+    "finding": "The 8x8 fits retain the small checker squares more clearly than 7x3 or 7x7, but thin false seams and distorted boundaries remain in every fit. These are approximate candidates, not the original cutting paths."
+  },
+  "conclusion": "The overlooked 8x8 count pair can improve the unchanged weighted-crop mask: 2.199375% versus 2.688125% independent error in both ordinary-control replays. Every arm initializes all count hypotheses. Restricted arms save later fine-grid work, so this is an oracle capacity check, not a validated automatic scheduling policy or speed improvement. All eight exports pass conversion, geometry, nominal paper and existing feature/image gates. No production ranking changes.",
+  "next": "Evaluate an automatic bounded comparison of competitive routings across broader perturbation tests, retaining the original physical and image gates."
+}

@@ -1,0 +1,72 @@
+{
+  "schema": "saliency-fresh-study-1",
+  "status": "predeclared-balanced-confidence-comparison",
+  "selection": {
+    "path": "docs/inverse/datasets/u2netp-expanded-qa-selection.json",
+    "sha256": "213b4a3a23d2a8913f1d2e8c9f3b02c048be8b1f9eaf7b6ea9554a52ef5cf9d2"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-body-adaptation-v1/model.pt",
+    "sha256": "ff4b56456aa17a40d4b4daed98cd384dc309933d2d5585da5ebeece843dd1e4f"
+  },
+  "model": {
+    "path": "tmp/heart-learning/u2netp-expanded-onnx-v1/model.onnx",
+    "sha256": "1033a25b9105ac1386e21f99271d3f9edaa5a6727ba6b3aa94f7add2e7668a9d"
+  },
+  "upstreamSource": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "pipeline": {
+    "policy": "review-whole-body-balanced-crop-v1",
+    "selection": "Same fixed recall, precision and improvement bounds, using symmetrical p^4 foreground and (1-p)^4 background confidence. Precision is inside-foreground / (inside-foreground + inside-background); recall is unchanged. Keep all existing local and observed-overlap gates. Reject unsupported alternatives; preserve existing weak crops as review-required. No fitting-error-based crop selection.",
+    "observedFraction": 0.99,
+    "maximumExtrapolation": 0.05,
+    "timeLimitSeconds": 10,
+    "trials": 0,
+    "target": "mask",
+    "methods": [
+      "production",
+      "fallback"
+    ],
+    "classifier": "Unchanged RGB mixture classifier",
+    "fits": "Reuse original production controls with unchanged source/geometry implementation; freshly fit every chosen neural crop. Both fixed cohorts include every unresolved or failed case. A body warning is separate from derived-mask agreement.",
+    "validation": "Independent exported weave error <=3%, original feature checks, geometry/paper checks, production editable conversion and independent editable-paper audit. Visual review of all photos/crops and distinct outputs.",
+    "missing": "No manual rescue or result-dependent replacement. Record photo eligibility misclassifications and possible irregular weaving separately without removing them from primary denominators.",
+    "fieldPalette": "confidence-weighted",
+    "outerBoundarySampling": true,
+    "wholeBodyEvidence": {
+      "probabilityPower": 4,
+      "minimumMass": 100,
+      "recall": 0.85,
+      "precision": 0.8,
+      "diceImprovement": 0.05,
+      "weighting": "balanced-confidence"
+    }
+  },
+  "scope": "Fixed 32-photo regression and all 18 additional development photos; no training or runtime changes. Whole-body coverage tests a different crop policy. Preserve prior raw numerical failures and separately record physical-mask versus whole-photo success. The first whole-body policy loses a known good crop by counting uncertain foreground as certain background. This variant corrects that asymmetry with unchanged thresholds; it must be checked on both complete cohorts.",
+  "evaluationExtension": {
+    "path": "docs/inverse/datasets/u2netp-expanded-evaluation-plan.json",
+    "sha256": "51e26bcd964ff25fc287b84fa1e17bd2e7d247fc08ea37f20e2797a4a84680f0"
+  },
+  "trainingSeparation": {
+    "report": {
+      "path": "tmp/heart-learning/u2netp-body-adaptation-v1/report.json",
+      "sha256": "8957773143a429a0be49093191d65c6c9e5f68f512fd99e352541ee9951ce6e3"
+    },
+    "plan": {
+      "path": "docs/inverse/datasets/u2netp-body-adaptation-plan.json",
+      "sha256": "488a318debdf2be64fe3570668ef0661385108b96b06a8d3b03c4c7408f9b704"
+    }
+  },
+  "sourcePins": {
+    "scripts/inverse/learning/partial-photo-crop.mjs": "69d3b078258e6c43296f7dec37bd40a875728aa3bd2e4ec2fb50ffcd6ec9c349",
+    "scripts/inverse/learning/u2netp-probe.py": "bf3974dd48257400fef4193bc90b4307e8486291e18b68f3a766d871fe096aba",
+    "scripts/inverse/learning/body_evaluation.py": "6578f8a038826ad01c8a147b1fcc5098f775ff570763f8494fd711b0590d9697",
+    "scripts/inverse/learning/replay-photo-fallback.mjs": "dac52ab4293607394208885308bbff28b264a499bfb71651af0fd0bb39608dec",
+    "scripts/inverse/learning/continuous-foreground.mjs": "ebdf2b4e7c463ded9ef6e192c4f98855ef677220d04d02e7e1f28bdc4abdaa23",
+    "scripts/inverse/learning/foreground-crop.mjs": "43e02a52e6e12b52295c3f95d6426e7231564cdd4f6599e00fe1f57aea12c10b",
+    "scripts/inverse/learning/outer-boundary-fields.mjs": "c1a3f149c908f324b692252e4c50744749a7f22fa313c3467bd8c9993a3d8695",
+    "scripts/inverse/learning/whole-body-crop.mjs": "5b567946d1575fb065f009d58bc400950276a71caa77fb9f0c7b58faadde5f5a"
+  }
+}

@@ -1,0 +1,2887 @@
+{
+  "schema": "expanded-body-evaluation-results-1",
+  "date": "2026-10-20",
+  "status": "complete-development-evaluation",
+  "plan": {
+    "path": "docs/inverse/datasets/u2netp-expanded-evaluation-plan.json",
+    "sha256": "51e26bcd964ff25fc287b84fa1e17bd2e7d247fc08ea37f20e2797a4a84680f0"
+  },
+  "scope": "Fixed existing adapted U2NETP checkpoint, no retraining, no production integration. Original 32-photo regression plus all 18 declared additional photos. Source metadata groups the 18 photos into 17 groups; these are development data, not untouched holdout or verified motif independence. Checked numbers describe reconstruction of a derived cropped mask, not original artwork success.",
+  "evidence": {
+    "nativeProbe": {
+      "path": "tmp/heart-learning/u2netp-expanded-probe-v1/report.json",
+      "sha256": "d8ee92a3421ab4aa396f8e7acd7fd0181b2df58cb0b3afc7cb149a883d71d80c"
+    },
+    "nativeRuntime": {
+      "path": "tmp/heart-learning/u2netp-expanded-onnx-v1/report.json",
+      "sha256": "87aeeaf301883e9c4bb86e8fe780843eaf2d006b5976d8d94d48f6bb1bf08a54"
+    },
+    "browserRuntime": {
+      "path": "tmp/heart-learning/u2netp-expanded-browser-v1/report.json",
+      "sha256": "0743e8cab94b5d7ac03ebbb6a6f4cd740958f9ae8f5597a2fa4e2a7e7a19c5ba"
+    },
+    "freshNativeEditable": {
+      "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+      "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+    },
+    "freshRegressionEditable": {
+      "path": "tmp/heart-learning/u2netp-release-regression-editable-v1/results.json",
+      "sha256": "551fe9b79a2bf4a590b7411010641643a815225e88eff80e52a7685a177537da"
+    },
+    "reusedProductionEditable": {
+      "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+      "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+    },
+    "retainedCropDiagnostic": {
+      "path": "tmp/heart-learning/u2netp-retained-crop-diagnostic-v1/report.json",
+      "sha256": "03c7b4f2a8b3878f45a1cd1b9d26dbbf77f4a2cbb9a071c8f0cd979136b448a8"
+    },
+    "retainedCropDiagnosticSource": {
+      "path": "tmp/heart-learning/check-retained-crops.mjs",
+      "sha256": "080e17449443c8505ef4b45e897b054f7ff621af464a3f26884e9847fb4703c3"
+    },
+    "retainedCropComparison": {
+      "path": "tmp/heart-learning/u2netp-retained-crop-diagnostic-v1/comparison.jpg",
+      "sha256": "9b4e69898fbd7cf2276a2afe02f39164341a7ddc67ae352f66bab997ce445c23"
+    },
+    "initialRuntimeEnvironmentFailure": {
+      "path": "tmp/heart-learning/body-expanded-onnx.log",
+      "sha256": "e89449a122faf1a63a25860164a1862ee26cc374ad1a99dc6325731fe401be16"
+    },
+    "evaluationAuditTests": {
+      "path": "tmp/heart-learning/body-expanded-evaluation-tests.log",
+      "sha256": "56e03afda220e7ba78bbcecf9a2e53a0149cfc3e311fa10bbd01b25e8e5ba671"
+    },
+    "outerBoundaryTests": {
+      "path": "tmp/heart-learning/body-outer-sampling-tests.log",
+      "sha256": "b8fb2d3b9532163c9626e31cd148793f4fa299a89ea777ae18c123d8adc6df03"
+    },
+    "focusedLint": {
+      "path": "tmp/heart-learning/body-expanded-lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "arms": {
+    "regression32": {
+      "pipeline": {
+        "path": "tmp/heart-learning/u2netp-release-regression-pipeline-v1/report.json",
+        "sha256": "15158093aff421bf8f300fec5de89c4375c79e7412a4a054be96e246e0ab7784"
+      },
+      "summary": {
+        "production": {
+          "attempted": 32,
+          "crops": 21,
+          "supported": 16,
+          "checkedPairs": 9,
+          "neuralSelected": 0,
+          "reusedFits": 32,
+          "checkedEditable": 9,
+          "primaryFailureStages": {
+            "crop-unresolved": 11,
+            "image-above-three-percent": 10,
+            "feature-loss-at-low-image-error": 1,
+            "checked-derived-mask": 9,
+            "paper-support-at-low-image-error": 1
+          }
+        },
+        "fallback": {
+          "attempted": 32,
+          "crops": 26,
+          "supported": 21,
+          "checkedPairs": 12,
+          "neuralSelected": 5,
+          "reusedFits": 27,
+          "checkedEditable": 12,
+          "primaryFailureStages": {
+            "crop-unresolved": 6,
+            "image-above-three-percent": 12,
+            "checked-derived-mask": 12,
+            "feature-loss-at-low-image-error": 1,
+            "paper-support-at-low-image-error": 1
+          }
+        }
+      },
+      "rows": [
+        {
+          "id": "real-1bcc922200edde26-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-1bcc922200edde26-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-80a649a21ea938ae-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-80a649a21ea938ae-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-f6e5e128449e3cb9-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": false,
+          "checkedPair": false,
+          "solveSeconds": 9.372932041,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.041,
+          "editableMismatch": 0.04114375,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-f6e5e128449e3cb9-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-f6e5e128449e3cb9-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": false,
+          "checkedPair": false,
+          "solveSeconds": 9.372932041,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.041,
+          "editableMismatch": 0.04114375,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-f6e5e128449e3cb9-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-fcbcc23efea92b93-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 9.274423583000003,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.06020098777673957,
+          "editableMismatch": 0.059800537747182546,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-fcbcc23efea92b93-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-fcbcc23efea92b93-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 9.274423583000003,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.06020098777673957,
+          "editableMismatch": 0.059800537747182546,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-fcbcc23efea92b93-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-55704c6e2911bebc-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": false,
+          "checkedPair": false,
+          "solveSeconds": 10.598959833,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.12011875,
+          "editableMismatch": 0.1198375,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-55704c6e2911bebc-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-55704c6e2911bebc-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": false,
+          "checkedPair": false,
+          "solveSeconds": 10.598959833,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.12011875,
+          "editableMismatch": 0.1198375,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-55704c6e2911bebc-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-24b5ed49c9411b11-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-24b5ed49c9411b11-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 10.2374915,
+          "cropExists": true,
+          "neuralSelected": true,
+          "exportedMismatch": 0.02930625,
+          "editableMismatch": 0.029825,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-release-regression-editable-v1/results.json",
+              "sha256": "551fe9b79a2bf4a590b7411010641643a815225e88eff80e52a7685a177537da"
+            },
+            "row": "real-24b5ed49c9411b11-body-1-fallback"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-589f606a9d9899f2-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 8.859349125000008,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.07155,
+          "editableMismatch": 0.0715875,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-589f606a9d9899f2-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-589f606a9d9899f2-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 8.859349125000008,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.07155,
+          "editableMismatch": 0.0715875,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-589f606a9d9899f2-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-dfa7e4b71b43aa86-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-dfa7e4b71b43aa86-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 10.096387416999999,
+          "cropExists": true,
+          "neuralSelected": true,
+          "exportedMismatch": 0.08489375,
+          "editableMismatch": 0.08525625,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-release-regression-editable-v1/results.json",
+              "sha256": "551fe9b79a2bf4a590b7411010641643a815225e88eff80e52a7685a177537da"
+            },
+            "row": "real-dfa7e4b71b43aa86-body-1-fallback"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-2b0550dd86d23b40-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-2b0550dd86d23b40-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-2502cdec0720f4ea-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 9.748713791000002,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.01965,
+          "editableMismatch": 0.01996875,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-2502cdec0720f4ea-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-2502cdec0720f4ea-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 9.748713791000002,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.01965,
+          "editableMismatch": 0.01996875,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-2502cdec0720f4ea-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-d3f063052599e167-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 10.056574458000004,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.0448,
+          "editableMismatch": 0.04543125,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-d3f063052599e167-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-d3f063052599e167-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 10.056574458000004,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.0448,
+          "editableMismatch": 0.04543125,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-d3f063052599e167-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-a126ed5d62adfd92-body-1",
+          "method": "production",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 4.5471627499999885,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.011890606420927468,
+          "editableMismatch": 0.011846798923587209,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-a126ed5d62adfd92-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-a126ed5d62adfd92-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 4.5471627499999885,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.011890606420927468,
+          "editableMismatch": 0.011846798923587209,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-a126ed5d62adfd92-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-5088a58018c3aa28-body-1",
+          "method": "production",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 9.533323833000003,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.016588122054577048,
+          "editableMismatch": 0.016544370413890522,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-5088a58018c3aa28-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-5088a58018c3aa28-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 9.533323833000003,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.016588122054577048,
+          "editableMismatch": 0.016544370413890522,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-5088a58018c3aa28-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-1a7cfc6be8b164b5-body-1",
+          "method": "production",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 3.9236232500000043,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.0051,
+          "editableMismatch": 0.00491875,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-1a7cfc6be8b164b5-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-1a7cfc6be8b164b5-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 3.9236232500000043,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.0051,
+          "editableMismatch": 0.00491875,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-1a7cfc6be8b164b5-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-fe7fb089d1cd86b4-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": false,
+          "checkedPair": false,
+          "solveSeconds": 9.736171583000017,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.06173125,
+          "editableMismatch": 0.0620375,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-fe7fb089d1cd86b4-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-fe7fb089d1cd86b4-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": false,
+          "checkedPair": false,
+          "solveSeconds": 9.736171583000017,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.06173125,
+          "editableMismatch": 0.0620375,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-fe7fb089d1cd86b4-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-8b91ecf546833a3f-body-1",
+          "method": "production",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 8.991661666,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.00920625,
+          "editableMismatch": 0.0091375,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-8b91ecf546833a3f-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-8b91ecf546833a3f-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 8.991661666,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.00920625,
+          "editableMismatch": 0.0091375,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-8b91ecf546833a3f-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-b5317080eec610dc-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": false,
+          "checkedPair": false,
+          "solveSeconds": 9.772939332999988,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.1513875,
+          "editableMismatch": 0.15164375,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-b5317080eec610dc-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-b5317080eec610dc-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": false,
+          "checkedPair": false,
+          "solveSeconds": 9.772939332999988,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.1513875,
+          "editableMismatch": 0.15164375,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-b5317080eec610dc-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-c7d1e0ad5050db71-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-c7d1e0ad5050db71-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 9.662876666000004,
+          "cropExists": true,
+          "neuralSelected": true,
+          "exportedMismatch": 0.008288277025971185,
+          "editableMismatch": 0.008250773510016565,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-release-regression-editable-v1/results.json",
+              "sha256": "551fe9b79a2bf4a590b7411010641643a815225e88eff80e52a7685a177537da"
+            },
+            "row": "real-c7d1e0ad5050db71-body-1-fallback"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-45ad148d9ec045be-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 8.05486608400001,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.01536875,
+          "editableMismatch": 0.01528125,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "fail",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-45ad148d9ec045be-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-45ad148d9ec045be-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 8.05486608400001,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.01536875,
+          "editableMismatch": 0.01528125,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "fail",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-45ad148d9ec045be-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-702942779385436c-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 9.678787416000006,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.0798625,
+          "editableMismatch": 0.07994375,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-702942779385436c-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-702942779385436c-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 9.678787416000006,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.0798625,
+          "editableMismatch": 0.07994375,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-702942779385436c-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-03bddab9c8f384c4-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": false,
+          "checkedPair": false,
+          "solveSeconds": 9.738535417000007,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.03425192315076734,
+          "editableMismatch": 0.03425192315076734,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-03bddab9c8f384c4-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-03bddab9c8f384c4-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": false,
+          "checkedPair": false,
+          "solveSeconds": 9.738535417000007,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.03425192315076734,
+          "editableMismatch": 0.03425192315076734,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-03bddab9c8f384c4-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-eb60ff94dfc6e2f8-body-1",
+          "method": "production",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 8.19497666700001,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.00641875,
+          "editableMismatch": 0.0064,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-eb60ff94dfc6e2f8-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-eb60ff94dfc6e2f8-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 8.19497666700001,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.00641875,
+          "editableMismatch": 0.0064,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-eb60ff94dfc6e2f8-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-af21a4ef38355dfa-body-1",
+          "method": "production",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 5.597996500000009,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.01093125,
+          "editableMismatch": 0.01078125,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-af21a4ef38355dfa-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-af21a4ef38355dfa-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 5.597996500000009,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.01093125,
+          "editableMismatch": 0.01078125,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-af21a4ef38355dfa-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-f4bd8d13fc7e68d0-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-f4bd8d13fc7e68d0-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-f05cf91c134daea9-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-f05cf91c134daea9-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 9.836561958999999,
+          "cropExists": true,
+          "neuralSelected": true,
+          "exportedMismatch": 0.03700625,
+          "editableMismatch": 0.03730625,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-release-regression-editable-v1/results.json",
+              "sha256": "551fe9b79a2bf4a590b7411010641643a815225e88eff80e52a7685a177537da"
+            },
+            "row": "real-f05cf91c134daea9-body-1-fallback"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-12f272f48ed09d51-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-12f272f48ed09d51-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-28a87a8be083f16c-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-28a87a8be083f16c-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 9.171346665999998,
+          "cropExists": true,
+          "neuralSelected": true,
+          "exportedMismatch": 0.00554461634630411,
+          "editableMismatch": 0.00565088295046101,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-release-regression-editable-v1/results.json",
+              "sha256": "551fe9b79a2bf4a590b7411010641643a815225e88eff80e52a7685a177537da"
+            },
+            "row": "real-28a87a8be083f16c-body-1-fallback"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-ce66f9634c2c613b-body-1",
+          "method": "production",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 6.269674500000023,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.01720625,
+          "editableMismatch": 0.0171,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-ce66f9634c2c613b-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-ce66f9634c2c613b-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 6.269674500000023,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.01720625,
+          "editableMismatch": 0.0171,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-ce66f9634c2c613b-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-52e732b98f9b14f1-body-1",
+          "method": "production",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 9.423482957999978,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.021575,
+          "editableMismatch": 0.02169375,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-52e732b98f9b14f1-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-52e732b98f9b14f1-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 9.423482957999978,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.021575,
+          "editableMismatch": 0.02169375,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-52e732b98f9b14f1-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-7e9f6f83ae43ec2a-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-7e9f6f83ae43ec2a-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-d4f6e3c76cf08ea8-body-1",
+          "method": "production",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 6.082391125000024,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.0046,
+          "editableMismatch": 0.00450625,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-d4f6e3c76cf08ea8-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-d4f6e3c76cf08ea8-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 6.082391125000024,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.0046,
+          "editableMismatch": 0.00450625,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-d4f6e3c76cf08ea8-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-41b7c3e0b79f1265-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 11.114009250000002,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.03903125,
+          "editableMismatch": 0.03955625,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-41b7c3e0b79f1265-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-41b7c3e0b79f1265-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 11.114009250000002,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.03903125,
+          "editableMismatch": 0.03955625,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+              "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+            },
+            "row": "real-41b7c3e0b79f1265-body-1-production"
+          },
+          "featurePassed": true
+        }
+      ]
+    },
+    "expandedNative18": {
+      "pipeline": {
+        "path": "tmp/heart-learning/u2netp-expanded-native-pipeline-v1/report.json",
+        "sha256": "b38bd3bbc093c7f7096b61f1bc6b58127b116fffb8ec005cb6958ade960f579e"
+      },
+      "summary": {
+        "production": {
+          "attempted": 18,
+          "crops": 6,
+          "supported": 5,
+          "checkedPairs": 3,
+          "neuralSelected": 0,
+          "reusedFits": 0,
+          "checkedEditable": 3,
+          "primaryFailureStages": {
+            "crop-unresolved": 12,
+            "paper-support-at-low-image-error": 1,
+            "feature-loss-at-low-image-error": 2,
+            "checked-derived-mask": 3
+          }
+        },
+        "fallback": {
+          "attempted": 18,
+          "crops": 8,
+          "supported": 7,
+          "checkedPairs": 3,
+          "neuralSelected": 2,
+          "reusedFits": 16,
+          "checkedEditable": 3,
+          "primaryFailureStages": {
+            "image-above-three-percent": 2,
+            "crop-unresolved": 10,
+            "paper-support-at-low-image-error": 1,
+            "feature-loss-at-low-image-error": 2,
+            "checked-derived-mask": 3
+          }
+        }
+      },
+      "rows": [
+        {
+          "id": "real-1fa372c6288da69f-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-1fa372c6288da69f-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 9.560999999999998,
+          "cropExists": true,
+          "neuralSelected": true,
+          "exportedMismatch": 0.0472875,
+          "editableMismatch": 0.04743125,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-1fa372c6288da69f-body-1-fallback"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-26c948c0aa94f483-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-26c948c0aa94f483-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-27c86e56296f2df5-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-27c86e56296f2df5-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-31ed1172998ab1c5-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-31ed1172998ab1c5-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-4066fe9f9aafb3e4-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": false,
+          "checkedPair": false,
+          "solveSeconds": 6.627433333000001,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.0250875,
+          "editableMismatch": 0.025,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "fail",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-4066fe9f9aafb3e4-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-4066fe9f9aafb3e4-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": false,
+          "checkedPair": false,
+          "solveSeconds": 6.627433333000001,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.0250875,
+          "editableMismatch": 0.025,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "fail",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-4066fe9f9aafb3e4-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-7076a4d811c096db-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-7076a4d811c096db-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-867f0e5852ebeba9-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-867f0e5852ebeba9-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 9.264550458999992,
+          "cropExists": true,
+          "neuralSelected": true,
+          "exportedMismatch": 0.03079375,
+          "editableMismatch": 0.0307625,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "fail",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-867f0e5852ebeba9-body-1-fallback"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-931ac5ea86dbe082-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 10.548471042000005,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.0270375,
+          "editableMismatch": 0.0276,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-931ac5ea86dbe082-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-931ac5ea86dbe082-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 10.548471042000005,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.0270375,
+          "editableMismatch": 0.0276,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-931ac5ea86dbe082-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-962159dea653810f-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-962159dea653810f-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-970f4be1bd64e5d7-body-1",
+          "method": "production",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 3.742014958,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.005825617283950617,
+          "editableMismatch": 0.005632716049382716,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-970f4be1bd64e5d7-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-970f4be1bd64e5d7-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 3.742014958,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.005825617283950617,
+          "editableMismatch": 0.005632716049382716,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-970f4be1bd64e5d7-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-9b47cfbdf0004f4d-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-9b47cfbdf0004f4d-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-a96b58bb0d45cb5c-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 9.895930999999997,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.02306875,
+          "editableMismatch": 0.02345,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-a96b58bb0d45cb5c-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-a96b58bb0d45cb5c-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 9.895930999999997,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.02306875,
+          "editableMismatch": 0.02345,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-a96b58bb0d45cb5c-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-c7bc99827b382da7-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-c7bc99827b382da7-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-d6d0462384722949-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-d6d0462384722949-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-e15ec1906fab0f9c-body-1",
+          "method": "production",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 8.702155625,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.013145320563188855,
+          "editableMismatch": 0.012996665887999321,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-e15ec1906fab0f9c-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-e15ec1906fab0f9c-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 8.702155625,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.013145320563188855,
+          "editableMismatch": 0.012996665887999321,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-e15ec1906fab0f9c-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-e4baad0c914577c8-body-1",
+          "method": "production",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 7.023992374999972,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.02474375,
+          "editableMismatch": 0.024675,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-e4baad0c914577c8-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-e4baad0c914577c8-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 7.023992374999972,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.02474375,
+          "editableMismatch": 0.024675,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-e4baad0c914577c8-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-e9131a2d52b78220-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-e9131a2d52b78220-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-f882e57ac79e63d3-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-f882e57ac79e63d3-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        }
+      ]
+    },
+    "expandedBrowser18": {
+      "pipeline": {
+        "path": "tmp/heart-learning/u2netp-expanded-browser-pipeline-v1/report.json",
+        "sha256": "d3d4bcd1d87d48f4c04ef0756469affb0f83482755480d9c214e335a735ee746"
+      },
+      "summary": {
+        "production": {
+          "attempted": 18,
+          "crops": 6,
+          "supported": 5,
+          "checkedPairs": 3,
+          "neuralSelected": 0,
+          "reusedFits": 18,
+          "checkedEditable": 3,
+          "primaryFailureStages": {
+            "crop-unresolved": 12,
+            "paper-support-at-low-image-error": 1,
+            "feature-loss-at-low-image-error": 2,
+            "checked-derived-mask": 3
+          }
+        },
+        "fallback": {
+          "attempted": 18,
+          "crops": 8,
+          "supported": 7,
+          "checkedPairs": 3,
+          "neuralSelected": 2,
+          "reusedFits": 16,
+          "checkedEditable": 3,
+          "primaryFailureStages": {
+            "image-above-three-percent": 2,
+            "crop-unresolved": 10,
+            "paper-support-at-low-image-error": 1,
+            "feature-loss-at-low-image-error": 2,
+            "checked-derived-mask": 3
+          }
+        }
+      },
+      "rows": [
+        {
+          "id": "real-1fa372c6288da69f-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-1fa372c6288da69f-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 9.541532583,
+          "cropExists": true,
+          "neuralSelected": true,
+          "exportedMismatch": 0.0472875,
+          "editableMismatch": 0.04743125,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-1fa372c6288da69f-body-1-fallback"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-26c948c0aa94f483-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-26c948c0aa94f483-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-27c86e56296f2df5-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-27c86e56296f2df5-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-31ed1172998ab1c5-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-31ed1172998ab1c5-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-4066fe9f9aafb3e4-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": false,
+          "checkedPair": false,
+          "solveSeconds": 6.627433333000001,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.0250875,
+          "editableMismatch": 0.025,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "fail",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-4066fe9f9aafb3e4-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-4066fe9f9aafb3e4-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": false,
+          "checkedPair": false,
+          "solveSeconds": 6.627433333000001,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.0250875,
+          "editableMismatch": 0.025,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "fail",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-4066fe9f9aafb3e4-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-7076a4d811c096db-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-7076a4d811c096db-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-867f0e5852ebeba9-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-867f0e5852ebeba9-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 9.273748458000002,
+          "cropExists": true,
+          "neuralSelected": true,
+          "exportedMismatch": 0.03079375,
+          "editableMismatch": 0.0307625,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "fail",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-867f0e5852ebeba9-body-1-fallback"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-931ac5ea86dbe082-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 10.548471042000005,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.0270375,
+          "editableMismatch": 0.0276,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-931ac5ea86dbe082-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-931ac5ea86dbe082-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 10.548471042000005,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.0270375,
+          "editableMismatch": 0.0276,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-931ac5ea86dbe082-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-962159dea653810f-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-962159dea653810f-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-970f4be1bd64e5d7-body-1",
+          "method": "production",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 3.742014958,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.005825617283950617,
+          "editableMismatch": 0.005632716049382716,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-970f4be1bd64e5d7-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-970f4be1bd64e5d7-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 3.742014958,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.005825617283950617,
+          "editableMismatch": 0.005632716049382716,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-970f4be1bd64e5d7-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-9b47cfbdf0004f4d-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-9b47cfbdf0004f4d-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-a96b58bb0d45cb5c-body-1",
+          "method": "production",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 9.895930999999997,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.02306875,
+          "editableMismatch": 0.02345,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-a96b58bb0d45cb5c-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-a96b58bb0d45cb5c-body-1",
+          "method": "fallback",
+          "status": "review-required",
+          "supported": true,
+          "checkedPair": false,
+          "solveSeconds": 9.895930999999997,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.02306875,
+          "editableMismatch": 0.02345,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": false,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-a96b58bb0d45cb5c-body-1-production"
+          },
+          "featurePassed": false
+        },
+        {
+          "id": "real-c7bc99827b382da7-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-c7bc99827b382da7-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-d6d0462384722949-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-d6d0462384722949-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-e15ec1906fab0f9c-body-1",
+          "method": "production",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 8.702155625,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.013145320563188855,
+          "editableMismatch": 0.012996665887999321,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-e15ec1906fab0f9c-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-e15ec1906fab0f9c-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 8.702155625,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.013145320563188855,
+          "editableMismatch": 0.012996665887999321,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-e15ec1906fab0f9c-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-e4baad0c914577c8-body-1",
+          "method": "production",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 7.023992374999972,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.02474375,
+          "editableMismatch": 0.024675,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-e4baad0c914577c8-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-e4baad0c914577c8-body-1",
+          "method": "fallback",
+          "status": "checked-derived-mask",
+          "supported": true,
+          "checkedPair": true,
+          "solveSeconds": 7.023992374999972,
+          "cropExists": true,
+          "neuralSelected": false,
+          "exportedMismatch": 0.02474375,
+          "editableMismatch": 0.024675,
+          "conversionPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "checkedEditable": true,
+          "editableEvidence": {
+            "ledger": {
+              "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+              "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+            },
+            "row": "real-e4baad0c914577c8-body-1-production"
+          },
+          "featurePassed": true
+        },
+        {
+          "id": "real-e9131a2d52b78220-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-e9131a2d52b78220-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-f882e57ac79e63d3-body-1",
+          "method": "production",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        },
+        {
+          "id": "real-f882e57ac79e63d3-body-1",
+          "method": "fallback",
+          "status": "crop-unresolved",
+          "supported": false,
+          "checkedPair": null,
+          "solveSeconds": null,
+          "cropExists": false,
+          "neuralSelected": false,
+          "checkedEditable": false
+        }
+      ]
+    }
+  },
+  "runtime": {
+    "checks": {
+      "allPhotos": true,
+      "noBrowserErrors": true,
+      "sourceRgbExact": true,
+      "inputParity": true,
+      "probabilityParity": false,
+      "halfThresholdParity": false
+    },
+    "passed": false,
+    "warmInference": {
+      "runs": 5,
+      "medianMilliseconds": 1072.6999998092651,
+      "p90Milliseconds": 1078.2000000476837
+    },
+    "startupMilliseconds": 274,
+    "vsTorchMaxProbabilityDifference": 0.00015237927436828613,
+    "vsNativeMaxProbabilityDifference": 2.5153160095214844e-05,
+    "halfThresholdChangedPixelsVsTorch": 1,
+    "halfThresholdChangedPixelsVsNative": 0,
+    "functionalComparison": [
+      {
+        "id": "real-1fa372c6288da69f-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true,
+        "maxCornerDriftPixels": 0.0,
+        "sameMask": true,
+        "sameGeometry": true
+      },
+      {
+        "id": "real-26c948c0aa94f483-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true
+      },
+      {
+        "id": "real-27c86e56296f2df5-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true
+      },
+      {
+        "id": "real-31ed1172998ab1c5-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true
+      },
+      {
+        "id": "real-4066fe9f9aafb3e4-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true,
+        "maxCornerDriftPixels": 0.0,
+        "sameMask": true,
+        "sameGeometry": true
+      },
+      {
+        "id": "real-7076a4d811c096db-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true
+      },
+      {
+        "id": "real-867f0e5852ebeba9-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true,
+        "maxCornerDriftPixels": 0.0,
+        "sameMask": true,
+        "sameGeometry": true
+      },
+      {
+        "id": "real-931ac5ea86dbe082-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true,
+        "maxCornerDriftPixels": 0.0,
+        "sameMask": true,
+        "sameGeometry": true
+      },
+      {
+        "id": "real-962159dea653810f-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true
+      },
+      {
+        "id": "real-970f4be1bd64e5d7-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true,
+        "maxCornerDriftPixels": 0.0,
+        "sameMask": true,
+        "sameGeometry": true
+      },
+      {
+        "id": "real-9b47cfbdf0004f4d-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true
+      },
+      {
+        "id": "real-a96b58bb0d45cb5c-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true,
+        "maxCornerDriftPixels": 0.0,
+        "sameMask": true,
+        "sameGeometry": true
+      },
+      {
+        "id": "real-c7bc99827b382da7-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true
+      },
+      {
+        "id": "real-d6d0462384722949-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true
+      },
+      {
+        "id": "real-e15ec1906fab0f9c-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true,
+        "maxCornerDriftPixels": 0.0,
+        "sameMask": true,
+        "sameGeometry": true
+      },
+      {
+        "id": "real-e4baad0c914577c8-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true,
+        "maxCornerDriftPixels": 0.0,
+        "sameMask": true,
+        "sameGeometry": true
+      },
+      {
+        "id": "real-e9131a2d52b78220-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true
+      },
+      {
+        "id": "real-f882e57ac79e63d3-body-1",
+        "sameSelection": true,
+        "sameCropPresence": true
+      }
+    ],
+    "scope": "Original raw numerical gates remain failed. Every browser source RGB and input tensor is exact. Both newly selected neural crops, their targets and freshly fitted geometry are byte-identical to the native development run. Production fits are shared controls, not independent runtime replications. No new tolerance inferred from these results."
+  },
+  "visualReview": {
+    "allExpandedPhotosAndEightExportsReviewed": true,
+    "allFiveFreshRegressionExportsReviewed": true,
+    "allTwoBrowserExportsReviewed": true,
+    "galleries": [
+      {
+        "path": "tmp/heart-learning/u2netp-expanded-native-fit-gallery-v1/manifest.json",
+        "sha256": "757991aca42601b3ddeb2392dc8634d45df7e2359061750a9e0334b11f19d083"
+      },
+      {
+        "path": "tmp/heart-learning/u2netp-release-regression-fit-gallery-v1/manifest.json",
+        "sha256": "e88a352135372ad56818db045f166da814a1559445a9e526afa97d773d450f69"
+      },
+      {
+        "path": "tmp/heart-learning/u2netp-expanded-browser-fit-gallery-v1/manifest.json",
+        "sha256": "39361b602075eb0fa562647f93b2bead14334106710227e2345ea0e4d73b8a1b"
+      }
+    ],
+    "criticalCropFalsePositive": {
+      "id": "real-e4baad0c914577c8-body-1",
+      "reportedChecked": true,
+      "wholeHeartReconstructed": false,
+      "finding": "A small subregion of the green/gold bird photograph is mistaken for the overlap. Low error and physical validity against this cropped target do not establish whole-heart success. The keep-every-production-crop policy suppresses neural evaluation. A post-study neural-only crop diagnostic also returns no candidate; changing selection alone has not solved it."
+    },
+    "weakRetainedCrop": {
+      "id": "real-4066fe9f9aafb3e4-body-1",
+      "finding": "The angel crop misses the true tip and misregisters the left side. It is already unsupported and fails paper checks. The independent post-study neural proposal visually follows the full overlap; no fit was run and no new success is claimed."
+    },
+    "printedPaper": [
+      "Decorative print and stickers become false cuts in real-1fa372c6288da69f; its 4.73% failure is not fixed by the plausible neural crop.",
+      "White swans and triangles on pink paper become holes/protrusions in real-867f0e5852ebeba9; paper and feature checks also fail.",
+      "Printed-tree regression remains corrupted by ink texture despite a plausible outer crop."
+    ],
+    "fitterFailures": [
+      "Both Santa variants have plausible whole-overlap crops but lose small enclosed features and retain seams; low global error does not preserve motif topology.",
+      "Stacked-heart regression remains borderline at 2.9825% editable mismatch and has visible unwanted seams.",
+      "Cthulhu regression has glare-contaminated colour estimates and loses shape detail at 3.73% editable mismatch."
+    ],
+    "remainingCropProblems": [
+      "Highly reflective/clipped foil photo lacks two lower edges.",
+      "Back sheet and handle distort the front silhouette in the hanging gingham heart.",
+      "Small gold cross and blue/orange tabletop heart fail lobe/edge support.",
+      "Black/gold cat has an incomplete predicted body and no usable two-colour foreground.",
+      "Child hand and handle attach to the predicted body.",
+      "Swan-shaped caps and newspaper/printed lobes violate the current silhouette/colour assumptions; no mathematical impossibility is inferred."
+    ],
+    "credibleFullOverlapAmongThreeChecked": "Two: real-970f4be1bd64e5d7 grid and real-e15ec1906fab0f9c tree. Visual plausibility is not ground-truth verification; keep 3/18 automated and the false positive explicit.",
+    "duplicateReview": {
+      "ids": [
+        "real-931ac5ea86dbe082",
+        "real-a96b58bb0d45cb5c"
+      ],
+      "sameSourceImageVisuallyConfirmed": true,
+      "alreadyGroupedBeforeEvaluation": true,
+      "nearDuplicateGroup": "real-931ac5ea86dbe082",
+      "splitGroupId": "real-split-16d9b32c2dc21c09",
+      "dhashDistance": 1,
+      "decision": "Keep both declared entries. No catalog mutation or new independent-motif claim."
+    }
+  },
+  "validation": {
+    "currentSourceHashesMatchAllReusedEditableLedgers": true,
+    "allExportedGeometryAndMasksHashVerified": true,
+    "freshDistinctEditableAudits": 13,
+    "browserDistinctExportsReuseExactNativeEditableEvidence": 2,
+    "releaseApplicationChanged": false,
+    "latestMainCI": "https://github.com/thomasahle/julehjerte/actions/runs/39324904486",
+    "latestMainCIConclusion": "success",
+    "evaluationAuditTests": 4,
+    "outerBoundaryAndRelatedTests": 19,
+    "broadApplicationQA": "No application changes in this batch. Latest complete application/build/inverse release QA remains docs/inverse/datasets/conni-release-qa.json; it was not rerun for these offline evaluations."
+  },
+  "decision": {
+    "deployNeuralModel": false,
+    "promoteNewTrainingVariant": false,
+    "next": "Require credible whole-heart coverage before treating a crop as successful; compare neural proposals for weak existing crops. Keep printed-paper material classification and Santa/stacked-heart topology as separate downstream failures. Preserve fixed cohorts and raw failure counts."
+  },
+  "resources": {
+    "logicalArtifactBytesIncludingHardlinks": 94277302,
+    "artifactBudgetMiB": 160,
+    "singleHeavyWorker": true,
+    "numericalThreads": 1,
+    "newPhotoDownloads": 0,
+    "newSourcePhotoCopies": 0,
+    "onnxGraphReexported": false,
+    "browserClosed": true,
+    "scope": "Artifact accounting includes existing hardlinks; it is not newly allocated disk bytes. Existing ONNX runtime was reused after correcting PYTHONPATH; no package installation."
+  }
+}

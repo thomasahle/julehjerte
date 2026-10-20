@@ -1,0 +1,35 @@
+{
+  "schema": "body-outline-preflight-summary-1",
+  "report": {
+    "path": "tmp/heart-learning/u2netp-body-outline-preflight-v1/report.json",
+    "sha256": "c20e040a4c574d2586ca1a2b1106b572510634a83b8b6d196910b4e755eecae0"
+  },
+  "plan": {
+    "path": "docs/inverse/datasets/u2netp-body-outline-plan.json",
+    "sha256": "a155452e938f5e394497cfc92690eb0d0e73364be87435a63437698660e873b3"
+  },
+  "implementation": {
+    "path": "scripts/inverse/learning/body_outline.py",
+    "sha256": "006f9cafcd13f7e2eec50a6d5f712a1ec13ee89008df559f7e8b7278624e1881"
+  },
+  "trainingPhotos": 24,
+  "knownBandPixels": 116162,
+  "allUnknownPixelsExcluded": true,
+  "allPhotosHaveBothClassesInBand": true,
+  "controlBandMetrics": {
+    "knownRegionIoU": 0.8992626301985348,
+    "knownRegionPixelError": 0.05342838745120532,
+    "knownPaperFalseNegative": 0.05946144721146579,
+    "knownBackgroundFalsePositive": 0.047594112845608105
+  },
+  "visualReview": {
+    "illustration": {
+      "path": "tmp/heart-learning/u2netp-body-outline-preflight-v1/bands.jpg",
+      "sha256": "f747e3bf5dd36941b0fbbfd5e61b3629c0fb34ed41c74f7c816f3da7f58298e7"
+    },
+    "photosInspected": 4,
+    "finding": "Bands follow known inner and outer silhouettes; unknown handle/occlusion regions remain grey and excluded. No labels or source photos modified."
+  },
+  "focusedOutlineTestsPassed": 6,
+  "scope": "Training-label preflight and fixed prior-checkpoint metric. No new training, evaluation inference, or label changes."
+}

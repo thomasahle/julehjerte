@@ -6,6 +6,7 @@ import {createHash} from 'node:crypto';
 import {createCanvas,loadImage} from 'canvas';
 import {detectForegroundCrop} from './foreground-crop.mjs';
 import {rectifyMaterialPrediction} from './material-target.mjs';
+import {rectifyMaterialPalette} from './material-palette-target.mjs';
 import {detectHeartCrops,supportedCropOutline} from '../../../static/inverse/core/crop.js';
 import {prepare,design} from '../../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../../static/inverse/core/presets.js';
@@ -15,8 +16,9 @@ import {hardPhotoTarget} from '../hard-photo-target.mjs';
 import {renderExportedWeave} from '../export-renderer.mjs';
 
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
-assert.ok(args.probe&&args.output&&Object.keys(args).every(k=>['probe','output','seconds','methods','target','crops'].includes(k)));
-const targetMode=args.target??'material';assert.ok(['material','rgb'].includes(targetMode));
+assert.ok(args.probe&&args.output&&Object.keys(args).every(k=>['probe','output','seconds','methods','target','crops','reuse'].includes(k)));
+const targetMode=args.target??'material';assert.ok(['material','rgb','palette'].includes(targetMode));
+if(targetMode==='palette')assert.ok(args.crops,'Palette comparison requires fixed crops');
 const seconds=Number(args.seconds??10);assert.ok(Number.isFinite(seconds)&&seconds>0&&seconds<=60);
 const probe=path.resolve(args.probe),output=path.resolve(args.output),hash=b=>createHash('sha256').update(b).digest('hex');
 const bytes=await fs.readFile(path.join(probe,'manifest.json')),manifest=JSON.parse(bytes);
@@ -31,11 +33,22 @@ if(args.crops){
  for(const method of methods)assert.deepEqual(cropReplay.rows.filter(r=>r.method===method).map(r=>r.id),manifest.rows.map(r=>r.id));
 }
 const configuration={...AUTOMATIC_PRESET,timeLimit:seconds,trials:0};
+let reuse,reuseBytes;
+if(args.reuse){
+ reuseBytes=await fs.readFile(path.join(args.reuse,'report.json'));reuse=JSON.parse(reuseBytes);
+ assert.equal(reuse.schema,'material-pair-pipeline-1');assert.equal(reuse.status,'complete');
+ assert.deepEqual(reuse.configuration,configuration);assert.equal(reuse.probeManifestSha256,hash(bytes));
+ assert.deepEqual(reuse.methods,methods);assert.equal(reuse.targetMode,targetMode);
+ // Only this harness may change. The fitter, target preparation and independent
+ // renderer must be identical before an unchanged target can reuse an export.
+ for(const [file,sha] of Object.entries(reuse.sourceHashes))if(path.resolve(file)!==new URL(import.meta.url).pathname)assert.equal(hash(await fs.readFile(file)),sha,file);
+}
 const report={schema:'material-pair-pipeline-1',status:'running',configuration,methods,targetMode,probeManifestSha256:hash(bytes),rows:[],sourceHashes:{},
  ...(cropReplay?{cropReplay:{path:args.crops,sha256:hash(cropReplayBytes)}}:{}),
+ ...(reuse?{reuseReference:{path:path.join(args.reuse,'report.json'),sha256:hash(reuseBytes)}}:{}),
  scope:'All declared development photos, same full RGB source, no ROI/annotations/reference templates. Fresh crop-to-template attempts for every declared method. Only observed photograph pixels score. Derived-mask agreement does not establish full artwork recovery.',
  order:'Rotate declared methods by photo index; original geometric, feature and paper checks. Search allowance excludes crop detection and final export audit.'};
-for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/foreground-crop.mjs','scripts/inverse/learning/locator-field-source.mjs','scripts/inverse/learning/material-target.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/export-renderer.mjs','scripts/inverse/hard-photo-target.mjs',
+for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/foreground-crop.mjs','scripts/inverse/learning/locator-field-source.mjs','scripts/inverse/learning/material-target.mjs','scripts/inverse/learning/material-palette-target.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/export-renderer.mjs','scripts/inverse/hard-photo-target.mjs',
  ...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator|vendor)\/.+\.(js|mjs|wasm)$/.test(p)).map(p=>'static/inverse/'+p)])report.sourceHashes[file]=hash(await fs.readFile(file));
 await fs.mkdir(output,{recursive:false});
 const save=()=>fs.writeFile(path.join(output,'report.json'),JSON.stringify(report,null,2)+'\n');
@@ -65,7 +78,7 @@ try{
    const store=async(name,data)=>{await fs.writeFile(path.join(folder,name),data);row.assets[name]={path:path.relative(output,path.join(folder,name)),sha256:hash(data)};};
    try{
     let body,material;
-    if(method!=='production'&&(!cropReplay||targetMode==='material')){body=await field(input.assets[method].body);material=await field(input.assets[method].material);}
+    if(method!=='production'&&(!cropReplay||targetMode!=='rgb')){body=await field(input.assets[method].body);material=await field(input.assets[method].material);}
     const began=performance.now();
     let detected;
     if(cropReplay){
@@ -83,7 +96,15 @@ try{
      const imported=prepare({...source,quad:crop.quad,cropProvenance:crop.provenance},configuration);
      preview=imported.preview;target=hardPhotoTarget(imported,'mask',configuration);
     }else{
-     preview=rectifyMaterialPrediction(source,{values:material,resolution:manifest.resolution,window:input.window},crop.quad,configuration.resolution);
+     // Match preprocessPixels' source-size cap; a small photograph must not
+     // silently receive a finer target grid just because its labels came from NN.
+     const resolution=Math.min(configuration.resolution,Math.max(32,Math.min(image.width,image.height)));
+     if(targetMode==='palette'){
+      const calibration=input.materialCalibration?.[method];assert.ok(calibration&&typeof calibration.applied==='boolean');
+      row.materialCalibration=calibration;
+      if(calibration.applied)preview=rectifyMaterialPalette(source,calibration,crop.quad,resolution);
+     }
+     preview??=rectifyMaterialPrediction(source,{values:material,resolution:manifest.resolution,window:input.window},crop.quad,resolution);
      target=prepare({type:'mask',resolution:preview.resolution,mask:preview.mask.slice(),validMask:preview.validMask},{...configuration,invert:false,removeSpecks:0,fillHoles:0}).target;
      assert.deepEqual(target.sourceImage.mask,preview.mask);assert.deepEqual(target.sourceImage.validMask??null,preview.validMask??null);
     }
@@ -91,6 +112,21 @@ try{
     row.observedPixels=preview.validMask?preview.validMask.reduce((a,b)=>a+b,0):n*n;
     await store('crop.png',png(preview.rgb,n,true));await store('mask.png',png(preview.mask,n));
     if(preview.validMask)await store('observed.bin',preview.validMask);
+    const previous=reuse?.rows.find(r=>r.id===row.id&&r.method===method);
+    if(previous?.independentImage&&!previous.reusedFitFrom&&previous.targetMaskSha256===row.targetMaskSha256&&previous.resolution===row.resolution&&
+       JSON.stringify(previous.selectedCrop)===JSON.stringify(row.selectedCrop)&&previous.sourceSha256===row.sourceSha256&&
+       previous.observedPixels===row.observedPixels&&previous.targetMode===row.targetMode&&
+       (previous.assets['observed.bin']?.sha256??null)===(row.assets['observed.bin']?.sha256??null)){
+     for(const [name,asset] of Object.entries(previous.assets)){
+      const file=path.resolve(args.reuse,asset.path);assert.ok(file.startsWith(path.resolve(args.reuse)+path.sep));
+      const raw=await fs.readFile(file);assert.equal(hash(raw),asset.sha256);
+      if(row.assets[name])assert.equal(row.assets[name].sha256,asset.sha256);
+      else{await fs.link(file,path.join(folder,name));row.assets[name]={path:path.relative(output,path.join(folder,name)),sha256:asset.sha256};}
+     }
+     for(const key of ['solveSeconds','report','independentImage','independentFeatures','checkedPair','status'])row[key]=previous[key];
+     row.reusedFitFrom={report:report.reuseReference,id:previous.id,method:previous.method};
+     continue;
+    }
     const started=performance.now(),result=await design(target,configuration);row.solveSeconds=(performance.now()-started)/1000;row.report=result.report;
     for(const name of ['cut_geometry.json','template_left.svg','template_right.svg','weave_preview.svg']){assert.ok(result.files[name]);await store(name,result.files[name]);}
     const render=await renderExportedWeave(result.files['cut_geometry.json'],n);await store('woven.png',render.png);

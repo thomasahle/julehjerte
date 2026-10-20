@@ -1,0 +1,907 @@
+{
+  "schema": "diverse-paper-probe-results-1",
+  "status": "diagnostic-complete-not-a-release",
+  "report": {
+    "path": "tmp/heart-learning/diverse-paper-probe-v1/report.json",
+    "sha256": "d260bf2a94e97b088b2ea997a88b2872183b6df30061ec7a1fad1afe2c97da8a"
+  },
+  "plan": {
+    "path": "docs/inverse/datasets/diverse-paper-probe-plan.json",
+    "sha256": "6e9c656af0f311d508e42654d42f341021489766982927209b9a69aaa34a6d87"
+  },
+  "labelExpansion": {
+    "path": "docs/inverse/datasets/diverse-paper-label-expansion.json",
+    "sha256": "aa4f2a5d1e87342409460073bf3f345feb7030741381d490fef566c5eb2791f1"
+  },
+  "photos": 8,
+  "sourceGroups": 6,
+  "allSourceGroupsAlreadyRepresentedInTraining": true,
+  "trainedPhotoOrReviewedDuplicateOverlap": false,
+  "gallery": [
+    {
+      "path": "tmp/heart-learning/diverse-paper-probe-v1/photos-1.jpg",
+      "sha256": "08cbe8db143b2712d139fe123d30d1a00d243076317ca6d498bbb9bca22e0454",
+      "visuallyInspected": true
+    },
+    {
+      "path": "tmp/heart-learning/diverse-paper-probe-v1/photos-2.jpg",
+      "sha256": "87607e42ede91e356f4d7470bf6caea4dc7ebeac9bcf819641806ac29dde135c",
+      "visuallyInspected": true
+    },
+    {
+      "path": "tmp/heart-learning/diverse-paper-probe-v1/photos-3.jpg",
+      "sha256": "0a77c49d35ab492e53d122ef9834da8509a808f82ea59171bea24ea780e2e8be",
+      "visuallyInspected": true
+    },
+    {
+      "path": "tmp/heart-learning/diverse-paper-probe-v1/photos-4.jpg",
+      "sha256": "7c022350865c936f5085a720e2423f7d35e72b976eccb52a184b1d1ebf773ff5",
+      "visuallyInspected": true
+    }
+  ],
+  "metrics": {
+    "network": {
+      "bodyIoU": 0.869215988170974,
+      "bodyPixelError": 0.04412972611688505,
+      "bodyFalseNegative": 0.006186308602796081,
+      "backgroundFalsePositive": 0.059282229694970684,
+      "materialPixelError": 0.04336650706049559,
+      "materialJointError": 0.046623185013843965,
+      "jointRegionPixelError": 0.059110726591423024,
+      "balancedMaterialJointError": 0.04223639647894137
+    },
+    "learned": {
+      "bodyIoU": 0.869215988170974,
+      "bodyPixelError": 0.04412972611688505,
+      "bodyFalseNegative": 0.006186308602796081,
+      "backgroundFalsePositive": 0.059282229694970684,
+      "materialPixelError": 0.0303094431903687,
+      "materialJointError": 0.03329571106094808,
+      "jointRegionPixelError": 0.05778490869900067,
+      "balancedMaterialJointError": 0.03300916214706584
+    },
+    "rgb": {
+      "bodyIoU": 0.869215988170974,
+      "bodyPixelError": 0.04412972611688505,
+      "bodyFalseNegative": 0.006186308602796081,
+      "backgroundFalsePositive": 0.059282229694970684,
+      "materialPixelError": 0.036520896897798784,
+      "materialJointError": 0.039471893888016994,
+      "jointRegionPixelError": 0.05885865814227529,
+      "balancedMaterialJointError": 0.03873776801252785
+    }
+  },
+  "perPhoto": [
+    {
+      "id": "real-f1af2fbb127278e4-body-1",
+      "review": "Dense checker: model includes the long handle; raw material merges adjacent small cells and loses lobe decoration. Both palette methods visibly restore much of it, despite partial-patch errors already being low.",
+      "scores": {
+        "network": {
+          "id": "real-f1af2fbb127278e4-body-1",
+          "knownBodyPixels": 97881,
+          "knownMaterialPixels": 245,
+          "knownBackgroundPixels": 66598,
+          "knownBodyWithoutMaterialPixels": 31038,
+          "unknownBodyPixels": 4519,
+          "bodyIoU": 0.903328509406657,
+          "bodyPixelError": 0.034123067806826654,
+          "bodyFalseNegative": 0.0023335357862097625,
+          "backgroundFalsePositive": 0.0490555271930088,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.0163265306122449,
+          "materialJointError": 0.0163265306122449,
+          "jointRegionPixelError": 0.04893556542943913,
+          "jointKnownPixels": 66843,
+          "perMaterial": {
+            "A": {
+              "observedMass": 83.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 162.0,
+              "materialError": 0.024691358024691357,
+              "jointError": 0.024691358024691357
+            }
+          },
+          "balancedMaterialJointError": 0.012345679012345678
+        },
+        "learned": {
+          "id": "real-f1af2fbb127278e4-body-1",
+          "knownBodyPixels": 97881,
+          "knownMaterialPixels": 245,
+          "knownBackgroundPixels": 66598,
+          "knownBodyWithoutMaterialPixels": 31038,
+          "unknownBodyPixels": 4519,
+          "bodyIoU": 0.903328509406657,
+          "bodyPixelError": 0.034123067806826654,
+          "bodyFalseNegative": 0.0023335357862097625,
+          "backgroundFalsePositive": 0.0490555271930088,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.048875723710784975,
+          "jointKnownPixels": 66843,
+          "perMaterial": {
+            "A": {
+              "observedMass": 83.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 162.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.0
+        },
+        "rgb": {
+          "id": "real-f1af2fbb127278e4-body-1",
+          "knownBodyPixels": 97881,
+          "knownMaterialPixels": 245,
+          "knownBackgroundPixels": 66598,
+          "knownBodyWithoutMaterialPixels": 31038,
+          "unknownBodyPixels": 4519,
+          "bodyIoU": 0.903328509406657,
+          "bodyPixelError": 0.034123067806826654,
+          "bodyFalseNegative": 0.0023335357862097625,
+          "backgroundFalsePositive": 0.0490555271930088,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.048875723710784975,
+          "jointKnownPixels": 66843,
+          "perMaterial": {
+            "A": {
+              "observedMass": 83.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 162.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.0
+        }
+      }
+    },
+    {
+      "id": "real-19e88a55e6eeaca8-body-1",
+      "review": "Celtic bands: body includes handle and much of the separate pinecone; raw material rounds the interlaced bands. Both palette methods restore crisper visible bands.",
+      "scores": {
+        "network": {
+          "id": "real-19e88a55e6eeaca8-body-1",
+          "knownBodyPixels": 99378,
+          "knownMaterialPixels": 485,
+          "knownBackgroundPixels": 81368,
+          "knownBodyWithoutMaterialPixels": 17525,
+          "unknownBodyPixels": 3022,
+          "bodyIoU": 0.7363944882855624,
+          "bodyPixelError": 0.06487351325243011,
+          "bodyFalseNegative": 0.0,
+          "backgroundFalsePositive": 0.07923262216104611,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.05360824742268041,
+          "materialJointError": 0.05360824742268041,
+          "jointRegionPixelError": 0.07908079117442245,
+          "jointKnownPixels": 81853,
+          "perMaterial": {
+            "A": {
+              "observedMass": 324.0,
+              "materialError": 0.08024691358024691,
+              "jointError": 0.08024691358024691
+            },
+            "B": {
+              "observedMass": 161.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.040123456790123455
+        },
+        "learned": {
+          "id": "real-19e88a55e6eeaca8-body-1",
+          "knownBodyPixels": 99378,
+          "knownMaterialPixels": 485,
+          "knownBackgroundPixels": 81368,
+          "knownBodyWithoutMaterialPixels": 17525,
+          "unknownBodyPixels": 3022,
+          "bodyIoU": 0.7363944882855624,
+          "bodyPixelError": 0.06487351325243011,
+          "bodyFalseNegative": 0.0,
+          "backgroundFalsePositive": 0.07923262216104611,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.07876314857121913,
+          "jointKnownPixels": 81853,
+          "perMaterial": {
+            "A": {
+              "observedMass": 324.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 161.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.0
+        },
+        "rgb": {
+          "id": "real-19e88a55e6eeaca8-body-1",
+          "knownBodyPixels": 99378,
+          "knownMaterialPixels": 485,
+          "knownBackgroundPixels": 81368,
+          "knownBodyWithoutMaterialPixels": 17525,
+          "unknownBodyPixels": 3022,
+          "bodyIoU": 0.7363944882855624,
+          "bodyPixelError": 0.06487351325243011,
+          "bodyFalseNegative": 0.0,
+          "backgroundFalsePositive": 0.07923262216104611,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.07876314857121913,
+          "jointKnownPixels": 81853,
+          "perMaterial": {
+            "A": {
+              "observedMass": 324.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 161.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.0
+        }
+      }
+    },
+    {
+      "id": "real-82eed10fb7484537-body-1",
+      "review": "Red/white checker: handle remains foreground; raw paper classifier rounds and joins some cells. Palette versions have clearer cell boundaries.",
+      "scores": {
+        "network": {
+          "id": "real-82eed10fb7484537-body-1",
+          "knownBodyPixels": 98660,
+          "knownMaterialPixels": 5699,
+          "knownBackgroundPixels": 72531,
+          "knownBodyWithoutMaterialPixels": 20430,
+          "unknownBodyPixels": 3740,
+          "bodyIoU": 0.9021821697396588,
+          "bodyPixelError": 0.028714778025542266,
+          "bodyFalseNegative": 0.0,
+          "backgroundFalsePositive": 0.039059160910507235,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.036213728748561935,
+          "jointKnownPixels": 78230,
+          "perMaterial": {
+            "A": {
+              "observedMass": 2834.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 2865.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.0
+        },
+        "learned": {
+          "id": "real-82eed10fb7484537-body-1",
+          "knownBodyPixels": 98660,
+          "knownMaterialPixels": 5699,
+          "knownBackgroundPixels": 72531,
+          "knownBodyWithoutMaterialPixels": 20430,
+          "unknownBodyPixels": 3740,
+          "bodyIoU": 0.9021821697396588,
+          "bodyPixelError": 0.028714778025542266,
+          "bodyFalseNegative": 0.0,
+          "backgroundFalsePositive": 0.039059160910507235,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.036213728748561935,
+          "jointKnownPixels": 78230,
+          "perMaterial": {
+            "A": {
+              "observedMass": 2834.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 2865.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.0
+        },
+        "rgb": {
+          "id": "real-82eed10fb7484537-body-1",
+          "knownBodyPixels": 98660,
+          "knownMaterialPixels": 5699,
+          "knownBackgroundPixels": 72531,
+          "knownBodyWithoutMaterialPixels": 20430,
+          "unknownBodyPixels": 3740,
+          "bodyIoU": 0.9021821697396588,
+          "bodyPixelError": 0.028714778025542266,
+          "bodyFalseNegative": 0.0,
+          "backgroundFalsePositive": 0.039059160910507235,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.036213728748561935,
+          "jointKnownPixels": 78230,
+          "perMaterial": {
+            "A": {
+              "observedMass": 2834.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 2865.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.0
+        }
+      }
+    },
+    {
+      "id": "real-3019a2560b5d8758-body-1",
+      "review": "Printed floral/striped paper: body includes the detached handle strip and misses a small lower interior. Every material method confuses printing with weave boundaries; calibration increases observed paper error.",
+      "scores": {
+        "network": {
+          "id": "real-3019a2560b5d8758-body-1",
+          "knownBodyPixels": 100395,
+          "knownMaterialPixels": 10632,
+          "knownBackgroundPixels": 65357,
+          "knownBodyWithoutMaterialPixels": 24406,
+          "unknownBodyPixels": 2005,
+          "bodyIoU": 0.7506761250277101,
+          "bodyPixelError": 0.11202749140893471,
+          "bodyFalseNegative": 0.03353501912209601,
+          "backgroundFalsePositive": 0.15410744067200147,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.09452595936794582,
+          "materialJointError": 0.12057938299473288,
+          "jointRegionPixelError": 0.14941636289462948,
+          "jointKnownPixels": 75989,
+          "perMaterial": {
+            "A": {
+              "observedMass": 5410.0,
+              "materialError": 0.1423290203327172,
+              "jointError": 0.1423290203327172
+            },
+            "B": {
+              "observedMass": 5222.0,
+              "materialError": 0.04500191497510533,
+              "jointError": 0.0980467253925699
+            }
+          },
+          "balancedMaterialJointError": 0.12018787286264354
+        },
+        "learned": {
+          "id": "real-3019a2560b5d8758-body-1",
+          "knownBodyPixels": 100395,
+          "knownMaterialPixels": 10632,
+          "knownBackgroundPixels": 65357,
+          "knownBodyWithoutMaterialPixels": 24406,
+          "unknownBodyPixels": 2005,
+          "bodyIoU": 0.7506761250277101,
+          "bodyPixelError": 0.11202749140893471,
+          "bodyFalseNegative": 0.03353501912209601,
+          "backgroundFalsePositive": 0.15410744067200147,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.2424755455229496,
+          "materialJointError": 0.26636568848758463,
+          "jointRegionPixelError": 0.169814052033847,
+          "jointKnownPixels": 75989,
+          "perMaterial": {
+            "A": {
+              "observedMass": 5410.0,
+              "materialError": 0.39371534195933455,
+              "jointError": 0.39371534195933455
+            },
+            "B": {
+              "observedMass": 5222.0,
+              "materialError": 0.08579088471849866,
+              "jointError": 0.1344312523937189
+            }
+          },
+          "balancedMaterialJointError": 0.2640732971765267
+        },
+        "rgb": {
+          "id": "real-3019a2560b5d8758-body-1",
+          "knownBodyPixels": 100395,
+          "knownMaterialPixels": 10632,
+          "knownBackgroundPixels": 65357,
+          "knownBodyWithoutMaterialPixels": 24406,
+          "unknownBodyPixels": 2005,
+          "bodyIoU": 0.7506761250277101,
+          "bodyPixelError": 0.11202749140893471,
+          "bodyFalseNegative": 0.03353501912209601,
+          "backgroundFalsePositive": 0.15410744067200147,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.23993604213694508,
+          "materialJointError": 0.26354401805869077,
+          "jointRegionPixelError": 0.1694192580505073,
+          "jointKnownPixels": 75989,
+          "perMaterial": {
+            "A": {
+              "observedMass": 5410.0,
+              "materialError": 0.3197781885397412,
+              "jointError": 0.3197781885397412
+            },
+            "B": {
+              "observedMass": 5222.0,
+              "materialError": 0.15721945614707009,
+              "jointError": 0.20528533129069323
+            }
+          },
+          "balancedMaterialJointError": 0.2625317599152172
+        }
+      }
+    },
+    {
+      "id": "real-1f38684757a79d85-body-1",
+      "review": "Red/pink checker: body includes surrounding chocolates. Raw material regions are badly distorted; learned-seeded calibration recovers the visible checker more cleanly than RGB clustering. This one success is not a release result.",
+      "scores": {
+        "network": {
+          "id": "real-1f38684757a79d85-body-1",
+          "knownBodyPixels": 100241,
+          "knownMaterialPixels": 14589,
+          "knownBackgroundPixels": 70221,
+          "knownBodyWithoutMaterialPixels": 15431,
+          "unknownBodyPixels": 2159,
+          "bodyIoU": 0.7651232742885056,
+          "bodyPixelError": 0.09114035175227701,
+          "bodyFalseNegative": 0.008627581612258494,
+          "backgroundFalsePositive": 0.12641517494766522,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.17424086640619646,
+          "materialJointError": 0.17424086640619646,
+          "jointRegionPixelError": 0.13464214125692725,
+          "jointKnownPixels": 84810,
+          "perMaterial": {
+            "A": {
+              "observedMass": 6546.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 8043.0,
+              "materialError": 0.31605122466741264,
+              "jointError": 0.31605122466741264
+            }
+          },
+          "balancedMaterialJointError": 0.15802561233370632
+        },
+        "learned": {
+          "id": "real-1f38684757a79d85-body-1",
+          "knownBodyPixels": 100241,
+          "knownMaterialPixels": 14589,
+          "knownBackgroundPixels": 70221,
+          "knownBodyWithoutMaterialPixels": 15431,
+          "unknownBodyPixels": 2159,
+          "bodyIoU": 0.7651232742885056,
+          "bodyPixelError": 0.09114035175227701,
+          "bodyFalseNegative": 0.008627581612258494,
+          "backgroundFalsePositive": 0.12641517494766522,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.10466926070038911,
+          "jointKnownPixels": 84810,
+          "perMaterial": {
+            "A": {
+              "observedMass": 6546.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 8043.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.0
+        },
+        "rgb": {
+          "id": "real-1f38684757a79d85-body-1",
+          "knownBodyPixels": 100241,
+          "knownMaterialPixels": 14589,
+          "knownBackgroundPixels": 70221,
+          "knownBodyWithoutMaterialPixels": 15431,
+          "unknownBodyPixels": 2159,
+          "bodyIoU": 0.7651232742885056,
+          "bodyPixelError": 0.09114035175227701,
+          "bodyFalseNegative": 0.008627581612258494,
+          "backgroundFalsePositive": 0.12641517494766522,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.052231133045445195,
+          "materialJointError": 0.052231133045445195,
+          "jointRegionPixelError": 0.11365405022992571,
+          "jointKnownPixels": 84810,
+          "perMaterial": {
+            "A": {
+              "observedMass": 6546.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 8043.0,
+              "materialError": 0.09474076837001119,
+              "jointError": 0.09474076837001119
+            }
+          },
+          "balancedMaterialJointError": 0.047370384185005596
+        }
+      }
+    },
+    {
+      "id": "real-3a89de4eae04a025-body-1",
+      "review": "Pale printed checker: handle is included; raw material deforms cells. Both palettes appear cleaner on the heart body.",
+      "scores": {
+        "network": {
+          "id": "real-3a89de4eae04a025-body-1",
+          "knownBodyPixels": 100016,
+          "knownMaterialPixels": 7047,
+          "knownBackgroundPixels": 81656,
+          "knownBodyWithoutMaterialPixels": 11313,
+          "unknownBodyPixels": 2384,
+          "bodyIoU": 0.8994394177812746,
+          "bodyPixelError": 0.02044672852343625,
+          "bodyFalseNegative": 0.003758169934640523,
+          "backgroundFalsePositive": 0.02419907906338787,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.00823045267489712,
+          "materialJointError": 0.00823045267489712,
+          "jointRegionPixelError": 0.022930453310485554,
+          "jointKnownPixels": 88703,
+          "perMaterial": {
+            "A": {
+              "observedMass": 4023.0,
+              "materialError": 0.014417101665423813,
+              "jointError": 0.014417101665423813
+            },
+            "B": {
+              "observedMass": 3024.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.007208550832711907
+        },
+        "learned": {
+          "id": "real-3a89de4eae04a025-body-1",
+          "knownBodyPixels": 100016,
+          "knownMaterialPixels": 7047,
+          "knownBackgroundPixels": 81656,
+          "knownBodyWithoutMaterialPixels": 11313,
+          "unknownBodyPixels": 2384,
+          "bodyIoU": 0.8994394177812746,
+          "bodyPixelError": 0.02044672852343625,
+          "bodyFalseNegative": 0.003758169934640523,
+          "backgroundFalsePositive": 0.02419907906338787,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.022276585910284884,
+          "jointKnownPixels": 88703,
+          "perMaterial": {
+            "A": {
+              "observedMass": 4023.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 3024.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.0
+        },
+        "rgb": {
+          "id": "real-3a89de4eae04a025-body-1",
+          "knownBodyPixels": 100016,
+          "knownMaterialPixels": 7047,
+          "knownBackgroundPixels": 81656,
+          "knownBodyWithoutMaterialPixels": 11313,
+          "unknownBodyPixels": 2384,
+          "bodyIoU": 0.8994394177812746,
+          "bodyPixelError": 0.02044672852343625,
+          "bodyFalseNegative": 0.003758169934640523,
+          "backgroundFalsePositive": 0.02419907906338787,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.022276585910284884,
+          "jointKnownPixels": 88703,
+          "perMaterial": {
+            "A": {
+              "observedMass": 4023.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 3024.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.0
+        }
+      }
+    },
+    {
+      "id": "real-1219fc5403d2b5ee-body-1",
+      "review": "Blue/cream star: body is well separated, but raw material rounds joins and loses some small star openings. Zero error on sparse labelled interiors does not measure these holes; palettes preserve more visible detail.",
+      "scores": {
+        "network": {
+          "id": "real-1219fc5403d2b5ee-body-1",
+          "knownBodyPixels": 96690,
+          "knownMaterialPixels": 15446,
+          "knownBackgroundPixels": 48252,
+          "knownBodyWithoutMaterialPixels": 32992,
+          "unknownBodyPixels": 5710,
+          "bodyIoU": 0.9994428854407396,
+          "bodyPixelError": 0.0002792429413589823,
+          "bodyFalseNegative": 2.0644948181180064e-05,
+          "backgroundFalsePositive": 0.0005388377683826578,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.0004081760808816603,
+          "jointKnownPixels": 63698,
+          "perMaterial": {
+            "A": {
+              "observedMass": 9598.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 5848.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.0
+        },
+        "learned": {
+          "id": "real-1219fc5403d2b5ee-body-1",
+          "knownBodyPixels": 96690,
+          "knownMaterialPixels": 15446,
+          "knownBackgroundPixels": 48252,
+          "knownBodyWithoutMaterialPixels": 32992,
+          "unknownBodyPixels": 5710,
+          "bodyIoU": 0.9994428854407396,
+          "bodyPixelError": 0.0002792429413589823,
+          "bodyFalseNegative": 2.0644948181180064e-05,
+          "backgroundFalsePositive": 0.0005388377683826578,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.0004081760808816603,
+          "jointKnownPixels": 63698,
+          "perMaterial": {
+            "A": {
+              "observedMass": 9598.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 5848.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.0
+        },
+        "rgb": {
+          "id": "real-1219fc5403d2b5ee-body-1",
+          "knownBodyPixels": 96690,
+          "knownMaterialPixels": 15446,
+          "knownBackgroundPixels": 48252,
+          "knownBodyWithoutMaterialPixels": 32992,
+          "unknownBodyPixels": 5710,
+          "bodyIoU": 0.9994428854407396,
+          "bodyPixelError": 0.0002792429413589823,
+          "bodyFalseNegative": 2.0644948181180064e-05,
+          "backgroundFalsePositive": 0.0005388377683826578,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.0004081760808816603,
+          "jointKnownPixels": 63698,
+          "perMaterial": {
+            "A": {
+              "observedMass": 9598.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 5848.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.0
+        }
+      }
+    },
+    {
+      "id": "real-13ae4cb788d7049c-body-1",
+      "review": "Purple/cream chalice: body is well separated, but raw material loses small holes in the chalice/bread. Palettes restore them; the current partial labels do not quantify their recovery.",
+      "scores": {
+        "network": {
+          "id": "real-13ae4cb788d7049c-body-1",
+          "knownBodyPixels": 97024,
+          "knownMaterialPixels": 15078,
+          "knownBackgroundPixels": 48485,
+          "knownBodyWithoutMaterialPixels": 33461,
+          "unknownBodyPixels": 5376,
+          "bodyIoU": 0.9971410353976841,
+          "bodyPixelError": 0.0014326352242744064,
+          "bodyFalseNegative": 0.0012155174189826738,
+          "backgroundFalsePositive": 0.0016499948437661133,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.001258593836036688,
+          "jointKnownPixels": 63563,
+          "perMaterial": {
+            "A": {
+              "observedMass": 8231.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 6847.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.0
+        },
+        "learned": {
+          "id": "real-13ae4cb788d7049c-body-1",
+          "knownBodyPixels": 97024,
+          "knownMaterialPixels": 15078,
+          "knownBackgroundPixels": 48485,
+          "knownBodyWithoutMaterialPixels": 33461,
+          "unknownBodyPixels": 5376,
+          "bodyIoU": 0.9971410353976841,
+          "bodyPixelError": 0.0014326352242744064,
+          "bodyFalseNegative": 0.0012155174189826738,
+          "backgroundFalsePositive": 0.0016499948437661133,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.001258593836036688,
+          "jointKnownPixels": 63563,
+          "perMaterial": {
+            "A": {
+              "observedMass": 8231.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 6847.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.0
+        },
+        "rgb": {
+          "id": "real-13ae4cb788d7049c-body-1",
+          "knownBodyPixels": 97024,
+          "knownMaterialPixels": 15078,
+          "knownBackgroundPixels": 48485,
+          "knownBodyWithoutMaterialPixels": 33461,
+          "unknownBodyPixels": 5376,
+          "bodyIoU": 0.9971410353976841,
+          "bodyPixelError": 0.0014326352242744064,
+          "bodyFalseNegative": 0.0012155174189826738,
+          "backgroundFalsePositive": 0.0016499948437661133,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.0,
+          "materialJointError": 0.0,
+          "jointRegionPixelError": 0.001258593836036688,
+          "jointKnownPixels": 63563,
+          "perMaterial": {
+            "A": {
+              "observedMass": 8231.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            },
+            "B": {
+              "observedMass": 6847.0,
+              "materialError": 0.0,
+              "jointError": 0.0
+            }
+          },
+          "balancedMaterialJointError": 0.0
+        }
+      }
+    }
+  ],
+  "verification": {
+    "storedFloat32FieldsReproduceEveryMetricExactly": true,
+    "frozenModelStateUnchanged": true,
+    "focusedTests": [
+      {
+        "file": "scripts/inverse/learning/material_metrics.test.py",
+        "exitCode": 0,
+        "log": {
+          "path": "tmp/heart-learning/diverse-paper-probe-v1/material_metrics.test.py.log",
+          "sha256": "274f6bac38cd9c543013527ca3004ec792d15edc09b5a81dc5a505bd86dbbc90"
+        }
+      },
+      {
+        "file": "scripts/inverse/learning/palette_calibration.test.py",
+        "exitCode": 0,
+        "log": {
+          "path": "tmp/heart-learning/diverse-paper-probe-v1/palette_calibration.test.py.log",
+          "sha256": "0797a603f79e55a5612211749887a547eca16fda33260dc9b3baf57657cc4f17"
+        }
+      },
+      {
+        "file": "scripts/inverse/learning/material_provenance.test.py",
+        "exitCode": 0,
+        "log": {
+          "path": "tmp/heart-learning/diverse-paper-probe-v1/material_provenance.test.py.log",
+          "sha256": "e179a51859ef7788090dbb40483a63d6f93c0b7e7280d48111d8bb6771f32b1a"
+        }
+      }
+    ],
+    "applicationReleaseQa": {
+      "record": "docs/inverse/datasets/conni-release-qa.json",
+      "branchReference": "cc79e22f04dfac466df53f8528d9265da33ea300",
+      "applicationFilesUnchangedSinceRecordedFullChecks": [
+        "src",
+        "static",
+        "package.json",
+        "package-lock.json",
+        "vite.config.ts",
+        "svelte.config.js"
+      ],
+      "scope": "Existing check/lint/test/build evidence applies to unchanged application files. This update adds offline annotations, a diagnostic driver and experiment plans; focused data/material tests and actual probe replay are new. No fresh full application-suite claim."
+    }
+  },
+  "limitations": [
+    "Within-source development photos selected for annotation diversity, not an independent test set.",
+    "Material scores cover small reviewed interiors, not complete design boundaries. Zero patch error can coexist with visibly missing details; no full-mask accuracy or template recovery is measured.",
+    "Colour calibration is measured at 320 pixels here, not full source resolution.",
+    "No cropping, fitting, editable export or browser inference in this diagnostic.",
+    "Models are unchanged; new labels have not yet been used for training."
+  ],
+  "decision": "First test additional body supervision to reject handles and nearby distractors, with fixed training budget and unchanged development evaluation. Material refinement needs denser within-sheet and motif-boundary supervision; low sparse-patch error is insufficient. No production model enabled.",
+  "artifactBytes": 13910275,
+  "nextExperiment": {
+    "controlPlan": "docs/inverse/datasets/u2netp-body-expanded-control-plan.json",
+    "candidatePlan": "docs/inverse/datasets/u2netp-body-expanded-plan.json",
+    "status": "predeclared-not-run",
+    "updatesPerArm": 120,
+    "seed": 20261020,
+    "commonSyntheticDrawsAndReflectionsVerified": true,
+    "allRealPhotosVisitedInSchedule": true,
+    "serialWorkers": 1,
+    "reason": "Compare the extra reviewed body supervision at fixed compute without changing the architecture, cropper or fitter."
+  }
+}

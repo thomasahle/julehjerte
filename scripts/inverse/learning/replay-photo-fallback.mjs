@@ -6,7 +6,9 @@ import {createHash} from 'node:crypto';
 import {createCanvas,loadImage} from 'canvas';
 import {selectPhotoCrop} from './photo-crop-fallback.mjs';
 import {selectReviewedPhotoCrop} from './partial-photo-crop.mjs';
+import {selectWholeBodyPhotoCrop} from './whole-body-crop.mjs';
 import {detectForegroundCrop} from './foreground-crop.mjs';
+import {continuousForeground} from './continuous-foreground.mjs';
 import {detectHeartCrops,supportedCropOutline} from '../../../static/inverse/core/crop.js';
 import {foregroundRegion} from './foreground-region.mjs';
 import {prepare,design} from '../../../static/inverse/core/engine.js';
@@ -44,13 +46,35 @@ if(saliency){
   assert.deepEqual(audit.report,manifest.fieldOrigin.adaptation);
   assert.equal(adaptation.schema,'u2netp-body-adaptation-1');assert.equal(adaptation.status,'complete');
   assert.ok(adaptation.frozenStateUnchanged&&adaptation.sourceSeparation.sourceAndDuplicateSeparationPassed);
-  assert.deepEqual(training.evaluation,study.selection);
+  if(study.evaluationExtension){
+   const extension=await pinned(study.evaluationExtension),evaluated=runtime.evaluationAudit;
+   assert.equal(extension.schema,'body-evaluation-extension-1');
+   assert.deepEqual(extension.trainingPlan,adaptation.plan);assert.deepEqual(extension.originalEvaluation,training.evaluation);
+   assert.deepEqual(extension.selection,study.selection);
+   assert.ok(evaluated?.passed&&evaluated.allEligiblePhotosIncluded&&evaluated.sourceAndDuplicateSeparationPassed);
+   assert.deepEqual(evaluated.extension,study.evaluationExtension);assert.deepEqual(evaluated.selection,study.selection);
+   assert.deepEqual(evaluated.trainingPlan,adaptation.plan);
+   assert.equal(hash(await fs.readFile('scripts/inverse/learning/body_evaluation.py')),runtime.evaluationAuditSourceSha256);
+  }else assert.deepEqual(training.evaluation,study.selection);
   assert.equal(runtime.checkpointSha256,adaptation.checkpointSha256);
   assert.equal(runtime.checkpointSha256,study.model.sha256);
   const nativePlan=await pinned(runtime.plan);assert.deepEqual(nativePlan.selection,study.selection);
+  if(study.evaluationExtension)assert.deepEqual(nativePlan.evaluationExtension,study.evaluationExtension);
   assert.deepEqual(runtime.rows.map(r=>r.id),plan.ids);
  }
  const assets=new Map(catalog.assets.map(r=>[r.id,r]));
+ if(study.trainingSeparation){
+  const adapted=await pinned(study.trainingSeparation.report),training=await pinned(study.trainingSeparation.plan);
+  assert.deepEqual(adapted.plan,study.trainingSeparation.plan);
+  assert.equal(adapted.checkpointSha256,study.checkpoint.sha256);
+  assert.equal(hash(await fs.readFile(study.checkpoint.path)),study.checkpoint.sha256);
+  const train=training.trainIds.map(id=>{const asset=assets.get(id.replace(/-body-\d+$/,''));assert.ok(asset);assert.equal(asset.splitStatus,'unassigned');return asset;});
+  for(const photo of selection.photos){
+   const asset=assets.get(photo.assetId);assert.ok(asset);
+   for(const key of ['id','sha256','nearDuplicateGroup','splitGroupId'])assert.ok(!train.some(a=>a[key]===asset[key]),`${photo.id}: training overlap in ${key}`);
+   assert.ok(!train.some(a=>a.sourceGroups.some(g=>asset.sourceGroups.includes(g))),`${photo.id}: training source overlap`);
+  }
+ }
  assert.deepEqual(plan.ids,selection.photos.map(r=>r.id));assert.deepEqual(manifest.rows.map(r=>r.id),plan.ids);
  for(const [file,digest] of Object.entries(study.sourcePins))assert.equal(hash(await fs.readFile(file)),digest,file);
  for(const [index,row] of manifest.rows.entries()){
@@ -106,6 +130,14 @@ for(const id of plan.ids){
 const configuration={...AUTOMATIC_PRESET,timeLimit:plan.protocol.timeLimitSeconds,trials:plan.protocol.trials};
 const cropStrategy=plan.protocol.cropStrategy??'learned-fields';
 assert.ok(['learned-fields','foreground-region-rgb'].includes(cropStrategy));
+const postprocess=plan.protocol.postprocess;
+assert.ok(!postprocess||(saliency&&['weighted-palette','subpixel-distance','both'].includes(postprocess)));
+const fieldPalette=plan.protocol.fieldPalette??'threshold';
+assert.ok(fieldPalette==='threshold'||saliency&&fieldPalette==='confidence-weighted');
+const outerBoundarySampling=plan.protocol.outerBoundarySampling??false;
+assert.ok(typeof outerBoundarySampling==='boolean'&&(!outerBoundarySampling||saliency));
+const wholeBodyPolicy=['review-whole-body-crop-v1','review-whole-body-balanced-crop-v1'].includes(plan.protocol.policy);
+assert.ok(!wholeBodyPolicy||saliency);
 const control=plan.controlRun?await pinned(plan.controlRun):null;
 if(control){
  assert.equal(control.schema,'material-pair-pipeline-1');assert.equal(control.status,'complete');
@@ -124,8 +156,8 @@ const report={schema:'material-pair-pipeline-1',status:'running',configuration,m
  scope:plan.purpose,comparisonProtocol:plan.protocol,sourceSeparationChecksPassed:true,runtimeNumericalGatePassed:runtime.passed??null,
  runtimeStage:plan.runtimeStage??'browser',
  ...(control?{reusedProductionRun:plan.controlRun}:{})};
-for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/photo-crop-fallback.mjs','scripts/inverse/learning/partial-photo-crop.mjs','scripts/inverse/learning/foreground-crop.mjs',
- 'scripts/inverse/learning/foreground-region.mjs','scripts/inverse/learning/locator-field-source.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs',
+for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/photo-crop-fallback.mjs','scripts/inverse/learning/partial-photo-crop.mjs','scripts/inverse/learning/whole-body-crop.mjs','scripts/inverse/learning/foreground-crop.mjs',
+ 'scripts/inverse/learning/foreground-region.mjs','scripts/inverse/learning/locator-field-source.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/learning/continuous-foreground.mjs','scripts/inverse/learning/outer-boundary-fields.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs',
  ...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator|vendor)\/.+\.(js|mjs|wasm)$/.test(p)).map(p=>'static/inverse/'+p)])report.sourceHashes[file]=hash(await fs.readFile(file));
 await fs.mkdir(args.output,{recursive:false});
 const save=()=>fs.writeFile(path.join(args.output,'report.json'),JSON.stringify(report,null,2)+'\n');
@@ -191,10 +223,16 @@ try{
   const source={type:'pixels',rgba,imageWidth:image.width,imageHeight:image.height};
   const started=performance.now();let neuralSeconds=0,region=null,learnedDetection=null;
   const production=control?JSON.parse((await controlAsset(control.rows.find(r=>r.id===input.id&&r.method==='production').assets['detection.json'])).bytes):null;
-  const selected=await (saliency?selectReviewedPhotoCrop:selectPhotoCrop)(source,{...(production?{productionCrop:()=>production}:{}),learnedCrop:async()=>{
-   const fields=saliency?null:input.assets[manifest.methods[0]],body=await field(saliency?input.assets['probability.f32']:fields.body),start=performance.now();let detected;
+  let cachedBody=null;
+  const bodyField=async()=>cachedBody??(cachedBody=await field(saliency?input.assets['probability.f32']:input.assets[manifest.methods[0]].body));
+  const select=wholeBodyPolicy?selectWholeBodyPhotoCrop:saliency?selectReviewedPhotoCrop:selectPhotoCrop;
+  const selected=await select(source,{...(production?{productionCrop:()=>production}:{}),
+   ...(wholeBodyPolicy?{body:{probability:await bodyField(),resolution:manifest.resolution,window:input.window},
+    weighting:plan.protocol.policy==='review-whole-body-balanced-crop-v1'?'balanced-confidence':'area'}:{}),learnedCrop:async()=>{
+   const fields=saliency?null:input.assets[manifest.methods[0]],body=await bodyField(),start=performance.now();let detected;
    if(saliency){
-    detected=await detectForegroundCrop(source,{probability:body,resolution:manifest.resolution,window:input.window});
+    detected=await detectForegroundCrop(source,{probability:body,resolution:manifest.resolution,window:input.window,paletteMode:fieldPalette,outerBoundarySampling,
+     ...(postprocess?{refineFields:fields=>continuousForeground(fields,{palette:postprocess!=='subpixel-distance',distance:postprocess!=='weighted-palette'})}:{})});
    }else if(cropStrategy==='foreground-region-rgb'){
     region=foregroundRegion({probability:body,resolution:256,window:input.window,imageWidth:source.imageWidth,imageHeight:source.imageHeight});
     detected=region.roi?await detectHeartCrops(source,{roi:region.roi}):{status:'not_found',reason:region.reason,candidates:[]};

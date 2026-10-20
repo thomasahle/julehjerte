@@ -1,0 +1,132 @@
+{
+  "schema": "u2netp-body-adaptation-plan-1",
+  "status": "predeclared",
+  "source": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-source-v1/u2netp.pth",
+    "sha256": "e7567cde013fb64813973ce6e1ecc25a80c05c3ca7adbc5a54f3c3d90991b854"
+  },
+  "sourceManifest": {
+    "path": "docs/inverse/datasets/real-manifest.json",
+    "sha256": "999544ef30b1d71095e1630d7f834e162e2aa6145181df10107a831aa2eda350"
+  },
+  "annotations": {
+    "path": "scripts/inverse/datasets/real-materials-expanded.json",
+    "sha256": "98f7dbf288fd39087681439eaf9cd70ac9e64fe40c0650b8d9fcf057d242dd9e"
+  },
+  "evaluation": {
+    "path": "docs/inverse/datasets/u2netp-continuous-selection.json",
+    "sha256": "6d4e0e7550fedf5c13333bdc90db28a98eb5ff9ce2de260f32e2d015f5128f52"
+  },
+  "syntheticParent": {
+    "path": "tmp/heart-learning/foreground-scene-v1/scene-trained/report.json",
+    "sha256": "f3a71ff6de0cb0a00fe8db15051631d131b6cbd71bf607bd607acae5d101929c"
+  },
+  "trainIds": [
+    "real-8c875dd0f298b5a4-body-1",
+    "real-995899fe049540ed-body-1",
+    "real-b87b0b19f12724f3-body-1",
+    "real-cf2d0fcff65d7386-body-1",
+    "real-cdae5c890b6933cd-body-1",
+    "real-68d8f25d8891df62-body-1",
+    "real-5330aa8b62176216-body-1",
+    "real-abf590088db891f9-body-1",
+    "real-990ac34431be87fe-body-1",
+    "real-12ce3c9180f7f317-body-1",
+    "real-d5b0aa8d4d2465ee-body-1",
+    "real-39f3a1ba97852876-body-1",
+    "real-e936e08ac62db19b-body-1",
+    "real-340f5e5b0f447889-body-1",
+    "real-710703159f609111-body-1",
+    "real-a414dfffbd2362ae-body-1",
+    "real-f1af2fbb127278e4-body-1",
+    "real-19e88a55e6eeaca8-body-1",
+    "real-82eed10fb7484537-body-1",
+    "real-3019a2560b5d8758-body-1",
+    "real-1f38684757a79d85-body-1",
+    "real-3a89de4eae04a025-body-1",
+    "real-1219fc5403d2b5ee-body-1",
+    "real-13ae4cb788d7049c-body-1"
+  ],
+  "protocol": {
+    "resolution": 320,
+    "skimage": "0.24.0",
+    "threads": 1,
+    "seed": 20261020,
+    "updates": 120,
+    "batchSize": 2,
+    "realPerBatch": 1,
+    "syntheticGeometries": 32,
+    "learningRate": 0.0001,
+    "weightDecay": 0.0001,
+    "input": "Unmodified publisher RescaleT(320) and ToTensorLab(flag=0), full original EXIF-oriented RGB. No corner, mask or ROI input.",
+    "target": "Whole selected paper body. Real polygons rasterized directly at stretched source pixel centres, retaining source-pixel uncertainty and occlusions. Synthetic labels from saved geometry, same across original/scene pairs. Material and corner annotations never enter loss.",
+    "architecture": "Original 1,131,181-parameter U2NETP. Freeze stages 1 through 6 and every BatchNorm statistic; train decoder stages 1d through 5d, side heads and fused output.",
+    "loss": "Existing per-image masked BCE-with-logits plus Dice on the fused raw logit; unknown pixels have zero gradient.",
+    "augmentation": "Independent horizontal and vertical reflection of input and target together.",
+    "checkpointSelection": "Final update only; no early stopping, held-out loss, alternative hyperparameters or per-photo checkpoint choices.",
+    "inference": "Keep the publisher fused sigmoid head and per-image min/max normalization. No change of threshold, preprocessing or crop policy.",
+    "evaluation": "First audit the checkpoint, frozen encoder and training predictions. Compare the fresh 16-photo control with the 24-photo candidate on the unchanged, previously inspected 32-photo development cohort. Full pipeline and editable validation decide utility; training IoU cannot promote either model. New eight photos are training diagnostics, not evaluation."
+  },
+  "resources": {
+    "minimumFreeGiB": 10,
+    "maxArtifactMiB": 40,
+    "workers": 1,
+    "newSourcePhotoCopies": 0,
+    "newPhotoDownloads": 0
+  },
+  "scope": "Expanded arm of the fresh paired control/candidate study. Motivated by handles, detached paper and scene objects entering predicted foreground. Same publisher checkpoint, seed, architecture, loss, optimizer, 120-update budget, synthetic draws and reflections as the fresh 16-photo control; change only the real-photo pool to 24. All six added source groups already occur in the prior training subset. Current evaluation source/duplicate separation is preserved. No material-head training or production model integration.",
+  "pairedReference": {
+    "controlPlan": {
+      "path": "docs/inverse/datasets/u2netp-body-expanded-control-plan.json",
+      "sha256": "288214b358c3ebf5d344e69432a49a08acd70683a911e413d319e835e6913300"
+    },
+    "historicalReferenceOnly": {
+      "path": "tmp/heart-learning/u2netp-body-adaptation-v1/report.json",
+      "sha256": "8957773143a429a0be49093191d65c6c9e5f68f512fd99e352541ee9951ce6e3"
+    },
+    "labelAudit": {
+      "path": "docs/inverse/datasets/diverse-paper-label-expansion.json",
+      "sha256": "aa4f2a5d1e87342409460073bf3f345feb7030741381d490fef566c5eb2791f1"
+    },
+    "freshControlRequired": true,
+    "samePublisherInitialization": true,
+    "sameOptimizerAndUpdateBudget": true,
+    "sameSyntheticDrawsAndReflections": true,
+    "expectedDrawsSha256": {
+      "16": "6aa4ef8906066b777c6b6933f46e9bb738afe41c954b51b9255dfc3e9224d9f5",
+      "24": "7112ff3458f2de93650cdc5a0787af4c136bb743d55827815d8965aeb8ec3bb4"
+    },
+    "expectedRealVisits": {
+      "real-8c875dd0f298b5a4-body-1": 6,
+      "real-995899fe049540ed-body-1": 9,
+      "real-b87b0b19f12724f3-body-1": 6,
+      "real-cf2d0fcff65d7386-body-1": 7,
+      "real-cdae5c890b6933cd-body-1": 2,
+      "real-68d8f25d8891df62-body-1": 6,
+      "real-5330aa8b62176216-body-1": 5,
+      "real-abf590088db891f9-body-1": 7,
+      "real-990ac34431be87fe-body-1": 4,
+      "real-12ce3c9180f7f317-body-1": 9,
+      "real-d5b0aa8d4d2465ee-body-1": 4,
+      "real-39f3a1ba97852876-body-1": 6,
+      "real-e936e08ac62db19b-body-1": 5,
+      "real-340f5e5b0f447889-body-1": 3,
+      "real-710703159f609111-body-1": 5,
+      "real-a414dfffbd2362ae-body-1": 3,
+      "real-f1af2fbb127278e4-body-1": 3,
+      "real-19e88a55e6eeaca8-body-1": 9,
+      "real-82eed10fb7484537-body-1": 2,
+      "real-3019a2560b5d8758-body-1": 4,
+      "real-1f38684757a79d85-body-1": 4,
+      "real-3a89de4eae04a025-body-1": 3,
+      "real-1219fc5403d2b5ee-body-1": 5,
+      "real-13ae4cb788d7049c-body-1": 3
+    },
+    "preflightNote": "Reusing historical seed 20261019 for 24 photos would never visit the Celtic-bands example (index 17). Use current-date seed 20261020 in both fresh arms; all 16/24 photos are visited. No model was trained or evaluated while choosing the schedule.",
+    "interpretation": "Same 120 updates and synthetic/reflection schedule. Real draws sample 24 photos instead of 16; old-photo exposure decreases. This measures replacing some real draws with new reviewed photos at fixed budget. It does not measure extra optimization steps or new source groups."
+  }
+}

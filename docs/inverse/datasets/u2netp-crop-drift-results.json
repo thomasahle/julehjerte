@@ -1,0 +1,83 @@
+{
+  "schema": "saliency-crop-drift-results-1",
+  "status": "diagnosed-not-fixed",
+  "date": "2026-10-19",
+  "diagnostic": {
+    "path": "tmp/heart-learning/u2netp-crop-drift-v1/report.json",
+    "sha256": "aa035114804eb663f3901d5d2a5c6a876e52522db6a6357dfb39ff0f5defd865"
+  },
+  "plan": "docs/inverse/datasets/u2netp-crop-drift-plan.json",
+  "cases": [
+    {
+      "id": "real-dfa7e4b71b43aa86-body-1",
+      "cause": "Palette membership cutoff changes the global chroma field.",
+      "workingForegroundThresholdChanges": 0,
+      "workingPaletteSampleChanges": 1,
+      "changedMaskPixels": 0,
+      "changedPaperDistancePixels": 0,
+      "maximumPaperDistanceDifference": 0,
+      "interventions": {
+        "body": {
+          "distanceToReference": 1.9363415417426384,
+          "distanceToNative": 0
+        },
+        "colours": {
+          "distanceToReference": 0,
+          "distanceToNative": 1.9363415417426384
+        },
+        "thresholdedGeometry": {
+          "distanceToReference": 1.9363415417426384,
+          "distanceToNative": 0
+        },
+        "chroma": {
+          "distanceToReference": 0,
+          "distanceToNative": 1.9363415417426384
+        },
+        "capProbabilities": {
+          "distanceToReference": 1.9363415417426384,
+          "distanceToNative": 0
+        }
+      },
+      "interpretation": "One sample crossing 0.95 changes one fitted paper colour; substituting chroma alone restores the original crop while body and cap-probability substitutions leave the shifted crop unchanged."
+    },
+    {
+      "id": "real-702942779385436c-body-1",
+      "cause": "A resampled foreground threshold change alters the distance objective.",
+      "workingForegroundThresholdChanges": 1,
+      "workingPaletteSampleChanges": 0,
+      "changedMaskPixels": 1,
+      "changedPaperDistancePixels": 589,
+      "maximumPaperDistanceDifference": 0.6767767071723938,
+      "interventions": {
+        "body": {
+          "distanceToReference": 0,
+          "distanceToNative": 0.9442962906082347
+        },
+        "colours": {
+          "distanceToReference": 0.9442962906082347,
+          "distanceToNative": 0
+        },
+        "thresholdedGeometry": {
+          "distanceToReference": 0,
+          "distanceToNative": 0.9442962906082347
+        },
+        "chroma": {
+          "distanceToReference": 0.9442962906082347,
+          "distanceToNative": 0
+        },
+        "capProbabilities": {
+          "distanceToReference": 0.9442962906082347,
+          "distanceToNative": 0
+        }
+      },
+      "interpretation": "One pixel crossing 0.5 changes 589 paper-distance samples by up to 0.677 working pixels. Body or thresholded-geometry substitution restores the original crop; colour/chroma substitutions do not."
+    }
+  ],
+  "scope": "Causal field substitutions on two previously observed development failures. All PyTorch, native ONNX and browser crops first reproduced exactly. No new quality cohort, training, production change or relaxed export gate.",
+  "next": "Evaluate continuous palette weights and subpixel foreground distance geometry as separately measured interventions. Preserve baseline failures and validate any selected method on the full development pipeline before a fresh evaluation.",
+  "geometryFollowup": {
+    "path": "tmp/heart-learning/u2netp-crop-drift-geometry-v1/report.json",
+    "sha256": "2824271126efb541c9e050c28d76ab34e8d4880f9e8deb5ba7acb1041568002a",
+    "finding": "Replacing the paper-distance field alone restores the second reference crop exactly; replacing the component mask or colour-distance fields does not. The second failure is therefore specifically amplified by the paper-distance objective, not component selection."
+  }
+}

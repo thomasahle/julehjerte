@@ -1,0 +1,65 @@
+{
+  "schema": "saliency-photo-crop-fallback-plan-1",
+  "study": {
+    "path": "docs/inverse/datasets/u2netp-expanded-native-study-plan.json",
+    "sha256": "8b19eeaa6a653e11f744c318799378bfbedaa4337299ee1e115cd193a9337315"
+  },
+  "purpose": "Expanded development evaluation, not untouched holdout or independent motif proof. Compare one fixed NN/crop policy with production. No claim of better template quality from training metrics or lower error against a changed target.",
+  "runtimeStage": "native-development",
+  "probe": {
+    "path": "tmp/heart-learning/u2netp-expanded-probe-v1/manifest.json",
+    "sha256": "01a556c77f4663b6f445bbdd62736608bd225045a5823c8dfc139dffe13cd936"
+  },
+  "runtimeEvidence": {
+    "path": "tmp/heart-learning/u2netp-expanded-probe-v1/report.json",
+    "sha256": "d8ee92a3421ab4aa396f8e7acd7fd0181b2df58cb0b3afc7cb149a883d71d80c"
+  },
+  "adaptationAudit": {
+    "path": "tmp/heart-learning/u2netp-body-adaptation-v1/audit.json",
+    "sha256": "17c41815cb650034ce1bf85a33e8325ca72137acd5d319e8b330875d55020afb"
+  },
+  "ids": [
+    "real-1fa372c6288da69f-body-1",
+    "real-26c948c0aa94f483-body-1",
+    "real-27c86e56296f2df5-body-1",
+    "real-31ed1172998ab1c5-body-1",
+    "real-4066fe9f9aafb3e4-body-1",
+    "real-7076a4d811c096db-body-1",
+    "real-867f0e5852ebeba9-body-1",
+    "real-931ac5ea86dbe082-body-1",
+    "real-962159dea653810f-body-1",
+    "real-970f4be1bd64e5d7-body-1",
+    "real-9b47cfbdf0004f4d-body-1",
+    "real-a96b58bb0d45cb5c-body-1",
+    "real-c7bc99827b382da7-body-1",
+    "real-d6d0462384722949-body-1",
+    "real-e15ec1906fab0f9c-body-1",
+    "real-e4baad0c914577c8-body-1",
+    "real-e9131a2d52b78220-body-1",
+    "real-f882e57ac79e63d3-body-1"
+  ],
+  "protocol": {
+    "policy": "retain-production-reviewed-partial-fallback-v1",
+    "selection": "Keep every production crop. Only if none exists, accept an outline-supported neural proposal with observed rectified overlap >=99% and maximum axis-normalized extrapolation <=5%, always needs_review. Use analytic projective coverage; no mask score or template selects the crop.",
+    "observedFraction": 0.99,
+    "maximumExtrapolation": 0.05,
+    "timeLimitSeconds": 10,
+    "trials": 0,
+    "target": "mask",
+    "methods": [
+      "production",
+      "fallback"
+    ],
+    "classifier": "Unchanged RGB mixture classifier",
+    "fits": "Fresh production controls on all 18 additional photos; share a fit only for identical source/crop/settings. Fresh-fit each neural addition. On the original 32 photos, reuse pinned production controls and freshly fit each neural crop for this fixed policy.",
+    "validation": "Independent exported weave error <=3%, original feature checks, geometry/paper checks, production editable conversion and independent editable-paper audit. Visual review of all photos/crops and distinct outputs.",
+    "missing": "No manual rescue or result-dependent replacement. Record photo eligibility misclassifications and possible irregular weaving separately without removing them from primary denominators.",
+    "fieldPalette": "confidence-weighted",
+    "outerBoundarySampling": true
+  },
+  "resources": {
+    "artifactBudgetMiB": 40,
+    "workers": 1,
+    "newSourcePhotoCopies": 0
+  }
+}

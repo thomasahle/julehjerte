@@ -1,0 +1,48 @@
+{
+  "schema": "u2netp-probe-plan-1",
+  "status": "predeclared",
+  "source": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-body-exposure-control-v1/model.pt",
+    "sha256": "de290ebde3faf2065390877c7e6cdbf52b55e37a3871c9a9c4e968597b8a2cc7"
+  },
+  "adaptation": {
+    "path": "tmp/heart-learning/u2netp-body-exposure-control-v1/report.json",
+    "sha256": "748ecd411fd77cfe451ea17b822cc01f7dc5a8e1b63422417e6f78c87c5d9cbd"
+  },
+  "selection": {
+    "path": "docs/inverse/datasets/u2netp-continuous-selection.json",
+    "sha256": "6d4e0e7550fedf5c13333bdc90db28a98eb5ff9ce2de260f32e2d015f5128f52"
+  },
+  "control": {
+    "path": "tmp/heart-learning/u2netp-body-adapted-browser-pipeline-v1/report.json",
+    "sha256": "e8c711d1c44db311a5f8e9aae0500f9e0b2bced4ca8bfc8c2d522df12ec8709a"
+  },
+  "pairedStudy": {
+    "path": "docs/inverse/datasets/u2netp-body-exposure-evaluation-plan.json",
+    "sha256": "808036019f1ed444c71cfd43d08350695e2578f6f85e426e6720c75d9ec7cb33"
+  },
+  "protocol": {
+    "resolution": 320,
+    "skimage": "0.24.0",
+    "threads": 1,
+    "pairedControl": "fresh-production",
+    "input": "Unmodified publisher RescaleT(320) and ToTensorLab(flag=0), full original EXIF-oriented RGB. No corner, mask or ROI input.",
+    "output": "Keep the publisher fused sigmoid head and per-image min/max normalization. No change of threshold, preprocessing or crop policy.",
+    "pipeline": "Keep every production crop. Only if none exists, accept an outline-supported neural proposal with observed rectified overlap >=99% and maximum axis-normalized extrapolation <=5%, always needs_review. Use analytic projective coverage; no mask score or template selects the crop."
+  },
+  "resources": {
+    "maxProbeMiB": 16,
+    "workers": 1,
+    "newPhotoDownloads": 0,
+    "newSourcePhotoCopies": 0
+  },
+  "scope": "Paired added-exposure experiment, not an exposure-only causal proof. Both arms have equal 180-update compute and preserve all old 120 visits; one allocates the added real visits to new data, the other to old data. Compare with prior 120-update results while acknowledging more optimizer updates and synthetic exposure. Native development only; no browser parity or production-release claim.",
+  "generatedBy": {
+    "path": "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/pin-body-evaluation.py",
+    "sha256": "1d435384b9ec4797a31f3f7350a2ad06d1c120633bebf9262c8689aec8a4d9e3"
+  }
+}

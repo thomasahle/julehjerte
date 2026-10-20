@@ -1,0 +1,26 @@
+{
+  "package": "onnxruntime-web",
+  "version": "1.19.2",
+  "registry": "https://registry.npmjs.org/onnxruntime-web/1.19.2",
+  "integrity": "sha512-r0ok6KpTUXR4WA+rHvUiZn7JoH02e8iS7XE1p5bXk7q3E0UaRFfYvpMNUHqEPiTBMuIssfBxDCQjUihV8dDFPg==",
+  "files": {
+    "ort.wasm.min.js": {
+      "sha256": "98e831517582c08fc1b729def487a8b0152c83fc641746137eb4c7ad46032f1c",
+      "bytes": 46436
+    },
+    "ort-wasm-simd-threaded.mjs": {
+      "sha256": "d870a377322c3053fb97432d548423f165dd15e2af232947592fc07b0d2f3639",
+      "bytes": 24503
+    },
+    "ort-wasm-simd-threaded.wasm": {
+      "sha256": "1bf0b9ed7ad025cf9ca88ce6da29e54df3f128a169f8241d71823e81f078d578",
+      "bytes": 11018731
+    }
+  },
+  "licenseSource": "MIT license and notices from the corresponding ONNX Runtime 1.19.2 distribution",
+  "esmAdapter": {
+    "path": "ort.module.mjs",
+    "change": "Prefix comment and named export appended; the bundled implementation is unchanged.",
+    "sha256": "ffb804ccb533bed9e2e85a17e20c2340020f6872dde770be21176c208daa122e"
+  }
+}

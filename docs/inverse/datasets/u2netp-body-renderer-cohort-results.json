@@ -1,0 +1,81 @@
+{
+  "schema": "body-renderer-cohort-results-1",
+  "report": {
+    "path": "tmp/heart-learning/u2netp-body-renderer-cohort-v2/report.json",
+    "sha256": "4010c21a81e8102880a0d1b32c2b12b63c8000acc13850516276dc816653d559"
+  },
+  "plan": {
+    "path": "docs/inverse/datasets/u2netp-body-renderer-cohort-plan.json",
+    "sha256": "a6e89e790c7a532f49393fac1cfa0677b0d13eb61a9cecb8d377defde9034cf4"
+  },
+  "exports": 31,
+  "allSavedMasksReproducedExactly": true,
+  "allEditorGeometryPaperChecksRerun": true,
+  "groups": {
+    "production": {
+      "exports": 21,
+      "imageFeaturesAndPaperPassCounts": [
+        9,
+        9,
+        9,
+        9
+      ]
+    },
+    "control": {
+      "exports": 5,
+      "imageFeaturesAndPaperPassCounts": [
+        2,
+        3,
+        3,
+        3
+      ]
+    },
+    "candidate": {
+      "exports": 5,
+      "imageFeaturesAndPaperPassCounts": [
+        3,
+        3,
+        3,
+        3
+      ]
+    }
+  },
+  "precision": [
+    {
+      "flatnessCells": 0.25,
+      "maximumPixelsChangedFromPrevious": 0,
+      "medianRenderMilliseconds": 2.501083000000108,
+      "maxRenderMilliseconds": 5.8772089999999935
+    },
+    {
+      "flatnessCells": 0.025,
+      "maximumPixelsChangedFromPrevious": 207,
+      "medianRenderMilliseconds": 5.683957999997801,
+      "maxRenderMilliseconds": 8.798416999998153
+    },
+    {
+      "flatnessCells": 0.0025,
+      "maximumPixelsChangedFromPrevious": 30,
+      "medianRenderMilliseconds": 19.127207999998063,
+      "maxRenderMilliseconds": 143.9263340000034
+    },
+    {
+      "flatnessCells": 0.00025,
+      "maximumPixelsChangedFromPrevious": 4,
+      "medianRenderMilliseconds": 26.10870799999975,
+      "maxRenderMilliseconds": 41.62312500000189
+    }
+  ],
+  "scope": "All 31 distinct saved exports from the paired 180-update body comparison, including 21 reused production outputs and all ten fresh neural fallback outputs. Unresolved crops stay failures in the 32-photo denominator. Use saved editable SVGs and original observed pixels; no geometry, training, crop, refit, acceptance-limit or production-renderer changes. Four fixed flattening tolerances assess convergence; saved original scores remain authoritative. Independent exported-geometry SVG samples also include conversion differences. Editor intersections and geometry/paper checks are rerun on each saved SVG; image and feature checks are recalculated at every precision. Timing is offline rendering only, not browser inference or end-to-end speed.",
+  "changedPasses": [
+    {
+      "group": "control",
+      "id": "real-24b5ed49c9411b11-body-1",
+      "originalMismatch": 0.030075,
+      "finestMismatch": 0.02969375
+    }
+  ],
+  "maximumFinestVsSupersampledExportPixels": 73,
+  "conclusion": "Only the previously identified control stacked-heart output changes image/feature/paper classification. All 21 production and all five candidate classifications stay unchanged. Both neural arms cover the same twelve designs under every finer diagnostic precision; original recorded counts remain 11 and 12. Between the two finest flattening levels at most four pixels change, without any additional classification change. No new recovered design or deployed renderer change.",
+  "executionNote": "Initial run v1 stopped before completing any row because the diagnostic omitted the required slit-count argument to the physical audit. Corrected driver passed all 31 outputs in v2. The failed log is retained; it contributes no successful measurements."
+}

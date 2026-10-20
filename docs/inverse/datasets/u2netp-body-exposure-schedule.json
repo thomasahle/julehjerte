@@ -1,0 +1,1862 @@
+{
+  "schema": "paired-body-exposure-schedule-1",
+  "baseline": {
+    "path": "tmp/heart-learning/u2netp-body-expanded-control-v1/report.json",
+    "sha256": "57b914d00f30aa9a4252b4c90d419d98db365681af0a7fd639a3b0c4e39080a7"
+  },
+  "syntheticCount": 64,
+  "trainIds": {
+    "control": [
+      "real-8c875dd0f298b5a4-body-1",
+      "real-995899fe049540ed-body-1",
+      "real-b87b0b19f12724f3-body-1",
+      "real-cf2d0fcff65d7386-body-1",
+      "real-cdae5c890b6933cd-body-1",
+      "real-68d8f25d8891df62-body-1",
+      "real-5330aa8b62176216-body-1",
+      "real-abf590088db891f9-body-1",
+      "real-990ac34431be87fe-body-1",
+      "real-12ce3c9180f7f317-body-1",
+      "real-d5b0aa8d4d2465ee-body-1",
+      "real-39f3a1ba97852876-body-1",
+      "real-e936e08ac62db19b-body-1",
+      "real-340f5e5b0f447889-body-1",
+      "real-710703159f609111-body-1",
+      "real-a414dfffbd2362ae-body-1"
+    ],
+    "candidate": [
+      "real-8c875dd0f298b5a4-body-1",
+      "real-995899fe049540ed-body-1",
+      "real-b87b0b19f12724f3-body-1",
+      "real-cf2d0fcff65d7386-body-1",
+      "real-cdae5c890b6933cd-body-1",
+      "real-68d8f25d8891df62-body-1",
+      "real-5330aa8b62176216-body-1",
+      "real-abf590088db891f9-body-1",
+      "real-990ac34431be87fe-body-1",
+      "real-12ce3c9180f7f317-body-1",
+      "real-d5b0aa8d4d2465ee-body-1",
+      "real-39f3a1ba97852876-body-1",
+      "real-e936e08ac62db19b-body-1",
+      "real-340f5e5b0f447889-body-1",
+      "real-710703159f609111-body-1",
+      "real-a414dfffbd2362ae-body-1",
+      "real-f1af2fbb127278e4-body-1",
+      "real-19e88a55e6eeaca8-body-1",
+      "real-82eed10fb7484537-body-1",
+      "real-3019a2560b5d8758-body-1",
+      "real-1f38684757a79d85-body-1",
+      "real-3a89de4eae04a025-body-1",
+      "real-1219fc5403d2b5ee-body-1",
+      "real-13ae4cb788d7049c-body-1"
+    ]
+  },
+  "extraSeeds": {
+    "common": 20261021,
+    "controlRealOrder": 20261022,
+    "candidateRealOrder": 20261023
+  },
+  "rows": [
+    {
+      "synthetic": 54,
+      "control": 13,
+      "candidate": 13,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 0
+    },
+    {
+      "synthetic": 46,
+      "control": 5,
+      "candidate": 5,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 1
+    },
+    {
+      "synthetic": 49,
+      "control": 6,
+      "candidate": 19,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 25,
+      "control": 1,
+      "candidate": 1,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 2
+    },
+    {
+      "synthetic": 52,
+      "control": 11,
+      "candidate": 11,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 3
+    },
+    {
+      "synthetic": 1,
+      "control": 12,
+      "candidate": 21,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 56,
+      "control": 4,
+      "candidate": 4,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 4
+    },
+    {
+      "synthetic": 38,
+      "control": 9,
+      "candidate": 9,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 5
+    },
+    {
+      "synthetic": 51,
+      "control": 8,
+      "candidate": 16,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 39,
+      "control": 8,
+      "candidate": 8,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 6
+    },
+    {
+      "synthetic": 44,
+      "control": 11,
+      "candidate": 11,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 7
+    },
+    {
+      "synthetic": 29,
+      "control": 7,
+      "candidate": 22,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 28,
+      "control": 1,
+      "candidate": 1,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 8
+    },
+    {
+      "synthetic": 3,
+      "control": 5,
+      "candidate": 5,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 9
+    },
+    {
+      "synthetic": 51,
+      "control": 1,
+      "candidate": 23,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 29,
+      "control": 14,
+      "candidate": 14,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 10
+    },
+    {
+      "synthetic": 47,
+      "control": 11,
+      "candidate": 11,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 11
+    },
+    {
+      "synthetic": 28,
+      "control": 13,
+      "candidate": 17,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 23,
+      "control": 10,
+      "candidate": 10,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 12
+    },
+    {
+      "synthetic": 1,
+      "control": 13,
+      "candidate": 13,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 13
+    },
+    {
+      "synthetic": 7,
+      "control": 5,
+      "candidate": 18,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 56,
+      "control": 8,
+      "candidate": 8,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 14
+    },
+    {
+      "synthetic": 47,
+      "control": 4,
+      "candidate": 4,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 15
+    },
+    {
+      "synthetic": 52,
+      "control": 15,
+      "candidate": 20,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 6,
+      "control": 0,
+      "candidate": 0,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 16
+    },
+    {
+      "synthetic": 29,
+      "control": 15,
+      "candidate": 15,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 17
+    },
+    {
+      "synthetic": 39,
+      "control": 14,
+      "candidate": 21,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 32,
+      "control": 3,
+      "candidate": 3,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 18
+    },
+    {
+      "synthetic": 41,
+      "control": 9,
+      "candidate": 9,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 19
+    },
+    {
+      "synthetic": 33,
+      "control": 10,
+      "candidate": 18,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 35,
+      "control": 0,
+      "candidate": 0,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 20
+    },
+    {
+      "synthetic": 23,
+      "control": 0,
+      "candidate": 0,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 21
+    },
+    {
+      "synthetic": 18,
+      "control": 3,
+      "candidate": 20,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 0,
+      "control": 6,
+      "candidate": 6,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 22
+    },
+    {
+      "synthetic": 45,
+      "control": 11,
+      "candidate": 11,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 23
+    },
+    {
+      "synthetic": 7,
+      "control": 0,
+      "candidate": 17,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 37,
+      "control": 0,
+      "candidate": 0,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 24
+    },
+    {
+      "synthetic": 31,
+      "control": 4,
+      "candidate": 4,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 25
+    },
+    {
+      "synthetic": 6,
+      "control": 2,
+      "candidate": 22,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 49,
+      "control": 11,
+      "candidate": 11,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 26
+    },
+    {
+      "synthetic": 22,
+      "control": 1,
+      "candidate": 1,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 27
+    },
+    {
+      "synthetic": 32,
+      "control": 4,
+      "candidate": 23,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 32,
+      "control": 1,
+      "candidate": 1,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 28
+    },
+    {
+      "synthetic": 35,
+      "control": 11,
+      "candidate": 11,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 29
+    },
+    {
+      "synthetic": 1,
+      "control": 9,
+      "candidate": 19,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 14,
+      "control": 13,
+      "candidate": 13,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 30
+    },
+    {
+      "synthetic": 24,
+      "control": 3,
+      "candidate": 3,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 31
+    },
+    {
+      "synthetic": 46,
+      "control": 11,
+      "candidate": 16,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 19,
+      "control": 7,
+      "candidate": 7,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 32
+    },
+    {
+      "synthetic": 52,
+      "control": 6,
+      "candidate": 6,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 33
+    },
+    {
+      "synthetic": 13,
+      "control": 6,
+      "candidate": 19,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 41,
+      "control": 2,
+      "candidate": 2,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 34
+    },
+    {
+      "synthetic": 23,
+      "control": 3,
+      "candidate": 3,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 35
+    },
+    {
+      "synthetic": 38,
+      "control": 5,
+      "candidate": 17,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 54,
+      "control": 5,
+      "candidate": 5,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 36
+    },
+    {
+      "synthetic": 26,
+      "control": 7,
+      "candidate": 7,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 37
+    },
+    {
+      "synthetic": 10,
+      "control": 8,
+      "candidate": 16,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 59,
+      "control": 11,
+      "candidate": 11,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 38
+    },
+    {
+      "synthetic": 7,
+      "control": 10,
+      "candidate": 10,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 39
+    },
+    {
+      "synthetic": 12,
+      "control": 0,
+      "candidate": 21,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 9,
+      "control": 0,
+      "candidate": 0,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 40
+    },
+    {
+      "synthetic": 50,
+      "control": 2,
+      "candidate": 2,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 41
+    },
+    {
+      "synthetic": 50,
+      "control": 13,
+      "candidate": 22,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 33,
+      "control": 6,
+      "candidate": 6,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 42
+    },
+    {
+      "synthetic": 26,
+      "control": 11,
+      "candidate": 11,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 43
+    },
+    {
+      "synthetic": 49,
+      "control": 4,
+      "candidate": 18,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 53,
+      "control": 11,
+      "candidate": 11,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 44
+    },
+    {
+      "synthetic": 31,
+      "control": 6,
+      "candidate": 6,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 45
+    },
+    {
+      "synthetic": 26,
+      "control": 7,
+      "candidate": 23,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 15,
+      "control": 15,
+      "candidate": 15,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 46
+    },
+    {
+      "synthetic": 58,
+      "control": 5,
+      "candidate": 5,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 47
+    },
+    {
+      "synthetic": 20,
+      "control": 12,
+      "candidate": 20,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 32,
+      "control": 3,
+      "candidate": 3,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 48
+    },
+    {
+      "synthetic": 62,
+      "control": 7,
+      "candidate": 7,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 49
+    },
+    {
+      "synthetic": 34,
+      "control": 2,
+      "candidate": 18,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 31,
+      "control": 12,
+      "candidate": 12,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 50
+    },
+    {
+      "synthetic": 9,
+      "control": 3,
+      "candidate": 3,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 51
+    },
+    {
+      "synthetic": 3,
+      "control": 3,
+      "candidate": 22,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 42,
+      "control": 3,
+      "candidate": 3,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 52
+    },
+    {
+      "synthetic": 29,
+      "control": 1,
+      "candidate": 1,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 53
+    },
+    {
+      "synthetic": 33,
+      "control": 1,
+      "candidate": 23,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 21,
+      "control": 13,
+      "candidate": 13,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 54
+    },
+    {
+      "synthetic": 0,
+      "control": 0,
+      "candidate": 0,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 55
+    },
+    {
+      "synthetic": 41,
+      "control": 15,
+      "candidate": 21,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 5,
+      "control": 0,
+      "candidate": 0,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 56
+    },
+    {
+      "synthetic": 55,
+      "control": 6,
+      "candidate": 6,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 57
+    },
+    {
+      "synthetic": 40,
+      "control": 14,
+      "candidate": 20,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 61,
+      "control": 8,
+      "candidate": 8,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 58
+    },
+    {
+      "synthetic": 17,
+      "control": 3,
+      "candidate": 3,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 59
+    },
+    {
+      "synthetic": 5,
+      "control": 11,
+      "candidate": 19,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 54,
+      "control": 1,
+      "candidate": 1,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 60
+    },
+    {
+      "synthetic": 15,
+      "control": 0,
+      "candidate": 0,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 61
+    },
+    {
+      "synthetic": 32,
+      "control": 10,
+      "candidate": 17,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 25,
+      "control": 9,
+      "candidate": 9,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 62
+    },
+    {
+      "synthetic": 1,
+      "control": 12,
+      "candidate": 12,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 63
+    },
+    {
+      "synthetic": 47,
+      "control": 9,
+      "candidate": 16,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 52,
+      "control": 12,
+      "candidate": 12,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 64
+    },
+    {
+      "synthetic": 29,
+      "control": 6,
+      "candidate": 6,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 65
+    },
+    {
+      "synthetic": 26,
+      "control": 4,
+      "candidate": 23,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 51,
+      "control": 8,
+      "candidate": 8,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 66
+    },
+    {
+      "synthetic": 23,
+      "control": 7,
+      "candidate": 7,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 67
+    },
+    {
+      "synthetic": 29,
+      "control": 6,
+      "candidate": 22,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 56,
+      "control": 1,
+      "candidate": 1,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 68
+    },
+    {
+      "synthetic": 8,
+      "control": 11,
+      "candidate": 11,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 69
+    },
+    {
+      "synthetic": 0,
+      "control": 15,
+      "candidate": 21,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 44,
+      "control": 2,
+      "candidate": 2,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 70
+    },
+    {
+      "synthetic": 35,
+      "control": 0,
+      "candidate": 0,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 71
+    },
+    {
+      "synthetic": 27,
+      "control": 1,
+      "candidate": 19,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 20,
+      "control": 6,
+      "candidate": 6,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 72
+    },
+    {
+      "synthetic": 11,
+      "control": 9,
+      "candidate": 9,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 73
+    },
+    {
+      "synthetic": 16,
+      "control": 12,
+      "candidate": 20,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 3,
+      "control": 3,
+      "candidate": 3,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 74
+    },
+    {
+      "synthetic": 9,
+      "control": 10,
+      "candidate": 10,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 75
+    },
+    {
+      "synthetic": 60,
+      "control": 13,
+      "candidate": 17,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 62,
+      "control": 9,
+      "candidate": 9,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 76
+    },
+    {
+      "synthetic": 1,
+      "control": 0,
+      "candidate": 0,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 77
+    },
+    {
+      "synthetic": 22,
+      "control": 3,
+      "candidate": 18,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 39,
+      "control": 5,
+      "candidate": 5,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 78
+    },
+    {
+      "synthetic": 17,
+      "control": 5,
+      "candidate": 5,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 79
+    },
+    {
+      "synthetic": 55,
+      "control": 8,
+      "candidate": 16,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 18,
+      "control": 13,
+      "candidate": 13,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 80
+    },
+    {
+      "synthetic": 31,
+      "control": 15,
+      "candidate": 15,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 81
+    },
+    {
+      "synthetic": 28,
+      "control": 14,
+      "candidate": 19,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 44,
+      "control": 0,
+      "candidate": 0,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 82
+    },
+    {
+      "synthetic": 43,
+      "control": 8,
+      "candidate": 8,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 83
+    },
+    {
+      "synthetic": 47,
+      "control": 10,
+      "candidate": 23,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 15,
+      "control": 7,
+      "candidate": 7,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 84
+    },
+    {
+      "synthetic": 48,
+      "control": 0,
+      "candidate": 0,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 85
+    },
+    {
+      "synthetic": 57,
+      "control": 0,
+      "candidate": 17,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 34,
+      "control": 14,
+      "candidate": 14,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 86
+    },
+    {
+      "synthetic": 15,
+      "control": 4,
+      "candidate": 4,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 87
+    },
+    {
+      "synthetic": 19,
+      "control": 7,
+      "candidate": 18,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 51,
+      "control": 2,
+      "candidate": 2,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 88
+    },
+    {
+      "synthetic": 18,
+      "control": 12,
+      "candidate": 12,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 89
+    },
+    {
+      "synthetic": 35,
+      "control": 5,
+      "candidate": 22,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 30,
+      "control": 1,
+      "candidate": 1,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 90
+    },
+    {
+      "synthetic": 22,
+      "control": 7,
+      "candidate": 7,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 91
+    },
+    {
+      "synthetic": 46,
+      "control": 9,
+      "candidate": 20,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 37,
+      "control": 10,
+      "candidate": 10,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 92
+    },
+    {
+      "synthetic": 2,
+      "control": 15,
+      "candidate": 15,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 93
+    },
+    {
+      "synthetic": 11,
+      "control": 2,
+      "candidate": 16,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 11,
+      "control": 2,
+      "candidate": 2,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 94
+    },
+    {
+      "synthetic": 39,
+      "control": 5,
+      "candidate": 5,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 95
+    },
+    {
+      "synthetic": 41,
+      "control": 11,
+      "candidate": 21,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 4,
+      "control": 15,
+      "candidate": 15,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 96
+    },
+    {
+      "synthetic": 36,
+      "control": 1,
+      "candidate": 1,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 97
+    },
+    {
+      "synthetic": 28,
+      "control": 4,
+      "candidate": 16,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 44,
+      "control": 11,
+      "candidate": 11,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 98
+    },
+    {
+      "synthetic": 2,
+      "control": 8,
+      "candidate": 8,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 99
+    },
+    {
+      "synthetic": 27,
+      "control": 8,
+      "candidate": 17,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 42,
+      "control": 14,
+      "candidate": 14,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 100
+    },
+    {
+      "synthetic": 51,
+      "control": 6,
+      "candidate": 6,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 101
+    },
+    {
+      "synthetic": 32,
+      "control": 14,
+      "candidate": 23,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 41,
+      "control": 5,
+      "candidate": 5,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 102
+    },
+    {
+      "synthetic": 9,
+      "control": 5,
+      "candidate": 5,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 103
+    },
+    {
+      "synthetic": 0,
+      "control": 15,
+      "candidate": 21,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 56,
+      "control": 6,
+      "candidate": 6,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 104
+    },
+    {
+      "synthetic": 40,
+      "control": 6,
+      "candidate": 6,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 105
+    },
+    {
+      "synthetic": 18,
+      "control": 11,
+      "candidate": 22,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 11,
+      "control": 12,
+      "candidate": 12,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 106
+    },
+    {
+      "synthetic": 63,
+      "control": 2,
+      "candidate": 2,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 107
+    },
+    {
+      "synthetic": 26,
+      "control": 0,
+      "candidate": 20,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 47,
+      "control": 8,
+      "candidate": 8,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 108
+    },
+    {
+      "synthetic": 9,
+      "control": 9,
+      "candidate": 9,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 109
+    },
+    {
+      "synthetic": 5,
+      "control": 5,
+      "candidate": 18,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 52,
+      "control": 5,
+      "candidate": 5,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 110
+    },
+    {
+      "synthetic": 51,
+      "control": 6,
+      "candidate": 6,
+      "flips": [
+        false,
+        false
+      ],
+      "baselineStep": 111
+    },
+    {
+      "synthetic": 30,
+      "control": 7,
+      "candidate": 19,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 2,
+      "control": 4,
+      "candidate": 4,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 112
+    },
+    {
+      "synthetic": 29,
+      "control": 14,
+      "candidate": 14,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 113
+    },
+    {
+      "synthetic": 14,
+      "control": 10,
+      "candidate": 20,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 63,
+      "control": 4,
+      "candidate": 4,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 114
+    },
+    {
+      "synthetic": 38,
+      "control": 6,
+      "candidate": 6,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 115
+    },
+    {
+      "synthetic": 52,
+      "control": 1,
+      "candidate": 19,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 6,
+      "control": 14,
+      "candidate": 14,
+      "flips": [
+        false,
+        true
+      ],
+      "baselineStep": 116
+    },
+    {
+      "synthetic": 32,
+      "control": 14,
+      "candidate": 14,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 117
+    },
+    {
+      "synthetic": 40,
+      "control": 12,
+      "candidate": 23,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    },
+    {
+      "synthetic": 31,
+      "control": 2,
+      "candidate": 2,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": 118
+    },
+    {
+      "synthetic": 54,
+      "control": 7,
+      "candidate": 7,
+      "flips": [
+        true,
+        true
+      ],
+      "baselineStep": 119
+    },
+    {
+      "synthetic": 42,
+      "control": 9,
+      "candidate": 22,
+      "flips": [
+        true,
+        false
+      ],
+      "baselineStep": null
+    }
+  ],
+  "scope": "Insert one update after each pair of the 120 original control updates. Both arms retain every old real/synthetic/reflection draw in order. At the 60 inserted updates only real-photo choice differs: old photos for control, added eight for candidate. Same original pretrained weights and optimizer; no checkpoint continuation."
+}

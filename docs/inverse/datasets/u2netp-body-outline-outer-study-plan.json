@@ -1,0 +1,62 @@
+{
+  "schema": "saliency-fresh-study-1",
+  "status": "predeclared-development",
+  "selection": {
+    "path": "docs/inverse/datasets/u2netp-continuous-selection.json",
+    "sha256": "6d4e0e7550fedf5c13333bdc90db28a98eb5ff9ce2de260f32e2d015f5128f52"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-body-outline-v1/model.pt",
+    "sha256": "e73f785d935e1f763ef23f2a625b930373c991b95478253d6b05a7e3cbc33625"
+  },
+  "model": {
+    "path": "tmp/heart-learning/u2netp-body-outline-v1/model.pt",
+    "sha256": "e73f785d935e1f763ef23f2a625b930373c991b95478253d6b05a7e3cbc33625"
+  },
+  "upstreamSource": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "pipeline": {
+    "policy": "retain-production-reviewed-partial-fallback-v1",
+    "selection": "Keep every production crop. Only if none exists, accept an outline-supported neural proposal with observed rectified overlap >=99% and maximum axis-normalized extrapolation <=5%, always needs_review. Use analytic projective coverage; no mask score or template selects the crop.",
+    "observedFraction": 0.99,
+    "maximumExtrapolation": 0.05,
+    "timeLimitSeconds": 10,
+    "trials": 0,
+    "target": "mask",
+    "methods": [
+      "production",
+      "fallback"
+    ],
+    "classifier": "Unchanged RGB mixture classifier",
+    "fits": "Reuse unchanged pinned production controls. Fresh-fit each selected neural crop using the same fixed checkpoint as its paired saved control; retain every unresolved crop and failed fit.",
+    "validation": "Independent exported weave error <=3%, original feature checks, geometry/paper checks, production editable conversion and independent editable-paper audit. Visual review of all photos/crops and distinct outputs.",
+    "missing": "No manual rescue or result-dependent replacement. Record photo eligibility misclassifications and possible irregular weaving separately without removing them from primary denominators.",
+    "fieldPalette": "confidence-weighted",
+    "outerBoundarySampling": true
+  },
+  "sourcePins": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/partial-photo-crop.mjs": "69d3b078258e6c43296f7dec37bd40a875728aa3bd2e4ec2fb50ffcd6ec9c349",
+    "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/u2netp-probe.py": "300c7c3c43188528eac7b96f06bdf124b4336e0215f94204c96318d8d4903a6d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/replay-photo-fallback.mjs": "062a6ceeb39b3266b06f5831728b40839459a9e3a708b3bedd1cab59a66485cd",
+    "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/continuous-foreground.mjs": "ebdf2b4e7c463ded9ef6e192c4f98855ef677220d04d02e7e1f28bdc4abdaa23",
+    "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/foreground-crop.mjs": "43e02a52e6e12b52295c3f95d6426e7231564cdd4f6599e00fe1f57aea12c10b",
+    "scripts/inverse/learning/outer-boundary-fields.mjs": "c1a3f149c908f324b692252e4c50744749a7f22fa313c3467bd8c9993a3d8695"
+  },
+  "scope": "Test whether sampling the outer body silhouette, without changing NN predictions or distance fields, removes enclosed-hole sensitivity in automatic cropping. Two comparisons on the same repeatedly inspected 32-photo development cohort. Native inference cached, no fresh generalization claim. The 10-second setting is the existing solver search budget, not an end-to-end wall-clock guarantee.",
+  "trainingSeparation": {
+    "report": {
+      "path": "tmp/heart-learning/u2netp-body-outline-v1/report.json",
+      "sha256": "ad8dc95c811d7291bd2504ab65b954ea96b18296cc03b387abd63470eaa60c1c"
+    },
+    "plan": {
+      "path": "docs/inverse/datasets/u2netp-body-outline-plan.json",
+      "sha256": "a155452e938f5e394497cfc92690eb0d0e73364be87435a63437698660e873b3"
+    }
+  },
+  "comparison": {
+    "path": "docs/inverse/datasets/u2netp-outer-boundary-plan.json",
+    "sha256": "6adcc325f1f2ec72e3cb489f6ec645a93f608e025fd3c7166998d6114c4606e4"
+  }
+}

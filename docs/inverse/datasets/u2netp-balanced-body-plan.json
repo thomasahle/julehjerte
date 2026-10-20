@@ -1,0 +1,61 @@
+{
+  "schema": "balanced-whole-body-crop-plan-1",
+  "date": "2026-10-20",
+  "status": "predeclared-before-balanced-cohort-audit",
+  "previous": {
+    "path": "docs/inverse/datasets/u2netp-whole-body-crop-plan.json",
+    "sha256": "f3322d75067a326dbe0ce38652a084fbc01894cb0041be2016908ac3411a633c"
+  },
+  "firstComparison": {
+    "regression": {
+      "path": "tmp/heart-learning/u2netp-whole-body-regression-pipeline-v1/report.json",
+      "sha256": "41139c892cb21bed22b67995c1110be30617b5d795ad4c71c0e7f8867fdf69f1"
+    },
+    "expanded": {
+      "path": "tmp/heart-learning/u2netp-whole-body-expanded-pipeline-v1/report.json",
+      "sha256": "d6b6aa20279be8e022652465c4f84c33449fb1d25f790497f208e2eac4a76c30"
+    }
+  },
+  "firstOutcome": {
+    "regressionChecked": 11,
+    "previousRegressionChecked": 12,
+    "expandedChecked": 4,
+    "previousExpandedChecked": 3,
+    "notPromoted": true
+  },
+  "diagnosis": "Foreground-only confidence weighting compares sum(p^4) inside an outline with its unweighted area, treating uncertain paper as certain background. The checker body includes the full silhouette but has many non-unit foreground probabilities. Separate confident foreground and background masses instead, using the same fourth power for each. Synthetic fixtures distinguish uncertain paper from both fragments and oversized shapes. No threshold change.",
+  "definitions": {
+    "F": "sum(p^4) across observed pixels",
+    "I": "sum(p^4) inside proposed full outline",
+    "B": "sum((1-p)^4) inside proposed full outline",
+    "recall": "I/F",
+    "precision": "I/(I+B)",
+    "dice": "2I/(F+I+B)"
+  },
+  "limits": {
+    "recall": 0.85,
+    "precision": 0.8,
+    "diceImprovement": 0.05,
+    "minimumMass": 100,
+    "probabilityPower": 4
+  },
+  "cohorts": [
+    {
+      "path": "docs/inverse/datasets/u2netp-balanced-body-regression-pipeline-plan.json",
+      "sha256": "b655d1a3b276931f522ac88806a47ecf92137b430618d8b892dfb6e14217424a"
+    },
+    {
+      "path": "docs/inverse/datasets/u2netp-balanced-body-expanded-pipeline-plan.json",
+      "sha256": "f70413a68837fa50d7ddb4ae04c7f3de34c3c1ad00d7c4c34981ee8fba1c0aa2"
+    }
+  ],
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "newPhotoDownloads": 0,
+    "newPhotoCopies": 0,
+    "newTraining": false,
+    "totalNewArtifactMiBIncludingFirstPolicy": 100
+  },
+  "scope": "Development comparison on fixed 32+18, preserve first policy failure and original raw runtime failures. No deployment claim; independently audit exported and editable templates and inspect every new fit."
+}

@@ -1,0 +1,72 @@
+{
+  "schema": "count-alternative-probe-plan-1",
+  "timeLimit": 10,
+  "scope": "Diagnostic on one inspected checker-heart photo and two immutable masks. Oracle arms cannot establish an automatic policy. All masks and validation unchanged. No saved geometry initialization.",
+  "inputs": [
+    {
+      "name": "original",
+      "report": {
+        "path": "tmp/heart-learning/u2netp-continuous-original-pipeline-v1/report.json",
+        "sha256": "74eabfbed462c394b3852c657cfbf45dbf3883c2a821b673e352f7b46b8cb9b4"
+      },
+      "id": "real-24b5ed49c9411b11-body-1",
+      "method": "fallback"
+    },
+    {
+      "name": "weighted",
+      "report": {
+        "path": "tmp/heart-learning/u2netp-continuous-weighted-pipeline-v1/report.json",
+        "sha256": "3b253389e6fe69e78f513dd2cf2c417051fcbdfc611f9c004b7be1fa4a789389"
+      },
+      "id": "real-24b5ed49c9411b11-body-1",
+      "method": "fallback"
+    }
+  ],
+  "runs": [
+    {
+      "input": "original"
+    },
+    {
+      "input": "weighted"
+    },
+    {
+      "input": "weighted",
+      "counts": [
+        8,
+        8
+      ]
+    },
+    {
+      "input": "original",
+      "counts": [
+        8,
+        8
+      ]
+    },
+    {
+      "input": "original",
+      "counts": [
+        7,
+        7
+      ]
+    },
+    {
+      "input": "weighted",
+      "counts": [
+        7,
+        7
+      ]
+    },
+    {
+      "input": "weighted"
+    },
+    {
+      "input": "original"
+    }
+  ],
+  "resources": {
+    "workers": 1,
+    "maximumNewArtifactsMiB": 15,
+    "newSourcePhotoCopies": 0
+  }
+}

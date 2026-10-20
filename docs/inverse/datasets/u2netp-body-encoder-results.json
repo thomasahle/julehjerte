@@ -1,0 +1,243 @@
+{
+  "schema": "u2netp-body-encoder-results-1",
+  "date": "2026-10-20",
+  "status": "complete-development-comparison",
+  "evidence": {
+    "study": {
+      "path": "docs/inverse/datasets/u2netp-body-encoder-evaluation-plan.json",
+      "sha256": "c0b972da7e7c0218f62aca910d9ebebf5f18a12f5a638701e6c12808ca57a5fd"
+    },
+    "training": {
+      "path": "tmp/heart-learning/u2netp-body-encoder-v1/report.json",
+      "sha256": "e6fa6420e0f6e84869423bb5ce525a45520d0f3171d5c1675edb9c9aa0e5033d"
+    },
+    "audit": {
+      "path": "tmp/heart-learning/u2netp-body-encoder-v1/audit.json",
+      "sha256": "43af0e20b3ebbc442b53dc9784c2f6f90782ec38321834fdefc0271887333647"
+    },
+    "controlTraining": {
+      "path": "tmp/heart-learning/u2netp-body-exposure-v1/report.json",
+      "sha256": "380d9850714cbff8d9e5cdcf6047b57b26305c3e694fdc92e4c9a736403ab49a"
+    },
+    "controlAudit": {
+      "path": "tmp/heart-learning/u2netp-body-exposure-v1/audit.json",
+      "sha256": "2d14fb9302de87694562ec4fcad1ccc0c1eaec8151e841f6f3412d599accd35b"
+    },
+    "trainingComparison": {
+      "path": "tmp/heart-learning/u2netp-body-encoder-training-comparison-v1/report.json",
+      "sha256": "cf12ebb0718d80dd8f235bdd41a49e1c33294ec1e1c9d13bf97bd8e48189e6c7"
+    },
+    "probe": {
+      "path": "tmp/heart-learning/u2netp-body-encoder-probe-v1/report.json",
+      "sha256": "94874bc5dcd8878336f83cc456750e6430c9a7641fc5566db1fb3e596b89c8ba"
+    },
+    "pipeline": {
+      "path": "tmp/heart-learning/u2netp-body-encoder-pipeline-v1/report.json",
+      "sha256": "b857de355965d46d6153d00e9ac749347458098d413aa4e60e7a60b2c4639a2f"
+    },
+    "editable": {
+      "path": "tmp/heart-learning/u2netp-body-encoder-editable-v1/results.json",
+      "sha256": "cbae50c16480549e1db4f1cde3c89a6b2b60c9e922ed6c212bc193b0111ee0d1"
+    },
+    "reusedProductionEditable": {
+      "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+      "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+    },
+    "evaluationGallery": {
+      "path": "tmp/heart-learning/u2netp-body-encoder-evaluation-gallery-v1/manifest.json",
+      "sha256": "2c6252044d6963d31b1b66c07bb73d8563b7a89bb916160c54bfb4fdac8f5483"
+    },
+    "fitGallery": {
+      "path": "tmp/heart-learning/u2netp-body-encoder-fit-gallery-v1/manifest.json",
+      "sha256": "395dd8dc946722f065e4a83728ceb93425acad7903479b7d782a369dad914437"
+    },
+    "focusedTests": {
+      "path": "tmp/heart-learning/body-encoder-focused-tests.log",
+      "sha256": "08fa2b5e35230257b631a7286bc1485a2515bec6ce5642c6290fdb7659e89d99"
+    },
+    "rendererCohort": {
+      "path": "docs/inverse/datasets/u2netp-body-renderer-cohort-results.json",
+      "sha256": "ccd833a9f64a0ef025d3d66e4a873a16523ae9a85d8de68a1f37041d8c2ffa45"
+    }
+  },
+  "protocol": {
+    "trainingPhotos": 24,
+    "updates": 180,
+    "initialization": "Fresh publisher pretrained U2NETP, unchanged seed 20261020",
+    "change": "Unfreeze encoder stages 4, 5 and 6 at one quarter the decoder learning rate. Early encoder and all BatchNorm statistics remain frozen.",
+    "actualInputsLabelsDrawsAndSourceSeparationMatchControl": true,
+    "all32NativeInputsMatchControl": true,
+    "checkpointSelection": "Final checkpoint only",
+    "equalCompute": false,
+    "scope": "Previously inspected 32-photo development cohort. No new motif-independence, prospective evaluation, browser/runtime, or physical-assembly claim."
+  },
+  "training": {
+    "seconds": 323.23132274999995,
+    "timingScope": "Updates, checkpoint checks, final predictions and galleries; excludes startup, loading and initial predictions.",
+    "parameters": 1131181,
+    "trainableParametersBefore": 636397,
+    "trainableParametersAfter": 880333,
+    "controlMetrics": {
+      "knownRegionIoU": 0.9193165981360316,
+      "knownRegionPixelError": 0.02906310615637338,
+      "knownPaperFalseNegative": 0.02434205650205709,
+      "knownBackgroundFalsePositive": 0.026095406689305257
+    },
+    "candidateMetrics": {
+      "knownRegionIoU": 0.9475828325136986,
+      "knownRegionPixelError": 0.017834153467990145,
+      "knownPaperFalseNegative": 0.012097267422942265,
+      "knownBackgroundFalsePositive": 0.018950388537091526
+    },
+    "auditPassed": true,
+    "changedTensors": 318,
+    "frozenStateUnchanged": true,
+    "predictionComparisons": {
+      "initial": {
+        "exact": false,
+        "maximumAbsoluteDifference": 1.1920928955078125e-07,
+        "absoluteTolerance": 1.1920928955078125e-07,
+        "changedHalfThresholdPixels": 0,
+        "passed": true,
+        "metricsExact": true
+      },
+      "final": {
+        "exact": false,
+        "maximumAbsoluteDifference": 1.1920928955078125e-07,
+        "absoluteTolerance": 1.1920928955078125e-07,
+        "changedHalfThresholdPixels": 0,
+        "passed": true,
+        "metricsExact": true
+      }
+    },
+    "sourceSeparation": {
+      "trainPhotos": 24,
+      "evaluationPhotos": 32,
+      "trainSourceGroups": 14,
+      "evaluationSourceGroups": 5,
+      "sourceAndDuplicateSeparationPassed": true
+    }
+  },
+  "reconstruction": {
+    "counts": {
+      "production": {
+        "attempted": 32,
+        "crops": 21,
+        "supported": 16,
+        "checkedPairs": 9,
+        "neuralSelected": 0,
+        "reusedFits": 32
+      },
+      "fallback": {
+        "attempted": 32,
+        "crops": 26,
+        "supported": 21,
+        "checkedPairs": 12,
+        "neuralSelected": 5,
+        "reusedFits": 27
+      }
+    },
+    "checkedEditableIncludingReusedProduction": 12,
+    "newCheckedDesigns": 0,
+    "lostCheckedDesigns": 0,
+    "learnedOutlineSupportChanges": 0,
+    "freshFits": [
+      {
+        "id": "real-24b5ed49c9411b11-body-1",
+        "targetMaskSha256": "d51ee905dc550cdecc0c0f98b5e0d47bc9cc50c44095dc02c3f3c71ae8e61f18",
+        "exportedMismatch": 0.02818125,
+        "editableMismatch": 0.028575,
+        "checkedEditable": true,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      {
+        "id": "real-dfa7e4b71b43aa86-body-1",
+        "targetMaskSha256": "b280d8651698656902155f49652947df3d67eb325a4a1e1d370a4d3c330344a4",
+        "exportedMismatch": 0.0927875,
+        "editableMismatch": 0.0929125,
+        "checkedEditable": false,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      {
+        "id": "real-c7d1e0ad5050db71-body-1",
+        "targetMaskSha256": "9aaa1021e09e743fb7bea885a76655cb9083a71c1d8aa23892bba18f72a8d2fa",
+        "exportedMismatch": 0.007069677895223748,
+        "editableMismatch": 0.007075928715643928,
+        "checkedEditable": true,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      {
+        "id": "real-f05cf91c134daea9-body-1",
+        "targetMaskSha256": "7e2ec20cdf4c8b9a77cfe820eafe7b5b3863e1bcf3ff7b68877a7a9e78127cfb",
+        "exportedMismatch": 0.0402,
+        "editableMismatch": 0.04063125,
+        "checkedEditable": false,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      {
+        "id": "real-28a87a8be083f16c-body-1",
+        "targetMaskSha256": "4d0c6330608676563fa90a9cf2ab9b973554f3038e1474a0327b36313ad7d728",
+        "exportedMismatch": 0.006769638515055101,
+        "editableMismatch": 0.006613368004550597,
+        "checkedEditable": true,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    ],
+    "primaryFailureStageCounts": {
+      "unresolvedCrop": 6,
+      "imageAboveThreePercent": 12,
+      "checked": 12,
+      "featureLossDespiteLowImageError": 1,
+      "paperFailureDespiteLowImageError": 1
+    },
+    "stageCountsScope": "Partition by observed stage outcome, not a proof of the physical cause or artwork impossibility. For failures, image >3% is counted before feature or paper checks. All 32 remain in the denominator."
+  },
+  "visualReview": {
+    "trainingPages": 6,
+    "evaluationBodyPages": 11,
+    "newFitPages": 2,
+    "allInspected": true,
+    "findings": [
+      "Some metallic/patterned paper confidence and background rejection improve, but the floral/striped training heart still loses its tip and detached strips/handles persist.",
+      "The black/cream teeth photo still loses dark regions; the gold-house photograph remains dominated by its interior motif.",
+      "Both models propose the same five fallback crops and neither recovers the six unresolved cases. No outline-support eligibility changes anywhere in the cohort.",
+      "Checkerboard and star remain recognizable; stacked hearts still contain false seams despite aggregate disagreement below 3%.",
+      "Printed trees are classified as cutting boundaries. Glossy highlights corrupt the green/black target, and its fitted curves lose details."
+    ]
+  },
+  "validation": {
+    "focusedTestsPassed": 14,
+    "focusedTestsFailed": 0,
+    "allFiveNewConversionsGeometryAndNominalPaperChecksPass": true,
+    "allNineReusedProductionEditablePassesReverified": true,
+    "productionChanged": false,
+    "fullApplicationChecks": "No src/ or static/ change; prior full release QA remains in conni-release-qa.json. This turn ran focused research tests and all applicable model/pipeline/editable audits, not another broad application suite.",
+    "browserExportAttempted": false
+  },
+  "decision": {
+    "productionPromotion": false,
+    "conclusion": "Late-encoder adaptation lowers training segmentation error but does not improve checked reconstruction coverage beyond 12/32. It is not a production improvement on this evidence.",
+    "rootCause": "Training-score improvement does not change crop-support decisions. Remaining failures span unresolved localization, printed/shaded RGB-to-mask conversion, loss of motif features during fitting, and one nominal paper-core failure. A body network alone does not address all these stages.",
+    "next": "Target actual whole-paper outline omissions and downstream material/fit failures; retain full-pipeline comparisons. Do not spend browser export/deployment work on this candidate without a demonstrated reconstruction benefit."
+  },
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "numericalThreads": 1,
+    "newPhotoDownloads": 0,
+    "newSourcePhotoCopies": 0,
+    "browserJobs": 0,
+    "retainedExperimentLogicalMiB": 78.0270938873291,
+    "scope": "Logical bytes for this encoder comparison and renderer diagnostics, including hardlinks to reused fits; not physical disk growth."
+  }
+}

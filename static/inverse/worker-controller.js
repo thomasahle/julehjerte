@@ -2,13 +2,14 @@ import {prepare,inspectSaved} from './core/engine.js';
 import {settings as normalizeSettings} from './core/settings.js';
 import {finishStopped} from './core/stopped.js';
 import {zipFiles} from './core/zip.js';
-import {detectHeartCrops,refineHeartCrop} from './core/crop.js';
+import {refineHeartCrop} from './core/crop.js';
 
 /** One prepared artwork and one public request at a time. The private fitting
  * worker can be terminated without discarding the artwork or the result queue.
  * Candidate packets stay here; only throttled progress pictures reach the UI.
  */
-export function workerController(scope,{createWorker=()=>new Worker(new URL('./compute-worker.js',import.meta.url),{type:'module'}),finalize=finishStopped}={}){
+export function workerController(scope,{createWorker=()=>new Worker(new URL('./compute-worker.js',import.meta.url),{type:'module'}),finalize=finishStopped,
+ detectCrops=(input,options)=>import('./neural/photo-crop.js').then(module=>module.detectPhotoCrops(input,options))}={}){
   let prepared=null,result=null,compute=null,active=null;
   const dispose=()=>{if(compute){compute.onmessage=null;compute.onerror=null;compute.onmessageerror=null;compute.terminate();compute=null;}};
   const failure=(id,error)=>scope.postMessage({id,type:'error',message:error.message||String(error),code:error.code,report:error.report||null});
@@ -44,8 +45,12 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
       result=null;
       if(action==='detect-crops'||action==='refine-crop'){
         prepared=null;
-        const crops=action==='detect-crops'?detectHeartCrops(input,{onProgress:progress}):refineHeartCrop(input,input.quad);
-        scope.postMessage({id,type:'crops',crops});
+        const job={id,phase:'detecting',done:()=>{}};active=job;
+        try{
+          const crops=action==='detect-crops'?await detectCrops(input,{onProgress:event=>{if(active===job)progress(event);},cancelled:()=>active!==job}):refineHeartCrop(input,input.quad);
+          if(active!==job)return;
+          active=null;scope.postMessage({id,type:'crops',crops});
+        }catch(error){if(active!==job)return;active=null;throw error;}
       }else if(action==='prepare'){
         prepared=null;
         const value=prepare(input,settings,progress);prepared=value.target;

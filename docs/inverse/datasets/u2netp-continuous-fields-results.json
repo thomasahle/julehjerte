@@ -1,0 +1,198 @@
+{
+  "schema": "saliency-continuous-fields-results-1",
+  "status": "weighted-palette-selected-for-pipeline-validation",
+  "scope": "All 32 previously inspected development photos, fixed model outputs and original RGB. Numerical crop replay only; no new quality or production claim. Existing raw numerical gates remain failed.",
+  "baseline": {
+    "path": "tmp/heart-learning/u2netp-body-adapted-crop-parity-v1/report.json",
+    "sha256": "0684b0bb7717ebc705462bdb8c211445f496d2bed9f217f5681dfc88ceb20489",
+    "summary": {
+      "native": {
+        "crops": 21,
+        "samePresenceAndSupport": true,
+        "maxCornerDisplacementPixels": 1.9363415417426384,
+        "changedRgbPixels": 6083,
+        "sameCoverage": true
+      },
+      "browser": {
+        "crops": 21,
+        "samePresenceAndSupport": true,
+        "maxCornerDisplacementPixels": 1.9363415417426384,
+        "changedRgbPixels": 6083,
+        "sameCoverage": true
+      }
+    }
+  },
+  "methods": {
+    "weighted-palette": {
+      "report": {
+        "path": "tmp/heart-learning/u2netp-continuous-weighted-palette-v1/report.json",
+        "sha256": "391958b1892dfe44e0f508e17a8e5e95de0eb8c0be94a50352d680e73bd29f10"
+      },
+      "exportDrift": {
+        "native": {
+          "crops": 21,
+          "samePresenceAndSupport": true,
+          "maxCornerDisplacementPixels": 0.18618138593618655,
+          "changedRgbPixels": 648,
+          "sameCoverage": true
+        },
+        "browser": {
+          "crops": 21,
+          "samePresenceAndSupport": true,
+          "maxCornerDisplacementPixels": 0.18618138593618655,
+          "changedRgbPixels": 664,
+          "sameCoverage": true
+        }
+      },
+      "vsBaseline": {
+        "presenceChanges": [],
+        "supportChanges": [],
+        "maximumCornerChangePixels": 9.450078943949547,
+        "medianCornerChangePixels": 0.38114600085742206,
+        "largestChanges": [
+          {
+            "id": "real-d3f063052599e167-body-1",
+            "pixels": 9.450078943949547
+          },
+          {
+            "id": "real-c7d1e0ad5050db71-body-1",
+            "pixels": 5.277514643733921
+          },
+          {
+            "id": "real-28a87a8be083f16c-body-1",
+            "pixels": 4.839945030459242
+          },
+          {
+            "id": "real-d4f6e3c76cf08ea8-body-1",
+            "pixels": 2.6096188065944705
+          },
+          {
+            "id": "real-dfa7e4b71b43aa86-body-1",
+            "pixels": 2.385851320882806
+          }
+        ]
+      },
+      "medianBrowserFieldCropSeconds": 0.8414310205000002
+    },
+    "subpixel-distance": {
+      "report": {
+        "path": "tmp/heart-learning/u2netp-continuous-subpixel-distance-v1/report.json",
+        "sha256": "99dfb75993772e7040bcdf067c0ddd8d13599dabaa0dfcf0eec16f2c3a8b643c"
+      },
+      "exportDrift": {
+        "native": {
+          "crops": 22,
+          "samePresenceAndSupport": true,
+          "maxCornerDisplacementPixels": 7.466654230620896,
+          "changedRgbPixels": 7417,
+          "sameCoverage": false
+        },
+        "browser": {
+          "crops": 22,
+          "samePresenceAndSupport": true,
+          "maxCornerDisplacementPixels": 7.466654230620896,
+          "changedRgbPixels": 7335,
+          "sameCoverage": false
+        }
+      },
+      "vsBaseline": {
+        "presenceChanges": [
+          {
+            "id": "real-f05cf91c134daea9-body-1",
+            "before": false,
+            "after": true
+          }
+        ],
+        "supportChanges": [
+          "real-f05cf91c134daea9-body-1"
+        ],
+        "maximumCornerChangePixels": 17.220869015902856,
+        "medianCornerChangePixels": 1.7655732244226776,
+        "largestChanges": [
+          {
+            "id": "real-28a87a8be083f16c-body-1",
+            "pixels": 17.220869015902856
+          },
+          {
+            "id": "real-52e732b98f9b14f1-body-1",
+            "pixels": 14.21847748228132
+          },
+          {
+            "id": "real-1a7cfc6be8b164b5-body-1",
+            "pixels": 10.253120627018328
+          },
+          {
+            "id": "real-eb60ff94dfc6e2f8-body-1",
+            "pixels": 5.800276788473921
+          },
+          {
+            "id": "real-d3f063052599e167-body-1",
+            "pixels": 5.037466578463695
+          }
+        ]
+      },
+      "medianBrowserFieldCropSeconds": 0.7532875834999977
+    },
+    "both": {
+      "report": {
+        "path": "tmp/heart-learning/u2netp-continuous-both-v1/report.json",
+        "sha256": "8fff6e0f8422e09dfd13f0443bbd1d0e4333b539debbabea161f9620839566f1"
+      },
+      "exportDrift": {
+        "native": {
+          "crops": 20,
+          "samePresenceAndSupport": true,
+          "maxCornerDisplacementPixels": 0.9089989822151558,
+          "changedRgbPixels": 1691,
+          "sameCoverage": true
+        },
+        "browser": {
+          "crops": 20,
+          "samePresenceAndSupport": true,
+          "maxCornerDisplacementPixels": 0.9089989822151558,
+          "changedRgbPixels": 1699,
+          "sameCoverage": true
+        }
+      },
+      "vsBaseline": {
+        "presenceChanges": [
+          {
+            "id": "real-55704c6e2911bebc-body-1",
+            "before": true,
+            "after": false
+          }
+        ],
+        "supportChanges": [
+          "real-55704c6e2911bebc-body-1"
+        ],
+        "maximumCornerChangePixels": 17.211318341741364,
+        "medianCornerChangePixels": 2.8051889904500737,
+        "largestChanges": [
+          {
+            "id": "real-28a87a8be083f16c-body-1",
+            "pixels": 17.211318341741364
+          },
+          {
+            "id": "real-52e732b98f9b14f1-body-1",
+            "pixels": 14.104623321553666
+          },
+          {
+            "id": "real-c7d1e0ad5050db71-body-1",
+            "pixels": 12.706127761330084
+          },
+          {
+            "id": "real-1a7cfc6be8b164b5-body-1",
+            "pixels": 10.669997406480988
+          },
+          {
+            "id": "real-dfa7e4b71b43aa86-body-1",
+            "pixels": 8.886311131050164
+          }
+        ]
+      },
+      "medianBrowserFieldCropSeconds": 0.8749079790000033
+    }
+  },
+  "decision": "Weighted palette is the next full-pipeline candidate: all original crop/support decisions survive and maximum export drift drops from 1.936 to 0.186 pixels. It changes some original crop corners by 5-9 pixels, so numerical stability is not enough to claim better physical alignment. Distance-only worsens export drift to 7.467 pixels; both changes lose one original crop and retain 0.909-pixel drift. Preserve both unsuccessful variants as development evidence.",
+  "next": "Fresh original-policy and weighted-policy fallback fits with matched fixed production controls, unchanged image/geometry/paper gates, followed by editable and visual comparison. No new model training or deployment."
+}

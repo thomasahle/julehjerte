@@ -1,0 +1,16 @@
+{
+  "schema": "saliency-continuous-fields-plan-1",
+  "status": "predeclared-development-ablation",
+  "baseRevision": "43773358",
+  "reference": "tmp/heart-learning/u2netp-body-adapted-probe-v1",
+  "native": "tmp/heart-learning/u2netp-body-adapted-onnx-v1",
+  "browser": "tmp/heart-learning/u2netp-body-adapted-browser-v1",
+  "baseline": "tmp/heart-learning/u2netp-body-adapted-crop-parity-v1/report.json",
+  "methods": ["weighted-palette", "subpixel-distance", "both"],
+  "palette": "Use every third RGB sample with weight p^8, weighted quantile seeds and 20 weighted two-means steps. Preserve the existing minimum effective mass, 8% class-mass and 0.18 colour-separation guards. The power is fixed for this experiment, not selected per photo.",
+  "distance": "Grayscale morphological closing at the existing one-pixel radius, linearly interpolated half-probability crossings and eight-neighbour chamfer propagation, followed by the existing separable blur. This is a subpixel registration objective, not an exact Euclidean distance or cutting certificate. Component masks and RGB remain unchanged.",
+  "scope": "Compare all 32 previously inspected development photos using their unchanged PyTorch/native/browser fields. No new inference, training, source images, manual corners or templates. First-stage analytic regressions pass; this stage measures stability, crop availability/support, changed RGB masks and runtime. Existing numerical gates remain failed. A candidate still needs full pipeline and visual validation before any fresh evaluation or app integration.",
+  "constraints": "Keep the baseline adapter unchanged unless the explicit experimental postprocess option is supplied. Transform already-accepted baseline fields only: this first experiment cannot rescue a rejected baseline palette. Use the prior diagnostic's frozen clock and finite orientation list, not a claim about production latency.",
+  "resources": {"workers": 1, "priority": 15, "newPhotoBytes": 0, "maximumArtifactMiB": 3},
+  "acceptance": "Record every method and failure. Compare maximum/total corner and mask drift, crop presence and support against the baseline; do not equate lower numerical drift with better photographic geometry. Do not change parameters after viewing results and call the same cohort prospective."
+}

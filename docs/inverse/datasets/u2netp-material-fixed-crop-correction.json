@@ -1,0 +1,26 @@
+{
+  "schema": "u2netp-material-fixed-crop-correction-1",
+  "status": "predeclared",
+  "date": "2026-10-20",
+  "inputs": [
+    {
+      "path": "docs/inverse/datasets/u2netp-material-fixed-crop-plan.json",
+      "sha256": "a08c6a929dd5a895eb2269820e71093a82ead49226b8073f881771e5a1c74ae3"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-material-fixed-pipeline-v1/report.json",
+      "sha256": "efbf5a217bde60e23371a5384f4904fb71c66e72025ff448ab72aa804220602f"
+    },
+    {
+      "path": "scripts/inverse/learning/replay-material-pair.mjs",
+      "sha256": "f077d3d8f278569b4f48c546678db78bf9b6ccff98d867be1d12e6e8855dd849"
+    }
+  ],
+  "finding": "The material replay always requested a 400-pixel target, but RGB preprocessing caps resolution at the shorter original photo side. One photo has a 229-pixel side. The comparison assertion caught this; no differing grids were compared.",
+  "correction": "Use the identical source-size cap for material targets. Reuse only prior fits whose actual target mask, resolution, observation, photograph, crop and complete solver configuration are unchanged, with all underlying solver/preparation/renderer source hashes checked.",
+  "affectedPhoto": "real-fcbcc23efea92b93-body-1",
+  "requestedResolution": 400,
+  "correctActualResolution": 229,
+  "originalRunRetained": true,
+  "cohortStillAll32": true
+}
