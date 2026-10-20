@@ -35,7 +35,14 @@ def main():
     if model['sha256'] != training['checkpointSha256']:
         raise ValueError('Checkpoint changed')
     control = json.loads(pinned(study['productionControl']).read_bytes())
-    for file, sha in control['sourceHashes'].items(): pinned({'path': file, 'sha256': sha})
+    # Match replay-photo-fallback's production-only reuse rule. Research
+    # adapters evolve, but every dependency of the cached production fit must
+    # still match the predeclared list and the historical bytes.
+    production_files = [f for f in control['sourceHashes'] if f.startswith('static/inverse/') or
+                        f in ['scripts/inverse/hard-photo-target.mjs', 'scripts/inverse/export-renderer.mjs']]
+    if sorted(production_files) != sorted(study['productionSourceHashesVerified']):
+        raise ValueError('Production dependency set differs from predeclared study')
+    for file in production_files: pinned({'path': file, 'sha256': control['sourceHashes'][file]})
     source_pin = reference(Path(__file__))
     scope = study['scope']+' Native development only; no browser parity or production-release claim.'
     def save(suffix, value):
