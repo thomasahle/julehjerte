@@ -11,7 +11,8 @@
     }
   },
   "ids": [
-    "real-28a87a8be083f16c-body-1"
+    "real-28a87a8be083f16c-body-1",
+    "real-c7d1e0ad5050db71-body-1"
   ],
   "sourcePins": {
     "scripts/inverse/learning/partial-photo-crop.mjs": "69d3b078258e6c43296f7dec37bd40a875728aa3bd2e4ec2fb50ffcd6ec9c349",
