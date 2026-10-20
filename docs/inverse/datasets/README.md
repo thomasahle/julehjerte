@@ -18,12 +18,35 @@ production path.
 | Saliency models | Frozen U2NETP raises checked derived-mask pairs from 10/32 to 12/32; adapted browser model adds three checked pairs over fresh current-main controls (9/32 to 12/32) | Raw numerical parity still fails; printed paper, missing body regions, timed-search variation and false seams remain; no production integration |
 | Expanded body supervision | Initial 120-update comparison gives 12/32 versus 10/32; preserving old-photo visits in a 180-update comparison restores both to 12/32 before editable rendering | Final raw editable counts are 11/32 versus 12/32, with the difference traced to a borderline rasterization artifact; no extra design coverage established |
 | Late encoder adaptation | Training-pixel error falls from 2.91% to 1.78%, but full editable recovery stays at the same 12/32 designs | No new crop-support decisions or recovered designs; not promoted |
-| Broader photo evaluation | Fixed adapted model retains 12/32 on the original cohort; on 18 additional photos, crops increase from 6 to 8 but checked editable pairs stay at 3 | One of those three fits only a small, incorrectly selected part of a heart; two whole-overlap results look plausible. Printed paper, crop assumptions and feature loss remain separate problems |
+| Broader photo evaluation | Whole-body crop selection retains 12/32 and recovers the angel on the additional set: 4/18 checked editable pairs, three also supported by full-body evidence | The fourth fits only a small fragment and is now flagged. Printed paper, crop assumptions and feature loss remain separate problems |
 | Paper-colour calibration | Original-resolution colour mixtures restore detail lost by raw neural masks; fresh fixed-crop comparison gives 11/32 checked pairs with learned palettes versus 13/32 with RGB clustering | No learned-only checked gain; print confusion and unsuitable crops remain; these are derived-mask checks, not artwork ground truth |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
 | Solver | Latest full release QA passes 1,207 inverse tests; earlier dedicated runs solve all 22 regular Hunodan designs under ten seconds | Some hard fits retain thin false seams; 19/77 CI timing targets miss; the earlier 27/31 photo benchmark has not been rerun |
 
-The [expanded photo evaluation](u2netp-expanded-evaluation-results.json) tests
+The [whole-body selection comparison](u2netp-balanced-body-results.json) now
+allows a supported neural crop to replace a weak existing proposal when it
+substantially improves coverage of the predicted paper. It recovers the angel:
+the new full-overlap crop produces **0.87% exported / 0.90% editable disagreement**
+and passes nominal paper checks, whereas the old crop failed them. Those errors
+refer to different crop-derived targets, not identical pixels or original
+cutting ground truth. All 12 checked cases on the original 32-photo cohort
+remain. The additional set rises from three to four checked derived masks;
+**three also pass the new whole-body evidence check**. The remaining bird crop
+contains only 17.9% of the predicted paper and remains an editable, flagged
+failure rather than a whole-heart success.
+
+The [first whole-body score](u2netp-whole-body-first-results.json) incorrectly
+rejected the checker: it discounted uncertain foreground but counted the entire
+outline area as certain background. The corrected metric treats foreground and
+background confidence symmetrically, without changing thresholds. Both complete
+cohorts were rerun. All 15 distinct exports across the two versions pass editable
+conversion and geometry; the printed swan paper fails paper checks in both.
+Every comparison page was inspected. The ten focused tests pass. This is still
+offline research: the next step is replacing source injection with an explicit
+locator field-provider API and checking model loading, cancellation and the
+actual user flow before production integration.
+
+The initial [expanded photo evaluation](u2netp-expanded-evaluation-results.json) tests
 the existing 16-photo-adapted checkpoint without further training. All 18
 eligible additional photos remain in the denominator, including two variants
 of the Santa photograph already assigned to the same duplicate group. This is
@@ -36,7 +59,7 @@ crop contains only a small part of the heart. Its **2.47% derived-mask error is
 not successful whole-heart reconstruction**. The current fallback keeps every
 production crop, so it cannot repair that selection. A separate neural-only
 diagnostic also fails on the bird. On the miscropped angel, it instead proposes
-a visually plausible full overlap, but that alternative has not been fitted.
+a visually plausible full overlap; the subsequent comparison above fits it.
 These observations motivate checking whole-heart coverage and considering
 neural alternatives to weak existing crops, without weakening geometry or
 image-fidelity checks. The Santa variants lose enclosed features despite less
