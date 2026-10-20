@@ -1,0 +1,3866 @@
+{
+  "schema": "paper-exemplar-reviewed-results-1",
+  "date": "2026-10-20",
+  "status": "complete-offline-diagnostic",
+  "evidence": [
+    {
+      "path": "tmp/heart-learning/paper-exemplar-v1/report.json",
+      "sha256": "1b83e7f89f84d54986e29968d26375f79ef983c277c446a7812376e52f1c555d"
+    },
+    {
+      "path": "tmp/heart-learning/paper-exemplar-v1.log",
+      "sha256": "51581a31b68174cd39988151375ab4192e56c2a69cdf25054a0b7a93ca5941c9"
+    },
+    {
+      "path": "tmp/heart-learning/paper-exemplar-colour-v1/report.json",
+      "sha256": "791dafc6f2017aa0d65a30a7fb4dc0eef375d80ee4e059fe7504cf8a95a8e572"
+    },
+    {
+      "path": "tmp/heart-learning/paper-exemplar-colour-v1.log",
+      "sha256": "fe41bfb536b2374b078e489089152e5f4495cbbcc5e5730d968e067808175ca9"
+    },
+    {
+      "path": "tmp/heart-learning/paper-exemplar-tests-v1.json",
+      "sha256": "495eff4449a024b1c5799b51bd08d738e00852472f3c47e27f6b088225697c62"
+    }
+  ],
+  "plans": [
+    {
+      "path": "docs/inverse/datasets/paper-exemplar-plan.json",
+      "sha256": "41736dbffe9cfdb9908a5b723ea4d811e814118b7cd3e65da6e8c6385cd4f687"
+    },
+    {
+      "path": "docs/inverse/datasets/paper-exemplar-colour-plan.json",
+      "sha256": "65701a960fd99adce869e49f33911962f1c5c6f1a61a5385e7f5897fc54321b7"
+    }
+  ],
+  "decision": "Reject the frozen neural-feature ridge classifier for integration. Retain raw-colour and neutral-deviation lobe classification as candidates for a comparison against the actual production colour classifier at the same crops. Neither diagnostic establishes a production or template improvement.",
+  "protocol": {
+    "syntheticViews": 96,
+    "syntheticGeometries": 32,
+    "syntheticGeometry": "True camera/corners supplied as a privileged conditioning diagnostic; known fractional labels only score overlap pixels after inference. These are previous training views, not holdout data.",
+    "realDevelopmentPhotos": 32,
+    "realFixedAutomaticQuads": 26,
+    "unresolvedRealCrops": 6,
+    "newLobeSampleFailures": 0,
+    "methods": "Baseline is the previously rejected paired-control identity head, not the deployed colour classifier. RGB texture uses nine raw/mean/deviation channels; neural texture adds 192 frozen U2NETP decoder features. Balanced per-photo ridge fit uses only inset exposed-lobe samples.",
+    "ablation": "Raw RGB uses the first three features. The second intervention preserves the entire RGB-texture fit but replaces query local deviations by the balanced support mean outside both support masks. No target labels, parameter tuning, crop repair or neural weight update."
+  },
+  "syntheticSummary": [
+    {
+      "kind": "synthetic-original",
+      "views": 32,
+      "baseline": {
+        "materialError": 0.035534737944993115,
+        "jointError": 0.03555639747432348,
+        "boundaryError": 0.09700427300693491,
+        "interiorError": 0.004866702935874
+      },
+      "rgbTexture": {
+        "materialError": 0.12463578903993411,
+        "jointError": 0.12465274106236013,
+        "boundaryError": 0.32529482106053853,
+        "interiorError": 0.03197838845557527
+      },
+      "neuralTexture": {
+        "materialError": 0.2007355507090506,
+        "jointError": 0.20075028262218764,
+        "boundaryError": 0.4111013373524144,
+        "interiorError": 0.10983619557526637
+      },
+      "rgbOnly": {
+        "materialError": 0.026936326567843092,
+        "boundaryError": 0.07101746196383064,
+        "interiorError": 0.00468990066934088
+      },
+      "neutralDeviation": {
+        "materialError": 0.029975069300680182,
+        "boundaryError": 0.07765736034375187,
+        "interiorError": 0.005371010335674026
+      },
+      "meanOverlapDeviationAboveSupportMax": 0.654167970946343
+    },
+    {
+      "kind": "synthetic-printed",
+      "views": 32,
+      "baseline": {
+        "materialError": 0.13078343635003425,
+        "jointError": 0.1310116294674321,
+        "boundaryError": 0.2243398938318462,
+        "interiorError": 0.08596393417341876
+      },
+      "rgbTexture": {
+        "materialError": 0.09130846240845944,
+        "jointError": 0.09160468655150644,
+        "boundaryError": 0.2529037051117197,
+        "interiorError": 0.01560105092449705
+      },
+      "neuralTexture": {
+        "materialError": 0.1203440922018289,
+        "jointError": 0.12057127663112757,
+        "boundaryError": 0.2901129723571162,
+        "interiorError": 0.04128143634020509
+      },
+      "rgbOnly": {
+        "materialError": 0.06329865780087142,
+        "boundaryError": 0.12276907367250116,
+        "interiorError": 0.034223519255559755
+      },
+      "neutralDeviation": {
+        "materialError": 0.04329684180957112,
+        "boundaryError": 0.12387024457044218,
+        "interiorError": 0.006036680082217359
+      },
+      "meanOverlapDeviationAboveSupportMax": 0.24779650902735378
+    },
+    {
+      "kind": "synthetic-scene",
+      "views": 32,
+      "baseline": {
+        "materialError": 0.0788368418998761,
+        "jointError": 0.24668375690585015,
+        "boundaryError": 0.20274799324646772,
+        "interiorError": 0.02418077497306638
+      },
+      "rgbTexture": {
+        "materialError": 0.1254140460474611,
+        "jointError": 0.29102344358150967,
+        "boundaryError": 0.3250082348114258,
+        "interiorError": 0.034357298156742794
+      },
+      "neuralTexture": {
+        "materialError": 0.23707615184565822,
+        "jointError": 0.3735733044354893,
+        "boundaryError": 0.3798443655787971,
+        "interiorError": 0.1754243972413674
+      },
+      "rgbOnly": {
+        "materialError": 0.027001796949220197,
+        "boundaryError": 0.07055022414919396,
+        "interiorError": 0.004969786297636249
+      },
+      "neutralDeviation": {
+        "materialError": 0.03044916472476624,
+        "boundaryError": 0.07774630885713807,
+        "interiorError": 0.006084342218677745
+      },
+      "meanOverlapDeviationAboveSupportMax": 0.6514936832514125
+    }
+  ],
+  "rows": [
+    {
+      "id": "180ecc34ae42:corner-lattice-3001055-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        1230,
+        950
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.01925479409908179,
+        "rgb-texture": 0.078654743460046,
+        "neural-texture": 0.16967716722211842,
+        "rgb-only": 0.015699277881873332,
+        "neutral-deviation": 0.016194822910669378
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-3001055-v0--scene-baseline",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        1230,
+        950
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.16531472723460724,
+        "rgb-texture": 0.08038893104133604,
+        "neural-texture": 0.3384080446807571,
+        "rgb-only": 0.015699277881873332,
+        "neutral-deviation": 0.016194822910669378
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-5029313-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        1188,
+        806
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.030717496400556762,
+        "rgb-texture": 0.07861122947636424,
+        "neural-texture": 0.1767646887055903,
+        "rgb-only": 0.02925952845361201,
+        "neutral-deviation": 0.029987550096627562
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-5029313-v0--scene-background-white",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        1188,
+        806
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.04699857682456021,
+        "rgb-texture": 0.07051607760082901,
+        "neural-texture": 0.09735513537547828,
+        "rgb-only": 0.03158775629272297,
+        "neutral-deviation": 0.03359003409138688
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-23244-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        1076,
+        1006
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.0215577905131506,
+        "rgb-texture": 0.025465270838299053,
+        "neural-texture": 0.10636156270947142,
+        "rgb-only": 0.011705691710569002,
+        "neutral-deviation": 0.01506046096379228
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-23244-v0--scene-background-black",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        1076,
+        1006
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.05077387294749406,
+        "rgb-texture": 0.04566446707283742,
+        "neural-texture": 0.25574579620429344,
+        "rgb-only": 0.011718457555310466,
+        "neutral-deviation": 0.015592932014421385
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-757447-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        1164,
+        1088
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.04304275452274903,
+        "rgb-texture": 0.34259904009743536,
+        "neural-texture": 0.3009887728893339,
+        "rgb-only": 0.03243588635979688,
+        "neutral-deviation": 0.034431360748266346
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-757447-v0--scene-background-gray",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        1164,
+        1088
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.29203273410419894,
+        "rgb-texture": 0.3485147166402739,
+        "neural-texture": 0.2805357430371723,
+        "rgb-only": 0.03253125112600695,
+        "neutral-deviation": 0.03458007417263265
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-835140-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        815,
+        809
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.008636826115247928,
+        "rgb-texture": 0.04970658607296629,
+        "neural-texture": 0.12906755884316226,
+        "rgb-only": 0.007059605508208097,
+        "neutral-deviation": 0.0072884314520209
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-835140-v0--scene-background-plain",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        815,
+        809
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.18540285410220114,
+        "rgb-texture": 0.0533286027601146,
+        "neural-texture": 0.2473015444575256,
+        "rgb-only": 0.007059605508208097,
+        "neutral-deviation": 0.0072884314520209
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-737267-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        985,
+        852
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.06962997865465714,
+        "rgb-texture": 0.24068725227689905,
+        "neural-texture": 0.29474583728560877,
+        "rgb-only": 0.049831088237604536,
+        "neutral-deviation": 0.06986185343869498
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-737267-v0--scene-background-white-plain",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        985,
+        852
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.08213372884226063,
+        "rgb-texture": 0.2492232897584471,
+        "neural-texture": 0.4449291935888826,
+        "rgb-only": 0.048375732647302286,
+        "neutral-deviation": 0.06447067187140149
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-20217-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        942,
+        1228
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.05046315956637535,
+        "rgb-texture": 0.10317883823860928,
+        "neural-texture": 0.3074072907156097,
+        "rgb-only": 0.03507314832214268,
+        "neutral-deviation": 0.04165827922363838
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-20217-v0--scene-baseline",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        942,
+        1228
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.1418432226337574,
+        "rgb-texture": 0.06469523701088822,
+        "neural-texture": 0.3140413036813582,
+        "rgb-only": 0.03511255960280601,
+        "neutral-deviation": 0.04161987025145133
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-762492-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        744,
+        809
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.02738229160908968,
+        "rgb-texture": 0.060420540796499535,
+        "neural-texture": 0.3119655307130821,
+        "rgb-only": 0.018282328419268887,
+        "neutral-deviation": 0.0189692303622577
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-762492-v0--scene-background-white",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        744,
+        809
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.06256798078443986,
+        "rgb-texture": 0.02774021349243162,
+        "neural-texture": 0.15837808993257133,
+        "rgb-only": 0.018305014368144922,
+        "neutral-deviation": 0.0192409653011168
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-830095-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        765,
+        688
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.015190517107426678,
+        "rgb-texture": 0.06648281924518944,
+        "neural-texture": 0.11964549678979612,
+        "rgb-only": 0.010188645314960054,
+        "neutral-deviation": 0.010607493345847173
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-830095-v0--scene-background-black",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        765,
+        688
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.01576732516650097,
+        "rgb-texture": 0.06583337731747695,
+        "neural-texture": 0.07604049162189308,
+        "rgb-only": 0.010322507073577687,
+        "neutral-deviation": 0.01094744856050764
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-1063607-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        692,
+        609
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.009584345209742481,
+        "rgb-texture": 0.04178424545949168,
+        "neural-texture": 0.049461638184855196,
+        "rgb-only": 0.0072336046170324705,
+        "neutral-deviation": 0.0077388562695516845
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-1063607-v0--scene-background-gray",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        692,
+        609
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.0170262043500313,
+        "rgb-texture": 0.03300268673281769,
+        "neural-texture": 0.07313132535514925,
+        "rgb-only": 0.007166818847509692,
+        "neutral-deviation": 0.007684276440271824
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-781663-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        1036,
+        1233
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.027204710560244788,
+        "rgb-texture": 0.1294386982656883,
+        "neural-texture": 0.24157285729732897,
+        "rgb-only": 0.013639226578290892,
+        "neutral-deviation": 0.01400030552137861
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-781663-v0--scene-background-plain",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        1036,
+        1233
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.03742029520679231,
+        "rgb-texture": 0.12948733403243118,
+        "neural-texture": 0.14560467772699273,
+        "rgb-only": 0.013652182490403222,
+        "neutral-deviation": 0.0140283289867572
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-745339-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        1139,
+        836
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.024109334951872934,
+        "rgb-texture": 0.2284688048768011,
+        "neural-texture": 0.3438962451836179,
+        "rgb-only": 0.021617014263874672,
+        "neutral-deviation": 0.022472234066060963
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-745339-v0--scene-background-white-plain",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        1139,
+        836
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.026048380203593947,
+        "rgb-texture": 0.22822137199297085,
+        "neural-texture": 0.22098396014093571,
+        "rgb-only": 0.021617014263874672,
+        "neutral-deviation": 0.022472234066060963
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-802852-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        564,
+        696
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.1816770953150145,
+        "rgb-texture": 0.3226915744208295,
+        "neural-texture": 0.27024014667647583,
+        "rgb-only": 0.1705858344517547,
+        "neutral-deviation": 0.19013333551218717
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-802852-v0--scene-baseline",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        564,
+        696
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.22682159842246352,
+        "rgb-texture": 0.3223485918443444,
+        "neural-texture": 0.4294411929599999,
+        "rgb-only": 0.1705858344517547,
+        "neutral-deviation": 0.1900787631708795
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-9039415-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        1117,
+        1065
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.018886429734365322,
+        "rgb-texture": 0.14102230692460493,
+        "neural-texture": 0.23306348191832826,
+        "rgb-only": 0.013834566190677943,
+        "neutral-deviation": 0.01492660948597484
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-9039415-v0--scene-background-white",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        1117,
+        1065
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.01946818475713689,
+        "rgb-texture": 0.14132358736648293,
+        "neural-texture": 0.25842125244305836,
+        "rgb-only": 0.013834566190677943,
+        "neutral-deviation": 0.01492660948597484
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-798816-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        672,
+        625
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.08709419285463597,
+        "rgb-texture": 0.3225169663085477,
+        "neural-texture": 0.1503748300105555,
+        "rgb-only": 0.05113454510830439,
+        "neutral-deviation": 0.06559470336508685
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-798816-v0--scene-background-black",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        672,
+        625
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.0857673184370747,
+        "rgb-texture": 0.3083038431035989,
+        "neural-texture": 0.2715461400640459,
+        "rgb-only": 0.0514999551865777,
+        "neutral-deviation": 0.07078166321052771
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-5053529-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        960,
+        980
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.01221286155463024,
+        "rgb-texture": 0.061959967200134816,
+        "neural-texture": 0.1000454606062285,
+        "rgb-only": 0.009320417707917255,
+        "neutral-deviation": 0.01004517650999986
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-5053529-v0--scene-background-gray",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        960,
+        980
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.013617139551898683,
+        "rgb-texture": 0.05957251835975283,
+        "neural-texture": 0.17726321382216834,
+        "rgb-only": 0.00932145799057437,
+        "neutral-deviation": 0.009963955050872206
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-733231-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        1056,
+        652
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.027472994703579657,
+        "rgb-texture": 0.11027841598398877,
+        "neural-texture": 0.16166688775078297,
+        "rgb-only": 0.025849279155562167,
+        "neutral-deviation": 0.029475530721550503
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-733231-v0--scene-background-plain",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        1056,
+        652
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.04739525094998743,
+        "rgb-texture": 0.10559508144980043,
+        "neural-texture": 0.18913055984815352,
+        "rgb-only": 0.025849279155562167,
+        "neutral-deviation": 0.029472313067078013
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-40397-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        1186,
+        880
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.011925384203299517,
+        "rgb-texture": 0.04261424134939709,
+        "neural-texture": 0.16075935620365492,
+        "rgb-only": 0.00956470995974551,
+        "neutral-deviation": 0.009784930207591285
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-40397-v0--scene-background-white-plain",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        1186,
+        880
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.06876501739373553,
+        "rgb-texture": 0.04341622466535159,
+        "neural-texture": 0.11682892948963057,
+        "rgb-only": 0.009552154120837906,
+        "neutral-deviation": 0.009790473494571683
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-786708-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        1244,
+        957
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.05434785500141435,
+        "rgb-texture": 0.06548048061828474,
+        "neural-texture": 0.3798023602856124,
+        "rgb-only": 0.032380540491734416,
+        "neutral-deviation": 0.034088451313485695
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-786708-v0--scene-baseline",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        1244,
+        957
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.05586466994516868,
+        "rgb-texture": 0.07950770929640874,
+        "neural-texture": 0.44542226535629814,
+        "rgb-only": 0.03244504591707047,
+        "neutral-deviation": 0.0341180404705531
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-813951-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        949,
+        1081
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.056015785288389616,
+        "rgb-texture": 0.11828635228106908,
+        "neural-texture": 0.09459914959521103,
+        "rgb-only": 0.024875014177216152,
+        "neutral-deviation": 0.025681890063975754
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-813951-v0--scene-background-white",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        949,
+        1081
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.09560505239387018,
+        "rgb-texture": 0.1367826790668764,
+        "neural-texture": 0.3146527572625476,
+        "rgb-only": 0.025620568402952744,
+        "neutral-deviation": 0.027539763450374115
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-818996-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        1030,
+        934
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.0369665205463519,
+        "rgb-texture": 0.2177460595277989,
+        "neural-texture": 0.2806457630491784,
+        "rgb-only": 0.032702215181582915,
+        "neutral-deviation": 0.03868832393452451
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-818996-v0--scene-background-black",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        1030,
+        934
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.09902698878321477,
+        "rgb-texture": 0.22797607604832248,
+        "neural-texture": 0.06752332251943617,
+        "rgb-only": 0.03282026417647161,
+        "neutral-deviation": 0.03964287075567373
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-3056550-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        1112,
+        921
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.009636982604614123,
+        "rgb-texture": 0.07617618043056278,
+        "neural-texture": 0.08206930144454658,
+        "rgb-only": 0.0060549386899718454,
+        "neutral-deviation": 0.006500751952239262
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-3056550-v0--scene-background-gray",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        1112,
+        921
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.22275649949548143,
+        "rgb-texture": 0.08481094060536402,
+        "neural-texture": 0.24573441533525678,
+        "rgb-only": 0.0060549386899718454,
+        "neutral-deviation": 0.006500751952239262
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-55532-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        785,
+        832
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.01460897161667807,
+        "rgb-texture": 0.0245084533984201,
+        "neural-texture": 0.17072244545033102,
+        "rgb-only": 0.00969285990480791,
+        "neutral-deviation": 0.010305865049362182
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-55532-v0--scene-background-plain",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        785,
+        832
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.11104246465365092,
+        "rgb-texture": 0.01547485445675097,
+        "neural-texture": 0.15707755237294915,
+        "rgb-only": 0.00969285990480791,
+        "neutral-deviation": 0.010305865049362182
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-2017196-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        772,
+        767
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.04340235948189643,
+        "rgb-texture": 0.03903268053327695,
+        "neural-texture": 0.11455492051305705,
+        "rgb-only": 0.03705188948408109,
+        "neutral-deviation": 0.030640787130770994
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-2017196-v0--scene-background-white-plain",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        772,
+        767
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.05541249864904842,
+        "rgb-texture": 0.05990436973031296,
+        "neural-texture": 0.13112377351152432,
+        "rgb-only": 0.03701364089997965,
+        "neutral-deviation": 0.038608636119783935
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-782672-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        1018,
+        773
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.023540163013967347,
+        "rgb-texture": 0.19258269556301846,
+        "neural-texture": 0.2067015608142563,
+        "rgb-only": 0.02096041124018959,
+        "neutral-deviation": 0.022416594435993035
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-782672-v0--scene-baseline",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        1018,
+        773
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.02452812910879556,
+        "rgb-texture": 0.19264051908562746,
+        "neural-texture": 0.281336818132095,
+        "rgb-only": 0.02096041124018959,
+        "neutral-deviation": 0.022434326979801588
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-761483-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        909,
+        1085
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.013302887312565402,
+        "rgb-texture": 0.02100658881524952,
+        "neural-texture": 0.07701267101757713,
+        "rgb-only": 0.007328344731688471,
+        "neutral-deviation": 0.007762440918627986
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-761483-v0--scene-background-white",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        909,
+        1085
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.011045719875829597,
+        "rgb-texture": 0.022080026554283448,
+        "neural-texture": 0.03464789235057812,
+        "rgb-only": 0.007197325682303375,
+        "neutral-deviation": 0.007528358972911449
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-1051499-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        990,
+        1010
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.01680074830667234,
+        "rgb-texture": 0.06209090714043541,
+        "neural-texture": 0.13729205684959517,
+        "rgb-only": 0.012480784698968003,
+        "neutral-deviation": 0.012801708060613
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-1051499-v0--scene-background-black",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        990,
+        1010
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.01708375691080181,
+        "rgb-texture": 0.058895206505174436,
+        "neural-texture": 0.08503319784518781,
+        "rgb-only": 0.012480784698968003,
+        "neutral-deviation": 0.012824359028118551
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-18199-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        691,
+        568
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.026731874674166215,
+        "rgb-texture": 0.019603551038183887,
+        "neural-texture": 0.1917237089810454,
+        "rgb-only": 0.013822757297409482,
+        "neutral-deviation": 0.01630670132501571
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-18199-v0--scene-background-gray",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        691,
+        568
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.021758730078364357,
+        "rgb-texture": 0.05633693610286727,
+        "neural-texture": 0.3925982998759282,
+        "rgb-only": 0.013822757297409482,
+        "neutral-deviation": 0.01623562688234202
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-713051-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        669,
+        690
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.032278707876087054,
+        "rgb-texture": 0.21753469385529897,
+        "neural-texture": 0.21051544766260744,
+        "rgb-only": 0.028558936578191852,
+        "neutral-deviation": 0.03132253758966515
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-713051-v0--scene-background-plain",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        669,
+        690
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.031213973172553325,
+        "rgb-texture": 0.2146094655447967,
+        "neural-texture": 0.3017955386041574,
+        "rgb-only": 0.02858972172231571,
+        "neutral-deviation": 0.03132253758966515
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-753411-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        882,
+        846
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.03259246908297288,
+        "rgb-texture": 0.33745767133084337,
+        "neural-texture": 0.29531707837913723,
+        "rgb-only": 0.03066994369018885,
+        "neutral-deviation": 0.03303436993945044
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-753411-v0--scene-background-white-plain",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        882,
+        846
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.041898788699858365,
+        "rgb-texture": 0.3322367129120479,
+        "neural-texture": 0.3599804757921578,
+        "rgb-only": 0.030682314849268828,
+        "neutral-deviation": 0.03329763910236794
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-773591-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        894,
+        720
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.03509784872149969,
+        "rgb-texture": 0.05448363685487504,
+        "neural-texture": 0.29788796445555,
+        "rgb-only": 0.030769017354721227,
+        "neutral-deviation": 0.03300859178603705
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-773591-v0--scene-baseline",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        894,
+        720
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.055137148707079066,
+        "rgb-texture": 0.045996929228933545,
+        "neural-texture": 0.37225599250248986,
+        "rgb-only": 0.03073332169420534,
+        "neutral-deviation": 0.033266768998360265
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-54523-v0",
+      "cohort": "synthetic",
+      "kind": "synthetic-original",
+      "status": "complete",
+      "supportPixels": [
+        1008,
+        868
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.055745483036783894,
+        "rgb-texture": 0.09577375659878215,
+        "neural-texture": 0.2569883844863138,
+        "rgb-only": 0.04230039840903169,
+        "neutral-deviation": 0.048412039920808614
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-54523-v0--scene-background-white",
+      "cohort": "synthetic",
+      "kind": "synthetic-scene",
+      "status": "complete",
+      "supportPixels": [
+        1008,
+        868
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.09524010840958368,
+        "rgb-texture": 0.10882089613880336,
+        "neural-texture": 0.3021679631703909,
+        "rgb-only": 0.04215212244540664,
+        "neutral-deviation": 0.048023858242364006
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-3001055-v0--print-flowers",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        1230,
+        950
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.018983770714047797,
+        "rgb-texture": 0.17198475732630608,
+        "neural-texture": 0.12261876913099896,
+        "rgb-only": 0.015670317426640448,
+        "neutral-deviation": 0.01615678536202259
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-5029313-v0--print-stripes-dots",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        1188,
+        806
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.23843609279720432,
+        "rgb-texture": 0.04146339851385783,
+        "neural-texture": 0.08669249062574015,
+        "rgb-only": 0.02359057378318605,
+        "neutral-deviation": 0.024811971742631785
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-23244-v0--print-flowers-stripes",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        1076,
+        1006
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.32858743033493876,
+        "rgb-texture": 0.018530833602134717,
+        "neural-texture": 0.02601230884163375,
+        "rgb-only": 0.012223220856429873,
+        "neutral-deviation": 0.012157528552670004
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-757447-v0--print-flowers",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        1164,
+        1088
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.042921565242618545,
+        "rgb-texture": 0.20891246539211192,
+        "neural-texture": 0.15851519754992313,
+        "rgb-only": 0.03268598707874371,
+        "neutral-deviation": 0.03481738256405319
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-835140-v0--print-stripes-dots",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        815,
+        809
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.06178606187192383,
+        "rgb-texture": 0.024493855690171203,
+        "neural-texture": 0.03288533995850229,
+        "rgb-only": 0.11768021779245103,
+        "neutral-deviation": 0.022841419842717998
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-737267-v0--print-flowers-stripes",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        985,
+        852
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.48368636308268154,
+        "rgb-texture": 0.0456858786452636,
+        "neural-texture": 0.11219388222435796,
+        "rgb-only": 0.043694593359972486,
+        "neutral-deviation": 0.10377024884294633
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-20217-v0--print-flowers",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        942,
+        1228
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.053237606821860295,
+        "rgb-texture": 0.23616065099377256,
+        "neural-texture": 0.28790635187965063,
+        "rgb-only": 0.034717925834804854,
+        "neutral-deviation": 0.04150462944474054
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-762492-v0--print-stripes-dots",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        744,
+        809
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.145159881914129,
+        "rgb-texture": 0.05792366227632288,
+        "neural-texture": 0.07641686499019681,
+        "rgb-only": 0.133698339655134,
+        "neutral-deviation": 0.06248141019428228
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-830095-v0--print-flowers-stripes",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        765,
+        688
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.04425866517129763,
+        "rgb-texture": 0.04822372980405556,
+        "neural-texture": 0.052299401613265954,
+        "rgb-only": 0.021612649525318897,
+        "neutral-deviation": 0.03056549821454456
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-1063607-v0--print-flowers",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        692,
+        609
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.008383875285427604,
+        "rgb-texture": 0.09494736815192435,
+        "neural-texture": 0.07498304323425146,
+        "rgb-only": 0.007342547767117832,
+        "neutral-deviation": 0.007778330386077534
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-781663-v0--print-stripes-dots",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        1036,
+        1233
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.09760249718566401,
+        "rgb-texture": 0.05415029107964831,
+        "neural-texture": 0.07456986046412548,
+        "rgb-only": 0.1715277102338996,
+        "neutral-deviation": 0.05302427915578037
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-745339-v0--print-flowers-stripes",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        1139,
+        836
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.01375598086124402,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.07937195092959523,
+        "rgb-texture": 0.06014577042093434,
+        "neural-texture": 0.09449909959086596,
+        "rgb-only": 0.16734912379844258,
+        "neutral-deviation": 0.06122378732667588
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-802852-v0--print-flowers",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        564,
+        696
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.1184817785211904,
+        "rgb-texture": 0.15455942762979086,
+        "neural-texture": 0.23981153615823841,
+        "rgb-only": 0.08804123559300997,
+        "neutral-deviation": 0.1427516175045825
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-9039415-v0--print-stripes-dots",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        1117,
+        1065
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.09882409352619326,
+        "rgb-texture": 0.057138780810681536,
+        "neural-texture": 0.052700455222272284,
+        "rgb-only": 0.18598184311117563,
+        "neutral-deviation": 0.060200376708753556
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-798816-v0--print-flowers-stripes",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        672,
+        625
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.3168197648849532,
+        "rgb-texture": 0.0973794557040601,
+        "neural-texture": 0.13584743656442463,
+        "rgb-only": 0.06349102664532863,
+        "neutral-deviation": 0.0739728610920655
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-5053529-v0--print-flowers",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        960,
+        980
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.014615415422251789,
+        "rgb-texture": 0.024384817402435466,
+        "neural-texture": 0.037706915839740826,
+        "rgb-only": 0.009427182630497306,
+        "neutral-deviation": 0.010068032187513462
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-733231-v0--print-stripes-dots",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        1056,
+        652
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.19329865882887828,
+        "rgb-texture": 0.07155593420382286,
+        "neural-texture": 0.17430430478497913,
+        "rgb-only": 0.048779030948699106,
+        "neutral-deviation": 0.050150528147529995
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-40397-v0--print-flowers-stripes",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        1186,
+        880
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.006818181818181818,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.09750280648875212,
+        "rgb-texture": 0.028384054354847883,
+        "neural-texture": 0.07037798943618474,
+        "rgb-only": 0.24219424105022117,
+        "neutral-deviation": 0.07126403815137021
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-786708-v0--print-flowers",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        1244,
+        957
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.05056276893311808,
+        "rgb-texture": 0.2968046525790056,
+        "neural-texture": 0.37161290579278977,
+        "rgb-only": 0.032387469060042126,
+        "neutral-deviation": 0.03450588049584181
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-813951-v0--print-stripes-dots",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        949,
+        1081
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.3058073627242561,
+        "rgb-texture": 0.04286142731075618,
+        "neural-texture": 0.05142642453197192,
+        "rgb-only": 0.02496261695560107,
+        "neutral-deviation": 0.0259629530909907
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-818996-v0--print-flowers-stripes",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        1030,
+        934
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.09543606811609606,
+        "rgb-texture": 0.10881949569009768,
+        "neural-texture": 0.16956815959038068,
+        "rgb-only": 0.054744153101390615,
+        "neutral-deviation": 0.04837918658392268
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-3056550-v0--print-flowers",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        1112,
+        921
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.009285008079449675,
+        "rgb-texture": 0.05250280656464598,
+        "neural-texture": 0.08779781302688736,
+        "rgb-only": 0.006108905795449889,
+        "neutral-deviation": 0.006525789731701096
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-55532-v0--print-stripes-dots",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        785,
+        832
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.07968884192433273,
+        "rgb-texture": 0.04055583055814107,
+        "neural-texture": 0.03389123359061124,
+        "rgb-only": 0.11766408913177356,
+        "neutral-deviation": 0.0348149551383236
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-2017196-v0--print-flowers-stripes",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        772,
+        767
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.43230824186801403,
+        "rgb-texture": 0.04295540128486268,
+        "neural-texture": 0.0733459075458662,
+        "rgb-only": 0.022415465445824675,
+        "neutral-deviation": 0.022518416531164123
+      }
+    },
+    {
+      "id": "6649301431ad:shared-lattice-782672-v0--print-flowers",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        1018,
+        773
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.023996934292977348,
+        "rgb-texture": 0.19778390557032258,
+        "neural-texture": 0.1721752841817005,
+        "rgb-only": 0.021091638851320177,
+        "neutral-deviation": 0.02277645179546264
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-761483-v0--print-stripes-dots",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        909,
+        1085
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.16475419369976335,
+        "rgb-texture": 0.03356075857586602,
+        "neural-texture": 0.0704958858043282,
+        "rgb-only": 0.019584469883610855,
+        "neutral-deviation": 0.016709670272075493
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-1051499-v0--print-flowers-stripes",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        990,
+        1010
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.05198421267764841,
+        "rgb-texture": 0.04772180600003065,
+        "neural-texture": 0.0592496959220788,
+        "rgb-only": 0.02755255288330234,
+        "neutral-deviation": 0.02392222545609972
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-18199-v0--print-flowers",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        691,
+        568
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.024148261618518956,
+        "rgb-texture": 0.16902492247507547,
+        "neural-texture": 0.16406856798476627,
+        "rgb-only": 0.014142701635171648,
+        "neutral-deviation": 0.01635052468988701
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-713051-v0--print-stripes-dots",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        669,
+        690
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.13692059067235282,
+        "rgb-texture": 0.0809201565464814,
+        "neural-texture": 0.15509110358735062,
+        "rgb-only": 0.06156492633447391,
+        "neutral-deviation": 0.05239532862845213
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-753411-v0--print-flowers-stripes",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        882,
+        846
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.10186661773119478,
+        "rgb-texture": 0.09739526518166669,
+        "neural-texture": 0.1048612064242074,
+        "rgb-only": 0.05552452368839702,
+        "neutral-deviation": 0.04951804604033314
+      }
+    },
+    {
+      "id": "6649301431ad:lattice-773591-v0--print-flowers",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        894,
+        720
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.038451731997904186,
+        "rgb-texture": 0.07989106374971311,
+        "neural-texture": 0.2754965976790092,
+        "rgb-only": 0.0297432713646045,
+        "neutral-deviation": 0.03139188935062587
+      }
+    },
+    {
+      "id": "180ecc34ae42:corner-lattice-54523-v0--print-stripes-dots",
+      "cohort": "synthetic",
+      "kind": "synthetic-printed",
+      "status": "complete",
+      "supportPixels": [
+        1008,
+        868
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "overlapErrors": {
+        "baseline": 0.22790084984186282,
+        "rgb-texture": 0.13504817298189506,
+        "neural-texture": 0.15158891668722413,
+        "rgb-only": 0.11836249840584995,
+        "neutral-deviation": 0.1201868946804376
+      }
+    },
+    {
+      "id": "real-1bcc922200edde26-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "failed",
+      "reason": "No fixed automatic crop; no lobe labels can be inferred."
+    },
+    {
+      "id": "real-80a649a21ea938ae-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "failed",
+      "reason": "No fixed automatic crop; no lobe labels can be inferred."
+    },
+    {
+      "id": "real-f6e5e128449e3cb9-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        1116,
+        1223
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.177734375,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            417.07318955467247,
+            147.8850394315756
+          ],
+          [
+            703.8351181756057,
+            465.6231853344314
+          ],
+          [
+            420.00062195949727,
+            781.5838810005721
+          ],
+          [
+            119.40959612173316,
+            420.29820714652783
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 1.1920928955078125e-07,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": false,
+          "maximumDifference": 1.1920928955078125e-07,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-fcbcc23efea92b93-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        1038,
+        1046
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.00048828125,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            119.52170598234152,
+            123.96462666819608
+          ],
+          [
+            197.25506733385495,
+            202.15575444904687
+          ],
+          [
+            114.66703548593401,
+            289.9612904484674
+          ],
+          [
+            36.880702677507514,
+            211.73267313398816
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 1.1920928955078125e-07,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-55704c6e2911bebc-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        566,
+        710
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.007067137809187279,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            566.2501028129489,
+            531.316244802162
+          ],
+          [
+            885.6283684622077,
+            818.1681767781392
+          ],
+          [
+            614.0719914510279,
+            1123.136879691518
+          ],
+          [
+            261.11098432881494,
+            813.2051971085874
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-24b5ed49c9411b11-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        1218,
+        1069
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            497.3011521394447,
+            548.7433880354315
+          ],
+          [
+            863.7064124819087,
+            958.236332856675
+          ],
+          [
+            457.44396416832194,
+            1316.678501206466
+          ],
+          [
+            114.1926562292777,
+            902.0934480825812
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 1.1920928955078125e-07,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": false,
+          "maximumDifference": 1.1175870895385742e-08,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-589f606a9d9899f2-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        1215,
+        1200
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            261.51215748982935,
+            229.47536890943587
+          ],
+          [
+            457.94476839512436,
+            431.63954481817507
+          ],
+          [
+            258.47463273386916,
+            625.1991528148252
+          ],
+          [
+            62.98439170951494,
+            418.1014122086215
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-dfa7e4b71b43aa86-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        493,
+        545
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.02535496957403651,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            532.6460823442083,
+            1025.4687711610866
+          ],
+          [
+            868.5650210016864,
+            1351.1995120033305
+          ],
+          [
+            567.9628307153245,
+            1692.6908456750002
+          ],
+          [
+            215.13648764921186,
+            1342.1502738484755
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 1.1920928955078125e-07,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-2b0550dd86d23b40-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "failed",
+      "reason": "No fixed automatic crop; no lobe labels can be inferred."
+    },
+    {
+      "id": "real-2502cdec0720f4ea-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        1316,
+        1280
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            281.6968704556635,
+            198.72458833684755
+          ],
+          [
+            494.6271243036605,
+            404.25001487891217
+          ],
+          [
+            280.61605280471656,
+            625.5440903658173
+          ],
+          [
+            70.48147551791536,
+            415.2296894835898
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-d3f063052599e167-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        539,
+        518
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            539.8607962652628,
+            1159.3697458444333
+          ],
+          [
+            859.4069307550405,
+            1478.8148939267837
+          ],
+          [
+            534.7961636810263,
+            1800.146791503801
+          ],
+          [
+            221.73489783374478,
+            1478.9586713992837
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 1.1175870895385742e-08,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-a126ed5d62adfd92-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        1116,
+        1045
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            789.5879283110597,
+            486.632163738002
+          ],
+          [
+            425.5398860971887,
+            894.741154539358
+          ],
+          [
+            -24.369303862746648,
+            507.2393433781294
+          ],
+          [
+            406.34236587247045,
+            110.21058457057754
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-5088a58018c3aa28-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        1240,
+        1224
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0361328125,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            950.8778782019817,
+            1052.1855294442685
+          ],
+          [
+            1671.0804815000124,
+            1831.4304832194673
+          ],
+          [
+            947.1706141033834,
+            2549.1415457205567
+          ],
+          [
+            231.4243985612144,
+            1786.9016400628966
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-1a7cfc6be8b164b5-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        731,
+        811
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            594.204267998057,
+            461.20139102377277
+          ],
+          [
+            927.027449446661,
+            786.0757446625759
+          ],
+          [
+            608.0023829333165,
+            1170.282000077618
+          ],
+          [
+            256.07600288530034,
+            799.4466520757758
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 1.1920928955078125e-07,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-fe7fb089d1cd86b4-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        179,
+        1230
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.20670391061452514,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            944.8086994930178,
+            1151.2740458795804
+          ],
+          [
+            1293.5555309683898,
+            1869.056643211879
+          ],
+          [
+            1009.0053151113743,
+            2711.9338023701034
+          ],
+          [
+            161.85771576167542,
+            1809.4340738470746
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-8b91ecf546833a3f-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        1423,
+        1408
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            413.3070595163138,
+            303.81564494516186
+          ],
+          [
+            738.6682638373397,
+            635.7984281788176
+          ],
+          [
+            400.86133718299504,
+            969.6528396771064
+          ],
+          [
+            77.91999021115596,
+            629.2647124473705
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 1.4901161193847656e-08,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-b5317080eec610dc-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        609,
+        422
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.17772511848341233,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            498.0695616350357,
+            503.7981371794178
+          ],
+          [
+            932.2738893354332,
+            857.3766371557336
+          ],
+          [
+            703.5553336548553,
+            1112.2155798745741
+          ],
+          [
+            299.61119246501966,
+            699.5037723146559
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-c7d1e0ad5050db71-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        1222,
+        1161
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            514.9565567881382,
+            524.3904526487775
+          ],
+          [
+            919.676565986055,
+            909.8542453145749
+          ],
+          [
+            520.0354953920096,
+            1340.1413989322814
+          ],
+          [
+            124.79431821619747,
+            918.4700862149982
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 1.1920928955078125e-07,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-45ad148d9ec045be-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        1202,
+        1206
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            329.72489186487263,
+            291.12335252304376
+          ],
+          [
+            576.0216350154246,
+            529.2649193566845
+          ],
+          [
+            327.94059799542276,
+            787.4931363752469
+          ],
+          [
+            81.13066931279144,
+            539.9129466117963
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-702942779385436c-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        705,
+        745
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.01276595744680851,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            675.6267911390378,
+            514.9472450924552
+          ],
+          [
+            991.1770412505282,
+            828.821083137389
+          ],
+          [
+            690.3280049545257,
+            1178.9161663502111
+          ],
+          [
+            367.9040634320186,
+            847.5311908512604
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 1.1920928955078125e-07,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-03bddab9c8f384c4-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        1722,
+        1311
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.00048828125,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            1169.1957389580086,
+            1180.4131486705742
+          ],
+          [
+            2214.3689067971864,
+            2148.2218299805563
+          ],
+          [
+            1058.0298575204654,
+            3534.6288139571757
+          ],
+          [
+            147.56184435775225,
+            2460.162781639952
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-eb60ff94dfc6e2f8-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        1244,
+        1196
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            278.6167751267989,
+            242.49282921091358
+          ],
+          [
+            492.7172922170973,
+            453.3076181261075
+          ],
+          [
+            278.7279866127508,
+            668.2060486066766
+          ],
+          [
+            68.35486443414258,
+            452.48671646251137
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-af21a4ef38355dfa-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        700,
+        569
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            524.8636442877053,
+            908.5828006857143
+          ],
+          [
+            903.6002958064523,
+            1236.584451007333
+          ],
+          [
+            532.3112631333281,
+            1620.080523573489
+          ],
+          [
+            188.6068214739418,
+            1275.0762465136029
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-f4bd8d13fc7e68d0-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "failed",
+      "reason": "No fixed automatic crop; no lobe labels can be inferred."
+    },
+    {
+      "id": "real-f05cf91c134daea9-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        1465,
+        1151
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            1046.9118128144019,
+            475.3815960472211
+          ],
+          [
+            1771.9567063623126,
+            1197.91891304215
+          ],
+          [
+            973.0325464403231,
+            1981.660180513089
+          ],
+          [
+            330.95971310081035,
+            1210.2253479724498
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 1.1920928955078125e-07,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-12f272f48ed09d51-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "failed",
+      "reason": "No fixed automatic crop; no lobe labels can be inferred."
+    },
+    {
+      "id": "real-28a87a8be083f16c-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        1196,
+        1271
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            506.0778635746796,
+            505.97759713466866
+          ],
+          [
+            917.6158644381778,
+            901.0821932983494
+          ],
+          [
+            538.7472418367147,
+            1341.5026017912278
+          ],
+          [
+            114.84917297316713,
+            909.9841104829538
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-ce66f9634c2c613b-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        1402,
+        1383
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            353.309821448498,
+            235.15874759608127
+          ],
+          [
+            632.7719977586695,
+            499.72211381010277
+          ],
+          [
+            358.0835928766229,
+            785.6505943446397
+          ],
+          [
+            80.41438631831058,
+            510.95707749520676
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 1.1920928955078125e-07,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-52e732b98f9b14f1-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        666,
+        587
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            518.8748078863684,
+            955.2788370485704
+          ],
+          [
+            904.0934012266056,
+            1303.5208662895525
+          ],
+          [
+            540.6404108155284,
+            1726.7836723799408
+          ],
+          [
+            174.11482814218718,
+            1320.9206132530585
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-7e9f6f83ae43ec2a-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "failed",
+      "reason": "No fixed automatic crop; no lobe labels can be inferred."
+    },
+    {
+      "id": "real-d4f6e3c76cf08ea8-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        1661,
+        1711
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            370.5780562453286,
+            151.4002170659261
+          ],
+          [
+            653.800022636137,
+            454.85622982707815
+          ],
+          [
+            370.01989440250753,
+            732.8436985954171
+          ],
+          [
+            83.42579298587462,
+            442.9761050843083
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": false,
+          "maximumDifference": 1.1920928955078125e-07,
+          "changedThresholdPixels": 0
+        }
+      }
+    },
+    {
+      "id": "real-41b7c3e0b79f1265-body-1",
+      "cohort": "development",
+      "kind": "development",
+      "status": "complete",
+      "supportPixels": [
+        689,
+        646
+      ],
+      "lobeFitError": {
+        "rgb-texture": 0.0,
+        "neural-texture": 0.0
+      },
+      "originalScoreReplayExact": true,
+      "geometry": {
+        "fixedQuad": [
+          [
+            602.7623658937517,
+            473.90393784753553
+          ],
+          [
+            894.2107733000779,
+            778.0281688978092
+          ],
+          [
+            586.3214651245999,
+            1068.313233369628
+          ],
+          [
+            305.32792826493954,
+            768.8351835255659
+          ]
+        ]
+      },
+      "priorFieldParity": {
+        "body": {
+          "exact": false,
+          "maximumDifference": 1.1920928955078125e-07,
+          "changedThresholdPixels": 0
+        },
+        "material": {
+          "exact": false,
+          "maximumDifference": 5.960464477539063e-08,
+          "changedThresholdPixels": 0
+        }
+      }
+    }
+  ],
+  "rootCause": {
+    "established": "For this fixed RGB-texture classifier, query local-deviation inputs cause most of its checker shrinkage: replacing only that block reduces plain overlap error from 12.46% to 3.00%, boundary error from 32.53% to 7.77%, with unchanged fitting samples and statistics. About 65.4% of plain overlap pixels exceed the maximum lobe-sample deviation in at least one channel.",
+    "interpretation": "Mixed-paper neighborhoods in the woven overlap have local variation unlike the paper interiors sampled on the lobes. The fitted texture signal does not transfer reliably to boundaries. This is evidence for this classifier, not proof of the cause of earlier independently trained NN failures.",
+    "neuralObservation": "All neural-feature classifiers have zero support error, including every real photo with a crop, yet synthetic overlap errors are 20.07% plain, 12.03% printed and 23.71% scene. Frozen saliency features with this per-photo linear fit do not transfer well from lobes to overlap. The specific neural-feature failure mechanism remains unproven.",
+    "remaining": [
+      "Incorrect or absent crops still prevent valid samples.",
+      "Similar-coloured printed papers remain ambiguous; a clean-looking uniform mask can be wrong.",
+      "Reflective building and small openings remain failures.",
+      "Body omissions are not fixed by identity changes.",
+      "Real source photographs lack complete material/cutting labels, so visual review cannot certify exact recovery."
+    ]
+  },
+  "visualReview": {
+    "parentGallery": {
+      "synthetic": [
+        {
+          "path": "tmp/heart-learning/paper-exemplar-v1/synthetic-1.jpg",
+          "sha256": "eff361b91319dc4bb203248766d8eb37398f4f36a2f1cdeb2ef693680ef628f1",
+          "ids": [
+            "6649301431ad:lattice-757447-v0",
+            "6649301431ad:lattice-757447-v0--scene-background-gray",
+            "6649301431ad:lattice-737267-v0--scene-background-white-plain",
+            "6649301431ad:shared-lattice-802852-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-v1/synthetic-2.jpg",
+          "sha256": "5f3dbe5ef227fde51fcceea3cf1f03b89813caacf641a67c1f59a850c5784c1d",
+          "ids": [
+            "6649301431ad:shared-lattice-802852-v0--scene-baseline",
+            "6649301431ad:shared-lattice-798816-v0",
+            "6649301431ad:shared-lattice-798816-v0--scene-background-black",
+            "6649301431ad:shared-lattice-786708-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-v1/synthetic-3.jpg",
+          "sha256": "2ac4d79fb784c6f903b5888180a1c442a72c7ad743261ed907fa610bb22a680f",
+          "ids": [
+            "6649301431ad:shared-lattice-786708-v0--scene-baseline",
+            "180ecc34ae42:corner-lattice-18199-v0--scene-background-gray",
+            "6649301431ad:lattice-753411-v0",
+            "6649301431ad:lattice-753411-v0--scene-background-white-plain"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-v1/synthetic-4.jpg",
+          "sha256": "c5f981bc11abd171211db5c1321af8839e53f2b447691877f3485cba19524deb",
+          "ids": [
+            "6649301431ad:lattice-773591-v0--scene-baseline",
+            "180ecc34ae42:corner-lattice-5029313-v0--print-stripes-dots",
+            "180ecc34ae42:corner-lattice-23244-v0--print-flowers-stripes",
+            "6649301431ad:lattice-737267-v0--print-flowers-stripes"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-v1/synthetic-5.jpg",
+          "sha256": "fd19bef8ba4f855800b1e4226ec56164f31fb89ea56d75109ac4425caf9bdeb1",
+          "ids": [
+            "6649301431ad:shared-lattice-798816-v0--print-flowers-stripes",
+            "6649301431ad:shared-lattice-786708-v0--print-flowers",
+            "6649301431ad:lattice-813951-v0--print-stripes-dots",
+            "180ecc34ae42:corner-lattice-2017196-v0--print-flowers-stripes"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-v1/synthetic-6.jpg",
+          "sha256": "da14726c21f13febc086486a6327d92c4d90fd31a6c1cbe91391b0c7f8dd1b63",
+          "ids": [
+            "180ecc34ae42:corner-lattice-54523-v0--print-stripes-dots"
+          ]
+        }
+      ],
+      "development": [
+        {
+          "path": "tmp/heart-learning/paper-exemplar-v1/development-1.jpg",
+          "sha256": "1702d726821c4595d722457f8fdf3e42f0830dc25211a135b2130f734f6079d3",
+          "ids": [
+            "real-1bcc922200edde26-body-1",
+            "real-80a649a21ea938ae-body-1",
+            "real-f6e5e128449e3cb9-body-1",
+            "real-fcbcc23efea92b93-body-1"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-v1/development-2.jpg",
+          "sha256": "1ab28b441cac4290984bdf1e92aee925fda4c2c5e84550b9e8d9dd16a11922e5",
+          "ids": [
+            "real-55704c6e2911bebc-body-1",
+            "real-24b5ed49c9411b11-body-1",
+            "real-589f606a9d9899f2-body-1",
+            "real-dfa7e4b71b43aa86-body-1"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-v1/development-3.jpg",
+          "sha256": "2aae59ad6db6a6ddb1bc084bf38ac25af826b960b59c75fae0839fd0bcc137e6",
+          "ids": [
+            "real-2b0550dd86d23b40-body-1",
+            "real-2502cdec0720f4ea-body-1",
+            "real-d3f063052599e167-body-1",
+            "real-a126ed5d62adfd92-body-1"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-v1/development-4.jpg",
+          "sha256": "3dd48887967bfc55c7e0e4495d503abdc71f475a55f89108ec6149544965123a",
+          "ids": [
+            "real-5088a58018c3aa28-body-1",
+            "real-1a7cfc6be8b164b5-body-1",
+            "real-fe7fb089d1cd86b4-body-1",
+            "real-8b91ecf546833a3f-body-1"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-v1/development-5.jpg",
+          "sha256": "633e82763382dff36ebf12f6387ea288828518363777dcdd3b48bf854c4f2122",
+          "ids": [
+            "real-b5317080eec610dc-body-1",
+            "real-c7d1e0ad5050db71-body-1",
+            "real-45ad148d9ec045be-body-1",
+            "real-702942779385436c-body-1"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-v1/development-6.jpg",
+          "sha256": "e76425d58669a52ae8f4960e8b016869c5f0e33bd90ef7d1c6456fee22bc4ca7",
+          "ids": [
+            "real-03bddab9c8f384c4-body-1",
+            "real-eb60ff94dfc6e2f8-body-1",
+            "real-af21a4ef38355dfa-body-1",
+            "real-f4bd8d13fc7e68d0-body-1"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-v1/development-7.jpg",
+          "sha256": "afe5169d1cc8ea766ccc9ec929c2a2c5bfc2aabadd9a4b70c47e95f47cac9c29",
+          "ids": [
+            "real-f05cf91c134daea9-body-1",
+            "real-12f272f48ed09d51-body-1",
+            "real-28a87a8be083f16c-body-1",
+            "real-ce66f9634c2c613b-body-1"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-v1/development-8.jpg",
+          "sha256": "6e65010939e937103c159dda7cb854d4d77947e6b7db987d70e5543894536672",
+          "ids": [
+            "real-52e732b98f9b14f1-body-1",
+            "real-7e9f6f83ae43ec2a-body-1",
+            "real-d4f6e3c76cf08ea8-body-1",
+            "real-41b7c3e0b79f1265-body-1"
+          ]
+        }
+      ]
+    },
+    "parentAll14PagesInspected": true,
+    "parentObservations": [
+      "Synthetic pages 1-3: ordinary checks shrink into isolated islands under RGB texture. Neural transfer often adds false outlines or loses alternating cells; crowded scene changes make those neural errors worse.",
+      "Synthetic pages 4-6: lobe examples suppress much of striped, spotted and floral ink, sometimes restoring the main grid. Small prints and dense checks still retain boundary distortion.",
+      "Real page 1: two inputs lack crops; the held basket crop samples the wrong content. Witch motif remains but fine joins differ.",
+      "Real page 2: RGB exemplars recover gold/red stacked hearts and reduce the printed stripe failure. Neural features add noise or erase the tree-paper design. Angel fine details remain limited.",
+      "Real page 3: rotated star has no crop; nativity details merge under texture, and neural features add noise to the flower and curled motif.",
+      "Real page 4: tree/snowflake printed papers become a cleaner woven frame. The reflective building remains a small wrongly cropped fragment. Cat and dinosaur lose detail with neural features.",
+      "Real page 5: white dotted/text papers remain ambiguous. Checker cells shrink, fox legs disappear, while purple floral ink is largely suppressed.",
+      "Real page 6: missing candle body remains a separate limitation. Dragonfly and central-heart checks are thickened or erased; vase has no crop.",
+      "Real page 7: green/black silhouette returns with RGB exemplars but neural features add noise. Blue protruding tree lacks a crop; star and figure details degrade.",
+      "Real page 8: printed central flower remains classified as material. Shaded crossing strips have no crop. Bird and small central-heart patterns retain shape defects."
+    ],
+    "ablationGallery": {
+      "synthetic": [
+        {
+          "path": "tmp/heart-learning/paper-exemplar-colour-v1/synthetic-1.jpg",
+          "sha256": "6469ee4e8761c99f5cca757b77fd4ab9b0ffefa32e2a6337de6dfd41db040386",
+          "ids": [
+            "6649301431ad:lattice-757447-v0",
+            "6649301431ad:lattice-757447-v0--scene-background-gray",
+            "6649301431ad:lattice-737267-v0--scene-background-white-plain",
+            "6649301431ad:shared-lattice-802852-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-colour-v1/synthetic-2.jpg",
+          "sha256": "ab02ff3fd7704a1231ab158619688ac73c01ba8e5cbf0b60884c55e1871aef94",
+          "ids": [
+            "6649301431ad:shared-lattice-802852-v0--scene-baseline",
+            "6649301431ad:shared-lattice-798816-v0",
+            "6649301431ad:shared-lattice-798816-v0--scene-background-black",
+            "6649301431ad:shared-lattice-786708-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-colour-v1/synthetic-3.jpg",
+          "sha256": "8df112b7c4af907e76c498d7a0635e34f96e81a5560e592e02e23085ccf74b9b",
+          "ids": [
+            "6649301431ad:shared-lattice-786708-v0--scene-baseline",
+            "180ecc34ae42:corner-lattice-18199-v0--scene-background-gray",
+            "6649301431ad:lattice-753411-v0",
+            "6649301431ad:lattice-753411-v0--scene-background-white-plain"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-colour-v1/synthetic-4.jpg",
+          "sha256": "cb97cfaf9a123ee0f40da51c900236a204db8e1ae7168a8f57b01d6624193ee3",
+          "ids": [
+            "6649301431ad:lattice-773591-v0--scene-baseline",
+            "180ecc34ae42:corner-lattice-5029313-v0--print-stripes-dots",
+            "180ecc34ae42:corner-lattice-23244-v0--print-flowers-stripes",
+            "6649301431ad:lattice-737267-v0--print-flowers-stripes"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-colour-v1/synthetic-5.jpg",
+          "sha256": "34c7174e8df19e33835928ee8f156ecb77bc97a2b6927fc65c2efd319bd9e180",
+          "ids": [
+            "6649301431ad:shared-lattice-798816-v0--print-flowers-stripes",
+            "6649301431ad:shared-lattice-786708-v0--print-flowers",
+            "6649301431ad:lattice-813951-v0--print-stripes-dots",
+            "180ecc34ae42:corner-lattice-2017196-v0--print-flowers-stripes"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-colour-v1/synthetic-6.jpg",
+          "sha256": "346c9450d2053ca5f8a9ebe2e064541019ca601c5f8dc1e78e122b2f389d670e",
+          "ids": [
+            "180ecc34ae42:corner-lattice-54523-v0--print-stripes-dots"
+          ]
+        }
+      ],
+      "development": [
+        {
+          "path": "tmp/heart-learning/paper-exemplar-colour-v1/development-1.jpg",
+          "sha256": "90b4b5c81645340248dc3e5d804d705c1bbee06c90b24b0d1563a4d579045298",
+          "ids": [
+            "real-f6e5e128449e3cb9-body-1",
+            "real-fcbcc23efea92b93-body-1",
+            "real-55704c6e2911bebc-body-1",
+            "real-24b5ed49c9411b11-body-1"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-colour-v1/development-2.jpg",
+          "sha256": "231e252cdadecab867aa02e6125cad28132ab7f618dc82255a2dfbe15278789d",
+          "ids": [
+            "real-589f606a9d9899f2-body-1",
+            "real-dfa7e4b71b43aa86-body-1",
+            "real-2502cdec0720f4ea-body-1",
+            "real-d3f063052599e167-body-1"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-colour-v1/development-3.jpg",
+          "sha256": "2aae0781a1eca92811719696b932a3ecc9c4560e94a96f3bb7a22869891f88bf",
+          "ids": [
+            "real-a126ed5d62adfd92-body-1",
+            "real-5088a58018c3aa28-body-1",
+            "real-1a7cfc6be8b164b5-body-1",
+            "real-fe7fb089d1cd86b4-body-1"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-colour-v1/development-4.jpg",
+          "sha256": "673812c85ddf6400355f80f07fbbef2bb3808b50df7576111c7f3e39c860773e",
+          "ids": [
+            "real-8b91ecf546833a3f-body-1",
+            "real-b5317080eec610dc-body-1",
+            "real-c7d1e0ad5050db71-body-1",
+            "real-45ad148d9ec045be-body-1"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-colour-v1/development-5.jpg",
+          "sha256": "7bb007b75e2577c7380063f6eb24e789957ea9dc94820176c1cf44874c5bf349",
+          "ids": [
+            "real-702942779385436c-body-1",
+            "real-03bddab9c8f384c4-body-1",
+            "real-eb60ff94dfc6e2f8-body-1",
+            "real-af21a4ef38355dfa-body-1"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-colour-v1/development-6.jpg",
+          "sha256": "da11762412ab4d4dc050672ba1d4d4ce4dd720f14aa244c1324721395069e223",
+          "ids": [
+            "real-f05cf91c134daea9-body-1",
+            "real-28a87a8be083f16c-body-1",
+            "real-ce66f9634c2c613b-body-1",
+            "real-52e732b98f9b14f1-body-1"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-colour-v1/development-7.jpg",
+          "sha256": "44215150e15fd371a3fd0b81e8333a7f2585f24a8222af038a6973bb91993f2b",
+          "ids": [
+            "real-d4f6e3c76cf08ea8-body-1",
+            "real-41b7c3e0b79f1265-body-1"
+          ]
+        }
+      ]
+    },
+    "ablationAll13PagesInspected": true,
+    "ablationObservations": [
+      "Synthetic pages 1-3: raw RGB and neutralized deviation restore ordinary checker widths and alternating connectivity; this matches the measured drop in boundary error.",
+      "Synthetic pages 4-6: broad printed stripes and stars are often suppressed by both. Neutralized deviation keeps more useful averaging than raw RGB on several printed cases, but small dense patterned checks remain imperfect.",
+      "Real page 1: wrong basket crop remains wrong. Witch small details and gold/red stacked-heart checks improve; red striped central-heart reconstruction remains approximate.",
+      "Real page 2: angel birds, nativity star/animal openings and narrow flower petals return. The two green printed papers still carry false detail, especially with raw RGB.",
+      "Real page 3: curled motif and cat gain cleaner edges. The printed tree/snowflake frame remains clean. Reflective building stays miscropped and mostly uniform.",
+      "Real page 4: dinosaur legs, checker cell widths and fox legs improve. White paper with dots and text remains an ink-driven failure.",
+      "Real page 5: raw RGB leaves more floral ink than neutralized deviation. Candle output now shows the whole fixed overlap because body gating was explicitly removed for this material-only diagnostic; this is not repaired body segmentation. Dragonfly body/wings and central-heart checks regain detail.",
+      "Real page 6: green/black motif remains recognizable, small surrounding hearts and figure detail improve. Printed central flower remains a false material island.",
+      "Real page 7: bird gains beak/foot detail and upright central-heart checks return, with residual blur/rounding."
+    ],
+    "displayQualification": "Parent real panels intersect the fixed overlap with predicted body. Ablation real panels intentionally show all of the fixed overlap without body gating. Compare methods within a page; a filled former body omission is not a body-model gain."
+  },
+  "validation": {
+    "focusedTests": 5,
+    "allPassed": true,
+    "sourceAndArtifactHashChecks": 278,
+    "originalRgbTextureScoresReplayedExactly": 122,
+    "queryInterventionsPreserveFitRecords": 122,
+    "independentSavedFieldMaterialScoresChecked": 384,
+    "maximumScalarMetricDifference": 0.0,
+    "frozenBodyStateExact": true,
+    "priorRawProbabilityDifferences": "26 real body fields and 13 material fields differ from previous process by at most 1.1920928955078125e-7; zero thresholded pixels change. Raw exact checks remain failed, not tolerance passes.",
+    "newApplicationChecks": false,
+    "scope": "Offline diagnostic scripts and records only; deployed app and model unchanged. Main CI run 39369293317 remains successful."
+  },
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "artifactBytes": 45585723,
+    "newPhotoDownloads": 0,
+    "newPhotoCopies": 0,
+    "newNeuralWeights": 0,
+    "freeDiskBytes": 27603574784
+  },
+  "next": "Run a fixed-crop comparison with the deployed RGB classifier before choosing any candidate for full-template fitting. For NN work, explicit per-photo paper conditioning remains supported, while blindly adding frozen saliency features is rejected. A learned embedding would need training that matches lobe and overlap pixels of the same paper and preserves boundaries; this has not been implemented or validated."
+}

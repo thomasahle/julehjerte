@@ -23,6 +23,7 @@ and passes all 11 live browser checks after merging PR #17.
 | Broader photo evaluation | Outline extension retains 12/32 and raises the additional set from 4/18 checked derived masks (three supported by full-body evidence) to 6/18, all six body-supported | Replacing a fragment crop with the whole overlap can reveal a reconstruction failure. Printed paper, crop assumptions and feature loss remain separate problems |
 | Paper-colour calibration | Original-resolution colour mixtures restore detail lost by raw neural masks; fresh fixed-crop comparison gives 11/32 checked pairs with learned palettes versus 13/32 with RGB clustering | No learned-only checked gain; print confusion and unsuitable crops remain; these are derived-mask checks, not artwork ground truth |
 | Paired paper-identity training | Matched 256-update runs reduce synthetic printed-paper error from 10.84% to 9.64%; every real training/development photo reviewed | Known-region real training error increases from 3.53% to 3.65%; print confusion and lost small features persist; head rejected for deployment |
+| Paper examples from exposed lobes | Controlled feature ablation identifies a cause of checker shrinkage; simpler per-photo classifiers restore several real motifs | Synthetic corners are supplied; six real crops remain unresolved; frozen neural features worsen results; comparison with deployed colour classification remains outstanding |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
 | Solver | Deployed outline release passes 1,183 inverse correctness tests; earlier dedicated runs solve all 22 regular Hunodan designs under ten seconds | Some hard fits retain thin false seams; 17/77 original main-CI timing targets miss; the earlier 27/31 photo benchmark has not been rerun |
 
@@ -353,10 +354,56 @@ gallery now records raw equality failures and uses each model's actual body.
 
 The experiment uses one low-priority CPU worker, adds about **92.1 MiB** of
 local artifacts and downloads no photos. Each learned head is 77 KB. No
-browser model export or new template fit was justified. The next hypothesis is
-to condition paper identity on examples of each paper's texture in the exposed
-lobes, after checking what the existing palette and context experiments already
-establish; this has not yet been implemented or evaluated.
+browser model export or new template fit was justified. The following diagnostic
+tests conditioning on examples of each paper in its exposed lobe.
+
+The [lobe-example experiment](paper-exemplar-results.json) fits a small linear
+classifier separately on each image. Its labels come only from inset parts of
+the two exposed lobes; it never fits labels inside the woven square. Both arms
+use the same samples and ridge penalty. One uses RGB and local colour statistics;
+the other adds frozen U2NETP features. All 96 synthetic views and 32 real photos
+remain in the experiment, including six real inputs without a usable crop.
+
+The neural-feature arm fits **every selected lobe training sample perfectly**, yet transfers
+poorly into the overlap: synthetic error reaches **20.07% on plain paper** and
+**23.71% in changed scenes**. RGB texture suppresses some printed ink, but
+shrinks ordinary checks into isolated islands. This neural-feature classifier
+is rejected; these results do not establish the cause of failures in previously
+trained, different heads.
+
+A subsequent controlled ablation isolates the RGB-texture failure. The fitting
+samples remain identical; only local-deviation features outside those samples
+are replaced by their support mean. This removes that feature block's centred
+contribution without changing the trained classifier. All **122 original score
+fields replay exactly** before comparison.
+
+| Overlap-only synthetic error | Prior NN head | RGB texture | RGB only | Neutralized query deviation |
+| --- | ---: | ---: | ---: | ---: |
+| Plain paper | 3.55% | 12.46% | 2.69% | 3.00% |
+| Printed paper | 13.08% | 9.13% | 6.33% | 4.33% |
+| Changed scene | 7.88% | 12.54% | 2.70% | 3.04% |
+
+About **65.4%** of plain overlap pixels have a local-deviation channel above
+the maximum seen in the lobe samples. Neighborhoods crossing between papers
+have variation absent from the smooth lobe interiors. The intervention reduces
+plain-paper boundary error from **32.53% to 7.77%**, establishing that this
+feature block causes much of this classifier's shrinkage.
+
+All 27 comparison pages were inspected. Simpler colour features restore small
+checks, nativity details, dragonfly wings and fox legs. Printed decorations are
+suppressed on some papers, but similar-coloured prints remain ambiguous; the
+wrongly cropped basket and reflective building still fail. The ablation's
+real panels show the entire fixed overlap without body gating, so formerly
+missing body regions appearing there are **not** a body-model improvement.
+
+These scores use known synthetic corners and measure only the overlap; they
+are not comparable to the earlier full-body percentages. The prior NN head is
+also an experimental baseline, not the deployed RGB classifier. Five focused
+tests pass, and 384 saved-field errors were independently recomputed. No neural
+weights changed, no source images were copied, and the two experiments added
+about **43.5 MiB** of local artifacts. The next comparison must use the deployed
+colour classifier at the same crops before any claim of improved templates or
+production readiness.
 
 ### Latest solver and browser validation
 
