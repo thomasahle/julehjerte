@@ -1196,8 +1196,9 @@
 		escherTab = true;
 		if (patternTile) return;
 		// The tab's code comes with the tab; then the tile it was left with, or that the cuts already are, is
-		// taken up. The tab always has a type: failing those, the cuts are drawn as the first one starts,
-		// which Fortryd takes back to the Normal tab and the cuts as they were.
+		// taken up. The tab always has a type: failing those, the cuts are drawn again as the tile it was
+		// left with (changed in the Normal tab since), or as the first type starts, which Fortryd takes
+		// back to the Normal tab and the cuts as they were.
 		void loadEscher().then((module) => {
 			if (!escherTab || patternTile) return;
 			const opened = module.openedTile(lastEscherTile, { fingers, gridSize, rect: getOverlapRect(), weaveParity });

@@ -124,12 +124,14 @@ export function resumedTile(last: PatternTile | null, heart: EscherHeart): Patte
 /**
  * The tile the Escher tab opens on, which always has a type: the one it was
  * left with or a tile the cuts already are (`resumedTile`), taken up as it is
- * (`drawn` false); else the cuts drawn afresh as the first type the tab offers
- * starts, at the heart's size.
+ * (`drawn` false); else the cuts drawn afresh (`drawn` true): as the tile the tab
+ * was left with, where the cuts have been changed in the Normal tab since, or as
+ * the first type the tab offers starts, at the heart's size.
  */
 export function openedTile(last: PatternTile | null, heart: EscherHeart): { tile: PatternTile; drawn: boolean } {
 	const resumed = resumedTile(last, heart);
-	return resumed ? { tile: resumed, drawn: false } : { tile: tileForRule(COMMON_RULES[0]!, null, heart), drawn: true };
+	if (resumed) return { tile: resumed, drawn: false };
+	return { tile: last ?? tileForRule(COMMON_RULES[0]!, null, heart), drawn: true };
 }
 
 /** The tile drawn again as its type starts, at its size: the tab's "Start forfra". */

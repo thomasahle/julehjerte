@@ -126,6 +126,8 @@ describe("Tegn's Escher tab", () => {
 		// a plain chequerboard is a tile of every type, with nothing to keep
 		const plain = heartOf({ rule: opposite('move', 'move'), cuts: 3, curves: {} });
 		expect(openedTile(null, plain)).toEqual({ tile: fitLines(ruleStart(COMMON_RULES[0]!, 3)), drawn: true });
+		// left for the Normal tab and changed there: the tile the tab was left with, drawn again
+		expect(openedTile(tile, plain)).toEqual({ tile, drawn: true });
 		expect(restartedTile(tile)).toEqual(fitLines(ruleStart(opposite('move', 'turn'), 3)));
 	});
 

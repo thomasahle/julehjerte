@@ -589,8 +589,9 @@ image, and a whole arrowhead for a straight side the tiles are mirrored in, whic
 first — Flyttet, Flyttet og spejlet, To former and Symmetrisk — and "Vis flere" opens the rest in three groups:
 the other types with neither a straight side nor a symmetry of the tile's own, those with mirror edges, and
 those whose tile has a symmetry of its own. The tab always has a type chosen: opened on cuts that are a tile
-(the one it was left with, or a heart drawn in it), it takes that tile up; on any other heart it draws the cuts
-as the first type, Flyttet, starts, which Fortryd takes back to the Normal tab and the cuts as they were.
+(the one it was left with, or a heart drawn in it), it takes that tile up; where the cuts were changed in the
+Normal tab since, it draws them again as the tile it was left with; on any other heart it draws the cuts as the
+first type, Flyttet, starts. Fortryd takes either back to the Normal tab and the cuts as they were.
 Under the picker: the chosen type's name, what it does and, small, Heesch's name for it (or its IH number where
 he has none), then the size, 3 × 3 to 7 × 7, the hint, and "Start forfra", which draws the tile again as its
 type starts, at its size. Picking
