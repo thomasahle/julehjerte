@@ -842,12 +842,12 @@ upstream generator change, all **65 focused frame tests** also pass.
 
 ### Latest solver and browser validation
 
-Main `206b0a8d`, including the border-fragment repair and subsequent generator
-work, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39400466843)
+Main `111f338a`, including the border-fragment repair and subsequent generator
+work, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39405560222)
 on 20 October. This includes type checking, lint, application tests, build and
 all four inverse correctness shards. Timed quality benchmarks retain their
 separate advisory policy; a green workflow does not mean every timing target
-was met. The preceding `2bacf135` run was cancelled by this newer push after
+was met. The preceding `832349e4` run was cancelled by this newer push after
 its correctness jobs passed. The residual material-classifier experiments
 above remain offline.
 

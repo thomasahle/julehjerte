@@ -5323,6 +5323,10 @@
         "sha256": "38ebed8cdfe9a8dcbad4f5ed4d475141701398fc437f28dd721d9a0848a7d7dc"
       },
       "scope": "Upstream changes are generate.ts, frames.test.ts and two documents; all focused frame tests pass after merge."
+    },
+    "upstreamMainCI": {
+      "path": "tmp/heart-learning/context-residual-training-base-ci.json",
+      "sha256": "0757dcb51bc495c4be3d69bf03f6b61b8e6d8ae1b985ce395ff5c9c5610fe8a0"
     }
   },
   "resources": {
