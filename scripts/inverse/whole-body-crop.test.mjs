@@ -35,6 +35,15 @@ test('whole-body comparison recovers a missed full outline and preserves strong 
  assert.equal(kept.detection,full);assert.equal(kept.decision.neuralAttempted,false);
 });
 
+test('balanced evidence treats uncertain paper and background symmetrically',()=>{
+ const evidence=(candidate,value)=>wholeBodyEvidence(candidate,{...body,...source,weighting:'balanced-confidence',probability:Float32Array.from(probability,p=>p*value)});
+ const uncertainPaper=evidence(box(20,20,60,60),.8);
+ assert.equal(uncertainPaper.passed,true);assert.ok(uncertainPaper.precision>.99);
+ assert.equal(evidence(box(20,20,60,60),.5).passed,false,'Uniform uncertainty is not a body certificate');
+ const fragment=evidence(box(35,35,30,30),.8);assert.ok(Math.abs(fragment.recall-.25)<1e-10);assert.equal(fragment.passed,false);
+ assert.equal(evidence(box(0,0,100,100),.8).passed,false,'Confident background still penalizes oversized outlines');
+});
+
 test('weak alternatives, missing models and geometrically unsupported proposals never discard an existing crop',async()=>{
  const fragment={candidates:[box(35,35,30,30)]},full={candidates:[box(20,20,60,60)]};
  full.candidates[0].locator.evidence.lowerEdgeSupport=[1,.2];

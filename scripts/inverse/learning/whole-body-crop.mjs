@@ -7,7 +7,8 @@ import {overlapCoverage} from './partial-photo-crop.mjs';
 
 export const WHOLE_BODY_LIMITS=Object.freeze({recall:.85,precision:.80,diceImprovement:.05,minimumMass:100,probabilityPower:4});
 
-export function wholeBodyEvidence(candidate,{probability,resolution,window,imageWidth,imageHeight}){
+export function wholeBodyEvidence(candidate,{probability,resolution,window,imageWidth,imageHeight,weighting='area'}){
+ if(!['area','balanced-confidence'].includes(weighting))throw new TypeError('Unknown whole-body evidence weighting.');
  if(!Number.isInteger(resolution)||resolution<2||resolution>1024||probability?.length!==resolution**2||
   !probability.every(p=>Number.isFinite(p)&&p>=0&&p<=1)||
   !Array.isArray(window)||window.length!==4||!window.every(Number.isFinite)||window[2]<=window[0]||window[3]<=window[1]||
@@ -20,7 +21,7 @@ export function wholeBodyEvidence(candidate,{probability,resolution,window,image
  // the two sampled lobes and two lower sides, in their documented cyclic order.
  const polygon=candidate.outline.flatMap((segment,i)=>[candidate.quad[i],...segment]);
  const n=resolution,dx=(window[2]-window[0])/n,dy=(window[3]-window[1])/n;
- let bodyMass=0,intersectionMass=0,outlinePixels=0,observedPixels=0;
+ let bodyMass=0,intersectionMass=0,backgroundMass=0,outlinePixels=0,observedPixels=0;
  for(let y=0;y<n;y++){
   const sy=window[1]+(y+.5)*dy;if(sy<0||sy>=imageHeight)continue;
   const crossings=[];
@@ -34,22 +35,26 @@ export function wholeBodyEvidence(candidate,{probability,resolution,window,image
    while(edge<crossings.length&&crossings[edge]<=sx)edge++;
    const mass=probability[y*n+x]**WHOLE_BODY_LIMITS.probabilityPower;
    observedPixels++;bodyMass+=mass;
-   if(edge%2){outlinePixels++;intersectionMass+=mass;}
+   if(edge%2){outlinePixels++;intersectionMass+=mass;backgroundMass+=(1-probability[y*n+x])**WHOLE_BODY_LIMITS.probabilityPower;}
   }
  }
  const usable=bodyMass>=WHOLE_BODY_LIMITS.minimumMass&&outlinePixels>0;
- const recall=bodyMass?intersectionMass/bodyMass:0,precision=outlinePixels?intersectionMass/outlinePixels:0;
+ // Foreground-only weighting treats all uncertainty inside the outline as
+ // certain background. Balance foreground and background confidence instead;
+ // retain the old area metric for exact historical comparisons.
+ const outlineMass=weighting==='area'?outlinePixels:intersectionMass+backgroundMass;
+ const recall=bodyMass?intersectionMass/bodyMass:0,precision=outlineMass?intersectionMass/outlineMass:0;
  return{status:usable?'measured':'unavailable',passed:usable&&recall>=WHOLE_BODY_LIMITS.recall&&precision>=WHOLE_BODY_LIMITS.precision,
-  recall,precision,dice:bodyMass+outlinePixels?2*intersectionMass/(bodyMass+outlinePixels):0,
-  bodyMass,intersectionMass,outlinePixels,observedPixels,probabilityPower:WHOLE_BODY_LIMITS.probabilityPower,
+  recall,precision,dice:bodyMass+outlineMass?2*intersectionMass/(bodyMass+outlineMass):0,
+  bodyMass,intersectionMass,backgroundMass,outlinePixels,observedPixels,weighting,probabilityPower:WHOLE_BODY_LIMITS.probabilityPower,
   scope:'Agreement with an estimated whole-paper body, not original artwork or a guarantee of correct corners.'};
 }
 
-export async function selectWholeBodyPhotoCrop(source,{body,learnedCrop,productionCrop=detectHeartCrops}={}){
+export async function selectWholeBodyPhotoCrop(source,{body,weighting='area',learnedCrop,productionCrop=detectHeartCrops}={}){
  if(typeof learnedCrop!=='function')throw new TypeError('A learned crop provider is required.');
  const production=await productionCrop(source),candidate=production.candidates?.[0];
- const evidence=c=>wholeBodyEvidence(c,{...body,imageWidth:source.imageWidth,imageHeight:source.imageHeight});
- const decision={policy:'review-whole-body-crop-v1',selected:'production',neuralAttempted:false,
+ const evidence=c=>wholeBodyEvidence(c,{...body,weighting,imageWidth:source.imageWidth,imageHeight:source.imageHeight});
+ const decision={policy:weighting==='area'?'review-whole-body-crop-v1':'review-whole-body-balanced-crop-v1',selected:'production',neuralAttempted:false,
   limits:WHOLE_BODY_LIMITS,productionSupported:!!candidate&&supportedCropOutline(candidate.locator??production.proposal),
   productionBody:evidence(candidate),requiresReview:false};
  if(decision.productionSupported&&decision.productionBody.passed)return{production,detection:production,decision};

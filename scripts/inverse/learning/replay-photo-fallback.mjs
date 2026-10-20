@@ -136,7 +136,7 @@ const fieldPalette=plan.protocol.fieldPalette??'threshold';
 assert.ok(fieldPalette==='threshold'||saliency&&fieldPalette==='confidence-weighted');
 const outerBoundarySampling=plan.protocol.outerBoundarySampling??false;
 assert.ok(typeof outerBoundarySampling==='boolean'&&(!outerBoundarySampling||saliency));
-const wholeBodyPolicy=plan.protocol.policy==='review-whole-body-crop-v1';
+const wholeBodyPolicy=['review-whole-body-crop-v1','review-whole-body-balanced-crop-v1'].includes(plan.protocol.policy);
 assert.ok(!wholeBodyPolicy||saliency);
 const control=plan.controlRun?await pinned(plan.controlRun):null;
 if(control){
@@ -227,7 +227,8 @@ try{
   const bodyField=async()=>cachedBody??(cachedBody=await field(saliency?input.assets['probability.f32']:input.assets[manifest.methods[0]].body));
   const select=wholeBodyPolicy?selectWholeBodyPhotoCrop:saliency?selectReviewedPhotoCrop:selectPhotoCrop;
   const selected=await select(source,{...(production?{productionCrop:()=>production}:{}),
-   ...(wholeBodyPolicy?{body:{probability:await bodyField(),resolution:manifest.resolution,window:input.window}}:{}),learnedCrop:async()=>{
+   ...(wholeBodyPolicy?{body:{probability:await bodyField(),resolution:manifest.resolution,window:input.window},
+    weighting:plan.protocol.policy==='review-whole-body-balanced-crop-v1'?'balanced-confidence':'area'}:{}),learnedCrop:async()=>{
    const fields=saliency?null:input.assets[manifest.methods[0]],body=await bodyField(),start=performance.now();let detected;
    if(saliency){
     detected=await detectForegroundCrop(source,{probability:body,resolution:manifest.resolution,window:input.window,paletteMode:fieldPalette,outerBoundarySampling,
