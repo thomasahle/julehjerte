@@ -4,7 +4,6 @@ Group original, scene and printed counterparts with identical geometry. These
 are training diagnostics, including unsampled views, never a held-out benchmark.
 """
 import argparse
-from collections import Counter
 import json
 from pathlib import Path
 
@@ -18,6 +17,7 @@ from u2netp_material_training import material_training
 from u2netp_adaptation import normalize_scores
 from material_pilot import evaluate_materials
 from data import digest
+from material_pairing import synthetic_draw_counts
 
 
 def boundary_diagnostics(predictions, items, metrics):
@@ -62,7 +62,7 @@ def main():
         assert {'id': item['id'], **item['evidence'], 'inputTensorSha256': digest(item['input'].numpy().tobytes())} == expected
     assert len(real)+len(items) == len(training['trainingInputs'])
     args.output.mkdir(parents=True, exist_ok=False)
-    draws = Counter(draw['synthetic'] for draw in training['draws'])
+    draws = synthetic_draw_counts(training['draws'])
     predictions = []
     with torch.no_grad():
         for index, item in enumerate(items):
