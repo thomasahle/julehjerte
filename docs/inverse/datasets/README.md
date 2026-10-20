@@ -674,6 +674,27 @@ up. No neural weights or crop rules change; the material projection remains
 experimental. Study artifacts occupy about **37.9 MiB**, with no new source
 photographs.
 
+The [first-candidate follow-up](first-paper-recovery-results.json) retains eight
+fixed-work refinements and twelve fresh deadline-pressure fits. The first MILP
+pair passes cut geometry and polygon offsets but remains uncertain at lattice
+resolutions 360, 500, 700 and 1,000. After 40 or 80 ordinary fitting steps, the
+existing final paper repair produces a physically checked provisional pair at
+1.81% or 1.77% source-mask disagreement. Longer 160/320-step refinements still
+fail or remain uncertain. Using nominal polygon offsets alone for checkpoint
+selection instead stalls at 2.73% with unresolved lattice uncertainty.
+
+An experimental callback attempted that short repair before spending another
+MILP round. It worked with the ordinary clock, but failed in one of two 1.5×
+deadline-pressure runs and both 2× runs; the retained implementation succeeds
+in both corresponding 1.5× runs. The failed early repairs consume time without
+finishing the required paper correction. **That runtime experiment is reverted,
+not deployed.** These sequential cohorts diagnose timing risk, not equal hardware
+performance or the precise remote-CI cause. All three comparison pages were
+inspected; all outcomes and the rejected patch are preserved in about 5.1 MiB,
+with no new photographs or weights. The missing border feature remains a failed
+final check even in the useful fits. This follow-up does not change the NN's
+experimental status or the existing border-fragment repair.
+
 ### Latest solver and browser validation
 
 The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and

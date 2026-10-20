@@ -1,0 +1,542 @@
+{
+  "schema": "first-paper-recovery-results-1",
+  "date": "2026-10-20",
+  "baselineCommit": "49cae73881b5e646ba667c8331beb980a90650b7",
+  "status": "experimental runtime reverted; existing border-fragment fix retained",
+  "reports": {
+    "capture": {
+      "path": "tmp/heart-learning/first-paper-candidate-v1/report.json",
+      "sha256": "3fcabc0ba6015578365b029f96e5fce25670967571719d2a3814bba78f78c39e"
+    },
+    "fixedWork": {
+      "path": "tmp/heart-learning/first-paper-checkpoints-v1/report.json",
+      "sha256": "e012a93ecae1178cdfe3190923c24cf1239f1b7efbb5a7895db52bd0d18c3d8c"
+    },
+    "experiment": {
+      "path": "tmp/heart-learning/first-paper-recovery-v1/report.json",
+      "sha256": "da336953df341aa7e1edc3ac50a6a6ecad254c9638e4670590f08df5ca7858b2"
+    },
+    "control": {
+      "path": "tmp/heart-learning/first-paper-recovery-control-v1/report.json",
+      "sha256": "81438b141f3c04892301e9892e2c9994427c2a84c92fdf89597a4f2d4ada44f9"
+    }
+  },
+  "changedRuntimeFiles": [
+    "static/inverse/core/feature-recovery.js",
+    "static/inverse/core/solver.js",
+    "static/inverse/core/direct/rejected-routing.js"
+  ],
+  "rejectedPatch": {
+    "path": "tmp/heart-learning/first-paper-recovery-v1/rejected-runtime.patch",
+    "sha256": "21c8c0de412fac3fe9bd8c3a2f9d69665355833da83025bfaafcdb307ec5b179"
+  },
+  "rejectedPatchText": "diff --git a/static/inverse/core/direct/rejected-routing.js b/static/inverse/core/direct/rejected-routing.js\nindex 5b7ad6f6..15fdb239 100644\n--- a/static/inverse/core/direct/rejected-routing.js\n+++ b/static/inverse/core/direct/rejected-routing.js\n@@ -14,6 +14,7 @@ import {projectShortReturns} from './short-return-project.js';\n import {hasOnlyObservationWeights,sourceWeights} from '../image-reference.js';\n import {maskDisagreement} from './prefer-matching.js';\n import {shortSelfReturns} from '../self-returns.js';\n+import {repairFinalPaper} from './final-paper-repair.js';\n \n export const projectedRoutingRepairMilliseconds=4500;\n \n@@ -57,7 +58,7 @@ export function rejectedRoutingQuality(solution,cfg){\n   return{geometry,clearanceOnly,affectedCuts,relativeDeficit,repairable:clearanceOnly};\n }\n \n-export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,quality=null,projectClearance=false,paperAudit=materialAudit}={}){\n+export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,quality=null,projectClearance=false,paperUncertain=false,paperAudit=materialAudit}={}){\n   // Complete return checks and constraint projection need room to retain a\n   // valid checkpoint. This local allowance never extends the caller deadline.\n   // Without a requested deadline, use the fixed step/iteration limits below.\n@@ -69,7 +70,10 @@ export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,qual\n   if(until-started<250)return finish('insufficient_time');\n   if(!input.sourceImage||(projectClearance?!hasOnlyObservationWeights(input.sourceImage):input.sourceImage.weights)||requestedSymmetry(cfg.symmetry).length)return finish('unsupported_constraints');\n   const initial=quality||rejectedRoutingQuality(proposal,cfg);report.initialGeometry=initial.geometry;report.relativeDeficit=initial.relativeDeficit;\n-  if(!initial.repairable)return finish('geometry_not_repairable');\n+  if(paperUncertain){\n+    report.initialPaper=paperAudit(proposal,cfg).summary;\n+    if(!cfg.requireMaterialCore||!initial.geometry.passed||report.initialPaper.status!=='uncertain')return finish('paper_not_repairable');\n+  }else if(!initial.repairable)return finish('geometry_not_repairable');\n   const source=input.sourceImage,initialMask=sampleWeave(proposal,source.resolution);\n   report.initialImageError=maskDisagreement(source,initialMask);\n   // Border interpretation admits a bounded provisional trace before fitting\n@@ -111,7 +115,7 @@ export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,qual\n   // integer proposal can otherwise produce a valid checkpoint and then lose\n   // it solely because those required checks overrun the recovery allowance.\n   const refinementStarted=performance.now(),fitted=refineCurves(graph,source.probability||Float32Array.from(source.mask),source.resolution,phase,cfg,{input,\n-    ...(projectClearance?{weights:sourceWeights(source)}:{}),steps:160,rate:.008,selection:'mask',deadline:until-500});\n+    ...(projectClearance?{weights:sourceWeights(source)}:{}),steps:paperUncertain?40:160,rate:.008,selection:'mask',deadline:until-500});\n   report.steps=fitted.steps;report.history=fitted.history;report.refinementSeconds=(performance.now()-refinementStarted)/1000;\n   // The local allowance stops further optimization. Its last checkpoint may\n   // finish just after that cutoff; retain it for final checks when the overall\n@@ -136,7 +140,20 @@ export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,qual\n     }\n   }\n   if(!report.geometry.passed||report.imageError>cfg.maxImageError||!featureCheckpoint(woven))return finish('refinement_rejected');\n-  report.paper=paperAudit(solution,cfg).summary;\n+  // Give the first image-fitting block a chance to repair its paper before\n+  // longer fitting deepens a narrow return. This uses the common final repair\n+  // and its unchanged source/geometry/offset/lattice gates.\n+  if(paperUncertain&&until-performance.now()>200){\n+    const repaired=repairFinalPaper(solution,cfg,{deadline:until,maxMilliseconds:1500});\n+    report.earlyPaperRepair=repaired.report;\n+    if(repaired.report.accepted){\n+      solution=repaired.solution;woven=sampleWeave(solution,source.resolution);\n+      report.geometry=validate(solution,cfg);report.imageError=maskDisagreement(source,woven);report.features=auditFeatureFidelity(source,woven,cfg);\n+      report.paperVerification=solution.report?.paperVerification;\n+    }\n+  }\n+  if(!report.geometry.passed||report.imageError>cfg.maxImageError||!featureCheckpoint(woven))return finish('refinement_rejected');\n+  report.paper=paperAudit(solution,{...cfg,materialResolution:report.paperVerification?.resolution??cfg.materialResolution}).summary;\n   // Resolve a conservative lattice ambiguity just as the main fitter does.\n   // Uncertainty itself never passes, and every later edit must retain the\n   // finer verified lattice rather than reverting to the coarser one.\ndiff --git a/static/inverse/core/feature-recovery.js b/static/inverse/core/feature-recovery.js\nindex 6eff357d..70895c97 100644\n--- a/static/inverse/core/feature-recovery.js\n+++ b/static/inverse/core/feature-recovery.js\n@@ -22,7 +22,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{},{\n     // only a routing proposal; every score still uses the original source.\n     const source=input.sourceImage,tracingMask=initializationMask(source),remaining=()=>seconds-(performance.now()-start)/1000;\n     const choices=[{neighbors:Math.min(8,cfg.neighbors),connectorVariants:1},{neighbors:cfg.neighbors,connectorVariants:cfg.connectorVariants}];\n-    let solution=null,rejectedRepairUsed=false;const deferred=[],denseSeeds=[],ordinaryTargets=new Map();\n+    let solution=null,rejectedRepairUsed=false,uncertainRepairUsed=false;const deferred=[],denseSeeds=[],ordinaryTargets=new Map();\n     const trace=(smoothRadius,borderSeed=null)=>{\n       if(!borderSeed&&ordinaryTargets.has(smoothRadius))return ordinaryTargets.get(smoothRadius);\n       const target=preprocessMask(borderSeed?.mask||tracingMask,source.resolution,{...cfg,algorithm:'trace',fitTolerance:.75,smoothRadius,snapRadius:1.5,maxSpan:30,borderRadius:borderSeed?0:3},input.metadata.preprocessing);\n@@ -67,10 +67,11 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{},{\n         // early and leaves later graphs and boundary interpretations available.\n         const onlyChoice=graphChoices.length===1||graphChoices[0].neighbors===graphChoices[1].neighbors&&graphChoices[0].connectorVariants===graphChoices[1].connectorVariants,budget=left,attempt={...graphChoices[i],smoothRadius,budgetSeconds:budget,...(borderSeed?{borderSeed: {...borderSeed.metadata}}:{}),...(denseRetryOf!==null?{denseRetryOf}:{})};report.attempts.push(attempt);\n         const observeRejected=async(proposal,timing)=>{\n-          const observation={round:timing.round,integerCandidateSeconds:timing.elapsedSeconds,remainingSeconds:seedRemaining()};\n+          const paperUncertain=timing.reason==='paper_uncertain';\n+          const observation={round:timing.round,trigger:timing.reason,integerCandidateSeconds:timing.elapsedSeconds,remainingSeconds:seedRemaining()};\n           (attempt.rejectedCandidates??=[]).push(observation);\n           try{\n-            if(rejectedRepairUsed){observation.reason='repair_already_attempted';return false;}\n+            if(paperUncertain?uncertainRepairUsed:rejectedRepairUsed){observation.reason='repair_already_attempted';return false;}\n             // Eligibility includes the same bounded tail that will fund the\n             // repair. The routing phase alone can be nearly over while its\n             // caller still reserves enough time to repair and verify a route.\n@@ -78,21 +79,22 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{},{\n             const deadline=Math.max(phaseDeadline,Math.min(repairDeadline??phaseDeadline,phaseDeadline+500));\n             if(deadline-performance.now()<750){observation.reason='insufficient_phase_time';return false;}\n             const quality=rejectedRoutingQuality(proposal,cfg);\n-            if(!quality.repairable){observation.reason='geometry_not_repairable';return false;}\n-            rejectedRepairUsed=true;\n+            if(paperUncertain?!quality.geometry.passed:!quality.repairable){observation.reason='geometry_not_repairable';return false;}\n+            if(paperUncertain)uncertainRepairUsed=true;else rejectedRepairUsed=true;\n             // The caller can lend a bounded tail from its remaining search\n             // allowance to repair and verify this image-faithful candidate.\n             // It never extends the discrete routing search or caller deadline.\n             observation.reason='repair_attempted';observation.repairBudgetSeconds=(deadline-performance.now())/1000;\n-            const repaired=repairRejectedRouting(proposal,input,cfg,{deadline,quality});\n+            const repaired=repairRejectedRouting(proposal,input,cfg,{deadline,quality,paperUncertain});\n             attempt.continuousRepair={...repaired.report,additionalBudgetSeconds:(deadline-phaseDeadline)/1000,integerCandidateSeconds:timing.elapsedSeconds};\n+            (attempt.continuousRepairs??=[]).push(attempt.continuousRepair);\n             if(repaired.solution||repaired.refinementSeed){solution=repaired.solution||repaired.refinementSeed;return true;}\n             return false;\n           }catch(error){observation.reason='repair_error';attempt.continuousProbeError=error.message;return false;}\n         };\n         try{\n           // This recovery phase already announced graph work before tracing.\n-          solution=await solveBoundary(target,{...graphCfg,timeLimit:budget},{expandNeighbors:false,announceGraph:false,onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,onRejectedCandidate:observeRejected,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});\n+          solution=await solveBoundary(target,{...graphCfg,timeLimit:budget},{expandNeighbors:false,announceGraph:false,onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,onRejectedCandidate:observeRejected,onUncertainCandidate:observeRejected,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});\n           attempt.solver=solution.report;break;\n         }catch(error){\n           attempt.error=error.message;attempt.solver=error.report;report.solver=error.report;\ndiff --git a/static/inverse/core/solver.js b/static/inverse/core/solver.js\nindex 6cf98ad3..988fef9e 100644\n--- a/static/inverse/core/solver.js\n+++ b/static/inverse/core/solver.js\n@@ -82,7 +82,7 @@ export function formulate(graph,cfg,{onProgress=()=>{},connectivity='commodity-f\n   if(m.cost.length>80000||m.rows.length>200000)throw new Error('MILP exceeds the browser memory guard. Reduce image detail or connector candidates.');onProgress({stage:'model',variables:m.cost.length,constraints:m.rows.length});return{m,x,z,order,endpoints,metadata:{connectivity,binaryVariables:m.integer.reduce((a,b)=>a+b,0),continuousVariables:m.integer.filter(x=>!x).length,linearConstraints:m.rows.length,turnAuxiliaries:turns,crossingConflicts:crossings,widthPairs}};\n }\n function extract(graph,x,z,values,endpoints){return[0,1].map(k=>{const next=new Map(),chosen=new Set();graph.edges.forEach((edge,e)=>{if(values[x[k][e]]>.5){const fw=values[z[k][e][0]]>.5,a=fw?edge.u:edge.v,b=fw?edge.v:edge.u;if(next.has(a))throw new Error('MILP produced a branching path.');next.set(a,{b,e,fw});chosen.add(e);}});const seen=new Set(),paths=[];for(const source of endpoints[k].sources){const path=[],visited=new Set();let v=source;while(next.has(v)){if(visited.has(v))throw new Error('MILP produced a cycle.');visited.add(v);const{b,e,fw}=next.get(v);path.push([e,fw]);seen.add(e);v=b;}if(!endpoints[k].sinks.includes(v))throw new Error('A slit does not reach the opposite border.');paths.push(path);}if(seen.size!==chosen.size)throw new Error('Detached cut loop in the MILP solution.');return paths;});}\n-export async function solveGraph(graph,cfg,{onProgress=()=>{},coreGate=null,coefficientQuantum=0,stopAfterValidated=false,relaxationOnly=false,onRejectedCandidate=null,connectivity='commodity-flow'}={}){\n+export async function solveGraph(graph,cfg,{onProgress=()=>{},coreGate=null,coefficientQuantum=0,stopAfterValidated=false,relaxationOnly=false,onRejectedCandidate=null,onUncertainCandidate=null,connectivity='commodity-flow'}={}){\n   onProgress=progressReporter(onProgress,cfg.progressGeometry);\n   const start=performance.now(),highs=await solverRuntime(),form=formulate(graph,cfg,{onProgress,connectivity}),{m,x,z,endpoints}=form;let native=null,best=null,bestObj=Infinity,lower=-Infinity,rejectionObserverStopped=false;const history=[],nogoods=new Set();\n   if(!graph.edges.length){const sol={graph,paths:[[],[]],report:{status:'uniform',physicalAssemblyTested:false}};sol.report.validation=validate(sol,cfg);return sol;}\n@@ -120,7 +120,15 @@ export async function solveGraph(graph,cfg,{onProgress=()=>{},coreGate=null,coef\n         if(!best&&onRejectedCandidate&&await onRejectedCandidate(candidate,{round:round+1,reason:'self_clearance',elapsedSeconds:(performance.now()-start)/1000,remainingSeconds:cfg.timeLimit-(performance.now()-start)/1000})===true){rejectionObserverStopped=true;break;}\n         for(const issue of necks){const chain=[...new Set(issue.edgeChain)],key=`${issue.family}:${chain.sort((a,b)=>a-b).join(',')}`;if(nogoods.has(key))continue;nogoods.add(key);append(chain.map(e=>[x[issue.family][e],1]),-Infinity,chain.length-1);}continue;\n       }\n-      const check=validate(candidate,cfg,{checkSelfNecks:false});if(check.passed&&coreGate){const core=coreGate(candidate);info.materialCore=core.summary;check.materialCore=core.summary;if(!core.passed){check.passed=false;check.issues.push({type:'material_core',summary:core.summary});}}\n+      const check=validate(candidate,cfg,{checkSelfNecks:false});if(check.passed&&coreGate){const core=coreGate(candidate);info.materialCore=core.summary;check.materialCore=core.summary;if(!core.passed){\n+        check.passed=false;check.issues.push({type:'material_core',summary:core.summary});\n+        // Opt-in repair opportunity, distinct from rejected cut geometry.\n+        // An uncertain pair is never a validated MILP incumbent.\n+        if(!best&&core.status==='uncertain'&&onUncertainCandidate){\n+          info.validationPassed=false;info.issues=check.issues.slice(0,8);\n+          if(await onUncertainCandidate(candidate,{round:round+1,reason:'paper_uncertain',elapsedSeconds:(performance.now()-start)/1000,remainingSeconds:cfg.timeLimit-(performance.now()-start)/1000})===true){rejectionObserverStopped=true;break;}\n+        }\n+      }}\n       info.validationPassed=check.passed;if(check.passed){if(obj<bestObj){best=candidate;bestObj=obj;best.report.validation=check;append(m.cost.map((c,j)=>[j,c]).filter(([,c])=>c),-Infinity,obj+1e-6);}// Adding the objective row invalidates native.info (including mip_gap). Use the captured bound.\n       if(cfg.progressGeometry||hasCandidateObserver(onProgress))onProgress({stage:'solving',round:round+1,validatedIncumbent:true,gap:Number.isFinite(lower)?objectiveGap(bestObj,lower):null},best);\n       if(stopAfterValidated||status===highs.constants.modelStatus.optimal||objectiveGap(bestObj,lower)<=cfg.relativeGap+1e-9)break;}\n",
+  "fixedWork": [
+    {
+      "mode": "lattice",
+      "steps": 40,
+      "refinementSeconds": 0.527460708,
+      "rawPaper": [
+        {
+          "resolution": 360,
+          "status": "fail",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "fail"
+        },
+        {
+          "resolution": 700,
+          "status": "fail",
+          "latticeStatus": "fail",
+          "offsetStatus": "fail"
+        },
+        {
+          "resolution": 1000,
+          "status": "fail",
+          "latticeStatus": "fail",
+          "offsetStatus": "fail"
+        }
+      ],
+      "repairAccepted": true,
+      "finalPaper": "pass",
+      "geometryPassed": true,
+      "featuresPassed": false,
+      "independentMaskError": 0.01811875
+    },
+    {
+      "mode": "lattice",
+      "steps": 80,
+      "refinementSeconds": 0.4987542919999996,
+      "rawPaper": [
+        {
+          "resolution": 360,
+          "status": "fail",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "fail"
+        },
+        {
+          "resolution": 700,
+          "status": "fail",
+          "latticeStatus": "fail",
+          "offsetStatus": "fail"
+        },
+        {
+          "resolution": 1000,
+          "status": "fail",
+          "latticeStatus": "fail",
+          "offsetStatus": "fail"
+        }
+      ],
+      "repairAccepted": true,
+      "finalPaper": "pass",
+      "geometryPassed": true,
+      "featuresPassed": false,
+      "independentMaskError": 0.0176875
+    },
+    {
+      "mode": "lattice",
+      "steps": 160,
+      "refinementSeconds": 0.6793357919999998,
+      "rawPaper": [
+        {
+          "resolution": 360,
+          "status": "fail",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "fail"
+        },
+        {
+          "resolution": 700,
+          "status": "fail",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "fail"
+        },
+        {
+          "resolution": 1000,
+          "status": "fail",
+          "latticeStatus": "fail",
+          "offsetStatus": "fail"
+        }
+      ],
+      "repairAccepted": false,
+      "finalPaper": "fail",
+      "geometryPassed": true,
+      "featuresPassed": false,
+      "independentMaskError": 0.01721875
+    },
+    {
+      "mode": "lattice",
+      "steps": 320,
+      "refinementSeconds": 1.3476875409999993,
+      "rawPaper": [
+        {
+          "resolution": 360,
+          "status": "uncertain",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "pass"
+        },
+        {
+          "resolution": 700,
+          "status": "uncertain",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "pass"
+        },
+        {
+          "resolution": 1000,
+          "status": "uncertain",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "pass"
+        }
+      ],
+      "repairAccepted": false,
+      "finalPaper": "uncertain",
+      "geometryPassed": true,
+      "featuresPassed": false,
+      "independentMaskError": 0.01653125
+    },
+    {
+      "mode": "nominal-offset",
+      "steps": 40,
+      "refinementSeconds": 0.2039995830000007,
+      "rawPaper": [
+        {
+          "resolution": 360,
+          "status": "uncertain",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "pass"
+        },
+        {
+          "resolution": 700,
+          "status": "uncertain",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "pass"
+        },
+        {
+          "resolution": 1000,
+          "status": "uncertain",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "pass"
+        }
+      ],
+      "repairAccepted": false,
+      "finalPaper": "uncertain",
+      "geometryPassed": true,
+      "featuresPassed": false,
+      "independentMaskError": 0.02725625
+    },
+    {
+      "mode": "nominal-offset",
+      "steps": 80,
+      "refinementSeconds": 0.3170121249999993,
+      "rawPaper": [
+        {
+          "resolution": 360,
+          "status": "uncertain",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "pass"
+        },
+        {
+          "resolution": 700,
+          "status": "uncertain",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "pass"
+        },
+        {
+          "resolution": 1000,
+          "status": "uncertain",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "pass"
+        }
+      ],
+      "repairAccepted": false,
+      "finalPaper": "uncertain",
+      "geometryPassed": true,
+      "featuresPassed": false,
+      "independentMaskError": 0.02725625
+    },
+    {
+      "mode": "nominal-offset",
+      "steps": 160,
+      "refinementSeconds": 0.7647594999999983,
+      "rawPaper": [
+        {
+          "resolution": 360,
+          "status": "uncertain",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "pass"
+        },
+        {
+          "resolution": 700,
+          "status": "uncertain",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "pass"
+        },
+        {
+          "resolution": 1000,
+          "status": "uncertain",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "pass"
+        }
+      ],
+      "repairAccepted": false,
+      "finalPaper": "uncertain",
+      "geometryPassed": true,
+      "featuresPassed": false,
+      "independentMaskError": 0.02725625
+    },
+    {
+      "mode": "nominal-offset",
+      "steps": 320,
+      "refinementSeconds": 1.278158625,
+      "rawPaper": [
+        {
+          "resolution": 360,
+          "status": "uncertain",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "pass"
+        },
+        {
+          "resolution": 700,
+          "status": "uncertain",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "pass"
+        },
+        {
+          "resolution": 1000,
+          "status": "uncertain",
+          "latticeStatus": "uncertain",
+          "offsetStatus": "pass"
+        }
+      ],
+      "repairAccepted": false,
+      "finalPaper": "uncertain",
+      "geometryPassed": true,
+      "featuresPassed": false,
+      "independentMaskError": 0.02725625
+    }
+  ],
+  "fullPipeline": [
+    {
+      "index": 0,
+      "clockScale": 1,
+      "control": {
+        "seconds": 9.193201958,
+        "independentMaskError": 0.01581875,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": false,
+        "repairs": [
+          {
+            "reason": "border_feature_refinement_seed",
+            "steps": 160,
+            "budgetSeconds": 2,
+            "seconds": 1.1414169579999998,
+            "refinementSeconds": 1.0511920419999996,
+            "paperRepairAccepted": null,
+            "paperRepairSteps": []
+          }
+        ]
+      },
+      "experiment": {
+        "seconds": 9.118492208,
+        "independentMaskError": 0.016375,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": false,
+        "repairs": [
+          {
+            "reason": "border_feature_refinement_seed",
+            "steps": 40,
+            "budgetSeconds": 2,
+            "seconds": 2.01394625,
+            "refinementSeconds": 0.32335016600000016,
+            "paperRepairAccepted": true,
+            "paperRepairSteps": [
+              160
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "index": 1,
+      "clockScale": 1.5,
+      "control": {
+        "seconds": 6.290518833,
+        "independentMaskError": 0.01794375,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": false,
+        "repairs": [
+          {
+            "reason": "border_feature_refinement_seed",
+            "steps": 120,
+            "budgetSeconds": 1.5976592629999977,
+            "seconds": 1.2426157499999972,
+            "refinementSeconds": 1.1405732505000015,
+            "paperRepairAccepted": null,
+            "paperRepairSteps": []
+          }
+        ]
+      },
+      "experiment": {
+        "seconds": 6.3784019160000005,
+        "independentMaskError": 0.04350625,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": false,
+        "repairs": [
+          {
+            "reason": "paper_rejected",
+            "steps": 40,
+            "budgetSeconds": 1.0387372499999983,
+            "seconds": 1.4144384370000007,
+            "refinementSeconds": 0.4317644999999975,
+            "paperRepairAccepted": false,
+            "paperRepairSteps": [
+              5
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "clockScale": 2,
+      "control": {
+        "seconds": 4.589954915999999,
+        "independentMaskError": 0.04320625,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": false,
+        "repairs": []
+      },
+      "experiment": {
+        "seconds": 4.890657375000001,
+        "independentMaskError": 0.04350625,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": false,
+        "repairs": [
+          {
+            "reason": "paper_rejected",
+            "steps": 40,
+            "budgetSeconds": 1.218451248000005,
+            "seconds": 1.7462375820000016,
+            "refinementSeconds": 0.4982593340000021,
+            "paperRepairAccepted": false,
+            "paperRepairSteps": [
+              5
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "clockScale": 2,
+      "control": {
+        "seconds": 4.622059333000001,
+        "independentMaskError": 0.04320625,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": false,
+        "repairs": []
+      },
+      "experiment": {
+        "seconds": 5.094547957999999,
+        "independentMaskError": 0.04350625,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": false,
+        "repairs": [
+          {
+            "reason": "paper_rejected",
+            "steps": 40,
+            "budgetSeconds": 1.6572220000000015,
+            "seconds": 2.576681749999996,
+            "refinementSeconds": 0.4555555000000022,
+            "paperRepairAccepted": false,
+            "paperRepairSteps": [
+              85
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "clockScale": 1.5,
+      "control": {
+        "seconds": 6.2635365840000015,
+        "independentMaskError": 0.01794375,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": false,
+        "repairs": [
+          {
+            "reason": "border_feature_refinement_seed",
+            "steps": 85,
+            "budgetSeconds": 1.4002271548999925,
+            "seconds": 1.0745779994999975,
+            "refinementSeconds": 0.9786438750000016,
+            "paperRepairAccepted": null,
+            "paperRepairSteps": []
+          }
+        ]
+      },
+      "experiment": {
+        "seconds": 6.322874749999999,
+        "independentMaskError": 0.01815,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": false,
+        "repairs": [
+          {
+            "reason": "border_feature_refinement_seed",
+            "steps": 40,
+            "budgetSeconds": 2,
+            "seconds": 2.936607437999999,
+            "refinementSeconds": 0.358105375500003,
+            "paperRepairAccepted": true,
+            "paperRepairSteps": [
+              155
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "clockScale": 1,
+      "control": {
+        "seconds": 8.598854292,
+        "independentMaskError": 0.01523125,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": false,
+        "repairs": [
+          {
+            "reason": "border_feature_refinement_seed",
+            "steps": 160,
+            "budgetSeconds": 2,
+            "seconds": 0.9898156250000029,
+            "refinementSeconds": 0.9245226659999971,
+            "paperRepairAccepted": null,
+            "paperRepairSteps": []
+          }
+        ]
+      },
+      "experiment": {
+        "seconds": 8.684117582999999,
+        "independentMaskError": 0.01403125,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": false,
+        "repairs": [
+          {
+            "reason": "border_feature_refinement_seed",
+            "steps": 40,
+            "budgetSeconds": 2,
+            "seconds": 1.5719498330000061,
+            "refinementSeconds": 0.22690970899999957,
+            "paperRepairAccepted": true,
+            "paperRepairSteps": [
+              160
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "interpretation": [
+    "The first integer candidate passes cut geometry and nominal polygon offsets but remains uncertain at all four lattice resolutions. Higher resolution alone does not repair it.",
+    "Forty or eighty ordinary refinement steps followed by the existing final paper repair give a valid provisional pair below 2% source-mask error. The 160/320-step alternatives are fail/uncertain. Offset-only refinement retains the initial poorer shape and never resolves lattice uncertainty.",
+    "The experimental observer attempts this first-candidate repair before another MILP round. Normal-clock cases improve the motif, but one 1.5x case and both 2x cases run out of repair time. Both 1.5x control cases pass the mask-error target. This provides no robust speed advantage, so the runtime patch was reverted.",
+    "The two clock cohorts ran sequentially, experiment then control; this is deadline-pressure evidence, not a hardware-matched causal estimate or a model of the remote runner.",
+    "All source-mask features remain final checks. The tiny border fragment is absent even in the useful candidates, so none is a fully accepted reconstruction. Error is agreement with the classified mask, not unavailable original artwork."
+  ],
+  "visualReview": {
+    "pages": [
+      {
+        "path": "tmp/heart-learning/first-paper-checkpoints-v1/comparison.jpg",
+        "sha256": "5f3bc46e01ecacb3e92701695ba613aa0ec7799060de65454ff5062430ae5acd"
+      },
+      {
+        "path": "tmp/heart-learning/first-paper-recovery-v1/comparison-0.jpg",
+        "sha256": "f86df14fa9f39edf74d1a1d3271ab31f551b0e14f4df0e43bc0dbd8b533ffeee"
+      },
+      {
+        "path": "tmp/heart-learning/first-paper-recovery-v1/comparison-1.jpg",
+        "sha256": "3b035415b5d21fdfa307a6c60577fce9c0619891b42831ae2ae89f941e433c66"
+      }
+    ],
+    "inspected": true,
+    "observations": "Short repaired silhouettes retain feet, foliage and narrow neck; timed misses replace these with coarse curved grid blocks. Offset-only runs remain visibly less faithful. Paper failures can be invisible in the woven silhouette."
+  },
+  "resources": {
+    "workers": 1,
+    "newSourceImages": 0,
+    "newWeights": 0,
+    "artifactBytes": 5372021
+  },
+  "next": "Keep the existing validated border repair. Any future first-candidate recovery must explicitly reserve enough paper-repair time or use a cheaper paper-aware trajectory; do not make uncertainty a pass. Resume material NN work with richer non-lattice supervision and unchanged full-cohort evaluation."
+}
