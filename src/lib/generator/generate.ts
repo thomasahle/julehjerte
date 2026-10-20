@@ -1877,7 +1877,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			return [[{ columns: 2, slices: 2 }, { ...compound, columns: 2, slices: 2 }, ...junctions.map(junction => ({ columns: 2, slices: 2, junction }))],
 				[undefined, ...junctions].map(junction => ({ ...islands, columns: 2, slices: 2, ...junction && { junction } }))];
 		};
-		const fills = (radius: number, { reach }: Placement, factor = 1) => (radius - Math.max(gap, 1.5)) * factor / reach / box;
+		const fills = (radius: number, { reach }: Placement, factor = 1, space = gap) => (radius - Math.max(space, 1.5)) * factor / reach / box;
 		// Only the invisible partition varies: where four panels meet, the
 		// routing, and the padding of the motif's cell, which gives its
 		// connections room: the usual, else little. (Gates the circle passes
@@ -1893,9 +1893,10 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// Whether the motif can be built this way at all is decided once, at
 		// sizes of the range's own: one that cannot be kept whole, or divided in
 		// four at both, takes the other construction at its size nearest the
-		// touching circle, whatever the slider.
+		// touching circle, whatever the slider. Its shape decides, not the
+		// space asked for: more than the usual would leave it too small there.
 		const buildable = (range: readonly [number, number]) => (range === small ? [25] : [34, 39])
-			.every(reference => sizes(range, reference).some(attempt => {
+			.every(reference => sizes(range, reference, boxed, fills(reference, boxed, 1, Math.min(gap, 3))).some(attempt => {
 				try {
 					build(attempt);
 					return true;
@@ -1948,9 +1949,15 @@ function generateUsingRecipes(request: GeneratorRequest,
 			if (hard) return kept(hard);
 		}
 		// Over the corner squares, a motif that cannot be built at all at its
-		// size keeps the largest circle short of them, at 85%.
-		if (mode === past)
-			return { ...generateUsingRecipes({ ...request, scale: .85 }, onRejected, curveFitter, variants, allRecipes), scale: .85 };
+		// size keeps the largest circle short of them, at 85%; with more space
+		// than usual, one divided in four that fits nowhere in its circle keeps
+		// the touching circle, as one that cannot be divided does.
+		const smaller = (scale: number) => {
+			const result = generateUsingRecipes({ ...request, scale }, onRejected, curveFitter, variants, allRecipes);
+			return { ...result, scale: result.scale ?? scale };
+		};
+		if (mode === past) return smaller(.85);
+		if (mode === large && gap > 3) return smaller(.7);
 		throw last;
 	}
 	if (request.style === 'corners') {

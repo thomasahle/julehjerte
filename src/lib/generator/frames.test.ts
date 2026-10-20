@@ -394,6 +394,13 @@ describe('frames from real hearts', () => {
   expect(house.hardToCut).toBeUndefined();
   expect(generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .9 }).enclosed).toBeUndefined();
  });
+ slow('keeps the circle the size asks for with much space around the motif, the motif smaller', () => {
+  // Space decides how much of the circle the motif fills, not whether it can
+  // be divided in four, so the circle no longer falls back to 70%.
+  const result = generate({ mode: 'figure', name: 'Deer', contours: deer.contours as Ring[], colors, style: 'board', scale: 1, gap: 14 });
+  expect(result.scale).toBeUndefined();
+  expect(result.hardToCut).toBeUndefined();
+ }, 20000);
  slow('takes an animal over the corner squares to 100%', () => {
   const result = generate({ mode: 'figure', name: 'Deer', contours: deer.contours as Ring[], colors, style: 'board', scale: 1 });
   expect(result.scale).toBeUndefined();

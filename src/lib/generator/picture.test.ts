@@ -9,6 +9,7 @@ import { rasterizeDesign } from '$lib/paint/rasterize';
 import star from '../../../static/generator/motifs/star.json';
 import heart from '../../../static/generator/motifs/heart.json';
 import tree from '../../../static/generator/motifs/tree.json';
+import house from '../../../static/generator/motifs/house.json';
 import bell from '../../../static/generator/motifs/bell.json';
 import nunito from '../../../static/generator/fonts/nunito.json';
 import oswald from '../../../static/generator/fonts/oswald.json';
@@ -142,8 +143,9 @@ describe('the picture drawn before the cuts are found', () => {
 		expect(mismatch({ ...request, scale: .8 })).toBeLessThan(.01);
 		// A solid tree keeps the touching circle, as its heart says.
 		expect(mismatch({ ...request, name: 'Tree', contours: tree.contours as Ring[], scale: .8 })).toBeLessThan(.01);
-		// Past 85% the circle overlaps the corner squares, of its own colour.
-		expect(mismatch({ ...request, scale: 1 })).toBeLessThan(.01);
+		// Past 85% the circle overlaps the corner squares, of its own colour,
+		// a house on its smallest enclosing circle.
+		expect(mismatch({ ...request, name: 'House', contours: house.contours as Ring[], scale: 1 })).toBeLessThan(.01);
 	});
 
 	it('is the checks in the tips the cuts make, at any space around the motif', () => {

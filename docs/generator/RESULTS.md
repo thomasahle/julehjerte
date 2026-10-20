@@ -1,5 +1,19 @@
 # Generator robustness results
 
+## More space around the motif keeps the circle's size
+
+Product report (2026-10-20): with "Luft om figuren" at 14% and the size at
+100%, the circle on equal squares fell back to 70% ("Ved 100 % kan figuren ikke
+væves …"). Whether a motif can be divided in four is decided once, at reference
+circles (radius 34 and 39), and that check used the space asked for: at 10% and
+more the reference deer was too small to divide, so it kept the touching circle
+at every size above 70%. The check now uses at most the usual 3%, its shape
+deciding; the space then only sets how much of the circle the motif fills. The
+deer at 100% with 10% or 14% is clean in the full circle (both kept 70% before).
+A motif divided in four that fits nowhere in its circle with more space than
+usual (the deer at 85% with 14%) keeps the touching circle, as before; at the
+usual space and less nothing changes.
+
 ## The circle on equal squares touching the edges, and motifs on their enclosing circle
 
 Product requests (2026-10-20), of the circle over the corner squares at 100%:
