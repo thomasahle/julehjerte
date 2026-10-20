@@ -1,0 +1,86 @@
+{
+  "schema": "junction-augmentation-training-plan-1",
+  "date": "2026-10-20",
+  "question": "Do printed-paper supervision and binary-label exchange improve the existing corner/boundary model without losing clean-design accuracy?",
+  "checkpoint": {
+    "path": "tmp/heart-learning/balanced-corners-v1/model.pt",
+    "sha256": "99001a3bf232c230a209a13cc5fd5a9b9d363dd131edc1ece937e1b9b6f668b9"
+  },
+  "training": {
+    "path": "tmp/heart-learning/balanced-corners-v1/report.json",
+    "sha256": "32b636dd752d7ccaecee321fbbf6bb5a27269ce4dbc5f2577c84fd3ee448a31d"
+  },
+  "preparedParents": [
+    {
+      "path": "tmp/heart-learning/prepared-v1/manifest.json",
+      "sha256": "4be61d42373722e3ead15fc27e2a5baffb485cc5e2e6c8468df5e8347c02a0a8"
+    },
+    {
+      "path": "tmp/heart-learning/prepared-corners-v1/manifest.json",
+      "sha256": "590b175ff4c748bf5bfba190c2f8c12444ff823db6058b2461171df98a93bb5a"
+    }
+  ],
+  "printed": {
+    "path": "tmp/heart-learning/junction-printed-prepared-v1/manifest.json",
+    "sha256": "5767e9b725b76f748bae79e9fd6c11ce27462207834a8b388c990f368afd4bab"
+  },
+  "evaluationPlan": {
+    "path": "docs/inverse/datasets/junction-phase-average-plan.json",
+    "sha256": "89cce8f3339268cb2319d4cbf9044615de405290661c1985f8db5c327119a06d"
+  },
+  "arms": [
+    {
+      "id": "plain",
+      "printed": false,
+      "phase": false
+    },
+    {
+      "id": "phase",
+      "printed": false,
+      "phase": true
+    },
+    {
+      "id": "printed",
+      "printed": true,
+      "phase": false
+    },
+    {
+      "id": "combined",
+      "printed": true,
+      "phase": true
+    }
+  ],
+  "protocol": {
+    "seed": 1729,
+    "updatesPerArm": 128,
+    "batchSize": 2,
+    "learningRate": 0.0001,
+    "weightDecay": 0.0001,
+    "gradientNormCap": 5,
+    "loss": "balanced-mse",
+    "resolution": 384,
+    "model": "Same 880466-parameter ProposalNet, same frozen checkpoint at the start of every arm. All parameters trainable; evaluation mode freezes BatchNorm running statistics for small batches.",
+    "sampling": "Each update has one original training view drawn from a shuffled cycle of all 408 views and one focus view drawn from shuffled cycles of the 75 printed variants. Plain/phase arms use the corresponding original input for the focus view. Identical schedule in every arm.",
+    "augmentation": "Joint batch-wide horizontal/vertical reflections with independent 50% coins. Separate per-item 50% mask-complement coins, used only by phase/combined arms; RGB, targets and validity never change with label exchange. All coins and sample IDs fixed before any arm trains.",
+    "selection": "Exactly 128 updates per arm. Retain terminal checkpoints only, plus the untouched baseline. No validation, photo, threshold or checkpoint selection during training.",
+    "evaluation": "All 308 existing synthetic evaluation views and all 32 real review rows from the pinned evaluation plan, including the six unresolved crops. Original and exchanged mask inference; .6 boundary/.4 junction thresholds, 3px matching, fixed 9px refinement. Reused evaluation sets, not new generalization holdouts.",
+    "inputValidation": "Verify all 75 derived RGB/masks, source hashes, binary masks, unchanged original graph/labels/validity references, actual training splits and exact original-input replay before training."
+  },
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "maximumWallSeconds": 1200,
+    "maximumArtifactMiB": 40,
+    "minimumFreeGiB": 10,
+    "maximumCachedViews": 8,
+    "downloads": 0,
+    "sourcePhotoCopies": 0
+  },
+  "limitations": [
+    "Single-seed bounded continuation, not a hyperparameter search or final training recipe.",
+    "Printed variants cover 25 procedural geometries; they are not real photograph labels.",
+    "Thresholded corner and boundary metrics do not establish legal or improved full template reconstruction.",
+    "Model remains offline until whole-pipeline and browser checks justify deployment."
+  ]
+}
