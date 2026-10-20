@@ -11,7 +11,7 @@ const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').s
 assert.ok(args.run&&args.output&&Object.keys(args).every(k=>['run','output'].includes(k)));
 const root=path.resolve(args.run),hash=b=>createHash('sha256').update(b).digest('hex');
 const raw=await fs.readFile(path.join(root,'report.json')),run=JSON.parse(raw);
-assert.equal(run.status,'complete');assert.equal(run.targetMode,'mask');
+assert.equal(run.status,'complete');assert.ok(['mask','native'].includes(run.targetMode));
 for(const [file,sha] of Object.entries(run.sourceHashes))assert.equal(hash(await fs.readFile(file)),sha,file);
 async function asset(row,name){
  const ref=row.assets[name],file=path.resolve(root,ref.path);

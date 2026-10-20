@@ -82,7 +82,8 @@ def measurement(item, field, region):
 
 
 def development_evaluation(plan, output, models, features, rescale, normalize,
-                           source_hashes, save, expected_masks=None, residual_methods=()):
+                           source_hashes, save, expected_masks=None, residual_methods=(),
+                           score_methods=()):
     """Fixed production RGB/crops, all cases, and optional exact mask replay.
 
     Returns rows and artifact references. No labels from this development
@@ -101,6 +102,7 @@ def development_evaluation(plan, output, models, features, rescale, normalize,
     assert [r['id'] for r in development['rows']] == plan['expectedDevelopmentCases']
     methods = list(models)
     assert set(residual_methods) <= set(methods)
+    assert set(score_methods) <= set(methods)
     manifest = {**inputs, 'methods': methods, 'rows': [], 'plan': plan['_reference'],
                 'scope': plan['scope'], 'sourceHashes': source_hashes}
     crop_replay = {'status': 'complete', 'rows': [], 'scope': plan['scope']}
@@ -157,7 +159,8 @@ def development_evaluation(plan, output, models, features, rescale, normalize,
                 context = model.context(frozen)
                 classifier = model.fit(rgb, context, indices, count, residual=residual)
                 high = crop_context(context, matrix, photo.shape[1::-1], n)
-                field = model.score(crop_rgb, high, classifier, residual=residual).sigmoid().numpy()
+                score = model.score(crop_rgb, high, classifier, residual=residual)
+                field = score.sigmoid().numpy()
             mask = field >= .5
             mask[~valid] = False
             if method in (expected_masks or {}):
@@ -167,6 +170,20 @@ def development_evaluation(plan, output, models, features, rescale, normalize,
             file.write_bytes(mask.astype(np.uint8).tobytes())
             row['masks'][method] = reference(file)
             staged['assets'][method] = {'mask': {'path': file.name, 'sha256': row['masks'][method]['sha256']}}
+            if score_methods:
+                values = score.numpy().copy()
+                assert np.isfinite(values).all()
+                values[~valid] = 0
+                raw_scores = values.astype('<f4').tobytes()
+                row.setdefault('scoreHashes', {})[method] = digest(raw_scores)
+                if method in score_methods:
+                    score_file = output/(identity+'-'+method+'.scores')
+                    score_file.write_bytes(raw_scores)
+                    row.setdefault('scores', {})[method] = reference(score_file)
+                    staged['assets'][method]['scores'] = {
+                        'path': score_file.name, 'sha256': row['scores'][method]['sha256'],
+                        'temperature': p['lossTemperature'],
+                    }
             difference = float((mask[valid] != raw[valid]).mean())
             flip = difference > .5
             row['differences'][method] = {

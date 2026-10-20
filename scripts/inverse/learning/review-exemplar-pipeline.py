@@ -83,7 +83,7 @@ def main():
                 assert digest(mask.astype(np.uint8).tobytes()) == row['targetMaskSha256']
                 if method == 'production':
                     assert row['targetMaskSha256'] == entry['expectedProductionMaskSha256']
-                elif run['targetMode'] == 'mask':
+                elif run['targetMode'] in ['mask', 'native']:
                     assert row['targetMaskSha256'] == entry['assets'][method]['mask']['sha256']
                 if baseline is None:
                     baseline = mask

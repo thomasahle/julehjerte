@@ -7,6 +7,7 @@ import {createCanvas,loadImage} from 'canvas';
 import {detectForegroundCrop} from './foreground-crop.mjs';
 import {rectifyMaterialPrediction,fixedMaterialMask} from './material-target.mjs';
 import {rectifyMaterialPalette} from './material-palette-target.mjs';
+import {nativeConfidenceTarget} from './native-confidence-target.mjs';
 import {detectHeartCrops,supportedCropOutline} from '../../../static/inverse/core/crop.js';
 import {prepare,design} from '../../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../../static/inverse/core/presets.js';
@@ -17,8 +18,8 @@ import {renderExportedWeave} from '../export-renderer.mjs';
 
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
 assert.ok(args.probe&&args.output&&Object.keys(args).every(k=>['probe','output','seconds','methods','target','crops','reuse'].includes(k)));
-const targetMode=args.target??'material';assert.ok(['material','rgb','palette','mask'].includes(targetMode));
-if(['palette','mask'].includes(targetMode))assert.ok(args.crops,'Audited palette or mask input requires fixed crops');
+const targetMode=args.target??'material';assert.ok(['material','rgb','palette','mask','native'].includes(targetMode));
+if(['palette','mask','native'].includes(targetMode))assert.ok(args.crops,'Audited native, palette or mask input requires fixed crops');
 const seconds=Number(args.seconds??10);assert.ok(Number.isFinite(seconds)&&seconds>0&&seconds<=60);
 const probe=path.resolve(args.probe),output=path.resolve(args.output),hash=b=>createHash('sha256').update(b).digest('hex');
 const bytes=await fs.readFile(path.join(probe,'manifest.json')),manifest=JSON.parse(bytes);
@@ -48,7 +49,7 @@ const report={schema:'material-pair-pipeline-1',status:'running',configuration,m
  ...(reuse?{reuseReference:{path:path.join(args.reuse,'report.json'),sha256:hash(reuseBytes)}}:{}),
  scope:'All declared development photos, same full RGB source, no ROI/annotations/reference templates. Fresh crop-to-template attempts for every declared method. Only observed photograph pixels score. Derived-mask agreement does not establish full artwork recovery.',
  order:'Rotate declared methods by photo index; original geometric, feature and paper checks. Search allowance excludes crop detection and final export audit.'};
-for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/foreground-crop.mjs','scripts/inverse/learning/locator-field-source.mjs','scripts/inverse/learning/material-target.mjs','scripts/inverse/learning/material-palette-target.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/export-renderer.mjs','scripts/inverse/hard-photo-target.mjs',
+for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/foreground-crop.mjs','scripts/inverse/learning/locator-field-source.mjs','scripts/inverse/learning/material-target.mjs','scripts/inverse/learning/material-palette-target.mjs','scripts/inverse/learning/native-confidence-target.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/export-renderer.mjs','scripts/inverse/hard-photo-target.mjs',
  ...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator|vendor)\/.+\.(js|mjs|wasm)$/.test(p)).map(p=>'static/inverse/'+p)])report.sourceHashes[file]=hash(await fs.readFile(file));
 await fs.mkdir(output,{recursive:false});
 const save=()=>fs.writeFile(path.join(output,'report.json'),JSON.stringify(report,null,2)+'\n');
@@ -103,7 +104,7 @@ try{
      // Match preprocessPixels' source-size cap; a small photograph must not
      // silently receive a finer target grid just because its labels came from NN.
      const resolution=Math.min(configuration.resolution,Math.max(32,Math.min(image.width,image.height)));
-     if(targetMode==='mask'){
+     if(['mask','native'].includes(targetMode)){
       const asset=input.assets[method].mask,mask=await assetBytes(asset);
       assert.equal(mask.length,resolution**2);
       preview=fixedMaterialMask(source,mask,crop.quad,resolution);
@@ -120,15 +121,30 @@ try{
      }
      target=prepare({type:'mask',resolution:preview.resolution,mask:preview.mask.slice(),validMask:preview.validMask},{...configuration,invert:false,removeSpecks:0,fillHoles:0}).target;
      assert.deepEqual(target.sourceImage.mask,preview.mask);assert.deepEqual(target.sourceImage.validMask??null,preview.validMask??null);
+     if(targetMode==='native'&&input.assets[method].scores){
+      const asset=input.assets[method].scores,raw=await assetBytes(asset);
+      assert.equal(raw.length,resolution**2*4);
+      const scores=Float32Array.from({length:resolution**2},(_,i)=>raw.readFloatLE(4*i));
+      const native=nativeConfidenceTarget(target,scores,asset.temperature);
+      target=native.target;row.nativeConfidence={...native.diagnostics,scoresSha256:asset.sha256};
+     }
     }
     const n=preview.resolution;row.resolution=n;row.targetMaskSha256=hash(preview.mask);
     row.observedPixels=preview.validMask?preview.validMask.reduce((a,b)=>a+b,0):n*n;
     await store('crop.png',png(preview.rgb,n,true));await store('mask.png',png(preview.mask,n));
     if(preview.validMask)await store('observed.bin',preview.validMask);
+    if(targetMode==='native'&&method!=='production'){
+     const probability=target.sourceImage.probability,raw=Buffer.alloc(n*n*4);
+     assert.equal(probability.length,n*n);
+     for(let i=0;i<probability.length;i++)raw.writeFloatLE(probability[i],4*i);
+     row.targetProbabilitySha256=hash(raw);
+     if(row.nativeConfidence)await store('fitting-probability.bin',raw);
+    }
     const previous=reuse?.rows.find(r=>r.id===row.id&&r.method===method);
     if(previous?.independentImage&&!previous.reusedFitFrom&&previous.targetMaskSha256===row.targetMaskSha256&&previous.resolution===row.resolution&&
        JSON.stringify(previous.selectedCrop)===JSON.stringify(row.selectedCrop)&&previous.sourceSha256===row.sourceSha256&&
        previous.observedPixels===row.observedPixels&&previous.targetMode===row.targetMode&&
+       previous.targetProbabilitySha256===row.targetProbabilitySha256&&
        (previous.assets['observed.bin']?.sha256??null)===(row.assets['observed.bin']?.sha256??null)){
      for(const [name,asset] of Object.entries(previous.assets)){
       const file=path.resolve(args.reuse,asset.path);assert.ok(file.startsWith(path.resolve(args.reuse)+path.sep));
@@ -141,6 +157,7 @@ try{
      continue;
     }
     const started=performance.now(),result=await design(target,configuration);row.solveSeconds=(performance.now()-started)/1000;row.report=result.report;
+    assert.equal(hash(target.sourceImage.mask),row.targetMaskSha256,'Fitting must retain the validation mask');
     for(const name of ['cut_geometry.json','template_left.svg','template_right.svg','weave_preview.svg']){assert.ok(result.files[name]);await store(name,result.files[name]);}
     const render=await renderExportedWeave(result.files['cut_geometry.json'],n);await store('woven.png',render.png);
     row.independentImage=referenceError(target.sourceImage,render.mask);row.independentFeatures=auditFeatureFidelity(target.sourceImage,render.mask,result.report.settings);
