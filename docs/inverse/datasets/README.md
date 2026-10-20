@@ -192,6 +192,31 @@ threshold was relaxed. Better segmentation scores alone have not established
 better usable templates; broader evaluation is also needed beyond this
 repeatedly inspected development cohort.
 
+The [outer-boundary sampling replay](u2netp-outer-boundary-results.json) now tests
+that fix on both saved models. It ignores enclosed background holes only while
+sampling the lower edges; original probabilities, distance fields, foreground
+selection, colour evidence and cutting targets remain unchanged. Open and
+diagonal gaps remain open. Nineteen focused tests pass, and the default mode
+reproduces all 22 saved neural detections exactly. The new mode restores the
+lost green/black crop with both lower-edge support scores at 100%, without
+lowering the 65% threshold. Both models now return 26 crops and retain the same
+**12/32 checked editable pairs**. All ten fresh exports pass conversion and
+nominal geometry/paper checks; the restored motif still exceeds the image-error
+limit. Four fit contact sheets were inspected. This fixes a crop sensitivity,
+but is still an offline option rather than a deployed NN or a new template
+success. Small differences between fresh fits of identical targets are recorded
+separately from crop changes.
+
+The [fixed expanded evaluation selection](u2netp-expanded-qa-selection.json)
+includes all 18 reserved single-object photos with a shortest side of at least
+160 pixels outside the source/duplicate groups of the 24 training and 32 current
+development photos. They span 17 split groups. Fifteen already appear in prior
+probe manifests, and all were classified during dataset review, so this is an
+expanded development evaluation, not an untouched holdout. Original bytes and
+decoded RGB are pinned; no photographs were copied or train/test groups changed.
+Inference and full reconstruction on this extension remain to be run before
+claiming a broader improvement from the browser-tested NN candidate.
+
 The [complete balanced-epoch follow-up](u2netp-material-complete-epochs-results.json)
 adds 384 updates to the fixed relative-colour head, visiting every synthetic
 view four times. Known-region real training error falls from **5.06% to 2.78%**.

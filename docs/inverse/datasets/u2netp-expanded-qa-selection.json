@@ -1,0 +1,709 @@
+{
+  "schema": "saliency-validation-selection-1",
+  "status": "fixed-before-expanded-cohort-inference",
+  "date": "2026-10-20",
+  "sourceManifest": {
+    "path": "docs/inverse/datasets/real-manifest.json",
+    "sha256": "999544ef30b1d71095e1630d7f834e162e2aa6145181df10107a831aa2eda350"
+  },
+  "trainingExclusion": {
+    "path": "docs/inverse/datasets/u2netp-body-outline-plan.json",
+    "sha256": "a155452e938f5e394497cfc92690eb0d0e73364be87435a63437698660e873b3"
+  },
+  "originalSelection": {
+    "path": "docs/inverse/datasets/u2netp-continuous-selection.json",
+    "sha256": "6d4e0e7550fedf5c13333bdc90db28a98eb5ff9ce2de260f32e2d015f5128f52"
+  },
+  "criteria": {
+    "kind": "photo",
+    "splitStatus": "qa-reserved",
+    "minimumImageSide": 160,
+    "allEligibleIncluded": true,
+    "exclude": "All sourceGroups, splitGroupIds and nearDuplicateGroups of the 24 training photos and previous 32 development photos. No crop, NN confidence or reconstruction outcome used."
+  },
+  "sourceSeparation": {
+    "photos": 18,
+    "splitGroups": 17,
+    "trainingOrOriginalDevelopmentOverlap": false
+  },
+  "priorUseAudit": {
+    "searchedManifests": 41,
+    "photosWithMatches": 15,
+    "scope": "Bounded search of existing probe/browser/inference/saliency manifest rows. No match does not establish that a photo was never seen. All photos already had dataset-level visual classification."
+  },
+  "scope": "Expanded development evaluation, not an untouched holdout or proof of independent motifs. All 18 must remain in primary crop/reconstruction denominators; irregular paper, poor images and errors are reported separately. No source photographs copied or catalog/train split mutated.",
+  "photos": [
+    {
+      "id": "real-1fa372c6288da69f-body-1",
+      "assetId": "real-1fa372c6288da69f",
+      "file": "tmp/heart-training-real/assets/1fa372c6288da69f4154beb1a5ff043361bacc6be7fe567742b9dad6e6361cd6.jpg",
+      "imageSha256": "1fa372c6288da69f4154beb1a5ff043361bacc6be7fe567742b9dad6e6361cd6",
+      "dimensions": [
+        1080,
+        1080
+      ],
+      "decodedRGBSha256": "8a2d18fcc26ab242e7b99f5fff4d022974d868b6267821e1e83d94eb8f5d7feb",
+      "splitGroupId": "real-split-8c499ecec97f26ec",
+      "nearDuplicateGroup": "real-1fa372c6288da69f",
+      "sourceGroups": [
+        "pinterest-pin-826762444117656882",
+        "publisher:antjebebic.stampinup.net"
+      ],
+      "priorProbeManifestMatches": [
+        {
+          "path": "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json",
+          "sha256": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf"
+        },
+        {
+          "path": "tmp/heart-learning/new-photo-rejected-crops-v1/probe/manifest.json",
+          "sha256": "6e38322f2cecb8506c59c183f7bb88146cf3dcc321f11310892f32f37b1faae8"
+        },
+        {
+          "path": "tmp/heart-learning/notch-local-support-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/notch-overlap-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/projective-real-v1/probe/manifest.json",
+          "sha256": "d22e7a94e0f5cc87e1d2b1b4663fd51f18ab9526dcaf12dcb616392c2228f57e"
+        },
+        {
+          "path": "tmp/heart-learning/shape-visibility-v1/probe/manifest.json",
+          "sha256": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f"
+        }
+      ]
+    },
+    {
+      "id": "real-26c948c0aa94f483-body-1",
+      "assetId": "real-26c948c0aa94f483",
+      "file": "tmp/heart-training-real/assets/26c948c0aa94f4838945106788310e404eadd161b6ae50d9738b8dca4896b366.jpg",
+      "imageSha256": "26c948c0aa94f4838945106788310e404eadd161b6ae50d9738b8dca4896b366",
+      "dimensions": [
+        236,
+        315
+      ],
+      "decodedRGBSha256": "12e2014af8aa5b8ee06b52c865620f96b65f5981e5fed1a8f586908881c9d93e",
+      "splitGroupId": "real-split-15d0a9d34e6d0436",
+      "nearDuplicateGroup": "real-26c948c0aa94f483",
+      "sourceGroups": [
+        "pinterest-pin-261349584606357567",
+        "publisher:fabulouslybroketwentysomething.blogspot.ca"
+      ],
+      "priorProbeManifestMatches": [
+        {
+          "path": "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json",
+          "sha256": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf"
+        },
+        {
+          "path": "tmp/heart-learning/notch-local-support-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/notch-overlap-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/projective-real-v1/probe/manifest.json",
+          "sha256": "d22e7a94e0f5cc87e1d2b1b4663fd51f18ab9526dcaf12dcb616392c2228f57e"
+        },
+        {
+          "path": "tmp/heart-learning/shape-visibility-v1/probe/manifest.json",
+          "sha256": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f"
+        }
+      ]
+    },
+    {
+      "id": "real-27c86e56296f2df5-body-1",
+      "assetId": "real-27c86e56296f2df5",
+      "file": "tmp/heart-training-real/assets/27c86e56296f2df5498f5d7a0ccebfb05688115cb5eefb5be065f7372ca18ac2.jpg",
+      "imageSha256": "27c86e56296f2df5498f5d7a0ccebfb05688115cb5eefb5be065f7372ca18ac2",
+      "dimensions": [
+        450,
+        630
+      ],
+      "decodedRGBSha256": "649418bf8fc7d176659e65ab1b3f465005d68444b1295a28db2d79a3d8daeb02",
+      "splitGroupId": "real-split-56eb3f400cc1112e",
+      "nearDuplicateGroup": "real-27c86e56296f2df5",
+      "sourceGroups": [
+        "pinterest-pin-985231139026161",
+        "publisher:the-pickled-herring.blogspot.com"
+      ],
+      "priorProbeManifestMatches": [
+        {
+          "path": "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json",
+          "sha256": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf"
+        },
+        {
+          "path": "tmp/heart-learning/notch-local-support-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/notch-overlap-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/projective-real-v1/probe/manifest.json",
+          "sha256": "d22e7a94e0f5cc87e1d2b1b4663fd51f18ab9526dcaf12dcb616392c2228f57e"
+        },
+        {
+          "path": "tmp/heart-learning/shape-visibility-v1/probe/manifest.json",
+          "sha256": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f"
+        }
+      ]
+    },
+    {
+      "id": "real-31ed1172998ab1c5-body-1",
+      "assetId": "real-31ed1172998ab1c5",
+      "file": "tmp/heart-training-real/assets/31ed1172998ab1c5c5f4a4ce5386a979c26e611f41cf9a2cc8ae116d8cc2107b.jpg",
+      "imageSha256": "31ed1172998ab1c5c5f4a4ce5386a979c26e611f41cf9a2cc8ae116d8cc2107b",
+      "dimensions": [
+        209,
+        280
+      ],
+      "decodedRGBSha256": "9b706af39163c4d301c1248e38a070acc3dfa496c5773cd77ab89ced2f886e11",
+      "splitGroupId": "real-split-0ce9ea5e8a63b6a4",
+      "nearDuplicateGroup": "real-31ed1172998ab1c5",
+      "sourceGroups": [
+        "pinterest-pin-500814421090676146",
+        "publisher:frkfogh.blogspot.com"
+      ],
+      "priorProbeManifestMatches": [
+        {
+          "path": "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json",
+          "sha256": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf"
+        },
+        {
+          "path": "tmp/heart-learning/notch-local-support-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/notch-overlap-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/projective-real-v1/probe/manifest.json",
+          "sha256": "d22e7a94e0f5cc87e1d2b1b4663fd51f18ab9526dcaf12dcb616392c2228f57e"
+        },
+        {
+          "path": "tmp/heart-learning/shape-visibility-v1/probe/manifest.json",
+          "sha256": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f"
+        }
+      ]
+    },
+    {
+      "id": "real-4066fe9f9aafb3e4-body-1",
+      "assetId": "real-4066fe9f9aafb3e4",
+      "file": "tmp/heart-training-real/assets/4066fe9f9aafb3e438164061c8d0c56d2b3db2e5ea5ad654aea46acf760ef49d.jpg",
+      "imageSha256": "4066fe9f9aafb3e438164061c8d0c56d2b3db2e5ea5ad654aea46acf760ef49d",
+      "dimensions": [
+        533,
+        800
+      ],
+      "decodedRGBSha256": "1400d17cb729b2446eef34714508890c831d71381e1ec4d3c0d9c55dc45f0d41",
+      "splitGroupId": "real-split-5c5fcfc680c78574",
+      "nearDuplicateGroup": "real-4066fe9f9aafb3e4",
+      "sourceGroups": [
+        "pinterest-pin-4151824650327465",
+        "publisher:charlotteboeg.dk"
+      ],
+      "priorProbeManifestMatches": []
+    },
+    {
+      "id": "real-7076a4d811c096db-body-1",
+      "assetId": "real-7076a4d811c096db",
+      "file": "tmp/heart-training-real/assets/7076a4d811c096db8daeedf04d2d6128d984c7f47b1a016e72d22db6ca38a91d.jpg",
+      "imageSha256": "7076a4d811c096db8daeedf04d2d6128d984c7f47b1a016e72d22db6ca38a91d",
+      "dimensions": [
+        3024,
+        3024
+      ],
+      "decodedRGBSha256": "3cb9b5cc70d252689e0334ecb4bc3cb3185f4d2634ee5e8089a4ab473a290e63",
+      "splitGroupId": "real-split-6b6a468a81ae6ed6",
+      "nearDuplicateGroup": "real-7076a4d811c096db",
+      "sourceGroups": [
+        "pinterest-pin-365565694752220936"
+      ],
+      "priorProbeManifestMatches": [
+        {
+          "path": "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json",
+          "sha256": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf"
+        },
+        {
+          "path": "tmp/heart-learning/new-photo-rejected-crops-v1/probe/manifest.json",
+          "sha256": "6e38322f2cecb8506c59c183f7bb88146cf3dcc321f11310892f32f37b1faae8"
+        },
+        {
+          "path": "tmp/heart-learning/notch-local-support-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/notch-overlap-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/projective-real-v1/probe/manifest.json",
+          "sha256": "d22e7a94e0f5cc87e1d2b1b4663fd51f18ab9526dcaf12dcb616392c2228f57e"
+        },
+        {
+          "path": "tmp/heart-learning/shape-visibility-v1/probe/manifest.json",
+          "sha256": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f"
+        }
+      ]
+    },
+    {
+      "id": "real-867f0e5852ebeba9-body-1",
+      "assetId": "real-867f0e5852ebeba9",
+      "file": "tmp/heart-training-real/assets/867f0e5852ebeba92db6e89b0d4883f88b12a30226a93bb2042d9bce0e17500b.jpg",
+      "imageSha256": "867f0e5852ebeba92db6e89b0d4883f88b12a30226a93bb2042d9bce0e17500b",
+      "dimensions": [
+        750,
+        500
+      ],
+      "decodedRGBSha256": "7800da43aebcce62f0c7b10ea91f00359234a35ac43eb675c15ec4b362bf3186",
+      "splitGroupId": "real-split-bd398b53cd63fe34",
+      "nearDuplicateGroup": "real-867f0e5852ebeba9",
+      "sourceGroups": [
+        "gathering",
+        "gathering-checker",
+        "publisher:gatheringbeauty.com"
+      ],
+      "priorProbeManifestMatches": []
+    },
+    {
+      "id": "real-931ac5ea86dbe082-body-1",
+      "assetId": "real-931ac5ea86dbe082",
+      "file": "tmp/heart-training-real/assets/931ac5ea86dbe0827d8ba7442c907b5f2f3fe006eeeb8829052f81e8bafb7382.jpg",
+      "imageSha256": "931ac5ea86dbe0827d8ba7442c907b5f2f3fe006eeeb8829052f81e8bafb7382",
+      "dimensions": [
+        400,
+        400
+      ],
+      "decodedRGBSha256": "1c10c6fad82fa6ba03217ae0df19396b454c9e37f7b8254404e239a2b56c59b2",
+      "splitGroupId": "real-split-16d9b32c2dc21c09",
+      "nearDuplicateGroup": "real-931ac5ea86dbe082",
+      "sourceGroups": [
+        "pinterest-pin-72761350199339125",
+        "pinterest-pin-8655424277447981",
+        "publisher:annkrestene.blogspot.com",
+        "publisher:bethanyjanehissong.blogspot.com"
+      ],
+      "priorProbeManifestMatches": [
+        {
+          "path": "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json",
+          "sha256": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf"
+        },
+        {
+          "path": "tmp/heart-learning/new-photo-rejected-crops-v1/probe/manifest.json",
+          "sha256": "6e38322f2cecb8506c59c183f7bb88146cf3dcc321f11310892f32f37b1faae8"
+        },
+        {
+          "path": "tmp/heart-learning/notch-local-support-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/notch-overlap-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/projective-real-v1/probe/manifest.json",
+          "sha256": "d22e7a94e0f5cc87e1d2b1b4663fd51f18ab9526dcaf12dcb616392c2228f57e"
+        },
+        {
+          "path": "tmp/heart-learning/shape-visibility-v1/probe/manifest.json",
+          "sha256": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f"
+        }
+      ]
+    },
+    {
+      "id": "real-962159dea653810f-body-1",
+      "assetId": "real-962159dea653810f",
+      "file": "tmp/heart-training-real/assets/962159dea653810f1d91894249cbce1b49f556ba2643ef89361a3a50f33ab45e.jpg",
+      "imageSha256": "962159dea653810f1d91894249cbce1b49f556ba2643ef89361a3a50f33ab45e",
+      "dimensions": [
+        240,
+        320
+      ],
+      "decodedRGBSha256": "200b3f8a6ea610ca0a8803ee11a3c744292931cc2d3d4d0b46d41d79824eedb5",
+      "splitGroupId": "real-split-e3606ee267cc7aef",
+      "nearDuplicateGroup": "real-962159dea653810f",
+      "sourceGroups": [
+        "pinterest-pin-246079567131678053",
+        "pinterest-pin-504825439483147858",
+        "publisher:margitammentorp.blogspot.com"
+      ],
+      "priorProbeManifestMatches": [
+        {
+          "path": "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json",
+          "sha256": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf"
+        },
+        {
+          "path": "tmp/heart-learning/new-photo-rejected-crops-v1/probe/manifest.json",
+          "sha256": "6e38322f2cecb8506c59c183f7bb88146cf3dcc321f11310892f32f37b1faae8"
+        },
+        {
+          "path": "tmp/heart-learning/notch-local-support-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/notch-overlap-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/projective-real-v1/probe/manifest.json",
+          "sha256": "d22e7a94e0f5cc87e1d2b1b4663fd51f18ab9526dcaf12dcb616392c2228f57e"
+        },
+        {
+          "path": "tmp/heart-learning/shape-visibility-v1/probe/manifest.json",
+          "sha256": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f"
+        }
+      ]
+    },
+    {
+      "id": "real-970f4be1bd64e5d7-body-1",
+      "assetId": "real-970f4be1bd64e5d7",
+      "file": "tmp/heart-training-real/assets/970f4be1bd64e5d7c560f1ef8deedbd7e982485bc43088e148bc3f969c42ff91.jpg",
+      "imageSha256": "970f4be1bd64e5d7c560f1ef8deedbd7e982485bc43088e148bc3f969c42ff91",
+      "dimensions": [
+        480,
+        360
+      ],
+      "decodedRGBSha256": "b2c66e116c6b346ba27e14f54a3f5e57a2be916f598b2c345616e3a3d1beadcf",
+      "splitGroupId": "real-split-ba1eab402442a39c",
+      "nearDuplicateGroup": "real-970f4be1bd64e5d7",
+      "sourceGroups": [
+        "cloudberry",
+        "publisher:cloudberryliving.co.uk"
+      ],
+      "priorProbeManifestMatches": [
+        {
+          "path": "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json",
+          "sha256": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf"
+        },
+        {
+          "path": "tmp/heart-learning/notch-local-support-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/notch-overlap-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/projective-real-v1/probe/manifest.json",
+          "sha256": "d22e7a94e0f5cc87e1d2b1b4663fd51f18ab9526dcaf12dcb616392c2228f57e"
+        },
+        {
+          "path": "tmp/heart-learning/shape-visibility-v1/probe/manifest.json",
+          "sha256": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f"
+        }
+      ]
+    },
+    {
+      "id": "real-9b47cfbdf0004f4d-body-1",
+      "assetId": "real-9b47cfbdf0004f4d",
+      "file": "tmp/heart-training-real/assets/9b47cfbdf0004f4d919755193e185273ced62d4c65839eebc7751893ee02c873.jpg",
+      "imageSha256": "9b47cfbdf0004f4d919755193e185273ced62d4c65839eebc7751893ee02c873",
+      "dimensions": [
+        2109,
+        3882
+      ],
+      "decodedRGBSha256": "577088ed4f8b60e443a1e45b072d88e6d5217e5bca896007c155657361f1abf1",
+      "splitGroupId": "real-split-e2af2eb574ab3a3d",
+      "nearDuplicateGroup": "real-9b47cfbdf0004f4d",
+      "sourceGroups": [
+        "pinterest-pin-313070611589910648"
+      ],
+      "priorProbeManifestMatches": [
+        {
+          "path": "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json",
+          "sha256": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf"
+        },
+        {
+          "path": "tmp/heart-learning/new-photo-rejected-crops-v1/probe/manifest.json",
+          "sha256": "6e38322f2cecb8506c59c183f7bb88146cf3dcc321f11310892f32f37b1faae8"
+        },
+        {
+          "path": "tmp/heart-learning/notch-local-support-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/notch-overlap-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/projective-real-v1/probe/manifest.json",
+          "sha256": "d22e7a94e0f5cc87e1d2b1b4663fd51f18ab9526dcaf12dcb616392c2228f57e"
+        },
+        {
+          "path": "tmp/heart-learning/shape-visibility-v1/probe/manifest.json",
+          "sha256": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f"
+        }
+      ]
+    },
+    {
+      "id": "real-a96b58bb0d45cb5c-body-1",
+      "assetId": "real-a96b58bb0d45cb5c",
+      "file": "tmp/heart-training-real/assets/a96b58bb0d45cb5c194d03e15052afff509283feff26b186b4d7f62e6eeedc62.jpg",
+      "imageSha256": "a96b58bb0d45cb5c194d03e15052afff509283feff26b186b4d7f62e6eeedc62",
+      "dimensions": [
+        400,
+        400
+      ],
+      "decodedRGBSha256": "9539e7cc15c6f4da079be43ae64f356e236ca8a7becc7b255c169d64364128f0",
+      "splitGroupId": "real-split-16d9b32c2dc21c09",
+      "nearDuplicateGroup": "real-931ac5ea86dbe082",
+      "sourceGroups": [
+        "pinterest-pin-8585055530427328"
+      ],
+      "priorProbeManifestMatches": []
+    },
+    {
+      "id": "real-c7bc99827b382da7-body-1",
+      "assetId": "real-c7bc99827b382da7",
+      "file": "tmp/heart-training-real/assets/c7bc99827b382da772696d65ac2189d055d4555123a9ccf6cd5ad37bc74c4183.jpg",
+      "imageSha256": "c7bc99827b382da772696d65ac2189d055d4555123a9ccf6cd5ad37bc74c4183",
+      "dimensions": [
+        600,
+        697
+      ],
+      "decodedRGBSha256": "e8000ca055bd17983d460256106af324b613fde8e055ec318a0736f884feb874",
+      "splitGroupId": "real-split-5e5322f8c2ee1471",
+      "nearDuplicateGroup": "real-c7bc99827b382da7",
+      "sourceGroups": [
+        "pinterest-pin-16607092354455762"
+      ],
+      "priorProbeManifestMatches": [
+        {
+          "path": "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json",
+          "sha256": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf"
+        },
+        {
+          "path": "tmp/heart-learning/new-photo-rejected-crops-v1/probe/manifest.json",
+          "sha256": "6e38322f2cecb8506c59c183f7bb88146cf3dcc321f11310892f32f37b1faae8"
+        },
+        {
+          "path": "tmp/heart-learning/notch-local-support-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/notch-overlap-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/projective-real-v1/probe/manifest.json",
+          "sha256": "d22e7a94e0f5cc87e1d2b1b4663fd51f18ab9526dcaf12dcb616392c2228f57e"
+        },
+        {
+          "path": "tmp/heart-learning/shape-visibility-v1/probe/manifest.json",
+          "sha256": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f"
+        }
+      ]
+    },
+    {
+      "id": "real-d6d0462384722949-body-1",
+      "assetId": "real-d6d0462384722949",
+      "file": "tmp/heart-training-real/assets/d6d0462384722949c19ab6ff67e83ec86f9a644e9621f7dee11badbfff629d42.jpg",
+      "imageSha256": "d6d0462384722949c19ab6ff67e83ec86f9a644e9621f7dee11badbfff629d42",
+      "dimensions": [
+        426,
+        640
+      ],
+      "decodedRGBSha256": "46471ce56e66024fe3a98e4b8a22c6098d9682c22825a1d21663731509fec47f",
+      "splitGroupId": "real-split-1ac106426ff58d65",
+      "nearDuplicateGroup": "real-d6d0462384722949",
+      "sourceGroups": [
+        "pinterest-pin-464715255312715725",
+        "publisher:instagram.com"
+      ],
+      "priorProbeManifestMatches": [
+        {
+          "path": "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json",
+          "sha256": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf"
+        },
+        {
+          "path": "tmp/heart-learning/notch-local-support-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/notch-overlap-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/projective-real-v1/probe/manifest.json",
+          "sha256": "d22e7a94e0f5cc87e1d2b1b4663fd51f18ab9526dcaf12dcb616392c2228f57e"
+        },
+        {
+          "path": "tmp/heart-learning/shape-visibility-v1/probe/manifest.json",
+          "sha256": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f"
+        }
+      ]
+    },
+    {
+      "id": "real-e15ec1906fab0f9c-body-1",
+      "assetId": "real-e15ec1906fab0f9c",
+      "file": "tmp/heart-training-real/assets/e15ec1906fab0f9ceaefd8253acf25fddec4d31e2a8e3fd52842db7bab21a31c.jpg",
+      "imageSha256": "e15ec1906fab0f9ceaefd8253acf25fddec4d31e2a8e3fd52842db7bab21a31c",
+      "dimensions": [
+        233,
+        217
+      ],
+      "decodedRGBSha256": "3840d46e84ddea0a283e6369150a6bbcdc4526b9314341275a9cb6a8e3ac632e",
+      "splitGroupId": "real-split-6cafd4b05ed950e5",
+      "nearDuplicateGroup": "real-e15ec1906fab0f9c",
+      "sourceGroups": [
+        "pinterest-pin-114841859228333307"
+      ],
+      "priorProbeManifestMatches": [
+        {
+          "path": "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json",
+          "sha256": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf"
+        },
+        {
+          "path": "tmp/heart-learning/notch-local-support-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/notch-overlap-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/projective-real-v1/probe/manifest.json",
+          "sha256": "d22e7a94e0f5cc87e1d2b1b4663fd51f18ab9526dcaf12dcb616392c2228f57e"
+        },
+        {
+          "path": "tmp/heart-learning/shape-visibility-v1/probe/manifest.json",
+          "sha256": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f"
+        }
+      ]
+    },
+    {
+      "id": "real-e4baad0c914577c8-body-1",
+      "assetId": "real-e4baad0c914577c8",
+      "file": "tmp/heart-training-real/assets/e4baad0c914577c83955c7868254f9de5385bebe02788a3db07c5efdb6651709.jpg",
+      "imageSha256": "e4baad0c914577c83955c7868254f9de5385bebe02788a3db07c5efdb6651709",
+      "dimensions": [
+        1200,
+        1600
+      ],
+      "decodedRGBSha256": "1c1da073155a36f03da5d8ecd1a19854aa49c6af8298e218007f728a45ad7d92",
+      "splitGroupId": "real-split-0eae24219cb8845b",
+      "nearDuplicateGroup": "real-e4baad0c914577c8",
+      "sourceGroups": [
+        "pinterest-pin-300896818834946815"
+      ],
+      "priorProbeManifestMatches": [
+        {
+          "path": "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json",
+          "sha256": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf"
+        },
+        {
+          "path": "tmp/heart-learning/new-photo-rejected-crops-v1/probe/manifest.json",
+          "sha256": "6e38322f2cecb8506c59c183f7bb88146cf3dcc321f11310892f32f37b1faae8"
+        },
+        {
+          "path": "tmp/heart-learning/notch-local-support-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/notch-overlap-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/projective-real-v1/probe/manifest.json",
+          "sha256": "d22e7a94e0f5cc87e1d2b1b4663fd51f18ab9526dcaf12dcb616392c2228f57e"
+        },
+        {
+          "path": "tmp/heart-learning/shape-visibility-v1/probe/manifest.json",
+          "sha256": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f"
+        }
+      ]
+    },
+    {
+      "id": "real-e9131a2d52b78220-body-1",
+      "assetId": "real-e9131a2d52b78220",
+      "file": "tmp/heart-training-real/assets/e9131a2d52b78220b7e7759f2ffe7b0c253b05a84dae7a09f71de17ebe08eb95.jpg",
+      "imageSha256": "e9131a2d52b78220b7e7759f2ffe7b0c253b05a84dae7a09f71de17ebe08eb95",
+      "dimensions": [
+        1024,
+        764
+      ],
+      "decodedRGBSha256": "9cf9d5dea72e9f39f53abfc4cb8bd0d781a8d621170186280088796431885870",
+      "splitGroupId": "real-split-8ce627c539135e9f",
+      "nearDuplicateGroup": "real-e9131a2d52b78220",
+      "sourceGroups": [
+        "pinterest-pin-551902129316334743"
+      ],
+      "priorProbeManifestMatches": [
+        {
+          "path": "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json",
+          "sha256": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf"
+        },
+        {
+          "path": "tmp/heart-learning/new-photo-rejected-crops-v1/probe/manifest.json",
+          "sha256": "6e38322f2cecb8506c59c183f7bb88146cf3dcc321f11310892f32f37b1faae8"
+        },
+        {
+          "path": "tmp/heart-learning/notch-local-support-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/notch-overlap-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/projective-real-v1/probe/manifest.json",
+          "sha256": "d22e7a94e0f5cc87e1d2b1b4663fd51f18ab9526dcaf12dcb616392c2228f57e"
+        },
+        {
+          "path": "tmp/heart-learning/shape-visibility-v1/probe/manifest.json",
+          "sha256": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f"
+        }
+      ]
+    },
+    {
+      "id": "real-f882e57ac79e63d3-body-1",
+      "assetId": "real-f882e57ac79e63d3",
+      "file": "tmp/heart-training-real/assets/f882e57ac79e63d329d91a1de7ccfd95f1da7686c6a220c0d79a18d0313d919a.jpg",
+      "imageSha256": "f882e57ac79e63d329d91a1de7ccfd95f1da7686c6a220c0d79a18d0313d919a",
+      "dimensions": [
+        3024,
+        3024
+      ],
+      "decodedRGBSha256": "10aa48a74c640a1ab10d9d97740a2f897d4ae4f727c24f2f5d246361871373a3",
+      "splitGroupId": "real-split-6767391c2999ba49",
+      "nearDuplicateGroup": "real-f882e57ac79e63d3",
+      "sourceGroups": [
+        "pinterest-pin-13792342602234987",
+        "pinterest-pin-404198135300569932"
+      ],
+      "priorProbeManifestMatches": [
+        {
+          "path": "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json",
+          "sha256": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf"
+        },
+        {
+          "path": "tmp/heart-learning/new-photo-rejected-crops-v1/probe/manifest.json",
+          "sha256": "6e38322f2cecb8506c59c183f7bb88146cf3dcc321f11310892f32f37b1faae8"
+        },
+        {
+          "path": "tmp/heart-learning/notch-local-support-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/notch-overlap-v1/probe/manifest.json",
+          "sha256": "c2ff58382b1598a6e73f64e444ab1de43ea2c85dbb18a1fc2657a9bf0ff5eebe"
+        },
+        {
+          "path": "tmp/heart-learning/projective-real-v1/probe/manifest.json",
+          "sha256": "d22e7a94e0f5cc87e1d2b1b4663fd51f18ab9526dcaf12dcb616392c2228f57e"
+        },
+        {
+          "path": "tmp/heart-learning/shape-visibility-v1/probe/manifest.json",
+          "sha256": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f"
+        }
+      ]
+    }
+  ]
+}
