@@ -5,7 +5,7 @@ import { generateFittedFigure, mirrorSymmetric, type GateTies } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid, roomOf, squareCellScale } from './textGrid';
 import { NO_WHOLE_STRIPS, STRIPS, slidePlace, stripFigures } from './stripFigure';
-import { MOTIF, boardRadius, boardScale, motifChoices, squareChoices } from './boardMotif';
+import { MOTIF, boardPlacement, boardRadius, boardScale, motifChoices, squareChoices } from './boardMotif';
 import { TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
 import { CIRCLE_STYLES, fillSquare, fitCircle } from './frameFit';
 export { fillSquare, fitCircle } from './frameFit';
@@ -128,6 +128,9 @@ export type GeneratorResult = {
 	 * strips could not all be whole; 70% on a board circle that cannot take a
 	 * larger circle around this motif. */
 	scale?: number;
+	/** On a board circle over the corner squares: whether the motif sits on
+	 * its smallest enclosing circle's centre rather than its box's. */
+	enclosed?: boolean;
 };
 /** Symmetric gates for a motif that is its own mirror image, after its own
  * (see `fittedGates`): those on the heart's middle further out or meeting the
@@ -1851,31 +1854,37 @@ function generateUsingRecipes(request: GeneratorRequest,
 		const contours = request.contours ?? [];
 		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } };
 		const xs = contours.flat().map(p => p[0]), ys = contours.flat().map(p => p[1]);
-		const centre: Point = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2];
+		const middle: Point = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2];
 		const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
-		const reach = Math.max(...contours.flat().map(p => distance(p, centre))) / box;
 		const gap = request.gap ?? 3, compound = { practical: true, compound: true };
 		// The size setting sizes the circle (see `boardRadius`); the motif fills
 		// the circle up to the space asked for.
 		const [small, large, past] = BOARD_RADII, { radius, range } = boardRadius(request.scale ?? .7);
+		// The motif sits on its box's centre, or over the corner squares, where
+		// it cuts cleanly so in the largest circle, on its smallest enclosing
+		// circle's, which lets it fill the circle further (see below).
+		type Placement = { centre: Point; reach: number; enclosed?: boolean };
+		const boxed: Placement = { centre: middle, reach: Math.max(...contours.flat().map(p => distance(p, middle))) / box };
 		// The slower compound routing only where the panels meet at the centre.
-		const junctions = backgroundJunctions(contours).map((p): Point => [p[0] - centre[0], p[1] - centre[1]]);
-		const four = [{ columns: 2, slices: 2 }, { ...compound, columns: 2, slices: 2 },
-			...junctions.map(junction => ({ columns: 2, slices: 2, junction }))];
+		const background = backgroundJunctions(contours);
 		// Panels holding separate pieces of the motif (an animal's legs) join
 		// them like a letter's dots and islands. These come after every other
 		// division, so a motif that divides without them keeps its cuts.
 		const islands = { ...compound, boundaryIslands: true, contourApproaches: true, guardedAttachments: true, filled: true, guardSeams: true };
-		const layouts = (range: readonly [number, number]) => range === small ? [[{}, compound]]
-			: [four, [undefined, ...junctions].map(junction => ({ ...islands, columns: 2, slices: 2, ...junction && { junction } }))];
-		const fills = (radius: number, factor = 1) => (radius - Math.max(gap, 1.5)) * factor / reach / box;
+		const layouts = (range: readonly [number, number], { centre }: Placement) => {
+			if (range === small) return [[{}, compound]];
+			const junctions = background.map((p): Point => [p[0] - centre[0], p[1] - centre[1]]);
+			return [[{ columns: 2, slices: 2 }, { ...compound, columns: 2, slices: 2 }, ...junctions.map(junction => ({ columns: 2, slices: 2, junction }))],
+				[undefined, ...junctions].map(junction => ({ ...islands, columns: 2, slices: 2, ...junction && { junction } }))];
+		};
+		const fills = (radius: number, { reach }: Placement, factor = 1) => (radius - Math.max(gap, 1.5)) * factor / reach / box;
 		// Only the invisible partition varies: where four panels meet, the
 		// routing, and the padding of the motif's cell, which gives its
 		// connections room: the usual, else little. (Gates the circle passes
 		// inside of move in, see `generateTextGrid`.)
-		const sizes = (range: readonly [number, number], radius: number, scale = fills(radius)) =>
-			layouts(range).flatMap(list => [.22, .05].flatMap(padding =>
-				list.map(layout => ({ radius, scale, layout: { padding, ...layout } }))));
+		const sizes = (range: readonly [number, number], radius: number, placement = boxed, scale = fills(radius, placement)) =>
+			layouts(range, placement).flatMap(list => [.22, .05].flatMap(padding =>
+				list.map(layout => ({ radius, scale, layout: { padding, ...layout, ...placement.enclosed && { centre: placement.centre } } }))));
 		const build = ({ radius, scale, layout }: ReturnType<typeof sizes>[number]) => {
 			const construction = generateTextGrid(MOTIF, font, false, 'circle', { ...layout, board: 5, circle: 2 * radius, scale });
 			audit(construction.edges);
@@ -1896,9 +1905,27 @@ function generateUsingRecipes(request: GeneratorRequest,
 				}
 			}));
 		const [mode, size] = buildable(range) ? [range, radius] : range === small ? [large, large[0] + .6] : [small, small[1]];
-		// The size setting the other construction's circle stands for.
-		const kept = (result: GeneratorResult): GeneratorResult => mode === range ? result : { ...result,
-			scale: mode === small ? .45 + (size - small[0]) / (small[1] - small[0]) * .25 : .7 + (size - large[0]) / (large[1] - large[0]) * .15 };
+		// Over the corner squares, whether the motif sits on its enclosing
+		// circle is decided once, in the largest circle, so it only grows with
+		// the setting: there a deer's antler and hooves reach equally far, but a
+		// star's five tips all come close to the circle's connections.
+		const enclosed: Placement = { ...boardPlacement(contours), enclosed: true };
+		const placement = mode === past && sizes(past, past[1], enclosed).some(attempt => {
+			try {
+				finish(build(attempt), 'nested', false);
+				return true;
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				return false;
+			}
+		}) ? enclosed : boxed;
+		// The size setting the other construction's circle stands for, and
+		// whether the motif sits on its enclosing circle, for the picture.
+		const kept = (result: GeneratorResult): GeneratorResult => ({
+			...mode === range ? result : { ...result,
+				scale: mode === small ? .45 + (size - small[0]) / (small[1] - small[0]) * .25 : .7 + (size - large[0]) / (large[1] - large[0]) * .15 },
+			...placement.enclosed && { enclosed: true }
+		});
 		// The circle and the motif keep the sizes the setting gives them, so
 		// both only grow with it: cut cleanly if they can be, else as hard to
 		// cut. Only where nothing at all can be finished at those sizes does the
@@ -1906,8 +1933,8 @@ function generateUsingRecipes(request: GeneratorRequest,
 		const nearby = [size + 1.5, size + 3].map(other => Math.min(mode[1], other))
 			.filter(other => other - size > .5 && Math.abs(other - 30) > .1);
 		let last: unknown;
-		for (const attempts of [sizes(mode, size), [.85, .7].flatMap(factor => sizes(mode, size, fills(size, factor))),
-			nearby.flatMap(other => sizes(mode, other))]) {
+		for (const attempts of [sizes(mode, size, placement), [.85, .7].flatMap(factor => sizes(mode, size, placement, fills(size, placement, factor))),
+			nearby.flatMap(other => sizes(mode, other, placement))]) {
 			const rejected: Parameters<typeof hardToCutResult>[1] = [];
 			for (const attempt of attempts) try {
 				const construction = build(attempt);

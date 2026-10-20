@@ -1635,7 +1635,7 @@ export function openLeg(gate: Point, corner: Point, axis: 0 | 1, taper: number):
  * the circle and the edges' middle squares is still wide enough to cut. */
 export const BOARD_RADII: readonly (readonly [number, number])[] = [
 	[Math.hypot(10, 10) + 5, Math.hypot(30, 10)], [Math.hypot(30, 10), Math.hypot(30, 30) - .4],
-	[Math.hypot(30, 30) + .4, 47]
+	[Math.hypot(30, 30) + .4, 49.5]
 ];
 
 /** A circle on the regular board of `strips` strips, with the board's

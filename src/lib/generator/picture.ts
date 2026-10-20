@@ -17,7 +17,7 @@ import { STRIPS, boardChecks, placeBounds, placeMotif, shifts, slidePlace, type 
 import { checkeredLayout, checkeredLetters } from './checkeredGrid';
 import { measureTextGrid } from './textGrid';
 import { CORNER_GAP, CORNER_INSET, checkedTips } from './cornerChecks';
-import { MOTIF, boardRadius, boardScale, motifChoices, squareChoices } from './boardMotif';
+import { MOTIF, boardPlacement, boardRadius, boardScale, motifChoices, squareChoices } from './boardMotif';
 import { isTextFigure, textFigureRequest } from './textFigure';
 
 /** The clearest place for each motif and board, where the search starts when
@@ -29,9 +29,11 @@ const clearest = new WeakMap<Ring[], Map<number, number>>();
 export type Picture = { rings: Ring[]; place?: number; bounds?: PlaceBounds };
 
 /** What a heart already made of the motif in this frame, at its default size,
- * tells the next picture: where the figure in the checks lay, and the board's
- * strips per side. */
-export type Known = { place?: number; board?: number; circle?: 'small' | 'large' };
+ * tells the next picture: where the figure in the checks lay, the board's
+ * strips per side, which circle a board circle keeps, and whether over the
+ * corner squares the motif sits on its enclosing circle (as it does unless a
+ * heart said otherwise). */
+export type Known = { place?: number; board?: number; circle?: 'small' | 'large'; enclosed?: boolean };
 
 /** The picture for a request, or none where this frame has none yet, or the
  * generator is known to build this motif differently. */
@@ -69,7 +71,7 @@ export function picture(request: GeneratorRequest, known: Known = {}): Picture |
 		if (request.mode === 'figure' && request.style === 'sunburst' && (known.board ?? 5) === 5) return sunburstPicture(request);
 		if (request.mode === 'figure' && request.style === 'layers' && (known.board ?? 7) === 7) return layersPicture(request);
 		if (request.mode === 'figure' && request.style === 'corners' && (known.board ?? 6) === 6) return cornersPicture(request);
-		if (request.mode === 'figure' && request.style === 'board') return boardPicture(request, known.circle);
+		if (request.mode === 'figure' && request.style === 'board') return boardPicture(request, known.circle, known.enclosed);
 		if (request.mode === 'figure' && (request.style === 'wedges' || request.style === 'fitted' || request.style === 'silhouette') && request.contours?.length
 			&& (known.board ?? (request.style === 'fitted' ? 5 : 3)) === (request.style === 'fitted' ? 5 : 3)) {
 			// The open frames' legs, as their first construction draws them, on
@@ -209,7 +211,7 @@ function cornersPicture(request: GeneratorRequest): Picture | undefined {
  * squares, its checks woven the other way round. A motif that one of the two
  * constructions cannot build keeps the other's nearest circle whatever its
  * size, as `circle` says once a heart of it has reported a size it kept. */
-function boardPicture(request: GeneratorRequest, circle?: 'small' | 'large'): Picture | undefined {
+function boardPicture(request: GeneratorRequest, circle?: 'small' | 'large', enclosed = true): Picture | undefined {
 	const contours = normalizeContours(request.contours ?? []);
 	if (!contours.length) return;
 	let { radius } = boardRadius(request.scale ?? .7);
@@ -218,9 +220,12 @@ function boardPicture(request: GeneratorRequest, circle?: 'small' | 'large'): Pi
 	if (radius <= small[1] && circle === 'large') radius = large[0] + .6;
 	const outer = radius > small[1] ? 1 : 0;
 	const xs = contours.flat().map(p => p[0]), ys = contours.flat().map(p => p[1]);
-	const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+	let cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
 	const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
-	const reach = Math.max(...contours.flat().map(([x, y]) => Math.hypot(x - cx, y - cy))) / box;
+	let reach = Math.max(...contours.flat().map(([x, y]) => Math.hypot(x - cx, y - cy))) / box;
+	// Over the corner squares the motif sits on its smallest enclosing circle,
+	// where it cuts cleanly so (see `generate`).
+	if (radius > large[1] && enclosed) ({ centre: [cx, cy], reach } = boardPlacement(contours));
 	const scale = (radius - Math.max(request.gap ?? 3, 1.5)) / reach / box;
 	const disc = frameRing('circle', 2 * radius), side = 20, rings: Ring[] = [];
 	for (let i = 0; i < 5; i++)

@@ -1,5 +1,30 @@
 # Generator robustness results
 
+## The circle on equal squares touching the edges, and motifs on their enclosing circle
+
+Product requests (2026-10-20), of the circle over the corner squares at 100%:
+"I think we can make it even bigger - until the circle touches the outer
+rectangle", then "you can make the deer even bigger! in fact, it can even be
+> 100%". The circle now reaches radius 49.5 at 100%: half a unit from the
+paper's edges in the middle squares, which are its own colour, the red squares
+beside them keeping 1.5 units of paper at their tips, the least space the
+generator allows between a motif and its frame (radius 50 leaves 1 unit; the
+clearance rule does not measure paper against the paper's edge, so this limit is
+set here). Over the corner squares a motif sits on the centre of its smallest
+enclosing circle, decided once per motif by whether it cuts cleanly so in the
+largest circle: 20 of the 28 motifs that grow do, the fish, the cat and the
+house a tenth or more larger than on their box's centre. At 100% over the corpus and the deer: 45 clean,
+3 hard (the star, whose tips all come close to the circle's connections on its
+enclosing circle and, on its box's, past radius 48.3; and snow and crown, which
+keep the touching circle), the same 4 refused; median 0.6 s, max 4.7 s; every
+picture matches its heart once the page knows which centre the motif took
+(`Known.enclosed`). The deer keeps its box's centre (on its enclosing circle it
+cuts cleanly only made smaller), so it grows with the circle alone: about 6%
+over radius 47. Centring every size on the enclosing circle was tried and not
+kept: more clean results overall (the coffee cup no longer refused at 60–70%,
+the crown clean), but the deer hard at 70% and the heart at 80%. Hearts at 85%
+and below are unchanged.
+
 ## The circle on equal squares up to 100%, over the corner squares
 
 Product request (2026-10-20): "why can I still not take the size of the deer to

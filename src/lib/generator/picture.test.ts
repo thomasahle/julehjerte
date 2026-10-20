@@ -27,7 +27,8 @@ function mismatch(request: GeneratorRequest, n = 100): number {
 	// circle the motif keeps.
 	const board = request.mode === 'figure' && request.style === 'board';
 	const circle = board && result.scale !== undefined ? (request.scale ?? .7) > .7 ? 'small' as const : 'large' as const : undefined;
-	const { rings } = picture({ ...request, scale: board ? request.scale : result.scale ?? request.scale, layout: base.layout }, { place: base.place, circle })!;
+	const { rings } = picture({ ...request, scale: board ? request.scale : result.scale ?? request.scale, layout: base.layout },
+		{ place: base.place, circle, enclosed: !!result.enclosed })!;
 	let differ = 0;
 	for (let y = 0; y < n; y++)
 		for (let x = 0; x < n; x++) {

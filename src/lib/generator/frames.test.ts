@@ -22,6 +22,7 @@ import deer from '../../../static/generator/motifs/pin-reindeer.json';
 import horse from '../../../static/generator/motifs/ph-horse.json';
 import bird from '../../../static/generator/motifs/ph-bird.json';
 import star from '../../../static/generator/motifs/star.json';
+import houseMotif from '../../../static/generator/motifs/house.json';
 import snowflake from '../../../static/generator/motifs/ph-snowflake.json';
 import gift from '../../../static/generator/motifs/gift.json';
 import female from '../../../static/generator/motifs/ph-gender-female.json';
@@ -360,7 +361,7 @@ describe('frames from real hearts', () => {
   expect(result.hardToCut).toBeUndefined();
  }, 20000);
  it('grows the circle past 85% over the corner squares, every square still equal', () => {
-  const { design, hardToCut, scale } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: 1 });
+  const { design, hardToCut, scale } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .95 });
   expect(hardToCut).toBeUndefined();
   expect(scale).toBeUndefined();
   expect(design.gridSize).toEqual({ x: 5, y: 5 });
@@ -379,11 +380,19 @@ describe('frames from real hearts', () => {
   // The circle covers the outer ring's corner junctions: the corners of the
   // squares beside them take its colour, their far ends keep the other.
   const n = 400, mask = rasterizeDesign(design, n).data;
-  const colour = (x: number, y: number) => mask[Math.floor(y / 100 * n) * n + Math.floor(x / 100 * n)], ground = colour(20, 20);
+  const colour = (x: number, y: number) => mask[Math.floor(y / 100 * n) * n + Math.floor(x / 100 * n)], ground = colour(50, 5);
   for (const [x, y] of [[21, 19], [19, 21], [79, 19], [81, 21], [19, 79], [21, 81], [79, 81], [81, 79]])
    expect(colour(x, y), `${x} ${y}`).toBe(ground);
   for (const [x, y] of [[30, 3], [3, 30], [70, 3], [97, 30], [3, 70], [30, 97], [70, 97], [97, 70]])
    expect(colour(x, y), `${x} ${y}`).not.toBe(ground);
+ });
+ it('sets a motif that cuts cleanly so on its smallest enclosing circle in the largest circles', () => {
+  // A house's roof and walls then reach equally far; a star keeps its box's
+  // centre, which leaves its tips further from the circle's connections.
+  const house = generate({ mode: 'figure', name: 'House', contours: houseMotif.contours as Ring[], colors, style: 'board', scale: 1 });
+  expect(house.enclosed).toBe(true);
+  expect(house.hardToCut).toBeUndefined();
+  expect(generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .9 }).enclosed).toBeUndefined();
  });
  slow('takes an animal over the corner squares to 100%', () => {
   const result = generate({ mode: 'figure', name: 'Deer', contours: deer.contours as Ring[], colors, style: 'board', scale: 1 });

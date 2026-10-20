@@ -244,9 +244,13 @@
 	/** What the board circle's hearts said of each motif: a size kept above 70%
 	 * means it keeps the touching circle, one at or below means the larger. */
 	const boardCircles = new Map<string, 'small' | 'large'>();
+	/** Whether over the corner squares each motif sat on its enclosing circle. */
+	const boardEnclosed = new Map<string, boolean>();
 	function learn(job: Job, result: GeneratorResult) {
 		if (job.motif && job.request.mode === 'figure' && job.request.style === 'board' && result.scale !== undefined)
 			boardCircles.set(job.motif, (job.request.scale ?? .7) > .7 ? 'small' : 'large');
+		if (job.motif && job.request.mode === 'figure' && job.request.style === 'board' && (job.request.scale ?? .7) > .85)
+			boardEnclosed.set(job.motif, !!result.enclosed);
 	}
 	let running: (Job & { started: number }) | null = null,
 		waiting: Job | null = null;
@@ -500,7 +504,8 @@
 				if (token !== revision) return;
 				// What the default size's heart, once made, tells the picture.
 				const made = cache.get(geometryKey({ ...snapshot, scale: defaults.scale, place: undefined, side: undefined }));
-				sketch = picture(request, { place: made?.place, board: made?.design.gridSize.x, circle: boardCircles.get(snapshot.motif) }) ?? null;
+				sketch = picture(request, { place: made?.place, board: made?.design.gridSize.x, circle: boardCircles.get(snapshot.motif),
+					enclosed: boardEnclosed.get(snapshot.motif) }) ?? null;
 				if (!cached && !failed) queueJob({ request, key, token, motif: snapshot.motif });
 			})
 			.catch(() => {
