@@ -10,9 +10,10 @@ import torch
 from data import digest
 from body_schedule import training_draws
 from body_provenance import verify_body_sources
+from body_trainable import configure_trainable, encoder_options
 from preserved_candidate import pinned
 from real_foreground import known_region_metrics
-from u2netp_adaptation import freeze_encoder, frozen_hash, normalize_scores, real_training
+from u2netp_adaptation import frozen_hash, normalize_scores, real_training
 
 
 def module(file, name):
@@ -61,13 +62,15 @@ def main():
     expected_ids = [[synthetic_ids[d['synthetic']], real_ids[d['real']]] for d in draws]
     if draws != report['draws'] or expected_ids != report['sampledIds'] or len(report['history']) != len(draws):
         raise ValueError('Training draws or update count differ')
-    model = architecture.U2NETP(3, 1); freeze_encoder(model)
+    model = architecture.U2NETP(3, 1)
+    trainable = configure_trainable(model, plan['protocol'])
+    if trainable != report['trainableParameters']: raise ValueError('Trainable parameter count changed')
     initial = torch.load(pinned(plan['checkpoint']), map_location='cpu', weights_only=True)
     final = torch.load(pinned({'path': str(args.run/'model.pt'), 'sha256': report['checkpointSha256']}), map_location='cpu', weights_only=True)
     model.load_state_dict(initial, strict=True); before = frozen_hash(model)
     model.load_state_dict(final, strict=True)
     if frozen_hash(model) != before or before != report['initialFrozenStateSha256']:
-        raise ValueError('Encoder weights or normalization buffers changed')
+        raise ValueError('Configured frozen weights or normalization buffers changed')
     changed = [n for n in initial if not torch.equal(initial[n], final[n])]
     if not changed: raise ValueError('Unchanged adapted checkpoint')
     metrics_items = [{'id': i['id'], 'target': (i['labels'] == 1).astype(np.float32),
@@ -89,6 +92,7 @@ def main():
               'sourceSeparation': separation, 'updates': len(draws), 'sourcePhotosRechecked': len(report['trainingInputs']),
               'historicalTrainingDrivers': historical,
               'immutableStateMatchesInitial': True, 'changedTensors': len(changed),
+              'trainableParameters': trainable, 'adaptedEncoderStages': encoder_options(plan['protocol'])[0],
               'predictionMaximumDifference': maximum, 'predictionComparisons': comparisons, 'trainingMetrics': metrics,
               'scope': 'Independent checkpoint reload, frozen weights/buffers, draw schedule, source identities, input/label hashes, predictions and metrics. The initial bitwise replay gate failed at 1.1920929e-7; this diagnostic gate allows one float32 epsilon on the unit probability interval while requiring identical threshold masks and metrics. It is not a bitwise replay, second optimization run, browser parity check or held-out quality result.'}
     with args.output.open('x') as file: file.write(json.dumps(result, indent=2)+'\n')

@@ -13,9 +13,10 @@ import torch
 
 from data import digest
 from body_schedule import training_draws
+from body_trainable import configure_trainable, optimizer_parameters
 from preserved_candidate import pinned
 from real_foreground import masked_foreground_loss, known_region_metrics
-from u2netp_adaptation import (freeze_encoder, frozen_hash, fused_logits, normalize_scores,
+from u2netp_adaptation import (frozen_hash, fused_logits, normalize_scores,
                               real_training, synthetic_training)
 
 
@@ -67,13 +68,13 @@ def main():
     rescale, normalize = loader.RescaleT(320), loader.ToTensorLab(flag=0)
     model = architecture.U2NETP(3, 1)
     model.load_state_dict(torch.load(pinned(plan['checkpoint']), map_location='cpu', weights_only=True), strict=True)
-    trainable = freeze_encoder(model); initial_frozen = frozen_hash(model)
+    trainable = configure_trainable(model, p); initial_frozen = frozen_hash(model)
     real, separation = real_training(plan, rescale, normalize)
     synthetic = synthetic_training(plan, rescale, normalize)
     initial = predict(model, real)
     source = Path(__file__).parent
     dependencies = [Path(__file__)]+[source/f for f in ['u2netp_adaptation.py', 'preserved_candidate.py',
-        'real_foreground.py', 'foreground.py', 'data.py', 'body_schedule.py']]
+        'real_foreground.py', 'foreground.py', 'data.py', 'body_schedule.py', 'body_trainable.py']]
     dependencies += [source.parent/'datasets'/f for f in ['real_annotations.py', 'real_materials.py']]
     hashes = {str(f): digest(f.read_bytes()) for f in dependencies}
     draws = training_draws(plan, len(synthetic), len(real))
@@ -95,7 +96,7 @@ def main():
         if 'drawSchedule' in plan: pinned(plan['drawSchedule'])
         temporary = args.output/'report.writing.json'
         temporary.write_text(json.dumps(report, indent=2)+'\n'); temporary.replace(args.output/'report.json')
-    optimizer = torch.optim.AdamW([x for x in model.parameters() if x.requires_grad], lr=p['learningRate'], weight_decay=p['weightDecay'])
+    optimizer = torch.optim.AdamW(optimizer_parameters(model, p), lr=p['learningRate'], weight_decay=p['weightDecay'])
     started = time.perf_counter(); save()
     try:
         for step, draw in enumerate(draws):
@@ -113,9 +114,9 @@ def main():
             optimizer.step(); report['history'].append(float(loss.detach()))
             report['sampledIds'].append([i['id'] for i in batch])
             if (step+1) % 20 == 0:
-                if frozen_hash(model) != initial_frozen: raise ValueError('Frozen encoder or statistics changed')
+                if frozen_hash(model) != initial_frozen: raise ValueError('Frozen weights or statistics changed')
                 save(); print(json.dumps({'step': step+1, 'loss': report['history'][-1], 'seconds': time.perf_counter()-started}), flush=True)
-        if frozen_hash(model) != initial_frozen: raise ValueError('Frozen encoder or statistics changed')
+        if frozen_hash(model) != initial_frozen: raise ValueError('Frozen weights or statistics changed')
         final = predict(model, real)
         if np.array_equal(initial, final): raise ValueError('Decoder did not learn')
         metrics_items = [{'id': i['id'], 'target': (i['labels'] == 1).astype(np.float32),

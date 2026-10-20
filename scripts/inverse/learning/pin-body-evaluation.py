@@ -20,7 +20,7 @@ def main():
     parser.add_argument('--stage', choices=['probe', 'pipeline'], required=True)
     parser.add_argument('--probe-run', type=Path)
     args = parser.parse_args(); study = json.loads(args.study.read_bytes())
-    if study['schema'] not in ['paired-body-expansion-evaluation-plan-1', 'paired-body-exposure-evaluation-plan-1']:
+    if study['schema'] not in ['paired-body-expansion-evaluation-plan-1', 'paired-body-exposure-evaluation-plan-1', 'paired-body-encoder-evaluation-plan-1']:
         raise ValueError('Require a predeclared paired body study')
     training = json.loads((args.run/'report.json').read_bytes()); audit = json.loads((args.run/'audit.json').read_bytes())
     if training['status'] != 'complete' or not audit['passed'] or audit['report'] != reference(args.run/'report.json'):
