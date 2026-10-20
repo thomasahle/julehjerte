@@ -22,6 +22,7 @@ and passes all 11 live browser checks after merging PR #17.
 | Late encoder adaptation | Training-pixel error falls from 2.91% to 1.78%, but full editable recovery stays at the same 12/32 designs | No new crop-support decisions or recovered designs; not promoted |
 | Broader photo evaluation | Outline extension retains 12/32 and raises the additional set from 4/18 checked derived masks (three supported by full-body evidence) to 6/18, all six body-supported | Replacing a fragment crop with the whole overlap can reveal a reconstruction failure. Printed paper, crop assumptions and feature loss remain separate problems |
 | Paper-colour calibration | Original-resolution colour mixtures restore detail lost by raw neural masks; fresh fixed-crop comparison gives 11/32 checked pairs with learned palettes versus 13/32 with RGB clustering | No learned-only checked gain; print confusion and unsuitable crops remain; these are derived-mask checks, not artwork ground truth |
+| Paired paper-identity training | Matched 256-update runs reduce synthetic printed-paper error from 10.84% to 9.64%; every real training/development photo reviewed | Known-region real training error increases from 3.53% to 3.65%; print confusion and lost small features persist; head rejected for deployment |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
 | Solver | Deployed outline release passes 1,183 inverse correctness tests; earlier dedicated runs solve all 22 regular Hunodan designs under ten seconds | Some hard fits retain thin false seams; 17/77 original main-CI timing targets miss; the earlier 27/31 photo benchmark has not been rerun |
 
@@ -312,9 +313,50 @@ All 32 saved grids decode exactly to the recorded fields; four focused tests
 pass, and both largest-error galleries were inspected. This shows that output
 resolution alone cannot explain those training failures. It is a target-informed
 reference, not a working image predictor, certified optimum or evidence for
-every fine real motif. The next material experiment should test paired print
-invariance while preserving clean-paper boundaries. No model or app behavior
-changes in this diagnostic.
+every fine real motif. The following experiment tests paired print invariance
+while preserving clean-paper boundaries. No model or app behavior changes in
+this diagnostic.
+
+The [paired consistency experiment](u2netp-paired-results.json) starts both arms
+from the same 120-update identity head. Each receives the same 256 batches:
+one real photo and two synthetic views of identical geometry, with identical
+reflections, supervised loss and optimizer. The candidate additionally penalizes
+material predictions that change when printing or the surrounding scene changes.
+Each image may swap its two paper labels once; individual pixels cannot swap
+independently. All 32 geometries, 96 synthetic views and 16 real training photos
+receive the predeclared number of visits.
+
+| Material error on synthetic training views | Supervised control | Paired consistency |
+| --- | ---: | ---: |
+| Original | 2.16% | 2.06% |
+| Printed paper | 10.84% | 9.64% |
+| Changed scene | 5.93% | 5.85% |
+
+Printed/original prediction disagreement also falls from **10.16% to 9.01%**.
+Boundary error improves in all three groups, but clean and scene interior error
+slightly increases. Sparse known-region real training error increases from
+**3.53% to 3.65%**. All 16 training and 32 previously inspected, source-separated
+development photos were visually reviewed. Printed ink still becomes false paper
+boundaries; shaded motifs and small openings disappear. Missing dark/reflective
+paper and included hands/handles remain separate problems in the frozen body
+model. These full-photo failures precede crop selection and curve fitting.
+Neither head is approved for deployment.
+
+Fourteen focused tests pass, and 485 source/artifact hash checks pass. A failed
+bitwise check is retained: saved training body and initial identity probabilities
+differ by at most **0.0000001192**, with no changed half-threshold pixels. Fresh
+inference in one process gives exactly equal checkpoint bodies; all 32 native
+development body fields also match the previous reference exactly. This supports
+small cross-process floating-point variation, without establishing its kernel
+cause or a deterministic causal effect from one training pair. The comparison
+gallery now records raw equality failures and uses each model's actual body.
+
+The experiment uses one low-priority CPU worker, adds about **92.1 MiB** of
+local artifacts and downloads no photos. Each learned head is 77 KB. No
+browser model export or new template fit was justified. The next hypothesis is
+to condition paper identity on examples of each paper's texture in the exposed
+lobes, after checking what the existing palette and context experiments already
+establish; this has not yet been implemented or evaluated.
 
 ### Latest solver and browser validation
 

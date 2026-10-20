@@ -25,6 +25,12 @@ def read_field(directory, asset):
     return np.fromfile(path, dtype='<f4').reshape(320, 320)
 
 
+def field_difference(a, b):
+    return {'exact': bool(np.array_equal(a, b)),
+            'maximumDifference': float(np.abs(a-b).max()),
+            'changedThresholdPixels': int(((a >= .5) != (b >= .5)).sum())}
+
+
 def panels(rows, output, prefix):
     records = []; colours = np.array([[255, 130, 0], [0, 200, 255]], np.uint8)
     for start in range(0, len(rows), 4):
@@ -37,13 +43,14 @@ def panels(rows, output, prefix):
             body = row['body']; images = [photo, Image.fromarray(np.uint8(body*255))]
             for key, flip in [('control', row['controlFlip']), ('candidate', row['candidateFlip'])]:
                 labels = (row[key] >= .5) ^ flip
-                rgb = np.full((n, n, 3), 130, np.uint8); known = body >= .5
+                rgb = np.full((n, n, 3), 130, np.uint8)
+                known = (row['candidateBody'] if key == 'candidate' else body) >= .5
                 rgb[known] = colours[labels[known].astype(int)]
                 images.append(Image.fromarray(rgb))
             for column, image in enumerate(images):
                 sheet.paste(image, (column*n, j*(n+32)))
             pen.text((4, j*(n+32)+n+2), row['id'], fill='black')
-            pen.text((4, j*(n+32)+n+16), 'Photo / unchanged body / supervised control / paired consistency', fill='black')
+            pen.text((4, j*(n+32)+n+16), 'Photo / control body / supervised control / paired consistency', fill='black')
         file = output/(prefix+'-'+str(start//4+1)+'.jpg'); sheet.save(file, quality=90)
         records.append({'path': file.name, 'sha256': digest(file.read_bytes()), 'ids': [r['id'] for r in selected]})
     return records
@@ -57,6 +64,9 @@ def main():
     control, c_ref = read_report(args.control); candidate, n_ref = read_report(args.candidate)
     if candidate['pairedControl'] != c_ref:
         raise ValueError('Candidate does not use this matched control')
+    for key in ['initialHeadSha256', 'initialFrozenStateSha256', 'trainingInputs', 'draws']:
+        if control[key] != candidate[key]:
+            raise ValueError('Matched training invariant differs: '+key)
     probes = [read_report(args.control_probe), read_report(args.candidate_probe)]
     for (probe, _), reference in zip(probes, [c_ref, n_ref]):
         if probe['training'] != reference:
@@ -67,10 +77,12 @@ def main():
         pinned({'path': str(file), 'sha256': report['artifacts'][file.name]})
         archives.append(np.load(file))
     left, right = archives
-    if not np.array_equal(left['ids'], right['ids']) or not np.array_equal(left['body'], right['body']):
-        raise ValueError('Training cohort or body changed')
-    if not np.array_equal(left['initial'], right['initial']):
-        raise ValueError('Initial material fields changed')
+    if not np.array_equal(left['ids'], right['ids']):
+        raise ValueError('Training cohort changed')
+    # A gallery is not an equality verifier. Keep failed raw-equality checks
+    # visible and show each proposal with its own actual body prediction.
+    parity = {'trainingBody': field_difference(left['body'], right['body']),
+              'initialMaterial': field_difference(left['initial'], right['initial']), 'development': []}
     inputs = {r['id']: r for r in control['trainingInputs']}
     training = []
     for index, identity in enumerate(left['ids']):
@@ -79,7 +91,8 @@ def main():
         if first['id'] != identity or second['id'] != identity:
             raise ValueError('Training metrics are misaligned')
         training.append({'id': str(identity), 'file': source['photo'], 'photoSha256': source['photoSha256'],
-            'body': left['body'][index], 'control': left['final'][index], 'candidate': right['final'][index],
+            'body': left['body'][index], 'candidateBody': right['body'][index],
+            'control': left['final'][index], 'candidate': right['final'][index],
             'controlFlip': first['materialPhaseExchanged'], 'candidateFlip': second['materialPhaseExchanged']})
     c_probe, n_probe = probes[0][0], probes[1][0]
     if [r['id'] for r in c_probe['rows']] != [r['id'] for r in n_probe['rows']]:
@@ -91,19 +104,20 @@ def main():
                 raise ValueError('Development image input differs')
         body = read_field(args.control_probe, first['assets']['body'])
         other_body = read_field(args.candidate_probe, second['assets']['body'])
-        if not np.array_equal(body, other_body):
-            raise ValueError('Body changed between paired models')
+        parity['development'].append({'id': first['id'], **field_difference(body, other_body)})
         a, b = read_field(args.control_probe, first['assets']['material']), read_field(args.candidate_probe, second['assets']['material'])
         known = body >= .5
         flip = bool(np.mean((a[known] >= .5) != (b[known] >= .5)) > .5) if known.any() else False
         development.append({'id': first['id'], 'file': first['file'], 'photoSha256': first['photoSha256'],
-            'body': body, 'control': a, 'candidate': b, 'controlFlip': False, 'candidateFlip': flip})
+            'body': body, 'candidateBody': other_body, 'control': a, 'candidate': b,
+            'controlFlip': False, 'candidateFlip': flip})
     args.output.mkdir(parents=True, exist_ok=False)
     report = {'schema': 'paired-material-gallery-1', 'status': 'complete',
         'implementationSha256': digest(Path(__file__).read_bytes()),
         'control': c_ref, 'candidate': n_ref, 'controlProbe': probes[0][1], 'candidateProbe': probes[1][1],
         'trainingCount': len(training), 'developmentCount': len(development),
-        'scope': 'All 16 training and 32 already-inspected source-separated development photos. Both binary proposals use the same frozen predicted body, shown separately; omitted paper remains a body failure. Training display uses target-based phases. Development candidate can swap labels once solely for visual comparison, not fitting or scoring. No original-artwork accuracy claim.',
+        'scope': 'All 16 training and 32 already-inspected source-separated development photos. Each binary proposal uses its own actual body field; the control body is shown separately. Frozen weights are exact, but raw-field equality is recorded independently, including failures. Omitted paper remains a body failure. Training display uses target-based phases. Development candidate can swap labels once solely for visual comparison, not fitting or scoring. No original-artwork accuracy claim.',
+        'rawFieldParity': parity,
         'training': panels(training, args.output, 'training'),
         'development': panels(development, args.output, 'development'),
         'displayPhases': [{'id': r['id'], 'candidateFlip': r['candidateFlip']} for r in development]}
