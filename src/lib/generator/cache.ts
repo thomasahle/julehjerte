@@ -12,7 +12,8 @@ export function geometryKey(s: GeneratorState): string {
 					// the frame size is the motif size's base everywhere else.
 					BOARD_STYLES.includes(s.style) ? [s.mode, s.motif, s.scale, s.style, stripCount(s), ...s.style === 'strips' ? [s.place, s.side] : []]
 					: s.style === 'silhouette' ? [s.mode, s.motif, s.scale, s.spacing, s.style]
-					: [s.mode, s.motif, s.frame, s.frameSize, s.scale, s.style, s.spacing]
+					: [s.mode, s.motif, s.frame, s.frameSize, s.scale, s.style, s.spacing,
+						...s.style === 'board' && stripCount(s) !== undefined ? [stripCount(s)] : []]
 				: [s.mode]
 	);
 }

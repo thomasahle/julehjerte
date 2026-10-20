@@ -5,7 +5,7 @@ import { generateFittedFigure, mirrorSymmetric, type GateTies } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid, roomOf, squareCellScale } from './textGrid';
 import { NO_WHOLE_STRIPS, STRIPS, slidePlace, stripFigures } from './stripFigure';
-import { MOTIF, boardPlacement, boardRadius, boardScale, enclosedAlong, motifChoices, squareChoices } from './boardMotif';
+import { MOTIF, boardPlacement, boardRadius, boardScale, boardSetting, enclosedAlong, motifChoices, squareChoices } from './boardMotif';
 import { TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
 import { CIRCLE_STYLES, fillSquare, fitCircle } from './frameFit';
 export { fillSquare, fitCircle } from './frameFit';
@@ -53,7 +53,7 @@ import {
 	dot,
 	cross,
 	frameRing,
-	BOARD_RADII,
+	boardRanges,
 	type Ring,
 	type Frame,
 	type FigureStyle,
@@ -1843,7 +1843,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 	}
 	if (request.style === 'board') {
 		// The circle on a regular board of five strips, every square outside it
-		// equally large, at the radii the board allows (`BOARD_RADII`). Up to the
+		// equally large, at the radii the board allows (`boardRanges`). Up to the
 		// circle touching the outer ring of squares, the outer lines cross the
 		// paper whole or follow the circle, and the undivided motif meets the
 		// middle lines like a letter in the circle frame. Reaching into the outer
@@ -1859,7 +1859,9 @@ function generateUsingRecipes(request: GeneratorRequest,
 		const gap = request.gap ?? 3, compound = { practical: true, compound: true };
 		// The size setting sizes the circle (see `boardRadius`); the motif fills
 		// the circle up to the space asked for.
-		const [small, large, past] = BOARD_RADII, { radius, range } = boardRadius(request.scale ?? .7);
+		// The board's strips, five unless the visitor chose (see `boardRanges`).
+		const strips = request.board ?? 5, ranges = boardRanges(strips);
+		const [small, large, past] = ranges, { radius, range } = boardRadius(request.scale ?? .7, strips);
 		// The motif sits on its box's centre, or over the corner squares, where
 		// it cuts cleanly so in the largest circle, on its smallest enclosing
 		// circle's, which lets it fill the circle further (see below).
@@ -1888,7 +1890,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			layouts(range, placement).flatMap(list => [.22, .05].flatMap(padding =>
 				list.map(layout => ({ radius, scale, layout: { padding, ...layout, ...placement.enclosed && { centre: placement.centre } } }))));
 		const build = ({ radius, scale, layout }: ReturnType<typeof sizes>[number]) => {
-			const construction = generateTextGrid(MOTIF, font, false, 'circle', { ...layout, board: 5, circle: 2 * radius, scale });
+			const construction = generateTextGrid(MOTIF, font, false, 'circle', { ...layout, board: strips, circle: 2 * radius, scale });
 			audit(construction.edges);
 			return construction;
 		};
@@ -1897,7 +1899,9 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// four at both, takes the other construction at its size nearest the
 		// touching circle, whatever the slider. Its shape decides, not the
 		// space asked for: more than the usual would leave it too small there.
-		const buildable = (range: readonly [number, number]) => (range === small ? [25] : [34, 39])
+		const [low, high] = large ?? small, references = (range: readonly [number, number]) => range === small
+			? [Math.round((small[0] + small[1]) / 2)] : [.25, .75].map(t => Math.round(low + t * (high - low)));
+		const buildable = (range: readonly [number, number]) => references(range)
 			.every(reference => sizes(range, reference, boxed, fills(reference, boxed, 1, Math.min(gap, 3))).some(attempt => {
 				try {
 					build(attempt);
@@ -1907,7 +1911,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 					return false;
 				}
 			}));
-		const [mode, size] = buildable(range) ? [range, radius] : range === small ? [large, large[0] + .6] : [small, small[1]];
+		const [mode, size] = buildable(range) || !large ? [range, radius] : range === small ? [large, large[0] + .6] : [small, small[1]];
 		// Over the corner squares, whether the motif sits on its enclosing
 		// circle is decided once, in the largest circle, so it only grows with
 		// the setting: there a deer's antler and hooves reach equally far, but a
@@ -1926,8 +1930,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// The size setting the other construction's circle stands for, and
 		// whether the motif sits on its enclosing circle, for the picture.
 		const kept = (result: GeneratorResult): GeneratorResult => ({
-			...mode === range ? result : { ...result,
-				scale: mode === small ? .45 + (size - small[0]) / (small[1] - small[0]) * .25 : .7 + (size - large[0]) / (large[1] - large[0]) * .15 },
+			...mode === range ? result : { ...result, scale: boardSetting(size, strips) },
 			...placement.enclosed && { enclosed: true }
 		});
 		// The circle and the motif keep the sizes the setting gives them, so
@@ -1959,8 +1962,17 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const result = generateUsingRecipes({ ...request, scale }, onRejected, curveFitter, variants, allRecipes);
 			return { ...result, scale: result.scale ?? scale };
 		};
-		if (mode === past) return smaller(.85);
-		if (mode === large && gap > 3) return smaller(.7);
+		try {
+			if (mode === past) return smaller(.85);
+			if (mode === large && gap > 3) return smaller(.7);
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) || strips === 5) throw error;
+			last = error;
+		}
+		// A motif that cannot be built at all on the strips the visitor chose
+		// (on three, one that must be divided) is shown on the frame's own five,
+		// as the page then says.
+		if (strips !== 5) return generateUsingRecipes({ ...request, board: undefined }, onRejected, curveFitter, variants, allRecipes);
 		throw last;
 	}
 	if (request.style === 'corners') {

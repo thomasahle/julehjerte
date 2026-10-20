@@ -146,6 +146,9 @@ describe('the picture drawn before the cuts are found', () => {
 		// Past 85% the circle overlaps the corner squares, of its own colour,
 		// a house on its smallest enclosing circle.
 		expect(mismatch({ ...request, name: 'House', contours: house.contours as Ring[], scale: 1 })).toBeLessThan(.01);
+		// On the strips the visitor chooses.
+		expect(mismatch({ ...request, board: 3, scale: .8 })).toBeLessThan(.01);
+		expect(mismatch({ ...request, board: 7, scale: .8 })).toBeLessThan(.01);
 	});
 
 	it('is the checks in the tips the cuts make, at any space around the motif', () => {

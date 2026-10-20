@@ -7,7 +7,7 @@ import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSide } from './state';
 import { templateVariants } from './templates';
-import { inside, uprightToSheet, distance, WEDGES, type Point, type Ring } from './geometry';
+import { inside, uprightToSheet, distance, boardRanges, WEDGES, type Point, type Ring } from './geometry';
 import { geometryKey } from './cache';
 import { boardRadius, motifChoices, motifPatterns, squareChoices } from './boardMotif';
 import { normalizeContours } from './contours';
@@ -411,17 +411,42 @@ describe('frames from real hearts', () => {
   expect(inner.length).toBe(8);
   for (const a of inner) expect(Math.abs(a - 50), `${a}`).toBeCloseTo(Math.sqrt(52 ** 2 - 50 ** 2), 1);
  });
- it('grows the circle over the corner squares without jumps', () => {
-  // From the junctions' far side at 86% to the paper's edges at 100%, no step
-  // larger than the one over the junctions.
-  let last = boardRadius(.85).radius;
-  for (let percent = 86; percent <= 100; percent++) {
-   const { radius } = boardRadius(percent / 100);
-   expect(radius - last, `${percent}`).toBeGreaterThan(0);
-   expect(radius - last, `${percent}`).toBeLessThanOrEqual(2 * .4 + 1e-9);
-   last = radius;
+ it('grows the circle without jumps, on every board', () => {
+  // From the smallest to the largest, no step larger than the one over the
+  // corner junctions at 85-86%, and none back.
+  for (const [board, largest] of [[3, 52], [5, 52], [7, boardRanges(7)[2][1]], [9, boardRanges(9)[2][1]]]) {
+   let last = boardRadius(.45, board).radius;
+   for (let percent = 46; percent <= 100; percent++) {
+    const { radius } = boardRadius(percent / 100, board);
+    expect(radius - last, `${board} ${percent}`).toBeGreaterThanOrEqual(0);
+    expect(radius - last, `${board} ${percent}`).toBeLessThanOrEqual(2 * .4 + 1e-9);
+    last = radius;
+   }
+   expect(last, `${board}`).toBe(largest);
   }
-  expect(last).toBe(52);
+ });
+ it('lays the circle on the strips the visitor chooses, every square equal', () => {
+  const state = { ...defaults, mode: 'figure' as const, style: 'board' as const };
+  expect([3, 4, 7, 9, 11].map(board => stripCount({ ...state, board }))).toEqual([3, 3, 7, 9, 9]);
+  expect(stripCount(state)).toBeUndefined();
+  for (const board of [3, 7, 9]) {
+   const { design, hardToCut, scale } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', board });
+   expect(design.gridSize, `${board}`).toEqual({ x: board, y: board });
+   expect(hardToCut, `${board}`).toBeUndefined();
+   expect(scale, `${board}`).toBeUndefined();
+   // Every cut leaves the paper edge along a line of the board.
+   const rect = inferOverlapRect(design.fingers, design.gridSize);
+   const square = ({ x, y }: { x: number; y: number }) => [(x - rect.left) / rect.width * board, (y - rect.top) / rect.height * board];
+   const lines = new Set<number>();
+   for (const { segments } of design.fingers.filter(f => f.id.includes('cut')))
+    for (const { p0, p3 } of [segments[0], segments[segments.length - 1]]) {
+     const [a, b] = [square(p0), square(p3)], axis = Math.abs(a[0] - b[0]) < 1e-6 ? 0 : 1;
+     expect(Math.abs(a[axis] - b[axis]), `${board}`).toBeLessThan(1e-6);
+     expect(Math.abs(a[axis] - Math.round(a[axis])), `${board}`).toBeLessThan(1e-6);
+     lines.add(Math.round(a[axis]) + 10 * axis);
+    }
+   expect(lines.size, `${board}`).toBe(2 * (board - 1));
+  }
  });
  slow('keeps the circle the size asks for with much space around the motif, the motif smaller', () => {
   // Space decides how much of the circle the motif fills, not whether it can
@@ -614,8 +639,9 @@ describe('frames from real hearts', () => {
    expect(geometryKey({ ...state, style, spacing: 9 }) !== key, style).toBe(spacing);
    expect(frameGap({ ...state, style, spacing: 9 }), style).toBe(spacing ? 9 : undefined);
    // The frames on a board have a number of strips to choose: the figure in
-   // the checks its own, the small motifs and equal squares the visitor's.
-   const field = style === 'strips' ? 'strips' : 'board', board = ['strips', 'motifs', 'squares'].includes(style);
+   // the checks its own, the small motifs, equal squares and the circle on
+   // them the visitor's.
+   const field = style === 'strips' ? 'strips' : 'board', board = ['strips', 'motifs', 'squares', 'board'].includes(style);
    expect(geometryKey({ ...state, style, [field]: 5 }) !== key, style).toBe(board);
    expect(stripCount({ ...state, style, [field]: 5 }), style).toBe(board ? 5 : undefined);
   }

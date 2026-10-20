@@ -9,7 +9,7 @@
  * Frames without a picture here return none.
  */
 import type { GeneratorRequest } from './generate';
-import { arc, frameRing, outerFrame, ray, uprightToSheet, BOARD_RADII, FITTED, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
+import { arc, boardRanges, frameRing, outerFrame, ray, uprightToSheet, FITTED, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
 import { fillSquare, fitCircle } from './frameFit';
 import { fittedPicture } from './fitted';
 import { normalizeContours } from './contours';
@@ -71,7 +71,7 @@ export function picture(request: GeneratorRequest, known: Known = {}): Picture |
 		if (request.mode === 'figure' && request.style === 'sunburst' && (known.board ?? 5) === 5) return sunburstPicture(request);
 		if (request.mode === 'figure' && request.style === 'layers' && (known.board ?? 7) === 7) return layersPicture(request);
 		if (request.mode === 'figure' && request.style === 'corners' && (known.board ?? 6) === 6) return cornersPicture(request);
-		if (request.mode === 'figure' && request.style === 'board') return boardPicture(request, known.circle, known.enclosed);
+		if (request.mode === 'figure' && request.style === 'board') return boardPicture(request, known.circle, known.enclosed, known.board);
 		if (request.mode === 'figure' && (request.style === 'wedges' || request.style === 'fitted' || request.style === 'silhouette') && request.contours?.length
 			&& (known.board ?? (request.style === 'fitted' ? 5 : 3)) === (request.style === 'fitted' ? 5 : 3)) {
 			// The open frames' legs, as their first construction draws them, on
@@ -205,19 +205,23 @@ function cornersPicture(request: GeneratorRequest): Picture | undefined {
 	return { rings };
 }
 
-/** The circle on a regular board of five strips: the board's checks, cleared
- * inside the circle, and the motif filling the circle up to the space asked
- * for (see `generate`). Above 70% the circle reaches into the outer ring of
- * squares, its checks woven the other way round. A motif that one of the two
+/** The circle on a regular board of five strips, or those the visitor chose
+ * (see `boardRanges`): the board's checks, cleared inside the circle, and the
+ * motif filling the circle up to the space asked for (see `generate`). Above
+ * 70% the circle reaches into the next ring of squares, its checks woven the
+ * other way round. A motif that one of the two
  * constructions cannot build keeps the other's nearest circle whatever its
  * size, as `circle` says once a heart of it has reported a size it kept. */
-function boardPicture(request: GeneratorRequest, circle?: 'small' | 'large', enclosed = true): Picture | undefined {
+function boardPicture(request: GeneratorRequest, circle?: 'small' | 'large', enclosed = true, board?: number): Picture | undefined {
 	const contours = normalizeContours(request.contours ?? []);
 	if (!contours.length) return;
-	let { radius } = boardRadius(request.scale ?? .7);
-	const [small, large] = BOARD_RADII;
-	if (radius > small[1] && circle === 'small') radius = small[1];
-	if (radius <= small[1] && circle === 'large') radius = large[0] + .6;
+	// The strips its heart was made on, where one was, else those asked for.
+	const strips = board ?? request.board ?? 5, [small, large] = boardRanges(strips);
+	let { radius } = boardRadius(request.scale ?? .7, strips);
+	if (large && radius > small[1] && circle === 'small') radius = small[1];
+	if (large && radius <= small[1] && circle === 'large') radius = large[0] + .6;
+	// The circle takes the colour of the middle squares around it while the
+	// motif is whole, the other once it is divided (on every odd board).
 	const outer = radius > small[1] ? 1 : 0;
 	const xs = contours.flat().map(p => p[0]), ys = contours.flat().map(p => p[1]);
 	let cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
@@ -225,11 +229,11 @@ function boardPicture(request: GeneratorRequest, circle?: 'small' | 'large', enc
 	let reach = Math.max(...contours.flat().map(([x, y]) => Math.hypot(x - cx, y - cy))) / box;
 	// Over the corner squares the motif moves towards its smallest enclosing
 	// circle's centre, where it cuts cleanly so (see `generate`).
-	if (radius > large[1] && enclosed) ({ centre: [cx, cy], reach } = boardPlacement(contours, enclosedAlong(request.scale ?? .7)));
+	if (large && radius > large[1] && enclosed) ({ centre: [cx, cy], reach } = boardPlacement(contours, enclosedAlong(request.scale ?? .7)));
 	const scale = (Math.min(radius, 50) - Math.max(request.gap ?? 3, 1.5)) / reach / box;
-	const disc = frameRing('circle', 2 * radius), side = 20, rings: Ring[] = [];
-	for (let i = 0; i < 5; i++)
-		for (let j = 0; j < 5; j++) {
+	const disc = frameRing('circle', 2 * radius), side = 100 / strips, rings: Ring[] = [];
+	for (let i = 0; i < strips; i++)
+		for (let j = 0; j < strips; j++) {
 			if ((i + j + outer) % 2) continue;
 			const square: Ring = [[i * side, j * side], [(i + 1) * side, j * side], [(i + 1) * side, (j + 1) * side], [i * side, (j + 1) * side]];
 			rings.push(square);

@@ -1,5 +1,27 @@
 # Generator robustness results
 
+## Strips for the circle on equal squares
+
+Product request (2026-10-20): "you should be able to choose the number of
+squares for this frame too". The circle on equal squares now takes 3×3, 5×5
+(its own), 7×7 or 9×9 (`BOARD_STRIPS.board`). Its constructions hold on any odd
+board, scaled to its squares (`boardRanges`): the undivided motif while it meets
+one line of each sheet a side, four panels while it meets two, the corner
+squares overlapped past the junctions of the second; the circle takes the middle
+squares' colour while the motif is whole and the other once it is divided, on
+every odd board. On three, one line a side, the motif stays whole all the way
+out past the paper's edges (radius 28.6 to 52); on seven and nine the circle
+stops where a third line would need panels of its own (36.0, 27.9). Over the
+corpus and the deer, at 70% / 100%: 3×3 47 clean, 1 hard, 4 refused (at 70%,
+tb-stars and tb-gift, which must be divided, shown on 5×5); 7×7 45, 3, 4 at both;
+9×9 44, 4, 4 / 45, 3, 4. The radius grows without a step larger than 0.8 on
+every board (tested; just past the touching circle it now steps up to the first
+radius clear of the corners there rather than back to the touching circle, as
+on 7×7 and 9×9 71% fell between). Not matched yet: the picture of a motif that
+fits nowhere at its size and is shrunk to fit (the Tabler flower on 3×3, 19% of
+the square off until its heart is shown). 5×5 is unchanged, bit for bit (the
+corpus and the deer at 60, 70, 80 and 85%).
+
 ## The circle on equal squares growing smoothly to the edges
 
 Product reports (2026-10-20): "From 85% to 86% there's a little jerk as the deer

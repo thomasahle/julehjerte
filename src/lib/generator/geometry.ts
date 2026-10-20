@@ -1622,21 +1622,35 @@ export function openLeg(gate: Point, corner: Point, axis: 0 | 1, taper: number):
 	return end;
 }
 
-/** The radii a circle on the regular five-strip board can take. From five
- * units outside the centre square's corners up to the radius through the
- * eight inner corners of the outer ring of squares, where it just touches that
- * ring, the motif meets the two middle lines of each sheet as a letter in the
- * circle frame; the outer lines cross the paper whole, or, once the circle
- * reaches them, follow it (see `boardLegs`). From there out to the junctions
- * at the ring's own corners the circle meets every line, and the motif, divided
- * into four panels, meets all their ends. Past those junctions, the circle
- * overlaps the ring's corner squares, of its own colour, and the same panels
- * meet the same ends (see `overlapGates`), out past the paper's edges, which
- * cut it off (see `boardRing`). */
-export const BOARD_RADII: readonly (readonly [number, number])[] = [
-	[Math.hypot(10, 10) + 5, Math.hypot(30, 10)], [Math.hypot(30, 10), Math.hypot(30, 30) - .4],
-	[Math.hypot(30, 30) + .4, 52]
-];
+/** The radii a circle on a regular board of `strips` strips (odd) can take,
+ * in the ranges of its constructions. Its lines lie `d` = 0.5, 1.5, … squares
+ * from the centre. From five units outside the centre square's corners up to
+ * the radius through the inner corners of the next ring of squares, where it
+ * just touches that ring, the motif meets the two middle lines of each sheet
+ * as a letter in the circle frame; the lines further out cross the paper
+ * whole, or, once the circle reaches them, follow it (see `boardLegs`). From
+ * there out to the junctions at that ring's own corners the circle meets two
+ * lines of each sheet on each side, and the motif, divided into four panels,
+ * meets all their ends. Past those junctions, the circle overlaps the ring's
+ * corner squares, of its own colour, and the same panels meet the same ends
+ * (see `overlapGates`), until the next lines out would need panels of their
+ * own: on five strips out past the paper's edges, which cut it off (see
+ * `boardRing`). On three, whose one line a side the motif meets whole however
+ * large the circle, there is one range, out past the paper's edges too. */
+export function boardRanges(strips: number): readonly (readonly [number, number])[] {
+	// One set per board, so a range found for a radius is the board's own.
+	const known = rangesByStrips.get(strips);
+	if (known) return known;
+	const d = Array.from({ length: (strips - 1) / 2 }, (_, k) => (100 / strips) * (k + .5));
+	const ranges: (readonly [number, number])[] = d.length < 2 ? [[Math.hypot(d[0], d[0]) + 5, 52]]
+		: [[Math.hypot(d[0], d[0]) + 5, Math.hypot(d[1], d[0])], [Math.hypot(d[1], d[0]), Math.hypot(d[1], d[1]) - .4],
+			[Math.hypot(d[1], d[1]) + .4, d.length > 2 ? Math.hypot(d[2], d[0]) - .4 : 52]];
+	rangesByStrips.set(strips, ranges);
+	return ranges;
+}
+const rangesByStrips = new Map<number, readonly (readonly [number, number])[]>();
+/** The radii on the board of five strips, the frame's own (see `boardRanges`). */
+export const BOARD_RADII: readonly (readonly [number, number])[] = boardRanges(5);
 
 /** A circle on the regular board of `strips` strips, with the board's
  * junctions that lie on it as exact corners: a circle through junctions (one

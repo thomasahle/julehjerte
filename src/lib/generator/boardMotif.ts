@@ -4,7 +4,7 @@
  * generator and the pictures drawn before the cuts (see `picture`).
  */
 import type { GeneratorRequest } from './generate';
-import { BOARD_RADII, type Point, type Ring } from './geometry';
+import { boardRanges, type Point, type Ring } from './geometry';
 import { checkeredLayouts } from './checkeredGrid';
 
 /** The motif in place of a letter: repeated on the checkerboard by the small
@@ -12,14 +12,16 @@ import { checkeredLayouts } from './checkeredGrid';
 export const MOTIF = '*';
 
 /** The strips per side the visitor can choose for each frame on a board, and
- * the one it starts at: the figure in the checks, the small motifs, and the
- * equal squares, whose motif lies in the centre square of an odd number. The
- * small motifs and equal squares choose for themselves until the visitor does
- * (see `motifChoices`, `squareChoices`). */
+ * the one it starts at: the figure in the checks, the small motifs, the equal
+ * squares, whose motif lies in the centre square of an odd number, and the
+ * circle on them, about the centre square too (see `boardRanges`). The small
+ * motifs and equal squares choose for themselves until the visitor does (see
+ * `motifChoices`, `squareChoices`). */
 export const BOARD_STRIPS = {
 	strips: { min: 3, max: 6, step: 1, initial: 4 },
 	motifs: { min: 2, max: 8, step: 1, initial: 4 },
-	squares: { min: 3, max: 9, step: 2, initial: 3 }
+	squares: { min: 3, max: 9, step: 2, initial: 3 },
+	board: { min: 3, max: 9, step: 2, initial: 5 }
 } as const;
 export type BoardStyle = keyof typeof BOARD_STRIPS;
 
@@ -95,23 +97,36 @@ export function boardScale(request: GeneratorRequest): number {
 	return Math.max(.6, Math.min(1.1, (request.scale ?? .7) / .7));
 }
 
-/** The circle on a board at a size setting: smoothly from the smallest
- * radius the board allows to the largest, with the touching circle at the
- * default 70%, where the one change of construction lies, and the circle
- * reaching the outer ring's corner junctions at 85%, past which it overlaps
- * the corner squares, meeting the paper's edges by 100% (see `boardRing`). It passes the outer lines' tangent slightly beyond it,
- * and just beyond the touching circle it touches, the corners there being too
- * close to cut. `range` is the construction's: up to the touching circle,
- * reaching into the outer ring, or past its corners. */
-export function boardRadius(scale: number) {
-	const [small, large, past] = BOARD_RADII, setting = Math.max(.45, Math.min(1, scale));
+/** The circle on a board of `strips` strips (odd, five by default) at a size
+ * setting: smoothly from the smallest radius the board allows to the
+ * largest, with the touching circle at the default 70%, where the one change
+ * of construction lies, and the circle reaching the next ring's corner
+ * junctions at 85%, past which it overlaps the corner squares (see
+ * `boardRanges`); on three strips one construction all the way. It passes a
+ * line's tangent slightly beyond it, and steps a little further beyond the
+ * touching circle, the corners just past it being too close to cut. `range`
+ * is the construction's. */
+export function boardRadius(scale: number, strips = 5) {
+	const ranges = boardRanges(strips), setting = Math.max(.45, Math.min(1, scale));
+	const lines = Array.from({ length: (strips - 1) / 2 }, (_, k) => (100 / strips) * (k + .5));
+	const [small, large, past] = ranges;
 	// Past the junctions from 86%, the step over them no larger than one.
-	let radius = setting <= .7 ? small[0] + (setting - .45) / .25 * (small[1] - small[0])
-		: setting <= .85 ? large[0] + (setting - .7) / .15 * (large[1] - large[0])
-			: past[0] + Math.max(0, setting - .86) / .14 * (past[1] - past[0]);
-	if (Math.abs(radius - 30) < .1) radius = 30.1;
-	if (radius > large[0] && radius < large[0] + .6) radius = large[0];
-	return { radius, range: radius <= small[1] ? small : radius <= large[1] ? large : past };
+	let radius = !large ? small[0] + (setting - .45) / .55 * (small[1] - small[0])
+		: setting <= .7 ? small[0] + (setting - .45) / .25 * (small[1] - small[0])
+			: setting <= .85 ? large[0] + (setting - .7) / .15 * (large[1] - large[0])
+				: past[0] + Math.max(0, setting - .86) / .14 * (past[1] - past[0]);
+	for (const line of lines) if (Math.abs(radius - line) < .1) radius = line + .1;
+	if (large && radius > large[0] && radius < large[0] + .6) radius = large[0] + .6;
+	return { radius, range: !large || radius <= small[1] ? small : radius <= large[1] ? large : past };
+}
+
+/** The size setting a circle's radius on `strips` strips stands for, up to
+ * the junctions: where a motif keeps another construction's circle. */
+export function boardSetting(radius: number, strips = 5): number {
+	const [small, large] = boardRanges(strips);
+	return !large ? .45 + (radius - small[0]) / (small[1] - small[0]) * .55
+		: radius <= small[1] ? .45 + (radius - small[0]) / (small[1] - small[0]) * .25
+			: .7 + (radius - large[0]) / (large[1] - large[0]) * .15;
 }
 
 /** The smallest circle around the points: around their convex hull, built

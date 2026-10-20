@@ -767,7 +767,12 @@ square's diagonal wide, so a wide motif is smaller. A motif whose sides cannot m
 beside it (the gift: no four-port construction) has only three strips, which the page then says;
 cells fitted to the motif are the last resort, rather than refusing. **The circle on equal squares** (Cirkel · Lige
 store tern) adds a layer, like the gallery's santa heart (whose lines are not evenly spaced): a
-regular 5×5 board with a circle around the motif. The size setting sizes the circle smoothly and
+regular board with a circle around the motif, of 5×5 squares unless the visitor chooses 3×3, 7×7
+or 9×9 (`boardRanges`): what follows holds on each, its radii scaled to its squares. On three
+strips, one line a side, the motif is never divided and the circle grows out past the paper's
+edges; on seven and nine, the circle stops where the lines further out would need panels of
+their own (radius 36 and 28). A motif that cannot be built at all on the board chosen (on three,
+one that must be divided) is shown on five, as the page then says. The size setting sizes the circle smoothly and
 the motif fills it up to the space asked for, so both only grow with the setting (tested): from
 five units clear of the centre square's corners (radius 19) to the circle that touches the outer
 ring of squares at their eight inner corners (31.6) at the default 70%, then on into that ring
