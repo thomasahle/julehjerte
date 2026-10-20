@@ -280,7 +280,7 @@
 	let lastEscherTile: PatternTile | null = null;
 	/** The tile behind each set of overrides the Escher tab derived: the heart's once Tegn applies them. */
 	const tileOfOverrides = new WeakMap<Map<string, Finger>, PatternTile>();
-	/** A drag in the Escher tab that the tile answers: on a point it places, or on a cut or an edge (see `TileDrag`). */
+	/** A drag in the Escher tab that the tile answers: on a point it places, or on an edge of the square (see `TileDrag`). */
 	let tileDrag: TileDrag | null = null;
 	/**
 	 * The Escher tab's code ($lib/pattern/escherTab) and its contents (EscherPanel), loaded the first
@@ -2721,30 +2721,15 @@
 
 	/**
 	 * A drag on a cut or an edge of the square, from `p`: it moves the cut, or pulls a new cut in from
-	 * the edge, and in the Escher tab moves the whole pattern instead, which keeps its cuts and strips
-	 * (see `escher.startPanDrag`).
+	 * the edge. In the Escher tab an edge moves the whole pattern instead, which keeps its cuts and
+	 * strips (see `escher.startPanDrag`), and a cut is only chosen: its points are what shape it.
 	 */
 	function beginPathDrag(e: PointerEvent, fingerId: string, p: Vec) {
-		const cut = getEditableFingerById(fingerId);
-		if (patternTile && escher) tileDrag = escher.startPanDrag(patternTile, p, cut ? cut.lobe : null);
-		beginDrag(e, { kind: 'path', fingerId });
-	}
-
-	/** The inner cut of `lobe` nearest `p`, or null. */
-	function cutNearest(lobe: LobeId, p: Vec): string | null {
-		let best: string | null = null;
-		let bestD = Infinity;
-		for (const f of fingers) {
-			if (f.lobe !== lobe || !getEditableFingerById(f.id)) continue;
-			for (const seg of fingerToSegments(f)) {
-				const d = closestPointOnBezier(seg, p).distance;
-				if (d < bestD) {
-					bestD = d;
-					best = f.id;
-				}
-			}
+		if (patternTile && escher) {
+			if (getEditableFingerById(fingerId)) return;
+			tileDrag = escher.startPanDrag(patternTile, p);
 		}
-		return best;
+		beginDrag(e, { kind: 'path', fingerId });
 	}
 
 	/**
@@ -2846,9 +2831,9 @@
 		if (!p) return;
 
 		if (tileDrag && escher) {
-			// The tiles lean, or the whole pattern moves, so that the dragged point, cut or edge follows
-			// the pointer; or the curve the edge cuts is reshaped so that the cut's end slides with it.
-			// The cuts are made again.
+			// The tiles change, or the whole pattern moves, so that the dragged point or edge follows the
+			// pointer; or the curve the edge cuts is reshaped so that the cut's end slides with it. The
+			// cuts are made again.
 			const rect = getOverlapRect();
 			const delta = vecSub(p, tileDrag.start);
 			const next = escher.dragTile(tileDrag, delta, rect);
@@ -2881,9 +2866,7 @@
 				if (at) selectedFingerId = at.fingerId;
 				selectedAnchors = at ? [at.anchor] : [];
 			} else if (tileDrag.mode === 'pan') {
-				// A cut dragged stays selected under the pointer, whichever line of the pattern is there
-				// now; its nodes are other nodes. An edge stays the edge.
-				if (tileDrag.lobe) selectedFingerId = cutNearest(tileDrag.lobe, p);
+				// The edge dragged stays selected.
 				selectedAnchors = [];
 				selectedSegments = [];
 			} else {

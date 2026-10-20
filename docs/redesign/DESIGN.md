@@ -599,17 +599,18 @@ another type keeps the curves it reads the same way, if the heart they make with
 starts afresh if not; a size the pattern is too tight for is refused, with a line above the heart. Every type
 starts from one bent curve on each side it reads (half of one for an S or an arch) and nothing more, because the
 visitor does the designing and adds the nodes they want; nothing else is drawn on the heart, and nothing moves
-on its own. Points the tile places itself are drawn dark — its crossings, the middles of its S sides, the
+on its own. A cut's points show when it is clicked, as in the Normal tab, and the hints say so first. Points the tile places itself are drawn dark — its crossings, the middles of its S sides, the
 ends of cuts on corners or on straight sides — and dragging one sizes, stretches and turns every tile so that
 the point follows the pointer, about the crossing of its line nearest the middle of the heart (two stretches or
 more from the point). Along its cut the tiles grow longer or shorter that way, or bigger or smaller both ways
 where the type's motions keep its cells square or rhombic (`latticeOf`: a mirror in a side keeps the cells
 rectangular, a mirror in a diagonal rhombic, a quarter turn square); across it they turn, up to 15° (every cut
 has to run from edge to opposite edge, and turned further the lines near the corners could not), with
-between two and twelve strips a side; near the plain grid they snap back square and straight. Dragging a cut,
-or one of the square's edges, moves the whole pattern, which comes back in at the other edge without end: in
-this tab no strip is pulled in from an edge or dragged out, and nothing done in the tab takes the heart out of
-it. However the pattern is moved, sized or turned, the heart is a window onto an endless tiling: it cuts every
+between two and twelve strips a side; near the plain grid they snap back square and straight. Dragging one of
+the square's edges moves the whole pattern, which comes back in at the other edge without end: in this tab no
+strip is pulled in from an edge or dragged out, and nothing done in the tab takes the heart out of it. A cut
+pressed is only chosen, its points shown: when any cut moved the pattern, visitors dragging where they had put
+nodes on a cut not yet chosen moved the whole pattern instead. However the pattern is moved, sized or turned, the heart is a window onto an endless tiling: it cuts every
 line whose whole cut keeps 0.15 of the way to the next line (and twice the paper's clearance) from the edge, so
 narrow tiles make more strips one way than the other (6 × 3, say), and a 3 × 3 pattern moved off a whole line
 makes a 4 × 3 or 4 × 4 heart; the strip count says so. The size buttons set a tile to the size of a cell of the

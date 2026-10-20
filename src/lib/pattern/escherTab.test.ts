@@ -191,8 +191,8 @@ describe("Tegn's Escher tab", () => {
 		const at = followedPoint(drag, next, pointer, rect)!;
 		const p = tileFingers(next, rect).find((f) => f.id === at.fingerId)!.segments[at.anchor]!.p0;
 		expect(Math.hypot(p.x - pointer.x, p.y - pointer.y)).toBeLessThan(1e-6);
-		// a cut dragged moves the whole pattern, by as much
-		const moved = dragTile(startPanDrag(tile, was, 'right'), { x: 0.3 * (rect.width / 5), y: 0 }, rect)!;
+		// an edge dragged moves the whole pattern, by as much
+		const moved = dragTile(startPanDrag(tile, was), { x: 0.3 * (rect.width / 5), y: 0 }, rect)!;
 		expect(moved.pan?.x).toBeCloseTo(0.3);
 		expect(moved.shape).toBeUndefined();
 	});

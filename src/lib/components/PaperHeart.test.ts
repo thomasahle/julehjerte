@@ -81,6 +81,15 @@ function midpoint(finger: Finger): Vec {
 	return { x: (p0.x + p3.x) / 2, y: (p0.y + p3.y) / 2 };
 }
 
+/** The point `t` of the way along a cubic Bézier segment. */
+function bezierAt(seg: Finger['segments'][number], t: number): Vec {
+	const u = 1 - t;
+	return {
+		x: u * u * u * seg.p0.x + 3 * u * u * t * seg.p1.x + 3 * u * t * t * seg.p2.x + t * t * t * seg.p3.x,
+		y: u * u * u * seg.p0.y + 3 * u * u * t * seg.p1.y + 3 * u * t * t * seg.p2.y + t * t * t * seg.p3.y
+	};
+}
+
 const edges = [
 	{ id: 'L-0', delta: { x: 0, y: 25 }, cut: 'L-1', grid: { x: 3, y: 4 } },
 	{ id: 'L-3', delta: { x: 0, y: -25 }, cut: 'L-3', grid: { x: 3, y: 4 } },
@@ -164,7 +173,7 @@ describe('the Escher tab', () => {
 		expect(snapBox(h)).toBe(true);
 	});
 
-	it.each(['L-0', 'R-4', 'L-2', 'R-1'])('moves the whole pattern when %s is dragged: no strip added or cut moved alone, and the type kept', async (id) => {
+	it.each(['L-0', 'R-4', 'L-4', 'R-0'])('moves the whole pattern when the edge %s is dragged: no strip added, and the type kept', async (id) => {
 		const tile = { ...knobTile(opposite('move', 'move')), cuts: 3 };
 		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
 		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
@@ -174,11 +183,26 @@ describe('the Escher tab', () => {
 		send(h.svg, 'pointermove', { x: from.x + delta.x / 2, y: from.y + delta.y / 2 });
 		send(h.svg, 'pointermove', { x: from.x + delta.x, y: from.y + delta.y });
 		send(h.svg, 'pointerup', { x: from.x + delta.x, y: from.y + delta.y });
-		const moved = dragTile(startPanDrag(tile, from, null), delta, getCenteredRectParams({ x: 4, y: 4 }))!;
+		const moved = dragTile(startPanDrag(tile, from), delta, getCenteredRectParams({ x: 4, y: 4 }))!;
 		expect(moved.pan).toBeDefined();
 		expect(cutsOf(h.fingers)).toBe(cutsOf(tileFingers(moved)));
 		expect(h.gridSize).toEqual(tileGrid(moved));
 		expect(chosenType(h)).toBe('Moved');
+	});
+
+	it.each(['L-2', 'R-1'])('only chooses the cut %s when it is pressed: its points show, and dragging it moves nothing', async (id) => {
+		const tile = { ...knobTile(opposite('move', 'move')), cuts: 3 };
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
+		const opened = JSON.stringify(h.fingers);
+		const from = bezierAt(h.fingers.find((f) => f.id === id)!.segments[1]!, 0.5);
+		send(h.path(id), 'pointerdown', from);
+		expect(h.handles().length).toBeGreaterThan(0);
+		send(h.svg, 'pointermove', { x: from.x + 15, y: from.y - 6 });
+		send(h.svg, 'pointermove', { x: from.x + 30, y: from.y - 12 });
+		send(h.svg, 'pointerup', { x: from.x + 30, y: from.y - 12 });
+		expect(JSON.stringify(h.fingers)).toBe(opened);
+		expect(h.button('Undo').disabled).toBe(true);
 	});
 
 	it('stretches the tiles when a black point is dragged along its cut, and the heart gets more strips that way', async () => {
@@ -225,12 +249,7 @@ describe('the Escher tab', () => {
 		expect(counts()).toEqual(['L-1:5', 'L-2:5', 'L-3:5', 'L-4:5', 'R-1:5', 'R-2:5', 'R-3:5', 'R-4:5']);
 		// a point on the bent curve of L-2's second stretch
 		const seg = h.fingers.find((f) => f.id === 'L-2')!.segments[1]!;
-		const t = 0.55;
-		const u = 1 - t;
-		const at = {
-			x: u * u * u * seg.p0.x + 3 * u * u * t * seg.p1.x + 3 * u * t * t * seg.p2.x + t * t * t * seg.p3.x,
-			y: u * u * u * seg.p0.y + 3 * u * u * t * seg.p1.y + 3 * u * t * t * seg.p2.y + t * t * t * seg.p3.y
-		};
+		const at = bezierAt(seg, 0.55);
 		send(h.path('L-2'), 'pointerdown', at);
 		send(h.svg, 'pointerup', at);
 		// the first click selected the cut and showed its handles; the second lands on one
