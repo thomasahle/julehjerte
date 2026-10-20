@@ -1065,14 +1065,75 @@ This remains an offline candidate. The next learning change should train
 consistent responses to both label phases and include printed-paper examples
 whose targets retain physical sheet boundaries.
 
+### Training with printed paper and exchanged mask labels
+
+The [matched continuation experiment](junction-augmentation-results.json)
+trains four terminal models from the same existing MobileNetV3 checkpoint.
+Every arm receives the same 128 updates, original-view draws and reflections.
+Two factors vary: printed-paper inputs and binary mask-label exchange. All
+weights remain trainable; BatchNorm running statistics stay frozen for the
+two-image batches. There is no checkpoint or threshold selection from results.
+The [training](junction-augmentation-training-plan.json) and
+[evaluation](junction-augmentation-evaluation-plan.json) protocols were fixed
+before their respective runs.
+
+Preparation admits **75 printed variants from 25 actual training designs** and
+excludes 21 variants from seven development designs. All 25 original RGB/mask
+controls replay pixel-exactly. Printed inputs use the unchanged classifier,
+including cases where it follows ink instead of paper. Graph targets, camera
+transforms and valid regions retain their original labels.
+
+| Model, original mask phase | Lattice corner F1 | Channel corner F1 | Frame corner F1 |
+| --- | ---: | ---: | ---: |
+| Original checkpoint | 70.75% | 82.05% | 87.95% |
+| Plain continuation | 70.66% | 90.02% | 91.28% |
+| Label exchange | 71.16% | 90.74% | 89.90% |
+| Printed paper | 71.60% | 90.63% | 91.15% |
+| Both | 70.78% | 87.23% | 87.32% |
+
+Continuing training under this setup already provides much of the gain.
+Printed-only training improves three-pixel boundary F1 over the matched plain
+control on all three groups: **96.86/94.19/97.71%**, versus
+**96.55/92.08/97.00%**. It is not uniformly better: lattice boundary F1 remains
+below the original 97.64%, and complete raw-corner coverage changes from
+23/113/81 for plain continuation to 21/109/79 for printed training.
+These are localization results on the existing 308-view cohort, not template
+success rates or new generalization holdouts.
+
+Exact field replays distinguish two regression mechanisms. In
+`channel-763501-v2`, the combined model keeps local peaks within 1.6 pixels of
+both true corners but reduces their scores to **0.3696 and 0.2334**, below the
+fixed 0.4 threshold. Other selected losses shift a peak just outside the
+three-pixel matching radius. Conversely, printed training recovers two faint
+corners in `channel-832113-v1` that plain continuation misses. No crop or label
+changed. A separately calibrated operating point could differ; this experiment
+does not retune thresholds after observing these results.
+
+All six synthetic comparison pages and all eleven real-photo pages were
+inspected. Printed training suppresses some proposals on dots and floral ink,
+but lettering and printed trees still produce false boundaries/corners.
+Smooth petals, crescents and animal silhouettes retain excessive proposals;
+some intended fine details also lose proposals. Label-exchange training raises
+real cross-phase agreement from 83.85% to **87.16%**, which is consistency,
+not labelled accuracy. All six unresolved crops remain in the 32-photo cohort.
+
+Independent maximum-flow matching verifies **7,392 synthetic corner assignments**
+and 208 real phase comparisons; every synthetic reference array is unchanged.
+All four checkpoints preserve their 99 BatchNorm buffers and the exact sample
+schedule. Training takes 234.6 seconds and evaluation 263.6 seconds on one
+low-priority CPU thread; preparation, checkpoints and evaluation together add
+about 46 MiB. All candidates remain offline. Next steps are testing transfer on
+the excluded printed variants, teaching sparse corners on smooth silhouettes,
+and measuring proposals through actual graph/template reconstruction.
+
 ### Latest solver and browser validation
 
-Main `540ba8f9`, including the border-fragment repair, generator work and the
-real-photo corner study, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39418918283)
+Main `fb38b1c3`, including the border-fragment repair, generator work and the
+offline augmentation experiment tools, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39424652316)
 on 20 October. This includes type checking, lint, application tests, build and
 all four inverse correctness shards. Timed quality benchmarks retain their
 separate advisory policy; a green workflow does not mean every timing target
-was met. The preceding `6e882325` and `ad9923c4` runs also passed. The residual
+was met. The preceding `b13a0109` and `540ba8f9` runs also passed. The residual
 material-classifier, confidence and scheduling experiments above remain offline.
 
 The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and
