@@ -5290,7 +5290,40 @@
     "priorPairedRadialScoresRecomputed": 512,
     "allEditableExportsAttempted": 52,
     "editableConversionFailures": 1,
-    "failedConversionAlreadyEngineRejected": true
+    "failedConversionAlreadyEngineRejected": true,
+    "applicationQA": {
+      "results": {
+        "path": "tmp/heart-learning/context-residual-training-app-qa-v1/results.json",
+        "sha256": "eb3986273f8957b224e39332fe37dfa3ebeb619779edfac16346dbd79754cc02"
+      },
+      "applicationSourceCommit": "c21c378e",
+      "typeCheckPassed": true,
+      "lintPassed": true,
+      "applicationTestsPassed": 2401,
+      "applicationTestsSkipped": 195,
+      "applicationTestFilesPassed": 159,
+      "buildPassed": true,
+      "scope": "Before merging main 111f338a; subsequent changes are confined to generator frames/generate plus documentation and receive focused replay."
+    },
+    "inverseCorrectnessReuse": {
+      "run": "https://github.com/thomasahle/julehjerte/actions/runs/39404472779",
+      "commit": "832349e47131f09e288b79b55b852830c0a7e418",
+      "allFourCorrectnessShardsPassed": true,
+      "workflowConclusion": "cancelled by subsequent main push while advisory benchmarks were running",
+      "runtimeTreeSha": "8b7c1d65463bb08e8a9929d333b967f58d4a3a60",
+      "scope": "No inverse runtime or correctness-test source changes in this study; learning changes are checked separately."
+    },
+    "mergedGeneratorQA": {
+      "mainCommit": "111f338a3d005bdbc6e0879cbef657099e45fbb5",
+      "mergeCommit": "003dd423516892861607863bf3699ae0d708be7d",
+      "focusedTestsPassed": 65,
+      "focusedTestsSkipped": 16,
+      "log": {
+        "path": "tmp/heart-learning/context-residual-training-merged-frames.log",
+        "sha256": "38ebed8cdfe9a8dcbad4f5ed4d475141701398fc437f28dd721d9a0848a7d7dc"
+      },
+      "scope": "Upstream changes are generate.ts, frames.test.ts and two documents; all focused frame tests pass after merge."
+    }
   },
   "resources": {
     "workers": 1,

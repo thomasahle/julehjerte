@@ -836,7 +836,9 @@ changes affect feature ranking, while keeping the final fidelity and paper
 checks intact. Better material supervision is still needed for printed paper;
 repeating training on the same narrow synthetic set is not sufficient evidence
 for release. No production model, solver rule or acceptance threshold changes
-in this study.
+in this study. All **216 learning tests** and **2,401 application tests** pass,
+as do type checking, lint and the production build. After merging the next
+upstream generator change, all **65 focused frame tests** also pass.
 
 ### Latest solver and browser validation
 
