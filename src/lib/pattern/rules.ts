@@ -419,13 +419,15 @@ function motionGroup(rule: TileRule): Set<string> {
 }
 
 /**
- * How far a rule's tiling repeats along each axis, in cells: the shortest moves
- * straight along x and along y its motions make. One, two or four: every tiling
- * of squares here repeats within four.
+ * How far a rule's tiling repeats along each axis, in cells, colours and all: the
+ * shortest moves straight along x and along y its motions make that take every
+ * tile onto one of its own colour. Two or four: a move of one cell takes the
+ * tiling onto itself where the white tile is the red one moved, but swaps the
+ * colours, and every tiling of squares here repeats within four.
  */
 export function ruleRepeat(rule: TileRule): Vec {
 	const group = motionGroup(rule);
-	const along = (dx: number, dy: number) => [1, 2].find((k) => group.has(motionKey(shift(dx * k, dy * k)))) ?? 4;
+	const along = (dx: number, dy: number) => (group.has(motionKey(shift(2 * dx, 2 * dy))) ? 2 : 4);
 	return { x: along(1, 0), y: along(0, 1) };
 }
 

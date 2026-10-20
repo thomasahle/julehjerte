@@ -4,7 +4,7 @@ import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIs
 import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
 import { splitBezierAt } from '$lib/geometry/bezierSegments';
 import { ALL_RULES, freeSides, halfOf, latticeOf, neighbours, opposite, ruleRepeat, ruleInfo, ruleKey, stretchSource, type CurveKey, type TileRule } from './rules';
-import { cellsToRaw, crossing, cutCounts, firstLine, fitLines, patternCuts, patternToDesign, sourceCurve, straightCurve, tileShape, type PatternTile, type SideCurve } from './tiling';
+import { cellsToRaw, crossing, cutCounts, firstLine, fitLines, patternCuts, patternToDesign, rawToCells, sourceCurve, straightCurve, tileShape, type PatternTile, type SideCurve } from './tiling';
 import { ruleStart } from './starts';
 import { EXAMPLES, exampleTile, knobTile } from './examples';
 import {
@@ -585,6 +585,30 @@ describe('a pattern moved within the heart', () => {
 			expect(grew, 'a strip more somewhere').toBe(true);
 		}
 	);
+
+	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))('keeps every tile of the %s pattern its colour, however far the pattern is moved', (_key, rule) => {
+		const rect = getCenteredRectParams({ x: 5, y: 5 });
+		const cell = rect.width / 5;
+		// The drawn tiles show the right lobe's colour (`weaveParityOf`): a tile is red where the cell it
+		// lies in, of the tiling, has an even index sum.
+		const red = (tile: PatternTile, q: Vec) => {
+			const c = rawToCells(tile, q);
+			return (((Math.floor(c.x) + Math.floor(c.y)) % 2) + 2) % 2 === 0;
+		};
+		for (const way of [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: -1 }]) {
+			let tile = ruleStart(rule, 4);
+			// the middle of a tile near the middle of the heart, carried along with the pattern, a tenth
+			// of a cell at a time, three cells on
+			let at = cellsToRaw(tile, { x: 2.5, y: 2.5 });
+			const was = red(tile, at);
+			for (let step = 1; step <= 30; step++) {
+				const d = { x: way.x * 0.1 * cell, y: way.y * 0.1 * cell };
+				tile = panBy(tile, d, rect);
+				at = { x: at.x + (d.x / rect.width) * 100, y: at.y + (d.y / rect.height) * 100 };
+				expect(red(tile, at), `${way.x}, ${way.y}: step ${step}`).toBe(was);
+			}
+		}
+	});
 
 	it('keeps an unmoved pattern as it was: n − 1 cuts each way, nearest the middle', () => {
 		for (const rule of ALL_RULES) expect(fitLines(ruleStart(rule, 4)), ruleKey(rule)).toEqual(ruleStart(rule, 4));
