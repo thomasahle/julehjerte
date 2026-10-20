@@ -40,6 +40,9 @@
  *                                    the image search results show (structured data,
  *                                    image sitemap, the heart page's thumbnail).
  *                                    Geometry in src/lib/heartImage.ts
+ *   static/og/pins/<id>.png          1000x1500 Pinterest picture of each heart with
+ *                                    its Danish name, for the /pinterest.xml feed
+ *                                    (src/lib/pinImage.ts, docs/PINTEREST.md)
  *
  * Coordinates are rounded to 1/1000 px (invisible; the symmetry and overlap checks
  * use 3-5 px tolerances) so the JSON stays small and diffs stay readable. The
@@ -239,6 +242,7 @@ try {
   const { calculateDifficulty } = await server.ssrLoadModule('/src/lib/utils/difficulty.ts');
   const { renderHeartSvgInline } = await server.ssrLoadModule('/src/lib/rendering/heartSvg.ts');
   const heartImage = await server.ssrLoadModule('/src/lib/heartImage.ts');
+  const pinImage = await server.ssrLoadModule('/src/lib/pinImage.ts');
 
   const heartsData = JSON.parse(fs.readFileSync(heartsJsonPath, 'utf8'));
   const ids = heartsData.categories.flatMap((category) => category.hearts);
@@ -379,6 +383,29 @@ try {
   console.log(
     `heart-data: ${ids.length} square heart images (${Math.round(squareBytes / ids.length / 1024)} KB each on average) -> ` +
       `${path.relative(root, squaresDir)}/ (${((performance.now() - squaresStarted) / 1000).toFixed(1)}s)`
+  );
+
+  // The Pinterest pictures, one per heart, named in Danish.
+  const pinsStarted = performance.now();
+  const pinsDir = path.join(ogDir, 'pins');
+  fs.rmSync(pinsDir, { recursive: true, force: true });
+  fs.mkdirSync(pinsDir, { recursive: true });
+  let pinBytes = 0;
+  const pinLayout = { width: pinImage.PIN_IMAGE_WIDTH, height: pinImage.PIN_IMAGE_HEIGHT, tagline: pinImage.PIN_IMAGE_TAGLINE };
+  for (const id of ids) {
+    const heart = renderHeartSvgInline(designs[id], heartImage.HEART_IMAGE_COLORS, { idPrefix: `pin-${id}` });
+    const name = designs[id].names?.da || designs[id].name; // $lib/utils/heartName for 'da'
+    const png = new Resvg(builder.pin(heart, name, pinLayout), {
+      fitTo: { mode: 'width', value: pinImage.PIN_IMAGE_WIDTH },
+      font: { loadSystemFonts: false, fontFiles, defaultFontFamily: OG_FONT_FAMILY },
+      logLevel: 'off'
+    }).render().asPng();
+    pinBytes += png.length;
+    fs.writeFileSync(path.join(root, 'static', pinImage.pinImagePath(id)), png);
+  }
+  console.log(
+    `heart-data: ${ids.length} Pinterest images (${Math.round(pinBytes / ids.length / 1024)} KB each on average) -> ` +
+      `${path.relative(root, pinsDir)}/ (${((performance.now() - pinsStarted) / 1000).toFixed(1)}s)`
   );
 } finally {
   await server.close();

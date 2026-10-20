@@ -24,6 +24,12 @@ export function socialCardBuilder(root) {
     return `<text x="${x}" y="${y}" font-family="${FONT}" font-size="${fitted}" font-weight="${weight}" fill="${fill}">${escapeXml(value)}</text>`;
   }
 
+  function centered(value, x, y, size, weight, fill, maxWidth) {
+    measure.font = `${weight} ${size}px "${FONT}"`;
+    const fitted = Math.min(size, size * maxWidth / Math.max(1, measure.measureText(value).width));
+    return `<text x="${x}" y="${y}" text-anchor="middle" font-family="${FONT}" font-size="${fitted}" font-weight="${weight}" fill="${fill}">${escapeXml(value)}</text>`;
+  }
+
   function hanging(heart, x, y, size) {
     return `<g filter="url(#card-shadow)">
       <rect x="${x + size / 2 - 6}" y="0" width="12" height="${y + size * .32}" fill="#b91313"/>
@@ -77,6 +83,29 @@ export function socialCardBuilder(root) {
         hanging(hearts[1], 1008, 58, 146),
         '<g fill="#e0b75a"><use href="#star" transform="translate(656 127) scale(.55)"/><use href="#star" transform="translate(973 287) scale(.45)"/></g>'
       ].join(''));
+    },
+    /**
+     * A heart's 1000x1500 Pinterest picture (src/lib/pinImage.ts): the heart
+     * large on the sky colour, hanging in its ribbon, over a page-coloured band
+     * with its Danish name, the tagline and the domain, centred and set large
+     * enough to read at Pinterest's ~236 px wide feed. No shadow: flat like the
+     * square pictures, and several times faster to draw.
+     */
+    pin(heart, name, { width, height, tagline }) {
+      const size = 780, left = (width - size) / 2, top = 175, band = 1040;
+      const ribbonWidth = size * .055;
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+      <rect width="${width}" height="${height}" fill="#d6e1d0"/>
+      <rect y="${band}" width="${width}" height="${height - band}" fill="#f9f9f3"/>
+      <g>
+        <rect x="${(width - ribbonWidth) / 2}" y="0" width="${ribbonWidth}" height="${top + size * .24}" fill="#b91313"/>
+        <svg x="${left}" y="${top}" width="${size}" height="${size}" viewBox="${heart.viewBox}">${heart.markup}</svg>
+      </g>
+      ${centered(name, width / 2, band + 150, 96, 700, '#1c3329', width - 140)}
+      ${centered(tagline, width / 2, band + 235, 44, 400, '#2e5041', width - 140)}
+      <rect x="${width / 2 - 40}" y="${band + 300}" width="80" height="6" rx="3" fill="#b91313"/>
+      ${centered('juleflet.dk', width / 2, band + 392, 52, 700, '#1c3329', width - 140)}
+    </svg>`;
     },
     heart(design, heart, lang) {
       const name = design.id === 'classic-3x3' ? (lang === 'da' ? 'Klassisk julehjerte' : 'Classic woven heart') : design.names?.[lang] || design.name; // the language's name, as $lib/utils/heartName resolves it
