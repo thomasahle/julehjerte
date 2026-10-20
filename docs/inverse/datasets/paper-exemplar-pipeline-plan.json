@@ -1,0 +1,79 @@
+{
+  "schema": "paper-exemplar-pipeline-plan-1",
+  "baselineCommit": "0a600a40",
+  "parent": {
+    "path": "tmp/heart-learning/paper-exemplar-v1/report.json",
+    "sha256": "1b83e7f89f84d54986e29968d26375f79ef983c277c446a7812376e52f1c555d"
+  },
+  "colour": {
+    "path": "tmp/heart-learning/paper-exemplar-colour-v1/report.json",
+    "sha256": "791dafc6f2017aa0d65a30a7fb4dc0eef375d80ee4e059fe7504cf8a95a8e572"
+  },
+  "crops": {
+    "path": "tmp/heart-learning/neural-outline-upload-replay-v1.json",
+    "sha256": "b2f3c2c1822ff67e61775f5a7b356ab033ea41268eacd48e7824084aa612552a"
+  },
+  "methods": [
+    "production",
+    "rgb-only",
+    "neutral-deviation"
+  ],
+  "expectedCases": [
+    "real-1bcc922200edde26-body-1",
+    "real-80a649a21ea938ae-body-1",
+    "real-f6e5e128449e3cb9-body-1",
+    "real-fcbcc23efea92b93-body-1",
+    "real-55704c6e2911bebc-body-1",
+    "real-24b5ed49c9411b11-body-1",
+    "real-589f606a9d9899f2-body-1",
+    "real-dfa7e4b71b43aa86-body-1",
+    "real-2b0550dd86d23b40-body-1",
+    "real-2502cdec0720f4ea-body-1",
+    "real-d3f063052599e167-body-1",
+    "real-a126ed5d62adfd92-body-1",
+    "real-5088a58018c3aa28-body-1",
+    "real-1a7cfc6be8b164b5-body-1",
+    "real-fe7fb089d1cd86b4-body-1",
+    "real-8b91ecf546833a3f-body-1",
+    "real-b5317080eec610dc-body-1",
+    "real-c7d1e0ad5050db71-body-1",
+    "real-45ad148d9ec045be-body-1",
+    "real-702942779385436c-body-1",
+    "real-03bddab9c8f384c4-body-1",
+    "real-eb60ff94dfc6e2f8-body-1",
+    "real-af21a4ef38355dfa-body-1",
+    "real-f4bd8d13fc7e68d0-body-1",
+    "real-f05cf91c134daea9-body-1",
+    "real-12f272f48ed09d51-body-1",
+    "real-28a87a8be083f16c-body-1",
+    "real-ce66f9634c2c613b-body-1",
+    "real-52e732b98f9b14f1-body-1",
+    "real-7e9f6f83ae43ec2a-body-1",
+    "real-d4f6e3c76cf08ea8-body-1",
+    "real-41b7c3e0b79f1265-body-1"
+  ],
+  "expectedCrops": 26,
+  "searchSeconds": 10,
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "numericalThreads": 1,
+    "minimumFreeGiB": 10,
+    "maximumInputMiB": 24,
+    "maximumFitMiB": 128,
+    "maximumReviewMiB": 32,
+    "noPhotoCopies": true,
+    "noDownloads": true
+  },
+  "scope": "All 32 previously inspected development photographs, with the 26 current automatic quads frozen and all six unresolved crops retained. Compare actual deployed RGB preparation against two previously fitted exposed-lobe classifiers. Reuse saved score fields, upsample scores to 320 then sigmoid, and rectify with common source coverage and resolution. No body masking, ROI correction, extra inset, reference artwork, new training or per-photo winner selection. Every available mask gets fresh production fitting on the binary-mask track (the Mal editor objective), rotating method order and allowing ten seconds of search. Retain original feature, geometry, material-core and 3% self-mask gates, independently render exports and audit editable conversion. Self-mask fidelity does not measure true design recovery; review all crops, masks and fitted weaves visually. This is development evaluation, not an untouched holdout.",
+  "questions": [
+    "Does lobe conditioning improve real masks relative to deployed whole-crop colour classification, including printed paper?",
+    "Does improved mask appearance survive full fitting without erased details, disconnected paper, or illegal cuts?",
+    "Which remaining failures are visibly due to fixed crop geometry, paper identity, or reconstruction?"
+  ],
+  "stopConditions": [
+    "Stop on pinned-source or production-mask mismatch; retain failed records.",
+    "Stop if free disk drops below 10 GiB or resource budgets are exceeded."
+  ],
+  "productionChanges": "None; adoption requires a later decision based on the complete evidence."
+}

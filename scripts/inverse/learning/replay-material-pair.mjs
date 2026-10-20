@@ -78,7 +78,7 @@ try{
    const store=async(name,data)=>{await fs.writeFile(path.join(folder,name),data);row.assets[name]={path:path.relative(output,path.join(folder,name)),sha256:hash(data)};};
    try{
     let body,material;
-    if(method!=='production'&&(!cropReplay||targetMode!=='rgb')){body=await field(input.assets[method].body);material=await field(input.assets[method].material);}
+    if(method!=='production'&&!cropReplay){body=await field(input.assets[method].body);material=await field(input.assets[method].material);}
     const began=performance.now();
     let detected;
     if(cropReplay){
@@ -95,6 +95,7 @@ try{
     if(row.targetMode==='rgb'){
      const imported=prepare({...source,quad:crop.quad,cropProvenance:crop.provenance},configuration);
      preview=imported.preview;target=hardPhotoTarget(imported,'mask',configuration);
+     if(method==='production'&&input.expectedProductionMaskSha256)assert.equal(hash(preview.mask),input.expectedProductionMaskSha256,'Fixed production classification must replay exactly');
     }else{
      // Match preprocessPixels' source-size cap; a small photograph must not
      // silently receive a finer target grid just because its labels came from NN.
@@ -104,7 +105,10 @@ try{
       row.materialCalibration=calibration;
       if(calibration.applied)preview=rectifyMaterialPalette(source,calibration,crop.quad,resolution);
      }
-     preview??=rectifyMaterialPrediction(source,{values:material,resolution:manifest.resolution,window:input.window},crop.quad,resolution);
+     if(!preview){
+      material??=await field(input.assets[method].material);
+      preview=rectifyMaterialPrediction(source,{values:material,resolution:manifest.resolution,window:input.window},crop.quad,resolution);
+     }
      target=prepare({type:'mask',resolution:preview.resolution,mask:preview.mask.slice(),validMask:preview.validMask},{...configuration,invert:false,removeSpecks:0,fillHoles:0}).target;
      assert.deepEqual(target.sourceImage.mask,preview.mask);assert.deepEqual(target.sourceImage.validMask??null,preview.validMask??null);
     }
@@ -133,7 +137,12 @@ try{
     row.independentImage=referenceError(target.sourceImage,render.mask);row.independentFeatures=auditFeatureFidelity(target.sourceImage,render.mask,result.report.settings);
     row.checkedPair=result.report.templateChecksPassed&&row.independentFeatures.passed&&row.independentImage.mismatchFraction<=.03;
     row.status=row.checkedPair?'checked-derived-mask':'review-required';
-   }catch(error){row.status='failed';row.error=error.message;if(error.report)row.report=error.report;}
+   }catch(error){
+    row.status='failed';row.error=error.message;if(error.report)row.report=error.report;
+    // A broken source/hash/crop invariant invalidates this replay; do not
+    // silently count it as an ordinary failed reconstruction and keep going.
+    if(error.code==='ERR_ASSERTION')throw error;
+   }
    finally{await save();console.log(row.id,method,row.status,row.independentImage?.mismatchFraction);}
   }
  }
