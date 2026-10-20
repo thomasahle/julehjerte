@@ -18,6 +18,7 @@ from u2netp_adaptation import normalize_scores
 from material_pilot import evaluate_materials
 from data import digest
 from material_pairing import synthetic_draw_counts
+from material_pair_metrics import paired_identity_metrics
 
 
 def boundary_diagnostics(predictions, items, metrics):
@@ -75,6 +76,9 @@ def main():
               'metrics': evaluate_materials(predictions, items), 'groups': {}, 'gallery': [],
               'trainingPhaseUpdates': len(training['history']), 'parentTraining': training.get('parentTraining')}
     report['boundaries'] = boundary_diagnostics(predictions, items, report['metrics'])
+    report['pairedInvariance'] = paired_identity_metrics(predictions, items, report['metrics'])
+    report['pairedMetricsSourceHashes'] = {name: digest(Path(__file__).with_name(name).read_bytes())
+                                         for name in ['material_pairing.py', 'material_pair_metrics.py']}
     for kind in sorted({item['evidence']['kind'] for item in items}):
         indices = [i for i, item in enumerate(items) if item['evidence']['kind'] == kind]
         selected = [items[i] for i in indices]
