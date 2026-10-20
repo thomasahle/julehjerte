@@ -1,5 +1,6 @@
 import { FIGURE_STYLES, FRAMES, type FigureStyle, type Frame, type TextFrame } from './geometry';
 import { BOARD_STRIPS, type BoardStyle } from './boardMotif';
+import { TEXT_FIGURES } from './textFigure';
 export type GeneratorState = {
 	mode: 'start' | 'figure' | 'text';
 	motif: string;
@@ -57,11 +58,13 @@ export function frameGap(s: GeneratorState): number | undefined {
 }
 /** The strips per side a state asks of a frame on a board, the nearest the
  * frame offers below it (see `BOARD_STRIPS`); none for other frames, or
- * where the frame chooses. */
+ * where the frame chooses. The letters in the checks offer the figure in the
+ * checks' strips, and choose until the visitor does. */
 export function stripCount(s: GeneratorState): number | undefined {
-	const strips = s.style === 'strips' ? s.strips : s.board;
-	if (s.mode !== 'figure' || !(s.style in BOARD_STRIPS) || strips === undefined) return;
-	const { min, max, step } = BOARD_STRIPS[s.style as BoardStyle];
+	const style = s.mode === 'figure' ? s.style : s.mode === 'text' && s.textFrame === 'strips' ? s.textFrame : undefined;
+	const strips = s.mode === 'figure' && s.style === 'strips' ? s.strips : s.board;
+	if (!style || !(style in BOARD_STRIPS) || strips === undefined) return;
+	const { min, max, step } = BOARD_STRIPS[style as BoardStyle];
 	return Math.max(min, Math.min(max, min + step * Math.floor((strips - min) / step)));
 }
 /** No place or side of the figure in the checks lies farther out than the
@@ -124,7 +127,7 @@ export function readGeneratorState(hash: string): GeneratorState {
 			font: ['nunito', 'breeserif', 'oswald', 'kalam', 'cinzel', 'righteous', 'josefinsans', 'alfaslabone', 'bungee'],
 			frame: [...FRAMES],
 			style: [...FIGURE_STYLES],
-			textFrame: ['woven', 'air', 'checkered', ...FRAMES],
+			textFrame: ['woven', 'air', 'checkered', ...FRAMES, ...TEXT_FIGURES],
 			cells: [...CELLS]
 		}))
 			if (allowed.includes(raw[k])) Object.assign(s, { [k]: raw[k] });

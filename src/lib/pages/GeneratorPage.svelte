@@ -33,6 +33,7 @@
 	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, stripCount, stripPlace, stripSide, textRoom, ROOM_RANGE, CELL_FRAMES, largestScale, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
 	import { clampPlace } from '$lib/generator/stripFigure';
 	import { BOARD_STRIPS, type BoardStyle } from '$lib/generator/boardMotif';
+	import { isTextFigure } from '$lib/generator/textFigure';
 	import type {
 		GeneratorResult,
 		GeneratorRequest
@@ -86,7 +87,9 @@
 		woven: 'generatorDense',
 		air: 'generatorAir',
 		checkered: 'generatorCheckered',
-		circle: 'generatorCircle'
+		circle: 'generatorCircle',
+		strips: 'generatorTextStrips',
+		layers: 'generatorLayers'
 	};
 	const cellNames: Record<GeneratorState['cells'], TranslationKey> = {
 		square: 'generatorSquareCells',
@@ -105,9 +108,12 @@
 	/** A frame's name as the picker shows it, the circle first. */
 	const frameName = (style: GeneratorState['style']) =>
 		circled(style) ? `${t('generatorCircle', lang)} · ${borderLabel(style)}` : borderLabel(style);
-	/** What went wrong, for a figure in the frame it cannot be made in. */
-	const errorText = (failure: Failure, style?: GeneratorState['style']) => {
+	/** What went wrong, for a figure in the frame it cannot be made in, or a
+	 * text in a figure frame. */
+	const errorText = (failure: Failure, style?: GeneratorState['style'], textFrame?: GeneratorState['textFrame']) => {
 		if (style && failure.error !== 'empty') return t('generatorFrameError', lang, { frame: frameName(style) });
+		if (isTextFigure(textFrame) && failure.error !== 'empty' && failure.error !== 'character')
+			return t('generatorTextFrameError', lang, { frame: t(textFrameNames[textFrame], lang) });
 		const key: TranslationKey =
 			failure.error === 'topology'
 				? 'generatorTopologyError'
@@ -156,8 +162,10 @@
 	 * in the same framing; on screen the middle is vertical. */
 	let draggable = $derived(config.mode === 'figure' && config.style === 'strips');
 	/** The strips the frame on a board offers, if it is one, and the strips of
-	 * the heart shown for these settings. */
-	let boardStrips = $derived(config.mode === 'figure' && config.style in BOARD_STRIPS ? BOARD_STRIPS[config.style as BoardStyle] : undefined);
+	 * the heart shown for these settings. The letters in the checks offer the
+	 * figure in the checks' strips. */
+	let boardStrips = $derived(config.mode === 'figure' && config.style in BOARD_STRIPS ? BOARD_STRIPS[config.style as BoardStyle]
+		: config.mode === 'text' && config.textFrame === 'strips' ? BOARD_STRIPS.strips : undefined);
 	let shownBoard = $derived(!busy && result ? result.design.gridSize.x : undefined);
 	/** The numbers of strips a frame on a board offers, as buttons. */
 	const stripChoices = ({ min, max, step }: { min: number; max: number; step: number }) =>
@@ -261,7 +269,7 @@
 					displayed = data.result;
 				} else {
 					displayed = null;
-					error = errorText(data as Failure, job.request.mode === 'figure' ? job.request.style : undefined);
+					error = errorText(data as Failure, job.request.mode === 'figure' ? job.request.style : undefined, job.request.textFrame);
 				}
 				// A nearby value finished on the way shows while the newest is prepared.
 			} else if (data.result && busy) displayed = data.result;
@@ -423,7 +431,7 @@
 			busy = false;
 		} else if (failed) {
 			displayed = null;
-			error = errorText(failed, snapshot.mode === 'figure' ? snapshot.style : undefined);
+			error = errorText(failed, snapshot.mode === 'figure' ? snapshot.style : undefined, snapshot.mode === 'text' ? snapshot.textFrame : undefined);
 			busy = false;
 		} else busy = true;
 		// The picture shows while the cuts are found, and tells a drag how far
@@ -793,6 +801,27 @@
 			aria-label={t('generatorPersonalise', lang)}
 		>
 			<h2>{t('generatorPersonalise', lang)}</h2>
+			<!-- The strips of a frame on a board, as buttons: the figure's frames on a board, and the letters in the checks. -->
+			{#snippet stripButtons()}
+				{#if boardStrips}{@const asked = stripCount(config)}{@const strips = asked ?? shownBoard ?? boardStrips.initial}
+					<span class="range-label" id="board-strips">{t('generatorStripCount', lang)}</span>
+					<div class="strip-choices" role="group" aria-labelledby="board-strips">
+						{#each stripChoices(boardStrips) as n (n)}
+							<button
+								type="button"
+								aria-pressed={strips === n}
+								onclick={() => {
+									if (config.mode === 'figure' && config.style === 'strips') config.strips = n;
+									else config.board = n;
+								}}>{n} × {n}</button
+							>
+						{/each}
+					</div>
+					{#if asked !== undefined && shownBoard !== undefined && shownBoard !== asked}<p class="hint" role="status">
+							{t('generatorStripsKept', lang, { asked: String(asked), kept: String(shownBoard) })}
+						</p>{/if}
+				{/if}
+			{/snippet}
 			{#if config.mode === 'figure'}
 				<h3>{t('generatorChooseTemplate', lang)}</h3>
 				<div class="frame-options">
@@ -842,24 +871,7 @@
 				{#if result?.scale !== undefined && Math.round(result.scale * 100) !== config.scale}<p class="hint" role="status">
 						{t('generatorSizeKept', lang, { asked: String(config.scale), kept: String(Math.round(result.scale * 100)) })}
 					</p>{/if}
-				{#if boardStrips}{@const asked = stripCount(config)}{@const strips = asked ?? shownBoard ?? boardStrips.initial}
-					<span class="range-label" id="board-strips">{t('generatorStripCount', lang)}</span>
-					<div class="strip-choices" role="group" aria-labelledby="board-strips">
-						{#each stripChoices(boardStrips) as n (n)}
-							<button
-								type="button"
-								aria-pressed={strips === n}
-								onclick={() => {
-									if (config.style === 'strips') config.strips = n;
-									else config.board = n;
-								}}>{n} × {n}</button
-							>
-						{/each}
-					</div>
-					{#if asked !== undefined && shownBoard !== undefined && shownBoard !== asked}<p class="hint" role="status">
-							{t('generatorStripsKept', lang, { asked: String(asked), kept: String(shownBoard) })}
-						</p>{/if}
-				{/if}
+				{@render stripButtons()}
 				{#if SPACED_STYLES.includes(config.style)}
 					<label class="range-label" for="frame-spacing"
 						>{t('generatorSpacing', lang)}<output>{config.spacing}%</output></label
@@ -879,17 +891,20 @@
 						<button
 							aria-pressed={config.textFrame === choice.textFrame && (!choice.cells || config.cells === choice.cells)}
 							onclick={() => {
+								// The letters in the checks choose their own board again.
+								if (choice.textFrame !== config.textFrame) config.board = undefined;
 								config.textFrame = choice.textFrame;
 								if (choice.cells) config.cells = choice.cells;
 							}}
 						>
 							<GeneratorFrameIcon
-								frame={choice.textFrame}
+								frame={choice.textFrame === 'layers' ? 'circle' : choice.textFrame}
 								design={thumbnails[choice.id]?.result?.design}
 								sketch={thumbnails[choice.id]?.sketch}
 								{colors}
 								unavailable={!!thumbnails[choice.id]?.failure}
 							/>{choice.cells ? t(cellNames[choice.cells], lang) : t(textFrameNames[choice.textFrame], lang)}
+							{#if thumbnails[choice.id]?.failure}<small class="unavailable-note">{t('generatorTextUnavailable', lang)}</small>{/if}
 						</button>
 					{/each}
 				</div>
@@ -906,6 +921,7 @@
 					/>
 				{/if}
 				{#if config.textFrame === 'checkered'}<p class="hint">{t('generatorCheckeredHint', lang)}</p>{/if}
+				{@render stripButtons()}
 			{/if}
 			<div class="actions">
 				<button

@@ -397,6 +397,37 @@ function crosses(a: Point, b: Point, c: Point, d: Point): boolean {
 	const side = (p: Point, q: Point, r: Point) => Math.sign((q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]));
 	return side(c, d, a) * side(c, d, b) < 0 && side(a, b, c) * side(a, b, d) < 0;
 }
+/** Where two outlines come nearest each other, as fractions of the way along
+ * each from its first point; with `apart`, away from those ends, by a quarter
+ * of the way round the first and a fifth of the way along the second, round
+ * it too if it closes. */
+function closest(a: Point[], b: Point[], apart?: [number, number]): [number, number] {
+	const closed = (pts: Point[]) => pts[0][0] === pts.at(-1)![0] && pts[0][1] === pts.at(-1)![1];
+	const along = (p: number, q: number, round: boolean) => round ? Math.min(Math.abs(p - q), 1 - Math.abs(p - q)) : Math.abs(p - q);
+	const [ra, rb] = [closed(a), closed(b)];
+	const lengths = (pts: Point[]) => {
+		const out = [0];
+		for (let k = 1; k < pts.length; k++) out.push(out[k - 1] + Math.hypot(pts[k][0] - pts[k - 1][0], pts[k][1] - pts[k - 1][1]));
+		return out;
+	};
+	const [la, lb] = [lengths(a), lengths(b)];
+	let best = Infinity, ends: [number, number] = [0, 0];
+	// Each corner of one against every side of the other, both ways round.
+	for (const [from, to, lf, lt, swap] of [[a, b, la, lb, false], [b, a, lb, la, true]] as const)
+		for (let i = 0; i < from.length; i++)
+			for (let k = 1; k < to.length; k++) {
+				const d = distanceTo(from[i], to[k - 1], to[k]);
+				if (d >= best) continue;
+				const dx = to[k][0] - to[k - 1][0], dy = to[k][1] - to[k - 1][1], l = dx * dx + dy * dy;
+				const t = l ? Math.max(0, Math.min(1, ((from[i][0] - to[k - 1][0]) * dx + (from[i][1] - to[k - 1][1]) * dy) / l)) : 0;
+				const u = lf[i] / lf.at(-1)!, v = (lt[k - 1] + t * (lt[k] - lt[k - 1])) / lt.at(-1)!;
+				const [x, y] = swap ? [v, u] : [u, v];
+				if (apart && (along(x, apart[0], ra) < .25 || along(y, apart[1], rb) < .2)) continue;
+				[best, ends] = [d, [x, y]];
+			}
+	return ends;
+}
+
 /** The distance from p to the segment ab. */
 function distanceTo(p: Point, a: Point, b: Point): number {
 	const dx = b[0] - a[0], dy = b[1] - a[1], l = dx * dx + dy * dy;
@@ -659,6 +690,36 @@ export function arrangement(rings: Ring[], strips: number, reach: 'motif' | 'nea
 		return true;
 	};
 	const kept = chords.map((_, c) => clear(c));
+	// An island needs two hidden cuts, between which its outline changes
+	// sheet. One these leave short of that, such as a letter's counter inside
+	// its stroke, may also be reached the shortest ways from the sides and
+	// islands of its face, once where they come nearest and once elsewhere,
+	// those cuts' ends staying where they point.
+	const cutsTo = (r: number) => chords.filter((c, k) => kept[k] && c.ends.some(e => attaches[e].segment === r)).length;
+	if (islands.some(r => cutsTo(r) < 2))
+		for (const [f, face] of faces.entries()) {
+			if (!candidate[f]) continue;
+			const holes = face.island === undefined ? face.holes : [face.island, ...face.holes];
+			const sides = face.entries.flatMap(e => e && long(e.segment) ? [e.segment] : []);
+			for (const [k, r] of holes.entries())
+				for (const q of [...sides, ...holes.slice(k + 1)]) {
+					if (cutsTo(r) >= 2 && (sides.includes(q) || cutsTo(q) >= 2)) continue;
+					const first = closest(segments[r].points, segments[q].points);
+					for (const ends of [first, closest(segments[r].points, segments[q].points, first)]) {
+						const c = chords.length;
+						chords.push({ face: f, ends: [attaches.length, attaches.length + 1] });
+						for (const [s, key] of [[r, ends[0]], [q, ends[1]]] as const) {
+							// Clear of the side's ends and of the other cuts leaving it.
+							let at = segments[s].closed ? key : Math.max(.05, Math.min(.95, key));
+							while (attaches.some((a, i) => a.segment === s && Math.abs(spot[i] - at) < 1e-3)) at = (at + 2e-3) % 1;
+							spot.push(at);
+							attaches.push({ segment: s, key, chord: c });
+						}
+						route.push([pointAt(r, spot.at(-2)!), pointAt(q, spot.at(-1)!)]);
+						kept.push(clear(c));
+					}
+				}
+		}
 	const crowded = ([p, q]: [Point, Point], [r, t]: [Point, Point]) =>
 		crosses(p, q, r, t) || [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1].some(u => distanceTo(mix(p, q, u), r, t) < room || distanceTo(mix(r, t, u), p, q) < room);
 	// Hidden cuts across one face that would cross or crowd each other.
