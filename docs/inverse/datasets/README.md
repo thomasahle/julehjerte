@@ -505,6 +505,58 @@ transfer from exposed lobes into the overlap. Search stability under small mask
 changes remains a separate problem. No new neural weights were trained in this
 diagnostic, and none of these classifier alternatives has been deployed.
 
+The subsequent [learned feature-transfer experiment](exemplar-projection-results.json)
+trains **1,536 weights** through the per-photo classifier itself. A linear
+projection reduces the frozen U2NETP decoder's 192 channels to eight context
+channels. Those channels and RGB enter a lobe-fitted ridge classifier; gradients
+pass through its support-only normalization and solve. The query retains direct
+RGB at the evaluation/crop resolution. Overlap labels supervise the outer loss
+only and never enter the per-photo fit.
+
+The fixed schedule uses two passes over the same 96 synthetic training views.
+All backbone weights and buffers remain unchanged. The new checkpoint is
+**7,870 bytes**, in addition to the existing backbone. Neither the 32 development
+photos nor the newly archived Pinterest board supervise this projection.
+
+| Overlap-only synthetic error | Direct RGB | Untrained projection | Trained projection |
+| --- | ---: | ---: | ---: |
+| Plain paper | 2.47% | 2.86% | 2.20% |
+| Printed paper | 7.13% | 8.95% | 4.33% |
+| Changed scene | 2.45% | 3.06% | 2.19% |
+
+This establishes improvement on the synthetic training views, **not unseen
+generalization**. Printed-paper interior error falls from 4.51% with direct RGB
+to 1.07%, but the real-photo previews still confuse printing with cuts. They also
+add false seams and islands to plain-paper designs, most visibly the cat.
+
+Fresh fitting on all 26 available masks gives **10/32 complete self-mask passes**,
+the same count as native RGB and below the production classifier's 13/32.
+Mother/child, repeated hearts and dinosaur gain passes relative to native RGB;
+cat, heart-checkerboard and hummingbird lose passes. These changes include
+different routing/cut-count choices and do not isolate a particular search
+branch. All 26 editable conversions pass; image and feature gates continue to
+reject the other candidates. Wrong crops, six unresolved proposals, and the
+printed central flower's misleading self-mask success remain in the records.
+The material head is **not ready for deployment**.
+
+The pipeline initially rejected a missing crop-manifest checksum before fitting.
+The corrected packaging hardlinks the exact same masks and manifest into a
+separate input directory; the original training report and outputs remain
+immutable. The writer is fixed for future runs. All **208 tests across 43 offline
+learning modules pass**, including finite-difference verification through the
+ridge solve. Independent audits recompute 288 synthetic errors, 104 exported
+fit errors and 26 editable errors; all 29 review pages were inspected.
+The experiment retains about **33.5 MiB excluding external logs/audit JSON**,
+without new photo downloads, copies or a disk feature cache.
+
+The next controlled continuation can use six existing, source-separated
+training photos that have both reviewed paper labels and approximate overlap
+corners, alongside an equal-step synthetic-only control. Those approximate
+corners are conditioning references, not exact cutting geometry. This real
+supervision experiment has not run yet; the current result does not establish
+whether more real training or a different representation will fix the
+remaining transfer failures.
+
 ### Latest solver and browser validation
 
 The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and

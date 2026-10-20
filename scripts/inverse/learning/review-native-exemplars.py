@@ -1,4 +1,4 @@
-"""Compare frozen baseline fits with native RGB fits, including editable exports."""
+"""Compare frozen baseline fits with one native-mask candidate and editable exports."""
 import argparse
 import hashlib
 import json
@@ -31,6 +31,7 @@ def main():
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--editor', type=Path, required=True)
     parser.add_argument('--baseline-editor', type=Path, required=True)
+    parser.add_argument('--baseline-source-commit', help='Revision that generated the frozen baseline')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     plan = json.loads(args.plan.read_bytes())
@@ -45,7 +46,8 @@ def main():
     assert baseline['probeManifestSha256'] == plan['previousInput']['sha256']
     assert [r['id'] for r in inputs['rows']] == plan['expectedDevelopmentCases']
     assert [r['id'] for r in old_inputs['rows']] == plan['expectedDevelopmentCases']
-    assert run['methods'] == ['native-rgb']
+    assert len(run['methods']) == 1
+    candidate = run['methods'][0]
     assert baseline['methods'] == ['production', 'rgb-only', 'neutral-deviation']
     assert run['configuration'] == baseline['configuration']
     checks = 0
@@ -63,7 +65,7 @@ def main():
             relative = str(local.resolve().relative_to(Path.cwd()))
             changed.add(relative)
             historical = subprocess.check_output(
-                ['git', 'show', plan['baselineCommit']+':'+relative])
+                ['git', 'show', (args.baseline_source_commit or plan['baselineCommit'])+':'+relative])
             assert digest(historical) == old, relative
         checks += 2
     assert changed == changed_helpers
@@ -76,7 +78,8 @@ def main():
         for row in report['results']:
             assert row['id'] not in editors
             editors[row['id']] = row
-    assert len(editors) == plan['expectedDevelopmentCrops']*4
+    crop_count = sum('selectedCrop' in r for r in run['rows'])
+    assert len(editors) == crop_count*4
     methods = baseline['methods']+run['methods']
     by_key = {(r['id'], r['method']): r for r in baseline['rows']+run['rows']}
     assert len(by_key) == len(inputs['rows'])*len(methods)
@@ -101,7 +104,7 @@ def main():
         photos = [ImageOps.exif_transpose(Image.open(entry['file'])).convert('RGB')]
         labels = ['Source photograph']
         for method, row in zip(methods, rows):
-            root = args.run if method == 'native-rgb' else baseline_root
+            root = args.run if method == candidate else baseline_root
             for asset in row['assets'].values():
                 checked(root, asset)
         if 'selectedCrop' not in rows[0]:
@@ -122,7 +125,7 @@ def main():
             images = {}
             production_mask = None
             for method, row in zip(methods, rows):
-                root = args.run if method == 'native-rgb' else baseline_root
+                root = args.run if method == candidate else baseline_root
                 for key in ['selectedCrop', 'resolution', 'observedPixels']:
                     assert row[key] == first[key], (identity, key)
                 assert row['observedPixels'] == int(valid.sum())
@@ -160,7 +163,7 @@ def main():
                 }
                 images[method] = [Image.fromarray(colours[(image ^ flip).astype(int)])
                                   for image in [mask, woven]]
-            for method, title in [('rgb-only', 'Low-resolution RGB'), ('native-rgb', 'Direct crop RGB')]:
+            for method, title in [('rgb-only', 'Low-resolution RGB'), (candidate, candidate)]:
                 photos += images[method]
                 labels += [title+' mask', title+' weave']
             for method, title in [('production', 'Production weave'), ('neutral-deviation', 'Neutral std weave')]:
@@ -200,6 +203,8 @@ def main():
         'editor': reference(args.editor/'results.json'),
         'baselineEditor': reference(args.baseline_editor/'results.json'),
         'source': reference(Path(__file__)), 'changedOfflineHelpers': sorted(changed),
+        'candidateMethod': candidate,
+        'baselineSourceCommit': args.baseline_source_commit or plan['baselineCommit'],
         'hashChecks': checks, 'summary': summary, 'rows': results, 'gallery': galleries,
         'scope': 'All declared cases; unchanged production fitter, crop RGB, coverage and resolution. '
                  'All 104 independent export errors recomputed from PNGs. Previous fits are frozen '

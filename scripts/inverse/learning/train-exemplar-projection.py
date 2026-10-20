@@ -303,8 +303,9 @@ def main():
         save()
     assert len(manifest['rows']) == 32 and sum(bool(r['assets']) for r in manifest['rows']) == 26
     manifest['sourceHashes'] = report['sourceHashes']
-    for path, value in [(args.output/'manifest.json', manifest), (args.output/'crops'/'report.json', crop_replay)]:
-        path.write_text(json.dumps(value, indent=2)+'\n')
+    (args.output/'manifest.json').write_text(json.dumps(manifest, indent=2)+'\n')
+    crop_replay['probeManifestSha256'] = reference(args.output/'manifest.json')['sha256']
+    (args.output/'crops'/'report.json').write_text(json.dumps(crop_replay, indent=2)+'\n')
     report['gallery']['development'] = display.gallery(real_panels, args.output, 'development', 256)
     for handle in handles:
         handle.remove()

@@ -310,7 +310,7 @@
     "allReviewed": true,
     "observations": [
       "Direct RGB restores sharp check corners and thin hummingbird/dragonfly details; it also restores false stripes, dots and fine speckle on printed paper.",
-      "Native dinosaur and star candidates retain recognizable motifs with errors 1.29125% and 0.83638%, but fail feature checks on small isolated components near the right or bottom crop edge. The checks remain enforced.",
+      "Native dinosaur and star candidates retain recognizable motifs with errors 1.29% and 0.84%, but fail feature checks on small isolated components near the right or bottom crop edge. The checks remain enforced.",
       "Mother/child loses a substantial interior detail in fitting despite preserving it in the native mask. Repeated hearts exceed the 3% image-error limit at 3.165625%. All four losses have identical crops to their baseline.",
       "The nativity and red/black girl with bird remain search failures even with visually recognizable masks. The native results do not identify a single causal search branch.",
       "The reflective-building and basket proposals still crop the wrong regions; changing classification does not repair them. All six missing proposals remain unresolved.",
