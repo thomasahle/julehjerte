@@ -1,0 +1,58 @@
+{
+  "schema": "renderer-cohort-diagnostic-plan-1",
+  "groups": [
+    {
+      "name": "production",
+      "pipeline": {
+        "path": "tmp/heart-learning/u2netp-body-exposure-control-pipeline-v1/report.json",
+        "sha256": "c5dbd1cc85e5672c692bb6753ec1f8862eddeacd588d58b18af8419c94479f45"
+      },
+      "editable": {
+        "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+        "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+      },
+      "method": "production",
+      "freshOnly": false,
+      "expectedExports": 21
+    },
+    {
+      "name": "control",
+      "pipeline": {
+        "path": "tmp/heart-learning/u2netp-body-exposure-control-pipeline-v1/report.json",
+        "sha256": "c5dbd1cc85e5672c692bb6753ec1f8862eddeacd588d58b18af8419c94479f45"
+      },
+      "editable": {
+        "path": "tmp/heart-learning/u2netp-body-exposure-control-editable-v1/results.json",
+        "sha256": "5b809aeed669509ca7a4972a7fc64ff54217acdb7bdcdec0310613da7b31ed9f"
+      },
+      "method": "fallback",
+      "freshOnly": true,
+      "expectedExports": 5
+    },
+    {
+      "name": "candidate",
+      "pipeline": {
+        "path": "tmp/heart-learning/u2netp-body-exposure-pipeline-v1/report.json",
+        "sha256": "261bf50964f24509bff7b8651b2d884a810e1458e33e122ec51da96bcd8f267b"
+      },
+      "editable": {
+        "path": "tmp/heart-learning/u2netp-body-exposure-editable-v1/results.json",
+        "sha256": "9123c2befc57df1c72d2e0b01291a10e9c8785f52db6c90d4587b1d4c0990332"
+      },
+      "method": "fallback",
+      "freshOnly": true,
+      "expectedExports": 5
+    }
+  ],
+  "flatnessCells": [
+    0.25,
+    0.025,
+    0.0025,
+    0.00025
+  ],
+  "svgScales": [
+    1,
+    5
+  ],
+  "scope": "All 31 distinct saved exports from the paired 180-update body comparison, including 21 reused production outputs and all ten fresh neural fallback outputs. Unresolved crops stay failures in the 32-photo denominator. Use saved editable SVGs and original observed pixels; no geometry, training, crop, refit, acceptance-limit or production-renderer changes. Four fixed flattening tolerances assess convergence; saved original scores remain authoritative. Independent exported-geometry SVG samples also include conversion differences. Editor intersections and geometry/paper checks are rerun on each saved SVG; image and feature checks are recalculated at every precision. Timing is offline rendering only, not browser inference or end-to-end speed."
+}

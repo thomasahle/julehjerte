@@ -138,6 +138,15 @@ recorded; no production rasterizer or acceptance limit was changed. The next
 comparison needs consistent rendering precision before selecting models on
 borderline scores. These models have not undergone browser/runtime release QA.
 
+A [31-output precision replay](u2netp-body-renderer-cohort-results.json) now
+covers all 21 production exports and ten fresh neural exports from that study.
+Every saved editable mask is reproduced exactly before changing precision;
+editor intersections and paper/geometry checks are rerun. The stacked-heart
+control is the only classification change across four fixed tolerances.
+At the two finest tolerances, masks differ by at most four pixels and no
+classification changes. Both models therefore recover the same twelve designs
+in this diagnostic; the original benchmark counts remain recorded separately.
+
 The [complete balanced-epoch follow-up](u2netp-material-complete-epochs-results.json)
 adds 384 updates to the fixed relative-colour head, visiting every synthetic
 view four times. Known-region real training error falls from **5.06% to 2.78%**.
