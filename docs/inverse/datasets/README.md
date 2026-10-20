@@ -169,6 +169,29 @@ omissions persist. Better training segmentation alone has not fixed those
 problems. This candidate is retained as an experiment, without browser export
 or production promotion.
 
+The [known-outline-loss follow-up](u2netp-body-outline-results.json) keeps that
+training setup fixed and adds balanced supervision near known paper/background
+boundaries, excluding uncertain pixels. The independent audit regenerates all
+88 real/synthetic outline fields. Training-band error falls from **5.34% to
+4.80%**, but whole-mask error rises from **1.78% to 2.14%**. Full reconstruction
+still yields the same **12/32 checked editable pairs**, and accepted crops fall
+from 26 to 25. All four new exports pass conversion, geometry and nominal paper
+checks; the printed-tree fit still fails image fidelity. All training,
+evaluation and new-fit galleries were inspected. This candidate is not promoted.
+
+A [replayable sampling diagnostic](../../../scripts/inverse/learning/body-outline-crop-diagnostic.mjs)
+isolates the lost green/black crop: a larger false hole in the NN's body mask
+causes 84 of 178 scanlines to stop inside the paper, more than ten working pixels
+from their previous endpoint. Right-edge support drops from **87.08% to 52.81%**,
+below the unchanged 65% requirement, although the proposed corners move by at
+most 19.62 pixels in the 2048-pixel photograph. Swapping only the two models'
+binary masks reproduces the opposite edge evidence exactly in both directions.
+The next crop experiment should distinguish enclosed gaps from the outer
+silhouette while retaining photograph evidence and lobe checks. No acceptance
+threshold was relaxed. Better segmentation scores alone have not established
+better usable templates; broader evaluation is also needed beyond this
+repeatedly inspected development cohort.
+
 The [complete balanced-epoch follow-up](u2netp-material-complete-epochs-results.json)
 adds 384 updates to the fixed relative-colour head, visiting every synthetic
 view four times. Known-region real training error falls from **5.06% to 2.78%**.

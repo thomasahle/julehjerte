@@ -1,0 +1,320 @@
+{
+  "schema": "u2netp-body-outline-results-1",
+  "date": "2026-10-20",
+  "status": "complete-development-comparison",
+  "evidence": {
+    "study": {
+      "path": "docs/inverse/datasets/u2netp-body-outline-evaluation-plan.json",
+      "sha256": "f7c686cd1174c623bc44b0b9392836a32660c079e89f3242af1210c0b1313dbf"
+    },
+    "training": {
+      "path": "tmp/heart-learning/u2netp-body-outline-v1/report.json",
+      "sha256": "ad8dc95c811d7291bd2504ab65b954ea96b18296cc03b387abd63470eaa60c1c"
+    },
+    "audit": {
+      "path": "tmp/heart-learning/u2netp-body-outline-v1/audit.json",
+      "sha256": "608adcd13c7409fd329c9a82b7d3d033b317a4d3634b071753a722bf9c81a2f5"
+    },
+    "controlTraining": {
+      "path": "tmp/heart-learning/u2netp-body-encoder-v1/report.json",
+      "sha256": "e6fa6420e0f6e84869423bb5ce525a45520d0f3171d5c1675edb9c9aa0e5033d"
+    },
+    "controlAudit": {
+      "path": "tmp/heart-learning/u2netp-body-encoder-v1/audit.json",
+      "sha256": "43af0e20b3ebbc442b53dc9784c2f6f90782ec38321834fdefc0271887333647"
+    },
+    "preflight": {
+      "path": "tmp/heart-learning/u2netp-body-outline-preflight-v1/report.json",
+      "sha256": "c20e040a4c574d2586ca1a2b1106b572510634a83b8b6d196910b4e755eecae0"
+    },
+    "trainingComparison": {
+      "path": "tmp/heart-learning/u2netp-body-outline-training-comparison-v1/report.json",
+      "sha256": "38894908b610b930daa9bc0ad603d15ce09ecf0010a0e674254c47f3ffdf9c19"
+    },
+    "probe": {
+      "path": "tmp/heart-learning/u2netp-body-outline-probe-v1/report.json",
+      "sha256": "ae563521fd0998a8f90b7270c0812bd80fe74b35932401805c52298ecc2788f4"
+    },
+    "controlProbe": {
+      "path": "tmp/heart-learning/u2netp-body-encoder-probe-v1/report.json",
+      "sha256": "94874bc5dcd8878336f83cc456750e6430c9a7641fc5566db1fb3e596b89c8ba"
+    },
+    "pipeline": {
+      "path": "tmp/heart-learning/u2netp-body-outline-pipeline-v1/report.json",
+      "sha256": "82e4980fd9dad416fc885a40190f911f6fcec306ea9dc92435dd67f279f97269"
+    },
+    "controlPipeline": {
+      "path": "tmp/heart-learning/u2netp-body-encoder-pipeline-v1/report.json",
+      "sha256": "b857de355965d46d6153d00e9ac749347458098d413aa4e60e7a60b2c4639a2f"
+    },
+    "editable": {
+      "path": "tmp/heart-learning/u2netp-body-outline-editable-v1/results.json",
+      "sha256": "5d948ab2363d785697981e6148143c3503b6ef0e17777155cb98e09cbafb58ef"
+    },
+    "controlEditable": {
+      "path": "tmp/heart-learning/u2netp-body-encoder-editable-v1/results.json",
+      "sha256": "cbae50c16480549e1db4f1cde3c89a6b2b60c9e922ed6c212bc193b0111ee0d1"
+    },
+    "reusedProductionEditable": {
+      "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+      "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+    },
+    "evaluationGallery": {
+      "path": "tmp/heart-learning/u2netp-body-outline-evaluation-gallery-v1/manifest.json",
+      "sha256": "c16b0d1cfa12668ad0e8170e372af306b3d21b25519d01b8151e53094a6c9a09"
+    },
+    "fitGallery": {
+      "path": "tmp/heart-learning/u2netp-body-outline-fit-gallery-v1/manifest.json",
+      "sha256": "f069c61d8bd3dd94b95ca4c639c6bfc7c0c07f1340170bba1f15eb41b3eb8a1b"
+    },
+    "cropDiagnostic": {
+      "path": "tmp/heart-learning/u2netp-body-outline-crop-diagnostic-v2/report.json",
+      "sha256": "ad909ed4ef1d44b5c430affa2348056c7454a89cfa34e1b95f991c593272d42d"
+    },
+    "focusedTests": {
+      "path": "tmp/heart-learning/body-outline-focused-tests.log",
+      "sha256": "a9fdc2569356f86ca9a3eb21885aff4351aebf00da944150cdd9aa1515b063a9"
+    },
+    "cropTests": {
+      "path": "tmp/heart-learning/body-outline-crop-tests.log",
+      "sha256": "70ddc9dabcc2d0be8591ba6aceb47382a6e05819b7c64d146814cc9d43ff7194"
+    },
+    "diagnosticLint": {
+      "path": "tmp/heart-learning/body-outline-diagnostic-lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "protocol": {
+    "trainingPhotos": 24,
+    "syntheticViews": 64,
+    "updates": 180,
+    "initialization": "Fresh publisher pretrained U2NETP, seed 20261020",
+    "change": "Add 0.5 times balanced known-outline BCE to the unchanged masked BCE + Dice. Radius 8 in the 320-pixel input; unknown labels never supervised. Same encoder stages, optimizer, inputs, labels and draws as the late-encoder control.",
+    "actualInputsLabelsDrawsTrainableParametersMatchControl": true,
+    "all32NativeInputsMatchControl": true,
+    "checkpointSelection": "Final checkpoint only",
+    "equalCompute": false,
+    "controlClarification": "The paired model control is the late-encoder checkpoint. The inherited fits description in the evaluation/pipeline plan says decoder-only; that stale sentence does not describe the actual paired comparison. Production fits are reused from the pinned original browser run.",
+    "scope": "Previously inspected 32-photo development cohort. Not prospective evaluation, independent motif proof, browser verification or physical assembly."
+  },
+  "training": {
+    "seconds": 251.360277458,
+    "timingScope": "Training updates, checkpoint checks, final predictions and galleries; excludes startup, input loading and initial prediction.",
+    "parameters": 1131181,
+    "trainableParameters": 880333,
+    "controlMetrics": {
+      "knownRegionIoU": 0.9475828325136986,
+      "knownRegionPixelError": 0.017834153467990145,
+      "knownPaperFalseNegative": 0.012097267422942265,
+      "knownBackgroundFalsePositive": 0.018950388537091526
+    },
+    "candidateMetrics": {
+      "knownRegionIoU": 0.934604994100226,
+      "knownRegionPixelError": 0.021393967297549082,
+      "knownPaperFalseNegative": 0.01045616803507401,
+      "knownBackgroundFalsePositive": 0.024569521126285368
+    },
+    "wholeMaskPerPhotoChanges": {
+      "worsened": 14,
+      "improved": 9,
+      "unchanged": 1
+    },
+    "controlBandMetrics": {
+      "knownRegionIoU": 0.8992626301985348,
+      "knownRegionPixelError": 0.05342838745120532,
+      "knownPaperFalseNegative": 0.05946144721146579,
+      "knownBackgroundFalsePositive": 0.047594112845608105
+    },
+    "candidateBandMetrics": {
+      "knownRegionIoU": 0.9088743577939007,
+      "knownRegionPixelError": 0.048035972236855684,
+      "knownPaperFalseNegative": 0.05119988843719494,
+      "knownBackgroundFalsePositive": 0.044952155156213265
+    },
+    "auditPassed": true,
+    "outlineInputsRecomputed": 88,
+    "unknownPixelsExcluded": true,
+    "changedTensors": 318,
+    "frozenStateUnchanged": true,
+    "predictionComparisons": {
+      "initial": {
+        "exact": false,
+        "maximumAbsoluteDifference": 1.1920928955078125e-07,
+        "absoluteTolerance": 1.1920928955078125e-07,
+        "changedHalfThresholdPixels": 0,
+        "passed": true,
+        "metricsExact": true,
+        "outlineMetricsExact": true
+      },
+      "final": {
+        "exact": false,
+        "maximumAbsoluteDifference": 1.1920928955078125e-07,
+        "absoluteTolerance": 1.1920928955078125e-07,
+        "changedHalfThresholdPixels": 0,
+        "passed": true,
+        "metricsExact": true,
+        "outlineMetricsExact": true
+      }
+    },
+    "sourceSeparation": {
+      "trainPhotos": 24,
+      "evaluationPhotos": 32,
+      "trainSourceGroups": 14,
+      "evaluationSourceGroups": 5,
+      "sourceAndDuplicateSeparationPassed": true
+    }
+  },
+  "reconstruction": {
+    "counts": {
+      "production": {
+        "attempted": 32,
+        "crops": 21,
+        "supported": 16,
+        "checkedPairs": 9,
+        "neuralSelected": 0,
+        "reusedFits": 32
+      },
+      "fallback": {
+        "attempted": 32,
+        "crops": 25,
+        "supported": 20,
+        "checkedPairs": 12,
+        "neuralSelected": 4,
+        "reusedFits": 28
+      }
+    },
+    "checkedEditableIncludingReusedProduction": 12,
+    "newCheckedDesigns": 0,
+    "lostCheckedDesigns": 0,
+    "outlineSupportChanges": [
+      {
+        "id": "real-f05cf91c134daea9-body-1",
+        "before": true,
+        "after": false
+      }
+    ],
+    "freshFits": [
+      {
+        "id": "real-24b5ed49c9411b11-body-1",
+        "targetMaskSha256": "9147920ffc9f6de74814327f849d8ddfebb7e7763a1be0636c103348b6463c2a",
+        "exportedMismatch": 0.0284625,
+        "editableMismatch": 0.0289375,
+        "checkedEditable": true,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      {
+        "id": "real-dfa7e4b71b43aa86-body-1",
+        "targetMaskSha256": "9f4bca199e58ef3ca28c6cc4baa6c59dbbbccc6217fb5888ea99386de2641cc0",
+        "exportedMismatch": 0.08271875,
+        "editableMismatch": 0.0833875,
+        "checkedEditable": false,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      {
+        "id": "real-c7d1e0ad5050db71-body-1",
+        "targetMaskSha256": "02581375cce1d9400d20c1b08804a0aa167175cbaa4445fe79f9f1922fa88e05",
+        "exportedMismatch": 0.007663505835140862,
+        "editableMismatch": 0.007626000912619781,
+        "checkedEditable": true,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      {
+        "id": "real-28a87a8be083f16c-body-1",
+        "targetMaskSha256": "c8d932dc56719f8c5b951645b60861f59670d60d5cb1c4311306199a15c52251",
+        "exportedMismatch": 0.005125320332520783,
+        "editableMismatch": 0.005012813300831302,
+        "checkedEditable": true,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    ],
+    "primaryFailureStageCounts": {
+      "unresolvedCrop": 7,
+      "imageAboveThreePercent": 11,
+      "checked": 12,
+      "featureLossDespiteLowImageError": 1,
+      "paperFailureDespiteLowImageError": 1
+    },
+    "overlappingFailedGateCounts": {
+      "image": 11,
+      "features": 9,
+      "paper": 1
+    },
+    "stageCountsScope": "All 32 remain. Stage outcomes, not a proof of physical causes or artwork impossibility; image error precedes feature and paper failures in the partition."
+  },
+  "cropDiagnosis": {
+    "id": "real-f05cf91c134daea9-body-1",
+    "workingMaskSize": [
+      650,
+      650
+    ],
+    "maskChangedPixels": 2732,
+    "maskChangeFraction": 0.006466272189349112,
+    "maximumCornerMovementOriginalPixels": 19.61540600966794,
+    "rightEdgeSupport": [
+      0.8707865168539326,
+      0.5280898876404494
+    ],
+    "requiredSupport": 0.65,
+    "samePhotoRgbVerified": true,
+    "maskOnlySwapReproducesOppositeLineEvidence": true,
+    "rightSampleChanges": {
+      "sharedRows": 178,
+      "changed": 96,
+      "inwardOverTenWorkingPixels": 84,
+      "maximumInwardWorkingPixels": 143
+    },
+    "finding": "A larger false hole inside the glossy green/black paper truncates center-out scanlines. Eighty-four of 178 shared right-edge samples shift more than ten working pixels inward. The unchanged line-support gate rejects the crop, although the proposed square barely moves. Swapping only the mask, retaining the other fields, reproduces the opposite line evidence in both directions.",
+    "qualification": "This isolates the mask-to-edge-sampler mechanism for this failure. It does not prove the rejected corners are ground truth or establish a general replacement gate. The control fit itself fails the image-error target."
+  },
+  "visualReview": {
+    "trainingPages": 6,
+    "evaluationBodyPages": 11,
+    "newFitPages": 1,
+    "diagnosticPages": 1,
+    "allInspected": true,
+    "findings": [
+      "Known-outline loss slightly reduces band error but increases whole-mask background inclusion; nearby decorative eggs and a pine cone gain confidence.",
+      "Floral/striped training hearts still lose their tips; handles, detached paper and hands remain possible foreground.",
+      "Dark teeth-shaped paper regions and the metallic gold-house silhouette remain poorly recognized.",
+      "The stacked-heart fit retains visible false seams and merged components despite passing the aggregate and existing feature checks.",
+      "Printed-tree decoration remains in the derived cutting mask. This fit fails at 8.34% editable disagreement.",
+      "The checkerboard and star remain recognizable, with residual small joins and border defects. Low derived-mask error is not physical ground truth."
+    ]
+  },
+  "validation": {
+    "focusedPythonTestsPassed": 20,
+    "focusedPythonTestsFailed": 0,
+    "cropTestsLog": "tmp/heart-learning/body-outline-crop-tests.log",
+    "allFourNewConversionsGeometryAndNominalPaperChecksPass": true,
+    "allNineReusedProductionEditablePassesReverified": true,
+    "productionChanged": false,
+    "browserExportAttempted": false,
+    "fullApplicationChecks": "No src/ or static/ change; prior full release QA is conni-release-qa.json. This follow-up ran focused research tests, diagnostic assertions and model/pipeline/editable audits; no repeat of the broad application suite.",
+    "focusedCropTestsPassed": 15,
+    "focusedCropTestsFailed": 0,
+    "diagnosticLintPassed": true
+  },
+  "decision": {
+    "productionPromotion": false,
+    "conclusion": "Known-outline loss does not improve 12/32 checked reconstruction coverage and loses one supported crop. Retain as a failed experiment.",
+    "next": "Test outer-silhouette sampling that is insensitive to enclosed NN-mask holes while retaining independent photograph evidence and lobe checks. Also broaden evaluation beyond this repeatedly used development cohort; further training-score gains alone do not justify promotion."
+  },
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "numericalThreads": 1,
+    "newPhotoDownloads": 0,
+    "newSourcePhotoCopies": 0,
+    "browserJobs": 0,
+    "retainedExperimentLogicalMiB": 78.03434371948242,
+    "scope": "Logical bytes including hardlinks to reused fits; not physical disk growth."
+  }
+}
