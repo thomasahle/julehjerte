@@ -840,16 +840,53 @@ in this study. All **216 learning tests** and **2,401 application tests** pass,
 as do type checking, lint and the production build. After merging the next
 upstream generator change, all **65 focused frame tests** also pass.
 
+### Feature-priority counterexample from the NN comparison
+
+The [follow-up scheduling experiment](feature-priority-results.json) tests a
+simple proposed guard: when colour retention promotes a grid with worse raw
+image error, keep the previous first grid ahead of it. This changes scheduling
+only; all finalists and final fidelity/paper checks remain available.
+
+The two complete classifier studies contain **78 distinct masks** after exact
+source/crop/mask/coverage deduplication. The fixed-work screen covers all 63
+fully observed targets; the other 15 use observation weights and cannot enter
+the changed policy. Six unresolved photographs remain recorded. Across original
+and duplicate runs, **1,542 coarse and 251 fine scores replay exactly**. One
+50-step interrupted fit is retained separately from its 150-step diagnostic.
+Only the residual-trained flower mask triggers the guard.
+
+Fresh ten-second comparisons include all three recorded classifier masks of
+that flower. The affected result improves from **9.77% to 3.93%** independent
+weave disagreement, and from **9.78% to 3.98%** after editable conversion.
+Missing features fall from two to one, but **neither arm gains a fully checked
+candidate**. All six exports convert and pass geometry; the joint-readout
+variant still has uncertain paper support. The rendered comparison was inspected.
+
+The existing `hjfig-05` photographic regression provides a counterexample to
+promoting this guard. With its original 60-second allowance and simulated
+one-second graph delay, the unchanged automatic workflow returns four cuts per
+sheet at **0.80%** disagreement in **5.8 seconds**. The guard returns six cuts
+at **1.18%** in **30.3 seconds**, failing the existing **0.95%** quality target.
+Both retain valid engine geometry, paper support and source features, but the
+new result has visibly rougher edges and false seams.
+
+The cause is a coupling between ranking and recovery policy. Restoring the
+lower-error grid starts feature initialization and shortens the routing attempt
+from about **6.44 seconds to 0.75 seconds**; subsequent grid refinement does not
+recover the earlier quality. The guard is **rejected for production**, and the
+original regression target remains intact. A learned ranking proposal will
+also need evaluation through these later scheduling decisions: a lower initial
+mask error does not establish a better template or faster search.
+
 ### Latest solver and browser validation
 
-Main `111f338a`, including the border-fragment repair and subsequent generator
-work, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39405560222)
+Main `9f260ba6`, including the border-fragment repair, generator work and the
+matched neural-training study, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39406954266)
 on 20 October. This includes type checking, lint, application tests, build and
 all four inverse correctness shards. Timed quality benchmarks retain their
 separate advisory policy; a green workflow does not mean every timing target
-was met. The preceding `832349e4` run was cancelled by this newer push after
-its correctness jobs passed. The residual material-classifier experiments
-above remain offline.
+was met. The preceding `111f338a` run also passed before this push. The residual
+material-classifier and scheduling experiments above remain offline.
 
 The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and
 hover outline) and archive are **deployed**. The [latest release record](conni-release-qa.json)
