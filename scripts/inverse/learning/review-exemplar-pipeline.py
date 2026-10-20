@@ -37,7 +37,13 @@ def main():
     methods = run['methods']
     assert methods and len(methods) == len(set(methods))
     assert all(m == 'production' or m in inputs['methods'] for m in methods)
-    columns = 2+2*len(methods)
+    seed_run = None
+    if run.get('seedPipeline'):
+        seed_raw = Path(run['seedPipeline']['path']).read_bytes()
+        assert digest(seed_raw) == run['seedPipeline']['sha256']
+        seed_run = json.loads(seed_raw)
+        assert seed_run['status'] == 'complete'
+    columns = 2+2*len(methods)+int(seed_run is not None)
     assert len(run['rows']) == len(inputs['rows'])*len(methods)
     args.output.mkdir(parents=True)
     results, panels, checks = [], [], 0
@@ -70,6 +76,22 @@ def main():
                     row['assets']['observed.bin']['sha256'] == rows[0]['assets']['observed.bin']['sha256'])
             photos.append(Image.open(checked(args.run, rows[0]['assets']['crop.png'])).convert('RGB'))
             labels = ['Photo', 'Fixed crop']
+            if seed_run is not None:
+                seed = next(r for r in seed_run['rows'] if r['id'] == entry['id'] and
+                            r['method'] == rows[0]['seedMethod'])
+                for row in rows:
+                    assert row['seed']['geometrySha256'] == seed['assets']['cut_geometry.json']['sha256']
+                    assert row['assets']['seed_woven.png']['sha256'] == seed['assets']['woven.png']['sha256']
+                    assert row['targetMaskSha256'] == seed['targetMaskSha256']
+                    assert row['selectedCrop'] == seed['selectedCrop']
+                seed_mask = np.asarray(Image.open(checked(args.run, rows[0]['assets']['seed_woven.png'])).convert('L')) < 128
+                photos.append(Image.fromarray(colours[seed_mask.astype(int)]))
+                labels.append('Starting weave')
+                metrics['seed'] = {
+                    'error': seed['independentImage']['mismatchFraction'],
+                    'checkedPair': seed['checkedPair'],
+                    'slits': seed['report']['slits'],
+                }
             valid = (np.frombuffer(checked(args.run, rows[0]['assets']['observed.bin']).read_bytes(),
                                    dtype=np.uint8).reshape(n, n) != 0
                      if 'observed.bin' in rows[0]['assets'] else np.ones((n, n), bool))
@@ -83,7 +105,7 @@ def main():
                 assert digest(mask.astype(np.uint8).tobytes()) == row['targetMaskSha256']
                 if method == 'production':
                     assert row['targetMaskSha256'] == entry['expectedProductionMaskSha256']
-                elif run['targetMode'] == 'mask':
+                elif run['targetMode'] in ['mask', 'native']:
                     assert row['targetMaskSha256'] == entry['assets'][method]['mask']['sha256']
                 if baseline is None:
                     baseline = mask
@@ -152,7 +174,7 @@ def main():
                 if metric:
                     error = metric['fitError']
                     text = ('%.2f%%; ' % (100*error) if error is not None else '')+metric['status']
-                    draw.text(((3+2*k)*240+3, j*300+275), text, fill='black')
+                    draw.text(((3+int(seed_run is not None)+2*k)*240+3, j*300+275), text, fill='black')
         file = args.output/('review-%02d.jpg' % (start//3+1))
         sheet.save(file, quality=92)
         galleries.append({'path': str(file), 'sha256': digest(file.read_bytes()),

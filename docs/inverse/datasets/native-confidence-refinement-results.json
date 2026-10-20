@@ -1,0 +1,2225 @@
+{
+  "schema": "native-confidence-refinement-results-1",
+  "status": "complete",
+  "date": "2026-10-20",
+  "plan": {
+    "path": "docs/inverse/datasets/native-confidence-refinement-plan.json",
+    "sha256": "eb7863c8ee82296c08bdfd2e8829eec5019ba0cb90a9389b0340ad40b20652fd"
+  },
+  "references": {
+    "run": {
+      "path": "tmp/heart-learning/native-confidence-refinement-v1/report.json",
+      "sha256": "a4a38d5f5fc826f0b2127fc7d7696d7fb922d43bf71fec8647aef1c5eea09756"
+    },
+    "seedPipeline": {
+      "path": "tmp/heart-learning/native-confidence-pipeline-v1/report.json",
+      "sha256": "44b65f967c1d99dbcd934a36873273fb5e025f6627622be242be2d9353ec3005"
+    },
+    "editable": {
+      "path": "tmp/heart-learning/native-confidence-refinement-editor-v1/results.json",
+      "sha256": "81db56df6ccbfd7c2a8764889d3af35d74f4099736464802ed46c933b4ba4410"
+    },
+    "seedEditable": {
+      "path": "tmp/heart-learning/native-confidence-editor-v1/results.json",
+      "sha256": "fde032f41a6d12fce28fa9ba0865b00bd82263e6fb79c902b20798b33b598d08"
+    },
+    "fields": {
+      "path": "tmp/heart-learning/native-confidence-refinement-fields-v1/report.json",
+      "sha256": "ed1d6f0d1f99a66650abddd4fa8cee69ed55cd1e6fb97246850c47bafcbf598a"
+    },
+    "review": {
+      "path": "tmp/heart-learning/native-confidence-refinement-review-v1/report.json",
+      "sha256": "ad4d5a63022b739e70537210bb67438503c94b112806cbe79544ddb457f3cfd9"
+    },
+    "crossTarget": {
+      "path": "tmp/heart-learning/native-confidence-refinement-cross-target-v1.json",
+      "sha256": "69bf32003574de512e4b17403e8d547a4a540e61fcdfe81a8798e8d881321121"
+    },
+    "structuralAudit": {
+      "path": "tmp/heart-learning/native-confidence-refinement-topology-v1.json",
+      "sha256": "f1e459f2d28980d46318913cb187aacfc6a1554f0f8b5b6234ad06758926bc26"
+    },
+    "legacyReviewReplay": {
+      "path": "tmp/heart-learning/native-confidence-refinement-review-compatibility.json",
+      "sha256": "1885562d045fa3e6dc254e572a9636cf8a7628b346d0258a5e4591554bf90547"
+    },
+    "lint": {
+      "path": "tmp/heart-learning/native-confidence-refinement-lint-v1.log",
+      "sha256": "9c6c2fb90ed12a33545bb4e880d0bb4bbea040cfb55116f470c813ae79c3987a"
+    },
+    "baseCI": {
+      "path": "tmp/heart-learning/native-confidence-refinement-base-ci.json",
+      "sha256": "320bc938d64d251be6892b34e41dbc20e7395f8e200fb5ee598a581cdfed50e2"
+    },
+    "unchangedApplicationQA": {
+      "path": "tmp/heart-learning/native-confidence-app-qa-v1/results.json",
+      "sha256": "b1f9c07c3a845c4b8beaaf91f550ed47152d07b7f947f83f01e12106712e0a26"
+    }
+  },
+  "decision": "Keep offline. With the same initial paths and matched work, continuous scores add no accepted candidates and do not improve mean mask disagreement relative to hard-mask continuation. Do not promote confidence-only refinement or add this continuation to the ten-second pipeline.",
+  "controls": {
+    "developmentPhotos": 32,
+    "fixedCrops": 26,
+    "unresolvedCrops": 6,
+    "pairedInitialGeometries": 26,
+    "unchangedCutAndSharedCurveStructures": 52,
+    "computedStepsPerCandidate": 160,
+    "computedStepsTotal": 8320,
+    "newCountSearches": 0,
+    "newMILPRouting": 0,
+    "newModelInference": 0,
+    "newTrainingSteps": 0,
+    "sharedCurveSplitNegativeControlPassed": true,
+    "curveRenameControlPassed": true,
+    "initialIdenticalSheetPairs": 0,
+    "nativeFieldReconstructions": 26,
+    "thresholdTies": 0,
+    "independentCandidateTargetComparisons": 104,
+    "convertedExports": 52,
+    "reviewAssetHashChecks": 600,
+    "unchangedLegacyReviewRows": 32,
+    "unchangedLegacyReviewJpegPages": 11,
+    "selection": "Original mask and full paper audit at each checkpoint; no finish() repairs. Every raw result retained, including small regressions from the seed."
+  },
+  "seedHardBaseline": {
+    "attemptedPhotos": 32,
+    "fixedCrops": 26,
+    "unresolvedCrops": 6,
+    "engineChecked": 12,
+    "editableConverted": 26,
+    "editableChecked": 12,
+    "meanEngineMaskDisagreement": 0.03529117476643362,
+    "meanEditableMaskDisagreement": 0.03537061872284951,
+    "errorDenominator": 26,
+    "totalSolveSeconds": 221.3616402939999,
+    "medianSolveSeconds": 9.495873791999994,
+    "maximumSolveSeconds": 10.611290999999998
+  },
+  "summary": {
+    "hard": {
+      "attemptedPhotos": 32,
+      "fixedCrops": 26,
+      "unresolvedCrops": 6,
+      "engineChecked": 12,
+      "editableConverted": 26,
+      "editableChecked": 12,
+      "newEnginePasses": [],
+      "lostEnginePasses": [],
+      "newEditablePasses": [],
+      "lostEditablePasses": [],
+      "engineGeometryPassed": 26,
+      "enginePaperPassed": 25,
+      "independentFeaturesPassed": 15,
+      "meanEngineMaskDisagreement": 0.03324805274073913,
+      "meanEditableMaskDisagreement": 0.033350955764301145,
+      "errorDenominator": 26,
+      "independentErrorImprovedFromSeed": 19,
+      "independentErrorUnchangedFromSeed": 4,
+      "independentErrorWorseThanSeed": 3,
+      "meanAdditionalRefinementSeconds": 2.7013319921153824,
+      "maximumAdditionalRefinementSeconds": 8.817023417000003,
+      "computedGradientSteps": 4160
+    },
+    "confidence": {
+      "attemptedPhotos": 32,
+      "fixedCrops": 26,
+      "unresolvedCrops": 6,
+      "engineChecked": 12,
+      "editableConverted": 26,
+      "editableChecked": 12,
+      "newEnginePasses": [],
+      "lostEnginePasses": [],
+      "newEditablePasses": [],
+      "lostEditablePasses": [],
+      "engineGeometryPassed": 26,
+      "enginePaperPassed": 25,
+      "independentFeaturesPassed": 15,
+      "meanEngineMaskDisagreement": 0.0333376011650408,
+      "meanEditableMaskDisagreement": 0.03339216470995064,
+      "errorDenominator": 26,
+      "independentErrorImprovedFromSeed": 12,
+      "independentErrorUnchangedFromSeed": 10,
+      "independentErrorWorseThanSeed": 4,
+      "meanAdditionalRefinementSeconds": 2.6169780834230756,
+      "maximumAdditionalRefinementSeconds": 9.298501667,
+      "computedGradientSteps": 4160
+    }
+  },
+  "rows": [
+    {
+      "id": "real-1bcc922200edde26-body-1",
+      "status": "crop-unresolved",
+      "source": "tmp/heart-training-real/assets/1bcc922200edde26ff8dc0513fbabdbcc092f9d7bd6e2e09e213c703d8c3099b.jpg",
+      "sourceSha256": "1bcc922200edde26ff8dc0513fbabdbcc092f9d7bd6e2e09e213c703d8c3099b",
+      "methods": {
+        "hard": {
+          "status": "crop-unresolved"
+        },
+        "confidence": {
+          "status": "crop-unresolved"
+        }
+      }
+    },
+    {
+      "id": "real-80a649a21ea938ae-body-1",
+      "status": "crop-unresolved",
+      "source": "tmp/heart-training-real/assets/80a649a21ea938ae429e5d5268fc40db7e2e00ed0987c54d1346543557cb4184.jpg",
+      "sourceSha256": "80a649a21ea938ae429e5d5268fc40db7e2e00ed0987c54d1346543557cb4184",
+      "methods": {
+        "hard": {
+          "status": "crop-unresolved"
+        },
+        "confidence": {
+          "status": "crop-unresolved"
+        }
+      }
+    },
+    {
+      "id": "real-f6e5e128449e3cb9-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/f6e5e128449e3cb9733275863a9e089bc3ae1eb18e74f222feae36b7839546f8.jpg",
+      "sourceSha256": "f6e5e128449e3cb9733275863a9e089bc3ae1eb18e74f222feae36b7839546f8",
+      "seed": {
+        "geometrySha256": "f21a8700d67c8750040e9fa933dfc6d2351ff660eb93daf7fa10280e27f636fb",
+        "error": 0.02063125,
+        "checkedPair": false,
+        "slits": {
+          "left": 3,
+          "right": 3
+        }
+      },
+      "targetMaskSha256": "f73f827f7298857e57b15e149a7c96fa62a4eb13de7df8c99602f66d163812bb",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "3a7acc93e6cbd33cdfa893728e7279149f87777bd3817585e41a69eb17e82498",
+          "independentError": 0.02035,
+          "seedImageChange": -0.00028125000000000025,
+          "additionalRefinementSeconds": 2.156320625,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 5,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 5,
+            "missingAfter": 5,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.02044375,
+          "editableMissingFeatures": 5,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "01c5d26d06afa104e27abb76166cb23e03e6933f3e24bade2efaeb61ad128732",
+          "independentError": 0.0206625,
+          "seedImageChange": 3.125000000000003e-05,
+          "additionalRefinementSeconds": 1.789745,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 5,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 5,
+            "missingAfter": 5,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.0207875,
+          "editableMissingFeatures": 5,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-fcbcc23efea92b93-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/fcbcc23efea92b93609b156241237793fa738b3d17c8bed30113bed3aa2d7695.jpg",
+      "sourceSha256": "fcbcc23efea92b93609b156241237793fa738b3d17c8bed30113bed3aa2d7695",
+      "seed": {
+        "geometrySha256": "536205a58b1630706a2d809a88fb1e2283f59acd5c2dfc33568ccb0f34ee9371",
+        "error": 0.013348334318567533,
+        "checkedPair": true,
+        "slits": {
+          "left": 4,
+          "right": 3
+        }
+      },
+      "targetMaskSha256": "3dd52ebd164eda7147064d1eb8e53c1750349d888b576d547aaf343526b1a1e4",
+      "observedPixels": 52441,
+      "methods": {
+        "hard": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "0fda1a9b72fec09dd862cc721bb400968ab65c268517f5d95d5f587717acf641",
+          "independentError": 0.012452089014320857,
+          "seedImageChange": -0.0008962453042466768,
+          "additionalRefinementSeconds": 3.8250789999999997,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.01247115806334738,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "52dd7009bc69beefa86a461873bea17013759c179bda41ae880693d1a4ad6d6e",
+          "independentError": 0.013348334318567533,
+          "seedImageChange": 0,
+          "additionalRefinementSeconds": 3.4962069579999997,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.013138574779275757,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-55704c6e2911bebc-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/55704c6e2911bebc83f7cc828096cb0bb6856014b4a95979b1faf1b49260ca04.jpg",
+      "sourceSha256": "55704c6e2911bebc83f7cc828096cb0bb6856014b4a95979b1faf1b49260ca04",
+      "seed": {
+        "geometrySha256": "2b19df04d46636596580d7c0cf8dc25003ee470f0795f0154f22512103a9d0f4",
+        "error": 0.088875,
+        "checkedPair": false,
+        "slits": {
+          "left": 3,
+          "right": 3
+        }
+      },
+      "targetMaskSha256": "6e18c6c968a4102dbddbd544ccb2883f8b1aee737f38d1242abe2f81dc78e155",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "3125cab54a6a7c7f886c1c55b75aca0159e3450cbb3fbe08a6e3d53d458cfe05",
+          "independentError": 0.0888125,
+          "seedImageChange": -6.249999999999312e-05,
+          "additionalRefinementSeconds": 3.035226999999999,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 29,
+          "featureChange": {
+            "passed": false,
+            "missingBefore": 24,
+            "missingAfter": 23,
+            "regressed": [
+              {
+                "value": 1,
+                "areaMm2": 18.8125,
+                "centerMm": [
+                  52.384966777408636,
+                  60.6748338870432
+                ],
+                "retainedFraction": 0.14285714285714285,
+                "retainedBefore": 0.14950166112956811,
+                "requiredRetention": 0.14950166112956811
+              }
+            ]
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.089175,
+          "editableMissingFeatures": 30,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "a725473f0a60ad01cc82856fc272d52ca2761d3f504848a38d19284d52341425",
+          "independentError": 0.08888125,
+          "seedImageChange": 6.249999999999312e-06,
+          "additionalRefinementSeconds": 2.7023369170000007,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 30,
+          "featureChange": {
+            "passed": false,
+            "missingBefore": 24,
+            "missingAfter": 24,
+            "regressed": [
+              {
+                "value": 1,
+                "areaMm2": 5.0625,
+                "centerMm": [
+                  34.239197530864196,
+                  22.026234567901234
+                ],
+                "retainedFraction": 0.12345679012345678,
+                "retainedBefore": 0.13580246913580246,
+                "requiredRetention": 0.13580246913580246
+              },
+              {
+                "value": 1,
+                "areaMm2": 18.8125,
+                "centerMm": [
+                  52.384966777408636,
+                  60.6748338870432
+                ],
+                "retainedFraction": 0.14285714285714285,
+                "retainedBefore": 0.14950166112956811,
+                "requiredRetention": 0.14950166112956811
+              }
+            ]
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.0893125,
+          "editableMissingFeatures": 30,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-24b5ed49c9411b11-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/24b5ed49c9411b1162d0746a0366ae3a32c46cdb787e248ec09931a66b9ce1dd.jpg",
+      "sourceSha256": "24b5ed49c9411b1162d0746a0366ae3a32c46cdb787e248ec09931a66b9ce1dd",
+      "seed": {
+        "geometrySha256": "0bf5bf27905a43239eb2af0ad9d09682b4bdce33e4b4306f54f2fc4a81451467",
+        "error": 0.0291,
+        "checkedPair": true,
+        "slits": {
+          "left": 7,
+          "right": 7
+        }
+      },
+      "targetMaskSha256": "513d56c1fc54920d1ea4e2879b27e9b74565dee442ded76338c56556f4d0ac6a",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "dcf02779ef4db56e007e578eb94f2dce16271f60e03f93ee4e6d69a33a2116e6",
+          "independentError": 0.02790625,
+          "seedImageChange": -0.0011937500000000004,
+          "additionalRefinementSeconds": 8.817023417000003,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.02860625,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "657b939dbf2a487440ae5025761d07181ab9b290240b9114e6e057e5da58274c",
+          "independentError": 0.02893125,
+          "seedImageChange": -0.00016875000000000223,
+          "additionalRefinementSeconds": 9.298501667,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.029375,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-589f606a9d9899f2-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/589f606a9d9899f2e9dae91b7fe9d2cd24b94838db6f20257cec43a7062f600c.jpg",
+      "sourceSha256": "589f606a9d9899f2e9dae91b7fe9d2cd24b94838db6f20257cec43a7062f600c",
+      "seed": {
+        "geometrySha256": "5b8a50de5986598db2ba05faf83f4ce6aa5b54a350fc04624e707edacc5ab13c",
+        "error": 0.07669375,
+        "checkedPair": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        }
+      },
+      "targetMaskSha256": "85d4f64324cb687aecea94ad3725736da9d76783972c5dfe3e29c3cf7e0a1869",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "24168f5d999297af73d559e698da0559e51dcf75068871d5262bd8641a42bef3",
+          "independentError": 0.05383125,
+          "seedImageChange": -0.022862500000000008,
+          "additionalRefinementSeconds": 1.4614644169999955,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 1,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 3,
+            "missingAfter": 1,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.0537625,
+          "editableMissingFeatures": 1,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "ec7de49c02b87c6b95854290cb5643238adedbf8a97422add9ee94513efe4182",
+          "independentError": 0.05431875,
+          "seedImageChange": -0.022375000000000006,
+          "additionalRefinementSeconds": 1.3520860840000024,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 1,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 3,
+            "missingAfter": 1,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.05408125,
+          "editableMissingFeatures": 1,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-dfa7e4b71b43aa86-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/dfa7e4b71b43aa866156f7c24493f1113307e330668ebbecd3a2bbc297fa8301.jpg",
+      "sourceSha256": "dfa7e4b71b43aa866156f7c24493f1113307e330668ebbecd3a2bbc297fa8301",
+      "seed": {
+        "geometrySha256": "b83fbfb27dbe3f450774b37774eeaa5ffca1a59c660d803b48e064a9606b75d1",
+        "error": 0.119575,
+        "checkedPair": false,
+        "slits": {
+          "left": 3,
+          "right": 3
+        }
+      },
+      "targetMaskSha256": "78439ec46e7d3e6618566fc85699659d45441d4251c3c0775abb8d85b705876d",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "9a69f8dd4013b19a1794ee8e2785ab5eaad7c8f8a6abbe239e1193fd5a26ea8e",
+          "independentError": 0.11621875,
+          "seedImageChange": -0.003356250000000005,
+          "additionalRefinementSeconds": 3.260586000000003,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 38,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 36,
+            "missingAfter": 36,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.11638125,
+          "editableMissingFeatures": 38,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "68381d47f1501ca0f5bfc17bc7510eb6d20849e0f831863ee642c157884cc532",
+          "independentError": 0.11774375,
+          "seedImageChange": -0.0018312500000000065,
+          "additionalRefinementSeconds": 3.2719936249999955,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 38,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 36,
+            "missingAfter": 36,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.11779375,
+          "editableMissingFeatures": 38,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-2b0550dd86d23b40-body-1",
+      "status": "crop-unresolved",
+      "source": "tmp/heart-training-real/assets/2b0550dd86d23b406cbee98615558ecc726de82f1668629d736bbdd15b01d305.jpg",
+      "sourceSha256": "2b0550dd86d23b406cbee98615558ecc726de82f1668629d736bbdd15b01d305",
+      "methods": {
+        "hard": {
+          "status": "crop-unresolved"
+        },
+        "confidence": {
+          "status": "crop-unresolved"
+        }
+      }
+    },
+    {
+      "id": "real-2502cdec0720f4ea-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/2502cdec0720f4eab6bcc6e6c3ca830a472f54fbccfb58b0ef10eed5c5ac8cbd.jpg",
+      "sourceSha256": "2502cdec0720f4eab6bcc6e6c3ca830a472f54fbccfb58b0ef10eed5c5ac8cbd",
+      "seed": {
+        "geometrySha256": "6d20ca1b690b3a9e9d4ed27e3c2016f24a1567e4a275065d28910dd44027a36b",
+        "error": 0.0299625,
+        "checkedPair": false,
+        "slits": {
+          "left": 6,
+          "right": 6
+        }
+      },
+      "targetMaskSha256": "97e3dac87b749c2ef1624ea83bf8230f6b180828abcb064d713a8ccf47a90544",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "d0434385532f42c290177be52038680ab971954e0874562e1b14302f8f2c1376",
+          "independentError": 0.02753125,
+          "seedImageChange": -0.0024312499999999994,
+          "additionalRefinementSeconds": 4.841924999999995,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 1,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.02786875,
+          "editableMissingFeatures": 1,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "49b81e5c7b4d3cce07d9465978960addf96ee11efdf69b805d104fdbd59de08d",
+          "independentError": 0.02851875,
+          "seedImageChange": -0.0014437500000000006,
+          "additionalRefinementSeconds": 4.827037082999996,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 2,
+          "featureChange": {
+            "passed": false,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": [],
+            "enclosuresOpened": [
+              {
+                "centerMm": [
+                  49.57391640866873,
+                  85.15982972136221
+                ],
+                "sourceAreaMm2": 20.1875,
+                "intersectionPixels": 271,
+                "retention": 0.8390092879256966,
+                "predictedComponentAreaMm2": 4428.875,
+                "touchesBorder": true,
+                "componentIoU": 0.0038215303043122656
+              }
+            ]
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.02875,
+          "editableMissingFeatures": 2,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-d3f063052599e167-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/d3f063052599e167ddc94cefc8951a15f9204a01708018fd254332d547c3ca94.jpg",
+      "sourceSha256": "d3f063052599e167ddc94cefc8951a15f9204a01708018fd254332d547c3ca94",
+      "seed": {
+        "geometrySha256": "5252077248d54c53c64f54e04ec83f60a93e53db1165fd331aaaee7071d01d11",
+        "error": 0.044325,
+        "checkedPair": false,
+        "slits": {
+          "left": 6,
+          "right": 6
+        }
+      },
+      "targetMaskSha256": "2ff750efecd2f17aff0227e0ee74394fabc958f3d126c11e86c314b7acdc1210",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "791019af24e479c663325feb1180fec6208b80e6b69603f977529c9d375f3004",
+          "independentError": 0.04395625,
+          "seedImageChange": -0.000368750000000001,
+          "additionalRefinementSeconds": 5.533008040999993,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 2,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.04451875,
+          "editableMissingFeatures": 2,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "c0cd46b9d62235a8cf7bd10b2a212d4bf14bf765d69ec704b3bcff34eed78e9c",
+          "independentError": 0.03673125,
+          "seedImageChange": -0.007593750000000003,
+          "additionalRefinementSeconds": 5.412274208999996,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 2,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.03726875,
+          "editableMissingFeatures": 2,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-a126ed5d62adfd92-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/a126ed5d62adfd9202b1d6cde5f0dc8b3da4c365c5687975b11f1191231831a0.jpg",
+      "sourceSha256": "a126ed5d62adfd9202b1d6cde5f0dc8b3da4c365c5687975b11f1191231831a0",
+      "seed": {
+        "geometrySha256": "528d111bbb697d031cb12fd41c2d074fa9cad2424b48e5d18093b7913f274937",
+        "error": 0.020188998059953688,
+        "checkedPair": true,
+        "slits": {
+          "left": 2,
+          "right": 1
+        }
+      },
+      "targetMaskSha256": "7ef71a2c2bdafa0c3cb1a68500c6cc8fe63330874d46012c80c2414565d30111",
+      "observedPixels": 159790,
+      "methods": {
+        "hard": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "0eee12a8ccaa10749852c0e83badd9b8b91293bd18ccddec80e20273fb6c8b92",
+          "independentError": 0.020188998059953688,
+          "seedImageChange": 0,
+          "additionalRefinementSeconds": 0.695778250000003,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.020188998059953688,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "0eee12a8ccaa10749852c0e83badd9b8b91293bd18ccddec80e20273fb6c8b92",
+          "independentError": 0.020188998059953688,
+          "seedImageChange": 0,
+          "additionalRefinementSeconds": 0.7332829579999961,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.020188998059953688,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-5088a58018c3aa28-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/5088a58018c3aa281e2715fad627c6bac0d111a06625fce8eb884694deaa87da.jpg",
+      "sourceSha256": "5088a58018c3aa281e2715fad627c6bac0d111a06625fce8eb884694deaa87da",
+      "seed": {
+        "geometrySha256": "9221591364688f04528de21b050cbc4547cffcbffa1669b8d6daf51ed38e3f2a",
+        "error": 0.023294623548383065,
+        "checkedPair": false,
+        "slits": {
+          "left": 3,
+          "right": 3
+        }
+      },
+      "targetMaskSha256": "26c597fe78d3bf392ebd62939a6fb303e13f307b33be138daa9b38c6b28e1821",
+      "observedPixels": 159994,
+      "methods": {
+        "hard": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "2de0ac3f4304a833ceb7e71c77849207310beda2b0147dbcca6d58867d4dd084",
+          "independentError": 0.023288373313999276,
+          "seedImageChange": -6.250234383789466e-06,
+          "additionalRefinementSeconds": 2.6262937089999907,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 3,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 3,
+            "missingAfter": 3,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.023313374251534433,
+          "editableMissingFeatures": 3,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "c1d8e51be1b388bf10de1a014f336f9b89e01aff22f0eea597e54b91c466094b",
+          "independentError": 0.023294623548383065,
+          "seedImageChange": 0,
+          "additionalRefinementSeconds": 2.11175229199999,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 3,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 3,
+            "missingAfter": 3,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.023294623548383065,
+          "editableMissingFeatures": 3,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-1a7cfc6be8b164b5-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/1a7cfc6be8b164b596e62254fc53e38df55e877524c08ebc597957b4ac15177a.jpg",
+      "sourceSha256": "1a7cfc6be8b164b596e62254fc53e38df55e877524c08ebc597957b4ac15177a",
+      "seed": {
+        "geometrySha256": "ea15dc47bec11ebd1f2e1d6ff3045105dd48e532b995614dd8c22dd72edbadf8",
+        "error": 0.00485625,
+        "checkedPair": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        }
+      },
+      "targetMaskSha256": "7bc8a8b42c062c7e02088f4f6de7506afffeb5110e77d14df1d45dcf04140c0b",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "68dc7a2f7156401e3c539f62e635c7d38b3ed8e8bc29a4faeabf846a354b61f1",
+          "independentError": 0.00476875,
+          "seedImageChange": -8.74999999999999e-05,
+          "additionalRefinementSeconds": 0.6293468750000029,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.00465,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "bb466e39cc0bc4fda645ff935737b3951e2daf3eff51e638388c1ce0beb7895a",
+          "independentError": 0.00485625,
+          "seedImageChange": 0,
+          "additionalRefinementSeconds": 0.6082380419999972,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.00466875,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-fe7fb089d1cd86b4-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/fe7fb089d1cd86b444dc68d47f6aa4d04f5b88eb3bf68c5c8304568f0a3ea4d8.jpg",
+      "sourceSha256": "fe7fb089d1cd86b444dc68d47f6aa4d04f5b88eb3bf68c5c8304568f0a3ea4d8",
+      "seed": {
+        "geometrySha256": "f127dd16d5a781ff3233ef1e7810792de8a9c2b6842ea678a4abd8e3c328a69f",
+        "error": 0.03433125,
+        "checkedPair": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        }
+      },
+      "targetMaskSha256": "249a44e293c662aaab7a742e6515b62e29357cd3ac310205d9dba0025432e2ce",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "b5dfc7cff90db89c88b86dd9f9158a5280d57af0d097d01935ce7731fd70ab2c",
+          "independentError": 0.03435625,
+          "seedImageChange": 2.4999999999997247e-05,
+          "additionalRefinementSeconds": 3.2380254589999966,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 8,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 8,
+            "missingAfter": 8,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.034625,
+          "editableMissingFeatures": 8,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "fa3e2afe42d3e2324d142e503daf3130c75b3227b84968afd72b1ac0e4a20845",
+          "independentError": 0.03433125,
+          "seedImageChange": 0,
+          "additionalRefinementSeconds": 3.2469837090000073,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 8,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 8,
+            "missingAfter": 8,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.03474375,
+          "editableMissingFeatures": 8,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-8b91ecf546833a3f-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/8b91ecf546833a3f968f00685ad2a1702f4967f9bc9a5fcd9117feb00b19d96e.jpg",
+      "sourceSha256": "8b91ecf546833a3f968f00685ad2a1702f4967f9bc9a5fcd9117feb00b19d96e",
+      "seed": {
+        "geometrySha256": "f16706c043dff5cd189012c75a55f27392cab894e4382a0e48ecf9e6857b4522",
+        "error": 0.0161,
+        "checkedPair": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        }
+      },
+      "targetMaskSha256": "e37a9352d7a427961492feb476ce43b3598ad91b701a0299c710269f9d73838b",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "9b6f4b7891a1f63eb9e4837c6a46c84f717dbb5417f654394ff828a5e469dd19",
+          "independentError": 0.01534375,
+          "seedImageChange": -0.00075625,
+          "additionalRefinementSeconds": 1.8643074170000036,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.0152375,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "7a706985152d79c19c49ceee57ca131184a405399e5cfdada8ae5f80c3875998",
+          "independentError": 0.01555625,
+          "seedImageChange": -0.0005437499999999991,
+          "additionalRefinementSeconds": 1.9143735829999933,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.01546875,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-b5317080eec610dc-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/b5317080eec610dc8a022fa1895f04440a629d6e6e6f2d1562550bf48ca92ed5.jpg",
+      "sourceSha256": "b5317080eec610dc8a022fa1895f04440a629d6e6e6f2d1562550bf48ca92ed5",
+      "seed": {
+        "geometrySha256": "64e862ca61c07ff9f74df49f58eca45c6cb21fb436e0307a05ff4fe6ebf802c1",
+        "error": 0.1157625,
+        "checkedPair": false,
+        "slits": {
+          "left": 2,
+          "right": 2
+        }
+      },
+      "targetMaskSha256": "a68333d0824f5b36b16bf53b411e9024935fbe74575cdaf506ad1067a5196964",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "c966001265c07317158852772a8c0394b68a7169a3aefa9ecb4b5d77615157f6",
+          "independentError": 0.1157625,
+          "seedImageChange": 0,
+          "additionalRefinementSeconds": 1.6704831249999987,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 44,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 41,
+            "missingAfter": 41,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.1160875,
+          "editableMissingFeatures": 44,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "c966001265c07317158852772a8c0394b68a7169a3aefa9ecb4b5d77615157f6",
+          "independentError": 0.1157625,
+          "seedImageChange": 0,
+          "additionalRefinementSeconds": 1.669050958000007,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 44,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 41,
+            "missingAfter": 41,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.1160875,
+          "editableMissingFeatures": 44,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-c7d1e0ad5050db71-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/c7d1e0ad5050db713a43a7acccacecdac65b68c0fc4072f587ff7b3422f9b0ba.jpg",
+      "sourceSha256": "c7d1e0ad5050db713a43a7acccacecdac65b68c0fc4072f587ff7b3422f9b0ba",
+      "seed": {
+        "geometrySha256": "d78dffcd499f08efece7d34f130df8202366956c09535303fe18eca40dfb3c6f",
+        "error": 0.0067943869737787915,
+        "checkedPair": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        }
+      },
+      "targetMaskSha256": "017df7b5825d2e1696d37a07156036c25fb7bdaf4e3dc5c1bf43ff9afebf8a15",
+      "observedPixels": 159985,
+      "methods": {
+        "hard": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "ae59d5c91fe49117a6ea774c84fa3c80b6ef03ad58c551b8a0ba285fc7ec60a3",
+          "independentError": 0.006869394005688033,
+          "seedImageChange": 7.500703190924194e-05,
+          "additionalRefinementSeconds": 3.0342911250000033,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.006963152795574585,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "b26b14a491d512c873452f4d3fdf50a170bbb4282a2bf6bb2f4e8fc3e646ffca",
+          "independentError": 0.0067943869737787915,
+          "seedImageChange": 0,
+          "additionalRefinementSeconds": 2.9400205419999983,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.006969403381567022,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-45ad148d9ec045be-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/45ad148d9ec045bec60048664871f4bfb466b2e5d1acd017b0fd35d173b532b9.jpg",
+      "sourceSha256": "45ad148d9ec045bec60048664871f4bfb466b2e5d1acd017b0fd35d173b532b9",
+      "seed": {
+        "geometrySha256": "208c8e5e6ac98bb8b03944d983582718216db484c12c3399d427fc50045d96a5",
+        "error": 0.01810625,
+        "checkedPair": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        }
+      },
+      "targetMaskSha256": "9fbff5d61bcfb7521c2925f11ac09ad0674089e5a7269c291330e8e06f5a1c35",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "1afc7586a34e7d6f22ce2e39cf9d97668ee6a2629dfc45c12a1237f370023d83",
+          "independentError": 0.01676875,
+          "seedImageChange": -0.0013375000000000019,
+          "additionalRefinementSeconds": 1.5458274590000074,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "fail",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.01688125,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "fail"
+        },
+        "confidence": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "1cdecd3e49d1fae81344bbd97c9952ab96ef368672e31587affbe4fe7b180ca6",
+          "independentError": 0.01836875,
+          "seedImageChange": 0.00026249999999999885,
+          "additionalRefinementSeconds": 1.3363719579999889,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "uncertain",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.01811875,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "uncertain"
+        }
+      }
+    },
+    {
+      "id": "real-702942779385436c-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/702942779385436cd9d6d0007130c158ce35361ed3d06900d7825eea647bcfce.jpg",
+      "sourceSha256": "702942779385436cd9d6d0007130c158ce35361ed3d06900d7825eea647bcfce",
+      "seed": {
+        "geometrySha256": "834ca6d555a0df2f443c3769919ad8824843123c37fe4794cbf885bca59950dd",
+        "error": 0.0619625,
+        "checkedPair": false,
+        "slits": {
+          "left": 3,
+          "right": 3
+        }
+      },
+      "targetMaskSha256": "6debf5e7a3cbbcc38fb16aaf5855b5c9343b68fbc0382ae15b84fb0ac49b13be",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "d6203488875ecd49838899701994877b94a56a6ba3581e0599d66d862697087e",
+          "independentError": 0.0616125,
+          "seedImageChange": -0.00034999999999999615,
+          "additionalRefinementSeconds": 1.6762696250000009,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 25,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 24,
+            "missingAfter": 24,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.061575,
+          "editableMissingFeatures": 25,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "898624f77b8d9009e3717882dd2b1f8a82b98656e00c614a12ef04623a0ccfe3",
+          "independentError": 0.0619625,
+          "seedImageChange": 0,
+          "additionalRefinementSeconds": 1.686930250000005,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 25,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 24,
+            "missingAfter": 24,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.06200625,
+          "editableMissingFeatures": 25,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-03bddab9c8f384c4-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/03bddab9c8f384c4f87cab690d00d92761b99d4339cee83a471398a117d82ddd.jpg",
+      "sourceSha256": "03bddab9c8f384c4f87cab690d00d92761b99d4339cee83a471398a117d82ddd",
+      "seed": {
+        "geometrySha256": "4faca541a4f217a0bc7bdc6081bbd9e567145d3a253379be5e0104b61c9baeb7",
+        "error": 0.016722771897039437,
+        "checkedPair": false,
+        "slits": {
+          "left": 5,
+          "right": 2
+        }
+      },
+      "targetMaskSha256": "6e8660c631c318153068e07b4e25bed9f73ee0bb82cb2968472970b31c4e7d38",
+      "observedPixels": 156254,
+      "methods": {
+        "hard": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "d0ada22308e52cc4e06091dbf956679871d632fb1e0da216060d3f2a4e43df0f",
+          "independentError": 0.01672917173320363,
+          "seedImageChange": 6.399836164194123e-06,
+          "additionalRefinementSeconds": 1.9460598750000062,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 1,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 1,
+            "missingAfter": 1,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.016735571569367825,
+          "editableMissingFeatures": 1,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "573d300596e8f0147591c491cf211253cb042e80e515cc3f50c837b2c8ce555c",
+          "independentError": 0.016492377795128445,
+          "seedImageChange": -0.00023039410191099188,
+          "additionalRefinementSeconds": 1.9912239169999957,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": false,
+          "missingFeatures": 1,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 1,
+            "missingAfter": 1,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.016370780908008756,
+          "editableMissingFeatures": 1,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-eb60ff94dfc6e2f8-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/eb60ff94dfc6e2f85e09e9e82b2ae369806b839081c63811e26c0c0e3e5528a8.jpg",
+      "sourceSha256": "eb60ff94dfc6e2f85e09e9e82b2ae369806b839081c63811e26c0c0e3e5528a8",
+      "seed": {
+        "geometrySha256": "86a2f39320307b89743cdfba4dd2a87fe320f9b5a0fa34967a82838b641398de",
+        "error": 0.0090875,
+        "checkedPair": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        }
+      },
+      "targetMaskSha256": "a46834f177743da624b38be11ef65b2c68291e640c410e2f6d6fcf252137fd56",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "c7c5879172c18566509be399f341f1f48fd16e71bfdf8565be2925c457d941d1",
+          "independentError": 0.00880625,
+          "seedImageChange": -0.00028125000000000025,
+          "additionalRefinementSeconds": 1.7592091669999936,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.0086125,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "3b908085615bf282295165b3c03214addc62e8372ae6f0b943bae709198672cf",
+          "independentError": 0.0090875,
+          "seedImageChange": 0,
+          "additionalRefinementSeconds": 1.5238607919999922,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.00880625,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-af21a4ef38355dfa-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/af21a4ef38355dfa63085e3ac742e6c152e213ae70ddd3a72d2a66923ab833a8.jpg",
+      "sourceSha256": "af21a4ef38355dfa63085e3ac742e6c152e213ae70ddd3a72d2a66923ab833a8",
+      "seed": {
+        "geometrySha256": "e54d4a55dc8d9b6430b4f15467c863de57150cb205a9f9e44704ae97725f0cba",
+        "error": 0.0211125,
+        "checkedPair": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        }
+      },
+      "targetMaskSha256": "25cbf4c2358c1cb505b2a0009c1f91c37ea04356a81ec3bb1e7e2cde53f3e81c",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "20d8e625344edefb3dec6e239d55a17c181d742dea5aefe72cdc6dcce0316b32",
+          "independentError": 0.01768125,
+          "seedImageChange": -0.0034312500000000003,
+          "additionalRefinementSeconds": 1.2773300829999934,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.0176,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "7a4140f821600c4e9da86d07d31b1cdf1ae1cb6d999b030a635887212633ba48",
+          "independentError": 0.0182,
+          "seedImageChange": -0.0029124999999999984,
+          "additionalRefinementSeconds": 1.2254322920000122,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.01819375,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-f4bd8d13fc7e68d0-body-1",
+      "status": "crop-unresolved",
+      "source": "tmp/heart-training-real/assets/f4bd8d13fc7e68d056351e659a03ed12364eef8878dd47b5dd1fa723eaa02755.jpg",
+      "sourceSha256": "f4bd8d13fc7e68d056351e659a03ed12364eef8878dd47b5dd1fa723eaa02755",
+      "methods": {
+        "hard": {
+          "status": "crop-unresolved"
+        },
+        "confidence": {
+          "status": "crop-unresolved"
+        }
+      }
+    },
+    {
+      "id": "real-f05cf91c134daea9-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/f05cf91c134daea977f2f7058f6f9d64cfdfdf823eb641f0dd454bdef002b998.jpg",
+      "sourceSha256": "f05cf91c134daea977f2f7058f6f9d64cfdfdf823eb641f0dd454bdef002b998",
+      "seed": {
+        "geometrySha256": "2845bc8e74aa8818b01de1ebb7195cf735197eb716444cf1a1679b6cd39b6102",
+        "error": 0.03135625,
+        "checkedPair": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        }
+      },
+      "targetMaskSha256": "f2385b1c3e03bdf0a1d1c26109f857c7df797120bcf215aabe5a668b17d49a7e",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "bd1d715cd7788432fb93f979be38fae9e1062edd222134609b7ee7f0ec521896",
+          "independentError": 0.03024375,
+          "seedImageChange": -0.0011125000000000024,
+          "additionalRefinementSeconds": 4.427428167000006,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.03016875,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "3003bca412a5612a9d6ef858e0308427ed76d2279c9e742be7bc1e34ece3d1fa",
+          "independentError": 0.03068125,
+          "seedImageChange": -0.000675000000000002,
+          "additionalRefinementSeconds": 4.393495749999973,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.03074375,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-12f272f48ed09d51-body-1",
+      "status": "crop-unresolved",
+      "source": "tmp/heart-training-real/assets/12f272f48ed09d51e9442f894ad1f7be29906285bd2009e2edc9ed329e54996a.jpg",
+      "sourceSha256": "12f272f48ed09d51e9442f894ad1f7be29906285bd2009e2edc9ed329e54996a",
+      "methods": {
+        "hard": {
+          "status": "crop-unresolved"
+        },
+        "confidence": {
+          "status": "crop-unresolved"
+        }
+      }
+    },
+    {
+      "id": "real-28a87a8be083f16c-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/28a87a8be083f16c7711d55fad658eb45634e684f9a0f288a63ae1672dd3db6a.jpg",
+      "sourceSha256": "28a87a8be083f16c7711d55fad658eb45634e684f9a0f288a63ae1672dd3db6a",
+      "seed": {
+        "geometrySha256": "10db9a66c2604c1f3c4f1fafbc8f37b918b443fd1f4b015fd099c99baa410276",
+        "error": 0.017146429129551492,
+        "checkedPair": true,
+        "slits": {
+          "left": 5,
+          "right": 4
+        }
+      },
+      "targetMaskSha256": "1aff07ab7f0ca7a1a54e8b86d48ba7303dbfbaf0c73ca2e854af91c240a74817",
+      "observedPixels": 159975,
+      "methods": {
+        "hard": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "93bcae95a23b5c07c3416dc2773e690b5eb6b8b3191afe86c1bd8e4fd3ebb8ac",
+          "independentError": 0.016608845132051884,
+          "seedImageChange": -0.0005375839974996084,
+          "additionalRefinementSeconds": 3.5157643340000067,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.016608845132051884,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "1141bdb7f1bba03bcbf6813a8165152c4729fc90349d8c9cddfeb1ae22d8c55f",
+          "independentError": 0.017021409595249257,
+          "seedImageChange": -0.00012501953430223492,
+          "additionalRefinementSeconds": 3.2602009580000013,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.016971401781528363,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-ce66f9634c2c613b-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/ce66f9634c2c613b521fcc4f96970b3947e00156581b55426978e1e6cf988345.jpg",
+      "sourceSha256": "ce66f9634c2c613b521fcc4f96970b3947e00156581b55426978e1e6cf988345",
+      "seed": {
+        "geometrySha256": "11256bb332df8655c2411043fd77d1423b4eb06707589aa28119dffb29b6b086",
+        "error": 0.05065625,
+        "checkedPair": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        }
+      },
+      "targetMaskSha256": "c27bd45f6bd4af53defe17fd39e0679f722ef2c1dfdd39c25d89e82e3ccd7b4b",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "1192e74fc96509d64cfc20c2fdf84b758f4cd67b492d1cc60e22d9e08dc638b2",
+          "independentError": 0.037225,
+          "seedImageChange": -0.013431249999999999,
+          "additionalRefinementSeconds": 1.348429541999998,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.03735625,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "review-required",
+          "checkedPair": false,
+          "geometrySha256": "9a36bbd7f5e43948b7f32de3573681afa7d89598afcaeafe0687c070c321f2a8",
+          "independentError": 0.0375375,
+          "seedImageChange": -0.013118749999999998,
+          "additionalRefinementSeconds": 1.339260917000007,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.0375625,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-52e732b98f9b14f1-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/52e732b98f9b14f182f4481dd7318789f751751b9f03f14f14b622d372eaf8f0.jpg",
+      "sourceSha256": "52e732b98f9b14f182f4481dd7318789f751751b9f03f14f14b622d372eaf8f0",
+      "seed": {
+        "geometrySha256": "ed423056938a8d5e5f49e50713cf148c3fed7cb7e5fdaae1e2f3b3e5c2b9e160",
+        "error": 0.0205875,
+        "checkedPair": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        }
+      },
+      "targetMaskSha256": "25b2e1122dbbd6b62eb6666f8527144267804ee61807dae66de3d1c91b00f79d",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "6ef6831af3ae4cbf98c492961883be55a5c972fe61c5c798c634d4c99e9f0591",
+          "independentError": 0.02014375,
+          "seedImageChange": -0.00044375000000000317,
+          "additionalRefinementSeconds": 2.522407790999976,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.0203875,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "ef9647b5b7615c22747032328004e5a6912a59c4eea720e0e94ef0e331ac3797",
+          "independentError": 0.0204375,
+          "seedImageChange": -0.00015000000000000083,
+          "additionalRefinementSeconds": 2.524761750000005,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.0205625,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-7e9f6f83ae43ec2a-body-1",
+      "status": "crop-unresolved",
+      "source": "tmp/heart-training-real/assets/7e9f6f83ae43ec2aad2fc0b37ad4c42d8f111df9cd7ae35b2f8a6649bb76c70d.jpg",
+      "sourceSha256": "7e9f6f83ae43ec2aad2fc0b37ad4c42d8f111df9cd7ae35b2f8a6649bb76c70d",
+      "methods": {
+        "hard": {
+          "status": "crop-unresolved"
+        },
+        "confidence": {
+          "status": "crop-unresolved"
+        }
+      }
+    },
+    {
+      "id": "real-d4f6e3c76cf08ea8-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/d4f6e3c76cf08ea8559e9cd4c349a48edc979fccddde9b3d38a6478672c4c11a.jpg",
+      "sourceSha256": "d4f6e3c76cf08ea8559e9cd4c349a48edc979fccddde9b3d38a6478672c4c11a",
+      "seed": {
+        "geometrySha256": "7d6dab431389ab64e14501196238ae7a23b90d2752a22193919f968bf1b324ee",
+        "error": 0.00500625,
+        "checkedPair": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        }
+      },
+      "targetMaskSha256": "a365f524740c1b7e0d215c8657faf31573dc58c24452fca2a33e258dfa038fcb",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "39e4b9e815053fc8ff75e5bfc03f3dbad23727d2013752ca5acce8c789a9e0ee",
+          "independentError": 0.00500625,
+          "seedImageChange": 0,
+          "additionalRefinementSeconds": 1.6313194999999832,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.00483125,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "39e4b9e815053fc8ff75e5bfc03f3dbad23727d2013752ca5acce8c789a9e0ee",
+          "independentError": 0.00500625,
+          "seedImageChange": 0,
+          "additionalRefinementSeconds": 1.5371000829999975,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.00483125,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-41b7c3e0b79f1265-body-1",
+      "status": "fitted",
+      "source": "tmp/heart-training-real/assets/41b7c3e0b79f126576ecce2c2f7fb12139af1f4bd06c22a3cc1831e2c8d78be2.jpg",
+      "sourceSha256": "41b7c3e0b79f126576ecce2c2f7fb12139af1f4bd06c22a3cc1831e2c8d78be2",
+      "seed": {
+        "geometrySha256": "eca20e637126d0fd3feabbdec88935a60a708c69d526277ccc51fc15303cce50",
+        "error": 0.0219875,
+        "checkedPair": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        }
+      },
+      "targetMaskSha256": "e659afc4a4868b65c54d818f5dd09d61a3f04399e4134afa6ed649a455460f94",
+      "observedPixels": 160000,
+      "methods": {
+        "hard": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "0b61b6e9d9080f90a7fbbee42f8783535f8681bdfc87de7bdece19dd981af98c",
+          "independentError": 0.0219875,
+          "seedImageChange": 0,
+          "additionalRefinementSeconds": 1.8954267919999839,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.022075,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        },
+        "confidence": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "geometrySha256": "cdbc2feadb01eeeac4eb2675248d5256d7b28738d35153b96fda98ba754f5dcf",
+          "independentError": 0.0220625,
+          "seedImageChange": 7.499999999999868e-05,
+          "additionalRefinementSeconds": 1.8489078750000045,
+          "engineGeometryPassed": true,
+          "enginePaperStatus": "pass",
+          "independentFeaturesPassed": true,
+          "missingFeatures": 0,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.0221,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass"
+        }
+      }
+    }
+  ],
+  "visualReview": {
+    "gallery": [
+      {
+        "path": "tmp/heart-learning/native-confidence-refinement-review-v1/review-01.jpg",
+        "sha256": "5ba0af0faef6a37cc75fd17dec53bf2e549bc1deafba2cb0cd8f15a4885ecd39",
+        "ids": [
+          "real-1bcc922200edde26-body-1",
+          "real-80a649a21ea938ae-body-1",
+          "real-f6e5e128449e3cb9-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-refinement-review-v1/review-02.jpg",
+        "sha256": "14f7c35f84d3e648c4807370bfdb0962e8ed014d66b2ce5f605f3c52072ce15c",
+        "ids": [
+          "real-fcbcc23efea92b93-body-1",
+          "real-55704c6e2911bebc-body-1",
+          "real-24b5ed49c9411b11-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-refinement-review-v1/review-03.jpg",
+        "sha256": "afcb8ee36249c2b5dc9720f40c7cf88ca786499a4b3abef6d3830004f05dc912",
+        "ids": [
+          "real-589f606a9d9899f2-body-1",
+          "real-dfa7e4b71b43aa86-body-1",
+          "real-2b0550dd86d23b40-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-refinement-review-v1/review-04.jpg",
+        "sha256": "514b28e31b3a0b9a505de16d52ca9585f73d6d81ffb28afc899692488f891729",
+        "ids": [
+          "real-2502cdec0720f4ea-body-1",
+          "real-d3f063052599e167-body-1",
+          "real-a126ed5d62adfd92-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-refinement-review-v1/review-05.jpg",
+        "sha256": "550db191bd1f526447600c65e20da9cbae1f78cba06d1e8214756dc6e87c137c",
+        "ids": [
+          "real-5088a58018c3aa28-body-1",
+          "real-1a7cfc6be8b164b5-body-1",
+          "real-fe7fb089d1cd86b4-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-refinement-review-v1/review-06.jpg",
+        "sha256": "9d166b39855134aa43c0e17cc147acb5de52c87749ab4cb626bb278d640e5aa8",
+        "ids": [
+          "real-8b91ecf546833a3f-body-1",
+          "real-b5317080eec610dc-body-1",
+          "real-c7d1e0ad5050db71-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-refinement-review-v1/review-07.jpg",
+        "sha256": "b329d3132c6ac87020b6a23c4eafe739287d4c1030ee09063bdc47bdcfb932bb",
+        "ids": [
+          "real-45ad148d9ec045be-body-1",
+          "real-702942779385436c-body-1",
+          "real-03bddab9c8f384c4-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-refinement-review-v1/review-08.jpg",
+        "sha256": "5f630af75c9955fe7965afb509c6a9fe99caed6a90f0f1fa21d7e71e78920034",
+        "ids": [
+          "real-eb60ff94dfc6e2f8-body-1",
+          "real-af21a4ef38355dfa-body-1",
+          "real-f4bd8d13fc7e68d0-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-refinement-review-v1/review-09.jpg",
+        "sha256": "94d1067c12e698922f1f1e6fcf9690f48f808feb7dbd641ecd566712616e2fce",
+        "ids": [
+          "real-f05cf91c134daea9-body-1",
+          "real-12f272f48ed09d51-body-1",
+          "real-28a87a8be083f16c-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-refinement-review-v1/review-10.jpg",
+        "sha256": "2ee7e3ad2cdfa11c5598c947dce14240fb4b681d199d6ec288279114da404241",
+        "ids": [
+          "real-ce66f9634c2c613b-body-1",
+          "real-52e732b98f9b14f1-body-1",
+          "real-7e9f6f83ae43ec2a-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-refinement-review-v1/review-11.jpg",
+        "sha256": "599bfc19ec4566b1397df18caceee72d78e80b2f49367bfd944574f58ca9635b",
+        "ids": [
+          "real-d4f6e3c76cf08ea8-body-1",
+          "real-41b7c3e0b79f1265-body-1"
+        ]
+      }
+    ],
+    "pagesInspected": 11,
+    "photosInspected": 32,
+    "findings": [
+      {
+        "ids": [
+          "real-d3f063052599e167-body-1"
+        ],
+        "finding": "Flower: confidence improves the independent error from the seed 4.433% to 3.673%, versus hard continuation 4.396%. False channels near the center and border defects remain; two source features are still missing."
+      },
+      {
+        "ids": [
+          "real-2502cdec0720f4ea-body-1"
+        ],
+        "finding": "Three wise men: holding the six-cut start prevents the large star loss seen in the previous full confidence search. Neither arm fully recovers the star; hard loses one measured feature, confidence two."
+      },
+      {
+        "ids": [
+          "real-45ad148d9ec045be-body-1"
+        ],
+        "finding": "Wolf: neither continuation resolves the starting paper problem. The earlier accepted full-confidence fit is therefore not reproduced by confidence refinement alone from this fixed hard start."
+      },
+      {
+        "ids": [
+          "real-f05cf91c134daea9-body-1"
+        ],
+        "finding": "Octopus: most existing tentacles remain, but fine curls are still missing and both results remain just above the original 3% disagreement limit."
+      },
+      {
+        "ids": [
+          "real-589f606a9d9899f2-body-1",
+          "real-ce66f9634c2c613b-body-1"
+        ],
+        "finding": "Woman/bird and bear: extra work improves bulk silhouettes, but does not recover fine faces, bird shapes or the isolated fish visible in the photos."
+      },
+      {
+        "ids": [
+          "real-af21a4ef38355dfa-body-1"
+        ],
+        "finding": "Single heart: the small top seam disappears in both continuations; both retain acceptance."
+      },
+      {
+        "ids": [
+          "real-55704c6e2911bebc-body-1",
+          "real-dfa7e4b71b43aa86-body-1",
+          "real-b5317080eec610dc-body-1",
+          "real-702942779385436c-body-1"
+        ],
+        "finding": "Printed ink remains confused with the sheet material in the fixed masks. Additional curve refinement cannot repair that classification target."
+      },
+      {
+        "ids": [
+          "real-f6e5e128449e3cb9-body-1",
+          "real-fe7fb089d1cd86b4-body-1"
+        ],
+        "finding": "The oblique filled basket and reflective building retain visibly wrong fixed crops. Confidence-only refinement does not correct crop geometry."
+      }
+    ]
+  },
+  "conclusions": [
+    "All twelve engine and editable passes have exactly the same identities as the initial hard-control fits. All six unresolved crops remain in the 32-photo denominator.",
+    "Hard continuation lowers mean independent disagreement from 3.529% to 3.325%; confidence continuation reaches 3.334%. This costs extra work after the initial search, rather than establishing a faster policy.",
+    "Local confidence forces can improve an individual silhouette, but this matched-start experiment finds no cohort-wide advantage or new accepted result.",
+    "The earlier full-confidence wolf gain and three-wise-men regression depended on a different search trajectory; this result does not identify which individual routing change caused the wolf gain.",
+    "The remaining defects include crop failure, printed-paper classification, missing fine details and paper support. A single confidence temperature or longer local optimization does not address all of them."
+  ],
+  "validation": {
+    "baseCI": {
+      "commit": "ad9923c4040667eb4ad522ca3c99339d4c9f16c5",
+      "run": 39413564223,
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39413564223",
+      "status": "completed",
+      "conclusion": "success",
+      "deploy": "success"
+    },
+    "applicationCoreModelAndGateFilesUnchangedFromBase": true,
+    "applicationChecks": "Base local QA passed type checking, lint, all 2401 application tests and build; base CI passed all four inverse correctness shards and deployment. Current lint exits zero with seven existing warnings. New work is offline experiment/review/audit code and documentation.",
+    "scope": "Field reconstruction, candidate rendering, source-feature checks, engine geometry, guarded paper and editable exports all audited; structural controls test shared parameter identity separately from coincident coordinates."
+  },
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "fitAndAuditWallSeconds": 168.97385883400003,
+    "mainRunUniqueArtifactBytesIncludingPriorHardLinks": 31798428,
+    "allStudyNewFileBytesExcludingPriorHardLinks": 17393282,
+    "sourcePhotoCopies": 0,
+    "downloads": 0,
+    "minimumFreeGiB": 10
+  },
+  "limitations": [
+    "These are repeatedly inspected development photos, not an untouched holdout.",
+    "Disagreement measures estimated two-color targets, not unavailable original artwork or ground-truth cuts.",
+    "Fixed topology can limit recovery; this is not a test of all possible NN-guided path proposals.",
+    "All initial pairs differ between sheets, so the optional identical-sheet preservation branch is not exercised here.",
+    "Geometry and paper checks are nominal computational checks, not physical assembly tests.",
+    "Raw candidate errors can worsen slightly after continuation; retaining every proposal avoids silently reporting only improvements.",
+    "Do not compare extra refinement seconds with a full end-to-end ten-second solve budget."
+  ],
+  "nextDirection": "Investigate missing material boundaries and structural proposals, with explicit supervision and independent full-pipeline checks, rather than tuning confidence temperature or iteration counts against these same 32 photos."
+}

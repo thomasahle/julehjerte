@@ -1,0 +1,101 @@
+{
+  "schema": "native-confidence-refinement-plan-1",
+  "date": "2026-10-20",
+  "parentPlan": {
+    "path": "docs/inverse/datasets/native-confidence-plan.json",
+    "sha256": "7edd011a269c094c89767500d2dee3a5505c4efbf9ecfd7cb985076c7e169a75"
+  },
+  "pipeline": {
+    "path": "tmp/heart-learning/native-confidence-pipeline-v1/report.json",
+    "sha256": "44b65f967c1d99dbcd934a36873273fb5e025f6627622be242be2d9353ec3005"
+  },
+  "input": {
+    "path": "tmp/heart-learning/native-confidence-v1/manifest.json",
+    "sha256": "3596251ac9b08999f270bab658717fcaca4272ed4fdadf9ac1fe686ade22d6af"
+  },
+  "fieldAudit": {
+    "path": "tmp/heart-learning/native-confidence-audit-v1/report.json",
+    "sha256": "3954a4d309590814e34e77977761ed91769fcbb4a3f2c371d4c529bf08b6da1e"
+  },
+  "expectedDevelopmentCases": [
+    "real-1bcc922200edde26-body-1",
+    "real-80a649a21ea938ae-body-1",
+    "real-f6e5e128449e3cb9-body-1",
+    "real-fcbcc23efea92b93-body-1",
+    "real-55704c6e2911bebc-body-1",
+    "real-24b5ed49c9411b11-body-1",
+    "real-589f606a9d9899f2-body-1",
+    "real-dfa7e4b71b43aa86-body-1",
+    "real-2b0550dd86d23b40-body-1",
+    "real-2502cdec0720f4ea-body-1",
+    "real-d3f063052599e167-body-1",
+    "real-a126ed5d62adfd92-body-1",
+    "real-5088a58018c3aa28-body-1",
+    "real-1a7cfc6be8b164b5-body-1",
+    "real-fe7fb089d1cd86b4-body-1",
+    "real-8b91ecf546833a3f-body-1",
+    "real-b5317080eec610dc-body-1",
+    "real-c7d1e0ad5050db71-body-1",
+    "real-45ad148d9ec045be-body-1",
+    "real-702942779385436c-body-1",
+    "real-03bddab9c8f384c4-body-1",
+    "real-eb60ff94dfc6e2f8-body-1",
+    "real-af21a4ef38355dfa-body-1",
+    "real-f4bd8d13fc7e68d0-body-1",
+    "real-f05cf91c134daea9-body-1",
+    "real-12f272f48ed09d51-body-1",
+    "real-28a87a8be083f16c-body-1",
+    "real-ce66f9634c2c613b-body-1",
+    "real-52e732b98f9b14f1-body-1",
+    "real-7e9f6f83ae43ec2a-body-1",
+    "real-d4f6e3c76cf08ea8-body-1",
+    "real-41b7c3e0b79f1265-body-1"
+  ],
+  "scope": "Offline matched-work continuation from each hard-control fit. All 32 existing development photos retained, including six unresolved crops. No new count search, MILP routing, crop selection, classification, model training or inference. This does not establish a ten-second end-to-end policy.",
+  "question": "Do continuous NN scores improve curves when initial cuts, topology and original binary validation targets are fixed?",
+  "methods": [
+    "hard",
+    "confidence"
+  ],
+  "seedMethod": "hard",
+  "refinement": {
+    "steps": 160,
+    "checkpointEvery": 40,
+    "rate": 0.008,
+    "selection": "mask",
+    "resolution": "native",
+    "deadline": "Infinity (fixed work)",
+    "paperAudit": "finalMaterialAudit at every checkpoint (lattice plus independent polygon offsets)",
+    "identicalSheets": "preserve when the starting pair is exactly identical",
+    "cfg": "saved final seed settings; all physical limits and matching penalty unchanged",
+    "subdivision": false,
+    "finalRepairs": false
+  },
+  "controls": [
+    "Verify parent source hashes, native probability hashes and raw source masks.",
+    "Every observed pixel must have the same hard decision under both fitting fields, including the strict >0.5 checkpoint convention.",
+    "Reconstruct both starts from the same exported geometry and require exactly equal nested curve coordinates, phase, slit counts and independently rendered seed mask.",
+    "Both methods compute all 160 gradient steps, with no clock deadline, early stopping, topology changes or repeated-block skipping.",
+    "Checkpoints and final exports retain geometry, paper, original image and feature requirements. Preserve every raw outcome, including failures.",
+    "No finish() repair or new matching-sheet search after the measured continuation. Record raw proposals separately from whether they improve the saved seed.",
+    "Independently render and convert every exported proposal to editable SVG; inspect every photo, seed and proposed weave."
+  ],
+  "evaluation": "Rotate arm order by original photo index. Report all 32 photos, raw pass/fail counts, same-denominator errors, new/lost passes, seed versus continued geometry and timings. A useful improvement must survive editable conversion. No per-photo temperature, step-count or learning-rate selection after inspection.",
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "maximumWallSeconds": 1200,
+    "maximumUniqueArtifactMiB": 100,
+    "minimumFreeGiB": 10,
+    "sourcePhotoCopies": 0,
+    "downloads": 0
+  },
+  "limitations": [
+    "These repeatedly inspected development photos are not an untouched holdout.",
+    "The score scale is inherited from training; real-photo calibration is unestablished.",
+    "Initial cuts are prior fitted candidates rather than ground truth; preserving their topology may limit recovery.",
+    "The fixed 160-step continuation adds compute after the original search; do not report it as a faster end-to-end solver.",
+    "Exact shared cubics remain tied. The stock refiner can straighten spans or project short returns, identically configured in both arms."
+  ]
+}

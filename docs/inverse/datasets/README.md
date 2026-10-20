@@ -878,15 +878,263 @@ original regression target remains intact. A learned ranking proposal will
 also need evaluation through these later scheduling decisions: a lower initial
 mask error does not establish a better template or faster search.
 
+### Keeping native NN confidence during fitting
+
+The [continuous-score comparison](native-confidence-results.json) keeps the
+same frozen joint-trained residual classifier, crops, binary masks and observed
+pixels. Its [predeclared plan](native-confidence-plan.json) compares fresh
+hard-mask fitting with `sigmoid(4 * score)` as the fitting objective. Four is
+the existing training-loss scale; it was not selected from these results.
+Final image, feature, geometry and paper checks still use the original masks.
+
+Both methods receive a ten-second search allowance on all 32 development
+photos. Six still have no crop; all 52 exports from the other 26 convert
+successfully through the independent editable-paper audit.
+
+| Measure | Hard mask | Continuous score |
+| --- | ---: | ---: |
+| Checked editable candidates, all 32 photos | 12 | 13 |
+| Mean independent weave disagreement, 26 crops | 3.529% | 3.730% |
+| Mean editable disagreement, same 26 crops | 3.537% | 3.729% |
+| Median solve time, including final work | 9.50 s | 9.28 s |
+
+The confidence arm retains all twelve hard-control passes and adds the wolf.
+Its editable disagreement falls from **1.82% to 1.34%** and the paper checks
+pass. However, visual review of all 32 photos finds worse thin details elsewhere:
+the three-wise-men design loses most of its star, increasing disagreement from
+**3.00% to 6.15%**, and the octopus loses curled tentacles (**3.14% to 4.18%**).
+Printed ink and the two visibly incorrect fixed crops remain unresolved.
+Neither of those detailed-motif regressions was a complete pass before this
+experiment; preserving the passing subset alone would hide them.
+
+The three-wise-men diagnostic reproduces every coarse/fine score and finalist
+preference in repeated, timing-free runs. **Zero binary-mask pixels changed.**
+The soft objective shortlists five cuts instead of six, although its omitted
+six-cut candidate still retains the source regions. This also changes scheduling:
+routing receives about **5.44 s instead of 2.81 s**, while direct refinement gets
+about **0.067 s instead of 2.79 s**. The later trajectory is one timed run, but
+the changed shortlist is deterministic. This isolates an objective/count/routing
+interaction from cropping or classification changes.
+
+For a binary render, squared error against a continuous target is a constant
+plus mask disagreement weighted by `abs(1 - 2p)`. The independent audit verifies
+that decomposition and reconstructs all 26 saved fields within Float32 rounding.
+Those weights can suppress real narrow details as well as noise. Coarse grids
+also threshold resampled probabilities, so matching native binary masks does
+not imply identical coarse objectives.
+
+This remains **offline**. The matched-work experiment below holds the starting
+cuts fixed to isolate continuous refinement. All
+52 previous control masks replay exactly, both network states remain unchanged,
+104 independent candidate/target comparisons replay, and all **216 learning
+tests plus two focused JavaScript tests pass**. The fresh hard baseline itself
+improves from the previous run's eleven passes to twelve; the table compares
+the two fresh arms, not unrelated timed runs. These are repeatedly inspected
+development photos, and the scores are not established photographic calibration.
+All **2,401 application tests**, type checking, lint and the production build
+also pass. No new training, downloads or source-photo copies were needed.
+
+### Isolating confidence refinement from cut selection
+
+The [fixed-path follow-up](native-confidence-refinement-results.json) starts
+both arms from the same 26 hard-control fits. Its
+[predeclared plan](native-confidence-refinement-plan.json) gives each candidate
+160 gradient steps, with unchanged crops, masks, cut counts, shared-curve
+relationships and physical limits. There is no new routing or count search.
+All six unresolved crops remain in the 32-photo cohort.
+
+| Measure | Starting fits | Hard continuation | Confidence continuation |
+| --- | ---: | ---: | ---: |
+| Checked editable candidates, all 32 photos | 12 | 12 | 12 |
+| Mean independent disagreement, all 26 crops | 3.529% | 3.325% | 3.334% |
+| Mean editable disagreement, same 26 crops | 3.537% | 3.335% | 3.339% |
+| Mean additional refinement time | — | 2.70 s | 2.62 s |
+
+The same twelve designs pass in every column. Both continuations improve some
+curves, but confidence alone provides no overall advantage. These times are
+**extra work after the original solve**, not a faster end-to-end policy.
+Small regressions are retained too: independent error worsens from the seed
+on three hard and four confidence candidates.
+
+Visual review covers all 32 photos, including the starting weave. Confidence
+helps the flower (**3.67% versus 4.40%** after hard refinement), but false center
+channels, border defects and two missing features remain. Holding the
+three-wise-men cut layout fixed avoids the earlier large star loss; the smaller
+missing-feature problem remains. Neither continuation repairs the wolf's paper
+failure, so the previous full-search wolf gain is not reproduced by changing
+only these local forces. Printed-paper classification errors and wrong fixed
+crops remain unchanged.
+
+All **52 editable conversions** pass. Independent audits reconstruct all fields,
+replay 104 candidate/target comparisons, and verify all 52 path structures.
+The structural audit detects a deliberately split shared curve even when its
+coordinates stay identical; renaming curve identifiers leaves the result
+unchanged. The review helper also reproduces all 32 rows and eleven JPEG pages
+of its previous unseeded report exactly.
+
+This remains offline. The experiment produced about **16.6 MiB of new files**,
+reusing existing inputs through hard links, with one worker and no downloads,
+new inference or training. The evidence favors investigating missing material
+boundaries and structural proposals over further tuning of confidence weights
+on these same photos. Production model, solver and acceptance gates are unchanged.
+
+### Real-photo corner proposals and paper-label exchange
+
+The [corner-proposal probe](real-junction-phase-results.json) evaluates the
+existing 880,466-parameter MobileNetV3 model on the same 26 fixed crops, retaining
+the six unresolved photos. This is the earlier synthetic-trained boundary/corner
+network, separate from the deployed U2NETP cropper and the experimental material
+classifier. Its checkpoint and synthetic-development thresholds stay fixed.
+
+The [predeclared comparison](real-junction-phase-plan.json) swaps the two binary
+mask labels while keeping RGB and observed pixels identical. This leaves every
+visible boundary unchanged, so useful corner proposals should be stable.
+Instead, one-to-one agreement within three pixels is **83.85%** across phases,
+or **84.85%** after the existing local corner refinement. None of the 26 crops
+matches every proposal. These are stability scores, **not corner accuracy**.
+The whale is the weakest case at 52.31%; the octopus reaches 69.14%.
+
+All eleven galleries were inspected. The model finds many grid corners and
+silhouette details, but also proposes corners along smooth petal and crescent
+arcs and on printed letters, trees, dots and floral ornaments. The latter
+problem persists even where the material mask suppresses the ink. A stable
+RGB corner detector alone would still not identify the boundaries between
+the two sheets.
+
+The original training source hashes confirm a concrete missing symmetry: the
+local branch consumes the signed binary mask, and training adds spatial
+reflections but no explicit mask-label exchange. The measured difference
+comes from changing that input alone. This does not prove that adding phase
+augmentation would resolve the other semantic or localization failures.
+
+An independent maximum-flow matcher reproduces all 52 raw/refined phase
+comparisons in both directions. Saved input/field hashes and raw proposals
+replay; one synthetic forward pass matches the historical inference helper
+exactly at Float16 storage precision. The probe takes **8.2 seconds total** on
+one CPU thread and saves about 27.2 MiB, without training or new downloads.
+
+The graph-proposal network remains offline. The fixed-average comparison below
+tests whether enforcing label symmetry preserves reference-corner accuracy.
+Material-aware supervision and full solver/export tests remain necessary.
+
+### A label-invariant corner readout
+
+The [fixed-average study](junction-phase-average-results.json) evaluates the
+same checkpoint and thresholds on all **308 synthetic views from 77 designs**.
+Its [predeclared protocol](junction-phase-average-plan.json) averages the two
+phase heatmaps before extracting peaks. Swapping their order now produces
+exactly identical output. No weights or labels change.
+
+| Synthetic cohort | Original raw corner F1 | Symmetric raw corner F1 | All corners recovered, original → symmetric |
+| --- | ---: | ---: | ---: |
+| Lattice development, 52 views | 70.75% | 70.78% | 23 → 22 |
+| Channel recipe, 128 views | 82.05% | 85.12% | 101 → 102 |
+| Frame recipe, 128 views | 87.95% | 88.34% | 71 → 77 |
+
+These are pooled localization scores, not template success rates. The recipe
+cohorts have been inspected repeatedly and are not topology-disjoint holdouts.
+The small gains include individual losses: frame coverage gains sixteen views
+and loses ten. Boundary F1 at three pixels changes from 97.64% to 97.24% on
+development, 90.22% to 90.35% on channel, and 96.39% to 96.22% on frame.
+
+The worst reviewed corner loss has a concrete cause. Two individually
+detectable peaks lie **five pixels apart**, with scores about 0.411 and 0.403.
+Averaging lowers the response within three pixels of the reference to at most
+0.353, below the unchanged 0.4 threshold. Both separate results recover the
+corner after local refinement; the averaged result has no nearby proposal to
+refine. An exact replay of all three fields confirms this mechanism. Averaging
+can therefore suppress a true corner, even while improving pooled scores.
+
+The existing nine-pixel refinement also remains a tradeoff: it improves lattice
+development results but lowers corner F1 on both recipe groups for all three
+readouts. Raw and refined results are reported separately. A diagnostic using
+the ideal training heatmaps recovers all **2,544 reference corners**, ruling out
+a target/peak-decoder mismatch on this cohort.
+
+All 24 selected synthetic views and all 32 real-photo rows were inspected.
+The real follow-up reuses the saved fields, so it needs no additional inference.
+Stable averages still respond to printed letters, trees and floral decoration,
+and place extra corners along smooth silhouettes. Exact label invariance is
+useful, but it does not establish material recognition or a usable cutting graph.
+
+The original corner counts replay exactly on all 308 views. Independent
+maximum-flow assignments verify all **1,848 raw/refined corner comparisons**;
+2,772 thin-boundary comparisons and all 26 real averages also replay.
+The main probe takes 71.6 seconds on one CPU thread and saves about 7.4 MiB.
+This remains an offline candidate. The next learning change should train
+consistent responses to both label phases and include printed-paper examples
+whose targets retain physical sheet boundaries.
+
+### Training with printed paper and exchanged mask labels
+
+The [matched continuation experiment](junction-augmentation-results.json)
+trains four terminal models from the same existing MobileNetV3 checkpoint.
+Every arm receives the same 128 updates, original-view draws and reflections.
+Two factors vary: printed-paper inputs and binary mask-label exchange. All
+weights remain trainable; BatchNorm running statistics stay frozen for the
+two-image batches. There is no checkpoint or threshold selection from results.
+The [training](junction-augmentation-training-plan.json) and
+[evaluation](junction-augmentation-evaluation-plan.json) protocols were fixed
+before their respective runs.
+
+Preparation admits **75 printed variants from 25 actual training designs** and
+excludes 21 variants from seven development designs. All 25 original RGB/mask
+controls replay pixel-exactly. Printed inputs use the unchanged classifier,
+including cases where it follows ink instead of paper. Graph targets, camera
+transforms and valid regions retain their original labels.
+
+| Model, original mask phase | Lattice corner F1 | Channel corner F1 | Frame corner F1 |
+| --- | ---: | ---: | ---: |
+| Original checkpoint | 70.75% | 82.05% | 87.95% |
+| Plain continuation | 70.66% | 90.02% | 91.28% |
+| Label exchange | 71.16% | 90.74% | 89.90% |
+| Printed paper | 71.60% | 90.63% | 91.15% |
+| Both | 70.78% | 87.23% | 87.32% |
+
+Continuing training under this setup already provides much of the gain.
+Printed-only training improves three-pixel boundary F1 over the matched plain
+control on all three groups: **96.86/94.19/97.71%**, versus
+**96.55/92.08/97.00%**. It is not uniformly better: lattice boundary F1 remains
+below the original 97.64%, and complete raw-corner coverage changes from
+23/113/81 for plain continuation to 21/109/79 for printed training.
+These are localization results on the existing 308-view cohort, not template
+success rates or new generalization holdouts.
+
+Exact field replays distinguish two regression mechanisms. In
+`channel-763501-v2`, the combined model keeps local peaks within 1.6 pixels of
+both true corners but reduces their scores to **0.3696 and 0.2334**, below the
+fixed 0.4 threshold. Other selected losses shift a peak just outside the
+three-pixel matching radius. Conversely, printed training recovers two faint
+corners in `channel-832113-v1` that plain continuation misses. No crop or label
+changed. A separately calibrated operating point could differ; this experiment
+does not retune thresholds after observing these results.
+
+All six synthetic comparison pages and all eleven real-photo pages were
+inspected. Printed training suppresses some proposals on dots and floral ink,
+but lettering and printed trees still produce false boundaries/corners.
+Smooth petals, crescents and animal silhouettes retain excessive proposals;
+some intended fine details also lose proposals. Label-exchange training raises
+real cross-phase agreement from 83.85% to **87.16%**, which is consistency,
+not labelled accuracy. All six unresolved crops remain in the 32-photo cohort.
+
+Independent maximum-flow matching verifies **7,392 synthetic corner assignments**
+and 208 real phase comparisons; every synthetic reference array is unchanged.
+All four checkpoints preserve their 99 BatchNorm buffers and the exact sample
+schedule. Training takes 234.6 seconds and evaluation 263.6 seconds on one
+low-priority CPU thread; preparation, checkpoints and evaluation together add
+about 46 MiB. All candidates remain offline. Next steps are testing transfer on
+the excluded printed variants, teaching sparse corners on smooth silhouettes,
+and measuring proposals through actual graph/template reconstruction.
+
 ### Latest solver and browser validation
 
-Main `9f260ba6`, including the border-fragment repair, generator work and the
-matched neural-training study, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39406954266)
+Main `fb38b1c3`, including the border-fragment repair, generator work and the
+offline augmentation experiment tools, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39424652316)
 on 20 October. This includes type checking, lint, application tests, build and
 all four inverse correctness shards. Timed quality benchmarks retain their
 separate advisory policy; a green workflow does not mean every timing target
-was met. The preceding `111f338a` run also passed before this push. The residual
-material-classifier and scheduling experiments above remain offline.
+was met. The preceding `b13a0109` and `540ba8f9` runs also passed. The residual
+material-classifier, confidence and scheduling experiments above remain offline.
 
 The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and
 hover outline) and archive are **deployed**. The [latest release record](conni-release-qa.json)
