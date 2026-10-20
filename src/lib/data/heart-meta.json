@@ -1455,12 +1455,12 @@
       "x": 3,
       "y": 3
     },
-    "difficulty": "easy",
+    "difficulty": "medium",
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": false,
       "lobeSymmetry": false,
-      "mirrorSymmetry": true,
+      "mirrorSymmetry": false,
       "sharedTemplate": false
     },
     "photo": null
@@ -1486,8 +1486,8 @@
       "isClassic": false,
       "curveSymmetry": false,
       "lobeSymmetry": false,
-      "mirrorSymmetry": false,
-      "sharedTemplate": false
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
     },
     "photo": null
   },

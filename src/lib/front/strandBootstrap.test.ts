@@ -323,8 +323,7 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 		}
 		expect(css).not.toContain('[data-level="easy"]{display:none}');
 		expect(css).toContain('#skabeloner > #moenstre{display:none}');
-		// Figurer keeps Fisk, its one easy heart.
-		expect(css).not.toContain('#figurer{display:none}');
+		expect(css).toContain('#skabeloner > #figurer{display:none}');
 		expect(css).not.toContain('#klassiske{display:none}');
 		// Klassiske still has a heart on show, so it keeps the first margin.
 		expect(css).not.toContain('margin-top');
