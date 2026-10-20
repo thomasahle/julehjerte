@@ -6128,7 +6128,7 @@
     "author": "Ukendt",
     "source": "juleflet.dk",
     "date": "2026-10-20",
-    "weaveParity": 0,
+    "weaveParity": 1,
     "gridSize": {"x":4,"y":4},
     "fingers": [
       { "id": "L-tmp-0", "lobe": "left", "segments": [
