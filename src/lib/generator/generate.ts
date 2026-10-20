@@ -6,6 +6,7 @@ import { sunburstBorder } from './sunburst';
 import { generateTextGrid, roomOf, squareCellScale } from './textGrid';
 import { NO_WHOLE_STRIPS, STRIPS, slidePlace, stripFigures } from './stripFigure';
 import { MOTIF, boardRadius, boardScale, motifChoices, squareChoices } from './boardMotif';
+import { TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
 import { CIRCLE_STYLES, fillSquare, fitCircle } from './frameFit';
 export { fillSquare, fitCircle } from './frameFit';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
@@ -60,6 +61,7 @@ import {
 	FITTED,
 	WEDGES,
 	SILHOUETTE,
+	textPanel,
 	type TextFrame,
 	type Font,
 	type Point,
@@ -455,6 +457,7 @@ function withLayout(request: GeneratorRequest): GeneratorRequest {
 }
 
 export function generate(request: GeneratorRequest): GeneratorResult {
+	if (request.mode === 'text' && isTextFigure(request.textFrame)) return generateTextFigure(request);
 	const scale = request.scale ?? .7;
 	try {
 		return generateAtSize(request);
@@ -473,19 +476,42 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	}
 }
 
+/** A text in a frame that is a figure frame (see `textFigure`). The letters
+ * in the checks keep the strips the visitor chose, hard to cut if need be;
+ * otherwise, or where those can build nothing at all, they take the first
+ * board that cuts cleanly, else the one that keeps the most of the cutting
+ * clearance. */
+function generateTextFigure(request: GeneratorRequest): GeneratorResult {
+	const figure = textFigureRequest(request);
+	if (figure.style !== 'strips') return generate(figure);
+	const asked = figure.board, boards = asked ? [asked, ...TEXT_STRIPS.filter(n => n !== asked)] : TEXT_STRIPS;
+	let hard: GeneratorResult | undefined, last: unknown;
+	for (const board of boards) try {
+		const result = generate({ ...figure, board });
+		if (!result.hardToCut || board === asked) return result;
+		if (!hard || result.hardToCut.spacing > hard.hardToCut!.spacing) hard = result;
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		last ??= error;
+	}
+	if (hard) return hard;
+	throw last;
+}
+
 /** A heart for the request at its own size (see `generate`). */
 function generateAtSize(request: GeneratorRequest): GeneratorResult {
 	if (request.mode === 'figure' && request.style === 'strips') return generateStrips(request);
 	request = withLayout(request);
 	const alternatives = frameAlternatives(request);
 	if (alternatives.length === 1) return generateOnce(alternatives[0].request);
-	// A figure names no letters, only that its paper is narrow. A motif on a
-	// board records the choice its default size made.
+	// A figure names no letters, only that its paper is narrow, unless it is
+	// a text's outline. A motif on a board records the choice its default size
+	// made.
 	const named = (result: GeneratorResult, alternative: number): GeneratorResult => ({
 		...result,
 		...request.mode === 'figure' && BOARD_FRAMES.includes(request.style ?? '')
 			? { layout: request.layout ?? { alternative, board: result.design.gridSize.x } } : {},
-		...result.hardToCut && request.mode === 'figure' ? { hardToCut: { ...result.hardToCut, letters: [] } } : {}
+		...result.hardToCut && request.mode === 'figure' && !request.font ? { hardToCut: { ...result.hardToCut, letters: [] } } : {}
 	});
 	// Prefer a clean alternative to a hard-to-cut earlier one. Only when none
 	// is clean is the first hard-to-cut alternative finished, and only when
@@ -579,7 +605,7 @@ function stripsAt(request: GeneratorRequest, key: string, scale: number,
 	const contours = request.contours!;
 	let shift: number | undefined;
 	const named = (result: GeneratorResult): GeneratorResult => ({
-		...result, place: shift, scale, ...result.hardToCut ? { hardToCut: { ...result.hardToCut, letters: [] } } : {}
+		...result, place: shift, scale, ...result.hardToCut && !request.font ? { hardToCut: { ...result.hardToCut, letters: [] } } : {}
 	});
 	let rejected: Parameters<typeof hardToCutResult>[1] = [], places = 0;
 	let last: unknown = new ConstructionError('topology', NO_WHOLE_STRIPS);
@@ -871,7 +897,7 @@ function hardToCutResult(request: GeneratorRequest,
 		}
 	}
 	if (!best?.narrow) return best?.result;
-	const { construction, spacing } = best, letters = request.mode === 'text' && request.font
+	const { construction, spacing } = best, letters = request.font
 		? trickyLetters(construction, request.text ?? '', request.font, 1.5 * gridClearanceScale(
 			construction.geometry.A_overlap_paths.length + 1, construction.geometry.B_overlap_paths.length + 1))
 		: [];
@@ -1081,7 +1107,7 @@ function retryTextPanelIslands(request: GeneratorRequest, curveFitter: ReturnTyp
 	if (request.mode !== 'text' || !font || !text.trim() || frame === 'checkered') return;
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n'),
 		letters = Math.max(...lines.map(line => [...line].length)),
-		shape = frame === 'woven' || frame === 'air' ? undefined : frame;
+		shape = textPanel(frame);
 	for (const frameFill of shape ? [.88, .94] : [.88]) {
 		let best: GeneratorResult | undefined;
 		for (const padding of [.16, .12]) for (const [columns, slices] of [[1, 2], [2, 1]]) {
@@ -1157,7 +1183,7 @@ function retryGuardedPanels(request: GeneratorRequest, curveFitter: ReturnType<t
 	if (request.mode !== 'text' || !font || !text.trim() || frame === 'checkered') return;
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n'),
 		letters = Math.max(...lines.map(line => [...line].length)),
-		shape = frame === 'woven' || frame === 'air' ? undefined : frame;
+		shape = textPanel(frame);
 	let best: GeneratorResult | undefined;
 	for (const frameFill of shape ? [.88, .94] : [.88])
 		for (const padding of [.16, .12]) for (const [columns, slices] of [[1, 2], [2, 1]]) {
@@ -1193,9 +1219,8 @@ function retryGuardedPanels(request: GeneratorRequest, curveFitter: ReturnType<t
 /** Overlapping serif ends need independent branches rather than tighter clips.
  * Other topology uses these bounded alternatives only as a final fallback. */
 function retryBranchedText(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
-	const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
-	if (request.mode !== 'text' || !font || !text.trim() || /\s/.test(text) ||
-		frame === 'woven' || frame === 'air' || frame === 'checkered') return;
+	const frame = textPanel(request.textFrame ?? 'woven'), text = request.text ?? '', font = request.font;
+	if (request.mode !== 'text' || !font || !text.trim() || /\s/.test(text) || !frame) return;
 	let best: GeneratorResult | undefined;
 	for (const splitFraction of [.55, .48, .62]) for (const practical of [false, true]) try {
 		const construction = generateBranchedText(text, font, frame, splitFraction, practical);
@@ -1428,7 +1453,7 @@ function improveTextPanelTips(request: GeneratorRequest, original: GeneratorResu
 	const strips = 2 * Math.max(...lines.map(line => [...line].length)) + 3 * lines.length + 1;
 	if (strips > Math.min(20, original.design.gridSize.x, original.design.gridSize.y)) return original;
 	try {
-		const shape = frame === 'woven' || frame === 'air' ? undefined : frame;
+		const shape = textPanel(frame);
 		const construction = generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 			columns: 2, slices: 3, spread: true, filled: true, inkPanels: true,
 			guardSeams: true, practical: true, compound: true, balanced: true,
@@ -1462,7 +1487,7 @@ function retryPanelLayouts(request: GeneratorRequest, curveFitter?: ReturnType<t
 		if (!font || !text.trim() || frame === 'checkered') return;
 		const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 		if (2 * Math.max(...lines.map(line => [...line].length)) + 3 * lines.length + 1 > 20) return;
-		const shape = frame === 'woven' || frame === 'air' ? undefined : frame;
+		const shape = textPanel(frame);
 		for (const adaptivePanels of [false, true]) recipes.push(() =>
 			generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 				columns: 2, slices: 3, filled: true, spread: true,
@@ -1682,7 +1707,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		}
 		const text = request.text ?? '';
 		const font = request.font;
-		const shape = frame === 'woven' || frame === 'air' ? undefined : frame;
+		const shape = textPanel(frame);
 		const size = request.letterScale ?? 1;
 		const recipes: Array<() => ReturnType<typeof generateTextGrid> | ReturnType<typeof generateCheckedText> | undefined> = text.includes('\n') ? [] : [
 			() => generateCheckedText(text, font, textRoom(request), shape, request.fittedCells, size)

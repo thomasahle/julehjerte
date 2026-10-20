@@ -704,6 +704,16 @@ the room on each side of a letter in percent of its height, 5–35%, at 11% the 
 to that frame open there). The board stays the same; only the letters' size in their cells
 changes. The checked-text construction keeps its own, slightly smaller room for the close
 framing (0.16 for 0.22), the same from 0.5 on, in between by the same line.
+Text also takes two figure frames, with its outline as the motif (`textFigure.ts`; 2026-10-20):
+each line centred under the one before, its letters at their advances and 0.08 em apart, every
+glyph kept exactly. **Text in the checks** (Tekst i ternene) is the figure in the checks: the
+letters swap the squares of a regular board, so each letter is light on a dark square and dark on
+a light one, and its outline shows wherever it crosses a line. The Strimler buttons offer its three
+to six strips; until the visitor chooses, the first of four, five, six and three that cuts cleanly,
+else the one keeping the most of the cutting clearance. **The circle with a double border**
+(Cirkel med dobbelt bort) sets the text in the medallion, in the other colour, in the figure
+frame's largest medallion (80) at 75%. Neither has a size slider: the text fills its frame as the
+other text frames do.
 Figure frames follow what real hearts use. Next to the circle with rays, checks,
 a sunburst or a double border, and the close-fitting and checked-tip frames, there are four
 frames without a centre panel. **Wedges** (Kiler; a quarter of real figure hearts): from each

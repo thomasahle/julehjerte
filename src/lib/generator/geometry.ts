@@ -39,7 +39,11 @@ export const WEDGES: OpenFrame = { taper: .45, gap: 3, border: false };
 /** A silhouette filling the square meets the edges near each corner, leaving
  * a small check there in the other colour. */
 export const SILHOUETTE: OpenFrame = { taper: 1, gap: 0, border: false };
-export type TextFrame = 'woven' | 'air' | 'checkered' | Frame;
+export type TextFrame = 'woven' | 'air' | 'checkered' | 'strips' | 'layers' | Frame;
+/** The panel a text frame sets its letters in: its frame, or none for the
+ * woven frames, the checkerboard, and the figure frames that take the text's
+ * outline (see `textFigure`). */
+export const textPanel = (frame: TextFrame): Frame | undefined => FRAMES.find(f => f === frame);
 export class ConstructionError extends Error {
 	constructor(
 		public code: 'topology' | 'clearance' | 'empty' | 'character',

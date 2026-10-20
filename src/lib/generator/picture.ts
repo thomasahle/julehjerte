@@ -18,6 +18,7 @@ import { checkeredLayout, checkeredLetters } from './checkeredGrid';
 import { measureTextGrid } from './textGrid';
 import { CORNER_GAP, CORNER_INSET, checkedTips } from './cornerChecks';
 import { MOTIF, boardRadius, boardScale, motifChoices, squareChoices } from './boardMotif';
+import { isTextFigure, textFigureRequest } from './textFigure';
 
 /** The clearest place for each motif and board, where the search starts when
  * its default size's place is not known yet. */
@@ -36,6 +37,12 @@ export type Known = { place?: number; board?: number; circle?: 'small' | 'large'
  * generator is known to build this motif differently. */
 export function picture(request: GeneratorRequest, known: Known = {}): Picture | undefined {
 	try {
+		// A text in a figure frame is that frame's picture of its outline, on
+		// the board its heart, once made, chose.
+		if (request.mode === 'text' && isTextFigure(request.textFrame) && request.font) {
+			const figure = textFigureRequest(request);
+			return picture(figure.style === 'strips' ? { ...figure, board: figure.board ?? known.board } : figure, known);
+		}
 		if (request.mode === 'text' && request.textFrame === 'checkered' && request.font)
 			return checkered(request.text ?? '', request.font, request.letterScale);
 		if (request.mode === 'text' && (request.textFrame === 'woven' || request.textFrame === 'air') && request.font && request.fittedCells === false)
