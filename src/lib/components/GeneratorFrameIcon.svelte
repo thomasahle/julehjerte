@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import { frameRing, type TextFrame } from '$lib/generator/geometry';
+	import { frameRing, textPanel, type TextFrame } from '$lib/generator/geometry';
 	import type { HeartDesign } from '$lib/types/heart';
 	import type { HeartColors } from '$lib/stores/colors';
 	import { renderHeartSvgMarkup, renderPictureSvgMarkup } from '$lib/rendering/heartSvg';
@@ -27,11 +27,12 @@
 				? renderPictureSvgMarkup(sketch, colors, { idPrefix: `template-sketch-${id}` })
 				: ''
 	);
+	let panel = $derived(textPanel(frame));
 	let outline = $derived(
-		frame === 'woven' || frame === 'air' || frame === 'checkered'
+		!panel
 			? ''
 			: 'M' +
-					frameRing(frame, 70)
+					frameRing(panel, 70)
 						.map(
 							([x, y]) =>
 								`${50 + (x - y) * Math.SQRT1_2 * 0.7},${50 + (x + y - 100) * Math.SQRT1_2 * 0.7}`

@@ -1,5 +1,59 @@
 # Generator robustness results
 
+## Text in the checks and in the medallion
+
+Product request (2026-10-20): two new text frames, one of them swapping the
+checks like the figure in the checks. Two figure frames now take the text's
+outline as their motif (`textFigure.ts`): each line centred under the one
+before, its letters at their advances 0.08 em apart, 1.1 em between baselines,
+every glyph exact, so the hard letters are still named. Considered and left:
+the checked tips with the text (clean for short words, but a white field much
+like the circle's, and refused for long words), rays, wedges and the sunburst
+around text (hard or refused for lowercase, up to 27 s), letters made of whole
+squares (every line inside a letter would have to be hidden), and initials in
+the two lobes (the lobes are one sheet each).
+
+**Text in the checks** (Tekst i ternene) is the figure in the checks at its
+default size: the letters swap the board's squares, light on dark, dark on
+light. Most texts were refused at first: a counter (the A's triangle, the ø's
+halves) or a whole small letter alone in one square had no hidden cut, until
+islands got the shortest ones (see the figure in the checks). The visitor's
+strips are kept, hard to cut if need be; until then the first of four, five,
+six and three that cuts cleanly, else the one keeping the most clearance.
+
+**The circle with a double border** (Cirkel med dobbelt bort) sets the text in
+the medallion in the other colour, in the figure frame's largest medallion
+(80) at 75%: letters a fifth larger than at a figure's 70/70, and cut more
+cleanly there (the Josefin Sans GOD JUL and anna hard at 70/70). At 80% the
+Nunito anna is hard to cut, so the text keeps 75%.
+
+Seven texts in Nunito, Josefin Sans and Bree Serif (GOD JUL on one line and
+on two): clean or hard, the letters the warning names, the checks' strips per
+side, and seconds on a heavily loaded machine (load 12–19), given only for the
+medallion and where the checks' first board was clean:
+
+| Text | Nunito checks | Josefin checks | Bree checks | Nunito medallion | Josefin medallion | Bree medallion |
+|---|---|---|---|---|---|---|
+| JUL | clean, 6 | clean, 4, 0.2 s | clean, 4, 0.2 s | clean, 0.3 s | clean, 0.2 s | clean, 0.8 s |
+| GOD JUL | clean, 6 | hard G, 4 | clean, 6 | clean, 0.3 s | clean, 0.2 s | clean, 0.2 s |
+| GOD / JUL | clean, 5 | hard GDU, 5 | hard GDL, 4 | clean, 1.7 s | clean, 0.5 s | clean, 0.3 s |
+| NOEL | hard OL, 4 | clean, 5 | hard OE, 4 | clean, 0.3 s | clean, 0.2 s | clean, 0.2 s |
+| ANNA | clean, 3 | hard A, 6 | hard N, 5 | clean, 0.2 s | clean, 0.1 s | hard A, 0.7 s |
+| Søren | hard ør, 4 | hard Sør, 6 | hard Søren, 5 | hard ørn, 2.6 s | clean, 2.5 s | hard ren, 2.0 s |
+| KÆRLIGHED | refused | refused | refused | hard KÆI, 1.3 s | hard Æ, 0.9 s | refused |
+
+Text in the checks: 8 clean, 10 hard, 3 refused; 0.2 s where four strips cut
+cleanly, else 0.8–7.6 s in an earlier, less loaded run, and 8–11 s to refuse
+(each board tried is a whole heart). The medallion: 15 clean, 5 hard, 1
+refused, 0.1–2.7 s; lowercase anna is clean in Nunito and Josefin Sans. The
+pictures differ from the hearts in at most 0.4% of the square in the medallion
+on seven strips (on eight there is none yet), and in the checks in at most
+0.3%, but by 0.8–3% where the checks kept a smaller size than asked, which
+the picture does not know (Søren in Nunito at 60%). A word of nine
+letters on one line has letters too small for any board, and the page says
+the frame cannot take that text; two lines (KÆRLIG / HED) are hard to cut on
+five or six strips.
+
 ## The figure in the checks
 
 Product decision (2026-10-18): the twelfth figure frame is the most common real
@@ -35,6 +89,18 @@ uncrossed and then separated, by a thousandth of the motif's size. Now **37**
 clean and **14** hard to cut, none refused (the star, tree, heart, angel, bell,
 gift, moon, house and flower clean), median 0.45 s, at most 2.5 s (the cookie).
 The fixture has **1,706** entries.
+
+Islands (2026-10-20). An outline crossing no line, such as a counter alone in
+its square, needs two hidden cuts, between which it changes sheet; the
+candidates from its face's sides, aimed at its centre, often leave it at a
+sharp angle or too close to the outline around it, and with none the search
+ends at once ("exhausted", nothing learned). Where they leave an island fewer
+than two, it also gets the shortest hidden cuts from each side and island of
+its face, once where they come nearest and once at least a quarter of the way
+round from there. Over the corpus on four strips at the default size, 46
+hearts are unchanged, the rabbit and the bicycle are now clean, and the coffee,
+crown and apple are cut differently: **39** clean, **12** hard, none refused,
+24 s in all instead of 25.
 
 Sizes (2026-10-19). Up to the default size the motif keeps its place, so it
 only grows with the slider. The fit to the paper measured the motif's reach

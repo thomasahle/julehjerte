@@ -5,7 +5,8 @@ import type { GeneratorResult } from './generate';
 export function geometryKey(s: GeneratorState): string {
 	return JSON.stringify(
 		s.mode === 'text'
-			? [s.mode, s.text.normalize('NFC'), s.font, s.textFrame, ...CELL_FRAMES.includes(s.textFrame) ? [s.cells, textRoom(s)] : []]
+			? [s.mode, s.text.normalize('NFC'), s.font, s.textFrame, ...CELL_FRAMES.includes(s.textFrame) ? [s.cells, textRoom(s)] : [],
+				...s.textFrame === 'strips' ? [stripCount(s)] : []]
 			: s.mode === 'figure'
 				? // Board frames fix the space; the silhouette fills the square;
 					// the frame size is the motif size's base everywhere else.

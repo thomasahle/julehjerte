@@ -41,7 +41,7 @@ it('measures how much smaller square cells make narrow letters', () => {
 });
 
 it('offers square and letter-sized cells as a pair, with a slider for the space around the text', () => {
-	expect(TEXT_TEMPLATES.map(t => t.id)).toEqual(['woven-square', 'woven-letters', 'checkered', 'circle']);
+	expect(TEXT_TEMPLATES.map(t => t.id)).toEqual(['woven-square', 'woven-letters', 'checkered', 'circle', 'strips', 'layers']);
 	const state = { ...defaults, mode: 'text' as const };
 	expect(state.cells).toBe('square');
 	expect(readGeneratorState('#make=' + JSON.stringify({ ...state, cells: 'letters' })).cells).toBe('letters');

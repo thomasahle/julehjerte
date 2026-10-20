@@ -474,6 +474,14 @@ describe('frames from real hearts', () => {
    expect(swapped(design).corners, `${strips}`).toBe(true);
   }
  }, 30000);
+ it('reaches a counter alone in its square by its shortest hidden cuts', () => {
+  // The cuts from their faces' sides leave islands of the bicycle fewer than
+  // two; with the shortest ways to them too, it cuts cleanly, where it was
+  // hard to cut.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Bicycle', contours: bicycle.contours as Ring[], colors, style: 'strips' });
+  expect(design.gridSize).toEqual({ x: 4, y: 4 });
+  expect(hardToCut).toBeUndefined();
+ });
  slow('keeps a snowflake in the checks at a size its strips can have, rather than refusing', () => {
   // At 75% no sheets keep every strip whole at the snowflake's place; it
   // keeps a size a little below that it can have there.

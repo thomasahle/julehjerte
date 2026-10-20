@@ -1,5 +1,6 @@
 import { FIGURE_STYLES, FRAMES, type Frame, type TextFrame } from './geometry';
 import { CELLS, CELL_FRAMES, type Cells, type GeneratorState } from './state';
+import { TEXT_FIGURES } from './textFigure';
 
 export type FigureTemplate = {
 	id: string;
@@ -13,8 +14,9 @@ export const FIGURE_TEMPLATES: FigureTemplate[] = FIGURE_STYLES.map((style) => (
 }));
 export type TextTemplate = { id: string; textFrame: TextFrame; cells?: Cells };
 /** The frame whose checks follow the text cells comes as a pair, square cells
- * beside letter-sized ones, its space around the text set by a slider. */
-export const TEXT_TEMPLATES: TextTemplate[] = (['woven', 'checkered', ...FRAMES] as TextFrame[])
+ * beside letter-sized ones, its space around the text set by a slider; the
+ * figure frames that take the text's outline follow the text's own frames. */
+export const TEXT_TEMPLATES: TextTemplate[] = (['woven', 'checkered', ...FRAMES, ...TEXT_FIGURES] as TextFrame[])
 	.flatMap((textFrame): TextTemplate[] => CELL_FRAMES.includes(textFrame)
 		? CELLS.map((cells) => ({ id: `${textFrame}-${cells}`, textFrame, cells }))
 		: [{ id: textFrame, textFrame }]);
