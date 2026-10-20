@@ -26,7 +26,7 @@ def sample_indices(support, minimum=32, maximum=1024):
     ])), n
 
 
-def fit_ridge(features, indices, per_paper, regularization=.1):
+def fit_ridge(features, indices, per_paper, regularization=.1, *, target=None):
     """CHW features; differentiable double-precision statistics and solve."""
     if features.ndim != 3 or not regularization > 0:
         raise ValueError('Require CHW features and positive ridge penalty')
@@ -36,7 +36,10 @@ def fit_ridge(features, indices, per_paper, regularization=.1):
     centre = samples.mean(0)
     scale = samples.std(0, unbiased=False).clamp_min(1e-4)
     x = (samples-centre)/scale
-    y = torch.cat([-torch.ones(per_paper), torch.ones(per_paper)]).to(x)
+    y = (torch.cat([-torch.ones(per_paper), torch.ones(per_paper)]).to(x)
+         if target is None else target.to(x))
+    if y.shape != (2*per_paper,) or not torch.isfinite(y).all():
+        raise ValueError('Require one finite target per lobe sample')
     covariance = x.T@x/len(x)+regularization*torch.eye(x.shape[1], dtype=x.dtype, device=x.device)
     weight = torch.linalg.solve(covariance, x.T@y/len(x))
     return centre, scale, weight
@@ -45,6 +48,22 @@ def fit_ridge(features, indices, per_paper, regularization=.1):
 def score_ridge(features, classifier):
     centre, scale, weight = classifier
     return (((features.permute(1, 2, 0).double()-centre)/scale)@weight).to(features.dtype)
+
+
+def context_residual_score(rgb, context, indices, per_paper):
+    """Fit context only to the residual of the lobe-fitted RGB classifier.
+
+    This is an offline alternative to joint ridge fitting, not a safety gate:
+    an unseen context value can still worsen a good RGB prediction.
+    """
+    rgb_low = F.interpolate(rgb[None], context.shape[-2:], mode='bilinear',
+                            align_corners=False)[0]
+    base = fit_ridge(rgb_low, indices, per_paper)
+    targets = torch.cat([-torch.ones(per_paper), torch.ones(per_paper)]).to(rgb_low)
+    residual = targets-score_ridge(rgb_low, base).flatten()[indices]
+    correction = fit_ridge(context, indices, per_paper, target=residual)
+    high = F.interpolate(context[None], rgb.shape[-2:], mode='bilinear', align_corners=False)[0]
+    return score_ridge(rgb, base)+score_ridge(high, correction)
 
 
 class ExemplarProjection(nn.Module):
@@ -61,8 +80,10 @@ class ExemplarProjection(nn.Module):
         rgb_low = F.interpolate(rgb[None], size, mode='bilinear', align_corners=False)[0]
         return fit_ridge(torch.cat([rgb_low, context]), indices, per_paper)
 
-    def forward(self, rgb, frozen, indices, per_paper):
+    def forward(self, rgb, frozen, indices, per_paper, *, residual=False):
         context = self.context(frozen)
+        if residual:
+            return context_residual_score(rgb, context, indices, per_paper)
         classifier = self.fit(rgb, context, indices, per_paper)
         high = F.interpolate(context[None], rgb.shape[-2:], mode='bilinear', align_corners=False)[0]
         return score_ridge(torch.cat([rgb, high]), classifier)

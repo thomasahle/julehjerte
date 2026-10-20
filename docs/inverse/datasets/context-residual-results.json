@@ -1,0 +1,1766 @@
+{
+  "schema": "context-residual-results-1",
+  "date": "2026-10-20",
+  "status": "offline prototype; not promoted",
+  "plans": {
+    "joint": {
+      "path": "docs/inverse/datasets/radial-exemplar-probe-plan.json",
+      "sha256": "bcf3d3dc8e7ceaa20b613a905f556946b227066729aae82d582310a5c5e302d5"
+    },
+    "residual": {
+      "path": "docs/inverse/datasets/radial-context-residual-plan.json",
+      "sha256": "964e75b04b5fbe74a63dc2bdf5c3e74a7658645a7ab91ea5424eaed24a3289a2"
+    },
+    "transfer": {
+      "path": "docs/inverse/datasets/context-residual-transfer-plan.json",
+      "sha256": "b1192de92affe66fd9dae44cd0a9c1a545099d2ccacd6b772a8620bc92341055"
+    }
+  },
+  "reports": {
+    "joint": {
+      "path": "tmp/heart-learning/radial-exemplar-probe-v2/report.json",
+      "sha256": "a2034e1b6673217b743389f3cc44cb173265f48910e7460a07d742d1b50892b6"
+    },
+    "residual": {
+      "path": "tmp/heart-learning/radial-context-residual-v1/report.json",
+      "sha256": "e0aa2ca2606b49abeb5fddd5ac8a6ce6d66bb583b5027b1ff39acd807767d187"
+    },
+    "transfer": {
+      "path": "tmp/heart-learning/context-residual-transfer-v1/report.json",
+      "sha256": "10f708fa7d6469f6e48d97fab78f56d11d28ddd7495bc169f53e958b43b99fde"
+    }
+  },
+  "failedPreparation": {
+    "path": "tmp/heart-learning/radial-exemplar-probe-v1/report.json",
+    "sha256": "76c8e28602cb8dfad0f2330e8aebc789be4ff5556cf70616356e44c9a1599f65"
+  },
+  "preparationQualification": "The first new diagnostic stopped before model inference because the RGB fitter returns a model/report pair. Tuple unpacking was corrected; the complete cohort was then run in a fresh output directory. The failed record is preserved.",
+  "architecture": "Same frozen adapted U2NETP and the same three 1536-weight projections. At inference, fit balanced exposed-lobe RGB first; fit context channels to the remaining signed regression residual on those same samples. Sum RGB and context scores for overlap pixels. No overlap labels enter either per-photo fit.",
+  "fittingQualification": "Sequential ridge is a different extrapolation bias, not an assurance that RGB cannot get worse. No neural updates or checkpoint selection occurred.",
+  "radial": {
+    "designs": 64,
+    "viewsPerDesign": 1,
+    "sourceSplit": "unassigned",
+    "camera": "known synthetic camera; not automatic localization",
+    "joint": {
+      "total": 64,
+      "complete": 64,
+      "methods": {
+        "rgb-only": {
+          "meanError": 0.014015542729528787,
+          "medianError": 0.011234852687072815,
+          "maximumError": 0.07715115152335271,
+          "casesBelow2Percent": 58
+        },
+        "parent": {
+          "meanError": 0.016122963269053193,
+          "medianError": 0.013031084427680587,
+          "maximumError": 0.05554773249899934,
+          "casesBelow2Percent": 54
+        },
+        "synthetic-control": {
+          "meanError": 0.01521041998035996,
+          "medianError": 0.012454621905542723,
+          "maximumError": 0.051942409155611505,
+          "casesBelow2Percent": 55
+        },
+        "real-mixed": {
+          "meanError": 0.0162901507259321,
+          "medianError": 0.012745846217646791,
+          "maximumError": 0.07322448440962474,
+          "casesBelow2Percent": 51
+        }
+      }
+    },
+    "residual": {
+      "total": 64,
+      "complete": 64,
+      "methods": {
+        "rgb-only": {
+          "meanError": 0.014015542729528787,
+          "medianError": 0.011234852687072815,
+          "maximumError": 0.07715115152335271,
+          "casesBelow2Percent": 58
+        },
+        "parent": {
+          "meanError": 0.013977277964939267,
+          "medianError": 0.01105244021363207,
+          "maximumError": 0.055629883221761434,
+          "casesBelow2Percent": 58
+        },
+        "synthetic-control": {
+          "meanError": 0.013909182403348859,
+          "medianError": 0.011026498877025412,
+          "maximumError": 0.061182102827282876,
+          "casesBelow2Percent": 58
+        },
+        "real-mixed": {
+          "meanError": 0.014350039321071102,
+          "medianError": 0.011202907505608543,
+          "maximumError": 0.0703265089180823,
+          "casesBelow2Percent": 57
+        }
+      }
+    },
+    "meanMinimumBinaryError": 0.009439526586879781,
+    "rows": [
+      {
+        "id": "radial-motif-920413-v0",
+        "knownPixels": 17167,
+        "joint": {
+          "rgb-only": 0.010585303241860619,
+          "parent": 0.01636441850964994,
+          "synthetic-control": 0.01801959861517161,
+          "real-mixed": 0.016069183194339396
+        },
+        "residual": {
+          "rgb-only": 0.010585303241860619,
+          "parent": 0.010892580237005019,
+          "synthetic-control": 0.010679662682468878,
+          "real-mixed": 0.010678012869510416
+        }
+      },
+      {
+        "id": "radial-motif-921422-v0",
+        "knownPixels": 16304,
+        "joint": {
+          "rgb-only": 0.01661693417742278,
+          "parent": 0.017254835954328984,
+          "synthetic-control": 0.016994298005273696,
+          "real-mixed": 0.020763348086103722
+        },
+        "residual": {
+          "rgb-only": 0.01661693417742278,
+          "parent": 0.016469407980206904,
+          "synthetic-control": 0.016009593548818004,
+          "real-mixed": 0.016190578702241328
+        }
+      },
+      {
+        "id": "radial-motif-922431-v0",
+        "knownPixels": 18542,
+        "joint": {
+          "rgb-only": 0.019938870925320068,
+          "parent": 0.020240709367223754,
+          "synthetic-control": 0.01676760240545449,
+          "real-mixed": 0.019135918728215656
+        },
+        "residual": {
+          "rgb-only": 0.019938870925320068,
+          "parent": 0.019274792651530415,
+          "synthetic-control": 0.018021053766281058,
+          "real-mixed": 0.01887352578643327
+        }
+      },
+      {
+        "id": "radial-motif-923440-v0",
+        "knownPixels": 20684,
+        "joint": {
+          "rgb-only": 0.009982160502027852,
+          "parent": 0.011701617065008087,
+          "synthetic-control": 0.012409439436865139,
+          "real-mixed": 0.011713322386753626
+        },
+        "residual": {
+          "rgb-only": 0.009982160502027852,
+          "parent": 0.010198861539214014,
+          "synthetic-control": 0.010954497106484254,
+          "real-mixed": 0.010861783113177153
+        }
+      },
+      {
+        "id": "radial-motif-924449-v0",
+        "knownPixels": 13180,
+        "joint": {
+          "rgb-only": 0.031314815103736376,
+          "parent": 0.04521601542898303,
+          "synthetic-control": 0.039452330838204874,
+          "real-mixed": 0.03979122663123112
+        },
+        "residual": {
+          "rgb-only": 0.031314815103736376,
+          "parent": 0.03289293811426177,
+          "synthetic-control": 0.03224163349373026,
+          "real-mixed": 0.03207311367047937
+        }
+      },
+      {
+        "id": "radial-motif-925458-v0",
+        "knownPixels": 18715,
+        "joint": {
+          "rgb-only": 0.012547371045427783,
+          "parent": 0.015279577646604554,
+          "synthetic-control": 0.013812438511064975,
+          "real-mixed": 0.012017878153538787
+        },
+        "residual": {
+          "rgb-only": 0.012547371045427783,
+          "parent": 0.011718180559868167,
+          "synthetic-control": 0.011785513068659562,
+          "real-mixed": 0.011931313100168166
+        }
+      },
+      {
+        "id": "radial-motif-926467-v0",
+        "knownPixels": 16440,
+        "joint": {
+          "rgb-only": 0.011709926427860909,
+          "parent": 0.011799707976135894,
+          "synthetic-control": 0.012499804374220307,
+          "real-mixed": 0.011989369861545933
+        },
+        "residual": {
+          "rgb-only": 0.011709926427860909,
+          "parent": 0.011564953559941618,
+          "synthetic-control": 0.01208282141717391,
+          "real-mixed": 0.011924632306951675
+        }
+      },
+      {
+        "id": "radial-motif-927476-v0",
+        "knownPixels": 16365,
+        "joint": {
+          "rgb-only": 0.011578954489923857,
+          "parent": 0.012367920277499658,
+          "synthetic-control": 0.011860795859492157,
+          "real-mixed": 0.012738803126489283
+        },
+        "residual": {
+          "rgb-only": 0.011578954489923857,
+          "parent": 0.012280310285663227,
+          "synthetic-control": 0.011383764382498439,
+          "real-mixed": 0.01131868914948885
+        }
+      },
+      {
+        "id": "radial-motif-928485-v0",
+        "knownPixels": 14828,
+        "joint": {
+          "rgb-only": 0.010103582310843795,
+          "parent": 0.010544103084145643,
+          "synthetic-control": 0.010353418877576926,
+          "real-mixed": 0.010685977598615564
+        },
+        "residual": {
+          "rgb-only": 0.010103582310843795,
+          "parent": 0.009997418447263743,
+          "synthetic-control": 0.010003915064123271,
+          "real-mixed": 0.009985055813642727
+        }
+      },
+      {
+        "id": "radial-motif-929494-v0",
+        "knownPixels": 15611,
+        "joint": {
+          "rgb-only": 0.014820381333708695,
+          "parent": 0.012076579915836523,
+          "synthetic-control": 0.011055336398063055,
+          "real-mixed": 0.011082161420526836
+        },
+        "residual": {
+          "rgb-only": 0.014820381333708695,
+          "parent": 0.013869848962123676,
+          "synthetic-control": 0.01376870297643378,
+          "real-mixed": 0.012607864105344833
+        }
+      },
+      {
+        "id": "radial-motif-930503-v0",
+        "knownPixels": 15174,
+        "joint": {
+          "rgb-only": 0.010877355019911423,
+          "parent": 0.011023012839460996,
+          "synthetic-control": 0.011025146311790997,
+          "real-mixed": 0.012004166342641143
+        },
+        "residual": {
+          "rgb-only": 0.010877355019911423,
+          "parent": 0.010648658510660393,
+          "synthetic-control": 0.010919878954816371,
+          "real-mixed": 0.011071130442842438
+        }
+      },
+      {
+        "id": "radial-motif-931512-v0",
+        "knownPixels": 15992,
+        "joint": {
+          "rgb-only": 0.026273395383489197,
+          "parent": 0.02867233180340795,
+          "synthetic-control": 0.027335832134940254,
+          "real-mixed": 0.030581448344572475
+        },
+        "residual": {
+          "rgb-only": 0.026273395383489197,
+          "parent": 0.028511653692946545,
+          "synthetic-control": 0.03042899798592548,
+          "real-mixed": 0.030936374190659924
+        }
+      },
+      {
+        "id": "radial-motif-932521-v0",
+        "knownPixels": 17330,
+        "joint": {
+          "rgb-only": 0.013823393876333837,
+          "parent": 0.03618081348931521,
+          "synthetic-control": 0.027822387751580937,
+          "real-mixed": 0.01598385834171121
+        },
+        "residual": {
+          "rgb-only": 0.013823393876333837,
+          "parent": 0.02157784679413392,
+          "synthetic-control": 0.014480560488323909,
+          "real-mixed": 0.012083292437370155
+        }
+      },
+      {
+        "id": "radial-motif-933530-v0",
+        "knownPixels": 18040,
+        "joint": {
+          "rgb-only": 0.01039362835249721,
+          "parent": 0.01372927102175626,
+          "synthetic-control": 0.013460982685078539,
+          "real-mixed": 0.011799478365682445
+        },
+        "residual": {
+          "rgb-only": 0.01039362835249721,
+          "parent": 0.010470075690561282,
+          "synthetic-control": 0.010912752316690602,
+          "real-mixed": 0.010500043240724805
+        }
+      },
+      {
+        "id": "radial-motif-934539-v0",
+        "knownPixels": 15807,
+        "joint": {
+          "rgb-only": 0.00981752521558694,
+          "parent": 0.009622440499071454,
+          "synthetic-control": 0.009733616091565976,
+          "real-mixed": 0.009705687180833616
+        },
+        "residual": {
+          "rgb-only": 0.00981752521558694,
+          "parent": 0.00967304119614607,
+          "synthetic-control": 0.009671446331660314,
+          "real-mixed": 0.009593463169523123
+        }
+      },
+      {
+        "id": "radial-motif-935548-v0",
+        "knownPixels": 17034,
+        "joint": {
+          "rgb-only": 0.07715115152335271,
+          "parent": 0.05554773249899934,
+          "synthetic-control": 0.051942409155611505,
+          "real-mixed": 0.07322448440962474
+        },
+        "residual": {
+          "rgb-only": 0.07715115152335271,
+          "parent": 0.055629883221761434,
+          "synthetic-control": 0.061182102827282876,
+          "real-mixed": 0.0703265089180823
+        }
+      },
+      {
+        "id": "radial-motif-936557-v0",
+        "knownPixels": 21555,
+        "joint": {
+          "rgb-only": 0.00838044679958509,
+          "parent": 0.008355552172389834,
+          "synthetic-control": 0.008335891980578467,
+          "real-mixed": 0.008715335890301639
+        },
+        "residual": {
+          "rgb-only": 0.00838044679958509,
+          "parent": 0.008266818119682643,
+          "synthetic-control": 0.008309919370683544,
+          "real-mixed": 0.008299864206754312
+        }
+      },
+      {
+        "id": "radial-motif-937566-v0",
+        "knownPixels": 20538,
+        "joint": {
+          "rgb-only": 0.01056845230918767,
+          "parent": 0.014700396355919555,
+          "synthetic-control": 0.011432769111305844,
+          "real-mixed": 0.01084702949594042
+        },
+        "residual": {
+          "rgb-only": 0.01056845230918767,
+          "parent": 0.010758421912445438,
+          "synthetic-control": 0.010261076397389211,
+          "real-mixed": 0.01021298060910311
+        }
+      },
+      {
+        "id": "radial-motif-938575-v0",
+        "knownPixels": 19613,
+        "joint": {
+          "rgb-only": 0.013782452590023184,
+          "parent": 0.018154086970859924,
+          "synthetic-control": 0.018912986023473587,
+          "real-mixed": 0.01854732664698871
+        },
+        "residual": {
+          "rgb-only": 0.013782452590023184,
+          "parent": 0.014224319621386474,
+          "synthetic-control": 0.014002042623150447,
+          "real-mixed": 0.013735044192776713
+        }
+      },
+      {
+        "id": "radial-motif-939584-v0",
+        "knownPixels": 16365,
+        "joint": {
+          "rgb-only": 0.015036958479713746,
+          "parent": 0.01975767780727033,
+          "synthetic-control": 0.015565425061028629,
+          "real-mixed": 0.01932765180970637
+        },
+        "residual": {
+          "rgb-only": 0.015036958479713746,
+          "parent": 0.017658195013377852,
+          "synthetic-control": 0.015493253899611285,
+          "real-mixed": 0.014736781920127973
+        }
+      },
+      {
+        "id": "radial-motif-940593-v0",
+        "knownPixels": 14913,
+        "joint": {
+          "rgb-only": 0.030209253149749465,
+          "parent": 0.022405901009876755,
+          "synthetic-control": 0.02529342622334254,
+          "real-mixed": 0.029197573118236057
+        },
+        "residual": {
+          "rgb-only": 0.030209253149749465,
+          "parent": 0.015679994107795532,
+          "synthetic-control": 0.02011259525568682,
+          "real-mixed": 0.02630784780472519
+        }
+      },
+      {
+        "id": "radial-motif-941602-v0",
+        "knownPixels": 19532,
+        "joint": {
+          "rgb-only": 0.015157815141436656,
+          "parent": 0.01594630260643792,
+          "synthetic-control": 0.013812064828502578,
+          "real-mixed": 0.0158947910957104
+        },
+        "residual": {
+          "rgb-only": 0.015157815141436656,
+          "parent": 0.015290959027734858,
+          "synthetic-control": 0.015189139005738938,
+          "real-mixed": 0.01512752887156809
+        }
+      },
+      {
+        "id": "radial-motif-942611-v0",
+        "knownPixels": 18095,
+        "joint": {
+          "rgb-only": 0.010734226579131194,
+          "parent": 0.012870101910264626,
+          "synthetic-control": 0.01206653593126072,
+          "real-mixed": 0.01197514736906011
+        },
+        "residual": {
+          "rgb-only": 0.010734226579131194,
+          "parent": 0.010643471127288978,
+          "synthetic-control": 0.010675545837642672,
+          "real-mixed": 0.010684195240744902
+        }
+      },
+      {
+        "id": "radial-motif-943620-v0",
+        "knownPixels": 15540,
+        "joint": {
+          "rgb-only": 0.010235544410144654,
+          "parent": 0.011074082497771028,
+          "synthetic-control": 0.010640207562053833,
+          "real-mixed": 0.011056179571489263
+        },
+        "residual": {
+          "rgb-only": 0.010235544410144654,
+          "parent": 0.010253479562824451,
+          "synthetic-control": 0.010311831136928101,
+          "real-mixed": 0.010253111847425826
+        }
+      },
+      {
+        "id": "radial-motif-944629-v0",
+        "knownPixels": 19201,
+        "joint": {
+          "rgb-only": 0.009985110240208346,
+          "parent": 0.010430392318886709,
+          "synthetic-control": 0.01081468133490307,
+          "real-mixed": 0.0103916107202022
+        },
+        "residual": {
+          "rgb-only": 0.009985110240208346,
+          "parent": 0.01008484879916338,
+          "synthetic-control": 0.010217596218552566,
+          "real-mixed": 0.010029576428948165
+        }
+      },
+      {
+        "id": "radial-motif-945638-v0",
+        "knownPixels": 13868,
+        "joint": {
+          "rgb-only": 0.01245753269804841,
+          "parent": 0.019456512987493332,
+          "synthetic-control": 0.016536590583323744,
+          "real-mixed": 0.02225970301292525
+        },
+        "residual": {
+          "rgb-only": 0.01245753269804841,
+          "parent": 0.012890559367841968,
+          "synthetic-control": 0.012503255073777324,
+          "real-mixed": 0.012662327724538758
+        }
+      },
+      {
+        "id": "radial-motif-946647-v0",
+        "knownPixels": 15861,
+        "joint": {
+          "rgb-only": 0.009364760430852308,
+          "parent": 0.00947819427421449,
+          "synthetic-control": 0.009554672531323704,
+          "real-mixed": 0.009499716447570812
+        },
+        "residual": {
+          "rgb-only": 0.009364760430852308,
+          "parent": 0.009394326168534344,
+          "synthetic-control": 0.009405282201972,
+          "real-mixed": 0.009404249656065875
+        }
+      },
+      {
+        "id": "radial-motif-1947659-v0",
+        "knownPixels": 14784,
+        "joint": {
+          "rgb-only": 0.012098916435364263,
+          "parent": 0.013027054475402677,
+          "synthetic-control": 0.011771684419766906,
+          "real-mixed": 0.0127528893088043
+        },
+        "residual": {
+          "rgb-only": 0.012098916435364263,
+          "parent": 0.012110597889434981,
+          "synthetic-control": 0.011646887944664532,
+          "real-mixed": 0.011992607697102673
+        }
+      },
+      {
+        "id": "radial-motif-948665-v0",
+        "knownPixels": 14717,
+        "joint": {
+          "rgb-only": 0.010854908716438046,
+          "parent": 0.013035114379958499,
+          "synthetic-control": 0.011252972688770183,
+          "real-mixed": 0.012500008317190902
+        },
+        "residual": {
+          "rgb-only": 0.010854908716438046,
+          "parent": 0.01105135449606933,
+          "synthetic-control": 0.010827185651275413,
+          "real-mixed": 0.011138118114485692
+        }
+      },
+      {
+        "id": "radial-motif-949674-v0",
+        "knownPixels": 18996,
+        "joint": {
+          "rgb-only": 0.010640793344075365,
+          "parent": 0.011224138630669,
+          "synthetic-control": 0.011305197847469351,
+          "real-mixed": 0.014381152742233847
+        },
+        "residual": {
+          "rgb-only": 0.010640793344075365,
+          "parent": 0.010836714395073043,
+          "synthetic-control": 0.010848773416279994,
+          "real-mixed": 0.011050322964382714
+        }
+      },
+      {
+        "id": "radial-motif-950683-v0",
+        "knownPixels": 16321,
+        "joint": {
+          "rgb-only": 0.01057228577662154,
+          "parent": 0.010590275832305285,
+          "synthetic-control": 0.010723130973660254,
+          "real-mixed": 0.010736082181737132
+        },
+        "residual": {
+          "rgb-only": 0.01057228577662154,
+          "parent": 0.010540964527315943,
+          "synthetic-control": 0.010565266875935553,
+          "real-mixed": 0.010641095013195127
+        }
+      },
+      {
+        "id": "radial-motif-1951695-v0",
+        "knownPixels": 13180,
+        "joint": {
+          "rgb-only": 0.011566358659987385,
+          "parent": 0.011684462504972999,
+          "synthetic-control": 0.011634761167404684,
+          "real-mixed": 0.011782400669566779
+        },
+        "residual": {
+          "rgb-only": 0.011566358659987385,
+          "parent": 0.011053525931194809,
+          "synthetic-control": 0.011098500647566569,
+          "real-mixed": 0.011101777293070676
+        }
+      },
+      {
+        "id": "radial-motif-952701-v0",
+        "knownPixels": 16742,
+        "joint": {
+          "rgb-only": 0.012719325175665283,
+          "parent": 0.017394167165604706,
+          "synthetic-control": 0.02310347794888339,
+          "real-mixed": 0.027731492625899447
+        },
+        "residual": {
+          "rgb-only": 0.012719325175665283,
+          "parent": 0.012942891816713521,
+          "synthetic-control": 0.013452451853694604,
+          "real-mixed": 0.013776339520235784
+        }
+      },
+      {
+        "id": "radial-motif-953710-v0",
+        "knownPixels": 19264,
+        "joint": {
+          "rgb-only": 0.010533069121184143,
+          "parent": 0.010620422320954032,
+          "synthetic-control": 0.010223614219019184,
+          "real-mixed": 0.010624346784331475
+        },
+        "residual": {
+          "rgb-only": 0.010533069121184143,
+          "parent": 0.010395637295669892,
+          "synthetic-control": 0.010309861626389414,
+          "real-mixed": 0.010193007153480552
+        }
+      },
+      {
+        "id": "radial-motif-954719-v0",
+        "knownPixels": 16518,
+        "joint": {
+          "rgb-only": 0.012741969372634667,
+          "parent": 0.014291779258693155,
+          "synthetic-control": 0.013004576915227583,
+          "real-mixed": 0.015376979158813489
+        },
+        "residual": {
+          "rgb-only": 0.012741969372634667,
+          "parent": 0.01258359745709569,
+          "synthetic-control": 0.012281100420733026,
+          "real-mixed": 0.01262760386439267
+        }
+      },
+      {
+        "id": "radial-motif-955728-v0",
+        "knownPixels": 16475,
+        "joint": {
+          "rgb-only": 0.009516416102512111,
+          "parent": 0.010886140202535302,
+          "synthetic-control": 0.010761014087428092,
+          "real-mixed": 0.010750718435134077
+        },
+        "residual": {
+          "rgb-only": 0.009516416102512111,
+          "parent": 0.009554269056942467,
+          "synthetic-control": 0.009490441422180269,
+          "real-mixed": 0.009490087035936
+        }
+      },
+      {
+        "id": "radial-motif-956737-v0",
+        "knownPixels": 16901,
+        "joint": {
+          "rgb-only": 0.013101200684733126,
+          "parent": 0.01528521466767264,
+          "synthetic-control": 0.013528425667696567,
+          "real-mixed": 0.015262386966870316
+        },
+        "residual": {
+          "rgb-only": 0.013101200684733126,
+          "parent": 0.013569016518955942,
+          "synthetic-control": 0.013175083429783338,
+          "real-mixed": 0.01363341911016403
+        }
+      },
+      {
+        "id": "radial-motif-957746-v0",
+        "knownPixels": 16909,
+        "joint": {
+          "rgb-only": 0.00994896204878094,
+          "parent": 0.010197081714753982,
+          "synthetic-control": 0.010449854632048302,
+          "real-mixed": 0.010209533441947293
+        },
+        "residual": {
+          "rgb-only": 0.00994896204878094,
+          "parent": 0.010007781557726884,
+          "synthetic-control": 0.010020513298792237,
+          "real-mixed": 0.010026145668059113
+        }
+      },
+      {
+        "id": "radial-motif-958755-v0",
+        "knownPixels": 14823,
+        "joint": {
+          "rgb-only": 0.009167593286916135,
+          "parent": 0.0098653085711256,
+          "synthetic-control": 0.009423433737113698,
+          "real-mixed": 0.009884289725142227
+        },
+        "residual": {
+          "rgb-only": 0.009167593286916135,
+          "parent": 0.009112996148056229,
+          "synthetic-control": 0.00912185972023049,
+          "real-mixed": 0.009146753166044063
+        }
+      },
+      {
+        "id": "radial-motif-2959770-v0",
+        "knownPixels": 13246,
+        "joint": {
+          "rgb-only": 0.026235425920441813,
+          "parent": 0.030367700828268288,
+          "synthetic-control": 0.025657885936421425,
+          "real-mixed": 0.024906681776586732
+        },
+        "residual": {
+          "rgb-only": 0.026235425920441813,
+          "parent": 0.026151183075223034,
+          "synthetic-control": 0.02513457082575332,
+          "real-mixed": 0.02546478412166816
+        }
+      },
+      {
+        "id": "radial-motif-960773-v0",
+        "knownPixels": 13568,
+        "joint": {
+          "rgb-only": 0.02789020234332332,
+          "parent": 0.03433552860581088,
+          "synthetic-control": 0.029728524922832567,
+          "real-mixed": 0.03630225333156732
+        },
+        "residual": {
+          "rgb-only": 0.02789020234332332,
+          "parent": 0.033055534928966804,
+          "synthetic-control": 0.03142786948537489,
+          "real-mixed": 0.037185202695359035
+        }
+      },
+      {
+        "id": "radial-motif-961782-v0",
+        "knownPixels": 14611,
+        "joint": {
+          "rgb-only": 0.010377502708201388,
+          "parent": 0.010837536725116113,
+          "synthetic-control": 0.011994362999286407,
+          "real-mixed": 0.011533016015776585
+        },
+        "residual": {
+          "rgb-only": 0.010377502708201388,
+          "parent": 0.010434774005121784,
+          "synthetic-control": 0.010583467755537325,
+          "real-mixed": 0.01044612146322997
+        }
+      },
+      {
+        "id": "radial-motif-1962794-v0",
+        "knownPixels": 14998,
+        "joint": {
+          "rgb-only": 0.01344275346182556,
+          "parent": 0.02607695381789863,
+          "synthetic-control": 0.019658843009912868,
+          "real-mixed": 0.020491742912110113
+        },
+        "residual": {
+          "rgb-only": 0.01344275346182556,
+          "parent": 0.01932995709073847,
+          "synthetic-control": 0.015892588193296735,
+          "real-mixed": 0.01617047752614243
+        }
+      },
+      {
+        "id": "radial-motif-963800-v0",
+        "knownPixels": 19927,
+        "joint": {
+          "rgb-only": 0.01822016138603799,
+          "parent": 0.016707383991693622,
+          "synthetic-control": 0.017120397057410985,
+          "real-mixed": 0.015797166686867568
+        },
+        "residual": {
+          "rgb-only": 0.01822016138603799,
+          "parent": 0.018299492945809633,
+          "synthetic-control": 0.019692286462415783,
+          "real-mixed": 0.01769564434666877
+        }
+      },
+      {
+        "id": "radial-motif-964809-v0",
+        "knownPixels": 14363,
+        "joint": {
+          "rgb-only": 0.012839784236586061,
+          "parent": 0.016304971576193487,
+          "synthetic-control": 0.017768750999628366,
+          "real-mixed": 0.024379329218104515
+        },
+        "residual": {
+          "rgb-only": 0.012839784236586061,
+          "parent": 0.013515568361353394,
+          "synthetic-control": 0.01348106760936536,
+          "real-mixed": 0.01366960772861804
+        }
+      },
+      {
+        "id": "radial-motif-965818-v0",
+        "knownPixels": 15854,
+        "joint": {
+          "rgb-only": 0.009916601764369285,
+          "parent": 0.011120596279543947,
+          "synthetic-control": 0.011162896704159455,
+          "real-mixed": 0.010722200300107917
+        },
+        "residual": {
+          "rgb-only": 0.009916601764369285,
+          "parent": 0.010015844858894285,
+          "synthetic-control": 0.010134548911294014,
+          "real-mixed": 0.010140183629282219
+        }
+      },
+      {
+        "id": "radial-motif-966827-v0",
+        "knownPixels": 15694,
+        "joint": {
+          "rgb-only": 0.009519521850103692,
+          "parent": 0.009933285262306071,
+          "synthetic-control": 0.010104516159581184,
+          "real-mixed": 0.009822328811969759
+        },
+        "residual": {
+          "rgb-only": 0.009519521850103692,
+          "parent": 0.009629881395661058,
+          "synthetic-control": 0.009679198941106444,
+          "real-mixed": 0.009544673832841962
+        }
+      },
+      {
+        "id": "radial-motif-967836-v0",
+        "knownPixels": 19729,
+        "joint": {
+          "rgb-only": 0.00822577053416947,
+          "parent": 0.00938283008595935,
+          "synthetic-control": 0.008770064718126677,
+          "real-mixed": 0.009393303445919194
+        },
+        "residual": {
+          "rgb-only": 0.00822577053416947,
+          "parent": 0.008359047009316634,
+          "synthetic-control": 0.008317395806814076,
+          "real-mixed": 0.00832403478357057
+        }
+      },
+      {
+        "id": "radial-motif-968845-v0",
+        "knownPixels": 16175,
+        "joint": {
+          "rgb-only": 0.009155994482349944,
+          "parent": 0.009578577808840014,
+          "synthetic-control": 0.009747149082018751,
+          "real-mixed": 0.0096195116772718
+        },
+        "residual": {
+          "rgb-only": 0.009155994482349944,
+          "parent": 0.009193520564384402,
+          "synthetic-control": 0.00915309570303656,
+          "real-mixed": 0.009187753974378017
+        }
+      },
+      {
+        "id": "radial-motif-969854-v0",
+        "knownPixels": 19172,
+        "joint": {
+          "rgb-only": 0.009346753526723836,
+          "parent": 0.013459578644575218,
+          "synthetic-control": 0.013777017064863572,
+          "real-mixed": 0.014682971172682954
+        },
+        "residual": {
+          "rgb-only": 0.009346753526723836,
+          "parent": 0.009730678310529588,
+          "synthetic-control": 0.009707690460458569,
+          "real-mixed": 0.009777938731398683
+        }
+      },
+      {
+        "id": "radial-motif-970863-v0",
+        "knownPixels": 13647,
+        "joint": {
+          "rgb-only": 0.009930986108784798,
+          "parent": 0.01013269923305812,
+          "synthetic-control": 0.010610306128447874,
+          "real-mixed": 0.010181715468866988
+        },
+        "residual": {
+          "rgb-only": 0.009930986108784798,
+          "parent": 0.009759086348193377,
+          "synthetic-control": 0.009753698432472604,
+          "real-mixed": 0.009757495659336009
+        }
+      },
+      {
+        "id": "radial-motif-971872-v0",
+        "knownPixels": 18635,
+        "joint": {
+          "rgb-only": 0.013396913499271771,
+          "parent": 0.013852800771510087,
+          "synthetic-control": 0.017322415649203216,
+          "real-mixed": 0.01648835027253049
+        },
+        "residual": {
+          "rgb-only": 0.013396913499271771,
+          "parent": 0.013183161781849412,
+          "synthetic-control": 0.014144511372530656,
+          "real-mixed": 0.016329826047153745
+        }
+      },
+      {
+        "id": "radial-motif-972881-v0",
+        "knownPixels": 17759,
+        "joint": {
+          "rgb-only": 0.014412272029500588,
+          "parent": 0.014640882132161985,
+          "synthetic-control": 0.01556374120634414,
+          "real-mixed": 0.014722952770753193
+        },
+        "residual": {
+          "rgb-only": 0.014412272029500588,
+          "parent": 0.014665517796803664,
+          "synthetic-control": 0.015265874574297055,
+          "real-mixed": 0.014526711779474722
+        }
+      },
+      {
+        "id": "radial-motif-973890-v0",
+        "knownPixels": 16322,
+        "joint": {
+          "rgb-only": 0.013508899362191545,
+          "parent": 0.01874720620445842,
+          "synthetic-control": 0.01592175786496085,
+          "real-mixed": 0.015175507427532728
+        },
+        "residual": {
+          "rgb-only": 0.013508899362191545,
+          "parent": 0.01362780684525586,
+          "synthetic-control": 0.013420206620958766,
+          "real-mixed": 0.013810852380699276
+        }
+      },
+      {
+        "id": "radial-motif-974899-v0",
+        "knownPixels": 19868,
+        "joint": {
+          "rgb-only": 0.009700637045990468,
+          "parent": 0.01214234073720805,
+          "synthetic-control": 0.014148831724496538,
+          "real-mixed": 0.014735953543707953
+        },
+        "residual": {
+          "rgb-only": 0.009700637045990468,
+          "parent": 0.010706130802955382,
+          "synthetic-control": 0.010830375124972808,
+          "real-mixed": 0.010815161570399634
+        }
+      },
+      {
+        "id": "radial-motif-975908-v0",
+        "knownPixels": 15694,
+        "joint": {
+          "rgb-only": 0.011625577754179535,
+          "parent": 0.012099953735043353,
+          "synthetic-control": 0.011443240210799422,
+          "real-mixed": 0.012968638702245279
+        },
+        "residual": {
+          "rgb-only": 0.011625577754179535,
+          "parent": 0.011782497300514677,
+          "synthetic-control": 0.011498595584467352,
+          "real-mixed": 0.011912923725422771
+        }
+      },
+      {
+        "id": "radial-motif-976917-v0",
+        "knownPixels": 18891,
+        "joint": {
+          "rgb-only": 0.008789207635464244,
+          "parent": 0.00904742632792655,
+          "synthetic-control": 0.008868661980525225,
+          "real-mixed": 0.008823432009756884
+        },
+        "residual": {
+          "rgb-only": 0.008789207635464244,
+          "parent": 0.008808897096403607,
+          "synthetic-control": 0.008763797390701393,
+          "real-mixed": 0.008742681217133024
+        }
+      },
+      {
+        "id": "radial-motif-977926-v0",
+        "knownPixels": 17287,
+        "joint": {
+          "rgb-only": 0.010929535456140107,
+          "parent": 0.013577977762246013,
+          "synthetic-control": 0.012693249080085544,
+          "real-mixed": 0.013546413546281008
+        },
+        "residual": {
+          "rgb-only": 0.010929535456140107,
+          "parent": 0.010740262811646093,
+          "synthetic-control": 0.010946500544096491,
+          "real-mixed": 0.011267696896731395
+        }
+      },
+      {
+        "id": "radial-motif-978935-v0",
+        "knownPixels": 17004,
+        "joint": {
+          "rgb-only": 0.009334424311232494,
+          "parent": 0.009431629293359214,
+          "synthetic-control": 0.009609873849794294,
+          "real-mixed": 0.010129479184427756
+        },
+        "residual": {
+          "rgb-only": 0.009334424311232494,
+          "parent": 0.00934574132076686,
+          "synthetic-control": 0.009383297518992867,
+          "real-mixed": 0.009348696405762533
+        }
+      },
+      {
+        "id": "radial-motif-979944-v0",
+        "knownPixels": 15915,
+        "joint": {
+          "rgb-only": 0.01035172632944273,
+          "parent": 0.011527433509239415,
+          "synthetic-control": 0.010718687083262,
+          "real-mixed": 0.011006610520111476
+        },
+        "residual": {
+          "rgb-only": 0.01035172632944273,
+          "parent": 0.010063985590286087,
+          "synthetic-control": 0.010006813174555446,
+          "real-mixed": 0.010005592595770642
+        }
+      },
+      {
+        "id": "radial-motif-1980956-v0",
+        "knownPixels": 14327,
+        "joint": {
+          "rgb-only": 0.017819420303030006,
+          "parent": 0.018188959898049712,
+          "synthetic-control": 0.018587793984050034,
+          "real-mixed": 0.020401594260569818
+        },
+        "residual": {
+          "rgb-only": 0.017819420303030006,
+          "parent": 0.017420882322354402,
+          "synthetic-control": 0.017459691215678086,
+          "real-mixed": 0.019611958216961857
+        }
+      },
+      {
+        "id": "radial-motif-1981965-v0",
+        "knownPixels": 14720,
+        "joint": {
+          "rgb-only": 0.013063907453223415,
+          "parent": 0.037520797145755395,
+          "synthetic-control": 0.02218648314314044,
+          "real-mixed": 0.0315733895920541
+        },
+        "residual": {
+          "rgb-only": 0.013063907453223415,
+          "parent": 0.01826432997603779,
+          "synthetic-control": 0.017015108701003635,
+          "real-mixed": 0.022590302173858105
+        }
+      },
+      {
+        "id": "radial-motif-982971-v0",
+        "knownPixels": 15181,
+        "joint": {
+          "rgb-only": 0.011540169918005523,
+          "parent": 0.014024981596623631,
+          "synthetic-control": 0.014846912254717706,
+          "real-mixed": 0.01472537205880609
+        },
+        "residual": {
+          "rgb-only": 0.011540169918005523,
+          "parent": 0.013417076404116213,
+          "synthetic-control": 0.014115854128964545,
+          "real-mixed": 0.014430186418070088
+        }
+      },
+      {
+        "id": "radial-motif-983980-v0",
+        "knownPixels": 16102,
+        "joint": {
+          "rgb-only": 0.010511484786955086,
+          "parent": 0.010478169233099213,
+          "synthetic-control": 0.010761683001427632,
+          "real-mixed": 0.011449074044818094
+        },
+        "residual": {
+          "rgb-only": 0.010511484786955086,
+          "parent": 0.010469739451317768,
+          "synthetic-control": 0.010533209536152884,
+          "real-mixed": 0.010419842508650318
+        }
+      }
+    ]
+  },
+  "trainingReplay": {
+    "views": 96,
+    "viewsPerKind": 32,
+    "jointMasksBitExact": 288,
+    "means": {
+      "synthetic-original": {
+        "parent-joint": 0.02198355267166565,
+        "parent-residual": 0.02159331877340696,
+        "synthetic-control-joint": 0.021260057144159836,
+        "synthetic-control-residual": 0.021266950118310327,
+        "real-mixed-joint": 0.021714799738420894,
+        "real-mixed-residual": 0.021257859260479024
+      },
+      "synthetic-printed": {
+        "parent-joint": 0.043287343370586366,
+        "parent-residual": 0.03827741996563479,
+        "synthetic-control-joint": 0.037797207047740346,
+        "synthetic-control-residual": 0.0348078361136179,
+        "real-mixed-joint": 0.04035576033128301,
+        "real-mixed-residual": 0.03742842886459302
+      },
+      "synthetic-scene": {
+        "parent-joint": 0.021931671261524354,
+        "parent-residual": 0.021269149430323937,
+        "synthetic-control-joint": 0.02089980123314046,
+        "synthetic-control-residual": 0.020922921165080148,
+        "real-mixed-joint": 0.02131611217467011,
+        "real-mixed-residual": 0.02088865009363816
+      }
+    },
+    "largestRegressions": [
+      {
+        "id": "6649301431ad:shared-lattice-762492-v0--print-stripes-dots",
+        "model": "real-mixed",
+        "change": 0.008925404050968248,
+        "before": 0.055313901916153214,
+        "after": 0.06423930596712146
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-2017196-v0",
+        "model": "synthetic-control",
+        "change": 0.007598477161635059,
+        "before": 0.03782018063155362,
+        "after": 0.045418657793188676
+      },
+      {
+        "id": "6649301431ad:shared-lattice-802852-v0",
+        "model": "parent",
+        "change": 0.0062947749502784145,
+        "before": 0.05168651093637228,
+        "after": 0.0579812858866507
+      },
+      {
+        "id": "6649301431ad:lattice-745339-v0--print-flowers-stripes",
+        "model": "real-mixed",
+        "change": 0.005111771424513092,
+        "before": 0.062221092582265144,
+        "after": 0.06733286400677824
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-2017196-v0--scene-background-white-plain",
+        "model": "synthetic-control",
+        "change": 0.005008440764337062,
+        "before": 0.03450945454370091,
+        "after": 0.039517895308037974
+      },
+      {
+        "id": "6649301431ad:lattice-713051-v0--print-stripes-dots",
+        "model": "synthetic-control",
+        "change": 0.004639066356025873,
+        "before": 0.0594130118407275,
+        "after": 0.06405207819675338
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-2017196-v0--scene-background-white-plain",
+        "model": "real-mixed",
+        "change": 0.004391511210691347,
+        "before": 0.0353912429967917,
+        "after": 0.03978275420748305
+      },
+      {
+        "id": "6649301431ad:shared-lattice-802852-v0--print-flowers",
+        "model": "real-mixed",
+        "change": 0.004249170559524493,
+        "before": 0.05300449983199317,
+        "after": 0.057253670391517665
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-2017196-v0",
+        "model": "real-mixed",
+        "change": 0.003851917799934927,
+        "before": 0.041854616796818636,
+        "after": 0.04570653459675356
+      },
+      {
+        "id": "6649301431ad:lattice-733231-v0--print-stripes-dots",
+        "model": "synthetic-control",
+        "change": 0.0037478270641672917,
+        "before": 0.04779782964496295,
+        "after": 0.05154565670913024
+      },
+      {
+        "id": "6649301431ad:shared-lattice-802852-v0--scene-baseline",
+        "model": "synthetic-control",
+        "change": 0.0034682754218161305,
+        "before": 0.04157082316381219,
+        "after": 0.04503909858562832
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-5029313-v0",
+        "model": "synthetic-control",
+        "change": 0.003463010827759204,
+        "before": 0.029700210873602723,
+        "after": 0.03316322170136193
+      }
+    ]
+  },
+  "verification": {
+    "radialAudit": {
+      "path": "tmp/heart-learning/radial-context-residual-audit.json",
+      "sha256": "b9154ac0fa9497b49515e28bda4b6d727ccb5ee3391b5a4b6a37b9f53bb8a71a"
+    },
+    "trainingReplayAudit": {
+      "path": "tmp/heart-learning/context-residual-transfer-audit.json",
+      "sha256": "f5af09868ef6c874df529f273291587183aef5be0efaa2d47dd58fdb3170ece1"
+    },
+    "scoresRecomputed": 1088,
+    "rgbMaskReplays": 64,
+    "tests": {
+      "passed": 214,
+      "modules": 45,
+      "log": {
+        "path": "tmp/heart-learning/context-residual-tests.log",
+        "sha256": "117e11be38166dc3feaf5c9fce8b0a8f25f21e5d12bc1f704bceeb35a3a74bae"
+      },
+      "newCases": [
+        "Uninformative context exactly retains RGB",
+        "Informative context recovers identity despite misleading ink colours",
+        "Finite-difference gradients through the residual ridge solve",
+        "Invalid residual target shape/value rejection"
+      ]
+    }
+  },
+  "visualReview": {
+    "radialPages": 44,
+    "trainingPages": 7,
+    "allInspected": true,
+    "observations": [
+      "Residual readout reduces many false corner-cell holes and contour irregularities introduced by joint feature fitting.",
+      "The low-contrast gray/cream example still loses bottom/right cells; red/green JPEG boundaries remain noisy.",
+      "Printed stripes/flowers are better suppressed on average, but some cells remain distorted or split and individual regressions persist."
+    ],
+    "galleries": {
+      "joint": [
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-01.jpg",
+          "sha256": "1b2b208a1d25162cb8f6eb7b0a2cb740862ee92062f4cfb816e5f6463457d127",
+          "ids": [
+            "radial-motif-920413-v0",
+            "radial-motif-921422-v0",
+            "radial-motif-922431-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-02.jpg",
+          "sha256": "df36f8f102c55fb5deef283ac8982420665a2822adeb25ff4e3bebb6ad38b916",
+          "ids": [
+            "radial-motif-923440-v0",
+            "radial-motif-924449-v0",
+            "radial-motif-925458-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-03.jpg",
+          "sha256": "b8fb005ab13aaf6d8bd1933a87aa3477ca1ee96c0d125f4608e171ac26d6c87a",
+          "ids": [
+            "radial-motif-926467-v0",
+            "radial-motif-927476-v0",
+            "radial-motif-928485-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-04.jpg",
+          "sha256": "3fe65199e218e2e75d625c99fc1494287cc7503f5b7804e65319d1cd7d25b28a",
+          "ids": [
+            "radial-motif-929494-v0",
+            "radial-motif-930503-v0",
+            "radial-motif-931512-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-05.jpg",
+          "sha256": "05a511653bdd7a843ef91d2ea3ad01dc7fd3d1ef7820a2ace008226fa433e075",
+          "ids": [
+            "radial-motif-932521-v0",
+            "radial-motif-933530-v0",
+            "radial-motif-934539-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-06.jpg",
+          "sha256": "a333a01fb9877051ce209351e0039593617d520586c13590411d03350f5d85a6",
+          "ids": [
+            "radial-motif-935548-v0",
+            "radial-motif-936557-v0",
+            "radial-motif-937566-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-07.jpg",
+          "sha256": "3e07385a40ab8d0783613a56d98cf461f9df50c8375111828d36e34b243e14ca",
+          "ids": [
+            "radial-motif-938575-v0",
+            "radial-motif-939584-v0",
+            "radial-motif-940593-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-08.jpg",
+          "sha256": "ff90c6c0727702edb6b55378b4c1d52a98f55dba51d55ad54d1022779059d69f",
+          "ids": [
+            "radial-motif-941602-v0",
+            "radial-motif-942611-v0",
+            "radial-motif-943620-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-09.jpg",
+          "sha256": "245c13c5f5976ba288b631d09e595162627232baf6937569e20e003312947c94",
+          "ids": [
+            "radial-motif-944629-v0",
+            "radial-motif-945638-v0",
+            "radial-motif-946647-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-10.jpg",
+          "sha256": "fee5575e8c57551e1a8b7284e6cd0564c53fe72ca48dfe20fa77f553f7c6a191",
+          "ids": [
+            "radial-motif-1947659-v0",
+            "radial-motif-948665-v0",
+            "radial-motif-949674-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-11.jpg",
+          "sha256": "3c2e0f884527300e38eb2e813f4bb514377af70a0598478d5f68f4ce8818e228",
+          "ids": [
+            "radial-motif-950683-v0",
+            "radial-motif-1951695-v0",
+            "radial-motif-952701-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-12.jpg",
+          "sha256": "95ea3c516defd86281aa3864bff2bc8926d87e1df5e417b766a42c0e71f35f9b",
+          "ids": [
+            "radial-motif-953710-v0",
+            "radial-motif-954719-v0",
+            "radial-motif-955728-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-13.jpg",
+          "sha256": "83fe1962deaafded8fcd1735d59a41aeef9742a3f7375a7a2cbdb1fa90386f93",
+          "ids": [
+            "radial-motif-956737-v0",
+            "radial-motif-957746-v0",
+            "radial-motif-958755-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-14.jpg",
+          "sha256": "9b4191cabe98de227d4107c47e74b3c4565fbd676aa8353c44a58b6ed778dfc0",
+          "ids": [
+            "radial-motif-2959770-v0",
+            "radial-motif-960773-v0",
+            "radial-motif-961782-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-15.jpg",
+          "sha256": "769c02df2661fc3e30d321a3d0b1b022f302963debe1916a5a2bf286150fd290",
+          "ids": [
+            "radial-motif-1962794-v0",
+            "radial-motif-963800-v0",
+            "radial-motif-964809-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-16.jpg",
+          "sha256": "34245e2353dfa24e1f6e03a3ee217eef633e2d9bf15bf10b9d4501a6157fa4e3",
+          "ids": [
+            "radial-motif-965818-v0",
+            "radial-motif-966827-v0",
+            "radial-motif-967836-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-17.jpg",
+          "sha256": "da4e34488afa12645c9d5516ef2f99a1493a3c77d73c3bf7e6974a543268687c",
+          "ids": [
+            "radial-motif-968845-v0",
+            "radial-motif-969854-v0",
+            "radial-motif-970863-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-18.jpg",
+          "sha256": "c1d7e85e8d0ff42b850acff9cca83e9aff2d4d6ac2d59570093284a4d66ca373",
+          "ids": [
+            "radial-motif-971872-v0",
+            "radial-motif-972881-v0",
+            "radial-motif-973890-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-19.jpg",
+          "sha256": "b1f1b59f9b038e3e9dc0cada256367061bc91b07e330bf6f84413aa17f38b67f",
+          "ids": [
+            "radial-motif-974899-v0",
+            "radial-motif-975908-v0",
+            "radial-motif-976917-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-20.jpg",
+          "sha256": "12f1ebac6de3ed2c19a3bf2ca9212f7530ef7faacc05e29d5e7a336b01a040df",
+          "ids": [
+            "radial-motif-977926-v0",
+            "radial-motif-978935-v0",
+            "radial-motif-979944-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-21.jpg",
+          "sha256": "c132fc93478a44ee436243f7b26e2288f850a73e916dd70564cbffd2368f0402",
+          "ids": [
+            "radial-motif-1980956-v0",
+            "radial-motif-1981965-v0",
+            "radial-motif-982971-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-exemplar-probe-v2/radial-22.jpg",
+          "sha256": "776565fbf6578c0510003599f0d7442b0218ce1497d66cea384118296cc723a9",
+          "ids": [
+            "radial-motif-983980-v0"
+          ]
+        }
+      ],
+      "residual": [
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-01.jpg",
+          "sha256": "0fa0a625182c5943b7eb5f084d133a35f945a45e08bcf05d88193f2f7ec7b852",
+          "ids": [
+            "radial-motif-920413-v0",
+            "radial-motif-921422-v0",
+            "radial-motif-922431-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-02.jpg",
+          "sha256": "eb16c136ee22dd39122d40d189cfbe1b26e1d5e7cfd3d1fe6ac3d3441b06d3a0",
+          "ids": [
+            "radial-motif-923440-v0",
+            "radial-motif-924449-v0",
+            "radial-motif-925458-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-03.jpg",
+          "sha256": "680fd047aaf28b33d0feecfea719e21790f08e157836c549ca821c888972ed23",
+          "ids": [
+            "radial-motif-926467-v0",
+            "radial-motif-927476-v0",
+            "radial-motif-928485-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-04.jpg",
+          "sha256": "bc797ad6c2e97d9cb92a647cfbac215da6b99809f5234abcc25eefd914e3b96c",
+          "ids": [
+            "radial-motif-929494-v0",
+            "radial-motif-930503-v0",
+            "radial-motif-931512-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-05.jpg",
+          "sha256": "bd24910416a337f93bb7401aa3c7fafe4208da194a5b93dd1cf28d980d217da8",
+          "ids": [
+            "radial-motif-932521-v0",
+            "radial-motif-933530-v0",
+            "radial-motif-934539-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-06.jpg",
+          "sha256": "e467cd33bf30044e1abd126dab699c9290deec96079e5a73fb4b176a1a3595fc",
+          "ids": [
+            "radial-motif-935548-v0",
+            "radial-motif-936557-v0",
+            "radial-motif-937566-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-07.jpg",
+          "sha256": "371ae681466086755098ffc17c81a12e48d9d635416a18ace3fb0406d59fea19",
+          "ids": [
+            "radial-motif-938575-v0",
+            "radial-motif-939584-v0",
+            "radial-motif-940593-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-08.jpg",
+          "sha256": "72fe82b647f0ad4d69ec23b4c0daa635609c5da1813cd9bc2be228a40ff60c12",
+          "ids": [
+            "radial-motif-941602-v0",
+            "radial-motif-942611-v0",
+            "radial-motif-943620-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-09.jpg",
+          "sha256": "74175c2fed838c9995f8dab53c8ac8b8792ecbcd4d58ba780dc05ceeb3c3c70b",
+          "ids": [
+            "radial-motif-944629-v0",
+            "radial-motif-945638-v0",
+            "radial-motif-946647-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-10.jpg",
+          "sha256": "22eeb03130c45ca5f82b27b25c5a4dd43f3adce66a897330ef3fbbf9373d7d5f",
+          "ids": [
+            "radial-motif-1947659-v0",
+            "radial-motif-948665-v0",
+            "radial-motif-949674-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-11.jpg",
+          "sha256": "88221f34818d2a22975c9218cd20e7340e8b6c2d40dd5fdab33ef6d52185fc1b",
+          "ids": [
+            "radial-motif-950683-v0",
+            "radial-motif-1951695-v0",
+            "radial-motif-952701-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-12.jpg",
+          "sha256": "c57c30b8461c77b2398bf2d436fc8a42f95d5ba2fe04dd05ee47093290e27ada",
+          "ids": [
+            "radial-motif-953710-v0",
+            "radial-motif-954719-v0",
+            "radial-motif-955728-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-13.jpg",
+          "sha256": "9c0d54150d253a82a69bba550715dc28bd20302373669c02fe6f65426b7c78ed",
+          "ids": [
+            "radial-motif-956737-v0",
+            "radial-motif-957746-v0",
+            "radial-motif-958755-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-14.jpg",
+          "sha256": "166db2abf16c376dc7b4915ba9e3d2f0f02594b654dcbd6f8525d026ef3b16ff",
+          "ids": [
+            "radial-motif-2959770-v0",
+            "radial-motif-960773-v0",
+            "radial-motif-961782-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-15.jpg",
+          "sha256": "8de0dacff1ce8b3a5b538b520f4e3273ec4a5a0ceea648eb18229fe9797bc263",
+          "ids": [
+            "radial-motif-1962794-v0",
+            "radial-motif-963800-v0",
+            "radial-motif-964809-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-16.jpg",
+          "sha256": "3529e6451fd404caa792ca6d53fda7c93201a985b2fb134b2a8e11bddd1ddb57",
+          "ids": [
+            "radial-motif-965818-v0",
+            "radial-motif-966827-v0",
+            "radial-motif-967836-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-17.jpg",
+          "sha256": "a29a456745ea711f035dbe12523a5d7ef994199f752c1dd6858309ab317843ff",
+          "ids": [
+            "radial-motif-968845-v0",
+            "radial-motif-969854-v0",
+            "radial-motif-970863-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-18.jpg",
+          "sha256": "6619f2b8d401f056b5103d0c34e2333138b435d707aeb209b8d991b6281b52e0",
+          "ids": [
+            "radial-motif-971872-v0",
+            "radial-motif-972881-v0",
+            "radial-motif-973890-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-19.jpg",
+          "sha256": "74a373f820857c92fb738c220350ed47542af5b3a59f537f4376917f670970a7",
+          "ids": [
+            "radial-motif-974899-v0",
+            "radial-motif-975908-v0",
+            "radial-motif-976917-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-20.jpg",
+          "sha256": "b097638d4853d07c7d7641ead82d8bcaabdb1f52b1cc987438bd0d4fd7103a67",
+          "ids": [
+            "radial-motif-977926-v0",
+            "radial-motif-978935-v0",
+            "radial-motif-979944-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-21.jpg",
+          "sha256": "71867352f75e158ef2e897d93e56e72aff9bc47539296061e33e3714ec25d6da",
+          "ids": [
+            "radial-motif-1980956-v0",
+            "radial-motif-1981965-v0",
+            "radial-motif-982971-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/radial-context-residual-v1/radial-22.jpg",
+          "sha256": "a1464ee48e46d8e270ccefbee471b504ce6f01a0b71ef0c2f8c87b6fad8f7de5",
+          "ids": [
+            "radial-motif-983980-v0"
+          ]
+        }
+      ],
+      "transfer": [
+        {
+          "path": "tmp/heart-learning/context-residual-transfer-v1/transfer-01.jpg",
+          "sha256": "2db96de0e18680c2be460373aa075680ead4e0a7a43689b514228098c62b0636",
+          "ids": [
+            "6649301431ad:lattice-757447-v0",
+            "6649301431ad:lattice-757447-v0--scene-background-gray",
+            "6649301431ad:lattice-737267-v0--scene-background-white-plain"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/context-residual-transfer-v1/transfer-02.jpg",
+          "sha256": "8e5f338b613514554ed1c73d02746b8cb7791dd5211dca5e66faf4fd62daa2b1",
+          "ids": [
+            "6649301431ad:shared-lattice-802852-v0",
+            "6649301431ad:shared-lattice-802852-v0--scene-baseline",
+            "6649301431ad:shared-lattice-798816-v0"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/context-residual-transfer-v1/transfer-03.jpg",
+          "sha256": "e1f0e69ad18dc2f65215f138a98ce58f1d21307d95a974066d06e702f34b72e1",
+          "ids": [
+            "6649301431ad:shared-lattice-798816-v0--scene-background-black",
+            "6649301431ad:shared-lattice-786708-v0",
+            "6649301431ad:shared-lattice-786708-v0--scene-baseline"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/context-residual-transfer-v1/transfer-04.jpg",
+          "sha256": "f2661c946f12016790367a6c6e01043613d59b5e86897b1a2f701158d6fe5d8d",
+          "ids": [
+            "180ecc34ae42:corner-lattice-18199-v0--scene-background-gray",
+            "6649301431ad:lattice-753411-v0",
+            "6649301431ad:lattice-753411-v0--scene-background-white-plain"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/context-residual-transfer-v1/transfer-05.jpg",
+          "sha256": "9d1c1b12b888b902918a09cd5fc55f12819e1191c7f2aa7e5b3cb1ac40e91f4f",
+          "ids": [
+            "6649301431ad:lattice-773591-v0--scene-baseline",
+            "180ecc34ae42:corner-lattice-5029313-v0--print-stripes-dots",
+            "180ecc34ae42:corner-lattice-23244-v0--print-flowers-stripes"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/context-residual-transfer-v1/transfer-06.jpg",
+          "sha256": "d4faa08f835820b920b8c977464c829151ebb603ef10f82599b2d0aa4b50d50e",
+          "ids": [
+            "6649301431ad:lattice-737267-v0--print-flowers-stripes",
+            "6649301431ad:shared-lattice-798816-v0--print-flowers-stripes",
+            "6649301431ad:shared-lattice-786708-v0--print-flowers"
+          ]
+        },
+        {
+          "path": "tmp/heart-learning/context-residual-transfer-v1/transfer-07.jpg",
+          "sha256": "b9e348270e7d0096f35c563066480a320f358cdb496603f8635477e83b9451e4",
+          "ids": [
+            "6649301431ad:lattice-813951-v0--print-stripes-dots",
+            "180ecc34ae42:corner-lattice-2017196-v0--print-flowers-stripes",
+            "180ecc34ae42:corner-lattice-54523-v0--print-stripes-dots"
+          ]
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "All radial examples are plain simulated paper with known camera corners; source allocation remains unassigned, and simplified routing topologies overlap existing families.",
+    "The 96-view comparison reuses training data. Its improvement is not unseen generalization.",
+    "Fractional synthetic coverage implies nonzero expected hard-label error even for ideal binary predictions.",
+    "No real-photo mask, crop, production NN, solver behavior or export threshold is changed by this prototype.",
+    "The full real-photo cohort and final exported-template checks remain required before any production decision."
+  ],
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "newSourcePhotographs": 0,
+    "newDownloads": 0,
+    "newWeights": 0,
+    "artifactBytes": 10008155
+  },
+  "next": "Freeze these results, then evaluate residual readout on every existing real development photo with the same crops, retaining unresolved cases, and rerun full template fitting/export checks for a justified candidate. Do not deploy on synthetic averages alone."
+}

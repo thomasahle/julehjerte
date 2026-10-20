@@ -538,5 +538,48 @@
     "newWeights": 0,
     "artifactBytes": 5372021
   },
-  "next": "Keep the existing validated border repair. Any future first-candidate recovery must explicitly reserve enough paper-repair time or use a cheaper paper-aware trajectory; do not make uncertainty a pass. Resume material NN work with richer non-lattice supervision and unchanged full-cohort evaluation."
+  "next": "Keep the existing validated border repair. Any future first-candidate recovery must explicitly reserve enough paper-repair time or use a cheaper paper-aware trajectory; do not make uncertainty a pass. Resume material NN work with richer non-lattice supervision and unchanged full-cohort evaluation.",
+  "mergedBranchCi": {
+    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39396245575",
+    "commit": "439165d1",
+    "conclusion": "success",
+    "deploy": "skipped on working branch",
+    "quality": {
+      "passed": 70,
+      "total": 78,
+      "misses": 8
+    },
+    "evidence": {
+      "path": "tmp/heart-learning/first-paper-merged-ci.json",
+      "sha256": "7dcf3dbe64b8980d6bb2fa1b2b8ba77eae8cd6dfee56e084ca628afec2efea6d"
+    },
+    "dinosaurReport": {
+      "path": "tmp/heart-learning/first-paper-ci-dinosaur-report.json",
+      "sha256": "80815b11be7940a22ef302b9cd6a03e597160d235cf4b1e519942915ae79da99"
+    },
+    "dinosaurRounds": [
+      {
+        "round": 1,
+        "status": 16,
+        "budgetSeconds": 4.659287482000001,
+        "solveSeconds": 2.753547144,
+        "elapsedSeconds": 2.8584518130000003,
+        "objective": 4387.2608567,
+        "selfNeckChains": 0,
+        "shortReturnChains": 0,
+        "validationPassed": false,
+        "selfIntersectionChains": 0,
+        "paperStatus": "uncertain"
+      },
+      {
+        "round": 2,
+        "status": 13,
+        "budgetSeconds": 1.4863116310000009,
+        "solveSeconds": 1.5002255549999999,
+        "elapsedSeconds": 4.778015986000001,
+        "paperStatus": null
+      }
+    ],
+    "finding": "The captured remote report now confirms this run had a first geometry-valid integer proposal with uncertain paper support, followed by a second-round timeout without any repairable proposal. It does not prove the historical run failed for the same exact hardware reason."
+  }
 }

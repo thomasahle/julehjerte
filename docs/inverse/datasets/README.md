@@ -694,6 +694,54 @@ inspected; all outcomes and the rejected patch are preserved in about 5.1 MiB,
 with no new photographs or weights. The missing border feature remains a failed
 final check even in the useful fits. This follow-up does not change the NN's
 experimental status or the existing border-fragment repair.
+The [merged working branch CI](https://github.com/thomasahle/julehjerte/actions/runs/39396245575)
+also passes all correctness/build jobs, with **70/78** timed targets passing.
+Its saved dinosaur report now directly records the limiting sequence: the first
+integer proposal has valid cuts but uncertain paper support, and the second
+round times out without a new proposal. This confirms that mechanism for the
+new remote run; it is stronger evidence than the local clock simulation alone.
+
+### Keeping colour evidence when adding neural context
+
+The [residual-context experiment](context-residual-results.json) compares the
+same three frozen projections with two per-photo classifiers. The original fits
+RGB and neural features together. The alternative first fits RGB, then fits
+neural context to the remaining regression error on the **same exposed-lobe
+samples**. Neither classifier fits to overlap labels. This changes the readout,
+not the neural weights, and is not a guarantee against worse predictions.
+
+All 64 existing radial motifs are evaluated using their first photographic view
+and known camera corners. They remain unassigned; no training allocation or
+new images are introduced. These privileged synthetic crops isolate material
+classification from automatic localization.
+
+| Frozen projection | Radial: joint | Radial: residual | Printed training views: joint | Printed: residual |
+| --- | ---: | ---: | ---: | ---: |
+| Parent | 1.61% | 1.40% | 4.33% | 3.83% |
+| Synthetic continuation | 1.52% | 1.39% | 3.78% | 3.48% |
+| Mixed real supervision | 1.63% | 1.44% | 4.04% | 3.74% |
+
+Direct RGB averages 1.40% on the radial cohort. The residual classifier mostly
+removes the joint classifier's extra errors on these plain-paper examples;
+it does not establish a substantial advantage over RGB there. Visual inspection
+finds fewer eroded corner cells and false islands, while low-contrast shading
+and noisy red/green boundaries remain troublesome. The printed comparison uses
+the earlier 32 training geometries, with one plain, one scene and one printed
+view each. All 288 saved joint-head masks replay exactly. Average printed error
+falls, but individual regressions remain, including a 0.89 percentage-point
+increase with the mixed projection.
+
+All 44 radial comparison pages and seven training-view pages were inspected.
+The worst printed grids still contain false seams and distorted cells. These
+are expected binary-classification errors against fractional synthetic labels,
+not reconstruction success rates or real-photo accuracy. The method remains
+offline: the next gate is the complete real-photo cohort and its exported
+templates, followed by training only if that evidence warrants it.
+Independent audits recompute all **1,088** error and boundary measurements and
+verify 64 exact RGB-control replays. The ideal binary-label floor for the radial
+metric averages 0.94%. All **214 tests across 45 offline learning modules pass**,
+including residual-gradient and unchanged-RGB checks. The experiments add about
+9.5 MiB, without new photographs or weights.
 
 ### Latest solver and browser validation
 

@@ -1,0 +1,139 @@
+{
+  "schema": "radial-exemplar-probe-plan-1",
+  "date": "2026-10-20",
+  "dataset": {
+    "path": "tmp/heart-training-synthetic/radial-motif-v1/manifest.json",
+    "sha256": "78021c200ffc901613219c59851db0d63983546c0ef07250e2ebacbbb0ffe725"
+  },
+  "viewIds": [
+    "radial-motif-920413-v0",
+    "radial-motif-921422-v0",
+    "radial-motif-922431-v0",
+    "radial-motif-923440-v0",
+    "radial-motif-924449-v0",
+    "radial-motif-925458-v0",
+    "radial-motif-926467-v0",
+    "radial-motif-927476-v0",
+    "radial-motif-928485-v0",
+    "radial-motif-929494-v0",
+    "radial-motif-930503-v0",
+    "radial-motif-931512-v0",
+    "radial-motif-932521-v0",
+    "radial-motif-933530-v0",
+    "radial-motif-934539-v0",
+    "radial-motif-935548-v0",
+    "radial-motif-936557-v0",
+    "radial-motif-937566-v0",
+    "radial-motif-938575-v0",
+    "radial-motif-939584-v0",
+    "radial-motif-940593-v0",
+    "radial-motif-941602-v0",
+    "radial-motif-942611-v0",
+    "radial-motif-943620-v0",
+    "radial-motif-944629-v0",
+    "radial-motif-945638-v0",
+    "radial-motif-946647-v0",
+    "radial-motif-1947659-v0",
+    "radial-motif-948665-v0",
+    "radial-motif-949674-v0",
+    "radial-motif-950683-v0",
+    "radial-motif-1951695-v0",
+    "radial-motif-952701-v0",
+    "radial-motif-953710-v0",
+    "radial-motif-954719-v0",
+    "radial-motif-955728-v0",
+    "radial-motif-956737-v0",
+    "radial-motif-957746-v0",
+    "radial-motif-958755-v0",
+    "radial-motif-2959770-v0",
+    "radial-motif-960773-v0",
+    "radial-motif-961782-v0",
+    "radial-motif-1962794-v0",
+    "radial-motif-963800-v0",
+    "radial-motif-964809-v0",
+    "radial-motif-965818-v0",
+    "radial-motif-966827-v0",
+    "radial-motif-967836-v0",
+    "radial-motif-968845-v0",
+    "radial-motif-969854-v0",
+    "radial-motif-970863-v0",
+    "radial-motif-971872-v0",
+    "radial-motif-972881-v0",
+    "radial-motif-973890-v0",
+    "radial-motif-974899-v0",
+    "radial-motif-975908-v0",
+    "radial-motif-976917-v0",
+    "radial-motif-977926-v0",
+    "radial-motif-978935-v0",
+    "radial-motif-979944-v0",
+    "radial-motif-1980956-v0",
+    "radial-motif-1981965-v0",
+    "radial-motif-982971-v0",
+    "radial-motif-983980-v0"
+  ],
+  "trainingParent": {
+    "path": "tmp/heart-learning/u2netp-paired-control-v1/report.json",
+    "sha256": "6bf4bbfa34ed29a7002c029d28bbebf19ba7db903fb2b347a77168904a8ca4d8"
+  },
+  "models": {
+    "parent": {
+      "path": "tmp/heart-learning/exemplar-projection-v1/projection.pt",
+      "sha256": "cb6b5020aa2d0f7a4910820c707508599eb76fed14ee3383b8b0608b3d9c0afe"
+    },
+    "synthetic-control": {
+      "path": "tmp/heart-learning/exemplar-continuation-v1/synthetic-control.pt",
+      "sha256": "7a130d0254b34819a1fe1a28034708a33abef7df81d927d28fb78647920f56ac"
+    },
+    "real-mixed": {
+      "path": "tmp/heart-learning/exemplar-continuation-v1/real-mixed.pt",
+      "sha256": "ce4b952e34be8e335d1ee553398e8ae1e6e6aab4df0d94f336b94e496087e889"
+    }
+  },
+  "protocol": {
+    "seed": 2026102001,
+    "resolution": 320,
+    "contextResolution": 160,
+    "layers": [
+      "stage1d",
+      "stage2d",
+      "stage3d"
+    ],
+    "contextChannels": 192,
+    "projectionChannels": 8,
+    "parameters": 1536,
+    "epochs": 1,
+    "updates": 96,
+    "learningRate": 0.001,
+    "weightDecay": 0.0001,
+    "maximumGradientNorm": 5,
+    "boundaryFactor": 4,
+    "boundaryRadius": 2,
+    "lossTemperature": 4,
+    "ridgeRegularization": 0.1,
+    "minimumSamples": 32,
+    "maximumSamples": 1024,
+    "realLossWeight": 0.5
+  },
+  "scope": "Offline inference only, same 64 radial views, all three identical frozen projections and privileged known corners. Fit RGB first on balanced lobe samples, then fit context to its residual on the same samples; sum their full-resolution scores. No training, source allocation, selected checkpoint or production change. Context can still worsen unseen pixels; this is not a certified fallback.",
+  "controls": [
+    "Direct RGB per-photo ridge, using only exposed lobe samples.",
+    "All three frozen existing context projections; identical image, camera and lobe samples."
+  ],
+  "evaluation": "Retain every case and boundary/overall errors. Independently replay all source-mask metrics and require RGB-only masks to match the joint-head control exactly. Compare the full cohort, not only better examples; separately inspect border holes and silhouette noise.",
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "maximumWallSeconds": 600,
+    "minimumFreeGiB": 10,
+    "maximumArtifactMiB": 20,
+    "sourcePhotoCopies": 0,
+    "newDownloads": 0
+  },
+  "head": "residual",
+  "controlReport": {
+    "path": "tmp/heart-learning/radial-exemplar-probe-v2/report.json",
+    "sha256": "a2034e1b6673217b743389f3cc44cb173265f48910e7460a07d742d1b50892b6"
+  },
+  "question": "Does fitting neural context only to the remaining lobe RGB regression error preserve plain-paper boundaries better than jointly refitting colour and context?"
+}
