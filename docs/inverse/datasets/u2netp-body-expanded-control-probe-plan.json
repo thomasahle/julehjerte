@@ -1,0 +1,45 @@
+{
+  "schema": "u2netp-probe-plan-1",
+  "status": "predeclared",
+  "source": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-body-expanded-control-v1/model.pt",
+    "sha256": "f191aa81b448ab8cbf64f2b8c657bfaeb85a52c7777e5161e4cd5a8c12d11a35"
+  },
+  "selection": {
+    "path": "docs/inverse/datasets/u2netp-continuous-selection.json",
+    "sha256": "6d4e0e7550fedf5c13333bdc90db28a98eb5ff9ce2de260f32e2d015f5128f52"
+  },
+  "protocol": {
+    "resolution": 320,
+    "skimage": "0.24.0",
+    "threads": 1,
+    "input": "Unmodified publisher RescaleT(320) and ToTensorLab(flag=0): stretch the complete RGB image, image-maximum scaling and ImageNet channel normalization. EXIF orientation applied before source hash checks.",
+    "output": "Publisher fused saliency head with per-image minimum/maximum normalization, threshold .5 for locator; constant field becomes zero.",
+    "pipeline": "Keep every production crop. Only if none exists, accept an outline-supported neural proposal with observed rectified overlap >=99% and maximum axis-normalized extrapolation <=5%, always needs_review. Use analytic projective coverage; no mask score or template selects the crop.",
+    "selection": "All 32 unchanged development photos and input tensors; no subset or per-photo adjustment.",
+    "pairedControl": "fresh-production"
+  },
+  "resources": {
+    "maxProbeMiB": 16,
+    "workers": 1,
+    "newSourcePhotoCopies": 0,
+    "newPhotoDownloads": 0
+  },
+  "scope": "Fixed-budget supervision comparison. Both arms are newly trained from the same pretrained U2NETP initialization. No crop, palette, fitter, loss or acceptance-threshold tuning per photo. All added source groups already occur in training; the 32 evaluation photos remain source/duplicate separated. Native control inference; no browser parity claim.",
+  "adaptation": {
+    "path": "tmp/heart-learning/u2netp-body-expanded-control-v1/report.json",
+    "sha256": "57b914d00f30aa9a4252b4c90d419d98db365681af0a7fd639a3b0c4e39080a7"
+  },
+  "control": {
+    "path": "tmp/heart-learning/u2netp-body-adapted-browser-pipeline-v1/report.json",
+    "sha256": "e8c711d1c44db311a5f8e9aae0500f9e0b2bced4ca8bfc8c2d522df12ec8709a"
+  },
+  "pairedStudy": {
+    "path": "docs/inverse/datasets/u2netp-body-expanded-evaluation-plan.json",
+    "sha256": "37c38a0dc32473da91d24df49bb6bbd7d3710f1062e88263e19594ebe8b14537"
+  }
+}
