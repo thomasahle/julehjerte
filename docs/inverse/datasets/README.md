@@ -62,6 +62,21 @@ at 256 and 768 pixels; uncertain boundaries and unlabelled material stay unknown
 These are assistant annotations without independent human review, exact artwork
 or cutting-path labels. The new labels have not yet trained a model.
 
+The [fixed-model probe on those eight photos](diverse-paper-probe-results.json)
+separates two problems. The body model often includes handles, a detached paper
+strip, pinecones or chocolates. The material head rounds checker cells and loses
+small openings, even where its sparse labelled patches score perfectly. Existing
+colour calibration restores much of that detail, but increases observed paper
+error from **9.45% to about 24%** on the floral/striped photo by treating printed
+ink as material changes. All four comparison pages were inspected, and saved
+probability fields reproduce every reported metric exactly. These photos share
+sources with training; they are development diagnostics, not generalization
+results or template successes. The
+[next body experiment](u2netp-body-expanded-plan.json) compares a fresh 16-photo
+control with a 24-photo candidate. Both use the same initialization, 120-update
+budget, synthetic draws and reflections; every real photo is visited. The two
+runs are predeclared and have not run.
+
 The [complete balanced-epoch follow-up](u2netp-material-complete-epochs-results.json)
 adds 384 updates to the fixed relative-colour head, visiting every synthetic
 view four times. Known-region real training error falls from **5.06% to 2.78%**.
