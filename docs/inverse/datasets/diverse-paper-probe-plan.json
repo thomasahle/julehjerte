@@ -1,0 +1,47 @@
+{
+  "schema": "reviewed-material-probe-plan-1",
+  "training": {
+    "path": "tmp/heart-learning/u2netp-material-boundary-v1/report.json",
+    "sha256": "1012c443ab49fdd58260f32ece4166fe521f98716e1495179e6527db0dd00520"
+  },
+  "annotations": {
+    "path": "scripts/inverse/datasets/real-materials-diverse-paper.json",
+    "sha256": "58dd7d93a900f1b2faa386074efa0a4e5c2bc443ad117d5f436614c6a0d689c9"
+  },
+  "sourceManifest": {
+    "path": "docs/inverse/datasets/real-manifest.json",
+    "sha256": "999544ef30b1d71095e1630d7f834e162e2aa6145181df10107a831aa2eda350"
+  },
+  "reservedEvaluation": {
+    "path": "docs/inverse/datasets/u2netp-continuous-selection.json",
+    "sha256": "6d4e0e7550fedf5c13333bdc90db28a98eb5ff9ce2de260f32e2d015f5128f52"
+  },
+  "labelAudit": {
+    "path": "docs/inverse/datasets/diverse-paper-label-expansion.json",
+    "sha256": "aa4f2a5d1e87342409460073bf3f345feb7030741381d490fef566c5eb2791f1"
+  },
+  "ids": [
+    "real-f1af2fbb127278e4-body-1",
+    "real-19e88a55e6eeaca8-body-1",
+    "real-82eed10fb7484537-body-1",
+    "real-3019a2560b5d8758-body-1",
+    "real-1f38684757a79d85-body-1",
+    "real-3a89de4eae04a025-body-1",
+    "real-1219fc5403d2b5ee-body-1",
+    "real-13ae4cb788d7049c-body-1"
+  ],
+  "methods": [
+    "network",
+    "learned",
+    "rgb"
+  ],
+  "scope": "Eight additional hand-selected photos from six source groups already represented in the earlier training set. No photo or reviewed duplicate was trained, but this is within-source development, not independent generalization. The fixed network and two existing palette rules are scored at 320 pixels over the same partial observed interiors. No model tuning, labels as input, crop adjustment, slit inference or template claim. One global A/B exchange per photo; missing body remains a joint material error.",
+  "resources": {
+    "cpuThreads": 1,
+    "nice": 15,
+    "minimumFreeGiB": 10,
+    "maximumOutputMiB": 20,
+    "maximumPhotos": 8
+  },
+  "reviewRequired": "Inspect all four comparison pages; keep failures and source-group overlap visible."
+}
