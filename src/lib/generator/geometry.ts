@@ -1631,9 +1631,8 @@ export function openLeg(gate: Point, corner: Point, axis: 0 | 1, taper: number):
  * at the ring's own corners the circle meets every line, and the motif, divided
  * into four panels, meets all their ends. Past those junctions, the circle
  * overlaps the ring's corner squares, of its own colour, and the same panels
- * meet the same ends (see `overlapGates`), out to where the paper left between
- * the circle and the edges' middle squares is still wide enough to cut, and
- * at the last past the paper's edges, which cut it off (see `boardRing`). */
+ * meet the same ends (see `overlapGates`), out past the paper's edges, which
+ * cut it off (see `boardRing`). */
 export const BOARD_RADII: readonly (readonly [number, number])[] = [
 	[Math.hypot(10, 10) + 5, Math.hypot(30, 10)], [Math.hypot(30, 10), Math.hypot(30, 30) - .4],
 	[Math.hypot(30, 30) + .4, 52]
@@ -1642,7 +1641,8 @@ export const BOARD_RADII: readonly (readonly [number, number])[] = [
 /** A circle on the regular board of `strips` strips, with the board's
  * junctions that lie on it as exact corners: a circle through junctions (one
  * just touching the outer ring of squares at their inner corners) then ends
- * both lines of each there, leaving no sliver beside it. */
+ * both lines of each there, leaving no sliver beside it. A circle wider than
+ * the paper is cut off by its edges. */
 export function boardRing(radius: number, strips: number): Ring {
 	const angle = ([x, y]: Point) => (Math.atan2(y - 50, x - 50) + 2 * Math.PI) % (2 * Math.PI);
 	const points: Point[] = frameRing('circle', 2 * radius);
@@ -1652,7 +1652,6 @@ export function boardRing(radius: number, strips: number): Ring {
 	}
 	points.sort((a, b) => angle(a) - angle(b));
 	if (radius <= 50) return points;
-	// A circle wider than the paper is cut off by its edges.
 	let ring = points;
 	for (const [axis, bound] of [[0, 0], [0, 100], [1, 0], [1, 100]] as const) {
 		const input = ring, inside = (p: Point) => bound ? p[axis] <= bound : p[axis] >= bound;

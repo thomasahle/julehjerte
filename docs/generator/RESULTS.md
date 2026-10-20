@@ -1,5 +1,22 @@
 # Generator robustness results
 
+## The circle on equal squares growing smoothly to the edges
+
+Product reports (2026-10-20): "From 85% to 86% there's a little jerk as the deer
+moves off center to the right. Is that really necessary?" and "There's also a
+jerk in the circle size from 99% to 100% that seems unnecessary". A motif that
+sits on its smallest enclosing circle over the corner squares jumped there at
+86% (the deer 2.7 units); it now moves there over 85–100% (`enclosedAlong`), the
+deer 0.2 units a step, its reach shrinking all the way so it still only grows.
+The circle held radius 49.5 over 96–99% and jumped to 52 at 100%; it now grows
+steadily from 42.8 at 86% to 52, in steps of 0.65 (0.8 over the junctions).
+Squaring off the red tips at 1.5 units where the circle comes near the edges
+was tried and dropped ("you don't need to make the squares wider to create this
+little inset … just increase the circle size smoothly"): the tips now thin out
+until the circle reaches the edge (at 97% a unit wide). Over the corpus and the
+deer: 45 clean, 3 hard, 4 refused at 86%, 95% and 100%; 44, 4 (the dog), 4 at
+97%; every picture matching its heart. Hearts at 85% and below are unchanged.
+
 ## The circle meeting the paper's edges at 100%
 
 Product request (2026-10-20), of a picture of the circle drawn past the paper's
@@ -10,9 +27,9 @@ red squares beside the middles ending in points there. The ring is the circle
 clipped to the paper (`boardRing`); the middle lines lie inside it all the way
 and end where it meets the edges (`boardLegs`); a line end on the edge has no
 run out to it (`overlapGates`). The motif keeps the paper's room (radius 50
-less the space), so it is no larger than at 49.5. Between 49.5 and 51.5 the red
-squares' tips would be thinner than 1.5 units without reaching the edge, so
-96–99% keep 49.5. At 100% over the corpus and the deer: 45 clean, 3 hard (star,
+less the space), so it is no larger than at 49.5. (96–99% then kept 49.5, the
+red tips no thinner than 1.5 units; see above.) At 100% over the corpus and the
+deer: 45 clean, 3 hard (star,
 snow, crown), the same 4 refused, every picture matching its heart, 26 motifs
 on their enclosing circle; median 0.6 s, max 10.2 s (the cat).
 

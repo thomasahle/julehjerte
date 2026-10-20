@@ -9,7 +9,7 @@ import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSi
 import { templateVariants } from './templates';
 import { inside, uprightToSheet, distance, WEDGES, type Point, type Ring } from './geometry';
 import { geometryKey } from './cache';
-import { motifChoices, motifPatterns, squareChoices } from './boardMotif';
+import { boardRadius, motifChoices, motifPatterns, squareChoices } from './boardMotif';
 import { normalizeContours } from './contours';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { serializeHeartDesign, normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
@@ -410,6 +410,18 @@ describe('frames from real hearts', () => {
   const inner = along.filter(a => a > 30 && a < 70);
   expect(inner.length).toBe(8);
   for (const a of inner) expect(Math.abs(a - 50), `${a}`).toBeCloseTo(Math.sqrt(52 ** 2 - 50 ** 2), 1);
+ });
+ it('grows the circle over the corner squares without jumps', () => {
+  // From the junctions' far side at 86% to the paper's edges at 100%, no step
+  // larger than the one over the junctions.
+  let last = boardRadius(.85).radius;
+  for (let percent = 86; percent <= 100; percent++) {
+   const { radius } = boardRadius(percent / 100);
+   expect(radius - last, `${percent}`).toBeGreaterThan(0);
+   expect(radius - last, `${percent}`).toBeLessThanOrEqual(2 * .4 + 1e-9);
+   last = radius;
+  }
+  expect(last).toBe(52);
  });
  slow('keeps the circle the size asks for with much space around the motif, the motif smaller', () => {
   // Space decides how much of the circle the motif fills, not whether it can

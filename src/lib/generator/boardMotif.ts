@@ -99,20 +99,18 @@ export function boardScale(request: GeneratorRequest): number {
  * radius the board allows to the largest, with the touching circle at the
  * default 70%, where the one change of construction lies, and the circle
  * reaching the outer ring's corner junctions at 85%, past which it overlaps
- * the corner squares. It passes the outer lines' tangent slightly beyond it,
+ * the corner squares, meeting the paper's edges by 100% (see `boardRing`). It passes the outer lines' tangent slightly beyond it,
  * and just beyond the touching circle it touches, the corners there being too
  * close to cut. `range` is the construction's: up to the touching circle,
  * reaching into the outer ring, or past its corners. */
 export function boardRadius(scale: number) {
 	const [small, large, past] = BOARD_RADII, setting = Math.max(.45, Math.min(1, scale));
+	// Past the junctions from 86%, the step over them no larger than one.
 	let radius = setting <= .7 ? small[0] + (setting - .45) / .25 * (small[1] - small[0])
 		: setting <= .85 ? large[0] + (setting - .7) / .15 * (large[1] - large[0])
-			: past[0] + (setting - .85) / .15 * (past[1] - past[0]);
+			: past[0] + Math.max(0, setting - .86) / .14 * (past[1] - past[0]);
 	if (Math.abs(radius - 30) < .1) radius = 30.1;
 	if (radius > large[0] && radius < large[0] + .6) radius = large[0];
-	// Between leaving the red squares beside the edges' middles 1.5 units of
-	// paper and meeting the paper's edges, it would leave them less.
-	if (radius > 49.5 && radius < 51.5) radius = 49.5;
 	return { radius, range: radius <= small[1] ? small : radius <= large[1] ? large : past };
 }
 
@@ -153,13 +151,21 @@ export function enclosingCircle(points: Point[]): { centre: Point; radius: numbe
 	return circle;
 }
 
-/** Where a motif sits in the circle on a board: the centre of its smallest
- * enclosing circle, so that it fills the circle as far as its shape allows
- * (a deer's antler and hooves equally far out), and that circle's radius as
- * a fraction of the side of its box, which sizes it. */
-export function boardPlacement(contours: Ring[]): { centre: Point; reach: number; box: number } {
+/** Where a motif sits in the circle on a board, `along` the way from its
+ * box's centre to its smallest enclosing circle's, where its farthest points
+ * reach equally far and it fills the circle furthest (a deer's antler and
+ * hooves), and how far it then reaches, as a fraction of the side of its box,
+ * which sizes it. */
+export function boardPlacement(contours: Ring[], along = 1): { centre: Point; reach: number; box: number } {
 	const points = contours.flat(), xs = points.map(p => p[0]), ys = points.map(p => p[1]);
 	const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
-	const { centre, radius } = enclosingCircle(points);
-	return { centre, reach: radius / box, box };
+	const middle: Point = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2];
+	const { centre: enclosing } = enclosingCircle(points);
+	const centre: Point = [middle[0] + along * (enclosing[0] - middle[0]), middle[1] + along * (enclosing[1] - middle[1])];
+	return { centre, reach: Math.max(...points.map(p => Math.hypot(p[0] - centre[0], p[1] - centre[1]))) / box, box };
 }
+
+/** How far over the corner squares a size setting is, from 85% to 100%: how
+ * far a motif that sits on its enclosing circle there has moved to it, so it
+ * moves and grows smoothly with the setting. */
+export const enclosedAlong = (scale: number) => Math.min(1, Math.max(0, (scale - .85) / .15));
