@@ -1,7 +1,7 @@
 {
   "schema": "u2netp-upload-integration-1",
   "date": "2026-10-20",
-  "status": "merged-awaiting-deployment",
+  "status": "deployed-and-live-verified",
   "scope": "Existing adapted U2NETP and balanced whole-body policy migrated into the actual upload worker; no retraining, solver changes or acceptance-threshold changes.",
   "sourceHashes": {
     "static/inverse/locator/locator.js": "c60c7c1dc11246b83a86877e16ef72dcf15239f0273c665698e4427175533f61",
@@ -115,10 +115,10 @@
     "Some retained geometric crops explain only part of a heart and remain flagged for review.",
     "Printed paper, reflection and occlusion still cause classification and fitting failures.",
     "Desktop Chromium evidence only; mobile performance is unmeasured.",
-    "Merged after complete CI; live deployment verification is pending."
+    "Live verification is for desktop Chromium; it does not establish mobile runtime or unseen-photo accuracy."
   ],
   "release": {
-    "status": "merged-awaiting-deployment",
+    "status": "deployed-and-live-verified",
     "pullRequest": "https://github.com/thomasahle/julehjerte/pull/16",
     "mergeCommit": "127dc3c16d4b0e029b129a43ca0d897bb1254dd7",
     "branchCI": {
@@ -211,6 +211,62 @@
           "sha256": "4b7a57d839e70b2b4b9303f2bb26d1d735b3c31842cd4f55d519a21daeae5c33"
         }
       }
+    },
+    "deploymentConclusion": "success",
+    "mainTimedQuality": {
+      "passed": 68,
+      "total": 77,
+      "missedOriginalTargets": 9,
+      "advisory": true,
+      "logs": [
+        {
+          "path": "tmp/heart-learning/neural-main-ci-118434929660.log",
+          "sha256": "6ed90e9f8ede7594ed0bfea7a25d7917c5bb87fcd520ff72d8e7dee054ce1781"
+        },
+        {
+          "path": "tmp/heart-learning/neural-main-ci-118434929756.log",
+          "sha256": "0f44ce72c60fde694c1498dd43f8c1d42391a9484b597e477b804e2deb3dc6a0"
+        }
+      ]
+    },
+    "live": {
+      "origin": "https://juleflet.dk",
+      "report": {
+        "path": "tmp/heart-learning/neural-upload-live-v1/report.json",
+        "sha256": "e5bbc9e5cb962741b39e71aa05abe138b6866c5886ccb663f3823f3586d0f9fd"
+      },
+      "servedAssets": {
+        "path": "tmp/heart-learning/neural-live-assets.json",
+        "sha256": "2f70a2fe00dc56c03915340e8c750e881cff8fc3847235d6e8a59875bbd6f257"
+      },
+      "passed": true,
+      "checks": [
+        "Real upload loads local ONNX/WASM and reproduces the audited angel corners",
+        "Imported angel solves through the actual Find snit flow with template and paper checks",
+        "Missing model preserves editable production corners and mask preview",
+        "Closing during model loading terminates the worker; reopening produces no stale result",
+        "A genuinely crowded frame still asks the user to select one heart"
+      ],
+      "pageErrors": [],
+      "angel": {
+        "imageError": 0.00649375,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": true,
+        "solverSeconds": 14.646200000047683
+      },
+      "screenshots": [
+        {
+          "path": "tmp/heart-learning/neural-upload-live-v1/angel-import.png",
+          "sha256": "1939bcf17d8bf85a4cf81251725276031b194e8adf49be34f330ff749a6e46eb"
+        },
+        {
+          "path": "tmp/heart-learning/neural-upload-live-v1/angel-solved.png",
+          "sha256": "73f144837facbc9e6455300141deb46bcca6e05fbe66306c528d2a0311666c92"
+        }
+      ],
+      "visualReview": "Both live screenshots inspected: the source overlay follows the overlap and the angel survives fitting. Minor photographic edge noise remains.",
+      "browserClosed": true
     }
   }
 }
