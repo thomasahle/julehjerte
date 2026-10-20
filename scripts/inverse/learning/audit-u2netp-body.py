@@ -8,6 +8,8 @@ import numpy as np
 import torch
 
 from data import digest
+from body_schedule import training_draws
+from body_provenance import verify_body_sources
 from preserved_candidate import pinned
 from real_foreground import known_region_metrics
 from u2netp_adaptation import freeze_encoder, frozen_hash, normalize_scores, real_training
@@ -39,7 +41,7 @@ def main():
     if report['schema'] != 'u2netp-body-adaptation-1' or report['status'] != 'complete':
         raise ValueError('Require completed body adaptation')
     plan = json.loads(pinned(report['plan']).read_bytes())
-    for name, expected in report['sourceHashes'].items(): pinned({'path': name, 'sha256': expected})
+    historical = verify_body_sources(report)
     for name, expected in report['artifacts'].items(): pinned({'path': str(args.run/name), 'sha256': expected})
     source_file = pinned(plan['source']); root = source_file.parent
     for row in json.loads(source_file.read_bytes())['files']:
@@ -55,10 +57,7 @@ def main():
     for item in report['trainingInputs']:
         pinned({'path': item['photo'], 'sha256': item['photoSha256']})
     real_ids = [i['id'] for i in real]; synthetic_ids = [i['id'] for i in report['trainingInputs'][len(real):]]
-    rng = np.random.default_rng(plan['protocol']['seed']); draws = []
-    for _ in range(plan['protocol']['updates']):
-        draws.append({'synthetic': int(rng.integers(len(synthetic_ids))), 'real': int(rng.integers(len(real))),
-                      'flips': (rng.random(2) < .5).tolist()})
+    draws = training_draws(plan, len(synthetic_ids), len(real))
     expected_ids = [[synthetic_ids[d['synthetic']], real_ids[d['real']]] for d in draws]
     if draws != report['draws'] or expected_ids != report['sampledIds'] or len(report['history']) != len(draws):
         raise ValueError('Training draws or update count differ')
@@ -88,6 +87,7 @@ def main():
     result = {'schema': 'u2netp-body-audit-1', 'passed': passed,
               'report': {'path': str(args.run/'report.json'), 'sha256': digest(raw)},
               'sourceSeparation': separation, 'updates': len(draws), 'sourcePhotosRechecked': len(report['trainingInputs']),
+              'historicalTrainingDrivers': historical,
               'immutableStateMatchesInitial': True, 'changedTensors': len(changed),
               'predictionMaximumDifference': maximum, 'predictionComparisons': comparisons, 'trainingMetrics': metrics,
               'scope': 'Independent checkpoint reload, frozen weights/buffers, draw schedule, source identities, input/label hashes, predictions and metrics. The initial bitwise replay gate failed at 1.1920929e-7; this diagnostic gate allows one float32 epsilon on the unit probability interval while requiring identical threshold masks and metrics. It is not a bitwise replay, second optimization run, browser parity check or held-out quality result.'}

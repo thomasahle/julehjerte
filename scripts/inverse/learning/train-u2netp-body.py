@@ -12,6 +12,7 @@ from PIL import Image, ImageDraw, ImageOps
 import torch
 
 from data import digest
+from body_schedule import training_draws
 from preserved_candidate import pinned
 from real_foreground import masked_foreground_loss, known_region_metrics
 from u2netp_adaptation import (freeze_encoder, frozen_hash, fused_logits, normalize_scores,
@@ -72,12 +73,10 @@ def main():
     initial = predict(model, real)
     source = Path(__file__).parent
     dependencies = [Path(__file__)]+[source/f for f in ['u2netp_adaptation.py', 'preserved_candidate.py',
-        'real_foreground.py', 'foreground.py', 'data.py']]
+        'real_foreground.py', 'foreground.py', 'data.py', 'body_schedule.py']]
     dependencies += [source.parent/'datasets'/f for f in ['real_annotations.py', 'real_materials.py']]
     hashes = {str(f): digest(f.read_bytes()) for f in dependencies}
-    rng = np.random.default_rng(p['seed'])
-    draws = [{'synthetic': int(rng.integers(len(synthetic))), 'real': int(rng.integers(len(real))),
-              'flips': (rng.random(2) < .5).tolist()} for _ in range(p['updates'])]
+    draws = training_draws(plan, len(synthetic), len(real))
     report = {'schema': 'u2netp-body-adaptation-1', 'status': 'training',
               'plan': {'path': str(args.plan), 'sha256': digest(plan_bytes)}, 'sourceHashes': hashes,
               'sourceCommit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
@@ -93,6 +92,7 @@ def main():
         if digest(args.plan.read_bytes()) != report['plan']['sha256']: raise ValueError('Training plan changed')
         for key in ['sourceManifest', 'annotations', 'evaluation', 'syntheticParent', 'source', 'checkpoint']:
             pinned(plan[key])
+        if 'drawSchedule' in plan: pinned(plan['drawSchedule'])
         temporary = args.output/'report.writing.json'
         temporary.write_text(json.dumps(report, indent=2)+'\n'); temporary.replace(args.output/'report.json')
     optimizer = torch.optim.AdamW([x for x in model.parameters() if x.requires_grad], lr=p['learningRate'], weight_decay=p['weightDecay'])

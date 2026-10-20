@@ -13,6 +13,7 @@ from PIL import Image, ImageDraw, ImageOps
 import torch
 
 from data import digest
+from body_provenance import verify_body_sources
 from preserved_candidate import pinned
 from real_foreground import known_region_metrics
 from u2netp_adaptation import real_training, normalize_scores
@@ -25,7 +26,7 @@ def checked_run(directory):
     reference = {'path': str(directory/'report.json'), 'sha256': digest(raw)}
     if report['status'] != 'complete' or not audit['passed'] or audit['report'] != reference:
         raise ValueError('Require independently audited training')
-    for file, sha in report['sourceHashes'].items(): pinned({'path': file, 'sha256': sha})
+    verify_body_sources(report)
     for file, sha in report['artifacts'].items(): pinned({'path': str(directory/file), 'sha256': sha})
     saved = np.load(directory/'training-predictions.npz', allow_pickle=False)
     if len(saved['ids']) != len(set(saved['ids'].tolist())):
