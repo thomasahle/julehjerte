@@ -480,6 +480,44 @@ vendored fonts. `generate-heart-data.mjs` generates all cards at build time and 
 legacy `/og-image.png` and `/og/{id}.png` paths. Designs shared only in URL fragments use the general
 card: a bespoke crawler preview would require a public URL with server-readable design data.
 
+The front page (both languages) uses `/og/social/gallery.png` instead: seven gallery hearts hanging on
+the page background with only the wordmark, so one card serves both languages. `home.png` and
+`/og-image.png` are still built for the other pages and for old links.
+
+### Search appearance
+
+Google does not use inline SVG for a result's thumbnail, and every heart on the site is inline SVG. So
+each gallery heart also exists as an image file, and the pages point at it in three ways:
+
+- **The square picture** `static/og/hearts/<id>.png` (800×800, about 15–33 KB): the heart in the site's
+  red and white, hanging in its ribbon, on the scene's `--sky` (on white the white lobe would vanish).
+  Built with the social cards by `scripts/generate-heart-data.mjs` (gitignored); its geometry lives in
+  `src/lib/heartImage.ts`.
+- **On the page**: the heart page's "Hjerte" thumbnail under the stage carries it as a real `<img>` with
+  alt text, laid exactly over the inline SVG (same heart box) with its ribbon band clipped off, so the
+  thumbnail looks as before. It is hidden whenever `<html>` has `colorful`, `paper-flipped` or
+  `paper-custom`: the SVG under it follows the colours, the PNG cannot (`HeartStage.svelte`).
+- **Structured data** (`src/lib/seo.ts`, one `<script type="application/ld+json">` in the prerendered
+  head, `<` escaped as `\u003c`): a heart page has a schema.org `HowTo` (name, meta description,
+  canonical URL, `inLanguage`, images = square picture then the 1200×630 card, paper as supply, scissors
+  as tool, the guide's three stages as `HowToStep`s linking to its sections, the author as `Person` when
+  the credit names one). The front page has a `CollectionPage` whose `ItemList` is the whole gallery in
+  order (position, page URL, name, square picture).
+- **Image sitemap**: `sitemap.xml` declares the `image` namespace; each heart page (both languages)
+  lists its square picture, the front pages the first five hearts' pictures.
+
+Indexable pages say `robots: index, follow, max-image-preview:large` (gallery heart pages too; the 404,
+a missing heart and `/hjerte/delt/` keep `noindex`). The social card for the front page is the gallery card
+above.
+
+**After a deploy, for the owner (Search Console, property juleflet.dk):** Sitemaps → submit (or resubmit)
+`https://juleflet.dk/sitemap.xml`. Then URL Inspection → paste `https://juleflet.dk/` → *Request indexing*,
+and the same for a few heart pages, e.g. `/hjerte/classic-3x3/`, `/hjerte/stjerne/`, `/hjerte/jul/`
+(there is a daily quota of roughly ten). *Test live URL* → *View tested page* shows the rendered HTML
+and "Detected structured data". Thumbnails appear in results only after Google recrawls and chooses to
+show one; that can take days to weeks. The Rich Results Test no longer reports `HowTo` (Google retired that
+rich result in 2023); use the Schema Markup Validator (validator.schema.org) to check the markup itself.
+
 ## 6. "Om" page (`/om/`, English `/en/about/`)
 
 Nav link "Om". Content and structure from `om()` in the generator: what juleflet.dk is, the editor, open source
