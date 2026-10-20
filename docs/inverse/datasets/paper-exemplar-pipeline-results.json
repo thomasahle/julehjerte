@@ -23,6 +23,14 @@
     "editable": {
       "path": "tmp/heart-learning/paper-exemplar-editable-v1/results.json",
       "sha256": "dd41702cdb6b79328ce0061f15de131ab481e631ee8e8ceb05bcb3930884867a"
+    },
+    "finalAudit": {
+      "path": "tmp/heart-learning/paper-exemplar-final-audit-v1.json",
+      "sha256": "98874e6b7f948e8df827fde2ade74770b482112787df89cbd9420a9884a9f39c"
+    },
+    "codeVerification": {
+      "path": "tmp/heart-learning/paper-exemplar-verification-v1/report.json",
+      "sha256": "16749caf222053e9b9bf9e9d29de6f28b74ae442ce77f0c17640676ec510c0bd"
     }
   },
   "summary": {
@@ -102,7 +110,51 @@
         "engineChecksPassed": true
       }
     ],
-    "applicationChecks": "pending"
+    "applicationChecks": {
+      "typeCheck": "passed",
+      "lint": "passed",
+      "build": "passed",
+      "applicationTests": {
+        "passed": 2374,
+        "skipped": 142
+      },
+      "inverseCorrectness": {
+        "passed": 1183,
+        "failed": 0
+      },
+      "classifierTests": {
+        "passed": 5
+      },
+      "logs": [
+        {
+          "path": "tmp/heart-learning/paper-exemplar-verification-v1/check.log",
+          "sha256": "db20055932e27d213414b63bc08b7d8e6cfc75e4ea9069e96544faa664b373f3"
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-verification-v1/lint.log",
+          "sha256": "ed03769a3ce8385a9f4ac03e5c95e619e9b83724d40bc05e37e2dcd67ab4975b"
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-verification-v1/app-tests.log",
+          "sha256": "9fe22edc636e3f18c85f0b9839fbc74cc277e002e004d388808c1f47cd419dbe"
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-verification-v1/inverse-correctness.log",
+          "sha256": "b7544fb192856526d688f588ee9efd262538d30c77fd79ae6eee249773ff2ac6"
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-verification-v1/build.log",
+          "sha256": "4c6b0e9f81682b17e93dfa82fd3558bef197f0c1a0235ae50e40a36254302700"
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-verification-v1/exemplar-tests.log",
+          "sha256": "86794120640779cb671ba5e0c86a20ba9e34a1c58d875f22e893ed52afef9026"
+        }
+      ],
+      "timingScope": "The default timing-inclusive inverse suite was stopped after 224 s to keep advisory speed checks separate. No completed test had failed before interruption. The full existing CI correctness suite then passed; no acceptance limits or expectations changed."
+    },
+    "finalSourceAndInputHashChecks": 234,
+    "editableArtifactHashes": 152
   },
   "limitations": [
     "All 32 photos were previously inspected; this is development evidence, not an untouched holdout.",
@@ -168,6 +220,7 @@
     }
   ],
   "nextWork": [
+    "Align the engine checked status with the editor minimum-slit rule; retain the near-empty building mask as a regression without disabling exports.",
     "Evaluate the fitted RGB classifier on native rectified pixels while holding cap samples, coefficients and crops fixed, to isolate resolution losses.",
     "Test deterministic phase/finalist selection on the nativity and small mask perturbations; retain legal candidates and observed feature checks.",
     "Train material embeddings with explicit lobe-to-overlap supervision and boundary preservation, rather than adding frozen foreground features.",
@@ -1844,5 +1897,15 @@
       },
       "status": "fitted"
     }
-  ]
+  ],
+  "resources": {
+    "uniqueExperimentBytesExcludingLogsAndFinalAudit": 77397897,
+    "sourcePhotographsCopied": 0,
+    "newImageDownloads": 0,
+    "newModelWeights": 0,
+    "workers": 1,
+    "nice": 15,
+    "applicationAndSolverIdenticalToOriginMain": true,
+    "freeDiskGiBAtVerification": 25.759674072265625
+  }
 }

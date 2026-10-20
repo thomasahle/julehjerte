@@ -448,6 +448,16 @@ material features explicitly to transfer from the exposed paper into the woven
 overlap. Choosing a classifier solely by its own reconstruction error would
 reward the near-empty-mask failure above.
 
+Verification passes: type checking, lint, build, **2,374 application tests**
+(142 skipped), **1,183 inverse correctness tests**, and all five classifier
+tests. The timing-inclusive local command was stopped after 224 seconds; the
+complete CI correctness suite was then run separately, without changing any
+expectation. The final audit checks another 234 source/input hashes and retains
+checksums for 152 editable SVG/preview artifacts. The experiment adds about
+**74 MiB excluding logs**, including its detailed JSON records, with no new
+photos or model weights. Application and solver files match the successful main
+CI build exactly.
+
 ### Latest solver and browser validation
 
 The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and
