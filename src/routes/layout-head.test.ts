@@ -65,7 +65,21 @@ describe('layout head', () => {
 		render(Layout, { children });
 		expect(head('link[rel="canonical"]').map((l) => l.getAttribute('href'))).toEqual(['https://juleflet.dk/om/']);
 		expect(head('link[rel="alternate"][hreflang]')).toHaveLength(3);
-		expect(head('meta[name="robots"]').map((m) => m.getAttribute('content'))).toEqual(['index, follow']);
+		expect(head('meta[name="robots"]').map((m) => m.getAttribute('content'))).toEqual([
+			'index, follow, max-image-preview:large'
+		]);
+		expect(head('meta[property="og:image"]')[0].getAttribute('content')).toBe('https://juleflet.dk/og/social/da/home.png');
+	});
+
+	it.each(['/', '/en/'])('gives the front page (%s) the gallery card as its social image', (path) => {
+		setPage({ url: new URL(`https://juleflet.dk${path}`), route: { id: '/[[lang=lang]]' }, status: 200, error: null });
+		render(Layout, { children });
+		for (const selector of ['meta[property="og:image"]', 'meta[name="twitter:image"]']) {
+			expect(head(selector).map((m) => m.getAttribute('content'))).toEqual([
+				'https://juleflet.dk/og/social/gallery.png'
+			]);
+		}
+		expect(head('meta[property="og:image:alt"]')[0].getAttribute('content')).toMatch(/[Ss]even|Syv/);
 	});
 
 	it('gives an error page noindex and no canonical or alternates', () => {

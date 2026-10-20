@@ -5,7 +5,7 @@
 	import { afterNavigate } from "$app/navigation";
 	import { page } from "$app/stores";
 	import { SITE_NAME, SITE_DESCRIPTION, SITE_DESCRIPTION_EN, SITE_KEYWORDS, SITE_URL, GA_MEASUREMENT_ID } from "$lib/config";
-	import { pageTitle, socialImage } from "$lib/seo";
+	import { FRONT_PAGE_SOCIAL_IMAGE, ROBOTS_INDEX, pageTitle, socialImage } from "$lib/seo";
 	import { langFromPathname, t } from "$lib/i18n";
 	import { alternatePaths, routeKeyFromPathname } from "$lib/i18n/routes";
 	import PageFooter from "$lib/components/PageFooter.svelte";
@@ -62,7 +62,11 @@
 	);
 
 	let ogTitle = $derived(pageTitle(routeKey, lang));
-	let ogImage = $derived(socialImage(lang));
+	// The front page shows gallery hearts (one card for both languages); the
+	// other pages keep the text card over the landscape.
+	let isHome = $derived(routeKey === "home");
+	let ogImage = $derived(isHome ? FRONT_PAGE_SOCIAL_IMAGE : socialImage(lang));
+	let ogImageAlt = $derived(t(isHome ? "gallerySocialImageAlt" : "socialImageAlt", lang));
 
 	// Heart detail pages (/hjerte/[id]) emit their own description, canonical, hreflang, og and twitter tags.
 	let isDetailRoute = $derived($page.route.id?.includes("/hjerte/") ?? false);
@@ -236,7 +240,7 @@
 	<meta name="keywords" content={SITE_KEYWORDS} />
 	<meta name="author" content={SITE_NAME} />
 	{#if isIndexable}
-		<meta name="robots" content="index, follow" />
+		<meta name="robots" content={ROBOTS_INDEX} />
 	{/if}
 
 	<!-- Open Graph / Facebook -->
@@ -251,14 +255,14 @@
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
 		<meta property="og:image:type" content="image/png" />
-		<meta property="og:image:alt" content={t("socialImageAlt", lang)} />
+		<meta property="og:image:alt" content={ogImageAlt} />
 
 		<!-- Twitter Card -->
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={ogTitle} />
 		<meta name="twitter:description" content={metaDescription} />
 		<meta name="twitter:image" content={ogImage} />
-		<meta name="twitter:image:alt" content={t("socialImageAlt", lang)} />
+		<meta name="twitter:image:alt" content={ogImageAlt} />
 	{/if}
 </svelte:head>
 

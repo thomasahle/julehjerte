@@ -809,6 +809,12 @@ export const translations = {
     heartBrowserTitle: '{name} – skabelon til julehjerte',
     socialImageAlt: 'Røde og hvide flettede julehjerter over Juleflets vinterlandskab',
     heartSocialImageAlt: 'Det flettede julehjerte {name} over Juleflets vinterlandskab',
+    gallerySocialImageAlt: 'Syv røde og hvide flettede julehjerter, der hænger i deres hanke',
+    /** The heart page's square picture of the heart ({name}), for image search. */
+    heartImageAlt: 'Flettet julehjerte i rødt og hvidt: {name}',
+    /** schema.org HowTo supply and tool on each heart page (search engines only). */
+    howToSupplyPaper: 'Papir i to farver',
+    howToToolScissors: 'Saks',
     guideStartTitle: 'Begynd med et enkelt mønster',
     guideStartText: 'Tre brede strimler og lige klip giver plads til at lære fletningen. Brug den samme skabelon til begge farver.',
     guideStartLink: 'Hent skabelonen til det klassiske 3×3-hjerte',
@@ -1790,6 +1796,10 @@ export const translations = {
     heartBrowserTitle: '{name} – woven heart template',
     socialImageAlt: 'Red and white woven Christmas hearts above the Juleflet winter landscape',
     heartSocialImageAlt: 'The {name} woven Christmas heart above the Juleflet winter landscape',
+    gallerySocialImageAlt: 'Seven red and white woven Christmas hearts hanging by their handles',
+    heartImageAlt: 'Woven Christmas heart in red and white: {name}',
+    howToSupplyPaper: 'Paper in two colours',
+    howToToolScissors: 'Scissors',
     guideStartTitle: 'Start with a simple pattern',
     guideStartText: 'Three wide strips and straight cuts give you room to learn the weave. Use the same template for both colours.',
     guideStartLink: 'Get the classic 3×3 heart template',

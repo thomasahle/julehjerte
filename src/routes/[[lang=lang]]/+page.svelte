@@ -27,7 +27,10 @@
   import { langFromParam, t, type Language } from "$lib/i18n";
   import { heartAnchorFromHash, sectionAnchorToLand } from "$lib/utils/heartAnchors";
   import { focusSectionHeading } from "$lib/front/deleteFocus";
-  import { MY_HEARTS_CATEGORY_ID } from "$lib/data/categories";
+  import { ALL_HEART_IDS, MY_HEARTS_CATEGORY_ID } from "$lib/data/categories";
+  import heartCards from "$lib/data/heart-cards.json";
+  import { heartName } from "$lib/utils/heartName";
+  import { frontPageJsonLd, jsonLdScript } from "$lib/seo";
   import { keepKnown, parseSelected, selectionSearch, toggleSelected } from "$lib/front/selection";
   import {
     LEVEL_PARAM,
@@ -63,6 +66,13 @@
   let levelsRestored = $state(false);
   let lang = $derived(langFromParam($page.params.lang));
   let metaTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
+  // Structured data: the gallery as a schema.org ItemList of the heart pages
+  // and their square pictures ($lib/seo). heart-cards.json is the file the
+  // load function already imports for the cards' names.
+  const cards = heartCards as Record<string, { name: string; names?: { da?: string; en?: string } }>;
+  let jsonLd = $derived(
+    jsonLdScript(frontPageJsonLd(ALL_HEART_IDS.map((id) => ({ id, name: heartName(cards[id], lang) })), lang)),
+  );
   let pendingAnchorId = $state<string | null>(null);
   /**
    * A gallery anchor other than a card's (a category, `#skabeloner`) the page
@@ -339,6 +349,7 @@
 
 <svelte:head>
   <title>{metaTitle}</title>
+  {@html jsonLd}
 </svelte:head>
 
 <PageHeader {lang} active="templates" />

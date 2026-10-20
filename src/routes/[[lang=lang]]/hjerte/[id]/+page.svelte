@@ -38,7 +38,7 @@
     SITE_NAME,
     SITE_URL,
   } from "$lib/config";
-  import { heartMetaDescription, heartPageTitle, socialImage } from "$lib/seo";
+  import { ROBOTS_INDEX, heartHowToJsonLd, heartMetaDescription, heartPageTitle, jsonLdScript, socialImage } from "$lib/seo";
   import { langFromParam, stripsLabel as formatStrips, t } from "$lib/i18n";
   import { slugify } from "$lib/utils/slug";
   import { editorHref, heartPath, homeAnchorHref, href as routeHref } from "$lib/i18n/routes";
@@ -51,6 +51,7 @@
   import { formatHeartDate } from "$lib/utils/date";
   import type { HeartDesign, HeartInfo } from "$lib/types/heart";
   import { heartName } from "$lib/utils/heartName";
+  import { heartImagePath } from "$lib/heartImage";
   import { trackHeartShare, trackHeartEdit } from "$lib/analytics";
 
   let { data }: PageProps = $props();
@@ -200,6 +201,24 @@
   // Gallery hearts get their own 1200x630 card, built by scripts/generate-heart-data.mjs.
   let ogImage = $derived(socialImage(lang, meta ? heartId : undefined));
   let ogImageAlt = $derived(meta ? t("heartSocialImageAlt", lang, { name: info?.name ?? "" }) : t("socialImageAlt", lang));
+  // A gallery heart's page is indexed and gets structured data (a schema.org
+  // HowTo whose first image is the square picture, $lib/heartImage); a heart
+  // that only lives in a browser has neither.
+  let isGalleryPage = $derived(meta !== null && !isShared && !notFound);
+  let jsonLd = $derived(
+    isGalleryPage && meta && info
+      ? jsonLdScript(
+          heartHowToJsonLd({
+            id: heartId,
+            name: info.name,
+            description: metaDescription,
+            author: meta.author,
+            authorUrl: meta.authorUrl,
+            lang,
+          }),
+        )
+      : "",
+  );
 
   // Gallery hearts open by id; user-created hearts carry their design in the URL
   // fragment (never sent to the server, so no request-URI limits). A shared heart that
@@ -365,6 +384,8 @@
   <title>{pageTitle}</title>
   {#if notFound}
     <meta name="robots" content="noindex" />
+  {:else if isGalleryPage}
+    <meta name="robots" content={ROBOTS_INDEX} />
   {/if}
   <meta name="description" content={metaDescription} />
   <link rel="canonical" href={canonicalUrl} />
@@ -387,6 +408,9 @@
   <meta name="twitter:image:alt" content={ogImageAlt} />
   {#if isShared}
     <meta name="robots" content="noindex" />
+  {/if}
+  {#if jsonLd}
+    {@html jsonLd}
   {/if}
 </svelte:head>
 
@@ -433,7 +457,14 @@
         </div>
       {:else if info}
         <div class="stage-col">
-          <HeartStage {design} {photo} {sharedTemplate} {lang} idPrefix={heartId} />
+          <HeartStage
+            {design}
+            {photo}
+            {sharedTemplate}
+            {lang}
+            idPrefix={heartId}
+            image={isGalleryPage && info ? { src: heartImagePath(heartId), alt: t("heartImageAlt", lang, { name: info.name }) } : null}
+          />
         </div>
 
         <!-- The buttons belong to the panel, not to the picture: they sit
