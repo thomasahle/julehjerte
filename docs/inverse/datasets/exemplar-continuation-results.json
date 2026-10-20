@@ -1,0 +1,804 @@
+{
+  "schema": "exemplar-continuation-study-1",
+  "status": "complete",
+  "date": "2026-10-20",
+  "sourceCommit": "48d5ed1c35fe6f6f626527a3e1edcbf102f249bc",
+  "plan": {
+    "path": "docs/inverse/datasets/exemplar-continuation-plan.json",
+    "sha256": "0af6f0d797766d30ea240a0a33ce1991e9709518d44d13dfcef980dbf56fe0ad"
+  },
+  "training": {
+    "path": "tmp/heart-learning/exemplar-continuation-v1/report.json",
+    "sha256": "a1d80d271dd3ec5f82429de4b17001ca99b7586730f0eec6056502bd31399a29"
+  },
+  "decision": "Retain both experimental checkpoints and failures; do not promote either material head. Mixed real supervision improves its known training interiors but does not beat the matched synthetic continuation after the unchanged full pipeline gates.",
+  "trainingComparison": {
+    "identicalInitialCheckpoint": {
+      "path": "tmp/heart-learning/exemplar-projection-v1/projection.pt",
+      "sha256": "cb6b5020aa2d0f7a4910820c707508599eb76fed14ee3383b8b0608b3d9c0afe"
+    },
+    "updatesPerArm": 96,
+    "syntheticDrawsPerArm": 96,
+    "extraRealDrawsInMixedArm": 96,
+    "realExamples": 6,
+    "realLossWeight": 0.5,
+    "optimizerState": "Fresh AdamW for both arms",
+    "parameters": 1536,
+    "frozenBodyExact": true,
+    "startupInclusiveSeconds": 150.1943005,
+    "summary": {
+      "reviewed-real-body": {
+        "count": 6,
+        "methods": {
+          "parent": {
+            "materialError": 0.044973088522839676,
+            "boundaryError": null,
+            "interiorError": 0.044973088522839676,
+            "boundaryAnnotatedImages": 0
+          },
+          "synthetic-control": {
+            "materialError": 0.04549674570536061,
+            "boundaryError": null,
+            "interiorError": 0.04549674570536061,
+            "boundaryAnnotatedImages": 0
+          },
+          "real-mixed": {
+            "materialError": 0.006527638387418361,
+            "boundaryError": null,
+            "interiorError": 0.006527638387418361,
+            "boundaryAnnotatedImages": 0
+          }
+        }
+      },
+      "synthetic-original": {
+        "count": 32,
+        "methods": {
+          "parent": {
+            "materialError": 0.02198355267166565,
+            "boundaryError": 0.0638615758897556,
+            "interiorError": 0.0014901813000816524,
+            "boundaryAnnotatedImages": 32
+          },
+          "synthetic-control": {
+            "materialError": 0.021260057144159836,
+            "boundaryError": 0.061939517954576466,
+            "interiorError": 0.001319671246886238,
+            "boundaryAnnotatedImages": 32
+          },
+          "real-mixed": {
+            "materialError": 0.021714799738420894,
+            "boundaryError": 0.0633501647753684,
+            "interiorError": 0.0012498746689476436,
+            "boundaryAnnotatedImages": 32
+          }
+        }
+      },
+      "synthetic-printed": {
+        "count": 32,
+        "methods": {
+          "parent": {
+            "materialError": 0.043287343370586366,
+            "boundaryError": 0.11629182044206211,
+            "interiorError": 0.010689848814027524,
+            "boundaryAnnotatedImages": 32
+          },
+          "synthetic-control": {
+            "materialError": 0.037797207047740346,
+            "boundaryError": 0.10747384568847768,
+            "interiorError": 0.00678133211457101,
+            "boundaryAnnotatedImages": 32
+          },
+          "real-mixed": {
+            "materialError": 0.04035576033128301,
+            "boundaryError": 0.11186106250318151,
+            "interiorError": 0.008465182605121364,
+            "boundaryAnnotatedImages": 32
+          }
+        }
+      },
+      "synthetic-scene": {
+        "count": 32,
+        "methods": {
+          "parent": {
+            "materialError": 0.021931671261524354,
+            "boundaryError": 0.06355413701538405,
+            "interiorError": 0.0015638672858665904,
+            "boundaryAnnotatedImages": 32
+          },
+          "synthetic-control": {
+            "materialError": 0.02089980123314046,
+            "boundaryError": 0.06185970115605331,
+            "interiorError": 0.0012305240158514287,
+            "boundaryAnnotatedImages": 32
+          },
+          "real-mixed": {
+            "materialError": 0.02131611217467011,
+            "boundaryError": 0.06268499032205549,
+            "interiorError": 0.0013027063484018946,
+            "boundaryAnnotatedImages": 32
+          }
+        }
+      }
+    }
+  },
+  "realSupervision": {
+    "records": [
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "geometry": {
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "source": {
+            "path": "scripts/inverse/datasets/real-annotations-pinterest.json",
+            "sha256": "a972cf961544f85565b2f8edc3df872dd27c2ca3333ea5c01d04e1867b19aaa9"
+          },
+          "overlapCorners": {
+            "points": [
+              [
+                225,
+                141
+              ],
+              [
+                380,
+                281
+              ],
+              [
+                223,
+                427
+              ],
+              [
+                74,
+                281
+              ]
+            ],
+            "status": "approximate-visible-reference",
+            "order": "notch,right,tip,left",
+            "uncertaintyRadiusPixels": 6
+          }
+        },
+        "samplesPerPaper": 1024,
+        "knownOverlapPixels": 9630,
+        "overlapPixels": 23146,
+        "knownOverlapLabelsSha256": "e3148f9d503511ea5a2675b020e26640e25aca81c304e1901e1e99db5234858b"
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "geometry": {
+          "id": "real-995899fe049540ed-body-1",
+          "source": {
+            "path": "scripts/inverse/datasets/real-annotations.json",
+            "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+          },
+          "overlapCorners": {
+            "points": [
+              [
+                787.5,
+                212.3426
+              ],
+              [
+                1370.0,
+                699.4815
+              ],
+              [
+                812.5,
+                1304.0333
+              ],
+              [
+                247.5,
+                699.4815
+              ]
+            ],
+            "uncertaintyRadiusPixels": 15.0,
+            "status": "approximate-visible-reference",
+            "order": "notch,right,tip,left"
+          }
+        },
+        "samplesPerPaper": 1024,
+        "knownOverlapPixels": 15842,
+        "overlapPixels": 29062,
+        "knownOverlapLabelsSha256": "a4ac5f2df1e9eabf97374295ffbb7022d3288755a2d3963fa7687d46f8d4f4da"
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "geometry": {
+          "id": "real-5330aa8b62176216-body-1",
+          "source": {
+            "path": "scripts/inverse/datasets/real-annotations.json",
+            "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+          },
+          "overlapCorners": {
+            "points": [
+              [
+                119.0,
+                40.0
+              ],
+              [
+                221.0,
+                144.0
+              ],
+              [
+                126.0,
+                239.0
+              ],
+              [
+                28.0,
+                145.0
+              ]
+            ],
+            "uncertaintyRadiusPixels": 6.0,
+            "status": "approximate-visible-reference",
+            "order": "notch,right,tip,left"
+          }
+        },
+        "samplesPerPaper": 1024,
+        "knownOverlapPixels": 1275,
+        "overlapPixels": 31498,
+        "knownOverlapLabelsSha256": "0d9dcc761aaeb0c2088c3d83a59bd44949bfe0e4508a965139da28ac9e24006a"
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "geometry": {
+          "id": "real-abf590088db891f9-body-1",
+          "source": {
+            "path": "scripts/inverse/datasets/real-annotations.json",
+            "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+          },
+          "overlapCorners": {
+            "points": [
+              [
+                128.0,
+                45.0
+              ],
+              [
+                225.0,
+                140.0
+              ],
+              [
+                125.0,
+                240.0
+              ],
+              [
+                27.0,
+                140.0
+              ]
+            ],
+            "uncertaintyRadiusPixels": 6.0,
+            "status": "approximate-visible-reference",
+            "order": "notch,right,tip,left"
+          }
+        },
+        "samplesPerPaper": 1024,
+        "knownOverlapPixels": 4646,
+        "overlapPixels": 31665,
+        "knownOverlapLabelsSha256": "fc82235b433010375c86daef35415a1da8691add8de65214b3f865c023b52902"
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "geometry": {
+          "id": "real-12ce3c9180f7f317-body-1",
+          "source": {
+            "path": "scripts/inverse/datasets/real-annotations.json",
+            "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+          },
+          "overlapCorners": {
+            "points": [
+              [
+                1523.8125,
+                541.8427
+              ],
+              [
+                2665.4625,
+                1611.0144
+              ],
+              [
+                1518.975,
+                2810.809
+              ],
+              [
+                387.0,
+                1552.9599
+              ]
+            ],
+            "uncertaintyRadiusPixels": 29.0273,
+            "status": "approximate-visible-reference",
+            "order": "notch,right,tip,left"
+          }
+        },
+        "samplesPerPaper": 1024,
+        "knownOverlapPixels": 4274,
+        "overlapPixels": 28371,
+        "knownOverlapLabelsSha256": "c67a5a33a4ec24a015a8cb4f0b5e140b21da8f201f248e7700cb0f9761cc8790"
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "geometry": {
+          "id": "real-d5b0aa8d4d2465ee-body-1",
+          "source": {
+            "path": "scripts/inverse/datasets/real-annotations.json",
+            "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+          },
+          "overlapCorners": {
+            "points": [
+              [
+                420.75,
+                113.5363
+              ],
+              [
+                558.0,
+                317.0023
+              ],
+              [
+                343.125,
+                448.5246
+              ],
+              [
+                221.625,
+                238.3138
+              ]
+            ],
+            "uncertaintyRadiusPixels": 6.75,
+            "status": "approximate-visible-reference",
+            "order": "notch,right,tip,left"
+          }
+        },
+        "samplesPerPaper": 799,
+        "knownOverlapPixels": 1344,
+        "overlapPixels": 17598,
+        "knownOverlapLabelsSha256": "829af057b11749b0dfb01236b235a6b943c41e6f660f0af64d096fd4b9798036"
+      }
+    ],
+    "allMaterialBoundaryMetricsAbsent": true,
+    "reason": "Unknown bands separate differently labelled real regions. No known real boundary seeds remain; reported error covers supervised interiors only.",
+    "syntheticFamilyCounts": {
+      "lattice": 11,
+      "shared-lattice": 7,
+      "corner-lattice": 14
+    }
+  },
+  "pipeline": {
+    "mixed": {
+      "report": {
+        "path": "tmp/heart-learning/exemplar-continuation-mixed-pipeline-v1/report.json",
+        "sha256": "fc4eae1890f52fd96ea138638feb6220986cc554248aba83fbd941511658ab28"
+      },
+      "review": {
+        "path": "tmp/heart-learning/exemplar-continuation-mixed-review-v1/report.json",
+        "sha256": "33fc586e174ec4750eede50f9e5706744e78620878b748f491abab1dfdf2441e"
+      },
+      "editable": {
+        "path": "tmp/heart-learning/exemplar-continuation-mixed-editable-v1/results.json",
+        "sha256": "d692d91d4cc770f1b2fbb18a239293fa76971ae1a757cf5c972f7ddc24317410"
+      },
+      "summary": {
+        "production": {
+          "cases": 32,
+          "crops": 26,
+          "checkedPair": 13,
+          "conversionPassed": 26,
+          "completeCandidatePassed": 13
+        },
+        "rgb-only": {
+          "cases": 32,
+          "crops": 26,
+          "checkedPair": 14,
+          "conversionPassed": 26,
+          "completeCandidatePassed": 14
+        },
+        "neutral-deviation": {
+          "cases": 32,
+          "crops": 26,
+          "checkedPair": 19,
+          "conversionPassed": 24,
+          "completeCandidatePassed": 18
+        },
+        "real-mixed": {
+          "cases": 32,
+          "crops": 26,
+          "checkedPair": 11,
+          "conversionPassed": 25,
+          "completeCandidatePassed": 10
+        }
+      }
+    },
+    "control": {
+      "report": {
+        "path": "tmp/heart-learning/exemplar-continuation-control-pipeline-v1/report.json",
+        "sha256": "9d789cb902d42bdff51915640d603eb80a03a7bebe9d7883b6afdf078bfb424c"
+      },
+      "review": {
+        "path": "tmp/heart-learning/exemplar-continuation-control-review-v1/report.json",
+        "sha256": "17d1c5c2847a10b50574e6a82e46e2c6eb1ef04a24740351cc109848e653970a"
+      },
+      "editable": {
+        "path": "tmp/heart-learning/exemplar-continuation-control-editable-v1/results.json",
+        "sha256": "472923fb8e129081d743eb21aaadc17d86bdbb3a73a8ac958f6d30ce630edd08"
+      },
+      "summary": {
+        "production": {
+          "cases": 32,
+          "crops": 26,
+          "checkedPair": 13,
+          "conversionPassed": 26,
+          "completeCandidatePassed": 13
+        },
+        "rgb-only": {
+          "cases": 32,
+          "crops": 26,
+          "checkedPair": 14,
+          "conversionPassed": 26,
+          "completeCandidatePassed": 14
+        },
+        "neutral-deviation": {
+          "cases": 32,
+          "crops": 26,
+          "checkedPair": 19,
+          "conversionPassed": 24,
+          "completeCandidatePassed": 18
+        },
+        "synthetic-control": {
+          "cases": 32,
+          "crops": 26,
+          "checkedPair": 11,
+          "conversionPassed": 26,
+          "completeCandidatePassed": 11
+        }
+      }
+    }
+  },
+  "comparisonScope": "32 repeatedly inspected development photos, fixed 26 crops and six unresolved per arm; 52 fresh fits with unchanged 10-second search allowance, core code, crop RGB, observed coverage, resolution and acceptance gates. Frozen production/reference fits are not simultaneous speed controls. These are self-mask and geometric checks, not counts of accurately recovered artworks.",
+  "mixedVersusSyntheticCompletePassChanges": [
+    {
+      "id": "real-a126ed5d62adfd92-body-1",
+      "change": "gain",
+      "syntheticControl": {
+        "status": "review-required",
+        "checkedPair": false,
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "fitError": 0.017278928593779334,
+        "editableError": 0.017272670379873584,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "missingFeatures": 1,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskClassFraction": 0.22540209024344451,
+        "phaseInvariantDifferenceFromProduction": 0.030471243507103063,
+        "displayPhaseFlipped": true
+      },
+      "realMixed": {
+        "status": "checked-derived-mask",
+        "checkedPair": true,
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "fitError": 0.019475561674698043,
+        "editableError": 0.019538143813755553,
+        "slits": {
+          "left": 1,
+          "right": 2
+        },
+        "missingFeatures": 0,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskClassFraction": 0.228837849677702,
+        "phaseInvariantDifferenceFromProduction": 0.029901746041679722,
+        "displayPhaseFlipped": true
+      }
+    },
+    {
+      "id": "real-8b91ecf546833a3f-body-1",
+      "change": "loss",
+      "syntheticControl": {
+        "status": "checked-derived-mask",
+        "checkedPair": true,
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "fitError": 0.01796875,
+        "editableError": 0.0179375,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "missingFeatures": 0,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskClassFraction": 0.48065625,
+        "phaseInvariantDifferenceFromProduction": 0.01464375,
+        "displayPhaseFlipped": false
+      },
+      "realMixed": {
+        "status": "review-required",
+        "checkedPair": false,
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "fitError": 0.04320625,
+        "editableError": 0.04324375,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "missingFeatures": 1,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskClassFraction": 0.4788,
+        "phaseInvariantDifferenceFromProduction": 0.013525,
+        "displayPhaseFlipped": false
+      }
+    },
+    {
+      "id": "real-41b7c3e0b79f1265-body-1",
+      "change": "loss",
+      "syntheticControl": {
+        "status": "checked-derived-mask",
+        "checkedPair": true,
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "fitError": 0.0274,
+        "editableError": 0.02731875,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "missingFeatures": 0,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskClassFraction": 0.4547625,
+        "phaseInvariantDifferenceFromProduction": 0.03610000000000002,
+        "displayPhaseFlipped": true
+      },
+      "realMixed": {
+        "status": "checked-derived-mask",
+        "checkedPair": true,
+        "conversionPassed": false,
+        "completeCandidatePassed": false,
+        "fitError": 0.0210375,
+        "editableError": 0.02094375,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "missingFeatures": 0,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskClassFraction": 0.4574375,
+        "phaseInvariantDifferenceFromProduction": 0.03618750000000004,
+        "displayPhaseFlipped": true
+      }
+    }
+  ],
+  "dinosaurRegression": {
+    "id": "real-8b91ecf546833a3f-body-1",
+    "parentPipeline": {
+      "path": "tmp/heart-learning/exemplar-projection-pipeline-v1/report.json",
+      "sha256": "8af4403ea7dd496364bd33a7c4c13371bfb21762bb58ba68e8ecc3fd692b8a58"
+    },
+    "changedPixels": 334,
+    "observedPixels": 160000,
+    "maskDisagreement": 0.0020875,
+    "fitErrors": {
+      "parent": 0.01584375,
+      "synthetic-control": 0.01796875,
+      "real-mixed": 0.04320625
+    },
+    "missingRegions": [
+      {
+        "value": 1,
+        "areaMm2": 8.875,
+        "centerMm": [
+          99.08626760563381,
+          79.49823943661971
+        ],
+        "retainedFraction": 0
+      }
+    ],
+    "routing": {
+      "parent": {
+        "traceUsed": true,
+        "featureRoutingFirst": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "finalists": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.0449066162109375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.052703857421875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0531768798828125,
+            "featuresRetained": true
+          }
+        ]
+      },
+      "synthetic-control": {
+        "traceUsed": true,
+        "featureRoutingFirst": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "finalists": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.045318603515625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0513763427734375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.062591552734375,
+            "featuresRetained": true
+          }
+        ]
+      },
+      "real-mixed": {
+        "traceUsed": false,
+        "featureRoutingFirst": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "finalists": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.0432586669921875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0486602783203125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.051422119140625,
+            "featuresRetained": false
+          }
+        ]
+      }
+    },
+    "visualFinding": "The fixed photo crop itself includes a thin red margin at the far right of an otherwise white border cell. The mixed mask retains a small disconnected region near x=99 mm. This is consistent with the overlap crop extending slightly beyond the intended frame.",
+    "qualification": "Observed mask/search-route association, not a causal timing-controlled ablation. No crop repair, gate relaxation or selected rerun has been performed."
+  },
+  "editableRegression": [
+    {
+      "id": "real-41b7c3e0b79f1265-body-1-real-mixed",
+      "error": "Editable cuts must retain the verified paper support\n+ actual - expected\n\n+ 'uncertain'\n- 'pass'\n",
+      "paperStatus": "uncertain",
+      "geometryPassed": true,
+      "fidelityPassed": true
+    }
+  ],
+  "visualReview": {
+    "trainingAndPreparationPages": 22,
+    "pipelinePages": 22,
+    "allInspected": true,
+    "observations": [
+      "Three real training examples already have zero error on their sparse known labels; the fourth near-perfect example remains unchanged. The improvement is concentrated in printed hearts and floral/striped checker paper.",
+      "Both continuations preserve many plain silhouettes but retain cat noise and fail to distinguish some printed stripes, dots, trees and lettering from cuts.",
+      "Mixed supervision produces a cleaner star mask and suppresses more purple floral ink, but both continuations pass the star fit; purple floral paper still fails the complete pipeline.",
+      "The tilted candle gains mask noise near the lower border; both final fits fail.",
+      "Dinosaur routing changes substantially despite only 334 of 160000 mask pixels changing relative to the parent.",
+      "The central printed flower still passes self-mask checks as a cut motif; this is not material-identity recovery.",
+      "Wrong basket/building crops and all six unresolved proposals remain in the denominator.",
+      "Detailed motifs such as the girl with birds and the diving figure have recognizable masks but badly simplified fitted curves; this is a separate fitting limitation."
+    ]
+  },
+  "validation": {
+    "trainingAudit": {
+      "path": "tmp/heart-learning/exemplar-continuation-audit-v1.json",
+      "sha256": "37af5c3eeb6f4f15a04a3ef8abbcc2f9afa318119197778055ba1558d03434e6"
+    },
+    "exportAudit": {
+      "path": "tmp/heart-learning/exemplar-continuation-export-audit-v1.json",
+      "sha256": "43d1fa1567fc094881aa187ae434001a456b2f7cc8f031bd0e2c476ea28ca56d"
+    },
+    "commands": {
+      "path": "tmp/heart-learning/exemplar-continuation-release-checks-v1.json",
+      "sha256": "3d7ef0b602ff005e6df1840944391063385a081d154eaf85395edc9718038229"
+    },
+    "parentInputsChecked": 112,
+    "exactParentMaskReplays": 122,
+    "knownLabelErrorsIndependentlyRecomputed": 306,
+    "distinctEngineRenderErrorsRecomputed": 130,
+    "editableErrorsIndependentlyRecomputed": 52,
+    "editableSvgAndPngHashes": 103,
+    "learningTests": 210,
+    "learningModules": 44,
+    "learningTestLog": {
+      "path": "tmp/heart-learning/exemplar-continuation-tests-v1.log",
+      "sha256": "3df1bce1bb7540596616f4cc6f230ee0981e78fe1f7e3953876544d3190f67fe"
+    },
+    "productionCodeChanged": false,
+    "applicationVerification": "Previously completed app/inverse correctness tests, typecheck, lint and build apply to the unchanged production code; not rerun for this offline Python/docs experiment.",
+    "mainCI": {
+      "conclusion": "success",
+      "headSha": "77a9bda79c64d7be79c07621bd3c25bd7cac0c61",
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39369293317",
+      "scope": "Latest main run rechecked after the experiment; offline research branch has no production changes."
+    }
+  },
+  "resources": {
+    "directories": [
+      "tmp/heart-learning/exemplar-continuation-control-editable-v1",
+      "tmp/heart-learning/exemplar-continuation-control-editor-input-v1",
+      "tmp/heart-learning/exemplar-continuation-control-pipeline-v1",
+      "tmp/heart-learning/exemplar-continuation-control-review-v1",
+      "tmp/heart-learning/exemplar-continuation-mixed-editable-v1",
+      "tmp/heart-learning/exemplar-continuation-mixed-editor-input-v1",
+      "tmp/heart-learning/exemplar-continuation-mixed-pipeline-v1",
+      "tmp/heart-learning/exemplar-continuation-mixed-review-v1",
+      "tmp/heart-learning/exemplar-continuation-preparation-v1",
+      "tmp/heart-learning/exemplar-continuation-v1"
+    ],
+    "uniqueContentBytes": 55430493,
+    "scope": "Content bytes in experiment directories, hardlinks counted once. External logs and audit scripts/JSON excluded.",
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "downloads": 0,
+    "sourcePhotoCopies": 0,
+    "featureBankOnDisk": false,
+    "newContentBytes": 44638601,
+    "sharedPriorContentBytes": 10791892,
+    "deduplication": {
+      "path": "tmp/heart-learning/exemplar-continuation-dedup-v1.json",
+      "sha256": "4dca403306e4e6661ad31ca459d43e5cbeab37c61fed31c3699c38d89f0ba676"
+    },
+    "resourceCapScope": "The training command enforces the 50 MiB cap inside its output directory. The complete retained study contains 52.9 MiB of unique bytes, of which 10.3 MiB already existed and is shared with prior experiments; 42.6 MiB is new. External logs and audit scripts/JSON are excluded."
+  },
+  "next": [
+    "Isolate the dinosaur border-fragment route change with a paired replay that controls search work/time. Test any uniform crop inset on the full cohort rather than selecting per-photo success.",
+    "Investigate the editable paper-support uncertainty on the simple heart-checker motif using the preserved geometry and the same checks; an uncertain support result is not proof of a physical defect.",
+    "Expand geometry/edge supervision beyond the 32 lattice-family synthetic geometries and sparse real interiors before treating additional epochs as the solution. Retain the source-separated development cohort and Pinterest QA reservation."
+  ],
+  "productionChanges": "None; no new model deployment."
+}

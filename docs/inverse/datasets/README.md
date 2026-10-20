@@ -549,13 +549,86 @@ fit errors and 26 editable errors; all 29 review pages were inspected.
 The experiment retains about **33.5 MiB excluding external logs/audit JSON**,
 without new photo downloads, copies or a disk feature cache.
 
-The next controlled continuation can use six existing, source-separated
-training photos that have both reviewed paper labels and approximate overlap
-corners, alongside an equal-step synthetic-only control. Those approximate
-corners are conditioning references, not exact cutting geometry. This real
-supervision experiment has not run yet; the current result does not establish
-whether more real training or a different representation will fix the
-remaining transfer failures.
+The [controlled continuation](exemplar-continuation-results.json) starts both arms
+from those same weights. Each takes 96 further updates with the same shuffled
+synthetic images and fresh AdamW state. One arm uses synthetic loss alone; the
+other averages synthetic loss with one reviewed real-photo example per update.
+The six real photos each appear 16 times. This matches optimizer steps and
+synthetic draws, **not example counts or computation**.
+
+These six already belonged to the parent's 16-photo training set. They have
+both material annotations and approximate overlap corners; the other ten lack
+reviewed corners and do not supervise this continuation. None of the development
+photos or newly archived Pinterest images enters training. The approximate
+corners are conditioning references, not exact cutting geometry.
+
+Known overlap labels cover only **4.0–54.5%** of each real training photo.
+Uncertain bands separate all differently labelled regions, leaving **no known
+real material boundaries** for the boundary-weighted loss. This is an important
+limitation: improving these labels' accuracy primarily measures paper interiors.
+
+| Training diagnostic | Parent | Synthetic continuation | Mixed real supervision |
+| --- | ---: | ---: | ---: |
+| Synthetic plain paper | 2.20% | 2.13% | 2.17% |
+| Synthetic printed paper | 4.33% | 3.78% | 4.04% |
+| Synthetic changed scene | 2.19% | 2.09% | 2.13% |
+| Six real photos, known overlap pixels only | 4.50% | 4.55% | 0.65% |
+
+The real improvement is concentrated in the two printed-paper training
+examples. It does not establish full-design or unseen-photo accuracy. All 96
+synthetic and 26 available real parent masks replay exactly after extracting
+shared input/evaluation helpers. The frozen backbone remains unchanged, and all
+32 development photos, including six unresolved crops, remain in the comparison.
+
+Visual inspection finds cleaner star edges and greater suppression of purple
+floral printing with mixed supervision. False islands remain on the cat;
+the tilted candle gains border noise, and red stripes/dots, trees and lettering
+still become false cuts. The printed central flower still appears as a cut
+motif. Wrong basket/building crops remain wrong. The real training annotations
+help transfer some material appearance, but this experiment has not resolved the
+classification failures that precede curve fitting.
+
+Fresh fitting and independent editable-export checks give:
+
+| Method | Engine + mask checks | Editable conversion | Complete checks |
+| --- | ---: | ---: | ---: |
+| Frozen production reference | 13/32 | 26/26 | 13/32 |
+| Parent projection | 10/32 | 26/26 | 10/32 |
+| Synthetic continuation | 11/32 | 26/26 | 11/32 |
+| Mixed real supervision | 11/32 | 25/26 | 10/32 |
+
+These remain **self-mask and geometry checks, not recovered-design counts**.
+The mixed model gains the crescent relative to its matched control, loses the
+dinosaur, and loses the simple heart/checker motif at editable conversion.
+That last candidate has good image fidelity and no reported intersections,
+but its independent paper-support check is **uncertain**, so it is not counted
+as a complete pass. The uncertainty does not prove a physical defect.
+Neither continuation is promoted.
+
+The dinosaur is a useful end-to-end regression fixture. Only **334 of 160,000
+mask pixels (0.20875%)** change from the parent, yet fit error rises from
+**1.58% to 4.32%**. The photo crop itself shows a thin red margin at the far
+right of a white border cell. The new missing component has area 8.875 mm²
+and centre x=99.086 mm on a nominal 100 mm square. Logs change from
+`traceUsed=true, featureRoutingFirst=false` to the opposite routing choice.
+This points to an interaction between crop margins, classification and
+feature-driven search. It is an observed association; a controlled intervention
+is still needed to isolate the effect from search timing.
+
+All 32 photos and all failures are retained. The review recomputes 130 distinct
+engine-render errors (78 frozen controls and 52 new fits) and all 52 editable
+render errors. All **210 tests in 44 offline learning modules pass**; all 44
+new preparation/training/development/pipeline gallery pages were inspected.
+Repeated crops and parent masks share immutable files through hardlinks.
+The study adds about **42.6 MiB** of artifact content, with no new photographs,
+feature cache or browser work.
+
+The next steps are to isolate the border-fragment routing regression and the
+editable paper-support discrepancy, then improve edge supervision. The 32
+synthetic geometries here are all lattice families (11 lattice, seven shared
+lattice, 14 corner lattice); sparse real interiors add little supervision of
+the detailed cut boundaries that still cause trouble. The current experiment
+does not establish which representation or richer labels will resolve that gap.
 
 ### Latest solver and browser validation
 
