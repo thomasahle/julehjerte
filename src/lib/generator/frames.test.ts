@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { slow } from './slow.test-helpers';
 import { generate, fillSquare, fitCircle } from './generate';
 import { cutTipCounts } from './cutQuality';
-import { generateFittedFigure } from './fitted';
+import { generateFittedFigure, mirrorSymmetric } from './fitted';
 import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSide } from './state';
@@ -39,6 +39,7 @@ import crown from '../../../static/generator/motifs/ph-crown.json';
 import bell from '../../../static/generator/motifs/bell.json';
 import heart from '../../../static/generator/motifs/heart.json';
 import fish from '../../../static/generator/motifs/ph-fish.json';
+import tablerFlower from '../../../static/generator/motifs/tb-flower.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -267,6 +268,20 @@ describe('frames from real hearts', () => {
    expect(centre).toBe(1);
   }
  }, 20000);
+ it('knows a motif that is its own mirror image', () => {
+  expect(mirrorSymmetric(normalizeContours(tree.contours as Ring[]))).toBe(true);
+  expect(mirrorSymmetric(normalizeContours(horse.contours as Ring[]))).toBe(false);
+ });
+ slow('gives a motif that is its own mirror image symmetric wedges, where its own gates leave narrow paper too', () => {
+  // The flower's two lower petals tie; the gate between them left narrow
+  // paper, and its own extremes gave a lopsided frame.
+  const { design } = generate({ mode: 'figure', name: 'Flower', contours: tablerFlower.contours as Ring[], colors, style: 'wedges' });
+  const n = 120, mask = rasterizeDesign(design, n).data;
+  let differ = 0;
+  // Mirrored across the heart's middle the paper's x and y swap, and so do the sheets.
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) differ += Number(mask[y * n + x] === mask[x * n + y]);
+  expect(Math.min(differ, n * n - differ) / n / n).toBeLessThan(.01);
+ });
  it('lays small motifs on the other colour of four strips where the first cannot be cut', () => {
   // The bell cannot stand in the top and bottom squares of four strips; the
   // other colour's eight squares hold it, before fewer copies on a smaller board.

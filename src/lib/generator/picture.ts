@@ -16,6 +16,7 @@ import { normalizeContours } from './contours';
 import { STRIPS, boardChecks, placeBounds, placeMotif, shifts, slidePlace, type PlaceBounds } from './stripFigure';
 import { checkeredLayout, checkeredLetters } from './checkeredGrid';
 import { measureTextGrid } from './textGrid';
+import { CORNER_GAP, CORNER_INSET, checkedTips } from './cornerChecks';
 import { MOTIF, boardRadius, boardScale, motifChoices, squareChoices } from './boardMotif';
 
 /** The clearest place for each motif and board, where the search starts when
@@ -183,10 +184,11 @@ function layersPicture(request: GeneratorRequest): Picture | undefined {
 function cornersPicture(request: GeneratorRequest): Picture | undefined {
 	const contours = normalizeContours(request.contours ?? []);
 	if (!contours.length) return;
-	const size = request.frameSize ?? 70, scale = request.scale ?? .7, gap = request.gap ?? 0, inset = 6;
+	const size = request.frameSize ?? 70, scale = request.scale ?? .7, inset = CORNER_INSET;
 	const rings = contours.map(r => r.map(([x, y]) => uprightToSheet([x * size * scale, y * size * scale])));
+	const { s, d, e, f } = checkedTips(rings, request.gap ?? CORNER_GAP);
 	for (let col = 0; col < 3; col++) {
-		const start: Point = [18 - gap + col * 6, 30 - gap - col * 6], end: Point = [70 + gap + col * 6, 82 + gap - col * 6];
+		const start: Point = [s - d + col * d, s + d - col * d], end: Point = [e - f + col * f, e + f - col * f];
 		rings.push([[0, 0], [start[0], 0], start, [0, start[1]]], [end, [end[0], 100], [100, 100], [100, end[1]]]);
 	}
 	rings.push([[0, 0], [inset, 0], [inset, 100], [0, 100]], [[100 - inset, 0], [100, 0], [100, 100], [100 - inset, 100]],

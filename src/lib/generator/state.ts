@@ -121,7 +121,7 @@ export function readGeneratorState(hash: string): GeneratorState {
 		if (raw.style === 'plain') raw.style = 'rays';
 		for (const [k, allowed] of Object.entries<readonly string[]>({
 			mode: ['start', 'figure', 'text'],
-			font: ['nunito', 'breeserif', 'oswald', 'kalam', 'cinzel', 'righteous'],
+			font: ['nunito', 'breeserif', 'oswald', 'kalam', 'cinzel', 'righteous', 'josefinsans', 'alfaslabone', 'bungee'],
 			frame: [...FRAMES],
 			style: [...FIGURE_STYLES],
 			textFrame: ['woven', 'air', 'checkered', ...FRAMES],

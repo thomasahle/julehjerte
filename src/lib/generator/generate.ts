@@ -1,7 +1,7 @@
 import { createExactCurveFitter } from '$lib/inverse/curveFitCache';
 import { generateLayeredFigure } from './layers';
-import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
-import { generateFittedFigure } from './fitted';
+import { CORNER_GAP, generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
+import { generateFittedFigure, mirrorSymmetric, type GateTies } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid, roomOf, squareCellScale } from './textGrid';
 import { NO_WHOLE_STRIPS, STRIPS, slidePlace, stripFigures } from './stripFigure';
@@ -127,6 +127,16 @@ export type GeneratorResult = {
 	 * larger circle around this motif. */
 	scale?: number;
 };
+/** Symmetric gates for a motif that is its own mirror image, after its own
+ * (see `fittedGates`): those on the heart's middle further out or meeting the
+ * motif on the middle itself, those beside it on the upper of two tied tips
+ * rather than between them, then turned alike, towards or away from the
+ * middle. */
+type SymmetricGates = { ties?: GateTies; angles?: [number, number, number, number]; axisGap?: number; onMiddle?: boolean };
+const SYMMETRIC_GATES: SymmetricGates[] = [
+	{ axisGap: 2 }, { axisGap: 4 }, { onMiddle: true }, { ties: 'mirror' }, { ties: 'mirror', axisGap: 3 },
+	...[.15, -.15, .3, -.3].flatMap(turn => (['mirror', true] as const).map(ties => ({ ties, angles: [0, turn, 0, -turn] as [number, number, number, number] })))
+];
 /** The frame without a centre panel that a figure request selects, if any. */
 function openFrame(request: GeneratorRequest): OpenFrame | undefined {
 	if (request.mode !== 'figure') return;
@@ -650,10 +660,15 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
 	// The frame keeps the space asked for, cut cleanly or else as hard to cut,
 	// so it only moves one way with the slider. Only where nothing at all can
 	// be finished there do the legs of a frame without a centre panel move
-	// nearer the motif, until they touch it, and a circle move out, and then
-	// keep the frame's own size.
+	// nearer the motif, until they touch it, a circle move out, and then keep
+	// the frame's own size, and the checked tips, which come nearest at no
+	// space, move away from the motif.
 	const style = request.style ?? 'rays';
-	if (style === 'wedges' || request.gap && ['silhouette', 'corners', 'fitted'].includes(style)) {
+	if (style === 'corners') {
+		const gap = request.gap ?? CORNER_GAP;
+		return [...new Set([gap, Math.max(gap, 3), Math.max(gap, 6)])].map((gap, i) => ({ request: { ...request, gap }, retries: true, lastResort: i > 0 }));
+	}
+	if (style === 'wedges' || request.gap && ['silhouette', 'fitted'].includes(style)) {
 		const gap = request.gap ?? WEDGES.gap;
 		return [...new Set([gap, gap / 2, 0])].map((gap, i) => ({ request: fillSquare({ ...request, gap }), retries: true, lastResort: i > 0 }));
 	}
@@ -977,9 +992,11 @@ function retryFittedGateClearance(request: GeneratorRequest, curveFitter: Return
 	const rings = normalizeContours(request.contours ?? []), count = forest(rings).length;
 	if (count < 2 || count > 8) return;
 	let best: GeneratorResult | undefined;
-	for (const padding of [2, 3]) try {
+	const symmetric = mirrorSymmetric(rings);
+	for (const balanced of symmetric ? [true, false] : [false]) for (const padding of [2, 3]) try {
+		if (!balanced && symmetric && best) return best;
 		const construction = generateFittedFigure(rings, request.frameSize, request.scale,
-			fourPortMotif, undefined, padding, open, false);
+			fourPortMotif, undefined, padding, open, balanced);
 		const result = improveSharedConnections(finishConstruction(request, construction, 'silhouette', undefined, curveFitter));
 		const margin = intersectionMarginPx(inferOverlapRect(result.design.fingers, result.design.gridSize),
 			gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
@@ -1282,13 +1299,17 @@ function retryFigureIslandPorts(request: GeneratorRequest, curveFitter: ReturnTy
 	const size = request.frameSize ?? 70, scale = request.scale ?? .7,
 		style = request.style ?? 'rays', sunburst = style === 'sunburst';
 	let best: GeneratorResult | undefined;
+	// A motif that is its own mirror image tries its symmetric gates first.
+	const symmetric = mirrorSymmetric(rings);
+	for (const balanced of symmetric ? [true, false] : [false])
 	for (const islandRank of [1, 2, 3]) for (const practical of [false, true]) try {
+		if (!balanced && symmetric && best) return best;
 		const route: typeof fourPortMotif = (...args) => {
 			args[7] = { ...args[7], islandRank, practical };
 			return fourPortMotif(...args);
 		};
 		const inner = style === 'fitted' || style === 'wedges' || style === 'silhouette'
-			? generateFittedFigure(rings, size, scale, route, undefined, 0, openFrame(request), false)
+			? generateFittedFigure(rings, size, scale, route, undefined, 0, openFrame(request), balanced)
 			: generateFourPortFigure(rings, sunburst ? 'circle' : request.frame,
 				sunburst ? size * .8 : size, scale, sunburst ? 'rays' : style, route, sunburst ? 2 : 0);
 		const construction = sunburst ? sunburstBorder(inner, size) : inner;
@@ -1314,6 +1335,20 @@ function retryFittedSupports(request: GeneratorRequest, curveFitter: ReturnType<
 	if (!open) return;
 	const rings = normalizeContours(request.contours ?? []), seen = new Set<string>();
 	let best: GeneratorResult | undefined;
+	// A motif that is its own mirror image turns the gates beside its middle
+	// alike first, with tied tips sharing their gates (see `SYMMETRIC_GATES`).
+	if (mirrorSymmetric(rings)) for (const { ties = true, angles, axisGap, onMiddle } of SYMMETRIC_GATES) try {
+		const construction = generateFittedFigure(rings, request.frameSize, request.scale, fourPortMotif, angles, 0, open, ties, axisGap, onMiddle);
+		const key = JSON.stringify(construction.geometry);
+		if (seen.has(key)) continue;
+		seen.add(key);
+		const result = improveSharedConnections(finishConstruction(request, construction, 'silhouette', undefined, curveFitter));
+		if (!best || fewerCutTips(cutTipCounts(result.design), cutTipCounts(best.design))) best = result;
+		if (!cutTipCounts(best.design)[0]) return best;
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
+	if (best) return best;
 	for (const offset of [.15, -.15, .3, -.3])
 	for (const signs of [[1, 1, 1, 1], [1, -1, 1, -1], [1, -1, -1, 1], [1, 1, -1, -1]]) try {
 		const angles = signs.map(sign => sign * offset) as [number, number, number, number];
@@ -1331,11 +1366,14 @@ function retryFittedSupports(request: GeneratorRequest, curveFitter: ReturnType<
 	}
 	if (best) return best;
 	// Divide a deeply concave silhouette into two rows. Adjust only its outer
-	// contacts: both neighbours still agree on the original internal seam.
-	for (const offset of [.15, -.15]) try {
+	// contacts: both neighbours still agree on the original internal seam. A
+	// motif that is its own mirror image turns them alike first.
+	const symmetric = mirrorSymmetric(rings);
+	for (const offsets of [...symmetric ? [.15, -.15].map(turn => [0, turn, 0, -turn]) : [],
+		...[.15, -.15].map(turn => [turn, turn, turn, turn])] as [number, number, number, number][]) try {
+		if (symmetric && best && offsets[0] === offsets[1]) break;
 		const construction = generatePanelFigure(rings, open, request.frameSize ?? 70,
-			request.scale ?? .7, 1, 'check', 2, false, fourPortMotif, 'support', false, 0,
-			[offset, offset, offset, offset]);
+			request.scale ?? .7, 1, 'check', 2, false, fourPortMotif, 'support', false, 0, offsets);
 		const result = improveSharedConnections(finishConstruction(request, construction, 'silhouette', undefined, curveFitter));
 		if (!best || fewerCutTips(cutTipCounts(result.design), cutTipCounts(best.design))) best = result;
 	} catch (error) {
@@ -1877,12 +1915,12 @@ function generateUsingRecipes(request: GeneratorRequest,
 	}
 	const open = openFrame(request);
 	if (open) {
-		const single = (symmetric: boolean) => {
+		const single = (symmetric: GateTies, angles?: [number, number, number, number], axisGap = 0, onMiddle = false) => {
 			for (const route of [fourPortMotif, originalFourPortMotif]) {
 				let constructed = false;
 				try {
 					const result = generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, route,
-						undefined, 0, open, symmetric);
+						angles, 0, open, symmetric, axisGap, onMiddle);
 					constructed = true;
 					return finish(result, 'silhouette');
 				}
@@ -1893,9 +1931,21 @@ function generateUsingRecipes(request: GeneratorRequest,
 			}
 		};
 		// Symmetric gates come first, kept only without needle-sharp paper.
-		// Otherwise every construction uses the motif's own extreme points.
+		// A motif that is its own mirror image keeps symmetric gates wherever
+		// any finish: those on the heart's middle further out, or those beside
+		// it turned alike, with the fewest needle-sharp tips. Otherwise every
+		// construction uses the motif's own extreme points.
 		const balanced = single(true);
 		if (balanced && !cutTipCounts(balanced.design)[0]) return balanced;
+		if (mirrorSymmetric(normalizeContours(request.contours ?? []))) {
+			let best = balanced;
+			for (const { ties = true, angles, axisGap, onMiddle } of SYMMETRIC_GATES) {
+				const result = single(ties, angles, axisGap, onMiddle);
+				if (result && (!best || fewerCutTips(cutTipCounts(result.design), cutTipCounts(best.design)))) best = result;
+				if (best && !cutTipCounts(best.design)[0]) break;
+			}
+			if (best) return best;
+		}
 		const extreme = single(false);
 		if (extreme) return extreme;
 		for (const [columns, rows] of [[2, 1], [2, 2], [3, 1], [3, 2], [3, 3], [4, 2]]) {

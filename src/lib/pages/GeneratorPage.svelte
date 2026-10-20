@@ -48,7 +48,10 @@
 		['oswald', 'generatorFontOswald'],
 		['kalam', 'generatorFontHandwriting'],
 		['cinzel', 'generatorFontCinzel'],
-		['righteous', 'generatorFontRighteous']
+		['righteous', 'generatorFontRighteous'],
+		['josefinsans', 'generatorFontJosefin'],
+		['alfaslabone', 'generatorFontSlab'],
+		['bungee', 'generatorFontBlock']
 	] as const;
 
 	let config = $state<GeneratorState>({ ...defaults });
@@ -92,7 +95,12 @@
 		style === 'rays' || style === 'check' || style === 'sunburst' || style === 'board';
 
 	const failures = new GeometryCache<Failure>();
-	const errorText = (failure: Failure) => {
+	/** A frame's name as the picker shows it, the circle first. */
+	const frameName = (style: GeneratorState['style']) =>
+		circled(style) ? `${t('generatorCircle', lang)} · ${borderLabel(style)}` : borderLabel(style);
+	/** What went wrong, for a figure in the frame it cannot be made in. */
+	const errorText = (failure: Failure, style?: GeneratorState['style']) => {
+		if (style && failure.error !== 'empty') return t('generatorFrameError', lang, { frame: frameName(style) });
 		const key: TranslationKey =
 			failure.error === 'topology'
 				? 'generatorTopologyError'
@@ -139,6 +147,9 @@
 	 * the heart shown for these settings. */
 	let boardStrips = $derived(config.mode === 'figure' && config.style in BOARD_STRIPS ? BOARD_STRIPS[config.style as BoardStyle] : undefined);
 	let shownBoard = $derived(!busy && result ? result.design.gridSize.x : undefined);
+	/** The numbers of strips a frame on a board offers, as buttons. */
+	const stripChoices = ({ min, max, step }: { min: number; max: number; step: number }) =>
+		Array.from({ length: Math.floor((max - min) / step) + 1 }, (_, i) => min + i * step);
 	const PICTURE_SIDE = Number(computeHeartViewBoxFromOverlap({ left: 0, top: 0, width: 100, height: 100 }).viewBox.split(' ')[3]);
 	let dragging = $state<{ pointer: number; x: number; y: number; place: number; side: number; unitsPerPx: number } | null>(null);
 	function startDrag(event: PointerEvent) {
@@ -238,7 +249,7 @@
 					displayed = data.result;
 				} else {
 					displayed = null;
-					error = errorText(data as Failure);
+					error = errorText(data as Failure, job.request.mode === 'figure' ? job.request.style : undefined);
 				}
 				// A nearby value finished on the way shows while the newest is prepared.
 			} else if (data.result && busy) displayed = data.result;
@@ -399,7 +410,7 @@
 			busy = false;
 		} else if (failed) {
 			displayed = null;
-			error = errorText(failed);
+			error = errorText(failed, snapshot.mode === 'figure' ? snapshot.style : undefined);
 			busy = false;
 		} else busy = true;
 		// The picture shows while the cuts are found, and tells a drag how far
@@ -773,7 +784,7 @@
 				<div class="frame-options">
 					{#each FIGURE_TEMPLATES as choice (choice.id)}
 						<button
-							aria-label={circled(choice.style) ? `${t('generatorCircle', lang)} · ${borderLabel(choice.style)}` : borderLabel(choice.style)}
+							aria-label={frameName(choice.style)}
 							aria-pressed={config.style === choice.style}
 							title={thumbnails[choice.id]?.failure
 								? t('generatorTemplateUnavailable', lang)
@@ -799,6 +810,7 @@
 							{:else}
 								{borderLabel(choice.style)}
 							{/if}
+							{#if thumbnails[choice.id]?.failure}<small class="unavailable-note">{t('generatorFrameUnavailable', lang)}</small>{/if}
 						</button>
 					{/each}
 				</div>
@@ -817,21 +829,19 @@
 						{t('generatorSizeKept', lang, { asked: String(config.scale), kept: String(Math.round(result.scale * 100)) })}
 					</p>{/if}
 				{#if boardStrips}{@const asked = stripCount(config)}{@const strips = asked ?? shownBoard ?? boardStrips.initial}
-					<label class="range-label" for="board-strips"
-						>{t('generatorStripCount', lang)}<output>{strips} × {strips}</output></label
-					><input
-						id="board-strips"
-						type="range"
-						min={boardStrips.min}
-						max={boardStrips.max}
-						step={boardStrips.step}
-						value={strips}
-						oninput={(event) => {
-							const value = Number(event.currentTarget.value);
-							if (config.style === 'strips') config.strips = value;
-							else config.board = value;
-						}}
-					/>
+					<span class="range-label" id="board-strips">{t('generatorStripCount', lang)}</span>
+					<div class="strip-choices" role="group" aria-labelledby="board-strips">
+						{#each stripChoices(boardStrips) as n (n)}
+							<button
+								type="button"
+								aria-pressed={strips === n}
+								onclick={() => {
+									if (config.style === 'strips') config.strips = n;
+									else config.board = n;
+								}}>{n} × {n}</button
+							>
+						{/each}
+					</div>
 					{#if asked !== undefined && shownBoard !== undefined && shownBoard !== asked}<p class="hint" role="status">
 							{t('generatorStripsKept', lang, { asked: String(asked), kept: String(shownBoard) })}
 						</p>{/if}
@@ -955,7 +965,8 @@
 		color: #2f4634;
 	}
 	.panel h3,
-	.panel label:not(.search) {
+	.panel label:not(.search),
+	.panel .range-label {
 		font-size: 12px;
 		font-weight: 800;
 		color: #495944;
@@ -1254,6 +1265,40 @@
 	}
 	.frame-options button:hover {
 		border-color: var(--green);
+	}
+	.frame-options .unavailable-note {
+		color: #9a6a52;
+	}
+	/* The strips per side, as the Escher tab offers its sizes. */
+	.strip-choices {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 6px;
+	}
+	.strip-choices button {
+		padding: 7px 0;
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		background: var(--cream);
+		color: var(--ink);
+		font: inherit;
+		font-size: 12px;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		cursor: pointer;
+	}
+	.strip-choices button:hover {
+		border-color: var(--green);
+	}
+	.strip-choices button:focus-visible {
+		outline: 2px solid var(--green);
+		outline-offset: 2px;
+	}
+	.strip-choices button[aria-pressed='true'] {
+		border-color: #6d8b56;
+		background: #edf3e4;
+		color: #314a2c;
+		box-shadow: inset 0 0 0 1px #6d8b56;
 	}
 	.frame-options button:focus-visible {
 		outline: 2px solid var(--green);

@@ -282,6 +282,21 @@
 		border-bottom: 1px solid var(--line);
 	}
 
+	/* The site's wordmark lines up with the hero's text column (Hero.svelte
+	   .hero-inner: 80px from 1200px up, 56px from 900px). The design tools'
+	   bar keeps its own, tighter, edges. */
+	@media (min-width: 1200px) {
+		.nav:not(.editor) {
+			padding-left: 80px;
+		}
+	}
+
+	@media (min-width: 900px) and (max-width: 1199px) {
+		.nav:not(.editor) {
+			padding-left: 56px;
+		}
+	}
+
 	.nav-start {
 		display: flex;
 		align-items: center;

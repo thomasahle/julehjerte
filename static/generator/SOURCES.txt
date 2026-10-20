@@ -26,7 +26,8 @@ Use --icons-only to rebuild motifs without rebuilding fonts.
 
 
 Fonts: Nunito (800), Bree Serif (400), Oswald (600), Kalam (700), Cinzel (900),
-and Righteous (400), from the corresponding ofl/<family>/ directories at:
+Righteous (400), Josefin Sans (700), Alfa Slab One (400) and Bungee (400), from
+the corresponding ofl/<family>/ directories at:
 https://github.com/google/fonts
 Each family is covered by its own OFL license in fonts/<id>-OFL.txt.
 The original source TTF files are in docs/design-start/assets/fonts/.
