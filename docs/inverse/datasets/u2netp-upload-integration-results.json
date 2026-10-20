@@ -1,7 +1,7 @@
 {
   "schema": "u2netp-upload-integration-1",
   "date": "2026-10-20",
-  "status": "local-browser-passed-release-qa-running",
+  "status": "deployed-and-live-verified",
   "scope": "Existing adapted U2NETP and balanced whole-body policy migrated into the actual upload worker; no retraining, solver changes or acceptance-threshold changes.",
   "sourceHashes": {
     "static/inverse/locator/locator.js": "c60c7c1dc11246b83a86877e16ef72dcf15239f0273c665698e4427175533f61",
@@ -30,7 +30,8 @@
       "path": "static/inverse/vendor/onnxruntime-1.19.2/SOURCE.json",
       "sha256": "03ed626139b011c894da8c2ac6039539f00e78b9f5b46bf40f03d2fb24a3ab76"
     },
-    "loading": "Lazy local HTTP assets; no photograph upload."
+    "loading": "Lazy local HTTP assets; no photograph upload.",
+    "uncompressedWasmBytes": 11018731
   },
   "cohortMigration": {
     "report": {
@@ -114,18 +115,158 @@
     "Some retained geometric crops explain only part of a heart and remain flagged for review.",
     "Printed paper, reflection and occlusion still cause classification and fitting failures.",
     "Desktop Chromium evidence only; mobile performance is unmeasured.",
-    "Full application and inverse checks are in progress; not deployed by this record."
+    "Live verification is for desktop Chromium; it does not establish mobile runtime or unseen-photo accuracy."
   ],
   "release": {
-    "status": "pending",
-    "required": [
-      "check",
-      "lint",
-      "application tests",
-      "inverse tests",
-      "build",
-      "CI",
-      "live verification"
-    ]
+    "status": "deployed-and-live-verified",
+    "pullRequest": "https://github.com/thomasahle/julehjerte/pull/16",
+    "mergeCommit": "127dc3c16d4b0e029b129a43ca0d897bb1254dd7",
+    "branchCI": {
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39362409138",
+      "headSha": "b407b04753666e299946598417db8f3f2d68d67f",
+      "conclusion": "success",
+      "treeIdenticalToMerge": true,
+      "tree": "77a2d50b95869dbf8d450631b2363790e77adff0",
+      "applicationTests": 2374,
+      "applicationSkipped": 142,
+      "inverseCorrectnessPassed": 1175,
+      "inverseCorrectnessFailed": 0,
+      "timedQuality": {
+        "passed": 68,
+        "total": 77,
+        "missedOriginalTargets": 9,
+        "advisory": true
+      },
+      "logs": [
+        {
+          "path": "tmp/heart-learning/neural-ci-118431365699.log",
+          "sha256": "5197930c57a5a851f8ffd5c5e6f18c099cdcd107642b825508520469ae4ba5ae"
+        },
+        {
+          "path": "tmp/heart-learning/neural-ci-118431365805.log",
+          "sha256": "9cde94725b6012926d77c189a8d384d260728e264f9f735134949f42ed716235"
+        },
+        {
+          "path": "tmp/heart-learning/neural-ci-118431365871.log",
+          "sha256": "c0dcf79ef2465831723818a78c018281a1777e70944260714507a30bb753e7e7"
+        },
+        {
+          "path": "tmp/heart-learning/neural-ci-118431365899.log",
+          "sha256": "f4fc0132a7f8ea855a99f3faf54999d6bf9027845f2312f2b88a7e3ca2d0a07e"
+        },
+        {
+          "path": "tmp/heart-learning/neural-ci-118431365933.log",
+          "sha256": "84c7b4ee0bf42fbca831d1a3a5fda8a65828e1468eedde9fd9cf4a5724a407e4"
+        },
+        {
+          "path": "tmp/heart-learning/neural-ci-118431365950.log",
+          "sha256": "4c2a80e53ba1586293fef27cf2018e817baa7fde3740ebeb76b3b33d3a4ac080"
+        },
+        {
+          "path": "tmp/heart-learning/neural-ci-118431365968.log",
+          "sha256": "f065f1827dcea65e4c8514c393dcb2a550f6c281c276eb2cb5c41fa5d97e2adc"
+        }
+      ]
+    },
+    "deploymentWorkflow": "https://github.com/thomasahle/julehjerte/actions/runs/39363520948",
+    "local": {
+      "check": {
+        "exitCode": 0,
+        "record": {
+          "path": "tmp/heart-learning/neural-release-check.log",
+          "sha256": "db20055932e27d213414b63bc08b7d8e6cfc75e4ea9069e96544faa664b373f3"
+        }
+      },
+      "lint": {
+        "exitCode": 0,
+        "record": {
+          "path": "tmp/heart-learning/neural-release-lint.log",
+          "sha256": "ed03769a3ce8385a9f4ac03e5c95e619e9b83724d40bc05e37e2dcd67ab4975b"
+        }
+      },
+      "application": {
+        "passed": 2372,
+        "skipped": 141,
+        "record": {
+          "path": "tmp/heart-learning/neural-release-app-tests.log",
+          "sha256": "863bac37fface770f34761c7ceb194da33b4dea0783757c628f906b21f634961"
+        },
+        "scope": "Before the main merge; final application tree is covered by branch CI."
+      },
+      "inverse": {
+        "complete": false,
+        "stop": {
+          "path": "tmp/heart-learning/neural-release-local-stop.json",
+          "sha256": "8e27bd82a7c9b3de355998f0a4b5ab62fa2eadaa4028da703175cc423113eb37"
+        },
+        "record": {
+          "path": "tmp/heart-learning/neural-release-inverse-tests.log",
+          "sha256": "7334b901211f7b9ee02231952c3eca0322ac2858151f0f0e5c0cc5d54b800d4a"
+        }
+      },
+      "build": {
+        "exitCode": 0,
+        "record": {
+          "path": "tmp/heart-learning/neural-release-build.log",
+          "sha256": "4b7a57d839e70b2b4b9303f2bb26d1d735b3c31842cd4f55d519a21daeae5c33"
+        }
+      }
+    },
+    "deploymentConclusion": "success",
+    "mainTimedQuality": {
+      "passed": 68,
+      "total": 77,
+      "missedOriginalTargets": 9,
+      "advisory": true,
+      "logs": [
+        {
+          "path": "tmp/heart-learning/neural-main-ci-118434929660.log",
+          "sha256": "6ed90e9f8ede7594ed0bfea7a25d7917c5bb87fcd520ff72d8e7dee054ce1781"
+        },
+        {
+          "path": "tmp/heart-learning/neural-main-ci-118434929756.log",
+          "sha256": "0f44ce72c60fde694c1498dd43f8c1d42391a9484b597e477b804e2deb3dc6a0"
+        }
+      ]
+    },
+    "live": {
+      "origin": "https://juleflet.dk",
+      "report": {
+        "path": "tmp/heart-learning/neural-upload-live-v1/report.json",
+        "sha256": "e5bbc9e5cb962741b39e71aa05abe138b6866c5886ccb663f3823f3586d0f9fd"
+      },
+      "servedAssets": {
+        "path": "tmp/heart-learning/neural-live-assets.json",
+        "sha256": "2f70a2fe00dc56c03915340e8c750e881cff8fc3847235d6e8a59875bbd6f257"
+      },
+      "passed": true,
+      "checks": [
+        "Real upload loads local ONNX/WASM and reproduces the audited angel corners",
+        "Imported angel solves through the actual Find snit flow with template and paper checks",
+        "Missing model preserves editable production corners and mask preview",
+        "Closing during model loading terminates the worker; reopening produces no stale result",
+        "A genuinely crowded frame still asks the user to select one heart"
+      ],
+      "pageErrors": [],
+      "angel": {
+        "imageError": 0.00649375,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": true,
+        "solverSeconds": 14.646200000047683
+      },
+      "screenshots": [
+        {
+          "path": "tmp/heart-learning/neural-upload-live-v1/angel-import.png",
+          "sha256": "1939bcf17d8bf85a4cf81251725276031b194e8adf49be34f330ff749a6e46eb"
+        },
+        {
+          "path": "tmp/heart-learning/neural-upload-live-v1/angel-solved.png",
+          "sha256": "73f144837facbc9e6455300141deb46bcca6e05fbe66306c528d2a0311666c92"
+        }
+      ],
+      "visualReview": "Both live screenshots inspected: the source overlay follows the overlap and the angel survives fitting. Minor photographic edge noise remains.",
+      "browserClosed": true
+    }
   }
 }

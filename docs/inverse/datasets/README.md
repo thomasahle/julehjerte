@@ -304,7 +304,13 @@ these are retained separately from correctness. Main commit `d0b882b5` passed
 rechecked on 20 October. No neural network is deployed in that release.
 
 The [upload integration audit](u2netp-upload-integration-results.json) records
-the next application change, currently under release QA. It packages the same
+the NN crop integration, **deployed and live-verified on 20 October** at
+`127dc3c1`. Its [release workflow](https://github.com/thomasahle/julehjerte/actions/runs/39363520948)
+passed, including 2,374 application tests and 1,175 inverse correctness tests.
+Timed quality remains separate: 68/77 original targets passed, with nine misses
+retained. The live browser passes all five upload/solve/failure/cancellation/
+crowded-frame checks, and the served model, runtime and worker hashes match.
+It packages the same
 4.62 MB adapted U2NETP model and a pinned local ONNX Runtime Web, runs on one
 WASM thread, and shares the tested whole-body crop policy with the offline
 experiments through an explicit locator API. No photo upload is involved.
@@ -320,6 +326,83 @@ small photographic edge irregularities remain visible. The historical strict
 WASM-versus-Torch probability tolerance remains failed and has not been relaxed.
 Output-level parity is checked separately; the development cohorts and desktop
 browser checks do not establish mobile performance or unseen-photo accuracy.
+
+The subsequent [outline-only diagnostic](u2netp-outline-only-diagnostic-results.json)
+keeps all 18 additional photos and their saved browser NN predictions. Nine
+rejected learned proposals fail lobe-outline support; five also fail the
+uniform-lobe colour check. Removing only that acceptance check would therefore
+not solve them. A research model that fits the body without colour objectives
+produces 12 proposals passing the stated outline, body and coverage checks,
+including five additional or replaced weak proposals. **No new templates were
+fitted during that diagnostic; it is not deployed.**
+
+All four diagnostic galleries were inspected. The reflective bird has two
+green-looking lobes despite multicoloured print inside the square; its full
+outline is recoverable, but a correct material mask is still unproven. The
+tabletop checker proposal slightly overshoots its lower paper corner. The
+newspaper and printed-bird crops also need material interpretation. Conversely,
+the cat still has missing neural foreground, the child-held heart includes a
+hand, and unusual swan-shaped caps still fail outline support. The next step
+was full reconstruction of the five new proposals while preserving strong
+existing crops.
+
+The [completed reconstruction experiment](u2netp-outline-reconstruction-results.json)
+freezes those five crops before fitting, retains the other 13 cases through
+the pinned baseline, and uses the unchanged RGB classifier and 10-second
+automatic solver. Three new results pass exported-mask and editable-template
+checks: the cross (1.02% exported disagreement), printed birds/X (0.92%) and
+tabletop checker (1.43%). All five exports pass geometry and nominal paper
+checks. Across the complete 18-photo cohort, checked derived masks increase
+from four to six; those also supported by whole-body evidence increase from
+three to six. The old reflective-bird fragment is replaced by a full-overlap
+attempt that correctly remains review-required.
+
+Both reconstruction galleries were inspected. These numbers still overstate
+recovery of the intended artwork: the printed birds extend beyond the overlap,
+and the checker includes a handle/notch intrusion and noisy outer border.
+The newspaper classifier follows printed letters, resulting in 12.90% error
+and 42 missing features. The reflective bird misses four features despite
+1.85% mean error. These fixed proposals were fitted without an inset. A separate
+margin study and the original 32-photo regression followed before any promotion.
+No model was retrained or application behavior changed in this experiment.
+
+The [32-photo regression](u2netp-outline-regression-results.json) replays all
+current crop decisions exactly and inspects all seven comparison galleries.
+Preserving strong current crops and retaining the existing 0.05 whole-body
+Dice improvement requirement leaves **all 32 original selections unchanged**.
+The same rule selects exactly the five tested alternatives in the expanded
+18-photo set. That offline selection simulation is now reproduced by the
+application migration below.
+
+The [paired inset comparison](u2netp-outline-inset-results.json) tests all five
+new proposals against the same original photographic coordinates. One-percent
+cropping worsens common-interior disagreement in three cases and improves two,
+while the number of checked derived masks stays at three. The checker loses
+some background rim, but retains the handle/notch intrusion; the newspaper
+remains a material-classification failure. All five before/after panels were
+inspected. **No default inset is enabled.** This agrees with the
+[earlier 26-case study](automatic-crop-inset-2026-10-19.json), where 24 cases
+worsened. Future border refinement must follow evidence for individual edges.
+
+The [production migration audit](u2netp-outline-upload-results.json) now verifies
+an explicit body-outline fallback after both existing crop attempts. Measured
+colour evidence and body-only evidence are separate; absent colour measurements
+cannot pass the colour-support check. The same model and classifier are retained.
+All **50 declared crop selections** match (45 preserved, five newly supported),
+and all **38 available classified masks** match exactly. All 11 actual browser
+checks pass, including five new uploads, angel and cross reconstruction,
+unavailable-model recovery, cancellation/reopen and crowded-frame handling.
+The cross's editable result has **1.280625% disagreement against the UI's
+400-pixel mask**, with geometry, paper and feature checks passing.
+
+Type checks, lint, build, 2,374 application tests and all 1,183 CI inverse
+correctness tests pass. The original timed quality targets remain advisory:
+**61/77 pass, with 16 misses retained**. This crop change does not modify the
+solver or its benchmark targets; the timed results are not evidence of a solver
+quality improvement. All eight browser screenshots were inspected. Printed
+decoration, glare and handle/border intrusions remain unresolved. These are the
+same development photos, not an unseen test set. Release PR #17 is ready for
+merge; deployment has not yet been verified.
 
 #### Latest neural experiments
 

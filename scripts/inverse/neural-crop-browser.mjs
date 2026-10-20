@@ -5,9 +5,10 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {heartPhoto} from './crop-fixture.mjs';
 const args=Object.fromEntries(process.argv.slice(2).map(a=>a.replace(/^--/,'').split('=')));
-assert.deepEqual(Object.keys(args).sort(),['origin','output']);
+assert.deepEqual(Object.keys(args).sort(),args.outlines?['origin','outlines','output']:['origin','output']);
 const {chromium}=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
-const report={schema:'neural-upload-browser-1',status:'running',checks:[],errors:[],modelRequests:0,externalRequests:[],screenshots:[]};
+const report={schema:'neural-upload-browser-1',status:'running',checks:[],errors:[],modelRequests:0,externalRequests:[],screenshots:[],
+ scriptSha256:createHash('sha256').update(await fs.readFile(import.meta.filename)).digest('hex')};
 const save=()=>fs.writeFile(path.join(args.output,'report.json'),JSON.stringify(report,null,2)+'\n');
 await fs.mkdir(args.output);
 const source=JSON.parse(await fs.readFile('tmp/heart-learning/u2netp-balanced-body-expanded-pipeline-v1/report.json'));
@@ -25,7 +26,7 @@ async function context(){
  });
  const page=await c.newPage();page.on('pageerror',e=>report.errors.push(e.message));
  await page.addInitScript(()=>{
-  window.__cropEvents=[];window.__results=[];window.__terminated=[];
+  window.__cropEvents=[];window.__results=[];window.__previews=[];window.__terminated=[];
   let next=0;const seen=new WeakMap(),post=Worker.prototype.postMessage,terminate=Worker.prototype.terminate;
   Worker.prototype.postMessage=function(...args){
    if(!seen.has(this)){
@@ -33,6 +34,7 @@ async function context(){
     this.addEventListener('message',({data})=>{
      if(data.type==='crops')window.__cropEvents.push({worker:id,...data});
      if(data.type==='result')window.__results.push({worker:id,...data});
+     if(data.type==='prepared')window.__previews.push({worker:id,...data});
     });
    }
    return post.apply(this,args);
@@ -72,6 +74,51 @@ try{
  await normal.page.screenshot({path:path.join(args.output,'angel-solved.png'),fullPage:true});report.screenshots.push('angel-solved.png');
  await check('Imported angel solves through the actual Find snit flow with template and paper checks');
  await normal.c.close();
+
+ if(args.outlines){
+  const bytes=await fs.readFile(args.outlines),outlines=JSON.parse(bytes);
+  assert.equal(outlines.status,'complete');assert.equal(outlines.rows.length,5);
+  report.outlineSource={path:args.outlines,sha256:createHash('sha256').update(bytes).digest('hex')};
+  report.outlines=[];
+  const extra=await context();
+  for(const [index,expected] of outlines.rows.entries()){
+   assert.equal(createHash('sha256').update(await fs.readFile(expected.source)).digest('hex'),expected.sourceSha256);
+   await upload(extra.page,expected.source);
+   const answer=await crop(extra.page,index+1),candidate=answer.crops.candidates[0];
+   assert.equal(answer.crops.bodyReview?.selected,'outline');
+   assert.equal(candidate.needsReview,true);assert.deepEqual(candidate.quad,expected.selectedCrop.quad);
+   assert.deepEqual(candidate.locator.evidence.capColourLoss,[]);
+   await extra.page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.trim()==='Brug som maske'&&!b.disabled));
+   const mask=await extra.page.evaluate(async()=>{
+    const p=window.__previews.at(-1).preview;
+    return{resolution:p.resolution,sha256:Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',p.mask)),
+     b=>b.toString(16).padStart(2,'0')).join('')};
+   });
+   assert.equal(mask.sha256,expected.targetMaskSha256);
+   const row={id:expected.id,quad:candidate.quad,review:answer.crops.bodyReview,mask};
+   report.outlines.push(row);
+   const screenshot=`outline-${index+1}-import.png`;
+   await extra.page.screenshot({path:path.join(args.output,screenshot),fullPage:true});report.screenshots.push(screenshot);
+   await check('Body-only upload preserves audited crop and mask: '+expected.id);
+   if(index===0){
+    await extra.page.getByRole('button',{name:'Brug som maske',exact:true}).click();
+    await extra.page.getByRole('button',{name:'Find snit',exact:true}).click();
+    await extra.page.waitForFunction(()=>window.__results.length>0,null,{timeout:150000});
+    const result=await extra.page.evaluate(()=>window.__results.at(-1).result);
+    row.uiSolve=result.report;
+    assert.equal(result.report.templateChecksPassed,true);assert.equal(result.report.validation.passed,true);
+    assert.equal(result.report.manufacturing.status,'pass');
+    await fs.writeFile(path.join(args.output,'outline-cross-geometry.json'),result.files['cut_geometry.json']);
+    await extra.page.screenshot({path:path.join(args.output,'outline-cross-solved.png'),fullPage:true});
+    report.screenshots.push('outline-cross-solved.png');
+    await check('New body-only cross crop solves through the actual Find snit flow');
+    await extra.page.getByRole('button',{name:'Tilbage til masken',exact:true}).first().click();
+   }else{
+    await extra.page.keyboard.press('Escape');await extra.page.locator('#paint-import-title').waitFor({state:'hidden'});
+   }
+  }
+  await extra.c.close();
+ }
 
  const unavailable=await context();await unavailable.c.route('**/*.onnx',route=>route.abort('failed'));
  await upload(unavailable.page,angel.source);const fallback=await crop(unavailable.page);

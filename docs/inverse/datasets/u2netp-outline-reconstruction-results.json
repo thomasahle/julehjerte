@@ -1,0 +1,456 @@
+{
+  "schema": "fixed-outline-reconstruction-results-1",
+  "date": "2026-10-20",
+  "status": "complete-offline-experiment",
+  "plan": {
+    "path": "docs/inverse/datasets/u2netp-outline-reconstruction-plan.json",
+    "sha256": "83010e15855111aff202f3f05561c20d29c917426d430ee549fa711fec4bc93e"
+  },
+  "fitReport": {
+    "path": "tmp/heart-learning/neural-outline-reconstruction-v1/report.json",
+    "sha256": "32947ea90d605aee7521f9db52248995d7887c82554cea8cf065b682b115d5f1"
+  },
+  "baseline": {
+    "path": "tmp/heart-learning/u2netp-balanced-body-expanded-pipeline-v1/report.json",
+    "sha256": "5657f3db84ea125be6d3803c5fede0586d241c282137ed61c6797acae6478e4b"
+  },
+  "outline": {
+    "path": "tmp/heart-learning/neural-outline-only-diagnostic-v1.json",
+    "sha256": "447e17f98c9f0228279d1aa69d5826af91874b74e56cc68733e77ad2bc8a9bd1"
+  },
+  "editableReports": [
+    {
+      "path": "tmp/heart-learning/neural-outline-editable-v1/results.json",
+      "sha256": "843b170aeee78ebaaaa8db19090a75a934d59c418cb10a6bfa2124c097742a89"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-balanced-body-expanded-editable-v1/results.json",
+      "sha256": "8b90a25a2c9f2b4aa7f8cca9a614f82c975d70ffc1e0848ca4d27807fffd605a"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+      "sha256": "352568e2695a4b0e14e1a2f9d3e2dd8e18251549ca0c373dec55df0bfe752b63"
+    }
+  ],
+  "gallery": {
+    "path": "tmp/heart-learning/neural-outline-fit-gallery-v1/manifest.json",
+    "sha256": "c324e1cf31559383d5f8b1207be31bccd242c7a9613b81c46177ea99535c41cc"
+  },
+  "summary": {
+    "cohortPhotos": 18,
+    "freshFits": 5,
+    "reusedBaselineCases": 13,
+    "baselineCheckedDerivedMasks": 4,
+    "baselineBodySupportedCheckedMasks": 3,
+    "combinedCheckedDerivedMasks": 6,
+    "combinedBodySupportedCheckedMasks": 6,
+    "freshCheckedDerivedMasks": 3,
+    "freshEditableConversions": 5,
+    "freshGeometryPassed": 5,
+    "freshPaperPassed": 5,
+    "selectedFreshSolveSeconds": 48.078299541
+  },
+  "rows": [
+    {
+      "id": "real-1fa372c6288da69f-body-1",
+      "freshFit": false,
+      "baselineStatus": "review-required",
+      "baselineCheckedDerivedMask": false,
+      "baselineBodySupported": true,
+      "status": "review-required",
+      "checkedDerivedMask": false,
+      "bodySupported": true,
+      "independentMaskError": 0.047275,
+      "missingFeatures": 1,
+      "solveSeconds": 9.598276416,
+      "engineGeometryPassed": true,
+      "enginePaperStatus": "pass",
+      "editable": {
+        "report": "tmp/heart-learning/u2netp-balanced-body-expanded-editable-v1/results.json",
+        "caseId": "real-1fa372c6288da69f-body-1-fallback",
+        "geometrySha256": "2290fa50138251dc8f9cf499d8ace3a49fbde533cd9b20d7f841942668d93603",
+        "maskSha256": "55f4216cbf6915a6f437834eccae8d4d16e30f51099916297649b8b8d8f0cca8",
+        "error": 0.0473875,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-26c948c0aa94f483-body-1",
+      "freshFit": false,
+      "baselineStatus": "crop-unresolved",
+      "baselineCheckedDerivedMask": false,
+      "baselineBodySupported": false,
+      "status": "crop-unresolved",
+      "checkedDerivedMask": false,
+      "bodySupported": false
+    },
+    {
+      "id": "real-27c86e56296f2df5-body-1",
+      "freshFit": false,
+      "baselineStatus": "crop-unresolved",
+      "baselineCheckedDerivedMask": false,
+      "baselineBodySupported": false,
+      "status": "crop-unresolved",
+      "checkedDerivedMask": false,
+      "bodySupported": false
+    },
+    {
+      "id": "real-31ed1172998ab1c5-body-1",
+      "freshFit": true,
+      "baselineStatus": "crop-unresolved",
+      "baselineCheckedDerivedMask": false,
+      "baselineBodySupported": false,
+      "status": "checked-derived-mask",
+      "checkedDerivedMask": true,
+      "bodySupported": true,
+      "independentMaskError": 0.01016460245873492,
+      "missingFeatures": 0,
+      "solveSeconds": 9.543325708000001,
+      "engineGeometryPassed": true,
+      "enginePaperStatus": "pass",
+      "editable": {
+        "report": "tmp/heart-learning/neural-outline-editable-v1/results.json",
+        "caseId": "real-31ed1172998ab1c5-body-1-outline-only",
+        "geometrySha256": "0630123af950ae103bc167f42de9b447bfc21fabbe83b74533d34ad18a24b951",
+        "maskSha256": "0fbe921676803375bd6c92e0c63f4b42d075e1e21e15b1c7b54c5b3fb0827889",
+        "error": 0.010530894439229872,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      "motif": "Gold/white cross",
+      "visualAssessment": "Recognizable cross and frame. Some small boundary irregularities remain; no original cutting-path ground truth."
+    },
+    {
+      "id": "real-4066fe9f9aafb3e4-body-1",
+      "freshFit": false,
+      "baselineStatus": "checked-derived-mask",
+      "baselineCheckedDerivedMask": true,
+      "baselineBodySupported": true,
+      "status": "checked-derived-mask",
+      "checkedDerivedMask": true,
+      "bodySupported": true,
+      "independentMaskError": 0.0087375,
+      "missingFeatures": 0,
+      "solveSeconds": 9.56550925,
+      "engineGeometryPassed": true,
+      "enginePaperStatus": "pass",
+      "editable": {
+        "report": "tmp/heart-learning/u2netp-balanced-body-expanded-editable-v1/results.json",
+        "caseId": "real-4066fe9f9aafb3e4-body-1-fallback",
+        "geometrySha256": "847d84d37a6c409b7910a28fbe9495e0b2196e4b224c52edef199afe1be5a47d",
+        "maskSha256": "5dfce4b5b47423b5e3f3567c2314c56b0a5708acdd13e74473a89f3075bcfe85",
+        "error": 0.008975,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-7076a4d811c096db-body-1",
+      "freshFit": false,
+      "baselineStatus": "crop-unresolved",
+      "baselineCheckedDerivedMask": false,
+      "baselineBodySupported": false,
+      "status": "crop-unresolved",
+      "checkedDerivedMask": false,
+      "bodySupported": false
+    },
+    {
+      "id": "real-867f0e5852ebeba9-body-1",
+      "freshFit": false,
+      "baselineStatus": "review-required",
+      "baselineCheckedDerivedMask": false,
+      "baselineBodySupported": true,
+      "status": "review-required",
+      "checkedDerivedMask": false,
+      "bodySupported": true,
+      "independentMaskError": 0.03079375,
+      "missingFeatures": 4,
+      "solveSeconds": 9.143194875,
+      "engineGeometryPassed": true,
+      "enginePaperStatus": "fail",
+      "editable": {
+        "report": "tmp/heart-learning/u2netp-balanced-body-expanded-editable-v1/results.json",
+        "caseId": "real-867f0e5852ebeba9-body-1-fallback",
+        "geometrySha256": "3cc73d7d470f4f9c8bcf9ae75b246cdba9f83b1a64e0235a1339420ce1e0cdad",
+        "maskSha256": "5134d70d4ac7f67520434e37f28163c3e7b9df0df465a5d766512b0d7ed60988",
+        "error": 0.0307625,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "fail"
+      }
+    },
+    {
+      "id": "real-931ac5ea86dbe082-body-1",
+      "freshFit": false,
+      "baselineStatus": "review-required",
+      "baselineCheckedDerivedMask": false,
+      "baselineBodySupported": true,
+      "status": "review-required",
+      "checkedDerivedMask": false,
+      "bodySupported": true,
+      "independentMaskError": 0.0270375,
+      "missingFeatures": 3,
+      "solveSeconds": 10.548471042000005,
+      "engineGeometryPassed": true,
+      "enginePaperStatus": "pass",
+      "editable": {
+        "report": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+        "caseId": "real-931ac5ea86dbe082-body-1-production",
+        "geometrySha256": "f35cb6a7de3c435835c8c1b16a64015546f76e18b08010bd8029c810fb196261",
+        "maskSha256": "b5975f837310ca3ab01859ffc3f69d90fea12fe05df23307296423b388659713",
+        "error": 0.0276,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-962159dea653810f-body-1",
+      "freshFit": true,
+      "baselineStatus": "crop-unresolved",
+      "baselineCheckedDerivedMask": false,
+      "baselineBodySupported": false,
+      "status": "checked-derived-mask",
+      "checkedDerivedMask": true,
+      "bodySupported": true,
+      "independentMaskError": 0.009184027777777777,
+      "missingFeatures": 0,
+      "solveSeconds": 9.520612958,
+      "engineGeometryPassed": true,
+      "enginePaperStatus": "pass",
+      "editable": {
+        "report": "tmp/heart-learning/neural-outline-editable-v1/results.json",
+        "caseId": "real-962159dea653810f-body-1-outline-only",
+        "geometrySha256": "19fbb1be9192066a47be8ae253b3b5ea10a880714181937d79bed105a4d93e51",
+        "maskSha256": "ab120c698b29af82748179be9589bc9f94b0e9745db3b114934b07c58b7ba2b1",
+        "error": 0.009288194444444444,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      "motif": "Printed birds and diagonal X",
+      "visualAssessment": "The square contains parts of the wings and diagonal bars. Low derived-mask error does not recover the birds on the lobes or distinguish printing from paper identity."
+    },
+    {
+      "id": "real-970f4be1bd64e5d7-body-1",
+      "freshFit": false,
+      "baselineStatus": "checked-derived-mask",
+      "baselineCheckedDerivedMask": true,
+      "baselineBodySupported": true,
+      "status": "checked-derived-mask",
+      "checkedDerivedMask": true,
+      "bodySupported": true,
+      "independentMaskError": 0.005825617283950617,
+      "missingFeatures": 0,
+      "solveSeconds": 3.742014958,
+      "engineGeometryPassed": true,
+      "enginePaperStatus": "pass",
+      "editable": {
+        "report": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+        "caseId": "real-970f4be1bd64e5d7-body-1-production",
+        "geometrySha256": "0d622c8a1dd64e43febeba44f087f701c3a2731103a743b4054ca274408984ef",
+        "maskSha256": "deaab51e7b1a4707ab3872244e44cb9a0ab9d086254fdae8264778f9ed90d9f2",
+        "error": 0.005632716049382716,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-9b47cfbdf0004f4d-body-1",
+      "freshFit": false,
+      "baselineStatus": "crop-unresolved",
+      "baselineCheckedDerivedMask": false,
+      "baselineBodySupported": false,
+      "status": "crop-unresolved",
+      "checkedDerivedMask": false,
+      "bodySupported": false
+    },
+    {
+      "id": "real-a96b58bb0d45cb5c-body-1",
+      "freshFit": false,
+      "baselineStatus": "review-required",
+      "baselineCheckedDerivedMask": false,
+      "baselineBodySupported": true,
+      "status": "review-required",
+      "checkedDerivedMask": false,
+      "bodySupported": true,
+      "independentMaskError": 0.02306875,
+      "missingFeatures": 4,
+      "solveSeconds": 9.895930999999997,
+      "engineGeometryPassed": true,
+      "enginePaperStatus": "pass",
+      "editable": {
+        "report": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+        "caseId": "real-a96b58bb0d45cb5c-body-1-production",
+        "geometrySha256": "70a209fd24c4550efa14859af14c51eb6d100db4e3e8918b1ef56723479fe4c9",
+        "maskSha256": "edfac1a647503f36d11d38d73ceea0d4b40ac057d7e9c3333bac4c865fbfeea1",
+        "error": 0.02345,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-c7bc99827b382da7-body-1",
+      "freshFit": false,
+      "baselineStatus": "crop-unresolved",
+      "baselineCheckedDerivedMask": false,
+      "baselineBodySupported": false,
+      "status": "crop-unresolved",
+      "checkedDerivedMask": false,
+      "bodySupported": false
+    },
+    {
+      "id": "real-d6d0462384722949-body-1",
+      "freshFit": true,
+      "baselineStatus": "crop-unresolved",
+      "baselineCheckedDerivedMask": false,
+      "baselineBodySupported": false,
+      "status": "review-required",
+      "checkedDerivedMask": false,
+      "bodySupported": true,
+      "independentMaskError": 0.12905,
+      "missingFeatures": 42,
+      "solveSeconds": 9.902191958,
+      "engineGeometryPassed": true,
+      "enginePaperStatus": "pass",
+      "editable": {
+        "report": "tmp/heart-learning/neural-outline-editable-v1/results.json",
+        "caseId": "real-d6d0462384722949-body-1-outline-only",
+        "geometrySha256": "8169a546c0b4f138e5259c66be895c8ab25e6a7ec57cd8ba04a05f7aba6fd1dd",
+        "maskSha256": "65b635679992768e339bdcdd747f4bed9bd6ecc4a4839f1bc57f8a1a8a41210a",
+        "error": 0.12916875,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      "motif": "Newspaper heart",
+      "visualAssessment": "The RGB classifier follows printed letters. The fit invents large blobs and misses 42 mask features. Material classification fails before template fitting."
+    },
+    {
+      "id": "real-e15ec1906fab0f9c-body-1",
+      "freshFit": false,
+      "baselineStatus": "checked-derived-mask",
+      "baselineCheckedDerivedMask": true,
+      "baselineBodySupported": true,
+      "status": "checked-derived-mask",
+      "checkedDerivedMask": true,
+      "bodySupported": true,
+      "independentMaskError": 0.013145320563188855,
+      "missingFeatures": 0,
+      "solveSeconds": 8.702155625,
+      "engineGeometryPassed": true,
+      "enginePaperStatus": "pass",
+      "editable": {
+        "report": "tmp/heart-learning/u2netp-expanded-native-editable-v1/results.json",
+        "caseId": "real-e15ec1906fab0f9c-body-1-production",
+        "geometrySha256": "f1a199cd0b7beabb9959a952a6b02cc6c4df1b461740f1b58904adadb213bc49",
+        "maskSha256": "846acc31e76ee399ea791e74acfd653ae5180172c5e0f717dc2bed8b9901411e",
+        "error": 0.012996665887999321,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "real-e4baad0c914577c8-body-1",
+      "freshFit": true,
+      "baselineStatus": "checked-derived-mask",
+      "baselineCheckedDerivedMask": true,
+      "baselineBodySupported": false,
+      "status": "review-required",
+      "checkedDerivedMask": false,
+      "bodySupported": true,
+      "independentMaskError": 0.01854375,
+      "missingFeatures": 4,
+      "solveSeconds": 9.622350334000002,
+      "engineGeometryPassed": true,
+      "enginePaperStatus": "pass",
+      "editable": {
+        "report": "tmp/heart-learning/neural-outline-editable-v1/results.json",
+        "caseId": "real-e4baad0c914577c8-body-1-outline-only",
+        "geometrySha256": "2467335d470833223de1bdecd4d233eb2e7c721ffe62bce57a5aed06a7d72aca",
+        "maskSha256": "2f55c1340e05bb5887ec98d4344ab477a96e876fc60f4d66a9a0f3e5ad13e1e7",
+        "error": 0.018625,
+        "completeCandidatePassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      "motif": "Reflective green/printed bird",
+      "visualAssessment": "The new crop covers the overlap rather than the old tiny fragment. Glare and printing create false holes and four missing features despite low mean error. Review required."
+    },
+    {
+      "id": "real-e9131a2d52b78220-body-1",
+      "freshFit": true,
+      "baselineStatus": "crop-unresolved",
+      "baselineCheckedDerivedMask": false,
+      "baselineBodySupported": false,
+      "status": "checked-derived-mask",
+      "checkedDerivedMask": true,
+      "bodySupported": true,
+      "independentMaskError": 0.01434375,
+      "missingFeatures": 0,
+      "solveSeconds": 9.489818583,
+      "engineGeometryPassed": true,
+      "enginePaperStatus": "pass",
+      "editable": {
+        "report": "tmp/heart-learning/neural-outline-editable-v1/results.json",
+        "caseId": "real-e9131a2d52b78220-body-1-outline-only",
+        "geometrySha256": "8153fb22feb9862473fbeaa4b8c89ac2cbb655dbf270f8e4584fd2dcfa6dec45",
+        "maskSha256": "f3f7a815c7fc4f4ec53edb619aaca33c843ff8b3222dbeabecd12a7337a04b40",
+        "error": 0.01445625,
+        "completeCandidatePassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      },
+      "motif": "Blue/orange tabletop checker",
+      "visualAssessment": "Recognizable checker, but the upper-left corner includes a handle/notch and the outer border contains background. Passing mask metrics does not establish a clean intended grid."
+    },
+    {
+      "id": "real-f882e57ac79e63d3-body-1",
+      "freshFit": false,
+      "baselineStatus": "crop-unresolved",
+      "baselineCheckedDerivedMask": false,
+      "baselineBodySupported": false,
+      "status": "crop-unresolved",
+      "checkedDerivedMask": false,
+      "bodySupported": false
+    }
+  ],
+  "scope": "All 18 development cases retained. Five frozen geometric proposals were fitted; the other 13 reuse pinned baseline results, including failures. The six checked results measure derived two-colour masks, not verified original motifs or cutting paths. No training, production changes or release.",
+  "visualReview": {
+    "allFiveFreshFitsInspected": true,
+    "pagesInspected": 2,
+    "original32PhotoRegressionPending": true
+  },
+  "cropMarginFinding": {
+    "automaticInsetApplied": false,
+    "code": "static/inverse/core/crop-inset.js",
+    "observation": "The one-percent inset helper exists but has no production or research call sites in the inspected source. These crops convert pixel centres to edges and are fitted without an inset. The visible background rim motivates a separate predeclared margin study, not retroactive crop selection by fit error."
+  },
+  "validation": {
+    "focusedLintExitCode": 0,
+    "lintLog": {
+      "path": "tmp/heart-learning/neural-outline-reconstruction-lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "allFreshAssetHashesVerified": true,
+    "editableReuseMatchedGeometryAndMaskHashes": true,
+    "allSourcePinsVerified": true,
+    "productionSourceUnchanged": true
+  },
+  "limitations": [
+    "Expanded cohort is development data, not an untouched holdout.",
+    "Whole-body agreement is estimated from the NN and does not certify exact overlap corners.",
+    "Paper-colour coherence is unmeasured in the research body-only locator.",
+    "Solve times exclude localization, mask preparation, independent export checks and editable audit.",
+    "Existing strict raw WASM-versus-Torch numerical tolerance remains failed; no threshold was relaxed.",
+    "Original 32-photo regression and explicit colour-independent production evidence API remain required before promotion.",
+    "No physical assembly test."
+  ]
+}

@@ -16,4 +16,7 @@ test('null foreground and malformed field providers fail explicitly',()=>{
  assert.throws(()=>createMotifDetector(image,{fieldProvider:true}),/function/);
  assert.throws(()=>createMotifDetector(image,{fieldProvider:()=>({w:1,h:1})}),/aligned/);
  assert.throws(()=>createMotifDetector(image,{edgeSamplingFields:()=>null})(),/working-image/);
+ for(const colourEvidence of [null,0,'false'])assert.throws(()=>createMotifDetector(image,{colourEvidence}),/boolean/);
+ assert.throws(()=>createMotifDetector(image,{colourEvidence:false}),/explicit paper fields/);
+ assert.throws(()=>createMotifDetector(image,{colourEvidence:false,fieldProvider:makeFields}),/unmeasured colour/);
 });

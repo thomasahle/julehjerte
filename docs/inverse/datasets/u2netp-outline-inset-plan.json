@@ -1,0 +1,30 @@
+{
+  "schema": "fixed-outline-inset-comparison-1",
+  "date": "2026-10-20",
+  "baseline": {
+    "path": "tmp/heart-learning/neural-outline-reconstruction-v1/report.json",
+    "sha256": "32947ea90d605aee7521f9db52248995d7887c82554cea8cf065b682b115d5f1"
+  },
+  "ids": [
+    "real-31ed1172998ab1c5-body-1",
+    "real-962159dea653810f-body-1",
+    "real-d6d0462384722949-body-1",
+    "real-e4baad0c914577c8-body-1",
+    "real-e9131a2d52b78220-body-1"
+  ],
+  "inset": 0.01,
+  "commonInteriorMargin": 0.03,
+  "comparisonResolution": 1600,
+  "sourcePins": {
+    "scripts/inverse/learning/compare-outline-insets.mjs": "d06afa0959cf94cc95d17e96485ae2f103a3d4a77640616de37ea3988bf82797",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948"
+  },
+  "artifactBudgetMiB": 15,
+  "scope": "Apply exactly one percent inward on all four sides to all five fresh outline-only crops, without choosing cases or corners based on fitting scores. Same RGB classifier and ten-second automatic solver. Compare independent exports against the fixed original classified crop over the same central 94% width/height, mapping both exports into source coordinates. Own-target errors alone are not comparable across crops. Original five solves are reused rather than rerun, so no timing comparison or claim of repeated-search certainty. Preserve per-case failures and inspect all five before/after images. No production changes, training or source copies. Earlier blanket-inset failures remain recorded.",
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "numericalThreads": 1,
+    "sourceCopies": 0
+  }
+}

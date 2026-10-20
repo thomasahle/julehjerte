@@ -1,0 +1,229 @@
+{
+  "schema": "fixed-outline-inset-results-1",
+  "date": "2026-10-20",
+  "status": "complete-offline-experiment",
+  "plan": {
+    "path": "docs/inverse/datasets/u2netp-outline-inset-plan-v2.json",
+    "sha256": "ac9e8692d63f330d7d54e0708b47aa3ecd058730e7c4ec7d71497e48b04ebb13"
+  },
+  "report": {
+    "path": "tmp/heart-learning/neural-outline-inset-v2/report.json",
+    "sha256": "5e64f22227374f90fadfb4be81901f6cc4904a6661c30f79031691165ab13cc9"
+  },
+  "previousAttempt": {
+    "plan": {
+      "path": "docs/inverse/datasets/u2netp-outline-inset-plan.json",
+      "sha256": "86afe066ad14e6347a44947da66ef491f468492ab60283197dced32a6df49368"
+    },
+    "report": {
+      "path": "tmp/heart-learning/neural-outline-inset-v1/report.json",
+      "sha256": "aad9da70299baae662d2c1541c18d7f5581ac0742badf0ccde072d32a1628319"
+    },
+    "failure": "Baseline renderer requires geometry JSON text; passing the Buffer failed before any fitting. Fixed explicit UTF-8 decoding; cohort, crop fraction, solver and gates unchanged."
+  },
+  "comparison": "The same unchanged original classified-mask coordinates and central 94% width/height for both independent exports; not cutting-path or material ground truth. Reused baseline solves mean this is not a timing comparison or repeated-search estimate.",
+  "summary": {
+    "cases": 5,
+    "insetFitsPassedGeometry": 5,
+    "insetFitsPassedPaper": 5,
+    "checkedMasksBefore": 3,
+    "checkedMasksAfter": 3,
+    "commonInteriorImproved": 2,
+    "commonInteriorWorsened": 3,
+    "newAssetBytes": 2946227
+  },
+  "rows": [
+    {
+      "id": "real-31ed1172998ab1c5-body-1",
+      "baseline": {
+        "checkedPair": true,
+        "ownMaskError": 0.01016460245873492,
+        "missingFeatures": 0,
+        "commonInterior": {
+          "pixels": 38809,
+          "errors": 179,
+          "fraction": 0.004612332190986627
+        }
+      },
+      "inset": {
+        "seconds": 9.567212042000001,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "ownMaskError": 0.010393534946544264,
+        "missingFeatures": 0,
+        "checkedPair": true,
+        "commonInterior": {
+          "pixels": 38809,
+          "errors": 436,
+          "fraction": 0.011234507459609884
+        }
+      },
+      "commonInteriorChange": 0.006622175268623257,
+      "comparison": {
+        "path": "comparison-1.png",
+        "sha256": "16533b308e20b4a9f23270c9bf2eaa1c8bb2f39e4452fcc27e299aed8d4c160e"
+      }
+    },
+    {
+      "id": "real-962159dea653810f-body-1",
+      "baseline": {
+        "checkedPair": true,
+        "ownMaskError": 0.009184027777777777,
+        "missingFeatures": 0,
+        "commonInterior": {
+          "pixels": 51076,
+          "errors": 323,
+          "fraction": 0.006323909468243402
+        }
+      },
+      "inset": {
+        "seconds": 9.376404082999999,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "ownMaskError": 0.00829861111111111,
+        "missingFeatures": 0,
+        "checkedPair": true,
+        "commonInterior": {
+          "pixels": 51076,
+          "errors": 464,
+          "fraction": 0.009084501527136033
+        }
+      },
+      "commonInteriorChange": 0.0027605920588926304,
+      "comparison": {
+        "path": "comparison-2.png",
+        "sha256": "9d388509426c5e8524b376a6410bbac56cc49f6d6b96ad03f1264931d74c19ad"
+      }
+    },
+    {
+      "id": "real-d6d0462384722949-body-1",
+      "baseline": {
+        "checkedPair": false,
+        "ownMaskError": 0.12905,
+        "missingFeatures": 42,
+        "commonInterior": {
+          "pixels": 141376,
+          "errors": 17127,
+          "fraction": 0.12114503168854686
+        }
+      },
+      "inset": {
+        "seconds": 9.994493083000002,
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "ownMaskError": 0.1156125,
+        "missingFeatures": 36,
+        "checkedPair": false,
+        "commonInterior": {
+          "pixels": 141376,
+          "errors": 16235,
+          "fraction": 0.11483561566319601
+        }
+      },
+      "commonInteriorChange": -0.006309416025350845,
+      "comparison": {
+        "path": "comparison-3.png",
+        "sha256": "bd412ac738509e6890b57a7ab18203271a410cbcf5eb6d874383f842df681b04"
+      }
+    },
+    {
+      "id": "real-e4baad0c914577c8-body-1",
+      "baseline": {
+        "checkedPair": false,
+        "ownMaskError": 0.01854375,
+        "missingFeatures": 4,
+        "commonInterior": {
+          "pixels": 141376,
+          "errors": 2010,
+          "fraction": 0.014217406066093254
+        }
+      },
+      "inset": {
+        "seconds": 9.652647541999999,
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "ownMaskError": 0.01711875,
+        "missingFeatures": 3,
+        "checkedPair": false,
+        "commonInterior": {
+          "pixels": 141376,
+          "errors": 2187,
+          "fraction": 0.015469386600271615
+        }
+      },
+      "commonInteriorChange": 0.001251980534178361,
+      "comparison": {
+        "path": "comparison-4.png",
+        "sha256": "a6b9dfe94f30fbf87080c359418140b5b7caeadff20ab06a9f74cd42f9f34343"
+      }
+    },
+    {
+      "id": "real-e9131a2d52b78220-body-1",
+      "baseline": {
+        "checkedPair": true,
+        "ownMaskError": 0.01434375,
+        "missingFeatures": 0,
+        "commonInterior": {
+          "pixels": 141376,
+          "errors": 1023,
+          "fraction": 0.00723602308736985
+        }
+      },
+      "inset": {
+        "seconds": 9.76893825,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "ownMaskError": 0.00855,
+        "missingFeatures": 0,
+        "checkedPair": true,
+        "commonInterior": {
+          "pixels": 141376,
+          "errors": 879,
+          "fraction": 0.0062174626527840655
+        }
+      },
+      "commonInteriorChange": -0.0010185604345857848,
+      "comparison": {
+        "path": "comparison-5.png",
+        "sha256": "1d3344a17fac5f5724bfc5edf6c6b0b39eb0f14113cfb5ac42969f8bd1e41429"
+      }
+    }
+  ],
+  "visualReview": {
+    "allFiveBeforeAfterPanelsInspected": true,
+    "findings": [
+      "Cross: silhouette is retained, but border alignment and common-interior agreement worsen.",
+      "Printed birds: trimming removes the thin bottom-edge line but does not recover artwork outside the overlap or establish paper identity. Common-interior agreement worsens.",
+      "Newspaper: mask and weave still follow/invent printed-ink shapes; the lower score and 36 missing features do not represent reconstruction success.",
+      "Reflective bird: three features remain missing and fine false seams persist; own-target error falls while common-interior error increases.",
+      "Checker: some background rim disappears and common-interior error falls from 0.724% to 0.622%, but the handle/notch intrusion remains."
+    ]
+  },
+  "decision": "Do not enable a default one-percent crop inset, even for the new body-only proposals. Only the checker has a plausible visual improvement; its top-corner defect persists. Target uncertain physical edges individually and keep a fixed original-coordinate comparison.",
+  "priorBlanketInsetStudy": {
+    "path": "docs/inverse/datasets/automatic-crop-inset-2026-10-19.json",
+    "sha256": "c16889ec2ca0739147cc7e774d56ee2eba64655d30eef20ffee312b9ea189365"
+  },
+  "productionChanged": false,
+  "modelTrained": false,
+  "validation": {
+    "focusedTests": 7,
+    "focusedFailures": 0,
+    "testReport": {
+      "path": "tmp/heart-learning/neural-outline-regression-tests.log",
+      "sha256": "92ea8208de9620491ff437dd409f92645a1ddcf0464437ca48c89996d0272bf7"
+    },
+    "focusedLintExitCode": 0,
+    "lintReport": {
+      "path": "tmp/heart-learning/neural-outline-inset-lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "productionSourceChanged": false,
+    "fullApplicationChecks": "The unchanged application has passed merged-release CI at 127dc3c1; this offline-only experiment uses targeted tests and actual pipeline runs, not a new application release."
+  }
+}

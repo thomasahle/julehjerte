@@ -1,0 +1,63 @@
+{
+  "schema": "outline-only-diagnostic-1",
+  "date": "2026-10-20",
+  "scope": "All 18 expanded development photographs, fixed actual-browser U2NETP probabilities. Compare a research-only projective body model with the current application policy. Retain lower-edge and lobe-outline support >=0.65, whole-body recall >=0.85/precision >=0.80, observed coverage >=0.99, extrapolation <=0.05. The diagnostic omits uniform sheet-colour objectives and does not claim material reconstruction, template success or permission to remove production gates. Both use the enclosed-hole sampling envelope. No fitting, training or image downloads.",
+  "probe": {
+    "path": "tmp/heart-learning/u2netp-expanded-browser-v1/manifest.json",
+    "sha256": "07360a1ef6549fa095b90ca8436f05e6610250ac080a4d178f3744687a9c9cb3"
+  },
+  "baseline": {
+    "path": "tmp/heart-learning/neural-expanded-rejection-replay-v1.json",
+    "sha256": "d50b978bd22163a5f01d32f976fb3b804fbe336c37c35df3e093ab69fc662ab8"
+  },
+  "ids": [
+    "real-1fa372c6288da69f-body-1",
+    "real-26c948c0aa94f483-body-1",
+    "real-27c86e56296f2df5-body-1",
+    "real-31ed1172998ab1c5-body-1",
+    "real-4066fe9f9aafb3e4-body-1",
+    "real-7076a4d811c096db-body-1",
+    "real-867f0e5852ebeba9-body-1",
+    "real-931ac5ea86dbe082-body-1",
+    "real-962159dea653810f-body-1",
+    "real-970f4be1bd64e5d7-body-1",
+    "real-9b47cfbdf0004f4d-body-1",
+    "real-a96b58bb0d45cb5c-body-1",
+    "real-c7bc99827b382da7-body-1",
+    "real-d6d0462384722949-body-1",
+    "real-e15ec1906fab0f9c-body-1",
+    "real-e4baad0c914577c8-body-1",
+    "real-e9131a2d52b78220-body-1",
+    "real-f882e57ac79e63d3-body-1"
+  ],
+  "sourcePins": {
+    "static/inverse/locator/anchored.js": "92f1ffb68bac38b1bc36f4209820b46200cfa7e6dcfbb746ed94f33beddac536",
+    "static/inverse/locator/background-mixture.js": "cc8ecd35a613cfaf5919db0ad2d74cfb8c0129e4c7a61ba85dab064937ba4fdb",
+    "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+    "static/inverse/locator/chromatic-palette.js": "3a9d89c421341d802e5bda0d92895ec542927d812c13022c0408029d166091c3",
+    "static/inverse/locator/fields.js": "569c2235139acdc3c22f1fee94158ae59406b682e7ef16e822de215fd94b36ea",
+    "static/inverse/locator/grid-outline.js": "693b9e46cf3d39fabc36335624566cfd8c5bfaaa50ab3c2e22a6c4f3355ef132",
+    "static/inverse/locator/grid-refine.js": "1c1f3c11f30afb2e887b5f14d894f1d10de26eaf2d0f5f1f305bdca38e0b3553",
+    "static/inverse/locator/interior-palette.js": "6322efaa9772d488992a40da5b01091b0e71826d30c91fba5976c5b285e027bc",
+    "static/inverse/locator/locator.js": "c60c7c1dc11246b83a86877e16ef72dcf15239f0273c665698e4427175533f61",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+    "static/inverse/locator/outline-evidence.js": "29a4226f160950cf7877ad4e045a4fdefaa437a269396b02bb43d57b7b882c42",
+    "static/inverse/locator/palette.js": "3d5908da4b191e91181b3b6e9a204e90aeeddd7c8dd851bd141926a3c24cb468",
+    "static/inverse/locator/rgb-background.js": "295f5dc2883eda9ad12b2ca030d3b12a7a2ddc59fe4f3406a5b0e3f8ef0ccf1c",
+    "scripts/inverse/learning/projective-body.mjs": "78a0d7e67317b3cef2693571a704bb25336917dee6ee0233a1420afb4a032d4e",
+    "scripts/inverse/learning/locator-field-source.mjs": "b0a4ba3925a81cf3bd4eef3395335a4e6151de79e5608136f4208add53568bbb",
+    "scripts/inverse/learning/outer-boundary-fields.mjs": "34b12ef05fbd1862f7717f976959e85d373a98940529189e6caf72809cb5bb9e",
+    "scripts/inverse/learning/audit-outline-only.mjs": "187d6f2c1ad54b83ae6f2ef4b082e3fb799a00c832d5495da4b59aa3437c23db",
+    "static/inverse/neural/outer-boundary-fields.js": "c1a3f149c908f324b692252e4c50744749a7f22fa313c3467bd8c9993a3d8695",
+    "static/inverse/neural/crop-selection.js": "ea7cb3f6852dd3a4da09e0ef73f270e392afb5b6dc250350a08ad9a49d9efef1",
+    "static/inverse/core/crop.js": "931dbf82dee8e940e53c73e51449e81b43b3b4dd7e7b2f30a4a4d7afce47d825",
+    "static/inverse/core/crop-coverage.js": "cab9ac17a52752098a42589bc045af385aef3e18be3dd1a922f049c11b6cc07b"
+  },
+  "maximumNewArtifactBytes": 10000000,
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "sourcePhotoCopies": 0
+  }
+}

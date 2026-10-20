@@ -1,0 +1,313 @@
+{
+  "schema": "expanded-outline-diagnostic-results-1",
+  "date": "2026-10-20",
+  "status": "completed-offline-diagnostic",
+  "plans": [
+    {
+      "path": "docs/inverse/datasets/u2netp-expanded-rejection-plan.json",
+      "sha256": "f2ef0b95eb3a70fef488fb23701c7fe0eca05a7939f66e77c97c3cd7391bf839"
+    },
+    {
+      "path": "docs/inverse/datasets/u2netp-outline-only-diagnostic-plan.json",
+      "sha256": "8ae2cc510dfe5c693ee91fd8201d239f57bf69a465ce2465a139a8331be8d4d2"
+    }
+  ],
+  "replay": {
+    "path": "tmp/heart-learning/neural-expanded-rejection-replay-v1.json",
+    "sha256": "d50b978bd22163a5f01d32f976fb3b804fbe336c37c35df3e093ab69fc662ab8"
+  },
+  "outlineComparison": {
+    "path": "tmp/heart-learning/neural-outline-only-diagnostic-v1.json",
+    "sha256": "447e17f98c9f0228279d1aa69d5826af91874b74e56cc68733e77ad2bc8a9bd1"
+  },
+  "gallery": {
+    "path": "tmp/heart-learning/neural-outline-only-gallery-v1/manifest.json",
+    "sha256": "3bbb815fecb6e595882c89f3ec64d15660f536795c471ff7bfc2d77a1b0eb81c"
+  },
+  "scope": "Same 18 development photos and cached actual-browser U2NETP predictions, no retraining, template fitting, source-image changes or application changes. Geometric proposals are not reconstruction successes.",
+  "summary": {
+    "photos": 18,
+    "applicationCropsReplayedExactly": 18,
+    "learnedAttempts": 14,
+    "learnedRejections": 11,
+    "overlappingRejectionReasons": {
+      "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 1,
+      "lobeOutlineSupport": 9,
+      "capColourLoss": 5,
+      "lowerEdgeSupport": 4,
+      "No two distinct paper colours on a sufficiently plain background": 1
+    },
+    "priorSelectedCropsWithWholeBodyEvidence": 7,
+    "outlineGeometricProposals": 12,
+    "additionalOrReplacedWeakProposals": 5,
+    "newTemplatesFitted": 0
+  },
+  "rows": [
+    {
+      "id": "real-1fa372c6288da69f-body-1",
+      "priorSelectedBodyPassed": true,
+      "outlineGeometricProposal": true,
+      "newGeometricProposal": false,
+      "outlineRecall": 0.9978065753064455,
+      "outlinePrecision": 0.9812795380894798,
+      "coverage": {
+        "observedFraction": 1,
+        "maximumExtrapolation": 0
+      },
+      "outlineRejection": null
+    },
+    {
+      "id": "real-26c948c0aa94f483-body-1",
+      "priorSelectedBodyPassed": false,
+      "outlineGeometricProposal": false,
+      "newGeometricProposal": false,
+      "outlineRecall": 0.994629100174664,
+      "outlinePrecision": 0.9904091587706544,
+      "coverage": {
+        "observedFraction": 0.9911792819622973,
+        "maximumExtrapolation": 0.05511078338928866
+      },
+      "outlineRejection": null
+    },
+    {
+      "id": "real-27c86e56296f2df5-body-1",
+      "priorSelectedBodyPassed": false,
+      "outlineGeometricProposal": false,
+      "newGeometricProposal": false,
+      "outlineRecall": null,
+      "outlinePrecision": null,
+      "coverage": null,
+      "outlineRejection": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-31ed1172998ab1c5-body-1",
+      "priorSelectedBodyPassed": false,
+      "outlineGeometricProposal": true,
+      "newGeometricProposal": true,
+      "outlineRecall": 0.9706277396584851,
+      "outlinePrecision": 0.9940570216119584,
+      "coverage": {
+        "observedFraction": 1,
+        "maximumExtrapolation": 0
+      },
+      "outlineRejection": null
+    },
+    {
+      "id": "real-4066fe9f9aafb3e4-body-1",
+      "priorSelectedBodyPassed": true,
+      "outlineGeometricProposal": true,
+      "newGeometricProposal": false,
+      "outlineRecall": 0.9986747174666383,
+      "outlinePrecision": 0.9964888176839376,
+      "coverage": {
+        "observedFraction": 1,
+        "maximumExtrapolation": 0
+      },
+      "outlineRejection": null
+    },
+    {
+      "id": "real-7076a4d811c096db-body-1",
+      "priorSelectedBodyPassed": false,
+      "outlineGeometricProposal": false,
+      "newGeometricProposal": false,
+      "outlineRecall": null,
+      "outlinePrecision": null,
+      "coverage": null,
+      "outlineRejection": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-867f0e5852ebeba9-body-1",
+      "priorSelectedBodyPassed": true,
+      "outlineGeometricProposal": true,
+      "newGeometricProposal": false,
+      "outlineRecall": 0.9986401208473512,
+      "outlinePrecision": 0.9942705535872979,
+      "coverage": {
+        "observedFraction": 1,
+        "maximumExtrapolation": 0
+      },
+      "outlineRejection": null
+    },
+    {
+      "id": "real-931ac5ea86dbe082-body-1",
+      "priorSelectedBodyPassed": true,
+      "outlineGeometricProposal": true,
+      "newGeometricProposal": false,
+      "outlineRecall": 0.9989668854572334,
+      "outlinePrecision": 0.9991241277912812,
+      "coverage": {
+        "observedFraction": 1,
+        "maximumExtrapolation": 0
+      },
+      "outlineRejection": null
+    },
+    {
+      "id": "real-962159dea653810f-body-1",
+      "priorSelectedBodyPassed": false,
+      "outlineGeometricProposal": true,
+      "newGeometricProposal": true,
+      "outlineRecall": 0.9926189086800675,
+      "outlinePrecision": 0.9993538765726114,
+      "coverage": {
+        "observedFraction": 1,
+        "maximumExtrapolation": 0
+      },
+      "outlineRejection": null
+    },
+    {
+      "id": "real-970f4be1bd64e5d7-body-1",
+      "priorSelectedBodyPassed": true,
+      "outlineGeometricProposal": true,
+      "newGeometricProposal": false,
+      "outlineRecall": 0.998733296905213,
+      "outlinePrecision": 0.999205653977406,
+      "coverage": {
+        "observedFraction": 1,
+        "maximumExtrapolation": 0
+      },
+      "outlineRejection": null
+    },
+    {
+      "id": "real-9b47cfbdf0004f4d-body-1",
+      "priorSelectedBodyPassed": false,
+      "outlineGeometricProposal": false,
+      "newGeometricProposal": false,
+      "outlineRecall": null,
+      "outlinePrecision": null,
+      "coverage": null,
+      "outlineRejection": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+    },
+    {
+      "id": "real-a96b58bb0d45cb5c-body-1",
+      "priorSelectedBodyPassed": true,
+      "outlineGeometricProposal": true,
+      "newGeometricProposal": false,
+      "outlineRecall": 0.9988907026685395,
+      "outlinePrecision": 0.9992451961775896,
+      "coverage": {
+        "observedFraction": 1,
+        "maximumExtrapolation": 0
+      },
+      "outlineRejection": null
+    },
+    {
+      "id": "real-c7bc99827b382da7-body-1",
+      "priorSelectedBodyPassed": false,
+      "outlineGeometricProposal": false,
+      "newGeometricProposal": false,
+      "outlineRecall": null,
+      "outlinePrecision": null,
+      "coverage": null,
+      "outlineRejection": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    },
+    {
+      "id": "real-d6d0462384722949-body-1",
+      "priorSelectedBodyPassed": false,
+      "outlineGeometricProposal": true,
+      "newGeometricProposal": true,
+      "outlineRecall": 0.9957967435625877,
+      "outlinePrecision": 0.9925324419334619,
+      "coverage": {
+        "observedFraction": 1,
+        "maximumExtrapolation": 0
+      },
+      "outlineRejection": null
+    },
+    {
+      "id": "real-e15ec1906fab0f9c-body-1",
+      "priorSelectedBodyPassed": true,
+      "outlineGeometricProposal": true,
+      "newGeometricProposal": false,
+      "outlineRecall": 0.9977127763992893,
+      "outlinePrecision": 0.9985456842292074,
+      "coverage": {
+        "observedFraction": 1,
+        "maximumExtrapolation": 0
+      },
+      "outlineRejection": null
+    },
+    {
+      "id": "real-e4baad0c914577c8-body-1",
+      "priorSelectedBodyPassed": false,
+      "outlineGeometricProposal": true,
+      "newGeometricProposal": true,
+      "outlineRecall": 0.9977280388129238,
+      "outlinePrecision": 0.9993406266694829,
+      "coverage": {
+        "observedFraction": 1,
+        "maximumExtrapolation": 0
+      },
+      "outlineRejection": null
+    },
+    {
+      "id": "real-e9131a2d52b78220-body-1",
+      "priorSelectedBodyPassed": false,
+      "outlineGeometricProposal": true,
+      "newGeometricProposal": true,
+      "outlineRecall": 0.9922288075927743,
+      "outlinePrecision": 0.9815562059055566,
+      "coverage": {
+        "observedFraction": 1,
+        "maximumExtrapolation": 0
+      },
+      "outlineRejection": null
+    },
+    {
+      "id": "real-f882e57ac79e63d3-body-1",
+      "priorSelectedBodyPassed": false,
+      "outlineGeometricProposal": false,
+      "newGeometricProposal": false,
+      "outlineRecall": null,
+      "outlinePrecision": null,
+      "coverage": null,
+      "outlineRejection": "The two-colour foreground does not clearly support both heart lobes and lower edges."
+    }
+  ],
+  "visualReview": {
+    "all18PhotosInspected": true,
+    "pagesInspected": 4,
+    "newProposalNotes": {
+      "real-31ed1172998ab1c5-body-1": "Gold/white cross: a plausible whole-overlap proposal; low-resolution edge and glare uncertainty remain. Needs mask and template checks.",
+      "real-962159dea653810f-body-1": "Printed birds: the physical square is plausible, but the birds extend onto the lobes. Cropping the overlap does not reproduce the complete decoration or prove paper identity.",
+      "real-d6d0462384722949-body-1": "Newspaper heart: silhouette can be localized even though the two papers have similar multicoloured text. A two-colour RGB mask remains ambiguous.",
+      "real-e4baad0c914577c8-body-1": "Reflective bird: orange proposal covers the whole overlap, unlike the retained cyan fragment. Both exposed lobes appear green; the interior contains coloured printing and glare. This violates the simple two-uniform-lobe colour model. No correct material mask or template is claimed.",
+      "real-e9131a2d52b78220-body-1": "Blue/orange tabletop checker: plausible whole-heart square, but the lower corner visibly overshoots the paper slightly. Boundary refinement or the existing inward sampling margin must be assessed before judging the mask."
+    },
+    "otherFailures": [
+      "Clipped foil: body and outline evidence alone would admit a crop, but observed coverage/extrapolation checks reject it.",
+      "Hanging gingham heart: back sheet and handle alter the silhouette.",
+      "Black/gold cat: the NN omits much of the body; removing the colour objective cannot restore missing foreground.",
+      "Child-held checker: the predicted foreground attaches the hand to the paper.",
+      "Swan-shaped lobes do not closely follow the normal cap model. No mathematical impossibility is inferred."
+    ],
+    "retainedCandidates": "Some outline-only corners drift relative to existing successful crops, including the angel and tree. Do not replace already-supported crops unconditionally."
+  },
+  "validation": {
+    "projectiveBodyTests": {
+      "passed": 4,
+      "record": {
+        "path": "tmp/heart-learning/outline-only-diagnostic-tests.log",
+        "sha256": "ab1547539fd0d8cad75936b66221e5a696648565b1f790b3d31a093e24e873c2"
+      }
+    },
+    "focusedLint": {
+      "exitCode": 0,
+      "record": {
+        "path": "tmp/heart-learning/neural-outline-only-lint.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "sourceAndPredictionHashesVerified": true,
+    "allCasesRetained": true,
+    "applicationUnchanged": true,
+    "releaseQA": "docs/inverse/datasets/u2netp-upload-integration-results.json"
+  },
+  "resources": {
+    "newArtifactBytes": 5317866,
+    "newPhotoDownloads": 0,
+    "sourcePhotoCopies": 0,
+    "trainingRuns": 0,
+    "workers": 1
+  },
+  "next": "Evaluate only additional/replaced weak geometric proposals through unchanged RGB classification, independent exported rendering and editable template/paper checks. Preserve strong existing crops. Then replay the full original 32-photo cohort before any promotion. A future colour-independent mode needs its own explicit evidence contract: empty colour arrays are unmeasured, never proof of colour support."
+}

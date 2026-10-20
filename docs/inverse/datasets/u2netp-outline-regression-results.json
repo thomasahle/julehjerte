@@ -1,0 +1,1322 @@
+{
+  "schema": "outline-regression-results-1",
+  "date": "2026-10-20",
+  "status": "complete-offline-policy-simulation",
+  "replay": {
+    "path": "tmp/heart-learning/neural-regression-rejection-replay-v1.json",
+    "sha256": "9764b2dfe5055e672af2073142e65d8ad0ed38a57c93676f53baedc27167ec95"
+  },
+  "gallery": {
+    "path": "tmp/heart-learning/neural-outline-regression-gallery-v1/manifest.json",
+    "sha256": "f77822507fc3f5d3d929e918fa02268e0444b17efe1c8dea9dda2a7c70943b98"
+  },
+  "cohorts": [
+    {
+      "diagnostic": {
+        "path": "tmp/heart-learning/neural-outline-regression-v1.json",
+        "sha256": "7a263b69560f5757b4d115c4d7b99a37095f1ee70c9a367ba5de1e5322af6d18"
+      },
+      "baseline": {
+        "path": "tmp/heart-learning/u2netp-balanced-body-regression-pipeline-v1/report.json",
+        "sha256": "9ef92b3d7c0c2913a1a0183dc7ec387fc84efe0918bb0b6a7cbee63ec571c89d"
+      },
+      "photos": 32,
+      "currentStrongCrops": 21,
+      "geometricProposals": 22,
+      "selectedAlternatives": 0,
+      "preservedCurrentSelections": 32,
+      "rows": [
+        {
+          "id": "real-1bcc922200edde26-body-1",
+          "currentStrong": false,
+          "geometricProposal": false,
+          "currentDice": null,
+          "proposedDice": null,
+          "diceImprovement": null,
+          "passesReplacementImprovement": true,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": null,
+          "originalQuad": null
+        },
+        {
+          "id": "real-80a649a21ea938ae-body-1",
+          "currentStrong": false,
+          "geometricProposal": false,
+          "currentDice": null,
+          "proposedDice": null,
+          "diceImprovement": null,
+          "passesReplacementImprovement": true,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": null,
+          "originalQuad": null
+        },
+        {
+          "id": "real-f6e5e128449e3cb9-body-1",
+          "currentStrong": false,
+          "geometricProposal": false,
+          "currentDice": 0.7513178506698991,
+          "proposedDice": null,
+          "diceImprovement": -0.7513178506698991,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "ab044ba866115180077a804b4738160eb90787b102951c4d40096bc99ec02ba7",
+          "originalQuad": [
+            [
+              417.07318955467247,
+              147.8850394315756
+            ],
+            [
+              703.8351181756057,
+              465.6231853344314
+            ],
+            [
+              420.00062195949727,
+              781.5838810005721
+            ],
+            [
+              119.40959612173316,
+              420.29820714652783
+            ]
+          ]
+        },
+        {
+          "id": "real-fcbcc23efea92b93-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9909414217644953,
+          "proposedDice": 0.998669473464121,
+          "diceImprovement": 0.00772805169962576,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "ff36e2159cf5fc83059a77f3fe9caf380bf9ff14cab4d09fdc76f5d99af79040",
+          "originalQuad": [
+            [
+              119.52170598234152,
+              123.96462666819608
+            ],
+            [
+              197.25506733385495,
+              202.15575444904687
+            ],
+            [
+              114.66703548593401,
+              289.9612904484674
+            ],
+            [
+              36.880702677507514,
+              211.73267313398816
+            ]
+          ]
+        },
+        {
+          "id": "real-55704c6e2911bebc-body-1",
+          "currentStrong": false,
+          "geometricProposal": true,
+          "currentDice": 0.8904003978503877,
+          "proposedDice": 0.9317360259367053,
+          "diceImprovement": 0.04133562808631763,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "2d1c3bde7138c3341c5f1ce5ede5984468c06f2c2f37951223bae36217976b26",
+          "originalQuad": [
+            [
+              566.2501028129489,
+              531.316244802162
+            ],
+            [
+              885.6283684622077,
+              818.1681767781392
+            ],
+            [
+              614.0719914510279,
+              1123.136879691518
+            ],
+            [
+              261.11098432881494,
+              813.2051971085874
+            ]
+          ]
+        },
+        {
+          "id": "real-24b5ed49c9411b11-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.993380283593829,
+          "proposedDice": 0.9985577577205582,
+          "diceImprovement": 0.005177474126729198,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": true,
+          "originalTargetSha256": "dc033050608515e3b30e95929c9e5ba5fe95ddd09d61f41a7582157c153b93cd",
+          "originalQuad": [
+            [
+              497.3011521394447,
+              548.7433880354315
+            ],
+            [
+              863.7064124819087,
+              958.236332856675
+            ],
+            [
+              457.44396416832194,
+              1316.678501206466
+            ],
+            [
+              114.1926562292777,
+              902.0934480825812
+            ]
+          ]
+        },
+        {
+          "id": "real-589f606a9d9899f2-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9976108950734981,
+          "proposedDice": 0.997799033423911,
+          "diceImprovement": 0.00018813835041286975,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "b426a23f930dbb6b25423ec348d57ba3ae8eb7831c2f7c8485ed3522b34e0391",
+          "originalQuad": [
+            [
+              261.51215748982935,
+              229.47536890943587
+            ],
+            [
+              457.94476839512436,
+              431.63954481817507
+            ],
+            [
+              258.47463273386916,
+              625.1991528148252
+            ],
+            [
+              62.98439170951494,
+              418.1014122086215
+            ]
+          ]
+        },
+        {
+          "id": "real-dfa7e4b71b43aa86-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9897308432365853,
+          "proposedDice": 0.99683592481386,
+          "diceImprovement": 0.00710508157727463,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "6447142bb1a527b7b576f1e279d03e4199646346c897898a8fcb7f68f8f59ec5",
+          "originalQuad": [
+            [
+              532.6460823442083,
+              1025.4687711610866
+            ],
+            [
+              868.5650210016864,
+              1351.1995120033305
+            ],
+            [
+              567.9628307153245,
+              1692.6908456750002
+            ],
+            [
+              215.13648764921186,
+              1342.1502738484755
+            ]
+          ]
+        },
+        {
+          "id": "real-2b0550dd86d23b40-body-1",
+          "currentStrong": false,
+          "geometricProposal": false,
+          "currentDice": null,
+          "proposedDice": null,
+          "diceImprovement": null,
+          "passesReplacementImprovement": true,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": null,
+          "originalQuad": null
+        },
+        {
+          "id": "real-2502cdec0720f4ea-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9871979614860681,
+          "proposedDice": 0.9877498838005241,
+          "diceImprovement": 0.0005519223144559993,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "402aa4934a2d95c3b1ac8615dc8502a947686f0ef8f6eebf3e9bb64487d19195",
+          "originalQuad": [
+            [
+              281.6968704556635,
+              198.72458833684755
+            ],
+            [
+              494.6271243036605,
+              404.25001487891217
+            ],
+            [
+              280.61605280471656,
+              625.5440903658173
+            ],
+            [
+              70.48147551791536,
+              415.2296894835898
+            ]
+          ]
+        },
+        {
+          "id": "real-d3f063052599e167-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9570293175477013,
+          "proposedDice": 0.9612129032909881,
+          "diceImprovement": 0.004183585743286811,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "b14d88bf5b8dc9dc6415e4857e39de8e84c8942f287c7ef430b84e8e85d375a8",
+          "originalQuad": [
+            [
+              539.8607962652628,
+              1159.3697458444333
+            ],
+            [
+              859.4069307550405,
+              1478.8148939267837
+            ],
+            [
+              534.7961636810263,
+              1800.146791503801
+            ],
+            [
+              221.73489783374478,
+              1478.9586713992837
+            ]
+          ]
+        },
+        {
+          "id": "real-a126ed5d62adfd92-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9891605254179803,
+          "proposedDice": 0.9903120517336924,
+          "diceImprovement": 0.001151526315712137,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": true,
+          "originalTargetSha256": "b299ba328c8b9f423f7bb9d35ff764fef0f61c9b934a73fa3953eff31fb49c80",
+          "originalQuad": [
+            [
+              789.5879283110597,
+              486.632163738002
+            ],
+            [
+              425.5398860971887,
+              894.741154539358
+            ],
+            [
+              -24.369303862746648,
+              507.2393433781294
+            ],
+            [
+              406.34236587247045,
+              110.21058457057754
+            ]
+          ]
+        },
+        {
+          "id": "real-5088a58018c3aa28-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.984557131585572,
+          "proposedDice": 0.9979292309749607,
+          "diceImprovement": 0.013372099389388659,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": true,
+          "originalTargetSha256": "4a3c5ee8c036190e96d31b7fe9cf990b3a5ac272114f40515c8c44ba7735c3a4",
+          "originalQuad": [
+            [
+              950.8778782019817,
+              1052.1855294442685
+            ],
+            [
+              1671.0804815000124,
+              1831.4304832194673
+            ],
+            [
+              947.1706141033834,
+              2549.1415457205567
+            ],
+            [
+              231.4243985612144,
+              1786.9016400628966
+            ]
+          ]
+        },
+        {
+          "id": "real-1a7cfc6be8b164b5-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9953796497952536,
+          "proposedDice": 0.9964056621808468,
+          "diceImprovement": 0.001026012385593189,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": true,
+          "originalTargetSha256": "b78dd9f9df6d6d2de773e6e68faa944490a35b3fc9d8305fb8aff83a38a9ebb2",
+          "originalQuad": [
+            [
+              594.204267998057,
+              461.20139102377277
+            ],
+            [
+              927.027449446661,
+              786.0757446625759
+            ],
+            [
+              608.0023829333165,
+              1170.282000077618
+            ],
+            [
+              256.07600288530034,
+              799.4466520757758
+            ]
+          ]
+        },
+        {
+          "id": "real-fe7fb089d1cd86b4-body-1",
+          "currentStrong": false,
+          "geometricProposal": false,
+          "currentDice": 0.2882503895376472,
+          "proposedDice": null,
+          "diceImprovement": -0.2882503895376472,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "2e19b7f71de78c44336a6f1d4a88e0fad98ea48a2443f36f9048a22ca0a5df3d",
+          "originalQuad": [
+            [
+              944.8086994930178,
+              1151.2740458795804
+            ],
+            [
+              1293.5555309683898,
+              1869.056643211879
+            ],
+            [
+              1009.0053151113743,
+              2711.9338023701034
+            ],
+            [
+              161.85771576167542,
+              1809.4340738470746
+            ]
+          ]
+        },
+        {
+          "id": "real-8b91ecf546833a3f-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9983107359046406,
+          "proposedDice": 0.9990020009133411,
+          "diceImprovement": 0.0006912650087005368,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": true,
+          "originalTargetSha256": "d7c19b45f44d86ad90e6b6bd2b8ff739357b2eaea598316fe0e51e1a216c8303",
+          "originalQuad": [
+            [
+              413.3070595163138,
+              303.81564494516186
+            ],
+            [
+              738.6682638373397,
+              635.7984281788176
+            ],
+            [
+              400.86133718299504,
+              969.6528396771064
+            ],
+            [
+              77.91999021115596,
+              629.2647124473705
+            ]
+          ]
+        },
+        {
+          "id": "real-b5317080eec610dc-body-1",
+          "currentStrong": false,
+          "geometricProposal": false,
+          "currentDice": 0.7903197761658771,
+          "proposedDice": null,
+          "diceImprovement": -0.7903197761658771,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "eefbec292a303d9d2b964ec6c6bd703023ae56b904a4ff747b4b6eaaa71ff586",
+          "originalQuad": [
+            [
+              498.0695616350357,
+              503.7981371794178
+            ],
+            [
+              932.2738893354332,
+              857.3766371557336
+            ],
+            [
+              703.5553336548553,
+              1112.2155798745741
+            ],
+            [
+              299.61119246501966,
+              699.5037723146559
+            ]
+          ]
+        },
+        {
+          "id": "real-c7d1e0ad5050db71-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9901690332788572,
+          "proposedDice": 0.9900354239115794,
+          "diceImprovement": -0.00013360936727779826,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": true,
+          "originalTargetSha256": "330c79e275c69582d8bc11a88ca1e0453f515d362e499dd1c33fef4428568a7b",
+          "originalQuad": [
+            [
+              514.9565567881382,
+              524.3904526487775
+            ],
+            [
+              919.676565986055,
+              909.8542453145749
+            ],
+            [
+              520.0354953920096,
+              1340.1413989322814
+            ],
+            [
+              124.79431821619747,
+              918.4700862149982
+            ]
+          ]
+        },
+        {
+          "id": "real-45ad148d9ec045be-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9957299596161915,
+          "proposedDice": 0.9986515710619349,
+          "diceImprovement": 0.002921611445743433,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "0b2b0388659dd76c64b35023cb78417a5a99dee43ef758f7ba43266643785cd7",
+          "originalQuad": [
+            [
+              329.72489186487263,
+              291.12335252304376
+            ],
+            [
+              576.0216350154246,
+              529.2649193566845
+            ],
+            [
+              327.94059799542276,
+              787.4931363752469
+            ],
+            [
+              81.13066931279144,
+              539.9129466117963
+            ]
+          ]
+        },
+        {
+          "id": "real-702942779385436c-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9932523241156693,
+          "proposedDice": 0.9969947572170857,
+          "diceImprovement": 0.0037424331014164203,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "da4d8082aab14346b2697a389273df123bddadc5de01df4d366ccb156212f8a9",
+          "originalQuad": [
+            [
+              675.6267911390378,
+              514.9472450924552
+            ],
+            [
+              991.1770412505282,
+              828.821083137389
+            ],
+            [
+              690.3280049545257,
+              1178.9161663502111
+            ],
+            [
+              367.9040634320186,
+              847.5311908512604
+            ]
+          ]
+        },
+        {
+          "id": "real-03bddab9c8f384c4-body-1",
+          "currentStrong": false,
+          "geometricProposal": false,
+          "currentDice": 0.830653095208162,
+          "proposedDice": null,
+          "diceImprovement": -0.830653095208162,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "302029e810fc24ff2a786d0ec90318d548446f2212663871eb6d2ec2333d4c4c",
+          "originalQuad": [
+            [
+              1169.1957389580086,
+              1180.4131486705742
+            ],
+            [
+              2214.3689067971864,
+              2148.2218299805563
+            ],
+            [
+              1058.0298575204654,
+              3534.6288139571757
+            ],
+            [
+              147.56184435775225,
+              2460.162781639952
+            ]
+          ]
+        },
+        {
+          "id": "real-eb60ff94dfc6e2f8-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9976035649744583,
+          "proposedDice": 0.9981821868534667,
+          "diceImprovement": 0.0005786218790083675,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": true,
+          "originalTargetSha256": "0a02d3afc48969b3fe925410aa67fe64d3ca30d9d09615bab4dbe80802ebaa08",
+          "originalQuad": [
+            [
+              278.6167751267989,
+              242.49282921091358
+            ],
+            [
+              492.7172922170973,
+              453.3076181261075
+            ],
+            [
+              278.7279866127508,
+              668.2060486066766
+            ],
+            [
+              68.35486443414258,
+              452.48671646251137
+            ]
+          ]
+        },
+        {
+          "id": "real-af21a4ef38355dfa-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9405947717095577,
+          "proposedDice": 0.9444571540948771,
+          "diceImprovement": 0.0038623823853193295,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": true,
+          "originalTargetSha256": "49857423ca5610055a5aa7159d07e0913bd5c3fbeabd47240d597378228116ac",
+          "originalQuad": [
+            [
+              524.8636442877053,
+              908.5828006857143
+            ],
+            [
+              903.6002958064523,
+              1236.584451007333
+            ],
+            [
+              532.3112631333281,
+              1620.080523573489
+            ],
+            [
+              188.6068214739418,
+              1275.0762465136029
+            ]
+          ]
+        },
+        {
+          "id": "real-f4bd8d13fc7e68d0-body-1",
+          "currentStrong": false,
+          "geometricProposal": false,
+          "currentDice": null,
+          "proposedDice": null,
+          "diceImprovement": null,
+          "passesReplacementImprovement": true,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": null,
+          "originalQuad": null
+        },
+        {
+          "id": "real-f05cf91c134daea9-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9938625096612447,
+          "proposedDice": 0.9976772844167527,
+          "diceImprovement": 0.0038147747555080658,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "5967f2583523e1f0ca5a23b89666d25389126e97766af6824139fada37b7bf42",
+          "originalQuad": [
+            [
+              1046.9118128144019,
+              475.3815960472211
+            ],
+            [
+              1771.9567063623126,
+              1197.91891304215
+            ],
+            [
+              973.0325464403231,
+              1981.660180513089
+            ],
+            [
+              330.95971310081035,
+              1210.2253479724498
+            ]
+          ]
+        },
+        {
+          "id": "real-12f272f48ed09d51-body-1",
+          "currentStrong": false,
+          "geometricProposal": false,
+          "currentDice": null,
+          "proposedDice": 0.8230645814586076,
+          "diceImprovement": null,
+          "passesReplacementImprovement": true,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": null,
+          "originalQuad": null
+        },
+        {
+          "id": "real-28a87a8be083f16c-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9925594938405636,
+          "proposedDice": 0.9955894144203713,
+          "diceImprovement": 0.0030299205798076656,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": true,
+          "originalTargetSha256": "57b76dd1df84ef4e4158627fc2b26809158bbaa7234335b49c495dd12a403528",
+          "originalQuad": [
+            [
+              506.0778635746796,
+              505.97759713466866
+            ],
+            [
+              917.6158644381778,
+              901.0821932983494
+            ],
+            [
+              538.7472418367147,
+              1341.5026017912278
+            ],
+            [
+              114.84917297316713,
+              909.9841104829538
+            ]
+          ]
+        },
+        {
+          "id": "real-ce66f9634c2c613b-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9992399210669112,
+          "proposedDice": 0.9993098331708189,
+          "diceImprovement": 6.991210390772107e-05,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": true,
+          "originalTargetSha256": "aa7df71928d43fe688e44c1176144961cfe26e6ac3625e1aed2097d5c4d6ce65",
+          "originalQuad": [
+            [
+              353.309821448498,
+              235.15874759608127
+            ],
+            [
+              632.7719977586695,
+              499.72211381010277
+            ],
+            [
+              358.0835928766229,
+              785.6505943446397
+            ],
+            [
+              80.41438631831058,
+              510.95707749520676
+            ]
+          ]
+        },
+        {
+          "id": "real-52e732b98f9b14f1-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9606221088399842,
+          "proposedDice": 0.9638501895044626,
+          "diceImprovement": 0.0032280806644783278,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": true,
+          "originalTargetSha256": "28f6f69d48172e7df91799faf676f350967f81a8213dd06bcd1ccf2734ef198e",
+          "originalQuad": [
+            [
+              518.8748078863684,
+              955.2788370485704
+            ],
+            [
+              904.0934012266056,
+              1303.5208662895525
+            ],
+            [
+              540.6404108155284,
+              1726.7836723799408
+            ],
+            [
+              174.11482814218718,
+              1320.9206132530585
+            ]
+          ]
+        },
+        {
+          "id": "real-7e9f6f83ae43ec2a-body-1",
+          "currentStrong": false,
+          "geometricProposal": false,
+          "currentDice": null,
+          "proposedDice": null,
+          "diceImprovement": null,
+          "passesReplacementImprovement": true,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": null,
+          "originalQuad": null
+        },
+        {
+          "id": "real-d4f6e3c76cf08ea8-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9927135479791257,
+          "proposedDice": 0.9962678113815553,
+          "diceImprovement": 0.0035542634024295916,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": true,
+          "originalTargetSha256": "c34b83b9062de0931d6a4dcee2ef6574ba0b92b1407e41a528f1b57e062e018d",
+          "originalQuad": [
+            [
+              370.5780562453286,
+              151.4002170659261
+            ],
+            [
+              653.800022636137,
+              454.85622982707815
+            ],
+            [
+              370.01989440250753,
+              732.8436985954171
+            ],
+            [
+              83.42579298587462,
+              442.9761050843083
+            ]
+          ]
+        },
+        {
+          "id": "real-41b7c3e0b79f1265-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9397139031108463,
+          "proposedDice": 0.9451749559598822,
+          "diceImprovement": 0.005461052849035863,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "70319ea0f63939fac49211ae565ffbf3b4b79334400bc968b908cfe1c41b3d99",
+          "originalQuad": [
+            [
+              602.7623658937517,
+              473.90393784753553
+            ],
+            [
+              894.2107733000779,
+              778.0281688978092
+            ],
+            [
+              586.3214651245999,
+              1068.313233369628
+            ],
+            [
+              305.32792826493954,
+              768.8351835255659
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "diagnostic": {
+        "path": "tmp/heart-learning/neural-outline-only-diagnostic-v1.json",
+        "sha256": "447e17f98c9f0228279d1aa69d5826af91874b74e56cc68733e77ad2bc8a9bd1"
+      },
+      "baseline": {
+        "path": "tmp/heart-learning/u2netp-balanced-body-expanded-pipeline-v1/report.json",
+        "sha256": "5657f3db84ea125be6d3803c5fede0586d241c282137ed61c6797acae6478e4b"
+      },
+      "photos": 18,
+      "currentStrongCrops": 7,
+      "geometricProposals": 12,
+      "selectedAlternatives": 5,
+      "preservedCurrentSelections": 13,
+      "rows": [
+        {
+          "id": "real-1fa372c6288da69f-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9858690040314578,
+          "proposedDice": 0.9894740493522686,
+          "diceImprovement": 0.0036050453208107403,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "55f4216cbf6915a6f437834eccae8d4d16e30f51099916297649b8b8d8f0cca8",
+          "originalQuad": [
+            [
+              548.2832912507528,
+              324.2080413512938
+            ],
+            [
+              871.3714213137149,
+              606.2431534785377
+            ],
+            [
+              544.292665127616,
+              952.357739932671
+            ],
+            [
+              230.0241075281469,
+              628.8014684046599
+            ]
+          ]
+        },
+        {
+          "id": "real-26c948c0aa94f483-body-1",
+          "currentStrong": false,
+          "geometricProposal": false,
+          "currentDice": null,
+          "proposedDice": 0.9925146439406114,
+          "diceImprovement": null,
+          "passesReplacementImprovement": true,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": null,
+          "originalQuad": null
+        },
+        {
+          "id": "real-27c86e56296f2df5-body-1",
+          "currentStrong": false,
+          "geometricProposal": false,
+          "currentDice": null,
+          "proposedDice": null,
+          "diceImprovement": null,
+          "passesReplacementImprovement": true,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": null,
+          "originalQuad": null
+        },
+        {
+          "id": "real-31ed1172998ab1c5-body-1",
+          "currentStrong": false,
+          "geometricProposal": true,
+          "currentDice": null,
+          "proposedDice": 0.9822026810600847,
+          "diceImprovement": null,
+          "passesReplacementImprovement": true,
+          "selectOutline": true,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": null,
+          "originalQuad": null
+        },
+        {
+          "id": "real-4066fe9f9aafb3e4-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9907554131795845,
+          "proposedDice": 0.9975805701401463,
+          "diceImprovement": 0.006825156960561851,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": true,
+          "originalTargetSha256": "5dfce4b5b47423b5e3f3567c2314c56b0a5708acdd13e74473a89f3075bcfe85",
+          "originalQuad": [
+            [
+              287.5201474250481,
+              360.6644852588719
+            ],
+            [
+              472.8159373471897,
+              560.4426225450169
+            ],
+            [
+              261.1341430586201,
+              766.4898917531965
+            ],
+            [
+              73.2260154921884,
+              562.029498197525
+            ]
+          ]
+        },
+        {
+          "id": "real-7076a4d811c096db-body-1",
+          "currentStrong": false,
+          "geometricProposal": false,
+          "currentDice": null,
+          "proposedDice": null,
+          "diceImprovement": null,
+          "passesReplacementImprovement": true,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": null,
+          "originalQuad": null
+        },
+        {
+          "id": "real-867f0e5852ebeba9-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9942426366034898,
+          "proposedDice": 0.9964505469579605,
+          "diceImprovement": 0.0022079103544707657,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "5134d70d4ac7f67520434e37f28163c3e7b9df0df465a5d766512b0d7ed60988",
+          "originalQuad": [
+            [
+              378.6197898534864,
+              82.98699586769929
+            ],
+            [
+              576.6172996593198,
+              281.26685661267373
+            ],
+            [
+              380.6517358293316,
+              490.30873017824877
+            ],
+            [
+              170.48345711789597,
+              275.95626720854983
+            ]
+          ]
+        },
+        {
+          "id": "real-931ac5ea86dbe082-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9956881658690359,
+          "proposedDice": 0.9990455004370639,
+          "diceImprovement": 0.003357334568028003,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "b5975f837310ca3ab01859ffc3f69d90fea12fe05df23307296423b388659713",
+          "originalQuad": [
+            [
+              197.43400087256245,
+              49.87057194063661
+            ],
+            [
+              363.9769726756484,
+              206.10478542306384
+            ],
+            [
+              200.2785484165025,
+              374.5604372664758
+            ],
+            [
+              37.545584327498744,
+              206.98526148734805
+            ]
+          ]
+        },
+        {
+          "id": "real-962159dea653810f-body-1",
+          "currentStrong": false,
+          "geometricProposal": true,
+          "currentDice": null,
+          "proposedDice": 0.9959750069806999,
+          "diceImprovement": null,
+          "passesReplacementImprovement": true,
+          "selectOutline": true,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": null,
+          "originalQuad": null
+        },
+        {
+          "id": "real-970f4be1bd64e5d7-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9916955808420463,
+          "proposedDice": 0.9989694196034663,
+          "diceImprovement": 0.0072738387614199596,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": true,
+          "originalTargetSha256": "deaab51e7b1a4707ab3872244e44cb9a0ab9d086254fdae8264778f9ed90d9f2",
+          "originalQuad": [
+            [
+              238.41886804038418,
+              110.37318939358553
+            ],
+            [
+              361.01775172273733,
+              222.2675280236889
+            ],
+            [
+              243.66203203473611,
+              354.2554321337618
+            ],
+            [
+              122.7795386469516,
+              226.51569983510495
+            ]
+          ]
+        },
+        {
+          "id": "real-9b47cfbdf0004f4d-body-1",
+          "currentStrong": false,
+          "geometricProposal": false,
+          "currentDice": null,
+          "proposedDice": null,
+          "diceImprovement": null,
+          "passesReplacementImprovement": true,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": null,
+          "originalQuad": null
+        },
+        {
+          "id": "real-a96b58bb0d45cb5c-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9970986189006612,
+          "proposedDice": 0.9990679179773435,
+          "diceImprovement": 0.001969299076682307,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": "edfac1a647503f36d11d38d73ceea0d4b40ac057d7e9c3333bac4c865fbfeea1",
+          "originalQuad": [
+            [
+              199.17361350999218,
+              51.433852133284496
+            ],
+            [
+              361.89003688117805,
+              207.93993961198683
+            ],
+            [
+              200.39370923339814,
+              374.8635620940333
+            ],
+            [
+              39.88449741015921,
+              209.2264377399355
+            ]
+          ]
+        },
+        {
+          "id": "real-c7bc99827b382da7-body-1",
+          "currentStrong": false,
+          "geometricProposal": false,
+          "currentDice": null,
+          "proposedDice": null,
+          "diceImprovement": null,
+          "passesReplacementImprovement": true,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": null,
+          "originalQuad": null
+        },
+        {
+          "id": "real-d6d0462384722949-body-1",
+          "currentStrong": false,
+          "geometricProposal": true,
+          "currentDice": null,
+          "proposedDice": 0.994161913195463,
+          "diceImprovement": null,
+          "passesReplacementImprovement": true,
+          "selectOutline": true,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": null,
+          "originalQuad": null
+        },
+        {
+          "id": "real-e15ec1906fab0f9c-body-1",
+          "currentStrong": true,
+          "geometricProposal": true,
+          "currentDice": 0.9906310615578864,
+          "proposedDice": 0.9981290565553221,
+          "diceImprovement": 0.007497994997435753,
+          "passesReplacementImprovement": false,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": true,
+          "originalTargetSha256": "846acc31e76ee399ea791e74acfd653ae5180172c5e0f717dc2bed8b9901411e",
+          "originalQuad": [
+            [
+              127.80809241159584,
+              35.82474451643232
+            ],
+            [
+              202.38715552001332,
+              119.4011690105062
+            ],
+            [
+              110.79263096534645,
+              207.4396165397992
+            ],
+            [
+              34.6021082918454,
+              120.49011582124946
+            ]
+          ]
+        },
+        {
+          "id": "real-e4baad0c914577c8-body-1",
+          "currentStrong": false,
+          "geometricProposal": true,
+          "currentDice": 0.3034249848759945,
+          "proposedDice": 0.9985336816770612,
+          "diceImprovement": 0.6951086968010667,
+          "passesReplacementImprovement": true,
+          "selectOutline": true,
+          "currentCheckedDerivedMask": true,
+          "originalTargetSha256": "7db70cebc23b3167ae6dd90c3150a650d3d11c6c4bc9bb8f829192cf3c747a2b",
+          "originalQuad": [
+            [
+              653.381129543278,
+              626.4708987661384
+            ],
+            [
+              827.4898107418675,
+              616.1650010254159
+            ],
+            [
+              1049.8171695936703,
+              837.1263672719596
+            ],
+            [
+              843.4857104972126,
+              1004.469849844989
+            ]
+          ]
+        },
+        {
+          "id": "real-e9131a2d52b78220-body-1",
+          "currentStrong": false,
+          "geometricProposal": true,
+          "currentDice": null,
+          "proposedDice": 0.9868636524347404,
+          "diceImprovement": null,
+          "passesReplacementImprovement": true,
+          "selectOutline": true,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": null,
+          "originalQuad": null
+        },
+        {
+          "id": "real-f882e57ac79e63d3-body-1",
+          "currentStrong": false,
+          "geometricProposal": false,
+          "currentDice": null,
+          "proposedDice": null,
+          "diceImprovement": null,
+          "passesReplacementImprovement": true,
+          "selectOutline": false,
+          "currentCheckedDerivedMask": false,
+          "originalTargetSha256": null,
+          "originalQuad": null
+        }
+      ]
+    }
+  ],
+  "selectionRule": "Preserve a currently selected crop with passing local outline and whole-body evidence. Otherwise require supported body-only outline, recall >=0.85, precision >=0.80, observed coverage >=0.99, extrapolation <=0.05, and Dice improvement >=0.05 over a measurable current outline. No reconstruction error enters selection.",
+  "summary": {
+    "photos": 50,
+    "currentSelectionsPreserved": 45,
+    "alternativeSelections": 5,
+    "originalRegressionCropsReplayedExactly": 32,
+    "originalRegressionSelectionsPreserved": 32,
+    "originalCheckedDerivedMasksPreserved": 12,
+    "expandedFreshFitsReferenced": 5
+  },
+  "visualReview": {
+    "all32Inspected": true,
+    "pagesInspected": 7,
+    "findings": [
+      "The one new geometrically supported original-cohort proposal is the striped/dotted Danish Things heart. Its handle remains part of the learned foreground; whole-body Dice improves by only 0.04134, below the unchanged 0.05 replacement requirement.",
+      "Existing successful crops sometimes drift under outline-only fitting; keeping strong current selections is necessary.",
+      "The house and candlestick still have missing learned paper, while hand-held images can include the hand. Removing colour objectives does not repair those body predictions.",
+      "The filled basket and clipped/nonstandard silhouettes remain unresolved; no fabrication impossibility is inferred."
+    ]
+  },
+  "expandedReconstruction": {
+    "path": "docs/inverse/datasets/u2netp-outline-reconstruction-results.json",
+    "sha256": "aaf929a2b4d14dc2a4d06f2a9eb6c704e251b1517de6ae3f07d6da344b71239b"
+  },
+  "limits": [
+    "The 50 photos are inspected development QA cases, not an unseen holdout.",
+    "This simulates a proposed fallback on pinned results; the application does not yet run the body-only fitter.",
+    "Unchanged crops reuse their exact prior template and editable audits; no unnecessary timed search was repeated.",
+    "Production migration still requires an explicit colour-independent evidence contract and actual runtime parity."
+  ],
+  "validation": {
+    "focusedTests": 7,
+    "focusedFailures": 0,
+    "testReport": {
+      "path": "tmp/heart-learning/neural-outline-regression-tests.log",
+      "sha256": "92ea8208de9620491ff437dd409f92645a1ddcf0464437ca48c89996d0272bf7"
+    },
+    "focusedLintExitCode": 0,
+    "lintReport": {
+      "path": "tmp/heart-learning/neural-outline-inset-lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "productionSourceChanged": false,
+    "fullApplicationChecks": "The unchanged application has passed merged-release CI at 127dc3c1; this offline-only experiment uses targeted tests and actual pipeline runs, not a new application release."
+  }
+}

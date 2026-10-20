@@ -104,24 +104,29 @@ function supportedAnchoredFit(f,fit,lines){
  const coloured=fit.mode?0:1,pale=1-coloured;
  return support[coloured]>=.65&&(support[pale]>=.4||fit.diameterContrast.every(v=>v>=.30))&&fit.colorLoss.every(v=>v<=.25)&&fit.diameterContrast.every(v=>v>=.12)&&[lines.left,lines.right].every(l=>l.support>=.7&&l.span>=f.h*.12);
 }
-function fitModel(f,box,lines,{iterations=550,flexibleCaps=false}={}){const[x0,y0,x1,y1]=box,w=x1-x0,h=y1-y0,scale=(w+h)/2,seed=[(x0+x1)/(2*scale),(y0+.094*h)/scale,.453*h/scale,.453*h/scale],flexible=f.palette||f.anchored||flexibleCaps;
+function fitModel(f,box,lines,{iterations=550,flexibleCaps=false,colourEvidence=true}={}){const[x0,y0,x1,y1]=box,w=x1-x0,h=y1-y0,scale=(w+h)/2,seed=[(x0+x1)/(2*scale),(y0+.094*h)/scale,.453*h/scale,.453*h/scale],flexible=f.palette||f.anchored||flexibleCaps;
  if(flexible)seed.push(.5,.5);
  const val=(field,p)=>bilinear(field,f.w,f.h,p[0],p[1],field===f.pd||field===f.rd||field===f.wd?-30:0);
  const capSamples=[];for(let u=.1;u<.96;u+=.14)for(let v=-.38;v<-.04;v+=.11)if(Math.hypot(u-.5,v)<.46)capSamples.push([u,v]);
  function evaluate(z,details=false){if(z[2]<.18||z[2]>.82||z[3]<.18||z[3]>.82||(flexible&&z.slice(4).some(v=>v<.35||v>.85)))return details?null:1e5;const m=model(z,lines,scale);if(!m)return details?null:1e5;const{H,q}=m;
   if(Math.abs(H[6])>.65||Math.abs(H[7])>.65||q.some(p=>p[0]<-w*.15||p[0]>f.w+w*.15||p[1]<-h*.12||p[1]>f.h+h*.12))return details?null:1e5;
   const polys=CONTOURS.map((v,k)=>v.map(p=>project(H,flexible&&k===0?[p[0],p[1]*2*z[4]]:flexible&&k===3?[p[0]*2*z[5],p[1]]:p)));let opts=[];
-  for(let mode=0;mode<2;mode++){// mode 0: right/top cap white; left cap red.
+  for(let mode=0;mode<(colourEvidence?2:1);mode++){// mode 0: right/top cap white; left cap red.
    const capDist=f.palette?[f.pd,f.pd]:mode?[f.rd,f.wd]:[f.wd,f.rd],capProb=mode?[f.red,f.white]:[f.white,f.red];
    let arcResiduals=[0,3].map((k,i)=>polys[k].map(p=>Math.abs(val(capDist[i],p)))),sideResiduals=[1,2].map(k=>polys[k].map(p=>Math.abs(val(f.pd,p))));
    const clip=f.palette?Infinity:Math.max(8,w*.05);let loss=(1.5*trimMean(arcResiduals[0].map(x=>Math.min(x,clip)))+1.5*trimMean(arcResiduals[1].map(x=>Math.min(x,clip)))+trimMean(sideResiduals[0].map(x=>Math.min(x,clip)))+trimMean(sideResiduals[1].map(x=>Math.min(x,clip))))/5;
-   let diameterLoss=0,diameterContrast=[];
+   // Printed or reflective papers need not have a uniform colour on either
+   // exposed lobe. In body mode these diagnostics stay explicitly unmeasured.
+   const diameterContrast=[],colorLoss=[];
+   if(colourEvidence){
+   let diameterLoss=0;
    for(let l=0;l<2;l++){const ins=[],outs=[];for(let k=0;k<48;k++){const t=.04+.92*k/47,pin=l?[.018,t]:[t,.018],pout=l?[-.018,t]:[t,-.018];let pi=val(f.chroma,project(H,pin)),po=val(f.chroma,project(H,pout));const foreignIsRed=(l===0)===(mode===0);if(!foreignIsRed){pi=1-pi;po=1-po;}ins.push(pi);outs.push(po);}
     const contrast=mean(ins.map((x,i)=>Math.max(x-outs[i],0)));diameterContrast.push(contrast);diameterLoss+=trimMean(outs,.85)-(f.palette?.paperForeground?0:.60)*contrast;
    }
    loss+=(f.anchored?30:f.palette?20:6)*diameterLoss;
-   const colorLoss=[];for(let l=0;l<2;l++){const ps=capSamples.map(p=>project(H,l?[p[1],p[0]]:p));colorLoss.push(trimMean(ps.map(p=>1-val(capProb[l],p)),.85));}loss+=(f.anchored?30:2)*mean(colorLoss);
+   for(let l=0;l<2;l++){const ps=capSamples.map(p=>project(H,l?[p[1],p[0]]:p));colorLoss.push(trimMean(ps.map(p=>1-val(capProb[l],p)),.85));}loss+=(f.anchored?30:2)*mean(colorLoss);
    let notchLoss=0;for(const t of [.022,.04,.065,.09]){const p0=project(H,[t,-t]),p1=project(H,[-t,t]);notchLoss+=1-val(capProb[0],p0)+1-val(capProb[1],p1);}loss+=(f.anchored?8:2)*notchLoss/4;
+   }
    opts.push({loss,mode,arcResiduals,sideResiduals,diameterContrast,colorLoss});
   }
   opts.sort((a,b)=>a.loss-b.loss);const best=opts[0];let penalty=.5*(H[6]**2+H[7]**2);penalty+=200*(Math.max(0,Math.abs(z[0]-seed[0])-.16)**2+Math.max(0,Math.abs(z[1]-seed[1])-.16)**2);
@@ -146,7 +151,7 @@ function fitModel(f,box,lines,{iterations=550,flexibleCaps=false}={}){const[x0,y
  const details=fits.map(s=>evaluate(s.x,true)).filter(Boolean);
  // A slightly lower image objective must not displace a fit that actually
  // explains both outer lobes. Final support checks still apply independently.
- const best=(f.anchored?details.find(d=>supportedAnchoredFit(f,d,lines)):f.palette?details.find(d=>d.arcResiduals.every(a=>mean(a.map(v=>v<Math.max(2,f.w*.012)?1:0))>=.65)&&d.colorLoss.every(v=>v<=.30)):null)||details[0];
+ const best=(f.anchored?details.find(d=>supportedAnchoredFit(f,d,lines)):f.palette?details.find(d=>d.arcResiduals.every(a=>mean(a.map(v=>v<Math.max(2,f.w*.012)?1:0))>=.65)&&(!colourEvidence||d.colorLoss.every(v=>v<=.30))):null)||details[0];
  if(!best)return null;return{...best,evaluations:fits.reduce((s,x)=>s+x.evaluations,0),alternatives:fits.map(s=>({score:s.f,quad:evaluate(s.x,true)?.q??null}))};
 }
 /**
@@ -156,6 +161,9 @@ function fitModel(f,box,lines,{iterations=550,flexibleCaps=false}={}){const[x0,y
  */
 export function createMotifDetector(image,options={}){checkImage(image);const preparationStart=performance.now();if(options.maxSize!==undefined&&(!Number.isFinite(options.maxSize)||options.maxSize<100||options.maxSize>800))throw new RangeError('maxSize must be from 100 to 800');const maxSize=options.maxSize??400;let inputROI=options.roi??[0,0,image.width,image.height];
  for(const name of ['fieldProvider','edgeSamplingFields'])if(options[name]!==undefined&&typeof options[name]!=='function')throw new TypeError(name+' must be a function.');
+ const colourEvidence=options.colourEvidence===undefined?true:options.colourEvidence;
+ if(typeof colourEvidence!=='boolean')throw new TypeError('colourEvidence must be a boolean.');
+ if(!colourEvidence&&!options.fieldProvider)throw new TypeError('Body-only fitting requires explicit paper fields.');
  if(inputROI.length!==4||inputROI.some(x=>!Number.isFinite(x))||inputROI[2]-inputROI[0]<24||inputROI[3]-inputROI[1]<24)throw new TypeError('Invalid ROI');
  inputROI=[clamp(inputROI[0],0,image.width-1),clamp(inputROI[1],0,image.height-1),clamp(inputROI[2],1,image.width),clamp(inputROI[3],1,image.height)];if(inputROI[2]-inputROI[0]<24||inputROI[3]-inputROI[1]<24)throw new RangeError('ROI is outside the image or too small after clipping');const pad=options.roi?.length?Math.max(inputROI[2]-inputROI[0],inputROI[3]-inputROI[1])*.18:0;const workROI=[Math.max(0,inputROI[0]-pad),Math.max(0,inputROI[1]-pad),Math.min(image.width,inputROI[2]+pad),Math.min(image.height,inputROI[3]+pad)];const work=resizeROI(image,workROI,maxSize);
  const sampleROI=inputROI.map((v,i)=>(v-workROI[i%2]+.5)*work.scale-.5);
@@ -168,6 +176,7 @@ export function createMotifDetector(image,options={}){checkImage(image);const pr
   :['adaptive','pale'].includes(options.palette)?makePaletteFields(work,{pale:options.palette==='pale'})
   :makeFields(work);return baseFields;};
  const baseFields=options.fieldProvider?options.fieldProvider(work):defaultFields();
+ if(!colourEvidence&&baseFields&&(baseFields.palette?.colourEvidenceUsed!==false||baseFields.anchored))throw new TypeError('Body-only fields must declare unmeasured colour evidence.');
  if(baseFields&&(baseFields.w!==work.width||baseFields.h!==work.height||
   ['paper','red','white','chroma','r','g','b','mask','pd','rd','wd'].some(key=>baseFields[key]?.length!==work.width*work.height)))throw new TypeError('Field provider must return aligned working-image fields.');
  const detectWithFields=(fields,degrees=0,{refineSelection=false,extendLowerBand=false}={})=>{
@@ -206,7 +215,7 @@ export function createMotifDetector(image,options={}){checkImage(image);const pr
  const sideSupport=edgeContrast?edgeContrast.map(r=>r.support):segmentationSupport;
  const edgeEvidence=edgeContrast?{lowerEdgeRegistrationSupport:segmentationSupport,lowerEdgePhotoContrast:edgeContrast,lowerEdgeSupportMethod:'photograph-contrast-along-fitted-outer-edges'}:{};
  const arcSupport=fit.arcResiduals.map(a=>mean(a.map(d=>d<Math.max(2,work.width*.012)?1:0)));
- if(f.palette&&(arcSupport.some(x=>x<.65)||sideSupport.some(x=>x<.65)||fit.colorLoss.some(x=>x>.30)))return{status:'needs_review',quad:null,reason:'The two-colour foreground does not clearly support both heart lobes and lower edges.',evidence:{lobeOutlineSupport:arcSupport,lowerEdgeSupport:sideSupport,...edgeEvidence,capColourLoss:fit.colorLoss,medianLobeResidualPx:residuals,rejectedQuad:quad},elapsedMs:performance.now()-started};
+ if(f.palette&&(arcSupport.some(x=>x<.65)||sideSupport.some(x=>x<.65)||(colourEvidence&&fit.colorLoss.some(x=>x>.30))))return{status:'needs_review',quad:null,reason:colourEvidence?'The two-colour foreground does not clearly support both heart lobes and lower edges.':'The paper outline does not clearly support both heart lobes and lower edges.',evidence:{lobeOutlineSupport:arcSupport,lowerEdgeSupport:sideSupport,...edgeEvidence,capColourLoss:fit.colorLoss,medianLobeResidualPx:residuals,rejectedQuad:quad},elapsedMs:performance.now()-started};
  const accepted=fit.alternatives.filter(a=>a.quad&&a.score<fit.loss+1.0);const spread=quad.map((p,j)=>Math.max(0,...accepted.map(a=>{const r=back(a.quad[j]);return Math.hypot(p[0]-r[0],p[1]-r[1]);})));
  const warnings=[];if(lobeRefinement?.accepted)warnings.push('Independent lobe shapes improved the outline fit. Review all four overlap corners.');if(f.anchored)warnings.push('The pale outline was inferred from colours inside the heart. Review all four overlap corners.');if(residuals.some(r=>r>3))warnings.push('Lobe outlines do not closely fit a single flat-heart model.');if(sideSupport.some(x=>x<.65))warnings.push('One or both lower edges have limited support, possibly due to a ribbon or overlapping paper.');if(arcSupport.some(x=>x<.6))warnings.push('Part of a lobe outline is obscured or ambiguous.');if(spread.some(x=>x>6))warnings.push('Several plausible fits disagree on the corner positions.');
  if(quad.some(p=>p[0]<1||p[1]<1||p[0]>image.width-2||p[1]>image.height-2))warnings.push('The heart may be clipped by the image boundary.');
@@ -259,7 +268,7 @@ export function createMotifDetector(image,options={}){checkImage(image);const pr
  };
  // A pose cannot supply a paper colour missing from the fixed segmentation.
  // In particular, avoid fitting dozens of red-only lobes in green/red photos.
- detector.orientations=()=>baseFields&&baseFields.rd.some(v=>v<-.75)&&baseFields.wd.some(v=>v<-.75)?orientationHypotheses(baseFields):[];
+ detector.orientations=()=>baseFields&&(!colourEvidence||(baseFields.rd.some(v=>v<-.75)&&baseFields.wd.some(v=>v<-.75)))?orientationHypotheses(baseFields):[];
  return detector;
 }
 export function detectMotif(image,options={}){const detect=createMotifDetector(image,options),result=detect(options.rotationDegrees??0);result.elapsedMs+=detect.preparationMs;return result;}

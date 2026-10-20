@@ -5,6 +5,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {createCanvas,loadImage} from 'canvas';
 import {detectPhotoCrops} from '../../../static/inverse/neural/photo-crop.js';
+import {detectForegroundCrop} from '../../../static/inverse/neural/foreground-crop.js';
 const args=Object.fromEntries(process.argv.slice(2).map(a=>a.replace(/^--/,'').split('=')));
 assert.deepEqual(Object.keys(args).sort(),['output','reports']);
 const hash=b=>createHash('sha256').update(b).digest('hex');
@@ -26,12 +27,18 @@ try{
    const asset=row.assets['probability.f32'],data=await pinned({path:path.join(path.dirname(plan.probe.path),asset.path),sha256:asset.sha256});
    const body={probability:Float32Array.from({length:data.length/4},(_,i)=>data.readFloatLE(i*4)),resolution:manifest.resolution,window:row.window,modelSha256:manifest.fieldOrigin.modelSha256};
    const detector=original.assets['detection.json'],production=JSON.parse(await pinned({path:path.join(path.dirname(file),detector.path),sha256:detector.sha256}));
-   const actual=await detectPhotoCrops({type:'pixels',rgba,imageWidth:image.width,imageHeight:image.height},{productionCrop:()=>production,predictBody:()=>body});
+   let learned=null;
+   const actual=await detectPhotoCrops({type:'pixels',rgba,imageWidth:image.width,imageHeight:image.height},{productionCrop:()=>production,predictBody:()=>body,
+    learnedCrop:async(...args)=>{learned=await detectForegroundCrop(...args);return learned;}});
    const quad=actual.candidates[0]?.quad??null;assert.deepEqual(quad,expected.selectedCrop?.quad??null,row.id);
    const decision=actual.bodyReview;assert.ok(!decision||decision.selected===expected.selection.selected,row.id);
    if(decision?.selected==='learned')assert.equal(actual.candidates[0].needsReview,true);
    if(actual.candidates.length&&decision?.requiresReview)assert.equal(actual.candidates[0].needsReview,true);
-   result.rows.push({id:row.id,cropExact:true,selected:decision?.selected??'production',status:actual.status,needsReview:actual.candidates[0]?.needsReview??null,explicitSelectionPreserved:!decision});
+   // Retain failed learned proposals as well as the selected crop. A null
+   // candidate alone cannot distinguish segmentation, colour and outline
+   // failures. Reuse the same fields and gates; never fit a new template here.
+   result.rows.push({id:row.id,cropExact:true,selected:decision?.selected??'production',status:actual.status,needsReview:actual.candidates[0]?.needsReview??null,explicitSelectionPreserved:!decision,
+    decision,learned});
    await save();console.log(row.id,'crop exact',decision?.selected??'selection preserved');
   }
  }
