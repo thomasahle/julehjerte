@@ -1629,9 +1629,13 @@ export function openLeg(gate: Point, corner: Point, axis: 0 | 1, taper: number):
  * circle frame; the outer lines cross the paper whole, or, once the circle
  * reaches them, follow it (see `boardLegs`). From there out to the junctions
  * at the ring's own corners the circle meets every line, and the motif, divided
- * into four panels, meets all their ends. */
+ * into four panels, meets all their ends. Past those junctions, the circle
+ * overlaps the ring's corner squares, of its own colour, and the same panels
+ * meet the same ends (see `overlapGates`), out to where the paper left between
+ * the circle and the edges' middle squares is still wide enough to cut. */
 export const BOARD_RADII: readonly (readonly [number, number])[] = [
-	[Math.hypot(10, 10) + 5, Math.hypot(30, 10)], [Math.hypot(30, 10), Math.hypot(30, 30) - .4]
+	[Math.hypot(10, 10) + 5, Math.hypot(30, 10)], [Math.hypot(30, 10), Math.hypot(30, 30) - .4],
+	[Math.hypot(30, 30) + .4, 49.5]
 ];
 
 /** A circle on the regular board of `strips` strips, with the board's
@@ -1657,9 +1661,15 @@ export function boardRing(radius: number, strips: number): Ring {
  * paper there to it rather than leaving a sliver. In each quarter of the circle
  * the other lines' ends alternate between the sheets, and consecutive pairs
  * meet at a gate: for an outer gate (side and index, as in `connectCellGrid`),
- * the gate's angle and the half-angle to its two legs, which then lie exactly
- * on the board's lines. */
-function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number): (side: number, index: number) => [number, number] {
+ * its point, its legs drawn by `framed` from the gate's angle and the
+ * half-angle to them, which then lie exactly on the board's lines.
+ *
+ * Past the junctions at the outer ring's corners, the circle overlaps the
+ * corner squares, and in each quarter the ends of one sheet's two lines come
+ * before the other's (`overlapGates`). The same lines pair at the same red
+ * squares, their legs overlapping along the corner square's arc. */
+function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number):
+	(side: number, index: number, framed: (angle: number, half: number) => Point) => Point {
 	type End = { angle: number; family: 'A' | 'B'; port: Port };
 	const turn = 2 * Math.PI, lines: { axis: number; line: number; ends: End[] }[] = [];
 	for (let k = 1; k < strips; k++) for (const axis of [0, 1]) {
@@ -1697,14 +1707,41 @@ function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number): (s
 		// Two lines ending at one junction on the circle pair at it, in turn.
 		const first = (end: { family: 'A' | 'B' }) => Number(end.family !== (quarter % 2 ? 'A' : 'B'));
 		ends.sort((a, b) => a.angle - b.angle > 1e-9 ? 1 : b.angle - a.angle > 1e-9 ? -1 : first(a) - first(b));
-		if (ends.length !== 2 * count || ends.some((end, i) => end.family !== ((quarter + i) % 2 ? 'A' : 'B')))
+		const past = count === 2 && ends.length === 4 && ends.every((end, i) => end.family === ((quarter + (i >> 1)) % 2 ? 'A' : 'B'));
+		if (ends.length !== 2 * count || !past && ends.some((end, i) => end.family !== ((quarter + i) % 2 ? 'A' : 'B')))
 			throw new ConstructionError('topology', 'The circle does not meet the board in turn');
 	}
-	return (side, index) => {
-		const ends = quarters[[2, 3, 0, 1][side]], k = side < 2 ? index : count - 1 - index;
+	const overlapping: (Point[] | undefined)[] = [];
+	return (side, index, framed) => {
+		const quarter = [2, 3, 0, 1][side], ends = quarters[quarter], k = side < 2 ? index : count - 1 - index;
+		if (ends[0].family === ends[1].family)
+			return (overlapping[quarter] ??= overlapGates(edges, ring, ends))[k];
 		const [low, high] = [ends[2 * k].angle, ends[2 * k + 1].angle];
-		return [(low + high) / 2, (high - low) / 2];
+		return framed((low + high) / 2, (high - low) / 2);
 	};
+}
+
+/** A quarter of a circle past the outer ring's corner junction meets one
+ * sheet's two lines, then the other's: `x` nearer its start, `y` nearer its end,
+ * the corner square between them the circle's own colour, the squares beside
+ * it the other. The lines pair as before the circle passed the junction, the
+ * first of each sheet with the second of the other, each pair at a gate
+ * midway along its red square's arc. A pair's legs reach their lines along the
+ * circle, the inner ones across the corner square, where both sheets are cut
+ * and the cut shows nothing. Returns the two gates. */
+function overlapGates(edges: Edge[], ring: Ring, [x1, x2, y1, y2]: { angle: number; family: 'A' | 'B'; port: Port }[]): Point[] {
+	const first = x1.family, other = y1.family;
+	const edge = ({ family, port: { point } }: typeof x1): Point =>
+		family === 'A' ? [point[0], point[1] < 50 ? 0 : 100] : [point[0] < 50 ? 0 : 100, point[1]];
+	const gates = [ray(ring, [50, 50], (x1.angle + x2.angle) / 2), ray(ring, [50, 50], (y1.angle + y2.angle) / 2)];
+	add(edges, [edge(x1), ...arc(ring, x1.port, gates[0])], first, 'frame');
+	add(edges, arc(ring, gates[0], x2.port), other, 'frame');
+	add(edges, arc(ring, x2.port, y1.port), 'AB', 'shared');
+	add(edges, [y1.port.point, edge(y1)], other, 'frame');
+	add(edges, [edge(x2), x2.port.point], first, 'frame');
+	add(edges, arc(ring, y1.port, gates[1]), first, 'frame');
+	add(edges, [...arc(ring, gates[1], y2.port), edge(y2)], other, 'frame');
+	return gates.map(gate => gate.point);
 }
 
 /** Join neighbouring motif cells with coincident cuts, and give every outer
@@ -1728,19 +1765,19 @@ export function connectCellGrid(
 	const connect = (gate: Point, side: number, index: number, count: number) => {
 		if (boundary) {
 			const step = Math.PI / (2 * count);
-			const [angle, half] = legs ? legs(side, index) : [
-				side === 0
-					? Math.PI + (index + 0.5) * step
-					: side === 2
-						? Math.PI / 2 - (index + 0.5) * step
-						: side === 3
-							? Math.PI - (index + 0.5) * step
-							: (3 * Math.PI) / 2 + (index + 0.5) * step,
-				count === 1 ? Math.PI / 8 : step * band
-			];
+			const framed = (angle: number, half: number) => framedGate(edges, boundary, angle, half, fan, spread);
 			add(
 				edges,
-				[gate, framedGate(edges, boundary, angle, half, fan, spread)],
+				[gate, legs ? legs(side, index, framed) : framed(
+					side === 0
+						? Math.PI + (index + 0.5) * step
+						: side === 2
+							? Math.PI / 2 - (index + 0.5) * step
+							: side === 3
+								? Math.PI - (index + 0.5) * step
+								: (3 * Math.PI) / 2 + (index + 0.5) * step,
+					count === 1 ? Math.PI / 8 : step * band
+				)],
 				'AB',
 				'shared'
 			);

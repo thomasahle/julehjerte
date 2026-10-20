@@ -9,6 +9,7 @@ import { rasterizeDesign } from '$lib/paint/rasterize';
 import star from '../../../static/generator/motifs/star.json';
 import heart from '../../../static/generator/motifs/heart.json';
 import tree from '../../../static/generator/motifs/tree.json';
+import house from '../../../static/generator/motifs/house.json';
 import bell from '../../../static/generator/motifs/bell.json';
 import nunito from '../../../static/generator/fonts/nunito.json';
 import oswald from '../../../static/generator/fonts/oswald.json';
@@ -27,7 +28,8 @@ function mismatch(request: GeneratorRequest, n = 100): number {
 	// circle the motif keeps.
 	const board = request.mode === 'figure' && request.style === 'board';
 	const circle = board && result.scale !== undefined ? (request.scale ?? .7) > .7 ? 'small' as const : 'large' as const : undefined;
-	const { rings } = picture({ ...request, scale: board ? request.scale : result.scale ?? request.scale, layout: base.layout }, { place: base.place, circle })!;
+	const { rings } = picture({ ...request, scale: board ? request.scale : result.scale ?? request.scale, layout: base.layout },
+		{ place: base.place, circle, enclosed: !!result.enclosed })!;
 	let differ = 0;
 	for (let y = 0; y < n; y++)
 		for (let x = 0; x < n; x++) {
@@ -141,6 +143,9 @@ describe('the picture drawn before the cuts are found', () => {
 		expect(mismatch({ ...request, scale: .8 })).toBeLessThan(.01);
 		// A solid tree keeps the touching circle, as its heart says.
 		expect(mismatch({ ...request, name: 'Tree', contours: tree.contours as Ring[], scale: .8 })).toBeLessThan(.01);
+		// Past 85% the circle overlaps the corner squares, of its own colour,
+		// a house on its smallest enclosing circle.
+		expect(mismatch({ ...request, name: 'House', contours: house.contours as Ring[], scale: 1 })).toBeLessThan(.01);
 	});
 
 	it('is the checks in the tips the cuts make, at any space around the motif', () => {

@@ -60,7 +60,7 @@ export function measureTextGrid(
 	font: Font,
 	air: boolean | number = false,
 	frame?: Frame,
-	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; junction?: Point; circle?: number; scale?: number } = {}
+	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; junction?: Point; circle?: number; scale?: number; centre?: Point } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -79,14 +79,18 @@ export function measureTextGrid(
 	const points = matrix.flat().flatMap((l) => l.glyph.contours.flat());
 	const minY = Math.min(...points.map((p) => p[1])),
 		maxY = Math.max(...points.map((p) => p[1]));
-	const height = maxY - minY,
-		cy = (minY + maxY) / 2;
+	// A motif may sit on another centre than its box's (see `boardPlacement`);
+	// its cell then reaches as far on each side of that centre.
+	const centre = layout.centre,
+		cy = centre?.[1] ?? (minY + maxY) / 2,
+		height = centre ? 2 * Math.max(maxY - cy, cy - minY) : maxY - minY;
 	const padding = height * (layout.padding ?? roomOf(air));
 	// Square cells, as wide as the widest letter needs, keep every check of
 	// the weave around and between the letters square.
 	const ink = (glyph: Font['glyphs'][string]) => {
 		const xs = glyph.contours.flat().map((p) => p[0]);
-		return xs.length ? Math.max(...xs) - Math.min(...xs) : 0;
+		return !xs.length ? 0 : centre ? 2 * Math.max(Math.max(...xs) - centre[0], centre[0] - Math.min(...xs))
+			: Math.max(...xs) - Math.min(...xs);
 	};
 	// Fitted cells, as wide as their column's letters, are the fallback when
 	// square ones leave too little paper.
@@ -129,7 +133,7 @@ export function generateTextGrid(
 	font: Font,
 	air: boolean | number = false,
 	frame?: Frame,
-	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; junction?: Point; circle?: number; scale?: number } = {}
+	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; junction?: Point; circle?: number; scale?: number; centre?: Point } = {}
 ) {
 	const { matrix, rows, cols, height, cy, padding, cellHeight, widths, inkWidths, span, fullHeight, scale, boundary, points } =
 		measureTextGrid(text, font, air, frame, layout);
@@ -147,7 +151,7 @@ export function generateTextGrid(
 	const splitsX = junction ? widths.map(() => [junction[0]]) : layout.adaptivePanels ? widths.map((_, col) => {
 		const values = matrix.flatMap(row => {
 			const xs = row[col].glyph.contours.flat().map(p => p[0]);
-			const cx = xs.length ? (Math.min(...xs) + Math.max(...xs)) / 2 : 0;
+			const cx = layout.centre?.[0] ?? (xs.length ? (Math.min(...xs) + Math.max(...xs)) / 2 : 0);
 			return xs.map(x => x - cx);
 		}), inkWidth = inkWidths[col];
 		return panelDividers(values, -inkWidth / 2, inkWidth / 2, columns);
@@ -211,7 +215,7 @@ export function generateTextGrid(
 				continue;
 			}
 			const xs = glyph.contours.flat().map((p) => p[0]),
-				cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+				cx = layout.centre?.[0] ?? (Math.min(...xs) + Math.max(...xs)) / 2;
 			const letterScale = scale * (layout.letterScale ?? 1);
 			let upright = glyph.contours.map(r => r.map(p => [glyphX + (p[0] - cx) * letterScale, glyphY + (p[1] - cy) * letterScale] as Point));
 			if (row % slices === 0 && col % columns === 0) artwork.push(...upright.map(r => r.map(uprightToSheet)));

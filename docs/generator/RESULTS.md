@@ -1,5 +1,100 @@
 # Generator robustness results
 
+## More space around the motif keeps the circle's size
+
+Product report (2026-10-20): with "Luft om figuren" at 14% and the size at
+100%, the circle on equal squares fell back to 70% ("Ved 100 % kan figuren ikke
+væves …"). Whether a motif can be divided in four is decided once, at reference
+circles (radius 34 and 39), and that check used the space asked for: at 10% and
+more the reference deer was too small to divide, so it kept the touching circle
+at every size above 70%. The check now uses at most the usual 3%, its shape
+deciding; the space then only sets how much of the circle the motif fills. The
+deer at 100% with 10% or 14% is clean in the full circle (both kept 70% before).
+A motif divided in four that fits nowhere in its circle with more space than
+usual (the deer at 85% with 14%) keeps the touching circle, as before; at the
+usual space and less nothing changes.
+
+## The circle on equal squares touching the edges, and motifs on their enclosing circle
+
+Product requests (2026-10-20), of the circle over the corner squares at 100%:
+"I think we can make it even bigger - until the circle touches the outer
+rectangle", then "you can make the deer even bigger! in fact, it can even be
+> 100%". The circle now reaches radius 49.5 at 100%: half a unit from the
+paper's edges in the middle squares, which are its own colour, the red squares
+beside them keeping 1.5 units of paper at their tips, the least space the
+generator allows between a motif and its frame (radius 50 leaves 1 unit; the
+clearance rule does not measure paper against the paper's edge, so this limit is
+set here). Over the corner squares a motif sits on the centre of its smallest
+enclosing circle, decided once per motif by whether it cuts cleanly so in the
+largest circle: 20 of the 28 motifs that grow do, the fish, the cat and the
+house a tenth or more larger than on their box's centre. At 100% over the corpus and the deer: 45 clean,
+3 hard (the star, whose tips all come close to the circle's connections on its
+enclosing circle and, on its box's, past radius 48.3; and snow and crown, which
+keep the touching circle), the same 4 refused; median 0.6 s, max 4.7 s; every
+picture matches its heart once the page knows which centre the motif took
+(`Known.enclosed`). The deer keeps its box's centre (on its enclosing circle it
+cuts cleanly only made smaller), so it grows with the circle alone: about 6%
+over radius 47. Centring every size on the enclosing circle was tried and not
+kept: more clean results overall (the coffee cup no longer refused at 60–70%,
+the crown clean), but the deer hard at 70% and the heart at 80%. Hearts at 85%
+and below are unchanged.
+
+## The circle on equal squares up to 100%, over the corner squares
+
+Product request (2026-10-20): "why can I still not take the size of the deer to
+100%?" in "Cirkel · Lige store tern", then, of a version that narrowed the outer
+squares, "It changes the size of the squares. Why can't we overlap the circle with
+the corner squares?" At 85% the circle (radius 42) almost reaches the junctions at
+the outer ring's corners. Past them, each quarter of the circle meets one sheet's
+two lines before the other's (B B A A), and the gates only paired neighbouring
+ends. The same lines now pair at the same red squares, each gate midway along its
+red square's arc, the inner legs of both pairs running along the circle across the
+corner square, which is the circle's colour, both sheets cut there. Above 85% the
+circle grows over the corner squares from radius 42.8 to 47 at 100%, every line in
+place. At 100% over the corpus and the deer: 46 clean, 2 hard, 4 refused (at 85%:
+45, 3, 4; the heart is clean at 100%). The 28 motifs that take the large circle
+grow, the 20 solid ones keep the touching circle, the same four are refused (sun,
+coffee, paw, bicycle; the slowest in 9 s), and every picture matches its heart.
+Median 0.4 s, max 6.6 s. Hearts at 85% and below are unchanged, bit for bit
+(design and picture hashes of the corpus and the deer at 60, 70, 80 and 85%).
+
+## Any Google font for the text
+
+Product request (2026-10-20): "a search box for any google font", fetched when
+chosen. Below the nine tested fonts, the text panel searches 1,962 Google
+families: Fontsource's list of those with Latin letters, most popular first by
+Google Fonts' ranking (`static/generator/google-fonts.json`, 70 KB, 22 KB
+gzipped, loaded only when searching; rebuilt by
+`scripts/generator/google-fonts.mjs`). Each result shows its name in its own
+letters. A chosen family's boldest weight up to 800 is fetched as WOFF from
+Fontsource's copy on jsDelivr, not from Google, and outlined in the browser
+(`fontFile.ts`): TrueType outlines flattened within .0005 em, overlapping
+contours merged under the non-zero rule with Clipper, as `build-outlines.py`
+does for the shipped fonts. Links name it as `gf:<id>:<weight>`. Searching a
+shipped family (Nunito, Cinzel, …) chooses our tested copy.
+
+Fidelity, against the JSON Python built from the same TTF files: every glyph of
+Alfa Slab One, Bree Serif, Bungee and Righteous has the same rings and advance,
+with areas within 0.2%. On Cinzel's variable master, whose letters are
+overlapping stems, bars and serifs, the ring counts match Python's for every
+glyph, with areas within 0.5%. A font reads in 3–30 ms.
+
+The 200 most popular families and Mountains of Christmas, "JUL" and "Anna" as
+the page asks for them by default (equal squares, square cells): 172 cut cleanly
+in both, 29 are hard in one or both, none is refused. The hard ones are serifs
+with fine hairlines (Playfair Display, Bodoni Moda, Garamonds, Libre
+Baskerville, Crimson Text, Noto Serif in four scripts, DM Serif Display, Abril
+Fatface), slab serifs on "Anna" (Zilla Slab, and Alfa Slab One, which the
+shipped "Plakat" is too), and scripts (Lobster, Lobster Two, Dancing Script,
+Satisfy, Great Vibes, Zeyada, Shadows Into Light, Mountains of Christmas).
+Median time 0.1 s, 90th percentile 3.9 s, slowest 33 s (Great Vibes; the picture
+shows at once). Four families lack some of ÆØÅ, ÄÖÜ or É and say so when those
+are typed. (A first sweep that let the generator choose letter-sized cells
+counted 187 clean, with scripts taking up to 140 s.)
+
+Not done: thickening thin families as Cinzel and Kalam are, which would need a
+measure of each font's thinnest strokes.
+
 ## Larger circles on equal squares for animals
 
 Product request (2026-10-20): the deer in "Cirkel · Lige store tern" stopped at

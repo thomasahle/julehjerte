@@ -56,6 +56,7 @@
 		"@sveltejs/kit": "^2.70.3",
 		"@sveltejs/vite-plugin-svelte": "^7.3.0",
 		"@tailwindcss/vite": "^4.3.3",
+		"@types/clipper-lib": "^6.4.0",
 		"bits-ui": "^2.19.0",
 		"canvas": "^3.2.3",
 		"embla-carousel-svelte": "^8.6.0",
@@ -73,6 +74,7 @@
 		"vitest": "^4.1.11"
 	},
 	"dependencies": {
+		"clipper-lib": "^6.4.2",
 		"clsx": "^2.1.1",
 		"jspdf": "^4.2.1",
 		"tailwind-merge": "^3.6.0"

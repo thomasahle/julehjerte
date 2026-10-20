@@ -4,7 +4,7 @@
  * generator and the pictures drawn before the cuts (see `picture`).
  */
 import type { GeneratorRequest } from './generate';
-import { BOARD_RADII } from './geometry';
+import { BOARD_RADII, type Point, type Ring } from './geometry';
 import { checkeredLayouts } from './checkeredGrid';
 
 /** The motif in place of a letter: repeated on the checkerboard by the small
@@ -97,15 +97,66 @@ export function boardScale(request: GeneratorRequest): number {
 
 /** The circle on a board at a size setting: smoothly from the smallest
  * radius the board allows to the largest, with the touching circle at the
- * default 70%, where the one change of construction lies. It passes the outer
- * lines' tangent slightly beyond it, and just beyond the touching circle it
- * touches, the corners there being too close to cut. `range` is the
- * construction's: up to the touching circle, or reaching into the outer ring. */
+ * default 70%, where the one change of construction lies, and the circle
+ * reaching the outer ring's corner junctions at 85%, past which it overlaps
+ * the corner squares. It passes the outer lines' tangent slightly beyond it,
+ * and just beyond the touching circle it touches, the corners there being too
+ * close to cut. `range` is the construction's: up to the touching circle,
+ * reaching into the outer ring, or past its corners. */
 export function boardRadius(scale: number) {
-	const [small, large] = BOARD_RADII, setting = Math.max(.45, Math.min(.85, scale));
+	const [small, large, past] = BOARD_RADII, setting = Math.max(.45, Math.min(1, scale));
 	let radius = setting <= .7 ? small[0] + (setting - .45) / .25 * (small[1] - small[0])
-		: large[0] + (setting - .7) / .15 * (large[1] - large[0]);
+		: setting <= .85 ? large[0] + (setting - .7) / .15 * (large[1] - large[0])
+			: past[0] + (setting - .85) / .15 * (past[1] - past[0]);
 	if (Math.abs(radius - 30) < .1) radius = 30.1;
 	if (radius > large[0] && radius < large[0] + .6) radius = large[0];
-	return { radius, range: radius <= small[1] ? small : large };
+	return { radius, range: radius <= small[1] ? small : radius <= large[1] ? large : past };
+}
+
+/** The smallest circle around the points: around their convex hull, built
+ * point by point (Welzl's construction) in a fixed scattered order, so the
+ * same motif is always placed alike. */
+export function enclosingCircle(points: Point[]): { centre: Point; radius: number } {
+	const turn = (o: Point, a: Point, b: Point) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+	const chain = (sorted: Point[]) => {
+		const result: Point[] = [];
+		for (const p of sorted) {
+			while (result.length > 1 && turn(result[result.length - 2], result[result.length - 1], p) <= 0) result.pop();
+			result.push(p);
+		}
+		return result.slice(0, -1);
+	};
+	const sorted = [...points].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+	const hull = sorted.length < 3 ? sorted : [...chain(sorted), ...chain([...sorted].reverse())];
+	const order = hull.map((_, i) => hull[(i * 7919) % hull.length]);
+	const two = (a: Point, b: Point) => ({ centre: [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2] as Point, radius: Math.hypot(a[0] - b[0], a[1] - b[1]) / 2 });
+	const three = (a: Point, b: Point, c: Point) => {
+		const d = 2 * (a[0] * (b[1] - c[1]) + b[0] * (c[1] - a[1]) + c[0] * (a[1] - b[1]));
+		if (Math.abs(d) < 1e-12) return [two(a, b), two(b, c), two(a, c)].reduce((x, y) => y.radius > x.radius ? y : x);
+		const [qa, qb, qc] = [a, b, c].map(p => p[0] * p[0] + p[1] * p[1]);
+		const centre: Point = [(qa * (b[1] - c[1]) + qb * (c[1] - a[1]) + qc * (a[1] - b[1])) / d,
+			(qa * (c[0] - b[0]) + qb * (a[0] - c[0]) + qc * (b[0] - a[0])) / d];
+		return { centre, radius: Math.hypot(a[0] - centre[0], a[1] - centre[1]) };
+	};
+	let circle = { centre: order[0] ?? [0, 0] as Point, radius: 0 };
+	const outside = (p: Point) => Math.hypot(p[0] - circle.centre[0], p[1] - circle.centre[1]) > circle.radius + 1e-9;
+	for (let i = 1; i < order.length; i++) if (outside(order[i])) {
+		circle = { centre: order[i], radius: 0 };
+		for (let j = 0; j < i; j++) if (outside(order[j])) {
+			circle = two(order[i], order[j]);
+			for (let k = 0; k < j; k++) if (outside(order[k])) circle = three(order[i], order[j], order[k]);
+		}
+	}
+	return circle;
+}
+
+/** Where a motif sits in the circle on a board: the centre of its smallest
+ * enclosing circle, so that it fills the circle as far as its shape allows
+ * (a deer's antler and hooves equally far out), and that circle's radius as
+ * a fraction of the side of its box, which sizes it. */
+export function boardPlacement(contours: Ring[]): { centre: Point; reach: number; box: number } {
+	const points = contours.flat(), xs = points.map(p => p[0]), ys = points.map(p => p[1]);
+	const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+	const { centre, radius } = enclosingCircle(points);
+	return { centre, reach: radius / box, box };
 }
