@@ -202,7 +202,7 @@ describe("Tegn's Escher tab", () => {
 		expect(edit.cuts.map((f) => f.id)).toEqual(['L-1', 'L-2', 'L-3', 'R-1', 'R-2', 'R-3']);
 	});
 
-	it('sizes and slants the tiles with a point of the tiling, the point staying under the pointer, and moves the pattern with an edge', () => {
+	it('sizes and slants the tiles with a point of the tiling, the point staying under the pointer, and moves the pattern with a cut', () => {
 		const tile = ruleStart(opposite('move', 'move'), 4);
 		const { fingers, rect } = heartOf(tile);
 		const [anchor, kind] = [...specialNodes(tile, 'R-2').entries()].sort(([a], [b]) => a - b).find(([a, k]) => a > 1 && k === 'frame')!;
@@ -216,8 +216,8 @@ describe("Tegn's Escher tab", () => {
 		const at = followedPoint(drag, next, pointer, rect)!;
 		const p = tileFingers(next, rect).find((f) => f.id === at.fingerId)!.segments[at.anchor]!.p0;
 		expect(Math.hypot(p.x - pointer.x, p.y - pointer.y)).toBeLessThan(1e-6);
-		// an edge dragged moves the whole pattern, by as much
-		const moved = dragTile(startPanDrag(tile, was), { x: 0.3 * (rect.width / 5), y: 0 }, rect)!;
+		// a cut dragged moves the whole pattern, by as much
+		const moved = dragTile(startPanDrag(tile, was, 'right'), { x: 0.3 * (rect.width / 5), y: 0 }, rect)!;
 		expect(moved.pan?.x).toBeCloseTo(0.3);
 		expect(moved.shape).toBeUndefined();
 	});

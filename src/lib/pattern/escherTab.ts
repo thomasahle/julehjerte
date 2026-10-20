@@ -8,7 +8,7 @@
  */
 
 import type { TranslationKey } from '$lib/i18n';
-import type { Finger, GridSize, HeartPattern, Vec } from '$lib/types/heart';
+import type { Finger, GridSize, HeartPattern, LobeId, Vec } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { getCenteredRectParams, inferOverlapRect, type OverlapRect } from '$lib/utils/overlapRect';
 import {
@@ -204,14 +204,14 @@ export function editTile(tile: PatternTile, edited: Finger, rect: OverlapRect): 
  * A drag the tile answers itself: on a point of the tiling it places — a
  * crossing, the middle of a half-turn S — which sizes, stretches and slants the
  * tiles (`frame`); on the end of a cut where the edge cuts a curve, which slides
- * along the edge and reshapes the curve (`slide`); or on one of the square's
- * edges, which moves the whole pattern (`pan`). `base` is the tile the drag
- * started from, `start` where the pointer was.
+ * along the edge and reshapes the curve (`slide`); or on a cut or one of the
+ * square's edges, which moves the whole pattern (`pan`). `base` is the tile the
+ * drag started from, `start` where the pointer was.
  */
 export type TileDrag =
 	| { mode: 'frame'; base: PatternTile; fingerId: string; anchor: number; point: PlacedPoint | null; start: Vec }
 	| { mode: 'slide'; base: PatternTile; fingerId: string; end: 'first' | 'last'; start: Vec }
-	| { mode: 'pan'; base: PatternTile; start: Vec };
+	| { mode: 'pan'; base: PatternTile; start: Vec; lobe: LobeId | null };
 
 /** A drag starting on Tegn's anchor `anchor` of cut `fingerId`, a point the tile places (`special`). */
 export function startTileDrag(tile: PatternTile, fingerId: string, anchor: number, special: SpecialNode, start: Vec): TileDrag | null {
@@ -225,8 +225,8 @@ export function startTileDrag(tile: PatternTile, fingerId: string, anchor: numbe
 	return { mode: 'frame', base: tile, fingerId, anchor, point: placedPointAt(tile, fingerId, anchor), start };
 }
 
-/** A drag on an edge of the square, which moves the whole pattern. */
-export const startPanDrag = (tile: PatternTile, start: Vec): TileDrag => ({ mode: 'pan', base: tile, start });
+/** A drag on a cut of `lobe`, or on an edge of the square (`lobe` null), which moves the whole pattern. */
+export const startPanDrag = (tile: PatternTile, start: Vec, lobe: LobeId | null): TileDrag => ({ mode: 'pan', base: tile, start, lobe });
 
 /** The tile with what was dragged moved by `delta` pixels from where the drag started: sized and slanted, moved or reshaped. */
 export function dragTile(drag: TileDrag, delta: Vec, rect: OverlapRect): PatternTile | null {

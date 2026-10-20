@@ -177,7 +177,7 @@ describe('the Escher tab', () => {
 		expect(snapBox(h)).toBe(true);
 	});
 
-	it.each(['L-0', 'R-4', 'L-4', 'R-0'])('moves the whole pattern when the edge %s is dragged: no strip added, and the type kept', async (id) => {
+	it.each(['L-0', 'R-4', 'L-4', 'R-0', 'L-2', 'R-1'])('moves the whole pattern when %s is dragged: no strip added or cut moved alone, and the type kept', async (id) => {
 		const tile = { ...knobTile(opposite('move', 'move')), cuts: 3 };
 		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
 		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
@@ -187,24 +187,22 @@ describe('the Escher tab', () => {
 		send(h.svg, 'pointermove', { x: from.x + delta.x / 2, y: from.y + delta.y / 2 });
 		send(h.svg, 'pointermove', { x: from.x + delta.x, y: from.y + delta.y });
 		send(h.svg, 'pointerup', { x: from.x + delta.x, y: from.y + delta.y });
-		const moved = dragTile(startPanDrag(tile, from), delta, getCenteredRectParams({ x: 4, y: 4 }))!;
+		const moved = dragTile(startPanDrag(tile, from, null), delta, getCenteredRectParams({ x: 4, y: 4 }))!;
 		expect(moved.pan).toBeDefined();
 		expect(cutsOf(h.fingers)).toBe(cutsOf(tileFingers(moved)));
 		expect(h.gridSize).toEqual(tileGrid(moved));
 		expect(chosenType(h)).toBe('Moved');
 	});
 
-	it.each(['L-2', 'R-1'])('only chooses the cut %s when it is pressed: its points show, and dragging it moves nothing', async (id) => {
+	it.each(['L-2', 'R-1'])('chooses the cut %s when it is clicked: its points show, and nothing moves', async (id) => {
 		const tile = { ...knobTile(opposite('move', 'move')), cuts: 3 };
 		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
 		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
 		const opened = JSON.stringify(h.fingers);
-		const from = bezierAt(h.fingers.find((f) => f.id === id)!.segments[1]!, 0.5);
-		send(h.path(id), 'pointerdown', from);
+		const at = bezierAt(h.fingers.find((f) => f.id === id)!.segments[1]!, 0.5);
+		send(h.path(id), 'pointerdown', at);
+		send(h.svg, 'pointerup', at);
 		expect(h.handles().length).toBeGreaterThan(0);
-		send(h.svg, 'pointermove', { x: from.x + 15, y: from.y - 6 });
-		send(h.svg, 'pointermove', { x: from.x + 30, y: from.y - 12 });
-		send(h.svg, 'pointerup', { x: from.x + 30, y: from.y - 12 });
 		expect(JSON.stringify(h.fingers)).toBe(opened);
 		expect(h.button('Undo').disabled).toBe(true);
 	});

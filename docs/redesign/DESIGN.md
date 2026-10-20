@@ -616,11 +616,12 @@ the sizes, "Drej mønstret", which turns the whole pattern about the middle of t
 shape (`PatternTile.turn`, kept apart from the cells' own shape and saved with the tile). Slant and turn
 together, no side lies more than 15° off its axis (every cut has to run from edge to opposite edge, and further
 the lines near the corners could not), with between two and twelve strips a side; near the plain grid the cells
-snap back square and straight. A type whose cells cannot slant takes the slant it is given as the turn. Dragging one of
-the square's edges moves the whole pattern, which comes back in at the other edge without end: in this tab no
-strip is pulled in from an edge or dragged out, and nothing done in the tab takes the heart out of it. A cut
-pressed is only chosen, its points shown: when any cut moved the pattern, visitors dragging where they had put
-nodes on a cut not yet chosen moved the whole pattern instead. However the pattern is moved, sized or turned, the heart is a window onto an endless tiling: it cuts every
+snap back square and straight. A type whose cells cannot slant takes the slant it is given as the turn. Dragging a
+cut, or one of the square's edges, moves the whole pattern, which comes back in at the other edge without end: in
+this tab no strip is pulled in from an edge or dragged out, and nothing done in the tab takes the heart out of
+it. A click on a cut only chooses it, its points shown. (For a day only the edges moved the pattern, after an
+agent tester dragged where it had put nodes on a cut not yet chosen and moved the whole pattern instead; the
+owner wanted the cuts to move it again.) However the pattern is moved, sized or turned, the heart is a window onto an endless tiling: it cuts every
 line whose whole cut keeps 0.15 of the way to the next line (and twice the paper's clearance) from the edge, so
 narrow tiles make more strips one way than the other (6 × 3, say), and a 3 × 3 pattern moved off a whole line
 makes a 4 × 3 or 4 × 4 heart; the strip count says so. The size buttons set a tile to the size of a cell of the

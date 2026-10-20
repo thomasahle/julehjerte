@@ -9,8 +9,8 @@
  * are read back into the tile and the whole heart is generated again, so every
  * stretch that carries the same curve follows. Dragging a point of the tiling —
  * a crossing, the middle of an S — sizes, stretches and slants every tile
- * (`frameTo`); the turn control turns the whole pattern (`turnedTo`); dragging an
- * edge of the square moves it (`panBy`).
+ * (`frameTo`); the turn control turns the whole pattern (`turnedTo`); dragging a
+ * cut or an edge of the square moves it (`panBy`).
  *
  * Tegn's frame: the overlap rectangle in pixels; left-lobe cuts `L-k` run from
  * the right edge to the left one, right-lobe cuts `R-k` from the bottom edge to
@@ -372,7 +372,7 @@ function cornerAt(pieces: CutPiece[], r: number): { i: number; j: number } | nul
  *   the pointer (`frameTo`).
  * - 'slide': an end of the cut where the edge cuts a curve: it slides along the
  *   edge, reshaping the curve in every copy.
- * None of them is locked, and none moves the pattern: dragging an edge does that.
+ * None of them is locked, and none moves the pattern: dragging a cut does that.
  */
 export type SpecialNode = 'frame' | 'slide';
 
