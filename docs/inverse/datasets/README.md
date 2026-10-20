@@ -362,10 +362,28 @@ recovery of the intended artwork: the printed birds extend beyond the overlap,
 and the checker includes a handle/notch intrusion and noisy outer border.
 The newspaper classifier follows printed letters, resulting in 12.90% error
 and 42 missing features. The reflective bird misses four features despite
-1.85% mean error. The one-percent crop-inset helper currently has no production
-or research callers; these fixed proposals were not inset. A separate margin
-study and the original 32-photo regression remain necessary before promotion.
+1.85% mean error. These fixed proposals were fitted without an inset. A separate
+margin study and the original 32-photo regression followed before any promotion.
 No model was retrained or application behavior changed in this experiment.
+
+The [32-photo regression](u2netp-outline-regression-results.json) replays all
+current crop decisions exactly and inspects all seven comparison galleries.
+Preserving strong current crops and retaining the existing 0.05 whole-body
+Dice improvement requirement leaves **all 32 original selections unchanged**.
+The same rule selects exactly the five tested alternatives in the expanded
+18-photo set. This is an offline selection simulation; migration into the
+application still needs an explicit distinction between measured colour
+evidence and body-only evidence, followed by runtime parity checks.
+
+The [paired inset comparison](u2netp-outline-inset-results.json) tests all five
+new proposals against the same original photographic coordinates. One-percent
+cropping worsens common-interior disagreement in three cases and improves two,
+while the number of checked derived masks stays at three. The checker loses
+some background rim, but retains the handle/notch intrusion; the newspaper
+remains a material-classification failure. All five before/after panels were
+inspected. **No default inset is enabled.** This agrees with the
+[earlier 26-case study](automatic-crop-inset-2026-10-19.json), where 24 cases
+worsened. Future border refinement must follow evidence for individual edges.
 
 #### Latest neural experiments
 

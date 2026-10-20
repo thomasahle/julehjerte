@@ -1,0 +1,21 @@
+{
+  "schema": "expanded-crop-rejection-audit-1",
+  "date": "2026-10-20",
+  "status": "predeclared-diagnostic",
+  "cohort": {
+    "path": "tmp/heart-learning/u2netp-balanced-body-regression-pipeline-v1/report.json",
+    "sha256": "9ef92b3d7c0c2913a1a0183dc7ec387fc84efe0918bb0b6a7cbee63ec571c89d"
+  },
+  "implementation": {
+    "path": "scripts/inverse/learning/replay-integrated-crops.mjs",
+    "sha256": "31d905bb44feeee9df8594e119cf19b6249ff6f5aad3fd844f006e1ee72df301"
+  },
+  "scope": "All original 32 development QA photos, unchanged application crop policy and cached actual-browser probabilities. Assert exact selected-corner replay, then retain every rejected learned proposal for the outline-only regression. No training, source downloads or template fitting. Strong currently selected crops will be preserved when evaluating an alternative policy.",
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "maximumNewArtifactBytes": 15000000,
+    "noSourcePhotoCopies": true
+  },
+  "output": "tmp/heart-learning/neural-regression-rejection-replay-v1.json"
+}
