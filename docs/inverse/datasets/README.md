@@ -23,7 +23,7 @@ and passes all 11 live browser checks after merging PR #17.
 | Broader photo evaluation | Outline extension retains 12/32 and raises the additional set from 4/18 checked derived masks (three supported by full-body evidence) to 6/18, all six body-supported | Replacing a fragment crop with the whole overlap can reveal a reconstruction failure. Printed paper, crop assumptions and feature loss remain separate problems |
 | Paper-colour calibration | Original-resolution colour mixtures restore detail lost by raw neural masks; fresh fixed-crop comparison gives 11/32 checked pairs with learned palettes versus 13/32 with RGB clustering | No learned-only checked gain; print confusion and unsuitable crops remain; these are derived-mask checks, not artwork ground truth |
 | Paired paper-identity training | Matched 256-update runs reduce synthetic printed-paper error from 10.84% to 9.64%; every real training/development photo reviewed | Known-region real training error increases from 3.53% to 3.65%; print confusion and lost small features persist; head rejected for deployment |
-| Paper examples from exposed lobes | Controlled feature ablation identifies a cause of checker shrinkage; simpler per-photo classifiers restore several real motifs | Synthetic corners are supplied; six real crops remain unresolved; frozen neural features worsen results; comparison with deployed colour classification remains outstanding |
+| Paper examples from exposed lobes | Fixed-crop production comparison yields 18/32 editable checked candidates versus 13/32 for production; all production passes retained | Self-mask scores overstate artwork recovery: one additional pass has a wrong crop; thin details regress and printed ink remains ambiguous; not deployed |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
 | Solver | Deployed outline release passes 1,183 inverse correctness tests; earlier dedicated runs solve all 22 regular Hunodan designs under ten seconds | Some hard fits retain thin false seams; 17/77 original main-CI timing targets miss; the earlier 27/31 photo benchmark has not been rerun |
 
@@ -401,9 +401,52 @@ are not comparable to the earlier full-body percentages. The prior NN head is
 also an experimental baseline, not the deployed RGB classifier. Five focused
 tests pass, and 384 saved-field errors were independently recomputed. No neural
 weights changed, no source images were copied, and the two experiments added
-about **43.5 MiB** of local artifacts. The next comparison must use the deployed
-colour classifier at the same crops before any claim of improved templates or
-production readiness.
+about **43.5 MiB** of local artifacts.
+
+The subsequent [complete pipeline comparison](paper-exemplar-pipeline-results.json)
+uses the **actual deployed RGB classifier**, the same 26 automatic quads and all
+six unresolved crops. All 26 production masks reproduce their earlier hashes
+exactly. The two lobe classifiers reuse their saved scores without refitting.
+Each of the 78 available masks receives fresh fitting with a ten-second search
+allowance on the binary-mask objective used by Mal. Methods rotate by photo;
+source coverage, resolution and acceptance limits remain fixed.
+
+| Method | Engine plus independent mask checks | Also passes editable SVG checks |
+| --- | ---: | ---: |
+| Production colour classification | 13/32 | 13/32 |
+| Lobe RGB only | 14/32 | 14/32 |
+| Lobe classifier with neutralized query deviation | 19/32 | 18/32 |
+
+These are **checks against each method's own derived mask**, not counts of
+recovered original designs. Every one of the 13 production passes remains a pass
+under neutralized deviation. Four additional candidates preserve recognizable
+mother/child, fox, petal-flower and tentacled motifs. A fifth additional pass is
+the wrongly cropped basket, which remains a failure of the complete photo task.
+The reflective-building crop produces an almost empty mask and zero cuts:
+the engine's self-mask checks pass, but the editor correctly rejects it.
+The neutral-deviation nativity also fails editable geometry; it already failed
+the engine checks. All 78 export errors were independently recomputed, all
+11 comparison pages reviewed, and these failures retained.
+
+The visual review prevents a blanket replacement. Plain-paper checks become
+rounded, the moon gains an extra cut, and small details change. Printed stripes
+and floral ink are suppressed in some photos, but the printed central flower
+is still mistaken for a cutting motif by **all three methods**, despite passing
+their fit checks. Production already handles the red-tree/blue-snowflake paper.
+
+The nativity illustrates a separate search problem: changing just **0.967%** of
+the production mask pixels raises fitting error from **1.96% to 12.47%**, with
+five cuts per sheet in both outputs. The production result itself still misses
+a feature. The logs show different phase finalists, refinement reservations and
+feature-recovery decisions; they do not yet prove which branch causes the
+regression. Crop quality and cut count alone cannot explain it.
+
+No application code or neural weights changed. Before adoption, the next steps
+are to isolate resolution losses by applying the fitted RGB classifier at native
+resolution, test search stability under small mask perturbations, and train
+material features explicitly to transfer from the exposed paper into the woven
+overlap. Choosing a classifier solely by its own reconstruction error would
+reward the near-empty-mask failure above.
 
 ### Latest solver and browser validation
 
