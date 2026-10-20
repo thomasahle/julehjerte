@@ -878,15 +878,71 @@ original regression target remains intact. A learned ranking proposal will
 also need evaluation through these later scheduling decisions: a lower initial
 mask error does not establish a better template or faster search.
 
+### Keeping native NN confidence during fitting
+
+The [continuous-score comparison](native-confidence-results.json) keeps the
+same frozen joint-trained residual classifier, crops, binary masks and observed
+pixels. Its [predeclared plan](native-confidence-plan.json) compares fresh
+hard-mask fitting with `sigmoid(4 * score)` as the fitting objective. Four is
+the existing training-loss scale; it was not selected from these results.
+Final image, feature, geometry and paper checks still use the original masks.
+
+Both methods receive a ten-second search allowance on all 32 development
+photos. Six still have no crop; all 52 exports from the other 26 convert
+successfully through the independent editable-paper audit.
+
+| Measure | Hard mask | Continuous score |
+| --- | ---: | ---: |
+| Checked editable candidates, all 32 photos | 12 | 13 |
+| Mean independent weave disagreement, 26 crops | 3.529% | 3.730% |
+| Mean editable disagreement, same 26 crops | 3.537% | 3.729% |
+| Median solve time, including final work | 9.50 s | 9.28 s |
+
+The confidence arm retains all twelve hard-control passes and adds the wolf.
+Its editable disagreement falls from **1.82% to 1.34%** and the paper checks
+pass. However, visual review of all 32 photos finds worse thin details elsewhere:
+the three-wise-men design loses most of its star, increasing disagreement from
+**3.00% to 6.15%**, and the octopus loses curled tentacles (**3.14% to 4.18%**).
+Printed ink and the two visibly incorrect fixed crops remain unresolved.
+Neither of those detailed-motif regressions was a complete pass before this
+experiment; preserving the passing subset alone would hide them.
+
+The three-wise-men diagnostic reproduces every coarse/fine score and finalist
+preference in repeated, timing-free runs. **Zero binary-mask pixels changed.**
+The soft objective shortlists five cuts instead of six, although its omitted
+six-cut candidate still retains the source regions. This also changes scheduling:
+routing receives about **5.44 s instead of 2.81 s**, while direct refinement gets
+about **0.067 s instead of 2.79 s**. The later trajectory is one timed run, but
+the changed shortlist is deterministic. This isolates an objective/count/routing
+interaction from cropping or classification changes.
+
+For a binary render, squared error against a continuous target is a constant
+plus mask disagreement weighted by `abs(1 - 2p)`. The independent audit verifies
+that decomposition and reconstructs all 26 saved fields within Float32 rounding.
+Those weights can suppress real narrow details as well as noise. Coarse grids
+also threshold resampled probabilities, so matching native binary masks does
+not imply identical coarse objectives.
+
+This remains **offline**. The next experiment should hold the starting cuts
+fixed and compare hard versus continuous refinement with matched work. All
+52 previous control masks replay exactly, both network states remain unchanged,
+104 independent candidate/target comparisons replay, and all **216 learning
+tests plus two focused JavaScript tests pass**. The fresh hard baseline itself
+improves from the previous run's eleven passes to twelve; the table compares
+the two fresh arms, not unrelated timed runs. These are repeatedly inspected
+development photos, and the scores are not established photographic calibration.
+All **2,401 application tests**, type checking, lint and the production build
+also pass. No new training, downloads or source-photo copies were needed.
+
 ### Latest solver and browser validation
 
-Main `9f260ba6`, including the border-fragment repair, generator work and the
-matched neural-training study, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39406954266)
+Main `4e353814`, including the border-fragment repair, generator work and the
+feature-priority study, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39409718903)
 on 20 October. This includes type checking, lint, application tests, build and
 all four inverse correctness shards. Timed quality benchmarks retain their
 separate advisory policy; a green workflow does not mean every timing target
-was met. The preceding `111f338a` run also passed before this push. The residual
-material-classifier and scheduling experiments above remain offline.
+was met. The preceding `9f260ba6` and `111f338a` runs also passed. The residual
+material-classifier, confidence and scheduling experiments above remain offline.
 
 The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and
 hover outline) and archive are **deployed**. The [latest release record](conni-release-qa.json)

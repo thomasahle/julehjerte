@@ -1,0 +1,1994 @@
+{
+  "schema": "native-confidence-results-1",
+  "status": "complete",
+  "date": "2026-10-20",
+  "plan": {
+    "path": "docs/inverse/datasets/native-confidence-plan.json",
+    "sha256": "7edd011a269c094c89767500d2dee3a5505c4efbf9ecfd7cb985076c7e169a75"
+  },
+  "references": {
+    "export": {
+      "path": "tmp/heart-learning/native-confidence-v1/report.json",
+      "sha256": "54fc6b84d4c9b6482bd596569ff2f129c4776484b3a43baa5d4e4f20a3c409f9"
+    },
+    "pipeline": {
+      "path": "tmp/heart-learning/native-confidence-pipeline-v1/report.json",
+      "sha256": "44b65f967c1d99dbcd934a36873273fb5e025f6627622be242be2d9353ec3005"
+    },
+    "fields": {
+      "path": "tmp/heart-learning/native-confidence-audit-v1/report.json",
+      "sha256": "3954a4d309590814e34e77977761ed91769fcbb4a3f2c371d4c529bf08b6da1e"
+    },
+    "review": {
+      "path": "tmp/heart-learning/native-confidence-review-v1/report.json",
+      "sha256": "e5e0a31e88ad1d5415a7b61951c0241637373227b18c2e08eae60d8eaa6afa76"
+    },
+    "crossTarget": {
+      "path": "tmp/heart-learning/native-confidence-cross-target-v1.json",
+      "sha256": "1c5e0e3ddd3bd44abd238511d652d725b6995da88c4ca8ed688cc0552effae81"
+    },
+    "editable": {
+      "path": "tmp/heart-learning/native-confidence-editor-v1/results.json",
+      "sha256": "fde032f41a6d12fce28fa9ba0865b00bd82263e6fb79c902b20798b33b598d08"
+    },
+    "magiCounts": {
+      "path": "tmp/heart-learning/native-confidence-magi-counts-v1.json",
+      "sha256": "2a08069869e27a9012a0cb1842cf52ad611043b9f0b11052accafee871fed7ef"
+    },
+    "wolfCounts": {
+      "path": "tmp/heart-learning/native-confidence-wolf-counts-v1.json",
+      "sha256": "d53a707cdceba18ae521ac6eb29df043f2c8990670ea8211d8680205788f3738"
+    },
+    "learningTests": {
+      "path": "tmp/heart-learning/native-confidence-learning-tests-v1.log",
+      "sha256": "e048f3bbe4e219663dd41414ccc9bee347b7a26accddf3216dacf49c1bd531e9"
+    },
+    "baseCI": {
+      "path": "tmp/heart-learning/native-confidence-base-ci.json",
+      "sha256": "6cf5b784e7b5ede770e2dd9009c7dcd20279ee84e2bacd60ebd92bef8bd42465"
+    },
+    "applicationQA": {
+      "path": "tmp/heart-learning/native-confidence-app-qa-v1/results.json",
+      "sha256": "b1f9c07c3a845c4b8beaaf91f550ed47152d07b7f947f83f01e12106712e0a26"
+    }
+  },
+  "decision": "Keep offline. Continuous scores preserve the 12 hard-control editable passes and add the wolf, but worsen mean disagreement and visibly destroy details on some failed designs. Do not replace the production objective or relax acceptance gates.",
+  "controls": {
+    "photos": 32,
+    "exactPreviousMaskReplays": 52,
+    "sameBinaryTargets": 26,
+    "sameRawScoreFields": 26,
+    "frozenBodyExact": true,
+    "frozenProjectionExact": true,
+    "trainingUpdates": 0,
+    "lossTemperature": 4,
+    "maximumIndependentSigmoidDifference": 2.980232227667301e-08,
+    "thresholdRoundoffPixels": 0,
+    "sourceCropAssetHashChecks": 496,
+    "independentCandidateTargetComparisons": 104,
+    "sourcePhotoCopies": 0,
+    "downloads": 0
+  },
+  "summary": {
+    "hard": {
+      "attemptedPhotos": 32,
+      "fixedCrops": 26,
+      "unresolvedCrops": 6,
+      "engineChecked": 12,
+      "editableConverted": 26,
+      "editableChecked": 12,
+      "meanEngineMaskDisagreement": 0.03529117476643362,
+      "meanEditableMaskDisagreement": 0.03537061872284951,
+      "errorDenominator": 26,
+      "totalSolveSeconds": 221.3616402939999,
+      "medianSolveSeconds": 9.495873791999994,
+      "maximumSolveSeconds": 10.611290999999998
+    },
+    "confidence": {
+      "attemptedPhotos": 32,
+      "fixedCrops": 26,
+      "unresolvedCrops": 6,
+      "engineChecked": 13,
+      "editableConverted": 26,
+      "editableChecked": 13,
+      "meanEngineMaskDisagreement": 0.03729870114715933,
+      "meanEditableMaskDisagreement": 0.03728589349470744,
+      "errorDenominator": 26,
+      "totalSolveSeconds": 219.48003895699995,
+      "medianSolveSeconds": 9.275969541499997,
+      "maximumSolveSeconds": 10.65497125000001
+    }
+  },
+  "changedEditablePasses": [
+    {
+      "id": "real-45ad148d9ec045be-body-1",
+      "hard": false,
+      "confidence": true
+    }
+  ],
+  "rows": [
+    {
+      "id": "real-1bcc922200edde26-body-1",
+      "status": "crop-unresolved"
+    },
+    {
+      "id": "real-80a649a21ea938ae-body-1",
+      "status": "crop-unresolved"
+    },
+    {
+      "id": "real-f6e5e128449e3cb9-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.9802282863755636e-08,
+        "scoreQuantiles": [
+          -2.0305428504943848,
+          -0.2987255424261093,
+          1.0493508577346802,
+          1.5530061602592469,
+          3.1574795246124268
+        ],
+        "meanBoundaryForce": 0.841673731803894,
+        "uncertainFraction": 0.1177125,
+        "binarySquaredLossFloor": 0.020821787416934967
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.02063125,
+          "softSquaredLoss": 0.029277954250574112,
+          "confidenceWeightedDisagreement": 0.008456164970993996,
+          "checkedPair": false,
+          "maskSha256": "f73f827f7298857e57b15e149a7c96fa62a4eb13de7df8c99602f66d163812bb",
+          "probabilitySha256": "46a5c6b84885665a6af2cb8a950d90ffb75eaf33cf094fd1704407b82682add6",
+          "solveSeconds": 9.372292667000002,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 5,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.020725,
+          "editableMissingFeatures": 5,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.01529375,
+          "softSquaredLoss": 0.025175459682941437,
+          "confidenceWeightedDisagreement": 0.004353669937700033,
+          "checkedPair": false,
+          "maskSha256": "f73f827f7298857e57b15e149a7c96fa62a4eb13de7df8c99602f66d163812bb",
+          "probabilitySha256": "f36f6a3c1d57230a6f8e9725c51d52e7ff34672b2296d8daaf0ff58dd5730b18",
+          "solveSeconds": 8.554529,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 4,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.01530625,
+          "editableMissingFeatures": 4,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-fcbcc23efea92b93-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 52441,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.9802106449317023e-08,
+        "scoreQuantiles": [
+          -1.5186266899108887,
+          -1.0143074989318848,
+          0.04716040939092636,
+          1.0270648002624512,
+          1.6724616289138794
+        ],
+        "meanBoundaryForce": 0.8153839111328125,
+        "uncertainFraction": 0.1272096260559486,
+        "binarySquaredLossFloor": 0.023053212091326714
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.013348334318567533,
+          "softSquaredLoss": 0.025969376787543297,
+          "confidenceWeightedDisagreement": 0.0029161651618778706,
+          "checkedPair": true,
+          "maskSha256": "3dd52ebd164eda7147064d1eb8e53c1750349d888b576d547aaf343526b1a1e4",
+          "probabilitySha256": "f827141dafc2601ed85f52108794595a4a5b13da5464cb0b5e53971ec6b1ce5a",
+          "solveSeconds": 7.8339919999999985,
+          "slits": {
+            "left": 4,
+            "right": 3
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.013138574779275757,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.020270399115196125,
+          "softSquaredLoss": 0.02984163537621498,
+          "confidenceWeightedDisagreement": 0.006788423750549555,
+          "checkedPair": true,
+          "maskSha256": "3dd52ebd164eda7147064d1eb8e53c1750349d888b576d547aaf343526b1a1e4",
+          "probabilitySha256": "95f0f66e7f51d537c1585cc3bda285c3e65a2cb43b0c78d1b89097a48def7770",
+          "solveSeconds": 9.987497791999997,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.02051829675254095,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-55704c6e2911bebc-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.980226232462968e-08,
+        "scoreQuantiles": [
+          -8.76150894165039,
+          -1.8426894664764404,
+          -0.25053994357585907,
+          0.798291128873825,
+          1.4694972038269043
+        ],
+        "meanBoundaryForce": 0.7661239504814148,
+        "uncertainFraction": 0.1794625,
+        "binarySquaredLossFloor": 0.0319824293255806
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.088875,
+          "softSquaredLoss": 0.0806465595960617,
+          "confidenceWeightedDisagreement": 0.048664119094610214,
+          "checkedPair": false,
+          "maskSha256": "6e18c6c968a4102dbddbd544ccb2883f8b1aee737f38d1242abe2f81dc78e155",
+          "probabilitySha256": "6812c240be0ee6ea2d48a96707c4d69a4a8f4acd831bf38957eeab08ef0e66c6",
+          "solveSeconds": 9.530238542,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 30,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.0892875,
+          "editableMissingFeatures": 30,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.09246875,
+          "softSquaredLoss": 0.08040663599967957,
+          "confidenceWeightedDisagreement": 0.04842421039938927,
+          "checkedPair": false,
+          "maskSha256": "6e18c6c968a4102dbddbd544ccb2883f8b1aee737f38d1242abe2f81dc78e155",
+          "probabilitySha256": "7d31ba14ae26a329506abc7fa694b3c8c6a55094ee766c70488880086ca16adb",
+          "solveSeconds": 9.428903833000003,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 30,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.09238125,
+          "editableMissingFeatures": 30,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-24b5ed49c9411b11-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.9802207146545356e-08,
+        "scoreQuantiles": [
+          -1.5059468746185303,
+          -1.06721031665802,
+          -0.5893288254737854,
+          1.3218109369277955,
+          6.053905010223389
+        ],
+        "meanBoundaryForce": 0.9310662150382996,
+        "uncertainFraction": 0.0279,
+        "binarySquaredLossFloor": 0.0054776594042778015
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.0291,
+          "softSquaredLoss": 0.027812708169221878,
+          "confidenceWeightedDisagreement": 0.022335048764944077,
+          "checkedPair": true,
+          "maskSha256": "513d56c1fc54920d1ea4e2879b27e9b74565dee442ded76338c56556f4d0ac6a",
+          "probabilitySha256": "a81d8b8ee2690cba9d99f0cd6fc8ce29ce80657540346739cf5146fccfc85bd1",
+          "solveSeconds": 10.496957792000002,
+          "slits": {
+            "left": 7,
+            "right": 7
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.0299625,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.02940625,
+          "softSquaredLoss": 0.027355020865797997,
+          "confidenceWeightedDisagreement": 0.021877363324165344,
+          "checkedPair": true,
+          "maskSha256": "513d56c1fc54920d1ea4e2879b27e9b74565dee442ded76338c56556f4d0ac6a",
+          "probabilitySha256": "9d6d631f9f3f834c78d9f07d662e24dd314e48568bf02f86c8b8535b98e41569",
+          "solveSeconds": 10.65497125000001,
+          "slits": {
+            "left": 3,
+            "right": 7
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.02979375,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-589f606a9d9899f2-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.980155722198674e-08,
+        "scoreQuantiles": [
+          -2.8138530254364014,
+          -0.9048996567726135,
+          -0.6609159111976624,
+          1.0695496559143067,
+          2.6795713901519775
+        ],
+        "meanBoundaryForce": 0.911483883857727,
+        "uncertainFraction": 0.02048125,
+        "binarySquaredLossFloor": 0.005093763116747141
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.07669375,
+          "softSquaredLoss": 0.06906972080469131,
+          "confidenceWeightedDisagreement": 0.06397595256567001,
+          "checkedPair": false,
+          "maskSha256": "85d4f64324cb687aecea94ad3725736da9d76783972c5dfe3e29c3cf7e0a1869",
+          "probabilitySha256": "05ba366d8705c6a2f61d6fc526d2e1fa70823af61be5c969c4f3bb5e65ca8359",
+          "solveSeconds": 9.076739166,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 3,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.07664375,
+          "editableMissingFeatures": 3,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.07036875,
+          "softSquaredLoss": 0.06281978636980057,
+          "confidenceWeightedDisagreement": 0.05772601440548897,
+          "checkedPair": false,
+          "maskSha256": "85d4f64324cb687aecea94ad3725736da9d76783972c5dfe3e29c3cf7e0a1869",
+          "probabilitySha256": "188af5d0fcb91ecda4d31261c0ef689b52db1eaf049f52895d744980431c8b34",
+          "solveSeconds": 8.838560375,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 2,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.0699625,
+          "editableMissingFeatures": 2,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-dfa7e4b71b43aa86-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.9802194490002876e-08,
+        "scoreQuantiles": [
+          -2.3882293701171875,
+          -1.1686115503311156,
+          -0.20230626314878464,
+          0.7341102957725528,
+          1.6862794160842896
+        ],
+        "meanBoundaryForce": 0.7131667733192444,
+        "uncertainFraction": 0.22530625,
+        "binarySquaredLossFloor": 0.039918962866067886
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.119575,
+          "softSquaredLoss": 0.09750300645828247,
+          "confidenceWeightedDisagreement": 0.057584043592214584,
+          "checkedPair": false,
+          "maskSha256": "78439ec46e7d3e6618566fc85699659d45441d4251c3c0775abb8d85b705876d",
+          "probabilitySha256": "ad6132558adfbda3eb2fa594875e72e6187a3e1eb83030ed3131cac9ea762a1b",
+          "solveSeconds": 9.737423207999992,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 38,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.11970625,
+          "editableMissingFeatures": 38,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.1246125,
+          "softSquaredLoss": 0.09811069816350937,
+          "confidenceWeightedDisagreement": 0.05819174647331238,
+          "checkedPair": false,
+          "maskSha256": "78439ec46e7d3e6618566fc85699659d45441d4251c3c0775abb8d85b705876d",
+          "probabilitySha256": "cc1a499b7a4b11cf593cafe28394e8381a0f113f4093e3320c5887f6b31bd300",
+          "solveSeconds": 9.509831208000003,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 37,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.12475625,
+          "editableMissingFeatures": 37,
+          "editableGeometryPassed": true,
+          "editablePaper": "uncertain"
+        }
+      }
+    },
+    {
+      "id": "real-2b0550dd86d23b40-body-1",
+      "status": "crop-unresolved"
+    },
+    {
+      "id": "real-2502cdec0720f4ea-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.9801959011699353e-08,
+        "scoreQuantiles": [
+          -1.2455437183380127,
+          -0.9552127122879028,
+          0.6030651032924652,
+          0.9922463715076446,
+          1.2620793581008911
+        ],
+        "meanBoundaryForce": 0.9159752130508423,
+        "uncertainFraction": 0.03400625,
+        "binarySquaredLossFloor": 0.006552460603415966
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.0299625,
+          "softSquaredLoss": 0.02820657379925251,
+          "confidenceWeightedDisagreement": 0.02165411412715912,
+          "checkedPair": false,
+          "maskSha256": "97e3dac87b749c2ef1624ea83bf8230f6b180828abcb064d713a8ccf47a90544",
+          "probabilitySha256": "ade5e86327c812c629a482b60232b3f6c0f47667b292cb066b67fc6ac934519a",
+          "solveSeconds": 9.886922208999996,
+          "slits": {
+            "left": 6,
+            "right": 6
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 1,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.03041875,
+          "editableMissingFeatures": 1,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.06149375,
+          "softSquaredLoss": 0.05196070671081543,
+          "confidenceWeightedDisagreement": 0.04540824517607689,
+          "checkedPair": false,
+          "maskSha256": "97e3dac87b749c2ef1624ea83bf8230f6b180828abcb064d713a8ccf47a90544",
+          "probabilitySha256": "c96c6c55d1faeff0b1e82eb0d533818edb72cb51bc4dba4a82753045bcdb0f27",
+          "solveSeconds": 9.24788887499999,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 2,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.06125,
+          "editableMissingFeatures": 2,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-d3f063052599e167-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.9802268763923223e-08,
+        "scoreQuantiles": [
+          -1.261625051498413,
+          -0.9504381120204926,
+          0.6006162166595459,
+          0.995555740594864,
+          4.26826286315918
+        ],
+        "meanBoundaryForce": 0.8324395418167114,
+        "uncertainFraction": 0.0880875,
+        "binarySquaredLossFloor": 0.0177332554012537
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.044325,
+          "softSquaredLoss": 0.03867116570472717,
+          "confidenceWeightedDisagreement": 0.020937908440828323,
+          "checkedPair": false,
+          "maskSha256": "2ff750efecd2f17aff0227e0ee74394fabc958f3d126c11e86c314b7acdc1210",
+          "probabilitySha256": "8f2fdc2a433edf3dcfb8f08f75cf711dd8d10ce602ed53a81148a61862cbc18d",
+          "solveSeconds": 10.611290999999998,
+          "slits": {
+            "left": 6,
+            "right": 6
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 2,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.04458125,
+          "editableMissingFeatures": 2,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.05,
+          "softSquaredLoss": 0.04368043318390846,
+          "confidenceWeightedDisagreement": 0.025947177782654762,
+          "checkedPair": false,
+          "maskSha256": "2ff750efecd2f17aff0227e0ee74394fabc958f3d126c11e86c314b7acdc1210",
+          "probabilitySha256": "19973e62aad59910c26489651c5fa4582f8193e34d75d468929d042f410c6401",
+          "solveSeconds": 10.459428584000008,
+          "slits": {
+            "left": 6,
+            "right": 6
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 2,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.0501,
+          "editableMissingFeatures": 2,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-a126ed5d62adfd92-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 159790,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.980148905429303e-08,
+        "scoreQuantiles": [
+          -3.2334001064300537,
+          -0.9783497512340545,
+          -0.8959713280200958,
+          0.7785196363925934,
+          1.3336052894592285
+        ],
+        "meanBoundaryForce": 0.9155358076095581,
+        "uncertainFraction": 0.021722260466862757,
+        "binarySquaredLossFloor": 0.005001860670745373
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.020188998059953688,
+          "softSquaredLoss": 0.01932395063340664,
+          "confidenceWeightedDisagreement": 0.014322087168693542,
+          "checkedPair": true,
+          "maskSha256": "7ef71a2c2bdafa0c3cb1a68500c6cc8fe63330874d46012c80c2414565d30111",
+          "probabilitySha256": "553259e6a71d8f464b859e2f1638e25a3612545c7566a6995a0652d44a482973",
+          "solveSeconds": 4.929365707999998,
+          "slits": {
+            "left": 2,
+            "right": 1
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.020188998059953688,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.020276613054634206,
+          "softSquaredLoss": 0.01935708336532116,
+          "confidenceWeightedDisagreement": 0.014355220831930637,
+          "checkedPair": true,
+          "maskSha256": "7ef71a2c2bdafa0c3cb1a68500c6cc8fe63330874d46012c80c2414565d30111",
+          "probabilitySha256": "039b10ab33a56c87d3235a029779947925dc23a61b66e2c0ec004591a0a8a39c",
+          "solveSeconds": 4.9930954999999955,
+          "slits": {
+            "left": 2,
+            "right": 1
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.02033293697978597,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-5088a58018c3aa28-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 159994,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.980205981994999e-08,
+        "scoreQuantiles": [
+          -1.5453956127166748,
+          -0.9304161310195923,
+          -0.008056551218032837,
+          0.8790514945983892,
+          2.2144083976745605
+        ],
+        "meanBoundaryForce": 0.8012830018997192,
+        "uncertainFraction": 0.08115929347350526,
+        "binarySquaredLossFloor": 0.018888721242547035
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.023294623548383065,
+          "softSquaredLoss": 0.03273605927824974,
+          "confidenceWeightedDisagreement": 0.01384733896702528,
+          "checkedPair": false,
+          "maskSha256": "26c597fe78d3bf392ebd62939a6fb303e13f307b33be138daa9b38c6b28e1821",
+          "probabilitySha256": "403f01173be17d8d5c18dbc5840ae3177baf37defa3ad290b36cad4a0e633a3d",
+          "solveSeconds": 9.82027904199998,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 3,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.023294623548383065,
+          "editableMissingFeatures": 3,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.02310086628248559,
+          "softSquaredLoss": 0.031962692737579346,
+          "confidenceWeightedDisagreement": 0.013073967769742012,
+          "checkedPair": false,
+          "maskSha256": "26c597fe78d3bf392ebd62939a6fb303e13f307b33be138daa9b38c6b28e1821",
+          "probabilitySha256": "f48d35c0a94c63c6b536b63bb21a3b428abc90079df06186e49aa2c341477cfe",
+          "solveSeconds": 9.304050208000001,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 3,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.02302586346988012,
+          "editableMissingFeatures": 3,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-1a7cfc6be8b164b5-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.980222169046698e-08,
+        "scoreQuantiles": [
+          -1.357331395149231,
+          -1.1203066945075988,
+          -0.6007415652275085,
+          0.9145680844783783,
+          1.1771018505096436
+        ],
+        "meanBoundaryForce": 0.8984839916229248,
+        "uncertainFraction": 0.02835,
+        "binarySquaredLossFloor": 0.006721497513353825
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.00485625,
+          "softSquaredLoss": 0.008453323505818844,
+          "confidenceWeightedDisagreement": 0.0017318262252956629,
+          "checkedPair": true,
+          "maskSha256": "7bc8a8b42c062c7e02088f4f6de7506afffeb5110e77d14df1d45dcf04140c0b",
+          "probabilitySha256": "22f2be80cbf860f6c42f71e6db40e0665fa04e03f8b167248d491c7b9380aa94",
+          "solveSeconds": 3.879843999999983,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.00466875,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.004775,
+          "softSquaredLoss": 0.008441335521638393,
+          "confidenceWeightedDisagreement": 0.001719839870929718,
+          "checkedPair": true,
+          "maskSha256": "7bc8a8b42c062c7e02088f4f6de7506afffeb5110e77d14df1d45dcf04140c0b",
+          "probabilitySha256": "1a62886a102f89ae7572c8cac8eb529f9f4ada6fe7460bbeda7b12fe8fc69bc1",
+          "solveSeconds": 3.992388332999981,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.0047125,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-fe7fb089d1cd86b4-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.980232227667301e-08,
+        "scoreQuantiles": [
+          -2.883197069168091,
+          -1.7984084129333495,
+          -0.4014817476272583,
+          0.47170692980289464,
+          2.200038433074951
+        ],
+        "meanBoundaryForce": 0.7026264071464539,
+        "uncertainFraction": 0.2888125,
+        "binarySquaredLossFloor": 0.046855393797159195
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.03433125,
+          "softSquaredLoss": 0.0567597821354866,
+          "confidenceWeightedDisagreement": 0.009904392994940281,
+          "checkedPair": false,
+          "maskSha256": "249a44e293c662aaab7a742e6515b62e29357cd3ac310205d9dba0025432e2ce",
+          "probabilitySha256": "9e86b29882abc374c3b316f737a4444e221f78f9f49ef953acafcbd5a5810675",
+          "solveSeconds": 9.590645416999992,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 8,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.03474375,
+          "editableMissingFeatures": 8,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.039625,
+          "softSquaredLoss": 0.05730060860514641,
+          "confidenceWeightedDisagreement": 0.010445214807987213,
+          "checkedPair": false,
+          "maskSha256": "249a44e293c662aaab7a742e6515b62e29357cd3ac310205d9dba0025432e2ce",
+          "probabilitySha256": "ec718902768eaa2ae98336a664d998e7f07e98a163a2254ada21203b91ce1582",
+          "solveSeconds": 9.783890541,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 9,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.03989375,
+          "editableMissingFeatures": 9,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-8b91ecf546833a3f-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.9802060930173013e-08,
+        "scoreQuantiles": [
+          -4.382017135620117,
+          -0.9637573301792145,
+          -0.4991050958633423,
+          1.1881906747817994,
+          2.655362129211426
+        ],
+        "meanBoundaryForce": 0.9314406514167786,
+        "uncertainFraction": 0.01116875,
+        "binarySquaredLossFloor": 0.003332580905407667
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.0161,
+          "softSquaredLoss": 0.015779707580804825,
+          "confidenceWeightedDisagreement": 0.01244712807238102,
+          "checkedPair": true,
+          "maskSha256": "e37a9352d7a427961492feb476ce43b3598ad91b701a0299c710269f9d73838b",
+          "probabilitySha256": "1c4c9713d4af0a3a57c731eb7c7982c466b61a6e324bf220253e1a893f46ca2b",
+          "solveSeconds": 6.973758541999996,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.0157875,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.0161625,
+          "softSquaredLoss": 0.015659350901842117,
+          "confidenceWeightedDisagreement": 0.012326771393418312,
+          "checkedPair": true,
+          "maskSha256": "e37a9352d7a427961492feb476ce43b3598ad91b701a0299c710269f9d73838b",
+          "probabilitySha256": "6522fad717000deac8c2f8ca50c83f072daebf646f2efa9982ac011e2fcd4a0f",
+          "solveSeconds": 7.046605917000008,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.01610625,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-b5317080eec610dc-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.9801523582229095e-08,
+        "scoreQuantiles": [
+          -1.9307128190994263,
+          -1.0250792860984803,
+          -0.5279341638088226,
+          0.1472749099135399,
+          2.0354461669921875
+        ],
+        "meanBoundaryForce": 0.7144432067871094,
+        "uncertainFraction": 0.2130625,
+        "binarySquaredLossFloor": 0.03892364725470543
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.1157625,
+          "softSquaredLoss": 0.09326909482479095,
+          "confidenceWeightedDisagreement": 0.054345447570085526,
+          "checkedPair": false,
+          "maskSha256": "a68333d0824f5b36b16bf53b411e9024935fbe74575cdaf506ad1067a5196964",
+          "probabilitySha256": "f77e68bd274505db71921286970505111b79ced0d6a6aaec8b9dd10e213c3ca2",
+          "solveSeconds": 9.935383292000013,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 44,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.1160875,
+          "editableMissingFeatures": 44,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.11404375,
+          "softSquaredLoss": 0.0908627063035965,
+          "confidenceWeightedDisagreement": 0.051939062774181366,
+          "checkedPair": false,
+          "maskSha256": "a68333d0824f5b36b16bf53b411e9024935fbe74575cdaf506ad1067a5196964",
+          "probabilitySha256": "6e07500204eb568c5bfd52009273b806e699395602ef76796bd7862c379a73aa",
+          "solveSeconds": 9.947574416999997,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 44,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.11429375,
+          "editableMissingFeatures": 44,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-c7d1e0ad5050db71-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 159985,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.9802024514857806e-08,
+        "scoreQuantiles": [
+          -1.7762343883514404,
+          -1.0846352100372314,
+          -0.8962271809577942,
+          1.0430529832839965,
+          2.839963436126709
+        ],
+        "meanBoundaryForce": 0.9287819862365723,
+        "uncertainFraction": 0.010951026658749257,
+        "binarySquaredLossFloor": 0.0036644968204200268
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.0067943869737787915,
+          "softSquaredLoss": 0.00820933934301138,
+          "confidenceWeightedDisagreement": 0.0045448425225913525,
+          "checkedPair": true,
+          "maskSha256": "017df7b5825d2e1696d37a07156036c25fb7bdaf4e3dc5c1bf43ff9afebf8a15",
+          "probabilitySha256": "ed6ecf7a0bc4022532bc19512ef296721d979d03ffd59b452df825c0a321a91c",
+          "solveSeconds": 9.590835375000024,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.006969403381567022,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.007263180923211551,
+          "softSquaredLoss": 0.008317132480442524,
+          "confidenceWeightedDisagreement": 0.00465263519436121,
+          "checkedPair": true,
+          "maskSha256": "017df7b5825d2e1696d37a07156036c25fb7bdaf4e3dc5c1bf43ff9afebf8a15",
+          "probabilitySha256": "57f9cde5c7b8c976eb9552881d02dc6adb33dc61d35666e7c281a08c713934ec",
+          "solveSeconds": 8.249525041999965,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.007338187955120793,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-45ad148d9ec045be-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.980226232462968e-08,
+        "scoreQuantiles": [
+          -1.3081583976745605,
+          -0.9640933811664582,
+          -0.08499182388186455,
+          0.999634325504303,
+          1.3025373220443726
+        ],
+        "meanBoundaryForce": 0.9052171111106873,
+        "uncertainFraction": 0.046225,
+        "binarySquaredLossFloor": 0.00849415548145771
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.01810625,
+          "softSquaredLoss": 0.01648847572505474,
+          "confidenceWeightedDisagreement": 0.007994319312274456,
+          "checkedPair": false,
+          "maskSha256": "9fbff5d61bcfb7521c2925f11ac09ad0674089e5a7269c291330e8e06f5a1c35",
+          "probabilitySha256": "e1d8c8aa4f48a5c1689c616b4431bef7c71e08e619e647dad073e5c5705bd6e0",
+          "solveSeconds": 7.53717520899995,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "fail",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.0181875,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "fail"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.01359375,
+          "softSquaredLoss": 0.013629122637212276,
+          "confidenceWeightedDisagreement": 0.005134966690093279,
+          "checkedPair": true,
+          "maskSha256": "9fbff5d61bcfb7521c2925f11ac09ad0674089e5a7269c291330e8e06f5a1c35",
+          "probabilitySha256": "25bd09876fa1a83213a237853e718bf7f7aaa0eef11ccb3f50e4b08e41d1dbbd",
+          "solveSeconds": 8.915240125000011,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.01338125,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-702942779385436c-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.980144309105981e-08,
+        "scoreQuantiles": [
+          -2.1829307079315186,
+          -1.180006504058838,
+          -0.12459579855203629,
+          1.3582935452461242,
+          2.534176826477051
+        ],
+        "meanBoundaryForce": 0.8172512650489807,
+        "uncertainFraction": 0.13758125,
+        "binarySquaredLossFloor": 0.024169228971004486
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.0619625,
+          "softSquaredLoss": 0.05121505632996559,
+          "confidenceWeightedDisagreement": 0.027045825496315956,
+          "checkedPair": false,
+          "maskSha256": "6debf5e7a3cbbcc38fb16aaf5855b5c9343b68fbc0382ae15b84fb0ac49b13be",
+          "probabilitySha256": "4ca88c6a03dabe3f650906a551397a990ed34a12151d2a61a588f259b14b7ba9",
+          "solveSeconds": 9.863782999999996,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 25,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.06200625,
+          "editableMissingFeatures": 25,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.06411875,
+          "softSquaredLoss": 0.05135900154709816,
+          "confidenceWeightedDisagreement": 0.027189776301383972,
+          "checkedPair": false,
+          "maskSha256": "6debf5e7a3cbbcc38fb16aaf5855b5c9343b68fbc0382ae15b84fb0ac49b13be",
+          "probabilitySha256": "a8cae326613bcae34a53bbb2e25bf91a97ea61cdb7b5b60b7cfd879001d4adcf",
+          "solveSeconds": 9.673665625000023,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 25,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.0641,
+          "editableMissingFeatures": 25,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-03bddab9c8f384c4-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 156254,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.9802221579444677e-08,
+        "scoreQuantiles": [
+          -1.3396190404891968,
+          -0.8718528389930725,
+          -0.5155137479305267,
+          0.7982663452625276,
+          1.8132960796356201
+        ],
+        "meanBoundaryForce": 0.8385974764823914,
+        "uncertainFraction": 0.03503910299896323,
+        "binarySquaredLossFloor": 0.011464129202067852
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.016722771897039437,
+          "softSquaredLoss": 0.02116178162395954,
+          "confidenceWeightedDisagreement": 0.009697655215859413,
+          "checkedPair": false,
+          "maskSha256": "6e8660c631c318153068e07b4e25bed9f73ee0bb82cb2968472970b31c4e7d38",
+          "probabilitySha256": "b5a8b598cd9f6b492fb4cbf774aa9f209e2919fad60b551eeec32320d72679c0",
+          "solveSeconds": 9.570431042000012,
+          "slits": {
+            "left": 5,
+            "right": 2
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 1,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.016735571569367825,
+          "editableMissingFeatures": 1,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.013727648572196553,
+          "softSquaredLoss": 0.018294019624590874,
+          "confidenceWeightedDisagreement": 0.006829890888184309,
+          "checkedPair": false,
+          "maskSha256": "6e8660c631c318153068e07b4e25bed9f73ee0bb82cb2968472970b31c4e7d38",
+          "probabilitySha256": "cf15461d118b91ab08023461cb1a7bab6fa2df0a2032392a2852f60952b35e31",
+          "solveSeconds": 9.654912666999968,
+          "slits": {
+            "left": 5,
+            "right": 3
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 1,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.01374044824452494,
+          "editableMissingFeatures": 1,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-eb60ff94dfc6e2f8-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.9802083578722716e-08,
+        "scoreQuantiles": [
+          -3.1320126056671143,
+          -1.0987149715423583,
+          0.5451493561267853,
+          0.9943487226963044,
+          1.7388877868652344
+        ],
+        "meanBoundaryForce": 0.9190231561660767,
+        "uncertainFraction": 0.0302875,
+        "binarySquaredLossFloor": 0.006156368646770716
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.0090875,
+          "softSquaredLoss": 0.010091610252857208,
+          "confidenceWeightedDisagreement": 0.0039352430030703545,
+          "checkedPair": true,
+          "maskSha256": "a46834f177743da624b38be11ef65b2c68291e640c410e2f6d6fcf252137fd56",
+          "probabilitySha256": "dee77165192d33f1b3e9b7ef1cee16ff21ea82baf408464cbf5d543964c1aa9f",
+          "solveSeconds": 8.666578333000013,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.00880625,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.009225,
+          "softSquaredLoss": 0.00966915674507618,
+          "confidenceWeightedDisagreement": 0.0035127883311361074,
+          "checkedPair": true,
+          "maskSha256": "a46834f177743da624b38be11ef65b2c68291e640c410e2f6d6fcf252137fd56",
+          "probabilitySha256": "fe9194423643fc04c9e88d4d179a9779295478da98708e994b45ad965b0596e9",
+          "solveSeconds": 9.047364583000016,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.00899375,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-af21a4ef38355dfa-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.9801744960700205e-08,
+        "scoreQuantiles": [
+          -1.0981602668762207,
+          -0.9899039447307587,
+          -0.8171627521514893,
+          0.9980335831642151,
+          3.8129193782806396
+        ],
+        "meanBoundaryForce": 0.9069140553474426,
+        "uncertainFraction": 0.05016875,
+        "binarySquaredLossFloor": 0.008909548632800579
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.0211125,
+          "softSquaredLoss": 0.020569225773215294,
+          "confidenceWeightedDisagreement": 0.011659679003059864,
+          "checkedPair": true,
+          "maskSha256": "25cbf4c2358c1cb505b2a0009c1f91c37ea04356a81ec3bb1e7e2cde53f3e81c",
+          "probabilitySha256": "4f0464466a6903d3f3e9b7f250600695c11f8f2ecd2b940d6aff9ce785bd79c8",
+          "solveSeconds": 3.7168689579999774,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.0208125,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.0205125,
+          "softSquaredLoss": 0.019682135432958603,
+          "confidenceWeightedDisagreement": 0.01077258586883545,
+          "checkedPair": true,
+          "maskSha256": "25cbf4c2358c1cb505b2a0009c1f91c37ea04356a81ec3bb1e7e2cde53f3e81c",
+          "probabilitySha256": "530ebf0918ee933cc7d5e562fc68a73b73bcaf73398d18acc5592c60631c34fe",
+          "solveSeconds": 3.581892374999996,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.02049375,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-f4bd8d13fc7e68d0-body-1",
+      "status": "crop-unresolved"
+    },
+    {
+      "id": "real-f05cf91c134daea9-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.980231639249098e-08,
+        "scoreQuantiles": [
+          -3.4471957683563232,
+          -0.7725364923477173,
+          0.11066846176981926,
+          1.0927831649780275,
+          1.4723782539367676
+        ],
+        "meanBoundaryForce": 0.8247647285461426,
+        "uncertainFraction": 0.08398125,
+        "binarySquaredLossFloor": 0.017933132126927376
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.03135625,
+          "softSquaredLoss": 0.034960269927978516,
+          "confidenceWeightedDisagreement": 0.01702713593840599,
+          "checkedPair": false,
+          "maskSha256": "f2385b1c3e03bdf0a1d1c26109f857c7df797120bcf215aabe5a668b17d49a7e",
+          "probabilitySha256": "3c00906e63456e8ea0270431a6bb8678ff88bfadb5f2a37244c72760547d6d41",
+          "solveSeconds": 9.662106708000007,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.0314375,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.0417875,
+          "softSquaredLoss": 0.039483536034822464,
+          "confidenceWeightedDisagreement": 0.021550407633185387,
+          "checkedPair": false,
+          "maskSha256": "f2385b1c3e03bdf0a1d1c26109f857c7df797120bcf215aabe5a668b17d49a7e",
+          "probabilitySha256": "5d2b66a62da3810d56ab06233219373453b96f7b20699ae37ceceb500eb4e906",
+          "solveSeconds": 9.598049249999981,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 1,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.0419375,
+          "editableMissingFeatures": 1,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-12f272f48ed09d51-body-1",
+      "status": "crop-unresolved"
+    },
+    {
+      "id": "real-28a87a8be083f16c-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 159975,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.980210944691919e-08,
+        "scoreQuantiles": [
+          -2.071902275085449,
+          -1.062294816970825,
+          -0.3322330713272095,
+          1.1980443000793457,
+          1.7486071586608887
+        ],
+        "meanBoundaryForce": 0.9085594415664673,
+        "uncertainFraction": 0.03487419909360838,
+        "binarySquaredLossFloor": 0.007602446712553501
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.017146429129551492,
+          "softSquaredLoss": 0.017524173483252525,
+          "confidenceWeightedDisagreement": 0.009921726770699024,
+          "checkedPair": true,
+          "maskSha256": "1aff07ab7f0ca7a1a54e8b86d48ba7303dbfbaf0c73ca2e854af91c240a74817",
+          "probabilitySha256": "2d5e9f71d37981f51b1ce16649cac7f618ce33ff321f7c26022a24debde9ba63",
+          "solveSeconds": 9.962203916999977,
+          "slits": {
+            "left": 5,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.01705891545553993,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.016140021878418502,
+          "softSquaredLoss": 0.01683913916349411,
+          "confidenceWeightedDisagreement": 0.009236692450940609,
+          "checkedPair": true,
+          "maskSha256": "1aff07ab7f0ca7a1a54e8b86d48ba7303dbfbaf0c73ca2e854af91c240a74817",
+          "probabilitySha256": "12a9e21c85585e047e0c7bf891a1986244b4b25b412eb714aac2d0d9ddb25bd6",
+          "solveSeconds": 9.89909387500002,
+          "slits": {
+            "left": 5,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.01598374746054071,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-ce66f9634c2c613b-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.9801996426215283e-08,
+        "scoreQuantiles": [
+          -23.351707458496094,
+          -1.287182080745697,
+          -0.7393207252025604,
+          1.0219977617263794,
+          1.243959665298462
+        ],
+        "meanBoundaryForce": 0.9459174871444702,
+        "uncertainFraction": 0.0098375,
+        "binarySquaredLossFloor": 0.0024387482553720474
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.05065625,
+          "softSquaredLoss": 0.047550030052661896,
+          "confidenceWeightedDisagreement": 0.0451112762093544,
+          "checkedPair": false,
+          "maskSha256": "c27bd45f6bd4af53defe17fd39e0679f722ef2c1dfdd39c25d89e82e3ccd7b4b",
+          "probabilitySha256": "54c1ed207243417b49e96d8ea013b552dd1c52b8a9fe4be1f75a897c67e77383",
+          "solveSeconds": 9.101297375000025,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.0507125,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.05015625,
+          "softSquaredLoss": 0.047064606100320816,
+          "confidenceWeightedDisagreement": 0.044625863432884216,
+          "checkedPair": false,
+          "maskSha256": "c27bd45f6bd4af53defe17fd39e0679f722ef2c1dfdd39c25d89e82e3ccd7b4b",
+          "probabilitySha256": "dd4990712ecceed92ab66eec100d29d6f789c5a8dc694e403f30b87e00cfe80a",
+          "solveSeconds": 9.101548332999984,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": false,
+          "editableError": 0.05010625,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-52e732b98f9b14f1-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.9802241452436817e-08,
+        "scoreQuantiles": [
+          -2.2339882850646973,
+          -1.2447513580322265,
+          -0.7733014225959778,
+          1.0336601853370668,
+          1.512325644493103
+        ],
+        "meanBoundaryForce": 0.919090211391449,
+        "uncertainFraction": 0.0173625,
+        "binarySquaredLossFloor": 0.004682689439505339
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.0205875,
+          "softSquaredLoss": 0.019963357597589493,
+          "confidenceWeightedDisagreement": 0.015280666761100292,
+          "checkedPair": true,
+          "maskSha256": "25b2e1122dbbd6b62eb6666f8527144267804ee61807dae66de3d1c91b00f79d",
+          "probabilitySha256": "a40197275ae3556b815fdfaad55632d364f90296129dd21e83a12a9deb9f8840",
+          "solveSeconds": 9.46150904199999,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.02076875,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.02375625,
+          "softSquaredLoss": 0.02229352295398712,
+          "confidenceWeightedDisagreement": 0.017610833048820496,
+          "checkedPair": true,
+          "maskSha256": "25b2e1122dbbd6b62eb6666f8527144267804ee61807dae66de3d1c91b00f79d",
+          "probabilitySha256": "a40551c0b4952fb706531c88d06071baebb818d02133799fb4029b166bb746b9",
+          "solveSeconds": 9.375099416000012,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.0237125,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-7e9f6f83ae43ec2a-body-1",
+      "status": "crop-unresolved"
+    },
+    {
+      "id": "real-d4f6e3c76cf08ea8-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.9802141643386904e-08,
+        "scoreQuantiles": [
+          -1.8482048511505127,
+          -0.8415224730968476,
+          0.16833259910345078,
+          0.9536703765392304,
+          1.2098597288131714
+        ],
+        "meanBoundaryForce": 0.8923518657684326,
+        "uncertainFraction": 0.02073125,
+        "binarySquaredLossFloor": 0.006082229781895876
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.00500625,
+          "softSquaredLoss": 0.008010705932974815,
+          "confidenceWeightedDisagreement": 0.0019284752197563648,
+          "checkedPair": true,
+          "maskSha256": "a365f524740c1b7e0d215c8657faf31573dc58c24452fca2a33e258dfa038fcb",
+          "probabilitySha256": "81cec550546f4ac641d65b616d1dc573e5a47428297cc54268e77aeb6f31baeb",
+          "solveSeconds": 6.9195,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.00483125,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.00538125,
+          "softSquaredLoss": 0.008096452802419662,
+          "confidenceWeightedDisagreement": 0.0020142237190157175,
+          "checkedPair": true,
+          "maskSha256": "a365f524740c1b7e0d215c8657faf31573dc58c24452fca2a33e258dfa038fcb",
+          "probabilitySha256": "ac98cf39e2f0a8ab67db8c4a7424e6259952172de25c77fd40393369f308e39f",
+          "solveSeconds": 5.460140374999959,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.00515625,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    },
+    {
+      "id": "real-41b7c3e0b79f1265-body-1",
+      "status": "complete",
+      "confidence": {
+        "observedPixels": 160000,
+        "thresholdRoundoffPixels": 0,
+        "maximumProbabilityReplayDifference": 2.9802292855762857e-08,
+        "scoreQuantiles": [
+          -1.178855538368225,
+          -1.0145535707473754,
+          -0.654828667640686,
+          0.9108688116073609,
+          3.6685116291046143
+        ],
+        "meanBoundaryForce": 0.8895973563194275,
+        "uncertainFraction": 0.06129375,
+        "binarySquaredLossFloor": 0.010895771905779839
+      },
+      "methods": {
+        "hard": {
+          "binaryDisagreement": 0.0219875,
+          "softSquaredLoss": 0.0216963030397892,
+          "confidenceWeightedDisagreement": 0.010800529271364212,
+          "checkedPair": true,
+          "maskSha256": "e659afc4a4868b65c54d818f5dd09d61a3f04399e4134afa6ed649a455460f94",
+          "probabilitySha256": "0aa0c65c316596d1ca8cb612a58bf3c6a15121ed608d467133bb4d40fb342d5d",
+          "solveSeconds": 5.63421875,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.022075,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        },
+        "confidence": {
+          "binaryDisagreement": 0.02220625,
+          "softSquaredLoss": 0.021621430292725563,
+          "confidenceWeightedDisagreement": 0.010725660249590874,
+          "checkedPair": true,
+          "maskSha256": "e659afc4a4868b65c54d818f5dd09d61a3f04399e4134afa6ed649a455460f94",
+          "probabilitySha256": "e5d742d33d48ba6cd4ccdc0b095f68f73cb3877256cdd0f6321a82da9635c268",
+          "solveSeconds": 5.174291458000021,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "engineGeometryPassed": true,
+          "enginePaper": "pass",
+          "engineMissingFeatures": 0,
+          "editableConverted": true,
+          "editableChecked": true,
+          "editableError": 0.02205625,
+          "editableMissingFeatures": 0,
+          "editableGeometryPassed": true,
+          "editablePaper": "pass"
+        }
+      }
+    }
+  ],
+  "visualReview": {
+    "allPhotosInspected": 32,
+    "gallery": [
+      {
+        "path": "tmp/heart-learning/native-confidence-audit-v1/confidence-01.jpg",
+        "sha256": "fdfeb0687c0fe47e4f02e3b75756dd3761f53c20270ed52a6cf8e6cce9d429fd",
+        "ids": [
+          "real-1bcc922200edde26-body-1",
+          "real-80a649a21ea938ae-body-1",
+          "real-f6e5e128449e3cb9-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-audit-v1/confidence-02.jpg",
+        "sha256": "b5c8e15a2a8aea6194d1115b717c31837346324d56a5d836bfc9338aaffb73cb",
+        "ids": [
+          "real-fcbcc23efea92b93-body-1",
+          "real-55704c6e2911bebc-body-1",
+          "real-24b5ed49c9411b11-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-audit-v1/confidence-03.jpg",
+        "sha256": "091ca7ae2c69ff18f2c19f80f2c0718b6b9812c2e3abbfc4140b8edde2710b89",
+        "ids": [
+          "real-589f606a9d9899f2-body-1",
+          "real-dfa7e4b71b43aa86-body-1",
+          "real-2b0550dd86d23b40-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-audit-v1/confidence-04.jpg",
+        "sha256": "a6d8d61f998b6231c8919461ab23c4c02955d78725208463b02827c84f0c44ad",
+        "ids": [
+          "real-2502cdec0720f4ea-body-1",
+          "real-d3f063052599e167-body-1",
+          "real-a126ed5d62adfd92-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-audit-v1/confidence-05.jpg",
+        "sha256": "cd9ba5fe6bc30c12055447ed9c241d93a28769318b55e80454daa3cb2793c67e",
+        "ids": [
+          "real-5088a58018c3aa28-body-1",
+          "real-1a7cfc6be8b164b5-body-1",
+          "real-fe7fb089d1cd86b4-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-audit-v1/confidence-06.jpg",
+        "sha256": "fa78071659b8b987a490a7f3e25b83a308205c7419bc7c88d72762dffdb4ce99",
+        "ids": [
+          "real-8b91ecf546833a3f-body-1",
+          "real-b5317080eec610dc-body-1",
+          "real-c7d1e0ad5050db71-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-audit-v1/confidence-07.jpg",
+        "sha256": "05830faba212f0294b6dbda25d8db46ed9f41bd9b27384c93af1bc6bb4fda463",
+        "ids": [
+          "real-45ad148d9ec045be-body-1",
+          "real-702942779385436c-body-1",
+          "real-03bddab9c8f384c4-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-audit-v1/confidence-08.jpg",
+        "sha256": "b258e9cb4a35f1adb89b64a8462007f6cadc1da309c665150e5eed72940a1c1b",
+        "ids": [
+          "real-eb60ff94dfc6e2f8-body-1",
+          "real-af21a4ef38355dfa-body-1",
+          "real-f4bd8d13fc7e68d0-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-audit-v1/confidence-09.jpg",
+        "sha256": "82a40145cc2e91fb9e2305198c05bac158e8936e73c8ad0f1eae067bba057d28",
+        "ids": [
+          "real-f05cf91c134daea9-body-1",
+          "real-12f272f48ed09d51-body-1",
+          "real-28a87a8be083f16c-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-audit-v1/confidence-10.jpg",
+        "sha256": "14d26fba21a59532d9faa549f05c2c0f7f93dd76af40c3d6608262ce7403cfd6",
+        "ids": [
+          "real-ce66f9634c2c613b-body-1",
+          "real-52e732b98f9b14f1-body-1",
+          "real-7e9f6f83ae43ec2a-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/native-confidence-audit-v1/confidence-11.jpg",
+        "sha256": "5cab1cd3dbf1c349733435b8c91221b649dd377fca161897a42d7fa1a63359fe",
+        "ids": [
+          "real-d4f6e3c76cf08ea8-body-1",
+          "real-41b7c3e0b79f1265-body-1"
+        ]
+      }
+    ],
+    "findings": [
+      "The oblique filled basket and reflective building have incorrect fixed crops in both arms; soft scores do not recover the intended designs. Six unresolved crops remain.",
+      "Printed ink still becomes cutting geometry on the striped/dotted G, tree/star wrapping, HO HO paper and floral paper. The confidence field contains the same confusing ink.",
+      "Both versions lose fine human/bird details in the blue/gold silhouette; both leave false channels and border defects in the flower and nested hearts.",
+      "The three-wise-men/star design is visibly worse with confidence: the star largely disappears and central silhouettes merge. Hard disagreement is 2.99625%, soft 6.149375%; missing source features increase from one to two. Neither passes the complete gates.",
+      "The octopus loses thin curled tentacles in the confidence result, increasing error from 3.135625% to 4.17875%.",
+      "The wolf improves visibly and passes both engine and independent editable paper checks. Its editable disagreement falls from 1.81875% to 1.338125%.",
+      "Several small aggregate improvements retain false seams; a passing derived-mask score is not complete recovery of the original artwork."
+    ]
+  },
+  "rootCauses": [
+    {
+      "case": "real-2502cdec0720f4ea-body-1",
+      "finding": "Exactly zero binary-mask changes. Both timing-free ABBA replays reproduce every original coarse/fine error and finalist preference. The hard shortlist includes six cuts (phase +1); soft replaces that candidate with five cuts (phase -1). Under soft fitting, the omitted six-cut candidate still retains source regions and has 5.329895% initialization-grid disagreement, but it is not shortlisted.",
+      "scheduling": "Hard feature-priority selection reserves grid refinement: about 2.81 s routing and 2.79 s direct refinement. Soft first-choice five-cut grid routes for about 5.44 s and leaves about 0.067 s direct refinement. This is an objective/count/routing interaction on an identical crop, not a crop or binary-classification change. The diagnostic verifies the shortlist deterministically; the later timed trajectory is one observed run."
+    },
+    {
+      "case": "real-45ad148d9ec045be-body-1",
+      "finding": "Both arms start with four cuts per sheet, and the ABBA initialization diagnostics replay exactly. Later routing/refinement differs. The hard final candidate has two significant floating offset-core islands totaling about 2.023 mm^2 in one sheet; confidence has none and passes the independent editable paper audit. Cut count alone does not explain the gain. This is not an isolated gradient-only causal test."
+    },
+    {
+      "scope": "all 26 fields",
+      "finding": "For binary renders, squared error against p equals a fixed floor plus disagreement weighted by |1-2p|. The independent audit verifies that decomposition. Confidence optimization can therefore downweight a real thin detail as well as photographic noise. Grid ranking also thresholds resampled probabilities, so identical native hard masks do not imply identical coarse objectives."
+    }
+  ],
+  "limitations": [
+    "These are the same repeatedly inspected development photos, not an untouched evaluation set.",
+    "The scores use the existing training scale; calibration on real photographs has not been established.",
+    "The new hard control gives 12 passes rather than the earlier run's 11, so compare the two fresh arms, not unrelated timed baselines.",
+    "Both methods receive a ten-second search allowance; reported solve time includes final work and reaches about 10.65 seconds. Cropping/export-audit/startup time is separate.",
+    "Nominal geometry and paper checks do not establish physical assembly, tear resistance or exact original-template recovery."
+  ],
+  "validation": {
+    "learningTests": 216,
+    "learningModules": 45,
+    "focusedJavaScriptTests": 2,
+    "editableConversions": 52,
+    "productionCodeChanged": false,
+    "acceptanceLimitsChanged": false,
+    "applicationTestsPassed": 2401,
+    "applicationTestsSkipped": 196,
+    "applicationFilesPassed": 159,
+    "typeCheckPassed": true,
+    "lintPassed": true,
+    "buildPassed": true,
+    "productionTreeMatchesGreenCI": "4e353814c3ae3813c94f84924af79e2fa6925a57"
+  },
+  "nextExperiment": "Hold the starting cut geometry fixed and compare binary versus continuous refinement with matched work, original mask/feature/geometry/paper gates, and all failed cases retained. This separates useful boundary forces from changing count selection and routing budgets.",
+  "resources": {
+    "workerThreads": 1,
+    "nice": 15,
+    "exportArtifactBytes": 27030864,
+    "exportArtifactCapMiB": 50,
+    "studyUniqueArtifactBytesAtRecording": 84861504,
+    "studyIncludes": [
+      "export",
+      "52 full fits",
+      "field and visual audits",
+      "editable audit",
+      "two ABBA diagnostics",
+      "logs"
+    ],
+    "hardLinkedEditorInputs": true,
+    "sourcePhotoCopies": 0,
+    "downloads": 0,
+    "freeGiBAtCheck": 43
+  }
+}

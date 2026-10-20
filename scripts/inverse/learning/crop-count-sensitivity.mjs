@@ -41,6 +41,18 @@ for(const [directory,method] of [[args.run,args['reference-method']||'fallback']
  const cfg=settings(report.configuration);
  const source=prepare({type:'mask',mask,resolution:row.resolution},{...report.configuration,invert:false,removeSpecks:0,fillHoles:0}).target.sourceImage;
  assert.equal(hash(source.mask),row.targetMaskSha256);assert.ok(!source.weights&&!source.validMask&&!cfg.symmetry);
+ if(report.targetMode==='native'){
+  if(row.assets['fitting-probability.bin']){
+   const asset=row.assets['fitting-probability.bin'],file=path.resolve(directory,asset.path);
+   assert.ok(file.startsWith(path.resolve(directory)+path.sep));
+   const raw=await fs.readFile(file);assert.equal(hash(raw),asset.sha256);assert.equal(raw.length,mask.length*4);
+   source.probability=Float32Array.from({length:mask.length},(_,i)=>raw.readFloatLE(4*i));
+   assert.ok(source.probability.every(p=>Number.isFinite(p)&&p>=0&&p<=1));
+  }
+  const raw=Buffer.alloc(mask.length*4);
+  for(let i=0;i<mask.length;i++)raw.writeFloatLE(source.probability[i],4*i);
+  assert.equal(hash(raw),row.targetProbabilitySha256,'Replay the actual fitting objective');
+ }
  inputs.push({directory,report:{path:filename,sha256:hash(raw),method},row,cfg,source,sourceHashes:report.sourceHashes});
 }
 assert.equal(inputs[0].row.sourceSha256,inputs[1].row.sourceSha256);
@@ -97,5 +109,6 @@ for(const input of inputs)for(const [file,sha] of Object.entries(input.sourceHas
 const result={schema:'crop-count-sensitivity-1',id:args.id,status:'complete',backend,
  implementationSha256:hash(await fs.readFile(new URL(import.meta.url))),inputs:inputs.map(i=>i.report),
  sourceHashes:inputs[0].sourceHashes,maskChanges:inputs[0].source.mask.reduce((s,v,i)=>s+Number(v!==inputs[1].source.mask[i]),0),
+ probabilityChanges:inputs[0].source.probability.reduce((s,v,i)=>s+Number(v!==inputs[1].source.probability[i]),0),
  scope:'Development diagnostic on an already inspected case. ABBA order with identical 18-round initialization and 150-step fine fits, without clock deadlines. Every recorded seed error, fine error and finalist preference exactly reproduces the original timed runs. Omitted finalists from the other arm are post-hoc fixed-work probes, not production candidates or validated templates. No full-curve rerun, production change or quality claim.',runs};
 await fs.writeFile(args.output,JSON.stringify(result,null,2)+'\n',{flag:'wx'});
