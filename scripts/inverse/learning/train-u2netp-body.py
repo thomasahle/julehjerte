@@ -14,6 +14,7 @@ import torch
 from data import digest
 from body_schedule import training_draws
 from body_trainable import configure_trainable, optimizer_parameters
+from body_outline import prepare_outline, outline_bce, outline_metrics, outline_options
 from preserved_candidate import pinned
 from real_foreground import masked_foreground_loss, known_region_metrics
 from u2netp_adaptation import (frozen_hash, fused_logits, normalize_scores,
@@ -63,6 +64,9 @@ def main():
     for row in source['files']: pinned({'path': str(upstream/row['path']), 'sha256': row['sha256']})
     import skimage
     if skimage.__version__ != p['skimage']: raise ValueError('Changed upstream input implementation')
+    import scipy
+    if outline_options(p) and scipy.__version__ != p['scipy']:
+        raise ValueError('Changed outline-distance implementation version')
     loader = module(upstream/'data_loader.py', 'u2netp_body_data')
     architecture = module(upstream/'model/u2net.py', 'u2netp_body_model')
     rescale, normalize = loader.RescaleT(320), loader.ToTensorLab(flag=0)
@@ -71,10 +75,11 @@ def main():
     trainable = configure_trainable(model, p); initial_frozen = frozen_hash(model)
     real, separation = real_training(plan, rescale, normalize)
     synthetic = synthetic_training(plan, rescale, normalize)
+    outline = prepare_outline(real+synthetic, p)
     initial = predict(model, real)
     source = Path(__file__).parent
     dependencies = [Path(__file__)]+[source/f for f in ['u2netp_adaptation.py', 'preserved_candidate.py',
-        'real_foreground.py', 'foreground.py', 'data.py', 'body_schedule.py', 'body_trainable.py']]
+        'real_foreground.py', 'foreground.py', 'data.py', 'body_schedule.py', 'body_trainable.py', 'body_outline.py']]
     dependencies += [source.parent/'datasets'/f for f in ['real_annotations.py', 'real_materials.py']]
     hashes = {str(f): digest(f.read_bytes()) for f in dependencies}
     draws = training_draws(plan, len(synthetic), len(real))
@@ -87,6 +92,9 @@ def main():
               'trainingInputs': [{'id': i['id'], **i['evidence'], 'inputTensorSha256': digest(i['input'].numpy().tobytes())}
                                  for i in real+synthetic], 'draws': draws, 'history': [], 'sampledIds': [],
               'scope': plan['scope']}
+    if outline:
+        report['outlineSupervision'] = outline
+        report['runtime']['scipy'] = scipy.__version__
     args.output.mkdir(parents=True, exist_ok=False)
     def save():
         for file, expected in hashes.items(): pinned({'path': file, 'sha256': expected})
@@ -105,10 +113,14 @@ def main():
             labels = np.stack([i['labels'] for i in batch])[:, None]
             target = torch.from_numpy((labels == 1).astype(np.float32))
             weight = torch.from_numpy((labels != 255).astype(np.float32))
+            band = torch.from_numpy(np.stack([i['outlineBand'] for i in batch])[:, None].astype(np.float32)) if outline else None
             for enabled, axis in zip(draw['flips'], [-1, -2]):
                 if enabled: rgb, target, weight = rgb.flip(axis), target.flip(axis), weight.flip(axis)
+                if enabled and band is not None: band = band.flip(axis)
             optimizer.zero_grad(set_to_none=True)
-            loss = masked_foreground_loss(fused_logits(model, rgb), target, weight)
+            logits = fused_logits(model, rgb)
+            loss = masked_foreground_loss(logits, target, weight)
+            if band is not None: loss = loss+p['outlineLoss']['weight']*outline_bce(logits, target, weight, band)
             if not torch.isfinite(loss): raise ValueError('Nonfinite training loss')
             loss.backward(); torch.nn.utils.clip_grad_norm_([x for x in model.parameters() if x.requires_grad], 5)
             optimizer.step(); report['history'].append(float(loss.detach()))
@@ -128,6 +140,8 @@ def main():
                       frozenStateUnchanged=True, trainingMetrics={'initial': known_region_metrics(initial, metrics_items),
                                                                  'final': known_region_metrics(final, metrics_items)},
                       checkpointSha256=digest((args.output/'model.pt').read_bytes()))
+        if outline:
+            report['trainingOutlineMetrics'] = {'initial': outline_metrics(initial, real), 'final': outline_metrics(final, real)}
         report['artifacts'] = {f.name: digest(f.read_bytes()) for f in args.output.iterdir() if f.is_file() and f.name != 'report.json'}
         report['artifactBytes'] = sum(f.stat().st_size for f in args.output.iterdir() if f.is_file())
         if report['artifactBytes'] > plan['resources']['maxArtifactMiB']*1024**2: raise ValueError('Artifact budget exceeded')

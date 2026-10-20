@@ -11,9 +11,10 @@ from data import digest
 from body_schedule import training_draws
 from body_provenance import verify_body_sources
 from body_trainable import configure_trainable, encoder_options
+from body_outline import outline_options, prepare_outline, outline_metrics
 from preserved_candidate import pinned
 from real_foreground import known_region_metrics
-from u2netp_adaptation import frozen_hash, normalize_scores, real_training
+from u2netp_adaptation import frozen_hash, normalize_scores, real_training, synthetic_training
 
 
 def module(file, name):
@@ -52,9 +53,18 @@ def main():
     loader = module(root/'data_loader.py', 'audit_u2netp_loader')
     real, separation = real_training(plan, loader.RescaleT(320), loader.ToTensorLab(flag=0))
     if separation != report['sourceSeparation']: raise ValueError('Source separation changed')
-    for item, recorded in zip(real, report['trainingInputs']):
+    outlined = outline_options(plan['protocol']) is not None
+    items = real
+    if outlined:
+        import scipy
+        if scipy.__version__ != plan['protocol']['scipy'] or scipy.__version__ != report['runtime']['scipy']:
+            raise ValueError('Outline implementation version changed')
+        items = real+synthetic_training(plan, loader.RescaleT(320), loader.ToTensorLab(flag=0))
+        if len(items) != len(report['trainingInputs']) or prepare_outline(items, plan['protocol']) != report['outlineSupervision']:
+            raise ValueError('Real/synthetic outline-supervision fields changed')
+    for item, recorded in zip(items, report['trainingInputs']):
         if {'id': item['id'], **item['evidence'], 'inputTensorSha256': digest(item['input'].numpy().tobytes())} != recorded:
-            raise ValueError('Real input/target changed')
+            raise ValueError('Input/target changed')
     for item in report['trainingInputs']:
         pinned({'path': item['photo'], 'sha256': item['photoSha256']})
     real_ids = [i['id'] for i in real]; synthetic_ids = [i['id'] for i in report['trainingInputs'][len(real):]]
@@ -77,7 +87,7 @@ def main():
                      'weight': (i['labels'] != 255).astype(np.float32)} for i in real]
     saved = np.load(args.run/'training-predictions.npz', allow_pickle=False)
     if saved['ids'].tolist() != real_ids: raise ValueError('Prediction identities differ')
-    maximum = {}; metrics = {}; comparisons = {}
+    maximum = {}; metrics = {}; comparisons = {}; boundary_metrics = {}
     for name, state in [('initial', initial), ('final', final)]:
         model.load_state_dict(state, strict=True)
         with torch.no_grad():
@@ -86,7 +96,10 @@ def main():
         metrics[name] = known_region_metrics(values, metrics_items)
         comparisons[name] = {**prediction_agreement(values, saved[name]),
                              'metricsExact': metrics[name] == report['trainingMetrics'][name]}
-    passed = all(c['passed'] and c['metricsExact'] for c in comparisons.values())
+        if outlined:
+            boundary_metrics[name] = outline_metrics(values, real)
+            comparisons[name]['outlineMetricsExact'] = boundary_metrics[name] == report['trainingOutlineMetrics'][name]
+    passed = all(c['passed'] and c['metricsExact'] and c.get('outlineMetricsExact', True) for c in comparisons.values())
     result = {'schema': 'u2netp-body-audit-1', 'passed': passed,
               'report': {'path': str(args.run/'report.json'), 'sha256': digest(raw)},
               'sourceSeparation': separation, 'updates': len(draws), 'sourcePhotosRechecked': len(report['trainingInputs']),
@@ -95,6 +108,8 @@ def main():
               'trainableParameters': trainable, 'adaptedEncoderStages': encoder_options(plan['protocol'])[0],
               'predictionMaximumDifference': maximum, 'predictionComparisons': comparisons, 'trainingMetrics': metrics,
               'scope': 'Independent checkpoint reload, frozen weights/buffers, draw schedule, source identities, input/label hashes, predictions and metrics. The initial bitwise replay gate failed at 1.1920929e-7; this diagnostic gate allows one float32 epsilon on the unit probability interval while requiring identical threshold masks and metrics. It is not a bitwise replay, second optimization run, browser parity check or held-out quality result.'}
+    if outlined:
+        result.update(outlineSupervisionRecomputed=True, outlineInputsRecomputed=len(items), trainingOutlineMetrics=boundary_metrics)
     with args.output.open('x') as file: file.write(json.dumps(result, indent=2)+'\n')
     print(json.dumps({'passed': passed, 'changedTensors': len(changed), 'predictionMaximumDifference': maximum, 'comparisons': comparisons}))
     if not passed: raise ValueError('Prediction replay failed; differences retained in the audit report')
