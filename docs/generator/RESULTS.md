@@ -36,6 +36,18 @@ clean and **14** hard to cut, none refused (the star, tree, heart, angel, bell,
 gift, moon, house and flower clean), median 0.45 s, at most 2.5 s (the cookie).
 The fixture has **1,706** entries.
 
+Islands (2026-10-20). An outline crossing no line, such as a counter alone in
+its square, needs two hidden cuts, between which it changes sheet; the
+candidates from its face's sides, aimed at its centre, often leave it at a
+sharp angle or too close to the outline around it, and with none the search
+ends at once ("exhausted", nothing learned). Where they leave an island fewer
+than two, it also gets the shortest hidden cuts from each side and island of
+its face, once where they come nearest and once at least a quarter of the way
+round from there. Over the corpus on four strips at the default size, 46
+hearts are unchanged, the rabbit and the bicycle are now clean, and the coffee,
+crown and apple are cut differently: **39** clean, **12** hard, none refused,
+24 s in all instead of 25.
+
 Sizes (2026-10-19). Up to the default size the motif keeps its place, so it
 only grows with the slider. The fit to the paper measured the motif's reach
 from its box's centre the same way up as down, so a heart's point never got
