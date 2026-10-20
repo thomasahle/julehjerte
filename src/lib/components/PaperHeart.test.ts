@@ -217,6 +217,36 @@ describe('the Escher tab', () => {
 		expect(JSON.stringify(h.fingers)).toBe(opened);
 	});
 
+	it('adds a node to every copy of a curve double-clicked, though the second click lands on a handle of the curve', async () => {
+		const tile = ruleStart(opposite('move', 'move'), 4);
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
+		const counts = () => h.fingers.filter((f) => /^[LR]-[1-4]$/.test(f.id)).map((f) => `${f.id}:${f.segments.length}`);
+		expect(counts()).toEqual(['L-1:5', 'L-2:5', 'L-3:5', 'L-4:5', 'R-1:5', 'R-2:5', 'R-3:5', 'R-4:5']);
+		// a point on the bent curve of L-2's second stretch
+		const seg = h.fingers.find((f) => f.id === 'L-2')!.segments[1]!;
+		const t = 0.55;
+		const u = 1 - t;
+		const at = {
+			x: u * u * u * seg.p0.x + 3 * u * u * t * seg.p1.x + 3 * u * t * t * seg.p2.x + t * t * t * seg.p3.x,
+			y: u * u * u * seg.p0.y + 3 * u * u * t * seg.p1.y + 3 * u * t * t * seg.p2.y + t * t * t * seg.p3.y
+		};
+		send(h.path('L-2'), 'pointerdown', at);
+		send(h.svg, 'pointerup', at);
+		// the first click selected the cut and showed its handles; the second lands on one
+		const handle = h.target.querySelector('circle[style*="cursor: pointer"]')!;
+		send(handle, 'pointerdown', at);
+		send(h.svg, 'pointerup', at);
+		expect(counts()).toEqual(['L-1:10', 'L-2:10', 'L-3:10', 'L-4:10', 'R-1:5', 'R-2:5', 'R-3:5', 'R-4:5']);
+		expect(chosenType(h)).toBe('Moved');
+		// the node selected is the one added, where it was put: in L-2's second stretch, after the node
+		// the first stretch got too
+		const nodes = h.fingers.find((f) => f.id === 'L-2')!.segments.map((s) => s.p0);
+		const selected = [...h.handles()].findIndex((el) => el.getAttribute('fill') === '#ffcc00');
+		expect(selected).toBe(3);
+		expect(Math.hypot(nodes[3]!.x - at.x, nodes[3]!.y - at.y)).toBeLessThan(1);
+	});
+
 	it('starts the tile over as its type starts, at its size, which Fortryd takes back', async () => {
 		const tile = { ...knobTile(opposite('move', 'turn')), cuts: 4 };
 		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });

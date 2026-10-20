@@ -2020,7 +2020,13 @@
 		applyOverrides(overrides);
 
 		selectedFingerId = fingerId;
-		selectedAnchors = [inserted.insertedAnchorIdx];
+		// The Escher tab makes the cut again with the node in every copy of the curve, earlier stretches
+		// of the same cut too: the node added is the one where it was put.
+		const at = getAnchorPositions(candidate.segments)[inserted.insertedAnchorIdx]!;
+		const made = getFingerById(fingerId);
+		const anchorsNow = made ? getAnchorPositions(fingerToSegments(made)) : [];
+		const found = anchorsNow.findIndex((q) => vecDist(q, at) < 1e-6);
+		selectedAnchors = [found >= 0 ? found : inserted.insertedAnchorIdx];
 		selectedSegments = [];
 		lastCurveHit = null;
 		pushUndo(before);
@@ -2673,24 +2679,7 @@
 			return;
 		}
 		const now = performance.now();
-		if (
-			lastFingerClickId === fingerId &&
-			lastFingerClickPos &&
-			now - lastFingerClickAt <= DOUBLE_CLICK_MS &&
-			vecDist(lastFingerClickPos, p) <= DOUBLE_CLICK_DIST
-		) {
-			lastFingerClickAt = 0;
-			lastFingerClickId = null;
-			lastFingerClickPos = null;
-			selectedFingerId = fingerId;
-			selectedAnchors = [];
-			selectedSegments = [];
-			const hit = computeCurveHit(fingerId, p);
-			if (!hit) return;
-			lastCurveHit = hit;
-			insertNodeAtCurveHit(hit);
-			return;
-		}
+		if (insertOnSecondClick(fingerId, p)) return;
 		lastFingerClickAt = now;
 		lastFingerClickId = fingerId;
 		lastFingerClickPos = p;
@@ -2755,6 +2744,31 @@
 		return best;
 	}
 
+	/**
+	 * The second click of a double-click on cut `fingerId`, at `p`: a node added there. The first click
+	 * selects the cut and shows its handles, and a handle of a gently bent curve can lie on the curve,
+	 * under the second click, so a click on a handle counts too. False for any other click.
+	 */
+	function insertOnSecondClick(fingerId: string, p: Vec): boolean {
+		const second =
+			lastFingerClickId === fingerId &&
+			!!lastFingerClickPos &&
+			performance.now() - lastFingerClickAt <= DOUBLE_CLICK_MS &&
+			vecDist(lastFingerClickPos, p) <= DOUBLE_CLICK_DIST;
+		if (!second) return false;
+		lastFingerClickAt = 0;
+		lastFingerClickId = null;
+		lastFingerClickPos = null;
+		selectedFingerId = fingerId;
+		selectedAnchors = [];
+		selectedSegments = [];
+		const hit = computeCurveHit(fingerId, p);
+		if (!hit) return true;
+		lastCurveHit = hit;
+		insertNodeAtCurveHit(hit);
+		return true;
+	}
+
 	const HIT_STROKE_WIDTH = 14;
 
 	function handleAnchorPointerDown(e: PointerEvent, fingerId: string, anchorIdx: number) {
@@ -2791,6 +2805,8 @@
 	) {
 		if (readonly || !getEditableFingerById(fingerId)) return;
 		e.stopPropagation();
+		const p = localPointFromClient(e.clientX, e.clientY);
+		if (p && insertOnSecondClick(fingerId, p)) return;
 		selectedFingerId = fingerId;
 		selectedSegments = [];
 		lastCurveHit = null;
