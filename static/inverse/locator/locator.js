@@ -155,15 +155,21 @@ function fitModel(f,box,lines,{iterations=550,flexibleCaps=false}={}){const[x0,y
  * Returns review status and evidence. Does not infer concealed ground-truth corners.
  */
 export function createMotifDetector(image,options={}){checkImage(image);const preparationStart=performance.now();if(options.maxSize!==undefined&&(!Number.isFinite(options.maxSize)||options.maxSize<100||options.maxSize>800))throw new RangeError('maxSize must be from 100 to 800');const maxSize=options.maxSize??400;let inputROI=options.roi??[0,0,image.width,image.height];
+ for(const name of ['fieldProvider','edgeSamplingFields'])if(options[name]!==undefined&&typeof options[name]!=='function')throw new TypeError(name+' must be a function.');
  if(inputROI.length!==4||inputROI.some(x=>!Number.isFinite(x))||inputROI[2]-inputROI[0]<24||inputROI[3]-inputROI[1]<24)throw new TypeError('Invalid ROI');
  inputROI=[clamp(inputROI[0],0,image.width-1),clamp(inputROI[1],0,image.height-1),clamp(inputROI[2],1,image.width),clamp(inputROI[3],1,image.height)];if(inputROI[2]-inputROI[0]<24||inputROI[3]-inputROI[1]<24)throw new RangeError('ROI is outside the image or too small after clipping');const pad=options.roi?.length?Math.max(inputROI[2]-inputROI[0],inputROI[3]-inputROI[1])*.18:0;const workROI=[Math.max(0,inputROI[0]-pad),Math.max(0,inputROI[1]-pad),Math.min(image.width,inputROI[2]+pad),Math.min(image.height,inputROI[3]+pad)];const work=resizeROI(image,workROI,maxSize);
  const sampleROI=inputROI.map((v,i)=>(v-workROI[i%2]+.5)*work.scale-.5);
- const baseFields=options.palette==='chromatic'?makeChromaticPaletteFields(work,{roi:sampleROI})
+ // Providers receive the same resized RGBA, source offset and scale as the
+ // built-in palettes. Null means no usable foreground, never a silent fallback.
+ const defaultFields=()=>{const baseFields=options.palette==='chromatic'?makeChromaticPaletteFields(work,{roi:sampleROI})
   :options.palette==='rgb-background'?makeRGBBackgroundFields(work,{roi:sampleROI})
   :options.palette==='interior'?makeInteriorPaletteFields(work)
   :options.palette==='anchored'?makeAnchoredFields(work)
   :['adaptive','pale'].includes(options.palette)?makePaletteFields(work,{pale:options.palette==='pale'})
-  :makeFields(work);
+  :makeFields(work);return baseFields;};
+ const baseFields=options.fieldProvider?options.fieldProvider(work):defaultFields();
+ if(baseFields&&(baseFields.w!==work.width||baseFields.h!==work.height||
+  ['paper','red','white','chroma','r','g','b','mask','pd','rd','wd'].some(key=>baseFields[key]?.length!==work.width*work.height)))throw new TypeError('Field provider must return aligned working-image fields.');
  const detectWithFields=(fields,degrees=0,{refineSelection=false,extendLowerBand=false}={})=>{
  const started=performance.now();if(!Number.isFinite(degrees))throw new TypeError('Expected a finite orientation angle.');
  const rotation=fields&&degrees%360!==0?orientFields(fields,degrees):null,f=rotation?.fields||fields;
@@ -171,7 +177,11 @@ export function createMotifDetector(image,options={}){checkImage(image);const pr
  let box=inputROI.map((v,i)=>(v-workROI[i%2]+.5)*work.scale-.5),fg=null;
  if(!options.roi||f.anchored||rotation||refineSelection){fg=options.roi&&refineSelection?selectedForegroundBox(f,box,rotation):foregroundBox(f);if(fg.status!=='ok')return{...fg,quad:null,elapsedMs:performance.now()-started};box=fg.box;if(f.anchored)box=box.map((v,i)=>clamp(v+(i<2?-1:1)*.12*Math.max(fg.box[2]-fg.box[0],fg.box[3]-fg.box[1]),0,i%2?f.h:f.w));}
  const back=p=>{if(rotation)p=rotation.toSource(p);return[(p[0]+.5)/work.scale-.5+workROI[0],(p[1]+.5)/work.scale-.5+workROI[1]];};
- const lines=lowerEdgeLines(f,box,{extendLowerBand})||(f.palette?.method==='two-chromatic-paper-colours'?lowerEdgeLines(f,box,{outerRuns:true}):null);if(!lines)return{status:'needs_review',quad:null,reason:'Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.',elapsedMs:performance.now()-started};
+ // A sampling envelope may fill enclosed segmentation holes; the original
+ // probabilities and distance fields still validate every fitted boundary.
+ const edgeFields=options.edgeSamplingFields?options.edgeSamplingFields(f):f;
+ if(!edgeFields||edgeFields.w!==f.w||edgeFields.h!==f.h||edgeFields.mask?.length!==f.w*f.h)throw new TypeError('Edge sampling fields must retain the working-image coordinates.');
+ const lines=lowerEdgeLines(edgeFields,box,{extendLowerBand})||(f.palette?.method==='two-chromatic-paper-colours'?lowerEdgeLines(edgeFields,box,{outerRuns:true}):null);if(!lines)return{status:'needs_review',quad:null,reason:'Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.',elapsedMs:performance.now()-started};
  let fit=fitModel(f,box,lines,options);if(!fit)return{status:'needs_review',quad:null,reason:'No nondegenerate heart-shape fit',elapsedMs:performance.now()-started};
  // The red/white model historically forced both caps to be semicircles.
  // A deep or shallow cap then moves an overlap corner to explain its outline.

@@ -301,8 +301,25 @@ contains live Danish/English and mobile QA, 2,371 application tests and 1,207
 inverse checks. Nineteen of 77 advisory timed quality targets still miss;
 these are retained separately from correctness. Main commit `d0b882b5` passed
 [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39324904486),
-rechecked on 20 October. Later material-learning experiments change offline tools
-and reports only; no neural network has been deployed.
+rechecked on 20 October. No neural network is deployed in that release.
+
+The [upload integration audit](u2netp-upload-integration-results.json) records
+the next application change, currently under release QA. It packages the same
+4.62 MB adapted U2NETP model and a pinned local ONNX Runtime Web, runs on one
+WASM thread, and shares the tested whole-body crop policy with the offline
+experiments through an explicit locator API. No photo upload is involved.
+Manual regions stay authoritative; model failures retain the existing editable
+crop. Suggested neural corners still require user review.
+
+All 50 saved browser-field cases reproduce their selected corners exactly after
+migration. Actual built-site tests pass for upload, mask preview, angel template
+generation, unavailable model, cancellation/reopen, and a crowded frame. The
+angel's UI fit passes geometry and nominal paper checks at 0.649375% mask
+disagreement. This measures the classified crop, not original cutting paths;
+small photographic edge irregularities remain visible. The historical strict
+WASM-versus-Torch probability tolerance remains failed and has not been relaxed.
+Output-level parity is checked separately; the development cohorts and desktop
+browser checks do not establish mobile performance or unseen-photo accuracy.
 
 #### Latest neural experiments
 

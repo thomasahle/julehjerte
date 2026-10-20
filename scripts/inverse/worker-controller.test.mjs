@@ -81,3 +81,20 @@ test('a failed child reports an engine failure and a subsequent solve creates a 
   h.reply(h.workers[1],3,'error',{message:'No routes',report:{status:'no_validated_solution'}});await retry;
   assert.equal(h.messages.at(-1).report.status,'no_validated_solution');
 });
+
+test('asynchronous crop detection is exclusive, cancellable and cannot publish stale results',async()=>{
+ let complete,options;
+ const h=harness({detectCrops:async(source,opts)=>{options=opts;return new Promise(resolve=>{complete=resolve;});}});
+ const detecting=h.send(1,'detect-crops',{input});
+ await h.send(2,'prepare',{input});assert.match(h.messages.at(-1).message,/already working/);
+ await h.send(1,'cancel');assert.equal(options.cancelled(),true);
+ options.onProgress({stage:'detecting'});complete({status:'candidate',candidates:[]});await detecting;
+ assert.equal(h.messages.filter(m=>m.type==='crops').length,0);assert.equal(h.messages.at(-1).type,'cancelled');
+});
+
+test('crop provider failures clear the busy state and permit a later request',async()=>{
+ let first=true;
+ const h=harness({detectCrops:async()=>{if(first){first=false;throw new Error('load failed');}return{status:'not_found',candidates:[]};}});
+ await h.send(1,'detect-crops',{input});assert.equal(h.messages.at(-1).message,'load failed');
+ await h.send(2,'detect-crops',{input});assert.equal(h.messages.at(-1).type,'crops');
+});

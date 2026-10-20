@@ -1,0 +1,131 @@
+{
+  "schema": "u2netp-upload-integration-1",
+  "date": "2026-10-20",
+  "status": "local-browser-passed-release-qa-running",
+  "scope": "Existing adapted U2NETP and balanced whole-body policy migrated into the actual upload worker; no retraining, solver changes or acceptance-threshold changes.",
+  "sourceHashes": {
+    "static/inverse/locator/locator.js": "c60c7c1dc11246b83a86877e16ef72dcf15239f0273c665698e4427175533f61",
+    "static/inverse/worker-controller.js": "8afea6c0fc203f09561c36d3730de3cdedfc9f606208841d74606fba625de348",
+    "static/inverse/core/crop-coverage.js": "cab9ac17a52752098a42589bc045af385aef3e18be3dd1a922f049c11b6cc07b",
+    "static/inverse/neural/continuous-foreground.js": "c0bf44dea12ea3b4443877a5c17866b7cce8aafc632d3b5fb6ffdcd3bcb84887",
+    "static/inverse/neural/crop-selection.js": "ea7cb3f6852dd3a4da09e0ef73f270e392afb5b6dc250350a08ad9a49d9efef1",
+    "static/inverse/neural/foreground-crop.js": "0a597df11e13bdaa91d7bac2466f338a1dbd6c93e507fdf71bcd44e37f285e8d",
+    "static/inverse/neural/foreground-fields.js": "724dfdde359daef49e7d77a0cb14fe752854e8bac3070293d4b243cd89c00fa8",
+    "static/inverse/neural/input.js": "235aed74549f8dcfcae99c115ec47d9b6c36f409bc44aa5d19f2eaa4811b5f77",
+    "static/inverse/neural/outer-boundary-fields.js": "c1a3f149c908f324b692252e4c50744749a7f22fa313c3467bd8c9993a3d8695",
+    "static/inverse/neural/photo-crop.js": "32cd4516c05c7975246f4c907cdbdd09642272ed52f9cc675ccadac96593678c",
+    "static/inverse/neural/runtime.js": "51150d4450eaf932f7b792f839307f4847d26374744bd2610c88342d98b15611"
+  },
+  "model": {
+    "path": "static/inverse/neural/body-1033a25b.onnx",
+    "sha256": "1033a25b9105ac1386e21f99271d3f9edaa5a6727ba6b3aa94f7add2e7668a9d",
+    "bytes": 4615895,
+    "trainingRecord": "docs/inverse/datasets/u2netp-body-adaptation-results.json"
+  },
+  "runtime": {
+    "version": "1.19.2",
+    "threads": 1,
+    "provider": "wasm",
+    "manifest": {
+      "path": "static/inverse/vendor/onnxruntime-1.19.2/SOURCE.json",
+      "sha256": "03ed626139b011c894da8c2ac6039539f00e78b9f5b46bf40f03d2fb24a3ab76"
+    },
+    "loading": "Lazy local HTTP assets; no photograph upload."
+  },
+  "cohortMigration": {
+    "report": {
+      "path": "tmp/heart-learning/neural-integrated-crop-replay-v2.json",
+      "sha256": "0c8df42ee96646a135b797cb3104cddd468f60f0225a41b918ba41faa635419a"
+    },
+    "exactSelectedQuads": 50,
+    "total": 50,
+    "freshFits": 0,
+    "scope": "Shared application crop policy with cached production controls and actual browser NN fields; no refitting or source-image copies. Actual model loading and UI behavior require separate browser QA.",
+    "failurePreserved": {
+      "path": "tmp/heart-learning/neural-integrated-crop-replay.json",
+      "sha256": "4a97db5cd606a5bbc81816b0b74a4a975645b0a617a5f560c9413edbdc9b63e7"
+    },
+    "fixedCause": "Do not treat every old needs_selection status as a true crowded frame; the learned locator independently checks components and full-outline coverage."
+  },
+  "browser": {
+    "report": {
+      "path": "tmp/heart-learning/neural-upload-browser-v1/report.json",
+      "sha256": "3fc653e6bea6946800f2523c58ed102d344fadb1763e0443d23aedf400ead46d"
+    },
+    "origin": "http://127.0.0.1:5284",
+    "passed": true,
+    "checks": [
+      "Real upload loads local ONNX/WASM and reproduces the audited angel corners",
+      "Imported angel solves through the actual Find snit flow with template and paper checks",
+      "Missing model preserves editable production corners and mask preview",
+      "Closing during model loading terminates the worker; reopening produces no stale result",
+      "A genuinely crowded frame still asks the user to select one heart"
+    ],
+    "pageErrors": [],
+    "angel": {
+      "imageError": {
+        "reference": "Classified input crop before border repair, cleanup or tracing",
+        "resolution": 400,
+        "mismatchPixels": 1039,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.00649375,
+        "method": "Forward sampling of both slit families at input resolution",
+        "independentExportRenderer": false
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "solverSeconds": 14.497
+    },
+    "screenshots": [
+      {
+        "path": "tmp/heart-learning/neural-upload-browser-v1/angel-import.png",
+        "sha256": "1939bcf17d8bf85a4cf81251725276031b194e8adf49be34f330ff749a6e46eb"
+      },
+      {
+        "path": "tmp/heart-learning/neural-upload-browser-v1/angel-solved.png",
+        "sha256": "1a758b8c4ca7647432608b4c1b0453d3af3a3c87a61184e59349d5aaa89cea56"
+      }
+    ],
+    "visualReview": "Both screenshots inspected. Corners cover the overlap square and the angel survives fitting; minor photographic edge irregularities remain. This is not original cutting-path ground truth.",
+    "scope": "The following session-load retry correction only affects synchronous injected-loader failures. All production crop modules and assets match the browser build; its targeted test passes."
+  },
+  "focusedTests": {
+    "passed": 15,
+    "report": {
+      "path": "tmp/heart-learning/neural-worker-integration-tests-final.log",
+      "sha256": "d933e5d78e3de63ffb1ba2e569870023653fe50e5e514cb176039dd614f469b0"
+    }
+  },
+  "numericalQualification": {
+    "originalStrictProbabilityGate": "failed and retained",
+    "probabilityAtol": 2e-05,
+    "expandedObservedMaxTorchDifference": 0.000152379,
+    "changedThresholdPixelsVsTorch": 1,
+    "policy": "No tolerance relaxation or exact raw-output claim. Selected corners and downstream masks were audited separately in the fixed development studies."
+  },
+  "limitations": [
+    "Both cohorts have informed development; they are not untouched holdouts.",
+    "Some retained geometric crops explain only part of a heart and remain flagged for review.",
+    "Printed paper, reflection and occlusion still cause classification and fitting failures.",
+    "Desktop Chromium evidence only; mobile performance is unmeasured.",
+    "Full application and inverse checks are in progress; not deployed by this record."
+  ],
+  "release": {
+    "status": "pending",
+    "required": [
+      "check",
+      "lint",
+      "application tests",
+      "inverse tests",
+      "build",
+      "CI",
+      "live verification"
+    ]
+  }
+}
