@@ -1460,7 +1460,7 @@
       "isClassic": false,
       "curveSymmetry": false,
       "lobeSymmetry": false,
-      "mirrorSymmetry": false,
+      "mirrorSymmetry": true,
       "sharedTemplate": false
     },
     "photo": null
