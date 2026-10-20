@@ -1,10 +1,12 @@
 # Data for learned heart reconstruction
 
 Neural release status reviewed on **2026-10-20**; dataset counts last audited on
-**2026-10-20**. **No neural network is ready for production or
-included in the website.** The collection, synthetic generator and learned
-prototypes are research tools; the existing geometric solver remains the
-production path.
+**2026-10-20**. **The adapted U2NETP paper-body model is deployed as a crop
+fallback.** It runs locally in the browser; the existing colour classifier and
+geometric solver still produce the cutting templates. The experimental
+paper-identity heads remain rejected for production. The
+[outline-only extension](u2netp-outline-upload-results.json) is also deployed
+and passes all 11 live browser checks after merging PR #17.
 
 ## Current results and limits
 
@@ -15,13 +17,19 @@ production path.
 | Conni’s heart-template board | [All 122 pins preserved](conni-board.md); 90 distinct files, 87 new, 12.5 MiB downloaded; 23 photo/template composites | Whole board QA-reserved; 42 visual duplicate links grouped; creators and cutting geometry mostly unverified |
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
 | Small learned model | Earlier MobileNetV3-Small fallback raises checked editable pairs from 7/16 to 9/16 on its development cohort; a newer fixed candidate stays at 7/16 on separately selected Sabrina photos | These are different cohorts; no deployment or established source generalization |
-| Saliency models | Frozen U2NETP raises checked derived-mask pairs from 10/32 to 12/32; adapted browser model adds three checked pairs over fresh current-main controls (9/32 to 12/32) | Raw numerical parity still fails; printed paper, missing body regions, timed-search variation and false seams remain; no production integration |
+| Saliency models | Adapted U2NETP crop fallback is deployed; the outline extension preserves all 32 original crops and selects five tested alternatives on the additional 18-photo cohort | Raw numerical parity still fails; output-level parity is separately verified. Printed paper, missing body regions and false seams remain; this is development evidence |
 | Expanded body supervision | Initial 120-update comparison gives 12/32 versus 10/32; preserving old-photo visits in a 180-update comparison restores both to 12/32 before editable rendering | Final raw editable counts are 11/32 versus 12/32, with the difference traced to a borderline rasterization artifact; no extra design coverage established |
 | Late encoder adaptation | Training-pixel error falls from 2.91% to 1.78%, but full editable recovery stays at the same 12/32 designs | No new crop-support decisions or recovered designs; not promoted |
-| Broader photo evaluation | Whole-body crop selection retains 12/32 and recovers the angel on the additional set: 4/18 checked editable pairs, three also supported by full-body evidence | The fourth fits only a small fragment and is now flagged. Printed paper, crop assumptions and feature loss remain separate problems |
+| Broader photo evaluation | Outline extension retains 12/32 and raises the additional set from 4/18 checked derived masks (three supported by full-body evidence) to 6/18, all six body-supported | Replacing a fragment crop with the whole overlap can reveal a reconstruction failure. Printed paper, crop assumptions and feature loss remain separate problems |
 | Paper-colour calibration | Original-resolution colour mixtures restore detail lost by raw neural masks; fresh fixed-crop comparison gives 11/32 checked pairs with learned palettes versus 13/32 with RGB clustering | No learned-only checked gain; print confusion and unsuitable crops remain; these are derived-mask checks, not artwork ground truth |
+| Paired paper-identity training | Matched 256-update runs reduce synthetic printed-paper error from 10.84% to 9.64%; every real training/development photo reviewed | Known-region real training error increases from 3.53% to 3.65%; print confusion and lost small features persist; head rejected for deployment |
+| Paper examples from exposed lobes | Fixed-crop production comparison yields 18/32 editable checked candidates versus 13/32 for production; all production passes retained | Self-mask scores overstate artwork recovery: one additional pass has a wrong crop; thin details regress and printed ink remains ambiguous; not deployed |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
-| Solver | Latest full release QA passes 1,207 inverse tests; earlier dedicated runs solve all 22 regular Hunodan designs under ten seconds | Some hard fits retain thin false seams; 19/77 CI timing targets miss; the earlier 27/31 photo benchmark has not been rerun |
+| Solver | Deployed outline release passes 1,183 inverse correctness tests; earlier dedicated runs solve all 22 regular Hunodan designs under ten seconds | Some hard fits retain thin false seams; 17/77 original main-CI timing targets miss; the earlier 27/31 photo benchmark has not been rerun |
+
+The experiment history below retains its original cohorts, counts and release
+decisions. References to an experiment remaining offline describe that stage;
+the current deployment status is stated above and in the release audits.
 
 The [whole-body selection comparison](u2netp-balanced-body-results.json) now
 allows a supported neural crop to replace a weak existing proposal when it
@@ -293,6 +301,448 @@ No new template fits, browser export or production changes were justified.
 Fifteen focused tests pass, and historical checkpoint reloads reproduce both
 older models' stored predictions exactly.
 
+The [output-grid capacity diagnostic](u2netp-material-grid-results.json) fits
+free 160-by-160 logits directly to all 32 synthetic training masks, then uses
+the identity head's exact float32 bilinear upsampling convention. Its **1.067%
+expected classification error** is close to the **1.059%** optimum of an
+unconstrained hard pixel map against the fractional targets. The mean excess is
+just **0.00759 percentage points**, with zero interior errors. The learned
+boundary-weighted head instead has 2.12% error on the clean views, 9.25% on their
+printed counterparts and 6.99% in scenes, despite identical target labels.
+
+All 32 saved grids decode exactly to the recorded fields; four focused tests
+pass, and both largest-error galleries were inspected. This shows that output
+resolution alone cannot explain those training failures. It is a target-informed
+reference, not a working image predictor, certified optimum or evidence for
+every fine real motif. The following experiment tests paired print invariance
+while preserving clean-paper boundaries. No model or app behavior changes in
+this diagnostic.
+
+The [paired consistency experiment](u2netp-paired-results.json) starts both arms
+from the same 120-update identity head. Each receives the same 256 batches:
+one real photo and two synthetic views of identical geometry, with identical
+reflections, supervised loss and optimizer. The candidate additionally penalizes
+material predictions that change when printing or the surrounding scene changes.
+Each image may swap its two paper labels once; individual pixels cannot swap
+independently. All 32 geometries, 96 synthetic views and 16 real training photos
+receive the predeclared number of visits.
+
+| Material error on synthetic training views | Supervised control | Paired consistency |
+| --- | ---: | ---: |
+| Original | 2.16% | 2.06% |
+| Printed paper | 10.84% | 9.64% |
+| Changed scene | 5.93% | 5.85% |
+
+Printed/original prediction disagreement also falls from **10.16% to 9.01%**.
+Boundary error improves in all three groups, but clean and scene interior error
+slightly increases. Sparse known-region real training error increases from
+**3.53% to 3.65%**. All 16 training and 32 previously inspected, source-separated
+development photos were visually reviewed. Printed ink still becomes false paper
+boundaries; shaded motifs and small openings disappear. Missing dark/reflective
+paper and included hands/handles remain separate problems in the frozen body
+model. These full-photo failures precede crop selection and curve fitting.
+Neither head is approved for deployment.
+
+Fourteen focused tests pass, and 485 source/artifact hash checks pass. A failed
+bitwise check is retained: saved training body and initial identity probabilities
+differ by at most **0.0000001192**, with no changed half-threshold pixels. Fresh
+inference in one process gives exactly equal checkpoint bodies; all 32 native
+development body fields also match the previous reference exactly. This supports
+small cross-process floating-point variation, without establishing its kernel
+cause or a deterministic causal effect from one training pair. The comparison
+gallery now records raw equality failures and uses each model's actual body.
+
+The experiment uses one low-priority CPU worker, adds about **92.1 MiB** of
+local artifacts and downloads no photos. Each learned head is 77 KB. No
+browser model export or new template fit was justified. The following diagnostic
+tests conditioning on examples of each paper in its exposed lobe.
+
+The [lobe-example experiment](paper-exemplar-results.json) fits a small linear
+classifier separately on each image. Its labels come only from inset parts of
+the two exposed lobes; it never fits labels inside the woven square. Both arms
+use the same samples and ridge penalty. One uses RGB and local colour statistics;
+the other adds frozen U2NETP features. All 96 synthetic views and 32 real photos
+remain in the experiment, including six real inputs without a usable crop.
+
+The neural-feature arm fits **every selected lobe training sample perfectly**, yet transfers
+poorly into the overlap: synthetic error reaches **20.07% on plain paper** and
+**23.71% in changed scenes**. RGB texture suppresses some printed ink, but
+shrinks ordinary checks into isolated islands. This neural-feature classifier
+is rejected; these results do not establish the cause of failures in previously
+trained, different heads.
+
+A subsequent controlled ablation isolates the RGB-texture failure. The fitting
+samples remain identical; only local-deviation features outside those samples
+are replaced by their support mean. This removes that feature block's centred
+contribution without changing the trained classifier. All **122 original score
+fields replay exactly** before comparison.
+
+| Overlap-only synthetic error | Prior NN head | RGB texture | RGB only | Neutralized query deviation |
+| --- | ---: | ---: | ---: | ---: |
+| Plain paper | 3.55% | 12.46% | 2.69% | 3.00% |
+| Printed paper | 13.08% | 9.13% | 6.33% | 4.33% |
+| Changed scene | 7.88% | 12.54% | 2.70% | 3.04% |
+
+About **65.4%** of plain overlap pixels have a local-deviation channel above
+the maximum seen in the lobe samples. Neighborhoods crossing between papers
+have variation absent from the smooth lobe interiors. The intervention reduces
+plain-paper boundary error from **32.53% to 7.77%**, establishing that this
+feature block causes much of this classifier's shrinkage.
+
+All 27 comparison pages were inspected. Simpler colour features restore small
+checks, nativity details, dragonfly wings and fox legs. Printed decorations are
+suppressed on some papers, but similar-coloured prints remain ambiguous; the
+wrongly cropped basket and reflective building still fail. The ablation's
+real panels show the entire fixed overlap without body gating, so formerly
+missing body regions appearing there are **not** a body-model improvement.
+
+These scores use known synthetic corners and measure only the overlap; they
+are not comparable to the earlier full-body percentages. The prior NN head is
+also an experimental baseline, not the deployed RGB classifier. Five focused
+tests pass, and 384 saved-field errors were independently recomputed. No neural
+weights changed, no source images were copied, and the two experiments added
+about **43.5 MiB** of local artifacts.
+
+The subsequent [complete pipeline comparison](paper-exemplar-pipeline-results.json)
+uses the **actual deployed RGB classifier**, the same 26 automatic quads and all
+six unresolved crops. All 26 production masks reproduce their earlier hashes
+exactly. The two lobe classifiers reuse their saved scores without refitting.
+Each of the 78 available masks receives fresh fitting with a ten-second search
+allowance on the binary-mask objective used by Mal. Methods rotate by photo;
+source coverage, resolution and acceptance limits remain fixed.
+
+| Method | Engine plus independent mask checks | Also passes editable SVG checks |
+| --- | ---: | ---: |
+| Production colour classification | 13/32 | 13/32 |
+| Lobe RGB only | 14/32 | 14/32 |
+| Lobe classifier with neutralized query deviation | 19/32 | 18/32 |
+
+These are **checks against each method's own derived mask**, not counts of
+recovered original designs. Every one of the 13 production passes remains a pass
+under neutralized deviation. Four additional candidates preserve recognizable
+mother/child, fox, petal-flower and tentacled motifs. A fifth additional pass is
+the wrongly cropped basket, which remains a failure of the complete photo task.
+The reflective-building crop produces an almost empty mask and zero cuts:
+the engine's self-mask checks pass, but the editor correctly rejects it.
+The neutral-deviation nativity also fails editable geometry; it already failed
+the engine checks. All 78 export errors were independently recomputed, all
+11 comparison pages reviewed, and these failures retained.
+
+The visual review prevents a blanket replacement. Plain-paper checks become
+rounded, the moon gains an extra cut, and small details change. Printed stripes
+and floral ink are suppressed in some photos, but the printed central flower
+is still mistaken for a cutting motif by **all three methods**, despite passing
+their fit checks. Production already handles the red-tree/blue-snowflake paper.
+
+The nativity illustrates a separate search problem: changing just **0.967%** of
+the production mask pixels raises fitting error from **1.96% to 12.47%**, with
+five cuts per sheet in both outputs. The production result itself still misses
+a feature. The logs show different phase finalists, refinement reservations and
+feature-recovery decisions; they do not yet prove which branch causes the
+regression. Crop quality and cut count alone cannot explain it.
+
+No application code or neural weights changed. Choosing a classifier solely by
+its own reconstruction error would reward the near-empty-mask failure above.
+
+Verification passes: type checking, lint, build, **2,374 application tests**
+(142 skipped), **1,183 inverse correctness tests**, and all five classifier
+tests. The timing-inclusive local command was stopped after 224 seconds; the
+complete CI correctness suite was then run separately, without changing any
+expectation. The final audit checks another 234 source/input hashes and retains
+checksums for 152 editable SVG/preview artifacts. The experiment adds about
+**74 MiB excluding logs**, including its detailed JSON records, with no new
+photos or model weights. Application and solver files match the successful main
+CI build exactly.
+
+The [resolution diagnostic](paper-exemplar-native-results.json) now isolates
+sampling losses while keeping the lobe samples, normalization, ridge penalty
+and fitted coefficients fixed. All **122 RGB-texture and 122 RGB-only fields**
+and their fit metadata replay exactly after separating fitting from scoring.
+Synthetic comparisons use the same 320-pixel evaluation frame, removing the
+intermediate 160-pixel scoring grid. Real-photo scoring instead uses the exact
+stored production crop RGB at each case's original target resolution.
+
+| Overlap-only synthetic error | Reduced scoring grid | Direct RGB scoring |
+| --- | ---: | ---: |
+| Plain paper | 2.69% | 2.47% |
+| Printed paper | 6.33% | 7.13% |
+| Changed scene | 2.70% | 2.45% |
+
+Plain-paper boundary error falls from **7.10% to 6.61%**, but printed-paper
+interior error rises from **3.42% to 4.51%**. Visual review confirms both effects:
+check corners and thin details become sharper, while stripes, dots and fine
+speckle return as false cuts. These are the same 96 synthetic training views
+with privileged corners, not an unseen evaluation set.
+
+All 26 native masks received fresh fitting with the unchanged production
+fitter and ten-second search allowance. All **26 editable conversions pass**;
+only **10/32** cases pass the complete self-mask checks, compared with **14/32**
+for the frozen lower-resolution RGB baseline. The four lost passes are retained:
+
+- Mother/child loses an interior detail during fitting, although it remains
+  visible in the mask.
+- Repeated hearts exceed the 3% mask-error limit, at 3.17%.
+- Dinosaur and star preserve recognizable motifs at 1.29% and 0.84% error,
+  respectively, but fail feature checks on isolated classified fragments near
+  the crop edge. Their feature gates remain enforced.
+
+The crops, coverage and resolutions are identical throughout. The wrong
+basket/building crops and six missing proposals remain failures; the printed
+central flower still illustrates a false success against a method's own mask.
+Higher scoring resolution alone is therefore rejected as a production change.
+
+All 29 new review pages were inspected. The comparison checks 1,443 hashes and
+recomputes all 104 independent exported-image errors; a further audit recomputes
+the 26 native editable errors and records all 52 SVG/preview hashes. Seven
+classifier tests, seven material-target tests, type checking, lint and build
+pass. The earlier full application and inverse correctness run remains the
+reference for unchanged production code. This experiment adds about **28.4 MiB
+of unique artifacts excluding external logs**, with no photo downloads or copies.
+
+The next material-model experiment should combine learned context for paper
+identity with a high-resolution RGB path for boundaries, trained explicitly to
+transfer from exposed lobes into the overlap. Search stability under small mask
+changes remains a separate problem. No new neural weights were trained in this
+diagnostic, and none of these classifier alternatives has been deployed.
+
+The subsequent [learned feature-transfer experiment](exemplar-projection-results.json)
+trains **1,536 weights** through the per-photo classifier itself. A linear
+projection reduces the frozen U2NETP decoder's 192 channels to eight context
+channels. Those channels and RGB enter a lobe-fitted ridge classifier; gradients
+pass through its support-only normalization and solve. The query retains direct
+RGB at the evaluation/crop resolution. Overlap labels supervise the outer loss
+only and never enter the per-photo fit.
+
+The fixed schedule uses two passes over the same 96 synthetic training views.
+All backbone weights and buffers remain unchanged. The new checkpoint is
+**7,870 bytes**, in addition to the existing backbone. Neither the 32 development
+photos nor the newly archived Pinterest board supervise this projection.
+
+| Overlap-only synthetic error | Direct RGB | Untrained projection | Trained projection |
+| --- | ---: | ---: | ---: |
+| Plain paper | 2.47% | 2.86% | 2.20% |
+| Printed paper | 7.13% | 8.95% | 4.33% |
+| Changed scene | 2.45% | 3.06% | 2.19% |
+
+This establishes improvement on the synthetic training views, **not unseen
+generalization**. Printed-paper interior error falls from 4.51% with direct RGB
+to 1.07%, but the real-photo previews still confuse printing with cuts. They also
+add false seams and islands to plain-paper designs, most visibly the cat.
+
+Fresh fitting on all 26 available masks gives **10/32 complete self-mask passes**,
+the same count as native RGB and below the production classifier's 13/32.
+Mother/child, repeated hearts and dinosaur gain passes relative to native RGB;
+cat, heart-checkerboard and hummingbird lose passes. These changes include
+different routing/cut-count choices and do not isolate a particular search
+branch. All 26 editable conversions pass; image and feature gates continue to
+reject the other candidates. Wrong crops, six unresolved proposals, and the
+printed central flower's misleading self-mask success remain in the records.
+The material head is **not ready for deployment**.
+
+The pipeline initially rejected a missing crop-manifest checksum before fitting.
+The corrected packaging hardlinks the exact same masks and manifest into a
+separate input directory; the original training report and outputs remain
+immutable. The writer is fixed for future runs. All **208 tests across 43 offline
+learning modules pass**, including finite-difference verification through the
+ridge solve. Independent audits recompute 288 synthetic errors, 104 exported
+fit errors and 26 editable errors; all 29 review pages were inspected.
+The experiment retains about **33.5 MiB excluding external logs/audit JSON**,
+without new photo downloads, copies or a disk feature cache.
+
+The [controlled continuation](exemplar-continuation-results.json) starts both arms
+from those same weights. Each takes 96 further updates with the same shuffled
+synthetic images and fresh AdamW state. One arm uses synthetic loss alone; the
+other averages synthetic loss with one reviewed real-photo example per update.
+The six real photos each appear 16 times. This matches optimizer steps and
+synthetic draws, **not example counts or computation**.
+
+These six already belonged to the parent's 16-photo training set. They have
+both material annotations and approximate overlap corners; the other ten lack
+reviewed corners and do not supervise this continuation. None of the development
+photos or newly archived Pinterest images enters training. The approximate
+corners are conditioning references, not exact cutting geometry.
+
+Known overlap labels cover only **4.0–54.5%** of each real training photo.
+Uncertain bands separate all differently labelled regions, leaving **no known
+real material boundaries** for the boundary-weighted loss. This is an important
+limitation: improving these labels' accuracy primarily measures paper interiors.
+
+| Training diagnostic | Parent | Synthetic continuation | Mixed real supervision |
+| --- | ---: | ---: | ---: |
+| Synthetic plain paper | 2.20% | 2.13% | 2.17% |
+| Synthetic printed paper | 4.33% | 3.78% | 4.04% |
+| Synthetic changed scene | 2.19% | 2.09% | 2.13% |
+| Six real photos, known overlap pixels only | 4.50% | 4.55% | 0.65% |
+
+The real improvement is concentrated in the two printed-paper training
+examples. It does not establish full-design or unseen-photo accuracy. All 96
+synthetic and 26 available real parent masks replay exactly after extracting
+shared input/evaluation helpers. The frozen backbone remains unchanged, and all
+32 development photos, including six unresolved crops, remain in the comparison.
+
+Visual inspection finds cleaner star edges and greater suppression of purple
+floral printing with mixed supervision. False islands remain on the cat;
+the tilted candle gains border noise, and red stripes/dots, trees and lettering
+still become false cuts. The printed central flower still appears as a cut
+motif. Wrong basket/building crops remain wrong. The real training annotations
+help transfer some material appearance, but this experiment has not resolved the
+classification failures that precede curve fitting.
+
+Fresh fitting and independent editable-export checks give:
+
+| Method | Engine + mask checks | Editable conversion | Complete checks |
+| --- | ---: | ---: | ---: |
+| Frozen production reference | 13/32 | 26/26 | 13/32 |
+| Parent projection | 10/32 | 26/26 | 10/32 |
+| Synthetic continuation | 11/32 | 26/26 | 11/32 |
+| Mixed real supervision | 11/32 | 25/26 | 10/32 |
+
+These remain **self-mask and geometry checks, not recovered-design counts**.
+The mixed model gains the crescent relative to its matched control, loses the
+dinosaur, and loses the simple heart/checker motif at editable conversion.
+That last candidate has good image fidelity and no reported intersections,
+but its independent paper-support check is **uncertain**, so it is not counted
+as a complete pass. The uncertainty does not prove a physical defect.
+Neither continuation is promoted.
+
+The dinosaur is a useful end-to-end regression fixture. Only **334 of 160,000
+mask pixels (0.20875%)** change from the parent, yet fit error rises from
+**1.58% to 4.32%**. The photo crop itself shows a thin red margin at the far
+right of a white border cell. The new missing component has area 8.875 mm²
+and centre x=99.086 mm on a nominal 100 mm square. Logs change from
+`traceUsed=true, featureRoutingFirst=false` to the opposite routing choice.
+This points to an interaction between crop margins, classification and
+feature-driven search. The continuation established an association; the
+controlled intervention below separates the repair gate from search timing.
+
+All 32 photos and all failures are retained. The review recomputes 130 distinct
+engine-render errors (78 frozen controls and 52 new fits) and all 52 editable
+render errors. All **210 tests in 44 offline learning modules pass**; all 44
+new preparation/training/development/pipeline gallery pages were inspected.
+Repeated crops and parent masks share immutable files through hardlinks.
+The study adds about **42.6 MiB** of artifact content, with no new photographs,
+feature cache or browser work.
+
+The border-fragment intervention below now isolates the routing regression.
+The editable paper-support discrepancy remains unresolved. The 32
+synthetic geometries here are all lattice families (11 lattice, seven shared
+lattice, 14 corner lattice); sparse real interiors add little supervision of
+the detailed cut boundaries that still cause trouble. The current experiment
+does not establish which representation or richer labels will resolve that gap.
+
+### Border fragments and provisional geometry repair
+
+The [controlled repair study](border-fragment-repair-results.json) retains
+24 repeated fits, fixed-work initialization, the full 32-photo cohort and
+eight additional timing comparisons. Removing just 142 pixels (0.08875% of
+the mask) recovered the dinosaur. The fragment does change routing priority,
+but a scheduling-only patch did **not** improve either repeat and was reverted.
+The successful variants instead repair a nearly valid MILP proposal. On the
+original mixed mask, the old repair gate rejects that proposal before moving
+any curves because the narrow border fragment is missing.
+
+Commit `5d86da68` allows that repair to supply a **provisional** starting pair
+when every interior feature is retained. It must pass the unchanged image,
+geometry and paper checks, and cannot erode existing features. A border-feature
+loss remains a failed final check. The original mask is never edited.
+The full-cohort dinosaur improves from **4.32% to 1.52%** disagreement and
+converts successfully; it still has a missing-feature warning.
+
+All **11/32** prior engine passes and **10/32** complete passes remain.
+Conversion passes fall from **25/26 to 24/26**: the already-failing diving
+figure also fails conversion in this run. Both previous and current code
+produce variable, unsuccessful fits in the paired timing study; neither case
+uses the new provisional repair path. All repeats and failures are retained,
+including the original heart-checker paper-support uncertainty. This does not
+establish equal quality distributions or eliminate the timing instability.
+
+The review independently recomputes 52 cohort engine renders and 51 available
+editable renders; all seven comparison pages were inspected. Its “editable
+pass” labels mean successful conversion, not complete reconstruction. Eleven
+focused tests pass, including the existing rabbit-border regression and checks
+that interior-feature loss and failed paper support remain ineligible.
+[CI completed successfully](https://github.com/thomasahle/julehjerte/actions/runs/39391283817):
+2,374 application tests and 1,188 inverse correctness checks pass. The advisory
+timed tests pass **62/78**, with all 16 misses retained. The dinosaur's
+ten-second test misses on that runner at the original 4.32% error.
+Six additional deadline-pressure replays retain every result: normal and 1.5×
+JavaScript clocks recover below 2%; both 2× clocks exhaust the MILP budget
+before observing a repairable candidate. This diagnoses deadline sensitivity,
+not the exact remote failure. Future failed tests now capture the full report.
+The fix remains on the working branch while that speed limitation is followed
+up. No neural weights or crop rules change; the material projection remains
+experimental. Study artifacts occupy about **37.9 MiB**, with no new source
+photographs.
+
+The [first-candidate follow-up](first-paper-recovery-results.json) retains eight
+fixed-work refinements and twelve fresh deadline-pressure fits. The first MILP
+pair passes cut geometry and polygon offsets but remains uncertain at lattice
+resolutions 360, 500, 700 and 1,000. After 40 or 80 ordinary fitting steps, the
+existing final paper repair produces a physically checked provisional pair at
+1.81% or 1.77% source-mask disagreement. Longer 160/320-step refinements still
+fail or remain uncertain. Using nominal polygon offsets alone for checkpoint
+selection instead stalls at 2.73% with unresolved lattice uncertainty.
+
+An experimental callback attempted that short repair before spending another
+MILP round. It worked with the ordinary clock, but failed in one of two 1.5×
+deadline-pressure runs and both 2× runs; the retained implementation succeeds
+in both corresponding 1.5× runs. The failed early repairs consume time without
+finishing the required paper correction. **That runtime experiment is reverted,
+not deployed.** These sequential cohorts diagnose timing risk, not equal hardware
+performance or the precise remote-CI cause. All three comparison pages were
+inspected; all outcomes and the rejected patch are preserved in about 5.1 MiB,
+with no new photographs or weights. The missing border feature remains a failed
+final check even in the useful fits. This follow-up does not change the NN's
+experimental status or the existing border-fragment repair.
+The [merged working branch CI](https://github.com/thomasahle/julehjerte/actions/runs/39396245575)
+also passes all correctness/build jobs, with **70/78** timed targets passing.
+Its saved dinosaur report now directly records the limiting sequence: the first
+integer proposal has valid cuts but uncertain paper support, and the second
+round times out without a new proposal. This confirms that mechanism for the
+new remote run; it is stronger evidence than the local clock simulation alone.
+
+### Keeping colour evidence when adding neural context
+
+The [residual-context experiment](context-residual-results.json) compares the
+same three frozen projections with two per-photo classifiers. The original fits
+RGB and neural features together. The alternative first fits RGB, then fits
+neural context to the remaining regression error on the **same exposed-lobe
+samples**. Neither classifier fits to overlap labels. This changes the readout,
+not the neural weights, and is not a guarantee against worse predictions.
+
+All 64 existing radial motifs are evaluated using their first photographic view
+and known camera corners. They remain unassigned; no training allocation or
+new images are introduced. These privileged synthetic crops isolate material
+classification from automatic localization.
+
+| Frozen projection | Radial: joint | Radial: residual | Printed training views: joint | Printed: residual |
+| --- | ---: | ---: | ---: | ---: |
+| Parent | 1.61% | 1.40% | 4.33% | 3.83% |
+| Synthetic continuation | 1.52% | 1.39% | 3.78% | 3.48% |
+| Mixed real supervision | 1.63% | 1.44% | 4.04% | 3.74% |
+
+Direct RGB averages 1.40% on the radial cohort. The residual classifier mostly
+removes the joint classifier's extra errors on these plain-paper examples;
+it does not establish a substantial advantage over RGB there. Visual inspection
+finds fewer eroded corner cells and false islands, while low-contrast shading
+and noisy red/green boundaries remain troublesome. The printed comparison uses
+the earlier 32 training geometries, with one plain, one scene and one printed
+view each. All 288 saved joint-head masks replay exactly. Average printed error
+falls, but individual regressions remain, including a 0.89 percentage-point
+increase with the mixed projection.
+
+All 44 radial comparison pages and seven training-view pages were inspected.
+The worst printed grids still contain false seams and distorted cells. These
+are expected binary-classification errors against fractional synthetic labels,
+not reconstruction success rates or real-photo accuracy. The method remains
+offline: the next gate is the complete real-photo cohort and its exported
+templates, followed by training only if that evidence warrants it.
+Independent audits recompute all **1,088** error and boundary measurements and
+verify 64 exact RGB-control replays. The ideal binary-label floor for the radial
+metric averages 0.94%. All **214 tests across 45 offline learning modules pass**,
+including residual-gradient and unchanged-RGB checks. The experiments add about
+9.5 MiB, without new photographs or weights.
+
 ### Latest solver and browser validation
 
 The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and
@@ -401,8 +851,16 @@ correctness tests pass. The original timed quality targets remain advisory:
 solver or its benchmark targets; the timed results are not evidence of a solver
 quality improvement. All eight browser screenshots were inspected. Printed
 decoration, glare and handle/border intrusions remain unresolved. These are the
-same development photos, not an unseen test set. Release PR #17 is ready for
-merge; deployment has not yet been verified.
+same development photos, not an unseen test set.
+
+Release PR #17 is **merged and deployed** at `77a9bda7`. Main CI passes all
+1,183 correctness tests and 2,374 application tests; its fresh timed run retains
+**60/77 passes and 17 original-target misses**. All 11 live browser checks pass,
+and all eight checked assets match the tested implementation. The live cross
+exports byte-identical geometry, so the independent export and editable-template
+audits above still apply. Six changed live screenshots were inspected; the other
+two are byte-identical to the reviewed local screenshots. The owned browser
+closed after QA.
 
 #### Latest neural experiments
 

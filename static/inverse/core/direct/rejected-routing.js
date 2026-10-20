@@ -4,7 +4,9 @@
 import {curvesOf,reindex} from '../graph.js';
 import {validate,sampleWeave} from '../validate.js';
 import {materialAudit} from '../material.js';
-import {auditFeatureFidelity} from '../feature-shapes.js';
+import {auditFeatureFidelity,auditFeatureFidelityChange} from '../feature-shapes.js';
+import {imageFeatures} from '../image-features.js';
+import {interiorFeatureIndices} from './feature-seeds.js';
 import {requestedSymmetry} from '../settings.js';
 import {CurveGraph} from './curves.js';
 import {refineCurves,fittingMargin} from './refine.js';
@@ -76,8 +78,24 @@ export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,qual
   // Keep the final error limit below unchanged, including stricter user limits.
   report.maximumInitialImageError=Math.max(cfg.maxImageError,Math.min(.05,2*cfg.maxImageError));
   if(report.initialImageError>report.maximumInitialImageError)return finish('initial_image');
-  report.initialFeatures=auditFeatureFidelity(source,initialMask,cfg);
-  if(!report.initialFeatures.passed)return finish('initial_image');
+  const sourceFeatures=imageFeatures(source,cfg.width);
+  report.initialFeatures=auditFeatureFidelity(source,initialMask,cfg,sourceFeatures);
+  // A crop-margin fleck can be absent from an otherwise useful routing.
+  // Repairing that routing may still supply a better provisional candidate,
+  // just as a geometrically valid MILP seed can fail its image audit. Keep
+  // interior losses ineligible and retain every source region in final checks.
+  let borderFeatureSeed=false;
+  if(!report.initialFeatures.passed){
+    const interior=interiorFeatureIndices(source,sourceFeatures,sourceFeatures.map((_,i)=>i),cfg).map(i=>sourceFeatures[i]);
+    report.initialInteriorFeatures=auditFeatureFidelity(source,initialMask,cfg,interior);
+    if(!report.initialInteriorFeatures.passed)return finish('initial_image');
+    borderFeatureSeed=true;
+  }
+  const featureCheckpoint=woven=>{
+    if(!borderFeatureSeed)return report.features.passed;
+    report.featureChange=auditFeatureFidelityChange(source,initialMask,woven,cfg,sourceFeatures);
+    return report.featureChange.passed;
+  };
   const graph=new CurveGraph(proposal.paths.map((family,f)=>family.map((_,i)=>curvesOf(proposal,f,i).map(c=>c.p))),cfg.width),phase=proposal.graph.target.phase?-1:1;
   if(projectClearance){
     // A local image gradient may keep returning to the same narrow routing.
@@ -106,7 +124,7 @@ export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,qual
   // Use part of the verification reserve for the common local projection,
   // keeping the actual required width rather than the larger fitting cushion.
   // This moves curves; it never excuses the failed geometry or image checks.
-  if(!report.geometry.passed&&report.geometry.issues.every(i=>['short_self_clearance','nonlocal_self_clearance'].includes(i.type))&&report.imageError<=cfg.maxImageError&&report.features.passed&&until-performance.now()>200){
+  if(!report.geometry.passed&&report.geometry.issues.every(i=>['short_self_clearance','nonlocal_self_clearance'].includes(i.type))&&report.imageError<=cfg.maxImageError&&featureCheckpoint(woven)&&until-performance.now()>200){
     const maxMilliseconds=timed?350:Infinity,clearanceMargin=report.geometry.issues.some(i=>i.type==='nonlocal_self_clearance')?cfg.nominalWidth:null;
     const projected=projectShortReturns(graph,fitted.points,phase,input,cfg,{initialAudit:report.geometry,
       deadline:Math.min(until-150,performance.now()+maxMilliseconds),maxMilliseconds,maxIterations:64,clearanceMargin});
@@ -117,7 +135,7 @@ export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,qual
       report.geometry=validate(solution,cfg);report.imageError=maskDisagreement(source,woven);report.features=auditFeatureFidelity(source,woven,cfg);
     }
   }
-  if(!report.geometry.passed||report.imageError>cfg.maxImageError||!report.features.passed)return finish('refinement_rejected');
+  if(!report.geometry.passed||report.imageError>cfg.maxImageError||!featureCheckpoint(woven))return finish('refinement_rejected');
   report.paper=paperAudit(solution,cfg).summary;
   // Resolve a conservative lattice ambiguity just as the main fitter does.
   // Uncertainty itself never passes, and every later edit must retain the
@@ -132,13 +150,20 @@ export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,qual
     // Keep an image-faithful geometric checkpoint available to the common
     // fitter's finer paper audit. This is never an accepted repair: the
     // caller must resolve uncertainty before publishing or exporting it.
-    if(report.paper.status==='uncertain'){
+    if(report.paper.status==='uncertain'&&report.features.passed){
       rejected.report.refinementSeedAvailable=true;
       solution.report={status:'repair_needs_paper_verification',algorithm:'direct-bezier',rejectedRoutingRepair:rejected.report,
         ...(report.paperVerification?{paperVerification:report.paperVerification}:{}),physicalAssemblyTested:false};
       rejected.refinementSeed=solution;
     }
     return rejected;
+  }
+  if(!report.features.passed){
+    const provisional=finish('border_feature_refinement_seed');
+    provisional.report.refinementSeedAvailable=true;
+    solution.report={status:'repair_needs_feature_refinement',algorithm:'direct-bezier',rejectedRoutingRepair:provisional.report,
+      ...(report.paperVerification?{paperVerification:report.paperVerification}:{}),physicalAssemblyTested:false};
+    return{...provisional,refinementSeed:solution};
   }
   // Verification began before the deadline and every required check has now
   // passed. A slow final audit must not discard this completed repair and

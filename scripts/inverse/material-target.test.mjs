@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {rectifyMaterialPrediction} from './learning/material-target.mjs';
+import {rectifyMaterialPrediction,fixedMaterialMask} from './learning/material-target.mjs';
 import {prepare} from '../../static/inverse/core/engine.js';
 import {referenceError,sourceWeights} from '../../static/inverse/core/image-reference.js';
 
@@ -62,4 +62,26 @@ test('invalid and partial prediction fields fail instead of shrinking the evalua
   assert.throws(()=>rectifyMaterialPrediction(source,prediction,[[0,0],[64,64],[64,0],[0,64]],n),/convex/);
   const absent=rectifyMaterialPrediction(source,prediction,[[128,128],[192,128],[192,192],[128,192]],n);
   assert.throws(()=>prepare({type:'mask',resolution:n,mask:absent.mask,validMask:absent.validMask},{algorithm:'direct',resolution:n}),/observed/);
+});
+
+test('fixed material decisions retain one-pixel features without field resampling',()=>{
+  const mask=Uint8Array.from({length:n*n},(_,i)=>Number(i%n===31||Math.floor(i/n)===17));
+  const result=fixedMaterialMask(source,mask,null,n);
+  assert.deepEqual(result.mask,mask);
+  assert.deepEqual(result.probability,Float32Array.from(mask));
+  assert.equal(result.validMask,null);
+  mask.fill(0);assert.equal(result.mask.reduce((a,b)=>a+b),2*n-1,'Own the input decisions');
+  assert.throws(()=>fixedMaterialMask(source,new Uint8Array(n*n-1),null,n),/Invalid/);
+  assert.throws(()=>fixedMaterialMask(source,new Uint8Array(n*n).fill(2),null,n),/Invalid/);
+});
+
+test('fixed masks cannot turn photograph padding into observed artwork',()=>{
+  const mask=new Uint8Array(n*n).fill(1),quad=[[0,0],[128,0],[128,128],[0,128]];
+  const fixed=fixedMaterialMask(source,mask,quad,n),sampled=rectifyMaterialPrediction(source,prediction,quad,n);
+  assert.deepEqual(fixed.rgb,sampled.rgb);assert.deepEqual(fixed.validMask,sampled.validMask);
+  assert.deepEqual(fixed.mask,mask,'Observation coverage must not rewrite input decisions');
+  const target=prepare({type:'mask',resolution:n,mask:fixed.mask,validMask:fixed.validMask},{algorithm:'direct'}).target.sourceImage;
+  const changed=Uint8Array.from(mask,(v,i)=>fixed.validMask[i]?v:0);
+  assert.equal(referenceError(target,changed).mismatchFraction,0);
+  assert.equal(fixed.probability.at(-1),.5);
 });

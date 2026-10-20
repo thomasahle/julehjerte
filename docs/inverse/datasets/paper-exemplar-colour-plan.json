@@ -1,0 +1,34 @@
+{
+  "schema": "paper-exemplar-colour-plan-1",
+  "status": "predeclared",
+  "date": "2026-10-20",
+  "parent": {
+    "path": "tmp/heart-learning/paper-exemplar-v1/report.json",
+    "sha256": "1b83e7f89f84d54986e29968d26375f79ef983c277c446a7812376e52f1c555d"
+  },
+  "hypothesis": "Local deviations at weave boundaries differ from those inside exposed lobes; those texture features may explain much of the shrinkage observed in plain checker designs. Frozen saliency feature transfer remains a separate question.",
+  "arms": [
+    "exact-replayed RGB texture",
+    "RGB only, same samples and ridge settings",
+    "same RGB-texture classifier, but set local-deviation features to balanced support mean only outside both support masks"
+  ],
+  "invariants": [
+    "All 96 synthetic and 32 real records retained, including six unresolved real crops.",
+    "Same input images, geometry, balanced support selection, regularization, output resolution and threshold.",
+    "Require exact replay of every stored original RGB-texture score and fit record before comparing.",
+    "The query intervention preserves every training sample and must reproduce its fit statistics exactly. No target labels enter sampling, feature choice or fitting.",
+    "Real-gallery panels show the entire fixed overlap without predicted-body gating; this is explicit material-only diagnosis, not repaired body segmentation."
+  ],
+  "evaluation": "Same overlap-only fractional target error and boundary/interior breakdown as parent. Also report fraction of overlap pixels whose local-deviation feature exceeds its maximum over balanced lobe samples. Real evaluation is qualitative; no full-artwork labels or cut fitting. Review all 26 available real outputs and exactly the original 21 selected synthetic failures; the six unresolved real cases remain failures.",
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "minimumFreeGiB": 10,
+    "maximumArtifactMiB": 32,
+    "newPhotoDownloads": 0,
+    "newPhotoCopies": 0
+  },
+  "scope": "Post-result mechanism diagnostic, declared after the lobe experiment exposed checker shrinkage and before this ablation. No neural inference, retraining, hyperparameter sweep, crop change, production change or new generalization claim.",
+  "fixedSyntheticReviewCount": 21
+}

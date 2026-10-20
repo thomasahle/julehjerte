@@ -1,0 +1,558 @@
+{
+  "schema": "paper-exemplar-native-results-summary-1",
+  "status": "complete",
+  "decision": "Reject blanket native RGB classifier replacement; retain resolution diagnostic and failed candidates.",
+  "plan": {
+    "path": "docs/inverse/datasets/paper-exemplar-native-plan.json",
+    "sha256": "3719757b8ea375f39140ff98cb8717a242db8b4d5b796ea92f391ede938504c0"
+  },
+  "probe": {
+    "path": "tmp/heart-learning/paper-exemplar-native-v1/report.json",
+    "sha256": "3371051715f4533f246647cb014739750a8c23aaa582061c7d1f4f63774c63e6"
+  },
+  "pipeline": {
+    "path": "tmp/heart-learning/paper-exemplar-native-pipeline-v1/report.json",
+    "sha256": "0970aca28a2c4692d41f10fc6fcc5aafe437f4d5039401c7c9d23c6433280479"
+  },
+  "editable": {
+    "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/results.json",
+    "sha256": "3013ffbadd124b4140cd0fb9cfe9656b0265ca82917e8fecd587d3df09f1c7f0"
+  },
+  "review": {
+    "path": "tmp/heart-learning/paper-exemplar-native-review-v1/report.json",
+    "sha256": "71f8fd413bdbfdfe0669bfbabf482ca1eb8ba159b1e574936a3bf48c38f852a5"
+  },
+  "verification": {
+    "path": "tmp/heart-learning/paper-exemplar-native-verification-v1/report.json",
+    "sha256": "6eaffe2adfa4414d43654110136344e1c1fd21ec30a77e53c3adcd06fda1d03a"
+  },
+  "previousFullVerification": {
+    "path": "tmp/heart-learning/paper-exemplar-verification-v1/report.json",
+    "sha256": "16749caf222053e9b9bf9e9d29de6f28b74ae442ce77f0c17640676ec510c0bd"
+  },
+  "scope": "Same fitted cap samples, normalization, ridge penalty and coefficients; no training or crop movement. Synthetic comparisons evaluate at 320, not full 384 native input. Real native scoring uses stored production crop RGB at its source-capped target resolution. All 32 inspected development photos and six unresolved crops retained. Prior baseline fits are frozen references. No untouched-holdout, design-ground-truth or matched-speed claim.",
+  "exactReplay": {
+    "rgbTextureFields": 122,
+    "rgbOnlyFields": 122,
+    "fitMetadata": true
+  },
+  "synthetic": {
+    "views": 96,
+    "summary": {
+      "synthetic-original": {
+        "legacy-rgb": {
+          "materialError": 0.026936326567843092,
+          "boundaryError": 0.07101746196383064,
+          "interiorError": 0.00468990066934088
+        },
+        "direct-rgb": {
+          "materialError": 0.024683930536874312,
+          "boundaryError": 0.06611152797699978,
+          "interiorError": 0.004319986984030151
+        }
+      },
+      "synthetic-printed": {
+        "legacy-rgb": {
+          "materialError": 0.06329865780087142,
+          "boundaryError": 0.12276907367250116,
+          "interiorError": 0.034223519255559755
+        },
+        "direct-rgb": {
+          "materialError": 0.07127311652353922,
+          "boundaryError": 0.12434671425059393,
+          "interiorError": 0.04514002669241795
+        }
+      },
+      "synthetic-scene": {
+        "legacy-rgb": {
+          "materialError": 0.027001796949220197,
+          "boundaryError": 0.07055022414919396,
+          "interiorError": 0.004969786297636249
+        },
+        "direct-rgb": {
+          "materialError": 0.02453160059328007,
+          "boundaryError": 0.06545087059217587,
+          "interiorError": 0.004378496875389847
+        }
+      }
+    },
+    "limitations": "Prior training views; known corners; overlap-only material labels."
+  },
+  "pipelineSummary": {
+    "production": {
+      "cases": 32,
+      "crops": 26,
+      "checkedPair": 13,
+      "conversionPassed": 26,
+      "completeCandidatePassed": 13
+    },
+    "rgb-only": {
+      "cases": 32,
+      "crops": 26,
+      "checkedPair": 14,
+      "conversionPassed": 26,
+      "completeCandidatePassed": 14
+    },
+    "neutral-deviation": {
+      "cases": 32,
+      "crops": 26,
+      "checkedPair": 19,
+      "conversionPassed": 24,
+      "completeCandidatePassed": 18
+    },
+    "native-rgb": {
+      "cases": 32,
+      "crops": 26,
+      "checkedPair": 10,
+      "conversionPassed": 26,
+      "completeCandidatePassed": 10
+    }
+  },
+  "rawRgbRegressions": [
+    {
+      "id": "real-fcbcc23efea92b93-body-1",
+      "lowResolution": {
+        "status": "checked-derived-mask",
+        "checkedPair": true,
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "fitError": 0.015274308270246563,
+        "editableError": 0.015655689250777063,
+        "slits": {
+          "left": 6,
+          "right": 3
+        },
+        "missingFeatures": 0,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskClassFraction": 0.4820464903415267,
+        "phaseInvariantDifferenceFromProduction": 0.0223298564100608,
+        "displayPhaseFlipped": true
+      },
+      "native": {
+        "status": "review-required",
+        "checkedPair": false,
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "fitError": 0.022959135027936155,
+        "editableError": 0.023016342175015733,
+        "slits": {
+          "left": 4,
+          "right": 3
+        },
+        "missingFeatures": 1,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskClassFraction": 0.4814172117236513,
+        "phaseInvariantDifferenceFromProduction": 0.025018592322800903,
+        "displayPhaseFlipped": true
+      },
+      "missingRegions": [
+        {
+          "value": 1,
+          "areaMm2": 46.33778913445587,
+          "centerMm": [
+            42.08223264506623,
+            39.87546498463529
+          ],
+          "retainedFraction": 0
+        }
+      ]
+    },
+    {
+      "id": "real-24b5ed49c9411b11-body-1",
+      "lowResolution": {
+        "status": "checked-derived-mask",
+        "checkedPair": true,
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "fitError": 0.0215875,
+        "editableError": 0.02221875,
+        "slits": {
+          "left": 8,
+          "right": 8
+        },
+        "missingFeatures": 0,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskClassFraction": 0.469975,
+        "phaseInvariantDifferenceFromProduction": 0.03054375,
+        "displayPhaseFlipped": false
+      },
+      "native": {
+        "status": "review-required",
+        "checkedPair": false,
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "fitError": 0.03165625,
+        "editableError": 0.032425,
+        "slits": {
+          "left": 7,
+          "right": 7
+        },
+        "missingFeatures": 0,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskClassFraction": 0.46299375,
+        "phaseInvariantDifferenceFromProduction": 0.021425,
+        "displayPhaseFlipped": false
+      },
+      "missingRegions": []
+    },
+    {
+      "id": "real-8b91ecf546833a3f-body-1",
+      "lowResolution": {
+        "status": "checked-derived-mask",
+        "checkedPair": true,
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "fitError": 0.01066875,
+        "editableError": 0.010625,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "missingFeatures": 0,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskClassFraction": 0.4758,
+        "phaseInvariantDifferenceFromProduction": 0.0211125,
+        "displayPhaseFlipped": false
+      },
+      "native": {
+        "status": "review-required",
+        "checkedPair": false,
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "fitError": 0.01290625,
+        "editableError": 0.0128875,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "missingFeatures": 1,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskClassFraction": 0.47534375,
+        "phaseInvariantDifferenceFromProduction": 0.01220625,
+        "displayPhaseFlipped": false
+      },
+      "missingRegions": [
+        {
+          "value": 1,
+          "areaMm2": 9.125,
+          "centerMm": [
+            99.08390410958904,
+            79.39212328767124
+          ],
+          "retainedFraction": 0
+        }
+      ]
+    },
+    {
+      "id": "real-28a87a8be083f16c-body-1",
+      "lowResolution": {
+        "status": "checked-derived-mask",
+        "checkedPair": true,
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "fitError": 0.007101109548366932,
+        "editableError": 0.006944835130489139,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "missingFeatures": 0,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskClassFraction": 0.4640600093764651,
+        "phaseInvariantDifferenceFromProduction": 0.01602125332083138,
+        "displayPhaseFlipped": false
+      },
+      "native": {
+        "status": "review-required",
+        "checkedPair": false,
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "fitError": 0.008363806844819502,
+        "editableError": 0.008238787310517269,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "missingFeatures": 1,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "maskClassFraction": 0.45909048288795123,
+        "phaseInvariantDifferenceFromProduction": 0.006763556805750899,
+        "displayPhaseFlipped": false
+      },
+      "missingRegions": [
+        {
+          "value": 1,
+          "areaMm2": 6.5,
+          "centerMm": [
+            69.5985576923077,
+            99.03365384615385
+          ],
+          "weightMass": 104,
+          "retainedFraction": 0
+        }
+      ]
+    }
+  ],
+  "visualReview": {
+    "syntheticPages": 7,
+    "syntheticViews": 21,
+    "developmentMaskPages": 11,
+    "developmentPhotos": 32,
+    "fitComparisonPages": 11,
+    "allReviewed": true,
+    "observations": [
+      "Direct RGB restores sharp check corners and thin hummingbird/dragonfly details; it also restores false stripes, dots and fine speckle on printed paper.",
+      "Native dinosaur and star candidates retain recognizable motifs with errors 1.29% and 0.84%, but fail feature checks on small isolated components near the right or bottom crop edge. The checks remain enforced.",
+      "Mother/child loses a substantial interior detail in fitting despite preserving it in the native mask. Repeated hearts exceed the 3% image-error limit at 3.165625%. All four losses have identical crops to their baseline.",
+      "The nativity and red/black girl with bird remain search failures even with visually recognizable masks. The native results do not identify a single causal search branch.",
+      "The reflective-building and basket proposals still crop the wrong regions; changing classification does not repair them. All six missing proposals remain unresolved.",
+      "Every method still treats the printed central flower as a cutting motif and passes its own mask checks. Self-mask fit success is not recovery of the actual weave.",
+      "Neutralized query deviation still has the highest self-mask pass count, but includes the wrong basket and retains rounded-corner/detailed-shape problems. It is not automatically adopted."
+    ]
+  },
+  "audit": {
+    "comparisonHashChecks": 1443,
+    "independentFitErrorsRecomputed": 104,
+    "nativeEditableErrorsRecomputed": 26,
+    "nativeEditableArtifacts": [
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-f6e5e128449e3cb9-body-1-native-rgb-automatic-weave.png",
+        "sha256": "20f84b7ad3184e1338bffa8cc92ccb44988a86ace5ba3b5783a67b10bc48585f"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-f6e5e128449e3cb9-body-1-native-rgb-automatic.svg",
+        "sha256": "27d616b821323c878ff59ce1d931233a39053ac7ba9b8bc7b76d6e2659b780a7"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-fcbcc23efea92b93-body-1-native-rgb-automatic-weave.png",
+        "sha256": "8f7b323f0976ab8fa5fbdf534f4b79c3a2bde27c2dd07e6d527b757735a6adf2"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-fcbcc23efea92b93-body-1-native-rgb-automatic.svg",
+        "sha256": "34109f092e4fc3ffb6970cf7e2bed10ebc22c26c2f6cae888bdfb1dabaed84c6"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-55704c6e2911bebc-body-1-native-rgb-automatic-weave.png",
+        "sha256": "877a200a758a56784aa972ba3a30076a43781674dab52781b55cdd0f00205ff9"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-55704c6e2911bebc-body-1-native-rgb-automatic.svg",
+        "sha256": "fc2d7e70a820ba9f56ff234366447bd5eb1b9aa5126084cd3425231692fd5055"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-24b5ed49c9411b11-body-1-native-rgb-automatic-weave.png",
+        "sha256": "5860604c3120118dbe9f386d87ecee855809cde16f843835a7feb5704001eb16"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-24b5ed49c9411b11-body-1-native-rgb-automatic.svg",
+        "sha256": "789012f03542b6d75723ea4e8f3955cb929b2178d2ddf0f176144da8fae398e6"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-589f606a9d9899f2-body-1-native-rgb-automatic-weave.png",
+        "sha256": "47ec2291dcead574ac07ae855c21d482e745370edddc0fa244d8ad909c01510c"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-589f606a9d9899f2-body-1-native-rgb-automatic.svg",
+        "sha256": "3adf37b5c213aae6a53897f4e9b10be5f4547ef9d7cba3d58deac263691572e5"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-dfa7e4b71b43aa86-body-1-native-rgb-automatic-weave.png",
+        "sha256": "d7cfb925b2cd0b10118e141d85f08b6b0186eca0711e6bfaeb78613ca7e11772"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-dfa7e4b71b43aa86-body-1-native-rgb-automatic.svg",
+        "sha256": "60c7b172f78e47b2fd0faee83f2c15a970019a05cb1f53286dbea18da5b653c4"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-2502cdec0720f4ea-body-1-native-rgb-automatic-weave.png",
+        "sha256": "ff66db4b7629d414034feeabfc549a2fbf2505399d6dd51dc57477a6c2233279"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-2502cdec0720f4ea-body-1-native-rgb-automatic.svg",
+        "sha256": "219589802c4cbc73721f6a9f37e91a3f3750768900d01107e2797c7d1f7f10b3"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-d3f063052599e167-body-1-native-rgb-automatic-weave.png",
+        "sha256": "a3fbfe9784037761e5876bbda6f05eeb80bd3bb22dad9840e32f0bcb21534cf6"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-d3f063052599e167-body-1-native-rgb-automatic.svg",
+        "sha256": "e5898ddc7ecaeeab8da4856718fe087cbf892249cccb69da4b64515201e2ddf9"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-a126ed5d62adfd92-body-1-native-rgb-automatic-weave.png",
+        "sha256": "7f534c007be42a05ded5fee781d830847c7344113b8e09d051b456f924b2eb03"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-a126ed5d62adfd92-body-1-native-rgb-automatic.svg",
+        "sha256": "073fa41e3362192761bde737a3ad26f594e76d7f99bcd3b9426cd371ab4ba323"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-5088a58018c3aa28-body-1-native-rgb-automatic-weave.png",
+        "sha256": "bef847a9d46e5a15ce2ed0129bce13c05b330a010b6067bc1a135f831d46b3e0"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-5088a58018c3aa28-body-1-native-rgb-automatic.svg",
+        "sha256": "a824081d59e8bd3a761fc3aaea95632483547cf11edf7cdd1161424575a3bc10"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-1a7cfc6be8b164b5-body-1-native-rgb-automatic-weave.png",
+        "sha256": "0f3da484fe2b6092dcdce33b4ff8df88ac68c8dd33b9307d48d7f574d5c8125f"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-1a7cfc6be8b164b5-body-1-native-rgb-automatic.svg",
+        "sha256": "0ce9630582abca2cec5070949d83457b0aedef7df15aa72c2a3d0235bae77e2d"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-fe7fb089d1cd86b4-body-1-native-rgb-automatic-weave.png",
+        "sha256": "d248d7b6393774c37080c5582ef725d1740c565c20769143345b4ed0645b25ab"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-fe7fb089d1cd86b4-body-1-native-rgb-automatic.svg",
+        "sha256": "29ab244f8b5a9f7430026c6adbad571fcafc48e7c509f48b4176a887bab499bd"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-8b91ecf546833a3f-body-1-native-rgb-automatic-weave.png",
+        "sha256": "185d3052e90ce8e8b507f2d2a09f717d1d3495c907ce34c5033f8e85af28b82b"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-8b91ecf546833a3f-body-1-native-rgb-automatic.svg",
+        "sha256": "9c131a5136b6a7fc2417d282f18a3de5e1d3066e5d4e71a5e4340d433d3089e2"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-b5317080eec610dc-body-1-native-rgb-automatic-weave.png",
+        "sha256": "ed4855677377eb8bd6d98716be77ba8a4780d832a7b9d9b6819b0a0bc547d3dd"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-b5317080eec610dc-body-1-native-rgb-automatic.svg",
+        "sha256": "2d666600c0feda0880bcc7cde66d4218d8c55137e96d979bf19bcc081b31a8ea"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-c7d1e0ad5050db71-body-1-native-rgb-automatic-weave.png",
+        "sha256": "0c2231b11f3b9097af20af0e2d0d2e8eb6d7e8b00ae69e49d14098044ce95170"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-c7d1e0ad5050db71-body-1-native-rgb-automatic.svg",
+        "sha256": "86b0cf516c602e2bcb1cef6f3920891da15e43462448e39045b2090030392b3d"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-45ad148d9ec045be-body-1-native-rgb-automatic-weave.png",
+        "sha256": "324fde62ff82e989e975cc43e602154d4c2c62c953ba3c421cbbda5f5c0d4f11"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-45ad148d9ec045be-body-1-native-rgb-automatic.svg",
+        "sha256": "f708a492b43844a022b86da58ffc383d5cf6ef1c9cb272898caa3765850f847d"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-702942779385436c-body-1-native-rgb-automatic-weave.png",
+        "sha256": "76e5c79ba74cc055515ce2b05347cf8e6670d61aa7fa5e5243aca02cc81b1b27"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-702942779385436c-body-1-native-rgb-automatic.svg",
+        "sha256": "a713f8aa5672b21931aa89530a992e4cbb0db34d36abf00a02fa445e3b6ea28f"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-03bddab9c8f384c4-body-1-native-rgb-automatic-weave.png",
+        "sha256": "60b6d52793849707f6a1c3f1082743fb00bf48a9b23c1575e4368e623919f0e3"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-03bddab9c8f384c4-body-1-native-rgb-automatic.svg",
+        "sha256": "0cfd484e0f0dfa2141f8a5429d24abc5b4120e0424041781e9067cec275b3ee2"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-eb60ff94dfc6e2f8-body-1-native-rgb-automatic-weave.png",
+        "sha256": "c46a11870ac67f75e55b5eedc3e8c669687faa8f5dc206a6e46659474fc4b0b6"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-eb60ff94dfc6e2f8-body-1-native-rgb-automatic.svg",
+        "sha256": "8bdefcb25966fb50f8f286affd5e3460c9238730366af6d5b9e016414bf44446"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-af21a4ef38355dfa-body-1-native-rgb-automatic-weave.png",
+        "sha256": "b422d48ea33af21a3fec5886dafc34a8096d715924356231dbbef85cea1b432b"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-af21a4ef38355dfa-body-1-native-rgb-automatic.svg",
+        "sha256": "6d73c962d35792f4c02282c12d691956dea384e74a2f531b8d16e1f0ce13e2b2"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-f05cf91c134daea9-body-1-native-rgb-automatic-weave.png",
+        "sha256": "5b12c0810de32b130b025812d40e67c09d16b594f41cd5a1ba0300deed20fc50"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-f05cf91c134daea9-body-1-native-rgb-automatic.svg",
+        "sha256": "8fc7314c8e5577b05ddb17415918bfee986d6e26712d0e999ca0c6d33e9088dc"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-28a87a8be083f16c-body-1-native-rgb-automatic-weave.png",
+        "sha256": "872c8d0c47413931c1dccdb862c34fb72fba98e75451896adbc22eab877ba637"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-28a87a8be083f16c-body-1-native-rgb-automatic.svg",
+        "sha256": "6a70f06389580f63eb1d9cb6f458da69a5e12fed16a9173aa0cdbea3bc25436e"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-ce66f9634c2c613b-body-1-native-rgb-automatic-weave.png",
+        "sha256": "6bdd1fd3914eb49157e82dcdf36a9e175fe057126697ad5dbf289d0c64c7c82f"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-ce66f9634c2c613b-body-1-native-rgb-automatic.svg",
+        "sha256": "c4c3666caa629fdb32803d3009bf161e9e4aeb3bfa1448282822ab306d67425c"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-52e732b98f9b14f1-body-1-native-rgb-automatic-weave.png",
+        "sha256": "3aa3f46e060b73b606f52c24f4c664884c110ac5f6ca988e4d9028bef51e0cf6"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-52e732b98f9b14f1-body-1-native-rgb-automatic.svg",
+        "sha256": "83f5cc816c07873644bf2c9938c12dbfb5dd3d485e1c10358ea9ae5df0a04326"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-d4f6e3c76cf08ea8-body-1-native-rgb-automatic-weave.png",
+        "sha256": "5255614da12b2f08e72b97ff9b39dcc06426b2eb25346baa8dafd860a4ce0a67"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-d4f6e3c76cf08ea8-body-1-native-rgb-automatic.svg",
+        "sha256": "0a2db4b3e66a74e785b9b9e88bba64d8e255bd37ec15d97a1dac35156a39939f"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-41b7c3e0b79f1265-body-1-native-rgb-automatic-weave.png",
+        "sha256": "21918255276c6df647a10f7815f51cbd497bd0cb0a09156325dbdd0f109b7411"
+      },
+      {
+        "path": "tmp/heart-learning/paper-exemplar-native-editable-v1/real-41b7c3e0b79f1265-body-1-native-rgb-automatic.svg",
+        "sha256": "98d3c63066034c921b52e1042ac6653be212f79e4593a929e955fdf8ba8c0efc"
+      }
+    ],
+    "allNativeConversionsPassed": true
+  },
+  "resources": {
+    "uniqueArtifactBytesByDirectory": {
+      "tmp/heart-learning/paper-exemplar-native-v1": 8898029,
+      "tmp/heart-learning/paper-exemplar-native-pipeline-v1": 12470476,
+      "tmp/heart-learning/paper-exemplar-native-editable-v1": 1017743,
+      "tmp/heart-learning/paper-exemplar-native-review-v1": 3650624,
+      "tmp/heart-learning/paper-exemplar-native-editor-input-v1": 3660786,
+      "tmp/heart-learning/paper-exemplar-native-verification-v1": 55542
+    },
+    "totalUniqueArtifactBytes": 29753200,
+    "scope": "Content sizes excluding external run logs; hardlinks counted once across these directories. Existing linked detection metadata may already occupy storage. No source-photo copies or downloads.",
+    "workers": 1,
+    "nice": 15,
+    "numericalThreads": 1
+  },
+  "next": [
+    "Combine learned context for material identity with a high-resolution RGB edge path; train explicitly on transfer from lobe samples to overlap labels, rather than assuming frozen segmentation features transfer.",
+    "Use paired synthetic printing and scene interventions to penalize ink-as-cut mistakes while retaining thin boundaries. Keep source groups separated and the complete inspected real cohort in development reporting.",
+    "Separately diagnose search instability using fixed masks and controlled perturbations; retain existing feature, geometry and editable-export gates."
+  ],
+  "productionChanges": "None; no model weights or application/solver code changed."
+}

@@ -1,0 +1,60 @@
+{
+  "schema": "border-priority-plan-1",
+  "status": "predeclared",
+  "baselineCommit": "8bd2db5e",
+  "case": "real-8b91ecf546833a3f-body-1",
+  "parentStudy": {
+    "path": "docs/inverse/datasets/exemplar-continuation-results.json",
+    "sha256": "cbf0273739424f81629fc6d3c4ff4325732ec2f66e4eafd933c72e04d3c79858"
+  },
+  "inputs": {
+    "parent": {
+      "path": "tmp/heart-learning/exemplar-continuation-v1/real-8b91ecf546833a3f-body-1-parent.mask",
+      "sha256": "fcc8fe7c6459d42f53e178d95eaf48fbf2f85d8e9682e56cb58e1fbc8f66893c"
+    },
+    "real-mixed": {
+      "path": "tmp/heart-learning/exemplar-continuation-v1/real-8b91ecf546833a3f-body-1-real-mixed.mask",
+      "sha256": "f4f6faf8ae7a7325acdaaf389c709deed7a79a2498b25b50985883180242851c"
+    }
+  },
+  "resolution": 400,
+  "component": {
+    "value": 1,
+    "pixels": 142,
+    "areaMm2": 8.875,
+    "centerMm": [
+      99.08626760563381,
+      79.49823943661971
+    ]
+  },
+  "variants": [
+    "parent",
+    "mixed",
+    "mixed-minus-fragment",
+    "parent-plus-fragment-neighbourhood"
+  ],
+  "intervention": "Identify the recorded mixed-mask feature by its exact area and centroid, then remove just its 142 pixels. For the reciprocal insertion, copy the mixed-mask fragment and its 8-neighbour one-pixel dilation into the parent mask. All other bytes stay fixed. These are diagnostic counterfactuals, not production mask editing or ground truth.",
+  "fixedWork": "Same coarse count hypotheses/initialization and exactly 150 fine-grid steps without deadlines; compare whole-source and existing nominal-margin interior feature retention for each finalist. No new seed or acceptance threshold.",
+  "fitOrder": [
+    "parent",
+    "mixed",
+    "mixed-minus-fragment",
+    "parent-plus-fragment-neighbourhood",
+    "parent-plus-fragment-neighbourhood",
+    "mixed-minus-fragment",
+    "mixed",
+    "parent"
+  ],
+  "searchSeconds": 10,
+  "evaluation": "All diagnostic fits scored against their declared input masks and, separately, the unchanged mixed source. Report image error, all feature gates, geometry/paper status, route, stages and original inputs. No favorable rerun selection.",
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "minimumFreeGiB": 10,
+    "maximumNewArtifactMiB": 20,
+    "downloads": 0,
+    "sourcePhotoCopies": 0
+  },
+  "scope": "Isolate a crop-margin/classification/search interaction found during neural-model evaluation. No model training and no production change in this baseline study."
+}

@@ -1,0 +1,2477 @@
+{
+  "schema": "u2netp-paired-material-results-1",
+  "date": "2026-10-20",
+  "status": "complete-offline-rejected-for-production",
+  "decision": "Do not export or deploy either identity head. Paired consistency modestly improves average synthetic error and print invariance, but real sparse training error worsens and visual review finds the same major real-photo failures. The existing production body fallback and colour classifier remain unchanged.",
+  "plans": [
+    {
+      "path": "docs/inverse/datasets/u2netp-paired-control-plan.json",
+      "sha256": "124fa710d7c7add50177a1f17061cda52a5a97304dfd0cb623417d6f082cc714"
+    },
+    {
+      "path": "docs/inverse/datasets/u2netp-paired-consistency-plan.json",
+      "sha256": "e2a93dcc4fa4bf4f5df5037ca196fddd7a0ae7d380a6170371153d321773a931"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "tmp/heart-learning/u2netp-paired-control-v1/report.json",
+      "sha256": "6bf4bbfa34ed29a7002c029d28bbebf19ba7db903fb2b347a77168904a8ca4d8"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-paired-consistency-v1/report.json",
+      "sha256": "5acb5536bfcb1c169b16866b9b46b9a6a45fb32a0ceac73c6a05cd215ad51a8d"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-paired-control-synthetic-v1/report.json",
+      "sha256": "32cd190cca0cad88b1b50e07747b334509ca3723f29317f7350e9c45f73a3904"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-paired-consistency-synthetic-v1/report.json",
+      "sha256": "efe7787facdd4fc9ac6ee1b2990704df47f4dc8c35ca4089f02cd7e6a18f2a24"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-paired-control-native-v1/report.json",
+      "sha256": "74d1e85d65d3d491616f512faee541bfab6bc2f0848858c3c95232aca3410b4c"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-paired-consistency-native-v1/report.json",
+      "sha256": "2f63e932fa3eaea59568b461749b6871331a6237a8f559c642e0c3a5685ff6c7"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-paired-preflight-v1.json",
+      "sha256": "32899d7d230aba76b735112cb07e1ee77a7b77a77be823dfc1d4f82c6e3271d9"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-paired-metric-tests-v1.json",
+      "sha256": "142d0248307818ac085d8bc4567bafe8049e29d320f3d2b9a8e847959f19882a"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-paired-evaluation-v1.json",
+      "sha256": "6c4dd877886540ee92e900e4c89b3193e7c0068146dd532379f3624d620787d5"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-paired-comparison-v1.log",
+      "sha256": "265d0ba658e2d2fce802f29b69e20f7a3b9c0946762faa08850a07caf12d960c"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-paired-comparison-v2/report.json",
+      "sha256": "100c9f84a17b7a57a18459d68c9a7fc3372e84c22a672964ad3a27c2ac33efab"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-paired-comparison-v2.log",
+      "sha256": "183495c23cb949d3005a79420a0877a7a57163e4f660b444e169f67e6f532a2e"
+    },
+    {
+      "path": "tmp/heart-learning/u2netp-paired-numerical-replay-v1.json",
+      "sha256": "3c336ecdd922c97d6a4f0af2c158b01363fbfa79146e42c1038b662928c97048"
+    }
+  ],
+  "matchedExperiment": {
+    "checkedEqualFields": [
+      "initialHeadSha256",
+      "initialFrozenStateSha256",
+      "initialHeadCheckpointSha256",
+      "trainingInputs",
+      "pairs",
+      "draws",
+      "sourceHashes",
+      "sourceSeparation",
+      "runtime",
+      "optimizer",
+      "materialLoss",
+      "syntheticVisitCounts"
+    ],
+    "initialThresholdMetricsExact": true,
+    "sourceSeparation": {
+      "trainPhotos": 16,
+      "evaluationPhotos": 32,
+      "trainSourceGroups": 14,
+      "evaluationSourceGroups": 5,
+      "sourceAndDuplicateSeparationPassed": true
+    },
+    "sameParentUpdates": 120,
+    "additionalUpdates": 256,
+    "batchSize": 3,
+    "completePairEpochs": 4,
+    "pairsPerEpoch": 64,
+    "originalVisitsPerGeometry": 8,
+    "variantVisitsPerGeometry": 4,
+    "realVisitsPerPhoto": 16,
+    "trainableParameters": 18193,
+    "weights": [
+      0,
+      1
+    ],
+    "frozenBodyParametersAndBuffersExact": true,
+    "qualification": "Initial saved raw probabilities are not bitwise equal across the two training processes; preserve the failed exact check below. Initial weights, data, draws and threshold metrics are exact. No replicated training seeds or isolated bitwise-deterministic causal claim."
+  },
+  "syntheticMetrics": {
+    "control": {
+      "synthetic-original": {
+        "views": 32,
+        "macroMean": {
+          "bodyIoU": 0.9906738266284586,
+          "bodyPixelError": 0.00288818359375,
+          "bodyFalseNegative": 0.0011890133753350894,
+          "backgroundFalsePositive": 0.0036620948077620494,
+          "materialPixelError": 0.021576456976174545,
+          "materialJointError": 0.02158882616186116,
+          "jointRegionPixelError": 0.0086158460750628,
+          "balancedMaterialJointError": 0.02157832589842379
+        },
+        "boundaryError": 0.09446152577286722,
+        "interiorError": 0.001491812380776568
+      },
+      "synthetic-printed": {
+        "views": 32,
+        "macroMean": {
+          "bodyIoU": 0.9857612360731409,
+          "bodyPixelError": 0.0043722534179687494,
+          "bodyFalseNegative": 0.0014985393624272806,
+          "backgroundFalsePositive": 0.005736813052256002,
+          "materialPixelError": 0.10844559312144955,
+          "materialJointError": 0.10860055122439351,
+          "jointRegionPixelError": 0.034994325747435974,
+          "balancedMaterialJointError": 0.1085125516729709
+        },
+        "boundaryError": 0.22201604915841225,
+        "interiorError": 0.07757539358575456
+      },
+      "synthetic-scene": {
+        "views": 32,
+        "macroMean": {
+          "bodyIoU": 0.6916539233691927,
+          "bodyPixelError": 0.11742431640625,
+          "bodyFalseNegative": 0.1802412112775239,
+          "backgroundFalsePositive": 0.08815545030100613,
+          "materialPixelError": 0.05932200319594052,
+          "materialJointError": 0.22011014673620927,
+          "jointRegionPixelError": 0.12853436841370025,
+          "balancedMaterialJointError": 0.22159950946443394
+        },
+        "boundaryError": 0.19962775652401132,
+        "interiorError": 0.024315895223090314
+      }
+    },
+    "consistency": {
+      "synthetic-original": {
+        "views": 32,
+        "macroMean": {
+          "bodyIoU": 0.9906738266284586,
+          "bodyPixelError": 0.00288818359375,
+          "bodyFalseNegative": 0.0011890133753350894,
+          "backgroundFalsePositive": 0.0036620948077620494,
+          "materialPixelError": 0.020623181830887065,
+          "materialJointError": 0.02063555101657368,
+          "jointRegionPixelError": 0.008328477579554877,
+          "balancedMaterialJointError": 0.02054971196782375
+        },
+        "boundaryError": 0.08896825407906311,
+        "interiorError": 0.0015496970337883526
+      },
+      "synthetic-printed": {
+        "views": 32,
+        "macroMean": {
+          "bodyIoU": 0.9857612360731409,
+          "bodyPixelError": 0.0043722534179687494,
+          "bodyFalseNegative": 0.0014985393624272806,
+          "backgroundFalsePositive": 0.005736813052256002,
+          "materialPixelError": 0.09640989449538669,
+          "materialJointError": 0.0965684320423297,
+          "jointRegionPixelError": 0.031501500312825996,
+          "balancedMaterialJointError": 0.09642844913499507
+        },
+        "boundaryError": 0.21372187096222153,
+        "interiorError": 0.064802492552368
+      },
+      "synthetic-scene": {
+        "views": 32,
+        "macroMean": {
+          "bodyIoU": 0.6916539233691927,
+          "bodyPixelError": 0.11742431640625,
+          "bodyFalseNegative": 0.1802412112775239,
+          "backgroundFalsePositive": 0.08815545030100613,
+          "materialPixelError": 0.058528263239644114,
+          "materialJointError": 0.21699494791867244,
+          "jointRegionPixelError": 0.12756723051702112,
+          "balancedMaterialJointError": 0.21852064011698374
+        },
+        "boundaryError": 0.1926328059094716,
+        "interiorError": 0.02533787369430882
+      }
+    }
+  },
+  "syntheticRows": {
+    "control": [
+      {
+        "id": "180ecc34ae42:corner-lattice-3001055-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.011788856216129842,
+        "materialJointError": 0.011788856216129842,
+        "boundaryError": 0.0667372269579784,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-5029313-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.01845488457528068,
+        "materialJointError": 0.01845488457528068,
+        "boundaryError": 0.0801675828478117,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-23244-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.012658943693735627,
+        "materialJointError": 0.012658943693735627,
+        "boundaryError": 0.1426258697526615,
+        "interiorError": 0.00046417559099499355
+      },
+      {
+        "id": "6649301431ad:lattice-757447-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.024661898058946315,
+        "materialJointError": 0.024661898058946315,
+        "boundaryError": 0.07772110006596368,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-835140-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.006167345306756514,
+        "materialJointError": 0.006167345306756514,
+        "boundaryError": 0.06596975087171521,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-737267-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.039064655014591505,
+        "materialJointError": 0.039064655014591505,
+        "boundaryError": 0.1593367373502474,
+        "interiorError": 0.002417883211678832
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-20217-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.028685760864388288,
+        "materialJointError": 0.028685760864388288,
+        "boundaryError": 0.10831483363792305,
+        "interiorError": 3.934684241589613e-05
+      },
+      {
+        "id": "6649301431ad:shared-lattice-762492-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.016888661085008586,
+        "materialJointError": 0.016888661085008586,
+        "boundaryError": 0.07663104439498912,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-830095-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.009630339662346556,
+        "materialJointError": 0.009630339662346556,
+        "boundaryError": 0.07410952757912906,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-1063607-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.006884846068251728,
+        "materialJointError": 0.006927052627150981,
+        "boundaryError": 0.06865431729591254,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-781663-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.016576345414081654,
+        "materialJointError": 0.016576345414081654,
+        "boundaryError": 0.10766554958188528,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-745339-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.01407453009436256,
+        "materialJointError": 0.01407453009436256,
+        "boundaryError": 0.06735524287654689,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-802852-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.11733445060791928,
+        "materialJointError": 0.11733445060791928,
+        "boundaryError": 0.26384947986527846,
+        "interiorError": 0.044740873117181515
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-9039415-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.01122656611520362,
+        "materialJointError": 0.011311187575205876,
+        "boundaryError": 0.07753832493984,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-798816-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.0530786727097788,
+        "materialJointError": 0.0530786727097788,
+        "boundaryError": 0.12690381829911107,
+        "interiorError": 7.57174225789354e-05
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-5053529-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.00796191416636341,
+        "materialJointError": 0.00796191416636341,
+        "boundaryError": 0.06778228503206501,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-733231-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.01547198471823286,
+        "materialJointError": 0.01547198471823286,
+        "boundaryError": 0.07398701950836252,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-40397-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.006803619303008426,
+        "materialJointError": 0.006803619303008426,
+        "boundaryError": 0.061841793246402654,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-786708-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.030317696171001843,
+        "materialJointError": 0.030317696171001843,
+        "boundaryError": 0.09723533891251991,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-813951-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.0332993567362583,
+        "materialJointError": 0.0332993567362583,
+        "boundaryError": 0.13009098468581728,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-818996-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.02058570082726173,
+        "materialJointError": 0.02058570082726173,
+        "boundaryError": 0.08581096758421315,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-3056550-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.0070445053394079,
+        "materialJointError": 0.007313491262477926,
+        "boundaryError": 0.08281872949797925,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-55532-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.009100527983011723,
+        "materialJointError": 0.009100527983011723,
+        "boundaryError": 0.07341149863035078,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-2017196-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.026757981855185693,
+        "materialJointError": 0.026757981855185693,
+        "boundaryError": 0.1356883714974084,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-782672-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.01463006121715984,
+        "materialJointError": 0.01463006121715984,
+        "boundaryError": 0.0672628175045457,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-761483-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.009177880866961757,
+        "materialJointError": 0.009177880866961757,
+        "boundaryError": 0.1094172682646617,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-1051499-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.01035696717917164,
+        "materialJointError": 0.01035696717917164,
+        "boundaryError": 0.07271678699201564,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-18199-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.017186477252595426,
+        "materialJointError": 0.017186477252595426,
+        "boundaryError": 0.09284610355931062,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-713051-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.020929023637370366,
+        "materialJointError": 0.020929023637370366,
+        "boundaryError": 0.0775399936080953,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-753411-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.019654677881757114,
+        "materialJointError": 0.019654677881757114,
+        "boundaryError": 0.06704502629711345,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-773591-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.021505805297047365,
+        "materialJointError": 0.021505805297047365,
+        "boundaryError": 0.06707150340214839,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-54523-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.03248568731900854,
+        "materialJointError": 0.03248568731900854,
+        "boundaryError": 0.0966219301917478,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-3001055-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.011694320197084619,
+        "materialJointError": 0.011694320197084619,
+        "boundaryError": 0.06620205444903793,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-5029313-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.2405504580391565,
+        "materialJointError": 0.2405504580391565,
+        "boundaryError": 0.36410300929808,
+        "interiorError": 0.2036026638850999
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-23244-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.2400531390007345,
+        "materialJointError": 0.2400531390007345,
+        "boundaryError": 0.38854880168665423,
+        "interiorError": 0.22611982361327543
+      },
+      {
+        "id": "6649301431ad:lattice-757447-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.02456864962857688,
+        "materialJointError": 0.02456864962857688,
+        "boundaryError": 0.07742723093349,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-835140-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.06364968502382373,
+        "materialJointError": 0.06368685698129901,
+        "boundaryError": 0.21523014970612572,
+        "interiorError": 0.04801738631237955
+      },
+      {
+        "id": "6649301431ad:lattice-737267-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.3977692287394815,
+        "materialJointError": 0.3977692287394815,
+        "boundaryError": 0.5033391484833706,
+        "interiorError": 0.3656021897810219
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-20217-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.03025931216161059,
+        "materialJointError": 0.03025931216161059,
+        "boundaryError": 0.11437179368707631,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-762492-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.13166040237939158,
+        "materialJointError": 0.13416570205177547,
+        "boundaryError": 0.23398550887256286,
+        "interiorError": 0.10273396944677905
+      },
+      {
+        "id": "6649301431ad:lattice-830095-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.029785868758279176,
+        "materialJointError": 0.029785868758279176,
+        "boundaryError": 0.21831479819902785,
+        "interiorError": 0.001627982696869622
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-1063607-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.006044495308509389,
+        "materialJointError": 0.0068464199275951945,
+        "boundaryError": 0.06027450645812834,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-781663-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.08839184698841888,
+        "materialJointError": 0.0885008655488288,
+        "boundaryError": 0.2188325823777797,
+        "interiorError": 0.06465433928226275
+      },
+      {
+        "id": "6649301431ad:lattice-745339-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.057462901073802024,
+        "materialJointError": 0.057462901073802024,
+        "boundaryError": 0.21750746766063586,
+        "interiorError": 0.015185837738065274
+      },
+      {
+        "id": "6649301431ad:shared-lattice-802852-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.07598241250039083,
+        "materialJointError": 0.07598241250039083,
+        "boundaryError": 0.21400797466142696,
+        "interiorError": 0.007595098289507276
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-9039415-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.08022310343940572,
+        "materialJointError": 0.08022310343940572,
+        "boundaryError": 0.24665292482638065,
+        "interiorError": 0.052046571456842244
+      },
+      {
+        "id": "6649301431ad:shared-lattice-798816-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.1961352765452442,
+        "materialJointError": 0.1961352765452442,
+        "boundaryError": 0.3690269235957652,
+        "interiorError": 0.07200726887256757
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-5053529-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.009443862194905216,
+        "materialJointError": 0.009443862194905216,
+        "boundaryError": 0.08039857573483301,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-733231-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.1636701103682615,
+        "materialJointError": 0.1637086787113655,
+        "boundaryError": 0.3020358948041838,
+        "interiorError": 0.127084755681264
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-40397-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.10118566981098696,
+        "materialJointError": 0.10118566981098696,
+        "boundaryError": 0.2911601133128856,
+        "interiorError": 0.07770171861345762
+      },
+      {
+        "id": "6649301431ad:shared-lattice-786708-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.028238520645924896,
+        "materialJointError": 0.028238520645924896,
+        "boundaryError": 0.09056697810768924,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-813951-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.24909805099753876,
+        "materialJointError": 0.24909805099753876,
+        "boundaryError": 0.3990004816567799,
+        "interiorError": 0.19752691184121013
+      },
+      {
+        "id": "6649301431ad:shared-lattice-818996-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.058498958257138,
+        "materialJointError": 0.058498958257138,
+        "boundaryError": 0.2189183226856216,
+        "interiorError": 0.00786911483572667
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-3056550-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.006646862415600573,
+        "materialJointError": 0.006676749740386131,
+        "boundaryError": 0.07814384032451847,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-55532-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.07006679635785086,
+        "materialJointError": 0.07057405404475581,
+        "boundaryError": 0.20512176803871637,
+        "interiorError": 0.050955414012738856
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-2017196-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.44590745172854646,
+        "materialJointError": 0.44590745172854646,
+        "boundaryError": 0.451050106915402,
+        "interiorError": 0.4446441947565543
+      },
+      {
+        "id": "6649301431ad:shared-lattice-782672-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.014893664597518197,
+        "materialJointError": 0.014893664597518197,
+        "boundaryError": 0.06847475406471737,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-761483-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.16745069471969506,
+        "materialJointError": 0.16745069471969506,
+        "boundaryError": 0.29448448398142135,
+        "interiorError": 0.15581952842677735
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-1051499-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.03816056074743026,
+        "materialJointError": 0.03819279905298492,
+        "boundaryError": 0.21292495106938414,
+        "interiorError": 0.00913499492500282
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-18199-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.01554303536989716,
+        "materialJointError": 0.01554303536989716,
+        "boundaryError": 0.083967775965349,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-713051-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.13715034392369654,
+        "materialJointError": 0.13715034392369654,
+        "boundaryError": 0.23377291153879903,
+        "interiorError": 0.10142906936214709
+      },
+      {
+        "id": "6649301431ad:lattice-753411-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.1043129512295403,
+        "materialJointError": 0.1043129512295403,
+        "boundaryError": 0.20774125297213644,
+        "interiorError": 0.06141708693264093
+      },
+      {
+        "id": "6649301431ad:lattice-773591-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.023464405717023303,
+        "materialJointError": 0.024296954765021563,
+        "boundaryError": 0.07317991333692546,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-54523-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.16229594102092137,
+        "materialJointError": 0.16236068479742585,
+        "boundaryError": 0.3057465736642867,
+        "interiorError": 0.08963667398195561
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-3001055-v0--scene-baseline",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.10434075462246473,
+        "materialJointError": 0.6906669772764644,
+        "boundaryError": 0.4574379301823441,
+        "interiorError": 0.0285857908847185
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-5029313-v0--scene-background-white",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.02846532654548737,
+        "materialJointError": 0.02846532654548737,
+        "boundaryError": 0.12365270640500148,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-23244-v0--scene-background-black",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.13150710896751042,
+        "materialJointError": 0.805600677194269,
+        "boundaryError": 0.2973678558117088,
+        "interiorError": 0.11594443155067803
+      },
+      {
+        "id": "6649301431ad:lattice-757447-v0--scene-background-gray",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.1948344128046871,
+        "materialJointError": 0.5151957334094796,
+        "boundaryError": 0.4644785963261552,
+        "interiorError": 0.0695038930333048
+      },
+      {
+        "id": "6649301431ad:shared-lattice-835140-v0--scene-background-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.22464431878909083,
+        "materialJointError": 0.7861042518959942,
+        "boundaryError": 0.4673484946577023,
+        "interiorError": 0.19961454873498174
+      },
+      {
+        "id": "6649301431ad:lattice-737267-v0--scene-background-white-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.15734974723115844,
+        "materialJointError": 0.6357144438981585,
+        "boundaryError": 0.1962936698703249,
+        "interiorError": 0.14548357664233577
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-20217-v0--scene-baseline",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.08092475636316275,
+        "materialJointError": 0.29984058057091095,
+        "boundaryError": 0.29099832991339586,
+        "interiorError": 0.005351170568561873
+      },
+      {
+        "id": "6649301431ad:shared-lattice-762492-v0--scene-background-white",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.03869666074093745,
+        "materialJointError": 0.14062876681597805,
+        "boundaryError": 0.17558322191738757,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-830095-v0--scene-background-black",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.010119556442343336,
+        "materialJointError": 0.010119556442343336,
+        "boundaryError": 0.07787425714428646,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-1063607-v0--scene-background-gray",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.012844217848476893,
+        "materialJointError": 0.1758093978425547,
+        "boundaryError": 0.12807998884005178,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-781663-v0--scene-background-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.023086659586513094,
+        "materialJointError": 0.024095081270304762,
+        "boundaryError": 0.14995089872344697,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-745339-v0--scene-background-white-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.015104306758844537,
+        "materialJointError": 0.015104306758844537,
+        "boundaryError": 0.07228335464154044,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-802852-v0--scene-baseline",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.14684323125955803,
+        "materialJointError": 0.16230636670003246,
+        "boundaryError": 0.31646061466478215,
+        "interiorError": 0.06280316568802655
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-9039415-v0--scene-background-white",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.01163589042787639,
+        "materialJointError": 0.01163589042787639,
+        "boundaryError": 0.08036539790552773,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-798816-v0--scene-background-black",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.052452761421618053,
+        "materialJointError": 0.052452761421618053,
+        "boundaryError": 0.12255860619015946,
+        "interiorError": 0.0021200878322101915
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-5053529-v0--scene-background-gray",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.008489902208460907,
+        "materialJointError": 0.008489902208460907,
+        "boundaryError": 0.07227721366545428,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-733231-v0--scene-background-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.026566464970027986,
+        "materialJointError": 0.026566464970027986,
+        "boundaryError": 0.12704081588765873,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-40397-v0--scene-background-white-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.04581361478654235,
+        "materialJointError": 0.17695849958514243,
+        "boundaryError": 0.3536855194986481,
+        "interiorError": 0.0077556073405184965
+      },
+      {
+        "id": "6649301431ad:shared-lattice-786708-v0--scene-baseline",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.031266996898839376,
+        "materialJointError": 0.043656266883588216,
+        "boundaryError": 0.10027994947529323,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-813951-v0--scene-background-white",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.057106802637876763,
+        "materialJointError": 0.12716575577311168,
+        "boundaryError": 0.2230998107939664,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-818996-v0--scene-background-black",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.05597172272055495,
+        "materialJointError": 0.8280731891761538,
+        "boundaryError": 0.22148404264638147,
+        "interiorError": 0.003734495176277064
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-3056550-v0--scene-background-gray",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.14512493613838043,
+        "materialJointError": 0.7153687765328305,
+        "boundaryError": 0.4714459726823859,
+        "interiorError": 0.11478783523339757
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-55532-v0--scene-background-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.07859779681777254,
+        "materialJointError": 0.2787655501980965,
+        "boundaryError": 0.4794788595674771,
+        "interiorError": 0.021869849895327604
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-2017196-v0--scene-background-white-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.03434917724059896,
+        "materialJointError": 0.03434917724059896,
+        "boundaryError": 0.17418293903018914,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-782672-v0--scene-baseline",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.015117905143662434,
+        "materialJointError": 0.015117905143662434,
+        "boundaryError": 0.0695057170052366,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-761483-v0--scene-background-white",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.008497857820460973,
+        "materialJointError": 0.11571563676368898,
+        "boundaryError": 0.09583925220266643,
+        "interiorError": 0.0005009123761136355
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-1051499-v0--scene-background-black",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.010685675728885628,
+        "materialJointError": 0.010685675728885628,
+        "boundaryError": 0.07502466623682737,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-18199-v0--scene-background-gray",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.014014137672499392,
+        "materialJointError": 0.11918763359287957,
+        "boundaryError": 0.07570824774104419,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-713051-v0--scene-background-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.020145343633510653,
+        "materialJointError": 0.020145343633510653,
+        "boundaryError": 0.07463653554225552,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-753411-v0--scene-background-white-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.024675701727991835,
+        "materialJointError": 0.058777254108602905,
+        "boundaryError": 0.0841724845965799,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-773591-v0--scene-baseline",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.03324450623555005,
+        "materialJointError": 0.04008462687435549,
+        "boundaryError": 0.10356883373936618,
+        "interiorError": 5.328218243819267e-05
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-54523-v0--scene-background-white",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.05578585007875219,
+        "materialJointError": 0.0706769186747834,
+        "boundaryError": 0.16592342526311707,
+        "interiorError": 0.0
+      }
+    ],
+    "consistency": [
+      {
+        "id": "180ecc34ae42:corner-lattice-3001055-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.011681714816293695,
+        "materialJointError": 0.011681714816293695,
+        "boundaryError": 0.06613069484100532,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-5029313-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.017167723280106746,
+        "materialJointError": 0.017167723280106746,
+        "boundaryError": 0.07457618457336415,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-23244-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.011106644321819872,
+        "materialJointError": 0.011106644321819872,
+        "boundaryError": 0.12629657343503864,
+        "interiorError": 0.0002983985942110673
+      },
+      {
+        "id": "6649301431ad:lattice-757447-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.02454881064563312,
+        "materialJointError": 0.02454881064563312,
+        "boundaryError": 0.07736470907994518,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-835140-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.005924750378952355,
+        "materialJointError": 0.005924750378952355,
+        "boundaryError": 0.06337480504754524,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-737267-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.03526058576211983,
+        "materialJointError": 0.03526058576211983,
+        "boundaryError": 0.14170047794742702,
+        "interiorError": 0.0028284671532846717
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-20217-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.025991923210624882,
+        "materialJointError": 0.025991923210624882,
+        "boundaryError": 0.09813287567677728,
+        "interiorError": 3.934684241589613e-05
+      },
+      {
+        "id": "6649301431ad:shared-lattice-762492-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.015212925359402853,
+        "materialJointError": 0.015212925359402853,
+        "boundaryError": 0.06902751809193897,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-830095-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.008787437522039874,
+        "materialJointError": 0.008787437522039874,
+        "boundaryError": 0.0676230399157911,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-1063607-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.006208360313398139,
+        "materialJointError": 0.006250566872297391,
+        "boundaryError": 0.06190853573457159,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-781663-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.014080072798592094,
+        "materialJointError": 0.014080072798592094,
+        "boundaryError": 0.09145192973148213,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-745339-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.013768759184420078,
+        "materialJointError": 0.013768759184420078,
+        "boundaryError": 0.0658919418806573,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-802852-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.11787584600433956,
+        "materialJointError": 0.11787584600433956,
+        "boundaryError": 0.2623919809001263,
+        "interiorError": 0.046272657646157775
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-9039415-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.010615338644189974,
+        "materialJointError": 0.01069996010419223,
+        "boundaryError": 0.07331677101379758,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-798816-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.051949153074566067,
+        "materialJointError": 0.051949153074566067,
+        "boundaryError": 0.12409558469825242,
+        "interiorError": 0.0001514348451578708
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-5053529-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.007673045659621549,
+        "materialJointError": 0.007673045659621549,
+        "boundaryError": 0.06532305637779443,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-733231-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.017097737965430054,
+        "materialJointError": 0.017097737965430054,
+        "boundaryError": 0.08176137033708418,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-40397-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.007035613853850535,
+        "materialJointError": 0.007035613853850535,
+        "boundaryError": 0.06395051779557398,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-786708-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.02797956133633154,
+        "materialJointError": 0.02797956133633154,
+        "boundaryError": 0.08973644019046628,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-813951-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.03067897960924303,
+        "materialJointError": 0.03067897960924303,
+        "boundaryError": 0.11985392685309251,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-818996-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.019191682562292443,
+        "materialJointError": 0.019191682562292443,
+        "boundaryError": 0.08000003808752754,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-3056550-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.006198843931238993,
+        "materialJointError": 0.006467829854309019,
+        "boundaryError": 0.07287671085570115,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-55532-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.008371183333855366,
+        "materialJointError": 0.008371183333855366,
+        "boundaryError": 0.0675280725464417,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-2017196-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.02434035517738904,
+        "materialJointError": 0.02434035517738904,
+        "boundaryError": 0.12342870899467212,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-782672-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.013794320491387624,
+        "materialJointError": 0.013794320491387624,
+        "boundaryError": 0.0634204360486979,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-761483-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.0081907715567821,
+        "materialJointError": 0.0081907715567821,
+        "boundaryError": 0.09764910459332095,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-1051499-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.009820202159491132,
+        "materialJointError": 0.009820202159491132,
+        "boundaryError": 0.06894813281694329,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-18199-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.015174840532438985,
+        "materialJointError": 0.015174840532438985,
+        "boundaryError": 0.08197868561796658,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-713051-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.020372710740943427,
+        "materialJointError": 0.020372710740943427,
+        "boundaryError": 0.07547890852450725,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-753411-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.02027397397394779,
+        "materialJointError": 0.02027397397394779,
+        "boundaryError": 0.06915753727472462,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-773591-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.022718274212760375,
+        "materialJointError": 0.022718274212760375,
+        "boundaryError": 0.07085290623184896,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-54523-v0",
+        "kind": "synthetic-original",
+        "materialPixelError": 0.030849676174883017,
+        "materialJointError": 0.030849676174883017,
+        "boundaryError": 0.091755954815936,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-3001055-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.011681481943403633,
+        "materialJointError": 0.011681481943403633,
+        "boundaryError": 0.06612937653746243,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-5029313-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.1927189070163059,
+        "materialJointError": 0.1927189070163059,
+        "boundaryError": 0.332336760019853,
+        "interiorError": 0.15096686191125733
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-23244-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.17605207507757964,
+        "materialJointError": 0.17605207507757964,
+        "boundaryError": 0.3799060102065123,
+        "interiorError": 0.1569245051556646
+      },
+      {
+        "id": "6649301431ad:lattice-757447-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.024248187748246525,
+        "materialJointError": 0.024248187748246525,
+        "boundaryError": 0.07641730664425034,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-835140-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.05170687999869623,
+        "materialJointError": 0.05174405195617151,
+        "boundaryError": 0.20716440784291293,
+        "interiorError": 0.03567474474105056
+      },
+      {
+        "id": "6649301431ad:lattice-737267-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.3908333920541312,
+        "materialJointError": 0.3908333920541312,
+        "boundaryError": 0.49624856705436415,
+        "interiorError": 0.35871350364963506
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-20217-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.027705144865644345,
+        "materialJointError": 0.027705144865644345,
+        "boundaryError": 0.10471775087683881,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-762492-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.1236645348661551,
+        "materialJointError": 0.126169834538539,
+        "boundaryError": 0.2251620071882466,
+        "interiorError": 0.09497206703910614
+      },
+      {
+        "id": "6649301431ad:lattice-830095-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.03004206947979296,
+        "materialJointError": 0.03004206947979296,
+        "boundaryError": 0.22122065924811088,
+        "interiorError": 0.0014884413228522257
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-1063607-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.006498404952556301,
+        "materialJointError": 0.007300329571642107,
+        "boundaryError": 0.06480080325796146,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-781663-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.08044359603317652,
+        "materialJointError": 0.08063437851389386,
+        "boundaryError": 0.21358753444030446,
+        "interiorError": 0.0562141614586689
+      },
+      {
+        "id": "6649301431ad:lattice-745339-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.05339378286044911,
+        "materialJointError": 0.05339378286044911,
+        "boundaryError": 0.20756259274251768,
+        "interiorError": 0.012668848057722963
+      },
+      {
+        "id": "6649301431ad:shared-lattice-802852-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.07552267255207563,
+        "materialJointError": 0.07552267255207563,
+        "boundaryError": 0.21274916147979958,
+        "interiorError": 0.007531273934133265
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-9039415-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.07398468645044284,
+        "materialJointError": 0.07398468645044284,
+        "boundaryError": 0.24019191584669775,
+        "interiorError": 0.04584583924271909
+      },
+      {
+        "id": "6649301431ad:shared-lattice-798816-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.17977508841996742,
+        "materialJointError": 0.17977508841996742,
+        "boundaryError": 0.35508510664001697,
+        "interiorError": 0.05391080487620201
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-5053529-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.00899287044703285,
+        "materialJointError": 0.00899287044703285,
+        "boundaryError": 0.0765591408247533,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-733231-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.15095231127578954,
+        "materialJointError": 0.15099087961889351,
+        "boundaryError": 0.3009759363258338,
+        "interiorError": 0.11128450209694724
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-40397-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.09624639188537541,
+        "materialJointError": 0.09624639188537541,
+        "boundaryError": 0.27513031139640637,
+        "interiorError": 0.07413341101077775
+      },
+      {
+        "id": "6649301431ad:shared-lattice-786708-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.02575182455793484,
+        "materialJointError": 0.02575182455793484,
+        "boundaryError": 0.0825916116575359,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-813951-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.2107366335148511,
+        "materialJointError": 0.2107366335148511,
+        "boundaryError": 0.3628940994800267,
+        "interiorError": 0.15838969146424428
+      },
+      {
+        "id": "6649301431ad:shared-lattice-818996-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.058628659156584426,
+        "materialJointError": 0.058628659156584426,
+        "boundaryError": 0.22072676176386058,
+        "interiorError": 0.007468990352554128
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-3056550-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.006056573072157166,
+        "materialJointError": 0.0060864603969427245,
+        "boundaryError": 0.07120410345091588,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-55532-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.058578918260495,
+        "materialJointError": 0.059086175947399955,
+        "boundaryError": 0.19838228428705257,
+        "interiorError": 0.038795599305153444
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-2017196-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.3628313754320221,
+        "materialJointError": 0.3628313754320221,
+        "boundaryError": 0.40627481780369173,
+        "interiorError": 0.3521598002496879
+      },
+      {
+        "id": "6649301431ad:shared-lattice-782672-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.0139276186466042,
+        "materialJointError": 0.0139276186466042,
+        "boundaryError": 0.06403328444044003,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-761483-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.15361276053070974,
+        "materialJointError": 0.153645538818372,
+        "boundaryError": 0.29012039791750416,
+        "interiorError": 0.14111417224229847
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-1051499-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.03588474330651836,
+        "materialJointError": 0.035916981612073025,
+        "boundaryError": 0.2082636606212977,
+        "interiorError": 0.007255366339611293
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-18199-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.014129112028791307,
+        "materialJointError": 0.014129112028791307,
+        "boundaryError": 0.07632937101337343,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-713051-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.13012361748192852,
+        "materialJointError": 0.13012361748192852,
+        "boundaryError": 0.23288099512710728,
+        "interiorError": 0.09213430928314163
+      },
+      {
+        "id": "6649301431ad:lattice-753411-v0--print-flowers-stripes",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.08114981587984238,
+        "materialJointError": 0.08114981587984238,
+        "boundaryError": 0.19482515450560728,
+        "interiorError": 0.03400409447246218
+      },
+      {
+        "id": "6649301431ad:lattice-773591-v0--print-flowers",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.023930056667479774,
+        "materialJointError": 0.024762605715478034,
+        "boundaryError": 0.07463216815260738,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-54523-v0--print-stripes-dots",
+        "kind": "synthetic-printed",
+        "materialPixelError": 0.1553124373896341,
+        "materialJointError": 0.15537718116613858,
+        "boundaryError": 0.29999581199722575,
+        "interiorError": 0.0820287734698854
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-3001055-v0--scene-baseline",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.06126524931902549,
+        "materialJointError": 0.6814246767486644,
+        "boundaryError": 0.3173032124055173,
+        "interiorError": 0.006333780160857909
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-5029313-v0--scene-background-white",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.025757058729648296,
+        "materialJointError": 0.025757058729648296,
+        "boundaryError": 0.11188805495921811,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-23244-v0--scene-background-black",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.1437757364534507,
+        "materialJointError": 0.8080420016949748,
+        "boundaryError": 0.42731636796317757,
+        "interiorError": 0.11717118132687908
+      },
+      {
+        "id": "6649301431ad:lattice-757447-v0--scene-background-gray",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.19335944550443385,
+        "materialJointError": 0.5136929365375235,
+        "boundaryError": 0.4614089594203492,
+        "interiorError": 0.068770127593657
+      },
+      {
+        "id": "6649301431ad:shared-lattice-835140-v0--scene-background-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.3255979971618566,
+        "materialJointError": 0.7675540851718936,
+        "boundaryError": 0.49353372550626873,
+        "interiorError": 0.30827900110714723
+      },
+      {
+        "id": "6649301431ad:lattice-737267-v0--scene-background-white-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.1189358254142431,
+        "materialJointError": 0.6351416638241043,
+        "boundaryError": 0.1968027655370472,
+        "interiorError": 0.09520985401459854
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-20217-v0--scene-baseline",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.0776748822701116,
+        "materialJointError": 0.29659070647785984,
+        "boundaryError": 0.2764178695713132,
+        "interiorError": 0.0061774542592956914
+      },
+      {
+        "id": "6649301431ad:shared-lattice-762492-v0--scene-background-white",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.03345008350378931,
+        "materialJointError": 0.1353821895788299,
+        "boundaryError": 0.15177726766453542,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-830095-v0--scene-background-black",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.009078285446633987,
+        "materialJointError": 0.009078285446633987,
+        "boundaryError": 0.0698612374295627,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-1063607-v0--scene-background-gray",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.010916800254033174,
+        "materialJointError": 0.173881980248111,
+        "boundaryError": 0.10886016347592929,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-781663-v0--scene-background-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.020103911323775574,
+        "materialJointError": 0.02111233300756724,
+        "boundaryError": 0.1305775553869091,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-745339-v0--scene-background-white-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.014362995735701389,
+        "materialJointError": 0.014362995735701389,
+        "boundaryError": 0.06873572756794685,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-802852-v0--scene-baseline",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.14982207809925832,
+        "materialJointError": 0.16528521353973274,
+        "boundaryError": 0.31411582016536416,
+        "interiorError": 0.06841970896093949
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-9039415-v0--scene-background-white",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.011129279152394471,
+        "materialJointError": 0.011129279152394471,
+        "boundaryError": 0.0768663948004459,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-798816-v0--scene-background-black",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.04997565350519292,
+        "materialJointError": 0.04997565350519292,
+        "boundaryError": 0.1169476484264208,
+        "interiorError": 0.0018929355644733852
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-5053529-v0--scene-background-gray",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.009559196004873946,
+        "materialJointError": 0.009559196004873946,
+        "boundaryError": 0.08138044881431952,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-733231-v0--scene-background-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.030439991767172533,
+        "materialJointError": 0.030439991767172533,
+        "boundaryError": 0.14556401817396705,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-40397-v0--scene-background-white-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.03545235575603308,
+        "materialJointError": 0.16659724055463318,
+        "boundaryError": 0.29396885015476437,
+        "interiorError": 0.003495484998543548
+      },
+      {
+        "id": "6649301431ad:shared-lattice-786708-v0--scene-baseline",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.028656436503980913,
+        "materialJointError": 0.041072286941257724,
+        "boundaryError": 0.09190732368889012,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-813951-v0--scene-background-white",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.05021713318509868,
+        "materialJointError": 0.1202760863203336,
+        "boundaryError": 0.1960675392758781,
+        "interiorError": 4.001760774740886e-05
+      },
+      {
+        "id": "6649301431ad:shared-lattice-818996-v0--scene-background-black",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.049218832312499745,
+        "materialJointError": 0.8194339099217022,
+        "boundaryError": 0.169387756837793,
+        "interiorError": 0.011292402080647312
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-3056550-v0--scene-background-gray",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.1346953491179271,
+        "materialJointError": 0.6904256333633997,
+        "boundaryError": 0.48129714902906623,
+        "interiorError": 0.10247280567079345
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-55532-v0--scene-background-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.07641268678187431,
+        "materialJointError": 0.2765804401621983,
+        "boundaryError": 0.4703507512892272,
+        "interiorError": 0.02066723085831366
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-2017196-v0--scene-background-white-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.031541490923754294,
+        "materialJointError": 0.031541490923754294,
+        "boundaryError": 0.15994530384267677,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:shared-lattice-782672-v0--scene-baseline",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.014075992049073602,
+        "materialJointError": 0.014075992049073602,
+        "boundaryError": 0.06471544242629466,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-761483-v0--scene-background-white",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.00973972096947397,
+        "materialJointError": 0.11695749991270198,
+        "boundaryError": 0.11025377387132157,
+        "interiorError": 0.0005366918315503238
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-1051499-v0--scene-background-black",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.010001816895303314,
+        "materialJointError": 0.010001816895303314,
+        "boundaryError": 0.07022325900303611,
+        "interiorError": 0.0
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-18199-v0--scene-background-gray",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.015137702712967376,
+        "materialJointError": 0.12031119863334755,
+        "boundaryError": 0.08177805684559222,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-713051-v0--scene-background-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.019629104458069275,
+        "materialJointError": 0.019629104458069275,
+        "boundaryError": 0.07272391969081668,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-753411-v0--scene-background-white-plain",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.026304792250031173,
+        "materialJointError": 0.060177656749098196,
+        "boundaryError": 0.08972955439683761,
+        "interiorError": 0.0
+      },
+      {
+        "id": "6649301431ad:lattice-773591-v0--scene-baseline",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.034843501636985935,
+        "materialJointError": 0.04168362227579138,
+        "boundaryError": 0.1085557209554497,
+        "interiorError": 5.328218243819267e-05
+      },
+      {
+        "id": "180ecc34ae42:corner-lattice-54523-v0--scene-background-white",
+        "kind": "synthetic-scene",
+        "materialPixelError": 0.051773038469943564,
+        "materialJointError": 0.06666410706597477,
+        "boundaryError": 0.1539881505271545,
+        "interiorError": 0.0
+      }
+    ]
+  },
+  "pairedInvariance": {
+    "control": {
+      "synthetic-printed": {
+        "probabilityMSE": 0.05561843878604649,
+        "hardDisagreement": 0.10160231806251127,
+        "materialErrorChange": 0.086869136145275
+      },
+      "synthetic-scene": {
+        "probabilityMSE": 0.02577611138338573,
+        "hardDisagreement": 0.04663555402618835,
+        "materialErrorChange": 0.037745546219765974
+      }
+    },
+    "consistency": {
+      "synthetic-printed": {
+        "probabilityMSE": 0.047389635865548084,
+        "hardDisagreement": 0.0900565803200388,
+        "materialErrorChange": 0.07578671266449963
+      },
+      "synthetic-scene": {
+        "probabilityMSE": 0.02567241877636465,
+        "hardDisagreement": 0.045697942994880635,
+        "materialErrorChange": 0.03790508140875704
+      }
+    }
+  },
+  "realTraining": {
+    "scope": "Partial known regions only. Unlabelled material is excluded from joint class scoring but remains in the separate body score. Missing body counts as a material joint error. Fractional labels score expected hard-classification disagreement. No complete-boundary, crop or cutting-template accuracy claim.",
+    "control": {
+      "bodyIoU": 0.9220370264229887,
+      "bodyPixelError": 0.02772860746760552,
+      "bodyFalseNegative": 0.0284759940848502,
+      "backgroundFalsePositive": 0.019533635632991684,
+      "materialPixelError": 0.03526154688451397,
+      "materialJointError": 0.06750914561448278,
+      "jointRegionPixelError": 0.036623634113111904,
+      "balancedMaterialJointError": 0.06287522998824091
+    },
+    "consistency": {
+      "bodyIoU": 0.9220370264229887,
+      "bodyPixelError": 0.02772860746760552,
+      "bodyFalseNegative": 0.0284759940848502,
+      "backgroundFalsePositive": 0.019533635632991684,
+      "materialPixelError": 0.036519195207199186,
+      "materialJointError": 0.06865721865235441,
+      "jointRegionPixelError": 0.036960708441553705,
+      "balancedMaterialJointError": 0.06399809763190646
+    },
+    "rows": [
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "knownMaterialPixels": 23588,
+        "controlMaterialError": 0.09326776326945904,
+        "candidateMaterialError": 0.09157198575546888,
+        "difference": -0.0016957775139901654,
+        "controlJointError": 0.09326776326945904,
+        "candidateJointError": 0.09157198575546888
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "knownMaterialPixels": 29170,
+        "controlMaterialError": 0.16112444292080905,
+        "candidateMaterialError": 0.17274597188892699,
+        "difference": 0.011621528968117939,
+        "controlJointError": 0.18172780253685294,
+        "candidateJointError": 0.19190949605759342
+      },
+      {
+        "id": "real-b87b0b19f12724f3-body-1",
+        "knownMaterialPixels": 8197,
+        "controlMaterialError": 0.11113822130047578,
+        "candidateMaterialError": 0.11955593509820667,
+        "difference": 0.008417713797730889,
+        "controlJointError": 0.11113822130047578,
+        "candidateJointError": 0.11955593509820667
+      },
+      {
+        "id": "real-cf2d0fcff65d7386-body-1",
+        "knownMaterialPixels": 34103,
+        "controlMaterialError": 0.0,
+        "candidateMaterialError": 0.0,
+        "difference": 0.0,
+        "controlJointError": 0.0,
+        "candidateJointError": 0.0
+      },
+      {
+        "id": "real-cdae5c890b6933cd-body-1",
+        "knownMaterialPixels": 14947,
+        "controlMaterialError": 0.024954840436207933,
+        "candidateMaterialError": 0.02227871813741888,
+        "difference": -0.002676122298789052,
+        "controlJointError": 0.024954840436207933,
+        "candidateJointError": 0.02227871813741888
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "knownMaterialPixels": 25529,
+        "controlMaterialError": 0.08511888440596968,
+        "candidateMaterialError": 0.08821340436366486,
+        "difference": 0.003094519957695177,
+        "controlJointError": 0.5804771044694269,
+        "candidateJointError": 0.5832582553174821
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "knownMaterialPixels": 12745,
+        "controlMaterialError": 0.0,
+        "candidateMaterialError": 0.0,
+        "difference": 0.0,
+        "controlJointError": 0.0,
+        "candidateJointError": 0.0
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "knownMaterialPixels": 17337,
+        "controlMaterialError": 0.023187402664820903,
+        "candidateMaterialError": 0.029128453596354617,
+        "difference": 0.0059410509315337146,
+        "controlJointError": 0.023187402664820903,
+        "candidateJointError": 0.029128453596354617
+      },
+      {
+        "id": "real-990ac34431be87fe-body-1",
+        "knownMaterialPixels": 6029,
+        "controlMaterialError": 0.0,
+        "candidateMaterialError": 0.0,
+        "difference": 0.0,
+        "controlJointError": 0.0,
+        "candidateJointError": 0.0
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "knownMaterialPixels": 14667,
+        "controlMaterialError": 0.004772618804118088,
+        "candidateMaterialError": 0.005522601759050931,
+        "difference": 0.0007499829549328426,
+        "controlJointError": 0.004772618804118088,
+        "candidateJointError": 0.005522601759050931
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "knownMaterialPixels": 9530,
+        "controlMaterialError": 0.0001049317943336831,
+        "candidateMaterialError": 0.000944386149003148,
+        "difference": 0.0008394543546694649,
+        "controlJointError": 0.0001049317943336831,
+        "candidateJointError": 0.000944386149003148
+      },
+      {
+        "id": "real-39f3a1ba97852876-body-1",
+        "knownMaterialPixels": 4829,
+        "controlMaterialError": 0.0,
+        "candidateMaterialError": 0.0,
+        "difference": 0.0,
+        "controlJointError": 0.0,
+        "candidateJointError": 0.0
+      },
+      {
+        "id": "real-e936e08ac62db19b-body-1",
+        "knownMaterialPixels": 16298,
+        "controlMaterialError": 0.0,
+        "candidateMaterialError": 0.0,
+        "difference": 0.0,
+        "controlJointError": 0.0,
+        "candidateJointError": 0.0
+      },
+      {
+        "id": "real-340f5e5b0f447889-body-1",
+        "knownMaterialPixels": 14274,
+        "controlMaterialError": 0.0,
+        "candidateMaterialError": 0.0,
+        "difference": 0.0,
+        "controlJointError": 0.0,
+        "candidateJointError": 0.0
+      },
+      {
+        "id": "real-710703159f609111-body-1",
+        "knownMaterialPixels": 13202,
+        "controlMaterialError": 0.02582941978488108,
+        "candidateMaterialError": 0.019769731858809272,
+        "difference": -0.006059687926071807,
+        "controlJointError": 0.02582941978488108,
+        "candidateJointError": 0.019769731858809272
+      },
+      {
+        "id": "real-a414dfffbd2362ae-body-1",
+        "knownMaterialPixels": 18134,
+        "controlMaterialError": 0.03468622477114812,
+        "candidateMaterialError": 0.03457593470828278,
+        "difference": -0.00011029006286533694,
+        "controlJointError": 0.03468622477114812,
+        "candidateJointError": 0.03457593470828278
+      }
+    ]
+  },
+  "numericalChecks": {
+    "rawFieldParity": {
+      "trainingBody": {
+        "exact": false,
+        "maximumDifference": 1.1920928955078125e-07,
+        "changedThresholdPixels": 0
+      },
+      "initialMaterial": {
+        "exact": false,
+        "maximumDifference": 1.1920928955078125e-07,
+        "changedThresholdPixels": 0
+      },
+      "development": [
+        {
+          "id": "real-1bcc922200edde26-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-80a649a21ea938ae-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-f6e5e128449e3cb9-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-fcbcc23efea92b93-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-55704c6e2911bebc-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-24b5ed49c9411b11-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-589f606a9d9899f2-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-dfa7e4b71b43aa86-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-2b0550dd86d23b40-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-2502cdec0720f4ea-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-d3f063052599e167-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-a126ed5d62adfd92-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-5088a58018c3aa28-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-1a7cfc6be8b164b5-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-fe7fb089d1cd86b4-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-8b91ecf546833a3f-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-b5317080eec610dc-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-c7d1e0ad5050db71-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-45ad148d9ec045be-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-702942779385436c-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-03bddab9c8f384c4-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-eb60ff94dfc6e2f8-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-af21a4ef38355dfa-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-f4bd8d13fc7e68d0-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-f05cf91c134daea9-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-12f272f48ed09d51-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-28a87a8be083f16c-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-ce66f9634c2c613b-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-52e732b98f9b14f1-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-7e9f6f83ae43ec2a-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-d4f6e3c76cf08ea8-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        },
+        {
+          "id": "real-41b7c3e0b79f1265-body-1",
+          "exact": true,
+          "maximumDifference": 0.0,
+          "changedThresholdPixels": 0
+        }
+      ]
+    },
+    "freshSameProcessReplay": {
+      "schema": "paired-material-numerical-replay-1",
+      "sameProcessBodies": {
+        "exact": true,
+        "maximumDifference": 0.0,
+        "meanDifference": 0.0,
+        "changedThresholdPixels": 0,
+        "changedValues": 0
+      },
+      "rows": [
+        {
+          "arm": "control",
+          "savedFields": {
+            "path": "tmp/heart-learning/u2netp-paired-control-v1/training-predictions.npz",
+            "sha256": "f2691a6baf9b8e167ed0e074ceb9238166215c1e881c5ea1935d38744ccac724"
+          },
+          "body": {
+            "exact": true,
+            "maximumDifference": 0.0,
+            "meanDifference": 0.0,
+            "changedThresholdPixels": 0,
+            "changedValues": 0
+          },
+          "final": {
+            "exact": true,
+            "maximumDifference": 0.0,
+            "meanDifference": 0.0,
+            "changedThresholdPixels": 0,
+            "changedValues": 0
+          },
+          "initial": {
+            "exact": true,
+            "maximumDifference": 0.0,
+            "meanDifference": 0.0,
+            "changedThresholdPixels": 0,
+            "changedValues": 0
+          }
+        },
+        {
+          "arm": "consistency",
+          "savedFields": {
+            "path": "tmp/heart-learning/u2netp-paired-consistency-v1/training-predictions.npz",
+            "sha256": "7bc6a676c805a8bd068ad82d9db7ebcc62d2fe205c82d5f284b644c3aed36ef6"
+          },
+          "body": {
+            "exact": false,
+            "maximumDifference": 1.1920928955078125e-07,
+            "meanDifference": 2.19686833828614e-12,
+            "changedThresholdPixels": 0,
+            "changedValues": 659
+          },
+          "final": {
+            "exact": false,
+            "maximumDifference": 5.960464477539063e-08,
+            "meanDifference": 6.707523533995563e-13,
+            "changedThresholdPixels": 0,
+            "changedValues": 29
+          },
+          "initial": {
+            "exact": false,
+            "maximumDifference": 1.1920928955078125e-07,
+            "meanDifference": 5.479705773338284e-13,
+            "changedThresholdPixels": 0,
+            "changedValues": 35
+          }
+        }
+      ],
+      "scope": "Fresh inference with both fixed checkpoints and their exact common parent in one process; all weights and image inputs unchanged. No retraining or source edits."
+    },
+    "interpretation": "Both checkpoint bodies are exactly equal in fresh same-process inference, and all 32 native-probe bodies exactly match the prior reference. Saved training fields differ by at most 1.1920928955078125e-7, with no changed half-threshold pixels. This is consistent with cross-process floating-point variation; the specific kernel cause is not established. The original exact-field failure is retained, not converted to a tolerance pass.",
+    "rendererCorrection": "The renderer records raw equality failures and displays each model using its own actual body. It verifies matched weights, inputs, draws and source/probe identity. No training, target, threshold or checkpoint was changed."
+  },
+  "visualReview": {
+    "scope": "Qualitative inspection of every fixed real training and development image, plus the retained largest-error synthetic galleries. Development photos have already been inspected in prior experiments. No independently labelled complete artwork or cutting-path comparison.",
+    "training": [
+      {
+        "page": {
+          "path": "training-1.jpg",
+          "sha256": "9ff5f06cd54a15e4ef2640b013e9417b26d4d01c273288785129eed8198ad43a",
+          "ids": [
+            "real-8c875dd0f298b5a4-body-1",
+            "real-995899fe049540ed-body-1",
+            "real-b87b0b19f12724f3-body-1",
+            "real-cf2d0fcff65d7386-body-1"
+          ]
+        },
+        "observation": "First four real training photos: printed flowers/stripes remain false paper changes; low-contrast red/pink loses major checker regions. Both arms look similar."
+      },
+      {
+        "page": {
+          "path": "training-2.jpg",
+          "sha256": "e5e781d4be169ff4af19a60c2dc2b70ac0314cdb664dc3fb196c135fa0a8cef8",
+          "ids": [
+            "real-cdae5c890b6933cd-body-1",
+            "real-68d8f25d8891df62-body-1",
+            "real-5330aa8b62176216-body-1",
+            "real-abf590088db891f9-body-1"
+          ]
+        },
+        "observation": "Next four training photos: gold/blue body omissions persist; sloth and bicycle remain recognizable with noisy or rounded details. Both arms look similar."
+      },
+      {
+        "page": {
+          "path": "training-3.jpg",
+          "sha256": "01399afebe408eaf0764a4db3b59041c354c6c2f370c395c1c87444422b036fb",
+          "ids": [
+            "real-990ac34431be87fe-body-1",
+            "real-12ce3c9180f7f317-body-1",
+            "real-d5b0aa8d4d2465ee-body-1",
+            "real-39f3a1ba97852876-body-1"
+          ]
+        },
+        "observation": "Four checker/curved-checker photos: both round corners and join or erase narrow transitions. A false tiny island remains in the outdoor checker."
+      },
+      {
+        "page": {
+          "path": "training-4.jpg",
+          "sha256": "25c237812d4062a141e2f4356cecdf83d4c524cbb9013ab7ad9fc22aa4c2ae88",
+          "ids": [
+            "real-e936e08ac62db19b-body-1",
+            "real-340f5e5b0f447889-body-1",
+            "real-710703159f609111-body-1",
+            "real-a414dfffbd2362ae-body-1"
+          ]
+        },
+        "observation": "Last four training photos: surrounding ornament leaks through the frozen body; swallow is recognizable; paired training removes a small false mark in the handheld red/green checker, while shadowed purple/white openings remain distorted."
+      }
+    ],
+    "development": [
+      {
+        "id": "real-1bcc922200edde26-body-1",
+        "page": "development-1.jpg",
+        "observation": "Multicolour/translucent example: body omits large internal regions; neither identity map recovers the source pattern."
+      },
+      {
+        "id": "real-80a649a21ea938ae-body-1",
+        "page": "development-1.jpg",
+        "observation": "Black/white rounded checks: body treats several dark paper regions as holes. Same omissions in both arms."
+      },
+      {
+        "id": "real-f6e5e128449e3cb9-body-1",
+        "page": "development-1.jpg",
+        "observation": "Held basket: body includes handle, chocolates and hand; both identity maps confuse these with paper."
+      },
+      {
+        "id": "real-fcbcc23efea92b93-body-1",
+        "page": "development-1.jpg",
+        "observation": "Framed witch silhouette remains recognizable in both; narrow frame joins and small details remain rounded or missing."
+      },
+      {
+        "id": "real-55704c6e2911bebc-body-1",
+        "page": "development-2.jpg",
+        "observation": "Striped paper and white dots are interpreted as material changes in both; consistency does not recover the woven motif."
+      },
+      {
+        "id": "real-24b5ed49c9411b11-body-1",
+        "page": "development-2.jpg",
+        "observation": "Low-contrast gold/red stacked-heart design is almost entirely erased by both identity heads."
+      },
+      {
+        "id": "real-589f606a9d9899f2-body-1",
+        "page": "development-2.jpg",
+        "observation": "Angel outline is retained, but thin arms, birds and small openings are simplified or lost by both."
+      },
+      {
+        "id": "real-dfa7e4b71b43aa86-body-1",
+        "page": "development-2.jpg",
+        "observation": "Two printed papers: tree and star ink remains false material detail; no convincing sheet separation."
+      },
+      {
+        "id": "real-2b0550dd86d23b40-body-1",
+        "page": "development-3.jpg",
+        "observation": "Rotated intricate star: both retain parts of the star but lose or merge narrow parallel branches and centre detail."
+      },
+      {
+        "id": "real-2502cdec0720f4ea-body-1",
+        "page": "development-3.jpg",
+        "observation": "Nativity: figures remain recognizable, but openings below the animal and thin connecting details are lost in both."
+      },
+      {
+        "id": "real-d3f063052599e167-body-1",
+        "page": "development-3.jpg",
+        "observation": "Small white/red floral weave: main fourfold shape remains, but narrow joins and pointed petals are rounded."
+      },
+      {
+        "id": "real-a126ed5d62adfd92-body-1",
+        "page": "development-3.jpg",
+        "observation": "Rotated gold/navy curled motif: primary shape retained; lower strip and border visibility are affected by body confidence."
+      },
+      {
+        "id": "real-5088a58018c3aa28-body-1",
+        "page": "development-4.jpg",
+        "observation": "Cat silhouette retained in both, with rounded checker corners and altered frame connections."
+      },
+      {
+        "id": "real-1a7cfc6be8b164b5-body-1",
+        "page": "development-4.jpg",
+        "observation": "Pink tree print and blue snowflake print become numerous false material islands in both arms."
+      },
+      {
+        "id": "real-fe7fb089d1cd86b4-body-1",
+        "page": "development-4.jpg",
+        "observation": "Reflective gold building: body omits most paper; identity only appears on a small central fragment and right cap."
+      },
+      {
+        "id": "real-8b91ecf546833a3f-body-1",
+        "page": "development-4.jpg",
+        "observation": "Dinosaur silhouette recognizable in both, but legs and narrow openings lose detail."
+      },
+      {
+        "id": "real-b5317080eec610dc-body-1",
+        "page": "development-5.jpg",
+        "observation": "Both white printed papers (dots and HO text) are segmented by ink; body also includes much of the hand."
+      },
+      {
+        "id": "real-c7d1e0ad5050db71-body-1",
+        "page": "development-5.jpg",
+        "observation": "Gold/navy checks and hearts: body omits some dark squares, and both heads round small shapes."
+      },
+      {
+        "id": "real-45ad148d9ec045be-body-1",
+        "page": "development-5.jpg",
+        "observation": "Fox silhouette remains, but leg openings and narrow lower frame features are merged or missing."
+      },
+      {
+        "id": "real-702942779385436c-body-1",
+        "page": "development-5.jpg",
+        "observation": "Purple floral paper: flower ink becomes false material holes; candidate does not remove the print pattern."
+      },
+      {
+        "id": "real-03bddab9c8f384c4-body-1",
+        "page": "development-6.jpg",
+        "observation": "Candle: frozen body omits much of the red square. Neither arm can recover a full paper-covered overlap."
+      },
+      {
+        "id": "real-eb60ff94dfc6e2f8-body-1",
+        "page": "development-6.jpg",
+        "observation": "Dragonfly: silhouette retained, but thin body and frame connections remain distorted."
+      },
+      {
+        "id": "real-af21a4ef38355dfa-body-1",
+        "page": "development-6.jpg",
+        "observation": "Small central heart/checker weave: both merge fine central checks and reshape the inner contour."
+      },
+      {
+        "id": "real-f4bd8d13fc7e68d0-body-1",
+        "page": "development-6.jpg",
+        "observation": "Gold/navy vase: both lose the foot/base and parts of the lower frame; highlights affect classification."
+      },
+      {
+        "id": "real-f05cf91c134daea9-body-1",
+        "page": "development-7.jpg",
+        "observation": "Green/black tentacled motif nearly disappears in both identity predictions despite a mostly complete body."
+      },
+      {
+        "id": "real-12f272f48ed09d51-body-1",
+        "page": "development-7.jpg",
+        "observation": "Pale blue printed Christmas tree: both classify printed stars/triangles as material and include the holding hand."
+      },
+      {
+        "id": "real-28a87a8be083f16c-body-1",
+        "page": "development-7.jpg",
+        "observation": "Four-point star and small hearts: central star remains, but heart outlines and surrounding checks become rounded."
+      },
+      {
+        "id": "real-ce66f9634c2c613b-body-1",
+        "page": "development-7.jpg",
+        "observation": "Red/black figure: main silhouette retained, but small internal features and thin frame joins remain altered."
+      },
+      {
+        "id": "real-52e732b98f9b14f1-body-1",
+        "page": "development-8.jpg",
+        "observation": "Printed flower illustration is reproduced as a material island; neither head distinguishes decoration from paper."
+      },
+      {
+        "id": "real-7e9f6f83ae43ec2a-body-1",
+        "page": "development-8.jpg",
+        "observation": "Shaded red/silver crossing strips: much of right silver cap is assigned to the wrong class; narrow crossings remain distorted."
+      },
+      {
+        "id": "real-d4f6e3c76cf08ea8-body-1",
+        "page": "development-8.jpg",
+        "observation": "Reflective green/gold bird: much of bird outline remains, but small feet, beak and frame detail are lost."
+      },
+      {
+        "id": "real-41b7c3e0b79f1265-body-1",
+        "page": "development-8.jpg",
+        "observation": "Upright red/white central heart: both retain overall motif but lose small checker openings."
+      }
+    ],
+    "synthetic": "All four largest-error pages inspected. Printed stars, flowers and stripes remain false material regions. One crowded central-heart scene regresses from about 22.46% to 32.56% despite a lower scene average. Individual large gains do not make the worst examples usable.",
+    "developmentRecoveredDesignCount": null,
+    "reasonNoRecoveryCount": "No downstream fitting or exact real design ground truth in this experiment; do not convert visual impressions into a success rate."
+  },
+  "rootCauseEvidence": [
+    "Severe errors occur in full-photo body/material fields before crop estimation or fitting. Cropping alone cannot explain these failures.",
+    "Printed ink is still frequently mistaken for the identity of the paper beneath it. Explicit paired consistency reduces, but does not remove, this behaviour on these synthetic training views.",
+    "Missing dark or reflective paper and included hands/handles are separate frozen-body limitations; identity training cannot change that frozen output.",
+    "Small openings, rounded checker corners and narrow branches remain wrong on plain paper too. The earlier free-grid diagnostic rules out output-grid capacity as a complete explanation on its 32 synthetic labels only.",
+    "Single-seed, small-data results do not isolate architecture, training diversity and sparse-label coverage as causal factors; those remain hypotheses."
+  ],
+  "validation": {
+    "focusedTestsPassed": 14,
+    "sourceAndArtifactSha256Checks": 485,
+    "all96SyntheticViewsAnd32NativePhotosRetained": true,
+    "all48RealPhotosVisuallyReviewed": true,
+    "newApplicationChecks": false,
+    "applicationCheckScope": "Offline Python tooling and research records only. Deployed PR17 remains covered by its recorded complete application/inverse suite and 11 live browser checks."
+  },
+  "resources": {
+    "workers": 1,
+    "numericalThreads": 1,
+    "nice": 15,
+    "newPhotoDownloads": 0,
+    "newSourcePhotoCopies": 0,
+    "trainingSeconds": {
+      "control": 344.631047666,
+      "consistency": 343.086608834
+    },
+    "headCheckpointBytes": {
+      "control": 77393,
+      "consistency": 77393
+    },
+    "pairedArtifactLogicalBytes": 96591085,
+    "limitBytes": 167772160,
+    "freeDiskBytesAtAudit": 28156866560
+  },
+  "nextStep": "Inspect existing palette, ROI and context/detail experiments before designing a paper-exemplar-conditioned classifier. Test whether identifying each sheet from exposed lobe texture supplies information missing from local colour prediction, with fixed crops and all failures retained. This is a research hypothesis, not a promised solution."
+}

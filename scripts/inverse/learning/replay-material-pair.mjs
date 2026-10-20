@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {createCanvas,loadImage} from 'canvas';
 import {detectForegroundCrop} from './foreground-crop.mjs';
-import {rectifyMaterialPrediction} from './material-target.mjs';
+import {rectifyMaterialPrediction,fixedMaterialMask} from './material-target.mjs';
 import {rectifyMaterialPalette} from './material-palette-target.mjs';
 import {detectHeartCrops,supportedCropOutline} from '../../../static/inverse/core/crop.js';
 import {prepare,design} from '../../../static/inverse/core/engine.js';
@@ -17,8 +17,8 @@ import {renderExportedWeave} from '../export-renderer.mjs';
 
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
 assert.ok(args.probe&&args.output&&Object.keys(args).every(k=>['probe','output','seconds','methods','target','crops','reuse'].includes(k)));
-const targetMode=args.target??'material';assert.ok(['material','rgb','palette'].includes(targetMode));
-if(targetMode==='palette')assert.ok(args.crops,'Palette comparison requires fixed crops');
+const targetMode=args.target??'material';assert.ok(['material','rgb','palette','mask'].includes(targetMode));
+if(['palette','mask'].includes(targetMode))assert.ok(args.crops,'Audited palette or mask input requires fixed crops');
 const seconds=Number(args.seconds??10);assert.ok(Number.isFinite(seconds)&&seconds>0&&seconds<=60);
 const probe=path.resolve(args.probe),output=path.resolve(args.output),hash=b=>createHash('sha256').update(b).digest('hex');
 const bytes=await fs.readFile(path.join(probe,'manifest.json')),manifest=JSON.parse(bytes);
@@ -52,9 +52,12 @@ for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/f
  ...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator|vendor)\/.+\.(js|mjs|wasm)$/.test(p)).map(p=>'static/inverse/'+p)])report.sourceHashes[file]=hash(await fs.readFile(file));
 await fs.mkdir(output,{recursive:false});
 const save=()=>fs.writeFile(path.join(output,'report.json'),JSON.stringify(report,null,2)+'\n');
-async function field(asset){
+async function assetBytes(asset){
  const file=path.resolve(probe,asset.path);assert.ok(file.startsWith(probe+path.sep));
- const raw=await fs.readFile(file);assert.equal(hash(raw),asset.sha256);assert.equal(raw.length,manifest.resolution**2*4);
+ const raw=await fs.readFile(file);assert.equal(hash(raw),asset.sha256);return raw;
+}
+async function field(asset){
+ const raw=await assetBytes(asset);assert.equal(raw.length,manifest.resolution**2*4);
  return Float32Array.from({length:manifest.resolution**2},(_,i)=>raw.readFloatLE(i*4));
 }
 function png(values,n,rgb=false){
@@ -78,7 +81,7 @@ try{
    const store=async(name,data)=>{await fs.writeFile(path.join(folder,name),data);row.assets[name]={path:path.relative(output,path.join(folder,name)),sha256:hash(data)};};
    try{
     let body,material;
-    if(method!=='production'&&(!cropReplay||targetMode!=='rgb')){body=await field(input.assets[method].body);material=await field(input.assets[method].material);}
+    if(method!=='production'&&!cropReplay){body=await field(input.assets[method].body);material=await field(input.assets[method].material);}
     const began=performance.now();
     let detected;
     if(cropReplay){
@@ -95,16 +98,26 @@ try{
     if(row.targetMode==='rgb'){
      const imported=prepare({...source,quad:crop.quad,cropProvenance:crop.provenance},configuration);
      preview=imported.preview;target=hardPhotoTarget(imported,'mask',configuration);
+     if(method==='production'&&input.expectedProductionMaskSha256)assert.equal(hash(preview.mask),input.expectedProductionMaskSha256,'Fixed production classification must replay exactly');
     }else{
      // Match preprocessPixels' source-size cap; a small photograph must not
      // silently receive a finer target grid just because its labels came from NN.
      const resolution=Math.min(configuration.resolution,Math.max(32,Math.min(image.width,image.height)));
+     if(targetMode==='mask'){
+      const asset=input.assets[method].mask,mask=await assetBytes(asset);
+      assert.equal(mask.length,resolution**2);
+      preview=fixedMaterialMask(source,mask,crop.quad,resolution);
+      assert.equal(hash(preview.mask),asset.sha256,'Retain every fixed classifier decision');
+     }
      if(targetMode==='palette'){
       const calibration=input.materialCalibration?.[method];assert.ok(calibration&&typeof calibration.applied==='boolean');
       row.materialCalibration=calibration;
       if(calibration.applied)preview=rectifyMaterialPalette(source,calibration,crop.quad,resolution);
      }
-     preview??=rectifyMaterialPrediction(source,{values:material,resolution:manifest.resolution,window:input.window},crop.quad,resolution);
+     if(!preview){
+      material??=await field(input.assets[method].material);
+      preview=rectifyMaterialPrediction(source,{values:material,resolution:manifest.resolution,window:input.window},crop.quad,resolution);
+     }
      target=prepare({type:'mask',resolution:preview.resolution,mask:preview.mask.slice(),validMask:preview.validMask},{...configuration,invert:false,removeSpecks:0,fillHoles:0}).target;
      assert.deepEqual(target.sourceImage.mask,preview.mask);assert.deepEqual(target.sourceImage.validMask??null,preview.validMask??null);
     }
@@ -133,7 +146,12 @@ try{
     row.independentImage=referenceError(target.sourceImage,render.mask);row.independentFeatures=auditFeatureFidelity(target.sourceImage,render.mask,result.report.settings);
     row.checkedPair=result.report.templateChecksPassed&&row.independentFeatures.passed&&row.independentImage.mismatchFraction<=.03;
     row.status=row.checkedPair?'checked-derived-mask':'review-required';
-   }catch(error){row.status='failed';row.error=error.message;if(error.report)row.report=error.report;}
+   }catch(error){
+    row.status='failed';row.error=error.message;if(error.report)row.report=error.report;
+    // A broken source/hash/crop invariant invalidates this replay; do not
+    // silently count it as an ordinary failed reconstruction and keep going.
+    if(error.code==='ERR_ASSERTION')throw error;
+   }
    finally{await save();console.log(row.id,method,row.status,row.independentImage?.mismatchFraction);}
   }
  }

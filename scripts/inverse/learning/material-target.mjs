@@ -6,6 +6,18 @@
 import {rectifyWithCoverage} from '../../../static/inverse/core/input.js';
 import {bilinear,homography,project} from '../../../static/inverse/locator/math.js';
 
+/** A classifier may already operate on the exact rectified source RGB grid.
+ * Preserve those binary decisions without another prediction-field resample.
+ * Source coverage still comes from the production photographic sampler.
+ */
+export function fixedMaterialMask(source,mask,quad,resolution){
+  if(mask?.length!==resolution**2||!Array.from(mask).every(v=>v===0||v===1))throw new Error('Invalid fixed material mask.');
+  const {rgba,imageWidth,imageHeight}=source;
+  const {rgb,validMask}=rectifyWithCoverage(rgba,imageWidth,imageHeight,resolution,quad);
+  return{rgb,validMask,resolution,mask:Uint8Array.from(mask),
+    probability:Float32Array.from(mask,(v,i)=>validMask?.[i] === 0 ? .5 : v)};
+}
+
 export function rectifyMaterialPrediction(source,prediction,quad,resolution=400){
   const {values,resolution:n,window}=prediction;
   if(!Number.isInteger(n)||n<2||values?.length!==n*n||!values.every(v=>Number.isFinite(v)&&v>=0&&v<=1)||

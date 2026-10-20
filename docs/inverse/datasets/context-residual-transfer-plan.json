@@ -1,0 +1,72 @@
+{
+  "schema": "context-residual-transfer-plan-1",
+  "date": "2026-10-20",
+  "trainingParent": {
+    "path": "tmp/heart-learning/u2netp-paired-control-v1/report.json",
+    "sha256": "6bf4bbfa34ed29a7002c029d28bbebf19ba7db903fb2b347a77168904a8ca4d8"
+  },
+  "models": {
+    "parent": {
+      "path": "tmp/heart-learning/exemplar-projection-v1/projection.pt",
+      "sha256": "cb6b5020aa2d0f7a4910820c707508599eb76fed14ee3383b8b0608b3d9c0afe"
+    },
+    "synthetic-control": {
+      "path": "tmp/heart-learning/exemplar-continuation-v1/synthetic-control.pt",
+      "sha256": "7a130d0254b34819a1fe1a28034708a33abef7df81d927d28fb78647920f56ac"
+    },
+    "real-mixed": {
+      "path": "tmp/heart-learning/exemplar-continuation-v1/real-mixed.pt",
+      "sha256": "ce4b952e34be8e335d1ee553398e8ae1e6e6aab4df0d94f336b94e496087e889"
+    }
+  },
+  "protocol": {
+    "seed": 2026102001,
+    "resolution": 320,
+    "contextResolution": 160,
+    "layers": [
+      "stage1d",
+      "stage2d",
+      "stage3d"
+    ],
+    "contextChannels": 192,
+    "projectionChannels": 8,
+    "parameters": 1536,
+    "epochs": 1,
+    "updates": 96,
+    "learningRate": 0.001,
+    "weightDecay": 0.0001,
+    "maximumGradientNorm": 5,
+    "boundaryFactor": 4,
+    "boundaryRadius": 2,
+    "lossTemperature": 4,
+    "ridgeRegularization": 0.1,
+    "minimumSamples": 32,
+    "maximumSamples": 1024,
+    "realLossWeight": 0.5
+  },
+  "scope": "Offline paired joint/residual scoring of the same 96 original training views: 32 plain, 32 scene and 32 printed. Frozen projections and body, exact replay of all 288 saved joint masks, no optimizer updates, no checkpoint selection. Training diagnostics only, not unseen generalization or deployment evidence.",
+  "controls": [
+    "Direct RGB per-photo ridge, using only exposed lobe samples.",
+    "All three frozen existing context projections; identical image, camera and lobe samples."
+  ],
+  "evaluation": "Retain all 576 neural predictions and fractional overlap/boundary measurements. Compare by image kind; check whether the plain-paper improvement sacrifices printed-paper accuracy. Inspect the same 21 prespecified synthetic gallery examples plus any large regressions.",
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "maximumWallSeconds": 600,
+    "minimumFreeGiB": 10,
+    "maximumArtifactMiB": 20,
+    "sourcePhotoCopies": 0,
+    "newDownloads": 0
+  },
+  "controlReport": {
+    "path": "tmp/heart-learning/exemplar-continuation-v1/report.json",
+    "sha256": "a1d80d271dd3ec5f82429de4b17001ca99b7586730f0eec6056502bd31399a29"
+  },
+  "question": "Does fitting neural context only to the remaining lobe RGB regression error preserve plain-paper boundaries better than jointly refitting colour and context?",
+  "geometrySource": {
+    "path": "tmp/heart-learning/paper-exemplar-v1/report.json",
+    "sha256": "1b83e7f89f84d54986e29968d26375f79ef983c277c446a7812376e52f1c555d"
+  }
+}

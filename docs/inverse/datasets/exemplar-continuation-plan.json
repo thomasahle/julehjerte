@@ -1,0 +1,309 @@
+{
+  "schema": "exemplar-continuation-plan-1",
+  "date": "2026-10-20",
+  "baselineCommit": "825a6904",
+  "status": "predeclared",
+  "question": "Does adding existing reviewed real-paper labels improve transfer compared with an equal-step synthetic-only continuation from the identical projection?",
+  "trainingParent": {
+    "path": "tmp/heart-learning/u2netp-paired-control-v1/report.json",
+    "sha256": "6bf4bbfa34ed29a7002c029d28bbebf19ba7db903fb2b347a77168904a8ca4d8"
+  },
+  "development": {
+    "path": "tmp/heart-learning/u2netp-paired-control-native-v1/report.json",
+    "sha256": "74d1e85d65d3d491616f512faee541bfab6bc2f0848858c3c95232aca3410b4c"
+  },
+  "exemplar": {
+    "path": "tmp/heart-learning/paper-exemplar-v1/report.json",
+    "sha256": "1b83e7f89f84d54986e29968d26375f79ef983c277c446a7812376e52f1c555d"
+  },
+  "native": {
+    "path": "tmp/heart-learning/paper-exemplar-native-v1/report.json",
+    "sha256": "3371051715f4533f246647cb014739750a8c23aaa582061c7d1f4f63774c63e6"
+  },
+  "previousPipeline": {
+    "path": "tmp/heart-learning/paper-exemplar-pipeline-v1/report.json",
+    "sha256": "8db176f4a978aec8e8960d88aa489d6be494973b167f03c2ea2a0991e21f42df"
+  },
+  "previousInput": {
+    "path": "tmp/heart-learning/paper-exemplar-pipeline-input-v1/manifest.json",
+    "sha256": "3b093ff8039e05883558eb768366ce7bd78e4ff39beef636704ec967715cf5bc"
+  },
+  "expectedDevelopmentCases": [
+    "real-1bcc922200edde26-body-1",
+    "real-80a649a21ea938ae-body-1",
+    "real-f6e5e128449e3cb9-body-1",
+    "real-fcbcc23efea92b93-body-1",
+    "real-55704c6e2911bebc-body-1",
+    "real-24b5ed49c9411b11-body-1",
+    "real-589f606a9d9899f2-body-1",
+    "real-dfa7e4b71b43aa86-body-1",
+    "real-2b0550dd86d23b40-body-1",
+    "real-2502cdec0720f4ea-body-1",
+    "real-d3f063052599e167-body-1",
+    "real-a126ed5d62adfd92-body-1",
+    "real-5088a58018c3aa28-body-1",
+    "real-1a7cfc6be8b164b5-body-1",
+    "real-fe7fb089d1cd86b4-body-1",
+    "real-8b91ecf546833a3f-body-1",
+    "real-b5317080eec610dc-body-1",
+    "real-c7d1e0ad5050db71-body-1",
+    "real-45ad148d9ec045be-body-1",
+    "real-702942779385436c-body-1",
+    "real-03bddab9c8f384c4-body-1",
+    "real-eb60ff94dfc6e2f8-body-1",
+    "real-af21a4ef38355dfa-body-1",
+    "real-f4bd8d13fc7e68d0-body-1",
+    "real-f05cf91c134daea9-body-1",
+    "real-12f272f48ed09d51-body-1",
+    "real-28a87a8be083f16c-body-1",
+    "real-ce66f9634c2c613b-body-1",
+    "real-52e732b98f9b14f1-body-1",
+    "real-7e9f6f83ae43ec2a-body-1",
+    "real-d4f6e3c76cf08ea8-body-1",
+    "real-41b7c3e0b79f1265-body-1"
+  ],
+  "protocol": {
+    "seed": 2026102001,
+    "resolution": 320,
+    "contextResolution": 160,
+    "layers": [
+      "stage1d",
+      "stage2d",
+      "stage3d"
+    ],
+    "contextChannels": 192,
+    "projectionChannels": 8,
+    "parameters": 1536,
+    "epochs": 1,
+    "updates": 96,
+    "learningRate": 0.001,
+    "weightDecay": 0.0001,
+    "maximumGradientNorm": 5,
+    "boundaryFactor": 4,
+    "boundaryRadius": 2,
+    "lossTemperature": 4,
+    "ridgeRegularization": 0.1,
+    "minimumSamples": 32,
+    "maximumSamples": 1024,
+    "realLossWeight": 0.5
+  },
+  "architecture": "Frozen adapted U2NETP supplies 192 decoder features at 160. One learned bias-free 1x1 projection produces eight context channels. Per-photo ridge fits 3 RGB plus 8 context channels on balanced geometric lobe samples only, with support-only normalization. Gradients pass through the support statistics and solve. Query uses direct 320 RGB plus interpolated context for synthetic frames; real overlap queries use the exact stored production crop RGB plus context sampled at the same homographic pixel centres. No overlap labels, coordinates or body gates enter per-photo fitting.",
+  "training": "Both arms start from the same 192-step projection checkpoint, with fresh identical AdamW states. One seeded permutation of the same 96 synthetic views supplies one synthetic example per step to both arms. The control uses synthetic loss only. The mixed arm uses 0.5 synthetic + 0.5 real loss, pairing each step with one of six existing parent-training photos, each seen 16 times in shuffled cycles. Both take 96 optimizer updates; the mixed arm has 96 extra labeled forward/backward examples. This compares supervision regimens, not equal example counts or training FLOPs. The other ten parent-training photos lack reviewed overlap corners and are explicitly not used. Approximate corners condition geometric lobe sampling; partial uncertain material labels supervise known overlap pixels only.",
+  "controls": [
+    "Immutable parent checkpoint with exact replay of all 96 saved synthetic and 26 saved real masks.",
+    "Equal-step synthetic-only continuation; identical synthetic draw order, optimizer settings and initial weights."
+  ],
+  "evaluation": "Retain 96 synthetic training diagnostics and six real training diagnostics with all uncertainties. Real development is the unchanged 32 repeatedly inspected photos, fixed 26 automatic crops and six unresolved cases; no new annotations or checkpoint selection on development. Review all 32 development images, the same 21 synthetic gallery examples, and all six real training images. If a candidate warrants further investigation, run the unchanged production fitter and independent editable export checks; no self-mask score is artwork accuracy.",
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "minimumFreeGiB": 10,
+    "maximumArtifactMiB": 50,
+    "maximumWallSeconds": 900,
+    "featureBankOnDisk": false,
+    "newPhotoDownloads": 0,
+    "sourcePhotoCopies": 0
+  },
+  "gates": [
+    "Known source inputs and source separation unchanged.",
+    "Frozen backbone parameters and buffers unchanged.",
+    "Finite-difference check of gradients through ridge fitting.",
+    "Exact reference native RGB mask replay on every available case.",
+    "Fixed final checkpoint; complete cohorts and failures retained.",
+    "Six real supervision identities must belong to the original 16-image training set and be disjoint from development.",
+    "Stored corner references and original source dimensions/hashes must match reviewed annotations.",
+    "Both arms see exactly the same synthetic sequence and take exactly 96 updates; no early stopping or selected checkpoint."
+  ],
+  "scope": "Offline controlled continuation, not a production release or held-out accuracy estimate. No source downloads/copies, no feature bank, no changed deployed model, solver, crop rules or acceptance thresholds.",
+  "parentProjection": {
+    "path": "tmp/heart-learning/exemplar-projection-v1/report.json",
+    "sha256": "1aac2e1586cf7c845f165f4fad52ba39d1e0f1efd6ab7c3f2c3bad11f8e401af"
+  },
+  "parentCheckpoint": {
+    "path": "tmp/heart-learning/exemplar-projection-v1/projection.pt",
+    "sha256": "cb6b5020aa2d0f7a4910820c707508599eb76fed14ee3383b8b0608b3d9c0afe"
+  },
+  "realExamples": [
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "source": {
+        "path": "scripts/inverse/datasets/real-annotations-pinterest.json",
+        "sha256": "a972cf961544f85565b2f8edc3df872dd27c2ca3333ea5c01d04e1867b19aaa9"
+      },
+      "overlapCorners": {
+        "points": [
+          [
+            225,
+            141
+          ],
+          [
+            380,
+            281
+          ],
+          [
+            223,
+            427
+          ],
+          [
+            74,
+            281
+          ]
+        ],
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left",
+        "uncertaintyRadiusPixels": 6
+      }
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "source": {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+      },
+      "overlapCorners": {
+        "points": [
+          [
+            787.5,
+            212.3426
+          ],
+          [
+            1370.0,
+            699.4815
+          ],
+          [
+            812.5,
+            1304.0333
+          ],
+          [
+            247.5,
+            699.4815
+          ]
+        ],
+        "uncertaintyRadiusPixels": 15.0,
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left"
+      }
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "source": {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+      },
+      "overlapCorners": {
+        "points": [
+          [
+            119.0,
+            40.0
+          ],
+          [
+            221.0,
+            144.0
+          ],
+          [
+            126.0,
+            239.0
+          ],
+          [
+            28.0,
+            145.0
+          ]
+        ],
+        "uncertaintyRadiusPixels": 6.0,
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left"
+      }
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "source": {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+      },
+      "overlapCorners": {
+        "points": [
+          [
+            128.0,
+            45.0
+          ],
+          [
+            225.0,
+            140.0
+          ],
+          [
+            125.0,
+            240.0
+          ],
+          [
+            27.0,
+            140.0
+          ]
+        ],
+        "uncertaintyRadiusPixels": 6.0,
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left"
+      }
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "source": {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+      },
+      "overlapCorners": {
+        "points": [
+          [
+            1523.8125,
+            541.8427
+          ],
+          [
+            2665.4625,
+            1611.0144
+          ],
+          [
+            1518.975,
+            2810.809
+          ],
+          [
+            387.0,
+            1552.9599
+          ]
+        ],
+        "uncertaintyRadiusPixels": 29.0273,
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left"
+      }
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "source": {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+      },
+      "overlapCorners": {
+        "points": [
+          [
+            420.75,
+            113.5363
+          ],
+          [
+            558.0,
+            317.0023
+          ],
+          [
+            343.125,
+            448.5246
+          ],
+          [
+            221.625,
+            238.3138
+          ]
+        ],
+        "uncertaintyRadiusPixels": 6.75,
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left"
+      }
+    }
+  ]
+}

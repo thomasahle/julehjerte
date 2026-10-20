@@ -1,0 +1,111 @@
+{
+  "schema": "material-grid-capacity-audit-1",
+  "date": "2026-10-20",
+  "status": "complete-offline-diagnostic",
+  "plan": {
+    "path": "docs/inverse/datasets/u2netp-material-grid-plan.json",
+    "sha256": "5b117811601a072402f4cbe8c9222078c769b51f607c322e7baf722d0694766a"
+  },
+  "report": {
+    "path": "tmp/heart-learning/u2netp-material-grid-v1/report.json",
+    "sha256": "279229bf6acfcf91ba76b0834c7201e127dfcc1573e77eb0656365c46171f6ab"
+  },
+  "log": {
+    "path": "tmp/heart-learning/u2netp-material-grid-v1.log",
+    "sha256": "8377ae809606add4cf1fbac083e52abf3b2f8b7123a10f1701df6a66229dd1c6"
+  },
+  "summary": {
+    "geometries": 32,
+    "views": 96,
+    "gridReference": {
+      "materialPixelError": 0.010669046213621594,
+      "boundaryError": 0.05072590154280139,
+      "interiorError": 0.0
+    },
+    "fullPixelIdealError": 0.010593171697109938,
+    "learned": {
+      "parent": {
+        "synthetic-original": {
+          "materialPixelError": 0.019122325443838135,
+          "boundaryError": 0.08246078601833201,
+          "interiorError": 0.0012651936565667178
+        },
+        "synthetic-printed": {
+          "materialPixelError": 0.11170725483417154,
+          "boundaryError": 0.22416174276237366,
+          "interiorError": 0.08191415805053243
+        },
+        "synthetic-scene": {
+          "materialPixelError": 0.07690051700375986,
+          "boundaryError": 0.2193413074289068,
+          "interiorError": 0.04070354115905579
+        }
+      },
+      "boundaryWeighted": {
+        "synthetic-original": {
+          "materialPixelError": 0.02123436002029799,
+          "boundaryError": 0.09383699066953238,
+          "interiorError": 0.0009818836802269232
+        },
+        "synthetic-printed": {
+          "materialPixelError": 0.09248590689129747,
+          "boundaryError": 0.21544177615969873,
+          "interiorError": 0.06003817297298356
+        },
+        "synthetic-scene": {
+          "materialPixelError": 0.06988160718908262,
+          "boundaryError": 0.19554255337727183,
+          "interiorError": 0.036297352297486665
+        }
+      }
+    }
+  },
+  "referenceExcessPercentagePoints": {
+    "mean": 0.007587451651165555,
+    "maximum": 0.021142883069392646
+  },
+  "validation": {
+    "focusedTestsPassed": 4,
+    "all32SavedFloat32GridsDecodeExactly": true,
+    "all32FieldHashesVerified": true,
+    "allSourceAndArtifactHashesVerified": true,
+    "all32FinalBCEBelowInitial": true,
+    "trainingInputAndLabelBytesExact": true,
+    "all96ViewsShareTheir32OriginalTargetsExactly": true
+  },
+  "visualReview": {
+    "pages": [
+      {
+        "path": "tmp/heart-learning/u2netp-material-grid-v1/grid-reference-1.jpg",
+        "sha256": "bf4cc7214e2b825be27ef8d62e6cedd280749aa14c94b3291f18a488735055fc"
+      },
+      {
+        "path": "tmp/heart-learning/u2netp-material-grid-v1/grid-reference-2.jpg",
+        "sha256": "0a7fa13444394ef69d750228b8d4ee59558f7490f1daac7b4749c0232689bb30"
+      }
+    ],
+    "bothPagesInspected": true,
+    "selection": "Eight largest reference errors; all 32 fields retained.",
+    "observations": [
+      "The target-informed 160-pixel grids retain the visible checker cells and narrow joins in these displayed synthetic designs.",
+      "Small raster stair steps remain; these panels do not validate cutting topology.",
+      "The viewed largest-error examples are dominated by grid patterns; the experiment does not establish adequate resolution for every fine real motif."
+    ]
+  },
+  "resources": {
+    "threads": 1,
+    "seconds": 16.443652541000002,
+    "artifactBytes": 2969165,
+    "newPhotoCopies": 0,
+    "newDownloads": 0
+  },
+  "conclusion": "The existing output grid can express these synthetic training masks almost as well as an unconstrained hard pixel map. Its fitted reference has zero interior error and only 0.00759 percentage points mean excess expected classification error over that pixel baseline. Grid resolution alone cannot account for the much larger errors of the learned heads on these same targets. This does not isolate the contributions of learned features, context, sampling or optimization, nor prove sufficient resolution for other designs.",
+  "next": "Test whether paired original/printed supervision can teach invariant paper identity while retaining sharp clean-paper boundaries. Keep both labels and geometry fixed, compare against the same-compute supervised control, and retain the existing real-photo cohort. Do not enlarge the output grid by default based on the current evidence.",
+  "limitations": [
+    "This fits free logits directly to known labels; it is not a photograph-to-mask model or deployable improvement.",
+    "Final 200-step BCE solution is feasible, not a certified optimum or a lower bound on the best possible grid.",
+    "All 32 geometries are existing training examples with limited procedural diversity; scene and print variants share labels.",
+    "No model was retrained, no template was fitted, and no application code or acceptance threshold changed.",
+    "The full-pixel baseline includes unavoidable expected hard-classification error on fractional coverage samples. It is not a photograph accuracy score."
+  ]
+}

@@ -1,0 +1,1911 @@
+{
+  "schema": "paper-exemplar-pipeline-results-1",
+  "status": "complete",
+  "decision": "Do not replace production classification yet. Continue boundary-preserving material inference and deterministic search-stability diagnostics.",
+  "baselineCommit": "ed915b7f",
+  "plan": {
+    "path": "docs/inverse/datasets/paper-exemplar-pipeline-plan.json",
+    "sha256": "ef736204200c9501b065f9f7e96762247477d8793424c193925d83fdceda2398"
+  },
+  "artifacts": {
+    "input": {
+      "path": "tmp/heart-learning/paper-exemplar-pipeline-input-v1/manifest.json",
+      "sha256": "3b093ff8039e05883558eb768366ce7bd78e4ff39beef636704ec967715cf5bc"
+    },
+    "pipeline": {
+      "path": "tmp/heart-learning/paper-exemplar-pipeline-v1/report.json",
+      "sha256": "8db176f4a978aec8e8960d88aa489d6be494973b167f03c2ea2a0991e21f42df"
+    },
+    "review": {
+      "path": "tmp/heart-learning/paper-exemplar-pipeline-review-v1/report.json",
+      "sha256": "39db6dac14710e0794e1603c2558dadf68dae50a0da88736c6de584a4242294a"
+    },
+    "editable": {
+      "path": "tmp/heart-learning/paper-exemplar-editable-v1/results.json",
+      "sha256": "dd41702cdb6b79328ce0061f15de131ab481e631ee8e8ceb05bcb3930884867a"
+    },
+    "finalAudit": {
+      "path": "tmp/heart-learning/paper-exemplar-final-audit-v1.json",
+      "sha256": "98874e6b7f948e8df827fde2ade74770b482112787df89cbd9420a9884a9f39c"
+    },
+    "codeVerification": {
+      "path": "tmp/heart-learning/paper-exemplar-verification-v1/report.json",
+      "sha256": "16749caf222053e9b9bf9e9d29de6f28b74ae442ce77f0c17640676ec510c0bd"
+    }
+  },
+  "summary": {
+    "production": {
+      "declaredPhotos": 32,
+      "fixedCrops": 26,
+      "unresolvedCrops": 6,
+      "freshFits": 26,
+      "checkedDerivedMasks": 13,
+      "editableCheckedCandidates": 13,
+      "editableConversionsPassed": 26,
+      "meanSolveWallSeconds": 8.482095937615384,
+      "maxSolveWallSeconds": 10.575793458999993
+    },
+    "rgb-only": {
+      "declaredPhotos": 32,
+      "fixedCrops": 26,
+      "unresolvedCrops": 6,
+      "freshFits": 26,
+      "checkedDerivedMasks": 14,
+      "editableCheckedCandidates": 14,
+      "editableConversionsPassed": 26,
+      "meanSolveWallSeconds": 8.100818719461534,
+      "maxSolveWallSeconds": 10.990709000000003
+    },
+    "neutral-deviation": {
+      "declaredPhotos": 32,
+      "fixedCrops": 26,
+      "unresolvedCrops": 6,
+      "freshFits": 26,
+      "checkedDerivedMasks": 19,
+      "editableCheckedCandidates": 18,
+      "editableConversionsPassed": 24,
+      "meanSolveWallSeconds": 7.628279483961548,
+      "maxSolveWallSeconds": 10.778010500000004
+    }
+  },
+  "comparison": {
+    "rgb-only": {
+      "additionalCheckedCandidates": [
+        "real-45ad148d9ec045be-body-1",
+        "real-fcbcc23efea92b93-body-1"
+      ],
+      "lostProductionPasses": [
+        "real-ce66f9634c2c613b-body-1"
+      ]
+    },
+    "neutral-deviation": {
+      "additionalCheckedCandidates": [
+        "real-45ad148d9ec045be-body-1",
+        "real-d3f063052599e167-body-1",
+        "real-f05cf91c134daea9-body-1",
+        "real-f6e5e128449e3cb9-body-1",
+        "real-fcbcc23efea92b93-body-1"
+      ],
+      "lostProductionPasses": []
+    }
+  },
+  "verification": {
+    "productionMasksExact": 26,
+    "sourceAndArtifactHashChecks": 689,
+    "independentExportImageErrorsRecomputedExactly": 78,
+    "visualReview": {
+      "pages": 11,
+      "photos": 32,
+      "allInspected": true
+    },
+    "editableFailures": [
+      {
+        "id": "real-2502cdec0720f4ea-body-1-neutral-deviation",
+        "reason": "The converted cuts fail the editor\u2019s crossing or minimum-spacing checks, including without simplification.",
+        "engineChecksPassed": false
+      },
+      {
+        "id": "real-fe7fb089d1cd86b4-body-1-neutral-deviation",
+        "reason": "Family A has no cuts; a heart needs at least one per side.",
+        "engineChecksPassed": true
+      }
+    ],
+    "applicationChecks": {
+      "typeCheck": "passed",
+      "lint": "passed",
+      "build": "passed",
+      "applicationTests": {
+        "passed": 2374,
+        "skipped": 142
+      },
+      "inverseCorrectness": {
+        "passed": 1183,
+        "failed": 0
+      },
+      "classifierTests": {
+        "passed": 5
+      },
+      "logs": [
+        {
+          "path": "tmp/heart-learning/paper-exemplar-verification-v1/check.log",
+          "sha256": "db20055932e27d213414b63bc08b7d8e6cfc75e4ea9069e96544faa664b373f3"
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-verification-v1/lint.log",
+          "sha256": "ed03769a3ce8385a9f4ac03e5c95e619e9b83724d40bc05e37e2dcd67ab4975b"
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-verification-v1/app-tests.log",
+          "sha256": "9fe22edc636e3f18c85f0b9839fbc74cc277e002e004d388808c1f47cd419dbe"
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-verification-v1/inverse-correctness.log",
+          "sha256": "b7544fb192856526d688f588ee9efd262538d30c77fd79ae6eee249773ff2ac6"
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-verification-v1/build.log",
+          "sha256": "4c6b0e9f81682b17e93dfa82fd3558bef197f0c1a0235ae50e40a36254302700"
+        },
+        {
+          "path": "tmp/heart-learning/paper-exemplar-verification-v1/exemplar-tests.log",
+          "sha256": "86794120640779cb671ba5e0c86a20ba9e34a1c58d875f22e893ed52afef9026"
+        }
+      ],
+      "timingScope": "The default timing-inclusive inverse suite was stopped after 224 s to keep advisory speed checks separate. No completed test had failed before interruption. The full existing CI correctness suite then passed; no acceptance limits or expectations changed."
+    },
+    "finalSourceAndInputHashChecks": 234,
+    "editableArtifactHashes": 152
+  },
+  "limitations": [
+    "All 32 photos were previously inspected; this is development evidence, not an untouched holdout.",
+    "Counts assess fitting to each method's own derived mask, not unknown original artwork or cutting paths.",
+    "Two of the six initial neutral-deviation gains are false reconstruction gains caused by wrong crops: basket and reflective building. Editor conversion rejects the latter; the former remains in the checked count.",
+    "The printed central flower is interpreted as a cut motif by all methods and passes all three; this is still a material-identity error.",
+    "Existing crop-support evidence was not reconstructed. The harness supported=0 values describe absent cached locator evidence, not 26 newly failed crop tests.",
+    "Ten seconds is the search allowance; final audits can exceed it. Reported wall times are single measurements, not a controlled speed benchmark.",
+    "No application code, model weights, crop proposal or acceptance limits changed."
+  ],
+  "findings": [
+    {
+      "category": "cropping",
+      "cases": [
+        "real-f6e5e128449e3cb9-body-1",
+        "real-fe7fb089d1cd86b4-body-1"
+      ],
+      "observation": "The basket crop includes its contents and opening; the reflective building crop is an incorrect small section. Lobe sampling then learns from the wrong regions. An almost blank building mask has only 0.170625% class-one pixels, fits with zero cuts per sheet and passes engine self-mask checks, but fails the independent editor requirement of at least one cut per sheet.",
+      "conclusion": "A low self-mask error and valid cut geometry cannot establish correct crop or paper identification."
+    },
+    {
+      "category": "printed paper",
+      "cases": [
+        "real-55704c6e2911bebc-body-1",
+        "real-dfa7e4b71b43aa86-body-1",
+        "real-702942779385436c-body-1",
+        "real-b5317080eec610dc-body-1",
+        "real-52e732b98f9b14f1-body-1"
+      ],
+      "observation": "Exposed-lobe classification suppresses many stripes and floral ink marks. Similar-coloured printed papers, large same-colour ink regions and white paper with red text/dots remain ambiguous. The printed central flower survives every classifier as a false cut motif.",
+      "conclusion": "Lobe conditioning helps some printed papers but does not yet infer material identity reliably."
+    },
+    {
+      "category": "plain-paper boundaries",
+      "cases": [
+        "real-af21a4ef38355dfa-body-1",
+        "real-41b7c3e0b79f1265-body-1",
+        "real-24b5ed49c9411b11-body-1",
+        "real-eb60ff94dfc6e2f8-body-1",
+        "real-a126ed5d62adfd92-body-1"
+      ],
+      "observation": "New masks round checks and narrow features that production preserves. The moon gains an extra cut, and thin details change in the hummingbird and dragonfly despite formal passes. Saved lobe scores are only 160 squared, upsampled to 320 before rectification; production classifies rectified source RGB.",
+      "conclusion": "Loss of boundary detail is observed. The share caused specifically by resampling versus classification needs a controlled native-resolution ablation."
+    },
+    {
+      "category": "search stability",
+      "cases": [
+        "real-2502cdec0720f4ea-body-1"
+      ],
+      "observation": "RGB-only changes 0.966875% of observed production mask pixels but self-mask fit error rises from 1.958125% to 12.4725%; both select five cuts per sheet. Neutral deviation changes 1.545625% and yields 6.350625% fit error plus invalid geometry. Production still fails a feature check. Logs show different phase finalists, refinement reservation and early feature-recovery decisions.",
+      "conclusion": "The cut count alone does not explain this failure. Search sensitivity is implicated; no single causal branch is established without a counterfactual replay."
+    },
+    {
+      "category": "useful candidates",
+      "cases": [
+        "real-fcbcc23efea92b93-body-1",
+        "real-45ad148d9ec045be-body-1",
+        "real-d3f063052599e167-body-1",
+        "real-f05cf91c134daea9-body-1"
+      ],
+      "observation": "The mother/child motif, fox, petal flower and glare-affected tentacled motif gain editable checked candidates with neutralized query deviations. All original 13 production passes remain passes. The flower has an altered mask and residual false seams; these are promising candidates, not verified artwork recovery.",
+      "conclusion": "Keep these regressions and the failures together; do not select a per-photo method by its own fit error."
+    }
+  ],
+  "nextWork": [
+    "Align the engine checked status with the editor minimum-slit rule; retain the near-empty building mask as a regression without disabling exports.",
+    "Evaluate the fitted RGB classifier on native rectified pixels while holding cap samples, coefficients and crops fixed, to isolate resolution losses.",
+    "Test deterministic phase/finalist selection on the nativity and small mask perturbations; retain legal candidates and observed feature checks.",
+    "Train material embeddings with explicit lobe-to-overlap supervision and boundary preservation, rather than adding frozen foreground features.",
+    "Make future success summaries require editor-valid cuts and track empty-mask/crop failures separately; do not hide them by dropping cases."
+  ],
+  "rows": [
+    {
+      "id": "real-1bcc922200edde26-body-1",
+      "methods": {},
+      "status": "crop-unresolved"
+    },
+    {
+      "id": "real-80a649a21ea938ae-body-1",
+      "methods": {},
+      "status": "crop-unresolved"
+    },
+    {
+      "id": "real-f6e5e128449e3cb9-body-1",
+      "methods": {
+        "production": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "ab044ba866115180077a804b4738160eb90787b102951c4d40096bc99ec02ba7",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.29885625,
+          "fitError": 0.033425,
+          "solveSeconds": 10.240585209,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "fail",
+          "missingFeatures": 9,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "20fb8b9d70556d9a6fe5b7fd44d34063aedefc5ac0756e76e6e1e0bce445b2e3",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.1524375,
+          "maskClassFraction": 0.85358125,
+          "fitError": 0.0048625,
+          "solveSeconds": 8.254843583000001,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 1,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "e974cd47cf5843fc9790e7accbda81481f5c7804ffa4a451c700dc762c73c458",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.15397499999999997,
+          "maskClassFraction": 0.85510625,
+          "fitError": 0.01938125,
+          "solveSeconds": 3.2896322909999998,
+          "slits": {
+            "left": 1,
+            "right": 1
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-fcbcc23efea92b93-body-1",
+      "methods": {
+        "production": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "ff36e2159cf5fc83059a77f3fe9caf380bf9ff14cab4d09fdc76f5d99af79040",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.5249899887492611,
+          "fitError": 0.0721763505653973,
+          "solveSeconds": 8.922711749999998,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "f8e6a065aa00c72e339b18ea7dedaf36f1329cf67172d22fbae55cf0e7ba63db",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.0223298564100608,
+          "maskClassFraction": 0.4820464903415267,
+          "fitError": 0.015274308270246563,
+          "solveSeconds": 9.840916333000001,
+          "slits": {
+            "left": 6,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "52e633bb904259f7c65082866c2b50e6db8f91572ed7f97b601f55f11209f5be",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.022463339753246547,
+          "maskClassFraction": 0.48050189737037813,
+          "fitError": 0.011231669876623253,
+          "solveSeconds": 9.316063833,
+          "slits": {
+            "left": 4,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-55704c6e2911bebc-body-1",
+      "methods": {
+        "production": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "2d1c3bde7138c3341c5f1ce5ede5984468c06f2c2f37951223bae36217976b26",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.78604375,
+          "fitError": 0.12011875,
+          "solveSeconds": 10.575793458999993,
+          "slits": {
+            "left": 1,
+            "right": 10
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 7,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "531abb18094c9fbf749c5403bb8d2f319b87bce151c470d05a3ae1d39e90c5e9",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.44616875,
+          "maskClassFraction": 0.3403875,
+          "fitError": 0.01909375,
+          "solveSeconds": 9.582924333000003,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 3,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "a6b0a5231d2ad142c98ef9c5e24657f9f4e93eee3274e4888be651a2db8b9884",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.43595,
+          "maskClassFraction": 0.35491875,
+          "fitError": 0.01741875,
+          "solveSeconds": 9.549491916999992,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 1,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-24b5ed49c9411b11-body-1",
+      "methods": {
+        "production": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "dc033050608515e3b30e95929c9e5ba5fe95ddd09d61f41a7582157c153b93cd",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.44294375,
+          "fitError": 0.0268875,
+          "solveSeconds": 10.325072832999998,
+          "slits": {
+            "left": 3,
+            "right": 7
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "570cd58450f58c66cbea4d2093f28860b7baaab9887d21242ed878ab9ed2f481",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.03054375,
+          "maskClassFraction": 0.469975,
+          "fitError": 0.0215875,
+          "solveSeconds": 10.990709000000003,
+          "slits": {
+            "left": 8,
+            "right": 8
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "8b8d68b92f6c87232ac2aebef7e241c515e68d905b135f64cfd144699a84fc3e",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0349375,
+          "maskClassFraction": 0.46973125,
+          "fitError": 0.02265,
+          "solveSeconds": 10.778010500000004,
+          "slits": {
+            "left": 3,
+            "right": 7
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-589f606a9d9899f2-body-1",
+      "methods": {
+        "production": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "b426a23f930dbb6b25423ec348d57ba3ae8eb7831c2f7c8485ed3522b34e0391",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.40419375,
+          "fitError": 0.07149375,
+          "solveSeconds": 8.825102291999995,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 3,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "e57ee1060dca7f75cb0b39e8b0a8522c5d3a5fddcbc6b42cee33f00fed5f242e",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.022925,
+          "maskClassFraction": 0.41908125,
+          "fitError": 0.07166875,
+          "solveSeconds": 8.923683458,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 2,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "a89d2cd5baa3321873314119a1f58d7b7ffb680e52c42d953c8db01127d0ee32",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.02845625,
+          "maskClassFraction": 0.4235,
+          "fitError": 0.0692625,
+          "solveSeconds": 8.931994959000003,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 2,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-dfa7e4b71b43aa86-body-1",
+      "methods": {
+        "production": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "6447142bb1a527b7b576f1e279d03e4199646346c897898a8fcb7f68f8f59ec5",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.60969375,
+          "fitError": 0.0848625,
+          "solveSeconds": 10.019535917,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 16,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "9fa94da368f846950bbbdf7ef0cd3b3e46dcde21e363b68138e38aff00af6cc9",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.11870625000000001,
+          "maskClassFraction": 0.4499875,
+          "fitError": 0.0343625,
+          "solveSeconds": 9.903651083000005,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 5,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "df04538ecbb9ac5e2c9831525f93c3cac56b8810edeea529787d5f3bdd406959",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.17666249999999994,
+          "maskClassFraction": 0.44960625,
+          "fitError": 0.044,
+          "solveSeconds": 9.491461833000008,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 4,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-2b0550dd86d23b40-body-1",
+      "methods": {},
+      "status": "crop-unresolved"
+    },
+    {
+      "id": "real-2502cdec0720f4ea-body-1",
+      "methods": {
+        "production": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "402aa4934a2d95c3b1ac8615dc8502a947686f0ef8f6eebf3e9bb64487d19195",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.54051875,
+          "fitError": 0.01958125,
+          "solveSeconds": 9.886201082999992,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 1,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "eaa82cf1be86f4eccc4fe2b2b73e74119a88c4abbc07d53599df123136503c49",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.00966875,
+          "maskClassFraction": 0.5449625,
+          "fitError": 0.124725,
+          "solveSeconds": 9.992460708999976,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "uncertain",
+          "missingFeatures": 2,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "ec3720241218b6cf9e0ac0d6c445258fd893097d61236744d797649fe4d24040",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.01545625,
+          "maskClassFraction": 0.5474875,
+          "fitError": 0.06350625,
+          "solveSeconds": 9.337812291999988,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": false,
+          "paperStatus": "fail",
+          "missingFeatures": 1,
+          "editableChecked": false,
+          "editableConversionPassed": false,
+          "editableError": "The converted cuts fail the editor\u2019s crossing or minimum-spacing checks, including without simplification."
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-d3f063052599e167-body-1",
+      "methods": {
+        "production": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "b14d88bf5b8dc9dc6415e4857e39de8e84c8942f287c7ef430b84e8e85d375a8",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.3674875,
+          "fitError": 0.05571875,
+          "solveSeconds": 9.977738750000018,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "4f07feb386d378388f1be6c4a48a96da368d3a4e374eba34b4addadc0bf59802",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.051843749999999966,
+          "maskClassFraction": 0.67813125,
+          "fitError": 0.03996875,
+          "solveSeconds": 9.436095292000013,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "2a1e46c0eb1c12605b5f9cfb88d660ecfbc9c8a323f4146c3bed436e6c3f78c1",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.0635,
+          "maskClassFraction": 0.682375,
+          "fitError": 0.01455625,
+          "solveSeconds": 9.794986250000017,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-a126ed5d62adfd92-body-1",
+      "methods": {
+        "production": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "b299ba328c8b9f423f7bb9d35ff764fef0f61c9b934a73fa3953eff31fb49c80",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.7498717066149321,
+          "fitError": 0.011890606420927468,
+          "solveSeconds": 4.413435124999989,
+          "slits": {
+            "left": 1,
+            "right": 1
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "1608e1774b08f55feec1ad0bc43ba6d7e2442d12b90b5c59319221c72de16e71",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.014368859127604994,
+          "maskClassFraction": 0.24119156392765503,
+          "fitError": 0.01894361349270918,
+          "solveSeconds": 5.321937082999997,
+          "slits": {
+            "left": 2,
+            "right": 1
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "c686b4a420327fb605f3446ecd2e573aea7dc4b4465601c0d04ef8fdea389433",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.01899993741786099,
+          "maskClassFraction": 0.23608486138056198,
+          "fitError": 0.017654421428124414,
+          "solveSeconds": 5.233444000000017,
+          "slits": {
+            "left": 2,
+            "right": 1
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-5088a58018c3aa28-body-1",
+      "methods": {
+        "production": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "4a3c5ee8c036190e96d31b7fe9cf990b3a5ac272114f40515c8c44ba7735c3a4",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.5098378689200845,
+          "fitError": 0.016588122054577048,
+          "solveSeconds": 9.427391249999985,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "f14894d3269f797f85191b5c3d0e024f86b03485539abb01f3552366ec1e5476",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.014000525019688292,
+          "maskClassFraction": 0.5021500806280236,
+          "fitError": 0.019813242996612374,
+          "solveSeconds": 9.476297040999983,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "e4d404b082837ec5f8f8fd35e0c782f57fb60b4a999ecbdc0268a5739a14d01f",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.027113516756878342,
+          "maskClassFraction": 0.5136505118941961,
+          "fitError": 0.009000337512656725,
+          "solveSeconds": 6.912321624999982,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-1a7cfc6be8b164b5-body-1",
+      "methods": {
+        "production": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "b78dd9f9df6d6d2de773e6e68faa944490a35b3fc9d8305fb8aff83a38a9ebb2",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.53016875,
+          "fitError": 0.0051,
+          "solveSeconds": 3.635451374999946,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "ee17f9d54f928bd5a4b7c82b4712c73a86ff59cf1fcc6e8938e61c39c297fd0e",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.009412500000000046,
+          "maskClassFraction": 0.46260625,
+          "fitError": 0.003875,
+          "solveSeconds": 3.0710192919999826,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "6f08f761021119ce0fc60f823bdfcd005c974ba4d363ca106891ee51145dc769",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.011487499999999984,
+          "maskClassFraction": 0.46468125,
+          "fitError": 0.00359375,
+          "solveSeconds": 3.8135000839999993,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-fe7fb089d1cd86b4-body-1",
+      "methods": {
+        "production": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "2e19b7f71de78c44336a6f1d4a88e0fad98ea48a2443f36f9048a22ca0a5df3d",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.44189375,
+          "fitError": 0.0596375,
+          "solveSeconds": 9.680527000000001,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 4,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "cc7e0c3b3248bc2294bb1419bfd478943454ccba52ffd68e9de6fb06a88daf56",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.45106875,
+          "maskClassFraction": 0.009175,
+          "fitError": 0.0100875,
+          "solveSeconds": 8.924232916000008,
+          "slits": {
+            "left": 1,
+            "right": 1
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 5,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "e69af5f4771cba5b9b344f234f1904491fda10c321e1c7d077f9fff85b84a2d4",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.4435625,
+          "maskClassFraction": 0.00170625,
+          "fitError": 0.00170625,
+          "solveSeconds": 0.5919467500000027,
+          "slits": {
+            "left": 0,
+            "right": 0
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": false,
+          "editableConversionPassed": false,
+          "editableError": "Family A has no cuts; a heart needs at least one per side."
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-8b91ecf546833a3f-body-1",
+      "methods": {
+        "production": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "d7c19b45f44d86ad90e6b6bd2b8ff739357b2eaea598316fe0e51e1a216c8303",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.4768625,
+          "fitError": 0.00920625,
+          "solveSeconds": 8.52839979200001,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "fe8f63c8c1f65e4a1bb367d73aa2466082dd58fc5c4470372fec5e362a5bc898",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0211125,
+          "maskClassFraction": 0.4758,
+          "fitError": 0.01066875,
+          "solveSeconds": 8.783458500000007,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "b45bf7c121b1cee0a82c97fb90b9f9b7145222359f7fa8e0241c435b4cc974ad",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.026425,
+          "maskClassFraction": 0.4774875,
+          "fitError": 0.00955,
+          "solveSeconds": 9.598644000000029,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-b5317080eec610dc-body-1",
+      "methods": {
+        "production": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "eefbec292a303d9d2b964ec6c6bd703023ae56b904a4ff747b4b6eaaa71ff586",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.18541875,
+          "fitError": 0.15084375,
+          "solveSeconds": 9.29556904099998,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 62,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "b005fcce11bf0966f95dbe6bbf287ddf162b76bbff6af079552345275e38067a",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.07374375,
+          "maskClassFraction": 0.1947125,
+          "fitError": 0.1612875,
+          "solveSeconds": 9.179017540999979,
+          "slits": {
+            "left": 1,
+            "right": 1
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 48,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "b15b52fe4ca30e15c7c308f0cdc7aeee20c0a776a69322e676572af765aef547",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.16810625,
+          "maskClassFraction": 0.155025,
+          "fitError": 0.06026875,
+          "solveSeconds": 9.568647792000032,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 10,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-c7d1e0ad5050db71-body-1",
+      "methods": {
+        "production": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "330c79e275c69582d8bc11a88ca1e0453f515d362e499dd1c33fef4428568a7b",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.5674281963934119,
+          "fitError": 0.008282026439978748,
+          "solveSeconds": 9.701385000000009,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "bcfe18c6c305a36afe00aae933b6416eccad3d2e7b7d5d31a21d1c2a935de4bf",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.020845704284776723,
+          "maskClassFraction": 0.42117698534237585,
+          "fitError": 0.0076194643247804485,
+          "solveSeconds": 9.631859375,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "c9c0a3885fd890b64fff8469a20bec2c4c5a9d547cbfcfe8e172ca05dcec7503",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.028427665093602505,
+          "maskClassFraction": 0.42029565271744224,
+          "fitError": 0.006144326030565366,
+          "solveSeconds": 9.934121416000009,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-45ad148d9ec045be-body-1",
+      "methods": {
+        "production": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "0b2b0388659dd76c64b35023cb78417a5a99dee43ef758f7ba43266643785cd7",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.50919375,
+          "fitError": 0.01536875,
+          "solveSeconds": 7.730660084000032,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "fail",
+          "missingFeatures": 0,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "e09ecb0125d57133c8c4ac227a18af003bd36157573e5aa9ea81f10f7c54fe0b",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.011062499999999975,
+          "maskClassFraction": 0.49451875,
+          "fitError": 0.0144875,
+          "solveSeconds": 4.895107334,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "b317e515b7d818b8645e3eb23796c56a75baedde3cb75eb329148dcfa156b028",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.013700000000000045,
+          "maskClassFraction": 0.49461875,
+          "fitError": 0.0137,
+          "solveSeconds": 4.900911957999982,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-702942779385436c-body-1",
+      "methods": {
+        "production": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "da4d8082aab14346b2697a389273df123bddadc5de01df4d366ccb156212f8a9",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.60284375,
+          "fitError": 0.0798625,
+          "solveSeconds": 9.460466040999977,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 29,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "14145283fddadbd86f4035392de75db830f840016233e63d9752f6263e1e0610",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.08604999999999996,
+          "maskClassFraction": 0.46300625,
+          "fitError": 0.03405,
+          "solveSeconds": 8.016538291000005,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 7,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "b0b4ef4db89dd262d55e4ce599385f681b4d14757302e155375e1da3e5e52bc0",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.11404375,
+          "maskClassFraction": 0.4758,
+          "fitError": 0.01520625,
+          "solveSeconds": 9.124638582999992,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 2,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-03bddab9c8f384c4-body-1",
+      "methods": {
+        "production": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "302029e810fc24ff2a786d0ec90318d548446f2212663871eb6d2ec2333d4c4c",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.61448666914127,
+          "fitError": 0.01980749292818104,
+          "solveSeconds": 9.396991666999995,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 1,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "4845edf51643ce478df50e7c3bfff38ccb1ed47b2ce49bff97f2592e659e63e4",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.014873219245587266,
+          "maskClassFraction": 0.3821470170363639,
+          "fitError": 0.02886966093668002,
+          "solveSeconds": 9.83495641600003,
+          "slits": {
+            "left": 6,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 1,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "a9c808dbf21b09edf6196e22299ff4921682deed8e5730fab4f1524f74d1683b",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.017612349123862447,
+          "maskClassFraction": 0.3842973619875331,
+          "fitError": 0.019205908328746784,
+          "solveSeconds": 9.517636125000019,
+          "slits": {
+            "left": 3,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 2,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-eb60ff94dfc6e2f8-body-1",
+      "methods": {
+        "production": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "0a02d3afc48969b3fe925410aa67fe64d3ca30d9d09615bab4dbe80802ebaa08",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.553325,
+          "fitError": 0.00641875,
+          "solveSeconds": 7.347221416999993,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "cbb5a90625a5b34d87cf26255d2d1a6403254532b6a8cd421375d36478b3bc51",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.02729375,
+          "maskClassFraction": 0.52651875,
+          "fitError": 0.012075,
+          "solveSeconds": 3.4563197089999447,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "7cced054c70c8547ad44b3d50ebc8b45b585ab96122d460d2203363ad987a16d",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.03334375,
+          "maskClassFraction": 0.52216875,
+          "fitError": 0.01254375,
+          "solveSeconds": 4.002741333000013,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-af21a4ef38355dfa-body-1",
+      "methods": {
+        "production": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "49857423ca5610055a5aa7159d07e0913bd5c3fbeabd47240d597378228116ac",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.58421875,
+          "fitError": 0.01093125,
+          "solveSeconds": 5.347280999999959,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "28ee99c759b8a715995440910372481955ec01b73964d6084ed2fdd0b0a580e3",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.02185625000000002,
+          "maskClassFraction": 0.4305125,
+          "fitError": 0.02061875,
+          "solveSeconds": 5.818302416999999,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "8438ff8dadba3c7b6e9f9847054cc54feb1d188d063ed8351bc584073ddc3d7c",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.02927500000000005,
+          "maskClassFraction": 0.43108125,
+          "fitError": 0.02854375,
+          "solveSeconds": 5.194015292000025,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-f4bd8d13fc7e68d0-body-1",
+      "methods": {},
+      "status": "crop-unresolved"
+    },
+    {
+      "id": "real-f05cf91c134daea9-body-1",
+      "methods": {
+        "production": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "5967f2583523e1f0ca5a23b89666d25389126e97766af6824139fada37b7bf42",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.4033375,
+          "fitError": 0.03694375,
+          "solveSeconds": 9.938289124999953,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 5,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "44d4cbcba2b11bbde27ed39c9901f291d378ea1af8a9ef6f45d30f0bfeee043c",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.11605624999999997,
+          "maskClassFraction": 0.49653125,
+          "fitError": 0.0342,
+          "solveSeconds": 9.57259141699993,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 1,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "227a8ff0df544c409e5f7b68d27f775ef800bd7b2a2e56ebe376e4c51745c576",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.14120624999999998,
+          "maskClassFraction": 0.48088125,
+          "fitError": 0.01894375,
+          "solveSeconds": 9.740900541000068,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-12f272f48ed09d51-body-1",
+      "methods": {},
+      "status": "crop-unresolved"
+    },
+    {
+      "id": "real-28a87a8be083f16c-body-1",
+      "methods": {
+        "production": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "57b76dd1df84ef4e4158627fc2b26809158bbaa7234335b49c495dd12a403528",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.45243944366307237,
+          "fitError": 0.00554461634630411,
+          "solveSeconds": 8.728707125000074,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "cc4163a30ff3f671d943a7e3f7fe6a895e1ea8ce303982f87d768763fadb6007",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.01602125332083138,
+          "maskClassFraction": 0.4640600093764651,
+          "fitError": 0.007101109548366932,
+          "solveSeconds": 7.4194182080000175,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "3947ec4c6af1223e460bad76cd1c158ca3d9763ee2e0976402f5b2ced7f7878a",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.019390529770276606,
+          "maskClassFraction": 0.46394124081887794,
+          "fitError": 0.006257227691826848,
+          "solveSeconds": 9.319292625000001,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-ce66f9634c2c613b-body-1",
+      "methods": {
+        "production": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "aa7df71928d43fe688e44c1176144961cfe26e6ac3625e1aed2097d5c4d6ce65",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.51818125,
+          "fitError": 0.01720625,
+          "solveSeconds": 5.782515917000011,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "98e864eff20e4a4e408279fe5ae94d3658c63d2bd6368a0bb798b07a5dddd740",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.04945624999999998,
+          "maskClassFraction": 0.432775,
+          "fitError": 0.07660625,
+          "solveSeconds": 8.831681250000024,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 2,
+          "editableChecked": false,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "66ce88dc12fcc2465890705d981481648fc41ee665fb748a8681b711bfcad512",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.07230000000000003,
+          "maskClassFraction": 0.41024375,
+          "fitError": 0.0228625,
+          "solveSeconds": 10.483784708000021,
+          "slits": {
+            "left": 7,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-52e732b98f9b14f1-body-1",
+      "methods": {
+        "production": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "28f6f69d48172e7df91799faf676f350967f81a8213dd06bcd1ccf2734ef198e",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.69599375,
+          "fitError": 0.02038125,
+          "solveSeconds": 9.501363292000024,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "5faae0d2aeab808491f838fadfdf4d6166a782f73166a21c2001fb2d09e3427b",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.032118749999999974,
+          "maskClassFraction": 0.2803875,
+          "fitError": 0.0151375,
+          "solveSeconds": 9.581314000000013,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "c019be13d9d3ae9d0e83475d1d15a3733bae5ccda550e40c5c3d7f607e4537e4",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.03887499999999999,
+          "maskClassFraction": 0.27686875,
+          "fitError": 0.02441875,
+          "solveSeconds": 9.56188287500001,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-7e9f6f83ae43ec2a-body-1",
+      "methods": {},
+      "status": "crop-unresolved"
+    },
+    {
+      "id": "real-d4f6e3c76cf08ea8-body-1",
+      "methods": {
+        "production": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "c34b83b9062de0931d6a4dcee2ef6574ba0b92b1407e41a528f1b57e062e018d",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.50885625,
+          "fitError": 0.0046,
+          "solveSeconds": 4.676235417000018,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "162b6861bc5d0791a1cf741869d823d6cf97c3683d0215b0889285f76a94e3c5",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.00910625,
+          "maskClassFraction": 0.50295,
+          "fitError": 0.01630625,
+          "solveSeconds": 9.252055500000017,
+          "slits": {
+            "left": 4,
+            "right": 6
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "1f99687c5bd5545d52f708e39046d50b5f28dab1999ecae6b68e704a9348dc29",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.01344375,
+          "maskClassFraction": 0.4998125,
+          "fitError": 0.00431875,
+          "solveSeconds": 6.647952667000005,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    },
+    {
+      "id": "real-41b7c3e0b79f1265-body-1",
+      "methods": {
+        "production": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "70319ea0f63939fac49211ae565ffbf3b4b79334400bc968b908cfe1c41b3d99",
+          "phaseAlignedToProductionForDisplay": false,
+          "phaseInvariantDifferenceFromProduction": 0.0,
+          "maskClassFraction": 0.5702125,
+          "fitError": 0.0114625,
+          "solveSeconds": 9.169863417000045,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "rgb-only": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "8ddd5744c1a6c8390558b968a3aae579bd5b1a8a920710bc8cc08d3881d37162",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.021312499999999956,
+          "maskClassFraction": 0.4455,
+          "fitError": 0.02355625,
+          "solveSeconds": 2.629896624999936,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        },
+        "neutral-deviation": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "4ca08e8afb2db903c9bce9998cb75bff0675959e3447398dbf289701c4ba0947",
+          "phaseAlignedToProductionForDisplay": true,
+          "phaseInvariantDifferenceFromProduction": 0.027112499999999984,
+          "maskClassFraction": 0.4445625,
+          "fitError": 0.0248125,
+          "solveSeconds": 3.6994303340000334,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableChecked": true,
+          "editableConversionPassed": true
+        }
+      },
+      "status": "fitted"
+    }
+  ],
+  "resources": {
+    "uniqueExperimentBytesExcludingLogsAndFinalAudit": 77397897,
+    "sourcePhotographsCopied": 0,
+    "newImageDownloads": 0,
+    "newModelWeights": 0,
+    "workers": 1,
+    "nice": 15,
+    "applicationAndSolverIdenticalToOriginMain": true,
+    "freeDiskGiBAtVerification": 25.759674072265625
+  }
+}

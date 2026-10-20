@@ -1,0 +1,110 @@
+{
+  "schema": "u2netp-material-training-plan-1",
+  "status": "predeclared",
+  "source": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-body-adaptation-v1/model.pt",
+    "sha256": "ff4b56456aa17a40d4b4daed98cd384dc309933d2d5585da5ebeece843dd1e4f"
+  },
+  "sourceManifest": {
+    "path": "docs/inverse/datasets/real-manifest.json",
+    "sha256": "999544ef30b1d71095e1630d7f834e162e2aa6145181df10107a831aa2eda350"
+  },
+  "annotations": {
+    "path": "scripts/inverse/datasets/real-materials-encoder-tail.json",
+    "sha256": "b245c23fb51691a4db2000ca5226f6ab400511c612d8414fbc50ff4ab4e80374"
+  },
+  "evaluation": {
+    "path": "docs/inverse/datasets/u2netp-continuous-selection.json",
+    "sha256": "6d4e0e7550fedf5c13333bdc90db28a98eb5ff9ce2de260f32e2d015f5128f52"
+  },
+  "syntheticParent": {
+    "path": "tmp/heart-learning/foreground-scene-v1/scene-trained/report.json",
+    "sha256": "f3a71ff6de0cb0a00fe8db15051631d131b6cbd71bf607bd607acae5d101929c"
+  },
+  "trainIds": [
+    "real-8c875dd0f298b5a4-body-1",
+    "real-995899fe049540ed-body-1",
+    "real-b87b0b19f12724f3-body-1",
+    "real-cf2d0fcff65d7386-body-1",
+    "real-cdae5c890b6933cd-body-1",
+    "real-68d8f25d8891df62-body-1",
+    "real-5330aa8b62176216-body-1",
+    "real-abf590088db891f9-body-1",
+    "real-990ac34431be87fe-body-1",
+    "real-12ce3c9180f7f317-body-1",
+    "real-d5b0aa8d4d2465ee-body-1",
+    "real-39f3a1ba97852876-body-1",
+    "real-e936e08ac62db19b-body-1",
+    "real-340f5e5b0f447889-body-1",
+    "real-710703159f609111-body-1",
+    "real-a414dfffbd2362ae-body-1"
+  ],
+  "protocol": {
+    "resolution": 320,
+    "skimage": "0.24.0",
+    "threads": 1,
+    "seed": 20261022,
+    "updates": 256,
+    "batchSize": 3,
+    "realPerBatch": 1,
+    "syntheticGeometries": 32,
+    "learningRate": 0.001,
+    "weightDecay": 0.0001,
+    "input": "Unmodified publisher RescaleT(320) and ToTensorLab(flag=0), full original EXIF-oriented RGB. No corner, mask or ROI input.",
+    "target": "Reviewed per-photo paper identity with unknown pixels excluded; synthetic original/scene/printed coverage from the same fixed 32 training geometries. Preserve fractional material coverage and source-pixel annotation uncertainty.",
+    "architecture": "Freeze every parameter and buffer of the adapted U2NETP body. Reuse stage1d/2d/3d features through three 64-to-16 projections; combine with input RGB and frozen body scores in a two-layer 32-channel identity head at half resolution. Replace only the three RGB channels at the material head with body-confidence-weighted per-image centred colour, divided by one common RGB standard deviation. Confidence uses the normalized frozen body to power eight; no binary mask or material prediction enters colour statistics.",
+    "loss": "Boundary-weighted supervised BCE with the existing per-image global A/B assignment on all three images. Add the declared consistency coefficient times boundary-weighted MSE between the two synthetic probabilities, each oriented once using its own supervised whole-image assignment. Unknown labels excluded; no predicted-body gating.",
+    "augmentation": "Independent horizontal and vertical reflection of input and target together.",
+    "checkpointSelection": "Same original 120-update parent for both arms. Fresh AdamW, 256 fixed updates, final checkpoint only; no per-photo or validation-based selection.",
+    "inference": "Publisher body preprocessing and min/max normalization unchanged. Material is sigmoid of the second raw logit, with no per-image material min/max normalization.",
+    "evaluation": "Verify exact initial head/body, image/label bytes, pairs, draws and optimizer between arms. Score every synthetic view, inspect all 16 real training images and all 32 separate-source development photographs. No full fitting or browser integration unless these image-stage checks justify it.",
+    "materialInput": "body-relative-rgb",
+    "sampling": "Each of four epochs visits all 64 original/variant pairs: one printed and one scene counterpart for each of the fixed 32 geometries. Pair each with one of 16 real photos, exactly four real passes per epoch. Both views and real photo receive the same sampled reflections. Control and candidate use exactly the same draws.",
+    "materialLoss": {
+      "kind": "boundary-weighted",
+      "factor": 4,
+      "radiusPixels": 2
+    },
+    "completePairEpochs": 4,
+    "consistencyWeight": 1
+  },
+  "resources": {
+    "minimumFreeGiB": 10,
+    "maxArtifactMiB": 30,
+    "workers": 1,
+    "newSourcePhotoCopies": 0,
+    "newPhotoDownloads": 0,
+    "maxCombinedExperimentMiB": 160
+  },
+  "scope": "Matched intervention-pair experiment: same parent, input/label bytes, architecture, data, 256 batches of three, reflections, optimizer and boundary weighting. Only consistencyWeight differs. More original than variant visits are deliberate and identical in both arms; historical unpaired runs are descriptive context, not this experiment's control. No production changes.",
+  "bodyReport": {
+    "path": "tmp/heart-learning/u2netp-body-adaptation-v1/report.json",
+    "sha256": "8957773143a429a0be49093191d65c6c9e5f68f512fd99e352541ee9951ce6e3"
+  },
+  "printedReplay": [
+    {
+      "directory": "tmp/heart-learning/material-prints-v1/source-1",
+      "manifestSha256": "8cb0e3894195861aa9212f2e3de82a013670693add652bb3600aa9cab1e3115a",
+      "parentManifestSha256": "6649301431add7c3a7b7ba2ccb374723bc165fd3a64c9adede0ad11b3a54133d"
+    },
+    {
+      "directory": "tmp/heart-learning/material-prints-v1/source-2",
+      "manifestSha256": "42e5b8af44acf6406d3baa22e7c207648ca86dcea66e0bf9f9c159fb5e1d9499",
+      "parentManifestSha256": "180ecc34ae4294b3e9a70d90009cd2610f918394c0fa531fa64b3aaad0b27732"
+    }
+  ],
+  "comparison": {
+    "controlOutput": "tmp/heart-learning/u2netp-paired-control-v1",
+    "candidateOutput": "tmp/heart-learning/u2netp-paired-consistency-v1",
+    "validation": "Both plans declared before training; retain all failures. Compare original, printed and scene subsets separately, including overall/boundary/interior errors and real-photo visual detail. Do not call a lower self-mask fitting error original-artwork recovery."
+  },
+  "parentCandidate": {
+    "path": "tmp/heart-learning/u2netp-material-relative-v2/report.json",
+    "sha256": "00f9404cf95fcdcc50d62eb4bc4df395f77bff03dd860e96a7636f5daacc77cf"
+  },
+  "date": "2026-10-20"
+}

@@ -1,0 +1,42 @@
+{
+  "schema": "material-grid-capacity-plan-1",
+  "status": "predeclared",
+  "date": "2026-10-20",
+  "training": {
+    "path": "tmp/heart-learning/u2netp-material-boundary-v1/report.json",
+    "sha256": "1012c443ab49fdd58260f32ece4166fe521f98716e1495179e6527db0dd00520"
+  },
+  "probes": {
+    "parent": {
+      "path": "tmp/heart-learning/u2netp-material-relative-boundaries-v1/report.json",
+      "sha256": "bfedda186ef91f18dc6eca0ddbdb0aeb97ae370fda0e3ff299cb958b3bc1d30b"
+    },
+    "boundaryWeighted": {
+      "path": "tmp/heart-learning/u2netp-material-boundary-synthetic-v1/report.json",
+      "sha256": "7cbe7390863b3197d0afbe310124040015d4d782764181d2696f02ead4aff43e"
+    }
+  },
+  "protocol": {
+    "fit": {
+      "grid_size": 160,
+      "steps": 200,
+      "learning_rate": 0.15
+    },
+    "inputResolution": 320,
+    "cohort": "All 32 original synthetic training geometries, paired with their 32 printed and 32 scene variants. Every counterpart must retain exactly identical material labels.",
+    "objective": "BCE on known fractional labels only, no phase exchange, Adam on free 160x160 logits; use exact production-head interpolation: bilinear align_corners=False, then sigmoid. Final update only.",
+    "reference": "Known labels fit the logits directly; no photographs enter the optimizer. This exhibits a feasible output-grid representation, not a predictive model, certified optimum, lower bound or topology certificate.",
+    "comparison": "Compare all three fixed synthetic groups to their stored parent and boundary-weighted material metrics. Report overall, boundary and interior errors; known-label denominators independent of predicted body. All fields saved; visually inspect the eight largest reference errors.",
+    "followup": "Only if output-grid references are substantially cleaner than actual predictions should future work focus on learned identity evidence/context rather than increasing decoder resolution by default.",
+    "numerics": "Optimize free logits in float64 to avoid saturated float32 Adam phase drift; cast the final grid to float32 and decode exactly as the head. Save both grids and probabilities for independent replay."
+  },
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "minimumFreeGiB": 10,
+    "maxArtifactMiB": 20,
+    "newPhotoDownloads": 0,
+    "newSourcePhotoCopies": 0
+  },
+  "productionChanges": false
+}

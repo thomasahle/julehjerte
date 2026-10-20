@@ -1,0 +1,115 @@
+{
+  "schema": "exemplar-projection-plan-1",
+  "date": "2026-10-20",
+  "baselineCommit": "c6f888c3",
+  "status": "predeclared",
+  "question": "Can a small learned subspace of frozen U2NETP decoder features transfer material identity from exposed lobe samples to the overlap while direct RGB preserves high-resolution boundaries?",
+  "trainingParent": {
+    "path": "tmp/heart-learning/u2netp-paired-control-v1/report.json",
+    "sha256": "6bf4bbfa34ed29a7002c029d28bbebf19ba7db903fb2b347a77168904a8ca4d8"
+  },
+  "development": {
+    "path": "tmp/heart-learning/u2netp-paired-control-native-v1/report.json",
+    "sha256": "74d1e85d65d3d491616f512faee541bfab6bc2f0848858c3c95232aca3410b4c"
+  },
+  "exemplar": {
+    "path": "tmp/heart-learning/paper-exemplar-v1/report.json",
+    "sha256": "1b83e7f89f84d54986e29968d26375f79ef983c277c446a7812376e52f1c555d"
+  },
+  "native": {
+    "path": "tmp/heart-learning/paper-exemplar-native-v1/report.json",
+    "sha256": "3371051715f4533f246647cb014739750a8c23aaa582061c7d1f4f63774c63e6"
+  },
+  "previousPipeline": {
+    "path": "tmp/heart-learning/paper-exemplar-pipeline-v1/report.json",
+    "sha256": "8db176f4a978aec8e8960d88aa489d6be494973b167f03c2ea2a0991e21f42df"
+  },
+  "previousInput": {
+    "path": "tmp/heart-learning/paper-exemplar-pipeline-input-v1/manifest.json",
+    "sha256": "3b093ff8039e05883558eb768366ce7bd78e4ff39beef636704ec967715cf5bc"
+  },
+  "expectedDevelopmentCases": [
+    "real-1bcc922200edde26-body-1",
+    "real-80a649a21ea938ae-body-1",
+    "real-f6e5e128449e3cb9-body-1",
+    "real-fcbcc23efea92b93-body-1",
+    "real-55704c6e2911bebc-body-1",
+    "real-24b5ed49c9411b11-body-1",
+    "real-589f606a9d9899f2-body-1",
+    "real-dfa7e4b71b43aa86-body-1",
+    "real-2b0550dd86d23b40-body-1",
+    "real-2502cdec0720f4ea-body-1",
+    "real-d3f063052599e167-body-1",
+    "real-a126ed5d62adfd92-body-1",
+    "real-5088a58018c3aa28-body-1",
+    "real-1a7cfc6be8b164b5-body-1",
+    "real-fe7fb089d1cd86b4-body-1",
+    "real-8b91ecf546833a3f-body-1",
+    "real-b5317080eec610dc-body-1",
+    "real-c7d1e0ad5050db71-body-1",
+    "real-45ad148d9ec045be-body-1",
+    "real-702942779385436c-body-1",
+    "real-03bddab9c8f384c4-body-1",
+    "real-eb60ff94dfc6e2f8-body-1",
+    "real-af21a4ef38355dfa-body-1",
+    "real-f4bd8d13fc7e68d0-body-1",
+    "real-f05cf91c134daea9-body-1",
+    "real-12f272f48ed09d51-body-1",
+    "real-28a87a8be083f16c-body-1",
+    "real-ce66f9634c2c613b-body-1",
+    "real-52e732b98f9b14f1-body-1",
+    "real-7e9f6f83ae43ec2a-body-1",
+    "real-d4f6e3c76cf08ea8-body-1",
+    "real-41b7c3e0b79f1265-body-1"
+  ],
+  "protocol": {
+    "seed": 20261020,
+    "resolution": 320,
+    "contextResolution": 160,
+    "layers": [
+      "stage1d",
+      "stage2d",
+      "stage3d"
+    ],
+    "contextChannels": 192,
+    "projectionChannels": 8,
+    "parameters": 1536,
+    "epochs": 2,
+    "updates": 192,
+    "learningRate": 0.001,
+    "weightDecay": 0.0001,
+    "maximumGradientNorm": 5,
+    "boundaryFactor": 4,
+    "boundaryRadius": 2,
+    "lossTemperature": 4,
+    "ridgeRegularization": 0.1,
+    "minimumSamples": 32,
+    "maximumSamples": 1024
+  },
+  "architecture": "Frozen adapted U2NETP supplies 192 decoder features at 160. One learned bias-free 1x1 projection produces eight context channels. Per-photo ridge fits 3 RGB plus 8 context channels on balanced geometric lobe samples only, with support-only normalization. Gradients pass through the support statistics and solve. Query uses direct 320 RGB plus interpolated context for synthetic frames; real overlap queries use the exact stored production crop RGB plus context sampled at the same homographic pixel centres. No overlap labels, coordinates or body gates enter per-photo fitting.",
+  "training": "Exactly the existing 96 synthetic training views: 32 original, 32 print interventions, 32 scene interventions. Two seeded shuffled epochs, one image per update, fractional known material labels inside the true overlap only. The 16 previously annotated real images are verified as parent evidence but do not supervise this new projection. Parent body pretraining/adaptation remains unchanged. One global phase assignment per image; no local phase selection.",
+  "controls": [
+    "Frozen RGB-only native classifier from the preceding exact-replay diagnostic.",
+    "Identical untrained projection weights, evaluated before updates; fixed final trained weights after exactly 192 updates."
+  ],
+  "evaluation": "Retain all 96 synthetic metric records and all 32 source-separated, repeatedly inspected development photos, including six unresolved and wrong crop proposals. Synthetic corners are privileged and these views are training diagnostics. Inspect the prior fixed 21 synthetic gallery views and every real photo. No hyperparameter sweep or per-photo model selection. Any promising mask method still needs fresh production fitting, independent export/render and editable geometry audits before promotion.",
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "minimumFreeGiB": 10,
+    "maximumArtifactMiB": 40,
+    "maximumWallSeconds": 900,
+    "featureBankOnDisk": false,
+    "newPhotoDownloads": 0,
+    "sourcePhotoCopies": 0
+  },
+  "gates": [
+    "Known source inputs and source separation unchanged.",
+    "Frozen backbone parameters and buffers unchanged.",
+    "Finite-difference check of gradients through ridge fitting.",
+    "Exact reference native RGB mask replay on every available case.",
+    "Fixed final checkpoint; complete cohorts and failures retained."
+  ],
+  "scope": "Offline supervised feature-transfer experiment, not a production model or unseen-data accuracy claim. No change to the deployed crop model, mask classifier, solver, acceptance thresholds or export checks."
+}

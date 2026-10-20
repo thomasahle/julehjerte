@@ -4,7 +4,6 @@ Group original, scene and printed counterparts with identical geometry. These
 are training diagnostics, including unsampled views, never a held-out benchmark.
 """
 import argparse
-from collections import Counter
 import json
 from pathlib import Path
 
@@ -18,6 +17,8 @@ from u2netp_material_training import material_training
 from u2netp_adaptation import normalize_scores
 from material_pilot import evaluate_materials
 from data import digest
+from material_pairing import synthetic_draw_counts
+from material_pair_metrics import paired_identity_metrics
 
 
 def boundary_diagnostics(predictions, items, metrics):
@@ -62,7 +63,7 @@ def main():
         assert {'id': item['id'], **item['evidence'], 'inputTensorSha256': digest(item['input'].numpy().tobytes())} == expected
     assert len(real)+len(items) == len(training['trainingInputs'])
     args.output.mkdir(parents=True, exist_ok=False)
-    draws = Counter(draw['synthetic'] for draw in training['draws'])
+    draws = synthetic_draw_counts(training['draws'])
     predictions = []
     with torch.no_grad():
         for index, item in enumerate(items):
@@ -75,6 +76,9 @@ def main():
               'metrics': evaluate_materials(predictions, items), 'groups': {}, 'gallery': [],
               'trainingPhaseUpdates': len(training['history']), 'parentTraining': training.get('parentTraining')}
     report['boundaries'] = boundary_diagnostics(predictions, items, report['metrics'])
+    report['pairedInvariance'] = paired_identity_metrics(predictions, items, report['metrics'])
+    report['pairedMetricsSourceHashes'] = {name: digest(Path(__file__).with_name(name).read_bytes())
+                                         for name in ['material_pairing.py', 'material_pair_metrics.py']}
     for kind in sorted({item['evidence']['kind'] for item in items}):
         indices = [i for i, item in enumerate(items) if item['evidence']['kind'] == kind]
         selected = [items[i] for i in indices]
