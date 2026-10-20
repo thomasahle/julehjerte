@@ -153,7 +153,7 @@ describe('outer edges in the designer', () => {
 });
 
 describe('the Escher tab', () => {
-	const chosenType = (h: ReturnType<typeof render>) => h.target.querySelector('.rule-templates [data-state="on"]')?.getAttribute('title');
+	const chosenType = (h: ReturnType<typeof render>) => h.target.querySelector('.rule-templates [data-state="on"]')?.getAttribute('aria-label');
 	const pressed = (h: ReturnType<typeof render>, label: string) => h.button(label).getAttribute('aria-pressed') === 'true';
 	const chosenTab = (h: ReturnType<typeof render>) => h.target.querySelector('.symmetry-tabs [data-state="on"]')?.textContent?.trim();
 	const snapBox = (h: ReturnType<typeof render>) => [...h.target.querySelectorAll('label.checkbox')].some((l) => l.textContent?.includes("Snap to the other lobe's points"));
@@ -164,6 +164,9 @@ describe('the Escher tab', () => {
 		const original = JSON.stringify(h.fingers);
 		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
 		expect(chosenTab(h)).toBe('Escher');
+		// every type's tooltip says what it does, before it is chosen
+		const moved = h.target.querySelector('.rule-templates [data-state="on"]')!.getAttribute('title')!;
+		expect(moved.split('\n')).toEqual(['Moved', expect.stringContaining('The white tile is the red one')]);
 		expect(cutsOf(h.fingers)).toBe(cutsOf(tileFingers(fitLines(ruleStart(opposite('move', 'move'), 2)))));
 		// the lobes share their crossings, which the tile places: no snapping to the other lobe's points
 		expect(snapBox(h)).toBe(false);
@@ -416,6 +419,8 @@ describe('the red cuts', () => {
 		send(h.svg, 'pointermove', { x: next - 1, y: node.y });
 		expect(h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0.x).toBeCloseTo(next - 1);
 		expect(red()).toBeGreaterThan(0);
+		// the cuts do not cross, and the warning says what is wrong: they are too close
+		expect(h.target.querySelector('.canvas-notice.warning')?.textContent).toContain('come too close');
 		// Straight back and let go: during a drag the check may wait a moment, but not past its end.
 		send(h.svg, 'pointermove', node);
 		send(h.svg, 'pointerup', node);

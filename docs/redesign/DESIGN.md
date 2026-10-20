@@ -592,6 +592,7 @@ those whose tile has a symmetry of its own. The tab always has a type chosen: op
 (the one it was left with, or a heart drawn in it), it takes that tile up; where the cuts were changed in the
 Normal tab since, it draws them again as the tile it was left with; on any other heart it draws the cuts as the
 first type, Flyttet, starts. Fortryd takes either back to the Normal tab and the cuts as they were.
+Every type's tooltip gives its name and what it does, so a type can be read about before it is picked.
 Under the picker: the chosen type's name, what it does and, small, Heesch's name for it (or its IH number where
 he has none), then the size, 3 × 3 to 7 × 7, the hint, and "Start forfra", which draws the tile again as its
 type starts, at its size. Picking
@@ -628,7 +629,9 @@ symmetric tile the cuts are, however its tiles were moved, sized, turned or lean
 only if it makes every cut node for node, to a hundredth of a pixel. A heart whose cuts are no tile opens as any
 other heart. Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both
 tabs, a drag that cannot go where the pointer is stops at the last place that weaves, and a line above the heart
-says why: two cuts would cross, a curve would cross itself, or it would leave the woven square.
+says why: two cuts would cross, a curve would cross itself, or it would leave the woven square. Cuts of a
+lobe that come too close without crossing are not stopped but drawn red, and the warning above the heart says
+the red curves cross or come too close.
 
 The canvas fills the whole area under the top bar — full width and height, no three-column grid — and the tool
 rail and the panel **float over it** as white cards with `--shadow-panel`. So does the drawing surface: the SVG
