@@ -134,24 +134,53 @@ export function distanceToLines(p: Vec, lines: readonly Polyline[]): number {
 
 /**
  * The farthest any point of one set of cuts lies from the other set, both ways
- * (the Hausdorff distance of the sampled cuts). A point stops being measured
- * as soon as it is nearer than the worst so far, which keeps this quick.
+ * (the Hausdorff distance of the sampled cuts). The other set's pieces are
+ * filed by squares, and a point looks at the squares around its own, ring by
+ * ring, until no farther piece could be nearer; it stops as soon as it is
+ * nearer than the worst so far. A detailed heart (Fisk og kors) has some ten
+ * thousand points a side.
  */
 export function cutDistance(a: readonly Polyline[], b: readonly Polyline[]): number {
+	const all = [...a, ...b].flat();
+	if (!all.length) return 0;
+	const size = Math.max(
+		Math.max(...all.map((p) => p.x)) - Math.min(...all.map((p) => p.x)),
+		Math.max(...all.map((p) => p.y)) - Math.min(...all.map((p) => p.y)),
+		1e-9
+	) / 64;
+	const cell = (v: number) => Math.floor(v / size);
 	let worst = 0;
 	for (const [from, to] of [
 		[a, b],
 		[b, a]
 	] as const) {
+		const filed = new Map<string, [Vec, Vec][]>();
+		let reach = 0;
+		for (const other of to)
+			for (let i = 1; i < other.length; i++) {
+				const [p, q] = [other[i - 1]!, other[i]!];
+				for (let x = cell(Math.min(p.x, q.x)); x <= cell(Math.max(p.x, q.x)); x++)
+					for (let y = cell(Math.min(p.y, q.y)); y <= cell(Math.max(p.y, q.y)); y++) {
+						const square = filed.get(`${x},${y}`);
+						if (square) square.push([p, q]);
+						else filed.set(`${x},${y}`, [[p, q]]);
+					}
+				reach = 64 + 2;
+			}
+		if (!reach) {
+			if (from.some((line) => line.length)) return Infinity;
+			continue;
+		}
 		for (const line of from) {
 			for (const p of line) {
 				let best = Infinity;
-				search: for (const other of to) {
-					for (let i = 1; i < other.length; i++) {
-						best = Math.min(best, distanceToSegment(p, other[i - 1]!, other[i]!));
-						if (best <= worst) break search;
-					}
-				}
+				const [cx, cy] = [cell(p.x), cell(p.y)];
+				// Pieces filed only in squares k or more rings out lie at least
+				// k - 1 squares away.
+				for (let k = 0; k <= reach && best > worst && best > (k - 1) * size; k++)
+					for (let x = cx - k; x <= cx + k; x++)
+						for (let y = cy - k; y <= cy + k; y += x === cx - k || x === cx + k ? 1 : 2 * k)
+							for (const [s, t] of filed.get(`${x},${y}`) ?? []) best = Math.min(best, distanceToSegment(p, s, t));
 				worst = Math.max(worst, best);
 			}
 		}
@@ -295,13 +324,24 @@ const placements = new WeakMap<HeartDesign, Map<string, PlacedMark>>();
 
 function searchMark(design: HeartDesign, printed: TemplateLobe, use: MarkUse, mmPerUnit: number): PlacedMark {
 	const data = getTemplateData(design, printed);
-	const lines = data.cutPaths.flatMap((d) => samplePathData(d));
 	const W = data.templateWidth;
 	const R = data.earRadius;
 	const H = data.templateHeight;
 	const unit = (mm: number) => mm / mmPerUnit;
 	const along = (inset: number) => (use.side === 'start' ? inset : W - inset);
 	const lowest = R + (H - R) / 3;
+	// Every place tried lies near one corner, so only the cuts' pieces within
+	// the largest clearance of that corner can decide one: a detailed heart
+	// (Fisk og kors) has some twenty thousand.
+	const reach = Math.max(...MARK_TIERS.map(({ radiusMm, clearanceMm }) => unit(radiusMm + clearanceMm)));
+	const inset = unit(Math.max(...MARK_TIERS.map(({ radiusMm }) => radiusMm)) + SIDE_GAP_MM + 2.4) + reach;
+	const [left, right] = use.side === 'start' ? [-reach, inset] : [W - inset, W + reach];
+	const [top, bottom] = [R - reach, lowest + reach];
+	const lines = data.cutPaths.flatMap((d) => samplePathData(d)).flatMap((line) => line.slice(1).flatMap((b, i) => {
+		const a = line[i]!;
+		return Math.max(a.x, b.x) < left || Math.min(a.x, b.x) > right || Math.max(a.y, b.y) < top || Math.min(a.y, b.y) > bottom
+			? [] : [[a, b]];
+	}));
 
 	for (const { radiusMm, clearanceMm } of MARK_TIERS) {
 		const r = unit(radiusMm);
