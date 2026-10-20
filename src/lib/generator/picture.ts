@@ -17,7 +17,7 @@ import { STRIPS, boardChecks, placeBounds, placeMotif, shifts, slidePlace, type 
 import { checkeredLayout, checkeredLetters } from './checkeredGrid';
 import { measureTextGrid } from './textGrid';
 import { CORNER_GAP, CORNER_INSET, checkedTips } from './cornerChecks';
-import { MOTIF, boardPlacement, boardRadius, boardScale, motifChoices, squareChoices } from './boardMotif';
+import { MOTIF, boardPlacement, boardRadius, boardScale, enclosedAlong, motifChoices, squareChoices } from './boardMotif';
 import { isTextFigure, textFigureRequest } from './textFigure';
 
 /** The clearest place for each motif and board, where the search starts when
@@ -223,9 +223,9 @@ function boardPicture(request: GeneratorRequest, circle?: 'small' | 'large', enc
 	let cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
 	const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
 	let reach = Math.max(...contours.flat().map(([x, y]) => Math.hypot(x - cx, y - cy))) / box;
-	// Over the corner squares the motif sits on its smallest enclosing circle,
-	// where it cuts cleanly so (see `generate`).
-	if (radius > large[1] && enclosed) ({ centre: [cx, cy], reach } = boardPlacement(contours));
+	// Over the corner squares the motif moves towards its smallest enclosing
+	// circle's centre, where it cuts cleanly so (see `generate`).
+	if (radius > large[1] && enclosed) ({ centre: [cx, cy], reach } = boardPlacement(contours, enclosedAlong(request.scale ?? .7)));
 	const scale = (Math.min(radius, 50) - Math.max(request.gap ?? 3, 1.5)) / reach / box;
 	const disc = frameRing('circle', 2 * radius), side = 20, rings: Ring[] = [];
 	for (let i = 0; i < 5; i++)

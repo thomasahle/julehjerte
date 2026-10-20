@@ -5,7 +5,7 @@ import { generateFittedFigure, mirrorSymmetric, type GateTies } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid, roomOf, squareCellScale } from './textGrid';
 import { NO_WHOLE_STRIPS, STRIPS, slidePlace, stripFigures } from './stripFigure';
-import { MOTIF, boardPlacement, boardRadius, boardScale, motifChoices, squareChoices } from './boardMotif';
+import { MOTIF, boardPlacement, boardRadius, boardScale, enclosedAlong, motifChoices, squareChoices } from './boardMotif';
 import { TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
 import { CIRCLE_STYLES, fillSquare, fitCircle } from './frameFit';
 export { fillSquare, fitCircle } from './frameFit';
@@ -1912,6 +1912,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// circle is decided once, in the largest circle, so it only grows with
 		// the setting: there a deer's antler and hooves reach equally far, but a
 		// star's five tips all come close to the circle's connections.
+		// It moves there over the sizes from 85%, so it does not jump.
 		const enclosed: Placement = { ...boardPlacement(contours), enclosed: true };
 		const placement = mode === past && sizes(past, past[1], enclosed).some(attempt => {
 			try {
@@ -1921,7 +1922,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 				return false;
 			}
-		}) ? enclosed : boxed;
+		}) ? { ...boardPlacement(contours, enclosedAlong(request.scale ?? .7)), enclosed: true } : boxed;
 		// The size setting the other construction's circle stands for, and
 		// whether the motif sits on its enclosing circle, for the picture.
 		const kept = (result: GeneratorResult): GeneratorResult => ({
