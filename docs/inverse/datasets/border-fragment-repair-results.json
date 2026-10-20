@@ -1,0 +1,1236 @@
+{
+  "schema": "border-fragment-repair-results-1",
+  "status": "evaluation-complete-ci-running",
+  "runtimeCommit": "5d86da68",
+  "scope": "A fitter regression isolated during neural-model comparison. The NN, crop coordinates and source masks are unchanged. The experimental material projection is not being promoted.",
+  "plan": {
+    "path": "docs/inverse/datasets/border-priority-plan.json",
+    "sha256": "556029aa5e426c49ac70d39f52a8881683d5ae3a5b8658fde9038d3da7c7c5be"
+  },
+  "pairedReview": {
+    "path": "tmp/heart-learning/border-priority-review-v1/report.json",
+    "sha256": "71ab74f6704f535e63d657a5a59808e6186b03af0d44a599b1c9769546ca445e"
+  },
+  "pairedRuns": [
+    {
+      "method": "baseline",
+      "index": 0,
+      "variant": "parent",
+      "error": 0.01584375,
+      "unchangedMixedError": 0.01548125,
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "missing": [],
+      "seconds": 7.1867952079999995,
+      "featureRoutingFirst": false,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": true,
+        "attempts": [
+          {
+            "initialError": 0.0279125,
+            "reason": null,
+            "accepted": true,
+            "refinedError": 0.01716875,
+            "termination": "rejected_candidate_observer"
+          }
+        ]
+      }
+    },
+    {
+      "method": "baseline",
+      "index": 1,
+      "variant": "mixed",
+      "error": 0.04320625,
+      "unchangedMixedError": 0.04320625,
+      "templateChecksPassed": false,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": false,
+      "missing": [
+        {
+          "value": 1,
+          "areaMm2": 8.875,
+          "centerMm": [
+            99.08626760563381,
+            79.49823943661971
+          ],
+          "retainedFraction": 0
+        }
+      ],
+      "seconds": 8.769215833,
+      "featureRoutingFirst": true,
+      "traceUsed": false,
+      "recovery": {
+        "accepted": false,
+        "attempts": [
+          {
+            "initialError": 0.02713125,
+            "reason": "initial_image",
+            "accepted": false,
+            "refinedError": null,
+            "termination": "time_limit"
+          }
+        ]
+      }
+    },
+    {
+      "method": "baseline",
+      "index": 2,
+      "variant": "mixed-minus-fragment",
+      "error": 0.01485,
+      "unchangedMixedError": 0.0157375,
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "missing": [],
+      "seconds": 7.574208708000002,
+      "featureRoutingFirst": false,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": true,
+        "attempts": [
+          {
+            "initialError": 0.02624375,
+            "reason": null,
+            "accepted": true,
+            "refinedError": 0.01683125,
+            "termination": "rejected_candidate_observer"
+          }
+        ]
+      }
+    },
+    {
+      "method": "baseline",
+      "index": 3,
+      "variant": "parent-plus-fragment-neighbourhood",
+      "error": 0.0174125,
+      "unchangedMixedError": 0.01703125,
+      "templateChecksPassed": false,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": false,
+      "missing": [
+        {
+          "value": 1,
+          "areaMm2": 8.875,
+          "centerMm": [
+            99.08626760563381,
+            79.49823943661971
+          ],
+          "retainedFraction": 0
+        }
+      ],
+      "seconds": 9.180603957999999,
+      "featureRoutingFirst": true,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": false,
+        "attempts": [
+          {
+            "initialError": 0.02783125,
+            "reason": "initial_image",
+            "accepted": false,
+            "refinedError": null,
+            "termination": null
+          }
+        ]
+      }
+    },
+    {
+      "method": "baseline",
+      "index": 4,
+      "variant": "parent-plus-fragment-neighbourhood",
+      "error": 0.0174125,
+      "unchangedMixedError": 0.01703125,
+      "templateChecksPassed": false,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": false,
+      "missing": [
+        {
+          "value": 1,
+          "areaMm2": 8.875,
+          "centerMm": [
+            99.08626760563381,
+            79.49823943661971
+          ],
+          "retainedFraction": 0
+        }
+      ],
+      "seconds": 8.615257334000002,
+      "featureRoutingFirst": true,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": false,
+        "attempts": [
+          {
+            "initialError": 0.02783125,
+            "reason": "initial_image",
+            "accepted": false,
+            "refinedError": null,
+            "termination": null
+          }
+        ]
+      }
+    },
+    {
+      "method": "baseline",
+      "index": 5,
+      "variant": "mixed-minus-fragment",
+      "error": 0.0144375,
+      "unchangedMixedError": 0.015325,
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "missing": [],
+      "seconds": 7.641616374999998,
+      "featureRoutingFirst": false,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": true,
+        "attempts": [
+          {
+            "initialError": 0.02624375,
+            "reason": null,
+            "accepted": true,
+            "refinedError": 0.0157625,
+            "termination": "rejected_candidate_observer"
+          }
+        ]
+      }
+    },
+    {
+      "method": "baseline",
+      "index": 6,
+      "variant": "mixed",
+      "error": 0.04320625,
+      "unchangedMixedError": 0.04320625,
+      "templateChecksPassed": false,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": false,
+      "missing": [
+        {
+          "value": 1,
+          "areaMm2": 8.875,
+          "centerMm": [
+            99.08626760563381,
+            79.49823943661971
+          ],
+          "retainedFraction": 0
+        }
+      ],
+      "seconds": 8.637795333000001,
+      "featureRoutingFirst": true,
+      "traceUsed": false,
+      "recovery": {
+        "accepted": false,
+        "attempts": [
+          {
+            "initialError": 0.02713125,
+            "reason": "initial_image",
+            "accepted": false,
+            "refinedError": null,
+            "termination": "time_limit"
+          }
+        ]
+      }
+    },
+    {
+      "method": "baseline",
+      "index": 7,
+      "variant": "parent",
+      "error": 0.01584375,
+      "unchangedMixedError": 0.01548125,
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "missing": [],
+      "seconds": 7.084494167000004,
+      "featureRoutingFirst": false,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": true,
+        "attempts": [
+          {
+            "initialError": 0.0279125,
+            "reason": null,
+            "accepted": true,
+            "refinedError": 0.01716875,
+            "termination": "rejected_candidate_observer"
+          }
+        ]
+      }
+    },
+    {
+      "method": "scheduling-only",
+      "index": 0,
+      "variant": "parent",
+      "error": 0.01584375,
+      "unchangedMixedError": 0.01548125,
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "missing": [],
+      "seconds": 7.997879041999999,
+      "featureRoutingFirst": false,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": true,
+        "attempts": [
+          {
+            "initialError": 0.0279125,
+            "reason": null,
+            "accepted": true,
+            "refinedError": 0.01716875,
+            "termination": "rejected_candidate_observer"
+          }
+        ]
+      }
+    },
+    {
+      "method": "scheduling-only",
+      "index": 1,
+      "variant": "mixed",
+      "error": 0.04320625,
+      "unchangedMixedError": 0.04320625,
+      "templateChecksPassed": false,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": false,
+      "missing": [
+        {
+          "value": 1,
+          "areaMm2": 8.875,
+          "centerMm": [
+            99.08626760563381,
+            79.49823943661971
+          ],
+          "retainedFraction": 0
+        }
+      ],
+      "seconds": 8.88610625,
+      "featureRoutingFirst": false,
+      "traceUsed": false,
+      "recovery": {
+        "accepted": false,
+        "attempts": [
+          {
+            "initialError": 0.02713125,
+            "reason": "initial_image",
+            "accepted": false,
+            "refinedError": null,
+            "termination": "time_limit"
+          }
+        ]
+      }
+    },
+    {
+      "method": "scheduling-only",
+      "index": 2,
+      "variant": "mixed-minus-fragment",
+      "error": 0.0144375,
+      "unchangedMixedError": 0.015325,
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "missing": [],
+      "seconds": 7.400015334,
+      "featureRoutingFirst": false,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": true,
+        "attempts": [
+          {
+            "initialError": 0.02624375,
+            "reason": null,
+            "accepted": true,
+            "refinedError": 0.0157625,
+            "termination": "rejected_candidate_observer"
+          }
+        ]
+      }
+    },
+    {
+      "method": "scheduling-only",
+      "index": 3,
+      "variant": "parent-plus-fragment-neighbourhood",
+      "error": 0.0174125,
+      "unchangedMixedError": 0.01703125,
+      "templateChecksPassed": false,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": false,
+      "missing": [
+        {
+          "value": 1,
+          "areaMm2": 8.875,
+          "centerMm": [
+            99.08626760563381,
+            79.49823943661971
+          ],
+          "retainedFraction": 0
+        }
+      ],
+      "seconds": 8.879470667000001,
+      "featureRoutingFirst": false,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": false,
+        "attempts": [
+          {
+            "initialError": 0.02783125,
+            "reason": "initial_image",
+            "accepted": false,
+            "refinedError": null,
+            "termination": null
+          }
+        ]
+      }
+    },
+    {
+      "method": "scheduling-only",
+      "index": 4,
+      "variant": "parent-plus-fragment-neighbourhood",
+      "error": 0.0174125,
+      "unchangedMixedError": 0.01703125,
+      "templateChecksPassed": false,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": false,
+      "missing": [
+        {
+          "value": 1,
+          "areaMm2": 8.875,
+          "centerMm": [
+            99.08626760563381,
+            79.49823943661971
+          ],
+          "retainedFraction": 0
+        }
+      ],
+      "seconds": 8.879321625000005,
+      "featureRoutingFirst": false,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": false,
+        "attempts": [
+          {
+            "initialError": 0.02783125,
+            "reason": "initial_image",
+            "accepted": false,
+            "refinedError": null,
+            "termination": null
+          }
+        ]
+      }
+    },
+    {
+      "method": "scheduling-only",
+      "index": 5,
+      "variant": "mixed-minus-fragment",
+      "error": 0.0144375,
+      "unchangedMixedError": 0.015325,
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "missing": [],
+      "seconds": 7.675893833000002,
+      "featureRoutingFirst": false,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": true,
+        "attempts": [
+          {
+            "initialError": 0.02624375,
+            "reason": null,
+            "accepted": true,
+            "refinedError": 0.0157625,
+            "termination": "rejected_candidate_observer"
+          }
+        ]
+      }
+    },
+    {
+      "method": "scheduling-only",
+      "index": 6,
+      "variant": "mixed",
+      "error": 0.04320625,
+      "unchangedMixedError": 0.04320625,
+      "templateChecksPassed": false,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": false,
+      "missing": [
+        {
+          "value": 1,
+          "areaMm2": 8.875,
+          "centerMm": [
+            99.08626760563381,
+            79.49823943661971
+          ],
+          "retainedFraction": 0
+        }
+      ],
+      "seconds": 8.869882624999999,
+      "featureRoutingFirst": false,
+      "traceUsed": false,
+      "recovery": {
+        "accepted": false,
+        "attempts": [
+          {
+            "initialError": 0.02713125,
+            "reason": "initial_image",
+            "accepted": false,
+            "refinedError": null,
+            "termination": "time_limit"
+          }
+        ]
+      }
+    },
+    {
+      "method": "scheduling-only",
+      "index": 7,
+      "variant": "parent",
+      "error": 0.01584375,
+      "unchangedMixedError": 0.01548125,
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "missing": [],
+      "seconds": 6.446153207999996,
+      "featureRoutingFirst": false,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": true,
+        "attempts": [
+          {
+            "initialError": 0.0279125,
+            "reason": null,
+            "accepted": true,
+            "refinedError": 0.01716875,
+            "termination": "rejected_candidate_observer"
+          }
+        ]
+      }
+    },
+    {
+      "method": "provisional-repair",
+      "index": 0,
+      "variant": "parent",
+      "error": 0.01584375,
+      "unchangedMixedError": 0.01548125,
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "missing": [],
+      "seconds": 7.387713165999999,
+      "featureRoutingFirst": false,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": true,
+        "attempts": [
+          {
+            "initialError": 0.0279125,
+            "reason": null,
+            "accepted": true,
+            "refinedError": 0.01716875,
+            "termination": "rejected_candidate_observer"
+          }
+        ]
+      }
+    },
+    {
+      "method": "provisional-repair",
+      "index": 1,
+      "variant": "mixed",
+      "error": 0.01536875,
+      "unchangedMixedError": 0.01536875,
+      "templateChecksPassed": false,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": false,
+      "missing": [
+        {
+          "value": 1,
+          "areaMm2": 8.875,
+          "centerMm": [
+            99.08626760563381,
+            79.49823943661971
+          ],
+          "retainedFraction": 0
+        }
+      ],
+      "seconds": 8.689981584,
+      "featureRoutingFirst": true,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": false,
+        "attempts": [
+          {
+            "initialError": 0.02713125,
+            "reason": "border_feature_refinement_seed",
+            "accepted": false,
+            "refinedError": 0.01665,
+            "termination": "rejected_candidate_observer"
+          }
+        ]
+      }
+    },
+    {
+      "method": "provisional-repair",
+      "index": 2,
+      "variant": "mixed-minus-fragment",
+      "error": 0.0144375,
+      "unchangedMixedError": 0.015325,
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "missing": [],
+      "seconds": 7.458480041000002,
+      "featureRoutingFirst": false,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": true,
+        "attempts": [
+          {
+            "initialError": 0.02624375,
+            "reason": null,
+            "accepted": true,
+            "refinedError": 0.0157625,
+            "termination": "rejected_candidate_observer"
+          }
+        ]
+      }
+    },
+    {
+      "method": "provisional-repair",
+      "index": 3,
+      "variant": "parent-plus-fragment-neighbourhood",
+      "error": 0.0138875,
+      "unchangedMixedError": 0.01389375,
+      "templateChecksPassed": false,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": false,
+      "missing": [
+        {
+          "value": 1,
+          "areaMm2": 8.875,
+          "centerMm": [
+            99.08626760563381,
+            79.49823943661971
+          ],
+          "retainedFraction": 0
+        }
+      ],
+      "seconds": 9.151011750000002,
+      "featureRoutingFirst": true,
+      "traceUsed": false,
+      "recovery": {
+        "accepted": false,
+        "attempts": [
+          {
+            "initialError": 0.02783125,
+            "reason": "border_feature_refinement_seed",
+            "accepted": false,
+            "refinedError": 0.0170875,
+            "termination": "rejected_candidate_observer"
+          }
+        ]
+      }
+    },
+    {
+      "method": "provisional-repair",
+      "index": 4,
+      "variant": "parent-plus-fragment-neighbourhood",
+      "error": 0.01494375,
+      "unchangedMixedError": 0.0149625,
+      "templateChecksPassed": false,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": false,
+      "missing": [
+        {
+          "value": 1,
+          "areaMm2": 8.875,
+          "centerMm": [
+            99.08626760563381,
+            79.49823943661971
+          ],
+          "retainedFraction": 0
+        }
+      ],
+      "seconds": 8.892385458000005,
+      "featureRoutingFirst": true,
+      "traceUsed": false,
+      "recovery": {
+        "accepted": false,
+        "attempts": [
+          {
+            "initialError": 0.02783125,
+            "reason": "border_feature_refinement_seed",
+            "accepted": false,
+            "refinedError": 0.0170875,
+            "termination": "rejected_candidate_observer"
+          }
+        ]
+      }
+    },
+    {
+      "method": "provisional-repair",
+      "index": 5,
+      "variant": "mixed-minus-fragment",
+      "error": 0.0144375,
+      "unchangedMixedError": 0.015325,
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "missing": [],
+      "seconds": 7.481126083000003,
+      "featureRoutingFirst": false,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": true,
+        "attempts": [
+          {
+            "initialError": 0.02624375,
+            "reason": null,
+            "accepted": true,
+            "refinedError": 0.0157625,
+            "termination": "rejected_candidate_observer"
+          }
+        ]
+      }
+    },
+    {
+      "method": "provisional-repair",
+      "index": 6,
+      "variant": "mixed",
+      "error": 0.01530625,
+      "unchangedMixedError": 0.01530625,
+      "templateChecksPassed": false,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": false,
+      "missing": [
+        {
+          "value": 1,
+          "areaMm2": 8.875,
+          "centerMm": [
+            99.08626760563381,
+            79.49823943661971
+          ],
+          "retainedFraction": 0
+        }
+      ],
+      "seconds": 8.583043916999996,
+      "featureRoutingFirst": true,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": false,
+        "attempts": [
+          {
+            "initialError": 0.02713125,
+            "reason": "border_feature_refinement_seed",
+            "accepted": false,
+            "refinedError": 0.01665,
+            "termination": "rejected_candidate_observer"
+          }
+        ]
+      }
+    },
+    {
+      "method": "provisional-repair",
+      "index": 7,
+      "variant": "parent",
+      "error": 0.01584375,
+      "unchangedMixedError": 0.01548125,
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "missing": [],
+      "seconds": 6.687099291999999,
+      "featureRoutingFirst": false,
+      "traceUsed": true,
+      "recovery": {
+        "accepted": true,
+        "attempts": [
+          {
+            "initialError": 0.0279125,
+            "reason": null,
+            "accepted": true,
+            "refinedError": 0.01716875,
+            "termination": "rejected_candidate_observer"
+          }
+        ]
+      }
+    }
+  ],
+  "schedulingOnlyRejected": {
+    "patch": {
+      "path": "tmp/heart-learning/border-priority-scheduling.patch",
+      "sha256": "bc9df74db51c9b9549de3dc55aa40df7e55fe21b72c827346c3510663bbc7fca"
+    },
+    "plan": {
+      "path": "tmp/heart-learning/border-priority-scheduling-plan.json",
+      "sha256": "56ad75e217ad5bc728d53ef3cdf53822eaac89db31b462ed3788b872e829a23c"
+    },
+    "outcome": "Flips featureRoutingFirst but leaves both mixed-mask runs at 4.320625%. Reverted; no scheduler change remains.",
+    "patchText": "diff --git a/static/inverse/core/direct/feature-seeds.js b/static/inverse/core/direct/feature-seeds.js\nindex 88f453d8..48f987cb 100644\n--- a/static/inverse/core/direct/feature-seeds.js\n+++ b/static/inverse/core/direct/feature-seeds.js\n@@ -19,6 +19,14 @@ export function interiorFeatureIndices(source,features,missed,cfg){\n   }));\n }\n \n+/** Scheduling only: crop-edge fragments must not give detailed routing\n+ * priority over every ordinary seed. Final audits still use all regions. */\n+export function gridsMissInteriorFeatures(source,finalists,cfg,features){\n+  const interior=interiorFeatureIndices(source,features,features.map((_,i)=>i),cfg).map(i=>features[i]);\n+  return interior.length>0&&!finalists.some(seed=>auditImageFeatures(source,\n+    gridMask(seed.model,source.resolution,seed.phase,seed.floor),cfg.width,interior).passed);\n+}\n+\n export function initializeFeatureSeeds({source,features,missed,counts,cfg,evidence,maximumCount},{expandCounts=true}={}){\n   // Do not create new routings solely to reproduce isolated crop-edge flecks.\n   // They still count in the unchanged final image/feature checks. At least part\ndiff --git a/static/inverse/core/direct/fit.js b/static/inverse/core/direct/fit.js\nindex bdaaa474..eaa86d36 100644\n--- a/static/inverse/core/direct/fit.js\n+++ b/static/inverse/core/direct/fit.js\n@@ -25,7 +25,7 @@ import {initializeTopology,initializeCoarseTopology} from './topology.js';\n import {curvesOf} from '../graph.js';\n import {sourceWeights,initializationMask,hasOnlyObservationWeights} from '../image-reference.js';\n import {resizeObjective} from './image-objective.js';\n-import {initializeFeatureSeeds,initializeFeatureSampling,featureRefinementObjective,interiorFeatureIndices} from './feature-seeds.js';\n+import {initializeFeatureSeeds,initializeFeatureSampling,featureRefinementObjective,interiorFeatureIndices,gridsMissInteriorFeatures} from './feature-seeds.js';\n import {featureDetailPlan} from './feature-details.js';\n import {rerouteFittedBoundary} from './reroute.js';\n import {recoverClampedFeatures} from './clamped-features.js';\n@@ -272,7 +272,8 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma\n   // Otherwise a speculative coarse MILP can consume a quarter of a short\n   // request before the smaller feature graph gets any search or repair time.\n   // Keep coarse routing as a fallback when feature recovery returns no seed.\n-  const featureRoutingFirst=shortBudget&&!weights&&!symmetryRequested&&!fine.some(retainsGridColours);\n+  const featureRoutingFirst=shortBudget&&!weights&&!symmetryRequested&&\n+    (partialPreferredGrid||gridsMissInteriorFeatures(source,fine,cfg,sourceFeatures));\n   if(!deferredRouting&&!featureRoutingFirst)await attemptCoarseRouting();\n   // A local boundary gradient cannot create a remote missing region. Try an\n   // alternate traced routing while there is still time within this search.\n"
+  },
+  "rootCause": {
+    "maskChangePixels": 142,
+    "maskPixels": 160000,
+    "maskChangeFraction": 0.0008875,
+    "fragment": {
+      "areaMm2": 8.875,
+      "centroid": [
+        99.08626760563381,
+        79.49823943661971
+      ],
+      "pixelBounds": [
+        394,
+        287,
+        397,
+        348
+      ]
+    },
+    "fixedWork": "All 36 finalist masks replay exactly across the three experiments; each fine fit requests and completes 150 steps without a deadline.",
+    "coarseTrace": "Rejected in successful and unsuccessful variants alike. Its rejection and the featureRoutingFirst switch do not by themselves explain the failure.",
+    "repair": "The successful variants repair a nearly valid MILP proposal. On the mixed mask, the first repairable proposal has 2.713125% image error, a 1.4948945109801448 mm self-clearance witness against a 1.5 mm requirement, and exactly one missing source feature: the 142-pixel border fragment. The old initial feature gate returns initial_image before moving any curves.",
+    "newBehavior": "Interior-feature loss still rejects bounded repair. Border-only loss can yield a provisional seed only after the unchanged image-error, geometry and paper checks pass, without eroding any retained source region. A missing feature never becomes an accepted repair or a passed final template.",
+    "fixedRepair": {
+      "path": "tmp/heart-learning/border-fragment-fixed-repair.json",
+      "sha256": "491844703cd10af5c693179760f9559d0ab3e2e89aecc3bebb77ca612e700b75"
+    },
+    "fixedRepairImageError": 0.01665,
+    "fixedRepairIndependentError": 0.0168,
+    "cropQualification": "The photo itself shows a narrow red margin outside the white border cell; this may reflect a crop extending beyond the intended overlap. The study does not assert that the NN hallucinated the margin, establish an exact artwork target, or enable a global crop inset."
+  },
+  "cohort": {
+    "plan": {
+      "path": "tmp/heart-learning/border-fragment-validation-plan.json",
+      "sha256": "abafcc89dbdb234ccb65859228615c328a22de479fe17a3e8a7f16626e7d31a3"
+    },
+    "review": {
+      "path": "tmp/heart-learning/border-fragment-cohort-review-v1/report.json",
+      "sha256": "e868e516c7846824894b893820a38140a7535588878fe0ab7750747754ed6757"
+    },
+    "summary": {
+      "previous": {
+        "total": 32,
+        "enginePassed": 11,
+        "conversionPassed": 25,
+        "completePassed": 10,
+        "borderRepair": 0
+      },
+      "current": {
+        "total": 32,
+        "enginePassed": 11,
+        "conversionPassed": 24,
+        "completePassed": 10,
+        "borderRepair": 1
+      }
+    },
+    "audit": {
+      "engineRenders": 52,
+      "editableRenders": 51
+    },
+    "galleries": [
+      {
+        "path": "tmp/heart-learning/border-fragment-cohort-review-v1/comparison-01.jpg",
+        "sha256": "11c18c2bd71874286dabea21cd1295f3e127331b946dfbb332d1bcc6b2b6f105",
+        "ids": [
+          "real-f6e5e128449e3cb9-body-1",
+          "real-fcbcc23efea92b93-body-1",
+          "real-55704c6e2911bebc-body-1",
+          "real-24b5ed49c9411b11-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/border-fragment-cohort-review-v1/comparison-02.jpg",
+        "sha256": "0918291064971fb7316b81767003abd4cd694f02c2e819e50a1d95cf3a7203e2",
+        "ids": [
+          "real-589f606a9d9899f2-body-1",
+          "real-dfa7e4b71b43aa86-body-1",
+          "real-2502cdec0720f4ea-body-1",
+          "real-d3f063052599e167-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/border-fragment-cohort-review-v1/comparison-03.jpg",
+        "sha256": "fec8675c3256728d655c3f37784f28778ee96508c4b0314b0a36f2fdd1613f5b",
+        "ids": [
+          "real-a126ed5d62adfd92-body-1",
+          "real-5088a58018c3aa28-body-1",
+          "real-1a7cfc6be8b164b5-body-1",
+          "real-fe7fb089d1cd86b4-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/border-fragment-cohort-review-v1/comparison-04.jpg",
+        "sha256": "7266516e187f73d658262cfd1150618e7fa401c6ecfb462908d8ff0c8c598b34",
+        "ids": [
+          "real-8b91ecf546833a3f-body-1",
+          "real-b5317080eec610dc-body-1",
+          "real-c7d1e0ad5050db71-body-1",
+          "real-45ad148d9ec045be-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/border-fragment-cohort-review-v1/comparison-05.jpg",
+        "sha256": "88d540d3dedce95d41cdc9132bdf34f013bdbe48d8dcb1c0230c910f4df8d474",
+        "ids": [
+          "real-702942779385436c-body-1",
+          "real-03bddab9c8f384c4-body-1",
+          "real-eb60ff94dfc6e2f8-body-1",
+          "real-af21a4ef38355dfa-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/border-fragment-cohort-review-v1/comparison-06.jpg",
+        "sha256": "25286c77c4719a2ee5aeaffe5f8dc7fc0300bf13005bf84f4d986016666049a4",
+        "ids": [
+          "real-f05cf91c134daea9-body-1",
+          "real-28a87a8be083f16c-body-1",
+          "real-ce66f9634c2c613b-body-1",
+          "real-52e732b98f9b14f1-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/border-fragment-cohort-review-v1/comparison-07.jpg",
+        "sha256": "2985fdf81d42bbddb37c819b17912d7c9180e66776a126cb2aacae4d8f324db5",
+        "ids": [
+          "real-d4f6e3c76cf08ea8-body-1",
+          "real-41b7c3e0b79f1265-body-1"
+        ]
+      }
+    ],
+    "allSevenGalleriesInspected": true,
+    "findings": [
+      "The dinosaur improves from 4.320625% to 1.519375% in the full cohort, keeps its missing-border-feature warning, and converts successfully.",
+      "All 11 previous engine passes and all 10 previous complete passes are retained. All six unresolved crops remain in the denominator.",
+      "Conversion passes fall from 25/26 to 24/26 because the already-failing diving-figure fit now fails editable geometry too. The same previous code produces invalid geometry on this case in the paired replay; do not omit this failed export.",
+      "The previous heart-checker paper-uncertainty conversion failure remains unchanged.",
+      "Printed decorations still confuse material classification; wrong crops remain; correctly classified complex figures can still lose important geometry. This is one fitter improvement, not a successful general NN release.",
+      "Gallery labels saying editable pass refer to conversion only; they do not certify mask fidelity or original-artwork recovery."
+    ]
+  },
+  "clockComparison": {
+    "report": {
+      "path": "tmp/heart-learning/border-fragment-clock-v1/report.json",
+      "sha256": "877aa3ae6f7886ffe4f7e2188a41645d043611ee02e1520bacc96d1dd71b4238"
+    },
+    "script": {
+      "path": "scripts/inverse/diagnostics/compare-border-repair.mjs",
+      "sha256": "05d81ee25d0ec95fef1f1f9dd6469a0969bf475a95596000cc0a864f3c249d59"
+    },
+    "runs": [
+      {
+        "index": 0,
+        "id": "real-fcbcc23efea92b93-body-1",
+        "method": "previous",
+        "maskSha256": "c05746e92ae2595bfbea2d8d4714a46648f561c4ea4a629e6a57301c8b199353",
+        "seconds": 9.978961792,
+        "error": 0.023969794626341984,
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paperStatus": "uncertain",
+        "provisional": false,
+        "assets": {
+          "geometry.json": {
+            "path": "00-previous-geometry.json",
+            "sha256": "37e2552fd84453f8f700fc398e75318c1016a8706982009206c8cb337c473e7e"
+          },
+          "report.json": {
+            "path": "00-previous-report.json",
+            "sha256": "9b85dfdc3a4a8bcc987090c4cf0635129196d3f75c9d2c1c582d819a71f900d3"
+          },
+          "woven.png": {
+            "path": "00-previous-woven.png",
+            "sha256": "b92ab32c5c9c2bea09541e85b42fc43215f70dc6070c4cd95f8da1d70159bd88"
+          }
+        }
+      },
+      {
+        "index": 1,
+        "id": "real-fcbcc23efea92b93-body-1",
+        "method": "current",
+        "maskSha256": "c05746e92ae2595bfbea2d8d4714a46648f561c4ea4a629e6a57301c8b199353",
+        "seconds": 9.579489709,
+        "error": 0.04567037241852749,
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "provisional": false,
+        "assets": {
+          "geometry.json": {
+            "path": "01-current-geometry.json",
+            "sha256": "d3e97a4c164c759a9b31c3c0497807eb0844edcbe91b6e6229d1fed036f682e9"
+          },
+          "report.json": {
+            "path": "01-current-report.json",
+            "sha256": "6e34b33ea3cdf8d6b3be0e115b74fe876168e211d3ac801a8b21f182ba3e524f"
+          },
+          "woven.png": {
+            "path": "01-current-woven.png",
+            "sha256": "0b1025bca235f0618809470f470ec801a2145ba5f4e58d94a0fd05cdb91a10d2"
+          }
+        }
+      },
+      {
+        "index": 2,
+        "id": "real-fcbcc23efea92b93-body-1",
+        "method": "current",
+        "maskSha256": "c05746e92ae2595bfbea2d8d4714a46648f561c4ea4a629e6a57301c8b199353",
+        "seconds": 9.915968083,
+        "error": 0.02927099025571595,
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "provisional": false,
+        "assets": {
+          "geometry.json": {
+            "path": "02-current-geometry.json",
+            "sha256": "73a66972714aa46c0904abcb6c2df43ab0bc6e22ddb150c9767d5fc0e7b0f335"
+          },
+          "report.json": {
+            "path": "02-current-report.json",
+            "sha256": "659a4582fad7d5040833184927dc3b916ff5b515ca2a2a8be089f81cef3a6ced"
+          },
+          "woven.png": {
+            "path": "02-current-woven.png",
+            "sha256": "c27996275369f4a87c036ccdf81a3fe3e3e81c213bbfc404a68639e10c0ba25e"
+          }
+        }
+      },
+      {
+        "index": 3,
+        "id": "real-fcbcc23efea92b93-body-1",
+        "method": "previous",
+        "maskSha256": "c05746e92ae2595bfbea2d8d4714a46648f561c4ea4a629e6a57301c8b199353",
+        "seconds": 9.615379666999997,
+        "error": 0.03998779580862302,
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "provisional": false,
+        "assets": {
+          "geometry.json": {
+            "path": "03-previous-geometry.json",
+            "sha256": "240b452d8cc9a39548324e403e1088957d625c4228d36711ebd57c5fce3f7ef7"
+          },
+          "report.json": {
+            "path": "03-previous-report.json",
+            "sha256": "ebc18d59ec60c58e7af3bceeb252c6768af96487e15f95e8905ff5fd690d2fd6"
+          },
+          "woven.png": {
+            "path": "03-previous-woven.png",
+            "sha256": "7a002438c53977f6c576e94a459a19ac3e36cc98ab296109b6b27dba5448b259"
+          }
+        }
+      },
+      {
+        "index": 4,
+        "id": "real-ce66f9634c2c613b-body-1",
+        "method": "previous",
+        "maskSha256": "3aceef21b6f3d3010f179b9f7c2a5ed16c16ad85af701d4840d65f620b53de8d",
+        "seconds": 9.419352833000005,
+        "error": 0.10555625,
+        "templateChecksPassed": false,
+        "geometryPassed": false,
+        "paperStatus": "fail",
+        "provisional": false,
+        "assets": {
+          "geometry.json": {
+            "path": "04-previous-geometry.json",
+            "sha256": "647e9db3d6f4bb83940e61c75ecdc132d6c8e8c66e2ba1f10ea1187ec8eef668"
+          },
+          "report.json": {
+            "path": "04-previous-report.json",
+            "sha256": "76eda18f5022183c43bd714a9e034f5eeb8696cf72e249a2ce59691b8f1d6320"
+          },
+          "woven.png": {
+            "path": "04-previous-woven.png",
+            "sha256": "1c0b3bdbb56dd2e7c86ac78be2fc9e8aca9c1a90e4d46f34c9df796d92fef7f0"
+          }
+        }
+      },
+      {
+        "index": 5,
+        "id": "real-ce66f9634c2c613b-body-1",
+        "method": "current",
+        "maskSha256": "3aceef21b6f3d3010f179b9f7c2a5ed16c16ad85af701d4840d65f620b53de8d",
+        "seconds": 9.451557082999999,
+        "error": 0.085975,
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paperStatus": "uncertain",
+        "provisional": false,
+        "assets": {
+          "geometry.json": {
+            "path": "05-current-geometry.json",
+            "sha256": "462e93cdc1f3e6cef4ee43800254d399487f5b18793cc439b47fa29d94039361"
+          },
+          "report.json": {
+            "path": "05-current-report.json",
+            "sha256": "7295a484215c168689a34134557d454dcc156f2924af0b7449ef6c18ba5ce4ac"
+          },
+          "woven.png": {
+            "path": "05-current-woven.png",
+            "sha256": "87d5be8e1a0626107e1d6fc5029a617bb6b89fb4a1d30f56b41de943287729c5"
+          }
+        }
+      },
+      {
+        "index": 6,
+        "id": "real-ce66f9634c2c613b-body-1",
+        "method": "current",
+        "maskSha256": "3aceef21b6f3d3010f179b9f7c2a5ed16c16ad85af701d4840d65f620b53de8d",
+        "seconds": 9.469128167000003,
+        "error": 0.085975,
+        "templateChecksPassed": false,
+        "geometryPassed": true,
+        "paperStatus": "uncertain",
+        "provisional": false,
+        "assets": {
+          "geometry.json": {
+            "path": "06-current-geometry.json",
+            "sha256": "462e93cdc1f3e6cef4ee43800254d399487f5b18793cc439b47fa29d94039361"
+          },
+          "report.json": {
+            "path": "06-current-report.json",
+            "sha256": "bfd0b09d73bd2aab835e416c2061f1ad5cd867a53c9731d16cfa1dc7e37c875b"
+          },
+          "woven.png": {
+            "path": "06-current-woven.png",
+            "sha256": "87d5be8e1a0626107e1d6fc5029a617bb6b89fb4a1d30f56b41de943287729c5"
+          }
+        }
+      },
+      {
+        "index": 7,
+        "id": "real-ce66f9634c2c613b-body-1",
+        "method": "previous",
+        "maskSha256": "3aceef21b6f3d3010f179b9f7c2a5ed16c16ad85af701d4840d65f620b53de8d",
+        "seconds": 9.443623083000013,
+        "error": 0.10184375,
+        "templateChecksPassed": false,
+        "geometryPassed": false,
+        "paperStatus": "fail",
+        "provisional": false,
+        "assets": {
+          "geometry.json": {
+            "path": "07-previous-geometry.json",
+            "sha256": "e051c6a863d7ada3f05bf419ee549ab933d7ac97a53bf21399c6f942ea319cdd"
+          },
+          "report.json": {
+            "path": "07-previous-report.json",
+            "sha256": "35033293061587ffe5b7d3f6eb24c2c8aea1856d19717875cd6d4cf24cbd4156"
+          },
+          "woven.png": {
+            "path": "07-previous-woven.png",
+            "sha256": "937650754f89e299a9c8759e2d44c5b718311904022046d2441b92b1aebd56cf"
+          }
+        }
+      }
+    ],
+    "interpretation": "All eight repeats retained. Neither case enters the new border-feature repair path. Old and new code both vary within the fixed ten-second allowance. This establishes substantial timing sensitivity, not statistical equality of quality distributions."
+  },
+  "validation": {
+    "focused": {
+      "log": {
+        "path": "tmp/heart-learning/border-fragment-focused-v1.log",
+        "sha256": "66ee04351aacb1884161adefa75f76c580b2f8820c68a92cf4156d8cf088ec6b"
+      },
+      "passed": 11,
+      "failed": 0
+    },
+    "ci": {
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39391283817",
+      "sha": "5d86da68f6b62eabf13e099eb6a083ef7b92bcea",
+      "status": "running"
+    },
+    "editableExitCode": 1,
+    "editableExitExplanation": "Two retained conversion failures from the full cohort; not a unit-test failure.",
+    "local": {
+      "path": "tmp/heart-learning/border-fragment-validation-v1/report.json",
+      "sha256": "8155827b2f93977f38ee5f803d672dec5a23c6a17ed34b4f7d7f4763455c43a7"
+    },
+    "localResults": [
+      {
+        "name": "check",
+        "exitCode": 0,
+        "seconds": 25.726024125,
+        "log": "tmp/heart-learning/border-fragment-validation-v1/check.log"
+      },
+      {
+        "name": "lint",
+        "exitCode": 0,
+        "seconds": 11.233431916999997,
+        "log": "tmp/heart-learning/border-fragment-validation-v1/lint.log"
+      },
+      {
+        "name": "build",
+        "exitCode": 0,
+        "seconds": 47.868214208000005,
+        "log": "tmp/heart-learning/border-fragment-validation-v1/build.log"
+      }
+    ]
+  },
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "newSourcePhotos": 0,
+    "browserSessions": 0,
+    "uniqueArtifactBytesInStudyRoots": 38720999,
+    "artifactRootNames": [
+      "tmp/heart-learning/border-priority-baseline-v1",
+      "tmp/heart-learning/border-priority-scheduling-v1",
+      "tmp/heart-learning/border-priority-repair-v1",
+      "tmp/heart-learning/border-priority-review-v1",
+      "tmp/heart-learning/border-fragment-pipeline-v1",
+      "tmp/heart-learning/border-fragment-editor-input-v1",
+      "tmp/heart-learning/border-fragment-editable-v1",
+      "tmp/heart-learning/border-fragment-clock-v1",
+      "tmp/heart-learning/border-fragment-cohort-review-v1"
+    ],
+    "budgetMiB": 50,
+    "scope": "Excludes small external logs/fixture/patch files and ordinary build outputs. Runtime snapshots used temporary hardlinks, removed after paired runs. No saved model or dataset was replaced."
+  },
+  "next": [
+    "Finish CI before deployment.",
+    "Investigate editable paper-support uncertainty separately from mask disagreement.",
+    "Add training supervision for figurative material boundaries; current real interior seeds do not directly teach most cut edges.",
+    "Retain crop-border uncertainty in the dataset and test any automatic inset uniformly across the cohort, rather than choosing it per successful example."
+  ],
+  "reviewScripts": [
+    {
+      "path": "scripts/inverse/diagnostics/review-border-priority.py",
+      "sha256": "ca17a8b561c6e3bcd32afec703fb0ce8860a6dd9c9d7284e33a4a326d491dd0b"
+    },
+    {
+      "path": "scripts/inverse/diagnostics/review-border-cohort.py",
+      "sha256": "277e1ec7baff669a6cdeccd6836f76392da1192cb70766bf57aeaa3777d40409"
+    },
+    {
+      "path": "scripts/inverse/diagnostics/compare-border-repair.mjs",
+      "sha256": "05d81ee25d0ec95fef1f1f9dd6469a0969bf475a95596000cc0a864f3c249d59"
+    }
+  ]
+}

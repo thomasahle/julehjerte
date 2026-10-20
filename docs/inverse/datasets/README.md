@@ -612,8 +612,8 @@ right of a white border cell. The new missing component has area 8.875 mm²
 and centre x=99.086 mm on a nominal 100 mm square. Logs change from
 `traceUsed=true, featureRoutingFirst=false` to the opposite routing choice.
 This points to an interaction between crop margins, classification and
-feature-driven search. It is an observed association; a controlled intervention
-is still needed to isolate the effect from search timing.
+feature-driven search. The continuation established an association; the
+controlled intervention below separates the repair gate from search timing.
 
 All 32 photos and all failures are retained. The review recomputes 130 distinct
 engine-render errors (78 frozen controls and 52 new fits) and all 52 editable
@@ -623,12 +623,47 @@ Repeated crops and parent masks share immutable files through hardlinks.
 The study adds about **42.6 MiB** of artifact content, with no new photographs,
 feature cache or browser work.
 
-The next steps are to isolate the border-fragment routing regression and the
-editable paper-support discrepancy, then improve edge supervision. The 32
+The border-fragment intervention below now isolates the routing regression.
+The editable paper-support discrepancy remains unresolved. The 32
 synthetic geometries here are all lattice families (11 lattice, seven shared
 lattice, 14 corner lattice); sparse real interiors add little supervision of
 the detailed cut boundaries that still cause trouble. The current experiment
 does not establish which representation or richer labels will resolve that gap.
+
+### Border fragments and provisional geometry repair
+
+The [controlled repair study](border-fragment-repair-results.json) retains
+24 repeated fits, fixed-work initialization, the full 32-photo cohort and
+eight additional timing comparisons. Removing just 142 pixels (0.08875% of
+the mask) recovered the dinosaur. The fragment does change routing priority,
+but a scheduling-only patch did **not** improve either repeat and was reverted.
+The successful variants instead repair a nearly valid MILP proposal. On the
+original mixed mask, the old repair gate rejects that proposal before moving
+any curves because the narrow border fragment is missing.
+
+Commit `5d86da68` allows that repair to supply a **provisional** starting pair
+when every interior feature is retained. It must pass the unchanged image,
+geometry and paper checks, and cannot erode existing features. A border-feature
+loss remains a failed final check. The original mask is never edited.
+The full-cohort dinosaur improves from **4.32% to 1.52%** disagreement and
+converts successfully; it still has a missing-feature warning.
+
+All **11/32** prior engine passes and **10/32** complete passes remain.
+Conversion passes fall from **25/26 to 24/26**: the already-failing diving
+figure also fails conversion in this run. Both previous and current code
+produce variable, unsuccessful fits in the paired timing study; neither case
+uses the new provisional repair path. All repeats and failures are retained,
+including the original heart-checker paper-support uncertainty. This does not
+establish equal quality distributions or eliminate the timing instability.
+
+The review independently recomputes 52 cohort engine renders and 51 available
+editable renders; all seven comparison pages were inspected. Its “editable
+pass” labels mean successful conversion, not complete reconstruction. Eleven
+focused tests pass, including the existing rabbit-border regression and checks
+that interior-feature loss and failed paper support remain ineligible.
+Full CI is running on the pushed runtime commit. No neural weights or crop
+rules change in this fix; the material projection remains experimental.
+Study artifacts occupy about **36.9 MiB**, with no new source photographs.
 
 ### Latest solver and browser validation
 
