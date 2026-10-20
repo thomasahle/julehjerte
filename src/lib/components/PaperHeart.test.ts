@@ -181,6 +181,32 @@ describe('the Escher tab', () => {
 		expect(chosenType(h)).toBe('Moved');
 	});
 
+	it('stretches the tiles when a black point is dragged along its cut, and the heart gets more strips that way', async () => {
+		const tile = { ...knobTile(opposite('move', 'move')), cuts: 3 };
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
+		const anchors = () => {
+			const segs = h.fingers.find((f) => f.id === 'L-2')!.segments;
+			return [segs[0]!.p0, ...segs.map((s) => s.p3)];
+		};
+		send(h.path('L-2'), 'pointerdown', anchors()[0]!);
+		send(h.svg, 'pointerup', anchors()[0]!);
+		// the black points, in Tegn's order along the cut: its crossings, ends and all
+		const black = [...h.handles()].map((el, a) => ({ el, a })).filter(({ el }) => el.getAttribute('fill') === '#1e2a25');
+		expect(black.length).toBeGreaterThanOrEqual(3);
+		// the second one in from the right edge, dragged along the cut towards the middle
+		const { el, a } = black[1]!;
+		const from = anchors()[a]!;
+		const to = { x: from.x - 30, y: from.y };
+		send(el, 'pointerdown', from);
+		send(h.svg, 'pointermove', { x: from.x - 15, y: from.y });
+		send(h.svg, 'pointermove', to);
+		send(h.svg, 'pointerup', to);
+		expect(h.gridSize.x).toBeGreaterThan(4);
+		expect(h.gridSize.y).toBe(4);
+		expect(chosenType(h)).toBe('Moved');
+	});
+
 	it('starts the tile over as its type starts, at its size, which Fortryd takes back', async () => {
 		const tile = { ...knobTile(opposite('move', 'turn')), cuts: 4 };
 		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });

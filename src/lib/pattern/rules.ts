@@ -84,6 +84,26 @@ export function canLean(rule: TileRule): boolean {
 	return rule.sides === 'free' || (rule.sides === 'opposite' && rule.v === 'turn' && rule.h === 'turn');
 }
 
+/**
+ * Which shapes a rule's cells may take in the heart (see `PatternTile.shape`),
+ * from the motions that make its tiling: each must stay a motion once the grid
+ * is stretched or turned, a true mirror or turn and not a skewed one. Moves and
+ * half turns stay one whatever the cells' shape (`oblique`, any parallelogram); a
+ * mirror in a side keeps the sides square to each other (`rectangular`); a mirror
+ * in a diagonal keeps them as long as each other (`rhombic`); a quarter turn, or
+ * mirrors both ways, keeps the cells square (`square`).
+ */
+export type Lattice = 'oblique' | 'rectangular' | 'rhombic' | 'square';
+
+export function latticeOf(rule: TileRule): Lattice {
+	const turns = ruleMotions(rule).map((m) => [m.a, m.b, m.c, m.d] as const);
+	const quarter = turns.some(([a, b, c, d]) => a === 0 && d === 0 && b === -c);
+	const sideMirror = turns.some(([a, b, c, d]) => b === 0 && c === 0 && a === -d);
+	const diagonalMirror = turns.some(([a, b, c, d]) => a === 0 && d === 0 && b === c);
+	if (quarter || (sideMirror && diagonalMirror)) return 'square';
+	return sideMirror ? 'rectangular' : diagonalMirror ? 'rhombic' : 'oblique';
+}
+
 /** How a curve drawn as half a side is completed: by a half turn about the side's middle (an S), or by its mirror image. */
 export type HalfKind = 'turn' | 'mirror';
 

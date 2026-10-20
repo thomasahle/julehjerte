@@ -598,16 +598,21 @@ another type keeps the curves it reads the same way, if the heart they make with
 starts afresh if not; a size the pattern is too tight for is refused, with a line above the heart. Every type
 starts from one bent curve on each side it reads (half of one for an S or an arch) and nothing more, because the
 visitor does the designing and adds the nodes they want; nothing else is drawn on the heart, and nothing moves
-on its own. Points the tile places itself
-are drawn dark: dragging a crossing leans every tile (where the type lets tiles lean), and dragging a point the
-type fixes moves the whole pattern, which comes back in at the other edge without end. So does dragging a cut,
-or one of the square's edges: in this tab no strip is pulled in from an edge or dragged out, and nothing done in
-the tab takes the heart out of it. Moved off a whole line,
-the pattern would leave an edge strip wider than a cell; there the heart cuts the pattern's next line as well,
-if all of that cut keeps 0.15 of a cell (and twice the paper's clearance) from the edge, so the pattern fills
-the heart like a window onto an endless tiling. The heart then has a strip more that way (a 3 × 3 pattern makes
-a 4 × 3 or 4 × 4 heart, and the strip count says so); no line it cut before is dropped, and the size buttons
-still set the size of the tiles. An end of a cut slides along the edge. A heart drawn in the tab keeps its tile
+on its own. Points the tile places itself are drawn dark — its crossings, the middles of its S sides, the
+ends of cuts on corners or on straight sides — and dragging one sizes, stretches and turns every tile so that
+the point follows the pointer, about the crossing of its line nearest the middle of the heart (two stretches or
+more from the point). Along its cut the tiles grow longer or shorter that way, or bigger or smaller both ways
+where the type's motions keep its cells square or rhombic (`latticeOf`: a mirror in a side keeps the cells
+rectangular, a mirror in a diagonal rhombic, a quarter turn square); across it they turn, up to 35°, with
+between two and twelve strips a side; near the plain grid they snap back square and straight. Dragging a cut,
+or one of the square's edges, moves the whole pattern, which comes back in at the other edge without end: in
+this tab no strip is pulled in from an edge or dragged out, and nothing done in the tab takes the heart out of
+it. However the pattern is moved, sized or turned, the heart is a window onto an endless tiling: it cuts every
+line whose whole cut keeps 0.15 of the way to the next line (and twice the paper's clearance) from the edge, so
+narrow tiles make more strips one way than the other (6 × 3, say), and a 3 × 3 pattern moved off a whole line
+makes a 4 × 3 or 4 × 4 heart; the strip count says so. The size buttons set a tile to the size of a cell of the
+n × n grid, stretched and turned as it was. An end of a cut where the edge cuts a curve is drawn white and
+slides along the edge, reshaping the curve. A heart drawn in the tab keeps its tile
 (`HeartDesign.pattern`, plain numbers) wherever the heart goes — the draft, "Mine hjerter", a shared link, an
 exported SVG (`data-pattern`) — and opens on the Escher tab with it, its type chosen, as long as its cuts are
 still the tile's; once they have been changed in the Normal tab, it opens as any other heart. Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both

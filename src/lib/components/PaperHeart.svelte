@@ -1224,10 +1224,14 @@
 	 */
 	let sizeStop = $state<number | null>(null);
 	let sizeStopTimer: ReturnType<typeof setTimeout> | null = null;
-	/** The pattern's size, n for tiles drawn n × n on the heart's square (which may have a strip more each way where the pattern has moved). */
-	let patternSize = $derived(patternTile ? patternTile.cuts + 1 : gridSize.x);
+	/**
+	 * The pattern's size, n for tiles a cell of the n × n grid in size (the heart may have more or fewer
+	 * strips, where the pattern has moved or its tiles are stretched or turned); null for tiles sized by
+	 * dragging a point.
+	 */
+	let patternSize = $derived(patternTile && escher ? escher.patternSize(patternTile) : null);
 
-	/** The pattern's size: the tile drawn again n × n on the heart's square, if it is not too tight for it. */
+	/** The pattern's size: the tile drawn again a cell of the n × n grid in size, if it is not too tight for it. */
 	function setPatternSize(n: number) {
 		if (!patternTile || !escher || n === patternSize) return;
 		const next = escher.resizedTile(patternTile, n);
@@ -1246,10 +1250,10 @@
 		pushUndo(before);
 	}
 
-	/** On the selected cut, the nodes the Escher tab treats specially: crossings that lean the tiles, and points that stay put. */
+	/** On the selected cut, the nodes the Escher tab treats specially: points of the tiling, which size and turn the tiles, and ends that slide. */
 	let patternNodes = $derived(patternTile && selectedFingerId && escher ? escher.specialNodes(patternTile, selectedFingerId) : null);
-	/** What the Escher tab's hint says about the crossings, for the chosen rule. */
-	let escherCornerHint = $derived<TranslationKey | null>(patternTile && escher ? escher.cornerHint(patternTile) : null);
+	/** What the Escher tab's hint says the black points do, for the chosen rule. */
+	let escherFrameHint = $derived<TranslationKey | null>(patternTile && escher ? escher.frameHint(patternTile) : null);
 
 	function deriveSymmetryOverrides(primary: Finger): Map<string, Finger> {
 		if (patternRule !== 'off') return derivePatternOverrides(primary);
@@ -2850,7 +2854,7 @@
 				tileOfOverrides.set(overrides, next);
 				applyOverrides(overrides);
 			}
-			if (tileDrag.mode === 'corner') {
+			if (tileDrag.mode === 'frame') {
 				// The point stays selected under the pointer, though the pattern may have moved it onto
 				// another cut, or a repeat on.
 				const at = escher.followedPoint(tileDrag, next, p, rect);
@@ -3365,23 +3369,17 @@
 	// bottom left. `stripsCount` is the shared '{n} striber' key; the grid fills in '3 × 3'.
 	let selectedPatternNode = $derived(selectedAnchors.length === 1 ? patternNodes?.get(selectedAnchors[0]!) : undefined);
 	let selectedNodeTypeLabel = $derived(
-		selectedPatternNode === 'lean'
-			? tr('patternCornerLean')
-			: selectedPatternNode === 'edge'
-				? tr('patternEdgeCorner')
-				: selectedPatternNode === 'pan'
-					? tr('patternPointPan')
-					: selectedPatternNode === 'pan-edge'
-						? tr('patternEdgePan')
-						: selectedPatternNode === 'slide'
-							? tr('patternEdgeSlide')
-							: nodeTypeSelected === 'corner'
-			? tr('editorCornerNode')
-			: nodeTypeSelected === 'smooth'
-				? tr('editorSmoothNode')
-				: nodeTypeSelected === 'symmetric'
-					? tr('editorSymmetricNode')
-					: null
+		selectedPatternNode === 'frame'
+			? tr(escherFrameHint === 'patternPointsGrow' ? 'patternPointGrow' : 'patternPointStretch')
+			: selectedPatternNode === 'slide'
+				? tr('patternEdgeSlide')
+				: nodeTypeSelected === 'corner'
+					? tr('editorCornerNode')
+					: nodeTypeSelected === 'smooth'
+						? tr('editorSmoothNode')
+						: nodeTypeSelected === 'symmetric'
+							? tr('editorSymmetricNode')
+							: null
 	);
 	let stripsLabel = $derived(formatStrips(gridSize, lang));
 
@@ -3984,7 +3982,7 @@
 									{lang}
 									rule={patternRule === 'off' ? null : patternRule}
 									size={patternSize}
-									cornerHint={escherCornerHint}
+									frameHint={escherFrameHint}
 									onChoose={chooseEscherRule}
 									onSize={setPatternSize}
 									onRestart={restartEscherTile}

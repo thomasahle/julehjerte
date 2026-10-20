@@ -117,7 +117,9 @@ function normalizePattern(raw: unknown): HeartPattern | undefined {
     curves[key] = curve.map((seg) => [...(seg as number[])]);
   }
   const lines = r.lines as { V?: unknown; H?: unknown } | undefined;
+  const four = (v: unknown): v is [number, number, number, number] => Array.isArray(v) && v.length === 4 && v.every(finite);
   if (r.offset !== undefined && !pair(r.offset)) return undefined;
+  if (r.shape !== undefined && !four(r.shape)) return undefined;
   if (r.pan !== undefined && !pair(r.pan)) return undefined;
   if (lines !== undefined && !(lines && whole(lines.V) && whole(lines.H))) return undefined;
   return {
@@ -125,6 +127,7 @@ function normalizePattern(raw: unknown): HeartPattern | undefined {
     cuts: r.cuts,
     curves,
     ...(r.offset ? { offset: [...(r.offset as [number, number])] as [number, number] } : {}),
+    ...(r.shape ? { shape: [...(r.shape as [number, number, number, number])] as [number, number, number, number] } : {}),
     ...(r.pan ? { pan: [...(r.pan as [number, number])] as [number, number] } : {}),
     ...(lines ? { lines: { V: [...(lines.V as [number, number])] as [number, number], H: [...(lines.H as [number, number])] as [number, number] } } : {})
   };

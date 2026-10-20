@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { BezierSegment, Vec } from '$lib/types/heart';
-import { ALL_RULES, SIDE_LINKS, canLean, freeSides, halfOf, isRedCell, moveBy, neighbours, opposite, ruleInfo, ruleKey, ruleMotions, type SideLink, type TileRule } from './rules';
+import { ALL_RULES, SIDE_LINKS, canLean, freeSides, halfOf, isRedCell, latticeOf, moveBy, neighbours, ofType, opposite, ruleInfo, ruleKey, ruleMotions, type Lattice, type SideLink, type TileRule } from './rules';
 import { cellOutline, crossing, type PatternTile, type SideCurve } from './tiling';
 import { ruleStart } from './starts';
 
@@ -204,5 +204,45 @@ describe('every way of tying the sides does what the Escher tab says', () => {
 				expect(sameOutline(move(cellOutline(half, 0, 0), (p) => ({ x: 2 * m.x - p.x, y: 2 * m.y - p.y })), cellOutline(half, c, d))).toBe(true);
 			}
 		}
+	});
+
+	// A shape of the cells (`PatternTile.shape`) of each kind: its columns, where (1, 0) and (0, 1) go.
+	const SHAPES: Record<Lattice, [Vec, Vec]> = {
+		oblique: [{ x: 1.3, y: 0.2 }, { x: -0.4, y: 0.8 }],
+		rectangular: [{ x: 1.4 * Math.cos(0.3), y: 1.4 * Math.sin(0.3) }, { x: -0.7 * Math.sin(0.3), y: 0.7 * Math.cos(0.3) }],
+		rhombic: [{ x: 1.1 * Math.cos(0.2), y: 1.1 * Math.sin(0.2) }, { x: 1.1 * Math.cos(1.9), y: 1.1 * Math.sin(1.9) }],
+		square: [{ x: 1.2 * Math.cos(0.4), y: 1.2 * Math.sin(0.4) }, { x: -1.2 * Math.sin(0.4), y: 1.2 * Math.cos(0.4) }]
+	};
+	const WITHIN: Record<Lattice, Lattice[]> = {
+		oblique: ['oblique', 'rectangular', 'rhombic', 'square'],
+		rectangular: ['rectangular', 'square'],
+		rhombic: ['rhombic', 'square'],
+		square: ['square']
+	};
+
+	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))(
+		'lets the %s cells take the shapes its motions stay motions of the plane under, and no others',
+		(_key, rule) => {
+			const lattice = latticeOf(rule);
+			for (const kind of Object.keys(SHAPES) as Lattice[]) {
+				const [a, b] = SHAPES[kind];
+				const det = a.x * b.y - b.x * a.y;
+				// each motion's turn, seen through the shape: S·M·S⁻¹, and whether it is a turn or mirror of the plane
+				const keeps = ruleMotions(rule).every((m) => {
+					const sm = [a.x * m.a + b.x * m.c, a.x * m.b + b.x * m.d, a.y * m.a + b.y * m.c, a.y * m.b + b.y * m.d];
+					const l = [(sm[0]! * b.y - sm[1]! * a.y) / det, (-sm[0]! * b.x + sm[1]! * a.x) / det, (sm[2]! * b.y - sm[3]! * a.y) / det, (-sm[2]! * b.x + sm[3]! * a.x) / det];
+					const [p, q, r, t] = l as [number, number, number, number];
+					return Math.abs(p * p + r * r - 1) < 1e-9 && Math.abs(q * q + t * t - 1) < 1e-9 && Math.abs(p * q + r * t) < 1e-9;
+				});
+				expect(keeps, `${lattice} cells shaped ${kind}`).toBe(WITHIN[lattice].includes(kind));
+			}
+		}
+	);
+
+	it("names each lattice as Kaplan's tables have the type's", () => {
+		expect([opposite('move', 'move'), opposite('turn', 'turn'), opposite('move', 'turn'), freeSides(), ofType(57)].map(latticeOf)).toEqual(Array(5).fill('oblique'));
+		expect([opposite('move', 'mirror'), opposite('mirror', 'mirror'), opposite('mirror', 'turn'), ofType(42)].map(latticeOf)).toEqual(Array(4).fill('rectangular'));
+		expect([neighbours('mirror'), ofType(53), ofType(68)].map(latticeOf)).toEqual(Array(3).fill('rhombic'));
+		expect([neighbours('turn'), neighbours('both'), ofType(56), ofType(62)].map(latticeOf)).toEqual(Array(4).fill('square'));
 	});
 });

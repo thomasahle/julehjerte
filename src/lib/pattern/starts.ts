@@ -6,7 +6,7 @@
 
 import type { Vec } from '$lib/types/heart';
 import { canLean, halfOf, ruleInfo, type HalfKind, type TileRule } from './rules';
-import type { PatternTile, SideCurve } from './tiling';
+import { shapeFor, type PatternTile, type SideCurve } from './tiling';
 
 const v = (x: number, y: number): Vec => ({ x, y });
 
@@ -52,8 +52,9 @@ export function ruleStart(rule: TileRule, cuts: number): PatternTile {
 /**
  * A tile moved to another rule, keeping what can be kept: every curve the new
  * rule reads that the tile has, drawn the same way (whole, or as the same kind
- * of half), is the visitor's own; the rest are the new rule's start, and the
- * tiles lean only as they did, where the new rule lets them. Changing how one
+ * of half), is the visitor's own; the rest are the new rule's start; the tiles
+ * lean only as they did, where the new rule lets them, and keep their size and
+ * turn, stretched only as the new rule lets them (`shapeFor`). Changing how one
  * pair of sides is tied leaves the other pair as drawn. With nothing to keep,
  * the tile is the new rule's start.
  */
@@ -64,7 +65,8 @@ export function carryCurves(tile: PatternTile, rule: TileRule, cuts = tile.cuts)
 	for (const k of kept) curves[k] = structuredClone(tile.curves[k]!);
 	const offset = canLean(rule) && canLean(tile.rule) ? tile.offset : undefined;
 	const lean = offset ? { offset: { ...offset } } : {};
-	return { rule, cuts, curves, ...lean, ...(tile.pan ? { pan: { ...tile.pan } } : {}) };
+	const shape = tile.shape ? { shape: shapeFor(rule, tile.shape) } : {};
+	return { rule, cuts, curves, ...lean, ...shape, ...(tile.pan ? { pan: { ...tile.pan } } : {}) };
 }
 
 /**

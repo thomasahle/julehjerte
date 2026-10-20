@@ -3,8 +3,8 @@
   chosen one, the pattern's size, what dragging does, and a way to start the tile over. Tegn keeps
   the tile; this only shows it and says what was picked.
 
-  size        n for tiles drawn n × n on the heart's square.
-  cornerHint  what the hint adds about the crossings for the chosen type, or null.
+  size        n for tiles a cell of the n × n grid in size, or null for a size dragged by hand.
+  frameHint   what the hint adds about the black points for the chosen type, or null.
   compact     Tegn below 900px: the type glyphs alone, and no hint once a type is chosen.
 -->
 <script lang="ts">
@@ -17,8 +17,8 @@
 		lang: Language;
 		/** The chosen type, or null while none is. */
 		rule: TileRule | null;
-		size: number;
-		cornerHint: TranslationKey | null;
+		size: number | null;
+		frameHint: TranslationKey | null;
 		onChoose: (rule: TileRule) => void;
 		onSize: (n: number) => void;
 		/** "Start forfra": the tile drawn again as its type starts, at its size. */
@@ -27,7 +27,7 @@
 		disabled?: boolean;
 	}
 
-	let { lang, rule, size, cornerHint, onChoose, onSize, onRestart, compact = false, disabled = false }: Props = $props();
+	let { lang, rule, size, frameHint, onChoose, onSize, onRestart, compact = false, disabled = false }: Props = $props();
 
 	const tr = (key: TranslationKey) => t(key, lang);
 </script>
@@ -41,7 +41,7 @@
 			{/each}
 		</div>
 		{#if !compact}
-			<p class="pattern-hint">{cornerHint ? `${tr('patternDragHint')} ${tr(cornerHint)}` : tr('patternDragHint')}</p>
+			<p class="pattern-hint">{frameHint ? `${tr('patternDragHint')} ${tr(frameHint)}` : tr('patternDragHint')}</p>
 		{/if}
 		<button type="button" class="pattern-restart" title={tr('patternRestartHint')} {disabled} onclick={onRestart}>
 			<RestartIcon size={14} />{tr('patternRestart')}

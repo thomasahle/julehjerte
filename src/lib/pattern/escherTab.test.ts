@@ -1,23 +1,25 @@
 import { describe, expect, it } from 'vitest';
 import type { Finger } from '$lib/types/heart';
 import { getCenteredRectParams } from '$lib/utils/overlapRect';
-import { ALL_RULES, COMMON_RULES, freeSides, opposite, ruleKey } from './rules';
+import { ALL_RULES, COMMON_RULES, freeSides, neighbours, opposite, ruleKey } from './rules';
 import { cutCounts, fitLines, type PatternTile, type SideCurve } from './tiling';
 import { ruleStart } from './starts';
 import { knobTile } from './examples';
 import {
-	cornerHint,
 	cutsAre,
 	dragTile,
 	editTile,
 	followedPoint,
+	frameHint,
 	openedTile,
+	patternSize,
 	resizedTile,
 	restartedTile,
 	restoredTile,
 	resumedTile,
 	savedPattern,
 	specialNodes,
+	startPanDrag,
 	startTileDrag,
 	tileFingers,
 	tileForRule,
@@ -119,10 +121,23 @@ describe("Tegn's Escher tab", () => {
 		expect(resizedTile(ruleStart(opposite('move', 'move'), 2), 7)?.cuts).toBe(6);
 	});
 
-	it('says what the crossings do for each kind of type', () => {
-		expect(cornerHint(ruleStart(opposite('move', 'move'), 2))).toBe('patternCornersPan');
-		expect(cornerHint(ruleStart(opposite('turn', 'turn'), 2))).toBe('patternCornersHalfturn');
-		expect(cornerHint(ruleStart(freeSides(), 2))).toBe('patternCornersLean');
+	it('says what the black points do for each kind of type: stretch the tiles, or grow them where the type keeps them square or rhombic', () => {
+		expect(frameHint(ruleStart(opposite('move', 'move'), 2))).toBe('patternPointsStretch');
+		expect(frameHint(ruleStart(opposite('mirror', 'mirror'), 2))).toBe('patternPointsStretch');
+		expect(frameHint(ruleStart(neighbours('mirror'), 2))).toBe('patternPointsGrow');
+		expect(frameHint(ruleStart(neighbours('both'), 2))).toBe('patternPointsGrow');
+	});
+
+	it('sizes stretched and turned tiles a cell of the n × n grid, keeping how they are stretched and turned', () => {
+		const tile = { ...ruleStart(opposite('move', 'move'), 3), shape: { x: { x: 0.9, y: 0.2 }, y: { x: -0.3, y: 1.35 } } };
+		expect(patternSize(tile)).toBeNull();
+		const sized = resizedTile(tile, 5)!;
+		expect(sized.cuts).toBe(4);
+		expect(patternSize(sized)).toBe(5);
+		const { x, y } = sized.shape!;
+		expect(Math.atan2(x.y, x.x)).toBeCloseTo(Math.atan2(0.2, 0.9), 12);
+		expect(Math.hypot(x.x, x.y) / Math.hypot(y.x, y.y)).toBeCloseTo(Math.hypot(0.9, 0.2) / Math.hypot(-0.3, 1.35), 12);
+		expect(patternSize(ruleStart(opposite('move', 'move'), 3))).toBe(4);
 	});
 
 	it("reads an edit to one of the tile's cuts back into the tile, and leaves the square's edges alone", () => {
@@ -136,28 +151,34 @@ describe("Tegn's Escher tab", () => {
 		expect(edit.cuts.map((f) => f.id)).toEqual(['L-1', 'L-2', 'L-3', 'R-1', 'R-2', 'R-3']);
 	});
 
-	it('moves the whole pattern with a point the type fixes, the point staying under the pointer', () => {
+	it('sizes and turns the tiles with a point of the tiling, the point staying under the pointer, and moves the pattern with a cut', () => {
 		const tile = ruleStart(opposite('move', 'move'), 4);
 		const { fingers, rect } = heartOf(tile);
-		const [anchor, kind] = [...specialNodes(tile, 'R-2').entries()].find(([, k]) => k === 'pan')!;
+		const [anchor, kind] = [...specialNodes(tile, 'R-2').entries()].sort(([a], [b]) => a - b).find(([a, k]) => a > 1 && k === 'frame')!;
 		const was = fingers.find((f) => f.id === 'R-2')!.segments[anchor]!.p0;
 		const drag = startTileDrag(tile, 'R-2', anchor, kind, was)!;
-		if (drag.mode !== 'corner') throw new Error('a crossing starts a corner drag');
-		const delta = { x: 0.3 * (rect.width / 5), y: 0 };
+		if (drag.mode !== 'frame') throw new Error('a crossing starts a frame drag');
+		const delta = { x: 0.2 * (rect.width / 5), y: 0.1 * (rect.width / 5) };
 		const next = dragTile(drag, delta, rect)!;
-		expect(next.pan?.x).toBeCloseTo(0.3);
+		expect(next.shape).toBeDefined();
 		const pointer = { x: was.x + delta.x, y: was.y + delta.y };
 		const at = followedPoint(drag, next, pointer, rect)!;
 		const p = tileFingers(next, rect).find((f) => f.id === at.fingerId)!.segments[at.anchor]!.p0;
 		expect(Math.hypot(p.x - pointer.x, p.y - pointer.y)).toBeLessThan(1e-6);
+		// a cut dragged moves the whole pattern, by as much
+		const moved = dragTile(startPanDrag(tile, was, 'right'), { x: 0.3 * (rect.width / 5), y: 0 }, rect)!;
+		expect(moved.pan?.x).toBeCloseTo(0.3);
+		expect(moved.shape).toBeUndefined();
 	});
 
-	it('keeps a moved, leaning tile through saving and reading back, the lines it cuts with it', () => {
-		const tile = fitLines({ ...ruleStart(freeSides(), 2), offset: { x: 0.1, y: -0.05 }, pan: { x: 0.4, y: 0.1 } });
+	it('keeps a moved, leaning, stretched and turned tile through saving and reading back, the lines it cuts with it', () => {
+		const tile = fitLines({ ...ruleStart(freeSides(), 2), offset: { x: 0.1, y: -0.05 }, shape: { x: { x: 0.8, y: 0.15 }, y: { x: -0.1, y: 1.2 } }, pan: { x: 0.4, y: 0.1 } });
 		expect(tile.lines).toBeDefined();
 		const saved = JSON.parse(JSON.stringify(savedPattern(tile)));
 		expect(saved.rule).toBe('free');
 		expect(tileOfPattern(saved)).toEqual(tile);
+		// a shape turned inside out is none of ours
+		expect(tileOfPattern({ ...saved, shape: [0, 1, 1, 0] })).toBeNull();
 	});
 
 	it('opens a saved heart on its tile only while the cuts are still its own', () => {
@@ -171,6 +192,7 @@ describe("Tegn's Escher tab", () => {
 		);
 		expect(restoredTile(saved, { ...heart, fingers: bent })).toBeNull();
 		expect(restoredTile({ ...saved, rule: 'ih99' }, heart)).toBeNull();
-		expect(tileOfPattern({ ...saved, lines: { V: [0, 9], H: [1, 3] } })).toBeNull();
+		expect(tileOfPattern({ ...saved, lines: { V: [0, 25], H: [1, 3] } })).toBeNull();
+		expect(tileOfPattern({ ...saved, lines: { V: [0, 0], H: [1, 3] } })).toBeNull();
 	});
 });

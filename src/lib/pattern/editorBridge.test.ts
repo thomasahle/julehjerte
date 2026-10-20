@@ -3,8 +3,8 @@ import type { BezierSegment, Finger, Vec } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
 import { splitBezierAt } from '$lib/geometry/bezierSegments';
-import { ALL_RULES, freeSides, halfOf, opposite, ruleRepeat, ruleInfo, ruleKey, stretchSource, type CurveKey, type TileRule } from './rules';
-import { cutCounts, firstLine, fitLines, patternCuts, patternToDesign, sourceCurve, straightCurve, type PatternTile, type SideCurve } from './tiling';
+import { ALL_RULES, freeSides, halfOf, latticeOf, neighbours, opposite, ruleRepeat, ruleInfo, ruleKey, stretchSource, type CurveKey, type TileRule } from './rules';
+import { cellsToRaw, crossing, cutCounts, firstLine, fitLines, patternCuts, patternToDesign, sourceCurve, straightCurve, tileShape, type PatternTile, type SideCurve } from './tiling';
 import { ruleStart } from './starts';
 import { EXAMPLES, exampleTile, knobTile } from './examples';
 import {
@@ -15,8 +15,8 @@ import {
 	generateEditorFingers,
 	anchorOfPlacedPoint,
 	dragPlacedPoint,
-	leanTo,
 	locatePlacedPoint,
+	panBy,
 	nodeAtCutEnd,
 	placedPointAt,
 	slideCutEnd,
@@ -165,47 +165,117 @@ describe("the bridge between a tile and Tegn's cuts", () => {
 
 	it('names the points the tile places, and none of them is locked', () => {
 		const at = (id: string) => {
-			const preset = EXAMPLES.find((p) => p.id === id)!;
-			const tile = exampleTile(preset);
-			return [...specialNodes(tile, 'R-1').values()];
+			const tile = exampleTile(EXAMPLES.find((p) => p.id === id)!);
+			return [...specialNodes(tile, 'R-1').entries()].sort(([a], [b]) => a - b).map(([, kind]) => kind);
 		};
-		// cut R-1 crosses every left-lobe cut once, and on the plain grid it ends on two corners on the edges
+		// cut R-1 crosses every left-lobe cut once, and on the plain grid it ends on two corners on the
+		// edges: every one a point of the tiling
 		const waves = exampleTile(EXAMPLES.find((p) => p.id === 'waves')!);
-		const tegnOrder = [...specialNodes(waves, 'R-1').entries()].sort(([a], [b]) => a - b).map(([, kind]) => kind);
-		expect(tegnOrder).toEqual(['edge', ...Array(waves.cuts).fill('lean'), 'edge']);
-		// a rule that keeps its tiles square: its corners move the whole pattern
-		expect(at('leaf').filter((k) => k === 'pan').length).toBeGreaterThanOrEqual(3);
-		expect(at('leaf').filter((k) => k === 'pan-edge').length).toBe(2);
-		expect(at('leaf')).not.toContain('lean');
-		// the birds lean, so the edges cut their curves: the ends slide
-		const birds = specialNodes(exampleTile(EXAMPLES.find((p) => p.id === 'birds')!), 'R-1');
-		const last = Math.max(...birds.keys());
-		expect([birds.get(0), birds.get(last)]).toEqual(['slide', 'slide']);
-		// half turn: the crossings lean, the middle of every S side moves the whole pattern
-		const windmill = at('windmill');
-		expect(windmill.filter((k) => k === 'lean').length).toBeGreaterThanOrEqual(3);
-		expect(windmill.filter((k) => k === 'pan').length).toBeGreaterThanOrEqual(3);
+		expect(at('waves')).toEqual(Array(waves.cuts + 2).fill('frame'));
+		// the birds lean, so the edges cut their curves: the ends slide, the crossings between are points
+		// of the tiling
+		const birds = at('birds');
+		expect([birds[0], birds[birds.length - 1]]).toEqual(['slide', 'slide']);
+		expect(birds.slice(1, -1).every((k) => k === 'frame')).toBe(true);
+		// half turn: the middle of every S side is a point of the tiling too, besides the crossings
+		const windmill = exampleTile(EXAMPLES.find((p) => p.id === 'windmill')!);
+		expect(at('windmill').length).toBeGreaterThanOrEqual(2 * windmill.cuts + 1);
 	});
 
-	it('dragging a crossing leans every tile, and the crossing follows the pointer', () => {
-		for (const id of ['waves', 'birds', 'windmill']) {
-			const tile = exampleTile(EXAMPLES.find((p) => p.id === id)!);
-			const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
-			const [anchor] = [...specialNodes(tile, 'R-2').entries()].find(([, kind]) => kind === 'lean')!;
-			const crossing = placedPointAt(tile, 'R-2', anchor)!;
-			const was = generateEditorFingers(tile, rect).find((f) => f.id === 'R-2')!.segments[anchor]!.p0;
-			const delta = { x: 6, y: -4 };
-			const next = leanTo(tile, 'R-2', anchor, delta, rect)!;
-			expect(next.offset).toBeDefined();
-			const after = anchorOfPlacedPoint(next, 'R-2', crossing);
-			expect(after, id).toBeGreaterThan(0);
-			const now = generateEditorFingers(next, rect).find((f) => f.id === 'R-2')!.segments[after]!.p0;
-			expect(near(now, { x: was.x + delta.x, y: was.y + delta.y }, 1e-6), id).toBe(true);
+	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))(
+		'a crossing of the %s tiling, dragged, sizes and turns every tile so that it follows the pointer, about the crossing of its line nearest the middle',
+		(_key, rule) => {
+			const tile = ruleStart(rule, 4);
+			const rect = getCenteredRectParams({ x: 5, y: 5 });
+			const lattice = latticeOf(rule);
+			for (const id of ['R-1', 'L-3']) {
+				const kind = id.startsWith('R') ? 'V' : 'H';
+				const line = firstLine(tile, kind) + Number(id.slice(2)) - 1;
+				const crossings = [...specialNodes(tile, id).keys()].filter((a) => isCrossing(tile, id, a)).sort((a, b) => a - b);
+				for (const anchor of [crossings[1]!, crossings[crossings.length - 2]!]) {
+					const point = placedPointAt(tile, id, anchor)!;
+					const was = generateEditorFingers(tile, rect).find((f) => f.id === id)!.segments[anchor]!.p0;
+					// across a right-lobe cut is x, along it y; a left-lobe cut the other way round; both far
+					// enough not to snap back to the plain grid's size or straightness
+					for (const delta of [{ x: 18, y: 12 }, { x: -13, y: -15 }, { x: 15, y: -14 }]) {
+						const where = `${id} node ${anchor} by ${delta.x}, ${delta.y}`;
+						const next = dragPlacedPoint(tile, id, anchor, delta, rect)!;
+						expect(next, where).not.toBeNull();
+						const pointer = { x: was.x + delta.x, y: was.y + delta.y };
+						const at = locatePlacedPoint(next, point, kind, pointer, rect)!;
+						expect(at, where).not.toBeNull();
+						expect(near(generateEditorFingers(next, rect).find((f) => f.id === at.fingerId)!.segments[at.anchor]!.p0, pointer, 1e-6), where).toBe(true);
+						// one crossing of the same line stays where it was: the one it turned about
+						const stays = [0, 1, 2, 3, 4, 5].filter((a) => {
+							const [i, j] = kind === 'V' ? [line, a] : [a, line];
+							return near(cellsToRaw(tile, crossing(tile, i, j)), cellsToRaw(next, crossing(next, i, j)), 1e-9);
+						});
+						expect(stays, where).toHaveLength(1);
+						// the cells take only the shapes the type keeps
+						const { x, y } = tileShape(next);
+						if (lattice === 'rectangular' || lattice === 'square') expect(Math.abs(x.x * y.x + x.y * y.y), where).toBeLessThan(1e-9);
+						if (lattice === 'rhombic' || lattice === 'square') expect(Math.hypot(x.x, x.y) - Math.hypot(y.x, y.y), where).toBeCloseTo(0, 9);
+						expect(problems(next), where).toEqual([]);
+					}
+				}
+			}
 		}
-		const leaf = exampleTile(EXAMPLES.find((p) => p.id === 'leaf')!);
-		const rect = getCenteredRectParams({ x: leaf.cuts + 1, y: leaf.cuts + 1 });
-		const [anchor] = [...specialNodes(leaf, 'R-2').keys()];
-		expect(leanTo(leaf, 'R-2', anchor!, { x: 6, y: -4 }, rect)).toBeNull();
+	);
+
+	it('narrows the tiles one way where the type lets them stretch, and the heart gets more strips that way than the other', () => {
+		const rect = getCenteredRectParams({ x: 5, y: 5 });
+		const drag = (rule: TileRule) => {
+			const tile = ruleStart(rule, 4);
+			// the second crossing of a left-lobe cut, dragged along it towards the middle: the cells grow shorter along x
+			const anchor = [...specialNodes(tile, 'L-2').keys()].filter((a) => isCrossing(tile, 'L-2', a)).sort((a, b) => a - b)[1]!;
+			const was = generateEditorFingers(tile, rect).find((f) => f.id === 'L-2')!.segments[anchor]!.p0;
+			const toward = Math.sign(rect.left + rect.width / 2 - was.x);
+			return dragPlacedPoint(tile, 'L-2', anchor, { x: toward * 0.45 * (rect.width / 5), y: 0 }, rect)!;
+		};
+		const narrow = drag(opposite('move', 'move'));
+		const { x, y } = tileShape(narrow);
+		expect(Math.hypot(x.x, x.y)).toBeLessThan(0.8);
+		expect(Math.hypot(y.x, y.y)).toBeCloseTo(1, 9);
+		expect(cutCounts(narrow).V).toBeGreaterThan(cutCounts(narrow).H);
+		expect(problems(narrow)).toEqual([]);
+		// a type that keeps its tiles square makes them smaller both ways instead
+		const small = drag(neighbours('both'));
+		const s = tileShape(small);
+		expect(Math.hypot(s.x.x, s.x.y)).toBeLessThan(0.8);
+		expect(Math.hypot(s.x.x, s.x.y)).toBeCloseTo(Math.hypot(s.y.x, s.y.y), 9);
+		expect(cutCounts(small).V).toBe(cutCounts(small).H);
+		expect(problems(small)).toEqual([]);
+	});
+
+	it('snaps back to the plain grid, square and straight, near it', () => {
+		const tile = ruleStart(opposite('move', 'move'), 4);
+		const rect = getCenteredRectParams({ x: 5, y: 5 });
+		const anchor = [...specialNodes(tile, 'R-1').keys()].filter((a) => isCrossing(tile, 'R-1', a)).sort((a, b) => a - b)[1]!;
+		// a little along the cut and across it: still the plain grid
+		expect(dragPlacedPoint(tile, 'R-1', anchor, { x: 2, y: 2 }, rect)!.shape).toBeUndefined();
+		// stretched and turned, then dragged back to within a hair of the plain grid
+		const out = dragPlacedPoint(tile, 'R-1', anchor, { x: 25, y: 30 }, rect)!;
+		expect(out.shape).toBeDefined();
+		const back = dragPlacedPoint(out, 'R-1', anchor, { x: -24, y: -29 }, rect);
+		expect(back?.shape, 'dragged back').toBeUndefined();
+	});
+
+	it('the middle of an S, dragged, sizes and turns the tiles too, and follows the pointer', () => {
+		const tile = exampleTile(EXAMPLES.find((p) => p.id === 'windmill')!);
+		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
+		const middles = [...specialNodes(tile, 'R-2').keys()].filter((a) => {
+			const point = placedPointAt(tile, 'R-2', a);
+			return !!point && 'middle' in point;
+		});
+		const anchor = middles.sort((a, b) => a - b)[middles.length - 1]!;
+		const point = placedPointAt(tile, 'R-2', anchor)!;
+		const was = generateEditorFingers(tile, rect).find((f) => f.id === 'R-2')!.segments[anchor]!.p0;
+		const delta = { x: 14, y: -20 };
+		const next = dragPlacedPoint(tile, 'R-2', anchor, delta, rect)!;
+		expect(next.shape).toBeDefined();
+		const pointer = { x: was.x + delta.x, y: was.y + delta.y };
+		const at = locatePlacedPoint(next, point, 'V', pointer, rect)!;
+		expect(near(generateEditorFingers(next, rect).find((f) => f.id === at.fingerId)!.segments[at.anchor]!.p0, pointer, 1e-6)).toBe(true);
 	});
 
 	it('on leaning tiles, an edit reaches every copy, also the ones the edge cuts short', () => {
@@ -259,18 +329,21 @@ describe("the bridge between a tile and Tegn's cuts", () => {
 		}
 	});
 
-	it('a corner at the end of a cut slides along the edge, and follows the pointer along it', () => {
+	it('a corner at the end of a cut is a point of the tiling: dragged into the heart, it comes in under the pointer', () => {
 		const tile = exampleTile(EXAMPLES.find((p) => p.id === 'waves')!);
 		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
 		for (const id of ['R-2', 'L-1']) {
-			const before = generateEditorFingers(tile, rect).find((f) => f.id === id)!;
-			const was = before.segments[0]!.p0;
-			const delta = { x: 7, y: -5 };
-			const next = leanTo(tile, id, 0, delta, rect)!;
-			const now = generateEditorFingers(next, rect).find((f) => f.id === id)!.segments[0]!.p0;
-			// right-lobe cuts end on the top and bottom edges and slide along x; left-lobe cuts along y
-			const along = id.startsWith('R') ? { x: was.x + delta.x, y: was.y } : { x: was.x, y: was.y + delta.y };
-			expect(near(now, along, 1e-6), id).toBe(true);
+			const kind = id.startsWith('R') ? 'V' : 'H';
+			const point = placedPointAt(tile, id, 0)!;
+			expect('crossing' in point, id).toBe(true);
+			const was = generateEditorFingers(tile, rect).find((f) => f.id === id)!.segments[0]!.p0;
+			// Tegn's first anchor of a right-lobe cut is on the bottom edge, of a left-lobe one on the right
+			const delta = id.startsWith('R') ? { x: 12, y: -22 } : { x: -22, y: 12 };
+			const next = dragPlacedPoint(tile, id, 0, delta, rect)!;
+			const pointer = { x: was.x + delta.x, y: was.y + delta.y };
+			const at = locatePlacedPoint(next, point, kind, pointer, rect)!;
+			expect(at, id).not.toBeNull();
+			expect(near(generateEditorFingers(next, rect).find((f) => f.id === at.fingerId)!.segments[at.anchor]!.p0, pointer, 1e-6), id).toBe(true);
 		}
 	});
 
@@ -336,7 +409,7 @@ describe("the bridge between a tile and Tegn's cuts", () => {
 						const special = specialNodes(tile, id);
 						const last = Math.max(...special.keys());
 						const ends = [special.get(0), special.get(last)];
-						expect(ends.every((e) => e === 'edge' || e === 'pan-edge'), `${preset.id} ${cuts} cuts ${id}: ${ends}`).toBe(true);
+						expect(ends.every((e) => e === 'frame') && isCrossing(tile, id, 0) && isCrossing(tile, id, last), `${preset.id} ${cuts} cuts ${id}: ${ends}`).toBe(true);
 					}
 				}
 			}
@@ -410,36 +483,23 @@ describe("the bridge between a tile and Tegn's cuts", () => {
 		}
 	});
 
-	it('a point the rule fixes in the tiling moves the whole pattern, and follows the pointer', () => {
-		// corners of rules that keep their tiles square, and the middle of a half-turn S
-		for (const [id, want] of [
-			['leaf', 'pan'],
-			['bone', 'pan'],
-			['hearts', 'pan'],
-			['arrows', 'pan'],
-			['windmill', 'pan']
-		] as const) {
+	it('a cut dragged moves the whole pattern, what was grabbed staying under the pointer', () => {
+		for (const id of ['leaf', 'bone', 'hearts', 'arrows', 'windmill', 'birds']) {
 			const tile = exampleTile(EXAMPLES.find((p) => p.id === id)!);
 			const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
-			const [anchor] = [...specialNodes(tile, 'R-2').entries()].find(([, kind]) => kind === want)!;
+			// a crossing on the cut stands for the place grabbed
+			const anchor = [...specialNodes(tile, 'R-2').keys()].sort((a, b) => a - b).find((a) => a > 0 && isCrossing(tile, 'R-2', a))!;
 			const point = placedPointAt(tile, 'R-2', anchor)!;
 			const was = generateEditorFingers(tile, rect).find((f) => f.id === 'R-2')!.segments[anchor]!.p0;
 			const delta = { x: 5, y: -7 };
-			const next = dragPlacedPoint(tile, 'R-2', anchor, delta, rect)!;
+			const next = panBy(tile, delta, rect);
 			expect(next.pan, id).toBeDefined();
 			expect(next.curves, id).toEqual(tile.curves);
-			const after = anchorOfPlacedPoint(next, 'R-2', point);
-			expect(after, id).toBeGreaterThan(0);
-			const now = generateEditorFingers(next, rect).find((f) => f.id === 'R-2')!.segments[after]!.p0;
-			expect(near(now, { x: was.x + delta.x, y: was.y + delta.y }, 1e-6), id).toBe(true);
+			const pointer = { x: was.x + delta.x, y: was.y + delta.y };
+			const at = locatePlacedPoint(next, point, 'V', pointer, rect)!;
+			expect(at, id).not.toBeNull();
+			expect(near(generateEditorFingers(next, rect).find((f) => f.id === at.fingerId)!.segments[at.anchor]!.p0, pointer, 1e-6), id).toBe(true);
 		}
-		// at an end of the cut, on the edge, only along the edge
-		const leaf = exampleTile(EXAMPLES.find((p) => p.id === 'leaf')!);
-		const rect = getCenteredRectParams({ x: leaf.cuts + 1, y: leaf.cuts + 1 });
-		const was = generateEditorFingers(leaf, rect).find((f) => f.id === 'R-2')!.segments[0]!.p0;
-		const next = dragPlacedPoint(leaf, 'R-2', 0, { x: 6, y: 9 }, rect)!;
-		const now = generateEditorFingers(next, rect).find((f) => f.id === 'R-2')!.segments[0]!.p0;
-		expect(near(now, { x: was.x + 6, y: was.y }, 1e-6)).toBe(true);
 	});
 });
 
@@ -518,20 +578,20 @@ describe('a pattern moved within the heart', () => {
 		for (const rule of ALL_RULES) expect(fitLines(ruleStart(rule, 4)), ruleKey(rule)).toEqual(ruleStart(rule, 4));
 	});
 
-	it.each(['hearts', 'leaf', 'windmill'])('moves the %s pattern without end when a point the rule fixes is dragged, the point staying under the pointer', (id) => {
+	it.each(['hearts', 'leaf', 'windmill'])('moves the %s pattern without end when a cut is dragged, the place grabbed staying under the pointer', (id) => {
 		// on the way, the heart gains a strip where an edge strip grows wide, and loses it again
 		let reshaped = false;
 		const tile = { ...exampleTile(EXAMPLES.find((p) => p.id === id)!), cuts: 5 };
 		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
 		const cell = rect.width / (tile.cuts + 1);
-		// a point the rule fixes on the middle cut, away from its ends
-		const middle = [...specialNodes(tile, 'R-3').entries()].filter(([, k]) => k === 'pan').map(([a]) => a);
+		// a crossing on the middle cut, away from its ends, stands for the place grabbed
+		const middle = [...specialNodes(tile, 'R-3').keys()].filter((a) => isCrossing(tile, 'R-3', a)).sort((a, b) => a - b);
 		const anchor = middle[Math.floor(middle.length / 2)]!;
 		const point = placedPointAt(tile, 'R-3', anchor)!;
 		const was = generateEditorFingers(tile, rect).find((f) => f.id === 'R-3')!.segments[anchor]!.p0;
 		for (let step = 1; step <= 12; step++) {
 			const delta = { x: step * 0.2 * cell, y: -step * 0.1 * cell };
-			const next = dragPlacedPoint(tile, 'R-3', anchor, delta, rect)!;
+			const next = panBy(tile, delta, rect);
 			const where = `${id} moved ${step * 0.2} cells`;
 			reshaped ||= cutCounts(next).V !== tile.cuts || cutCounts(next).H !== tile.cuts;
 			expect(Math.abs(next.pan!.x), where).toBeLessThanOrEqual(1);
