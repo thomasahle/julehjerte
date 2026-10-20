@@ -304,7 +304,13 @@ these are retained separately from correctness. Main commit `d0b882b5` passed
 rechecked on 20 October. No neural network is deployed in that release.
 
 The [upload integration audit](u2netp-upload-integration-results.json) records
-the next application change, currently under release QA. It packages the same
+the NN crop integration, **deployed and live-verified on 20 October** at
+`127dc3c1`. Its [release workflow](https://github.com/thomasahle/julehjerte/actions/runs/39363520948)
+passed, including 2,374 application tests and 1,175 inverse correctness tests.
+Timed quality remains separate: 68/77 original targets passed, with nine misses
+retained. The live browser passes all five upload/solve/failure/cancellation/
+crowded-frame checks, and the served model, runtime and worker hashes match.
+It packages the same
 4.62 MB adapted U2NETP model and a pinned local ONNX Runtime Web, runs on one
 WASM thread, and shares the tested whole-body crop policy with the offline
 experiments through an explicit locator API. No photo upload is involved.
@@ -320,6 +326,25 @@ small photographic edge irregularities remain visible. The historical strict
 WASM-versus-Torch probability tolerance remains failed and has not been relaxed.
 Output-level parity is checked separately; the development cohorts and desktop
 browser checks do not establish mobile performance or unseen-photo accuracy.
+
+The subsequent [outline-only diagnostic](u2netp-outline-only-diagnostic-results.json)
+keeps all 18 additional photos and their saved browser NN predictions. Nine
+rejected learned proposals fail lobe-outline support; five also fail the
+uniform-lobe colour check. Removing only that acceptance check would therefore
+not solve them. A research model that fits the body without colour objectives
+produces 12 proposals passing the stated outline, body and coverage checks,
+including five additional or replaced weak proposals. **No new templates were
+fitted and this diagnostic is not deployed.**
+
+All four diagnostic galleries were inspected. The reflective bird has two
+green-looking lobes despite multicoloured print inside the square; its full
+outline is recoverable, but a correct material mask is still unproven. The
+tabletop checker proposal slightly overshoots its lower paper corner. The
+newspaper and printed-bird crops also need material interpretation. Conversely,
+the cat still has missing neural foreground, the child-held heart includes a
+hand, and unusual swan-shaped caps still fail outline support. The next step
+is full reconstruction of the five new proposals while preserving strong
+existing crops, followed by the original 32-photo regression cohort.
 
 #### Latest neural experiments
 

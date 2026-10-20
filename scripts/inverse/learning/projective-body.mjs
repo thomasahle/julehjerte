@@ -7,6 +7,7 @@ import {LOCATOR_FIELD_SELECTION} from './locator-field-source.mjs';
 import {close, signedDistance} from '../../../static/inverse/locator/fields.js';
 import {bilinear} from '../../../static/inverse/locator/math.js';
 import {pixelCentresToEdges} from '../../../static/inverse/core/crop.js';
+import {outerBoundaryFields} from './outer-boundary-fields.mjs';
 
 export function bodyFields(work, probability, resolution, window) {
   const {width:w,height:h,data,offset=[0,0],scale=1}=work;
@@ -70,10 +71,12 @@ export function supportedBodyOutline(proposal) {
     [...e.lowerEdgeSupport,...e.lobeOutlineSupport].every(v=>Number.isFinite(v)&&v>=.65);
 }
 
-export async function detectProjectiveBody(input,{probability,resolution=256,window}={}) {
+export async function detectProjectiveBody(input,{probability,resolution=256,window,outerBoundarySampling=false}={}) {
+  if(typeof outerBoundarySampling!=='boolean')throw new TypeError('Expected a boolean outer-boundary sampling option.');
   const create=await bodyLocator(),started=performance.now();
   const detect=create({width:input.imageWidth,height:input.imageHeight,data:input.rgba},
-    {maxSize:650,bodyFields:work=>bodyFields(work,probability,resolution,window)});
+    {maxSize:650,bodyFields:work=>bodyFields(work,probability,resolution,window),
+      ...(outerBoundarySampling?{edgeSamplingFields:outerBoundaryFields}:{})});
   let proposal=detect();const attempts=[];
   if(!supportedBodyOutline(proposal)){
     const deadline=performance.now()+2000,pending=detect.orientations().map(degrees=>({degrees}));

@@ -1,0 +1,26 @@
+{
+  "schema": "expanded-crop-rejection-audit-1",
+  "date": "2026-10-20",
+  "status": "predeclared-diagnostic",
+  "cohort": {
+    "path": "tmp/heart-learning/u2netp-balanced-body-expanded-pipeline-v1/report.json",
+    "sha256": "5657f3db84ea125be6d3803c5fede0586d241c282137ed61c6797acae6478e4b"
+  },
+  "implementation": {
+    "path": "scripts/inverse/learning/replay-integrated-crops.mjs",
+    "sha256": "31d905bb44feeee9df8594e119cf19b6249ff6f5aad3fd844f006e1ee72df301"
+  },
+  "scope": "All 18 expanded development photos, including failures and the misleading fragmentary bird crop. Replay cached actual-browser fields through the unchanged application crop policy, retain rejected learned proposals, and assert every selected crop still matches the saved policy. No training, new image downloads, new templates or threshold changes.",
+  "questions": [
+    "Does the foreground split into components before any outline is fitted?",
+    "Do lower-edge registration, lobe-outline support or lobe-colour coherence reject the fitted outline?",
+    "Does whole-body coverage reject a geometrically supported crop?"
+  ],
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "maximumNewArtifactBytes": 10000000,
+    "noSourcePhotoCopies": true
+  },
+  "output": "tmp/heart-learning/neural-expanded-rejection-replay-v1.json"
+}
