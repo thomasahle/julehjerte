@@ -3841,23 +3841,41 @@
 										{#each getAnchorPositions(segs) as a, aIdx (selectedFinger.id + ':a:' + aIdx)}
 											{@const s = 10 * curveUiScale}
 											{@const special = patternNodes?.get(aIdx)}
+											{@const black = !!special && special !== 'slide'}
+											{@const selected = selectedAnchors.includes(aIdx)}
+											{@const turned =
+												aIdx !== 0 &&
+												aIdx !== n &&
+												(getAnchorNodeType(selectedFinger, aIdx) === 'smooth' || getAnchorNodeType(selectedFinger, aIdx) === 'symmetric')
+													? `rotate(45 ${a.x} ${a.y})`
+													: ''}
+											{#if black && selected}
+												<!-- A black point chosen stays black, ringed in the selection's yellow: yellow all
+												     through, it looked like a node of the curve. -->
+												{@const ring = s + 6 * curveUiScale}
+												<rect
+													x={a.x - ring / 2}
+													y={a.y - ring / 2}
+													width={ring}
+													height={ring}
+													fill="#ffcc00"
+													stroke="#111"
+													stroke-width="1"
+													vector-effect="non-scaling-stroke"
+													transform={turned}
+													pointer-events="none"
+												/>
+											{/if}
 											<rect
 												x={a.x - s / 2}
 												y={a.y - s / 2}
 												width={s}
 												height={s}
-												fill={selectedAnchors.includes(aIdx) ? '#ffcc00' : special && special !== 'slide' ? '#1e2a25' : '#fff'}
+												fill={black ? '#1e2a25' : selected ? '#ffcc00' : '#fff'}
 												stroke="#111"
 												stroke-width="1"
 												vector-effect="non-scaling-stroke"
-												transform={
-													aIdx !== 0 &&
-													aIdx !== n &&
-													(getAnchorNodeType(selectedFinger, aIdx) === 'smooth' ||
-														getAnchorNodeType(selectedFinger, aIdx) === 'symmetric')
-														? `rotate(45 ${a.x} ${a.y})`
-														: ''
-												}
+												transform={turned}
 												style="cursor: pointer"
 												onpointerdown={(e) => handleAnchorPointerDown(e, selectedFinger.id, aIdx)}
 											/>

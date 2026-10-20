@@ -246,6 +246,9 @@ describe('the Escher tab', () => {
 		const from = anchors()[a]!;
 		const to = { x: from.x - 30, y: from.y };
 		send(el, 'pointerdown', from);
+		// chosen, it stays black, ringed in yellow: not yellow all through like a node of the curve
+		expect(h.handles()[a]!.getAttribute('fill')).toBe('#1e2a25');
+		expect(h.target.querySelectorAll('rect[fill="#ffcc00"][pointer-events="none"]')).toHaveLength(1);
 		send(h.svg, 'pointermove', { x: from.x - 15, y: from.y });
 		send(h.svg, 'pointermove', to);
 		send(h.svg, 'pointerup', to);
