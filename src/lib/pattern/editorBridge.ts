@@ -399,13 +399,20 @@ function panTo(base: PatternTile, fingerId: string, anchor: number, delta: Vec, 
 	if (!traced) return null;
 	const m = traced.pieces.length;
 	const along = anchor === 0 || anchor === m ? edgeAxis(traced.cut.kind) : null;
-	const d = along === 'x' ? { x: delta.x, y: 0 } : along === 'y' ? { x: 0, y: delta.y } : delta;
+	return panBy(base, along === 'x' ? { x: delta.x, y: 0 } : along === 'y' ? { x: 0, y: delta.y } : delta, rect);
+}
+
+/**
+ * The whole pattern moved within the heart by `delta` pixels: what dragging a
+ * cut, or the square's edge, does. It moves without end, as `panTo` says.
+ */
+export function panBy(base: PatternTile, delta: Vec, rect: OverlapRect): PatternTile {
 	const n = base.cuts + 1;
 	const pan = base.pan ?? { x: 0, y: 0 };
 	const repeat = ruleRepeat(base.rule);
 	return fitLines({
 		...base,
-		pan: { x: withinRepeat(pan.x + (d.x * n) / rect.width, repeat.x), y: withinRepeat(pan.y + (d.y * n) / rect.height, repeat.y) }
+		pan: { x: withinRepeat(pan.x + (delta.x * n) / rect.width, repeat.x), y: withinRepeat(pan.y + (delta.y * n) / rect.height, repeat.y) }
 	});
 }
 

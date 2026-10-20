@@ -6,7 +6,8 @@ import { splitBezierAt } from '$lib/geometry/bezierSegments';
 import { opposite } from '$lib/pattern/rules';
 import { fitLines } from '$lib/pattern/tiling';
 import { ruleStart } from '$lib/pattern/starts';
-import { restartedTile, savedPattern, tileFingers, tileGrid, weaveParityOf } from '$lib/pattern/escherTab';
+import { dragTile, restartedTile, savedPattern, startPanDrag, tileFingers, tileGrid, weaveParityOf } from '$lib/pattern/escherTab';
+import { getCenteredRectParams } from '$lib/utils/overlapRect';
 import { knobTile } from '$lib/pattern/examples';
 // The Escher tab's panel, which Tegn loads when a heart opens on the tab, loaded ahead.
 import '$lib/components/pattern/EscherPanel.svelte';
@@ -161,6 +162,23 @@ describe('the Escher tab', () => {
 		expect(JSON.stringify(h.fingers)).toBe(original);
 		expect(chosenTab(h)).toBe('Normal');
 		expect(snapBox(h)).toBe(true);
+	});
+
+	it.each(['L-0', 'R-4', 'L-2', 'R-1'])('moves the whole pattern when %s is dragged: no strip added or cut moved alone, and the type kept', async (id) => {
+		const tile = { ...knobTile(opposite('move', 'move')), cuts: 3 };
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
+		const from = h.fingers.find((f) => f.id === id)!.segments[0]!.p3;
+		const delta = { x: 30, y: -12 };
+		send(h.path(id), 'pointerdown', from);
+		send(h.svg, 'pointermove', { x: from.x + delta.x / 2, y: from.y + delta.y / 2 });
+		send(h.svg, 'pointermove', { x: from.x + delta.x, y: from.y + delta.y });
+		send(h.svg, 'pointerup', { x: from.x + delta.x, y: from.y + delta.y });
+		const moved = dragTile(startPanDrag(tile, from, null), delta, getCenteredRectParams({ x: 4, y: 4 }))!;
+		expect(moved.pan).toBeDefined();
+		expect(cutsOf(h.fingers)).toBe(cutsOf(tileFingers(moved)));
+		expect(h.gridSize).toEqual(tileGrid(moved));
+		expect(chosenType(h)).toBe('Moved');
 	});
 
 	it('starts the tile over as its type starts, at its size, which Fortryd takes back', async () => {

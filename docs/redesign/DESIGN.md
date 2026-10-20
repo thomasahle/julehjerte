@@ -600,7 +600,9 @@ starts from one bent curve on each side it reads (half of one for an S or an arc
 visitor does the designing and adds the nodes they want; nothing else is drawn on the heart, and nothing moves
 on its own. Points the tile places itself
 are drawn dark: dragging a crossing leans every tile (where the type lets tiles lean), and dragging a point the
-type fixes moves the whole pattern, which comes back in at the other edge without end. Moved off a whole line,
+type fixes moves the whole pattern, which comes back in at the other edge without end. So does dragging a cut,
+or one of the square's edges: in this tab no strip is pulled in from an edge or dragged out, and nothing done in
+the tab takes the heart out of it. Moved off a whole line,
 the pattern would leave an edge strip wider than a cell; there the heart cuts the pattern's next line as well,
 if all of that cut keeps 0.15 of a cell (and twice the paper's clearance) from the edge, so the pattern fills
 the heart like a window onto an endless tiling. The heart then has a strip more that way (a 3 × 3 pattern makes

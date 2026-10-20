@@ -279,8 +279,8 @@
 	let lastEscherTile: PatternTile | null = null;
 	/** The tile behind each set of overrides the Escher tab derived: the heart's once Tegn applies them. */
 	const tileOfOverrides = new WeakMap<Map<string, Finger>, PatternTile>();
-	/** A drag in the Escher tab on a point the tile places (see `TileDrag`). */
-	let leanDrag: TileDrag | null = null;
+	/** A drag in the Escher tab that the tile answers: on a point it places, or on a cut or an edge (see `TileDrag`). */
+	let tileDrag: TileDrag | null = null;
 	/**
 	 * The Escher tab's code ($lib/pattern/escherTab) and its contents (EscherPanel), loaded the first
 	 * time the tab is opened or a heart saved from it is: a tenth of the editor's code, which most
@@ -2652,7 +2652,7 @@
 		dragSnapshot = null;
 		dragDirty = false;
 		dragTarget = null;
-		leanDrag = null;
+		tileDrag = null;
 	}
 
 	function handleFingerPointerDown(e: PointerEvent, fingerId: string) {
@@ -2664,7 +2664,7 @@
 			clearSelection();
 			selectedFingerId = fingerId;
 			lastFingerClickId = null;
-			beginDrag(e, { kind: 'path', fingerId });
+			beginPathDrag(e, fingerId, p);
 			return;
 		}
 		const now = performance.now();
@@ -2719,7 +2719,35 @@
 			selectedAnchors = [0, segLen];
 			selectedSegments = [];
 		}
+		beginPathDrag(e, fingerId, p);
+	}
+
+	/**
+	 * A drag on a cut or an edge of the square, from `p`: it moves the cut, or pulls a new cut in from
+	 * the edge, and in the Escher tab moves the whole pattern instead, which keeps its cuts and strips
+	 * (see `escher.startPanDrag`).
+	 */
+	function beginPathDrag(e: PointerEvent, fingerId: string, p: Vec) {
+		const cut = getEditableFingerById(fingerId);
+		if (patternTile && escher) tileDrag = escher.startPanDrag(patternTile, p, cut ? cut.lobe : null);
 		beginDrag(e, { kind: 'path', fingerId });
+	}
+
+	/** The inner cut of `lobe` nearest `p`, or null. */
+	function cutNearest(lobe: LobeId, p: Vec): string | null {
+		let best: string | null = null;
+		let bestD = Infinity;
+		for (const f of fingers) {
+			if (f.lobe !== lobe || !getEditableFingerById(f.id)) continue;
+			for (const seg of fingerToSegments(f)) {
+				const d = closestPointOnBezier(seg, p).distance;
+				if (d < bestD) {
+					bestD = d;
+					best = f.id;
+				}
+			}
+		}
+		return best;
 	}
 
 	const HIT_STROKE_WIDTH = 14;
@@ -2738,7 +2766,7 @@
 			if (!start) return;
 			const drag = escher.startTileDrag(patternTile, fingerId, anchorIdx, special, start);
 			if (!drag) return;
-			leanDrag = drag;
+			tileDrag = drag;
 			beginDrag(e, { kind: 'control', fingerId, anchorIdx });
 			return;
 		}
@@ -2793,15 +2821,15 @@
 		const p = localPointFromClient(e.clientX, e.clientY);
 		if (!p) return;
 
-		if (leanDrag && escher) {
-			// The tiles lean, or the whole pattern moves, so that the dragged point follows the pointer;
-			// or the curve the edge cuts is reshaped so that the cut's end slides with it. The cuts are
-			// made again.
+		if (tileDrag && escher) {
+			// The tiles lean, or the whole pattern moves, so that the dragged point, cut or edge follows
+			// the pointer; or the curve the edge cuts is reshaped so that the cut's end slides with it.
+			// The cuts are made again.
 			const rect = getOverlapRect();
-			const delta = vecSub(p, leanDrag.start);
-			const next = escher.dragTile(leanDrag, delta, rect);
+			const delta = vecSub(p, tileDrag.start);
+			const next = escher.dragTile(tileDrag, delta, rect);
 			// A press that has not moved anything yet changes nothing (not even the node a slide adds).
-			if (!next || (!dragDirty && (next === leanDrag.base || Math.hypot(delta.x, delta.y) < 0.5))) return;
+			if (!next || (!dragDirty && (next === tileDrag.base || Math.hypot(delta.x, delta.y) < 0.5))) return;
 			const grid = escher.tileGrid(next);
 			if (grid.x !== gridSize.x || grid.y !== gridSize.y) {
 				// A line of the tiling came in where an edge strip grew wider than a cell, or left again
@@ -2822,15 +2850,21 @@
 				tileOfOverrides.set(overrides, next);
 				applyOverrides(overrides);
 			}
-			if (leanDrag.mode === 'corner') {
+			if (tileDrag.mode === 'corner') {
 				// The point stays selected under the pointer, though the pattern may have moved it onto
 				// another cut, or a repeat on.
-				const at = escher.followedPoint(leanDrag, next, p, rect);
+				const at = escher.followedPoint(tileDrag, next, p, rect);
 				if (at) selectedFingerId = at.fingerId;
 				selectedAnchors = at ? [at.anchor] : [];
+			} else if (tileDrag.mode === 'pan') {
+				// A cut dragged stays selected under the pointer, whichever line of the pattern is there
+				// now; its nodes are other nodes. An edge stays the edge.
+				if (tileDrag.lobe) selectedFingerId = cutNearest(tileDrag.lobe, p);
+				selectedAnchors = [];
+				selectedSegments = [];
 			} else {
-				const moved = getFingerById(leanDrag.fingerId);
-				selectedAnchors = leanDrag.end === 'first' ? [0] : moved ? [fingerToSegments(moved).length] : [];
+				const moved = getFingerById(tileDrag.fingerId);
+				selectedAnchors = tileDrag.end === 'first' ? [0] : moved ? [fingerToSegments(moved).length] : [];
 			}
 			dragDirty = true;
 			return;
@@ -3006,13 +3040,15 @@
 			}
 		}
 
-		if (dragTarget?.kind === 'path') {
+		// In the Escher tab the tile makes every cut, edges and strips: nothing to clamp, and no cut is
+		// added or removed by hand.
+		if (dragTarget?.kind === 'path' && !patternTile) {
 			clampEndpoints(dragTarget.fingerId);
 		}
 
 		// Structural reconcile: keep dummy outer curves at all four edges, and allow
 		// "remove by dragging to edge" to avoid stacking curves on top of an outer curve.
-		if (dragDirty && reconcileBoundaryCurves({ allowEdgeRemoval: true })) {
+		if (dragDirty && !patternTile && reconcileBoundaryCurves({ allowEdgeRemoval: true })) {
 			dragDirty = true;
 		}
 
@@ -3760,7 +3796,7 @@
 				     words and sits right under this line, so on a first visit only the tip
 				     shows and the permanent hint takes over once it has been dismissed. -->
 				{#if firstVisitHintDismissed}
-					<p class="canvas-hint">{tr('editorCanvasHint')}</p>
+					<p class="canvas-hint">{tr(patternTile ? 'editorCanvasHintEscher' : 'editorCanvasHint')}</p>
 				{/if}
 				{#if selectedNodeTypeLabel}
 					<p class="canvas-selection">
@@ -3787,7 +3823,7 @@
 					{/if}
 					{#if !firstVisitHintDismissed}
 						<div class="canvas-notice hint" role="note">
-							<span>{tr('editorFirstVisitHint')}</span>
+							<span>{tr(patternTile ? 'editorFirstVisitHintEscher' : 'editorFirstVisitHint')}</span>
 							<button type="button" class="notice-dismiss" onclick={dismissFirstVisitHint} aria-label={tr('editorDismissHint')}>
 								<CloseIcon size={16} aria-hidden="true" />
 							</button>

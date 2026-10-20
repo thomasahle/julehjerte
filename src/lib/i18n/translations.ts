@@ -491,6 +491,7 @@ export const translations = {
     editorDragStopSelf: 'Stop: en kurve må ikke krydse sig selv.',
     editorDragStopOutside: 'Stop: kurverne skal blive inden for den flettede firkant.',
     editorFirstVisitHint: 'Tip: Træk i en laps yderste kant for at tilføje en stribe, og dobbeltklik på en kurve for at tilføje et punkt.',
+    editorFirstVisitHintEscher: 'Tip: Træk i et punkt for at forme fliserne, og dobbeltklik på en kurve for at tilføje et punkt. Træk i et klip for at flytte hele mønstret.',
     editorDismissHint: 'Skjul tip',
     editorDraftPrompt: 'Du har en kladde fra sidst. Fortsæt hvor du slap?',
     editorDraftContinue: 'Fortsæt',
@@ -500,6 +501,7 @@ export const translations = {
     editorHidePanel: 'Skjul panel',
     editorShowPanel: 'Vis panel',
     editorCanvasHint: 'Træk i en kurve for at forme striberne · dobbeltklik for at sætte et punkt · træk i kanten for at tilføje en stribe',
+    editorCanvasHintEscher: 'Træk i et punkt for at forme fliserne · dobbeltklik for at sætte et punkt · træk i et klip for at flytte mønstret',
     editorDrawing: 'Tegning',
     editorSave: 'Gem',
     editorDownloadPdf: 'Hent PDF',
@@ -794,7 +796,7 @@ export const translations = {
       '<strong>Inden i kurve:</strong> Gør hver kurve symmetrisk omkring sit midtpunkt',
       '<strong>Inden i lap:</strong> Spejler kurver inden for hver lap',
       '<strong>Mellem lapper:</strong> Gør begge lapper identiske (kræver samme gitterstørrelse)',
-      '<strong>Escher-fanen:</strong> Hele hjertet bliver én flise, gentaget. Vælg en flisetype; når du trækker i et klip, følger alle de stykker med, der er den samme kurve'
+      '<strong>Escher-fanen:</strong> Hele hjertet bliver én flise, gentaget. Vælg en flisetype; når du trækker i et punkt, følger alle de stykker klip med, der er den samme kurve, og når du trækker i selve klippet, flytter hele mønstret sig'
     ],
     helpSectionSymmetryNote: '<em>Sym</em> = spejlsymmetri, <em>Anti</em> = punktsymmetri (180° rotation)',
     helpSectionRequirementsTitle: 'Krav for hjerter der kan foldes',
@@ -1492,6 +1494,7 @@ export const translations = {
     editorDragStopSelf: "Stopped: a curve can't cross itself.",
     editorDragStopOutside: 'Stopped: the curves have to stay inside the woven square.',
     editorFirstVisitHint: 'Tip: Drag a lobe\'s outer edge to add a strip, and double-click a curve to add a node.',
+    editorFirstVisitHintEscher: 'Tip: Drag a point to shape the tiles, and double-click a curve to add a node. Drag a cut to move the whole pattern.',
     editorDismissHint: 'Dismiss tip',
     editorDraftPrompt: 'You have a draft from last time. Continue where you left off?',
     editorDraftContinue: 'Continue',
@@ -1501,6 +1504,7 @@ export const translations = {
     editorHidePanel: 'Hide panel',
     editorShowPanel: 'Show panel',
     editorCanvasHint: 'Drag a curve to shape the strips · double-click to add a node · drag the edge to add a strip',
+    editorCanvasHintEscher: 'Drag a point to shape the tiles · double-click to add a node · drag a cut to move the pattern',
     editorDrawing: 'Drawing',
     editorSave: 'Save',
     editorDownloadPdf: 'Download PDF',
@@ -1793,7 +1797,7 @@ export const translations = {
       '<strong>Within curve:</strong> Makes each curve symmetric around its center',
       '<strong>Within lobe:</strong> Mirrors curves within each lobe',
       '<strong>Between lobes:</strong> Makes both lobes identical (requires equal grid size)',
-      '<strong>Escher tab:</strong> The whole heart becomes one tile, repeated. Choose a type of tile; when you drag a cut, every piece that is the same curve follows'
+      '<strong>Escher tab:</strong> The whole heart becomes one tile, repeated. Choose a type of tile; when you drag a point, every piece of cut that is the same curve follows, and when you drag the cut itself, the whole pattern moves'
     ],
     helpSectionSymmetryNote: '<em>Sym</em> = mirror symmetry, <em>Anti</em> = point symmetry (180° rotation)',
     helpSectionRequirementsTitle: 'Requirements for Foldable Hearts',
