@@ -1,5 +1,37 @@
 # Generator robustness results
 
+## Any Google font for the text
+
+Product request (2026-10-20): "a search box for any google font", fetched when
+chosen. Below the nine tested fonts, the text panel searches 1,962 Google
+families: Fontsource's list of those with Latin letters, most popular first by
+Google Fonts' ranking (`static/generator/google-fonts.json`, 70 KB, 22 KB
+gzipped, loaded only when searching; rebuilt by
+`scripts/generator/google-fonts.mjs`). Each result shows its name in its own
+letters. A chosen family's boldest weight up to 800 is fetched as WOFF from
+Fontsource's copy on jsDelivr, not from Google, and outlined in the browser
+(`fontFile.ts`): TrueType outlines flattened within .0005 em, overlapping
+contours merged under the non-zero rule with Clipper, as `build-outlines.py`
+does for the shipped fonts. Links name it as `gf:<id>:<weight>`. Searching a
+shipped family (Nunito, Cinzel, …) chooses our tested copy.
+
+Fidelity, against the JSON Python built from the same TTF files: every glyph of
+Alfa Slab One, Bree Serif, Bungee and Righteous has the same rings and advance,
+with areas within 0.2%. On Cinzel's variable master, whose letters are
+overlapping stems, bars and serifs, the ring counts match Python's for every
+glyph, with areas within 0.5%. A font reads in 3–30 ms.
+
+The 200 most popular families, "JUL" and "Anna" in the default frame: 187 cut
+cleanly in both, 13 are hard in one or both, none is refused. The hard ones are
+thin or high-contrast: Playfair Display, Bodoni Moda, Cormorant (both), Abril
+Fatface, Gravitas One, Instrument Serif, Cinzel (Google's, unthickened; the
+search chooses ours), Lobster and the scripts Dancing Script, Satisfy, Great
+Vibes and Zeyada. Median time 0.1 s, 90th percentile 1.8 s, but the four
+scripts take 80–140 s, and Gravitas One 30 s, to settle on hard to cut (the
+picture shows at once). Four families lack some of ÆØÅ, ÄÖÜ or É and say so
+when those are typed. Not done: thickening thin families as Cinzel and Kalam
+are, which would need a measure of each font's thinnest strokes.
+
 ## Larger circles on equal squares for animals
 
 Product request (2026-10-20): the deer in "Cirkel · Lige store tern" stopped at

@@ -61,6 +61,13 @@ Cinzel and Kalam have slightly thickened outlines where doing so preserves
 the number of contours, to leave more paper around fine details.
 The sample SVGs show the exact outlines used by the generator.
 
+Fonts found in the search over Google Fonts are not part of this site: the
+visitor's browser fetches each, when chosen, from Fontsource's copy of Google
+Fonts on jsDelivr (https://fontsource.org) and outlines it there, untested and
+not thickened. Each family keeps its own licence (mostly OFL), listed at
+https://fonts.google.com. The list of families in google-fonts.json comes from
+Fontsource's list and Google Fonts' popularity ranking.
+
 Construction: independently implemented contour routing; no image solver.
 Dense text framing is inspired by Gerth Stolting
 Brodal's explanation and slides:

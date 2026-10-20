@@ -34,6 +34,18 @@
 	import { clampPlace } from '$lib/generator/stripFigure';
 	import { BOARD_STRIPS, type BoardStyle } from '$lib/generator/boardMotif';
 	import { isTextFigure } from '$lib/generator/textFigure';
+	import {
+		SHIPPED,
+		familyName,
+		fontSample,
+		googleFontChoice,
+		isGoogleFont,
+		loadGoogleFont,
+		loadPreview,
+		matchingFamilies,
+		previewFamily,
+		type GoogleFamily
+	} from '$lib/generator/googleFonts';
 	import type {
 		GeneratorResult,
 		GeneratorRequest
@@ -64,6 +76,14 @@
 		query = $state(''),
 		limit = $state(24),
 		retry = $state(0);
+	// The font search over Google Fonts, and the last family chosen there,
+	// which keeps a button beside the fonts we ship.
+	let fontQuery = $state(''),
+		fontLimit = $state(8),
+		googleIndex = $state<GoogleFamily[] | null>(null),
+		indexError = $state(false),
+		googleChoice = $state<string | null>(null),
+		googleSample = $state<{ d: string; viewBox: string } | null>(null);
 	const cache = new GeometryCache();
 	type Failure = { error: string; character?: string };
 	type Thumbnail = { result?: GeneratorResult; failure?: Failure; sketch?: Ring[] };
@@ -342,7 +362,9 @@
 		if (snapshot.mode === 'figure' && BOARD_STYLES.includes(snapshot.style))
 			request.layout = cache.get(geometryKey({ ...snapshot, scale: defaults.scale }))?.layout;
 		if (snapshot.mode === 'text')
-			request.font = await asset<Font>(`fonts/${snapshot.font}.json`);
+			request.font = isGoogleFont(snapshot.font)
+				? await loadGoogleFont(snapshot.font)
+				: await asset<Font>(`fonts/${snapshot.font}.json`);
 		else
 			request.contours = (
 				await asset<{ contours: Ring[] }>(`motifs/${snapshot.motif}.json`)
@@ -352,6 +374,43 @@
 	const label = (item: CatalogItem) => motifLabel(item, lang);
 	let matches = $derived(matchingMotifs(catalog, query));
 	let groups = $derived(motifGroups(catalog));
+	let fontMatches = $derived(googleIndex ? matchingFamilies(googleIndex, fontQuery) : []);
+	/** A family found in the search chooses our own copy of the fonts we ship. */
+	const familyChoice = (family: GoogleFamily) => SHIPPED[family[0]] ?? googleFontChoice(family);
+	function loadIndex() {
+		if (googleIndex) return;
+		indexError = false;
+		asset<GoogleFamily[]>('google-fonts.json')
+			.then((index) => (googleIndex = index))
+			.catch(() => (indexError = true));
+	}
+
+	$effect(() => {
+		if (isGoogleFont(config.font)) googleChoice = config.font;
+	});
+	$effect(() => {
+		if (googleChoice || fontQuery.trim()) untrack(loadIndex);
+	});
+	$effect(() => {
+		const choice = googleChoice;
+		if (!choice) return;
+		let live = true;
+		googleSample = null;
+		loadGoogleFont(choice)
+			.then((font) => {
+				if (live) googleSample = fontSample(font) ?? null;
+			})
+			.catch(() => {
+				/* The heart reports the font that cannot be fetched. */
+			});
+		return () => {
+			live = false;
+		};
+	});
+	// Each family found shows its name in its own letters.
+	$effect(() => {
+		for (const family of fontMatches.slice(0, fontLimit)) loadPreview(googleFontChoice(family));
+	});
 
 	onMount(() => {
 		colors = getColors();
@@ -681,7 +740,50 @@
 								alt=""
 							/>{t(key, lang)}</button
 						>{/each}
+					{#if googleChoice}{@const choice = googleChoice}<button
+							aria-pressed={config.font === choice}
+							onclick={() => (config.font = choice)}
+							>{#if googleSample}<svg
+									viewBox={googleSample.viewBox}
+									width="55"
+									height="32"
+									aria-hidden="true"
+									><path d={googleSample.d} fill="#40573c" fill-rule="evenodd" /></svg
+								>{:else}<span class="sample-wait" aria-hidden="true"></span>{/if}<span class="family"
+								>{familyName(choice, googleIndex ?? [])}</span
+							></button
+						>{/if}
 				</div>
+				<label class="search font-search" for="font-search"
+					><SearchIcon size={18} /><input
+						id="font-search"
+						type="search"
+						placeholder={t('generatorFontSearch', lang)}
+						aria-label={t('generatorFontSearch', lang)}
+						bind:value={fontQuery}
+						onfocus={loadIndex}
+						oninput={() => (fontLimit = 8)}
+					/></label
+				>
+				{#if fontQuery.trim()}
+					{#if indexError}<p role="alert">{t('generatorLoadError', lang)}</p>
+						<button class="btn btn-outline" onclick={loadIndex}>{t('generatorRetry', lang)}</button>{/if}
+					<div class="font-results">
+						{#each fontMatches.slice(0, fontLimit) as family (family[0])}<button
+								aria-pressed={config.font === familyChoice(family)}
+								onclick={() => (config.font = familyChoice(family))}
+								style:font-family={`"${previewFamily(googleFontChoice(family))}", system-ui, sans-serif`}
+								>{family[1]}</button
+							>{/each}
+					</div>
+					{#if googleIndex && !fontMatches.length}<p class="search-hint">
+							{t('generatorFontNoMatches', lang)}
+						</p>{/if}
+					{#if fontMatches.length > fontLimit}<button class="more" onclick={() => (fontLimit += 8)}
+							>{t('generatorMoreFonts', lang)} ({fontMatches.length})</button
+						>{/if}
+					<p class="search-hint">{t('generatorFontSearchHint', lang)}</p>
+				{/if}
 			{:else}
 				<label class="search" for="motif-search"
 					><SearchIcon size={18} /><input
@@ -1195,10 +1297,45 @@
 		color: #4d6243;
 		font-size: 11px;
 	}
-	.fonts img {
+	.fonts img,
+	.fonts svg,
+	.sample-wait {
 		width: 55px;
 		height: 32px;
 		object-fit: contain;
+	}
+	.fonts .family {
+		max-width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.font-search {
+		margin-top: 10px;
+	}
+	.font-results {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		margin-top: 8px;
+	}
+	.font-results button {
+		border: 1px solid #dce2d1;
+		background: white;
+		border-radius: 10px;
+		padding: 8px 12px;
+		text-align: left;
+		font-size: 19px;
+		line-height: 1.25;
+		color: #354c31;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.font-results button[aria-pressed='true'] {
+		border-color: #6d8b56;
+		background: #edf3e4;
+		box-shadow: inset 0 0 0 1px #6d8b56;
 	}
 	.stage {
 		position: sticky;

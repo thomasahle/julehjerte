@@ -1,6 +1,7 @@
 import { FIGURE_STYLES, FRAMES, type FigureStyle, type Frame, type TextFrame } from './geometry';
 import { BOARD_STRIPS, type BoardStyle } from './boardMotif';
 import { TEXT_FIGURES } from './textFigure';
+import { isGoogleFont } from './googleFonts';
 export type GeneratorState = {
 	mode: 'start' | 'figure' | 'text';
 	motif: string;
@@ -131,6 +132,7 @@ export function readGeneratorState(hash: string): GeneratorState {
 			cells: [...CELLS]
 		}))
 			if (allowed.includes(raw[k])) Object.assign(s, { [k]: raw[k] });
+		if (typeof raw.font === 'string' && isGoogleFont(raw.font)) s.font = raw.font;
 		if (typeof raw.text === 'string') s.text = normalizeText(raw.text);
 		if (typeof raw.motif === 'string' && /^[a-z0-9-]{1,80}$/.test(raw.motif))
 			s.motif = raw.motif;
