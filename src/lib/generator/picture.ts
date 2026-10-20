@@ -226,7 +226,7 @@ function boardPicture(request: GeneratorRequest, circle?: 'small' | 'large', enc
 	// Over the corner squares the motif sits on its smallest enclosing circle,
 	// where it cuts cleanly so (see `generate`).
 	if (radius > large[1] && enclosed) ({ centre: [cx, cy], reach } = boardPlacement(contours));
-	const scale = (radius - Math.max(request.gap ?? 3, 1.5)) / reach / box;
+	const scale = (Math.min(radius, 50) - Math.max(request.gap ?? 3, 1.5)) / reach / box;
 	const disc = frameRing('circle', 2 * radius), side = 20, rings: Ring[] = [];
 	for (let i = 0; i < 5; i++)
 		for (let j = 0; j < 5; j++) {

@@ -361,7 +361,7 @@ describe('frames from real hearts', () => {
   expect(result.hardToCut).toBeUndefined();
  }, 20000);
  it('grows the circle past 85% over the corner squares, every square still equal', () => {
-  const { design, hardToCut, scale } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .95 });
+  const { design, hardToCut, scale } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .93 });
   expect(hardToCut).toBeUndefined();
   expect(scale).toBeUndefined();
   expect(design.gridSize).toEqual({ x: 5, y: 5 });
@@ -393,6 +393,23 @@ describe('frames from real hearts', () => {
   expect(house.enclosed).toBe(true);
   expect(house.hardToCut).toBeUndefined();
   expect(generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .9 }).enclosed).toBeUndefined();
+ });
+ it('meets the paper\'s edges at 100%, its middle lines inside it', () => {
+  // The paper cuts the circle off: the red squares beside the edges' middles
+  // end where it meets the edges, and their middle lines leave no cut there.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'House', contours: houseMotif.contours as Ring[], colors, style: 'board', scale: 1 });
+  expect(hardToCut).toBeUndefined();
+  const rect = inferOverlapRect(design.fingers, design.gridSize);
+  const sheet = ({ x, y }: { x: number; y: number }) => [(x - rect.left) / rect.width * 100, (y - rect.top) / rect.height * 100];
+  const ends = design.fingers.filter(f => f.id.includes('cut')).flatMap(({ segments }) => [segments[0].p0, segments.at(-1)!.p3]).map(sheet)
+   .filter(p => p.some(v => Math.abs(v) < 1e-6 || Math.abs(v - 100) < 1e-6));
+  const along = ends.map(p => Math.abs(p[0]) < 1e-6 || Math.abs(p[0] - 100) < 1e-6 ? p[1] : p[0]);
+  // On every edge: the outer lines at 20 and 80, the circle's ends between.
+  for (const v of [20, 80]) expect(along.filter(a => Math.abs(a - v) < 1e-6).length, `${v}`).toBe(4);
+  expect(along.some(a => Math.abs(a - 40) < 1e-6 || Math.abs(a - 60) < 1e-6)).toBe(false);
+  const inner = along.filter(a => a > 30 && a < 70);
+  expect(inner.length).toBe(8);
+  for (const a of inner) expect(Math.abs(a - 50), `${a}`).toBeCloseTo(Math.sqrt(52 ** 2 - 50 ** 2), 1);
  });
  slow('keeps the circle the size asks for with much space around the motif, the motif smaller', () => {
   // Space decides how much of the circle the motif fills, not whether it can
@@ -442,12 +459,14 @@ describe('frames from real hearts', () => {
     const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'board', scale, gap: 3 });
     const rect = inferOverlapRect(design.fingers, design.gridSize);
     // Where the board's second line from the left leaves the top edge, it
-    // runs down to the circle.
-    const line = design.fingers.find(f => f.id.includes('cut') && [f.segments[0].p0, f.segments.at(-1)!.p3].some(p =>
-     Math.abs((p.x - rect.left) / rect.width - .4) < 1e-6 && Math.abs(p.y - rect.top) < 1e-6))!;
+    // runs down to the circle; once the circle meets the paper's edges, the
+    // first line does.
+    const leaving = (x: number) => design.fingers.find(f => f.id.includes('cut') && [f.segments[0].p0, f.segments.at(-1)!.p3].some(p =>
+     Math.abs((p.x - rect.left) / rect.width - x) < 1e-6 && Math.abs(p.y - rect.top) < 1e-6));
+    const second = leaving(.4), line = second ?? leaving(.2)!;
     const top = (p: { y: number }) => Math.abs(p.y - rect.top) < 1e-6;
     const segment = top(line.segments[0].p0) ? line.segments[0] : line.segments.at(-1)!;
-    const radius = Math.hypot(10, 50 - ((top(segment.p0) ? segment.p3 : segment.p0).y - rect.top) / rect.height * 100);
+    const radius = Math.hypot(second ? 10 : 30, 50 - ((top(segment.p0) ? segment.p3 : segment.p0).y - rect.top) / rect.height * 100);
     // The motif's colour within the circle's band of background.
     const n = 200, mask = rasterizeDesign(design, n).data, ground = mask[Math.round((51 - radius) / 100 * n) * n + n / 2];
     let area = 0;
