@@ -18,6 +18,7 @@ import { intersectionMarginPx } from '$lib/editor/curveIssues';
 import { findSearchIssues } from './searchClearance';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import tree from '../../../static/generator/motifs/tree.json';
+import deer from '../../../static/generator/motifs/pin-reindeer.json';
 import horse from '../../../static/generator/motifs/ph-horse.json';
 import bird from '../../../static/generator/motifs/ph-bird.json';
 import star from '../../../static/generator/motifs/star.json';
@@ -352,6 +353,12 @@ describe('frames from real hearts', () => {
    expect(lines.size, name).toBe(8);
   }
  }, 30000);
+ slow('divides an animal whose legs fall in separate panels, so it grows past the touching circle', () => {
+  const result = generate({ mode: 'figure', name: 'Deer', contours: deer.contours as Ring[], colors, style: 'board', scale: .85 });
+  // Kept at the size asked for: no smaller circle stands in.
+  expect(result.scale).toBeUndefined();
+  expect(result.hardToCut).toBeUndefined();
+ }, 20000);
  slow('keeps the space asked for, so a circle only grows with it', () => {
   // A circle that could be cut cleanly further out stays where the space puts
   // it, hard to cut if need be, rather than jumping out as the slider moves.

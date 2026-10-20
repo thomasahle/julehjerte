@@ -1858,18 +1858,23 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// the circle up to the space asked for.
 		const [small, large] = BOARD_RADII, { radius, range } = boardRadius(request.scale ?? .7);
 		// The slower compound routing only where the panels meet at the centre.
+		const junctions = backgroundJunctions(contours).map((p): Point => [p[0] - centre[0], p[1] - centre[1]]);
 		const four = [{ columns: 2, slices: 2 }, { ...compound, columns: 2, slices: 2 },
-			...backgroundJunctions(contours).map((p): Point => [p[0] - centre[0], p[1] - centre[1]])
-				.map(junction => ({ columns: 2, slices: 2, junction }))];
-		const layouts = (range: readonly [number, number]) => range === small ? [{}, compound] : four;
+			...junctions.map(junction => ({ columns: 2, slices: 2, junction }))];
+		// Panels holding separate pieces of the motif (an animal's legs) join
+		// them like a letter's dots and islands. These come after every other
+		// division, so a motif that divides without them keeps its cuts.
+		const islands = { ...compound, boundaryIslands: true, contourApproaches: true, guardedAttachments: true, filled: true, guardSeams: true };
+		const layouts = (range: readonly [number, number]) => range === small ? [[{}, compound]]
+			: [four, [undefined, ...junctions].map(junction => ({ ...islands, columns: 2, slices: 2, ...junction && { junction } }))];
 		const fills = (radius: number, factor = 1) => (radius - Math.max(gap, 1.5)) * factor / reach / box;
 		// Only the invisible partition varies: where four panels meet, the
 		// routing, and the padding of the motif's cell, which gives its
 		// connections room: the usual, else little. (Gates the circle passes
 		// inside of move in, see `generateTextGrid`.)
 		const sizes = (range: readonly [number, number], radius: number, scale = fills(radius)) =>
-			[.22, .05].flatMap(padding =>
-				layouts(range).map(layout => ({ radius, scale, layout: { padding, ...layout } })));
+			layouts(range).flatMap(list => [.22, .05].flatMap(padding =>
+				list.map(layout => ({ radius, scale, layout: { padding, ...layout } }))));
 		const build = ({ radius, scale, layout }: ReturnType<typeof sizes>[number]) => {
 			const construction = generateTextGrid(MOTIF, font, false, 'circle', { ...layout, board: 5, circle: 2 * radius, scale });
 			audit(construction.edges);

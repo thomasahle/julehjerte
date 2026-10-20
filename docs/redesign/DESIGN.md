@@ -753,9 +753,11 @@ the circle meets every line, and the motif, divided like a letter into four pane
 lines' ends in pairs. The eight ends form two cycles, upper left to lower right and upper right to
 lower left, which must cross inside the circle: the panels meet at the motif's centre, or else at
 a point of background near it with paper in every panel around it (a star's lower notch, a cat's
-eye), so their invisible seams cross its paper but not each other. That is the one change of
+eye), so their invisible seams cross its paper but not each other. A panel holding separate pieces
+of the motif (a deer's legs) joins them like a letter's dots and islands; that is tried after every
+other division, so a motif that divides without it keeps its cuts. That is the one change of
 construction, between 70% and 71%. Whether a motif can be built each way is decided once, so a
-convex motif (the heart, the bell), which cannot be divided so, stays at the touching circle above
+solid motif (the bell, the tree), which cannot be divided so, stays at the touching circle above
 70%, and one that cannot be kept whole (the gift) takes the large circle's smallest size below it.
 Sizes that cannot be cut cleanly keep their size and are shown as hard to cut (the star at 72–76%,
 the cat beyond the touching circle) rather than jumping smaller; only where nothing at all can be
