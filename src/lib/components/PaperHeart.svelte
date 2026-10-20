@@ -383,9 +383,10 @@
 		prevWithinCurveMode = withinCurveMode;
 		prevWithinLobeMode = withinLobeMode;
 		prevBetweenLobesMode = betweenLobesMode;
-		// The history is deep state, so the tile comes back proxied; the tile is plain data.
+		// The history is deep state, so the tile comes back proxied; the tile is plain data. The Escher tab
+		// always has a type, so the tab comes back with the tile, and goes with it.
 		patternTile = s.patternTile ? $state.snapshot(s.patternTile) : null;
-		if (patternTile) escherTab = true;
+		escherTab = patternTile !== null;
 		selectedFingerId = s.selectedFingerId;
 		selectedAnchors = s.selectedAnchors.slice();
 		selectedSegments = s.selectedSegments.slice();
@@ -774,7 +775,8 @@
 	// The anchor of the other lobe nearest to `pos` within the snap radius, or null. Positions are
 	// the editor's internal coordinates, the same system drag positions are in.
 	function snapTargetForAnchor(lobe: LobeId, pos: Vec): Vec | null {
-		if (!snapToOpposite) return null;
+		// The Escher tab places the points the lobes share itself: the crossings.
+		if (!snapToOpposite || patternTile) return null;
 		const { width, height } = getOverlapRect();
 		return findNearestOppositeAnchor(fingers, lobe, pos, snapOppositeRadiusPx({ width, height }));
 	}
@@ -1192,12 +1194,28 @@
 		}
 		escherTab = true;
 		if (patternTile) return;
-		// The tab's code comes with the tab; then the tile it was left with, or that the cuts already are, is taken up.
+		// The tab's code comes with the tab; then the tile it was left with, or that the cuts already are, is
+		// taken up. The tab always has a type: failing those, the cuts are drawn as the first one starts,
+		// which Fortryd takes back to the Normal tab and the cuts as they were.
 		void loadEscher().then((module) => {
 			if (!escherTab || patternTile) return;
-			const resumed = module.resumedTile(lastEscherTile, { fingers, gridSize, rect: getOverlapRect() });
-			if (resumed) takeUpTile(resumed);
+			const opened = module.openedTile(lastEscherTile, { fingers, gridSize, rect: getOverlapRect() });
+			if (!opened.drawn) {
+				takeUpTile(opened.tile);
+				return;
+			}
+			const before = snapshotState();
+			showTile(opened.tile);
+			pushUndo(before);
 		});
+	}
+
+	/** The tab's "Start forfra": the tile drawn again as its type starts, at its size. */
+	function restartEscherTile() {
+		if (!patternTile || !escher) return;
+		const before = snapshotState();
+		showTile(escher.restartedTile(patternTile));
+		pushUndo(before);
 	}
 
 	/**
@@ -3933,6 +3951,7 @@
 									cornerHint={escherCornerHint}
 									onChoose={chooseEscherRule}
 									onSize={setPatternSize}
+									onRestart={restartEscherTile}
 									compact={isMobileLayout}
 									disabled={readonly}
 								/>
@@ -3964,11 +3983,15 @@
 							<OutlineIcon />
 							<span>{tr('editorOutlines')}</span>
 						</label>
-						<label class="checkbox" title={tr('editorSnapToOppositeTitle')}>
-							<input type="checkbox" bind:checked={snapToOpposite} />
-							<SnapIcon />
-							<span>{tr('editorSnapToOpposite')}</span>
-						</label>
+						<!-- Not in the Escher tab: the points the lobes share there are the crossings, which
+						     the tile places itself. -->
+						{#if !escherTab}
+							<label class="checkbox" title={tr('editorSnapToOppositeTitle')}>
+								<input type="checkbox" bind:checked={snapToOpposite} />
+								<SnapIcon />
+								<span>{tr('editorSnapToOpposite')}</span>
+							</label>
+						{/if}
 					</section>
 
 					{#if panelExtra}{@render panelExtra()}{/if}

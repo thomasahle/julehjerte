@@ -29,7 +29,7 @@ import {
 	type PlacedPoint,
 	type SpecialNode
 } from './editorBridge';
-import { ALL_RULES, canLean, ruleInfo, ruleKey, ruleSymmetry, sameRule, type TileRule } from './rules';
+import { ALL_RULES, COMMON_RULES, canLean, ruleInfo, ruleKey, ruleSymmetry, sameRule, type TileRule } from './rules';
 import { cutCounts, fitLines, type PatternTile, type SideCurve } from './tiling';
 import { isStraightTile, ruleStart, switchRule } from './starts';
 
@@ -132,6 +132,20 @@ export function resumedTile(last: PatternTile | null, heart: EscherHeart): Patte
 	}
 	return null;
 }
+
+/**
+ * The tile the Escher tab opens on, which always has a type: the one it was
+ * left with or a tile the cuts already are (`resumedTile`), taken up as it is
+ * (`drawn` false); else the cuts drawn afresh as the first type the tab offers
+ * starts, at the heart's size.
+ */
+export function openedTile(last: PatternTile | null, heart: EscherHeart): { tile: PatternTile; drawn: boolean } {
+	const resumed = resumedTile(last, heart);
+	return resumed ? { tile: resumed, drawn: false } : { tile: tileForRule(COMMON_RULES[0]!, null, heart), drawn: true };
+}
+
+/** The tile drawn again as its type starts, at its size: the tab's "Start forfra". */
+export const restartedTile = (tile: PatternTile): PatternTile => fitLines(ruleStart(tile.rule, tile.cuts));
 
 /**
  * The tile drawn n × n on the heart's square, its lines fitted again, or null

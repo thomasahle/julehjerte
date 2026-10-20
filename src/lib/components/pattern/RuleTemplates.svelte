@@ -22,7 +22,7 @@
 	import { untrack } from 'svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import { ToggleGroup, ToggleGroupItem, keepChosen } from '$lib/components/ui/toggle-group';
-	import { freeSides, neighbours, ofType, opposite, ruleKey, type TileRule } from '$lib/pattern/rules';
+	import { COMMON_RULES, neighbours, ofType, opposite, ruleKey, type TileRule } from '$lib/pattern/rules';
 	import { ruleCode, ruleText } from '$lib/pattern/names';
 	import TemplateGlyph from './TemplateGlyph.svelte';
 
@@ -44,7 +44,7 @@
 		return rule.sides === 'opposite' ? `opposite:${[rule.v, rule.h].sort().join(':')}` : ruleKey(rule);
 	}
 
-	const COMMON: TileRule[] = [opposite('move', 'move'), opposite('move', 'mirror'), freeSides(), neighbours('both')];
+	const COMMON = COMMON_RULES;
 	const GROUPS: { title: TranslationKey | null; rules: TileRule[] }[] = [
 		{
 			title: null,

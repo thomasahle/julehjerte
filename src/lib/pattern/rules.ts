@@ -53,6 +53,13 @@ export const ALL_RULES: TileRule[] = [
 	...([42, 45, 49, 50, 53, 54, 56, 57, 58, 59, 61, 62, 64, 66, 67, 68, 69, 71, 74] as const).map((ih): TileRule => ({ sides: 'type', ih }))
 ];
 
+/**
+ * The types the Escher tab offers first: moved, and moved and mirrored, the two
+ * quadrilateral types tiled.art's gallery uses most; two shapes; and symmetric,
+ * every tile its own mirror image. The tab opens on the first.
+ */
+export const COMMON_RULES: TileRule[] = [opposite('move', 'move'), opposite('move', 'mirror'), freeSides(), neighbours('both')];
+
 /** A rule as a string, the same for the same rule: to compare rules, and to key things by rule. */
 export function ruleKey(rule: TileRule): string {
 	if (rule.sides === 'free') return 'free';

@@ -570,6 +570,7 @@ laps punkter" — drawn in the canvas's own cut colours, cyan for the left lobe 
 ($lib/editor/outlineColors, which the canvas reads too), because the colours are half of what those two icons
 say. Where a narrow phone column costs the Snap label a third line for the glyph,
 nothing is clipped, and no glyph small enough to win the line back is still worth drawing, so it is accepted.
+The Escher tab leaves Snap out: the points the lobes share there are the crossings, which the tile places.
 
 Where cyan and orange cut strokes overlap, alternate their colours along the shared
 screen stroke (4px per colour, 2px wide). Keep the cadence fixed while zooming and let
@@ -587,8 +588,12 @@ colour per shape, two half arrowheads for a side that is its own S, a bow tie fo
 image, and a whole arrowhead for a straight side the tiles are mirrored in, which stays straight. Four come
 first — Flyttet, Flyttet og spejlet, To former and Symmetrisk — and "Vis flere" opens the rest in three groups:
 the other types with neither a straight side nor a symmetry of the tile's own, those with mirror edges, and
-those whose tile has a symmetry of its own. Under the picker: the chosen type's name, what it does and,
-small, Heesch's name for it (or its IH number where he has none), then the size, 3 × 3 to 7 × 7. Picking
+those whose tile has a symmetry of its own. The tab always has a type chosen: opened on cuts that are a tile
+(the one it was left with, or a heart drawn in it), it takes that tile up; on any other heart it draws the cuts
+as the first type, Flyttet, starts, which Fortryd takes back to the Normal tab and the cuts as they were.
+Under the picker: the chosen type's name, what it does and, small, Heesch's name for it (or its IH number where
+he has none), then the size, 3 × 3 to 7 × 7, the hint, and "Start forfra", which draws the tile again as its
+type starts, at its size. Picking
 another type keeps the curves it reads the same way, if the heart they make with its own still weaves, and
 starts afresh if not; a size the pattern is too tight for is refused, with a line above the heart. Every type
 starts from one bent curve on each side it reads (half of one for an S or an arch) and nothing more, because the

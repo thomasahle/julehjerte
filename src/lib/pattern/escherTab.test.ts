@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { Finger } from '$lib/types/heart';
 import { getCenteredRectParams } from '$lib/utils/overlapRect';
-import { ALL_RULES, freeSides, opposite, ruleKey } from './rules';
+import { ALL_RULES, COMMON_RULES, freeSides, opposite, ruleKey } from './rules';
 import { cutCounts, fitLines, type PatternTile, type SideCurve } from './tiling';
 import { ruleStart } from './starts';
 import { knobTile } from './examples';
@@ -11,7 +11,9 @@ import {
 	dragTile,
 	editTile,
 	followedPoint,
+	openedTile,
 	resizedTile,
+	restartedTile,
 	restoredTile,
 	resumedTile,
 	savedPattern,
@@ -87,6 +89,18 @@ describe("Tegn's Escher tab", () => {
 
 	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))('reads the %s start back as that type: it is a tile of no more symmetric one', (_key, rule) => {
 		for (const cuts of [2, 4]) expect(ruleKey(resumedTile(null, heartOf(ruleStart(rule, cuts)))!.rule), `${cuts} cuts`).toBe(ruleKey(rule));
+	});
+
+	it('opens on a type: on cuts that are a tile, that tile as it is; on any other heart, the first type the tab offers, drawn as it starts', () => {
+		const tile = { ...knobTile(opposite('move', 'turn')), cuts: 3 };
+		const taken = openedTile(null, heartOf(tile));
+		expect(taken.drawn).toBe(false);
+		expect(ruleKey(taken.tile.rule)).toBe('opposite:move:turn');
+		expect(sameCurves(taken.tile.curves, tile.curves)).toBe(true);
+		// a plain chequerboard is a tile of every type, with nothing to keep
+		const plain = heartOf({ rule: opposite('move', 'move'), cuts: 3, curves: {} });
+		expect(openedTile(null, plain)).toEqual({ tile: fitLines(ruleStart(COMMON_RULES[0]!, 3)), drawn: true });
+		expect(restartedTile(tile)).toEqual(fitLines(ruleStart(opposite('move', 'turn'), 3)));
 	});
 
 	it('refuses a size the pattern is too tight for: the paper between two cuts keeps its width in the heart', () => {

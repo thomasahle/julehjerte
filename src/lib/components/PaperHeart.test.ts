@@ -6,7 +6,8 @@ import { splitBezierAt } from '$lib/geometry/bezierSegments';
 import { opposite } from '$lib/pattern/rules';
 import { fitLines } from '$lib/pattern/tiling';
 import { ruleStart } from '$lib/pattern/starts';
-import { savedPattern, tileFingers, tileGrid, weaveParityOf } from '$lib/pattern/escherTab';
+import { restartedTile, savedPattern, tileFingers, tileGrid, weaveParityOf } from '$lib/pattern/escherTab';
+import { knobTile } from '$lib/pattern/examples';
 // The Escher tab's panel, which Tegn loads when a heart opens on the tab, loaded ahead.
 import '$lib/components/pattern/EscherPanel.svelte';
 
@@ -34,7 +35,7 @@ afterEach(async () => {
 
 type Opened = { initialFingers: Finger[]; initialGridSize: GridSize; initialWeaveParity: 0 | 1; initialPattern: HeartPattern };
 
-function render(opened?: Opened) {
+function render(opened?: Opened | { initialEscherTab: boolean }) {
 	const target = document.createElement('div');
 	document.body.appendChild(target);
 	let fingers: Finger[] = [];
@@ -142,6 +143,40 @@ describe('outer edges in the designer', () => {
 });
 
 describe('the Escher tab', () => {
+	const chosenType = (h: ReturnType<typeof render>) => h.target.querySelector('.rule-templates [data-state="on"]')?.getAttribute('title');
+	const chosenTab = (h: ReturnType<typeof render>) => h.target.querySelector('.symmetry-tabs [data-state="on"]')?.textContent?.trim();
+	const snapBox = (h: ReturnType<typeof render>) => [...h.target.querySelectorAll('label.checkbox')].some((l) => l.textContent?.includes("Snap to the other lobe's points"));
+	const cutsOf = (fingers: Finger[]) => JSON.stringify(fingers.map((f) => [f.id, f.segments]).sort());
+
+	it('always has a type: opened on a heart that is no tile, it draws the cuts as the first type starts, which Fortryd takes back', async () => {
+		const h = render({ initialEscherTab: true });
+		const original = JSON.stringify(h.fingers);
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
+		expect(chosenTab(h)).toBe('Escher');
+		expect(cutsOf(h.fingers)).toBe(cutsOf(tileFingers(fitLines(ruleStart(opposite('move', 'move'), 2)))));
+		// the lobes share their crossings, which the tile places: no snapping to the other lobe's points
+		expect(snapBox(h)).toBe(false);
+		h.button('Undo').click();
+		flushSync();
+		expect(JSON.stringify(h.fingers)).toBe(original);
+		expect(chosenTab(h)).toBe('Normal');
+		expect(snapBox(h)).toBe(true);
+	});
+
+	it('starts the tile over as its type starts, at its size, which Fortryd takes back', async () => {
+		const tile = { ...knobTile(opposite('move', 'turn')), cuts: 4 };
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved and half turn'));
+		const knobs = JSON.stringify(h.fingers);
+		h.target.querySelector<HTMLButtonElement>('.pattern-restart')!.click();
+		flushSync();
+		expect(cutsOf(h.fingers)).toBe(cutsOf(tileFingers(restartedTile(tile))));
+		expect(chosenType(h)).toBe('Moved and half turn');
+		h.button('Undo').click();
+		flushSync();
+		expect(JSON.stringify(h.fingers)).toBe(knobs);
+	});
+
 	it('drags the same node of a moved pattern on, though the edge cuts more of a curve before it into the cut on the way', async () => {
 		// The type's start with a node added in the middle of every piece. Dragging node 10 of R-1 lets
 		// the edge show more of the curve before it: from the second step on, the cut made again has

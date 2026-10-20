@@ -39,6 +39,7 @@ export { default as PencilIcon } from '@lucide/svelte/icons/pencil';
 export { default as PlusIcon } from '@lucide/svelte/icons/plus';
 export { default as PrinterIcon } from '@lucide/svelte/icons/printer';
 export { default as RedoIcon } from '@lucide/svelte/icons/redo-2';
+export { default as RestartIcon } from '@lucide/svelte/icons/rotate-ccw';
 export { default as SaveIcon } from '@lucide/svelte/icons/save';
 export { default as ScissorsIcon } from '@lucide/svelte/icons/scissors';
 /** The marquee of the selection tool. lucide's box-select ships no Svelte build. */
