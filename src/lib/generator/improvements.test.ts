@@ -2,9 +2,9 @@ import { describe, it, expect } from 'vitest';
 import { slow } from './slow.test-helpers';
 import { generate } from './generate';
 import { type Font, type Ring, FRAMES, FIGURE_STYLES } from './geometry';
-import { defaults, readGeneratorState, normalizeText } from './state';
+import { defaults, frameGap, readGeneratorState, normalizeText } from './state';
 import { FIGURE_TEMPLATES, templateVariants } from './templates';
-import { matchingMotifs, motifLabel } from './catalog';
+import { matchingMotifs, motifGroups, motifLabel, motifSource } from './catalog';
 import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
 import { intersectionMarginPx } from '$lib/editor/curveIssues';
 import { findSearchIssues } from './searchClearance';
@@ -22,6 +22,7 @@ import gift from '../../../static/generator/motifs/gift.json';
 import candle from '../../../static/generator/motifs/tb-candle.json';
 import stars from '../../../static/generator/motifs/tb-stars.json';
 import tablerTree from '../../../static/generator/motifs/tb-christmas-tree.json';
+const motifFiles = import.meta.glob<{ contours: Ring[] }>('/static/generator/motifs/*.json');
 const colors = { left: '#fffdf5', right: '#b72f2b' };
 const font = nunito as unknown as Font;
 
@@ -138,14 +139,28 @@ describe('figures and complete templates', () => {
 		// The circle with a plain edge mostly repeated the rays or the checks.
 		expect(readGeneratorState(link({ ...state, style: 'plain' })).style).toBe('rays');
 	});
-	it('starts with seasonal choices from both libraries and searches the full set', () => {
-		const initial = matchingMotifs(catalog, '');
-		expect(initial.some((i) => i.id === 'tb-candle')).toBe(true);
-		expect(initial.some((i) => i.id === 'tb-gift')).toBe(true);
-		expect(initial.some((i) => i.id === 'tb-bow')).toBe(false);
-		expect(motifLabel(catalog.find(i => i.id === 'tb-bow')!, 'da')).toBe('Bue og pil');
-		expect(initial.some((i) => i.id === 'ph-snowflake')).toBe(true);
-		expect(initial.some((i) => /airplay|alarm/.test(i.id))).toBe(false);
+	it('starts with Christmas motifs, animals and shapes, and searches the full set', () => {
+		const groups = motifGroups(catalog);
+		expect(groups.map((g) => g.group)).toEqual(['jul', 'dyr', 'form']);
+		const shown = groups.flatMap((g) => g.items);
+		expect(shown.length).toBeGreaterThan(40);
+		for (const item of shown) {
+			expect(motifFiles[`/static/generator/motifs/${item.id}.json`]).toBeDefined();
+			// Every figure on show has a Danish name, not its set's English one.
+			if (item.package !== 'juleflet') expect(motifLabel(item, 'da')).not.toBe(item.name);
+		}
+		expect(shown.some((i) => /^(ph|tb)-/.test(i.id))).toBe(false);
+		expect(groups[1].items.some((i) => i.id === 'pin-cat')).toBe(true);
+		expect(motifLabel(catalog.find((i) => i.id === 'tb-bow')!, 'da')).toBe('Bue og pil');
+		expect(motifLabel(catalog.find((i) => i.id === 'pin-reindeer')!, 'da')).toBe('Rensdyr');
+		expect(motifLabel(catalog.find((i) => i.id === 'pin-reindeer')!, 'en')).toBe('reindeer');
+		// Where the licence asks for a credit, the tooltip names the author.
+		expect(motifSource(catalog.find((i) => i.id === 'gi-swan')!)).toBe('Lorc, Game Icons');
+		expect(motifSource(catalog.find((i) => i.id === 'star')!)).toBe('Juleflet');
+		// A search lists the figures on show first, then the large sets.
+		expect(matchingMotifs(catalog, 'kat')[0].id).toBe('pin-cat');
+		expect(matchingMotifs(catalog, 'kat').some((i) => i.id === 'ph-cat')).toBe(true);
+		expect(matchingMotifs(catalog, 'dyr').length).toBeGreaterThanOrEqual(groups[1].items.length);
 		expect(matchingMotifs(catalog, 'airplay').length).toBeGreaterThan(0);
 		expect(
 			matchingMotifs(catalog, 'tabler juletræ').some(
@@ -153,4 +168,11 @@ describe('figures and complete templates', () => {
 			)
 		).toBe(true);
 	});
+	const state = { ...defaults, mode: 'figure' as const };
+	for (const item of motifGroups(catalog).flatMap((g) => g.items))
+		slow(`weaves the ${item.id} figure on show in the default frame`, async () => {
+			const { contours } = await motifFiles[`/static/generator/motifs/${item.id}.json`]();
+			const request = { mode: 'figure' as const, name: item.id, contours, colors, style: state.style, frame: state.frame, frameSize: state.frameSize, scale: state.scale / 100, gap: frameGap(state) };
+			expect(() => generate(request)).not.toThrow();
+		}, 60000);
 });

@@ -3,9 +3,12 @@
 	import { GeometryCache, geometryKey } from '$lib/generator/cache';
 	import { FIGURE_TEMPLATES, TEXT_TEMPLATES, templateVariants } from '$lib/generator/templates';
 	import {
+		motifGroups,
 		motifLabel,
+		motifSource,
 		matchingMotifs,
-		type CatalogItem
+		type CatalogItem,
+		type MotifGroup
 	} from '$lib/generator/catalog';
 	import {
 		DEFAULT_COLORS,
@@ -59,7 +62,6 @@
 		catalog = $state<CatalogItem[]>([]),
 		query = $state(''),
 		limit = $state(24),
-		browseAll = $state(false),
 		retry = $state(0);
 	const cache = new GeometryCache();
 	type Failure = { error: string; character?: string };
@@ -89,6 +91,11 @@
 	const cellNames: Record<GeneratorState['cells'], TranslationKey> = {
 		square: 'generatorSquareCells',
 		letters: 'generatorLetterCells'
+	};
+	const GROUP_TITLES: Record<MotifGroup, TranslationKey> = {
+		jul: 'generatorChristmasChoices',
+		dyr: 'generatorAnimals',
+		form: 'generatorShapes'
 	};
 	/** Frames drawn around a round centre panel name the circle first. */
 	const circled = (style: GeneratorState['style']) =>
@@ -330,7 +337,8 @@
 		return request;
 	}
 	const label = (item: CatalogItem) => motifLabel(item, lang);
-	let matches = $derived(matchingMotifs(catalog, query, browseAll));
+	let matches = $derived(matchingMotifs(catalog, query));
+	let groups = $derived(motifGroups(catalog));
 
 	onMount(() => {
 		colors = getColors();
@@ -556,7 +564,6 @@
 	function chooseMode(mode: GeneratorState['mode']) {
 		config.mode = mode;
 		query = '';
-		browseAll = false;
 		limit = 24;
 		if (mode === 'start' && mounted) replaceState(href('generator', lang), {});
 	}
@@ -674,39 +681,31 @@
 					<button class="btn btn-outline" onclick={() => retry++}
 						>{t('generatorRetry', lang)}</button
 					>{/if}
-				{#if !query.trim() && !browseAll}<p class="motif-heading">
-						{t('generatorChristmasChoices', lang)}
-					</p>{/if}
-				<div class="motifs">
-					{#each matches.slice(0, limit) as item (item.id)}<button
-							aria-pressed={config.motif === item.id}
-							aria-label={label(item)}
-							title={`${label(item)} · ${item.package === 'tabler' ? 'Tabler' : item.package === 'phosphor' ? 'Phosphor' : 'Juleflet'}`}
-							onclick={() => (config.motif = item.id)}
-							><svg viewBox={`0 0 ${item.box} ${item.box}`} aria-hidden="true"
-								>{@html item.art}</svg
-							><span>{label(item)}</span></button
-						>{/each}
+				<div class="motif-list">
+					{#if query.trim()}<div class="motifs">
+							{#each matches.slice(0, limit) as item (item.id)}{@render motifButton(
+									item
+								)}{/each}
+						</div>
+						{#if catalog.length && !matches.length}<p>
+								{t('generatorNoMatches', lang)}
+							</p>{/if}
+						{#if matches.length > limit}<button
+								class="more"
+								onclick={() => (limit += 24)}
+								>{t('generatorMore', lang)} ({matches.length})</button
+							>{/if}
+					{:else}{#each groups as { group, items } (group)}<h2 class="motif-heading">
+								{t(GROUP_TITLES[group], lang)}
+							</h2>
+							<div class="motifs">
+								{#each items as item (item.id)}{@render motifButton(item)}{/each}
+							</div>{/each}
+						{#if catalog.length}<p class="search-hint">
+								{t('generatorSearchMore', lang)}
+							</p>{/if}
+					{/if}
 				</div>
-				{#if catalog.length && !matches.length}<p>
-						{t('generatorNoMatches', lang)}
-					</p>{/if}
-				{#if matches.length > limit}<button
-						class="more"
-						onclick={() => (limit += 24)}
-						>{t('generatorMore', lang)} ({matches.length})</button
-					>{/if}
-				{#if !query.trim()}<button
-						class="more"
-						onclick={() => {
-							browseAll = !browseAll;
-							limit = 24;
-						}}
-						>{t(
-							browseAll ? 'generatorShowChristmas' : 'generatorBrowseAll',
-							lang
-						)}</button
-					>{/if}
 				<a
 					class="credit"
 					href={`${base}/generator/SOURCES.txt`}
@@ -926,6 +925,16 @@
 	</div>
 {/if}
 
+{#snippet motifButton(item: CatalogItem)}<button
+		aria-pressed={config.motif === item.id}
+		aria-label={label(item)}
+		title={`${label(item)} · ${motifSource(item)}`}
+		onclick={() => (config.motif = item.id)}
+		><svg viewBox={`0 0 ${item.box} ${item.box}`} aria-hidden="true"
+			>{@html item.art}</svg
+		><span>{label(item)}</span></button
+	>{/snippet}
+
 <style>
 	:global(body) {
 		background: #f6f5ef;
@@ -1025,14 +1034,30 @@
 		border: 0;
 		outline: none;
 	}
-	.motifs {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 7px;
+	.motif-list {
 		margin: 15px 0;
 		max-height: 485px;
 		overflow: auto;
 		padding: 2px;
+	}
+	.motifs {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 7px;
+	}
+	.panel .motif-heading {
+		font-size: 12px;
+		font-weight: 800;
+		color: #495944;
+		margin: 17px 0 9px;
+	}
+	.panel .motif-heading:first-child {
+		margin-top: 0;
+	}
+	.search-hint {
+		font-size: 11px;
+		color: #6f7d68;
+		margin: 14px 0 0;
 	}
 	.motifs button {
 		border: 1px solid #e4e7dc;
@@ -1425,6 +1450,8 @@
 		}
 		.motifs {
 			grid-template-columns: repeat(4, 1fr);
+		}
+		.motif-list {
 			max-height: 270px;
 		}
 		.panel h1 {

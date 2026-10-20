@@ -1116,10 +1116,14 @@ without selecting a paper size. The generator and editor use this same rule. Gen
 carry no print-size preference and use the site's normal PDF layouts. There is no paper-width
 slider, automatic enlargement or multi-page tiling in the generator.
 
-The searchable motif library contains the authored motifs, 1,525 filled Phosphor icons and 1,088
-filled Tabler icons. The initial list is a curated set of Christmas motifs that generate successfully
-with default settings. Search still covers the full catalogue; browsing everything is explicit.
-Source SVGs, licenses and rebuild inputs are local, and asset URLs are versioned when they change.
+The searchable motif library contains the authored motifs, 40 Christmas motifs and animals picked
+from eight open icon sets, 1,525 filled Phosphor icons and 1,088 filled Tabler icons. Before any
+search the list shows three groups, Jul, Dyr and Former, of motifs that generate with default
+settings; the large general sets are found only by searching, since few of their icons suit a heart.
+A motif that is hard to cut in the default frame may still be listed, last in its group. Where an
+icon's licence asks for a credit, its tooltip names the author and set, and SOURCES.txt gives the
+credit lines. Source SVGs, licenses and rebuild inputs are local, and asset URLs are versioned when
+they change.
 
 The generator keeps its last valid preview visible while calculating a new choice. Export actions
 wait for the latest result. A bounded per-visit cache makes revisiting recent choices immediate;

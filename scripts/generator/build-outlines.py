@@ -1,7 +1,7 @@
 """Rebuild the local outline catalogue; no image fitting or cut solver.
 Requires fonttools, shapely, svgpathtools. Sources/licences are vendored alongside
-these assets. Curves are flattened within 0.0005 em / 0.05 icon units, then SVG
-nonzero winding and overlapping shapes are resolved before extracting contours.
+these assets. Curves are flattened within 0.0005 em / 0.05 icon units, then the SVG
+fill rule and overlapping shapes are resolved before extracting contours.
 """
 import json, math, subprocess, sys, shutil
 from pathlib import Path
@@ -28,10 +28,11 @@ def winding(p,r):
         if b[1]<=y<a[1] and cross<0: n-=1
     return n
 
-def fill(rings):
+def fill(rings,evenodd=False):
     lines=[LineString(r+[r[0]]) for r in rings if len(r)>2]
     faces=polygonize(unary_union(lines))
-    return unary_union([p for p in faces if sum(winding(p.representative_point().coords[0],r) for r in rings)!=0])
+    inside=lambda n:n%2!=0 if evenodd else n!=0
+    return unary_union([p for p in faces if inside(sum(winding(p.representative_point().coords[0],r) for r in rings))])
 
 def contours(geom):
     if geom.is_empty: return []
@@ -123,7 +124,7 @@ def svg_geometry(art, tolerance=.05):
         elif tag=='rect':
             x=float(attrs.get('x',0));y=float(attrs.get('y',0));w=float(attrs['width']);h=float(attrs['height']);paths=[[[x,y],[x+w,y],[x+w,y+h],[x,y+h]]]
         else:raise ValueError(tag)
-        geo=fill(paths) if attrs.get('fill')!='none' else Polygon()
+        geo=fill(paths,attrs.get('fill-rule')=='evenodd') if attrs.get('fill')!='none' else Polygon()
         if attrs.get('stroke') not in [None,'none']:
             width=float(attrs.get('stroke-width',1))
             strokes=[LineString(r).buffer(width/2,cap_style=3 if attrs.get('stroke-linecap')=='square' else 1,join_style=2) for r in paths]
@@ -137,16 +138,27 @@ def svg_geometry(art, tolerance=.05):
         result=result.difference(g) if 'var(' in e.attrib.get('fill','') else result.union(g)
     return result
 
+def fitted(icon):
+    # The sets pad their icons differently; fill the picker's box as the simple motifs do.
+    box=max(icon['width'],icon['height'])
+    x,y,X,Y=svg_geometry(icon['body'],.05 if box>=100 else box/5120).bounds;k=90/max(X-x,Y-y)
+    return f'<g transform="translate({50-k*(x+X)/2:.2f} {50-k*(y+Y)/2:.2f}) scale({k:.4f})">{icon["body"]}</g>'
+
 def build_motifs():
     library=json.loads((ROOT/'docs/design-start/assets/motif-library.js').read_text().split(' = ',1)[1].rstrip(';\n'))
     simple=json.loads(subprocess.check_output(['node','--input-type=module','-e',"import {motifs} from './docs/design-start/motifs.mjs';console.log(JSON.stringify(motifs))"],cwd=ROOT))
     icons={}
     tabler=json.loads((ROOT/'scripts/generator/vendor/tabler-filled.json').read_text())
     items=[{**item,'box':100,'package':'juleflet'} for item in simple]
+    # Christmas motifs and animals picked from several open sets; see SOURCES.txt.
+    curated=json.loads((ROOT/'scripts/generator/vendor/curated.json').read_text())
+    items += [{'id':c['id'],'art':fitted(c),'name':c['id'].split('-',1)[1].replace('-',' ').title(),'box':100,'package':c['package'],**({'author':c['author']} if 'author' in c else {})} for c in curated]
     items += [{'id':'ph-'+k,'art':v,'name':k.replace('-',' ').title(),'box':256,'package':'phosphor'} for k,v in library['icons'].items()]
     items += [{'id':'tb-'+k,'art':v,'name':k.replace('-',' ').title(),'box':24,'package':'tabler'} for k,v in tabler['icons'].items()]
+    raw={c['id']:(c['body'],max(c['width'],c['height'])) for c in curated}
     for item in items:
-        geo=svg_geometry(item['art'],.05 if item['box'] >= 100 else item['box']/5120); x,y,X,Y=geo.bounds;scale=1/max(X-x,Y-y)
+        art,box=raw.get(item['id'],(item['art'],item['box']))
+        geo=svg_geometry(art,.05 if box >= 100 else box/5120); x,y,X,Y=geo.bounds;scale=1/max(X-x,Y-y)
         rings=contours(geo)
         icons[item['id']]={'name':item['name'],'contours':[[[round((a-(x+X)/2)*scale,5),round((b-(y+Y)/2)*scale,5)] for a,b in r] for r in rings]}
     (OUT/'motifs').mkdir(exist_ok=True)
