@@ -1,0 +1,48 @@
+{
+  "schema": "u2netp-probe-plan-1",
+  "status": "predeclared",
+  "source": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-body-outline-v1/model.pt",
+    "sha256": "e73f785d935e1f763ef23f2a625b930373c991b95478253d6b05a7e3cbc33625"
+  },
+  "adaptation": {
+    "path": "tmp/heart-learning/u2netp-body-outline-v1/report.json",
+    "sha256": "ad8dc95c811d7291bd2504ab65b954ea96b18296cc03b387abd63470eaa60c1c"
+  },
+  "selection": {
+    "path": "docs/inverse/datasets/u2netp-continuous-selection.json",
+    "sha256": "6d4e0e7550fedf5c13333bdc90db28a98eb5ff9ce2de260f32e2d015f5128f52"
+  },
+  "control": {
+    "path": "tmp/heart-learning/u2netp-body-adapted-browser-pipeline-v1/report.json",
+    "sha256": "e8c711d1c44db311a5f8e9aae0500f9e0b2bced4ca8bfc8c2d522df12ec8709a"
+  },
+  "pairedStudy": {
+    "path": "docs/inverse/datasets/u2netp-body-outline-evaluation-plan.json",
+    "sha256": "f7c686cd1174c623bc44b0b9392836a32660c079e89f3242af1210c0b1313dbf"
+  },
+  "protocol": {
+    "resolution": 320,
+    "skimage": "0.24.0",
+    "threads": 1,
+    "pairedControl": "fresh-production",
+    "input": "Unmodified publisher RescaleT(320) and ToTensorLab(flag=0), full original EXIF-oriented RGB. No corner, mask or ROI input.",
+    "output": "Keep the publisher fused sigmoid head and per-image min/max normalization. No change of threshold, preprocessing or crop policy.",
+    "pipeline": "Keep every production crop. Only if none exists, accept an outline-supported neural proposal with observed rectified overlap >=99% and maximum axis-normalized extrapolation <=5%, always needs_review. Use analytic projective coverage; no mask score or template selects the crop."
+  },
+  "resources": {
+    "maxProbeMiB": 16,
+    "workers": 1,
+    "newPhotoDownloads": 0,
+    "newSourcePhotoCopies": 0
+  },
+  "scope": "Fixed-budget outline-supervision experiment on the same 24 reviewed training photos. Same fresh publisher initialization, 180 draws, synthetic data, optimizer, late-encoder adaptation, normalization and final checkpoint as the saved encoder model. Only an explicit known-outline auxiliary loss is added. Additional loss computation means this is not an exactly equal-compute trial. Training-band metrics are diagnostic and do not establish crop or reconstruction improvement. Native development only; no browser parity or production-release claim.",
+  "generatedBy": {
+    "path": "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/pin-body-evaluation.py",
+    "sha256": "98d855b20ffc41b28851f1a70196b0fe759b66f4b8a6aaccf3e3df7e12ce0403"
+  }
+}
