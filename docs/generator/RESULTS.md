@@ -1,5 +1,33 @@
 # Generator robustness results
 
+## The circle on equal squares meeting the paper's edges in points
+
+Product report (2026-10-20), on 3×3 at 100%: "I want a nice sharp cut here at the
+edge, not this little bump. Also, the circle can clearly get bigger than this".
+At radius 52, then the largest on three strips, the line between a corner square
+and the square beside it met the circle 0.74 units short of the paper's edge, so
+the red corner square ended in a 0.74 stub of line instead of a point. Now, once
+the circle reaches an edge, a line it meets closer to that edge than the cutting
+clearance (1.5, `BOARD_STUB`) ends where the circle meets the edge: the square
+beyond the line comes to a point along the circle, in the cuts and in the picture
+alike (tested both ways). The circle still grows smoothly, and at the slider's 1%
+steps no stub shorter than 1.5 is left on three or five strips (3×3: 2.5 at 83%,
+1.9 at 84%, points from 85%; 5×5: 1.6 at 96%, points from 97%). On three strips
+the circle now grows on over the corner squares until it meets the edges halfway
+along them (radius 60.1 at 100%, up from 52), in steps of 0.57; the motif keeps
+the paper's room, as on five. Three strips also skip checking whether the motif
+could be divided, which it never is there.
+
+Over the corpus and the deer, 3×3 at 100% and at 86% (where a stub would have
+been 0.7): 47 clean, 1 hard (snow), 4 refused, as at 70%. 5×5 at 97% and 98%,
+where the middle lines now end at points: the same result for every motif as
+without the rule (44, 4, 4). 5×5 is bit-identical at 60, 70, 80 and 85%. The
+picture matches the heart except where the motif is shrunk to fit, which it
+cannot predict yet: the Tabler flower (18%) and the gift (13%, as at the old
+100%), and tb-stars and tb-gift, which are shown on 5×5. The cat's search on
+5×5 at 97–98% tries candidates whose cuts leave the paper (validation warnings),
+with or without this change; its finished hearts stay inside.
+
 ## Strips for the circle on equal squares
 
 Product request (2026-10-20): "you should be able to choose the number of

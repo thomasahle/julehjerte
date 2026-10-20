@@ -1636,19 +1636,24 @@ export function openLeg(gate: Point, corner: Point, axis: 0 | 1, taper: number):
  * (see `overlapGates`), until the next lines out would need panels of their
  * own: on five strips out past the paper's edges, which cut it off (see
  * `boardRing`). On three, whose one line a side the motif meets whole however
- * large the circle, there is one range, out past the paper's edges too. */
+ * large the circle, there is one range, out past the paper's edges and over
+ * the corner squares until it meets the edges halfway along them. */
 export function boardRanges(strips: number): readonly (readonly [number, number])[] {
 	// One set per board, so a range found for a radius is the board's own.
 	const known = rangesByStrips.get(strips);
 	if (known) return known;
 	const d = Array.from({ length: (strips - 1) / 2 }, (_, k) => (100 / strips) * (k + .5));
-	const ranges: (readonly [number, number])[] = d.length < 2 ? [[Math.hypot(d[0], d[0]) + 5, 52]]
+	const ranges: (readonly [number, number])[] = d.length < 2 ? [[Math.hypot(d[0], d[0]) + 5, Math.hypot(50, 50 - d[0])]]
 		: [[Math.hypot(d[0], d[0]) + 5, Math.hypot(d[1], d[0])], [Math.hypot(d[1], d[0]), Math.hypot(d[1], d[1]) - .4],
 			[Math.hypot(d[1], d[1]) + .4, d.length > 2 ? Math.hypot(d[2], d[0]) - .4 : 52]];
 	rangesByStrips.set(strips, ranges);
 	return ranges;
 }
 const rangesByStrips = new Map<number, readonly (readonly [number, number])[]>();
+/** The shortest stretch a board line keeps between the circle and an edge of
+ * the paper the circle reaches, the cutting clearance; one the circle meets
+ * closer to that edge ends where the circle meets it (see `boardLegs`). */
+export const BOARD_STUB = 1.5;
 /** The radii on the board of five strips, the frame's own (see `boardRanges`). */
 export const BOARD_RADII: readonly (readonly [number, number])[] = boardRanges(5);
 
@@ -1697,13 +1702,19 @@ export function boardRing(radius: number, strips: number): Ring {
  * Past the junctions at the outer ring's corners, the circle overlaps the
  * corner squares, and in each quarter the ends of one sheet's two lines come
  * before the other's (`overlapGates`). The same lines pair at the same red
- * squares, their legs overlapping along the corner square's arc. */
+ * squares, their legs overlapping along the corner square's arc.
+ *
+ * Where the paper's edges cut the circle off, a line that would meet the
+ * circle past an edge, or within `BOARD_STUB` of it, ends where the circle
+ * meets that edge, so the squares there come to points along the circle. */
 function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number):
 	(side: number, index: number, framed: (angle: number, half: number) => Point) => Point {
 	type End = { angle: number; family: 'A' | 'B'; port: Port };
 	const turn = 2 * Math.PI, lines: { axis: number; line: number; ends: End[] }[] = [];
 	for (let k = 1; k < strips; k++) for (const axis of [0, 1]) {
 		const line = (100 * k) / strips, ends: End[] = [];
+		const end = (point: Point, index: number) =>
+			ends.push({ angle: (Math.atan2(point[1] - 50, point[0] - 50) + turn) % turn, family: axis ? 'B' : 'A', port: { point, index } });
 		ring.forEach((p, i) => {
 			const q = ring[(i + 1) % ring.length];
 			if ((p[axis] < line) === (q[axis] < line)) return;
@@ -1712,15 +1723,26 @@ function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number):
 			// edge, on its far side from the centre.
 			const edge = p[1 - axis] === q[1 - axis] && (p[1 - axis] === 0 || p[1 - axis] === 100);
 			if (edge) {
-				const [point, index] = (p[axis] - line) * (line - 50) > 0 ? [p, i] : [q, (i + 1) % ring.length];
-				ends.push({ angle: (Math.atan2(point[1] - 50, point[0] - 50) + turn) % turn, family: axis ? 'B' : 'A', port: { point, index } });
+				if ((p[axis] - line) * (line - 50) > 0) end(p, i);
+				else end(q, (i + 1) % ring.length);
 				return;
 			}
 			const t = (line - p[axis]) / (q[axis] - p[axis]);
 			const point: Point = [p[0] + t * (q[0] - p[0]), p[1] + t * (q[1] - p[1])];
 			point[axis] = line;
-			const angle = (Math.atan2(point[1] - 50, point[0] - 50) + turn) % turn;
-			ends.push({ angle, family: axis ? 'B' : 'A', port: { point, index: i + t } });
+			// One the circle meets just short of an edge it reaches ends where
+			// the circle meets that edge, on its near side: the square beyond the
+			// line there comes to a point along the circle, not to a stub of line.
+			const bound = point[1 - axis] < 50 ? 0 : 100;
+			if (Math.abs(point[1 - axis] - bound) < BOARD_STUB) {
+				let meets = -1;
+				ring.forEach((v, j) => {
+					if (v[1 - axis] === bound && (v[axis] - line) * (50 - line) > 0
+						&& (meets < 0 || Math.abs(v[axis] - line) < Math.abs(ring[meets][axis] - line))) meets = j;
+				});
+				if (meets >= 0) return end(ring[meets], meets);
+			}
+			end(point, i + t);
 		});
 		if (!ends.length) add(edges, axis ? [[0, line], [100, line]] : [[line, 0], [line, 100]], axis ? 'B' : 'A', 'frame');
 		else lines.push({ axis, line, ends });

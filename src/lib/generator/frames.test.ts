@@ -411,10 +411,31 @@ describe('frames from real hearts', () => {
   expect(inner.length).toBe(8);
   for (const a of inner) expect(Math.abs(a - 50), `${a}`).toBeCloseTo(Math.sqrt(52 ** 2 - 50 ** 2), 1);
  });
+ it('brings the squares to points where the circle meets the paper\'s edges, not to stubs of line', () => {
+  // On three strips a line would meet the circle 0.7 short of the edge at
+  // 86%, and lies inside it at 100%, where it meets the edges halfway along
+  // the corner squares; on five, the middle lines 0.3 short at 98%.
+  expect(Math.sqrt(boardRadius(1, 3).radius ** 2 - 50 ** 2)).toBeCloseTo(100 / 3, 6);
+  for (const [board, scale, outer] of [[3, .86, []], [3, 1, []], [5, .98, [20, 80]]] as const) {
+   const { design, hardToCut } = generate({ mode: 'figure', name: 'House', contours: houseMotif.contours as Ring[], colors, style: 'board', board, scale });
+   expect(hardToCut, `${board} ${scale}`).toBeUndefined();
+   const rect = inferOverlapRect(design.fingers, design.gridSize);
+   const sheet = ({ x, y }: { x: number; y: number }) => [(x - rect.left) / rect.width * 100, (y - rect.top) / rect.height * 100];
+   const ends = design.fingers.filter(f => f.id.includes('cut')).flatMap(({ segments }) => [segments[0].p0, segments.at(-1)!.p3]).map(sheet)
+    .filter(p => p.some(v => Math.abs(v) < 1e-6 || Math.abs(v - 100) < 1e-6));
+   const along = ends.map(p => Math.abs(p[0]) < 1e-6 || Math.abs(p[0] - 100) < 1e-6 ? p[1] : p[0]);
+   // The outer lines on five leave the edges as before; every other line
+   // ends where the circle meets the edge.
+   for (const v of outer) expect(along.filter(a => Math.abs(a - v) < 1e-6).length, `${board} ${scale} ${v}`).toBe(4);
+   const inner = along.filter(a => !outer.some(v => Math.abs(a - v) < 1e-6));
+   expect(inner.length, `${board} ${scale}`).toBe(8);
+   for (const a of inner) expect(Math.abs(a - 50), `${board} ${scale} ${a}`).toBeCloseTo(Math.sqrt(boardRadius(scale, board).radius ** 2 - 50 ** 2), 1);
+  }
+ });
  it('grows the circle without jumps, on every board', () => {
   // From the smallest to the largest, no step larger than the one over the
   // corner junctions at 85-86%, and none back.
-  for (const [board, largest] of [[3, 52], [5, 52], [7, boardRanges(7)[2][1]], [9, boardRanges(9)[2][1]]]) {
+  for (const [board, largest] of [[3, boardRanges(3)[0][1]], [5, 52], [7, boardRanges(7)[2][1]], [9, boardRanges(9)[2][1]]]) {
    let last = boardRadius(.45, board).radius;
    for (let percent = 46; percent <= 100; percent++) {
     const { radius } = boardRadius(percent / 100, board);

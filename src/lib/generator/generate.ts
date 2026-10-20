@@ -1911,7 +1911,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 					return false;
 				}
 			}));
-		const [mode, size] = buildable(range) || !large ? [range, radius] : range === small ? [large, large[0] + .6] : [small, small[1]];
+		const [mode, size] = !large || buildable(range) ? [range, radius] : range === small ? [large, large[0] + .6] : [small, small[1]];
 		// Over the corner squares, whether the motif sits on its enclosing
 		// circle is decided once, in the largest circle, so it only grows with
 		// the setting: there a deer's antler and hooves reach equally far, but a

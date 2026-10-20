@@ -770,7 +770,7 @@ store tern) adds a layer, like the gallery's santa heart (whose lines are not ev
 regular board with a circle around the motif, of 5×5 squares unless the visitor chooses 3×3, 7×7
 or 9×9 (`boardRanges`): what follows holds on each, its radii scaled to its squares. On three
 strips, one line a side, the motif is never divided and the circle grows out past the paper's
-edges; on seven and nine, the circle stops where the lines further out would need panels of
+edges until it meets them halfway along the corner squares (radius 60 at 100%); on seven and nine, the circle stops where the lines further out would need panels of
 their own (radius 36 and 28). A motif that cannot be built at all on the board chosen (on three,
 one that must be divided) is shown on five, as the page then says. The size setting sizes the circle smoothly and
 the motif fills it up to the space asked for, so both only grow with the setting (tested): from
@@ -785,10 +785,12 @@ its red square's arc, and the inner legs of the two pairs reach their lines alon
 the corner square, where both sheets are cut on the same arc. The corner squares are the circle's
 own colour, so that cut shows nothing and they merge with it. Near 100% the circle grows into the
 paper's edges in the middle squares, its own colour; the red squares beside them thin at their tips
-(1.5 units at radius 49.5, the least space the generator allows around a motif, less until the
-circle reaches the edge at 51, then points), and at 52 the paper cuts the circle off 14.3 units from
-each edge's middle, the middle lines, inside it all the way, ending there too (`boardRing`,
-`boardLegs`). Squaring the red tips off at 1.5 units was tried and dropped: the visitor saw it as a
+to 1.5 units at radius 49.5, the least space the generator allows around a motif. Once the circle
+reaches an edge, a line it meets closer to that edge than this ends where the circle meets the
+edge, so the red square beyond comes to a point along the circle rather than ending in a stub of
+line (`BOARD_STUB`; on three strips the visitor saw a 0.7 stub as a bump), and at 52 the paper cuts
+the circle off 14.3 units from each edge's middle, the middle lines, inside it all the way, ending
+there too (`boardRing`, `boardLegs`). Squaring the red tips off at 1.5 units was tried and dropped: the visitor saw it as a
 step where the circle meets the edge. The clearance rule does not measure paper against the paper's
 edge, so those thin tips are not called hard to cut. The motif keeps the paper's room, not the
 circle's. Over the corner squares a motif moves from its box's centre at 85% to its smallest enclosing

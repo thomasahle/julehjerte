@@ -151,6 +151,20 @@ describe('the picture drawn before the cuts are found', () => {
 		expect(mismatch({ ...request, board: 7, scale: .8 })).toBeLessThan(.01);
 	});
 
+	it('brings the board\'s squares to points where the circle meets the paper\'s edges, as the cuts do', () => {
+		// On three strips at 86% the line beside a corner square would meet the
+		// circle 0.7 short of the edge: the corner square's colour runs on along
+		// the circle past it, to where the circle meets the edge.
+		const request: GeneratorRequest = { mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', board: 3, scale: .86 };
+		const n = 1000, mask = rasterizeDesign(generate(request).design, n).data, { rings } = picture(request)!;
+		const drawn = (p: [number, number]) => rings.reduce((n, ring) => n ^ Number(inside(p, ring as Ring)), 0);
+		const woven = ([x, y]: [number, number]) => mask[Math.floor(y / 100 * n) * n + Math.floor(x / 100 * n)];
+		for (const colour of [drawn, woven]) {
+			expect(colour([33.85, .15])).toBe(colour([5, 5]));
+			expect(colour([36.05, .15])).not.toBe(colour([5, 5]));
+		}
+	});
+
 	it('is the checks in the tips the cuts make, at any space around the motif', () => {
 		for (const gap of [0, 3, 15])
 			expect(mismatch({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'corners', gap }), `${gap}`).toBeLessThan(.01);
