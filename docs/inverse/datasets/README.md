@@ -1,7 +1,7 @@
 # Data for learned heart reconstruction
 
 Neural release status reviewed on **2026-10-20**; dataset counts last audited on
-**2026-10-19**. **No neural network is ready for production or
+**2026-10-20**. **No neural network is ready for production or
 included in the website.** The collection, synthetic generator and learned
 prototypes are research tools; the existing geometric solver remains the
 production path.
@@ -17,6 +17,7 @@ production path.
 | Small learned model | Earlier MobileNetV3-Small fallback raises checked editable pairs from 7/16 to 9/16 on its development cohort; a newer fixed candidate stays at 7/16 on separately selected Sabrina photos | These are different cohorts; no deployment or established source generalization |
 | Saliency models | Frozen U2NETP raises checked derived-mask pairs from 10/32 to 12/32; adapted browser model adds three checked pairs over fresh current-main controls (9/32 to 12/32) | Raw numerical parity still fails; printed paper, missing body regions, timed-search variation and false seams remain; no production integration |
 | Expanded body supervision | Initial 120-update comparison gives 12/32 versus 10/32; preserving old-photo visits in a 180-update comparison restores both to 12/32 before editable rendering | Final raw editable counts are 11/32 versus 12/32, with the difference traced to a borderline rasterization artifact; no extra design coverage established |
+| Late encoder adaptation | Training-pixel error falls from 2.91% to 1.78%, but full editable recovery stays at the same 12/32 designs | No new crop-support decisions or recovered designs; not promoted |
 | Paper-colour calibration | Original-resolution colour mixtures restore detail lost by raw neural masks; fresh fixed-crop comparison gives 11/32 checked pairs with learned palettes versus 13/32 with RGB clustering | No learned-only checked gain; print confusion and unsuitable crops remain; these are derived-mask checks, not artwork ground truth |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
 | Solver | Latest full release QA passes 1,207 inverse tests; earlier dedicated runs solve all 22 regular Hunodan designs under ten seconds | Some hard fits retain thin false seams; 19/77 CI timing targets miss; the earlier 27/31 photo benchmark has not been rerun |
@@ -146,6 +147,27 @@ control is the only classification change across four fixed tolerances.
 At the two finest tolerances, masks differ by at most four pixels and no
 classification changes. Both models therefore recover the same twelve designs
 in this diagnostic; the original benchmark counts remain recorded separately.
+
+The [completed late-encoder experiment](u2netp-body-encoder-results.json) tests
+whether fixed pretrained features limit whole-paper recognition. It trains
+encoder stages 4–6 at one quarter the decoder learning rate, retaining the same
+24 photos, all 180 draws, synthetic examples, loss and publisher initialization.
+Early encoder weights and every normalization statistic stay frozen. The
+checkpoint audit and 14 focused tests pass. Training-pixel error drops from
+**2.91% to 1.78%**, but the complete reconstruction pipeline still recovers the
+same **12/32 checked editable pairs**. No outline-support eligibility changes.
+All five fresh exports pass editable geometry and nominal paper checks; their
+mask/feature checks retain the same three passes and two failures. All six
+training, eleven evaluation-body and two new fit contact sheets were reviewed.
+
+Across the full cohort, six photos still have no accepted crop, twelve fitted
+outputs exceed 3% target disagreement, one loses a motif feature despite low
+aggregate error, and one fails nominal paper-core checks despite low error.
+These are stage outcomes, not proofs that the artwork is impossible. Printed
+paper and glare also corrupt some classified targets, while dark/metallic body
+omissions persist. Better training segmentation alone has not fixed those
+problems. This candidate is retained as an experiment, without browser export
+or production promotion.
 
 The [complete balanced-epoch follow-up](u2netp-material-complete-epochs-results.json)
 adds 384 updates to the fixed relative-colour head, visiting every synthetic
