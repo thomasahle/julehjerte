@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - main
+  # A daily rebuild, so the Pinterest feed's next heart (released 07:00
+  # Copenhagen time, docs/PINTEREST.md) goes out without a push. 06:30 UTC is
+  # 07:30 in winter and 08:30 in summer. Scheduled runs use the default
+  # branch (main), so they build and deploy exactly like a push to main.
+  schedule:
+    - cron: '30 6 * * *'
   workflow_dispatch:
 
 permissions:
