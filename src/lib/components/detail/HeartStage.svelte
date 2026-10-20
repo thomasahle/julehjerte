@@ -13,6 +13,16 @@
   Every PaperHeartSVG on the page needs its own id prefix (its clip path is named
   after it), hence `idPrefix`: the stage heart uses "stage-<id>" and the
   thumbnail "thumb-<id>".
+
+  `image`, given for a gallery heart, is its square search picture
+  ($lib/heartImage, static/og/hearts/<id>.png): the one real image file of the
+  heart on the page, which search engines need (they skip inline SVG). It is
+  laid over the "Hjerte" thumbnail's SVG, its heart box exactly on the SVG's,
+  with its top band (the ribbon and the cleft it dips into) clipped off, so the
+  thumbnail looks as it did. The PNG is red and white only: with the header's
+  colourful mode or another paper pair on <html> it is hidden and the inline
+  SVG, which follows the colours, shows alone. Until it has loaded the SVG under
+  it shows, so nothing flashes.
 -->
 <script lang="ts">
 	import HangingHeart from '$lib/components/HangingHeart.svelte';
@@ -21,6 +31,7 @@
 	import { t, type Language } from '$lib/i18n';
 	import type { HeartDesign } from '$lib/types/heart';
 	import { pairAttributes } from '$lib/utils/palette';
+	import { heartImageFit, heartImageRibbonBand } from '$lib/heartImage';
 
 	type ViewId = 'heart' | 'photo' | 'left' | 'right';
 
@@ -34,9 +45,14 @@
 		lang: Language;
 		/** Unique per page — see the note above. */
 		idPrefix: string;
+		/** A gallery heart's square picture — see the note above. */
+		image?: { src: string; alt: string } | null;
 	}
 
-	let { design, photo = null, sharedTemplate = true, lang, idPrefix }: Props = $props();
+	let { design, photo = null, sharedTemplate = true, lang, idPrefix, image = null }: Props = $props();
+
+	const fit = heartImageFit();
+	const imageStyle = `width: ${fit.width}; margin-left: ${fit.left}; margin-top: ${fit.top}; clip-path: inset(${Number((heartImageRibbonBand() * 100).toFixed(3))}% 0 0 0);`;
 
 	let views = $derived.by(() => {
 		const list: { id: ViewId; label: string }[] = [{ id: 'heart', label: t('viewHeart', lang) }];
@@ -118,6 +134,19 @@
 						initialWeaveParity={design.weaveParity ?? 0}
 						size={200}
 					/>
+					{#if image}
+						<span class="thumb-picture">
+							<img
+								src={image.src}
+								alt={image.alt}
+								width="800"
+								height="800"
+								loading="lazy"
+								decoding="async"
+								style={imageStyle}
+							/>
+						</span>
+					{/if}
 				{:else if v.id === 'photo' && photo}
 					<img class="thumb-photo" src={photo.src} alt="" loading="lazy" decoding="async" />
 				{:else if design}
@@ -220,6 +249,7 @@
 	}
 
 	.thumb {
+		position: relative;
 		display: block;
 		width: 104px;
 		height: 104px;
@@ -261,6 +291,29 @@
 	.thumb :global(.template-preview) {
 		height: 100%;
 		gap: 0;
+	}
+
+	/* The square picture over the heart thumbnail's SVG: the content box of the
+	   tile (inside its 8px padding) is the heart's box, and the image's own
+	   style puts its heart box there ($lib/heartImage). */
+	.thumb-picture {
+		position: absolute;
+		inset: 8px;
+		overflow: hidden;
+	}
+
+	.thumb-picture img {
+		display: block;
+		max-width: none;
+		height: auto;
+	}
+
+	/* Red and white only: another pair on <html> (src/app.css, "Colourful
+	   mode"; $lib/stores/colors PAPER_KIND_CLASSES) leaves the SVG alone. */
+	:global(html.colorful) .thumb-picture,
+	:global(html.paper-flipped) .thumb-picture,
+	:global(html.paper-custom) .thumb-picture {
+		display: none;
 	}
 
 	.thumb-photo {

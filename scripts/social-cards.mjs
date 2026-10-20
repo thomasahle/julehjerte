@@ -41,6 +41,29 @@ export function socialCardBuilder(root) {
   }
 
   return {
+    /**
+     * The front page's card: gallery hearts hanging on the page's own background
+     * (--page), four over three, with a small wordmark. Language-independent.
+     */
+    gallery(hearts) {
+      const size = 220;
+      const rows = [
+        { top: 58, centers: [150, 450, 750, 1050] },
+        { top: 318, centers: [300, 600, 900] }
+      ];
+      const placed = rows.flatMap(({ top, centers }) => centers.map((cx) => ({ cx, top })));
+      if (hearts.length !== placed.length) throw new Error(`gallery card takes ${placed.length} hearts`);
+      // Ribbons first, so the second row's run down behind the first row's gaps.
+      const ribbons = placed.map(({ cx, top }) => `<rect x="${cx - 6}" y="0" width="12" height="${top + size * .24}" fill="#b91313"/>`);
+      const heartsMarkup = placed.map(({ cx, top }, i) =>
+        `<svg x="${cx - size / 2}" y="${top}" width="${size}" height="${size}" viewBox="${hearts[i].viewBox}">${hearts[i].markup}</svg>`);
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+      <defs><filter id="card-shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="9" stdDeviation="9" flood-color="#1c3329" flood-opacity=".15"/></filter></defs>
+      <rect width="1200" height="630" fill="#f9f9f3"/>
+      <g filter="url(#card-shadow)">${ribbons.join('')}${heartsMarkup.join('')}</g>
+      <text x="600" y="603" text-anchor="middle" font-family="${FONT}" font-size="26" font-weight="700" fill="#1c3329">Juleflet.dk</text>
+    </svg>`;
+    },
     home(hearts, lang) {
       const lines = lang === 'da' ? ['Skabeloner til', 'flettede julehjerter'] : ['Templates for', 'woven Christmas hearts'];
       return frame([

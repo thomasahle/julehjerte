@@ -3,9 +3,12 @@
 	import { GeometryCache, geometryKey } from '$lib/generator/cache';
 	import { FIGURE_TEMPLATES, TEXT_TEMPLATES, templateVariants } from '$lib/generator/templates';
 	import {
+		motifGroups,
 		motifLabel,
+		motifSource,
 		matchingMotifs,
-		type CatalogItem
+		type CatalogItem,
+		type MotifGroup
 	} from '$lib/generator/catalog';
 	import {
 		DEFAULT_COLORS,
@@ -59,7 +62,6 @@
 		catalog = $state<CatalogItem[]>([]),
 		query = $state(''),
 		limit = $state(24),
-		browseAll = $state(false),
 		retry = $state(0);
 	const cache = new GeometryCache();
 	type Failure = { error: string; character?: string };
@@ -89,6 +91,11 @@
 	const cellNames: Record<GeneratorState['cells'], TranslationKey> = {
 		square: 'generatorSquareCells',
 		letters: 'generatorLetterCells'
+	};
+	const GROUP_TITLES: Record<MotifGroup, TranslationKey> = {
+		jul: 'generatorChristmasChoices',
+		dyr: 'generatorAnimals',
+		form: 'generatorShapes'
 	};
 	/** Frames drawn around a round centre panel name the circle first. */
 	const circled = (style: GeneratorState['style']) =>
@@ -139,6 +146,11 @@
 					})
 				: ''
 	);
+	/** Before there is a text, or while the first picture loads, a plain heart
+	 * stands in: the lobes and an empty middle where the weave will go. */
+	let blankHeart = $derived(renderPictureSvgMarkup([], colors, { idPrefix: 'generated-blank' }));
+	let emptyText = $derived(config.mode === 'text' && !config.text.trim());
+	const EXAMPLE_TEXTS = ['ANNA', 'JUL', 'JULE\nMAND'];
 	/** The figure in the checks moves up and down the heart's middle when
 	 * dragged. A picture's square is 100 units wide, and so is every heart's
 	 * in the same framing; on screen the middle is vertical. */
@@ -330,7 +342,8 @@
 		return request;
 	}
 	const label = (item: CatalogItem) => motifLabel(item, lang);
-	let matches = $derived(matchingMotifs(catalog, query, browseAll));
+	let matches = $derived(matchingMotifs(catalog, query));
+	let groups = $derived(motifGroups(catalog));
 
 	onMount(() => {
 		colors = getColors();
@@ -398,7 +411,7 @@
 		notice = '';
 		error = '';
 		savedId = null;
-		if (snapshot.mode === 'start') {
+		if (snapshot.mode === 'start' || snapshot.mode === 'text' && !snapshot.text.trim()) {
 			displayed = null;
 			busy = false;
 			return;
@@ -437,6 +450,8 @@
 	let thumbnailState = $derived(
 		JSON.stringify({
 			...config,
+			// With no text yet, the frames show the sample text rather than nothing.
+			text: config.text.trim() ? config.text : defaults.text,
 			frame: defaults.frame,
 			style: defaults.style,
 			textFrame: defaults.textFrame,
@@ -556,7 +571,6 @@
 	function chooseMode(mode: GeneratorState['mode']) {
 		config.mode = mode;
 		query = '';
-		browseAll = false;
 		limit = 24;
 		if (mode === 'start' && mounted) replaceState(href('generator', lang), {});
 	}
@@ -632,6 +646,7 @@
 					class="name-input"
 					rows={Math.max(3, config.text.split('\n').length)}
 					value={config.text}
+					placeholder={t('generatorTextPlaceholder', lang)}
 					oninput={(event) => {
 						const value = normalizeText(event.currentTarget.value);
 						config.text = value;
@@ -642,7 +657,7 @@
 					spellcheck="false"></textarea>
 				<p class="hint">{t('generatorNameHint', lang, { lines: TEXT_LINES, chars: TEXT_LINE_LENGTH })}</p>
 				<div class="examples">
-					{#each ['ANNA', 'JUL', 'JULE\nMAND'] as word (word)}<button
+					{#each EXAMPLE_TEXTS as word (word)}<button
 							onclick={() => (config.text = word)}>{word}</button
 						>{/each}
 				</div>
@@ -674,39 +689,31 @@
 					<button class="btn btn-outline" onclick={() => retry++}
 						>{t('generatorRetry', lang)}</button
 					>{/if}
-				{#if !query.trim() && !browseAll}<p class="motif-heading">
-						{t('generatorChristmasChoices', lang)}
-					</p>{/if}
-				<div class="motifs">
-					{#each matches.slice(0, limit) as item (item.id)}<button
-							aria-pressed={config.motif === item.id}
-							aria-label={label(item)}
-							title={`${label(item)} · ${item.package === 'tabler' ? 'Tabler' : item.package === 'phosphor' ? 'Phosphor' : 'Juleflet'}`}
-							onclick={() => (config.motif = item.id)}
-							><svg viewBox={`0 0 ${item.box} ${item.box}`} aria-hidden="true"
-								>{@html item.art}</svg
-							><span>{label(item)}</span></button
-						>{/each}
+				<div class="motif-list">
+					{#if query.trim()}<div class="motifs">
+							{#each matches.slice(0, limit) as item (item.id)}{@render motifButton(
+									item
+								)}{/each}
+						</div>
+						{#if catalog.length && !matches.length}<p>
+								{t('generatorNoMatches', lang)}
+							</p>{/if}
+						{#if matches.length > limit}<button
+								class="more"
+								onclick={() => (limit += 24)}
+								>{t('generatorMore', lang)} ({matches.length})</button
+							>{/if}
+					{:else}{#each groups as { group, items } (group)}<h2 class="motif-heading">
+								{t(GROUP_TITLES[group], lang)}
+							</h2>
+							<div class="motifs">
+								{#each items as item (item.id)}{@render motifButton(item)}{/each}
+							</div>{/each}
+						{#if catalog.length}<p class="search-hint">
+								{t('generatorSearchMore', lang)}
+							</p>{/if}
+					{/if}
 				</div>
-				{#if catalog.length && !matches.length}<p>
-						{t('generatorNoMatches', lang)}
-					</p>{/if}
-				{#if matches.length > limit}<button
-						class="more"
-						onclick={() => (limit += 24)}
-						>{t('generatorMore', lang)} ({matches.length})</button
-					>{/if}
-				{#if !query.trim()}<button
-						class="more"
-						onclick={() => {
-							browseAll = !browseAll;
-							limit = 24;
-						}}
-						>{t(
-							browseAll ? 'generatorShowChristmas' : 'generatorBrowseAll',
-							lang
-						)}</button
-					>{/if}
 				<a
 					class="credit"
 					href={`${base}/generator/SOURCES.txt`}
@@ -750,17 +757,24 @@
 							(displayed?.design.name ?? config.text)}
 					>
 						{@html preview}
-					</div>{:else}<div class="placeholder-heart" aria-hidden="true">
-						♥
+					</div>{:else}<div class="heart-art blank" aria-hidden="true">
+						{@html blankHeart}
 					</div>{/if}
 			</div>
 			<div class="stage-status" role="status">
-				{busy
-					? t('generatorWorking', lang)
-					: result
-						? t('generatorReady', lang)
-						: ''}
+				{emptyText
+					? t('generatorEmptyText', lang)
+					: busy
+						? t('generatorWorking', lang)
+						: result
+							? t('generatorReady', lang)
+							: ''}
 			</div>
+			{#if emptyText}<div class="examples start-examples">
+					{#each EXAMPLE_TEXTS as word (word)}<button
+							onclick={() => (config.text = word)}>{word}</button
+						>{/each}
+				</div>{/if}
 			{#if error}<div class="error" role="alert">{error}</div>{/if}
 			{#if result?.hardToCut}<div class="warning" role="status">
 					{hardToCutText(result.hardToCut.letters)}
@@ -926,6 +940,16 @@
 	</div>
 {/if}
 
+{#snippet motifButton(item: CatalogItem)}<button
+		aria-pressed={config.motif === item.id}
+		aria-label={label(item)}
+		title={`${label(item)} · ${motifSource(item)}`}
+		onclick={() => (config.motif = item.id)}
+		><svg viewBox={`0 0 ${item.box} ${item.box}`} aria-hidden="true"
+			>{@html item.art}</svg
+		><span>{label(item)}</span></button
+	>{/snippet}
+
 <style>
 	:global(body) {
 		background: #f6f5ef;
@@ -1025,14 +1049,30 @@
 		border: 0;
 		outline: none;
 	}
-	.motifs {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 7px;
+	.motif-list {
 		margin: 15px 0;
 		max-height: 485px;
 		overflow: auto;
 		padding: 2px;
+	}
+	.motifs {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 7px;
+	}
+	.panel .motif-heading {
+		font-size: 12px;
+		font-weight: 800;
+		color: #495944;
+		margin: 17px 0 9px;
+	}
+	.panel .motif-heading:first-child {
+		margin-top: 0;
+	}
+	.search-hint {
+		font-size: 11px;
+		color: #6f7d68;
+		margin: 14px 0 0;
 	}
 	.motifs button {
 		border: 1px solid #e4e7dc;
@@ -1193,10 +1233,12 @@
 		text-decoration: underline;
 		cursor: pointer;
 	}
-	.placeholder-heart {
-		font-size: 270px;
-		line-height: 1.5;
-		color: #b72f2b;
+	.heart-art.blank {
+		opacity: 0.55;
+	}
+	.start-examples {
+		justify-content: center;
+		margin: 10px 0 0;
 	}
 	.stage-status {
 		font-size: 13px;
@@ -1400,9 +1442,6 @@
 		.heart-art {
 			max-width: 285px;
 		}
-		.placeholder-heart {
-			font-size: 200px;
-		}
 		.stage-status {
 			font-size: 12px;
 		}
@@ -1425,6 +1464,8 @@
 		}
 		.motifs {
 			grid-template-columns: repeat(4, 1fr);
+		}
+		.motif-list {
 			max-height: 270px;
 		}
 		.panel h1 {

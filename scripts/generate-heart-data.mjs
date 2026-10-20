@@ -33,6 +33,13 @@
  *                                    gitignored and generated on every build
  *   static/og/<id>.png               Danish cards at the legacy URLs
  *   static/og-image.png              Danish homepage card at the legacy URL
+ *   static/og/social/gallery.png     1200x630 front-page card: seven gallery hearts
+ *                                    on the page background, small wordmark
+ *   static/og/hearts/<id>.png        800x800 square picture of each heart in red and
+ *                                    white, hanging in its ribbon on the sky colour:
+ *                                    the image search results show (structured data,
+ *                                    image sitemap, the heart page's thumbnail).
+ *                                    Geometry in src/lib/heartImage.ts
  *
  * Coordinates are rounded to 1/1000 px (invisible; the symmetry and overlap checks
  * use 3-5 px tolerances) so the JSON stays small and diffs stay readable. The
@@ -184,6 +191,26 @@ function renderOgPng(svg, fontFiles) {
   return resvg.render().asPng();
 }
 
+function renderPng(svg, width) {
+  return new Resvg(svg, { fitTo: { mode: 'width', value: width }, font: { loadSystemFonts: false }, logLevel: 'off' })
+    .render()
+    .asPng();
+}
+
+/** A heart's square search picture: see src/lib/heartImage.ts. */
+function squareHeartSvg(heart, image) {
+  const { HEART_IMAGE_SIZE: size, HEART_IMAGE_BOX: box, HEART_IMAGE_RIBBON: ribbon, HEART_IMAGE_BACKGROUND: background, HEART_IMAGE_COLORS: colors } = image;
+  const ribbonWidth = box.size * ribbon.width;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">` +
+    `<rect width="${size}" height="${size}" fill="${background}"/>` +
+    `<rect x="${(size - ribbonWidth) / 2}" y="0" width="${ribbonWidth}" height="${box.top + box.size * ribbon.dip}" fill="${colors.right}"/>` +
+    `<svg x="${box.left}" y="${box.top}" width="${box.size}" height="${box.size}" viewBox="${heart.viewBox}">${heart.markup}</svg>` +
+    '</svg>';
+}
+
+/** The front page card's hearts, first row then second (social-cards.mjs `gallery`). */
+const GALLERY_CARD_HEARTS = ['classic-3x3', 'stjerne', 'juletrae', 'amy-rosette', 'jul', 'snowflake', 'h4h2'];
+
 function writeIfChanged(file, content) {
   const changed = !fs.existsSync(file) || fs.readFileSync(file, 'utf8') !== content;
   if (changed) fs.writeFileSync(file, content);
@@ -211,6 +238,7 @@ try {
   const { detectSymmetry, lobesShareTemplate } = await server.ssrLoadModule('/src/lib/utils/symmetry.ts');
   const { calculateDifficulty } = await server.ssrLoadModule('/src/lib/utils/difficulty.ts');
   const { renderHeartSvgInline } = await server.ssrLoadModule('/src/lib/rendering/heartSvg.ts');
+  const heartImage = await server.ssrLoadModule('/src/lib/heartImage.ts');
 
   const heartsData = JSON.parse(fs.readFileSync(heartsJsonPath, 'utf8'));
   const ids = heartsData.categories.flatMap((category) => category.hearts);
@@ -326,9 +354,31 @@ try {
       if (lang === 'da') fs.writeFileSync(path.join(ogDir, `${id}.png`), png);
     }
   }
+  fs.writeFileSync(path.join(socialDir, 'gallery.png'), renderOgPng(builder.gallery(GALLERY_CARD_HEARTS.map((id) => {
+    if (!heartImages[id]) throw new Error(`heart-data: the front page card's heart "${id}" is not in hearts.json`);
+    return heartImages[id];
+  })), fontFiles));
   console.log(
-    `heart-data: ${2 * (ids.length + 1)} localized social cards plus legacy images -> ${path.relative(root, ogDir)}/ ` +
+    `heart-data: ${2 * (ids.length + 1) + 1} social cards plus legacy images -> ${path.relative(root, ogDir)}/ ` +
       `(${((performance.now() - started) / 1000).toFixed(1)}s)`
+  );
+
+  // The square search pictures, one per heart in both languages' pages. Drawn
+  // with the site's colours, so their hearts are the default ones on the page.
+  const squaresStarted = performance.now();
+  const squaresDir = path.join(ogDir, 'hearts');
+  fs.rmSync(squaresDir, { recursive: true, force: true });
+  fs.mkdirSync(squaresDir, { recursive: true });
+  let squareBytes = 0;
+  for (const id of ids) {
+    const heart = renderHeartSvgInline(designs[id], heartImage.HEART_IMAGE_COLORS, { idPrefix: `sq-${id}` });
+    const png = renderPng(squareHeartSvg(heart, heartImage), heartImage.HEART_IMAGE_SIZE);
+    squareBytes += png.length;
+    fs.writeFileSync(path.join(root, 'static', heartImage.heartImagePath(id)), png);
+  }
+  console.log(
+    `heart-data: ${ids.length} square heart images (${Math.round(squareBytes / ids.length / 1024)} KB each on average) -> ` +
+      `${path.relative(root, squaresDir)}/ (${((performance.now() - squaresStarted) / 1000).toFixed(1)}s)`
   );
 } finally {
   await server.close();
