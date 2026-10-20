@@ -1673,6 +1673,10 @@
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
-    "photo": null
+    "photo": {
+      "src": "/hearts/photos/hjertekloever.jpg",
+      "width": 1200,
+      "height": 1116
+    }
   }
 }
