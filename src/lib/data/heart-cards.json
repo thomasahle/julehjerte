@@ -362,6 +362,20 @@
     },
     "difficulty": "medium"
   },
+  "fisk": {
+    "name": "Fisk",
+    "names": {
+      "en": "Fish"
+    },
+    "difficulty": "easy"
+  },
+  "tulipan": {
+    "name": "Tulipan",
+    "names": {
+      "en": "Tulip"
+    },
+    "difficulty": "medium"
+  },
   "triple-heart": {
     "name": "Triple Hjerte",
     "names": {

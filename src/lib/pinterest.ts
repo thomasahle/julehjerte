@@ -53,17 +53,17 @@ export const PINTEREST_FIRST = ['classic-3x3', 'gaver', 'jul', 'juletrae', 'stje
  * (pinterestSchedule). Append new hearts here rather than reorder.
  */
 export const PINTEREST_ORDER: readonly string[] = [
-	'classic-3x3', 'juletrae', 'gaver', 'stjerne-ramme', 'circle', 'jul',
-	'balls', 'ramme', 'kogle', 'stjerne', 'plus', 'flower',
-	'plus3', 'triple-heart', 'amy-weave-1', '5star', 'amy-weave-2', 'simple-5star',
-	'amy-rosette', 'venus', 'amy-pattern', 'h4h2', 'amy-flowering', 'sun',
-	'amy-pinecone', 'angel', 'alhambra', 'permo-sol', 'squares', 'nemt-hjerte',
-	'sildeben', 'explosion', 'puslespil', 'mor-og-barn', 'koelbuer', 'snowflake',
-	'roserude', 'nihon', 'hanefod', 'lilje1', 'flyvendegaes', 'davidsstjerne-circ',
-	'origami', 'santa', 'drageskael', 'david4', 'hermanngitter', 'lilje2',
-	'tragt', 'dagognat', 'boelgebrud', 'khatam', 'glaskuppel', 'stjernegitter',
-	'hvirvel', 'hjertekloever', 'permo-kroge', 'ball', 'permo-draaber', 'stjernerogkors',
-	'permo-cirkler'
+	'classic-3x3', 'juletrae', 'gaver', 'stjerne-ramme', 'jul', 'circle',
+	'ramme', 'stjerne', 'balls', 'flower', 'kogle', 'triple-heart',
+	'plus', '5star', 'plus3', 'venus', 'amy-weave-1', 'simple-5star',
+	'amy-weave-2', 'h4h2', 'amy-rosette', 'angel', 'amy-pattern', 'sun',
+	'amy-flowering', 'permo-sol', 'amy-pinecone', 'snowflake', 'alhambra', 'nemt-hjerte',
+	'squares', 'explosion', 'sildeben', 'mor-og-barn', 'puslespil', 'santa',
+	'koelbuer', 'nihon', 'roserude', 'lilje1', 'hanefod', 'dagognat',
+	'flyvendegaes', 'davidsstjerne-circ', 'origami', 'david4', 'drageskael', 'ball',
+	'hermanngitter', 'lilje2', 'tragt', 'khatam', 'boelgebrud', 'fisk',
+	'glaskuppel', 'stjernegitter', 'hvirvel', 'hjertekloever', 'permo-kroge', 'tulipan',
+	'permo-draaber', 'stjernerogkors', 'permo-cirkler'
 ];
 
 /** A gallery category as hearts.json lists it. */

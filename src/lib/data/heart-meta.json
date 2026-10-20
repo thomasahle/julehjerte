@@ -1439,6 +1439,58 @@
     },
     "photo": null
   },
+  "fisk": {
+    "name": "Fisk",
+    "names": {
+      "en": "Fish"
+    },
+    "author": "Jan Krümmel",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+    "date": "2026-10-20",
+    "description": null,
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "easy",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "tulipan": {
+    "name": "Tulipan",
+    "names": {
+      "en": "Tulip"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-20",
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
   "triple-heart": {
     "name": "Triple Hjerte",
     "names": {
