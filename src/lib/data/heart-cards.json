@@ -369,6 +369,13 @@
     },
     "difficulty": "medium"
   },
+  "fisk-kors": {
+    "name": "Fisk og kors",
+    "names": {
+      "en": "Fish and cross"
+    },
+    "difficulty": "medium"
+  },
   "tulipan": {
     "name": "Tulipan",
     "names": {

@@ -1465,6 +1465,32 @@
     },
     "photo": null
   },
+  "fisk-kors": {
+    "name": "Fisk og kors",
+    "names": {
+      "en": "Fish and cross"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-20",
+    "description": null,
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
   "tulipan": {
     "name": "Tulipan",
     "names": {

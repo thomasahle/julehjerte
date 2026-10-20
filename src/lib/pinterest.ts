@@ -54,16 +54,16 @@ export const PINTEREST_FIRST = ['classic-3x3', 'gaver', 'jul', 'juletrae', 'stje
  */
 export const PINTEREST_ORDER: readonly string[] = [
 	'classic-3x3', 'juletrae', 'gaver', 'stjerne-ramme', 'jul', 'circle',
-	'ramme', 'stjerne', 'balls', 'flower', 'kogle', 'triple-heart',
-	'plus', '5star', 'plus3', 'venus', 'amy-weave-1', 'simple-5star',
-	'amy-weave-2', 'h4h2', 'amy-rosette', 'angel', 'amy-pattern', 'sun',
-	'amy-flowering', 'permo-sol', 'amy-pinecone', 'snowflake', 'alhambra', 'nemt-hjerte',
-	'squares', 'explosion', 'sildeben', 'mor-og-barn', 'puslespil', 'santa',
-	'koelbuer', 'nihon', 'roserude', 'lilje1', 'hanefod', 'dagognat',
-	'flyvendegaes', 'davidsstjerne-circ', 'origami', 'david4', 'drageskael', 'ball',
-	'hermanngitter', 'lilje2', 'tragt', 'khatam', 'boelgebrud', 'fisk',
-	'glaskuppel', 'stjernegitter', 'hvirvel', 'hjertekloever', 'permo-kroge', 'tulipan',
-	'permo-draaber', 'stjernerogkors', 'permo-cirkler'
+	'ramme', 'stjerne', 'flower', 'balls', 'triple-heart', 'kogle',
+	'5star', 'plus', 'venus', 'plus3', 'simple-5star', 'amy-weave-1',
+	'angel', 'amy-weave-2', 'h4h2', 'amy-rosette', 'sun', 'amy-pattern',
+	'snowflake', 'amy-flowering', 'permo-sol', 'amy-pinecone', 'nemt-hjerte', 'alhambra',
+	'santa', 'squares', 'explosion', 'sildeben', 'mor-og-barn', 'puslespil',
+	'nihon', 'koelbuer', 'dagognat', 'roserude', 'lilje1', 'hanefod',
+	'davidsstjerne-circ', 'flyvendegaes', 'ball', 'origami', 'david4', 'drageskael',
+	'fisk', 'hermanngitter', 'lilje2', 'tragt', 'khatam', 'boelgebrud',
+	'fisk-kors', 'glaskuppel', 'stjernegitter', 'hvirvel', 'hjertekloever', 'permo-kroge',
+	'tulipan', 'permo-draaber', 'stjernerogkors', 'permo-cirkler'
 ];
 
 /** A gallery category as hearts.json lists it. */

@@ -25,7 +25,7 @@ import {
  */
 const MARKED = [
 	'5star', 'alhambra', 'amy-weave-1', 'amy-weave-2', 'angel', 'boelgebrud', 'dagognat', 'david4',
-	'davidsstjerne-circ', 'fisk', 'flower', 'flyvendegaes', 'h4h2', 'hanefod', 'hermanngitter', 'hvirvel',
+	'davidsstjerne-circ', 'fisk', 'fisk-kors', 'flower', 'flyvendegaes', 'h4h2', 'hanefod', 'hermanngitter', 'hvirvel',
 	'jul', 'juletrae', 'khatam', 'koelbuer', 'kogle', 'lilje1', 'lilje2', 'mor-og-barn', 'nemt-hjerte',
 	'origami', 'permo-cirkler', 'permo-draaber', 'permo-kroge', 'plus', 'plus3', 'puslespil',
 	'roserude', 'santa', 'sildeben', 'simple-5star', 'snowflake', 'squares', 'stjernegitter', 'sun',
