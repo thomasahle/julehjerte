@@ -154,6 +154,7 @@ describe('outer edges in the designer', () => {
 
 describe('the Escher tab', () => {
 	const chosenType = (h: ReturnType<typeof render>) => h.target.querySelector('.rule-templates [data-state="on"]')?.getAttribute('title');
+	const pressed = (h: ReturnType<typeof render>, label: string) => h.button(label).getAttribute('aria-pressed') === 'true';
 	const chosenTab = (h: ReturnType<typeof render>) => h.target.querySelector('.symmetry-tabs [data-state="on"]')?.textContent?.trim();
 	const snapBox = (h: ReturnType<typeof render>) => [...h.target.querySelectorAll('label.checkbox')].some((l) => l.textContent?.includes("Snap to the other lobe's points"));
 	const cutsOf = (fingers: Finger[]) => JSON.stringify(fingers.map((f) => [f.id, f.segments]).sort());
@@ -264,6 +265,65 @@ describe('the Escher tab', () => {
 		const selected = [...h.handles()].findIndex((el) => el.getAttribute('fill') === '#ffcc00');
 		expect(selected).toBe(3);
 		expect(Math.hypot(nodes[3]!.x - at.x, nodes[3]!.y - at.y)).toBeLessThan(1);
+		// the curve is as it was, the node a smooth one on it
+		const [before, after] = h.fingers.find((f) => f.id === 'L-2')!.segments.slice(2, 4);
+		for (const k of [0.25, 0.5, 0.75]) {
+			const p = bezierAt(before!, k);
+			const q = bezierAt(seg, 0.55 * k);
+			expect(Math.hypot(p.x - q.x, p.y - q.y)).toBeLessThan(1e-3);
+			const r = bezierAt(after!, k);
+			const w = bezierAt(seg, 0.55 + 0.45 * k);
+			expect(Math.hypot(r.x - w.x, r.y - w.y)).toBeLessThan(1e-3);
+		}
+		expect(pressed(h, 'Smooth node')).toBe(true);
+	});
+
+	it('adds a corner to a straight piece, which Smooth node gives handles that a drag keeps in line', async () => {
+		const tile = ruleStart(opposite('move', 'move'), 4);
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
+		// L-2's second stretch made straight: its piece is chosen by a click on it
+		const seg = () => h.fingers.find((f) => f.id === 'L-2')!.segments[1]!;
+		const on = bezierAt(seg(), 0.5);
+		send(h.path('L-2'), 'pointerdown', on);
+		send(h.svg, 'pointerup', on);
+		h.button('Straight segment').click();
+		flushSync();
+		const near = (a: Vec, b: Vec) => Math.hypot(a.x - b.x, a.y - b.y) < 1e-6;
+		const straight = seg();
+		expect(near(straight.p1, straight.p0) && near(straight.p2, straight.p3)).toBe(true);
+		// a double-click on it, away from the first click, adds a corner with no handles of its own
+		const at = bezierAt(straight, 0.2);
+		for (let i = 0; i < 2; i++) {
+			send(h.path('L-2'), 'pointerdown', at);
+			send(h.svg, 'pointerup', at);
+		}
+		expect(pressed(h, 'Corner node')).toBe(true);
+		// the pieces on either side of the node selected, the one added (every copy of the curve has one)
+		const selected = () => [...h.handles()].findIndex((el) => el.getAttribute('fill') === '#ffcc00');
+		const around = () => h.fingers.find((f) => f.id === 'L-2')!.segments.slice(selected() - 1, selected() + 1);
+		expect(Math.hypot(around()[1]!.p0.x - at.x, around()[1]!.p0.y - at.y)).toBeLessThan(1);
+		expect(near(around()[0]!.p2, around()[0]!.p3) && near(around()[1]!.p1, around()[1]!.p0)).toBe(true);
+		// Smooth node gives it handles, in line
+		h.button('Smooth node').click();
+		flushSync();
+		const inLine = () => {
+			const [a, b] = around();
+			const node = b!.p0;
+			const u = { x: a!.p2.x - node.x, y: a!.p2.y - node.y };
+			const v = { x: b!.p1.x - node.x, y: b!.p1.y - node.y };
+			return { lengths: [Math.hypot(u.x, u.y), Math.hypot(v.x, v.y)], cross: (u.x * v.y - u.y * v.x) / (Math.hypot(u.x, u.y) * Math.hypot(v.x, v.y)), dot: u.x * v.x + u.y * v.y };
+		};
+		expect(Math.min(...inLine().lengths)).toBeGreaterThan(1);
+		expect(Math.abs(inLine().cross)).toBeLessThan(1e-6);
+		expect(inLine().dot).toBeLessThan(0);
+		// and the node dragged off the line stays smooth, its handles still in line
+		const node = around()[1]!.p0;
+		send(h.handles()[selected()]!, 'pointerdown', node);
+		send(h.svg, 'pointermove', { x: node.x + 4, y: node.y - 6 });
+		send(h.svg, 'pointerup', { x: node.x + 4, y: node.y - 6 });
+		expect(Math.abs(inLine().cross)).toBeLessThan(1e-6);
+		expect(pressed(h, 'Smooth node')).toBe(true);
 	});
 
 	it('starts the tile over as its type starts, at its size, which Fortryd takes back', async () => {
@@ -315,6 +375,26 @@ describe('the Escher tab', () => {
 			expect(h.handles()[at]!.getAttribute('fill'), `step ${step}`).toBe('#ffcc00');
 		}
 		send(h.svg, 'pointerup', pointer);
+	});
+});
+
+describe('node types', () => {
+	it('give a node without handles its handles when it is made smooth', () => {
+		const h = render();
+		const at = midpoint(h.fingers.find((f) => f.id === 'R-1')!);
+		for (let i = 0; i < 2; i++) {
+			send(h.path('R-1'), 'pointerdown', at);
+			send(h.svg, 'pointerup', at);
+		}
+		const handleLengths = () => {
+			const [a, b] = h.fingers.find((f) => f.id === 'R-1')!.segments;
+			return [Math.hypot(a!.p2.x - a!.p3.x, a!.p2.y - a!.p3.y), Math.hypot(b!.p1.x - b!.p0.x, b!.p1.y - b!.p0.y)];
+		};
+		// the Normal tab adds a node without handles
+		expect(handleLengths()).toEqual([0, 0]);
+		h.button('Smooth node').click();
+		flushSync();
+		expect(Math.min(...handleLengths())).toBeGreaterThan(1);
 	});
 });
 

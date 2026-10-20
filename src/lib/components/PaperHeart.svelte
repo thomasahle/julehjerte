@@ -2014,7 +2014,11 @@
 			return;
 		}
 
-		const inserted = insertNodeInFinger(finger, segIdx, t);
+		// The Escher tab keeps a bent curve as it is, the node smooth on it: its types start as bent
+		// curves to add nodes to. A straight piece becomes two, the node a corner, as in Normal.
+		const seg = fingerToSegments(finger)[segIdx]!;
+		const keepShape = !!patternTile && !(isHandleCollapsed(seg.p1, seg.p0) && isHandleCollapsed(seg.p2, seg.p3));
+		const inserted = insertNodeInFinger(finger, segIdx, t, keepShape);
 		if (!inserted) return;
 
 		const candidate = inserted.finger;
@@ -2152,45 +2156,7 @@
 		if (!internal.length) return;
 
 		const before = snapshotState();
-
-		for (const anchorIdx of internal) {
-			if (anchorIdx <= 0) {
-				const seg = segs[0]!;
-				if (isHandleCollapsed(seg.p1, seg.p0)) {
-					const dir = normalize(vecSub(seg.p3, seg.p0));
-					const len = vecDist(seg.p0, seg.p3) / 3;
-					seg.p1 = vecAdd(seg.p0, vecScale(dir, len));
-				}
-				continue;
-			}
-			if (anchorIdx >= n) {
-				const seg = segs[n - 1]!;
-				if (isHandleCollapsed(seg.p2, seg.p3)) {
-					const dir = normalize(vecSub(seg.p0, seg.p3));
-					const len = vecDist(seg.p0, seg.p3) / 3;
-					seg.p2 = vecAdd(seg.p3, vecScale(dir, len));
-				}
-				continue;
-			}
-
-			const prev = segs[anchorIdx - 1]!;
-			const next = segs[anchorIdx]!;
-			const anchor = next.p0;
-
-			const inChord = normalize(vecSub(anchor, prev.p0));
-			const outChord = normalize(vecSub(next.p3, anchor));
-			const dir = normalize(vecAdd(inChord, outChord));
-			if (!(dir.x || dir.y)) continue;
-
-			if (isHandleCollapsed(prev.p2, anchor)) {
-				const len = vecDist(prev.p0, anchor) / 3;
-				prev.p2 = vecAdd(anchor, vecScale(dir, -len));
-			}
-			if (isHandleCollapsed(next.p1, anchor)) {
-				const len = vecDist(anchor, next.p3) / 3;
-				next.p1 = vecAdd(anchor, vecScale(dir, len));
-			}
-		}
+		for (const anchorIdx of internal) addMissingHandles(segs, anchorIdx);
 
 		let candidate = updateFingerSegments(finger, segs);
 		if (symmetryWithinCurve) candidate = applyWithinCurveSymmetry(candidate);
@@ -2199,6 +2165,50 @@
 		if (!overridesAreValid(overrides)) return;
 		applyOverrides(overrides);
 		pushUndo(before);
+	}
+
+	/**
+	 * The handles node `anchorIdx` of `segs` lacks, added in place: along the curve through the node, a
+	 * third of the way to the node on that side; at an end of the cut, towards the next node.
+	 */
+	function addMissingHandles(segs: BezierSegment[], anchorIdx: number) {
+		const n = segs.length;
+		if (anchorIdx <= 0) {
+			const seg = segs[0]!;
+			if (isHandleCollapsed(seg.p1, seg.p0)) {
+				const dir = normalize(vecSub(seg.p3, seg.p0));
+				const len = vecDist(seg.p0, seg.p3) / 3;
+				seg.p1 = vecAdd(seg.p0, vecScale(dir, len));
+			}
+			return;
+		}
+		if (anchorIdx >= n) {
+			const seg = segs[n - 1]!;
+			if (isHandleCollapsed(seg.p2, seg.p3)) {
+				const dir = normalize(vecSub(seg.p0, seg.p3));
+				const len = vecDist(seg.p0, seg.p3) / 3;
+				seg.p2 = vecAdd(seg.p3, vecScale(dir, len));
+			}
+			return;
+		}
+
+		const prev = segs[anchorIdx - 1]!;
+		const next = segs[anchorIdx]!;
+		const anchor = next.p0;
+
+		const inChord = normalize(vecSub(anchor, prev.p0));
+		const outChord = normalize(vecSub(next.p3, anchor));
+		const dir = normalize(vecAdd(inChord, outChord));
+		if (!(dir.x || dir.y)) return;
+
+		if (isHandleCollapsed(prev.p2, anchor)) {
+			const len = vecDist(prev.p0, anchor) / 3;
+			prev.p2 = vecAdd(anchor, vecScale(dir, -len));
+		}
+		if (isHandleCollapsed(next.p1, anchor)) {
+			const len = vecDist(anchor, next.p3) / 3;
+			next.p1 = vecAdd(anchor, vecScale(dir, len));
+		}
 	}
 
 	function getAnchorNodeType(finger: Finger, anchorIdx: number): NodeType {
@@ -2229,6 +2239,8 @@
 			const segs = cloneSegments(fingerToSegments(f));
 			for (const anchorIdx of internal) {
 				if (anchorIdx <= 0 || anchorIdx >= segs.length) continue;
+				// A node without handles gets them first, as Kurvepunkt gives them, for the type to line up.
+				addMissingHandles(segs, anchorIdx);
 				const prev = segs[anchorIdx - 1]!;
 				const next = segs[anchorIdx]!;
 				const anchor = next.p0;

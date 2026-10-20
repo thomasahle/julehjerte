@@ -599,7 +599,10 @@ another type keeps the curves it reads the same way, if the heart they make with
 starts afresh if not; a size the pattern is too tight for is refused, with a line above the heart. Every type
 starts from one bent curve on each side it reads (half of one for an S or an arch) and nothing more, because the
 visitor does the designing and adds the nodes they want; nothing else is drawn on the heart, and nothing moves
-on its own. A cut's points show when it is clicked, as in the Normal tab, and the hints say so first. Points the tile places itself are drawn dark — its crossings, the middles of its S sides, the
+on its own. A cut's points show when it is clicked, as in the Normal tab, and the hints say so first. A node
+double-clicked onto a bent curve keeps the curve as it is, a smooth node with handles, so that dragging it bends
+the curve rather than kinking it; on a straight piece it is a corner, as in Normal. Blødt and Symmetrisk punkt
+give a node without handles its handles first, as Kurvepunkt does, in both tabs. Points the tile places itself are drawn dark — its crossings, the middles of its S sides, the
 ends of cuts on corners or on straight sides — and dragging one sizes, stretches and turns every tile so that
 the point follows the pointer, about the crossing of its line nearest the middle of the heart (two stretches or
 more from the point). Along its cut the tiles grow longer or shorter that way, or bigger or smaller both ways

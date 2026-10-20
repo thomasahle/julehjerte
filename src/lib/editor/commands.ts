@@ -37,10 +37,16 @@ export function shiftNodeTypesOnDelete(
   return next;
 }
 
+/**
+ * `finger` with a node added in segment `segmentIndex`, at `t` along it. The node has no handles of
+ * its own, unless `keepShape`: then it splits the segment where it is, a smooth node, and the curve
+ * keeps its shape.
+ */
 export function insertNodeInFinger(
   finger: Finger,
   segmentIndex: number,
   t: number,
+  keepShape = false,
 ): { finger: Finger; insertedAnchorIdx: number } | null {
   const segments = fingerToSegments(finger);
   if (!segments.length) return null;
@@ -48,13 +54,16 @@ export function insertNodeInFinger(
 
   const segs = cloneSegments(segments);
   const [s1, s2] = splitBezierAt(segs[segmentIndex]!, t);
-  // New nodes should be control-point-free by default: collapse the handles at the inserted anchor.
-  s1.p2 = { ...s1.p3 };
-  s2.p1 = { ...s2.p0 };
+  if (!keepShape) {
+    // New nodes should be control-point-free by default: collapse the handles at the inserted anchor.
+    s1.p2 = { ...s1.p3 };
+    s2.p1 = { ...s2.p0 };
+  }
   segs.splice(segmentIndex, 1, s1, s2);
 
   const insertedAnchorIdx = segmentIndex + 1;
   const nodeTypes = shiftNodeTypesOnInsert(finger.nodeTypes, insertedAnchorIdx);
+  if (keepShape) nodeTypes[String(insertedAnchorIdx)] = "smooth";
   const nextFinger: Finger = {
     ...updateFingerSegments(finger, segs),
     nodeTypes,
