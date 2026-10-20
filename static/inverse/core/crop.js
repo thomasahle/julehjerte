@@ -1,16 +1,24 @@
 /** Adapter for the supplied motif locator. Its coordinates refer to pixel
  * centres; the inverse engine's quadrilateral refers to pixel edges. */
 import { createMotifDetector } from '../locator/locator.js';
-import { homography, project } from '../locator/math.js';
+import { homography, project, convexQuad } from '../locator/math.js';
 
 export const pixelCentresToEdges = quad => quad.map(p => p.map(v => v + 0.5));
 export const pixelEdgesToCentres = quad => quad.map(p => p.map(v => v - 0.5));
 
 /** A rotated guess must explain both lobes. Merely returning a quadrilateral
  * is insufficient when one paper colour is absent from the segmentation. */
+export function supportedBodyOutline(proposal) {
+  const e = proposal?.evidence;
+  return Array.isArray(proposal?.quad) && proposal.quad.every(p => Array.isArray(p)) && convexQuad(proposal.quad, 0) &&
+    e?.lowerEdgeSupport?.length === 2 && e?.lobeOutlineSupport?.length === 2 &&
+    [...e.lowerEdgeSupport, ...e.lobeOutlineSupport].every(v => Number.isFinite(v) && v >= .65 && v <= 1);
+}
+
 export function supportedCropOutline(proposal) {
   const e = proposal?.evidence;
-  return !!proposal?.quad && !!e && [...e.lowerEdgeSupport, ...e.lobeOutlineSupport].every(v => v >= .65) && e.capColourLoss.every(v => v <= .30);
+  return supportedBodyOutline(proposal) && e.capColourLoss?.length === 2 &&
+    e.capColourLoss.every(v => Number.isFinite(v) && v >= 0 && v <= .30);
 }
 
 /** A fit can explain both lobes while its tilted lower edges have too few

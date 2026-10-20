@@ -1,11 +1,12 @@
 /** Whole-image automatic suggestions. Manual regions and corners stay explicit. */
 import {detectHeartCrops} from '../core/crop.js';
 import {detectForegroundCrop} from './foreground-crop.js';
+import {detectBodyCrop} from './body-crop.js';
 import {selectWholeBodyPhotoCrop} from './crop-selection.js';
 import {predictPaperBody} from './runtime.js';
 
 export async function detectPhotoCrops(input,{roi=input.roi,onProgress=()=>{},cancelled=()=>false,
- productionCrop=detectHeartCrops,predictBody=predictPaperBody,learnedCrop=detectForegroundCrop}={}){
+ productionCrop=detectHeartCrops,predictBody=predictPaperBody,learnedCrop=detectForegroundCrop,outlineCrop=detectBodyCrop}={}){
  const production=await productionCrop(input,{roi,onProgress});
  const check=()=>{if(cancelled())throw new DOMException('Cancelled','AbortError');};check();
  // An explicit selection identifies an instance. Whole-image saliency must
@@ -16,14 +17,15 @@ export async function detectPhotoCrops(input,{roi=input.roi,onProgress=()=>{},ca
  try{
   const body=await predictBody(input);check();if(!body)return production;
   const selected=await selectWholeBodyPhotoCrop(input,{body,weighting:'balanced-confidence',productionCrop:()=>production,
-   learnedCrop:()=>learnedCrop(input,{...body,paletteMode:'confidence-weighted',outerBoundarySampling:true})});
+   learnedCrop:()=>learnedCrop(input,{...body,paletteMode:'confidence-weighted',outerBoundarySampling:true}),
+   outlineCrop:()=>{check();return outlineCrop(input,{...body,outerBoundarySampling:true});}});
   check();const {decision,detection}=selected;
   const needsReview=decision.requiresReview||decision.selected==='learned';
   return{...detection,...(needsReview&&detection.candidates.length?{status:'needs_review'}:{}),
    candidates:detection.candidates.map(candidate=>({...candidate,
     status:needsReview?'needs_review':candidate.status??detection.status,
     needsReview:needsReview||candidate.needsReview===true,warnings:candidate.warnings??candidate.locator?.warnings??[],
-    provenance:{...candidate.provenance,method:decision.selected==='learned'?'learned-paper-body':candidate.provenance?.method,
+    provenance:{...candidate.provenance,method:decision.selected==='outline'?'learned-paper-outline':decision.selected==='learned'?'learned-paper-body':candidate.provenance?.method,
      modelSha256:body.modelSha256,bodyReview:decision}})),
    bodyReview:decision};
  }catch(error){check();return{...production,bodyReview:{status:'unavailable',reason:error.message}};}

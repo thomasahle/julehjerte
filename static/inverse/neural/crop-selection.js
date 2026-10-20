@@ -2,7 +2,7 @@
  * The probability grid and candidate coordinates both describe source pixels;
  * only observed pixels count, so clipped photographs are not padded with paper.
  */
-import {supportedCropOutline,detectHeartCrops} from '../core/crop.js';
+import {supportedCropOutline,supportedBodyOutline,detectHeartCrops} from '../core/crop.js';
 import {overlapCoverage} from '../core/crop-coverage.js';
 
 export const WHOLE_BODY_LIMITS=Object.freeze({recall:.85,precision:.80,diceImprovement:.05,minimumMass:100,probabilityPower:4});
@@ -50,8 +50,9 @@ export function wholeBodyEvidence(candidate,{probability,resolution,window,image
   scope:'Agreement with an estimated whole-paper body, not original artwork or a guarantee of correct corners.'};
 }
 
-export async function selectWholeBodyPhotoCrop(source,{body,weighting='area',learnedCrop,productionCrop=detectHeartCrops}={}){
+export async function selectWholeBodyPhotoCrop(source,{body,weighting='area',learnedCrop,outlineCrop,productionCrop=detectHeartCrops}={}){
  if(typeof learnedCrop!=='function')throw new TypeError('A learned crop provider is required.');
+ if(outlineCrop!==undefined&&typeof outlineCrop!=='function')throw new TypeError('An outline crop provider must be a function.');
  const production=await productionCrop(source),candidate=production.candidates?.[0];
  const evidence=c=>wholeBodyEvidence(c,{...body,weighting,imageWidth:source.imageWidth,imageHeight:source.imageHeight});
  const decision={policy:weighting==='area'?'review-whole-body-crop-v1':'review-whole-body-balanced-crop-v1',selected:'production',neuralAttempted:false,
@@ -70,6 +71,26 @@ export async function selectWholeBodyPhotoCrop(source,{body,weighting='area',lea
    decision.selected='learned';return{production,detection:learned,decision};
   }
  }catch(error){decision.neuralError=error.message;}
+ // A sound colour-aware crop always wins. Only now try geometry without
+ // uniform lobe colours, with the same body improvement and coverage limits.
+ // This is separate evidence: empty colour diagnostics are not colour support.
+ if(outlineCrop){
+  decision.outlineAttempted=true;
+  try{
+   const outline=await outlineCrop(source),alternative=outline?.candidates?.[0];
+   const review=decision.outline={
+    evidenceKind:'paper-outline; colour-unmeasured',
+    supported:!!alternative&&supportedBodyOutline(alternative.locator??outline.proposal),
+    body:evidence(alternative),
+    coverage:overlapCoverage(alternative?.quad,source.imageWidth,source.imageHeight)
+   };
+   review.bodyImproved=!candidate||decision.productionBody.status!=='measured'||
+    review.body.dice>=decision.productionBody.dice+WHOLE_BODY_LIMITS.diceImprovement;
+   if(review.supported&&review.body.passed&&review.bodyImproved&&review.coverage?.observedFraction>=.99&&review.coverage.maximumExtrapolation<=.05){
+    decision.selected='outline';return{production,detection:outline,decision};
+   }
+  }catch(error){decision.outlineError=error.message;}
+ }
  // Preserve editable alternatives even when evidence is weak. Replacing an
  // existing crop requires a supported, substantially better full-body fit.
  return{production,detection:production,decision};
