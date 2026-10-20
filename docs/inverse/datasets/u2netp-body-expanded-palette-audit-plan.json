@@ -1,0 +1,55 @@
+{
+  "schema": "foreground-palette-audit-plan-1",
+  "probes": {
+    "control": {
+      "path": "tmp/heart-learning/u2netp-body-expanded-control-probe-v1/manifest.json",
+      "sha256": "a6b305cdddb0e06cb27ff16325540e55295720fbedbfdbdabf98fac3d71c9f94"
+    },
+    "candidate": {
+      "path": "tmp/heart-learning/u2netp-body-expanded-probe-v1/manifest.json",
+      "sha256": "51a6e9dc57260fb3558702686d204811c67d5f227f044a232a11fbe1268788b7"
+    }
+  },
+  "ids": [
+    "real-1bcc922200edde26-body-1",
+    "real-80a649a21ea938ae-body-1",
+    "real-f6e5e128449e3cb9-body-1",
+    "real-fcbcc23efea92b93-body-1",
+    "real-55704c6e2911bebc-body-1",
+    "real-24b5ed49c9411b11-body-1",
+    "real-589f606a9d9899f2-body-1",
+    "real-dfa7e4b71b43aa86-body-1",
+    "real-2b0550dd86d23b40-body-1",
+    "real-2502cdec0720f4ea-body-1",
+    "real-d3f063052599e167-body-1",
+    "real-a126ed5d62adfd92-body-1",
+    "real-5088a58018c3aa28-body-1",
+    "real-1a7cfc6be8b164b5-body-1",
+    "real-fe7fb089d1cd86b4-body-1",
+    "real-8b91ecf546833a3f-body-1",
+    "real-b5317080eec610dc-body-1",
+    "real-c7d1e0ad5050db71-body-1",
+    "real-45ad148d9ec045be-body-1",
+    "real-702942779385436c-body-1",
+    "real-03bddab9c8f384c4-body-1",
+    "real-eb60ff94dfc6e2f8-body-1",
+    "real-af21a4ef38355dfa-body-1",
+    "real-f4bd8d13fc7e68d0-body-1",
+    "real-f05cf91c134daea9-body-1",
+    "real-12f272f48ed09d51-body-1",
+    "real-28a87a8be083f16c-body-1",
+    "real-ce66f9634c2c613b-body-1",
+    "real-52e732b98f9b14f1-body-1",
+    "real-7e9f6f83ae43ec2a-body-1",
+    "real-d4f6e3c76cf08ea8-body-1",
+    "real-41b7c3e0b79f1265-body-1"
+  ],
+  "sourcePins": {
+    "scripts/inverse/learning/partial-photo-crop.mjs": "69d3b078258e6c43296f7dec37bd40a875728aa3bd2e4ec2fb50ffcd6ec9c349",
+    "scripts/inverse/learning/u2netp-probe.py": "300c7c3c43188528eac7b96f06bdf124b4336e0215f94204c96318d8d4903a6d",
+    "scripts/inverse/learning/replay-photo-fallback.mjs": "ec842919ff25c998c4d09ca3cb64fc39fdf00ca3e7ea41fcbc0be57f98dab112",
+    "scripts/inverse/learning/continuous-foreground.mjs": "ebdf2b4e7c463ded9ef6e192c4f98855ef677220d04d02e7e1f28bdc4abdaa23",
+    "scripts/inverse/learning/foreground-crop.mjs": "b67e2e99acfd4bfcf2cceaa84dd90fc64433e9ef1b7dd1709851ce055dc34ca8",
+    "scripts/inverse/learning/audit-foreground-palette.mjs": "100f37e3ac94d108760f970a8234f0e8b9c479ed464b556b4a900cb4c871fd35"
+  }
+}

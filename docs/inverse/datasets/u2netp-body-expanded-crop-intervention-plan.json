@@ -1,0 +1,54 @@
+{
+  "schema": "body-crop-intervention-plan-1",
+  "probes": {
+    "control": {
+      "path": "tmp/heart-learning/u2netp-body-expanded-control-probe-v1/manifest.json",
+      "sha256": "a6b305cdddb0e06cb27ff16325540e55295720fbedbfdbdabf98fac3d71c9f94"
+    },
+    "candidate": {
+      "path": "tmp/heart-learning/u2netp-body-expanded-probe-v1/manifest.json",
+      "sha256": "51a6e9dc57260fb3558702686d204811c67d5f227f044a232a11fbe1268788b7"
+    }
+  },
+  "ids": [
+    "real-28a87a8be083f16c-body-1"
+  ],
+  "sourcePins": {
+    "scripts/inverse/learning/partial-photo-crop.mjs": "69d3b078258e6c43296f7dec37bd40a875728aa3bd2e4ec2fb50ffcd6ec9c349",
+    "scripts/inverse/learning/u2netp-probe.py": "300c7c3c43188528eac7b96f06bdf124b4336e0215f94204c96318d8d4903a6d",
+    "scripts/inverse/learning/replay-photo-fallback.mjs": "ec842919ff25c998c4d09ca3cb64fc39fdf00ca3e7ea41fcbc0be57f98dab112",
+    "scripts/inverse/learning/continuous-foreground.mjs": "ebdf2b4e7c463ded9ef6e192c4f98855ef677220d04d02e7e1f28bdc4abdaa23",
+    "scripts/inverse/learning/foreground-crop.mjs": "b67e2e99acfd4bfcf2cceaa84dd90fc64433e9ef1b7dd1709851ce055dc34ca8",
+    "scripts/inverse/learning/body-crop-interventions.mjs": "d4cd310b8e54dff9088a14ae51a4bfb8ccc3e8764bfd6ee08042451480fbc8f7"
+  },
+  "interventions": {
+    "binary_shape": [
+      "mask",
+      "pd"
+    ],
+    "body": [
+      "paper",
+      "mask",
+      "pd"
+    ],
+    "colour": [
+      "red",
+      "white",
+      "chroma",
+      "rd",
+      "wd",
+      "palette"
+    ],
+    "all_learned": [
+      "paper",
+      "mask",
+      "pd",
+      "red",
+      "white",
+      "chroma",
+      "rd",
+      "wd",
+      "palette"
+    ]
+  }
+}
