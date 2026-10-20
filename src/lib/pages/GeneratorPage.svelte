@@ -146,6 +146,11 @@
 					})
 				: ''
 	);
+	/** Before there is a text, or while the first picture loads, a plain heart
+	 * stands in: the lobes and an empty middle where the weave will go. */
+	let blankHeart = $derived(renderPictureSvgMarkup([], colors, { idPrefix: 'generated-blank' }));
+	let emptyText = $derived(config.mode === 'text' && !config.text.trim());
+	const EXAMPLE_TEXTS = ['ANNA', 'JUL', 'JULE\nMAND'];
 	/** The figure in the checks moves up and down the heart's middle when
 	 * dragged. A picture's square is 100 units wide, and so is every heart's
 	 * in the same framing; on screen the middle is vertical. */
@@ -406,7 +411,7 @@
 		notice = '';
 		error = '';
 		savedId = null;
-		if (snapshot.mode === 'start') {
+		if (snapshot.mode === 'start' || snapshot.mode === 'text' && !snapshot.text.trim()) {
 			displayed = null;
 			busy = false;
 			return;
@@ -445,6 +450,8 @@
 	let thumbnailState = $derived(
 		JSON.stringify({
 			...config,
+			// With no text yet, the frames show the sample text rather than nothing.
+			text: config.text.trim() ? config.text : defaults.text,
 			frame: defaults.frame,
 			style: defaults.style,
 			textFrame: defaults.textFrame,
@@ -639,6 +646,7 @@
 					class="name-input"
 					rows={Math.max(3, config.text.split('\n').length)}
 					value={config.text}
+					placeholder={t('generatorTextPlaceholder', lang)}
 					oninput={(event) => {
 						const value = normalizeText(event.currentTarget.value);
 						config.text = value;
@@ -649,7 +657,7 @@
 					spellcheck="false"></textarea>
 				<p class="hint">{t('generatorNameHint', lang, { lines: TEXT_LINES, chars: TEXT_LINE_LENGTH })}</p>
 				<div class="examples">
-					{#each ['ANNA', 'JUL', 'JULE\nMAND'] as word (word)}<button
+					{#each EXAMPLE_TEXTS as word (word)}<button
 							onclick={() => (config.text = word)}>{word}</button
 						>{/each}
 				</div>
@@ -749,17 +757,24 @@
 							(displayed?.design.name ?? config.text)}
 					>
 						{@html preview}
-					</div>{:else}<div class="placeholder-heart" aria-hidden="true">
-						♥
+					</div>{:else}<div class="heart-art blank" aria-hidden="true">
+						{@html blankHeart}
 					</div>{/if}
 			</div>
 			<div class="stage-status" role="status">
-				{busy
-					? t('generatorWorking', lang)
-					: result
-						? t('generatorReady', lang)
-						: ''}
+				{emptyText
+					? t('generatorEmptyText', lang)
+					: busy
+						? t('generatorWorking', lang)
+						: result
+							? t('generatorReady', lang)
+							: ''}
 			</div>
+			{#if emptyText}<div class="examples start-examples">
+					{#each EXAMPLE_TEXTS as word (word)}<button
+							onclick={() => (config.text = word)}>{word}</button
+						>{/each}
+				</div>{/if}
 			{#if error}<div class="error" role="alert">{error}</div>{/if}
 			{#if result?.hardToCut}<div class="warning" role="status">
 					{hardToCutText(result.hardToCut.letters)}
@@ -1218,10 +1233,12 @@
 		text-decoration: underline;
 		cursor: pointer;
 	}
-	.placeholder-heart {
-		font-size: 270px;
-		line-height: 1.5;
-		color: #b72f2b;
+	.heart-art.blank {
+		opacity: 0.55;
+	}
+	.start-examples {
+		justify-content: center;
+		margin: 10px 0 0;
 	}
 	.stage-status {
 		font-size: 13px;
@@ -1424,9 +1441,6 @@
 		}
 		.heart-art {
 			max-width: 285px;
-		}
-		.placeholder-heart {
-			font-size: 200px;
 		}
 		.stage-status {
 			font-size: 12px;

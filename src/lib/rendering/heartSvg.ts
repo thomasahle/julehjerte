@@ -236,8 +236,10 @@ export function renderPictureSvgMarkup(
 		`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="${viewBox}" preserveAspectRatio="xMidYMid meet">`,
 		`<g transform="rotate(45, ${overlapCenter.x}, ${overlapCenter.y})">`,
 		`<defs><clipPath id="${idPrefix}-overlap"><rect x="0" y="0" width="100" height="100" /></clipPath></defs>`,
-		`<path d="${buildLobeClipPath('left', overlap)}" fill="${colors.left}" />`,
+		// Both lobe paths cover the square; the left one goes last, so no edge of
+		// the red one shows at the square's side where the left ear meets it.
 		`<path d="${buildLobeClipPath('right', overlap)}" fill="${colors.right}" />`,
+		`<path d="${buildLobeClipPath('left', overlap)}" fill="${colors.left}" />`,
 		`<g clip-path="url(#${idPrefix}-overlap)">`,
 		`<rect x="0" y="0" width="100" height="100" fill="${colors.left}" />`,
 		`<path d="${picture}" fill="${colors.right}" fill-rule="evenodd" />`,
