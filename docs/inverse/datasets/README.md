@@ -782,8 +782,61 @@ recomputes all 52 independent PNG errors. A second audit checks all 104
 candidate/target combinations, including exact self-feature replays and
 observation weights. All **216 tests across 45 learning modules pass**.
 No deployed classifier, model weights, crop rules or acceptance limits changed.
-The next experiment is a matched training continuation for the residual
-readout; these results do not justify releasing the material classifier.
+The matched training continuation below now tests that readout directly;
+these results do not justify releasing the material classifier.
+
+### Training through the residual classifier
+
+The [matched continuation](context-residual-training-results.json) starts both
+1,536-parameter projections from the same checkpoint, with the same 96 draws
+from 32 synthetic geometries, optimizer and frozen U2NETP body. One differentiates
+through the joint colour/context fit; the other fits neural context to the
+remaining colour residual. Both are evaluated with the residual readout. The
+control reproduces all 96 training losses and gradient norms and every final
+weight exactly. All 192 synthetic, 52 real and 64 radial control masks replay
+exactly, as do the radial RGB and observation masks.
+
+| Diagnostic | Joint-trained | Residual-trained |
+| --- | ---: | ---: |
+| Printed synthetic training views, expected pixel error | 3.481% | 3.444% |
+| Previously inspected radial views, expected pixel error | 1.391% | 1.350% |
+| Checked editable pairs, all 32 real photos | 11 | 11 |
+| Editable conversions, 26 fixed crops | 26 | 25 |
+| Independent weave disagreement with each own mask, all 26 | 3.84% | 4.01% |
+
+These small synthetic gains do not establish improved real reconstruction.
+The radial test uses known camera corners, and none of these cohorts is an
+untouched source holdout. Six unresolved crops remain in the denominator.
+All 21 selected synthetic examples, all 64 radial views and all 32 real photos
+were inspected, including every downstream mask/weave panel. Printed ink,
+reflections and the two visibly wrong crop selections remain unresolved.
+
+Two checked designs are gained (wolf and dragonfly), and two are lost (four
+small hearts and the single heart). Their masks differ by only **0.08–0.22%**
+of pixels. In all four cases the successful candidate also passes the image,
+feature and engine geometry/paper checks on the other target. Those are
+cross-target checks on existing candidates, not alternate-target editable
+certificates or a demonstration that fresh searches will recover them reliably.
+The failed single-heart candidate also fails editable crossing/spacing checks;
+its rejection is retained rather than counted as a conversion success.
+
+Fixed-work ABBA diagnostics reproduce the original coarse scores, fine fits and
+ranking decisions on four cases. The flower exposes a concrete instability:
+301 of 160,000 pixels change, an interior region disappears from the feature
+list, and the three-cut grid crosses the colour-retention threshold. It moves
+ahead of the closer five-cut grid; final disagreement rises from **4.45% to
+9.77%**. The single-heart shortlist swaps a five-cut grid for a four-cut grid.
+The wolf and four-small-hearts keep their original shortlists, so their changed
+outcomes arise later in the search. The dragonfly diagnostic deliberately fails
+its exact-replay assertion: its original control fit hit the 800 ms deadline
+after 50 of 150 steps. It is not reported as a deterministic NN improvement.
+
+The next priority is preserving promising routing alternatives when small mask
+changes affect feature ranking, while keeping the final fidelity and paper
+checks intact. Better material supervision is still needed for printed paper;
+repeating training on the same narrow synthetic set is not sufficient evidence
+for release. No production model, solver rule or acceptance threshold changes
+in this study.
 
 ### Latest solver and browser validation
 
