@@ -7,7 +7,7 @@ import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSide } from './state';
 import { templateVariants } from './templates';
-import { inside, uprightToSheet, distance, RIM, WEDGES, type Point, type Ring } from './geometry';
+import { inside, uprightToSheet, distance, WEDGES, type Point, type Ring } from './geometry';
 import { geometryKey } from './cache';
 import { motifChoices, motifPatterns, squareChoices } from './boardMotif';
 import { normalizeContours } from './contours';
@@ -352,26 +352,6 @@ describe('frames from real hearts', () => {
    expect(lines.size, name).toBe(8);
   }
  }, 30000);
- it('lays a large circle on a rim of narrow strips, whose lines cross in a check at each tip', () => {
-  for (const [name, motif] of Object.entries({ star, tree })) {
-   const { design, hardToCut } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'rim' });
-   expect(design.gridSize, name).toEqual({ x: 5, y: 5 });
-   expect(hardToCut, name).toBeUndefined();
-   // Every cut leaves the paper edge along one of the rim's lines.
-   const rect = inferOverlapRect(design.fingers, design.gridSize);
-   const sheet = ({ x, y }: { x: number; y: number }) => [(x - rect.left) / rect.width * 100, (y - rect.top) / rect.height * 100];
-   const lines = new Set<string>();
-   for (const { segments } of design.fingers.filter(f => f.id.includes('cut')))
-    for (const { p0, p3 } of [segments[0], segments[segments.length - 1]]) {
-     const [a, b] = [sheet(p0), sheet(p3)], axis = Math.abs(a[0] - b[0]) < 1e-6 ? 0 : 1;
-     expect(Math.abs(a[axis] - b[axis]), name).toBeLessThan(1e-6);
-     const line = RIM.lines.find(l => Math.abs(a[axis] - l) < 1e-6);
-     expect(line, name).toBeDefined();
-     lines.add(`${axis} ${line}`);
-    }
-   expect(lines.size, name).toBe(8);
-  }
- });
  slow('keeps the space asked for, so a circle only grows with it', () => {
   // A circle that could be cut cleanly further out stays where the space puts
   // it, hard to cut if need be, rather than jumping out as the slider moves.

@@ -143,11 +143,6 @@ describe('the picture drawn before the cuts are found', () => {
 		expect(mismatch({ ...request, name: 'Tree', contours: tree.contours as Ring[], scale: .8 })).toBeLessThan(.01);
 	});
 
-	it('is the large circle on its rim the cuts make, at any size', () => {
-		const request: GeneratorRequest = { mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'rim', gap: 3 };
-		for (const scale of [.7, .85]) expect(mismatch({ ...request, scale }), `${scale}`).toBeLessThan(.01);
-	});
-
 	it('is the checks in the tips the cuts make, at any space around the motif', () => {
 		for (const gap of [0, 3, 15])
 			expect(mismatch({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'corners', gap }), `${gap}`).toBeLessThan(.01);

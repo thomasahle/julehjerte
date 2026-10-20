@@ -1,30 +1,5 @@
 # Generator robustness results
 
-## The large circle, as in an old pattern
-
-Product request (2026-10-19): the frame of a photographed set of hearts, a large
-white circle with a fleur-de-lis, a deer's head or a goat on a red field, checks
-only at the tips. It is the circle on a board with uneven strips (`RIM`): two
-narrow strips along each edge (lines at 8, 16, 84, 92) and a circle of radius 46
-in the large middle square. The board circle's legs already lay on any lines
-(`boardLines`); what was new is that the inner lines cross outside the circle,
-so in each quarter the other sheet's end comes first, and each gate's legs must
-leave the other way round (`framedGate`'s `swap`), crossing in the tip's check.
-Regular boards are unchanged: their first end in the first quarter is always
-the second sheet's, so nothing flips (the slow board tests pass).
-
-A search over the outer and inner lines (40–46 and 28–37 from the middle, plus
-a middle line) and radii 38–47 built only layouts with two lines per side and a
-circle past the outer ones; a third, middle line never meets the circle in turn.
-At 46 the circle shows almost all round and the field is one colour.
-
-At the default size and space, over the 51-motif corpus: 44 clean, 2 hard to cut,
-5 refused (the Tabler stars, coffee, bicycle, sun, paw), median 0.23 s, at most
-4.7 s; every heart is its picture within 1.5% (0.1–0.3% typically). The letter
-layouts for islands (as for dots and accents) rescued the Tabler gift. Over the 49 figures the list shows:
-39 clean, 6 hard (the gift, pig, cow, swan, squirrel, butterfly), 4 refused
-(the polar star, santa hat, candy cane, elephant), refusals after 1–4.5 s.
-
 ## Text in the checks and in the medallion
 
 Product request (2026-10-20): two new text frames, one of them swapping the
