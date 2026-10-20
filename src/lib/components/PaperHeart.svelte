@@ -1212,11 +1212,13 @@
 		});
 	}
 
-	/** The tab's "Start forfra": the tile drawn again as its type starts, at its size. */
+	/** The tab's "Start forfra": the tile drawn again as its type starts, at its size; nothing, where it is that already. */
 	function restartEscherTile() {
 		if (!patternTile || !escher) return;
+		const start = escher.restartedTile(patternTile);
+		if (JSON.stringify(escher.savedPattern(start)) === JSON.stringify(escher.savedPattern(patternTile))) return;
 		const before = snapshotState();
-		showTile(escher.restartedTile(patternTile));
+		showTile(start);
 		pushUndo(before);
 	}
 
@@ -3690,6 +3692,7 @@
 														stroke="#666"
 														stroke-width="1"
 														vector-effect="non-scaling-stroke"
+														pointer-events="none"
 													/>
 													<circle
 														cx={seg.p1.x}
@@ -3714,6 +3717,7 @@
 														stroke="#666"
 														stroke-width="1"
 														vector-effect="non-scaling-stroke"
+														pointer-events="none"
 													/>
 													<circle
 														cx={seg.p2.x}
@@ -3739,6 +3743,7 @@
 														stroke="#666"
 														stroke-width="1"
 														vector-effect="non-scaling-stroke"
+														pointer-events="none"
 													/>
 													<circle
 														cx={prev.p2.x}
@@ -3761,6 +3766,7 @@
 														stroke="#666"
 														stroke-width="1"
 														vector-effect="non-scaling-stroke"
+														pointer-events="none"
 													/>
 													<circle
 														cx={next.p1.x}

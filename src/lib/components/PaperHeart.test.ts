@@ -259,6 +259,17 @@ describe('the Escher tab', () => {
 		h.button('Undo').click();
 		flushSync();
 		expect(JSON.stringify(h.fingers)).toBe(knobs);
+		// on a tile that is its start already, it changes nothing and leaves nothing to undo
+		h.button('Redo').click();
+		flushSync();
+		const started = JSON.stringify(h.fingers);
+		h.target.querySelector<HTMLButtonElement>('.pattern-restart')!.click();
+		flushSync();
+		expect(JSON.stringify(h.fingers)).toBe(started);
+		h.button('Undo').click();
+		flushSync();
+		expect(JSON.stringify(h.fingers)).toBe(knobs);
+		expect(h.button('Undo').disabled).toBe(true);
 	});
 
 	it('drags the same node of a moved pattern on, though the edge cuts more of a curve before it into the cut on the way', async () => {
