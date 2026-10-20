@@ -1,0 +1,5224 @@
+{
+  "schema": "feature-priority-study-1",
+  "date": "2026-10-20",
+  "status": "complete",
+  "decision": "Reject the proposed guard for production. It improves one neural-mask flower fit but regresses the existing Hunodan quality and runtime control. Preserve the original production ranking and all acceptance gates.",
+  "plan": {
+    "path": "docs/inverse/datasets/feature-priority-plan.json",
+    "sha256": "c41af3706d5d8f172a405b5e5e643042da8a2e0112888835419f3f7c39531047"
+  },
+  "sourceCommit": "41d4a4ab28e312a80f3ddaf73cfa140d81f13272",
+  "screen": {
+    "summary": {
+      "uniqueTargets": 78,
+      "duplicateReferences": 26,
+      "unresolvedReferences": 24,
+      "screened": 63,
+      "changed": [
+        59
+      ],
+      "coarseScoresReplayed": 1166,
+      "fineScoresReplayed": 189,
+      "deadlineLimitedOriginalFits": 0,
+      "duplicateCoarseScoresReplayed": 376,
+      "duplicateFineScoresReplayed": 62,
+      "duplicateDeadlineLimitedOriginalFits": 1
+    },
+    "seconds": 67.240670041,
+    "firstScreen": {
+      "path": "tmp/heart-learning/feature-priority-screen-v1.json",
+      "sha256": "8e66f2b9a6e67bab52f8f707ea0d1da3597a264ac867b76d2250dc490842bd91"
+    },
+    "completeScreen": {
+      "path": "tmp/heart-learning/feature-priority-screen-v2.json",
+      "sha256": "d35e40d97e3cae255efdbf66edc0052b72d66192235c80293f4adeeb5de10785"
+    },
+    "firstScreenControlScoresExactOnReplay": true,
+    "scope": "78 unique targets from 26 fixed crops plus six unresolved photos; repeated targets and unresolved method references are retained separately. 63 fully observed targets eligible, 15 observation-weighted targets outside the changed policy. The second screen adds exact duplicate-run score validation and retains the original deadline-truncated fit.",
+    "rows": [
+      {
+        "index": 0,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-f6e5e128449e3cb9-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "c58ace9db40649208b25b25bd42f532512362b362fd002d92f20bdaed691a7ca",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.0858917236328125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.081390380859375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.086212158203125,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.0858917236328125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.081390380859375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.086212158203125,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 1,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-f6e5e128449e3cb9-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "f73f827f7298857e57b15e149a7c96fa62a4eb13de7df8c99602f66d163812bb",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.0335235595703125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.0413818359375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.037200927734375,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.0335235595703125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.0413818359375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.037200927734375,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 2,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-fcbcc23efea92b93-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "3dd52ebd164eda7147064d1eb8e53c1750349d888b576d547aaf343526b1a1e4",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              3,
+              4
+            ],
+            "phase": 1,
+            "error": 0.06590263343567056,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.06861043839743712,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0620506855323125,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              3,
+              4
+            ],
+            "phase": 1,
+            "error": 0.06590263343567056,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.06861043839743712,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0620506855323125,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 3,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-fcbcc23efea92b93-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "125568d2afdfb169abd30cff662964ac379d0b6e67fa9d323e44a4824bf151e0",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              3,
+              4
+            ],
+            "phase": 1,
+            "error": 0.06943040750557769,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              7
+            ],
+            "phase": 1,
+            "error": 0.061402337865410654,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.06727560496558037,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              3,
+              4
+            ],
+            "phase": 1,
+            "error": 0.06943040750557769,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              7
+            ],
+            "phase": 1,
+            "error": 0.061402337865410654,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.06727560496558037,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 4,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-55704c6e2911bebc-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "cd597a73183932ee743691b60b5ae1df76a9da3ba59c7bf316733fb0d9be035d",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.099639892578125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.111663818359375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              1
+            ],
+            "phase": -1,
+            "error": 0.129241943359375,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.099639892578125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.111663818359375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              1
+            ],
+            "phase": -1,
+            "error": 0.129241943359375,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 5,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-55704c6e2911bebc-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "6e18c6c968a4102dbddbd544ccb2883f8b1aee737f38d1242abe2f81dc78e155",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.112701416015625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.1248016357421875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.1100921630859375,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.112701416015625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.1248016357421875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.1100921630859375,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 6,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-24b5ed49c9411b11-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "513d56c1fc54920d1ea4e2879b27e9b74565dee442ded76338c56556f4d0ac6a",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              7,
+              3
+            ],
+            "phase": 1,
+            "error": 0.0966033935546875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              7,
+              7
+            ],
+            "phase": 1,
+            "error": 0.093536376953125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              8,
+              8
+            ],
+            "phase": 1,
+            "error": 0.0898284912109375,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              7,
+              7
+            ],
+            "phase": 1,
+            "error": 0.093536376953125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              8,
+              8
+            ],
+            "phase": 1,
+            "error": 0.0898284912109375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              7,
+              3
+            ],
+            "phase": 1,
+            "error": 0.0966033935546875,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 7,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-24b5ed49c9411b11-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "bb851ff71fdb5c11763be4b171c5fb9ea60a2d731df0a907a6fc9194373250e6",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              7,
+              3
+            ],
+            "phase": 1,
+            "error": 0.092987060546875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              7,
+              7
+            ],
+            "phase": -1,
+            "error": 0.09967041015625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              8,
+              8
+            ],
+            "phase": 1,
+            "error": 0.0922088623046875,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              7,
+              3
+            ],
+            "phase": 1,
+            "error": 0.092987060546875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              7,
+              7
+            ],
+            "phase": -1,
+            "error": 0.09967041015625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              8,
+              8
+            ],
+            "phase": 1,
+            "error": 0.0922088623046875,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 8,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-589f606a9d9899f2-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "a2a18b953e472f5890e03871fbe7f08a2ca801aedc83564ab18d8a3c3eb5ea39",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.0911102294921875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0776214599609375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0777130126953125,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.0911102294921875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0776214599609375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0777130126953125,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 9,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-589f606a9d9899f2-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "85d4f64324cb687aecea94ad3725736da9d76783972c5dfe3e29c3cf7e0a1869",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.0786895751953125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0755767822265625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.07916259765625,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.0786895751953125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0755767822265625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.07916259765625,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 10,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-dfa7e4b71b43aa86-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "78439ec46e7d3e6618566fc85699659d45441d4251c3c0775abb8d85b705876d",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.1536102294921875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.163177490234375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.1548309326171875,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.1536102294921875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.163177490234375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.1548309326171875,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 11,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-dfa7e4b71b43aa86-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "3016c06a2dfbc61c15dad0f9f1828c53fad3b07bcddf2cf94111472437409c64",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.1604766845703125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.1542510986328125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.1484375,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.1604766845703125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.1542510986328125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.1484375,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 12,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-2502cdec0720f4ea-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "97e3dac87b749c2ef1624ea83bf8230f6b180828abcb064d713a8ccf47a90544",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.069732666015625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0528411865234375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0543975830078125,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0543975830078125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.069732666015625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0528411865234375,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 13,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-2502cdec0720f4ea-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "9330af7a9eeb8bb71a593f463665040686eccd14425e59373cec981bbd78310c",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.06744384765625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0602569580078125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0538177490234375,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0602569580078125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.06744384765625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0538177490234375,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 14,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-d3f063052599e167-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "95df5f17e585666876cadb8b01c53aaf12fa75bec9800f2f4d883e1e818da646",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.072479248046875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.1029205322265625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.097625732421875,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.072479248046875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.1029205322265625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.097625732421875,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 15,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-d3f063052599e167-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "2ff750efecd2f17aff0227e0ee74394fabc958f3d126c11e86c314b7acdc1210",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.061004638671875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.089996337890625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.1028594970703125,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.061004638671875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.089996337890625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.1028594970703125,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 16,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-a126ed5d62adfd92-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "7ef71a2c2bdafa0c3cb1a68500c6cc8fe63330874d46012c80c2414565d30111",
+        "reason": "observation-weighted-policy-unchanged"
+      },
+      {
+        "index": 17,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-a126ed5d62adfd92-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "28a5318e73bd7c8e4e63d8408509ece6a2f969c76f0c6f5dd850de9ff78f456f",
+        "reason": "observation-weighted-policy-unchanged"
+      },
+      {
+        "index": 18,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-5088a58018c3aa28-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "394baa70e3634a4bf450bdf4120fbdf2823c3eb461e32399a66bdbbc4297662d",
+        "reason": "observation-weighted-policy-unchanged"
+      },
+      {
+        "index": 19,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-5088a58018c3aa28-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "26c597fe78d3bf392ebd62939a6fb303e13f307b33be138daa9b38c6b28e1821",
+        "reason": "observation-weighted-policy-unchanged"
+      },
+      {
+        "index": 20,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-1a7cfc6be8b164b5-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "7bc8a8b42c062c7e02088f4f6de7506afffeb5110e77d14df1d45dcf04140c0b",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.012359619140625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": 1,
+            "error": 0.0134735107421875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              2,
+              3
+            ],
+            "phase": -1,
+            "error": 0.01470947265625,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.012359619140625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": 1,
+            "error": 0.0134735107421875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              2,
+              3
+            ],
+            "phase": -1,
+            "error": 0.01470947265625,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 21,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-1a7cfc6be8b164b5-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "2888bda27478105e837dc2c7aea562c90f21fd238a4339196ea9eb0609bedc6a",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.013580322265625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": 1,
+            "error": 0.014404296875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              2,
+              3
+            ],
+            "phase": -1,
+            "error": 0.015594482421875,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.013580322265625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": 1,
+            "error": 0.014404296875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              2,
+              3
+            ],
+            "phase": -1,
+            "error": 0.015594482421875,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 22,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-fe7fb089d1cd86b4-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "02be9374277984c99fd17e518ef672dbf326ee2e21161b6a3300ebd803e636dc",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0934600830078125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              3
+            ],
+            "phase": -1,
+            "error": 0.07855224609375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0766754150390625,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0934600830078125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              3
+            ],
+            "phase": -1,
+            "error": 0.07855224609375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0766754150390625,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 23,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-fe7fb089d1cd86b4-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "249a44e293c662aaab7a742e6515b62e29357cd3ac310205d9dba0025432e2ce",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.089996337890625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.0733489990234375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              4
+            ],
+            "phase": -1,
+            "error": 0.0866851806640625,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.089996337890625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.0733489990234375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              4
+            ],
+            "phase": -1,
+            "error": 0.0866851806640625,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 24,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-8b91ecf546833a3f-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "e37a9352d7a427961492feb476ce43b3598ad91b701a0299c710269f9d73838b",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.0424346923828125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0491180419921875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0537109375,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.0424346923828125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0491180419921875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0537109375,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 25,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-8b91ecf546833a3f-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "1ce2d424938a763b548f7c73e783fbf84cb23586b306b79fea094ebf7999f02a",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.045318603515625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0513763427734375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.062591552734375,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.045318603515625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0513763427734375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.062591552734375,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 26,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-b5317080eec610dc-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "00e8f3d3d22fbb89d4fedd7619471730e5d9a8c9c574f1f7f9b1377368f97e8e",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              1,
+              1
+            ],
+            "phase": -1,
+            "error": 0.122802734375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              1,
+              1
+            ],
+            "phase": 1,
+            "error": 0.1252288818359375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.1243896484375,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              1,
+              1
+            ],
+            "phase": -1,
+            "error": 0.122802734375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              1,
+              1
+            ],
+            "phase": 1,
+            "error": 0.1252288818359375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.1243896484375,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 27,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-b5317080eec610dc-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "a68333d0824f5b36b16bf53b411e9024935fbe74575cdaf506ad1067a5196964",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              1,
+              1
+            ],
+            "phase": -1,
+            "error": 0.115875244140625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              1,
+              1
+            ],
+            "phase": 1,
+            "error": 0.116363525390625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.11370849609375,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              1,
+              1
+            ],
+            "phase": -1,
+            "error": 0.115875244140625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              1,
+              1
+            ],
+            "phase": 1,
+            "error": 0.116363525390625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.11370849609375,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 28,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-c7d1e0ad5050db71-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "017df7b5825d2e1696d37a07156036c25fb7bdaf4e3dc5c1bf43ff9afebf8a15",
+        "reason": "observation-weighted-policy-unchanged"
+      },
+      {
+        "index": 29,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-c7d1e0ad5050db71-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "20279f5d7d8b49d38839bfa5634bfccaddbc66a0ace3e7c6be4c6f04db98edc5",
+        "reason": "observation-weighted-policy-unchanged"
+      },
+      {
+        "index": 30,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-45ad148d9ec045be-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "931b79cba0bfd05be976f96e30b191605a7454081cf3bd8c903b191ef007fcf9",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.043121337890625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              4,
+              5
+            ],
+            "phase": -1,
+            "error": 0.047760009765625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0446929931640625,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.043121337890625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              4,
+              5
+            ],
+            "phase": -1,
+            "error": 0.047760009765625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0446929931640625,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 31,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-45ad148d9ec045be-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "9fbff5d61bcfb7521c2925f11ac09ad0674089e5a7269c291330e8e06f5a1c35",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.044647216796875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0489959716796875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0459136962890625,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.044647216796875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0489959716796875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0459136962890625,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 32,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-702942779385436c-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "6debf5e7a3cbbcc38fb16aaf5855b5c9343b68fbc0382ae15b84fb0ac49b13be",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.074615478515625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0751190185546875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.0753936767578125,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.074615478515625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0751190185546875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.0753936767578125,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 33,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-702942779385436c-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "5de03f6ab6f6bd0bbe905e30f47446682f340dc2c705ebadba8cfb55280236a7",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.07550048828125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.07061767578125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.07061767578125,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.07550048828125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.07061767578125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.07061767578125,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 34,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-03bddab9c8f384c4-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "62e0b397be60d7e32abb1263367c83b1c8bc1223b041843e1d271c7111cbfa24",
+        "reason": "observation-weighted-policy-unchanged"
+      },
+      {
+        "index": 35,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-03bddab9c8f384c4-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "6e8660c631c318153068e07b4e25bed9f73ee0bb82cb2968472970b31c4e7d38",
+        "reason": "observation-weighted-policy-unchanged"
+      },
+      {
+        "index": 36,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-eb60ff94dfc6e2f8-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "a46834f177743da624b38be11ef65b2c68291e640c410e2f6d6fcf252137fd56",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.053253173828125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0348968505859375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0443267822265625,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.053253173828125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0348968505859375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0443267822265625,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 37,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-eb60ff94dfc6e2f8-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "0bea5772aaa9fe3685c08ae7297190d1e8b9ca8d81e0f000a82f09ae12245d74",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.05120849609375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.037109375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0435028076171875,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.05120849609375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.037109375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0435028076171875,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 38,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-af21a4ef38355dfa-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "f9447525c902c3043567c77a393f631dbe9aa61b85226c6a617fcbc14346ecb3",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0587615966796875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0453033447265625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0473175048828125,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0587615966796875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0453033447265625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0473175048828125,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 39,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-af21a4ef38355dfa-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "25cbf4c2358c1cb505b2a0009c1f91c37ea04356a81ec3bb1e7e2cde53f3e81c",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0604095458984375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.044769287109375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.07550048828125,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0604095458984375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.044769287109375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.07550048828125,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 40,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-f05cf91c134daea9-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "ff85473586239ab9ae903e98a01e72fe64d627fa72e948ee83edf38e932f9f85",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              3,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0949554443359375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.099151611328125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              5
+            ],
+            "phase": -1,
+            "error": 0.1014404296875,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              3,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0949554443359375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.099151611328125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              5
+            ],
+            "phase": -1,
+            "error": 0.1014404296875,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 41,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-f05cf91c134daea9-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "f2385b1c3e03bdf0a1d1c26109f857c7df797120bcf215aabe5a668b17d49a7e",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.0911712646484375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.078125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              5,
+              3
+            ],
+            "phase": 1,
+            "error": 0.1136016845703125,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.0911712646484375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.078125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              5,
+              3
+            ],
+            "phase": 1,
+            "error": 0.1136016845703125,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 42,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-28a87a8be083f16c-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "7c81ee8da5b4d3638116f6c6c8a4168f703ef97e26e16c812ab3b406b3c9f25a",
+        "reason": "observation-weighted-policy-unchanged"
+      },
+      {
+        "index": 43,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-28a87a8be083f16c-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "1aff07ab7f0ca7a1a54e8b86d48ba7303dbfbaf0c73ca2e854af91c240a74817",
+        "reason": "observation-weighted-policy-unchanged"
+      },
+      {
+        "index": 44,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-ce66f9634c2c613b-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "c27bd45f6bd4af53defe17fd39e0679f722ef2c1dfdd39c25d89e82e3ccd7b4b",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.0629119873046875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0671539306640625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0625,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.0629119873046875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0671539306640625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0625,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 45,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-ce66f9634c2c613b-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "0d006ebece78b0f78b6a657a0210fc4cac006b669b2965f311f69b34febbe6d1",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.065948486328125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0706634521484375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0689849853515625,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.065948486328125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0706634521484375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0689849853515625,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 46,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-52e732b98f9b14f1-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "60d603662f2cf8b41f09afd9a04f74f7039d43ea489a5b79e79fbfc54ffe445a",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.0462493896484375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0498809814453125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              5
+            ],
+            "phase": -1,
+            "error": 0.05316162109375,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.0462493896484375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0498809814453125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              5
+            ],
+            "phase": -1,
+            "error": 0.05316162109375,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 47,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-52e732b98f9b14f1-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "25b2e1122dbbd6b62eb6666f8527144267804ee61807dae66de3d1c91b00f79d",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.045166015625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": -1,
+            "error": 0.0671539306640625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.0596771240234375,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.045166015625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": -1,
+            "error": 0.0671539306640625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.0596771240234375,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 48,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-d4f6e3c76cf08ea8-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "125133957d39f3e856f77ec311204bd5c095ba7a8ec73608be1855b62fa5029e",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.0338134765625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              5
+            ],
+            "phase": 1,
+            "error": 0.034576416015625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0370635986328125,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.0338134765625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              5
+            ],
+            "phase": 1,
+            "error": 0.034576416015625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0370635986328125,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 49,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-d4f6e3c76cf08ea8-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "a365f524740c1b7e0d215c8657faf31573dc58c24452fca2a33e258dfa038fcb",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.0218048095703125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0322265625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.032623291015625,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.0218048095703125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0322265625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.032623291015625,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 50,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-41b7c3e0b79f1265-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "e659afc4a4868b65c54d818f5dd09d61a3f04399e4134afa6ed649a455460f94",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.0714263916015625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.052001953125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.04364013671875,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.0714263916015625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.052001953125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.04364013671875,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 51,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-41b7c3e0b79f1265-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "1fc3d4d5305d5c79c5f4836c9123a68925a0fee3ebe4cbf37464ae1d1cbc9a4a",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.048431396484375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0474395751953125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": 1,
+            "error": 0.0793304443359375,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.048431396484375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0474395751953125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": 1,
+            "error": 0.0793304443359375,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 52,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-f6e5e128449e3cb9-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "d64816310f6ba1745d8dd303582db20d2f65a608d884ca62e3d2f8d5c6dd74b7",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.0426025390625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.04827880859375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0427398681640625,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.0426025390625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.04827880859375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0427398681640625,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 53,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-fcbcc23efea92b93-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "b54b0b95e429c3f5d80d74ba664aac8f2fac1fca39f8ac1ddeac64084c4af280",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              6
+            ],
+            "phase": -1,
+            "error": 0.05432772067656986,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.06889647413283499,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0628897236894796,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              6
+            ],
+            "phase": -1,
+            "error": 0.05432772067656986,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.06889647413283499,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0628897236894796,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 54,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-55704c6e2911bebc-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "84f5236bd0e482a4f055f9be78155b75087e36f16f6288e511fe445751d8b1f4",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              5,
+              1
+            ],
+            "phase": -1,
+            "error": 0.1115570068359375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              1
+            ],
+            "phase": -1,
+            "error": 0.1227874755859375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.107635498046875,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              5,
+              1
+            ],
+            "phase": -1,
+            "error": 0.1115570068359375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              1
+            ],
+            "phase": -1,
+            "error": 0.1227874755859375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.107635498046875,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 55,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-24b5ed49c9411b11-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "db64b714d76ffa3542fe2e2108cc9424aa68f88d46600c2924d3f096a276f76f",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              7,
+              3
+            ],
+            "phase": 1,
+            "error": 0.0953826904296875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              7,
+              7
+            ],
+            "phase": 1,
+            "error": 0.0901336669921875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              8,
+              8
+            ],
+            "phase": 1,
+            "error": 0.0941009521484375,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              7,
+              7
+            ],
+            "phase": 1,
+            "error": 0.0901336669921875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              8,
+              8
+            ],
+            "phase": 1,
+            "error": 0.0941009521484375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              7,
+              3
+            ],
+            "phase": 1,
+            "error": 0.0953826904296875,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 56,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-589f606a9d9899f2-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "03fd6f266ab3dad705fdf48fbaa708815ef530fb12b490a0154c65b88034f480",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.072418212890625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0784759521484375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.1195068359375,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.072418212890625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0784759521484375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.1195068359375,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 57,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-dfa7e4b71b43aa86-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "75c52aa3175f0d571913e42c3a684a5022cd20f721ee8d1d9054982c3cf6fd7e",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.1579132080078125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.1402130126953125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.1557464599609375,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.1579132080078125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.1402130126953125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.1557464599609375,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 58,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-2502cdec0720f4ea-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "8203200acf9abbf9937a7b15543f29f8bed978bfa8b27970c1b1d76be375bf61",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.069580078125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.05194091796875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0545196533203125,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0545196533203125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.069580078125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.05194091796875,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 59,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-d3f063052599e167-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "b2f53569568d37d9cf2bb0ef8d2d6093fbfd51e8600aa65fae698e1a35be8a68",
+        "reason": "higher-error-feature-promotion",
+        "before": [
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.061614990234375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.08917236328125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.102752685546875,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.08917236328125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.061614990234375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.102752685546875,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": true
+      },
+      {
+        "index": 60,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-a126ed5d62adfd92-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "a15504e31b77c4c874f704ee03130fc45ad2f11225a49783a70a8f1a786abfdc",
+        "reason": "observation-weighted-policy-unchanged"
+      },
+      {
+        "index": 61,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-5088a58018c3aa28-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "86b23e1293847eada03eb94fd33fcfbeb41b640cbf2cfe38275e7338b5a7d8b6",
+        "reason": "observation-weighted-policy-unchanged"
+      },
+      {
+        "index": 62,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-1a7cfc6be8b164b5-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "5258b47deef61b54839e7881ab7f858c35b1483cb503a9f885dead12a1ab748c",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.01251220703125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": 1,
+            "error": 0.013458251953125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              2,
+              3
+            ],
+            "phase": -1,
+            "error": 0.01458740234375,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.01251220703125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": 1,
+            "error": 0.013458251953125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              2,
+              3
+            ],
+            "phase": -1,
+            "error": 0.01458740234375,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 63,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-fe7fb089d1cd86b4-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "f0453f7f4b6764557f20f936555874e76afe6d004e284f950b3b3236edcd0e0d",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.0653076171875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.077117919921875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0675201416015625,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.0653076171875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.077117919921875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0675201416015625,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 64,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-8b91ecf546833a3f-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "ae76b160a76ed6a05b2ca2642602b0bb0432f157b4f440fa97e45eb396f78937",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.04229736328125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.048858642578125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0538787841796875,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.04229736328125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.048858642578125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0538787841796875,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 65,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-b5317080eec610dc-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "de7b6e9215a350cfb4bc99b045866b1678bc58713ee64a2481f5a2602734993d",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              1,
+              1
+            ],
+            "phase": 1,
+            "error": 0.0880126953125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              1,
+              1
+            ],
+            "phase": -1,
+            "error": 0.1004486083984375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.0913238525390625,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              1,
+              1
+            ],
+            "phase": 1,
+            "error": 0.0880126953125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              1,
+              1
+            ],
+            "phase": -1,
+            "error": 0.1004486083984375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.0913238525390625,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 66,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-c7d1e0ad5050db71-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "b4c014eab9b1eb9d0b616bb71927c1cf0a7b6d6208b0bba5965116491cbb36f2",
+        "reason": "observation-weighted-policy-unchanged"
+      },
+      {
+        "index": 67,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-45ad148d9ec045be-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "5f4f7b28cf8974033c8bb2c8ef0c1392f8b7e1c7ecf278265dba9a1f28f0383e",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.044769287109375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0491180419921875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0472412109375,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.044769287109375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0491180419921875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0472412109375,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 68,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-702942779385436c-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "fcac5f84e3913cad4222dbc1830fcf9ebdd3fead72fd6492f47e7bc74a1be48b",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.077545166015625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.0753021240234375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0792388916015625,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": -1,
+            "error": 0.077545166015625,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "error": 0.0753021240234375,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0792388916015625,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 69,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-03bddab9c8f384c4-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "aef714f62d5cee23a2a4027fc0ffe98d9a171038e7aac1c951ec21d35ca3e0de",
+        "reason": "observation-weighted-policy-unchanged"
+      },
+      {
+        "index": 70,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-eb60ff94dfc6e2f8-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "8f9a2f1bc906a61c990d2d0be7ea34c816b80497c3371e2ea919d1daa9aafc0d",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.050811767578125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0356292724609375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0445556640625,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.050811767578125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": 1,
+            "error": 0.0356292724609375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0445556640625,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 71,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-af21a4ef38355dfa-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "f695e706e90e01b9561fa322affce03b4edca20456087d342897b190f5eb95b4",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0585174560546875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.053497314453125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.075225830078125,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": -1,
+            "error": 0.0585174560546875,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.053497314453125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.075225830078125,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 72,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-f05cf91c134daea9-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "2e0f47eba398194d1396a330279f9987abd1d5f2d10041e93a9cc8a034a2eaa7",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.0961456298828125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0808563232421875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              5
+            ],
+            "phase": -1,
+            "error": 0.105224609375,
+            "featuresRetained": false
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.0961456298828125,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0808563232421875,
+            "featuresRetained": false
+          },
+          {
+            "counts": [
+              3,
+              5
+            ],
+            "phase": -1,
+            "error": 0.105224609375,
+            "featuresRetained": false
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 73,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-28a87a8be083f16c-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "fd4c0a58249e305b83bf2f063331a48add29d6e9adadc3539bf527334385313d",
+        "reason": "observation-weighted-policy-unchanged"
+      },
+      {
+        "index": 74,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-ce66f9634c2c613b-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "27ab149b52cbf7a2026990b2c57b46913dc20af289db5a83728b1ef98cd764d9",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.06280517578125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.066925048828125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0677337646484375,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.06280517578125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.066925048828125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              6,
+              6
+            ],
+            "phase": -1,
+            "error": 0.0677337646484375,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 75,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-52e732b98f9b14f1-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "9f5f535917429f274b90af7031b1c8a109a7047c1fbfb2898f57bd01a95ed7f8",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.045562744140625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": -1,
+            "error": 0.0675201416015625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.060211181640625,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.045562744140625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              3,
+              2
+            ],
+            "phase": -1,
+            "error": 0.0675201416015625,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": -1,
+            "error": 0.060211181640625,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 76,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-d4f6e3c76cf08ea8-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "7e4b4c0fbf848a78b0db3592e933f89ab275aab8884b0ae8f38c6c65c2903bcc",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.021484375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0319366455078125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0320587158203125,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.021484375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0319366455078125,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": 1,
+            "error": 0.0320587158203125,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      },
+      {
+        "index": 77,
+        "reference": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-41b7c3e0b79f1265-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "4c648045d1f2b14135c06de70bcde705818ad62317cbf4c30c7995e89cf184a2",
+        "reason": "policy-unchanged",
+        "before": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.04925537109375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0463714599609375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.07977294921875,
+            "featuresRetained": true
+          }
+        ],
+        "after": [
+          {
+            "counts": [
+              4,
+              4
+            ],
+            "phase": 1,
+            "error": 0.04925537109375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              5,
+              5
+            ],
+            "phase": -1,
+            "error": 0.0463714599609375,
+            "featuresRetained": true
+          },
+          {
+            "counts": [
+              2,
+              2
+            ],
+            "phase": 1,
+            "error": 0.07977294921875,
+            "featuresRetained": true
+          }
+        ],
+        "guardTriggered": false
+      }
+    ]
+  },
+  "flower": {
+    "variants": 3,
+    "independentPhotographs": 1,
+    "timeAllowanceSeconds": 10,
+    "methods": [
+      "baseline",
+      "candidate"
+    ],
+    "rows": [
+      {
+        "id": "real-d3f063052599e167-body-1-95df5f17e585",
+        "method": "baseline",
+        "target": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-d3f063052599e167-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "95df5f17e585666876cadb8b01c53aaf12fa75bec9800f2f4d883e1e818da646",
+        "guard": [],
+        "engineError": 0.09014375,
+        "solveSeconds": 10.054596417,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "editableError": 0.09045625,
+        "missingFeatures": 10,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "uncertain",
+        "completeCandidatePassed": false
+      },
+      {
+        "id": "real-d3f063052599e167-body-1-95df5f17e585",
+        "method": "candidate",
+        "target": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-d3f063052599e167-body-1",
+          "method": "synthetic-control-joint"
+        },
+        "maskSha256": "95df5f17e585666876cadb8b01c53aaf12fa75bec9800f2f4d883e1e818da646",
+        "guard": [],
+        "engineError": 0.09014375,
+        "solveSeconds": 9.987623000000001,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "editableError": 0.09045625,
+        "missingFeatures": 10,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "uncertain",
+        "completeCandidatePassed": false
+      },
+      {
+        "id": "real-d3f063052599e167-body-1-2ff750efecd2",
+        "method": "candidate",
+        "target": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-d3f063052599e167-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "2ff750efecd2f17aff0227e0ee74394fabc958f3d126c11e86c314b7acdc1210",
+        "guard": [],
+        "engineError": 0.04436875,
+        "solveSeconds": 10.479932375,
+        "slits": {
+          "left": 6,
+          "right": 6
+        },
+        "editableError": 0.04481875,
+        "missingFeatures": 2,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "completeCandidatePassed": false
+      },
+      {
+        "id": "real-d3f063052599e167-body-1-2ff750efecd2",
+        "method": "baseline",
+        "target": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+            "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+          },
+          "id": "real-d3f063052599e167-body-1",
+          "method": "synthetic-control-residual"
+        },
+        "maskSha256": "2ff750efecd2f17aff0227e0ee74394fabc958f3d126c11e86c314b7acdc1210",
+        "guard": [],
+        "engineError": 0.044325,
+        "solveSeconds": 10.750472292000001,
+        "slits": {
+          "left": 6,
+          "right": 6
+        },
+        "editableError": 0.04458125,
+        "missingFeatures": 2,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "completeCandidatePassed": false
+      },
+      {
+        "id": "real-d3f063052599e167-body-1-b2f53569568d",
+        "method": "baseline",
+        "target": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-d3f063052599e167-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "b2f53569568d37d9cf2bb0ef8d2d6093fbfd51e8600aa65fae698e1a35be8a68",
+        "guard": [],
+        "engineError": 0.097725,
+        "solveSeconds": 9.865991167,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "editableError": 0.09779375,
+        "missingFeatures": 2,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "completeCandidatePassed": false
+      },
+      {
+        "id": "real-d3f063052599e167-body-1-b2f53569568d",
+        "method": "candidate",
+        "target": {
+          "run": {
+            "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+            "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+          },
+          "id": "real-d3f063052599e167-body-1",
+          "method": "residual-trained-residual"
+        },
+        "maskSha256": "b2f53569568d37d9cf2bb0ef8d2d6093fbfd51e8600aa65fae698e1a35be8a68",
+        "guard": [
+          {
+            "retained": [
+              5,
+              5
+            ],
+            "retainedError": 0.061614990234375,
+            "deferred": [
+              3,
+              3
+            ],
+            "deferredError": 0.08917236328125
+          }
+        ],
+        "engineError": 0.03928125,
+        "solveSeconds": 10.214012708000002,
+        "slits": {
+          "left": 6,
+          "right": 6
+        },
+        "editableError": 0.03976875,
+        "missingFeatures": 1,
+        "conversionPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "completeCandidatePassed": false
+      }
+    ]
+  },
+  "hunodanControl": {
+    "fixture": "hjfig-05",
+    "timeAllowanceSeconds": 60,
+    "simulatedFirstGraphDelaySeconds": 1,
+    "originalDisagreementLimit": 0.0095,
+    "report": {
+      "path": "tmp/heart-learning/feature-priority-hunodan-v1/report.json",
+      "sha256": "10d2784933a59c5a9b3f7e6a97125945d6a69022d814e24332befcc3da76a0a1"
+    },
+    "rows": [
+      {
+        "method": "baseline",
+        "maskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+        "probabilitySha256": "f41d0c2e84c81e4f36657face75e51d5445baf3f7e849458e41c24985d815a30",
+        "error": 0.007995139518706689,
+        "seconds": 5.753,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "originalQualityTargetPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true,
+        "guard": [],
+        "routingBudgetSeconds": 6.437475074700001,
+        "routingAccepted": true,
+        "routingPolicy": "prioritize_routing",
+        "finalistPreference": {
+          "before": [
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.042510986328125,
+              "featuresRetained": false
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": 1,
+              "error": 0.037109375,
+              "featuresRetained": false
+            },
+            {
+              "counts": [
+                6,
+                6
+              ],
+              "phase": -1,
+              "error": 0.04638671875,
+              "featuresRetained": true
+            }
+          ],
+          "reservesRefinement": false,
+          "after": [
+            {
+              "counts": [
+                6,
+                6
+              ],
+              "phase": -1,
+              "error": 0.04638671875,
+              "featuresRetained": true
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.042510986328125,
+              "featuresRetained": false
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": 1,
+              "error": 0.037109375,
+              "featuresRetained": false
+            }
+          ],
+          "shortBudgetRefinementFirst": false
+        },
+        "deferredRecovery": null
+      },
+      {
+        "method": "candidate",
+        "maskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+        "probabilitySha256": "f41d0c2e84c81e4f36657face75e51d5445baf3f7e849458e41c24985d815a30",
+        "error": 0.011798994443906348,
+        "seconds": 30.311,
+        "slits": {
+          "left": 6,
+          "right": 6
+        },
+        "originalQualityTargetPassed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "featuresPassed": true,
+        "guard": [
+          {
+            "retained": [
+              4,
+              4
+            ],
+            "retainedError": 0.042510986328125,
+            "deferred": [
+              6,
+              6
+            ],
+            "deferredError": 0.04638671875
+          }
+        ],
+        "routingBudgetSeconds": 0.75,
+        "routingAccepted": false,
+        "routingPolicy": "probe_before_grid_refinement",
+        "finalistPreference": {
+          "before": [
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.042510986328125,
+              "featuresRetained": false
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": 1,
+              "error": 0.037109375,
+              "featuresRetained": false
+            },
+            {
+              "counts": [
+                6,
+                6
+              ],
+              "phase": -1,
+              "error": 0.04638671875,
+              "featuresRetained": true
+            }
+          ],
+          "reservesRefinement": false,
+          "after": [
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1,
+              "error": 0.042510986328125,
+              "featuresRetained": false
+            },
+            {
+              "counts": [
+                6,
+                6
+              ],
+              "phase": -1,
+              "error": 0.04638671875,
+              "featuresRetained": true
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": 1,
+              "error": 0.037109375,
+              "featuresRetained": false
+            }
+          ],
+          "shortBudgetRefinementFirst": false
+        },
+        "deferredRecovery": {
+          "maximumSeconds": 5.906615249700001,
+          "attempted": false,
+          "remainingSeconds": 4.8660566657,
+          "retainedCandidate": {
+            "counts": [
+              6,
+              4
+            ],
+            "imageError": 0.015365108436281028,
+            "geometryPassed": true,
+            "paperPassed": true,
+            "featuresPassed": true
+          }
+        }
+      }
+    ]
+  },
+  "evidence": {
+    "feature-priority-screen-v1.log": {
+      "path": "tmp/heart-learning/feature-priority-screen-v1.log",
+      "sha256": "e35e5cab86bde5af4ecf56b84122f70c35c8bbfe9e95ffc1077f8dc810cf842d"
+    },
+    "feature-priority-screen-v2.log": {
+      "path": "tmp/heart-learning/feature-priority-screen-v2.log",
+      "sha256": "feff60a89226a589e1c86b67d0978ce509ee9f5f9978615dfd9218ff8dd3d85a"
+    },
+    "feature-priority-pipeline-v1/report.json": {
+      "path": "tmp/heart-learning/feature-priority-pipeline-v1/report.json",
+      "sha256": "8f9ff5191b1db53cfb1a0568a20ca9c5c30587d22bc63ef9a0d8baf4de14eacd"
+    },
+    "feature-priority-review-v1/report.json": {
+      "path": "tmp/heart-learning/feature-priority-review-v1/report.json",
+      "sha256": "16c80d0c4ebd0da263b5184af249b46260d349bf3e3a61d528708a1c5a98dea3"
+    },
+    "feature-priority-editor-v1/results.json": {
+      "path": "tmp/heart-learning/feature-priority-editor-v1/results.json",
+      "sha256": "fc317397180f81f18bca3eb148bb81ed6c868a2bd58989a6eba8f634d535dedf"
+    },
+    "feature-priority-hunodan-v1/report.json": {
+      "path": "tmp/heart-learning/feature-priority-hunodan-v1/report.json",
+      "sha256": "10d2784933a59c5a9b3f7e6a97125945d6a69022d814e24332befcc3da76a0a1"
+    }
+  },
+  "visualReview": {
+    "flowerGallery": {
+      "path": "tmp/heart-learning/feature-priority-review-v1/review-01.jpg",
+      "sha256": "461bf0321e935bfb9b4d19a5154030e9564b1e0beca07e5ceeecef42cda25ce4"
+    },
+    "allThreeVariantsInspected": true,
+    "hunodanMaskAndBothWeavesInspected": true,
+    "observations": [
+      "The guard restores a recognizable six-petal flower in the residual-trained mask, but false channels, warped petals and border defects remain.",
+      "The untriggered joint-trained residual mask remains similar; both methods lose two features. The joint-readout mask remains severely distorted.",
+      "On hjfig-05 the guarded candidate has visibly rougher edges, thin false seams and six cuts per sheet versus the baseline four."
+    ]
+  },
+  "validation": {
+    "coarseScoresExactlyReplayed": 1542,
+    "fineScoresExactlyReplayed": 251,
+    "deadlineTruncatedOriginalFitsRetained": 1,
+    "independentFlowerPNGErrorsRecomputed": 6,
+    "editableFlowerExportsAttempted": 6,
+    "editableFlowerExportsConverted": 6,
+    "editableFlowerCandidatesPassed": 0,
+    "pipelineAssetHashChecks": 39,
+    "independentHunodanSVGWeavesRendered": 2,
+    "sourceRuntimeUnchanged": true
+  },
+  "limitations": [
+    "Post-hoc development investigation of already inspected data; not unseen-source NN generalization.",
+    "A fixed-work screen of unchanged masks does not establish robustness on arbitrary perturbations.",
+    "The fresh flower comparison covers one photograph, not three independent designs.",
+    "Timed fits can differ even when the policy does not trigger; no best-of-repeated-run selection.",
+    "Targets are derived photographic masks, not original artwork or cutting-path ground truth.",
+    "The Hunodan counterexample is sufficient to reject this guard; its two candidates did not receive an additional editable-export study after the independent quality regression was established."
+  ],
+  "rootCause": "Sorting candidates also changes early feature initialization and routing allocation. On hjfig-05, restoring the lower-error four-cut grid starts feature initialization, cuts the routing attempt to 0.75 seconds and defers the remaining routing. The unchanged solver instead funds about 6.44 seconds of routing and recovers a four-cut pair. The guarded search refines a six-cut grid for longer and produces worse exported fidelity. A local image-error preference is not an independent scheduling change.",
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "sourcePhotoCopies": 0,
+    "downloads": 0,
+    "studyArtifactUniqueBytes": 4499802,
+    "scope": "Five fit/review/export directories, unique inodes; excludes small standalone screen/log files."
+  }
+}

@@ -1,5 +1,18 @@
 # Generator robustness results
 
+## Larger circles on equal squares for animals
+
+Product request (2026-10-20): the deer in "Cirkel · Lige store tern" stopped at
+70% ("Ved 85 % kan figuren ikke væves…"). Above the touching circle the motif is
+divided into four panels; the deer's panels held separate pieces (its legs), so
+every division failed. The letter grid's routing for dots and islands now joins
+them, tried after every other division. At 85% over the corpus: 44 clean, 3 hard,
+4 refused (was 42, 5, 4); 20 solid motifs (the bell, the tree, simple stars) still
+keep the touching circle, against 24 before: the heart, the Phosphor bird and fish
+and the Tabler butterfly now take the large circle, and so does the deer. Motifs
+that divided before keep their cuts. The corpus run took 42 s instead of 28 s,
+the extra time spent on motifs that end at the touching circle anyway.
+
 ## Text in the checks and in the medallion
 
 Product request (2026-10-20): two new text frames, one of them swapping the

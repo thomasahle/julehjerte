@@ -1,0 +1,32 @@
+{
+  "schema": "feature-priority-plan-1",
+  "date": "2026-10-20",
+  "runs": [
+    {
+      "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+      "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+    },
+    {
+      "path": "tmp/heart-learning/context-residual-trained-pipeline-v1/report.json",
+      "sha256": "9fc6c0959dea69912dc9541ad4466c4a52a629624116b25203f3db31e33f7995"
+    }
+  ],
+  "expectedUniqueTargets": 78,
+  "scope": "Offline fixed-work screen of every distinct target in both complete residual-classifier cohorts. Deduplicate only identical source/crop/target/coverage; retain unresolved references and skip observation-weighted targets because the policy cannot affect them. Reproduce every complete 150-step original fit; record truncated original fits separately and evaluate their full 150 steps without claiming exact replay. No source-photo copies, crop changes, training, extra count hypotheses, production edits or quality-gate changes.",
+  "proposal": "When the existing colour-retention sort promotes a grid whose raw mask error is higher than the original first grid, restore that original grid to first position. Keep all finalists and all later image/feature/geometry/paper gates. This is a scheduling experiment, not a new acceptance rule.",
+  "evaluation": "After fixed-work screening, run fresh paired baseline/proposal ten-second fits on all mask variants of every affected photograph in this pool. Alternate method order. Preserve all outcomes, independently render and score all exports, and audit editable conversions. No per-photo checkpoint selection. A successful affected case alone does not justify release.",
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "maximumWallSeconds": 600,
+    "minimumFreeGiB": 10,
+    "maximumArtifactMiB": 50,
+    "sourcePhotoCopies": 0,
+    "downloads": 0
+  },
+  "motivation": {
+    "path": "docs/inverse/datasets/context-residual-training-results.json",
+    "sha256": "c14000172002ffcc279aeb6e2a958f0994ccccb8aeb5b1c364c5effd6c4ab421"
+  }
+}

@@ -782,19 +782,111 @@ recomputes all 52 independent PNG errors. A second audit checks all 104
 candidate/target combinations, including exact self-feature replays and
 observation weights. All **216 tests across 45 learning modules pass**.
 No deployed classifier, model weights, crop rules or acceptance limits changed.
-The next experiment is a matched training continuation for the residual
-readout; these results do not justify releasing the material classifier.
+The matched training continuation below now tests that readout directly;
+these results do not justify releasing the material classifier.
+
+### Training through the residual classifier
+
+The [matched continuation](context-residual-training-results.json) starts both
+1,536-parameter projections from the same checkpoint, with the same 96 draws
+from 32 synthetic geometries, optimizer and frozen U2NETP body. One differentiates
+through the joint colour/context fit; the other fits neural context to the
+remaining colour residual. Both are evaluated with the residual readout. The
+control reproduces all 96 training losses and gradient norms and every final
+weight exactly. All 192 synthetic, 52 real and 64 radial control masks replay
+exactly, as do the radial RGB and observation masks.
+
+| Diagnostic | Joint-trained | Residual-trained |
+| --- | ---: | ---: |
+| Printed synthetic training views, expected pixel error | 3.481% | 3.444% |
+| Previously inspected radial views, expected pixel error | 1.391% | 1.350% |
+| Checked editable pairs, all 32 real photos | 11 | 11 |
+| Editable conversions, 26 fixed crops | 26 | 25 |
+| Independent weave disagreement with each own mask, all 26 | 3.84% | 4.01% |
+
+These small synthetic gains do not establish improved real reconstruction.
+The radial test uses known camera corners, and none of these cohorts is an
+untouched source holdout. Six unresolved crops remain in the denominator.
+All 21 selected synthetic examples, all 64 radial views and all 32 real photos
+were inspected, including every downstream mask/weave panel. Printed ink,
+reflections and the two visibly wrong crop selections remain unresolved.
+
+Two checked designs are gained (wolf and dragonfly), and two are lost (four
+small hearts and the single heart). Their masks differ by only **0.08–0.22%**
+of pixels. In all four cases the successful candidate also passes the image,
+feature and engine geometry/paper checks on the other target. Those are
+cross-target checks on existing candidates, not alternate-target editable
+certificates or a demonstration that fresh searches will recover them reliably.
+The failed single-heart candidate also fails editable crossing/spacing checks;
+its rejection is retained rather than counted as a conversion success.
+
+Fixed-work ABBA diagnostics reproduce the original coarse scores, fine fits and
+ranking decisions on four cases. The flower exposes a concrete instability:
+301 of 160,000 pixels change, an interior region disappears from the feature
+list, and the three-cut grid crosses the colour-retention threshold. It moves
+ahead of the closer five-cut grid; final disagreement rises from **4.45% to
+9.77%**. The single-heart shortlist swaps a five-cut grid for a four-cut grid.
+The wolf and four-small-hearts keep their original shortlists, so their changed
+outcomes arise later in the search. The dragonfly diagnostic deliberately fails
+its exact-replay assertion: its original control fit hit the 800 ms deadline
+after 50 of 150 steps. It is not reported as a deterministic NN improvement.
+
+The next priority is preserving promising routing alternatives when small mask
+changes affect feature ranking, while keeping the final fidelity and paper
+checks intact. Better material supervision is still needed for printed paper;
+repeating training on the same narrow synthetic set is not sufficient evidence
+for release. No production model, solver rule or acceptance threshold changes
+in this study. All **216 learning tests** and **2,401 application tests** pass,
+as do type checking, lint and the production build. After merging the next
+upstream generator change, all **65 focused frame tests** also pass.
+
+### Feature-priority counterexample from the NN comparison
+
+The [follow-up scheduling experiment](feature-priority-results.json) tests a
+simple proposed guard: when colour retention promotes a grid with worse raw
+image error, keep the previous first grid ahead of it. This changes scheduling
+only; all finalists and final fidelity/paper checks remain available.
+
+The two complete classifier studies contain **78 distinct masks** after exact
+source/crop/mask/coverage deduplication. The fixed-work screen covers all 63
+fully observed targets; the other 15 use observation weights and cannot enter
+the changed policy. Six unresolved photographs remain recorded. Across original
+and duplicate runs, **1,542 coarse and 251 fine scores replay exactly**. One
+50-step interrupted fit is retained separately from its 150-step diagnostic.
+Only the residual-trained flower mask triggers the guard.
+
+Fresh ten-second comparisons include all three recorded classifier masks of
+that flower. The affected result improves from **9.77% to 3.93%** independent
+weave disagreement, and from **9.78% to 3.98%** after editable conversion.
+Missing features fall from two to one, but **neither arm gains a fully checked
+candidate**. All six exports convert and pass geometry; the joint-readout
+variant still has uncertain paper support. The rendered comparison was inspected.
+
+The existing `hjfig-05` photographic regression provides a counterexample to
+promoting this guard. With its original 60-second allowance and simulated
+one-second graph delay, the unchanged automatic workflow returns four cuts per
+sheet at **0.80%** disagreement in **5.8 seconds**. The guard returns six cuts
+at **1.18%** in **30.3 seconds**, failing the existing **0.95%** quality target.
+Both retain valid engine geometry, paper support and source features, but the
+new result has visibly rougher edges and false seams.
+
+The cause is a coupling between ranking and recovery policy. Restoring the
+lower-error grid starts feature initialization and shortens the routing attempt
+from about **6.44 seconds to 0.75 seconds**; subsequent grid refinement does not
+recover the earlier quality. The guard is **rejected for production**, and the
+original regression target remains intact. A learned ranking proposal will
+also need evaluation through these later scheduling decisions: a lower initial
+mask error does not establish a better template or faster search.
 
 ### Latest solver and browser validation
 
-Main `206b0a8d`, including the border-fragment repair and subsequent generator
-work, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39400466843)
+Main `9f260ba6`, including the border-fragment repair, generator work and the
+matched neural-training study, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39406954266)
 on 20 October. This includes type checking, lint, application tests, build and
 all four inverse correctness shards. Timed quality benchmarks retain their
 separate advisory policy; a green workflow does not mean every timing target
-was met. The preceding `2bacf135` run was cancelled by this newer push after
-its correctness jobs passed. The residual material-classifier experiments
-above remain offline.
+was met. The preceding `111f338a` run also passed before this push. The residual
+material-classifier and scheduling experiments above remain offline.
 
 The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and
 hover outline) and archive are **deployed**. The [latest release record](conni-release-qa.json)
