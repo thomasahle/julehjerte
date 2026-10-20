@@ -21,16 +21,21 @@ with areas within 0.2%. On Cinzel's variable master, whose letters are
 overlapping stems, bars and serifs, the ring counts match Python's for every
 glyph, with areas within 0.5%. A font reads in 3–30 ms.
 
-The 200 most popular families, "JUL" and "Anna" in the default frame: 187 cut
-cleanly in both, 13 are hard in one or both, none is refused. The hard ones are
-thin or high-contrast: Playfair Display, Bodoni Moda, Cormorant (both), Abril
-Fatface, Gravitas One, Instrument Serif, Cinzel (Google's, unthickened; the
-search chooses ours), Lobster and the scripts Dancing Script, Satisfy, Great
-Vibes and Zeyada. Median time 0.1 s, 90th percentile 1.8 s, but the four
-scripts take 80–140 s, and Gravitas One 30 s, to settle on hard to cut (the
-picture shows at once). Four families lack some of ÆØÅ, ÄÖÜ or É and say so
-when those are typed. Not done: thickening thin families as Cinzel and Kalam
-are, which would need a measure of each font's thinnest strokes.
+The 200 most popular families and Mountains of Christmas, "JUL" and "Anna" as
+the page asks for them by default (equal squares, square cells): 172 cut cleanly
+in both, 29 are hard in one or both, none is refused. The hard ones are serifs
+with fine hairlines (Playfair Display, Bodoni Moda, Garamonds, Libre
+Baskerville, Crimson Text, Noto Serif in four scripts, DM Serif Display, Abril
+Fatface), slab serifs on "Anna" (Zilla Slab, and Alfa Slab One, which the
+shipped "Plakat" is too), and scripts (Lobster, Lobster Two, Dancing Script,
+Satisfy, Great Vibes, Zeyada, Shadows Into Light, Mountains of Christmas).
+Median time 0.1 s, 90th percentile 3.9 s, slowest 33 s (Great Vibes; the picture
+shows at once). Four families lack some of ÆØÅ, ÄÖÜ or É and say so when those
+are typed. (A first sweep that let the generator choose letter-sized cells
+counted 187 clean, with scripts taking up to 140 s.)
+
+Not done: thickening thin families as Cinzel and Kalam are, which would need a
+measure of each font's thinnest strokes.
 
 ## Larger circles on equal squares for animals
 
