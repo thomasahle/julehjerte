@@ -1,4 +1,4 @@
-"""Compare audited body models on the expanded reviewed training pool.
+"""Compare audited body models on identical or expanded reviewed training pools.
 
 Reuse independently audited training predictions and infer only the additional
 photos absent from the control run. These are training diagnostics, not a
@@ -43,8 +43,8 @@ def main():
     torch.set_num_threads(1); torch.set_num_interop_threads(1)
     control, cp, cf, cr = checked_run(args.control)
     candidate, plan, fields, reference = checked_run(args.candidate)
-    if cp['source'] != plan['source'] or not set(cf) < set(fields):
-        raise ValueError('Require one upstream source and a strictly expanded candidate pool')
+    if cp['source'] != plan['source'] or not set(cf) <= set(fields):
+        raise ValueError('Require one upstream source and an identical or expanded candidate pool')
     if plan['trainIds'][:len(cp['trainIds'])] != cp['trainIds']:
         raise ValueError('Require unchanged control-photo order followed by additional photos')
     root = pinned(plan['source']).parent
@@ -74,12 +74,15 @@ def main():
     with np.load(args.output/'predictions.npz', allow_pickle=False) as saved:
         for name, values in predictions.items():
             if not np.array_equal(saved[name], values): raise ValueError('Stored prediction mismatch')
-    groups = {'previous-16': list(range(len(cp['trainIds']))), 'additional-8': list(range(len(cp['trainIds']), len(items)))}
+    same_pool = len(cp['trainIds']) == len(items)
+    groups = ({'all-training': list(range(len(items)))} if same_pool else
+              {'previous-'+str(len(cp['trainIds'])): list(range(len(cp['trainIds']))),
+               'additional-'+str(len(items)-len(cp['trainIds'])): list(range(len(cp['trainIds']), len(items)))})
     metrics = {group: {name: known_region_metrics(values[ids], [labels[i] for i in ids]) for name, values in predictions.items()} for group, ids in groups.items()}
     pages = []
     for start in range(0, len(items), 4):
         selected = items[start:start+4]; sheet = Image.new('RGB', (1280, 28+len(selected)*344), 'white'); pen = ImageDraw.Draw(sheet)
-        for x, label in enumerate(['Photo', 'Reviewed body (grey unknown)', '16-photo control', '24-photo candidate']): pen.text((320*x+4, 4), label, fill='black')
+        for x, label in enumerate(['Photo', 'Reviewed body (grey unknown)', 'Control', 'Candidate']): pen.text((320*x+4, 4), label, fill='black')
         for row, item in enumerate(selected):
             with Image.open(item['evidence']['photo']) as original:
                 photo = ImageOps.exif_transpose(original).convert('RGB').resize((320, 320), Image.Resampling.BILINEAR)
@@ -94,7 +97,9 @@ def main():
               'implementationSha256': digest(Path(__file__).read_bytes()), 'sourceSeparation': separation,
               'newControlInferences': len(items)-len(cp['trainIds']), 'metrics': metrics, 'gallery': pages,
               'predictions': {'path': 'predictions.npz', 'sha256': digest((args.output/'predictions.npz').read_bytes())},
-              'scope': 'Training diagnostics. All candidate photos trained; eight were absent from control training but share its source groups. Unknown annotation bands are excluded. No held-out, crop or template accuracy claim.'}
+              'scope': ('Training diagnostics. Both models trained on the same photos. ' if same_pool else
+                        'Training diagnostics. All candidate photos trained; additional photos were absent from control training but can share its source groups. ')+
+                       'Unknown annotation bands are excluded. No held-out, crop or template accuracy claim.'}
     (args.output/'report.json').write_text(json.dumps(report, indent=2)+'\n')
     print(json.dumps({g: {n: m['macroMean'] for n, m in methods.items()} for g, methods in metrics.items()}))
 
