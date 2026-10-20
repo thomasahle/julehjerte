@@ -5,8 +5,8 @@ Neural release status reviewed on **2026-10-20**; dataset counts last audited on
 fallback.** It runs locally in the browser; the existing colour classifier and
 geometric solver still produce the cutting templates. The experimental
 paper-identity heads remain rejected for production. The
-[outline-only extension](u2netp-outline-upload-results.json) has passed branch
-CI and browser QA and is merged in PR #17; its main deployment is being checked.
+[outline-only extension](u2netp-outline-upload-results.json) is also deployed
+and passes all 11 live browser checks after merging PR #17.
 
 ## Current results and limits
 
@@ -23,7 +23,7 @@ CI and browser QA and is merged in PR #17; its main deployment is being checked.
 | Broader photo evaluation | Outline extension retains 12/32 and raises the additional set from 4/18 checked derived masks (three supported by full-body evidence) to 6/18, all six body-supported | Replacing a fragment crop with the whole overlap can reveal a reconstruction failure. Printed paper, crop assumptions and feature loss remain separate problems |
 | Paper-colour calibration | Original-resolution colour mixtures restore detail lost by raw neural masks; fresh fixed-crop comparison gives 11/32 checked pairs with learned palettes versus 13/32 with RGB clustering | No learned-only checked gain; print confusion and unsuitable crops remain; these are derived-mask checks, not artwork ground truth |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
-| Solver | Outline release branch passes 1,183 inverse correctness tests; earlier dedicated runs solve all 22 regular Hunodan designs under ten seconds | Some hard fits retain thin false seams; 16/77 original branch-CI timing targets miss; the earlier 27/31 photo benchmark has not been rerun |
+| Solver | Deployed outline release passes 1,183 inverse correctness tests; earlier dedicated runs solve all 22 regular Hunodan designs under ten seconds | Some hard fits retain thin false seams; 17/77 original main-CI timing targets miss; the earlier 27/31 photo benchmark has not been rerun |
 
 The experiment history below retains its original cohorts, counts and release
 decisions. References to an experiment remaining offline describe that stage;
@@ -424,8 +424,16 @@ correctness tests pass. The original timed quality targets remain advisory:
 solver or its benchmark targets; the timed results are not evidence of a solver
 quality improvement. All eight browser screenshots were inspected. Printed
 decoration, glare and handle/border intrusions remain unresolved. These are the
-same development photos, not an unseen test set. Release PR #17 is ready for
-merge; deployment has not yet been verified.
+same development photos, not an unseen test set.
+
+Release PR #17 is **merged and deployed** at `77a9bda7`. Main CI passes all
+1,183 correctness tests and 2,374 application tests; its fresh timed run retains
+**60/77 passes and 17 original-target misses**. All 11 live browser checks pass,
+and all eight checked assets match the tested implementation. The live cross
+exports byte-identical geometry, so the independent export and editable-template
+audits above still apply. Six changed live screenshots were inspected; the other
+two are byte-identical to the reviewed local screenshots. The owned browser
+closed after QA.
 
 #### Latest neural experiments
 

@@ -1,7 +1,7 @@
 {
   "schema": "outline-upload-release-audit-1",
   "date": "2026-10-20",
-  "status": "release-candidate-qa-passed",
+  "status": "deployed-and-live-verified",
   "implementationCommit": "5a91e758cfde3f6b1b72d65acf1bc6a9e6caf966",
   "pullRequest": "https://github.com/thomasahle/julehjerte/pull/17",
   "plan": {
@@ -201,12 +201,122 @@
   },
   "modelWeightsChanged": false,
   "defaultInsetEnabled": false,
-  "productionDeployed": false,
+  "productionDeployed": true,
   "limitations": [
     "This is the same inspected 50-photo development cohort, not unseen-photo accuracy.",
     "Suggested outline-only corners require review; material classification is unchanged.",
     "The existing strict WASM-versus-Torch numerical tolerance remains failed; output-level parity is separately verified.",
     "No mobile performance or physical assembly claim.",
     "The full correctness suite ran in branch CI; it was not duplicated locally. Local validation includes all application tests, targeted crop tests, 50-case parity and real-browser checks."
-  ]
+  ],
+  "release": {
+    "mergeCommit": "77a9bda79c64d7be79c07621bd3c25bd7cac0c61",
+    "applicationSourcesMatchTestedImplementation": true,
+    "mainCI": {
+      "path": "tmp/heart-learning/neural-outline-main-ci.json",
+      "sha256": "adf38711c7546d61c8abebf0d536b6e677073d5db66d86d0cdbb291c23bfe9f9"
+    },
+    "workflow": "https://github.com/thomasahle/julehjerte/actions/runs/39369293317",
+    "conclusion": "success",
+    "applicationTestsPassed": 2374,
+    "applicationTestsSkipped": 142,
+    "inverseCorrectnessPassed": 1183,
+    "inverseCorrectnessFailed": 0,
+    "timedQuality": {
+      "advisory": true,
+      "passed": 60,
+      "total": 77,
+      "missedOriginalTargets": 17,
+      "misses": [
+        "a simpler seed that never contained the Viking opening leaves time for the viable routing",
+        "late clearance comparison can repair its first usable layout before polishing",
+        "a lower-error finalist that erodes a partially retained region cannot claim the refinement reserve",
+        "a late routing candidate uses the repair time already provided by its caller",
+        "a late routing candidate cannot manufacture an unprovided repair allowance",
+        "fresh round-checker fitting verifies its accurate finalist before choosing a worse routing",
+        "fresh fitting continues an unfinished verified initializer within the remaining search allowance",
+        "fresh fitting retains the stacked motif on the resampled mask",
+        "one unobserved corner preserves the significant features of photo-bird",
+        "hard-bibel-star-outline: refine the retained grid before routing, preserving photographic quality",
+        "the original near-miss layout produces checked exports within the original short search (1.5x clock)",
+        "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)",
+        "a short search reserves enough local refinement to close the photographed bird eye",
+        "a fresh shifted bird fit preserves its eye with a 10-second allowance",
+        "the main fitter reconstructs the dense binary photo target with legal editable-sized counts",
+        "fresh frozen routing retains time for a valid template without changing the mask",
+        "fresh synthetic-control routing retains time for a valid template without changing the mask"
+      ]
+    },
+    "live": {
+      "origin": "https://juleflet.dk",
+      "report": {
+        "path": "tmp/heart-learning/neural-outline-upload-live-v1/report.json",
+        "sha256": "634e5310f4c5096e4ba90954a1fd8aaeb413384e94cd804db977bb1af334c600"
+      },
+      "log": {
+        "path": "tmp/heart-learning/neural-outline-upload-live-v1.log",
+        "sha256": "b2eca400c3dac59d9a0f3b7c43c32a3025241736a914c56518681cd3a9474b83"
+      },
+      "servedAssets": {
+        "path": "tmp/heart-learning/neural-outline-live-assets.json",
+        "sha256": "0fd244dc176f1886956fc3f36c5e2f25ecdfdbc818c815f364e789f2029652ba"
+      },
+      "allEightServedAssetsMatch": true,
+      "checksPassed": 11,
+      "errors": [],
+      "newCropsAndMasksMatchExactly": 5,
+      "angelSolvePassed": true,
+      "crossSolvePassed": true,
+      "crossGeometry": {
+        "path": "tmp/heart-learning/neural-outline-upload-live-v1/outline-cross-geometry.json",
+        "sha256": "60bc3d210a0883cfb93a8fb8e62af20245c1c2ba85a8c6797fc5744d5904063a"
+      },
+      "crossGeometryByteIdenticalToAuditedLocalResult": true,
+      "editableCrossAuditReused": "The source crop, classified mask and serialized geometry are exactly equal to the locally audited result. Reuse both independent-export and editable geometry/paper/fidelity checks at 209 and UI 400 pixels; no repeat fitting.",
+      "screenshots": [
+        {
+          "path": "tmp/heart-learning/neural-outline-upload-live-v1/angel-import.png",
+          "sha256": "1939bcf17d8bf85a4cf81251725276031b194e8adf49be34f330ff749a6e46eb",
+          "byteIdenticalToPreviouslyInspectedLocal": true
+        },
+        {
+          "path": "tmp/heart-learning/neural-outline-upload-live-v1/angel-solved.png",
+          "sha256": "1a758b8c4ca7647432608b4c1b0453d3af3a3c87a61184e59349d5aaa89cea56",
+          "byteIdenticalToPreviouslyInspectedLocal": false
+        },
+        {
+          "path": "tmp/heart-learning/neural-outline-upload-live-v1/outline-1-import.png",
+          "sha256": "ab03ee592f84b95fc0171600de522ecaf6cba74e75a6d5685715477eca4a38c8",
+          "byteIdenticalToPreviouslyInspectedLocal": true
+        },
+        {
+          "path": "tmp/heart-learning/neural-outline-upload-live-v1/outline-cross-solved.png",
+          "sha256": "e41ec2295bf546059f76d6bb443e0510740183e23bd71959877d3636b5c57578",
+          "byteIdenticalToPreviouslyInspectedLocal": false
+        },
+        {
+          "path": "tmp/heart-learning/neural-outline-upload-live-v1/outline-2-import.png",
+          "sha256": "36900e843e68d428d2a235c5d3cbf62f7891d91a12864f8e6ec83b85fcf0d317",
+          "byteIdenticalToPreviouslyInspectedLocal": false
+        },
+        {
+          "path": "tmp/heart-learning/neural-outline-upload-live-v1/outline-3-import.png",
+          "sha256": "a9bc75208149768d308325506859fdb4d66b2230f7ca45d37ad51702ebb3e39b",
+          "byteIdenticalToPreviouslyInspectedLocal": false
+        },
+        {
+          "path": "tmp/heart-learning/neural-outline-upload-live-v1/outline-4-import.png",
+          "sha256": "8757023385e4c97d9e3604734450552c56928d22b1c11bc7a8f57a20493bd03d",
+          "byteIdenticalToPreviouslyInspectedLocal": false
+        },
+        {
+          "path": "tmp/heart-learning/neural-outline-upload-live-v1/outline-5-import.png",
+          "sha256": "749fef3431f34caf5befe6b72bd83a0287a2f2667fc52b646c303b07206dc417",
+          "byteIdenticalToPreviouslyInspectedLocal": false
+        }
+      ],
+      "visualReview": "Six changed screenshots inspected directly; two remaining screenshots are byte-identical to the inspected local images. Angel and cross preserve their main shapes, with uneven borders. Printed birds extend onto lobes, newspaper text is still interpreted as material, reflective bird has glare/noise, and checker handle/rim intrusions remain.",
+      "ownedBrowserClosed": true
+    }
+  }
 }
