@@ -5,7 +5,7 @@ import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { get } from '$lib/paint/mask';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { ALL_RULES, freeSides, neighbours, opposite, ruleInfo, ruleKey, stretchSource, type CurveKey } from './rules';
-import { cellOutline, completeHalfTurn, patternCuts, cutCounts, fitLines, patternToDesign, squareToStretch, stretchToSquare, type PatternTile } from './tiling';
+import { cellOutline, cellsToRaw, completeHalfTurn, fromFrame, patternCuts, cutCounts, fitLines, patternToDesign, rawToCells, stretchFrame, toFrame, type PatternTile } from './tiling';
 import { ruleStart } from './starts';
 import { EXAMPLES, exampleTile } from './examples';
 
@@ -42,12 +42,18 @@ describe('pattern tiling', () => {
 		});
 	});
 
-	it('maps a stretch frame to the square and back', () => {
-		for (const kind of ['V', 'H'] as const) {
-			const p = { x: 0.3, y: -0.2 };
-			const q = stretchToSquare(kind, 2, 3, 25, p);
-			expect(close(squareToStretch(kind, 2, 3, 25, q), p)).toBe(true);
+	it('maps a stretch frame to the square and back, the tiles moved, leaning, stretched and turned or not', () => {
+		const plain = { rule: freeSides(), cuts: 3, curves: {} };
+		const bent = { ...plain, offset: { x: 0.2, y: -0.1 }, shape: { x: { x: 0.9, y: 0.2 }, y: { x: -0.3, y: 1.3 } }, pan: { x: 0.4, y: -0.7 } };
+		for (const tile of [plain, bent]) {
+			for (const kind of ['V', 'H'] as const) {
+				const frame = stretchFrame(tile, kind, 2, 3);
+				const p = { x: 0.3, y: -0.2 };
+				expect(close(fromFrame(frame, rawToCells(tile, cellsToRaw(tile, toFrame(frame, p)))), p)).toBe(true);
+			}
 		}
+		// on the plain grid a cell is a quarter of a 4 × 4 square, and crossing (2, 3) where it was always
+		expect(close(cellsToRaw(plain, { x: 2, y: 3 }), { x: 50, y: 75 })).toBe(true);
 	});
 
 	it('completes a half S by turning it about the side midpoint', () => {

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import { loadHeart } from '$lib/laser/testHearts.test-helpers';
 import type { Finger } from '$lib/types/heart';
-import { getCenteredRectParams } from '$lib/utils/overlapRect';
+import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
 import { ALL_RULES, COMMON_RULES, freeSides, neighbours, opposite, ruleKey } from './rules';
 import { cutCounts, fitLines, type PatternTile, type SideCurve } from './tiling';
 import { ruleStart } from './starts';
@@ -24,7 +25,8 @@ import {
 	tileFingers,
 	tileForRule,
 	tileGrid,
-	tileOfPattern
+	tileOfPattern,
+	weaveParityOf
 } from './escherTab';
 
 /** Whether two tiles' curves are the same, to a millionth of a cell: a tile read back off its cuts comes back with rounding. */
@@ -37,7 +39,7 @@ const sameCurves = (a: PatternTile['curves'], b: PatternTile['curves']) =>
 
 const heartOf = (tile: PatternTile) => {
 	const fingers = tileFingers(tile);
-	return { fingers, gridSize: tileGrid(tile), rect: getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 }) };
+	return { fingers, gridSize: tileGrid(tile), rect: getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 }), weaveParity: weaveParityOf(tile) };
 };
 
 describe("Tegn's Escher tab", () => {
@@ -91,6 +93,28 @@ describe("Tegn's Escher tab", () => {
 
 	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))('reads the %s start back as that type: it is a tile of no more symmetric one', (_key, rule) => {
 		for (const cuts of [2, 4]) expect(ruleKey(resumedTile(null, heartOf(ruleStart(rule, cuts)))!.rule), `${cuts} cuts`).toBe(ruleKey(rule));
+	});
+
+	it("reads the gallery's Dag og nat, drawn from Escher's birds before the tab was there, as two shapes leaning, a cell 28 hundredths of the square", () => {
+		const design = loadHeart('dagognat');
+		// as Tegn numbers the cuts, from the top and from the left, the square's edges first and last
+		const sorted = (lobe: 'left' | 'right', axis: 'x' | 'y', prefix: string) =>
+			design.fingers
+				.filter((f) => f.lobe === lobe)
+				.sort((a, b) => a.segments[0]!.p0[axis] - b.segments[0]!.p0[axis])
+				.map((f, k) => ({ ...f, id: `${prefix}-${k}` }));
+		const fingers = [...sorted('left', 'y', 'L'), ...sorted('right', 'x', 'R')];
+		const heart = { fingers, gridSize: design.gridSize, rect: inferOverlapRect(fingers, design.gridSize), weaveParity: design.weaveParity as 0 | 1 };
+		const tile = resumedTile(null, heart)!;
+		expect(ruleKey(tile.rule)).toBe('free');
+		expect(tile.offset!.x).toBeCloseTo(0.9795, 3);
+		expect(tile.offset!.y).toBeCloseTo(-0.6626, 3);
+		// the size of a cell, as a part of the square, and not turned
+		const { x, y } = tile.shape!;
+		expect(Math.hypot(x.x, x.y) / (tile.cuts + 1)).toBeCloseTo(0.28, 3);
+		expect(Math.hypot(y.x, y.y) / (tile.cuts + 1)).toBeCloseTo(0.28, 3);
+		expect(Math.abs(x.y) + Math.abs(y.x)).toBeLessThan(1e-6);
+		expect(weaveParityOf(tile)).toBe(heart.weaveParity);
 	});
 
 	it('opens on a type: on cuts that are a tile, that tile as it is; on any other heart, the first type the tab offers, drawn as it starts', () => {

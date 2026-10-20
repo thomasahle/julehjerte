@@ -9,8 +9,7 @@ import { ruleStart } from './starts';
 import { EXAMPLES, exampleTile, knobTile } from './examples';
 import {
 	cutOfFinger,
-	extractTile,
-	fitsTile,
+	cutsAre,
 	followEdit,
 	generateEditorFingers,
 	anchorOfPlacedPoint,
@@ -20,8 +19,8 @@ import {
 	nodeAtCutEnd,
 	placedPointAt,
 	slideCutEnd,
+	readTile,
 	specialNodes,
-	stretchesOfCut,
 	tileAfterFingerEdit,
 	weaveParityOf
 } from './editorBridge';
@@ -65,47 +64,62 @@ describe("the bridge between a tile and Tegn's cuts", () => {
 		expect(near(r1.segments[0]!.p0, { x: rect.left + rect.width / 4, y: rect.bottom })).toBe(true);
 	});
 
-	// Reading a tile back from cuts keeps the crossings on the plain grid, so it reads only the tiles that do.
-	const plain = EXAMPLES.filter((p) => !p.offset);
-	it.each(plain.map((p) => [p.id, p] as const))('reads example %s back off the fingers it wrote', (_id, preset) => {
-		const tile = exampleTile(preset);
+	/** The heart a tile makes, as `readTile` reads one: its inner cuts, grid, square and colours. */
+	const heartOf = (tile: PatternTile) => {
 		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
-		const fingers = generateEditorFingers(tile, rect);
-		const back = extractTile(fingers, tile.rule, tile.cuts, rect);
+		const counts = cutCounts(tile);
+		return { fingers: generateEditorFingers(tile, rect), gridSize: { x: counts.V + 1, y: counts.H + 1 }, rect, weaveParity: weaveParityOf(tile) };
+	};
+	/** Whether `back` makes the cuts `tile` makes, node for node. */
+	const makesSame = (back: PatternTile, tile: PatternTile) => {
+		const heart = heartOf(tile);
+		return cutsAre(heart.fingers, generateEditorFingers(back, heart.rect), 1e-6) && cutsAre(generateEditorFingers(back, heart.rect), heart.fingers, 1e-6);
+	};
+
+	it.each(EXAMPLES.map((p) => [p.id, p] as const))('reads example %s back off the fingers it wrote, leaning or not', (_id, preset) => {
+		const tile = exampleTile(preset);
+		const back = readTile(heartOf(tile), [tile.rule]);
 		expect(back).not.toBeNull();
 		for (const key of ruleInfo(tile.rule).curves) expect(sameCurve(back!.curves[key]!, tile.curves[key]!, 1e-6), key).toBe(true);
-		expect(fitsTile(fingers, back!, rect)).toBe(true);
+		expect(makesSame(back!, tile)).toBe(true);
 	});
 
 	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))('reads the knob tile of %s back off the fingers it wrote', (_key, rule) => {
 		for (const cuts of [2, 3, 5]) {
 			const tile = { ...knobTile(rule), cuts };
-			const rect = getCenteredRectParams({ x: cuts + 1, y: cuts + 1 });
-			const fingers = generateEditorFingers(tile, rect);
-			const back = extractTile(fingers, rule, cuts, rect);
-			expect(back).not.toBeNull();
+			const back = readTile(heartOf(tile), [rule]);
+			expect(back, `${cuts} cuts`).not.toBeNull();
 			for (const key of ruleInfo(rule).curves) {
 				const want = tile.curves[key] ?? straightCurve(!!halfOf(rule, key));
 				expect(sameCurve(back!.curves[key]!, want, 1e-6), `${key} at ${cuts} cuts`).toBe(true);
 			}
-			expect(fitsTile(fingers, back!, rect)).toBe(true);
+			expect(makesSame(back!, tile), `${cuts} cuts`).toBe(true);
 		}
 	});
 
-	it('does not take the cuts of a leaning tile, or of a free drawing, for a plain tile', () => {
-		const birds = exampleTile(EXAMPLES.find((p) => p.id === 'birds')!);
-		const rect = getCenteredRectParams({ x: birds.cuts + 1, y: birds.cuts + 1 });
-		const fingers = generateEditorFingers(birds, rect);
-		const back = extractTile(fingers, birds.rule, birds.cuts, rect);
-		expect(back === null || !fitsTile(fingers, back, rect)).toBe(true);
-		// one cut of a plain pattern bent by a tool the Escher tab does not know about
+	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))('reads the %s tile back however its tiles were moved, sized, stretched or turned', (_key, rule) => {
+		const tile = knobTile(rule);
+		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
+		const anchor = [...specialNodes(tile, 'R-1').keys()].filter((a) => isCrossing(tile, 'R-1', a)).sort((a, b) => a - b)[1]!;
+		for (const delta of [{ x: 14, y: 20 }, { x: -18, y: -9 }]) {
+			const framed = dragPlacedPoint(tile, 'R-1', anchor, delta, rect)!;
+			const moved = panBy(framed, { x: 11, y: -7 }, rect);
+			const back = readTile(heartOf(moved), [rule]);
+			const where = `${delta.x}, ${delta.y}`;
+			expect(back, where).not.toBeNull();
+			expect(makesSame(back!, moved), where).toBe(true);
+		}
+	});
+
+	it('reads no tile out of cuts that are none: a cut bent by a tool the Escher tab does not know about, or cuts crossing between nodes', () => {
 		const leaf = exampleTile(EXAMPLES.find((p) => p.id === 'leaf')!);
-		const edited = generateEditorFingers(leaf, rect);
-		const first = edited[0]!;
+		const heart = heartOf(leaf);
+		const first = heart.fingers[0]!;
 		const bent = first.segments.map((s, k) => (k === 1 ? { ...s, p1: { x: s.p1.x + 9, y: s.p1.y - 9 } } : s));
-		edited[0] = { ...first, segments: bent };
-		const read = extractTile(edited, leaf.rule, leaf.cuts, rect);
-		expect(read === null || !fitsTile(edited, read, rect)).toBe(true);
+		expect(readTile({ ...heart, fingers: [{ ...first, segments: bent }, ...heart.fingers.slice(1)] }, ALL_RULES)).toBeNull();
+		// one piece a cut, so the cuts cross where neither has a node
+		const lines = heart.fingers.map((f) => ({ ...f, segments: [{ ...f.segments[0]!, p3: f.segments[f.segments.length - 1]!.p3 }] }));
+		expect(readTile({ ...heart, fingers: lines }, ALL_RULES)).toBeNull();
 	});
 
 	it('an edit to one stretch reaches every stretch carrying the same curve', () => {
@@ -136,8 +150,6 @@ describe("the bridge between a tile and Tegn's cuts", () => {
 		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
 		const fingers = generateEditorFingers(tile, rect);
 		const before = fingers.find((f) => f.id === 'L-2')!;
-		const raw = stretchesOfCut([], 'H', 2, tile.cuts);
-		expect(raw).toBeNull();
 		// the first inner crossing on the cut, with the handles on either side of it
 		const c = [...Array(before.segments.length).keys()].find((a) => a > 0 && isCrossing(tile, 'L-2', a))!;
 		const d = { x: 7, y: 5 };

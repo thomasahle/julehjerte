@@ -43,6 +43,7 @@
 	import type { TileRule } from '$lib/pattern/rules';
 	import type { PatternTile } from '$lib/pattern/tiling';
 	import type { TileDrag } from '$lib/pattern/escherTab';
+	import { READ_TOLERANCE, sharedCrossings } from '$lib/pattern/crossings';
 	import { ToggleGroup, ToggleGroupItem, keepChosen } from '$lib/components/ui/toggle-group';
 	import {
 		cloneSegments,
@@ -1180,7 +1181,7 @@
 	function chooseEscherRule(rule: TileRule) {
 		if (!escher || (patternTile && escher.sameRule(rule, patternTile.rule))) return;
 		const before = snapshotState();
-		showTile(escher.tileForRule(rule, patternTile, { fingers, gridSize, rect: getOverlapRect() }));
+		showTile(escher.tileForRule(rule, patternTile, { fingers, gridSize, rect: getOverlapRect(), weaveParity }));
 		pushUndo(before);
 	}
 
@@ -1199,7 +1200,7 @@
 		// which Fortryd takes back to the Normal tab and the cuts as they were.
 		void loadEscher().then((module) => {
 			if (!escherTab || patternTile) return;
-			const opened = module.openedTile(lastEscherTile, { fingers, gridSize, rect: getOverlapRect() });
+			const opened = module.openedTile(lastEscherTile, { fingers, gridSize, rect: getOverlapRect(), weaveParity });
 			if (!opened.drawn) {
 				takeUpTile(opened.tile);
 				return;
@@ -3079,16 +3080,22 @@
 				prevWithinLobeMode = withinLobeMode;
 				prevBetweenLobesMode = betweenLobesMode;
 			}
-			// A heart saved from the Escher tab opens on it, its tile taken up, if the cuts are still the
-			// tile's; the tab's code comes first.
-			if (has && initialPattern) {
+			// A heart drawn from a tile opens on the Escher tab, its tile taken up: the one it was saved
+			// with, if the cuts are still the tile's, else one the cuts are (a heart like the gallery's Dag
+			// og nat, drawn from a tile before the tab was there). The tab's code comes first, and only for
+			// cuts that cross at nodes of both lobes, as a tile's do. A link that asks for the tab opens it
+			// on a type either way.
+			const crossed = has && sharedCrossings(fingers, gridSize, READ_TOLERANCE) !== null;
+			if (has && (initialPattern || crossed)) {
 				const saved = initialPattern;
 				void loadEscher().then((module) => {
 					if (patternTile) return;
-					const restored = module.restoredTile(saved, { fingers, gridSize, rect: getOverlapRect() });
-					if (!restored) return;
-					takeUpTile(restored);
-					escherTab = true;
+					const heart = { fingers, gridSize, rect: getOverlapRect(), weaveParity };
+					const tile = (saved ? module.restoredTile(saved, heart) : null) ?? (crossed ? module.resumedTile(null, heart) : null);
+					if (tile) {
+						takeUpTile(tile);
+						escherTab = true;
+					} else if (initialEscherTab) openSymmetryTab('escher');
 				});
 			} else if (initialEscherTab) openSymmetryTab('escher');
 		});
@@ -3184,7 +3191,7 @@
 		const current = fingers;
 		const module = escher;
 		untrack(() => {
-			const close = (p: Vec, q: Vec) => Math.abs(p.x - q.x) < 1e-3 && Math.abs(p.y - q.y) < 1e-3;
+			const close = (p: Vec, q: Vec) => Math.abs(p.x - q.x) < READ_TOLERANCE && Math.abs(p.y - q.y) < READ_TOLERANCE;
 			for (const g of module.generateEditorFingers(tile, getOverlapRect())) {
 				const f = current.find((x) => x.id === g.id);
 				const segs = f ? fingerToSegments(f) : [];

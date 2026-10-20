@@ -10,19 +10,19 @@
 import type { TranslationKey } from '$lib/i18n';
 import type { Finger, GridSize, HeartPattern, LobeId, Vec } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
-import { fingerToSegments } from '$lib/geometry/bezierSegments';
 import { getCenteredRectParams, inferOverlapRect, type OverlapRect } from '$lib/utils/overlapRect';
 import {
 	cutOfFinger,
+	cutsAre,
 	dragPlacedPoint,
-	extractTile,
-	fitsTile,
 	followEdit,
 	generateEditorFingers,
 	locatePlacedPoint,
 	nodeAtCutEnd,
 	panBy,
 	placedPointAt,
+	READ_TOLERANCE,
+	readTile,
 	slideCutEnd,
 	specialNodes,
 	tileAfterFingerEdit,
@@ -35,14 +35,15 @@ import { ALL_RULES, COMMON_RULES, latticeOf, ruleInfo, ruleKey, ruleSymmetry, sa
 import { cutCounts, fitLines, tileShape, type PatternTile, type SideCurve } from './tiling';
 import { isStraightTile, ruleStart, switchRule } from './starts';
 
-export { cutOfFinger, followEdit, generateEditorFingers, sameRule, specialNodes, weaveParityOf };
+export { cutOfFinger, cutsAre, followEdit, generateEditorFingers, READ_TOLERANCE, sameRule, specialNodes, weaveParityOf };
 export type { PatternTile, SpecialNode, TileRule };
 
-/** The heart as the Escher tab finds it: its cuts, edges and all, its grid, and the square they fill. */
+/** The heart as the Escher tab finds it: its cuts, edges and all, its grid, the square they fill, and which of its cells show the right lobe's colour. */
 export interface EscherHeart {
 	fingers: Finger[];
 	gridSize: GridSize;
 	rect: OverlapRect;
+	weaveParity: 0 | 1;
 }
 
 /** The grid a tile's heart has: a strip more than its cuts, each way. */
@@ -81,18 +82,7 @@ function tileWeaves(tile: PatternTile): boolean {
 	return findFingersWithIssues(made, intersectionMarginPx(inferOverlapRect(made, tileGrid(fitted)))).size === 0;
 }
 
-/** Whether the heart's cuts include exactly these: every one of `generated` is there, node for node, to `tolerance` pixels. */
-export function cutsAre(fingers: Finger[], generated: Finger[], tolerance = 1e-6): boolean {
-	const close = (p: Vec, q: Vec) => Math.abs(p.x - q.x) < tolerance && Math.abs(p.y - q.y) < tolerance;
-	return generated.every((g) => {
-		const f = fingers.find((x) => x.id === g.id);
-		const segs = f ? fingerToSegments(f) : null;
-		const want = fingerToSegments(g);
-		return !!segs && segs.length === want.length && segs.every((seg, k) => close(seg.p0, want[k]!.p0) && close(seg.p1, want[k]!.p1) && close(seg.p2, want[k]!.p2) && close(seg.p3, want[k]!.p3));
-	});
-}
-
-/**
+ /**
  * The tile a type chosen in the Escher tab draws, its lines fitted. The curves
  * the new type reads the same way carry over (and the lean, when the new type
  * lets tiles lean), so tying one pair of sides differently keeps the other pair
@@ -103,11 +93,10 @@ export function cutsAre(fingers: Finger[], generated: Finger[], tolerance = 1e-6
  * there too.
  */
 export function tileForRule(rule: TileRule, current: PatternTile | null, heart: EscherHeart): PatternTile {
-	const { fingers, gridSize, rect } = heart;
-	const n = current ? current.cuts + 1 : Math.min(7, Math.max(3, gridSize.x, gridSize.y));
-	const found = !current && gridSize.x === n && gridSize.y === n ? extractTile(fingers, rule, n - 1, rect) : null;
+	const n = current ? current.cuts + 1 : Math.min(7, Math.max(3, heart.gridSize.x, heart.gridSize.y));
 	if (current && !isStraightTile(current)) return fitLines(switchRule(current, rule, n - 1, tileWeaves));
-	if (found && !isStraightTile(found) && fitsTile(fingers, found, rect)) return fitLines(found);
+	const found = current ? null : readTile(heart, [rule]);
+	if (found && !isStraightTile(found)) return found;
 	return fitLines(ruleStart(rule, n - 1));
 }
 
@@ -115,24 +104,21 @@ export function tileForRule(rule: TileRule, current: PatternTile | null, heart: 
 const BY_SYMMETRY = [...ALL_RULES].sort((a, b) => ruleSymmetry(b) - ruleSymmetry(a));
 
 /**
- * The tile the Escher tab takes up when it is opened again: the one it was left
- * with, if the cuts are still the ones it makes (a moved pattern's heart can have
- * a strip more one way); else, on a square grid, a tile the cuts already are (a
- * heart drawn in the tab and saved, say), unchanged, of the most symmetric type
- * that fits: two shapes fit every tile, a moved tile is also a mirrored one's
- * equal only by chance. A plain chequerboard fits every type, so it waits for
- * one to be chosen; null then.
+ * The tile the Escher tab takes up when it is opened again, or a heart is opened
+ * whose cuts are a tile: the one it was left with, if the cuts are still the ones
+ * it makes; else a tile the cuts already are (a heart drawn in the tab and saved,
+ * or drawn from a tile before the tab was there, like the gallery's Dag og nat),
+ * however its tiles were moved, sized, turned or leant (`readTile`), unchanged, of
+ * the most symmetric type that fits: two shapes fit every tile, a moved tile is
+ * also a mirrored one's equal only by chance. A plain chequerboard fits every
+ * type, so it waits for one to be chosen; null then.
  */
 export function resumedTile(last: PatternTile | null, heart: EscherHeart): PatternTile | null {
 	const { fingers, gridSize, rect } = heart;
 	const grid = last ? tileGrid(last) : null;
 	if (last && grid && grid.x === gridSize.x && grid.y === gridSize.y && cutsAre(fingers, generateEditorFingers(last, rect))) return last;
-	if (gridSize.x !== gridSize.y) return null;
-	for (const rule of BY_SYMMETRY) {
-		const found = extractTile(fingers, rule, gridSize.x - 1, rect);
-		if (found && !isStraightTile(found) && fitsTile(fingers, found, rect)) return found;
-	}
-	return null;
+	const found = readTile(heart, BY_SYMMETRY);
+	return found && !isStraightTile(found) ? found : null;
 }
 
 /**
@@ -282,5 +268,5 @@ export function restoredTile(saved: HeartPattern, heart: EscherHeart): PatternTi
 	if (!tile) return null;
 	const grid = tileGrid(tile);
 	if (grid.x !== heart.gridSize.x || grid.y !== heart.gridSize.y) return null;
-	return cutsAre(heart.fingers, generateEditorFingers(tile, heart.rect), 1e-3) ? tile : null;
+	return cutsAre(heart.fingers, generateEditorFingers(tile, heart.rect), READ_TOLERANCE) ? tile : null;
 }

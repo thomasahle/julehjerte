@@ -36,7 +36,7 @@ afterEach(async () => {
 
 type Opened = { initialFingers: Finger[]; initialGridSize: GridSize; initialWeaveParity: 0 | 1; initialPattern: HeartPattern };
 
-function render(opened?: Opened | { initialEscherTab: boolean }) {
+function render(opened?: Partial<Opened> & { initialEscherTab?: boolean }) {
 	const target = document.createElement('div');
 	document.body.appendChild(target);
 	let fingers: Finger[] = [];
@@ -205,6 +205,16 @@ describe('the Escher tab', () => {
 		expect(h.gridSize.x).toBeGreaterThan(4);
 		expect(h.gridSize.y).toBe(4);
 		expect(chosenType(h)).toBe('Moved');
+	});
+
+	it('opens a heart whose cuts are a tile on the Escher tab, its type chosen, though no tile was saved with it', async () => {
+		const tile = fitLines({ ...knobTile(opposite('move', 'mirror')), cuts: 4, pan: { x: 0.3, y: -0.2 } });
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile) });
+		const opened = JSON.stringify(h.fingers);
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved and mirrored'));
+		expect(chosenTab(h)).toBe('Escher');
+		// taken up as it is: not one cut changed
+		expect(JSON.stringify(h.fingers)).toBe(opened);
 	});
 
 	it('starts the tile over as its type starts, at its size, which Fortryd takes back', async () => {

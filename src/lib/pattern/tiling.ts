@@ -179,16 +179,6 @@ export function stretchCurve(tile: PatternTile, kind: StretchKind, i: number, j:
 	return sourceCurve(tile, stretchSource(tile.rule, kind, i, j));
 }
 
-/** A point of stretch `kind (i, j)`'s own frame in the square, for cells of size `h`. */
-export function stretchToSquare(kind: StretchKind, i: number, j: number, h: number, p: Vec): Vec {
-	return kind === 'V' ? { x: (i + p.y) * h, y: (j + p.x) * h } : { x: (i + p.x) * h, y: (j + p.y) * h };
-}
-
-/** The inverse of `stretchToSquare`. */
-export function squareToStretch(kind: StretchKind, i: number, j: number, h: number, q: Vec): Vec {
-	return kind === 'V' ? { x: q.y / h - j, y: q.x / h - i } : { x: q.x / h - i, y: q.y / h - j };
-}
-
 /** Crossing (i, j) of the infinite tiling, in cells: on the plain grid, the odd ones moved by the offset. */
 export function crossing(tile: PatternTile, i: number, j: number): Vec {
 	const o = mod2(i + j) === 1 ? tileOffset(tile) : { x: 0, y: 0 };

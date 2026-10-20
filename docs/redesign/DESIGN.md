@@ -615,7 +615,12 @@ n × n grid, stretched and turned as it was. An end of a cut where the edge cuts
 slides along the edge, reshaping the curve. A heart drawn in the tab keeps its tile
 (`HeartDesign.pattern`, plain numbers) wherever the heart goes — the draft, "Mine hjerter", a shared link, an
 exported SVG (`data-pattern`) — and opens on the Escher tab with it, its type chosen, as long as its cuts are
-still the tile's; once they have been changed in the Normal tab, it opens as any other heart. Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both
+still the tile's. So does a heart whose cuts are a tile though none was saved with it, like the gallery's Dag og
+nat, drawn from Escher's birds before the tab was there: where every cut of one lobe crosses every cut of the
+other at a node of both (a cheap check, so the tab's code loads only for such hearts), Tegn reads the most
+symmetric tile the cuts are, however its tiles were moved, sized, turned or leant (`readTile`), and takes it up
+only if it makes every cut node for node, to a hundredth of a pixel. A heart whose cuts are no tile opens as any
+other heart. Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both
 tabs, a drag that cannot go where the pointer is stops at the last place that weaves, and a line above the heart
 says why: two cuts would cross, a curve would cross itself, or it would leave the woven square.
 
