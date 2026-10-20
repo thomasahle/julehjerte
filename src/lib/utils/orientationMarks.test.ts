@@ -57,11 +57,12 @@ describe('needsOrientationMarks', () => {
 
 // ---- The proof: a piece laid with its mark at the top of the heart is the woven lobe ----
 
-/** The inverse of getTemplateData's map: a point of `lobe`'s template back in the editor's frame. */
-function templateToEditor(design: HeartDesign, lobe: TemplateLobe, p: Vec): Vec {
+/** The inverse of getTemplateData's map: points of `lobe`'s template back in
+ * the editor's frame (measured once, as a detailed heart has thousands). */
+function templateToEditor(design: HeartDesign, lobe: TemplateLobe): (p: Vec) => Vec {
 	const rect = inferOverlapRect(design.fingers, design.gridSize);
 	const R = getTemplateData(design, lobe).earRadius;
-	return lobe === 'left'
+	return (p) => lobe === 'left'
 		? { x: p.y - R + rect.left, y: p.x + rect.top }
 		: { x: p.x + rect.left, y: p.y - R + rect.top };
 }
@@ -80,8 +81,8 @@ function rendered(design: HeartDesign, p: Vec): Vec {
  * when it is on the right. Returns the map from printed template to editor frame.
  */
 function pose(design: HeartDesign, printed: TemplateLobe, lobe: TemplateLobe, turned: boolean) {
-	const W = getTemplateData(design, printed).templateWidth;
-	return (p: Vec) => templateToEditor(design, lobe, turned ? { x: W - p.x, y: p.y } : p);
+	const W = getTemplateData(design, printed).templateWidth, toEditor = templateToEditor(design, lobe);
+	return (p: Vec) => toEditor(turned ? { x: W - p.x, y: p.y } : p);
 }
 
 /** Every outline of the woven rendering's strips of `lobe`, both parities. */
