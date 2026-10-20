@@ -9,7 +9,7 @@
  * Frames without a picture here return none.
  */
 import type { GeneratorRequest } from './generate';
-import { arc, frameRing, outerFrame, ray, uprightToSheet, BOARD_RADII, FITTED, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
+import { arc, boardLines, frameRing, outerFrame, ray, uprightToSheet, BOARD_RADII, FITTED, RIM, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
 import { fillSquare, fitCircle } from './frameFit';
 import { fittedPicture } from './fitted';
 import { normalizeContours } from './contours';
@@ -17,7 +17,7 @@ import { STRIPS, boardChecks, placeBounds, placeMotif, shifts, slidePlace, type 
 import { checkeredLayout, checkeredLetters } from './checkeredGrid';
 import { measureTextGrid } from './textGrid';
 import { CORNER_GAP, CORNER_INSET, checkedTips } from './cornerChecks';
-import { MOTIF, boardRadius, boardScale, motifChoices, squareChoices } from './boardMotif';
+import { MOTIF, boardRadius, boardScale, motifChoices, motifReach, squareChoices } from './boardMotif';
 import { isTextFigure, textFigureRequest } from './textFigure';
 
 /** The clearest place for each motif and board, where the search starts when
@@ -70,6 +70,7 @@ export function picture(request: GeneratorRequest, known: Known = {}): Picture |
 		if (request.mode === 'figure' && request.style === 'layers' && (known.board ?? 7) === 7) return layersPicture(request);
 		if (request.mode === 'figure' && request.style === 'corners' && (known.board ?? 6) === 6) return cornersPicture(request);
 		if (request.mode === 'figure' && request.style === 'board') return boardPicture(request, known.circle);
+		if (request.mode === 'figure' && request.style === 'rim') return rimPicture(request);
 		if (request.mode === 'figure' && (request.style === 'wedges' || request.style === 'fitted' || request.style === 'silhouette') && request.contours?.length
 			&& (known.board ?? (request.style === 'fitted' ? 5 : 3)) === (request.style === 'fitted' ? 5 : 3)) {
 			// The open frames' legs, as their first construction draws them, on
@@ -216,17 +217,30 @@ function boardPicture(request: GeneratorRequest, circle?: 'small' | 'large'): Pi
 	const [small, large] = BOARD_RADII;
 	if (radius > small[1] && circle === 'small') radius = small[1];
 	if (radius <= small[1] && circle === 'large') radius = large[0] + .6;
-	const outer = radius > small[1] ? 1 : 0;
-	const xs = contours.flat().map(p => p[0]), ys = contours.flat().map(p => p[1]);
-	const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
-	const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
-	const reach = Math.max(...contours.flat().map(([x, y]) => Math.hypot(x - cx, y - cy))) / box;
+	const { box, reach } = motifReach(contours);
 	const scale = (radius - Math.max(request.gap ?? 3, 1.5)) / reach / box;
-	const disc = frameRing('circle', 2 * radius), side = 20, rings: Ring[] = [];
-	for (let i = 0; i < 5; i++)
-		for (let j = 0; j < 5; j++) {
+	return boardCirclePicture(5, radius, radius > small[1] ? 1 : 0, contours, scale);
+}
+
+/** The large circle on a rim (see `RIM`), the motif at its size setting. */
+function rimPicture(request: GeneratorRequest): Picture | undefined {
+	const contours = normalizeContours(request.contours ?? []);
+	if (!contours.length) return;
+	const { box, reach } = motifReach(contours), factor = Math.min(1, (request.scale ?? .7) / .85);
+	const scale = (RIM.radius - Math.max(request.gap ?? 3, 1.5)) * factor / reach / box;
+	return boardCirclePicture(RIM.lines, RIM.radius, 0, contours, scale);
+}
+
+/** A circle on a board's cells (see `boardLines`): the checks, starting from
+ * the corner's colour unless `outer`, their parts inside the circle turned
+ * back, and the motif, centred, at `scale`. */
+function boardCirclePicture(board: number | readonly number[], radius: number, outer: number, contours: Ring[], scale: number): Picture {
+	const { centre: [cx, cy] } = motifReach(contours), edges = [0, ...boardLines(board), 100];
+	const disc = frameRing('circle', 2 * radius), rings: Ring[] = [];
+	for (let i = 0; i + 1 < edges.length; i++)
+		for (let j = 0; j + 1 < edges.length; j++) {
 			if ((i + j + outer) % 2) continue;
-			const square: Ring = [[i * side, j * side], [(i + 1) * side, j * side], [(i + 1) * side, (j + 1) * side], [i * side, (j + 1) * side]];
+			const square: Ring = [[edges[i], edges[j]], [edges[i + 1], edges[j]], [edges[i + 1], edges[j + 1]], [edges[i], edges[j + 1]]];
 			rings.push(square);
 			// Its part inside the circle turns back.
 			const inside = clipConvex(square, disc);

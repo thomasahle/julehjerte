@@ -764,6 +764,18 @@ cell takes the usual padding, else little, and an outer gate that the circle pas
 moves in to midway between the motif's farthest point and the circle, so the legs stay inside it.
 Every straight cut lies on the board (tested). Motifs in several separate parts (the coffee cup,
 the bicycle, the sun, the paw) cannot yet be built on this board.
+**The large circle** (Stor cirkel), from an old pattern of hearts with a fleur-de-lis, a deer's head
+or a goat: two narrow strips along each edge of the paper (lines at 8, 16, 84 and 92, see `RIM`)
+around one large middle square, in which a circle of radius 46 holds the motif, so the field around
+the circle is one colour and the checks are small, crossing at each tip. It is the circle on a board
+with uneven strips: the circle reaches past the outer lines, which follow it, and the inner lines end
+on it. Those ends meet it the other way round from the equal squares' (each quarter starts with the
+other sheet), so each gate's two legs cross just outside the circle, which makes the check at the
+tip; the undivided motif meets the four gates like a letter in the circle frame. The circle stays;
+the size setting sizes the motif in it, filling it up to the space asked for at 85%. The picture is
+the board's cells with their parts inside the circle turned back. Motifs in separate parts that the
+letter routing cannot join (the polar star, the santa hat, the candy cane, the elephant) cannot be
+built in it, and the picker says so.
 **The figure in the checks** (Figur i ternene; a sixth of real figure hearts, the gallery's
 notched stars, clovers and hearts): a regular board of four strips per side (three to six with the
 Strimler slider) whose squares swap colour inside the motif, so its outline is cut into the strips. The board's lines and the outline
