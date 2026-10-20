@@ -1013,19 +1013,66 @@ replay; one synthetic forward pass matches the historical inference helper
 exactly at Float16 storage precision. The probe takes **8.2 seconds total** on
 one CPU thread and saves about 27.2 MiB, without training or new downloads.
 
-The graph-proposal network remains offline. The next check is whether a fixed
-average of both phase outputs preserves reference-corner accuracy on the
-existing synthetic cohorts while enforcing label symmetry. That will not
-replace the need for material-aware supervision or full solver/export tests.
+The graph-proposal network remains offline. The fixed-average comparison below
+tests whether enforcing label symmetry preserves reference-corner accuracy.
+Material-aware supervision and full solver/export tests remain necessary.
+
+### A label-invariant corner readout
+
+The [fixed-average study](junction-phase-average-results.json) evaluates the
+same checkpoint and thresholds on all **308 synthetic views from 77 designs**.
+Its [predeclared protocol](junction-phase-average-plan.json) averages the two
+phase heatmaps before extracting peaks. Swapping their order now produces
+exactly identical output. No weights or labels change.
+
+| Synthetic cohort | Original raw corner F1 | Symmetric raw corner F1 | All corners recovered, original → symmetric |
+| --- | ---: | ---: | ---: |
+| Lattice development, 52 views | 70.75% | 70.78% | 23 → 22 |
+| Channel recipe, 128 views | 82.05% | 85.12% | 101 → 102 |
+| Frame recipe, 128 views | 87.95% | 88.34% | 71 → 77 |
+
+These are pooled localization scores, not template success rates. The recipe
+cohorts have been inspected repeatedly and are not topology-disjoint holdouts.
+The small gains include individual losses: frame coverage gains sixteen views
+and loses ten. Boundary F1 at three pixels changes from 97.64% to 97.24% on
+development, 90.22% to 90.35% on channel, and 96.39% to 96.22% on frame.
+
+The worst reviewed corner loss has a concrete cause. Two individually
+detectable peaks lie **five pixels apart**, with scores about 0.411 and 0.403.
+Averaging lowers the response within three pixels of the reference to at most
+0.353, below the unchanged 0.4 threshold. Both separate results recover the
+corner after local refinement; the averaged result has no nearby proposal to
+refine. An exact replay of all three fields confirms this mechanism. Averaging
+can therefore suppress a true corner, even while improving pooled scores.
+
+The existing nine-pixel refinement also remains a tradeoff: it improves lattice
+development results but lowers corner F1 on both recipe groups for all three
+readouts. Raw and refined results are reported separately. A diagnostic using
+the ideal training heatmaps recovers all **2,544 reference corners**, ruling out
+a target/peak-decoder mismatch on this cohort.
+
+All 24 selected synthetic views and all 32 real-photo rows were inspected.
+The real follow-up reuses the saved fields, so it needs no additional inference.
+Stable averages still respond to printed letters, trees and floral decoration,
+and place extra corners along smooth silhouettes. Exact label invariance is
+useful, but it does not establish material recognition or a usable cutting graph.
+
+The original corner counts replay exactly on all 308 views. Independent
+maximum-flow assignments verify all **1,848 raw/refined corner comparisons**;
+2,772 thin-boundary comparisons and all 26 real averages also replay.
+The main probe takes 71.6 seconds on one CPU thread and saves about 7.4 MiB.
+This remains an offline candidate. The next learning change should train
+consistent responses to both label phases and include printed-paper examples
+whose targets retain physical sheet boundaries.
 
 ### Latest solver and browser validation
 
-Main `6e882325`, including the border-fragment repair, generator work and the
-fixed-path confidence study, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39417445592)
+Main `540ba8f9`, including the border-fragment repair, generator work and the
+real-photo corner study, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39418918283)
 on 20 October. This includes type checking, lint, application tests, build and
 all four inverse correctness shards. Timed quality benchmarks retain their
 separate advisory policy; a green workflow does not mean every timing target
-was met. The preceding `ad9923c4` and `4e353814` runs also passed. The residual
+was met. The preceding `6e882325` and `ad9923c4` runs also passed. The residual
 material-classifier, confidence and scheduling experiments above remain offline.
 
 The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and
