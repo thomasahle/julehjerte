@@ -135,5 +135,5 @@ describe('layoutEar', () => {
 				}
 			}
 		}
-	});
+	}, 30_000); // loops over the whole gallery; a loaded CI runner took 5.7 s
 });
