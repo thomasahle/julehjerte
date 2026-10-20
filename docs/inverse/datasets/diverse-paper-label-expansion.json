@@ -1,0 +1,586 @@
+{
+  "schema": "reviewed-real-label-expansion-1",
+  "status": "labels-reviewed-and-verified-not-yet-trained",
+  "parents": {
+    "previousAnnotations": {
+      "path": "scripts/inverse/datasets/real-materials-encoder-tail.json",
+      "sha256": "b245c23fb51691a4db2000ca5226f6ab400511c612d8414fbc50ff4ab4e80374"
+    },
+    "newBodyAnnotations": {
+      "path": "scripts/inverse/datasets/real-annotations-diverse-paper.json",
+      "sha256": "54e38d161b1ff372331d273068e9fa4f98d5a498ca9924c911fe961dd267cf53"
+    },
+    "newMaterialAnnotations": {
+      "path": "scripts/inverse/datasets/real-materials-diverse-paper.json",
+      "sha256": "58dd7d93a900f1b2faa386074efa0a4e5c2bc443ad117d5f436614c6a0d689c9"
+    },
+    "combinedAnnotations": {
+      "path": "scripts/inverse/datasets/real-materials-expanded.json",
+      "sha256": "98f7dbf288fd39087681439eaf9cd70ac9e64fe40c0650b8d9fcf057d242dd9e"
+    },
+    "sourceManifest": {
+      "path": "docs/inverse/datasets/real-manifest.json",
+      "sha256": "999544ef30b1d71095e1630d7f834e162e2aa6145181df10107a831aa2eda350"
+    },
+    "evaluationSelection": {
+      "path": "docs/inverse/datasets/u2netp-continuous-selection.json",
+      "sha256": "6d4e0e7550fedf5c13333bdc90db28a98eb5ff9ce2de260f32e2d015f5128f52"
+    }
+  },
+  "selection": {
+    "candidateContactSheet": {
+      "path": "tmp/heart-learning/label-expansion-review-v2/selection.json",
+      "sha256": "6f8b19332f64d113aa46eded2afbb00f12e5435662d1e7074adbe55cb8f10880"
+    },
+    "candidates": 35,
+    "selectedPhotos": 8,
+    "sourceGroupsAlreadyInPreviousTraining": [
+      "real-split-1c907ad4f70d8815",
+      "real-split-4cb27dd0236bd215",
+      "real-split-66587aa0e20b89c8",
+      "real-split-837aa89750c4379e",
+      "real-split-b0658dffd8a94416",
+      "real-split-e15997e1ba929b7f"
+    ],
+    "newApproximateOverlapReferences": 3,
+    "notes": "Selected diverse visible-paper examples from currently unassigned sources; excluded QA sources, already labelled duplicates, alternate views of selected physical objects and ambiguous three-material designs. Generic motifs recur. Source inspection preceded model predictions. All six selected source groups already occur in the earlier 16-instance subset: additional photographs, not new source groups.",
+    "selectedSourceGroups": 6,
+    "newSourceGroups": 0
+  },
+  "review": {
+    "reviewer": "assistant",
+    "resolutions": [
+      256,
+      768
+    ],
+    "allEightSourceImagesAndCompiledOverlaysInspected": true,
+    "independentHumanAudit": false,
+    "corrections": [
+      "Pale printed checker: moved a mistaken central material patch to the visible blue-grey cell; earlier A/B conflict rejected by compiler.",
+      "Celtic bands: corrected a red patch labelled white; removed an uncertain tip patch and shortened an edge patch that crossed a white band.",
+      "Dense checker: enlarged source view exposed three misplaced added cell patches; moved them inside the correct cells. Colour checks used only as an additional diagnostic for these plain two-colour photos."
+    ],
+    "limitations": [
+      "Partial material interiors; unlabelled pixels and uncertain outlines excluded, including handle attachments.",
+      "No exact artwork, slit counts, cutting paths or dense material boundaries.",
+      "Three new overlap quadrilaterals are approximate visible references, not exact cutting geometry.",
+      "Assistant annotations have not received an independent human review.",
+      "Source accessibility is not a licence; training-rights and motif-fold reviews remain recorded in the source catalog.",
+      "These eight photos are new to model training, but all six source groups already appear in the previous training set; a pre-training probe is within-source development, not independent generalization."
+    ],
+    "failedOrSupersededArtifacts": [
+      "tmp/heart-learning/label-expansion-materials-256-v1",
+      "tmp/heart-learning/label-expansion-materials-256-v2",
+      "tmp/heart-learning/label-expansion-materials-768-v2",
+      "tmp/heart-learning/label-expansion-materials-256-v3",
+      "tmp/heart-learning/label-expansion-materials-768-v3"
+    ]
+  },
+  "verification": {
+    "rasterExports": {
+      "256": {
+        "passed": true,
+        "instances": 8,
+        "sourceGroups": 6,
+        "manifestSha256": "2876e73e90df078c47a9db4a420ab7b7297c40cfe987abbbfedfac653bfb77f8",
+        "annotationsSha256": "58dd7d93a900f1b2faa386074efa0a4e5c2bc443ad117d5f436614c6a0d689c9",
+        "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+      },
+      "768": {
+        "passed": true,
+        "instances": 8,
+        "sourceGroups": 6,
+        "manifestSha256": "85ad4fada6fc8389920c00bf556a31e064b7b36e1e0c846190d066729117bb0d",
+        "annotationsSha256": "58dd7d93a900f1b2faa386074efa0a4e5c2bc443ad117d5f436614c6a0d689c9",
+        "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+      }
+    },
+    "currentSourceAudit": {
+      "currentManifestSha256": "999544ef30b1d71095e1630d7f834e162e2aa6145181df10107a831aa2eda350",
+      "checkedSources": 24
+    },
+    "currentDevelopmentSeparation": {
+      "trainPhotos": 24,
+      "evaluationPhotos": 32,
+      "trainSourceGroups": 14,
+      "evaluationSourceGroups": 5,
+      "sourceAndDuplicateSeparationPassed": true
+    },
+    "previousInstancesAndBodyReferencesUnchanged": true,
+    "stretchedTrainingResolution": 320,
+    "instances": [
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "assetId": "real-8c875dd0f298b5a4",
+        "sourceGroup": "real-split-79fb92ea84d04dc8",
+        "bodyCounts": {
+          "0": 57850,
+          "1": 40367,
+          "255": 4183
+        },
+        "materialCounts": {
+          "0": 11744,
+          "1": 11844,
+          "255": 78812
+        },
+        "bodyLabelSha256": "42343bf3d5429bf1a9959c11b4f2a79b3ebf83dd573e3e4db578f349ac404d56",
+        "materialLabelSha256": "b0b8a51d899e6d11222e2527f912fe8f0a283b43a368da62ff00becba046679a",
+        "approximateOverlapReference": true
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "assetId": "real-995899fe049540ed",
+        "sourceGroup": "real-split-837aa89750c4379e",
+        "bodyCounts": {
+          "0": 52903,
+          "1": 46709,
+          "255": 2788
+        },
+        "materialCounts": {
+          "0": 13341,
+          "1": 15829,
+          "255": 73230
+        },
+        "bodyLabelSha256": "f1c13c53ee2c67fb44081750b9902d2b6b003689e649b088fd1975345a68f7de",
+        "materialLabelSha256": "73b0427e9ad900a65d31bfb22b11f7fd1819b396d0332859e44ceecbcfd2d7d4",
+        "approximateOverlapReference": true
+      },
+      {
+        "id": "real-b87b0b19f12724f3-body-1",
+        "assetId": "real-b87b0b19f12724f3",
+        "sourceGroup": "real-split-b0658dffd8a94416",
+        "bodyCounts": {
+          "0": 83147,
+          "1": 17187,
+          "255": 2066
+        },
+        "materialCounts": {
+          "0": 4325,
+          "1": 3872,
+          "255": 94203
+        },
+        "bodyLabelSha256": "2558f1ef62e3c969a096e8effc1377af511f62f8519017ff1c344d78dbabb108",
+        "materialLabelSha256": "76e4eb90b8ab989a8518c109a70b5c83767360cce8528a550bd7754e854eef8d",
+        "approximateOverlapReference": false
+      },
+      {
+        "id": "real-cf2d0fcff65d7386-body-1",
+        "assetId": "real-cf2d0fcff65d7386",
+        "sourceGroup": "real-split-561720ec89d3174d",
+        "bodyCounts": {
+          "0": 47812,
+          "1": 50481,
+          "255": 4107
+        },
+        "materialCounts": {
+          "0": 17402,
+          "1": 16701,
+          "255": 68297
+        },
+        "bodyLabelSha256": "33b21b8fee358822fd7a5af5e27d4d963d40918adf620b530b81017053ccfec9",
+        "materialLabelSha256": "baf0aebbc57901f83a0289ac490490f1648d398b08946d7b41bfbe4fbd80a440",
+        "approximateOverlapReference": false
+      },
+      {
+        "id": "real-cdae5c890b6933cd-body-1",
+        "assetId": "real-cdae5c890b6933cd",
+        "sourceGroup": "real-split-e15997e1ba929b7f",
+        "bodyCounts": {
+          "0": 75623,
+          "1": 21699,
+          "255": 5078
+        },
+        "materialCounts": {
+          "0": 6978,
+          "1": 7969,
+          "255": 87453
+        },
+        "bodyLabelSha256": "a45c93e37983819154fca865a52be396af6d97f2f2ddfb55bd474a5a42e2dcd5",
+        "materialLabelSha256": "94453e89ddcf5060ca84f4870a1cea0e6bd2774283eee528eb3d5efe60266444",
+        "approximateOverlapReference": false
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "assetId": "real-68d8f25d8891df62",
+        "sourceGroup": "real-split-6459d28c6c10b90f",
+        "bodyCounts": {
+          "0": 49038,
+          "1": 44997,
+          "255": 8365
+        },
+        "materialCounts": {
+          "0": 10246,
+          "1": 15283,
+          "255": 76871
+        },
+        "bodyLabelSha256": "90ca35e1e61b7c66f3636ba1cc056efa063c0efd5243e311941357efb4c26eb6",
+        "materialLabelSha256": "7681225d618840e83bd44ec861ee816689ee06ee3ba553d8117a670e24e2db59",
+        "approximateOverlapReference": false
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "assetId": "real-5330aa8b62176216",
+        "sourceGroup": "real-split-66587aa0e20b89c8",
+        "bodyCounts": {
+          "0": 44827,
+          "1": 50747,
+          "255": 6826
+        },
+        "materialCounts": {
+          "0": 6451,
+          "1": 6294,
+          "255": 89655
+        },
+        "bodyLabelSha256": "610d73d3454424c667f5ebda674ee899e819ab8c5ced56afe18318b93d178ba1",
+        "materialLabelSha256": "a6156ed7ba2ed71d84005b6b1ff1373f1e8a21bd2f0d0f64266c0b0fd48ce45e",
+        "approximateOverlapReference": true
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "assetId": "real-abf590088db891f9",
+        "sourceGroup": "real-split-66587aa0e20b89c8",
+        "bodyCounts": {
+          "0": 45495,
+          "1": 50079,
+          "255": 6826
+        },
+        "materialCounts": {
+          "0": 11474,
+          "1": 5863,
+          "255": 85063
+        },
+        "bodyLabelSha256": "9a8920136045121e66352481dccb402cced48f85f42be779daad90cab3e8ab2d",
+        "materialLabelSha256": "cab9ccd729f71b583d29a4b5e70fafcafd3044f901e559219a80c7ea1ca0c8e4",
+        "approximateOverlapReference": true
+      },
+      {
+        "id": "real-990ac34431be87fe-body-1",
+        "assetId": "real-990ac34431be87fe",
+        "sourceGroup": "real-split-4cb27dd0236bd215",
+        "bodyCounts": {
+          "0": 78989,
+          "1": 18709,
+          "255": 4702
+        },
+        "materialCounts": {
+          "0": 2963,
+          "1": 3066,
+          "255": 96371
+        },
+        "bodyLabelSha256": "04a8ad9b747975ca5d2c6b9d598d87bc90653f93848ef42a900160e311dbeaf7",
+        "materialLabelSha256": "74c18d29eafda9ca77c04f8857d124831c8a1df2f90c266ff5aefd354fe738d7",
+        "approximateOverlapReference": false
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "assetId": "real-12ce3c9180f7f317",
+        "sourceGroup": "real-split-1c907ad4f70d8815",
+        "bodyCounts": {
+          "0": 53834,
+          "1": 46002,
+          "255": 2564
+        },
+        "materialCounts": {
+          "0": 6791,
+          "1": 7876,
+          "255": 87733
+        },
+        "bodyLabelSha256": "f599c98b10673a56a3b116b030cfcdd5feac1b371873e3b6637c209292525f54",
+        "materialLabelSha256": "952cf14033548db807c39eb065ca9e601306b7be1d25ca4e89fb70120ad591d8",
+        "approximateOverlapReference": true
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "assetId": "real-d5b0aa8d4d2465ee",
+        "sourceGroup": "real-split-4cd39a54715c7740",
+        "bodyCounts": {
+          "0": 70476,
+          "1": 29420,
+          "255": 2504
+        },
+        "materialCounts": {
+          "0": 3961,
+          "1": 5569,
+          "255": 92870
+        },
+        "bodyLabelSha256": "0c2d83a3dd3d509104e8e0fd0879bf672f5d6249ebab5a465a4840257b8e7672",
+        "materialLabelSha256": "65810e8b16165ca72619fab48ce14a1a85be451ad609f313f8e40f3b923ceec3",
+        "approximateOverlapReference": true
+      },
+      {
+        "id": "real-39f3a1ba97852876-body-1",
+        "assetId": "real-39f3a1ba97852876",
+        "sourceGroup": "real-split-0ce4ada523ddc171",
+        "bodyCounts": {
+          "0": 75433,
+          "1": 21920,
+          "255": 5047
+        },
+        "materialCounts": {
+          "0": 2739,
+          "1": 2090,
+          "255": 97571
+        },
+        "bodyLabelSha256": "e498af8d942b67fa3cc5a8434bb8fff3100ae21a2f811fa2d9c016ce9959fc1b",
+        "materialLabelSha256": "9db64781f022500a8aa884e21bc9612997cb27fac2c1eff9ee019246ed06c622",
+        "approximateOverlapReference": false
+      },
+      {
+        "id": "real-e936e08ac62db19b-body-1",
+        "assetId": "real-e936e08ac62db19b",
+        "sourceGroup": "real-split-0fe657e07ffc37c9",
+        "bodyCounts": {
+          "0": 71968,
+          "1": 27069,
+          "255": 3363
+        },
+        "materialCounts": {
+          "0": 7890,
+          "1": 8408,
+          "255": 86102
+        },
+        "bodyLabelSha256": "5c4501020ad257db6b5477776bde6fb250c687e5ec8766d2c4df2b2678d497f3",
+        "materialLabelSha256": "310966952c1920a6c49620ac0624a35a3eb97f6a0fa83d9a7e5a2c4d345ce48a",
+        "approximateOverlapReference": false
+      },
+      {
+        "id": "real-340f5e5b0f447889-body-1",
+        "assetId": "real-340f5e5b0f447889",
+        "sourceGroup": "real-split-66587aa0e20b89c8",
+        "bodyCounts": {
+          "0": 70968,
+          "1": 27915,
+          "255": 3517
+        },
+        "materialCounts": {
+          "0": 8117,
+          "1": 6157,
+          "255": 88126
+        },
+        "bodyLabelSha256": "3b04c1334c46ac42ba5ec390a2597a86fb61f8db0a4d5310fc8e20152aab2204",
+        "materialLabelSha256": "554a562fe793fe0960d0a5e416b01c11d09e218d429e7f4fa50a8a88a76113f6",
+        "approximateOverlapReference": false
+      },
+      {
+        "id": "real-710703159f609111-body-1",
+        "assetId": "real-710703159f609111",
+        "sourceGroup": "real-split-81569cae44356567",
+        "bodyCounts": {
+          "0": 78314,
+          "1": 21623,
+          "255": 2463
+        },
+        "materialCounts": {
+          "0": 6929,
+          "1": 6273,
+          "255": 89198
+        },
+        "bodyLabelSha256": "60c26f85fa165a49cb4a7431aa7a326d39479a8f97428c266187a490799b42ec",
+        "materialLabelSha256": "3ae0481f2cc2b734c622d4ecab70377b18031e468ad606e7e520c5f730e3b6e7",
+        "approximateOverlapReference": false
+      },
+      {
+        "id": "real-a414dfffbd2362ae-body-1",
+        "assetId": "real-a414dfffbd2362ae",
+        "sourceGroup": "real-split-79137bb425b64798",
+        "bodyCounts": {
+          "0": 58866,
+          "1": 40432,
+          "255": 3102
+        },
+        "materialCounts": {
+          "0": 11517,
+          "1": 6617,
+          "255": 84266
+        },
+        "bodyLabelSha256": "8a973a49f0c536e024f7590c1e084c24da2d6d96d8d1295bf5b36380643d8d2e",
+        "materialLabelSha256": "c814c2bc6f0d31252715eb91b405945f8a91c5c4ad4a56c87c38510e9f7dc644",
+        "approximateOverlapReference": false
+      },
+      {
+        "id": "real-f1af2fbb127278e4-body-1",
+        "assetId": "real-f1af2fbb127278e4",
+        "sourceGroup": "real-split-1c907ad4f70d8815",
+        "bodyCounts": {
+          "0": 66598,
+          "1": 31283,
+          "255": 4519
+        },
+        "materialCounts": {
+          "0": 83,
+          "1": 162,
+          "255": 102155
+        },
+        "bodyLabelSha256": "9c929a61d43e77ffe12f90e23c4459248b26b9e2dca5e2d2754bd038c82a28fc",
+        "materialLabelSha256": "bf738b70ff55cc8ff790528f1d4dc2d86a10ff56b8c0df1d2e7cad5da9d0a48c",
+        "approximateOverlapReference": false
+      },
+      {
+        "id": "real-19e88a55e6eeaca8-body-1",
+        "assetId": "real-19e88a55e6eeaca8",
+        "sourceGroup": "real-split-4cb27dd0236bd215",
+        "bodyCounts": {
+          "0": 81368,
+          "1": 18010,
+          "255": 3022
+        },
+        "materialCounts": {
+          "0": 324,
+          "1": 161,
+          "255": 101915
+        },
+        "bodyLabelSha256": "687626b288318bd43cef739d0ece3329091d9835b1ebc8bdf1079973c6b9c494",
+        "materialLabelSha256": "3f899887da1233735e05970ad8573caf093d29f04d907f7cc4d71bbf701d26cd",
+        "approximateOverlapReference": false
+      },
+      {
+        "id": "real-82eed10fb7484537-body-1",
+        "assetId": "real-82eed10fb7484537",
+        "sourceGroup": "real-split-4cb27dd0236bd215",
+        "bodyCounts": {
+          "0": 72531,
+          "1": 26129,
+          "255": 3740
+        },
+        "materialCounts": {
+          "0": 2834,
+          "1": 2865,
+          "255": 96701
+        },
+        "bodyLabelSha256": "0132630d9d60d09c38bcf8fc2e86746f17c5baf4c1d5bfb19eaf814e8dc00997",
+        "materialLabelSha256": "efad2253c33f54d887d8d3ff6944c3acc68327fede8567f1ce19c145ea23bf54",
+        "approximateOverlapReference": false
+      },
+      {
+        "id": "real-3019a2560b5d8758-body-1",
+        "assetId": "real-3019a2560b5d8758",
+        "sourceGroup": "real-split-837aa89750c4379e",
+        "bodyCounts": {
+          "0": 65357,
+          "1": 35038,
+          "255": 2005
+        },
+        "materialCounts": {
+          "0": 5410,
+          "1": 5222,
+          "255": 91768
+        },
+        "bodyLabelSha256": "bf453e616aee90602e12c633028a6ca60e94fb7ce026333cc21a7b87a187ff13",
+        "materialLabelSha256": "dc52070b78fb549a1e23c19fa7c9bb0c55258e994d0c1e3006f90d9c6f741cc0",
+        "approximateOverlapReference": true
+      },
+      {
+        "id": "real-1f38684757a79d85-body-1",
+        "assetId": "real-1f38684757a79d85",
+        "sourceGroup": "real-split-b0658dffd8a94416",
+        "bodyCounts": {
+          "0": 70221,
+          "1": 30020,
+          "255": 2159
+        },
+        "materialCounts": {
+          "0": 6546,
+          "1": 8043,
+          "255": 87811
+        },
+        "bodyLabelSha256": "60d9bf41b1a19c7c4791d231252e3ef467f480b92d3075be19a06216b8edf144",
+        "materialLabelSha256": "0689169b3ed223ae407112f97fb4e7f7c4311d63d765c85e0a1896f7018ae3d7",
+        "approximateOverlapReference": false
+      },
+      {
+        "id": "real-3a89de4eae04a025-body-1",
+        "assetId": "real-3a89de4eae04a025",
+        "sourceGroup": "real-split-e15997e1ba929b7f",
+        "bodyCounts": {
+          "0": 81656,
+          "1": 18360,
+          "255": 2384
+        },
+        "materialCounts": {
+          "0": 4023,
+          "1": 3024,
+          "255": 95353
+        },
+        "bodyLabelSha256": "af35381199923f70a36493d172aac471d7557800aca717d1f25428b59f1888e4",
+        "materialLabelSha256": "ebe0bd9c1f986af2a65db9e9d5c5596b5eb88e01d62551d4946d9dcdd815433e",
+        "approximateOverlapReference": true
+      },
+      {
+        "id": "real-1219fc5403d2b5ee-body-1",
+        "assetId": "real-1219fc5403d2b5ee",
+        "sourceGroup": "real-split-66587aa0e20b89c8",
+        "bodyCounts": {
+          "0": 48252,
+          "1": 48438,
+          "255": 5710
+        },
+        "materialCounts": {
+          "0": 9598,
+          "1": 5848,
+          "255": 86954
+        },
+        "bodyLabelSha256": "84b291514c25c65ee916aca7ea4b684c0b1dc06a3995b0d0c7262ae58e2aa0af",
+        "materialLabelSha256": "380adedca98f22b70327bcd114af2c9959a33b097a50094003a841632c91da36",
+        "approximateOverlapReference": false
+      },
+      {
+        "id": "real-13ae4cb788d7049c-body-1",
+        "assetId": "real-13ae4cb788d7049c",
+        "sourceGroup": "real-split-66587aa0e20b89c8",
+        "bodyCounts": {
+          "0": 48485,
+          "1": 48539,
+          "255": 5376
+        },
+        "materialCounts": {
+          "0": 8231,
+          "1": 6847,
+          "255": 87322
+        },
+        "bodyLabelSha256": "38f044b980245cecb98ca223582d88e4efb7e1f3c3c8c5e0c55269b677a1123e",
+        "materialLabelSha256": "790a6a212f55ff05f1108882a65ed77d20ad99b1d500991647dfe14f58f3b18d",
+        "approximateOverlapReference": true
+      }
+    ],
+    "focusedTests": [
+      {
+        "file": "scripts/inverse/learning/real_foreground.test.py",
+        "sourceSha256": "9e17f3c2bc4c9434fb688323a9ac2af4a7723b7d6745d38fc31ccfa5263b0c25",
+        "exitCode": 0,
+        "log": {
+          "path": "tmp/heart-learning/label-expansion-review-v2/real_foreground.test.py.log",
+          "sha256": "13e9e2ac3ebaf71c6e973d57fa680a7da1d6b1ea8587ce33fb757aaaa8776fed"
+        }
+      },
+      {
+        "file": "scripts/inverse/learning/real_materials.test.py",
+        "sourceSha256": "854cbee079418e47fc71c450f85db92203f0e7b489775be94e14eb91f1263e80",
+        "exitCode": 0,
+        "log": {
+          "path": "tmp/heart-learning/label-expansion-review-v2/real_materials.test.py.log",
+          "sha256": "f556d0af882b25f272f6e81ca87c9a2e6aa8327067f369d9e7d035739d36d62d"
+        }
+      },
+      {
+        "file": "scripts/inverse/learning/u2netp_material.test.py",
+        "sourceSha256": "9fbef3d810d424a6948417d3bee95d9d9558c027429ccdb0451e03c7d8d38df7",
+        "exitCode": 0,
+        "log": {
+          "path": "tmp/heart-learning/label-expansion-review-v2/u2netp_material.test.py.log",
+          "sha256": "6db4710eb496aaf9a4c7b492c2454e8aeac89ebd52bb789f431a334cef7dade2"
+        }
+      }
+    ],
+    "sixUnchangedReviewedExportsByteIdenticalToFinal": true
+  },
+  "totals": {
+    "previousInstances": 16,
+    "newInstances": 8,
+    "combinedInstances": 24,
+    "combinedSourceGroups": 14,
+    "combinedApproximateOverlapReferences": 9
+  },
+  "productionChanged": false,
+  "modelTrained": false,
+  "nextStep": "Measure the fixed existing body/material model on these previously untrained photos before any new fitting; then preregister a bounded comparison using the expanded training labels and the unchanged 32-photo development cohort."
+}

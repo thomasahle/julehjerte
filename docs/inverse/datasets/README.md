@@ -50,11 +50,17 @@ All 28 exports pass conversion and geometry; three paper-support results remain
 uncertain. Every comparison was inspected. This stays an isolated experiment,
 with no production scheduling change or added disagreement allowance.
 
-The current U2NETP training subset contains only **16 reviewed real instances**.
-Six have approximate overlap-corner references; the others have none. The large
-photo inventory is not a correspondingly large supervised training set. More
-reviewed body/material labels and better corner references are needed before a
-direct learned corner proposal can be evaluated responsibly.
+The current U2NETP models were trained on **16 reviewed real instances**.
+The [reviewed label expansion](diverse-paper-label-expansion.json) prepares eight
+more photographs, bringing the candidate set to **24 instances and nine approximate
+overlap references**. It includes pale printed paper, low-contrast red/pink paper,
+dense checks and decorative motifs. All six sources in this batch already occur
+in the earlier subset: it adds photographs within the same 14 source groups,
+not independent sources. These remain separate from the five source groups in
+the 32-photo development evaluation. Every new body/material overlay was inspected
+at 256 and 768 pixels; uncertain boundaries and unlabelled material stay unknown.
+These are assistant annotations without independent human review, exact artwork
+or cutting-path labels. The new labels have not yet trained a model.
 
 The [complete balanced-epoch follow-up](u2netp-material-complete-epochs-results.json)
 adds 384 updates to the fixed relative-colour head, visiting every synthetic
