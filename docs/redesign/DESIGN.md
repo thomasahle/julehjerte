@@ -676,7 +676,13 @@ stray colour click would leave a "Mit hjerte" card behind. Its work in progress 
 localStorage instead (`paperheart.draft`: the design, where it came from, when it was written), on the same
 debounced path autosave uses. Open the editor as a new heart with a draft waiting and it is offered back in a
 canvas notice — "Du har en kladde fra sidst. Fortsæt hvor du slap?", *Fortsæt* / *Start forfra* — read after
-mount, never during render. Saving the heart, discarding the draft, or starting another one clears it.
+mount, never during render. Saving the heart, discarding the draft, or starting another one clears it. While a
+heart that is not in "Mine hjerter" holds work — edited since it opened, a draft taken up, an import, a heart
+from Mal — "Gem" wears a red dot, ringed white, and its tooltip says the heart is not saved yet, as tiled.art
+turns its Save button red; a heart already in the collection saves itself, so it shows none unless that
+failed. After "Gem", the page it goes to (the heart's own page, or the front page at its card) says
+“Mit hjerte” er gemt i Mine hjerter for a few seconds, from the root layout (`SavedToast`), so that saving does
+not pass in silence: user testers found the jump away alone gave no sign the heart was saved.
 
 Paper colours are a site-wide viewing preference, controlled by the shared footer on every page,
 including the generator, vector editor and paint editor. The footer offers two colour inputs, swap,

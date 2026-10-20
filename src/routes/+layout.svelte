@@ -9,6 +9,7 @@
 	import { langFromPathname, t } from "$lib/i18n";
 	import { alternatePaths, routeKeyFromPathname } from "$lib/i18n/routes";
 	import PageFooter from "$lib/components/PageFooter.svelte";
+	import SavedToast from "$lib/components/SavedToast.svelte";
 	import { markAppStarted } from "$lib/hydration";
 	import { isPageViewNavigation, trackPageView } from "$lib/analytics";
 	import {
@@ -277,6 +278,7 @@
 		{@render children()}
 	</div>
 	<PageFooter />
+	<SavedToast {lang} />
 </div>
 
 <style>

@@ -17,6 +17,7 @@
     type DraftSource,
     type EditorDraft
   } from '$lib/editor/draft';
+  import { noteSaved } from '$lib/editor/savedNotice';
   import type { Finger, GridSize, HeartDesign, HeartPattern } from '$lib/types/heart';
   import { normalizeHeartDesign, parseHeartFromSVGWithReport } from '$lib/utils/heartDesign';
   import { heartName as nameIn } from '$lib/utils/heartName';
@@ -228,6 +229,11 @@
   // Serialized design as first emitted by PaperHeart; used to tell real edits from the initial emission.
   let designBaseline: string | null = null;
   let hasDesignEdits = false;
+  // Whether the heart holds work that is not in "Mine hjerter": a heart that is not
+  // there yet (a new one, a copy, an import, Mal's) edited since it opened. "Gem"
+  // wears a dot for it, as tiled.art turns its Save button red. A heart that is
+  // there already saves its edits itself (autosave), so it has none unless that failed.
+  let unsaved = $state(false);
   const AUTOSAVE_DEBOUNCE_MS = 600;
 
   // Below 900px the editor keeps its old stacked layout: the heart panels go under the
@@ -240,6 +246,8 @@
   // buttons, so the heading is visually hidden — but every other route has an
   // h1 and heading navigation should not start at the panel titles.
   let pageHeading = $derived(editingExisting ? t('editHeart', lang) : t('createNewHeartTitle', lang));
+  // What "Gem" says it does, on hover and to a screen reader: that the heart is not saved yet, while it is not.
+  let saveLabel = $derived(unsaved ? t('saveNotYetSaved', lang) : isEditMode ? t('saveChanges', lang) : t('saveToMyHearts', lang));
 
   onMount(() => {
     // Initialize colors
@@ -376,6 +384,7 @@
     isEditMode = false;
     initialDesign = design;
     resetDesignBaseline();
+    unsaved = false;
     editorKey++;
   }
 
@@ -523,6 +532,7 @@
       clearStatus('save');
     } catch (err) {
       autosaveDirty = true;
+      unsaved = true;
       reportSaveError(err);
     }
   }
@@ -536,6 +546,7 @@
   function scheduleAutosave(): void {
     if (!browser) return;
     autosaveDirty = true;
+    if (!savesToCollection) unsaved = true;
     clearAutosaveTimer();
     autosaveTimeout = setTimeout(() => {
       autosaveTimeout = null;
@@ -550,6 +561,8 @@
     pendingDraft = null;
     if (!draft) return;
     pendingLoadSuperseded = true;
+    // The draft is work that never went into "Mine hjerter".
+    unsaved = true;
     const design = draft.design;
     currentFingers = design.fingers;
     currentGridSize = design.gridSize;
@@ -610,10 +623,13 @@
     }
 
     // The heart is in "Mine hjerter" now, so it is an existing heart from here on
-    // and autosaves; the draft that stood in for it has been spent.
+    // and autosaves; the draft that stood in for it has been spent. The page "Gem"
+    // goes to says it was saved.
     clearDraft();
     pendingDraft = null;
     savesToCollection = true;
+    unsaved = false;
+    noteSaved(design.name || t('myHeart', lang));
 
     // Back where the visitor came from: arriving from a heart's page via
     // "Rediger i editor" (?returnTo=detail), "Gem" returns to that heart
@@ -837,11 +853,12 @@
       type="button"
       class="btn btn-sm btn-dark top-action"
       onclick={showInGallery}
-      title={isEditMode ? t('saveChanges', lang) : t('saveToMyHearts', lang)}
-      aria-label={isEditMode ? t('saveChanges', lang) : t('saveToMyHearts', lang)}
+      title={saveLabel}
+      aria-label={saveLabel}
     >
       <SaveIcon size={18} />
       <span class="top-action-label">{t('editorSave', lang)}</span>
+      {#if unsaved}<span class="unsaved-dot" aria-hidden="true"></span>{/if}
     </button>
   </PageHeader>
 
@@ -1044,6 +1061,23 @@
     .top-action-label {
       display: none;
     }
+  }
+
+  /* "Gem" while the heart holds work that is not in "Mine hjerter" yet: a red dot
+     on the button's corner, ringed in white against the bar. */
+  .top-action {
+    position: relative;
+  }
+
+  .unsaved-dot {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 0 2px var(--white);
   }
 
   /* The draft prompt inside PaperHeart's notice box: one quiet line, its two
