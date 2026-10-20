@@ -12,7 +12,8 @@
   One segment per type. Opposite pairs tied two different ways can lie either way round in the
   heart; a segment chooses its type the way its glyph shows it, and shows as chosen either way.
   The chosen rule is told underneath: its name, what it does and, small, Heesch's name for the type,
-  or Grünbaum and Shephard's number where Heesch has none.
+  or Grünbaum and Shephard's number where Heesch has none. Every segment's tooltip tells its name and
+  what it does, so a type can be read about before it is chosen.
 
   compact   Tegn below 900px, where the panel leaves its column for a row under the drawing and can
             be 235px wide: the segments keep their glyph alone, its name their accessible name, and
@@ -22,7 +23,7 @@
 	import { untrack } from 'svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import { ToggleGroup, ToggleGroupItem, keepChosen } from '$lib/components/ui/toggle-group';
-	import { freeSides, neighbours, ofType, opposite, ruleKey, type TileRule } from '$lib/pattern/rules';
+	import { COMMON_RULES, neighbours, ofType, opposite, ruleKey, type TileRule } from '$lib/pattern/rules';
 	import { ruleCode, ruleText } from '$lib/pattern/names';
 	import TemplateGlyph from './TemplateGlyph.svelte';
 
@@ -44,7 +45,7 @@
 		return rule.sides === 'opposite' ? `opposite:${[rule.v, rule.h].sort().join(':')}` : ruleKey(rule);
 	}
 
-	const COMMON: TileRule[] = [opposite('move', 'move'), opposite('move', 'mirror'), freeSides(), neighbours('both')];
+	const COMMON = COMMON_RULES;
 	const GROUPS: { title: TranslationKey | null; rules: TileRule[] }[] = [
 		{
 			title: null,
@@ -109,7 +110,13 @@
 
 {#snippet segment(rule: TileRule, wide: boolean)}
 	{@const name = tr(ruleText(rule).name)}
-	<ToggleGroupItem value={typeKey(rule)} title={name} class={wide ? 'wide' : undefined} {...keepChosen(chosen === typeKey(rule))}>
+	<ToggleGroupItem
+		value={typeKey(rule)}
+		aria-label={name}
+		title={`${name}\n${tr(ruleText(rule).hint)}`}
+		class={wide ? 'wide' : undefined}
+		{...keepChosen(chosen === typeKey(rule))}
+	>
 		<TemplateGlyph {rule} size={compact ? 34 : 48} />
 		<span class:sr-only={compact}>{name}</span>
 	</ToggleGroupItem>

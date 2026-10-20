@@ -10,18 +10,19 @@
 import type { TranslationKey } from '$lib/i18n';
 import type { Finger, GridSize, HeartPattern, Vec } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
-import { fingerToSegments } from '$lib/geometry/bezierSegments';
 import { getCenteredRectParams, inferOverlapRect, type OverlapRect } from '$lib/utils/overlapRect';
 import {
 	cutOfFinger,
+	cutsAre,
 	dragPlacedPoint,
-	extractTile,
-	fitsTile,
 	followEdit,
 	generateEditorFingers,
 	locatePlacedPoint,
 	nodeAtCutEnd,
+	panBy,
 	placedPointAt,
+	READ_TOLERANCE,
+	readTile,
 	slideCutEnd,
 	specialNodes,
 	tileAfterFingerEdit,
@@ -29,18 +30,20 @@ import {
 	type PlacedPoint,
 	type SpecialNode
 } from './editorBridge';
-import { ALL_RULES, canLean, ruleInfo, ruleKey, ruleSymmetry, sameRule, type TileRule } from './rules';
-import { cutCounts, fitLines, type PatternTile, type SideCurve } from './tiling';
+import { MAX_GRID_SIZE, MIN_GRID_SIZE } from '$lib/constants';
+import { ALL_RULES, COMMON_RULES, latticeOf, ruleInfo, ruleKey, ruleSymmetry, sameRule, type TileRule } from './rules';
+import { cutCounts, fitLines, tileShape, type PatternTile, type SideCurve } from './tiling';
 import { isStraightTile, ruleStart, switchRule } from './starts';
 
-export { cutOfFinger, followEdit, generateEditorFingers, sameRule, specialNodes, weaveParityOf };
+export { cutOfFinger, cutsAre, followEdit, generateEditorFingers, READ_TOLERANCE, sameRule, specialNodes, weaveParityOf };
 export type { PatternTile, SpecialNode, TileRule };
 
-/** The heart as the Escher tab finds it: its cuts, edges and all, its grid, and the square they fill. */
+/** The heart as the Escher tab finds it: its cuts, edges and all, its grid, the square they fill, and which of its cells show the right lobe's colour. */
 export interface EscherHeart {
 	fingers: Finger[];
 	gridSize: GridSize;
 	rect: OverlapRect;
+	weaveParity: 0 | 1;
 }
 
 /** The grid a tile's heart has: a strip more than its cuts, each way. */
@@ -79,33 +82,21 @@ function tileWeaves(tile: PatternTile): boolean {
 	return findFingersWithIssues(made, intersectionMarginPx(inferOverlapRect(made, tileGrid(fitted)))).size === 0;
 }
 
-/** Whether the heart's cuts include exactly these: every one of `generated` is there, node for node, to `tolerance` pixels. */
-export function cutsAre(fingers: Finger[], generated: Finger[], tolerance = 1e-6): boolean {
-	const close = (p: Vec, q: Vec) => Math.abs(p.x - q.x) < tolerance && Math.abs(p.y - q.y) < tolerance;
-	return generated.every((g) => {
-		const f = fingers.find((x) => x.id === g.id);
-		const segs = f ? fingerToSegments(f) : null;
-		const want = fingerToSegments(g);
-		return !!segs && segs.length === want.length && segs.every((seg, k) => close(seg.p0, want[k]!.p0) && close(seg.p1, want[k]!.p1) && close(seg.p2, want[k]!.p2) && close(seg.p3, want[k]!.p3));
-	});
-}
-
-/**
+ /**
  * The tile a type chosen in the Escher tab draws, its lines fitted. The curves
  * the new type reads the same way carry over (and the lean, when the new type
  * lets tiles lean), so tying one pair of sides differently keeps the other pair
  * as drawn, as long as the heart still weaves (else the type starts afresh,
  * `switchRule`); cuts that already are a tile of the new type stay as they are;
- * anything else starts as the type starts, with a low peak of straight lines on
- * every curve, at the pattern's size. A plain chequerboard has nothing to keep,
- * so it starts there too.
+ * anything else starts as the type starts, with one bent curve on every side,
+ * at the pattern's size. A plain chequerboard has nothing to keep, so it starts
+ * there too.
  */
 export function tileForRule(rule: TileRule, current: PatternTile | null, heart: EscherHeart): PatternTile {
-	const { fingers, gridSize, rect } = heart;
-	const n = current ? current.cuts + 1 : Math.min(7, Math.max(3, gridSize.x, gridSize.y));
-	const found = !current && gridSize.x === n && gridSize.y === n ? extractTile(fingers, rule, n - 1, rect) : null;
+	const n = current ? current.cuts + 1 : Math.min(7, Math.max(3, heart.gridSize.x, heart.gridSize.y));
 	if (current && !isStraightTile(current)) return fitLines(switchRule(current, rule, n - 1, tileWeaves));
-	if (found && !isStraightTile(found) && fitsTile(fingers, found, rect)) return fitLines(found);
+	const found = current ? null : readTile(heart, [rule]);
+	if (found && !isStraightTile(found)) return found;
 	return fitLines(ruleStart(rule, n - 1));
 }
 
@@ -113,40 +104,62 @@ export function tileForRule(rule: TileRule, current: PatternTile | null, heart: 
 const BY_SYMMETRY = [...ALL_RULES].sort((a, b) => ruleSymmetry(b) - ruleSymmetry(a));
 
 /**
- * The tile the Escher tab takes up when it is opened again: the one it was left
- * with, if the cuts are still the ones it makes (a moved pattern's heart can have
- * a strip more one way); else, on a square grid, a tile the cuts already are (a
- * heart drawn in the tab and saved, say), unchanged, of the most symmetric type
- * that fits: two shapes fit every tile, a moved tile is also a mirrored one's
- * equal only by chance. A plain chequerboard fits every type, so it waits for
- * one to be chosen; null then.
+ * The tile the Escher tab takes up when it is opened again, or a heart is opened
+ * whose cuts are a tile: the one it was left with, if the cuts are still the ones
+ * it makes; else a tile the cuts already are (a heart drawn in the tab and saved,
+ * or drawn from a tile before the tab was there, like the gallery's Dag og nat),
+ * however its tiles were moved, sized, turned or leant (`readTile`), unchanged, of
+ * the most symmetric type that fits: two shapes fit every tile, a moved tile is
+ * also a mirrored one's equal only by chance. A plain chequerboard fits every
+ * type, so it waits for one to be chosen; null then.
  */
 export function resumedTile(last: PatternTile | null, heart: EscherHeart): PatternTile | null {
 	const { fingers, gridSize, rect } = heart;
 	const grid = last ? tileGrid(last) : null;
 	if (last && grid && grid.x === gridSize.x && grid.y === gridSize.y && cutsAre(fingers, generateEditorFingers(last, rect))) return last;
-	if (gridSize.x !== gridSize.y) return null;
-	for (const rule of BY_SYMMETRY) {
-		const found = extractTile(fingers, rule, gridSize.x - 1, rect);
-		if (found && !isStraightTile(found) && fitsTile(fingers, found, rect)) return found;
-	}
-	return null;
+	const found = readTile(heart, BY_SYMMETRY);
+	return found && !isStraightTile(found) ? found : null;
 }
+
+/**
+ * The tile the Escher tab opens on, which always has a type: the one it was
+ * left with or a tile the cuts already are (`resumedTile`), taken up as it is
+ * (`drawn` false); else the cuts drawn afresh (`drawn` true): as the tile the tab
+ * was left with, where the cuts have been changed in the Normal tab since, or as
+ * the first type the tab offers starts, at the heart's size.
+ */
+export function openedTile(last: PatternTile | null, heart: EscherHeart): { tile: PatternTile; drawn: boolean } {
+	const resumed = resumedTile(last, heart);
+	if (resumed) return { tile: resumed, drawn: false };
+	return { tile: last ?? tileForRule(COMMON_RULES[0]!, null, heart), drawn: true };
+}
+
+/** The tile drawn again as its type starts, at its size: the tab's "Start forfra". */
+export const restartedTile = (tile: PatternTile): PatternTile => fitLines(ruleStart(tile.rule, tile.cuts));
 
 /**
  * The tile drawn n × n on the heart's square, its lines fitted again, or null
  * when the pattern is too tight for that size: the tiles keep their shape in
- * cells, but the paper between two cuts has to stay as wide in the heart.
+ * cells, but the paper between two cuts has to stay as wide in the heart. Tiles
+ * stretched or turned keep that too, at the size of a cell of the n × n grid.
  */
 export function resizedTile(tile: PatternTile, n: number): PatternTile | null {
-	const next = fitLines({ ...tile, cuts: n - 1 });
+	const { shape, ...plain } = tile;
+	const area = shape ? Math.abs(shape.x.x * shape.y.y - shape.y.x * shape.x.y) : 1;
+	const unit = (v: Vec) => ({ x: v.x / Math.sqrt(area), y: v.y / Math.sqrt(area) });
+	const next = fitLines({ ...plain, cuts: n - 1, ...(shape ? { shape: { x: unit(shape.x), y: unit(shape.y) } } : {}) });
 	return tileWeaves(next) ? next : null;
 }
 
-/** What the Escher tab's hint says about the crossings, for the tile's type. */
-export function cornerHint(tile: PatternTile): TranslationKey {
-	if (!canLean(tile.rule)) return 'patternCornersPan';
-	return tile.rule.sides === 'opposite' ? 'patternCornersHalfturn' : 'patternCornersLean';
+/** The size the tab's buttons show the tile at: n for tiles a cell of the n × n grid in size, stretched or turned or not; null for a size dragged by hand. */
+export function patternSize(tile: PatternTile): number | null {
+	const { x, y } = tileShape(tile);
+	return Math.abs(x.x * y.y - y.x * x.y - 1) < 1e-9 ? tile.cuts + 1 : null;
+}
+
+/** What the Escher tab's hint says the black points do, for the tile's type: stretch the tiles, or grow them, where the type keeps them square or rhombic. */
+export function frameHint(tile: PatternTile): TranslationKey {
+	return ['square', 'rhombic'].includes(latticeOf(tile.rule)) ? 'patternPointsGrow' : 'patternPointsStretch';
 }
 
 /**
@@ -161,16 +174,17 @@ export function editTile(tile: PatternTile, edited: Finger, rect: OverlapRect): 
 }
 
 /**
- * A drag on a point the tile places: a corner, which leans every tile where the
- * type allows it and otherwise moves the whole pattern (on the square's edge,
- * along it); the middle of a half-turn S, which moves the whole pattern; or the
- * end of a cut where the edge cuts a curve, which slides along the edge and
- * reshapes the curve. `base` is the tile the drag started from, `start` where
- * the pointer was.
+ * A drag the tile answers itself: on a point of the tiling it places — a
+ * crossing, the middle of a half-turn S — which sizes, stretches and turns the
+ * tiles (`frame`); on the end of a cut where the edge cuts a curve, which slides
+ * along the edge and reshapes the curve (`slide`); or on one of the square's
+ * edges, which moves the whole pattern (`pan`). `base` is the tile the drag
+ * started from, `start` where the pointer was.
  */
 export type TileDrag =
-	| { mode: 'corner'; base: PatternTile; fingerId: string; anchor: number; point: PlacedPoint | null; start: Vec }
-	| { mode: 'slide'; base: PatternTile; fingerId: string; end: 'first' | 'last'; start: Vec };
+	| { mode: 'frame'; base: PatternTile; fingerId: string; anchor: number; point: PlacedPoint | null; start: Vec }
+	| { mode: 'slide'; base: PatternTile; fingerId: string; end: 'first' | 'last'; start: Vec }
+	| { mode: 'pan'; base: PatternTile; start: Vec };
 
 /** A drag starting on Tegn's anchor `anchor` of cut `fingerId`, a point the tile places (`special`). */
 export function startTileDrag(tile: PatternTile, fingerId: string, anchor: number, special: SpecialNode, start: Vec): TileDrag | null {
@@ -179,22 +193,26 @@ export function startTileDrag(tile: PatternTile, fingerId: string, anchor: numbe
 		const base = nodeAtCutEnd(tile, fingerId, anchor);
 		return base ? { mode: 'slide', base, fingerId, end: anchor === 0 ? 'first' : 'last', start } : null;
 	}
-	// A crossing or the middle of an S is followed as the pattern moves; an end of the cut on a
-	// straight side, which only moves the pattern along the edge, is not.
-	return { mode: 'corner', base: tile, fingerId, anchor, point: placedPointAt(tile, fingerId, anchor), start };
+	// A crossing or the middle of an S is followed as the tiles change; an end of the cut on a
+	// straight side is where the edge cuts it, which is somewhere else once they have.
+	return { mode: 'frame', base: tile, fingerId, anchor, point: placedPointAt(tile, fingerId, anchor), start };
 }
 
-/** The tile with the dragged point moved by `delta` pixels from where the drag started: leaned, moved or reshaped. */
+/** A drag on an edge of the square, which moves the whole pattern. */
+export const startPanDrag = (tile: PatternTile, start: Vec): TileDrag => ({ mode: 'pan', base: tile, start });
+
+/** The tile with what was dragged moved by `delta` pixels from where the drag started: sized and turned, moved or reshaped. */
 export function dragTile(drag: TileDrag, delta: Vec, rect: OverlapRect): PatternTile | null {
-	return drag.mode === 'corner' ? dragPlacedPoint(drag.base, drag.fingerId, drag.anchor, delta, rect) : slideCutEnd(drag.base, drag.fingerId, drag.end, delta, rect);
+	if (drag.mode === 'pan') return panBy(drag.base, delta, rect);
+	return drag.mode === 'frame' ? dragPlacedPoint(drag.base, drag.fingerId, drag.anchor, delta, rect) : slideCutEnd(drag.base, drag.fingerId, drag.end, delta, rect);
 }
 
 /**
- * Where the point a corner drag follows shows in the heart now: the cut and
- * Tegn's anchor there, under the pointer, though the pattern may have moved it
- * onto another cut, or a repeat on. Null when it is not on a cut the heart shows.
+ * Where the point a frame drag follows shows in the heart now: the cut and
+ * Tegn's anchor there, under the pointer, though the tiles' new size may have put
+ * it on another cut, or a repeat on. Null when it is not on a cut the heart shows.
  */
-export function followedPoint(drag: TileDrag & { mode: 'corner' }, next: PatternTile, pointer: Vec, rect: OverlapRect): { fingerId: string; anchor: number } | null {
+export function followedPoint(drag: TileDrag & { mode: 'frame' }, next: PatternTile, pointer: Vec, rect: OverlapRect): { fingerId: string; anchor: number } | null {
 	const kind = cutOfFinger(drag.fingerId, cutCounts(drag.base))?.kind;
 	return kind && drag.point ? locatePlacedPoint(next, drag.point, kind, pointer, rect) : null;
 }
@@ -210,6 +228,7 @@ export function savedPattern(tile: PatternTile): HeartPattern {
 		cuts: tile.cuts,
 		curves: Object.fromEntries(Object.entries(tile.curves).map(([key, curve]) => [key, numbers(curve!)])),
 		...(tile.offset ? { offset: pair(tile.offset) } : {}),
+		...(tile.shape ? { shape: [tile.shape.x.x, tile.shape.x.y, tile.shape.y.x, tile.shape.y.y] } : {}),
 		...(tile.pan ? { pan: pair(tile.pan) } : {}),
 		...(tile.lines ? { lines: { V: [tile.lines.V.first, tile.lines.V.count], H: [tile.lines.H.first, tile.lines.H.count] } } : {})
 	};
@@ -217,14 +236,15 @@ export function savedPattern(tile: PatternTile): HeartPattern {
 
 /**
  * The tile a heart kept, or null where it cannot be one of ours: a type we do not
- * have, a move past any repeat, or more lines cut than a moved pattern ever has.
- * Curves its type does not read are left behind.
+ * have, a move past any repeat, a shape turned inside out, or no line or more
+ * than a heart has cut one way. Curves its type does not read are left behind.
  */
 export function tileOfPattern(saved: HeartPattern): PatternTile | null {
 	const rule = RULE_BY_KEY.get(saved.rule);
 	if (!rule) return null;
 	if (saved.pan && saved.pan.some((v) => Math.abs(v) > 4)) return null;
-	if (saved.lines && [saved.lines.V[1], saved.lines.H[1]].some((count) => count < saved.cuts || count > saved.cuts + 1)) return null;
+	if (saved.shape && saved.shape[0] * saved.shape[3] - saved.shape[2] * saved.shape[1] <= 0) return null;
+	if (saved.lines && [saved.lines.V[1], saved.lines.H[1]].some((count) => count < MIN_GRID_SIZE - 1 || count > MAX_GRID_SIZE - 1)) return null;
 	const reads = new Set<string>(ruleInfo(rule).curves);
 	const vec = (x: number, y: number) => ({ x, y });
 	const curve = (segments: number[][]): SideCurve => segments.map((n) => ({ p0: vec(n[0]!, n[1]!), p1: vec(n[2]!, n[3]!), p2: vec(n[4]!, n[5]!), p3: vec(n[6]!, n[7]!) }));
@@ -233,6 +253,7 @@ export function tileOfPattern(saved: HeartPattern): PatternTile | null {
 		cuts: saved.cuts,
 		curves: Object.fromEntries(Object.entries(saved.curves).filter(([key]) => reads.has(key)).map(([key, segments]) => [key, curve(segments)])),
 		...(saved.offset ? { offset: vec(...saved.offset) } : {}),
+		...(saved.shape ? { shape: { x: vec(saved.shape[0], saved.shape[1]), y: vec(saved.shape[2], saved.shape[3]) } } : {}),
 		...(saved.pan ? { pan: vec(...saved.pan) } : {}),
 		...(saved.lines ? { lines: { V: { first: saved.lines.V[0], count: saved.lines.V[1] }, H: { first: saved.lines.H[0], count: saved.lines.H[1] } } } : {})
 	};
@@ -249,5 +270,5 @@ export function restoredTile(saved: HeartPattern, heart: EscherHeart): PatternTi
 	if (!tile) return null;
 	const grid = tileGrid(tile);
 	if (grid.x !== heart.gridSize.x || grid.y !== heart.gridSize.y) return null;
-	return cutsAre(heart.fingers, generateEditorFingers(tile, heart.rect), 1e-3) ? tile : null;
+	return cutsAre(heart.fingers, generateEditorFingers(tile, heart.rect), READ_TOLERANCE) ? tile : null;
 }

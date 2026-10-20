@@ -12,14 +12,18 @@ const problems = (tile: PatternTile) => {
 };
 
 describe('the tiles the rules start from, and what a new rule keeps', () => {
-	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))('starts %s from low peaks of straight lines on the plain grid, which weave at every size', (_key, rule) => {
+	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))('starts %s from one bent curve on every side, on the plain grid, which weaves at every size', (_key, rule) => {
 		const tile = ruleStart(rule, 3);
 		expect(sameRule(tile.rule, rule)).toBe(true);
 		expect(tile.cuts).toBe(3);
 		expect(tile.offset).toBeUndefined();
 		expect(isStraightTile(tile)).toBe(false);
-		// every piece straight: its handles on its ends
-		for (const curve of Object.values(tile.curves)) for (const s of curve!) expect([s.p1, s.p2]).toEqual([s.p0, s.p3]);
+		// one piece a curve, bent: the visitor adds the nodes
+		for (const curve of Object.values(tile.curves)) {
+			expect(curve).toHaveLength(1);
+			const [s] = curve!;
+			expect(Math.abs(s!.p1.y) + Math.abs(s!.p2.y)).toBeGreaterThan(0.1);
+		}
 		for (const cuts of [2, 3, 4, 5, 6]) expect(problems({ ...tile, cuts }), `${cuts} cuts`).toEqual([]);
 	});
 
@@ -79,7 +83,7 @@ describe('the tiles the rules start from, and what a new rule keeps', () => {
 	});
 
 	it("starts afresh where the curves it would keep come too close to the new rule's own", () => {
-		// The windmill's S sides are half circles, which meet a crossing square on; beside a peak, the cut
+		// The windmill's S sides are half circles, which meet a crossing square on; beside a bend, the cut
 		// turns back on itself there, closer than the paper allows.
 		const windmill = exampleTile(EXAMPLES.find((p) => p.id === 'windmill')!);
 		const weaves = (tile: PatternTile) => problems(tile).length === 0;

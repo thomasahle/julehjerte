@@ -53,6 +53,13 @@ export const ALL_RULES: TileRule[] = [
 	...([42, 45, 49, 50, 53, 54, 56, 57, 58, 59, 61, 62, 64, 66, 67, 68, 69, 71, 74] as const).map((ih): TileRule => ({ sides: 'type', ih }))
 ];
 
+/**
+ * The types the Escher tab offers first: moved, and moved and mirrored, the two
+ * quadrilateral types tiled.art's gallery uses most; two shapes; and symmetric,
+ * every tile its own mirror image. The tab opens on the first.
+ */
+export const COMMON_RULES: TileRule[] = [opposite('move', 'move'), opposite('move', 'mirror'), freeSides(), neighbours('both')];
+
 /** A rule as a string, the same for the same rule: to compare rules, and to key things by rule. */
 export function ruleKey(rule: TileRule): string {
 	if (rule.sides === 'free') return 'free';
@@ -77,6 +84,26 @@ export function canLean(rule: TileRule): boolean {
 	return rule.sides === 'free' || (rule.sides === 'opposite' && rule.v === 'turn' && rule.h === 'turn');
 }
 
+/**
+ * Which shapes a rule's cells may take in the heart (see `PatternTile.shape`),
+ * from the motions that make its tiling: each must stay a motion once the grid
+ * is stretched or turned, a true mirror or turn and not a skewed one. Moves and
+ * half turns stay one whatever the cells' shape (`oblique`, any parallelogram); a
+ * mirror in a side keeps the sides square to each other (`rectangular`); a mirror
+ * in a diagonal keeps them as long as each other (`rhombic`); a quarter turn, or
+ * mirrors both ways, keeps the cells square (`square`).
+ */
+export type Lattice = 'oblique' | 'rectangular' | 'rhombic' | 'square';
+
+export function latticeOf(rule: TileRule): Lattice {
+	const turns = ruleMotions(rule).map((m) => [m.a, m.b, m.c, m.d] as const);
+	const quarter = turns.some(([a, b, c, d]) => a === 0 && d === 0 && b === -c);
+	const sideMirror = turns.some(([a, b, c, d]) => b === 0 && c === 0 && a === -d);
+	const diagonalMirror = turns.some(([a, b, c, d]) => a === 0 && d === 0 && b === c);
+	if (quarter || (sideMirror && diagonalMirror)) return 'square';
+	return sideMirror ? 'rectangular' : diagonalMirror ? 'rhombic' : 'oblique';
+}
+
 /** How a curve drawn as half a side is completed: by a half turn about the side's middle (an S), or by its mirror image. */
 export type HalfKind = 'turn' | 'mirror';
 
@@ -96,14 +123,22 @@ export interface RuleInfo {
  * each other is one curve (`vertical` for the upper-left and lower-right sides,
  * `horizontal` for the other two); a side that is its own S is drawn as half,
  * completed by a half turn, one that is its own mirror image as half, completed by
- * its mirror image; a mirror line of the tiling is straight.
+ * its mirror image; a mirror line of the tiling is straight. Worked out once a
+ * rule and shared, like `ruleEdges`, so not to be changed.
  */
 export function ruleInfo(rule: TileRule): RuleInfo {
+	const key = ruleKey(rule);
+	const cached = infoByRule.get(key);
+	if (cached) return cached;
 	const classes = edgeClasses(rule);
 	const drawn = classes.filter((c) => c.shape !== 'I');
 	const halves = drawn.flatMap((c): Array<[CurveKey, HalfKind]> => (c.shape === 'S' ? [[c.key, 'turn']] : c.shape === 'U' ? [[c.key, 'mirror']] : []));
-	return { curves: drawn.map((c) => c.key), halves: Object.fromEntries(halves), straight: classes.filter((c) => c.shape === 'I').map((c) => c.key) };
+	const info = { curves: drawn.map((c) => c.key), halves: Object.fromEntries(halves), straight: classes.filter((c) => c.shape === 'I').map((c) => c.key) };
+	infoByRule.set(key, info);
+	return info;
 }
+
+const infoByRule = new Map<string, RuleInfo>();
 
 /** Whether a rule draws curve `key` as half a side, and how the half is completed. */
 export function halfOf(rule: TileRule, key: CurveKey): HalfKind | null {
@@ -384,13 +419,15 @@ function motionGroup(rule: TileRule): Set<string> {
 }
 
 /**
- * How far a rule's tiling repeats along each axis, in cells: the shortest moves
- * straight along x and along y its motions make. One, two or four: every tiling
- * of squares here repeats within four.
+ * How far a rule's tiling repeats along each axis, in cells, colours and all: the
+ * shortest moves straight along x and along y its motions make that take every
+ * tile onto one of its own colour. Two or four: a move of one cell takes the
+ * tiling onto itself where the white tile is the red one moved, but swaps the
+ * colours, and every tiling of squares here repeats within four.
  */
 export function ruleRepeat(rule: TileRule): Vec {
 	const group = motionGroup(rule);
-	const along = (dx: number, dy: number) => [1, 2].find((k) => group.has(motionKey(shift(dx * k, dy * k)))) ?? 4;
+	const along = (dx: number, dy: number) => (group.has(motionKey(shift(2 * dx, 2 * dy))) ? 2 : 4);
 	return { x: along(1, 0), y: along(0, 1) };
 }
 

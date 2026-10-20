@@ -3,7 +3,7 @@
  * from the gallery's own Escher-type and Alhambra hearts (Escher's birds, a leaf,
  * a windmill, hearts, arrowheads), some leaning, and a tile with knobs for every
  * rule. They put real curves, S's and leaning tiles through the engine; the Escher
- * tab itself starts every rule from plain peaks (`ruleStart`). Curves are in a
+ * tab itself starts every rule from plain bends (`ruleStart`). Curves are in a
  * side's own frame (see `tiling.ts`): from (0, 0) to (1, 0), y towards the
  * stretch's high side, in units of a cell.
  */

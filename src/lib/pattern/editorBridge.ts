@@ -7,8 +7,9 @@
  * the rule's curves. Tegn keeps its ordinary editing — drag a node or a handle,
  * double-click to add a node — and after every edit the stretches that changed
  * are read back into the tile and the whole heart is generated again, so every
- * stretch that carries the same curve follows. Dragging a crossing leans every
- * tile (`leanTo`), where the rule allows it.
+ * stretch that carries the same curve follows. Dragging a point of the tiling —
+ * a crossing, the middle of an S — sizes, stretches and turns every tile
+ * (`frameTo`); dragging a cut or an edge moves the whole pattern (`panBy`).
  *
  * Tegn's frame: the overlap rectangle in pixels; left-lobe cuts `L-k` run from
  * the right edge to the left one, right-lobe cuts `R-k` from the bottom edge to
@@ -17,11 +18,33 @@
  * reversal.
  */
 
-import type { BezierSegment, Finger, NodeType, Vec } from '$lib/types/heart';
+import type { BezierSegment, Finger, GridSize, NodeType, Vec } from '$lib/types/heart';
+import { MAX_GRID_SIZE, MIN_GRID_SIZE } from '$lib/constants';
 import { reverseSegments, splitBezierAt } from '$lib/geometry/bezierSegments';
 import type { OverlapRect } from '$lib/utils/overlapRect';
-import { canLean, ruleRepeat, halfOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
-import { crossing, cutCounts, firstLine, fitLines, heartLines, fromFrame, patternCuts, rawToCells, squareToStretch, stretchCurve, stretchFrame, tileOffset, toFrame, tracedCut, type CutPiece, type PatternTile, type SideCurve } from './tiling';
+import { READ_TOLERANCE, sharedCrossings } from './crossings';
+import { canLean, latticeOf, ruleRepeat, halfOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
+import {
+	cellsToRaw,
+	crossing,
+	cutCounts,
+	firstLine,
+	fitLines,
+	heartLines,
+	fromFrame,
+	patternCuts,
+	rawToCells,
+	shapeFor,
+	stretchCurve,
+	stretchFrame,
+	tileShape,
+	toFrame,
+	tracedCut,
+	type CutPiece,
+	type PatternTile,
+	type Shape,
+	type SideCurve
+} from './tiling';
 
 const mapSegs = (segs: BezierSegment[], f: (p: Vec) => Vec): BezierSegment[] =>
 	segs.map((s) => ({ p0: f(s.p0), p1: f(s.p1), p2: f(s.p2), p3: f(s.p3) }));
@@ -72,58 +95,6 @@ export function generateEditorFingers(tile: PatternTile, rect: OverlapRect): Fin
 /** A finger's segments in the tile's square frame, running from the cut's low end to its high end. */
 function rawCut(finger: Finger, rect: OverlapRect): BezierSegment[] {
 	return reverseSegments(mapSegs(finger.segments, fromPx(rect)));
-}
-
-/**
- * Cut `index` of family `kind` split at its crossings: one chain per stretch, in
- * the stretch's own frame, with its ends put back exactly on the crossings (a
- * dragged crossing goes back where it was, its handles with it). Null when the
- * cut has no node near some crossing — it was not drawn from a tile.
- */
-export function stretchesOfCut(segments: BezierSegment[], kind: StretchKind, index: number, cuts: number): SideCurve[] | null {
-	const n = cuts + 1;
-	const h = 100 / n;
-	const anchors = [segments[0]?.p0, ...segments.map((s) => s.p3)];
-	if (!segments.length) return null;
-	const crossing = (a: number): Vec => (kind === 'V' ? { x: index * h, y: a * h } : { x: a * h, y: index * h });
-	const tolerance = h * 0.2;
-	// The node nearest each crossing, in order along the cut.
-	const at: number[] = [];
-	let from = 0;
-	for (let a = 0; a <= n; a++) {
-		const c = crossing(a);
-		let best = -1;
-		let bestD = Infinity;
-		for (let k = from; k < anchors.length; k++) {
-			const p = anchors[k]!;
-			const d = Math.hypot(p.x - c.x, p.y - c.y);
-			if (d < bestD) {
-				bestD = d;
-				best = k;
-			}
-		}
-		if (best < 0 || bestD > tolerance) return null;
-		at.push(best);
-		from = best + 1;
-	}
-	const out: SideCurve[] = [];
-	for (let a = 0; a < n; a++) {
-		const slice = segments.slice(at[a], at[a + 1]).map((s) => ({ p0: { ...s.p0 }, p1: { ...s.p1 }, p2: { ...s.p2 }, p3: { ...s.p3 } }));
-		if (!slice.length) return null;
-		const start = crossing(a);
-		const end = crossing(a + 1);
-		const first = slice[0]!;
-		const last = slice[slice.length - 1]!;
-		const d0 = { x: start.x - first.p0.x, y: start.y - first.p0.y };
-		const d1 = { x: end.x - last.p3.x, y: end.y - last.p3.y };
-		first.p0 = start;
-		first.p1 = { x: first.p1.x + d0.x, y: first.p1.y + d0.y };
-		last.p3 = end;
-		last.p2 = { x: last.p2.x + d1.x, y: last.p2.y + d1.y };
-		const [i, j] = kind === 'V' ? [index, a] : [a, index];
-		out.push(mapSegs(slice, (p) => squareToStretch(kind, i, j, h, p)));
-	}
-	return out;
 }
 
 /** A stretch's curve back in the frame of the free curve it carries (both flips undone). */
@@ -187,76 +158,171 @@ const isStraightStretch = (rule: TileRule, piece: CutPiece) => ruleInfo(rule).st
 /** Whether a stretch is an S (its curve drawn as half, completed by a half turn), whose middle the side turns about. */
 const isSStretch = (rule: TileRule, piece: CutPiece) => halfOf(rule, stretchSource(rule, piece.kind, piece.i, piece.j).curve) === 'turn';
 
-/** Every stretch on an inner cut, in a fixed order: vertical cuts first. */
-function* innerStretches(cuts: number): Generator<{ kind: StretchKind; index: number; a: number }> {
-	const n = cuts + 1;
-	for (let index = 1; index < n; index++) for (let a = 0; a < n; a++) yield { kind: 'V', index, a };
-	for (let index = 1; index < n; index++) for (let a = 0; a < n; a++) yield { kind: 'H', index, a };
-}
-
-const stretchIndices = (kind: StretchKind, index: number, a: number): [number, number] => (kind === 'V' ? [index, a] : [a, index]);
-
-/**
- * The tile Tegn's cuts were drawn from, read off the first stretch that carries
- * each curve. Null when the cuts do not have nodes on the plain grid's crossings.
- */
-export function extractTile(fingers: Finger[], rule: TileRule, cuts: number, rect: OverlapRect): PatternTile | null {
-	const byId = new Map(fingers.map((f) => [f.id, f]));
-	const curves: Partial<Record<CurveKey, SideCurve>> = {};
-	const cache = new Map<string, SideCurve[] | null>();
-	for (const key of ruleInfo(rule).curves) {
-		for (const { kind, index, a } of innerStretches(cuts)) {
-			const [i, j] = stretchIndices(kind, index, a);
-			const src = stretchSource(rule, kind, i, j);
-			if (src.curve !== key) continue;
-			const id = `${kind === 'V' ? 'R' : 'L'}-${index}`;
-			if (!cache.has(id)) {
-				const f = byId.get(id);
-				cache.set(id, f ? stretchesOfCut(rawCut(f, rect), kind, index, cuts) : null);
-			}
-			const stretches = cache.get(id);
-			if (!stretches) return null;
-			curves[key] = freeCurveOf(rule, src, stretches[a]!);
-			break;
-		}
-	}
-	return { rule, cuts, curves };
-}
-
-const samePoint = (p: Vec, q: Vec, eps = 1e-6) => Math.abs(p.x - q.x) < eps && Math.abs(p.y - q.y) < eps;
-const sameCurve = (a: SideCurve, b: SideCurve, eps = 1e-6) =>
-	a.length === b.length &&
-	a.every((s, k) => samePoint(s.p0, b[k]!.p0, eps) && samePoint(s.p1, b[k]!.p1, eps) && samePoint(s.p2, b[k]!.p2, eps) && samePoint(s.p3, b[k]!.p3, eps));
-
-/**
- * Whether the cuts are exactly the ones `tile` makes: every stretch of every
- * inner cut is the curve the tile puts there (to `tolerance`, in cells).
- * `extractTile` reads each curve off one stretch only, so it also finds a tile in
- * cuts that were never drawn from one — a leaning tile, or a free drawing with
- * nodes near the crossings. Opening the Escher tab asks this first, and starts from
- * straight sides when the answer is no.
- */
-export function fitsTile(fingers: Finger[], tile: PatternTile, rect: OverlapRect, tolerance = 1e-3): boolean {
-	const byId = new Map(fingers.map((f) => [f.id, f]));
-	const cache = new Map<string, SideCurve[] | null>();
-	for (const { kind, index, a } of innerStretches(tile.cuts)) {
-		const id = `${kind === 'V' ? 'R' : 'L'}-${index}`;
-		if (!cache.has(id)) {
-			const f = byId.get(id);
-			cache.set(id, f ? stretchesOfCut(rawCut(f, rect), kind, index, tile.cuts) : null);
-		}
-		const actual = cache.get(id)?.[a];
-		const [i, j] = stretchIndices(kind, index, a);
-		if (!actual || !sameCurve(actual, stretchCurve(tile, kind, i, j), tolerance)) return false;
-	}
-	return true;
-}
-
 const EPS = 1e-6;
-const samePt = (p: Vec, q: Vec) => Math.abs(p.x - q.x) < EPS && Math.abs(p.y - q.y) < EPS;
-const sameSeg = (a: BezierSegment, b: BezierSegment) => samePt(a.p0, b.p0) && samePt(a.p1, b.p1) && samePt(a.p2, b.p2) && samePt(a.p3, b.p3);
+const samePt = (p: Vec, q: Vec, eps = EPS) => Math.abs(p.x - q.x) < eps && Math.abs(p.y - q.y) < eps;
+const sameSeg = (a: BezierSegment, b: BezierSegment, eps = EPS) => samePt(a.p0, b.p0, eps) && samePt(a.p1, b.p1, eps) && samePt(a.p2, b.p2, eps) && samePt(a.p3, b.p3, eps);
+const sameCurve = (a: SideCurve, b: SideCurve, eps: number) => a.length === b.length && a.every((s, k) => sameSeg(s, b[k]!, eps));
+
+/** Whether the heart's cuts include exactly these: every one of `generated` is there, node for node, to `tolerance` pixels. */
+export function cutsAre(fingers: Finger[], generated: Finger[], tolerance = 1e-6): boolean {
+	const byId = new Map(fingers.map((f) => [f.id, f]));
+	return generated.every((g) => {
+		const segs = byId.get(g.id)?.segments;
+		return !!segs && segs.length === g.segments.length && segs.every((seg, k) => sameSeg(seg, g.segments[k]!, tolerance));
+	});
+}
+
+/** The solution of the least squares problem rows · x = values, by its normal equations; null where they are singular. */
+function leastSquares(rows: number[][], values: number[]): number[] | null {
+	const n = rows[0]!.length;
+	const m = Array.from({ length: n }, (_, r) => [
+		...Array.from({ length: n }, (_, c) => rows.reduce((sum, row) => sum + row[r]! * row[c]!, 0)),
+		rows.reduce((sum, row, k) => sum + row[r]! * values[k]!, 0)
+	]);
+	for (let c = 0; c < n; c++) {
+		const pivot = m.slice(c).reduce((best, row, k) => (Math.abs(row[c]!) > Math.abs(m[best]![c]!) ? c + k : best), c);
+		if (Math.abs(m[pivot]![c]!) < 1e-12) return null;
+		[m[c], m[pivot]] = [m[pivot]!, m[c]!];
+		for (let r = 0; r < n; r++) {
+			if (r === c) continue;
+			const f = m[r]![c]! / m[c]![c]!;
+			for (let k = c; k <= n; k++) m[r]![k]! -= f * m[c]![k]!;
+		}
+	}
+	return m.map((row, r) => row[n]! / row[r]!);
+}
+
+/**
+ * The crossings of a heart's cuts as a grid: crossing (i, j) of `R-i` and `L-j`
+ * at t + i·a + j·b, and `odd` further where i + j is odd (leaning tiles), in the
+ * raw 0–100 square, fitted by least squares; `off` the farthest a crossing lies
+ * from its place.
+ */
+function fitGrid(points: Vec[][]): { t: Vec; a: Vec; b: Vec; odd: Vec; off: number } | null {
+	const rows: number[][] = [];
+	const at: Vec[] = [];
+	points.forEach((row, j) =>
+		row.forEach((p, i) => {
+			rows.push([1, i + 1, j + 1, (i + j) % 2]);
+			at.push(p);
+		})
+	);
+	const cx = leastSquares(rows, at.map((p) => p.x));
+	const cy = leastSquares(rows, at.map((p) => p.y));
+	if (!cx || !cy) return null;
+	const [t, a, b, odd] = [0, 1, 2, 3].map((k) => ({ x: cx[k]!, y: cy[k]! })) as [Vec, Vec, Vec, Vec];
+	const off = Math.max(...rows.map((r, k) => Math.hypot(t.x + r[1]! * a.x + r[2]! * b.x + r[3]! * odd.x - at[k]!.x, t.y + r[1]! * a.y + r[2]! * b.y + r[3]! * odd.y - at[k]!.y)));
+	return { t, a, b, odd, off };
+}
+
+/**
+ * The tile, its curves still to read, that puts the heart's crossings where
+ * `grid` has them, its tiling lying so that `R-1` is line `first.x` and `L-1`
+ * line `first.y`: the size of a cell the nearest plain grid's, its shape what is
+ * left, the lean and the pan what the grid says. Null where the cells' shape is
+ * not one the rule keeps (`latticeOf`), or they lean and the rule's do not.
+ */
+function gridTile(rule: TileRule, grid: { t: Vec; a: Vec; b: Vec; odd: Vec }, first: Vec, counts: Vec, tolerance: number): PatternTile | null {
+	const { t, a, b, odd } = grid;
+	const lean = Math.hypot(odd.x, odd.y) > tolerance;
+	if (lean && !canLean(rule)) return null;
+	const det = a.x * b.y - b.x * a.y;
+	if (det <= 0) return null;
+	const n = Math.min(MAX_GRID_SIZE, Math.max(MIN_GRID_SIZE, Math.round(100 / Math.sqrt(det))));
+	const h = 100 / n;
+	const read: Shape = { x: times(a, 1 / h), y: times(b, 1 / h) };
+	const shape = shapeFor(rule, read);
+	const off = (p: Vec, q: Vec) => Math.hypot(p.x - q.x, p.y - q.y);
+	if (off(shape.x, read.x) + off(shape.y, read.y) > (2 * tolerance) / h) return null;
+	const plain = off(shape.x, { x: 1, y: 0 }) + off(shape.y, { x: 0, y: 1 }) < tolerance / h;
+	const base: PatternTile = { rule, cuts: n - 1, curves: {}, ...(plain ? {} : { shape }) };
+	// Raw vectors back in cells.
+	const cells = (v: Vec) => minus(rawToCells(base, plus({ x: 50, y: 50 }, v)), rawToCells(base, { x: 50, y: 50 }));
+	// Whether the tiling's odd crossings are the heart's odd ones: if not, the others lean.
+	const even = (first.x + first.y) % 2 === 0;
+	const offset = lean ? cells(even ? odd : times(odd, -1)) : null;
+	const corner = even ? t : plus(t, odd);
+	const middle = minus({ x: first.x - 1, y: first.y - 1 }, cells(minus(corner, { x: 50, y: 50 })));
+	const o = offset ?? { x: 0, y: 0 };
+	return {
+		...base,
+		...(offset ? { offset } : {}),
+		pan: { x: n / 2 + o.x / 2 - middle.x, y: n / 2 + o.y / 2 - middle.y },
+		lines: { V: { first: first.x, count: counts.x }, H: { first: first.y, count: counts.y } }
+	};
+}
+
+export { READ_TOLERANCE };
+
+/**
+ * A tile Tegn's cuts were drawn from, of the first of `rules` that has one,
+ * wherever its tiles stand in the heart — moved, sized, stretched, turned or
+ * leaning — or null. The cuts have to cross at nodes of both (`sharedCrossings`),
+ * the crossings lie on a grid the rule's cells can take (`latticeOf`), leaning only
+ * where the rule lets tiles lean, and every cut has to be the one the tile makes,
+ * node for node, to `tolerance` pixels. Each rule is tried at every way its tiling
+ * can lie under the heart — where its four-cell repeat starts — that shows the
+ * drawn tiles in the heart's own colours (`weaveParity`), each curve read off the
+ * first stretch that carries it.
+ */
+export function readTile(heart: { fingers: Finger[]; gridSize: GridSize; rect: OverlapRect; weaveParity: 0 | 1 }, rules: TileRule[], tolerance = READ_TOLERANCE): PatternTile | null {
+	const { fingers, gridSize, rect, weaveParity } = heart;
+	const counts = { x: gridSize.x - 1, y: gridSize.y - 1 };
+	if (counts.x < 2 || counts.y < 2) return null;
+	const crossings = sharedCrossings(fingers, gridSize, tolerance);
+	if (!crossings) return null;
+	const square = fromPx(rect);
+	const grid = fitGrid(crossings.map((row) => row.map((c) => square(c.at))));
+	const tol = (tolerance / rect.width) * 100;
+	if (!grid || grid.off > tol) return null;
+	const byId = new Map(fingers.map((f) => [f.id, f]));
+	// Every whole stretch of an inner cut, in the square's frame from its low end: between the crossings
+	// with two neighbouring cuts of the other lobe, by heart indices.
+	const stretches: Array<{ kind: StretchKind; i: number; j: number; segments: BezierSegment[] }> = [];
+	for (let j = 1; j <= counts.y; j++) {
+		const cut = rawCut(byId.get(`L-${j}`)!, rect);
+		const at = crossings[j - 1]!.map((c) => cut.length - c.left);
+		for (let i = 1; i < counts.x; i++) stretches.push({ kind: 'H', i, j, segments: cut.slice(at[i - 1], at[i]) });
+	}
+	for (let i = 1; i <= counts.x; i++) {
+		const cut = rawCut(byId.get(`R-${i}`)!, rect);
+		const at = crossings.map((row) => cut.length - row[i - 1]!.right);
+		for (let j = 1; j < counts.y; j++) stretches.push({ kind: 'V', i, j, segments: cut.slice(at[j - 1], at[j]) });
+	}
+	// Where the tiling's repeat can start under the heart, the colours the heart's own.
+	const starts = [0, 1, 2, 3].flatMap((x) => [0, 1, 2, 3].map((y) => ({ x, y }))).filter((f) => (f.x + f.y + 1) % 2 === weaveParity);
+	for (const rule of rules) {
+		// The least moved first: a tile drawn in the tab and not moved comes back as it was drawn, not
+		// as one of the other tiles its heart is also made of.
+		const tiles = starts.flatMap((first) => {
+			const tile = gridTile(rule, grid, first, counts, tol);
+			return tile ? [{ tile, first }] : [];
+		});
+		const moved = (t: PatternTile) => Math.hypot(t.pan?.x ?? 0, t.pan?.y ?? 0);
+		tiles.sort((a, b) => moved(a.tile) - moved(b.tile));
+		for (const { tile, first } of tiles) {
+			// Each stretch in its own frame, its ends exactly on its crossings.
+			const framed = stretches.map(({ kind, i, j, segments }) => {
+				const [si, sj] = [first.x + i - 1, first.y + j - 1];
+				const frame = stretchFrame(tile, kind, si, sj);
+				return { kind, si, sj, curve: settle(mapSegs(segments, (p) => fromFrame(frame, rawToCells(tile, p)))) };
+			});
+			const curves: Partial<Record<CurveKey, SideCurve>> = {};
+			for (const key of ruleInfo(rule).curves) {
+				const carrier = framed.find(({ kind, si, sj }) => stretchSource(rule, kind, si, sj).curve === key);
+				if (carrier) curves[key] = freeCurveOf(rule, stretchSource(rule, carrier.kind, carrier.si, carrier.sj), carrier.curve);
+			}
+			const read = { ...tile, curves };
+			// Every whole stretch first, roughly; then every cut, its ends at the edges and all, exactly.
+			const eps = (4 * tol) / Math.sqrt(grid.a.x * grid.b.y - grid.b.x * grid.a.y);
+			if (!framed.every(({ kind, si, sj, curve }) => sameCurve(curve, stretchCurve(read, kind, si, sj), eps))) continue;
+			if (cutsAre(fingers, generateEditorFingers(read, rect), tolerance)) return read;
+		}
+	}
+	return null;
+}
+
 const sameStretch = (a: CutPiece, b: CutPiece) => a.kind === b.kind && a.i === b.i && a.j === b.j;
-const mod2 = (x: number) => ((x % 2) + 2) % 2;
 const plus = (p: Vec, d: Vec): Vec => ({ x: p.x + d.x, y: p.y + d.y });
 const minus = (p: Vec, q: Vec): Vec => ({ x: p.x - q.x, y: p.y - q.y });
 const times = (p: Vec, k: number): Vec => ({ x: p.x * k, y: p.y * k });
@@ -268,13 +334,9 @@ const edgeAxis = (kind: StretchKind): 'x' | 'y' => (kind === 'V' ? 'x' : 'y');
 /** Below this share of a segment showing, a handle on what shows would swing the rest of it too far. */
 const MIN_SHOWN = 0.15;
 
-/** How far the tiles may lean, in cells. */
-const MAX_LEAN = 1.2;
-
-/** The crossing a cut reaches at the end of `piece`'s stretch. Odd crossings move with the lean, even ones against it. */
-function crossingAfter(piece: CutPiece): { i: number; j: number; odd: boolean } {
-	const [i, j] = piece.kind === 'V' ? [piece.i, piece.j + 1] : [piece.i + 1, piece.j];
-	return { i, j, odd: mod2(i + j) === 1 };
+/** The crossing a cut reaches at the end of `piece`'s stretch. */
+function crossingAfter(piece: CutPiece): { i: number; j: number } {
+	return piece.kind === 'V' ? { i: piece.i, j: piece.j + 1 } : { i: piece.i + 1, j: piece.j };
 }
 
 /** The cut the tile makes for a finger, with where each segment comes from, or null for the square's edges. */
@@ -288,12 +350,12 @@ function tracedFinger(tile: PatternTile, fingerId: string) {
  * at an end of the cut that falls exactly on one (the plain grid's cuts end on
  * corners on the square's edges).
  */
-function cornerAt(pieces: CutPiece[], r: number): { i: number; j: number; odd: boolean } | null {
+function cornerAt(pieces: CutPiece[], r: number): { i: number; j: number } | null {
 	const m = pieces.length;
 	if (r > 0 && r < m) return sameStretch(pieces[r - 1]!, pieces[r]!) ? null : crossingAfter(pieces[r - 1]!);
 	if (r === 0) {
 		const p = pieces[0];
-		return p && !p.clipped && p.index === 0 ? { i: p.i, j: p.j, odd: mod2(p.i + p.j) === 1 } : null;
+		return p && !p.clipped && p.index === 0 ? { i: p.i, j: p.j } : null;
 	}
 	const p = pieces[m - 1];
 	return r === m && p && !p.clipped && p.index === p.count - 1 ? crossingAfter(p) : null;
@@ -301,19 +363,15 @@ function cornerAt(pieces: CutPiece[], r: number): { i: number; j: number; odd: b
 
 /**
  * A node the tile places rather than a curve, and what dragging it does:
- * - 'lean': a crossing, under a rule whose tiles may lean: every tile leans with it.
- * - 'edge': an end of the cut on a corner on the square's edge, same rules: it
- *   slides along the edge, leaning the tiles that way.
- * - 'pan': a point the rule fixes in the tiling — a corner of a rule that keeps
- *   its tiles square, the middle of a half-turn S: the whole pattern moves with it.
- * - 'pan-edge': such a corner at an end of the cut, on the edge: the whole
- *   pattern moves along the edge with it.
+ * - 'frame': a point of the tiling itself — a crossing, the middle of a half-turn
+ *   S, an end of the cut where the edge cuts a corner or a straight side, which
+ *   may not bend: the tiles are sized, stretched and turned so that it follows the
+ *   pointer (`frameTo`).
  * - 'slide': an end of the cut where the edge cuts a curve: it slides along the
- *   edge, reshaping the curve in every copy. Where the edge cuts a straight side
- *   instead, which may not bend, it is a 'pan-edge'.
- * None of them is locked.
+ *   edge, reshaping the curve in every copy.
+ * None of them is locked, and none moves the pattern: dragging a cut does that.
  */
-export type SpecialNode = 'lean' | 'edge' | 'pan' | 'pan-edge' | 'slide';
+export type SpecialNode = 'frame' | 'slide';
 
 /** The nodes of a cut the tile makes that it places itself, by Tegn's anchor index (see `SpecialNode`). */
 export function specialNodes(tile: PatternTile, fingerId: string): Map<number, SpecialNode> {
@@ -322,14 +380,13 @@ export function specialNodes(tile: PatternTile, fingerId: string): Map<number, S
 	if (!traced) return out;
 	const { pieces } = traced;
 	const m = pieces.length;
-	const leaning = canLean(tile.rule);
 	// Tegn runs every cut the other way, so the raw anchor r is its anchor m − r. The middle of an S
 	// is the point it turns about; a mirrored side's middle only moves across it, like any node.
 	for (let r = 0; r <= m; r++) {
 		const end = r === 0 || r === m;
-		if (cornerAt(pieces, r)) out.set(m - r, leaning ? (end ? 'edge' : 'lean') : end ? 'pan-edge' : 'pan');
-		else if (end) out.set(m - r, isStraightStretch(tile.rule, pieces[r === 0 ? 0 : m - 1]!) ? 'pan-edge' : 'slide');
-		else if (pieces[r]!.index === pieces[r]!.count / 2 && isSStretch(tile.rule, pieces[r]!)) out.set(m - r, 'pan');
+		if (cornerAt(pieces, r)) out.set(m - r, 'frame');
+		else if (end) out.set(m - r, isStraightStretch(tile.rule, pieces[r === 0 ? 0 : m - 1]!) ? 'frame' : 'slide');
+		else if (pieces[r]!.index === pieces[r]!.count / 2 && isSStretch(tile.rule, pieces[r]!)) out.set(m - r, 'frame');
 	}
 	return out;
 }
@@ -387,26 +444,23 @@ export function followEdit(before: PatternTile, after: PatternTile, fingerId: st
 /** A pan brought into one repeat of the tiling, [−repeat / 2, repeat / 2): moving the whole pattern a repeat changes nothing. */
 const withinRepeat = (v: number, repeat: number) => v - repeat * Math.floor((v + repeat / 2) / repeat);
 
+/** The tile with its pan moved by `d` cells, kept within one repeat of the tiling: moving the whole pattern a repeat changes nothing. */
+function panned(tile: PatternTile, d: Vec): PatternTile {
+	const pan = tile.pan ?? { x: 0, y: 0 };
+	const repeat = ruleRepeat(tile.rule);
+	return { ...tile, pan: { x: withinRepeat(pan.x + d.x, repeat.x), y: withinRepeat(pan.y + d.y, repeat.y) } };
+}
+
 /**
- * The whole pattern moved within the heart so that the point at Tegn's anchor
- * `anchor` of cut `fingerId` moves by `delta` pixels — along the edge, for an end
- * of the cut. It moves without end: the heart cuts the lines nearest its middle,
- * and the next one where an edge strip has grown wider than a cell (`fitLines`);
- * the pan is kept within one repeat of the pattern.
+ * The whole pattern moved within the heart by `delta` pixels: what dragging a
+ * cut, or the square's edge, does. It moves without end: the heart cuts the
+ * lines of the tiling that fit in its square (`fitLines`), so a line that leaves
+ * at one edge comes in again at the other; the pan is kept within one repeat.
  */
-function panTo(base: PatternTile, fingerId: string, anchor: number, delta: Vec, rect: OverlapRect): PatternTile | null {
-	const traced = tracedFinger(base, fingerId);
-	if (!traced) return null;
-	const m = traced.pieces.length;
-	const along = anchor === 0 || anchor === m ? edgeAxis(traced.cut.kind) : null;
-	const d = along === 'x' ? { x: delta.x, y: 0 } : along === 'y' ? { x: 0, y: delta.y } : delta;
-	const n = base.cuts + 1;
-	const pan = base.pan ?? { x: 0, y: 0 };
-	const repeat = ruleRepeat(base.rule);
-	return fitLines({
-		...base,
-		pan: { x: withinRepeat(pan.x + (d.x * n) / rect.width, repeat.x), y: withinRepeat(pan.y + (d.y * n) / rect.height, repeat.y) }
-	});
+export function panBy(base: PatternTile, delta: Vec, rect: OverlapRect): PatternTile {
+	const to = rawToCells(base, { x: (delta.x / rect.width) * 100, y: (delta.y / rect.height) * 100 });
+	const from = rawToCells(base, { x: 0, y: 0 });
+	return fitLines(panned(base, minus(to, from)));
 }
 
 /**
@@ -444,17 +498,9 @@ export function locatePlacedPoint(tile: PatternTile, point: PlacedPoint, kind: S
 	return anchor < 0 ? null : { fingerId, anchor };
 }
 
-/**
- * A point the tile places, dragged by `delta` pixels from where it was in `base`:
- * a corner leans every tile where the rule lets tiles lean; any other corner, and
- * the middle of a half-turn S, moves the whole pattern within the heart. Either
- * way the point follows the pointer (along the edge, for an end of the cut).
- */
+/** A point of the tiling the tile places, dragged by `delta` pixels from where it was in `base` (`frameTo`). */
 export function dragPlacedPoint(base: PatternTile, fingerId: string, anchor: number, delta: Vec, rect: OverlapRect): PatternTile | null {
-	const kind = specialNodes(base, fingerId).get(anchor);
-	if (kind === 'lean' || kind === 'edge') return leanTo(base, fingerId, anchor, delta, rect);
-	if (kind === 'pan' || kind === 'pan-edge') return panTo(base, fingerId, anchor, delta, rect);
-	return null;
+	return specialNodes(base, fingerId).get(anchor) === 'frame' ? frameTo(base, fingerId, anchor, delta, rect) : null;
 }
 
 /** Tegn's anchor index of a crossing on a cut the tile makes, or -1 when the cut does not show it. */
@@ -470,31 +516,133 @@ function anchorOfCrossing(tile: PatternTile, fingerId: string, crossing: { i: nu
 }
 
 /**
- * The tile leaned so that the crossing at Tegn's anchor `anchor` of cut `fingerId`
- * moves by `delta` pixels: every crossing of its kind moves with it and the
- * others the opposite way. The heart is a window onto the tiling that moves by
- * half the lean, so the lean changes by twice the move, and the lines it cuts are
- * fitted again (`fitLines`). A corner at an end of the cut, on the square's edge,
- * only slides along it. Null when the anchor is not a crossing or the rule keeps
- * its tiles square.
+ * How far the cells may turn off the plain grid, in radians. Every cut has to run
+ * from one edge of the square to the opposite one, and a turned line runs across
+ * it aslant: turned much further, the lines near the corners would leave it at the
+ * sides, and a 5 × 5 pattern would keep three strips a side, a 3 × 3 one two.
  */
-export function leanTo(base: PatternTile, fingerId: string, anchor: number, delta: Vec, rect: OverlapRect): PatternTile | null {
-	if (!canLean(base.rule)) return null;
+const MAX_TURN = (15 * Math.PI) / 180;
+
+/** The shortest and the longest side a cell may have, in the square's 100 units: twelve strips across, and two. */
+const SIDES: [number, number] = [100 / 12, 100 / 2];
+
+/**
+ * How near the plain grid a drag snaps to it: a side within this turn of its
+ * axis lies on it, and within this share of a plain cell's length, or of the
+ * other side's, is that long. So the tiles come back square and straight.
+ */
+const SNAP_TURN = (2.5 * Math.PI) / 180;
+const SNAP_SIZE = 0.025;
+
+/**
+ * The crossing of line `line` of family `kind` that the tiles turn about when a
+ * point of the line at `from` (in cells) is dragged: the one nearest the middle of
+ * the heart, so that the middle stays where it was, and two stretches or more from
+ * the point, so that a point near the middle has some way to turn about.
+ */
+function framePivot(tile: PatternTile, kind: StretchKind, line: number, from: Vec): Vec {
+	const along = kind === 'V' ? 'y' : 'x';
+	const middle = rawToCells(tile, { x: 50, y: 50 })[along];
+	let best = kind === 'V' ? crossing(tile, line, Math.round(middle)) : crossing(tile, Math.round(middle), line);
+	let bestD = Infinity;
+	for (let a = Math.floor(middle) - 4; a <= Math.ceil(middle) + 4; a++) {
+		const c = kind === 'V' ? crossing(tile, line, a) : crossing(tile, a, line);
+		if (Math.abs(c[along] - from[along]) < 1.75) continue;
+		const q = cellsToRaw(tile, c);
+		const d = Math.hypot(q.x - 50, q.y - 50);
+		if (d < bestD) {
+			bestD = d;
+			best = c;
+		}
+	}
+	return best;
+}
+
+const angleOf = (v: Vec) => Math.atan2(v.y, v.x);
+const dot = (p: Vec, q: Vec) => p.x * q.x + p.y * q.y;
+const turn = (v: Vec, a: number): Vec => ({ x: v.x * Math.cos(a) - v.y * Math.sin(a), y: v.x * Math.sin(a) + v.y * Math.cos(a) });
+const apply = (shape: Shape, p: Vec): Vec => plus(times(shape.x, p.x), times(shape.y, p.y));
+
+/**
+ * The tile's shape turned, grown and stretched so that the cells' vector `v`
+ * (from the pivot to the dragged point) comes to `w` in the square: every side
+ * turns, as far as `MAX_TURN` lets it; then the cell side along the dragged cut
+ * (family `kind`) grows or shrinks, and the other side with it where the type
+ * keeps its cells square or rhombic, to bring the point as near the pointer as
+ * the turn left it room for, within `SIDES`. Within those limits the point is the
+ * pointer; past them it stops short, and a pointer dragged past the pivot leaves
+ * the tiles as small as they go.
+ */
+function turnedShape(tile: PatternTile, kind: StretchKind, v: Vec, w: Vec): Shape {
+	const h = 100 / (tile.cuts + 1);
+	const shape = tileShape(tile);
+	const both = ['square', 'rhombic'].includes(latticeOf(tile.rule));
+	const side = kind === 'V' ? 'y' : 'x';
+	const e = side === 'x' ? { x: 1, y: 0 } : { x: 0, y: 1 };
+	// Where the point is from the pivot now, as the part that grows (`b`) and the part that does not (`a`).
+	const now = times(apply(shape, v), h);
+	const b = both ? now : times(shape[side], h * dot(v, e));
+	const a = minus(now, b);
+	// Turned towards the pointer, as far as every side may turn off its axis: by how far it lies across
+	// the line to the point against how far along it, either way, so that a pointer dragged on past the
+	// pivot along the line turns nothing.
+	const axisOf = { x: 0, y: Math.PI / 2 };
+	const unit = times(now, 1 / (Math.hypot(now.x, now.y) || 1));
+	const [along, aside] = [dot(unit, w), unit.x * w.y - unit.y * w.x];
+	const wanted = Math.atan2(aside, Math.abs(along));
+	let by = wanted;
+	if (Math.abs(angleOf(shape[side]) + by - axisOf[side]) < SNAP_TURN) by = axisOf[side] - angleOf(shape[side]);
+	for (const k of ['x', 'y'] as const) {
+		const off = angleOf(shape[k]) - axisOf[k];
+		by = Math.min(Math.max(by, -MAX_TURN - off), MAX_TURN - off);
+	}
+	// Then grown so that the point, turned, comes nearest the pointer: a + g·b nearest w turned back.
+	// Where the turn stopped short of the pointer, or snapped, only how far along the pointer is counts,
+	// not how far aside: dragged on across, the tiles turn as far as they go and keep their size.
+	const reach = by === wanted ? w : plus(times(unit, along), times({ x: -unit.y, y: unit.x }, Math.abs(along) * Math.tan(by)));
+	const back = turn(reach, -by);
+	let grow = dot(b, b) > 1e-12 ? dot(minus(back, a), b) / dot(b, b) : 1;
+	const grown = (both ? ['x', 'y'] : [side]) as Array<'x' | 'y'>;
+	const length = (k: 'x' | 'y') => Math.hypot(shape[k].x, shape[k].y);
+	for (const target of both ? [1] : [1, length(side === 'x' ? 'y' : 'x')]) {
+		if (Math.abs((grow * length(side)) / target - 1) < SNAP_SIZE) grow = target / length(side);
+	}
+	for (const k of grown) grow = Math.min(Math.max(grow, SIDES[0] / (h * length(k))), SIDES[1] / (h * length(k)));
+	const sized = (k: 'x' | 'y') => turn(grown.includes(k) ? times(shape[k], grow) : shape[k], by);
+	return { x: sized('x'), y: sized('y') };
+}
+
+/**
+ * The tile sized, stretched and turned so that the point at Tegn's anchor
+ * `anchor` of cut `fingerId` — a point of the tiling (`SpecialNode` 'frame') —
+ * moves by `delta` pixels, the crossing of its line nearest the middle of the
+ * heart staying where it is (`framePivot`). Along the cut the tiles grow longer or
+ * shorter that way, or bigger or smaller where the type keeps them square or
+ * rhombic (`latticeOf`); across it they turn. The heart cuts the lines that then
+ * fit (`fitLines`), so a smaller tile makes more strips, and a narrow one more
+ * one way than the other. Null for an anchor that is no node of the cut, or where
+ * no line of a family would fit.
+ */
+export function frameTo(base: PatternTile, fingerId: string, anchor: number, delta: Vec, rect: OverlapRect): PatternTile | null {
 	const traced = tracedFinger(base, fingerId);
 	if (!traced) return null;
-	const m = traced.pieces.length;
-	const corner = cornerAt(traced.pieces, m - anchor);
-	if (!corner) return null;
-	const along = anchor === 0 || anchor === m ? edgeAxis(traced.cut.kind) : null;
-	const d = along === 'x' ? { x: delta.x, y: 0 } : along === 'y' ? { x: 0, y: delta.y } : delta;
-	const n = base.cuts + 1;
-	const sign = corner.odd ? 2 : -2;
-	const o = tileOffset(base);
-	const clamp = (v: number) => Math.max(-MAX_LEAN, Math.min(MAX_LEAN, v));
-	return fitLines({
-		...base,
-		offset: { x: clamp(o.x + (sign * d.x * n) / rect.width), y: clamp(o.y + (sign * d.y * n) / rect.height) }
-	});
+	const r = traced.pieces.length - anchor;
+	const node = r === 0 ? traced.segments[0]?.p0 : traced.segments[r - 1]?.p3;
+	if (!node) return null;
+	const { kind, index } = traced.cut;
+	const from = rawToCells(base, node);
+	const pivot = framePivot(base, kind, firstLine(base, kind) + index - 1, from);
+	const at = cellsToRaw(base, pivot);
+	const to = { x: node.x + (delta.x / rect.width) * 100, y: node.y + (delta.y / rect.height) * 100 };
+	const shape = turnedShape(base, kind, minus(from, pivot), minus(to, at));
+	// Snapped back square and straight at the plain grid's size, it is the plain grid again.
+	const plain = Math.abs(shape.x.x - 1) + Math.abs(shape.x.y) + Math.abs(shape.y.x) + Math.abs(shape.y.y - 1) < 1e-9;
+	const { shape: _was, ...unshaped } = base;
+	const shaped: PatternTile = plain ? unshaped : { ...base, shape };
+	// The pivot stays where it was: the pattern moves under it by as much as the new shape took it away.
+	const next = fitLines(panned(shaped, minus(rawToCells(shaped, at), pivot)));
+	const counts = cutCounts(next);
+	return counts.V > 0 && counts.H > 0 ? next : null;
 }
 
 /**

@@ -2,10 +2,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
 import PaperHeart from './PaperHeart.svelte';
 import type { Finger, GridSize, HeartPattern, Vec } from '$lib/types/heart';
+import { splitBezierAt } from '$lib/geometry/bezierSegments';
 import { opposite } from '$lib/pattern/rules';
 import { fitLines } from '$lib/pattern/tiling';
 import { ruleStart } from '$lib/pattern/starts';
-import { savedPattern, tileFingers, tileGrid, weaveParityOf } from '$lib/pattern/escherTab';
+import { dragTile, restartedTile, savedPattern, startPanDrag, tileFingers, tileGrid, weaveParityOf } from '$lib/pattern/escherTab';
+import { getCenteredRectParams } from '$lib/utils/overlapRect';
+import { knobTile } from '$lib/pattern/examples';
 // The Escher tab's panel, which Tegn loads when a heart opens on the tab, loaded ahead.
 import '$lib/components/pattern/EscherPanel.svelte';
 
@@ -33,7 +36,7 @@ afterEach(async () => {
 
 type Opened = { initialFingers: Finger[]; initialGridSize: GridSize; initialWeaveParity: 0 | 1; initialPattern: HeartPattern };
 
-function render(opened?: Opened) {
+function render(opened?: Partial<Opened> & { initialEscherTab?: boolean }) {
 	const target = document.createElement('div');
 	document.body.appendChild(target);
 	let fingers: Finger[] = [];
@@ -76,6 +79,15 @@ function send(target: Element, type: string, p: Vec, shiftKey = false) {
 function midpoint(finger: Finger): Vec {
 	const { p0, p3 } = finger.segments[0]!;
 	return { x: (p0.x + p3.x) / 2, y: (p0.y + p3.y) / 2 };
+}
+
+/** The point `t` of the way along a cubic Bézier segment. */
+function bezierAt(seg: Finger['segments'][number], t: number): Vec {
+	const u = 1 - t;
+	return {
+		x: u * u * u * seg.p0.x + 3 * u * u * t * seg.p1.x + 3 * u * t * t * seg.p2.x + t * t * t * seg.p3.x,
+		y: u * u * u * seg.p0.y + 3 * u * u * t * seg.p1.y + 3 * u * t * t * seg.p2.y + t * t * t * seg.p3.y
+	};
 }
 
 const edges = [
@@ -141,27 +153,251 @@ describe('outer edges in the designer', () => {
 });
 
 describe('the Escher tab', () => {
-	it('drags the same node of a moved pattern on, though the edge cuts a node before it off the cut on the way', async () => {
-		// Dragging node 11 of R-1 lets the edge cut the curve before it short: the cut made again has
-		// the node as node 10.
-		const tile = fitLines({ ...ruleStart(opposite('turn', 'move'), 4), pan: { x: 0.37, y: -0.21 } });
+	const chosenType = (h: ReturnType<typeof render>) => h.target.querySelector('.rule-templates [data-state="on"]')?.getAttribute('aria-label');
+	const pressed = (h: ReturnType<typeof render>, label: string) => h.button(label).getAttribute('aria-pressed') === 'true';
+	const chosenTab = (h: ReturnType<typeof render>) => h.target.querySelector('.symmetry-tabs [data-state="on"]')?.textContent?.trim();
+	const snapBox = (h: ReturnType<typeof render>) => [...h.target.querySelectorAll('label.checkbox')].some((l) => l.textContent?.includes("Snap to the other lobe's points"));
+	const cutsOf = (fingers: Finger[]) => JSON.stringify(fingers.map((f) => [f.id, f.segments]).sort());
+
+	it('always has a type: opened on a heart that is no tile, it draws the cuts as the first type starts, which Fortryd takes back', async () => {
+		const h = render({ initialEscherTab: true });
+		const original = JSON.stringify(h.fingers);
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
+		expect(chosenTab(h)).toBe('Escher');
+		// every type's tooltip says what it does, before it is chosen
+		const moved = h.target.querySelector('.rule-templates [data-state="on"]')!.getAttribute('title')!;
+		expect(moved.split('\n')).toEqual(['Moved', expect.stringContaining('The white tile is the red one')]);
+		expect(cutsOf(h.fingers)).toBe(cutsOf(tileFingers(fitLines(ruleStart(opposite('move', 'move'), 2)))));
+		// the lobes share their crossings, which the tile places: no snapping to the other lobe's points
+		expect(snapBox(h)).toBe(false);
+		h.button('Undo').click();
+		flushSync();
+		expect(JSON.stringify(h.fingers)).toBe(original);
+		expect(chosenTab(h)).toBe('Normal');
+		expect(snapBox(h)).toBe(true);
+	});
+
+	it.each(['L-0', 'R-4', 'L-4', 'R-0'])('moves the whole pattern when the edge %s is dragged: no strip added, and the type kept', async (id) => {
+		const tile = { ...knobTile(opposite('move', 'move')), cuts: 3 };
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
+		const from = h.fingers.find((f) => f.id === id)!.segments[0]!.p3;
+		const delta = { x: 30, y: -12 };
+		send(h.path(id), 'pointerdown', from);
+		send(h.svg, 'pointermove', { x: from.x + delta.x / 2, y: from.y + delta.y / 2 });
+		send(h.svg, 'pointermove', { x: from.x + delta.x, y: from.y + delta.y });
+		send(h.svg, 'pointerup', { x: from.x + delta.x, y: from.y + delta.y });
+		const moved = dragTile(startPanDrag(tile, from), delta, getCenteredRectParams({ x: 4, y: 4 }))!;
+		expect(moved.pan).toBeDefined();
+		expect(cutsOf(h.fingers)).toBe(cutsOf(tileFingers(moved)));
+		expect(h.gridSize).toEqual(tileGrid(moved));
+		expect(chosenType(h)).toBe('Moved');
+	});
+
+	it.each(['L-2', 'R-1'])('only chooses the cut %s when it is pressed: its points show, and dragging it moves nothing', async (id) => {
+		const tile = { ...knobTile(opposite('move', 'move')), cuts: 3 };
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
+		const opened = JSON.stringify(h.fingers);
+		const from = bezierAt(h.fingers.find((f) => f.id === id)!.segments[1]!, 0.5);
+		send(h.path(id), 'pointerdown', from);
+		expect(h.handles().length).toBeGreaterThan(0);
+		send(h.svg, 'pointermove', { x: from.x + 15, y: from.y - 6 });
+		send(h.svg, 'pointermove', { x: from.x + 30, y: from.y - 12 });
+		send(h.svg, 'pointerup', { x: from.x + 30, y: from.y - 12 });
+		expect(JSON.stringify(h.fingers)).toBe(opened);
+		expect(h.button('Undo').disabled).toBe(true);
+	});
+
+	it('stretches the tiles when a black point is dragged along its cut, and the heart gets more strips that way', async () => {
+		const tile = { ...knobTile(opposite('move', 'move')), cuts: 3 };
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
+		const anchors = () => {
+			const segs = h.fingers.find((f) => f.id === 'L-2')!.segments;
+			return [segs[0]!.p0, ...segs.map((s) => s.p3)];
+		};
+		send(h.path('L-2'), 'pointerdown', anchors()[0]!);
+		send(h.svg, 'pointerup', anchors()[0]!);
+		// the black points, in Tegn's order along the cut: its crossings, ends and all
+		const black = [...h.handles()].map((el, a) => ({ el, a })).filter(({ el }) => el.getAttribute('fill') === '#1e2a25');
+		expect(black.length).toBeGreaterThanOrEqual(3);
+		// the second one in from the right edge, dragged along the cut towards the middle
+		const { el, a } = black[1]!;
+		const from = anchors()[a]!;
+		const to = { x: from.x - 30, y: from.y };
+		send(el, 'pointerdown', from);
+		send(h.svg, 'pointermove', { x: from.x - 15, y: from.y });
+		send(h.svg, 'pointermove', to);
+		send(h.svg, 'pointerup', to);
+		expect(h.gridSize.x).toBeGreaterThan(4);
+		expect(h.gridSize.y).toBe(4);
+		expect(chosenType(h)).toBe('Moved');
+	});
+
+	it('opens a heart whose cuts are a tile on the Escher tab, its type chosen, though no tile was saved with it', async () => {
+		const tile = fitLines({ ...knobTile(opposite('move', 'mirror')), cuts: 4, pan: { x: 0.3, y: -0.2 } });
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile) });
+		const opened = JSON.stringify(h.fingers);
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved and mirrored'));
+		expect(chosenTab(h)).toBe('Escher');
+		// taken up as it is: not one cut changed
+		expect(JSON.stringify(h.fingers)).toBe(opened);
+	});
+
+	it('adds a node to every copy of a curve double-clicked, though the second click lands on a handle of the curve', async () => {
+		const tile = ruleStart(opposite('move', 'move'), 4);
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
+		const counts = () => h.fingers.filter((f) => /^[LR]-[1-4]$/.test(f.id)).map((f) => `${f.id}:${f.segments.length}`);
+		expect(counts()).toEqual(['L-1:5', 'L-2:5', 'L-3:5', 'L-4:5', 'R-1:5', 'R-2:5', 'R-3:5', 'R-4:5']);
+		// a point on the bent curve of L-2's second stretch
+		const seg = h.fingers.find((f) => f.id === 'L-2')!.segments[1]!;
+		const at = bezierAt(seg, 0.55);
+		send(h.path('L-2'), 'pointerdown', at);
+		send(h.svg, 'pointerup', at);
+		// the first click selected the cut and showed its handles; the second lands on one
+		const handle = h.target.querySelector('circle[style*="cursor: pointer"]')!;
+		send(handle, 'pointerdown', at);
+		send(h.svg, 'pointerup', at);
+		expect(counts()).toEqual(['L-1:10', 'L-2:10', 'L-3:10', 'L-4:10', 'R-1:5', 'R-2:5', 'R-3:5', 'R-4:5']);
+		expect(chosenType(h)).toBe('Moved');
+		// the node selected is the one added, where it was put: in L-2's second stretch, after the node
+		// the first stretch got too
+		const nodes = h.fingers.find((f) => f.id === 'L-2')!.segments.map((s) => s.p0);
+		const selected = [...h.handles()].findIndex((el) => el.getAttribute('fill') === '#ffcc00');
+		expect(selected).toBe(3);
+		expect(Math.hypot(nodes[3]!.x - at.x, nodes[3]!.y - at.y)).toBeLessThan(1);
+		// the curve is as it was, the node a smooth one on it
+		const [before, after] = h.fingers.find((f) => f.id === 'L-2')!.segments.slice(2, 4);
+		for (const k of [0.25, 0.5, 0.75]) {
+			const p = bezierAt(before!, k);
+			const q = bezierAt(seg, 0.55 * k);
+			expect(Math.hypot(p.x - q.x, p.y - q.y)).toBeLessThan(1e-3);
+			const r = bezierAt(after!, k);
+			const w = bezierAt(seg, 0.55 + 0.45 * k);
+			expect(Math.hypot(r.x - w.x, r.y - w.y)).toBeLessThan(1e-3);
+		}
+		expect(pressed(h, 'Smooth node')).toBe(true);
+	});
+
+	it('adds a corner to a straight piece, which Smooth node gives handles that a drag keeps in line', async () => {
+		const tile = ruleStart(opposite('move', 'move'), 4);
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
+		// L-2's second stretch made straight: its piece is chosen by a click on it
+		const seg = () => h.fingers.find((f) => f.id === 'L-2')!.segments[1]!;
+		const on = bezierAt(seg(), 0.5);
+		send(h.path('L-2'), 'pointerdown', on);
+		send(h.svg, 'pointerup', on);
+		h.button('Straight segment').click();
+		flushSync();
+		const near = (a: Vec, b: Vec) => Math.hypot(a.x - b.x, a.y - b.y) < 1e-6;
+		const straight = seg();
+		expect(near(straight.p1, straight.p0) && near(straight.p2, straight.p3)).toBe(true);
+		// a double-click on it, away from the first click, adds a corner with no handles of its own
+		const at = bezierAt(straight, 0.2);
+		for (let i = 0; i < 2; i++) {
+			send(h.path('L-2'), 'pointerdown', at);
+			send(h.svg, 'pointerup', at);
+		}
+		expect(pressed(h, 'Corner node')).toBe(true);
+		// the pieces on either side of the node selected, the one added (every copy of the curve has one)
+		const selected = () => [...h.handles()].findIndex((el) => el.getAttribute('fill') === '#ffcc00');
+		const around = () => h.fingers.find((f) => f.id === 'L-2')!.segments.slice(selected() - 1, selected() + 1);
+		expect(Math.hypot(around()[1]!.p0.x - at.x, around()[1]!.p0.y - at.y)).toBeLessThan(1);
+		expect(near(around()[0]!.p2, around()[0]!.p3) && near(around()[1]!.p1, around()[1]!.p0)).toBe(true);
+		// Smooth node gives it handles, in line
+		h.button('Smooth node').click();
+		flushSync();
+		const inLine = () => {
+			const [a, b] = around();
+			const node = b!.p0;
+			const u = { x: a!.p2.x - node.x, y: a!.p2.y - node.y };
+			const v = { x: b!.p1.x - node.x, y: b!.p1.y - node.y };
+			return { lengths: [Math.hypot(u.x, u.y), Math.hypot(v.x, v.y)], cross: (u.x * v.y - u.y * v.x) / (Math.hypot(u.x, u.y) * Math.hypot(v.x, v.y)), dot: u.x * v.x + u.y * v.y };
+		};
+		expect(Math.min(...inLine().lengths)).toBeGreaterThan(1);
+		expect(Math.abs(inLine().cross)).toBeLessThan(1e-6);
+		expect(inLine().dot).toBeLessThan(0);
+		// and the node dragged off the line stays smooth, its handles still in line
+		const node = around()[1]!.p0;
+		send(h.handles()[selected()]!, 'pointerdown', node);
+		send(h.svg, 'pointermove', { x: node.x + 4, y: node.y - 6 });
+		send(h.svg, 'pointerup', { x: node.x + 4, y: node.y - 6 });
+		expect(Math.abs(inLine().cross)).toBeLessThan(1e-6);
+		expect(pressed(h, 'Smooth node')).toBe(true);
+	});
+
+	it('starts the tile over as its type starts, at its size, which Fortryd takes back', async () => {
+		const tile = { ...knobTile(opposite('move', 'turn')), cuts: 4 };
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved and half turn'));
+		const knobs = JSON.stringify(h.fingers);
+		h.target.querySelector<HTMLButtonElement>('.pattern-restart')!.click();
+		flushSync();
+		expect(cutsOf(h.fingers)).toBe(cutsOf(tileFingers(restartedTile(tile))));
+		expect(chosenType(h)).toBe('Moved and half turn');
+		h.button('Undo').click();
+		flushSync();
+		expect(JSON.stringify(h.fingers)).toBe(knobs);
+		// on a tile that is its start already, it changes nothing and leaves nothing to undo
+		h.button('Redo').click();
+		flushSync();
+		const started = JSON.stringify(h.fingers);
+		h.target.querySelector<HTMLButtonElement>('.pattern-restart')!.click();
+		flushSync();
+		expect(JSON.stringify(h.fingers)).toBe(started);
+		h.button('Undo').click();
+		flushSync();
+		expect(JSON.stringify(h.fingers)).toBe(knobs);
+		expect(h.button('Undo').disabled).toBe(true);
+	});
+
+	it('drags the same node of a moved pattern on, though the edge cuts more of a curve before it into the cut on the way', async () => {
+		// The type's start with a node added in the middle of every piece. Dragging node 10 of R-1 lets
+		// the edge show more of the curve before it: from the second step on, the cut made again has
+		// the node as node 11.
+		const start = ruleStart(opposite('turn', 'move'), 4);
+		const noded = { ...start, curves: Object.fromEntries(Object.entries(start.curves).map(([key, curve]) => [key, curve!.flatMap((s) => splitBezierAt(s, 0.5))])) };
+		const tile = fitLines({ ...noded, pan: { x: 0.37, y: -0.21 } });
 		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
 		await vi.waitFor(() => expect(h.target.querySelector('.rule-templates')).not.toBeNull());
 		const nodes = () => h.fingers.find((f) => f.id === 'R-1')!.segments.map((s) => s.p0);
 		send(h.path('R-1'), 'pointerdown', nodes()[5]!);
 		send(h.svg, 'pointerup', nodes()[5]!);
-		const start = nodes()[11]!;
-		send(h.handles()[11]!, 'pointerdown', start);
-		let pointer = start;
+		const from = nodes()[10]!;
+		send(h.handles()[10]!, 'pointerdown', from);
+		let pointer = from;
 		for (let step = 1; step <= 3; step++) {
-			pointer = { x: start.x + 1.5 * step, y: start.y - step };
+			pointer = { x: from.x - 1.5 * step, y: from.y + step };
 			send(h.svg, 'pointermove', pointer);
 			// The dragged node is under the pointer, and still the one selected.
 			const at = nodes().findIndex((p) => Math.hypot(p.x - pointer.x, p.y - pointer.y) < 1e-6);
-			expect(at, `step ${step}`).toBe(10);
+			expect(at, `step ${step}`).toBe(step === 1 ? 10 : 11);
 			expect(h.handles()[at]!.getAttribute('fill'), `step ${step}`).toBe('#ffcc00');
 		}
 		send(h.svg, 'pointerup', pointer);
+	});
+});
+
+describe('node types', () => {
+	it('give a node without handles its handles when it is made smooth', () => {
+		const h = render();
+		const at = midpoint(h.fingers.find((f) => f.id === 'R-1')!);
+		for (let i = 0; i < 2; i++) {
+			send(h.path('R-1'), 'pointerdown', at);
+			send(h.svg, 'pointerup', at);
+		}
+		const handleLengths = () => {
+			const [a, b] = h.fingers.find((f) => f.id === 'R-1')!.segments;
+			return [Math.hypot(a!.p2.x - a!.p3.x, a!.p2.y - a!.p3.y), Math.hypot(b!.p1.x - b!.p0.x, b!.p1.y - b!.p0.y)];
+		};
+		// the Normal tab adds a node without handles
+		expect(handleLengths()).toEqual([0, 0]);
+		h.button('Smooth node').click();
+		flushSync();
+		expect(Math.min(...handleLengths())).toBeGreaterThan(1);
 	});
 });
 
@@ -183,6 +419,8 @@ describe('the red cuts', () => {
 		send(h.svg, 'pointermove', { x: next - 1, y: node.y });
 		expect(h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0.x).toBeCloseTo(next - 1);
 		expect(red()).toBeGreaterThan(0);
+		// the cuts do not cross, and the warning says what is wrong: they are too close
+		expect(h.target.querySelector('.canvas-notice.warning')?.textContent).toContain('come too close');
 		// Straight back and let go: during a drag the check may wait a moment, but not past its end.
 		send(h.svg, 'pointermove', node);
 		send(h.svg, 'pointerup', node);

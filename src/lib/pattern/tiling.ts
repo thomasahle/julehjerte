@@ -42,7 +42,7 @@ import type { BezierSegment, HeartDesign, Vec } from '$lib/types/heart';
 import { reverseSegments, segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { normalizeHeartDesign } from '$lib/utils/heartDesign';
 import { HEART_CLEARANCE_UNITS } from '$lib/geometry/returnSearch';
-import { canLean, halfOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
+import { canLean, halfOf, latticeOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
 
 const mod2 = (x: number) => ((x % 2) + 2) % 2;
 
@@ -72,22 +72,59 @@ export interface PatternTile {
 	 */
 	offset?: Vec;
 	/**
+	 * How the cells are sized, stretched and turned in the heart (`Shape`), about
+	 * the middle of its square: absent, the plain grid, cuts + 1 cells across.
+	 * Dragging a point the tile places sets it, within the shapes the rule's
+	 * motions keep (`latticeOf`), and the heart cuts as many lines each way as fit.
+	 */
+	shape?: Shape;
+	/**
 	 * How far the whole pattern is moved within the heart, in cells (any rule).
-	 * A point the tile itself fixes — a corner the rule keeps on the grid, the
-	 * middle of a half-turn S — moves only with the whole pattern, so dragging
-	 * one moves this. The heart cuts whichever lines of the tiling are nearest
-	 * its middle (`firstLine`), so the pattern can move without end; a pan is
-	 * kept within one repeat of the tiling (`ruleRepeat`), from half a repeat back
-	 * to half a repeat on.
+	 * Dragging a cut or an edge of the square moves this. The heart cuts whichever
+	 * lines of the tiling fit in its square (`fitLines`), so the pattern can move
+	 * without end; a pan is kept within one repeat of the tiling (`ruleRepeat`),
+	 * from half a repeat back to half a repeat on.
 	 */
 	pan?: Vec;
 	/**
-	 * The lines the heart cuts, each way, when the pattern has been moved: the
-	 * cuts + 1 nearest the middle and, where an edge strip has grown wider than a
-	 * cell, the next line in it too, so the pattern fills the heart like a window
-	 * onto the infinite tiling (`fitLines`). Absent, the cuts + 1 nearest the middle.
+	 * The lines the heart cuts, each way, once the pattern has been moved,
+	 * stretched or turned: every line of the tiling whose cut fits in the square,
+	 * so the pattern fills the heart like a window onto the infinite tiling
+	 * (`fitLines`). Absent, the cuts + 1 nearest the middle.
 	 */
 	lines?: Record<StretchKind, HeartLines>;
+}
+
+/**
+ * A cell's shape in the heart: where its side along a left-lobe cut (`x`, the
+ * cell's (1, 0)) and its side along a right-lobe cut (`y`, its (0, 1)) go, in
+ * cells of the plain grid. The columns of a 2 × 2 matrix.
+ */
+export interface Shape {
+	x: Vec;
+	y: Vec;
+}
+
+const PLAIN: Shape = { x: { x: 1, y: 0 }, y: { x: 0, y: 1 } };
+
+/** The tile's shape: the plain grid unless it has been sized, stretched or turned. */
+export const tileShape = (tile: PatternTile): Shape => tile.shape ?? PLAIN;
+
+/** The shape the tile would have under `rule`: the nearest its motions keep (`latticeOf`), the size the same. */
+export function shapeFor(rule: TileRule, shape: Shape): Shape {
+	const len = (v: Vec) => Math.hypot(v.x, v.y);
+	const scale = (v: Vec, k: number) => ({ x: v.x * k, y: v.y * k });
+	// A quarter turn on, the way (1, 0) turns to (0, 1).
+	const turned = (v: Vec) => ({ x: -v.y, y: v.x });
+	const lattice = latticeOf(rule);
+	if (lattice === 'oblique') return shape;
+	if (lattice === 'rhombic') {
+		const side = Math.sqrt(len(shape.x) * len(shape.y));
+		return { x: scale(shape.x, side / len(shape.x)), y: scale(shape.y, side / len(shape.y)) };
+	}
+	const area = Math.abs(shape.x.x * shape.y.y - shape.y.x * shape.x.y);
+	const x = lattice === 'square' ? scale(shape.x, Math.sqrt(area) / len(shape.x)) : shape.x;
+	return { x, y: scale(turned(x), (lattice === 'square' ? len(x) : len(shape.y)) / len(x)) };
 }
 
 /** The tile's corner offset, or none for a rule that keeps the plain grid. */
@@ -140,16 +177,6 @@ export function sourceCurve(tile: PatternTile, src: StretchSource): SideCurve {
 
 export function stretchCurve(tile: PatternTile, kind: StretchKind, i: number, j: number): SideCurve {
 	return sourceCurve(tile, stretchSource(tile.rule, kind, i, j));
-}
-
-/** A point of stretch `kind (i, j)`'s own frame in the square, for cells of size `h`. */
-export function stretchToSquare(kind: StretchKind, i: number, j: number, h: number, p: Vec): Vec {
-	return kind === 'V' ? { x: (i + p.y) * h, y: (j + p.x) * h } : { x: (i + p.x) * h, y: (j + p.y) * h };
-}
-
-/** The inverse of `stretchToSquare`. */
-export function squareToStretch(kind: StretchKind, i: number, j: number, h: number, q: Vec): Vec {
-	return kind === 'V' ? { x: q.y / h - j, y: q.x / h - i } : { x: q.x / h - i, y: q.y / h - j };
 }
 
 /** Crossing (i, j) of the infinite tiling, in cells: on the plain grid, the odd ones moved by the offset. */
@@ -209,19 +236,29 @@ function splitAt(s: BezierSegment, t: number): [BezierSegment, BezierSegment] {
 
 const samePoint = (p: Vec, q: Vec) => Math.abs(p.x - q.x) < 1e-6 && Math.abs(p.y - q.y) < 1e-6;
 
+/** Coordinate `axis` of `bezierAt(s, t)`, without the other. */
+const coordAt = (s: BezierSegment, axis: 'x' | 'y', t: number): number => {
+	const u = 1 - t;
+	return u * u * u * s.p0[axis] + 3 * u * u * t * s.p1[axis] + 3 * u * t * t * s.p2[axis] + t * t * t * s.p3[axis];
+};
+
 /** The first parameter at which coordinate `axis` of the segment reaches `v` from below, or null. */
 function firstCrossing(s: BezierSegment, axis: 'x' | 'y', v: number): number | null {
+	const c0 = s.p0[axis], c1 = s.p1[axis], c2 = s.p2[axis], c3 = s.p3[axis];
+	// Its points are weighted means of its control points, so it stays below a `v` they all lie
+	// well below, rounding and all.
+	if (Math.max(c0, c1, c2, c3) + 1e-9 * (1 + Math.abs(c0) + Math.abs(c1) + Math.abs(c2) + Math.abs(c3)) < v) return null;
 	const STEPS = 64;
-	let prev = bezierAt(s, 0)[axis];
+	let prev = coordAt(s, axis, 0);
 	if (prev >= v) return 0;
 	for (let k = 1; k <= STEPS; k++) {
-		const cur = bezierAt(s, k / STEPS)[axis];
+		const cur = coordAt(s, axis, k / STEPS);
 		if (cur >= v) {
 			let lo = (k - 1) / STEPS;
 			let hi = k / STEPS;
 			for (let it = 0; it < 40; it++) {
 				const mid = (lo + hi) / 2;
-				if (bezierAt(s, mid)[axis] >= v) hi = mid;
+				if (coordAt(s, axis, mid) >= v) hi = mid;
 				else lo = mid;
 			}
 			return hi;
@@ -314,32 +351,58 @@ function snapEnds(chain: BezierSegment[], axis: 'x' | 'y', lo: number, hi: numbe
 }
 
 /**
- * Where the heart's square sits on the infinite tiling, in cells: on the plain
- * grid exactly over cells 0…n−1; with leaning tiles moved by half the lean, so
- * its n − 1 cuts each way keep an even margin from its edges; and moved by the
- * opposite of the tile's `pan`, which moves the pattern within the heart.
+ * The point of the infinite tiling, in cells, at the middle of the heart's
+ * square: on the plain grid the square lies exactly over cells 0…n−1; with
+ * leaning tiles it moves by half the lean, so the cuts keep an even margin from
+ * the edges; and it moves by the opposite of the tile's `pan`, which moves the
+ * pattern within the heart. The tile's shape turns and stretches about it.
  */
-function patternWindow(tile: PatternTile): Vec {
+function patternMiddle(tile: PatternTile): Vec {
+	const n = tile.cuts + 1;
 	const o = tileOffset(tile);
 	const pan = tile.pan ?? { x: 0, y: 0 };
-	return { x: o.x / 2 - pan.x, y: o.y / 2 - pan.y };
+	return { x: n / 2 + o.x / 2 - pan.x, y: n / 2 + o.y / 2 - pan.y };
+}
+
+/** A point of the infinite tiling, in cells, in the raw 0–100 square. */
+export function cellsToRaw(tile: PatternTile, p: Vec): Vec {
+	const h = 100 / (tile.cuts + 1);
+	const m = patternMiddle(tile);
+	const { x: a, y: b } = tileShape(tile);
+	const d = { x: p.x - m.x, y: p.y - m.y };
+	return { x: 50 + h * (a.x * d.x + b.x * d.y), y: 50 + h * (a.y * d.x + b.y * d.y) };
 }
 
 /** A point of the raw 0–100 square in cells of the infinite tiling, the frame crossings and stretch frames live in. */
 export function rawToCells(tile: PatternTile, q: Vec): Vec {
 	const h = 100 / (tile.cuts + 1);
-	const w = patternWindow(tile);
-	return { x: q.x / h + w.x, y: q.y / h + w.y };
+	const m = patternMiddle(tile);
+	const { x: a, y: b } = tileShape(tile);
+	const det = a.x * b.y - b.x * a.y;
+	const r = { x: (q.x - 50) / h, y: (q.y - 50) / h };
+	return { x: m.x + (b.y * r.x - b.x * r.y) / det, y: m.y + (a.x * r.y - a.y * r.x) / det };
+}
+
+const CORNERS: Vec[] = [
+	{ x: 0, y: 0 },
+	{ x: 100, y: 0 },
+	{ x: 0, y: 100 },
+	{ x: 100, y: 100 }
+];
+
+/** Where the heart's square lies on the tiling along cell axis `axis`, from its corners: the least and the most. */
+function squareSpan(tile: PatternTile, axis: 'x' | 'y'): [number, number] {
+	const at = CORNERS.map((q) => rawToCells(tile, q)[axis]);
+	return [Math.min(...at), Math.max(...at)];
 }
 
 const panOf = (tile: PatternTile, kind: StretchKind) => (kind === 'V' ? (tile.pan?.x ?? 0) : (tile.pan?.y ?? 0));
 
 /**
- * The n − 1 lines of family `kind` nearest the middle of the heart's square:
- * line k lies k + pan cells in (the lean moves the window with it), so the first
- * is the one between half a cell and one and a half in, and neither edge strip
- * is narrower than half a cell or wider than one and a half. As the pattern
- * moves, a line that leaves at one edge comes in again at the other.
+ * The n − 1 lines of family `kind` nearest the middle of the heart's square, on
+ * the plain grid: line k lies k + pan cells in (the lean moves the window with
+ * it), so the first is the one between half a cell and one and a half in. The
+ * lines a tile that has not been moved, sized or turned cuts.
  */
 function nearestLines(tile: PatternTile, kind: StretchKind): HeartLines {
 	return { first: Math.ceil(0.5 - panOf(tile, kind) - 1e-9), count: tile.cuts };
@@ -365,19 +428,15 @@ export function tracedCut(tile: PatternTile, kind: StretchKind, k: number): Trac
 
 /** Line `line` of family `kind` of the infinite tiling, where it crosses the heart's square (see `tracedCut`). */
 function traceLine(tile: PatternTile, kind: StretchKind, line: number): TracedCut {
-	const n = tile.cuts + 1;
-	const h = 100 / n;
-	const w = patternWindow(tile);
-	const toRaw = (p: Vec): Vec => ({ x: (p.x - w.x) * h, y: (p.y - w.y) * h });
 	const chain: BezierSegment[] = [];
 	const pieces: CutPiece[] = [];
-	const start = Math.floor(kind === 'V' ? w.y : w.x) - 2;
-	const end = Math.ceil((kind === 'V' ? w.y : w.x) + n) + 2;
-	for (let a = start; a < end; a++) {
+	// The stretches along the line where the square can be, and two more each way for leaning tiles and curves.
+	const [from, to] = squareSpan(tile, kind === 'V' ? 'y' : 'x');
+	for (let a = Math.floor(from) - 2; a < Math.ceil(to) + 2; a++) {
 		const [i, j] = kind === 'V' ? [line, a] : [a, line];
 		const frame = stretchFrame(tile, kind, i, j);
 		const curve = stretchCurve(tile, kind, i, j);
-		mapCurve(curve, (p) => toRaw(toFrame(frame, p))).forEach((seg, index) => {
+		mapCurve(curve, (p) => cellsToRaw(tile, toFrame(frame, p))).forEach((seg, index) => {
 			chain.push(seg);
 			pieces.push({ kind, i, j, index, count: curve.length, clipped: false, range: [0, 1] });
 		});
@@ -394,17 +453,30 @@ export function patternCuts(tile: PatternTile): { left: BezierSegment[][]; right
 	return { left: cuts('H'), right: cuts('V') };
 }
 
+/** How far apart the lines of family `kind` are in the square, square across them, in its 100 units. */
+export function lineSpacing(tile: PatternTile, kind: StretchKind): number {
+	const { x: a, y: b } = tileShape(tile);
+	const along = kind === 'V' ? b : a;
+	return ((100 / (tile.cuts + 1)) * Math.abs(a.x * b.y - b.x * a.y)) / Math.hypot(along.x, along.y);
+}
+
 /**
- * How close to the square's edge a moved pattern's extra line may come, in the
- * square's 100 units: twice the paper Tegn keeps between two cuts, and at least
- * 0.15 of a cell, so the edge strip it leaves can be cut and woven.
+ * How close to the square's edge a cut may come, in the square's 100 units:
+ * twice the paper Tegn keeps between two cuts, and at least 0.15 of the way to
+ * the next line, so the edge strip it leaves can be cut and woven.
  */
-const edgeMargin = (tile: PatternTile) => Math.max(0.15 * (100 / (tile.cuts + 1)), 2 * HEART_CLEARANCE_UNITS);
+const edgeMargin = (tile: PatternTile, kind: StretchKind) => Math.max(0.15 * lineSpacing(tile, kind), 2 * HEART_CLEARANCE_UNITS);
 
 /** Whether the cut along line `line` of family `kind` lies inside the square, `edgeMargin` from its edges. */
 function lineFits(tile: PatternTile, kind: StretchKind, line: number): boolean {
-	const margin = edgeMargin(tile);
-	const axis = kind === 'V' ? 'x' : 'y';
+	const margin = edgeMargin(tile, kind);
+	const [axis, run] = kind === 'V' ? (['x', 'y'] as const) : (['y', 'x'] as const);
+	// A crossing of the line across the square from the margin answers it without tracing the curves.
+	const [from, to] = squareSpan(tile, run);
+	for (let a = Math.floor(from); a <= Math.ceil(to); a++) {
+		const q = cellsToRaw(tile, kind === 'V' ? crossing(tile, line, a) : crossing(tile, a, line));
+		if (q[run] >= 0 && q[run] <= 100 && (q[axis] < margin - 1e-6 || q[axis] > 100 - margin + 1e-6)) return false;
+	}
 	for (const s of traceLine(tile, kind, line).segments) {
 		for (let k = 0; k <= 12; k++) {
 			// A cut exactly at the margin fits, whichever way the rounding falls.
@@ -417,32 +489,29 @@ function lineFits(tile: PatternTile, kind: StretchKind, line: number): boolean {
 
 /**
  * The tile with the lines the heart cuts fitted to where the pattern now is:
- * the n − 1 nearest the middle, and where an edge strip is wider than a cell,
- * the next line in it as well, if its whole cut keeps `edgeMargin` from the
- * edge. So the pattern fills the heart like a window onto the infinite tiling,
- * with a strip more where the pattern has moved off a whole line; no line the
- * heart cuts is ever dropped, and a pattern that has not moved is as before.
- * For anything that moves the pattern, leans its tiles, or sizes or rules it
- * afresh; edits to the curves keep the lines they started from.
+ * every line of the tiling whose whole cut keeps `edgeMargin` from the edges,
+ * from the first to the last. So the pattern fills the heart like a window onto
+ * the infinite tiling, with a strip more where it has moved off a whole line, and
+ * as many strips each way as its tiles' size and shape let fit; a pattern that has
+ * not been moved, sized or turned is as before. For anything that moves, sizes,
+ * turns or rules the pattern afresh; edits to the curves keep the lines they
+ * started from.
  */
 export function fitLines(tile: PatternTile): PatternTile {
 	const { lines: _old, ...plain } = tile;
-	const n = plain.cuts + 1;
 	const fit = (kind: StretchKind): HeartLines => {
-		const near = nearestLines(plain, kind);
-		const pan = panOf(plain, kind);
-		let { first, count } = near;
-		const below = near.first - 1;
-		if (below + pan > 0 && lineFits(plain, kind, below)) {
-			first = below;
-			count++;
-		}
-		const above = near.first + near.count;
-		if (above + pan < n && lineFits(plain, kind, above)) count++;
-		return { first, count };
+		// The lines that can cross the square, and one more each way for leaning tiles and curves; the
+		// first and the last that fit, looked for from each end.
+		const [from, to] = squareSpan(plain, kind === 'V' ? 'x' : 'y');
+		const [lo, hi] = [Math.floor(from) - 1, Math.ceil(to) + 1];
+		let first = lo;
+		while (first <= hi && !lineFits(plain, kind, first)) first++;
+		let last = hi;
+		while (last > first && !lineFits(plain, kind, last)) last--;
+		return first <= hi ? { first, count: last - first + 1 } : { first: 0, count: 0 };
 	};
 	const lines = { V: fit('V'), H: fit('H') };
-	const moved = (['V', 'H'] as const).some((kind) => lines[kind].count !== nearestLines(plain, kind).count);
+	const moved = (['V', 'H'] as const).some((kind) => lines[kind].count !== nearestLines(plain, kind).count || lines[kind].first !== nearestLines(plain, kind).first);
 	return moved ? { ...plain, lines } : plain;
 }
 

@@ -3,7 +3,7 @@ import { HEART_CLEARANCE_UNITS } from '$lib/geometry/returnSearch';
 import type { Finger, Vec } from '$lib/types/heart';
 import type { BezierSegment } from '$lib/geometry/bezierSegments';
 import { fingerToSegments } from '$lib/geometry/bezierSegments';
-import { bezierBBox, closestPointOnBezier, closestPointsBetweenBeziers, intersectBezierCurves } from '$lib/geometry/curves';
+import { bezierBBox, closestPointOnBezier, closestPointsBetweenBeziers, intersectBezierCurves, perSegment } from '$lib/geometry/curves';
 import { vecDist, vecLerp } from '$lib/geometry/vec';
 
 /**
@@ -29,6 +29,12 @@ export function intersectionMarginPx(overlap: { width: number; height: number },
 	const unit = (overlap.width + overlap.height) / 200;
 	return INTERSECTION_MARGIN_UNITS * unit * clearanceScale;
 }
+
+/**
+ * A segment's box, worked out once: the checks meet a cut's segments again for every other cut,
+ * and again for every edit a drag tries. Shared, so read only.
+ */
+const segmentBox = perSegment(bezierBBox);
 
 function bboxesOverlap(a: BBox, b: BBox): boolean {
 	return a.x <= b.x + b.width && a.x + a.width >= b.x && a.y <= b.y + b.height && a.y + a.height >= b.y;
@@ -60,8 +66,8 @@ export function segmentsIntersect(a: BezierSegment[], b: BezierSegment[], opts: 
 	const same = a === b;
 	const skipAdjacent = opts.skipAdjacent ?? false;
 	// Each segment's box once, not once per pair.
-	const boxesB = b.map(bezierBBox);
-	const boxesA = same ? boxesB : a.map(bezierBBox);
+	const boxesB = b.map(segmentBox);
+	const boxesA = same ? boxesB : a.map(segmentBox);
 	for (let i = 0; i < a.length; i++) {
 		const sa = a[i]!;
 		const ba = boxesA[i]!;
@@ -349,7 +355,7 @@ export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], m
 	if (!n) return false;
 	const start = segs[0]!.p0;
 	const end = segs[n - 1]!.p3;
-	const segBBoxes = segs.map(bezierBBox);
+	const segBBoxes = segs.map(segmentBox);
 	const endpoints = { start, end };
 
 	// Loops smaller than the margin are slivers below the physical resolution; ignore them.
@@ -382,7 +388,7 @@ export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], m
 		const otherSegs = fingerToSegments(other);
 		const m = otherSegs.length;
 		if (!m) continue;
-		const otherBBoxes = otherSegs.map(bezierBBox);
+		const otherBBoxes = otherSegs.map(segmentBox);
 		const otherEndpoints = { start: otherSegs[0]!.p0, end: otherSegs[m - 1]!.p3 };
 		// No endpoint exemption between different curves: two cuts that meet or nearly meet on the
 		// fold line (the "baseline") leave a strip with no paper holding it, so flag those too.
@@ -406,8 +412,8 @@ export function fingerPairHasIntersectionIssues(finger: Finger, other: Finger, m
 	const segs = fingerToSegments(finger), otherSegs = fingerToSegments(other);
 	if (!segs.length || !otherSegs.length) return false;
 	// No endpoint exemption between different curves, as in `fingerHasIntersectionIssues`.
-	return segmentsHaveIssues(segs, segs.map(bezierBBox), { start: segs[0]!.p0, end: segs.at(-1)!.p3 },
-		otherSegs, otherSegs.map(bezierBBox), { start: otherSegs[0]!.p0, end: otherSegs.at(-1)!.p3 },
+	return segmentsHaveIssues(segs, segs.map(segmentBox), { start: segs[0]!.p0, end: segs.at(-1)!.p3 },
+		otherSegs, otherSegs.map(segmentBox), { start: otherSegs[0]!.p0, end: otherSegs.at(-1)!.p3 },
 		{ minDistance, endpointTolerance: 0 });
 }
 

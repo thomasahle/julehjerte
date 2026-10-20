@@ -570,6 +570,7 @@ laps punkter" — drawn in the canvas's own cut colours, cyan for the left lobe 
 ($lib/editor/outlineColors, which the canvas reads too), because the colours are half of what those two icons
 say. Where a narrow phone column costs the Snap label a third line for the glyph,
 nothing is clipped, and no glyph small enough to win the line back is still worth drawing, so it is accepted.
+The Escher tab leaves Snap out: the points the lobes share there are the crossings, which the tile places.
 
 Where cyan and orange cut strokes overlap, alternate their colours along the shared
 screen stroke (4px per colour, 2px wide). Keep the cadence fixed while zooming and let
@@ -587,24 +588,50 @@ colour per shape, two half arrowheads for a side that is its own S, a bow tie fo
 image, and a whole arrowhead for a straight side the tiles are mirrored in, which stays straight. Four come
 first — Flyttet, Flyttet og spejlet, To former and Symmetrisk — and "Vis flere" opens the rest in three groups:
 the other types with neither a straight side nor a symmetry of the tile's own, those with mirror edges, and
-those whose tile has a symmetry of its own. Under the picker: the chosen type's name, what it does and,
-small, Heesch's name for it (or its IH number where he has none), then the size, 3 × 3 to 7 × 7. Picking
+those whose tile has a symmetry of its own. The tab always has a type chosen: opened on cuts that are a tile
+(the one it was left with, or a heart drawn in it), it takes that tile up; where the cuts were changed in the
+Normal tab since, it draws them again as the tile it was left with; on any other heart it draws the cuts as the
+first type, Flyttet, starts. Fortryd takes either back to the Normal tab and the cuts as they were.
+Every type's tooltip gives its name and what it does, so a type can be read about before it is picked.
+Under the picker: the chosen type's name, what it does and, small, Heesch's name for it (or its IH number where
+he has none), then the size, 3 × 3 to 7 × 7, the hint, and "Start forfra", which draws the tile again as its
+type starts, at its size. Picking
 another type keeps the curves it reads the same way, if the heart they make with its own still weaves, and
 starts afresh if not; a size the pattern is too tight for is refused, with a line above the heart. Every type
-starts from one low peak of straight lines on each curve it reads and nothing more, because the visitor does
-the designing; nothing else is drawn on the heart, and nothing moves on its own. Points the tile places itself
-are drawn dark: dragging a crossing leans every tile (where the type lets tiles lean), and dragging a point the
-type fixes moves the whole pattern, which comes back in at the other edge without end. Moved off a whole line,
-the pattern would leave an edge strip wider than a cell; there the heart cuts the pattern's next line as well,
-if all of that cut keeps 0.15 of a cell (and twice the paper's clearance) from the edge, so the pattern fills
-the heart like a window onto an endless tiling. The heart then has a strip more that way (a 3 × 3 pattern makes
-a 4 × 3 or 4 × 4 heart, and the strip count says so); no line it cut before is dropped, and the size buttons
-still set the size of the tiles. An end of a cut slides along the edge. A heart drawn in the tab keeps its tile
+starts from one bent curve on each side it reads (half of one for an S or an arch) and nothing more, because the
+visitor does the designing and adds the nodes they want; nothing else is drawn on the heart, and nothing moves
+on its own. A cut's points show when it is clicked, as in the Normal tab, and the hints say so first. A node
+double-clicked onto a bent curve keeps the curve as it is, a smooth node with handles, so that dragging it bends
+the curve rather than kinking it; on a straight piece it is a corner, as in Normal. Blødt and Symmetrisk punkt
+give a node without handles its handles first, as Kurvepunkt does, in both tabs. Points the tile places itself are drawn dark — its crossings, the middles of its S sides, the
+ends of cuts on corners or on straight sides — and dragging one sizes, stretches and turns every tile so that
+the point follows the pointer, about the crossing of its line nearest the middle of the heart (two stretches or
+more from the point). Along its cut the tiles grow longer or shorter that way, or bigger or smaller both ways
+where the type's motions keep its cells square or rhombic (`latticeOf`: a mirror in a side keeps the cells
+rectangular, a mirror in a diagonal rhombic, a quarter turn square); across it they turn, up to 15° (every cut
+has to run from edge to opposite edge, and turned further the lines near the corners could not), with
+between two and twelve strips a side; near the plain grid they snap back square and straight. Dragging one of
+the square's edges moves the whole pattern, which comes back in at the other edge without end: in this tab no
+strip is pulled in from an edge or dragged out, and nothing done in the tab takes the heart out of it. A cut
+pressed is only chosen, its points shown: when any cut moved the pattern, visitors dragging where they had put
+nodes on a cut not yet chosen moved the whole pattern instead. However the pattern is moved, sized or turned, the heart is a window onto an endless tiling: it cuts every
+line whose whole cut keeps 0.15 of the way to the next line (and twice the paper's clearance) from the edge, so
+narrow tiles make more strips one way than the other (6 × 3, say), and a 3 × 3 pattern moved off a whole line
+makes a 4 × 3 or 4 × 4 heart; the strip count says so. The size buttons set a tile to the size of a cell of the
+n × n grid, stretched and turned as it was. An end of a cut where the edge cuts a curve is drawn white and
+slides along the edge, reshaping the curve. A heart drawn in the tab keeps its tile
 (`HeartDesign.pattern`, plain numbers) wherever the heart goes — the draft, "Mine hjerter", a shared link, an
 exported SVG (`data-pattern`) — and opens on the Escher tab with it, its type chosen, as long as its cuts are
-still the tile's; once they have been changed in the Normal tab, it opens as any other heart. Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both
+still the tile's. So does a heart whose cuts are a tile though none was saved with it, like the gallery's Dag og
+nat, drawn from Escher's birds before the tab was there: where every cut of one lobe crosses every cut of the
+other at a node of both (a cheap check, so the tab's code loads only for such hearts), Tegn reads the most
+symmetric tile the cuts are, however its tiles were moved, sized, turned or leant (`readTile`), and takes it up
+only if it makes every cut node for node, to a hundredth of a pixel. A heart whose cuts are no tile opens as any
+other heart. Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both
 tabs, a drag that cannot go where the pointer is stops at the last place that weaves, and a line above the heart
-says why: two cuts would cross, a curve would cross itself, or it would leave the woven square.
+says why: two cuts would cross, a curve would cross itself, or it would leave the woven square. Cuts of a
+lobe that come too close without crossing are not stopped but drawn red, and the warning above the heart says
+the red curves cross or come too close.
 
 The canvas fills the whole area under the top bar — full width and height, no three-column grid — and the tool
 rail and the panel **float over it** as white cards with `--shadow-panel`. So does the drawing surface: the SVG
