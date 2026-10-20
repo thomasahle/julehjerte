@@ -1877,7 +1877,9 @@ function generateUsingRecipes(request: GeneratorRequest,
 			return [[{ columns: 2, slices: 2 }, { ...compound, columns: 2, slices: 2 }, ...junctions.map(junction => ({ columns: 2, slices: 2, junction }))],
 				[undefined, ...junctions].map(junction => ({ ...islands, columns: 2, slices: 2, ...junction && { junction } }))];
 		};
-		const fills = (radius: number, { reach }: Placement, factor = 1, space = gap) => (radius - Math.max(space, 1.5)) * factor / reach / box;
+		// A circle wider than the paper leaves the motif no more room than the paper.
+		const fills = (radius: number, { reach }: Placement, factor = 1, space = gap) =>
+			(Math.min(radius, 50) - Math.max(space, 1.5)) * factor / reach / box;
 		// Only the invisible partition varies: where four panels meet, the
 		// routing, and the padding of the motif's cell, which gives its
 		// connections room: the usual, else little. (Gates the circle passes

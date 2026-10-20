@@ -1632,10 +1632,11 @@ export function openLeg(gate: Point, corner: Point, axis: 0 | 1, taper: number):
  * into four panels, meets all their ends. Past those junctions, the circle
  * overlaps the ring's corner squares, of its own colour, and the same panels
  * meet the same ends (see `overlapGates`), out to where the paper left between
- * the circle and the edges' middle squares is still wide enough to cut. */
+ * the circle and the edges' middle squares is still wide enough to cut, and
+ * at the last past the paper's edges, which cut it off (see `boardRing`). */
 export const BOARD_RADII: readonly (readonly [number, number])[] = [
 	[Math.hypot(10, 10) + 5, Math.hypot(30, 10)], [Math.hypot(30, 10), Math.hypot(30, 30) - .4],
-	[Math.hypot(30, 30) + .4, 49.5]
+	[Math.hypot(30, 30) + .4, 52]
 ];
 
 /** A circle on the regular board of `strips` strips, with the board's
@@ -1649,7 +1650,23 @@ export function boardRing(radius: number, strips: number): Ring {
 		const junction: Point = [(100 * i) / strips, (100 * j) / strips];
 		if (Math.abs(distance(junction, [50, 50]) - radius) < 1e-9) points.push(junction);
 	}
-	return points.sort((a, b) => angle(a) - angle(b));
+	points.sort((a, b) => angle(a) - angle(b));
+	if (radius <= 50) return points;
+	// A circle wider than the paper is cut off by its edges.
+	let ring = points;
+	for (const [axis, bound] of [[0, 0], [0, 100], [1, 0], [1, 100]] as const) {
+		const input = ring, inside = (p: Point) => bound ? p[axis] <= bound : p[axis] >= bound;
+		ring = [];
+		input.forEach((p, i) => {
+			const q = input[(i + 1) % input.length];
+			if (inside(p)) ring.push(p);
+			if (inside(p) === inside(q)) return;
+			const t = (bound - p[axis]) / (q[axis] - p[axis]), cut: Point = [p[0] + t * (q[0] - p[0]), p[1] + t * (q[1] - p[1])];
+			cut[axis] = bound;
+			ring.push(cut);
+		});
+	}
+	return ring.sort((a, b) => angle(a) - angle(b));
 }
 
 /** Where the lines of a regular board of `strips` strips meet a circle around
@@ -1677,6 +1694,15 @@ function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number):
 		ring.forEach((p, i) => {
 			const q = ring[(i + 1) % ring.length];
 			if ((p[axis] < line) === (q[axis] < line)) return;
+			// Where the paper's edge cuts the circle off, the line has nothing of
+			// its own outside the circle: it ends where the circle meets that
+			// edge, on its far side from the centre.
+			const edge = p[1 - axis] === q[1 - axis] && (p[1 - axis] === 0 || p[1 - axis] === 100);
+			if (edge) {
+				const [point, index] = (p[axis] - line) * (line - 50) > 0 ? [p, i] : [q, (i + 1) % ring.length];
+				ends.push({ angle: (Math.atan2(point[1] - 50, point[0] - 50) + turn) % turn, family: axis ? 'B' : 'A', port: { point, index } });
+				return;
+			}
 			const t = (line - p[axis]) / (q[axis] - p[axis]);
 			const point: Point = [p[0] + t * (q[0] - p[0]), p[1] + t * (q[1] - p[1])];
 			point[axis] = line;
@@ -1731,16 +1757,19 @@ function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number):
  * and the cut shows nothing. Returns the two gates. */
 function overlapGates(edges: Edge[], ring: Ring, [x1, x2, y1, y2]: { angle: number; family: 'A' | 'B'; port: Port }[]): Point[] {
 	const first = x1.family, other = y1.family;
-	const edge = ({ family, port: { point } }: typeof x1): Point =>
-		family === 'A' ? [point[0], point[1] < 50 ? 0 : 100] : [point[0] < 50 ? 0 : 100, point[1]];
+	// A line's run out to the paper's edge, none where its end lies on it.
+	const out = ({ family, port: { point } }: typeof x1): Point[] => {
+		const edge: Point = family === 'A' ? [point[0], point[1] < 50 ? 0 : 100] : [point[0] < 50 ? 0 : 100, point[1]];
+		return near(edge, point) ? [] : [edge];
+	};
 	const gates = [ray(ring, [50, 50], (x1.angle + x2.angle) / 2), ray(ring, [50, 50], (y1.angle + y2.angle) / 2)];
-	add(edges, [edge(x1), ...arc(ring, x1.port, gates[0])], first, 'frame');
+	add(edges, [...out(x1), ...arc(ring, x1.port, gates[0])], first, 'frame');
 	add(edges, arc(ring, gates[0], x2.port), other, 'frame');
 	add(edges, arc(ring, x2.port, y1.port), 'AB', 'shared');
-	add(edges, [y1.port.point, edge(y1)], other, 'frame');
-	add(edges, [edge(x2), x2.port.point], first, 'frame');
+	if (out(y1).length) add(edges, [y1.port.point, ...out(y1)], other, 'frame');
+	if (out(x2).length) add(edges, [...out(x2), x2.port.point], first, 'frame');
 	add(edges, arc(ring, y1.port, gates[1]), first, 'frame');
-	add(edges, [...arc(ring, gates[1], y2.port), edge(y2)], other, 'frame');
+	add(edges, [...arc(ring, gates[1], y2.port), ...out(y2)], other, 'frame');
 	return gates.map(gate => gate.point);
 }
 

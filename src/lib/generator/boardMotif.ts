@@ -110,6 +110,9 @@ export function boardRadius(scale: number) {
 			: past[0] + (setting - .85) / .15 * (past[1] - past[0]);
 	if (Math.abs(radius - 30) < .1) radius = 30.1;
 	if (radius > large[0] && radius < large[0] + .6) radius = large[0];
+	// Between leaving the red squares beside the edges' middles 1.5 units of
+	// paper and meeting the paper's edges, it would leave them less.
+	if (radius > 49.5 && radius < 51.5) radius = 49.5;
 	return { radius, range: radius <= small[1] ? small : radius <= large[1] ? large : past };
 }
 

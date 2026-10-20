@@ -744,8 +744,8 @@ regular 5×5 board with a circle around the motif. The size setting sizes the ci
 the motif fills it up to the space asked for, so both only grow with the setting (tested): from
 five units clear of the centre square's corners (radius 19) to the circle that touches the outer
 ring of squares at their eight inner corners (31.6) at the default 70%, then on into that ring
-almost to the junctions at its corners (42) at 85%, and past them over the ring's corner squares
-up to radius 49.5 at 100%, every square still equal. Past a corner junction, each quarter of the
+almost to the junctions at its corners (42) at 85%, past them over the ring's corner squares
+up to radius 49.5 at 96%, and at 100% past the paper's edges (radius 52), every square still equal. Past a corner junction, each quarter of the
 circle meets one sheet's two lines before the other's, so neighbouring ends no longer alternate;
 the same lines still pair at the same two red squares (`overlapGates`): each gate sits midway along
 its red square's arc, and the inner legs of the two pairs reach their lines along the circle across
@@ -753,7 +753,11 @@ the corner square, where both sheets are cut on the same arc. The corner squares
 own colour, so that cut shows nothing and they merge with it. At radius 49.5 the circle all but
 touches the paper's edges in the middle squares, its own colour, and leaves the red squares beside
 them 1.5 units of paper at their tips, the least space the generator allows between a motif and its
-frame. Over the corner squares a motif sits on the centre of its smallest enclosing circle rather
+frame. Sizes between would leave them less, so the slider passes them by (96–99% keep 49.5) to the
+circle that meets the edges at 100%: the paper cuts it off, the red squares beside the middles end
+in points where it meets the edges, 14.3 units from their middles, and the middle lines, inside it
+all the way, end there too (`boardRing`, `boardLegs`). The motif keeps the paper's room, not the
+circle's. Over the corner squares a motif sits on the centre of its smallest enclosing circle rather
 than its box's, so its farthest points reach equally far and it fills the circle further (a fish or
 a cat by a tenth), where it cuts cleanly so in the largest circle; that is decided once, so it only grows
 with the setting. A star, whose five tips then all come close to the circle's connections, keeps

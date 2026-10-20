@@ -1,5 +1,21 @@
 # Generator robustness results
 
+## The circle meeting the paper's edges at 100%
+
+Product request (2026-10-20), of a picture of the circle drawn past the paper's
+edges: "it looks good in your touch-look.png, but I don't see it when I open
+localhost?" At 100% the circle on equal squares now has radius 52: the paper's
+edges cut it off, so it meets them 14.3 units either side of their middles, the
+red squares beside the middles ending in points there. The ring is the circle
+clipped to the paper (`boardRing`); the middle lines lie inside it all the way
+and end where it meets the edges (`boardLegs`); a line end on the edge has no
+run out to it (`overlapGates`). The motif keeps the paper's room (radius 50
+less the space), so it is no larger than at 49.5. Between 49.5 and 51.5 the red
+squares' tips would be thinner than 1.5 units without reaching the edge, so
+96–99% keep 49.5. At 100% over the corpus and the deer: 45 clean, 3 hard (star,
+snow, crown), the same 4 refused, every picture matching its heart, 26 motifs
+on their enclosing circle; median 0.6 s, max 10.2 s (the cat).
+
 ## More space around the motif keeps the circle's size
 
 Product report (2026-10-20): with "Luft om figuren" at 14% and the size at
