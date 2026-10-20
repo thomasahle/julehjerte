@@ -604,7 +604,8 @@ ends of cuts on corners or on straight sides — and dragging one sizes, stretch
 the point follows the pointer, about the crossing of its line nearest the middle of the heart (two stretches or
 more from the point). Along its cut the tiles grow longer or shorter that way, or bigger or smaller both ways
 where the type's motions keep its cells square or rhombic (`latticeOf`: a mirror in a side keeps the cells
-rectangular, a mirror in a diagonal rhombic, a quarter turn square); across it they turn, up to 35°, with
+rectangular, a mirror in a diagonal rhombic, a quarter turn square); across it they turn, up to 15° (every cut
+has to run from edge to opposite edge, and turned further the lines near the corners could not), with
 between two and twelve strips a side; near the plain grid they snap back square and straight. Dragging a cut,
 or one of the square's edges, moves the whole pattern, which comes back in at the other edge without end: in
 this tab no strip is pulled in from an edge or dragged out, and nothing done in the tab takes the heart out of

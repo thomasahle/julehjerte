@@ -259,6 +259,22 @@ describe("the bridge between a tile and Tegn's cuts", () => {
 		expect(problems(small)).toEqual([]);
 	});
 
+	it('stops at the smallest tiles where a black point is dragged on past the crossing they turn about', () => {
+		const tile = ruleStart(opposite('move', 'move'), 4);
+		const rect = getCenteredRectParams({ x: 5, y: 5 });
+		const crossings = [...specialNodes(tile, 'L-3').keys()].filter((a) => isCrossing(tile, 'L-3', a)).sort((a, b) => a - b);
+		const anchor = crossings[crossings.length - 2]!;
+		const was = generateEditorFingers(tile, rect).find((f) => f.id === 'L-3')!.segments[anchor]!.p0;
+		// Tegn runs a left-lobe cut from right to left: on along it, past the middle and further
+		const toward = Math.sign(rect.left + rect.width / 2 - was.x);
+		const next = dragPlacedPoint(tile, 'L-3', anchor, { x: toward * rect.width, y: 0 }, rect)!;
+		const { x, y } = tileShape(next);
+		// twelve strips across: a cell side 100 / 12 of the square, of a plain cell's 100 / 5
+		expect(Math.hypot(x.x, x.y)).toBeCloseTo(5 / 12, 9);
+		expect(Math.hypot(y.x, y.y)).toBeCloseTo(1, 9);
+		expect(problems(next)).toEqual([]);
+	});
+
 	it('snaps back to the plain grid, square and straight, near it', () => {
 		const tile = ruleStart(opposite('move', 'move'), 4);
 		const rect = getCenteredRectParams({ x: 5, y: 5 });

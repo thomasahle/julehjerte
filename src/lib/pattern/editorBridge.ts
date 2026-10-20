@@ -515,8 +515,13 @@ function anchorOfCrossing(tile: PatternTile, fingerId: string, crossing: { i: nu
 	return -1;
 }
 
-/** How far the cells may turn off the plain grid, in radians: every cut still runs from edge to opposite edge. */
-const MAX_TURN = (35 * Math.PI) / 180;
+/**
+ * How far the cells may turn off the plain grid, in radians. Every cut has to run
+ * from one edge of the square to the opposite one, and a turned line runs across
+ * it aslant: turned much further, the lines near the corners would leave it at the
+ * sides, and a 5 × 5 pattern would keep three strips a side, a 3 × 3 one two.
+ */
+const MAX_TURN = (15 * Math.PI) / 180;
 
 /** The shortest and the longest side a cell may have, in the square's 100 units: twelve strips across, and two. */
 const SIDES: [number, number] = [100 / 12, 100 / 2];
@@ -559,11 +564,14 @@ const turn = (v: Vec, a: number): Vec => ({ x: v.x * Math.cos(a) - v.y * Math.si
 const apply = (shape: Shape, p: Vec): Vec => plus(times(shape.x, p.x), times(shape.y, p.y));
 
 /**
- * The tile's shape grown, stretched and turned so that the cells' vector `v` (from
- * the pivot to the dragged point) comes to `w` in the square: the cell side along
- * the dragged cut (family `kind`) grows or shrinks, and the other side with it
- * where the type keeps its cells square or rhombic; then every side turns. Kept
- * within `SIDES` and `MAX_TURN`, so the point may stop short of `w`.
+ * The tile's shape turned, grown and stretched so that the cells' vector `v`
+ * (from the pivot to the dragged point) comes to `w` in the square: every side
+ * turns, as far as `MAX_TURN` lets it; then the cell side along the dragged cut
+ * (family `kind`) grows or shrinks, and the other side with it where the type
+ * keeps its cells square or rhombic, to bring the point as near the pointer as
+ * the turn left it room for, within `SIDES`. Within those limits the point is the
+ * pointer; past them it stops short, and a pointer dragged past the pivot leaves
+ * the tiles as small as they go.
  */
 function turnedShape(tile: PatternTile, kind: StretchKind, v: Vec, w: Vec): Shape {
 	const h = 100 / (tile.cuts + 1);
@@ -575,25 +583,31 @@ function turnedShape(tile: PatternTile, kind: StretchKind, v: Vec, w: Vec): Shap
 	const now = times(apply(shape, v), h);
 	const b = both ? now : times(shape[side], h * dot(v, e));
 	const a = minus(now, b);
-	// |a + g b| = |w|: how much the side grows.
-	const [aa, ab, bb, ww] = [dot(a, a), dot(a, b), dot(b, b), dot(w, w)];
-	const disc = ab * ab - bb * (aa - ww);
-	let grow = bb > 1e-12 ? (disc >= 0 ? (-ab + Math.sqrt(disc)) / bb : -ab / bb) : 1;
+	// Turned towards the pointer, as far as every side may turn off its axis: by how far it lies across
+	// the line to the point against how far along it, either way, so that a pointer dragged on past the
+	// pivot along the line turns nothing.
+	const axisOf = { x: 0, y: Math.PI / 2 };
+	const unit = times(now, 1 / (Math.hypot(now.x, now.y) || 1));
+	const [along, aside] = [dot(unit, w), unit.x * w.y - unit.y * w.x];
+	const wanted = Math.atan2(aside, Math.abs(along));
+	let by = wanted;
+	if (Math.abs(angleOf(shape[side]) + by - axisOf[side]) < SNAP_TURN) by = axisOf[side] - angleOf(shape[side]);
+	for (const k of ['x', 'y'] as const) {
+		const off = angleOf(shape[k]) - axisOf[k];
+		by = Math.min(Math.max(by, -MAX_TURN - off), MAX_TURN - off);
+	}
+	// Then grown so that the point, turned, comes nearest the pointer: a + g·b nearest w turned back.
+	// Where the turn stopped short of the pointer, or snapped, only how far along the pointer is counts,
+	// not how far aside: dragged on across, the tiles turn as far as they go and keep their size.
+	const reach = by === wanted ? w : plus(times(unit, along), times({ x: -unit.y, y: unit.x }, Math.abs(along) * Math.tan(by)));
+	const back = turn(reach, -by);
+	let grow = dot(b, b) > 1e-12 ? dot(minus(back, a), b) / dot(b, b) : 1;
 	const grown = (both ? ['x', 'y'] : [side]) as Array<'x' | 'y'>;
 	const length = (k: 'x' | 'y') => Math.hypot(shape[k].x, shape[k].y);
 	for (const target of both ? [1] : [1, length(side === 'x' ? 'y' : 'x')]) {
 		if (Math.abs((grow * length(side)) / target - 1) < SNAP_SIZE) grow = target / length(side);
 	}
 	for (const k of grown) grow = Math.min(Math.max(grow, SIDES[0] / (h * length(k))), SIDES[1] / (h * length(k)));
-	// Then turned, as far as every side may turn off its axis.
-	let by = angleOf(w) - angleOf(plus(a, times(b, grow)));
-	by = Math.atan2(Math.sin(by), Math.cos(by));
-	const axisOf = { x: 0, y: Math.PI / 2 };
-	if (Math.abs(angleOf(shape[side]) + by - axisOf[side]) < SNAP_TURN) by = axisOf[side] - angleOf(shape[side]);
-	for (const k of ['x', 'y'] as const) {
-		const off = angleOf(shape[k]) - axisOf[k];
-		by = Math.min(Math.max(by, -MAX_TURN - off), MAX_TURN - off);
-	}
 	const sized = (k: 'x' | 'y') => turn(grown.includes(k) ? times(shape[k], grow) : shape[k], by);
 	return { x: sized('x'), y: sized('y') };
 }
