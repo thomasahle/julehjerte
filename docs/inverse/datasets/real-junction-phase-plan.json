@@ -1,0 +1,96 @@
+{
+  "schema": "real-junction-phase-plan-1",
+  "date": "2026-10-20",
+  "question": "Does the existing synthetic-trained corner CNN offer stable, visually useful proposals on the fixed real-photo cohort? Swapping A/B mask names must not move actual visible junctions.",
+  "pipeline": {
+    "path": "tmp/heart-learning/native-confidence-pipeline-v1/report.json",
+    "sha256": "44b65f967c1d99dbcd934a36873273fb5e025f6627622be242be2d9353ec3005"
+  },
+  "training": {
+    "path": "tmp/heart-learning/balanced-corners-v1/report.json",
+    "sha256": "32b636dd752d7ccaecee321fbbf6bb5a27269ce4dbc5f2577c84fd3ee448a31d"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/balanced-corners-v1/model.pt",
+    "sha256": "99001a3bf232c230a209a13cc5fd5a9b9d363dd131edc1ece937e1b9b6f668b9"
+  },
+  "previousSyntheticReplay": {
+    "path": "tmp/heart-learning/junction-replay-v1/report.json",
+    "sha256": "9e7397b7d7584df688c2fa991a79daeb01fe05e0c896a6c0f2b8da93b0f2cb6b"
+  },
+  "preparedSynthetic": {
+    "path": "tmp/heart-learning/prepared-v1/manifest.json",
+    "sha256": "4be61d42373722e3ead15fc27e2a5baffb485cc5e2e6c8468df5e8347c02a0a8"
+  },
+  "expectedCases": [
+    "real-1bcc922200edde26-body-1",
+    "real-80a649a21ea938ae-body-1",
+    "real-f6e5e128449e3cb9-body-1",
+    "real-fcbcc23efea92b93-body-1",
+    "real-55704c6e2911bebc-body-1",
+    "real-24b5ed49c9411b11-body-1",
+    "real-589f606a9d9899f2-body-1",
+    "real-dfa7e4b71b43aa86-body-1",
+    "real-2b0550dd86d23b40-body-1",
+    "real-2502cdec0720f4ea-body-1",
+    "real-d3f063052599e167-body-1",
+    "real-a126ed5d62adfd92-body-1",
+    "real-5088a58018c3aa28-body-1",
+    "real-1a7cfc6be8b164b5-body-1",
+    "real-fe7fb089d1cd86b4-body-1",
+    "real-8b91ecf546833a3f-body-1",
+    "real-b5317080eec610dc-body-1",
+    "real-c7d1e0ad5050db71-body-1",
+    "real-45ad148d9ec045be-body-1",
+    "real-702942779385436c-body-1",
+    "real-03bddab9c8f384c4-body-1",
+    "real-eb60ff94dfc6e2f8-body-1",
+    "real-af21a4ef38355dfa-body-1",
+    "real-f4bd8d13fc7e68d0-body-1",
+    "real-f05cf91c134daea9-body-1",
+    "real-12f272f48ed09d51-body-1",
+    "real-28a87a8be083f16c-body-1",
+    "real-ce66f9634c2c613b-body-1",
+    "real-52e732b98f9b14f1-body-1",
+    "real-7e9f6f83ae43ec2a-body-1",
+    "real-d4f6e3c76cf08ea8-body-1",
+    "real-41b7c3e0b79f1265-body-1"
+  ],
+  "protocol": {
+    "seedMethod": "hard",
+    "resolution": 384,
+    "thresholds": [
+      0.6,
+      0.4
+    ],
+    "maskResize": "nearest",
+    "rgbResize": "bilinear",
+    "observationErosionPixels": 2,
+    "phases": [
+      "original",
+      "exchanged"
+    ],
+    "model": "Frozen 880466-parameter MobileNetV3-small proposal network, trained on synthetic corners with ImageNet initialization.",
+    "refinementRadiusPixels": 9,
+    "matchingTolerancePixels": 3,
+    "controls": "Compare one synthetic forward pass exactly with the existing infer helper at float16 storage precision. Require immutable checkpoint, native crop/mask/coverage, and exact A/B complementation. The two neural passes share identical RGB and validity.",
+    "interpretation": "One-to-one phase agreement measures stability, not real corner accuracy. Compare raw proposals and the existing synthetic-development-selected 9px refinement. No per-photo method, threshold, checkpoint or reference-dependent proposal selection."
+  },
+  "evaluation": "Keep all 32 photos, including six unresolved crops. Store both heatmap heads and raw/refined proposals for all 26 fixed crops. Inspect every source/crop/mask/proposal panel. No ground-truth junction coordinates, new solve, training, production integration or accuracy claim.",
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "maximumWallSeconds": 300,
+    "maximumArtifactMiB": 50,
+    "minimumFreeGiB": 10,
+    "downloads": 0,
+    "sourcePhotoCopies": 0
+  },
+  "limitations": [
+    "The existing CNN saw procedural photographs, not this real development cohort.",
+    "These repeatedly inspected real photos are not an untouched holdout.",
+    "The mask itself can miss true material boundaries or contain printed-ink artifacts.",
+    "Phase stability is necessary for reliable proposals but does not prove useful graph connectivity or legal cutting paths."
+  ]
+}
