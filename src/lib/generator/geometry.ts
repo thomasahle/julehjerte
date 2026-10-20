@@ -26,7 +26,7 @@ export const FRAMES = ['circle'] as const;
 export type Frame = (typeof FRAMES)[number];
 /** The frames around a figure, in the order the generator offers them: the
  * default first, then the frames most real figure hearts use. */
-export const FIGURE_STYLES = ['rays', 'wedges', 'corners', 'silhouette', 'motifs', 'squares', 'board', 'fitted', 'sunburst', 'layers', 'check', 'strips', 'rim'] as const;
+export const FIGURE_STYLES = ['rays', 'wedges', 'corners', 'silhouette', 'motifs', 'squares', 'board', 'fitted', 'sunburst', 'layers', 'check', 'strips'] as const;
 export type FigureStyle = (typeof FIGURE_STYLES)[number];
 /** A frame without a centre panel joins each outer gate of the motif straight
  * to the two paper edges at its corner of the square. Legs meeting the edges
@@ -1551,15 +1551,13 @@ export function framedGate(
 	angle: number,
 	half: number,
 	fan = 1,
-	spread = false,
-	swap = false
+	spread = false
 ): Point {
 	const low = ray(ring, [50, 50], angle - half),
 		mid = ray(ring, [50, 50], angle),
 		high = ray(ring, [50, 50], angle + half);
 	const quadrant = Math.floor(angle / (Math.PI / 2));
-	// With `swap`, the legs leave the other way round and cross outside the ring.
-	const first: 'A' | 'B' = (quadrant % 2 === 1) !== swap ? 'A' : 'B';
+	const first: 'A' | 'B' = quadrant % 2 ? 'A' : 'B';
 	const edge = (p: Point, family: 'A' | 'B'): Point =>
 		family === 'A'
 			? [
@@ -1636,33 +1634,22 @@ export const BOARD_RADII: readonly (readonly [number, number])[] = [
 	[Math.hypot(10, 10) + 5, Math.hypot(30, 10)], [Math.hypot(30, 10), Math.hypot(30, 30) - .4]
 ];
 
-/** The large circle on a rim (`rim`), as in an old pattern: two narrow strips
- * along each edge of the paper, crossing in a small check at each tip, around
- * a circle nearly as wide as the square. It reaches past the outer lines,
- * which follow it, and the inner lines end on it, in pairs that cross just
- * outside, at a gate for each side of the undivided motif. */
-export const RIM = { lines: [8, 16, 84, 92], radius: 46 } as const;
-
-/** A board's lines, the same in both sheets: those of `board` equal strips,
- * or the given positions, for strips of other widths. */
-export const boardLines = (board: number | readonly number[]) => typeof board === 'number'
-	? Array.from({ length: board - 1 }, (_, k) => (100 * (k + 1)) / board) : [...board];
-
-/** A circle on a board (`boardLines`), with the board's junctions that lie on
- * it as exact corners: a circle through junctions (one just touching the outer
- * ring of squares at their inner corners) then ends both lines of each there,
- * leaving no sliver beside it. */
-export function boardRing(radius: number, board: number | readonly number[]): Ring {
+/** A circle on the regular board of `strips` strips, with the board's
+ * junctions that lie on it as exact corners: a circle through junctions (one
+ * just touching the outer ring of squares at their inner corners) then ends
+ * both lines of each there, leaving no sliver beside it. */
+export function boardRing(radius: number, strips: number): Ring {
 	const angle = ([x, y]: Point) => (Math.atan2(y - 50, x - 50) + 2 * Math.PI) % (2 * Math.PI);
-	const points: Point[] = frameRing('circle', 2 * radius), lines = boardLines(board);
-	for (const x of lines) for (const y of lines) {
-		const junction: Point = [x, y];
+	const points: Point[] = frameRing('circle', 2 * radius);
+	for (let i = 1; i < strips; i++) for (let j = 1; j < strips; j++) {
+		const junction: Point = [(100 * i) / strips, (100 * j) / strips];
 		if (Math.abs(distance(junction, [50, 50]) - radius) < 1e-9) points.push(junction);
 	}
 	return points.sort((a, b) => angle(a) - angle(b));
 }
 
-/** Where the lines of a board (`boardLines`) meet a circle around its centre, for a cell grid with `count` outer gates on each side. Lines
+/** Where the lines of a regular board of `strips` strips meet a circle around
+ * its centre, for a cell grid with `count` outer gates on each side. Lines
  * that miss the circle cross the paper whole. A line the circle reaches across
  * with no other line ending on its far side follows the circle there instead
  * (the outer lines of a circle just reaching into the outer ring of squares):
@@ -1672,11 +1659,11 @@ export function boardRing(radius: number, board: number | readonly number[]): Ri
  * meet at a gate: for an outer gate (side and index, as in `connectCellGrid`),
  * the gate's angle and the half-angle to its two legs, which then lie exactly
  * on the board's lines. */
-function boardLegs(edges: Edge[], ring: Ring, board: number | readonly number[], count: number): (side: number, index: number) => [number, number, boolean] {
+function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number): (side: number, index: number) => [number, number] {
 	type End = { angle: number; family: 'A' | 'B'; port: Port };
 	const turn = 2 * Math.PI, lines: { axis: number; line: number; ends: End[] }[] = [];
-	for (const line of boardLines(board)) for (const axis of [0, 1]) {
-		const ends: End[] = [];
+	for (let k = 1; k < strips; k++) for (const axis of [0, 1]) {
+		const line = (100 * k) / strips, ends: End[] = [];
 		ring.forEach((p, i) => {
 			const q = ring[(i + 1) % ring.length];
 			if ((p[axis] < line) === (q[axis] < line)) return;
@@ -1706,35 +1693,23 @@ function boardLegs(edges: Edge[], ring: Ring, board: number | readonly number[],
 	}
 	const quarters: End[][] = [[], [], [], []];
 	for (const end of open) quarters[Math.floor(end.angle / (Math.PI / 2)) % 4].push(end);
-	// Lines that cross beyond the circle, as a rim's narrow strips do (see
-	// `RIM`), meet it the other way round: each quarter then starts with the
-	// other sheet, and each gate's legs cross outside it, making the check there.
-	let flip = 0;
-	const order = (quarter: number) => {
-		// Two lines ending at one junction on the circle pair at it, in turn.
-		const first = (end: { family: 'A' | 'B' }) => Number(end.family !== ((quarter + flip) % 2 ? 'A' : 'B'));
-		quarters[quarter].sort((a, b) => a.angle - b.angle > 1e-9 ? 1 : b.angle - a.angle > 1e-9 ? -1 : first(a) - first(b));
-	};
-	order(0);
-	if (quarters[0][0]?.family === 'A') {
-		flip = 1;
-		order(0);
-	}
 	for (const [quarter, ends] of quarters.entries()) {
-		if (quarter) order(quarter);
-		if (ends.length !== 2 * count || ends.some((end, i) => end.family !== ((quarter + i + flip) % 2 ? 'A' : 'B')))
+		// Two lines ending at one junction on the circle pair at it, in turn.
+		const first = (end: { family: 'A' | 'B' }) => Number(end.family !== (quarter % 2 ? 'A' : 'B'));
+		ends.sort((a, b) => a.angle - b.angle > 1e-9 ? 1 : b.angle - a.angle > 1e-9 ? -1 : first(a) - first(b));
+		if (ends.length !== 2 * count || ends.some((end, i) => end.family !== ((quarter + i) % 2 ? 'A' : 'B')))
 			throw new ConstructionError('topology', 'The circle does not meet the board in turn');
 	}
 	return (side, index) => {
 		const ends = quarters[[2, 3, 0, 1][side]], k = side < 2 ? index : count - 1 - index;
 		const [low, high] = [ends[2 * k].angle, ends[2 * k + 1].angle];
-		return [(low + high) / 2, (high - low) / 2, flip === 1];
+		return [(low + high) / 2, (high - low) / 2];
 	};
 }
 
 /** Join neighbouring motif cells with coincident cuts, and give every outer
  * cell its own connection to the paper edge or the decorative frame. On a
- * board (`board`, see `boardLines`), the frame's legs lie on its lines. */
+ * regular board of `strips` strips (`board`), the frame's legs lie on its lines. */
 export function connectCellGrid(
 	edges: Edge[],
 	cells: Point[][][],
@@ -1742,7 +1717,7 @@ export function connectCellGrid(
 	style: 'rays' | 'check' | 'board' = 'check',
 	spread = false,
 	open: OpenFrame = FITTED,
-	strips: number | readonly number[] = 2 * cells[0].length + 1
+	strips = 2 * cells[0].length + 1
 ) {
 	const rows = cells.length,
 		cols = cells[0].length;
@@ -1753,7 +1728,7 @@ export function connectCellGrid(
 	const connect = (gate: Point, side: number, index: number, count: number) => {
 		if (boundary) {
 			const step = Math.PI / (2 * count);
-			const [angle, half, swap = false] = legs ? legs(side, index) : [
+			const [angle, half] = legs ? legs(side, index) : [
 				side === 0
 					? Math.PI + (index + 0.5) * step
 					: side === 2
@@ -1765,7 +1740,7 @@ export function connectCellGrid(
 			];
 			add(
 				edges,
-				[gate, framedGate(edges, boundary, angle, half, fan, spread, swap)],
+				[gate, framedGate(edges, boundary, angle, half, fan, spread)],
 				'AB',
 				'shared'
 			);
