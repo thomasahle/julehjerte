@@ -6,6 +6,7 @@ import {createHash} from 'node:crypto';
 import {createCanvas,loadImage} from 'canvas';
 import {selectPhotoCrop} from './photo-crop-fallback.mjs';
 import {selectReviewedPhotoCrop} from './partial-photo-crop.mjs';
+import {selectWholeBodyPhotoCrop} from './whole-body-crop.mjs';
 import {detectForegroundCrop} from './foreground-crop.mjs';
 import {continuousForeground} from './continuous-foreground.mjs';
 import {detectHeartCrops,supportedCropOutline} from '../../../static/inverse/core/crop.js';
@@ -135,6 +136,8 @@ const fieldPalette=plan.protocol.fieldPalette??'threshold';
 assert.ok(fieldPalette==='threshold'||saliency&&fieldPalette==='confidence-weighted');
 const outerBoundarySampling=plan.protocol.outerBoundarySampling??false;
 assert.ok(typeof outerBoundarySampling==='boolean'&&(!outerBoundarySampling||saliency));
+const wholeBodyPolicy=plan.protocol.policy==='review-whole-body-crop-v1';
+assert.ok(!wholeBodyPolicy||saliency);
 const control=plan.controlRun?await pinned(plan.controlRun):null;
 if(control){
  assert.equal(control.schema,'material-pair-pipeline-1');assert.equal(control.status,'complete');
@@ -153,7 +156,7 @@ const report={schema:'material-pair-pipeline-1',status:'running',configuration,m
  scope:plan.purpose,comparisonProtocol:plan.protocol,sourceSeparationChecksPassed:true,runtimeNumericalGatePassed:runtime.passed??null,
  runtimeStage:plan.runtimeStage??'browser',
  ...(control?{reusedProductionRun:plan.controlRun}:{})};
-for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/photo-crop-fallback.mjs','scripts/inverse/learning/partial-photo-crop.mjs','scripts/inverse/learning/foreground-crop.mjs',
+for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/photo-crop-fallback.mjs','scripts/inverse/learning/partial-photo-crop.mjs','scripts/inverse/learning/whole-body-crop.mjs','scripts/inverse/learning/foreground-crop.mjs',
  'scripts/inverse/learning/foreground-region.mjs','scripts/inverse/learning/locator-field-source.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/learning/continuous-foreground.mjs','scripts/inverse/learning/outer-boundary-fields.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs',
  ...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator|vendor)\/.+\.(js|mjs|wasm)$/.test(p)).map(p=>'static/inverse/'+p)])report.sourceHashes[file]=hash(await fs.readFile(file));
 await fs.mkdir(args.output,{recursive:false});
@@ -220,8 +223,12 @@ try{
   const source={type:'pixels',rgba,imageWidth:image.width,imageHeight:image.height};
   const started=performance.now();let neuralSeconds=0,region=null,learnedDetection=null;
   const production=control?JSON.parse((await controlAsset(control.rows.find(r=>r.id===input.id&&r.method==='production').assets['detection.json'])).bytes):null;
-  const selected=await (saliency?selectReviewedPhotoCrop:selectPhotoCrop)(source,{...(production?{productionCrop:()=>production}:{}),learnedCrop:async()=>{
-   const fields=saliency?null:input.assets[manifest.methods[0]],body=await field(saliency?input.assets['probability.f32']:fields.body),start=performance.now();let detected;
+  let cachedBody=null;
+  const bodyField=async()=>cachedBody??(cachedBody=await field(saliency?input.assets['probability.f32']:input.assets[manifest.methods[0]].body));
+  const select=wholeBodyPolicy?selectWholeBodyPhotoCrop:saliency?selectReviewedPhotoCrop:selectPhotoCrop;
+  const selected=await select(source,{...(production?{productionCrop:()=>production}:{}),
+   ...(wholeBodyPolicy?{body:{probability:await bodyField(),resolution:manifest.resolution,window:input.window}}:{}),learnedCrop:async()=>{
+   const fields=saliency?null:input.assets[manifest.methods[0]],body=await bodyField(),start=performance.now();let detected;
    if(saliency){
     detected=await detectForegroundCrop(source,{probability:body,resolution:manifest.resolution,window:input.window,paletteMode:fieldPalette,outerBoundarySampling,
      ...(postprocess?{refineFields:fields=>continuousForeground(fields,{palette:postprocess!=='subpixel-distance',distance:postprocess!=='weighted-palette'})}:{})});

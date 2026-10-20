@@ -1,0 +1,57 @@
+{
+  "schema": "whole-body-crop-policy-plan-1",
+  "date": "2026-10-20",
+  "status": "predeclared-before-crop-audit",
+  "policy": {
+    "policy": "review-whole-body-crop-v1",
+    "selection": "Audit each full outline against the fixed browser NN body. Retain supported production crops with confidence-weighted body recall >=85% and precision >=80%. Otherwise consider a neural outline; require original local edge/lobe and observed-area gates, the same body bounds, and at least 0.05 Dice improvement over an existing measured crop. Keep weak existing crops editable when no stronger proposal exists. Do not use motif error or template quality to select crops.",
+    "observedFraction": 0.99,
+    "maximumExtrapolation": 0.05,
+    "timeLimitSeconds": 10,
+    "trials": 0,
+    "target": "mask",
+    "methods": [
+      "production",
+      "fallback"
+    ],
+    "classifier": "Unchanged RGB mixture classifier",
+    "fits": "Reuse original production controls with unchanged source/geometry implementation; freshly fit every chosen neural crop. Both fixed cohorts include every unresolved or failed case. A body warning is separate from derived-mask agreement.",
+    "validation": "Independent exported weave error <=3%, original feature checks, geometry/paper checks, production editable conversion and independent editable-paper audit. Visual review of all photos/crops and distinct outputs.",
+    "missing": "No manual rescue or result-dependent replacement. Record photo eligibility misclassifications and possible irregular weaving separately without removing them from primary denominators.",
+    "fieldPalette": "confidence-weighted",
+    "outerBoundarySampling": true,
+    "wholeBodyEvidence": {
+      "probabilityPower": 4,
+      "minimumMass": 100,
+      "recall": 0.85,
+      "precision": 0.8,
+      "diceImprovement": 0.05
+    }
+  },
+  "cohorts": [
+    {
+      "path": "docs/inverse/datasets/u2netp-whole-body-regression-pipeline-plan.json",
+      "sha256": "88a31f6a1da9ee1fc6d52a7516ba879048b6f9c1d730f022d14502fce29355c2"
+    },
+    {
+      "path": "docs/inverse/datasets/u2netp-whole-body-expanded-pipeline-plan.json",
+      "sha256": "2e90125322e5a128d648b916cbb946311670240269f447cd38fbc42b8243c69f"
+    }
+  ],
+  "resources": {
+    "workers": 1,
+    "nice": 15,
+    "maxNewArtifactMiB": 100,
+    "newPhotoCopies": 0,
+    "newPhotoDownloads": 0,
+    "newTraining": false,
+    "cachedActualBrowserFields": true
+  },
+  "validation": [
+    "Analytic full/fragment/oversized coverage fixtures; source-coordinate scaling and clipping; fail-safe selection tests.",
+    "Both fixed cohorts, no manually replaced corners or result-based case exclusions.",
+    "Every selected neural crop freshly fitted and independently rendered; exact retained production exports reused.",
+    "Every distinct export through editable geometry and nominal paper checks; all new comparisons visually inspected."
+  ],
+  "motivation": "Expanded QA found one locally supported but severely undersized crop and one unsupported retained angel crop. Do not tune thresholds after examining this comparison."
+}
