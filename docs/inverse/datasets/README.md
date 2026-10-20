@@ -334,7 +334,7 @@ uniform-lobe colour check. Removing only that acceptance check would therefore
 not solve them. A research model that fits the body without colour objectives
 produces 12 proposals passing the stated outline, body and coverage checks,
 including five additional or replaced weak proposals. **No new templates were
-fitted and this diagnostic is not deployed.**
+fitted during that diagnostic; it is not deployed.**
 
 All four diagnostic galleries were inspected. The reflective bird has two
 green-looking lobes despite multicoloured print inside the square; its full
@@ -343,8 +343,29 @@ tabletop checker proposal slightly overshoots its lower paper corner. The
 newspaper and printed-bird crops also need material interpretation. Conversely,
 the cat still has missing neural foreground, the child-held heart includes a
 hand, and unusual swan-shaped caps still fail outline support. The next step
-is full reconstruction of the five new proposals while preserving strong
-existing crops, followed by the original 32-photo regression cohort.
+was full reconstruction of the five new proposals while preserving strong
+existing crops.
+
+The [completed reconstruction experiment](u2netp-outline-reconstruction-results.json)
+freezes those five crops before fitting, retains the other 13 cases through
+the pinned baseline, and uses the unchanged RGB classifier and 10-second
+automatic solver. Three new results pass exported-mask and editable-template
+checks: the cross (1.02% exported disagreement), printed birds/X (0.92%) and
+tabletop checker (1.43%). All five exports pass geometry and nominal paper
+checks. Across the complete 18-photo cohort, checked derived masks increase
+from four to six; those also supported by whole-body evidence increase from
+three to six. The old reflective-bird fragment is replaced by a full-overlap
+attempt that correctly remains review-required.
+
+Both reconstruction galleries were inspected. These numbers still overstate
+recovery of the intended artwork: the printed birds extend beyond the overlap,
+and the checker includes a handle/notch intrusion and noisy outer border.
+The newspaper classifier follows printed letters, resulting in 12.90% error
+and 42 missing features. The reflective bird misses four features despite
+1.85% mean error. The one-percent crop-inset helper currently has no production
+or research callers; these fixed proposals were not inset. A separate margin
+study and the original 32-photo regression remain necessary before promotion.
+No model was retrained or application behavior changed in this experiment.
 
 #### Latest neural experiments
 
