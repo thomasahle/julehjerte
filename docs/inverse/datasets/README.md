@@ -1,10 +1,12 @@
 # Data for learned heart reconstruction
 
 Neural release status reviewed on **2026-10-20**; dataset counts last audited on
-**2026-10-20**. **No neural network is ready for production or
-included in the website.** The collection, synthetic generator and learned
-prototypes are research tools; the existing geometric solver remains the
-production path.
+**2026-10-20**. **The adapted U2NETP paper-body model is deployed as a crop
+fallback.** It runs locally in the browser; the existing colour classifier and
+geometric solver still produce the cutting templates. The experimental
+paper-identity heads remain rejected for production. The
+[outline-only extension](u2netp-outline-upload-results.json) has passed branch
+CI and browser QA and is merged in PR #17; its main deployment is being checked.
 
 ## Current results and limits
 
@@ -15,13 +17,17 @@ production path.
 | Conni’s heart-template board | [All 122 pins preserved](conni-board.md); 90 distinct files, 87 new, 12.5 MiB downloaded; 23 photo/template composites | Whole board QA-reserved; 42 visual duplicate links grouped; creators and cutting geometry mostly unverified |
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
 | Small learned model | Earlier MobileNetV3-Small fallback raises checked editable pairs from 7/16 to 9/16 on its development cohort; a newer fixed candidate stays at 7/16 on separately selected Sabrina photos | These are different cohorts; no deployment or established source generalization |
-| Saliency models | Frozen U2NETP raises checked derived-mask pairs from 10/32 to 12/32; adapted browser model adds three checked pairs over fresh current-main controls (9/32 to 12/32) | Raw numerical parity still fails; printed paper, missing body regions, timed-search variation and false seams remain; no production integration |
+| Saliency models | Adapted U2NETP crop fallback is deployed; the outline extension preserves all 32 original crops and selects five tested alternatives on the additional 18-photo cohort | Raw numerical parity still fails; output-level parity is separately verified. Printed paper, missing body regions and false seams remain; this is development evidence |
 | Expanded body supervision | Initial 120-update comparison gives 12/32 versus 10/32; preserving old-photo visits in a 180-update comparison restores both to 12/32 before editable rendering | Final raw editable counts are 11/32 versus 12/32, with the difference traced to a borderline rasterization artifact; no extra design coverage established |
 | Late encoder adaptation | Training-pixel error falls from 2.91% to 1.78%, but full editable recovery stays at the same 12/32 designs | No new crop-support decisions or recovered designs; not promoted |
-| Broader photo evaluation | Whole-body crop selection retains 12/32 and recovers the angel on the additional set: 4/18 checked editable pairs, three also supported by full-body evidence | The fourth fits only a small fragment and is now flagged. Printed paper, crop assumptions and feature loss remain separate problems |
+| Broader photo evaluation | Outline extension retains 12/32 and raises the additional set from 4/18 checked derived masks (three supported by full-body evidence) to 6/18, all six body-supported | Replacing a fragment crop with the whole overlap can reveal a reconstruction failure. Printed paper, crop assumptions and feature loss remain separate problems |
 | Paper-colour calibration | Original-resolution colour mixtures restore detail lost by raw neural masks; fresh fixed-crop comparison gives 11/32 checked pairs with learned palettes versus 13/32 with RGB clustering | No learned-only checked gain; print confusion and unsuitable crops remain; these are derived-mask checks, not artwork ground truth |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
-| Solver | Latest full release QA passes 1,207 inverse tests; earlier dedicated runs solve all 22 regular Hunodan designs under ten seconds | Some hard fits retain thin false seams; 19/77 CI timing targets miss; the earlier 27/31 photo benchmark has not been rerun |
+| Solver | Outline release branch passes 1,183 inverse correctness tests; earlier dedicated runs solve all 22 regular Hunodan designs under ten seconds | Some hard fits retain thin false seams; 16/77 original branch-CI timing targets miss; the earlier 27/31 photo benchmark has not been rerun |
+
+The experiment history below retains its original cohorts, counts and release
+decisions. References to an experiment remaining offline describe that stage;
+the current deployment status is stated above and in the release audits.
 
 The [whole-body selection comparison](u2netp-balanced-body-results.json) now
 allows a supported neural crop to replace a weak existing proposal when it
@@ -292,6 +298,23 @@ motif remain. These full-photo material failures precede cropping and fitting.
 No new template fits, browser export or production changes were justified.
 Fifteen focused tests pass, and historical checkpoint reloads reproduce both
 older models' stored predictions exactly.
+
+The [output-grid capacity diagnostic](u2netp-material-grid-results.json) fits
+free 160-by-160 logits directly to all 32 synthetic training masks, then uses
+the identity head's exact float32 bilinear upsampling convention. Its **1.067%
+expected classification error** is close to the **1.059%** optimum of an
+unconstrained hard pixel map against the fractional targets. The mean excess is
+just **0.00759 percentage points**, with zero interior errors. The learned
+boundary-weighted head instead has 2.12% error on the clean views, 9.25% on their
+printed counterparts and 6.99% in scenes, despite identical target labels.
+
+All 32 saved grids decode exactly to the recorded fields; four focused tests
+pass, and both largest-error galleries were inspected. This shows that output
+resolution alone cannot explain those training failures. It is a target-informed
+reference, not a working image predictor, certified optimum or evidence for
+every fine real motif. The next material experiment should test paired print
+invariance while preserving clean-paper boundaries. No model or app behavior
+changes in this diagnostic.
 
 ### Latest solver and browser validation
 
