@@ -591,8 +591,9 @@ those whose tile has a symmetry of its own. Under the picker: the chosen type's 
 small, Heesch's name for it (or its IH number where he has none), then the size, 3 × 3 to 7 × 7. Picking
 another type keeps the curves it reads the same way, if the heart they make with its own still weaves, and
 starts afresh if not; a size the pattern is too tight for is refused, with a line above the heart. Every type
-starts from one low peak of straight lines on each curve it reads and nothing more, because the visitor does
-the designing; nothing else is drawn on the heart, and nothing moves on its own. Points the tile places itself
+starts from one bent curve on each side it reads (half of one for an S or an arch) and nothing more, because the
+visitor does the designing and adds the nodes they want; nothing else is drawn on the heart, and nothing moves
+on its own. Points the tile places itself
 are drawn dark: dragging a crossing leans every tile (where the type lets tiles lean), and dragging a point the
 type fixes moves the whole pattern, which comes back in at the other edge without end. Moved off a whole line,
 the pattern would leave an edge strip wider than a cell; there the heart cuts the pattern's next line as well,

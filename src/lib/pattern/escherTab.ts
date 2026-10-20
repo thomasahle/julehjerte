@@ -96,9 +96,9 @@ export function cutsAre(fingers: Finger[], generated: Finger[], tolerance = 1e-6
  * lets tiles lean), so tying one pair of sides differently keeps the other pair
  * as drawn, as long as the heart still weaves (else the type starts afresh,
  * `switchRule`); cuts that already are a tile of the new type stay as they are;
- * anything else starts as the type starts, with a low peak of straight lines on
- * every curve, at the pattern's size. A plain chequerboard has nothing to keep,
- * so it starts there too.
+ * anything else starts as the type starts, with one bent curve on every side,
+ * at the pattern's size. A plain chequerboard has nothing to keep, so it starts
+ * there too.
  */
 export function tileForRule(rule: TileRule, current: PatternTile | null, heart: EscherHeart): PatternTile {
 	const { fingers, gridSize, rect } = heart;

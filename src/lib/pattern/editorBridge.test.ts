@@ -494,7 +494,7 @@ describe('a pattern moved within the heart', () => {
 				}
 				grew ||= cutCounts(tile).V > base.cuts || cutCounts(tile).H > base.cuts;
 				// Every cut keeps a strip of paper from the edge, and no edge strip is much wider than a cell:
-				// the peaks the rule starts from stand at most an eighth of a cell off their line.
+				// the bends the rule starts from stand less than a fifth of a cell off their line.
 				const { left, right } = patternCuts(tile);
 				const extent = (cuts: BezierSegment[][], axis: 'x' | 'y') => cuts.map((cut) => cut.flatMap((s) => [s.p0[axis], s.p3[axis]]));
 				for (const [cuts, axis] of [[right, 'x'], [left, 'y']] as const) {
@@ -561,6 +561,12 @@ describe('a pattern moved within the heart', () => {
 		}
 	});
 
+	/** A rule's start with a node in the middle of every piece, as a double-click adds one: the shape unchanged. */
+	const noded = (rule: TileRule): PatternTile => {
+		const start = ruleStart(rule, 4);
+		return { ...start, curves: Object.fromEntries(Object.entries(start.curves).map(([key, curve]) => [key, curve!.flatMap((s) => splitBezierAt(s, 0.5))])) };
+	};
+
 	/** On every cut of a moved pattern with a node the tile does not place, the one nearest the middle, nudged with its handles. */
 	function nudges(tile: PatternTile, d: Vec) {
 		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
@@ -586,7 +592,7 @@ describe('a pattern moved within the heart', () => {
 		(_key, rule) => {
 			const d = { x: 1.5, y: -1 };
 			for (const pan of [{ x: 0.37, y: -0.21 }, { x: -0.62, y: 0.44 }, { x: 1.6, y: -1.3 }]) {
-				const tile = fitLines({ ...ruleStart(rule, 4), pan });
+				const tile = fitLines({ ...noded(rule), pan });
 				const dragged = nudges(tile, d);
 				expect(dragged.length, `pan ${pan.x}, ${pan.y}`).toBeGreaterThan(0);
 				for (const { id, k, drawn, next, nodes } of dragged) {
@@ -603,9 +609,9 @@ describe('a pattern moved within the heart', () => {
 		}
 	);
 
-	it('a node dragged where the edge cuts off a node before it is a node further along the cut made again', () => {
-		const tile = fitLines({ ...ruleStart(opposite('turn', 'move'), 4), pan: { x: 0.37, y: -0.21 } });
-		const moved = nudges(tile, { x: 1.5, y: -1 }).filter(({ id, k, next }) => followEdit(tile, next, id).anchor(k) !== k);
+	it('a node dragged where the edge cuts more or less of a curve before it into the cut is another node of the cut made again', () => {
+		const tile = fitLines({ ...noded(opposite('turn', 'move')), pan: { x: 0.37, y: -0.21 } });
+		const moved = nudges(tile, { x: -3, y: 2 }).filter(({ id, k, next }) => followEdit(tile, next, id).anchor(k) !== k);
 		expect(moved.length).toBeGreaterThan(0);
 		for (const { id, k, drawn, next, nodes } of moved) expect(near(nodes[followEdit(tile, next, id).anchor(k)]!, drawn), `${id} node ${k}`).toBe(true);
 	});

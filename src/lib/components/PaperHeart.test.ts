@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
 import PaperHeart from './PaperHeart.svelte';
 import type { Finger, GridSize, HeartPattern, Vec } from '$lib/types/heart';
+import { splitBezierAt } from '$lib/geometry/bezierSegments';
 import { opposite } from '$lib/pattern/rules';
 import { fitLines } from '$lib/pattern/tiling';
 import { ruleStart } from '$lib/pattern/starts';
@@ -141,24 +142,27 @@ describe('outer edges in the designer', () => {
 });
 
 describe('the Escher tab', () => {
-	it('drags the same node of a moved pattern on, though the edge cuts a node before it off the cut on the way', async () => {
-		// Dragging node 11 of R-1 lets the edge cut the curve before it short: the cut made again has
-		// the node as node 10.
-		const tile = fitLines({ ...ruleStart(opposite('turn', 'move'), 4), pan: { x: 0.37, y: -0.21 } });
+	it('drags the same node of a moved pattern on, though the edge cuts more of a curve before it into the cut on the way', async () => {
+		// The type's start with a node added in the middle of every piece. Dragging node 10 of R-1 lets
+		// the edge show more of the curve before it: from the second step on, the cut made again has
+		// the node as node 11.
+		const start = ruleStart(opposite('turn', 'move'), 4);
+		const noded = { ...start, curves: Object.fromEntries(Object.entries(start.curves).map(([key, curve]) => [key, curve!.flatMap((s) => splitBezierAt(s, 0.5))])) };
+		const tile = fitLines({ ...noded, pan: { x: 0.37, y: -0.21 } });
 		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
 		await vi.waitFor(() => expect(h.target.querySelector('.rule-templates')).not.toBeNull());
 		const nodes = () => h.fingers.find((f) => f.id === 'R-1')!.segments.map((s) => s.p0);
 		send(h.path('R-1'), 'pointerdown', nodes()[5]!);
 		send(h.svg, 'pointerup', nodes()[5]!);
-		const start = nodes()[11]!;
-		send(h.handles()[11]!, 'pointerdown', start);
-		let pointer = start;
+		const from = nodes()[10]!;
+		send(h.handles()[10]!, 'pointerdown', from);
+		let pointer = from;
 		for (let step = 1; step <= 3; step++) {
-			pointer = { x: start.x + 1.5 * step, y: start.y - step };
+			pointer = { x: from.x - 1.5 * step, y: from.y + step };
 			send(h.svg, 'pointermove', pointer);
 			// The dragged node is under the pointer, and still the one selected.
 			const at = nodes().findIndex((p) => Math.hypot(p.x - pointer.x, p.y - pointer.y) < 1e-6);
-			expect(at, `step ${step}`).toBe(10);
+			expect(at, `step ${step}`).toBe(step === 1 ? 10 : 11);
 			expect(h.handles()[at]!.getAttribute('fill'), `step ${step}`).toBe('#ffcc00');
 		}
 		send(h.svg, 'pointerup', pointer);
