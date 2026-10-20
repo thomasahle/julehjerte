@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {createCanvas,loadImage} from 'canvas';
 import {detectForegroundCrop} from './foreground-crop.mjs';
-import {rectifyMaterialPrediction} from './material-target.mjs';
+import {rectifyMaterialPrediction,fixedMaterialMask} from './material-target.mjs';
 import {rectifyMaterialPalette} from './material-palette-target.mjs';
 import {detectHeartCrops,supportedCropOutline} from '../../../static/inverse/core/crop.js';
 import {prepare,design} from '../../../static/inverse/core/engine.js';
@@ -17,8 +17,8 @@ import {renderExportedWeave} from '../export-renderer.mjs';
 
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
 assert.ok(args.probe&&args.output&&Object.keys(args).every(k=>['probe','output','seconds','methods','target','crops','reuse'].includes(k)));
-const targetMode=args.target??'material';assert.ok(['material','rgb','palette'].includes(targetMode));
-if(targetMode==='palette')assert.ok(args.crops,'Palette comparison requires fixed crops');
+const targetMode=args.target??'material';assert.ok(['material','rgb','palette','mask'].includes(targetMode));
+if(['palette','mask'].includes(targetMode))assert.ok(args.crops,'Audited palette or mask input requires fixed crops');
 const seconds=Number(args.seconds??10);assert.ok(Number.isFinite(seconds)&&seconds>0&&seconds<=60);
 const probe=path.resolve(args.probe),output=path.resolve(args.output),hash=b=>createHash('sha256').update(b).digest('hex');
 const bytes=await fs.readFile(path.join(probe,'manifest.json')),manifest=JSON.parse(bytes);
@@ -52,9 +52,12 @@ for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/f
  ...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator|vendor)\/.+\.(js|mjs|wasm)$/.test(p)).map(p=>'static/inverse/'+p)])report.sourceHashes[file]=hash(await fs.readFile(file));
 await fs.mkdir(output,{recursive:false});
 const save=()=>fs.writeFile(path.join(output,'report.json'),JSON.stringify(report,null,2)+'\n');
-async function field(asset){
+async function assetBytes(asset){
  const file=path.resolve(probe,asset.path);assert.ok(file.startsWith(probe+path.sep));
- const raw=await fs.readFile(file);assert.equal(hash(raw),asset.sha256);assert.equal(raw.length,manifest.resolution**2*4);
+ const raw=await fs.readFile(file);assert.equal(hash(raw),asset.sha256);return raw;
+}
+async function field(asset){
+ const raw=await assetBytes(asset);assert.equal(raw.length,manifest.resolution**2*4);
  return Float32Array.from({length:manifest.resolution**2},(_,i)=>raw.readFloatLE(i*4));
 }
 function png(values,n,rgb=false){
@@ -100,6 +103,12 @@ try{
      // Match preprocessPixels' source-size cap; a small photograph must not
      // silently receive a finer target grid just because its labels came from NN.
      const resolution=Math.min(configuration.resolution,Math.max(32,Math.min(image.width,image.height)));
+     if(targetMode==='mask'){
+      const asset=input.assets[method].mask,mask=await assetBytes(asset);
+      assert.equal(mask.length,resolution**2);
+      preview=fixedMaterialMask(source,mask,crop.quad,resolution);
+      assert.equal(hash(preview.mask),asset.sha256,'Retain every fixed classifier decision');
+     }
      if(targetMode==='palette'){
       const calibration=input.materialCalibration?.[method];assert.ok(calibration&&typeof calibration.applied==='boolean');
       row.materialCalibration=calibration;

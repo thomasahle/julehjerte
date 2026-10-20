@@ -3,7 +3,10 @@ import unittest
 import numpy as np
 import torch
 
-from paper_exemplars import canonical_grid, fit_exemplars, lobe_samples, overlap_region, quad_transform
+from paper_exemplars import (
+    canonical_grid, fit_exemplars, fit_exemplar_classifier, score_exemplars,
+    lobe_samples, overlap_region, quad_transform,
+)
 
 
 class PaperExemplarTests(unittest.TestCase):
@@ -60,6 +63,30 @@ class PaperExemplarTests(unittest.TestCase):
         proposal, _ = fit_exemplars(changed, support)
         np.testing.assert_array_equal(original[:8], proposal[:8])
         np.testing.assert_array_equal(original[12:], proposal[12:])
+
+    def test_frozen_colour_classifier_retains_a_single_pixel_feature(self):
+        features = np.zeros((16, 16, 3), np.float32)
+        features[:8] = [1, .05, .05]
+        features[8:] = [1, 1, 1]
+        support = np.zeros((2, 16, 16), bool)
+        support[0, :4] = True
+        support[1, -4:] = True
+        model, record = fit_exemplar_classifier(features, support)
+        self.assertEqual(record['trainingMisclassification'], 0)
+        query = np.ones((41, 53, 3), np.float32)
+        query[:, 27] = [1, .05, .05]
+        expected = np.ones((41, 53), bool)
+        expected[:, 27] = False
+        np.testing.assert_array_equal(score_exemplars(query, model) >= 0, expected)
+        # A constant query must use the fitted normalizer, not its own zero variance.
+        self.assertTrue((score_exemplars(query[:, :1], model) > 0).all())
+
+    def test_query_classifier_rejects_invalid_or_mismatched_parameters(self):
+        model = {'centre': [0, 0, 0], 'scale': [1, 1, 1], 'weight': [1, 1, 1]}
+        with self.assertRaises(ValueError):
+            score_exemplars(np.zeros((3, 4, 2)), model)
+        with self.assertRaises(ValueError):
+            score_exemplars(np.zeros((3, 4, 3)), {**model, 'scale': [1, 0, 1]})
 
 
 if __name__ == '__main__':

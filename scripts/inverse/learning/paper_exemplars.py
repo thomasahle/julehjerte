@@ -67,7 +67,7 @@ def rgb_texture_features(rgb, size=160):
     return features[0].numpy().transpose(1, 2, 0).copy()
 
 
-def fit_exemplars(features, support, *, regularization=.1, minimum=32, maximum=1024):
+def fit_exemplar_classifier(features, support, *, regularization=.1, minimum=32, maximum=1024):
     """Balanced ridge classifier; all normalization is fitted on lobe samples."""
     features, support = np.asarray(features), np.asarray(support)
     if features.ndim != 3 or support.shape != (2, *features.shape[:2]) or support.dtype != bool:
@@ -91,11 +91,29 @@ def fit_exemplars(features, support, *, regularization=.1, minimum=32, maximum=1
     x = (x-centre)/scale
     y = np.repeat([-1., 1.], n)
     weight = np.linalg.solve(x.T@x/len(x)+regularization*np.eye(x.shape[1]), x.T@y/len(x))
-    # Keep the saved scoring field float32; no per-photo threshold search.
-    score = (((features.astype(np.float64)-centre)/scale)@weight).astype(np.float32)
-    return score, {'supportPixels': counts.tolist(), 'samplesPerPaper': n,
+    model = {'centre': centre.tolist(), 'scale': scale.tolist(), 'weight': weight.tolist()}
+    return model, {'supportPixels': counts.tolist(), 'samplesPerPaper': n,
                    'features': features.shape[-1], 'regularization': regularization,
                    'trainingMisclassification': float(((x@weight >= 0) != (y > 0)).mean())}
+
+
+def score_exemplars(features, model):
+    """Apply the fitted classifier to another grid without refitting its scale."""
+    features = np.asarray(features, dtype=np.float64)
+    centre, scale, weight = (np.asarray(model[key], dtype=np.float64)
+                             for key in ['centre', 'scale', 'weight'])
+    if (centre.ndim != 1 or not centre.size or scale.shape != centre.shape or
+            weight.shape != centre.shape or features.ndim < 2 or
+            features.shape[-1] != centre.size or not (scale > 0).all() or
+            not all(np.isfinite(x).all() for x in [features, centre, scale, weight])):
+        raise ValueError('Invalid classifier or query features')
+    # Retain the existing float32 score field and zero decision boundary.
+    return (((features-centre)/scale)@weight).astype(np.float32)
+
+
+def fit_exemplars(features, support, **settings):
+    model, record = fit_exemplar_classifier(features, support, **settings)
+    return score_exemplars(features, model), record
 
 
 def score_probability(score, size=320):
