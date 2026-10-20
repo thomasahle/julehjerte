@@ -6,7 +6,7 @@ import { splitBezierAt } from '$lib/geometry/bezierSegments';
 import { opposite } from '$lib/pattern/rules';
 import { fitLines } from '$lib/pattern/tiling';
 import { ruleStart } from '$lib/pattern/starts';
-import { dragTile, restartedTile, savedPattern, startPanDrag, tileFingers, tileGrid, weaveParityOf } from '$lib/pattern/escherTab';
+import { dragTile, restartedTile, savedPattern, startPanDrag, tileFingers, tileGrid, turnedTile, weaveParityOf } from '$lib/pattern/escherTab';
 import { getCenteredRectParams } from '$lib/utils/overlapRect';
 import { knobTile } from '$lib/pattern/examples';
 // The Escher tab's panel, which Tegn loads when a heart opens on the tab, loaded ahead.
@@ -205,6 +205,27 @@ describe('the Escher tab', () => {
 		send(h.svg, 'pointermove', { x: from.x + 15, y: from.y - 6 });
 		send(h.svg, 'pointermove', { x: from.x + 30, y: from.y - 12 });
 		send(h.svg, 'pointerup', { x: from.x + 30, y: from.y - 12 });
+		expect(JSON.stringify(h.fingers)).toBe(opened);
+		expect(h.button('Undo').disabled).toBe(true);
+	});
+
+	it('turns the whole pattern with its turn control, which a turn takes one Fortryd step to take back', async () => {
+		const tile = { ...knobTile(opposite('move', 'move')), cuts: 3 };
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
+		const opened = JSON.stringify(h.fingers);
+		const slider = h.target.querySelector<HTMLInputElement>('.pattern-turn input[type="range"]')!;
+		expect(h.target.querySelector('.pattern-turn output')?.textContent).toBe('0°');
+		slider.value = '7.5';
+		slider.dispatchEvent(new Event('input', { bubbles: true }));
+		flushSync();
+		slider.dispatchEvent(new Event('change', { bubbles: true }));
+		flushSync();
+		expect(cutsOf(h.fingers)).toBe(cutsOf(tileFingers(turnedTile(tile, 7.5)!)));
+		expect(h.target.querySelector('.pattern-turn output')?.textContent).toBe('7.5°');
+		expect(chosenType(h)).toBe('Moved');
+		h.button('Undo').click();
+		flushSync();
 		expect(JSON.stringify(h.fingers)).toBe(opened);
 		expect(h.button('Undo').disabled).toBe(true);
 	});

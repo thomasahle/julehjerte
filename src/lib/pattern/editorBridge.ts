@@ -8,8 +8,9 @@
  * double-click to add a node — and after every edit the stretches that changed
  * are read back into the tile and the whole heart is generated again, so every
  * stretch that carries the same curve follows. Dragging a point of the tiling —
- * a crossing, the middle of an S — sizes, stretches and turns every tile
- * (`frameTo`); dragging a cut or an edge moves the whole pattern (`panBy`).
+ * a crossing, the middle of an S — sizes, stretches and slants every tile
+ * (`frameTo`); the turn control turns the whole pattern (`turnedTo`); dragging an
+ * edge of the square moves it (`panBy`).
  *
  * Tegn's frame: the overlap rectangle in pixels; left-lobe cuts `L-k` run from
  * the right edge to the left one, right-lobe cuts `R-k` from the bottom edge to
@@ -34,11 +35,13 @@ import {
 	fromFrame,
 	patternCuts,
 	rawToCells,
+	shapeFields,
 	shapeFor,
 	stretchCurve,
 	stretchFrame,
-	tileShape,
+	tileTurn,
 	toFrame,
+	unturnedShape,
 	tracedCut,
 	type CutPiece,
 	type PatternTile,
@@ -365,11 +368,11 @@ function cornerAt(pieces: CutPiece[], r: number): { i: number; j: number } | nul
  * A node the tile places rather than a curve, and what dragging it does:
  * - 'frame': a point of the tiling itself — a crossing, the middle of a half-turn
  *   S, an end of the cut where the edge cuts a corner or a straight side, which
- *   may not bend: the tiles are sized, stretched and turned so that it follows the
- *   pointer (`frameTo`).
+ *   may not bend: the tiles are sized, stretched and slanted so that it follows
+ *   the pointer (`frameTo`).
  * - 'slide': an end of the cut where the edge cuts a curve: it slides along the
  *   edge, reshaping the curve in every copy.
- * None of them is locked, and none moves the pattern: dragging a cut does that.
+ * None of them is locked, and none moves the pattern: dragging an edge does that.
  */
 export type SpecialNode = 'frame' | 'slide';
 
@@ -516,10 +519,11 @@ function anchorOfCrossing(tile: PatternTile, fingerId: string, crossing: { i: nu
 }
 
 /**
- * How far the cells may turn off the plain grid, in radians. Every cut has to run
- * from one edge of the square to the opposite one, and a turned line runs across
- * it aslant: turned much further, the lines near the corners would leave it at the
- * sides, and a 5 × 5 pattern would keep three strips a side, a 3 × 3 one two.
+ * How far a side of the cells may lie off its axis in the heart, slanted and
+ * turned together, in radians. Every cut has to run from one edge of the square to
+ * the opposite one, and a slanting line runs across it aslant: much further, the
+ * lines near the corners would leave it at the sides, and a 5 × 5 pattern would
+ * keep three strips a side, a 3 × 3 one two.
  */
 const MAX_TURN = (15 * Math.PI) / 180;
 
@@ -527,7 +531,7 @@ const MAX_TURN = (15 * Math.PI) / 180;
 const SIDES: [number, number] = [100 / 12, 100 / 2];
 
 /**
- * How near the plain grid a drag snaps to it: a side within this turn of its
+ * How near the plain grid a drag snaps to it: a side within this slant of its
  * axis lies on it, and within this share of a plain cell's length, or of the
  * other side's, is that long. So the tiles come back square and straight.
  */
@@ -535,10 +539,10 @@ const SNAP_TURN = (2.5 * Math.PI) / 180;
 const SNAP_SIZE = 0.025;
 
 /**
- * The crossing of line `line` of family `kind` that the tiles turn about when a
- * point of the line at `from` (in cells) is dragged: the one nearest the middle of
- * the heart, so that the middle stays where it was, and two stretches or more from
- * the point, so that a point near the middle has some way to turn about.
+ * The crossing of line `line` of family `kind` that stays put when a point of the
+ * line at `from` (in cells) is dragged: the one nearest the middle of the heart, so
+ * that the middle stays where it was, and two stretches or more from the point, so
+ * that a point near the middle has some way to move.
  */
 function framePivot(tile: PatternTile, kind: StretchKind, line: number, from: Vec): Vec {
 	const along = kind === 'V' ? 'y' : 'x';
@@ -561,67 +565,68 @@ function framePivot(tile: PatternTile, kind: StretchKind, line: number, from: Ve
 const angleOf = (v: Vec) => Math.atan2(v.y, v.x);
 const dot = (p: Vec, q: Vec) => p.x * q.x + p.y * q.y;
 const turn = (v: Vec, a: number): Vec => ({ x: v.x * Math.cos(a) - v.y * Math.sin(a), y: v.x * Math.sin(a) + v.y * Math.cos(a) });
-const apply = (shape: Shape, p: Vec): Vec => plus(times(shape.x, p.x), times(shape.y, p.y));
+const clamp = (v: number, lo: number, hi: number) => Math.min(Math.max(v, lo), hi);
 
 /**
- * The tile's shape turned, grown and stretched so that the cells' vector `v`
- * (from the pivot to the dragged point) comes to `w` in the square: every side
- * turns, as far as `MAX_TURN` lets it; then the cell side along the dragged cut
- * (family `kind`) grows or shrinks, and the other side with it where the type
- * keeps its cells square or rhombic, to bring the point as near the pointer as
- * the turn left it room for, within `SIDES`. Within those limits the point is the
- * pointer; past them it stops short, and a pointer dragged past the pivot leaves
- * the tiles as small as they go.
+ * The cells' own shape (`unturnedShape`) stretched and slanted, never turned, so
+ * that the cells' vector `v` (from the pivot to the dragged point, a point of a cut
+ * of family `kind`) comes to `w` in the square. The cell side along the dragged cut
+ * follows the pointer, in length and in slant, the other side staying as it is:
+ * the point is the pointer. Where the type keeps its cells rhombic, the other side
+ * grows or shrinks with it; where it keeps them rectangular, the side cannot
+ * slant and only grows longer or shorter, and square, both sides alike
+ * (`latticeOf`). The side slants no further than `MAX_TURN` off its axis in the
+ * heart, the pattern's turn with it, and is `SIDES` long at most and at least;
+ * past those the point stops short, and a pointer dragged past the pivot leaves the
+ * tiles as small as they go. Near the plain grid it snaps back square and straight.
  */
-function turnedShape(tile: PatternTile, kind: StretchKind, v: Vec, w: Vec): Shape {
+function slantedShape(tile: PatternTile, kind: StretchKind, v: Vec, w: Vec): Shape {
 	const h = 100 / (tile.cuts + 1);
-	const shape = tileShape(tile);
-	const both = ['square', 'rhombic'].includes(latticeOf(tile.rule));
+	const by = tileTurn(tile);
+	const own = unturnedShape(tile);
+	const lattice = latticeOf(tile.rule);
 	const side = kind === 'V' ? 'y' : 'x';
-	const e = side === 'x' ? { x: 1, y: 0 } : { x: 0, y: 1 };
-	// Where the point is from the pivot now, as the part that grows (`b`) and the part that does not (`a`).
-	const now = times(apply(shape, v), h);
-	const b = both ? now : times(shape[side], h * dot(v, e));
-	const a = minus(now, b);
-	// Turned towards the pointer, as far as every side may turn off its axis: by how far it lies across
-	// the line to the point against how far along it, either way, so that a pointer dragged on past the
-	// pivot along the line turns nothing.
-	const axisOf = { x: 0, y: Math.PI / 2 };
-	const unit = times(now, 1 / (Math.hypot(now.x, now.y) || 1));
-	const [along, aside] = [dot(unit, w), unit.x * w.y - unit.y * w.x];
-	const wanted = Math.atan2(aside, Math.abs(along));
-	let by = wanted;
-	if (Math.abs(angleOf(shape[side]) + by - axisOf[side]) < SNAP_TURN) by = axisOf[side] - angleOf(shape[side]);
-	for (const k of ['x', 'y'] as const) {
-		const off = angleOf(shape[k]) - axisOf[k];
-		by = Math.min(Math.max(by, -MAX_TURN - off), MAX_TURN - off);
+	const other = side === 'x' ? 'y' : 'x';
+	const axis = side === 'x' ? { x: 1, y: 0 } : { x: 0, y: 1 };
+	// The side that puts the point at the pointer, in the cells' own frame: the point is v[side] of it
+	// along from the pivot, and v[other] of the other side (none for a point of the pivot's own line).
+	const pointer = turn(w, -by);
+	const wanted = times(minus(times(pointer, 1 / h), times(own[other], v[other])), 1 / v[side]);
+	let dir: Vec;
+	if (lattice === 'oblique' || lattice === 'rhombic') {
+		// Slanted towards the pointer, by how far it lies across the side against how far along, either
+		// way, so that a pointer dragged on past the pivot slants nothing; straight near the axis.
+		let slant = Math.atan2(axis.x * wanted.y - axis.y * wanted.x, Math.abs(dot(wanted, axis)));
+		if (Math.abs(slant) < SNAP_TURN) slant = 0;
+		dir = turn(axis, clamp(slant, -MAX_TURN - by, MAX_TURN - by));
+	} else {
+		// Square corners: across the other side, the way the side runs.
+		const across = { x: -own[other].y, y: own[other].x };
+		const len = Math.hypot(across.x, across.y);
+		dir = times(across, (side === 'x' ? -1 : 1) / len);
 	}
-	// Then grown so that the point, turned, comes nearest the pointer: a + g·b nearest w turned back.
-	// Where the turn stopped short of the pointer, or snapped, only how far along the pointer is counts,
-	// not how far aside: dragged on across, the tiles turn as far as they go and keep their size.
-	const reach = by === wanted ? w : plus(times(unit, along), times({ x: -unit.y, y: unit.x }, Math.abs(along) * Math.tan(by)));
-	const back = turn(reach, -by);
-	let grow = dot(b, b) > 1e-12 ? dot(minus(back, a), b) / dot(b, b) : 1;
-	const grown = (both ? ['x', 'y'] : [side]) as Array<'x' | 'y'>;
-	const length = (k: 'x' | 'y') => Math.hypot(shape[k].x, shape[k].y);
-	for (const target of both ? [1] : [1, length(side === 'x' ? 'y' : 'x')]) {
-		if (Math.abs((grow * length(side)) / target - 1) < SNAP_SIZE) grow = target / length(side);
-	}
-	for (const k of grown) grow = Math.min(Math.max(grow, SIDES[0] / (h * length(k))), SIDES[1] / (h * length(k)));
-	const sized = (k: 'x' | 'y') => turn(grown.includes(k) ? times(shape[k], grow) : shape[k], by);
-	return { x: sized('x'), y: sized('y') };
+	// As long as brings the point nearest the pointer; within a hair of a plain cell's length, or of the
+	// other side's, that long.
+	const length = (u: Vec) => Math.hypot(u.x, u.y);
+	let grow = Math.max(dot(wanted, dir), 0);
+	for (const target of [1, length(own[other])]) if (Math.abs(grow / target - 1) < SNAP_SIZE) grow = target;
+	grow = clamp(grow, SIDES[0] / h, SIDES[1] / h);
+	const both = lattice === 'rhombic' || lattice === 'square';
+	const others = both ? times(own[other], grow / length(own[other])) : own[other];
+	const moved = times(dir, grow);
+	return side === 'x' ? { x: moved, y: others } : { x: others, y: moved };
 }
 
 /**
- * The tile sized, stretched and turned so that the point at Tegn's anchor
+ * The tile sized, stretched and slanted so that the point at Tegn's anchor
  * `anchor` of cut `fingerId` — a point of the tiling (`SpecialNode` 'frame') —
  * moves by `delta` pixels, the crossing of its line nearest the middle of the
- * heart staying where it is (`framePivot`). Along the cut the tiles grow longer or
- * shorter that way, or bigger or smaller where the type keeps them square or
- * rhombic (`latticeOf`); across it they turn. The heart cuts the lines that then
- * fit (`fitLines`), so a smaller tile makes more strips, and a narrow one more
- * one way than the other. Null for an anchor that is no node of the cut, or where
- * no line of a family would fit.
+ * heart staying where it is (`framePivot`): the side of the cells along the cut
+ * follows the point, longer, shorter or aslant as the type lets the cells be
+ * (`slantedShape`), and the pattern keeps its turn (`turnedTo` turns it). The
+ * heart cuts the lines that then fit (`fitLines`), so a smaller tile makes more
+ * strips, and a narrow one more one way than the other. Null for an anchor that
+ * is no node of the cut, or where no line of a family would fit.
  */
 export function frameTo(base: PatternTile, fingerId: string, anchor: number, delta: Vec, rect: OverlapRect): PatternTile | null {
 	const traced = tracedFinger(base, fingerId);
@@ -634,15 +639,43 @@ export function frameTo(base: PatternTile, fingerId: string, anchor: number, del
 	const pivot = framePivot(base, kind, firstLine(base, kind) + index - 1, from);
 	const at = cellsToRaw(base, pivot);
 	const to = { x: node.x + (delta.x / rect.width) * 100, y: node.y + (delta.y / rect.height) * 100 };
-	const shape = turnedShape(base, kind, minus(from, pivot), minus(to, at));
-	// Snapped back square and straight at the plain grid's size, it is the plain grid again.
-	const plain = Math.abs(shape.x.x - 1) + Math.abs(shape.x.y) + Math.abs(shape.y.x) + Math.abs(shape.y.y - 1) < 1e-9;
-	const { shape: _was, ...unshaped } = base;
-	const shaped: PatternTile = plain ? unshaped : { ...base, shape };
+	return reshaped(base, slantedShape(base, kind, minus(from, pivot), minus(to, at)), tileTurn(base), pivot);
+}
+
+/**
+ * The tile with cells of their own shape `own`, the pattern turned `by`, the
+ * point `pivot` (in cells) staying where it was in the heart; null where no line
+ * of a family would fit.
+ */
+function reshaped(base: PatternTile, own: Shape, by: number, pivot: Vec): PatternTile | null {
+	const at = cellsToRaw(base, pivot);
+	const { shape: _shape, turn: _turn, ...rest } = base;
+	const shaped: PatternTile = { ...rest, ...shapeFields(base.rule, own, by) };
 	// The pivot stays where it was: the pattern moves under it by as much as the new shape took it away.
 	const next = fitLines(panned(shaped, minus(rawToCells(shaped, at), pivot)));
 	const counts = cutCounts(next);
 	return counts.V > 0 && counts.H > 0 ? next : null;
+}
+
+/**
+ * How far the pattern may be turned, in radians, from and to: as far as keeps
+ * every side of the cells within `MAX_TURN` of its axis, each slanted as it is.
+ */
+export function turnLimits(tile: PatternTile): [number, number] {
+	const own = unturnedShape(tile);
+	const slants = [angleOf(own.x), angleOf(own.y) - Math.PI / 2];
+	return [Math.max(...slants.map((a) => -MAX_TURN - a)), Math.min(...slants.map((a) => MAX_TURN - a))];
+}
+
+/**
+ * The whole pattern turned to `angle` radians (within `turnLimits`) about the
+ * middle of the heart, the cells keeping their own shape: the turn control's
+ * tile, as tiled.art's rotation tool turns the tessellation. Null where no line
+ * of a family would fit.
+ */
+export function turnedTo(base: PatternTile, angle: number): PatternTile | null {
+	const [lo, hi] = turnLimits(base);
+	return reshaped(base, unturnedShape(base), clamp(angle, lo, hi), rawToCells(base, { x: 50, y: 50 }));
 }
 
 /**

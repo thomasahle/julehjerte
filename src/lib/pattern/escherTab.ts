@@ -26,13 +26,15 @@ import {
 	slideCutEnd,
 	specialNodes,
 	tileAfterFingerEdit,
+	turnedTo,
+	turnLimits,
 	weaveParityOf,
 	type PlacedPoint,
 	type SpecialNode
 } from './editorBridge';
 import { MAX_GRID_SIZE, MIN_GRID_SIZE } from '$lib/constants';
 import { ALL_RULES, COMMON_RULES, latticeOf, ruleInfo, ruleKey, ruleSymmetry, sameRule, type TileRule } from './rules';
-import { cutCounts, fitLines, tileShape, type PatternTile, type SideCurve } from './tiling';
+import { cutCounts, fitLines, tileShape, tileTurn, type PatternTile, type SideCurve } from './tiling';
 import { isStraightTile, ruleStart, switchRule } from './starts';
 
 export { cutOfFinger, cutsAre, followEdit, generateEditorFingers, READ_TOLERANCE, sameRule, specialNodes, weaveParityOf };
@@ -141,7 +143,7 @@ export const restartedTile = (tile: PatternTile): PatternTile => fitLines(ruleSt
  * The tile drawn n × n on the heart's square, its lines fitted again, or null
  * when the pattern is too tight for that size: the tiles keep their shape in
  * cells, but the paper between two cuts has to stay as wide in the heart. Tiles
- * stretched or turned keep that too, at the size of a cell of the n × n grid.
+ * stretched, slanted or turned keep that too, at the size of a cell of the n × n grid.
  */
 export function resizedTile(tile: PatternTile, n: number): PatternTile | null {
 	const { shape, ...plain } = tile;
@@ -151,16 +153,41 @@ export function resizedTile(tile: PatternTile, n: number): PatternTile | null {
 	return tileWeaves(next) ? next : null;
 }
 
-/** The size the tab's buttons show the tile at: n for tiles a cell of the n × n grid in size, stretched or turned or not; null for a size dragged by hand. */
+/** The size the tab's buttons show the tile at: n for tiles a cell of the n × n grid in size, stretched, slanted or turned or not; null for a size dragged by hand. */
 export function patternSize(tile: PatternTile): number | null {
 	const { x, y } = tileShape(tile);
 	return Math.abs(x.x * y.y - y.x * x.y - 1) < 1e-9 ? tile.cuts + 1 : null;
 }
 
-/** What the Escher tab's hint says the black points do, for the tile's type: stretch the tiles, or grow them, where the type keeps them square or rhombic. */
-export function frameHint(tile: PatternTile): TranslationKey {
-	return ['square', 'rhombic'].includes(latticeOf(tile.rule)) ? 'patternPointsGrow' : 'patternPointsStretch';
-}
+/**
+ * What the black points do to the tiles of a type, as the tab's hint says it and as the line above the
+ * heart does for a black point chosen: longer, shorter or aslant where the type's cells may be any
+ * parallelogram; longer or shorter where it keeps them rectangular; bigger, smaller or aslant where
+ * rhombic; bigger or smaller where square (`latticeOf`).
+ */
+const FRAME_TEXT = {
+	oblique: ['patternPointsSlant', 'patternPointSlant'],
+	rectangular: ['patternPointsStretch', 'patternPointStretch'],
+	rhombic: ['patternPointsGrowSlant', 'patternPointGrowSlant'],
+	square: ['patternPointsGrow', 'patternPointGrow']
+} as const satisfies Record<string, readonly [TranslationKey, TranslationKey]>;
+
+/** What the Escher tab's hint says the black points do, for the tile's type (`FRAME_TEXT`). */
+export const frameHint = (tile: PatternTile): TranslationKey => FRAME_TEXT[latticeOf(tile.rule)][0];
+
+/** What the line above the heart says a black point chosen does, for the tile's type (`FRAME_TEXT`). */
+export const frameChip = (tile: PatternTile): TranslationKey => FRAME_TEXT[latticeOf(tile.rule)][1];
+
+const DEGREES = 180 / Math.PI;
+
+/** How far the tile's pattern is turned, in degrees: what the turn control shows. */
+export const turnDegrees = (tile: PatternTile): number => tileTurn(tile) * DEGREES;
+
+/** How far the turn control may turn the pattern, in degrees, from and to (`turnLimits`). */
+export const turnRange = (tile: PatternTile): [number, number] => turnLimits(tile).map((a) => a * DEGREES) as [number, number];
+
+/** The pattern turned to `degrees` about the middle of the heart, its cells keeping their shape (`turnedTo`); null where it would not fit. */
+export const turnedTile = (tile: PatternTile, degrees: number): PatternTile | null => turnedTo(tile, degrees / DEGREES);
 
 /**
  * An edit to one of the tile's cuts read back into the tile (the stretches that
@@ -175,7 +202,7 @@ export function editTile(tile: PatternTile, edited: Finger, rect: OverlapRect): 
 
 /**
  * A drag the tile answers itself: on a point of the tiling it places — a
- * crossing, the middle of a half-turn S — which sizes, stretches and turns the
+ * crossing, the middle of a half-turn S — which sizes, stretches and slants the
  * tiles (`frame`); on the end of a cut where the edge cuts a curve, which slides
  * along the edge and reshapes the curve (`slide`); or on one of the square's
  * edges, which moves the whole pattern (`pan`). `base` is the tile the drag
@@ -201,7 +228,7 @@ export function startTileDrag(tile: PatternTile, fingerId: string, anchor: numbe
 /** A drag on an edge of the square, which moves the whole pattern. */
 export const startPanDrag = (tile: PatternTile, start: Vec): TileDrag => ({ mode: 'pan', base: tile, start });
 
-/** The tile with what was dragged moved by `delta` pixels from where the drag started: sized and turned, moved or reshaped. */
+/** The tile with what was dragged moved by `delta` pixels from where the drag started: sized and slanted, moved or reshaped. */
 export function dragTile(drag: TileDrag, delta: Vec, rect: OverlapRect): PatternTile | null {
 	if (drag.mode === 'pan') return panBy(drag.base, delta, rect);
 	return drag.mode === 'frame' ? dragPlacedPoint(drag.base, drag.fingerId, drag.anchor, delta, rect) : slideCutEnd(drag.base, drag.fingerId, drag.end, delta, rect);
@@ -229,6 +256,7 @@ export function savedPattern(tile: PatternTile): HeartPattern {
 		curves: Object.fromEntries(Object.entries(tile.curves).map(([key, curve]) => [key, numbers(curve!)])),
 		...(tile.offset ? { offset: pair(tile.offset) } : {}),
 		...(tile.shape ? { shape: [tile.shape.x.x, tile.shape.x.y, tile.shape.y.x, tile.shape.y.y] } : {}),
+		...(tile.turn !== undefined ? { turn: tile.turn } : {}),
 		...(tile.pan ? { pan: pair(tile.pan) } : {}),
 		...(tile.lines ? { lines: { V: [tile.lines.V.first, tile.lines.V.count], H: [tile.lines.H.first, tile.lines.H.count] } } : {})
 	};
@@ -254,6 +282,7 @@ export function tileOfPattern(saved: HeartPattern): PatternTile | null {
 		curves: Object.fromEntries(Object.entries(saved.curves).filter(([key]) => reads.has(key)).map(([key, segments]) => [key, curve(segments)])),
 		...(saved.offset ? { offset: vec(...saved.offset) } : {}),
 		...(saved.shape ? { shape: { x: vec(saved.shape[0], saved.shape[1]), y: vec(saved.shape[2], saved.shape[3]) } } : {}),
+		...(saved.turn !== undefined ? { turn: saved.turn } : {}),
 		...(saved.pan ? { pan: vec(...saved.pan) } : {}),
 		...(saved.lines ? { lines: { V: { first: saved.lines.V[0], count: saved.lines.V[1] }, H: { first: saved.lines.H[0], count: saved.lines.H[1] } } } : {})
 	};

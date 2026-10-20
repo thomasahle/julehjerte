@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { ALL_RULES, freeSides, halfOf, neighbours, opposite, ruleInfo, ruleKey, sameRule } from './rules';
-import { patternToDesign, straightCurve, type PatternTile } from './tiling';
+import { patternToDesign, shapeFields, straightCurve, tileShape, tileTurn, unturnedShape, type PatternTile } from './tiling';
 import { carryCurves, isStraightTile, ruleStart, switchRule } from './starts';
 import { EXAMPLES, exampleTile, knobTile } from './examples';
 
@@ -102,5 +102,21 @@ describe('the tiles the rules start from, and what a new rule keeps', () => {
 			expect(isStraightTile(knobTile(rule)), ruleKey(rule)).toBe(false);
 		}
 		for (const preset of EXAMPLES) expect(isStraightTile(exampleTile(preset)), preset.id).toBe(false);
+	});
+
+	it('keeps the cells slanted and turned as the new type lets them: a type that keeps them rectangular takes their slant as the turn', () => {
+		const deg = Math.PI / 180;
+		// cells whose x side slants 6° and whose y side 3°, the pattern turned 5°
+		const slanted = { x: { x: Math.cos(6 * deg), y: Math.sin(6 * deg) }, y: { x: -Math.sin(3 * deg), y: Math.cos(3 * deg) } };
+		const tile: PatternTile = { ...knobTile(opposite('move', 'move')), cuts: 3, ...shapeFields(opposite('move', 'move'), slanted, 5 * deg) };
+		// another type whose cells may be any parallelogram keeps both
+		const moved = carryCurves(tile, opposite('move', 'turn'));
+		expect(tileTurn(moved)).toBeCloseTo(5 * deg, 12);
+		expect(unturnedShape(moved).y.x).toBeCloseTo(-Math.sin(3 * deg), 12);
+		// one that keeps them rectangular straightens the y side across the x side, and turns the pattern as the x side lay
+		const mirrored = carryCurves(tile, opposite('mirror', 'mirror'));
+		expect(tileTurn(mirrored)).toBeCloseTo(11 * deg, 12);
+		expect(Math.atan2(tileShape(mirrored).x.y, tileShape(mirrored).x.x)).toBeCloseTo(11 * deg, 12);
+		expect(unturnedShape(mirrored).x.y).toBeCloseTo(0, 12);
 	});
 });

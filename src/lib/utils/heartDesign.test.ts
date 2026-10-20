@@ -263,6 +263,7 @@ describe('heartDesign round trips', () => {
       cuts: 2,
       curves: { vertical: [[0, 0, 0, 0, 0.4, 0.12, 0.4, 0.12], [0.4, 0.12, 0.4, 0.12, 1, 0, 1, 0]] },
       shape: [0.9, 0.2, -0.2, 0.9] as [number, number, number, number],
+      turn: 0.22,
       pan: [0.4, 0] as [number, number],
       lines: { V: [0, 3] as [number, number], H: [1, 2] as [number, number] }
     };
@@ -290,6 +291,7 @@ describe('heartDesign round trips', () => {
       { ...good, curves: { nw: [[0, 0, 0, 0, 1, 0, 1, Infinity]] } },
       { ...good, pan: [1] },
       { ...good, shape: [1, 0, 0] },
+      { ...good, turn: 'a quarter' },
       { ...good, lines: { V: [0.5, 2], H: [1, 2] } }
     ]) {
       expect(normalizeHeartDesign({ ...json, pattern: bad })!.pattern, JSON.stringify(bad)).toBeUndefined();

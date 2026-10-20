@@ -604,13 +604,19 @@ on its own. A cut's points show when it is clicked, as in the Normal tab, and th
 double-clicked onto a bent curve keeps the curve as it is, a smooth node with handles, so that dragging it bends
 the curve rather than kinking it; on a straight piece it is a corner, as in Normal. Blødt and Symmetrisk punkt
 give a node without handles its handles first, as Kurvepunkt does, in both tabs. Points the tile places itself are drawn dark — its crossings, the middles of its S sides, the
-ends of cuts on corners or on straight sides — and dragging one sizes, stretches and turns every tile so that
-the point follows the pointer, about the crossing of its line nearest the middle of the heart (two stretches or
-more from the point). Along its cut the tiles grow longer or shorter that way, or bigger or smaller both ways
-where the type's motions keep its cells square or rhombic (`latticeOf`: a mirror in a side keeps the cells
-rectangular, a mirror in a diagonal rhombic, a quarter turn square); across it they turn, up to 15° (every cut
-has to run from edge to opposite edge, and turned further the lines near the corners could not), with
-between two and twelve strips a side; near the plain grid they snap back square and straight. Dragging one of
+ends of cuts on corners or on straight sides — and dragging one sizes, stretches and slants the tiles, never
+turning them, so that the point follows the pointer, about the crossing of its line nearest the middle of the
+heart (two stretches or more from the point): the side of the cells along the dragged cut follows it, longer,
+shorter or aslant, and the other side stays, as tiled.art's corner points reshape its tile and leave turning to a
+tool of its own. The cells stay the shapes the type's motions keep (`latticeOf`): any parallelogram where it has
+only moves and half turns; a rhombus where a mirror lies in a diagonal, the other side growing with the dragged
+one; a rectangle where a mirror lies in a side, which cannot slant, so the point only goes along its cut; a
+square where a quarter turn keeps it, both sides growing alike. The pattern's turn is a control of its own under
+the sizes, "Drej mønstret", which turns the whole pattern about the middle of the heart, the cells keeping their
+shape (`PatternTile.turn`, kept apart from the cells' own shape and saved with the tile). Slant and turn
+together, no side lies more than 15° off its axis (every cut has to run from edge to opposite edge, and further
+the lines near the corners could not), with between two and twelve strips a side; near the plain grid the cells
+snap back square and straight. A type whose cells cannot slant takes the slant it is given as the turn. Dragging one of
 the square's edges moves the whole pattern, which comes back in at the other edge without end: in this tab no
 strip is pulled in from an edge or dragged out, and nothing done in the tab takes the heart out of it. A cut
 pressed is only chosen, its points shown: when any cut moved the pattern, visitors dragging where they had put

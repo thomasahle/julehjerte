@@ -3,7 +3,7 @@ import { loadHeart } from '$lib/laser/testHearts.test-helpers';
 import type { Finger } from '$lib/types/heart';
 import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
 import { ALL_RULES, COMMON_RULES, freeSides, neighbours, opposite, ruleKey } from './rules';
-import { cutCounts, fitLines, type PatternTile, type SideCurve } from './tiling';
+import { cutCounts, fitLines, tileTurn, unturnedShape, type PatternTile, type SideCurve } from './tiling';
 import { ruleStart } from './starts';
 import { knobTile } from './examples';
 import {
@@ -11,6 +11,7 @@ import {
 	dragTile,
 	editTile,
 	followedPoint,
+	frameChip,
 	frameHint,
 	openedTile,
 	patternSize,
@@ -26,6 +27,9 @@ import {
 	tileForRule,
 	tileGrid,
 	tileOfPattern,
+	turnDegrees,
+	turnedTile,
+	turnRange,
 	weaveParityOf
 } from './escherTab';
 
@@ -147,14 +151,35 @@ describe("Tegn's Escher tab", () => {
 		expect(resizedTile(ruleStart(opposite('move', 'move'), 2), 7)?.cuts).toBe(6);
 	});
 
-	it('says what the black points do for each kind of type: stretch the tiles, or grow them where the type keeps them square or rhombic', () => {
-		expect(frameHint(ruleStart(opposite('move', 'move'), 2))).toBe('patternPointsStretch');
+	it('says what the black points do for each kind of type: stretch and slant the tiles, only stretch them where the type keeps them rectangular, grow and slant them where rhombic, only grow them where square', () => {
+		expect(frameHint(ruleStart(opposite('move', 'move'), 2))).toBe('patternPointsSlant');
 		expect(frameHint(ruleStart(opposite('mirror', 'mirror'), 2))).toBe('patternPointsStretch');
-		expect(frameHint(ruleStart(neighbours('mirror'), 2))).toBe('patternPointsGrow');
+		expect(frameHint(ruleStart(neighbours('mirror'), 2))).toBe('patternPointsGrowSlant');
 		expect(frameHint(ruleStart(neighbours('both'), 2))).toBe('patternPointsGrow');
+		// and so does the line above the heart for a black point chosen
+		expect(frameChip(ruleStart(opposite('move', 'move'), 2))).toBe('patternPointSlant');
+		expect(frameChip(ruleStart(neighbours('both'), 2))).toBe('patternPointGrow');
 	});
 
-	it('sizes stretched and turned tiles a cell of the n × n grid, keeping how they are stretched and turned', () => {
+	it('turns the pattern by the turn control, in degrees, as far as keeps every side within 15° of its axis, and keeps the turn through saving', () => {
+		const tile = ruleStart(opposite('move', 'move'), 4);
+		expect(turnDegrees(tile)).toBe(0);
+		expect(turnRange(tile)[0]).toBeCloseTo(-15, 9);
+		expect(turnRange(tile)[1]).toBeCloseTo(15, 9);
+		const turned = turnedTile(tile, 7.5)!;
+		expect(turnDegrees(turned)).toBeCloseTo(7.5, 9);
+		expect(turnDegrees(turnedTile(tile, 20)!)).toBeCloseTo(15, 9);
+		const saved = JSON.parse(JSON.stringify(savedPattern(turned)));
+		expect(saved.turn).toBeCloseTo((7.5 * Math.PI) / 180, 12);
+		expect(tileOfPattern(saved)).toEqual(turned);
+		// a shape saved before the turn was kept apart: the turn its sides share
+		const { turn: _turn, ...older } = saved;
+		expect(tileTurn(tileOfPattern(older)!)).toBeCloseTo((7.5 * Math.PI) / 180, 12);
+		const own = unturnedShape(tileOfPattern(older)!);
+		expect(Math.hypot(own.x.x - 1, own.x.y)).toBeLessThan(1e-12);
+	});
+
+	it('sizes stretched, slanted and turned tiles a cell of the n × n grid, keeping how they are stretched, slanted and turned', () => {
 		const tile = { ...ruleStart(opposite('move', 'move'), 3), shape: { x: { x: 0.9, y: 0.2 }, y: { x: -0.3, y: 1.35 } } };
 		expect(patternSize(tile)).toBeNull();
 		const sized = resizedTile(tile, 5)!;
@@ -177,7 +202,7 @@ describe("Tegn's Escher tab", () => {
 		expect(edit.cuts.map((f) => f.id)).toEqual(['L-1', 'L-2', 'L-3', 'R-1', 'R-2', 'R-3']);
 	});
 
-	it('sizes and turns the tiles with a point of the tiling, the point staying under the pointer, and moves the pattern with a cut', () => {
+	it('sizes and slants the tiles with a point of the tiling, the point staying under the pointer, and moves the pattern with an edge', () => {
 		const tile = ruleStart(opposite('move', 'move'), 4);
 		const { fingers, rect } = heartOf(tile);
 		const [anchor, kind] = [...specialNodes(tile, 'R-2').entries()].sort(([a], [b]) => a - b).find(([a, k]) => a > 1 && k === 'frame')!;

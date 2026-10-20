@@ -1177,6 +1177,65 @@
 		lastCurveHit = null;
 	}
 
+	/**
+	 * `next`, a tile a drag in the Escher tab or its turn control made, drawn into the heart if the cuts it
+	 * makes pass the checks every edit gets: true if they did. Where a line of the tiling came in, as an
+	 * edge strip grew wider than a cell, or left again (`fitLines`), the heart gets a strip more or fewer,
+	 * its cuts made again, edges and all.
+	 */
+	function applyTileStep(next: PatternTile): boolean {
+		if (!escher) return false;
+		const rect = getOverlapRect();
+		const grid = escher.tileGrid(next);
+		if (grid.x !== gridSize.x || grid.y !== gridSize.y) {
+			const all = escher.tileFingers(next, rect);
+			const problem = fingersProblem(all, grid);
+			noteDragStop(problem);
+			if (problem) return false;
+			fingers = all;
+			gridSize = grid;
+			patternTile = next;
+			weaveParity = escher.weaveParityOf(next);
+			return true;
+		}
+		const overrides = new Map(escher.generateEditorFingers(next, rect).map((f) => [f.id, f]));
+		const problem = overridesProblem(overrides);
+		noteDragStop(problem);
+		if (problem) return false;
+		tileOfOverrides.set(overrides, next);
+		applyOverrides(overrides);
+		return true;
+	}
+
+	/** How far the pattern is turned, in degrees, to the half degree the turn control moves by. */
+	let patternTurn = $derived(patternTile && escher ? Math.round(escher.turnDegrees(patternTile) * 2) / 2 : 0);
+	/** The heart as it was before the turn control's first move, for that turn's one Fortryd step. */
+	let turnSnapshot: HistorySnapshot | null = null;
+
+	/**
+	 * The whole pattern turned to `degrees` by the turn control, about the middle of the heart, the cells
+	 * keeping their shape (`escher.turnedTile`): no further than keeps every side of them within 15° of
+	 * its axis, and only where the cuts it makes weave.
+	 */
+	function turnPattern(degrees: number) {
+		if (readonly || !patternTile || !escher) return;
+		const next = escher.turnedTile(patternTile, degrees);
+		if (!next) return;
+		const before = turnSnapshot ?? snapshotState();
+		if (!applyTileStep(next)) return;
+		turnSnapshot = before;
+		selectedFingerId = null;
+		selectedAnchors = [];
+		selectedSegments = [];
+		lastCurveHit = null;
+	}
+
+	/** The turn control let go, or turned by a key: the turn, if it moved anything, is one Fortryd step. */
+	function endPatternTurn() {
+		if (turnSnapshot) pushUndo(turnSnapshot);
+		turnSnapshot = null;
+	}
+
 	/** A type chosen in the Escher tab (see `escher.tileForRule`). */
 	function chooseEscherRule(rule: TileRule) {
 		if (!escher || (patternTile && escher.sameRule(rule, patternTile.rule))) return;
@@ -1254,10 +1313,12 @@
 		pushUndo(before);
 	}
 
-	/** On the selected cut, the nodes the Escher tab treats specially: points of the tiling, which size and turn the tiles, and ends that slide. */
+	/** On the selected cut, the nodes the Escher tab treats specially: points of the tiling, which size and slant the tiles, and ends that slide. */
 	let patternNodes = $derived(patternTile && selectedFingerId && escher ? escher.specialNodes(patternTile, selectedFingerId) : null);
 	/** What the Escher tab's hint says the black points do, for the chosen rule. */
 	let escherFrameHint = $derived<TranslationKey | null>(patternTile && escher ? escher.frameHint(patternTile) : null);
+	/** What the line above the heart says a black point chosen does, for the chosen rule. */
+	let escherFrameChip = $derived<TranslationKey | null>(patternTile && escher ? escher.frameChip(patternTile) : null);
 
 	function deriveSymmetryOverrides(primary: Finger): Map<string, Finger> {
 		if (patternRule !== 'off') return derivePatternOverrides(primary);
@@ -1318,8 +1379,9 @@
 
 	// The cuts the red highlight below was last worked out for. Checking every cut takes tens of
 	// milliseconds for a big Escher pattern whose cuts have many nodes, too slow for every move of a
-	// drag: while one goes on, the cuts are checked at its first move, then at most every
-	// ISSUE_CHECK_MS, once more after the last move, and at once when the drag ends.
+	// drag, or a turn of the Escher tab's turn control: while one goes on, the cuts are checked at its
+	// first move, then at most every ISSUE_CHECK_MS, once more after the last move, and at once when a
+	// drag ends.
 	const ISSUE_CHECK_MS = 150;
 	let checkedCuts = $state.raw<{ fingers: Finger[]; gridSize: GridSize }>({ fingers: [], gridSize: { x: 3, y: 3 } });
 	let checkedAt = 0;
@@ -1329,7 +1391,7 @@
 		const now = { fingers, gridSize: { x: gridSize.x, y: gridSize.y } };
 		const last = checkedCuts;
 		if (now.fingers === last.fingers && now.gridSize.x === last.gridSize.x && now.gridSize.y === last.gridSize.y) return;
-		const drag = dragTarget ? dragSnapshot : null;
+		const drag = dragTarget ? dragSnapshot : turnSnapshot;
 		const take = () => {
 			checkedCuts = now;
 			checkedAt = performance.now();
@@ -2851,26 +2913,7 @@
 			const next = escher.dragTile(tileDrag, delta, rect);
 			// A press that has not moved anything yet changes nothing (not even the node a slide adds).
 			if (!next || (!dragDirty && (next === tileDrag.base || Math.hypot(delta.x, delta.y) < 0.5))) return;
-			const grid = escher.tileGrid(next);
-			if (grid.x !== gridSize.x || grid.y !== gridSize.y) {
-				// A line of the tiling came in where an edge strip grew wider than a cell, or left again
-				// (`fitLines`): the heart gets a strip more or fewer, its cuts made again, edges and all.
-				const all = escher.tileFingers(next, rect);
-				const problem = fingersProblem(all, grid);
-				noteDragStop(problem);
-				if (problem) return;
-				fingers = all;
-				gridSize = grid;
-				patternTile = next;
-				weaveParity = escher.weaveParityOf(next);
-			} else {
-				const overrides = new Map(escher.generateEditorFingers(next, rect).map((f) => [f.id, f]));
-				const problem = overridesProblem(overrides);
-				noteDragStop(problem);
-				if (problem) return;
-				tileOfOverrides.set(overrides, next);
-				applyOverrides(overrides);
-			}
+			if (!applyTileStep(next)) return;
 			if (tileDrag.mode === 'frame') {
 				// The point stays selected under the pointer, though the pattern may have moved it onto
 				// another cut, or a repeat on.
@@ -3391,7 +3434,7 @@
 	let selectedPatternNode = $derived(selectedAnchors.length === 1 ? patternNodes?.get(selectedAnchors[0]!) : undefined);
 	let selectedNodeTypeLabel = $derived(
 		selectedPatternNode === 'frame'
-			? tr(escherFrameHint === 'patternPointsGrow' ? 'patternPointGrow' : 'patternPointStretch')
+			? tr(escherFrameChip ?? 'patternPointStretch')
 			: selectedPatternNode === 'slide'
 				? tr('patternEdgeSlide')
 				: nodeTypeSelected === 'corner'
@@ -4008,8 +4051,11 @@
 									rule={patternRule === 'off' ? null : patternRule}
 									size={patternSize}
 									frameHint={escherFrameHint}
+									turn={patternTurn}
 									onChoose={chooseEscherRule}
 									onSize={setPatternSize}
+									onTurn={turnPattern}
+									onTurnDone={endPatternTurn}
 									onRestart={restartEscherTile}
 									compact={isMobileLayout}
 									disabled={readonly}

@@ -72,12 +72,21 @@ export interface PatternTile {
 	 */
 	offset?: Vec;
 	/**
-	 * How the cells are sized, stretched and turned in the heart (`Shape`), about
-	 * the middle of its square: absent, the plain grid, cuts + 1 cells across.
-	 * Dragging a point the tile places sets it, within the shapes the rule's
-	 * motions keep (`latticeOf`), and the heart cuts as many lines each way as fit.
+	 * How the cells are sized, stretched, slanted and turned in the heart (`Shape`),
+	 * about the middle of its square: absent, the plain grid, cuts + 1 cells across.
+	 * Dragging a point the tile places sizes, stretches and slants the cells, within
+	 * the shapes the rule's motions keep (`latticeOf`); the turn control turns them
+	 * (`turn`). The heart cuts as many lines each way as fit.
 	 */
 	shape?: Shape;
+	/**
+	 * How far the whole pattern is turned, in radians: `shape` is the cells' own
+	 * shape (`unturnedShape`) turned this far. Kept apart, as tiled.art keeps its
+	 * rotation tool apart from its corner points, so that dragging a point never
+	 * turns the pattern and turning it never slants the cells. Absent with a shape
+	 * saved before it was kept apart, it is the turn the shape's sides share (`tileTurn`).
+	 */
+	turn?: number;
 	/**
 	 * How far the whole pattern is moved within the heart, in cells (any rule).
 	 * Dragging a cut or an edge of the square moves this. The heart cuts whichever
@@ -107,8 +116,45 @@ export interface Shape {
 
 const PLAIN: Shape = { x: { x: 1, y: 0 }, y: { x: 0, y: 1 } };
 
-/** The tile's shape: the plain grid unless it has been sized, stretched or turned. */
+/** The tile's shape: the plain grid unless it has been sized, stretched, slanted or turned. */
 export const tileShape = (tile: PatternTile): Shape => tile.shape ?? PLAIN;
+
+const angleOf = (v: Vec) => Math.atan2(v.y, v.x);
+const rotated = (v: Vec, a: number): Vec => ({ x: v.x * Math.cos(a) - v.y * Math.sin(a), y: v.x * Math.sin(a) + v.y * Math.cos(a) });
+
+/** A shape turned by `angle` radians, both its sides. */
+export const turnShape = (shape: Shape, angle: number): Shape => ({ x: rotated(shape.x, angle), y: rotated(shape.y, angle) });
+
+/**
+ * How far the tile's pattern is turned, in radians (`PatternTile.turn`): for a
+ * shape kept without one, the turn its sides share, each off its own axis.
+ */
+export function tileTurn(tile: PatternTile): number {
+	if (tile.turn !== undefined) return tile.turn;
+	if (!tile.shape) return 0;
+	return (angleOf(tile.shape.x) + angleOf(tile.shape.y) - Math.PI / 2) / 2;
+}
+
+/** The cells' own shape, before the pattern's turn: how dragging its points left them. */
+export const unturnedShape = (tile: PatternTile): Shape => turnShape(tileShape(tile), -tileTurn(tile));
+
+/**
+ * A tile's `shape` and `turn` for cells of their own shape `unturned`, the pattern
+ * turned by `turn`: none for the plain grid unturned. Cells the rule keeps
+ * rectangular or square cannot slant, so a turn of their own is the pattern's.
+ */
+export function shapeFields(rule: TileRule, unturned: Shape, turn: number): { shape?: Shape; turn?: number } {
+	let own = unturned;
+	let by = turn;
+	if (['rectangular', 'square'].includes(latticeOf(rule))) {
+		const off = angleOf(own.x);
+		own = turnShape(own, -off);
+		by += off;
+	}
+	const plain = Math.abs(own.x.x - 1) + Math.abs(own.x.y) + Math.abs(own.y.x) + Math.abs(own.y.y - 1) < 1e-9;
+	if (plain && Math.abs(by) < 1e-12) return {};
+	return { shape: turnShape(own, by), turn: by };
+}
 
 /** The shape the tile would have under `rule`: the nearest its motions keep (`latticeOf`), the size the same. */
 export function shapeFor(rule: TileRule, shape: Shape): Shape {
