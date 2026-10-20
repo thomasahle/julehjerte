@@ -462,11 +462,12 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	try {
 		return generateAtSize(request);
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) || scale <= .85) throw error;
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) || scale <= .85
+			|| request.mode === 'figure' && request.style === 'board') throw error;
 		// Above 85% a frame takes a motif larger than its constructions were
 		// first made for. Where nothing at all can be built at that size, the
 		// motif keeps the largest a few percent below that can be, rather than
-		// refusing.
+		// refusing. The circle on a board keeps its own (see `generateUsingRecipes`).
 		for (let size = scale - .03; size > .85 - 1e-9; size -= .03) try {
 			return generateAtSize({ ...request, scale: Math.round(size * 100) / 100 });
 		} catch (smallerError) {
@@ -1856,7 +1857,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		const gap = request.gap ?? 3, compound = { practical: true, compound: true };
 		// The size setting sizes the circle (see `boardRadius`); the motif fills
 		// the circle up to the space asked for.
-		const [small, large] = BOARD_RADII, { radius, range } = boardRadius(request.scale ?? .7);
+		const [small, large, past] = BOARD_RADII, { radius, range } = boardRadius(request.scale ?? .7);
 		// The slower compound routing only where the panels meet at the centre.
 		const junctions = backgroundJunctions(contours).map((p): Point => [p[0] - centre[0], p[1] - centre[1]]);
 		const four = [{ columns: 2, slices: 2 }, { ...compound, columns: 2, slices: 2 },
@@ -1919,6 +1920,10 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const hard = hardToCutResult(request, rejected, curveFitter);
 			if (hard) return kept(hard);
 		}
+		// Over the corner squares, a motif that cannot be built at all at its
+		// size keeps the largest circle short of them, at 85%.
+		if (mode === past)
+			return { ...generateUsingRecipes({ ...request, scale: .85 }, onRejected, curveFitter, variants, allRecipes), scale: .85 };
 		throw last;
 	}
 	if (request.style === 'corners') {

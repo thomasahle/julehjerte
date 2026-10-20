@@ -1,5 +1,24 @@
 # Generator robustness results
 
+## The circle on equal squares up to 100%, over the corner squares
+
+Product request (2026-10-20): "why can I still not take the size of the deer to
+100%?" in "Cirkel · Lige store tern", then, of a version that narrowed the outer
+squares, "It changes the size of the squares. Why can't we overlap the circle with
+the corner squares?" At 85% the circle (radius 42) almost reaches the junctions at
+the outer ring's corners. Past them, each quarter of the circle meets one sheet's
+two lines before the other's (B B A A), and the gates only paired neighbouring
+ends. The same lines now pair at the same red squares, each gate midway along its
+red square's arc, the inner legs of both pairs running along the circle across the
+corner square, which is the circle's colour, both sheets cut there. Above 85% the
+circle grows over the corner squares from radius 42.8 to 47 at 100%, every line in
+place. At 100% over the corpus and the deer: 46 clean, 2 hard, 4 refused (at 85%:
+45, 3, 4; the heart is clean at 100%). The 28 motifs that take the large circle
+grow, the 20 solid ones keep the touching circle, the same four are refused (sun,
+coffee, paw, bicycle; the slowest in 9 s), and every picture matches its heart.
+Median 0.4 s, max 6.6 s. Hearts at 85% and below are unchanged, bit for bit
+(design and picture hashes of the corpus and the deer at 60, 70, 80 and 85%).
+
 ## Any Google font for the text
 
 Product request (2026-10-20): "a search box for any google font", fetched when

@@ -359,6 +359,37 @@ describe('frames from real hearts', () => {
   expect(result.scale).toBeUndefined();
   expect(result.hardToCut).toBeUndefined();
  }, 20000);
+ it('grows the circle past 85% over the corner squares, every square still equal', () => {
+  const { design, hardToCut, scale } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: 1 });
+  expect(hardToCut).toBeUndefined();
+  expect(scale).toBeUndefined();
+  expect(design.gridSize).toEqual({ x: 5, y: 5 });
+  // Every cut still leaves the paper edge along a line of the board.
+  const rect = inferOverlapRect(design.fingers, design.gridSize);
+  const board = ({ x, y }: { x: number; y: number }) => [(x - rect.left) / rect.width * 5, (y - rect.top) / rect.height * 5];
+  const lines = new Set<number>();
+  for (const { segments } of design.fingers.filter(f => f.id.includes('cut')))
+   for (const { p0, p3 } of [segments[0], segments[segments.length - 1]]) {
+    const [a, b] = [board(p0), board(p3)], axis = Math.abs(a[0] - b[0]) < 1e-6 ? 0 : 1;
+    expect(Math.abs(a[axis] - b[axis])).toBeLessThan(1e-6);
+    expect(Math.abs(a[axis] - Math.round(a[axis]))).toBeLessThan(1e-6);
+    lines.add(Math.round(a[axis]) + 10 * axis);
+   }
+  expect(lines.size).toBe(8);
+  // The circle covers the outer ring's corner junctions: the corners of the
+  // squares beside them take its colour, their far ends keep the other.
+  const n = 400, mask = rasterizeDesign(design, n).data;
+  const colour = (x: number, y: number) => mask[Math.floor(y / 100 * n) * n + Math.floor(x / 100 * n)], ground = colour(20, 20);
+  for (const [x, y] of [[21, 19], [19, 21], [79, 19], [81, 21], [19, 79], [21, 81], [79, 81], [81, 79]])
+   expect(colour(x, y), `${x} ${y}`).toBe(ground);
+  for (const [x, y] of [[30, 3], [3, 30], [70, 3], [97, 30], [3, 70], [30, 97], [70, 97], [97, 70]])
+   expect(colour(x, y), `${x} ${y}`).not.toBe(ground);
+ });
+ slow('takes an animal over the corner squares to 100%', () => {
+  const result = generate({ mode: 'figure', name: 'Deer', contours: deer.contours as Ring[], colors, style: 'board', scale: 1 });
+  expect(result.scale).toBeUndefined();
+  expect(result.hardToCut).toBeUndefined();
+ }, 20000);
  slow('keeps the space asked for, so a circle only grows with it', () => {
   // A circle that could be cut cleanly further out stays where the space puts
   // it, hard to cut if need be, rather than jumping out as the slider moves.
@@ -386,11 +417,12 @@ describe('frames from real hearts', () => {
   }
  }, 60000);
  slow('grows the board\'s circle and its motif steadily with the size, never refusing', () => {
-  // Through the touching circle at 70%, where the construction changes, the
-  // circle and the motif only grow; sizes that cannot be cut cleanly are hard.
+  // Through the touching circle at 70%, where the construction changes, and
+  // over the corner squares past 85%, the circle and the motif only grow;
+  // sizes that cannot be cut cleanly are hard.
   for (const [name, motif] of Object.entries({ star, cookie })) {
    let last = [0, 0];
-   for (const scale of [.6, .66, .7, .71, .72, .73, .76, .8, .85]) {
+   for (const scale of [.6, .66, .7, .71, .72, .73, .76, .8, .85, .86, .9, .95, 1]) {
     const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'board', scale, gap: 3 });
     const rect = inferOverlapRect(design.fingers, design.gridSize);
     // Where the board's second line from the left leaves the top edge, it

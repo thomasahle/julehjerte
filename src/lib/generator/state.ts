@@ -45,12 +45,12 @@ export const BOARD_STYLES: readonly FigureStyle[] = ['motifs', 'squares', 'strip
  * distance from it, or the legs' of a frame without a centre panel. */
 export const SPACED_STYLES: readonly FigureStyle[] = FIGURE_STYLES.filter(style => !BOARD_STYLES.includes(style));
 /** The frames that take the motif to 100%: the figure in the checks to the
- * paper's edge, the others as far as their frame leaves room, hard to cut
- * where they must be. The silhouette and the circle on a board are as large as
- * the square and the board allow at 85%, and a motif on squares fills its
- * square before that; the sunburst, layers and corner checks cannot yet build
- * every motif larger. */
-const FULL_SIZE: readonly FigureStyle[] = ['rays', 'check', 'wedges', 'fitted', 'strips'];
+ * paper's edge, the circle on a board over the corner squares, the others as
+ * far as their frame leaves room, hard to cut where they must be. The
+ * silhouette is as large as the square allows at 85%, and a motif on squares
+ * fills its square before that; the sunburst, layers and corner checks cannot
+ * yet build every motif larger. */
+const FULL_SIZE: readonly FigureStyle[] = ['rays', 'check', 'wedges', 'fitted', 'strips', 'board'];
 /** The largest size a frame takes the motif to. */
 export const largestScale = (style: FigureStyle) => FULL_SIZE.includes(style) ? 100 : 85;
 /** The space a state asks between the motif and its frame, where it has one. */

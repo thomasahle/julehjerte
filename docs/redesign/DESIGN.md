@@ -744,7 +744,16 @@ regular 5×5 board with a circle around the motif. The size setting sizes the ci
 the motif fills it up to the space asked for, so both only grow with the setting (tested): from
 five units clear of the centre square's corners (radius 19) to the circle that touches the outer
 ring of squares at their eight inner corners (31.6) at the default 70%, then on into that ring
-almost to the junctions at its corners (42). Up to the touching circle only the two middle lines of
+almost to the junctions at its corners (42) at 85%, and past them over the ring's corner squares
+up to radius 47 at 100%, every square still equal. Past a corner junction, each quarter of the
+circle meets one sheet's two lines before the other's, so neighbouring ends no longer alternate;
+the same lines still pair at the same two red squares (`overlapGates`): each gate sits midway along
+its red square's arc, and the inner legs of the two pairs reach their lines along the circle across
+the corner square, where both sheets are cut on the same arc. The corner squares are the circle's
+own colour, so that cut shows nothing and they merge with it. Radius 47 leaves three units between
+the circle and the middle of each edge of the paper. A motif that cannot be
+built at all over the corner squares keeps the largest circle short of them, at 85%, rather than
+stepping down through the sizes between as other frames do above 85%. Up to the touching circle only the two middle lines of
 each sheet end on the circle and the undivided motif meets them like a letter in the circle frame;
 the outer lines cross the paper whole, and once the circle reaches them they follow it, so beside
 each corner of the ring it is left uncut rather than leaving a sliver, a slightly flattened circle.

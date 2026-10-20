@@ -141,6 +141,8 @@ describe('the picture drawn before the cuts are found', () => {
 		expect(mismatch({ ...request, scale: .8 })).toBeLessThan(.01);
 		// A solid tree keeps the touching circle, as its heart says.
 		expect(mismatch({ ...request, name: 'Tree', contours: tree.contours as Ring[], scale: .8 })).toBeLessThan(.01);
+		// Past 85% the circle overlaps the corner squares, of its own colour.
+		expect(mismatch({ ...request, scale: 1 })).toBeLessThan(.01);
 	});
 
 	it('is the checks in the tips the cuts make, at any space around the motif', () => {
