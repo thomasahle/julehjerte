@@ -1,0 +1,64 @@
+{
+  "schema": "saliency-fresh-study-1",
+  "status": "predeclared-development",
+  "selection": {
+    "path": "docs/inverse/datasets/u2netp-continuous-selection.json",
+    "sha256": "6d4e0e7550fedf5c13333bdc90db28a98eb5ff9ce2de260f32e2d015f5128f52"
+  },
+  "checkpoint": {
+    "path": "tmp/heart-learning/u2netp-body-encoder-v1/model.pt",
+    "sha256": "ef4143cc27fb473da189514ff2e7f4bcba7da6587717678b4161fe269dcdf273"
+  },
+  "model": {
+    "path": "tmp/heart-learning/u2netp-body-encoder-v1/model.pt",
+    "sha256": "ef4143cc27fb473da189514ff2e7f4bcba7da6587717678b4161fe269dcdf273"
+  },
+  "upstreamSource": {
+    "path": "tmp/heart-learning/u2netp-source-v1/source.json",
+    "sha256": "f6fe434979abcd0531fede48187b3009d2d7996096fc8c507fcbaf90f428577a"
+  },
+  "pipeline": {
+    "policy": "retain-production-reviewed-partial-fallback-v1",
+    "selection": "Keep every production crop. Only if none exists, accept an outline-supported neural proposal with observed rectified overlap >=99% and maximum axis-normalized extrapolation <=5%, always needs_review. Use analytic projective coverage; no mask score or template selects the crop.",
+    "observedFraction": 0.99,
+    "maximumExtrapolation": 0.05,
+    "timeLimitSeconds": 10,
+    "trials": 0,
+    "target": "mask",
+    "methods": [
+      "production",
+      "fallback"
+    ],
+    "classifier": "Unchanged RGB mixture classifier",
+    "fits": "Reuse unchanged pinned production controls. Fit every neural crop selected by the new fixed model, retaining all 32 photos, unresolved crops and failed fits. Compare with saved audited decoder-only outputs without selecting checkpoints or methods per photo.",
+    "validation": "Independent exported weave error <=3%, original feature checks, geometry/paper checks, production editable conversion and independent editable-paper audit. Visual review of all photos/crops and distinct outputs.",
+    "missing": "No manual rescue or result-dependent replacement. Record photo eligibility misclassifications and possible irregular weaving separately without removing them from primary denominators.",
+    "fieldPalette": "confidence-weighted"
+  },
+  "sourcePins": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/partial-photo-crop.mjs": "69d3b078258e6c43296f7dec37bd40a875728aa3bd2e4ec2fb50ffcd6ec9c349",
+    "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/u2netp-probe.py": "300c7c3c43188528eac7b96f06bdf124b4336e0215f94204c96318d8d4903a6d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/replay-photo-fallback.mjs": "ec842919ff25c998c4d09ca3cb64fc39fdf00ca3e7ea41fcbc0be57f98dab112",
+    "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/continuous-foreground.mjs": "ebdf2b4e7c463ded9ef6e192c4f98855ef677220d04d02e7e1f28bdc4abdaa23",
+    "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/foreground-crop.mjs": "b67e2e99acfd4bfcf2cceaa84dd90fc64433e9ef1b7dd1709851ce055dc34ca8"
+  },
+  "scope": "Controlled late-encoder adaptation on the existing 24-photo training pool. Same publisher initialization, seed, 180-update schedule, synthetic data, loss, normalization and final-checkpoint selection as the saved decoder-only comparison. More trainable parameters and more computation per update, so not an equal-compute experiment. No held-out tuning or production integration. Native development only; no browser parity or production-release claim.",
+  "pairedStudy": {
+    "path": "docs/inverse/datasets/u2netp-body-encoder-evaluation-plan.json",
+    "sha256": "c0b972da7e7c0218f62aca910d9ebebf5f18a12f5a638701e6c12808ca57a5fd"
+  },
+  "trainingSeparation": {
+    "report": {
+      "path": "tmp/heart-learning/u2netp-body-encoder-v1/report.json",
+      "sha256": "e6fa6420e0f6e84869423bb5ce525a45520d0f3171d5c1675edb9c9aa0e5033d"
+    },
+    "plan": {
+      "path": "docs/inverse/datasets/u2netp-body-encoder-plan.json",
+      "sha256": "1a9a685488c566035b10582c71ef8befbf253c79ab7eaba2d03e9fbba8941df5"
+    }
+  },
+  "generatedBy": {
+    "path": "/Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/learning/pin-body-evaluation.py",
+    "sha256": "eb3815bc83fc6ed09d753783be20022425023d32d07f3c5b8c28d6ddc5ff9b4a"
+  }
+}
