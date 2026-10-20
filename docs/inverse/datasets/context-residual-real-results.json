@@ -1,0 +1,3084 @@
+{
+  "schema": "context-residual-real-study-1",
+  "date": "2026-10-20",
+  "status": "complete",
+  "plan": {
+    "path": "docs/inverse/datasets/context-residual-real-plan.json",
+    "sha256": "70cd23a96c5851e1a4c2c857089c66cc7da02ff02c50826b6e2fb3a2dfb4d988"
+  },
+  "reports": {
+    "context-residual-real-v1/report.json": {
+      "path": "tmp/heart-learning/context-residual-real-v1/report.json",
+      "sha256": "4dec9a8b1a8a7a105781a1bc9cca605c7a178825f4e265b30659e69396e4b8b6"
+    },
+    "context-residual-real-audit.json": {
+      "path": "tmp/heart-learning/context-residual-real-audit.json",
+      "sha256": "6b88727be841ca774370aeb6cf8ac70a0d97db32284dc495747da0faec9b5f43"
+    },
+    "context-residual-real-visual-review.json": {
+      "path": "tmp/heart-learning/context-residual-real-visual-review.json",
+      "sha256": "f6342ab4a5e657c3f770dffbf84a0ad4ea9194e7fc04595200919619ac8a91ac"
+    },
+    "context-residual-real-pipeline-v1/report.json": {
+      "path": "tmp/heart-learning/context-residual-real-pipeline-v1/report.json",
+      "sha256": "cfbe3da6a0e917a3ae99e8f74c64ffc0fbee8b6a11ba515202cdd09e0be34194"
+    },
+    "context-residual-real-pipeline-review-v1/report.json": {
+      "path": "tmp/heart-learning/context-residual-real-pipeline-review-v1/report.json",
+      "sha256": "b85057f5d92b015c1e44c58709b9f00645d2511661a823c2065c53386098f13d"
+    },
+    "context-residual-real-cross-target.json": {
+      "path": "tmp/heart-learning/context-residual-real-cross-target.json",
+      "sha256": "e8ab5c5e762553e283b2b183831997519ecc2d2612f64edf36ce1142c84b76f4"
+    },
+    "context-residual-real-editor-input-v1/results.json": {
+      "path": "tmp/heart-learning/context-residual-real-editor-input-v1/results.json",
+      "sha256": "c6882f0e69df6e324f45cd87e393166a18ec4bdee32518ee3c1ec598d31549ba"
+    },
+    "context-residual-real-editor-v1/results.json": {
+      "path": "tmp/heart-learning/context-residual-real-editor-v1/results.json",
+      "sha256": "34f1fe06f6c70848008d276277c21677269badea605051e4e39670a5e7791fc8"
+    }
+  },
+  "summary": {
+    "synthetic-control-joint": {
+      "attempted": 32,
+      "fixedCrops": 26,
+      "unresolvedCrops": 6,
+      "engineChecksPassed": 11,
+      "converted": 26,
+      "completeEditableCandidates": 11,
+      "meanEngineDisagreement": 0.04259331877366026,
+      "meanEditableDisagreement": 0.04269007590856659,
+      "medianEditableDisagreement": 0.028521875000000002,
+      "maximumEditableDisagreement": 0.12779375,
+      "solveSeconds": 237.83723691700007
+    },
+    "synthetic-control-residual": {
+      "attempted": 32,
+      "fixedCrops": 26,
+      "unresolvedCrops": 6,
+      "engineChecksPassed": 11,
+      "converted": 26,
+      "completeEditableCandidates": 11,
+      "meanEngineDisagreement": 0.038100119973216794,
+      "meanEditableDisagreement": 0.03818029088400097,
+      "medianEditableDisagreement": 0.025171875,
+      "maximumEditableDisagreement": 0.120625,
+      "solveSeconds": 229.1483454159999
+    }
+  },
+  "protocol": "All 32 repeatedly inspected development photos retained, with fixed 26 automatic crops and six unresolved crops. All three frozen projections compared visually as joint and residual readouts. Synthetic-control heads chosen for the full paired pipeline before real-photo inspection based on the synthetic printed-paper diagnostic. 10-second fitting allowances, rotated method order by photo. No checkpoint training, new labels, crop correction, classifier selection per photo, or altered acceptance gates.",
+  "result": "No aggregate increase: both heads produce 11/32 complete editable candidates. Residual removes several joint-head classification defects but printing/reflection failures and inaccurate crop selections persist. Lower self-mask error is not artwork accuracy. The material classifier remains offline.",
+  "verification": {
+    "jointMaskExactReplays": 78,
+    "nativeRgbExactReplays": 26,
+    "independentByteComparisons": 78,
+    "pipelineAssetHashChecks": 470,
+    "crossTargetComparisons": 104,
+    "exactSelfErrorAndFeatureReplays": 52,
+    "editableConversionsPassed": 52,
+    "classifierGalleryPagesInspected": 11,
+    "pipelineGalleryPagesInspected": 11,
+    "retainedUnresolvedCrops": 6,
+    "learningTests": {
+      "modules": 45,
+      "tests": 216,
+      "passed": true,
+      "log": {
+        "path": "tmp/heart-learning/context-residual-real-tests.log",
+        "sha256": "66e4597328ff5abef9f178f577a2b0c9d5966a91d93cdde620a35359c8b0b37c"
+      }
+    }
+  },
+  "rootCauses": [
+    {
+      "category": "classification extrapolation",
+      "evidence": "Bull, star, tentacled motif, candle and bird have fewer false holes/eroded border cells under residual fitting. The lobe RGB fit remains the base; neural context fits its remaining error. This is a qualitative paired-input observation, not annotated accuracy."
+    },
+    {
+      "category": "printing and reflection",
+      "evidence": "Similar red/white stripes and dots, mixed Christmas printing, and two white papers with dots/letters remain confused with material identity. Floral paper regresses because residual fitting restores printed detail suppressed by the joint head. Reflective gold remains badly classified."
+    },
+    {
+      "category": "localization",
+      "evidence": "Six fixed automatic crops are unresolved. The oblique basket and gold-building examples have clearly inappropriate fixed overlap selections. Cleaner material classification cannot repair those selections."
+    },
+    {
+      "category": "search sensitivity",
+      "evidence": "Four-small-hearts residual target has a passing alternate candidate from the joint search: 2.79625% error, full feature retention and engine geometry/paper pass. Its own fresh search returns 3.11625%. The joint candidate also passes editable conversion against its original target. Cross-target editable rendering has not been claimed."
+    },
+    {
+      "category": "combined target and search effects",
+      "evidence": "Wolf targets differ by 1.379375% of pixels. The old candidate scores 2.988125% on its own mask and 3.64125% on the residual mask; the residual search returns 4.379375% on that new mask. Both geometry/paper audits and feature retention pass. Neither candidate meets 3% on the residual target."
+    },
+    {
+      "category": "target fidelity versus recoverable shapes",
+      "evidence": "Even visually adequate woman/birds, figure and bull masks lose important thin motif parts during fitting. Binary global error and broad feature checks do not certify intended original contours or physical assembly."
+    }
+  ],
+  "comparisonChanges": {
+    "gainedEngineChecks": [
+      "real-fcbcc23efea92b93-body-1",
+      "real-a126ed5d62adfd92-body-1"
+    ],
+    "lostEngineChecks": [
+      "real-24b5ed49c9411b11-body-1",
+      "real-45ad148d9ec045be-body-1"
+    ]
+  },
+  "auditPreparationCorrection": "The first cross-target audit omitted the explicit observation weights that preprocessing attaches to a partial crop. The self-replay assertion detected missing weightMass metadata. Restoring Float64 observation weights made all 52 self error/feature reports exact; no candidate, mask, production code or gate changed.",
+  "limitations": [
+    "One timed fit per classifier/photo is not a stable estimate of search variance.",
+    "No held-out real-photo accuracy estimate; this development cohort has been repeatedly inspected.",
+    "Self-mask error may improve while the intended artwork worsens. No original cutting paths are available for these cases.",
+    "The learned projections were trained for joint fitting, not this residual readout. No neural weights were changed in this study.",
+    "This is headless production conversion and SVG I/O replay, not a new browser interaction test or physical assembly."
+  ],
+  "next": "Train a matched residual-readout continuation using the existing source-separated training inputs and fixed updates, paired against unchanged joint continuation. Retain the radial cohort as diagnostic and repeat the complete real-photo/export gate. Separately use the preserved four-small-hearts pair to study search sensitivity without altering its target.",
+  "rows": [
+    {
+      "id": "real-1bcc922200edde26-body-1",
+      "methods": {},
+      "status": "crop-unresolved",
+      "classifierObservation": "No fixed crop; retained as unresolved, not classified or excluded from the cohort."
+    },
+    {
+      "id": "real-80a649a21ea938ae-body-1",
+      "methods": {},
+      "status": "crop-unresolved",
+      "classifierObservation": "No fixed crop; retained as unresolved, not classified or excluded from the cohort."
+    },
+    {
+      "id": "real-f6e5e128449e3cb9-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "c58ace9db40649208b25b25bd42f532512362b362fd002d92f20bdaed691a7ca",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.75641875,
+          "fitError": 0.05684375,
+          "solveSeconds": 8.987643917,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 16,
+          "editableError": 0.05695625,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 16
+        },
+        "synthetic-control-residual": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "f73f827f7298857e57b15e149a7c96fa62a4eb13de7df8c99602f66d163812bb",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.11865,
+          "maskClassFraction": 0.82140625,
+          "fitError": 0.02043125,
+          "solveSeconds": 9.409683290999999,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 5,
+          "editableError": 0.02055,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 5
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.05684375,
+          "synthetic-control-residual": 0.10403125
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.12576875,
+          "synthetic-control-residual": 0.02043125
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.11865
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.11865,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Fixed crop selects an oblique basket/candy region rather than the overlap. Residual removes many islands but cannot repair the crop; a good self-mask fit would not recover the heart.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.05684375,
+          "featuresPassed": false,
+          "missingFeatures": 16,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.10403125,
+          "featuresPassed": false,
+          "missingFeatures": 4,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.12576875,
+          "featuresPassed": false,
+          "missingFeatures": 16,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.02043125,
+          "featuresPassed": false,
+          "missingFeatures": 5,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        }
+      ]
+    },
+    {
+      "id": "real-fcbcc23efea92b93-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "125568d2afdfb169abd30cff662964ac379d0b6e67fa9d323e44a4824bf151e0",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.5545660837894014,
+          "fitError": 0.020575503899620526,
+          "solveSeconds": 9.527752084,
+          "slits": {
+            "left": 4,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 1,
+          "editableError": 0.020613641997673578,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "uncertain",
+          "editableMissingFeatures": 1
+        },
+        "synthetic-control-residual": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "3dd52ebd164eda7147064d1eb8e53c1750349d888b576d547aaf343526b1a1e4",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.05030415133197307,
+          "maskClassFraction": 0.510859823420606,
+          "fitError": 0.013348334318567533,
+          "solveSeconds": 8.205945292000001,
+          "slits": {
+            "left": 4,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.013138574779275757,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.020575503899620526,
+          "synthetic-control-residual": 0.05821780667798097
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.05251616101904998,
+          "synthetic-control-residual": 0.013348334318567533
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.05030415133197307
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.05030415133197307,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Peacock silhouette remains recognizable; residual preserves more border structure, but thin photo seams remain.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.020575503899620526,
+          "featuresPassed": false,
+          "missingFeatures": 1,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.05821780667798097,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.05251616101904998,
+          "featuresPassed": false,
+          "missingFeatures": 1,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.013348334318567533,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        }
+      ]
+    },
+    {
+      "id": "real-55704c6e2911bebc-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "cd597a73183932ee743691b60b5ae1df76a9da3ba59c7bf316733fb0d9be035d",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.4826,
+          "fitError": 0.078525,
+          "solveSeconds": 9.584814124999998,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 24,
+          "editableError": 0.07875625,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 24
+        },
+        "synthetic-control-residual": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "6e18c6c968a4102dbddbd544ccb2883f8b1aee737f38d1242abe2f81dc78e155",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.1121875,
+          "maskClassFraction": 0.4199,
+          "fitError": 0.088875,
+          "solveSeconds": 9.647328374999997,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 30,
+          "editableError": 0.0892875,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 30
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.078525,
+          "synthetic-control-residual": 0.16115
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.136325,
+          "synthetic-control-residual": 0.088875
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.1121875
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.1121875,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Red/white stripes and dots on two papers remain badly confused with material identity. Residual does not recover the woven motif.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.078525,
+          "featuresPassed": false,
+          "missingFeatures": 24,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.16115,
+          "featuresPassed": false,
+          "missingFeatures": 32,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.136325,
+          "featuresPassed": false,
+          "missingFeatures": 25,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.088875,
+          "featuresPassed": false,
+          "missingFeatures": 30,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        }
+      ]
+    },
+    {
+      "id": "real-24b5ed49c9411b11-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "bb851ff71fdb5c11763be4b171c5fb9ea60a2d731df0a907a6fc9194373250e6",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.46294375,
+          "fitError": 0.02679375,
+          "solveSeconds": 10.409138250000003,
+          "slits": {
+            "left": 3,
+            "right": 7
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.02719375,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        },
+        "synthetic-control-residual": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "513d56c1fc54920d1ea4e2879b27e9b74565dee442ded76338c56556f4d0ac6a",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.00343125,
+          "maskClassFraction": 0.4627875,
+          "fitError": 0.0311625,
+          "solveSeconds": 11.426476833000008,
+          "slits": {
+            "left": 7,
+            "right": 7
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.03256875,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.02679375,
+          "synthetic-control-residual": 0.0279625
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.03193125,
+          "synthetic-control-residual": 0.0311625
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.00343125
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.00343125,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Four small woven hearts remain recognizable across heads; subtle cell-boundary differences need template validation.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.02679375,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.0279625,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.03193125,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.0311625,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        }
+      ]
+    },
+    {
+      "id": "real-589f606a9d9899f2-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "a2a18b953e472f5890e03871fbe7f08a2ca801aedc83564ab18d8a3c3eb5ea39",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.4053375,
+          "fitError": 0.089,
+          "solveSeconds": 9.412468332999998,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 2,
+          "editableError": 0.0890875,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 2
+        },
+        "synthetic-control-residual": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "85d4f64324cb687aecea94ad3725736da9d76783972c5dfe3e29c3cf7e0a1869",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.003525,
+          "maskClassFraction": 0.40725,
+          "fitError": 0.07710625,
+          "solveSeconds": 8.987824042000007,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 3,
+          "editableError": 0.076675,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 3
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.089,
+          "synthetic-control-residual": 0.0883375
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.07839375,
+          "synthetic-control-residual": 0.07710625
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.003525
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.003525,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Woman and birds retain their main silhouette; residual removes some edge specks without resolving thin features.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.089,
+          "featuresPassed": false,
+          "missingFeatures": 2,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.0883375,
+          "featuresPassed": false,
+          "missingFeatures": 2,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.07839375,
+          "featuresPassed": false,
+          "missingFeatures": 3,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.07710625,
+          "featuresPassed": false,
+          "missingFeatures": 3,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        }
+      ]
+    },
+    {
+      "id": "real-dfa7e4b71b43aa86-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "3016c06a2dfbc61c15dad0f9f1828c53fad3b07bcddf2cf94111472437409c64",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.41563125,
+          "fitError": 0.1277125,
+          "solveSeconds": 9.731045874999996,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 42,
+          "editableError": 0.12779375,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 42
+        },
+        "synthetic-control-residual": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "78439ec46e7d3e6618566fc85699659d45441d4251c3c0775abb8d85b705876d",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0150125,
+          "maskClassFraction": 0.41915625,
+          "fitError": 0.12049375,
+          "solveSeconds": 9.585328208000007,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 38,
+          "editableError": 0.120625,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 38
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.1277125,
+          "synthetic-control-residual": 0.1242375
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.12749375,
+          "synthetic-control-residual": 0.12049375
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.0150125
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.0150125,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Two densely printed papers remain confused. Neither head recovers their clean material partition.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.1277125,
+          "featuresPassed": false,
+          "missingFeatures": 42,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.1242375,
+          "featuresPassed": false,
+          "missingFeatures": 38,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.12749375,
+          "featuresPassed": false,
+          "missingFeatures": 42,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.12049375,
+          "featuresPassed": false,
+          "missingFeatures": 38,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        }
+      ]
+    },
+    {
+      "id": "real-2b0550dd86d23b40-body-1",
+      "methods": {},
+      "status": "crop-unresolved",
+      "classifierObservation": "No fixed crop; retained as unresolved, not classified or excluded from the cohort."
+    },
+    {
+      "id": "real-2502cdec0720f4ea-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "9330af7a9eeb8bb71a593f463665040686eccd14425e59373cec981bbd78310c",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.53465625,
+          "fitError": 0.01916875,
+          "solveSeconds": 9.813430124999984,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 1,
+          "editableError": 0.019575,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 1
+        },
+        "synthetic-control-residual": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "97e3dac87b749c2ef1624ea83bf8230f6b180828abcb064d713a8ccf47a90544",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.01343125,
+          "maskClassFraction": 0.542525,
+          "fitError": 0.02785625,
+          "solveSeconds": 9.922954208999988,
+          "slits": {
+            "left": 6,
+            "right": 6
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 2,
+          "editableError": 0.02826875,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 2
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.01916875,
+          "synthetic-control-residual": 0.0261625
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.034875,
+          "synthetic-control-residual": 0.02785625
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.01343125
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.01343125,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Nativity/star silhouette and frame remain similar; differences are mostly at photographed borders.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.01916875,
+          "featuresPassed": false,
+          "missingFeatures": 1,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.0261625,
+          "featuresPassed": false,
+          "missingFeatures": 1,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.034875,
+          "featuresPassed": false,
+          "missingFeatures": 2,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.02785625,
+          "featuresPassed": false,
+          "missingFeatures": 2,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        }
+      ]
+    },
+    {
+      "id": "real-d3f063052599e167-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "95df5f17e585666876cadb8b01c53aaf12fa75bec9800f2f4d883e1e818da646",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.6218,
+          "fitError": 0.09014375,
+          "solveSeconds": 10.034558541000006,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "uncertain",
+          "missingFeatures": 10,
+          "editableError": 0.09045625,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "uncertain",
+          "editableMissingFeatures": 10
+        },
+        "synthetic-control-residual": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "2ff750efecd2f17aff0227e0ee74394fabc958f3d126c11e86c314b7acdc1210",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0510625,
+          "maskClassFraction": 0.6710625,
+          "fitError": 0.0443375,
+          "solveSeconds": 10.530835166000005,
+          "slits": {
+            "left": 6,
+            "right": 6
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 2,
+          "editableError": 0.0447875,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 2
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.09014375,
+          "synthetic-control-residual": 0.09744375
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.0812,
+          "synthetic-control-residual": 0.0443375
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.0510625
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.0510625,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Residual reduces doubled edges around the flower petals; seams from relief/shadows remain.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.09014375,
+          "featuresPassed": false,
+          "missingFeatures": 10,
+          "engineGeometryAndPaperPassed": false,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.09744375,
+          "featuresPassed": false,
+          "missingFeatures": 2,
+          "engineGeometryAndPaperPassed": false,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.0812,
+          "featuresPassed": false,
+          "missingFeatures": 7,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.0443375,
+          "featuresPassed": false,
+          "missingFeatures": 2,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        }
+      ]
+    },
+    {
+      "id": "real-a126ed5d62adfd92-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "28a5318e73bd7c8e4e63d8408509ece6a2f969c76f0c6f5dd850de9ff78f456f",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.22540209024344451,
+          "fitError": 0.025833907002941362,
+          "solveSeconds": 8.398136,
+          "slits": {
+            "left": 1,
+            "right": 1
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 1,
+          "editableError": 0.025833907002941362,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 1
+        },
+        "synthetic-control-residual": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "7ef71a2c2bdafa0c3cb1a68500c6cc8fe63330874d46012c80c2414565d30111",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.01851805494711809,
+          "maskClassFraction": 0.24164215532886915,
+          "fitError": 0.020188998059953688,
+          "solveSeconds": 5.053798458000005,
+          "slits": {
+            "left": 2,
+            "right": 1
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.020188998059953688,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.025833907002941362,
+          "synthetic-control-residual": 0.030133299956192502
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.03435133612866888,
+          "synthetic-control-residual": 0.020188998059953688
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.01851805494711809
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.01851805494711809,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Crescent remains clean; residual removes some edge noise, crop remains imperfect.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.025833907002941362,
+          "featuresPassed": false,
+          "missingFeatures": 1,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.030133299956192502,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.03435133612866888,
+          "featuresPassed": false,
+          "missingFeatures": 1,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.020188998059953688,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        }
+      ]
+    },
+    {
+      "id": "real-5088a58018c3aa28-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "394baa70e3634a4bf450bdf4120fbdf2823c3eb461e32399a66bdbbc4297662d",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.5505268947585534,
+          "fitError": 0.06027101016288111,
+          "solveSeconds": 9.772379834000022,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 13,
+          "editableError": 0.06027101016288111,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 13
+        },
+        "synthetic-control-residual": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "26c597fe78d3bf392ebd62939a6fb303e13f307b33be138daa9b38c6b28e1821",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.10719151968198808,
+          "maskClassFraction": 0.4992749728114804,
+          "fitError": 0.050308136555120814,
+          "solveSeconds": 8.702704625000013,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 3,
+          "editableError": 0.050151880695526084,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 3
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.06027101016288111,
+          "synthetic-control-residual": 0.10469767616285611
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.13719889495856094,
+          "synthetic-control-residual": 0.050308136555120814
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.10719151968198808
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.10719151968198808,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Clear improvement: joint classification erodes border cells and adds large holes; residual preserves the bull and cells, closer to RGB.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.06027101016288111,
+          "featuresPassed": false,
+          "missingFeatures": 13,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.10469767616285611,
+          "featuresPassed": false,
+          "missingFeatures": 4,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.13719889495856094,
+          "featuresPassed": false,
+          "missingFeatures": 14,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.050308136555120814,
+          "featuresPassed": false,
+          "missingFeatures": 3,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        }
+      ]
+    },
+    {
+      "id": "real-1a7cfc6be8b164b5-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "2888bda27478105e837dc2c7aea562c90f21fd238a4339196ea9eb0609bedc6a",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.45981875,
+          "fitError": 0.00526875,
+          "solveSeconds": 4.032910083000024,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.00516875,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        },
+        "synthetic-control-residual": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "7bc8a8b42c062c7e02088f4f6de7506afffeb5110e77d14df1d45dcf04140c0b",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0045,
+          "maskClassFraction": 0.46289375,
+          "fitError": 0.00485625,
+          "solveSeconds": 4.095157791999983,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.00466875,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.00526875,
+          "synthetic-control-residual": 0.00719375
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.00769375,
+          "synthetic-control-residual": 0.00485625
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.0045
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.0045,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Blue snowflake/red tree printing is separated well by both heads and RGB; context is not needed here.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.00526875,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.00719375,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.00769375,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.00485625,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        }
+      ]
+    },
+    {
+      "id": "real-fe7fb089d1cd86b4-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "02be9374277984c99fd17e518ef672dbf326ee2e21161b6a3300ebd803e636dc",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.41280625,
+          "fitError": 0.04275,
+          "solveSeconds": 9.940856042,
+          "slits": {
+            "left": 3,
+            "right": 6
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 7,
+          "editableError": 0.04319375,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 7
+        },
+        "synthetic-control-residual": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "249a44e293c662aaab7a742e6515b62e29357cd3ac310205d9dba0025432e2ce",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.1628375,
+          "maskClassFraction": 0.29283125,
+          "fitError": 0.03540625,
+          "solveSeconds": 9.686892290999996,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 8,
+          "editableError": 0.03579375,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 8
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.04275,
+          "synthetic-control-residual": 0.1772625
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.17426875,
+          "synthetic-control-residual": 0.03540625
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.1628375
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.1628375,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Severe crop and reflective-paper failure. Neither classification recovers the building motif.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.04275,
+          "featuresPassed": false,
+          "missingFeatures": 7,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.1772625,
+          "featuresPassed": false,
+          "missingFeatures": 9,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.17426875,
+          "featuresPassed": false,
+          "missingFeatures": 8,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.03540625,
+          "featuresPassed": false,
+          "missingFeatures": 8,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        }
+      ]
+    },
+    {
+      "id": "real-8b91ecf546833a3f-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "1ce2d424938a763b548f7c73e783fbf84cb23586b306b79fea094ebf7999f02a",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.48065625,
+          "fitError": 0.01796875,
+          "solveSeconds": 6.835934374999982,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.0179375,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        },
+        "synthetic-control-residual": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "e37a9352d7a427961492feb476ce43b3598ad91b701a0299c710269f9d73838b",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.00450625,
+          "maskClassFraction": 0.4762625,
+          "fitError": 0.0161,
+          "solveSeconds": 7.590010083000001,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.0157875,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.01796875,
+          "synthetic-control-residual": 0.017
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.01866875,
+          "synthetic-control-residual": 0.0161
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.00450625
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.00450625,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Dinosaur main silhouette changes little; residual removes scattered specks but retains the problematic right-border fragment.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.01796875,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.017,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.01866875,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.0161,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        }
+      ]
+    },
+    {
+      "id": "real-b5317080eec610dc-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "00e8f3d3d22fbb89d4fedd7619471730e5d9a8c9c574f1f7f9b1377368f97e8e",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.16341875,
+          "fitError": 0.1059375,
+          "solveSeconds": 8.995579957999988,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 41,
+          "editableError": 0.1060375,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 40
+        },
+        "synthetic-control-residual": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "a68333d0824f5b36b16bf53b411e9024935fbe74575cdaf506ad1067a5196964",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.022875,
+          "maskClassFraction": 0.15175625,
+          "fitError": 0.1157625,
+          "solveSeconds": 9.977437750000012,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 44,
+          "editableError": 0.1160875,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 44
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.1059375,
+          "synthetic-control-residual": 0.1015125
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.1266625,
+          "synthetic-control-residual": 0.1157625
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.022875
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.022875,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Two white papers with dots/letters remain confused. Printing dominates all masks.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.1059375,
+          "featuresPassed": false,
+          "missingFeatures": 41,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.1015125,
+          "featuresPassed": false,
+          "missingFeatures": 38,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.1266625,
+          "featuresPassed": false,
+          "missingFeatures": 44,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.1157625,
+          "featuresPassed": false,
+          "missingFeatures": 44,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        }
+      ]
+    },
+    {
+      "id": "real-c7d1e0ad5050db71-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "20279f5d7d8b49d38839bfa5634bfccaddbc66a0ace3e7c6be4c6f04db98edc5",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.42017064099759355,
+          "fitError": 0.007613213738788011,
+          "solveSeconds": 9.632766667000018,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.007719473700659437,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        },
+        "synthetic-control-residual": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "017df7b5825d2e1696d37a07156036c25fb7bdaf4e3dc5c1bf43ff9afebf8a15",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.005269243991624215,
+          "maskClassFraction": 0.4250023439697472,
+          "fitError": 0.0067943869737787915,
+          "solveSeconds": 9.598527541999996,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.006969403381567022,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.007613213738788011,
+          "synthetic-control-residual": 0.00971966121823921
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.009988436415913992,
+          "synthetic-control-residual": 0.0067943869737787915
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.005269243991624215
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.005269243991624215,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Card suits and checkerboard retained; residual removes some joint holes and bottom-edge noise.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.007613213738788011,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.00971966121823921,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.009988436415913992,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.0067943869737787915,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        }
+      ]
+    },
+    {
+      "id": "real-45ad148d9ec045be-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "931b79cba0bfd05be976f96e30b191605a7454081cf3bd8c903b191ef007fcf9",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.4993625,
+          "fitError": 0.02988125,
+          "solveSeconds": 11.450903625000036,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.029725,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        },
+        "synthetic-control-residual": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "9fbff5d61bcfb7521c2925f11ac09ad0674089e5a7269c291330e8e06f5a1c35",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.01379375,
+          "maskClassFraction": 0.49288125,
+          "fitError": 0.04379375,
+          "solveSeconds": 10.756963166999979,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.0437,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.02988125,
+          "synthetic-control-residual": 0.0364125
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.0464125,
+          "synthetic-control-residual": 0.04379375
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.01379375
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.01379375,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Wolf silhouette retained; residual removes some isolated corner specks.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.02988125,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.0364125,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.0464125,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.04379375,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        }
+      ]
+    },
+    {
+      "id": "real-702942779385436c-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "5de03f6ab6f6bd0bbe905e30f47446682f340dc2c705ebadba8cfb55280236a7",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.537775,
+          "fitError": 0.0626,
+          "solveSeconds": 9.562568874999997,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 22,
+          "editableError": 0.062525,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 22
+        },
+        "synthetic-control-residual": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "6debf5e7a3cbbcc38fb16aaf5855b5c9343b68fbc0382ae15b84fb0ac49b13be",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0754125,
+          "maskClassFraction": 0.470425,
+          "fitError": 0.07794375,
+          "solveSeconds": 10.189104250000034,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 26,
+          "editableError": 0.07796875,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 26
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0626,
+          "synthetic-control-residual": 0.1075875
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.10654375,
+          "synthetic-control-residual": 0.07794375
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.0754125
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.0754125,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Regression relative to joint: residual reintroduces printed floral detail into the material mask. Mixed joint is visually cleanest here.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.0626,
+          "featuresPassed": false,
+          "missingFeatures": 22,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.1075875,
+          "featuresPassed": false,
+          "missingFeatures": 26,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.10654375,
+          "featuresPassed": false,
+          "missingFeatures": 22,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.07794375,
+          "featuresPassed": false,
+          "missingFeatures": 26,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        }
+      ]
+    },
+    {
+      "id": "real-03bddab9c8f384c4-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "62e0b397be60d7e32abb1263367c83b1c8bc1223b041843e1d271c7111cbfa24",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.3970970343159215,
+          "fitError": 0.03918619683336107,
+          "solveSeconds": 10.393674042000027,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 3,
+          "editableError": 0.03929499404815237,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 3
+        },
+        "synthetic-control-residual": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "6e8660c631c318153068e07b4e25bed9f73ee0bb82cb2968472970b31c4e7d38",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.020588272940212732,
+          "maskClassFraction": 0.38426536280671214,
+          "fitError": 0.016735571569367825,
+          "solveSeconds": 9.580634375000024,
+          "slits": {
+            "left": 5,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 1,
+          "editableError": 0.016754771077860407,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 1
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.03918619683336107,
+          "synthetic-control-residual": 0.04424846723923868
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.03400872937652796,
+          "synthetic-control-residual": 0.016735571569367825
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.020588272940212732
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.020588272940212732,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Residual removes joint holes along the candle/frame and bottom border. Fixed crop still extends beyond the overlap.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.03918619683336107,
+          "featuresPassed": false,
+          "missingFeatures": 3,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.04424846723923868,
+          "featuresPassed": false,
+          "missingFeatures": 1,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.03400872937652796,
+          "featuresPassed": false,
+          "missingFeatures": 4,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.016735571569367825,
+          "featuresPassed": false,
+          "missingFeatures": 1,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        }
+      ]
+    },
+    {
+      "id": "real-eb60ff94dfc6e2f8-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "0bea5772aaa9fe3685c08ae7297190d1e8b9ca8d81e0f000a82f09ae12245d74",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.5465875,
+          "fitError": 0.00870625,
+          "solveSeconds": 9.026654582999996,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.0087625,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        },
+        "synthetic-control-residual": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "a46834f177743da624b38be11ef65b2c68291e640c410e2f6d6fcf252137fd56",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.011325,
+          "maskClassFraction": 0.53615,
+          "fitError": 0.0093,
+          "solveSeconds": 8.864843999999982,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.00904375,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.00870625,
+          "synthetic-control-residual": 0.01588125
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.0153,
+          "synthetic-control-residual": 0.0093
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.011325
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.011325,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Dragonfly silhouette and frame similar across heads; thin details still require fit checks.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.00870625,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.01588125,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.0153,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.0093,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        }
+      ]
+    },
+    {
+      "id": "real-af21a4ef38355dfa-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "f9447525c902c3043567c77a393f631dbe9aa61b85226c6a617fcbc14346ecb3",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.42561875,
+          "fitError": 0.0157625,
+          "solveSeconds": 9.613793999999995,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.0158125,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        },
+        "synthetic-control-residual": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "25cbf4c2358c1cb505b2a0009c1f91c37ea04356a81ec3bb1e7e2cde53f3e81c",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.01856875,
+          "maskClassFraction": 0.44025,
+          "fitError": 0.0220625,
+          "solveSeconds": 3.7538455409999587,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.0218,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0157625,
+          "synthetic-control-residual": 0.02755625
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.03154375,
+          "synthetic-control-residual": 0.0220625
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.01856875
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.01856875,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Small heart/checker motif remains similar; residual smooths some joint edge damage.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.0157625,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.02755625,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.03154375,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.0220625,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        }
+      ]
+    },
+    {
+      "id": "real-f4bd8d13fc7e68d0-body-1",
+      "methods": {},
+      "status": "crop-unresolved",
+      "classifierObservation": "No fixed crop; retained as unresolved, not classified or excluded from the cohort."
+    },
+    {
+      "id": "real-f05cf91c134daea9-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "ff85473586239ab9ae903e98a01e72fe64d627fa72e948ee83edf38e932f9f85",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.54474375,
+          "fitError": 0.0462375,
+          "solveSeconds": 9.839395166000003,
+          "slits": {
+            "left": 5,
+            "right": 3
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 4,
+          "editableError": 0.04654375,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 4
+        },
+        "synthetic-control-residual": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "f2385b1c3e03bdf0a1d1c26109f857c7df797120bcf215aabe5a668b17d49a7e",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0556125,
+          "maskClassFraction": 0.51481875,
+          "fitError": 0.03135625,
+          "solveSeconds": 9.734900958999992,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.0314375,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0462375,
+          "synthetic-control-residual": 0.0794125
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.07089375,
+          "synthetic-control-residual": 0.03135625
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.0556125
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.0556125,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Clear improvement: residual preserves tentacles and checker corners where joint creates holes/eroded edges. Reflection remains visible in photo.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.0462375,
+          "featuresPassed": false,
+          "missingFeatures": 4,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.0794125,
+          "featuresPassed": false,
+          "missingFeatures": 1,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.07089375,
+          "featuresPassed": false,
+          "missingFeatures": 4,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.03135625,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        }
+      ]
+    },
+    {
+      "id": "real-12f272f48ed09d51-body-1",
+      "methods": {},
+      "status": "crop-unresolved",
+      "classifierObservation": "No fixed crop; retained as unresolved, not classified or excluded from the cohort."
+    },
+    {
+      "id": "real-28a87a8be083f16c-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "7c81ee8da5b4d3638116f6c6c8a4168f703ef97e26e16c812ab3b406b3c9f25a",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.4914517893420847,
+          "fitError": 0.01732145647757462,
+          "solveSeconds": 9.618367333999952,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.017258946710423502,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        },
+        "synthetic-control-residual": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "1aff07ab7f0ca7a1a54e8b86d48ba7303dbfbaf0c73ca2e854af91c240a74817",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.027929363963119236,
+          "maskClassFraction": 0.46411001719018596,
+          "fitError": 0.017227691826847944,
+          "solveSeconds": 9.674944374999964,
+          "slits": {
+            "left": 5,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.017183934989842164,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.01732145647757462,
+          "synthetic-control-residual": 0.03484919518674793
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.04018127832473824,
+          "synthetic-control-residual": 0.017227691826847944
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.027929363963119236
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.027929363963119236,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Clear improvement: residual restores the clean star tips and bottom-right border cell damaged by joint.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.01732145647757462,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.03484919518674793,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.04018127832473824,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.017227691826847944,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        }
+      ]
+    },
+    {
+      "id": "real-ce66f9634c2c613b-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "0d006ebece78b0f78b6a657a0210fc4cac006b669b2965f311f69b34febbe6d1",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.45160625,
+          "fitError": 0.0552375,
+          "solveSeconds": 9.216444416999991,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.0553375,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        },
+        "synthetic-control-residual": {
+          "status": "review-required",
+          "checkedPair": false,
+          "maskSha256": "c27bd45f6bd4af53defe17fd39e0679f722ef2c1dfdd39c25d89e82e3ccd7b4b",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.00850625,
+          "maskClassFraction": 0.45825,
+          "fitError": 0.05065625,
+          "solveSeconds": 9.142868749999964,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.0507125,
+          "conversionPassed": true,
+          "completeCandidatePassed": false,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0552375,
+          "synthetic-control-residual": 0.05708125
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.0549375,
+          "synthetic-control-residual": 0.05065625
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.00850625
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.00850625,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Figure silhouette remains similar; no major visual recovery change.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.0552375,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.05708125,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.0549375,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.05065625,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        }
+      ]
+    },
+    {
+      "id": "real-52e732b98f9b14f1-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "60d603662f2cf8b41f09afd9a04f74f7039d43ea489a5b79e79fbfc54ffe445a",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.28664375,
+          "fitError": 0.02080625,
+          "solveSeconds": 9.937522583000012,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.02094375,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        },
+        "synthetic-control-residual": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "25b2e1122dbbd6b62eb6666f8527144267804ee61807dae66de3d1c91b00f79d",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.00323125,
+          "maskClassFraction": 0.2886,
+          "fitError": 0.0215125,
+          "solveSeconds": 9.486323916999972,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.02163125,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.02080625,
+          "synthetic-control-residual": 0.0229875
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.02060625,
+          "synthetic-control-residual": 0.0215125
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.00323125
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.00323125,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Both heads recover an outer flower silhouette but ignore the printed internal decoration. This is not evidence of recovering original cuts.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.02080625,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.0229875,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.02060625,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.0215125,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        }
+      ]
+    },
+    {
+      "id": "real-7e9f6f83ae43ec2a-body-1",
+      "methods": {},
+      "status": "crop-unresolved",
+      "classifierObservation": "No fixed crop; retained as unresolved, not classified or excluded from the cohort."
+    },
+    {
+      "id": "real-d4f6e3c76cf08ea8-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "125133957d39f3e856f77ec311204bd5c095ba7a8ec73608be1855b62fa5029e",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.54851875,
+          "fitError": 0.00988125,
+          "solveSeconds": 5.98747900000005,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.009825,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        },
+        "synthetic-control-residual": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "a365f524740c1b7e0d215c8657faf31573dc58c24452fca2a33e258dfa038fcb",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.043025,
+          "maskClassFraction": 0.50689375,
+          "fitError": 0.00500625,
+          "solveSeconds": 7.2353371250000205,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.00483125,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.00988125,
+          "synthetic-control-residual": 0.04351875
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.04431875,
+          "synthetic-control-residual": 0.00500625
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.043025
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.043025,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Residual preserves bird and edge cells more cleanly than joint, especially lower right.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.00988125,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.04351875,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.04431875,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": false
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.00500625,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        }
+      ]
+    },
+    {
+      "id": "real-41b7c3e0b79f1265-body-1",
+      "methods": {
+        "synthetic-control-joint": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "1fc3d4d5305d5c79c5f4836c9123a68925a0fee3ebe4cbf37464ae1d1cbc9a4a",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.0,
+          "maskClassFraction": 0.4547625,
+          "fitError": 0.0274,
+          "solveSeconds": 8.08101908300002,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.02731875,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        },
+        "synthetic-control-residual": {
+          "status": "checked-derived-mask",
+          "checkedPair": true,
+          "maskSha256": "e659afc4a4868b65c54d818f5dd09d61a3f04399e4134afa6ed649a455460f94",
+          "phaseAlignedToFirstMethodForDisplay": false,
+          "phaseInvariantDifferenceFromFirstMethod": 0.00705,
+          "maskClassFraction": 0.4593875,
+          "fitError": 0.02198125,
+          "solveSeconds": 8.307675000000046,
+          "slits": {
+            "left": 2,
+            "right": 2
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "missingFeatures": 0,
+          "editableError": 0.022075,
+          "conversionPassed": true,
+          "completeCandidatePassed": true,
+          "editableGeometryPassed": true,
+          "editablePaperStatus": "pass",
+          "editableMissingFeatures": 0
+        }
+      },
+      "status": "fitted",
+      "crossMaskErrors": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0274,
+          "synthetic-control-residual": 0.0285125
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.02603125,
+          "synthetic-control-residual": 0.02198125
+        }
+      },
+      "maskDifferences": {
+        "synthetic-control-joint": {
+          "synthetic-control-joint": 0.0,
+          "synthetic-control-residual": 0.00705
+        },
+        "synthetic-control-residual": {
+          "synthetic-control-joint": 0.00705,
+          "synthetic-control-residual": 0.0
+        }
+      },
+      "classifierObservation": "Small woven heart remains similar; residual slightly reduces joint boundary noise.",
+      "crossTargetChecks": [
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-joint",
+          "error": 0.0274,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-joint",
+          "target": "synthetic-control-residual",
+          "error": 0.0285125,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-joint",
+          "error": 0.02603125,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        },
+        {
+          "candidate": "synthetic-control-residual",
+          "target": "synthetic-control-residual",
+          "error": 0.02198125,
+          "featuresPassed": true,
+          "missingFeatures": 0,
+          "engineGeometryAndPaperPassed": true,
+          "passesImageFeatureAndEnginePhysicalChecks": true
+        }
+      ]
+    }
+  ],
+  "ci": {
+    "run": "https://github.com/thomasahle/julehjerte/actions/runs/39400466843",
+    "head": "206b0a8d09177a593db84c8cdb056ed8fdf3c651",
+    "status": "completed",
+    "conclusion": "success",
+    "deployment": "success",
+    "scope": "Main includes the production border-fragment repair and generator changes. New offline Python math is covered by the 216 local learning tests. Advisory quality policy is unchanged; job success is not an all-timing-targets pass."
+  },
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "newDownloads": 0,
+    "sourcePhotoCopies": 0,
+    "newModelWeights": 0,
+    "artifactBytesUniqueInodes": 67534045,
+    "artifactMiBUniqueInodes": 64.40548419952393,
+    "hardlinkedCropDetectionsAndEditorInputs": true,
+    "minimumFreeGiBObserved": 44,
+    "measurementQualification": "Logical byte total deduplicated by inode, including report/gallery/mask/output files. Some hardlinked detections already existed before this study; not a measurement of APFS physical growth."
+  }
+}

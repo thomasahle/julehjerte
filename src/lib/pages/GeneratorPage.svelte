@@ -80,7 +80,8 @@
 		fitted: 'generatorFitted',
 		corners: 'generatorCorners',
 		layers: 'generatorLayers',
-		strips: 'generatorStrips'
+		strips: 'generatorStrips',
+		rim: 'generatorRim'
 	};
 	const borderLabel = (style: GeneratorState['style']) => t(borderNames[style], lang);
 	const textFrameNames: Record<GeneratorState['textFrame'], TranslationKey> = {
@@ -842,7 +843,7 @@
 						>
 							<!-- Until the thumbnail is ready, frames without a circle show a square. -->
 							<GeneratorFrameIcon
-								frame={circled(choice.style) || choice.style === 'layers' ? choice.frame : 'checkered'}
+								frame={circled(choice.style) || choice.style === 'layers' || choice.style === 'rim' ? choice.frame : 'checkered'}
 								design={thumbnails[choice.id]?.result?.design}
 								sketch={thumbnails[choice.id]?.sketch}
 								{colors}

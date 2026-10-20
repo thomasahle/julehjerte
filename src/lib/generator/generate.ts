@@ -5,7 +5,7 @@ import { generateFittedFigure, mirrorSymmetric, type GateTies } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid, roomOf, squareCellScale } from './textGrid';
 import { NO_WHOLE_STRIPS, STRIPS, slidePlace, stripFigures } from './stripFigure';
-import { MOTIF, boardRadius, boardScale, motifChoices, squareChoices } from './boardMotif';
+import { MOTIF, boardRadius, boardScale, motifChoices, motifReach, squareChoices } from './boardMotif';
 import { TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
 import { CIRCLE_STYLES, fillSquare, fitCircle } from './frameFit';
 export { fillSquare, fitCircle } from './frameFit';
@@ -54,6 +54,7 @@ import {
 	cross,
 	frameRing,
 	BOARD_RADII,
+	RIM,
 	type Ring,
 	type Frame,
 	type FigureStyle,
@@ -1287,7 +1288,7 @@ function retryBranchedText(request: GeneratorRequest, curveFitter: ReturnType<ty
  * contacts only after their established constructions have failed. */
 function retryWideComponentContacts(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
 	if (request.mode !== 'figure' || request.style === 'corners' || request.style === 'layers' || request.style === 'motifs' ||
-		request.style === 'squares' || request.style === 'board' || request.style === 'strips') return;
+		request.style === 'squares' || request.style === 'board' || request.style === 'strips' || request.style === 'rim') return;
 	const rings = normalizeContours(request.contours ?? []), count = forest(rings).length;
 	if (count < 2 || count > 8) return;
 	const size = request.frameSize ?? 70, scale = request.scale ?? .7,
@@ -1318,7 +1319,7 @@ function retryWideComponentContacts(request: GeneratorRequest, curveFitter: Retu
  * keep its approach clear of the main silhouette, retaining the same frame. */
 function retryFigureIslandPorts(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
 	if (request.mode !== 'figure' || request.style === 'corners' || request.style === 'layers' || request.style === 'motifs' ||
-		request.style === 'squares' || request.style === 'board' || request.style === 'strips') return;
+		request.style === 'squares' || request.style === 'board' || request.style === 'strips' || request.style === 'rim') return;
 	const rings = normalizeContours(request.contours ?? []);
 	if (forest(rings).length < 2) return;
 	const size = request.frameSize ?? 70, scale = request.scale ?? .7,
@@ -1413,7 +1414,7 @@ function retryFittedSupports(request: GeneratorRequest, curveFitter: ReturnType<
 function retryComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>,
 	rejected: { construction: Construction; recipe: GeneratorResult['recipe'] }[] = []): GeneratorResult | undefined {
 	if (request.mode !== 'figure' || request.style === 'corners' || request.style === 'layers' ||
-		request.style === 'motifs' || request.style === 'squares' || request.style === 'board' || request.style === 'strips') return;
+		request.style === 'motifs' || request.style === 'squares' || request.style === 'board' || request.style === 'strips' || request.style === 'rim') return;
 	const rings = normalizeContours(request.contours ?? []), size = request.frameSize ?? 70,
 		sunburst = request.style === 'sunburst', open = openFrame(request),
 		frame = open ?? (sunburst ? 'circle' : (request.frame ?? 'circle')),
@@ -1495,7 +1496,7 @@ function retryPanelLayouts(request: GeneratorRequest, curveFitter?: ReturnType<t
 			}));
 	} else {
 		const rings = normalizeContours(request.contours ?? []), size = request.frameSize ?? 70, scale = request.scale ?? .7;
-		if (request.style === 'corners' || request.style === 'motifs' || request.style === 'squares' || request.style === 'board' || request.style === 'strips') return;
+		if (request.style === 'corners' || request.style === 'motifs' || request.style === 'squares' || request.style === 'board' || request.style === 'strips' || request.style === 'rim') return;
 		if (request.style === 'layers') {
 			recipe = 'nested';
 			recipes.push(() => generateLayeredFigure(rings, size, scale,
@@ -1837,6 +1838,37 @@ function generateUsingRecipes(request: GeneratorRequest,
 			return finishConstruction(request, construction, 'nested', geometry, curveFitter);
 		}
 	}
+	if (request.style === 'rim') {
+		// The large circle on a rim of narrow strips (`RIM`), the undivided
+		// motif in it like a letter in the circle frame, its four gates where
+		// the inner lines cross. The circle stays; the size setting sizes the
+		// motif in it, up to the space asked for at 85%.
+		const contours = request.contours ?? [], { lines, radius } = RIM;
+		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } };
+		const { reach, box } = motifReach(contours);
+		const gap = request.gap ?? 3, compound = { practical: true, compound: true };
+		const fill = (factor: number) => (radius - Math.max(gap, 1.5)) * factor / reach / box,
+			factor = Math.min(1, (request.scale ?? .7) / .85);
+		// Only the invisible partition varies, then the motif shrinks a little.
+		let last: unknown;
+		for (const scale of [fill(factor), ...[.9, .8].map(less => fill(factor * less))]) {
+			const rejected: Parameters<typeof hardToCutResult>[1] = [];
+			for (const padding of [.22, .05]) for (const layout of [{}, compound, { ...compound, boundaryIslands: true },
+				{ ...compound, boundaryIslands: true, contourApproaches: true, guardedAttachments: true },
+				{ ...compound, boundaryIslands: true, contourApproaches: true, guardedAttachments: true, filled: true, guardSeams: true }]) try {
+				const construction = generateTextGrid(MOTIF, font, false, 'circle', { ...layout, padding, board: lines, circle: 2 * radius, scale });
+				audit(construction.edges);
+				rejected.push({ construction, recipe: 'nested' });
+				return finish(construction, 'nested');
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				last = error;
+			}
+			const hard = hardToCutResult(request, rejected, curveFitter);
+			if (hard) return hard;
+		}
+		throw last;
+	}
 	if (request.style === 'board') {
 		// The circle on a regular board of five strips, every square outside it
 		// equally large, at the radii the board allows (`BOARD_RADII`). Up to the
@@ -1849,10 +1881,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// near it, so their seams cross its paper but not each other.
 		const contours = request.contours ?? [];
 		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } };
-		const xs = contours.flat().map(p => p[0]), ys = contours.flat().map(p => p[1]);
-		const centre: Point = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2];
-		const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
-		const reach = Math.max(...contours.flat().map(p => distance(p, centre))) / box;
+		const { centre, box, reach } = motifReach(contours);
 		const gap = request.gap ?? 3, compound = { practical: true, compound: true };
 		// The size setting sizes the circle (see `boardRadius`); the motif fills
 		// the circle up to the space asked for.

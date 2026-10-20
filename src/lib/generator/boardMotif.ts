@@ -4,12 +4,22 @@
  * generator and the pictures drawn before the cuts (see `picture`).
  */
 import type { GeneratorRequest } from './generate';
-import { BOARD_RADII } from './geometry';
+import { BOARD_RADII, type Point, type Ring } from './geometry';
 import { checkeredLayouts } from './checkeredGrid';
 
 /** The motif in place of a letter: repeated on the checkerboard by the small
  * motifs, alone in a row of square cells by the equal squares. */
 export const MOTIF = '*';
+
+/** A motif's middle (of its bounding box), its larger side, and how far its
+ * farthest point lies from that middle, in sides: what a circle around the
+ * motif must hold. */
+export function motifReach(contours: Ring[]) {
+	const xs = contours.flat().map(p => p[0]), ys = contours.flat().map(p => p[1]);
+	const centre: Point = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2];
+	const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+	return { centre, box, reach: Math.max(...contours.flat().map(([x, y]) => Math.hypot(x - centre[0], y - centre[1]))) / box };
+}
 
 /** The strips per side the visitor can choose for each frame on a board, and
  * the one it starts at: the figure in the checks, the small motifs, and the

@@ -743,7 +743,58 @@ metric averages 0.94%. All **214 tests across 45 offline learning modules pass**
 including residual-gradient and unchanged-RGB checks. The experiments add about
 9.5 MiB, without new photographs or weights.
 
+### Residual context on the complete real-photo cohort
+
+The [real-photo follow-up](context-residual-real-results.json) keeps all 32
+development photos, their 26 fixed automatic crops and six unresolved crops.
+All three frozen projections are evaluated with both classifiers. The 78 saved
+joint masks and 26 native RGB masks replay exactly. Fitting still uses only
+exposed-paper samples; the native crop supplies query pixels, never fit labels.
+The synthetic-continuation checkpoint was chosen for the paired solver test
+before inspecting the real results, because it had the lowest synthetic
+printed-paper error.
+
+| Same 10-second fitting allowance | Joint context | Residual context |
+| --- | ---: | ---: |
+| Engine checks passed, out of all 32 | 11 | 11 |
+| Editable conversion passed, out of 26 crops | 26 | 26 |
+| Complete editable candidates, out of all 32 | 11 | 11 |
+| Mean editable disagreement with each method's own mask | 4.27% | 3.82% |
+
+The average is **self-mask disagreement, not original-artwork accuracy**.
+Residual fitting visibly removes holes and eroded cells around the bull, star,
+tentacled motif, candle and bird. Similar-coloured printed papers and strong
+reflections remain troublesome; floral printing is a regression. The oblique
+basket and reflective building also have inappropriate fixed crops. All 11
+classifier galleries and 11 mask/weave galleries were inspected.
+
+The paired targets expose search sensitivity as well. On the four-small-hearts
+residual mask, the candidate from the joint search passes the same image,
+feature, engine geometry and paper checks at **2.79625%** disagreement. The
+residual search instead returned **3.11625%**. This establishes an available
+better candidate without changing the target. The wolf has both effects:
+its masks differ by 1.379375%, the old candidate scores 3.64125% on the new
+mask, and the new search returns 4.379375%. Cross-target scoring does not
+establish the unseen optimum or the variability of repeated timed searches.
+
+The shared review tool now supports arbitrary declared classifier pairs and
+recomputes all 52 independent PNG errors. A second audit checks all 104
+candidate/target combinations, including exact self-feature replays and
+observation weights. All **216 tests across 45 learning modules pass**.
+No deployed classifier, model weights, crop rules or acceptance limits changed.
+The next experiment is a matched training continuation for the residual
+readout; these results do not justify releasing the material classifier.
+
 ### Latest solver and browser validation
+
+Main `206b0a8d`, including the border-fragment repair and subsequent generator
+work, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39400466843)
+on 20 October. This includes type checking, lint, application tests, build and
+all four inverse correctness shards. Timed quality benchmarks retain their
+separate advisory policy; a green workflow does not mean every timing target
+was met. The preceding `2bacf135` run was cancelled by this newer push after
+its correctness jobs passed. The residual material-classifier experiments
+above remain offline.
 
 The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and
 hover outline) and archive are **deployed**. The [latest release record](conni-release-qa.json)
