@@ -923,8 +923,8 @@ Those weights can suppress real narrow details as well as noise. Coarse grids
 also threshold resampled probabilities, so matching native binary masks does
 not imply identical coarse objectives.
 
-This remains **offline**. The next experiment should hold the starting cuts
-fixed and compare hard versus continuous refinement with matched work. All
+This remains **offline**. The matched-work experiment below holds the starting
+cuts fixed to isolate continuous refinement. All
 52 previous control masks replay exactly, both network states remain unchanged,
 104 independent candidate/target comparisons replay, and all **216 learning
 tests plus two focused JavaScript tests pass**. The fresh hard baseline itself
@@ -934,14 +934,58 @@ development photos, and the scores are not established photographic calibration.
 All **2,401 application tests**, type checking, lint and the production build
 also pass. No new training, downloads or source-photo copies were needed.
 
+### Isolating confidence refinement from cut selection
+
+The [fixed-path follow-up](native-confidence-refinement-results.json) starts
+both arms from the same 26 hard-control fits. Its
+[predeclared plan](native-confidence-refinement-plan.json) gives each candidate
+160 gradient steps, with unchanged crops, masks, cut counts, shared-curve
+relationships and physical limits. There is no new routing or count search.
+All six unresolved crops remain in the 32-photo cohort.
+
+| Measure | Starting fits | Hard continuation | Confidence continuation |
+| --- | ---: | ---: | ---: |
+| Checked editable candidates, all 32 photos | 12 | 12 | 12 |
+| Mean independent disagreement, all 26 crops | 3.529% | 3.325% | 3.334% |
+| Mean editable disagreement, same 26 crops | 3.537% | 3.335% | 3.339% |
+| Mean additional refinement time | — | 2.70 s | 2.62 s |
+
+The same twelve designs pass in every column. Both continuations improve some
+curves, but confidence alone provides no overall advantage. These times are
+**extra work after the original solve**, not a faster end-to-end policy.
+Small regressions are retained too: independent error worsens from the seed
+on three hard and four confidence candidates.
+
+Visual review covers all 32 photos, including the starting weave. Confidence
+helps the flower (**3.67% versus 4.40%** after hard refinement), but false center
+channels, border defects and two missing features remain. Holding the
+three-wise-men cut layout fixed avoids the earlier large star loss; the smaller
+missing-feature problem remains. Neither continuation repairs the wolf's paper
+failure, so the previous full-search wolf gain is not reproduced by changing
+only these local forces. Printed-paper classification errors and wrong fixed
+crops remain unchanged.
+
+All **52 editable conversions** pass. Independent audits reconstruct all fields,
+replay 104 candidate/target comparisons, and verify all 52 path structures.
+The structural audit detects a deliberately split shared curve even when its
+coordinates stay identical; renaming curve identifiers leaves the result
+unchanged. The review helper also reproduces all 32 rows and eleven JPEG pages
+of its previous unseeded report exactly.
+
+This remains offline. The experiment produced about **16.6 MiB of new files**,
+reusing existing inputs through hard links, with one worker and no downloads,
+new inference or training. The evidence favors investigating missing material
+boundaries and structural proposals over further tuning of confidence weights
+on these same photos. Production model, solver and acceptance gates are unchanged.
+
 ### Latest solver and browser validation
 
-Main `4e353814`, including the border-fragment repair, generator work and the
-feature-priority study, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39409718903)
+Main `ad9923c4`, including the border-fragment repair, generator work and the
+native-confidence study, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39413564223)
 on 20 October. This includes type checking, lint, application tests, build and
 all four inverse correctness shards. Timed quality benchmarks retain their
 separate advisory policy; a green workflow does not mean every timing target
-was met. The preceding `9f260ba6` and `111f338a` runs also passed. The residual
+was met. The preceding `4e353814` and `9f260ba6` runs also passed. The residual
 material-classifier, confidence and scheduling experiments above remain offline.
 
 The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and
