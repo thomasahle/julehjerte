@@ -4,12 +4,14 @@
 import fs from 'node:fs/promises';
 import {LOCATOR_FIELD_SELECTION} from './locator-field-source.mjs';
 import {materialFields} from './material-fields.mjs';
+import {continuousForeground} from './continuous-foreground.mjs';
 import {close,signedDistance} from '../../../static/inverse/locator/fields.js';
 import {bilinear,quantile,sigmoid} from '../../../static/inverse/locator/math.js';
 import {supportedCropOutline,pixelCentresToEdges} from '../../../static/inverse/core/crop.js';
 
 const distance=(a,b)=>Math.hypot(...a.map((v,i)=>v-b[i]));
-export function foregroundFields(work,probability,resolution,window){
+export function foregroundFields(work,probability,resolution,window,{paletteMode='threshold'}={}){
+  if(!['threshold','confidence-weighted'].includes(paletteMode))throw new TypeError('Unknown foreground palette mode.');
   const {width:w,height:h,data,offset=[0,0],scale=1}=work,n=w*h;
   if(probability.length!==resolution*resolution||!probability.every(v=>Number.isFinite(v)&&v>=0&&v<=1)||window.length!==4||window.some(v=>!Number.isFinite(v))||window[2]<=window[0]||window[3]<=window[1])throw new Error('Invalid foreground prediction or window.');
   const paper=new Float32Array(n),r=new Float32Array(n),g=new Float32Array(n),b=new Float32Array(n),pool=[];
@@ -18,8 +20,13 @@ export function foregroundFields(work,probability,resolution,window){
     // work coordinates are pixel centres; window is in source pixel edges.
     const sx=offset[0]+(x+.5)/scale,sy=offset[1]+(y+.5)/scale;
     paper[i]=bilinear(probability,resolution,resolution,(sx-window[0])*resolution/(window[2]-window[0])-.5,(sy-window[1])*resolution/(window[3]-window[1])-.5,0)*data[4*i+3]/255;
-    if(paper[i]>.95&&i%3===0)pool.push(p);
+    if(paletteMode==='threshold'&&paper[i]>.95&&i%3===0)pool.push(p);
   }
+  // Estimate continuous colours directly from the sampled RGB/body fields.
+  // Running the threshold palette first can reject a valid weighted palette
+  // before a post-processing callback ever sees the fields.
+  if(paletteMode==='confidence-weighted')return continuousForeground({w,h,paper,r,g,b,
+    mask:close(paper,w,h,2),pd:signedDistance(close(paper,w,h,1),w,h)},{palette:true});
   if(pool.length<100)return null;
   const spreads=[0,1,2].map(c=>quantile(pool.map(p=>p[c]),.9)-quantile(pool.map(p=>p[c]),.1));
   const axis=spreads.indexOf(Math.max(...spreads)),sorted=[...pool].sort((a,b)=>a[axis]-b[axis]);
@@ -52,11 +59,12 @@ async function injectedLocator(){
   return locator;
 }
 
-export async function detectForegroundCrop(input,{roi,probability,resolution=256,window,refineFields,material}={}){
+export async function detectForegroundCrop(input,{roi,probability,resolution=256,window,refineFields,material,paletteMode='threshold'}={}){
+  if(!['threshold','confidence-weighted'].includes(paletteMode)||material&&paletteMode!=='threshold')throw new TypeError('Invalid foreground palette mode for these fields.');
   const create=await injectedLocator(),started=performance.now();
   let refinement=null;
   const detect=create({width:input.imageWidth,height:input.imageHeight,data:input.rgba},{roi,maxSize:650,foregroundFields:work=>{
-    const fields=material?materialFields(work,probability,material,resolution,window):foregroundFields(work,probability,resolution,window),refined=fields&&refineFields?refineFields(fields):fields;
+    const fields=material?materialFields(work,probability,material,resolution,window):foregroundFields(work,probability,resolution,window,{paletteMode}),refined=fields&&refineFields?refineFields(fields):fields;
     refinement=refined?.refinement??null;return refined;
   }});
   let proposal=detect();const attempts=[];

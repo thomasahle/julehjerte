@@ -121,6 +121,8 @@ const cropStrategy=plan.protocol.cropStrategy??'learned-fields';
 assert.ok(['learned-fields','foreground-region-rgb'].includes(cropStrategy));
 const postprocess=plan.protocol.postprocess;
 assert.ok(!postprocess||(saliency&&['weighted-palette','subpixel-distance','both'].includes(postprocess)));
+const fieldPalette=plan.protocol.fieldPalette??'threshold';
+assert.ok(fieldPalette==='threshold'||saliency&&fieldPalette==='confidence-weighted');
 const control=plan.controlRun?await pinned(plan.controlRun):null;
 if(control){
  assert.equal(control.schema,'material-pair-pipeline-1');assert.equal(control.status,'complete');
@@ -209,7 +211,7 @@ try{
   const selected=await (saliency?selectReviewedPhotoCrop:selectPhotoCrop)(source,{...(production?{productionCrop:()=>production}:{}),learnedCrop:async()=>{
    const fields=saliency?null:input.assets[manifest.methods[0]],body=await field(saliency?input.assets['probability.f32']:fields.body),start=performance.now();let detected;
    if(saliency){
-    detected=await detectForegroundCrop(source,{probability:body,resolution:manifest.resolution,window:input.window,
+    detected=await detectForegroundCrop(source,{probability:body,resolution:manifest.resolution,window:input.window,paletteMode:fieldPalette,
      ...(postprocess?{refineFields:fields=>continuousForeground(fields,{palette:postprocess!=='subpixel-distance',distance:postprocess!=='weighted-palette'})}:{})});
    }else if(cropStrategy==='foreground-region-rgb'){
     region=foregroundRegion({probability:body,resolution:256,window:input.window,imageWidth:source.imageWidth,imageHeight:source.imageHeight});

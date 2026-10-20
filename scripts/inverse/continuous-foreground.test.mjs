@@ -43,4 +43,24 @@ test('continuous post-processing retains original RGB, probabilities and compone
  for(const key of ['r','g','b','paper','mask'])assert.equal(result[key],fields[key]);
  assert.notEqual(result.pd,fields.pd);assert.notEqual(result.chroma,fields.chroma);
  assert.deepEqual(continuousForeground(fields),fields);
+ assert.deepEqual(foregroundFields({width:w,height:h,data},new Float32Array(w*h).fill(.999),w,[0,0,w,h],{paletteMode:'confidence-weighted'}),
+  continuousForeground(fields,{palette:true}),'Direct weighting must preserve every field when the old gate accepts.');
+});
+
+test('continuous field construction works when both papers fall below the old seed threshold',()=>{
+ const w=48,h=48,data=new Uint8ClampedArray(w*h*4);
+ for(let i=0;i<w*h;i++)data.set(i%w<w/2?[190,15,15,255]:[245,240,235,255],i*4);
+ const work={width:w,height:h,data},window=[0,0,w,h],make=p=>new Float32Array(w*h).fill(p);
+ assert.equal(foregroundFields(work,make(.94),w,window),null);
+ const a=foregroundFields(work,make(.94),w,window,{paletteMode:'confidence-weighted'});
+ const b=foregroundFields(work,make(.96),w,window,{paletteMode:'confidence-weighted'});
+ assert.ok(a&&b);
+ assert.deepEqual(a.mask,b.mask);
+ assert.notEqual(a.chroma[0]>.5,a.chroma[w-1]>.5);
+ assert.ok(maximumDifference(a.palette.colors.flat(),b.palette.colors.flat())<1e-12);
+ assert.equal(a.palette.confidencePower,8);
+ assert.throws(()=>foregroundFields(work,make(.94),w,window,{paletteMode:'unknown'}),/palette mode/);
+ for(let i=0;i<w*h;i++)data.set([190,15,15,255],i*4);
+ assert.equal(foregroundFields(work,make(.94),w,window,{paletteMode:'confidence-weighted'}),null,
+  'A single-colour region still cannot supply two paper identities.');
 });
