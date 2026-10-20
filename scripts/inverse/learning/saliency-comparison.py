@@ -20,6 +20,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ['reference', 'candidate', 'output']: parser.add_argument('--'+name, type=Path, required=True)
     parser.add_argument('--ids', help='Optional explicit diagnostic subset, never a quality denominator')
+    parser.add_argument('--reference-label', default='Frozen saliency')
+    parser.add_argument('--candidate-label', default='Adapted saliency')
     args = parser.parse_args(); manifests = [json.loads((root/'manifest.json').read_bytes()) for root in [args.reference, args.candidate]]
     a, b = manifests
     if any(m['status'] != 'complete' for m in manifests) or a['resolution'] != b['resolution']:
@@ -30,7 +32,7 @@ def main():
     args.output.mkdir(parents=True, exist_ok=False); n = a['resolution']; pages = []; records = []
     for start in range(0, len(ids), 3):
         selected = ids[start:start+3]; panel = Image.new('RGB', (3*n, 26+len(selected)*(n+28)), 'white'); pen = ImageDraw.Draw(panel)
-        for i, label in enumerate(['Whole photo: network frame', 'Frozen saliency', 'Adapted saliency']): pen.text((i*n+4, 4), label, fill='black')
+        for i, label in enumerate(['Whole photo: network frame', args.reference_label, args.candidate_label]): pen.text((i*n+4, 4), label, fill='black')
         for index, identity in enumerate(selected):
             rows = [next(r for r in m['rows'] if r['id'] == identity) for m in manifests]
             for key in ['photoSha256', 'decodedRGBSha256', 'window', 'dimensions']: assert rows[0][key] == rows[1][key]
@@ -49,6 +51,7 @@ def main():
         file = args.output/('bodies-'+str(len(pages)+1)+'.jpg'); panel.save(file, quality=92)
         pages.append({'path': file.name, 'sha256': hashlib.sha256(file.read_bytes()).hexdigest()})
     manifest = {'reference': str(args.reference), 'candidate': str(args.candidate), 'records': records, 'pages': pages,
+                'columnLabels': ['Whole photo: network frame', args.reference_label, args.candidate_label],
                 'scope': 'Diagnostic selection only. Photos and fields are stretched to the same network frame; these are neither physical crop proposals nor reviewed body labels. Creating this gallery is not visual review.'}
     (args.output/'manifest.json').write_text(json.dumps(manifest, indent=2)+'\n')
     print(json.dumps({'photos': len(ids), 'pages': len(pages)}))
