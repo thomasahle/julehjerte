@@ -34,8 +34,10 @@ def main():
     for file, expected in run['sourceHashes'].items():
         assert digest(Path(file).read_bytes()) == expected, file
     assert not args.output.exists()
-    methods = ['production', 'rgb-only', 'neutral-deviation']
-    assert run['methods'] == methods
+    methods = run['methods']
+    assert methods and len(methods) == len(set(methods))
+    assert all(m == 'production' or m in inputs['methods'] for m in methods)
+    columns = 2+2*len(methods)
     assert len(run['rows']) == len(inputs['rows'])*len(methods)
     args.output.mkdir(parents=True)
     results, panels, checks = [], [], 0
@@ -55,8 +57,8 @@ def main():
         if 'selectedCrop' not in rows[0]:
             assert all(r['status'] == 'crop-unresolved' for r in rows)
             metrics['status'] = 'crop-unresolved'
-            photos += [None]*7
-            labels = ['Photo']+['No fixed crop']*7
+            photos += [None]*(columns-1)
+            labels = ['Photo']+['No fixed crop']*(columns-1)
         else:
             n = rows[0]['resolution']
             for row in rows:
@@ -72,14 +74,19 @@ def main():
                                    dtype=np.uint8).reshape(n, n) != 0
                      if 'observed.bin' in rows[0]['assets'] else np.ones((n, n), bool))
             baseline = None
+            masks, weaves = {}, {}
             metrics['status'] = 'fitted'
             for method, row in zip(methods, rows):
                 pixel = np.asarray(Image.open(checked(args.run, row['assets']['mask.png'])).convert('RGB'))
                 mask = pixel[:, :, 1] < 128
+                masks[method] = mask
                 assert digest(mask.astype(np.uint8).tobytes()) == row['targetMaskSha256']
+                if method == 'production':
+                    assert row['targetMaskSha256'] == entry['expectedProductionMaskSha256']
+                elif run['targetMode'] == 'mask':
+                    assert row['targetMaskSha256'] == entry['assets'][method]['mask']['sha256']
                 if baseline is None:
                     baseline = mask
-                    assert row['targetMaskSha256'] == entry['expectedProductionMaskSha256']
                 disagreement = float((mask[valid] != baseline[valid]).mean())
                 flipped = disagreement > .5
                 aligned = mask ^ flipped
@@ -87,8 +94,8 @@ def main():
                 metric = {
                     'status': row['status'], 'checkedPair': bool(row.get('checkedPair')),
                     'maskSha256': row['targetMaskSha256'],
-                    'phaseAlignedToProductionForDisplay': flipped,
-                    'phaseInvariantDifferenceFromProduction': min(disagreement, 1-disagreement),
+                    'phaseAlignedToFirstMethodForDisplay': flipped,
+                    'phaseInvariantDifferenceFromFirstMethod': min(disagreement, 1-disagreement),
                     'maskClassFraction': float(mask[valid].mean()),
                     'fitError': row.get('independentImage', {}).get('mismatchFraction'),
                     'solveSeconds': row.get('solveSeconds'),
@@ -100,6 +107,7 @@ def main():
                 metrics['methods'][method] = metric
                 if 'woven.png' in row['assets']:
                     woven = np.asarray(Image.open(checked(args.run, row['assets']['woven.png'])).convert('L')) < 128
+                    weaves[method] = woven
                     # Replay the exact independent binary-error numerator.
                     error = float((woven[valid] != mask[valid]).mean())
                     assert error == metric['fitError']
@@ -107,14 +115,27 @@ def main():
                 else:
                     photos.append(None)
                 label = {'production': 'Production', 'rgb-only': 'Lobe RGB',
-                         'neutral-deviation': 'Lobe neutral std'}[method]
+                         'neutral-deviation': 'Lobe neutral std',
+                         'synthetic-control-joint': 'Joint context',
+                         'synthetic-control-residual': 'Residual context'}.get(method, method)
                 labels.extend([label+' mask', label+' weave'])
+            # No refit: isolate target changes from which candidate the search
+            # found. Physical checks belong to the source candidate; these
+            # pixel errors alone do not establish alternate-target fidelity.
+            metrics['crossMaskErrors'] = {
+                source: {target: float((woven[valid] != mask[valid]).mean())
+                         for target, mask in masks.items()}
+                for source, woven in weaves.items()}
+            metrics['maskDifferences'] = {
+                source: {target: float((a[valid] != b[valid]).mean())
+                         for target, b in masks.items()}
+                for source, a in masks.items()}
         panels.append((entry['id'], photos, labels, metrics))
         results.append(metrics)
     galleries = []
     for start in range(0, len(panels), 3):
         batch = panels[start:start+3]
-        sheet = Image.new('RGB', (8*240, 300*len(batch)), '#eeeeee')
+        sheet = Image.new('RGB', (columns*240, 300*len(batch)), '#eeeeee')
         draw = ImageDraw.Draw(sheet)
         for j, (identity, photos, labels, metrics) in enumerate(batch):
             draw.text((4, j*300+2), identity, fill='black')
@@ -135,14 +156,17 @@ def main():
         galleries.append({'path': str(file), 'sha256': digest(file.read_bytes()),
                           'ids': [p[0] for p in batch]})
     report = {
-        'schema': 'paper-exemplar-pipeline-review-1', 'status': 'complete',
+        'schema': 'paper-exemplar-pipeline-review-2', 'status': 'complete',
+        'methods': methods, 'displayPhaseReference': methods[0],
         'pipeline': {'path': str(args.run/'report.json'), 'sha256': digest(raw)},
         'input': {'path': str(args.input/'manifest.json'), 'sha256': digest(inputs_raw)},
         'source': {'path': __file__, 'sha256': digest(Path(__file__).read_bytes())},
         'hashChecks': checks, 'gallery': galleries, 'rows': results,
         'scope': 'Every declared case; common crop, resolution and coverage verified. '
-                 'Candidate phases align with production only for display. All fit errors '
-                 'replayed from independent exported PNGs, without artwork ground truth.',
+                 'Candidate phases align with the first method only for display. All fit errors '
+                 'replayed from independent exported PNGs, without artwork ground truth. '
+                 'Cross-mask errors use the original colour phases and do not imply feature '
+                 'fidelity or alternate-target acceptance.',
     }
     (args.output/'report.json').write_text(json.dumps(report, indent=2)+'\n')
     print(json.dumps({'photos': len(results), 'hashChecks': checks,
