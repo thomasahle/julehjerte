@@ -1,0 +1,634 @@
+{
+  "schema": "u2netp-body-exposure-results-1",
+  "date": "2026-10-20",
+  "status": "complete-development-comparison",
+  "evidence": {
+    "study": {
+      "path": "docs/inverse/datasets/u2netp-body-exposure-evaluation-plan.json",
+      "sha256": "808036019f1ed444c71cfd43d08350695e2578f6f85e426e6720c75d9ec7cb33"
+    },
+    "preflight": {
+      "path": "docs/inverse/datasets/u2netp-body-exposure-preflight.json",
+      "sha256": "652ca61fba4cd1d5d4868bfd63f734d5280c6da29e8026888bc4abdae544a7d1"
+    },
+    "priorComparison": {
+      "path": "docs/inverse/datasets/u2netp-body-expanded-results.json",
+      "sha256": "b8a8c72d705fe7892be5a0f1a19c4283842868561d8a7ff3289b7c62a62b2349"
+    },
+    "trainingComparison": {
+      "path": "tmp/heart-learning/u2netp-body-exposure-training-comparison-v1/report.json",
+      "sha256": "8e1c454204016753d61a440221360d6c5aa7d43d741c122178264da8e8741245"
+    },
+    "reusedProductionEditable": {
+      "path": "tmp/heart-learning/u2netp-body-adapted-browser-editable-v1/results.json",
+      "sha256": "3a9ddb4e027ee8b37cab7ce65e4808af19728290ab243ad23b9949e1b749925f"
+    },
+    "rendererDiagnostic": {
+      "path": "tmp/heart-learning/u2netp-body-exposure-render-diagnostic-v1/report.json",
+      "sha256": "892f4073dace59b9be96b3a3ad134b6a201f17f942a5ad5f3a7e2ef6007699d9"
+    },
+    "controlTraining": {
+      "path": "tmp/heart-learning/u2netp-body-exposure-control-v1/report.json",
+      "sha256": "748ecd411fd77cfe451ea17b822cc01f7dc5a8e1b63422417e6f78c87c5d9cbd"
+    },
+    "controlAudit": {
+      "path": "tmp/heart-learning/u2netp-body-exposure-control-v1/audit.json",
+      "sha256": "2f5edb6305bd538c0052196923b1a879a74f6c938797011726136d5342b7ca35"
+    },
+    "controlNative": {
+      "path": "tmp/heart-learning/u2netp-body-exposure-control-probe-v1/report.json",
+      "sha256": "476fa3bef1d6f0179e985d3677a3fc892df8426bf2766bab40da2c7e612b677c"
+    },
+    "controlPipeline": {
+      "path": "tmp/heart-learning/u2netp-body-exposure-control-pipeline-v1/report.json",
+      "sha256": "c5dbd1cc85e5672c692bb6753ec1f8862eddeacd588d58b18af8419c94479f45"
+    },
+    "controlEditable": {
+      "path": "tmp/heart-learning/u2netp-body-exposure-control-editable-v1/results.json",
+      "sha256": "5b809aeed669509ca7a4972a7fc64ff54217acdb7bdcdec0310613da7b31ed9f"
+    },
+    "controlFitGallery": {
+      "path": "tmp/heart-learning/u2netp-body-exposure-control-fit-gallery-v1/manifest.json",
+      "sha256": "0781e98502e240daa67c41010cd06758a07bfb49b428126a57eef22b4e13bf95"
+    },
+    "candidateTraining": {
+      "path": "tmp/heart-learning/u2netp-body-exposure-v1/report.json",
+      "sha256": "380d9850714cbff8d9e5cdcf6047b57b26305c3e694fdc92e4c9a736403ab49a"
+    },
+    "candidateAudit": {
+      "path": "tmp/heart-learning/u2netp-body-exposure-v1/audit.json",
+      "sha256": "2d14fb9302de87694562ec4fcad1ccc0c1eaec8151e841f6f3412d599accd35b"
+    },
+    "candidateNative": {
+      "path": "tmp/heart-learning/u2netp-body-exposure-probe-v1/report.json",
+      "sha256": "126beb89bbe1c23879ba968a7eb4fa7c1c7919a71be567fab424b255051e4ae1"
+    },
+    "candidatePipeline": {
+      "path": "tmp/heart-learning/u2netp-body-exposure-pipeline-v1/report.json",
+      "sha256": "261bf50964f24509bff7b8651b2d884a810e1458e33e122ec51da96bcd8f267b"
+    },
+    "candidateEditable": {
+      "path": "tmp/heart-learning/u2netp-body-exposure-editable-v1/results.json",
+      "sha256": "9123c2befc57df1c72d2e0b01291a10e9c8785f52db6c90d4587b1d4c0990332"
+    },
+    "candidateFitGallery": {
+      "path": "tmp/heart-learning/u2netp-body-exposure-fit-gallery-v1/manifest.json",
+      "sha256": "8fafd1bc59aa70f74af219377b47b0e5fe1aad4975640d5d0cda66594f3655c7"
+    }
+  },
+  "protocol": {
+    "realPhotos": {
+      "control": 16,
+      "candidate": 24
+    },
+    "updatesPerArm": 180,
+    "retainedOriginalDraws": 120,
+    "addedDraws": 60,
+    "addedControlVisits": "Original sixteen photos, three or four added visits each.",
+    "addedCandidateVisits": "New eight photos, seven or eight visits each.",
+    "sameSyntheticDrawsAndReflections": true,
+    "samePretrainedInitialization": true,
+    "unchangedOptimizerLossInputsAndFrozenEncoder": true,
+    "sourceGroups": {
+      "training": 14,
+      "evaluation": 5
+    },
+    "evaluationPhotos": 32,
+    "cohort": "Previously inspected source/duplicate-separated development cohort; no new holdout or motif-independence claim.",
+    "cropAndFit": "Same direct weighted-palette fallback, every production crop retained, unchanged RGB classifier and ten-second fitter; independent exported and editable image/feature/geometry/paper checks.",
+    "qualification": "Adding visits changes the update schedule and increases compute from the previous 120-update study. The control and candidate here have equal compute and retain all original draws. This is not a pure causal isolation of exposure alone.",
+    "resources": {
+      "workers": 1,
+      "nice": 15,
+      "numericalThreads": 1,
+      "newPhotoDownloads": 0,
+      "newSourcePhotoCopies": 0,
+      "browserJobs": 0,
+      "retainedExperimentLogicalMiB": 131.00852298736572,
+      "storageScope": "Logical bytes in new experiment directories, including reused production hardlinks; no new original-photo copies. Not a physical disk-growth measurement."
+    },
+    "timingScope": "Training seconds include updates, checkpoint checks, final predictions and galleries; exclude startup, source loading and initial predictions. Cached native inference/production controls are excluded from fresh reconstruction timings; no browser speed claim."
+  },
+  "training": {
+    "control": {
+      "seconds": 292.255982541,
+      "updates": 180,
+      "parameters": 1131181,
+      "trainableParameters": 636397,
+      "checkpointSha256": "de290ebde3faf2065390877c7e6cdbf52b55e37a3871c9a9c4e968597b8a2cc7",
+      "frozenStateUnchanged": true,
+      "predictionComparisons": {
+        "initial": {
+          "exact": false,
+          "maximumAbsoluteDifference": 1.1920928955078125e-07,
+          "absoluteTolerance": 1.1920928955078125e-07,
+          "changedHalfThresholdPixels": 0,
+          "passed": true,
+          "metricsExact": true
+        },
+        "final": {
+          "exact": true,
+          "maximumAbsoluteDifference": 0.0,
+          "absoluteTolerance": 1.1920928955078125e-07,
+          "changedHalfThresholdPixels": 0,
+          "passed": true,
+          "metricsExact": true
+        }
+      },
+      "trainingInputsUnchangedFromPriorStudy": true
+    },
+    "candidate": {
+      "seconds": 284.574954084,
+      "updates": 180,
+      "parameters": 1131181,
+      "trainableParameters": 636397,
+      "checkpointSha256": "271b29634ec4506f0e4678c6982a7839bcf5a7f176e6a7b2a44132b361b8e5a0",
+      "frozenStateUnchanged": true,
+      "predictionComparisons": {
+        "initial": {
+          "exact": true,
+          "maximumAbsoluteDifference": 0.0,
+          "absoluteTolerance": 1.1920928955078125e-07,
+          "changedHalfThresholdPixels": 0,
+          "passed": true,
+          "metricsExact": true
+        },
+        "final": {
+          "exact": true,
+          "maximumAbsoluteDifference": 0.0,
+          "absoluteTolerance": 1.1920928955078125e-07,
+          "changedHalfThresholdPixels": 0,
+          "passed": true,
+          "metricsExact": true
+        }
+      },
+      "trainingInputsUnchangedFromPriorStudy": true
+    },
+    "knownRegionComparison": {
+      "previous-16": {
+        "control": {
+          "knownRegionIoU": 0.9307663148876042,
+          "knownRegionPixelError": 0.02401659158557639,
+          "knownPaperFalseNegative": 0.023263026923464374,
+          "knownBackgroundFalsePositive": 0.01838716973859715
+        },
+        "candidate": {
+          "knownRegionIoU": 0.9250957152794135,
+          "knownRegionPixelError": 0.027179846190179602,
+          "knownPaperFalseNegative": 0.0315674690359955,
+          "knownBackgroundFalsePositive": 0.01790471318453246
+        }
+      },
+      "additional-8": {
+        "control": {
+          "knownRegionIoU": 0.8806635253435953,
+          "knownRegionPixelError": 0.04045362667305259,
+          "knownPaperFalseNegative": 0.0066785180721355255,
+          "knownBackgroundFalsePositive": 0.054151282732181394
+        },
+        "candidate": {
+          "knownRegionIoU": 0.9077583638492682,
+          "knownRegionPixelError": 0.032829626088760944,
+          "knownPaperFalseNegative": 0.009891231434180275,
+          "knownBackgroundFalsePositive": 0.04247679369885085
+        }
+      }
+    },
+    "scope": "Known labelled pixels in training photos only. The control did not train on the eight new photos, but their source groups occur in its training set."
+  },
+  "reconstruction": {
+    "control": {
+      "pipelineCounts": {
+        "production": {
+          "attempted": 32,
+          "crops": 21,
+          "supported": 16,
+          "checkedPairs": 9,
+          "neuralSelected": 0,
+          "reusedFits": 32
+        },
+        "fallback": {
+          "attempted": 32,
+          "crops": 26,
+          "supported": 21,
+          "checkedPairs": 12,
+          "neuralSelected": 5,
+          "reusedFits": 27
+        }
+      },
+      "freshFits": [
+        {
+          "id": "real-24b5ed49c9411b11-body-1",
+          "exportedMismatch": 0.0295875,
+          "editableMismatch": 0.030075,
+          "exportedChecked": true,
+          "editableChecked": false,
+          "targetMaskSha256": "0d5554f050416e180ab7a19d9023a92edc624991d4ff814d238ede4805247620",
+          "quad": [
+            [
+              497.37587632653623,
+              548.8707619023306
+            ],
+            [
+              863.7439186141833,
+              958.2905371881565
+            ],
+            [
+              456.99792545472326,
+              1316.6015749218916
+            ],
+            [
+              114.15601652120587,
+              901.822092440675
+            ]
+          ],
+          "conversion": true,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "id": "real-dfa7e4b71b43aa86-body-1",
+          "exportedMismatch": 0.08379375,
+          "editableMismatch": 0.0840375,
+          "exportedChecked": false,
+          "editableChecked": false,
+          "targetMaskSha256": "94386e60efbe8a15deefabdf1874638c9443ce2ab2610d7c9e389ffc1110ac32",
+          "quad": [
+            [
+              541.2430196102914,
+              1022.9113201979864
+            ],
+            [
+              873.3102276536559,
+              1345.7831926704648
+            ],
+            [
+              567.8082749237412,
+              1693.0026684593145
+            ],
+            [
+              215.52281643633088,
+              1342.6314118492267
+            ]
+          ],
+          "conversion": true,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "id": "real-c7d1e0ad5050db71-body-1",
+          "exportedMismatch": 0.006563402467839328,
+          "editableMismatch": 0.006482141294427984,
+          "exportedChecked": true,
+          "editableChecked": true,
+          "targetMaskSha256": "53e23bfabef653fb74ec9ea610259118d0c64352e865278aeefd96ce54bdddc0",
+          "quad": [
+            [
+              514.1034646362551,
+              525.5408951724634
+            ],
+            [
+              915.1785128207044,
+              915.0909024423406
+            ],
+            [
+              518.0305868055183,
+              1341.2180973714678
+            ],
+            [
+              124.8080358118769,
+              917.0287165109273
+            ]
+          ],
+          "conversion": true,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "id": "real-f05cf91c134daea9-body-1",
+          "exportedMismatch": 0.03611875,
+          "editableMismatch": 0.0362125,
+          "exportedChecked": false,
+          "editableChecked": false,
+          "targetMaskSha256": "c25b6544eb80e7a2e3bb709d586c1b1baa3f4bc341463e36d4a8df59b81dd319",
+          "quad": [
+            [
+              1066.0122598480266,
+              463.6224990301326
+            ],
+            [
+              1763.270828790111,
+              1206.5949078632298
+            ],
+            [
+              971.8730952896314,
+              1980.792820368634
+            ],
+            [
+              272.12794926913233,
+              1139.3483583685697
+            ]
+          ],
+          "conversion": true,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "id": "real-28a87a8be083f16c-body-1",
+          "exportedMismatch": 0.004118827228010525,
+          "editableMismatch": 0.004218829103045682,
+          "exportedChecked": true,
+          "editableChecked": true,
+          "targetMaskSha256": "801ae6b9b9b2c0efeb2ef65a372cbdbcc8403693f314039284ff2b7945c9e003",
+          "quad": [
+            [
+              504.6763564351962,
+              500.05576822599573
+            ],
+            [
+              933.7041390789768,
+              880.6225035105645
+            ],
+            [
+              530.5759209067229,
+              1335.8406374568979
+            ],
+            [
+              123.63690263268896,
+              918.0362896682418
+            ]
+          ],
+          "conversion": true,
+          "geometry": true,
+          "paper": "pass"
+        }
+      ],
+      "checkedEditableIncludingReusedProduction": 11,
+      "scope": "Raw historical scoring rules retained, including the borderline renderer mismatch described separately."
+    },
+    "candidate": {
+      "pipelineCounts": {
+        "production": {
+          "attempted": 32,
+          "crops": 21,
+          "supported": 16,
+          "checkedPairs": 9,
+          "neuralSelected": 0,
+          "reusedFits": 32
+        },
+        "fallback": {
+          "attempted": 32,
+          "crops": 26,
+          "supported": 21,
+          "checkedPairs": 12,
+          "neuralSelected": 5,
+          "reusedFits": 27
+        }
+      },
+      "freshFits": [
+        {
+          "id": "real-24b5ed49c9411b11-body-1",
+          "exportedMismatch": 0.02636875,
+          "editableMismatch": 0.02661875,
+          "exportedChecked": true,
+          "editableChecked": true,
+          "targetMaskSha256": "f24ec67b90e24e707ef629b5accb1a6871650ce80408f39b71aa2c1b350f6c58",
+          "quad": [
+            [
+              497.4003285201783,
+              548.4330618805204
+            ],
+            [
+              863.6761821591002,
+              958.4103991982545
+            ],
+            [
+              457.1517817539254,
+              1316.3898074566903
+            ],
+            [
+              114.46511813072227,
+              902.3946019297545
+            ]
+          ],
+          "conversion": true,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "id": "real-dfa7e4b71b43aa86-body-1",
+          "exportedMismatch": 0.0888125,
+          "editableMismatch": 0.08910625,
+          "exportedChecked": false,
+          "editableChecked": false,
+          "targetMaskSha256": "130a91f636c40c62f055b570f5d5177757290f2b0adc53f6cece1d58da25a8e5",
+          "quad": [
+            [
+              541.1366776570385,
+              1022.8862425508936
+            ],
+            [
+              873.2769068047554,
+              1345.8483155842732
+            ],
+            [
+              567.5900253792756,
+              1693.1630181179796
+            ],
+            [
+              216.0778804691832,
+              1342.4354100422365
+            ]
+          ],
+          "conversion": true,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "id": "real-c7d1e0ad5050db71-body-1",
+          "exportedMismatch": 0.00658791174448403,
+          "editableMismatch": 0.006494155884742796,
+          "exportedChecked": true,
+          "editableChecked": true,
+          "targetMaskSha256": "08978496ae931f545b18edcdcfd16c556670c329019a411adf404ca876abcb07",
+          "quad": [
+            [
+              512.7679908576895,
+              524.9315346124723
+            ],
+            [
+              915.0073312749334,
+              914.9354582835268
+            ],
+            [
+              521.6398822278763,
+              1338.6100162111188
+            ],
+            [
+              124.71871959227694,
+              920.1910484030984
+            ]
+          ],
+          "conversion": true,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "id": "real-f05cf91c134daea9-body-1",
+          "exportedMismatch": 0.03901875,
+          "editableMismatch": 0.0391125,
+          "exportedChecked": false,
+          "editableChecked": false,
+          "targetMaskSha256": "8dc6f1e81cb16a13b9f256508074bd7d9e5ede6f258fdbb602d10852316554f7",
+          "quad": [
+            [
+              1057.9975255949846,
+              478.6389164497978
+            ],
+            [
+              1756.474938088779,
+              1213.6083207831277
+            ],
+            [
+              972.9904519660531,
+              1981.0053605545431
+            ],
+            [
+              277.9181260580982,
+              1146.9462864812717
+            ]
+          ],
+          "conversion": true,
+          "geometry": true,
+          "paper": "pass"
+        },
+        {
+          "id": "real-28a87a8be083f16c-body-1",
+          "exportedMismatch": 0.006062727352275711,
+          "editableMismatch": 0.005850219383226871,
+          "exportedChecked": true,
+          "editableChecked": true,
+          "targetMaskSha256": "dffb69eb0f6e9c787200b9f0fab6772c837158dd1876492ccf63dbc4c21cbdd9",
+          "quad": [
+            [
+              500.9076762660018,
+              507.8487284862404
+            ],
+            [
+              912.9960057218861,
+              903.3559725009408
+            ],
+            [
+              529.862464764753,
+              1336.9231644140136
+            ],
+            [
+              116.72171410476139,
+              909.9600333553434
+            ]
+          ],
+          "conversion": true,
+          "geometry": true,
+          "paper": "pass"
+        }
+      ],
+      "checkedEditableIncludingReusedProduction": 12,
+      "scope": "Raw historical scoring rules retained, including the borderline renderer mismatch described separately."
+    },
+    "previous120UpdateCounts": {
+      "control": 12,
+      "candidate": 10
+    },
+    "newExportedCounts": {
+      "control": 12,
+      "candidate": 12
+    },
+    "newEditableCounts": {
+      "control": 11,
+      "candidate": 12
+    }
+  },
+  "visualReview": {
+    "pairedTrainingPages": 6,
+    "evaluationBodyPages": 11,
+    "fitPages": 4,
+    "allInspected": true,
+    "findings": [
+      "Expanded training reduces some background confidence but retains handles, detached strips and clutter.",
+      "Both models omit parts of dark or metallic paper; the gold-house photo still emphasizes the building rather than the whole heart.",
+      "Both lose the tip of the floral/striped training photo.",
+      "Reconstructed checkerboard and star are recognizable, while stacked hearts retain false seams despite low aggregate mask disagreement.",
+      "Printed trees still become inappropriate cuts, and glossy highlights corrupt the green/black motif target."
+    ]
+  },
+  "validation": {
+    "focusedTestsPassed": 11,
+    "focusedTestsFailed": 0,
+    "historicalCheckpointCompatibilityPassed": true,
+    "actualTrainingTensorsLabelsAndSharedDrawsMatch": true,
+    "allNativeInputTensorsMatchPreviousStudy": true,
+    "bothCheckpointsIndependentlyAudited": true,
+    "newEditableExports": 10,
+    "allNewConversionGeometryAndNominalPaperChecksPass": true,
+    "allNineReusedProductionEditablePassesVerified": true,
+    "planGeneratorReplaysHistoricalInputsAndProtocolsExactly": true,
+    "productionChanges": false,
+    "fullApplicationChecks": "Application src/ and static/ remain unchanged from cc79e22f04dfac466df53f8528d9265da33ea300; full check/lint/test/build and browser QA are recorded in conni-release-qa.json. No broad app-suite rerun for offline-only changes.",
+    "physicalAssemblyTested": false,
+    "rendererDiagnosticLintExitCode": 0
+  },
+  "decision": {
+    "productionPromotion": false,
+    "coverage": "Restoring old-photo exposure recovers the two lost metallic crops, but neither arm exceeds the earlier twelve checked designs.",
+    "checkpointRanking": "Do not rank the candidate above the control from the 12-versus-11 editable count alone; that difference includes a twelve-pixel threshold artifact.",
+    "next": "Resolve renderer consistency before selecting models on borderline scores. Further neural work should target remaining whole-paper outline errors and downstream material/fit failures, with full-pipeline validation; more training labels alone have not established extra coverage. Native results still require browser/runtime and user-flow verification before deployment."
+  },
+  "rendererFinding": {
+    "id": "real-24b5ed49c9411b11-body-1",
+    "nativeSvgError": 0.0295875,
+    "defaultEditableError": 0.030075,
+    "pixelsAboveThreePercent": 12,
+    "originalAndSimplifiedEditableMasksExactAt400And800": true,
+    "measurements": {
+      "svgCoverageAndCentreSupersampling": [
+        {
+          "scale": 1,
+          "method": "Half-coverage threshold at target resolution",
+          "mismatchPixels": 4734,
+          "disagreementWithEditable": 416
+        },
+        {
+          "scale": 3,
+          "method": "Centre subpixel of odd supersampling; shrinking coverage window approximates a centre test",
+          "mismatchPixels": 4755,
+          "disagreementWithEditable": 227
+        },
+        {
+          "scale": 5,
+          "method": "Centre subpixel of odd supersampling; shrinking coverage window approximates a centre test",
+          "mismatchPixels": 4763,
+          "disagreementWithEditable": 201
+        }
+      ],
+      "pixelCentreFlattening": [
+        {
+          "flatnessCells": 0.25,
+          "mismatchPixels": 4812,
+          "disagreementWithEditable": 0
+        },
+        {
+          "flatnessCells": 0.025,
+          "mismatchPixels": 4758,
+          "disagreementWithEditable": 162
+        },
+        {
+          "flatnessCells": 0.0025,
+          "mismatchPixels": 4750,
+          "disagreementWithEditable": 178
+        }
+      ]
+    },
+    "conclusion": "The unsimplified editable design reproduces the same borderline failure. Tightening only offline raster flattening moves its error below 3%; supersampled SVG centre measurements agree approximately. Thus the count change is a renderer-precision threshold artifact, not evidence that simplification altered the cutting paths.",
+    "scope": "No production renderer or threshold changed, no refit, and no replacement of the predeclared benchmark scores. Finite numerical agreement is not an exact area proof."
+  }
+}

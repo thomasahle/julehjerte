@@ -16,7 +16,7 @@ production path.
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
 | Small learned model | Earlier MobileNetV3-Small fallback raises checked editable pairs from 7/16 to 9/16 on its development cohort; a newer fixed candidate stays at 7/16 on separately selected Sabrina photos | These are different cohorts; no deployment or established source generalization |
 | Saliency models | Frozen U2NETP raises checked derived-mask pairs from 10/32 to 12/32; adapted browser model adds three checked pairs over fresh current-main controls (9/32 to 12/32) | Raw numerical parity still fails; printed paper, missing body regions, timed-search variation and false seams remain; no production integration |
-| Expanded body supervision | Fresh, audited 16-photo control recovers 12/32 checked pairs; a matched-budget 24-photo candidate recovers 10/32 | Candidate loses two metallic-paper crops; an isolated palette-gate fix does not recover them; neither model is approved for production |
+| Expanded body supervision | Initial 120-update comparison gives 12/32 versus 10/32; preserving old-photo visits in a 180-update comparison restores both to 12/32 before editable rendering | Final raw editable counts are 11/32 versus 12/32, with the difference traced to a borderline rasterization artifact; no extra design coverage established |
 | Paper-colour calibration | Original-resolution colour mixtures restore detail lost by raw neural masks; fresh fixed-crop comparison gives 11/32 checked pairs with learned palettes versus 13/32 with RGB clustering | No learned-only checked gain; print confusion and unsuitable crops remain; these are derived-mask checks, not artwork ground truth |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
 | Solver | Latest full release QA passes 1,207 inverse tests; earlier dedicated runs solve all 22 regular Hunodan designs under ten seconds | Some hard fits retain thin false seams; 19/77 CI timing targets miss; the earlier 27/31 photo benchmark has not been rerun |
@@ -109,9 +109,34 @@ crops still fail after all 19 alternate orientations. Replacing only the binary
 paper mask and its distance field with the control's fields restores outline
 support on both; replacing colour fields does not. These mixed fields are
 diagnostic probes, not deployable predictions or newly validated templates.
-The next body experiment should separate reduced training exposure from
+This motivated a follow-up separating reduced training exposure from
 representation/loss limitations. No network, support threshold or solver change
-is deployed from this study; the ten focused palette/crop regression tests pass.
+was deployed from that study; the ten focused palette/crop regression tests pass.
+
+The [completed added-exposure comparison](u2netp-body-exposure-results.json)
+preserves every original 120-update control draw, then inserts 60 updates.
+The 16-photo control spends the added real visits on old photos; the 24-photo
+candidate spends them on the new eight. Both use identical synthetic inputs and
+reflections, and both train for 180 updates from the same pretrained weights.
+The candidate recovers the two lost metallic-paper crops, so both arms reach
+**12/32 exported-image passes**, matching the earlier control. Its training
+error improves on both the original and added photos, but it adds no previously
+unrecovered design. All ten new exports pass conversion, geometry and nominal
+paper checks. Six paired training pages, eleven evaluation-body pages and four
+fit pages were inspected. Eleven scheduling/provenance/audit tests pass.
+
+The final editable counts are **11/32 for the control and 12/32 for the
+candidate**, but this is not strong evidence for ranking the candidate higher.
+One control fit moves from **2.95875%** exported-SVG disagreement to **3.0075%**
+in the editor's mask renderer—only twelve pixels beyond the 3% cutoff. The
+unsimplified and simplified editable masks are identical at 400 and 800 pixels.
+An isolated diagnostic keeps the curves fixed and tightens only the editor's
+quarter-pixel flattening: disagreement falls to about **2.97%**, consistent with
+supersampled SVG centre tests. This is a renderer-precision threshold artifact,
+not a demonstrated simplification defect. Original scores and failures remain
+recorded; no production rasterizer or acceptance limit was changed. The next
+comparison needs consistent rendering precision before selecting models on
+borderline scores. These models have not undergone browser/runtime release QA.
 
 The [complete balanced-epoch follow-up](u2netp-material-complete-epochs-results.json)
 adds 384 updates to the fixed relative-colour head, visiting every synthetic
