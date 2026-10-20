@@ -441,12 +441,8 @@ a feature. The logs show different phase finalists, refinement reservations and
 feature-recovery decisions; they do not yet prove which branch causes the
 regression. Crop quality and cut count alone cannot explain it.
 
-No application code or neural weights changed. Before adoption, the next steps
-are to isolate resolution losses by applying the fitted RGB classifier at native
-resolution, test search stability under small mask perturbations, and train
-material features explicitly to transfer from the exposed paper into the woven
-overlap. Choosing a classifier solely by its own reconstruction error would
-reward the near-empty-mask failure above.
+No application code or neural weights changed. Choosing a classifier solely by
+its own reconstruction error would reward the near-empty-mask failure above.
 
 Verification passes: type checking, lint, build, **2,374 application tests**
 (142 skipped), **1,183 inverse correctness tests**, and all five classifier
@@ -457,6 +453,57 @@ checksums for 152 editable SVG/preview artifacts. The experiment adds about
 **74 MiB excluding logs**, including its detailed JSON records, with no new
 photos or model weights. Application and solver files match the successful main
 CI build exactly.
+
+The [resolution diagnostic](paper-exemplar-native-results.json) now isolates
+sampling losses while keeping the lobe samples, normalization, ridge penalty
+and fitted coefficients fixed. All **122 RGB-texture and 122 RGB-only fields**
+and their fit metadata replay exactly after separating fitting from scoring.
+Synthetic comparisons use the same 320-pixel evaluation frame, removing the
+intermediate 160-pixel scoring grid. Real-photo scoring instead uses the exact
+stored production crop RGB at each case's original target resolution.
+
+| Overlap-only synthetic error | Reduced scoring grid | Direct RGB scoring |
+| --- | ---: | ---: |
+| Plain paper | 2.69% | 2.47% |
+| Printed paper | 6.33% | 7.13% |
+| Changed scene | 2.70% | 2.45% |
+
+Plain-paper boundary error falls from **7.10% to 6.61%**, but printed-paper
+interior error rises from **3.42% to 4.51%**. Visual review confirms both effects:
+check corners and thin details become sharper, while stripes, dots and fine
+speckle return as false cuts. These are the same 96 synthetic training views
+with privileged corners, not an unseen evaluation set.
+
+All 26 native masks received fresh fitting with the unchanged production
+fitter and ten-second search allowance. All **26 editable conversions pass**;
+only **10/32** cases pass the complete self-mask checks, compared with **14/32**
+for the frozen lower-resolution RGB baseline. The four lost passes are retained:
+
+- Mother/child loses an interior detail during fitting, although it remains
+  visible in the mask.
+- Repeated hearts exceed the 3% mask-error limit, at 3.17%.
+- Dinosaur and star preserve recognizable motifs at 1.29% and 0.84% error,
+  respectively, but fail feature checks on isolated classified fragments near
+  the crop edge. Their feature gates remain enforced.
+
+The crops, coverage and resolutions are identical throughout. The wrong
+basket/building crops and six missing proposals remain failures; the printed
+central flower still illustrates a false success against a method's own mask.
+Higher scoring resolution alone is therefore rejected as a production change.
+
+All 29 new review pages were inspected. The comparison checks 1,443 hashes and
+recomputes all 104 independent exported-image errors; a further audit recomputes
+the 26 native editable errors and records all 52 SVG/preview hashes. Seven
+classifier tests, seven material-target tests, type checking, lint and build
+pass. The earlier full application and inverse correctness run remains the
+reference for unchanged production code. This experiment adds about **28.4 MiB
+of unique artifacts excluding external logs**, with no photo downloads or copies.
+
+The next material-model experiment should combine learned context for paper
+identity with a high-resolution RGB path for boundaries, trained explicitly to
+transfer from exposed lobes into the overlap. Search stability under small mask
+changes remains a separate problem. No new neural weights were trained in this
+diagnostic, and none of these classifier alternatives has been deployed.
 
 ### Latest solver and browser validation
 
