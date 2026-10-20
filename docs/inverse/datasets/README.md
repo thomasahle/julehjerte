@@ -978,14 +978,54 @@ new inference or training. The evidence favors investigating missing material
 boundaries and structural proposals over further tuning of confidence weights
 on these same photos. Production model, solver and acceptance gates are unchanged.
 
+### Real-photo corner proposals and paper-label exchange
+
+The [corner-proposal probe](real-junction-phase-results.json) evaluates the
+existing 880,466-parameter MobileNetV3 model on the same 26 fixed crops, retaining
+the six unresolved photos. This is the earlier synthetic-trained boundary/corner
+network, separate from the deployed U2NETP cropper and the experimental material
+classifier. Its checkpoint and synthetic-development thresholds stay fixed.
+
+The [predeclared comparison](real-junction-phase-plan.json) swaps the two binary
+mask labels while keeping RGB and observed pixels identical. This leaves every
+visible boundary unchanged, so useful corner proposals should be stable.
+Instead, one-to-one agreement within three pixels is **83.85%** across phases,
+or **84.85%** after the existing local corner refinement. None of the 26 crops
+matches every proposal. These are stability scores, **not corner accuracy**.
+The whale is the weakest case at 52.31%; the octopus reaches 69.14%.
+
+All eleven galleries were inspected. The model finds many grid corners and
+silhouette details, but also proposes corners along smooth petal and crescent
+arcs and on printed letters, trees, dots and floral ornaments. The latter
+problem persists even where the material mask suppresses the ink. A stable
+RGB corner detector alone would still not identify the boundaries between
+the two sheets.
+
+The original training source hashes confirm a concrete missing symmetry: the
+local branch consumes the signed binary mask, and training adds spatial
+reflections but no explicit mask-label exchange. The measured difference
+comes from changing that input alone. This does not prove that adding phase
+augmentation would resolve the other semantic or localization failures.
+
+An independent maximum-flow matcher reproduces all 52 raw/refined phase
+comparisons in both directions. Saved input/field hashes and raw proposals
+replay; one synthetic forward pass matches the historical inference helper
+exactly at Float16 storage precision. The probe takes **8.2 seconds total** on
+one CPU thread and saves about 27.2 MiB, without training or new downloads.
+
+The graph-proposal network remains offline. The next check is whether a fixed
+average of both phase outputs preserves reference-corner accuracy on the
+existing synthetic cohorts while enforcing label symmetry. That will not
+replace the need for material-aware supervision or full solver/export tests.
+
 ### Latest solver and browser validation
 
-Main `ad9923c4`, including the border-fragment repair, generator work and the
-native-confidence study, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39413564223)
+Main `6e882325`, including the border-fragment repair, generator work and the
+fixed-path confidence study, passed [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39417445592)
 on 20 October. This includes type checking, lint, application tests, build and
 all four inverse correctness shards. Timed quality benchmarks retain their
 separate advisory policy; a green workflow does not mean every timing target
-was met. The preceding `4e353814` and `9f260ba6` runs also passed. The residual
+was met. The preceding `ad9923c4` and `4e353814` runs also passed. The residual
 material-classifier, confidence and scheduling experiments above remain offline.
 
 The drawing improvements (red/white/XOR, full-circle weave icon, brush slider and

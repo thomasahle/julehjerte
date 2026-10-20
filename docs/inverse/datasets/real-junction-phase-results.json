@@ -1,0 +1,1825 @@
+{
+  "schema": "real-junction-phase-results-1",
+  "status": "complete",
+  "date": "2026-10-20",
+  "plan": {
+    "path": "docs/inverse/datasets/real-junction-phase-plan.json",
+    "sha256": "badc00ac55b47ff57cd4a41f3829729c491767753eda7b831d49c9a70b353b57"
+  },
+  "run": {
+    "path": "tmp/heart-learning/real-junction-phase-v1/report.json",
+    "sha256": "e662dae228cced5199cbad3cc7053d1492fd26767d25d4e05627ed421ec2eb51"
+  },
+  "audit": {
+    "path": "tmp/heart-learning/real-junction-phase-audit-v1.json",
+    "sha256": "9f0edec0d81f567c30881b159c00c7f5e94a692a107dd8a98065efd242e7be07"
+  },
+  "decision": "The existing synthetic-trained graph-proposal CNN is not ready for production or a hard MILP graph filter. Its corners depend on arbitrary A/B mask names, and visual review finds many proposals on smooth outlines and printed decorations.",
+  "summary": {
+    "photos": 32,
+    "crops": 26,
+    "unresolved": 6,
+    "phaseAgreement": {
+      "raw": {
+        "precision": 0.8371907422186752,
+        "recall": 0.8398718975180144,
+        "f1": 0.838529176658673,
+        "matched": 2098,
+        "predicted": 2506,
+        "target": 2498
+      },
+      "refined": {
+        "precision": 0.8471667996807661,
+        "recall": 0.8498799039231385,
+        "f1": 0.8485211830535571,
+        "matched": 2123,
+        "predicted": 2506,
+        "target": 2498
+      }
+    },
+    "photosWithEveryProposalMatched": {
+      "raw": 0,
+      "refined": 0
+    },
+    "interpretation": "Agreement between A/B label phases, not real junction accuracy or valid-template recovery."
+  },
+  "proposalRange": {
+    "original": {
+      "minimum": 48,
+      "maximum": 148
+    },
+    "exchanged": {
+      "minimum": 51,
+      "maximum": 134
+    }
+  },
+  "phaseAgreementRange": {
+    "raw": {
+      "minimum": 0.5230769230769231,
+      "maximum": 0.9580838323353293
+    },
+    "refined": {
+      "minimum": 0.6615384615384615,
+      "maximum": 0.9461077844311377
+    }
+  },
+  "nativeInferenceSeconds": {
+    "original": {
+      "mean": 0.05996033803846153,
+      "maximum": 0.06310099999999963
+    },
+    "exchanged": {
+      "mean": 0.05963977715384615,
+      "maximum": 0.06209916599999943
+    }
+  },
+  "controls": {
+    "unchangedPhotos": 32,
+    "unchangedCrops": 26,
+    "retainedUnresolved": 6,
+    "frozenThresholds": [
+      0.6,
+      0.4
+    ],
+    "sameRGBAndValidityBetweenPhases": true,
+    "checkpointUnchanged": true,
+    "modelStateUnchanged": true,
+    "syntheticForward": {
+      "id": "lattice-713051-v0",
+      "exactFloat16Fields": true,
+      "sha256": "615fd7a9ed49773746b374c5010681e46a98b8ab674082061f6710bf7d12141f",
+      "scope": "Same CPU checkpoint through the historical and new input paths; not historical GPU-bit parity."
+    },
+    "savedFloat16FieldsVerified": 52,
+    "rawProposalCoordinatesRecomputed": 52,
+    "phaseComparisonsCheckedWithIndependentMaximumFlow": 52,
+    "bidirectionalMatchingCountsAgree": true,
+    "duplicateProposalControlPassed": true,
+    "originalTrainingModelAndDataSourceHashesMatchCurrent": true
+  },
+  "rows": [
+    {
+      "id": "real-1bcc922200edde26-body-1",
+      "status": "crop-unresolved",
+      "source": {
+        "path": "tmp/heart-training-real/assets/1bcc922200edde26ff8dc0513fbabdbcc092f9d7bd6e2e09e213c703d8c3099b.jpg",
+        "sha256": "1bcc922200edde26ff8dc0513fbabdbcc092f9d7bd6e2e09e213c703d8c3099b"
+      }
+    },
+    {
+      "id": "real-80a649a21ea938ae-body-1",
+      "status": "crop-unresolved",
+      "source": {
+        "path": "tmp/heart-training-real/assets/80a649a21ea938ae429e5d5268fc40db7e2e00ed0987c54d1346543557cb4184.jpg",
+        "sha256": "80a649a21ea938ae429e5d5268fc40db7e2e00ed0987c54d1346543557cb4184"
+      }
+    },
+    {
+      "id": "real-f6e5e128449e3cb9-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/f6e5e128449e3cb9733275863a9e089bc3ae1eb18e74f222feae36b7839546f8.jpg",
+        "sha256": "f6e5e128449e3cb9733275863a9e089bc3ae1eb18e74f222feae36b7839546f8"
+      },
+      "nativeMaskSha256": "f73f827f7298857e57b15e149a7c96fa62a4eb13de7df8c99602f66d163812bb",
+      "rgbInputSha256": "3b0c0dc5d2042fdc8725ef964f95c62b182ba4ef78773f256c4dba0e72813590",
+      "maskInputSha256": "0d1a7600613488146b01152176aa97aa001f87e5421d68265f44765e8b6748ee",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-f6e5e128449e3cb9-body-1.npz",
+        "sha256": "2f034ee991d594094ab98a25d4d77e0931b110f78950f185645f325c7c1cbd70"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            86,
+            90,
+            113
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8472906403940886
+        },
+        "refined": {
+          "counts": [
+            85,
+            90,
+            113
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8374384236453202
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.024271847680211067,
+        0.017165832221508026
+      ],
+      "maximumHeatmapChange": [
+        0.438720703125,
+        0.259033203125
+      ],
+      "methods": {
+        "original": {
+          "proposals": 90,
+          "boundaryPixels": 1225,
+          "inferenceSeconds": 0.061725583000000306
+        },
+        "exchanged": {
+          "proposals": 113,
+          "boundaryPixels": 1710,
+          "inferenceSeconds": 0.059949041000000314
+        }
+      }
+    },
+    {
+      "id": "real-fcbcc23efea92b93-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/fcbcc23efea92b93609b156241237793fa738b3d17c8bed30113bed3aa2d7695.jpg",
+        "sha256": "fcbcc23efea92b93609b156241237793fa738b3d17c8bed30113bed3aa2d7695"
+      },
+      "nativeMaskSha256": "3dd52ebd164eda7147064d1eb8e53c1750349d888b576d547aaf343526b1a1e4",
+      "rgbInputSha256": "b1fd646c229d5650e087f8af03a83e46d0908c01246a4a6453460b472f3a4dbe",
+      "maskInputSha256": "537237715dc56862afefa8fe3b0fd5e77a1be63f956dcc45ca520fbc9384ac05",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-fcbcc23efea92b93-body-1.npz",
+        "sha256": "b69d551a1b74c9a31a8504f4627de104faf108daeae649991bab68635d40c5ea"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            34,
+            59,
+            71
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.5230769230769231
+        },
+        "refined": {
+          "counts": [
+            43,
+            59,
+            71
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.6615384615384615
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.12332309782505035,
+        0.05707753449678421
+      ],
+      "maximumHeatmapChange": [
+        0.49267578125,
+        0.2939453125
+      ],
+      "methods": {
+        "original": {
+          "proposals": 59,
+          "boundaryPixels": 4227,
+          "inferenceSeconds": 0.05967737500000059
+        },
+        "exchanged": {
+          "proposals": 71,
+          "boundaryPixels": 8441,
+          "inferenceSeconds": 0.06021816700000038
+        }
+      }
+    },
+    {
+      "id": "real-55704c6e2911bebc-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/55704c6e2911bebc83f7cc828096cb0bb6856014b4a95979b1faf1b49260ca04.jpg",
+        "sha256": "55704c6e2911bebc83f7cc828096cb0bb6856014b4a95979b1faf1b49260ca04"
+      },
+      "nativeMaskSha256": "6e18c6c968a4102dbddbd544ccb2883f8b1aee737f38d1242abe2f81dc78e155",
+      "rgbInputSha256": "ebd75b7c5de3831393dabf1f044fde8a283196ed0f47e6e20a93a9391b8a1d71",
+      "maskInputSha256": "fd704872cb9ac580a5a4c8274fe206d141a5480288b805f36f4aa9774a3507eb",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-55704c6e2911bebc-body-1.npz",
+        "sha256": "347e335bd4b755f888809e80f94df150f8976562e1df71600fd272ddda52af7e"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            51,
+            58,
+            55
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.9026548672566371
+        },
+        "refined": {
+          "counts": [
+            53,
+            58,
+            55
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.9380530973451328
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.018234284594655037,
+        0.007716007996350527
+      ],
+      "maximumHeatmapChange": [
+        0.2861328125,
+        0.0966796875
+      ],
+      "methods": {
+        "original": {
+          "proposals": 58,
+          "boundaryPixels": 12053,
+          "inferenceSeconds": 0.059758791000000144
+        },
+        "exchanged": {
+          "proposals": 55,
+          "boundaryPixels": 10572,
+          "inferenceSeconds": 0.06179304199999969
+        }
+      }
+    },
+    {
+      "id": "real-24b5ed49c9411b11-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/24b5ed49c9411b1162d0746a0366ae3a32c46cdb787e248ec09931a66b9ce1dd.jpg",
+        "sha256": "24b5ed49c9411b1162d0746a0366ae3a32c46cdb787e248ec09931a66b9ce1dd"
+      },
+      "nativeMaskSha256": "513d56c1fc54920d1ea4e2879b27e9b74565dee442ded76338c56556f4d0ac6a",
+      "rgbInputSha256": "a67cdfb581a39d65b662e4cd383f5484d4699ef787ef8120b1a88b5bc4303299",
+      "maskInputSha256": "60be3b36b5d2654534d485c6030a40bb717e44bda6e3344b4f616c357618b69a",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-24b5ed49c9411b11-body-1.npz",
+        "sha256": "f35fda751dd5a2c9183653702226ac7072e5e5b3d77720877e5332c9c955c01c"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            82,
+            103,
+            96
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8241206030150754
+        },
+        "refined": {
+          "counts": [
+            84,
+            103,
+            96
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8442211055276382
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.08909096568822861,
+        0.04378747195005417
+      ],
+      "maximumHeatmapChange": [
+        0.579345703125,
+        0.328369140625
+      ],
+      "methods": {
+        "original": {
+          "proposals": 103,
+          "boundaryPixels": 6649,
+          "inferenceSeconds": 0.061361957999999994
+        },
+        "exchanged": {
+          "proposals": 96,
+          "boundaryPixels": 6385,
+          "inferenceSeconds": 0.06148575000000012
+        }
+      }
+    },
+    {
+      "id": "real-589f606a9d9899f2-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/589f606a9d9899f2e9dae91b7fe9d2cd24b94838db6f20257cec43a7062f600c.jpg",
+        "sha256": "589f606a9d9899f2e9dae91b7fe9d2cd24b94838db6f20257cec43a7062f600c"
+      },
+      "nativeMaskSha256": "85d4f64324cb687aecea94ad3725736da9d76783972c5dfe3e29c3cf7e0a1869",
+      "rgbInputSha256": "f870dac8febe2f233b36aae740c1e6f2a614e95cfbdddc809abfd67d97158cd0",
+      "maskInputSha256": "b0deb86fa24cbf766b58c0fa5ab99bca9b2276d93f0ef6bc398a461820a139e3",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-589f606a9d9899f2-body-1.npz",
+        "sha256": "78537f74002236b708cd0418e303da61d74193c9fddca6fadbea96a9ca90e9a1"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            56,
+            83,
+            70
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.7320261437908496
+        },
+        "refined": {
+          "counts": [
+            63,
+            83,
+            70
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8235294117647058
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.10138634592294693,
+        0.04673817381262779
+      ],
+      "maximumHeatmapChange": [
+        0.435791015625,
+        0.233154296875
+      ],
+      "methods": {
+        "original": {
+          "proposals": 83,
+          "boundaryPixels": 11027,
+          "inferenceSeconds": 0.06060070799999995
+        },
+        "exchanged": {
+          "proposals": 70,
+          "boundaryPixels": 11081,
+          "inferenceSeconds": 0.059294083000000164
+        }
+      }
+    },
+    {
+      "id": "real-dfa7e4b71b43aa86-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/dfa7e4b71b43aa866156f7c24493f1113307e330668ebbecd3a2bbc297fa8301.jpg",
+        "sha256": "dfa7e4b71b43aa866156f7c24493f1113307e330668ebbecd3a2bbc297fa8301"
+      },
+      "nativeMaskSha256": "78439ec46e7d3e6618566fc85699659d45441d4251c3c0775abb8d85b705876d",
+      "rgbInputSha256": "2b096ee4f7097e7563f58918d9529acc05793de0a49a0c06d227ecfcb83c9fda",
+      "maskInputSha256": "704410000dbb6c03fc0f7c790ac27c77dbd7d736ca6d778a3cfb0bdbf74f309f",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-dfa7e4b71b43aa86-body-1.npz",
+        "sha256": "46ae54b0b942681651223051065df5a4cef7a2ab3d2cb98577b61b35630aebd7"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            114,
+            148,
+            126
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8321167883211679
+        },
+        "refined": {
+          "counts": [
+            113,
+            148,
+            126
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8248175182481752
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.02558579295873642,
+        0.017365260049700737
+      ],
+      "maximumHeatmapChange": [
+        0.326416015625,
+        0.181884765625
+      ],
+      "methods": {
+        "original": {
+          "proposals": 148,
+          "boundaryPixels": 1967,
+          "inferenceSeconds": 0.059293375000000204
+        },
+        "exchanged": {
+          "proposals": 126,
+          "boundaryPixels": 1429,
+          "inferenceSeconds": 0.05945866600000027
+        }
+      }
+    },
+    {
+      "id": "real-2b0550dd86d23b40-body-1",
+      "status": "crop-unresolved",
+      "source": {
+        "path": "tmp/heart-training-real/assets/2b0550dd86d23b406cbee98615558ecc726de82f1668629d736bbdd15b01d305.jpg",
+        "sha256": "2b0550dd86d23b406cbee98615558ecc726de82f1668629d736bbdd15b01d305"
+      }
+    },
+    {
+      "id": "real-2502cdec0720f4ea-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/2502cdec0720f4eab6bcc6e6c3ca830a472f54fbccfb58b0ef10eed5c5ac8cbd.jpg",
+        "sha256": "2502cdec0720f4eab6bcc6e6c3ca830a472f54fbccfb58b0ef10eed5c5ac8cbd"
+      },
+      "nativeMaskSha256": "97e3dac87b749c2ef1624ea83bf8230f6b180828abcb064d713a8ccf47a90544",
+      "rgbInputSha256": "1b98eab04c3dda715357f8c98e7635ba1b572145b2f37e367da92a1eeffa1285",
+      "maskInputSha256": "e4b87f05353d0d745eaa5857d2188fa10aae11e08a2e0b49852ff1d391884095",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-2502cdec0720f4ea-body-1.npz",
+        "sha256": "53fe15fab950b19acdb18c44916b2ecd8836789953840cadf21408ef703d4f6c"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            101,
+            117,
+            114
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8744588744588745
+        },
+        "refined": {
+          "counts": [
+            100,
+            117,
+            114
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8658008658008658
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.06135711818933487,
+        0.03177252039313316
+      ],
+      "maximumHeatmapChange": [
+        0.334716796875,
+        0.185302734375
+      ],
+      "methods": {
+        "original": {
+          "proposals": 117,
+          "boundaryPixels": 6601,
+          "inferenceSeconds": 0.06030300000000022
+        },
+        "exchanged": {
+          "proposals": 114,
+          "boundaryPixels": 6031,
+          "inferenceSeconds": 0.058722957999999714
+        }
+      }
+    },
+    {
+      "id": "real-d3f063052599e167-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/d3f063052599e167ddc94cefc8951a15f9204a01708018fd254332d547c3ca94.jpg",
+        "sha256": "d3f063052599e167ddc94cefc8951a15f9204a01708018fd254332d547c3ca94"
+      },
+      "nativeMaskSha256": "2ff750efecd2f17aff0227e0ee74394fabc958f3d126c11e86c314b7acdc1210",
+      "rgbInputSha256": "b340aab7c24ad4feb953679089192b4793a78f074a81682c0092c628da3ccee2",
+      "maskInputSha256": "840e7f1a5bb49ac0d6cecc20043bd0fcbcc0f4a0ba564a5b35e8bd532fb66c7d",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-d3f063052599e167-body-1.npz",
+        "sha256": "5cc0f50a08ddf1e1513d69379a9554b6a1df4fade5c7f06653418efde2704ef2"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            91,
+            96,
+            96
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.9479166666666666
+        },
+        "refined": {
+          "counts": [
+            89,
+            96,
+            96
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.9270833333333334
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.01828085444867611,
+        0.00741397263482213
+      ],
+      "maximumHeatmapChange": [
+        0.233154296875,
+        0.1201171875
+      ],
+      "methods": {
+        "original": {
+          "proposals": 96,
+          "boundaryPixels": 8440,
+          "inferenceSeconds": 0.05949950000000026
+        },
+        "exchanged": {
+          "proposals": 96,
+          "boundaryPixels": 8690,
+          "inferenceSeconds": 0.05947512500000052
+        }
+      }
+    },
+    {
+      "id": "real-a126ed5d62adfd92-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/a126ed5d62adfd9202b1d6cde5f0dc8b3da4c365c5687975b11f1191231831a0.jpg",
+        "sha256": "a126ed5d62adfd9202b1d6cde5f0dc8b3da4c365c5687975b11f1191231831a0"
+      },
+      "nativeMaskSha256": "7ef71a2c2bdafa0c3cb1a68500c6cc8fe63330874d46012c80c2414565d30111",
+      "rgbInputSha256": "041b0e0abb28659d45d5e100363e7676f9e2c60c31a1cbbf92c45ca45ae5bc28",
+      "maskInputSha256": "1a3f8702cc7264bd07d2051623a94b31f56d96c9517354361531b175cdde928b",
+      "validInputSha256": "b95226966f538a84700dc4d79edd69028a3379e56c8ffb195961fe2660231219",
+      "validPixels": 144241,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-a126ed5d62adfd92-body-1.npz",
+        "sha256": "bfd99d5673ca1ed9cabacd387ff0e2320165e076cb08786da130b3198a98a9b3"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            47,
+            61,
+            61
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.7704918032786885
+        },
+        "refined": {
+          "counts": [
+            46,
+            61,
+            61
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.7540983606557377
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.1328369677066803,
+        0.06489456444978714
+      ],
+      "maximumHeatmapChange": [
+        0.5224609375,
+        0.2822265625
+      ],
+      "methods": {
+        "original": {
+          "proposals": 61,
+          "boundaryPixels": 1674,
+          "inferenceSeconds": 0.059294165999999926
+        },
+        "exchanged": {
+          "proposals": 61,
+          "boundaryPixels": 2135,
+          "inferenceSeconds": 0.05943462499999974
+        }
+      }
+    },
+    {
+      "id": "real-5088a58018c3aa28-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/5088a58018c3aa281e2715fad627c6bac0d111a06625fce8eb884694deaa87da.jpg",
+        "sha256": "5088a58018c3aa281e2715fad627c6bac0d111a06625fce8eb884694deaa87da"
+      },
+      "nativeMaskSha256": "26c597fe78d3bf392ebd62939a6fb303e13f307b33be138daa9b38c6b28e1821",
+      "rgbInputSha256": "bdca43e9670367abc28561389f51d028ad8638a054c721b595d1190ff4eb71dc",
+      "maskInputSha256": "7d6133f3b993484e94b4d5dde0e081017befb55d73c11b7f2e4946f7b6d11739",
+      "validInputSha256": "8f670b7c238b5cec5880a7ee3be0a52be7ea6cefa85859e63197a4217d7dc8c3",
+      "validPixels": 144399,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-5088a58018c3aa28-body-1.npz",
+        "sha256": "e9b5978fd8be935e1e816c3e53e43b8d02b7fdae178adca318389a9edd6832f4"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            80,
+            84,
+            83
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.9580838323353293
+        },
+        "refined": {
+          "counts": [
+            79,
+            84,
+            83
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.9461077844311377
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.01220222283154726,
+        0.006922941189259291
+      ],
+      "maximumHeatmapChange": [
+        0.24072265625,
+        0.116455078125
+      ],
+      "methods": {
+        "original": {
+          "proposals": 84,
+          "boundaryPixels": 6138,
+          "inferenceSeconds": 0.05863966699999956
+        },
+        "exchanged": {
+          "proposals": 83,
+          "boundaryPixels": 6106,
+          "inferenceSeconds": 0.059357834000000054
+        }
+      }
+    },
+    {
+      "id": "real-1a7cfc6be8b164b5-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/1a7cfc6be8b164b596e62254fc53e38df55e877524c08ebc597957b4ac15177a.jpg",
+        "sha256": "1a7cfc6be8b164b596e62254fc53e38df55e877524c08ebc597957b4ac15177a"
+      },
+      "nativeMaskSha256": "7bc8a8b42c062c7e02088f4f6de7506afffeb5110e77d14df1d45dcf04140c0b",
+      "rgbInputSha256": "eee0ab96b4e9a5f5de58ee55f91cc4b090bb9fe9efef04e821271a1633f7d7d5",
+      "maskInputSha256": "1c797f8e6ff57861aff22e3f919ac93540c4a4a5af0f1c65b0fbb358b805e6b6",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-1a7cfc6be8b164b5-body-1.npz",
+        "sha256": "6d64651973f8ac0dbc7a83f3402857c380ec888a1bede3504280a4f0af736a90"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            71,
+            92,
+            92
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.7717391304347826
+        },
+        "refined": {
+          "counts": [
+            69,
+            92,
+            92
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.75
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.029529336839914322,
+        0.020919492468237877
+      ],
+      "maximumHeatmapChange": [
+        0.402099609375,
+        0.17919921875
+      ],
+      "methods": {
+        "original": {
+          "proposals": 92,
+          "boundaryPixels": 363,
+          "inferenceSeconds": 0.062190832999999834
+        },
+        "exchanged": {
+          "proposals": 92,
+          "boundaryPixels": 416,
+          "inferenceSeconds": 0.05887483400000004
+        }
+      }
+    },
+    {
+      "id": "real-fe7fb089d1cd86b4-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/fe7fb089d1cd86b444dc68d47f6aa4d04f5b88eb3bf68c5c8304568f0a3ea4d8.jpg",
+        "sha256": "fe7fb089d1cd86b444dc68d47f6aa4d04f5b88eb3bf68c5c8304568f0a3ea4d8"
+      },
+      "nativeMaskSha256": "249a44e293c662aaab7a742e6515b62e29357cd3ac310205d9dba0025432e2ce",
+      "rgbInputSha256": "b0debc1813270138bfac200f4c8ea0ce92c6b576817f16df63020d91b50cfe16",
+      "maskInputSha256": "4f231ab91c3837942b3c8e886e93ab7603124ff3214be889c7b0f4afba0e7e32",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-fe7fb089d1cd86b4-body-1.npz",
+        "sha256": "2d4d3ac8503f35716b8164f379da4af8e79b0fa9817ceaeae907fbaaa5886cf4"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            109,
+            138,
+            132
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8074074074074075
+        },
+        "refined": {
+          "counts": [
+            109,
+            138,
+            132
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8074074074074075
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.02360330894589424,
+        0.018371231853961945
+      ],
+      "maximumHeatmapChange": [
+        0.308349609375,
+        0.171142578125
+      ],
+      "methods": {
+        "original": {
+          "proposals": 138,
+          "boundaryPixels": 1700,
+          "inferenceSeconds": 0.0584026660000001
+        },
+        "exchanged": {
+          "proposals": 132,
+          "boundaryPixels": 1268,
+          "inferenceSeconds": 0.058548916999999534
+        }
+      }
+    },
+    {
+      "id": "real-8b91ecf546833a3f-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/8b91ecf546833a3f968f00685ad2a1702f4967f9bc9a5fcd9117feb00b19d96e.jpg",
+        "sha256": "8b91ecf546833a3f968f00685ad2a1702f4967f9bc9a5fcd9117feb00b19d96e"
+      },
+      "nativeMaskSha256": "e37a9352d7a427961492feb476ce43b3598ad91b701a0299c710269f9d73838b",
+      "rgbInputSha256": "89cf918080ce18a03b96655fab0f1391d90b8a956716eaceb815e3daa31c75b0",
+      "maskInputSha256": "4ca3f2921ff9b274b636914c8546e0274eb647de7ca2f25381e03212b3aac31c",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-8b91ecf546833a3f-body-1.npz",
+        "sha256": "13b5a65104c1b60bcabde0eb83f9e97103d8ca6110d525a3e8ffc6be3ae6b89a"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            102,
+            110,
+            111
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.9230769230769231
+        },
+        "refined": {
+          "counts": [
+            102,
+            110,
+            111
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.9230769230769231
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.011509882286190987,
+        0.0074082789942622185
+      ],
+      "maximumHeatmapChange": [
+        0.2822265625,
+        0.126708984375
+      ],
+      "methods": {
+        "original": {
+          "proposals": 110,
+          "boundaryPixels": 6765,
+          "inferenceSeconds": 0.05905199999999944
+        },
+        "exchanged": {
+          "proposals": 111,
+          "boundaryPixels": 7032,
+          "inferenceSeconds": 0.05930483299999967
+        }
+      }
+    },
+    {
+      "id": "real-b5317080eec610dc-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/b5317080eec610dc8a022fa1895f04440a629d6e6e6f2d1562550bf48ca92ed5.jpg",
+        "sha256": "b5317080eec610dc8a022fa1895f04440a629d6e6e6f2d1562550bf48ca92ed5"
+      },
+      "nativeMaskSha256": "a68333d0824f5b36b16bf53b411e9024935fbe74575cdaf506ad1067a5196964",
+      "rgbInputSha256": "fe87149b294e73f694d4dec728b7ff857a5793b7a1ef831a3cb2211a9c51da0f",
+      "maskInputSha256": "3458820ebe8e88ed86280f999d0761987b149e460f68f9d32f8b79e13f558cd7",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-b5317080eec610dc-body-1.npz",
+        "sha256": "d70f0b58d4d185e3678479ed174686d9795e1fbb001b8b3e579fe8abf9b8dee1"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            109,
+            125,
+            120
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.889795918367347
+        },
+        "refined": {
+          "counts": [
+            113,
+            125,
+            120
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.9224489795918367
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.02170689031481743,
+        0.009033739566802979
+      ],
+      "maximumHeatmapChange": [
+        0.41162109375,
+        0.215576171875
+      ],
+      "methods": {
+        "original": {
+          "proposals": 125,
+          "boundaryPixels": 4820,
+          "inferenceSeconds": 0.05991720899999997
+        },
+        "exchanged": {
+          "proposals": 120,
+          "boundaryPixels": 5672,
+          "inferenceSeconds": 0.0588895410000001
+        }
+      }
+    },
+    {
+      "id": "real-c7d1e0ad5050db71-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/c7d1e0ad5050db713a43a7acccacecdac65b68c0fc4072f587ff7b3422f9b0ba.jpg",
+        "sha256": "c7d1e0ad5050db713a43a7acccacecdac65b68c0fc4072f587ff7b3422f9b0ba"
+      },
+      "nativeMaskSha256": "017df7b5825d2e1696d37a07156036c25fb7bdaf4e3dc5c1bf43ff9afebf8a15",
+      "rgbInputSha256": "022c14a5c734f8e1002e131b18f338cd060c895b184ebf45ca1c927fcc01696d",
+      "maskInputSha256": "a274f062e3267d303c1da85a53ed41cb7d64b859de101bfc9d90e41dae0fdfbe",
+      "validInputSha256": "28bb4b5eeb490d55bd084b9cb00182f7375a4df033d8c61bf44cc379ad6db30e",
+      "validPixels": 144394,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-c7d1e0ad5050db71-body-1.npz",
+        "sha256": "90555f453345a4f77b9b0d830a39eadeef5ca0c735e48c60a4b30b01733a41d7"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            85,
+            100,
+            105
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8292682926829268
+        },
+        "refined": {
+          "counts": [
+            85,
+            100,
+            105
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8292682926829268
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.08011048287153244,
+        0.03478718176484108
+      ],
+      "maximumHeatmapChange": [
+        0.3671875,
+        0.2174072265625
+      ],
+      "methods": {
+        "original": {
+          "proposals": 100,
+          "boundaryPixels": 8389,
+          "inferenceSeconds": 0.05879391700000003
+        },
+        "exchanged": {
+          "proposals": 105,
+          "boundaryPixels": 9235,
+          "inferenceSeconds": 0.05736458400000011
+        }
+      }
+    },
+    {
+      "id": "real-45ad148d9ec045be-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/45ad148d9ec045bec60048664871f4bfb466b2e5d1acd017b0fd35d173b532b9.jpg",
+        "sha256": "45ad148d9ec045bec60048664871f4bfb466b2e5d1acd017b0fd35d173b532b9"
+      },
+      "nativeMaskSha256": "9fbff5d61bcfb7521c2925f11ac09ad0674089e5a7269c291330e8e06f5a1c35",
+      "rgbInputSha256": "9802bd83c095d224ea252049085b205518f4f19908b8305e4aa9113c01460b78",
+      "maskInputSha256": "bffa2bd4208a17c1f9d0d994a5f7e3f615c109edda07511cdcc149afa4f62020",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-45ad148d9ec045be-body-1.npz",
+        "sha256": "2f200888c89e2d58dc713bb105d5ef9469eda2fb92e16b4ffd7be17f4862ef6f"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            88,
+            97,
+            97
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.9072164948453608
+        },
+        "refined": {
+          "counts": [
+            87,
+            97,
+            97
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8969072164948454
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.009976227767765522,
+        0.006129418034106493
+      ],
+      "maximumHeatmapChange": [
+        0.232177734375,
+        0.1123046875
+      ],
+      "methods": {
+        "original": {
+          "proposals": 97,
+          "boundaryPixels": 7451,
+          "inferenceSeconds": 0.05994425000000003
+        },
+        "exchanged": {
+          "proposals": 97,
+          "boundaryPixels": 7555,
+          "inferenceSeconds": 0.05903550000000024
+        }
+      }
+    },
+    {
+      "id": "real-702942779385436c-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/702942779385436cd9d6d0007130c158ce35361ed3d06900d7825eea647bcfce.jpg",
+        "sha256": "702942779385436cd9d6d0007130c158ce35361ed3d06900d7825eea647bcfce"
+      },
+      "nativeMaskSha256": "6debf5e7a3cbbcc38fb16aaf5855b5c9343b68fbc0382ae15b84fb0ac49b13be",
+      "rgbInputSha256": "b6c2f5e59bda4f4d048c60d7370af96925a58530b0f918900dd4c208f4c71608",
+      "maskInputSha256": "68c56b4642aef6b39e8bd44c8e974a3255d471ca3a9da3c57078c1fabe6b62c4",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-702942779385436c-body-1.npz",
+        "sha256": "8684a2a4a9b7beff10a2f506cabfdbbdbf6067e57bbdb4905de666d412f5b000"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            123,
+            137,
+            134
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.9077490774907749
+        },
+        "refined": {
+          "counts": [
+            121,
+            137,
+            134
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8929889298892989
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.02628602646291256,
+        0.018257111310958862
+      ],
+      "maximumHeatmapChange": [
+        0.349365234375,
+        0.1649169921875
+      ],
+      "methods": {
+        "original": {
+          "proposals": 137,
+          "boundaryPixels": 3233,
+          "inferenceSeconds": 0.06310099999999963
+        },
+        "exchanged": {
+          "proposals": 134,
+          "boundaryPixels": 2738,
+          "inferenceSeconds": 0.05844920800000075
+        }
+      }
+    },
+    {
+      "id": "real-03bddab9c8f384c4-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/03bddab9c8f384c4f87cab690d00d92761b99d4339cee83a471398a117d82ddd.jpg",
+        "sha256": "03bddab9c8f384c4f87cab690d00d92761b99d4339cee83a471398a117d82ddd"
+      },
+      "nativeMaskSha256": "6e8660c631c318153068e07b4e25bed9f73ee0bb82cb2968472970b31c4e7d38",
+      "rgbInputSha256": "f7cbb78bd303208b5a9330acf1caedd5d721019d4f9fbdba2757ef1c58d4fa1d",
+      "maskInputSha256": "015b1a65206ecdb186d0298152b4641bf802745f1e52080ae9c31d9ce2ddb613",
+      "validInputSha256": "76e7a6fe3b4fd9f91f5ab70d67778ca35659e9816bc5300a9ec64252244e40bb",
+      "validPixels": 141095,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-03bddab9c8f384c4-body-1.npz",
+        "sha256": "a4f65d5d5c558882ea63d4ffb34d2a9ab0339db92aa5a79adba31bf7ad8bb447"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            91,
+            99,
+            98
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.9238578680203046
+        },
+        "refined": {
+          "counts": [
+            91,
+            99,
+            98
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.9238578680203046
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.018184710294008255,
+        0.010974130593240261
+      ],
+      "maximumHeatmapChange": [
+        0.326171875,
+        0.234130859375
+      ],
+      "methods": {
+        "original": {
+          "proposals": 99,
+          "boundaryPixels": 5225,
+          "inferenceSeconds": 0.05952683299999961
+        },
+        "exchanged": {
+          "proposals": 98,
+          "boundaryPixels": 4894,
+          "inferenceSeconds": 0.06117470800000113
+        }
+      }
+    },
+    {
+      "id": "real-eb60ff94dfc6e2f8-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/eb60ff94dfc6e2f85e09e9e82b2ae369806b839081c63811e26c0c0e3e5528a8.jpg",
+        "sha256": "eb60ff94dfc6e2f85e09e9e82b2ae369806b839081c63811e26c0c0e3e5528a8"
+      },
+      "nativeMaskSha256": "a46834f177743da624b38be11ef65b2c68291e640c410e2f6d6fcf252137fd56",
+      "rgbInputSha256": "031b358e4adc02d24a6a2f3cf0f8674e82e37fdbef53eb960bb661a45efde6fd",
+      "maskInputSha256": "46ceef8794fa7f566aef4099272624e3a0e3cb71174d9c9430392ccdf88f2a01",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-eb60ff94dfc6e2f8-body-1.npz",
+        "sha256": "77b18edf6eedb52373fbf08177e7073297622320c6c2dfa92f4103ac72f53f4d"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            78,
+            97,
+            94
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8167539267015707
+        },
+        "refined": {
+          "counts": [
+            84,
+            97,
+            94
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8795811518324608
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.028096439316868782,
+        0.01667688600718975
+      ],
+      "maximumHeatmapChange": [
+        0.265625,
+        0.17529296875
+      ],
+      "methods": {
+        "original": {
+          "proposals": 97,
+          "boundaryPixels": 7379,
+          "inferenceSeconds": 0.05960529100000045
+        },
+        "exchanged": {
+          "proposals": 94,
+          "boundaryPixels": 7237,
+          "inferenceSeconds": 0.061870290999999966
+        }
+      }
+    },
+    {
+      "id": "real-af21a4ef38355dfa-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/af21a4ef38355dfa63085e3ac742e6c152e213ae70ddd3a72d2a66923ab833a8.jpg",
+        "sha256": "af21a4ef38355dfa63085e3ac742e6c152e213ae70ddd3a72d2a66923ab833a8"
+      },
+      "nativeMaskSha256": "25cbf4c2358c1cb505b2a0009c1f91c37ea04356a81ec3bb1e7e2cde53f3e81c",
+      "rgbInputSha256": "15e9ebcadb0c6fd6b1b9c6a7ab3028e8b0868f3e7bfcbf3463b2bb33ff03aba6",
+      "maskInputSha256": "10842cc926826896fa4bbed7765d06bff34ed23abf8d4e325e800a35ff88ffd5",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-af21a4ef38355dfa-body-1.npz",
+        "sha256": "c1fc7c6ced191eb0e55bbf0b3412f2e42fa74d9a264750b7c549e9bbef0a5a30"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            50,
+            53,
+            56
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.9174311926605505
+        },
+        "refined": {
+          "counts": [
+            48,
+            53,
+            56
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8807339449541285
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.018630627542734146,
+        0.006476758513599634
+      ],
+      "maximumHeatmapChange": [
+        0.3802490234375,
+        0.1298828125
+      ],
+      "methods": {
+        "original": {
+          "proposals": 53,
+          "boundaryPixels": 9074,
+          "inferenceSeconds": 0.05807324999999963
+        },
+        "exchanged": {
+          "proposals": 56,
+          "boundaryPixels": 8340,
+          "inferenceSeconds": 0.05931808299999908
+        }
+      }
+    },
+    {
+      "id": "real-f4bd8d13fc7e68d0-body-1",
+      "status": "crop-unresolved",
+      "source": {
+        "path": "tmp/heart-training-real/assets/f4bd8d13fc7e68d056351e659a03ed12364eef8878dd47b5dd1fa723eaa02755.jpg",
+        "sha256": "f4bd8d13fc7e68d056351e659a03ed12364eef8878dd47b5dd1fa723eaa02755"
+      }
+    },
+    {
+      "id": "real-f05cf91c134daea9-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/f05cf91c134daea977f2f7058f6f9d64cfdfdf823eb641f0dd454bdef002b998.jpg",
+        "sha256": "f05cf91c134daea977f2f7058f6f9d64cfdfdf823eb641f0dd454bdef002b998"
+      },
+      "nativeMaskSha256": "f2385b1c3e03bdf0a1d1c26109f857c7df797120bcf215aabe5a668b17d49a7e",
+      "rgbInputSha256": "1601cdf8fb90ce39787e5fc63019d5fa7ceb9cc35cc7db6c6d1750729f1a7ac4",
+      "maskInputSha256": "55f5353c4f709b3c70ef210d9c3a571ccbd3b1943e9818ff9dd39d916777cc06",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-f05cf91c134daea9-body-1.npz",
+        "sha256": "2ca365eebdbfd10eebc35db91a433da806a6796e28c2e7a8973bb07e10751715"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            84,
+            109,
+            134
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.691358024691358
+        },
+        "refined": {
+          "counts": [
+            87,
+            109,
+            134
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.7160493827160493
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.13408812880516052,
+        0.06767433881759644
+      ],
+      "maximumHeatmapChange": [
+        0.505126953125,
+        0.3172607421875
+      ],
+      "methods": {
+        "original": {
+          "proposals": 109,
+          "boundaryPixels": 2353,
+          "inferenceSeconds": 0.05915116699999956
+        },
+        "exchanged": {
+          "proposals": 134,
+          "boundaryPixels": 3241,
+          "inferenceSeconds": 0.059481958000001
+        }
+      }
+    },
+    {
+      "id": "real-12f272f48ed09d51-body-1",
+      "status": "crop-unresolved",
+      "source": {
+        "path": "tmp/heart-training-real/assets/12f272f48ed09d51e9442f894ad1f7be29906285bd2009e2edc9ed329e54996a.jpg",
+        "sha256": "12f272f48ed09d51e9442f894ad1f7be29906285bd2009e2edc9ed329e54996a"
+      }
+    },
+    {
+      "id": "real-28a87a8be083f16c-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/28a87a8be083f16c7711d55fad658eb45634e684f9a0f288a63ae1672dd3db6a.jpg",
+        "sha256": "28a87a8be083f16c7711d55fad658eb45634e684f9a0f288a63ae1672dd3db6a"
+      },
+      "nativeMaskSha256": "1aff07ab7f0ca7a1a54e8b86d48ba7303dbfbaf0c73ca2e854af91c240a74817",
+      "rgbInputSha256": "e891e200eef23e44fcafe7aa70c85df15c6a130ef18c37e731e184ecc39d2a62",
+      "maskInputSha256": "bc2632a736c4c7308c575b051f6b01e26cf860337e681f22b505a185cb07d064",
+      "validInputSha256": "679360e07bbcfac4468e2530feca702ec8b4695624e735528777fe3f08400e9e",
+      "validPixels": 144386,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-28a87a8be083f16c-body-1.npz",
+        "sha256": "22e443b13788541952e37156fb451eaf479393a18860059cabee17553c4fa7c4"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            101,
+            121,
+            113
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8632478632478633
+        },
+        "refined": {
+          "counts": [
+            101,
+            121,
+            113
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8632478632478633
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.07601980119943619,
+        0.035270433872938156
+      ],
+      "maximumHeatmapChange": [
+        0.413330078125,
+        0.2149658203125
+      ],
+      "methods": {
+        "original": {
+          "proposals": 121,
+          "boundaryPixels": 6321,
+          "inferenceSeconds": 0.060044459000000217
+        },
+        "exchanged": {
+          "proposals": 113,
+          "boundaryPixels": 6051,
+          "inferenceSeconds": 0.05880020799999919
+        }
+      }
+    },
+    {
+      "id": "real-ce66f9634c2c613b-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/ce66f9634c2c613b521fcc4f96970b3947e00156581b55426978e1e6cf988345.jpg",
+        "sha256": "ce66f9634c2c613b521fcc4f96970b3947e00156581b55426978e1e6cf988345"
+      },
+      "nativeMaskSha256": "c27bd45f6bd4af53defe17fd39e0679f722ef2c1dfdd39c25d89e82e3ccd7b4b",
+      "rgbInputSha256": "9a2c3b2662bb100e5025ed96f58e4e6f3fa49b6204138a2f79ae509a034227cd",
+      "maskInputSha256": "335fb7994f0cb4d1407b57fe6ddccd19f0bc7f71d74d8ae0036a78ee8cbe32eb",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-ce66f9634c2c613b-body-1.npz",
+        "sha256": "629ed44be07a639f3b29b1d4ec08aa11f40aa944924586cccbea3cce0519277e"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            87,
+            108,
+            111
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.7945205479452054
+        },
+        "refined": {
+          "counts": [
+            88,
+            108,
+            111
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8036529680365296
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.08148489892482758,
+        0.03857283666729927
+      ],
+      "maximumHeatmapChange": [
+        0.4248046875,
+        0.25634765625
+      ],
+      "methods": {
+        "original": {
+          "proposals": 108,
+          "boundaryPixels": 4840,
+          "inferenceSeconds": 0.06171941600000075
+        },
+        "exchanged": {
+          "proposals": 111,
+          "boundaryPixels": 4209,
+          "inferenceSeconds": 0.05923204199999965
+        }
+      }
+    },
+    {
+      "id": "real-52e732b98f9b14f1-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/52e732b98f9b14f182f4481dd7318789f751751b9f03f14f14b622d372eaf8f0.jpg",
+        "sha256": "52e732b98f9b14f182f4481dd7318789f751751b9f03f14f14b622d372eaf8f0"
+      },
+      "nativeMaskSha256": "25b2e1122dbbd6b62eb6666f8527144267804ee61807dae66de3d1c91b00f79d",
+      "rgbInputSha256": "29d0b0ee6d5341a3f023964bb01d6fe0c16c99f2523f51eba2c42ebd073b221c",
+      "maskInputSha256": "37eef72e78241b2424a79a3ae65b40579b692ec336c13f3e2eaa78194a47bd08",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-52e732b98f9b14f1-body-1.npz",
+        "sha256": "1b3f4c774d0ea657f7690adfe363b01781b6af2fe356e27cf78cff767cb889dd"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            67,
+            78,
+            76
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8701298701298701
+        },
+        "refined": {
+          "counts": [
+            68,
+            78,
+            76
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8831168831168831
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.022247102111577988,
+        0.014614326879382133
+      ],
+      "maximumHeatmapChange": [
+        0.364501953125,
+        0.222412109375
+      ],
+      "methods": {
+        "original": {
+          "proposals": 78,
+          "boundaryPixels": 6351,
+          "inferenceSeconds": 0.05833408300000009
+        },
+        "exchanged": {
+          "proposals": 76,
+          "boundaryPixels": 5355,
+          "inferenceSeconds": 0.05990824999999944
+        }
+      }
+    },
+    {
+      "id": "real-7e9f6f83ae43ec2a-body-1",
+      "status": "crop-unresolved",
+      "source": {
+        "path": "tmp/heart-training-real/assets/7e9f6f83ae43ec2aad2fc0b37ad4c42d8f111df9cd7ae35b2f8a6649bb76c70d.jpg",
+        "sha256": "7e9f6f83ae43ec2aad2fc0b37ad4c42d8f111df9cd7ae35b2f8a6649bb76c70d"
+      }
+    },
+    {
+      "id": "real-d4f6e3c76cf08ea8-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/d4f6e3c76cf08ea8559e9cd4c349a48edc979fccddde9b3d38a6478672c4c11a.jpg",
+        "sha256": "d4f6e3c76cf08ea8559e9cd4c349a48edc979fccddde9b3d38a6478672c4c11a"
+      },
+      "nativeMaskSha256": "a365f524740c1b7e0d215c8657faf31573dc58c24452fca2a33e258dfa038fcb",
+      "rgbInputSha256": "907c2e794bdb494664412e48387697c63c27ed44f518b40fa024348d408a74fa",
+      "maskInputSha256": "1d1948dff500ae9c7e72907a108c685d001f7246e17ff170d970fc998cd17c10",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-d4f6e3c76cf08ea8-body-1.npz",
+        "sha256": "700469a688e5157d4b5f4736bcded0bcccc4ee91a32d912fcd40740eaebbe8c2"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            66,
+            95,
+            89
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.717391304347826
+        },
+        "refined": {
+          "counts": [
+            71,
+            95,
+            89
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.7717391304347826
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.14327633380889893,
+        0.06522953510284424
+      ],
+      "maximumHeatmapChange": [
+        0.54345703125,
+        0.296875
+      ],
+      "methods": {
+        "original": {
+          "proposals": 95,
+          "boundaryPixels": 6388,
+          "inferenceSeconds": 0.06101287499999941
+        },
+        "exchanged": {
+          "proposals": 89,
+          "boundaryPixels": 5934,
+          "inferenceSeconds": 0.059092791999999505
+        }
+      }
+    },
+    {
+      "id": "real-41b7c3e0b79f1265-body-1",
+      "status": "complete",
+      "source": {
+        "path": "tmp/heart-training-real/assets/41b7c3e0b79f126576ecce2c2f7fb12139af1f4bd06c22a3cc1831e2c8d78be2.jpg",
+        "sha256": "41b7c3e0b79f126576ecce2c2f7fb12139af1f4bd06c22a3cc1831e2c8d78be2"
+      },
+      "nativeMaskSha256": "e659afc4a4868b65c54d818f5dd09d61a3f04399e4134afa6ed649a455460f94",
+      "rgbInputSha256": "16f5dd5443e320911dab16be3b6efc2e400faccdf9ea93802d10b4da4491c0ea",
+      "maskInputSha256": "5a358c472e9257b35e6cc6f98d68a111239f506db3cc9388fef3187125b56161",
+      "validInputSha256": "aacee2841bdea07ec67fb9e2532c8e5706db2c06c4549968918775f58f2cb0f2",
+      "validPixels": 144400,
+      "fields": {
+        "path": "tmp/heart-learning/real-junction-phase-v1/real-41b7c3e0b79f1265-body-1.npz",
+        "sha256": "aeade03e27f0ad11c3fa10813cbc9ba51747fb5d0b0a6fd1b11e33688fddb20d"
+      },
+      "phaseAgreement": {
+        "raw": {
+          "counts": [
+            45,
+            48,
+            51
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.9090909090909091
+        },
+        "refined": {
+          "counts": [
+            44,
+            48,
+            51
+          ],
+          "interpretation": "Across label phases, not against ground truth.",
+          "symmetricAgreement": 0.8888888888888888
+        }
+      },
+      "meanAbsoluteHeatmapChange": [
+        0.019576676189899445,
+        0.0068132635205984116
+      ],
+      "maximumHeatmapChange": [
+        0.3482666015625,
+        0.129638671875
+      ],
+      "methods": {
+        "original": {
+          "proposals": 48,
+          "boundaryPixels": 8404,
+          "inferenceSeconds": 0.05994541699999978
+        },
+        "exchanged": {
+          "proposals": 51,
+          "boundaryPixels": 7884,
+          "inferenceSeconds": 0.06209916599999943
+        }
+      }
+    }
+  ],
+  "visualReview": {
+    "pagesInspected": 11,
+    "photosInspected": 32,
+    "gallery": [
+      {
+        "path": "tmp/heart-learning/real-junction-phase-v1/review-01.jpg",
+        "sha256": "e32b7bd7e0e8bfb826ba4a2512b1f19bbd9a3a71ba184dd65d93d446860c21bd",
+        "ids": [
+          "real-1bcc922200edde26-body-1",
+          "real-80a649a21ea938ae-body-1",
+          "real-f6e5e128449e3cb9-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/real-junction-phase-v1/review-02.jpg",
+        "sha256": "93579a2deed54e945aee5bdf3ccf900a5527213a433520eaf443706621635c74",
+        "ids": [
+          "real-fcbcc23efea92b93-body-1",
+          "real-55704c6e2911bebc-body-1",
+          "real-24b5ed49c9411b11-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/real-junction-phase-v1/review-03.jpg",
+        "sha256": "da8f8472c83167bf8bfdfd7ef202bd06cfdb566b623b0410d4abceac1a8829ea",
+        "ids": [
+          "real-589f606a9d9899f2-body-1",
+          "real-dfa7e4b71b43aa86-body-1",
+          "real-2b0550dd86d23b40-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/real-junction-phase-v1/review-04.jpg",
+        "sha256": "dbcbcc8ce9c5201731aad56494082ec4f3c9077cd2af9101a8efdde0b90b9385",
+        "ids": [
+          "real-2502cdec0720f4ea-body-1",
+          "real-d3f063052599e167-body-1",
+          "real-a126ed5d62adfd92-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/real-junction-phase-v1/review-05.jpg",
+        "sha256": "46ffae96584152572570af32c64e1f296d5d75d0d443d1d9ddce668afefc9f90",
+        "ids": [
+          "real-5088a58018c3aa28-body-1",
+          "real-1a7cfc6be8b164b5-body-1",
+          "real-fe7fb089d1cd86b4-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/real-junction-phase-v1/review-06.jpg",
+        "sha256": "60be1b5d1540d420c2da42c08fff4d0e7b0a3998a06e7f132ed019d288576286",
+        "ids": [
+          "real-8b91ecf546833a3f-body-1",
+          "real-b5317080eec610dc-body-1",
+          "real-c7d1e0ad5050db71-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/real-junction-phase-v1/review-07.jpg",
+        "sha256": "0ef73253f9372f925b360dffe0eb02a8deaca4ba15a6179e5061bc90b48cf5da",
+        "ids": [
+          "real-45ad148d9ec045be-body-1",
+          "real-702942779385436c-body-1",
+          "real-03bddab9c8f384c4-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/real-junction-phase-v1/review-08.jpg",
+        "sha256": "4ef3d582ec650ff6ab6ab8f696c8ab9fe3fbc88f4cf365b0b792146fd1088a1a",
+        "ids": [
+          "real-eb60ff94dfc6e2f8-body-1",
+          "real-af21a4ef38355dfa-body-1",
+          "real-f4bd8d13fc7e68d0-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/real-junction-phase-v1/review-09.jpg",
+        "sha256": "5b02b32c713aaa96895e02c2ca8f92576bc604caf9858e147fb726dc8a14d871",
+        "ids": [
+          "real-f05cf91c134daea9-body-1",
+          "real-12f272f48ed09d51-body-1",
+          "real-28a87a8be083f16c-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/real-junction-phase-v1/review-10.jpg",
+        "sha256": "50ab5b9c8cc63f42cd34945e2457dd6c0d63b1c30d8353af32324edce91aec6a",
+        "ids": [
+          "real-ce66f9634c2c613b-body-1",
+          "real-52e732b98f9b14f1-body-1",
+          "real-7e9f6f83ae43ec2a-body-1"
+        ]
+      },
+      {
+        "path": "tmp/heart-learning/real-junction-phase-v1/review-11.jpg",
+        "sha256": "9a05272704d5a07283290dca5e0392dc10811b48532416ffa5736594b0f4610f",
+        "ids": [
+          "real-d4f6e3c76cf08ea8-body-1",
+          "real-41b7c3e0b79f1265-body-1"
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "ids": [
+          "real-fcbcc23efea92b93-body-1",
+          "real-f05cf91c134daea9-body-1",
+          "real-d4f6e3c76cf08ea8-body-1"
+        ],
+        "finding": "The whale, octopus and bird show substantial shifts or changed corner counts under phase exchange, despite identical photograph pixels and visible mask boundary."
+      },
+      {
+        "ids": [
+          "real-d3f063052599e167-body-1",
+          "real-a126ed5d62adfd92-body-1",
+          "real-af21a4ef38355dfa-body-1",
+          "real-41b7c3e0b79f1265-body-1"
+        ],
+        "finding": "Numerous proposed corners lie along apparently smooth petal, crescent and heart arcs. These are qualitative false-corner observations, not measured precision against annotated curves."
+      },
+      {
+        "ids": [
+          "real-55704c6e2911bebc-body-1",
+          "real-dfa7e4b71b43aa86-body-1",
+          "real-1a7cfc6be8b164b5-body-1",
+          "real-b5317080eec610dc-body-1",
+          "real-702942779385436c-body-1",
+          "real-52e732b98f9b14f1-body-1"
+        ],
+        "finding": "The CNN proposes corners on striped/dotted paper, printed trees/stars, letters and floral ornament. It does not reliably restrict proposals to transitions between sheets. The tree and ornamental flower demonstrate this even where the fixed material mask suppresses most of that ink."
+      },
+      {
+        "ids": [
+          "real-f6e5e128449e3cb9-body-1",
+          "real-fe7fb089d1cd86b4-body-1"
+        ],
+        "finding": "Wrong fixed crops retain packaging, background or an oblique reflective fragment; proposals follow those structures too. This experiment does not alter the cropper."
+      },
+      {
+        "ids": [
+          "real-24b5ed49c9411b11-body-1",
+          "real-2502cdec0720f4ea-body-1",
+          "real-589f606a9d9899f2-body-1",
+          "real-5088a58018c3aa28-body-1",
+          "real-45ad148d9ec045be-body-1",
+          "real-eb60ff94dfc6e2f8-body-1",
+          "real-ce66f9634c2c613b-body-1"
+        ],
+        "finding": "Many clear grid corners and silhouette details do receive proposals. That potential usefulness coexists with false smooth-edge proposals; complete usable graph recovery has not been measured."
+      }
+    ]
+  },
+  "rootCauseEvidence": [
+    "The same frozen model, RGB, valid pixels and exact binary boundary produce different fields when only mask label names change. This directly isolates phase dependence from cropping, photometric differences, fitting or training randomness.",
+    "The original checkpoint source hashes match the inspected model.py, train.py and data.py. The local detail branch receives the signed binary mask as a fourth channel; its architecture has no A/B-exchange constraint. Training applies joint spatial reflections, but no explicit mask-label exchange.",
+    "The phase dependence is therefore an unhandled model symmetry. The experiment does not prove that phase augmentation alone will remove false corners or improve reconstructed templates.",
+    "Printed-decoration proposals reveal a separate semantic failure: RGB corners are not necessarily material-boundary corners. Enforcing label symmetry alone cannot establish paper identity."
+  ],
+  "nextExperiment": "Evaluate a fixed symmetric average of both phase predictions against the existing synthetic reference corners and boundaries, using unchanged thresholds and complete cohorts. It must preserve useful localization, not merely achieve phase consistency. Material-boundary supervision for printed paper remains a separate requirement.",
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "totalProbeSeconds": 8.203699499999999,
+    "artifactBytesBeforeFinalReport": 28559821,
+    "maximumArtifactMiB": 50,
+    "downloads": 0,
+    "sourcePhotoCopies": 0,
+    "newTrainingSteps": 0,
+    "newSolves": 0
+  },
+  "limitations": [
+    "The existing CNN saw procedural photographs, not this real development cohort.",
+    "These repeatedly inspected real photos are not an untouched holdout.",
+    "The mask itself can miss true material boundaries or contain printed-ink artifacts.",
+    "Phase stability is necessary for reliable proposals but does not prove useful graph connectivity or legal cutting paths.",
+    "Fields are stored in Float16, matching the historical localization evaluator. This diagnostic has no manually annotated real junction ground truth.",
+    "Native CPU times exclude image loading and processing and do not establish browser or mobile latency.",
+    "The deployed U2NETP crop fallback is a different network; its weights and production behavior are unchanged."
+  ],
+  "validation": {
+    "baseCI": {
+      "path": "tmp/heart-learning/real-junction-phase-base-ci.json",
+      "sha256": "26e1b650726ab640593430c07c15130f4be405aafdafb635c77c596fbbb1602e"
+    },
+    "baseCommit": "6e8823256ec889369514c90bd662f761d4ae5843",
+    "baseCIPassed": true,
+    "baseDeployPassed": true,
+    "productionChanges": false,
+    "probeExitCode": 0,
+    "independentAuditExitCode": 0
+  }
+}
