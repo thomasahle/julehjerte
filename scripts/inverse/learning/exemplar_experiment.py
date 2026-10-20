@@ -9,7 +9,7 @@ import torch
 from torch.nn import functional as F
 
 from data import digest
-from exemplar_projection import crop_context, sample_indices, score_ridge
+from exemplar_projection import crop_context, sample_indices
 from paper_exemplars import lobe_samples, overlap_region, quad_transform, score_exemplars
 from preserved_candidate import pinned
 from u2netp_adaptation import input_tensor
@@ -82,7 +82,7 @@ def measurement(item, field, region):
 
 
 def development_evaluation(plan, output, models, features, rescale, normalize,
-                           source_hashes, save, expected_masks=None):
+                           source_hashes, save, expected_masks=None, residual_methods=()):
     """Fixed production RGB/crops, all cases, and optional exact mask replay.
 
     Returns rows and artifact references. No labels from this development
@@ -100,6 +100,7 @@ def development_evaluation(plan, output, models, features, rescale, normalize,
     assert digest((input_root/'crops'/'report.json').read_bytes()) == pipeline['cropReplay']['sha256']
     assert [r['id'] for r in development['rows']] == plan['expectedDevelopmentCases']
     methods = list(models)
+    assert set(residual_methods) <= set(methods)
     manifest = {**inputs, 'methods': methods, 'rows': [], 'plan': plan['_reference'],
                 'scope': plan['scope'], 'sourceHashes': source_hashes}
     crop_replay = {'status': 'complete', 'rows': [], 'scope': plan['scope']}
@@ -152,10 +153,11 @@ def development_evaluation(plan, output, models, features, rescale, normalize,
         row.update(status='complete', rgbReferenceExact=True, masks={}, differences={}, exactReplays={})
         for method, model in models.items():
             with torch.no_grad():
+                residual = method in residual_methods
                 context = model.context(frozen)
-                classifier = model.fit(rgb, context, indices, count)
+                classifier = model.fit(rgb, context, indices, count, residual=residual)
                 high = crop_context(context, matrix, photo.shape[1::-1], n)
-                field = score_ridge(torch.cat([crop_rgb, high]), classifier).sigmoid().numpy()
+                field = model.score(crop_rgb, high, classifier, residual=residual).sigmoid().numpy()
             mask = field >= .5
             mask[~valid] = False
             if method in (expected_masks or {}):

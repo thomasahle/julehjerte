@@ -50,8 +50,8 @@ def score_ridge(features, classifier):
     return (((features.permute(1, 2, 0).double()-centre)/scale)@weight).to(features.dtype)
 
 
-def context_residual_score(rgb, context, indices, per_paper):
-    """Fit context only to the residual of the lobe-fitted RGB classifier.
+def fit_context_residual(rgb, context, indices, per_paper):
+    """Fit on the full photo's exposed lobes, independently of query pixels.
 
     This is an offline alternative to joint ridge fitting, not a safety gate:
     an unseen context value can still worsen a good RGB prediction.
@@ -62,8 +62,21 @@ def context_residual_score(rgb, context, indices, per_paper):
     targets = torch.cat([-torch.ones(per_paper), torch.ones(per_paper)]).to(rgb_low)
     residual = targets-score_ridge(rgb_low, base).flatten()[indices]
     correction = fit_ridge(context, indices, per_paper, target=residual)
+    return base, correction
+
+
+def score_context_residual(rgb, context, classifier):
+    """Score RGB and context already sampled at the same query pixel centres."""
+    if rgb.shape[-2:] != context.shape[-2:]:
+        raise ValueError('Require matching RGB/context query grids')
+    base, correction = classifier
+    return score_ridge(rgb, base)+score_ridge(context, correction)
+
+
+def context_residual_score(rgb, context, indices, per_paper):
+    classifier = fit_context_residual(rgb, context, indices, per_paper)
     high = F.interpolate(context[None], rgb.shape[-2:], mode='bilinear', align_corners=False)[0]
-    return score_ridge(rgb, base)+score_ridge(high, correction)
+    return score_context_residual(rgb, high, classifier)
 
 
 class ExemplarProjection(nn.Module):
@@ -75,18 +88,23 @@ class ExemplarProjection(nn.Module):
     def context(self, frozen):
         return self.projection(frozen[None])[0]
 
-    def fit(self, rgb, context, indices, per_paper):
+    def fit(self, rgb, context, indices, per_paper, *, residual=False):
+        if residual:
+            return fit_context_residual(rgb, context, indices, per_paper)
         size = context.shape[-2:]
         rgb_low = F.interpolate(rgb[None], size, mode='bilinear', align_corners=False)[0]
         return fit_ridge(torch.cat([rgb_low, context]), indices, per_paper)
 
+    def score(self, rgb, context, classifier, *, residual=False):
+        if residual:
+            return score_context_residual(rgb, context, classifier)
+        return score_ridge(torch.cat([rgb, context]), classifier)
+
     def forward(self, rgb, frozen, indices, per_paper, *, residual=False):
         context = self.context(frozen)
-        if residual:
-            return context_residual_score(rgb, context, indices, per_paper)
-        classifier = self.fit(rgb, context, indices, per_paper)
+        classifier = self.fit(rgb, context, indices, per_paper, residual=residual)
         high = F.interpolate(context[None], rgb.shape[-2:], mode='bilinear', align_corners=False)[0]
-        return score_ridge(torch.cat([rgb, high]), classifier)
+        return self.score(rgb, high, classifier, residual=residual)
 
 
 def overlap_loss(score, labels, factor=4., radius=2, temperature=4.):
