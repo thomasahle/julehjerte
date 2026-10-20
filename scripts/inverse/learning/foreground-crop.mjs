@@ -46,22 +46,30 @@ export function foregroundFields(work,probability,resolution,window,{paletteMode
   return{w,h,paper,red,white,chroma,r,g,b,mask:close(paper,w,h,2),pd:signedDistance(close(paper,w,h,1),w,h),rd:signedDistance(close(red,w,h,1),w,h),wd:signedDistance(close(white,w,h,1),w,h),palette:{method:'offline-supplied-foreground',colors:centers,separation}};
 }
 
-let locator;
-async function injectedLocator(){
-  if(locator)return locator;
+const locators=new Map();
+async function injectedLocator(outerBoundarySampling){
+  if(locators.has(outerBoundarySampling))return locators.get(outerBoundarySampling);
   const file=new URL('../../../static/inverse/locator/locator.js',import.meta.url);
   let source=await fs.readFile(file,'utf8');
   const before=LOCATOR_FIELD_SELECTION;
   if(source.split(before).length!==2)throw new Error('Locator field seam changed; re-audit adapter.');
   source=source.replace(before,'baseFields=options.foregroundFields(work);');
+  if(outerBoundarySampling){
+    const seam='const lines=lowerEdgeLines(f,box,{extendLowerBand})';
+    if(source.split(seam).length!==2)throw new Error('Locator edge-sampling seam changed; re-audit adapter.');
+    source=source.replace(seam,'const lines=lowerEdgeLines(outerBoundaryFields(f),box,{extendLowerBand})');
+    source=`import {outerBoundaryFields} from '${new URL('./outer-boundary-fields.mjs',import.meta.url).href}';\n`+source;
+  }
   source=source.replace(/from '(\.\/[^']+)'/g,(_,p)=>`from '${new URL(p,file).href}'`);
-  locator=(await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'))).createMotifDetector;
+  const locator=(await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'))).createMotifDetector;
+  locators.set(outerBoundarySampling,locator);
   return locator;
 }
 
-export async function detectForegroundCrop(input,{roi,probability,resolution=256,window,refineFields,material,paletteMode='threshold'}={}){
+export async function detectForegroundCrop(input,{roi,probability,resolution=256,window,refineFields,material,paletteMode='threshold',outerBoundarySampling=false}={}){
   if(!['threshold','confidence-weighted'].includes(paletteMode)||material&&paletteMode!=='threshold')throw new TypeError('Invalid foreground palette mode for these fields.');
-  const create=await injectedLocator(),started=performance.now();
+  if(typeof outerBoundarySampling!=='boolean')throw new TypeError('Expected a boolean outer-boundary sampling option.');
+  const create=await injectedLocator(outerBoundarySampling),started=performance.now();
   let refinement=null;
   const detect=create({width:input.imageWidth,height:input.imageHeight,data:input.rgba},{roi,maxSize:650,foregroundFields:work=>{
     const fields=material?materialFields(work,probability,material,resolution,window):foregroundFields(work,probability,resolution,window,{paletteMode}),refined=fields&&refineFields?refineFields(fields):fields;
@@ -81,7 +89,8 @@ export async function detectForegroundCrop(input,{roi,probability,resolution=256
       }
     }
   }
-  return{status:proposal.status,reason:proposal.reason,proposal,attempts,...(refinement?{refinement}:{}),elapsedMs:performance.now()-started,
+  return{status:proposal.status,reason:proposal.reason,proposal,attempts,...(refinement?{refinement}:{}),
+    ...(outerBoundarySampling?{boundarySampling:'enclosed-background-8-connected'}:{}),elapsedMs:performance.now()-started,
     candidates:proposal.quad?[{quad:pixelCentresToEdges(proposal.quad),outline:proposal.outline.map(pixelCentresToEdges),locator:proposal,
       provenance:{method:'Offline foreground prediction plus unchanged locator geometry and support gates',humanReviewed:false}}]:[]};
 }

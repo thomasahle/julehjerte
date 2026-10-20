@@ -123,6 +123,8 @@ const postprocess=plan.protocol.postprocess;
 assert.ok(!postprocess||(saliency&&['weighted-palette','subpixel-distance','both'].includes(postprocess)));
 const fieldPalette=plan.protocol.fieldPalette??'threshold';
 assert.ok(fieldPalette==='threshold'||saliency&&fieldPalette==='confidence-weighted');
+const outerBoundarySampling=plan.protocol.outerBoundarySampling??false;
+assert.ok(typeof outerBoundarySampling==='boolean'&&(!outerBoundarySampling||saliency));
 const control=plan.controlRun?await pinned(plan.controlRun):null;
 if(control){
  assert.equal(control.schema,'material-pair-pipeline-1');assert.equal(control.status,'complete');
@@ -142,7 +144,7 @@ const report={schema:'material-pair-pipeline-1',status:'running',configuration,m
  runtimeStage:plan.runtimeStage??'browser',
  ...(control?{reusedProductionRun:plan.controlRun}:{})};
 for(const file of [new URL(import.meta.url).pathname,'scripts/inverse/learning/photo-crop-fallback.mjs','scripts/inverse/learning/partial-photo-crop.mjs','scripts/inverse/learning/foreground-crop.mjs',
- 'scripts/inverse/learning/foreground-region.mjs','scripts/inverse/learning/locator-field-source.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/learning/continuous-foreground.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs',
+ 'scripts/inverse/learning/foreground-region.mjs','scripts/inverse/learning/locator-field-source.mjs','scripts/inverse/learning/material-fields.mjs','scripts/inverse/learning/continuous-foreground.mjs','scripts/inverse/learning/outer-boundary-fields.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs',
  ...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator|vendor)\/.+\.(js|mjs|wasm)$/.test(p)).map(p=>'static/inverse/'+p)])report.sourceHashes[file]=hash(await fs.readFile(file));
 await fs.mkdir(args.output,{recursive:false});
 const save=()=>fs.writeFile(path.join(args.output,'report.json'),JSON.stringify(report,null,2)+'\n');
@@ -211,7 +213,7 @@ try{
   const selected=await (saliency?selectReviewedPhotoCrop:selectPhotoCrop)(source,{...(production?{productionCrop:()=>production}:{}),learnedCrop:async()=>{
    const fields=saliency?null:input.assets[manifest.methods[0]],body=await field(saliency?input.assets['probability.f32']:fields.body),start=performance.now();let detected;
    if(saliency){
-    detected=await detectForegroundCrop(source,{probability:body,resolution:manifest.resolution,window:input.window,paletteMode:fieldPalette,
+    detected=await detectForegroundCrop(source,{probability:body,resolution:manifest.resolution,window:input.window,paletteMode:fieldPalette,outerBoundarySampling,
      ...(postprocess?{refineFields:fields=>continuousForeground(fields,{palette:postprocess!=='subpixel-distance',distance:postprocess!=='weighted-palette'})}:{})});
    }else if(cropStrategy==='foreground-region-rgb'){
     region=foregroundRegion({probability:body,resolution:256,window:input.window,imageWidth:source.imageWidth,imageHeight:source.imageHeight});
