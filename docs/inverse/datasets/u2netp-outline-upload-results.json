@@ -1,0 +1,212 @@
+{
+  "schema": "outline-upload-release-audit-1",
+  "date": "2026-10-20",
+  "status": "release-candidate-qa-passed",
+  "implementationCommit": "5a91e758cfde3f6b1b72d65acf1bc6a9e6caf966",
+  "pullRequest": "https://github.com/thomasahle/julehjerte/pull/17",
+  "plan": {
+    "path": "docs/inverse/datasets/u2netp-outline-upload-plan.json",
+    "sha256": "ec5ac337bf28d840d6ad4759c27fd52320dcf7a837d62b5268e79cdeeedc9f4d"
+  },
+  "replay": {
+    "path": "tmp/heart-learning/neural-outline-upload-replay-v1.json",
+    "sha256": "b2f3c2c1822ff67e61775f5a7b356ab033ea41268eacd48e7824084aa612552a"
+  },
+  "replaySummary": {
+    "cases": 50,
+    "preservedCrops": 45,
+    "newOutlineCrops": 5,
+    "original32Preserved": 32,
+    "classifiedMasksComparedExactly": 38
+  },
+  "browser": {
+    "path": "tmp/heart-learning/neural-outline-upload-browser-v2/report.json",
+    "sha256": "fd351d3d21fdab9347632e6b128234e1a3cece7537c42ebed4930ce0335961ba"
+  },
+  "browserSummary": {
+    "checksPassed": 11,
+    "newCropsAndMasksMatchedExactly": 5,
+    "angelSolvePassed": true,
+    "crossSolvePassed": true,
+    "missingModelRecovery": true,
+    "cancellationAndReopen": true,
+    "crowdedFrameRequiresSelection": true,
+    "ownedBrowserClosed": true,
+    "photosUploadedToServer": false
+  },
+  "servedAssets": {
+    "path": "tmp/heart-learning/neural-outline-served-assets.json",
+    "sha256": "4ea0f60cef7d14eb845bc4d43717911d1cc9e08f06be116ea11df1e56d5eb2fc"
+  },
+  "localChecks": {
+    "path": "tmp/heart-learning/neural-outline-release-checks.json",
+    "sha256": "76e7f1b29fabdfa1fe78630bf3eb666ae9803b1f1f13805369c4d3d4ef3544c9"
+  },
+  "localSummary": {
+    "applicationTestsPassed": 2374,
+    "applicationTestsSkipped": 142,
+    "focusedTestsPassed": 25,
+    "checkPassed": true,
+    "lintPassed": true,
+    "buildPassed": true
+  },
+  "focusedLog": {
+    "path": "tmp/heart-learning/neural-outline-upload-focused.log",
+    "sha256": "d1be484e54e8b540cba41264a29f82527db4b03ba0a6f727a4f271b68857a832"
+  },
+  "ci": {
+    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39367745588",
+    "headSha": "5a91e758cfde3f6b1b72d65acf1bc6a9e6caf966",
+    "correctnessPassed": 1183,
+    "correctnessFailures": 0,
+    "correctnessShards": [
+      {
+        "jobId": 118448344204,
+        "passed": 244,
+        "failures": 0,
+        "log": {
+          "path": "tmp/heart-learning/neural-outline-ci-118448344204.log",
+          "sha256": "676ffd6089ce2fef0435361f8b9cc7ffe465a9517b7c8b165fc052943ba89edd"
+        }
+      },
+      {
+        "jobId": 118448344206,
+        "passed": 363,
+        "failures": 0,
+        "log": {
+          "path": "tmp/heart-learning/neural-outline-ci-118448344206.log",
+          "sha256": "85c45aa1a7fc2fa06a7f0ae08e4a659df793f4e284d06d8282591f677571beb3"
+        }
+      },
+      {
+        "jobId": 118448344223,
+        "passed": 311,
+        "failures": 0,
+        "log": {
+          "path": "tmp/heart-learning/neural-outline-ci-118448344223.log",
+          "sha256": "74c379d0f1f5c84869b844b7fd06c4714aab39badfd5597bb9a7cbb3ace717ef"
+        }
+      },
+      {
+        "jobId": 118448344301,
+        "passed": 265,
+        "failures": 0,
+        "log": {
+          "path": "tmp/heart-learning/neural-outline-ci-118448344301.log",
+          "sha256": "7d14a3afa8de9daaca8c29bdb1c6e120f6ea316f4bcfaa6b42b350690723cf6d"
+        }
+      }
+    ],
+    "buildPassed": true,
+    "timingStatus": "Complete; original numeric targets retained as advisory.",
+    "conclusion": "success",
+    "timedQuality": {
+      "passed": 61,
+      "total": 77,
+      "missedOriginalTargets": 16,
+      "advisory": true,
+      "shards": [
+        {
+          "jobId": 118448344218,
+          "passed": 40,
+          "total": 51,
+          "missedOriginalTargets": 11,
+          "log": {
+            "path": "tmp/heart-learning/neural-outline-ci-118448344218.log",
+            "sha256": "d09e2792dbd901579933f3d696680f1623094ac01db6838f44c1c0db3acf33c1"
+          }
+        },
+        {
+          "jobId": 118448344282,
+          "passed": 21,
+          "total": 26,
+          "missedOriginalTargets": 5,
+          "log": {
+            "path": "tmp/heart-learning/neural-outline-ci-118448344282.log",
+            "sha256": "5267df156d336d2c9235aa7970dab731c801d3e9e1f07d1857c6704f3b6e6040"
+          }
+        }
+      ]
+    }
+  },
+  "editableCross": {
+    "nativeReference": {
+      "path": "tmp/heart-learning/neural-outline-browser-cross-editable-v1/results.json",
+      "sha256": "c36c2623616e2a405b97a1c28aa26ff2137d346ace789351e7ceccb6f5cc440a"
+    },
+    "uiReference": {
+      "path": "tmp/heart-learning/neural-outline-browser-cross-ui-editable-v1/results.json",
+      "sha256": "11ef88befe2e7259f3a12ce8314011b498da6616007be6bdca0b74c90fd314ce"
+    },
+    "nativeResolution": 209,
+    "uiResolution": 400,
+    "nativeEditableMaskError": 0.008081316819669879,
+    "uiEditableMaskError": 0.01280625,
+    "uiDisplayedPercent": 1.3,
+    "missingFeatures": 0,
+    "geometryPassed": true,
+    "paperPassed": true,
+    "explanation": "The solver retains the native 209-pixel classified crop, while Paint compares the editable heart with its 400-pixel resampled drawing. Both references were audited using production conversion, SVG round-trip, rasterization, geometry and paper checks. The displayed 1.3% is consistent with the 400-pixel audit; do not substitute the lower native-reference score."
+  },
+  "visualReview": {
+    "screenshotsInspected": [
+      {
+        "path": "tmp/heart-learning/neural-outline-upload-browser-v2/angel-import.png",
+        "sha256": "1939bcf17d8bf85a4cf81251725276031b194e8adf49be34f330ff749a6e46eb"
+      },
+      {
+        "path": "tmp/heart-learning/neural-outline-upload-browser-v2/angel-solved.png",
+        "sha256": "73f144837facbc9e6455300141deb46bcca6e05fbe66306c528d2a0311666c92"
+      },
+      {
+        "path": "tmp/heart-learning/neural-outline-upload-browser-v2/outline-1-import.png",
+        "sha256": "ab03ee592f84b95fc0171600de522ecaf6cba74e75a6d5685715477eca4a38c8"
+      },
+      {
+        "path": "tmp/heart-learning/neural-outline-upload-browser-v2/outline-cross-solved.png",
+        "sha256": "d75b12c7d241420059c71ab152b20284381e20cb236e9124eb45d73a5b30fe97"
+      },
+      {
+        "path": "tmp/heart-learning/neural-outline-upload-browser-v2/outline-2-import.png",
+        "sha256": "4f67b5b5bed760887b13b5d52f8e4b17dd535b9296bbfc8725987fd947e04034"
+      },
+      {
+        "path": "tmp/heart-learning/neural-outline-upload-browser-v2/outline-3-import.png",
+        "sha256": "c54e9b79eae28b273bc079507584fadba6cf2254ecae7ee1d032dbb43dbabfa8"
+      },
+      {
+        "path": "tmp/heart-learning/neural-outline-upload-browser-v2/outline-4-import.png",
+        "sha256": "975a3303be4b254a56252a05634878ec42d31bb4ca7f9958755e8249c26ce270"
+      },
+      {
+        "path": "tmp/heart-learning/neural-outline-upload-browser-v2/outline-5-import.png",
+        "sha256": "1d24829a521b6c512c67d288faa4d3daa0cd2df2f8670c30ac2fe65efd76a915"
+      }
+    ],
+    "allEightInspected": true,
+    "observations": [
+      "Angel and cross remain recognizable; border irregularities persist.",
+      "Printed birds continue onto the lobes, so the square mask does not represent the complete decoration.",
+      "Newspaper text still dominates its mask; locating the paper does not recover paper identity.",
+      "The reflective bird still has glare-related holes and noisy features.",
+      "The checker retains a handle/notch intrusion and an outer rim."
+    ]
+  },
+  "failedBrowserAttempt": {
+    "report": {
+      "path": "tmp/heart-learning/neural-outline-upload-browser-v1/report.json",
+      "sha256": "8e07af2f78781d18b9575731a289da293380adf810126d731f5f5b28a3c670ce"
+    },
+    "reason": "QA driver tried to import the next image while showing the solved preview. The application intentionally disables drawing/import there. Added the existing Return to mask step; no application fix or validation threshold change was needed."
+  },
+  "modelWeightsChanged": false,
+  "defaultInsetEnabled": false,
+  "productionDeployed": false,
+  "limitations": [
+    "This is the same inspected 50-photo development cohort, not unseen-photo accuracy.",
+    "Suggested outline-only corners require review; material classification is unchanged.",
+    "The existing strict WASM-versus-Torch numerical tolerance remains failed; output-level parity is separately verified.",
+    "No mobile performance or physical assembly claim.",
+    "The full correctness suite ran in branch CI; it was not duplicated locally. Local validation includes all application tests, targeted crop tests, 50-case parity and real-browser checks."
+  ]
+}

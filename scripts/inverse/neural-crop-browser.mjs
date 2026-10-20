@@ -7,7 +7,8 @@ import {heartPhoto} from './crop-fixture.mjs';
 const args=Object.fromEntries(process.argv.slice(2).map(a=>a.replace(/^--/,'').split('=')));
 assert.deepEqual(Object.keys(args).sort(),args.outlines?['origin','outlines','output']:['origin','output']);
 const {chromium}=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
-const report={schema:'neural-upload-browser-1',status:'running',checks:[],errors:[],modelRequests:0,externalRequests:[],screenshots:[]};
+const report={schema:'neural-upload-browser-1',status:'running',checks:[],errors:[],modelRequests:0,externalRequests:[],screenshots:[],
+ scriptSha256:createHash('sha256').update(await fs.readFile(import.meta.filename)).digest('hex')};
 const save=()=>fs.writeFile(path.join(args.output,'report.json'),JSON.stringify(report,null,2)+'\n');
 await fs.mkdir(args.output);
 const source=JSON.parse(await fs.readFile('tmp/heart-learning/u2netp-balanced-body-expanded-pipeline-v1/report.json'));
@@ -111,6 +112,7 @@ try{
     await extra.page.screenshot({path:path.join(args.output,'outline-cross-solved.png'),fullPage:true});
     report.screenshots.push('outline-cross-solved.png');
     await check('New body-only cross crop solves through the actual Find snit flow');
+    await extra.page.getByRole('button',{name:'Tilbage til masken',exact:true}).first().click();
    }else{
     await extra.page.keyboard.press('Escape');await extra.page.locator('#paint-import-title').waitFor({state:'hidden'});
    }

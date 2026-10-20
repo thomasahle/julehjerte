@@ -371,9 +371,8 @@ current crop decisions exactly and inspects all seven comparison galleries.
 Preserving strong current crops and retaining the existing 0.05 whole-body
 Dice improvement requirement leaves **all 32 original selections unchanged**.
 The same rule selects exactly the five tested alternatives in the expanded
-18-photo set. This is an offline selection simulation; migration into the
-application still needs an explicit distinction between measured colour
-evidence and body-only evidence, followed by runtime parity checks.
+18-photo set. That offline selection simulation is now reproduced by the
+application migration below.
 
 The [paired inset comparison](u2netp-outline-inset-results.json) tests all five
 new proposals against the same original photographic coordinates. One-percent
@@ -384,6 +383,26 @@ remains a material-classification failure. All five before/after panels were
 inspected. **No default inset is enabled.** This agrees with the
 [earlier 26-case study](automatic-crop-inset-2026-10-19.json), where 24 cases
 worsened. Future border refinement must follow evidence for individual edges.
+
+The [production migration audit](u2netp-outline-upload-results.json) now verifies
+an explicit body-outline fallback after both existing crop attempts. Measured
+colour evidence and body-only evidence are separate; absent colour measurements
+cannot pass the colour-support check. The same model and classifier are retained.
+All **50 declared crop selections** match (45 preserved, five newly supported),
+and all **38 available classified masks** match exactly. All 11 actual browser
+checks pass, including five new uploads, angel and cross reconstruction,
+unavailable-model recovery, cancellation/reopen and crowded-frame handling.
+The cross's editable result has **1.280625% disagreement against the UI's
+400-pixel mask**, with geometry, paper and feature checks passing.
+
+Type checks, lint, build, 2,374 application tests and all 1,183 CI inverse
+correctness tests pass. The original timed quality targets remain advisory:
+**61/77 pass, with 16 misses retained**. This crop change does not modify the
+solver or its benchmark targets; the timed results are not evidence of a solver
+quality improvement. All eight browser screenshots were inspected. Printed
+decoration, glare and handle/border intrusions remain unresolved. These are the
+same development photos, not an unseen test set. Release PR #17 is ready for
+merge; deployment has not yet been verified.
 
 #### Latest neural experiments
 
