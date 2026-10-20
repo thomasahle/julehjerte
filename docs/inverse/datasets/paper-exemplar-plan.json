@@ -1,0 +1,62 @@
+{
+  "schema": "paper-exemplar-plan-1",
+  "date": "2026-10-20",
+  "status": "predeclared",
+  "question": "Can paper examples from the exposed lobes distinguish printed ink from paper identity better than the unconditioned head, and do frozen neural features add information beyond local RGB texture?",
+  "priorExperiments": [
+    "docs/inverse/datasets/u2netp-paired-results.json",
+    "docs/inverse/datasets/u2netp-material-palette-pipeline-results.json",
+    "docs/inverse/datasets/material-context-detail-results.json"
+  ],
+  "distinction": "Previous palette experiments fitted two uniform RGB colours from predicted seeds. This diagnostic learns a balanced linear classifier separately on each photo, from geometric exposed-lobe samples, and compares local RGB texture with the same features plus frozen U2NETP decoder features. It does not update any neural weights or use overlap labels to fit classifiers.",
+  "training": {
+    "path": "tmp/heart-learning/u2netp-paired-control-v1/report.json",
+    "sha256": "6bf4bbfa34ed29a7002c029d28bbebf19ba7db903fb2b347a77168904a8ca4d8"
+  },
+  "development": {
+    "path": "tmp/heart-learning/u2netp-paired-control-native-v1/report.json",
+    "sha256": "74d1e85d65d3d491616f512faee541bfab6bc2f0848858c3c95232aca3410b4c"
+  },
+  "crops": {
+    "path": "tmp/heart-learning/neural-outline-upload-replay-v1.json",
+    "sha256": "b2f3c2c1822ff67e61775f5a7b356ab033ea41268eacd48e7824084aa612552a"
+  },
+  "features": {
+    "resolution": 160,
+    "outputResolution": 320,
+    "layers": [
+      "stage1d",
+      "stage2d",
+      "stage3d"
+    ],
+    "rgb": "Original uint8 RGB resized to 320 by float32 bilinear interpolation, local 7x7 mean and standard deviation with reflected padding; all nine channels downsampled to 160.",
+    "neural": "Concatenate 64 channels from each frozen decoder layer after bilinear resizing to 160, alongside the identical nine RGB texture channels. No image coordinates are features.",
+    "normalization": "Per-feature mean and standard deviation from balanced lobe samples only; standard deviation floor 0.0001. Same normalization and ridge regularization in both arms."
+  },
+  "classifier": {
+    "regularization": 0.1,
+    "minimum": 32,
+    "maximum": 1024
+  },
+  "samples": {
+    "rule": "Canonical semicircles at (0.5,0) and (0,0.5), radius 0.42, farther than 0.08 outside the overlap. Equal samples per paper, capped at 1024; deterministic evenly spaced row-major selection. No predicted-body gating, annotation or overlap identity enters sampling.",
+    "synthetic": "All 96 previous training views from 32 geometries. Use true camera/corners solely as a privileged conditioning diagnostic; this does not test automatic cropping or source generalization.",
+    "development": "All 32 previously inspected, source-separated development photos. Freeze the latest production replay: 26 quads and six unresolved cases. Keep missing lobes, incorrect crops and all other failures in the denominator; no manual crop repair."
+  },
+  "evaluation": {
+    "synthetic": "Use every known material pixel inside the true overlap, independent of predicted body. Report expected hard-label error against fractional targets, joint errors including missed body, and boundary/interior breakdown. Whole-image A/B assignment is for scoring only. Recompute prior-head metrics in the same overlap; do not compare directly to historical full-body averages.",
+    "development": "Inspect every photo, including failures, with the prior head and both exemplar arms. No unavailable exact-artwork metric or template success rate. Display in fixed-quad overlap with the existing body; retain raw body/material parity checks against prior inference.",
+    "gallerySelection": "All 32 development photos, and the union of each method's eight highest-error synthetic cases plus any sample failures. Retain all 96 synthetic metric records and new score fields.",
+    "numeric": "Save float32 low-resolution ridge scores losslessly; bilinearly upsample scores and apply sigmoid at 320, threshold 0.5. No threshold or hyperparameter sweep."
+  },
+  "resources": {
+    "workers": 1,
+    "threads": 1,
+    "nice": 15,
+    "maximumArtifactMiB": 48,
+    "minimumFreeGiB": 10,
+    "newPhotoDownloads": 0,
+    "newPhotoCopies": 0
+  },
+  "scope": "Offline mechanism diagnostic for NN paper conditioning. Synthetic geometry is privileged and examples are training diagnostics; real photos are repeatedly inspected development data. No production integration, end-to-end accuracy, cut legality or unseen-generalization claim. All failures retained. Previous frozen-body defects remain separate limitations."
+}
