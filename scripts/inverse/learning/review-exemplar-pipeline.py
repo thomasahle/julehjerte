@@ -117,7 +117,9 @@ def main():
                 label = {'production': 'Production', 'rgb-only': 'Lobe RGB',
                          'neutral-deviation': 'Lobe neutral std',
                          'synthetic-control-joint': 'Joint context',
-                         'synthetic-control-residual': 'Residual context'}.get(method, method)
+                         'synthetic-control-residual': 'Residual context',
+                         'joint-trained-residual': 'Joint-trained residual',
+                         'residual-trained-residual': 'Residual-trained residual'}.get(method, method)
                 labels.extend([label+' mask', label+' weave'])
             # No refit: isolate target changes from which candidate the search
             # found. Physical checks belong to the source candidate; these
