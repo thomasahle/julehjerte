@@ -1,6 +1,6 @@
 {
   "schema": "border-fragment-repair-results-1",
-  "status": "evaluation-complete-ci-running",
+  "status": "complete",
   "runtimeCommit": "5d86da68",
   "scope": "A fitter regression isolated during neural-model comparison. The NN, crop coordinates and source masks are unchanged. The experimental material projection is not being promoted.",
   "plan": {
@@ -1164,7 +1164,23 @@
     "ci": {
       "url": "https://github.com/thomasahle/julehjerte/actions/runs/39391283817",
       "sha": "5d86da68f6b62eabf13e099eb6a083ef7b92bcea",
-      "status": "running"
+      "status": "completed",
+      "conclusion": "success",
+      "record": {
+        "path": "tmp/heart-learning/border-fragment-ci-v1.json",
+        "sha256": "25db32360baae2821e51b47033f84f96ea494e33e7e40dd07445a71b2cc74ea7"
+      },
+      "applicationPassed": 2374,
+      "applicationSkipped": 142,
+      "inverseCorrectnessPassed": 1188,
+      "advisoryPassed": 62,
+      "advisoryTotal": 78,
+      "advisoryMisses": 16,
+      "dinosaurAdvisoryPassed": false,
+      "dinosaurFailure": {
+        "path": "tmp/heart-learning/border-fragment-ci-dinosaur-failure.json",
+        "sha256": "fba0b04563411bba274edebaf44cfa8f57eaf9434173a1f5d6e3ee32f6e53176"
+      }
     },
     "editableExitCode": 1,
     "editableExitExplanation": "Two retained conversion failures from the full cohort; not a unit-test failure.",
@@ -1191,14 +1207,20 @@
         "seconds": 47.868214208000005,
         "log": "tmp/heart-learning/border-fragment-validation-v1/build.log"
       }
-    ]
+    ],
+    "finalFocused": {
+      "path": "tmp/heart-learning/border-fragment-final-tests-v1.log",
+      "sha256": "1831840b4a9127bcdf27fc1fbb9c9fe3a39d630e588d97eab598afe26bfd3cf1",
+      "passed": 4,
+      "failed": 0
+    }
   },
   "resources": {
     "workers": 1,
     "nice": 15,
     "newSourcePhotos": 0,
     "browserSessions": 0,
-    "uniqueArtifactBytesInStudyRoots": 38720999,
+    "uniqueArtifactBytesInStudyRoots": 39765196,
     "artifactRootNames": [
       "tmp/heart-learning/border-priority-baseline-v1",
       "tmp/heart-learning/border-priority-scheduling-v1",
@@ -1208,13 +1230,14 @@
       "tmp/heart-learning/border-fragment-editor-input-v1",
       "tmp/heart-learning/border-fragment-editable-v1",
       "tmp/heart-learning/border-fragment-clock-v1",
-      "tmp/heart-learning/border-fragment-cohort-review-v1"
+      "tmp/heart-learning/border-fragment-cohort-review-v1",
+      "tmp/heart-learning/border-fragment-clock-budget-v1"
     ],
     "budgetMiB": 50,
     "scope": "Excludes small external logs/fixture/patch files and ordinary build outputs. Runtime snapshots used temporary hardlinks, removed after paired runs. No saved model or dataset was replaced."
   },
   "next": [
-    "Finish CI before deployment.",
+    "Inspect captured CI timings and the first paper-uncertain MILP candidate before claiming portable ten-second recovery or promoting the follow-up.",
     "Investigate editable paper-support uncertainty separately from mask disagreement.",
     "Add training supervision for figurative material boundaries; current real interior seeds do not directly teach most cut edges.",
     "Retain crop-border uncertainty in the dataset and test any automatic inset uniformly across the cohort, rather than choosing it per successful example."
@@ -1232,5 +1255,133 @@
       "path": "scripts/inverse/diagnostics/compare-border-repair.mjs",
       "sha256": "05d81ee25d0ec95fef1f1f9dd6469a0969bf475a95596000cc0a864f3c249d59"
     }
-  ]
+  ],
+  "deadlinePressure": {
+    "report": {
+      "path": "tmp/heart-learning/border-fragment-clock-budget-v1/report.json",
+      "sha256": "9bdf82967c0249885e772f0935de40076a216deb33c81984057f7bac5c27bdec"
+    },
+    "runs": [
+      {
+        "index": 0,
+        "scale": 1,
+        "seconds": 9.070231583,
+        "error": 0.016025,
+        "checked": false,
+        "trace": true,
+        "repairs": [
+          {
+            "events": [
+              {
+                "round": 2,
+                "integerCandidateSeconds": 3.1877617499999995,
+                "remainingSeconds": 2.5460936176000013,
+                "reason": "repair_attempted",
+                "repairBudgetSeconds": 3.0266039096000004
+              }
+            ],
+            "repair": "border_feature_refinement_seed",
+            "steps": 160,
+            "seconds": 1.0872183330000007
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "scale": 1.5,
+        "seconds": 6.249896583,
+        "error": 0.018375,
+        "checked": false,
+        "trace": true,
+        "repairs": [
+          {
+            "events": [
+              {
+                "round": 2,
+                "integerCandidateSeconds": 4.166976438000002,
+                "remainingSeconds": 0.7881578005499987,
+                "reason": "repair_attempted",
+                "repairBudgetSeconds": 1.268451175549999
+              }
+            ],
+            "repair": "border_feature_refinement_seed",
+            "steps": 65,
+            "seconds": 0.9280020000000004
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "scale": 2,
+        "seconds": 4.604795292000002,
+        "error": 0.04320625,
+        "checked": false,
+        "trace": false,
+        "repairs": [
+          {}
+        ]
+      },
+      {
+        "index": 3,
+        "scale": 2,
+        "seconds": 4.667627790999999,
+        "error": 0.04320625,
+        "checked": false,
+        "trace": false,
+        "repairs": [
+          {}
+        ]
+      },
+      {
+        "index": 4,
+        "scale": 1.5,
+        "seconds": 6.287334333000002,
+        "error": 0.01794375,
+        "checked": false,
+        "trace": true,
+        "repairs": [
+          {
+            "events": [
+              {
+                "round": 2,
+                "integerCandidateSeconds": 4.112550063000002,
+                "remainingSeconds": 1.0118231312999972,
+                "reason": "repair_attempted",
+                "repairBudgetSeconds": 1.4928443183000017
+              }
+            ],
+            "repair": "border_feature_refinement_seed",
+            "steps": 100,
+            "seconds": 1.1311898115000003
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "scale": 1,
+        "seconds": 8.820767791999998,
+        "error": 0.01558125,
+        "checked": false,
+        "trace": true,
+        "repairs": [
+          {
+            "events": [
+              {
+                "round": 2,
+                "integerCandidateSeconds": 2.8087100409999985,
+                "remainingSeconds": 3.173820683600002,
+                "reason": "repair_attempted",
+                "repairBudgetSeconds": 3.660434517600006
+              }
+            ],
+            "repair": "border_feature_refinement_seed",
+            "steps": 160,
+            "seconds": 1.047658500000005
+          }
+        ]
+      }
+    ],
+    "finding": "Both 2x JS-clock runs return the old 4.320625% grid. Their first MILP candidate has uncertain paper support, and the second round times out before a repairable candidate is observed. Both 1.5x and both normal-clock runs retain a provisional repair below 2%. This reproduces deadline sensitivity, not the exact remote CPU behavior; the CI failure only exposed final disagreement. The quality assertion stays unchanged, and future failures capture full reports."
+  },
+  "releaseStatus": "Committed and pushed on the working branch; not deployed in this study. Existing main CI remains green. The bounded repair works when its input candidate arrives in time; portable ten-second performance remains unresolved."
 }

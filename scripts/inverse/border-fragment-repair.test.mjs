@@ -10,6 +10,7 @@ import {materialAudit} from '../../static/inverse/core/material.js';
 import {repairRejectedRouting} from '../../static/inverse/core/direct/rejected-routing.js';
 import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {captureFitFailure} from './diagnostics/fit-failure.mjs';
 
 const fixture=JSON.parse(await fs.readFile(new URL('./fixtures/dinosaur-border-repair.json',import.meta.url)));
 const n=fixture.resolution,mask=new Uint8Array(n*n),cfg=fixture.configuration;
@@ -65,10 +66,11 @@ test('a feature-incomplete repair still needs passing paper support',()=>{
   }
 });
 
-qualityBenchmark('a thin crop-margin fragment cannot discard the dinosaur motif during a short search',async()=>{
+qualityBenchmark('a thin crop-margin fragment cannot discard the dinosaur motif during a short search',async t=>{
   const target=input(),before=target.sourceImage.mask.slice();
   const answer=await design(target,cfg),woven=await renderExportedWeave(answer.files['cut_geometry.json'],n);
   const error=woven.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length;
+  try{
   assert.ok(error<.02,`The 142-pixel fragment previously caused 4.32% disagreement: ${error}`);
   assert.equal(answer.report.validation.passed,true);
   assert.equal(answer.report.manufacturing.status,'pass');
@@ -77,4 +79,9 @@ qualityBenchmark('a thin crop-margin fragment cannot discard the dinosaur motif 
   const features=auditFeatureFidelity(target.sourceImage,woven.mask,cfg);
   assert.equal(features.passed,false);assert.ok(features.missing.some(f=>f.areaMm2===8.875));
   assert.deepEqual(target.sourceImage.mask,before);
+  }catch(failure){
+    t.diagnostic(await captureFitFailure({answer,source:target.sourceImage,error,maximum:.02,
+      context:{fixture:'dinosaur-border-repair',assertion:failure.message}}));
+    throw failure;
+  }
 });

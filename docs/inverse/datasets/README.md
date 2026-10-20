@@ -661,9 +661,18 @@ editable renders; all seven comparison pages were inspected. Its “editable
 pass” labels mean successful conversion, not complete reconstruction. Eleven
 focused tests pass, including the existing rabbit-border regression and checks
 that interior-feature loss and failed paper support remain ineligible.
-Full CI is running on the pushed runtime commit. No neural weights or crop
-rules change in this fix; the material projection remains experimental.
-Study artifacts occupy about **36.9 MiB**, with no new source photographs.
+[CI completed successfully](https://github.com/thomasahle/julehjerte/actions/runs/39391283817):
+2,374 application tests and 1,188 inverse correctness checks pass. The advisory
+timed tests pass **62/78**, with all 16 misses retained. The dinosaur's
+ten-second test misses on that runner at the original 4.32% error.
+Six additional deadline-pressure replays retain every result: normal and 1.5×
+JavaScript clocks recover below 2%; both 2× clocks exhaust the MILP budget
+before observing a repairable candidate. This diagnoses deadline sensitivity,
+not the exact remote failure. Future failed tests now capture the full report.
+The fix remains on the working branch while that speed limitation is followed
+up. No neural weights or crop rules change; the material projection remains
+experimental. Study artifacts occupy about **37.9 MiB**, with no new source
+photographs.
 
 ### Latest solver and browser validation
 
