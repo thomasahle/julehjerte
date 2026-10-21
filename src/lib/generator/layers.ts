@@ -1,6 +1,6 @@
 /** A circular medallion, then two independent outer bands. The motif is a
  * nested contour inside the circle; counters remain coincident A/B cuts. */
-import { add, compile, fourPortMotif, forest, centroid, ConstructionError, type Ring, type Point } from './geometry';
+import { add, compile, fourPortMotif, forest, centroid, layerInset, ConstructionError, type Ring, type Point } from './geometry';
 import { generateFittedFigure } from './fitted';
 import { generatePanelFigure } from './panels';
 
@@ -35,7 +35,7 @@ export function generateLayeredFigure(rings: Ring[], size = 70, scale = .7,
 			add(result.edges, [[0, t], [100, t]], 'B', 'frame');
 		}
 	}
-	const inset = (100 - size) / 2 - 8;
+	const inset = layerInset(size);
 	for (const t of [inset, 100 - inset]) {
 		add(result.edges, [[t, 0], [t, 100]], 'A', 'frame');
 		add(result.edges, [[0, t], [100, t]], 'B', 'frame');

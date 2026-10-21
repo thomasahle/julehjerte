@@ -7,7 +7,7 @@ import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSide } from './state';
 import { templateVariants } from './templates';
-import { inside, uprightToSheet, distance, boardLines, boardRangeLines, boardRanges, WEDGES, type Point, type Ring } from './geometry';
+import { inside, uprightToSheet, distance, boardLines, boardRangeLines, boardRanges, layerInset, WEDGES, type Point, type Ring } from './geometry';
 import { geometryKey } from './cache';
 import { boardRadius, boardSteps, motifChoices, motifPatterns, squareChoices } from './boardMotif';
 import { normalizeContours } from './contours';
@@ -83,7 +83,7 @@ describe('complete motif frames', () => {
   expect(result.artwork.slice(1)).toEqual(rings.map(r => r.map(([x, y]) => uprightToSheet([x * .7 * 70, y * .7 * 70]))));
   expect(result.artwork[0]).toEqual(Array.from({ length: 96 }, (_, i) =>
    uprightToSheet([.5 * Math.cos(i * Math.PI / 48) * 70, .5 * Math.sin(i * Math.PI / 48) * 70] as Point)));
-  for (const t of [7, 11, 89, 93]) {
+  for (const t of [layerInset(70), 11, 89, 100 - layerInset(70)]) {
    expect(result.edges).toContainEqual({ from: [t, 0], to: [t, 100], family: 'A', kind: 'frame' });
    expect(result.edges).toContainEqual({ from: [0, t], to: [100, t], family: 'B', kind: 'frame' });
   }
@@ -180,7 +180,7 @@ describe('complete motif frames', () => {
  });
  it('retains two complete outer bands when the medallion uses several panels', () => {
   const result = generateLayeredFigure(sun.contours as Ring[], 70, .7, { columns: 1, rows: 2, filled: false });
-  for (const t of [7, 11, 89, 93]) {
+  for (const t of [layerInset(70), 11, 89, 100 - layerInset(70)]) {
    expect(result.edges).toContainEqual({ from: [t, 0], to: [t, 100], family: 'A', kind: 'frame' });
    expect(result.edges).toContainEqual({ from: [0, t], to: [100, t], family: 'B', kind: 'frame' });
   }

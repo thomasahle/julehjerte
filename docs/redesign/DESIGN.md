@@ -754,7 +754,8 @@ a light one, and its outline shows wherever it crosses a line. The Strimler butt
 to six strips; until the visitor chooses, the first of four, five, six and three that cuts cleanly,
 else the one keeping the most of the cutting clearance. **The circle with a double border**
 (Cirkel med dobbelt bort) sets the text in the medallion, in the other colour, in the figure
-frame's largest medallion (80) at 75%. Neither has a size slider: the text fills its frame as the
+frame's largest medallion (80) at 75%; its two outer bands share the room between the fitted
+frame and the paper's edge equally (`layerInset`). Neither has a size slider: the text fills its frame as the
 other text frames do.
 Figure frames follow what real hearts use. Next to the circle with rays, checks,
 a sunburst or a double border, and the close-fitting and checked-tip frames, there are four

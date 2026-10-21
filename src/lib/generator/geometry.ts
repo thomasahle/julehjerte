@@ -35,6 +35,10 @@ export type FigureStyle = (typeof FIGURE_STYLES)[number];
  * motif, joined to it by an invisible coincident cut; `border` adds outer strips. */
 export type OpenFrame = { taper: number; gap: number; border: boolean };
 export const FITTED: OpenFrame = { taper: 1, gap: 0, border: true };
+/** Where the circle with a double border (a medallion `size` wide) draws its
+ * outer pair of lines: midway between the fitted frame's lines, 4 outside the
+ * medallion, and the paper's edges, so its two bands are equally wide. */
+export const layerInset = (size: number) => ((100 - size) / 2 - 4) / 2;
 export const WEDGES: OpenFrame = { taper: .45, gap: 3, border: false };
 /** A silhouette filling the square meets the edges near each corner, leaving
  * a small check there in the other colour. */

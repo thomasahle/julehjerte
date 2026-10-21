@@ -9,7 +9,7 @@
  * Frames without a picture here return none.
  */
 import type { GeneratorRequest } from './generate';
-import { arc, boardPanels, boardRanges, frameRing, outerFrame, ray, uprightToSheet, BOARD_STUB, FITTED, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
+import { arc, boardPanels, boardRanges, frameRing, layerInset, outerFrame, ray, uprightToSheet, BOARD_STUB, FITTED, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
 import { fillSquare, fitCircle } from './frameFit';
 import { fittedPicture } from './fitted';
 import { normalizeContours } from './contours';
@@ -179,7 +179,7 @@ function layersPicture(request: GeneratorRequest): Picture | undefined {
 	const fitted = fitCircle(request), size = fitted.frameSize ?? 70, scale = fitted.scale ?? .7;
 	const disc: Ring = Array.from({ length: 96 }, (_, i) => [.5 * Math.cos(i * Math.PI / 48), .5 * Math.sin(i * Math.PI / 48)]);
 	const rings = fittedPicture([disc, ...contours.map(r => r.map(([x, y]): Point => [x * scale, y * scale]))], size, 1, FITTED);
-	const inset = (100 - size) / 2 - 8;
+	const inset = layerInset(size);
 	rings.push([[0, 0], [inset, 0], [inset, 100], [0, 100]], [[100 - inset, 0], [100, 0], [100, 100], [100 - inset, 100]],
 		[[0, 0], [100, 0], [100, inset], [0, inset]], [[0, 100 - inset], [100, 100 - inset], [100, 100], [0, 100]]);
 	return { rings };

@@ -1,5 +1,17 @@
 # Generator robustness results
 
+## Equal bands around the circle with a double border
+
+Product report (2026-10-21): "'Cirkel med dobbelt bort' is unnecessarily thin in
+the border". The outer pair of lines lay 8 units outside the medallion, so at
+the default size (70) the inner band was 4 wide beside an outer band of 7, and
+in the text frame's larger medallion (80) the outer band was 2. Both pairs now
+share the room equally: the outer lines lie midway between the fitted frame's
+lines and the paper's edge (`layerInset`), bands of 5.5 at 70 and 3 at 80. Over
+the corpus the figure frame is unchanged, 49 clean, the paw hard and the flower
+invalid as before; the text frame too (105 clean, 62 hard, 36 invalid, 13
+refused of 216, as before).
+
 ## The circle on seven and nine strips out past the paper's edges
 
 Product reports (2026-10-21), on 7×7 and 9×9: "I still see this: at 100% the
