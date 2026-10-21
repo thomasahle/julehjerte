@@ -2325,14 +2325,15 @@
 			return { ...updateFingerSegments(f, segs), nodeTypes: Object.keys(nextNodeTypes).length ? nextNodeTypes : undefined };
 		};
 
-		if (patternTile) {
-			// Escher tab: the handles the node type lines up are read back into the tile, so every
-			// copy of the curve turns with them; the cut keeps the node types it was given.
-			const edited = edit(finger);
-			const overrides = derivePatternOverrides(edited);
+		if (patternTile && escher) {
+			// Escher tab: the handles the node type lines up are read back into the tile, so every copy
+			// of the curve turns with them, and the tile keeps the type (`escher.typedTile`): every copy
+			// has it, and keeps it through every edit after, though a corner's handles lie in line.
+			const read = tileOfOverrides.get(derivePatternOverrides(edit(finger))) ?? patternTile;
+			const typed = escher.typedTile(read, fingerId, targets, type);
+			const overrides = new Map(escher.generateEditorFingers(typed, getOverlapRect()).map((f) => [f.id, f]));
 			if (!overridesAreValid(overrides)) return;
-			const own = overrides.get(fingerId);
-			if (own && fingerToSegments(own).length === fingerToSegments(edited).length) overrides.set(fingerId, { ...own, nodeTypes: edited.nodeTypes });
+			tileOfOverrides.set(overrides, typed);
 			applyOverrides(overrides);
 		} else {
 			updateFinger(fingerId, edit);

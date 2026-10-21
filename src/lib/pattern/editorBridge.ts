@@ -26,14 +26,16 @@ import type { OverlapRect } from '$lib/utils/overlapRect';
 import { READ_TOLERANCE, sharedCrossings } from './crossings';
 import { canLean, latticeOf, ruleRepeat, halfOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
 import {
+	carryNodeTypes,
 	cellsToRaw,
+	chosenNodeType,
 	crossing,
+	curveNodeOf,
 	cutCounts,
 	firstLine,
 	fitLines,
 	heartLines,
 	fromFrame,
-	patternCuts,
 	rawToCells,
 	shapeFields,
 	shapeFor,
@@ -84,15 +86,52 @@ function nodeTypesFor(segments: BezierSegment[]): Record<string, NodeType> {
 	return types;
 }
 
-/** The tile's inner cuts as Tegn's fingers, in Tegn's frame, ids and direction. */
+/**
+ * The tile's inner cuts as Tegn's fingers, in Tegn's frame, ids and direction. A
+ * node is smooth where its handles lie in line and a corner where not, unless the
+ * visitor gave that node of the curve a type (`PatternTile.nodeTypes`): then every
+ * copy of it has that.
+ */
 export function generateEditorFingers(tile: PatternTile, rect: OverlapRect): Finger[] {
-	const { left, right } = patternCuts(tile);
+	const counts = cutCounts(tile);
 	const px = toPx(rect);
-	const finger = (segs: BezierSegment[], lobe: 'left' | 'right', k: number): Finger => {
-		const segments = reverseSegments(mapSegs(segs, px));
-		return { id: `${lobe === 'left' ? 'L' : 'R'}-${k}`, lobe, segments, nodeTypes: nodeTypesFor(segments) };
+	const finger = (kind: StretchKind, k: number): Finger => {
+		const traced = tracedCut(tile, kind, k);
+		const segments = reverseSegments(mapSegs(traced.segments, px));
+		const nodeTypes = nodeTypesFor(segments);
+		// Tegn runs a cut the other way: the raw anchor r is its n − r.
+		const n = segments.length;
+		for (let r = 1; r < n; r++) {
+			const chosen = chosenNodeType(tile, traced, r);
+			if (chosen) nodeTypes[String(n - r)] = chosen;
+		}
+		return { id: `${kind === 'H' ? 'L' : 'R'}-${k}`, lobe: kind === 'H' ? 'left' : 'right', segments, nodeTypes };
 	};
-	return [...left.map((s, i) => finger(s, 'left', i + 1)), ...right.map((s, i) => finger(s, 'right', i + 1))];
+	const family = (kind: StretchKind) => Array.from({ length: counts[kind] }, (_, k) => finger(kind, k + 1));
+	return [...family('H'), ...family('V')];
+}
+
+/**
+ * The tile with node type `type` given to the nodes of its curves at Tegn's
+ * anchors `anchors` of cut `fingerId` (`PatternTile.nodeTypes`), so that every
+ * copy of them has it, through every edit after. Anchors that are no node of a
+ * curve — the tiling's own points, the cut's ends — are left as they are.
+ */
+export function typedTile(tile: PatternTile, fingerId: string, anchors: number[], type: NodeType): PatternTile {
+	const traced = tracedFinger(tile, fingerId);
+	if (!traced) return tile;
+	const m = traced.pieces.length;
+	let types = tile.nodeTypes;
+	for (const anchor of anchors) {
+		const r = m - anchor;
+		const [a, b] = [traced.pieces[r - 1], traced.pieces[r]];
+		if (!a || !b || !sameStretch(a, b) || b.index !== a.index + 1) continue;
+		const src = stretchSource(tile.rule, b.kind, b.i, b.j);
+		const node = curveNodeOf(tile, src, b.index);
+		if (node === null) continue;
+		types = { ...types, [src.curve]: { ...types?.[src.curve], [String(node)]: type } };
+	}
+	return types === tile.nodeTypes ? tile : { ...tile, nodeTypes: types };
 }
 
 /** A finger's segments in the tile's square frame, running from the cut's low end to its high end. */
@@ -742,7 +781,7 @@ export function nodeAtCutEnd(tile: PatternTile, fingerId: string, anchor: number
 	const { curve, src } = editableStretch(tile, piece);
 	const [a, b] = splitBezierAt(curve[piece.index]!, r === 0 ? piece.range[0] : piece.range[1]);
 	curve.splice(piece.index, 1, a, b);
-	return { ...tile, curves: { ...tile.curves, [src.curve]: freeCurveOf(tile.rule, src, settle(curve), piece.index, piece.count) } };
+	return carryNodeTypes(tile, { ...tile, curves: { ...tile.curves, [src.curve]: freeCurveOf(tile.rule, src, settle(curve), piece.index, piece.count) } });
 }
 
 /**
@@ -891,7 +930,8 @@ export function tileAfterFingerEdit(tile: PatternTile, edited: Finger, rect: Ove
 	const traced = tracedFinger(tile, edited.id);
 	if (!traced) return tile;
 	const now = rawCut(edited, rect);
+	// The node types the visitor gave stay on their nodes, as a curve gains or loses one.
 	return now.length === traced.segments.length
 		? readMoves(tile, traced.segments, traced.pieces, now)
-		: readNodeChange(tile, traced.segments, traced.pieces, now);
+		: carryNodeTypes(tile, readNodeChange(tile, traced.segments, traced.pieces, now));
 }

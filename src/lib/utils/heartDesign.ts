@@ -121,6 +121,13 @@ function normalizePattern(raw: unknown): HeartPattern | undefined {
   if (r.offset !== undefined && !pair(r.offset)) return undefined;
   if (r.shape !== undefined && !four(r.shape)) return undefined;
   if (r.turn !== undefined && !finite(r.turn)) return undefined;
+  // The node types the visitor gave the curves: by curve, by node, each one of ours.
+  const typesOk = (v: unknown) =>
+    !!v && typeof v === 'object' && !Array.isArray(v) &&
+    Object.values(v as Record<string, unknown>).every((types) =>
+      !!types && typeof types === 'object' && !Array.isArray(types) &&
+      Object.values(types as Record<string, unknown>).every((t) => t === 'corner' || t === 'smooth' || t === 'symmetric'));
+  if (r.nodeTypes !== undefined && !typesOk(r.nodeTypes)) return undefined;
   if (r.pan !== undefined && !pair(r.pan)) return undefined;
   if (lines !== undefined && !(lines && whole(lines.V) && whole(lines.H))) return undefined;
   return {
@@ -130,6 +137,9 @@ function normalizePattern(raw: unknown): HeartPattern | undefined {
     ...(r.offset ? { offset: [...(r.offset as [number, number])] as [number, number] } : {}),
     ...(r.shape ? { shape: [...(r.shape as [number, number, number, number])] as [number, number, number, number] } : {}),
     ...(r.turn !== undefined ? { turn: r.turn as number } : {}),
+    ...(r.nodeTypes !== undefined
+      ? { nodeTypes: Object.fromEntries(Object.entries(r.nodeTypes as Record<string, Record<string, NodeType>>).map(([key, types]) => [key, { ...types }])) }
+      : {}),
     ...(r.pan ? { pan: [...(r.pan as [number, number])] as [number, number] } : {}),
     ...(lines ? { lines: { V: [...(lines.V as [number, number])] as [number, number], H: [...(lines.H as [number, number])] as [number, number] } } : {})
   };

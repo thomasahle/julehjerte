@@ -67,7 +67,10 @@ export function carryCurves(tile: PatternTile, rule: TileRule, cuts = tile.cuts)
 	const offset = canLean(rule) && canLean(tile.rule) ? tile.offset : undefined;
 	const lean = offset ? { offset: { ...offset } } : {};
 	const shape = tile.shape ? shapeFields(rule, shapeFor(rule, unturnedShape(tile)), tileTurn(tile)) : {};
-	return { rule, cuts, curves, ...lean, ...shape, ...(tile.pan ? { pan: { ...tile.pan } } : {}) };
+	// The node types the visitor gave a curve kept come with it.
+	const typed = kept.filter((k) => tile.nodeTypes?.[k]);
+	const nodeTypes = typed.length ? { nodeTypes: Object.fromEntries(typed.map((k) => [k, { ...tile.nodeTypes![k] }])) } : {};
+	return { rule, cuts, curves, ...lean, ...shape, ...nodeTypes, ...(tile.pan ? { pan: { ...tile.pan } } : {}) };
 }
 
 /**

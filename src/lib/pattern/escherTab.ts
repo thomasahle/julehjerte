@@ -8,7 +8,7 @@
  */
 
 import type { TranslationKey } from '$lib/i18n';
-import type { Finger, GridSize, HeartPattern, LobeId, Vec } from '$lib/types/heart';
+import type { Finger, GridSize, HeartPattern, LobeId, NodeType, Vec } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { getCenteredRectParams, inferOverlapRect, type OverlapRect } from '$lib/utils/overlapRect';
 import {
@@ -29,6 +29,7 @@ import {
 	tileAfterFingerEdit,
 	turnedTo,
 	turnLimits,
+	typedTile,
 	weaveParityOf,
 	type PlacedPoint,
 	type SpecialNode
@@ -232,6 +233,9 @@ export const startPanDrag = (tile: PatternTile, start: Vec, lobe: LobeId | null)
 /** A frame drag from `base` let go: the cells on the plain grid exactly where they were let go a hair from it, or null (`settledTile`). */
 export { settledTile };
 
+/** The tile with a node type given to the nodes of its curves at anchors of a cut, kept on every copy (`typedTile`). */
+export { typedTile };
+
 /** The tile with what was dragged moved by `delta` pixels from where the drag started: sized and slanted, moved or reshaped. */
 export function dragTile(drag: TileDrag, delta: Vec, rect: OverlapRect): PatternTile | null {
 	if (drag.mode === 'pan') return panBy(drag.base, delta, rect);
@@ -261,9 +265,15 @@ export function savedPattern(tile: PatternTile): HeartPattern {
 		...(tile.offset ? { offset: pair(tile.offset) } : {}),
 		...(tile.shape ? { shape: [tile.shape.x.x, tile.shape.x.y, tile.shape.y.x, tile.shape.y.y] } : {}),
 		...(tile.turn !== undefined ? { turn: tile.turn } : {}),
+		...(tile.nodeTypes ? { nodeTypes: structuredClone(tile.nodeTypes) as Record<string, Record<string, NodeType>> } : {}),
 		...(tile.pan ? { pan: pair(tile.pan) } : {}),
 		...(tile.lines ? { lines: { V: [tile.lines.V.first, tile.lines.V.count], H: [tile.lines.H.first, tile.lines.H.count] } } : {})
 	};
+}
+
+/** The node types a heart kept, for the curves its type reads. */
+function nodeTypesOf(saved: Record<string, Record<string, NodeType>>, reads: Set<string>): PatternTile['nodeTypes'] {
+	return Object.fromEntries(Object.entries(saved).filter(([key]) => reads.has(key)).map(([key, types]) => [key, { ...types }]));
 }
 
 /**
@@ -287,6 +297,7 @@ export function tileOfPattern(saved: HeartPattern): PatternTile | null {
 		...(saved.offset ? { offset: vec(...saved.offset) } : {}),
 		...(saved.shape ? { shape: { x: vec(saved.shape[0], saved.shape[1]), y: vec(saved.shape[2], saved.shape[3]) } } : {}),
 		...(saved.turn !== undefined ? { turn: saved.turn } : {}),
+		...(saved.nodeTypes ? { nodeTypes: nodeTypesOf(saved.nodeTypes, reads) } : {}),
 		...(saved.pan ? { pan: vec(...saved.pan) } : {}),
 		...(saved.lines ? { lines: { V: { first: saved.lines.V[0], count: saved.lines.V[1] }, H: { first: saved.lines.H[0], count: saved.lines.H[1] } } } : {})
 	};

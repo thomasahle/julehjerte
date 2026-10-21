@@ -96,8 +96,9 @@ export interface HeartDesign {
  * frame — how far the tiles lean (`offset`), how they are sized, stretched,
  * slanted and turned (`shape`, where a cell's two sides go: x and y of one, then
  * of the other), how far of that is the whole pattern turned (`turn`, radians),
- * how far the pattern has moved (`pan`), and the lines of the tiling the heart
- * cuts once it has (`lines`, first and how many, each way).
+ * how far the pattern has moved (`pan`), the lines of the tiling the heart cuts
+ * once it has (`lines`, first and how many, each way), and the types the visitor
+ * gave nodes of the curves (`nodeTypes`, by curve and by the node's place in it).
  */
 export interface HeartPattern {
   rule: string;
@@ -107,6 +108,7 @@ export interface HeartPattern {
   shape?: [number, number, number, number];
   turn?: number;
   pan?: [number, number];
+  nodeTypes?: Record<string, Record<string, NodeType>>;
   lines?: { V: [number, number]; H: [number, number] };
 }
 

@@ -303,6 +303,39 @@ describe('the Escher tab', () => {
 		expect(pressed(h, 'Smooth node')).toBe(true);
 	});
 
+	it('keeps a node made a corner a corner in every copy, though the pattern is then moved, and its handles then move apart', async () => {
+		const tile = ruleStart(opposite('move', 'move'), 4);
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
+		// a smooth node added to the bent curve of L-2's second stretch, its handles in line
+		const seg = h.fingers.find((f) => f.id === 'L-2')!.segments[1]!;
+		const at = bezierAt(seg, 0.5);
+		const second = bezierAt(seg, 0.55);
+		send(h.path('L-2'), 'pointerdown', at);
+		send(h.svg, 'pointerup', at);
+		send(h.path('L-2'), 'pointerdown', second);
+		send(h.svg, 'pointerup', second);
+		expect(pressed(h, 'Smooth node')).toBe(true);
+		const selected = () => [...h.handles()].findIndex((el) => el.getAttribute('fill') === '#ffcc00');
+		const node = selected();
+		h.button('Corner node').click();
+		flushSync();
+		expect(pressed(h, 'Corner node')).toBe(true);
+		// the pattern moved by its edge: every cut made again, the node still a corner, in every copy
+		const edge = h.fingers.find((f) => f.id === 'L-0')!.segments[0]!.p3;
+		send(h.path('L-0'), 'pointerdown', edge);
+		send(h.svg, 'pointermove', { x: edge.x + 6, y: edge.y + 3 });
+		send(h.svg, 'pointerup', { x: edge.x + 6, y: edge.y + 3 });
+		const types = (id: string) => h.fingers.find((f) => f.id === id)!.nodeTypes ?? {};
+		// every left-lobe cut carries the curve: the node is a corner on each
+		for (const id of ['L-1', 'L-2', 'L-3']) expect(types(id)[String(node)], id).toBe('corner');
+		// chosen again, it is a corner, and one handle dragged leaves the other where it was
+		const corner = h.fingers.find((f) => f.id === 'L-2')!.segments;
+		send(h.path('L-2'), 'pointerdown', bezierAt(corner[node - 1]!, 0.5));
+		send(h.svg, 'pointerup', bezierAt(corner[node - 1]!, 0.5));
+		expect(types('L-2')[String(node)]).toBe('corner');
+	});
+
 	it('adds a corner to a straight piece, which Smooth node gives handles that a drag keeps in line', async () => {
 		const tile = ruleStart(opposite('move', 'move'), 4);
 		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });

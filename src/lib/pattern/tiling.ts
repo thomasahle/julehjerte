@@ -38,7 +38,7 @@
  * (`sw`). The rules name the red tile's sides that way, as the visitor sees them.
  */
 
-import type { BezierSegment, HeartDesign, Vec } from '$lib/types/heart';
+import type { BezierSegment, HeartDesign, NodeType, Vec } from '$lib/types/heart';
 import { reverseSegments, segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { normalizeHeartDesign } from '$lib/utils/heartDesign';
 import { HEART_CLEARANCE_UNITS } from '$lib/geometry/returnSearch';
@@ -102,6 +102,15 @@ export interface PatternTile {
 	 * (`fitLines`). Absent, the cuts + 1 nearest the middle.
 	 */
 	lines?: Record<StretchKind, HeartLines>;
+	/**
+	 * The types the visitor gave nodes of the tile's curves, by curve and by the
+	 * node's place in it (1 to its length − 1; of a curve drawn in halves, in the
+	 * half): a corner keeps its handles apart though they lie in line, a
+	 * symmetric node its handles alike. Every copy of a curve shows them
+	 * (`chosenNodeType`), through every edit after; every other node is smooth
+	 * where its handles lie in line and a corner where not.
+	 */
+	nodeTypes?: Partial<Record<CurveKey, Record<string, NodeType>>>;
 }
 
 /**
@@ -223,6 +232,68 @@ export function sourceCurve(tile: PatternTile, src: StretchSource): SideCurve {
 
 export function stretchCurve(tile: PatternTile, kind: StretchKind, i: number, j: number): SideCurve {
 	return sourceCurve(tile, stretchSource(tile.rule, kind, i, j));
+}
+
+/**
+ * The node of the visitor's curve that node `s` of a stretch carrying it
+ * (`src`, see `sourceCurve`) is, numbered as `PatternTile.nodeTypes` numbers it;
+ * null where it is none: on a straight side, at the middle where a curve drawn in
+ * halves meets its other half, or at an end.
+ */
+export function curveNodeOf(tile: PatternTile, src: StretchSource, s: number): number | null {
+	if (ruleInfo(tile.rule).straight.includes(src.curve)) return null;
+	const own = tile.curves[src.curve]?.length ?? 1;
+	const half = halfOf(tile.rule, src.curve);
+	const total = half ? 2 * own : own;
+	let k = src.reverse ? total - s : s;
+	if (half) {
+		if (k === own) return null;
+		// The other half runs back: its nodes are the half's, counted from the middle.
+		if (k > own) k = total - k;
+	}
+	return k >= 1 && k < own ? k : null;
+}
+
+/**
+ * The type the visitor gave the node where segments `r − 1` and `r` of a traced
+ * cut meet, where that is a node of one of the tile's curves and they gave it one.
+ */
+export function chosenNodeType(tile: PatternTile, traced: TracedCut, r: number): NodeType | undefined {
+	const a = traced.pieces[r - 1];
+	const b = traced.pieces[r];
+	if (!a || !b || a.kind !== b.kind || a.i !== b.i || a.j !== b.j || b.index !== a.index + 1) return undefined;
+	const src = stretchSource(tile.rule, b.kind, b.i, b.j);
+	const node = curveNodeOf(tile, src, b.index);
+	return node === null ? undefined : tile.nodeTypes?.[src.curve]?.[String(node)];
+}
+
+/**
+ * The visitor's node types carried from the tile `before` an edit to the tile
+ * `after` it: a curve with as many nodes keeps them where they are; one that
+ * gained or lost a node keeps them on the nodes that stayed put, and drops the
+ * type of one removed.
+ */
+export function carryNodeTypes(before: PatternTile, after: PatternTile): PatternTile {
+	const { nodeTypes: _types, ...rest } = after;
+	if (!before.nodeTypes) return rest;
+	const next: Partial<Record<CurveKey, Record<string, NodeType>>> = {};
+	for (const [key, chosen] of Object.entries(before.nodeTypes) as Array<[CurveKey, Record<string, NodeType>]>) {
+		const was = before.curves[key];
+		const now = after.curves[key];
+		if (!was || !now) continue;
+		if (was.length === now.length) {
+			next[key] = chosen;
+			continue;
+		}
+		const kept: Record<string, NodeType> = {};
+		for (const [k, type] of Object.entries(chosen)) {
+			const p = was[Number(k)]?.p0;
+			const at = p ? now.findIndex((seg, n) => n > 0 && Math.hypot(seg.p0.x - p.x, seg.p0.y - p.y) < 1e-6) : -1;
+			if (at > 0) kept[String(at)] = type;
+		}
+		if (Object.keys(kept).length) next[key] = kept;
+	}
+	return Object.keys(next).length ? { ...rest, nodeTypes: next } : rest;
 }
 
 /** Crossing (i, j) of the infinite tiling, in cells: on the plain grid, the odd ones moved by the offset. */

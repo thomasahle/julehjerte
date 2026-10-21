@@ -2,8 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { loadHeart } from '$lib/laser/testHearts.test-helpers';
 import type { Finger } from '$lib/types/heart';
 import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
-import { ALL_RULES, COMMON_RULES, freeSides, neighbours, opposite, ruleKey } from './rules';
-import { cutCounts, fitLines, tileTurn, unturnedShape, type PatternTile, type SideCurve } from './tiling';
+import { ALL_RULES, COMMON_RULES, freeSides, neighbours, opposite, ruleInfo, ruleKey } from './rules';
+import { carryNodeTypes, cutCounts, fitLines, tileTurn, unturnedShape, type PatternTile, type SideCurve } from './tiling';
+import { splitBezierAt } from '$lib/geometry/bezierSegments';
 import { ruleStart } from './starts';
 import { knobTile } from './examples';
 import {
@@ -159,6 +160,25 @@ describe("Tegn's Escher tab", () => {
 		// and so does the line above the heart for a black point chosen
 		expect(frameChip(ruleStart(opposite('move', 'move'), 2))).toBe('patternPointSlant');
 		expect(frameChip(ruleStart(neighbours('both'), 2))).toBe('patternPointGrow');
+	});
+
+	it('gives every copy of a curve the node types the visitor gave it, keeps them through saving, and on their nodes as the curve gains one', () => {
+		const start = ruleStart(opposite('move', 'move'), 3);
+		const key = ruleInfo(start.rule).curves[0]!;
+		const split = splitBezierAt(start.curves[key]![0]!, 0.5);
+		const plain: PatternTile = { ...start, curves: { ...start.curves, [key]: split } };
+		const typed: PatternTile = { ...plain, nodeTypes: { [key]: { '1': 'corner' } } };
+		// the node splits a bent curve smoothly, so only the type makes it a corner, on every copy
+		const corners = (tile: PatternTile) => tileFingers(tile).flatMap((f) => Object.values(f.nodeTypes ?? {})).filter((t) => t === 'corner').length;
+		const copies = tileFingers(plain).filter((f) => f.segments.length > 4).length;
+		expect(corners(typed) - corners(plain)).toBeGreaterThanOrEqual(copies);
+		// saved and read back
+		expect(tileOfPattern(JSON.parse(JSON.stringify(savedPattern(typed))))).toEqual(typed);
+		// a node added before it: the type stays on its node, now the second
+		const more: PatternTile = { ...typed, curves: { ...typed.curves, [key]: [...splitBezierAt(split[0]!, 0.5), split[1]!] } };
+		expect(carryNodeTypes(typed, more).nodeTypes).toEqual({ [key]: { '2': 'corner' } });
+		// the node removed: the type goes with it
+		expect(carryNodeTypes(typed, start).nodeTypes).toBeUndefined();
 	});
 
 	it('turns the pattern by the turn control, in degrees, as far as keeps every side within 15° of its axis, and keeps the turn through saving', () => {
