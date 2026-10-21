@@ -1,5 +1,56 @@
 # Generator robustness results
 
+## The circle on seven and nine strips out past the paper's edges
+
+Product reports (2026-10-21), on 7×7 and 9×9: "I still see this: at 100% the
+circle is far from intersecting the sides", "I think you can find an
+algorithm/weave that works if you think hard" and, of a mock-up with a thin
+ring of the motif's colour inside the circle, "You don't need the extra ring".
+
+No plain circle between the largest so far (39.0 on 7×7, 30.4 on 9×9) and
+one that covers the middle lines whole can be woven with the motif divided in
+four. Every strip of one half crosses every strip of the other, so every check
+of the board exists somewhere in the woven heart, in its own colour. A check
+the circle covers whole can only lie inside it: in the circle's colour it
+merges with it, in the other it must be a piece of the motif. Past radius 41.7
+on 7×7 (32.4 on 9×9) the circle covers 21 checks, 9 of one colour and 12 of
+the other, so the motif would need at least nine hidden pieces. Hiding those
+checks as pockets just outside the circle, in squares of their own colour,
+does not help: every line must still pass through the motif, and each of the
+32 pairs of lines whose junction the circle covers must cross on a hidden seam
+of its own, where four pieces, the circle's edge and pockets give at most
+about 24 (an exhaustive search of rims found none with the motif in four, nor
+in five without pockets, nor in five around a middle piece with them). The
+ring of the mock-up worked because it gave those checks a place.
+
+Once the circle covers the middle lines from edge to edge of the paper, though,
+they show nothing, and leaving them out (both sheets, both sides) merges the
+checks between them and changes no square outside it. The outer two lines a
+side remain, and the five-strip constructions take the circle out past the
+paper's edges, the motif in four (`boardRanges`, `boardRangeLines`): on 7×7
+from just past the outer lines' corner junctions (50.9) to a unit past covering
+the inner of the two whole (55.4), on 9×9 from where the second lines are
+covered (52.8) to 58.2. The heart then has five strips, three squares wide in
+the middle; the page still shows the board chosen (`GeneratorResult.board`).
+The slider steps once to there: 7×7 39.0 at 93%, 50.9 at 94%; 9×9 30.4 at 90%,
+52.8 at 91%.
+
+At first such hearts cut thin where the motif's outer gates, moved in to
+midway between the motif and the circle, came to lie on the paper's edge, the
+circle being beyond it. Where the paper's edges cut a circle off, a gate now
+moves to three fifths of the way out from the motif to the edge, or to the
+circle where that is nearer (midway inside the paper, as before), which cut
+cleanly most often; the cut that runs round between motif and circle keeps
+inside the paper likewise. Over the corpus and the deer: 7×7 at 94%, 97% and
+100% 45 / 44 / 45 clean, 3 / 4 / 3 hard, 9×9 at 91%, 95% and 100% 45 clean, 3
+hard, 4 refused throughout (the usual four); the hard ones are the star,
+snowflake and crown, hard on every board, and the dog at 97%, as on five
+strips. The boards that already went past the edges keep their counts: 5×5 at
+97% and 100% 44 / 45 clean, 3×3 at 86% and 100% 47 clean, 1 hard (snow), 3×3's
+slowest heart at 100% 3.2 s (was 7). Pictures match their hearts except where a
+motif is shrunk to fit (tb-star, 9.6%) and on three strips as before. Slowest
+7 s.
+
 ## Larger board circles on seven and nine strips
 
 Product report (2026-10-21), on 9×9 at 92%: "it looks like we still can't make

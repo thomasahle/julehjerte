@@ -1638,7 +1638,8 @@ export function openLeg(gate: Point, corner: Point, axis: 0 | 1, taper: number):
  * the circle, the middle lines of the other sheet crossing it, until the
  * second lines' ends come too close to its arc for a gate between them
  * (`gateRoom`); further out still the motif would need nine panels, which few
- * motifs can be divided into. On three, whose one line a side the motif
+ * motifs can be divided into, until the circle covers the middle lines whole
+ * and the heart leaves them out (see below). On three, whose one line a side the motif
  * meets whole however large the circle, there is one range, out past the
  * paper's edges and over the corner squares until it meets the edges halfway
  * along them. */
@@ -1646,7 +1647,29 @@ export function boardRanges(strips: number): readonly (readonly [number, number]
 	// One set per board, so a range found for a radius is the board's own.
 	const known = rangesByStrips.get(strips);
 	if (known) return known;
-	const d = boardLines(strips), junction = (j: number, k: number) => Math.hypot(d[Math.max(j, k)], d[Math.min(j, k)]);
+	const all = boardLines(strips), ranges = linesRanges(all);
+	// Once the circle covers the middle lines whole, from edge to edge of the
+	// paper, they show nothing, and leaving them out, with the same lines of
+	// the other sheet, changes no square outside it. On finer boards the
+	// circle reaches the paper's edges only so: the outer two lines a side
+	// remain, met as on five strips, from past their corner junctions or
+	// wherever the last of the middle lines is covered, out to a unit past
+	// covering the inner of the two (as five strips' 52).
+	if (all.length > 2) {
+		const lines = all.slice(-2), from = Math.hypot(all[all.length - 3], 50) + .1;
+		for (const [low, high] of linesRanges(lines, Math.hypot(lines[0], 50) + 1)) if (high > from) {
+			const range = [Math.max(low, from), high] as const;
+			coveredLines.set(range, lines);
+			ranges.push(range);
+		}
+	}
+	rangesByStrips.set(strips, ranges);
+	return ranges;
+}
+/** The ranges of radii for a board whose lines lie `d` from its centre (see
+ * `boardRanges`), the last out to `top`. */
+function linesRanges(d: number[], top = 52): (readonly [number, number])[] {
+	const junction = (j: number, k: number) => Math.hypot(d[Math.max(j, k)], d[Math.min(j, k)]);
 	const ranges: (readonly [number, number])[] = d.length < 2 ? [[junction(0, 0) + 5, Math.hypot(50, 50 - d[0])]]
 		: [[junction(0, 0) + 5, junction(1, 0)], [junction(1, 0), junction(1, 1) - .4]];
 	if (d.length > 1) {
@@ -1677,12 +1700,19 @@ export function boardRanges(strips: number): readonly (readonly [number, number]
 			low = Math.max(low, next + .4);
 		}
 		// Past the last junction, out past the paper's edges.
-		if (open && low < 52 && gateRoom((low + 52) / 2, d) > 0) ranges.push([low, 52]);
+		if (open && low < top && gateRoom((low + top) / 2, d) > 0) ranges.push([low, top]);
 	}
-	rangesByStrips.set(strips, ranges);
 	return ranges;
 }
 const rangesByStrips = new Map<number, readonly (readonly [number, number])[]>();
+/** The lines that remain in a range where the circle covers the middle ones. */
+const coveredLines = new WeakMap<readonly [number, number], number[]>();
+/** The distances from the centre of the lines a range of radii on a board
+ * of `strips` strips meets the circle with (see `boardRanges`): all of the
+ * board's, or where the circle covers the middle ones, the outer two. */
+export function boardRangeLines(range: readonly [number, number], strips: number): number[] {
+	return coveredLines.get(range) ?? boardLines(strips);
+}
 /** The distances of a regular board's lines from its centre, half a square,
  * a square and a half, …, on each side. */
 export const boardLines = (strips: number) => Array.from({ length: (strips - 1) / 2 }, (_, k) => (100 / strips) * (k + .5));
@@ -1691,7 +1721,7 @@ export const boardLines = (strips: number) => Array.from({ length: (strips - 1) 
  * encloses, the motif divided at most in four. A line it reaches short of
  * that, or the one beyond the motif's, follows the circle (see `boardLegs`). */
 export function boardPanels(range: readonly [number, number], strips: number): number {
-	const d = boardLines(strips), radius = (range[0] + range[1]) / 2;
+	const d = boardRangeLines(range, strips), radius = (range[0] + range[1]) / 2;
 	return Math.max(1, Math.min(2, d.filter(dk => Math.hypot(dk, d[0]) < radius).length));
 }
 /** How far from the lines beside it the closest gate on a circle of
@@ -1781,11 +1811,15 @@ type End = { angle: number; family: 'A' | 'B'; port: Port };
  * Where the paper's edges cut the circle off, a line that would meet the
  * circle past an edge, or within `BOARD_STUB` of it, ends where the circle
  * meets that edge, so the squares there come to points along the circle. */
-function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number, around?: number):
+function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number, around?: number, d = boardLines(strips)):
 	(side: number, index: number, framed: (angle: number, half: number) => Point, from: Point) => Point[] {
 	const turn = 2 * Math.PI, lines: { axis: number; line: number; ends: End[] }[] = [];
+	// A line's place among those in play, out from the centre; none for the
+	// middle lines a circle covers whole, which are left out.
+	const place = (line: number) => d.findIndex(dk => Math.abs(Math.abs(line - 50) - dk) < 1e-9);
 	for (let k = 1; k < strips; k++) for (const axis of [0, 1]) {
 		const line = (100 * k) / strips, ends: End[] = [];
+		if (place(line) < 0) continue;
 		const end = (point: Point, index: number) =>
 			ends.push({ angle: (Math.atan2(point[1] - 50, point[0] - 50) + turn) % turn, family: axis ? 'B' : 'A', port: { point, index } });
 		ring.forEach((p, i) => {
@@ -1833,7 +1867,7 @@ function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number, aro
 		// other sheet's ends between its own, which reach their gates along
 		// it (see `overlapGates`): its arc ends each quarter's run of ends.
 		if (between.length && between.every(end => end.family !== (axis ? 'B' : 'A'))
-			&& Math.round(Math.abs(line - 50) * strips / 100 - .5) >= count) {
+			&& place(line) >= count) {
 			after[Math.floor(a.angle / (Math.PI / 2)) % 4] = a;
 			before[Math.floor(b.angle / (Math.PI / 2)) % 4] = b;
 			continue;
@@ -1962,14 +1996,15 @@ export function connectCellGrid(
 	spread = false,
 	open: OpenFrame = FITTED,
 	strips = 2 * cells[0].length + 1,
-	around?: number
+	around?: number,
+	lines?: number[]
 ) {
 	const rows = cells.length,
 		cols = cells[0].length;
 	const fan = style === 'rays' ? 0.72 : 1,
 		band = 0.3;
 	if (style === 'board' && cols !== rows) throw new ConstructionError('topology', 'A regular board needs as many rows as columns');
-	const legs = style === 'board' && boundary ? boardLegs(edges, boundary, strips, cols, around) : undefined;
+	const legs = style === 'board' && boundary ? boardLegs(edges, boundary, strips, cols, around, lines) : undefined;
 	const connect = (gate: Point, side: number, index: number, count: number) => {
 		if (boundary) {
 			const step = Math.PI / (2 * count);

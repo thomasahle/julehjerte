@@ -60,7 +60,7 @@ export function measureTextGrid(
 	font: Font,
 	air: boolean | number = false,
 	frame?: Frame,
-	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; junction?: Point; circle?: number; scale?: number; centre?: Point } = {}
+	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -133,7 +133,7 @@ export function generateTextGrid(
 	font: Font,
 	air: boolean | number = false,
 	frame?: Frame,
-	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; junction?: Point; circle?: number; scale?: number; centre?: Point } = {}
+	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point } = {}
 ) {
 	const { matrix, rows, cols, height, cy, padding, cellHeight, widths, inkWidths, span, fullHeight, scale, boundary, points } =
 		measureTextGrid(text, font, air, frame, layout);
@@ -224,11 +224,19 @@ export function generateTextGrid(
 				// gate the circle passes inside of, the cell being square and the
 				// motif large, moves in towards the centre, to midway between the
 				// circle and the motif's farthest point, while it stays in its panel.
-				const reach = Math.max(...upright.flat().map(p => Math.hypot(p[0], p[1]))),
-					limit = (reach + layout.circle / 2) / 2;
+				// A circle wider than the paper is cut off by its edges: there the
+				// gate moves to three fifths of the way out from the motif to the
+				// edge, or to the circle where that is nearer, which cuts cleanly
+				// most often (every corpus motif but the always hard star, snowflake
+				// and crown on five to nine strips at 100%).
+				const reach = Math.max(...upright.flat().map(p => Math.hypot(p[0], p[1])));
 				const outer = [row === 0, col === cols * columns - 1, row === rows * slices - 1, col === 0];
 				[[x, y - h / 2], [x + w / 2, y], [x, y + h / 2], [x - w / 2, y]].forEach(([u, v], i) => {
-					const k = limit / Math.hypot(u, v);
+					const rim = () => {
+						const [sx, sy] = uprightToSheet([u, v]);
+						return Math.min(layout.circle! / 2, distance(ray(boundary!, [50, 50], Math.atan2(sy - 50, sx - 50)).point, [50, 50]));
+					};
+					const k = (layout.circle! > 100 ? reach + .6 * (rim() - reach) : (reach + layout.circle! / 2) / 2) / Math.hypot(u, v);
 					if (outer[i] && k < 1 && Math.abs(u * k - x) <= w / 2 + 1e-9 && Math.abs(v * k - y) <= h / 2 + 1e-9)
 						gates[i] = uprightToSheet([u * k, v * k]);
 				});
@@ -355,8 +363,8 @@ export function generateTextGrid(
 	// On a board circle, cuts that must run round to its gates do so midway
 	// between the motif and the circle (see `boardLegs`).
 	const around = layout.board && layout.circle
-		? (Math.max(...artwork.flat().map(p => distance(p, [50, 50]))) + layout.circle / 2) / 2 : undefined;
-	connectCellGrid(edges, cells, boundary, layout.board ? 'board' : 'check', layout.spread, undefined, layout.board, around);
+		? (Math.max(...artwork.flat().map(p => distance(p, [50, 50]))) + Math.min(layout.circle / 2, 50)) / 2 : undefined;
+	connectCellGrid(edges, cells, boundary, layout.board ? 'board' : 'check', layout.spread, undefined, layout.board, around, layout.lines);
 	const domain =
 		boundary ??
 		[

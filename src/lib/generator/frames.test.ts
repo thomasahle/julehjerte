@@ -7,9 +7,9 @@ import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSide } from './state';
 import { templateVariants } from './templates';
-import { inside, uprightToSheet, distance, boardRanges, WEDGES, type Point, type Ring } from './geometry';
+import { inside, uprightToSheet, distance, boardLines, boardRangeLines, boardRanges, WEDGES, type Point, type Ring } from './geometry';
 import { geometryKey } from './cache';
-import { boardRadius, motifChoices, motifPatterns, squareChoices } from './boardMotif';
+import { boardRadius, boardSteps, motifChoices, motifPatterns, squareChoices } from './boardMotif';
 import { normalizeContours } from './contours';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { serializeHeartDesign, normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
@@ -434,13 +434,17 @@ describe('frames from real hearts', () => {
  });
  it('grows the circle without jumps, on every board', () => {
   // From the smallest to the largest, no step larger than the one over the
-  // corner junctions at 85-86%, and none back.
+  // corner junctions at 85-86%, and none back; on seven and nine strips but
+  // the one out to where the circle covers the middle lines whole, as no
+  // circle between can be woven with the motif in four (see `boardRanges`).
   for (const [board, largest] of [[3, boardRanges(3)[0][1]], [5, 52], [7, boardRanges(7).at(-1)![1]], [9, boardRanges(9).at(-1)![1]]]) {
+   const ranges = boardRanges(board), covered = ranges.find(range => boardRangeLines(range, board).length < boardLines(board).length);
    let last = boardRadius(.45, board).radius;
    for (let percent = 46; percent <= 100; percent++) {
     const { radius } = boardRadius(percent / 100, board);
     expect(radius - last, `${board} ${percent}`).toBeGreaterThanOrEqual(0);
-    expect(radius - last, `${board} ${percent}`).toBeLessThanOrEqual(2 * .4 + 1e-9);
+    if (covered && radius === covered[0]) expect(last, `${board}`).toBe(ranges[ranges.indexOf(covered) - 1][1]);
+    else expect(radius - last, `${board} ${percent}`).toBeLessThanOrEqual(2 * .4 + 1e-9);
     last = radius;
    }
    expect(last, `${board}`).toBe(largest);
@@ -453,11 +457,11 @@ describe('frames from real hearts', () => {
   // grows from 36 to 39 on seven strips, from 28 to 30 on nine, and stops
   // where each gate keeps room for a cut either side of it.
   for (const [board, from] of [[7, 36], [9, 27.9]]) {
-   const ranges = boardRanges(board), top = ranges.at(-1)!;
-   expect(ranges.length, `${board}`).toBe(4);
+   const ranges = boardRanges(board), top = ranges[3], setting = boardSteps(board)[2][1] / 100;
    expect(top[0], `${board}`).toBeGreaterThan(from);
-   expect(boardRadius(1, board).radius, `${board}`).toBe(top[1]);
-   const { design, hardToCut, scale } = generate({ mode: 'figure', name: 'House', contours: houseMotif.contours as Ring[], colors, style: 'board', board, scale: 1 });
+   expect(boardRangeLines(top, board), `${board}`).toEqual(boardLines(board));
+   expect(boardRadius(setting, board).radius, `${board}`).toBe(top[1]);
+   const { design, hardToCut, scale } = generate({ mode: 'figure', name: 'House', contours: houseMotif.contours as Ring[], colors, style: 'board', board, scale: setting });
    expect(design.gridSize, `${board}`).toEqual({ x: board, y: board });
    expect(hardToCut, `${board}`).toBeUndefined();
    expect(scale, `${board}`).toBeUndefined();
@@ -469,6 +473,35 @@ describe('frames from real hearts', () => {
     [segments[0].p0, segments.at(-1)!.p3].map(sheet).some(([x, y]) => Math.abs(x - third) < 1e-6 && Math.abs(y) < 1e-6))!;
    expect(cut, `${board}`).toBeDefined();
    expect(Math.min(...cut.segments.map(({ p3 }) => sheet(p3)[0])), `${board}`).toBeLessThan(third - 2);
+  }
+ });
+ it('reaches past the paper\'s edges on finer boards, leaving out the middle lines it covers', () => {
+  // Once the circle covers the middle lines from edge to edge they show
+  // nothing: the heart leaves them out, and the circle reaches past the
+  // paper's edges as on five strips, the outer two lines a side meeting it
+  // there, the motif still divided in four. The page still shows the board
+  // chosen.
+  for (const board of [7, 9]) {
+   const ranges = boardRanges(board), range = ranges.at(-1)!, lines = boardLines(board);
+   expect(boardRangeLines(range, board), `${board}`).toEqual(lines.slice(-2));
+   expect(range[0], `${board}`).toBeGreaterThan(Math.hypot(lines.at(-3)!, 50));
+   expect(boardRadius(1, board).radius, `${board}`).toBeGreaterThan(54);
+   const result = generate({ mode: 'figure', name: 'House', contours: houseMotif.contours as Ring[], colors, style: 'board', board, scale: 1 });
+   expect(result.scale, `${board}`).toBeUndefined();
+   expect(result.board, `${board}`).toBe(board);
+   expect(result.design.gridSize, `${board}`).toEqual({ x: 5, y: 5 });
+   // Every cut reaching the paper's edge does so on one of the outer two
+   // lines a side, or where the circle meets that edge.
+   const rect = inferOverlapRect(result.design.fingers, result.design.gridSize);
+   const sheet = ({ x, y }: { x: number; y: number }) => [(x - rect.left) / rect.width * 100, (y - rect.top) / rect.height * 100];
+   const meets = Math.sqrt(boardRadius(1, board).radius ** 2 - 50 ** 2);
+   for (const { segments } of result.design.fingers.filter(f => f.id.includes('cut')))
+    for (const [x, y] of [segments[0].p0, segments.at(-1)!.p3].map(sheet)) {
+     const along = Math.abs(x) < 1e-6 || Math.abs(x - 100) < 1e-6 ? y : Math.abs(y) < 1e-6 || Math.abs(y - 100) < 1e-6 ? x : undefined;
+     if (along === undefined) continue;
+     const off = Math.abs(along - 50);
+     expect(lines.slice(-2).some(d => Math.abs(off - d) < 1e-6) || Math.abs(off - meets) < .1, `${board} ${along}`).toBe(true);
+    }
   }
  });
  it('lays the circle on the strips the visitor chooses, every square equal', () => {

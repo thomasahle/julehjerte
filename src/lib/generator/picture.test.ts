@@ -157,6 +157,10 @@ describe('the picture drawn before the cuts are found', () => {
 			expect(mismatch({ ...request, board: 3, scale: .8 })).toBeLessThan(.01);
 			expect(mismatch({ ...request, board: 7, scale: .8 })).toBeLessThan(.01);
 		});
+		it('past the paper\'s edges on finer boards, the middle lines left out', () => {
+			// The circle covers them whole, so the board looks the same without them.
+			expect(mismatch({ ...request, name: 'House', contours: house.contours as Ring[], board: 7, scale: 1 })).toBeLessThan(.01);
+		});
 	});
 
 	it('brings the board\'s squares to points where the circle meets the paper\'s edges, as the cuts do', () => {

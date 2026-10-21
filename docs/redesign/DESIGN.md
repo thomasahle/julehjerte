@@ -794,7 +794,17 @@ than 1.5 to the lines beside it, the second lines' ends nearing the follower's a
 30, from 36 and 28; `gateRoom`), the cut from the motif's gate running round midway between motif
 and circle to its gate there. Further out each further line a side would need panels of its own:
 of 52 corpus motifs 12 can be divided into nine panels whose seams cross only in their background,
-none into sixteen. Past the touching circle, each range of a board takes a share of 70–100% in
+none into sixteen. No circle between can be woven with the motif in four: every check the circle
+covers whole must lie inside it, merged with it in its colour or as a piece of the motif in the
+other (nine pieces from radius 41.7 on seven, 32.4 on nine). Once the circle covers the middle
+lines from edge to edge, though, they show nothing, and the heart leaves them out in both sheets:
+the outer two lines a side remain, met as on five strips, and the circle grows out past the paper's
+edges with the motif in four (50.9 to 55.4 on seven, 52.8 to 58.2 on nine; `boardRangeLines`), the
+heart then having five strips while the page shows the board chosen. The slider steps once to
+there (93 to 94% on seven, 90 to 91% on nine). Where the paper's edges cut the circle off, the
+motif's outer gates move three fifths of the way out from the motif to the edge, not towards the
+circle beyond it, and the cut running round between motif and circle keeps inside the paper too.
+Past the touching circle, each range of a board takes a share of 70–100% in
 proportion to its radii (`boardSteps`; on five strips 70–85% and 86–100%, as before). A motif that cannot be built at all on the board chosen (on three,
 one that must be divided) is shown on five, as the page then says. The size setting sizes the circle smoothly and
 the motif fills it up to the space asked for, so both only grow with the setting (tested): from

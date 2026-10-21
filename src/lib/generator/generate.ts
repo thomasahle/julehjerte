@@ -55,6 +55,7 @@ import {
 	frameRing,
 	boardLines,
 	boardPanels,
+	boardRangeLines,
 	boardRanges,
 	type Ring,
 	type Frame,
@@ -133,6 +134,10 @@ export type GeneratorResult = {
 	/** On a board circle over the corner squares: whether the motif sits on
 	 * its smallest enclosing circle's centre rather than its box's. */
 	enclosed?: boolean;
+	/** On a board circle that covers the board's middle lines whole: the
+	 * strips its squares show, the heart leaving those lines out (see
+	 * `boardRanges`). */
+	board?: number;
 };
 /** Symmetric gates for a motif that is its own mirror image, after its own
  * (see `fittedGates`): those on the heart's middle further out or meeting the
@@ -371,13 +376,16 @@ type Construction = ReturnType<typeof generateFigure> & {
 	domain?: Ring[];
 	background?: Ring[];
 	overlapAspectRatio?: number;
+	/** The strips it has where a circle on the chosen board covers its
+	 * middle lines whole and leaves them out (see `boardRanges`). */
+	strips?: number;
 };
 
 function finishConstruction(request: GeneratorRequest, r: Construction, recipe: GeneratorResult['recipe'],
 	geometry = r.geometry, curveFitter?: ReturnType<typeof createExactCurveFitter>, spacing = 1,
 	precheck = request.mode !== 'text'): GeneratorResult {
 	const curved = geometry !== r.geometry;
-	if (request.board && r.geometry.A_overlap_paths.length + 1 !== request.board)
+	if (request.board && r.geometry.A_overlap_paths.length + 1 !== (r.strips ?? request.board))
 		throw new ConstructionError('topology', 'Not the board the default size chose');
 	// The polygon prechecks describe the original straight cuts. A curved retry
 	// is checked on its actual cubics by the complete converter below.
@@ -1890,23 +1898,28 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// routing, and the padding of the motif's cell, which gives its
 		// connections room: the usual, else little. (Gates the circle passes
 		// inside of move in, see `generateTextGrid`.)
-		const sizes = (range: readonly [number, number], radius: number, placement = boxed, scale = fills(radius, placement)) =>
-			layouts(range, placement).flatMap(list => [.22, .05].flatMap(padding =>
-				list.map(layout => ({ radius, scale, layout: { padding, ...layout, ...placement.enclosed && { centre: placement.centre } } }))));
-		const build = ({ radius, scale, layout }: ReturnType<typeof sizes>[number]) => {
+		// Where the circle covers the middle lines whole, only the outer ones
+		// remain (see `boardRanges`).
+		const sizes = (range: readonly [number, number], radius: number, placement = boxed, scale = fills(radius, placement)) => {
+			const lines = boardRangeLines(range, strips), covered = lines.length < boardLines(strips).length;
+			return layouts(range, placement).flatMap(list => [.22, .05].flatMap(padding =>
+				list.map(layout => ({ radius, scale, layout: { padding, ...layout, ...placement.enclosed && { centre: placement.centre }, ...covered && { lines } } }))));
+		};
+		const build = ({ radius, scale, layout }: ReturnType<typeof sizes>[number]): Construction => {
 			const construction = generateTextGrid(MOTIF, font, false, 'circle', { ...layout, board: strips, circle: 2 * radius, scale });
 			audit(construction.edges);
-			return construction;
+			return layout.lines ? { ...construction, strips: 2 * layout.lines.length + 1 } : construction;
 		};
 		// Whether the motif can be built this way at all is decided once, at
 		// sizes of the range's own: one that cannot be kept whole, or divided in
 		// four at both, takes the other construction at its size nearest the
 		// touching circle, whatever the slider. Its shape decides, not the
 		// space asked for: more than the usual would leave it too small there.
-		const [low, high] = large ?? small, references = (range: readonly [number, number]) => panels(range) === 1
-			? [Math.round((small[0] + small[1]) / 2)] : [.25, .75].map(t => Math.round(low + t * (high - low)));
+		const [low, high] = large ?? small, home = (range: readonly [number, number]) => panels(range) === 1 ? small : large ?? small,
+			references = (range: readonly [number, number]) => home(range) === small
+				? [Math.round((small[0] + small[1]) / 2)] : [.25, .75].map(t => Math.round(low + t * (high - low)));
 		const buildable = (range: readonly [number, number]) => references(range)
-			.every(reference => sizes(range, reference, boxed, fills(reference, boxed, 1, Math.min(gap, 3))).some(attempt => {
+			.every(reference => sizes(home(range), reference, boxed, fills(reference, boxed, 1, Math.min(gap, 3))).some(attempt => {
 				try {
 					build(attempt);
 					return true;
@@ -1936,7 +1949,8 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// whether the motif sits on its enclosing circle, for the picture.
 		const kept = (result: GeneratorResult): GeneratorResult => ({
 			...mode === range ? result : { ...result, scale: boardSetting(size, strips) },
-			...placement.enclosed && { enclosed: true }
+			...placement.enclosed && { enclosed: true },
+			...result.design.gridSize.x !== strips && { board: strips }
 		});
 		// The circle and the motif keep the sizes the setting gives them, so
 		// both only grow with it: cut cleanly if they can be, else as hard to

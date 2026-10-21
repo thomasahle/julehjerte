@@ -186,7 +186,7 @@
 	 * figure in the checks' strips. */
 	let boardStrips = $derived(config.mode === 'figure' && config.style in BOARD_STRIPS ? BOARD_STRIPS[config.style as BoardStyle]
 		: config.mode === 'text' && config.textFrame === 'strips' ? BOARD_STRIPS.strips : undefined);
-	let shownBoard = $derived(!busy && result ? result.design.gridSize.x : undefined);
+	let shownBoard = $derived(!busy && result ? result.board ?? result.design.gridSize.x : undefined);
 	/** The numbers of strips a frame on a board offers, as buttons. */
 	const stripChoices = ({ min, max, step }: { min: number; max: number; step: number }) =>
 		Array.from({ length: Math.floor((max - min) / step) + 1 }, (_, i) => min + i * step);
@@ -510,7 +510,7 @@
 				// What the default size's heart, once made, tells the picture.
 				const made = cache.get(geometryKey({ ...snapshot, scale: defaults.scale, place: undefined, side: undefined }));
 				const known = onBoard(snapshot.motif, stripCount(snapshot));
-				sketch = picture(request, { place: made?.place, board: made?.design.gridSize.x, circle: boardCircles.get(known),
+				sketch = picture(request, { place: made?.place, board: made?.board ?? made?.design.gridSize.x, circle: boardCircles.get(known),
 					enclosed: boardEnclosed.get(known) }) ?? null;
 				if (!cached && !failed) queueJob({ request, key, token, motif: snapshot.motif });
 			})
