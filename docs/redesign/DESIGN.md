@@ -532,6 +532,14 @@ Selecting them shows no anchor or control handles and enables no node or segment
 does not insert a node. Dragging the whole edge inward creates a real cut and restores the outer edge.
 That new cut supports normal editing, symmetry, undo and redo.
 
+A node, handle or cut dragged towards a place it may not go — where its cut would cross another cut of its
+lobe or itself, leave the woven square, or come closer to the next cut than the red cuts allow (1.5 of the
+square's 100 units; GitHub issue #4) — stops at the nearest place it may be and slides along whatever stops it
+as the pointer goes on past it, in both tabs (`$lib/editor/dragSearch`), while the line above the heart says
+why. So a drag never makes a cut red; on a heart already too close, a drag may leave it as close as it was.
+A cut folding too close on itself is caught where the search ends (that check costs many times the others),
+so there the point stops instead of sliding.
+
 The four point-type icons follow the owner's point-types reference: a diamond at a corner, a square
 on a smooth curve, a square with equal handles for symmetry, and a circle for creating curve handles.
 These glyphs are 24px within the existing 44px buttons. Curves use the button text colour; points are

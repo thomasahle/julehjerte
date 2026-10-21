@@ -36,8 +36,6 @@
 	import SharedCutOverlay from './editor/SharedCutOverlay.svelte';
 	import { computeHeartViewBoxFromOverlap } from '$lib/rendering/heartSvg';
 	import { bezierPathBBox, closestPointOnBezier } from '$lib/geometry/curves';
-	import { Point } from '$lib/geometry/point';
-	import { snapSequentialQP, snapSequentialQPBezierControl, snapSequentialQPBezierJunction } from '$lib/algorithms/snapBezierControl';
 	import { detectSymmetryModes } from '$lib/utils/symmetry';
 	import { dev } from '$app/environment';
 	import type { TileRule } from '$lib/pattern/rules';
@@ -56,7 +54,14 @@
 	} from '$lib/geometry/bezierSegments';
 	import { dot, midpoint, normalize, perp, vecAdd, vecDist, vecLerp, vecScale, vecSub } from '$lib/geometry/vec';
 	import { insertNodeInFinger, shiftNodeTypesOnDelete } from '$lib/editor/commands';
-	import { bezierPointAt, findFingersWithIssues, intersectionMarginPx, segmentsIntersect } from '$lib/editor/curveIssues';
+	import {
+		fingerHasIntersectionIssues,
+		fingerPairHasIntersectionIssues,
+		findFingersWithIssues,
+		intersectionMarginPx,
+		segmentsIntersect
+	} from '$lib/editor/curveIssues';
+	import { nearestAllowed, type Slide } from '$lib/editor/dragSearch';
 	import { LOBE_OUTLINE_COLORS } from '$lib/editor/outlineColors';
 	import { findNearestOppositeAnchor, snapOppositeRadiusPx } from '$lib/editor/snapOpposite';
 	import { toggleNumberInList } from '$lib/editor/selection';
@@ -331,6 +336,12 @@
 	let activePointerId = $state<number | null>(null);
 	let dragStartPointer = $state<Vec | null>(null);
 	let dragStartOffset = $state<Vec | null>(null);
+	/** Where the drag in progress slides along the edge of where its point may be (`nearestAllowed`). */
+	let dragSlide: Slide | null = null;
+	/** How far the drag in progress has moved the selected nodes it moves together, from where they were. */
+	let dragDelta: Vec = { x: 0, y: 0 };
+	/** Cuts the drag in progress found too close to each other or themselves already as it began, by their ids (`wasClose`). */
+	let closeAtStart = new Map<string, boolean>();
 	let lastFingerClickAt = 0;
 	let lastFingerClickId: string | null = null;
 	let lastFingerClickPos: Vec | null = null;
@@ -1420,9 +1431,10 @@
 
 	/**
 	 * Why a cut may not be where an edit would put it: it would cross another cut of its lobe (or pass
-	 * the end of one), cross itself, or leave the woven square.
+	 * the end of one), cross itself, or leave the woven square; or, in a drag, come closer than the
+	 * margin to the next cut or to itself, where the paper would be too thin.
 	 */
-	type CutProblem = 'cross' | 'self' | 'outside';
+	type CutProblem = 'cross' | 'self' | 'outside' | 'close';
 
 		/**
 		 * `whole`: judge the candidate among this set of cuts, edges and all, on this grid, instead of
@@ -1547,6 +1559,85 @@
 		return overridesProblem(overrides) === null;
 	}
 
+	/** The least gap the red cuts allow between two cuts of a lobe, in the heart's units (`findFingersWithIssues`). */
+	function clearanceMargin(): number {
+		return intersectionMarginPx(inferOverlapRect(fingers, gridSize), gridClearanceScale(gridSize.x, gridSize.y));
+	}
+
+	/**
+	 * Whether two cuts of a lobe, or a cut and itself (`a` = `b`), were closer than the margin already
+	 * when the drag in progress began: a drag may leave such a heart as it found it.
+	 */
+	function wasClose(a: string, b: string): boolean {
+		const key = a < b ? `${a} ${b}` : `${b} ${a}`;
+		let close = closeAtStart.get(key);
+		if (close === undefined) {
+			const before = dragSnapshot?.fingers ?? fingers;
+			const cutA = before.find((f) => f.id === a);
+			const cutB = before.find((f) => f.id === b);
+			const margin = clearanceMargin();
+			close = !!cutA && !!cutB && (a === b ? fingerHasIntersectionIssues(cutA, [cutA], margin) : fingerPairHasIntersectionIssues(cutA, cutB, margin));
+			closeAtStart.set(key, close);
+		}
+		return close;
+	}
+
+	/**
+	 * Whether the cuts an edit would make come closer than the margin to a next cut of their lobe,
+	 * where they were not that close as the drag began: the red cuts' rule, which a drag keeps to
+	 * (GitHub issue #4). Only next cuts are measured: a cut lies between its two neighbours, so a cut
+	 * further off is further away still.
+	 */
+	function closeProblem(overrides: Map<string, Finger>): CutProblem | null {
+		const margin = clearanceMargin();
+		const measured = new Set<string>();
+		for (const cut of overrides.values()) {
+			const idx = boundaryIndexFromId(cut.id);
+			const count = boundaryCurveCount(gridSize, cut.lobe);
+			for (const k of [idx - 1, idx + 1]) {
+				if (k < 0 || k >= count) continue;
+				const id = idForBoundary(cut.lobe, k);
+				const key = cut.id < id ? `${cut.id} ${id}` : `${id} ${cut.id}`;
+				if (measured.has(key)) continue;
+				measured.add(key);
+				const next = overrides.get(id) ?? getFingerById(id);
+				if (next && fingerPairHasIntersectionIssues(cut, next, margin) && !wasClose(cut.id, id)) return 'close';
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Whether the dragged cut, as an edit would make it, comes closer to itself than the margin (a
+	 * fold, short of crossing itself), where it did not as the drag began: the red cuts' rule too. It
+	 * takes many times the other checks, so a drag's search leaves it out, and the place the search
+	 * finds is refused for it (`dragKept`).
+	 */
+	function foldProblem(overrides: Map<string, Finger>): CutProblem | null {
+		const own = dragTarget ? overrides.get(dragTarget.fingerId) : undefined;
+		if (!own || !fingerHasIntersectionIssues(own, [own], clearanceMargin()) || wasClose(own.id, own.id)) return null;
+		return 'close';
+	}
+
+	/** The first problem among the cuts a drag's edit would make: `overridesProblem`'s, or their coming too close to the next (`closeProblem`). */
+	function dragProblem(overrides: Map<string, Finger>): CutProblem | null {
+		return overridesProblem(overrides) ?? closeProblem(overrides);
+	}
+
+	/**
+	 * The edit a drag found, made, unless the dragged cut would fold too close on itself
+	 * (`foldProblem`): then the drag stays where it was, and says why.
+	 */
+	function dragKept(overrides: Map<string, Finger>): boolean {
+		const fold = foldProblem(overrides);
+		if (fold) {
+			noteDragStop(fold);
+			return false;
+		}
+		applyOverrides(overrides);
+		return true;
+	}
+
 	/** An edit a drag tries: the cuts it makes, and the first problem among them, or null. */
 	type JudgedEdit = { overrides: Map<string, Finger>; problem: CutProblem | null };
 
@@ -1563,7 +1654,7 @@
 			if (!edit) {
 				// A plain point: the search's own may end up in the cuts.
 				const overrides = overridesAt({ x: at.x, y: at.y });
-				edit = { overrides, problem: overridesProblem(overrides) };
+				edit = { overrides, problem: dragProblem(overrides) };
 				judged.set(key, edit);
 			}
 			return edit;
@@ -1580,7 +1671,8 @@
 	const DRAG_STOP_TEXT: Record<CutProblem, TranslationKey> = {
 		cross: 'editorDragStopCross',
 		self: 'editorDragStopSelf',
-		outside: 'editorDragStopOutside'
+		outside: 'editorDragStopOutside',
+		close: 'editorDragStopClose'
 	};
 
 	function noteDragStop(problem: CutProblem | null) {
@@ -1620,12 +1712,9 @@
 		const root = base ?? current;
 		const desiredPrimary = buildCandidate(root, 1);
 		const desiredOverrides = deriveSymmetryOverrides(desiredPrimary);
-		const desiredProblem = overridesProblem(desiredOverrides);
+		const desiredProblem = dragProblem(desiredOverrides);
 		noteDragStop(desiredProblem);
-		if (!desiredProblem) {
-			applyOverrides(desiredOverrides);
-			return true;
-		}
+		if (!desiredProblem) return dragKept(desiredOverrides);
 
 		let lo = 0;
 		let hi = 1;
@@ -1634,7 +1723,7 @@
 			const mid = (lo + hi) / 2;
 			const primaryCandidate = buildCandidate(root, mid);
 			const overrides = deriveSymmetryOverrides(primaryCandidate);
-			if (overridesAreValid(overrides)) {
+			if (dragProblem(overrides) === null) {
 				bestOverrides = overrides;
 				lo = mid;
 			} else {
@@ -1643,18 +1732,15 @@
 		}
 
 		if (!bestOverrides || lo <= 0.001) return false;
-		applyOverrides(bestOverrides);
-		return true;
+		return dragKept(bestOverrides);
 	}
 
-	function buildGlobalCurveSamples(count: number): number[] {
-		const n = Math.max(3, Math.floor(count));
-		const out: number[] = [];
-		for (let i = 1; i < n; i++) out.push(i / n);
-		return out;
-	}
-
-	function snapAnchorDeltaQP(
+	/**
+	 * Selected nodes moved together by `desiredDelta` from where they were as the drag began: as near
+	 * that as they may go (`nearestAllowed`), from where the drag has them now. Null for a move of a
+	 * cut's end, which slides along its edge, a line the search does not keep to.
+	 */
+	function searchAnchorDelta(
 		finger: Finger,
 		segments: BezierSegment[],
 		movedAnchors: number[],
@@ -1663,16 +1749,7 @@
 	): JudgedEdit | null {
 		const n = segments.length;
 		if (!n) return null;
-		// Only handle internal-anchor moves here. Endpoint anchors include projection onto
-		// fixed edges, which breaks the "A + w*delta" affine model used by snapSequentialQP.
 		if (movedAnchors.some((idx) => idx <= 0 || idx >= n)) return null;
-
-		const moved = new Set(movedAnchors);
-		const obstacles = buildObstaclePaths(finger.id, finger.lobe);
-		const { left, right, top, bottom } = getOverlapRect();
-		const square = { minX: left, maxX: right, minY: top, maxY: bottom };
-		const from = new Point(0, 0);
-		const desired = new Point(desiredDelta.x, desiredDelta.y);
 
 		const buildCandidateAt = (delta: Vec): Finger => {
 			const segs = cloneSegments(segments);
@@ -1683,78 +1760,23 @@
 			return updateFingerSegments(finger, segs);
 		};
 		const judge = judgeOnce((delta) => deriveSymmetryOverrides(buildCandidateAt(delta)));
-
-		const tSamples = buildGlobalCurveSamples(20);
-		const sampler = (g: number) => {
-			const gg = Math.max(0, Math.min(0.999999, g));
-			const segFloat = gg * n;
-			const segIdx = Math.min(n - 1, Math.floor(segFloat));
-			const t = segFloat - segIdx;
-			const seg = segments[segIdx]!;
-			const u = 1 - t;
-			const b0 = u * u * u;
-			const b1 = 3 * u * u * t;
-			const b2 = 3 * u * t * t;
-			const b3 = t * t * t;
-
-			const startMoved = moved.has(segIdx);
-			const endMoved = moved.has(segIdx + 1);
-			const w = (startMoved ? b0 + b1 : 0) + (endMoved ? b2 + b3 : 0);
-
-			const A = bezierPointAt(seg, t);
-			return [{ A: new Point(A.x, A.y), w }];
-		};
-
-		const out = snapSequentialQP(
-			(pos: Point) => pos,
-			from,
-			desired,
-			(pos: Point) => judge(pos).problem === null,
-			sampler,
-			obstacles,
-			square,
-			{
-				tSamples
-			}
-		);
-
-		const got = { x: out.point.x, y: out.point.y };
-		noteDragStop(vecDist(got, desiredDelta) > STOP_SLOP ? judge(desiredDelta).problem : null);
-		return judge(got);
-	}
-
-	/** How far short of the pointer, in the overlap square's units, a snapped drag may stop before it counts as stopped. */
-	const STOP_SLOP = 1;
-
-	function toPoint(v: Vec): Point {
-		return new Point(v.x, v.y);
-	}
-
-	function buildObstaclePaths(targetId: string, lobe: LobeId) {
-		const obs: Array<{ getNearestLocation: (p: Point) => { point: Point; distance: number } | null }> = [];
-		for (const f of fingers) {
-			if (f.id === targetId) continue;
-			if (f.lobe !== lobe) continue;
-			const segs = fingerToSegments(f);
-			if (!segs.length) continue;
-			obs.push({
-				getNearestLocation: (p: Point) => {
-					let bestDist = Infinity;
-					let bestPoint: Point | null = null;
-					const pv: Vec = { x: p.x, y: p.y };
-					for (const seg of segs) {
-						const hit = closestPointOnBezier(seg, pv);
-						if (hit.distance < bestDist) {
-							bestDist = hit.distance;
-							bestPoint = new Point(hit.point.x, hit.point.y);
-						}
-					}
-					return bestPoint ? { point: bestPoint, distance: bestDist } : null;
-				}
-			});
+		const { left, right } = getOverlapRect();
+		const reached = nearestAllowed(dragDelta, desiredDelta, (delta) => judge(delta).problem === null, right - left, dragSlide);
+		dragSlide = reached.slide;
+		noteDragStop(vecDist(reached.point, desiredDelta) > STOP_SLOP ? judge(desiredDelta).problem : null);
+		const edit = judge(reached.point);
+		if (edit.problem) return edit;
+		const fold = foldProblem(edit.overrides);
+		if (fold) {
+			noteDragStop(fold);
+			return { ...edit, problem: fold };
 		}
-		return obs;
+		dragDelta = reached.point;
+		return edit;
 	}
+
+	/** How far short of the pointer, in the overlap square's units, a drag may stop before it counts as stopped. */
+	const STOP_SLOP = 1;
 
 	function updateSegmentControlPoint(
 		fingerId: string,
@@ -1848,61 +1870,17 @@
 			return deriveSymmetryOverrides(updateFingerSegments(candidate, segs));
 		};
 		const judge = judgeOnce((pos) => overridesOf(buildCandidateAt(pos)));
-		const isValidAt = (pos: Point) => judge(pos).problem === null;
-
-		const from = toPoint(basePos);
-		const desired = toPoint(newPos);
-		const { left, right, top, bottom } = getOverlapRect();
-		const square = { minX: left, maxX: right, minY: top, maxY: bottom };
-
-		let snapped: Vec = newPos;
-		const obstacles = buildObstaclePaths(fingerId, finger.lobe);
-
-		if (isP1 || isP2) {
-			const seg = segments[segmentIndex]!;
-			const p0 = toPoint(seg.p0);
-			const p3 = toPoint(seg.p3);
-			const other = toPoint(isP1 ? seg.p2 : seg.p1);
-			const out = snapSequentialQPBezierControl(
-				(pos: Point) => pos,
-				from,
-				desired,
-				isValidAt,
-				isP1 ? 'p1' : 'p2',
-				p0,
-				other,
-				p3,
-				obstacles,
-				square
-			);
-			snapped = { x: out.point.x, y: out.point.y };
-		} else {
-			if (segmentIndex <= 0) return false;
-			const prevSeg = segments[segmentIndex - 1]!;
-			const nextSeg = segments[segmentIndex]!;
-			const out = snapSequentialQPBezierJunction(
-				(pos: Point) => pos,
-				from,
-				desired,
-				isValidAt,
-				toPoint(prevSeg.p0),
-				toPoint(prevSeg.p1),
-				toPoint(prevSeg.p2),
-				toPoint(nextSeg.p1),
-				toPoint(nextSeg.p2),
-				toPoint(nextSeg.p3),
-				obstacles,
-				square
-			);
-			snapped = { x: out.point.x, y: out.point.y };
-		}
+		// As near the pointer as the point may go, sliding along whatever stops it.
+		const { left, right } = getOverlapRect();
+		const reached = nearestAllowed(basePos, newPos, (pos) => judge(pos).problem === null, right - left, dragSlide);
+		dragSlide = reached.slide;
+		const snapped = reached.point;
 
 		noteDragStop(vecDist(snapped, newPos) > STOP_SLOP ? judge(newPos).problem : null);
 
 		const { overrides, problem } = judge(snapped);
 		if (problem) return false;
-		applyOverrides(overrides);
-		return true;
+		return dragKept(overrides);
 	}
 
 	function deleteSelectedAnchors() {
@@ -2711,6 +2689,9 @@
 		dragDirty = false;
 		dragStartPointer = localPointFromClient(e.clientX, e.clientY);
 		dragStartOffset = null;
+		dragSlide = null;
+		dragDelta = { x: 0, y: 0 };
+		closeAtStart = new Map();
 		if (dragStartPointer && target?.kind === 'control') {
 			const baseFinger = getDragBaseFinger(target.fingerId);
 			const baseSegs = baseFinger ? fingerToSegments(baseFinger) : null;
@@ -3049,7 +3030,7 @@
 				const finger = getDragBaseFinger(dragTarget.fingerId);
 				const baseSegs = finger ? fingerToSegments(finger) : null;
 				if (finger && baseSegs && baseSegs.length) {
-					const snapped = snapAnchorDeltaQP(finger, baseSegs, anchorsToMove, anchorIdx, delta);
+					const snapped = searchAnchorDelta(finger, baseSegs, anchorsToMove, anchorIdx, delta);
 					if (snapped) {
 						if (snapped.problem) return;
 						applyOverrides(snapped.overrides);

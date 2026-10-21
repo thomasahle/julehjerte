@@ -3,6 +3,7 @@ import { flushSync, mount, unmount } from 'svelte';
 import PaperHeart from './PaperHeart.svelte';
 import type { Finger, GridSize, HeartPattern, Vec } from '$lib/types/heart';
 import { splitBezierAt } from '$lib/geometry/bezierSegments';
+import { closestPointOnBezier } from '$lib/geometry/curves';
 import { opposite } from '$lib/pattern/rules';
 import { fitLines } from '$lib/pattern/tiling';
 import { ruleStart } from '$lib/pattern/starts';
@@ -502,28 +503,78 @@ describe('the cut under the pointer', () => {
 });
 
 describe('the red cuts', () => {
-	it('mark a cut dragged too close to the next one at the first move, and are right again the moment the drag ends', () => {
-		const h = render();
-		const red = () => h.target.querySelectorAll('path[stroke="#ff0000"]').length;
-		expect(red()).toBe(0);
-		// A node in the middle of R-1, put by a double-click.
+	const red = (h: ReturnType<typeof render>) => h.target.querySelectorAll('path[stroke="#ff0000"]').length;
+	// The least gap the red cuts allow on the 3 × 3 heart: 1.5 of its 100 units across 225 px.
+	const margin = 1.5 * (225 / 100);
+
+	/** A node put in the middle of R-1 by a double-click. */
+	function nodeOnR1(h: ReturnType<typeof render>) {
 		const at = midpoint(h.fingers.find((f) => f.id === 'R-1')!);
 		for (let i = 0; i < 2; i++) {
 			send(h.path('R-1'), 'pointerdown', at);
 			send(h.svg, 'pointerup', at);
 		}
-		// Dragged to a pixel short of R-2: no crossing, so the drag goes there, but far too close.
-		const next = h.fingers.find((f) => f.id === 'R-2')!.segments[0]!.p0.x;
-		const node = h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0;
+		return h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0;
+	}
+
+	it('are never made by a drag: a node dragged at the next cut stops short of it by the gap they need, and says why', () => {
+		const h = render();
+		expect(red(h)).toBe(0);
+		const node = nodeOnR1(h);
+		const next = h.fingers.find((f) => f.id === 'R-2')!;
+		// How far the dragged node is from R-2, which is gently bent.
+		const gap = () => {
+			const at = h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0;
+			return Math.min(...next.segments.map((seg) => closestPointOnBezier(seg, at).distance));
+		};
 		send(h.handles()[1]!, 'pointerdown', node);
-		send(h.svg, 'pointermove', { x: next - 1, y: node.y });
+		send(h.svg, 'pointermove', { x: next.segments[0]!.p0.x - 1, y: node.y });
+		expect(gap()).toBeGreaterThan(margin - 0.05);
+		expect(gap()).toBeLessThan(margin + 0.3);
+		expect(red(h)).toBe(0);
+		expect(h.target.querySelector('.drag-stop')?.textContent).toContain('too thin');
+		// and slides along it as the pointer goes on past it
+		send(h.svg, 'pointermove', { x: next.segments[0]!.p0.x + 5, y: node.y + 20 });
+		const slid = h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0;
+		expect(Math.abs(slid.y - (node.y + 20))).toBeLessThan(1);
+		expect(gap()).toBeGreaterThan(margin - 0.05);
+		expect(gap()).toBeLessThan(margin + 0.3);
+		send(h.svg, 'pointerup', slid);
+		expect(red(h)).toBe(0);
+	});
+
+	it('mark a heart too close already at the first move of a drag, which may leave it so, and are right again the moment the drag ends', () => {
+		const first = render();
+		const node = nodeOnR1(first);
+		const next = first.fingers.find((f) => f.id === 'R-2')!.segments[0]!.p0.x;
+		// The same heart with R-1's node a pixel short of R-2: no crossing, but far too close.
+		const tooClose = first.fingers.map((f) => {
+			if (f.id !== 'R-1') return f;
+			const [a, b] = f.segments as [Finger['segments'][number], Finger['segments'][number]];
+			const delta = { x: next - 1 - node.x, y: 0 };
+			const move = (p: Vec) => ({ x: p.x + delta.x, y: p.y + delta.y });
+			return { ...f, segments: [{ ...a, p2: move(a.p2), p3: move(a.p3) }, { ...b, p0: move(b.p0), p1: move(b.p1) }] };
+		});
+		const h = render({ initialFingers: tooClose, initialGridSize: { x: 3, y: 3 } });
+		expect(red(h)).toBeGreaterThan(0);
+		const close = h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0;
+		send(h.path('R-1'), 'pointerdown', close);
+		send(h.svg, 'pointerup', close);
+		// away: right at the first move
+		send(h.handles()[1]!, 'pointerdown', close);
+		send(h.svg, 'pointermove', node);
+		expect(h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0.x).toBeCloseTo(node.x);
+		expect(red(h)).toBe(0);
+		// back as close as it was, which the drag may leave it, and let go: red the moment the drag ends
+		send(h.svg, 'pointermove', close);
+		send(h.svg, 'pointerup', close);
 		expect(h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0.x).toBeCloseTo(next - 1);
-		expect(red()).toBeGreaterThan(0);
-		// the cuts do not cross, and the warning says what is wrong: they are too close
+		expect(red(h)).toBeGreaterThan(0);
 		expect(h.target.querySelector('.canvas-notice.warning')?.textContent).toContain('come too close');
-		// Straight back and let go: during a drag the check may wait a moment, but not past its end.
+		// A drag that begins on a heart this close may not take it closer than that again, after it once left.
+		send(h.handles()[1]!, 'pointerdown', close);
 		send(h.svg, 'pointermove', node);
 		send(h.svg, 'pointerup', node);
-		expect(red()).toBe(0);
+		expect(red(h)).toBe(0);
 	});
 });
