@@ -23,6 +23,7 @@ import {
 	placedPointAt,
 	READ_TOLERANCE,
 	readTile,
+	settledTile,
 	slideCutEnd,
 	specialNodes,
 	tileAfterFingerEdit,
@@ -227,6 +228,9 @@ export function startTileDrag(tile: PatternTile, fingerId: string, anchor: numbe
 
 /** A drag on a cut of `lobe`, or on an edge of the square (`lobe` null), which moves the whole pattern. */
 export const startPanDrag = (tile: PatternTile, start: Vec, lobe: LobeId | null): TileDrag => ({ mode: 'pan', base: tile, start, lobe });
+
+/** A frame drag from `base` let go: the cells on the plain grid exactly where they were let go a hair from it, or null (`settledTile`). */
+export { settledTile };
 
 /** The tile with what was dragged moved by `delta` pixels from where the drag started: sized and slanted, moved or reshaped. */
 export function dragTile(drag: TileDrag, delta: Vec, rect: OverlapRect): PatternTile | null {

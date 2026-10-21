@@ -2736,6 +2736,12 @@
 		} catch {
 			// Ignore pointer release failures.
 		}
+		// A black point let go a hair from the plain grid, which its drag is drawn to but never quite
+		// reaches: the cells settle on it, square and straight (`escher.settledTile`), in the same step.
+		if (dragDirty && tileDrag?.mode === 'frame' && patternTile && escher) {
+			const settled = escher.settledTile(patternTile, tileDrag.base);
+			if (settled) applyTileStep(settled);
+		}
 		if (dragDirty && dragSnapshot) pushUndo(dragSnapshot);
 		dragSnapshot = null;
 		dragDirty = false;

@@ -21,6 +21,7 @@ import {
 	slideCutEnd,
 	readTile,
 	specialNodes,
+	settledTile,
 	tileAfterFingerEdit,
 	turnedTo,
 	turnLimits,
@@ -336,17 +337,41 @@ describe("the bridge between a tile and Tegn's cuts", () => {
 		expect(problems(next)).toEqual([]);
 	});
 
-	it('snaps back to the plain grid, square and straight, near it', () => {
+	it('draws the cells to the plain grid near it, the point never jumping, and settles them on it when let go a hair from it', () => {
 		const tile = ruleStart(opposite('move', 'move'), 4);
 		const rect = getCenteredRectParams({ x: 5, y: 5 });
 		const anchor = [...specialNodes(tile, 'R-1').keys()].filter((a) => isCrossing(tile, 'R-1', a)).sort((a, b) => a - b)[1]!;
-		// a little along the cut and across it: still the plain grid
-		expect(dragPlacedPoint(tile, 'R-1', anchor, { x: 2, y: 2 }, rect)!.shape).toBeUndefined();
-		// stretched and slanted, then dragged back to within a hair of the plain grid
+		const point = placedPointAt(tile, 'R-1', anchor)!;
+		const was = generateEditorFingers(tile, rect).find((f) => f.id === 'R-1')!.segments[anchor]!.p0;
+		const where = (next: PatternTile, pointer: Vec) => {
+			const at = locatePlacedPoint(next, point, 'V', pointer, rect)!;
+			return generateEditorFingers(next, rect).find((f) => f.id === at.fingerId)!.segments[at.anchor]!.p0;
+		};
+		// dragged off the plain grid a little at a time, the point moves at every step, never more than
+		// twice as far as the pointer: no standing still and then jumping, as when the grid held it
+		const step = { x: 0.6, y: 0.4 };
+		let last = was;
+		let pointer = was;
+		for (let k = 1; k <= 40; k++) {
+			pointer = { x: was.x + step.x * k, y: was.y + step.y * k };
+			const p = where(dragPlacedPoint(tile, 'R-1', anchor, { x: step.x * k, y: step.y * k }, rect)!, pointer);
+			const moved = Math.hypot(p.x - last.x, p.y - last.y);
+			expect(moved, `step ${k}`).toBeGreaterThan(1e-6);
+			expect(moved, `step ${k}`).toBeLessThan(2 * Math.hypot(step.x, step.y));
+			last = p;
+		}
+		// and past the pull it is under the pointer again
+		expect(near(last, pointer, 1e-6)).toBe(true);
+		// let go a hair from the plain grid, the cells settle on it
+		const hair = dragPlacedPoint(tile, 'R-1', anchor, { x: 0.5, y: 0.5 }, rect)!;
+		expect(hair.shape).toBeDefined();
+		// back where the drag started, the plain grid
+		expect(settledTile(hair, tile)).toBe(tile);
+		// stretched and slanted they stay so; dragged back to within a hair of the plain grid, they settle there
 		const out = dragPlacedPoint(tile, 'R-1', anchor, { x: 25, y: 30 }, rect)!;
-		expect(out.shape).toBeDefined();
-		const back = dragPlacedPoint(out, 'R-1', anchor, { x: -24, y: -29 }, rect);
-		expect(back?.shape, 'dragged back').toBeUndefined();
+		expect(settledTile(out, tile)).toBeNull();
+		const back = dragPlacedPoint(out, 'R-1', anchor, { x: -24.5, y: -29.5 }, rect)!;
+		expect(settledTile(back, out)?.shape, 'dragged back').toBeUndefined();
 	});
 
 	it('the middle of an S, dragged, sizes and slants the tiles too, and follows the pointer', () => {

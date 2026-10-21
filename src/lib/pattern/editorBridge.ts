@@ -531,12 +531,29 @@ const MAX_TURN = (15 * Math.PI) / 180;
 const SIDES: [number, number] = [100 / 12, 100 / 2];
 
 /**
- * How near the plain grid a drag snaps to it: a side within this slant of its
- * axis lies on it, and within this share of a plain cell's length, or of the
- * other side's, is that long. So the tiles come back square and straight.
+ * How near the plain grid a drag is drawn to it: a side within this slant of its
+ * axis is pulled towards it, and within this share of a plain cell's length, or
+ * of the other side's, towards that length (`magnet`). So the tiles come back
+ * square and straight, without the point sticking and then jumping.
  */
 const SNAP_TURN = (2.5 * Math.PI) / 180;
 const SNAP_SIZE = 0.025;
+
+/**
+ * `x` drawn towards 0 within `zone` of it, without a jump: inside, it eases from 0
+ * up to x (smoothstep), so a point dragged off the plain grid leaves it slowly at
+ * first and is under the pointer again by the zone's edge, moving all the way.
+ * Holding the tiles at the plain grid until the pointer left the zone made the
+ * point stand still and then jump the whole zone at once.
+ */
+function magnet(x: number, zone: number): number {
+	const t = Math.abs(x) / zone;
+	return t >= 1 ? x : x * t * t * (3 - 2 * t);
+}
+
+/** How near the plain grid a drag let go settles on it exactly (`settledTile`): well inside the pull, where the point is a pixel or so off it. */
+const SETTLE_TURN = (0.25 * Math.PI) / 180;
+const SETTLE_SIZE = 0.0025;
 
 /**
  * The crossing of line `line` of family `kind` that stays put when a point of the
@@ -578,7 +595,8 @@ const clamp = (v: number, lo: number, hi: number) => Math.min(Math.max(v, lo), h
  * (`latticeOf`). The side slants no further than `MAX_TURN` off its axis in the
  * heart, the pattern's turn with it, and is `SIDES` long at most and at least;
  * past those the point stops short, and a pointer dragged past the pivot leaves the
- * tiles as small as they go. Near the plain grid it snaps back square and straight.
+ * tiles as small as they go. Near the plain grid the cells are drawn to it, square
+ * and straight (`magnet`); let go there, they settle on it (`settledTile`).
  */
 function slantedShape(tile: PatternTile, kind: StretchKind, v: Vec, w: Vec): Shape {
 	const h = 100 / (tile.cuts + 1);
@@ -597,7 +615,7 @@ function slantedShape(tile: PatternTile, kind: StretchKind, v: Vec, w: Vec): Sha
 		// Slanted towards the pointer, by how far it lies across the side against how far along, either
 		// way, so that a pointer dragged on past the pivot slants nothing; straight near the axis.
 		let slant = Math.atan2(axis.x * wanted.y - axis.y * wanted.x, Math.abs(dot(wanted, axis)));
-		if (Math.abs(slant) < SNAP_TURN) slant = 0;
+		slant = magnet(slant, SNAP_TURN);
 		dir = turn(axis, clamp(slant, -MAX_TURN - by, MAX_TURN - by));
 	} else {
 		// Square corners: across the other side, the way the side runs.
@@ -609,7 +627,12 @@ function slantedShape(tile: PatternTile, kind: StretchKind, v: Vec, w: Vec): Sha
 	// other side's, that long.
 	const length = (u: Vec) => Math.hypot(u.x, u.y);
 	let grow = Math.max(dot(wanted, dir), 0);
-	for (const target of [1, length(own[other])]) if (Math.abs(grow / target - 1) < SNAP_SIZE) grow = target;
+	// One pull for lengths whose pulls would overlap (the other side as long as a plain cell, say): two
+	// at once would make the point catch up too fast. The other side keeps its length through a drag, so
+	// the pulls do not change while it lasts.
+	const lengths = [1, length(own[other])];
+	const targets = Math.abs(lengths[1]! - 1) < 2 * SNAP_SIZE ? [1] : lengths;
+	for (const target of targets) grow = target * (1 + magnet(grow / target - 1, SNAP_SIZE));
 	grow = clamp(grow, SIDES[0] / h, SIDES[1] / h);
 	const both = lattice === 'rhombic' || lattice === 'square';
 	const others = both ? times(own[other], grow / length(own[other])) : own[other];
@@ -676,6 +699,30 @@ export function turnLimits(tile: PatternTile): [number, number] {
 export function turnedTo(base: PatternTile, angle: number): PatternTile | null {
 	const [lo, hi] = turnLimits(base);
 	return reshaped(base, unturnedShape(base), clamp(angle, lo, hi), rawToCells(base, { x: 50, y: 50 }));
+}
+
+/** Whether a tile's cells are the plain grid's, square and straight, the pattern turned or not. */
+function onPlainGrid(tile: PatternTile): boolean {
+	const own = unturnedShape(tile);
+	return Math.abs(own.x.x - 1) + Math.abs(own.x.y) + Math.abs(own.y.x) + Math.abs(own.y.y - 1) < 1e-12;
+}
+
+/**
+ * The tile with its cells on the plain grid exactly, square and straight, where a
+ * drag from `base` let go of them a hair from it (`SETTLE_TURN`, `SETTLE_SIZE`) —
+ * the pull of `magnet` brings them close but never quite there — the pattern
+ * keeping its turn. A drag that started on the plain grid is back where it started
+ * (`base`); any other keeps the heart's middle where it is. Null where the cells
+ * are not that near the plain grid, or are on it already.
+ */
+export function settledTile(tile: PatternTile, base: PatternTile): PatternTile | null {
+	if (!tile.shape || onPlainGrid(tile)) return null;
+	const own = unturnedShape(tile);
+	const off = (v: Vec, axis: number) => Math.abs(angleOf(v) - axis);
+	const size = (v: Vec) => Math.abs(Math.hypot(v.x, v.y) - 1);
+	if (off(own.x, 0) > SETTLE_TURN || off(own.y, Math.PI / 2) > SETTLE_TURN || size(own.x) > SETTLE_SIZE || size(own.y) > SETTLE_SIZE) return null;
+	if (onPlainGrid(base) && tileTurn(base) === tileTurn(tile)) return base;
+	return reshaped(tile, { x: { x: 1, y: 0 }, y: { x: 0, y: 1 } }, tileTurn(tile), rawToCells(tile, { x: 50, y: 50 }));
 }
 
 /**

@@ -616,7 +616,9 @@ the sizes, "Drej mønstret", which turns the whole pattern about the middle of t
 shape (`PatternTile.turn`, kept apart from the cells' own shape and saved with the tile). Slant and turn
 together, no side lies more than 15° off its axis (every cut has to run from edge to opposite edge, and further
 the lines near the corners could not), with between two and twelve strips a side; near the plain grid the cells
-snap back square and straight. A type whose cells cannot slant takes the slant it is given as the turn. Dragging a
+are drawn to it, square and straight, easing in so that the point never stands still and then jumps (held there
+until the pointer left a 2.5° zone, it did, which the owner found jarring), and let go a hair from it they settle
+on it exactly. A type whose cells cannot slant takes the slant it is given as the turn. Dragging a
 cut, or one of the square's edges, moves the whole pattern, which comes back in at the other edge without end: in
 this tab no strip is pulled in from an edge or dragged out, and nothing done in the tab takes the heart out of
 it. A click on a cut only chooses it, its points shown. (For a day only the edges moved the pattern, after an
