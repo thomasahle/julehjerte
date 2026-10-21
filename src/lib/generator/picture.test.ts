@@ -20,13 +20,14 @@ const colors = { left: '#ffffff', right: '#cc0000' };
 /** The share of the square where the picture and the finished heart differ. */
 function mismatch(request: GeneratorRequest, n = 100): number {
 	const result = generate(request), mask = rasterizeDesign(result.design, n).data;
-	// The page knows what the default size chose once it has made it: where
-	// the figure in the checks lies, which pattern the small motifs repeat.
-	const fixed = request.place !== undefined || (request.scale ?? .7) === .7, base = fixed ? result : generate({ ...request, scale: .7 });
 	// Where its strips could not all be whole at the size asked for, the
 	// generator says which it kept; a board circle's kept size says which
 	// circle the motif keeps.
 	const board = request.mode === 'figure' && request.style === 'board';
+	// The page knows what the default size chose once it has made it: where
+	// the figure in the checks lies, which pattern the small motifs repeat
+	// (nothing a board circle's picture needs).
+	const fixed = board || request.place !== undefined || (request.scale ?? .7) === .7, base = fixed ? result : generate({ ...request, scale: .7 });
 	const circle = board && result.scale !== undefined ? result.scale < (request.scale ?? .7) ? result.scale : 'large' as const : undefined;
 	const { rings } = picture({ ...request, scale: board ? request.scale : result.scale ?? request.scale, layout: base.layout },
 		{ place: base.place, circle, enclosed: !!result.enclosed })!;
@@ -136,20 +137,27 @@ describe('the picture drawn before the cuts are found', () => {
 		expect(mismatch({ ...request, name: 'Star', contours: star.contours as Ring[], board: 9, scale: .8 })).toBeLessThan(.01);
 	});
 
-	it('is the circle on a board the cuts make, small, large or kept', () => {
+	describe('is the circle on a board the cuts make', () => {
 		const request: GeneratorRequest = { mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', gap: 3 };
-		expect(mismatch({ ...request, scale: .6 })).toBeLessThan(.01);
-		// Reaching into the outer ring, the checks are woven the other way round.
-		expect(mismatch({ ...request, scale: .8 })).toBeLessThan(.01);
-		// A solid tree keeps the touching circle, as its heart says.
-		expect(mismatch({ ...request, name: 'Tree', contours: tree.contours as Ring[], scale: .8 })).toBeLessThan(.01);
-		// Past 85% the circle overlaps the corner squares, of its own colour,
-		// a house on its smallest enclosing circle.
-		expect(mismatch({ ...request, name: 'House', contours: house.contours as Ring[], scale: 1 })).toBeLessThan(.01);
-		// On the strips the visitor chooses.
-		expect(mismatch({ ...request, board: 3, scale: .8 })).toBeLessThan(.01);
-		expect(mismatch({ ...request, board: 7, scale: .8 })).toBeLessThan(.01);
-	}, 20_000); // 1.3 s locally, over 5 s on a loaded CI runner (2026-10-21)
+		it('small and large', () => {
+			expect(mismatch({ ...request, scale: .6 })).toBeLessThan(.01);
+			// Reaching into the outer ring, the checks are woven the other way round.
+			expect(mismatch({ ...request, scale: .8 })).toBeLessThan(.01);
+		});
+		it('kept', () => {
+			// A solid tree keeps the touching circle, as its heart says.
+			expect(mismatch({ ...request, name: 'Tree', contours: tree.contours as Ring[], scale: .8 })).toBeLessThan(.01);
+		});
+		it('over the corner squares', () => {
+			// Past 85% the circle overlaps the corner squares, of its own colour,
+			// a house on its smallest enclosing circle.
+			expect(mismatch({ ...request, name: 'House', contours: house.contours as Ring[], scale: 1 })).toBeLessThan(.01);
+		});
+		it('on the strips the visitor chooses', () => {
+			expect(mismatch({ ...request, board: 3, scale: .8 })).toBeLessThan(.01);
+			expect(mismatch({ ...request, board: 7, scale: .8 })).toBeLessThan(.01);
+		});
+	});
 
 	it('brings the board\'s squares to points where the circle meets the paper\'s edges, as the cuts do', () => {
 		// On three strips at 86% the line beside a corner square would meet the
