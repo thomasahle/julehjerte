@@ -785,8 +785,17 @@ store tern) adds a layer, like the gallery's santa heart (whose lines are not ev
 regular board with a circle around the motif, of 5×5 squares unless the visitor chooses 3×3, 7×7
 or 9×9 (`boardRanges`): what follows holds on each, its radii scaled to its squares. On three
 strips, one line a side, the motif is never divided and the circle grows out past the paper's
-edges until it meets them halfway along the corner squares (radius 60 at 100%); on seven and nine, the circle stops where the lines further out would need panels of
-their own (radius 36 and 28). A motif that cannot be built at all on the board chosen (on three,
+edges until it meets them halfway along the corner squares (radius 60 at 100%). On seven and nine,
+once the circle reaches the third line a side, that line follows the circle, and the middle lines
+of the other sheet cross it on their way to their gates along the circle, cut in both sheets where
+they run together over a square of the circle's own colour; the motif stays divided in four and the
+circle keeps its colour (`boardLegs`, `overlapGates`). It grows so until a gate would sit closer
+than 1.5 to the lines beside it, the second lines' ends nearing the follower's arc (radius 39 and
+30, from 36 and 28; `gateRoom`), the cut from the motif's gate running round midway between motif
+and circle to its gate there. Further out each further line a side would need panels of its own:
+of 52 corpus motifs 12 can be divided into nine panels whose seams cross only in their background,
+none into sixteen. Past the touching circle, each range of a board takes a share of 70–100% in
+proportion to its radii (`boardSteps`; on five strips 70–85% and 86–100%, as before). A motif that cannot be built at all on the board chosen (on three,
 one that must be divided) is shown on five, as the page then says. The size setting sizes the circle smoothly and
 the motif fills it up to the space asked for, so both only grow with the setting (tested): from
 five units clear of the centre square's corners (radius 19) to the circle that touches the outer

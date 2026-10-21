@@ -242,16 +242,19 @@
 	 * kept, for moving back; a long job for a value already left is abandoned. */
 	type Job = { request: GeneratorRequest; key: string; token: number; motif?: string };
 	/** What the board circle's hearts said of each motif on each board: a size
-	 * kept above 70% means it keeps the touching circle, one at or below means
-	 * the larger; and whether over the corner squares it sat on its enclosing
-	 * circle. */
-	const boardCircles = new Map<string, 'small' | 'large'>();
+	 * kept below the one asked for is the largest it takes (the touching
+	 * circle, say, for one that cannot be divided), one kept above means it
+	 * must be divided; and whether over the corner squares it sat on its
+	 * enclosing circle. */
+	const boardCircles = new Map<string, 'large' | number>();
 	const boardEnclosed = new Map<string, boolean>();
 	const onBoard = (motif: string, board?: number) => `${motif}|${board ?? 5}`;
 	function learn(job: Job, result: GeneratorResult) {
 		if (!job.motif || job.request.mode !== 'figure' || job.request.style !== 'board') return;
 		const key = onBoard(job.motif, job.request.board);
-		if (result.scale !== undefined) boardCircles.set(key, (job.request.scale ?? .7) > .7 ? 'small' : 'large');
+		const asked = job.request.scale ?? .7, largest = boardCircles.get(key);
+		if (result.scale !== undefined) boardCircles.set(key, result.scale < asked ? result.scale : 'large');
+		else if (typeof largest === 'number' && asked > largest) boardCircles.delete(key);
 		if ((job.request.scale ?? .7) > .85) boardEnclosed.set(key, !!result.enclosed);
 	}
 	let running: (Job & { started: number }) | null = null,

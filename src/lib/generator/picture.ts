@@ -9,7 +9,7 @@
  * Frames without a picture here return none.
  */
 import type { GeneratorRequest } from './generate';
-import { arc, boardRanges, frameRing, outerFrame, ray, uprightToSheet, BOARD_STUB, FITTED, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
+import { arc, boardPanels, boardRanges, frameRing, outerFrame, ray, uprightToSheet, BOARD_STUB, FITTED, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
 import { fillSquare, fitCircle } from './frameFit';
 import { fittedPicture } from './fitted';
 import { normalizeContours } from './contours';
@@ -33,7 +33,7 @@ export type Picture = { rings: Ring[]; place?: number; bounds?: PlaceBounds };
  * strips per side, which circle a board circle keeps, and whether over the
  * corner squares the motif sits on its enclosing circle (as it does unless a
  * heart said otherwise). */
-export type Known = { place?: number; board?: number; circle?: 'small' | 'large'; enclosed?: boolean };
+export type Known = { place?: number; board?: number; circle?: 'large' | number; enclosed?: boolean };
 
 /** The picture for a request, or none where this frame has none yet, or the
  * generator is known to build this motif differently. */
@@ -212,24 +212,26 @@ function cornersPicture(request: GeneratorRequest): Picture | undefined {
  * other way round. A motif that one of the two
  * constructions cannot build keeps the other's nearest circle whatever its
  * size, as `circle` says once a heart of it has reported a size it kept. */
-function boardPicture(request: GeneratorRequest, circle?: 'small' | 'large', enclosed = true, board?: number): Picture | undefined {
+function boardPicture(request: GeneratorRequest, circle?: 'large' | number, enclosed = true, board?: number): Picture | undefined {
 	const contours = normalizeContours(request.contours ?? []);
 	if (!contours.length) return;
-	// The strips its heart was made on, where one was, else those asked for.
+	// The strips its heart was made on, where one was, else those asked for;
+	// the largest size its heart kept, where it kept one smaller.
 	const strips = board ?? request.board ?? 5, [small, large] = boardRanges(strips);
-	let { radius } = boardRadius(request.scale ?? .7, strips);
-	if (large && radius > small[1] && circle === 'small') radius = small[1];
-	if (large && radius <= small[1] && circle === 'large') radius = large[0] + .6;
+	const setting = typeof circle === 'number' ? Math.min(circle, request.scale ?? .7) : request.scale ?? .7;
+	let { radius, range } = boardRadius(setting, strips);
+	if (large && radius <= small[1] && circle === 'large') [radius, range] = [large[0] + .6, large];
 	// The circle takes the colour of the middle squares around it while the
-	// motif is whole, the other once it is divided (on every odd board).
-	const outer = radius > small[1] ? 1 : 0;
+	// motif is whole, the other once it is divided in four (on every odd
+	// board).
+	const outer = (boardPanels(range, strips) - 1) % 2;
 	const xs = contours.flat().map(p => p[0]), ys = contours.flat().map(p => p[1]);
 	let cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
 	const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
 	let reach = Math.max(...contours.flat().map(([x, y]) => Math.hypot(x - cx, y - cy))) / box;
 	// Over the corner squares the motif moves towards its smallest enclosing
 	// circle's centre, where it cuts cleanly so (see `generate`).
-	if (large && radius > large[1] && enclosed) ({ centre: [cx, cy], reach } = boardPlacement(contours, enclosedAlong(request.scale ?? .7)));
+	if (large && radius > large[1] && enclosed) ({ centre: [cx, cy], reach } = boardPlacement(contours, enclosedAlong(setting)));
 	const scale = (Math.min(radius, 50) - Math.max(request.gap ?? 3, 1.5)) / reach / box;
 	const disc = frameRing('circle', 2 * radius), side = 100 / strips, rings: Ring[] = [];
 	for (let i = 0; i < strips; i++)

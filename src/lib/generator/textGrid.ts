@@ -352,7 +352,11 @@ export function generateTextGrid(
 		});
 		edges = stitch(edges, dividers);
 	}
-	connectCellGrid(edges, cells, boundary, layout.board ? 'board' : 'check', layout.spread, undefined, layout.board);
+	// On a board circle, cuts that must run round to its gates do so midway
+	// between the motif and the circle (see `boardLegs`).
+	const around = layout.board && layout.circle
+		? (Math.max(...artwork.flat().map(p => distance(p, [50, 50]))) + layout.circle / 2) / 2 : undefined;
+	connectCellGrid(edges, cells, boundary, layout.board ? 'board' : 'check', layout.spread, undefined, layout.board, around);
 	const domain =
 		boundary ??
 		[

@@ -435,7 +435,7 @@ describe('frames from real hearts', () => {
  it('grows the circle without jumps, on every board', () => {
   // From the smallest to the largest, no step larger than the one over the
   // corner junctions at 85-86%, and none back.
-  for (const [board, largest] of [[3, boardRanges(3)[0][1]], [5, 52], [7, boardRanges(7)[2][1]], [9, boardRanges(9)[2][1]]]) {
+  for (const [board, largest] of [[3, boardRanges(3)[0][1]], [5, 52], [7, boardRanges(7).at(-1)![1]], [9, boardRanges(9).at(-1)![1]]]) {
    let last = boardRadius(.45, board).radius;
    for (let percent = 46; percent <= 100; percent++) {
     const { radius } = boardRadius(percent / 100, board);
@@ -444,6 +444,31 @@ describe('frames from real hearts', () => {
     last = radius;
    }
    expect(last, `${board}`).toBe(largest);
+  }
+ });
+ it('grows the circle on finer boards past the third lines, which follow it', () => {
+  // On seven and nine strips the largest circles reach the third line a
+  // side, which follows the circle while the middle lines of the other sheet
+  // cross it to their gates, the motif still divided in four: the circle
+  // grows from 36 to 39 on seven strips, from 28 to 30 on nine, and stops
+  // where each gate keeps room for a cut either side of it.
+  for (const [board, from] of [[7, 36], [9, 27.9]]) {
+   const ranges = boardRanges(board), top = ranges.at(-1)!;
+   expect(ranges.length, `${board}`).toBe(4);
+   expect(top[0], `${board}`).toBeGreaterThan(from);
+   expect(boardRadius(1, board).radius, `${board}`).toBe(top[1]);
+   const { design, hardToCut, scale } = generate({ mode: 'figure', name: 'House', contours: houseMotif.contours as Ring[], colors, style: 'board', board, scale: 1 });
+   expect(design.gridSize, `${board}`).toEqual({ x: board, y: board });
+   expect(hardToCut, `${board}`).toBeUndefined();
+   expect(scale, `${board}`).toBeUndefined();
+   // The third line from the middle runs in from the paper's edge to the
+   // circle and round it, out beyond the line where the circle bulges past.
+   const rect = inferOverlapRect(design.fingers, design.gridSize);
+   const sheet = ({ x, y }: { x: number; y: number }) => [(x - rect.left) / rect.width * 100, (y - rect.top) / rect.height * 100];
+   const third = 50 - 250 / board, cut = design.fingers.filter(f => f.id.includes('cut')).find(({ segments }) =>
+    [segments[0].p0, segments.at(-1)!.p3].map(sheet).some(([x, y]) => Math.abs(x - third) < 1e-6 && Math.abs(y) < 1e-6))!;
+   expect(cut, `${board}`).toBeDefined();
+   expect(Math.min(...cut.segments.map(({ p3 }) => sheet(p3)[0])), `${board}`).toBeLessThan(third - 2);
   }
  });
  it('lays the circle on the strips the visitor chooses, every square equal', () => {

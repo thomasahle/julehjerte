@@ -1633,23 +1633,94 @@ export function openLeg(gate: Point, corner: Point, axis: 0 | 1, taper: number):
  * lines of each sheet on each side, and the motif, divided into four panels,
  * meets all their ends. Past those junctions, the circle overlaps the ring's
  * corner squares, of its own colour, and the same panels meet the same ends
- * (see `overlapGates`), until the next lines out would need panels of their
- * own: on five strips out past the paper's edges, which cut it off (see
- * `boardRing`). On three, whose one line a side the motif meets whole however
- * large the circle, there is one range, out past the paper's edges and over
- * the corner squares until it meets the edges halfway along them. */
+ * (see `overlapGates`): on five strips out past the paper's edges, which cut
+ * it off (see `boardRing`). On finer boards the next line out then follows
+ * the circle, the middle lines of the other sheet crossing it, until the
+ * second lines' ends come too close to its arc for a gate between them
+ * (`gateRoom`); further out still the motif would need nine panels, which few
+ * motifs can be divided into. On three, whose one line a side the motif
+ * meets whole however large the circle, there is one range, out past the
+ * paper's edges and over the corner squares until it meets the edges halfway
+ * along them. */
 export function boardRanges(strips: number): readonly (readonly [number, number])[] {
 	// One set per board, so a range found for a radius is the board's own.
 	const known = rangesByStrips.get(strips);
 	if (known) return known;
-	const d = Array.from({ length: (strips - 1) / 2 }, (_, k) => (100 / strips) * (k + .5));
-	const ranges: (readonly [number, number])[] = d.length < 2 ? [[Math.hypot(d[0], d[0]) + 5, Math.hypot(50, 50 - d[0])]]
-		: [[Math.hypot(d[0], d[0]) + 5, Math.hypot(d[1], d[0])], [Math.hypot(d[1], d[0]), Math.hypot(d[1], d[1]) - .4],
-			[Math.hypot(d[1], d[1]) + .4, d.length > 2 ? Math.hypot(d[2], d[0]) - .4 : 52]];
+	const d = boardLines(strips), junction = (j: number, k: number) => Math.hypot(d[Math.max(j, k)], d[Math.min(j, k)]);
+	const ranges: (readonly [number, number])[] = d.length < 2 ? [[junction(0, 0) + 5, Math.hypot(50, 50 - d[0])]]
+		: [[junction(0, 0) + 5, junction(1, 0)], [junction(1, 0), junction(1, 1) - .4]];
+	if (d.length > 1) {
+		// Clear of each junction by as much as of the second ring's corners.
+		let low = junction(1, 1) + .4, open = true;
+		const after = d.flatMap((_, j) => d.slice(j).map((_, i) => junction(j + i, j))).filter(r => r > low).sort((a, b) => a - b);
+		for (const next of after) {
+			if (next - .4 > low) {
+				if (gateRoom((low + next - .4) / 2, d) <= 0) {
+					open = false;
+					break;
+				}
+				// Short of a line it would just touch, too (see `boardRadius`),
+				// and while each gate keeps room for a cut either side of it.
+				const touched = d.find(dk => Math.abs(next - .4 - dk) < .1);
+				let high = touched === undefined ? next - .4 : touched - .15;
+				if (gateRoom(high, d) < 1.5) {
+					let roomy = (low + high) / 2;
+					for (let step = 0; step < 40; step++) {
+						const mid = (roomy + high) / 2;
+						if (gateRoom(mid, d) < 1.5) high = mid;
+						else roomy = mid;
+					}
+					high = roomy;
+				}
+				ranges.push([low, high]);
+			}
+			low = Math.max(low, next + .4);
+		}
+		// Past the last junction, out past the paper's edges.
+		if (open && low < 52 && gateRoom((low + 52) / 2, d) > 0) ranges.push([low, 52]);
+	}
 	rangesByStrips.set(strips, ranges);
 	return ranges;
 }
 const rangesByStrips = new Map<number, readonly (readonly [number, number])[]>();
+/** The distances of a regular board's lines from its centre, half a square,
+ * a square and a half, …, on each side. */
+export const boardLines = (strips: number) => Array.from({ length: (strips - 1) / 2 }, (_, k) => (100 / strips) * (k + .5));
+/** How many lines of each sheet a side meet the motif in a range of radii,
+ * its panels a side: those whose junctions with the middle lines the circle
+ * encloses, the motif divided at most in four. A line it reaches short of
+ * that, or the one beyond the motif's, follows the circle (see `boardLegs`). */
+export function boardPanels(range: readonly [number, number], strips: number): number {
+	const d = boardLines(strips), radius = (range[0] + range[1]) / 2;
+	return Math.max(1, Math.min(2, d.filter(dk => Math.hypot(dk, d[0]) < radius).length));
+}
+/** How far from the lines beside it the closest gate on a circle of
+ * `radius` about the centre of a board whose lines lie `d` from it is, where
+ * each quarter's ends pair up: the j-th end of one sheet with the j-th of
+ * the other, each pair's gate midway between its ends and clear of the
+ * neighbouring pairs' ends of the same sheet, and of the arcs of a line
+ * beyond the motif's that follows the circle (see `boardLegs`). None, or
+ * less, where they do not. */
+function gateRoom(radius: number, d: number[]): number {
+	const lines = d.filter(dk => Math.hypot(dk, d[0]) < radius), panels = Math.min(2, lines.length);
+	if (lines.length > panels + 1) return -Infinity;
+	// From the quarter's start, along the circle: one sheet's ends from the
+	// nearest line out, the other's from the furthest in, a following line's
+	// arcs before and after them; each with how far a point at an angle is
+	// from its line.
+	type Stop = { angle: number; away: (angle: number) => number };
+	const across = (dk: number): Stop => ({ angle: Math.atan2(dk, Math.sqrt(radius ** 2 - dk ** 2)), away: angle => Math.abs(radius * Math.sin(angle) - dk) });
+	const down = (dk: number): Stop => ({ angle: Math.PI / 2 - across(dk).angle, away: angle => Math.abs(radius * Math.cos(angle) - dk) });
+	const x = lines.slice(0, panels).map(across), y = lines.slice(0, panels).map(down).reverse(), follower = lines[panels];
+	const before = follower === undefined ? undefined : down(follower), after = follower === undefined ? undefined : across(follower);
+	return Math.min(...x.map((xj, j) => {
+		const low = [xj, j ? y[j - 1] : before].reduce((a, b) => b && b.angle > a!.angle ? b : a)!,
+			high = [y[j], j < panels - 1 ? x[j + 1] : after].reduce((a, b) => b && b.angle < a!.angle ? b : a)!;
+		if (low.angle >= high.angle) return -Infinity;
+		const mid = (low.angle + high.angle) / 2;
+		return Math.min(low.away(mid), high.away(mid));
+	}));
+}
 /** The shortest stretch a board line keeps between the circle and an edge of
  * the paper the circle reaches, the cutting clearance; one the circle meets
  * closer to that edge ends where the circle meets it (see `boardLegs`). */
@@ -1687,6 +1758,9 @@ export function boardRing(radius: number, strips: number): Ring {
 	return ring.sort((a, b) => angle(a) - angle(b));
 }
 
+/** Where a board line ends on the circle, and the angle there about the centre. */
+type End = { angle: number; family: 'A' | 'B'; port: Port };
+
 /** Where the lines of a regular board of `strips` strips meet a circle around
  * its centre, for a cell grid with `count` outer gates on each side. Lines
  * that miss the circle cross the paper whole. A line the circle reaches across
@@ -1707,9 +1781,8 @@ export function boardRing(radius: number, strips: number): Ring {
  * Where the paper's edges cut the circle off, a line that would meet the
  * circle past an edge, or within `BOARD_STUB` of it, ends where the circle
  * meets that edge, so the squares there come to points along the circle. */
-function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number):
-	(side: number, index: number, framed: (angle: number, half: number) => Point) => Point {
-	type End = { angle: number; family: 'A' | 'B'; port: Port };
+function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number, around?: number):
+	(side: number, index: number, framed: (angle: number, half: number) => Point, from: Point) => Point[] {
 	const turn = 2 * Math.PI, lines: { axis: number; line: number; ends: End[] }[] = [];
 	for (let k = 1; k < strips; k++) for (const axis of [0, 1]) {
 		const line = (100 * k) / strips, ends: End[] = [];
@@ -1749,13 +1822,23 @@ function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number):
 	}
 	const all = lines.flatMap(line => line.ends), inside = (angle: number, from: number, to: number) =>
 		(angle - from + turn) % turn > 1e-9 && (to - angle + turn) % turn > 1e-9 && (angle - from + turn) % turn < (to - from + turn) % turn;
-	const open: End[] = [];
+	const open: End[] = [], before: (End | undefined)[] = [], after: (End | undefined)[] = [];
 	for (const { axis, line, ends } of lines) {
 		// The far side of the line from the centre.
 		const away = axis ? (line < 50 ? 1.5 : .5) * Math.PI : line < 50 ? Math.PI : 0;
 		let [a, b] = ends;
 		if (ends.length === 2 && !inside(away, a.angle, b.angle)) [a, b] = [b, a];
-		if (ends.length !== 2 || all.some(end => end !== a && end !== b && inside(end.angle, a.angle, b.angle))) {
+		const between = ends.length === 2 ? all.filter(end => end !== a && end !== b && inside(end.angle, a.angle, b.angle)) : [];
+		// A line beyond those the motif meets follows the circle across the
+		// other sheet's ends between its own, which reach their gates along
+		// it (see `overlapGates`): its arc ends each quarter's run of ends.
+		if (between.length && between.every(end => end.family !== (axis ? 'B' : 'A'))
+			&& Math.round(Math.abs(line - 50) * strips / 100 - .5) >= count) {
+			after[Math.floor(a.angle / (Math.PI / 2)) % 4] = a;
+			before[Math.floor(b.angle / (Math.PI / 2)) % 4] = b;
+			continue;
+		}
+		if (ends.length !== 2 || between.length) {
 			open.push(...ends);
 			continue;
 		}
@@ -1764,48 +1847,108 @@ function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number):
 	}
 	const quarters: End[][] = [[], [], [], []];
 	for (const end of open) quarters[Math.floor(end.angle / (Math.PI / 2)) % 4].push(end);
+	const pairs: [End, End][][] = [];
 	for (const [quarter, ends] of quarters.entries()) {
 		// Two lines ending at one junction on the circle pair at it, in turn.
-		const first = (end: { family: 'A' | 'B' }) => Number(end.family !== (quarter % 2 ? 'A' : 'B'));
+		const family = quarter % 2 ? 'A' : 'B', first = (end: { family: 'A' | 'B' }) => Number(end.family !== family);
 		ends.sort((a, b) => a.angle - b.angle > 1e-9 ? 1 : b.angle - a.angle > 1e-9 ? -1 : first(a) - first(b));
-		const past = count === 2 && ends.length === 4 && ends.every((end, i) => end.family === ((quarter + (i >> 1)) % 2 ? 'A' : 'B'));
-		if (ends.length !== 2 * count || !past && ends.some((end, i) => end.family !== ((quarter + i) % 2 ? 'A' : 'B')))
+		// The j-th end of the quarter's first sheet pairs with the j-th of the
+		// other, as the motif's panels meet them: each pair's gate lies between
+		// its ends, clear of the neighbouring pairs' ends of the same sheet.
+		const xs = ends.filter(end => end.family === family), ys = ends.filter(end => end.family !== family);
+		const at = (end: End) => ends.indexOf(end), opening = before[quarter], closing = after[quarter];
+		const clear = (j: number) => Math.max(xs[j].angle, j ? ys[j - 1].angle : opening?.angle ?? -Infinity)
+			< Math.min(ys[j].angle, j < count - 1 ? xs[j + 1].angle : closing?.angle ?? Infinity);
+		if (ends.length !== 2 * count || xs.length !== count
+			|| xs.some((x, j) => at(x) > at(ys[j]) || j > 0 && j < count - 1 && at(ys[j - 1]) > at(xs[j + 1]))
+			|| (opening || closing) && !xs.every((_, j) => clear(j)))
 			throw new ConstructionError('topology', 'The circle does not meet the board in turn');
+		pairs[quarter] = xs.map((x, j) => [x, ys[j]]);
 	}
-	const overlapping: (Point[] | undefined)[] = [];
-	return (side, index, framed) => {
+	const overlapping: ({ point: Point; low: number; high: number } | undefined)[][] = [];
+	return (side, index, framed, from) => {
 		const quarter = [2, 3, 0, 1][side], ends = quarters[quarter], k = side < 2 ? index : count - 1 - index;
-		if (ends[0].family === ends[1].family)
-			return (overlapping[quarter] ??= overlapGates(edges, ring, ends))[k];
-		const [low, high] = [ends[2 * k].angle, ends[2 * k + 1].angle];
-		return framed((low + high) / 2, (high - low) / 2);
+		const [x, y] = pairs[quarter][k], following = before[quarter] || after[quarter];
+		// A pair whose ends are neighbours meets at a gate midway between them.
+		if (!following && ends.indexOf(y) === ends.indexOf(x) + 1) return [framed((x.angle + y.angle) / 2, (y.angle - x.angle) / 2)];
+		const gate = (overlapping[quarter] ??= overlapGates(edges, ring, ends, pairs[quarter], quarter, before[quarter], after[quarter]))[k]!;
+		// Beside a following line the gate has little room: where the motif's
+		// gate faces elsewhere, the cut to it runs out from the motif's gate,
+		// round midway between the motif and the circle, and out to the gate,
+		// clear of the lines' ends beside it.
+		const facing = (Math.atan2(from[1] - 50, from[0] - 50) + turn) % turn;
+		if (!following || around === undefined || facing > gate.low && facing < gate.high) return [gate.point];
+		const reach = Math.max(around, distance(from, [50, 50])), toward = (gate.low + gate.high) / 2;
+		const delta = ((toward - facing + 3 * Math.PI) % turn) - Math.PI, steps = Math.max(1, Math.ceil(Math.abs(delta) / (Math.PI / 90)));
+		return [...Array.from({ length: steps + 1 }, (_, i): Point => {
+			const angle = facing + delta * i / steps;
+			return [50 + reach * Math.cos(angle), 50 + reach * Math.sin(angle)];
+		}), gate.point];
 	};
 }
 
-/** A quarter of a circle past the outer ring's corner junction meets one
- * sheet's two lines, then the other's: `x` nearer its start, `y` nearer its end,
- * the corner square between them the circle's own colour, the squares beside
- * it the other. The lines pair as before the circle passed the junction, the
- * first of each sheet with the second of the other, each pair at a gate
- * midway along its red square's arc. A pair's legs reach their lines along the
- * circle, the inner ones across the corner square, where both sheets are cut
- * and the cut shows nothing. Returns the two gates. */
-function overlapGates(edges: Edge[], ring: Ring, [x1, x2, y1, y2]: { angle: number; family: 'A' | 'B'; port: Port }[]): Point[] {
-	const first = x1.family, other = y1.family;
+/** A quarter of a circle past junctions of its board, where some lines' ends
+ * come between a pair's: on five strips, past the outer ring's corner
+ * junction, one sheet's two ends, then the other's, the corner square between
+ * them the circle's own colour, the squares beside it the other. The lines
+ * pair as before the circle passed the junctions (see `boardLegs`), each such
+ * pair at a gate midway along the stretch between its ends that the
+ * neighbouring pairs' ends of the same sheet leave clear. Its legs reach its
+ * ends along the circle, past other lines' ends; where two pairs' legs
+ * overlap, across a square of the circle's own colour, both sheets are cut on
+ * the same arc and the cut shows nothing. Returns those pairs' gates. */
+function overlapGates(edges: Edge[], ring: Ring, ends: End[], pairs: [End, End][], quarter: number, first?: End, last?: End):
+	({ point: Point; low: number; high: number } | undefined)[] {
 	// A line's run out to the paper's edge, none where its end lies on it.
-	const out = ({ family, port: { point } }: typeof x1): Point[] => {
+	const out = ({ family, port: { point } }: End): Point[] => {
 		const edge: Point = family === 'A' ? [point[0], point[1] < 50 ? 0 : 100] : [point[0] < 50 ? 0 : 100, point[1]];
 		return near(edge, point) ? [] : [edge];
 	};
-	const gates = [ray(ring, [50, 50], (x1.angle + x2.angle) / 2), ray(ring, [50, 50], (y1.angle + y2.angle) / 2)];
-	add(edges, [...out(x1), ...arc(ring, x1.port, gates[0])], first, 'frame');
-	add(edges, arc(ring, gates[0], x2.port), other, 'frame');
-	add(edges, arc(ring, x2.port, y1.port), 'AB', 'shared');
-	if (out(y1).length) add(edges, [y1.port.point, ...out(y1)], other, 'frame');
-	if (out(x2).length) add(edges, [...out(x2), x2.port.point], first, 'frame');
-	add(edges, arc(ring, y1.port, gates[1]), first, 'frame');
-	add(edges, [...arc(ring, gates[1], y2.port), ...out(y2)], other, 'frame');
-	return gates.map(gate => gate.point);
+	const following = first || last;
+	const gates = pairs.map(([x, y], j) => {
+		if (!following && ends.indexOf(y) === ends.indexOf(x) + 1) return undefined;
+		const low = Math.max(x.angle, pairs[j - 1]?.[1].angle ?? first?.angle ?? -Infinity),
+			high = Math.min(y.angle, pairs[j + 1]?.[0].angle ?? last?.angle ?? Infinity), angle = (low + high) / 2;
+		return { angle, low, high, port: ray(ring, [50, 50], angle) };
+	});
+	// Where the quarter starts and ends, the lines following the circle there
+	// crossing into it.
+	const bounds = following ? [quarter, quarter + 1].map(i => ({ angle: i * Math.PI / 2, port: ray(ring, [50, 50], i * Math.PI / 2) })) : [];
+	// The ends and gates in turn, and the legs between them: a pair's first
+	// from its first end to its gate, its second on to its second end.
+	const stops = [...ends, ...first ? [first] : [], ...last ? [last] : [], ...bounds, ...gates.flatMap(gate => gate ? [gate] : [])]
+		.sort((a, b) => a.angle - b.angle);
+	const legs = [...pairs.flatMap(([x, y], j) => {
+		const gate = gates[j];
+		return gate ? [{ family: x.family, from: x.angle, to: gate.angle }, { family: y.family, from: gate.angle, to: y.angle }] : [];
+	}), ...first ? [{ family: first.family, from: bounds[0].angle, to: first.angle }] : [],
+		...last ? [{ family: last.family, from: last.angle, to: bounds[1].angle }] : []];
+	const both = (i: number) => new Set(legs.filter(leg => leg.from <= stops[i].angle && stops[i + 1].angle <= leg.to).map(leg => leg.family)).size > 1;
+	const shared = new Set<number>();
+	const along = (family: 'A' | 'B', from: number, to: number, start: Point[], end: Point[]) => {
+		let line = start;
+		for (let i = stops.findIndex(stop => stop.angle === from); stops[i].angle < to; i++) {
+			const piece = arc(ring, stops[i].port, stops[i + 1].port);
+			if (!both(i)) {
+				line.push(...piece);
+				continue;
+			}
+			add(edges, line, family, 'frame');
+			if (!shared.has(i)) add(edges, piece, 'AB', 'shared');
+			shared.add(i);
+			line = [];
+		}
+		add(edges, [...line, ...end], family, 'frame');
+	};
+	pairs.forEach(([x, y], j) => {
+		const gate = gates[j];
+		if (!gate) return;
+		along(x.family, x.angle, gate.angle, [...out(x), x.port.point], []);
+		along(y.family, gate.angle, y.angle, [], [y.port.point, ...out(y)]);
+	});
+	if (first) along(first.family, bounds[0].angle, first.angle, [], [first.port.point, ...out(first)]);
+	if (last) along(last.family, last.angle, bounds[1].angle, [...out(last), last.port.point], []);
+	return gates.map(gate => gate && { point: gate.port.point, low: gate.low, high: gate.high });
 }
 
 /** Join neighbouring motif cells with coincident cuts, and give every outer
@@ -1818,21 +1961,22 @@ export function connectCellGrid(
 	style: 'rays' | 'check' | 'board' = 'check',
 	spread = false,
 	open: OpenFrame = FITTED,
-	strips = 2 * cells[0].length + 1
+	strips = 2 * cells[0].length + 1,
+	around?: number
 ) {
 	const rows = cells.length,
 		cols = cells[0].length;
 	const fan = style === 'rays' ? 0.72 : 1,
 		band = 0.3;
 	if (style === 'board' && cols !== rows) throw new ConstructionError('topology', 'A regular board needs as many rows as columns');
-	const legs = style === 'board' && boundary ? boardLegs(edges, boundary, strips, cols) : undefined;
+	const legs = style === 'board' && boundary ? boardLegs(edges, boundary, strips, cols, around) : undefined;
 	const connect = (gate: Point, side: number, index: number, count: number) => {
 		if (boundary) {
 			const step = Math.PI / (2 * count);
 			const framed = (angle: number, half: number) => framedGate(edges, boundary, angle, half, fan, spread);
 			add(
 				edges,
-				[gate, legs ? legs(side, index, framed) : framed(
+				[gate, ...legs ? legs(side, index, framed, gate) : [framed(
 					side === 0
 						? Math.PI + (index + 0.5) * step
 						: side === 2
@@ -1841,7 +1985,7 @@ export function connectCellGrid(
 								? Math.PI - (index + 0.5) * step
 								: (3 * Math.PI) / 2 + (index + 0.5) * step,
 					count === 1 ? Math.PI / 8 : step * band
-				)],
+				)]],
 				'AB',
 				'shared'
 			);

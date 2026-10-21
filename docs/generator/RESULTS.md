@@ -1,5 +1,43 @@
 # Generator robustness results
 
+## Larger board circles on seven and nine strips
+
+Product report (2026-10-21), on 9×9 at 92%: "it looks like we still can't make
+the circle big for 7x7 and 9x9". Past the second ring's corners the circle there
+reached the third line a side, whose ends would need a third gate a side, and
+the motif nine panels. Of the 52 corpus motifs, 12 can be divided into nine
+panels whose seams cross only in their background (each panel keeping some of
+the motif: an empty one would need visible cuts or a pinched strip), none into
+sixteen, so finer division was dropped. Instead the third line follows the
+circle, crossed by the middle lines of the other sheet, which reach their gates
+along it (cut in both sheets where the two run together, over squares of the
+circle's colour); the motif stays divided in four and the circle keeps its
+colour. `overlapGates` now pairs any number of lines a side, with following
+lines' arcs bounding a quarter's gates; on five strips it reproduces the old
+two-line overlap exactly (5×5 bit-identical at 60–100%). The circle grows so
+until a gate would come within 1.5 of the lines beside it (`gateRoom`): radius
+39.0 on 7×7 (from 36.0) and 30.4 on 9×9 (from 27.9). Measured along the circle,
+a gate 1.5 from the follower's end was only 0.7 from its line, which meets the
+circle at 28°, and cut thin; the cut from the motif's gate, which there faces
+another part of the circle, runs round midway between motif and circle to its
+gate, rather than along the circle past the follower's end. The slider gives each
+range past the touching circle a share of 70–100% in proportion to its radii
+(`boardSteps`; 5×5 unchanged), steps never larger than 0.8 on any board.
+
+Over the corpus and the deer: 7×7 at 100% 44 clean, 4 hard (star, ph-moon-stars,
+snow, ph-crown), 4 refused (the usual four), at 97% the same; 9×9 at 100% and
+97% 43, 5 (and ph-dog), 4. Before, at the old 100%: 45, 3, 4 on both. Pictures match
+the hearts except where a motif is shrunk to fit (tb-star on 7×7 at 100%,
+5.6%). Slowest 7 s.
+
+The same day, a Reddit report said "Tekst i ternene" refused SØREN and ÆBLE and
+the circle frame set SØREN as "S ØREN". Neither reproduces: in all nine fonts and
+on every strip count, both make hearts (mostly with the hard-to-cut warning,
+naming Ø or Æ, whose split counter or ring make thin paper), in Chrome and WebKit,
+on the site and on the version of 10-20 11:18; Ø has O's width in every font.
+Characters outside the fonts' set (~, ?, …) are refused by name: the set is
+fixed when the shipped fonts are built, and for Google fonts in `FONT_CHARACTERS`.
+
 ## The circle on equal squares meeting the paper's edges in points
 
 Product report (2026-10-20), on 3×3 at 100%: "I want a nice sharp cut here at the

@@ -4,7 +4,7 @@
  * generator and the pictures drawn before the cuts (see `picture`).
  */
 import type { GeneratorRequest } from './generate';
-import { boardRanges, type Point, type Ring } from './geometry';
+import { boardLines, boardRanges, type Point, type Ring } from './geometry';
 import { checkeredLayouts } from './checkeredGrid';
 
 /** The motif in place of a letter: repeated on the checkerboard by the small
@@ -99,34 +99,62 @@ export function boardScale(request: GeneratorRequest): number {
 
 /** The circle on a board of `strips` strips (odd, five by default) at a size
  * setting: smoothly from the smallest radius the board allows to the
- * largest, with the touching circle at the default 70%, where the one change
- * of construction lies, and the circle reaching the next ring's corner
- * junctions at 85%, past which it overlaps the corner squares (see
- * `boardRanges`); on three strips one construction all the way. It passes a
- * line's tangent slightly beyond it, and steps a little further beyond the
- * touching circle, the corners just past it being too close to cut. `range`
- * is the construction's. */
+ * largest, with the touching circle at the default 70%, where the motif is
+ * first divided, and from there each range of the board in turn (see
+ * `boardRanges`), each over a share of the settings to 100% in proportion to
+ * its radii, the step between two of them over a junction no larger than
+ * one within them: on five strips the circle reaches the next ring's corner
+ * junctions at 85%, past which it overlaps the corner squares; on three
+ * strips one construction all the way. It passes a line's tangent slightly
+ * beyond it, and steps a little further beyond the touching circle, the
+ * corners just past it being too close to cut. `range` is the
+ * construction's. */
 export function boardRadius(scale: number, strips = 5) {
 	const ranges = boardRanges(strips), setting = Math.max(.45, Math.min(1, scale));
-	const lines = Array.from({ length: (strips - 1) / 2 }, (_, k) => (100 / strips) * (k + .5));
-	const [small, large, past] = ranges;
-	// Past the junctions from 86%, the step over them no larger than one.
+	const [small, large] = ranges;
 	let radius = !large ? small[0] + (setting - .45) / .55 * (small[1] - small[0])
-		: setting <= .7 ? small[0] + (setting - .45) / .25 * (small[1] - small[0])
-			: setting <= .85 ? large[0] + (setting - .7) / .15 * (large[1] - large[0])
-				: past[0] + Math.max(0, setting - .86) / .14 * (past[1] - past[0]);
-	for (const line of lines) if (Math.abs(radius - line) < .1) radius = line + .1;
+		: small[0] + (setting - .45) / .25 * (small[1] - small[0]), range = small;
+	if (large && setting > .7) {
+		const steps = boardSteps(strips), found = steps.findIndex(([, end]) => setting <= end / 100), i = found < 0 ? steps.length - 1 : found;
+		const [start, end] = steps[i], [low, high] = range = ranges[i + 1];
+		radius = low + Math.max(0, setting - start / 100) / ((end - start) / 100) * (high - low);
+	}
+	for (const line of boardLines(strips)) if (Math.abs(radius - line) < .1) radius = line + .1;
 	if (large && radius > large[0] && radius < large[0] + .6) radius = large[0] + .6;
-	return { radius, range: !large || radius <= small[1] ? small : radius <= large[1] ? large : past };
+	return { radius, range };
 }
 
-/** The size setting a circle's radius on `strips` strips stands for, up to
- * the junctions: where a motif keeps another construction's circle. */
+/** The settings, in whole percents, over which each of a board's ranges past
+ * the touching circle grows (see `boardRadius`): from 70% to 100%, a share for
+ * each in proportion to its radii (the largest remainders rounded up), and
+ * one step between each two, over a junction. */
+export function boardSteps(strips: number): readonly (readonly [number, number])[] {
+	const known = stepsByStrips.get(strips);
+	if (known) return known;
+	const spans = boardRanges(strips).slice(1).map(([low, high]) => high - low), total = spans.reduce((a, b) => a + b, 0);
+	const free = 30 - (spans.length - 1), shares = spans.map(span => free * span / total), counts = shares.map(Math.floor);
+	const short = free - counts.reduce((a, b) => a + b, 0);
+	for (const i of shares.map((_, i) => i).sort((a, b) => shares[b] - counts[b] - (shares[a] - counts[a])).slice(0, short)) counts[i]++;
+	let start = 70;
+	const steps = counts.map((count): readonly [number, number] => {
+		const range = [start, start + count] as const;
+		start += count + 1;
+		return range;
+	});
+	stepsByStrips.set(strips, steps);
+	return steps;
+}
+const stepsByStrips = new Map<number, readonly (readonly [number, number])[]>();
+
+/** The size setting a circle's radius on `strips` strips stands for: where a
+ * motif keeps another construction's circle. */
 export function boardSetting(radius: number, strips = 5): number {
-	const [small, large] = boardRanges(strips);
-	return !large ? .45 + (radius - small[0]) / (small[1] - small[0]) * .55
-		: radius <= small[1] ? .45 + (radius - small[0]) / (small[1] - small[0]) * .25
-			: .7 + (radius - large[0]) / (large[1] - large[0]) * .15;
+	const ranges = boardRanges(strips), [small, large] = ranges;
+	if (!large) return .45 + (radius - small[0]) / (small[1] - small[0]) * .55;
+	if (radius <= small[1]) return .45 + (radius - small[0]) / (small[1] - small[0]) * .25;
+	const found = ranges.slice(1).findIndex(([, high]) => radius <= high), i = found < 0 ? ranges.length - 2 : found;
+	const [start, end] = boardSteps(strips)[i], [low, high] = ranges[i + 1];
+	return start / 100 + (radius - low) / (high - low) * ((end - start) / 100);
 }
 
 /** The smallest circle around the points: around their convex hull, built

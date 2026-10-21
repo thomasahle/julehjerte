@@ -5,7 +5,7 @@ import { generateFittedFigure, mirrorSymmetric, type GateTies } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid, roomOf, squareCellScale } from './textGrid';
 import { NO_WHOLE_STRIPS, STRIPS, slidePlace, stripFigures } from './stripFigure';
-import { MOTIF, boardPlacement, boardRadius, boardScale, boardSetting, enclosedAlong, motifChoices, squareChoices } from './boardMotif';
+import { MOTIF, boardPlacement, boardRadius, boardScale, boardSetting, boardSteps, enclosedAlong, motifChoices, squareChoices } from './boardMotif';
 import { TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
 import { CIRCLE_STYLES, fillSquare, fitCircle } from './frameFit';
 export { fillSquare, fitCircle } from './frameFit';
@@ -53,6 +53,8 @@ import {
 	dot,
 	cross,
 	frameRing,
+	boardLines,
+	boardPanels,
 	boardRanges,
 	type Ring,
 	type Frame,
@@ -1850,7 +1852,9 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// ring, like the gallery's santa, the circle meets every line, and the
 		// motif, divided like a letter into four panels, meets the lines' ends in
 		// pairs. The panels meet at its centre, or else at a point of background
-		// near it, so their seams cross its paper but not each other.
+		// near it, so their seams cross its paper but not each other. On finer
+		// boards a larger circle reaches a third line a side, which follows it
+		// (see `boardLegs`).
 		const contours = request.contours ?? [];
 		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } };
 		const xs = contours.flat().map(p => p[0]), ys = contours.flat().map(p => p[1]);
@@ -1860,7 +1864,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// The size setting sizes the circle (see `boardRadius`); the motif fills
 		// the circle up to the space asked for.
 		// The board's strips, five unless the visitor chose (see `boardRanges`).
-		const strips = request.board ?? 5, ranges = boardRanges(strips);
+		const strips = request.board ?? 5, ranges = boardRanges(strips), panels = (range: readonly [number, number]) => boardPanels(range, strips);
 		const [small, large, past] = ranges, { radius, range } = boardRadius(request.scale ?? .7, strips);
 		// The motif sits on its box's centre, or over the corner squares, where
 		// it cuts cleanly so in the largest circle, on its smallest enclosing
@@ -1874,7 +1878,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// division, so a motif that divides without them keeps its cuts.
 		const islands = { ...compound, boundaryIslands: true, contourApproaches: true, guardedAttachments: true, filled: true, guardSeams: true };
 		const layouts = (range: readonly [number, number], { centre }: Placement) => {
-			if (range === small) return [[{}, compound]];
+			if (panels(range) === 1) return [[{}, compound]];
 			const junctions = background.map((p): Point => [p[0] - centre[0], p[1] - centre[1]]);
 			return [[{ columns: 2, slices: 2 }, { ...compound, columns: 2, slices: 2 }, ...junctions.map(junction => ({ columns: 2, slices: 2, junction }))],
 				[undefined, ...junctions].map(junction => ({ ...islands, columns: 2, slices: 2, ...junction && { junction } }))];
@@ -1899,7 +1903,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// four at both, takes the other construction at its size nearest the
 		// touching circle, whatever the slider. Its shape decides, not the
 		// space asked for: more than the usual would leave it too small there.
-		const [low, high] = large ?? small, references = (range: readonly [number, number]) => range === small
+		const [low, high] = large ?? small, references = (range: readonly [number, number]) => panels(range) === 1
 			? [Math.round((small[0] + small[1]) / 2)] : [.25, .75].map(t => Math.round(low + t * (high - low)));
 		const buildable = (range: readonly [number, number]) => references(range)
 			.every(reference => sizes(range, reference, boxed, fills(reference, boxed, 1, Math.min(gap, 3))).some(attempt => {
@@ -1916,9 +1920,10 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// circle is decided once, in the largest circle, so it only grows with
 		// the setting: there a deer's antler and hooves reach equally far, but a
 		// star's five tips all come close to the circle's connections.
-		// It moves there over the sizes from 85%, so it does not jump.
+		// It moves there over the sizes from 85%, so it does not jump; on finer
+		// boards the circle short of the next lines out decides.
 		const enclosed: Placement = { ...boardPlacement(contours), enclosed: true };
-		const placement = mode === past && sizes(past, past[1], enclosed).some(attempt => {
+		const placement = ranges.indexOf(mode) > 1 && enclosedAlong(request.scale ?? .7) > 0 && sizes(past, past[1], enclosed).some(attempt => {
 			try {
 				finish(build(attempt), 'nested', false);
 				return true;
@@ -1938,7 +1943,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// cut. Only where nothing at all can be finished at those sizes does the
 		// motif shrink a little, and then the circle grow a little.
 		const nearby = [size + 1.5, size + 3].map(other => Math.min(mode[1], other))
-			.filter(other => other - size > .5 && Math.abs(other - 30) > .1);
+			.filter(other => other - size > .5 && boardLines(strips).every(line => Math.abs(other - line) > .1));
 		let last: unknown;
 		for (const attempts of [sizes(mode, size, placement), [.85, .7].flatMap(factor => sizes(mode, size, placement, fills(size, placement, factor))),
 			nearby.flatMap(other => sizes(mode, other, placement))]) {
@@ -1955,15 +1960,17 @@ function generateUsingRecipes(request: GeneratorRequest,
 			if (hard) return kept(hard);
 		}
 		// Over the corner squares, a motif that cannot be built at all at its
-		// size keeps the largest circle short of them, at 85%; with more space
-		// than usual, one divided in four that fits nowhere in its circle keeps
-		// the touching circle, as one that cannot be divided does.
+		// size keeps the largest circle short of them, at 85% on five strips, and
+		// so on past each junction further out; with more space than usual, one
+		// divided in four that fits nowhere in its circle keeps the touching
+		// circle, as one that cannot be divided does.
 		const smaller = (scale: number) => {
 			const result = generateUsingRecipes({ ...request, scale }, onRejected, curveFitter, variants, allRecipes);
 			return { ...result, scale: result.scale ?? scale };
 		};
 		try {
-			if (mode === past) return smaller(.85);
+			const at = ranges.indexOf(mode);
+			if (at > 1) return smaller(boardSteps(strips)[at - 2][1] / 100);
 			if (mode === large && gap > 3) return smaller(.7);
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) || strips === 5) throw error;
