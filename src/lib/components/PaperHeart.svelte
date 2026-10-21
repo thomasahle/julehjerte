@@ -2880,6 +2880,13 @@
 	}
 
 	const HIT_STROKE_WIDTH = 14;
+
+	/** Whether `p` lies on cut `fingerId`, as near as a handle's circle reaches. */
+	function onCurve(fingerId: string, p: Vec): boolean {
+		const finger = getFingerById(fingerId);
+		if (!finger) return false;
+		return fingerToSegments(finger).some((seg) => closestPointOnBezier(seg, p).distance <= 6 * curveUiScale);
+	}
 	/** On a touch screen a cut is easier to hit: a finger is wider than a mouse pointer. */
 	const TOUCH_HIT_STROKE_WIDTH = 26;
 	let coarsePointer = $state(false);
@@ -2920,6 +2927,13 @@
 		e.stopPropagation();
 		const p = localPointFromClient(e.clientX, e.clientY);
 		if (p && insertOnSecondClick(fingerId, p)) return;
+		// A handle of a gently bent curve can lie on the curve, under the first click of a double-click
+		// meant for it, as under the second: a press on one there counts as a first click too.
+		if (p && onCurve(fingerId, p)) {
+			lastFingerClickAt = performance.now();
+			lastFingerClickId = fingerId;
+			lastFingerClickPos = p;
+		}
 		selectedFingerId = fingerId;
 		selectedSegments = [];
 		lastCurveHit = null;
@@ -3581,8 +3595,16 @@
 			// Ignore failed storage writes; the tip simply shows again next time.
 		}
 	}
+	/**
+	 * Whether the chosen points are all black ones: corners of the tile, where the cut goes from one curve
+	 * of the tile on to another, whose handles move apart already, as at a corner. No node type is theirs
+	 * to give, so the type buttons are off for them and say why.
+	 */
+	let tileCornersChosen = $derived(
+		selectedAnchors.length > 0 && !!patternNodes && selectedAnchors.every((a) => patternNodes!.get(a) === 'frame')
+	);
 	let nodeTypeSelected = $derived.by(() => {
-		if (!selectedFinger || !validAnchors.length) return null;
+		if (!selectedFinger || !validAnchors.length || tileCornersChosen) return null;
 		const t0 = getAnchorNodeType(selectedFinger, validAnchors[0]!);
 		for (const a of validAnchors.slice(1)) if (getAnchorNodeType(selectedFinger, a) !== t0) return null;
 		return t0;
@@ -4126,44 +4148,44 @@
 						{@render toolButton({
 							label: tr('editorCornerNode'),
 							tip: tr('editorCornerNodeHint'),
-							disabledHint: tr('editorSelectPointHint'),
+							disabledHint: tr(tileCornersChosen ? 'patternTileCornerTypeHint' : 'editorSelectPointHint'),
 							icon: NodeCornerIcon,
 							iconSize: 24,
 							onclick: () => setSelectedAnchorsNodeType('corner'),
-							disabled: !validAnchors.length,
+							disabled: !validAnchors.length || tileCornersChosen,
 							pressed: nodeTypeSelected === 'corner'
 						})}
 						{@render toolButton({
 							label: tr('editorSmoothNode'),
 							tip: tr('editorSmoothNodeHint'),
-							disabledHint: tr('editorSelectPointHint'),
+							disabledHint: tr(tileCornersChosen ? 'patternTileCornerTypeHint' : 'editorSelectPointHint'),
 							icon: NodeSmoothIcon,
 							iconSize: 24,
 							onclick: () => setSelectedAnchorsNodeType('smooth'),
-							disabled: !validAnchors.length,
+							disabled: !validAnchors.length || tileCornersChosen,
 							pressed: nodeTypeSelected === 'smooth'
 						})}
 						{@render toolButton({
 							label: tr('editorSymmetricNode'),
 							tip: tr('editorSymmetricNodeHint'),
-							disabledHint: tr('editorSelectPointHint'),
+							disabledHint: tr(tileCornersChosen ? 'patternTileCornerTypeHint' : 'editorSelectPointHint'),
 							icon: NodeSymmetricIcon,
 							iconSize: 24,
 							onclick: () => {
 								makeSelectedAnchorsCurved();
 								setSelectedAnchorsNodeType('symmetric');
 							},
-							disabled: !validAnchors.length,
+							disabled: !validAnchors.length || tileCornersChosen,
 							pressed: nodeTypeSelected === 'symmetric'
 						})}
 						{@render toolButton({
 							label: tr('editorCurveNode'),
 							tip: tr('editorCurveNodeHint'),
-							disabledHint: tr('editorSelectPointHint'),
+							disabledHint: tr(tileCornersChosen ? 'patternTileCornerTypeHint' : 'editorSelectPointHint'),
 							icon: NodeCurveIcon,
 							iconSize: 24,
 							onclick: makeSelectedAnchorsCurved,
-							disabled: !validAnchors.length
+							disabled: !validAnchors.length || tileCornersChosen
 						})}
 					</div>
 					<div class="toolbar-separator" aria-hidden="true">

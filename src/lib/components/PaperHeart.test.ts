@@ -332,6 +332,40 @@ describe('the Escher tab', () => {
 			expect(Math.hypot(r.x - w.x, r.y - w.y)).toBeLessThan(1e-3);
 		}
 		expect(pressed(h, 'Smooth node')).toBe(true);
+		// a double-click both of whose clicks land on a handle lying on the curve adds a node too
+		const onTheCurve = [...h.target.querySelectorAll('circle[data-grab-handle]')].find((c) => {
+			const p = { x: Number(c.getAttribute('cx')), y: Number(c.getAttribute('cy')) };
+			return h.fingers.find((f) => f.id === 'L-2')!.segments.some((s) => closestPointOnBezier(s, p).distance < 0.5);
+		})!;
+		const there = { x: Number(onTheCurve.getAttribute('cx')), y: Number(onTheCurve.getAttribute('cy')) };
+		for (let i = 0; i < 2; i++) {
+			send(onTheCurve, 'pointerdown', there);
+			send(h.svg, 'pointerup', there);
+		}
+		expect(counts()).toEqual(['L-1:15', 'L-2:15', 'L-3:15', 'L-4:15', 'R-1:5', 'R-2:5', 'R-3:5', 'R-4:5']);
+	});
+
+	it('turns the node type buttons off for a black point, a corner of the tile, whose handles move apart already', async () => {
+		const tile = { ...knobTile(opposite('move', 'move')), cuts: 3 };
+		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
+		const at = bezierAt(h.fingers.find((f) => f.id === 'L-2')!.segments[1]!, 0.5);
+		send(h.path('L-2'), 'pointerdown', at);
+		send(h.svg, 'pointerup', at);
+		const black = [...h.handles()].find((el) => el.getAttribute('fill') === '#1e2a25')!;
+		const p = { x: Number(black.getAttribute('x')) + Number(black.getAttribute('width')) / 2, y: Number(black.getAttribute('y')) + Number(black.getAttribute('height')) / 2 };
+		send(black, 'pointerdown', p);
+		send(h.svg, 'pointerup', p);
+		for (const label of ['Corner node', 'Smooth node', 'Symmetric node', 'Curve node']) {
+			expect(h.button(label).disabled).toBe(true);
+			expect(h.button(label).getAttribute('aria-pressed')).not.toBe('true');
+		}
+		// and a node of the curve has them again
+		const node = [...h.handles()].find((el) => el.getAttribute('fill') === '#fff')!;
+		const q = { x: Number(node.getAttribute('x')) + Number(node.getAttribute('width')) / 2, y: Number(node.getAttribute('y')) + Number(node.getAttribute('height')) / 2 };
+		send(node, 'pointerdown', q);
+		send(h.svg, 'pointerup', q);
+		expect(h.button('Corner node').disabled).toBe(false);
 	});
 
 	it('keeps a node made a corner a corner in every copy, though the pattern is then moved, and its handles then move apart', async () => {
