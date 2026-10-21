@@ -611,9 +611,10 @@ those whose tile has a symmetry of its own. The tab always has a type chosen: op
 Normal tab since, it draws them again as the tile it was left with; on any other heart it draws the cuts as the
 first type, Flyttet, starts. Fortryd takes either back to the Normal tab and the cuts as they were.
 Every type's tooltip gives its name and what it does, so a type can be read about before it is picked.
-Under the picker: the chosen type's name, what it does and, small, Heesch's name for it (or its IH number where
-he has none), then the size, 3 × 3 to 7 × 7, the hint, and "Start forfra", which draws the tile again as its
-type starts, at its size. Picking
+Above the picker, where "Vis flere" cannot push it out of sight: the chosen type's name, what it does and,
+small, Heesch's name for it, its tooltip spelling the letters out (T moved, C half turn, G mirrored and moved,
+C4 quarter turn; or its IH number where he has none). Under the picker the size, 3 × 3 to 7 × 7, the hint,
+and "Start forfra", which draws the tile again as its type starts, at its size. Picking
 another type keeps the curves it reads the same way, if the heart they make with its own still weaves, and
 starts afresh if not; a size the pattern is too tight for is refused, with a line above the heart. Every type
 starts from one bent curve on each side it reads (half of one for an S or an arch) and nothing more, because the
@@ -621,7 +622,7 @@ visitor does the designing and adds the nodes they want; nothing else is drawn o
 on its own. A cut's points show when it is clicked, as in the Normal tab, and the hints say so first. A node
 double-clicked onto a bent curve keeps the curve as it is, a smooth node with handles, so that dragging it bends
 the curve rather than kinking it; on a straight piece it is a corner, as in Normal. Blødt and Symmetrisk punkt
-give a node without handles its handles first, as Kurvepunkt does, in both tabs. Points the tile places itself are drawn dark — its crossings, the middles of its S sides, the
+give a node without handles its handles first, as Kurvepunkt does, in both tabs. Points the tile places itself are drawn dark (hovered, a black point says what dragging it does, and its cursor is a move cursor, not a node's pointer) — its crossings, the middles of its S sides, the
 ends of cuts on corners or on straight sides — and dragging one sizes, stretches and slants the tiles, never
 turning them, so that the point follows the pointer, about the crossing of its line nearest the middle of the
 heart (two stretches or more from the point): the side of the cells along the dragged cut follows it, longer,

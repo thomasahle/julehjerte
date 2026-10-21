@@ -68,7 +68,7 @@ function render(opened?: Partial<Opened> & { initialEscherTab?: boolean }) {
 			const index = fingers.findIndex((f) => f.id === id);
 			return target.querySelectorAll<SVGPathElement>('path[stroke-opacity="0.001"]')[index]!;
 		},
-		handles: () => target.querySelectorAll('rect[style*="cursor: pointer"]'),
+		handles: () => target.querySelectorAll('[data-grab-anchor]'),
 		button: (label: string) => target.querySelector<HTMLButtonElement>(`button[aria-label="${label}"]`)!
 	};
 }

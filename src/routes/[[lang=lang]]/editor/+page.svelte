@@ -974,6 +974,15 @@
       </section>
 
       <section>
+        <h3>{t('helpSectionEscherTitle', lang)}</h3>
+        <ul>
+          {#each tArray('helpSectionEscherBullets', lang) as item, i (i)}
+            <li>{@html item}</li>
+          {/each}
+        </ul>
+      </section>
+
+      <section>
         <h3>{t('helpSectionRequirementsTitle', lang)}</h3>
         <p>{t('helpSectionRequirementsIntro', lang)}</p>
         <ul>

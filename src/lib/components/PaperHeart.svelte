@@ -4028,10 +4028,13 @@
 												stroke-width="1"
 												vector-effect="non-scaling-stroke"
 												transform={turned}
-												style="cursor: pointer"
+												style="cursor: {black ? 'move' : 'pointer'}"
 												data-grab-anchor={aIdx}
 												onpointerdown={(e) => handleAnchorPointerDown(e, selectedFinger.id, aIdx)}
-											/>
+											>
+												<!-- A black point is no node of the curve: hovered, it says what dragging it does. -->
+												{#if black}<title>{tr(escherFrameChip ?? 'patternPointStretch')}</title>{:else if special === 'slide'}<title>{tr('patternEdgeSlide')}</title>{/if}
+											</rect>
 										{/each}
 									{/if}
 								{/if}
@@ -4054,7 +4057,7 @@
 				{/if}
 				{#if selectedNodeTypeLabel}
 					<p class="canvas-selection">
-						<span class="canvas-selection-dot" aria-hidden="true"></span>{selectedNodeTypeLabel}
+						<span class="canvas-selection-dot" class:black={selectedPatternNode === 'frame'} aria-hidden="true"></span>{selectedNodeTypeLabel}
 					</p>
 				{/if}
 				<p class="canvas-strips">{stripsLabel}</p>
@@ -4443,6 +4446,11 @@
 			flex: none;
 			border-radius: 50%;
 			background: var(--red);
+		}
+
+		/* A black point's chip: its dot black, as the point is. */
+		.canvas-selection-dot.black {
+			background: #1e2a25;
 		}
 
 		.canvas-strips {

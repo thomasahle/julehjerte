@@ -11,8 +11,9 @@
 
   One segment per type. Opposite pairs tied two different ways can lie either way round in the
   heart; a segment chooses its type the way its glyph shows it, and shows as chosen either way.
-  The chosen rule is told underneath: its name, what it does and, small, Heesch's name for the type,
-  or Grünbaum and Shephard's number where Heesch has none. Every segment's tooltip tells its name and
+  The chosen rule is told above the types, where "Vis flere" cannot push it out of sight: its name,
+  what it does and, small, Heesch's name for the type (its tooltip spells the letters out), or
+  Grünbaum and Shephard's number where Heesch has none. Every segment's tooltip tells its name and
   what it does, so a type can be read about before it is chosen.
 
   compact   Tegn below 900px, where the panel leaves its column for a row under the drawing and can
@@ -76,6 +77,17 @@
 </script>
 
 <div class="rule-templates" class:compact>
+	<!-- The chosen type first, so that what it does stays in sight above the types, though "Vis flere"
+	     makes them a long list. -->
+	{#if active && text}
+		<p class="chosen">
+			<span class="chosen-name">
+				<strong>{tr(text.name)}</strong>
+				{#if code}<span class="code" title={tr(code.startsWith('IH') ? 'patternIhNumber' : 'patternHeeschCode')}>{code}</span>{/if}
+			</span>
+			<span>{tr(text.hint)}</span>
+		</p>
+	{/if}
 	<div class="choices">
 	<ToggleGroup type="single" role="radiogroup" aria-label={tr('patternRuleTitle')} value={chosen} onValueChange={choose} {disabled}>
 		{#each COMMON as rule (typeKey(rule))}
@@ -97,15 +109,6 @@
 	</button>
 	</div>
 
-	{#if active && text}
-		<p class="chosen">
-			<span class="chosen-name">
-				<strong>{tr(text.name)}</strong>
-				{#if code}<span class="code" title={tr(code.startsWith('IH') ? 'patternIhNumber' : 'patternHeeschCode')}>{code}</span>{/if}
-			</span>
-			<span>{tr(text.hint)}</span>
-		</p>
-	{/if}
 </div>
 
 {#snippet segment(rule: TileRule, wide: boolean)}

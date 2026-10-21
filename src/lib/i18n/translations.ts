@@ -769,7 +769,7 @@ export const translations = {
     patternRuleGgHint: 'Den hvide flise er den røde, spejlet, hvilken vej du end går. Modsatte sider er hinandens spejlbilleder; du tegner to sider.',
     patternRuleGc: 'Spejlet og halv omgang',
     patternRuleGcHint: 'Den hvide flise er den røde, spejlet den ene vej og drejet en halv omgang om midten af en side den anden. Du tegner én side, der går igen spejlet på den modsatte, og den første halvdel af to, der hver er sit eget S.',
-    patternHeeschCode: 'Heeschs navn for flisetypen',
+    patternHeeschCode: 'Heeschs navn for flisetypen, et bogstav for hver side: T – siden går igen flyttet, C – drejet en halv omgang om sin midte, G – spejlet og flyttet, C4 – drejet en kvart omgang om et hjørne. Tallene skelner par af samme slags.',
 
     // Editor help dialog
     helpOpenAriaLabel: 'Hjælp',
@@ -783,10 +783,11 @@ export const translations = {
       'Hvert hjerte består af to <strong>lapper</strong> (venstre og højre), som flettes sammen i midten. Kurverne du ser, er <strong>grænserne</strong> mellem papirstrimler. Træk i kurverne for at ændre formen, eller træk fra kanterne for at tilføje nye strimler.',
     helpSectionEditingCurvesTitle: 'Redigering af kurver',
     helpSectionEditingCurvesBullets: [
-      '<strong>Klik på en kurve</strong> for at vælge den og se dens kontrolpunkter',
-      '<strong>Træk i ankerpunkter</strong> (diamanter) for at flytte kurvens endepunkter',
-      '<strong>Træk i kontrolhåndtag</strong> (cirkler) for at justere kurvens form',
-      '<strong>Brug værktøjslinjen</strong> til venstre for at tilføje/slette noder eller ændre nodetyper'
+      '<strong>Klik på en kurve</strong> for at vælge den og se dens punkter',
+      '<strong>Træk i et punkt</strong> (firkant eller rude) for at flytte det; endepunkterne glider langs kanten',
+      '<strong>Træk i et håndtag</strong> (cirkel) for at bøje kurven',
+      '<strong>Dobbeltklik på en kurve</strong> for at sætte et nyt punkt',
+      '<strong>Brug værktøjslinjen</strong> til venstre for at tilføje eller slette punkter og vælge deres type'
     ],
     helpSectionShortcutsTitle: 'Genveje',
     helpSectionShortcutsBullets: [
@@ -798,18 +799,25 @@ export const translations = {
       '<strong>Esc</strong> fravælger kurven'
     ],
     helpSectionSymmetryTitle: 'Symmetrimuligheder',
-    helpSectionSymmetryIntro: 'Brug symmetripanelet til højre for at håndhæve begrænsninger:',
+    helpSectionSymmetryIntro: 'Symmetripanelet til højre har to faner, Normal og Escher. I Normal binder tre rækker kurverne sammen:',
     helpSectionSymmetryBullets: [
       '<strong>Inden i kurve:</strong> Gør hver kurve symmetrisk omkring sit midtpunkt',
       '<strong>Inden i lap:</strong> Spejler kurver inden for hver lap',
-      '<strong>Mellem lapper:</strong> Gør begge lapper identiske (kræver samme gitterstørrelse)',
-      '<strong>Escher-fanen:</strong> Hele hjertet bliver én flise, gentaget. Vælg en flisetype, og klik på et klip for at se dets punkter; når du trækker i et punkt, følger alle de stykker klip med, der er den samme kurve. Et sort punkt gør fliserne større, mindre, smallere eller skæve, <em>Drej mønstret</em> drejer dem, og når du trækker i et klip, flytter hele mønstret sig'
+      '<strong>Mellem lapper:</strong> Gør begge lapper identiske (kræver samme gitterstørrelse)'
     ],
-    helpSectionSymmetryNote: '<em>Sym</em> = spejlsymmetri, <em>Anti</em> = punktsymmetri (180° rotation)',
+    helpSectionSymmetryNote: 'I rækkerne er <em>Sym</em> spejlsymmetri og <em>Anti</em> punktsymmetri (en halv omgang om midten).',
+    helpSectionEscherTitle: 'Escher-fanen',
+    helpSectionEscherBullets: [
+      'Hele hjertet bliver <strong>én flise, gentaget</strong>, som i M.C. Eschers mønstre. Vælg en flisetype; over typerne står, hvad den valgte gør',
+      'Koden ved navnet (fx <strong>TTTT</strong>) siger, hvordan hver side går igen: <strong>T</strong> flyttet, <strong>C</strong> drejet en halv omgang om sin midte, <strong>G</strong> spejlet og flyttet, <strong>C4</strong> drejet en kvart omgang om et hjørne',
+      '<strong>Klik på et klip</strong> for at se dets punkter. Når du trækker i et hvidt punkt eller et håndtag, følger alle de stykker klip med, der er den samme kurve',
+      'De <strong>sorte punkter</strong> holder flisen: træk i et for at gøre fliserne længere, kortere eller skæve – hvad der kan lade sig gøre, afhænger af typen. Et valgt sort punkt får en gul ring',
+      '<strong>Træk i et klip</strong> for at flytte hele mønstret, og brug <em>Drej mønstret</em> for at dreje det. <em>3 × 3</em> til <em>7 × 7</em> gør fliserne større eller mindre, og <em>Start forfra</em> tegner flisen forfra; Fortryd tager det tilbage'
+    ],
     helpSectionRequirementsTitle: 'Krav for hjerter der kan foldes',
     helpSectionRequirementsIntro: 'For at et hjertedesign kan foldes fysisk af papir:',
     helpSectionRequirementsBullets: [
-      '<strong>Ingen selvkryds:</strong> Kurver i samme lap må ikke krydse hinanden',
+      '<strong>Ingen kryds, ingen for tynde strimler:</strong> Kurver i samme lap må ikke krydse eller komme for tæt på hinanden – så bliver de røde, og et træk stopper, før det sker',
       '<strong>Korrekt fletning:</strong> Striber skal skiftevis ligge over/under ved hvert kryds',
       '<strong>Bløde kurver:</strong> Skarpe knæk kan være svære at folde pænt',
       '<strong>Rimelig kompleksitet:</strong> Flere strimler = sværere at flette i hånden'
@@ -1777,7 +1785,7 @@ export const translations = {
     patternRuleGgHint: 'The white tile is the red one, mirrored, whichever way you go. Opposite sides are mirror images of each other; you draw two sides.',
     patternRuleGc: 'Mirrored and half turn',
     patternRuleGcHint: 'The white tile is the red one, mirrored one way and turned half round about the middle of a side the other. You draw one side, which comes back mirrored on the opposite one, and the first half of two that are each their own S.',
-    patternHeeschCode: "Heesch's name for the tile type",
+    patternHeeschCode: "Heesch's name for the tile type, a letter for each side: T – the side comes back moved, C – turned half round about its middle, G – mirrored and moved, C4 – turned a quarter round about a corner. The numbers tell pairs of one kind apart.",
 
     // Editor help dialog
     helpOpenAriaLabel: 'Help',
@@ -1791,10 +1799,11 @@ export const translations = {
       'Each heart consists of two <strong>lobes</strong> (left and right) that interweave in the center. The curves you see are the <strong>boundaries</strong> between paper strips. Drag curves to reshape them, or drag from the edges to add new strips.',
     helpSectionEditingCurvesTitle: 'Editing Curves',
     helpSectionEditingCurvesBullets: [
-      '<strong>Click a curve</strong> to select it and see its control points',
-      '<strong>Drag anchor points</strong> (diamonds) to move curve endpoints',
-      '<strong>Drag control handles</strong> (circles) to adjust curve shape',
-      '<strong>Use the toolbar</strong> on the left to add/delete nodes or change node types'
+      '<strong>Click a curve</strong> to select it and see its points',
+      '<strong>Drag a point</strong> (square or diamond) to move it; the end points slide along the edge',
+      '<strong>Drag a handle</strong> (circle) to bend the curve',
+      '<strong>Double-click a curve</strong> to add a point',
+      '<strong>Use the toolbar</strong> on the left to add or delete points and choose their type'
     ],
     helpSectionShortcutsTitle: 'Keyboard shortcuts',
     helpSectionShortcutsBullets: [
@@ -1806,18 +1815,25 @@ export const translations = {
       '<strong>Esc</strong> deselects the curve'
     ],
     helpSectionSymmetryTitle: 'Symmetry Options',
-    helpSectionSymmetryIntro: 'Use the symmetry panel on the right to enforce constraints:',
+    helpSectionSymmetryIntro: 'The symmetry panel on the right has two tabs, Normal and Escher. In Normal, three rows tie the curves together:',
     helpSectionSymmetryBullets: [
       '<strong>Within curve:</strong> Makes each curve symmetric around its center',
       '<strong>Within lobe:</strong> Mirrors curves within each lobe',
-      '<strong>Between lobes:</strong> Makes both lobes identical (requires equal grid size)',
-      '<strong>Escher tab:</strong> The whole heart becomes one tile, repeated. Choose a type of tile, and click a cut to see its points; when you drag a point, every piece of cut that is the same curve follows. A black point makes the tiles bigger, smaller, narrower or slanted, <em>Turn the pattern</em> turns them, and dragging a cut moves the whole pattern'
+      '<strong>Between lobes:</strong> Makes both lobes identical (requires equal grid size)'
     ],
-    helpSectionSymmetryNote: '<em>Sym</em> = mirror symmetry, <em>Anti</em> = point symmetry (180° rotation)',
+    helpSectionSymmetryNote: 'In the rows, <em>Sym</em> is mirror symmetry and <em>Anti</em> point symmetry (half a turn about the middle).',
+    helpSectionEscherTitle: 'The Escher tab',
+    helpSectionEscherBullets: [
+      "The whole heart becomes <strong>one tile, repeated</strong>, as in M.C. Escher's patterns. Choose a type of tile; above the types it says what the chosen one does",
+      'The code by its name (<strong>TTTT</strong>, say) tells how each side comes back: <strong>T</strong> moved, <strong>C</strong> turned half round about its middle, <strong>G</strong> mirrored and moved, <strong>C4</strong> turned a quarter round about a corner',
+      '<strong>Click a cut</strong> to see its points. When you drag a white point or a handle, every piece of cut that is the same curve follows',
+      'The <strong>black points</strong> hold the tile: drag one to make the tiles longer, shorter or slanted – what it can do depends on the type. A chosen black point gets a yellow ring',
+      '<strong>Drag a cut</strong> to move the whole pattern, and use <em>Turn the pattern</em> to turn it. <em>3 × 3</em> to <em>7 × 7</em> make the tiles bigger or smaller, and <em>Start over</em> draws the tile afresh; Undo takes it back'
+    ],
     helpSectionRequirementsTitle: 'Requirements for Foldable Hearts',
     helpSectionRequirementsIntro: 'For a heart design to be physically foldable from paper:',
     helpSectionRequirementsBullets: [
-      '<strong>No self-intersections:</strong> Curves within the same lobe must not cross each other',
+      '<strong>No crossings, no strips too thin:</strong> Curves in the same lobe must not cross or come too close – they turn red, and a drag stops short of it',
       '<strong>Proper weaving:</strong> Strips must alternate over/under at each crossing',
       '<strong>Smooth curves:</strong> Sharp angles can be difficult to fold cleanly',
       '<strong>Reasonable complexity:</strong> More strips = harder to weave by hand'
