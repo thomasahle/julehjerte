@@ -1,5 +1,19 @@
 # Generator robustness results
 
+## Above the default size, a motif nothing can be built for keeps a smaller one
+
+Sweeping the frames that stop at 85% at 85–100% showed refusals inside the
+slider's range: the circle with a double border refused the butterfly even at
+85%, and the fish at 90%, though it builds at 85%. Above 85% a motif that could
+not be built at its size tried 3% less, and 3% less again, but never below 85%,
+and from 90% never 85% itself (87%, then 84% was below the floor). A motif that
+cannot be built at its size above the default now keeps the largest of a fixed
+few sizes below that can be (97, 94, 91, 88, 85, 80, 75, 70%), the same for
+neighbouring sizes, rather than refusing, and the result says which (the page
+then says the motif is shown at that size). The double border: the butterfly
+keeps 80% at 85–100%, the fish and the coffee cup 85% at 90–100%. The fitted
+fish at 100% still keeps 97%.
+
 ## Motifs that cannot be divided grow past the touching circle
 
 Found while sweeping the circle on equal squares (goal set 2026-10-21: "Keep

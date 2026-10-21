@@ -696,10 +696,11 @@ describe('frames from real hearts', () => {
   const area = (scale: number) => swapped(generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'strips', scale }).design).area;
   expect(area(1)).toBeGreaterThan(area(.85));
  }, 30000);
- slow('keeps a fitted fish a little smaller at 100% rather than refusing it', () => {
+ slow('keeps a fitted fish a little smaller at 100% rather than refusing it, and says so', () => {
   // Nothing can be built at 100%; 97% can.
-  const { design } = generate({ mode: 'figure', name: 'Fish', contours: fish.contours as Ring[], colors, style: 'fitted', scale: 1 });
+  const { design, scale } = generate({ mode: 'figure', name: 'Fish', contours: fish.contours as Ring[], colors, style: 'fitted', scale: 1 });
   expect(design.gridSize.x).toBeGreaterThanOrEqual(4);
+  expect(scale).toBe(.97);
  }, 30000);
  slow('weaves outlines that touch into the checks', () => {
   // The bicycle's wheels touch its frame at single points.

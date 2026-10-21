@@ -480,14 +480,17 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	try {
 		return generateAtSize(request);
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) || scale <= .85
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) || scale <= .7
 			|| request.mode === 'figure' && request.style === 'board') throw error;
-		// Above 85% a frame takes a motif larger than its constructions were
-		// first made for. Where nothing at all can be built at that size, the
-		// motif keeps the largest a few percent below that can be, rather than
-		// refusing. The circle on a board keeps its own (see `generateUsingRecipes`).
-		for (let size = scale - .03; size > .85 - 1e-9; size -= .03) try {
-			return generateAtSize({ ...request, scale: Math.round(size * 100) / 100 });
+		// Above the default size a frame takes a motif larger than its
+		// constructions were first made for. Where nothing at all can be built
+		// at that size, the motif keeps the largest size below that can be, of
+		// a fixed few (so neighbouring sizes keep alike), down to the default
+		// size, rather than refusing, and says so. The circle on a board keeps
+		// its own (see `generateUsingRecipes`).
+		for (const size of [.97, .94, .91, .88, .85, .8, .75, .7].filter(size => size < scale - 1e-9)) try {
+			const result = generateAtSize({ ...request, scale: size });
+			return { ...result, scale: result.scale ?? size };
 		} catch (smallerError) {
 			if (!(smallerError instanceof ConstructionError) && !(smallerError instanceof CutGeometryError)) throw smallerError;
 		}
