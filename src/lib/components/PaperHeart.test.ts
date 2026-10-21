@@ -456,6 +456,21 @@ describe('node types', () => {
 	});
 });
 
+describe('the cut under the pointer', () => {
+	it('darkens all along, over the stripes where two cuts share a stroke too', () => {
+		const h = render();
+		h.path('R-1').dispatchEvent(new PointerEvent('pointerenter'));
+		flushSync();
+		const dark = [...h.svg.querySelectorAll('path[stroke="#000"][stroke-opacity="0.35"]')];
+		expect(dark).toHaveLength(1);
+		const overlay = h.svg.querySelector('.shared-cut-overlay')!;
+		expect(overlay.compareDocumentPosition(dark[0]!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+		h.path('R-1').dispatchEvent(new PointerEvent('pointerleave'));
+		flushSync();
+		expect(h.svg.querySelectorAll('path[stroke="#000"][stroke-opacity="0.35"]')).toHaveLength(0);
+	});
+});
+
 describe('the red cuts', () => {
 	it('mark a cut dragged too close to the next one at the first move, and are right again the moment the drag ends', () => {
 		const h = render();

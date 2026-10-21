@@ -318,6 +318,8 @@
 	let selectedSegments = $state<number[]>([]);
 	let lastCurveHit = $state<CurveHit | null>(null);
 	let hoverFingerId = $state<string | null>(null);
+	/** The cut under the pointer, which the canvas darkens, or null. */
+	let hoveredFinger = $derived(hoverFingerId ? (fingers.find((f) => f.id === hoverFingerId) ?? null) : null);
 
 	let dragTarget = $state<DragTarget>(null);
 	let dragDirty = $state(false);
@@ -3649,7 +3651,6 @@
 								{#if !readonly}
 									{#each fingers as finger (finger.id)}
 											{@const isSelected = finger.id === selectedFingerId}
-											{@const isHovered = finger.id === hoverFingerId}
 											{@const hidden = !showCurves}
 											{@const hasIssues = issueFingerIds.has(finger.id)}
 											{@const lobeColor = LOBE_OUTLINE_COLORS[finger.lobe]}
@@ -3699,24 +3700,27 @@
 											/>
 										{/if}
 
-										{#if isHovered}
-											<path
-												d={fingerPathData}
-												fill="none"
-												stroke="#000"
-												stroke-opacity={hidden ? 1 : 0.35}
-												stroke-width={hidden ? 2 : 5}
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												vector-effect="non-scaling-stroke"
-												pointer-events="none"
-											/>
-										{/if}
 									{/each}
 
 									{#if showCurves}
 										<SharedCutOverlay {fingers} excluded={overlapExcluded} idPrefix={componentId}
 											unitsPerPixel={curveUiScale} bounds={weaveData.overlap} />
+									{/if}
+
+									<!-- The cut under the pointer, darkened: last, over the stripes where two cuts share a stroke too,
+									     so that the whole cut darkens. -->
+									{#if hoveredFinger}
+										<path
+											d={segmentsToPathData(hoveredFinger.segments)}
+											fill="none"
+											stroke="#000"
+											stroke-opacity={showCurves ? 0.35 : 1}
+											stroke-width={showCurves ? 5 : 2}
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											vector-effect="non-scaling-stroke"
+											pointer-events="none"
+										/>
 									{/if}
 
 									{#if selectedFinger}
