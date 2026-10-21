@@ -545,6 +545,11 @@ finger on empty paper pans. A finger hides what it presses, so it takes hold of 
 it within 22 px, and the point keeps that distance from the finger as it is dragged, in sight; cuts take a
 26 px wide touch instead of 14.
 
+As in tiled.art, the arrow keys move the chosen node a screen pixel a press, ten with Shift: a drag
+(`nudge`), so it keeps to everything a drag does, and a black point in the Escher tab moves the tiles. A key
+held is one Fortryd step. F and B choose the next and the previous node on the cut. Keys with focus on a
+toggle, slider, menu or dialog are theirs, not the canvas's.
+
 The four point-type icons follow the owner's point-types reference: a diamond at a corner, a square
 on a smooth curve, a square with equal handles for symmetry, and a circle for creating curve handles.
 These glyphs are 24px within the existing 44px buttons. Curves use the button text colour; points are

@@ -502,6 +502,42 @@ describe('the cut under the pointer', () => {
 	});
 });
 
+describe('the keys', () => {
+	const key = (type: 'keydown' | 'keyup', k: string, shiftKey = false) => {
+		window.dispatchEvent(new KeyboardEvent(type, { key: k, shiftKey }));
+		flushSync();
+	};
+
+	it('move the chosen node a pixel a press with the arrows, ten with Shift, in one Fortryd step, and F and B step from node to node', () => {
+		const h = render();
+		const at = midpoint(h.fingers.find((f) => f.id === 'R-1')!);
+		for (let i = 0; i < 2; i++) {
+			send(h.path('R-1'), 'pointerdown', at);
+			send(h.svg, 'pointerup', at);
+		}
+		const node = () => h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0;
+		const start = node();
+		const opened = JSON.stringify(h.fingers);
+		for (let i = 0; i < 3; i++) key('keydown', 'ArrowLeft');
+		key('keydown', 'ArrowDown', true);
+		key('keyup', 'ArrowDown');
+		expect(node().x).toBeCloseTo(start.x - 3);
+		expect(node().y).toBeCloseTo(start.y + 10);
+		h.button('Undo').click();
+		flushSync();
+		expect(JSON.stringify(h.fingers)).toBe(opened);
+		// F and B: the next node and the one before, round the cut
+		const chosen = () => [...h.target.querySelectorAll('[data-grab-anchor]')].find((r) => r.getAttribute('fill') === '#ffcc00')?.getAttribute('data-grab-anchor');
+		expect(chosen()).toBe('1');
+		key('keydown', 'f');
+		expect(chosen()).toBe('2');
+		key('keydown', 'f');
+		expect(chosen()).toBe('0');
+		key('keydown', 'B');
+		expect(chosen()).toBe('2');
+	});
+});
+
 describe('a finger', () => {
 	it('takes hold of the chosen cut\'s point nearest it, though it touches beside the point, which keeps that distance from it', () => {
 		const h = render();

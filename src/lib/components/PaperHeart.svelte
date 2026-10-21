@@ -2712,16 +2712,23 @@
 
 	function beginDrag(e: PointerEvent, target: DragTarget) {
 		if (readonly) return;
+		// A nudge by the arrow keys going on ends first.
+		if (activePointerId === KEY_POINTER) finishDrag(KEY_POINTER);
 		activePointerId = e.pointerId;
 		try {
 			svgEl?.setPointerCapture?.(e.pointerId);
 		} catch {
 			// Ignore pointer capture failures.
 		}
+		startDragAt(localPointFromClient(e.clientX, e.clientY), target);
+	}
+
+	/** A drag of `target` from `start`, in the heart's units: by a pointer, or by the arrow keys (`nudge`). */
+	function startDragAt(start: Vec | null, target: DragTarget) {
 		dragTarget = target;
 		dragSnapshot = snapshotState();
 		dragDirty = false;
-		dragStartPointer = localPointFromClient(e.clientX, e.clientY);
+		dragStartPointer = start;
 		dragStartOffset = null;
 		dragSlide = null;
 		dragDelta = { x: 0, y: 0 };
@@ -2947,7 +2954,12 @@
 		if (!dragTarget) return;
 		const p = localPointFromClient(e.clientX, e.clientY);
 		if (!p) return;
+		dragTo(p);
+	}
 
+	/** The drag going on, its pointer (or the place the arrow keys took it to) at `p` in the heart's units. */
+	function dragTo(p: Vec) {
+		if (!dragTarget) return;
 		if (tileDrag && escher) {
 			// The tiles change, or the whole pattern moves, so that the dragged point, cut or edge follows
 			// the pointer; or the curve the edge cuts is reshaped so that the cut's end slides with it.
@@ -3129,7 +3141,11 @@
 			return;
 		}
 		if (activePointerId == null || e.pointerId !== activePointerId) return;
+		finishDrag(e.pointerId);
+	}
 
+	/** The drag of pointer `pointerId` let go: what it made is tidied, and it is one Fortryd step. */
+	function finishDrag(pointerId: number) {
 		// snap dragged handle to anchor if close
 		if (dragTarget?.kind === 'control' && dragTarget.handle && typeof dragTarget.segmentIndex === 'number') {
 			const { fingerId, segmentIndex, handle: handleKey } = dragTarget;
@@ -3160,7 +3176,74 @@
 			dragDirty = true;
 		}
 
-		endDrag(e.pointerId);
+		endDrag(pointerId);
+	}
+
+	/** The pointer id the arrow keys drag with (`nudge`): no real pointer has it. */
+	const KEY_POINTER = -2;
+	/** Where the arrow keys have taken the node they move, in the heart's units, and where it started. */
+	let keyNudge: { start: Vec; at: Vec } | null = null;
+
+	/**
+	 * The chosen node moved by the arrow keys, a screen pixel a press, ten with Shift, as tiled.art's
+	 * arrows move its points: a drag (`dragTo`), so it keeps to everything a drag keeps to, and the
+	 * presses until the keys are let go are one Fortryd step. The node the cut's black point is in the
+	 * Escher tab moves the tiles, as dragging it does.
+	 */
+	function nudge(dx: number, dy: number) {
+		if (activePointerId != null && activePointerId !== KEY_POINTER) return;
+		if (!selectedFingerId || !getEditableFingerById(selectedFingerId) || selectedAnchors.length === 0) return;
+		const anchorIdx = selectedAnchors[selectedAnchors.length - 1]!;
+		const finger = getFingerById(selectedFingerId);
+		const anchor = finger ? getAnchorPositions(fingerToSegments(finger))[anchorIdx] : undefined;
+		if (!anchor) return;
+		// A screen pixel, in the heart's units: the heart is drawn turned and zoomed.
+		const ctm = rotatedGroup?.getScreenCTM?.();
+		if (!ctm) return;
+		const screen = new DOMPoint(anchor.x, anchor.y).matrixTransform(ctm);
+		const moved = localPointFromClient(screen.x + dx, screen.y + dy);
+		if (!moved) return;
+		const step = vecSub(moved, anchor);
+		if (activePointerId !== KEY_POINTER || !keyNudge) {
+			const special = patternTile && escher ? escher.specialNodes(patternTile, selectedFingerId).get(anchorIdx) : undefined;
+			if (patternTile && escher && special) {
+				const drag = escher.startTileDrag(patternTile, selectedFingerId, anchorIdx, special, anchor);
+				if (!drag) return;
+				tileDrag = drag;
+			}
+			activePointerId = KEY_POINTER;
+			startDragAt(anchor, { kind: 'control', fingerId: selectedFingerId, anchorIdx });
+			keyNudge = { start: anchor, at: anchor };
+		}
+		keyNudge.at = vecAdd(keyNudge.at, step);
+		dragTo(keyNudge.at);
+	}
+
+	/** The arrow keys let go: the nudge is one Fortryd step. */
+	function endNudge() {
+		if (activePointerId !== KEY_POINTER) return;
+		keyNudge = null;
+		finishDrag(KEY_POINTER);
+	}
+
+	/** The chosen cut's next node (or previous, `by` = -1), as tiled.art's F and B step through its points. */
+	function stepNode(by: 1 | -1) {
+		if (!selectedFingerId) return;
+		const finger = getFingerById(selectedFingerId);
+		if (!finger) return;
+		const count = fingerToSegments(finger).length + 1;
+		const current = selectedAnchors.length ? selectedAnchors[selectedAnchors.length - 1]! : by > 0 ? -1 : 0;
+		selectedAnchors = [(((current + by) % count) + count) % count];
+		selectedSegments = [];
+	}
+
+	/** Controls that use the arrow keys themselves. */
+	const ARROW_CONTROLS =
+		'[role="radiogroup"], [role="radio"], [role="slider"], [role="tablist"], [role="tab"], [role="listbox"], [role="menu"], [role="menubar"], [role="toolbar"], [role="dialog"], [role="combobox"], [role="spinbutton"], select';
+
+	/** Whether keys pressed with focus on `target` are the canvas's: not a toggle's, slider's or menu's, which use arrows themselves. */
+	function keysForCanvas(target: EventTarget | null): boolean {
+		return !(target instanceof Element) || !target.closest(ARROW_CONTROLS);
 	}
 
 	// init from props
@@ -3360,7 +3443,29 @@
 		if (e.key === 'Backspace' || e.key === 'Delete') {
 			e.preventDefault();
 			deleteSelectedAnchors();
+			return;
 		}
+
+		if (!keysForCanvas(e.target) || isMod || e.altKey) return;
+		const arrow = ARROWS[e.key];
+		if (arrow && selectedAnchors.length) {
+			e.preventDefault();
+			const by = e.shiftKey ? 10 : 1;
+			nudge(arrow.x * by, arrow.y * by);
+			return;
+		}
+		if (e.key === 'f' || e.key === 'F' || e.key === 'b' || e.key === 'B') {
+			if (!selectedFingerId) return;
+			e.preventDefault();
+			endNudge();
+			stepNode(e.key === 'f' || e.key === 'F' ? 1 : -1);
+		}
+	}
+
+	const ARROWS: Record<string, Vec> = { ArrowLeft: { x: -1, y: 0 }, ArrowRight: { x: 1, y: 0 }, ArrowUp: { x: 0, y: -1 }, ArrowDown: { x: 0, y: 1 } };
+
+	function handleKeyUp(e: KeyboardEvent) {
+		if (ARROWS[e.key]) endNudge();
 	}
 
 	onMount(() => {
@@ -3368,6 +3473,9 @@
 		const unsub = subscribeColors((c) => (heartColors = c));
 		if (!readonly && typeof window !== 'undefined') {
 			window.addEventListener('keydown', handleKeyDown);
+			window.addEventListener('keyup', handleKeyUp);
+			// Keys let go elsewhere: a nudge going on ends.
+			window.addEventListener('blur', endNudge);
 			try {
 				firstVisitHintDismissed = localStorage.getItem(FIRST_VISIT_HINT_KEY) === '1';
 			} catch {
@@ -3385,6 +3493,8 @@
 		return () => {
 			if (!readonly && typeof window !== 'undefined') {
 				window.removeEventListener('keydown', handleKeyDown);
+				window.removeEventListener('keyup', handleKeyUp);
+				window.removeEventListener('blur', endNudge);
 			}
 			unsub();
 		};

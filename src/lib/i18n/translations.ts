@@ -793,6 +793,8 @@ export const translations = {
       '<strong>Ctrl+Z</strong> (⌘Z på Mac) fortryder',
       '<strong>Ctrl+Shift+Z</strong> eller <strong>Ctrl+Y</strong> (⇧⌘Z på Mac) gentager',
       '<strong>Delete</strong> eller <strong>Backspace</strong> sletter det valgte punkt',
+      '<strong>Piletasterne</strong> flytter det valgte punkt en pixel ad gangen, med <strong>Shift</strong> ti',
+      '<strong>F</strong> og <strong>B</strong> vælger næste og forrige punkt på kurven',
       '<strong>Esc</strong> fravælger kurven'
     ],
     helpSectionSymmetryTitle: 'Symmetrimuligheder',
@@ -1799,6 +1801,8 @@ export const translations = {
       '<strong>Ctrl+Z</strong> (⌘Z on a Mac) undoes',
       '<strong>Ctrl+Shift+Z</strong> or <strong>Ctrl+Y</strong> (⇧⌘Z on a Mac) redoes',
       '<strong>Delete</strong> or <strong>Backspace</strong> deletes the selected point',
+      '<strong>Arrow keys</strong> move the selected point a pixel at a time, ten with <strong>Shift</strong>',
+      '<strong>F</strong> and <strong>B</strong> select the next and the previous point on the curve',
       '<strong>Esc</strong> deselects the curve'
     ],
     helpSectionSymmetryTitle: 'Symmetry Options',
