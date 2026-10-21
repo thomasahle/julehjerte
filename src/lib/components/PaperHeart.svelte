@@ -2624,7 +2624,41 @@
 		if (touchPointerIds.size >= 2 || multiTouch) {
 			beginMultiTouch();
 			e.stopPropagation();
+			return;
 		}
+		// A finger hides what it presses (GitHub issue #12): it takes hold of the chosen cut's point
+		// nearest it, though it touches beside the point, and the point keeps that distance from it as it
+		// is dragged, in sight.
+		const grab = selectedFingerId ? pointNear(e.clientX, e.clientY) : null;
+		if (!grab || !selectedFingerId) return;
+		e.stopPropagation();
+		if ('anchor' in grab) handleAnchorPointerDown(e, selectedFingerId, grab.anchor);
+		else handleHandlePointerDown(e, selectedFingerId, grab.segment, grab.handle);
+	}
+
+	/** How far from a point of the chosen cut, in screen pixels, a finger may touch and still take hold of it. */
+	const TOUCH_REACH_PX = 22;
+
+	/** The chosen cut's point (node or handle) nearest the screen point (x, y), within a finger's reach, or null. */
+	function pointNear(x: number, y: number): { anchor: number } | { segment: number; handle: 'p1' | 'p2' } | null {
+		let best: { anchor: number } | { segment: number; handle: 'p1' | 'p2' } | null = null;
+		let bestD = TOUCH_REACH_PX;
+		for (const el of svgEl?.querySelectorAll<SVGGraphicsElement>('[data-grab-anchor], [data-grab-handle]') ?? []) {
+			const ctm = el.getScreenCTM?.();
+			if (!ctm) continue;
+			const n = (name: string) => Number(el.getAttribute(name));
+			const local = el.tagName.toLowerCase() === 'circle' ? { x: n('cx'), y: n('cy') } : { x: n('x') + n('width') / 2, y: n('y') + n('height') / 2 };
+			const at = new DOMPoint(local.x, local.y).matrixTransform(ctm);
+			const d = Math.hypot(at.x - x, at.y - y);
+			if (d >= bestD) continue;
+			bestD = d;
+			const anchor = el.getAttribute('data-grab-anchor');
+			best =
+				anchor !== null
+					? { anchor: Number(anchor) }
+					: { segment: Number(el.getAttribute('data-grab-segment')), handle: el.getAttribute('data-grab-handle') === 'p2' ? 'p2' : 'p1' };
+		}
+		return best;
 	}
 
 	function beginPan(e: PointerEvent) {
@@ -2839,6 +2873,9 @@
 	}
 
 	const HIT_STROKE_WIDTH = 14;
+	/** On a touch screen a cut is easier to hit: a finger is wider than a mouse pointer. */
+	const TOUCH_HIT_STROKE_WIDTH = 26;
+	let coarsePointer = $state(false);
 
 	function handleAnchorPointerDown(e: PointerEvent, fingerId: string, anchorIdx: number) {
 		if (readonly || !getEditableFingerById(fingerId)) return;
@@ -3354,6 +3391,8 @@
 	});
 
 			onMount(() => {
+				// A finger is wider than a mouse pointer (`TOUCH_HIT_STROKE_WIDTH`).
+				coarsePointer = window.matchMedia?.('(pointer: coarse)').matches ?? false;
 				if (!fullPage) return;
 
 			try {
@@ -3649,7 +3688,7 @@
 												fill="none"
 												stroke="#000"
 												stroke-opacity="0.001"
-											stroke-width={HIT_STROKE_WIDTH}
+											stroke-width={coarsePointer ? TOUCH_HIT_STROKE_WIDTH : HIT_STROKE_WIDTH}
 											stroke-linecap="round"
 											stroke-linejoin="round"
 											vector-effect="non-scaling-stroke"
@@ -3753,6 +3792,8 @@
 														stroke-width="1"
 														vector-effect="non-scaling-stroke"
 														style="cursor: pointer"
+														data-grab-segment={0}
+														data-grab-handle="p1"
 														onpointerdown={(e) => handleHandlePointerDown(e, selectedFinger.id, 0, 'p1')}
 													/>
 												{/if}
@@ -3778,6 +3819,8 @@
 														stroke-width="1"
 														vector-effect="non-scaling-stroke"
 														style="cursor: pointer"
+														data-grab-segment={n - 1}
+														data-grab-handle="p2"
 														onpointerdown={(e) => handleHandlePointerDown(e, selectedFinger.id, n - 1, 'p2')}
 													/>
 												{/if}
@@ -3804,6 +3847,8 @@
 														stroke-width="1"
 														vector-effect="non-scaling-stroke"
 														style="cursor: pointer"
+														data-grab-segment={idx - 1}
+														data-grab-handle="p2"
 														onpointerdown={(e) => handleHandlePointerDown(e, selectedFinger.id, idx - 1, 'p2')}
 													/>
 												{/if}
@@ -3827,6 +3872,8 @@
 														stroke-width="1"
 														vector-effect="non-scaling-stroke"
 														style="cursor: pointer"
+														data-grab-segment={idx}
+														data-grab-handle="p1"
 														onpointerdown={(e) => handleHandlePointerDown(e, selectedFinger.id, idx, 'p1')}
 													/>
 												{/if}
@@ -3872,6 +3919,7 @@
 												vector-effect="non-scaling-stroke"
 												transform={turned}
 												style="cursor: pointer"
+												data-grab-anchor={aIdx}
 												onpointerdown={(e) => handleAnchorPointerDown(e, selectedFinger.id, aIdx)}
 											/>
 										{/each}

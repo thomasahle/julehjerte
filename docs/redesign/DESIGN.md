@@ -540,6 +540,11 @@ why. So a drag never makes a cut red; on a heart already too close, a drag may l
 A cut folding too close on itself is caught where the search ends (that check costs many times the others),
 so there the point stops instead of sliding.
 
+On a touch screen (GitHub issue #12) a second finger stops any drag, undoing it, and pinches and pans; one
+finger on empty paper pans. A finger hides what it presses, so it takes hold of the chosen cut's point nearest
+it within 22 px, and the point keeps that distance from the finger as it is dragged, in sight; cuts take a
+26 px wide touch instead of 14.
+
 The four point-type icons follow the owner's point-types reference: a diamond at a corner, a square
 on a smooth curve, a square with equal handles for symmetry, and a circle for creating curve handles.
 These glyphs are 24px within the existing 44px buttons. Curves use the button text colour; points are

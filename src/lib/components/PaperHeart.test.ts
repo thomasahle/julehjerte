@@ -73,9 +73,9 @@ function render(opened?: Partial<Opened> & { initialEscherTab?: boolean }) {
 	};
 }
 
-function send(target: Element, type: string, p: Vec, shiftKey = false) {
+function send(target: Element, type: string, p: Vec, shiftKey = false, pointerType = 'mouse') {
 	target.dispatchEvent(new PointerEvent(type, {
-		pointerId: 1, pointerType: 'mouse', button: 0, buttons: type === 'pointerup' ? 0 : 1,
+		pointerId: 1, pointerType, button: 0, buttons: type === 'pointerup' ? 0 : 1,
 		clientX: p.x, clientY: p.y, bubbles: true, shiftKey
 	}));
 	flushSync();
@@ -499,6 +499,26 @@ describe('the cut under the pointer', () => {
 		h.path('R-1').dispatchEvent(new PointerEvent('pointerleave'));
 		flushSync();
 		expect(h.svg.querySelectorAll('path[stroke="#000"][stroke-opacity="0.35"]')).toHaveLength(0);
+	});
+});
+
+describe('a finger', () => {
+	it('takes hold of the chosen cut\'s point nearest it, though it touches beside the point, which keeps that distance from it', () => {
+		const h = render();
+		const at = midpoint(h.fingers.find((f) => f.id === 'R-1')!);
+		for (let i = 0; i < 2; i++) {
+			send(h.path('R-1'), 'pointerdown', at);
+			send(h.svg, 'pointerup', at);
+		}
+		const node = h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0;
+		// pressed 9 units beside the node, on the empty paper, and moved 12 down
+		const beside = { x: node.x - 9, y: node.y };
+		send(h.svg, 'pointerdown', beside, false, 'touch');
+		send(h.svg, 'pointermove', { x: beside.x, y: beside.y + 12 }, false, 'touch');
+		send(h.svg, 'pointerup', { x: beside.x, y: beside.y + 12 }, false, 'touch');
+		const moved = h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0;
+		expect(moved.x).toBeCloseTo(node.x);
+		expect(moved.y).toBeCloseTo(node.y + 12);
 	});
 });
 
