@@ -1952,9 +1952,9 @@ function generateUsingRecipes(request: GeneratorRequest,
 					return false;
 				}
 			}));
-		let whole = false;
-		const [mode, size] = !large || buildable(range) ? [range, radius] : range === small ? [large, large[0] + .6]
-			: (whole = wholeBuildable()) ? [large, Math.min(radius, boardWholeTop(strips))] : [small, small[1]];
+		const divided = !large || buildable(range), whole = !divided && range !== small && wholeBuildable();
+		const [mode, size] = divided ? [range, radius] : range === small ? [large, large[0] + .6]
+			: whole ? [large, Math.min(radius, boardWholeTop(strips))] : [small, small[1]];
 		// Over the corner squares, whether the motif sits on its enclosing
 		// circle is decided once, in the largest circle, so it only grows with
 		// the setting: there a deer's antler and hooves reach equally far, but a
