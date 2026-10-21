@@ -57,6 +57,7 @@ import {
 	boardPanels,
 	boardRangeLines,
 	boardRanges,
+	boardWholeTop,
 	type Ring,
 	type Frame,
 	type FigureStyle,
@@ -134,6 +135,10 @@ export type GeneratorResult = {
 	/** On a board circle over the corner squares: whether the motif sits on
 	 * its smallest enclosing circle's centre rather than its box's. */
 	enclosed?: boolean;
+	/** On a board circle past the touching circle: the motif is kept whole,
+	 * as it cannot be divided in four, the circle keeping the colour it has
+	 * below (see `generate`). */
+	whole?: boolean;
 	/** On a board circle that covers the board's middle lines whole: the
 	 * strips its squares show, the heart leaving those lines out (see
 	 * `boardRanges`). */
@@ -1885,8 +1890,8 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// them like a letter's dots and islands. These come after every other
 		// division, so a motif that divides without them keeps its cuts.
 		const islands = { ...compound, boundaryIslands: true, contourApproaches: true, guardedAttachments: true, filled: true, guardSeams: true };
-		const layouts = (range: readonly [number, number], { centre }: Placement) => {
-			if (panels(range) === 1) return [[{}, compound]];
+		const layouts = (range: readonly [number, number], { centre }: Placement, whole = false) => {
+			if (whole || panels(range) === 1) return [[{}, compound]];
 			const junctions = background.map((p): Point => [p[0] - centre[0], p[1] - centre[1]]);
 			return [[{ columns: 2, slices: 2 }, { ...compound, columns: 2, slices: 2 }, ...junctions.map(junction => ({ columns: 2, slices: 2, junction }))],
 				[undefined, ...junctions].map(junction => ({ ...islands, columns: 2, slices: 2, ...junction && { junction } }))];
@@ -1900,9 +1905,9 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// inside of move in, see `generateTextGrid`.)
 		// Where the circle covers the middle lines whole, only the outer ones
 		// remain (see `boardRanges`).
-		const sizes = (range: readonly [number, number], radius: number, placement = boxed, scale = fills(radius, placement)) => {
+		const sizes = (range: readonly [number, number], radius: number, placement = boxed, scale = fills(radius, placement), whole = false) => {
 			const lines = boardRangeLines(range, strips), covered = lines.length < boardLines(strips).length;
-			return layouts(range, placement).flatMap(list => [.22, .05].flatMap(padding =>
+			return layouts(range, placement, whole).flatMap(list => [.22, .05].flatMap(padding =>
 				list.map(layout => ({ radius, scale, layout: { padding, ...layout, ...placement.enclosed && { centre: placement.centre }, ...covered && { lines } } }))));
 		};
 		const build = ({ radius, scale, layout }: ReturnType<typeof sizes>[number]): Construction => {
@@ -1915,9 +1920,14 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// four at both, takes the other construction at its size nearest the
 		// touching circle, whatever the slider. Its shape decides, not the
 		// space asked for: more than the usual would leave it too small there.
-		const [low, high] = large ?? small, home = (range: readonly [number, number]) => panels(range) === 1 ? small : large ?? small,
-			references = (range: readonly [number, number]) => home(range) === small
-				? [Math.round((small[0] + small[1]) / 2)] : [.25, .75].map(t => Math.round(low + t * (high - low)));
+		// Where the circle covers the middle lines, the motif is divided at its
+		// size there, more than twice that in the touching ring on finer boards.
+		const home = (range: readonly [number, number]) => panels(range) === 1 ? small
+			: boardRangeLines(range, strips).length < boardLines(strips).length ? range : large ?? small;
+		const references = (range: readonly [number, number]) => {
+			const [low, high] = home(range);
+			return home(range) === small ? [Math.round((low + high) / 2)] : [.25, .75].map(t => Math.round(low + t * (high - low)));
+		};
 		const buildable = (range: readonly [number, number]) => references(range)
 			.every(reference => sizes(home(range), reference, boxed, fills(reference, boxed, 1, Math.min(gap, 3))).some(attempt => {
 				try {
@@ -1928,7 +1938,23 @@ function generateUsingRecipes(request: GeneratorRequest,
 					return false;
 				}
 			}));
-		const [mode, size] = !large || buildable(range) ? [range, radius] : range === small ? [large, large[0] + .6] : [small, small[1]];
+		// One that cannot be divided in four is kept whole in the touching ring
+		// too, the outer lines following the circle while the other sheet's
+		// middle lines cross them to the motif, out to the corner junctions,
+		// and there past them; else it keeps the touching circle.
+		const wholeBuildable = () => !!large && references(large).every(reference =>
+			sizes(large, reference, boxed, fills(reference, boxed, 1, Math.min(gap, 3)), true).some(attempt => {
+				try {
+					build(attempt);
+					return true;
+				} catch (error) {
+					if (!(error instanceof ConstructionError)) throw error;
+					return false;
+				}
+			}));
+		let whole = false;
+		const [mode, size] = !large || buildable(range) ? [range, radius] : range === small ? [large, large[0] + .6]
+			: (whole = wholeBuildable()) ? [large, Math.min(radius, boardWholeTop(strips))] : [small, small[1]];
 		// Over the corner squares, whether the motif sits on its enclosing
 		// circle is decided once, in the largest circle, so it only grows with
 		// the setting: there a deer's antler and hooves reach equally far, but a
@@ -1936,7 +1962,10 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// It moves there over the sizes from 85%, so it does not jump; on finer
 		// boards the circle short of the next lines out decides.
 		const enclosed: Placement = { ...boardPlacement(contours), enclosed: true };
-		const placement = ranges.indexOf(mode) > 1 && enclosedAlong(request.scale ?? .7) > 0 && sizes(past, past[1], enclosed).some(attempt => {
+		// Out past the paper's edges, where the middle lines are left out, the
+		// largest circle there decides.
+		const deciding = home(mode) === mode ? mode : past;
+		const placement = ranges.indexOf(mode) > 1 && enclosedAlong(request.scale ?? .7) > 0 && sizes(deciding, deciding[1], enclosed).some(attempt => {
 			try {
 				finish(build(attempt), 'nested', false);
 				return true;
@@ -1948,8 +1977,9 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// The size setting the other construction's circle stands for, and
 		// whether the motif sits on its enclosing circle, for the picture.
 		const kept = (result: GeneratorResult): GeneratorResult => ({
-			...mode === range ? result : { ...result, scale: boardSetting(size, strips) },
+			...mode === range && size === radius ? result : { ...result, scale: boardSetting(size, strips) },
 			...placement.enclosed && { enclosed: true },
+			...whole && { whole: true },
 			...result.design.gridSize.x !== strips && { board: strips }
 		});
 		// The circle and the motif keep the sizes the setting gives them, so
@@ -1959,8 +1989,8 @@ function generateUsingRecipes(request: GeneratorRequest,
 		const nearby = [size + 1.5, size + 3].map(other => Math.min(mode[1], other))
 			.filter(other => other - size > .5 && boardLines(strips).every(line => Math.abs(other - line) > .1));
 		let last: unknown;
-		for (const attempts of [sizes(mode, size, placement), [.85, .7].flatMap(factor => sizes(mode, size, placement, fills(size, placement, factor))),
-			nearby.flatMap(other => sizes(mode, other, placement))]) {
+		for (const attempts of [sizes(mode, size, placement, undefined, whole), [.85, .7].flatMap(factor => sizes(mode, size, placement, fills(size, placement, factor), whole)),
+			nearby.flatMap(other => sizes(mode, other, placement, undefined, whole))]) {
 			const rejected: Parameters<typeof hardToCutResult>[1] = [];
 			for (const attempt of attempts) try {
 				const construction = build(attempt);
@@ -1985,7 +2015,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		try {
 			const at = ranges.indexOf(mode);
 			if (at > 1) return smaller(boardSteps(strips)[at - 2][1] / 100);
-			if (mode === large && gap > 3) return smaller(.7);
+			if (mode === large && (gap > 3 || whole)) return smaller(.7);
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) || strips === 5) throw error;
 			last = error;

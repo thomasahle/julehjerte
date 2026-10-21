@@ -33,7 +33,7 @@ export type Picture = { rings: Ring[]; place?: number; bounds?: PlaceBounds };
  * strips per side, which circle a board circle keeps, and whether over the
  * corner squares the motif sits on its enclosing circle (as it does unless a
  * heart said otherwise). */
-export type Known = { place?: number; board?: number; circle?: 'large' | number; enclosed?: boolean };
+export type Known = { place?: number; board?: number; circle?: 'large' | number; enclosed?: boolean; whole?: boolean };
 
 /** The picture for a request, or none where this frame has none yet, or the
  * generator is known to build this motif differently. */
@@ -71,7 +71,7 @@ export function picture(request: GeneratorRequest, known: Known = {}): Picture |
 		if (request.mode === 'figure' && request.style === 'sunburst' && (known.board ?? 5) === 5) return sunburstPicture(request);
 		if (request.mode === 'figure' && request.style === 'layers' && (known.board ?? 7) === 7) return layersPicture(request);
 		if (request.mode === 'figure' && request.style === 'corners' && (known.board ?? 6) === 6) return cornersPicture(request);
-		if (request.mode === 'figure' && request.style === 'board') return boardPicture(request, known.circle, known.enclosed, known.board);
+		if (request.mode === 'figure' && request.style === 'board') return boardPicture(request, known.circle, known.enclosed, known.board, known.whole);
 		if (request.mode === 'figure' && (request.style === 'wedges' || request.style === 'fitted' || request.style === 'silhouette') && request.contours?.length
 			&& (known.board ?? (request.style === 'fitted' ? 5 : 3)) === (request.style === 'fitted' ? 5 : 3)) {
 			// The open frames' legs, as their first construction draws them, on
@@ -211,8 +211,10 @@ function cornersPicture(request: GeneratorRequest): Picture | undefined {
  * 70% the circle reaches into the next ring of squares, its checks woven the
  * other way round. A motif that one of the two
  * constructions cannot build keeps the other's nearest circle whatever its
- * size, as `circle` says once a heart of it has reported a size it kept. */
-function boardPicture(request: GeneratorRequest, circle?: 'large' | number, enclosed = true, board?: number): Picture | undefined {
+ * size, as `circle` says once a heart of it has reported a size it kept, and
+ * one that cannot be divided stays whole in the touching ring, as `whole`
+ * says, the circle keeping its colour. */
+function boardPicture(request: GeneratorRequest, circle?: 'large' | number, enclosed = true, board?: number, whole = false): Picture | undefined {
 	const contours = normalizeContours(request.contours ?? []);
 	if (!contours.length) return;
 	// The strips its heart was made on, where one was, else those asked for;
@@ -224,7 +226,7 @@ function boardPicture(request: GeneratorRequest, circle?: 'large' | number, encl
 	// The circle takes the colour of the middle squares around it while the
 	// motif is whole, the other once it is divided in four (on every odd
 	// board).
-	const outer = (boardPanels(range, strips) - 1) % 2;
+	const outer = whole && range === large ? 0 : (boardPanels(range, strips) - 1) % 2;
 	const xs = contours.flat().map(p => p[0]), ys = contours.flat().map(p => p[1]);
 	let cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
 	const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));

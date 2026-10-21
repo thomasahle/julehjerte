@@ -30,7 +30,7 @@ function mismatch(request: GeneratorRequest, n = 100): number {
 	const fixed = board || request.place !== undefined || (request.scale ?? .7) === .7, base = fixed ? result : generate({ ...request, scale: .7 });
 	const circle = board && result.scale !== undefined ? result.scale < (request.scale ?? .7) ? result.scale : 'large' as const : undefined;
 	const { rings } = picture({ ...request, scale: board ? request.scale : result.scale ?? request.scale, layout: base.layout },
-		{ place: base.place, circle, enclosed: !!result.enclosed })!;
+		{ place: base.place, circle, enclosed: !!result.enclosed, whole: !!result.whole })!;
 	let differ = 0;
 	for (let y = 0; y < n; y++)
 		for (let x = 0; x < n; x++) {
@@ -145,8 +145,10 @@ describe('the picture drawn before the cuts are found', () => {
 			expect(mismatch({ ...request, scale: .8 })).toBeLessThan(.01);
 		});
 		it('kept', () => {
-			// A solid tree keeps the touching circle, as its heart says.
+			// A solid tree stays whole past the touching circle, as its heart says,
+			// the circle keeping its colour, and keeps the largest such circle.
 			expect(mismatch({ ...request, name: 'Tree', contours: tree.contours as Ring[], scale: .8 })).toBeLessThan(.01);
+			expect(mismatch({ ...request, name: 'Tree', contours: tree.contours as Ring[], scale: .95 })).toBeLessThan(.01);
 		});
 		it('over the corner squares', () => {
 			// Past 85% the circle overlaps the corner squares, of its own colour,

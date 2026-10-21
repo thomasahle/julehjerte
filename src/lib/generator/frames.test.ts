@@ -7,9 +7,9 @@ import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSide } from './state';
 import { templateVariants } from './templates';
-import { inside, uprightToSheet, distance, boardLines, boardRangeLines, boardRanges, layerInset, WEDGES, type Point, type Ring } from './geometry';
+import { inside, uprightToSheet, distance, boardLines, boardRangeLines, boardRanges, boardWholeTop, layerInset, WEDGES, type Point, type Ring } from './geometry';
 import { geometryKey } from './cache';
-import { boardRadius, boardSteps, motifChoices, motifPatterns, squareChoices } from './boardMotif';
+import { boardRadius, boardSetting, boardSteps, motifChoices, motifPatterns, squareChoices } from './boardMotif';
 import { normalizeContours } from './contours';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { serializeHeartDesign, normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
@@ -649,12 +649,20 @@ describe('frames from real hearts', () => {
   expect(full.point).toBeGreaterThan(180);
   expect(full.area).toBeGreaterThan(middle.area);
  }, 30000);
- it('says when the board circle keeps a motif at 70%, its large circle being out of reach', () => {
-  // A solid motif has no background point for four panels to meet at, so it
-  // keeps the touching circle; the star's points leave one.
+ it('keeps a motif that cannot be divided whole past the touching circle, and says how far it went', () => {
+  // A solid motif has no background point for four panels to meet at: it
+  // stays whole, the outer lines following the circle, until its gates near
+  // the corner junctions, and keeps that circle above; the star's points
+  // leave a point to divide it at.
   const board = (motif: { contours: unknown }, scale: number) => generate({ mode: 'figure', name: 'Motif', contours: motif.contours as Ring[], colors, style: 'board', scale });
-  expect(board(tree, .8).scale).toBe(.7);
+  const at80 = board(tree, .8), top = boardSetting(boardWholeTop(5), 5);
+  expect(at80.scale).toBeUndefined();
+  expect(at80.whole).toBe(true);
+  expect(at80.hardToCut).toBeUndefined();
+  expect(top).toBeGreaterThan(.8);
+  expect(board(tree, .95).scale).toBe(top);
   expect(board(star, .8).scale).toBeUndefined();
+  expect(board(star, .8).whole).toBeUndefined();
   expect(board(tree, .6).scale).toBeUndefined();
  });
  it('lays the figure in the checks on boards of three to six strips', () => {

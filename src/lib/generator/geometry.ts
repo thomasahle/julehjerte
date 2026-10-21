@@ -1735,8 +1735,8 @@ export function boardPanels(range: readonly [number, number], strips: number): n
  * neighbouring pairs' ends of the same sheet, and of the arcs of a line
  * beyond the motif's that follows the circle (see `boardLegs`). None, or
  * less, where they do not. */
-function gateRoom(radius: number, d: number[]): number {
-	const lines = d.filter(dk => Math.hypot(dk, d[0]) < radius), panels = Math.min(2, lines.length);
+function gateRoom(radius: number, d: number[], whole = false): number {
+	const lines = d.filter(dk => Math.hypot(dk, d[0]) < radius), panels = whole ? 1 : Math.min(2, lines.length);
 	if (lines.length > panels + 1) return -Infinity;
 	// From the quarter's start, along the circle: one sheet's ends from the
 	// nearest line out, the other's from the furthest in, a following line's
@@ -1754,6 +1754,21 @@ function gateRoom(radius: number, d: number[]): number {
 		const mid = (low.angle + high.angle) / 2;
 		return Math.min(low.away(mid), high.away(mid));
 	}));
+}
+/** The largest circle in the touching ring (`boardRanges`' second range) a
+ * motif kept whole can take, the next line out following the circle: where
+ * its gate keeps room for a cut either side of it (`gateRoom`). */
+export function boardWholeTop(strips: number): number {
+	const [, large] = boardRanges(strips), d = boardLines(strips);
+	if (!large) return 0;
+	let [low, high] = large;
+	if (gateRoom(high, d, true) >= 1.5) return high;
+	for (let step = 0; step < 40; step++) {
+		const mid = (low + high) / 2;
+		if (gateRoom(mid, d, true) >= 1.5) low = mid;
+		else high = mid;
+	}
+	return low;
 }
 /** The shortest stretch a board line keeps between the circle and an edge of
  * the paper the circle reaches, the cutting clearance; one the circle meets

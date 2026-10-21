@@ -32,7 +32,7 @@
 	import { saveUserDesign } from '$lib/stores/collection';
 	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, stripCount, stripPlace, stripSide, textRoom, ROOM_RANGE, CELL_FRAMES, largestScale, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
 	import { clampPlace } from '$lib/generator/stripFigure';
-	import { BOARD_STRIPS, type BoardStyle } from '$lib/generator/boardMotif';
+	import { BOARD_STRIPS, boardPastEdges, type BoardStyle } from '$lib/generator/boardMotif';
 	import { isTextFigure } from '$lib/generator/textFigure';
 	import {
 		SHIPPED,
@@ -248,14 +248,18 @@
 	 * enclosing circle. */
 	const boardCircles = new Map<string, 'large' | number>();
 	const boardEnclosed = new Map<string, boolean>();
-	const onBoard = (motif: string, board?: number) => `${motif}|${board ?? 5}`;
+	const boardWhole = new Map<string, boolean>();
+	// Out past the paper's edges a motif's circle is decided apart from the
+	// sizes below (see `boardPastEdges`).
+	const onBoard = (motif: string, board = 5, scale = .7) => `${motif}|${board}${boardPastEdges(scale, board) ? '|past' : ''}`;
 	function learn(job: Job, result: GeneratorResult) {
 		if (!job.motif || job.request.mode !== 'figure' || job.request.style !== 'board') return;
-		const key = onBoard(job.motif, job.request.board);
+		const key = onBoard(job.motif, job.request.board, job.request.scale);
 		const asked = job.request.scale ?? .7, largest = boardCircles.get(key);
 		if (result.scale !== undefined) boardCircles.set(key, result.scale < asked ? result.scale : 'large');
 		else if (typeof largest === 'number' && asked > largest) boardCircles.delete(key);
 		if ((job.request.scale ?? .7) > .85) boardEnclosed.set(key, !!result.enclosed);
+		if ((job.request.scale ?? .7) > .7) boardWhole.set(key, !!result.whole);
 	}
 	let running: (Job & { started: number }) | null = null,
 		waiting: Job | null = null;
@@ -509,9 +513,9 @@
 				if (token !== revision) return;
 				// What the default size's heart, once made, tells the picture.
 				const made = cache.get(geometryKey({ ...snapshot, scale: defaults.scale, place: undefined, side: undefined }));
-				const known = onBoard(snapshot.motif, stripCount(snapshot));
+				const known = onBoard(snapshot.motif, stripCount(snapshot), request.scale);
 				sketch = picture(request, { place: made?.place, board: made?.board ?? made?.design.gridSize.x, circle: boardCircles.get(known),
-					enclosed: boardEnclosed.get(known) }) ?? null;
+					enclosed: boardEnclosed.get(known), whole: boardWhole.get(known) }) ?? null;
 				if (!cached && !failed) queueJob({ request, key, token, motif: snapshot.motif });
 			})
 			.catch(() => {

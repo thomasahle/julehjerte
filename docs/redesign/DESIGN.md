@@ -835,7 +835,12 @@ and it moves a little with each step, so it only grows
 with the setting. A star, whose five tips then all come close to the circle's connections, keeps
 its box's centre, and so does the deer, which cuts cleanly so only made smaller. A motif that cannot be
 built at all over the corner squares keeps the largest circle short of them, at 85%, rather than
-stepping down through the sizes between as other frames do above 85%. Up to the touching circle only the two middle lines of
+stepping down through the sizes between as other frames do above 85%. A motif that cannot be divided in four (no
+point of background for the panels to meet at: a tree, a bell, a circle) is kept whole past the
+touching circle too, the next line out following the circle while the other sheet's middle lines
+cross it to the motif's gates, the circle keeping its colour, until a gate would come within 1.5 of
+the lines beside it (`boardWholeTop`: 82.5% on five strips, 77.6% on seven, 76.2% on nine), and
+keeps that circle above. Up to the touching circle only the two middle lines of
 each sheet end on the circle and the undivided motif meets them like a letter in the circle frame;
 the outer lines cross the paper whole, and once the circle reaches them they follow it, so beside
 each corner of the ring it is left uncut rather than leaving a sliver, a slightly flattened circle.

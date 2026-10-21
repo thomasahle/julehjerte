@@ -1,5 +1,30 @@
 # Generator robustness results
 
+## Motifs that cannot be divided grow past the touching circle
+
+Found while sweeping the circle on equal squares (goal set 2026-10-21: "Keep
+improving the frames, making them more robust and able to handle a wider range
+of parameters"): 19 of the 52 corpus motifs (the tree, bell, circle, moon,
+diamond, heart and other solid shapes, the rabbit, butterfly and anchor) kept
+the touching circle, 70%, whatever the size, on every board, as four panels need
+a point of background to meet at. A motif kept whole weaves past the touching
+circle too: there the circle covers the middle square and the four around it, the
+four of its own colour, and the next line out follows the circle while the other
+sheet's middle lines cross it to the motif's four gates, as on seven strips past
+the third line (an exhaustive search of the rim finds it at every radius up to the
+corner junctions). It keeps the circle's colour, so nothing flips at 70%. Such a
+motif now grows until its gate would come within 1.5 of the lines beside it
+(`boardWholeTop`: radius 40.4, 82.5%, on 5×5; 28.2, 77.6%, on 7×7; 21.5, 76.2%,
+on 9×9) and keeps that circle above (`GeneratorResult.whole`, which the picture
+follows). Out past the paper's edges, where the middle lines are left out,
+whether a motif can be divided is decided at sizes of that range: on nine strips
+the deer, too small to divide in the touching ring, now goes out past the edges.
+
+Over the corpus and the deer no motif keeps 70% any more: 5×5 at 80% 45 clean, 3
+hard, 4 refused, at 100% 46, 2, 4 (the crown, kept whole, now cuts cleanly); 7×7
+at 78% and 100% 45, 3, 4; 9×9 at 76% 46, 2, 4 and at 100% 45, 3, 4. Every picture
+matches its heart.
+
 ## Equal bands around the circle with a double border
 
 Product report (2026-10-21): "'Cirkel med dobbelt bort' is unnecessarily thin in
