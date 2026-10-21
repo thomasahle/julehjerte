@@ -797,6 +797,7 @@ export const translations = {
       '<strong>Delete</strong> eller <strong>Backspace</strong> sletter det valgte punkt',
       '<strong>Piletasterne</strong> flytter det valgte punkt en pixel ad gangen, med <strong>Shift</strong> ti',
       '<strong>F</strong> og <strong>B</strong> vælger næste og forrige punkt på kurven',
+      '<strong>Ctrl</strong> + rullehjul, eller to fingre der knibes, zoomer ind og ud; <strong>Tilpas visning</strong> nederst i værktøjslinjen viser hele hjertet igen',
       '<strong>Esc</strong> fravælger kurven'
     ],
     helpSectionSymmetryTitle: 'Symmetrimuligheder',
@@ -1814,6 +1815,7 @@ export const translations = {
       '<strong>Delete</strong> or <strong>Backspace</strong> deletes the selected point',
       '<strong>Arrow keys</strong> move the selected point a pixel at a time, ten with <strong>Shift</strong>',
       '<strong>F</strong> and <strong>B</strong> select the next and the previous point on the curve',
+      '<strong>Ctrl</strong> + mouse wheel, or pinching with two fingers, zooms in and out; <strong>Fit to view</strong> at the bottom of the toolbar shows the whole heart again',
       '<strong>Esc</strong> deselects the curve'
     ],
     helpSectionSymmetryTitle: 'Symmetry Options',
