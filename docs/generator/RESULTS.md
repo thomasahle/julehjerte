@@ -1,5 +1,21 @@
 # Generator robustness results
 
+## The double border and the checked tips to 100%
+
+Six figure frames stopped the size slider at 85%. Swept over the corpus and the
+deer at 85, 90, 95 and 100% (with the fallback below): the checked tips build
+51 clean at 85–90%, 48 at 95%, 41 clean and 11 hard at 100% (4 shown at 97%),
+no refusals, slowest 9 s; the double border 49 / 48 / 44 clean at 90 / 95 /
+100%, the rest hard, none refused, 15 motifs shown smaller at 100% (the gift
+85%, the butterfly 80%), slowest 14 s. Both now go to 100%. The silhouette,
+small motifs and equal squares build the same heart at 85% and 100% (their
+squares are full), and the sunburst gets slow and hard above 85% (43 clean at
+85%, 22 at 100%; the rabbit 73 s at 90%, 6 minutes at 100%), so they keep 85%.
+The frames that already went to 100% build there for all but the fitted fish
+(97%): rays and checks 50 clean, 2 hard, wedges 52, close-fitting 48 and 4.
+(The earlier fallback had returned smaller hearts without saying so: the
+double border's gift was built at 85% when asked for 100%.)
+
 ## Above the default size, a motif nothing can be built for keeps a smaller one
 
 Sweeping the frames that stop at 85% at 85–100% showed refusals inside the

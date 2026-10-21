@@ -46,11 +46,12 @@ export const BOARD_STYLES: readonly FigureStyle[] = ['motifs', 'squares', 'strip
 export const SPACED_STYLES: readonly FigureStyle[] = FIGURE_STYLES.filter(style => !BOARD_STYLES.includes(style));
 /** The frames that take the motif to 100%: the figure in the checks to the
  * paper's edge, the circle on a board over the corner squares, the others as
- * far as their frame leaves room, hard to cut where they must be. The
+ * far as their frame leaves room, hard to cut where they must be, a motif
+ * that nothing can be built for keeping a smaller size (see `generate`). The
  * silhouette is as large as the square allows at 85%, and a motif on squares
- * fills its square before that; the sunburst, layers and corner checks cannot
- * yet build every motif larger. */
-const FULL_SIZE: readonly FigureStyle[] = ['rays', 'check', 'wedges', 'fitted', 'strips', 'board'];
+ * fills its square before that; the sunburst grows too slow to build above
+ * 85% (a rabbit 73 s at 90%, 6 minutes at 100%). */
+const FULL_SIZE: readonly FigureStyle[] = ['rays', 'check', 'wedges', 'fitted', 'strips', 'board', 'layers', 'corners'];
 /** The largest size a frame takes the motif to. */
 export const largestScale = (style: FigureStyle) => FULL_SIZE.includes(style) ? 100 : 85;
 /** The space a state asks between the motif and its frame, where it has one. */

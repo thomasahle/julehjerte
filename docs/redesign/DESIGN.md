@@ -902,7 +902,12 @@ moves. Only where nothing at all can be finished there do the frames without a c
 half the space and then none, and a circle move 4% further out and then keep the frame's own size.
 The two board frames whose squares hold the motif (small motifs, equal squares) fix the space with
 their squares, as the figure in the checks does with its board; their size setting scales the
-motif within its square, 0.6–1.1 times the default.
+motif within its square, 0.6–1.1 times the default. The size goes to 100% in the frames with room
+for it (`largestScale`: rays, checks, wedges, close-fitting, the figure in the checks, the circle on
+a board, the double border and the checked tips); a motif nothing can be built for at its size
+keeps the largest of a fixed few sizes below that can be (97, 94, 91, 88, 85, 80, 75, 70%), and the
+page says so. The silhouette, small motifs and equal squares are as large as their squares allow
+by 85%; the sunburst stops there as it builds too slowly above.
 On them a motif keeps, at every size, the choice its default size made on its strips, since
 another would make it jump in size: which squares hold the small copies, or for equal squares the
 motif up to a tenth larger in its square, or with the spacious frame's room around it. Each choice
