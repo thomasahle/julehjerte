@@ -25,7 +25,8 @@
         "david4",
         "khatam",
         "stjernegitter",
-        "stjernerogkors"
+        "stjernerogkors",
+        "groen-stjerne"
       ]
     },
     {
@@ -59,7 +60,15 @@
         "hvirvel",
         "permo-kroge",
         "permo-draaber",
-        "permo-cirkler"
+        "permo-cirkler",
+        "fiskeskael",
+        "boelger",
+        "blomster-hjerte",
+        "skraa-kryds",
+        "fejlternet",
+        "gitterhjerte",
+        "cirkelhjerte",
+        "firkanthjerte"
       ]
     },
     {
@@ -74,8 +83,9 @@
         "dagognat",
         "ball",
         "fisk",
-        "fisk-kors",
-        "tulipan"
+        "tulipan",
+        "roed-blomst",
+        "kloeverblad-hjerte"
       ]
     },
     {
@@ -86,7 +96,8 @@
         "nemt-hjerte",
         "lilje1",
         "lilje2",
-        "hjertekloever"
+        "hjertekloever",
+        "firkloever-hjerte"
       ]
     }
   ]

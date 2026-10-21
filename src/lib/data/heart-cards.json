@@ -122,6 +122,13 @@
     },
     "difficulty": "hard"
   },
+  "groen-stjerne": {
+    "name": "Grøn stjerne",
+    "names": {
+      "en": "Green star"
+    },
+    "difficulty": "medium"
+  },
   "circle": {
     "name": "Uret v2",
     "names": {
@@ -309,6 +316,62 @@
     },
     "difficulty": "medium"
   },
+  "fiskeskael": {
+    "name": "Fiskeskæl",
+    "names": {
+      "en": "Fish scales"
+    },
+    "difficulty": "medium"
+  },
+  "boelger": {
+    "name": "Bølger",
+    "names": {
+      "en": "Waves"
+    },
+    "difficulty": "medium"
+  },
+  "blomster-hjerte": {
+    "name": "Blomster-hjerte",
+    "names": {
+      "en": "Flower heart"
+    },
+    "difficulty": "hard"
+  },
+  "skraa-kryds": {
+    "name": "Skrå kryds",
+    "names": {
+      "en": "Slanted crosses"
+    },
+    "difficulty": "medium"
+  },
+  "fejlternet": {
+    "name": "Fejlternet hjerte",
+    "names": {
+      "en": "Bias-check heart"
+    },
+    "difficulty": "medium"
+  },
+  "gitterhjerte": {
+    "name": "Gitterhjerte",
+    "names": {
+      "en": "Lattice heart"
+    },
+    "difficulty": "hard"
+  },
+  "cirkelhjerte": {
+    "name": "Cirkelhjerte",
+    "names": {
+      "en": "Circle heart"
+    },
+    "difficulty": "medium"
+  },
+  "firkanthjerte": {
+    "name": "Firkanthjerte",
+    "names": {
+      "en": "Squircle heart"
+    },
+    "difficulty": "medium"
+  },
   "juletrae": {
     "name": "Juletræ",
     "names": {
@@ -369,17 +432,24 @@
     },
     "difficulty": "medium"
   },
-  "fisk-kors": {
-    "name": "Fisk og kors",
-    "names": {
-      "en": "Fish and cross"
-    },
-    "difficulty": "medium"
-  },
   "tulipan": {
     "name": "Tulipan",
     "names": {
       "en": "Tulip"
+    },
+    "difficulty": "medium"
+  },
+  "roed-blomst": {
+    "name": "Rød blomst",
+    "names": {
+      "en": "Red flower"
+    },
+    "difficulty": "medium"
+  },
+  "kloeverblad-hjerte": {
+    "name": "Kløverblads-hjerte",
+    "names": {
+      "en": "Clover leaf heart"
     },
     "difficulty": "medium"
   },
@@ -426,5 +496,12 @@
       "en": "Heart clover"
     },
     "difficulty": "medium"
+  },
+  "firkloever-hjerte": {
+    "name": "Firkløver-hjerte",
+    "names": {
+      "en": "Four-leaf clover heart"
+    },
+    "difficulty": "expert"
   }
 }

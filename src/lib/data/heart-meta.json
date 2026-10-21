@@ -484,6 +484,32 @@
     },
     "photo": null
   },
+  "groen-stjerne": {
+    "name": "Grøn stjerne",
+    "names": {
+      "en": "Green star"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "circle": {
     "name": "Uret v2",
     "names": {
@@ -1230,6 +1256,214 @@
     },
     "photo": null
   },
+  "fiskeskael": {
+    "name": "Fiskeskæl",
+    "names": {
+      "en": "Fish scales"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "boelger": {
+    "name": "Bølger",
+    "names": {
+      "en": "Waves"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "blomster-hjerte": {
+    "name": "Blomster-hjerte",
+    "names": {
+      "en": "Flower heart"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "skraa-kryds": {
+    "name": "Skrå kryds",
+    "names": {
+      "en": "Slanted crosses"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": false,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "fejlternet": {
+    "name": "Fejlternet hjerte",
+    "names": {
+      "en": "Bias-check heart"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": false,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "gitterhjerte": {
+    "name": "Gitterhjerte",
+    "names": {
+      "en": "Lattice heart"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "cirkelhjerte": {
+    "name": "Cirkelhjerte",
+    "names": {
+      "en": "Circle heart"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 10,
+      "y": 10
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "firkanthjerte": {
+    "name": "Firkanthjerte",
+    "names": {
+      "en": "Squircle heart"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 10,
+      "y": 10
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "juletrae": {
     "name": "Juletræ",
     "names": {
@@ -1444,32 +1678,6 @@
     "names": {
       "en": "Fish"
     },
-    "author": "Jan Krümmel",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
-    "date": "2026-10-20",
-    "description": null,
-    "gridSize": {
-      "x": 3,
-      "y": 3
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": false,
-      "sharedTemplate": false
-    },
-    "photo": null
-  },
-  "fisk-kors": {
-    "name": "Fisk og kors",
-    "names": {
-      "en": "Fish and cross"
-    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -1512,6 +1720,58 @@
       "isClassic": false,
       "curveSymmetry": false,
       "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "roed-blomst": {
+    "name": "Rød blomst",
+    "names": {
+      "en": "Red flower"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "kloeverblad-hjerte": {
+    "name": "Kløverblads-hjerte",
+    "names": {
+      "en": "Clover leaf heart"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
@@ -1678,5 +1938,31 @@
       "width": 1200,
       "height": 1116
     }
+  },
+  "firkloever-hjerte": {
+    "name": "Firkløver-hjerte",
+    "names": {
+      "en": "Four-leaf clover heart"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
   }
 }

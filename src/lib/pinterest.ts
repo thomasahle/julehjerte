@@ -47,23 +47,25 @@ export const PINTEREST_FIRST = ['classic-3x3', 'gaver', 'jul', 'juletrae', 'stje
 /**
  * The order the hearts are pinned in, one a day from PINTEREST_START_DATE.
  * Frozen (made once by interleaveByCategory from hearts.json as it was on
- * 2026-10-20) so that editing the gallery never moves a heart that is already
+ * 2026-10-21, after the feed's first day) so that editing the gallery never moves a heart that is already
  * out to another day: a heart removed from the gallery leaves its day empty,
  * and a heart added to the gallery is pinned after the last of these
  * (pinterestSchedule). Append new hearts here rather than reorder.
  */
 export const PINTEREST_ORDER: readonly string[] = [
-	'classic-3x3', 'juletrae', 'gaver', 'stjerne-ramme', 'jul', 'circle',
-	'ramme', 'stjerne', 'flower', 'balls', 'triple-heart', 'kogle',
-	'5star', 'plus', 'venus', 'plus3', 'simple-5star', 'amy-weave-1',
-	'angel', 'amy-weave-2', 'h4h2', 'amy-rosette', 'sun', 'amy-pattern',
-	'snowflake', 'amy-flowering', 'permo-sol', 'amy-pinecone', 'nemt-hjerte', 'alhambra',
-	'santa', 'squares', 'explosion', 'sildeben', 'mor-og-barn', 'puslespil',
-	'nihon', 'koelbuer', 'dagognat', 'roserude', 'lilje1', 'hanefod',
-	'davidsstjerne-circ', 'flyvendegaes', 'ball', 'origami', 'david4', 'drageskael',
-	'fisk', 'hermanngitter', 'lilje2', 'tragt', 'khatam', 'boelgebrud',
-	'fisk-kors', 'glaskuppel', 'stjernegitter', 'hvirvel', 'hjertekloever', 'permo-kroge',
-	'tulipan', 'permo-draaber', 'stjernerogkors', 'permo-cirkler'
+	'classic-3x3', 'juletrae', 'circle', 'gaver', 'balls', 'jul',
+	'kogle', 'stjerne-ramme', 'plus', 'ramme', 'plus3', 'stjerne',
+	'amy-weave-1', 'flower', 'amy-weave-2', 'triple-heart', 'amy-rosette', '5star',
+	'amy-pattern', 'venus', 'amy-flowering', 'simple-5star', 'amy-pinecone', 'h4h2',
+	'alhambra', 'angel', 'squares', 'sun', 'sildeben', 'snowflake',
+	'puslespil', 'permo-sol', 'koelbuer', 'nemt-hjerte', 'roserude', 'santa',
+	'hanefod', 'explosion', 'flyvendegaes', 'mor-og-barn', 'origami', 'nihon',
+	'drageskael', 'dagognat', 'hermanngitter', 'lilje1', 'tragt', 'davidsstjerne-circ',
+	'boelgebrud', 'ball', 'glaskuppel', 'lilje2', 'hvirvel', 'david4',
+	'permo-kroge', 'fisk', 'permo-draaber', 'khatam', 'permo-cirkler', 'tulipan',
+	'fiskeskael', 'hjertekloever', 'boelger', 'stjernegitter', 'blomster-hjerte', 'roed-blomst',
+	'skraa-kryds', 'stjernerogkors', 'fejlternet', 'firkloever-hjerte', 'gitterhjerte', 'kloeverblad-hjerte',
+	'cirkelhjerte', 'groen-stjerne', 'firkanthjerte'
 ];
 
 /** A gallery category as hearts.json lists it. */

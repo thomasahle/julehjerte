@@ -71,6 +71,10 @@
     "da": "Stjerner og kors: hvide ottetakkede stjerner med spidser på 60 grader og røde kors imellem, som på de persiske fliser fra Kashan, med en hel stjerne midt i hjertet. Fem striber i hver halvdel, alle klip lige, og hvert stykke klip mellem to krydsninger har en tand, en stjernespids, der stikker ind i korset ved siden af. Halvdelene er spejlvendte, og én skabelon dækker begge. Sværhedsgraden er svær; klip hver tand helt ud til spidsen.",
     "en": "Star and cross: white eight-pointed stars with 60-degree points and red crosses between them, as on the Persian tiles of Kashan, with a whole star in the middle of the heart. Five strips in each half, every cut straight, and every stretch of cut between two crossings carries one tooth, a star's point poking into the cross beside it. The halves mirror each other, and one template covers both. It is rated hard; cut each tooth right out to its point."
   },
+  "groen-stjerne": {
+    "da": "En ottetakket stjerne med stråler ud mod kanterne. Fem striber i hver halvdel med lige klip i zigzag. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er mellem. Klip spidserne med en lineal, så stjernens takker bliver skarpe.",
+    "en": "An eight-pointed star with rays out towards the edges. Five strips in each half with straight zigzag cuts. The halves mirror each other, so one template covers both, and the difficulty is medium. Cut the points along a ruler so the star's tips stay sharp."
+  },
   "circle": {
     "da": "En bred rød ring om et tomt midterfelt, brudt af fire åbninger, med buer der løber videre ud mod kanten. Fem striber i hver halvdel, og godt halvdelen af klippene er buer, som tilsammen former ringen. Halvdelene er spejlvendte, og én skabelon dækker begge. En ring afslører enhver skæv bue, så klip langsomt og drej papiret i stedet for saksen.",
     "en": "A wide red ring around an empty middle, broken by four openings, with arcs running on towards the edge. Five strips in each half, and a good half of the cuts are curves that together form the ring. The halves mirror each other, and one template covers both. A ring shows up every uneven curve, so cut slowly and turn the paper rather than the scissors."
@@ -187,6 +191,38 @@
     "da": "Et gitter af runde cirkler i hjertets midte. Fire striber i hver halvdel, og alle tre klip er bølger af cirkelbuer, så hver stribe skiftevis svulmer og snævres ind. Begge halvdele klippes efter samme skabelon, og sværhedsgraden er mellem. Nabocirklerne rører lige hinanden, så buerne glider over i hinanden; klip hver bølge i ét roligt træk, så cirklerne bliver runde. Fra Per V. Mortensens [Circles in Hearts](https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm).",
     "en": "A grid of round circles in the middle of the heart. Four strips in each half, and all three cuts are waves of circular arcs, so each strip swells and narrows in turn. Both halves are cut from the same template, and the difficulty is medium. Neighbouring circles just touch, so the arcs flow into one another; cut each wave in one steady stroke so the circles stay round. From Per V. Mortensen's [Circles in Hearts](https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm)."
   },
+  "fiskeskael": {
+    "da": "Rækker af fiskeskæl, der ligger som tagsten: hver skæl er rund foroven, og skællet nedenfor skærer ind i den. Fem striber i hver halvdel med buede klip af kvartcirkler. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er mellem. Klip hver bue i ét træk, så spidserne mellem skællene bliver skarpe.",
+    "en": "Rows of fish scales laid like roof tiles: each scale is round at the top, and the scale below cuts into it. Five strips in each half with curved cuts made of quarter circles. The halves mirror each other, so one template covers both, and the difficulty is medium. Cut each arc in a single stroke so the points between the scales stay sharp."
+  },
+  "boelger": {
+    "da": "Dråber, der hænger i snore ned gennem hjertet, så mønstret bølger fra side til side. Fem striber i hver halvdel med buede klip af kvartcirkler. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er mellem. Flet roligt, så buerne ikke knækker, hvor de mødes i en spids.",
+    "en": "Drops hanging in strings down through the heart, so the pattern waves from side to side. Five strips in each half with curved cuts made of quarter circles. The halves mirror each other, so one template covers both, and the difficulty is medium. Weave gently so the arcs do not crease where they meet in a point."
+  },
+  "blomster-hjerte": {
+    "da": "En blomst af cirkler: en rund midte, fire kronblade omkring den og skæl ud mod kanterne. Fem striber i hver halvdel, og alle klip er rækker af kvartcirkler. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er svær. Begynd fletningen ved midten, hvor de hele cirkler skal sidde præcist.",
+    "en": "A flower of circles: a round centre, four petals around it and scales towards the edges. Five strips in each half, and every cut is a row of quarter circles. The halves mirror each other, so one template covers both, and the difficulty is hard. Start weaving at the centre, where the whole circles have to line up exactly."
+  },
+  "skraa-kryds": {
+    "da": "Kors i to farver, der griber ind i hinanden og står skråt i hjertet. Fire striber i hver halvdel med lige klip, der går i trapper med rette vinkler. Én skabelon dækker begge halvdele, og sværhedsgraden er mellem. Klip trapperne med en lineal, så korsenes hjørner bliver skarpe.",
+    "en": "Crosses in two colours that interlock and stand at a slant in the heart. Four strips in each half with straight cuts that step at right angles. One template covers both halves, and the difficulty is medium. Cut the steps along a ruler so the corners of the crosses stay sharp."
+  },
+  "fejlternet": {
+    "da": "Et ternet hjerte, hvor ternene er drejet en ottendedel omgang og står på spidsen. Fire striber i hver halvdel med lige klip i zigzag. Én skabelon dækker begge halvdele, og sværhedsgraden er mellem. Klip zigzaggen med en lineal og flet langsomt ved kanterne, hvor de halve tern sidder.",
+    "en": "A checked heart whose checks are turned an eighth of a turn and stand on their points. Four strips in each half with straight zigzag cuts. One template covers both halves, and the difficulty is medium. Cut the zigzags along a ruler and weave slowly at the edges, where the half checks sit."
+  },
+  "gitterhjerte": {
+    "da": "Et gitter af bånd med firkantede ruder, der står lige op i det hængende hjerte. Fem striber i hver halvdel med lige klip i trapper. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er svær. Klip med en lineal, så ruderne bliver lige store.",
+    "en": "A lattice of bands with square panes that stand upright in the hanging heart. Five strips in each half with straight stepped cuts. The halves mirror each other, so one template covers both, and the difficulty is hard. Cut along a ruler so all the panes come out the same size."
+  },
+  "cirkelhjerte": {
+    "da": "Fire ringe uden om hinanden midt i et ternet felt af smalle striber. Ti striber i hver halvdel; hvert klip er lige med en kvartcirkel på midten. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er mellem. Brug tyndt papir, for de mange smalle striber fylder meget i fletningen.",
+    "en": "Four rings inside one another in the middle of a checked field of narrow strips. Ten strips in each half; each cut is straight with a quarter circle in the middle. The halves mirror each other, so one template covers both, and the difficulty is medium. Use thin paper, because the many narrow strips take up a lot of room in the weave."
+  },
+  "firkanthjerte": {
+    "da": "Som Cirkelhjerte, men ringene er runde firkanter, der ligger midt imellem en cirkel og et kvadrat. Ti striber i hver halvdel; hvert klip er lige med en bue på midten. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er mellem. Brug tyndt papir, for de mange smalle striber fylder meget i fletningen.",
+    "en": "Like the Circle heart, but the rings are rounded squares, halfway between a circle and a square. Ten strips in each half; each cut is straight with a curve in the middle. The halves mirror each other, so one template covers both, and the difficulty is medium. Use thin paper, because the many narrow strips take up a lot of room in the weave."
+  },
   "juletrae": {
     "da": "Et rødt grantræ med stamme i et hvidt felt, rammet ind af diagonale bånd og små ruder. Fire striber i hver halvdel, og næsten alle klip er lige; grenspidserne er de eneste steder, hvor saksen skal vende. Halvdelene er spejlvendte, og én skabelon dækker begge. Grenspidserne er de smalleste steder i hjertet, og en saks med skarp spids gør dem lettere at ramme.",
     "en": "A red fir tree with a trunk in a white field, framed by diagonal bands and small diamonds. Four strips in each half, and nearly every cut is straight; the branch tips are the only places where the scissors have to turn. The halves mirror each other, and one template covers both. Those tips are the narrowest parts of the heart, and sharp-pointed scissors make them much easier to hit."
@@ -220,16 +256,20 @@
     "en": "A large chequered Christmas bauble that fills almost the whole woven field. Six strips in each half: the middle one of the five cuts is straight, and the other four bow out in arcs, so the squares swell into a round ball. The halves mirror each other, so one template is enough. Medium difficulty: cut each arc in a single stroke, and weave gently at the edge of the ball, where the strips are narrow. Inspired by [a pencil drawing by the artist Prince](https://www.instagram.com/p/DdhD8WDnQwh/), in which a chequerboard bulges into a sphere, and by [Johan's julekugle](https://johansjulehjerter.dk/julehjerter/julekugle/)."
   },
   "fisk": {
-    "da": "En fisk, det kristne symbol ΙΧΘΥΣ, svømmer på tværs af hjertet: et bånd med et hvidt øje og to krydsende halefinner. Tre striber i hver halvdel med buede klip, som hver løber en tur rundt i fisken. Halvdelene er forskellige, så der er to skabeloner, og sværhedsgraden er mellem. Klip de korte stykker ved øjets spidser helt præcist, for her ligger de to halvdeles klip oven på hinanden. Tegnet efter [Jan Krümmels skabelon ICTYS](https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php).",
-    "en": "A fish, the Christian symbol ΙΧΘΥΣ, swims across the heart: a band with a white eye and two crossing tail fins. Three strips in each half with curved cuts, each of which makes a loop through the fish. The halves differ, so there are two templates, and the difficulty is medium. Cut the short pieces at the tips of the eye precisely, because there the cuts of the two halves lie on top of each other. Drawn after [Jan Krümmel's ICTYS template](https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php)."
-  },
-  "fisk-kors": {
     "da": "Fisken, det kristne symbol ΙΧΘΥΣ, tegnet med streger midt på et kors, hvis fire arme løber ud til hjertets kanter. Tre striber i hver halvdel med buede klip, som hver løber en tur rundt i fisken. Halvdelene er forskellige, så der er to skabeloner, og sværhedsgraden er mellem. Klip korsets smalle arme med en lineal, og klip de korte stykker ved øjets spidser præcist, for her ligger de to halvdeles klip oven på hinanden. Bygger på [Jan Krümmels skabelon ICTYS](https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php).",
     "en": "The fish, the Christian symbol ΙΧΘΥΣ, drawn in lines at the centre of a cross whose four arms run out to the edges of the heart. Three strips in each half with curved cuts, each of which makes a loop through the fish. The halves differ, so there are two templates, and the difficulty is medium. Cut the narrow arms of the cross along a ruler, and cut the short pieces at the tips of the eye precisely, because there the cuts of the two halves lie on top of each other. Builds on [Jan Krümmel's ICTYS template](https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php)."
   },
   "tulipan": {
     "da": "En opretstående tulipan med to blade i en oval medaljon. Fire striber i hver halvdel med buede klip: de yderste klip tegner ovalen, og det midterste tegner blomsten. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er mellem. Klip spidserne på blade og kronblade forsigtigt, så de ikke knækker under fletningen.",
     "en": "An upright tulip with two leaves in an oval medallion. Four strips in each half with curved cuts: the outer cuts draw the oval and the middle one draws the flower. The halves mirror each other, so one template covers both, and the difficulty is medium. Cut the tips of the leaves and petals carefully so they do not snap while you weave."
+  },
+  "roed-blomst": {
+    "da": "En blomst med otte runde kronblade og en hvid midte, og en kvartcirkel i hvert hjørne. Tre striber i hver halvdel med buede klip. Halvdelene er forskellige, så der er to skabeloner, og sværhedsgraden er mellem. Midten holdes af korte stykker, hvor de to halvdeles klip ligger oven på hinanden, så klip dem præcist.",
+    "en": "A flower with eight round petals and a white centre, and a quarter circle in each corner. Three strips in each half with curved cuts. The halves differ, so there are two templates, and the difficulty is medium. The centre is held by short pieces where the cuts of the two halves lie on top of each other, so cut those precisely."
+  },
+  "kloeverblad-hjerte": {
+    "da": "Fire runde kløverblade om midten og en kvartcirkel i hvert hjørne. Fire striber i hver halvdel; de midterste klip er lige, og de yderste bugter sig om bladene. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er mellem. Klip buerne i ét træk, så bladene bliver runde.",
+    "en": "Four round clover leaves around the centre and a quarter circle in each corner. Four strips in each half; the middle cuts are straight and the outer ones curve around the leaves. The halves mirror each other, so one template covers both, and the difficulty is medium. Cut each curve in a single stroke so the leaves stay round."
   },
   "triple-heart": {
     "da": "Et stort stribet hjerte tegnet inde i selve julehjertet, med et lille hvidt hjerte i bunden af det. Seks striber i hver halvdel; godt en tredjedel af klippene er buer, som danner hjerternes rundinger, og resten er lige. Halvdelene er spejlvendte, og én skabelon dækker begge. Det er buerne øverst, der afgør, om de to indre hjerter bliver symmetriske.",
@@ -254,5 +294,9 @@
   "hjertekloever": {
     "da": "Fire hjerter, to hvide og to røde, med spidserne samlet midt i et 4 × 4-felt. Fire striber i hver halvdel; de to yderste klip er buede med to halvcirkler hver, og det midterste er lige. Halvdelene er spejlvendte, og én skabelon dækker begge. Sværhedsgraden er mellem; klip hver halvcirkel helt ind til midterklippet, så hjerternes kløfter bliver skarpe.",
     "en": "Four hearts, two white and two red, with their tips meeting in the middle of a 4 × 4 field. Four strips in each half; the two outer cuts are curved, with two half circles each, and the middle one is straight. The halves mirror each other, and one template covers both. Medium difficulty; cut each half circle right in to the middle cut, so the clefts of the hearts come out sharp."
+  },
+  "firkloever-hjerte": {
+    "da": "Et lille firkløver af hjerter inde i et stort firkløver, med firkanter ind fra hjørnerne. Seks striber i hver halvdel, hvor de yderste er dobbelt så brede; klippene har buer, og det midterste er lige. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er ekspert. Flet de små hjerter i midten først, mens der stadig er plads til fingrene.",
+    "en": "A small four-leaf clover of hearts inside a large one, with squares reaching in from the corners. Six strips in each half, the outermost twice as wide; the cuts carry arcs, and the middle one is straight. The halves mirror each other, so one template covers both, and the difficulty is expert. Weave the small hearts in the middle first, while there is still room for your fingers."
   }
 }

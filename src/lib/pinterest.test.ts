@@ -46,7 +46,8 @@ describe('the order', () => {
 
 	it('starts with the most popular hearts', () => {
 		expect(PINTEREST_ORDER[0]).toBe('classic-3x3');
-		for (const id of PINTEREST_FIRST) expect(PINTEREST_ORDER.indexOf(id)).toBeLessThan(8);
+		// Within the first ten days: one category per day pushes them a little apart.
+		for (const id of PINTEREST_FIRST) expect(PINTEREST_ORDER.indexOf(id)).toBeLessThan(10);
 	});
 
 	it('never pins two hearts of one category on consecutive days', () => {
