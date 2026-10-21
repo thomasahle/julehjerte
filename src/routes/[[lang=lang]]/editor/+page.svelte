@@ -339,7 +339,7 @@
     return () => mq.removeEventListener('change', sync);
   });
 
-  function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1, pattern: HeartPattern | null) {
+  function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1, pattern: HeartPattern | null, isStart: () => boolean) {
     currentFingers = fingers;
     currentGridSize = gridSize;
     currentWeaveParity = weaveParity;
@@ -353,6 +353,9 @@
         designBaseline = snapshot;
         return;
       }
+      // Nor is an Escher type's start, which the tab draws itself as it opens: "Gem" gets no dot for it, and no
+      // draft is kept of it.
+      if (isStart()) return;
       hasDesignEdits = true;
     }
     scheduleAutosave();

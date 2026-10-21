@@ -41,14 +41,16 @@ function render(opened?: Partial<Opened> & { initialEscherTab?: boolean }) {
 	document.body.appendChild(target);
 	let fingers: Finger[] = [];
 	let gridSize: GridSize = { x: 0, y: 0 };
+	let isStart = () => false;
 	const component = mount(PaperHeart, {
 		target,
 		props: {
 			lang: 'en',
 			...opened,
-			onFingersChange(nextFingers, nextGrid) {
+			onFingersChange(nextFingers, nextGrid, _parity, _pattern, nextIsStart) {
 				fingers = nextFingers;
 				gridSize = nextGrid;
+				isStart = nextIsStart;
 			}
 		}
 	});
@@ -59,6 +61,8 @@ function render(opened?: Partial<Opened> & { initialEscherTab?: boolean }) {
 		svg: target.querySelector<SVGSVGElement>('.canvas-wrapper > svg')!,
 		get fingers() { return fingers; },
 		get gridSize() { return gridSize; },
+		/** Whether the heart is just its Escher type's start, as the route is told. */
+		isStart: () => isStart(),
 		path(id: string) {
 			const index = fingers.findIndex((f) => f.id === id);
 			return target.querySelectorAll<SVGPathElement>('path[stroke-opacity="0.001"]')[index]!;
@@ -205,6 +209,32 @@ describe('the Escher tab', () => {
 		expect(h.handles().length).toBeGreaterThan(0);
 		expect(JSON.stringify(h.fingers)).toBe(opened);
 		expect(h.button('Undo').disabled).toBe(true);
+	});
+
+	it("tells the route the cuts it draws as it opens are just its type's start, and not once they are drawn on", async () => {
+		const h = render({ initialEscherTab: true });
+		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved'));
+		expect(h.isStart()).toBe(true);
+		// another size of the start is its start too
+		const first = cutsOf(h.fingers);
+		h.target.querySelector<HTMLButtonElement>('.pattern-sizes button:nth-child(2)')!.click();
+		flushSync();
+		expect(cutsOf(h.fingers)).not.toBe(first);
+		expect(h.isStart()).toBe(true);
+		const slider = h.target.querySelector<HTMLInputElement>('.pattern-turn input[type="range"]')!;
+		slider.value = '5';
+		slider.dispatchEvent(new Event('input', { bubbles: true }));
+		flushSync();
+		slider.dispatchEvent(new Event('change', { bubbles: true }));
+		flushSync();
+		expect(h.isStart()).toBe(false);
+		// nor is a heart in the Normal tab
+		h.button('Undo').click();
+		h.button('Undo').click();
+		h.button('Undo').click();
+		flushSync();
+		expect(chosenTab(h)).toBe('Normal');
+		expect(h.isStart()).toBe(false);
 	});
 
 	it('turns the whole pattern with its turn control, which a turn takes one Fortryd step to take back', async () => {

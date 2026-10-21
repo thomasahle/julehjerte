@@ -141,6 +141,9 @@ export function openedTile(last: PatternTile | null, heart: EscherHeart): { tile
 /** The tile drawn again as its type starts, at its size: the tab's "Start forfra". */
 export const restartedTile = (tile: PatternTile): PatternTile => fitLines(ruleStart(tile.rule, tile.cuts));
 
+/** Whether the tile is just its type's start at its size, as the tab draws it: nothing drawn on it yet. */
+export const isStartTile = (tile: PatternTile): boolean => JSON.stringify(savedPattern(restartedTile(tile))) === JSON.stringify(savedPattern(tile));
+
 /**
  * The tile drawn n × n on the heart's square, its lines fitted again, or null
  * when the pattern is too tight for that size: the tiles keep their shape in

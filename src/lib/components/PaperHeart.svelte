@@ -102,8 +102,12 @@
 			initialPattern?: HeartPattern;
 			/** Open on the Escher tab, for a link that asks for it (the design start's Escher card). */
 			initialEscherTab?: boolean;
-			/** Told the cuts after every change, and the Escher tab's tile while the cuts are its own, so the route saves both. */
-			onFingersChange?: (fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1, pattern: HeartPattern | null) => void;
+			/**
+			 * Told the cuts after every change, and the Escher tab's tile while the cuts are its own, so the route saves both;
+			 * and asked, if the route wants to know, whether the heart is just its Escher type's start, which the tab draws
+			 * itself as it opens: no work of the visitor's.
+			 */
+			onFingersChange?: (fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1, pattern: HeartPattern | null, isStart: () => boolean) => void;
 		}
 
 	let {
@@ -1275,11 +1279,9 @@
 
 	/** The tab's "Start forfra": the tile drawn again as its type starts, at its size; nothing, where it is that already. */
 	function restartEscherTile() {
-		if (!patternTile || !escher) return;
-		const start = escher.restartedTile(patternTile);
-		if (JSON.stringify(escher.savedPattern(start)) === JSON.stringify(escher.savedPattern(patternTile))) return;
+		if (!patternTile || !escher || escher.isStartTile(patternTile)) return;
 		const before = snapshotState();
-		showTile(start);
+		showTile(escher.restartedTile(patternTile));
 		pushUndo(before);
 	}
 
@@ -3301,7 +3303,8 @@
 
 		$effect(() => {
 			if (!didInit) return;
-			if (onFingersChange) onFingersChange(fingers, gridSize, weaveParity, savedTile());
+			const tile = patternTile;
+			if (onFingersChange) onFingersChange(fingers, gridSize, weaveParity, savedTile(), () => tile !== null && escher !== null && escher.isStartTile(tile));
 		});
 
 	function isEditableTarget(target: EventTarget | null): boolean {
