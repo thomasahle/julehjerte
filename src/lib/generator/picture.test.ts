@@ -149,7 +149,7 @@ describe('the picture drawn before the cuts are found', () => {
 		// On the strips the visitor chooses.
 		expect(mismatch({ ...request, board: 3, scale: .8 })).toBeLessThan(.01);
 		expect(mismatch({ ...request, board: 7, scale: .8 })).toBeLessThan(.01);
-	});
+	}, 20_000); // 1.3 s locally, over 5 s on a loaded CI runner (2026-10-21)
 
 	it('brings the board\'s squares to points where the circle meets the paper\'s edges, as the cuts do', () => {
 		// On three strips at 86% the line beside a corner square would meet the
