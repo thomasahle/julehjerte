@@ -56,6 +56,8 @@
 	} from '$lib/generator/generate';
 	import type { Font, Ring } from '$lib/generator/geometry';
 	import type { RecipeFile } from '$lib/generator/recipes';
+	import type { PaperReport } from '$lib/geometry/paperNecks';
+	import type { HeartDesign } from '$lib/types/heart';
 	import {
 		DownloadIcon,
 		PencilIcon,
@@ -162,6 +164,13 @@
 					)
 				})
 			: t('generatorHardToCut', lang);
+	/** What tears off the heart's templates at the width they print (see `paper`). */
+	const paperText = (report: PaperReport) => {
+		const simpler = t(config.mode === 'figure' ? 'generatorPaperSimplerFigure' : 'generatorPaperSimplerText', lang);
+		return report.faults.loose
+			? `${t('generatorPaperLoose', lang)} ${simpler}`
+			: t('generatorPaperThin', lang, { width: String(report.widthMm) }) + (report.holdsMm ? '' : ` ${simpler}`);
+	};
 	let displayed = $state<GeneratorResult | null>(null);
 	let result = $state<GeneratorResult | null>(null),
 		busy = $state(false),
@@ -659,6 +668,37 @@
 			background?.terminate();
 		};
 	});
+	/** Whether the heart's paper holds at the width its PDF prints, and the width its sheet takes where
+	 * it would ($lib/geometry/paperNecks, $lib/pdf/designPrint): in a worker of its own once the heart
+	 * is settled, as the thumbnails are.
+	 * A thin neck there tears in cutting, which the generator's clearance (made for ~25 mm strips)
+	 * lets through at 80 mm on about two hearts in five; the always-shown "fine details" note this
+	 * replaces sat below the fold (round 2 of the user study, 22 Oct 2026). */
+	let paper = $state<(PaperReport & { design: HeartDesign }) | null>(null);
+	let paperFault = $derived(paper && paper.design === result?.design && (paper.faults.weak || paper.faults.loose) ? paper : null);
+	$effect(() => {
+		const design = busy ? undefined : result?.design;
+		if (!design) return;
+		let live = true,
+			checker: Worker | null = null;
+		const timer = setTimeout(async () => {
+			const { designPrintRange } = await import('$lib/pdf/designPrint');
+			if (!live) return;
+			const plain = $state.snapshot(design);
+			checker = new Worker(new URL('../generator/paperWorker.ts', import.meta.url), { type: 'module' });
+			checker.onmessage = (e: MessageEvent<PaperReport>) => {
+				if (live) paper = { ...e.data, design };
+				checker?.terminate();
+			};
+			checker.onerror = () => checker?.terminate();
+			checker.postMessage({ design: plain, ...designPrintRange(plain) });
+		}, 400);
+		return () => {
+			live = false;
+			clearTimeout(timer);
+			checker?.terminate();
+		};
+	});
 	/** The request for one frame's thumbnail, the page's request in that frame. */
 	function variantRequest(request: GeneratorRequest, state: GeneratorState): GeneratorRequest {
 		return {
@@ -688,14 +728,15 @@
 		limit = 24;
 		if (mode === 'start' && mounted) replaceState(href('generator', lang), {});
 	}
-	async function download() {
+	/** The heart's PDF, at `widthMm` where its paper would tear at the visitor's width. */
+	async function download(widthMm?: number) {
 		if (!result || downloadBusy) return;
 		const design = currentDesign()!;
 		downloadBusy = true;
 		notice = '';
 		try {
 			const { downloadDesignPDF } = await import('$lib/pdf/template');
-			await downloadDesignPDF(design, lang);
+			await downloadDesignPDF(design, lang, widthMm);
 		} catch {
 			notice = t('generatorFailedDownload', lang);
 		} finally {
@@ -952,8 +993,14 @@
 						>{/each}
 				</div>{/if}
 			{#if error}<div class="error" role="alert">{error}</div>{/if}
-			{#if result?.hardToCut}<div class="warning" role="status">
-					{hardToCutText(result.hardToCut.letters)}
+			{#if result?.hardToCut || paperFault}<div class="warning" role="status">
+					{result?.hardToCut ? hardToCutText(result.hardToCut.letters) : paperText(paperFault!)}
+					{#if paperFault?.holdsMm}{@const width = paperFault.holdsMm}<button
+							class="wider"
+							disabled={busy || downloadBusy}
+							onclick={() => download(width)}
+							><DownloadIcon size={16} />{t('generatorPaperWider', lang, { width: String(width) })}</button
+						>{/if}
 				</div>{/if}
 			{#if draggable && preview}<p class="drag-hint">
 					{t('generatorDragFigure', lang)}{#if config.place !== undefined || config.side !== undefined}
@@ -977,7 +1024,6 @@
 				<p class="cut-note">
 					{t('generatorPureWeave', lang)}
 				</p>{/if}
-			<p class="fine-note">{t('generatorFine', lang)}</p>
 		</section>
 		<section
 			class="panel settings"
@@ -1110,7 +1156,7 @@
 				<button
 					class="btn btn-primary"
 					disabled={!result || busy || downloadBusy}
-					onclick={download}
+					onclick={() => download()}
 					><DownloadIcon size={18} />{t('generatorDownload', lang)}</button
 				>
 				<p class="hint">{t('generatorPaperHint', lang)}</p>
@@ -1526,12 +1572,6 @@
 		line-height: 1.7;
 		max-width: 350px;
 	}
-	.fine-note {
-		font-size: 11px;
-		line-height: 1.65;
-		color: #8a927f;
-		max-width: 350px;
-	}
 	.error,
 	.warning {
 		background: #fbefe5;
@@ -1542,6 +1582,25 @@
 		font-size: 13px;
 		line-height: 1.6;
 		max-width: 420px;
+	}
+	.warning .wider {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		width: fit-content;
+		margin: 10px auto 0;
+		padding: 0;
+		border: 0;
+		background: none;
+		color: inherit;
+		font: inherit;
+		font-weight: 700;
+		text-decoration: underline;
+		cursor: pointer;
+	}
+	.warning .wider:disabled {
+		opacity: 0.6;
+		cursor: default;
 	}
 
 	.range-label {
@@ -1718,9 +1777,6 @@
 		}
 		.stage-status {
 			font-size: 12px;
-		}
-		.fine-note {
-			display: none;
 		}
 		.templates {
 			margin-top: 12px;

@@ -174,12 +174,12 @@ describe('templatesFilename', () => {
 
 describe("Tegn's, Mal's and the design page's PDF", () => {
 	/** The options their "Hent PDF" prints with, with `stored` as the dialog's stored settings. */
-	function options(stored: string | null) {
+	function options(stored: string | null, widthMm?: number) {
 		const storage = new Map<string, string>(stored === null ? [] : [['juleflet:download', stored]]);
 		vi.stubGlobal('localStorage', { getItem: (k: string) => storage.get(k) ?? null, setItem: () => {}, removeItem: () => {} });
 		try {
 			const design = { ...loadHeart('classic-3x3'), name: 'Mit hjerte' };
-			const chosen = designPDFOptions(design);
+			const chosen = designPDFOptions(design, 'da', widthMm);
 			return { ...chosen, file: templatesFilename([design], chosen.widthMm, 'da', chosen.fileStem) };
 		} finally {
 			vi.unstubAllGlobals();
@@ -196,5 +196,9 @@ describe("Tegn's, Mal's and the design page's PDF", () => {
 		expect(options(JSON.stringify({ widthMm: 120, sheet: 'A4' })).file).toBe('mit-hjerte-120mm.pdf');
 		const small = options(JSON.stringify({ widthMm: 200, sheet: { widthMm: 60, heightMm: 60 } }));
 		expect([small.widthMm, small.sheet]).toEqual([80, SHEETS.A4]);
+	});
+
+	it("prints at the width the design page asks for where its paper would tear, on the visitor's sheet", () => {
+		expect(options(JSON.stringify({ widthMm: 90, sheet: 'A3' }), 120)).toMatchObject({ widthMm: 120, sheet: SHEETS.A3, file: 'mit-hjerte-120mm.pdf' });
 	});
 });

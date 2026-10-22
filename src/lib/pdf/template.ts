@@ -9,7 +9,7 @@ import { markStrokes, type PlacedMark } from '$lib/utils/orientationMarks';
 import { heartFileStem, slugify } from '$lib/utils/slug';
 import { t, type Language } from '$lib/i18n';
 import { SHEETS, type SheetSize } from '$lib/laser/sheet';
-import { DEFAULT_DOWNLOAD_SETTINGS, loadDownloadSettings, type DownloadSettings } from '$lib/download/settings';
+import { designPrintSettings, sheetSize } from './designPrint';
 import {
   planTemplatePages,
   templateEar,
@@ -423,22 +423,20 @@ export async function downloadTemplatesPDF(designs: HeartDesign[], options: Temp
  * nine templates to an A4 page, so each came out 51 mm wide, not the 80 mm the
  * guide and the gallery's download give (a user tester's "five centimetres in
  * the top third of the page"). A stored width the sheet cannot take falls back
- * to the dialog's defaults.
+ * to the dialog's defaults. The design page asks for a wider print where its
+ * paper would tear at the visitor's (`widthMm`, see ./designPrint).
  */
-export async function downloadDesignPDF(design: HeartDesign, lang: Language = 'da') {
-  await downloadTemplatesPDF([design], designPDFOptions(design, lang));
+export async function downloadDesignPDF(design: HeartDesign, lang: Language = 'da', widthMm?: number) {
+  await downloadTemplatesPDF([design], designPDFOptions(design, lang, widthMm));
 }
 
 /** What `downloadDesignPDF` prints the heart with. */
-export function designPDFOptions(design: HeartDesign, lang: Language = 'da'): TemplatesPDFOptions {
-  const stored = loadDownloadSettings();
-  const sheetOf = (choice: DownloadSettings['sheet']) => (typeof choice === 'string' ? SHEETS[choice] : choice);
-  const fits = planTemplatePages(templatePieces([design], stored.widthMm, 1), { sheet: sheetOf(stored.sheet) }).fits;
-  const settings = fits ? stored : DEFAULT_DOWNLOAD_SETTINGS;
+export function designPDFOptions(design: HeartDesign, lang: Language = 'da', widthMm?: number): TemplatesPDFOptions {
+  const settings = designPrintSettings(design, widthMm);
   return {
     widthMm: settings.widthMm,
     hearts: 1,
-    sheet: sheetOf(settings.sheet),
+    sheet: sheetSize(settings.sheet),
     lang,
     previewImage: settings.previewImage,
     fileStem: slugify(design.name) || undefined

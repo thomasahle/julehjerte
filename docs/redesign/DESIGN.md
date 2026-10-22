@@ -1447,6 +1447,20 @@ without selecting a paper size. The generator and editor use this same rule. Gen
 carry no print-size preference and use the site's normal PDF layouts. There is no paper-width
 slider, automatic enlargement or multi-page tiling in the generator.
 
+At the PDF's 80 mm that rule leaves necks of 0.7–1.2 mm, and about two generated hearts in five
+have a piece of paper hanging by less than 2 mm, which tears in cutting. Rerouting those at print
+size (tried 22 Oct 2026, branch `claude/safe-cuts`) mended 5 of 55 at up to 10 s more: the thin
+places are mostly what the visitor asked for, a letter against a strip line. So the design page
+says so instead. Once a heart is settled, a worker ($lib/generator/paperWorker) cuts its templates
+as paper at the width its PDF prints ($lib/geometry/paperNecks; the visitor's stored width, as
+`downloadDesignPDF`) and, where something would tear, finds the narrowest width in 10 mm steps the
+sheet takes at which it holds ($lib/pdf/designPrint). Under the heart: "Printet 80 mm bredt bliver
+papiret smallere end 2 mm nogle steder…" and a button "Hent den 120 mm bred, så holder papiret", or,
+with no such width, fewer letters or a bolder font (texts), fewer strips or a simpler motif
+(figures). A heart already shown as hard to cut keeps that text, with the button. This replaced
+the note "Begynd med et kort navn eller en enkel figur. Fine detaljer kræver omhyggelig klipning og
+fletning.", shown on every heart below the fold (user test round 2).
+
 The searchable motif library contains the authored motifs, 40 Christmas motifs and animals picked
 from eight open icon sets, 1,525 filled Phosphor icons and 1,088 filled Tabler icons. Before any
 search the list shows three groups, Jul, Dyr and Former, of motifs that generate with default
