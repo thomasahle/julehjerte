@@ -19,6 +19,7 @@ import {
 	connectCellGrid
 } from './geometry';
 import { gridClearance } from '$lib/geometry/clearance';
+import type { BoardPattern } from './boardCompletion';
 import { contoursWithinBoundary } from './contours';
 import { clipContours, stitch, filledSeamGate, panelDividers, panelSeamGuard } from './panels';
 
@@ -60,7 +61,7 @@ export function measureTextGrid(
 	font: Font,
 	air: boolean | number = false,
 	frame?: Frame,
-	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point } = {}
+	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point; completion?: BoardPattern } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -133,7 +134,7 @@ export function generateTextGrid(
 	font: Font,
 	air: boolean | number = false,
 	frame?: Frame,
-	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point } = {}
+	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point; completion?: BoardPattern } = {}
 ) {
 	const { matrix, rows, cols, height, cy, padding, cellHeight, widths, inkWidths, span, fullHeight, scale, boundary, points } =
 		measureTextGrid(text, font, air, frame, layout);
@@ -364,7 +365,7 @@ export function generateTextGrid(
 	// between the motif and the circle (see `boardLegs`).
 	const around = layout.board && layout.circle
 		? (Math.max(...artwork.flat().map(p => distance(p, [50, 50]))) + Math.min(layout.circle / 2, 50)) / 2 : undefined;
-	connectCellGrid(edges, cells, boundary, layout.board ? 'board' : 'check', layout.spread, undefined, layout.board, around, layout.lines);
+	connectCellGrid(edges, cells, boundary, layout.board ? 'board' : 'check', layout.spread, undefined, layout.board, around, layout.lines, layout.completion);
 	const domain =
 		boundary ??
 		[

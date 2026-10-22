@@ -1,4 +1,6 @@
 import { createLocalRouter } from './localRoutes';
+import { completionLegs } from './boardCompletion';
+import { BOARD_PATTERNS, type BoardPattern } from './boardPatterns';
 import { createSharedCutValidator } from './sharedCutValidation';
 import { cellTipCounts, fewerCutTips } from './cutQuality';
 import { gridClearance } from '$lib/geometry/clearance';
@@ -1764,7 +1766,19 @@ export function boardRanges(strips: number): readonly (readonly [number, number]
 	if (all.length > 2) {
 		// From just past the junction of the outer two lines, where the circle
 		// first meets both a side, and past the largest circle with every line.
-		const lines = all.slice(-2), meet = Math.hypot(lines[1], lines[0]), from = Math.max(ranges[ranges.length - 1][1] + .8, meet + .4);
+		const lines = all.slice(-2), meet = Math.hypot(lines[1], lines[0]);
+		let from = ranges[ranges.length - 1][1] + .8;
+		// Where completions with every line have been found for the board, they
+		// carry the circle on from just past the junctions where theirs begin,
+		// while they cut cleanly, and the middle lines are left out only after
+		// (see `boardCompletion`).
+		for (const { strips: n, lo, hi, pattern } of BOARD_PATTERNS) if (n === strips && lo > from - 1e-6) {
+			const range = [lo, hi] as const;
+			patternRanges.set(range, pattern);
+			ranges.push(range);
+			from = hi;
+		}
+		from = Math.max(from, meet + .4);
 		for (const [low, high] of linesRanges(lines, Math.hypot(lines[0], 50) + 1))
 			if (high > from && meet < (low + high) / 2) {
 				const range = [Math.max(low, from), high] as const;
@@ -1816,6 +1830,10 @@ function linesRanges(d: number[], top = 52): (readonly [number, number])[] {
 const rangesByStrips = new Map<number, readonly (readonly [number, number])[]>();
 /** The lines that remain in a range where the circle covers the middle ones. */
 const coveredLines = new WeakMap<readonly [number, number], number[]>();
+/** The completion that routes every line in a range past the motif in four's reach. */
+const patternRanges = new WeakMap<readonly [number, number], BoardPattern>();
+/** The completion for a range of radii, where one carries the circle (see `boardRanges`). */
+export const boardRangePattern = (range: readonly [number, number]) => patternRanges.get(range);
 /** The distances from the centre of the lines a range of radii on a board
  * of `strips` strips meets the circle with (see `boardRanges`): all of the
  * board's, or where the circle covers the middle ones, the outer two. */
@@ -1824,16 +1842,32 @@ export function boardRangeLines(range: readonly [number, number], strips: number
 }
 /** How far from the centre of a circle of `radius` on a board of `strips`
  * strips the motif reaches, with the space around it: to the circle, or to
- * the paper's edges where the circle is wider. Where the heart first leaves
- * the middle lines out, the motif does not step with the circle but grows on
- * evenly from the largest circle with every line to the first past the outer
- * lines' corner junctions, which leaves the gates room between it and the
- * circle (see `boardRanges`). */
+ * the paper's edges where the circle is wider. Where the circle first steps
+ * on past a junction to a completion or to leaving the middle lines out, the
+ * motif does not step with it but grows on evenly, over the radii of the
+ * ranges and not the steps between them, from the largest circle before to
+ * the first past the outer lines' corner junctions, which leaves the gates
+ * room between it and the circle (see `boardRanges`). */
 export function boardFill(radius: number, strips: number): number {
-	const ranges = boardRanges(strips), first = ranges.findIndex(range => coveredLines.has(range));
-	if (first < 0 || radius < ranges[first][0] || !ranges[first + 1] || radius >= ranges[first + 1][0]) return Math.min(radius, 50);
-	const from = ranges[first - 1][1], start = ranges[first][0], whole = ranges[first + 1][0];
-	return from + (radius - start) / (whole - start) * (Math.min(whole, 50) - from);
+	const ranges = boardRanges(strips), first = ranges.findIndex(range => coveredLines.has(range) || patternRanges.has(range));
+	if (first < 0) return Math.min(radius, 50);
+	const outer = boardLines(strips).at(-1)!, past = ranges.find(range => range[0] > Math.hypot(outer, outer));
+	if (radius < ranges[first][0] || !past || radius >= past[0]) return Math.min(radius, 50);
+	// Along the radii from the first, less the steps between the ranges below
+	// (the last, on to the first circle past the junctions, kept).
+	const spans = ranges.slice(first, ranges.indexOf(past)), start = spans[0][0];
+	const steps = spans.slice(1).map(([low], i) => [spans[i][1], low] as const);
+	const along = (r: number) => steps.reduce((x, [a, b]) => x - Math.max(0, Math.min(r, b) - a), r - start);
+	// Evenly, but never past a circle before it steps on: the lowest convex
+	// line under those, from the largest circle before to the first past.
+	const from = ranges[first - 1][1], whole = past[0], hull: Point[] = [];
+	for (const p of [[0, from], ...steps.map(([a]): Point => [along(a), Math.min(a, 50)]), [along(whole), Math.min(whole, 50)]] as Point[]) {
+		const turn = () => { const [o, q] = hull.slice(-2); return (q[0] - o[0]) * (p[1] - o[1]) - (q[1] - o[1]) * (p[0] - o[0]); };
+		while (hull.length > 1 && turn() <= 0) hull.pop();
+		hull.push(p);
+	}
+	const x = along(radius), k = Math.max(1, hull.findIndex(([at]) => at >= x)), [x0, y0] = hull[k - 1], [x1, y1] = hull[k];
+	return y0 + (x - x0) / (x1 - x0) * (y1 - y0);
 }
 /** The distances of a regular board's lines from its centre, half a square,
  * a square and a half, …, on each side. */
@@ -2136,14 +2170,20 @@ export function connectCellGrid(
 	open: OpenFrame = FITTED,
 	strips = 2 * cells[0].length + 1,
 	around?: number,
-	lines?: number[]
+	lines?: number[],
+	completion?: BoardPattern
 ) {
 	const rows = cells.length,
 		cols = cells[0].length;
 	const fan = style === 'rays' ? 0.72 : 1,
 		band = 0.3;
 	if (style === 'board' && cols !== rows) throw new ConstructionError('topology', 'A regular board needs as many rows as columns');
-	const legs = style === 'board' && boundary ? boardLegs(edges, boundary, strips, cols, around, lines) : undefined;
+	// Past the radii the motif in four can meet every line at, a completion
+	// found for the board routes the lines instead (see `boardCompletion`).
+	const completed = style === 'board' && boundary && completion
+		? completionLegs(edges, boundary, strips, Math.max(...boundary.map(p => distance(p, [50, 50]))), completion, around ?? 0) : undefined;
+	const legs = completed ? (side: number, index: number, _framed: unknown, from: Point) => completed(side, index, from)
+		: style === 'board' && boundary ? boardLegs(edges, boundary, strips, cols, around, lines) : undefined;
 	const connect = (gate: Point, side: number, index: number, count: number) => {
 		if (boundary) {
 			const step = Math.PI / (2 * count);

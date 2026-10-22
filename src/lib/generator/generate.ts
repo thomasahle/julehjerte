@@ -59,6 +59,7 @@ import {
 	boardLines,
 	boardPanels,
 	boardRangeLines,
+	boardRangePattern,
 	boardRanges,
 	boardWholeTop,
 	type Ring,
@@ -1986,8 +1987,9 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// remain (see `boardRanges`).
 		const sizes = (range: readonly [number, number], radius: number, placement = boxed, scale = fills(radius, placement), whole = false) => {
 			const lines = boardRangeLines(range, strips), covered = lines.length < boardLines(strips).length;
+			const completion = whole ? undefined : boardRangePattern(range);
 			return layouts(range, placement, whole).flatMap(list => [.22, .05].flatMap(padding =>
-				list.map(layout => ({ radius, scale, layout: { padding, ...layout, ...placement.enclosed && { centre: placement.centre }, ...covered && { lines } } }))));
+				list.map(layout => ({ radius, scale, layout: { padding, ...layout, ...placement.enclosed && { centre: placement.centre }, ...covered && { lines }, ...completion && { completion } } }))));
 		};
 		const build = ({ radius, scale, layout }: ReturnType<typeof sizes>[number]): Construction => {
 			const construction = generateTextGrid(MOTIF, font, false, 'circle', { ...layout, board: strips, circle: 2 * radius, scale });
@@ -2002,7 +2004,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// Where the circle covers the middle lines, the motif is divided at its
 		// size there, more than twice that in the touching ring on finer boards.
 		const home = (range: readonly [number, number]) => panels(range) === 1 ? small
-			: boardRangeLines(range, strips).length < boardLines(strips).length ? range : large ?? small;
+			: boardRangeLines(range, strips).length < boardLines(strips).length || boardRangePattern(range) ? range : large ?? small;
 		const references = (range: readonly [number, number]) => {
 			const [low, high] = home(range);
 			return home(range) === small ? [Math.round((low + high) / 2)] : [.25, .75].map(t => Math.round(low + t * (high - low)));
@@ -2033,7 +2035,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			}));
 		// Where the middle lines are left out, it is divided only if it is in
 		// every range further out too, so it does not shrink back.
-		const covered = boardRangeLines(range, strips).length < boardLines(strips).length;
+		const covered = boardRangeLines(range, strips).length < boardLines(strips).length || !!boardRangePattern(range);
 		const divided = !large || (covered ? ranges.slice(ranges.indexOf(range)).reverse().every(buildable) : buildable(range));
 		const whole = !divided && range !== small && wholeBuildable();
 		const [mode, size] = divided ? [range, radius] : range === small ? [large, large[0] + .6]

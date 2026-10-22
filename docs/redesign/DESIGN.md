@@ -814,26 +814,32 @@ they run together over a square of the circle's own colour; the motif stays divi
 circle keeps its colour (`boardLegs`, `overlapGates`). It grows so until a gate would sit closer
 than 1.5 to the lines beside it, the second lines' ends nearing the follower's arc (radius 39 and
 30, from 36 and 28; `gateRoom`), the cut from the motif's gate running round midway between motif
-and circle to its gate there. Further out each further line a side would need panels of its own:
-of 52 corpus motifs 12 can be divided into nine panels whose seams cross only in their background,
-none into sixteen. No circle between can be woven with the motif in four: every check the circle
-covers whole must lie inside it, merged with it in its colour or as a piece of the motif in the
-other (nine pieces from radius 41.7 on seven, 32.4 on nine). So the heart leaves the middle lines
-out in both sheets: the outer two lines a side remain, met as on five strips with the motif in four,
-from just past their junction with each other (42.1 to 55.4 on seven, 48.2 to 58.2 on nine;
-`boardRangeLines`) out past the paper's edges, the heart then having five strips while the page
-shows the board chosen. Once the circle covers the middle lines from edge to edge, that changes no
-square outside it; short of that, only the outer ring's middle squares, which merge into one of the
-circle's colour beside it. The slider steps once to there (86 to 87%: 39.0 to 42.1 on seven, 30.4
-to 48.2 on nine), and the motif does not step with the circle: it grows on evenly from the largest
-circle with every line to fill the circle again past the outer lines' corner junctions
+and circle to its gate there. Further out, past the junction of the third line with the second
+(41.7 on seven, 32.4 on nine), the motif in four can no longer meet every line's end; dividing it
+further would need panels of its own for each line (of 52 corpus motifs 12 divide into nine panels
+whose seams cross only in their background, none into sixteen). The circle is woven with every line
+all the same, every square equal: a completion found once by the exact search
+(`docs/inverse/exact-weave-solvability.tex`) switches the circle's edge between the sheets at points
+of its own, joined in pairs by hidden cuts across the white circle (hugging its edge, through the
+white squares outside it), across the red square just outside it, or in to the motif's gates
+(`boardCompletion`, `boardPatterns`). On seven strips it carries the circle from 42.1 to 46.5
+(87–91%). Nine strips short of their outer lines are seven, smaller, those lines crossing the paper
+whole, and the same completion carries the circle from 32.8 to 35.6 (85–88%). Further out, its
+switch points crowd on the short side between the outer line and the circle. Beyond, the heart
+leaves the middle lines out in both sheets: the outer two lines a side remain, met as on five
+strips with the motif in four (46.5 to 55.4 on seven, 48.2 to 58.2 on nine; `boardRangeLines`) out
+past the paper's edges, the heart then having five strips while the page shows the board chosen.
+Once the circle covers the middle lines from edge to edge, that changes no square outside it; short
+of that, only the outer ring's middle squares, which merge into one of the circle's colour beside
+it. The slider steps where it first reaches past a junction (86 to 87%: 39.0 to 42.1 on seven; 84
+to 85%: 30.4 to 32.8, and 88 to 89%: 35.6 to 48.2 on nine, where no completion has been found for
+the circle past the outer lines). The motif does not step with the circle: it grows on evenly over
+the ranges' radii, not the steps between them, never past a circle before it steps, from the
+largest circle with every line to fill the circle again past the outer lines' corner junctions
 (`boardFill`), which also leaves its gates room. Where two lines' ends meet at one gate between
 them and the motif's gate faces elsewhere, the cut to it runs round midway between motif and
 circle rather than along the circle past them, which keeps the starts of the divided ranges
-clean (on five strips at 73%, 45 of 52 clean, from 34). Hearts with every line past those radii do
-exist (`docs/inverse/exact-weave-solvability.tex`; see `docs/generator/RESULTS.md`), routed
-partly through hidden cuts across the white circle and across the red squares just outside it,
-and are the next step. Where the paper's edges cut the circle off, the
+clean (on five strips at 73%, 45 of 52 clean, from 34). Where the paper's edges cut the circle off, the
 motif's outer gates move three fifths of the way out from the motif to the edge, not towards the
 circle beyond it, and the cut running round between motif and circle keeps inside the paper too.
 Past the touching circle, each range of a board takes a share of 70–100% in

@@ -7,7 +7,7 @@ import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSide } from './state';
 import { templateVariants } from './templates';
-import { inside, uprightToSheet, distance, boardFill, boardLines, boardRangeLines, boardRanges, boardWholeTop, layerInset, withVisibleIslands, ConstructionError, WEDGES, type Point, type Ring } from './geometry';
+import { inside, uprightToSheet, distance, boardFill, boardLines, boardRangeLines, boardRangePattern, boardRanges, boardWholeTop, layerInset, withVisibleIslands, ConstructionError, WEDGES, type Point, type Ring } from './geometry';
 import { generateTextGrid } from './textGrid';
 import { geometryKey } from './cache';
 import { MOTIF, boardRadius, boardSetting, boardSteps, motifChoices, motifPatterns, squareChoices } from './boardMotif';
@@ -437,21 +437,25 @@ describe('frames from real hearts', () => {
  it('grows the circle without jumps, on every board', () => {
   // From the smallest to the largest, the circle and the motif in it never
   // shrink, and the circle steps by little more than the step over the
-  // corner junctions at 85-86% (0.8); on seven and nine strips but once, out
-  // to just past the junction where the heart leaves the middle lines out
-  // (see `boardRanges`). The motif does not step there with the circle, but
-  // grows on evenly (see `boardFill`).
-  for (const [board, largest, step] of [[3, boardRanges(3)[0][1], 0], [5, 52, 0], [7, boardRanges(7).at(-1)![1], 3.1], [9, boardRanges(9).at(-1)![1], 18]]) {
-   const ranges = boardRanges(board), covered = ranges.find(range => boardRangeLines(range, board).length < boardLines(board).length);
+  // corner junctions at 85-86% (0.8); on seven and nine strips but where it
+  // steps on to just past the junctions where the heart weaves the circle's
+  // edge its own way or leaves the middle lines out (see `boardRanges`):
+  // three units on seven strips, and on nine, where none is found yet for
+  // the circle past the outer lines, thirteen. The motif does not step there
+  // with the circle, but grows on evenly (see `boardFill`).
+  for (const [board, largest, step] of [[3, boardRanges(3)[0][1], 0], [5, 52, 0], [7, boardRanges(7).at(-1)![1], 3.1], [9, boardRanges(9).at(-1)![1], 12.7]]) {
+   const ranges = boardRanges(board), past = ranges.filter((range, i) => ranges[i - 1]?.[1] < range[0]
+    && (boardRangePattern(range) || boardRangeLines(range, board).length < boardLines(board).length));
    let last = boardRadius(.45, board).radius;
    for (let percent = 46; percent <= 100; percent++) {
     const { radius } = boardRadius(percent / 100, board);
     expect(radius - last, `${board} ${percent}`).toBeGreaterThanOrEqual(0);
     expect(boardFill(radius, board) - boardFill(last, board), `${board} ${percent}`).toBeGreaterThanOrEqual(0);
-    if (covered && radius === covered[0]) {
-     expect(last, `${board}`).toBe(ranges[ranges.indexOf(covered) - 1][1]);
+    const onto = past.find(range => radius === range[0]);
+    if (onto) {
+     expect(last, `${board}`).toBeCloseTo(ranges[ranges.indexOf(onto) - 1][1], 9);
      expect(radius - last, `${board}`).toBeLessThan(step);
-     expect(boardFill(radius, board), `${board}`).toBe(boardFill(last, board));
+     expect(boardFill(radius, board) - boardFill(last, board), `${board} ${percent}`).toBeLessThan(2.5);
     } else expect(radius - last, `${board} ${percent}`).toBeLessThanOrEqual(1.25);
     last = radius;
    }
@@ -482,6 +486,20 @@ describe('frames from real hearts', () => {
    expect(cut, `${board}`).toBeDefined();
    expect(Math.min(...cut.segments.map(({ p3 }) => sheet(p3)[0])), `${board}`).toBeLessThan(third - 2);
   }
+ });
+ it('weaves every line of seven strips past the corner junctions, every square equal', () => {
+  // Past the junction where the outer lines meet, the circle's edge switches
+  // sheet at points of its own, joined in pairs by hidden cuts across the
+  // circle or round the red squares beside it (see `completionLegs`): the
+  // heart keeps all seven strips a side, equal, up to 91%.
+  const ranges = boardRanges(7), range = ranges.find(r => boardRangePattern(r))!, lines = boardLines(7);
+  expect(range[0]).toBeGreaterThan(Math.hypot(lines.at(-1)!, lines.at(-2)!));
+  expect(boardRangeLines(range, 7)).toEqual(lines);
+  expect(boardRadius(.89, 7).range).toBe(range);
+  const { design, hardToCut, scale } = generate({ mode: 'figure', name: 'House', contours: houseMotif.contours as Ring[], colors, style: 'board', board: 7, scale: .89 });
+  expect(design.gridSize).toEqual({ x: 7, y: 7 });
+  expect(hardToCut).toBeUndefined();
+  expect(scale).toBeUndefined();
  });
  it('reaches past the paper\'s edges on finer boards, leaving out the middle lines it covers', () => {
   // Once the circle covers the middle lines from edge to edge they show
