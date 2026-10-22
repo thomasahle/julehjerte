@@ -35,12 +35,17 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   sizes and tagline in `src/lib/pinImage.ts`): the heart in its ribbon on the
   sky colour, its Danish name, "Gratis skabelon til flettet julehjerte" and
   "juleflet.dk".
-- The deploy workflow (`.github/workflows/deploy.yml`) has
-  `schedule: cron: '30 6 * * *'`: a rebuild and deploy every day at 06:30 UTC
-  (07:30 Danish winter time, 08:30 summer time), after that day's release, so a
-  new item appears without any push. GitHub may start scheduled runs late, and
-  disables schedules in a repository with no activity for 60 days (re-enable
-  under Actions).
+- The deploy workflow (`.github/workflows/deploy.yml`) rebuilds the site every
+  day at 06:17 UTC, with a second try at 09:43 UTC, after that day's release
+  (07:00 Copenhagen time is 05:00 or 06:00 UTC), so a new item appears without
+  any push. A scheduled run rebuilds the commit that is live, the newest one
+  whose push run passed every job, not the tip of main, and skips the tests,
+  which already passed for that commit; so a flaky test cannot cost the feed a
+  day and an untested commit never reaches the site. Actions → Deploy to
+  GitHub Pages → Run workflow does the same by hand ("Rebuild the live commit"
+  ticked). GitHub may start scheduled runs hours late (the first one started
+  5½ hours late), and disables schedules in a repository with no activity for
+  60 days (re-enable under Actions).
 
 ### Schedule and order
 
@@ -106,8 +111,8 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
 - **Do not empty `PINTEREST_ORDER`** to pause: hearts not in the order are
   appended after it, so with an empty order every heart would be scheduled from
   the start date and released at once.
-- The daily cron only rebuilds the site; without it, new items appear only on
-  the next push.
+- The daily run only rebuilds the live commit; without it, new items appear
+  only on the next push (any push after 07:00 also brings that day's item).
 
 ## A second round later (e.g. English)
 

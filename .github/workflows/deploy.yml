@@ -5,28 +5,64 @@ on:
     branches:
       - main
   # A daily rebuild, so the Pinterest feed's next heart (released 07:00
-  # Copenhagen time, docs/PINTEREST.md) goes out without a push. 06:30 UTC is
-  # 07:30 in winter and 08:30 in summer. Scheduled runs use the default
-  # branch (main), so they build and deploy exactly like a push to main.
+  # Copenhagen time, docs/PINTEREST.md) goes out without a push. It rebuilds
+  # the commit that is live now (the newest one whose push run passed every
+  # job and deployed), not the tip of main, and skips the tests: they already
+  # passed for that commit, and a timing hiccup on a slow runner must not cost
+  # the feed a day. 06:17 UTC is after the release in summer and winter time;
+  # 09:43 UTC is a second try, because GitHub starts scheduled runs late or
+  # not at all at busy times (the 06:30 run of 2026-10-21 started at 12:08).
+  # Off the hour and half hour on purpose.
   schedule:
-    - cron: '30 6 * * *'
+    - cron: '17 6 * * *'
+    - cron: '43 9 * * *'
   workflow_dispatch:
+    inputs:
+      rebuild_live:
+        description: 'Rebuild the live commit without tests, as the daily run does (untick to build and test the chosen branch)'
+        type: boolean
+        default: true
 
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 
+env:
+  # Scheduled runs, and manual runs with rebuild_live ticked: rebuild the live
+  # commit, skip the tests (see the schedule above).
+  REBUILD_LIVE: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.rebuild_live) }}
+
 concurrency:
   group: 'pages-${{ github.ref }}'
-  cancel-in-progress: true
+  # A push cancels an older run; a rebuild waits for a running push run
+  # instead of cancelling its deploy.
+  cancel-in-progress: ${{ github.event_name == 'push' }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # The newest commit whose push run succeeded is the one on the site: a
+      # push run deploys only after every job passed, and later push runs
+      # cancel older ones. Rebuild runs are not counted, since GitHub records
+      # them under main's tip rather than the commit they built.
+      - name: Find the live commit
+        id: live
+        if: env.REBUILD_LIVE == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sha=$(gh api "repos/${{ github.repository }}/actions/workflows/deploy.yml/runs?branch=main&event=push&status=success&per_page=1" --jq '.workflow_runs[0].head_sha // empty')
+          if [ -z "$sha" ]; then echo "No successful push run on main to rebuild" >&2; exit 1; fi
+          echo "Rebuilding the live commit $sha (main is at $GITHUB_SHA)"
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.live.outputs.sha || github.sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -38,12 +74,15 @@ jobs:
         run: npm ci
 
       - name: Check
+        if: env.REBUILD_LIVE != 'true'
         run: npm run check
 
       - name: Lint
+        if: env.REBUILD_LIVE != 'true'
         run: npm run lint
 
       - name: Application tests
+        if: env.REBUILD_LIVE != 'true'
         run: npx vitest run
 
       - name: Build
@@ -57,6 +96,7 @@ jobs:
           path: 'build'
 
   inverse:
+    if: github.event_name != 'schedule' && !(github.event_name == 'workflow_dispatch' && inputs.rebuild_live)
     name: Inverse correctness (${{ matrix.shard }}/4)
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -84,6 +124,7 @@ jobs:
           retention-days: 7
 
   benchmarks:
+    if: github.event_name != 'schedule' && !(github.event_name == 'workflow_dispatch' && inputs.rebuild_live)
     name: Timed quality benchmarks (advisory ${{ matrix.shard }}/2)
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -122,7 +163,12 @@ jobs:
           retention-days: 7
 
   deploy:
-    if: github.ref == 'refs/heads/main'
+    # A rebuild skips the test jobs, so it deploys after the build alone;
+    # every other run needs all three jobs to have passed.
+    if: >-
+      !cancelled() && github.ref == 'refs/heads/main' && needs.build.result == 'success' &&
+      (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.rebuild_live) ||
+       (needs.inverse.result == 'success' && needs.benchmarks.result == 'success'))
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
