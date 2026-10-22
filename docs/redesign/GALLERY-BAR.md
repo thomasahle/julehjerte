@@ -121,8 +121,10 @@ difficulty.
   row; back on the hero the row scrolls back to its start so they are in sight.
 - **Room.** The row would not fit the column with everything at full width,
   so on the desktop layout the toggles drop their dots below 1200px and
-  whenever the download button is shown. Even so the row overflows from 900
-  to about 975px, and with a selection up to about 1150px; it then scrolls
+  whenever the download button is shown; since the Fliser and Tekst chips
+  (22 Oct 2026) at every width, which makes the row fit from 1300px up, "Mine
+  hjerter" included. Below that the row overflows, and with a selection up to
+  about 1300px; it then scrolls
   (the button sticky at its start), and snapping is off on the desktop
   layout because its snap positions kept the row from scrolling back to 0.
 - **Filtering.** Cards of other levels get `display: none` (kept in the page:

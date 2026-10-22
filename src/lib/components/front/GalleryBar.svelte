@@ -493,7 +493,6 @@
 		bind:this={chipRow}
 		data-hill-chips
 		class:placed={measured}
-		class:ticked={hasSelection}
 		class:fade-start={fadeStart}
 		class:fade-end={fadeEnd}
 		style:--fade-skip={fadeSkip > 0 ? `${fadeSkip}px` : undefined}
@@ -764,19 +763,14 @@
 		background: var(--white);
 	}
 
-	/* On the desktop layout the row is one line on the hill, and the toggles'
-	   dots do not fit beside everything else below 1200px, nor beside the
-	   download button at any width (1128px of row for 1098 at 1440): there
+	/* On the desktop layout the row is one line on the hill, and since the
+	   Fliser and Tekst chips the toggles' dots fit beside the rest at no width
+	   (1133px of row for 1098 at 1300 and up, 1255 with "Mine hjerter"): there
 	   they show their words alone, the red fill still marking the chosen
-	   ones. The inline strand script follows the same rule. */
-	@media (min-width: 900px) and (max-width: 1199px) {
-		.level-chip :global(.dots) {
-			display: none;
-		}
-	}
-
+	   ones, and the row fits from 1300px up. The inline strand script follows
+	   the same rule. */
 	@media (min-width: 900px) {
-		.chips.ticked .level-chip :global(.dots) {
+		.level-chip :global(.dots) {
 			display: none;
 		}
 	}

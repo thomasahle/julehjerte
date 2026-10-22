@@ -65,13 +65,7 @@ export const STRAND_LAYOUT = {
 	trackGap: 16,
 	/** The chips' row (GalleryBar.svelte): 8px apart, 12px padding, 1px border, 6px label gap. */
 	chipGap: 8,
-	/**
-	 * A difficulty toggle's dots (DifficultyDots at 6px: four, 4px apart) and
-	 * their 6px gap, shown from `dotsFrom` px up while nothing is ticked; and the toggles' group's
-	 * extra margin before the category chips.
-	 */
-	dotsWidth: 36,
-	dotsFrom: 1200,
+	/** The toggles' group's extra margin before the category chips (their dots are not shown on the hill). */
 	groupGap: 8,
 	/** The one-row bar: 10px padding twice around a 13px × 1.2 chip with 6px padding and a border. */
 	barHeight: 49.6,
@@ -227,12 +221,9 @@ function chipSpan(left, right, counts) {
 	}
 	var filter = ch.filter;
 	if (filter) {
-		// The dots and their 6px gap (from 1200px up, and not beside the
-		// download button), and the word, inside a chip's padding and border.
-		var dots =
-			ticked === 0 && window.matchMedia('(min-width: ' + C.dotsFrom + 'px)').matches ? C.dotsWidth + 6 : 0;
+		// The word alone, inside a chip's padding and border: the dots are not shown on the hill.
 		for (var l = 0; l < filter.levels.length; l++) {
-			widths.push(Math.round(26 + dots + measure(filter.levels[l].label, 600)));
+			widths.push(Math.round(26 + measure(filter.levels[l].label, 600)));
 		}
 	}
 	for (var i = 0; i < ch.categories.length; i++) {

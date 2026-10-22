@@ -71,14 +71,12 @@ const LABELS: Record<string, string> = {
 };
 
 /**
- * The row's width with the toggles: four toggles (dots and their gap only
- * from 1200px up), the group's extra gap, and the seven category chips with
- * these counts, 8px apart.
+ * The row's width with the toggles: four toggles (their words alone: the dots
+ * are not shown on the hill), the group's extra gap, and the seven category
+ * chips with these counts, 8px apart.
  */
-function rowTotal(counts: string[], dots: boolean): number {
-	const toggles = ['Let', 'Mellem', 'Svær', 'Ekspert'].map((label) =>
-		Math.round(26 + (dots ? STRAND_LAYOUT.dotsWidth + 6 : 0) + TEXT_WIDTHS[label])
-	);
+function rowTotal(counts: string[]): number {
+	const toggles = ['Let', 'Mellem', 'Svær', 'Ekspert'].map((label) => Math.round(26 + TEXT_WIDTHS[label]));
 	const chips = ['Klassiske', 'Stjerner', 'Mønstre', 'Fliser', 'Figurer', 'Tekst', 'Hjerter'].map((title, i) =>
 		Math.round(32 + TEXT_WIDTHS[title] + TEXT_WIDTHS[counts[i]])
 	);
@@ -314,10 +312,10 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 	const style = () => document.querySelector('style[data-level-bootstrap]')?.textContent ?? null;
 
 	it('counts the toggles into the chips’ span: 1440 as the gallery measures it there', () => {
-		// The numbers Gallery.svelte sets at 1440 with the toggles in the row
-		// (chromium and WebKit agree): the row now reaches over four columns.
+		// The numbers Gallery.svelte sets at 1440 with the toggles in the row, their
+		// words alone (chromium and WebKit agree): the row reaches over four columns.
 		run(FILTERED);
-		expect([0, 1, 2, 3, 4].map((k) => px(`--strand-${k}`))).toEqual([54.2, 83, 122.8, 105.7, 65.3]);
+		expect([0, 1, 2, 3, 4].map((k) => px(`--strand-${k}`))).toEqual([0.2, 83, 122.8, 105.7, 65.3]);
 		expect(px('--strand-room')).toBe(122.8);
 		// No filter chosen: nothing to hide.
 		expect(style()).toBeNull();
@@ -353,7 +351,7 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 			root().removeAttribute('style');
 			root().className = '';
 			run(FILTERED);
-			const { drops } = expected(viewport, rowTotal(counts, viewport >= 1200));
+			const { drops } = expected(viewport, rowTotal(counts));
 			drops.forEach((drop, k) => {
 				expect(Math.abs(px(`--strand-${k}`) - drop), `strand ${k} at ${viewport}`).toBeLessThan(0.051);
 			});
@@ -422,25 +420,22 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 		expect(style()).toBeNull();
 	});
 
-	it('counts the toggles’ dots only from 1200px up and while nothing is ticked', () => {
+	it('counts the toggles by their words alone, and the download button once hearts are ticked', () => {
 		const all = ['5', '14', '28', '10', '11', '5', '7'];
-		// A desktop width where a column centre lies between the row's start with and without the dots.
-		const at = [1440, 1366, 1280, 1536, 1600, 1680, 1920, 1200].find(
-			(viewport) => JSON.stringify(expected(viewport, rowTotal(all, true)).drops) !== JSON.stringify(expected(viewport, rowTotal(all, false)).drops)
-		)!;
-		expect(at).toBeDefined();
-		width = at;
-		const withDots = expected(at, rowTotal(all, true)).drops;
-		run(FILTERED);
-		withDots.forEach((drop, k) => expect(px(`--strand-${k}`)).toBeCloseTo(drop, 1));
+		for (const at of [1200, 1440, 1920]) {
+			width = at;
+			window.history.replaceState(null, '', '/');
+			root().removeAttribute('style');
+			run(FILTERED);
+			expected(at, rowTotal(all)).drops.forEach((drop, k) => expect(px(`--strand-${k}`), `${at}`).toBeCloseTo(drop, 1));
 
-		// Ticked: the download button joins the row and the dots go.
-		window.history.replaceState(null, '', '/?selected=a');
-		root().removeAttribute('style');
-		run(FILTERED);
-		const button = Math.round(64 + 'Hent skabeloner'.length * 7 + 7);
-		const ticked = expected(at, rowTotal(all, false) + button + 8).drops;
-		ticked.forEach((drop, k) => expect(px(`--strand-${k}`)).toBeCloseTo(drop, 1));
+			// Ticked: the download button joins the row.
+			window.history.replaceState(null, '', '/?selected=a');
+			root().removeAttribute('style');
+			run(FILTERED);
+			const button = Math.round(64 + 'Hent skabeloner'.length * 7 + 7);
+			expected(at, rowTotal(all) + button + 8).drops.forEach((drop, k) => expect(px(`--strand-${k}`), `${at} ticked`).toBeCloseTo(drop, 1));
+		}
 	});
 });
 
