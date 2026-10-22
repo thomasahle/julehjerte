@@ -7,9 +7,10 @@ import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSide } from './state';
 import { templateVariants } from './templates';
-import { inside, uprightToSheet, distance, boardLines, boardRangeLines, boardRanges, boardWholeTop, layerInset, WEDGES, type Point, type Ring } from './geometry';
+import { inside, uprightToSheet, distance, boardLines, boardRangeLines, boardRanges, boardWholeTop, layerInset, withVisibleIslands, ConstructionError, WEDGES, type Point, type Ring } from './geometry';
+import { generateTextGrid } from './textGrid';
 import { geometryKey } from './cache';
-import { boardRadius, boardSetting, boardSteps, motifChoices, motifPatterns, squareChoices } from './boardMotif';
+import { MOTIF, boardRadius, boardSetting, boardSteps, motifChoices, motifPatterns, squareChoices } from './boardMotif';
 import { normalizeContours } from './contours';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { serializeHeartDesign, normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
@@ -714,7 +715,14 @@ describe('frames from real hearts', () => {
   expect(design.gridSize).toEqual({ x: 3, y: 3 });
   expect(motifChoices()[layout!.alternative].alone).toBe(true);
  }, 30000);
- it('weaves islands too close for hidden chains along visible spokes, hard to cut rather than refused', () => {
+ it('enters islands too close for hidden chains along visible spokes, as a last resort', () => {
+  // The paw's toes route in a woven square only along visible spokes.
+  const font = { glyphs: { [MOTIF]: { advance: 1, contours: paw.contours as Ring[] } } };
+  const cell = () => generateTextGrid(MOTIF, font, false, undefined, { board: 3 });
+  expect(cell).toThrow(ConstructionError);
+  expect(withVisibleIslands(cell).edges.length).toBeGreaterThan(0);
+ });
+ slow('weaves islands too close for hidden chains along visible spokes, hard to cut rather than refused', () => {
   // The sun's rays route only along visible spokes; nothing else does.
   const { design, hardToCut } = generate({ mode: 'figure', name: 'Sun', contours: sun.contours as Ring[], colors, style: 'board' });
   expect(design.gridSize).toEqual({ x: 5, y: 5 });

@@ -106,10 +106,11 @@ describe('text in a figure frame', () => {
 
 	it('cuts hidden cuts that come too close rather than refuse the letters, as a last resort', () => {
 		// In Cinzel's ANNA some hidden cuts across one square must crowd each
-		// other on four strips: no sheets keep every strip whole without them.
-		const rings = textOutline('ANNA', fonts.cinzel);
-		expect(stripFigures(rings, 4, .7).next().done).toBe(true);
-		expect(withCrowdedHiddenCuts(() => stripFigures(rings, 4, .7).next().done)).toBe(false);
+		// other on four strips: no sheets keep every strip whole without them,
+		// at the place its heart takes or any other.
+		const rings = textOutline('ANNA', fonts.cinzel), at = () => stripFigures(rings, 4, .7, 4000, 4.5, 'alone').next().done;
+		expect(at()).toBe(true);
+		expect(withCrowdedHiddenCuts(at)).toBe(false);
 	});
 
 	slow('names the letters that are hard to cut in the checks', () => {
