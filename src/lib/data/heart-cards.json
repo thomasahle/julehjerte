@@ -453,6 +453,22 @@
     },
     "difficulty": "medium"
   },
+  "noel": {
+    "name": "NOEL",
+    "difficulty": "hard"
+  },
+  "sne": {
+    "name": "SNE",
+    "difficulty": "hard"
+  },
+  "mor": {
+    "name": "MOR",
+    "difficulty": "expert"
+  },
+  "fred": {
+    "name": "FRED",
+    "difficulty": "expert"
+  },
   "triple-heart": {
     "name": "Triple Hjerte",
     "names": {

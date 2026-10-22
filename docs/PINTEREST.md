@@ -62,6 +62,8 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   added to it is released after the last listed heart, in gallery order. To
   place a new heart elsewhere, insert it in `PINTEREST_ORDER` only at a
   position after today's (inserting before today would shift released days).
+  The four text hearts of 2026-10-22 went in so, at days 12, 25, 45 and 57,
+  each between hearts of other categories, before Christmas.
 - The feed holds the released items only (nothing future-dated), newest first,
   at most 30 (`PINTEREST_MAX_ITEMS`). When every heart is out, the feed stops
   growing: it does not cycle.

@@ -40,6 +40,7 @@ const TEXT_WIDTHS: Record<string, number> = {
 	Mønstre: 51.4,
 	Fliser: 33.9,
 	Figurer: 44.0,
+	Tekst: 33.0,
 	Hjerter: 43.0,
 	'4': 7.2,
 	'12': 14.4,
@@ -71,14 +72,14 @@ const LABELS: Record<string, string> = {
 
 /**
  * The row's width with the toggles: four toggles (dots and their gap only
- * from 1200px up), the group's extra gap, and the six category chips with
+ * from 1200px up), the group's extra gap, and the seven category chips with
  * these counts, 8px apart.
  */
 function rowTotal(counts: string[], dots: boolean): number {
 	const toggles = ['Let', 'Mellem', 'Svær', 'Ekspert'].map((label) =>
 		Math.round(26 + (dots ? STRAND_LAYOUT.dotsWidth + 6 : 0) + TEXT_WIDTHS[label])
 	);
-	const chips = ['Klassiske', 'Stjerner', 'Mønstre', 'Fliser', 'Figurer', 'Hjerter'].map((title, i) =>
+	const chips = ['Klassiske', 'Stjerner', 'Mønstre', 'Fliser', 'Figurer', 'Tekst', 'Hjerter'].map((title, i) =>
 		Math.round(32 + TEXT_WIDTHS[title] + TEXT_WIDTHS[counts[i]])
 	);
 	const widths = [...toggles, ...chips];
@@ -91,6 +92,7 @@ const TITLES: Record<string, string> = {
 	moenstre: 'Mønstre',
 	fliser: 'Fliser',
 	figurer: 'Figurer',
+	tekst: 'Tekst',
 	hjerter: 'Hjerter'
 };
 
@@ -313,9 +315,9 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 
 	it('counts the toggles into the chips’ span: 1440 as the gallery measures it there', () => {
 		// The numbers Gallery.svelte sets at 1440 with the toggles in the row
-		// (chromium and WebKit agree): the row now reaches over three columns.
+		// (chromium and WebKit agree): the row now reaches over four columns.
 		run(FILTERED);
-		expect([0, 1, 2, 3, 4].map((k) => px(`--strand-${k}`))).toEqual([0.2, 83, 122.8, 105.7, 65.3]);
+		expect([0, 1, 2, 3, 4].map((k) => px(`--strand-${k}`))).toEqual([54.2, 83, 122.8, 105.7, 65.3]);
 		expect(px('--strand-room')).toBe(122.8);
 		// No filter chosen: nothing to hide.
 		expect(style()).toBeNull();
@@ -342,9 +344,9 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 	});
 
 	it('estimates the chips with the counts the filter leaves, at every desktop width', () => {
-		// "Let": Klassiske 1, Stjerner 4, Mønstre 0, Fliser 0, Figurer 0, Hjerter 1,
-		// the emptied ones dimmed but still in the row.
-		const counts = ['1', '4', '0', '0', '0', '1'];
+		// "Let": Klassiske 1, Stjerner 4, Mønstre 0, Fliser 0, Figurer 0, Tekst 0,
+		// Hjerter 1, the emptied ones dimmed but still in the row.
+		const counts = ['1', '4', '0', '0', '0', '0', '1'];
 		for (const viewport of [900, 1024, 1199, 1200, 1440, 1920]) {
 			width = viewport;
 			window.history.replaceState(null, '', '/?level=let');
@@ -421,7 +423,7 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 	});
 
 	it('counts the toggles’ dots only from 1200px up and while nothing is ticked', () => {
-		const all = ['5', '14', '28', '10', '11', '7'];
+		const all = ['5', '14', '28', '10', '11', '4', '7'];
 		// A desktop width where a column centre lies between the row's start with and without the dots.
 		const at = [1440, 1366, 1280, 1536, 1600, 1680, 1920, 1200].find(
 			(viewport) => JSON.stringify(expected(viewport, rowTotal(all, true)).drops) !== JSON.stringify(expected(viewport, rowTotal(all, false)).drops)

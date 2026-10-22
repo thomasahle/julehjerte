@@ -220,12 +220,14 @@ export const translations = {
     categoryFigurer: 'Figurer',
     categoryMoenstre: 'Mønstre',
     categoryFliser: 'Fliser',
+    categoryTekst: 'Tekst',
     categoryHjerter: 'Hjerter',
     categoryMine: 'Mine hjerter',
     // The gallery's last card in a category: a way to make one's own
     makeOwnPattern: 'Lav dit eget mønster',
     makeOwnTiling: 'Lav dit eget flisemønster',
     makeOwnFigure: 'Lav din egen figur',
+    makeOwnText: 'Lav dit eget tekstmønster',
 
     // Heart detail page, its share/save actions and its meta tags
     loadingTemplate: 'Indlæser skabelon...',
@@ -296,6 +298,7 @@ export const translations = {
     categoryStjernerLower: 'stjerner',
     categoryMoenstreLower: 'mønstre',
     categoryFliserLower: 'fliser',
+    categoryTekstLower: 'teksthjerter',
     categoryFigurerLower: 'figurer',
     categoryHjerterLower: 'hjerter',
 
@@ -1265,12 +1268,14 @@ export const translations = {
     categoryFigurer: 'Figures',
     categoryMoenstre: 'Patterns',
     categoryFliser: 'Tilings',
+    categoryTekst: 'Text',
     categoryHjerter: 'Hearts',
     categoryMine: 'My hearts',
     // The gallery's last card in a category: a way to make one's own
     makeOwnPattern: 'Make your own pattern',
     makeOwnTiling: 'Make your own tiling',
     makeOwnFigure: 'Make your own figure',
+    makeOwnText: 'Make your own text pattern',
 
     // Heart detail page, its share/save actions and its meta tags
     loadingTemplate: 'Loading template...',
@@ -1340,6 +1345,7 @@ export const translations = {
     categoryStjernerLower: 'stars',
     categoryMoenstreLower: 'patterns',
     categoryFliserLower: 'tilings',
+    categoryTekstLower: 'text hearts',
     categoryFigurerLower: 'figures',
     categoryHjerterLower: 'hearts',
 

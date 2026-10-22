@@ -300,17 +300,19 @@ name the rows and carry the counts; sections are `margin-top: 28px` apart (32 be
 row-gap; the grid is `align-items: start`.
 "Mine hjerter" keeps its visible heading row (uppercase 15px/600 `--green`, letter-spacing .06em,
 padding-bottom 4, margin-bottom 10, no rule under it). Section ids `klassiske`, `stjerner`,
-`moenstre`, `fliser`, `figurer`, `hjerter` (anchors used by the detail page). Grid
+`moenstre`, `fliser`, `figurer`, `tekst`, `hjerter` (anchors used by the detail page). Grid
 `repeat(auto-fill, minmax(204px, 1fr))`, column-gap 16, row-gap 28 (2 columns, gaps 14/32 below 600).
 
-Categories (hearts.json, 2026-10-22): Klassiske, Stjerner, Mønstre, Fliser, Figurer, Hjerter. Fliser ("Tilings")
+Categories (hearts.json, 2026-10-22): Klassiske, Stjerner, Mønstre, Fliser, Figurer, Tekst, Hjerter. Fliser ("Tilings")
 holds the Escher-like tilings, where the red and the white pieces are the same interlocking figure: Dag og nat,
 Puslespil, Drageskæl, Kroge, Alhambra, Kølbuer, Hanefod, Dråber, Fiskeskæl, Bølger. Plain polygon tilings (Sildeben,
-Flyvende gæs) and Hermann-gitter stay in Mønstre. Mønstre, Fliser and Figurer each end with a "make your own" card
+Flyvende gæs) and Hermann-gitter stay in Mønstre. Tekst holds four hearts made with the design page's text frames,
+one frame and font each: NOEL (Tern), SNE (Helt ind til teksten), MOR (Cirkel) and FRED (Cirkel med dobbelt bort);
+JUL, drawn by hand, stays in Klassiske. Mønstre, Fliser, Figurer and Tekst each end with a "make your own" card
 (`front/MakeOwnCard.svelte`, `makeOwnLink` in `$lib/data/categories`): a blank heart, dashed and with a plus,
 hanging on the next ribbon and strand like a card, named "Lav dit eget mønster" (Tegn, `/editor/`), "Lav dit eget
-flisemønster" (Tegn's Escher tab, `/editor/escher/`) and "Lav din egen figur" (the design page's figures,
-`/design/figure/`). The whole card is one link; it is not a heart, so the hero and the chips' counts leave it out.
+flisemønster" (Tegn's Escher tab, `/editor/escher/`), "Lav din egen figur" (the design page's figures,
+`/design/figure/`) and "Lav dit eget tekstmønster" (its texts, `/design/text/`). The whole card is one link; it is not a heart, so the hero and the chips' counts leave it out.
 
 Addresses: `/design/figure/` and `/design/text/` (and under `/en/`) are the design page opened on a figure or a
 text; the page keeps its address in step with what it makes (`/design/` at its start), with the state in

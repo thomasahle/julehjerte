@@ -51,12 +51,8 @@ describe('the order', () => {
 	});
 
 	it('never pins two hearts of one category on consecutive days', () => {
-		// But Drageskæl and Dag og nat, days 42 and 43: Fliser was gathered from Mønstre and Figurer
-		// (2026-10-22) after the order was frozen, and the order keeps every heart on its day.
-		const regrouped = new Set(['drageskael dagognat']);
 		const present = PINTEREST_ORDER.filter((id) => CATEGORY.has(id));
 		for (let i = 1; i < present.length; i++) {
-			if (regrouped.has(`${present[i - 1]} ${present[i]}`)) continue;
 			expect(CATEGORY.get(present[i]), `${present[i - 1]} then ${present[i]}`).not.toBe(CATEGORY.get(present[i - 1]));
 		}
 	});

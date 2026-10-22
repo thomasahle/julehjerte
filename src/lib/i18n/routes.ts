@@ -67,7 +67,7 @@ export function homeAnchorHref(anchor: string, lang: Language): string {
 /**
  * A link to one gallery category on the front page, e.g. `/#stjerner`.
  * The category ids are the ones in hearts.json and are the same in both
- * languages (klassiske, stjerner, moenstre, fliser, figurer, hjerter).
+ * languages (klassiske, stjerner, moenstre, fliser, figurer, tekst, hjerter).
  */
 export function categoryHref(categoryId: string, lang: Language): string {
 	return homeAnchorHref(categoryId, lang);

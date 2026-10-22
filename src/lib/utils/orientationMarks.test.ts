@@ -25,12 +25,12 @@ import {
  */
 const MARKED = [
 	'5star', 'alhambra', 'amy-weave-1', 'amy-weave-2', 'angel', 'boelgebrud', 'boelger', 'dagognat',
-	'david4', 'davidsstjerne-circ', 'fejlternet', 'fisk', 'fiskeskael', 'flower', 'flyvendegaes',
+	'david4', 'davidsstjerne-circ', 'fejlternet', 'fisk', 'fiskeskael', 'flower', 'flyvendegaes', 'fred',
 	'h4h2', 'hanefod', 'hermanngitter', 'hvirvel', 'jul', 'juletrae', 'khatam', 'koelbuer', 'kogle',
-	'lilje1', 'lilje2', 'mor-og-barn', 'nemt-hjerte', 'origami', 'permo-cirkler', 'permo-draaber',
-	'permo-kroge', 'plus', 'plus3', 'puslespil', 'roed-blomst', 'roserude', 'santa', 'sildeben',
-	'simple-5star', 'skraa-kryds', 'snowflake', 'squares', 'stjernegitter', 'sun', 'triple-heart',
-	'tulipan', 'venus'
+	'lilje1', 'lilje2', 'mor', 'mor-og-barn', 'nemt-hjerte', 'noel', 'origami', 'permo-cirkler',
+	'permo-draaber', 'permo-kroge', 'plus', 'plus3', 'puslespil', 'roed-blomst', 'roserude', 'santa',
+	'sildeben', 'simple-5star', 'skraa-kryds', 'sne', 'snowflake', 'squares', 'stjernegitter', 'sun',
+	'triple-heart', 'tulipan', 'venus'
 ];
 
 const allIds = Object.keys(gallerySvgs)

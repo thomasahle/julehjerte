@@ -23,7 +23,7 @@
         "permo-sol",
         "nihon",
         "davidsstjerne-circ",
-        "david4",
+        "david4"
       ]
     },
     {
@@ -71,7 +71,7 @@
         "firkanthjerte",
         "khatam",
         "stjernegitter",
-        "stjernerogkors",
+        "stjernerogkors"
       ]
     },
     {
@@ -103,6 +103,15 @@
         "tulipan",
         "roed-blomst",
         "kloeverblad-hjerte"
+      ]
+    },
+    {
+      "id": "tekst",
+      "hearts": [
+        "noel",
+        "sne",
+        "mor",
+        "fred"
       ]
     }
   ]

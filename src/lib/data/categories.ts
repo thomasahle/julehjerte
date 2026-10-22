@@ -19,7 +19,7 @@ import { t, type Language } from '$lib/i18n';
 import { escherEditorHref, generatorHref, heartPath, href } from '$lib/i18n/routes';
 import type { TranslationKey } from '$lib/i18n/translations';
 
-export type CategoryId = 'klassiske' | 'stjerner' | 'moenstre' | 'fliser' | 'figurer' | 'hjerter';
+export type CategoryId = 'klassiske' | 'stjerner' | 'moenstre' | 'fliser' | 'figurer' | 'tekst' | 'hjerter';
 
 /**
  * The synthetic category the front page appends for hearts the visitor drew
@@ -49,6 +49,7 @@ const TITLE_KEYS: Record<CategoryId, TranslationKey> = {
 	moenstre: 'categoryMoenstre',
 	fliser: 'categoryFliser',
 	figurer: 'categoryFigurer',
+	tekst: 'categoryTekst',
 	hjerter: 'categoryHjerter'
 };
 
@@ -58,6 +59,7 @@ const LOWER_TITLE_KEYS: Record<CategoryId, TranslationKey> = {
 	moenstre: 'categoryMoenstreLower',
 	fliser: 'categoryFliserLower',
 	figurer: 'categoryFigurerLower',
+	tekst: 'categoryTekstLower',
 	hjerter: 'categoryHjerterLower'
 };
 
@@ -130,12 +132,13 @@ export function siblingHeartIds(heartId: string): string[] {
 
 /**
  * Where a visitor makes their own heart of a category's kind, for the gallery's last card in it
- * (MakeOwnCard): a pattern in Tegn, a tiling in its Escher tab, a figure on the design page.
+ * (MakeOwnCard): a pattern in Tegn, a tiling in its Escher tab, a figure or a text on the design page.
  */
 const MAKE_OWN: Partial<Record<CategoryId, { label: TranslationKey; href: (lang: Language) => string }>> = {
 	moenstre: { label: 'makeOwnPattern', href: (lang) => href('editor', lang) },
 	fliser: { label: 'makeOwnTiling', href: escherEditorHref },
-	figurer: { label: 'makeOwnFigure', href: (lang) => generatorHref(lang, 'figure') }
+	figurer: { label: 'makeOwnFigure', href: (lang) => generatorHref(lang, 'figure') },
+	tekst: { label: 'makeOwnText', href: (lang) => generatorHref(lang, 'text') }
 };
 
 /** The link and words of a category's "make your own" card, or null for a category without one. */
