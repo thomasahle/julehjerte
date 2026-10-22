@@ -9,8 +9,9 @@ import { intersectionMarginPx } from '$lib/editor/curveIssues';
 import { findSearchIssues } from './searchClearance';
 import { normalizeHeartDesign, serializeHeartDesign, parseHeartFromSVG, serializeHeartToSVG } from '$lib/utils/heartDesign';
 import { rasterizeDesign } from '$lib/paint/rasterize';
-import cinzel from '../../../static/generator/fonts/cinzel.json';
-import breeserif from '../../../static/generator/fonts/breeserif.json';
+import { shippedFont } from './fonts.test-helpers';
+
+const [cinzel, breeserif] = await Promise.all(['cinzel', 'breeserif'].map(shippedFont));
 
 const fonts = { cinzel, breeserif } as unknown as Record<string, Font>;
 for (const [fontId, text, textFrame, strips, tips] of [

@@ -16,12 +16,14 @@ import {
 	parseHeartFromSVG
 } from '$lib/utils/heartDesign';
 import catalog from '../../../static/generator/catalog.json';
-import nunito from '../../../static/generator/fonts/nunito.json';
 import tree from '../../../static/generator/motifs/tree.json';
 import gift from '../../../static/generator/motifs/gift.json';
 import candle from '../../../static/generator/motifs/tb-candle.json';
 import stars from '../../../static/generator/motifs/tb-stars.json';
 import tablerTree from '../../../static/generator/motifs/tb-christmas-tree.json';
+import { shippedFont } from './fonts.test-helpers';
+
+const nunito = await shippedFont('nunito');
 const motifFiles = import.meta.glob<{ contours: Ring[] }>('/static/generator/motifs/*.json');
 const colors = { left: '#fffdf5', right: '#b72f2b' };
 const font = nunito as unknown as Font;

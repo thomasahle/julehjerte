@@ -9,7 +9,9 @@ import { intersectionMarginPx } from '$lib/editor/curveIssues';
 import { findSearchIssues } from './searchClearance';
 import { normalizeHeartDesign, serializeHeartDesign, parseHeartFromSVG, serializeHeartToSVG } from '$lib/utils/heartDesign';
 import { rasterizeDesign } from '$lib/paint/rasterize';
-import cinzel from '../../../static/generator/fonts/cinzel.json';
+import { shippedFont } from './fonts.test-helpers';
+
+const cinzel = await shippedFont('cinzel');
 
 for (const [text, textFrame, strips, tips] of [
 	['EM', 'circle', 8, 3], ['ME', 'circle', 8, 1],

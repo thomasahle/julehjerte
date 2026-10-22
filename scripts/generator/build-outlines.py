@@ -1,14 +1,12 @@
-"""Rebuild the local outline catalogue; no image fitting or cut solver.
-Requires fonttools, shapely, svgpathtools. Sources/licences are vendored alongside
-these assets. Curves are flattened within 0.0005 em / 0.05 icon units, then the SVG
-fill rule and overlapping shapes are resolved before extracting contours.
+"""Rebuild the local motif catalogue; no image fitting or cut solver.
+Requires shapely, svgpathtools. Sources/licences are vendored alongside these
+assets. Curves are flattened within 0.05 icon units, then the SVG fill rule and
+overlapping shapes are resolved before extracting contours. The fonts are not
+built: the page reads their files (src/lib/generator/fontLibrary.ts).
 """
 import json, math, subprocess, sys, shutil
 from pathlib import Path
 from xml.etree import ElementTree as ET
-from fontTools.ttLib import TTFont
-from fontTools.varLib.instancer import instantiateVariableFont
-from fontTools.pens.basePen import BasePen
 from shapely.geometry import Polygon, LineString
 from shapely.ops import unary_union, polygonize
 from svgpathtools import parse_path, Line
@@ -55,53 +53,6 @@ def flatten(evalp,tol):
         m=(a+b)/2;r=evalp(m);step(a,m,p,r,depth+1);step(m,b,r,q,depth+1)
     step(0,1,result[0],evalp(1),0)
     return result
-
-class Pen(BasePen):
-    def __init__(self,gs,em):super().__init__(gs);self.em=em;self.rings=[];self.r=[]
-    def p(self,p):return [p[0]/self.em,-p[1]/self.em]
-    def _moveTo(self,p):self.r=[self.p(p)]
-    def _lineTo(self,p):self.r.append(self.p(p))
-    def _curveToOne(self,b,c,d):
-        a=self.r[-1];b,c,d=map(self.p,[b,c,d])
-        self.r+=flatten(lambda t:[(1-t)**3*a[i]+3*(1-t)**2*t*b[i]+3*(1-t)*t*t*c[i]+t**3*d[i] for i in range(2)],.0005)[1:]
-    def _qCurveToOne(self,b,c):
-        a=self.r[-1];b,c=map(self.p,[b,c]);self.r+=flatten(lambda t:[(1-t)**2*a[i]+2*(1-t)*t*b[i]+t*t*c[i] for i in range(2)],.0005)[1:]
-    def _closePath(self):
-        if self.r and self.r[-1]==self.r[0]:self.r.pop()
-        if len(self.r)>2:self.rings.append(self.r)
-    def _endPath(self):self._closePath()
-
-def build_fonts():
-    fonts={}
-    for name,weight in [('nunito',800),('breeserif',400),('oswald',600),('kalam',700),('cinzel',900),('righteous',400),
-                        ('josefinsans',700),('alfaslabone',400),('bungee',400)]:
-        f=TTFont(ROOT/f'docs/design-start/assets/fonts/{name}.ttf')
-        if 'fvar' in f:f=instantiateVariableFont(f,{'wght':weight})
-        gs=f.getGlyphSet();cmap=f.getBestCmap();em=f['head'].unitsPerEm;glyphs={}
-        for ch in 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÆØÅæøåÄÖÜäöüÉé0123456789+-&.! ':
-            if ord(ch) not in cmap:continue
-            g=gs[cmap[ord(ch)]];p=Pen(gs,em);g.draw(p)
-            shape=fill(p.rings)
-            # Cut-friendly variants for fonts whose original hairlines are thinner
-            # than practical paper strips. Retain their original component/hole count.
-            if name in ['cinzel','kalam'] and not shape.is_empty:
-                expanded=shape.buffer(.04 if name=='cinzel' else .025,join_style=1).simplify(.0005,preserve_topology=True)
-                if len(contours(expanded))==len(contours(shape)):shape=expanded
-            glyphs[ch]={'advance':round(g.width/em,5),'contours':contours(shape)}
-        fonts[name]={'glyphs':glyphs}
-    (OUT/'fonts').mkdir(exist_ok=True)
-    for name,data in fonts.items():
-        (OUT/'fonts'/f'{name}.json').write_text(json.dumps(data,ensure_ascii=False,separators=(',',':')))
-        sample=[];x=0
-        for ch in 'Aa':
-            g=data['glyphs'][ch]
-            sample += [[[a+x,b] for a,b in r] for r in g['contours']];x+=g['advance']+.05
-        pts=[p for r in sample for p in r];l=min(p[0] for p in pts);top=min(p[1] for p in pts);w=max(p[0] for p in pts)-l;h=max(p[1] for p in pts)-top
-        d=''.join('M'+'L'.join(f'{a},{b}' for a,b in r)+'Z' for r in sample)
-        (OUT/'fonts'/f'{name}-sample.svg').write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{l-.03} {top-.03} {w+.06} {h+.06}"><path fill="#40573c" fill-rule="evenodd" d="{d}"/></svg>')
-    (OUT/'fonts.json').unlink(missing_ok=True)
-    for name in fonts:
-        shutil.copyfile(ROOT/f'docs/design-start/assets/fonts/{name}-OFL.txt',OUT/f'fonts/{name}-OFL.txt')
 
 def svg_geometry(art, tolerance=.05):
     root=ET.fromstring('<svg>'+art+'</svg>')
@@ -169,5 +120,4 @@ def build_motifs():
     print(f'Wrote {len(icons)} motifs')
 
 if __name__ == '__main__':
-    if '--icons-only' not in sys.argv: build_fonts()
-    if '--fonts-only' not in sys.argv: build_motifs()
+    build_motifs()

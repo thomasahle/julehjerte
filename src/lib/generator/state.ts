@@ -2,6 +2,7 @@ import { FIGURE_STYLES, FRAMES, type FigureStyle, type Frame, type TextFrame } f
 import { BOARD_STRIPS, type BoardStyle } from './boardMotif';
 import { TEXT_FIGURES } from './textFigure';
 import { isGoogleFont } from './googleFonts';
+import { INVISIBLE } from './fontFaces';
 export type GeneratorState = {
 	mode: 'start' | 'figure' | 'text';
 	motif: string;
@@ -163,9 +164,13 @@ export function readGeneratorState(hash: string): GeneratorState {
 /** The longest text the generator takes: lines, and characters per line. */
 export const TEXT_LINES = 6, TEXT_LINE_LENGTH = 10;
 
+/** The text as written: composed, one kind of line break, without the
+ * characters that only choose an emoji's form or build one from several
+ * (`INVISIBLE`), within TEXT_LINES of TEXT_LINE_LENGTH characters. */
 export function normalizeText(text: string): string {
 	return text
 		.normalize('NFC')
+		.replace(INVISIBLE, '')
 		.replace(/\r\n?/g, '\n')
 		.split('\n')
 		.slice(0, TEXT_LINES)

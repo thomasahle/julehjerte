@@ -6,12 +6,6 @@ import { defaults, readGeneratorState } from './state';
 import { geometryKey } from './cache';
 import { templateVariants } from './templates';
 import { usableMotif, type Font } from './geometry';
-import nunito from '../../../static/generator/fonts/nunito.json';
-import breeserif from '../../../static/generator/fonts/breeserif.json';
-import oswald from '../../../static/generator/fonts/oswald.json';
-import kalam from '../../../static/generator/fonts/kalam.json';
-import cinzel from '../../../static/generator/fonts/cinzel.json';
-import righteous from '../../../static/generator/fonts/righteous.json';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { normalizeHeartDesign, serializeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
 import { intersectionMarginPx } from '$lib/editor/curveIssues';
@@ -20,6 +14,9 @@ import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { cutTipCounts } from './cutQuality';
 import { PAPER_NECK_MM, PRINT_WIDTH_MM, paperFaults } from '$lib/geometry/paperNecks';
+import { shippedFont } from './fonts.test-helpers';
+
+const [nunito, breeserif, oswald, kalam, cinzel, righteous] = await Promise.all(['nunito', 'breeserif', 'oswald', 'kalam', 'cinzel', 'righteous'].map(shippedFont));
 
 const font = nunito as unknown as Font;
 const fonts = { nunito, breeserif, oswald, kalam, cinzel, righteous };

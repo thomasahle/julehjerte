@@ -1317,7 +1317,8 @@ on every strip count, both make hearts (mostly with the hard-to-cut warning,
 naming Ø or Æ, whose split counter or ring make thin paper), in Chrome and WebKit,
 on the site and on the version of 10-20 11:18; Ø has O's width in every font.
 Characters outside the fonts' set (~, ?, …) are refused by name: the set is
-fixed when the shipped fonts are built, and for Google fonts in `FONT_CHARACTERS`.
+fixed when the shipped fonts are built, and for Google fonts in `FONT_CHARACTERS`
+(until 22 Oct 2026; see "Every character a font has, and symbols and emoji").
 
 ## The circle on equal squares meeting the paper's edges in points
 
@@ -1496,6 +1497,54 @@ counted 187 clean, with scripts taking up to 140 s.)
 
 Not done: thickening thin families as Cinzel and Kalam are, which would need a
 measure of each font's thinnest strokes.
+
+## Every character a font has, and symbols and emoji
+
+Product request (2026-10-22): "I still would like to support more characters,
+like ~. Can we just support all characters without preprocessing?", and then
+"Ideally we should even support unicode, so users can type ♥, or L♥o / ♥v♥ /
+e♥e". No outline is built ahead any more and no list of characters is kept:
+
+- The nine fonts ship as Fontsource's static WOFF files of their Latin and Latin
+  Extended subsets at our weights (`static/generator/fonts/{name}-latin.woff`,
+  `-latin-ext.woff`; 292 KB in all, where the nine outline JSONs were 1.2 MB).
+  A Google font is fetched the same way. A character in neither file is looked
+  up in Fontsource's list of the font's subsets (`api.fontsource.org`, asked
+  only then) and its subset's file fetched from jsDelivr.
+- A character the font has in no subset comes from Noto Sans Symbols 2 (♥ ★ ❄
+  ✓ ✝ ☃), else from Noto Emoji at 700 (🎄 🎅 ⭐), the emoji as outlines, not
+  colour. Such a stand-in is scaled to the font's capitals (the H's height, no
+  wider than half as much again), centred between the baseline and the
+  capitals' tops with the H's side bearings, loses its specks (parts and holes
+  under a disc 0.1 em across, π · .05² em²: 🎄 went from 26 rings and 1,002
+  points to 4 and 185) and is thickened by the strokes rule measured on itself.
+  The emoji's variation selectors, joiners and skin tones are dropped from the
+  text. Only a character none of them has is refused ("Tegnet “雪” findes ikke i
+  denne skrifttype.").
+- `fontFile.ts` opens a file once and outlines a character when a text first
+  asks for it, flattening curves as `build-outlines.py` did (each piece halved
+  until its chord strays at most .0005 em at its quarter points, to depth 14).
+  Kalam and Cinzel grow as the build grew them (.025 and .04 em, round joins,
+  only where a letter keeps its rings), a thin Google font as `strokes` decides,
+  each a character at a time. All of it runs in one font worker for the visit
+  (`fontLibrary.ts`, `fontWorker.ts`, `fontLoader.ts`); the generator is sent
+  only the text's glyphs.
+
+Against the old outlines, per font the mean difference in area is 0.03–0.37%
+(Kalam 0.21%, Cinzel 0.12%), every glyph with the same number of rings. The
+static fonts (Alfa Slab One, Bree Serif, Bungee, Righteous) mostly match point
+for point; the variable ones (Nunito, Oswald, Josefin Sans, Cinzel, Kalam) come
+from Google's static instances, not fontTools' instancing, and differ by a few
+points a letter. Every generator test passes unchanged. Over the 36 corpus
+texts in the default frame in Nunito, generation took 7.2 s in all against
+8.2 s; one text is much slower (A-B, 72 → 253 ms), two much faster (BO, æøå).
+The design page's first heart shows in 0.50 s, against 0.52 s.
+
+In the browser (built site, Chrome): ~?,:; and '"()/ in Nunito, éñçłß,
+Łukasz in Kalam, I♥U in Cinzel's checks, L♥o / ♥v♥ / e♥e in the checks, ⭐, ❤️
+and ❄ make hearts; Cinzel's €, Lobster's ñ and J, and 🎄 are hard to cut;
+雪 is refused by name. The fonts' own @ is slow in "Store bogstaver" (69 s
+alone; @%€ is refused after 208 s), quick on equal squares (3 s).
 
 ## Larger circles on equal squares for animals
 

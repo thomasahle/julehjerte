@@ -3,8 +3,8 @@
  * are is measured on its letters drawn as pixels: the share of their area in
  * strokes thinner than a width is what no disc of that width inside a letter
  * covers (the letters "opened" by it). A font with more of its letters that
- * thin than ours have is grown all round, as the build grows our thin ones
- * (`scripts/generator/build-outlines.py`), by the least that leaves no more;
+ * thin than ours have is grown all round, as our thin ones are
+ * (`fontLibrary`'s `buildGrown`), by the least that leaves no more;
  * each letter by less where growing would make the paper round it, in its
  * counters and notches, thin instead.
  */
@@ -125,28 +125,30 @@ function grownPixels(letter: Letter, g: number, inside = true): Uint8Array {
 	return out;
 }
 
-/** The measured letters of each font, once. */
-const measured = new WeakMap<Font, Letter[]>();
+/** The measured letters of each font, once for each set of characters. */
+const measured = new WeakMap<Font, Map<string, Letter[]>>();
 
-function letters(font: Font): Letter[] {
-	let known = measured.get(font);
+function letters(font: Font, chars = MEASURED_LETTERS): Letter[] {
+	let sets = measured.get(font);
+	if (!sets) measured.set(font, sets = new Map());
+	let known = sets.get(chars);
 	if (!known) {
 		known = [];
-		for (const char of MEASURED_LETTERS) {
+		for (const char of chars) {
 			const glyph = font.glyphs[char];
 			const r = glyph && raster(glyph.contours);
 			if (r) known.push(letterOf(r));
 		}
-		measured.set(font, known);
+		sets.set(chars, known);
 	}
 	return known;
 }
 
 /** The letters' thin pixels, as `thinShare`; once more than `most` of them
  * are found, the count so far. */
-function thinPixels(font: Font, width: number, grow: number, most = Infinity): { thin: number; total: number } {
+function thinPixels(font: Font, width: number, grow: number, most = Infinity, chars = MEASURED_LETTERS): { thin: number; total: number } {
 	const radius = width / 2 / PIXEL, g = grow / PIXEL;
-	const grown = letters(font).map(letter => ({ letter, inside: g > 0 ? grownPixels(letter, g) : letter.raster.inside }));
+	const grown = letters(font, chars).map(letter => ({ letter, inside: g > 0 ? grownPixels(letter, g) : letter.raster.inside }));
 	let total = 0, thin = 0;
 	for (const { inside } of grown) for (let i = 0; i < inside.length; i++) total += inside[i];
 	for (const { letter, inside } of grown) {
@@ -165,8 +167,8 @@ export function thinShare(font: Font, width: number, grow = 0): number {
 }
 
 /** Whether more than THIN_SHARE of the letters, grown by `grow`, is thinner than THIN_WIDTH. */
-const tooThin = (font: Font, grow: number) => {
-	const { thin, total } = thinPixels(font, THIN_WIDTH, grow, THIN_SHARE);
+const tooThin = (font: Font, grow: number, chars = MEASURED_LETTERS) => {
+	const { thin, total } = thinPixels(font, THIN_WIDTH, grow, THIN_SHARE, chars);
 	return thin > THIN_SHARE * total;
 };
 
@@ -183,16 +185,17 @@ export function thinWidth(font: Font, share = THIN_SHARE, most = .4): number {
 	return low;
 }
 
-/** The least the letters must grow by, all round, to have no more than
- * THIN_SHARE of their area thinner than THIN_WIDTH: none for a font as thick
- * as ours, at most half THIN_WIDTH, to the pixel. */
-export function thinGrowth(font: Font): number {
-	if (!tooThin(font, 0)) return 0;
+/** The least the letters (`chars` of the font, its Latin letters unless
+ * told) must grow by, all round, to have no more than THIN_SHARE of their
+ * area thinner than THIN_WIDTH: none for a font as thick as ours, at most
+ * half THIN_WIDTH, to the pixel. */
+export function thinGrowth(font: Font, chars = MEASURED_LETTERS): number {
+	if (!tooThin(font, 0, chars)) return 0;
 	let low = 0, high = THIN_WIDTH / 2;
-	if (tooThin(font, high)) return high;
+	if (tooThin(font, high, chars)) return high;
 	while (high - low > PIXEL) {
 		const mid = (low + high) / 2;
-		if (tooThin(font, mid)) low = mid;
+		if (tooThin(font, mid, chars)) low = mid;
 		else high = mid;
 	}
 	return high;
@@ -273,7 +276,7 @@ export function glyphGrowth(contours: Ring[], by: number): number {
 /** The glyph grown by what it takes of `most` ems (`glyphGrowth`), or as
  * near it as keeps its parts apart and its counters; moved right and its
  * advance widened by what it grew, so the letters keep their spacing. */
-function grownGlyph(glyph: Font['glyphs'][string], most: number): Font['glyphs'][string] {
+export function grownGlyph(glyph: Font['glyphs'][string], most: number): Font['glyphs'][string] {
 	const by = glyphGrowth(glyph.contours, most);
 	if (!by) return glyph;
 	const shape = shapeOf(glyph.contours);

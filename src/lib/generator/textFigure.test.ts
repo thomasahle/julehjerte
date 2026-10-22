@@ -8,10 +8,10 @@ import { TEXT_TEMPLATES } from './templates';
 import { TEXT_FIGURES, textFigureRequest, textOutline } from './textFigure';
 import { ConstructionError, inside, type Font, type Ring } from './geometry';
 import { rasterizeDesign } from '$lib/paint/rasterize';
-import nunito from '../../../static/generator/fonts/nunito.json';
-import josefinsans from '../../../static/generator/fonts/josefinsans.json';
-import cinzel from '../../../static/generator/fonts/cinzel.json';
 import { arrangement, placeMotif, stripFigures, withCrowdedHiddenCuts } from './stripFigure';
+import { shippedFont } from './fonts.test-helpers';
+
+const [nunito, josefinsans, cinzel] = await Promise.all(['nunito', 'josefinsans', 'cinzel'].map(shippedFont));
 
 const colors = { left: '#ffffff', right: '#cc0000' };
 const fonts = { nunito: nunito as unknown as Font, josefinsans: josefinsans as unknown as Font, cinzel: cinzel as unknown as Font };

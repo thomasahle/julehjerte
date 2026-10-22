@@ -2,9 +2,12 @@ import { describe, expect, it } from 'vitest';
 import type { Font, Ring } from './geometry';
 import { readFont } from './fontFile';
 import { slow } from './slow.test-helpers';
+import { shippedFont } from './fonts.test-helpers';
+import { SHIPPED_FONTS } from './fontFaces';
 import { THIN_SHARE, THIN_WIDTH, glyphGrowth, thickened, thinGrowth, thinShare, thinWidth } from './strokes';
 
-const shippedFonts = import.meta.glob<Font>('/static/generator/fonts/*.json', { eager: true, import: 'default' });
+const shippedFonts: Record<string, Font> = Object.fromEntries(
+	await Promise.all(Object.keys(SHIPPED_FONTS).map(async name => [name, await shippedFont(name)] as const)));
 const files = import.meta.glob<string>('/docs/design-start/assets/fonts/*.ttf', { eager: true, query: '?inline', import: 'default' });
 const file = (name: string) => Uint8Array.from(atob(files[`/docs/design-start/assets/fonts/${name}.ttf`].split(',')[1]), c => c.charCodeAt(0));
 

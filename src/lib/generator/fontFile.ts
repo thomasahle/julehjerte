@@ -1,16 +1,13 @@
 /**
  * Letter outlines read from a font file, as `scripts/generator/build-outlines.py`
- * makes them for the fonts we ship: curves flattened within .0005 em, the
- * contours that overlap merged under the non-zero rule, in ems with y down,
- * each ring's area positive. Reads TrueType outlines from a TrueType or WOFF
- * file, which is what Fontsource serves for every Google font (see
- * `googleFonts`); a static instance only, as variations are not applied.
+ * made them for the fonts we ship until 22 Oct 2026: curves flattened within
+ * .0005 em, the contours that overlap merged under the non-zero rule, in ems
+ * with y down, each ring's area positive. Reads TrueType outlines from a TrueType or WOFF
+ * file, which is what Fontsource serves for every font, ours among them (see
+ * `fontLibrary`); a static instance only, as variations are not applied.
  */
 import ClipperLib from 'clipper-lib';
 import type { Font, Point, Ring } from './geometry';
-
-/** The characters the fonts we ship carry. */
-export const FONT_CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÆØÅæøåÄÖÜäöüÉé0123456789+-&.! ';
 
 /** A file that is not a font, or one whose outlines this does not read. */
 export class FontFileError extends Error {}
@@ -64,9 +61,16 @@ async function tables(bytes: Uint8Array<ArrayBuffer>): Promise<Map<string, DataV
 	return result;
 }
 
-/** The glyph a character maps to, from the font's Unicode map: the full
- * repertoire's (format 12) before the basic plane's (format 4). */
-function characterMap(cmap: DataView): (code: number) => number {
+type CharacterMap = {
+	/** The glyph a character maps to, 0 where none. */
+	glyph: (code: number) => number;
+	/** The characters it maps, those of each range that map to a glyph. */
+	codes: () => number[];
+};
+
+/** The font's Unicode map: the full repertoire's (format 12) before the
+ * basic plane's (format 4). */
+function characterMap(cmap: DataView): CharacterMap {
 	let best: { format: number; offset: number } | undefined;
 	for (let i = 0; i < cmap.getUint16(2); i++) {
 		const platform = cmap.getUint16(4 + 8 * i), encoding = cmap.getUint16(6 + 8 * i);
@@ -76,16 +80,25 @@ function characterMap(cmap: DataView): (code: number) => number {
 	}
 	if (!best) throw new FontFileError('No Unicode map');
 	const { format, offset } = best;
-	if (format === 12)
-		return code => {
-			for (let g = 0, at = offset + 16; g < cmap.getUint32(offset + 12); g++, at += 12)
+	const mapped = (glyph: (code: number) => number, ranges: [number, number][]): CharacterMap => ({
+		glyph,
+		codes: () => ranges.flatMap(([first, last]) =>
+			Array.from({ length: last - first + 1 }, (_, i) => first + i).filter(code => glyph(code)))
+	});
+	if (format === 12) {
+		const groups = Array.from({ length: cmap.getUint32(offset + 12) }, (_, g) => offset + 16 + 12 * g);
+		return mapped(code => {
+			for (const at of groups)
 				if (code >= cmap.getUint32(at) && code <= cmap.getUint32(at + 4))
 					return cmap.getUint32(at + 8) + code - cmap.getUint32(at);
 			return 0;
-		};
+		}, groups.map((at): [number, number] => [cmap.getUint32(at), cmap.getUint32(at + 4)]));
+	}
 	const segments = cmap.getUint16(offset + 6), ends = offset + 14, starts = ends + segments + 2;
 	const deltas = starts + segments, ranges = deltas + segments;
-	return code => {
+	const spans = Array.from({ length: segments / 2 }, (_, k): [number, number] =>
+		[cmap.getUint16(starts + 2 * k), cmap.getUint16(ends + 2 * k)]).filter(([first]) => first !== 0xffff);
+	return mapped(code => {
 		for (let s = 0; s < segments; s += 2) {
 			if (code > cmap.getUint16(ends + s)) continue;
 			const start = cmap.getUint16(starts + s), delta = cmap.getUint16(deltas + s), range = cmap.getUint16(ranges + s);
@@ -95,7 +108,7 @@ function characterMap(cmap: DataView): (code: number) => number {
 			return glyph ? (glyph + delta) & 0xffff : 0;
 		}
 		return 0;
-	};
+	}, spans);
 }
 
 /** A glyph's contours in font units, y up, its components placed. */
@@ -174,26 +187,48 @@ function splines(glyf: DataView, start: (id: number) => number, id: number, dept
 	return result;
 }
 
-/** A contour as a ring, each quadratic curve split into pieces that stray
- * from it by at most `tolerance`. */
-function polyline(spline: Spline, tolerance: number): Point[] {
+/** The distance from a point to the segment from p to q. */
+function segmentDistance([x, y]: Point, [px, py]: Point, [qx, qy]: Point): number {
+	const dx = qx - px, dy = qy - py, length = dx * dx + dy * dy;
+	const t = length ? Math.max(0, Math.min(1, ((x - px) * dx + (y - py) * dy) / length)) : 0;
+	return Math.hypot(x - (px + t * dx), y - (py + t * dy));
+}
+
+/** A curve's points after its first, as the build flattened curves: each
+ * piece halved until its chord strays by at most `tolerance` at its quarter
+ * points, or fourteen times. */
+function flattened(at: (t: number) => Point, tolerance: number): Point[] {
+	const result: Point[] = [];
+	const step = (a: number, b: number, p: Point, q: Point, depth: number) => {
+		const error = Math.max(...[.25, .5, .75].map(v => segmentDistance(at(a + (b - a) * v), p, q)));
+		if (error <= tolerance || depth >= 14) {
+			result.push(q);
+			return;
+		}
+		const m = (a + b) / 2, r = at(m);
+		step(a, m, p, r, depth + 1);
+		step(m, b, r, q, depth + 1);
+	};
+	step(0, 1, at(0), at(1), 0);
+	return result;
+}
+
+/** A contour as a ring in ems, y down: its quadratic curves flattened within
+ * `tolerance` ems (`flattened`), the control points between two of them
+ * standing for the on-curve point halfway, as TrueType has it. */
+function polyline(spline: Spline, em: number, tolerance: number): Point[] {
 	const k = spline.findIndex(p => p.on);
 	// Start on the curve: at its first point there, or between the first and
 	// last control points of a contour that has none.
-	const points = k < 0
+	const points = (k < 0
 		? [{ x: (spline[0].x + spline.at(-1)!.x) / 2, y: (spline[0].y + spline.at(-1)!.y) / 2, on: true }, ...spline]
-		: [...spline.slice(k), ...spline.slice(0, k)];
+		: [...spline.slice(k), ...spline.slice(0, k)]).map(p => ({ x: p.x / em, y: -p.y / em, on: p.on }));
 	const ring: Point[] = [[points[0].x, points[0].y]];
-	const curve = (cx: number, cy: number, x: number, y: number) => {
-		const [x0, y0] = ring.at(-1)!;
-		// A quadratic's chords of a parameter step h stray by at most h²|p0 - 2c + p1| / 4.
-		const n = Math.max(1, Math.ceil(Math.sqrt(Math.hypot(x0 - 2 * cx + x, y0 - 2 * cy + y) / 4 / tolerance)));
-		for (let i = 1; i <= n; i++) {
-			const t = i / n, u = 1 - t;
-			ring.push([u * u * x0 + 2 * u * t * cx + t * t * x, u * u * y0 + 2 * u * t * cy + t * t * y]);
-		}
+	const curve = (bx: number, by: number, cx: number, cy: number) => {
+		const [ax, ay] = ring.at(-1)!;
+		ring.push(...flattened(t => [(1 - t) ** 2 * ax + 2 * (1 - t) * t * bx + t * t * cx, (1 - t) ** 2 * ay + 2 * (1 - t) * t * by + t * t * cy], tolerance));
 	};
-	let control: Spline[number] | undefined;
+	let control: (typeof points)[number] | undefined;
 	for (const p of [...points.slice(1), points[0]]) {
 		if (p.on) {
 			if (control) curve(control.x, control.y, p.x, p.y);
@@ -204,7 +239,8 @@ function polyline(spline: Spline, tolerance: number): Point[] {
 			control = p;
 		}
 	}
-	ring.pop();
+	const [x0, y0] = ring[0], [x1, y1] = ring.at(-1)!;
+	if (x0 === x1 && y0 === y1) ring.pop();
 	return ring;
 }
 
@@ -227,27 +263,56 @@ function filled(rings: Ring[]): Ring[] {
 		.map(r => area(r) < 0 ? r.reverse() : r);
 }
 
-/** The font's outlines of the characters we use, from its file's bytes.
- * Characters it lacks are left out, as the shipped fonts leave them. */
-export async function readFont(bytes: Uint8Array<ArrayBuffer>, characters = FONT_CHARACTERS): Promise<Font> {
+/** A character the text can be written with: not a control character. */
+const printable = (code: number) => code >= 0x20 && !(code >= 0x7f && code <= 0x9f);
+
+/** A font file opened: its characters, and each one's outline when first asked for. */
+export type FontReader = {
+	/** Every character the file maps that a text can be written with. */
+	characters(): string[];
+	/** The character's outline, or undefined where the file lacks it. */
+	glyph(char: string): Font['glyphs'][string] | undefined;
+};
+
+/** The font in a file's bytes, its tables read once. */
+export async function openFont(bytes: Uint8Array<ArrayBuffer>): Promise<FontReader> {
 	const t = await tables(bytes);
-	const head = t.get('head')!, loca = t.get('loca')!, hmtx = t.get('hmtx')!;
+	const head = t.get('head')!, loca = t.get('loca')!, hmtx = t.get('hmtx')!, glyf = t.get('glyf')!;
 	const em = head.getUint16(18), long = head.getInt16(50) === 1;
 	const glyphCount = t.get('maxp')!.getUint16(4), metrics = t.get('hhea')!.getUint16(34);
 	if (!em || !metrics) throw new FontFileError('No metrics');
 	const start = (id: number) => long ? loca.getUint32(4 * id) : 2 * loca.getUint16(2 * id);
-	const glyphOf = characterMap(t.get('cmap')!);
+	const map = characterMap(t.get('cmap')!);
+	const outlined = new Map<string, Font['glyphs'][string] | undefined>();
+	return {
+		characters: () => map.codes().filter(printable).map(code => String.fromCodePoint(code)),
+		glyph(char) {
+			if (outlined.has(char)) return outlined.get(char);
+			const id = map.glyph(char.codePointAt(0)!);
+			let glyph: Font['glyphs'][string] | undefined;
+			if (id && id < glyphCount) {
+				const rings = splines(glyf, start, id)
+					.filter(s => s.length > 2)
+					.map(s => polyline(s, em, TOLERANCE));
+				glyph = {
+					advance: Math.round(hmtx.getUint16(4 * Math.min(id, metrics - 1)) / em * 1e5) / 1e5,
+					contours: filled(rings)
+				};
+			}
+			outlined.set(char, glyph);
+			return glyph;
+		}
+	};
+}
+
+/** The font's outlines of `characters`, from its file's bytes: by default
+ * every character the file maps. Characters it lacks are left out. */
+export async function readFont(bytes: Uint8Array<ArrayBuffer>, characters?: string): Promise<Font> {
+	const reader = await openFont(bytes);
 	const glyphs: Font['glyphs'] = {};
-	for (const char of characters) {
-		const id = glyphOf(char.codePointAt(0)!);
-		if (!id || id >= glyphCount) continue;
-		const rings = splines(t.get('glyf')!, start, id)
-			.filter(s => s.length > 2)
-			.map(s => polyline(s, TOLERANCE * em).map(([x, y]): Point => [x / em, -y / em]));
-		glyphs[char] = {
-			advance: Math.round(hmtx.getUint16(4 * Math.min(id, metrics - 1)) / em * 1e5) / 1e5,
-			contours: filled(rings)
-		};
+	for (const char of characters === undefined ? reader.characters() : [...characters]) {
+		const glyph = reader.glyph(char);
+		if (glyph) glyphs[char] = glyph;
 	}
 	return { glyphs };
 }

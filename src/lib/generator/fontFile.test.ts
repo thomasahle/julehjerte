@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { FontFileError, readFont } from './fontFile';
-import { inside, type Font, type Point, type Ring } from './geometry';
+import { inside, type Point, type Ring } from './geometry';
 
 const files = import.meta.glob<string>('/docs/design-start/assets/fonts/*.ttf', { eager: true, query: '?inline', import: 'default' });
-const shippedFonts = import.meta.glob<Font>('/static/generator/fonts/*.json', { eager: true, import: 'default' });
-const file = (name: string) => Uint8Array.from(atob(files[`/docs/design-start/assets/fonts/${name}.ttf`].split(',')[1]), c => c.charCodeAt(0));
-const shipped = (name: string) => shippedFonts[`/static/generator/fonts/${name}.json`];
+const woffs = import.meta.glob<string>('/static/generator/fonts/*.woff', { eager: true, query: '?inline', import: 'default' });
+const bytes = (data: string) => Uint8Array.from(atob(data.split(',')[1]), c => c.charCodeAt(0));
+const file = (name: string) => bytes(files[`/docs/design-start/assets/fonts/${name}.ttf`]);
+const shipped = (name: string, subset = 'latin') => bytes(woffs[`/static/generator/fonts/${name}-${subset}.woff`]);
 
 /** The area the rings fill, each ring inside an odd number of others a hole. */
 const filledArea = (rings: Ring[]) => rings.reduce((sum, ring, i) => {
@@ -70,18 +71,21 @@ async function woff(ttf: Uint8Array<ArrayBuffer>): Promise<Uint8Array<ArrayBuffe
 }
 
 describe('font files', () => {
-	it('outlines the fonts we ship from their files as the build does', async () => {
-		// The static ones, which the build does not thicken; Righteous has 2048 units to the em.
+	it('reads every character of a file, the letters of the files we ship as their TrueType originals', async () => {
+		// The static ones, whose files are the same design; Righteous has 2048 units to the em.
 		for (const name of ['alfaslabone', 'breeserif', 'bungee', 'righteous']) {
-			const font = await readFont(file(name)), reference = shipped(name);
-			expect(Object.keys(font.glyphs).sort(), name).toEqual(Object.keys(reference.glyphs).sort());
+			const font = await readFont(shipped(name)), reference = await readFont(file(name), 'AÆØÅaæøå09&!');
+			for (const char of '~?,:;\'"()/@%€éñçß') expect(font.glyphs[char], `${name} ${char}`).toBeDefined();
+			expect(Object.keys(font.glyphs).length, name).toBeGreaterThan(200);
 			for (const [char, glyph] of Object.entries(reference.glyphs)) {
 				const ours = font.glyphs[char];
 				expect(ours.contours.length, `${name} ${char}`).toBe(glyph.contours.length);
 				expect(ours.advance, `${name} ${char}`).toBeCloseTo(glyph.advance, 4);
-				expect(filledArea(ours.contours), `${name} ${char}`).toBeCloseTo(filledArea(glyph.contours), 3);
+				expect(Math.abs(filledArea(ours.contours) / filledArea(glyph.contours) - 1), `${name} ${char}`).toBeLessThan(.01);
 			}
 		}
+		// Polish, Czech and the like are in the second file.
+		expect((await readFont(shipped('nunito', 'latin-ext'))).glyphs['ł']).toBeDefined();
 	});
 
 	it('merges contours that overlap, as variable fonts draw them', async () => {

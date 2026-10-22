@@ -13,12 +13,11 @@ import { generate } from '$lib/generator/generate';
 import { defaults, fittedCells } from '$lib/generator/state';
 import { DEFAULT_COLORS_HEX } from '$lib/stores/colors';
 import type { CatalogItem } from '$lib/generator/catalog';
-import type { Font } from '$lib/generator/geometry';
+import { FontLibrary } from '$lib/generator/fontLibrary';
+import { staticFontFiles } from './staticFonts';
 import type { HeartDesign } from '$lib/types/heart';
 import type { StartArt } from '$lib/components/DesignStart.svelte';
 import catalog from '../../../static/generator/catalog.json';
-
-const fonts = import.meta.glob<Font>('/static/generator/fonts/*.json', { import: 'default' });
 
 /** Where each gallery heart appears; a heart shown twice needs two slots for its clip-path ids. */
 const GALLERY = {
@@ -45,7 +44,7 @@ const draw = (design: HeartDesign, slot: string) => {
 
 /** The heart "Skriv et navn" opens with: the generator's defaults, as the page would request them. */
 async function nameHeart(): Promise<HeartDesign> {
-	const font = await fonts[`/static/generator/fonts/${defaults.font}.json`]();
+	const font = await new FontLibrary(staticFontFiles).font(defaults.font, defaults.text);
 	return generate({
 		mode: 'text',
 		name: defaults.text,

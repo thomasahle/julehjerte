@@ -5,7 +5,9 @@ import { generate, type GeneratorRequest } from './generate';
 import { defaults, fittedCells, readGeneratorState, textRoom } from './state';
 import { TEXT_TEMPLATES, templateVariants } from './templates';
 import { geometryKey } from './cache';
-import nunito from '../../../static/generator/fonts/nunito.json';
+import { shippedFont } from './fonts.test-helpers';
+
+const nunito = await shippedFont('nunito');
 
 const font = nunito as unknown as Font;
 // Where the cuts reaching the paper's top edges meet it, in order.
@@ -111,7 +113,7 @@ it('lays square cells on a regular board, as in Brodal’s hearts', () => {
 it('weaves the geometric, poster and block fonts, with every letter the generator takes', async () => {
 	const colors = { left: '#fffdf5', right: '#b72f2b' };
 	for (const id of ['josefinsans', 'alfaslabone', 'bungee']) {
-		const added = (await import(`../../../static/generator/fonts/${id}.json`)).default as Font;
+		const added = await shippedFont(id);
 		for (const char of 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÆØÅæøå0123456789+-&.! ')
 			expect(added.glyphs[char], `${id} ${char}`).toBeDefined();
 		const { hardToCut } = generate({ mode: 'text', name: 'JUL', text: 'JUL', font: added, colors, textFrame: 'woven', fittedCells: false });

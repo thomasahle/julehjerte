@@ -13,9 +13,10 @@ import house from '../../../static/generator/motifs/house.json';
 import bell from '../../../static/generator/motifs/bell.json';
 import { motifChoices } from './boardMotif';
 import butterfly from '../../../static/generator/motifs/ph-butterfly.json';
-import nunito from '../../../static/generator/fonts/nunito.json';
-import oswald from '../../../static/generator/fonts/oswald.json';
 import type { Font } from './geometry';
+import { shippedFont } from './fonts.test-helpers';
+
+const [nunito, oswald] = await Promise.all(['nunito', 'oswald'].map(shippedFont));
 
 const colors = { left: '#ffffff', right: '#cc0000' };
 

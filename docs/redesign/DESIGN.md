@@ -1489,6 +1489,14 @@ icon's licence asks for a credit, its tooltip names the author and set, and SOUR
 credit lines. Source SVGs, licenses and rebuild inputs are local, and asset URLs are versioned when
 they change.
 
+A text may hold any character. The fonts are read from their files in the browser, the nine we
+ship from static/generator/fonts/ (Fontsource's Latin and Latin Extended files), the rest of a
+font's subsets and any Google font from Fontsource when a typed character needs them; a character
+the font lacks is drawn from Noto Sans Symbols 2, else Noto Emoji, scaled to the capitals and
+without specks too small to cut. Only a character none of these has is refused, by name. There is
+no list of allowed characters and nothing is outlined ahead (docs/generator/RESULTS.md, "Every
+character a font has, and symbols and emoji").
+
 The generator keeps its last valid preview visible while calculating a new choice. Export actions
 wait for the latest result. A bounded per-visit cache makes revisiting recent choices immediate;
 colours and print size are excluded from geometry dependencies. Reuse idle workers, cancel obsolete

@@ -3,7 +3,9 @@ import { SHIPPED, familyName, fontSample, googleFontChoice, googleFontUrl, isGoo
 import { readGeneratorState } from './state';
 import type { Font } from './geometry';
 import families from '../../../static/generator/google-fonts.json';
-import righteous from '../../../static/generator/fonts/righteous.json';
+import { shippedFont } from './fonts.test-helpers';
+
+const righteous = await shippedFont('righteous');
 
 const index = families as unknown as GoogleFamily[];
 const link = (font: string) => '#make=' + encodeURIComponent(JSON.stringify({ mode: 'text', font }));

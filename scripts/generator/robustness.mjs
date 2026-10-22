@@ -32,10 +32,14 @@ try {
     const { gridClearanceScale } = await server.ssrLoadModule('/src/lib/geometry/clearance.ts');
     const { rasterizeDesign } = await server.ssrLoadModule('/src/lib/paint/rasterize.ts');
     const { renderHeartSvgMarkup } = await server.ssrLoadModule('/src/lib/rendering/heartSvg.ts');
+    const { FontLibrary } = await server.ssrLoadModule('/src/lib/generator/fontLibrary.ts');
+    const { staticFontFiles } = await server.ssrLoadModule('/src/lib/server/staticFonts.ts');
+    // The fonts we ship, read from their files as the page reads them.
+    const fonts = new FontLibrary(staticFontFiles);
     let cases = [];
     if (args.mode !== 'figure')
         for (const fontId of fontIds.filter(f => !args.font || (args.font === 'others' ? f !== 'nunito' : String(args.font).split(',').includes(f)))) {
-            const font = await read(`static/generator/fonts/${fontId}.json`);
+            const font = await fonts.font(fontId, texts.join(''));
             for (const text of texts.filter(t => !args.input || args.input === t))
                 for (const { id, textFrame, cells } of TEXT_TEMPLATES.filter(f => !args.frame || f.id === args.frame || f.textFrame === args.frame)) {
                     const fittedCells = cells && cells === 'letters';

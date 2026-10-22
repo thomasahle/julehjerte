@@ -14,12 +14,6 @@ import { findSearchIssues } from './searchClearance';
 import { normalizeHeartDesign, serializeHeartDesign, parseHeartFromSVG, serializeHeartToSVG } from '$lib/utils/heartDesign';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import type { HeartDesign } from '$lib/types/heart';
-import nunito from '../../../static/generator/fonts/nunito.json';
-import breeserif from '../../../static/generator/fonts/breeserif.json';
-import oswald from '../../../static/generator/fonts/oswald.json';
-import kalam from '../../../static/generator/fonts/kalam.json';
-import cinzel from '../../../static/generator/fonts/cinzel.json';
-import righteous from '../../../static/generator/fonts/righteous.json';
 import gift from '../../../static/generator/motifs/gift.json';
 import paw from '../../../static/generator/motifs/ph-paw-print.json';
 import tablerPaw from '../../../static/generator/motifs/tb-paw.json';
@@ -37,6 +31,9 @@ import bicycle from '../../../static/generator/motifs/ph-bicycle.json';
 import moonStars from '../../../static/generator/motifs/ph-moon-stars.json';
 import tablerStars from '../../../static/generator/motifs/tb-stars.json';
 import crown from '../../../static/generator/motifs/ph-crown.json';
+import { shippedFont } from './fonts.test-helpers';
+
+const [nunito, breeserif, oswald, kalam, cinzel, righteous] = await Promise.all(['nunito', 'breeserif', 'oswald', 'kalam', 'cinzel', 'righteous'].map(shippedFont));
 const colors = { left: '#fffdf5', right: '#b72f2b' };
 const fonts = { nunito, breeserif, oswald, kalam, cinzel, righteous } as unknown as Record<string, Font>;
 function validateHandoffs(design: HeartDesign) {

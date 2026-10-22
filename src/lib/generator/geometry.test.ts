@@ -31,17 +31,14 @@ import { serializeTemplateToSVG } from '$lib/utils/templateSvg';
 import { renderHeartSvgMarkup } from '$lib/rendering/heartSvg';
 
 import { defaults, readGeneratorState, largestScale } from './state';
-import nunito from '../../../static/generator/fonts/nunito.json';
-import bree from '../../../static/generator/fonts/breeserif.json';
-import oswald from '../../../static/generator/fonts/oswald.json';
-import cinzel from '../../../static/generator/fonts/cinzel.json';
-import kalam from '../../../static/generator/fonts/kalam.json';
-import righteous from '../../../static/generator/fonts/righteous.json';
 import star from '../../../static/generator/motifs/star.json';
 import tree from '../../../static/generator/motifs/tree.json';
 import heart from '../../../static/generator/motifs/heart.json';
 import flower from '../../../static/generator/motifs/flower.json';
 import cat from '../../../static/generator/motifs/ph-cat.json';
+import { shippedFont } from './fonts.test-helpers';
+
+const [nunito, bree, oswald, cinzel, kalam, righteous] = await Promise.all(['nunito', 'breeserif', 'oswald', 'cinzel', 'kalam', 'righteous'].map(shippedFont));
 const colors = { left: '#fffdf5', right: '#b72f2b' };
 const fonts = {
 	nunito,

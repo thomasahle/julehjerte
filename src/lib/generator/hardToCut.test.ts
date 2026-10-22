@@ -11,9 +11,10 @@ import { findSearchIssues } from './searchClearance';
 import { normalizeHeartDesign, serializeHeartDesign, parseHeartFromSVG, serializeHeartToSVG } from '$lib/utils/heartDesign';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import type { HeartDesign } from '$lib/types/heart';
-import cinzel from '../../../static/generator/fonts/cinzel.json';
-import nunito from '../../../static/generator/fonts/nunito.json';
 import coffee from '../../../static/generator/motifs/ph-coffee.json';
+import { shippedFont } from './fonts.test-helpers';
+
+const [cinzel, nunito] = await Promise.all(['cinzel', 'nunito'].map(shippedFont));
 const colors = { left: '#fffdf5', right: '#b72f2b' };
 
 /** A hard-to-cut heart still survives both handoffs with the same weave and no

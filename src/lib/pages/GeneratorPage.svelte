@@ -44,17 +44,17 @@
 		fontSample,
 		googleFontChoice,
 		isGoogleFont,
-		loadGoogleFont,
 		loadPreview,
 		matchingFamilies,
 		previewFamily,
 		type GoogleFamily
 	} from '$lib/generator/googleFonts';
+	import { textFont } from '$lib/generator/fontLoader';
 	import type {
 		GeneratorResult,
 		GeneratorRequest
 	} from '$lib/generator/generate';
-	import type { Font, Ring } from '$lib/generator/geometry';
+	import type { Ring } from '$lib/generator/geometry';
 	import type { RecipeFile } from '$lib/generator/recipes';
 	import type { PaperReport } from '$lib/geometry/paperNecks';
 	import type { HeartDesign } from '$lib/types/heart';
@@ -286,7 +286,8 @@
 		revision = 0,
 		savedId: string | null = null;
 	const ABANDON_MS = 400;
-	function startJob(job: Job) {
+	/** The generator's worker, started once: by the first job, or while a text's font is read. */
+	function generatorWorker(): Worker {
 		if (!worker) {
 			worker = new Worker(new URL('../generator/worker.ts', import.meta.url), { type: 'module' });
 			worker.onmessage = (e) => finishJob(e.data);
@@ -303,8 +304,11 @@
 				nextJob();
 			};
 		}
+		return worker;
+	}
+	function startJob(job: Job) {
 		running = { ...job, started: performance.now() };
-		worker.postMessage(job.request);
+		generatorWorker().postMessage(job.request);
 	}
 	function finishJob(data: { result?: GeneratorResult } & Partial<Failure>) {
 		const job = running;
@@ -346,6 +350,9 @@
 			}
 		}, Math.max(0, ABANDON_MS - (performance.now() - running.started)));
 	}
+	/** The glyphs of the text's characters, read from the font's files (and a symbol or emoji font's) in a worker. */
+	const fontFor = (font: string, text: string) =>
+		textFont(new URL(`${base}/generator/fonts/`, window.location.href).href, font, text);
 	const requests = new Map<string, Promise<unknown>>();
 	const asset = async <T,>(path: string): Promise<T> => {
 		if (!requests.has(path))
@@ -401,11 +408,11 @@
 		// A motif on a board keeps the choice its default size made.
 		if (snapshot.mode === 'figure' && BOARD_STYLES.includes(snapshot.style))
 			request.layout = cache.get(geometryKey({ ...snapshot, scale: defaults.scale }))?.layout;
-		if (snapshot.mode === 'text')
-			request.font = isGoogleFont(snapshot.font)
-				? await loadGoogleFont(snapshot.font)
-				: await asset<Font>(`fonts/${snapshot.font}.json`);
-		else {
+		if (snapshot.mode === 'text') {
+			// The generator's worker loads while the letters are read.
+			generatorWorker();
+			request.font = await fontFor(snapshot.font, snapshot.text);
+		} else {
 			request.contours = (
 				await asset<{ contours: Ring[] }>(`motifs/${snapshot.motif}.json`)
 			).contours;
@@ -438,7 +445,7 @@
 		if (!choice) return;
 		let live = true;
 		googleSample = null;
-		loadGoogleFont(choice)
+		fontFor(choice, 'Aa')
 			.then((font) => {
 				if (live) googleSample = fontSample(font) ?? null;
 			})
