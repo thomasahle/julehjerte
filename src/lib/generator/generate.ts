@@ -44,6 +44,7 @@ import {
 	balancedFourPortMotif,
 	bentFourPortMotif,
 	touchingFourPortMotif,
+	withVisibleIslands,
 	hasCounterContact,
 	generateCheckedText,
 	inside,
@@ -478,7 +479,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	if (request.mode === 'text' && isTextFigure(request.textFrame)) return generateTextFigure(request);
 	const scale = request.scale ?? .7;
 	try {
-		return generateAtSize(request);
+		return generateAtSizeOrIslands(request);
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) || scale <= .7
 			|| request.mode === 'figure' && request.style === 'board') throw error;
@@ -489,7 +490,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		// size, rather than refusing, and says so. The circle on a board keeps
 		// its own (see `generateUsingRecipes`).
 		for (const size of [.97, .94, .91, .88, .85, .8, .75, .7].filter(size => size < scale - 1e-9)) try {
-			const result = generateAtSize({ ...request, scale: size });
+			const result = generateAtSizeOrIslands({ ...request, scale: size });
 			return { ...result, scale: result.scale ?? size };
 		} catch (smallerError) {
 			if (!(smallerError instanceof ConstructionError) && !(smallerError instanceof CutGeometryError)) throw smallerError;
@@ -518,6 +519,23 @@ function generateTextFigure(request: GeneratorRequest): GeneratorResult {
 	}
 	if (hard) return hard;
 	throw last;
+}
+
+/** A heart for the request at its own size, else one whose islands are
+ * entered along visible spokes where nothing else routes (see
+ * `withVisibleIslands`), hard to cut rather than refused. */
+function generateAtSizeOrIslands(request: GeneratorRequest): GeneratorResult {
+	try {
+		return generateAtSize(request);
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		try {
+			return withVisibleIslands(() => generateAtSize(request));
+		} catch (islandError) {
+			if (!(islandError instanceof ConstructionError) && !(islandError instanceof CutGeometryError)) throw islandError;
+			throw error;
+		}
+	}
 }
 
 /** A heart for the request at its own size (see `generate`). */

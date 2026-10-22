@@ -790,6 +790,20 @@ function attachmentOrder(fan: number, count: number) {
 	}
 	return choices;
 }
+/** Whether a construction whose islands only route along visible spokes is
+ * kept for the final check (see `contourMotif`). Earlier, it can stand where
+ * a later construction would be clean, so only a request refused without it
+ * tries again with it: every heart built without it keeps its cuts. */
+let visibleIslands = false;
+export function withVisibleIslands<T>(build: () => T): T {
+	const before = visibleIslands;
+	visibleIslands = true;
+	try {
+		return build();
+	} finally {
+		visibleIslands = before;
+	}
+}
 /** Boundary cells restrict counters to inward gates, so opening an outer cap
  * cannot discard a counter or its bridges. Their route validator checks the
  * retained paths with the new paper-edge endpoints, instead of the cap that
@@ -802,7 +816,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; connectionAllowed?: (point: Point) => boolean; safeAttachments?: boolean } = {}
+	options: { root?: Ring; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; connectionAllowed?: (point: Point) => boolean; safeAttachments?: boolean; routed?: { fallback?: Edge[] } } = {}
 ) {
 	if (options.alternateIslandGates) {
 		// Different letters can need different gates. Finish each cell locally
@@ -1049,13 +1063,20 @@ function contourMotif(
 		return;
 	}
 	if (!options.originalOnly && !options.visibleIslands && nodes.length > 1) {
+		const visible: { fallback?: Edge[] } = {};
 		try {
-			contourMotif(edges, contours, gates, angles, margin, bridgePorts, acceptRoutes, { ...options, visibleIslands: true, strict: true });
+			contourMotif(edges, contours, gates, angles, margin, bridgePorts, acceptRoutes, { ...options, visibleIslands: true, strict: true, routed: visible });
 			return;
 		} catch (error) {
 			if (!(error instanceof ConstructionError)) throw error;
 		}
+		// Islands too close together for any hidden chain (a paw's toes, a
+		// sun's rays) can still be entered along visible spokes. Where only
+		// those route, their first construction is the one left to the final
+		// check, hard to cut rather than refused (see `withVisibleIslands`).
+		if (visibleIslands) fallback ??= visible.fallback ?? null;
 	}
+	if (options.routed) options.routed.fallback = fallback ?? undefined;
 	// Fitted curves get their own full-sheet clearance check before export.
 	if (fallback && !acceptRoutes && !options.strict) {
 		edges.push(...fallback);

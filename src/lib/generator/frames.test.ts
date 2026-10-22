@@ -708,6 +708,17 @@ describe('frames from real hearts', () => {
   expect(design.gridSize).toEqual({ x: 3, y: 3 });
   expect(motifChoices()[layout!.alternative].alone).toBe(true);
  }, 30000);
+ it('weaves islands too close for hidden chains along visible spokes, hard to cut rather than refused', () => {
+  // The sun's rays route only along visible spokes; nothing else does.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Sun', contours: sun.contours as Ring[], colors, style: 'board' });
+  expect(design.gridSize).toEqual({ x: 5, y: 5 });
+  expect(hardToCut).toBeDefined();
+ });
+ slow('lays the paw on equal squares, its toes entered along visible spokes', () => {
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Paw', contours: paw.contours as Ring[], colors, style: 'squares' });
+  expect(design.gridSize).toEqual({ x: 3, y: 3 });
+  expect(hardToCut).toBeDefined();
+ }, 30000);
  slow('weaves outlines that touch into the checks', () => {
   // The bicycle's wheels touch its frame at single points.
   const { design } = generate({ mode: 'figure', name: 'Bicycle', contours: bicycle.contours as Ring[], colors, style: 'strips' });
