@@ -61,13 +61,13 @@
 		{ key: 'lobes', label: 'editorBetweenLobes', name: 'editorBetweenLobesSymmetry' }
 	];
 
-	// Word and tooltip per segment. The tooltip is the long name — "Spejlsymmetri"
-	// for Sym — and it is also what a mouse gets where the segment is compact and
-	// keeps the glyph alone.
+	// Word and tooltip per segment: Fri leaves the curves free, Spejlet mirrors one side in the other,
+	// Drejet turns it, as the glyphs draw them. The tooltip says so in a few words, and it is also what a
+	// mouse gets where the segment is compact and keeps the glyph alone.
 	const MODES: { mode: SymmetryMode; word: TranslationKey; title: TranslationKey }[] = [
-		{ mode: 'off', word: 'editorOff', title: 'editorOff' },
-		{ mode: 'sym', word: 'editorSym', title: 'mirrorSymmetry' },
-		{ mode: 'anti', word: 'editorAnti', title: 'editorAntiSymmetry' }
+		{ mode: 'off', word: 'editorOff', title: 'editorOffHint' },
+		{ mode: 'sym', word: 'editorSym', title: 'editorSymHint' },
+		{ mode: 'anti', word: 'editorAnti', title: 'editorAntiHint' }
 	];
 
 	function isMode(v: unknown): v is SymmetryMode {

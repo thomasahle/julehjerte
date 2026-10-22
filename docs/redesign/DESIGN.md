@@ -300,8 +300,25 @@ name the rows and carry the counts; sections are `margin-top: 28px` apart (32 be
 row-gap; the grid is `align-items: start`.
 "Mine hjerter" keeps its visible heading row (uppercase 15px/600 `--green`, letter-spacing .06em,
 padding-bottom 4, margin-bottom 10, no rule under it). Section ids `klassiske`, `stjerner`,
-`moenstre`, `figurer`, `hjerter` (anchors used by the detail page). Grid
+`moenstre`, `fliser`, `figurer`, `tekst`, `hjerter` (anchors used by the detail page). Grid
 `repeat(auto-fill, minmax(204px, 1fr))`, column-gap 16, row-gap 28 (2 columns, gaps 14/32 below 600).
+
+Categories (hearts.json, 2026-10-22): Klassiske, Stjerner, Mønstre, Fliser, Figurer, Tekst, Hjerter. Fliser ("Tilings")
+holds the Escher-like tilings, where the red and the white pieces are the same interlocking figure: Dag og nat,
+Puslespil, Drageskæl, Kroge, Alhambra, Kølbuer, Hanefod, Dråber, Fiskeskæl, Bølger. Plain polygon tilings (Sildeben,
+Flyvende gæs) and Hermann-gitter stay in Mønstre. Tekst holds five hearts made with the design page's text frames and checked
+as paper (each template drawn at 80 mm, every piece joined to its ear by paper about 2 mm wide or more, no red cut):
+GOD JUL (Cirkel), TAK (Store bogstaver), 2026 (Tern), JUL 2026 (Cirkel med dobbelt bort) and MOR & FAR (Store
+bogstaver); JUL, drawn by hand, stays in Klassiske. Mønstre, Fliser, Figurer and Tekst each end with a "make your own" card
+(`front/MakeOwnCard.svelte`, `makeOwnLink` in `$lib/data/categories`): a blank heart, dashed and with a plus,
+hanging on the next ribbon and strand like a card, named "Lav dit eget mønster" (Tegn, `/editor/`), "Lav dit eget
+flisemønster" (Tegn's Escher tab, `/editor/escher/`), "Lav din egen figur" (the design page's figures,
+`/design/figure/`) and "Lav dit eget tekstmønster" (its texts, `/design/text/`). The whole card is one link; it is not a heart, so the hero and the chips' counts leave it out.
+
+Addresses: `/design/figure/` and `/design/text/` (and under `/en/`) are the design page opened on a figure or a
+text; the page keeps its address in step with what it makes (`/design/` at its start), with the state in
+`#make=` as before. `/editor/escher/` opens Tegn on its Escher tab. Older links' `?mode=` and `?tab=escher` still
+work.
 
 Card (`article.card`, relative, flex column centred, height size+120 with size 200, radius 14, hover
 `transform: scale(1.02)`, transition .2s):
@@ -562,15 +579,23 @@ Keep every existing tool (undo/redo, insert/delete node, corner/smooth/symmetric
 44px icon buttons with tooltips — nothing removed, no labels under icons. Apply the palette: page background,
 panels white with 1px `--line` and radius 12, section titles 12px uppercase `--muted`, green accents, red
 primary. Top bar: back link + logo at the left; Help (icon), **Hent PDF** (primary red) and **Gem** (dark
-green) at the right. Right panel 340px: Symmetri (segmented Fra / Sym / Anti), Tegning, Hjertedetaljer,
+green) at the right. Right panel 340px: Symmetri (three rows, "Hver kurve", "Kurverne i hver lap" and "De to lapper", each segmented Fri / Spejlet / Drejet; named so after the 2026-10-22 user test, where "Inden i lap" and "Sym / Anti" were guesswork; then Striber and Start forfra), Tegning, Hjertedetaljer,
 Handlinger. A **"Skjul panel"** control collapses the panel so the canvas fills the width; a slim tab at the
 right edge ("Vis panel") brings it back; remember the choice in localStorage. Add a "Snap til modsat side"
 checkbox and a one-line hint above the canvas. The mobile editor keeps its existing stacked panels.
 
+The hint above the canvas follows what is chosen (`canvasHint`, 2026-10-22: one fixed line of three instructions
+and a first-visit tip saying the same were read once and passed over): with nothing chosen, how to choose and
+shape a curve and where the strip count is, and, in the Normal tab, a link to the design page's figures for a
+motif such as a tree ("Lav en figur", `/design/figure/`); a curve, a node, an end, several nodes and an outer
+edge each get what can be done with them; the Escher tab has its own lines for nothing chosen, a cut and an edge.
+It names the panel and the toolbar rather than right and left, since the mobile editor places them elsewhere,
+and there it comes as the dismissible tip. The help's tips end with the same way to a figure.
+
 Symmetri and Tegning are drawn, not only named — the icons the owner chose in `docs/redesign/symmetri-ikoner.html`
 ("Familie A med tekst"). Each symmetry segment carries the glyph of *its own* row and mode at 28px in a 40px
-segment, with the word beside it: one curve, one lobe with two cuts, or both lobes, where Fra leaves the second
-cut free, Sym mirrors it and Anti turns it. Nine glyphs, one component and one table (`SymmetryIcon` and
+segment, with the word beside it: one curve, one lobe with two cuts, or both lobes, where Fri leaves the second
+cut free, Spejlet mirrors it and Drejet turns it. Nine glyphs, one component and one table (`SymmetryIcon` and
 `symmetryIcons.ts` in `$lib/components/icons`), all one colour — `currentColor` — so a selected segment inverts
 glyph and word together on green. The source page has a second family that marks the following cut in red, but
 that is not the one the owner chose, so no glyph here carries a second colour. Three segments with a glyph and
@@ -596,9 +621,18 @@ selection and red invalid-cut highlights take priority. This is a visual overlap
 not a certificate of exact geometric coincidence. It must not intercept pointer events
 or change saved/exported cutting paths.
 
-Each tab of the Symmetri card ends with a dice button that replaces the heart with a random one in one Fortryd
-step, for exploring what the tab can draw: a draw from the whole space of designs, not a pick from a few
-prepared ones. **Tilfældigt mønster / Random pattern** under the Normal rows (`$lib/editor/randomHeart`) draws
+Under the Normal tab's three rows, as under the Escher tab's types (2026-10-22, after the user test: adding a
+strip by pulling an edge in was found by one tester in twelve tries): **Striber**, 2 × 2 to 7 × 7
+(`SizeButtons`), and **Start forfra** (`RestartButton`), a plain heart of the same size, nothing where it is
+one already. A size draws the heart again with n strips in each half on the square they span, keeping its
+drawing (`$lib/editor/strips` `restripped`): each new cut lies an n-th of the way across, between two old ones,
+blended from them by how near it lies to each, the two lined up node for node across the square (by length
+where a cut turns back); a plain heart becomes the plain heart of that size. A size that would make red cuts is
+refused with a line above the heart, as every button's edit and every symmetry row now is (GitHub #4).
+
+Beside each tab's Start forfra is a dice button (`RandomButton`) that replaces the heart with a random one in one
+Fortryd step, for exploring what the tab can draw: a draw from the whole space of designs, not a pick from a few
+prepared ones. **Tilfældigt mønster / Random pattern** in the Normal tab (`$lib/editor/randomHeart`) draws
 2–8 strips, the same in both lobes so the woven square is always square, the three rows (Fra, Sym or Anti each), the
 cuts' places on the square's sides (anywhere, at least 4 % apart), and every cut as a chain of 1–6 cubic
 pieces with random nodes, smooth or corners, and random handles, reaching from a tenth of a strip to more
@@ -728,9 +762,18 @@ mount, never during render. Saving the heart, discarding the draft, or starting 
 heart that is not in "Mine hjerter" holds work — edited since it opened, a draft taken up, an import, a heart
 from Mal — "Gem" wears a red dot, ringed white, and its tooltip says the heart is not saved yet, as tiled.art
 turns its Save button red; a heart already in the collection saves itself, so it shows none unless that
-failed. After "Gem", the page it goes to (the heart's own page, or the front page at its card) says
-“Mit hjerte” er gemt i Mine hjerter for a few seconds, from the root layout (`SavedToast`), so that saving does
-not pass in silence: user testers found the jump away alone gave no sign the heart was saved.
+failed. An edit that changes nothing, or Fortryd back to the cuts it opened with (and no field typed in), leaves
+no dot. "Gem" saves and stays in the editor (2026-10-22: every user tester was thrown by it leaving): “Mit
+hjerte” er gemt i Mine hjerter · *Se dem* shows for six seconds from the root layout (`SavedToast`,
+`$lib/editor/savedNotice.svelte`), *Se dem* going to the heart's card. From then on it is a heart of the
+collection: it autosaves, and the address becomes its `?edit=true#design=` link, which opens the heart as the
+collection has it now, so a reload or Back and Forward find it rather than a blank heart or a second copy. A
+copy of a gallery heart (`?from=`) is the visitor's own: no author, description, source or date of the
+original's. The name field takes a name the visitor has not typed (the default, a copy's) whole on the first
+click.
+
+Mal keeps its drawing in memory as it is painted; as the page unloads it writes the session once to the tab's
+sessionStorage, and takes it back as it opens again, so a reload (which the engine's error asks for) keeps it.
 
 Paper colours are a site-wide viewing preference, controlled by the shared footer on every page,
 including the generator, vector editor and paint editor. The footer offers two colour inputs, swap,

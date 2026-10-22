@@ -26,7 +26,7 @@
 	import { LEVELS, levelValue, matchesLevels } from '$lib/front/levelFilter';
 	import type { DifficultyLevel } from '$lib/utils/difficulty';
 	import { CLAIM_PRERENDERED } from '$lib/front/galleryHearts';
-	import { categoryTitle } from '$lib/data/categories';
+	import { categoryTitle, makeOwnLink } from '$lib/data/categories';
 	import { t, type Language } from '$lib/i18n';
 	import type { HeartDesign } from '$lib/types/heart';
 	import type { GalleryHeart } from '$lib/front/galleryHearts';
@@ -415,6 +415,7 @@
 				id={category.id}
 				title={categoryTitle(category.id, lang)}
 				hearts={category.hearts}
+				make={makeOwnLink(category.id, lang)}
 				{markup}
 				{designs}
 				{lang}

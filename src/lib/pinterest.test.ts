@@ -57,12 +57,14 @@ describe('the order', () => {
 		}
 	});
 
-	it('is what interleaveByCategory makes of the gallery it was frozen from', () => {
-		// Holds while the gallery is unchanged; if hearts.json changes, the frozen
-		// order is kept (new hearts go to the end), and this test may be dropped.
-		if (GALLERY.length === PINTEREST_ORDER.length) {
-			expect(interleaveByCategory(hearts.categories, PINTEREST_FIRST)).toEqual(PINTEREST_ORDER);
-		}
+	it('was made by interleaveByCategory, which spreads every category of the gallery out', () => {
+		// The order is frozen and kept when hearts.json changes (new hearts go to the end), so it is
+		// the function's order only for the gallery as it was then; for the gallery as it is now, the
+		// function still lists every heart once and never two of one category in a row.
+		const now = interleaveByCategory(hearts.categories, PINTEREST_FIRST);
+		expect([...now].sort()).toEqual([...GALLERY].sort());
+		for (let i = 1; i < now.length; i++) expect(CATEGORY.get(now[i]), `${now[i - 1]} then ${now[i]}`).not.toBe(CATEGORY.get(now[i - 1]));
+		for (const id of PINTEREST_FIRST) expect(now.indexOf(id)).toBeLessThan(10);
 	});
 
 	it('keeps each heart on its day when the gallery changes', () => {

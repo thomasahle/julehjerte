@@ -23,7 +23,7 @@
         "permo-sol",
         "nihon",
         "davidsstjerne-circ",
-        "david4",
+        "david4"
       ]
     },
     {
@@ -52,26 +52,17 @@
         "amy-pattern",
         "amy-flowering",
         "amy-pinecone",
-        "alhambra",
         "squares",
         "sildeben",
-        "puslespil",
-        "koelbuer",
         "roserude",
-        "hanefod",
         "flyvendegaes",
         "origami",
-        "drageskael",
         "hermanngitter",
         "tragt",
         "boelgebrud",
         "glaskuppel",
         "hvirvel",
-        "permo-kroge",
-        "permo-draaber",
         "permo-cirkler",
-        "fiskeskael",
-        "boelger",
         "blomster-hjerte",
         "skraa-kryds",
         "fejlternet",
@@ -80,7 +71,22 @@
         "firkanthjerte",
         "khatam",
         "stjernegitter",
-        "stjernerogkors",
+        "stjernerogkors"
+      ]
+    },
+    {
+      "id": "fliser",
+      "hearts": [
+        "dagognat",
+        "puslespil",
+        "drageskael",
+        "permo-kroge",
+        "alhambra",
+        "koelbuer",
+        "hanefod",
+        "permo-draaber",
+        "fiskeskael",
+        "boelger"
       ]
     },
     {
@@ -92,12 +98,21 @@
         "angel",
         "snowflake",
         "santa",
-        "dagognat",
         "ball",
         "fisk",
         "tulipan",
         "roed-blomst",
         "kloeverblad-hjerte"
+      ]
+    },
+    {
+      "id": "tekst",
+      "hearts": [
+        "god-jul",
+        "tak",
+        "aar-2026",
+        "jul-2026",
+        "mor-far"
       ]
     }
   ]

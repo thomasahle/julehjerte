@@ -50,22 +50,29 @@ export const PINTEREST_FIRST = ['classic-3x3', 'gaver', 'jul', 'juletrae', 'stje
  * 2026-10-21, after the feed's first day) so that editing the gallery never moves a heart that is already
  * out to another day: a heart removed from the gallery leaves its day empty,
  * and a heart added to the gallery is pinned after the last of these
- * (pinterestSchedule). Append new hearts here rather than reorder.
+ * (pinterestSchedule). Append new hearts here rather than reorder, or insert one
+ * only after the day it is (docs/PINTEREST.md): the five text hearts of
+ * 2026-10-22 went in that way, at days 12, 25, 45, 57 and 70, spread out
+ * before the new year, MOR & FAR between Drageskæl and Dag og nat, which Fliser
+ * had made two of one category. When Khatam, Stjernegitter and Stjerner og kors
+ * moved to Mønstre the same day, three swaps of hearts not yet out (days 62/63,
+ * 68/69 and 65/72) kept every day's neighbours of another category.
  */
 export const PINTEREST_ORDER: readonly string[] = [
 	'classic-3x3', 'juletrae', 'circle', 'gaver', 'balls', 'jul',
 	'kogle', 'stjerne-ramme', 'plus', 'ramme', 'plus3', 'stjerne',
-	'amy-weave-1', 'flower', 'amy-weave-2', 'triple-heart', 'amy-rosette', '5star',
-	'amy-pattern', 'venus', 'amy-flowering', 'simple-5star', 'amy-pinecone', 'h4h2',
-	'alhambra', 'angel', 'squares', 'sun', 'sildeben', 'snowflake',
-	'puslespil', 'permo-sol', 'koelbuer', 'nemt-hjerte', 'roserude', 'santa',
-	'hanefod', 'explosion', 'flyvendegaes', 'mor-og-barn', 'origami', 'nihon',
-	'drageskael', 'dagognat', 'hermanngitter', 'lilje1', 'tragt', 'davidsstjerne-circ',
-	'boelgebrud', 'ball', 'glaskuppel', 'lilje2', 'hvirvel', 'david4',
-	'permo-kroge', 'fisk', 'permo-draaber', 'khatam', 'permo-cirkler', 'tulipan',
-	'fiskeskael', 'hjertekloever', 'boelger', 'stjernegitter', 'blomster-hjerte', 'roed-blomst',
-	'skraa-kryds', 'stjernerogkors', 'fejlternet', 'firkloever-hjerte', 'gitterhjerte', 'kloeverblad-hjerte',
-	'cirkelhjerte', 'groen-stjerne', 'firkanthjerte'
+	'god-jul', 'amy-weave-1', 'flower', 'amy-weave-2', 'triple-heart', 'amy-rosette',
+	'5star', 'amy-pattern', 'venus', 'amy-flowering', 'simple-5star', 'amy-pinecone',
+	'h4h2', 'tak', 'alhambra', 'angel', 'squares', 'sun',
+	'sildeben', 'snowflake', 'puslespil', 'permo-sol', 'koelbuer', 'nemt-hjerte',
+	'roserude', 'santa', 'hanefod', 'explosion', 'flyvendegaes', 'mor-og-barn',
+	'origami', 'nihon', 'drageskael', 'mor-far', 'dagognat', 'hermanngitter',
+	'lilje1', 'tragt', 'davidsstjerne-circ', 'boelgebrud', 'ball', 'glaskuppel',
+	'lilje2', 'hvirvel', 'david4', 'jul-2026', 'permo-kroge', 'fisk',
+	'permo-draaber', 'khatam', 'tulipan', 'permo-cirkler', 'fiskeskael', 'stjernerogkors',
+	'boelger', 'stjernegitter', 'roed-blomst', 'blomster-hjerte', 'aar-2026', 'skraa-kryds',
+	'hjertekloever', 'fejlternet', 'firkloever-hjerte', 'gitterhjerte', 'kloeverblad-hjerte', 'cirkelhjerte',
+	'groen-stjerne', 'firkanthjerte'
 ];
 
 /** A gallery category as hearts.json lists it. */

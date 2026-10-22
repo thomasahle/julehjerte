@@ -7,7 +7,6 @@
 	import {
 		ChevronRightIcon,
 		CloseIcon,
-		DiceIcon,
 		FitIcon,
 		OutlineIcon,
 		RedoIcon,
@@ -16,6 +15,10 @@
 		UndoIcon
 	} from '$lib/components/icons';
 	import SymmetryRows from '$lib/components/editor/SymmetryRows.svelte';
+	import RandomButton from '$lib/components/editor/RandomButton.svelte';
+	import RestartButton from '$lib/components/editor/RestartButton.svelte';
+	import SizeButtons from '$lib/components/editor/SizeButtons.svelte';
+	import { restripped } from '$lib/editor/strips';
 	import {
 		NodeAddIcon,
 		NodeCornerIcon,
@@ -30,7 +33,7 @@
 	import { readPanelCollapsed, writePanelCollapsed } from '$lib/editor/panelState';
 	import type { Finger, GridSize, HeartPattern, Vec, LobeId, NodeType } from '$lib/types/heart';
 	import { clamp, clampInt } from '$lib/utils/math';
-	import { inferOverlapRect } from '$lib/utils/overlapRect';
+	import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
 	import { BASE_CANVAS_SIZE, CENTER, MAX_GRID_SIZE, MIN_GRID_SIZE, PRECISION_GRID_SIZE, STRIP_WIDTH } from '$lib/constants';
 	import { computeWeaveData } from '$lib/rendering/svgWeave';
 	import HeartWeaveFill from './HeartWeaveFill.svelte';
@@ -76,6 +79,7 @@
 		type HeartColors
 	} from '$lib/stores/colors';
 	import { stripsLabel as formatStrips, t as translate, type Language, type TranslationKey } from '$lib/i18n';
+	import { generatorHref } from '$lib/i18n/routes';
 
 		interface Props {
 			readonly?: boolean;
@@ -1107,7 +1111,10 @@
 			last.p2 = vecAdd(last.p2, d);
 		}
 
-		return updateFingerSegments(base, mappedSegments);
+		// The node types go with the nodes, counted from the other end on a copy that runs the other way.
+		const n = mappedSegments.length;
+		const nodeTypes = source.nodeTypes && Object.fromEntries(Object.entries(source.nodeTypes).map(([k, type]) => [String(reverseDirection ? n - Number(k) : Number(k)), type]));
+		return { ...updateFingerSegments(base, mappedSegments), ...(nodeTypes ? { nodeTypes } : {}) };
 	}
 
 	function canSymmetryBetweenLobes() {
@@ -1291,6 +1298,46 @@
 		});
 	}
 
+	/** The Normal tab's sizes, n × n strips. */
+	const HEART_SIZES = [2, 3, 4, 5, 6, 7] as const;
+
+	/**
+	 * The Normal tab's size: the heart drawn again with n strips in each half on the square they span,
+	 * keeping its drawing (`restripped`: each new cut lies between two old ones and is as like each as
+	 * it is near it), as the Escher tab's sizes keep the tile; a plain heart, the plain heart of that
+	 * size. Not where that would make red cuts.
+	 */
+	function setHeartSize(n: number) {
+		if (readonly || patternTile || (gridSize.x === n && gridSize.y === n)) return;
+		const grid = { x: n, y: n };
+		const from = getOverlapRect();
+		const to = getCenteredRectParams(grid, { x: from.left + from.width / 2, y: from.top + from.height / 2 });
+		const next = sameCuts(fingers, createDefaultFingers(gridSize)) ? createDefaultFingers(grid) : restripped(fingers, from, to, n);
+		const red = (cuts: Finger[], size: GridSize) =>
+			findFingersWithIssues(cuts, intersectionMarginPx(inferOverlapRect(cuts, size), gridClearanceScale(size.x, size.y))).size;
+		if (red(next, grid) > red(fingers, gridSize)) {
+			noteRefused(tr('editorSizeTooTight').replace('{n}', `${n} × ${n}`));
+			return;
+		}
+		noteRefused(null);
+		const before = snapshotState();
+		fingers = next;
+		gridSize = grid;
+		clearSelection();
+		pushUndo(before);
+	}
+
+	/** The Normal tab's "Start forfra": a plain heart of the same size; nothing, where it is one already. */
+	function restartHeart() {
+		if (readonly || patternTile) return;
+		const fresh = createDefaultFingers(gridSize);
+		if (sameCuts(fresh, fingers)) return;
+		const before = snapshotState();
+		fingers = fresh;
+		clearSelection();
+		pushUndo(before);
+	}
+
 	/** The tab's "Start forfra": the tile drawn again as its type starts, at its size; nothing, where it is that already. */
 	function restartEscherTile() {
 		if (!patternTile || !escher || escher.isStartTile(patternTile)) return;
@@ -1356,11 +1403,20 @@
 	}
 
 	/**
-	 * A size the pattern was too tight for, said above the heart a moment: the tiles keep their shape
-	 * in cells, but the paper between two cuts has to stay as wide in the heart.
+	 * Why something asked for was not done, said above the heart a moment: a size the pattern is too
+	 * tight for (the tiles keep their shape in cells, but the paper between two cuts has to stay as wide
+	 * in the heart), or a button's edit or a symmetry that would make a red cut (GitHub issue #4).
 	 */
-	let sizeStop = $state<number | null>(null);
-	let sizeStopTimer: ReturnType<typeof setTimeout> | null = null;
+	let refusal = $state<string | null>(null);
+	let refusalTimer: ReturnType<typeof setTimeout> | null = null;
+	function noteRefused(text: string | null) {
+		if (refusalTimer) clearTimeout(refusalTimer);
+		refusal = text;
+		refusalTimer = text === null ? null : setTimeout(() => {
+			refusal = null;
+			refusalTimer = null;
+		}, 4500);
+	}
 	/**
 	 * The pattern's size, n for tiles a cell of the n × n grid in size (the heart may have more or fewer
 	 * strips, where the pattern has moved or its tiles are stretched or turned); null for tiles sized by
@@ -1372,16 +1428,11 @@
 	function setPatternSize(n: number) {
 		if (!patternTile || !escher || n === patternSize) return;
 		const next = escher.resizedTile(patternTile, n);
-		if (sizeStopTimer) clearTimeout(sizeStopTimer);
-		sizeStop = null;
 		if (!next) {
-			sizeStop = n;
-			sizeStopTimer = setTimeout(() => {
-				sizeStop = null;
-				sizeStopTimer = null;
-			}, 4500);
+			noteRefused(tr('patternSizeTooTight').replace('{n}', `${n} × ${n}`));
 			return;
 		}
+		noteRefused(null);
 		const before = snapshotState();
 		showTile(next);
 		pushUndo(before);
@@ -1614,8 +1665,42 @@
 		return cutsProblem(inner, undefined, { fingers: all, gridSize: grid });
 	}
 
+	/**
+	 * Whether a button's edit may leave the cuts as `overrides` makes them: they pass `overridesProblem`,
+	 * and make no red cut the heart has not now (GitHub issue #4). If not, it says why above the heart.
+	 */
 	function overridesAreValid(overrides: Map<string, Finger>): boolean {
-		return overridesProblem(overrides) === null;
+		if (overridesProblem(overrides) === null && !makesRedCuts(fingers.map((f) => overrides.get(f.id) ?? f))) return true;
+		noteRefused(tr('editorEditRefused'));
+		return false;
+	}
+
+	/**
+	 * Whether `next`, the heart's cuts as an edit would leave them on its grid, has a red cut the heart
+	 * has not now. A cut that comes newly too close to another is red, and so is the other, so one of the
+	 * changed cuts is red then: the whole heart is measured only when one is.
+	 */
+	function makesRedCuts(next: Finger[]): boolean {
+		const margin = clearanceMargin();
+		const changed = next.filter((f) => !fingers.includes(f));
+		if (!changed.some((f) => fingerHasIntersectionIssues(f, next, margin))) return false;
+		const now = findFingersWithIssues(fingers, margin);
+		for (const id of findFingersWithIssues(next, margin)) if (!now.has(id)) return true;
+		return false;
+	}
+
+	/** Whether two sets of cuts are the same cuts, to a millionth of a pixel. */
+	function sameCuts(a: Finger[], b: Finger[]): boolean {
+		const close = (p: Vec, q: Vec) => Math.abs(p.x - q.x) < 1e-6 && Math.abs(p.y - q.y) < 1e-6;
+		return (
+			a.length === b.length &&
+			a.every((f, i) => {
+				const g = b[i]!;
+				const fs = fingerToSegments(f);
+				const gs = fingerToSegments(g);
+				return f.id === g.id && fs.length === gs.length && fs.every((seg, k) => close(seg.p0, gs[k]!.p0) && close(seg.p1, gs[k]!.p1) && close(seg.p2, gs[k]!.p2) && close(seg.p3, gs[k]!.p3));
+			})
+		);
 	}
 
 	/** The least gap the red cuts allow between two cuts of a lobe, in the heart's units (`findFingersWithIssues`). */
@@ -1980,10 +2065,7 @@
 		// Original logic: delete internal anchors by merging segments
 		if (segLen <= 1) return;
 
-		const toDelete = selectedAnchors
-			.filter((idx) => idx >= 1 && idx <= segLen - 1)
-			.slice()
-			.sort((a, b) => b - a);
+		const toDelete = withMates(selectedAnchors.filter((idx) => idx >= 1 && idx <= segLen - 1), segLen).reverse();
 		if (!toDelete.length) return;
 
 		let nextSegs = cloneSegments(segments);
@@ -1995,13 +2077,12 @@
 			nodeTypes = shiftNodeTypesOnDelete(nodeTypes, anchorIdx);
 		}
 
-		if (patternRule !== 'off') {
-			const overrides = derivePatternOverrides({ ...updateFingerSegments(finger, nextSegs), nodeTypes });
-			if (!overridesAreValid(overrides)) return;
-			applyOverrides(overrides);
-		} else {
-			updateFinger(fingerId, (f) => ({ ...updateFingerSegments(f, nextSegs), nodeTypes }));
-		}
+		let edited: Finger = { ...updateFingerSegments(finger, nextSegs), nodeTypes };
+		if (patternRule === 'off' && symmetryWithinCurve) edited = applyWithinCurveSymmetry(edited);
+		// The copies the symmetry rows (or the pattern) make of the cut lose the nodes too.
+		const overrides = deriveSymmetryOverrides(edited);
+		if (!overridesAreValid(overrides)) return;
+		applyOverrides(overrides);
 		selectedAnchors = [];
 		selectedSegments = [];
 		lastCurveHit = null;
@@ -2142,6 +2223,16 @@
 		pushUndo(before);
 	}
 
+	/**
+	 * The segments or nodes `0..last` of a cut that a button edits, and with within-curve symmetry their
+	 * mirror partners too (`last − i`): the symmetry then copies the cut's first half onto its second, which
+	 * would undo an edit to the second half alone.
+	 */
+	function withMates(indexes: number[], last: number): number[] {
+		if (!symmetryWithinCurve) return indexes;
+		return [...new Set(indexes.flatMap((i) => [i, last - i]))].sort((a, b) => a - b);
+	}
+
 	function getSelectedSegmentIndexes(segmentsLength: number): number[] {
 		const uniq = new Set<number>();
 		for (const idx of selectedSegments) {
@@ -2171,7 +2262,7 @@
 		const targets = getSelectedSegmentIndexes(segs.length);
 		if (!targets.length) return;
 
-		for (const segIdx of targets) {
+		for (const segIdx of withMates(targets, segs.length - 1)) {
 			const seg = segs[segIdx]!;
 			seg.p1 = { ...seg.p0 };
 			seg.p2 = { ...seg.p3 };
@@ -2204,7 +2295,7 @@
 			return d.x || d.y ? d : { x: 1, y: 0 };
 		};
 
-		for (const segIdx of targets) {
+		for (const segIdx of withMates(targets, segs.length - 1)) {
 			const seg = segs[segIdx]!;
 
 			// Out handle at p0.
@@ -2259,7 +2350,7 @@
 		if (!internal.length) return;
 
 		const before = snapshotState();
-		for (const anchorIdx of internal) addMissingHandles(segs, anchorIdx);
+		for (const anchorIdx of withMates(internal, n)) addMissingHandles(segs, anchorIdx);
 
 		let candidate = updateFingerSegments(finger, segs);
 		if (symmetryWithinCurve) candidate = applyWithinCurveSymmetry(candidate);
@@ -2327,17 +2418,17 @@
 		const segCount = fingerToSegments(finger).length;
 		const targets = selectedAnchors.filter((idx) => idx >= 0 && idx <= segCount);
 		if (!targets.length) return;
-		const internal = targets.filter((idx) => idx >= 1 && idx <= segCount - 1);
 		const before = snapshotState();
 
-		const edit = (f: Finger): Finger => {
+		const edit = (f: Finger, anchors: number[]): Finger => {
+			const internal = anchors.filter((idx) => idx >= 1 && idx <= segCount - 1);
 			const nextNodeTypes: Record<string, NodeType> = { ...(f.nodeTypes ?? {}) };
 			if (type === 'corner') {
-				for (const idx of targets) delete nextNodeTypes[String(idx)];
+				for (const idx of anchors) delete nextNodeTypes[String(idx)];
 				return { ...f, nodeTypes: Object.keys(nextNodeTypes).length ? nextNodeTypes : undefined };
 			}
 
-			for (const idx of targets) nextNodeTypes[String(idx)] = type;
+			for (const idx of anchors) nextNodeTypes[String(idx)] = type;
 
 			const segs = cloneSegments(fingerToSegments(f));
 			for (const anchorIdx of internal) {
@@ -2370,14 +2461,20 @@
 			// Escher tab: the handles the node type lines up are read back into the tile, so every copy
 			// of the curve turns with them, and the tile keeps the type (`escher.typedTile`): every copy
 			// has it, and keeps it through every edit after, though a corner's handles lie in line.
-			const read = tileOfOverrides.get(derivePatternOverrides(edit(finger))) ?? patternTile;
+			const read = tileOfOverrides.get(derivePatternOverrides(edit(finger, targets))) ?? patternTile;
 			const typed = escher.typedTile(read, fingerId, targets, type);
 			const overrides = new Map(escher.generateEditorFingers(typed, getOverlapRect()).map((f) => [f.id, f]));
 			if (!overridesAreValid(overrides)) return;
 			tileOfOverrides.set(overrides, typed);
 			applyOverrides(overrides);
 		} else {
-			updateFinger(fingerId, edit);
+			// The node's mirror image in the curve, and the copies the symmetry rows make of the cut, take
+			// the type too, as a drag moves them all.
+			let edited = edit(finger, withMates(targets, segCount));
+			if (symmetryWithinCurve) edited = applyWithinCurveSymmetry(edited);
+			const overrides = deriveSymmetryOverrides(edited);
+			if (!overridesAreValid(overrides)) return;
+			applyOverrides(overrides);
 		}
 		pushUndo(before);
 	}
@@ -2678,7 +2775,18 @@
 	// Runs before the curve/anchor/handle handlers (capture phase) so a second finger cannot
 	// select or start dragging anything: from then on the gesture is pan/zoom only.
 	function handleSvgPointerDownCapture(e: PointerEvent) {
-		if (readonly || e.pointerType === 'mouse') return;
+		if (readonly) return;
+		if (e.pointerType === 'mouse') {
+			// A point is small: a press just beside one of the chosen cut's takes hold of it, rather than of
+			// the cut under the pointer, which would move whole (user test, 2026-10-22).
+			const onPoint = e.target instanceof Element && e.target.closest('[data-grab-anchor], [data-grab-handle]');
+			const grab = selectedFingerId && e.button === 0 && !onPoint ? pointNear(e.clientX, e.clientY, MOUSE_REACH_PX) : null;
+			if (!grab || !selectedFingerId) return;
+			e.stopPropagation();
+			if ('anchor' in grab) handleAnchorPointerDown(e, selectedFingerId, grab.anchor);
+			else handleHandlePointerDown(e, selectedFingerId, grab.segment, grab.handle);
+			return;
+		}
 		touchPointerIds.add(e.pointerId);
 		if (touchPointerIds.size >= 2 || multiTouch) {
 			beginMultiTouch();
@@ -2688,7 +2796,7 @@
 		// A finger hides what it presses (GitHub issue #12): it takes hold of the chosen cut's point
 		// nearest it, though it touches beside the point, and the point keeps that distance from it as it
 		// is dragged, in sight.
-		const grab = selectedFingerId ? pointNear(e.clientX, e.clientY) : null;
+		const grab = selectedFingerId ? pointNear(e.clientX, e.clientY, TOUCH_REACH_PX) : null;
 		if (!grab || !selectedFingerId) return;
 		e.stopPropagation();
 		if ('anchor' in grab) handleAnchorPointerDown(e, selectedFingerId, grab.anchor);
@@ -2697,11 +2805,13 @@
 
 	/** How far from a point of the chosen cut, in screen pixels, a finger may touch and still take hold of it. */
 	const TOUCH_REACH_PX = 22;
+	/** How far from one a mouse press may be: a pointer is precise, and a press further off means the cut. */
+	const MOUSE_REACH_PX = 8;
 
-	/** The chosen cut's point (node or handle) nearest the screen point (x, y), within a finger's reach, or null. */
-	function pointNear(x: number, y: number): { anchor: number } | { segment: number; handle: 'p1' | 'p2' } | null {
+	/** The chosen cut's point (node or handle) nearest the screen point (x, y), within `reach` pixels, or null. */
+	function pointNear(x: number, y: number, reach: number): { anchor: number } | { segment: number; handle: 'p1' | 'p2' } | null {
 		let best: { anchor: number } | { segment: number; handle: 'p1' | 'p2' } | null = null;
-		let bestD = TOUCH_REACH_PX;
+		let bestD = reach;
 		for (const el of svgEl?.querySelectorAll<SVGGraphicsElement>('[data-grab-anchor], [data-grab-handle]') ?? []) {
 			const ctm = el.getScreenCTM?.();
 			if (!ctm) continue;
@@ -2828,7 +2938,9 @@
 			const settled = escher.settledTile(patternTile, tileDrag.base);
 			if (settled) applyTileStep(settled);
 		}
-		if (dragDirty && dragSnapshot) pushUndo(dragSnapshot);
+		// A drag that moved nothing (an edge pulled outwards, past where it may go) is no Fortryd step.
+		const moved = dragSnapshot && (!sameCuts(fingers, dragSnapshot.fingers) || gridSize.x !== dragSnapshot.gridSize.x || gridSize.y !== dragSnapshot.gridSize.y);
+		if (dragDirty && dragSnapshot && moved) pushUndo(dragSnapshot);
 		dragSnapshot = null;
 		dragDirty = false;
 		dragTarget = null;
@@ -3379,7 +3491,8 @@
 		if (!shouldApply) return;
 		if (readonly || !didInit) return;
 
-		const applySymmetryToAllFingers = () => {
+		/** Every cut as the rows now make it: one side of each pair copied onto the other. */
+		const symmetricFingers = (): Finger[] => {
 			let updated = fingers.map(cloneFinger);
 
 			if (symmetryWithinCurve) {
@@ -3432,12 +3545,24 @@
 				}
 			}
 
-			fingers = updated;
+			return updated;
 		};
 
+		const updated = symmetricFingers();
+		// Cuts that keep to the rows already stay as they are, with no Fortryd step for nothing.
+		if (sameCuts(updated, fingers)) return;
+		// A symmetry that would make a red cut is not turned on (GitHub issue #4): the rows go back to
+		// what they were, and say why.
+		if (makesRedCuts(updated)) {
+			withinCurveMode = prevWithinCurveMode = oldSymmetry.withinCurveMode;
+			withinLobeMode = prevWithinLobeMode = oldSymmetry.withinLobeMode;
+			betweenLobesMode = prevBetweenLobesMode = oldSymmetry.betweenLobesMode;
+			noteRefused(tr('editorSymmetryRefused'));
+			return;
+		}
 		const before = snapshotState();
 		before.symmetry = oldSymmetry;
-		applySymmetryToAllFingers();
+		fingers = updated;
 		pushUndo(before);
 	});
 
@@ -3687,6 +3812,25 @@
 	);
 	let stripsLabel = $derived(formatStrips(gridSize, lang));
 
+	/**
+	 * The line above the heart: what can be done with what is chosen, in the tab it is chosen in
+	 * (user test, 2026-10-22: one fixed line of three instructions, and a first-visit tip that said
+	 * the same, were read once and passed over as the task changed). A chosen point says what kind it
+	 * is in the chip beside it (`selectedNodeTypeLabel`).
+	 */
+	let canvasHint = $derived.by((): TranslationKey => {
+		const escher = !!patternTile;
+		if (!selectedFingerId) return escher ? 'hintEscherNothing' : 'hintNothing';
+		const cut = getEditableFingerById(selectedFingerId);
+		if (!cut) return escher ? 'hintEscherEdge' : 'hintEdge';
+		const last = fingerToSegments(cut).length;
+		if (selectedSegments.length || selectedAnchors.length === 0) return escher ? 'hintEscherCut' : 'hintCut';
+		if (selectedAnchors.length > 1) return 'hintNodes';
+		const node = selectedAnchors[0]!;
+		if (patternNodes?.get(node) === 'frame') return 'hintEscherCut';
+		return node === 0 || node === last ? 'hintEnd' : 'hintNode';
+	});
+
 	let visibleAnchorSet = $derived.by(() => {
 		const set = new Set<number>();
 		for (const idx of selectedAnchors) {
@@ -3743,6 +3887,12 @@
 	});
 
 </script>
+
+	<!-- The line above the heart (`canvasHint`). With nothing chosen in the Normal tab it also offers a
+	     figure, for a motif such as a tree, which is hard to draw cut by cut. -->
+	{#snippet hintLine()}
+		{tr(canvasHint)}{#if canvasHint === 'hintNothing'}&nbsp;· {tr('hintFigure')} <a class="hint-link" href={generatorHref(lang, 'figure')}>{tr('hintFigureLink')}</a>{/if}
+	{/snippet}
 
 	<!--
 		One tool-rail button: a 44px icon button with a tooltip (DESIGN.md §7).
@@ -4128,14 +4278,10 @@
 			</div>
 
 			{#if !readonly}
-				<!-- Canvas chrome (DESIGN.md §7): the one-line hint, what is selected and the
-				     strip count. Desktop only — the mobile editor keeps its stacked panels.
-				     The dismissible first-visit tip below says the same three things in other
-				     words and sits right under this line, so on a first visit only the tip
-				     shows and the permanent hint takes over once it has been dismissed. -->
-				{#if firstVisitHintDismissed}
-					<p class="canvas-hint">{tr(patternTile ? 'editorCanvasHintEscher' : 'editorCanvasHint')}</p>
-				{/if}
+				<!-- Canvas chrome (DESIGN.md §7): the line that says what can be done with what is
+				     chosen (`canvasHint`), what is selected and the strip count. Desktop only — the
+				     mobile editor keeps its stacked panels, and the same line comes as a tip there. -->
+				<p class="canvas-hint">{@render hintLine()}</p>
 				{#if selectedNodeTypeLabel}
 					<p class="canvas-selection">
 						<span class="canvas-selection-dot" class:black={selectedPatternNode === 'frame'} aria-hidden="true"></span>{selectedNodeTypeLabel}
@@ -4145,8 +4291,8 @@
 				<div class="canvas-notices">
 					{#if dragStop}
 						<div class="canvas-notice info drag-stop" role="status">{tr(DRAG_STOP_TEXT[dragStop])}</div>
-					{:else if sizeStop}
-						<div class="canvas-notice info drag-stop" role="status">{tr('patternSizeTooTight').replace('{n}', `${sizeStop} × ${sizeStop}`)}</div>
+					{:else if refusal}
+						<div class="canvas-notice info drag-stop" role="status">{refusal}</div>
 					{/if}
 					{#if notice}
 						<!-- role="status": the route's notice appears after mount (it waits on
@@ -4159,9 +4305,9 @@
 					{#if hasManyStrips}
 						<div class="canvas-notice info" role="status">{tr('editorManyStripsHint')}</div>
 					{/if}
-					{#if !firstVisitHintDismissed}
+					{#if !firstVisitHintDismissed && (isMobileLayout || !fullPage)}
 						<div class="canvas-notice hint" role="note">
-							<span>{tr(patternTile ? 'editorFirstVisitHintEscher' : 'editorFirstVisitHint')}</span>
+							<span>{@render hintLine()}</span>
 							<button type="button" class="notice-dismiss" onclick={dismissFirstVisitHint} aria-label={tr('editorDismissHint')}>
 								<CloseIcon size={16} aria-hidden="true" />
 							</button>
@@ -4349,11 +4495,20 @@
 								}}
 								disabled={{ lobes: !canSymmetryBetweenLobes() }}
 							/>
-							<!-- A new heart, one picture over the square, its grid and rows drawn at random;
-							     the Escher tab has its own, for a random tile. Fortryd brings the old one back. -->
-							<button type="button" class="random-heart" title={tr('editorRandomHeartHint')} disabled={readonly} onclick={drawRandomHeart}>
-								<DiceIcon size={16} aria-hidden="true" />{tr('editorRandomHeart')}
-							</button>
+							<!-- As in the Escher tab: the size, and a way to start over. -->
+							<SizeButtons
+								sizes={HEART_SIZES}
+								size={gridSize.x === gridSize.y ? gridSize.x : null}
+								name={tr('editorStrips')}
+								label
+								onSize={setHeartSize}
+								disabled={readonly}
+							/>
+							<!-- A new heart drawn at random, its grid and rows too; the Escher tab has its own, for a random tile. -->
+							<div class="heart-actions">
+								<RestartButton label={tr('patternRestart')} title={tr('editorRestartHint')} onclick={restartHeart} disabled={readonly} />
+								<RandomButton label={tr('editorRandomHeart')} title={tr('editorRandomHeartHint')} onclick={drawRandomHeart} disabled={readonly} />
+							</div>
 						{/if}
 					</section>
 
@@ -4513,6 +4668,15 @@
 			left: 16px;
 			max-width: calc(100% - 32px);
 			color: var(--muted);
+		}
+
+		/* The line takes no clicks, so the drawing under it does; its link does. */
+		.hint-link {
+			color: var(--green);
+			font-weight: 600;
+			text-decoration: underline;
+			text-underline-offset: 2px;
+			pointer-events: auto;
 		}
 
 		/* The selection chip shares the line, anchored to the right edge; give way
@@ -5162,29 +5326,10 @@
 		}
 
 	/* "Tilfældigt mønster", in the look of the Escher tab's "Start forfra". */
-	.random-heart {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 6px;
-		width: 100%;
-		margin-top: 10px;
-		padding: 7px 10px;
-		border: 1.5px solid var(--line);
-		border-radius: 8px;
-		background: var(--white);
-		color: var(--green);
-		font: inherit;
-		font-size: 13px;
-		font-weight: 600;
-		cursor: pointer;
-	}
-	.random-heart:hover:not(:disabled) {
-		background: var(--cream2);
-	}
-	.random-heart:focus-visible {
-		outline: 2px solid var(--green);
-		outline-offset: 2px;
+	.heart-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
 	}
 	.random-heart:disabled {
 		opacity: 0.5;

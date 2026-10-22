@@ -15,7 +15,9 @@
 <script lang="ts">
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import type { TileRule } from '$lib/pattern/rules';
-	import { DiceIcon, RestartIcon } from '$lib/components/icons';
+	import RandomButton from '$lib/components/editor/RandomButton.svelte';
+	import RestartButton from '$lib/components/editor/RestartButton.svelte';
+	import SizeButtons from '$lib/components/editor/SizeButtons.svelte';
 	import RuleTemplates from './RuleTemplates.svelte';
 
 	interface Props {
@@ -48,11 +50,7 @@
 <div class="escher-tab">
 	<RuleTemplates {lang} active={rule} {onChoose} {compact} {disabled} />
 	{#if rule}
-		<div class="pattern-sizes" role="group" aria-label={tr('patternSizes')}>
-			{#each [3, 4, 5, 6, 7] as n (n)}
-				<button type="button" class="pattern-size" class:active={size === n} aria-pressed={size === n} {disabled} onclick={() => onSize(n)}>{n} × {n}</button>
-			{/each}
-		</div>
+		<SizeButtons sizes={[3, 4, 5, 6, 7]} {size} name={tr('patternSizes')} {onSize} {disabled} />
 		<label class="pattern-turn">
 			<span class="pattern-turn-head">
 				<span>{tr('patternTurn')}</span>
@@ -78,13 +76,9 @@
 	{/if}
 	<div class="pattern-actions">
 		{#if rule}
-			<button type="button" class="pattern-restart" title={tr('patternRestartHint')} {disabled} onclick={onRestart}>
-				<RestartIcon size={14} />{tr('patternRestart')}
-			</button>
+			<RestartButton label={tr('patternRestart')} title={tr('patternRestartHint')} onclick={onRestart} {disabled} />
 		{/if}
-		<button type="button" class="pattern-restart" title={tr('patternRandomHint')} {disabled} onclick={onRandom}>
-			<DiceIcon size={14} aria-hidden="true" />{tr('patternRandom')}
-		</button>
+		<RandomButton label={tr('patternRandom')} title={tr('patternRandomHint')} onclick={onRandom} {disabled} />
 	</div>
 </div>
 
@@ -95,49 +89,10 @@
 		gap: 8px;
 	}
 
-	.pattern-sizes {
-		display: grid;
-		grid-template-columns: repeat(5, 1fr);
-		gap: 4px;
-	}
-
-	.pattern-size {
-		padding: 6px 0;
-		border: 1.5px solid var(--line);
-		border-radius: 8px;
-		background: var(--white);
-		color: var(--ink);
-		font: inherit;
-		font-size: 12px;
-		font-weight: 600;
-		font-variant-numeric: tabular-nums;
-		cursor: pointer;
-	}
-
-	.pattern-size.active {
-		border-color: var(--green);
-		box-shadow: inset 0 0 0 1px var(--green);
-	}
-
 	.pattern-actions {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 8px;
-	}
-	.pattern-restart {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		align-self: flex-start;
-		padding: 6px 10px;
-		border: 1.5px solid var(--line);
-		border-radius: 8px;
-		background: var(--white);
-		color: var(--green);
-		font: inherit;
-		font-size: 12px;
-		font-weight: 600;
-		cursor: pointer;
 	}
 
 	.pattern-turn {
