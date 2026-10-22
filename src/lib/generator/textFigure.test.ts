@@ -10,9 +10,11 @@ import { ConstructionError, inside, type Font, type Ring } from './geometry';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import nunito from '../../../static/generator/fonts/nunito.json';
 import josefinsans from '../../../static/generator/fonts/josefinsans.json';
+import cinzel from '../../../static/generator/fonts/cinzel.json';
+import { stripFigures, withCrowdedHiddenCuts } from './stripFigure';
 
 const colors = { left: '#ffffff', right: '#cc0000' };
-const fonts = { nunito: nunito as unknown as Font, josefinsans: josefinsans as unknown as Font };
+const fonts = { nunito: nunito as unknown as Font, josefinsans: josefinsans as unknown as Font, cinzel: cinzel as unknown as Font };
 const text = (value: string, textFrame: 'strips' | 'layers', font = fonts.nunito, board?: number): GeneratorRequest =>
 	({ mode: 'text', name: value, text: value, font, textFrame, colors, board });
 
@@ -100,6 +102,14 @@ describe('text in a figure frame', () => {
 		const kept = generate(text('NOEL', 'strips', fonts.josefinsans, 4));
 		expect(kept.design.gridSize).toEqual({ x: 4, y: 4 });
 		expect(kept.hardToCut?.letters.length).toBeGreaterThan(0);
+	});
+
+	it('cuts hidden cuts that come too close rather than refuse the letters, as a last resort', () => {
+		// In Cinzel's ANNA some hidden cuts across one square must crowd each
+		// other on four strips: no sheets keep every strip whole without them.
+		const rings = textOutline('ANNA', fonts.cinzel);
+		expect(stripFigures(rings, 4, .7).next().done).toBe(true);
+		expect(withCrowdedHiddenCuts(() => stripFigures(rings, 4, .7).next().done)).toBe(false);
 	});
 
 	slow('names the letters that are hard to cut in the checks', () => {

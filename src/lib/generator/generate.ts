@@ -4,7 +4,7 @@ import { CORNER_GAP, generateCornerChecks, hasThreeCounterLanes } from './corner
 import { generateFittedFigure, mirrorSymmetric, type GateTies } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid, roomOf, squareCellScale } from './textGrid';
-import { NO_WHOLE_STRIPS, STRIPS, slidePlace, stripFigures } from './stripFigure';
+import { NO_WHOLE_STRIPS, STRIPS, crowdedHiddenCutsSetAside, slidePlace, stripFigures, withCrowdedHiddenCuts } from './stripFigure';
 import { MOTIF, boardPlacement, boardRadius, boardScale, boardSetting, boardSteps, enclosedAlong, motifChoices, squareChoices } from './boardMotif';
 import { TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
 import { CIRCLE_STYLES, fillSquare, fitCircle } from './frameFit';
@@ -480,7 +480,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	if (request.mode === 'text' && isTextFigure(request.textFrame)) return generateTextFigure(request);
 	const scale = request.scale ?? .7;
 	try {
-		return generateAtSizeOrIslands(request);
+		return generateAtSizeOrLastResort(request);
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) || scale <= .7
 			|| request.mode === 'figure' && request.style === 'board') throw error;
@@ -491,7 +491,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		// size, rather than refusing, and says so. The circle on a board keeps
 		// its own (see `generateUsingRecipes`).
 		for (const size of [.97, .94, .91, .88, .85, .8, .75, .7].filter(size => size < scale - 1e-9)) try {
-			const result = generateAtSizeOrIslands({ ...request, scale: size });
+			const result = generateAtSizeOrLastResort({ ...request, scale: size });
 			return { ...result, scale: result.scale ?? size };
 		} catch (smallerError) {
 			if (!(smallerError instanceof ConstructionError) && !(smallerError instanceof CutGeometryError)) throw smallerError;
@@ -522,22 +522,29 @@ function generateTextFigure(request: GeneratorRequest): GeneratorResult {
 	throw last;
 }
 
-/** A heart for the request at its own size, else one whose islands are
- * entered along visible spokes where nothing else routes (see
- * `withVisibleIslands`), hard to cut rather than refused. */
-function generateAtSizeOrIslands(request: GeneratorRequest): GeneratorResult {
-	const setAside = visibleIslandsSetAside();
+/** Constructions set aside where a clean one might follow, each with how
+ * many it set aside so far: islands entered along visible spokes where
+ * nothing else routes (see `withVisibleIslands`), and in the checks hidden
+ * cuts that come too close (see `withCrowdedHiddenCuts`). */
+const LAST_RESORTS = [[withVisibleIslands, visibleIslandsSetAside], [withCrowdedHiddenCuts, crowdedHiddenCutsSetAside]] as const;
+/** A heart for the request at its own size, else one with a construction
+ * set aside while making it (see `LAST_RESORTS`), hard to cut rather than
+ * refused. */
+function generateAtSizeOrLastResort(request: GeneratorRequest): GeneratorResult {
+	const before = LAST_RESORTS.map(([, setAside]) => setAside());
 	try {
 		return generateAtSize(request);
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) ||
-			visibleIslandsSetAside() === setAside) throw error;
-		try {
-			return withVisibleIslands(() => generateAtSize(request));
-		} catch (islandError) {
-			if (!(islandError instanceof ConstructionError) && !(islandError instanceof CutGeometryError)) throw islandError;
-			throw error;
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		for (const [k, [allowing, setAside]] of LAST_RESORTS.entries()) {
+			if (setAside() === before[k]) continue;
+			try {
+				return allowing(() => generateAtSize(request));
+			} catch (lastError) {
+				if (!(lastError instanceof ConstructionError) && !(lastError instanceof CutGeometryError)) throw lastError;
+			}
 		}
+		throw error;
 	}
 }
 

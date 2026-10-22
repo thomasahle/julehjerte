@@ -268,11 +268,13 @@ export function crowding(rings: Ring[], strips: number): number {
 
 /** The cuts' graph: board lines and outline split at junctions, crossings
  * and the ends of the hidden cuts that may cross the motif's pieces of board;
- * `exclusive` pairs hidden cuts that would cross each other. */
+ * `exclusive` pairs hidden cuts that would cross or crowd each other, and
+ * `crowdedOnly` says which of those only crowd. */
 export type StripGraph = {
 	vertices: Vertex[];
 	pieces: Piece[];
 	exclusive: [number, number][];
+	crowdedOnly: boolean[];
 	loops: { pieces: number[]; not: Sheet[] }[];
 	/** Pieces that had better not share a sheet. */
 	apart: [number, number][];
@@ -723,11 +725,14 @@ export function arrangement(rings: Ring[], strips: number, reach: 'motif' | 'nea
 	const crowded = ([p, q]: [Point, Point], [r, t]: [Point, Point]) =>
 		crosses(p, q, r, t) || [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1].some(u => distanceTo(mix(p, q, u), r, t) < room || distanceTo(mix(r, t, u), p, q) < room);
 	// Hidden cuts across one face that would cross or crowd each other.
-	const exclusive: [number, number][] = [];
+	const exclusive: [number, number][] = [], crowdedOnly: boolean[] = [];
 	for (let a = 0; a < chords.length; a++)
 		for (let b = a + 1; b < chords.length; b++) {
 			if (!kept[a] || !kept[b] || chords[a].face !== chords[b].face) continue;
-			if (crowded(route[a], route[b])) exclusive.push([a, b]);
+			if (crowded(route[a], route[b])) {
+				exclusive.push([a, b]);
+				crowdedOnly.push(!crosses(...route[a], ...route[b]));
+			}
 		}
 	// Split the visible cuts where hidden cuts may leave them; a segment no
 	// hidden cut leaves keeps its line's own sheet outside the motif.
@@ -866,7 +871,26 @@ export function arrangement(rings: Ring[], strips: number, reach: 'motif' | 'nea
 		for (const [k, path] of paths.entries()) if (present[k]) add(edges, spread ? path : route[k], 'AB', 'shared');
 		return edges;
 	};
-	return { vertices, pieces, exclusive: exclusive.map(([a, b]) => [hidden[a], hidden[b]]), loops, apart: [...apart.values()], draw };
+	return { vertices, pieces, exclusive: exclusive.map(([a, b]) => [hidden[a], hidden[b]]), crowdedOnly, loops, apart: [...apart.values()], draw };
+}
+
+/** Whether two hidden cuts across one face that come too close, without
+ * crossing, may both be cut, counted among the crowded pairs: only once a
+ * request has been refused without it, so that every heart built without it
+ * keeps its cuts, and the letters or motif are hard to cut rather than
+ * refused. */
+let crowdedHiddenCuts = false, setAside = 0;
+/** How many searches without it failed where it could have helped: a request
+ * that failed none would fail the same way again. */
+export const crowdedHiddenCutsSetAside = () => setAside;
+export function withCrowdedHiddenCuts<T>(build: () => T): T {
+	const before = crowdedHiddenCuts;
+	crowdedHiddenCuts = true;
+	try {
+		return build();
+	} finally {
+		crowdedHiddenCuts = before;
+	}
 }
 
 /** What the last `solve` did: strips learned, crowded pairs and hidden cuts
@@ -898,7 +922,9 @@ export function solve(graph: StripGraph, budget: number): Value[] | undefined {
 			clauses.push([2 * c + 1, 2 * h, 2 * k], [2 * c + 1, 2 * h + 1, 2 * k + 1], [2 * c, 2 * h + 1, 2 * k], [2 * c, 2 * h, 2 * k + 1]);
 		}
 	}
-	for (const [a, b] of graph.exclusive) clauses.push([2 * a + 1, 2 * b + 1]);
+	const soft = crowdedHiddenCuts ? graph.exclusive.filter((_, k) => graph.crowdedOnly[k]) : [];
+	for (const [k, [a, b]] of graph.exclusive.entries())
+		if (!crowdedHiddenCuts || !graph.crowdedOnly[k]) clauses.push([2 * a + 1, 2 * b + 1]);
 	for (const loop of graph.loops)
 		for (const sheet of loop.not) {
 			if (loop.pieces.some(q => pieces[q].fixed && pieces[q].fixed !== sheet)) continue;
@@ -937,7 +963,10 @@ export function solve(graph: StripGraph, budget: number): Value[] | undefined {
 		if (hidden(p) || hidden(q)) clauses.push([...[p, q].filter(hidden).map(x => 2 * x + 1), relaxed[k]]);
 		else clauses.push([2 * p, 2 * q, relaxed[k]], [2 * p + 1, 2 * q + 1, relaxed[k]]);
 	}
-	const variables = pieces.length + 2 * vertices.length * numbers + graph.apart.length;
+	const after = pieces.length + 2 * vertices.length * numbers + graph.apart.length;
+	const crowding = soft.map((_, k) => 2 * (after + k));
+	for (const [k, [a, b]] of soft.entries()) clauses.push([2 * a + 1, 2 * b + 1, crowding[k]]);
+	const variables = after + soft.length;
 	// First tries: a line keeps its own sheet outside the motif and turns to
 	// the other inside it, where the strips of each sheet run along the other
 	// sheet's lines; hidden cuts are left out.
@@ -954,7 +983,7 @@ export function solve(graph: StripGraph, budget: number): Value[] | undefined {
 	};
 	// Fewest crowded pairs first, then fewest hidden cuts: a search between
 	// the most an answer has and the least none could be found below.
-	const objectives = [relaxed, pieces.flatMap((p, q) => hidden(q) ? [2 * q] : [])];
+	const objectives = [[...relaxed, ...crowding], pieces.flatMap((p, q) => hidden(q) ? [2 * q] : [])];
 	const kept: number[] = [];
 	const holds = (bits: boolean[], literals: number[]) => literals.filter(l => bits[l >> 1]).length;
 	const attempt = (bounds: number[], limit: number) => {
@@ -967,7 +996,11 @@ export function solve(graph: StripGraph, budget: number): Value[] | undefined {
 		return search(base, clauses.concat(learned, extra), phase, check, limit);
 	};
 	const first = attempt([], budget);
-	if (!first || first === 'budget') { stripStats.end = first ?? 'exhausted'; return undefined; }
+	if (!first || first === 'budget') {
+		stripStats.end = first ?? 'exhausted';
+		if (!crowdedHiddenCuts && graph.crowdedOnly.includes(true)) setAside++;
+		return undefined;
+	}
 	let best = first;
 	for (const literals of objectives) {
 		let low = 0, high = holds(best, literals);
