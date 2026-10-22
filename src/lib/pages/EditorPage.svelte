@@ -639,12 +639,12 @@
     downloadTemplateSvg(createHeartDesign(), colors);
   }
 
-  // Top bar: the A4 template as a PDF, the same generator the gallery and detail pages use.
+  // Top bar: the templates as a PDF, as the gallery's and the heart page's download prints them.
   // jsPDF is loaded on demand, so it stays out of the editor's initial bundle.
   async function downloadTemplatePDF() {
     try {
-      const { downloadPDF } = await import('$lib/pdf/template');
-      await downloadPDF(createHeartDesign(), { lang });
+      const { downloadDesignPDF } = await import('$lib/pdf/template');
+      await downloadDesignPDF(createHeartDesign(), lang);
     } catch (err) {
       console.error('Generating the PDF failed', err);
       showStatus('pdf', 'error', t('pdfFailed', lang));

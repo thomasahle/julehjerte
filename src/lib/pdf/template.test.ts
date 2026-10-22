@@ -11,7 +11,7 @@ import { SHEETS } from '$lib/laser/sheet';
 import { loadHeart } from '$lib/laser/testHearts.test-helpers';
 import { laserFileName } from '$lib/laser/export';
 import { getGalleryDesign } from '$lib/data/heartDesigns';
-import { generateTemplatesPDF, templatesFilename } from './template';
+import { designPDFOptions, generateTemplatesPDF, templatesFilename } from './template';
 import { planTemplatePages, templatePieces } from './plan';
 import { markStrokes } from '$lib/utils/orientationMarks';
 
@@ -169,5 +169,32 @@ describe('templatesFilename', () => {
 		expect(templatesFilename([classic], 80, 'da', 'mit-hjerte')).toBe('mit-hjerte-80mm.pdf');
 		// Several hearts are still named by their count.
 		expect(templatesFilename([classic, jul], 80, 'da', 'mit-hjerte')).toBe('julehjerter-2-skabeloner.pdf');
+	});
+});
+
+describe("Tegn's, Mal's and the design page's PDF", () => {
+	/** The options their "Hent PDF" prints with, with `stored` as the dialog's stored settings. */
+	function options(stored: string | null) {
+		const storage = new Map<string, string>(stored === null ? [] : [['juleflet:download', stored]]);
+		vi.stubGlobal('localStorage', { getItem: (k: string) => storage.get(k) ?? null, setItem: () => {}, removeItem: () => {} });
+		try {
+			const design = { ...loadHeart('classic-3x3'), name: 'Mit hjerte' };
+			const chosen = designPDFOptions(design);
+			return { ...chosen, file: templatesFilename([design], chosen.widthMm, 'da', chosen.fileStem) };
+		} finally {
+			vi.unstubAllGlobals();
+		}
+	}
+
+	it("prints the heart as the gallery's download does, at 80 mm on A4, named after the heart", () => {
+		const chosen = options(null);
+		expect(chosen.sheet).toEqual(SHEETS.A4);
+		expect(chosen.file).toBe('mit-hjerte-80mm.pdf');
+	});
+
+	it('takes the width the visitor last downloaded with, and the defaults where the sheet cannot hold it', () => {
+		expect(options(JSON.stringify({ widthMm: 120, sheet: 'A4' })).file).toBe('mit-hjerte-120mm.pdf');
+		const small = options(JSON.stringify({ widthMm: 200, sheet: { widthMm: 60, heightMm: 60 } }));
+		expect([small.widthMm, small.sheet]).toEqual([80, SHEETS.A4]);
 	});
 });

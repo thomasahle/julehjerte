@@ -953,8 +953,8 @@
 		const design = session.result ? { ...session.result.design, colors: toHexColors(colors, DEFAULT_COLORS_HEX) } : undefined;
 		if (!design) return;
 		try {
-			const { downloadPDF } = await import('$lib/pdf/template');
-			await downloadPDF(design, { lang });
+			const { downloadDesignPDF } = await import('$lib/pdf/template');
+			await downloadDesignPDF(design, lang);
 		} catch (err) {
 			console.error('Generating the PDF failed', err);
 			notice = t('pdfFailed', lang);

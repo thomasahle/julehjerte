@@ -692,8 +692,8 @@
 		downloadBusy = true;
 		notice = '';
 		try {
-			const { downloadPDF } = await import('$lib/pdf/template');
-			await downloadPDF(design, { lang });
+			const { downloadDesignPDF } = await import('$lib/pdf/template');
+			await downloadDesignPDF(design, lang);
 		} catch {
 			notice = t('generatorFailedDownload', lang);
 		} finally {

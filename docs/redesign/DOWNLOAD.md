@@ -110,7 +110,7 @@ is back since the owner's "no name in the ear" (below). Pull the page-planning m
 (`planTemplatePages`) in `src/lib/pdf/plan.ts` with tests. Keep the existing
 `generatePDF`/`generateMultiPDF`/`LayoutMode` code path intact for the front
 page toolbar. (Since removed: `generateMultiPDF` and `LayoutMode` are gone, and
-only the editor and the paint page still call `generatePDF`/`downloadPDF`.) `downloadTemplatesPDF` saves `{heart id}-{width}mm.pdf` (since the
+since 2026-10-22 `generatePDF`/`downloadPDF` too: Tegn, Mal and the design page print with `downloadDesignPDF`, the dialog's PDF at its stored settings.) `downloadTemplatesPDF` saves `{heart id}-{width}mm.pdf` (since the
 QA round of 2026-10-17 the id, `heartFileStem`, as the laser files are named;
 it was the display name's slug, so `circle` printed as `uret-v2-60mm.pdf`).
 
@@ -287,8 +287,12 @@ Everything else in this file stands, including round 1.
   `downloadMultiPDF`, the small/medium/large `LayoutMode`, the page's
   `pdfLayout` and `generating`, the bar's gear menu and select all/none, and
   the strings `pdfLayout`, `pdfSettings`, `layoutSmall/Medium/Large`,
-  `selectAll`, `selectNone`. `generatePDF`/`downloadPDF` stay, fixed at nine
-  templates to an A4 page: the editor and the paint mode still use them.
+  `selectAll`, `selectNone`. `generatePDF`/`downloadPDF` stayed, fixed at nine
+  templates to an A4 page, for the editor and the paint mode, until
+  2026-10-22: each template came out 51 mm wide, not the 80 mm of the
+  dialog and the guide (user test round 2). Tegn's, Mal's and the design
+  page's "Hent PDF" now print as the dialog does (`downloadDesignPDF`): its
+  stored width, sheet and picture, 80 mm on A4 until the visitor chooses.
 - Tests: `DownloadDialog.test.ts` (several hearts: title, plan order, PDF
   call and event, laser file name, contents and event, no lobe when all
   shared; printer has no count), `export.test.ts` (multi-heart plan, file

@@ -4,15 +4,14 @@ import { prerenderHeartImages } from './heartRenderer';
 import { SITE_DOMAIN } from '$lib/config';
 import { segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
-import { lobesShareTemplate, SHARED_TEMPLATE_LOBE } from '$lib/utils/symmetry';
-import { transformPathData, type TemplateLobe } from '$lib/utils/templateSvg';
-import { dedupeMarks, markStrokes, templateMarks, type PlacedMark } from '$lib/utils/orientationMarks';
+import { transformPathData } from '$lib/utils/templateSvg';
+import { markStrokes, type PlacedMark } from '$lib/utils/orientationMarks';
 import { heartFileStem, slugify } from '$lib/utils/slug';
 import { t, type Language } from '$lib/i18n';
 import { SHEETS, type SheetSize } from '$lib/laser/sheet';
+import { DEFAULT_DOWNLOAD_SETTINGS, loadDownloadSettings, type DownloadSettings } from '$lib/download/settings';
 import {
   planTemplatePages,
-  templateAddress,
   templateEar,
   templateLabel,
   templatePicturePixels,
@@ -21,50 +20,6 @@ import {
   TEMPLATE_LABEL_BASELINE_MM,
   TEMPLATE_LABEL_PT
 } from './plan';
-
-// A4 dimensions in mm
-const PAGE_WIDTH = 210;
-const PAGE_HEIGHT = 297;
-const PREVIEW_DPI = 300;
-
-// The editor's and paint mode's one-page PDF: nine templates to an A4 page.
-// (The front page's small/medium/large choice went with its own PDF path,
-// docs/redesign/SELECTION.md; the front page uses the download dialog now.)
-const GRID = { cols: 3, rows: 3 };
-
-interface PDFOptions {
-  lang?: Language;
-}
-
-function getTemplateDimensions() {
-  const COMPACT_MARGIN = 5;
-  const FOOTER_HEIGHT = 5;
-  const availableWidth = PAGE_WIDTH - COMPACT_MARGIN * 2;
-  const availableHeight = PAGE_HEIGHT - COMPACT_MARGIN * 2 - FOOTER_HEIGHT;
-
-  const { cols, rows } = GRID;
-
-  const maxWidth = (availableWidth - COMPACT_MARGIN * (cols - 1)) / cols;
-  const maxHeight = (availableHeight - COMPACT_MARGIN * (rows - 1)) / rows;
-
-  // Maintain heart template aspect ratio (~1.5 height/width)
-  const aspectRatio = 1.5;
-  let width = maxWidth;
-  let height = width * aspectRatio;
-
-  if (height > maxHeight) {
-    height = maxHeight;
-    width = height / aspectRatio;
-  }
-
-  return { width, height, cols, rows, margin: COMPACT_MARGIN, footerHeight: FOOTER_HEIGHT };
-}
-
-function previewSizePx(): number {
-  const { width, height } = getTemplateDimensions();
-  const previewSizeMm = Math.min(width * 0.35, height * 0.25);
-  return Math.max(200, Math.round((previewSizeMm / 25.4) * PREVIEW_DPI));
-}
 
 function inferOverlapRect(design: HeartDesign) {
   const rect = inferOverlapRectShared(design.fingers, design.gridSize);
@@ -169,42 +124,6 @@ function drawArc(
   }
 }
 
-// Draw a single lobe template (vertical orientation with ear at top), as large
-// as fits in a box centred on (centerX, centerY): the gallery's fixed layouts.
-function drawLobeTemplate(
-  pdf: jsPDF,
-  design: HeartDesign,
-  lobe: 'left' | 'right',
-  centerX: number,
-  centerY: number,
-  maxWidth: number,
-  maxHeight: number,
-  uses: readonly TemplateLobe[] = [lobe]
-) {
-  const rect = inferOverlapRect(design);
-  const overlapWidth = rect.overlapWidth;
-  const overlapHeight = rect.overlapHeight;
-  const earRadius = lobe === 'left' ? overlapHeight / 2 : overlapWidth / 2;
-  const bodyWidth = lobe === 'left' ? overlapHeight : overlapWidth;
-  const bodyHeight = lobe === 'left' ? overlapWidth : overlapHeight;
-
-  // Calculate scale to fit template in available space
-  // Template is squareSize wide and squareSize + earRadius tall
-  const templateWidth = bodyWidth;
-  const templateHeight = bodyHeight + earRadius;
-
-  const scaleX = maxWidth / templateWidth;
-  const scaleY = maxHeight / templateHeight;
-  const scale = Math.min(scaleX, scaleY) * 0.95; // Use 95% to leave minimal padding
-
-  // Calculate offset to center the template
-  const offsetX = centerX - (templateWidth * scale) / 2;
-  const offsetY = centerY - (templateHeight * scale) / 2;
-
-  drawLobeTemplateAt(pdf, design, lobe, offsetX, offsetY, scale);
-  drawMarks(pdf, dedupeMarks(templateMarks(design, lobe, uses, scale)), offsetX, offsetY, scale);
-}
-
 /**
  * The orientation marks ($lib/utils/orientationMarks) on a template drawn at
  * (offsetX, offsetY) and `scale` mm per unit: thin crosses in the template's
@@ -229,8 +148,8 @@ function drawMarks(pdf: jsPDF, marks: readonly PlacedMark[], offsetX: number, of
 }
 
 // Draw a single lobe template with its top-left corner (the ear's bounding
-// box) at (offsetX, offsetY), at `scale` mm per template unit. The dialog's
-// PDF uses this directly, since there the size is the visitor's to choose.
+// box) at (offsetX, offsetY), at `scale` mm per template unit, the size the
+// visitor chose.
 function drawLobeTemplateAt(
   pdf: jsPDF,
   design: HeartDesign,
@@ -378,158 +297,6 @@ function drawLobeTemplateAt(
   }
 }
 
-interface TemplateSlot {
-  design: HeartDesign;
-  lobe: 'left' | 'right' | 'both';
-}
-
-// Collect templates needed for all designs
-function collectTemplates(designs: HeartDesign[]): TemplateSlot[] {
-  const templates: TemplateSlot[] = [];
-
-  for (const design of designs) {
-    if (lobesShareTemplate(design.fingers, design.gridSize)) {
-      // Symmetric - only need one template
-      templates.push({ design, lobe: 'both' });
-    } else {
-      // Asymmetric - need both templates
-      templates.push({ design, lobe: 'left' });
-      templates.push({ design, lobe: 'right' });
-    }
-  }
-
-  return templates;
-}
-
-function addTemplatesPage(
-  pdf: jsPDF,
-  templates: TemplateSlot[],
-  startIndex: number,
-  isFirstPage: boolean,
-  heartImages: Map<string, string>,
-  lang: Language = 'da'
-): number {
-  if (!isFirstPage) {
-    pdf.addPage();
-  }
-
-  const { width: TEMPLATE_WIDTH, height: TEMPLATE_HEIGHT, cols, rows, margin: COMPACT_MARGIN, footerHeight: FOOTER_HEIGHT } = getTemplateDimensions();
-
-  const maxPerPage = cols * rows;
-
-  // Calculate grid positions based on layout
-  const totalGridWidth = TEMPLATE_WIDTH * cols + COMPACT_MARGIN * (cols - 1);
-  const totalGridHeight = TEMPLATE_HEIGHT * rows + COMPACT_MARGIN * (rows - 1);
-  const startX = (PAGE_WIDTH - totalGridWidth) / 2 + TEMPLATE_WIDTH / 2;
-  const startY = (PAGE_HEIGHT - FOOTER_HEIGHT - totalGridHeight) / 2 + TEMPLATE_HEIGHT / 2;
-
-  const positions: { x: number; y: number }[] = [];
-  for (let row = 0; row < rows; row++) {
-    for (let col = 0; col < cols; col++) {
-      positions.push({
-        x: startX + col * (TEMPLATE_WIDTH + COMPACT_MARGIN),
-        y: startY + row * (TEMPLATE_HEIGHT + COMPACT_MARGIN)
-      });
-    }
-  }
-
-  // Preview size: scales with template size, max 30% of template width
-  const PREVIEW_SIZE = Math.min(TEMPLATE_WIDTH * 0.35, TEMPLATE_HEIGHT * 0.25);
-  const HEADER_SPACE = 7; // Two lines: the name, and the template's own address
-
-  let drawn = 0;
-  for (let i = 0; i < maxPerPage && startIndex + i < templates.length; i++) {
-    const template = templates[startIndex + i];
-    const pos = positions[i];
-
-    // Calculate vertical layout within slot
-    const slotTop = pos.y - TEMPLATE_HEIGHT / 2;
-    const slotBottom = pos.y + TEMPLATE_HEIGHT / 2;
-
-    // Draw template name at top
-    pdf.setFontSize(8);
-    pdf.setTextColor(0);
-    const label = templateLabel(
-      { design: template.design, lobe: template.lobe === 'both' ? 'left' : template.lobe, shared: template.lobe === 'both' },
-      lang
-    );
-    pdf.text(label, pos.x, slotTop + 4, { align: 'center' });
-    // A sheet often ends up separated from the rest (a school, a workshop), so
-    // each template carries the address that leads back to it.
-    pdf.setFontSize(6);
-    pdf.setTextColor(128);
-    pdf.text(templateAddress(template.design, lang), pos.x, slotTop + HEADER_SPACE, { align: 'center' });
-
-    // Calculate template dimensions to position preview inside the ear
-    const templateTop = slotTop + HEADER_SPACE + 2;
-    const templateHeight = slotBottom - templateTop;
-    const templateCenterY = templateTop + templateHeight / 2;
-
-    // Draw the template first
-    const lobeToUse = template.lobe === 'both' ? SHARED_TEMPLATE_LOBE : template.lobe;
-    drawLobeTemplate(
-      pdf,
-      template.design,
-      lobeToUse,
-      pos.x,
-      templateCenterY,
-      TEMPLATE_WIDTH - 4,
-      templateHeight - 2,
-      template.lobe === 'both' ? ['left', 'right'] : [template.lobe]
-    );
-
-    // Draw colored preview heart image inside the ear (semicircle) portion
-    const earHeight = templateHeight / 3; // Approximate ear portion
-    const previewCenterY = templateTop + earHeight * 0.6; // Slightly below ear center
-    const imageData = heartImages.get(template.design.id);
-    if (imageData) {
-      pdf.addImage(
-        imageData,
-        'PNG',
-        pos.x - PREVIEW_SIZE / 2,
-        previewCenterY - PREVIEW_SIZE / 2,
-        PREVIEW_SIZE,
-        PREVIEW_SIZE
-      );
-    }
-
-    drawn++;
-  }
-
-  // Add footer with source attribution
-  pdf.setFontSize(7);
-  pdf.setTextColor(128);
-  pdf.text(SITE_DOMAIN, PAGE_WIDTH / 2, PAGE_HEIGHT - 3, { align: 'center' });
-
-  return drawn;
-}
-
-async function generatePDF(design: HeartDesign, options: PDFOptions = {}): Promise<jsPDF> {
-  const lang = options.lang ?? 'da';
-
-  const pdf = new jsPDF({
-    orientation: 'portrait',
-    unit: 'mm',
-    format: 'a4'
-  });
-
-  const heartImages = await prerenderHeartImages([design], previewSizePx());
-  const templates = collectTemplates([design]);
-  addTemplatesPage(pdf, templates, 0, true, heartImages, lang);
-
-  return pdf;
-}
-
-/** "juletrae-template.pdf" — one heart's template, named after the heart. */
-function singleFilename(design: HeartDesign): string {
-  return `${slugify(design.name)}-template.pdf`;
-}
-
-export async function downloadPDF(design: HeartDesign, options: PDFOptions = {}) {
-  const pdf = await generatePDF(design, options);
-  pdf.save(singleFilename(design));
-}
-
 // ---- The "Hent skabelon" dialog's PDF (docs/redesign/DOWNLOAD.md) ----------
 
 export interface TemplatesPDFOptions {
@@ -646,4 +413,34 @@ export async function downloadTemplatesPDF(designs: HeartDesign[], options: Temp
   if (designs.length === 0) return;
   const pdf = await generateTemplatesPDF(designs, options);
   pdf.save(templatesFilename(designs, options.widthMm, options.lang, options.fileStem));
+}
+
+/**
+ * Tegn's, Mal's and the design page's "Hent PDF": the heart's templates as the
+ * "Hent skabelon" dialog prints them, at the width, on the sheet and with the
+ * picture the visitor last downloaded with (80 mm on A4 until then), named
+ * after the heart. Until 2026-10-22 these buttons printed a page of their own,
+ * nine templates to an A4 page, so each came out 51 mm wide, not the 80 mm the
+ * guide and the gallery's download give (a user tester's "five centimetres in
+ * the top third of the page"). A stored width the sheet cannot take falls back
+ * to the dialog's defaults.
+ */
+export async function downloadDesignPDF(design: HeartDesign, lang: Language = 'da') {
+  await downloadTemplatesPDF([design], designPDFOptions(design, lang));
+}
+
+/** What `downloadDesignPDF` prints the heart with. */
+export function designPDFOptions(design: HeartDesign, lang: Language = 'da'): TemplatesPDFOptions {
+  const stored = loadDownloadSettings();
+  const sheetOf = (choice: DownloadSettings['sheet']) => (typeof choice === 'string' ? SHEETS[choice] : choice);
+  const fits = planTemplatePages(templatePieces([design], stored.widthMm, 1), { sheet: sheetOf(stored.sheet) }).fits;
+  const settings = fits ? stored : DEFAULT_DOWNLOAD_SETTINGS;
+  return {
+    widthMm: settings.widthMm,
+    hearts: 1,
+    sheet: sheetOf(settings.sheet),
+    lang,
+    previewImage: settings.previewImage,
+    fileStem: slugify(design.name) || undefined
+  };
 }
