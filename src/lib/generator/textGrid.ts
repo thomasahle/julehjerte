@@ -237,7 +237,10 @@ export function generateTextGrid(
 						const [sx, sy] = uprightToSheet([u, v]);
 						return Math.min(layout.circle! / 2, distance(ray(boundary!, [50, 50], Math.atan2(sy - 50, sx - 50)).point, [50, 50]));
 					};
-					const k = (layout.circle! > 100 ? reach + .6 * (rim() - reach) : (reach + layout.circle! / 2) / 2) / Math.hypot(u, v);
+					// A completion whose cuts across the circle run deep keeps its
+					// gates just outside the motif instead (see `BOARD_PATTERNS`).
+					const near = layout.completion?.gates;
+					const k = (near !== undefined ? reach + near : layout.circle! > 100 ? reach + .6 * (rim() - reach) : (reach + layout.circle! / 2) / 2) / Math.hypot(u, v);
 					if (outer[i] && k < 1 && Math.abs(u * k - x) <= w / 2 + 1e-9 && Math.abs(v * k - y) <= h / 2 + 1e-9)
 						gates[i] = uprightToSheet([u * k, v * k]);
 				});

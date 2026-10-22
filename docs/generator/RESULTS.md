@@ -1,5 +1,60 @@
 # Generator robustness results
 
+## An exact search for the completions, and two more ranges on nine strips
+
+Product prompts (2026-10-22): "continue", and of the fewest-hidden-cuts
+bundle: "You can check the algorithms and comprehensive analysis".
+
+The completion model of the board circle is now solved by CP-SAT
+(tmp/claude/weave/cpsat.py, OR-Tools 9.14). It uses:
+- a boolean per candidate chord;
+- one line label per boundary stretch, equal along every chosen chord
+  (turned with its quarter);
+- planarity conflicts between chords, worked out in numpy;
+- a distance per stretch from the paper's edge, which rules out closed loops
+  (as the bundle's flows and potentials do);
+- the spokes' order round an aligned motif, as conflicts.
+
+Options let the counts per chain be maxima (two neighbouring switch points may
+pair up as unused), give each switch point its piece (side, arc, side) with
+room for the points on it, limit how deep cuts nest, and keep to cuts between
+neighbouring chains. It finds the known seven- and nine-strip completions in
+0.3 s, where the depth-first search took minutes or ran out of time. It also
+proves cases impossible: on seven strips at 47, cuts between neighbouring
+chains alone, with room for each point, have no completion.
+
+At the bound the meetings give (each A cut meets each B cut once, visibly or
+along one hidden cut), the bundle's Proposition T says the completion is a
+partial smoothing of the grid. The search reaches that bound on nine strips:
+12 switch points a quarter at 36.5, 22 at 45.
+
+Drawing them needed three things:
+- the motif's outer gates just outside the motif (a pattern's `gates`), not
+  midway to the circle;
+- spokes whose gate lies within another's turn round the motif running a level
+  deeper (the router now sees every gate first);
+- for the 12-point pattern, the motif 2.7 inside the circle (a pattern's
+  `band`, which the motif's even growth respects).
+
+For the same circle and motif the router still draws the deployed patterns
+bit for bit as before. On nine strips the new ranges move the slider and the
+motif's growth.
+
+Two new ranges:
+- 35.6 to 37.3: over the corpus, star, tb-star, ph-moon-stars and tb-paw are
+  hard, as around it.
+- 42.7 to 43.6: star and tb-paw are hard, and ph-puzzle-piece at 43.6.
+
+None is refused. The ranges that meet now share their percent, and the
+percents go one by one to the range that grows most per percent. The
+nine-strip slider steps 30.4 to 32.8 (81–82%), 37.3 to 40.2 (87–88%), 41 to
+42.7 (89–90%) and 43.6 to 48.2 (91–92%). The cat's largest change from one
+percent to the next on nine strips falls from 14.2% to 9.2%.
+
+With the 12-point pattern on nine strips but the gates midway, 13 more corpus
+motifs were hard: the gates stood in the way of its cuts. The 22-point
+pattern, at 44.3 and above, is hard for all.
+
 ## Nine strips past the outer lines' junctions with the middle ones
 
 Past radius 39.3 the nine-strip circle encloses the outer lines' junctions

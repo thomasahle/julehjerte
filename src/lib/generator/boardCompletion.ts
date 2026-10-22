@@ -244,7 +244,7 @@ function norm([x, y]: number[]): [number, number] {
  * switch point. `around` is the radius midway between motif and circle.
  */
 export function completionLegs(edges: Edge[], ring: Ring, strips: number, radius: number, pattern: BoardPattern, around: number):
-	(side: number, index: number, from: Point) => Point[] {
+	((side: number, index: number, from: Point) => Point[]) & { prepare: (all: { side: number; index: number; from: Point }[]) => void } {
 	const { chains, lines } = boundaryChains(strips, radius), spacing = SPACING * 7 / Math.max(7, strips);
 	const Q = chains.length / 4, quarter = chains.slice(0, Q);
 	if (Q !== pattern.counts.length) throw new ConstructionError('topology', 'The pattern does not fit the circle');
@@ -271,7 +271,9 @@ export function completionLegs(edges: Edge[], ring: Ring, strips: number, radius
 		// One between chains further apart runs across the circle, from the arcs.
 		for (const [p, c] of [[i, ci], [j, cj]] as const) if (!piece.has(p) && c.pieces.some(x => x.type === 'arc')) piece.set(p, c.pieces.findIndex(x => x.type === 'arc'));
 	}
-	// The others take the piece of the point before them on the chain (or after).
+	// The others take the piece of the point before them on the chain (or
+	// after), unless the pattern says.
+	pattern.pieces?.forEach((pc, p) => piece.set(p, pc));
 	const placed: { at: number; point: Point }[] = [];
 	pattern.counts.forEach((n, k) => {
 		const ids = outer.map((o, p) => [o, p] as const).filter(([o]) => o.k === k).map(([, p]) => p);
@@ -436,21 +438,38 @@ export function completionLegs(edges: Edge[], ring: Ring, strips: number, radius
 	// of its panel, then the top (turned with the quarter).
 	const spokes = pattern.chords.filter(([kind, face]) => kind === 'spoke' && face === 0);
 	const gates: [number, number][][] = [[[1, 0], [0, 1]], [[0, 0], [3, 0]], [[3, 1], [2, 0]], [[2, 1], [1, 1]]];
-	return (side, index, from) => {
+	const spokeOf = (side: number, index: number, from: Point) => {
 		for (let q = 0; q < 4; q++) for (const [, , i, j, dq] of spokes) {
 			const mq = (q + dq) % 4, slot = j - N;
 			if (gates[mq][slot]?.[0] !== side || gates[mq][slot]?.[1] !== index) continue;
-			// Round midway between motif and circle to the switch point's angle,
-			// under the hidden cuts across the circle on the way, then out to it.
 			const target = pointAt(q, i), start = toCentred(from);
 			const a0 = Math.atan2(start[1], start[0]), a1 = Math.atan2(target[1], target[0]);
-			const delta = turnAngle(a1 - a0 + Math.PI) - Math.PI, steps = Math.max(1, Math.ceil(Math.abs(delta) / (Math.PI / 90)));
-			const passed = (p: Point) => { const d = turnAngle(Math.atan2(p[1], p[0]) - a0); return delta < 0 ? d === 0 || 2 * Math.PI - d <= -delta : d <= delta; };
-			const under = Math.min(Infinity, ...across.filter(passed).map(p => Math.hypot(...p))) - spacing;
-			const reach = Math.max(Math.min(around, under), Math.hypot(...start));
-			const path: Point[] = Array.from({ length: steps + 1 }, (_, t) => { const a = a0 + delta * t / steps; return [reach * Math.cos(a), reach * Math.sin(a)]; });
-			return [...path, target].map(toSheet);
+			return { target, start, a0, delta: turnAngle(a1 - a0 + Math.PI) - Math.PI };
 		}
 		throw new ConstructionError('topology', 'A motif gate has no spoke');
 	};
+	const swept = (a0: number, delta: number, angle: number) => {
+		const d = turnAngle(angle - a0);
+		return delta < 0 ? d === 0 || 2 * Math.PI - d <= -delta : d <= delta;
+	};
+	// Where one spoke's gate lies within the turn another makes round the
+	// motif, it runs a spacing deeper than that one.
+	const levels = new Map<string, number>();
+	const legs = (side: number, index: number, from: Point): Point[] => {
+		// Round midway between motif and circle to the switch point's angle,
+		// under the hidden cuts across the circle on the way, then out to it.
+		const { target, start, a0, delta } = spokeOf(side, index, from), steps = Math.max(1, Math.ceil(Math.abs(delta) / (Math.PI / 90)));
+		const under = Math.min(Infinity, ...across.filter(p => swept(a0, delta, Math.atan2(p[1], p[0]))).map(p => Math.hypot(...p))) - spacing;
+		const reach = Math.max(Math.min(around, under) - (levels.get(`${side}:${index}`) ?? 0) * spacing, Math.hypot(...start));
+		const path: Point[] = Array.from({ length: steps + 1 }, (_, t) => { const a = a0 + delta * t / steps; return [reach * Math.cos(a), reach * Math.sin(a)]; });
+		return [...path, target].map(toSheet);
+	};
+	legs.prepare = (all: { side: number; index: number; from: Point }[]) => {
+		const turns = all.map(g => ({ key: `${g.side}:${g.index}`, ...spokeOf(g.side, g.index, g.from) }));
+		for (let round = 0; round < turns.length; round++)
+			for (const s of turns) for (const t of turns)
+				if (s !== t && swept(s.a0, s.delta, t.a0) && Math.abs(turnAngle(t.a0 - s.a0)) > 1e-9)
+					levels.set(t.key, Math.max(levels.get(t.key) ?? 0, (levels.get(s.key) ?? 0) + 1));
+	};
+	return legs;
 }

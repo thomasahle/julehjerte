@@ -1772,9 +1772,10 @@ export function boardRanges(strips: number): readonly (readonly [number, number]
 		// carry the circle on from just past the junctions where theirs begin,
 		// while they cut cleanly, and the middle lines are left out only after
 		// (see `boardCompletion`).
-		for (const { strips: n, lo, hi, pattern } of BOARD_PATTERNS) if (n === strips && lo > from - 1e-6) {
+		for (const { strips: n, lo, hi, band, pattern } of BOARD_PATTERNS) if (n === strips && lo > from - 1e-6) {
 			const range = [lo, hi] as const;
 			patternRanges.set(range, pattern);
+			if (band) rangeBands.set(range, band);
 			ranges.push(range);
 			from = hi;
 		}
@@ -1832,6 +1833,9 @@ const rangesByStrips = new Map<number, readonly (readonly [number, number])[]>()
 const coveredLines = new WeakMap<readonly [number, number], number[]>();
 /** The completion that routes every line in a range past the motif in four's reach. */
 const patternRanges = new WeakMap<readonly [number, number], BoardPattern>();
+/** How far inside the circle a completion keeps the motif, in its range,
+ * for its cuts across the circle to pass between. */
+const rangeBands = new WeakMap<readonly [number, number], number>();
 /** The completion for a range of radii, where one carries the circle (see `boardRanges`). */
 export const boardRangePattern = (range: readonly [number, number]) => patternRanges.get(range);
 /** The distances from the centre of the lines a range of radii on a board
@@ -1858,10 +1862,18 @@ export function boardFill(radius: number, strips: number): number {
 	const spans = ranges.slice(first, ranges.indexOf(past)), start = spans[0][0];
 	const steps = spans.slice(1).map(([low], i) => [spans[i][1], low] as const);
 	const along = (r: number) => steps.reduce((x, [a, b]) => x - Math.max(0, Math.min(r, b) - a), r - start);
-	// Evenly, but never past a circle before it steps on: the lowest convex
+	// Evenly, but never past a circle before it steps on, nor nearer a circle
+	// than its completion lets it (see `BOARD_PATTERNS`): the lowest convex
 	// line under those, from the largest circle before to the first past.
 	const from = ranges[first - 1][1], whole = past[0], hull: Point[] = [];
-	for (const p of [[0, from], ...steps.map(([a]): Point => [along(a), Math.min(a, 50)]), [along(whole), Math.min(whole, 50)]] as Point[]) {
+	const under = new Map<number, number>();
+	for (const range of spans) for (const r of range) {
+		const at = along(r), y = Math.min(r, 50) - (rangeBands.get(range) ?? 0);
+		under.set(at, Math.min(under.get(at) ?? Infinity, y));
+	}
+	under.delete(0);
+	under.delete(along(whole));
+	for (const p of [[0, from], ...[...under].sort((a, b) => a[0] - b[0]), [along(whole), Math.min(whole, 50)]] as Point[]) {
 		const turn = () => { const [o, q] = hull.slice(-2); return (q[0] - o[0]) * (p[1] - o[1]) - (q[1] - o[1]) * (p[0] - o[0]); };
 		while (hull.length > 1 && turn() <= 0) hull.pop();
 		hull.push(p);
@@ -2209,6 +2221,10 @@ export function connectCellGrid(
 			add(edges, [gate, openLeg(gate, corner, 0, open.taper)], 'B', 'frame');
 		}
 	};
+	// The completion routes its spokes knowing every outer gate.
+	completed?.prepare(cells.flatMap((line, row) => line.flatMap((gates, col) => [
+		...!row ? [{ side: 0, index: col, from: gates[0] }] : [], ...row === rows - 1 ? [{ side: 2, index: col, from: gates[2] }] : [],
+		...!col ? [{ side: 3, index: row, from: gates[3] }] : [], ...col === cols - 1 ? [{ side: 1, index: row, from: gates[1] }] : []])));
 	for (let row = 0; row < rows; row++)
 		for (let col = 0; col < cols; col++) {
 			const gates = cells[row][col];

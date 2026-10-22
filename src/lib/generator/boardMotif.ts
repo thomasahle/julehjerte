@@ -143,12 +143,20 @@ export function boardStage(scale: number, strips = 5): '' | 'pattern' | 'past' {
 export function boardSteps(strips: number): readonly (readonly [number, number])[] {
 	const known = stepsByStrips.get(strips);
 	if (known) return known;
-	const spans = boardRanges(strips).slice(1).map(([low, high]) => high - low), total = spans.reduce((a, b) => a + b, 0);
-	const free = 30 - (spans.length - 1), shares = spans.map(span => free * span / total), counts = shares.map(Math.floor);
-	const short = free - counts.reduce((a, b) => a + b, 0);
-	for (const i of shares.map((_, i) => i).sort((a, b) => shares[b] - counts[b] - (shares[a] - counts[a])).slice(0, short)) counts[i]++;
+	// A percent between ranges is the step over a junction; ranges that meet
+	// share their percent instead.
+	const ranges = boardRanges(strips).slice(1), spans = ranges.map(([low, high]) => high - low);
+	const meets = ranges.map((range, i) => i > 0 && Math.abs(ranges[i - 1][1] - range[0]) < 1e-9);
+	// Each percent in turn to the range that grows most per percent, so that
+	// none grows faster than it must.
+	const free = 30 - meets.slice(1).filter(m => !m).length, counts = spans.map(() => 1);
+	for (let left = free - counts.length; left > 0; left--) {
+		const i = spans.reduce((best, span, k) => span / counts[k] > spans[best] / counts[best] ? k : best, 0);
+		counts[i]++;
+	}
 	let start = 70;
-	const steps = counts.map((count): readonly [number, number] => {
+	const steps = counts.map((count, i): readonly [number, number] => {
+		if (meets[i]) start--;
 		const range = [start, start + count] as const;
 		start += count + 1;
 		return range;

@@ -891,22 +891,29 @@ of its own, joined in pairs by hidden cuts across the white circle (hugging its 
 white squares outside it), across the red square just outside it, or in to the motif's gates
 (`boardCompletion`, `boardPatterns`). On seven strips it carries the circle from 42.1 to 46.5
 (87–91%). Nine strips short of their outer lines are seven, smaller, those lines crossing the paper
-whole, and the same completion carries the circle from 32.8 to 35.6 (84–87%). Further out, its
-switch points crowd on the short side between the outer line and the circle. Past the outer lines'
-junctions with the middle ones (39.3), another carries it from 40.2 to 41 (88–89%): its cuts from
-one chain to another past a third cross the mouths of the white squares outside the circle along
-the circle rather than going in, and the spokes to the motif's gates pass under them. The hidden
-cuts run 1.6 apart on seven strips and as much less on nine as the clearance its cuts need (1.24);
-where a passage between red squares is narrower, nested cuts share it. Beyond, the heart
+whole, and the same completion carries the circle from 32.8 to 35.6. Further out, its switch
+points crowd on the short side between the outer line and the circle. Further completions on nine
+strips, found by an exact search over the same model (CP-SAT, which also chooses the piece of its
+chain each switch point lies on, with room for each), carry the circle on: from 35.6 to 37.3 with
+the fewest switch points the crossings allow; past the outer lines' junctions with the middle ones
+(39.3) from 40.2 to 41; and past their junctions with the second lines (42.3) from 42.7 to 43.9,
+again with the fewest. Their cuts from one chain to another past a third cross the mouths of the
+white squares outside the circle along the circle rather than going in. Where those cuts nest
+deep, the motif's outer gates sit just outside the motif (a pattern's `gates`) and, if need be, the
+motif keeps further inside the circle (its `band`), so that the spokes to the gates pass under the
+cuts, each spoke whose gate lies within another's turn round the motif running a level deeper. The
+hidden cuts run 1.6 apart on seven strips and as much less on nine as the clearance its cuts need
+(1.24); where a passage between red squares is narrower, nested cuts share it. Beyond, the heart
 leaves the middle lines out in both sheets: the outer two lines a side remain, met as on five
 strips with the motif in four (46.5 to 55.4 on seven, 48.2 to 58.2 on nine; `boardRangeLines`) out
 past the paper's edges, the heart then having five strips while the page shows the board chosen.
 Once the circle covers the middle lines from edge to edge, that changes no square outside it; short
 of that, only the outer ring's middle squares, which merge into one of the circle's colour beside
-it. The slider steps where it first reaches past a junction (86 to 87%: 39.0 to 42.1 on seven; 83
-to 84%: 30.4 to 32.8, 87 to 88%: 35.6 to 40.2, and 89 to 90%: 41 to 48.2 on nine, where no
-completion has been found for the circle reaching the outer lines, nor past their junctions with
-the second lines). The motif does not step with the circle: it grows on evenly over
+it. The slider steps where it first reaches past a junction (86 to 87%: 39.0 to 42.1 on seven; 81
+to 82%: 30.4 to 32.8, 87 to 88%: 37.3 to 40.2, 89 to 90%: 41 to 42.7, and 91 to 92%: 43.9 to 48.2
+on nine, where no completion cuts cleanly nearer the outer lines or the junctions). Each step
+takes a percent of the slider, ranges that meet sharing one; the percents left go one by one to
+the range that grows most per percent (`boardSteps`). The motif does not step with the circle: it grows on evenly over
 the ranges' radii, not the steps between them, never past a circle before it steps, from the
 largest circle with every line to fill the circle again past the outer lines' corner junctions
 (`boardFill`), which also leaves its gates room. Where two lines' ends meet at one gate between
@@ -915,8 +922,9 @@ circle rather than along the circle past them, which keeps the starts of the div
 clean (on five strips at 73%, 45 of 52 clean, from 34). Where the paper's edges cut the circle off, the
 motif's outer gates move three fifths of the way out from the motif to the edge, not towards the
 circle beyond it, and the cut running round between motif and circle keeps inside the paper too.
-Past the touching circle, each range of a board takes a share of 70–100% in
-proportion to its radii (`boardSteps`; on five strips 70–85% and 86–100%, as before). A motif that cannot be built at all on the board chosen (on three,
+Past the touching circle, each range of a board takes a share of 70–100%, as near its radii as
+whole percents allow, none growing faster than it must (`boardSteps`; on five strips 70–85% and
+86–100%, as before). A motif that cannot be built at all on the board chosen (on three,
 one that must be divided) is shown on five, as the page then says. The size setting sizes the circle smoothly and
 the motif fills it up to the space asked for, so both only grow with the setting (tested): from
 five units clear of the centre square's corners (radius 19) to the circle that touches the outer
