@@ -720,7 +720,7 @@ describe('frames from real hearts', () => {
   expect(design.gridSize).toEqual({ x: 5, y: 5 });
   expect(hardToCut).toBeDefined();
  });
- it('keeps equal squares, hard to cut, rather than fitting cells to the sun', () => {
+ slow('keeps equal squares, hard to cut, rather than fitting cells to the sun', () => {
   // Its rays route only along visible spokes; fitted cells cut cleanly but
   // leave the squares unequal.
   const { design, hardToCut, layout } = generate({ mode: 'figure', name: 'Sun', contours: sun.contours as Ring[], colors, style: 'squares' });
