@@ -546,6 +546,19 @@
     autosaveTimeout = null;
   }
 
+  // A name the visitor has not chosen is taken whole by the click into the field, so what they
+  // type replaces it. Safari puts the caret where the click let go, so that mouseup is kept back.
+  let nameJustTaken = false;
+  function takeDefaultName(event: FocusEvent & { currentTarget: HTMLInputElement }): void {
+    if (heartName !== t('myHeart', lang)) return;
+    event.currentTarget.select();
+    nameJustTaken = true;
+  }
+  function keepNameTaken(event: MouseEvent): void {
+    if (nameJustTaken) event.preventDefault();
+    nameJustTaken = false;
+  }
+
   function scheduleAutosave(): void {
     if (!browser) return;
     autosaveDirty = true;
@@ -744,6 +757,8 @@
         type="text"
         autocomplete="off"
         bind:value={heartName}
+        onfocus={takeDefaultName}
+        onmouseup={keepNameTaken}
         oninput={scheduleAutosave}
       />
     </label>
