@@ -1313,9 +1313,7 @@
 		const from = getOverlapRect();
 		const to = getCenteredRectParams(grid, { x: from.left + from.width / 2, y: from.top + from.height / 2 });
 		const next = sameCuts(fingers, createDefaultFingers(gridSize)) ? createDefaultFingers(grid) : restripped(fingers, from, to, n);
-		const red = (cuts: Finger[], size: GridSize) =>
-			findFingersWithIssues(cuts, intersectionMarginPx(inferOverlapRect(cuts, size), gridClearanceScale(size.x, size.y))).size;
-		if (red(next, grid) > red(fingers, gridSize)) {
+		if (redCount(next, grid) > redCount(fingers, gridSize)) {
 			noteRefused(tr('editorSizeTooTight').replace('{n}', `${n} × ${n}`));
 			return;
 		}
@@ -1680,6 +1678,11 @@
 	 * has not now. A cut that comes newly too close to another is red, and so is the other, so one of the
 	 * changed cuts is red then: the whole heart is measured only when one is.
 	 */
+	/** How many of the cuts are red at the heart's size (`findFingersWithIssues`). */
+	function redCount(cuts: Finger[], size: GridSize): number {
+		return findFingersWithIssues(cuts, intersectionMarginPx(inferOverlapRect(cuts, size), gridClearanceScale(size.x, size.y))).size;
+	}
+
 	function makesRedCuts(next: Finger[]): boolean {
 		const margin = clearanceMargin();
 		const changed = next.filter((f) => !fingers.includes(f));
@@ -3005,8 +3008,14 @@
 	function beginPathDrag(e: PointerEvent, fingerId: string, p: Vec) {
 		const cut = getEditableFingerById(fingerId);
 		if (patternTile && escher) tileDrag = escher.startPanDrag(patternTile, p, cut ? cut.lobe : null);
+		pullingEdge = !cut && !patternTile;
 		beginDrag(e, { kind: 'path', fingerId });
 	}
+
+	/** The drag in progress pulls an edge of the square in, for a new strip. */
+	let pullingEdge = false;
+	/** Screen pixels an edge has to be pulled before a pull too short for a strip says so: less is a click that wobbled. */
+	const EDGE_PULL_NOTE_PX = 4;
 
 	/** The inner cut of `lobe` nearest `p`, or null. */
 	function cutNearest(lobe: LobeId, p: Vec): string | null {
@@ -3357,11 +3366,32 @@
 
 		// Structural reconcile: keep dummy outer curves at all four edges, and allow
 		// "remove by dragging to edge" to avoid stacking curves on top of an outer curve.
+		const pulled = pullingEdge && dragTarget?.kind === 'path' ? edgePull(dragTarget.fingerId) : 0;
 		if (dragDirty && !patternTile && reconcileBoundaryCurves({ allowEdgeRemoval: true })) {
 			dragDirty = true;
 		}
+		// An edge pulled in too little for a strip: the new cut would lie against the edge, a red cut
+		// (issue #4). The heart stays as it was, and a pull that was more than a wobble says why.
+		if (pullingEdge && dragSnapshot && redCount(fingers, gridSize) > redCount(dragSnapshot.fingers, dragSnapshot.gridSize)) {
+			restoreSnapshot(dragSnapshot);
+			if (pulled > EDGE_PULL_NOTE_PX) noteRefused(tr('editorEdgePullTooShort'));
+		}
+		pullingEdge = false;
 
 		endDrag(pointerId);
+	}
+
+	/** How far, in screen pixels, the edge `fingerId` has been pulled from where the drag found it. */
+	function edgePull(fingerId: string): number {
+		const base = dragSnapshot?.fingers.find((f) => f.id === fingerId);
+		const moved = getFingerById(fingerId);
+		const was = base ? fingerToSegments(base)[0]?.p0 : undefined;
+		const now = moved ? fingerToSegments(moved)[0]?.p0 : undefined;
+		const ctm = rotatedGroup?.getScreenCTM?.();
+		if (!was || !now || !ctm) return 0;
+		const a = new DOMPoint(was.x, was.y).matrixTransform(ctm);
+		const b = new DOMPoint(now.x, now.y).matrixTransform(ctm);
+		return Math.hypot(b.x - a.x, b.y - a.y);
 	}
 
 	/** The pointer id the arrow keys drag with (`nudge`): no real pointer has it. */

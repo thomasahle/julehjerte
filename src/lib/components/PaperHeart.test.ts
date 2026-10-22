@@ -134,6 +134,19 @@ describe('outer edges in the designer', () => {
 		expect(h.button('Undo').disabled).toBe(true);
 	});
 
+	it.each(edges)('$id pulled in a hair, too little for a strip, stays where it is: no red cut, no Fortryd step', ({ id, delta }) => {
+		const h = render();
+		const original = JSON.stringify(h.fingers);
+		const p = midpoint(h.fingers.find((f) => f.id === id)!);
+		const end = { x: p.x + delta.x / 25, y: p.y + delta.y / 25 };
+		send(h.path(id), 'pointerdown', p);
+		send(h.svg, 'pointermove', end);
+		send(h.svg, 'pointerup', end);
+		expect(JSON.stringify(h.fingers)).toBe(original);
+		expect(h.gridSize).toEqual({ x: 3, y: 3 });
+		expect(h.button('Undo').disabled).toBe(true);
+	});
+
 	it.each(edges)('$id still pulls inward to create an editable cut, with undo and redo', ({ id, delta, cut, grid }) => {
 		const h = render();
 		const original = JSON.stringify(h.fingers);
