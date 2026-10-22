@@ -23,23 +23,28 @@ describe('randomHeart', () => {
 		expect(randomHeart(seeded(42))).toEqual(randomHeart(seeded(42)));
 	});
 
-	it('draws square grids of 3 to 8 strips, with the outer edges and the cuts the editor numbers', () => {
+	it('draws 2 to 8 strips a lobe, the same in both when the lobes are tied, with the edges and cuts the editor numbers', () => {
 		for (const heart of HEARTS) {
-			const n = heart.gridSize.x;
-			expect(heart.gridSize.y).toBe(n);
-			expect(n).toBeGreaterThanOrEqual(3);
-			expect(n).toBeLessThanOrEqual(8);
-			const ids = heart.fingers.map((f) => f.id);
-			expect(ids).toEqual([...Array.from({ length: n + 1 }, (_, i) => `L-${i}`), ...Array.from({ length: n + 1 }, (_, i) => `R-${i}`)]);
-			// The square sits where the editor puts an n × n grid.
+			const { x, y } = heart.gridSize;
+			for (const n of [x, y]) {
+				expect(n).toBeGreaterThanOrEqual(2);
+				expect(n).toBeLessThanOrEqual(8);
+			}
+			if (heart.symmetry.betweenLobesMode !== 'off') expect(x).toBe(y);
+			expect(heart.fingers.map((f) => f.id)).toEqual([
+				...Array.from({ length: y + 1 }, (_, i) => `L-${i}`),
+				...Array.from({ length: x + 1 }, (_, i) => `R-${i}`)
+			]);
+			// The square sits where the editor puts an x × y grid.
 			const rect = inferOverlapRect(heart.fingers, heart.gridSize);
-			expect(rect.width).toBeCloseTo(n * STRIP_WIDTH, 6);
+			expect(rect.width).toBeCloseTo(x * STRIP_WIDTH, 6);
+			expect(rect.height).toBeCloseTo(y * STRIP_WIDTH, 6);
 			expect(rect.left + rect.width / 2).toBeCloseTo(CENTER.x, 6);
 		}
 	});
 
-	it('never makes a red cut: every cut keeps its distance from its neighbours and itself', () => {
-		for (const heart of HEARTS) expect(randomHeartIsValid(heart.fingers, heart.gridSize.x)).toBe(true);
+	it('never makes a red cut, nor lets a left and a right cut run alongside each other', () => {
+		for (const heart of HEARTS) expect(randomHeartIsValid(heart.fingers, heart.gridSize)).toBe(true);
 	});
 
 	it('keeps every symmetry row it opens with', () => {
@@ -54,40 +59,20 @@ describe('randomHeart', () => {
 				if (chosen === 'off') continue;
 				// The detector reports Sym where both hold (a straight cut is both), so Anti may read as Sym.
 				const ok = detected === chosen || (chosen === 'anti' && detected === 'sym');
-				expect(
-					ok,
-					`${row}: chose ${chosen}, found ${detected} (${heart.shape}, ${heart.spacing}, ${heart.profile}, ${heart.gridSize.x})`
-				).toBe(true);
+				expect(ok, `${row}: chose ${chosen}, found ${detected}`).toBe(true);
 			}
 		}
 	});
 
-	it('places the cuts the same from either edge, never closer than the narrowest band', () => {
-		for (const heart of HEARTS) {
-			const n = heart.gridSize.x;
-			const side = n * STRIP_WIDTH;
-			const top = CENTER.y - side / 2;
-			// A cut's place: where it meets the square's right side, as a share of the square.
-			const at = heart.fingers.filter((f) => f.lobe === 'left').map((f) => (f.segments[0]!.p0.y - top) / side);
-			for (let c = 0; c <= n; c++) {
-				if (heart.symmetry.withinLobeMode === 'off' && heart.symmetry.withinCurveMode === 'off') break;
-				if (heart.shape === 'lean') break;
-				expect(at[c]! + at[n - c]!).toBeCloseTo(1, 6);
-			}
-			for (let c = 1; c <= n; c++) expect(at[c]! - at[c - 1]!).toBeGreaterThan(0.03);
-		}
-	});
-
-	it('is never just the straight grid, and varies its grid, spacing, shape, profile and symmetry', () => {
+	it('explores: never the straight grid, and every grid, row setting and number of pieces turns up', () => {
 		for (const heart of HEARTS) {
 			const curved = heart.fingers.some((f) => f.segments.some((s) => Math.abs(s.p1.y - s.p0.y) > 1 && Math.abs(s.p1.x - s.p0.x) > 1));
 			expect(curved).toBe(true);
 		}
 		const kinds = (key: (h: (typeof HEARTS)[number]) => string) => new Set(HEARTS.map(key)).size;
-		expect(kinds((h) => String(h.gridSize.x))).toBe(6);
-		expect(kinds((h) => h.spacing)).toBe(4);
-		expect(kinds((h) => h.shape)).toBe(6);
-		expect(kinds((h) => h.profile)).toBe(3);
-		expect(kinds((h) => h.symmetry.withinCurveMode + h.symmetry.withinLobeMode + h.symmetry.betweenLobesMode)).toBeGreaterThan(15);
+		expect(kinds((h) => String(h.gridSize.y))).toBe(7);
+		expect(kinds((h) => h.symmetry.withinCurveMode + h.symmetry.withinLobeMode + h.symmetry.betweenLobesMode)).toBeGreaterThan(20);
+		expect(kinds((h) => String(h.pieces))).toBeGreaterThanOrEqual(5);
+		expect(HEARTS.some((h) => h.gridSize.x !== h.gridSize.y)).toBe(true);
 	});
 });

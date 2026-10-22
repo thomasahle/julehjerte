@@ -1,36 +1,34 @@
 /**
- * A random heart for Tegn's "Tilfældigt mønster" button in the Normal tab (docs/redesign/DESIGN.md §7).
+ * A random heart for Tegn's "Tilfældigt mønster" button in the Normal tab (docs/redesign/DESIGN.md §7), for
+ * exploring what the editor can draw: not a pick from a few prepared designs, but a draw from the whole
+ * space of hearts the Normal tab makes, limited only by what makes a heart one at all.
  *
- * Not a tiling (the Escher tab's "Tilfældig flise" draws those) but one picture over the whole square, the
- * way the gallery's Ramme, Amy's pattern, Amy's flowering and Amy's weave 2 are drawn: a few long cuts in
- * each lobe, each one or two smooth curves across the square, placed unevenly — in close pairs that make
- * bands, in frames that narrow towards the edges, round a wide middle — and bowed more or less with their
- * place, so that together they make a ring, a frame, a lens, a star or a flower. A heart picks:
+ *   strips     2–8 in each lobe; the same number in both when the lobes are tied, else each its own
+ *   symmetry   the three rows (Inden i kurve, Inden i lap, Mellem lapper), each Fra, Sym or Anti
+ *   places     where each cut meets the square's sides: anywhere, at least MIN_GAP apart
+ *   cuts       each a chain of 1–6 cubic pieces: its nodes anywhere along and across it, each smooth or
+ *              a corner, its handles any length and any way forward; a cut no row ties may also end
+ *              higher or lower than it starts
+ *   bow        how far the cuts reach from their line: from nearly straight to more than a strip
+ *   parity     which colour the woven cells start with
  *
- *   strips    3–8, mostly 5–7
- *   spacing   even, bands (a narrow gap between wide ones), frames (narrower towards the edges), or a wide
- *             middle; always the same from either edge
- *   shape     bow, point (two bows meeting in a point in the middle), double (two bumps), wave (an S),
- *             swing (one S-shaped curve), or lean (a bow off its middle, with slanted ends)
- *   profile   how far each cut bows with its place: outward (the outer cuts bow towards the edges: a ring
- *             or frame), inward (towards the middle: a lens or diamond), or alternate (each pair of
- *             neighbouring cuts bows apart: bands that swell)
+ * The rows are built in exactly, as the editor's own rows would make them: a cut the within-curve row
+ * ties is a random first half and its mirror image (Sym) or its half-turned copy (Anti); the lobe's other
+ * half is made from the first by the within-lobe row (a middle cut, its own mate, straight under the
+ * mirror and turned onto itself under the half turn); the right lobe from the left by the between-lobes
+ * row, or drawn the same way on its own. So the rows the heart opens with are true.
  *
- * and the three symmetry rows (Inden i kurve, Inden i lap, Mellem lapper), each Fra, Sym or Anti, built in
- * exactly: the shape is one the within-curve row keeps (a mirror keeps bows, points and double bumps; a
- * half turn keeps waves and swings; Fra allows any, slanted ones too), the lobe's other half is made from
- * the first by the within-lobe row, and the right lobe from the left by the between-lobes row (else drawn
- * the same way on its own). So the rows the heart opens with are true, as the editor's own rows would
- * make them.
- *
- * The cuts are in the editor's coordinates (the square centred on CENTER, STRIP_WIDTH a strip), ids
- * `L-0`…`L-n` and `R-0`…`R-n` with the outer edges straight, as `createDefaultFingers` makes them; and
- * are checked before they are returned, with the red cuts' rule (`findFingersWithIssues`) and for a left
- * and a right cut running alongside each other (`halvesRunTogether`): such a draw is drawn again.
+ * A draw is kept only if it is fit to cut: no red cuts (`findFingersWithIssues`), and no left and right
+ * cut running alongside each other (`halvesRunTogether`); else it is drawn again, and after many tries
+ * with smaller bows. The cuts are in the editor's coordinates (the square centred on CENTER, STRIP_WIDTH a
+ * strip), ids `L-0`…`L-n` and `R-0`…`R-m` with the outer edges straight, as `createDefaultFingers` makes
+ * them.
  */
 import { CENTER, STRIP_WIDTH } from '$lib/constants';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { gridClearanceScale } from '$lib/geometry/clearance';
+import { randomChain } from '$lib/geometry/randomChain';
+import { halvesCrossCleanly } from '$lib/editor/slivers';
 import type { BezierSegment } from '$lib/geometry/bezierSegments';
 import type { Finger, GridSize, NodeType, Vec } from '$lib/types/heart';
 
@@ -42,212 +40,64 @@ export interface RandomSymmetry {
 	betweenLobesMode: SymmetryMode;
 }
 
-export type CutShape = 'bow' | 'point' | 'double' | 'wave' | 'swing' | 'lean';
-export type Spacing = 'even' | 'bands' | 'frames' | 'middle';
-export type Profile = 'outward' | 'inward' | 'alternate';
-
 export interface RandomHeart {
 	gridSize: GridSize;
 	fingers: Finger[];
 	symmetry: RandomSymmetry;
 	weaveParity: 0 | 1;
-	shape: CutShape;
-	spacing: Spacing;
-	profile: Profile;
+	/** The most pieces any cut has, for the analytics event. */
+	pieces: number;
 }
 
 type Rng = () => number;
-/** A cut in the unit square, (u, v) = (0, 0) its upper-left corner: cubic segments. */
+/** Cubic pieces in the unit square, (u, v) = (0, 0) its upper-left corner; or in a cut's own frame. */
 type Cut = BezierSegment[];
 
-const GRID_WEIGHTS: [number, number][] = [
-	[3, 0.5],
-	[4, 1.5],
-	[5, 4],
-	[6, 3],
-	[7, 3],
-	[8, 1]
-];
-const SPACING_WEIGHTS: [Spacing, number][] = [
-	['even', 2],
-	['bands', 4],
-	['frames', 2],
-	['middle', 2]
-];
-const PROFILE_WEIGHTS: [Profile, number][] = [
-	['outward', 4],
-	['inward', 3],
-	['alternate', 2]
-];
+const MODES: SymmetryMode[] = ['off', 'sym', 'anti'];
+/** The narrowest gap between two cuts of a lobe, or a cut and an edge, where they meet the square's side. */
+const MIN_GAP = 0.04;
 /**
- * How often each row is Fra, Sym or Anti. Mostly Sym, as in the gallery's hearts of this kind: all four
- * are mirrored between the lobes, three within the lobe and three within the curve. A twist (Anti) or no
- * tie at all is the exception, so as not to make a crooked heart often.
+ * A grid and its rows are kept for TRIES draws of the rest, the bows a little smaller each time, before
+ * they are drawn again, so every grid and row setting turns up as often as any other, the many-stripped
+ * ones too, which more often come too close; after ROUNDS, the straight grid.
  */
-const MODE_WEIGHTS: Record<keyof RandomSymmetry, [SymmetryMode, number][]> = {
-	withinCurveMode: [
-		['off', 1],
-		['sym', 7],
-		['anti', 2]
-	],
-	withinLobeMode: [
-		['off', 1],
-		['sym', 6],
-		['anti', 2]
-	],
-	betweenLobesMode: [
-		['off', 1],
-		['sym', 7],
-		['anti', 2]
-	]
-};
-/** The shapes each within-curve row keeps, and how often each is drawn. */
-const SHAPES: Record<SymmetryMode, [CutShape, number][]> = {
-	sym: [
-		['bow', 4],
-		['point', 3],
-		['double', 2]
-	],
-	anti: [
-		['wave', 3],
-		['swing', 2]
-	],
-	off: [
-		['bow', 2],
-		['point', 2],
-		['wave', 1],
-		['lean', 1]
-	]
-};
-
-/**
- * A grid, spacing, symmetry and shape are kept for TRIES draws of the rest (profile and bow, the bow a
- * little smaller each time) before they are drawn again, so a combination that often comes too close is
- * as common as its weights say; after ROUNDS, the straight grid.
- */
-const ROUNDS = 12;
-const TRIES = 10;
-/** The narrowest gap between two cuts of a lobe, as a share of the square (Amy's weave 2 has 2.6 %). */
-const MIN_GAP = 0.035;
-
-function pick<T>(rng: Rng, weights: [T, number][]): T {
-	const total = weights.reduce((sum, [, w]) => sum + w, 0);
-	let r = rng() * total;
-	for (const [value, w] of weights) {
-		r -= w;
-		if (r < 0) return value;
-	}
-	return weights[weights.length - 1]![0];
-}
+const ROUNDS = 25;
+const TRIES = 20;
 
 const between = (rng: Rng, lo: number, hi: number) => lo + rng() * (hi - lo);
-
-/**
- * Where a lobe's k = n − 1 cuts lie across the square, from the top (0) to the bottom (1): the k + 1 gaps
- * between the edges and the cuts, the same from either edge, scaled to fill the square.
- */
-function cutPositions(n: number, spacing: Spacing, rng: Rng): number[] {
-	const gaps: number[] = [];
-	for (let i = 0; i <= n - 1; i++) {
-		const fromEdge = Math.min(i, n - 1 - i);
-		switch (spacing) {
-			case 'even':
-				gaps.push(1);
-				break;
-			case 'bands':
-				// Wide gaps at the edges and between bands, narrow ones inside them.
-				gaps.push(fromEdge % 2 === 0 ? 1 : 0);
-				break;
-			case 'frames':
-				gaps.push(1 + fromEdge);
-				break;
-			case 'middle':
-				gaps.push(fromEdge === Math.floor((n - 1) / 2) ? 2.5 : 1);
-				break;
-		}
-	}
-	// A band's width, the same for every band of the heart.
-	const narrow = between(rng, 0.18, 0.32);
-	const sized = gaps.map((g) => (g === 0 ? narrow : g));
-	const total = sized.reduce((a, b) => a + b, 0);
-	const positions: number[] = [];
-	let at = 0;
-	for (let i = 0; i < n - 1; i++) {
-		at += sized[i]! / total;
-		positions.push(at);
-	}
-	return positions;
-}
-
-/** How far the cut at `pos` bows, as a share of the square: + towards the bottom of the square. */
-function bowAt(pos: number, index: number, profile: Profile, amplitude: number): number {
-	const side = (pos - 0.5) / 0.5; // −1 at the top edge, +1 at the bottom
-	switch (profile) {
-		case 'outward':
-			return amplitude * side;
-		case 'inward':
-			return -amplitude * side;
-		case 'alternate':
-			// Neighbouring cuts bow apart: the band between a pair swells.
-			return amplitude * (0.35 + 0.65 * Math.abs(side)) * (index % 2 === 0 ? -1 : 1);
-	}
-}
-
+const int = (rng: Rng, lo: number, hi: number) => lo + Math.floor(rng() * (hi - lo + 1));
 const V = (x: number, y: number): Vec => ({ x, y });
+const STRAIGHT: Cut = [{ p0: V(0, 0), p1: V(1 / 3, 0), p2: V(2 / 3, 0), p3: V(1, 0) }];
 
-/**
- * One cut's segments in its own frame, from t = 0 (the square's right side) to t = 1 (its left), w the
- * offset from its line, towards the bottom: shapes kept by a mirror across the middle are built as a half
- * and its mirror image, shapes kept by a half turn as a half and its turned copy, so they keep their row
- * exactly.
- */
-function cutShape(shape: CutShape, b: number, rng: Rng): [Vec, Vec, Vec, Vec][] {
-	const mirrored = (half: [Vec, Vec, Vec, Vec][]): [Vec, Vec, Vec, Vec][] => [
-		...half,
-		...half
-			.slice()
-			.reverse()
-			.map(([p0, p1, p2, p3]) => [V(1 - p3.x, p3.y), V(1 - p2.x, p2.y), V(1 - p1.x, p1.y), V(1 - p0.x, p0.y)] as [Vec, Vec, Vec, Vec])
-	];
-	const turned = (half: [Vec, Vec, Vec, Vec][]): [Vec, Vec, Vec, Vec][] => [
-		...half,
-		...half
-			.slice()
-			.reverse()
-			.map(([p0, p1, p2, p3]) => [V(1 - p3.x, -p3.y), V(1 - p2.x, -p2.y), V(1 - p1.x, -p1.y), V(1 - p0.x, -p0.y)] as [Vec, Vec, Vec, Vec])
-	];
-	// A cubic with both controls at height c peaks at 0.75c: c = 4b/3 reaches b.
-	const c = (4 * b) / 3;
-	switch (shape) {
-		case 'bow': {
-			const reach = between(rng, 0.22, 0.38);
-			return mirrored([[V(0, 0), V(reach, c * 0.75), V(0.5 - 0.15, b), V(0.5, b)]]);
-		}
-		case 'point': {
-			// Flat at the edges, rising steeply to a point in the middle, not quite upright: two halves
-			// meeting along one line would touch there (the red cuts' rule).
-			const flat = between(rng, 0.18, 0.3);
-			return mirrored([[V(0, 0), V(flat, 0), V(0.5 - 0.07, b * 0.55), V(0.5, b)]]);
-		}
-		case 'double':
-			return mirrored([[V(0, 0), V(0.12, c), V(0.38, c), V(0.5, 0)]]);
-		case 'wave':
-			return turned([[V(0, 0), V(0.12, c), V(0.38, c), V(0.5, 0)]]);
-		case 'swing':
-			return [[V(0, 0), V(0.35, 1.6 * b), V(0.65, -1.6 * b), V(1, 0)]];
-		case 'lean': {
-			// A bow whose top is off the middle, and whose ends are not level: off its middle both ways.
-			const top = between(rng, 0.3, 0.7);
-			const slant = between(rng, -0.6, 0.6) * Math.abs(b);
-			return [[V(0, 0), V(top * 0.6, c), V(top + (1 - top) * 0.4, c + slant / 2), V(1, slant)]];
-		}
-	}
+/** The chain mirrored across x = 0.5 (`turn`: and across y = 0, a half turn about (0.5, 0)), run backwards: the second half of a tied cut. */
+function secondHalf(half: Cut, turn: boolean): Cut {
+	const f = (p: Vec) => V(1 - p.x, turn ? -p.y : p.y);
+	return half
+		.slice()
+		.reverse()
+		.map((s) => ({ p0: f(s.p3), p1: f(s.p2), p2: f(s.p1), p3: f(s.p0) }));
 }
 
-/** A left cut at `pos` (top 0, bottom 1) in the unit square: from its right end (u = 1) to its left (u = 0). */
-function leftCut(pos: number, local: [Vec, Vec, Vec, Vec][]): Cut {
-	const at = (p: Vec): Vec => ({ x: 1 - p.x, y: pos + p.y });
-	return local.map(([p0, p1, p2, p3]) => ({ p0: at(p0), p1: at(p1), p2: at(p2), p3: at(p3) }));
+/**
+ * One cut in its own frame, from (0, 0) at the square's far side to (1, end) at its near side: random, or
+ * a random half and its mirror image (Sym) or half-turned copy (Anti), as the within-curve row ties it.
+ */
+function randomCut(curveMode: SymmetryMode, reach: number, slant: number, rng: Rng): Cut {
+	if (curveMode === 'off') return randomChain(V(0, 0), V(1, between(rng, -slant, slant)), int(rng, 1, 6), reach, rng);
+	const pieces = int(rng, 1, 3);
+	if (curveMode === 'anti') {
+		const half = randomChain(V(0, 0), V(0.5, 0), pieces, reach, rng);
+		return [...half, ...secondHalf(half, true)];
+	}
+	// A mirror's middle node is on the mirror line; arriving level makes it smooth, else a point.
+	const half = randomChain(V(0, 0), V(0.5, between(rng, -reach, reach)), pieces, reach, rng, rng() < 0.5 ? 0 : undefined);
+	return [...half, ...secondHalf(half, false)];
+}
+
+/** A left cut at `pos` from a cut in its own frame: from its right end (u = 1) to its left (u = 0), y down. */
+function leftCut(pos: number, local: Cut): Cut {
+	const at = (p: Vec): Vec => V(1 - p.x, pos + p.y);
+	return local.map((s) => ({ p0: at(s.p0), p1: at(s.p1), p2: at(s.p2), p3: at(s.p3) }));
 }
 
 /** The cut with every point moved by `f`, and run the other way when `reverse`. */
@@ -257,94 +107,53 @@ function mapCut(cut: Cut, f: (p: Vec) => Vec, reverse = false): Cut {
 	return mapped.reverse().map((s) => ({ p0: s.p3, p1: s.p2, p2: s.p1, p3: s.p0 }));
 }
 
+/** Where a lobe's n − 1 cuts meet the square's far side, top (0) to bottom (1): random, at least MIN_GAP apart, the same from either edge when `mirrored`. */
+function randomPlaces(n: number, mirrored: boolean, rng: Rng): number[] | null {
+	const k = n - 1;
+	const half = mirrored ? Math.floor(k / 2) : k;
+	const free = Array.from({ length: half }, () => between(rng, MIN_GAP, mirrored ? 0.5 - MIN_GAP / 2 : 1 - MIN_GAP)).sort((a, b) => a - b);
+	const places = mirrored ? [...free, ...(k % 2 === 1 ? [0.5] : []), ...free.map((p) => 1 - p).reverse()] : free;
+	const all = [0, ...places, 1];
+	for (let i = 1; i < all.length; i++) if (all[i]! - all[i - 1]! < MIN_GAP) return null;
+	return places;
+}
+
 /**
  * One lobe's inner cuts as left cuts, index 1…n−1 at [1]…[n−1]: the first half drawn, the rest made from
- * it by the within-lobe row; a middle cut, which is its own mate, straight under the lobe's mirror and an
- * S under its half turn.
+ * it by the within-lobe row; a middle cut, its own mate, straight under the lobe's mirror and an S under
+ * its half turn (straight too if the within-curve row mirrors it).
  */
-function drawLobe(
-	n: number,
-	positions: number[],
-	shape: CutShape,
-	profile: Profile,
-	amplitude: number,
-	symmetry: RandomSymmetry,
-	rng: Rng
-): (Cut | undefined)[] {
+function randomLobe(n: number, places: number[], symmetry: RandomSymmetry, reach: number, rng: Rng): (Cut | undefined)[] {
 	const cuts: (Cut | undefined)[] = new Array(n + 1).fill(undefined);
 	const lobeMode = symmetry.withinLobeMode;
-	const draw = (c: number, s: CutShape) => leftCut(positions[c - 1]!, cutShape(s, bowAt(positions[c - 1]!, c, profile, amplitude), rng));
 	for (let c = 1; c < n; c++) {
 		const mate = n - c;
+		const pos = places[c - 1]!;
+		const own = reach * between(rng, 0.25, 1);
 		if (lobeMode !== 'off' && mate < c) {
-			cuts[c] =
-				lobeMode === 'sym'
-					? mapCut(cuts[mate]!, (p) => ({ x: p.x, y: 1 - p.y }))
-					: mapCut(cuts[mate]!, (p) => ({ x: 1 - p.x, y: 1 - p.y }), true);
+			cuts[c] = lobeMode === 'sym' ? mapCut(cuts[mate]!, (p) => V(p.x, 1 - p.y)) : mapCut(cuts[mate]!, (p) => V(1 - p.x, 1 - p.y), true);
 		} else if (lobeMode !== 'off' && mate === c) {
-			// The middle cut: a lobe's mirror maps it onto itself turned over, so it is straight; a half
-			// turn keeps an S (and a straight cut, which a within-curve mirror as well leaves the only one).
-			const s = lobeMode === 'anti' && symmetry.withinCurveMode !== 'sym' ? 'swing' : null;
-			cuts[c] = s ? leftCut(0.5, cutShape(s, amplitude * 0.6 * (rng() < 0.5 ? 1 : -1), rng)) : leftCut(0.5, cutShape('bow', 0, rng));
+			const turnable = lobeMode === 'anti' && symmetry.withinCurveMode !== 'sym';
+			cuts[c] = leftCut(0.5, turnable ? randomCut('anti', own, 0, rng) : STRAIGHT);
 		} else {
-			cuts[c] = draw(c, shape);
+			// A cut may end higher or lower only where no row needs its ends level: up to half its gaps.
+			const room = lobeMode === 'off' ? Math.min(pos - (places[c - 2] ?? 0), (places[c] ?? 1) - pos) / 2 : 0;
+			cuts[c] = leftCut(pos, randomCut(symmetry.withinCurveMode, own, room, rng));
 		}
 	}
 	return cuts;
 }
 
-/** Points along a cut, about every `step` units, for the closeness check below. */
-function samplePoints(finger: Finger, step: number): Vec[] {
-	const points: Vec[] = [];
-	for (const seg of finger.segments) {
-		const length = Math.hypot(seg.p3.x - seg.p0.x, seg.p3.y - seg.p0.y) + Math.hypot(seg.p1.x - seg.p0.x, seg.p1.y - seg.p0.y);
-		const count = Math.max(4, Math.ceil(length / step));
-		for (let i = 0; i < count; i++) {
-			const t = i / count;
-			const u = 1 - t;
-			points.push({
-				x: u * u * u * seg.p0.x + 3 * u * u * t * seg.p1.x + 3 * u * t * t * seg.p2.x + t * t * t * seg.p3.x,
-				y: u * u * u * seg.p0.y + 3 * u * u * t * seg.p1.y + 3 * u * t * t * seg.p2.y + t * t * t * seg.p3.y
-			});
-		}
-	}
-	return points;
-}
-
-/**
- * Whether a left cut runs alongside a right cut, closer than `close` for longer than `run`: the two
- * halves' cuts may cross, but where they nearly follow each other the paper between them is a sliver
- * too thin to cut or weave, and on the screen a hairline. Two cuts crossing at a fair angle are close
- * only for a short way either side of the crossing.
- */
-function halvesRunTogether(fingers: Finger[], close: number, run: number): boolean {
-	const step = close / 2;
-	const inner = (f: Finger) => f.segments.some((s) => s.p1.x !== s.p0.x || s.p1.y !== s.p0.y);
-	const right = fingers.filter((f) => f.lobe === 'right' && inner(f)).flatMap((f) => samplePoints(f, step));
-	for (const finger of fingers.filter((f) => f.lobe === 'left' && inner(f))) {
-		let together = 0;
-		for (const p of samplePoints(finger, step)) {
-			const near = right.some(
-				(q) => Math.abs(q.x - p.x) < close && Math.abs(q.y - p.y) < close && Math.hypot(q.x - p.x, q.y - p.y) < close
-			);
-			together = near ? together + step : 0;
-			if (together > run) return true;
-		}
-	}
-	return false;
-}
-
 /**
  * Whether the cuts are fit to cut: they keep the red cuts' distance from each other and themselves on their
- * own grid, and the two halves' cuts never run alongside each other (`halvesRunTogether`).
+ * own grid, and the two halves' cuts never run alongside each other (`halvesRunTogether`): within 1.5
+ * margins for 10 margins, two cuts crossing at less than about 18°. The wedges of an ordinary curved
+ * crossing pass.
  */
-export function randomHeartIsValid(fingers: Finger[], n: number): boolean {
-	const side = n * STRIP_WIDTH;
-	const margin = intersectionMarginPx({ width: side, height: side }, gridClearanceScale(n, n));
+export function randomHeartIsValid(fingers: Finger[], grid: GridSize): boolean {
+	const margin = intersectionMarginPx({ width: grid.x * STRIP_WIDTH, height: grid.y * STRIP_WIDTH }, gridClearanceScale(grid.x, grid.y));
 	if (findFingersWithIssues(fingers, margin).size > 0) return false;
-	// Close: within 1.5 margins, for 10 margins: two cuts crossing at less than about 18° (a sliver or a
-	// hairline); the wedges of an ordinary curved crossing pass.
-	return !halvesRunTogether(fingers, 1.5 * margin, 10 * margin);
+	return halvesCrossCleanly(fingers, margin);
 }
 
 /** Smooth where the handles on either side of a node point in opposite directions along one line. */
@@ -365,23 +174,24 @@ function nodeTypesOf(segments: BezierSegment[]): Record<string, NodeType> | unde
 }
 
 /** The heart's fingers in the editor's coordinates: both lobes' edges and cuts, in the editor's order. */
-function heartFingers(left: (Cut | undefined)[], right: (Cut | undefined)[], n: number): Finger[] {
-	const side = n * STRIP_WIDTH;
-	const x0 = CENTER.x - side / 2;
-	const y0 = CENTER.y - side / 2;
-	const at = (p: Vec): Vec => ({ x: x0 + p.x * side, y: y0 + p.y * side });
-	const edge = (lobe: 'left' | 'right', c: number): Cut => {
-		const t = c / n;
-		const [p0, p3] = lobe === 'left' ? [V(1, t), V(0, t)] : [V(t, 1), V(t, 0)];
-		return [{ p0, p1: { ...p0 }, p2: { ...p3 }, p3 }];
-	};
+function heartFingers(left: (Cut | undefined)[], right: (Cut | undefined)[], grid: GridSize): Finger[] {
+	const width = grid.x * STRIP_WIDTH;
+	const height = grid.y * STRIP_WIDTH;
+	const x0 = CENTER.x - width / 2;
+	const y0 = CENTER.y - height / 2;
+	const at = (p: Vec): Vec => V(x0 + p.x * width, y0 + p.y * height);
 	const out: Finger[] = [];
-	for (const [lobe, cuts] of [
-		['left', left],
-		['right', right]
+	for (const [lobe, cuts, n] of [
+		['left', left, grid.y],
+		['right', right, grid.x]
 	] as const) {
 		for (let c = 0; c <= n; c++) {
-			const cut = c === 0 || c === n ? edge(lobe, c) : cuts[c]!;
+			let cut: Cut;
+			if (c === 0 || c === n) {
+				const t = c / n;
+				const [p0, p3] = lobe === 'left' ? [V(1, t), V(0, t)] : [V(t, 1), V(t, 0)];
+				cut = [{ p0, p1: { ...p0 }, p2: { ...p3 }, p3 }];
+			} else cut = cuts[c]!;
 			const segments = cut.map((s) => ({ p0: at(s.p0), p1: at(s.p1), p2: at(s.p2), p3: at(s.p3) }));
 			const finger: Finger = { id: `${lobe === 'left' ? 'L' : 'R'}-${c}`, lobe, segments };
 			const nodeTypes = nodeTypesOf(segments);
@@ -392,64 +202,69 @@ function heartFingers(left: (Cut | undefined)[], right: (Cut | undefined)[], n: 
 	return out;
 }
 
-function drawSymmetry(rng: Rng): RandomSymmetry {
-	return {
-		withinCurveMode: pick(rng, MODE_WEIGHTS.withinCurveMode),
-		withinLobeMode: pick(rng, MODE_WEIGHTS.withinLobeMode),
-		betweenLobesMode: pick(rng, MODE_WEIGHTS.betweenLobesMode)
-	};
+/** Whether every point of the cut lies on the line through its ends. */
+function isStraight(cut: Cut): boolean {
+	const a = cut[0]!.p0;
+	const b = cut[cut.length - 1]!.p3;
+	const len = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+	const off = (p: Vec) => Math.abs((b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x)) / len;
+	return cut.every((s) => off(s.p1) < 1e-9 && off(s.p2) < 1e-9 && off(s.p3) < 1e-9);
+}
+
+/** How far a lobe of n strips' cuts may reach from their lines: from a tenth of a strip to more than one. */
+const reachFor = (n: number, rng: Rng, shrink: number) => (between(rng, 0.1, 1.3) / n) * shrink;
+
+/** One draw on a given grid and rows: the heart, unchecked, or null where its cuts' places came too close, or none of them curves. */
+function draw(rng: Rng, shrink: number, symmetry: RandomSymmetry, nL: number, nR: number): Omit<RandomHeart, 'weaveParity'> | null {
+	const mirrored = symmetry.withinLobeMode !== 'off';
+	const placesL = randomPlaces(nL, mirrored, rng);
+	if (!placesL) return null;
+	const left = randomLobe(nL, placesL, symmetry, reachFor(nL, rng, shrink), rng);
+	let right: (Cut | undefined)[];
+	if (symmetry.betweenLobesMode === 'sym') {
+		right = left.map((cut) => cut && mapCut(cut, (p) => V(p.y, p.x)));
+	} else if (symmetry.betweenLobesMode === 'anti') {
+		right = left.map((_, c) => (c === 0 || c === nL ? undefined : mapCut(left[nL - c]!, (p) => V(1 - p.y, 1 - p.x), true)));
+	} else {
+		const placesR = randomPlaces(nR, mirrored, rng);
+		if (!placesR) return null;
+		right = randomLobe(nR, placesR, symmetry, reachFor(nR, rng, shrink), rng).map((cut) => cut && mapCut(cut, (p) => V(p.y, p.x)));
+	}
+	// Only straight cuts (two strips and a mirrored lobe leave nothing else) is the plain grid, not a draw.
+	if ([...left, ...right].every((cut) => !cut || cut === STRAIGHT || isStraight(cut))) return null;
+	const gridSize = { x: nR, y: nL };
+	const pieces = Math.max(...[...left, ...right].map((cut) => cut?.length ?? 0));
+	return { gridSize, fingers: heartFingers(left, right, gridSize), symmetry, pieces };
 }
 
 /** A random heart (see the top of this file); `rng` returns numbers in [0, 1), Math.random by default. */
 export function randomHeart(rng: Rng = Math.random): RandomHeart {
 	for (let round = 0; round < ROUNDS; round++) {
-		const n = pick(rng, GRID_WEIGHTS);
-		const spacing = n <= 3 && rng() < 0.5 ? 'even' : pick(rng, SPACING_WEIGHTS);
-		const positions = cutPositions(n, spacing, rng);
-		const gaps = [positions[0]!, ...positions.slice(1).map((p, i) => p - positions[i]!), 1 - positions[positions.length - 1]!];
-		if (Math.min(...gaps) < MIN_GAP) continue;
-		const shrink = round < ROUNDS / 2 ? 1 : 0.7;
-		const symmetry = drawSymmetry(rng);
-		const shape = pick(rng, SHAPES[symmetry.withinCurveMode]);
+		const symmetry: RandomSymmetry = {
+			withinCurveMode: MODES[int(rng, 0, 2)]!,
+			withinLobeMode: MODES[int(rng, 0, 2)]!,
+			betweenLobesMode: MODES[int(rng, 0, 2)]!
+		};
+		const nL = int(rng, 2, 8);
+		const nR = symmetry.betweenLobesMode === 'off' ? int(rng, 2, 8) : nL;
 		for (let attempt = 0; attempt < TRIES; attempt++) {
-			const profile = pick(rng, PROFILE_WEIGHTS);
-			const amplitude = between(rng, 0.08, 0.2) * shrink * (1 - attempt / (2 * TRIES));
-
-			const left = drawLobe(n, positions, shape, profile, amplitude, symmetry, rng);
-			let right: (Cut | undefined)[];
-			if (symmetry.betweenLobesMode === 'sym') {
-				right = left.map((cut) => cut && mapCut(cut, (p) => ({ x: p.y, y: p.x })));
-			} else if (symmetry.betweenLobesMode === 'anti') {
-				right = left.map((_, c) => (c === 0 || c === n ? undefined : mapCut(left[n - c]!, (p) => ({ x: 1 - p.y, y: 1 - p.x }), true)));
-			} else {
-				// The right lobe drawn the same way on its own, its positions the same so the grid stays plaid.
-				const own = drawLobe(n, positions, shape, pick(rng, PROFILE_WEIGHTS), between(rng, 0.08, 0.2) * shrink, symmetry, rng);
-				right = own.map((cut) => cut && mapCut(cut, (p) => ({ x: p.y, y: p.x })));
-			}
-
-			const fingers = heartFingers(left, right, n);
-			if (!randomHeartIsValid(fingers, n)) continue;
-			return { gridSize: { x: n, y: n }, fingers, symmetry, weaveParity: rng() < 0.5 ? 0 : 1, shape, spacing, profile };
+			const heart = draw(rng, 1 - (0.6 * attempt) / TRIES, symmetry, nL, nR);
+			if (!heart || !randomHeartIsValid(heart.fingers, heart.gridSize)) continue;
+			return { ...heart, weaveParity: rng() < 0.5 ? 0 : 1 };
 		}
 	}
-	const n = 3;
-	const straight = [
-		undefined,
-		leftCut(1 / 3, [[V(0, 0), V(1 / 3, 0), V(2 / 3, 0), V(1, 0)]]),
-		leftCut(2 / 3, [[V(0, 0), V(1 / 3, 0), V(2 / 3, 0), V(1, 0)]]),
-		undefined
-	];
+	const straight = (n: number): (Cut | undefined)[] =>
+		Array.from({ length: n + 1 }, (_, c) => (c === 0 || c === n ? undefined : leftCut(c / n, STRAIGHT)));
+	const gridSize = { x: 3, y: 3 };
 	return {
-		gridSize: { x: n, y: n },
+		gridSize,
 		fingers: heartFingers(
-			straight,
-			straight.map((cut) => cut && mapCut(cut, (p) => ({ x: p.y, y: p.x }))),
-			n
+			straight(3),
+			straight(3).map((cut) => cut && mapCut(cut, (p) => V(p.y, p.x))),
+			gridSize
 		),
 		symmetry: { withinCurveMode: 'sym', withinLobeMode: 'sym', betweenLobesMode: 'sym' },
 		weaveParity: 0,
-		shape: 'bow',
-		spacing: 'even',
-		profile: 'outward'
+		pieces: 1
 	};
 }

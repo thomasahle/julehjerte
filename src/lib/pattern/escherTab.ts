@@ -10,6 +10,7 @@
 import type { TranslationKey } from '$lib/i18n';
 import type { Finger, GridSize, HeartPattern, LobeId, NodeType, Vec } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
+import { halvesCrossCleanly } from '$lib/editor/slivers';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { getCenteredRectParams, inferOverlapRect, type OverlapRect } from '$lib/utils/overlapRect';
 import {
@@ -39,7 +40,7 @@ import { MAX_GRID_SIZE, MIN_GRID_SIZE } from '$lib/constants';
 import { ALL_RULES, COMMON_RULES, latticeOf, ruleInfo, ruleKey, ruleSymmetry, sameRule, type TileRule } from './rules';
 import { cutCounts, fitLines, tileShape, tileTurn, type PatternTile, type SideCurve } from './tiling';
 import { isStraightTile, ruleStart, switchRule } from './starts';
-import { randomTileDraw, type TileStyle } from './randomTile';
+import { randomTileDraw, randomTileKind } from './randomTile';
 
 export { cutOfFinger, cutsAre, followEdit, generateEditorFingers, READ_TOLERANCE, sameRule, specialNodes, weaveParityOf };
 export type { PatternTile, SpecialNode, TileRule };
@@ -90,19 +91,38 @@ function tileWeaves(tile: PatternTile): boolean {
 }
 
 /**
- * The tab's "Tilfældig flise": a random type, size and curves (`randomTileDraw`), its lines fitted,
- * drawn again until the heart it makes weaves and is not a plain chequerboard; the first common type's
- * start, if forty draws never do. With the type's key and the style the curves were drawn in, for the
- * analytics event.
+ * The tab's "Tilfældig flise": a random type, size, sides, lean and shape (`randomTileDraw`), its lines fitted,
+ * and two times in five the whole pattern turned, anywhere the type lets it turn; drawn again until the
+ * heart it makes weaves, has no sliver between its lobes' cuts and is not a plain chequerboard, the sides smaller after many tries; the first
+ * common type's start, if none does. With the type's key, for the analytics event.
  */
-export function randomTile(rng: () => number = Math.random): { tile: PatternTile; rule: string; style: TileStyle } {
-	for (let i = 0; i < 40; i++) {
-		const { tile, style } = randomTileDraw(rng);
-		if (isStraightTile(tile) || !tileWeaves(tile)) continue;
-		return { tile: fitLines(tile), rule: ruleKey(tile.rule), style };
+/** Whether the tile's heart has no sliver between its lobes' cuts (`halvesCrossCleanly`), its lines fitted. */
+function crossesCleanly(tile: PatternTile): boolean {
+	const made = tileFingers(tile);
+	const grid = tileGrid(tile);
+	return halvesCrossCleanly(made, intersectionMarginPx(inferOverlapRect(made, grid), gridClearanceScale(grid.x, grid.y)));
+}
+
+export function randomTile(rng: () => number = Math.random): { tile: PatternTile; rule: string } {
+	// A type and size are kept for a round of draws, the sides smaller each time, so every type and size
+	// turns up as often as any other, the ones that more often come too close as well.
+	for (let round = 0; round < 12; round++) {
+		const kind = randomTileKind(rng);
+		for (let i = 0; i < 12; i++) {
+			const drawn = randomTileDraw(rng, kind, 1 - (0.6 * i) / 12);
+			if (isStraightTile(drawn) || !tileWeaves(drawn)) continue;
+			let tile = fitLines(drawn);
+			if (rng() < 0.4) {
+				const [lo, hi] = turnRange(tile);
+				const turned = turnedTile(tile, lo + rng() * (hi - lo));
+				if (turned && tileWeaves(turned)) tile = turned;
+			}
+			if (!crossesCleanly(tile)) continue;
+			return { tile, rule: ruleKey(tile.rule) };
+		}
 	}
 	const start = fitLines(ruleStart(COMMON_RULES[0]!, 3));
-	return { tile: start, rule: ruleKey(start.rule), style: 'bend' };
+	return { tile: start, rule: ruleKey(start.rule) };
 }
 
  /**

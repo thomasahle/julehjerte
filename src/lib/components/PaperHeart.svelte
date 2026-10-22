@@ -1332,7 +1332,7 @@
 		const { withinCurveMode: c, withinLobeMode: l, betweenLobesMode: b } = heart.symmetry;
 		trackRandomHeart(
 			'normal',
-			{ strips: heart.gridSize.x, shape: heart.shape, spacing: heart.spacing, profile: heart.profile, symmetry: `${c[0]}${l[0]}${b[0]}` },
+			{ grid: `${heart.gridSize.x}x${heart.gridSize.y}`, pieces: heart.pieces, symmetry: `${c[0]}${l[0]}${b[0]}` },
 			randomPresses
 		);
 	}
@@ -1344,14 +1344,14 @@
 	function drawRandomTile() {
 		if (readonly) return;
 		void loadEscher().then((module) => {
-			const { tile, rule, style } = module.randomTile();
+			const { tile, rule } = module.randomTile();
 			const before = snapshotState();
 			showTile(tile);
 			escherTab = true;
 			pushUndo(before);
 			fitView();
 			randomPresses += 1;
-			trackRandomHeart('escher', { rule, strips: tile.cuts + 1, style }, randomPresses);
+			trackRandomHeart('escher', { rule, strips: tile.cuts + 1 }, randomPresses);
 		});
 	}
 

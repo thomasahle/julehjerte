@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { randomTileDraw } from './randomTile';
+import { randomTileDraw, randomTileKind } from './randomTile';
 import { randomTile, tileFingers, tileGrid } from './escherTab';
 import { halfOf, ruleInfo } from './rules';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
+import { halvesCrossCleanly } from '$lib/editor/slivers';
 
 function seeded(seed: number): () => number {
 	let a = seed >>> 0;
@@ -22,7 +23,8 @@ const close = (a: number, b: number) => Math.abs(a - b) < 1e-9;
 describe('randomTileDraw', () => {
 	it('draws every side the type draws, whole sides from (0, 0) to (1, 0), halves to the middle as the type completes them', () => {
 		for (let i = 1; i <= 120; i++) {
-			const { tile } = randomTileDraw(seeded(i));
+			const rng = seeded(i);
+			const tile = randomTileDraw(rng, randomTileKind(rng));
 			const info = ruleInfo(tile.rule);
 			expect(Object.keys(tile.curves).sort()).toEqual([...info.curves].sort());
 			for (const key of info.curves) {
@@ -44,20 +46,23 @@ describe('randomTileDraw', () => {
 });
 
 describe('randomTile', () => {
-	it('is a tile whose heart weaves: no red cuts', () => {
+	it("is a tile whose heart weaves: no red cuts, and no sliver between the lobes' cuts", () => {
 		for (let i = 1; i <= 40; i++) {
 			const { tile } = randomTile(seeded(i));
 			const fingers = tileFingers(tile);
 			const grid = tileGrid(tile);
 			const margin = intersectionMarginPx(inferOverlapRect(fingers, grid), gridClearanceScale(grid.x, grid.y));
 			expect(findFingersWithIssues(fingers, margin).size).toBe(0);
+			expect(halvesCrossCleanly(fingers, margin)).toBe(true);
 		}
 	});
 
-	it('varies the type, the size and the style', () => {
-		const tiles = Array.from({ length: 60 }, (_, i) => randomTile(seeded(100 + i)));
-		expect(new Set(tiles.map((t) => t.rule)).size).toBeGreaterThan(15);
-		expect(new Set(tiles.map((t) => t.tile.cuts)).size).toBeGreaterThanOrEqual(3);
-		expect(new Set(tiles.map((t) => t.style)).size).toBe(3);
+	it('explores: most types, every size the tab offers, leaning tiles and turned patterns', () => {
+		const tiles = Array.from({ length: 80 }, (_, i) => randomTile(seeded(100 + i)));
+		expect(new Set(tiles.map((t) => t.rule)).size).toBeGreaterThan(20);
+		expect(new Set(tiles.map((t) => t.tile.cuts)).size).toBe(5);
+		expect(tiles.some((t) => t.tile.offset && (t.tile.offset.x !== 0 || t.tile.offset.y !== 0))).toBe(true);
+		expect(tiles.some((t) => t.tile.turn !== undefined && Math.abs(t.tile.turn) > 1e-6)).toBe(true);
+		expect(tiles.some((t) => t.tile.shape && Math.abs(t.tile.shape.x.x - t.tile.shape.y.y) > 0.05)).toBe(true);
 	});
 });
