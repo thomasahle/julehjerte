@@ -7,7 +7,8 @@
        pressed again while the classic pair is already on, it swaps the sides,
        and its picture follows (`html.paper-flipped`).
     2. Colourful ("Farverig", $lib/stores/colorMode): four papers in a plain
-       2×2 grid. Each press deals every heart that follows the site's pair a
+       2×2 grid. On from a first visit, with a shuffle of its own (the
+       default). Each press deals every heart that follows the site's pair a
        new random pair ($lib/utils/palette), and the grid deals itself anew
        with them: it shows the strong papers of the first four pairs of the
        shuffle that differ in colour family (palette.iconPairs, the

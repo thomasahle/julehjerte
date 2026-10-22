@@ -57,10 +57,20 @@ beforeEach(() => {
 });
 
 describe('colourful mode store', () => {
-	it('is off until the button is pressed', async () => {
+	it('greets a first visit with a shuffle of its own', async () => {
+		const store = await freshStore();
+		expect(store.getColorMode()).toBe(true);
+		expect(store.getPermutation()).toHaveLength(PALETTE.length);
+		expect(root().classList.contains('colorful')).toBe(true);
+		expect(window.localStorage.getItem(KEY)).toBe(store.getPermutation()!.join(','));
+	});
+
+	it('leaves a pair chosen before the mode was the default on show', async () => {
+		window.localStorage.setItem('julehjerte-colors', JSON.stringify({ left: '#ffffff', right: '#b91313' }));
 		const store = await freshStore();
 		expect(store.getColorMode()).toBe(false);
 		expect(store.getPermutation()).toBeNull();
+		expect(window.localStorage.getItem(KEY)).toBeNull();
 	});
 
 	it('deals a new shuffle on every press, and remembers the last, under juleflet:', async () => {
@@ -78,7 +88,7 @@ describe('colourful mode store', () => {
 		expect(reloaded.getPermutation()).toEqual(second);
 
 		reloaded.turnOffColorMode();
-		expect(window.localStorage.getItem(KEY)).toBeNull();
+		expect(window.localStorage.getItem(KEY)).toBe('0');
 		expect(root().classList.contains('colorful')).toBe(false);
 		expect((await freshStore()).getColorMode()).toBe(false);
 	});
@@ -87,6 +97,7 @@ describe('colourful mode store', () => {
 		const store = await freshStore();
 		expect(store.parseStoredPermutation('1')).toEqual(IDENTITY);
 		expect(store.parseStoredPermutation(null)).toBeNull();
+		expect(store.parseStoredPermutation('0')).toBeNull();
 		expect(store.parseStoredPermutation('')).toBeNull();
 		expect(store.parseStoredPermutation('0,1,2')).toBeNull();
 		expect(store.parseStoredPermutation([...IDENTITY.slice(1), 1].join(','))).toBeNull();
@@ -94,6 +105,7 @@ describe('colourful mode store', () => {
 	});
 
 	it('tells its subscribers, until they leave', async () => {
+		window.localStorage.setItem(KEY, '0');
 		const store = await freshStore();
 		const seen: boolean[] = [];
 		const leave = store.subscribeColorMode((on) => seen.push(on));
@@ -123,6 +135,9 @@ describe('colourful mode store', () => {
 	it('still shuffles, for the page view, with storage blocked', async () => {
 		blockLocalStorage();
 		const store = await freshStore();
+		expect(store.getColorMode()).toBe(true);
+		expect(root().classList.contains('colorful')).toBe(true);
+		store.turnOffColorMode();
 		expect(store.getColorMode()).toBe(false);
 		expect(() => store.shuffleColorMode()).not.toThrow();
 		expect(store.getColorMode()).toBe(true);
@@ -157,15 +172,31 @@ describe("the head's inline script", () => {
 		expect(rootVariables()).toEqual(paletteVariables(IDENTITY));
 	});
 
-	it('leaves the mode off with nothing, or nothing it can read, stored', async () => {
-		for (const stored of [null, '', 'yes', '0,1,2', [...IDENTITY.slice(1), 1].join(','), [...IDENTITY.slice(1), 99].join(',')]) {
+	it('deals a first visit a shuffle of its own, stores it, and the store reads it', async () => {
+		const store = await run();
+		expect(root().classList.contains('colorful')).toBe(true);
+		const dealt = store.parseStoredPermutation(window.localStorage.getItem(KEY));
+		expect(dealt).toHaveLength(PALETTE.length);
+		expect(rootVariables()).toEqual(paletteVariables(dealt!));
+		expect((await freshStore()).getPermutation()).toEqual(dealt);
+	});
+
+	it('leaves the mode off once turned off, after a pair was chosen before it was the default, or with nothing it can read', async () => {
+		const cases: [string | null, string | null][] = [
+			['0', null],
+			[null, JSON.stringify({ left: '#ffffff', right: '#b91313' })],
+			...['', 'yes', '0,1,2', [...IDENTITY.slice(1), 1].join(','), [...IDENTITY.slice(1), 99].join(',')].map((v): [string, null] => [v, null])
+		];
+		for (const [stored, pair] of cases) {
 			root().className = '';
 			root().removeAttribute('style');
-			if (stored === null) window.localStorage.removeItem(KEY);
-			else window.localStorage.setItem(KEY, stored);
+			window.localStorage.clear();
+			if (stored !== null) window.localStorage.setItem(KEY, stored);
+			if (pair !== null) window.localStorage.setItem('julehjerte-colors', pair);
 			await run();
 			expect(root().classList.contains('colorful'), String(stored)).toBe(false);
 			expect(rootVariables(), String(stored)).toEqual({});
+			expect(window.localStorage.getItem(KEY), String(stored)).toBe(stored);
 		}
 	});
 

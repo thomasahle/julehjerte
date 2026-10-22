@@ -15,9 +15,11 @@
  * class and the variables before the body is parsed. Without JavaScript the
  * class is never set and the mode simply is not there.
  *
- * Stored under COLOR_MODE_STORAGE_KEY as the permutation, "3,0,7,…"; nothing
- * stored means off. "1", what the first version stored, is the unshuffled
- * palette.
+ * Stored under COLOR_MODE_STORAGE_KEY as the permutation, "3,0,7,…", or
+ * COLOR_MODE_OFF once turned off. "1", what the first version stored, is the
+ * unshuffled palette. Nothing stored is a first visit, which the mode greets
+ * with a shuffle of its own, stored at once, unless a pair was chosen before the
+ * mode was the default (`julehjerte-colors` stored): that visitor keeps it.
  */
 import { browser } from '$app/environment';
 import {
@@ -29,7 +31,7 @@ import {
 	randomPermutation,
 	type Permutation
 } from '$lib/utils/palette';
-import { readStorage, removeStorage, writeStorage } from '$lib/utils/safeStorage';
+import { readStorage, writeStorage } from '$lib/utils/safeStorage';
 import {
 	COLORS_STORAGE_KEY,
 	CUSTOM_COLORS_STORAGE_KEY,
@@ -47,9 +49,12 @@ export const COLOR_MODE_STORAGE_KEY = 'juleflet:colourful';
 /** The class on <html> that turns the mode on in CSS. */
 export const COLOR_MODE_CLASS = 'colorful';
 
+/** What is stored once the mode is turned off, so the next page does not deal a shuffle again. */
+export const COLOR_MODE_OFF = '0';
+
 /** The stored text's permutation, or null for off (or anything unreadable). */
 export function parseStoredPermutation(text: string | null): Permutation | null {
-	if (text === null) return null;
+	if (text === null || text === COLOR_MODE_OFF) return null;
 	if (text === '1') return IDENTITY;
 	const p = text.split(',').map((v) => (/^\d+$/.test(v) ? Number(v) : NaN));
 	return isPermutation(p) ? p : null;
@@ -65,10 +70,11 @@ export function parseStoredPermutation(text: string | null): Permutation | null 
  *   - the visitor's own pair, saved apart from the one on show, as
  *     `--custom-left` / `--custom-right` with `paper-has-custom`, for the
  *     custom button's picture (colors.getCustomColors);
- *   - with a shuffle stored, the colourful class and the shuffle's variables.
- * The same rules as parseStoredPermutation, paletteVariables and paperKind, in
- * plain ES5; colorMode.test.ts checks they agree. Storage that throws, or holds
- * something unreadable, leaves the defaults.
+ *   - with a shuffle stored, or on a first visit a new one, which it stores,
+ *     the colourful class and the shuffle's variables.
+ * The same rules as parseStoredPermutation, randomPermutation, paletteVariables
+ * and paperKind, in plain ES5; colorMode.test.ts checks they agree. Storage that
+ * throws, or holds something unreadable, leaves the defaults.
  */
 export function colorModeHeadScript(): string {
 	return `<script>${colorModeHeadSource()}</script>`;
@@ -89,15 +95,19 @@ export function colorModeHeadSource(): string {
 		`r.classList.add(L===${red}&&R===${white}?${JSON.stringify(PAPER_KIND_CLASSES.flipped)}:${JSON.stringify(PAPER_KIND_CLASSES.custom)})` +
 		`})(localStorage.getItem(${JSON.stringify(COLORS_STORAGE_KEY)}))}catch(e){}`;
 	const mode =
-		`try{(function(t,P,E){if(t===null)return;var n=P.length,p=[],s={},i;` +
-		`if(t==="1"){for(i=0;i<n;i++)p.push(i)}else{var a=t.split(",");if(a.length!==n)return;` +
+		`try{(function(t,P,E,c){if(t===${JSON.stringify(COLOR_MODE_OFF)})return;var n=P.length,p=[],s={},i;` +
+		`if(t===null){if(c!==null)return;for(i=0;i<n;i++)p.push(i);` +
+		`for(i=n-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),x=p[i];p[i]=p[j];p[j]=x}` +
+		`try{localStorage.setItem(${JSON.stringify(COLOR_MODE_STORAGE_KEY)},p.join(","))}catch(e){}}` +
+		`else if(t==="1"){for(i=0;i<n;i++)p.push(i)}else{var a=t.split(",");if(a.length!==n)return;` +
 		`for(i=0;i<n;i++){if(!/^\\d+$/.test(a[i]))return;var v=+a[i];if(v>=n||s[v])return;s[v]=1;p.push(v)}}` +
 		`var r=document.documentElement;for(i=0;i<n;i++){var q=P[p[i]];` +
 		`r.style.setProperty("--pal-"+i+"-l",q[0]);r.style.setProperty("--pal-"+i+"-r",q[1]);` +
 		`r.style.setProperty("--pal-"+i+"-o",q[2]?E:"transparent")}` +
 		`var f={},c=0;for(i=0;i<n&&c<4;i++){var w=P[p[i]];if(f[w[3]])continue;f[w[3]]=1;r.style.setProperty("--pal-icon-"+c,w[1]);c++}` +
 		`r.classList.add(${JSON.stringify(COLOR_MODE_CLASS)})` +
-		`})(localStorage.getItem(${JSON.stringify(COLOR_MODE_STORAGE_KEY)}),${pairs},${JSON.stringify(EDGE_COLOR)})}catch(e){}`;
+		`})(localStorage.getItem(${JSON.stringify(COLOR_MODE_STORAGE_KEY)}),${pairs},${JSON.stringify(EDGE_COLOR)},` +
+		`localStorage.getItem(${JSON.stringify(COLORS_STORAGE_KEY)}))}catch(e){}`;
 	// The visitor's own pair, for the custom button's picture; before one is
 	// saved, a custom pair on show counts as it (colors.getCustomColors).
 	const custom =
@@ -115,8 +125,20 @@ const subscribers = new Set<(on: boolean) => void>();
 let current: Permutation | null | undefined;
 
 function stored(): Permutation | null {
-	if (current === undefined) current = browser ? parseStoredPermutation(readStorage(COLOR_MODE_STORAGE_KEY)) : null;
+	if (current === undefined) current = browser ? initial() : null;
 	return current;
+}
+
+/**
+ * The mode as the page starts: as stored, or on a first visit a shuffle of its own. The head's script
+ * has stored that already, so it is dealt here only where storage is blocked, for the page view.
+ */
+function initial(): Permutation | null {
+	const text = readStorage(COLOR_MODE_STORAGE_KEY);
+	if (text !== null || readStorage(COLORS_STORAGE_KEY) !== null) return parseStoredPermutation(text);
+	const first = randomPermutation();
+	apply(first);
+	return first;
 }
 
 /** Whether the mode is on. */
@@ -140,8 +162,7 @@ function apply(permutation: Permutation | null) {
 		}
 		root.classList.toggle(COLOR_MODE_CLASS, permutation !== null);
 		// Blocked or full: the mode still changes, for this page view only.
-		if (permutation) writeStorage(COLOR_MODE_STORAGE_KEY, permutation.join(','));
-		else removeStorage(COLOR_MODE_STORAGE_KEY);
+		writeStorage(COLOR_MODE_STORAGE_KEY, permutation ? permutation.join(',') : COLOR_MODE_OFF);
 	}
 	subscribers.forEach((fn) => fn(permutation !== null));
 }

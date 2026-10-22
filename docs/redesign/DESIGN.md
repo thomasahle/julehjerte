@@ -133,8 +133,11 @@ neighbour's slot at any of the grid's 2–6 columns, and other hearts (Mine hjer
 then a press draws a random permutation of the palette (never the one on show) that says which pair each slot
 shows, set as the `--pal-*` variables on `<html>`. Being one-to-one, it keeps the neighbour rule; no slot or
 pair is fixed. The permutation is stored as "3,0,7,…" under
-`juleflet:colourful` (the first version's "1" reads as unshuffled), and an inline head script sets the class and
-the variables before first paint, so a reload shows the last shuffle with no flash. app.css maps the slot's pair
+`juleflet:colourful` (the first version's "1" reads as unshuffled), "0" once the mode is turned off, and an inline
+head script sets the class and the variables before first paint, so a reload shows the last shuffle with no flash.
+The mode is the default (since 2026-10-22, the owner's wish): with nothing stored, the head script deals a first
+visit a shuffle of its own and stores it, unless a pair is stored from before (`julehjerte-colors`), which stays
+on show; red and white is a press of the first button away. app.css maps the slot's pair
 onto the heart's `--paper-*` tokens and HeartWeaveFill's `paper-l`/`paper-r` paths, cross-fading fills and
 ribbons over 0.4s unless reduced motion is asked for. A heart with its own colours keeps them. The hero's
 bootstrap copies a card's slot with its heart and, in the mode, draws hearts of different slots. The heart

@@ -60,16 +60,20 @@ async function render() {
 }
 
 describe('ColorControls', () => {
-	it('shows three named round buttons', async () => {
+	it('shows three named round buttons, the colourful one on at a first visit', async () => {
 		const { target } = await render();
 		const names = [...target.querySelectorAll('button')].map((b) => b.getAttribute('aria-label'));
 		expect(names).toEqual(['Rød og hvid', 'Farverig', 'Egne farver']);
-		expect(target.querySelector('button[aria-label="Rød og hvid"]')!.getAttribute('aria-pressed')).toBe('true');
+		expect(target.querySelector('button[aria-label="Farverig"]')!.getAttribute('aria-pressed')).toBe('true');
+		expect(target.querySelector('button[aria-label="Rød og hvid"]')!.getAttribute('aria-pressed')).toBe('false');
 		expect(target.querySelector('button[aria-label="Egne farver"]')!.getAttribute('aria-haspopup')).toBe('dialog');
 	});
 
 	it('red and white: pressed again it swaps the sides, back and forth', async () => {
-		const { colors, button, click } = await render();
+		const { colors, mode, button, click } = await render();
+		await click(button('Rød og hvid'));
+		expect(mode.getColorMode()).toBe(false);
+		expect(colors.paperKind(colors.getColors())).toBe('classic');
 		await click(button('Rød og hvid'));
 		expect(colors.paperKind(colors.getColors())).toBe('flipped');
 		await click(button('Rød og hvid'));
