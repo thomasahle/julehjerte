@@ -7,7 +7,7 @@
  *   size   2–6 cuts, so 3–7 tiles across, as the tab's size buttons offer
  *   sides  every side the type draws: a chain of 1–4 cubic pieces, its nodes anywhere along the side and
  *          up to 0.7 of a cell across it, smooth or corners, its handles any length and any way forward
- *   lean   for the types whose tiles lean, half the time the odd corners moved up to 0.4 of a cell
+ *   lean   for the types whose tiles lean, seven times in ten the odd corners moved up to 0.3 of a cell
  *   shape  half the time the cells sized (0.8–1.3), stretched (to about 1.3 : 1) and slanted (up to 0.3), as far as the
  *          type keeps its motions (`shapeFor`): the black points' drag, drawn at random
  *
@@ -101,7 +101,7 @@ export function randomTileDraw(rng: Rng, kind: { rule: TileRule; cuts: number },
 	const curves = Object.fromEntries(
 		ruleInfo(rule).curves.map((key) => [key, randomSide(halfOf(rule, key), reach * between(rng, 0.6, 1), rng)])
 	);
-	const lean = canLean(rule) && rng() < 0.5 ? { offset: v(between(rng, -0.4, 0.4) * shrink, between(rng, -0.4, 0.4) * shrink) } : {};
+	const lean = canLean(rule) && rng() < 0.7 ? { offset: v(between(rng, -0.3, 0.3) * shrink, between(rng, -0.3, 0.3) * shrink) } : {};
 	// The cells' size and stretch: never more than about 1.3 to 1, or the tiles read as stripes.
 	const stretch = 1 + between(rng, -0.2, 0.3) * shrink;
 	const aspect = 1 + between(rng, -0.2, 0.25) * shrink;

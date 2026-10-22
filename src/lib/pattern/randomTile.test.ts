@@ -57,11 +57,18 @@ describe('randomTile', () => {
 		}
 	});
 
-	it('explores: most types, every size the tab offers, leaning tiles and turned patterns', () => {
+	it('leans the tiles of the types that lean, now and then', () => {
+		const leaned = Array.from({ length: 40 }, (_, i) => {
+			const rng = seeded(300 + i);
+			return randomTileDraw(rng, { rule: { sides: 'free' }, cuts: 3 });
+		}).filter((t) => t.offset && (t.offset.x !== 0 || t.offset.y !== 0));
+		expect(leaned.length).toBeGreaterThan(15);
+	});
+
+	it('explores: most types, every size the tab offers, stretched cells and turned patterns', () => {
 		const tiles = Array.from({ length: 80 }, (_, i) => randomTile(seeded(100 + i)));
 		expect(new Set(tiles.map((t) => t.rule)).size).toBeGreaterThan(20);
 		expect(new Set(tiles.map((t) => t.tile.cuts)).size).toBe(5);
-		expect(tiles.some((t) => t.tile.offset && (t.tile.offset.x !== 0 || t.tile.offset.y !== 0))).toBe(true);
 		expect(tiles.some((t) => t.tile.turn !== undefined && Math.abs(t.tile.turn) > 1e-6)).toBe(true);
 		expect(tiles.some((t) => t.tile.shape && Math.abs(t.tile.shape.x.x - t.tile.shape.y.y) > 0.05)).toBe(true);
 	});
