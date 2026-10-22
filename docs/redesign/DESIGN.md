@@ -616,7 +616,9 @@ small, Heesch's name for it, its tooltip spelling the letters out (T moved, C ha
 C4 quarter turn; or its IH number where he has none). Under the picker the size, 3 × 3 to 7 × 7, the hint,
 and "Start forfra", which draws the tile again as its type starts, at its size. Picking
 another type keeps the curves it reads the same way, if the heart they make with its own still weaves, and
-starts afresh if not; a size the pattern is too tight for is refused, with a line above the heart. Every type
+starts afresh if not; a size the pattern is too tight for (by the gap the red cuts keep at that size, finer
+on a denser grid) is refused, with a line above the heart that says to widen the figure's narrowest places
+first. Every type
 starts from one bent curve on each side it reads (half of one for an S or an arch) and nothing more, because the
 visitor does the designing and adds the nodes they want; nothing else is drawn on the heart, and nothing moves
 on its own. A cut's points show when it is clicked, as in the Normal tab, and the hints say so first. A node

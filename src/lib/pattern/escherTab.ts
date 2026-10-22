@@ -10,6 +10,7 @@
 import type { TranslationKey } from '$lib/i18n';
 import type { Finger, GridSize, HeartPattern, LobeId, NodeType, Vec } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
+import { gridClearanceScale } from '$lib/geometry/clearance';
 import { getCenteredRectParams, inferOverlapRect, type OverlapRect } from '$lib/utils/overlapRect';
 import {
 	cutOfFinger,
@@ -83,7 +84,8 @@ export function tileFingers(tile: PatternTile, rect = getCenteredRectParams({ x:
 function tileWeaves(tile: PatternTile): boolean {
 	const fitted = fitLines(tile);
 	const made = tileFingers(fitted);
-	return findFingersWithIssues(made, intersectionMarginPx(inferOverlapRect(made, tileGrid(fitted)))).size === 0;
+	const grid = tileGrid(fitted);
+	return findFingersWithIssues(made, intersectionMarginPx(inferOverlapRect(made, grid), gridClearanceScale(grid.x, grid.y))).size === 0;
 }
 
  /**

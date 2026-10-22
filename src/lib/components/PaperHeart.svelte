@@ -1320,7 +1320,7 @@
 			sizeStopTimer = setTimeout(() => {
 				sizeStop = null;
 				sizeStopTimer = null;
-			}, 2500);
+			}, 4500);
 			return;
 		}
 		const before = snapshotState();

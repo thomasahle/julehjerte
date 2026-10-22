@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { loadHeart } from '$lib/laser/testHearts.test-helpers';
 import type { Finger } from '$lib/types/heart';
+import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
+import { gridClearanceScale } from '$lib/geometry/clearance';
 import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
 import { ALL_RULES, COMMON_RULES, freeSides, neighbours, opposite, ruleInfo, ruleKey } from './rules';
 import { carryNodeTypes, cutCounts, fitLines, tileTurn, unturnedShape, type PatternTile, type SideCurve } from './tiling';
@@ -137,19 +139,36 @@ describe("Tegn's Escher tab", () => {
 	});
 
 	it('refuses a size the pattern is too tight for: the paper between two cuts keeps its width in the heart', () => {
-		// a thin finger of paper, six hundredths of a cell wide: two units wide in a 3 × 3 heart, less
-		// than one in a 7 × 7 one
+		// a thin finger of paper, five hundredths of a cell wide: 1.7 units wide in a 3 × 3 heart, where
+		// cuts may come 1.5 apart, and 0.7 in a 7 × 7 one, where they may come 0.86 apart
 		const finger: SideCurve = [
 			[0, 0, 0.4, 0],
 			[0.4, 0, 0.4, 0.3],
-			[0.4, 0.3, 0.46, 0.3],
-			[0.46, 0.3, 0.46, 0],
-			[0.46, 0, 1, 0]
+			[0.4, 0.3, 0.45, 0.3],
+			[0.45, 0.3, 0.45, 0],
+			[0.45, 0, 1, 0]
 		].map(([ax, ay, bx, by]) => ({ p0: { x: ax!, y: ay! }, p1: { x: ax!, y: ay! }, p2: { x: bx!, y: by! }, p3: { x: bx!, y: by! } }));
 		const tile: PatternTile = { rule: opposite('move', 'move'), cuts: 2, curves: { vertical: finger } };
 		expect(resizedTile(tile, 3)).not.toBeNull();
 		expect(resizedTile(tile, 7)).toBeNull();
 		expect(resizedTile(ruleStart(opposite('move', 'move'), 2), 7)?.cuts).toBe(6);
+	});
+
+	it('judges a size by the gap the red cuts keep at it, which a denser grid makes finer', () => {
+		// a knob reaching nearly into the next tile's: nearer it than 1.5 units in a 6 × 6 heart, the
+		// gap on 3 × 3 and 4 × 4, but not nearer than 1, the gap on 6 × 6
+		const k = (4 / 3) * -0.925;
+		const knob: SideCurve = [
+			{ p0: { x: 0, y: 0 }, p1: { x: 0, y: 0 }, p2: { x: 0.1, y: 0 }, p3: { x: 0.1, y: 0 } },
+			{ p0: { x: 0.1, y: 0 }, p1: { x: 0.1, y: k }, p2: { x: 0.6, y: k }, p3: { x: 0.6, y: 0 } },
+			{ p0: { x: 0.6, y: 0 }, p1: { x: 0.6, y: 0 }, p2: { x: 1, y: 0 }, p3: { x: 1, y: 0 } }
+		];
+		const sized = resizedTile({ rule: freeSides(), cuts: 2, curves: { nw: knob } }, 6)!;
+		expect(sized).not.toBeNull();
+		const { fingers, gridSize } = heartOf(sized);
+		const rect = inferOverlapRect(fingers, gridSize);
+		expect(findFingersWithIssues(fingers, intersectionMarginPx(rect, gridClearanceScale(gridSize.x, gridSize.y))).size).toBe(0);
+		expect(findFingersWithIssues(fingers, intersectionMarginPx(rect)).size).toBeGreaterThan(0);
 	});
 
 	it('says what the black points do for each kind of type: stretch and slant the tiles, only stretch them where the type keeps them rectangular, grow and slant them where rhombic, only grow them where square', () => {
