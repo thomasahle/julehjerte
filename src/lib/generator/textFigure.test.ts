@@ -57,6 +57,19 @@ describe('text in a figure frame', () => {
 		expect(() => textOutline(' \n ', fonts.nunito)).toThrow(ConstructionError);
 	});
 
+	it('moves a letter reaching into the one before until they are apart', () => {
+		// Cinzel's serifs cross their neighbours' at the usual tracking.
+		const crossing = (rings: Ring[]) => rings.some((a, i) => rings.some((b, j) => j > i && a.some((p, k) => {
+			const q = a[(k + 1) % a.length];
+			return b.some((r, m) => {
+				const t = b[(m + 1) % b.length], side = (u: number[], v: number[], w: number[]) => Math.sign((v[0] - u[0]) * (w[1] - u[1]) - (v[1] - u[1]) * (w[0] - u[0]));
+				return side(p, q, r) * side(p, q, t) < 0 && side(r, t, p) * side(r, t, q) < 0;
+			});
+		})));
+		expect(crossing(textOutline('EMMA', fonts.cinzel))).toBe(false);
+		expect(textOutline('EMMA', fonts.cinzel).length).toBe(5);
+	});
+
 	it('offers the letters in the checks and the medallion, the first on the strips the visitor chooses', () => {
 		expect(TEXT_TEMPLATES.map(t => t.id).slice(-2)).toEqual([...TEXT_FIGURES]);
 		const state = { ...defaults, mode: 'text' as const };
@@ -105,10 +118,10 @@ describe('text in a figure frame', () => {
 	});
 
 	it('cuts hidden cuts that come too close rather than refuse the letters, as a last resort', () => {
-		// In Cinzel's ANNA some hidden cuts across one square must crowd each
+		// In Cinzel's FAR some hidden cuts across one square must crowd each
 		// other on four strips: no sheets keep every strip whole without them,
 		// at the place its heart takes or any other.
-		const rings = textOutline('ANNA', fonts.cinzel), at = () => stripFigures(rings, 4, .7, 4000, 4.5, 'alone').next().done;
+		const rings = textOutline('FAR', fonts.cinzel), at = () => stripFigures(rings, 4, .7, 4000, .75, 'alone').next().done;
 		expect(at()).toBe(true);
 		expect(withCrowdedHiddenCuts(at)).toBe(false);
 	});

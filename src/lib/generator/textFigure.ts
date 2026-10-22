@@ -43,7 +43,15 @@ export function textOutline(text: string, font: Font): Ring[] {
 		for (const char of line) {
 			const glyph = font.glyphs[char];
 			if (!glyph) throw new ConstructionError('character', char);
-			placed.push(...glyph.contours.map(ring => ring.map(([u, v]): Point => [u + x, v + row * LEADING])));
+			let rings = glyph.contours.map(ring => ring.map(([u, v]): Point => [u + x, v + row * LEADING]));
+			// A letter reaching into the one before (Cinzel's serifs) moves on
+			// until they are apart: outlines that cross cannot be woven.
+			const shift = overlapShift(placed, rings);
+			if (shift > 0) {
+				rings = rings.map(ring => ring.map(([u, v]): Point => [u + shift, v]));
+				x += shift;
+			}
+			placed.push(...rings);
 			x += glyph.advance + TRACKING;
 		}
 		const width = x - TRACKING;
@@ -57,6 +65,49 @@ export function textOutline(text: string, font: Font): Ring[] {
 	const outline = rings.map(ring => ring.map(([u, v]): Point => [(u - cx) / size, (v - cy) / size]));
 	known.set(key, outline);
 	return outline;
+}
+
+/** How far right `next` must move to keep half the tracking clear of
+ * `before` where their outlines cross; nothing where they do not. Measured
+ * in thin horizontal bands, each ring's points taken every hundredth of an
+ * em along its sides. */
+function overlapShift(before: Ring[], next: Ring[]): number {
+	if (!before.length || !next.some(ring => before.some(other => ringsCross(ring, other)))) return 0;
+	const band = .01, step = .01;
+	const extremes = (rings: Ring[], pick: (a: number, b: number) => number, start: number) => {
+		const found = new Map<number, number>();
+		for (const ring of rings)
+			for (let i = 0; i < ring.length; i++) {
+				const [a, b] = [ring[i], ring[(i + 1) % ring.length]];
+				const n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / step));
+				for (let k = 0; k <= n; k++) {
+					const u = a[0] + (b[0] - a[0]) * k / n, v = a[1] + (b[1] - a[1]) * k / n, key = Math.floor(v / band);
+					found.set(key, pick(found.get(key) ?? start, u));
+				}
+			}
+		return found;
+	};
+	const right = extremes(before, Math.max, -Infinity), left = extremes(next, Math.min, Infinity);
+	let shift = 0;
+	for (const [key, u] of left)
+		for (const near of [key - 1, key, key + 1]) {
+			const v = right.get(near);
+			if (v !== undefined) shift = Math.max(shift, v - u + TRACKING / 2);
+		}
+	return shift;
+}
+
+/** Whether two rings' sides cross. */
+function ringsCross(a: Ring, b: Ring): boolean {
+	const side = (p: Point, q: Point, r: Point) => Math.sign((q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]));
+	for (let i = 0; i < a.length; i++) {
+		const [p, q] = [a[i], a[(i + 1) % a.length]];
+		for (let j = 0; j < b.length; j++) {
+			const [r, t] = [b[j], b[(j + 1) % b.length]];
+			if (side(p, q, r) * side(p, q, t) < 0 && side(r, t, p) * side(r, t, q) < 0) return true;
+		}
+	}
+	return false;
 }
 
 /** The figure request a text in one of these frames makes: its outline at

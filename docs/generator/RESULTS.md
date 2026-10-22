@@ -58,6 +58,19 @@ that can (the finer of two), as the page already says for the other board
 frames ("Med 3 strimler kan figuren ikke væves …; den vises med 4"), and the
 picture draws the strips its heart was made on.
 
+Text in the checks and the medallion lays its letters out as one outline,
+each letter its advance and a little tracking after the last. Cinzel's serifs
+reach into the next letter there (E–M, M–A, A–N, l–l), and outlines that cross
+cannot be woven: in a sweep of its 216 text cases it refused 12, among them
+JULEMAND, juleman, William and EMMA in the medallion ("the converted cuts fail
+the editor's crossing check") and in the checks. A letter that reaches into
+the one before now moves on until they are half the tracking apart; letters
+that do not cross keep their places, so every other bundled font lays out
+exactly as before (and joined script fonts from Google can now be woven).
+The medallion builds all of Cinzel's (hard to cut), the checks EMMA and ANNA;
+seven- and eight-letter words in the checks still find no sheets on any board
+in Cinzel (in Nunito they do).
+
 The board circle's kept sizes are motifs that cannot be divided in four: they
 stay whole up to the largest circle that holds them whole (about 83%, see
 below), the coffee cup at the touching circle. Still refused in text: Nunito
