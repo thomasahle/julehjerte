@@ -196,10 +196,6 @@
     },
     "difficulty": "hard"
   },
-  "alhambra": {
-    "name": "Alhambra",
-    "difficulty": "expert"
-  },
   "squares": {
     "name": "Squares",
     "names": {
@@ -214,33 +210,12 @@
     },
     "difficulty": "medium"
   },
-  "puslespil": {
-    "name": "Puslespil",
-    "names": {
-      "en": "Jigsaw"
-    },
-    "difficulty": "hard"
-  },
-  "koelbuer": {
-    "name": "Kølbuer",
-    "names": {
-      "en": "Ogee arches"
-    },
-    "difficulty": "medium"
-  },
   "roserude": {
     "name": "Roserude",
     "names": {
       "en": "Rose window"
     },
     "difficulty": "medium"
-  },
-  "hanefod": {
-    "name": "Hanefod",
-    "names": {
-      "en": "Houndstooth"
-    },
-    "difficulty": "hard"
   },
   "flyvendegaes": {
     "name": "Flyvende gæs",
@@ -252,13 +227,6 @@
   "origami": {
     "name": "Origami",
     "difficulty": "hard"
-  },
-  "drageskael": {
-    "name": "Drageskæl",
-    "names": {
-      "en": "Dragon scales"
-    },
-    "difficulty": "medium"
   },
   "hermanngitter": {
     "name": "Hermann-gitter",
@@ -295,38 +263,10 @@
     },
     "difficulty": "medium"
   },
-  "permo-kroge": {
-    "name": "Kroge",
-    "names": {
-      "en": "Hooks"
-    },
-    "difficulty": "hard"
-  },
-  "permo-draaber": {
-    "name": "Dråber",
-    "names": {
-      "en": "Drops"
-    },
-    "difficulty": "expert"
-  },
   "permo-cirkler": {
     "name": "Cirkler",
     "names": {
       "en": "Circles"
-    },
-    "difficulty": "medium"
-  },
-  "fiskeskael": {
-    "name": "Fiskeskæl",
-    "names": {
-      "en": "Fish scales"
-    },
-    "difficulty": "medium"
-  },
-  "boelger": {
-    "name": "Bølger",
-    "names": {
-      "en": "Waves"
     },
     "difficulty": "medium"
   },
@@ -372,6 +312,73 @@
     },
     "difficulty": "medium"
   },
+  "dagognat": {
+    "name": "Dag og nat",
+    "names": {
+      "en": "Day and night"
+    },
+    "difficulty": "hard"
+  },
+  "puslespil": {
+    "name": "Puslespil",
+    "names": {
+      "en": "Jigsaw"
+    },
+    "difficulty": "hard"
+  },
+  "drageskael": {
+    "name": "Drageskæl",
+    "names": {
+      "en": "Dragon scales"
+    },
+    "difficulty": "medium"
+  },
+  "permo-kroge": {
+    "name": "Kroge",
+    "names": {
+      "en": "Hooks"
+    },
+    "difficulty": "hard"
+  },
+  "alhambra": {
+    "name": "Alhambra",
+    "difficulty": "expert"
+  },
+  "koelbuer": {
+    "name": "Kølbuer",
+    "names": {
+      "en": "Ogee arches"
+    },
+    "difficulty": "medium"
+  },
+  "hanefod": {
+    "name": "Hanefod",
+    "names": {
+      "en": "Houndstooth"
+    },
+    "difficulty": "hard"
+  },
+  "permo-draaber": {
+    "name": "Dråber",
+    "names": {
+      "en": "Drops"
+    },
+    "difficulty": "expert"
+  },
+  "fiskeskael": {
+    "name": "Fiskeskæl",
+    "names": {
+      "en": "Fish scales"
+    },
+    "difficulty": "medium"
+  },
+  "boelger": {
+    "name": "Bølger",
+    "names": {
+      "en": "Waves"
+    },
+    "difficulty": "medium"
+  },
   "juletrae": {
     "name": "Juletræ",
     "names": {
@@ -408,13 +415,6 @@
     "name": "Santa",
     "names": {
       "da": "Julemand"
-    },
-    "difficulty": "hard"
-  },
-  "dagognat": {
-    "name": "Dag og nat",
-    "names": {
-      "en": "Day and night"
     },
     "difficulty": "hard"
   },

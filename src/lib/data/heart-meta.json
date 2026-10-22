@@ -790,33 +790,6 @@
     },
     "photo": null
   },
-  "alhambra": {
-    "name": "Alhambra",
-    "author": "Torben Mogensen",
-    "authorUrl": "https://hjemmesider.diku.dk/~torbenm/",
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "https://hjemmesider.diku.dk/~torbenm/hearts.pdf#page=9",
-    "date": null,
-    "description": "A pattern inspired by the Alhambra tiling. Note that it is somewhat tricky to braid, as the corners tend to snag, so it should not be your first braiding project.",
-    "gridSize": {
-      "x": 6,
-      "y": 6
-    },
-    "difficulty": "expert",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": {
-      "src": "/hearts/photos/alhambra.png",
-      "width": 1065,
-      "height": 1200
-    }
-  },
   "squares": {
     "name": "Squares",
     "names": {
@@ -869,58 +842,6 @@
     },
     "photo": null
   },
-  "puslespil": {
-    "name": "Puslespil",
-    "names": {
-      "en": "Jigsaw"
-    },
-    "author": "Thomas Ahle & Claude",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 4,
-      "y": 4
-    },
-    "difficulty": "hard",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": false,
-      "sharedTemplate": false
-    },
-    "photo": null
-  },
-  "koelbuer": {
-    "name": "Kølbuer",
-    "names": {
-      "en": "Ogee arches"
-    },
-    "author": "Thomas Ahle & Claude",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 5,
-      "y": 5
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
   "roserude": {
     "name": "Roserude",
     "names": {
@@ -944,32 +865,6 @@
       "lobeSymmetry": false,
       "mirrorSymmetry": true,
       "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "hanefod": {
-    "name": "Hanefod",
-    "names": {
-      "en": "Houndstooth"
-    },
-    "author": "Thomas Ahle & Claude",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 5,
-      "y": 5
-    },
-    "difficulty": "hard",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": false,
-      "sharedTemplate": false
     },
     "photo": null
   },
@@ -1019,32 +914,6 @@
       "lobeSymmetry": true,
       "mirrorSymmetry": false,
       "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "drageskael": {
-    "name": "Drageskæl",
-    "names": {
-      "en": "Dragon scales"
-    },
-    "author": "Thomas Ahle & Claude",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 5,
-      "y": 5
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": false,
-      "sharedTemplate": false
     },
     "photo": null
   },
@@ -1178,58 +1047,6 @@
     },
     "photo": null
   },
-  "permo-kroge": {
-    "name": "Kroge",
-    "names": {
-      "en": "Hooks"
-    },
-    "author": "Per V. Mortensen",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 4,
-      "y": 4
-    },
-    "difficulty": "hard",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": false,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "permo-draaber": {
-    "name": "Dråber",
-    "names": {
-      "en": "Drops"
-    },
-    "author": "Per V. Mortensen",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 4,
-      "y": 4
-    },
-    "difficulty": "expert",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
   "permo-cirkler": {
     "name": "Cirkler",
     "names": {
@@ -1250,58 +1067,6 @@
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "fiskeskael": {
-    "name": "Fiskeskæl",
-    "names": {
-      "en": "Fish scales"
-    },
-    "author": "Ukendt",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2026-10-21",
-    "description": null,
-    "gridSize": {
-      "x": 5,
-      "y": 5
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "boelger": {
-    "name": "Bølger",
-    "names": {
-      "en": "Waves"
-    },
-    "author": "Ukendt",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2026-10-21",
-    "description": null,
-    "gridSize": {
-      "x": 5,
-      "y": 5
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
       "lobeSymmetry": false,
       "mirrorSymmetry": true,
       "sharedTemplate": true
@@ -1464,6 +1229,267 @@
     },
     "photo": null
   },
+  "dagognat": {
+    "name": "Dag og nat",
+    "names": {
+      "en": "Day and night"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "puslespil": {
+    "name": "Puslespil",
+    "names": {
+      "en": "Jigsaw"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "drageskael": {
+    "name": "Drageskæl",
+    "names": {
+      "en": "Dragon scales"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "permo-kroge": {
+    "name": "Kroge",
+    "names": {
+      "en": "Hooks"
+    },
+    "author": "Per V. Mortensen",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": false,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "alhambra": {
+    "name": "Alhambra",
+    "author": "Torben Mogensen",
+    "authorUrl": "https://hjemmesider.diku.dk/~torbenm/",
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "https://hjemmesider.diku.dk/~torbenm/hearts.pdf#page=9",
+    "date": null,
+    "description": "A pattern inspired by the Alhambra tiling. Note that it is somewhat tricky to braid, as the corners tend to snag, so it should not be your first braiding project.",
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": {
+      "src": "/hearts/photos/alhambra.png",
+      "width": 1065,
+      "height": 1200
+    }
+  },
+  "koelbuer": {
+    "name": "Kølbuer",
+    "names": {
+      "en": "Ogee arches"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "hanefod": {
+    "name": "Hanefod",
+    "names": {
+      "en": "Houndstooth"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "permo-draaber": {
+    "name": "Dråber",
+    "names": {
+      "en": "Drops"
+    },
+    "author": "Per V. Mortensen",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "fiskeskael": {
+    "name": "Fiskeskæl",
+    "names": {
+      "en": "Fish scales"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "boelger": {
+    "name": "Bølger",
+    "names": {
+      "en": "Waves"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "juletrae": {
     "name": "Juletræ",
     "names": {
@@ -1610,32 +1636,6 @@
     "gridSize": {
       "x": 5,
       "y": 5
-    },
-    "difficulty": "hard",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": false,
-      "sharedTemplate": false
-    },
-    "photo": null
-  },
-  "dagognat": {
-    "name": "Dag og nat",
-    "names": {
-      "en": "Day and night"
-    },
-    "author": "Thomas Ahle & Claude",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 4,
-      "y": 4
     },
     "difficulty": "hard",
     "symmetry": {

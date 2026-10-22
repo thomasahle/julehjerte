@@ -29,6 +29,17 @@
   its inline bootstrap picks cards by them and clones their SVGs
   ($lib/front/heroBootstrap). `data-user` marks the ones it must not draw from.
 -->
+<script module lang="ts">
+	/** Heart width in px; the card is this plus 120px for the ribbon slack, name and difficulty. */
+	export const CARD_HEART_SIZE = 200;
+	/** Ribbon lengths cycled through the grid, so neighbours hang at different heights. */
+	const RIBBONS = [26, 54, 38, 66, 44];
+	/** The ribbon of the card at `index` in its category grid. */
+	export const cardRibbon = (index: number): number => RIBBONS[index % RIBBONS.length]!;
+	/** How far into its sway the card at `index` starts, so neighbours sway out of step. */
+	export const cardSway = (index: number): number => (index * 0.7) % 5;
+</script>
+
 <script lang="ts">
 	import type { HeartDesign } from '$lib/types/heart';
 	import type { GalleryHeart } from '$lib/front/galleryHearts';
@@ -82,13 +93,8 @@
 		hidden = false
 	}: Props = $props();
 
-	/** Heart width in px; the card is this plus 120px for the ribbon slack, name and difficulty. */
-	const SIZE = 200;
-	/** Ribbon lengths cycled through the grid, so neighbours hang at different heights. */
-	const RIBBONS = [26, 54, 38, 66, 44];
-
-	let ribbon = $derived(RIBBONS[index % RIBBONS.length]);
-	let swayDelay = $derived((index * 0.7) % 5);
+	let ribbon = $derived(cardRibbon(index));
+	let swayDelay = $derived(cardSway(index));
 	let href = $derived(heartHref(heart.id, lang));
 	let pickId = $derived(`pick-${heart.id}`);
 	let nameId = $derived(`${makeHeartAnchorId(heart.id)}-name`);
@@ -115,7 +121,7 @@
 	data-user={heart.isUserCreated ? '' : undefined}
 	data-level={heart.difficulty}
 	aria-labelledby={nameId}
-	style="height: {SIZE + 120}px;"
+	style="height: {CARD_HEART_SIZE + 120}px;"
 	style:--strand={strand === undefined ? undefined : `var(--strand-${strand})`}
 	style:display={hidden ? 'none' : undefined}
 >
@@ -127,7 +133,7 @@
 			{markup}
 			loadPaper={loadPaperHeart}
 			heartId={heart.id}
-			size={SIZE}
+			size={CARD_HEART_SIZE}
 			{ribbon}
 			delay={swayDelay}
 			idPrefix="card-{heart.id}"

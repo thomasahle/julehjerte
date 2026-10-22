@@ -38,11 +38,17 @@ const TEXT_WIDTHS: Record<string, number> = {
 	Klassiske: 59.4,
 	Stjerner: 49.7,
 	Mønstre: 51.4,
+	Fliser: 33.9,
 	Figurer: 44.0,
 	Hjerter: 43.0,
 	'4': 7.2,
 	'12': 14.4,
 	'26': 14.4,
+	'5': 7.2,
+	'14': 14.4,
+	'28': 14.4,
+	'10': 14.4,
+	'11': 14.4,
 	'7': 7.2,
 	'6': 7.2,
 	'8': 7.2,
@@ -65,14 +71,14 @@ const LABELS: Record<string, string> = {
 
 /**
  * The row's width with the toggles: four toggles (dots and their gap only
- * from 1200px up), the group's extra gap, and the five category chips with
+ * from 1200px up), the group's extra gap, and the six category chips with
  * these counts, 8px apart.
  */
 function rowTotal(counts: string[], dots: boolean): number {
 	const toggles = ['Let', 'Mellem', 'Svær', 'Ekspert'].map((label) =>
 		Math.round(26 + (dots ? STRAND_LAYOUT.dotsWidth + 6 : 0) + TEXT_WIDTHS[label])
 	);
-	const chips = ['Klassiske', 'Stjerner', 'Mønstre', 'Figurer', 'Hjerter'].map((title, i) =>
+	const chips = ['Klassiske', 'Stjerner', 'Mønstre', 'Fliser', 'Figurer', 'Hjerter'].map((title, i) =>
 		Math.round(32 + TEXT_WIDTHS[title] + TEXT_WIDTHS[counts[i]])
 	);
 	const widths = [...toggles, ...chips];
@@ -83,6 +89,7 @@ const TITLES: Record<string, string> = {
 	klassiske: 'Klassiske',
 	stjerner: 'Stjerner',
 	moenstre: 'Mønstre',
+	fliser: 'Fliser',
 	figurer: 'Figurer',
 	hjerter: 'Hjerter'
 };
@@ -335,9 +342,9 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 	});
 
 	it('estimates the chips with the counts the filter leaves, at every desktop width', () => {
-		// "Let": Klassiske 1, Stjerner 3, Mønstre 0, Figurer 0, Hjerter 1, the
-		// emptied ones dimmed but still in the row.
-		const counts = ['1', '3', '0', '0', '1'];
+		// "Let": Klassiske 1, Stjerner 4, Mønstre 0, Fliser 0, Figurer 0, Hjerter 1,
+		// the emptied ones dimmed but still in the row.
+		const counts = ['1', '4', '0', '0', '0', '1'];
 		for (const viewport of [900, 1024, 1199, 1200, 1440, 1920]) {
 			width = viewport;
 			window.history.replaceState(null, '', '/?level=let');
@@ -414,21 +421,24 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 	});
 
 	it('counts the toggles’ dots only from 1200px up and while nothing is ticked', () => {
-		const all = ['4', '12', '26', '8', '6'];
-		// At 1440 a column centre lies between the row's start with and without the dots.
-		const withDots = expected(1440, rowTotal(all, true)).drops;
-		const without = expected(1440, rowTotal(all, false)).drops;
-		expect(withDots).not.toEqual(without);
+		const all = ['5', '14', '28', '10', '11', '7'];
+		// A desktop width where a column centre lies between the row's start with and without the dots.
+		const at = [1440, 1366, 1280, 1536, 1600, 1680, 1920, 1200].find(
+			(viewport) => JSON.stringify(expected(viewport, rowTotal(all, true)).drops) !== JSON.stringify(expected(viewport, rowTotal(all, false)).drops)
+		)!;
+		expect(at).toBeDefined();
+		width = at;
+		const withDots = expected(at, rowTotal(all, true)).drops;
 		run(FILTERED);
-		[0, 1, 2, 3, 4].forEach((k) => expect(px(`--strand-${k}`)).toBeCloseTo(withDots[k], 1));
+		withDots.forEach((drop, k) => expect(px(`--strand-${k}`)).toBeCloseTo(drop, 1));
 
 		// Ticked: the download button joins the row and the dots go.
 		window.history.replaceState(null, '', '/?selected=a');
 		root().removeAttribute('style');
 		run(FILTERED);
 		const button = Math.round(64 + 'Hent skabeloner'.length * 7 + 7);
-		const ticked = expected(1440, rowTotal(all, false) + button + 8).drops;
-		[0, 1, 2, 3, 4].forEach((k) => expect(px(`--strand-${k}`)).toBeCloseTo(ticked[k], 1));
+		const ticked = expected(at, rowTotal(all, false) + button + 8).drops;
+		ticked.forEach((drop, k) => expect(px(`--strand-${k}`)).toBeCloseTo(drop, 1));
 	});
 });
 

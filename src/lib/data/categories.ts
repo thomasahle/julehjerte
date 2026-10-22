@@ -16,10 +16,10 @@
 import hearts from '../../../hearts.json';
 import { SITE_DOMAIN, SITE_URL } from '$lib/config';
 import { t, type Language } from '$lib/i18n';
-import { heartPath } from '$lib/i18n/routes';
+import { escherEditorHref, generatorHref, heartPath, href } from '$lib/i18n/routes';
 import type { TranslationKey } from '$lib/i18n/translations';
 
-export type CategoryId = 'klassiske' | 'stjerner' | 'moenstre' | 'figurer' | 'hjerter';
+export type CategoryId = 'klassiske' | 'stjerner' | 'moenstre' | 'fliser' | 'figurer' | 'hjerter';
 
 /**
  * The synthetic category the front page appends for hearts the visitor drew
@@ -47,6 +47,7 @@ const TITLE_KEYS: Record<CategoryId, TranslationKey> = {
 	klassiske: 'categoryKlassiske',
 	stjerner: 'categoryStjerner',
 	moenstre: 'categoryMoenstre',
+	fliser: 'categoryFliser',
 	figurer: 'categoryFigurer',
 	hjerter: 'categoryHjerter'
 };
@@ -55,6 +56,7 @@ const LOWER_TITLE_KEYS: Record<CategoryId, TranslationKey> = {
 	klassiske: 'categoryKlassiskeLower',
 	stjerner: 'categoryStjernerLower',
 	moenstre: 'categoryMoenstreLower',
+	fliser: 'categoryFliserLower',
 	figurer: 'categoryFigurerLower',
 	hjerter: 'categoryHjerterLower'
 };
@@ -124,6 +126,22 @@ export function siblingHeartIds(heartId: string): string[] {
 	const category = categoryOfHeart(heartId);
 	if (!category) return [];
 	return category.hearts.filter((id) => id !== heartId);
+}
+
+/**
+ * Where a visitor makes their own heart of a category's kind, for the gallery's last card in it
+ * (MakeOwnCard): a pattern in Tegn, a tiling in its Escher tab, a figure on the design page.
+ */
+const MAKE_OWN: Partial<Record<CategoryId, { label: TranslationKey; href: (lang: Language) => string }>> = {
+	moenstre: { label: 'makeOwnPattern', href: (lang) => href('editor', lang) },
+	fliser: { label: 'makeOwnTiling', href: escherEditorHref },
+	figurer: { label: 'makeOwnFigure', href: (lang) => generatorHref(lang, 'figure') }
+};
+
+/** The link and words of a category's "make your own" card, or null for a category without one. */
+export function makeOwnLink(id: string, lang: Language): { href: string; label: string } | null {
+	const make = MAKE_OWN[id as CategoryId];
+	return make ? { href: make.href(lang), label: t(make.label, lang) } : null;
 }
 
 /** "Stjerner" / "Stars". Also handles the synthetic "mine" category. */

@@ -14,6 +14,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import HeartCard from '$lib/components/HeartCard.svelte';
+	import MakeOwnCard from '$lib/components/front/MakeOwnCard.svelte';
 	import type { HeartDesign } from '$lib/types/heart';
 	import type { GalleryHeart } from '$lib/front/galleryHearts';
 	import type { Language } from '$lib/i18n';
@@ -59,6 +60,8 @@
 		apart?: boolean;
 		/** Shown instead of the grid when `hearts` is empty. */
 		empty?: Snippet;
+		/** The last card: where to make one's own heart of this kind (`makeOwnLink`). */
+		make?: { href: string; label: string } | null;
 	}
 
 	let {
@@ -76,7 +79,8 @@
 		columns = 0,
 		levels = new Set(),
 		apart = false,
-		empty
+		empty,
+		make = null
 	}: Props = $props();
 
 	/**
@@ -88,6 +92,9 @@
 		let next = 0;
 		return hearts.map((heart) => (matchesLevels(levels, heart.difficulty) ? next++ : -1));
 	});
+
+	/** How many cards are on show: the "make your own" card hangs in the next column. */
+	let shownCount = $derived(shownIndex.filter((i) => i >= 0).length);
 
 	/** A gallery category the filter has emptied takes no room at all. */
 	let filteredAway = $derived(!apart && hearts.length > 0 && !shownIndex.some((i) => i >= 0));
@@ -127,6 +134,14 @@
 					{onDelete}
 				/>
 			{/each}
+			{#if make}
+				<MakeOwnCard
+					{...make}
+					{id}
+					index={hearts.length}
+					strand={columns > 0 ? shownCount % columns : undefined}
+				/>
+			{/if}
 		</div>
 	{/if}
 </section>
