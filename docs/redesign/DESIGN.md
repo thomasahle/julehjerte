@@ -306,9 +306,10 @@ padding-bottom 4, margin-bottom 10, no rule under it). Section ids `klassiske`, 
 Categories (hearts.json, 2026-10-22): Klassiske, Stjerner, Mønstre, Fliser, Figurer, Tekst, Hjerter. Fliser ("Tilings")
 holds the Escher-like tilings, where the red and the white pieces are the same interlocking figure: Dag og nat,
 Puslespil, Drageskæl, Kroge, Alhambra, Kølbuer, Hanefod, Dråber, Fiskeskæl, Bølger. Plain polygon tilings (Sildeben,
-Flyvende gæs) and Hermann-gitter stay in Mønstre. Tekst holds four hearts made with the design page's text frames,
-one frame and font each: NOEL (Tern), SNE (Helt ind til teksten), MOR (Cirkel) and FRED (Cirkel med dobbelt bort);
-JUL, drawn by hand, stays in Klassiske. Mønstre, Fliser, Figurer and Tekst each end with a "make your own" card
+Flyvende gæs) and Hermann-gitter stay in Mønstre. Tekst holds five hearts made with the design page's text frames and checked
+as paper (each template drawn at 80 mm, every piece joined to its ear by paper about 2 mm wide or more, no red cut):
+GOD JUL (Cirkel), TAK (Store bogstaver), 2026 (Tern), JUL 2026 (Cirkel med dobbelt bort) and MOR & FAR (Store
+bogstaver); JUL, drawn by hand, stays in Klassiske. Mønstre, Fliser, Figurer and Tekst each end with a "make your own" card
 (`front/MakeOwnCard.svelte`, `makeOwnLink` in `$lib/data/categories`): a blank heart, dashed and with a plus,
 hanging on the next ribbon and strand like a card, named "Lav dit eget mønster" (Tegn, `/editor/`), "Lav dit eget
 flisemønster" (Tegn's Escher tab, `/editor/escher/`), "Lav din egen figur" (the design page's figures,

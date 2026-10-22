@@ -453,20 +453,24 @@
     },
     "difficulty": "medium"
   },
-  "noel": {
-    "name": "NOEL",
-    "difficulty": "hard"
-  },
-  "sne": {
-    "name": "SNE",
-    "difficulty": "hard"
-  },
-  "mor": {
-    "name": "MOR",
+  "god-jul": {
+    "name": "GOD JUL",
     "difficulty": "expert"
   },
-  "fred": {
-    "name": "FRED",
+  "tak": {
+    "name": "TAK",
+    "difficulty": "hard"
+  },
+  "aar-2026": {
+    "name": "2026",
+    "difficulty": "hard"
+  },
+  "jul-2026": {
+    "name": "JUL 2026",
+    "difficulty": "expert"
+  },
+  "mor-far": {
+    "name": "MOR & FAR",
     "difficulty": "expert"
   },
   "triple-heart": {

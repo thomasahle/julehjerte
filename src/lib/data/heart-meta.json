@@ -1777,54 +1777,8 @@
     },
     "photo": null
   },
-  "noel": {
-    "name": "NOEL",
-    "author": "Thomas Ahle & Claude",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2026-10-22",
-    "description": null,
-    "gridSize": {
-      "x": 4,
-      "y": 4
-    },
-    "difficulty": "hard",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": false,
-      "sharedTemplate": false
-    },
-    "photo": null
-  },
-  "sne": {
-    "name": "SNE",
-    "author": "Thomas Ahle & Claude",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2026-10-22",
-    "description": null,
-    "gridSize": {
-      "x": 5,
-      "y": 5
-    },
-    "difficulty": "hard",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": false,
-      "sharedTemplate": false
-    },
-    "photo": null
-  },
-  "mor": {
-    "name": "MOR",
+  "god-jul": {
+    "name": "GOD JUL",
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -1846,8 +1800,54 @@
     },
     "photo": null
   },
-  "fred": {
-    "name": "FRED",
+  "tak": {
+    "name": "TAK",
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-22",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "aar-2026": {
+    "name": "2026",
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-22",
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "jul-2026": {
+    "name": "JUL 2026",
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -1858,6 +1858,29 @@
     "gridSize": {
       "x": 7,
       "y": 7
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "mor-far": {
+    "name": "MOR & FAR",
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-22",
+    "description": null,
+    "gridSize": {
+      "x": 6,
+      "y": 6
     },
     "difficulty": "expert",
     "symmetry": {

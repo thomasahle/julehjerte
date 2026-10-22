@@ -423,7 +423,7 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 	});
 
 	it('counts the toggles’ dots only from 1200px up and while nothing is ticked', () => {
-		const all = ['5', '14', '28', '10', '11', '4', '7'];
+		const all = ['5', '14', '28', '10', '11', '5', '7'];
 		// A desktop width where a column centre lies between the row's start with and without the dots.
 		const at = [1440, 1366, 1280, 1536, 1600, 1680, 1920, 1200].find(
 			(viewport) => JSON.stringify(expected(viewport, rowTotal(all, true)).drops) !== JSON.stringify(expected(viewport, rowTotal(all, false)).drops)
