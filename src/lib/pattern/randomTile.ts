@@ -8,7 +8,7 @@
  *   sides  every side the type draws: a chain of 1–4 cubic pieces, its nodes anywhere along the side and
  *          up to 0.7 of a cell across it, smooth or corners, its handles any length and any way forward
  *   lean   for the types whose tiles lean, half the time the odd corners moved up to 0.4 of a cell
- *   shape  half the time the cells stretched (0.7–1.5 a side) and slanted (up to 0.35), as far as the
+ *   shape  half the time the cells sized (0.8–1.3), stretched (to about 1.3 : 1) and slanted (up to 0.3), as far as the
  *          type keeps its motions (`shapeFor`): the black points' drag, drawn at random
  *
  * Curves are in a side's own frame (see `tiling.ts`): from (0, 0) to (1, 0), y towards the stretch's
@@ -87,7 +87,7 @@ export function tileBoldness(tile: PatternTile): number {
 }
 
 /** Below this, in cells, a tile's sides are too nearly straight to make a figure (`tileBoldness`). */
-export const MIN_BOLDNESS = 0.12;
+export const MIN_BOLDNESS = 0.16;
 
 /** A random type and size: the round of draws `randomTileDraw` keeps them for. */
 export function randomTileKind(rng: Rng = Math.random): { rule: TileRule; cuts: number } {
@@ -102,13 +102,16 @@ export function randomTileDraw(rng: Rng, kind: { rule: TileRule; cuts: number },
 		ruleInfo(rule).curves.map((key) => [key, randomSide(halfOf(rule, key), reach * between(rng, 0.6, 1), rng)])
 	);
 	const lean = canLean(rule) && rng() < 0.5 ? { offset: v(between(rng, -0.4, 0.4) * shrink, between(rng, -0.4, 0.4) * shrink) } : {};
+	// The cells' size and stretch: never more than about 1.3 to 1, or the tiles read as stripes.
+	const stretch = 1 + between(rng, -0.2, 0.3) * shrink;
+	const aspect = 1 + between(rng, -0.2, 0.25) * shrink;
 	const shaped =
 		rng() < 0.5
 			? shapeFields(
 					rule,
 					shapeFor(rule, {
-						x: v(1 + between(rng, -0.3, 0.5) * shrink, between(rng, -0.35, 0.35) * shrink),
-						y: v(between(rng, -0.35, 0.35) * shrink, 1 + between(rng, -0.3, 0.5) * shrink)
+						x: v(stretch, between(rng, -0.3, 0.3) * shrink),
+						y: v(between(rng, -0.3, 0.3) * shrink, stretch * aspect)
 					}),
 					0
 				)

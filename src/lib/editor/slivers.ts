@@ -64,6 +64,20 @@ export function pieceSizes(
 	rect: { left: number; top: number; width: number; height: number },
 	resolution = 128
 ): number[] {
+	return pieces(fingers, rect, resolution)
+		.map((p) => p.area)
+		.sort((a, b) => a - b);
+}
+
+/** A piece of the woven picture: its area as a share of the square, its outline in samples, and whether it reaches the square's edge. */
+export interface Piece {
+	area: number;
+	perimeter: number;
+	edge: boolean;
+}
+
+/** The pieces of the woven picture, sampled `resolution` times each way (see `pieceSizes`). */
+export function pieces(fingers: Finger[], rect: { left: number; top: number; width: number; height: number }, resolution = 128): Piece[] {
 	const R = resolution;
 	const lines = (lobe: 'left' | 'right') =>
 		fingers
@@ -118,12 +132,14 @@ export function pieceSizes(
 		for (let c = 0; c < R; c++) colour[r * R + c] = (before(columns[c]!, y) + before(rows[r]!, xAt(c))) & 1;
 	}
 	const seen = new Uint8Array(R * R);
-	const sizes: number[] = [];
+	const found: Piece[] = [];
 	const stack: number[] = [];
 	for (let start = 0; start < R * R; start++) {
 		if (seen[start]) continue;
 		const col = colour[start];
 		let size = 0;
+		let perimeter = 0;
+		let edge = false;
 		stack.push(start);
 		seen[start] = 1;
 		while (stack.length) {
@@ -131,16 +147,19 @@ export function pieceSizes(
 			size++;
 			const r = (i / R) | 0;
 			const c = i % R;
+			if (r === 0 || c === 0 || r === R - 1 || c === R - 1) edge = true;
 			for (const j of [r > 0 ? i - R : -1, r < R - 1 ? i + R : -1, c > 0 ? i - 1 : -1, c < R - 1 ? i + 1 : -1]) {
-				if (j >= 0 && !seen[j] && colour[j] === col) {
-					seen[j] = 1;
-					stack.push(j);
-				}
+				if (j >= 0 && colour[j] === col) {
+					if (!seen[j]) {
+						seen[j] = 1;
+						stack.push(j);
+					}
+				} else perimeter++;
 			}
 		}
-		sizes.push(size / (R * R));
+		found.push({ area: size / (R * R), perimeter, edge });
 	}
-	return sizes.sort((a, b) => a - b);
+	return found;
 }
 
 /** Samples each way `smallestPiece` reads the picture at, and the pieces it takes for sampling noise along a line. */
@@ -163,5 +182,5 @@ export function smallestPiece(
 	return real === undefined ? cells : real * cells;
 }
 
-/** The least a random heart's or tile's smallest piece may be, in cells (`smallestPiece`). */
-export const MIN_PIECE = 0.05;
+/** The least a random heart's or tile's smallest piece may be, in cells (`smallestPiece`): what nearly all the gallery's hearts keep. */
+export const MIN_PIECE = 0.08;
