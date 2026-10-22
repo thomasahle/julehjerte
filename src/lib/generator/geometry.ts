@@ -1160,12 +1160,24 @@ function cuttingCost(routes: Ring[], margin: number) {
 /** Locate a point on the original outline, including fractional edge positions. */
 function ringPort(ring: Ring, point: Point): Port | null {
 	for (let i = 0; i < ring.length; i++) {
-		const a = ring[i], b = ring[(i + 1) % ring.length], d = sub(b, a);
+		const a = ring[i], b = ring[(i + 1) % ring.length];
+		// A point on the edge lies in its box widened by the tolerances: most
+		// edges are passed over without the projection.
+		if (!nearSegmentBox(point, a, b)) continue;
+		const d = sub(b, a);
 		const t = dot(sub(point, a), d) / dot(d, d);
 		if (t >= -EPS && t <= 1 + EPS && distance(point, mix(a, b, t)) < EPS)
 			return { point, index: (i + Math.max(0, Math.min(1, t))) % ring.length };
 	}
 	return null;
+}
+/** Whether a point can lie within `EPS` of the segment from `a` to `b`,
+ * extended by `EPS` of its length at either end: inside their box widened
+ * by that much. */
+function nearSegmentBox(p: Point, a: Point, b: Point): boolean {
+	const dx = Math.abs(b[0] - a[0]), dy = Math.abs(b[1] - a[1]), pad = EPS * (1 + dx + dy) + 1e-12;
+	return p[0] >= Math.min(a[0], b[0]) - pad && p[0] <= Math.max(a[0], b[0]) + pad
+		&& p[1] >= Math.min(a[1], b[1]) - pad && p[1] <= Math.max(a[1], b[1]) + pad;
 }
 /** Scoped to one immutable outline, routing mode and allowed external ports.
  * Attachment eligibility is checked against each candidate's current cuts. */
@@ -1254,7 +1266,8 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
 				continue;
 			}
 			const d = sub(edge.to, edge.from);
-			const splits = [a.point, b.point].map(p => ({ p, t: dot(sub(p, edge.from), d) / dot(d, d) })).filter(({ p, t }) => t > EPS && t < 1 - EPS && distance(p, mix(edge.from, edge.to, t)) < EPS).sort((a, b) => a.t - b.t);
+			const splits = [a.point, b.point].filter(p => nearSegmentBox(p, edge.from, edge.to))
+				.map(p => ({ p, t: dot(sub(p, edge.from), d) / dot(d, d) })).filter(({ p, t }) => t > EPS && t < 1 - EPS && distance(p, mix(edge.from, edge.to, t)) < EPS).sort((a, b) => a.t - b.t);
 			const points = [edge.from, ...splits.map(s => s.p), edge.to];
 			for (let i = 1; i < points.length; i++) {
 				const port = splits.length ? ringPort(ring, mix(points[i - 1], points[i], .5))! : middle;
