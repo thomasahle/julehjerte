@@ -22,6 +22,8 @@
 	import { goto, replaceState } from '$app/navigation';
 	import PageHeader from '$lib/components/PageHeader.svelte';
 	import GeneratorFrameIcon from '$lib/components/GeneratorFrameIcon.svelte';
+	import TemplatePreview from '$lib/components/TemplatePreview.svelte';
+	import { lobesShareTemplate } from '$lib/utils/symmetry';
 	import DesignStart, { type StartArt } from '$lib/components/DesignStart.svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import { href, editorHref, otherLanguage } from '$lib/i18n/routes';
@@ -69,6 +71,8 @@
 		['alfaslabone', 'generatorFontSlab'],
 		['bungee', 'generatorFontBlock']
 	] as const;
+	/** The templates shown below the heart: one where the two lobes share it. */
+	const SHARED_LOBES = ['left'] as const, BOTH_LOBES = ['left', 'right'] as const;
 
 	let config = $state<GeneratorState>({ ...defaults });
 	let mounted = $state(false),
@@ -908,7 +912,22 @@
 					{t('generatorDragFigure', lang)}{#if config.place !== undefined || config.side !== undefined}
 						<button class="place-back" onclick={() => ([config.place, config.side] = [undefined, undefined])}>{t('generatorPlaceBack', lang)}</button>{/if}
 				</p>{/if}
-			{#if displayed}<p class="cut-note">
+			<!-- The cutting templates of the heart shown, so the visitor can judge
+			     how much cutting a design asks for, and simplify it if need be:
+			     one when the two lobes share it. -->
+			{#if displayed}{@const shared = lobesShareTemplate(displayed.design.fingers, displayed.design.gridSize)}
+				<div class="templates" role="group" aria-label={t('generatorTemplates', lang)}>
+					<span class="templates-label">{t('generatorTemplates', lang)}</span>
+					<div class="template-row">
+						{#each shared ? SHARED_LOBES : BOTH_LOBES as lobe (lobe)}
+							<figure class="template">
+								<TemplatePreview design={displayed.design} {lobe} size={220} marks={false} />
+								<figcaption>{shared ? t('template', lang) : t(lobe === 'left' ? 'templateLeft' : 'templateRight', lang)}</figcaption>
+							</figure>
+						{/each}
+					</div>
+				</div>
+				<p class="cut-note">
 					{t('generatorPureWeave', lang)}
 				</p>{/if}
 			<p class="fine-note">{t('generatorFine', lang)}</p>
@@ -1414,6 +1433,46 @@
 		color: #4c6542;
 		min-height: 22px;
 	}
+	.templates {
+		width: 100%;
+		max-width: 540px;
+		margin: 18px 0 8px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 6px;
+	}
+	.templates-label {
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #66745e;
+	}
+	.template-row {
+		display: flex;
+		justify-content: center;
+		gap: 12px;
+		width: 100%;
+	}
+	.template {
+		margin: 0;
+		flex: 0 1 220px;
+		min-width: 0;
+		background: #fffdf8;
+		border: 1px solid #e3e0d4;
+		border-radius: 12px;
+	}
+	.template :global(svg) {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+	.template figcaption {
+		font-size: 11px;
+		color: #66745e;
+		padding-bottom: 8px;
+	}
 	.cut-note {
 		font-size: 12px;
 		color: #66745e;
@@ -1615,6 +1674,12 @@
 		}
 		.fine-note {
 			display: none;
+		}
+		.templates {
+			margin-top: 12px;
+		}
+		.template {
+			flex-basis: 150px;
 		}
 		.cut-note {
 			font-size: 11px;
