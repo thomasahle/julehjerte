@@ -54,7 +54,9 @@ export const PINTEREST_FIRST = ['classic-3x3', 'gaver', 'jul', 'juletrae', 'stje
  * only after the day it is (docs/PINTEREST.md): the five text hearts of
  * 2026-10-22 went in that way, at days 12, 25, 45, 57 and 70, spread out
  * before the new year, MOR & FAR between Drageskæl and Dag og nat, which Fliser
- * had made two of one category.
+ * had made two of one category. When Khatam, Stjernegitter and Stjerner og kors
+ * moved to Mønstre the same day, three swaps of hearts not yet out (days 62/63,
+ * 68/69 and 65/72) kept every day's neighbours of another category.
  */
 export const PINTEREST_ORDER: readonly string[] = [
 	'classic-3x3', 'juletrae', 'circle', 'gaver', 'balls', 'jul',
@@ -67,9 +69,9 @@ export const PINTEREST_ORDER: readonly string[] = [
 	'origami', 'nihon', 'drageskael', 'mor-far', 'dagognat', 'hermanngitter',
 	'lilje1', 'tragt', 'davidsstjerne-circ', 'boelgebrud', 'ball', 'glaskuppel',
 	'lilje2', 'hvirvel', 'david4', 'jul-2026', 'permo-kroge', 'fisk',
-	'permo-draaber', 'khatam', 'permo-cirkler', 'tulipan', 'fiskeskael', 'hjertekloever',
-	'boelger', 'stjernegitter', 'blomster-hjerte', 'roed-blomst', 'aar-2026', 'skraa-kryds',
-	'stjernerogkors', 'fejlternet', 'firkloever-hjerte', 'gitterhjerte', 'kloeverblad-hjerte', 'cirkelhjerte',
+	'permo-draaber', 'khatam', 'tulipan', 'permo-cirkler', 'fiskeskael', 'stjernerogkors',
+	'boelger', 'stjernegitter', 'roed-blomst', 'blomster-hjerte', 'aar-2026', 'skraa-kryds',
+	'hjertekloever', 'fejlternet', 'firkloever-hjerte', 'gitterhjerte', 'kloeverblad-hjerte', 'cirkelhjerte',
 	'groen-stjerne', 'firkanthjerte'
 ];
 

@@ -39,6 +39,20 @@
     },
     "difficulty": "medium"
   },
+  "groen-stjerne": {
+    "name": "Grøn stjerne",
+    "names": {
+      "en": "Green star"
+    },
+    "difficulty": "medium"
+  },
+  "explosion": {
+    "name": "Eksplosion",
+    "names": {
+      "en": "Explosion"
+    },
+    "difficulty": "easy"
+  },
   "stjerne-ramme": {
     "name": "Stjerne Ramme",
     "names": {
@@ -77,13 +91,6 @@
     },
     "difficulty": "easy"
   },
-  "explosion": {
-    "name": "Eksplosion",
-    "names": {
-      "en": "Explosion"
-    },
-    "difficulty": "easy"
-  },
   "nihon": {
     "name": "Nihon",
     "difficulty": "easy"
@@ -104,30 +111,56 @@
     },
     "difficulty": "medium"
   },
-  "khatam": {
-    "name": "Khatam",
-    "difficulty": "expert"
-  },
-  "stjernegitter": {
-    "name": "Stjernegitter",
+  "triple-heart": {
+    "name": "Triple Hjerte",
     "names": {
-      "en": "Star lattice"
+      "da": "Tre hjerter",
+      "en": "Triple heart"
     },
-    "difficulty": "expert"
+    "difficulty": "medium"
   },
-  "stjernerogkors": {
-    "name": "Stjerner og kors",
+  "h4h2": {
+    "name": "Hjerte i hjerte",
     "names": {
-      "en": "Stars and crosses"
+      "en": "Heart in heart"
+    },
+    "difficulty": "medium"
+  },
+  "nemt-hjerte": {
+    "name": "Nemt Hjerte",
+    "names": {
+      "da": "Nemt hjerte",
+      "en": "Easy heart"
+    },
+    "difficulty": "easy"
+  },
+  "lilje1": {
+    "name": "Lilje 1",
+    "names": {
+      "en": "Lily 1"
     },
     "difficulty": "hard"
   },
-  "groen-stjerne": {
-    "name": "Grøn stjerne",
+  "lilje2": {
+    "name": "Lilje 2",
     "names": {
-      "en": "Green star"
+      "en": "Lily 2"
+    },
+    "difficulty": "expert"
+  },
+  "hjertekloever": {
+    "name": "Hjertekløver",
+    "names": {
+      "en": "Heart clover"
     },
     "difficulty": "medium"
+  },
+  "firkloever-hjerte": {
+    "name": "Firkløver-hjerte",
+    "names": {
+      "en": "Four-leaf clover heart"
+    },
+    "difficulty": "expert"
   },
   "circle": {
     "name": "Uret v2",
@@ -312,6 +345,24 @@
     },
     "difficulty": "medium"
   },
+  "khatam": {
+    "name": "Khatam",
+    "difficulty": "expert"
+  },
+  "stjernegitter": {
+    "name": "Stjernegitter",
+    "names": {
+      "en": "Star lattice"
+    },
+    "difficulty": "expert"
+  },
+  "stjernerogkors": {
+    "name": "Stjerner og kors",
+    "names": {
+      "en": "Stars and crosses"
+    },
+    "difficulty": "hard"
+  },
   "dagognat": {
     "name": "Dag og nat",
     "names": {
@@ -471,57 +522,6 @@
   },
   "mor-far": {
     "name": "MOR & FAR",
-    "difficulty": "expert"
-  },
-  "triple-heart": {
-    "name": "Triple Hjerte",
-    "names": {
-      "da": "Tre hjerter",
-      "en": "Triple heart"
-    },
-    "difficulty": "medium"
-  },
-  "h4h2": {
-    "name": "Hjerte i hjerte",
-    "names": {
-      "en": "Heart in heart"
-    },
-    "difficulty": "medium"
-  },
-  "nemt-hjerte": {
-    "name": "Nemt Hjerte",
-    "names": {
-      "da": "Nemt hjerte",
-      "en": "Easy heart"
-    },
-    "difficulty": "easy"
-  },
-  "lilje1": {
-    "name": "Lilje 1",
-    "names": {
-      "en": "Lily 1"
-    },
-    "difficulty": "hard"
-  },
-  "lilje2": {
-    "name": "Lilje 2",
-    "names": {
-      "en": "Lily 2"
-    },
-    "difficulty": "expert"
-  },
-  "hjertekloever": {
-    "name": "Hjertekløver",
-    "names": {
-      "en": "Heart clover"
-    },
-    "difficulty": "medium"
-  },
-  "firkloever-hjerte": {
-    "name": "Firkløver-hjerte",
-    "names": {
-      "en": "Four-leaf clover heart"
-    },
     "difficulty": "expert"
   }
 }

@@ -8,7 +8,7 @@ import { describe, expect, it } from 'vitest';
 import hearts from '../../../hearts.json';
 import type { CategoryId } from './categories';
 
-const KNOWN_CATEGORIES: CategoryId[] = ['klassiske', 'stjerner', 'moenstre', 'fliser', 'figurer', 'tekst', 'hjerter'];
+const KNOWN_CATEGORIES: CategoryId[] = ['klassiske', 'stjerner', 'hjerter', 'moenstre', 'fliser', 'figurer', 'tekst'];
 /** The ids that have a static/hearts/<id>.svg. */
 const SVGS = new Set(
 	Object.keys(import.meta.glob('/static/hearts/*.svg')).map((file) =>

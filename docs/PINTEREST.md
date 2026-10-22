@@ -63,7 +63,10 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   place a new heart elsewhere, insert it in `PINTEREST_ORDER` only at a
   position after today's (inserting before today would shift released days).
   The five text hearts of 2026-10-22 went in so, at days 12, 25, 45, 57 and 70,
-  each between hearts of other categories, before the new year.
+  each between hearts of other categories, before the new year. When Khatam,
+  Stjernegitter and Stjerner og kors moved to Mønstre the same day, three swaps
+  of hearts not yet out (days 62/63, 68/69 and 65/72) kept every day's
+  neighbours of another category.
 - The feed holds the released items only (nothing future-dated), newest first,
   at most 30 (`PINTEREST_MAX_ITEMS`). When every heart is out, the feed stops
   growing: it does not cycle.

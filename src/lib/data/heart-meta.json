@@ -157,6 +157,58 @@
       "height": 1200
     }
   },
+  "groen-stjerne": {
+    "name": "Grøn stjerne",
+    "names": {
+      "en": "Green star"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "explosion": {
+    "name": "Eksplosion",
+    "names": {
+      "en": "Explosion"
+    },
+    "author": "Traditional",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "Strålende farver fra midten der skyder ud i alle retninger.",
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "easy",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "stjerne-ramme": {
     "name": "Stjerne Ramme",
     "names": {
@@ -298,32 +350,6 @@
     },
     "photo": null
   },
-  "explosion": {
-    "name": "Eksplosion",
-    "names": {
-      "en": "Explosion"
-    },
-    "author": "Traditional",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
-    "description": "Strålende farver fra midten der skyder ud i alle retninger.",
-    "gridSize": {
-      "x": 5,
-      "y": 5
-    },
-    "difficulty": "easy",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
   "nihon": {
     "name": "Nihon",
     "author": "Bjørn",
@@ -409,20 +435,50 @@
       "height": 1200
     }
   },
-  "khatam": {
-    "name": "Khatam",
-    "author": "Thomas Ahle",
+  "triple-heart": {
+    "name": "Triple Hjerte",
+    "names": {
+      "da": "Tre hjerter",
+      "en": "Triple heart"
+    },
+    "author": "Ukendt",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
     "source": null,
-    "date": "Dec 25, 2025",
-    "description": "A Khatam star is an eight-pointed star prominent in Islamic art and architecture",
+    "date": null,
+    "description": null,
     "gridSize": {
       "x": 6,
       "y": 6
     },
-    "difficulty": "expert",
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "h4h2": {
+    "name": "Hjerte i hjerte",
+    "names": {
+      "en": "Heart in heart"
+    },
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "En variation af det klassiske \"mor og barn\" julehjerte",
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": false,
@@ -432,16 +488,69 @@
     },
     "photo": null
   },
-  "stjernegitter": {
-    "name": "Stjernegitter",
+  "nemt-hjerte": {
+    "name": "Nemt Hjerte",
     "names": {
-      "en": "Star lattice"
+      "da": "Nemt hjerte",
+      "en": "Easy heart"
     },
-    "author": "Thomas Ahle & Claude",
+    "author": "Thomas Ahle",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
     "source": "juleflet.dk",
+    "date": "2025-12-20",
+    "description": null,
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "easy",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "lilje1": {
+    "name": "Lilje 1",
+    "names": {
+      "en": "Lily 1"
+    },
+    "author": "Niels Thygesen",
+    "authorUrl": null,
+    "publisher": "Spejderliv",
+    "publisherUrl": null,
+    "source": null,
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "lilje2": {
+    "name": "Lilje 2",
+    "names": {
+      "en": "Lily 2"
+    },
+    "author": "Niels Thygesen",
+    "authorUrl": null,
+    "publisher": "Spejderliv",
+    "publisherUrl": null,
+    "source": null,
     "date": null,
     "description": null,
     "gridSize": {
@@ -452,16 +561,16 @@
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": false,
-      "lobeSymmetry": true,
+      "lobeSymmetry": false,
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
     "photo": null
   },
-  "stjernerogkors": {
-    "name": "Stjerner og kors",
+  "hjertekloever": {
+    "name": "Hjertekløver",
     "names": {
-      "en": "Stars and crosses"
+      "en": "Heart clover"
     },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
@@ -471,10 +580,10 @@
     "date": null,
     "description": null,
     "gridSize": {
-      "x": 5,
-      "y": 5
+      "x": 4,
+      "y": 4
     },
-    "difficulty": "hard",
+    "difficulty": "medium",
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": true,
@@ -482,12 +591,16 @@
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
-    "photo": null
+    "photo": {
+      "src": "/hearts/photos/hjertekloever.jpg",
+      "width": 1200,
+      "height": 1116
+    }
   },
-  "groen-stjerne": {
-    "name": "Grøn stjerne",
+  "firkloever-hjerte": {
+    "name": "Firkløver-hjerte",
     "names": {
-      "en": "Green star"
+      "en": "Four-leaf clover heart"
     },
     "author": "Ukendt",
     "authorUrl": null,
@@ -497,10 +610,10 @@
     "date": "2026-10-21",
     "description": null,
     "gridSize": {
-      "x": 5,
-      "y": 5
+      "x": 6,
+      "y": 6
     },
-    "difficulty": "medium",
+    "difficulty": "expert",
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": true,
@@ -1229,6 +1342,81 @@
     },
     "photo": null
   },
+  "khatam": {
+    "name": "Khatam",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": "Dec 25, 2025",
+    "description": "A Khatam star is an eight-pointed star prominent in Islamic art and architecture",
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "stjernegitter": {
+    "name": "Stjernegitter",
+    "names": {
+      "en": "Star lattice"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 7,
+      "y": 7
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "stjernerogkors": {
+    "name": "Stjerner og kors",
+    "names": {
+      "en": "Stars and crosses"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "dagognat": {
     "name": "Dag og nat",
     "names": {
@@ -1889,194 +2077,6 @@
       "lobeSymmetry": false,
       "mirrorSymmetry": false,
       "sharedTemplate": false
-    },
-    "photo": null
-  },
-  "triple-heart": {
-    "name": "Triple Hjerte",
-    "names": {
-      "da": "Tre hjerter",
-      "en": "Triple heart"
-    },
-    "author": "Ukendt",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": null,
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 6,
-      "y": 6
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "h4h2": {
-    "name": "Hjerte i hjerte",
-    "names": {
-      "en": "Heart in heart"
-    },
-    "author": "Thomas Ahle",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
-    "description": "En variation af det klassiske \"mor og barn\" julehjerte",
-    "gridSize": {
-      "x": 4,
-      "y": 4
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": false,
-      "sharedTemplate": false
-    },
-    "photo": null
-  },
-  "nemt-hjerte": {
-    "name": "Nemt Hjerte",
-    "names": {
-      "da": "Nemt hjerte",
-      "en": "Easy heart"
-    },
-    "author": "Thomas Ahle",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2025-12-20",
-    "description": null,
-    "gridSize": {
-      "x": 3,
-      "y": 3
-    },
-    "difficulty": "easy",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "lilje1": {
-    "name": "Lilje 1",
-    "names": {
-      "en": "Lily 1"
-    },
-    "author": "Niels Thygesen",
-    "authorUrl": null,
-    "publisher": "Spejderliv",
-    "publisherUrl": null,
-    "source": null,
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 5,
-      "y": 5
-    },
-    "difficulty": "hard",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "lilje2": {
-    "name": "Lilje 2",
-    "names": {
-      "en": "Lily 2"
-    },
-    "author": "Niels Thygesen",
-    "authorUrl": null,
-    "publisher": "Spejderliv",
-    "publisherUrl": null,
-    "source": null,
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 7,
-      "y": 7
-    },
-    "difficulty": "expert",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "hjertekloever": {
-    "name": "Hjertekløver",
-    "names": {
-      "en": "Heart clover"
-    },
-    "author": "Thomas Ahle & Claude",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 4,
-      "y": 4
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": {
-      "src": "/hearts/photos/hjertekloever.jpg",
-      "width": 1200,
-      "height": 1116
-    }
-  },
-  "firkloever-hjerte": {
-    "name": "Firkløver-hjerte",
-    "names": {
-      "en": "Four-leaf clover heart"
-    },
-    "author": "Ukendt",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2026-10-21",
-    "description": null,
-    "gridSize": {
-      "x": 6,
-      "y": 6
-    },
-    "difficulty": "expert",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
     },
     "photo": null
   }
