@@ -15,6 +15,7 @@
 	import type { Snippet } from 'svelte';
 	import HeartCard from '$lib/components/HeartCard.svelte';
 	import MakeOwnCard from '$lib/components/front/MakeOwnCard.svelte';
+	import { pairSlotAfter } from '$lib/utils/palette';
 	import type { HeartDesign } from '$lib/types/heart';
 	import type { GalleryHeart } from '$lib/front/galleryHearts';
 	import type { Language } from '$lib/i18n';
@@ -138,6 +139,7 @@
 				<MakeOwnCard
 					{...make}
 					{id}
+					slot={pairSlotAfter(hearts.at(-1)?.id ?? id)}
 					index={hearts.length}
 					strand={columns > 0 ? shownCount % columns : undefined}
 				/>

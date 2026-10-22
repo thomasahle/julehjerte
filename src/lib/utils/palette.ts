@@ -177,6 +177,14 @@ export function pairIndex(heartId: string): number {
 }
 
 /**
+ * The slot of whatever comes in the gallery right after the heart with this id: the card that ends
+ * its row ("Lav dit eget mønster") carries on the cycle as one more heart would.
+ */
+export function pairSlotAfter(heartId: string): number {
+	return (pairIndex(heartId) + 1) % PALETTE.length;
+}
+
+/**
  * What a heart's element carries so the mode can recolour it with CSS alone:
  * its slot (`data-pair`) and the slot's papers and outline as custom
  * properties, which read the shuffle's `--pal-<slot>-*` variables on <html>
