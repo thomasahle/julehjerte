@@ -26,7 +26,9 @@
 	import { lobesShareTemplate } from '$lib/utils/symmetry';
 	import DesignStart, { type StartArt } from '$lib/components/DesignStart.svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
-	import { href, editorHref, generatorHref, otherLanguage, type GeneratorMode } from '$lib/i18n/routes';
+	import { href, editorHref, generatorHref, homeAnchorHref, otherLanguage, type GeneratorMode } from '$lib/i18n/routes';
+	import { noteSaved } from '$lib/editor/savedNotice.svelte';
+	import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
 	import { pageTitle } from '$lib/seo';
 	import { computeHeartViewBoxFromOverlap, renderHeartSvgMarkup, renderPictureSvgMarkup } from '$lib/rendering/heartSvg';
 	import { picture, type Picture } from '$lib/generator/picture';
@@ -700,12 +702,31 @@
 			downloadBusy = false;
 		}
 	}
+	// A text the visitor has not typed (JUL, an example word's, a link's) is taken whole by the click into
+	// the field, so what they type replaces it, as Tegn's name field does (a user tester's "JULHYGGE",
+	// round 2). Safari puts the caret where the click let go, so that mouseup is kept back.
+	let textJustTaken = false;
+	let textTyped = false;
+	function takeOfferedText(event: FocusEvent & { currentTarget: HTMLTextAreaElement }): void {
+		if (textTyped) return;
+		event.currentTarget.select();
+		textJustTaken = true;
+	}
+	function keepTextTaken(event: MouseEvent): void {
+		if (textJustTaken) event.preventDefault();
+		textJustTaken = false;
+	}
+
 	function save() {
 		if (!result) return;
 		try {
 			savedId ??= `user-${crypto.randomUUID()}`;
-			saveUserDesign({ ...currentDesign()!, id: savedId });
-			notice = t('generatorSaved', lang);
+			const design = { ...currentDesign()!, id: savedId };
+			saveUserDesign(design);
+			// Said as Tegn says it, a moment over the page with a way to the heart's card, rather than a
+			// line in the panel that pushed the heart down and led nowhere (user test round 2).
+			notice = '';
+			noteSaved(design.name || t('myHeart', lang), homeAnchorHref(makeHeartAnchorId(design.id), lang));
 		} catch {
 			notice = t('generatorFailedSave', lang);
 		}
@@ -756,7 +777,10 @@
 					rows={Math.max(3, config.text.split('\n').length)}
 					value={config.text}
 					placeholder={t('generatorTextPlaceholder', lang)}
+					onfocus={takeOfferedText}
+					onmouseup={keepTextTaken}
 					oninput={(event) => {
+						textTyped = true;
 						const value = normalizeText(event.currentTarget.value);
 						config.text = value;
 						if (event.currentTarget.value !== value)
