@@ -3985,6 +3985,8 @@
 						height={fullPage ? '100%' : size}
 						preserveAspectRatio="xMidYMid meet"
 						class="heart-svg"
+						role="application"
+						aria-label={tr('editorCanvasLabel')}
 						style:cursor={hoverFingerId ? 'crosshair' : 'default'}
 					onwheel={handleWheel}
 					ontouchstart={handleTouchStart}
@@ -4124,6 +4126,7 @@
 														vector-effect="non-scaling-stroke"
 														pointer-events="none"
 													/>
+													<!-- svelte-ignore a11y_no_static_element_interactions -->
 													<circle
 														cx={seg.p1.x}
 														cy={seg.p1.y}
@@ -4151,6 +4154,7 @@
 														vector-effect="non-scaling-stroke"
 														pointer-events="none"
 													/>
+													<!-- svelte-ignore a11y_no_static_element_interactions -->
 													<circle
 														cx={seg.p2.x}
 														cy={seg.p2.y}
@@ -4179,6 +4183,7 @@
 														vector-effect="non-scaling-stroke"
 														pointer-events="none"
 													/>
+													<!-- svelte-ignore a11y_no_static_element_interactions -->
 													<circle
 														cx={prev.p2.x}
 														cy={prev.p2.y}
@@ -4204,6 +4209,7 @@
 														vector-effect="non-scaling-stroke"
 														pointer-events="none"
 													/>
+													<!-- svelte-ignore a11y_no_static_element_interactions -->
 													<circle
 														cx={next.p1.x}
 														cy={next.p1.y}
@@ -4249,6 +4255,7 @@
 													pointer-events="none"
 												/>
 											{/if}
+											<!-- svelte-ignore a11y_no_static_element_interactions -->
 											<rect
 												x={a.x - s / 2}
 												y={a.y - s / 2}
