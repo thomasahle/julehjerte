@@ -45,6 +45,7 @@ import {
 	bentFourPortMotif,
 	touchingFourPortMotif,
 	withVisibleIslands,
+	visibleIslandsSetAside,
 	hasCounterContact,
 	generateCheckedText,
 	inside,
@@ -525,10 +526,12 @@ function generateTextFigure(request: GeneratorRequest): GeneratorResult {
  * entered along visible spokes where nothing else routes (see
  * `withVisibleIslands`), hard to cut rather than refused. */
 function generateAtSizeOrIslands(request: GeneratorRequest): GeneratorResult {
+	const setAside = visibleIslandsSetAside();
 	try {
 		return generateAtSize(request);
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) ||
+			visibleIslandsSetAside() === setAside) throw error;
 		try {
 			return withVisibleIslands(() => generateAtSize(request));
 		} catch (islandError) {

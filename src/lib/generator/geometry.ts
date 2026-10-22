@@ -794,7 +794,10 @@ function attachmentOrder(fan: number, count: number) {
  * kept for the final check (see `contourMotif`). Earlier, it can stand where
  * a later construction would be clean, so only a request refused without it
  * tries again with it: every heart built without it keeps its cuts. */
-let visibleIslands = false;
+let visibleIslands = false, setAside = 0;
+/** How many such constructions were set aside so far: a request that set
+ * none aside would fail the same way again. */
+export const visibleIslandsSetAside = () => setAside;
 export function withVisibleIslands<T>(build: () => T): T {
 	const before = visibleIslands;
 	visibleIslands = true;
@@ -1075,6 +1078,7 @@ function contourMotif(
 		// those route, their first construction is the one left to the final
 		// check, hard to cut rather than refused (see `withVisibleIslands`).
 		if (visibleIslands) fallback ??= visible.fallback ?? null;
+		else if (!fallback && visible.fallback) setAside++;
 	}
 	if (options.routed) options.routed.fallback = fallback ?? undefined;
 	// Fitted curves get their own full-sheet clearance check before export.
