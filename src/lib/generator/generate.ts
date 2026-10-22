@@ -14,7 +14,7 @@ import { boardOutline } from './boardOutline';
 import { picture, type Known } from './picture';
 export { fillSquare, fitCircle } from './frameFit';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
-import { generateCheckeredGrid, checkeredGridCache, checkeredLayouts } from './checkeredGrid';
+import { CORNER_INSETS, generateCheckeredGrid, checkeredGridCache, checkeredLayouts, printCornerInsets } from './checkeredGrid';
 import { generateMixedCheckeredGrid, mixedCheckeredGridCache } from './mixedCheckeredGrid';
 import { betterCuts, cutMeasures, cutTipCounts, cutTipPoints, fewerCutTips } from './cutQuality';
 import { trickyLetters } from './trickyLetters';
@@ -33,6 +33,7 @@ import {
 import type { HeartColors, HeartDesign, Vec } from '$lib/types/heart';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { lobesShareTemplate, mapPointBetweenLobes } from '$lib/utils/symmetry';
+import { paperFaults } from '$lib/geometry/paperNecks';
 import { intersectionMarginPx } from '$lib/editor/curveIssues';
 import { findSearchIssues, searchFingerIssues } from './searchClearance';
 import { rasterizeDesign } from '$lib/paint/rasterize';
@@ -616,6 +617,42 @@ function bentAtTips(original: HeartDesign, only?: (point: { x: number; y: number
 			if (!Number.isFinite(p.x) || !Number.isFinite(p.y) || p.x < rect.left || p.x > rect.right ||
 				p.y < rect.top || p.y > rect.bottom) return;
 	return design;
+}
+
+const tearing = new WeakMap<HeartDesign, number>();
+
+/** How many pieces tear off the heart's templates printed at the download's
+ * default width, or come loose ($lib/geometry/paperNecks). */
+function paperTears(design: HeartDesign): number {
+	let tears = tearing.get(design);
+	if (tears === undefined) {
+		const { weak, loose } = paperFaults(design);
+		tearing.set(design, tears = weak + loose);
+	}
+	return tears;
+}
+
+const exportedResults = new WeakMap<GeneratorResult, GeneratorResult>();
+
+/** The result as exported (`improveSharedConnections`), worked out once. */
+function exported(result: GeneratorResult): GeneratorResult {
+	let out = exportedResults.get(result);
+	if (!out) {
+		exportedResults.set(result, out = improveSharedConnections(result));
+		exportedResults.set(out, out);
+	}
+	return out;
+}
+
+/** Whether `a` cuts better than `b`, both as exported: fewer needle-thin
+ * paper tips, then fewer sharp tips, then fewer pieces that tear at print
+ * size (`paperTears`). Tips first, as the search always ranked them: a heart
+ * mended in its paper may not gain a tip (Nunito ANNA's keep none). */
+function cutsBetter(a: GeneratorResult, b: GeneratorResult): boolean {
+	const x = exported(a).design, y = exported(b).design, [ta, tb] = [cutTipCounts(x), cutTipCounts(y)];
+	if (ta[0] !== tb[0]) return ta[0] < tb[0];
+	if (ta[1] !== tb[1]) return ta[1] < tb[1];
+	return paperTears(x) < paperTears(y);
 }
 
 const BOARD_FRAMES: string[] = ['squares', 'motifs'];
@@ -2059,7 +2096,9 @@ function generateUsingRecipes(request: GeneratorRequest,
 			// before the next board's layouts, which follow as the fallback.
 			const layouts = checkeredLayouts(text);
 			const checkered = (variant: number, fill: number, cache: ReturnType<typeof checkeredGridCache>,
-				mixed: ReturnType<typeof mixedCheckeredGridCache>, finish: (construction: Construction, recipe: GeneratorResult['recipe']) => GeneratorResult): GeneratorResult => {
+				mixed: ReturnType<typeof mixedCheckeredGridCache>, finish: (construction: Construction, recipe: GeneratorResult['recipe']) => GeneratorResult,
+				corners: [number, number]): GeneratorResult => {
+				// Of the working cuts, the one that cuts best (`cutsBetter`).
 				let best: GeneratorResult | undefined;
 				let bestInset = .35;
 				let rawTips: [number, number] | undefined;
@@ -2074,17 +2113,19 @@ function generateUsingRecipes(request: GeneratorRequest,
 					// topology should still return promptly instead of trying it twice.
 					if (inset >= .4 && !best) break;
 					try {
-						const construction = generateCheckeredGrid(text, font, fill, inset, { cache, variant, onCrowded: () => { crowded = true; } });
+						const construction = generateCheckeredGrid(text, font, fill, inset, { cache, variant, corners, onCrowded: () => { crowded = true; } });
 						const tips = cutTipCounts(construction.geometry);
-						// Reject worse candidates before the more expensive curve fitting.
-						if (rawTips && !fewerCutTips(tips, rawTips)) continue;
+						// Reject worse candidates before the more expensive curve fitting,
+						// unless the best so far tears: wider connections can leave the
+						// letters' bridges too narrow, and narrower ones fix that.
+						if (rawTips && best && !paperTears(exported(best).design) && !fewerCutTips(tips, rawTips)) continue;
 						const candidate = finish(construction, 'letters');
-						if (!best || fewerCutTips(cutTipCounts(candidate.design), cutTipCounts(best.design))) {
+						if (!best || cutsBetter(candidate, best)) {
 							best = candidate;
 							bestInset = inset;
 							rawTips = tips;
 						}
-						if (best && !cutTipCounts(best.design)[1]) break;
+						if (best && !paperTears(exported(best).design) && !cutTipCounts(best.design)[1]) break;
 					} catch (error) {
 						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 						if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
@@ -2093,27 +2134,27 @@ function generateUsingRecipes(request: GeneratorRequest,
 				}
 				if (best) {
 					if (rawTips?.[1] && cutTipCounts(best.design)[1]) try {
-						const construction = generateCheckeredGrid(text, font, fill, bestInset, { cache, variant, optimize: true });
+						const construction = generateCheckeredGrid(text, font, fill, bestInset, { cache, variant, corners, optimize: true });
 						// Skip fitting unchanged or worse combinations. A local improvement
-						// still has to pass every full-sheet check and improve the export.
+						// still has to pass every full-sheet check and cut better.
 						if (fewerCutTips(cutTipCounts(construction.geometry), rawTips)) {
 							const candidate = finish(construction, 'letters');
-							if (fewerCutTips(cutTipCounts(candidate.design), cutTipCounts(best.design))) best = candidate;
+							if (cutsBetter(candidate, best)) best = candidate;
 						}
 					} catch (error) {
 						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 					}
-					let bestTips = cutTipCounts(improveSharedConnections(best).design);
+					let bestTips = cutTipCounts(exported(best).design);
 					// A further chord can split the narrow notch of a solid letter such
 					// as N. Reuse cached cells, then try one wider pair of grid contacts.
 					// The original remains available if the joined cuts lose clearance.
 					if (bestTips[1]) for (const inset of [bestInset, .2]) {
 						try {
 							const construction = generateCheckeredGrid(text, font, fill, inset,
-								{ cache, variant, optimize: true, relieve: true });
+								{ cache, variant, corners, optimize: true, relieve: true });
 							const candidate = finish(construction, 'letters');
-							const rounded = improveSharedConnections(candidate).design, tips = cutTipCounts(rounded);
-							if (fewerCutTips(tips, bestTips)) {
+							const rounded = exported(candidate).design, tips = cutTipCounts(rounded);
+							if (cutsBetter(candidate, best)) {
 								const rect = inferOverlapRect(rounded.fingers, rounded.gridSize);
 								const margin = intersectionMarginPx(rect, gridClearanceScale(rounded.gridSize.x, rounded.gridSize.y));
 								// A smaller tip count alone can hide a new thin neck. Leave a
@@ -2129,7 +2170,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				}
 				if (crowded) for (const inset of small ? [.35, .25] : [.35]) {
 					try {
-						return finish(generateCheckeredGrid(text, font, fill, inset, { cache, variant, balanced: true }), 'letters');
+						return finish(generateCheckeredGrid(text, font, fill, inset, { cache, variant, corners, balanced: true }), 'letters');
 					} catch (error) {
 						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 						last = error;
@@ -2139,7 +2180,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 					let repaired = false;
 					try {
 						const construction = generateCheckeredGrid(text, font, fill, inset, {
-							cache, variant, repair: true, onRepair: () => { repaired = true; }
+							cache, variant, corners, repair: true, onRepair: () => { repaired = true; }
 						});
 						// All local cells can be clear while their joined paths fail.
 						// An unchanged construction does not need another global fit.
@@ -2155,7 +2196,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				// support point leaves on the same paper. Reuse clear earlier cells.
 				for (const strokeTips of [false, true]) for (const balanced of [false, true]) {
 					try {
-						return finish(generateMixedCheckeredGrid(text, font, { cache: mixed, previous: cache, variant, balanced, strokeTips, fill }), 'letters');
+						return finish(generateMixedCheckeredGrid(text, font, { cache: mixed, previous: cache, variant, balanced, strokeTips, fill, corners }), 'letters');
 					} catch (error) {
 						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 						last = error;
@@ -2163,7 +2204,6 @@ function generateUsingRecipes(request: GeneratorRequest,
 				}
 				throw last;
 			};
-			let last: unknown;
 			// Every letter has the size of the text's widest. When no layout weaves
 			// cleanly, the first may have all of them a little larger, as on the
 			// regular board, before a hard-to-cut heart: narrow letters then keep
@@ -2176,31 +2216,52 @@ function generateUsingRecipes(request: GeneratorRequest,
 			// retries and comparisons would override, at the cost of every pattern
 			// they try; typed letters have none.
 			const standard = .82 * (request.letterScale ?? 1), sized = request.letterScale !== undefined;
-			const attempt = (variant: number, fill: number) => {
+			const attempt = (variant: number, fill: number, corners: [number, number]) => {
 				if (!caches.has(fill)) caches.set(fill, [checkeredGridCache(), mixedCheckeredGridCache()]);
 				const [cache, mixed] = caches.get(fill)!;
 				return checkered(variant, fill, cache, mixed, fill === standard ? finish
-					: (construction, recipe) => finish(construction, recipe, false));
+					: (construction, recipe) => finish(construction, recipe, false), corners);
 			};
-			for (const fill of sized ? [standard] : [standard, standard * 1.05, standard * 1.1])
-				for (let variant = 0; variant < Math.min(fill === standard ? variants : 1, layouts.length); variant++) {
-					try {
-						// Compared as exported, after their shared connections are improved.
-						const result = improveSharedConnections(attempt(variant, fill));
-						if (!sized && cutTipCounts(result.design)[1]) try {
-							const larger = improveSharedConnections(attempt(0, standard * 1.05));
-							if (fewerCutTips(cutTipCounts(larger.design), cutTipCounts(result.design))) return larger;
+			// The first layout and size that weaves, with CORNER_INSETS or, with
+			// `board`, corner cuts as large as paper printed at the download's width
+			// asks for (`printCornerInsets`) on layouts of that board only.
+			const search = (board?: number): GeneratorResult => {
+				const corners = board ? printCornerInsets(board) : CORNER_INSETS;
+				let last: unknown = new ConstructionError('clearance', 'No layout on this board');
+				for (const fill of sized ? [standard] : [standard, standard * 1.05, standard * 1.1])
+					for (let variant = 0; variant < Math.min(fill === standard ? variants : 1, layouts.length); variant++) {
+						if (board && layouts[variant].matrix.length !== board) continue;
+						try {
+							// Compared as exported, after their shared connections are improved.
+							const result = exported(attempt(variant, fill, corners));
+							if (!sized && cutTipCounts(result.design)[1]) try {
+								const larger = exported(attempt(0, standard * 1.05, corners));
+								if (cutsBetter(larger, result)) return larger;
+							} catch (error) {
+								if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+							}
+							return result;
 						} catch (error) {
 							if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+							if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
+							last = error;
 						}
-						return result;
-					} catch (error) {
-						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-						if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
-						last = error;
 					}
-				}
-			throw last;
+				throw last;
+			};
+			// Where that heart's paper tears at print size, larger corner cuts on
+			// its board, in any of its layouts and sizes, and the better of the two
+			// (`cutsBetter`): never another board, and never worse.
+			const plain = search();
+			const board = plain.design.gridSize.x;
+			if (!paperTears(plain.design) || printCornerInsets(board)[0] === CORNER_INSETS[0]) return plain;
+			try {
+				const print = search(board);
+				return cutsBetter(print, plain) ? print : plain;
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				return plain;
+			}
 		}
 		const text = request.text ?? '';
 		const font = request.font;

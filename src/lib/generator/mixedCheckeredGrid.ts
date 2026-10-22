@@ -17,11 +17,11 @@ const layouts = [[0, 0], [1, 0], [2, 2], [4, 0], [8, 8], [5, 0], [5, 5],
 type Cell = { origin: Point; edges: Edge[]; gates: Point[]; usable?: boolean };
 export const mixedCheckeredGridCache = () => new Map<string, Cell | false>();
 
-function contacts(quadrant: number, side: number, four: number, corner: boolean[]): number[] {
+function contacts(quadrant: number, side: number, four: number, corner: boolean[], corners: [number, number]): number[] {
 	const neighbour = (quadrant + (side ? 1 : 3)) % 4;
 	// A corner cut and the square after it (never four-port) stay near the junction.
-	if (corner[quadrant]) return [CORNER_INSETS[side]];
-	if (!side && corner[neighbour]) return [CORNER_INSETS[0]];
+	if (corner[quadrant]) return [corners[side]];
+	if (!side && corner[neighbour]) return [corners[0]];
 	const ownFour = !!(four & (1 << quadrant)), otherFour = !!(four & (1 << neighbour));
 	// Two adjacent four-port cells alternate their connections along the edge.
 	// With only one four-port cell, its two connections straddle its neighbour's.
@@ -36,7 +36,10 @@ export function generateMixedCheckeredGrid(text: string, font: Font, options: {
 	previous?: ReturnType<typeof checkeredGridCache>;
 	variant?: number;
 	fill?: number;
+	/** The corner cuts' reach (`CORNER_INSETS`, or `printCornerInsets`). */
+	corners?: [number, number];
 } = {}) {
+	const corners = options.corners ?? CORNER_INSETS;
 	const { matrix, groups, letterGroup } = checkeredLayout(text, options.variant), n = matrix.length, cell = 100 / n;
 	const letter = checkeredLetters(matrix, font, options.fill ?? .82);
 	const margin = gridClearance(n), cache = options.cache ?? mixedCheckeredGridCache();
@@ -59,7 +62,7 @@ export function generateMixedCheckeredGrid(text: string, font: Font, options: {
 			owner[0] + [1, 0, -1, 0][ray] * cell * edgeReach(d, shared[ray]),
 			owner[1] + [0, 1, 0, -1][ray] * cell * edgeReach(d, shared[ray])
 		];
-		const first = contacts(q, 0, four, corner), second = contacts(q, 1, four, corner);
+		const first = contacts(q, 0, four, corner, corners), second = contacts(q, 1, four, corner, corners);
 		const char = corner[q] ? undefined : matrix[row][col];
 		const hasFour = first.length === 2;
 		const baseKey = `${char}:${q}:${reach}:${first}:${second}:${Number(hasFour && !!options.balanced)}`;
@@ -119,7 +122,7 @@ export function generateMixedCheckeredGrid(text: string, font: Font, options: {
 			const move = (p: Point): Point => [p[0] + origin[0] - piece.origin[0], p[1] + origin[1] - piece.origin[1]];
 			edges.push(...piece.edges.map(e => ({ ...e, from: move(e.from), to: move(e.to),
 				family: phase & (1 << q) && e.family !== 'AB' ? e.family === 'A' ? 'B' : 'A' : e.family })));
-			for (const side of [0, 1]) for (const d of contacts(q, side, four, corner)) {
+			for (const side of [0, 1]) for (const d of contacts(q, side, four, corner, corners)) {
 				const ray = (q + side) % 4, axis = ray % 2;
 				const coordinate = owner[axis] + [1, 1, -1, -1][ray] * cell * edgeReach(d, shared[ray]);
 				flips.push({ axis, line: owner[1 - axis], from: Math.min(owner[axis], coordinate), to: Math.max(owner[axis], coordinate) });

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { slow } from './slow.test-helpers';
 import { generate } from './generate';
-import { generateCheckeredGrid, checkeredGridCache, checkeredLayout, checkeredLayouts, checkeredMatrix } from './checkeredGrid';
+import { CORNER_INSETS, generateCheckeredGrid, checkeredGridCache, checkeredLayout, checkeredLayouts, checkeredMatrix, printCornerInsets } from './checkeredGrid';
 import { defaults, readGeneratorState } from './state';
 import { geometryKey } from './cache';
 import { templateVariants } from './templates';
@@ -19,6 +19,7 @@ import { findSearchIssues } from './searchClearance';
 import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { cutTipCounts } from './cutQuality';
+import { PAPER_NECK_MM, PRINT_WIDTH_MM, paperFaults } from '$lib/geometry/paperNecks';
 
 const font = nunito as unknown as Font;
 const fonts = { nunito, breeserif, oswald, kalam, cinzel, righteous };
@@ -125,6 +126,25 @@ describe('typed letters on alternating squares', () => {
 			expect(piece.insets[0]).toBeLessThan(.5);
 			expect(piece.insets[1]).toBeGreaterThan(.5);
 		}
+	}, 20000);
+
+	it('grows the corner cuts until the square after one keeps a 2 mm neck at 80 mm, as far as the edge allows', () => {
+		// The neck between the next square's connection (0, a) and the cut from (a, 0) to (0, b), in units of the 100-unit square.
+		const neck = ([a, b]: [number, number], n: number) => (b - a) * a / Math.hypot(a, b) * 100 / n;
+		const wanted = PAPER_NECK_MM / PRINT_WIDTH_MM * 100;
+		expect(neck(CORNER_INSETS, 3)).toBeLessThan(wanted);
+		expect(neck(printCornerInsets(3), 3)).toBeCloseTo(wanted);
+		// Large squares need no more than the cuts made for them.
+		expect(printCornerInsets(2)).toEqual(CORNER_INSETS);
+		// Small squares cannot have it: the cut stops at four tenths of the edge.
+		expect(printCornerInsets(8)[1]).toBeCloseTo(.4);
+	});
+
+	slow('holds the letters by 2 mm of paper at 80 mm on the board the text asked for, where the corner cuts tore it', () => {
+		// The owner's JUL diamond: every connection 1.6–1.9 mm wide with the smaller corner cuts.
+		const { design } = generate({ mode: 'text', name: 'JUL', text: 'J\nUU\nLLL\nJJ\nU', font: righteous as unknown as Font, colors, textFrame: 'checkered' });
+		expect(design.gridSize).toEqual({ x: 3, y: 3 });
+		expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
 	}, 20000);
 
 	slow('keeps ANNA free of narrow paper tips', () => {

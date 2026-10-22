@@ -4,6 +4,7 @@
  * background both remain paper. */
 import { MAX_GRID_SIZE } from '$lib/constants';
 import { gridClearance } from '$lib/geometry/clearance';
+import { PAPER_NECK_MM, PRINT_WIDTH_MM } from '$lib/geometry/paperNecks';
 import { cellTipCounts, fewerCutTips } from './cutQuality';
 import {
 	ConstructionError, type Font, type Ring, type Point, type Edge,
@@ -35,6 +36,26 @@ export type CheckeredLayout = {
  * cut across the corner at this group's junction, clear of its letter. The
  * square after it connects inside the cut. */
 export const CORNER_INSETS: [number, number] = [.1, .25];
+
+/** The most a corner cut reaches along a grid edge, in squares. */
+const PRINT_CORNER_MOST = .4;
+
+/**
+ * The corner cut on an n × n board grown from CORNER_INSETS until the square
+ * after it hangs by a neck of PAPER_NECK_MM between its connection and the cut
+ * once the templates are printed PRINT_WIDTH_MM wide, reaching at most
+ * PRINT_CORNER_MOST along the edge. The cut runs from (a, 0) to (0, b), in
+ * squares from the junction, and the connection sits at (0, a): the neck is
+ * (b − a)·a / √(a² + b²). CORNER_INSETS leave 1.5 mm on a 3 × 3 board, where
+ * a piece tears off in cutting; they stay the fallback for letters the larger
+ * cut would crowd.
+ */
+export function printCornerInsets(n: number): [number, number] {
+	const [a, b] = CORNER_INSETS;
+	const neck = (b - a) * a / Math.hypot(a, b) * (100 / n), wanted = PAPER_NECK_MM / PRINT_WIDTH_MM * 100;
+	const grow = Math.min(Math.max(1, wanted / neck), PRINT_CORNER_MOST / b);
+	return [a * grow, b * grow];
+}
 
 /** The typed lines on a square checkerboard, one character per square. The
  * heart shows the board turned 45°, so each line is one horizontal row of the
@@ -232,8 +253,9 @@ export function checkeredGridCache() {
 }
 
 export function generateCheckeredGrid(text: string, font: Font, fill = .82, contactInset = .35,
-	options: { balanced?: boolean; onCrowded?: () => void; repair?: boolean; onRepair?: () => void; optimize?: boolean; relieve?: boolean; cache?: ReturnType<typeof checkeredGridCache>; variant?: number } = {}) {
+	options: { balanced?: boolean; onCrowded?: () => void; repair?: boolean; onRepair?: () => void; optimize?: boolean; relieve?: boolean; cache?: ReturnType<typeof checkeredGridCache>; variant?: number; corners?: [number, number] } = {}) {
 	const { matrix, groups, letterGroup } = checkeredLayout(text, options.variant), n = matrix.length;
+	const corners = options.corners ?? CORNER_INSETS;
 	const letter = checkeredLetters(matrix, font, fill), cell = 100 / n;
 	const edges: Edge[] = [], artwork: Ring[] = [];
 	const cache = options.cache ?? checkeredGridCache();
@@ -248,7 +270,7 @@ export function generateCheckeredGrid(text: string, font: Font, fill = .82, cont
 		for (const [q, [row, col]] of owner.cells.entries()) {
 			const char = corner[q] ? undefined : matrix[row][col];
 			// After a corner cut, this square's first connection stays inside it.
-			const first = (inset: number) => corner[(q + 3) % 4] ? Math.min(inset, CORNER_INSETS[0]) : inset;
+			const first = (inset: number) => corner[(q + 3) % 4] ? Math.min(inset, corners[0]) : inset;
 			// Cells keep their cuts relative to their connections, which differ
 			// beside a neighbouring junction.
 			// The layouts of one text can differ in board size, too.
@@ -269,7 +291,7 @@ export function generateCheckeredGrid(text: string, font: Font, fill = .82, cont
 				}
 			};
 			if (char === undefined) {
-				const insets: [number, number] = corner[q] ? CORNER_INSETS : [first(contactInset), 1 - contactInset];
+				const insets: [number, number] = corner[q] ? corners : [first(contactInset), 1 - contactInset];
 				edges.push(...emptyCell([contact(q, insets[0]), contact((q + 1) % 4, insets[1])]));
 				flip(insets);
 				continue;

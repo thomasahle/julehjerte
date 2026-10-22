@@ -1447,6 +1447,17 @@ attempt this layout when its resulting grid remains within the 20-strip limit.
 Identical glyphs in the same position within a four-cell group reuse their cuts.
 This frame uses an n×n cut grid with a square physical overlap, up to the shared
 20-strip limit. Its thumbnail, shared link, editor and PDF use the same design.
+The checkerboard's letters hang from the grid by bridges whose sides are proportions of the
+square: a corner cut at .1 and .25 of the edge, and contacts at .35, .4 or .46 chosen for the
+fewest narrow tips. On a 3×3 board printed 80 mm wide those leave 1.6–1.9 mm of paper, and the
+owner's J / UU / LLL / JJ / U (22 Oct 2026) tore at nine places. Where the chosen heart's paper
+tears at the download's 80 mm ($lib/geometry/paperNecks), the search runs again on the same board,
+in any of its junction layouts and letter sizes, with corner cuts grown until the square after one
+keeps 2 mm (`printCornerInsets`, at most .4 of the edge), and keeps the better heart: fewer needle
+tips, then fewer sharp tips, then fewer pieces that tear (`cutsBetter`); every choice inside a
+search ranks its candidates the same way. It never moves to another board or tears more. On twelve
+texts it mends both JUL diamonds (9 thin necks → 0), MOR FAR 15 → 9 and HYGGE 7 → 2; NOEL keeps its
+three, where mending them would cost sharp tips. It costs 0.1–1.7 s more where the paper tears.
 
 Spacing follows grid density: use 1.5 normalized units for grids up to 4×4, then scale the gap
 by 4 / max(columns, rows). This retains the construction assumption of about 25 mm per strip
