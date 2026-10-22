@@ -593,10 +593,14 @@ function generateAtSize(request: GeneratorRequest): GeneratorResult {
 	// for, hard to cut if need be; and only then are the last resorts tried,
 	// which change those.
 	let last: unknown;
-	const preferred = (): GeneratorResult => {
+	// Which last resorts each alternative set a construction aside for: one
+	// that set none aside fails the same way again.
+	const setAsideBy = new Map<number, boolean[]>();
+	const preferred = (again?: number): GeneratorResult => {
 		const hard: [number, () => GeneratorResult | undefined][] = [];
 		for (const [index, { request: alternative, retries, lastResort }] of alternatives.entries()) {
-			if (lastResort) continue;
+			if (lastResort || again !== undefined && !setAsideBy.get(index)?.[again]) continue;
+			const before = LAST_RESORTS.map(([, setAside]) => setAside());
 			try {
 				// Identical small motifs gain little from other junctions; a
 				// smaller board is the better next choice.
@@ -604,6 +608,7 @@ function generateAtSize(request: GeneratorRequest): GeneratorResult {
 			} catch (error) {
 				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 				last = error;
+				if (again === undefined) setAsideBy.set(index, LAST_RESORTS.map(([, setAside], k) => setAside() !== before[k]));
 			}
 		}
 		for (const [index, finish] of hard) {
@@ -612,16 +617,15 @@ function generateAtSize(request: GeneratorRequest): GeneratorResult {
 		}
 		throw last ?? new ConstructionError('topology', 'No alternative');
 	};
-	const before = LAST_RESORTS.map(([, setAside]) => setAside());
 	try {
 		return preferred();
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 	}
-	for (const [k, [allowing, setAside]] of LAST_RESORTS.entries()) {
-		if (setAside() === before[k]) continue;
+	for (const [k, [allowing]] of LAST_RESORTS.entries()) {
+		if (![...setAsideBy.values()].some(aside => aside[k])) continue;
 		try {
-			return allowing(preferred);
+			return allowing(() => preferred(k));
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 		}
