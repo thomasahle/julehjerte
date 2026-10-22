@@ -31,7 +31,7 @@ export type BoardStyle = keyof typeof BOARD_STRIPS;
  * airy frame's room around it, or in cells `fitted` to it. Tried in turn (see
  * `frameAlternatives`): without `retries` quickly, a `lastResort` only where
  * no other can be built at all. */
-export type BoardChoice = { text: string; board: number; retries: boolean; lastResort?: boolean; larger?: number; air?: boolean; fitted?: boolean };
+export type BoardChoice = { text: string; board: number; retries: boolean; lastResort?: boolean; larger?: number; air?: boolean; fitted?: boolean; alone?: boolean };
 
 /** The small motifs on a board of `n` strips, the most copies first: on every
  * square of one colour, the rows of the heart's diamond taking turns (each
@@ -62,11 +62,14 @@ export function motifPatterns(n: number): string[] {
  * on four strips, then three across a 3×3 board, then two on 2×2. */
 export function motifChoices(n?: number): BoardChoice[] {
 	const fewest: [number, string][] = [[3, MOTIF.repeat(3)], ...motifPatterns(2).map(text => [2, text] as [number, string])];
-	if (n === undefined) return [...motifPatterns(4).map(text => [4, text] as [number, string]), ...fewest.slice(0, 2)]
-		.map(([board, text]) => ({ text, board, retries: true }));
+	// Where not even two copies connect, one alone in the centre square, as
+	// equal squares build it on three strips, rather than refusing.
+	const alone = squareChoices().map((choice): BoardChoice => ({ ...choice, lastResort: true, alone: true }));
+	if (n === undefined) return [...[...motifPatterns(4).map(text => [4, text] as [number, string]), ...fewest.slice(0, 2)]
+		.map(([board, text]) => ({ text, board, retries: true })), ...alone];
 	const own = motifPatterns(n);
 	return [...own.map(text => ({ text, board: n, retries: true })),
-		...fewest.filter(([, text]) => !own.includes(text)).map(([board, text]) => ({ text, board, retries: true, lastResort: true }))];
+		...fewest.filter(([, text]) => !own.includes(text)).map(([board, text]) => ({ text, board, retries: true, lastResort: true })), ...alone];
 }
 
 /** The motif alone in the centre square of a board of `n` strips, an odd

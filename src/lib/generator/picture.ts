@@ -60,7 +60,8 @@ export function picture(request: GeneratorRequest, known: Known = {}): Picture |
 			const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours }, ' ': { advance: 1, contours: [] } } };
 			const choice = (request.style === 'squares' ? squareChoices(request.board) : motifChoices(request.board))[request.layout?.alternative ?? 0];
 			if (!choice || choice.fitted) return;
-			return request.style === 'squares' ? woven(choice.text, font, !!choice.air, Math.min(1.1, boardScale(request) * (choice.larger ?? 1)))
+			// Small motifs alone in the centre square are the equal squares' picture.
+			return request.style === 'squares' || choice.alone ? woven(choice.text, font, !!choice.air, Math.min(1.1, boardScale(request) * (choice.larger ?? 1)))
 				: checkered(choice.text, font, boardScale(request));
 		}
 		if (request.mode === 'figure' && request.style === 'strips') return stripsPicture(request, known.place);

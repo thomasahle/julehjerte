@@ -41,6 +41,7 @@ import crown from '../../../static/generator/motifs/ph-crown.json';
 import bell from '../../../static/generator/motifs/bell.json';
 import heart from '../../../static/generator/motifs/heart.json';
 import fish from '../../../static/generator/motifs/ph-fish.json';
+import butterflyMotif from '../../../static/generator/motifs/ph-butterfly.json';
 import tablerFlower from '../../../static/generator/motifs/tb-flower.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
@@ -701,6 +702,11 @@ describe('frames from real hearts', () => {
   const { design, scale } = generate({ mode: 'figure', name: 'Fish', contours: fish.contours as Ring[], colors, style: 'fitted', scale: 1 });
   expect(design.gridSize.x).toBeGreaterThanOrEqual(4);
   expect(scale).toBe(.97);
+ }, 30000);
+ slow('shows one small motif alone where no pattern of copies connects, rather than refusing', () => {
+  const { design, layout } = generate({ mode: 'figure', name: 'Butterfly', contours: butterflyMotif.contours as Ring[], colors, style: 'motifs' });
+  expect(design.gridSize).toEqual({ x: 3, y: 3 });
+  expect(motifChoices()[layout!.alternative].alone).toBe(true);
  }, 30000);
  slow('weaves outlines that touch into the checks', () => {
   // The bicycle's wheels touch its frame at single points.

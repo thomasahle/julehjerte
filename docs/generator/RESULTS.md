@@ -1,5 +1,18 @@
 # Generator robustness results
 
+## Small motifs: one alone rather than refusing
+
+At the default size the small motifs refused 7 of the 52 corpus motifs (the
+butterfly, rabbit, coffee cup, bicycle, crown, sun and Tabler gift: "No clear
+mixed letter connections"), even after three copies on 3×3 and two on 2×2. Their
+last resort is now one copy alone in the centre square of 3×3, built as equal
+squares build it (its choices in turn, cells fitted to the motif last), and the
+picture draws it as equal squares do. At the default size over the corpus and
+the deer: 46 clean, 6 hard, none refused (the six hard: snow, bicycle, crown,
+Tabler paw and butterfly, the deer). The first heart still tries every pattern
+before the single copy: the rabbit takes 49 s (refused after 54 s before), the
+Tabler gift 18 s; later sizes keep the default size's choice and are quick.
+
 ## The double border and the checked tips to 100%
 
 Six figure frames stopped the size slider at 85%. Swept over the corpus and the

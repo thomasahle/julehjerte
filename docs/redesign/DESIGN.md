@@ -900,7 +900,8 @@ outer strips out. **Sizes move one way with the sliders** (2026-10-18): a frame 
 size asked for, cut cleanly or else shown as hard to cut, so nothing jumps back while a slider
 moves. Only where nothing at all can be finished there do the frames without a centre panel try
 half the space and then none, and a circle move 4% further out and then keep the frame's own size.
-The two board frames whose squares hold the motif (small motifs, equal squares) fix the space with
+Where no pattern of small motifs connects, not even two, one is shown alone in the centre square of
+3×3, as equal squares build it (`motifChoices`). The two board frames whose squares hold the motif (small motifs, equal squares) fix the space with
 their squares, as the figure in the checks does with its board; their size setting scales the
 motif within its square, 0.6–1.1 times the default. The size goes to 100% in the frames with room
 for it (`largestScale`: rays, checks, wedges, close-fitting, the figure in the checks, the circle on

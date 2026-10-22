@@ -11,6 +11,8 @@ import heart from '../../../static/generator/motifs/heart.json';
 import tree from '../../../static/generator/motifs/tree.json';
 import house from '../../../static/generator/motifs/house.json';
 import bell from '../../../static/generator/motifs/bell.json';
+import { motifChoices } from './boardMotif';
+import butterfly from '../../../static/generator/motifs/ph-butterfly.json';
 import nunito from '../../../static/generator/fonts/nunito.json';
 import oswald from '../../../static/generator/fonts/oswald.json';
 import type { Font } from './geometry';
@@ -177,6 +179,15 @@ describe('the picture drawn before the cuts are found', () => {
 			expect(colour([33.85, .15])).toBe(colour([5, 5]));
 			expect(colour([36.05, .15])).not.toBe(colour([5, 5]));
 		}
+	});
+
+	it('is one small motif alone in the centre square, as equal squares draw it, where no pattern connects', () => {
+		// The small motifs' last resort is the equal squares' first choice.
+		const alone = motifChoices().findIndex(choice => choice.alone);
+		const base: GeneratorRequest = { mode: 'figure', name: 'Butterfly', contours: butterfly.contours as Ring[], colors };
+		expect(alone).toBeGreaterThan(0);
+		expect(picture({ ...base, style: 'motifs', layout: { alternative: alone, board: 3 } })!.rings)
+			.toEqual(picture({ ...base, style: 'squares', layout: { alternative: 0, board: 3 } })!.rings);
 	});
 
 	it('is the checks in the tips the cuts make, at any space around the motif', () => {

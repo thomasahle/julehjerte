@@ -690,9 +690,9 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
 		// they can build nothing at all.
 		const board = request.style === 'squares' ? squareChoices(request.board) : motifChoices(request.board);
 		type Choice = { request: GeneratorRequest; retries: boolean; lastResort?: boolean };
-		const choicesAt = (letterScale: number): Choice[] => board.map(({ text, board, retries, lastResort, larger = 1, air, fitted }) => ({
-			retries, lastResort, request: { mode: 'text', name: request.name, colors: request.colors, text, font, letterScale: Math.min(request.style === 'squares' ? 1.1 : Infinity, letterScale * larger),
-				...request.style === 'squares' ? { textFrame: air ? 'air' : 'woven', fittedCells: !!fitted, board: fitted ? undefined : board } : { textFrame: 'checkered', board } }
+		const choicesAt = (letterScale: number): Choice[] => board.map(({ text, board, retries, lastResort, larger = 1, air, fitted, alone }) => ({
+			retries, lastResort, request: { mode: 'text', name: request.name, colors: request.colors, text, font, letterScale: Math.min(request.style === 'squares' || alone ? 1.1 : Infinity, letterScale * larger),
+				...request.style === 'squares' || alone ? { textFrame: air ? 'air' : 'woven', fittedCells: !!fitted, board: fitted ? undefined : board } : { textFrame: 'checkered', board } }
 		}));
 		const choices = choicesAt(letterScale), layout = request.layout, chosen = layout && choices[layout.alternative];
 		if (!layout || !chosen) return choices;
