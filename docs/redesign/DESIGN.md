@@ -718,7 +718,11 @@ nat, drawn from Escher's birds before the tab was there: where every cut of one 
 other at a node of both (a cheap check, so the tab's code loads only for such hearts), Tegn reads the most
 symmetric tile the cuts are, however its tiles were moved, sized, turned or leant (`readTile`), and takes it up
 only if it makes every cut node for node, to a hundredth of a pixel. A heart whose cuts are no tile opens as any
-other heart. Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both
+other heart. The gallery's tilings (Fliser) that were drawn by scripts before the tab, Drageskæl, Kølbuer,
+Hanefod, Fiskeskæl and Bølger, are their tiles' cuts with the tile in `data-pattern` (made 2026-10-22, each
+within 0.05 mm of the drawing at the 80 mm print), so "Rediger" opens them on the Escher tab; Puslespil (a real
+puzzle's knobs turn either way), Kroge (each row leans the other way) and Alhambra (drawn up to a quarter unit off
+its tiling) are no one tile and open in the Normal tab. Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both
 tabs, a drag that cannot go where the pointer is stops at the last place that weaves, and a line above the heart
 says why: two cuts would cross, a curve would cross itself, or it would leave the woven square. Cuts of a
 lobe that come too close without crossing are not stopped but drawn red, and the warning above the heart says

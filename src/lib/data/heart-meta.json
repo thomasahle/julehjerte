@@ -1519,7 +1519,7 @@
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": false,
-      "lobeSymmetry": false,
+      "lobeSymmetry": true,
       "mirrorSymmetry": false,
       "sharedTemplate": false
     },
@@ -1597,8 +1597,8 @@
     "difficulty": "medium",
     "symmetry": {
       "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
@@ -1623,7 +1623,7 @@
     "difficulty": "hard",
     "symmetry": {
       "isClassic": false,
-      "curveSymmetry": true,
+      "curveSymmetry": false,
       "lobeSymmetry": false,
       "mirrorSymmetry": false,
       "sharedTemplate": false

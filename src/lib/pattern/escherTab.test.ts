@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import hearts from '../../../hearts.json';
 import { loadHeart } from '$lib/laser/testHearts.test-helpers';
 import type { Finger } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
@@ -43,6 +44,16 @@ const sameCurves = (a: PatternTile['curves'], b: PatternTile['curves']) =>
 		const other = b[key as keyof typeof b]!;
 		return curve!.length === other.length && curve!.every((s, k) => (['p0', 'p1', 'p2', 'p3'] as const).every((q) => Math.hypot(s[q].x - other[k]![q].x, s[q].y - other[k]![q].y) < 1e-6));
 	});
+
+/** A heart's cuts as Tegn numbers them, from the top and from the left, the square's edges first and last. */
+function sortedAsTegn(fingers: Finger[]): Finger[] {
+	const sorted = (lobe: 'left' | 'right', axis: 'x' | 'y', prefix: string) =>
+		fingers
+			.filter((f) => f.lobe === lobe)
+			.sort((a, b) => a.segments[0]!.p0[axis] - b.segments[0]!.p0[axis])
+			.map((f, k) => ({ ...f, id: `${prefix}-${k}` }));
+	return [...sorted('left', 'y', 'L'), ...sorted('right', 'x', 'R')];
+}
 
 const heartOf = (tile: PatternTile) => {
 	const fingers = tileFingers(tile);
@@ -104,13 +115,7 @@ describe("Tegn's Escher tab", () => {
 
 	it("reads the gallery's Dag og nat, drawn from Escher's birds before the tab was there, as two shapes leaning, a cell 28 hundredths of the square", () => {
 		const design = loadHeart('dagognat');
-		// as Tegn numbers the cuts, from the top and from the left, the square's edges first and last
-		const sorted = (lobe: 'left' | 'right', axis: 'x' | 'y', prefix: string) =>
-			design.fingers
-				.filter((f) => f.lobe === lobe)
-				.sort((a, b) => a.segments[0]!.p0[axis] - b.segments[0]!.p0[axis])
-				.map((f, k) => ({ ...f, id: `${prefix}-${k}` }));
-		const fingers = [...sorted('left', 'y', 'L'), ...sorted('right', 'x', 'R')];
+		const fingers = sortedAsTegn(design.fingers);
 		const heart = { fingers, gridSize: design.gridSize, rect: inferOverlapRect(fingers, design.gridSize), weaveParity: design.weaveParity as 0 | 1 };
 		const tile = resumedTile(null, heart)!;
 		expect(ruleKey(tile.rule)).toBe('free');
@@ -122,6 +127,24 @@ describe("Tegn's Escher tab", () => {
 		expect(Math.hypot(y.x, y.y) / (tile.cuts + 1)).toBeCloseTo(0.28, 3);
 		expect(Math.abs(x.y) + Math.abs(y.x)).toBeLessThan(1e-6);
 		expect(weaveParityOf(tile)).toBe(heart.weaveParity);
+	});
+
+	it("opens the gallery's tilings (Fliser) on the Escher tab, as Tegn does: on the tile each was saved with, else on one its cuts are", () => {
+		// Not one tile, so none of the tab's types: a real puzzle's knobs turn either way; each row of
+		// hooks leans the other way, so the crossings are no grid the tab's tiles make; the arrows were
+		// drawn up to a quarter unit off their tiling, which as a tile would move cut ends by 0.8 mm.
+		const notTiles = ['puslespil', 'permo-kroge', 'alhambra'];
+		const fliser = hearts.categories.find((c) => c.id === 'fliser')!.hearts;
+		for (const id of fliser) {
+			const design = loadHeart(id);
+			const fingers = sortedAsTegn(design.fingers);
+			const heart = { fingers, gridSize: design.gridSize, rect: inferOverlapRect(fingers, design.gridSize), weaveParity: design.weaveParity as 0 | 1 };
+			const saved = design.pattern ? restoredTile(design.pattern, heart) : null;
+			if (design.pattern) expect(saved, `${id} is its saved tile`).not.toBeNull();
+			const tile = saved ?? resumedTile(null, heart);
+			if (notTiles.includes(id)) expect(tile, id).toBeNull();
+			else expect(tile, id).not.toBeNull();
+		}
 	});
 
 	it('opens on a type: on cuts that are a tile, that tile as it is; on any other heart, the first type the tab offers, drawn as it starts', () => {
