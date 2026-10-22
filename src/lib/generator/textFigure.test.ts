@@ -11,7 +11,7 @@ import { rasterizeDesign } from '$lib/paint/rasterize';
 import nunito from '../../../static/generator/fonts/nunito.json';
 import josefinsans from '../../../static/generator/fonts/josefinsans.json';
 import cinzel from '../../../static/generator/fonts/cinzel.json';
-import { stripFigures, withCrowdedHiddenCuts } from './stripFigure';
+import { arrangement, placeMotif, stripFigures, withCrowdedHiddenCuts } from './stripFigure';
 
 const colors = { left: '#ffffff', right: '#cc0000' };
 const fonts = { nunito: nunito as unknown as Font, josefinsans: josefinsans as unknown as Font, cinzel: cinzel as unknown as Font };
@@ -55,6 +55,16 @@ describe('text in a figure frame', () => {
 		expect(textOutline('GOD\nJUL', fonts.nunito)).toBe(rings);
 		expect(() => textOutline('JUL☃', fonts.nunito)).toThrow(ConstructionError);
 		expect(() => textOutline(' \n ', fonts.nunito)).toThrow(ConstructionError);
+	});
+
+	it('keeps hidden cuts that only come too close to the cuts around them as a last resort', () => {
+		// In a long word, letters share squares and the cuts that join each to
+		// the board come near the next letter.
+		const placed = placeMotif(textOutline('JULEMAND', fonts.cinzel), .7, 0);
+		const normal = arrangement(placed, 4, 'motif'), crowded = withCrowdedHiddenCuts(() => arrangement(placed, 4, 'motif'));
+		if (normal === 'degenerate' || crowded === 'degenerate') throw Error('degenerate');
+		expect(normal.crowdedLeftOut).toBe(true);
+		expect(crowded.pieces.length).toBeGreaterThan(normal.pieces.length);
 	});
 
 	it('moves a letter reaching into the one before until they are apart', () => {

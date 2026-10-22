@@ -67,9 +67,19 @@ the editor's crossing check") and in the checks. A letter that reaches into
 the one before now moves on until they are half the tracking apart; letters
 that do not cross keep their places, so every other bundled font lays out
 exactly as before (and joined script fonts from Google can now be woven).
-The medallion builds all of Cinzel's (hard to cut), the checks EMMA and ANNA;
-seven- and eight-letter words in the checks still find no sheets on any board
-in Cinzel (in Nunito they do).
+The medallion builds all of Cinzel's (hard to cut), the checks EMMA and ANNA.
+
+Longer words in the checks were still refused in most fonts (juleman,
+JULEMAND, William, GLÆDELIG/JUL, ANNA/BO): their letters share squares, and
+the hidden cuts that join each letter to the board came within the cutting
+room of the next letter, so they were left out and some letter had fewer than
+the two it needs. The crowded-hidden-cuts pass now also keeps those, as long
+as they keep a tenth of the room and cross nothing. All nine refused cases in
+Cinzel, Kalam and Oswald build, hard to cut, in 20–54 s (each board fails
+first). Hearts that built before keep their cuts (52 figures, 12 texts), but
+where the text chooses its strips it may now take one that refused before, if
+that keeps more of the clearance (Oswald's Søren and God jul, hard either way,
+now on 4 strips rather than 5 and 6). ABCDEFGHIJ still finds no sheets.
 
 The board circle's kept sizes are motifs that cannot be divided in four: they
 stay whole up to the largest circle that holds them whole (about 83%, see

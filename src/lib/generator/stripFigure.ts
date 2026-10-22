@@ -275,6 +275,8 @@ export type StripGraph = {
 	pieces: Piece[];
 	exclusive: [number, number][];
 	crowdedOnly: boolean[];
+	/** Whether a hidden cut was left out only for coming too close. */
+	crowdedLeftOut: boolean;
 	loops: { pieces: number[]; not: Sheet[] }[];
 	/** Pieces that had better not share a sheet. */
 	apart: [number, number][];
@@ -680,17 +682,26 @@ export function arrangement(rings: Ring[], strips: number, reach: 'motif' | 'nea
 			if (Math.abs(t[0] * (b[0] - a[0]) + t[1] * (b[1] - a[1])) > .5 * l) return false;
 		}
 		// Clear of the face's other cuts all along, and of those it leaves at
-		// its middle. Its ends lie on the cuts it leaves, to rounding.
+		// its middle. Its ends lie on the cuts it leaves, to rounding. Where
+		// crowded hidden cuts are allowed, a tenth of the room will do.
 		const [p, q] = [mix(a, b, 1e-4), mix(a, b, 1 - 1e-4)], samples = [.1, .2, .3, .4, .5, .6, .7, .8, .9].map(t => mix(a, b, t));
-		for (const segment of walls[chords[c].face]) {
+		const within = (space: number) => walls[chords[c].face].some(segment => {
 			const line = segments[segment].points, own = ends.includes(segment);
-			for (let k = 1; k < line.length; k++) {
-				if (crosses(p, q, line[k - 1], line[k])) return false;
-				if (own ? distanceTo(mid, line[k - 1], line[k]) < Math.min(room, .4 * l) : samples.some(x => distanceTo(x, line[k - 1], line[k]) < room)) return false;
-			}
+			for (let k = 1; k < line.length; k++)
+				if (own ? distanceTo(mid, line[k - 1], line[k]) < Math.min(space, .4 * l) : samples.some(x => distanceTo(x, line[k - 1], line[k]) < space)) return true;
+			return false;
+		});
+		for (const segment of walls[chords[c].face]) {
+			const line = segments[segment].points;
+			for (let k = 1; k < line.length; k++) if (crosses(p, q, line[k - 1], line[k])) return false;
 		}
-		return true;
+		if (!within(room)) return true;
+		if (!within(room / 10)) crowdedOnly ||= !crowdedHiddenCuts;
+		return crowdedHiddenCuts && !within(room / 10);
 	};
+	// Whether a hidden cut was left out only for coming too close, which
+	// crowded hidden cuts allow (see `withCrowdedHiddenCuts`).
+	let crowdedOnly = false;
 	const kept = chords.map((_, c) => clear(c));
 	// An island needs two hidden cuts, between which its outline changes
 	// sheet. One these leave short of that, such as a letter's counter inside
@@ -725,13 +736,13 @@ export function arrangement(rings: Ring[], strips: number, reach: 'motif' | 'nea
 	const crowded = ([p, q]: [Point, Point], [r, t]: [Point, Point]) =>
 		crosses(p, q, r, t) || [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1].some(u => distanceTo(mix(p, q, u), r, t) < room || distanceTo(mix(r, t, u), p, q) < room);
 	// Hidden cuts across one face that would cross or crowd each other.
-	const exclusive: [number, number][] = [], crowdedOnly: boolean[] = [];
+	const exclusive: [number, number][] = [], crowdedPairs: boolean[] = [];
 	for (let a = 0; a < chords.length; a++)
 		for (let b = a + 1; b < chords.length; b++) {
 			if (!kept[a] || !kept[b] || chords[a].face !== chords[b].face) continue;
 			if (crowded(route[a], route[b])) {
 				exclusive.push([a, b]);
-				crowdedOnly.push(!crosses(...route[a], ...route[b]));
+				crowdedPairs.push(!crosses(...route[a], ...route[b]));
 			}
 		}
 	// Split the visible cuts where hidden cuts may leave them; a segment no
@@ -871,7 +882,8 @@ export function arrangement(rings: Ring[], strips: number, reach: 'motif' | 'nea
 		for (const [k, path] of paths.entries()) if (present[k]) add(edges, spread ? path : route[k], 'AB', 'shared');
 		return edges;
 	};
-	return { vertices, pieces, exclusive: exclusive.map(([a, b]) => [hidden[a], hidden[b]]), crowdedOnly, loops, apart: [...apart.values()], draw };
+	return { vertices, pieces, exclusive: exclusive.map(([a, b]) => [hidden[a], hidden[b]]), crowdedOnly: crowdedPairs,
+		crowdedLeftOut: crowdedOnly, loops, apart: [...apart.values()], draw };
 }
 
 /** Whether two hidden cuts across one face that come too close, without
@@ -998,7 +1010,7 @@ export function solve(graph: StripGraph, budget: number): Value[] | undefined {
 	const first = attempt([], budget);
 	if (!first || first === 'budget') {
 		stripStats.end = first ?? 'exhausted';
-		if (!crowdedHiddenCuts && graph.crowdedOnly.includes(true)) setAside++;
+		if (!crowdedHiddenCuts && (graph.crowdedOnly.includes(true) || graph.crowdedLeftOut)) setAside++;
 		return undefined;
 	}
 	let best = first;
