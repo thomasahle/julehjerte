@@ -85,11 +85,33 @@ export const BOARD_PATTERNS: { strips: number; lo: number; hi: number; band?: nu
 /** Completions about a motif kept whole, the circle in the edge squares'
  * colour, for the circles past the touching ring's top (`boardWholeTop`):
  * the motif has a gate on each side, so the lines it cannot meet go round. */
-export const WHOLE_PATTERNS: { strips: number; lo: number; hi: number; pattern: BoardPattern }[] = [
+export const WHOLE_PATTERNS: { strips: number; lo: number; hi: number; band?: number; pattern: BoardPattern }[] = [
 	// Five strips past the outer lines' corner junctions (42.4): seven switch
 	// points a quarter, a spoke from the outer chain's arc to the gate.
 	{ strips: 5, lo: Math.hypot(30, 30) + .4, hi: 48.5, pattern: {
 		counts: [5, 2], motif: 1, circle: 1,
+		chords: [['pocket', 'p', 0, 4, 0], ['arc-', 0, 1, 6, 3], ['spoke', 0, 2, 7, 0], ['arc+', 0, 3, 5, 0]],
+		pieces: [0, 0, 1, 2, 2, 0, 2]
+	} },
+	// Seven strips short of their outer lines are five, smaller: the same.
+	{ strips: 7, lo: Math.hypot(line(7, 1), line(7, 1)) + .4, hi: 34.6, pattern: {
+		counts: [0, 5, 0, 2], motif: 1, circle: 1,
+		chords: [['pocket', 'p', 0, 4, 0], ['arc-', 0, 1, 6, 3], ['spoke', 0, 2, 7, 0], ['arc+', 0, 3, 5, 0]],
+		pieces: [0, 0, 1, 2, 2, 0, 2]
+	} },
+	// Past the outer lines' junctions with the middle ones (36.4): eleven
+	// switch points; a spoke passes under a cut across the circle, so the
+	// motif keeps 3.5 in. Two lie on the second line's side short of its
+	// junction with the outer line (41.65), which crowds them past 39.3; the
+	// completions that keep that side free nest their cuts three deep.
+	{ strips: 7, lo: Math.hypot(line(7, 2), line(7, 0)) + .4, hi: 39.3, band: 3.5, pattern: {
+		counts: [5, 5, 1], motif: 1, circle: 1,
+		chords: [['pocket', 'p', 0, 4, 0], ['arc-', 0, 1, 7, 3], ['spoke', 0, 2, 11, 0], ['arc+', 0, 3, 6, 0], ['pocket', 'p', 5, 9, 0], ['arc+', 0, 8, 10, 0]],
+		pieces: [0, 1, 1, 2, 2, 0, 0, 1, 2, 2, 0]
+	} },
+	// Nine strips short of their third lines are five, smaller: the same.
+	{ strips: 9, lo: Math.hypot(line(9, 1), line(9, 1)) + .4, hi: 26.9, pattern: {
+		counts: [0, 5, 0, 2], motif: 1, circle: 1,
 		chords: [['pocket', 'p', 0, 4, 0], ['arc-', 0, 1, 6, 3], ['spoke', 0, 2, 7, 0], ['arc+', 0, 3, 5, 0]],
 		pieces: [0, 0, 1, 2, 2, 0, 2]
 	} }

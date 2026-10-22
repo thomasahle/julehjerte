@@ -1,5 +1,49 @@
 # Generator robustness results
 
+## Motifs kept whole grow on seven and nine strips too
+
+The five-strip completion about the whole motif also fits two finer boards
+short of a line: seven strips short of their outer lines, and nine short of
+their third. These are the same chains, only smaller. The exact search (CP-SAT,
+label A) also found an eleven-point completion for seven strips past the outer
+lines' junctions with the middle ones (36.8). Its spoke passes under a cut
+across the circle, so the motif keeps 3.5 in.
+
+Motifs kept whole now grow on seven strips from the touching ring's top (28.2,
+75%) to 39.3 (87%). On nine they grow from 21.4 (73%) to 26.9 (77%). Before,
+they stopped at the top on both. The motif grows with the radii the
+completions cover. It waits between them rather than jumping
+(`boardWholeFill`, now also on five strips: at 90% its motif reaches 44.1, so
+it no longer jumps at 86%).
+
+| Board | Sizes swept | Clean | Hard | Hard motifs |
+|---|---|---|---|---|
+| Seven strips | 85–100% | 19 of 22 | 3 of 22 | ph-coffee, ph-sun, ph-bicycle (as before) |
+| Nine strips | 78–100% | 19 of 22 | 3 of 22 | ph-coffee, ph-sun, ph-bicycle (as before) |
+
+Nine strips at 76% also have snow hard. Nothing is refused. Divided hearts are
+unchanged bit for bit.
+
+Limits found:
+
+- **Seven strips stop at 39.3.** The eleven-point completion puts two switch
+  points on the second line's short side, between its junction with the outer
+  line (41.65) and the circle. At 39.5 they are under 0.9 apart, and every
+  motif is hard. The search finds completions that keep the sides free up to
+  41.2, but only with their cuts across the circle nested three deep. The
+  motif would then keep further in than the circle gains. None nests two deep
+  there (spacing 1.0 or 1.2: infeasible).
+- **Further out, every motif is hard.** This covers seven strips past 42.05
+  (15 points a quarter) and nine past 28.7 (11). Both are left out.
+- **A size kept inside a slider step.** On seven strips, 39.3 lies in the step
+  between 39.0 and 42.05. Its setting used to map back below the step (to
+  37.4), so the page's picture missed the heart by 4–7% of pixels.
+  `boardSetting` now gives the setting just past a step. The picture caps a
+  whole motif's circle as the heart does (`boardWholeRadius`), and now misses by
+  at most 0.4%.
+- **The bicycle is slow.** ph-bicycle takes 50 s at nine strips, 100%, as
+  before. That time goes to failing attempts before it keeps a smaller circle.
+
 ## Motifs kept whole grow on, every line kept
 
 Product prompt (2026-10-22): "Remember that you can also change the color of

@@ -727,6 +727,12 @@ describe('frames from real hearts', () => {
   expect(at90.design.gridSize).toEqual({ x: 5, y: 5 });
   expect(top).toBeGreaterThan(.9);
   expect(board(tree, 1).scale).toBe(top);
+  // The largest circle's setting gives that circle back, also where it ends
+  // in a step between two of the slider's ranges (seven strips).
+  for (const strips of [5, 7, 9]) {
+   const largest = boardWholeRadius(60, strips);
+   expect(boardWholeRadius(boardRadius(boardSetting(largest, strips), strips).radius, strips), `${strips}`).toBeCloseTo(largest);
+  }
   expect(board(star, .8).scale).toBeUndefined();
   expect(board(star, .8).whole).toBeUndefined();
   expect(board(tree, .6).scale).toBeUndefined();

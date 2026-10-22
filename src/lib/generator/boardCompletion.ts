@@ -444,7 +444,9 @@ export function completionLegs(edges: Edge[], ring: Ring, strips: number, radius
 			const a = Math.atan2(placed[i].point[1], placed[i].point[0]), g = Math.PI / 2 * ((dq + rho) % 4);
 			return sum + Math.abs(turnAngle(a - g + Math.PI) - Math.PI);
 		}, 0);
-		const rho = [0, 1, 2, 3].reduce((best, r) => turn(r) < turn(best) ? r : best, 0);
+		// Turned by whole half turns only: a quarter turn swaps the sheets on
+		// the motif's outline.
+		const rho = [0, 2].reduce((best, r) => turn(r) < turn(best) ? r : best, 0);
 		return [0, 1, 2, 3].map(q => [[sides[(q + rho) % 4], 0]] as [number, number][]);
 	})();
 	const gates: [number, number][][] = whole || [[[1, 0], [0, 1]], [[0, 0], [3, 0]], [[3, 1], [2, 0]], [[2, 1], [1, 1]]];

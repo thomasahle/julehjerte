@@ -167,14 +167,16 @@ export function boardSteps(strips: number): readonly (readonly [number, number])
 const stepsByStrips = new Map<number, readonly (readonly [number, number])[]>();
 
 /** The size setting a circle's radius on `strips` strips stands for: where a
- * motif keeps another construction's circle. */
+ * motif keeps another construction's circle. One in a step between two
+ * ranges (a motif kept whole stops at any radius) stands for the setting
+ * past the step, the first whose circle is at least as large. */
 export function boardSetting(radius: number, strips = 5): number {
 	const ranges = boardRanges(strips), [small, large] = ranges;
 	if (!large) return .45 + (radius - small[0]) / (small[1] - small[0]) * .55;
 	if (radius <= small[1]) return .45 + (radius - small[0]) / (small[1] - small[0]) * .25;
 	const found = ranges.slice(1).findIndex(([, high]) => radius <= high), i = found < 0 ? ranges.length - 2 : found;
 	const [start, end] = boardSteps(strips)[i], [low, high] = ranges[i + 1];
-	return start / 100 + (radius - low) / (high - low) * ((end - start) / 100);
+	return start / 100 + Math.max(0, radius - low) / (high - low) * ((end - start) / 100);
 }
 
 /** The smallest circle around the points: around their convex hull, built

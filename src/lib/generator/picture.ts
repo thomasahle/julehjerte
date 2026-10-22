@@ -9,7 +9,7 @@
  * Frames without a picture here return none.
  */
 import type { GeneratorRequest } from './generate';
-import { arc, boardFill, boardLines, boardPanels, boardRangeLines, boardRanges, frameRing, layerInset, outerFrame, ray, uprightToSheet, BOARD_STUB, FITTED, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
+import { arc, boardFill, boardLines, boardPanels, boardRangeLines, boardRanges, boardWholeFill, boardWholeRadius, frameRing, layerInset, outerFrame, ray, uprightToSheet, BOARD_STUB, FITTED, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
 import { fillSquare, fitCircle } from './frameFit';
 import { fittedPicture } from './fitted';
 import { normalizeContours } from './contours';
@@ -224,6 +224,8 @@ function boardPicture(request: GeneratorRequest, circle?: 'large' | number, encl
 	const setting = typeof circle === 'number' ? Math.min(circle, request.scale ?? .7) : request.scale ?? .7;
 	let { radius, range } = boardRadius(setting, strips);
 	if (large && radius <= small[1] && circle === 'large') [radius, range] = [large[0] + .6, large];
+	// A motif kept whole stops growing where its completions end.
+	if (whole) radius = boardWholeRadius(radius, strips);
 	// The circle takes the colour of the middle squares around it while the
 	// motif is whole, the other once it is divided in four (on every odd
 	// board).
@@ -235,11 +237,11 @@ function boardPicture(request: GeneratorRequest, circle?: 'large' | number, encl
 	// Over the corner squares the motif moves towards its smallest enclosing
 	// circle's centre, where it cuts cleanly so (see `generate`).
 	if (large && radius > large[1] && enclosed) ({ centre: [cx, cy], reach } = boardPlacement(contours, enclosedAlong(setting)));
-	const scale = (boardFill(radius, strips) - Math.max(request.gap ?? 3, 1.5)) / reach / box;
+	const scale = ((whole ? boardWholeFill : boardFill)(radius, strips) - Math.max(request.gap ?? 3, 1.5)) / reach / box;
 	const disc = frameRing('circle', 2 * radius), side = 100 / strips, rings: Ring[] = [];
 	// The lines in play: where the heart leaves the middle lines out, the
 	// strips between them are one (see `boardRangeLines`).
-	const own = boardLines(strips), lines = boardRangeLines(range, strips);
+	const own = boardLines(strips), lines = whole ? own : boardRangeLines(range, strips);
 	const bounds = lines.length === own.length && lines.every((dk, k) => dk === own[k]) ? Array.from({ length: strips + 1 }, (_, k) => k * side)
 		: [0, ...lines.map(dk => 50 - dk).reverse(), ...lines.map(dk => 50 + dk), 100];
 	for (let i = 0; i < bounds.length - 1; i++)

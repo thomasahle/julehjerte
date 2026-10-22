@@ -1930,6 +1930,29 @@ export function boardWholeRadius(radius: number, strips: number): number {
 	for (const { strips: n, lo, hi } of WHOLE_PATTERNS) if (n === strips && lo <= radius) best = Math.max(best, Math.min(radius, hi));
 	return best;
 }
+/** How far from the centre a motif kept whole reaches with the space around
+ * it, past the touching ring's top: evenly over the radii its completions
+ * cover (not the steps between them), never nearer their circles than they
+ * let it (`band`), as `boardFill` for the motif in four. */
+export function boardWholeFill(radius: number, strips: number): number {
+	const top = boardWholeTop(strips), spans = WHOLE_PATTERNS.filter(p => p.strips === strips).sort((a, b) => a.lo - b.lo);
+	if (radius <= top || !spans.length) return boardFill(radius, strips);
+	const along = (r: number) => spans.reduce((x, { lo, hi }) => x + Math.max(0, Math.min(r, hi) - lo), 0);
+	const under = new Map<number, number>();
+	for (const { lo, hi, band = 0 } of spans) for (const r of [lo, hi]) {
+		const at = along(r), y = Math.min(r, 50) - band;
+		under.set(at, Math.min(under.get(at) ?? Infinity, y));
+	}
+	const from = boardFill(top, strips), end = along(spans.at(-1)!.hi), hull: Point[] = [];
+	under.delete(0);
+	for (const p of [[0, from], ...[...under].sort((a, b) => a[0] - b[0])] as Point[]) {
+		const turn = () => { const [o, q] = hull.slice(-2); return (q[0] - o[0]) * (p[1] - o[1]) - (q[1] - o[1]) * (p[0] - o[0]); };
+		while (hull.length > 1 && turn() <= 0) hull.pop();
+		hull.push(p);
+	}
+	const x = Math.min(along(radius), end), k = Math.max(1, hull.findIndex(([at]) => at >= x)), [x0, y0] = hull[k - 1], [x1, y1] = hull[k] ?? hull[k - 1];
+	return x1 === x0 ? y0 : y0 + (x - x0) / (x1 - x0) * (y1 - y0);
+}
 /** The completion about a whole motif for a circle, past the touching ring. */
 export const boardWholePattern = (radius: number, strips: number) => radius > boardWholeTop(strips)
 	? WHOLE_PATTERNS.find(({ strips: n, lo, hi }) => n === strips && radius >= lo - 1e-9 && radius <= hi + 1e-9)?.pattern : undefined;

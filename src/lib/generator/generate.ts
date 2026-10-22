@@ -61,6 +61,7 @@ import {
 	boardRangeLines,
 	boardRangePattern,
 	boardRanges,
+	boardWholeFill,
 	boardWholePattern,
 	boardWholeRadius,
 	type Ring,
@@ -1978,16 +1979,18 @@ function generateUsingRecipes(request: GeneratorRequest,
 				[undefined, ...junctions].map(junction => ({ ...islands, columns: 2, slices: 2, ...junction && { junction } }))];
 		};
 		// A circle wider than the paper leaves the motif no more room than the paper.
-		const fills = (radius: number, { reach }: Placement, factor = 1, space = gap) =>
-			(boardFill(radius, strips) - Math.max(space, 1.5)) * factor / reach / box;
+		const fills = (radius: number, { reach }: Placement, factor = 1, space = gap, whole = false) =>
+			((whole ? boardWholeFill : boardFill)(radius, strips) - Math.max(space, 1.5)) * factor / reach / box;
 		// Only the invisible partition varies: where four panels meet, the
 		// routing, and the padding of the motif's cell, which gives its
 		// connections room: the usual, else little. (Gates the circle passes
 		// inside of move in, see `generateTextGrid`.)
 		// Where the circle covers the middle lines whole, only the outer ones
 		// remain (see `boardRanges`).
-		const sizes = (range: readonly [number, number], radius: number, placement = boxed, scale = fills(radius, placement), whole = false) => {
-			const lines = boardRangeLines(range, strips), covered = lines.length < boardLines(strips).length;
+		const sizes = (range: readonly [number, number], radius: number, placement = boxed, given?: number, whole = false) => {
+			const scale = given ?? fills(radius, placement, 1, gap, whole);
+			// A motif kept whole keeps every line (see `WHOLE_PATTERNS`).
+			const lines = whole ? boardLines(strips) : boardRangeLines(range, strips), covered = lines.length < boardLines(strips).length;
 			const completion = whole ? boardWholePattern(radius, strips) : boardRangePattern(range);
 			return layouts(range, placement, whole).flatMap(list => [.22, .05].flatMap(padding =>
 				list.map(layout => ({ radius, scale, layout: { padding, ...layout, ...placement.enclosed && { centre: placement.centre }, ...covered && { lines }, ...completion && { completion } } }))));
@@ -2075,7 +2078,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		const nearby = [size + 1.5, size + 3].map(other => Math.min(mode[1], other))
 			.filter(other => other - size > .5 && boardLines(strips).every(line => Math.abs(other - line) > .1));
 		let last: unknown;
-		for (const attempts of [sizes(mode, size, placement, undefined, whole), [.85, .7].flatMap(factor => sizes(mode, size, placement, fills(size, placement, factor), whole)),
+		for (const attempts of [sizes(mode, size, placement, undefined, whole), [.85, .7].flatMap(factor => sizes(mode, size, placement, fills(size, placement, factor, gap, whole), whole)),
 			nearby.flatMap(other => sizes(mode, other, placement, undefined, whole))]) {
 			const rejected: Parameters<typeof hardToCutResult>[1] = [];
 			for (const attempt of attempts) try {
