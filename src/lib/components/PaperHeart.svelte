@@ -1303,10 +1303,10 @@
 	let randomPresses = 0;
 
 	/**
-	 * "Tilfældigt mønster": a new random heart ($lib/editor/randomHeart), its grid size and three
-	 * symmetry rows drawn with it, in one Fortryd step. The rows are set with the cuts already
-	 * symmetric, so the effect that applies a newly chosen row has nothing to do; the Normal tab
-	 * opens, since the heart is drawn from rows, not a tile, and the view is fitted to its size.
+	 * The Normal tab's "Tilfældigt mønster": a new random heart ($lib/editor/randomHeart), one picture over
+	 * the whole square, its grid size and three symmetry rows drawn with it, in one Fortryd step. The rows
+	 * are set with the cuts already symmetric, so the effect that applies a newly chosen row has nothing
+	 * to do; the view is fitted to the heart's size.
 	 */
 	function drawRandomHeart() {
 		if (readonly) return;
@@ -1331,9 +1331,28 @@
 		randomPresses += 1;
 		const { withinCurveMode: c, withinLobeMode: l, betweenLobesMode: b } = heart.symmetry;
 		trackRandomHeart(
-			{ strips: heart.gridSize.x, shape: heart.shape, arrangement: heart.arrangement, symmetry: `${c[0]}${l[0]}${b[0]}` },
+			'normal',
+			{ strips: heart.gridSize.x, shape: heart.shape, spacing: heart.spacing, profile: heart.profile, symmetry: `${c[0]}${l[0]}${b[0]}` },
 			randomPresses
 		);
+	}
+
+	/**
+	 * The Escher tab's "Tilfældig flise": a random type, size and tile (`escher.randomTile`), drawn into the
+	 * heart in one Fortryd step, as choosing a type is.
+	 */
+	function drawRandomTile() {
+		if (readonly) return;
+		void loadEscher().then((module) => {
+			const { tile, rule, style } = module.randomTile();
+			const before = snapshotState();
+			showTile(tile);
+			escherTab = true;
+			pushUndo(before);
+			fitView();
+			randomPresses += 1;
+			trackRandomHeart('escher', { rule, strips: tile.cuts + 1, style }, randomPresses);
+		});
 	}
 
 	/**
@@ -4310,6 +4329,7 @@
 									onTurn={turnPattern}
 									onTurnDone={endPatternTurn}
 									onRestart={restartEscherTile}
+									onRandom={drawRandomTile}
 									compact={isMobileLayout}
 									disabled={readonly}
 								/>
@@ -4329,12 +4349,12 @@
 								}}
 								disabled={{ lobes: !canSymmetryBetweenLobes() }}
 							/>
+							<!-- A new heart, one picture over the square, its grid and rows drawn at random;
+							     the Escher tab has its own, for a random tile. Fortryd brings the old one back. -->
+							<button type="button" class="random-heart" title={tr('editorRandomHeartHint')} disabled={readonly} onclick={drawRandomHeart}>
+								<DiceIcon size={16} aria-hidden="true" />{tr('editorRandomHeart')}
+							</button>
 						{/if}
-						<!-- A new heart with its grid and rows drawn at random; in both tabs, since it
-						     replaces the heart, and Fortryd brings the old one back. -->
-						<button type="button" class="random-heart" title={tr('editorRandomHeartHint')} disabled={readonly} onclick={drawRandomHeart}>
-							<DiceIcon size={16} aria-hidden="true" />{tr('editorRandomHeart')}
-						</button>
 					</section>
 
 					<section class="editor-panel">

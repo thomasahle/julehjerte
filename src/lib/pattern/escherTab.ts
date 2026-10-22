@@ -39,6 +39,7 @@ import { MAX_GRID_SIZE, MIN_GRID_SIZE } from '$lib/constants';
 import { ALL_RULES, COMMON_RULES, latticeOf, ruleInfo, ruleKey, ruleSymmetry, sameRule, type TileRule } from './rules';
 import { cutCounts, fitLines, tileShape, tileTurn, type PatternTile, type SideCurve } from './tiling';
 import { isStraightTile, ruleStart, switchRule } from './starts';
+import { randomTileDraw, type TileStyle } from './randomTile';
 
 export { cutOfFinger, cutsAre, followEdit, generateEditorFingers, READ_TOLERANCE, sameRule, specialNodes, weaveParityOf };
 export type { PatternTile, SpecialNode, TileRule };
@@ -86,6 +87,22 @@ function tileWeaves(tile: PatternTile): boolean {
 	const made = tileFingers(fitted);
 	const grid = tileGrid(fitted);
 	return findFingersWithIssues(made, intersectionMarginPx(inferOverlapRect(made, grid), gridClearanceScale(grid.x, grid.y))).size === 0;
+}
+
+/**
+ * The tab's "Tilfældig flise": a random type, size and curves (`randomTileDraw`), its lines fitted,
+ * drawn again until the heart it makes weaves and is not a plain chequerboard; the first common type's
+ * start, if forty draws never do. With the type's key and the style the curves were drawn in, for the
+ * analytics event.
+ */
+export function randomTile(rng: () => number = Math.random): { tile: PatternTile; rule: string; style: TileStyle } {
+	for (let i = 0; i < 40; i++) {
+		const { tile, style } = randomTileDraw(rng);
+		if (isStraightTile(tile) || !tileWeaves(tile)) continue;
+		return { tile: fitLines(tile), rule: ruleKey(tile.rule), style };
+	}
+	const start = fitLines(ruleStart(COMMON_RULES[0]!, 3));
+	return { tile: start, rule: ruleKey(start.rule), style: 'bend' };
 }
 
  /**

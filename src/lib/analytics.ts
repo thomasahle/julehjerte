@@ -142,12 +142,13 @@ export function trackHeartEdit(heartId: string, heartName: string) {
 }
 
 /**
- * Track Tegn's "Tilfældigt mønster" button: the heart it drew, by its grid,
- * shape, arrangement and symmetry rows (Inden i kurve, Inden i lap, Mellem
- * lapper as o/s/a), and how many it has drawn in this page view.
+ * Track Tegn's random buttons: "Tilfældigt mønster" in the Normal tab (`mode: 'normal'`, with the
+ * heart's strips, cut shape, spacing, profile and symmetry rows as three letters o/s/a) and "Tilfældig
+ * flise" in the Escher tab (`mode: 'escher'`, with the tile type's key, its size in strips and the
+ * style its sides were drawn in), and how many random hearts this page view has drawn.
  */
-export function trackRandomHeart(heart: { strips: number; shape: string; arrangement: string; symmetry: string }, press: number) {
-  trackEvent('random_heart', { strips: heart.strips, shape: heart.shape, arrangement: heart.arrangement, symmetry: heart.symmetry, press });
+export function trackRandomHeart(mode: 'normal' | 'escher', details: Record<string, string | number>, press: number) {
+  trackEvent('random_heart', { mode, ...details, press });
 }
 
 /**

@@ -596,17 +596,20 @@ selection and red invalid-cut highlights take priority. This is a visual overlap
 not a certificate of exact geometric coincidence. It must not intercept pointer events
 or change saved/exported cutting paths.
 
-Below the rows (and below the Escher tab's contents) the Symmetri card ends with **Tilfældigt mønster /
-Random pattern** (a dice icon), which replaces the heart with a random one in one Fortryd step
-(`$lib/editor/randomHeart`). Random but not chaotic: it draws a square grid (2–6 strips, mostly 3–5), one
-shape (scales, hills, zigzags, square steps or S's), one arrangement of which way the shapes point (all one
-way, alternating along the cut, a checkerboard, alternating from cut to cut, a few, or the middle only) and
-the three rows, each Fra, Sym or Anti (all Fra is rarer). The rows are built into the cuts exactly, so the
-heart opens in the Normal tab with those rows chosen and true. Hills, zigzags and S's bulge from the middle of
-a stretch and run straight across the crossings; a draw that would make a red cut, or let a left and a right
-cut run alongside each other (a sliver too thin to cut, a hairline on screen), is drawn again. Six strips
-take only the calmer shapes and arrangements. GA4 event `random_heart`: strips, shape, arrangement, the rows
-as three letters (o/s/a) and the press's number in the page view.
+Each tab of the Symmetri card ends with a dice button that replaces the heart with a random one in one Fortryd
+step. **Tilfældigt mønster / Random pattern** under the Normal rows (`$lib/editor/randomHeart`) draws one picture
+over the whole square, in the manner of Ramme, Amy's pattern, Amy's flowering and Amy's weave 2, not a tiling: a
+few long cuts in each lobe (3–8 strips, mostly 5–7), placed unevenly but the same from either edge — evenly, in
+close pairs that make bands, in frames narrowing towards the edges, or round a wide middle — each one or two
+smooth curves across the square (a bow, a point, two bumps, an S, a swing, or a lean), bowed more or less with
+its place (outward, a ring or frame; inward, a lens or diamond; alternate, bands that swell). The three rows are
+drawn too, mostly Sym, as those hearts are, and built into the cuts exactly, so the heart opens with them chosen
+and true. **Tilfældig flise / Random tile** below the Escher tab's types (`$lib/pattern/randomTile`) draws a
+tiling instead: a random type (the four first ones twice as often), a size of 3–6 tiles across, and every side
+the type draws in one style (bends, zigzags, or jigsaw knobs), halves completed as the type completes them, drawn
+again until its heart weaves. Both are drawn again when a cut would turn red, and the Normal one also when a left
+and a right cut would cross at less than about 18° (a sliver on paper, a hairline on screen). GA4 event
+`random_heart`: `mode` (normal / escher), what was drawn, and the press's number in the page view.
 
 Symmetri has two tabs at its top, **Normal** (the rows above) and **Escher**, which draws the whole heart from
 one tile, repeated the way Escher's regular divisions repeat one shape (`$lib/pattern`): an edit to one stretch

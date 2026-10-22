@@ -9,11 +9,13 @@
               rotation tool apart from its corner points). onTurn as it moves, onTurnDone let go.
   frameHint   what the hint adds about the black points for the chosen type, or null.
   compact     Tegn below 900px: the type glyphs alone, and no hint once a type is chosen.
+  onRandom    "Tilfældig flise": a random type, size and tile ($lib/pattern/randomTile), with or
+              without a type chosen.
 -->
 <script lang="ts">
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import type { TileRule } from '$lib/pattern/rules';
-	import { RestartIcon } from '$lib/components/icons';
+	import { DiceIcon, RestartIcon } from '$lib/components/icons';
 	import RuleTemplates from './RuleTemplates.svelte';
 
 	interface Props {
@@ -29,11 +31,13 @@
 		onTurnDone: () => void;
 		/** "Start forfra": the tile drawn again as its type starts, at its size. */
 		onRestart: () => void;
+		/** "Tilfældig flise": a random type, size and tile. */
+		onRandom: () => void;
 		compact?: boolean;
 		disabled?: boolean;
 	}
 
-	let { lang, rule, size, frameHint, turn, onChoose, onSize, onTurn, onTurnDone, onRestart, compact = false, disabled = false }: Props = $props();
+	let { lang, rule, size, frameHint, turn, onChoose, onSize, onTurn, onTurnDone, onRestart, onRandom, compact = false, disabled = false }: Props = $props();
 
 	const tr = (key: TranslationKey) => t(key, lang);
 	/** The most the pattern turns either way, in degrees: further, the lines near the corners would leave the square at its sides. */
@@ -69,12 +73,19 @@
 		{#if !compact}
 			<p class="pattern-hint">{frameHint ? `${tr('patternDragHint')} ${tr(frameHint)}` : tr('patternDragHint')}</p>
 		{/if}
-		<button type="button" class="pattern-restart" title={tr('patternRestartHint')} {disabled} onclick={onRestart}>
-			<RestartIcon size={14} />{tr('patternRestart')}
-		</button>
 	{:else}
 		<p class="pattern-hint">{tr('patternTabChoose')}</p>
 	{/if}
+	<div class="pattern-actions">
+		{#if rule}
+			<button type="button" class="pattern-restart" title={tr('patternRestartHint')} {disabled} onclick={onRestart}>
+				<RestartIcon size={14} />{tr('patternRestart')}
+			</button>
+		{/if}
+		<button type="button" class="pattern-restart" title={tr('patternRandomHint')} {disabled} onclick={onRandom}>
+			<DiceIcon size={14} aria-hidden="true" />{tr('patternRandom')}
+		</button>
+	</div>
 </div>
 
 <style>
@@ -108,6 +119,11 @@
 		box-shadow: inset 0 0 0 1px var(--green);
 	}
 
+	.pattern-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
 	.pattern-restart {
 		display: inline-flex;
 		align-items: center;
