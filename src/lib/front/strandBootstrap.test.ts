@@ -56,7 +56,8 @@ const TEXT_WIDTHS: Record<string, number> = {
 	'0': 7.2,
 	'1': 7.2,
 	'3': 7.2,
-	// The difficulty toggles' words, at 600.
+	// The difficulty chip's word, and the levels', at 600.
+	Sværhedsgrad: 90.5,
 	Let: 20.2,
 	Mellem: 45.1,
 	Svær: 32.2,
@@ -71,12 +72,14 @@ const LABELS: Record<string, string> = {
 };
 
 /**
- * The row's width with the toggles: four toggles (their words alone: the dots
- * are not shown on the hill), the group's extra gap, and the seven category
- * chips with these counts, 8px apart.
+ * The row's width with the difficulty filter: its chip ("Sværhedsgrad", how
+ * many levels are `chosen` if any, and the caret), its extra gap, and the
+ * seven category chips with these counts, 8px apart.
  */
-function rowTotal(counts: string[]): number {
-	const toggles = ['Let', 'Mellem', 'Svær', 'Ekspert'].map((label) => Math.round(26 + TEXT_WIDTHS[label]));
+function rowTotal(counts: string[], chosen = 0): number {
+	const toggles = [
+		Math.round(26 + TEXT_WIDTHS['Sværhedsgrad'] + (chosen ? 6 + TEXT_WIDTHS[String(chosen)] : 0) + 6 + STRAND_LAYOUT.caretWidth)
+	];
 	const chips = ['Klassiske', 'Stjerner', 'Mønstre', 'Fliser', 'Figurer', 'Tekst', 'Hjerter'].map((title, i) =>
 		Math.round(32 + TEXT_WIDTHS[title] + TEXT_WIDTHS[counts[i]])
 	);
@@ -106,6 +109,7 @@ const FILTERED: StrandChips = {
 		hearts: category.hearts
 	})),
 	filter: {
+		label: 'Sværhedsgrad',
 		levels: LEVELS.map((level) => ({ level, slug: LEVEL_SLUGS[level], label: LABELS[level] })),
 		param: LEVEL_PARAM,
 		storageKey: LEVEL_STORAGE_KEY
@@ -312,10 +316,10 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 	const style = () => document.querySelector('style[data-level-bootstrap]')?.textContent ?? null;
 
 	it('counts the toggles into the chips’ span: 1440 as the gallery measures it there', () => {
-		// The numbers Gallery.svelte sets at 1440 with the toggles in the row, their
-		// words alone (chromium and WebKit agree): the row reaches over four columns.
+		// The numbers Gallery.svelte sets at 1440 with the difficulty chip in the
+		// row (chromium and WebKit agree): the row reaches over three columns.
 		run(FILTERED);
-		expect([0, 1, 2, 3, 4].map((k) => px(`--strand-${k}`))).toEqual([0.2, 83, 122.8, 105.7, 65.3]);
+		expect([0, 1, 2, 3, 4].map((k) => px(`--strand-${k}`))).toEqual([0.2, 29, 122.8, 105.7, 65.3]);
 		expect(px('--strand-room')).toBe(122.8);
 		// No filter chosen: nothing to hide.
 		expect(style()).toBeNull();
@@ -343,7 +347,7 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 
 	it('estimates the chips with the counts the filter leaves, at every desktop width', () => {
 		// "Let": Klassiske 1, Stjerner 4, Mønstre 0, Fliser 0, Figurer 0, Tekst 0,
-		// Hjerter 1, the emptied ones dimmed but still in the row.
+		// Hjerter 1, the emptied ones dimmed but still in the row; the difficulty chip says 1.
 		const counts = ['1', '4', '0', '0', '0', '0', '1'];
 		for (const viewport of [900, 1024, 1199, 1200, 1440, 1920]) {
 			width = viewport;
@@ -351,7 +355,7 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 			root().removeAttribute('style');
 			root().className = '';
 			run(FILTERED);
-			const { drops } = expected(viewport, rowTotal(counts));
+			const { drops } = expected(viewport, rowTotal(counts, 1));
 			drops.forEach((drop, k) => {
 				expect(Math.abs(px(`--strand-${k}`) - drop), `strand ${k} at ${viewport}`).toBeLessThan(0.051);
 			});

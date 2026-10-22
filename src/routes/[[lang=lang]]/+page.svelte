@@ -198,6 +198,12 @@
     updateUrlWithSelections(selectedIds);
   }
 
+  function handleClearLevels() {
+    levels = new Set();
+    storeLevels(levels);
+    updateUrlWithSelections(selectedIds);
+  }
+
   function handleSelect(heart: GalleryHeart) {
     const wasSelected = selectedIds.has(heart.id);
     selectedIds = toggleSelected(selectedIds, heart.id);
@@ -380,6 +386,7 @@
     {levels}
     {levelsRestored}
     onToggleLevel={handleToggleLevel}
+    onClearLevels={handleClearLevels}
     strandScript={data.strandScript}
   />
 

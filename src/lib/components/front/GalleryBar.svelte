@@ -24,11 +24,13 @@
   that the bar's box is L (the largest lift) taller, chips at its bottom, and
   sticks at `top: -L`; everything is scroll-linked, nothing transitions.
 
-  Between the button and the category chips, the difficulty filter's toggles
-  ("Let", "Mellem", "Svær", "Ekspert"; GALLERY-BAR.md, "As built: difficulty
-  filter"): each is an item of the row like a chip, with its own lift and
-  push, and they count in the chips' span. The chips then count the hearts the
-  filter leaves; a category it empties keeps its chip, dimmed.
+  Between the button and the category chips, the difficulty filter
+  (GALLERY-BAR.md, "As built: difficulty filter"): one chip, "Sværhedsgrad",
+  an item of the row like the others, with its own lift and push, counted in
+  the chips' span, which opens a menu of the levels ("Let", "Mellem", "Svær",
+  "Ekspert") to tick. Four toggles of their own stood there until the Fliser
+  and Tekst chips left no room for them (22 Oct 2026). The chips then count
+  the hearts the filter leaves; a category it empties keeps its chip, dimmed.
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
@@ -39,6 +41,8 @@
 	import { DownloadIcon } from '$lib/components/icons';
 	import { NARROW_QUERY } from '$lib/breakpoints';
 	import DifficultyDots from '$lib/components/DifficultyDots.svelte';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
 	import { LEVEL_LABEL_KEYS } from '$lib/front/levelFilter';
 	import type { DifficultyLevel } from '$lib/utils/difficulty';
 
@@ -55,6 +59,8 @@
 		/** The levels to offer a toggle for, easiest first; none: no filter. */
 		availableLevels?: readonly DifficultyLevel[];
 		onToggleLevel?: (level: DifficultyLevel) => void;
+		/** "Alle sværhedsgrader": the filter cleared. */
+		onClearLevels?: () => void;
 		/** How many hearts the visitor has drawn ("Mine hjerter"). */
 		myHeartCount: number;
 		/** Hearts currently ticked; shown in the button's badge. */
@@ -99,7 +105,8 @@
 		onDownload,
 		levels = new Set(),
 		availableLevels = [],
-		onToggleLevel = () => {}
+		onToggleLevel = () => {},
+		onClearLevels = () => {}
 	}: Props = $props();
 
 	let hasSelection = $derived(selectedCount > 0);
@@ -501,24 +508,40 @@
 			{@render getButton()}
 		{/if}
 		{#if availableLevels.length > 0}
-			<!-- A flex row with the chips' own gap, so its toggles sit where
-			     they would as the row's own items (the gallery measures them
-			     as such, [data-hill-chip]). -->
-			<div class="levels" role="group" aria-label={t('difficulty', lang)}>
-				{#each availableLevels as level (level)}
-					<button
-						type="button"
-						class="level-chip"
-						data-hill-chip
-						data-level={level}
-						aria-pressed={levels.has(level) ? 'true' : 'false'}
-						onclick={() => onToggleLevel(level)}
-					>
-						<DifficultyDots {level} {lang} size={6} decorative />
-						{t(LEVEL_LABEL_KEYS[level], lang)}
-					</button>
-				{/each}
-			</div>
+			<!-- The menu is put on the page's top layer (a portal), so the row's
+			     sideways scrolling never clips it, and it follows the chip as
+			     the hill and the push move it. -->
+			<DropdownMenu.Root>
+				<DropdownMenu.Trigger>
+					{#snippet child({ props })}
+						<button {...props} type="button" class="level-chip" class:chosen={levels.size > 0} data-hill-chip>
+							{t('difficulty', lang)}
+							{#if levels.size > 0}<span class="chip-count">{levels.size}</span>{/if}
+							<ChevronDownIcon class="caret" size={12} aria-hidden="true" />
+						</button>
+					{/snippet}
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content class="level-menu" align="start">
+					{#each availableLevels as level (level)}
+						<DropdownMenu.CheckboxItem
+							class="level-item"
+							data-level={level}
+							checked={levels.has(level)}
+							closeOnSelect={false}
+							onCheckedChange={() => onToggleLevel(level)}
+						>
+							<DifficultyDots {level} {lang} size={7} decorative />
+							{t(LEVEL_LABEL_KEYS[level], lang)}
+						</DropdownMenu.CheckboxItem>
+					{/each}
+					{#if levels.size > 0}
+						<DropdownMenu.Separator />
+						<DropdownMenu.Item class="level-item level-all" onSelect={onClearLevels}>
+							{t('difficultyAll', lang)}
+						</DropdownMenu.Item>
+					{/if}
+				</DropdownMenu.Content>
+			</DropdownMenu.Root>
 		{/if}
 		{#each sections as section, i (section.id)}
 			<a
@@ -719,60 +742,61 @@
 		color: var(--deep);
 	}
 
-	/* The difficulty filter: its toggles as one group of the row, the chips'
-	   gap inside it as well, so each toggle sits where it would as an item of
-	   the row itself. */
-	.levels {
-		flex: none;
-		display: flex;
-		gap: 8px;
-		/* A little more room before the category chips, so the two groups
-		   read as two. The gallery's measure and the inline strand script
-		   both count it. */
-		margin-right: 8px;
-	}
-
-	/* A toggle is a chip with the cards' difficulty dots before its word. A
-	   button, so it gets the font and the cursor a link would have. The
-	   chip's own line box (13px × 1.2), so the bar keeps its height. */
+	/* The difficulty filter: one chip that opens a menu of the levels. A
+	   button, so it gets the font and the cursor a link would have; the
+	   chip's own line box (13px × 1.2), so the bar keeps its height. A little
+	   more room after it, so the filter and the category chips read as two
+	   groups; the gallery's measure and the inline strand script both count
+	   it. */
 	.level-chip {
 		align-items: center;
+		margin-right: 8px;
 		font-family: inherit;
 		cursor: pointer;
 	}
 
-	/* Chosen: the red of the download button and the selection ring (the
-	   current category chip is --deep: what is being read, not what is
-	   picked), its dots in white. */
-	.level-chip[aria-pressed='true'],
-	.level-chip[aria-pressed='true']:hover {
+	.level-chip :global(.caret) {
+		margin-left: -1px;
+		flex: none;
+	}
+
+	/* Some level chosen: the red of the download button and the selection
+	   ring (the current category chip is --deep: what is being read, not
+	   what is picked), with how many are chosen. */
+	.level-chip.chosen,
+	.level-chip.chosen:hover {
 		border-color: transparent;
 		background: var(--red);
 		color: var(--white);
 	}
 
-	.level-chip[aria-pressed='true']:hover {
+	.level-chip.chosen:hover {
 		background: var(--red-hover);
 	}
 
-	.level-chip[aria-pressed='true'] :global(.dot) {
-		background: rgb(255 255 255 / 0.4);
+	.level-chip.chosen .chip-count {
+		color: inherit;
+		opacity: 0.85;
 	}
 
-	.level-chip[aria-pressed='true'] :global(.dot.on) {
-		background: var(--white);
+	/* The menu, on the page's top layer: each level with the cards' dots
+	   before its word, ticked when chosen. */
+	:global(.level-menu) {
+		min-width: 11rem;
+		border-color: var(--line);
+		font-family: inherit;
 	}
 
-	/* On the desktop layout the row is one line on the hill, and since the
-	   Fliser and Tekst chips the toggles' dots fit beside the rest at no width
-	   (1133px of row for 1098 at 1300 and up, 1255 with "Mine hjerter"): there
-	   they show their words alone, the red fill still marking the chosen
-	   ones, and the row fits from 1300px up. The inline strand script follows
-	   the same rule. */
-	@media (min-width: 900px) {
-		.level-chip :global(.dots) {
-			display: none;
-		}
+	:global(.level-menu .level-item) {
+		gap: 8px;
+		font-size: 14px;
+		font-weight: 600;
+		color: var(--deep);
+		cursor: pointer;
+	}
+
+	:global(.level-menu .level-all) {
+		font-weight: 500;
 	}
 
 	.level-chip:focus-visible,
@@ -840,12 +864,8 @@
 			pointer-events: auto;
 		}
 
-		.levels {
-			pointer-events: none;
-		}
-
-		/* No snapping here: the row only scrolls when it overflows (with the
-		   difficulty toggles and the download button below about 1150px),
+		/* No snapping here: the row only scrolls when it overflows (below
+		   about 1100px, and with the download button below about 1250px),
 		   and its snap positions, all past the sticky button, then kept it
 		   from ever scrolling back to its start. */
 		.chips {

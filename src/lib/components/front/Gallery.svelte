@@ -84,6 +84,7 @@
 		 */
 		levelsRestored?: boolean;
 		onToggleLevel?: (level: DifficultyLevel) => void;
+		onClearLevels?: () => void;
 	}
 
 	let {
@@ -103,10 +104,11 @@
 		strandScript = null,
 		levels = new Set(),
 		levelsRestored = false,
-		onToggleLevel = () => {}
+		onToggleLevel = () => {},
+		onClearLevels = () => {}
 	}: Props = $props();
 
-	/** The levels any gallery heart has, easiest first: one toggle each. */
+	/** The levels any gallery heart has, easiest first: one menu item each. */
 	let availableLevels = $derived(
 		LEVELS.filter((level) =>
 			categories.some((category) => category.hearts.some((heart) => heart.difficulty === level))
@@ -401,6 +403,7 @@
 			{levels}
 			{availableLevels}
 			{onToggleLevel}
+			{onClearLevels}
 			myHeartCount={myHearts.length}
 			bind:height={barHeight}
 			lifts={chipLifts}

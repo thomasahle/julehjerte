@@ -65,8 +65,9 @@ export const STRAND_LAYOUT = {
 	trackGap: 16,
 	/** The chips' row (GalleryBar.svelte): 8px apart, 12px padding, 1px border, 6px label gap. */
 	chipGap: 8,
-	/** The toggles' group's extra margin before the category chips (their dots are not shown on the hill). */
+	/** The difficulty chip's extra margin before the category chips, and its caret's room: 12px, pulled 1px in (GalleryBar). */
 	groupGap: 8,
+	caretWidth: 11,
 	/** The one-row bar: 10px padding twice around a 13px × 1.2 chip with 6px padding and a border. */
 	barHeight: 49.6,
 	/** `font-family` of the page (`--font-sans` in app.css). */
@@ -82,11 +83,12 @@ export interface StrandChips {
 	 */
 	categories: { id?: string; title: string; count: number; levels?: string[]; hearts?: string[] }[];
 	/**
-	 * The difficulty filter's toggles, first in the row after the download
-	 * button: each level's word in `?level=`, its label, and where the tab
-	 * keeps the choice. Absent: no filter.
+	 * The difficulty filter, first in the row after the download button: its
+	 * chip's word ("Sværhedsgrad"), each level's word in `?level=` and its
+	 * label, and where the tab keeps the choice. Absent: no filter.
 	 */
 	filter?: {
+		label: string;
 		levels: { level: string; slug: string; label: string }[];
 		param: string;
 		storageKey: string;
@@ -220,11 +222,12 @@ function chipSpan(left, right, counts) {
 		widths.push(Math.round(20 + 16 + 12 + measure(ch.download, 600) + 16 + measure(String(ticked), 600)));
 	}
 	var filter = ch.filter;
-	if (filter) {
-		// The word alone, inside a chip's padding and border: the dots are not shown on the hill.
-		for (var l = 0; l < filter.levels.length; l++) {
-			widths.push(Math.round(26 + measure(filter.levels[l].label, 600)));
-		}
+	if (filter && filter.levels.length) {
+		// One chip: its word, how many levels are chosen (if any, after a 6px
+		// gap) and the 12px caret after another, inside a chip's padding and border.
+		var chosen = 0;
+		for (var key in shown || {}) chosen++;
+		widths.push(Math.round(26 + measure(filter.label, 600) + (chosen ? 6 + measure(String(chosen), 500) : 0) + 6 + C.caretWidth));
 	}
 	for (var i = 0; i < ch.categories.length; i++) {
 		widths.push(chip(ch.categories[i].title, counts[i]));

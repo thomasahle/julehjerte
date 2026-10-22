@@ -292,9 +292,10 @@ The three-step strip (print / cut / weave links to the guide) that used to sit a
 (owner's decision, 2026-10-17; the steps live on the guide page). The "Foreslå et hjerte" link is not in the bar
 (it lives on the Om page).
 
-Difficulty filter (GALLERY-BAR.md, "As built: difficulty filter"; `$lib/front/levelFilter`): toggle chips
-"Let", "Mellem", "Svær", "Ekspert" in the chip row, between the download button and the category chips. Any
-number at once, none shows all; cards of other levels are hidden and the strands count the cards on show, an
+Difficulty filter (GALLERY-BAR.md, "As built: difficulty filter"; `$lib/front/levelFilter`): one chip,
+"Sværhedsgrad", in the chip row between the download button and the category chips, whose menu ticks "Let",
+"Mellem", "Svær", "Ekspert" (four toggle chips until 22 Oct 2026, when the Fliser and Tekst chips left no
+room for them). Any number at once, none shows all; cards of other levels are hidden and the strands count the cards on show, an
 emptied category is hidden and its chip dimmed. The choice lives in `?level=let,mellem` and the tab's
 sessionStorage, and the strand bootstrap applies it before the first paint.
 

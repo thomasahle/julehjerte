@@ -112,8 +112,9 @@ export const load: PageLoad = async ({ params }) => {
 						};
 					})
 					.filter((category) => category.count > 0),
-				// The difficulty toggles, one per level some gallery heart has.
+				// The difficulty filter's chip, and its menu's levels: one per level some gallery heart has.
 				filter: {
+					label: t('difficulty', lang),
 					levels: LEVELS.filter((level) => ids.some((id) => hearts[id]?.difficulty === level)).map(
 						(level) => ({
 							level,

@@ -103,7 +103,7 @@ A QA tester playing a teacher could not gather six easy hearts: only five are
 "Let", spread over three categories. The bar now filters the gallery by
 difficulty.
 
-- **Toggles.** "Let", "Mellem", "Svær", "Ekspert" ("Easy", "Medium", "Hard",
+- **Toggles** (until 22 Oct 2026, see "One chip" below). "Let", "Mellem", "Svær", "Ekspert" ("Easy", "Medium", "Hard",
   "Expert"; the existing `difficulty*` keys), one per level some gallery heart
   has, each a chip with the cards' four difficulty dots (6px, decorative)
   before its word. They are `<button aria-pressed>` in a
@@ -120,13 +120,29 @@ difficulty.
   122.8, 105.7, 65.3; D 122.8, L 74.2). Below 900 they lead the scrolling chip
   row; back on the hero the row scrolls back to its start so they are in sight.
 - **Room.** The row would not fit the column with everything at full width,
-  so on the desktop layout the toggles drop their dots below 1200px and
-  whenever the download button is shown; since the Fliser and Tekst chips
-  (22 Oct 2026) at every width, which makes the row fit from 1300px up, "Mine
-  hjerter" included. Below that the row overflows, and with a selection up to
-  about 1300px; it then scrolls
-  (the button sticky at its start), and snapping is off on the desktop
-  layout because its snap positions kept the row from scrolling back to 0.
+  so on the desktop layout the toggles dropped their dots below 1200px and
+  whenever the download button was shown. Even so, with the Fliser and Tekst
+  chips (22 Oct 2026) the row was 1133px for 1098 at every desktop width, and
+  "Mine hjerter" fell off the screen. So, at the owner's word ("remove the four
+  difficulty buttons … there's no room for them", "we could try using a
+  dropdown"), the four toggles became one chip (below). The row now fits
+  from 1300px up, "Mine hjerter" and a chosen count included; below that
+  it overflows and scrolls (the download button sticky at its start), and
+  snapping is off on the desktop layout because its snap positions kept the
+  row from scrolling back to 0.
+- **One chip (22 Oct 2026).** "Sværhedsgrad" / "Difficulty" with a 12px
+  caret, a `<button aria-haspopup="menu">` (bits-ui's dropdown menu,
+  `$lib/components/ui/dropdown-menu`) and the row's one `[data-hill-chip]`
+  for the filter, 8px further from the categories than the chips are from
+  each other. It opens a menu, on the page's top layer so the scrolling row
+  never clips it, of the levels some gallery heart has, each with the cards'
+  dots (7px, decorative) before its word, a tick when chosen. A tick keeps the
+  menu open (multi-select; none chosen shows all), and "Alle sværhedsgrader"
+  / "All difficulties" clears them once any is chosen. Chosen: the chip takes
+  the download button's red fill and says how many ("Sværhedsgrad 1"). The
+  inline strand script counts the chip so: its word, the count's 6px gap and
+  digits when any is chosen, and the caret's 6px gap and 11px (12, pulled 1px
+  in); at 1440 the strands are 0.2, 29, 122.8, 105.7, 65.3.
 - **Filtering.** Cards of other levels get `display: none` (kept in the page:
   a prerendered heart's SVG cannot be drawn again), so the grid closes up; the
   strands count the cards on show (`strand = shown index % columns`). A

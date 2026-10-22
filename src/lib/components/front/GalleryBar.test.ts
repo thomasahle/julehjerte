@@ -89,7 +89,7 @@ async function render({
 
 	const target = document.createElement('div');
 	document.body.appendChild(target);
-	const handlers = { onDownload: vi.fn(), onToggleLevel: vi.fn() };
+	const handlers = { onDownload: vi.fn(), onToggleLevel: vi.fn(), onClearLevels: vi.fn() };
 	const component = mount(GalleryBar, {
 		target,
 		props: {
@@ -159,7 +159,19 @@ async function render({
 			await tick();
 		},
 		download: () => button('Hent skabeloner'),
-		toggles: () => [...target.querySelectorAll<HTMLButtonElement>('button.level-chip')]
+		/** The difficulty filter's chip. */
+		levelChip: () => target.querySelector<HTMLButtonElement>('button.level-chip'),
+		/** Opens the filter's menu, as Enter on its chip does, and gives its items (on the page's top layer). */
+		openLevels: async () => {
+			const chip = target.querySelector<HTMLButtonElement>('button.level-chip')!;
+			chip.focus();
+			chip.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+			flushSync();
+			await tick();
+			await new Promise((resolve) => setTimeout(resolve, 0));
+			flushSync();
+			return [...document.querySelectorAll<HTMLElement>('.level-menu [role^="menuitem"]')];
+		}
 	};
 }
 
@@ -404,46 +416,46 @@ describe('GalleryBar', () => {
 	describe('the difficulty filter', () => {
 		const ALL: DifficultyLevel[] = ['easy', 'medium', 'hard', 'expert'];
 
-		it('offers one toggle per level, in a labelled group before the category chips', async () => {
+		it('offers one chip before the category chips, which opens a menu of the levels', async () => {
 			const ui = await render({ availableLevels: ALL });
-			const group = ui.target.querySelector('[role="group"]')!;
-			expect(group.getAttribute('aria-label')).toBe('Sværhedsgrad');
-			expect(ui.toggles().map((b) => b.textContent?.trim())).toEqual(['Let', 'Mellem', 'Svær', 'Ekspert']);
-			expect(ui.toggles().every((b) => b.getAttribute('aria-pressed') === 'false')).toBe(true);
-			// In the chip row, before the first category chip.
+			const chip = ui.levelChip()!;
+			expect(chip.textContent?.trim()).toBe('Sværhedsgrad');
+			expect(chip.getAttribute('aria-haspopup')).toBe('menu');
+			expect(chip.type).toBe('button');
+			// In the chip row, before the first category chip, an item the gallery lifts onto the hill.
 			const nav = ui.target.querySelector('nav')!;
-			expect(group.parentElement).toBe(nav);
-			expect(group.nextElementSibling?.getAttribute('href')).toBe('#klassiske');
-			// Each toggle and chip is an item the gallery lifts onto the hill.
-			expect(nav.querySelectorAll('[data-hill-chip]')).toHaveLength(4 + 5);
-			// The dots are decoration: the word names the toggle.
-			const dots = ui.toggles()[0].querySelector('.dots')!;
+			expect(chip.parentElement).toBe(nav);
+			expect(chip.nextElementSibling?.getAttribute('href')).toBe('#klassiske');
+			expect(nav.querySelectorAll('[data-hill-chip]')).toHaveLength(1 + 5);
+			const items = await ui.openLevels();
+			expect(items.map((item) => item.textContent?.trim())).toEqual(['Let', 'Mellem', 'Svær', 'Ekspert']);
+			expect(items.every((item) => item.getAttribute('aria-checked') === 'false')).toBe(true);
+			// The dots are decoration: the word names the level.
+			const dots = items[0].querySelector('.dots')!;
 			expect(dots.getAttribute('aria-hidden')).toBe('true');
-			expect(dots.querySelectorAll('.dot.on')).toHaveLength(1);
-			expect(ui.toggles()[3].querySelectorAll('.dot.on')).toHaveLength(4);
+			expect(items[3].querySelectorAll('.dot.on')).toHaveLength(4);
 		});
 
 		it('offers only the levels the gallery has', async () => {
 			const ui = await render({ availableLevels: ['easy', 'hard'] });
-			expect(ui.toggles().map((b) => b.textContent?.trim())).toEqual(['Let', 'Svær']);
+			expect((await ui.openLevels()).map((item) => item.textContent?.trim())).toEqual(['Let', 'Svær']);
 			const none = await render();
-			expect(none.target.querySelector('[role="group"]')).toBeNull();
+			expect(none.levelChip()).toBeNull();
 		});
 
-		it('reports a click on a toggle and marks the chosen ones as pressed', async () => {
+		it('ticks the chosen levels, reports a tick, and says how many are chosen', async () => {
 			const ui = await render({ availableLevels: ALL, levels: new Set(['easy', 'expert']) });
-			expect(ui.toggles().map((b) => b.getAttribute('aria-pressed'))).toEqual([
-				'true',
-				'false',
-				'false',
-				'true'
-			]);
-			ui.toggles()[1].click();
+			const chip = ui.levelChip()!;
+			expect(chip.classList.contains('chosen')).toBe(true);
+			expect(chip.querySelector('.chip-count')?.textContent).toBe('2');
+			const items = await ui.openLevels();
+			expect(items.slice(0, 4).map((item) => item.getAttribute('aria-checked'))).toEqual(['true', 'false', 'false', 'true']);
+			items[1].click();
 			expect(ui.handlers.onToggleLevel).toHaveBeenCalledWith('medium');
-			ui.toggles()[0].click();
-			expect(ui.handlers.onToggleLevel).toHaveBeenLastCalledWith('easy');
-			// Toggles, not submit buttons.
-			expect(ui.toggles().every((b) => b.type === 'button')).toBe(true);
+			// And a way to show them all again.
+			expect(items[4].textContent?.trim()).toBe('Alle sværhedsgrader');
+			items[4].click();
+			expect(ui.handlers.onClearLevels).toHaveBeenCalled();
 		});
 
 		it('counts the hearts on show and dims a category the filter empties', async () => {
@@ -506,10 +518,10 @@ describe('GalleryBar', () => {
 			expect(ui.current()).toEqual(['#hjerter']);
 		});
 
-		it('names the group and the levels in English on /en/', async () => {
+		it('names the chip and the levels in English on /en/', async () => {
 			const ui = await render({ availableLevels: ALL, lang: 'en' });
-			expect(ui.target.querySelector('[role="group"]')?.getAttribute('aria-label')).toBe('Difficulty');
-			expect(ui.toggles().map((b) => b.textContent?.trim())).toEqual(['Easy', 'Medium', 'Hard', 'Expert']);
+			expect(ui.levelChip()?.textContent?.trim()).toBe('Difficulty');
+			expect((await ui.openLevels()).map((item) => item.textContent?.trim())).toEqual(['Easy', 'Medium', 'Hard', 'Expert']);
 		});
 	});
 
