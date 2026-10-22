@@ -55,6 +55,7 @@ import {
 	dot,
 	cross,
 	frameRing,
+	boardFill,
 	boardLines,
 	boardPanels,
 	boardRangeLines,
@@ -1976,7 +1977,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		};
 		// A circle wider than the paper leaves the motif no more room than the paper.
 		const fills = (radius: number, { reach }: Placement, factor = 1, space = gap) =>
-			(Math.min(radius, 50) - Math.max(space, 1.5)) * factor / reach / box;
+			(boardFill(radius, strips) - Math.max(space, 1.5)) * factor / reach / box;
 		// Only the invisible partition varies: where four panels meet, the
 		// routing, and the padding of the motif's cell, which gives its
 		// connections room: the usual, else little. (Gates the circle passes
@@ -2030,7 +2031,11 @@ function generateUsingRecipes(request: GeneratorRequest,
 					return false;
 				}
 			}));
-		const divided = !large || buildable(range), whole = !divided && range !== small && wholeBuildable();
+		// Where the middle lines are left out, it is divided only if it is in
+		// every range further out too, so it does not shrink back.
+		const covered = boardRangeLines(range, strips).length < boardLines(strips).length;
+		const divided = !large || (covered ? ranges.slice(ranges.indexOf(range)).reverse().every(buildable) : buildable(range));
+		const whole = !divided && range !== small && wholeBuildable();
 		const [mode, size] = divided ? [range, radius] : range === small ? [large, large[0] + .6]
 			: whole ? [large, Math.min(radius, boardWholeTop(strips))] : [small, small[1]];
 		// Over the corner squares, whether the motif sits on its enclosing

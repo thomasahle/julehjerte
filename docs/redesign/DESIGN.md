@@ -818,12 +818,18 @@ and circle to its gate there. Further out each further line a side would need pa
 of 52 corpus motifs 12 can be divided into nine panels whose seams cross only in their background,
 none into sixteen. No circle between can be woven with the motif in four: every check the circle
 covers whole must lie inside it, merged with it in its colour or as a piece of the motif in the
-other (nine pieces from radius 41.7 on seven, 32.4 on nine). Once the circle covers the middle
-lines from edge to edge, though, they show nothing, and the heart leaves them out in both sheets:
-the outer two lines a side remain, met as on five strips, and the circle grows out past the paper's
-edges with the motif in four (50.9 to 55.4 on seven, 52.8 to 58.2 on nine; `boardRangeLines`), the
-heart then having five strips while the page shows the board chosen. The slider steps once to
-there (93 to 94% on seven, 90 to 91% on nine). Where the paper's edges cut the circle off, the
+other (nine pieces from radius 41.7 on seven, 32.4 on nine). So the heart leaves the middle lines
+out in both sheets: the outer two lines a side remain, met as on five strips with the motif in four,
+and the circle grows on out past the paper's edges (44.9 to 55.4 on seven, 51.0 to 58.2 on nine;
+`boardRangeLines`), the heart then having five strips while the page shows the board chosen. Once
+the circle covers the middle lines from edge to edge, that changes no square outside it; short of
+that, only the outer ring's middle squares, which merge into one of the circle's colour beside it
+(leaving out fewer on nine would leave bars three squares long there). It starts where the gates
+keep room 2 from the lines beside them (`gateRoom`): just past the outer lines' junctions with the
+inner, their ends crowd the gates and cut thin. The slider steps once to there (88 to 89% on
+seven, 39.0 to 44.9; 89 to 90% on nine, 30.4 to 51.0), and the motif does not step with it: it
+grows on evenly to fill the circle again past the outer lines' corner junctions (`boardFill`),
+which also leaves its gates room. Where the paper's edges cut the circle off, the
 motif's outer gates move three fifths of the way out from the motif to the edge, not towards the
 circle beyond it, and the cut running round between motif and circle keeps inside the paper too.
 Past the touching circle, each range of a board takes a share of 70–100% in

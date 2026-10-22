@@ -1740,8 +1740,8 @@ export function openLeg(gate: Point, corner: Point, axis: 0 | 1, taper: number):
  * the circle, the middle lines of the other sheet crossing it, until the
  * second lines' ends come too close to its arc for a gate between them
  * (`gateRoom`); further out still the motif would need nine panels, which few
- * motifs can be divided into, until the circle covers the middle lines whole
- * and the heart leaves them out (see below). On three, whose one line a side the motif
+ * motifs can be divided into, so the heart leaves the middle lines out (see
+ * below). On three, whose one line a side the motif
  * meets whole however large the circle, there is one range, out past the
  * paper's edges and over the corner squares until it meets the edges halfway
  * along them. */
@@ -1750,20 +1750,39 @@ export function boardRanges(strips: number): readonly (readonly [number, number]
 	const known = rangesByStrips.get(strips);
 	if (known) return known;
 	const all = boardLines(strips), ranges = linesRanges(all);
-	// Once the circle covers the middle lines whole, from edge to edge of the
-	// paper, they show nothing, and leaving them out, with the same lines of
-	// the other sheet, changes no square outside it. On finer boards the
-	// circle reaches the paper's edges only so: the outer two lines a side
-	// remain, met as on five strips, from past their corner junctions or
-	// wherever the last of the middle lines is covered, out to a unit past
-	// covering the inner of the two (as five strips' 52).
+	// Further out the heart leaves the middle lines out, with the same lines
+	// of the other sheet: the outer two lines a side remain, met as on five
+	// strips with the motif divided in four, out to a unit past covering the
+	// inner of the two (as five strips' 52). Once the circle covers the
+	// middle lines whole, from edge to edge of the paper, that changes no
+	// square outside it; short of that, from where the circle meets the
+	// outer lines' junctions with the inner, only the outer ring's middle
+	// squares, which merge into one of the circle's colour beside it. So the
+	// circle grows on from just past the largest above, rather than from
+	// where it covers the middle lines. (Leaving out fewer, on nine strips,
+	// would leave bars three squares long in the outer ring.)
 	if (all.length > 2) {
-		const lines = all.slice(-2), from = Math.hypot(all[all.length - 3], 50) + .1;
-		for (const [low, high] of linesRanges(lines, Math.hypot(lines[0], 50) + 1)) if (high > from) {
-			const range = [Math.max(low, from), high] as const;
-			coveredLines.set(range, lines);
-			ranges.push(range);
-		}
+		const lines = all.slice(-2), from = ranges[ranges.length - 1][1] + .8;
+		for (const [low, high] of linesRanges(lines, Math.hypot(lines[0], 50) + 1))
+			if (high > from && Math.hypot(lines[1], lines[0]) < (low + high) / 2) {
+				// Just past the junctions where it starts, the outer lines' ends
+				// crowd the inner lines' gates, their legs meeting at a sharp
+				// angle: from where each gate keeps a little more room than a cut
+				// either side of it.
+				let start = Math.max(low, from);
+				if (gateRoom(start + .01, lines) < 2) {
+					let crowded = start + .01, roomy = high;
+					for (let step = 0; step < 40; step++) {
+						const mid = (crowded + roomy) / 2;
+						if (gateRoom(mid, lines) < 2) crowded = mid;
+						else roomy = mid;
+					}
+					start = roomy;
+				}
+				const range = [start, high] as const;
+				coveredLines.set(range, lines);
+				ranges.push(range);
+			}
 	}
 	rangesByStrips.set(strips, ranges);
 	return ranges;
@@ -1814,6 +1833,19 @@ const coveredLines = new WeakMap<readonly [number, number], number[]>();
  * board's, or where the circle covers the middle ones, the outer two. */
 export function boardRangeLines(range: readonly [number, number], strips: number): number[] {
 	return coveredLines.get(range) ?? boardLines(strips);
+}
+/** How far from the centre of a circle of `radius` on a board of `strips`
+ * strips the motif reaches, with the space around it: to the circle, or to
+ * the paper's edges where the circle is wider. Where the heart first leaves
+ * the middle lines out, the motif does not step with the circle but grows on
+ * evenly from the largest circle with every line to the first past the outer
+ * lines' corner junctions, which leaves the gates room between it and the
+ * circle (see `boardRanges`). */
+export function boardFill(radius: number, strips: number): number {
+	const ranges = boardRanges(strips), first = ranges.findIndex(range => coveredLines.has(range));
+	if (first < 0 || radius < ranges[first][0] || !ranges[first + 1] || radius >= ranges[first + 1][0]) return Math.min(radius, 50);
+	const from = ranges[first - 1][1], start = ranges[first][0], whole = ranges[first + 1][0];
+	return from + (radius - start) / (whole - start) * (Math.min(whole, 50) - from);
 }
 /** The distances of a regular board's lines from its centre, half a square,
  * a square and a half, …, on each side. */

@@ -9,7 +9,7 @@
  * Frames without a picture here return none.
  */
 import type { GeneratorRequest } from './generate';
-import { arc, boardPanels, boardRanges, frameRing, layerInset, outerFrame, ray, uprightToSheet, BOARD_STUB, FITTED, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
+import { arc, boardFill, boardPanels, boardRangeLines, boardRanges, frameRing, layerInset, outerFrame, ray, uprightToSheet, BOARD_STUB, FITTED, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
 import { fillSquare, fitCircle } from './frameFit';
 import { fittedPicture } from './fitted';
 import { normalizeContours } from './contours';
@@ -235,11 +235,15 @@ function boardPicture(request: GeneratorRequest, circle?: 'large' | number, encl
 	// Over the corner squares the motif moves towards its smallest enclosing
 	// circle's centre, where it cuts cleanly so (see `generate`).
 	if (large && radius > large[1] && enclosed) ({ centre: [cx, cy], reach } = boardPlacement(contours, enclosedAlong(setting)));
-	const scale = (Math.min(radius, 50) - Math.max(request.gap ?? 3, 1.5)) / reach / box;
+	const scale = (boardFill(radius, strips) - Math.max(request.gap ?? 3, 1.5)) / reach / box;
 	const disc = frameRing('circle', 2 * radius), side = 100 / strips, rings: Ring[] = [];
+	// Where the heart leaves the middle lines out, the strips between them
+	// are one, its checks of one colour (see `boardRanges`).
+	const middle = (strips - 1) / 2, left = middle - boardRangeLines(range, strips).length;
+	const strip = (i: number) => Math.abs(i - middle) <= left ? middle - left : i;
 	for (let i = 0; i < strips; i++)
 		for (let j = 0; j < strips; j++) {
-			if ((i + j + outer) % 2) continue;
+			if ((strip(i) + strip(j) + outer) % 2) continue;
 			const square: Ring = [[i * side, j * side], [(i + 1) * side, j * side], [(i + 1) * side, (j + 1) * side], [i * side, (j + 1) * side]];
 			rings.push(square);
 			// Its part inside the circle turns back.

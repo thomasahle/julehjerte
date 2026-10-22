@@ -1,5 +1,54 @@
 # Generator robustness results
 
+## A smaller step for the circle on seven and nine strips
+
+Product report (2026-10-22), on 7×7: "there's a big jerk now as we go from 93
+to 94%. An even bigger jerk at 9x9. Maybe the background colors should swap
+again around this level, like 70->71". There the circle stepped from 39.0 to
+50.9 (on nine from 30.4 to 52.8), and the motif filling it with it.
+
+The circle steps only where the heart leaves the middle lines out, and those
+constructions now start where they can, not where the circle covers the middle
+lines whole. Short of that, leaving them out changes only the outer ring's
+middle squares, which merge into one in the circle's colour beside it. It
+starts where each gate keeps room 2 from the lines beside it (`gateRoom`): just
+past the outer lines' junctions with the inner (41.65 on seven), their ends
+crowd the gates and cut thin (seven of eight hard-prone motifs hard at 43.8).
+On seven the step is now 39.0 to 44.9, at 88 to 89%; on nine 30.4 to 51.0, at
+89 to 90%. The motif does not step with the circle: it grows on evenly to fill
+the circle again past the outer lines' corner junctions (`boardFill`, 89–95% on
+seven, 90–96% on nine). Filling the circle at once, as before, gave half the
+corpus hard at 87–91% (24–25 clean of 52), the gates midway between the
+circle and a motif nearly filling it; three units more room made most clean.
+
+Swapping the colours does not help on its own: with every line, a motif kept
+whole in the circle's other colour (as below 71%) fits only to radius 30.3 on
+seven, as every check the circle covers whole must lie in it. With the middle
+lines left out it fits from 35.3 to about 50.5, but there the merged middle
+squares show as bars three squares long, and past it the motif must be divided
+again, a second swap. On nine, leaving out only the innermost line a
+side would fill 32.4–45.3, but leaves such bars in the outer ring, so the step
+there stays large; the motif's not stepping is the gain.
+
+A motif is divided where the middle lines are left out only if it is in every
+range further out, so it does not shrink back (the tulip divided at 89–94% and
+fell back to its small circle at 100%). The bicycle, hard at every size and
+15–25 s a heart, still divides at 89–92% and from 93% falls back to its small
+circle, where the build at its size fails. The other ranges on seven now share
+the slider with the new one: steps of up to 1.1 units a percent (were 0.8).
+
+Over the corpus and the deer, 0 refused throughout:
+
+| Board | Sizes | Clean | Hard |
+| --- | --- | --- | --- |
+| 7×7, deployed | 86 / 93 / 94% | 46 / 44 / 45 | 6 / 8 / 7 |
+| 7×7, now | 88 / 89 / 91 / 94 / 100% | 44 / 44 / 45 / 45 / 45 | 8 / 8 / 7 / 7 / 7 |
+| 9×9, now | 89 / 90 / 93 / 97% | 43 / 44 / 45 / 44 | 9 / 8 / 7 / 8 |
+
+Pictures before the cuts colour the merged middle strips as one and match their
+hearts within 0.5%. Five and three strips are unchanged (cuts and pictures
+identical for eight motifs at five sizes each).
+
 ## No refusals in any figure frame
 
 Three changes, each tried only where a request would otherwise be refused or

@@ -7,7 +7,7 @@ import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSide } from './state';
 import { templateVariants } from './templates';
-import { inside, uprightToSheet, distance, boardLines, boardRangeLines, boardRanges, boardWholeTop, layerInset, withVisibleIslands, ConstructionError, WEDGES, type Point, type Ring } from './geometry';
+import { inside, uprightToSheet, distance, boardFill, boardLines, boardRangeLines, boardRanges, boardWholeTop, layerInset, withVisibleIslands, ConstructionError, WEDGES, type Point, type Ring } from './geometry';
 import { generateTextGrid } from './textGrid';
 import { geometryKey } from './cache';
 import { MOTIF, boardRadius, boardSetting, boardSteps, motifChoices, motifPatterns, squareChoices } from './boardMotif';
@@ -435,18 +435,24 @@ describe('frames from real hearts', () => {
   }
  });
  it('grows the circle without jumps, on every board', () => {
-  // From the smallest to the largest, no step larger than the one over the
-  // corner junctions at 85-86%, and none back; on seven and nine strips but
-  // the one out to where the circle covers the middle lines whole, as no
-  // circle between can be woven with the motif in four (see `boardRanges`).
-  for (const [board, largest] of [[3, boardRanges(3)[0][1]], [5, 52], [7, boardRanges(7).at(-1)![1]], [9, boardRanges(9).at(-1)![1]]]) {
+  // From the smallest to the largest, the circle and the motif in it never
+  // shrink, and the circle steps by little more than the step over the
+  // corner junctions at 85-86% (0.8); on seven and nine strips but once, out
+  // to where the heart leaves the middle lines out, as no circle between can
+  // be woven with the motif in four (see `boardRanges`). The motif does not
+  // step there with the circle, but grows on evenly (see `boardFill`).
+  for (const [board, largest, step] of [[3, boardRanges(3)[0][1], 0], [5, 52, 0], [7, boardRanges(7).at(-1)![1], 6], [9, boardRanges(9).at(-1)![1], 21]]) {
    const ranges = boardRanges(board), covered = ranges.find(range => boardRangeLines(range, board).length < boardLines(board).length);
    let last = boardRadius(.45, board).radius;
    for (let percent = 46; percent <= 100; percent++) {
     const { radius } = boardRadius(percent / 100, board);
     expect(radius - last, `${board} ${percent}`).toBeGreaterThanOrEqual(0);
-    if (covered && radius === covered[0]) expect(last, `${board}`).toBe(ranges[ranges.indexOf(covered) - 1][1]);
-    else expect(radius - last, `${board} ${percent}`).toBeLessThanOrEqual(2 * .4 + 1e-9);
+    expect(boardFill(radius, board) - boardFill(last, board), `${board} ${percent}`).toBeGreaterThanOrEqual(0);
+    if (covered && radius === covered[0]) {
+     expect(last, `${board}`).toBe(ranges[ranges.indexOf(covered) - 1][1]);
+     expect(radius - last, `${board}`).toBeLessThan(step);
+     expect(boardFill(radius, board), `${board}`).toBe(boardFill(last, board));
+    } else expect(radius - last, `${board} ${percent}`).toBeLessThanOrEqual(1.2);
     last = radius;
    }
    expect(last, `${board}`).toBe(largest);
