@@ -76,6 +76,7 @@
 		type HeartColors
 	} from '$lib/stores/colors';
 	import { stripsLabel as formatStrips, t as translate, type Language, type TranslationKey } from '$lib/i18n';
+	import { generatorHref } from '$lib/i18n/routes';
 
 		interface Props {
 			readonly?: boolean;
@@ -3752,6 +3753,25 @@
 	);
 	let stripsLabel = $derived(formatStrips(gridSize, lang));
 
+	/**
+	 * The line above the heart: what can be done with what is chosen, in the tab it is chosen in
+	 * (user test, 2026-10-22: one fixed line of three instructions, and a first-visit tip that said
+	 * the same, were read once and passed over as the task changed). A chosen point says what kind it
+	 * is in the chip beside it (`selectedNodeTypeLabel`).
+	 */
+	let canvasHint = $derived.by((): TranslationKey => {
+		const escher = !!patternTile;
+		if (!selectedFingerId) return escher ? 'hintEscherNothing' : 'hintNothing';
+		const cut = getEditableFingerById(selectedFingerId);
+		if (!cut) return escher ? 'hintEscherEdge' : 'hintEdge';
+		const last = fingerToSegments(cut).length;
+		if (selectedSegments.length || selectedAnchors.length === 0) return escher ? 'hintEscherCut' : 'hintCut';
+		if (selectedAnchors.length > 1) return 'hintNodes';
+		const node = selectedAnchors[0]!;
+		if (patternNodes?.get(node) === 'frame') return 'hintEscherCut';
+		return node === 0 || node === last ? 'hintEnd' : 'hintNode';
+	});
+
 	let visibleAnchorSet = $derived.by(() => {
 		const set = new Set<number>();
 		for (const idx of selectedAnchors) {
@@ -3808,6 +3828,12 @@
 	});
 
 </script>
+
+	<!-- The line above the heart (`canvasHint`). With nothing chosen in the Normal tab it also offers a
+	     figure, for a motif such as a tree, which is hard to draw cut by cut. -->
+	{#snippet hintLine()}
+		{tr(canvasHint)}{#if canvasHint === 'hintNothing'}&nbsp;· {tr('hintFigure')} <a class="hint-link" href={generatorHref(lang, 'figure')}>{tr('hintFigureLink')}</a>{/if}
+	{/snippet}
 
 	<!--
 		One tool-rail button: a 44px icon button with a tooltip (DESIGN.md §7).
@@ -4193,14 +4219,10 @@
 			</div>
 
 			{#if !readonly}
-				<!-- Canvas chrome (DESIGN.md §7): the one-line hint, what is selected and the
-				     strip count. Desktop only — the mobile editor keeps its stacked panels.
-				     The dismissible first-visit tip below says the same three things in other
-				     words and sits right under this line, so on a first visit only the tip
-				     shows and the permanent hint takes over once it has been dismissed. -->
-				{#if firstVisitHintDismissed}
-					<p class="canvas-hint">{tr(patternTile ? 'editorCanvasHintEscher' : 'editorCanvasHint')}</p>
-				{/if}
+				<!-- Canvas chrome (DESIGN.md §7): the line that says what can be done with what is
+				     chosen (`canvasHint`), what is selected and the strip count. Desktop only — the
+				     mobile editor keeps its stacked panels, and the same line comes as a tip there. -->
+				<p class="canvas-hint">{@render hintLine()}</p>
 				{#if selectedNodeTypeLabel}
 					<p class="canvas-selection">
 						<span class="canvas-selection-dot" class:black={selectedPatternNode === 'frame'} aria-hidden="true"></span>{selectedNodeTypeLabel}
@@ -4224,9 +4246,9 @@
 					{#if hasManyStrips}
 						<div class="canvas-notice info" role="status">{tr('editorManyStripsHint')}</div>
 					{/if}
-					{#if !firstVisitHintDismissed}
+					{#if !firstVisitHintDismissed && (isMobileLayout || !fullPage)}
 						<div class="canvas-notice hint" role="note">
-							<span>{tr(patternTile ? 'editorFirstVisitHintEscher' : 'editorFirstVisitHint')}</span>
+							<span>{@render hintLine()}</span>
 							<button type="button" class="notice-dismiss" onclick={dismissFirstVisitHint} aria-label={tr('editorDismissHint')}>
 								<CloseIcon size={16} aria-hidden="true" />
 							</button>
@@ -4582,6 +4604,15 @@
 			left: 16px;
 			max-width: calc(100% - 32px);
 			color: var(--muted);
+		}
+
+		/* The line takes no clicks, so the drawing under it does; its link does. */
+		.hint-link {
+			color: var(--green);
+			font-weight: 600;
+			text-decoration: underline;
+			text-underline-offset: 2px;
+			pointer-events: auto;
 		}
 
 		/* The selection chip shares the line, anchored to the right edge; give way

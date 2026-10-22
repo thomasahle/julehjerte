@@ -581,10 +581,18 @@ Handlinger. A **"Skjul panel"** control collapses the panel so the canvas fills 
 right edge ("Vis panel") brings it back; remember the choice in localStorage. Add a "Snap til modsat side"
 checkbox and a one-line hint above the canvas. The mobile editor keeps its existing stacked panels.
 
+The hint above the canvas follows what is chosen (`canvasHint`, 2026-10-22: one fixed line of three instructions
+and a first-visit tip saying the same were read once and passed over): with nothing chosen, how to choose and
+shape a curve and where the strip count is, and, in the Normal tab, a link to the design page's figures for a
+motif such as a tree ("Lav en figur", `/design/figure/`); a curve, a node, an end, several nodes and an outer
+edge each get what can be done with them; the Escher tab has its own lines for nothing chosen, a cut and an edge.
+It names the panel and the toolbar rather than right and left, since the mobile editor places them elsewhere,
+and there it comes as the dismissible tip. The help's tips end with the same way to a figure.
+
 Symmetri and Tegning are drawn, not only named — the icons the owner chose in `docs/redesign/symmetri-ikoner.html`
 ("Familie A med tekst"). Each symmetry segment carries the glyph of *its own* row and mode at 28px in a 40px
-segment, with the word beside it: one curve, one lobe with two cuts, or both lobes, where Fra leaves the second
-cut free, Sym mirrors it and Anti turns it. Nine glyphs, one component and one table (`SymmetryIcon` and
+segment, with the word beside it: one curve, one lobe with two cuts, or both lobes, where Fri leaves the second
+cut free, Spejlet mirrors it and Drejet turns it. Nine glyphs, one component and one table (`SymmetryIcon` and
 `symmetryIcons.ts` in `$lib/components/icons`), all one colour — `currentColor` — so a selected segment inverts
 glyph and word together on green. The source page has a second family that marks the following cut in red, but
 that is not the one the owner chose, so no glyph here carries a second colour. Three segments with a glyph and

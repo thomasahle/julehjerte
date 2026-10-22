@@ -39,7 +39,7 @@
     UploadIcon
   } from '$lib/components/icons';
   import { NARROW_QUERY } from '$lib/breakpoints';
-  import { editorHref, homeAnchorHref, href } from '$lib/i18n/routes';
+  import { editorHref, generatorHref, homeAnchorHref, href } from '$lib/i18n/routes';
   import { takeHandoff } from '$lib/editor/handoff';
   import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
 
@@ -1050,6 +1050,8 @@
           {#each tArray('helpSectionTipsBullets', lang) as item, i (i)}
             <li>{item}</li>
           {/each}
+          <!-- A motif, such as a tree, is hard to draw cut by cut: the design page makes it. -->
+          <li>{t('helpFigureTip', lang)} <a href={generatorHref(lang, 'figure')}>{t('hintFigureLink', lang)}</a></li>
         </ul>
       </section>
     </div>
