@@ -68,8 +68,13 @@ export const mix = (a: Point, b: Point, t: number): Point => [
 export const sub = (a: Point, b: Point): Point => [a[0] - b[0], a[1] - b[1]];
 export const dot = (a: Point, b: Point) => a[0] * b[0] + a[1] * b[1];
 export const cross = (a: Point, b: Point) => a[0] * b[1] - a[1] * b[0];
-export const distance = (a: Point, b: Point) => Math.hypot(...sub(a, b));
-export const near = (a: Point, b: Point) => distance(a, b) < EPS;
+export const distance = (a: Point, b: Point) => Math.hypot(a[0] - b[0], a[1] - b[1]);
+// Points apart in either coordinate are apart: the hypotenuse is never
+// shorter than a side, so most pairs skip it.
+export const near = (a: Point, b: Point) => {
+	const dx = a[0] - b[0], dy = a[1] - b[1];
+	return Math.abs(dx) < EPS && Math.abs(dy) < EPS && Math.hypot(dx, dy) < EPS;
+};
 export const direction = (a: number): Point => [Math.cos(a), Math.sin(a)];
 export const area = (r: Ring) =>
 	r.reduce((s, p, i) => s + cross(p, r[(i + 1) % r.length]), 0) / 2;
@@ -135,24 +140,24 @@ export function arc(r: Ring, a: Port, b: Port): Ring {
 }
 /** A missed trial ray is routine while placing connections, not an exception. */
 function rayHit(r: Ring, origin: Point, angle: number): Port | null {
-	const v = direction(angle),
-		hits: (Port & { d: number })[] = [];
-	r.forEach((p, i) => {
-		const e = sub(r[(i + 1) % r.length], p),
-			det = cross(v, e);
-		if (Math.abs(det) < EPS) return;
-		const q = sub(p, origin),
-			d = cross(q, e) / det,
-			t = cross(q, v) / det;
-		if (d > EPS && t >= -EPS && t <= 1 + EPS)
-			hits.push({
-				point: mix(p, r[(i + 1) % r.length], Math.max(0, Math.min(1, t))),
-				index: i + Math.max(0, Math.min(1, t)),
-				d
-			});
-	});
-	hits.sort((a, b) => a.d - b.d);
-	return hits[0] ?? null;
+	// The nearest crossing, the first of equals: called for every counter at
+	// every candidate bridge, so one pass without a list of hits.
+	const v = direction(angle);
+	let best: Port | null = null, nearest = Infinity;
+	for (let i = 0; i < r.length; i++) {
+		const p = r[i], next = r[(i + 1) % r.length],
+			e0 = next[0] - p[0], e1 = next[1] - p[1],
+			det = v[0] * e1 - v[1] * e0;
+		if (Math.abs(det) < EPS) continue;
+		const q0 = p[0] - origin[0], q1 = p[1] - origin[1],
+			d = (q0 * e1 - q1 * e0) / det,
+			t = (q0 * v[1] - q1 * v[0]) / det;
+		if (d > EPS && t >= -EPS && t <= 1 + EPS && d < nearest) {
+			nearest = d;
+			best = { point: mix(p, next, Math.max(0, Math.min(1, t))), index: i + Math.max(0, Math.min(1, t)) };
+		}
+	}
+	return best;
 }
 export function ray(r: Ring, origin: Point, angle: number): Port {
 	const hit = rayHit(r, origin, angle);
@@ -302,12 +307,14 @@ function nestedBlock(...args: Parameters<typeof block>) {
 	}));
 }
 export const centroid = (r: Ring): Point => {
-	const xs = r.map((p) => p[0]),
-		ys = r.map((p) => p[1]);
-	return [
-		(Math.min(...xs) + Math.max(...xs)) / 2,
-		(Math.min(...ys) + Math.max(...ys)) / 2
-	];
+	let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+	for (const [x, y] of r) {
+		if (x < minX) minX = x;
+		if (x > maxX) maxX = x;
+		if (y < minY) minY = y;
+		if (y > maxY) maxY = y;
+	}
+	return [(minX + maxX) / 2, (minY + maxY) / 2];
 };
 export function contourChain(
 	edges: Edge[],
