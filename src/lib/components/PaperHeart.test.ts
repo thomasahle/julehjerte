@@ -230,7 +230,7 @@ describe('the Escher tab', () => {
 		expect(h.isStart()).toBe(true);
 		// another size of the start is its start too
 		const first = cutsOf(h.fingers);
-		h.target.querySelector<HTMLButtonElement>('.pattern-sizes button:nth-child(2)')!.click();
+		h.target.querySelector<HTMLButtonElement>('.escher-tab .sizes button:nth-child(2)')!.click();
 		flushSync();
 		expect(cutsOf(h.fingers)).not.toBe(first);
 		expect(h.isStart()).toBe(true);
@@ -467,7 +467,7 @@ describe('the Escher tab', () => {
 		const h = render({ initialFingers: tileFingers(tile), initialGridSize: tileGrid(tile), initialWeaveParity: weaveParityOf(tile), initialPattern: savedPattern(tile) });
 		await vi.waitFor(() => expect(chosenType(h)).toBe('Moved and half turn'));
 		const knobs = JSON.stringify(h.fingers);
-		h.target.querySelector<HTMLButtonElement>('.pattern-restart')!.click();
+		h.target.querySelector<HTMLButtonElement>('.escher-tab .restart')!.click();
 		flushSync();
 		expect(cutsOf(h.fingers)).toBe(cutsOf(tileFingers(restartedTile(tile))));
 		expect(chosenType(h)).toBe('Moved and half turn');
@@ -478,7 +478,7 @@ describe('the Escher tab', () => {
 		h.button('Redo').click();
 		flushSync();
 		const started = JSON.stringify(h.fingers);
-		h.target.querySelector<HTMLButtonElement>('.pattern-restart')!.click();
+		h.target.querySelector<HTMLButtonElement>('.escher-tab .restart')!.click();
 		flushSync();
 		expect(JSON.stringify(h.fingers)).toBe(started);
 		h.button('Undo').click();
@@ -712,6 +712,65 @@ describe('a finger', () => {
 		const moved = h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0;
 		expect(moved.x).toBeCloseTo(node.x);
 		expect(moved.y).toBeCloseTo(node.y + 12);
+	});
+});
+
+describe('the Normal tab’s sizes and Start forfra', () => {
+	const sizeButton = (h: ReturnType<typeof render>, n: number) =>
+		[...h.target.querySelectorAll<HTMLButtonElement>('[aria-label="Strips"] button')].find((b) => b.textContent === `${n} × ${n}`)!;
+	const same = (a: Finger[], b: Finger[]) =>
+		a.length === b.length &&
+		a.every((f, i) => f.id === b[i]!.id && f.segments.length === b[i]!.segments.length && f.segments.every((seg, k) =>
+			(['p0', 'p1', 'p2', 'p3'] as const).every((q) => Math.hypot(seg[q].x - b[i]!.segments[k]![q].x, seg[q].y - b[i]!.segments[k]![q].y) < 1e-6)));
+
+	it('draw a plain heart as the plain heart of the size pressed, which Fortryd takes back', () => {
+		const h = render();
+		const opened = JSON.stringify(h.fingers);
+		expect(sizeButton(h, 3).getAttribute('aria-pressed')).toBe('true');
+		sizeButton(h, 4).click();
+		flushSync();
+		expect(h.gridSize).toEqual({ x: 4, y: 4 });
+		expect(sizeButton(h, 4).getAttribute('aria-pressed')).toBe('true');
+		const plainFour = render({ initialGridSize: { x: 4, y: 4 } });
+		expect(same(h.fingers, plainFour.fingers)).toBe(true);
+		h.button('Undo').click();
+		flushSync();
+		expect(JSON.stringify(h.fingers)).toBe(opened);
+	});
+
+	it('keep a drawn heart drawn, and Start forfra draws it plain again, once', () => {
+		const h = render();
+		const plain = JSON.stringify(h.fingers);
+		// a node on R-1, dragged aside
+		const at = midpoint(h.fingers.find((f) => f.id === 'R-1')!);
+		for (let i = 0; i < 2; i++) {
+			send(h.path('R-1'), 'pointerdown', at);
+			send(h.svg, 'pointerup', at);
+		}
+		const node = h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0;
+		send(h.handles()[1]!, 'pointerdown', node);
+		send(h.svg, 'pointermove', { x: node.x + 20, y: node.y });
+		send(h.svg, 'pointerup', { x: node.x + 20, y: node.y });
+		sizeButton(h, 6).click();
+		flushSync();
+		// 6 strips: R-2 lies where R-1 did, a third of the way across, with its node and bend
+		expect(h.gridSize).toEqual({ x: 6, y: 6 });
+		const kept = h.fingers.find((f) => f.id === 'R-2')!;
+		expect(kept.segments).toHaveLength(2);
+		const square = (cut: Finger) => cut.segments[0]!.p0.x;
+		expect(kept.segments[1]!.p0.x - square(kept)).toBeGreaterThan(20);
+		// Start forfra: plain again, at 6 × 6
+		h.target.querySelector<HTMLButtonElement>('.symmetry-panel .restart')!.click();
+		flushSync();
+		expect(same(h.fingers, render({ initialGridSize: { x: 6, y: 6 } }).fingers)).toBe(true);
+		const steps = () => (h.button('Undo').disabled ? 0 : 1);
+		// pressed again, nothing to do: no step
+		const before = JSON.stringify(h.fingers);
+		h.target.querySelector<HTMLButtonElement>('.symmetry-panel .restart')!.click();
+		flushSync();
+		expect(JSON.stringify(h.fingers)).toBe(before);
+		expect(steps()).toBe(1);
+		expect(plain).not.toBe(before);
 	});
 });
 

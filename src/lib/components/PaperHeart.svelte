@@ -15,6 +15,9 @@
 		UndoIcon
 	} from '$lib/components/icons';
 	import SymmetryRows from '$lib/components/editor/SymmetryRows.svelte';
+	import RestartButton from '$lib/components/editor/RestartButton.svelte';
+	import SizeButtons from '$lib/components/editor/SizeButtons.svelte';
+	import { restripped } from '$lib/editor/strips';
 	import {
 		NodeAddIcon,
 		NodeCornerIcon,
@@ -29,7 +32,7 @@
 	import { readPanelCollapsed, writePanelCollapsed } from '$lib/editor/panelState';
 	import type { Finger, GridSize, HeartPattern, Vec, LobeId, NodeType } from '$lib/types/heart';
 	import { clamp, clampInt } from '$lib/utils/math';
-	import { inferOverlapRect } from '$lib/utils/overlapRect';
+	import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
 	import { BASE_CANVAS_SIZE, CENTER, MAX_GRID_SIZE, MIN_GRID_SIZE, PRECISION_GRID_SIZE, STRIP_WIDTH } from '$lib/constants';
 	import { computeWeaveData } from '$lib/rendering/svgWeave';
 	import HeartWeaveFill from './HeartWeaveFill.svelte';
@@ -1291,6 +1294,46 @@
 		});
 	}
 
+	/** The Normal tab's sizes, n × n strips. */
+	const HEART_SIZES = [2, 3, 4, 5, 6, 7] as const;
+
+	/**
+	 * The Normal tab's size: the heart drawn again with n strips in each half on the square they span,
+	 * keeping its drawing (`restripped`: each new cut lies between two old ones and is as like each as
+	 * it is near it), as the Escher tab's sizes keep the tile; a plain heart, the plain heart of that
+	 * size. Not where that would make red cuts.
+	 */
+	function setHeartSize(n: number) {
+		if (readonly || patternTile || (gridSize.x === n && gridSize.y === n)) return;
+		const grid = { x: n, y: n };
+		const from = getOverlapRect();
+		const to = getCenteredRectParams(grid, { x: from.left + from.width / 2, y: from.top + from.height / 2 });
+		const next = sameCuts(fingers, createDefaultFingers(gridSize)) ? createDefaultFingers(grid) : restripped(fingers, from, to, n);
+		const red = (cuts: Finger[], size: GridSize) =>
+			findFingersWithIssues(cuts, intersectionMarginPx(inferOverlapRect(cuts, size), gridClearanceScale(size.x, size.y))).size;
+		if (red(next, grid) > red(fingers, gridSize)) {
+			noteRefused(tr('editorSizeTooTight').replace('{n}', `${n} × ${n}`));
+			return;
+		}
+		noteRefused(null);
+		const before = snapshotState();
+		fingers = next;
+		gridSize = grid;
+		clearSelection();
+		pushUndo(before);
+	}
+
+	/** The Normal tab's "Start forfra": a plain heart of the same size; nothing, where it is one already. */
+	function restartHeart() {
+		if (readonly || patternTile) return;
+		const fresh = createDefaultFingers(gridSize);
+		if (sameCuts(fresh, fingers)) return;
+		const before = snapshotState();
+		fingers = fresh;
+		clearSelection();
+		pushUndo(before);
+	}
+
 	/** The tab's "Start forfra": the tile drawn again as its type starts, at its size; nothing, where it is that already. */
 	function restartEscherTile() {
 		if (!patternTile || !escher || escher.isStartTile(patternTile)) return;
@@ -1306,10 +1349,10 @@
 	 */
 	let refusal = $state<string | null>(null);
 	let refusalTimer: ReturnType<typeof setTimeout> | null = null;
-	function noteRefused(text: string) {
+	function noteRefused(text: string | null) {
 		if (refusalTimer) clearTimeout(refusalTimer);
 		refusal = text;
-		refusalTimer = setTimeout(() => {
+		refusalTimer = text === null ? null : setTimeout(() => {
 			refusal = null;
 			refusalTimer = null;
 		}, 4500);
@@ -1329,6 +1372,7 @@
 			noteRefused(tr('patternSizeTooTight').replace('{n}', `${n} × ${n}`));
 			return;
 		}
+		noteRefused(null);
 		const before = snapshotState();
 		showTile(next);
 		pushUndo(before);
@@ -4369,6 +4413,16 @@
 								}}
 								disabled={{ lobes: !canSymmetryBetweenLobes() }}
 							/>
+							<!-- As in the Escher tab: the size, and a way to start over. -->
+							<SizeButtons
+								sizes={HEART_SIZES}
+								size={gridSize.x === gridSize.y ? gridSize.x : null}
+								name={tr('editorStrips')}
+								label
+								onSize={setHeartSize}
+								disabled={readonly}
+							/>
+							<RestartButton label={tr('patternRestart')} title={tr('editorRestartHint')} onclick={restartHeart} disabled={readonly} />
 						{/if}
 					</section>
 

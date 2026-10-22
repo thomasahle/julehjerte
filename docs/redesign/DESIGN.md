@@ -610,6 +610,15 @@ selection and red invalid-cut highlights take priority. This is a visual overlap
 not a certificate of exact geometric coincidence. It must not intercept pointer events
 or change saved/exported cutting paths.
 
+Under the Normal tab's three rows, as under the Escher tab's types (2026-10-22, after the user test: adding a
+strip by pulling an edge in was found by one tester in twelve tries): **Striber**, 2 × 2 to 7 × 7
+(`SizeButtons`), and **Start forfra** (`RestartButton`), a plain heart of the same size, nothing where it is
+one already. A size draws the heart again with n strips in each half on the square they span, keeping its
+drawing (`$lib/editor/strips` `restripped`): each new cut lies an n-th of the way across, between two old ones,
+blended from them by how near it lies to each, the two lined up node for node across the square (by length
+where a cut turns back); a plain heart becomes the plain heart of that size. A size that would make red cuts is
+refused with a line above the heart, as every button's edit and every symmetry row now is (GitHub #4).
+
 Symmetri has two tabs at its top, **Normal** (the rows above) and **Escher**, which draws the whole heart from
 one tile, repeated the way Escher's regular divisions repeat one shape (`$lib/pattern`): an edit to one stretch
 of cut between two crossings reaches every stretch that carries the same curve. The visitor picks a tile type
