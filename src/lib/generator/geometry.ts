@@ -306,7 +306,8 @@ function nestedBlock(...args: Parameters<typeof block>) {
 		...edge, family: edge.family === 'A' ? 'B' as const : 'A' as const
 	}));
 }
-export const centroid = (r: Ring): Point => {
+/** A ring's box: its least and greatest x and y. */
+function ringBox(r: Ring): [number, number, number, number] {
 	let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
 	for (const [x, y] of r) {
 		if (x < minX) minX = x;
@@ -314,6 +315,10 @@ export const centroid = (r: Ring): Point => {
 		if (y < minY) minY = y;
 		if (y > maxY) maxY = y;
 	}
+	return [minX, minY, maxX, maxY];
+}
+export const centroid = (r: Ring): Point => {
+	const [minX, minY, maxX, maxY] = ringBox(r);
 	return [(minX + maxX) / 2, (minY + maxY) / 2];
 };
 export function contourChain(
@@ -1375,11 +1380,26 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 		return best;
 	};
 
+	// Each counter's box, and a group's box centre from theirs: the numbers
+	// `centroid` gives, asked at every candidate bridge.
+	const boxes = new Map(node.children.map(child => [child, ringBox(child.ring)]));
+	const centreOf = (children: Contour[]): Point => {
+		let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+		for (const child of children) {
+			const [x0, y0, x1, y1] = boxes.get(child)!;
+			if (x0 < minX) minX = x0;
+			if (x1 > maxX) maxX = x1;
+			if (y0 < minY) minY = y0;
+			if (y1 > maxY) maxY = y1;
+		}
+		return [(minX + maxX) / 2, (minY + maxY) / 2];
+	};
+	const centres = new Map(node.children.map(child => [child, centreOf([child])]));
 	const nearest = node.children.map((h) =>
 		bridgePorts.reduce(
 			(best, i) =>
-				distance(centroid(h.ring), ports[i].point) <
-				distance(centroid(h.ring), ports[best].point)
+				distance(centres.get(h)!, ports[i].point) <
+				distance(centres.get(h)!, ports[best].point)
 					? i
 					: best,
 			bridgePorts[0]
@@ -1411,7 +1431,7 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 				for (let j = 0; j < count; j++) {
 					const children = node.children.filter((_, i) => assignment[i] === j);
 					if (!children.length) continue;
-					const center = centroid(children.flatMap((h) => h.ring));
+					const center = centreOf(children);
 					const contact = (a: Port, b: Port): Port => {
 						if (children.length !== 1) throw new ConstructionError('topology', 'Contact needs one counter');
 						const candidates = contacts.get(children[0])!.filter(p =>
@@ -1437,15 +1457,15 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 					intervals.push([before, after]);
 					const d = sub(after.point, before.point);
 					children.sort(
-						(a, b) => dot(centroid(a.ring), d) - dot(centroid(b.ring), d)
+						(a, b) => dot(centres.get(a)!, d) - dot(centres.get(b)!, d)
 					);
 					let previous = before.point;
 					for (let k = 0; k < children.length; k++) {
 						const h = children[k],
-							c = centroid(h.ring);
+							c = centres.get(h)!;
 						const next =
 							k + 1 < children.length
-								? centroid(children[k + 1].ring)
+								? centres.get(children[k + 1])!
 								: after.point;
 						const entry = (left === -2 ? ringPort(h.ring, previous) : undefined) ?? (corners ? support(h.ring, Math.atan2(previous[1] - c[1], previous[0] - c[0])) : ray(
 							h.ring,

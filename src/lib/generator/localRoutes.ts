@@ -10,7 +10,7 @@ export function createLocalRouter() {
 	const id = (p: Point) => {
 		let value = points.get(p);
 		if (value === undefined) {
-			const key = p.map(x => x.toFixed(6)).join(',');
+			const key = p[0].toFixed(6) + ',' + p[1].toFixed(6);
 			value = coordinates.get(key);
 			if (value === undefined) {
 				value = coordinates.size;
@@ -20,7 +20,11 @@ export function createLocalRouter() {
 		}
 		return value;
 	};
-	const near = (a: Point, b: Point) => Math.hypot(a[0] - b[0], a[1] - b[1]) < 1e-7;
+	// Apart in either coordinate is apart: the hypotenuse is never shorter.
+	const near = (a: Point, b: Point) => {
+		const dx = a[0] - b[0], dy = a[1] - b[1];
+		return Math.abs(dx) < 1e-7 && Math.abs(dy) < 1e-7 && Math.hypot(dx, dy) < 1e-7;
+	};
 
 	/** Trace the two noncrossing paths of each sheet, rejecting branches and loops.
 	 * The returned paths use the candidate's exact points, never rounded keys. */
