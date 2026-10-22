@@ -519,9 +519,13 @@
     "name": "TAK",
     "difficulty": "hard"
   },
-  "aar-2026": {
-    "name": "2026",
-    "difficulty": "hard"
+  "jul-tern": {
+    "name": "JUL i tern",
+    "names": {
+      "da": "JUL i tern",
+      "en": "JUL in checks"
+    },
+    "difficulty": "medium"
   },
   "jul-2026": {
     "name": "JUL 2026",

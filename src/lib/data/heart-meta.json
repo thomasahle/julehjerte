@@ -2041,8 +2041,12 @@
     },
     "photo": null
   },
-  "aar-2026": {
-    "name": "2026",
+  "jul-tern": {
+    "name": "JUL i tern",
+    "names": {
+      "da": "JUL i tern",
+      "en": "JUL in checks"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -2051,10 +2055,10 @@
     "date": "2026-10-22",
     "description": null,
     "gridSize": {
-      "x": 4,
-      "y": 4
+      "x": 3,
+      "y": 3
     },
-    "difficulty": "hard",
+    "difficulty": "medium",
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": false,

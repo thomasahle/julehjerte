@@ -70,7 +70,7 @@ export const PINTEREST_ORDER: readonly string[] = [
 	'lilje1', 'tragt', 'davidsstjerne-circ', 'boelgebrud', 'ball', 'glaskuppel',
 	'lilje2', 'hvirvel', 'david4', 'jul-2026', 'permo-kroge', 'fisk',
 	'permo-draaber', 'khatam', 'tulipan', 'permo-cirkler', 'fiskeskael', 'stjernerogkors',
-	'boelger', 'stjernegitter', 'roed-blomst', 'blomster-hjerte', 'aar-2026', 'skraa-kryds',
+	'boelger', 'stjernegitter', 'roed-blomst', 'blomster-hjerte', 'jul-tern', 'skraa-kryds',
 	'hjertekloever', 'fejlternet', 'firkloever-hjerte', 'gitterhjerte', 'kloeverblad-hjerte', 'cirkelhjerte',
 	'groen-stjerne', 'firkanthjerte', 'hjerte-paa-hjerte'
 ];

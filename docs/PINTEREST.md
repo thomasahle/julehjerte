@@ -63,7 +63,8 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   place a new heart elsewhere, insert it in `PINTEREST_ORDER` only at a
   position after today's (inserting before today would shift released days).
   The five text hearts of 2026-10-22 went in so, at days 12, 25, 45, 57 and 70,
-  each between hearts of other categories, before the new year. When Khatam,
+  each between hearts of other categories, before the new year; JUL i tern
+  took day 70 from 2026 the same evening, before either was out. When Khatam,
   Stjernegitter and Stjerner og kors moved to Mønstre the same day, three swaps
   of hearts not yet out (days 62/63, 68/69 and 65/72) kept every day's
   neighbours of another category.
