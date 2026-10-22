@@ -121,7 +121,7 @@
 	data-user={heart.isUserCreated ? '' : undefined}
 	data-level={heart.difficulty}
 	aria-labelledby={nameId}
-	style="height: {CARD_HEART_SIZE + 120}px;"
+	style:--card-height="{CARD_HEART_SIZE + 120}px"
 	style:--strand={strand === undefined ? undefined : `var(--strand-${strand})`}
 	style:display={hidden ? 'none' : undefined}
 >
@@ -190,6 +190,15 @@
 		/* The strand's offset, when the gallery sets one (`translate`, so the
 		   hover's `transform` is not overridden); 0 when it does not. */
 		translate: 0 var(--strand, 0px);
+	}
+
+	/* Every card the same height where the gallery hangs its columns as strands (GALLERY-CURVE.md),
+	   whose push moves rows a card's height apart; the slack for the longer ribbons goes below the
+	   name. Narrower, the card is as tall as what is in it. */
+	@media (min-width: 900px) {
+		.card {
+			height: var(--card-height);
+		}
 	}
 
 	.card:hover {
@@ -335,8 +344,9 @@
 		pointer-events: none;
 	}
 
+	/* Right under its own heart's tip, whatever the ribbon: at the card's foot it was nearer the
+	   next row's heart than its own on a phone (the owner, 22 Oct 2026). */
 	.card-meta {
-		margin-top: auto;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

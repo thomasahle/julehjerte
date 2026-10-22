@@ -242,6 +242,13 @@ strands from the viewport width and leaves them on `<html>`, so the first paint 
 the hill; the stylesheet's 1440 estimate `-100vw * 226 / 2172` is only the fallback without script. `z-index: 1` stays so the gallery paints over the scene. Below 900
 none of this applies: the landscape is an in-flow band, with the scroll hint just above it.
 
+A card's name and difficulty sit right under its heart's tip (12px at 1440, 9px on a phone), whatever its
+ribbon. From 900 up every card is the heart plus 120px tall, since the strands' push moves rows a card's
+height apart, and the slack for the longer ribbons is below the name; narrower, a card is as tall as what is
+in it. Until 22 Oct 2026 the name stood at the card's foot, 19–59px below its heart at 1440 and 58–98px on a
+phone, where that was further than the next row's ribbon (32px; the owner: "the text is closer to the heart
+below it, than to the heart above it that it belongs to").
+
 Gallery bar (`front/GalleryBar.svelte`, docs/redesign/GALLERY-BAR.md; it replaced the toolbar, 2026-10-17):
 sticky top 0, z-index 5, one row (`display: flex; align-items: center; gap: 12px`, padding 10px 0, 8px below
 700). It is transparent until it sticks — a 1px sentinel above it tells — and `--page` once stuck, so it never

@@ -39,7 +39,7 @@
 <a
 	class="make"
 	{href}
-	style="height: {CARD_HEART_SIZE + 120}px;"
+	style:--card-height="{CARD_HEART_SIZE + 120}px"
 	style:--strand={strand === undefined ? undefined : `var(--strand-${strand})`}
 >
 	<div class="make-heart" data-pair={slot} style={slotStyle(slot)}>
@@ -62,6 +62,12 @@
 		translate: 0 var(--strand, 0px);
 	}
 
+	@media (min-width: 900px) {
+		.make {
+			height: var(--card-height);
+		}
+	}
+
 	.make:hover {
 		transform: scale(1.02);
 	}
@@ -80,9 +86,8 @@
 		pointer-events: none;
 	}
 
-	/* Where a card has its name and difficulty. */
+	/* Where a card has its name and difficulty: under the heart. */
 	.name {
-		margin-top: auto;
 		padding-bottom: 22px;
 		font-size: 16px;
 		font-weight: 600;
