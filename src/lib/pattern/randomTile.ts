@@ -28,24 +28,78 @@ const between = (rng: Rng, lo: number, hi: number) => lo + rng() * (hi - lo);
 const int = (rng: Rng, lo: number, hi: number) => lo + Math.floor(rng() * (hi - lo + 1));
 const v = (x: number, y: number): Vec => ({ x, y });
 
-/** One side as the type draws it: whole, half an S (to (0.5, 0)), or half an arch (to the middle, level). */
-function randomSide(half: HalfKind | null, reach: number, rng: Rng): SideCurve {
-	if (half === 'turn') return randomChain(v(0, 0), v(0.5, 0), int(rng, 1, 2), reach, rng);
-	if (half === 'mirror') return randomChain(v(0, 0), v(0.5, between(rng, -reach, reach)), int(rng, 1, 2), reach, rng, 0);
-	return randomChain(v(0, 0), v(1, 0), int(rng, 1, 4), reach, rng);
+function pick<T>(rng: Rng, weights: [T, number][]): T {
+	const total = weights.reduce((sum, [, w]) => sum + w, 0);
+	let r = rng() * total;
+	for (const [value, w] of weights) {
+		r -= w;
+		if (r < 0) return value;
+	}
+	return weights[weights.length - 1]![0];
 }
+
+/** Pieces a whole side has: mostly one or two, which bulge, and fewer of the wigglier three and four. */
+const PIECES: [number, number][] = [
+	[1, 3],
+	[2, 3],
+	[3, 2],
+	[4, 1]
+];
+/** Cuts, so tiles across: mostly 3–5 big tiles, whose shapes read, and fewer of the finer 6 and 7. */
+const CUTS: [number, number][] = [
+	[2, 3],
+	[3, 3],
+	[4, 2],
+	[5, 1],
+	[6, 0.5]
+];
+
+/** One side as the type draws it: whole, half an S (to (0.5, 0)), or half an arch (to the middle, level); its nodes bold (`randomChain`). */
+function randomSide(half: HalfKind | null, reach: number, rng: Rng): SideCurve {
+	const sign = rng() < 0.5 ? -1 : 1;
+	if (half === 'turn') return randomChain(v(0, 0), v(0.5, 0), int(rng, 1, 2), reach, rng, undefined, true);
+	if (half === 'mirror') return randomChain(v(0, 0), v(0.5, sign * reach * between(rng, 0.45, 1)), int(rng, 1, 2), reach, rng, 0, true);
+	return randomChain(v(0, 0), v(1, 0), pick(rng, PIECES), reach, rng, undefined, true);
+}
+
+/**
+ * How far a tile's sides stand off straight, on average, in cells: each side the type draws sampled along
+ * its length. A tile under MIN_BOLDNESS is close to a chequerboard with a ripple, which reads as noise
+ * rather than as a figure.
+ */
+export function tileBoldness(tile: PatternTile): number {
+	const sides = Object.values(tile.curves).filter((c): c is SideCurve => !!c);
+	if (!sides.length) return 0;
+	const offset = (side: SideCurve) => {
+		let sum = 0;
+		let count = 0;
+		for (const s of side) {
+			for (let i = 0; i < 12; i++) {
+				const t = (i + 0.5) / 12;
+				const u = 1 - t;
+				sum += Math.abs(u * u * u * s.p0.y + 3 * u * u * t * s.p1.y + 3 * u * t * t * s.p2.y + t * t * t * s.p3.y);
+				count++;
+			}
+		}
+		return sum / count;
+	};
+	return sides.reduce((total, side) => total + offset(side), 0) / sides.length;
+}
+
+/** Below this, in cells, a tile's sides are too nearly straight to make a figure (`tileBoldness`). */
+export const MIN_BOLDNESS = 0.12;
 
 /** A random type and size: the round of draws `randomTileDraw` keeps them for. */
 export function randomTileKind(rng: Rng = Math.random): { rule: TileRule; cuts: number } {
-	return { rule: ALL_RULES[int(rng, 0, ALL_RULES.length - 1)]!, cuts: int(rng, 2, 6) };
+	return { rule: ALL_RULES[int(rng, 0, ALL_RULES.length - 1)]!, cuts: pick(rng, CUTS) };
 }
 
 /** A random tile of the type and size, not yet checked: every side the type draws, a lean and a shape; `shrink` makes them all smaller. */
 export function randomTileDraw(rng: Rng, kind: { rule: TileRule; cuts: number }, shrink = 1): PatternTile {
 	const { rule, cuts } = kind;
-	const reach = between(rng, 0.05, 0.7) * shrink;
+	const reach = between(rng, 0.2, 0.75) * shrink;
 	const curves = Object.fromEntries(
-		ruleInfo(rule).curves.map((key) => [key, randomSide(halfOf(rule, key), reach * between(rng, 0.4, 1), rng)])
+		ruleInfo(rule).curves.map((key) => [key, randomSide(halfOf(rule, key), reach * between(rng, 0.6, 1), rng)])
 	);
 	const lean = canLean(rule) && rng() < 0.5 ? { offset: v(between(rng, -0.4, 0.4) * shrink, between(rng, -0.4, 0.4) * shrink) } : {};
 	const shaped =

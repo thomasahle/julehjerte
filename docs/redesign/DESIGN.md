@@ -599,7 +599,7 @@ or change saved/exported cutting paths.
 Each tab of the Symmetri card ends with a dice button that replaces the heart with a random one in one Fortryd
 step, for exploring what the tab can draw: a draw from the whole space of designs, not a pick from a few
 prepared ones. **Tilfældigt mønster / Random pattern** under the Normal rows (`$lib/editor/randomHeart`) draws
-2–8 strips a lobe (the same in both when the lobes are tied), the three rows (Fra, Sym or Anti each), the
+2–8 strips, the same in both lobes so the woven square is always square, the three rows (Fra, Sym or Anti each), the
 cuts' places on the square's sides (anywhere, at least 4 % apart), and every cut as a chain of 1–6 cubic
 pieces with random nodes, smooth or corners, and random handles, reaching from a tenth of a strip to more
 than one; the rows are built in exactly (a tied cut is a random half and its mirror image or turned copy, the

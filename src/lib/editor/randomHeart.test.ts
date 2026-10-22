@@ -23,14 +23,14 @@ describe('randomHeart', () => {
 		expect(randomHeart(seeded(42))).toEqual(randomHeart(seeded(42)));
 	});
 
-	it('draws 2 to 8 strips a lobe, the same in both when the lobes are tied, with the edges and cuts the editor numbers', () => {
+	it('draws 2 to 8 strips, the same in both lobes so the woven square is square, with the edges and cuts the editor numbers', () => {
 		for (const heart of HEARTS) {
 			const { x, y } = heart.gridSize;
 			for (const n of [x, y]) {
 				expect(n).toBeGreaterThanOrEqual(2);
 				expect(n).toBeLessThanOrEqual(8);
 			}
-			if (heart.symmetry.betweenLobesMode !== 'off') expect(x).toBe(y);
+			expect(x).toBe(y);
 			expect(heart.fingers.map((f) => f.id)).toEqual([
 				...Array.from({ length: y + 1 }, (_, i) => `L-${i}`),
 				...Array.from({ length: x + 1 }, (_, i) => `R-${i}`)
@@ -73,6 +73,5 @@ describe('randomHeart', () => {
 		expect(kinds((h) => String(h.gridSize.y))).toBe(7);
 		expect(kinds((h) => h.symmetry.withinCurveMode + h.symmetry.withinLobeMode + h.symmetry.betweenLobesMode)).toBeGreaterThan(20);
 		expect(kinds((h) => String(h.pieces))).toBeGreaterThanOrEqual(5);
-		expect(HEARTS.some((h) => h.gridSize.x !== h.gridSize.y)).toBe(true);
 	});
 });

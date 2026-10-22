@@ -10,7 +10,7 @@
 import type { TranslationKey } from '$lib/i18n';
 import type { Finger, GridSize, HeartPattern, LobeId, NodeType, Vec } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
-import { halvesCrossCleanly } from '$lib/editor/slivers';
+import { halvesCrossCleanly, MIN_PIECE, smallestPiece } from '$lib/editor/slivers';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { getCenteredRectParams, inferOverlapRect, type OverlapRect } from '$lib/utils/overlapRect';
 import {
@@ -40,7 +40,7 @@ import { MAX_GRID_SIZE, MIN_GRID_SIZE } from '$lib/constants';
 import { ALL_RULES, COMMON_RULES, latticeOf, ruleInfo, ruleKey, ruleSymmetry, sameRule, type TileRule } from './rules';
 import { cutCounts, fitLines, tileShape, tileTurn, type PatternTile, type SideCurve } from './tiling';
 import { isStraightTile, ruleStart, switchRule } from './starts';
-import { randomTileDraw, randomTileKind } from './randomTile';
+import { MIN_BOLDNESS, randomTileDraw, randomTileKind, tileBoldness } from './randomTile';
 
 export { cutOfFinger, cutsAre, followEdit, generateEditorFingers, READ_TOLERANCE, sameRule, specialNodes, weaveParityOf };
 export type { PatternTile, SpecialNode, TileRule };
@@ -96,21 +96,29 @@ function tileWeaves(tile: PatternTile): boolean {
  * heart it makes weaves, has no sliver between its lobes' cuts and is not a plain chequerboard, the sides smaller after many tries; the first
  * common type's start, if none does. With the type's key, for the analytics event.
  */
-/** Whether the tile's heart has no sliver between its lobes' cuts (`halvesCrossCleanly`), its lines fitted. */
+/**
+ * Whether the heart a tile makes, its lines fitted, is fit to cut beyond weaving: at least two cuts each way
+ * (a stretched or turned pattern can leave the square nearly bare), no sliver between its lobes' cuts
+ * (`halvesCrossCleanly`), and no crumb of a piece (`smallestPiece`).
+ */
 function crossesCleanly(tile: PatternTile): boolean {
 	const made = tileFingers(tile);
 	const grid = tileGrid(tile);
-	return halvesCrossCleanly(made, intersectionMarginPx(inferOverlapRect(made, grid), gridClearanceScale(grid.x, grid.y)));
+	if (grid.x < 3 || grid.y < 3) return false;
+	const rect = inferOverlapRect(made, grid);
+	if (!halvesCrossCleanly(made, intersectionMarginPx(rect, gridClearanceScale(grid.x, grid.y)))) return false;
+	// The square holds cuts + 1 cells each way, whatever the lines fitted.
+	return smallestPiece(made, rect, (tile.cuts + 1) ** 2) >= MIN_PIECE;
 }
 
 export function randomTile(rng: () => number = Math.random): { tile: PatternTile; rule: string } {
 	// A type and size are kept for a round of draws, the sides smaller each time, so every type and size
 	// turns up as often as any other, the ones that more often come too close as well.
-	for (let round = 0; round < 12; round++) {
+	for (let round = 0; round < 20; round++) {
 		const kind = randomTileKind(rng);
 		for (let i = 0; i < 12; i++) {
-			const drawn = randomTileDraw(rng, kind, 1 - (0.6 * i) / 12);
-			if (isStraightTile(drawn) || !tileWeaves(drawn)) continue;
+			const drawn = randomTileDraw(rng, kind, 1 - (0.35 * i) / 12);
+			if (tileBoldness(drawn) < MIN_BOLDNESS || !tileWeaves(drawn)) continue;
 			let tile = fitLines(drawn);
 			if (rng() < 0.4) {
 				const [lo, hi] = turnRange(tile);

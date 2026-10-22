@@ -3,7 +3,8 @@
  * exploring what the editor can draw: not a pick from a few prepared designs, but a draw from the whole
  * space of hearts the Normal tab makes, limited only by what makes a heart one at all.
  *
- *   strips     2–8 in each lobe; the same number in both when the lobes are tied, else each its own
+ *   strips     2–8, the same number in both lobes: a heart's woven square is square, strips × STRIP_WIDTH
+ *              a side, whatever the cuts' places
  *   symmetry   the three rows (Inden i kurve, Inden i lap, Mellem lapper), each Fra, Sym or Anti
  *   places     where each cut meets the square's sides: anywhere, at least MIN_GAP apart
  *   cuts       each a chain of 1–6 cubic pieces: its nodes anywhere along and across it, each smooth or
@@ -28,7 +29,7 @@ import { CENTER, STRIP_WIDTH } from '$lib/constants';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { randomChain } from '$lib/geometry/randomChain';
-import { halvesCrossCleanly } from '$lib/editor/slivers';
+import { halvesCrossCleanly, MIN_PIECE, smallestPiece } from '$lib/editor/slivers';
 import type { BezierSegment } from '$lib/geometry/bezierSegments';
 import type { Finger, GridSize, NodeType, Vec } from '$lib/types/heart';
 
@@ -146,14 +147,16 @@ function randomLobe(n: number, places: number[], symmetry: RandomSymmetry, reach
 
 /**
  * Whether the cuts are fit to cut: they keep the red cuts' distance from each other and themselves on their
- * own grid, and the two halves' cuts never run alongside each other (`halvesRunTogether`): within 1.5
- * margins for 10 margins, two cuts crossing at less than about 18°. The wedges of an ordinary curved
- * crossing pass.
+ * own grid, the two halves' cuts never run alongside each other (`halvesCrossCleanly`), and no piece of
+ * the woven picture is a crumb (`smallestPiece`).
  */
 export function randomHeartIsValid(fingers: Finger[], grid: GridSize): boolean {
 	const margin = intersectionMarginPx({ width: grid.x * STRIP_WIDTH, height: grid.y * STRIP_WIDTH }, gridClearanceScale(grid.x, grid.y));
-	if (findFingersWithIssues(fingers, margin).size > 0) return false;
-	return halvesCrossCleanly(fingers, margin);
+	if (findFingersWithIssues(fingers, margin).size > 0 || !halvesCrossCleanly(fingers, margin)) return false;
+	const width = grid.x * STRIP_WIDTH;
+	const height = grid.y * STRIP_WIDTH;
+	const rect = { left: CENTER.x - width / 2, top: CENTER.y - height / 2, width, height };
+	return smallestPiece(fingers, rect, grid.x * grid.y) >= MIN_PIECE;
 }
 
 /** Smooth where the handles on either side of a node point in opposite directions along one line. */
@@ -246,7 +249,8 @@ export function randomHeart(rng: Rng = Math.random): RandomHeart {
 			betweenLobesMode: MODES[int(rng, 0, 2)]!
 		};
 		const nL = int(rng, 2, 8);
-		const nR = symmetry.betweenLobesMode === 'off' ? int(rng, 2, 8) : nL;
+		// Both lobes the same number of strips: the woven square is square (a lobe's strips set its side).
+		const nR = nL;
 		for (let attempt = 0; attempt < TRIES; attempt++) {
 			const heart = draw(rng, 1 - (0.6 * attempt) / TRIES, symmetry, nL, nR);
 			if (!heart || !randomHeartIsValid(heart.fingers, heart.gridSize)) continue;

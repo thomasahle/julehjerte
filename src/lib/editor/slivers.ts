@@ -53,3 +53,115 @@ export function halvesRunTogether(fingers: Finger[], close: number, run: number)
 export function halvesCrossCleanly(fingers: Finger[], margin: number): boolean {
 	return !halvesRunTogether(fingers, 1.5 * margin, 10 * margin);
 }
+
+/**
+ * The sizes of the woven picture's pieces, smallest first, each as a share of the square: the picture
+ * sampled `resolution` times each way inside `rect` (each point's colour is the number of left cuts above
+ * it and right cuts to its left, odd or even), and its pieces of one colour found.
+ */
+export function pieceSizes(
+	fingers: Finger[],
+	rect: { left: number; top: number; width: number; height: number },
+	resolution = 128
+): number[] {
+	const R = resolution;
+	const lines = (lobe: 'left' | 'right') =>
+		fingers
+			.filter((f) => f.lobe === lobe)
+			.map((f) => {
+				const pts: Vec[] = [];
+				for (const s of f.segments) {
+					for (let i = 0; i <= 16; i++) {
+						const t = i / 16;
+						const u = 1 - t;
+						pts.push({
+							x: u * u * u * s.p0.x + 3 * u * u * t * s.p1.x + 3 * u * t * t * s.p2.x + t * t * t * s.p3.x,
+							y: u * u * u * s.p0.y + 3 * u * u * t * s.p1.y + 3 * u * t * t * s.p2.y + t * t * t * s.p3.y
+						});
+					}
+				}
+				return pts;
+			});
+	// Where each column meets the left cuts (their heights), and each row the right cuts (their places).
+	const across = (polys: Vec[][], along: 'x' | 'y', at: (k: number) => number): number[][] => {
+		const other = along === 'x' ? 'y' : 'x';
+		const out: number[][] = Array.from({ length: R }, () => []);
+		for (const poly of polys) {
+			for (let i = 1; i < poly.length; i++) {
+				const a = poly[i - 1]!;
+				const b = poly[i]!;
+				const lo = Math.min(a[along], b[along]);
+				const hi = Math.max(a[along], b[along]);
+				for (let k = 0; k < R; k++) {
+					const p = at(k);
+					if (p < lo || p >= hi || hi === lo) continue;
+					const t = (p - a[along]) / (b[along] - a[along]);
+					out[k]!.push(a[other] + t * (b[other] - a[other]));
+				}
+			}
+		}
+		for (const list of out) list.sort((p, q) => p - q);
+		return out;
+	};
+	const xAt = (k: number) => rect.left + ((k + 0.5) / R) * rect.width;
+	const yAt = (k: number) => rect.top + ((k + 0.5) / R) * rect.height;
+	const columns = across(lines('left'), 'x', xAt);
+	const rows = across(lines('right'), 'y', yAt);
+	const before = (list: number[], v: number) => {
+		let n = 0;
+		while (n < list.length && list[n]! < v) n++;
+		return n;
+	};
+	const colour = new Uint8Array(R * R);
+	for (let r = 0; r < R; r++) {
+		const y = yAt(r);
+		for (let c = 0; c < R; c++) colour[r * R + c] = (before(columns[c]!, y) + before(rows[r]!, xAt(c))) & 1;
+	}
+	const seen = new Uint8Array(R * R);
+	const sizes: number[] = [];
+	const stack: number[] = [];
+	for (let start = 0; start < R * R; start++) {
+		if (seen[start]) continue;
+		const col = colour[start];
+		let size = 0;
+		stack.push(start);
+		seen[start] = 1;
+		while (stack.length) {
+			const i = stack.pop()!;
+			size++;
+			const r = (i / R) | 0;
+			const c = i % R;
+			for (const j of [r > 0 ? i - R : -1, r < R - 1 ? i + R : -1, c > 0 ? i - 1 : -1, c < R - 1 ? i + 1 : -1]) {
+				if (j >= 0 && !seen[j] && colour[j] === col) {
+					seen[j] = 1;
+					stack.push(j);
+				}
+			}
+		}
+		sizes.push(size / (R * R));
+	}
+	return sizes.sort((a, b) => a - b);
+}
+
+/** Samples each way `smallestPiece` reads the picture at, and the pieces it takes for sampling noise along a line. */
+const PIECE_RESOLUTION = 160;
+const NOISE = 3;
+
+/**
+ * The smallest piece of the woven picture, in cells (strips²): a crossing of the two lobes' cuts at a slant,
+ * a knob pinched against a cut, or a figure clipped at the square's edge can leave a crumb too small to cut,
+ * on the screen a speck. Specks of NOISE samples or fewer are where two lines pass between samples, not
+ * paper. The gallery's hearts keep 0.07 of a cell and more, but for two (h4h2 and santa, 0.01).
+ */
+export function smallestPiece(
+	fingers: Finger[],
+	rect: { left: number; top: number; width: number; height: number },
+	cells: number
+): number {
+	const R = PIECE_RESOLUTION;
+	const real = pieceSizes(fingers, rect, R).find((share) => share * R * R > NOISE);
+	return real === undefined ? cells : real * cells;
+}
+
+/** The least a random heart's or tile's smallest piece may be, in cells (`smallestPiece`). */
+export const MIN_PIECE = 0.05;

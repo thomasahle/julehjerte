@@ -14,11 +14,13 @@ const between = (rng: Rng, lo: number, hi: number) => lo + rng() * (hi - lo);
  * `pieces` cubics from `from` to `to` (x along the chain, increasing; y across it): the inner nodes
  * anywhere between, up to `reach` across; each node smooth (one way through it) or, two times in five, a
  * corner; each handle pointing forward, within 75° of the chain's way, 15–60 % of its piece long.
- * `endAngle` fixes the way the chain arrives (0: level), else that is random too.
+ * `endAngle` fixes the way the chain arrives (0: level), else that is random too. `bold`: every inner node
+ * at least 45 % of `reach` off the line, to one side or the other, so the chain bulges rather than wiggles.
  */
-export function randomChain(from: Vec, to: Vec, pieces: number, reach: number, rng: Rng, endAngle?: number): BezierSegment[] {
+export function randomChain(from: Vec, to: Vec, pieces: number, reach: number, rng: Rng, endAngle?: number, bold = false): BezierSegment[] {
 	const xs = Array.from({ length: pieces - 1 }, () => between(rng, from.x, to.x)).sort((a, b) => a - b);
-	const nodes = [from, ...xs.map((x) => V(x, between(rng, -reach, reach))), to];
+	const across = () => (bold ? (rng() < 0.5 ? -1 : 1) * reach * between(rng, 0.45, 1) : between(rng, -reach, reach));
+	const nodes = [from, ...xs.map((x) => V(x, across())), to];
 	const angle = () => between(rng, -1.3, 1.3);
 	const ways = nodes.map((_, i) => {
 		const into = i === nodes.length - 1 && endAngle !== undefined ? endAngle : angle();
