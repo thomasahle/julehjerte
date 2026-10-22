@@ -163,14 +163,18 @@ export function ray(r: Ring, origin: Point, angle: number): Port {
 /** Extreme support point, using the middle of a flat supporting edge. The ray
  * leading away from it cannot cross the same contour, even on a concave motif. */
 export function support(r: Ring, angle: number): Port {
-	const d = direction(angle),
-		values = r.map((p) => dot(p, d)),
-		max = Math.max(...values);
-	for (let i = 0; i < r.length; i++)
-		if (max - values[i] < EPS && max - values[(i + 1) % r.length] < EPS)
-			return { point: mix(r[i], r[(i + 1) % r.length], 0.5), index: i + 0.5 };
-	const i = values.indexOf(max);
-	return { point: r[i], index: i };
+	// Called for every counter at every candidate bridge: one typed pass for
+	// the values, no spread (the same numbers as before, far faster).
+	const d = direction(angle), n = r.length, values = new Float64Array(n);
+	let max = -Infinity, first = 0;
+	for (let i = 0; i < n; i++) {
+		const v = values[i] = dot(r[i], d);
+		if (v > max) { max = v; first = i; }
+	}
+	for (let i = 0; i < n; i++)
+		if (max - values[i] < EPS && max - values[(i + 1) % n] < EPS)
+			return { point: mix(r[i], r[(i + 1) % n], 0.5), index: i + 0.5 };
+	return { point: r[first], index: first };
 }
 export const add = (
 	edges: Edge[],
