@@ -8,7 +8,7 @@ import { gridClearance } from '$lib/geometry/clearance';
  * edge-to-edge paths. The compiler checks that combinatorial invariant before
  * the geometric clearance check and conversion into the existing editor model.
  */
-import { searchFingerIssues } from './searchClearance';
+import { searchCurve, searchCurvePairIssues, searchCurveSelfIssues, type SearchCurve } from './searchClearance';
 import type { Finger } from '$lib/types/heart';
 import type { CutGeometry } from '$lib/inverse/toHeartDesign';
 export type Point = [number, number];
@@ -1487,23 +1487,56 @@ export function generateFourPortFigure(
 	return { geometry: compile(edges), edges, artwork };
 }
 
+/** The search's clearance verdicts on routes seen before, by their points
+ * and margin, alone and beside another route in its lobe: the candidate
+ * constructions of one cell share most of their routes. */
+const routeIds = new Map<string, number>(), aloneVerdicts: boolean[] = [], pairVerdicts = new Map<number, boolean>();
 function usableRoutes(routes: Ring[], margin: number): boolean {
-	// Cell ports become interior points once neighbours are connected. Extend
-	// the local paths so the editor's endpoint exemption cannot hide a pinch.
-	const extended = routes.map((route) => {
-		const extend = (p: Point, q: Point): Point =>
-			mix(q, p, 1 + 3 / Math.max(distance(p, q), 1e-6));
-		return [
-			extend(route[0], route[1]),
-			...route,
-			extend(route.at(-1)!, route.at(-2)!)
-		];
+	if (routeIds.size >= 1 << 15 || pairVerdicts.size >= 1 << 20) {
+		routeIds.clear();
+		aloneVerdicts.length = 0;
+		pairVerdicts.clear();
+	}
+	const ids = routes.map((route) => {
+		const key = margin + ';' + route.join(';');
+		let id = routeIds.get(key);
+		if (id === undefined) routeIds.set(key, id = routeIds.size);
+		return id;
 	});
-	const fingers: Finger[] = extended.map((route, i) => ({
-		id: String(i),
-		lobe: i < routes.length / 2 ? 'right' : 'left',
-		segments: route.slice(1).map((p, j) => {
-			const a = route[j],
+	const curves: SearchCurve[] = [];
+	const curve = (i: number) => curves[i] ??= searchCurve(routeFinger(routes[i]));
+	// The search's own clearance rule (see `searchClearance`): no route comes
+	// too close to itself or to another in its lobe.
+	for (let i = 0; i < routes.length; i++) {
+		const alone = aloneVerdicts[ids[i]] ??= searchCurveSelfIssues(curve(i), margin * 4);
+		if (alone) return false;
+		for (let j = 0; j < routes.length; j++) {
+			if (j === i || (i < routes.length / 2) !== (j < routes.length / 2)) continue;
+			const key = ids[i] * (1 << 16) + ids[j];
+			let pair = pairVerdicts.get(key);
+			if (pair === undefined) pairVerdicts.set(key, pair = searchCurvePairIssues(curve(i), curve(j), margin * 4));
+			if (pair) return false;
+		}
+	}
+	return true;
+}
+
+/** A route as a cut of straight segments, its ends extended: cell ports
+ * become interior points once neighbours are connected, and the extension
+ * keeps the editor's endpoint exemption from hiding a pinch. */
+function routeFinger(route: Ring): Finger {
+	const extend = (p: Point, q: Point): Point =>
+		mix(q, p, 1 + 3 / Math.max(distance(p, q), 1e-6));
+	const extended = [
+		extend(route[0], route[1]),
+		...route,
+		extend(route.at(-1)!, route.at(-2)!)
+	];
+	return {
+		id: '',
+		lobe: 'right',
+		segments: extended.slice(1).map((p, j) => {
+			const a = extended[j],
 				b = mix(a, p, 1 / 3),
 				c = mix(a, p, 2 / 3);
 			return {
@@ -1513,11 +1546,7 @@ function usableRoutes(routes: Ring[], margin: number): boolean {
 				p3: { x: p[0] * 4, y: p[1] * 4 }
 			};
 		})
-	}));
-	// The search's own clearance rule (see `searchClearance`).
-	return !fingers.some((finger) =>
-		searchFingerIssues(finger, fingers, margin * 4)
-	);
+	};
 }
 
 /** A completed letter can still contain the legacy fallback route. Check its

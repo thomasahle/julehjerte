@@ -380,14 +380,29 @@ function segmentsHaveIssues(
  * part of one cut. It defaults to `minDistance`; a narrower spacing check keeps the usual one.
  */
 export function searchFingerIssues(finger: Finger, fingers: Finger[], minDistance: number, resolution = minDistance): boolean {
-	const segs = fingerToSegments(finger);
-	const n = segs.length;
-	if (!n) return false;
-	const start = segs[0]!.p0;
-	const end = segs[n - 1]!.p3;
-	const segBBoxes = segs.map(bezierBBox);
-	const endpoints = { start, end };
+	const curve = searchCurve(finger);
+	if (!curve.segs.length) return false;
+	if (searchCurveSelfIssues(curve, minDistance, resolution)) return true;
 
+	for (const other of fingers) {
+		if (other.id === finger.id) continue;
+		if (other.lobe !== finger.lobe) continue;
+		if (searchCurvePairIssues(curve, searchCurve(other), minDistance)) return true;
+	}
+
+	return false;
+}
+
+/** A curve's segments, their boxes and its ends, for the checks below. */
+export type SearchCurve = { segs: BezierSegment[]; boxes: BBox[]; endpoints: { start: Vec; end: Vec } };
+export function searchCurve(finger: Finger): SearchCurve {
+	const segs = fingerToSegments(finger);
+	return { segs, boxes: segs.map(bezierBBox), endpoints: segs.length ? { start: segs[0]!.p0, end: segs.at(-1)!.p3 } : { start: { x: 0, y: 0 }, end: { x: 0, y: 0 } } };
+}
+
+/** The part of `searchFingerIssues` that looks at a curve alone. */
+export function searchCurveSelfIssues({ segs, boxes, endpoints }: SearchCurve, minDistance: number, resolution = minDistance): boolean {
+	const n = segs.length;
 	// Loops smaller than the margin are slivers below the physical resolution; ignore them.
 	for (const seg of segs) {
 		const loopSize = cubicSelfIntersectionLoopSize(seg);
@@ -399,35 +414,23 @@ export function searchFingerIssues(finger: Finger, fingers: Finger[], minDistanc
 		if (hasAdjacentIntersection(segs[i]!, segs[i + 1]!, join, resolution)) return true;
 	}
 
-	if (
-		segmentsHaveIssues(segs, segBBoxes, endpoints, segs, segBBoxes, endpoints, {
-			minDistance,
-			endpointTolerance: SELF_ENDPOINT_TOLERANCE,
-			proximityEndpointTolerance: SELF_ENDPOINT_TOLERANCE * 2,
-			skipAdjacent: true,
-			intersectionLoopThreshold: resolution,
-			resolution
-		})
-	) {
-		return true;
-	}
-
-	for (const other of fingers) {
-		if (other.id === finger.id) continue;
-		if (other.lobe !== finger.lobe) continue;
-		if (pairHasIssues(segs, segBBoxes, endpoints, other, minDistance)) return true;
-	}
-
-	return false;
+	return segmentsHaveIssues(segs, boxes, endpoints, segs, boxes, endpoints, {
+		minDistance,
+		endpointTolerance: SELF_ENDPOINT_TOLERANCE,
+		proximityEndpointTolerance: SELF_ENDPOINT_TOLERANCE * 2,
+		skipAdjacent: true,
+		intersectionLoopThreshold: resolution,
+		resolution
+	});
 }
 
-function pairHasIssues(segs: BezierSegment[], boxes: BBox[], endpoints: { start: Vec; end: Vec }, other: Finger, minDistance: number): boolean {
-	const otherSegs = fingerToSegments(other);
-	if (!otherSegs.length) return false;
-	const otherEndpoints = { start: otherSegs[0].p0, end: otherSegs.at(-1)!.p3 };
+/** The part of `searchFingerIssues` that looks at a curve beside another in
+ * its lobe. */
+export function searchCurvePairIssues(curve: SearchCurve, other: SearchCurve, minDistance: number): boolean {
+	if (!curve.segs.length || !other.segs.length) return false;
 	// No endpoint exemption between cuts: a narrow fold-line attachment can
 	// leave a strip with no paper holding it, even if both cuts are open.
-	return segmentsHaveIssues(segs, boxes, endpoints, otherSegs, otherSegs.map(bezierBBox), otherEndpoints, {
+	return segmentsHaveIssues(curve.segs, curve.boxes, curve.endpoints, other.segs, other.boxes, other.endpoints, {
 		minDistance, endpointTolerance: 0, proximityEndpointTolerance: 0
 	});
 }
