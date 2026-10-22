@@ -68,7 +68,10 @@ five-line J/UL/JUL/UL/J in the medallion.
 The first build of the sunburst rabbit at 90% took 73 s this morning and 28 s
 now (each counter's box centre found once per outline rather than per port and
 comparison, and the speed-ups below): the sunburst's slowest at 85% fell from
-19.5 s to 8.5 s.
+19.5 s to 8.5 s. At 90% the sunburst builds every corpus motif at its size (36
+clean, 16 hard, the rabbit slowest at 28.5 s, all others within 16 s), so its
+slider now goes to 90%. Above, of the ten slowest, six at 95% and nine at 100%
+came out at 91–97% after up to 3.5 minutes.
 
 ## Faster first builds, the same hearts
 

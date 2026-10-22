@@ -910,8 +910,9 @@ keeps the largest of a fixed few sizes below that can be (97, 94, 91, 88, 85, 80
 page says so. The double border's medallion holds the whole motif, at most 80 across: a motif that
 would reach past it at 100% (a gift's corners) grows over the sizes above the default to the largest
 it holds, the cutting clearance inside it, so every size is its own (`fitCircle`). The silhouette,
-small motifs and equal squares are as large as their squares allow by 85%; the sunburst stops there
-as it builds too slowly above. Before refusing, and before any last resort that changes the strips, space
+small motifs and equal squares are as large as their squares allow by 85%; the sunburst goes to 90%,
+where it builds every motif (the slowest in half a minute), but above which most come out only a
+little smaller, after minutes. Before refusing, and before any last resort that changes the strips, space
 or cells asked for, a request tries again with the constructions set aside on
 the way to a clean one, where some were: islands entered along visible spokes where no
 hidden chain routes (a paw's toes, a sun's rays), and in the checks two hidden cuts across one square

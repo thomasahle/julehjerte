@@ -49,11 +49,12 @@ export const SPACED_STYLES: readonly FigureStyle[] = FIGURE_STYLES.filter(style 
  * far as their frame leaves room, hard to cut where they must be, a motif
  * that nothing can be built for keeping a smaller size (see `generate`). The
  * silhouette is as large as the square allows at 85%, and a motif on squares
- * fills its square before that; the sunburst grows too slow to build above
- * 85% (a rabbit 73 s at 90%, 6 minutes at 100%). */
+ * fills its square before that; the sunburst builds every motif at 90%
+ * (the slowest, a rabbit, in 29 s), but above that most only a little smaller,
+ * after minutes. */
 const FULL_SIZE: readonly FigureStyle[] = ['rays', 'check', 'wedges', 'fitted', 'strips', 'board', 'layers', 'corners'];
 /** The largest size a frame takes the motif to. */
-export const largestScale = (style: FigureStyle) => FULL_SIZE.includes(style) ? 100 : 85;
+export const largestScale = (style: FigureStyle) => FULL_SIZE.includes(style) ? 100 : style === 'sunburst' ? 90 : 85;
 /** The space a state asks between the motif and its frame, where it has one. */
 export function frameGap(s: GeneratorState): number | undefined {
 	return s.mode === 'figure' && SPACED_STYLES.includes(s.style) ? s.spacing : undefined;
