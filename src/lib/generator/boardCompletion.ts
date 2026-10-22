@@ -129,28 +129,52 @@ function polyline(c: Chain, r: number): { points: Point[]; pieceStart: number[] 
 }
 
 
-/** How far apart nested hidden cuts run, and the first from the boundary. */
+/** How far apart nested hidden cuts run, and the first from the boundary,
+ * on seven strips: on finer boards, as much less as the clearance the cuts
+ * need there. */
 const SPACING = 1.6;
 /** Rotate a centred point by quarter turns, counterclockwise. */
 const turn = ([x, y]: Point, q: number): Point => { let p: Point = [x, y]; for (let k = 0; k < q % 4; k++) p = [-p[1], p[0]]; return p; };
+/** An angle brought into [0, 2π). */
+const turnAngle = (x: number) => (x % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
 const toSheet = ([x, y]: Point): Point => [50 + x, 50 - y];
 const toCentred = ([x, y]: Point): Point => [x - 50, 50 - y];
 /** A polyline offset by `delta`, to the left of its direction (to the right
  * when negative): sampled finely, each sample moved along the normal of the
  * stretch around it, and the samples that come back within the offset of the
- * polyline elsewhere (round a sharp corner) left out. */
-function offset(points: Point[], delta: number): Point[] {
-	const step = .25, samples: Point[] = [];
+ * polyline elsewhere (round a sharp corner) left out. Where the closed
+ * polyline `bound` comes nearer along a sample's normal (a narrow passage),
+ * the sample moves only the `share` of the way there, so that cuts nested
+ * deeper keep their order. */
+function offset(points: Point[], delta: number, bound?: Point[], share = .5): Point[] {
+	const step = .25, samples: Point[] = [], segment: number[] = [];
 	for (let i = 0; i + 1 < points.length; i++) {
 		const [a, b] = [points[i], points[i + 1]], n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / step));
-		for (let k = 0; k < n; k++) samples.push([a[0] + (b[0] - a[0]) * k / n, a[1] + (b[1] - a[1]) * k / n]);
+		for (let k = 0; k < n; k++) { samples.push([a[0] + (b[0] - a[0]) * k / n, a[1] + (b[1] - a[1]) * k / n]); segment.push(i); }
 	}
 	samples.push(points.at(-1)!);
+	segment.push(points.length - 1);
 	const span = Math.max(2, Math.ceil(Math.abs(delta) / step));
+	const room = (p: Point, n: Point) => {
+		// How far along `n` from `p` the bound lies, if nearer than twice the offset.
+		let near = Math.abs(delta) / share;
+		if (!bound) return near;
+		for (let k = 0; k < bound.length; k++) {
+			const c = bound[k], d = bound[(k + 1) % bound.length];
+			if (Math.max(c[0], d[0]) < p[0] - near || Math.min(c[0], d[0]) > p[0] + near || Math.max(c[1], d[1]) < p[1] - near || Math.min(c[1], d[1]) > p[1] + near) continue;
+			const e = [d[0] - c[0], d[1] - c[1]], det = n[0] * -e[1] + e[0] * n[1];
+			if (Math.abs(det) < 1e-12) continue;
+			const w = [c[0] - p[0], c[1] - p[1]], t = (w[0] * -e[1] + e[0] * w[1]) / det, u = (n[0] * w[1] - n[1] * w[0]) / det;
+			if (t > 1e-6 && t < near && u >= 0 && u <= 1) near = t;
+		}
+		return near;
+	};
+	const reach: number[] = [];
 	const moved = samples.map((p, i) => {
 		const a = samples[Math.max(0, i - span)], b = samples[Math.min(samples.length - 1, i + span)];
-		const [tx, ty] = norm([b[0] - a[0], b[1] - a[1]]);
-		return [p[0] - ty * delta, p[1] + tx * delta] as Point;
+		const [tx, ty] = norm([b[0] - a[0], b[1] - a[1]]), side = Math.sign(delta), out = Math.min(Math.abs(delta), room(p, [-ty * side, tx * side]) * share);
+		reach.push(out);
+		return [p[0] - ty * side * out, p[1] + tx * side * out] as Point;
 	});
 	// Distance from a point to the polyline.
 	const away = (q: Point) => Math.min(...points.slice(1).map((b, i) => {
@@ -158,7 +182,35 @@ function offset(points: Point[], delta: number): Point[] {
 		const t = l ? Math.max(0, Math.min(1, ((q[0] - a[0]) * dx + (q[1] - a[1]) * dy) / l)) : 0;
 		return Math.hypot(q[0] - a[0] - t * dx, q[1] - a[1] - t * dy);
 	}));
-	const kept = moved.filter((q, i) => i === 0 || i === moved.length - 1 || away(q) > Math.abs(delta) * .97);
+	const keep = moved.map((q, i) => i === 0 || i === moved.length - 1 || away(q) > reach[i] * .97);
+	// Round a corner turning away from the offset side the samples near it
+	// all come too close to one of its sides: go round it instead, at the
+	// offset (or halfway across a narrow passage).
+	const kept: Point[] = [];
+	let last = -1;
+	for (let i = 0; i < moved.length; i++) {
+		if (!keep[i]) continue;
+		if (last >= 0 && i > last + 1) {
+			let corner = -1, sharpest = 0;
+			for (let v = segment[last] + 1; v <= segment[i] && v + 1 < points.length; v++) {
+				const d1 = [points[v][0] - points[v - 1][0], points[v][1] - points[v - 1][1]], d2 = [points[v + 1][0] - points[v][0], points[v + 1][1] - points[v][1]];
+				const turn = Math.atan2(d1[0] * d2[1] - d1[1] * d2[0], d1[0] * d2[0] + d1[1] * d2[1]);
+				if (turn * delta < -sharpest * Math.abs(delta)) { corner = v; sharpest = Math.abs(turn); }
+			}
+			if (corner >= 0) {
+				const c = points[corner], from = moved[last], to = moved[i];
+				const a0 = Math.atan2(from[1] - c[1], from[0] - c[0]), a1 = Math.atan2(to[1] - c[1], to[0] - c[0]);
+				const sweep = turnAngle(a1 - a0 + Math.PI) - Math.PI, n = Math.ceil(Math.abs(sweep) * Math.abs(delta) / step);
+				for (let k = 1; k < n; k++) {
+					const angle = a0 + sweep * k / n, dir: Point = [Math.cos(angle), Math.sin(angle)];
+					const radius = Math.min(Math.abs(delta), room(c, dir) * share);
+					kept.push([c[0] + dir[0] * radius, c[1] + dir[1] * radius]);
+				}
+			}
+		}
+		kept.push(moved[i]);
+		last = i;
+	}
 	// Thin to every few samples, keeping the ends, and cut out any loop where
 	// the path comes back across itself (round a corner).
 	return untangle(kept.filter((_, i) => i === 0 || i === kept.length - 1 || i % 3 === 0));
@@ -193,7 +245,7 @@ function norm([x, y]: number[]): [number, number] {
  */
 export function completionLegs(edges: Edge[], ring: Ring, strips: number, radius: number, pattern: BoardPattern, around: number):
 	(side: number, index: number, from: Point) => Point[] {
-	const { chains } = boundaryChains(strips, radius);
+	const { chains, lines } = boundaryChains(strips, radius), spacing = SPACING * 7 / Math.max(7, strips);
 	const Q = chains.length / 4, quarter = chains.slice(0, Q);
 	if (Q !== pattern.counts.length) throw new ConstructionError('topology', 'The pattern does not fit the circle');
 	const polys = quarter.map(c => polyline(c, radius));
@@ -216,6 +268,8 @@ export function completionLegs(edges: Edge[], ring: Ring, strips: number, radius
 				piece.set(i, a === 'first' ? 0 : ci.pieces.length - 1);
 				piece.set(j, b === 'first' ? 0 : cj.pieces.length - 1);
 			}
+		// One between chains further apart runs across the circle, from the arcs.
+		for (const [p, c] of [[i, ci], [j, cj]] as const) if (!piece.has(p) && c.pieces.some(x => x.type === 'arc')) piece.set(p, c.pieces.findIndex(x => x.type === 'arc'));
 	}
 	// The others take the piece of the point before them on the chain (or after).
 	const placed: { at: number; point: Point }[] = [];
@@ -266,14 +320,24 @@ export function completionLegs(edges: Edge[], ring: Ring, strips: number, radius
 	// The hidden cuts, each as the stretch of the loop it cuts off: across F,
 	// counterclockwise from its first end or its second as the pattern says;
 	// across the red square, the stretch of its chain between its ends.
-	const hidden: { kind: 'f' | 'pocket'; from: number; to: number }[] = [];
+	const hidden: { kind: 'f' | 'pocket'; from: number; to: number; square?: Point[] }[] = [];
+	// The red square beside a chain, which its pockets keep within: the one
+	// its arc runs through, else the one across its side.
+	const redSquare = (k: number, q: number): Point[] => {
+		const c = quarter[k], arc = c.pieces.find(p => p.type === 'arc');
+		const at: Point = arc ? (() => { const [a0, a1] = arc.angles, mid = a0 + turnAngle(a1 - a0) / 2; return [radius * 1.001 * Math.cos(mid), radius * 1.001 * Math.sin(mid)]; })()
+			: (() => { const p = c.pieces[0] as Extract<Piece, { type: 'side' }>, m: Point = [(p.from[0] + p.to[0]) / 2, (p.from[1] + p.to[1]) / 2], w = p.square.map(v => v * 100 / strips) as Point; return [2 * m[0] - w[0], 2 * m[1] - w[1]]; })();
+		const bounds = [-50, ...lines, 50], cell = (v: number) => bounds.findIndex((b, x) => x + 1 < bounds.length && v >= b && v < bounds[x + 1]);
+		const [i0, j0] = [cell(at[0]), cell(at[1])], [x0, x1, y0, y1] = [bounds[i0], bounds[i0 + 1], bounds[j0], bounds[j0 + 1]];
+		return ([[x0, y0], [x1, y0], [x1, y1], [x0, y1]] as Point[]).map(v => turn(v, q));
+	};
 	for (const [kind, , i, j, dq] of pattern.chords) {
 		if (kind === 'spoke') continue;
 		for (let q = 0; q < 4; q++) {
 			const qb = (q + dq) % 4;
 			if (kind === 'pocket') {
 				const [a, b] = [where(q, i), where(qb, j)].sort((x, y) => x - y);
-				hidden.push({ kind: 'pocket', from: a, to: b });
+				hidden.push({ kind: 'pocket', from: a, to: b, square: redSquare(outer[i].k, q) });
 			} else {
 				const [a, b] = kind === 'arc+' ? [where(q, i), where(qb, j)] : [where(qb, j), where(q, i)];
 				hidden.push({ kind: 'f', from: a, to: b });
@@ -292,8 +356,41 @@ export function completionLegs(edges: Edge[], ring: Ring, strips: number, radius
 		if (!height.has(h)) height.set(h, 1 + Math.max(0, ...hidden.filter(g => g.kind === h.kind && contains(h, g)).map(heightOf)));
 		return height.get(h)!;
 	};
+	// A hidden cut across the white circle crosses the mouth of a white square
+	// outside it, along the circle, rather than going in, where the cuts within
+	// it all start and end in it.
+	const fEnds = hidden.filter(g => g.kind === 'f').map(g => [g.from, g.to, g] as const);
+	const rel = (x: number, base: number) => ((x - base) % n + n) % n;
+	const guide = (h: typeof hidden[number]): Point[] => {
+		const stretch = along(h.from, h.to);
+		if (h.kind !== 'f') return stretch;
+		const length = span(h), out: Point[] = [stretch[0]];
+		const vertices: number[] = [];
+		for (let k = Math.floor(h.from) + 1; rel(k, h.from) < length; k++) vertices.push(k % n);
+		const outside = (v: number) => Math.hypot(...loop[v]) > radius + 1e-6;
+		for (let x = 0; x < vertices.length; x++) {
+			if (!outside(vertices[x]) || x === 0 || outside(vertices[x - 1])) { out.push(loop[vertices[x]]); continue; }
+			let y = x;
+			while (y + 1 < vertices.length && outside(vertices[y + 1])) y++;
+			// The bay from the crossing before to the one after.
+			const from = vertices[x - 1], to = y + 1 < vertices.length ? vertices[y + 1] : -1;
+			const inside = (pos: number) => to >= 0 && rel(pos, from) > 0 && rel(pos, from) < rel(to, from);
+			const whole = to >= 0 && !inside(h.from) && !inside(h.to) && fEnds.every(([a, b, g]) => g === h || inside(a) === inside(b));
+			if (!whole) { for (let z = x; z <= y; z++) out.push(loop[vertices[z]]); continue; }
+			const a0 = Math.atan2(loop[from][1], loop[from][0]), sweep = turnAngle(Math.atan2(loop[to][1], loop[to][0]) - a0);
+			const steps = Math.max(1, Math.ceil(sweep / (Math.PI / 80)));
+			for (let k = 1; k < steps; k++) out.push([radius * Math.cos(a0 + sweep * k / steps), radius * Math.sin(a0 + sweep * k / steps)]);
+			x = y;
+		}
+		out.push(stretch.at(-1)!);
+		return out.filter((p, i) => !i || Math.hypot(p[0] - out[i - 1][0], p[1] - out[i - 1][1]) > 1e-9);
+	};
+	// The hidden cuts across the white circle, for the spokes to pass under.
+	const across: Point[] = [];
 	for (const h of hidden) {
-		const stretch = along(h.from, h.to), path = offset(stretch, heightOf(h) * SPACING * (h.kind === 'f' ? 1 : -1));
+		const height = heightOf(h), stretch = guide(h);
+		const path = offset(stretch, height * spacing * (h.kind === 'f' ? 1 : -1), h.kind === 'f' ? loop : h.square, height / (height + 1));
+		if (h.kind === 'f') across.push(...path);
 		add(edges, [stretch[0], ...path, stretch.at(-1)!].map(toSheet), 'AB', 'shared');
 	}
 	// Visible stretches: each chain between its switch points, the sheets
@@ -339,15 +436,18 @@ export function completionLegs(edges: Edge[], ring: Ring, strips: number, radius
 	// of its panel, then the top (turned with the quarter).
 	const spokes = pattern.chords.filter(([kind, face]) => kind === 'spoke' && face === 0);
 	const gates: [number, number][][] = [[[1, 0], [0, 1]], [[0, 0], [3, 0]], [[3, 1], [2, 0]], [[2, 1], [1, 1]]];
-	const turnAngle = (x: number) => (x % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
 	return (side, index, from) => {
 		for (let q = 0; q < 4; q++) for (const [, , i, j, dq] of spokes) {
 			const mq = (q + dq) % 4, slot = j - N;
 			if (gates[mq][slot]?.[0] !== side || gates[mq][slot]?.[1] !== index) continue;
-			// Round midway between motif and circle to the switch point's angle, then out to it.
-			const target = pointAt(q, i), start = toCentred(from), reach = Math.max(around, Math.hypot(...start));
+			// Round midway between motif and circle to the switch point's angle,
+			// under the hidden cuts across the circle on the way, then out to it.
+			const target = pointAt(q, i), start = toCentred(from);
 			const a0 = Math.atan2(start[1], start[0]), a1 = Math.atan2(target[1], target[0]);
 			const delta = turnAngle(a1 - a0 + Math.PI) - Math.PI, steps = Math.max(1, Math.ceil(Math.abs(delta) / (Math.PI / 90)));
+			const passed = (p: Point) => { const d = turnAngle(Math.atan2(p[1], p[0]) - a0); return delta < 0 ? d === 0 || 2 * Math.PI - d <= -delta : d <= delta; };
+			const under = Math.min(Infinity, ...across.filter(passed).map(p => Math.hypot(...p))) - spacing;
+			const reach = Math.max(Math.min(around, under), Math.hypot(...start));
 			const path: Point[] = Array.from({ length: steps + 1 }, (_, t) => { const a = a0 + delta * t / steps; return [reach * Math.cos(a), reach * Math.sin(a)]; });
 			return [...path, target].map(toSheet);
 		}

@@ -891,16 +891,22 @@ of its own, joined in pairs by hidden cuts across the white circle (hugging its 
 white squares outside it), across the red square just outside it, or in to the motif's gates
 (`boardCompletion`, `boardPatterns`). On seven strips it carries the circle from 42.1 to 46.5
 (87–91%). Nine strips short of their outer lines are seven, smaller, those lines crossing the paper
-whole, and the same completion carries the circle from 32.8 to 35.6 (85–88%). Further out, its
-switch points crowd on the short side between the outer line and the circle. Beyond, the heart
+whole, and the same completion carries the circle from 32.8 to 35.6 (84–87%). Further out, its
+switch points crowd on the short side between the outer line and the circle. Past the outer lines'
+junctions with the middle ones (39.3), another carries it from 40.2 to 41 (88–89%): its cuts from
+one chain to another past a third cross the mouths of the white squares outside the circle along
+the circle rather than going in, and the spokes to the motif's gates pass under them. The hidden
+cuts run 1.6 apart on seven strips and as much less on nine as the clearance its cuts need (1.24);
+where a passage between red squares is narrower, nested cuts share it. Beyond, the heart
 leaves the middle lines out in both sheets: the outer two lines a side remain, met as on five
 strips with the motif in four (46.5 to 55.4 on seven, 48.2 to 58.2 on nine; `boardRangeLines`) out
 past the paper's edges, the heart then having five strips while the page shows the board chosen.
 Once the circle covers the middle lines from edge to edge, that changes no square outside it; short
 of that, only the outer ring's middle squares, which merge into one of the circle's colour beside
-it. The slider steps where it first reaches past a junction (86 to 87%: 39.0 to 42.1 on seven; 84
-to 85%: 30.4 to 32.8, and 88 to 89%: 35.6 to 48.2 on nine, where no completion has been found for
-the circle past the outer lines). The motif does not step with the circle: it grows on evenly over
+it. The slider steps where it first reaches past a junction (86 to 87%: 39.0 to 42.1 on seven; 83
+to 84%: 30.4 to 32.8, 87 to 88%: 35.6 to 40.2, and 89 to 90%: 41 to 48.2 on nine, where no
+completion has been found for the circle reaching the outer lines, nor past their junctions with
+the second lines). The motif does not step with the circle: it grows on evenly over
 the ranges' radii, not the steps between them, never past a circle before it steps, from the
 largest circle with every line to fill the circle again past the outer lines' corner junctions
 (`boardFill`), which also leaves its gates room. Where two lines' ends meet at one gate between

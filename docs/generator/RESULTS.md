@@ -1,5 +1,49 @@
 # Generator robustness results
 
+## Nine strips past the outer lines' junctions with the middle ones
+
+Past radius 39.3 the nine-strip circle encloses the outer lines' junctions
+with the middle ones and the third lines' with each other. Each A cut must meet
+each B cut, and at 40.5 only 20 of the 64 meetings are visible, so a quarter
+needs at least 11 hidden cuts and 18 switch points.
+
+The search now takes the motif's panels as aligned with the circle's quarters
+(spokes into a panel's two gates from one quarter, the seam in the third slot).
+That pruning makes each count vector about ten times faster. It finds a
+completion with counts 2, 0, 0, 6, 1, 9. Two of its hidden cuts reach past a
+whole chain. Drawn by offsetting the boundary, they squeezed between the
+corners of red squares near the junction at (27.8, 27.8), where the passage
+into the white corner square is two units wide. They now cross the mouth of a
+white square outside the circle along the circle, wherever the cuts inside it
+all start and end there. Their ends go on the arcs.
+
+Other changes for this pattern:
+- Spokes route under the hidden cuts they pass.
+- Offsets round sharp outer corners follow an arc instead of a shortcut through
+  the corner.
+- Nested cuts share a narrow passage by height: a cut of height h takes h/(h+1)
+  of the room.
+- Pockets keep within their red square.
+- The cuts' spacing shrinks with the clearance the board needs (1.6 on seven
+  strips, 1.24 on nine).
+
+Seven strips are bit-identical (checked on house, cat, reindeer and gift).
+Nine strips' first range is redrawn with the smaller spacing. Its corpus
+results are the same: none refused, and the same motifs hard.
+
+The new range is 40.2 to 41 (88–89%). Over the corpus none is refused, and
+only star and tb-paw are hard, as at every size. The switch points crowd the
+middle chains' short arcs below 40.2, and the second lines' sides beside the
+junction (42.3) above 41.
+
+The nine-strip slider now steps 35.6 to 40.2 at 87–88% and 41 to 48.2 at
+89–90%, instead of 35.6 to 48.2. The cat's largest change from one percent to
+the next falls from 21% to 14.2% (6.4% at 87–88%).
+
+The seven-strip search past 46.5, which is also nine strips from 36 to 38.9,
+found nothing up to 24 switch points a quarter. The search at 45 on nine
+strips, past the outer lines' junction with the second, is still running.
+
 ## Every line past the junction, on seven and nine strips
 
 The completion found by the search is now part of the generator

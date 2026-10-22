@@ -34,5 +34,20 @@ export const BOARD_PATTERNS: { strips: number; lo: number; hi: number; pattern: 
 	// Nine strips short of its outer lines are seven, smaller, with those
 	// lines crossing the paper whole: the white squares the circle cuts end
 	// on them, their sides there two chains with no switch points.
-	{ strips: 9, lo: Math.hypot(line(9, 2), line(9, 1)) + .4, hi: 35.6, pattern: { counts: [0, 5, 5, 0, 6], motif: 3, chords: PAST_SECOND } }
+	{ strips: 9, lo: Math.hypot(line(9, 2), line(9, 1)) + .4, hi: 35.6, pattern: { counts: [0, 5, 5, 0, 6], motif: 3, chords: PAST_SECOND } },
+	// Nine strips past their outer lines' junctions with the middle ones and
+	// the third lines' with each other (39.3), short of the outer lines'
+	// with the second (42.3): a quarter turn has two chains round red squares
+	// beside the diagonal, each from and back to one edge of the paper, the
+	// two sides of the white corner square between them, and two chains
+	// either side of the middle, each along the outer line and round to the
+	// middle line's. Cuts from one chain to another past a third cross the
+	// white squares' mouths along the circle. The switch points crowd the
+	// middle chains' short arcs below 40.2, and the second lines' sides
+	// beside the junction above 41.
+	{ strips: 9, lo: 40.2, hi: 41, pattern: {
+		counts: [2, 0, 0, 6, 1, 9], motif: 3,
+		chords: [['arc-', 0, 0, 15, 3], ['arc+', 0, 1, 2, 0], ['pocket', 'p', 3, 7, 0], ['arc-', 0, 4, 14, 3], ['spoke', 0, 5, 18, 0],
+			['arc+', 0, 6, 11, 0], ['arc+', 0, 8, 10, 0], ['pocket', 'p', 9, 17, 0], ['pocket', 'p', 12, 16, 0], ['spoke', 0, 13, 19, 0]]
+	} }
 ];

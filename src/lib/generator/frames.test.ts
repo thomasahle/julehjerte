@@ -441,9 +441,10 @@ describe('frames from real hearts', () => {
   // steps on to just past the junctions where the heart weaves the circle's
   // edge its own way or leaves the middle lines out (see `boardRanges`):
   // three units on seven strips, and on nine, where none is found yet for
-  // the circle past the outer lines, thirteen. The motif does not step there
-  // with the circle, but grows on evenly (see `boardFill`).
-  for (const [board, largest, step] of [[3, boardRanges(3)[0][1], 0], [5, 52, 0], [7, boardRanges(7).at(-1)![1], 3.1], [9, boardRanges(9).at(-1)![1], 12.7]]) {
+  // the circle reaching the outer lines or past their junctions with the
+  // second, seven. The motif does not step there with the circle, but grows
+  // on evenly (see `boardFill`).
+  for (const [board, largest, step] of [[3, boardRanges(3)[0][1], 0], [5, 52, 0], [7, boardRanges(7).at(-1)![1], 3.1], [9, boardRanges(9).at(-1)![1], 7.3]]) {
    const ranges = boardRanges(board), past = ranges.filter((range, i) => ranges[i - 1]?.[1] < range[0]
     && (boardRangePattern(range) || boardRangeLines(range, board).length < boardLines(board).length));
    let last = boardRadius(.45, board).radius;
@@ -472,7 +473,7 @@ describe('frames from real hearts', () => {
    const ranges = boardRanges(board), top = ranges[3], setting = boardSteps(board)[2][1] / 100;
    expect(top[0], `${board}`).toBeGreaterThan(from);
    expect(boardRangeLines(top, board), `${board}`).toEqual(boardLines(board));
-   expect(boardRadius(setting, board).radius, `${board}`).toBe(top[1]);
+   expect(boardRadius(setting, board).radius, `${board}`).toBeCloseTo(top[1], 9);
    const { design, hardToCut, scale } = generate({ mode: 'figure', name: 'House', contours: houseMotif.contours as Ring[], colors, style: 'board', board, scale: setting });
    expect(design.gridSize, `${board}`).toEqual({ x: board, y: board });
    expect(hardToCut, `${board}`).toBeUndefined();
@@ -487,19 +488,34 @@ describe('frames from real hearts', () => {
    expect(Math.min(...cut.segments.map(({ p3 }) => sheet(p3)[0])), `${board}`).toBeLessThan(third - 2);
   }
  });
- it('weaves every line of seven strips past the corner junctions, every square equal', () => {
-  // Past the junction where the outer lines meet, the circle's edge switches
-  // sheet at points of its own, joined in pairs by hidden cuts across the
-  // circle or round the red squares beside it (see `completionLegs`): the
-  // heart keeps all seven strips a side, equal, up to 91%.
-  const ranges = boardRanges(7), range = ranges.find(r => boardRangePattern(r))!, lines = boardLines(7);
-  expect(range[0]).toBeGreaterThan(Math.hypot(lines.at(-1)!, lines.at(-2)!));
-  expect(boardRangeLines(range, 7)).toEqual(lines);
-  expect(boardRadius(.89, 7).range).toBe(range);
-  const { design, hardToCut, scale } = generate({ mode: 'figure', name: 'House', contours: houseMotif.contours as Ring[], colors, style: 'board', board: 7, scale: .89 });
-  expect(design.gridSize).toEqual({ x: 7, y: 7 });
-  expect(hardToCut).toBeUndefined();
-  expect(scale).toBeUndefined();
+ it('weaves every line past the third lines\' junctions on seven and nine strips, every square equal', () => {
+  // Past the junction of the third line out with the second, the circle's
+  // edge switches sheet at points of its own, joined in pairs by hidden cuts
+  // across the circle or round the red squares beside it (see
+  // `completionLegs`): the heart keeps all seven strips a side, equal, up to
+  // 91%. Nine strips short of their outer lines take the same, up to 88%.
+  for (const [board, setting] of [[7, .89], [9, .87]]) {
+   const range = boardRanges(board).find(r => boardRangePattern(r))!, lines = boardLines(board);
+   expect(range[0], `${board}`).toBeGreaterThan(Math.hypot(lines[2], lines[1]));
+   expect(boardRangeLines(range, board), `${board}`).toEqual(lines);
+   expect(boardRadius(setting, board).range, `${board}`).toBe(range);
+   const { design, hardToCut, scale } = generate({ mode: 'figure', name: 'House', contours: houseMotif.contours as Ring[], colors, style: 'board', board, scale: setting });
+   expect(design.gridSize, `${board}`).toEqual({ x: board, y: board });
+   expect(hardToCut, `${board}`).toBeUndefined();
+   expect(scale, `${board}`).toBeUndefined();
+  }
+ });
+ it('weaves every line of nine strips past the outer lines\' junctions with the middle ones, every square equal', () => {
+  // Past the junctions at 39.3, a completion whose cuts across the circle
+  // reach past one chain to the next keeps all nine strips a side.
+  const range = boardRanges(9).filter(r => boardRangePattern(r))[1];
+  expect(range[0]).toBeGreaterThan(Math.hypot(boardLines(9)[3], boardLines(9)[0]));
+  for (const setting of [boardSetting(range[0], 9), boardSetting(range[1], 9)]) {
+   const { design, hardToCut, scale } = generate({ mode: 'figure', name: 'House', contours: houseMotif.contours as Ring[], colors, style: 'board', board: 9, scale: setting });
+   expect(design.gridSize, `${setting}`).toEqual({ x: 9, y: 9 });
+   expect(hardToCut, `${setting}`).toBeUndefined();
+   expect(scale, `${setting}`).toBeUndefined();
+  }
  });
  it('reaches past the paper\'s edges on finer boards, leaving out the middle lines it covers', () => {
   // Once the circle covers the middle lines from edge to edge they show
