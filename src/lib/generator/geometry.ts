@@ -1,6 +1,6 @@
 import { createLocalRouter } from './localRoutes';
 import { completionLegs } from './boardCompletion';
-import { BOARD_PATTERNS, type BoardPattern } from './boardPatterns';
+import { BOARD_PATTERNS, WHOLE_PATTERNS, type BoardPattern } from './boardPatterns';
 import { createSharedCutValidator } from './sharedCutValidation';
 import { cellTipCounts, fewerCutTips } from './cutQuality';
 import { gridClearance } from '$lib/geometry/clearance';
@@ -1922,6 +1922,17 @@ function gateRoom(radius: number, d: number[], whole = false): number {
 /** The largest circle in the touching ring (`boardRanges`' second range) a
  * motif kept whole can take, the next line out following the circle: where
  * its gate keeps room for a cut either side of it (`gateRoom`). */
+/** The circle a motif kept whole takes for a radius the setting asks: that
+ * radius where a completion about a whole motif covers it (`WHOLE_PATTERNS`),
+ * else the largest below it that one covers, or the touching ring's top. */
+export function boardWholeRadius(radius: number, strips: number): number {
+	let best = Math.min(radius, boardWholeTop(strips));
+	for (const { strips: n, lo, hi } of WHOLE_PATTERNS) if (n === strips && lo <= radius) best = Math.max(best, Math.min(radius, hi));
+	return best;
+}
+/** The completion about a whole motif for a circle, past the touching ring. */
+export const boardWholePattern = (radius: number, strips: number) => radius > boardWholeTop(strips)
+	? WHOLE_PATTERNS.find(({ strips: n, lo, hi }) => n === strips && radius >= lo - 1e-9 && radius <= hi + 1e-9)?.pattern : undefined;
 export function boardWholeTop(strips: number): number {
 	const [, large] = boardRanges(strips), d = boardLines(strips);
 	if (!large) return 0;

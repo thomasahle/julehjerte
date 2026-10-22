@@ -227,7 +227,7 @@ function boardPicture(request: GeneratorRequest, circle?: 'large' | number, encl
 	// The circle takes the colour of the middle squares around it while the
 	// motif is whole, the other once it is divided in four (on every odd
 	// board).
-	const outer = whole && range === large ? 0 : (boardPanels(range, strips) - 1) % 2;
+	const outer = whole ? 0 : (boardPanels(range, strips) - 1) % 2;
 	const xs = contours.flat().map(p => p[0]), ys = contours.flat().map(p => p[1]);
 	let cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
 	const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));

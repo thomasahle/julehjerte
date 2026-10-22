@@ -19,8 +19,10 @@ export type PatternChord = [kind: 'pocket' | 'arc+' | 'arc-' | 'spoke', face: nu
 /** The pattern: switch points per chain, the motif's points a quarter, the
  * hidden cuts, and, where the search chose them, the piece of its chain each
  * switch point lies on (side, arc, side); `gates`: how far outside the motif
- * its outer gates sit, where its cuts across the circle run deep. */
-export type BoardPattern = { counts: number[]; motif: number; chords: PatternChord[]; pieces?: number[]; gates?: number };
+ * its outer gates sit, where its cuts across the circle run deep; `circle`:
+ * 1 for the circle in the edge squares' colour, about a motif kept whole
+ * (`motif` 1: a gate on each side). */
+export type BoardPattern = { counts: number[]; motif: number; chords: PatternChord[]; pieces?: number[]; gates?: number; circle?: 0 | 1 };
 
 /** Past the junction of the third line out from the middle with the second,
  * a quarter turn of the boundary has three chains crossing the circle: one
@@ -77,5 +79,18 @@ export const BOARD_PATTERNS: { strips: number; lo: number; hi: number; band?: nu
 			['spoke', 0, 6, 22, 0], ['arc+', 0, 7, 12, 0], ['arc+', 0, 9, 10, 0], ['pocket', 'p', 11, 19, 0], ['pocket', 'p', 13, 17, 0],
 			['spoke', 0, 14, 23, 0], ['arc+', 0, 18, 20, 0]],
 		pieces: [0, 1, 2, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 0, 2]
+	} }
+];
+
+/** Completions about a motif kept whole, the circle in the edge squares'
+ * colour, for the circles past the touching ring's top (`boardWholeTop`):
+ * the motif has a gate on each side, so the lines it cannot meet go round. */
+export const WHOLE_PATTERNS: { strips: number; lo: number; hi: number; pattern: BoardPattern }[] = [
+	// Five strips past the outer lines' corner junctions (42.4): seven switch
+	// points a quarter, a spoke from the outer chain's arc to the gate.
+	{ strips: 5, lo: Math.hypot(30, 30) + .4, hi: 48.5, pattern: {
+		counts: [5, 2], motif: 1, circle: 1,
+		chords: [['pocket', 'p', 0, 4, 0], ['arc-', 0, 1, 6, 3], ['spoke', 0, 2, 7, 0], ['arc+', 0, 3, 5, 0]],
+		pieces: [0, 0, 1, 2, 2, 0, 2]
 	} }
 ];

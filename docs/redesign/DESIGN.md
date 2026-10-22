@@ -957,8 +957,13 @@ stepping down through the sizes between as other frames do above 85%. A motif th
 point of background for the panels to meet at: a tree, a bell, a circle) is kept whole past the
 touching circle too, the next line out following the circle while the other sheet's middle lines
 cross it to the motif's gates, the circle keeping its colour, until a gate would come within 1.5 of
-the lines beside it (`boardWholeTop`: 82.5% on five strips, 77.6% on seven, 76.2% on nine), and
-keeps that circle above. Up to the touching circle only the two middle lines of
+the lines beside it (`boardWholeTop`: 82.5% on five strips, 77.6% on seven, 76.2% on nine). On five
+strips a completion about the whole motif then carries the circle on past the outer lines' corner
+junctions, every line kept, from 42.8 to 48.5 (86–95%; `WHOLE_PATTERNS`, `boardWholeRadius`): the
+circle in the edge squares' colour, as the whole motif needs (an odd number of the circle's chains
+switch sheets, so its motif must bring an odd number of switch points a quarter: one gate), the
+lines the motif cannot meet going round it through hidden cuts. Above the largest such circle it
+keeps that one. Up to the touching circle only the two middle lines of
 each sheet end on the circle and the undivided motif meets them like a letter in the circle frame;
 the outer lines cross the paper whole, and once the circle reaches them they follow it, so beside
 each corner of the ring it is left uncut rather than leaving a sliver, a slightly flattened circle.

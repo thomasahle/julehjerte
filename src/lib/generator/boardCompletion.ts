@@ -34,7 +34,7 @@ const EPS = 1e-9;
 const angleOf = (x: number, y: number) => (Math.atan2(y, x) + 2 * Math.PI) % (2 * Math.PI);
 
 /** The chains of F's boundary, counterclockwise, starting just after a break. */
-function boundaryChains(strips: number, r: number): Boundary {
+function boundaryChains(strips: number, r: number, circle = 0): Boundary {
 	const s = 100 / strips, m = (strips - 1) / 2, d = Array.from({ length: m }, (_, k) => s * (k + .5));
 	const lines = [...d.map(x => -x).reverse(), ...d];
 	const bound = (i: number) => i === 0 ? -50 : i === strips ? 50 : lines[i - 1];
@@ -53,7 +53,7 @@ function boundaryChains(strips: number, r: number): Boundary {
 		const a = crossings[c], b = crossings[(c + 1) % crossings.length];
 		const span = (b.angle - a.angle + 2 * Math.PI) % (2 * Math.PI), mid = a.angle + span / 2;
 		const [i, j] = square(r * Math.cos(mid), r * Math.sin(mid));
-		if (colour(i, j) === 1) { elements.push({ type: 'arc', from: cutOf(a.axis, a.p), to: cutOf(b.axis, b.p), angles: [a.angle, b.angle] }); continue; }
+		if ((colour(i, j) + circle) % 2 === 1) { elements.push({ type: 'arc', from: cutOf(a.axis, a.p), to: cutOf(b.axis, b.p), angles: [a.angle, b.angle] }); continue; }
 		// Counterclockwise round the white square, which lies on the left, from a to b.
 		const [x0, x1, y0, y1] = [bound(i), bound(i + 1), bound(j), bound(j + 1)];
 		const ring: Point[] = [[x0, y0], [x1, y0], [x1, y1], [x0, y1]];
@@ -245,7 +245,7 @@ function norm([x, y]: number[]): [number, number] {
  */
 export function completionLegs(edges: Edge[], ring: Ring, strips: number, radius: number, pattern: BoardPattern, around: number):
 	((side: number, index: number, from: Point) => Point[]) & { prepare: (all: { side: number; index: number; from: Point }[]) => void } {
-	const { chains, lines } = boundaryChains(strips, radius), spacing = SPACING * 7 / Math.max(7, strips);
+	const { chains, lines } = boundaryChains(strips, radius, pattern.circle ?? 0), spacing = SPACING * 7 / Math.max(7, strips);
 	const Q = chains.length / 4, quarter = chains.slice(0, Q);
 	if (Q !== pattern.counts.length) throw new ConstructionError('topology', 'The pattern does not fit the circle');
 	const polys = quarter.map(c => polyline(c, radius));
@@ -437,7 +437,17 @@ export function completionLegs(edges: Edge[], ring: Ring, strips: number, radius
 	// The motif's outer gates take the spokes: in each quarter the right gate
 	// of its panel, then the top (turned with the quarter).
 	const spokes = pattern.chords.filter(([kind, face]) => kind === 'spoke' && face === 0);
-	const gates: [number, number][][] = [[[1, 0], [0, 1]], [[0, 0], [3, 0]], [[3, 1], [2, 0]], [[2, 1], [1, 1]]];
+	// A motif kept whole has a gate on each side: the quarters take them in
+	// turn from the one that leaves the spokes the least way round.
+	const sides = [1, 0, 3, 2], whole = pattern.motif === 1 && (() => {
+		const turn = (rho: number) => spokes.reduce((sum, [, , i, , dq]) => {
+			const a = Math.atan2(placed[i].point[1], placed[i].point[0]), g = Math.PI / 2 * ((dq + rho) % 4);
+			return sum + Math.abs(turnAngle(a - g + Math.PI) - Math.PI);
+		}, 0);
+		const rho = [0, 1, 2, 3].reduce((best, r) => turn(r) < turn(best) ? r : best, 0);
+		return [0, 1, 2, 3].map(q => [[sides[(q + rho) % 4], 0]] as [number, number][]);
+	})();
+	const gates: [number, number][][] = whole || [[[1, 0], [0, 1]], [[0, 0], [3, 0]], [[3, 1], [2, 0]], [[2, 1], [1, 1]]];
 	const spokeOf = (side: number, index: number, from: Point) => {
 		for (let q = 0; q < 4; q++) for (const [, , i, j, dq] of spokes) {
 			const mq = (q + dq) % 4, slot = j - N;

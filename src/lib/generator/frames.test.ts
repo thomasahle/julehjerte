@@ -7,7 +7,7 @@ import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSide } from './state';
 import { templateVariants } from './templates';
-import { inside, uprightToSheet, distance, boardFill, boardLines, boardRangeLines, boardRangePattern, boardRanges, boardWholeTop, layerInset, withVisibleIslands, ConstructionError, WEDGES, type Point, type Ring } from './geometry';
+import { inside, uprightToSheet, distance, boardFill, boardLines, boardRangeLines, boardRangePattern, boardRanges, boardWholeRadius, boardWholeTop, layerInset, withVisibleIslands, ConstructionError, WEDGES, type Point, type Ring } from './geometry';
 import { generateTextGrid } from './textGrid';
 import { geometryKey } from './cache';
 import { MOTIF, boardRadius, boardSetting, boardSteps, motifChoices, motifPatterns, squareChoices } from './boardMotif';
@@ -711,15 +711,22 @@ describe('frames from real hearts', () => {
  it('keeps a motif that cannot be divided whole past the touching circle, and says how far it went', () => {
   // A solid motif has no background point for four panels to meet at: it
   // stays whole, the outer lines following the circle, until its gates near
-  // the corner junctions, and keeps that circle above; the star's points
-  // leave a point to divide it at.
+  // the corner junctions; past them a completion about the whole motif
+  // carries the circle on, every line kept (see `WHOLE_PATTERNS`), and above
+  // that it keeps the largest circle; the star's points leave a point to
+  // divide it at.
   const board = (motif: { contours: unknown }, scale: number) => generate({ mode: 'figure', name: 'Motif', contours: motif.contours as Ring[], colors, style: 'board', scale });
-  const at80 = board(tree, .8), top = boardSetting(boardWholeTop(5), 5);
+  const at80 = board(tree, .8), at90 = board(tree, .9), top = boardSetting(boardWholeRadius(60, 5), 5);
   expect(at80.scale).toBeUndefined();
   expect(at80.whole).toBe(true);
   expect(at80.hardToCut).toBeUndefined();
-  expect(top).toBeGreaterThan(.8);
-  expect(board(tree, .95).scale).toBe(top);
+  expect(boardSetting(boardWholeTop(5), 5)).toBeLessThan(.9);
+  expect(at90.scale).toBeUndefined();
+  expect(at90.whole).toBe(true);
+  expect(at90.hardToCut).toBeUndefined();
+  expect(at90.design.gridSize).toEqual({ x: 5, y: 5 });
+  expect(top).toBeGreaterThan(.9);
+  expect(board(tree, 1).scale).toBe(top);
   expect(board(star, .8).scale).toBeUndefined();
   expect(board(star, .8).whole).toBeUndefined();
   expect(board(tree, .6).scale).toBeUndefined();

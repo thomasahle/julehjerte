@@ -1,5 +1,34 @@
 # Generator robustness results
 
+## Motifs kept whole grow on, every line kept
+
+Product prompt (2026-10-22): "Remember that you can also change the color of
+the grid at certain zoom levels".
+
+The circle's colour goes with how the motif is divided, by parity. In the edge
+squares' colour, an odd number of the circle's chains switch sheets each
+quarter. So the motif must bring an odd number of switch points a quarter:
+one gate, the motif whole. The motif in four brings four (two gates, the
+seam, the centre).
+
+A flip near nine strips' remaining steps would therefore need the motif
+whole, which meets only four lines. The search finds weaves there (radius 38
+to 47.5), but at 45 they need 41 switch points a quarter with room for each,
+against 22 in the centre's colour: more crowded, not less.
+
+The motifs that cannot be divided in four already use the edge squares'
+colour. On every finer board they stopped growing at the touching ring's top
+(82.5% on five strips, 75% on seven, 73% on nine). 22 of the 52 corpus motifs
+are such.
+
+On five strips, a completion about the whole motif (7 switch points a quarter;
+`WHOLE_PATTERNS`) now carries their circle from 42.8 to 48.5 (86–95%), every
+line kept, and they keep 48.5 above. At 49.5 the paper left between the circle
+and the paper's edge is too thin. Over the corpus at 86–95%, two motifs are
+kept smaller, as before (ph-coffee, ph-bicycle), against 22. snow and ph-crown
+are now clean there. The page's picture matches the hearts (at most 0.4% of
+pixels). Divided hearts are unchanged, bit for bit.
+
 ## An exact search for the completions, and two more ranges on nine strips
 
 Product prompts (2026-10-22): "continue", and of the fewest-hidden-cuts

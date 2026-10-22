@@ -61,7 +61,8 @@ import {
 	boardRangeLines,
 	boardRangePattern,
 	boardRanges,
-	boardWholeTop,
+	boardWholePattern,
+	boardWholeRadius,
 	type Ring,
 	type Frame,
 	type FigureStyle,
@@ -1987,7 +1988,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// remain (see `boardRanges`).
 		const sizes = (range: readonly [number, number], radius: number, placement = boxed, scale = fills(radius, placement), whole = false) => {
 			const lines = boardRangeLines(range, strips), covered = lines.length < boardLines(strips).length;
-			const completion = whole ? undefined : boardRangePattern(range);
+			const completion = whole ? boardWholePattern(radius, strips) : boardRangePattern(range);
 			return layouts(range, placement, whole).flatMap(list => [.22, .05].flatMap(padding =>
 				list.map(layout => ({ radius, scale, layout: { padding, ...layout, ...placement.enclosed && { centre: placement.centre }, ...covered && { lines }, ...completion && { completion } } }))));
 		};
@@ -2039,7 +2040,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		const divided = !large || (covered ? ranges.slice(ranges.indexOf(range)).reverse().every(buildable) : buildable(range));
 		const whole = !divided && range !== small && wholeBuildable();
 		const [mode, size] = divided ? [range, radius] : range === small ? [large, large[0] + .6]
-			: whole ? [large, Math.min(radius, boardWholeTop(strips))] : [small, small[1]];
+			: whole ? [large, boardWholeRadius(radius, strips)] : [small, small[1]];
 		// Over the corner squares, whether the motif sits on its enclosing
 		// circle is decided once, in the largest circle, so it only grows with
 		// the setting: there a deer's antler and hooves reach equally far, but a
@@ -2062,7 +2063,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// The size setting the other construction's circle stands for, and
 		// whether the motif sits on its enclosing circle, for the picture.
 		const kept = (result: GeneratorResult): GeneratorResult => ({
-			...mode === range && size === radius ? result : { ...result, scale: boardSetting(size, strips) },
+			...size === radius && (mode === range || whole) ? result : { ...result, scale: boardSetting(size, strips) },
 			...placement.enclosed && { enclosed: true },
 			...whole && { whole: true },
 			...result.design.gridSize.x !== strips && { board: strips }
