@@ -2083,6 +2083,16 @@
 		pushUndo(before);
 	}
 
+	/**
+	 * The segments or nodes `0..last` of a cut that a button edits, and with within-curve symmetry their
+	 * mirror partners too (`last − i`): the symmetry then copies the cut's first half onto its second, which
+	 * would undo an edit to the second half alone.
+	 */
+	function withMates(indexes: number[], last: number): number[] {
+		if (!symmetryWithinCurve) return indexes;
+		return [...new Set(indexes.flatMap((i) => [i, last - i]))].sort((a, b) => a - b);
+	}
+
 	function getSelectedSegmentIndexes(segmentsLength: number): number[] {
 		const uniq = new Set<number>();
 		for (const idx of selectedSegments) {
@@ -2112,7 +2122,7 @@
 		const targets = getSelectedSegmentIndexes(segs.length);
 		if (!targets.length) return;
 
-		for (const segIdx of targets) {
+		for (const segIdx of withMates(targets, segs.length - 1)) {
 			const seg = segs[segIdx]!;
 			seg.p1 = { ...seg.p0 };
 			seg.p2 = { ...seg.p3 };
@@ -2145,7 +2155,7 @@
 			return d.x || d.y ? d : { x: 1, y: 0 };
 		};
 
-		for (const segIdx of targets) {
+		for (const segIdx of withMates(targets, segs.length - 1)) {
 			const seg = segs[segIdx]!;
 
 			// Out handle at p0.
@@ -2200,7 +2210,7 @@
 		if (!internal.length) return;
 
 		const before = snapshotState();
-		for (const anchorIdx of internal) addMissingHandles(segs, anchorIdx);
+		for (const anchorIdx of withMates(internal, n)) addMissingHandles(segs, anchorIdx);
 
 		let candidate = updateFingerSegments(finger, segs);
 		if (symmetryWithinCurve) candidate = applyWithinCurveSymmetry(candidate);

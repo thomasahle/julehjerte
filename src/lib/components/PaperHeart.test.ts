@@ -521,6 +521,48 @@ describe('node types', () => {
 	});
 });
 
+describe('within-curve symmetry', () => {
+	it("keeps a button's edit to a cut's second half, and makes the first half its mirror image", () => {
+		const h = render();
+		h.target.querySelector<HTMLButtonElement>('[aria-label="Within curve symmetry"] [title="Mirror symmetry"]')!.click();
+		flushSync();
+		const cut = () => h.fingers.find((f) => f.id === 'R-1')!;
+		// a double-click adds a node in the middle, and then one near the start adds its mirror image too
+		const doubleClick = (at: Vec) => {
+			for (let i = 0; i < 2; i++) {
+				send(h.path('R-1'), 'pointerdown', at);
+				send(h.svg, 'pointerup', at);
+			}
+		};
+		doubleClick(bezierAt(cut().segments[0]!, 0.5));
+		send(h.svg, 'pointerdown', { x: 0, y: 0 });
+		send(h.svg, 'pointerup', { x: 0, y: 0 });
+		doubleClick(bezierAt(cut().segments[0]!, 0.3));
+		expect(cut().segments).toHaveLength(4);
+		const handles = (k: number) => {
+			const s = cut().segments[k]!;
+			return [Math.hypot(s.p1.x - s.p0.x, s.p1.y - s.p0.y), Math.hypot(s.p2.x - s.p3.x, s.p2.y - s.p3.y)];
+		};
+		expect(Math.max(...handles(3))).toBeGreaterThan(1);
+		// the last segment, chosen by its two nodes, made straight
+		const nodes = () => [cut().segments[0]!.p0, ...cut().segments.map((s) => s.p3)];
+		send(h.handles()[3]!, 'pointerdown', nodes()[3]!);
+		send(h.svg, 'pointerup', nodes()[3]!);
+		send(h.handles()[4]!, 'pointerdown', nodes()[4]!, true);
+		send(h.svg, 'pointerup', nodes()[4]!);
+		h.button('Straight segment').click();
+		flushSync();
+		expect(handles(3)).toEqual([0, 0]);
+		expect(handles(0)).toEqual([0, 0]);
+		// and curved again, the same
+		h.button('Curved segment').click();
+		flushSync();
+		expect(Math.min(...handles(3))).toBeGreaterThan(1);
+		expect(handles(0)[0]).toBeCloseTo(handles(3)[1]);
+		expect(handles(0)[1]).toBeCloseTo(handles(3)[0]);
+	});
+});
+
 describe('the cut under the pointer', () => {
 	it('darkens all along, over the stripes where two cuts share a stroke too', () => {
 		const h = render();
