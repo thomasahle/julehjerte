@@ -34,7 +34,7 @@
 	import { saveUserDesign } from '$lib/stores/collection';
 	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, stripCount, stripPlace, stripSide, textRoom, ROOM_RANGE, CELL_FRAMES, largestScale, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
 	import { clampPlace } from '$lib/generator/stripFigure';
-	import { BOARD_STRIPS, boardPastEdges, type BoardStyle } from '$lib/generator/boardMotif';
+	import { BOARD_STRIPS, boardStage, type BoardStyle } from '$lib/generator/boardMotif';
 	import { isTextFigure } from '$lib/generator/textFigure';
 	import {
 		SHIPPED,
@@ -253,9 +253,9 @@
 	const boardCircles = new Map<string, 'large' | number>();
 	const boardEnclosed = new Map<string, boolean>();
 	const boardWhole = new Map<string, boolean>();
-	// Out past the paper's edges a motif's circle is decided apart from the
-	// sizes below (see `boardPastEdges`).
-	const onBoard = (motif: string, board = 5, scale = .7) => `${motif}|${board}${boardPastEdges(scale, board) ? '|past' : ''}`;
+	// Past the motif in four's reach a motif's circle is decided apart from
+	// the sizes below (see `boardStage`).
+	const onBoard = (motif: string, board = 5, scale = .7) => { const stage = boardStage(scale, board); return `${motif}|${board}${stage ? '|' + stage : ''}`; };
 	function learn(job: Job, result: GeneratorResult) {
 		if (!job.motif || job.request.mode !== 'figure' || job.request.style !== 'board') return;
 		const key = onBoard(job.motif, job.request.board, job.request.scale);

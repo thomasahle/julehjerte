@@ -4,7 +4,7 @@
  * generator and the pictures drawn before the cuts (see `picture`).
  */
 import type { GeneratorRequest } from './generate';
-import { boardLines, boardRangeLines, boardRanges, type Point, type Ring } from './geometry';
+import { boardLines, boardRangeLines, boardRangePattern, boardRanges, type Point, type Ring } from './geometry';
 import { checkeredLayouts } from './checkeredGrid';
 
 /** The motif in place of a letter: repeated on the checkerboard by the small
@@ -127,11 +127,13 @@ export function boardRadius(scale: number, strips = 5) {
 	return { radius, range };
 }
 
-/** Whether a size setting on `strips` strips takes the circle out past the
- * paper's edges with the middle lines left out (see `boardRanges`), where
- * whether a motif can be divided is decided apart from the sizes below. */
-export function boardPastEdges(scale: number, strips = 5): boolean {
-	return boardRangeLines(boardRadius(scale, strips).range, strips).length < boardLines(strips).length;
+/** Which construction past the motif in four's reach a size setting on
+ * `strips` strips takes, if any: every line routed by a completion
+ * ('pattern'), or the middle lines left out ('past') (see `boardRanges`),
+ * where whether a motif can be divided is decided apart from the sizes below. */
+export function boardStage(scale: number, strips = 5): '' | 'pattern' | 'past' {
+	const { range } = boardRadius(scale, strips);
+	return boardRangePattern(range) ? 'pattern' : boardRangeLines(range, strips).length < boardLines(strips).length ? 'past' : '';
 }
 
 /** The settings, in whole percents, over which each of a board's ranges past

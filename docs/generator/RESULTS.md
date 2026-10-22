@@ -1,5 +1,88 @@
 # Generator robustness results
 
+## Every line past the junction, on seven and nine strips
+
+The completion found by the search is now part of the generator
+(`boardCompletion`, `boardPatterns`): past the junction of the third line out
+with the second, the circle's edge switches between the sheets at points of
+its own, chain by chain round the white circle and its white squares. Each
+switch point's hidden cut runs across the white circle, hugging its edge
+through the white squares outside it, a step further in for each it
+encloses; or across the red square beside its chain; or round midway between
+motif and circle to one of the motif's gates. The motif keeps its four panels.
+
+On seven strips it carries the circle from 42.1 to 46.5 (87–91%), every line
+kept and every square equal, where the heart had left the middle lines out.
+Of 52 corpus motifs none is refused. Of those divided, star and tb-paw are
+hard there as on either side, ph-moon-stars at 87% as at 86%, and tb-star at
+89–91% (clean at 86% and 93%). The 22 motifs that cannot be divided in four
+keep their whole circle at 75%, as before.
+
+Nine strips short of their outer lines are seven, scaled by 9/7, with those
+lines crossing the paper whole: the white squares the circle cuts end on
+them, and their sides there are two more chains, with no switch points. The
+search finds the same completion there at once. It carries the circle from
+32.8 to 35.6 (85–88%), with the same result over the corpus (none refused;
+star, tb-star, ph-moon-stars and tb-paw hard). From 35.9 every motif is hard.
+The completion's axis chain holds three switch points on the side between the
+outer line and the circle, under a unit apart there. On seven strips that
+side is what ends the range at 46.5.
+
+The motif now grows evenly over the ranges' radii, skipping the steps between
+them, and never past a circle before the circle steps on. Seven strips are
+unchanged. On nine, the fill rises about 1.8 a percent from 84% to 97%
+instead of stepping 32.8 to 43.7 with the circle. The cat's picture changes
+at most 6.1% from one percent to the next on seven (besides the 70–71% colour
+swap). On nine it changes 1.4% at 84–85%, but 21% at 88–89%, where the
+circle still steps 35.6 to 48.2.
+
+Past the outer lines on nine strips (radius 38.9 on), no completion with the
+motif in four has been found. Each A cut must meet each B cut at a visible
+junction or along one hidden cut. At 40.5 only 20 of the 64 meetings are
+visible, so each quarter needs at least 11 hidden cuts and 18 switch points.
+The few counts of 18 tried give no complete pairing at all. Neither do
+smaller counts with a larger ring-shaped motif.
+
+## Gates between neighbouring ends, and every line past the junctions
+
+Product report (2026-10-22), after the step above: "There's still a jump from
+88% to 89% on the cat. Please keep going till it's completely smooth all the
+way from 0 to 100% at all grid sizes", and of "no heart with equal squares and
+every line can be woven between radius 32.4 and 47.8": "Yes it can. Just think
+harder on how to do it."
+
+The thin cuts just past the outer lines' junction (43.8 on seven, seven of
+eight hard-prone motifs hard) came from the gate between two neighbouring
+ends: the cut from a motif's gate facing elsewhere ran along the circle past a
+line's end. It now runs round midway between motif and circle, as beside a
+following line, and the five-strip constructions start 0.4 past the junction
+(42.1 on seven, 48.2 on nine), the slider stepping 39.0 to 42.1 and 30.4 to
+48.2 at 86 to 87%. The same routing cleans five strips just past its own
+junction: at 73%, 45 of 52 clean, from 34 (11 motifs hard to clean, none the
+other way; every other size unchanged). On seven and nine at 86–100%, 43–45
+clean and 7–9 hard, as before.
+
+Running on to the junction with every line, the middle lines closing in so
+that the squares between them all but vanish, removed the step on seven but
+cut thin at 86–87% (17 clean of 52) and left those squares unequal; set aside.
+
+The claim was wrong. `docs/inverse/exact-weave-solvability.tex` gives an exact
+test: a picture weaves if and only if its visible edges can be labelled by
+sheet and completed with hidden cuts (shared by both sheets) so that each
+sheet's cuts are disjoint paths from edge to edge; every pair of an A and a B
+cut then crosses at a visible four-way junction or along one hidden cut. A
+search over that model, symmetric under a quarter turn, with switch points on
+the boundary chains of the white circle and its white squares, on the motif's
+outline and round its centre point (scratchpad weave/), reproduces the
+three- and five-strip constructions, and finds hearts with every line on seven
+strips at radius 45 using today's four-panel motif: 12 switch points a quarter
+on the circle's chains, hidden cuts across the white circle between
+neighbouring chains, and hidden cuts through the red squares just outside the
+circle. Without those last it needs a ring-shaped motif with a large hole;
+without a motif nothing works. One such solution, realised as curves, renders
+exactly to its target (every pixel). Building it into the board circle is the
+next step.
+
 ## A smaller step for the circle on seven and nine strips
 
 Product report (2026-10-22), on 7×7: "there's a big jerk now as we go from 93
