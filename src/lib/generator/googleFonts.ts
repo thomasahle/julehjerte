@@ -2,9 +2,9 @@
  * Any Google font for the text, found by name: the families in our index
  * (`scripts/generator/google-fonts.mjs`, most popular first), each fetched
  * when chosen from Fontsource's copy of Google Fonts on jsDelivr, rather than
- * from Google, and outlined in the browser (see `fontFile`). Unlike the fonts
- * we ship, none is tested or thickened: the generator says when one is hard
- * to cut.
+ * from Google, outlined in the browser (see `fontFile`) and, where its strokes
+ * are thinner than ours, thickened (see `strokes`). Unlike the fonts we ship,
+ * none is tested: the generator says when one is hard to cut.
  */
 import type { Font } from './geometry';
 
@@ -57,6 +57,27 @@ export function matchingFamilies(index: readonly GoogleFamily[], query: string):
 
 const loaded = new Map<string, Promise<Font>>();
 
+/** The outlines in a font file, thickened where thin: in a worker of their
+ * own, as measuring the strokes takes a moment, where the browser has one. */
+function outlined(bytes: ArrayBuffer): Promise<Font> {
+	if (typeof Worker === 'undefined')
+		return Promise.all([import('./fontFile'), import('./strokes')])
+			.then(async ([{ readFont }, { thickened }]) => thickened(await readFont(new Uint8Array(bytes))));
+	return new Promise((resolve, reject) => {
+		const worker = new Worker(new URL('./fontWorker.ts', import.meta.url), { type: 'module' });
+		worker.onmessage = (event: MessageEvent<{ font?: Font; error?: string }>) => {
+			worker.terminate();
+			if (event.data.font) resolve(event.data.font);
+			else reject(new Error(event.data.error));
+		};
+		worker.onerror = event => {
+			worker.terminate();
+			reject(new Error(event.message));
+		};
+		worker.postMessage(bytes, [bytes]);
+	});
+}
+
 /** The family's outlines, fetched and read once a visit; a failed request
  * is tried again the next time. */
 export function loadGoogleFont(choice: string): Promise<Font> {
@@ -67,7 +88,7 @@ export function loadGoogleFont(choice: string): Promise<Font> {
 				if (!response.ok) throw new Error(`Font request failed: ${response.status}`);
 				return response.arrayBuffer();
 			})
-			.then(async bytes => (await import('./fontFile')).readFont(new Uint8Array(bytes)));
+			.then(outlined);
 		font.catch(() => loaded.delete(choice));
 		loaded.set(choice, font);
 	}
