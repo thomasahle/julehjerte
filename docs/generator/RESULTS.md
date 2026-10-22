@@ -1,5 +1,45 @@
 # Generator robustness results
 
+## Gates between neighbouring ends, and every line past the junctions
+
+Product report (2026-10-22), after the step above: "There's still a jump from
+88% to 89% on the cat. Please keep going till it's completely smooth all the
+way from 0 to 100% at all grid sizes", and of "no heart with equal squares and
+every line can be woven between radius 32.4 and 47.8": "Yes it can. Just think
+harder on how to do it."
+
+The thin cuts just past the outer lines' junction (43.8 on seven, seven of
+eight hard-prone motifs hard) came from the gate between two neighbouring
+ends: the cut from a motif's gate facing elsewhere ran along the circle past a
+line's end. It now runs round midway between motif and circle, as beside a
+following line, and the five-strip constructions start 0.4 past the junction
+(42.1 on seven, 48.2 on nine), the slider stepping 39.0 to 42.1 and 30.4 to
+48.2 at 86 to 87%. The same routing cleans five strips just past its own
+junction: at 73%, 45 of 52 clean, from 34 (11 motifs hard to clean, none the
+other way; every other size unchanged). On seven and nine at 86–100%, 43–45
+clean and 7–9 hard, as before.
+
+Running on to the junction with every line, the middle lines closing in so
+that the squares between them all but vanish, removed the step on seven but
+cut thin at 86–87% (17 clean of 52) and left those squares unequal; set aside.
+
+The claim was wrong. `docs/inverse/exact-weave-solvability.tex` gives an exact
+test: a picture weaves if and only if its visible edges can be labelled by
+sheet and completed with hidden cuts (shared by both sheets) so that each
+sheet's cuts are disjoint paths from edge to edge; every pair of an A and a B
+cut then crosses at a visible four-way junction or along one hidden cut. A
+search over that model, symmetric under a quarter turn, with switch points on
+the boundary chains of the white circle and its white squares, on the motif's
+outline and round its centre point (scratchpad weave/), reproduces the
+three- and five-strip constructions, and finds hearts with every line on seven
+strips at radius 45 using today's four-panel motif: 12 switch points a quarter
+on the circle's chains, hidden cuts across the white circle between
+neighbouring chains, and hidden cuts through the red squares just outside the
+circle. Without those last it needs a ring-shaped motif with a large hole;
+without a motif nothing works. One such solution, realised as curves, renders
+exactly to its target (every pixel). Building it into the board circle is the
+next step.
+
 ## A smaller step for the circle on seven and nine strips
 
 Product report (2026-10-22), on 7×7: "there's a big jerk now as we go from 93

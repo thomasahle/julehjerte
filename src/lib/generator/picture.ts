@@ -9,7 +9,7 @@
  * Frames without a picture here return none.
  */
 import type { GeneratorRequest } from './generate';
-import { arc, boardFill, boardPanels, boardRangeLines, boardRanges, frameRing, layerInset, outerFrame, ray, uprightToSheet, BOARD_STUB, FITTED, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
+import { arc, boardFill, boardLines, boardPanels, boardRangeLines, boardRanges, frameRing, layerInset, outerFrame, ray, uprightToSheet, BOARD_STUB, FITTED, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
 import { fillSquare, fitCircle } from './frameFit';
 import { fittedPicture } from './fitted';
 import { normalizeContours } from './contours';
@@ -237,14 +237,15 @@ function boardPicture(request: GeneratorRequest, circle?: 'large' | number, encl
 	if (large && radius > large[1] && enclosed) ({ centre: [cx, cy], reach } = boardPlacement(contours, enclosedAlong(setting)));
 	const scale = (boardFill(radius, strips) - Math.max(request.gap ?? 3, 1.5)) / reach / box;
 	const disc = frameRing('circle', 2 * radius), side = 100 / strips, rings: Ring[] = [];
-	// Where the heart leaves the middle lines out, the strips between them
-	// are one, its checks of one colour (see `boardRanges`).
-	const middle = (strips - 1) / 2, left = middle - boardRangeLines(range, strips).length;
-	const strip = (i: number) => Math.abs(i - middle) <= left ? middle - left : i;
-	for (let i = 0; i < strips; i++)
-		for (let j = 0; j < strips; j++) {
-			if ((strip(i) + strip(j) + outer) % 2) continue;
-			const square: Ring = [[i * side, j * side], [(i + 1) * side, j * side], [(i + 1) * side, (j + 1) * side], [i * side, (j + 1) * side]];
+	// The lines in play: where the heart leaves the middle lines out, the
+	// strips between them are one (see `boardRangeLines`).
+	const own = boardLines(strips), lines = boardRangeLines(range, strips);
+	const bounds = lines.length === own.length && lines.every((dk, k) => dk === own[k]) ? Array.from({ length: strips + 1 }, (_, k) => k * side)
+		: [0, ...lines.map(dk => 50 - dk).reverse(), ...lines.map(dk => 50 + dk), 100];
+	for (let i = 0; i < bounds.length - 1; i++)
+		for (let j = 0; j < bounds.length - 1; j++) {
+			if ((i + j + outer) % 2) continue;
+			const square: Ring = [[bounds[i], bounds[j]], [bounds[i + 1], bounds[j]], [bounds[i + 1], bounds[j + 1]], [bounds[i], bounds[j + 1]]];
 			rings.push(square);
 			// Its part inside the circle turns back.
 			const inside = clipConvex(square, disc);

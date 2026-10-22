@@ -1762,24 +1762,12 @@ export function boardRanges(strips: number): readonly (readonly [number, number]
 	// where it covers the middle lines. (Leaving out fewer, on nine strips,
 	// would leave bars three squares long in the outer ring.)
 	if (all.length > 2) {
-		const lines = all.slice(-2), from = ranges[ranges.length - 1][1] + .8;
+		// From just past the junction of the outer two lines, where the circle
+		// first meets both a side, and past the largest circle with every line.
+		const lines = all.slice(-2), meet = Math.hypot(lines[1], lines[0]), from = Math.max(ranges[ranges.length - 1][1] + .8, meet + .4);
 		for (const [low, high] of linesRanges(lines, Math.hypot(lines[0], 50) + 1))
-			if (high > from && Math.hypot(lines[1], lines[0]) < (low + high) / 2) {
-				// Just past the junctions where it starts, the outer lines' ends
-				// crowd the inner lines' gates, their legs meeting at a sharp
-				// angle: from where each gate keeps a little more room than a cut
-				// either side of it.
-				let start = Math.max(low, from);
-				if (gateRoom(start + .01, lines) < 2) {
-					let crowded = start + .01, roomy = high;
-					for (let step = 0; step < 40; step++) {
-						const mid = (crowded + roomy) / 2;
-						if (gateRoom(mid, lines) < 2) crowded = mid;
-						else roomy = mid;
-					}
-					start = roomy;
-				}
-				const range = [start, high] as const;
+			if (high > from && meet < (low + high) / 2) {
+				const range = [Math.max(low, from), high] as const;
 				coveredLines.set(range, lines);
 				ranges.push(range);
 			}
@@ -2053,14 +2041,16 @@ function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number, aro
 		const quarter = [2, 3, 0, 1][side], ends = quarters[quarter], k = side < 2 ? index : count - 1 - index;
 		const [x, y] = pairs[quarter][k], following = before[quarter] || after[quarter];
 		// A pair whose ends are neighbours meets at a gate midway between them.
-		if (!following && ends.indexOf(y) === ends.indexOf(x) + 1) return [framed((x.angle + y.angle) / 2, (y.angle - x.angle) / 2)];
-		const gate = (overlapping[quarter] ??= overlapGates(edges, ring, ends, pairs[quarter], quarter, before[quarter], after[quarter]))[k]!;
-		// Beside a following line the gate has little room: where the motif's
-		// gate faces elsewhere, the cut to it runs out from the motif's gate,
-		// round midway between the motif and the circle, and out to the gate,
-		// clear of the lines' ends beside it.
+		const neighbours = !following && ends.indexOf(y) === ends.indexOf(x) + 1;
+		const gate = neighbours ? { point: framed((x.angle + y.angle) / 2, (y.angle - x.angle) / 2), low: x.angle, high: y.angle }
+			: (overlapping[quarter] ??= overlapGates(edges, ring, ends, pairs[quarter], quarter, before[quarter], after[quarter]))[k]!;
+		// Beside a following line, or between neighbouring ends, the gate has
+		// little room: where the motif's gate faces elsewhere, the cut to it
+		// runs out from the motif's gate, round midway between the motif and
+		// the circle, and out to the gate, clear of the lines' ends beside it,
+		// not along the circle past them.
 		const facing = (Math.atan2(from[1] - 50, from[0] - 50) + turn) % turn;
-		if (!following || around === undefined || facing > gate.low && facing < gate.high) return [gate.point];
+		if (!following && !neighbours || around === undefined || facing > gate.low && facing < gate.high) return [gate.point];
 		const reach = Math.max(around, distance(from, [50, 50])), toward = (gate.low + gate.high) / 2;
 		const delta = ((toward - facing + 3 * Math.PI) % turn) - Math.PI, steps = Math.max(1, Math.ceil(Math.abs(delta) / (Math.PI / 90)));
 		return [...Array.from({ length: steps + 1 }, (_, i): Point => {

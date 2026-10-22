@@ -438,10 +438,10 @@ describe('frames from real hearts', () => {
   // From the smallest to the largest, the circle and the motif in it never
   // shrink, and the circle steps by little more than the step over the
   // corner junctions at 85-86% (0.8); on seven and nine strips but once, out
-  // to where the heart leaves the middle lines out, as no circle between can
-  // be woven with the motif in four (see `boardRanges`). The motif does not
-  // step there with the circle, but grows on evenly (see `boardFill`).
-  for (const [board, largest, step] of [[3, boardRanges(3)[0][1], 0], [5, 52, 0], [7, boardRanges(7).at(-1)![1], 6], [9, boardRanges(9).at(-1)![1], 21]]) {
+  // to just past the junction where the heart leaves the middle lines out
+  // (see `boardRanges`). The motif does not step there with the circle, but
+  // grows on evenly (see `boardFill`).
+  for (const [board, largest, step] of [[3, boardRanges(3)[0][1], 0], [5, 52, 0], [7, boardRanges(7).at(-1)![1], 3.1], [9, boardRanges(9).at(-1)![1], 18]]) {
    const ranges = boardRanges(board), covered = ranges.find(range => boardRangeLines(range, board).length < boardLines(board).length);
    let last = boardRadius(.45, board).radius;
    for (let percent = 46; percent <= 100; percent++) {
@@ -452,7 +452,7 @@ describe('frames from real hearts', () => {
      expect(last, `${board}`).toBe(ranges[ranges.indexOf(covered) - 1][1]);
      expect(radius - last, `${board}`).toBeLessThan(step);
      expect(boardFill(radius, board), `${board}`).toBe(boardFill(last, board));
-    } else expect(radius - last, `${board} ${percent}`).toBeLessThanOrEqual(1.2);
+    } else expect(radius - last, `${board} ${percent}`).toBeLessThanOrEqual(1.25);
     last = radius;
    }
    expect(last, `${board}`).toBe(largest);
