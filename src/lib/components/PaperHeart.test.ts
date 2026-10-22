@@ -552,24 +552,24 @@ describe('the symmetry rows', () => {
 		});
 		const h = render({ initialFingers: cuts, initialGridSize: { x: 3, y: 3 } });
 		const opened = JSON.stringify(h.fingers);
-		row(h, 'Within lobe symmetry', 'Mirror symmetry').click();
+		row(h, 'Symmetry of the curves in each lobe', 'Mirrored: one side mirrors the other').click();
 		flushSync();
 		expect(JSON.stringify(h.fingers)).toBe(opened);
-		expect(chosen(h, 'Within lobe symmetry')).toBe('Off');
+		expect(chosen(h, 'Symmetry of the curves in each lobe')).toBe('Free: each shaped on its own');
 		expect(h.target.querySelector('.drag-stop')?.textContent).toContain("can't be turned on");
 		expect(h.button('Undo').disabled).toBe(true);
 	});
 
 	it('are no Fortryd step where the cuts keep to them already', () => {
 		const h = render();
-		row(h, 'Within lobe symmetry', 'Mirror symmetry').click();
+		row(h, 'Symmetry of the curves in each lobe', 'Mirrored: one side mirrors the other').click();
 		flushSync();
 		const once = JSON.stringify(h.fingers);
 		const undoable = !h.button('Undo').disabled;
 		// the same again: off, and on
-		row(h, 'Within lobe symmetry', 'Off').click();
+		row(h, 'Symmetry of the curves in each lobe', 'Free: each shaped on its own').click();
 		flushSync();
-		row(h, 'Within lobe symmetry', 'Mirror symmetry').click();
+		row(h, 'Symmetry of the curves in each lobe', 'Mirrored: one side mirrors the other').click();
 		flushSync();
 		expect(JSON.stringify(h.fingers)).toBe(once);
 		h.button('Undo').click();
@@ -581,7 +581,7 @@ describe('the symmetry rows', () => {
 
 	it("give a node type to the node's copies too", () => {
 		const h = render();
-		row(h, 'Between lobes symmetry', 'Mirror symmetry').click();
+		row(h, 'Symmetry between the two lobes', 'Mirrored: one side mirrors the other').click();
 		flushSync();
 		const at = midpoint(h.fingers.find((f) => f.id === 'R-1')!);
 		for (let i = 0; i < 2; i++) {
@@ -605,7 +605,7 @@ describe('the symmetry rows', () => {
 
 	it("keep a button's edit to a cut's second half, and make the first half its mirror image", () => {
 		const h = render();
-		row(h, 'Within curve symmetry', 'Mirror symmetry').click();
+		row(h, 'Symmetry of each curve', 'Mirrored: one side mirrors the other').click();
 		flushSync();
 		const cut = () => h.fingers.find((f) => f.id === 'R-1')!;
 		// a double-click adds a node in the middle, and then one near the start adds its mirror image too

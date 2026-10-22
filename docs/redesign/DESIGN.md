@@ -576,7 +576,7 @@ Keep every existing tool (undo/redo, insert/delete node, corner/smooth/symmetric
 44px icon buttons with tooltips — nothing removed, no labels under icons. Apply the palette: page background,
 panels white with 1px `--line` and radius 12, section titles 12px uppercase `--muted`, green accents, red
 primary. Top bar: back link + logo at the left; Help (icon), **Hent PDF** (primary red) and **Gem** (dark
-green) at the right. Right panel 340px: Symmetri (segmented Fra / Sym / Anti), Tegning, Hjertedetaljer,
+green) at the right. Right panel 340px: Symmetri (three rows, "Hver kurve", "Kurverne i hver lap" and "De to lapper", each segmented Fri / Spejlet / Drejet; named so after the 2026-10-22 user test, where "Inden i lap" and "Sym / Anti" were guesswork; then Striber and Start forfra), Tegning, Hjertedetaljer,
 Handlinger. A **"Skjul panel"** control collapses the panel so the canvas fills the width; a slim tab at the
 right edge ("Vis panel") brings it back; remember the choice in localStorage. Add a "Snap til modsat side"
 checkbox and a one-line hint above the canvas. The mobile editor keeps its existing stacked panels.
