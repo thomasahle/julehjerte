@@ -587,24 +587,44 @@ function generateAtSize(request: GeneratorRequest): GeneratorResult {
 		...result.hardToCut && request.mode === 'figure' && !request.font ? { hardToCut: { ...result.hardToCut, letters: [] } } : {}
 	});
 	// Prefer a clean alternative to a hard-to-cut earlier one. Only when none
-	// is clean is the first hard-to-cut alternative finished, and only when
-	// none is even that are the last resorts tried.
-	const hard: [number, () => GeneratorResult | undefined][] = [];
+	// is clean is the first hard-to-cut alternative finished; only when none
+	// is even that are they tried again with the constructions set aside on
+	// the way (see `LAST_RESORTS`), keeping the strips, space and cells asked
+	// for, hard to cut if need be; and only then are the last resorts tried,
+	// which change those.
 	let last: unknown;
-	for (const [index, { request: alternative, retries, lastResort }] of alternatives.entries()) {
-		if (lastResort) continue;
+	const preferred = (): GeneratorResult => {
+		const hard: [number, () => GeneratorResult | undefined][] = [];
+		for (const [index, { request: alternative, retries, lastResort }] of alternatives.entries()) {
+			if (lastResort) continue;
+			try {
+				// Identical small motifs gain little from other junctions; a
+				// smaller board is the better next choice.
+				return named(generateOnce(alternative, finish => hard.push([index, finish]), 1, retries), index);
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				last = error;
+			}
+		}
+		for (const [index, finish] of hard) {
+			const result = finish();
+			if (result) return named(result, index);
+		}
+		throw last ?? new ConstructionError('topology', 'No alternative');
+	};
+	const before = LAST_RESORTS.map(([, setAside]) => setAside());
+	try {
+		return preferred();
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
+	for (const [k, [allowing, setAside]] of LAST_RESORTS.entries()) {
+		if (setAside() === before[k]) continue;
 		try {
-			// Identical small motifs gain little from other junctions; a
-			// smaller board is the better next choice.
-			return named(generateOnce(alternative, finish => hard.push([index, finish]), 1, retries), index);
+			return allowing(preferred);
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-			last = error;
 		}
-	}
-	for (const [index, finish] of hard) {
-		const result = finish();
-		if (result) return named(result, index);
 	}
 	for (const [index, { request: alternative, lastResort }] of alternatives.entries()) {
 		if (!lastResort) continue;

@@ -40,6 +40,16 @@ After all three, over the corpus and the deer (refused / kept smaller):
 | Checked tips | 0 / 0 | 0 / 0 | 0 / 4 |
 | Sunburst | 0 / 0 | 0 / 0 | — (85% cap) |
 
+The same second pass now comes before the last resorts that change what was
+asked (other strips, more space, cells fitted to the motif), as the strips
+and space are kept hard to cut if need be. At the default size this changes
+six hearts and no text (275 compared): on equal squares the sun and Tabler
+stars were clean only on fitted 4×4 cells and the Tabler gift on fitted 5×5,
+now on true 3×3 squares (the gift clean, the others hard); in the sunburst
+the coffee cup, sun and Tabler paw were built with more space than asked, now
+with the space asked (the paw hard). Their pictures, which differed from the
+hearts by 5–45%, now differ by under 1%.
+
 The figure in the checks on 3–6 strips, at 70% and 100%, refused only the
 snowflake on three strips below 80% (no sheets keep every strip whole, even
 without the crowding, loop or vertex rules). A board frame that cannot weave a
