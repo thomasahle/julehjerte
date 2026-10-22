@@ -64,7 +64,7 @@ export function picture(request: GeneratorRequest, known: Known = {}): Picture |
 			return request.style === 'squares' || choice.alone ? woven(choice.text, font, !!choice.air, Math.min(1.1, boardScale(request) * (choice.larger ?? 1)))
 				: checkered(choice.text, font, boardScale(request));
 		}
-		if (request.mode === 'figure' && request.style === 'strips') return stripsPicture(request, known.place);
+		if (request.mode === 'figure' && request.style === 'strips') return stripsPicture({ ...request, board: known.board ?? request.board }, known.place);
 		// A motif that needs panels gets a finer board, which crosses the
 		// corners its frame turns over with more stripes.
 		if (request.mode === 'figure' && (request.style === 'rays' || request.style === 'check') && (known.board ?? 3) === 3)

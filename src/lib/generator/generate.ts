@@ -5,7 +5,7 @@ import { generateFittedFigure, mirrorSymmetric, type GateTies } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid, roomOf, squareCellScale } from './textGrid';
 import { NO_WHOLE_STRIPS, STRIPS, crowdedHiddenCutsSetAside, slidePlace, stripFigures, withCrowdedHiddenCuts } from './stripFigure';
-import { MOTIF, boardPlacement, boardRadius, boardScale, boardSetting, boardSteps, enclosedAlong, motifChoices, squareChoices } from './boardMotif';
+import { BOARD_STRIPS, MOTIF, boardPlacement, boardRadius, boardScale, boardSetting, boardSteps, enclosedAlong, motifChoices, squareChoices, type BoardStyle } from './boardMotif';
 import { TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
 import { CIRCLE_STYLES, fillSquare, fitCircle } from './frameFit';
 export { fillSquare, fitCircle } from './frameFit';
@@ -478,6 +478,29 @@ function withLayout(request: GeneratorRequest): GeneratorRequest {
 
 export function generate(request: GeneratorRequest): GeneratorResult {
 	if (request.mode === 'text' && isTextFigure(request.textFrame)) return generateTextFigure(request);
+	try {
+		return generateAtSizeOrSmaller(request);
+	} catch (error) {
+		// A frame on a board that cannot weave the motif on the strips asked
+		// for, at any size, shows it on the nearest that can (the finer of two),
+		// as the page then says.
+		const range = request.mode === 'figure' ? BOARD_STRIPS[request.style as BoardStyle] : undefined;
+		if (!range || !(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		const asked = request.board ?? range.initial, boards: number[] = [];
+		for (let n = range.min; n <= range.max; n += range.step) if (n !== asked) boards.push(n);
+		boards.sort((a, b) => Math.abs(a - asked) - Math.abs(b - asked) || b - a);
+		for (const board of boards) try {
+			return generateAtSizeOrSmaller({ ...request, board });
+		} catch (otherError) {
+			if (!(otherError instanceof ConstructionError) && !(otherError instanceof CutGeometryError)) throw otherError;
+		}
+		throw error;
+	}
+}
+
+/** A heart at the size asked for, else above the default size the largest
+ * of a few sizes below (see `generate`). */
+function generateAtSizeOrSmaller(request: GeneratorRequest): GeneratorResult {
 	const scale = request.scale ?? .7;
 	try {
 		return generateAtSizeOrLastResort(request);
@@ -511,7 +534,7 @@ function generateTextFigure(request: GeneratorRequest): GeneratorResult {
 	const asked = figure.board, boards = asked ? [asked, ...TEXT_STRIPS.filter(n => n !== asked)] : TEXT_STRIPS;
 	let hard: GeneratorResult | undefined, last: unknown;
 	for (const board of boards) try {
-		const result = generate({ ...figure, board });
+		const result = generateAtSizeOrSmaller({ ...figure, board });
 		if (!result.hardToCut || board === asked) return result;
 		if (!hard || result.hardToCut.spacing > hard.hardToCut!.spacing) hard = result;
 	} catch (error) {

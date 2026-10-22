@@ -40,6 +40,14 @@ After all three, over the corpus and the deer (refused / kept smaller):
 | Checked tips | 0 / 0 | 0 / 0 | 0 / 4 |
 | Sunburst | 0 / 0 | 0 / 0 | — (85% cap) |
 
+The figure in the checks on 3–6 strips, at 70% and 100%, refused only the
+snowflake on three strips below 80% (no sheets keep every strip whole, even
+without the crowding, loop or vertex rules). A board frame that cannot weave a
+motif on the strips asked for at any size now shows it on the nearest strips
+that can (the finer of two), as the page already says for the other board
+frames ("Med 3 strimler kan figuren ikke væves …; den vises med 4"), and the
+picture draws the strips its heart was made on.
+
 The board circle's kept sizes are motifs that cannot be divided in four: they
 stay whole up to the largest circle that holds them whole (about 83%, see
 below), the coffee cup at the touching circle. Still refused in text: Nunito

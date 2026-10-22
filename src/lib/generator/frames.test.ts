@@ -673,6 +673,12 @@ describe('frames from real hearts', () => {
    expect(swapped(design).corners, `${strips}`).toBe(true);
   }
  }, 30000);
+ slow('shows a motif the strips asked for cannot weave at all on the nearest that can', () => {
+  // No sheets keep every strip whole for the snowflake on three strips
+  // below 80%; four can.
+  const { design } = generate({ mode: 'figure', name: 'Snow', contours: snow.contours as Ring[], colors, style: 'strips', board: 3 });
+  expect(design.gridSize).toEqual({ x: 4, y: 4 });
+ });
  it('reaches a counter alone in its square by its shortest hidden cuts', () => {
   // The cuts from their faces' sides leave islands of the bicycle fewer than
   // two; with the shortest ways to them too, it cuts cleanly, where it was
