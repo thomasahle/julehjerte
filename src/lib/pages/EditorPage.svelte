@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { beforeNavigate, goto } from '$app/navigation';
+  import { beforeNavigate, goto, replaceState } from '$app/navigation';
   import { settleOverlayHistory } from '$lib/utils/overlayHistory';
   import { onMount, tick } from 'svelte';
   import PaperHeart from '$lib/components/PaperHeart.svelte';
@@ -17,9 +17,9 @@
     type DraftSource,
     type EditorDraft
   } from '$lib/editor/draft';
-  import { noteSaved } from '$lib/editor/savedNotice';
+  import { noteSaved } from '$lib/editor/savedNotice.svelte';
   import type { Finger, GridSize, HeartDesign, HeartPattern } from '$lib/types/heart';
-  import { normalizeHeartDesign, parseHeartFromSVGWithReport } from '$lib/utils/heartDesign';
+  import { normalizeHeartDesign, parseHeartFromSVGWithReport, serializeHeartDesign } from '$lib/utils/heartDesign';
   import { heartName as nameIn } from '$lib/utils/heartName';
   import { importSummary } from '$lib/utils/svgImportSummary';
   import { downloadHeartSvg, downloadTemplateSvg } from '$lib/editor/svgDownloads';
@@ -39,7 +39,7 @@
     UploadIcon
   } from '$lib/components/icons';
   import { NARROW_QUERY } from '$lib/breakpoints';
-  import { heartHref, homeAnchorHref, href } from '$lib/i18n/routes';
+  import { editorHref, homeAnchorHref, href } from '$lib/i18n/routes';
   import { takeHandoff } from '$lib/editor/handoff';
   import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
 
@@ -103,7 +103,8 @@
   //   /editor/?from=session        takes the heart Mal found out of the editor session (PAINT.md §3)
   //   /editor/#design=<payload>    user-created heart; payload = encodeURIComponent(JSON.stringify(serializeHeartDesign(d)))
   //   /editor/?design=<payload>    legacy form of the same payload (kept so old links keep working)
-  // edit=true and returnTo=detail are read from the query string (also accepted in the hash).
+  // edit=true is read from the query string (also accepted in the hash): the heart is one of "Mine
+  // hjerter", opened as it is saved there now (it autosaves), the payload standing in where it is not.
   function parseDesignPayload(raw: string): HeartDesign | null {
     // URLSearchParams has already percent-decoded once; fall back to a second decode for
     // links that were encoded twice.
@@ -133,18 +134,18 @@
     fromId: string | null;
     fromSession: boolean;
     isEditMode: boolean;
-    returnToDetail: boolean;
     escher: boolean;
   } {
     if (!browser) {
-      return { design: null, fromId: null, fromSession: false, isEditMode: false, returnToDetail: false, escher: false };
+      return { design: null, fromId: null, fromSession: false, isEditMode: false, escher: false };
     }
     const query = new URLSearchParams(window.location.search);
     const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
     const get = (key: string) => query.get(key) ?? hash.get(key);
-    const returnToDetail = get('returnTo') === 'detail';
     const designData = hash.get('design') ?? query.get('design');
-    const design = designData ? parseDesignPayload(designData) : null;
+    const linked = designData ? parseDesignPayload(designData) : null;
+    const saved = linked && get('edit') === 'true' ? getUserCollection().find((h) => h.id === linked.id) : undefined;
+    const design = saved ?? linked;
     const rawFrom = design ? null : get('from');
     // `?from=session` is Mal handing over the heart Find snit found (PAINT.md
     // §3): the design waits in the editor session, not in the gallery, so it
@@ -156,7 +157,6 @@
       fromId,
       fromSession,
       isEditMode: design !== null && get('edit') === 'true',
-      returnToDetail,
       // `/editor/escher/`, or an older link's `?tab=escher`, opens Tegn on that tab.
       escher: escherPage || get('tab') === 'escher'
     };
@@ -168,7 +168,6 @@
     fromId: urlFromId,
     fromSession: urlFromSession,
     isEditMode: urlEditMode,
-    returnToDetail: urlReturnToDetail,
     escher: urlEscher
   } = getEditorUrlInput();
 
@@ -193,7 +192,6 @@
   // over is a new unsaved one, so the page is "create", not "edit".
   let editingExisting = $state(urlDesignFromLink !== null);
   let isEditMode = $state(urlEditMode); // true = editing custom heart, false = creating copy
-  let returnToDetail = $state(urlReturnToDetail);
   let editorKey = $state(0); // Key to force PaperHeart remount
 
   // Initialize fingers/gridSize with URL design if available
@@ -232,6 +230,12 @@
   // Serialized design as first emitted by PaperHeart; used to tell real edits from the initial emission.
   let designBaseline: string | null = null;
   let hasDesignEdits = false;
+  // The cuts as last reported, so the same cuts again (an edit that moved nothing) are no edit.
+  let lastCuts: string | null = null;
+  // The visitor has typed in the heart's name, author or description since it opened.
+  let fieldsEdited = false;
+  // The heart came in as work that is in no collection: a restored draft, or the heart Mal found.
+  let cameUnsaved = false;
   // Whether the heart holds work that is not in "Mine hjerter": a heart that is not
   // there yet (a new one, a copy, an import, Mal's) edited since it opened. "Gem"
   // wears a dot for it, as tiled.art turns its Save button red. A heart that is
@@ -295,7 +299,10 @@
     if (!savesToCollection && !sessionDesign) {
       pendingDraft = readDraft();
     }
-    if (sessionDesign) scheduleAutosave();
+    if (sessionDesign) {
+      cameUnsaved = true;
+      scheduleAutosave();
+    }
 
     if (urlFromId) {
       void loadDesignFromGallery(urlFromId);
@@ -350,8 +357,10 @@
     currentPattern = pattern ?? undefined;
     // PaperHeart emits once on mount (with reconciled boundary curves). That is not a
     // user edit, so only autosave once the design actually differs from that baseline.
+    const snapshot = JSON.stringify({ fingers, gridSize, weaveParity });
+    if (snapshot === lastCuts) return;
+    lastCuts = snapshot;
     if (!hasDesignEdits) {
-      const snapshot = JSON.stringify({ fingers, gridSize, weaveParity });
       if (designBaseline === null || snapshot === designBaseline) {
         designBaseline = snapshot;
         return;
@@ -362,12 +371,22 @@
       hasDesignEdits = true;
     }
     scheduleAutosave();
+    // Taken back (Fortryd) to the cuts it opened with, and nothing else changed: nothing to save.
+    if (snapshot === designBaseline && !fieldsEdited && !cameUnsaved) unsaved = false;
+  }
+
+  /** The visitor typed in the name, author or description. */
+  function editField(): void {
+    fieldsEdited = true;
+    scheduleAutosave();
   }
 
   // Reset the autosave baseline before remounting PaperHeart with a new design.
   function resetDesignBaseline(): void {
     designBaseline = null;
     hasDesignEdits = false;
+    lastCuts = null;
+    fieldsEdited = false;
   }
 
   // ?from=<gallery-id>: fetch the static heart and edit it as a copy (same flow as ?design= links).
@@ -384,11 +403,23 @@
     currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
     currentPattern = design.pattern;
     heartName = `${nameIn(design, lang)} ${t('copy', lang)}`;
-    authorName = design.author ?? '';
-    description = design.description ?? '';
+    // The copy is the visitor's own heart: it is not by the gallery heart's author, nor described,
+    // published or dated as that one is (user test, 2026-10-22: a copy saved as "af Thomas").
+    authorName = '';
+    description = '';
     editingExisting = true;
     isEditMode = false;
-    initialDesign = design;
+    initialDesign = {
+      ...design,
+      author: '',
+      authorUrl: undefined,
+      publisher: undefined,
+      publisherUrl: undefined,
+      source: undefined,
+      date: undefined,
+      description: undefined,
+      descriptions: undefined
+    };
     resetDesignBaseline();
     unsaved = false;
     editorKey++;
@@ -485,14 +516,6 @@
     return draftId;
   }
 
-  function getBackDetailId(): string | null {
-    if (isEditMode && initialDesign) return initialDesign.id;
-    if (!draftId) return initialDesign?.id ?? null;
-    const userHearts = getUserCollection();
-    if (userHearts.some((h) => h.id === draftId)) return draftId;
-    return initialDesign?.id ?? draftId;
-  }
-
   function createHeartDesign(): HeartDesign {
     return {
       // In edit mode, keep the original ID; otherwise generate a new one
@@ -549,11 +572,13 @@
     autosaveTimeout = null;
   }
 
-  // A name the visitor has not chosen is taken whole by the click into the field, so what they
-  // type replaces it. Safari puts the caret where the click let go, so that mouseup is kept back.
+  // A name the visitor has not typed (the default, a copy's, an import's, Mal's) is taken whole by the
+  // click into the field, so what they type replaces it. Safari puts the caret where the click let go,
+  // so that mouseup is kept back.
   let nameJustTaken = false;
+  let nameTyped = false;
   function takeDefaultName(event: FocusEvent & { currentTarget: HTMLInputElement }): void {
-    if (heartName !== t('myHeart', lang)) return;
+    if (nameTyped) return;
     event.currentTarget.select();
     nameJustTaken = true;
   }
@@ -582,6 +607,7 @@
     pendingLoadSuperseded = true;
     // The draft is work that never went into "Mine hjerter".
     unsaved = true;
+    cameUnsaved = true;
     const design = draft.design;
     currentFingers = design.fingers;
     currentGridSize = design.gridSize;
@@ -625,7 +651,14 @@
     }
   }
 
-  function showInGallery() {
+  /**
+   * "Gem": the heart into "Mine hjerter", and the editor stays on it, saying so with a way to the heart's
+   * card (user tests, 2026-10-20 to 22: every tester was thrown by "Gem" leaving the editor). From here it
+   * is a heart of "Mine hjerter": it saves its own edits (autosave), and the page's address opens it
+   * again (`?edit=true`), so a reload, or Back and Forward, finds it rather than a blank heart or a
+   * second copy to save.
+   */
+  function save() {
     if (!browser) return;
 
     // The save below writes exactly what the pending autosave would have.
@@ -641,20 +674,18 @@
       return;
     }
 
-    // The heart is in "Mine hjerter" now, so it is an existing heart from here on
-    // and autosaves; the draft that stood in for it has been spent. The page "Gem"
-    // goes to says it was saved.
+    // The draft that stood in for it has been spent.
     clearDraft();
     pendingDraft = null;
     savesToCollection = true;
     unsaved = false;
-    noteSaved(design.name || t('myHeart', lang));
-
-    // Back where the visitor came from: arriving from a heart's page via
-    // "Rediger i editor" (?returnTo=detail), "Gem" returns to that heart
-    // rather than to the front page.
-    const backId = returnToDetail ? getBackDetailId() : null;
-    goto(backId ? heartHref(backId, lang) : homeAnchorHref(makeHeartAnchorId(design.id), lang));
+    cameUnsaved = false;
+    isEditMode = true;
+    editingExisting = true;
+    initialDesign = design;
+    const payload = encodeURIComponent(JSON.stringify(serializeHeartDesign(design)));
+    replaceState(editorHref(lang, `?edit=true#design=${payload}`), {});
+    noteSaved(design.name || t('myHeart', lang), homeAnchorHref(makeHeartAnchorId(design.id), lang));
   }
 
   function handleImport(event: Event) {
@@ -762,7 +793,10 @@
         bind:value={heartName}
         onfocus={takeDefaultName}
         onmouseup={keepNameTaken}
-        oninput={scheduleAutosave}
+        oninput={() => {
+          nameTyped = true;
+          editField();
+        }}
       />
     </label>
     <label class="field" for="author">
@@ -774,7 +808,7 @@
         autocomplete="name"
         bind:value={authorName}
         placeholder={t('yourName', lang)}
-        oninput={scheduleAutosave}
+        oninput={editField}
       />
     </label>
     <label class="field" for="desc">
@@ -786,7 +820,7 @@
         bind:value={description}
         rows="3"
         placeholder={t('optionalDescription', lang)}
-        oninput={scheduleAutosave}
+        oninput={editField}
       ></textarea>
     </label>
   </section>
@@ -873,7 +907,7 @@
     <button
       type="button"
       class="btn btn-sm btn-dark top-action"
-      onclick={showInGallery}
+      onclick={save}
       title={saveLabel}
       aria-label={saveLabel}
     >

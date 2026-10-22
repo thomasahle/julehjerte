@@ -7,10 +7,12 @@
  * Find snit produced so the draw page can pick it up without putting a whole design
  * in the URL.
  *
- * Nothing here touches the DOM or storage. The mask deliberately does not survive
- * a reload: 160 KB per keystroke is more than the draft mechanism should carry, and
- * an unsaved drawing that disappears with the tab is what a visitor already expects.
- * `serialize`/`restore` exist so that decision can be reversed in one place.
+ * Nothing here touches the DOM or storage. The mask is not stored as it is painted:
+ * 160 KB per keystroke is more than the draft mechanism should carry, and an unsaved
+ * drawing that disappears with the tab is what a visitor already expects. A reload
+ * is not closing the tab, though (and the engine's error asks for one), so Mal writes
+ * `serialize` once to the tab's sessionStorage as the page unloads and `restore`s it
+ * as it opens again (PaintPage).
  *
  * The mask and the found heart are held with `$state.raw`, so that what the store
  * makes reactive is the *replacement* of a mask, not a write to a cell. A plain

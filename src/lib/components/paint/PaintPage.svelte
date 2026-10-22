@@ -39,10 +39,13 @@
 	import { editorHref, homeAnchorHref } from '$lib/i18n/routes';
 	import { NARROW_QUERY } from '$lib/breakpoints';
 	import { readPanelCollapsed, writePanelCollapsed } from '$lib/editor/panelState';
+	import { getSessionStorage, readStorage, removeStorage, writeStorage } from '$lib/utils/safeStorage';
 	import {
 		clearMask,
 		handoffToDraw,
 		markMaskDirty,
+		restore as restoreSession,
+		serialize as serializeSession,
 		session,
 		setFrame,
 		setMask,
@@ -244,6 +247,32 @@
 	let toolsStandby = $derived(showingResult);
 	let heading = $derived(t('paintPageTitle', lang));
 
+	/** Where the session waits in the tab's sessionStorage through a reload. */
+	const RELOAD_KEY = 'julehjerte-paint-reload';
+
+	/**
+	 * The session, written once as the page unloads, for this tab to take back as Mal opens again:
+	 * a drawing survives a reload, though nothing is stored while painting
+	 * ($lib/editor/session.svelte.ts). Only a mask with paint on it.
+	 */
+	function keepThroughReload(): void {
+		if (!session.mask || isEmpty(session.mask)) return;
+		writeStorage(RELOAD_KEY, JSON.stringify(serializeSession()), getSessionStorage());
+	}
+
+	/** The session kept through a reload, put back and forgotten; false when there is none. */
+	function takeBackAfterReload(): boolean {
+		const storage = getSessionStorage();
+		const raw = readStorage(RELOAD_KEY, storage);
+		removeStorage(RELOAD_KEY, storage);
+		if (!raw) return false;
+		try {
+			return restoreSession(JSON.parse(raw));
+		} catch {
+			return false;
+		}
+	}
+
 	onMount(() => {
 		const narrow = window.matchMedia(NARROW_QUERY);
 		const syncNarrow = () => (isNarrow = narrow.matches);
@@ -257,11 +286,16 @@
 		// so the page opens where it was left rather than on a mask the visitor has
 		// already moved past.
 		showingResult = session.status === 'done' && !!session.result;
+		// A reload keeps the drawing (the engine's own error asks for one): the session
+		// written as the page unloaded comes back, once.
+		if (!session.mask) takeBackAfterReload();
+		window.addEventListener('pagehide', keepThroughReload);
 		// The page always has a mask to paint on: the empty state is an empty mask,
 		// not the absence of one, so the heart is on screen from the first frame.
 		if (!session.mask) setMask(createMask(0));
 		measureHeader();
 		return () => {
+			window.removeEventListener('pagehide', keepThroughReload);
 			narrow.removeEventListener('change', syncNarrow);
 			unsubscribe();
 			stopTimer();

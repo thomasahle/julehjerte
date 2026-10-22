@@ -718,9 +718,18 @@ mount, never during render. Saving the heart, discarding the draft, or starting 
 heart that is not in "Mine hjerter" holds work — edited since it opened, a draft taken up, an import, a heart
 from Mal — "Gem" wears a red dot, ringed white, and its tooltip says the heart is not saved yet, as tiled.art
 turns its Save button red; a heart already in the collection saves itself, so it shows none unless that
-failed. After "Gem", the page it goes to (the heart's own page, or the front page at its card) says
-“Mit hjerte” er gemt i Mine hjerter for a few seconds, from the root layout (`SavedToast`), so that saving does
-not pass in silence: user testers found the jump away alone gave no sign the heart was saved.
+failed. An edit that changes nothing, or Fortryd back to the cuts it opened with (and no field typed in), leaves
+no dot. "Gem" saves and stays in the editor (2026-10-22: every user tester was thrown by it leaving): “Mit
+hjerte” er gemt i Mine hjerter · *Se dem* shows for six seconds from the root layout (`SavedToast`,
+`$lib/editor/savedNotice.svelte`), *Se dem* going to the heart's card. From then on it is a heart of the
+collection: it autosaves, and the address becomes its `?edit=true#design=` link, which opens the heart as the
+collection has it now, so a reload or Back and Forward find it rather than a blank heart or a second copy. A
+copy of a gallery heart (`?from=`) is the visitor's own: no author, description, source or date of the
+original's. The name field takes a name the visitor has not typed (the default, a copy's) whole on the first
+click.
+
+Mal keeps its drawing in memory as it is painted; as the page unloads it writes the session once to the tab's
+sessionStorage, and takes it back as it opens again, so a reload (which the engine's error asks for) keeps it.
 
 Paper colours are a site-wide viewing preference, controlled by the shared footer on every page,
 including the generator, vector editor and paint editor. The footer offers two colour inputs, swap,
