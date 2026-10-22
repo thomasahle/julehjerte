@@ -27,7 +27,7 @@
 	import Landscape from '$lib/components/Landscape.svelte';
 	import { ArrowRightIcon } from '$lib/components/icons';
 	import { t, type Language } from '$lib/i18n';
-	import { href } from '$lib/i18n/routes';
+	import { escherEditorHref, href } from '$lib/i18n/routes';
 
 	let {
 		lang,
@@ -97,7 +97,7 @@
 
 	<h2 class="section-line">{t('generatorHaveIdea', lang)}</h2>
 	<div class="others">
-		<a class="choice other" href="{href('editor', lang)}?tab=escher">
+		<a class="choice other" href={escherEditorHref(lang)}>
 			<div class="art pair" aria-hidden="true">
 				{@render heart('escherFront')}{@render heart('escherBack')}
 			</div>

@@ -67,7 +67,7 @@ export function homeAnchorHref(anchor: string, lang: Language): string {
 /**
  * A link to one gallery category on the front page, e.g. `/#stjerner`.
  * The category ids are the ones in hearts.json and are the same in both
- * languages (klassiske, stjerner, moenstre, figurer, hjerter).
+ * languages (klassiske, stjerner, moenstre, fliser, figurer, hjerter).
  */
 export function categoryHref(categoryId: string, lang: Language): string {
 	return homeAnchorHref(categoryId, lang);
@@ -79,6 +79,20 @@ export function categoryHref(categoryId: string, lang: Language): string {
  */
 export function editorHref(lang: Language, suffix = ''): string {
 	return `${href('editor', lang)}${suffix}`;
+}
+
+/** Tegn opened on its Escher tab: `/editor/escher/`, `/en/editor/escher/`. */
+export function escherEditorHref(lang: Language): string {
+	return `${href('editor', lang)}escher/`;
+}
+
+/** What the design page makes once past its start, and the last part of its address then. */
+export const GENERATOR_MODES = ['figure', 'text'] as const;
+export type GeneratorMode = (typeof GENERATOR_MODES)[number];
+
+/** The design page opened on making a figure or a text, e.g. `/design/figure/`; without `mode`, its start. */
+export function generatorHref(lang: Language, mode?: GeneratorMode): string {
+	return `${href('generator', lang)}${mode ? `${mode}/` : ''}`;
 }
 
 export function otherLanguage(lang: Language): Language {

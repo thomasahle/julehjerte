@@ -26,7 +26,7 @@
 	import { lobesShareTemplate } from '$lib/utils/symmetry';
 	import DesignStart, { type StartArt } from '$lib/components/DesignStart.svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
-	import { href, editorHref, otherLanguage } from '$lib/i18n/routes';
+	import { href, editorHref, generatorHref, otherLanguage, type GeneratorMode } from '$lib/i18n/routes';
 	import { pageTitle } from '$lib/seo';
 	import { computeHeartViewBoxFromOverlap, renderHeartSvgMarkup, renderPictureSvgMarkup } from '$lib/rendering/heartSvg';
 	import { picture, type Picture } from '$lib/generator/picture';
@@ -59,7 +59,8 @@
 		SaveIcon
 	} from '$lib/components/icons';
 	import { Search as SearchIcon } from '@lucide/svelte';
-	let { lang, art }: { lang: Language; art: StartArt } = $props();
+	/** `mode`: the page's own address makes a figure or a text (`/design/figure/`), not the start. */
+	let { lang, art, mode: pageMode }: { lang: Language; art: StartArt; mode?: GeneratorMode } = $props();
 	const fonts = [
 		['nunito', 'generatorFontNunito'],
 		['breeserif', 'generatorFontBree'],
@@ -74,7 +75,9 @@
 	/** The templates shown below the heart: one where the two lobes share it. */
 	const SHARED_LOBES = ['left'] as const, BOTH_LOBES = ['left', 'right'] as const;
 
-	let config = $state<GeneratorState>({ ...defaults });
+	// The page's address only says where it starts; from there `config` follows the visitor.
+	// svelte-ignore state_referenced_locally
+	let config = $state<GeneratorState>({ ...defaults, ...(pageMode ? { mode: pageMode } : {}) });
 	let mounted = $state(false),
 		catalog = $state<CatalogItem[]>([]),
 		query = $state(''),
@@ -435,8 +438,10 @@
 			colors = next;
 		});
 		config = readGeneratorState(window.location.hash);
-		const mode = new URLSearchParams(window.location.search).get('mode');
-		if (mode === 'figure' || mode === 'text') config.mode = mode;
+		// A link's own state wins; else the page's address, and an older link's `?mode=` over both.
+		if (config.mode === 'start' && pageMode) config.mode = pageMode;
+		const asked = new URLSearchParams(window.location.search).get('mode');
+		if (asked === 'figure' || asked === 'text') config.mode = asked;
 		// A shared link pasted into an open generator changes only the hash.
 		// The page's own replaceState below never fires this event.
 		const follow = () => (config = readGeneratorState(window.location.hash));
@@ -472,6 +477,8 @@
 		const snapshot = { ...config };
 		const url = new URL(window.location.href);
 		url.searchParams.delete('mode');
+		// The address names what the page makes: /design/figure/, /design/text/, or /design/ at the start.
+		url.pathname = snapshot.mode === 'start' ? href('generator', lang) : generatorHref(lang, snapshot.mode);
 		url.hash =
 			snapshot.mode === 'start'
 				? ''
@@ -654,6 +661,14 @@
 			room: textRoom(state)
 		};
 	}
+	/**
+	 * The same page in the other language, making the same. The state joins it once the page is live:
+	 * the prerender would read a `#make=` in the HTML as an anchor it must find on that page.
+	 */
+	let languageUrl = $derived(
+		generatorHref(otherLanguage(lang), config.mode === 'start' ? undefined : config.mode) +
+			(config.mode === 'start' || !mounted ? '' : '#make=' + encodeURIComponent(JSON.stringify(config)))
+	);
 	function chooseMode(mode: GeneratorState['mode']) {
 		config.mode = mode;
 		query = '';
@@ -696,10 +711,7 @@
 <PageHeader
 	{lang}
 	variant={config.mode === 'start' ? 'site' : 'editor'}
-	languageUrl={href('generator', otherLanguage(lang)) +
-		(config.mode === 'start'
-			? ''
-			: '#make=' + encodeURIComponent(JSON.stringify(config)))}
+	{languageUrl}
 ></PageHeader>
 {#if config.mode === 'start'}
 	<DesignStart {lang} {art} onchoose={chooseMode} />
