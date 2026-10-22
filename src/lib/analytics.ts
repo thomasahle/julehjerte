@@ -142,6 +142,15 @@ export function trackHeartEdit(heartId: string, heartName: string) {
 }
 
 /**
+ * Track Tegn's "Tilfældigt mønster" button: the heart it drew, by its grid,
+ * shape, arrangement and symmetry rows (Inden i kurve, Inden i lap, Mellem
+ * lapper as o/s/a), and how many it has drawn in this page view.
+ */
+export function trackRandomHeart(heart: { strips: number; shape: string; arrangement: string; symmetry: string }, press: number) {
+  trackEvent('random_heart', { strips: heart.strips, shape: heart.shape, arrangement: heart.arrangement, symmetry: heart.symmetry, press });
+}
+
+/**
  * Track the header's colourful mode ("Farverig"): `{ on: true, shuffle: n }`
  * for the n-th press of its button in this page view (each press deals the
  * hearts new colours), `{ on: false }` when choosing a pair with the header's

@@ -596,6 +596,18 @@ selection and red invalid-cut highlights take priority. This is a visual overlap
 not a certificate of exact geometric coincidence. It must not intercept pointer events
 or change saved/exported cutting paths.
 
+Below the rows (and below the Escher tab's contents) the Symmetri card ends with **Tilfældigt mønster /
+Random pattern** (a dice icon), which replaces the heart with a random one in one Fortryd step
+(`$lib/editor/randomHeart`). Random but not chaotic: it draws a square grid (2–6 strips, mostly 3–5), one
+shape (scales, hills, zigzags, square steps or S's), one arrangement of which way the shapes point (all one
+way, alternating along the cut, a checkerboard, alternating from cut to cut, a few, or the middle only) and
+the three rows, each Fra, Sym or Anti (all Fra is rarer). The rows are built into the cuts exactly, so the
+heart opens in the Normal tab with those rows chosen and true. Hills, zigzags and S's bulge from the middle of
+a stretch and run straight across the crossings; a draw that would make a red cut, or let a left and a right
+cut run alongside each other (a sliver too thin to cut, a hairline on screen), is drawn again. Six strips
+take only the calmer shapes and arrangements. GA4 event `random_heart`: strips, shape, arrangement, the rows
+as three letters (o/s/a) and the press's number in the page view.
+
 Symmetri has two tabs at its top, **Normal** (the rows above) and **Escher**, which draws the whole heart from
 one tile, repeated the way Escher's regular divisions repeat one shape (`$lib/pattern`): an edit to one stretch
 of cut between two crossings reaches every stretch that carries the same curve. The visitor picks a tile type

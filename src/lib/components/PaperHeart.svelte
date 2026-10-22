@@ -7,6 +7,7 @@
 	import {
 		ChevronRightIcon,
 		CloseIcon,
+		DiceIcon,
 		FitIcon,
 		OutlineIcon,
 		RedoIcon,
@@ -54,6 +55,8 @@
 	} from '$lib/geometry/bezierSegments';
 	import { dot, midpoint, normalize, perp, vecAdd, vecDist, vecLerp, vecScale, vecSub } from '$lib/geometry/vec';
 	import { insertNodeInFinger, shiftNodeTypesOnDelete } from '$lib/editor/commands';
+	import { randomHeart } from '$lib/editor/randomHeart';
+	import { trackRandomHeart } from '$lib/analytics';
 	import {
 		fingerHasIntersectionIssues,
 		fingerPairHasIntersectionIssues,
@@ -1294,6 +1297,43 @@
 		const before = snapshotState();
 		showTile(escher.restartedTile(patternTile));
 		pushUndo(before);
+	}
+
+	/** How many hearts "Tilfældigt mønster" has drawn on this page, for its analytics event. */
+	let randomPresses = 0;
+
+	/**
+	 * "Tilfældigt mønster": a new random heart ($lib/editor/randomHeart), its grid size and three
+	 * symmetry rows drawn with it, in one Fortryd step. The rows are set with the cuts already
+	 * symmetric, so the effect that applies a newly chosen row has nothing to do; the Normal tab
+	 * opens, since the heart is drawn from rows, not a tile, and the view is fitted to its size.
+	 */
+	function drawRandomHeart() {
+		if (readonly) return;
+		const heart = randomHeart();
+		const before = snapshotState();
+		if (patternTile) lastEscherTile = patternTile;
+		patternTile = null;
+		escherTab = false;
+		gridSize = heart.gridSize;
+		weaveParity = heart.weaveParity;
+		withinCurveMode = prevWithinCurveMode = heart.symmetry.withinCurveMode;
+		withinLobeMode = prevWithinLobeMode = heart.symmetry.withinLobeMode;
+		betweenLobesMode = prevBetweenLobesMode = heart.symmetry.betweenLobesMode;
+		fingers = heart.fingers;
+		selectedFingerId = null;
+		selectedAnchors = [];
+		selectedSegments = [];
+		lastCurveHit = null;
+		dragTarget = null;
+		pushUndo(before);
+		fitView();
+		randomPresses += 1;
+		const { withinCurveMode: c, withinLobeMode: l, betweenLobesMode: b } = heart.symmetry;
+		trackRandomHeart(
+			{ strips: heart.gridSize.x, shape: heart.shape, arrangement: heart.arrangement, symmetry: `${c[0]}${l[0]}${b[0]}` },
+			randomPresses
+		);
 	}
 
 	/**
@@ -4290,6 +4330,11 @@
 								disabled={{ lobes: !canSymmetryBetweenLobes() }}
 							/>
 						{/if}
+						<!-- A new heart with its grid and rows drawn at random; in both tabs, since it
+						     replaces the heart, and Fortryd brings the old one back. -->
+						<button type="button" class="random-heart" title={tr('editorRandomHeartHint')} disabled={readonly} onclick={drawRandomHeart}>
+							<DiceIcon size={16} aria-hidden="true" />{tr('editorRandomHeart')}
+						</button>
 					</section>
 
 					<section class="editor-panel">
@@ -5095,6 +5140,36 @@
 				grid-column: 1 / -1;
 			}
 		}
+
+	/* "Tilfældigt mønster", in the look of the Escher tab's "Start forfra". */
+	.random-heart {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		width: 100%;
+		margin-top: 10px;
+		padding: 7px 10px;
+		border: 1.5px solid var(--line);
+		border-radius: 8px;
+		background: var(--white);
+		color: var(--green);
+		font: inherit;
+		font-size: 13px;
+		font-weight: 600;
+		cursor: pointer;
+	}
+	.random-heart:hover:not(:disabled) {
+		background: var(--cream2);
+	}
+	.random-heart:focus-visible {
+		outline: 2px solid var(--green);
+		outline-offset: 2px;
+	}
+	.random-heart:disabled {
+		opacity: 0.5;
+		cursor: default;
+	}
 
 	/* The same restyled ToggleGroup as Mal's Fast / Fri, so the editor's segmented
 	   controls look like one control. */

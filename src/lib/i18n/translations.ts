@@ -398,6 +398,9 @@ export const translations = {
     editorAnti: 'Anti',
     editorAntiSymmetry: 'Antisymmetri (punktsymmetri)',
     editorRequiresEqualGridSize: 'Kræver samme gitterstørrelse',
+    // Tegn's "Tilfældigt mønster": a new random heart, its grid and symmetry rows drawn at random
+    editorRandomHeart: 'Tilfældigt mønster',
+    editorRandomHeartHint: 'Tegn et nyt tilfældigt mønster med tilfældig størrelse og symmetri. Fortryd bringer dit hjerte tilbage.',
     // Tegn's Escher tab: one tile repeated over the heart, as in Escher's regular divisions
     symmetryTabNormal: 'Normal',
     symmetryTabEscher: 'Escher',
@@ -1419,6 +1422,9 @@ export const translations = {
     editorAnti: 'Anti',
     editorAntiSymmetry: 'Anti-symmetry',
     editorRequiresEqualGridSize: 'Requires equal grid size',
+    // Tegn's "Tilfældigt mønster": a new random heart, its grid and symmetry rows drawn at random
+    editorRandomHeart: 'Random pattern',
+    editorRandomHeartHint: 'Draw a new random pattern with a random size and symmetry. Undo brings your heart back.',
     // Tegn's Escher tab: one tile repeated over the heart, as in Escher's regular divisions
     symmetryTabNormal: 'Normal',
     symmetryTabEscher: 'Escher',
