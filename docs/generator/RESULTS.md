@@ -1,5 +1,30 @@
 # Generator robustness results
 
+## Faster first builds, the same hearts
+
+The small motifs' first heart tries every pattern before a hard-to-cut one, and
+most of that time went to work done again: the search's clearance check on
+routes it had already judged (of the deer's 140,904 route checks only 28,444
+were new routes; its 55,288 route sets held 26,715 distinct ones), ports and
+splits projected onto every edge of a ring, and rays, box centres and point
+comparisons building temporary arrays at every candidate bridge. The verdicts
+are now kept by the route's points and margin, alone and per pair in a lobe;
+edges are passed over by a box test first; and rays, centres and nearness take
+one pass each, points apart in either coordinate skipping the hypotenuse. All
+of it gives the same numbers, so the same hearts: identical cut hashes for ten
+frames over a range of motifs and for 40 text hearts (two fonts, five frames).
+
+| Small motifs, first heart | Before | After |
+| --- | ---: | ---: |
+| Phosphor crown | 58 s | 43 s |
+| Phosphor rabbit | 54 s | 32 s |
+| Tabler cookie | 32 s | 21 s |
+| The deer | 24 s | 15.5 s |
+| Ten frames, one motif each | 48.5 s | 28.5 s |
+
+The crown is still slow because each of its four patterns fails after 4–13 s
+before the hard-to-cut one is finished: that is the search itself.
+
 ## Small motifs: one alone rather than refusing
 
 At the default size the small motifs refused 7 of the 52 corpus motifs (the
