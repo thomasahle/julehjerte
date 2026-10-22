@@ -1,5 +1,57 @@
 # Generator robustness results
 
+## No refusals in any figure frame
+
+Three changes, each tried only where a request would otherwise be refused or
+shown smaller, so that every heart built before keeps its cuts (cut hashes
+compared over every frame for the motifs concerned, and over text hearts):
+
+- **Islands along visible spokes.** A motif's islands (a paw's toes, a sun's
+  rays, a cup's steam) are chained along hidden cuts; entered along visible
+  spokes they route where those cannot, but that construction was kept only
+  when clean. A refused request that set one aside tries again keeping it for
+  the final check. The board circle's paw, sun, coffee cup and bicycle and the
+  paw on equal squares are hard to cut rather than refused, the sunburst's sun
+  clean, its paw at 95% hard. Made global instead, it turned 9 clean hearts
+  hard (the earlier construction standing where a later one was clean), hence
+  the second pass.
+- **Hidden cuts that only crowd.** In the checks, two hidden cuts across one
+  square that would come too close, without crossing, were never both cut, and
+  Cinzel's ANNA, anna and Anna found no sheets that keep every strip whole on
+  any board (the solver proved it at once). The same second pass lets them be
+  cut, counted as crowded: those texts are hard to cut.
+- **The double border to 100%.** Its medallion is at most 80 across and holds
+  the whole motif, so 15 motifs could not be built above 85–97% and the slider
+  stood still there. A motif that would reach past the largest circle now grows
+  over the sizes above the default to the largest it holds, the cutting
+  clearance inside it. The 17 motifs concerned build at every size from 75% to
+  100%, all clean but the bicycle at 85% (hard), the butterfly stopping at 88%
+  (its outline finds no four attachments larger); several hard ones became
+  clean, as the space asked for is now kept.
+
+After all three, over the corpus and the deer (refused / kept smaller):
+
+| Frame | 70% | 85% | 100% |
+| --- | --- | --- | --- |
+| Equal squares, small motifs | 0 / 0 | 0 / 0 | 0 / 0 |
+| Board circle | 0 / 4 | 0 / 22 | 0 / 23 |
+| Rays, checks, wedges, silhouette, fitted | 0 / 0 | 0 / 0 | 0 / 1 (fitted) |
+| Double border | 0 / 0 | 0 / 1 | 0 / 15 → 1 |
+| Checked tips | 0 / 0 | 0 / 0 | 0 / 4 |
+| Sunburst | 0 / 0 | 0 / 0 | — (85% cap) |
+
+The board circle's kept sizes are motifs that cannot be divided in four: they
+stay whole up to the largest circle that holds them whole (about 83%, see
+below), the coffee cup at the touching circle. Still refused in text: Nunito
+ABCDEFGHIJ in the checks (ten letters across are too small for any board; the
+solver finds nothing even without crowding, loops or vertex rules) and the
+five-line J/UL/JUL/UL/J in the medallion.
+
+The first build of the sunburst rabbit at 90% took 73 s this morning and 28 s
+now (each counter's box centre found once per outline rather than per port and
+comparison, and the speed-ups below): the sunburst's slowest at 85% fell from
+19.5 s to 8.5 s.
+
 ## Faster first builds, the same hearts
 
 The small motifs' first heart tries every pattern before a hard-to-cut one, and

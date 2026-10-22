@@ -907,8 +907,15 @@ motif within its square, 0.6–1.1 times the default. The size goes to 100% in t
 for it (`largestScale`: rays, checks, wedges, close-fitting, the figure in the checks, the circle on
 a board, the double border and the checked tips); a motif nothing can be built for at its size
 keeps the largest of a fixed few sizes below that can be (97, 94, 91, 88, 85, 80, 75, 70%), and the
-page says so. The silhouette, small motifs and equal squares are as large as their squares allow
-by 85%; the sunburst stops there as it builds too slowly above.
+page says so. The double border's medallion holds the whole motif, at most 80 across: a motif that
+would reach past it at 100% (a gift's corners) grows over the sizes above the default to the largest
+it holds, the cutting clearance inside it, so every size is its own (`fitCircle`). The silhouette,
+small motifs and equal squares are as large as their squares allow by 85%; the sunburst stops there
+as it builds too slowly above. Before refusing, a request tries again with the constructions set
+aside on the way to a clean one, where some were: islands entered along visible spokes where no
+hidden chain routes (a paw's toes, a sun's rays), and in the checks two hidden cuts across one square
+that only come too close; such hearts are hard to cut, and every heart built without them keeps its
+cuts.
 On them a motif keeps, at every size, the choice its default size made on its strips, since
 another would make it jump in size: which squares hold the small copies, or for equal squares the
 motif up to a tenth larger in its square, or with the spacious frame's room around it. Each choice

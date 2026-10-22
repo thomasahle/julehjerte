@@ -797,6 +797,18 @@ describe('frames from real hearts', () => {
   expect(hardToCut).toBeUndefined();
   expect(design.gridSize).toEqual({ x: 3, y: 3 });
  }, 20000);
+ it('grows a motif the medallion cannot hold at 100% to the largest it holds, smoothly', () => {
+  // The gift's corners reach past the largest circle (80) long before 100%.
+  const request = { mode: 'figure' as const, name: 'Gift', contours: gift.contours as Ring[], colors, style: 'layers' as const, gap: 3 };
+  const reach = Math.max(...(gift.contours as Ring[]).flat().map(([x, y]) => Math.hypot(x, y)));
+  const size = (scale: number) => { const fitted = fitCircle({ ...request, scale }); return fitted.frameSize! * fitted.scale!; };
+  expect(size(.7)).toBeCloseTo(49);
+  expect(80 / 2 - size(1) * reach).toBeCloseTo(1.5);
+  for (const scale of [.75, .8, .85, .9, .95, 1]) expect(size(scale)).toBeGreaterThan(size(scale - .05));
+  const { scale, design } = generate({ ...request, scale: 1 });
+  expect(scale).toBeUndefined();
+  expect(design.gridSize).toEqual({ x: 7, y: 7 });
+ });
  it('sizes the motif on a board frame by the visitor\'s size', () => {
   for (const style of ['squares', 'motifs', 'board'] as const) {
    const ink = (scale: number) => {
