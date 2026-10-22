@@ -1104,7 +1104,10 @@
 			last.p2 = vecAdd(last.p2, d);
 		}
 
-		return updateFingerSegments(base, mappedSegments);
+		// The node types go with the nodes, counted from the other end on a copy that runs the other way.
+		const n = mappedSegments.length;
+		const nodeTypes = source.nodeTypes && Object.fromEntries(Object.entries(source.nodeTypes).map(([k, type]) => [String(reverseDirection ? n - Number(k) : Number(k)), type]));
+		return { ...updateFingerSegments(base, mappedSegments), ...(nodeTypes ? { nodeTypes } : {}) };
 	}
 
 	function canSymmetryBetweenLobes() {
@@ -1297,11 +1300,20 @@
 	}
 
 	/**
-	 * A size the pattern was too tight for, said above the heart a moment: the tiles keep their shape
-	 * in cells, but the paper between two cuts has to stay as wide in the heart.
+	 * Why something asked for was not done, said above the heart a moment: a size the pattern is too
+	 * tight for (the tiles keep their shape in cells, but the paper between two cuts has to stay as wide
+	 * in the heart), or a button's edit or a symmetry that would make a red cut (GitHub issue #4).
 	 */
-	let sizeStop = $state<number | null>(null);
-	let sizeStopTimer: ReturnType<typeof setTimeout> | null = null;
+	let refusal = $state<string | null>(null);
+	let refusalTimer: ReturnType<typeof setTimeout> | null = null;
+	function noteRefused(text: string) {
+		if (refusalTimer) clearTimeout(refusalTimer);
+		refusal = text;
+		refusalTimer = setTimeout(() => {
+			refusal = null;
+			refusalTimer = null;
+		}, 4500);
+	}
 	/**
 	 * The pattern's size, n for tiles a cell of the n × n grid in size (the heart may have more or fewer
 	 * strips, where the pattern has moved or its tiles are stretched or turned); null for tiles sized by
@@ -1313,14 +1325,8 @@
 	function setPatternSize(n: number) {
 		if (!patternTile || !escher || n === patternSize) return;
 		const next = escher.resizedTile(patternTile, n);
-		if (sizeStopTimer) clearTimeout(sizeStopTimer);
-		sizeStop = null;
 		if (!next) {
-			sizeStop = n;
-			sizeStopTimer = setTimeout(() => {
-				sizeStop = null;
-				sizeStopTimer = null;
-			}, 4500);
+			noteRefused(tr('patternSizeTooTight').replace('{n}', `${n} × ${n}`));
 			return;
 		}
 		const before = snapshotState();
@@ -1555,8 +1561,42 @@
 		return cutsProblem(inner, undefined, { fingers: all, gridSize: grid });
 	}
 
+	/**
+	 * Whether a button's edit may leave the cuts as `overrides` makes them: they pass `overridesProblem`,
+	 * and make no red cut the heart has not now (GitHub issue #4). If not, it says why above the heart.
+	 */
 	function overridesAreValid(overrides: Map<string, Finger>): boolean {
-		return overridesProblem(overrides) === null;
+		if (overridesProblem(overrides) === null && !makesRedCuts(fingers.map((f) => overrides.get(f.id) ?? f))) return true;
+		noteRefused(tr('editorEditRefused'));
+		return false;
+	}
+
+	/**
+	 * Whether `next`, the heart's cuts as an edit would leave them on its grid, has a red cut the heart
+	 * has not now. A cut that comes newly too close to another is red, and so is the other, so one of the
+	 * changed cuts is red then: the whole heart is measured only when one is.
+	 */
+	function makesRedCuts(next: Finger[]): boolean {
+		const margin = clearanceMargin();
+		const changed = next.filter((f) => !fingers.includes(f));
+		if (!changed.some((f) => fingerHasIntersectionIssues(f, next, margin))) return false;
+		const now = findFingersWithIssues(fingers, margin);
+		for (const id of findFingersWithIssues(next, margin)) if (!now.has(id)) return true;
+		return false;
+	}
+
+	/** Whether two sets of cuts are the same cuts, to a millionth of a pixel. */
+	function sameCuts(a: Finger[], b: Finger[]): boolean {
+		const close = (p: Vec, q: Vec) => Math.abs(p.x - q.x) < 1e-6 && Math.abs(p.y - q.y) < 1e-6;
+		return (
+			a.length === b.length &&
+			a.every((f, i) => {
+				const g = b[i]!;
+				const fs = fingerToSegments(f);
+				const gs = fingerToSegments(g);
+				return f.id === g.id && fs.length === gs.length && fs.every((seg, k) => close(seg.p0, gs[k]!.p0) && close(seg.p1, gs[k]!.p1) && close(seg.p2, gs[k]!.p2) && close(seg.p3, gs[k]!.p3));
+			})
+		);
 	}
 
 	/** The least gap the red cuts allow between two cuts of a lobe, in the heart's units (`findFingersWithIssues`). */
@@ -1921,10 +1961,7 @@
 		// Original logic: delete internal anchors by merging segments
 		if (segLen <= 1) return;
 
-		const toDelete = selectedAnchors
-			.filter((idx) => idx >= 1 && idx <= segLen - 1)
-			.slice()
-			.sort((a, b) => b - a);
+		const toDelete = withMates(selectedAnchors.filter((idx) => idx >= 1 && idx <= segLen - 1), segLen).reverse();
 		if (!toDelete.length) return;
 
 		let nextSegs = cloneSegments(segments);
@@ -1936,13 +1973,12 @@
 			nodeTypes = shiftNodeTypesOnDelete(nodeTypes, anchorIdx);
 		}
 
-		if (patternRule !== 'off') {
-			const overrides = derivePatternOverrides({ ...updateFingerSegments(finger, nextSegs), nodeTypes });
-			if (!overridesAreValid(overrides)) return;
-			applyOverrides(overrides);
-		} else {
-			updateFinger(fingerId, (f) => ({ ...updateFingerSegments(f, nextSegs), nodeTypes }));
-		}
+		let edited: Finger = { ...updateFingerSegments(finger, nextSegs), nodeTypes };
+		if (patternRule === 'off' && symmetryWithinCurve) edited = applyWithinCurveSymmetry(edited);
+		// The copies the symmetry rows (or the pattern) make of the cut lose the nodes too.
+		const overrides = deriveSymmetryOverrides(edited);
+		if (!overridesAreValid(overrides)) return;
+		applyOverrides(overrides);
 		selectedAnchors = [];
 		selectedSegments = [];
 		lastCurveHit = null;
@@ -2278,17 +2314,17 @@
 		const segCount = fingerToSegments(finger).length;
 		const targets = selectedAnchors.filter((idx) => idx >= 0 && idx <= segCount);
 		if (!targets.length) return;
-		const internal = targets.filter((idx) => idx >= 1 && idx <= segCount - 1);
 		const before = snapshotState();
 
-		const edit = (f: Finger): Finger => {
+		const edit = (f: Finger, anchors: number[]): Finger => {
+			const internal = anchors.filter((idx) => idx >= 1 && idx <= segCount - 1);
 			const nextNodeTypes: Record<string, NodeType> = { ...(f.nodeTypes ?? {}) };
 			if (type === 'corner') {
-				for (const idx of targets) delete nextNodeTypes[String(idx)];
+				for (const idx of anchors) delete nextNodeTypes[String(idx)];
 				return { ...f, nodeTypes: Object.keys(nextNodeTypes).length ? nextNodeTypes : undefined };
 			}
 
-			for (const idx of targets) nextNodeTypes[String(idx)] = type;
+			for (const idx of anchors) nextNodeTypes[String(idx)] = type;
 
 			const segs = cloneSegments(fingerToSegments(f));
 			for (const anchorIdx of internal) {
@@ -2321,14 +2357,20 @@
 			// Escher tab: the handles the node type lines up are read back into the tile, so every copy
 			// of the curve turns with them, and the tile keeps the type (`escher.typedTile`): every copy
 			// has it, and keeps it through every edit after, though a corner's handles lie in line.
-			const read = tileOfOverrides.get(derivePatternOverrides(edit(finger))) ?? patternTile;
+			const read = tileOfOverrides.get(derivePatternOverrides(edit(finger, targets))) ?? patternTile;
 			const typed = escher.typedTile(read, fingerId, targets, type);
 			const overrides = new Map(escher.generateEditorFingers(typed, getOverlapRect()).map((f) => [f.id, f]));
 			if (!overridesAreValid(overrides)) return;
 			tileOfOverrides.set(overrides, typed);
 			applyOverrides(overrides);
 		} else {
-			updateFinger(fingerId, edit);
+			// The node's mirror image in the curve, and the copies the symmetry rows make of the cut, take
+			// the type too, as a drag moves them all.
+			let edited = edit(finger, withMates(targets, segCount));
+			if (symmetryWithinCurve) edited = applyWithinCurveSymmetry(edited);
+			const overrides = deriveSymmetryOverrides(edited);
+			if (!overridesAreValid(overrides)) return;
+			applyOverrides(overrides);
 		}
 		pushUndo(before);
 	}
@@ -2629,7 +2671,18 @@
 	// Runs before the curve/anchor/handle handlers (capture phase) so a second finger cannot
 	// select or start dragging anything: from then on the gesture is pan/zoom only.
 	function handleSvgPointerDownCapture(e: PointerEvent) {
-		if (readonly || e.pointerType === 'mouse') return;
+		if (readonly) return;
+		if (e.pointerType === 'mouse') {
+			// A point is small: a press just beside one of the chosen cut's takes hold of it, rather than of
+			// the cut under the pointer, which would move whole (user test, 2026-10-22).
+			const onPoint = e.target instanceof Element && e.target.closest('[data-grab-anchor], [data-grab-handle]');
+			const grab = selectedFingerId && e.button === 0 && !onPoint ? pointNear(e.clientX, e.clientY, MOUSE_REACH_PX) : null;
+			if (!grab || !selectedFingerId) return;
+			e.stopPropagation();
+			if ('anchor' in grab) handleAnchorPointerDown(e, selectedFingerId, grab.anchor);
+			else handleHandlePointerDown(e, selectedFingerId, grab.segment, grab.handle);
+			return;
+		}
 		touchPointerIds.add(e.pointerId);
 		if (touchPointerIds.size >= 2 || multiTouch) {
 			beginMultiTouch();
@@ -2639,7 +2692,7 @@
 		// A finger hides what it presses (GitHub issue #12): it takes hold of the chosen cut's point
 		// nearest it, though it touches beside the point, and the point keeps that distance from it as it
 		// is dragged, in sight.
-		const grab = selectedFingerId ? pointNear(e.clientX, e.clientY) : null;
+		const grab = selectedFingerId ? pointNear(e.clientX, e.clientY, TOUCH_REACH_PX) : null;
 		if (!grab || !selectedFingerId) return;
 		e.stopPropagation();
 		if ('anchor' in grab) handleAnchorPointerDown(e, selectedFingerId, grab.anchor);
@@ -2648,11 +2701,13 @@
 
 	/** How far from a point of the chosen cut, in screen pixels, a finger may touch and still take hold of it. */
 	const TOUCH_REACH_PX = 22;
+	/** How far from one a mouse press may be: a pointer is precise, and a press further off means the cut. */
+	const MOUSE_REACH_PX = 8;
 
-	/** The chosen cut's point (node or handle) nearest the screen point (x, y), within a finger's reach, or null. */
-	function pointNear(x: number, y: number): { anchor: number } | { segment: number; handle: 'p1' | 'p2' } | null {
+	/** The chosen cut's point (node or handle) nearest the screen point (x, y), within `reach` pixels, or null. */
+	function pointNear(x: number, y: number, reach: number): { anchor: number } | { segment: number; handle: 'p1' | 'p2' } | null {
 		let best: { anchor: number } | { segment: number; handle: 'p1' | 'p2' } | null = null;
-		let bestD = TOUCH_REACH_PX;
+		let bestD = reach;
 		for (const el of svgEl?.querySelectorAll<SVGGraphicsElement>('[data-grab-anchor], [data-grab-handle]') ?? []) {
 			const ctm = el.getScreenCTM?.();
 			if (!ctm) continue;
@@ -2779,7 +2834,9 @@
 			const settled = escher.settledTile(patternTile, tileDrag.base);
 			if (settled) applyTileStep(settled);
 		}
-		if (dragDirty && dragSnapshot) pushUndo(dragSnapshot);
+		// A drag that moved nothing (an edge pulled outwards, past where it may go) is no Fortryd step.
+		const moved = dragSnapshot && (!sameCuts(fingers, dragSnapshot.fingers) || gridSize.x !== dragSnapshot.gridSize.x || gridSize.y !== dragSnapshot.gridSize.y);
+		if (dragDirty && dragSnapshot && moved) pushUndo(dragSnapshot);
 		dragSnapshot = null;
 		dragDirty = false;
 		dragTarget = null;
@@ -3330,7 +3387,8 @@
 		if (!shouldApply) return;
 		if (readonly || !didInit) return;
 
-		const applySymmetryToAllFingers = () => {
+		/** Every cut as the rows now make it: one side of each pair copied onto the other. */
+		const symmetricFingers = (): Finger[] => {
 			let updated = fingers.map(cloneFinger);
 
 			if (symmetryWithinCurve) {
@@ -3383,12 +3441,24 @@
 				}
 			}
 
-			fingers = updated;
+			return updated;
 		};
 
+		const updated = symmetricFingers();
+		// Cuts that keep to the rows already stay as they are, with no Fortryd step for nothing.
+		if (sameCuts(updated, fingers)) return;
+		// A symmetry that would make a red cut is not turned on (GitHub issue #4): the rows go back to
+		// what they were, and say why.
+		if (makesRedCuts(updated)) {
+			withinCurveMode = prevWithinCurveMode = oldSymmetry.withinCurveMode;
+			withinLobeMode = prevWithinLobeMode = oldSymmetry.withinLobeMode;
+			betweenLobesMode = prevBetweenLobesMode = oldSymmetry.betweenLobesMode;
+			noteRefused(tr('editorSymmetryRefused'));
+			return;
+		}
 		const before = snapshotState();
 		before.symmetry = oldSymmetry;
-		applySymmetryToAllFingers();
+		fingers = updated;
 		pushUndo(before);
 	});
 
@@ -4096,8 +4166,8 @@
 				<div class="canvas-notices">
 					{#if dragStop}
 						<div class="canvas-notice info drag-stop" role="status">{tr(DRAG_STOP_TEXT[dragStop])}</div>
-					{:else if sizeStop}
-						<div class="canvas-notice info drag-stop" role="status">{tr('patternSizeTooTight').replace('{n}', `${sizeStop} × ${sizeStop}`)}</div>
+					{:else if refusal}
+						<div class="canvas-notice info drag-stop" role="status">{refusal}</div>
 					{/if}
 					{#if notice}
 						<!-- role="status": the route's notice appears after mount (it waits on

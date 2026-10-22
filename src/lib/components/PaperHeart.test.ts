@@ -122,6 +122,18 @@ describe('outer edges in the designer', () => {
 		expect(JSON.stringify(h.fingers)).toBe(original);
 	});
 
+	it.each(edges)('$id pulled outward stays where it is, with no Fortryd step', ({ id, delta }) => {
+		const h = render();
+		const original = JSON.stringify(h.fingers);
+		const p = midpoint(h.fingers.find((f) => f.id === id)!);
+		const out = { x: p.x - delta.x, y: p.y - delta.y };
+		send(h.path(id), 'pointerdown', p);
+		send(h.svg, 'pointermove', out);
+		send(h.svg, 'pointerup', out);
+		expect(JSON.stringify(h.fingers)).toBe(original);
+		expect(h.button('Undo').disabled).toBe(true);
+	});
+
 	it.each(edges)('$id still pulls inward to create an editable cut, with undo and redo', ({ id, delta, cut, grid }) => {
 		const h = render();
 		const original = JSON.stringify(h.fingers);
@@ -415,8 +427,9 @@ describe('the Escher tab', () => {
 		const near = (a: Vec, b: Vec) => Math.hypot(a.x - b.x, a.y - b.y) < 1e-6;
 		const straight = seg();
 		expect(near(straight.p1, straight.p0) && near(straight.p2, straight.p3)).toBe(true);
-		// a double-click on it, away from the first click, adds a corner with no handles of its own
-		const at = bezierAt(straight, 0.2);
+		// a double-click on it, away from the first click and from its nodes (a press within 8 px of one
+		// takes hold of the node), adds a corner with no handles of its own
+		const at = bezierAt(straight, 0.3);
 		for (let i = 0; i < 2; i++) {
 			send(h.path('L-2'), 'pointerdown', at);
 			send(h.svg, 'pointerup', at);
@@ -521,10 +534,78 @@ describe('node types', () => {
 	});
 });
 
-describe('within-curve symmetry', () => {
-	it("keeps a button's edit to a cut's second half, and makes the first half its mirror image", () => {
+describe('the symmetry rows', () => {
+	const row = (h: ReturnType<typeof render>, name: string, mode: string) =>
+		h.target.querySelector<HTMLButtonElement>(`[aria-label="${name}"] [title="${mode}"]`)!;
+	const chosen = (h: ReturnType<typeof render>, name: string) => h.target.querySelector(`[aria-label="${name}"] [data-state="on"]`)?.getAttribute('title');
+
+	it('are not turned on where the copies would make a red cut, and say why', () => {
+		const first = render();
+		// L-1 drawn straight, a unit above the middle: its mirror image in the lobe would lie a unit below
+		const middle = (first.fingers.find((f) => f.id === 'L-0')!.segments[0]!.p0.y + first.fingers.find((f) => f.id === 'L-3')!.segments[0]!.p0.y) / 2;
+		const cuts = first.fingers.map((f) => {
+			if (f.id !== 'L-1') return f;
+			const seg = f.segments[0]!;
+			const a = { x: seg.p0.x, y: middle - 1 };
+			const b = { x: f.segments.at(-1)!.p3.x, y: middle - 1 };
+			return { ...f, segments: [{ p0: a, p1: a, p2: b, p3: b }] };
+		});
+		const h = render({ initialFingers: cuts, initialGridSize: { x: 3, y: 3 } });
+		const opened = JSON.stringify(h.fingers);
+		row(h, 'Within lobe symmetry', 'Mirror symmetry').click();
+		flushSync();
+		expect(JSON.stringify(h.fingers)).toBe(opened);
+		expect(chosen(h, 'Within lobe symmetry')).toBe('Off');
+		expect(h.target.querySelector('.drag-stop')?.textContent).toContain("can't be turned on");
+		expect(h.button('Undo').disabled).toBe(true);
+	});
+
+	it('are no Fortryd step where the cuts keep to them already', () => {
 		const h = render();
-		h.target.querySelector<HTMLButtonElement>('[aria-label="Within curve symmetry"] [title="Mirror symmetry"]')!.click();
+		row(h, 'Within lobe symmetry', 'Mirror symmetry').click();
+		flushSync();
+		const once = JSON.stringify(h.fingers);
+		const undoable = !h.button('Undo').disabled;
+		// the same again: off, and on
+		row(h, 'Within lobe symmetry', 'Off').click();
+		flushSync();
+		row(h, 'Within lobe symmetry', 'Mirror symmetry').click();
+		flushSync();
+		expect(JSON.stringify(h.fingers)).toBe(once);
+		h.button('Undo').click();
+		flushSync();
+		// one Fortryd step back to before the first time, or none at all where that changed nothing either
+		expect(h.button('Undo').disabled).toBe(true);
+		expect(undoable || JSON.stringify(h.fingers) === once).toBe(true);
+	});
+
+	it("give a node type to the node's copies too", () => {
+		const h = render();
+		row(h, 'Between lobes symmetry', 'Mirror symmetry').click();
+		flushSync();
+		const at = midpoint(h.fingers.find((f) => f.id === 'R-1')!);
+		for (let i = 0; i < 2; i++) {
+			send(h.path('R-1'), 'pointerdown', at);
+			send(h.svg, 'pointerup', at);
+		}
+		const withNode = () => h.fingers.filter((f) => f.segments.length === 2);
+		expect(withNode().length).toBe(2);
+		h.button('Smooth node').click();
+		flushSync();
+		for (const f of withNode()) {
+			expect(f.nodeTypes?.['1'], f.id).toBe('smooth');
+			const [a, b] = f.segments as [Finger['segments'][number], Finger['segments'][number]];
+			const node = b.p0;
+			const u = { x: a.p2.x - node.x, y: a.p2.y - node.y };
+			const v = { x: b.p1.x - node.x, y: b.p1.y - node.y };
+			expect(Math.min(Math.hypot(u.x, u.y), Math.hypot(v.x, v.y)), f.id).toBeGreaterThan(1);
+			expect(Math.abs(u.x * v.y - u.y * v.x) / (Math.hypot(u.x, u.y) * Math.hypot(v.x, v.y)), f.id).toBeLessThan(1e-6);
+		}
+	});
+
+	it("keep a button's edit to a cut's second half, and make the first half its mirror image", () => {
+		const h = render();
+		row(h, 'Within curve symmetry', 'Mirror symmetry').click();
 		flushSync();
 		const cut = () => h.fingers.find((f) => f.id === 'R-1')!;
 		// a double-click adds a node in the middle, and then one near the start adds its mirror image too
@@ -631,6 +712,39 @@ describe('a finger', () => {
 		const moved = h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0;
 		expect(moved.x).toBeCloseTo(node.x);
 		expect(moved.y).toBeCloseTo(node.y + 12);
+	});
+});
+
+describe('a mouse', () => {
+	it("takes hold of the chosen cut's node from a press just beside it, and of the cut from one further off", () => {
+		const h = render();
+		const at = midpoint(h.fingers.find((f) => f.id === 'R-1')!);
+		for (let i = 0; i < 2; i++) {
+			send(h.path('R-1'), 'pointerdown', at);
+			send(h.svg, 'pointerup', at);
+		}
+		const node = () => h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0;
+		const start = node();
+		// pressed on the cut 5 units from the node, and moved 12 down: the node goes, the cut's ends stay
+		const ends = () => {
+			const segs = h.fingers.find((f) => f.id === 'R-1')!.segments;
+			return [segs[0]!.p0, segs.at(-1)!.p3];
+		};
+		const endsBefore = JSON.stringify(ends());
+		const beside = { x: start.x, y: start.y + 5 };
+		send(h.path('R-1'), 'pointerdown', beside);
+		send(h.svg, 'pointermove', { x: beside.x, y: beside.y + 12 });
+		send(h.svg, 'pointerup', { x: beside.x, y: beside.y + 12 });
+		expect(node().y).toBeCloseTo(start.y + 12);
+		expect(JSON.stringify(ends())).toBe(endsBefore);
+		// 20 units off, on the cut, a press takes the whole cut
+		const far = { x: node().x, y: node().y + 20 };
+		const onCut = h.fingers.find((f) => f.id === 'R-1')!.segments[0]!;
+		const hit = closestPointOnBezier(onCut, far).point;
+		send(h.path('R-1'), 'pointerdown', hit);
+		send(h.svg, 'pointermove', { x: hit.x + 6, y: hit.y });
+		send(h.svg, 'pointerup', { x: hit.x + 6, y: hit.y });
+		expect(JSON.stringify(ends())).not.toBe(endsBefore);
 	});
 });
 
