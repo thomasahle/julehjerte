@@ -605,12 +605,19 @@ pieces with random nodes, smooth or corners, and random handles, reaching from a
 than one; the rows are built in exactly (a tied cut is a random half and its mirror image or turned copy, the
 lobe's other half and the right lobe made from the first by their rows), so the heart opens with them chosen
 and true. **Tilfældig flise / Random tile** below the Escher tab's types (`$lib/pattern/randomTile`) draws any
-type and a size of 3–7 tiles, every side the type draws as a random chain of 1–4 pieces (halves completed as
-the type completes them), and at random a lean, a stretch and slant of the cells (`shapeFor`) and a turn of the
-whole pattern. Both keep the grid or type for a round of draws, the curves smaller each time, so every grid and
-type turns up as often as any other, and draw again when a cut would turn red or a left and a right cut would
-run alongside each other, crossing at less than about 18° (`$lib/editor/slivers`: a sliver on paper, a hairline
-on screen). GA4 event `random_heart`: `mode` (normal / escher), the grid and rows or the type and size, and the
+type and a size of 3–7 tiles, every side the type draws as one to three features (lobes, knobs, beaks, swoops,
+with straight runs between) or a random chain of 1–4 pieces (halves completed as the type completes them), and
+at random a lean of up to 0.9 of a cell (Escher's birds lean 0.98), a stretch and slant of the cells
+(`shapeFor`) and a turn of the whole pattern; it keeps only tiles that read as figures (`tileFigure`: the widest
+disc inside a tile is 0.45–0.75 of its size, as Escher's birds' 0.64, so neither a splinter nor a square with
+dents, and at most 5 % of it is teeth; one round in seven may be squarer, to 0.9, for scales and plain
+interlocking shapes). Both keep the grid or type for a round of draws, the curves smaller each time, so every
+grid and type turns up as often as any other, and draw again when a cut would turn red, a left and a right cut
+would run alongside each other, crossing at less than about 18°, or any piece is a crumb under 0.08 of a cell
+(`$lib/editor/slivers`: a sliver on paper, a hairline on screen); and when two neighbouring cuts of a lobe stay
+within 0.2 of a strip for more than a strip (paper too thin to weave), a left and a right cut that close for
+more than 2.5 strips, or, for tiles, an edge of the square the cuts leave bare for more than 1.6 strips
+(`weavesWell`). GA4 event `random_heart`: `mode` (normal / escher), the grid and rows or the type and size, and the
 press's number in the page view.
 
 Symmetri has two tabs at its top, **Normal** (the rows above) and **Escher**, which draws the whole heart from

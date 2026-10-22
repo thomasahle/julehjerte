@@ -10,7 +10,7 @@
 import type { TranslationKey } from '$lib/i18n';
 import type { Finger, GridSize, HeartPattern, LobeId, NodeType, Vec } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
-import { halvesCrossCleanly, MIN_PIECE, smallestPiece } from '$lib/editor/slivers';
+import { halvesCrossCleanly, MIN_PIECE, smallestPiece, weavesWell } from '$lib/editor/slivers';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { getCenteredRectParams, inferOverlapRect, type OverlapRect } from '$lib/utils/overlapRect';
 import {
@@ -40,7 +40,7 @@ import { MAX_GRID_SIZE, MIN_GRID_SIZE } from '$lib/constants';
 import { ALL_RULES, COMMON_RULES, latticeOf, ruleInfo, ruleKey, ruleSymmetry, sameRule, type TileRule } from './rules';
 import { cutCounts, fitLines, tileShape, tileTurn, type PatternTile, type SideCurve } from './tiling';
 import { isStraightTile, ruleStart, switchRule } from './starts';
-import { MIN_BOLDNESS, randomTileDraw, randomTileKind, tileBoldness } from './randomTile';
+import { isFigure, randomTileDraw, randomTileKind } from './randomTile';
 
 export { cutOfFinger, cutsAre, followEdit, generateEditorFingers, READ_TOLERANCE, sameRule, specialNodes, weaveParityOf };
 export type { PatternTile, SpecialNode, TileRule };
@@ -69,7 +69,11 @@ export function tileGrid(tile: PatternTile): GridSize {
 export function tileFingers(tile: PatternTile, rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 })): Finger[] {
 	const counts = cutCounts(tile);
 	const inner = generateEditorFingers(tile, rect);
-	const straight = (id: string, lobe: 'left' | 'right', p0: Vec, p3: Vec): Finger => ({ id, lobe, segments: [{ p0, p1: { ...p0 }, p2: { ...p3 }, p3 }] });
+	const straight = (id: string, lobe: 'left' | 'right', p0: Vec, p3: Vec): Finger => ({
+		id,
+		lobe,
+		segments: [{ p0, p1: { ...p0 }, p2: { ...p3 }, p3 }]
+	});
 	const across = (id: string, y: number) => straight(id, 'left', { x: rect.right, y }, { x: rect.left, y });
 	const down = (id: string, x: number) => straight(id, 'right', { x, y: rect.bottom }, { x, y: rect.top });
 	return [
@@ -91,15 +95,10 @@ function tileWeaves(tile: PatternTile): boolean {
 }
 
 /**
- * The tab's "Tilfældig flise": a random type, size, sides, lean and shape (`randomTileDraw`), its lines fitted,
- * and two times in five the whole pattern turned, anywhere the type lets it turn; drawn again until the
- * heart it makes weaves, has no sliver between its lobes' cuts and is not a plain chequerboard, the sides smaller after many tries; the first
- * common type's start, if none does. With the type's key, for the analytics event.
- */
-/**
  * Whether the heart a tile makes, its lines fitted, is fit to cut beyond weaving: at least two cuts each way
  * (a stretched or turned pattern can leave the square nearly bare), no sliver between its lobes' cuts
- * (`halvesCrossCleanly`), and no crumb of a piece (`smallestPiece`).
+ * (`halvesCrossCleanly`), no crumb of a piece (`smallestPiece`), no thin line or strip and no empty band
+ * along an edge (`weavesWell`).
  */
 function crossesCleanly(tile: PatternTile): boolean {
 	const made = tileFingers(tile);
@@ -108,17 +107,29 @@ function crossesCleanly(tile: PatternTile): boolean {
 	const rect = inferOverlapRect(made, grid);
 	if (!halvesCrossCleanly(made, intersectionMarginPx(rect, gridClearanceScale(grid.x, grid.y)))) return false;
 	// The square holds cuts + 1 cells each way, whatever the lines fitted.
-	return smallestPiece(made, rect, (tile.cuts + 1) ** 2) >= MIN_PIECE;
+	const n = tile.cuts + 1;
+	return weavesWell(made, rect, n, 1.6) && smallestPiece(made, rect, n * n) >= MIN_PIECE;
 }
+
+/**
+ * The tab's "Tilfældig flise": a random type, size, sides, lean and shape (`randomTileDraw`), its lines fitted,
+ * and two times in five the whole pattern turned, anywhere the type lets it turn; drawn again until its
+ * tiles read as figures (`isFigure`) and the heart it makes weaves and is fit to cut (`crossesCleanly`), the
+ * sides smaller after many tries; the first common type's start, if none does. With the type's key, for the
+ * analytics event.
+ */
 
 export function randomTile(rng: () => number = Math.random): { tile: PatternTile; rule: string } {
 	// A type and size are kept for a round of draws, the sides smaller each time, so every type and size
-	// turns up as often as any other, the ones that more often come too close as well.
+	// turns up as often as any other, the ones that more often come too close as well. So is whether the
+	// tiles may be as square as they like: one round in seven, decided for the round, as squarish tiles
+	// pass the checks more often and would otherwise win most rounds.
 	for (let round = 0; round < 20; round++) {
 		const kind = randomTileKind(rng);
+		const square = rng() < 1 / 7;
 		for (let i = 0; i < 12; i++) {
-			const drawn = randomTileDraw(rng, kind, 1 - (0.35 * i) / 12);
-			if (tileBoldness(drawn) < MIN_BOLDNESS || !tileWeaves(drawn)) continue;
+			const drawn = randomTileDraw(rng, kind, 1 - (0.25 * i) / 12);
+			if (!isFigure(drawn, square) || !tileWeaves(drawn)) continue;
 			let tile = fitLines(drawn);
 			if (rng() < 0.4) {
 				const [lo, hi] = turnRange(tile);
@@ -133,7 +144,7 @@ export function randomTile(rng: () => number = Math.random): { tile: PatternTile
 	return { tile: start, rule: ruleKey(start.rule) };
 }
 
- /**
+/**
  * The tile a type chosen in the Escher tab draws, its lines fitted. The curves
  * the new type reads the same way carry over (and the lean, when the new type
  * lets tiles lean), so tying one pair of sides differently keeps the other pair
@@ -189,7 +200,8 @@ export function openedTile(last: PatternTile | null, heart: EscherHeart): { tile
 export const restartedTile = (tile: PatternTile): PatternTile => fitLines(ruleStart(tile.rule, tile.cuts));
 
 /** Whether the tile is just its type's start at its size, as the tab draws it: nothing drawn on it yet. */
-export const isStartTile = (tile: PatternTile): boolean => JSON.stringify(savedPattern(restartedTile(tile))) === JSON.stringify(savedPattern(tile));
+export const isStartTile = (tile: PatternTile): boolean =>
+	JSON.stringify(savedPattern(restartedTile(tile))) === JSON.stringify(savedPattern(tile));
 
 /**
  * The tile drawn n × n on the heart's square, its lines fitted again, or null
@@ -289,7 +301,9 @@ export { typedTile };
 /** The tile with what was dragged moved by `delta` pixels from where the drag started: sized and slanted, moved or reshaped. */
 export function dragTile(drag: TileDrag, delta: Vec, rect: OverlapRect): PatternTile | null {
 	if (drag.mode === 'pan') return panBy(drag.base, delta, rect);
-	return drag.mode === 'frame' ? dragPlacedPoint(drag.base, drag.fingerId, drag.anchor, delta, rect) : slideCutEnd(drag.base, drag.fingerId, drag.end, delta, rect);
+	return drag.mode === 'frame'
+		? dragPlacedPoint(drag.base, drag.fingerId, drag.anchor, delta, rect)
+		: slideCutEnd(drag.base, drag.fingerId, drag.end, delta, rect);
 }
 
 /**
@@ -297,7 +311,12 @@ export function dragTile(drag: TileDrag, delta: Vec, rect: OverlapRect): Pattern
  * Tegn's anchor there, under the pointer, though the tiles' new size may have put
  * it on another cut, or a repeat on. Null when it is not on a cut the heart shows.
  */
-export function followedPoint(drag: TileDrag & { mode: 'frame' }, next: PatternTile, pointer: Vec, rect: OverlapRect): { fingerId: string; anchor: number } | null {
+export function followedPoint(
+	drag: TileDrag & { mode: 'frame' },
+	next: PatternTile,
+	pointer: Vec,
+	rect: OverlapRect
+): { fingerId: string; anchor: number } | null {
 	const kind = cutOfFinger(drag.fingerId, cutCounts(drag.base))?.kind;
 	return kind && drag.point ? locatePlacedPoint(next, drag.point, kind, pointer, rect) : null;
 }
@@ -323,7 +342,11 @@ export function savedPattern(tile: PatternTile): HeartPattern {
 
 /** The node types a heart kept, for the curves its type reads. */
 function nodeTypesOf(saved: Record<string, Record<string, NodeType>>, reads: Set<string>): PatternTile['nodeTypes'] {
-	return Object.fromEntries(Object.entries(saved).filter(([key]) => reads.has(key)).map(([key, types]) => [key, { ...types }]));
+	return Object.fromEntries(
+		Object.entries(saved)
+			.filter(([key]) => reads.has(key))
+			.map(([key, types]) => [key, { ...types }])
+	);
 }
 
 /**
@@ -336,20 +359,28 @@ export function tileOfPattern(saved: HeartPattern): PatternTile | null {
 	if (!rule) return null;
 	if (saved.pan && saved.pan.some((v) => Math.abs(v) > 4)) return null;
 	if (saved.shape && saved.shape[0] * saved.shape[3] - saved.shape[2] * saved.shape[1] <= 0) return null;
-	if (saved.lines && [saved.lines.V[1], saved.lines.H[1]].some((count) => count < MIN_GRID_SIZE - 1 || count > MAX_GRID_SIZE - 1)) return null;
+	if (saved.lines && [saved.lines.V[1], saved.lines.H[1]].some((count) => count < MIN_GRID_SIZE - 1 || count > MAX_GRID_SIZE - 1))
+		return null;
 	const reads = new Set<string>(ruleInfo(rule).curves);
 	const vec = (x: number, y: number) => ({ x, y });
-	const curve = (segments: number[][]): SideCurve => segments.map((n) => ({ p0: vec(n[0]!, n[1]!), p1: vec(n[2]!, n[3]!), p2: vec(n[4]!, n[5]!), p3: vec(n[6]!, n[7]!) }));
+	const curve = (segments: number[][]): SideCurve =>
+		segments.map((n) => ({ p0: vec(n[0]!, n[1]!), p1: vec(n[2]!, n[3]!), p2: vec(n[4]!, n[5]!), p3: vec(n[6]!, n[7]!) }));
 	return {
 		rule,
 		cuts: saved.cuts,
-		curves: Object.fromEntries(Object.entries(saved.curves).filter(([key]) => reads.has(key)).map(([key, segments]) => [key, curve(segments)])),
+		curves: Object.fromEntries(
+			Object.entries(saved.curves)
+				.filter(([key]) => reads.has(key))
+				.map(([key, segments]) => [key, curve(segments)])
+		),
 		...(saved.offset ? { offset: vec(...saved.offset) } : {}),
 		...(saved.shape ? { shape: { x: vec(saved.shape[0], saved.shape[1]), y: vec(saved.shape[2], saved.shape[3]) } } : {}),
 		...(saved.turn !== undefined ? { turn: saved.turn } : {}),
 		...(saved.nodeTypes ? { nodeTypes: nodeTypesOf(saved.nodeTypes, reads) } : {}),
 		...(saved.pan ? { pan: vec(...saved.pan) } : {}),
-		...(saved.lines ? { lines: { V: { first: saved.lines.V[0], count: saved.lines.V[1] }, H: { first: saved.lines.H[0], count: saved.lines.H[1] } } } : {})
+		...(saved.lines
+			? { lines: { V: { first: saved.lines.V[0], count: saved.lines.V[1] }, H: { first: saved.lines.H[0], count: saved.lines.H[1] } } }
+			: {})
 	};
 }
 

@@ -29,7 +29,7 @@ import { CENTER, STRIP_WIDTH } from '$lib/constants';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { randomChain } from '$lib/geometry/randomChain';
-import { halvesCrossCleanly, MIN_PIECE, smallestPiece } from '$lib/editor/slivers';
+import { halvesCrossCleanly, MIN_PIECE, smallestPiece, weavesWell } from '$lib/editor/slivers';
 import type { BezierSegment } from '$lib/geometry/bezierSegments';
 import type { Finger, GridSize, NodeType, Vec } from '$lib/types/heart';
 
@@ -156,7 +156,7 @@ export function randomHeartIsValid(fingers: Finger[], grid: GridSize): boolean {
 	const width = grid.x * STRIP_WIDTH;
 	const height = grid.y * STRIP_WIDTH;
 	const rect = { left: CENTER.x - width / 2, top: CENTER.y - height / 2, width, height };
-	return smallestPiece(fingers, rect, grid.x * grid.y) >= MIN_PIECE;
+	return weavesWell(fingers, rect, grid.x) && smallestPiece(fingers, rect, grid.x * grid.y) >= MIN_PIECE;
 }
 
 /** Smooth where the handles on either side of a node point in opposite directions along one line. */

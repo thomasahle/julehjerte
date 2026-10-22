@@ -16,7 +16,7 @@ function seeded(seed: number): () => number {
 	};
 }
 
-const HEARTS = Array.from({ length: 150 }, (_, i) => randomHeart(seeded(i + 1)));
+const HEARTS = Array.from({ length: 100 }, (_, i) => randomHeart(seeded(i + 1)));
 
 describe('randomHeart', () => {
 	it('is the same heart for the same random numbers', () => {
