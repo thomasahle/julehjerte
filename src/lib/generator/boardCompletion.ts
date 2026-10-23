@@ -656,7 +656,8 @@ export function completionLegs(edges: Edge[], ring: Ring, strips: number, radius
 		const reach = Math.max(Math.min(around, under) - (levels.get(`${side}:${index}`) ?? 0) * spacing, Math.hypot(...start));
 		const path: Point[] = Array.from({ length: steps + 1 }, (_, t) => { const a = a0 + delta * t / steps; return [reach * Math.cos(a), reach * Math.sin(a)]; });
 		// With no other spoke's gate or switch point in its turn, straight out
-		// to the switch point once that keeps it clear, no nearer the motif.
+		// to the switch point (or to a point straight in from it) once that
+		// keeps it clear, no nearer the motif.
 		const crossed = !turns || turns.some(t => t.key !== `${side}:${index}` &&
 			[t.a0, Math.atan2(t.target[1], t.target[0])].some(angle => swept(a0, delta, angle)));
 		return (crossed ? [...path, target] : straighten([...path, target], reach)).map(toSheet);
@@ -679,6 +680,15 @@ export function completionLegs(edges: Edge[], ring: Ring, strips: number, radius
 		for (let i = 0; i < last - 1; i++) {
 			const a = path[i], length = Math.hypot(target[0] - a[0], target[1] - a[1]);
 			if (fits(a, length, [(target[0] - a[0]) / length, (target[1] - a[1]) / length])) return [...path.slice(0, i + 1), target];
+			// Else across to a point straight in from the switch point, and out
+			// (round to it, a spoke whose gate lies past its switch point turns
+			// back on the motif's own cut to the gate in a needle).
+			for (let t = 3 * spacing; t >= spacing - 1e-9; t -= .25) {
+				const q: Point = [target[0] - out[0] * t, target[1] - out[1] * t], across = Math.hypot(q[0] - a[0], q[1] - a[1]);
+				if (across < 1e-6 || pointToSegment([0, 0], [a, q]) < low - 1e-6) continue;
+				if (cuts([a, q], spacing) < spacing - 1e-6 || walls([a, q], spacing) < spacing - 1e-6) continue;
+				if (fits(q, t, out)) return [...path.slice(0, i + 1), q, target];
+			}
 		}
 		return path;
 	};

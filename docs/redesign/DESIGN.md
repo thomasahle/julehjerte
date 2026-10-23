@@ -912,7 +912,9 @@ paper there), no nearer the centre at any angle than the drawn cuts came there o
 inside the circle, outermost first so that an inner cut can swing out where its outer one went
 round; one that still leaves its switch point straight in and then turns leaves along the steepest
 way allowed instead, where that keeps clear. A spoke with no other spoke's gate or switch point in
-its turn runs straight out to its switch point once that keeps clear. This halves the corners of the
+its turn runs straight out to its switch point once that keeps clear, or across to a point straight
+in from it and out (round to it, one whose gate lies past its switch point turned back on the motif's
+own cut to the gate in a needle: the star on seven strips at 88–90%, on nine at 82%). This halves the corners of the
 cuts there (9×9 at 90%: 627 to 385; a motif kept whole on 5×5: 206 to 94) without bringing
 any two nearer. Beyond, the heart
 leaves the middle lines out in both sheets: the outer two lines a side remain, met as on five

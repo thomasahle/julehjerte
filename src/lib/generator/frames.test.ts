@@ -591,6 +591,14 @@ describe('frames from real hearts', () => {
    expect(lines.size, `${board}`).toBe(2 * (board - 1));
   }
  });
+ slow('runs a spoke past the circle\'s switch point across to it rather than back round', () => {
+  // On seven strips at 88% the star's upper right gate lies past the switch
+  // point its spoke leads to; round to it, the spoke turned back on the
+  // motif's own cut to the gate in a needle.
+  const { hardToCut, scale } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', board: 7, scale: .88 });
+  expect(hardToCut).toBeUndefined();
+  expect(scale).toBeUndefined();
+ });
  it('keeps a panel\'s gate off a seam through the motif\'s point', () => {
   // On nine strips at 100% the seams cross beside the star's centre, one
   // through its top point, where the top panels' gates would meet it.

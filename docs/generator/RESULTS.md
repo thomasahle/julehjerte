@@ -1,5 +1,18 @@
 # Generator robustness results
 
+## Spokes across to a point straight in from their switch point
+
+On seven strips at 88% the star's upper right gate lies past the switch point
+its spoke leads to (7° against 0°). Round to it at the gate's radius, the
+spoke turned back on the motif's own cut to the gate, a 25° needle of paper,
+and the heart was hard to cut. A direct line to the switch point would leave
+it 57° from straight in, past the 40° allowed. A spoke may now also run
+across to a point straight in from its switch point, and out.
+
+Over the featured motifs at eleven completion sizes (539 hearts): the star on
+seven strips at 88% and 90% and on nine at 82% go from hard to clean; 179
+hearts have new spokes, none changes otherwise, and the time falls 5%.
+
 ## Gates kept off a seam through the motif's point
 
 At the largest circles on seven and nine strips the star's seams cross just
