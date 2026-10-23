@@ -1,5 +1,22 @@
 # Generator robustness results
 
+## Motifs kept whole stop where their paper holds
+
+On five strips a motif kept whole (the tree, the bell, the angel) grew with
+the circle in the touching ring until the ring's ends beside each gate were
+1.5 units wide, the room for a cut: printed 80 mm wide, 1.5 mm, under the 2 mm
+paper holds (`paperNecks`). Every such heart from 81% to 85% had eight places
+to tear, at the outer ring's corner junctions. The circle now stops where
+those ends are as wide as the paper's 2 mm, 2.5 units (`boardWholeTop`): at
+80.5% rather than 82.5%. Finer boards keep the room for a cut until their
+completions are checked against the paper.
+
+Over the 49 featured motifs at 81/83/85%: 18 hearts change at each size;
+hearts that tear fall from 36/37/35 to 24/25/23, places to tear from
+225/223/215 to 80/76/68; none changes status. From 86% the motifs kept whole
+grow on from that circle's size, so up to 94% they are slightly smaller than
+before (the pig at 86%, hard to cut either way, gains one place to tear).
+
 ## Stored hidden cuts for the board circle
 
 The board circle's hidden cuts step and hook around the motif. Mal's

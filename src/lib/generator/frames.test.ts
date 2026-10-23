@@ -18,6 +18,7 @@ import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { intersectionMarginPx } from '$lib/editor/curveIssues';
 import { findSearchIssues } from './searchClearance';
 import { gridClearanceScale } from '$lib/geometry/clearance';
+import { paperFaults } from '$lib/geometry/paperNecks';
 import tree from '../../../static/generator/motifs/tree.json';
 import deer from '../../../static/generator/motifs/pin-reindeer.json';
 import horse from '../../../static/generator/motifs/ph-horse.json';
@@ -864,6 +865,14 @@ describe('frames from real hearts', () => {
   expect(board(star, .8).scale).toBeUndefined();
   expect(board(star, .8).whole).toBeUndefined();
   expect(board(tree, .6).scale).toBeUndefined();
+ });
+ it('keeps a motif kept whole short of where its ring\'s ends would tear in print', () => {
+  // At the touching ring's top the ring's ends beside each gate were 1.5
+  // units wide, under 2 mm printed 80 mm wide: eight places to tear.
+  const { design, whole, scale } = generate({ mode: 'figure', name: 'Tree', contours: tree.contours as Ring[], colors, style: 'board', scale: .85 });
+  expect(whole).toBe(true);
+  expect(scale).toBeLessThan(.82);
+  expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
  });
  it('lays the figure in the checks on boards of three to six strips', () => {
   for (const strips of [3, 5, 6]) {

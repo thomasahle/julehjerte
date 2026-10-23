@@ -4,6 +4,7 @@ import { BOARD_PATTERNS, WHOLE_PATTERNS, type BoardPattern } from './boardPatter
 import { createSharedCutValidator } from './sharedCutValidation';
 import { cellTipCounts, fewerCutTips } from './cutQuality';
 import { gridClearance } from '$lib/geometry/clearance';
+import { PAPER_NECK_MM, PRINT_WIDTH_MM } from '$lib/geometry/paperNecks';
 /** Direct contour constructions. No image fitting, search solver, or raster mask.
  * A visible outline belongs to one sheet. A connecting cut belongs to both;
  * it cancels in the woven image. Every sheet must remain a set of disjoint open
@@ -2220,9 +2221,6 @@ function gateRoom(radius: number, d: number[], whole = false): number {
 		return Math.min(low.away(mid), high.away(mid));
 	}));
 }
-/** The largest circle in the touching ring (`boardRanges`' second range) a
- * motif kept whole can take, the next line out following the circle: where
- * its gate keeps room for a cut either side of it (`gateRoom`). */
 /** The circle a motif kept whole takes for a radius the setting asks: that
  * radius where a completion about a whole motif covers it (`WHOLE_PATTERNS`),
  * else the largest below it that one covers, or the touching ring's top. */
@@ -2257,14 +2255,20 @@ export function boardWholeFill(radius: number, strips: number): number {
 /** The completion about a whole motif for a circle, past the touching ring. */
 export const boardWholePattern = (radius: number, strips: number) => radius > boardWholeTop(strips)
 	? WHOLE_PATTERNS.find(({ strips: n, lo, hi }) => n === strips && radius >= lo - 1e-9 && radius <= hi + 1e-9)?.pattern : undefined;
+/** The largest circle in the touching ring (`boardRanges`' second range) a
+ * motif kept whole can take, the next line out following the circle: where
+ * the ring's ends beside its gate (`gateRoom`) are as wide as paper that
+ * holds printed (`PAPER_NECK_MM`), more than the room for a cut. Finer
+ * boards keep the room for a cut until their completions are checked
+ * against the paper. */
 export function boardWholeTop(strips: number): number {
-	const [, large] = boardRanges(strips), d = boardLines(strips);
+	const [, large] = boardRanges(strips), d = boardLines(strips), room = strips === 5 ? PAPER_NECK_MM / PRINT_WIDTH_MM * 100 : 1.5;
 	if (!large) return 0;
 	let [low, high] = large;
-	if (gateRoom(high, d, true) >= 1.5) return high;
+	if (gateRoom(high, d, true) >= room) return high;
 	for (let step = 0; step < 40; step++) {
 		const mid = (low + high) / 2;
-		if (gateRoom(mid, d, true) >= 1.5) low = mid;
+		if (gateRoom(mid, d, true) >= room) low = mid;
 		else high = mid;
 	}
 	return low;
