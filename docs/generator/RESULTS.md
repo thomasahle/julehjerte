@@ -1,5 +1,16 @@
 # Generator robustness results
 
+## Seams crossing the outline square, a finer search
+
+Searching a finer grid (60 steps rather than 40) for up to six such points,
+each with only 1% of the motif's paper in every panel round it rather than 2%,
+makes six more featured hearts clean: the nisse on seven and nine strips at
+88%, the moon and stars on five strips at 72% and 78% and seven at 72%, and the
+cow on nine strips at 100%. Hearts that stay hard take 14% longer (79 of them:
+287 s → 326 s); the dove, clean since the curved retry, is cut along other
+square seams again. A prefix sum over the grid counts the paper round each
+point, so the search takes 3–45 ms, not 50–110.
+
 ## Seams crossing the outline square
 
 The seams dividing a motif in four cross at a point of its background nearest

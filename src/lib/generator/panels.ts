@@ -262,20 +262,27 @@ export function backgroundJunctions(rings: Ring[], limit = 4): Point[] {
 
 /** Points of the background where the seams through them (level and upright)
  * cross the outline most nearly square: by the narrowest angle at any
- * crossing, widest first, each with paper in every panel round it. */
-export function squareJunctions(rings: Ring[], limit = 3): Point[] {
+ * crossing, widest first, each with some paper in every panel round it (a
+ * finer search than `backgroundJunctions`, and less paper: a seam that misses
+ * a narrow point by a little leaves a panel little of the motif). */
+export function squareJunctions(rings: Ring[], limit = 6): Point[] {
 	const points = rings.flat();
 	if (!points.length) return [];
 	const xs = points.map(p => p[0]), ys = points.map(p => p[1]);
 	const [left, right, top, bottom] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
-	const extent = Math.max(right - left, bottom - top);
-	const steps = 40, candidates: Point[] = [], ink: Point[] = [];
-	for (let i = 1; i < steps; i++) for (let j = 1; j < steps; j++) {
-		const p: Point = [left + (i / steps) * (right - left), top + (j / steps) * (bottom - top)];
-		(rings.filter(r => inside(p, r)).length % 2 ? ink : candidates).push(p);
-	}
-	const surrounded = (p: Point) => [[-1, -1], [1, -1], [1, 1], [-1, 1]].every(([sx, sy]) =>
-		ink.filter(q => (q[0] - p[0]) * sx > 0 && (q[1] - p[1]) * sy > 0).length >= .02 * ink.length);
+	const extent = Math.max(right - left, bottom - top), steps = 60;
+	const at = (i: number, j: number): Point => [left + (i / steps) * (right - left), top + (j / steps) * (bottom - top)];
+	// Ink on the grid, and how much lies beyond each point each way round
+	// (counts of the grid points at or past i, j, by quadrant via sums).
+	const ink = Array.from({ length: steps + 1 }, (_, i) => Array.from({ length: steps + 1 }, (_, j) =>
+		i > 0 && i < steps && j > 0 && j < steps && rings.filter(r => inside(at(i, j), r)).length % 2 ? 1 : 0));
+	const sum = Array.from({ length: steps + 2 }, () => new Array<number>(steps + 2).fill(0));
+	for (let i = steps; i >= 0; i--) for (let j = steps; j >= 0; j--)
+		sum[i][j] = ink[i][j] + sum[i + 1][j] + sum[i][j + 1] - sum[i + 1][j + 1];
+	const total = sum[0][0], beyond = (i0: number, i1: number, j0: number, j1: number) =>
+		sum[i0][j0] - sum[i1 + 1][j0] - sum[i0][j1 + 1] + sum[i1 + 1][j1 + 1];
+	const surrounded = (i: number, j: number) => [beyond(i + 1, steps, j + 1, steps), beyond(0, i - 1, j + 1, steps),
+		beyond(0, i - 1, 0, j - 1), beyond(i + 1, steps, 0, j - 1)].every(n => n >= .01 * total);
 	const outline = (p: Point) => Math.min(...rings.flatMap(r => r.map((a, i) => {
 		const b = r[(i + 1) % r.length], d = sub(b, a), t = Math.max(0, Math.min(1, dot(sub(p, a), d) / (dot(d, d) || 1)));
 		return distance(p, [a[0] + t * d[0], a[1] + t * d[1]]);
@@ -294,8 +301,13 @@ export function squareJunctions(rings: Ring[], limit = 3): Point[] {
 		}
 		return least;
 	};
-	const scored = candidates.filter(p => outline(p) >= .04 * extent && surrounded(p)).map(p => ({ p, angle: narrowest(p) }))
-		.sort((a, b) => b.angle - a.angle);
+	const scored: { p: Point; angle: number }[] = [];
+	for (let i = 1; i < steps; i++) for (let j = 1; j < steps; j++) {
+		const p = at(i, j);
+		if (ink[i][j] || !surrounded(i, j) || outline(p) < .04 * extent) continue;
+		scored.push({ p, angle: narrowest(p) });
+	}
+	scored.sort((a, b) => b.angle - a.angle);
 	const chosen: Point[] = [];
 	for (const { p } of scored) {
 		if (chosen.length >= limit) break;

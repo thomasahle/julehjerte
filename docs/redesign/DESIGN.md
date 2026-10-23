@@ -999,8 +999,9 @@ farthest point in a panel's direction (a star's top point, on its axis, at the l
 that panel's gate would sit where the seam crosses the outline, and the construction fails; last of
 all at the size itself, every division is tried again with the seams guarded, the gates kept off
 them (the star at 98–100% on seven and nine strips); then through the points of its background
-where the seams cross its outline most nearly square, rather than nearest its centre (a dove's
-wing otherwise meets a seam almost along it). As a last resort it decides nothing
+where the seams cross its outline most nearly square, rather than nearest its centre, searched
+finer and with less of the motif in each panel (a dove's wing otherwise meets a seam almost along
+it; the nisse's boot, the moon's horn). As a last resort it decides nothing
 else: whether the motif is divided and where it sits stay as they were. A motif of several pieces,
 or with islands in its holes, that would be refused even so is decided and built again with every
 way of reaching its pieces, after every other way: the gates' spokes meet each other piece in
