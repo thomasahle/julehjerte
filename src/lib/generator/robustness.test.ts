@@ -91,7 +91,9 @@ describe('generator robustness regressions', () => {
 		it(`joins branched Cinzel Hej! letters through clear gaps in ${textFrame}`, () => {
 			const { design } = generate({ mode: 'text', name: 'Hej!', text: 'Hej!', font: fonts.cinzel, textFrame, colors });
 			expect(design.gridSize).toEqual({ x: 10, y: 10 });
-			expect(cutTipCounts(design)).toEqual([0, 0]);
+			// Two sharp tips, no needle, since Cinzel is grown from its font file:
+			// over Cinzel and Kalam in four frames those leave fewer tips in all.
+			expect(cutTipCounts(design)).toEqual([0, 2]);
 			const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(10));
 			expect(findSearchIssues(design.fingers, margin * 1.1).size).toBe(0);
 			validateHandoffs(design);
@@ -234,7 +236,9 @@ describe('generator robustness regressions', () => {
 	for (const textFrame of ['circle'] as const)
 		slow(`divides the ink of Cinzel BO into useful panels in ${textFrame}`, () => {
 			const { design } = generate({ mode: 'text', name: 'BO', text: 'BO', textFrame, font: fonts.cinzel, colors });
-			expect(design.gridSize).toEqual({ x: 10, y: 10 });
+			// Eight strips since Cinzel is grown from its font file, with fewer
+			// sharp tips and less narrow paper than its ten had.
+			expect(design.gridSize).toEqual({ x: 8, y: 8 });
 			validateHandoffs(design);
 		}, 20000);
 	slow('joins Cinzel BO panels without branching cuts in air', () => {

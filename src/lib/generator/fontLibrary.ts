@@ -58,9 +58,35 @@ export function buildGrown(glyph: Glyph, by: number): Glyph {
 	const grown: ClipperLib.Paths = [];
 	offset.AddPaths(filled, ClipperLib.JoinType.jtRound, ClipperLib.EndType.etClosedPolygon);
 	offset.Execute(grown, by * SCALE);
-	const contours = toRings(ClipperLib.Clipper.CleanPolygons(grown, .0005 * SCALE));
+	const contours = toRings(grown).map(ring => simplified(ring, .0005)).filter(r => r.length > 2 && signedArea(r) !== 0);
 	return contours.length === glyph.contours.length ? { advance: glyph.advance, contours } : glyph;
 }
+
+/** A ring with the points Douglas and Peucker's simplification drops within
+ * `tolerance` left out, as Shapely's `simplify` leaves a ring: from its first
+ * point round to itself again. */
+function simplified(ring: Ring, tolerance: number): Ring {
+	const line = [...ring, ring[0]], keep = new Uint8Array(line.length), stack: [number, number][] = [[0, line.length - 1]];
+	keep[0] = keep[line.length - 1] = 1;
+	while (stack.length) {
+		const [a, b] = stack.pop()!;
+		let far = -1, most = tolerance;
+		for (let i = a + 1; i < b; i++) {
+			const d = segmentDistance(line[i], line[a], line[b]);
+			if (d > most) { most = d; far = i; }
+		}
+		if (far < 0) continue;
+		keep[far] = 1;
+		stack.push([a, far], [far, b]);
+	}
+	return ring.filter((_, i) => keep[i]);
+}
+
+const segmentDistance = (p: Point, a: Point, b: Point) => {
+	const dx = b[0] - a[0], dy = b[1] - a[1], length = dx * dx + dy * dy;
+	const t = length ? Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / length)) : 0;
+	return Math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy);
+};
 
 /** The band a font's capitals stand in: its H's height and side bearing. */
 function capitals(font: Font): { height: number; bearing: number } {

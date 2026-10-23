@@ -1546,6 +1546,26 @@ and ❄ make hearts; Cinzel's €, Lobster's ñ and J, and 🎄 are hard to cut;
 雪 is refused by name. The fonts' own @ is slow in "Store bogstaver" (69 s
 alone; @%€ is refused after 208 s), quick on equal squares (3 s).
 
+## Kalam and Cinzel simplified as the build simplified them
+
+Grown from the font files, Kalam and Cinzel were simplified with Clipper's
+`CleanPolygons`, which drops a point wherever three lie within .0005 em of a
+line, one after another: round corners thinned out, and Cinzel had 11% fewer
+points than the old outline files (Kalam 3%). Shapely's `simplify`, which built
+those files, is Douglas and Peucker's: `buildGrown` now does the same, and
+Cinzel is within 3% of its old points, Kalam within one point. Over both fonts,
+ten texts and four frames (circle, both woven cells, the checks; 80 hearts):
+
+| outlines | refused | hard | needles | sharp tips | paper faults at 80 mm |
+|---|---|---|---|---|---|
+| old files | 0 | 23 | 90 | 219 | 528 |
+| CleanPolygons | 0 | 23 | 85 | 212 | 549 |
+| Douglas–Peucker | 0 | 23 | 86 | 208 | 500 |
+
+Cinzel EMMA in the circle has two sharp tips again (four with CleanPolygons);
+Cinzel BO weaves on eight strips (ten with the old files, with ten sharp tips
+there against two now); Cinzel Hej! has two sharp tips where it had none.
+
 ## The same search, faster for nested outlines
 
 Nunito's @ in "Store bogstaver" took 78 s (node, this Mac): 34,704 choices of
