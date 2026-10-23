@@ -1,5 +1,16 @@
 # Generator robustness results
 
+## Board hearts ranked by their paper at every size
+
+The ranking of a five-strip board heart's first working cuts, and their retry
+with connections kept off by paper's width, now also run at 70% and below, in
+the touching circle. Over the 49 featured motifs at 45/50/55/60/65/70%: hearts
+that tear fall from 25/22/21/21/19/18 to 21/20/16/15/13/11, hearts that cut
+cleanly and hold from 149 to 179 of 288, the mean print width that holds from
+84 mm to 80.5; none changes status or tears more. The yule goat at the default
+70% now holds printed 80 mm wide. Generating takes about 0.35 s longer a heart
+there (0.75 s → 1.1 s on average).
+
 ## Board hearts' connections kept as far off as paper holds
 
 Of the cuts that remained to tear on five strips, most ran between the

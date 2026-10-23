@@ -24,6 +24,7 @@ import deer from '../../../static/generator/motifs/pin-reindeer.json';
 import horse from '../../../static/generator/motifs/ph-horse.json';
 import bird from '../../../static/generator/motifs/ph-bird.json';
 import star from '../../../static/generator/motifs/star.json';
+import yuleGoat from '../../../static/generator/motifs/yule-goat.json';
 import houseMotif from '../../../static/generator/motifs/house.json';
 import snowflake from '../../../static/generator/motifs/ph-snowflake.json';
 import gift from '../../../static/generator/motifs/gift.json';
@@ -884,6 +885,12 @@ describe('frames from real hearts', () => {
   // The star's best division at 80% still left three pieces hanging by paper
   // under 2 mm, its connections the room for a cut from its points.
   const { design } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .8 });
+  expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
+ });
+ it('keeps the five-strip board heart whose paper holds best at the default size too', () => {
+  // The yule goat at 70%, in the touching circle, left two pieces hanging by
+  // paper under 2 mm in the first construction that finished.
+  const { design } = generate({ mode: 'figure', name: 'Yule goat', contours: yuleGoat.contours as Ring[], colors, style: 'board', scale: .7 });
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
  });
  it('lays the figure in the checks on boards of three to six strips', () => {
