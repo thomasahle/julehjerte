@@ -658,6 +658,21 @@ function cutsBetter(a: GeneratorResult, b: GeneratorResult, paperFirst = false):
 	return pa < pb;
 }
 
+/** Of the first few results that finish on as many strips as the first, the
+ * one whose paper holds best, then with the fewest tips (`cutsBetter`),
+ * stopping at one that holds with no sharp tip: for constructions that differ
+ * only in their hidden cuts. */
+function bestOfFirst(results: Iterable<GeneratorResult>, count = 4): GeneratorResult | undefined {
+	let best: GeneratorResult | undefined, first: GeneratorResult | undefined, working = 0;
+	for (const result of results) {
+		first ??= result;
+		if (result.design.gridSize.x !== first.design.gridSize.x || result.design.gridSize.y !== first.design.gridSize.y) continue;
+		if (!best || cutsBetter(result, best, true)) best = result;
+		if (!paperTears(exported(best).design) && !cutTipCounts(exported(best).design)[1] || ++working === count) break;
+	}
+	return best;
+}
+
 const BOARD_FRAMES: string[] = ['squares', 'motifs'];
 /** The choice each motif's default size made, per frame (see `withLayout`). */
 const layouts = new Map<string, BoardLayout | undefined>();
@@ -2375,13 +2390,17 @@ function generateUsingRecipes(request: GeneratorRequest,
 	if (request.style === 'layers') {
 		const layouts = [undefined, ...[false, true].flatMap(filled =>
 			[[1, 2], [2, 1], [2, 2], [3, 2]].map(([columns, rows]) => ({ columns, rows, filled })))];
-		for (const panels of layouts) {
-			try {
-				return finish(generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, panels), 'nested');
-			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		// The panels divide the motif unseen: of the first few, the best paper.
+		const best = bestOfFirst((function* () {
+			for (const panels of layouts) {
+				try {
+					yield finish(generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, panels), 'nested');
+				} catch (error) {
+					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				}
 			}
-		}
+		})());
+		if (best) return best;
 		// A motif inside the medallion can have counters whose attachments
 		// cannot alternate along a straight chain. Reconnect those counters
 		// around either attachment while retaining the seven-strip layout.
@@ -2654,19 +2673,29 @@ function generateUsingRecipes(request: GeneratorRequest,
 	}
 	if (request.style === 'corners') {
 		let last: unknown;
-		for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) {
-			try {
-				const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes,
-					undefined, undefined, request.gap);
-				// Keep the established frame and skip another fit when moving
-				// separate components did not change any lane or connection.
-				if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
-				return finish(result, 'silhouette');
-			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-				last = error;
+		// The layouts route the lanes unseen: of the first few, the best paper.
+		// One fitting the border narrows the outer strips, a picture of its
+		// own: only where none of the others finish.
+		let finished = false;
+		const best = bestOfFirst((function* () {
+			for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) {
+				if (fitBorder && finished) return;
+				try {
+					const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes,
+						undefined, undefined, request.gap);
+					// Keep the established frame and skip another fit when moving
+					// separate components did not change any lane or connection.
+					if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
+					const done = finish(result, 'silhouette');
+					finished = true;
+					yield done;
+				} catch (error) {
+					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					last = error;
+				}
 			}
-		}
+		})());
+		if (best) return best;
 		throw last;
 	}
 	const open = openFrame(request);
@@ -2768,23 +2797,28 @@ function generateUsingRecipes(request: GeneratorRequest,
 	// Only failed designs reach the wider attachment pass. Bound that extra
 	// work to the initial panel/four-port layouts; keep the exact chosen frame.
 	const balancedRecipes = recipes.slice(0, 4).filter(recipe => recipe !== baseFigure);
-	for (const route of [fourPortMotif, originalFourPortMotif, balancedFourPortMotif])
-	for (const construct of route === balancedFourPortMotif ? balancedRecipes : recipes) {
-		if (route === originalFourPortMotif && (!retryOriginal.has(construct) || construct === baseFigure)) continue;
-		let constructed = false;
-		try {
-			const construction = construct(route);
-			constructed = true;
-			return finish(
-				sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction,
-				rings.length === 1 ? 'silhouette' : 'nested'
-			);
-		} catch (e) {
-			if (!(e instanceof ConstructionError) && !(e instanceof CutGeometryError)) throw e;
-			if (constructed || e instanceof CompilationError) retryOriginal.add(construct);
-			errors.push(e);
+	// Of the first few that finish, the best paper (`bestOfFirst`): they differ
+	// only in how the motif's cuts spread over its panels, so the picture stays.
+	const best = bestOfFirst((function* () {
+		for (const route of [fourPortMotif, originalFourPortMotif, balancedFourPortMotif])
+		for (const construct of route === balancedFourPortMotif ? balancedRecipes : recipes) {
+			if (route === originalFourPortMotif && (!retryOriginal.has(construct) || construct === baseFigure)) continue;
+			let constructed = false;
+			try {
+				const construction = construct(route);
+				constructed = true;
+				yield finish(
+					sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction,
+					rings.length === 1 ? 'silhouette' : 'nested'
+				);
+			} catch (e) {
+				if (!(e instanceof ConstructionError) && !(e instanceof CutGeometryError)) throw e;
+				if (constructed || e instanceof CompilationError) retryOriginal.add(construct);
+				errors.push(e);
+			}
 		}
-	}
+	})());
+	if (best) return best;
 	// A uniform seam can graze a motif's tip. Shift one modest three-panel layout
 	// within its cells before refusing the figure, keeping its exact outline.
 	try {

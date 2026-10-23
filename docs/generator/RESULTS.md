@@ -1,5 +1,18 @@
 # Generator robustness results
 
+## Frames ranked by their paper
+
+Rays, checks, the sunburst, the double border and the checked tips took the
+first construction that finished. They now finish up to four on as many strips
+as the first (the checked tips with the border as the first has it) and keep
+the one whose paper holds best, then with the fewest tips (`bestOfFirst`);
+those differ only in their hidden cuts, so the picture stays. Over the 49
+featured motifs at 50/70/85%: hearts that tear at 80 mm fall from 88 to 81 in
+the checked tips, from 55 to 52 in rays and checks and from 55 to 54 in the
+double border; none tears more or changes status. Ranking across strip counts
+and borders too would take rays from 55 to 43, the double border to 39 and the
+checked tips to 78, but changes how many strips the heart has, or its border.
+
 ## Every board's hearts ranked by their paper
 
 The ranking of the first working cuts, and their retry with connections kept

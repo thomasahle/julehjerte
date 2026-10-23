@@ -26,6 +26,8 @@ import bird from '../../../static/generator/motifs/ph-bird.json';
 import star from '../../../static/generator/motifs/star.json';
 import yuleGoat from '../../../static/generator/motifs/yule-goat.json';
 import snowman from '../../../static/generator/motifs/mc-snowman.json';
+import candle from '../../../static/generator/motifs/ms-candle.json';
+import sleigh from '../../../static/generator/motifs/fa-sleigh.json';
 import houseMotif from '../../../static/generator/motifs/house.json';
 import snowflake from '../../../static/generator/motifs/ph-snowflake.json';
 import gift from '../../../static/generator/motifs/gift.json';
@@ -899,6 +901,16 @@ describe('frames from real hearts', () => {
   // 2 mm in the first construction that finished.
   const { design } = generate({ mode: 'figure', name: 'Snowman', contours: snowman.contours as Ring[], colors, style: 'board', board: 3, scale: .6 });
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
+ });
+ it('keeps, of the first constructions that finish in a frame, the one whose paper holds best', () => {
+  // The first that finished left pieces hanging by paper under 2 mm: the
+  // candle's in rays at 85%, the sleigh's in the checked tips at 70%.
+  for (const [style, motif, scale] of [['rays', candle, 85], ['corners', sleigh, 70]] as const) {
+   const s = { ...defaults, mode: 'figure' as const, style, scale };
+   const { design } = generate({ mode: 'figure', name: style, contours: motif.contours as Ring[], colors, style, scale: scale / 100,
+    frame: s.frame, frameSize: s.frameSize, gap: frameGap(s) });
+   expect(paperFaults(design), style).toEqual({ weak: 0, loose: 0 });
+  }
  });
  it('lays the figure in the checks on boards of three to six strips', () => {
   for (const strips of [3, 5, 6]) {
