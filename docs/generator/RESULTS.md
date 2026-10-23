@@ -1,5 +1,25 @@
 # Generator robustness results
 
+## Every motif file on the rays frame
+
+At 70% the rays frame cuts 2623 of the 2668 motif files cleanly; 20 are hard
+to cut and 25 refused (0.9%). Ten motifs are refused by both the rays frame and
+the board circle: ph-circuitry, ph-codepen-logo, ph-command,
+ph-fallout-shelter, ph-graduation-cap, ph-head-circuit, ph-steam-logo,
+tb-blender, tb-brand-signal and tb-radar. They have pieces touching at points,
+slivers, or islands in winding holes.
+
+The other refusals of each frame are built by the other. The board's
+remaining six include two featured motifs, the polar star (clean on the rays
+frame) and the elephant (hard to cut there). The rays frame's other fifteen
+(the ph-user-circle badges, ph-lasso, ph-subway and more) are all built by the
+board circle, four of them (ph-clock-countdown, ph-globe-stand, ph-yarn,
+tb-download) since the change below.
+
+Every way of reaching a motif's pieces (below), tried as a route of the rays
+frame's panels too, builds none of its refusals. Those constructions then fail
+to compile ("A path ends on the wrong edge", "Invalid A degree").
+
 ## Every motif file on the board circle
 
 The board circle had only been swept over the corpus and the featured motifs.
