@@ -2578,12 +2578,12 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// motif shrink a little, and then the circle grow a little.
 		const nearby = [size + 1.5, size + 3].map(other => Math.min(mode[1], other))
 			.filter(other => other - size > .5 && boardLines(strips).every(line => Math.abs(other - line) > .1));
-		// On five strips, of the first few working cuts, the one whose paper
-		// holds best, then with the fewest tips (`cutsBetter`): the attempts
-		// differ only in the invisible partition, so the picture stays. Tips
-		// first would leave the star at 73% needing a print 170 mm wide rather
-		// than 140.
-		const ranked = strips === 5;
+		// On five strips or three, of the first few working cuts, the one whose
+		// paper holds best, then with the fewest tips (`cutsBetter`): the
+		// attempts differ only in the invisible partition, so the picture
+		// stays. Tips first would leave the star at 73% needing a print 170 mm
+		// wide rather than 140.
+		const ranked = strips <= 5;
 		let last: unknown;
 		for (const attempts of [sizes(mode, size, placement, undefined, whole, true), [.85, .7].flatMap(factor => sizes(mode, size, placement, fills(size, placement, factor, gap, whole), whole, true)),
 			nearby.flatMap(other => sizes(mode, other, placement, undefined, whole, true))]) {

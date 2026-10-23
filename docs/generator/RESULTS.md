@@ -1,5 +1,13 @@
 # Generator robustness results
 
+## Three-strip board hearts ranked by their paper
+
+The same ranking of the first working cuts, and their retry with connections
+kept off by paper's width, now run on three strips too. Over the 49 featured
+motifs at 50/60/70/80/90/100%: hearts that tear fall from 18/17/15/13/12/13 to
+13/9/10/9/9/10, hearts that cut cleanly and hold from 190 to 218 of 288; none
+changes status or tears more. Generating takes about 0.3 s longer a heart.
+
 ## Board hearts ranked by their paper at every size
 
 The ranking of a five-strip board heart's first working cuts, and their retry
