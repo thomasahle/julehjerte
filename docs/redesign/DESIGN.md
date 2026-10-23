@@ -992,7 +992,11 @@ of the motif (a deer's legs) joins them like a letter's dots and islands; that i
 other division, so a motif that divides without it keeps its cuts. A seam that would run through a
 corner of the outline, or nearly (the star's top tip lies just beside the seam through its centre),
 cannot be built or halves the tip into slivers; at the size itself, after everything else, it is
-tried a fiftieth of the motif beside the corner, either way. As a last resort it decides nothing
+tried a fiftieth of the motif beside the corner, either way. Where a seam still meets the motif's
+farthest point in a panel's direction (a star's top point, on its axis, at the largest circles),
+that panel's gate would sit where the seam crosses the outline, and the construction fails; last of
+all at the size itself, every division is tried again with the seams guarded, the gates kept off
+them (the star at 98–100% on seven and nine strips). As a last resort it decides nothing
 else: whether the motif is divided and where it sits stay as they were. A motif of several pieces,
 or with islands in its holes, that would be refused even so is decided and built again with every
 way of reaching its pieces, after every other way: the gates' spokes meet each other piece in

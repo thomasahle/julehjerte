@@ -591,6 +591,13 @@ describe('frames from real hearts', () => {
    expect(lines.size, `${board}`).toBe(2 * (board - 1));
   }
  });
+ it('keeps a panel\'s gate off a seam through the motif\'s point', () => {
+  // On nine strips at 100% the seams cross beside the star's centre, one
+  // through its top point, where the top panels' gates would meet it.
+  const { hardToCut, scale } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', board: 9, scale: 1 });
+  expect(hardToCut).toBeUndefined();
+  expect(scale).toBeUndefined();
+ });
  slow('bends the seams of a motif divided in four where they meet it in a narrow point, rather than calling it hard to cut', () => {
   // The dove's seams meet its outline at a narrow angle; straight, every
   // division leaves a sharp tip of paper there.

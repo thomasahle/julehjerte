@@ -1,5 +1,23 @@
 # Generator robustness results
 
+## Gates kept off a seam through the motif's point
+
+At the largest circles on seven and nine strips the star's seams cross just
+beside its centre, one along its axis through its top point. Most divisions
+then failed to compile ("Invalid A degree" at the point): the top panels'
+gate, the outline's farthest point in its direction, is exactly where that
+seam crosses the outline, so two hidden cuts met there. The seam guard that
+keeps gates off seams was only on in the divisions that also reach islands.
+Last of all at the size itself, every division (and the seams moved beside a
+corner) is now tried again with the seams guarded.
+
+Over the 49 featured motifs at the same 637 sizes as below: the star at 100%
+on seven and nine strips goes from hard to clean (it was hard at 98–100%);
+the nisse on five strips stays hard, keeping a different construction with
+the candidates added; the heart (five strips, 84%) and the wreath (seven, 72%),
+clean since the curved retry below, are now cut by a guarded division instead.
+The other 629 are identical, and the time is the same.
+
 ## Curved seams before calling a board heart hard to cut
 
 The board circle kept its best hard-to-cut construction as soon as none cut

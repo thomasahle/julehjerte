@@ -2017,6 +2017,11 @@ function generateUsingRecipes(request: GeneratorRequest,
 			return [[{ columns: 2, slices: 2 }, { ...compound, columns: 2, slices: 2 }, ...junctions.map(junction => ({ columns: 2, slices: 2, junction }))],
 				[undefined, ...junctions].map(junction => ({ ...islands, columns: 2, slices: 2, ...junction && { junction } })),
 				...moved.length ? [moved.map(junction => ({ columns: 2, slices: 2, junction }))] : [],
+				// A seam through the motif's farthest point in a panel's direction
+				// (a star's point on its axis) can meet that panel's gate there;
+				// with the seams guarded, the gate keeps off it. Only at the size
+				// itself, after the others, so no heart cut without them changes.
+				...atSize ? [[undefined, ...junctions, ...moved].map(junction => ({ columns: 2, slices: 2, guardSeams: true, ...junction && { junction } }))] : [],
 				...rest([undefined, ...junctions].map(junction => ({ columns: 2, slices: 2, ...junction && { junction } })))];
 		};
 		// A circle wider than the paper leaves the motif no more room than the paper.
