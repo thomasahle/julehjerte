@@ -56,9 +56,11 @@ export function curveSharedCuts<T extends CutNetwork>(geometry: T, at?: (point: 
 
 /** Work on the already fitted cutting paths so a quality improvement cannot
  * refit unrelated outlines or narrow their paper necks. Only handles at sharp
- * ends of coincident curves change. The caller must validate spacing afterward. */
-export function curveSharpSharedTips<T extends Pick<HeartDesign, 'fingers'>>(design: T): T | undefined {
-	const points = cutTipPoints(design);
+ * ends of coincident curves change, at every sharp tip or those `only` keeps.
+ * The caller must validate spacing afterward. */
+export function curveSharpSharedTips<T extends Pick<HeartDesign, 'fingers'>>(design: T,
+	only?: (point: { x: number; y: number }) => boolean): T | undefined {
+	const points = cutTipPoints(design).filter(point => !only || only(point));
 	if (!points.length) return;
 	const geometry: CutNetwork = { curves: {}, A_overlap_paths: [], B_overlap_paths: [] };
 	const ids = new Map<string, { curve: string; reverse: boolean }>();

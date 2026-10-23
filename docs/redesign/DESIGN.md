@@ -1019,7 +1019,10 @@ each construction it tried bend where they meet the motif in a narrow point, as 
 after a refusal (`curveSharedCuts`), and one that then cuts cleanly is kept (the dove divided in
 four, at every size); a heart that cuts cleanly without them keeps its cuts. A clean heart's shared
 cuts that meet the motif in a sharp tip of paper bend to cross it instead, where that leaves fewer
-such tips and the cuts as far apart (`improveSharedConnections`, as every frame's clean figures do). Only where nothing at all can be
+such tips and the cuts as far apart (`improveSharedConnections`, as every frame's clean figures do).
+A figure called hard to cut bends the same way, all at once or else tip by tip, where each bend
+leaves its narrowest paper no narrower (to a 64th of the clearance) and brings no other cut too
+near (`improveHardConnections`): still hard to cut, with fewer sharp tips. Only where nothing at all can be
 finished at a size does the motif shrink a little, and then the circle grow a little. The motif's
 cell takes the usual padding, else little, and an outer gate that the circle passes inside of
 moves in to midway between the motif's farthest point and the circle, so the legs stay inside it.

@@ -12,7 +12,7 @@ export { fillSquare, fitCircle } from './frameFit';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
 import { generateCheckeredGrid, checkeredGridCache, checkeredLayouts } from './checkeredGrid';
 import { generateMixedCheckeredGrid, mixedCheckeredGridCache } from './mixedCheckeredGrid';
-import { cutTipCounts, fewerCutTips } from './cutQuality';
+import { cutTipCounts, cutTipPoints, fewerCutTips } from './cutQuality';
 import { trickyLetters } from './trickyLetters';
 import { normalizeContours } from './contours';
 import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
@@ -441,18 +441,57 @@ function finishConstruction(request: GeneratorRequest, r: Construction, recipe: 
  * original whenever bending fails full-sheet checks or does not improve the
  * actual exported cuts. Visible outlines, strip count and connections stay fixed. */
 function improveSharedConnections(result: GeneratorResult): GeneratorResult {
-	const design = curveSharpSharedTips(result.design);
-	if (!design || !fewerCutTips(cutTipCounts(design), cutTipCounts(result.design))) return result;
-	const rect = inferOverlapRect(design.fingers, design.gridSize);
-	for (const finger of design.fingers) for (const segment of finger.segments)
-		for (const p of [segment.p0, segment.p1, segment.p2, segment.p3])
-			if (!Number.isFinite(p.x) || !Number.isFinite(p.y) || p.x < rect.left || p.x > rect.right ||
-				p.y < rect.top || p.y > rect.bottom) return result;
-	const margin = intersectionMarginPx(rect, gridClearanceScale(design.gridSize.x, design.gridSize.y));
+	const design = bentAtTips(result.design);
+	if (!design) return result;
+	const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(design.gridSize.x, design.gridSize.y));
 	if (findSearchIssues(design.fingers, margin).size) return result;
 	// Endpoints, visible curves and strip connections are unchanged. Each moved
 	// curve is still exactly coincident on both sheets, preserving the weave.
 	return { ...result, design };
+}
+
+/** A figure hard to cut, bent at its sharp tips of paper as a clean one is
+ * (see `improveSharedConnections`) where that leaves its narrowest paper no
+ * narrower and brings no other cut too near: all at once, else tip by tip.
+ * Still hard to cut, with fewer sharp tips (a hedgehog in the checks at 70%
+ * from four needles to none; a nisse on seven strips at 80% from five to
+ * one). */
+function improveHardConnections(result: GeneratorResult): GeneratorResult {
+	const original = result.design, full = intersectionMarginPx(inferOverlapRect(original.fingers, original.gridSize),
+		gridClearanceScale(original.gridSize.x, original.gridSize.y));
+	// The narrowest paper, as a fraction of the clearance, to a 64th: below
+	// that a bend is not measured, so not made.
+	let low = 0, high = 1;
+	for (let step = 0; step < 6; step++) {
+		const middle = (low + high) / 2;
+		if (findSearchIssues(original.fingers, full * middle, full).size) high = middle;
+		else low = middle;
+	}
+	if (!low) return result;
+	const flagged = findSearchIssues(original.fingers, full);
+	const kept = (design: HeartDesign) => !findSearchIssues(design.fingers, full * low, full).size &&
+		![...findSearchIssues(design.fingers, full)].some(id => !flagged.has(id));
+	const all = bentAtTips(original);
+	if (all && kept(all)) return { ...result, design: all };
+	let design = original;
+	for (const tip of cutTipPoints(original)) {
+		const bent = bentAtTips(design, point => Math.hypot(point.x - tip.x, point.y - tip.y) < 1e-7);
+		if (bent && kept(bent)) design = bent;
+	}
+	return design === original ? result : { ...result, design };
+}
+
+/** The design bent at its sharp tips of paper (those `only` keeps), where that
+ * leaves fewer and every point on the sheet. */
+function bentAtTips(original: HeartDesign, only?: (point: { x: number; y: number }) => boolean): HeartDesign | undefined {
+	const design = curveSharpSharedTips(original, only);
+	if (!design || !fewerCutTips(cutTipCounts(design), cutTipCounts(original))) return;
+	const rect = inferOverlapRect(design.fingers, design.gridSize);
+	for (const finger of design.fingers) for (const segment of finger.segments)
+		for (const p of [segment.p0, segment.p1, segment.p2, segment.p3])
+			if (!Number.isFinite(p.x) || !Number.isFinite(p.y) || p.x < rect.left || p.x > rect.right ||
+				p.y < rect.top || p.y > rect.bottom) return;
+	return design;
 }
 
 const BOARD_FRAMES: string[] = ['squares', 'motifs'];
@@ -1053,7 +1092,8 @@ function hardToCutResult(request: GeneratorRequest,
 		? trickyLetters(construction, request.text ?? '', request.font, 1.5 * gridClearanceScale(
 			construction.geometry.A_overlap_paths.length + 1, construction.geometry.B_overlap_paths.length + 1))
 		: [];
-	return { ...best.result, hardToCut: { letters, spacing } };
+	const result = { ...best.result, hardToCut: { letters, spacing } };
+	return request.mode === 'figure' && !request.font ? improveHardConnections(result) : result;
 }
 
 /** A single connected figure need not weave through one long central lane.

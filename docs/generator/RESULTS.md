@@ -1,5 +1,21 @@
 # Generator robustness results
 
+## Hard-to-cut figures bent at their sharp tips
+
+A clean figure's shared cuts bend where they meet the motif in a sharp tip of
+paper; a figure called hard to cut kept every tip. It now bends the same way,
+all at once or else tip by tip, each bend kept only where its narrowest paper
+stays (to a 64th of the clearance) and no other cut comes too near. Over the
+23 featured motifs that are hard somewhere (the swan left out), in 7 figure
+frames at 70, 85 and 100% (483 hearts): 39 change, all hard before and after
+and every one with fewer sharp tips (needles, sharp): the hedgehog in rays
+and checks at 70–85% [4,7] → [0,2], the elephant in rays at 70% [2,8] →
+[0,1], the bauble in the checked tips [2,3] → [0,0], the cat in the double
+border [1,3] → [1,1]; none other changes. On the board circle (26 motifs at
+72, 80, 88 and 100%) 13 of 104 hearts change on seven strips and 12 of 104
+on nine, again only hard ones and all with fewer tips: the cow on seven at
+80% [6,12] → [0,0], the nisse on nine at 100% [1,14] → [1,4].
+
 ## No alternative made twice where it would fail the same way
 
 A request that cannot be built at its size is made again with each last

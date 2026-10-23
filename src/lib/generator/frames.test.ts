@@ -49,6 +49,7 @@ import peace from '../../../static/generator/motifs/ph-peace.json';
 import copyPlus from '../../../static/generator/motifs/tb-copy-plus.json';
 import polarStar from '../../../static/generator/motifs/gi-polar-star.json';
 import dove from '../../../static/generator/motifs/pin-dove.json';
+import pinCat from '../../../static/generator/motifs/pin-cat.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -94,6 +95,13 @@ describe('complete motif frames', () => {
    expect(result.edges).toContainEqual({ from: [t, 0], to: [t, 100], family: 'A', kind: 'frame' });
    expect(result.edges).toContainEqual({ from: [0, t], to: [100, t], family: 'B', kind: 'frame' });
   }
+ });
+ slow('bends a hard-to-cut figure at sharp tips where its narrowest paper keeps', () => {
+  // The cat's tail meets its body in a notch the double border leaves on one
+  // sheet (hard to cut); its connections' sharp tips bend as a clean heart's.
+  const result = generate({ mode: 'figure', name: 'Cat', contours: pinCat.contours as Ring[], colors, style: 'layers' });
+  expect(result.hardToCut).toBeDefined();
+  expect(cutTipCounts(result.design)).toEqual([1, 1]);
  });
  slow('rounds the layered paw connections and keeps its open cuts through both exports', () => {
   const { design } = generate({ mode: 'figure', name: 'Paw', contours: paw.contours as Ring[], colors, style: 'layers' });
