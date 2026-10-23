@@ -1580,6 +1580,16 @@ with the same cuts, @%€ is refused after 22 s, Kalam's @ after 57 s (317 s), a
 the 132 hearts of a sweep over every text and figure frame are bit for bit the
 same, 16% faster in all (216 → 182 s).
 
+What letter cells still refuse (23 Oct 2026, every frame in Nunito and our nine
+fonts' @ in "Store bogstaver"): Kalam's @ in both woven cells and the circle
+(the checks, the strips and the double border build it), and two of @ % € side
+by side ("%€", "@€", "@%"; "@@" builds). Every punctuation mark and symbol after
+an A builds in both woven cells, and so does each of @ % € alone in any font
+but Kalam's @. Kalam's @ is one spiral outline whose only counter, the a's, is
+tiny and deep inside it: a cell bridges a counter on both sides of one port, and
+every gate's ray meets the spiral's outer turn, so one side's bridge always
+crosses the spiral.
+
 ## Larger circles on equal squares for animals
 
 Product request (2026-10-20): the deer in "Cirkel · Lige store tern" stopped at
