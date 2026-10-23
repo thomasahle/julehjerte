@@ -79,9 +79,11 @@ describe('thin strokes', () => {
 });
 
 describe('thin fonts', () => {
-	// Cinzel's file at its lightest weight, which the build grows by .04 em at 900.
+	// Cinzel's file at its lightest weight, which the build grows by .04 em at 900;
+	// its capitals, which are what a heart spells.
 	slow('grows Cinzel, halving what of it is thinner than the fonts we ship', async () => {
-		const font = await readFont(file('cinzel'));
+		const whole = await readFont(file('cinzel'));
+		const font = { ...whole, glyphs: Object.fromEntries(Object.entries(whole.glyphs).filter(([char]) => /^[A-ZÆØÅ]$/.test(char))) };
 		const thick = thickened(font);
 		expect(thinGrowth(font)).toBeGreaterThan(.01);
 		expect(thinShare(thick, THIN_WIDTH)).toBeLessThan(thinShare(font, THIN_WIDTH) / 2);
