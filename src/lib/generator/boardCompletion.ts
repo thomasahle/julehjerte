@@ -236,6 +236,144 @@ function norm([x, y]: number[]): [number, number] {
 	return [x / l, y / l];
 }
 
+/** The hidden cuts drawn for each pattern, by board and radius. */
+const drawnCuts = new WeakMap<BoardPattern, Map<string, Point[][]>>();
+
+type Segment = [Point, Point];
+/** How far from straight in a pulled hidden cut may leave the boundary. */
+const SLANT = 40 * Math.PI / 180;
+/** Distance from a point to a segment. */
+function pointToSegment(p: Point, [a, b]: Segment): number {
+	const dx = b[0] - a[0], dy = b[1] - a[1], l = dx * dx + dy * dy;
+	const t = l ? Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / l)) : 0;
+	return Math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy);
+}
+/** Distance between two segments (0 where they cross). */
+function segmentToSegment(s: Segment, t: Segment): number {
+	const [a, b] = s, [c, d] = t;
+	const side = (p: Point, q: Point, r: Point) => (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]);
+	const d1 = side(c, d, a), d2 = side(c, d, b), d3 = side(a, b, c), d4 = side(a, b, d);
+	if (((d1 > 0 && d2 < 0) || (d1 < 0 && d2 > 0)) && ((d3 > 0 && d4 < 0) || (d3 < 0 && d4 > 0))) return 0;
+	return Math.min(pointToSegment(a, t), pointToSegment(b, t), pointToSegment(c, s), pointToSegment(d, s));
+}
+/** How near segments come to a given one (up to `limit`): bucketed once. */
+function nearness(segments: Segment[]): (s: Segment, limit: number) => number {
+	const size = 1.5, cells = new Map<number, number[]>(), key = (x: number, y: number) => (x + 1000) * 4000 + y + 1000;
+	segments.forEach(([a, b], k) => {
+		for (let x = Math.floor(Math.min(a[0], b[0]) / size); x <= Math.floor(Math.max(a[0], b[0]) / size); x++)
+			for (let y = Math.floor(Math.min(a[1], b[1]) / size); y <= Math.floor(Math.max(a[1], b[1]) / size); y++) {
+				const cell = cells.get(key(x, y));
+				if (cell) cell.push(k); else cells.set(key(x, y), [k]);
+			}
+	});
+	const seen = new Int32Array(segments.length);
+	let stamp = 0;
+	return ([a, b], limit) => {
+		stamp++;
+		let best = limit;
+		for (let x = Math.floor((Math.min(a[0], b[0]) - limit) / size); x <= Math.floor((Math.max(a[0], b[0]) + limit) / size); x++)
+			for (let y = Math.floor((Math.min(a[1], b[1]) - limit) / size); y <= Math.floor((Math.max(a[1], b[1]) + limit) / size); y++)
+				for (const k of cells.get(key(x, y)) ?? []) {
+					if (seen[k] === stamp) continue;
+					seen[k] = stamp;
+					best = Math.min(best, segmentToSegment([a, b], segments[k]));
+				}
+		return best;
+	};
+}
+/**
+ * Hidden cuts pulled taut: drawn along the boundary they cut off, they follow
+ * every bay and corner of it; here each keeps its ends and as few of its
+ * points as leave it as far from everything else (the `walls`, the other
+ * cuts, and its own: the red square a pocket keeps within) as it was there,
+ * or `clear`, if that is nearer. A cut across the white circle (of
+ * `radius`) keeps no nearer the centre at any angle than those drawn there
+ * or a spacing inside the circle, and on the same side of it: the motif and
+ * its spokes lie there. The cuts come in fours, a quarter turn apart: the
+ * first of each is pulled, outermost first (pulled, an inner cut swings out
+ * across the bay its outer one went round), twice, and the others turned
+ * with it.
+ */
+function tighten(paths: Point[][], heights: number[], walls: Point[][], sides: ('centre' | Point[])[], clear: number, radius: number): Point[][] {
+	const out = paths.map(p => [...p]);
+	const ring = (r: Point[]): Segment[] => r.map((p, i) => [p, r[(i + 1) % r.length]]);
+	const open = (p: Point[]): Segment[] => p.slice(1).map((q, i) => [p[i], q]);
+	const fixed = walls.flatMap(ring);
+	const order = Array.from({ length: paths.length / 4 }, (_, g) => 4 * g).sort((a, b) => heights[b] - heights[a]);
+	// The motif and its spokes lie nearer the centre than the cuts across the
+	// circle came, at each angle, and than a spacing inside the circle.
+	const bins = 720, floor = new Float64Array(bins).fill(Infinity);
+	const bin = ([x, y]: Point) => Math.floor(turnAngle(Math.atan2(y, x)) / (2 * Math.PI) * bins) % bins;
+	const along = (a: Point, b: Point, step: number) => {
+		const n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / step));
+		return Array.from({ length: n + 1 }, (_, k): Point => [a[0] + (b[0] - a[0]) * k / n, a[1] + (b[1] - a[1]) * k / n]);
+	};
+	paths.forEach((p, x) => {
+		if (sides[x] === 'centre') for (let i = 1; i < p.length; i++) for (const q of along(p[i - 1], p[i], .25)) floor[bin(q)] = Math.min(floor[bin(q)], Math.hypot(...q));
+	});
+	floor.forEach((v, k) => floor[k] = Math.min(v, radius - clear));
+	for (const x of [...order, ...order]) {
+		const path = out[x], side = sides[x], last = path.length - 1;
+		if (last < 2) continue;
+		const wall = nearness([...fixed, ...side === 'centre' ? [] : ring(side)]);
+		const cuts = nearness(out.flatMap((p, y) => y === x ? [] : open(p)));
+		const room = path.map((p, k) => k === 0 || k === last ? clear : Math.min(wall([p, p], clear), cuts([p, p], clear)));
+		// At its ends, on the boundary, as far from the other cuts as it was
+		// leaving straight in.
+		const drawn = paths[x], end = drawn.length - 1;
+		const ends = [cuts([drawn[0], drawn[1]], clear), cuts([drawn[end - 1], drawn[end]], clear)];
+		const inward = [norm([drawn[1][0] - drawn[0][0], drawn[1][1] - drawn[0][1]]), norm([drawn[end - 1][0] - drawn[end][0], drawn[end - 1][1] - drawn[end][1]])];
+		// Whether the stretch from i to j and back straight goes round the centre.
+		const round = (i: number, j: number) => {
+			let sum = 0;
+			for (let k = i; k <= j; k++) {
+				const p = path[k], q = path[k === j ? i : k + 1];
+				sum += Math.atan2(p[0] * q[1] - p[1] * q[0], p[0] * q[0] + p[1] * q[1]);
+			}
+			return Math.abs(sum) > Math.PI;
+		};
+		const fits = (i: number, j: number) => {
+			const a = path[i], b = path[j], length = Math.hypot(b[0] - a[0], b[1] - a[1]), u: Point = [(b[0] - a[0]) / length, (b[1] - a[1]) / length];
+			const at = (t: number): Point => [a[0] + u[0] * t, a[1] + u[1] * t];
+			const keeps = (near: typeof wall, from: number, to: number, need: number) => to <= from || near([at(from), at(to)], need) >= need - 1e-6;
+			// `clear` from everything, but within twice its shortfall of an
+			// end, as near as that end is (a switch point: as near the other
+			// cuts as its cut was, leaving straight in); and a switch point's
+			// own stretch of the boundary only once it can be.
+			const ending = [i === 0, j === last], skip = [0, 0];
+			const apart = (near: typeof wall, needs: number[]) => {
+				const reach = needs.map((v, e) => skip[e] || Math.min(length / 2, 2 * (clear - v)));
+				return keeps(near, skip[0], reach[0], needs[0]) && keeps(near, length - reach[1], length - skip[1], needs[1]) && keeps(near, reach[0], length - reach[1], clear);
+			};
+			if (!apart(cuts, [ending[0] ? ends[0] : room[i], ending[1] ? ends[1] : room[j]])) return false;
+			// Off the boundary at an end no more than `SLANT` from straight in
+			// (more leaves one sheet a sharp tip of paper there).
+			for (const [e, sign] of [[0, 1], [1, -1]] as const) {
+				if (!ending[e]) continue;
+				if ((u[0] * inward[e][0] + u[1] * inward[e][1]) * sign < Math.cos(SLANT)) return false;
+				skip[e] = Math.min(clear / Math.cos(SLANT), length / 2);
+				const q = e ? b : a, w: Point = [u[0] * sign, u[1] * sign];
+				if (wall([[q[0] + w[0] * .1, q[1] + w[1] * .1], [q[0] + w[0] * skip[e], q[1] + w[1] * skip[e]]], .05) < .05) return false;
+			}
+			if (!apart(wall, [ending[0] ? clear : room[i], ending[1] ? clear : room[j]])) return false;
+			return side !== 'centre' || (along(a, b, .25).every(q => Math.hypot(...q) >= floor[bin(q)] - 1e-6) && !round(i, j));
+		};
+		const kept = [path[0]];
+		for (let i = 0; i < last;) {
+			let best = i + 1;
+			for (let j = i + 2, misses = 0; j <= last && misses < 12; j++) if (fits(i, j)) { best = j; misses = 0; } else misses++;
+			kept.push(path[best]);
+			i = best;
+		}
+		// The other three, turned: as far from this one as they were.
+		const gap = (a: Point[], b: Point[]) => Math.min(...open(a).map(s => Math.min(...open(b).map(t => segmentToSegment(s, t)))));
+		const turned = [1, 2, 3].map(q => kept.map(p => turn(p, q)));
+		if (turned.every((t, k) => gap(kept, t) >= Math.min(clear, gap(path, out[x + k + 1])) - 1e-6))
+			[kept, ...turned].forEach((t, q) => out[x + q] = t);
+	}
+	return out;
+}
+
 /**
  * The legs of a circle of `radius` on `strips` strips drawn by `pattern`:
  * adds the board's visible lines, the chains' visible stretches and the hidden
@@ -387,14 +525,31 @@ export function completionLegs(edges: Edge[], ring: Ring, strips: number, radius
 		out.push(stretch.at(-1)!);
 		return out.filter((p, i) => !i || Math.hypot(p[0] - out[i - 1][0], p[1] - out[i - 1][1]) > 1e-9);
 	};
+	// The hidden cuts, drawn along their stretches and then pulled taut (once
+	// for each circle: every layout of the motif tried draws it again).
+	const known = drawnCuts.get(pattern) ?? drawnCuts.set(pattern, new Map()).get(pattern)!, key = `${strips}:${radius}`;
+	const taut = known.get(key) ?? (() => {
+		const drawn = hidden.map(h => {
+			const height = heightOf(h), stretch = guide(h);
+			const path = offset(stretch, height * spacing * (h.kind === 'f' ? 1 : -1), h.kind === 'f' ? loop : h.square, height / (height + 1));
+			return [stretch[0], ...path, stretch.at(-1)!];
+		});
+		const paper: Point[] = [[-50, -50], [50, -50], [50, 50], [-50, 50]];
+		const pulled = tighten(drawn, hidden.map(heightOf), [loop, paper], hidden.map(h => h.kind === 'f' ? 'centre' : h.square!), spacing, radius);
+		if (known.size > 32) known.clear();
+		known.set(key, pulled);
+		return pulled;
+	})();
 	// The hidden cuts across the white circle, for the spokes to pass under.
 	const across: Point[] = [];
-	for (const h of hidden) {
-		const height = heightOf(h), stretch = guide(h);
-		const path = offset(stretch, height * spacing * (h.kind === 'f' ? 1 : -1), h.kind === 'f' ? loop : h.square, height / (height + 1));
-		if (h.kind === 'f') across.push(...path);
-		add(edges, [stretch[0], ...path, stretch.at(-1)!].map(toSheet), 'AB', 'shared');
-	}
+	hidden.forEach((h, x) => {
+		// Every half unit along it: pulled taut, a cut has few points.
+		if (h.kind === 'f') taut[x].slice(1).forEach((q, i) => {
+			const p = taut[x][i], n = Math.ceil(Math.hypot(q[0] - p[0], q[1] - p[1]) / .5);
+			for (let k = i ? 0 : 1; k < n; k++) across.push([p[0] + (q[0] - p[0]) * k / n, p[1] + (q[1] - p[1]) * k / n]);
+		});
+		add(edges, taut[x].map(toSheet), 'AB', 'shared');
+	});
 	// Visible stretches: each chain between its switch points, the sheets
 	// alternating from its first (swapped every quarter turn).
 	const swap = (f: 'A' | 'B', q: number): 'A' | 'B' => q % 2 ? (f === 'A' ? 'B' : 'A') : f;
@@ -474,10 +629,36 @@ export function completionLegs(edges: Edge[], ring: Ring, strips: number, radius
 		const under = Math.min(Infinity, ...across.filter(p => swept(a0, delta, Math.atan2(p[1], p[0]))).map(p => Math.hypot(...p))) - spacing;
 		const reach = Math.max(Math.min(around, under) - (levels.get(`${side}:${index}`) ?? 0) * spacing, Math.hypot(...start));
 		const path: Point[] = Array.from({ length: steps + 1 }, (_, t) => { const a = a0 + delta * t / steps; return [reach * Math.cos(a), reach * Math.sin(a)]; });
-		return [...path, target].map(toSheet);
+		// With no other spoke's gate or switch point in its turn, straight out
+		// to the switch point once that keeps it clear, no nearer the motif.
+		const crossed = !turns || turns.some(t => t.key !== `${side}:${index}` &&
+			[t.a0, Math.atan2(t.target[1], t.target[0])].some(angle => swept(a0, delta, angle)));
+		return (crossed ? [...path, target] : straighten([...path, target], reach)).map(toSheet);
 	};
+	// The hidden cuts and the boundary, for the spokes to keep clear of.
+	let cutsNear: ReturnType<typeof nearness> | undefined, wallsNear: ReturnType<typeof nearness> | undefined;
+	const straighten = (path: Point[], low: number): Point[] => {
+		const cuts = cutsNear ??= nearness(taut.flatMap(p => p.slice(1).map((q, i): Segment => [p[i], q])));
+		const walls = wallsNear ??= nearness(loop.map((p, i): Segment => [p, loop[(i + 1) % loop.length]]));
+		const last = path.length - 1, target = path[last], out = norm(target);
+		// Out to the switch point as near the cuts beside it as the last stretch was.
+		const end = cuts([path[last - 1], target], spacing);
+		const fits = (a: Point, length: number, u: Point) => {
+			if (u[0] * out[0] + u[1] * out[1] < Math.cos(SLANT) || pointToSegment([0, 0], [a, target]) < low - 1e-6) return false;
+			const at = (t: number): Point => [a[0] + u[0] * t, a[1] + u[1] * t];
+			const reach = Math.min(length, 2 * (spacing - end)), zone = Math.min(length, spacing / Math.cos(SLANT));
+			return cuts([a, at(length - reach)], spacing) >= spacing - 1e-6 && cuts([at(length - reach), target], end) >= end - 1e-6
+				&& walls([a, at(length - zone)], spacing) >= spacing - 1e-6 && walls([at(length - zone), at(length - .1)], .05) >= .05;
+		};
+		for (let i = 0; i < last - 1; i++) {
+			const a = path[i], length = Math.hypot(target[0] - a[0], target[1] - a[1]);
+			if (fits(a, length, [(target[0] - a[0]) / length, (target[1] - a[1]) / length])) return [...path.slice(0, i + 1), target];
+		}
+		return path;
+	};
+	let turns: (ReturnType<typeof spokeOf> & { key: string })[] | undefined;
 	legs.prepare = (all: { side: number; index: number; from: Point }[]) => {
-		const turns = all.map(g => ({ key: `${g.side}:${g.index}`, ...spokeOf(g.side, g.index, g.from) }));
+		turns = all.map(g => ({ key: `${g.side}:${g.index}`, ...spokeOf(g.side, g.index, g.from) }));
 		for (let round = 0; round < turns.length; round++)
 			for (const s of turns) for (const t of turns)
 				if (s !== t && swept(s.a0, s.delta, t.a0) && Math.abs(turnAngle(t.a0 - s.a0)) > 1e-9)

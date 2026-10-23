@@ -1,5 +1,66 @@
 # Generator robustness results
 
+## The board circle's completions, pulled taut
+
+Where the board circle keeps every line past the junctions (seven strips at
+87–91%, nine at 82–91%, and the motifs kept whole on five strips at 86–94%,
+seven at 78–86% and nine at 75–77%), its hidden cuts were drawn along the
+stretch of the circle's edge each cuts off. Round every white square outside
+the circle they passed they went three sides, boxes within boxes, and the
+templates looked "really quite crazy" (the star on nine strips at 90%: 627
+corners over 25°, both sheets).
+
+Each hidden cut is now pulled taut once drawn (`tighten` in
+`boardCompletion.ts`). It keeps its ends and as few of its points as leave it
+as far from everything else as it was. It crosses a white or red square
+straight, leaves its switch point no more than 40° from straight in, and comes
+no nearer the centre at any angle than the drawn cuts came there, or than a
+spacing inside the circle. A spoke with no other spoke's gate or switch point in
+its turn runs straight out to its switch point once that keeps clear.
+
+| Pattern (middle of its range) | Hidden cuts | Corners before | after | Length before | after |
+|---|---|---|---|---|---|
+| 7 strips, 44.3 | 28 | 108 | 12 | 515 | 405 |
+| 9 strips, 34.2 | 28 | 124 | 20 | 405 | 319 |
+| 9 strips, 36.5 | 20 | 64 | 28 | 343 | 308 |
+| 9 strips, 40.6 | 32 | 88 | 40 | 591 | 474 |
+| 9 strips, 43.2 | 40 | 192 | 52 | 957 | 678 |
+| whole, 5 strips, 45.7 | 12 | 48 | 8 | 349 | 259 |
+| whole, 7 strips, 32.7 | 12 | 52 | 8 | 242 | 186 |
+| whole, 7 strips, 38.1 | 20 | 76 | 32 | 461 | 380 |
+| whole, 9 strips, 25.4 | 12 | 52 | 8 | 187 | 145 |
+
+At each pattern's ends and middle, no two hidden cuts come nearer than before.
+Whole hearts, both sheets:
+
+| Heart | Corners before | after |
+|---|---|---|
+| star, 7 strips, 88% | 484 | 248 |
+| star, 9 strips, 82% | 450 | 246 |
+| star, 9 strips, 90% | 627 | 401 |
+| heart, 9 strips, 90% | 612 | 386 |
+| tree (kept whole), 5 strips, 90% | 206 | 110 |
+
+The 40° limit is what keeps the hard-to-cut flags as they were: at 50° the
+star and the heart turned hard to cut on nine strips at 88% (one sheet's paper
+comes to a 40° tip beside the switch point). Letting a cut turn anywhere along
+its first stretch made two more hard and saved nothing. Bounding the depth by
+the drawn cuts' at each angle alone (outside the circle where none went in)
+kept most corners (7 strips: 68 instead of 12).
+
+The patterns themselves were already the simplest of their kind: a search
+over the same exact model for the completion whose hidden cuts enclose the
+fewest switch points (`SPAN=1` in `tmp/claude/weave/cpsat.py`) returns the
+nine-strip pattern in use at 42.7 unchanged, and another of the same span for
+seven strips. With the fewest switch points the crossings allow, what is left
+is the number of cuts the circle needs there.
+
+Over the 49 featured motifs at the sizes these patterns draw (five strips at
+86–94%, seven at 78–91%, nine at 75–91%; 1127 hearts), 776 have new cuts and
+351 are unchanged. One changes status: the candy cane on nine strips at 90%,
+hard to cut before, is now clean. No heart turns hard or refused, none keeps a
+different size, and the time is the same (2479 s before, 2487 s after).
+
 ## Every motif file on the rays frame
 
 At 70% the rays frame cuts 2623 of the 2668 motif files cleanly; 20 are hard
