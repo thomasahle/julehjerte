@@ -2578,12 +2578,10 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// motif shrink a little, and then the circle grow a little.
 		const nearby = [size + 1.5, size + 3].map(other => Math.min(mode[1], other))
 			.filter(other => other - size > .5 && boardLines(strips).every(line => Math.abs(other - line) > .1));
-		// On five strips or three, of the first few working cuts, the one whose
-		// paper holds best, then with the fewest tips (`cutsBetter`): the
-		// attempts differ only in the invisible partition, so the picture
-		// stays. Tips first would leave the star at 73% needing a print 170 mm
-		// wide rather than 140.
-		const ranked = strips <= 5;
+		// Of the first few working cuts, the one whose paper holds best, then
+		// with the fewest tips (`cutsBetter`): the attempts differ only in the
+		// invisible partition, so the picture stays. Tips first would leave the
+		// star at 73% on five strips needing a print 170 mm wide rather than 140.
 		let last: unknown;
 		for (const attempts of [sizes(mode, size, placement, undefined, whole, true), [.85, .7].flatMap(factor => sizes(mode, size, placement, fills(size, placement, factor, gap, whole), whole, true)),
 			nearby.flatMap(other => sizes(mode, other, placement, undefined, whole, true))]) {
@@ -2592,7 +2590,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			// Where the best of them tears, those that worked again with the
 			// motif's connections kept as far from it as paper holds printed.
 			const worked: typeof attempts = [];
-			for (const tried of ranked ? [attempts, worked] : [attempts]) {
+			for (const tried of [attempts, worked]) {
 				if (tried === worked && (!best || !paperTears(exported(best).design))) break;
 				let working = 0;
 				for (const attempt of tried === worked ? worked.map(({ layout, ...attempt }) => ({ ...attempt, layout: { ...layout, margin: PAPER_NECK_MM / PRINT_WIDTH_MM * 100 } })) : tried) try {
@@ -2603,7 +2601,6 @@ function generateUsingRecipes(request: GeneratorRequest,
 					if (rawTips && best && !paperTears(exported(best).design) && !fewerCutTips(tips, rawTips)) continue;
 					rejected.push({ construction, recipe: 'nested' });
 					const candidate = finish(construction, 'nested');
-					if (!ranked) return kept(candidate);
 					if (tried !== worked) worked.push(attempt);
 					if (!best || cutsBetter(candidate, best, true)) [best, rawTips] = [candidate, tips];
 					if (!paperTears(exported(best).design) && !cutTipCounts(exported(best).design)[1] || ++working === 4) break;

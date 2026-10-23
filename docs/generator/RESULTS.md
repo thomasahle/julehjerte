@@ -1,5 +1,16 @@
 # Generator robustness results
 
+## Every board's hearts ranked by their paper
+
+The ranking of the first working cuts, and their retry with connections kept
+off by paper's width, now run on seven and nine strips too. Over the 49
+featured motifs at 72/80/88/90/100% (measured by the board's other session):
+on seven strips hearts that tear at 80 mm fall from 214 to 197 and places to
+tear from 3619 to 3408; on nine from 237 to 231 and 6825 to 6524; 169 hearts
+are better, none worse, none changes status. Generating takes about 30% longer.
+A nine-strip strip printed 80 mm wide is 8.9 mm and the cutting clearance
+about 1 mm, so most of those tear whatever the routing.
+
 ## Three-strip board hearts ranked by their paper
 
 The same ranking of the first working cuts, and their retry with connections
