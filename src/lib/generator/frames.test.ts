@@ -374,10 +374,12 @@ describe('frames from real hearts', () => {
      for (const v of [...square(p0), ...square(p3)]) expect(Math.abs(v - Math.round(v)), `${board}`).toBeLessThan(1e-6);
   }
  });
- slow('keeps a motif whose sides cannot meet the cells beside it on three strips', () => {
-  const { design, layout } = generate({ mode: 'figure', name: 'Gift', contours: gift.contours as Ring[], colors, style: 'squares', board: 5 });
-  expect(design.gridSize).toEqual({ x: 3, y: 3 });
-  expect(squareChoices(5)[layout!.alternative].board).toBe(3);
+ slow('keeps the strips asked for a motif whose sides cannot meet the cells beside it, hard to cut', () => {
+  // On three strips until the strips asked for were kept before changing them (1ca80163).
+  const { design, layout, hardToCut } = generate({ mode: 'figure', name: 'Gift', contours: gift.contours as Ring[], colors, style: 'squares', board: 5 });
+  expect(design.gridSize).toEqual({ x: 5, y: 5 });
+  expect(squareChoices(5)[layout!.alternative].board).toBe(5);
+  expect(hardToCut).toBeDefined();
  });
  slow('lays the circle on a regular five-strip board, every square outside it equal', () => {
   for (const [name, motif] of Object.entries({ star, tree, cat, gift })) {
@@ -870,11 +872,13 @@ describe('frames from real hearts', () => {
    expect(swapped(design).corners, `${strips}`).toBe(true);
   }
  }, 30000);
- slow('shows a motif the strips asked for cannot weave at all on the nearest that can', () => {
-  // No sheets keep every strip whole for the snowflake on three strips
-  // below 80%; four can.
-  const { design } = generate({ mode: 'figure', name: 'Snow', contours: snow.contours as Ring[], colors, style: 'strips', board: 3 });
-  expect(design.gridSize).toEqual({ x: 4, y: 4 });
+ slow('keeps the figure in the checks on the three strips asked, hard to cut', () => {
+  // The polar star, quickly. The snowflake stays on three too since hidden cuts
+  // that only come too close are kept as a last resort (78eb9654; it took four
+  // before), but takes five seconds.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Polar star', contours: polarStar.contours as Ring[], colors, style: 'strips', board: 3 });
+  expect(design.gridSize).toEqual({ x: 3, y: 3 });
+  expect(hardToCut).toBeDefined();
  });
  it('reaches a counter alone in its square by its shortest hidden cuts', () => {
   // The cuts from their faces' sides leave islands of the bicycle fewer than
