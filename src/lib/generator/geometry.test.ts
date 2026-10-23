@@ -27,6 +27,9 @@ import {
 	parseHeartFromSVG
 } from '$lib/utils/heartDesign';
 import { rasterizeDesign } from '$lib/paint/rasterize';
+import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
+import { gridClearanceScale } from '$lib/geometry/clearance';
+import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { serializeTemplateToSVG } from '$lib/utils/templateSvg';
 import { renderHeartSvgMarkup } from '$lib/rendering/heartSvg';
 
@@ -36,6 +39,7 @@ import tree from '../../../static/generator/motifs/tree.json';
 import heart from '../../../static/generator/motifs/heart.json';
 import flower from '../../../static/generator/motifs/flower.json';
 import cat from '../../../static/generator/motifs/ph-cat.json';
+import diamond from '../../../static/generator/motifs/diamond.json';
 import { shippedFont } from './fonts.test-helpers';
 
 const [nunito, bree, oswald, cinzel, kalam, righteous] = await Promise.all(['nunito', 'breeserif', 'oswald', 'cinzel', 'kalam', 'righteous'].map(shippedFont));
@@ -72,6 +76,21 @@ describe('constructive figure generator', () => {
 		expect(ray(ring, [-2, 5], 0).point).toEqual([0, 5]);
 		expect(ray(ring, [0, 5], 0).point).toEqual([10, 5]);
 		expect(() => ray(ring, [0, 5], Math.PI)).toThrow('No visible contour port');
+	});
+	it('meets a motif at its point where a ray lands beside one, so the default heart opens with no red cut', () => {
+		// The default star's upper ray met it 0.9 units below a point: the cut ran
+		// up to the point and back, the paper beside the ray a needle 1.49 units
+		// across where Tegn asks 1.5 (its red cut).
+		for (const style of ['rays', 'check'] as const) {
+			const { design } = figure(star.contours as Ring[], 'circle', style);
+			const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(design.gridSize.x, design.gridSize.y));
+			expect(findFingersWithIssues(design.fingers, margin).size, style).toBe(0);
+		}
+	});
+	it('meets a motif beside its first corner where a ray lands at the end of its last side', () => {
+		// The diamond at half size: a ray hits its ring at index n, past the last corner.
+		for (const style of ['rays', 'check'] as const)
+			expect(generate({ mode: 'figure', name: 'Figure', contours: diamond.contours as Ring[], colors, frame: 'circle', style, scale: .5 }).hardToCut, style).toBeFalsy();
 	});
 	it('distinguishes a touching counter from separate touching silhouettes', () => {
 		const square: Ring = [[0, 0], [10, 0], [10, 10], [0, 10]];

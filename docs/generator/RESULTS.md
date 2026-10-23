@@ -1546,6 +1546,18 @@ and ❄ make hearts; Cinzel's €, Lobster's ñ and J, and 🎄 are hard to cut;
 雪 is refused by name. The fonts' own @ is slow in "Store bogstaver" (69 s
 alone; @%€ is refused after 208 s), quick on equal squares (3 s).
 
+## Rays meet a motif's point rather than beside it
+
+The design page's first heart, the star on rays, opened in Tegn with a red cut:
+the upper ray met the star 0.9 units below one of its points, so the cut ran up
+to the point and back, and the paper beside the ray was a needle 1.49 units
+across where the editor asks 1.5. A ray that meets a single-outline motif within
+1.5 units of a corner of at most a right angle now meets the corner, where the
+straight way there crosses nothing (`pointedPort`). Over the sweep's 60 figure
+hearts 54 are bit for bit the same; the star in rays, the checks and the
+sunburst lose their red cut, the nisse's cuts move with the same picture. Of the
+49 featured motifs in the default frame only the star and the nisse change.
+
 ## Kalam and Cinzel simplified as the build simplified them
 
 Grown from the font files, Kalam and Cinzel were simplified with Clipper's

@@ -512,6 +512,54 @@ export const uprightToSheet = (p: Point): Point => [
 	50 + (p[0] + p[1]) * Math.SQRT1_2,
 	50 + (p[1] - p[0]) * Math.SQRT1_2
 ];
+/** How far along the outline, in the square's hundredths, a ray that meets
+ * the motif beside one of its points moves to the point: the editor's room
+ * between cuts (HEART_CLEARANCE_UNITS). */
+const POINT_REACH = 1.5;
+
+/**
+ * A ray's port moved to a point of the motif beside it: an outline corner of
+ * at most a right angle within POINT_REACH along it. Met just beside its point,
+ * the cut runs up to the point and back, the paper between it and the ray a
+ * needle (the star's on the default heart, 1.49 units across where 1.5 are
+ * asked); met at the point, the ray parts its two sides. Kept where the
+ * straight way to the point would cross the outline.
+ */
+function pointedPort(r: Ring, port: Port, from: Point): Port {
+	const n = r.length, turn = Math.sign(area(r));
+	let best: Port | undefined, nearest = POINT_REACH;
+	for (const direction of [-1, 1]) {
+		// A port at the very end of the last side has index n: the first corner.
+		let i = (direction < 0 ? Math.floor(port.index) : Math.ceil(port.index)) % n, along = distance(port.point, r[i]);
+		for (let steps = 0; steps < n && along <= nearest; steps++) {
+			const previous = r[(i + n - 1) % n], next = r[(i + 1) % n], a = sub(r[i], previous), b = sub(next, r[i]);
+			// A convex corner of at most a right angle: the outline turns by at least one.
+			if (Math.sign(cross(a, b)) === turn && dot(a, b) <= 0) {
+				best = { point: r[i], index: i };
+				nearest = along;
+				break;
+			}
+			const j = (i + n + direction) % n;
+			along += distance(r[i], r[j]);
+			i = j;
+		}
+	}
+	if (!best) return port;
+	// The way from the gate to the point crosses no side of the outline but the two at the point.
+	for (let k = 0; k < n; k++) {
+		if (k === best.index || (k + 1) % n === best.index) continue;
+		if (segmentsCross(from, best.point, r[k], r[(k + 1) % n])) return port;
+	}
+	return best;
+}
+
+function segmentsCross(p: Point, q: Point, a: Point, b: Point): boolean {
+	const d = cross(sub(q, p), sub(b, a));
+	if (Math.abs(d) < EPS) return false;
+	const t = cross(sub(a, p), sub(b, a)) / d, u = cross(sub(a, p), sub(q, p)) / d;
+	return t > EPS && t < 1 - EPS && u > -EPS && u < 1 + EPS;
+}
+
 export function generateFigure(
 	rings: Ring[],
 	shape: Frame = 'circle',
@@ -536,7 +584,7 @@ export function generateFigure(
 	if (nodes.length === 1 && !nodes[0].children.length) {
 		const gates = outerFrame(edges, frame, [0, 1, 2, 3], style),
 			r = nodes[0].ring;
-		const ports = gates.map((g) => ray(r, g.point, g.angle + Math.PI));
+		const ports = gates.map((g) => pointedPort(r, ray(r, g.point, g.angle + Math.PI), g.point));
 		if (!cyclic(r, ports))
 			throw new ConstructionError(
 				'topology',
