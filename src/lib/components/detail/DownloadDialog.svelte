@@ -34,6 +34,7 @@
 	import { CloseIcon, DownloadIcon } from '$lib/components/icons';
 	import { t, type Language } from '$lib/i18n';
 	import type { HeartDesign } from '$lib/types/heart';
+	import { papersAt, type PaperReport } from '$lib/geometry/paperNecks';
 	import {
 		trackHeartDownload,
 		trackLaserDownload,
@@ -137,6 +138,36 @@
 	let customWidthMm = $state<number>(SHEETS.A4.widthMm);
 	let customHeightMm = $state<number>(SHEETS.A4.heightMm);
 	let previewImage = $state(defaults.previewImage);
+	/** Whether every heart's paper holds at the width its templates come out
+	 * ($lib/geometry/paperNecks), as the design page says of its heart: in a
+	 * worker once the width has settled, and the narrowest width where all would. */
+	let paper = $state<{ widthMm: number; loose: boolean; holdsMm: number | null } | null>(null);
+	const paperFault = $derived(paper?.widthMm === widthMm ? paper : null);
+	$effect(() => {
+		if (!open || typeof Worker === 'undefined') return;
+		const width = widthMm, list = designs.map((d) => $state.snapshot(d) as HeartDesign);
+		let live = true,
+			checker: Worker | null = null;
+		const timer = setTimeout(() => {
+			const reports: PaperReport[] = [];
+			const ask = () => checker!.postMessage({ design: list[reports.length], widthMm: width, maxMm: MAX_WIDTH_MM });
+			checker = new Worker(new URL('../../generator/paperWorker.ts', import.meta.url), { type: 'module' });
+			checker.onmessage = (e: MessageEvent<PaperReport>) => {
+				reports.push(e.data);
+				if (reports.length < list.length) return ask();
+				checker?.terminate();
+				if (!live) return;
+				paper = papersAt(reports);
+			};
+			checker.onerror = () => checker?.terminate();
+			ask();
+		}, 400);
+		return () => {
+			live = false;
+			clearTimeout(timer);
+			checker?.terminate();
+		};
+	});
 	/** The last download that went wrong, cleared by the next that works. */
 	let failure = $state<DownloadMode | null>(null);
 	/**
@@ -580,6 +611,19 @@
 					{#if derivedLine}
 						<p class="hint" data-testid="download-derived">{derivedLine}</p>
 					{/if}
+					{#if paperFault}
+						<p class="hint warn" role="status" data-testid="download-paper-note">
+							{paperFault.loose ? t('generatorPaperLoose', lang) : t('generatorPaperThin', lang, { width: String(paperFault.widthMm) })}
+							{#if paperFault.holdsMm}{@const width = paperFault.holdsMm}<button
+									type="button"
+									class="paper-wider"
+									onclick={() => {
+										delete drafts.width;
+										assign('width', width);
+									}}>{t('downloadPaperWider', lang, { width: String(width) })}</button
+								>{/if}
+						</p>
+					{/if}
 				</div>
 
 				{#if mode === 'laser'}
@@ -824,6 +868,18 @@
 	.warn {
 		color: var(--red);
 		font-weight: 600;
+	}
+
+	.paper-wider {
+		display: block;
+		margin-top: 4px;
+		padding: 0;
+		border: 0;
+		background: none;
+		color: inherit;
+		font: inherit;
+		text-decoration: underline;
+		cursor: pointer;
 	}
 
 	.number {

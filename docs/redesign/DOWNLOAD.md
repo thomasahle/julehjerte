@@ -31,6 +31,15 @@ dialog does today. Settings, top to bottom:
    whole millimetre is a fine width). In Printer mode the derived
    line gives the strip width and the **folded** template's height
    (`templateHeight` scaled); in Laser mode the unfolded height, as now.
+   Below it, where a heart's paper would tear at that width (`$lib/geometry/paperNecks`,
+   checked in the design page's paper worker 400 ms after the width settles,
+   every heart of a selection; `papersAt`), the design page's note in red
+   (`generatorPaperThin`, or `generatorPaperLoose` where paper comes loose)
+   and, where one exists up to 200 mm, a link that sets the narrowest width
+   where all hold (`downloadPaperWider`, "Brug 90 mm, så holder papiret").
+   Six gallery hearts tear at 80 mm (23 Oct 2026): balls, davidsstjerne-circ,
+   venus, fejlternet, lilje1 hold at 90–140 mm; kogle's outer scales touch
+   the paper's edge, so its triangles there come loose at any width.
 3. **Antal hjerter** — existing `laserHearts` and `laserPiecesNote` ("Et hjerte
    er to stykker."), both modes. *As built: laser mode only; the printer PDF
    always gets one heart per design (`hearts: 1`).* A heart is two pieces in both: the printer PDF

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { holdingWidth, paperFaults, paperHolds, paperReport } from './paperNecks';
+import { holdingWidth, paperFaults, paperHolds, paperReport, papersAt } from './paperNecks';
 import { bentHeart as heart } from './paperNecks.test-helpers';
 
 describe('paper that holds once cut', () => {
@@ -33,5 +33,13 @@ describe('paper that holds once cut', () => {
 		expect(paperReport(heart(1), 80, 200)).toEqual({ widthMm: 80, faults: { weak: 1, loose: 0 }, holdsMm: holdingWidth(heart(1)) });
 		expect(paperReport(heart(1), 80, 120).holdsMm).toBeNull();
 		expect(paperReport(heart(0), 80, 200)).toMatchObject({ faults: { loose: 1 }, holdsMm: null });
+	});
+
+	it("sums up several hearts' paper at one width: the widest any needs, and none where one never holds", () => {
+		const plain = paperReport(heart(), 80, 200), thin = paperReport(heart(1), 80, 200), loose = paperReport(heart(0), 80, 200);
+		expect(papersAt([plain, plain])).toBeNull();
+		expect(papersAt([plain, thin])).toEqual({ widthMm: 80, loose: false, holdsMm: thin.holdsMm });
+		expect(papersAt([thin, { ...thin, holdsMm: 190 }])!.holdsMm).toBe(190);
+		expect(papersAt([thin, loose])).toEqual({ widthMm: 80, loose: true, holdsMm: null });
 	});
 });
