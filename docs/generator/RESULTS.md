@@ -1,5 +1,39 @@
 # Generator robustness results
 
+## Seams beside the motif's corners
+
+The star was hard to cut on the board circle at most sizes past 80% (nine
+strips at 80–90% and 100%, seven at 83–90%, 96% and 100%, five at 96% and
+100%). Its top tip lies 0.0056 of the motif from the seam through its
+centre. At the board's scale that is a quarter of a unit, close enough for the
+seam to snap onto the tip ("Invalid A degree" at the tip), so every division
+through the centre failed. The seams through the star's lower notch run
+straight into the same tip and halve it into two 18° slivers of paper, too
+thin to cut.
+
+A seam that comes within a fiftieth of the motif of a corner of its outline is
+now tried that far beside the corner, either way. These moved seams are a last
+resort. They are tried only when building at the size itself, after every
+other division. They take no part in deciding whether the motif is divided or
+where it sits; when they did, the deer on nine strips was divided from 72%,
+hard to cut there, instead of kept whole.
+
+Over the corpus on five, seven and nine strips at ten sizes from 72% to 100%
+(1560 hearts):
+
+- 12 hearts went from hard to clean: the star at nine of them, and ph-dog at
+  96% on every board.
+- 5 hearts of the star stay hard (nine strips at 83% and 100%, seven at 88%,
+  90% and 100%).
+- Every other heart is unchanged bit for bit.
+
+The star's remaining hard sizes at 83% on nine strips and 90% on seven come
+from the completion router. There, a spoke runs along its gate's own circle,
+with no room to step out under the deep cuts across the circle. It meets the
+gate's connection to the motif at 34°, a wedge too thin to cut. A gate is
+placed in the direction of its panel's side, not of the port it serves. That
+remains open.
+
 ## Motifs kept whole grow on seven and nine strips too
 
 The five-strip completion about the whole motif also fits two finer boards

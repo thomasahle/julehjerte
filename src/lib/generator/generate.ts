@@ -1972,11 +1972,27 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// them like a letter's dots and islands. These come after every other
 		// division, so a motif that divides without them keeps its cuts.
 		const islands = { ...compound, boundaryIslands: true, contourApproaches: true, guardedAttachments: true, filled: true, guardSeams: true };
-		const layouts = (range: readonly [number, number], { centre }: Placement, whole = false) => {
+		// A seam through a corner of the outline, or nearly (a star's tip
+		// straight above its centre), cannot be built, or halves the tip into
+		// slivers: at the size itself, after every other division, it is tried
+		// a fiftieth of the motif beside the corner, either way. A last resort,
+		// it decides nothing below (whether the motif is divided, where it
+		// sits).
+		const near = .02 * box, corners = contours.flat();
+		const beside = (centre: Point, junction: Point): Point[] => ([0, 1] as const).flatMap(axis => {
+			const at = centre[axis] + junction[axis], corner = corners.reduce((best, p) => Math.abs(p[axis] - at) < Math.abs(best - at) ? p[axis] : best, Infinity);
+			if (Math.abs(corner - at) >= near) return [];
+			return [-1, 1].map(side => corner + side * near - centre[axis])
+				.filter(moved => corners.every(p => Math.abs(p[axis] - centre[axis] - moved) >= near / 2))
+				.map((moved): Point => axis ? [junction[0], moved] : [moved, junction[1]]);
+		});
+		const layouts = (range: readonly [number, number], { centre }: Placement, whole = false, atSize = false) => {
 			if (whole || panels(range) === 1) return [[{}, compound]];
 			const junctions = background.map((p): Point => [p[0] - centre[0], p[1] - centre[1]]);
+			const moved = atSize ? [[0, 0] as Point, ...junctions].flatMap(junction => beside(centre, junction)) : [];
 			return [[{ columns: 2, slices: 2 }, { ...compound, columns: 2, slices: 2 }, ...junctions.map(junction => ({ columns: 2, slices: 2, junction }))],
-				[undefined, ...junctions].map(junction => ({ ...islands, columns: 2, slices: 2, ...junction && { junction } }))];
+				[undefined, ...junctions].map(junction => ({ ...islands, columns: 2, slices: 2, ...junction && { junction } })),
+				...moved.length ? [moved.map(junction => ({ columns: 2, slices: 2, junction }))] : []];
 		};
 		// A circle wider than the paper leaves the motif no more room than the paper.
 		const fills = (radius: number, { reach }: Placement, factor = 1, space = gap, whole = false) =>
@@ -1987,12 +2003,12 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// inside of move in, see `generateTextGrid`.)
 		// Where the circle covers the middle lines whole, only the outer ones
 		// remain (see `boardRanges`).
-		const sizes = (range: readonly [number, number], radius: number, placement = boxed, given?: number, whole = false) => {
+		const sizes = (range: readonly [number, number], radius: number, placement = boxed, given?: number, whole = false, atSize = false) => {
 			const scale = given ?? fills(radius, placement, 1, gap, whole);
 			// A motif kept whole keeps every line (see `WHOLE_PATTERNS`).
 			const lines = whole ? boardLines(strips) : boardRangeLines(range, strips), covered = lines.length < boardLines(strips).length;
 			const completion = whole ? boardWholePattern(radius, strips) : boardRangePattern(range);
-			return layouts(range, placement, whole).flatMap(list => [.22, .05].flatMap(padding =>
+			return layouts(range, placement, whole, atSize).flatMap(list => [.22, .05].flatMap(padding =>
 				list.map(layout => ({ radius, scale, layout: { padding, ...layout, ...placement.enclosed && { centre: placement.centre }, ...covered && { lines }, ...completion && { completion } } }))));
 		};
 		const build = ({ radius, scale, layout }: ReturnType<typeof sizes>[number]): Construction => {
@@ -2078,8 +2094,8 @@ function generateUsingRecipes(request: GeneratorRequest,
 		const nearby = [size + 1.5, size + 3].map(other => Math.min(mode[1], other))
 			.filter(other => other - size > .5 && boardLines(strips).every(line => Math.abs(other - line) > .1));
 		let last: unknown;
-		for (const attempts of [sizes(mode, size, placement, undefined, whole), [.85, .7].flatMap(factor => sizes(mode, size, placement, fills(size, placement, factor, gap, whole), whole)),
-			nearby.flatMap(other => sizes(mode, other, placement, undefined, whole))]) {
+		for (const attempts of [sizes(mode, size, placement, undefined, whole, true), [.85, .7].flatMap(factor => sizes(mode, size, placement, fills(size, placement, factor, gap, whole), whole, true)),
+			nearby.flatMap(other => sizes(mode, other, placement, undefined, whole, true))]) {
 			const rejected: Parameters<typeof hardToCutResult>[1] = [];
 			for (const attempt of attempts) try {
 				const construction = build(attempt);

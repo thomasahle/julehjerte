@@ -978,7 +978,11 @@ lower left, which must cross inside the circle: the panels meet at the motif's c
 a point of background near it with paper in every panel around it (a star's lower notch, a cat's
 eye), so their invisible seams cross its paper but not each other. A panel holding separate pieces
 of the motif (a deer's legs) joins them like a letter's dots and islands; that is tried after every
-other division, so a motif that divides without it keeps its cuts. That is the one change of
+other division, so a motif that divides without it keeps its cuts. A seam that would run through a
+corner of the outline, or nearly (the star's top tip lies just beside the seam through its centre),
+cannot be built or halves the tip into slivers; at the size itself, after everything else, it is
+tried a fiftieth of the motif beside the corner, either way. As a last resort it decides nothing
+else: whether the motif is divided and where it sits stay as they were. That is the one change of
 construction, between 70% and 71%. Whether a motif can be built each way is decided once, so a
 solid motif (the bell, the tree), which cannot be divided so, stays at the touching circle above
 70%, and one that cannot be kept whole (the gift) takes the large circle's smallest size below it.

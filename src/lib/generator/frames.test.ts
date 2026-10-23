@@ -708,6 +708,14 @@ describe('frames from real hearts', () => {
   expect(full.point).toBeGreaterThan(180);
   expect(full.area).toBeGreaterThan(middle.area);
  }, 30000);
+ it('moves a seam that would run through a corner of the motif beside it', () => {
+  // The star's top tip lies nearly on the seam through its centre, which
+  // then cannot be built, and the seam through its lower notch halves the
+  // tip into slivers: moved a fiftieth of the motif beside the tip, the seam
+  // cuts cleanly.
+  for (const [board, scale] of [[9, .8], [5, 1]])
+   expect(generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', board, scale }).hardToCut, `${board} ${scale}`).toBeUndefined();
+ });
  it('keeps a motif that cannot be divided whole past the touching circle, and says how far it went', () => {
   // A solid motif has no background point for four panels to meet at: it
   // stays whole, the outer lines following the circle, until its gates near
