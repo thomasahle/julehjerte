@@ -48,6 +48,7 @@ import columnsPlus from '../../../static/generator/motifs/ph-columns-plus-left.j
 import peace from '../../../static/generator/motifs/ph-peace.json';
 import copyPlus from '../../../static/generator/motifs/tb-copy-plus.json';
 import polarStar from '../../../static/generator/motifs/gi-polar-star.json';
+import dove from '../../../static/generator/motifs/pin-dove.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -589,6 +590,13 @@ describe('frames from real hearts', () => {
     }
    expect(lines.size, `${board}`).toBe(2 * (board - 1));
   }
+ });
+ slow('bends the seams of a motif divided in four where they meet it in a narrow point, rather than calling it hard to cut', () => {
+  // The dove's seams meet its outline at a narrow angle; straight, every
+  // division leaves a sharp tip of paper there.
+  const { hardToCut, scale } = generate({ mode: 'figure', name: 'Dove', contours: dove.contours as Ring[], colors, style: 'board', scale: .72 });
+  expect(hardToCut).toBeUndefined();
+  expect(scale).toBeUndefined();
  });
  slow('keeps the circle the size asks for with much space around the motif, the motif smaller', () => {
   // Space decides how much of the circle the motif fills, not whether it can

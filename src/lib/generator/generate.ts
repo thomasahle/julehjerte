@@ -2131,6 +2131,18 @@ function generateUsingRecipes(request: GeneratorRequest,
 				last = error;
 			}
 			const hard = hardToCutResult(request, rejected, curveFitter);
+			// Shared cuts meeting the motif's outline in a narrow point can bend
+			// to cross it instead (see `curveSharedCuts`), where only that keeps
+			// the heart from being hard to cut.
+			if (hard?.hardToCut) for (const { construction, recipe } of rejected) {
+				const geometry = curveSharedCuts(construction.geometry);
+				if (!geometry) continue;
+				try {
+					return kept(finishConstruction(request, construction, recipe, geometry, curveFitter));
+				} catch (error) {
+					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				}
+			}
 			if (hard) return kept(hard);
 		}
 		// A motif of several pieces, or with islands in its holes, may still

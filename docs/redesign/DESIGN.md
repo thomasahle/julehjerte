@@ -1005,7 +1005,10 @@ construction, between 70% and 71%. Whether a motif can be built each way is deci
 solid motif (the bell, the tree), which cannot be divided so, stays at the touching circle above
 70%, and one that cannot be kept whole (the gift) takes the large circle's smallest size below it.
 Sizes that cannot be cut cleanly keep their size and are shown as hard to cut (the star at 72–76%,
-the cat beyond the touching circle) rather than jumping smaller; only where nothing at all can be
+the cat beyond the touching circle) rather than jumping smaller. Before that, the shared cuts of
+each construction it tried bend where they meet the motif in a narrow point, as other frames' do
+after a refusal (`curveSharedCuts`), and one that then cuts cleanly is kept (the dove divided in
+four, at every size); a heart that cuts cleanly without them keeps its cuts. Only where nothing at all can be
 finished at a size does the motif shrink a little, and then the circle grow a little. The motif's
 cell takes the usual padding, else little, and an outer gate that the circle passes inside of
 moves in to midway between the motif's farthest point and the circle, so the legs stay inside it.

@@ -1,5 +1,26 @@
 # Generator robustness results
 
+## Curved seams before calling a board heart hard to cut
+
+The board circle kept its best hard-to-cut construction as soon as none cut
+cleanly, so the curved-cut retry other frames get after a refusal
+(`curveSharedCuts`: shared cuts meeting the motif in a narrow point bend to
+cross it instead) never ran for it. Divided in four, the dove's seams meet its
+outline at about 40°, a needle of paper at every size. Now, when the
+construction kept would be hard to cut, each one tried is curved and finished
+again, and the first that cuts cleanly is kept. A heart that cuts cleanly
+without them keeps its cuts: the retry comes after the narrowest-spacing check
+that finds some rejected constructions clean after all (a first version before
+it changed the cuts of 11 clean hearts).
+
+Over the 49 featured motifs at 5 strips 72/78/84/90/100%, 7 and 9 strips
+72/80/88/100% (637 hearts), 23 go from hard to clean and the other 614 are
+identical: the dove at every size on every board, the candy and the heart on
+five strips, the squirrel on seven and nine, the julebuk, the wreath and the
+cow. Hearts that stay hard take about 0.7 s more (median 2.1 → 2.8 s). Still
+hard: the nisse and the cow on five strips (a seam squeezing past a boot), the
+star at 98–100% on seven and nine strips (a seam alongside a point).
+
 ## The board circle's completions, pulled taut
 
 Where the board circle keeps every line past the junctions (seven strips at
