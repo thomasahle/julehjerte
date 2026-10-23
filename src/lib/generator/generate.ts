@@ -2117,12 +2117,18 @@ function generateUsingRecipes(request: GeneratorRequest,
 		}) ? { ...boardPlacement(contours, enclosedAlong(request.scale ?? .7)), enclosed: true } : boxed;
 		// The size setting the other construction's circle stands for, and
 		// whether the motif sits on its enclosing circle, for the picture.
-		const kept = (result: GeneratorResult): GeneratorResult => ({
-			...size === radius && (mode === range || whole) ? result : { ...result, scale: boardSetting(size, strips) },
-			...placement.enclosed && { enclosed: true },
-			...whole && { whole: true },
-			...result.design.gridSize.x !== strips && { board: strips }
-		});
+		// A clean heart's shared cuts that meet the motif in a sharp tip of
+		// paper bend to cross it instead, where that leaves fewer such tips and
+		// every strip as wide (see `improveSharedConnections`).
+		const kept = (cut: GeneratorResult): GeneratorResult => {
+			const result = cut.hardToCut ? cut : improveSharedConnections(cut);
+			return {
+				...size === radius && (mode === range || whole) ? result : { ...result, scale: boardSetting(size, strips) },
+				...placement.enclosed && { enclosed: true },
+				...whole && { whole: true },
+				...result.design.gridSize.x !== strips && { board: strips }
+			};
+		};
 		// The circle and the motif keep the sizes the setting gives them, so
 		// both only grow with it: cut cleanly if they can be, else as hard to
 		// cut. Only where nothing at all can be finished at those sizes does the

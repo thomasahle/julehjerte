@@ -1,5 +1,21 @@
 # Generator robustness results
 
+## Fewer sharp tips on the board circle
+
+A clean board heart's shared cuts (seams through the motif, spokes to its
+gates, hidden cuts round the circle) often met the motif's outline at a sharp
+angle, leaving a tip of paper hard to cut with scissors: the star on five
+strips at 85% had five tips under 30° and twelve under 45°. The layered frame
+already bends such cuts to cross the outline instead, keeping the bend only
+where it leaves fewer such tips and the cutting checks still pass
+(`improveSharedConnections`); the board circle now does so for every clean
+heart. Shared cuts are cut alike in both sheets, so the picture is unchanged.
+
+Over the 49 featured motifs on five strips at 72/85/100%, seven and nine at
+80/88/100% and 80/90/100% (441 hearts): tips under 30° fall from 1436 to 709,
+under 45° from 3104 to 1678; 234 hearts have new cuts, none more tips, none a
+different status, and the time rises 1%.
+
 ## Seams crossing the outline square, a finer search
 
 Searching a finer grid (60 steps rather than 40) for up to six such points,
