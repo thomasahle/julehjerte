@@ -165,9 +165,9 @@ describe('DownloadDialog', () => {
 		expect(view.q('.hint')!.textContent).toContain('Print uden tilpasning til siden');
 		expect(view.note()).toBe('1 side');
 		expect(view.button('Hent PDF')).toBeDefined();
-		// The first page: the heart's two folded templates.
+		// The first page: the classic's one folded template, both pieces cut from it.
 		expect(view.q('.preview-sheet svg')!.getAttribute('viewBox')).toBe('0 0 210 297');
-		expect(view.q('.preview-sheet')!.querySelectorAll('g.cut')).toHaveLength(2);
+		expect(view.q('.preview-sheet')!.querySelectorAll('g.cut')).toHaveLength(1);
 		await view.choose('Laserskærer');
 		expect(view.q<HTMLInputElement>('#download-hearts')!.value).toBe('1');
 	});
@@ -221,7 +221,7 @@ describe('DownloadDialog', () => {
 		// The PDF's own size: 28 mm at 300 dpi.
 		expect(prerenderHeartImages).toHaveBeenCalledWith([design], 331);
 		expect(sheet().querySelector('image')!.getAttribute('href')).toBe(PICTURE);
-		expect(sheet().querySelectorAll('use.picture')).toHaveLength(2);
+		expect(sheet().querySelectorAll('use.picture')).toHaveLength(1);
 
 		// Turned off: no picture in the preview either, and no new rendering.
 		view.q<HTMLInputElement>('[data-testid="download-preview-image"]')!.click();
@@ -229,7 +229,7 @@ describe('DownloadDialog', () => {
 		expect(sheet().querySelectorAll('image, use')).toHaveLength(0);
 		view.q<HTMLInputElement>('[data-testid="download-preview-image"]')!.click();
 		await settle();
-		expect(sheet().querySelectorAll('use.picture')).toHaveLength(2);
+		expect(sheet().querySelectorAll('use.picture')).toHaveLength(1);
 		expect(prerenderHeartImages).toHaveBeenCalledTimes(1);
 	});
 
@@ -270,7 +270,8 @@ describe('DownloadDialog', () => {
 	});
 
 	it('says how many pages the PDF takes, and when a template is too big for the sheet', async () => {
-		const view = await render([loadHeart('classic-3x3'), loadHeart('jul'), loadHeart('stjerne')]);
+		// The classic's one template, Jul's two, and the angel's two (its copies' marks differ).
+		const view = await render([loadHeart('classic-3x3'), loadHeart('jul'), loadHeart('stjerne'), loadHeart('angel')]);
 		expect(view.note()).toBe('2 sider');
 		expect(view.q('[data-testid="download-preview-page"]')!.textContent!.trim()).toBe('Side 1 af 2');
 		expect(view.q('.preview-sheet')!.querySelectorAll('g.cut')).toHaveLength(4);
@@ -744,11 +745,10 @@ describe('DownloadDialog', () => {
 			const view = await render(set());
 			expect(view.q('#download-dialog-title')!.textContent!.replace(/\s+/g, ' ').trim()).toBe('Hent skabeloner 2');
 			expect(view.derived()).toBeUndefined();
-			// Classic's one shared template twice (as the single dialog prints it), Jul's two.
-			expect(view.q('.preview-sheet')!.querySelectorAll('g.cut')).toHaveLength(4);
+			// Classic's one shared template once (as the single dialog prints it), Jul's two.
+			expect(view.q('.preview-sheet')!.querySelectorAll('g.cut')).toHaveLength(3);
 			const addresses = [...view.q('.preview-sheet')!.querySelectorAll('text.address')].map((t) => t.textContent);
 			expect(addresses).toEqual([
-				'juleflet.dk/hjerte/classic-3x3',
 				'juleflet.dk/hjerte/classic-3x3',
 				'juleflet.dk/hjerte/jul',
 				'juleflet.dk/hjerte/jul',
@@ -757,7 +757,7 @@ describe('DownloadDialog', () => {
 			]);
 			// The names, with the side for Jul's two halves, sit above the templates.
 			const labels = [...view.q('.preview-sheet')!.querySelectorAll('text.label')].map((t) => t.textContent);
-			expect(labels).toEqual(['Klassisk 3×3', 'Klassisk 3×3', 'JUL (Venstre)', 'JUL (Højre)']);
+			expect(labels).toEqual(['Klassisk 3×3', 'JUL (Venstre)', 'JUL (Højre)']);
 		});
 
 		it('hands the PDF generator every heart, with one shared download event', async () => {

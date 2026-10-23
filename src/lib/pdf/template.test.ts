@@ -48,7 +48,8 @@ describe('generateTemplatesPDF', () => {
 		const pdf = await generateTemplatesPDF([classic], { widthMm: 80, hearts: 1, sheet: SHEETS.A4, lang: 'da' });
 		expect(pdf.getNumberOfPages()).toBe(1);
 		const { texts, images } = readPage(pdf, 297);
-		expect(images).toHaveLength(2);
+		// Both pieces are cut from the classic's one template, printed once.
+		expect(images).toHaveLength(1);
 		for (const [i, { x, y }] of page!.entries()) {
 			const piece = pieces[i]!;
 			// The ear's top is 9 mm under the box's.
@@ -64,8 +65,8 @@ describe('generateTemplatesPDF', () => {
 			expect(picture.y).toBeGreaterThan(top);
 			expect(inside[0]!.y).toBeGreaterThan(picture.y + picture.size);
 		}
-		// Two names, two addresses and the footer.
-		expect(texts).toHaveLength(5);
+		// A name, an address and the footer.
+		expect(texts).toHaveLength(3);
 	});
 
 	it('moves the address up when the picture is off', async () => {
@@ -81,7 +82,7 @@ describe('generateTemplatesPDF', () => {
 	it('prints the English page in an English PDF, as the English laser file links to', async () => {
 		const pdf = await generateTemplatesPDF([classic], { widthMm: 80, hearts: 1, sheet: SHEETS.A4, lang: 'en' });
 		const { texts } = readPage(pdf, 297);
-		expect(texts.filter((t) => t.text === 'juleflet.dk/en/hjerte/classic-3x3')).toHaveLength(2);
+		expect(texts.filter((t) => t.text === 'juleflet.dk/en/hjerte/classic-3x3')).toHaveLength(1);
 		expect(texts.some((t) => t.text === 'juleflet.dk/hjerte/classic-3x3')).toBe(false);
 	});
 

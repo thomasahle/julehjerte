@@ -24,6 +24,7 @@
 	import GeneratorFrameIcon from '$lib/components/GeneratorFrameIcon.svelte';
 	import TemplatePreview from '$lib/components/TemplatePreview.svelte';
 	import { lobesShareTemplate } from '$lib/utils/symmetry';
+	import { printsOneTemplate } from '$lib/utils/orientationMarks';
 	import DesignStart, { type StartArt } from '$lib/components/DesignStart.svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import { href, editorHref, generatorHref, homeAnchorHref, otherLanguage, type GeneratorMode } from '$lib/i18n/routes';
@@ -1166,7 +1167,7 @@
 					onclick={() => download()}
 					><DownloadIcon size={18} />{t('generatorDownload', lang)}</button
 				>
-				<p class="hint">{t('generatorPaperHint', lang)}</p>
+				<p class="hint">{t(result && printsOneTemplate(result.design) ? 'generatorPaperHintOne' : 'generatorPaperHint', lang)}</p>
 				<button
 					class="btn btn-outline"
 					disabled={!result || busy}

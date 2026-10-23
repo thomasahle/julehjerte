@@ -330,7 +330,10 @@ of each other. Juleflet does the same (`$lib/utils/orientationMarks`).
   (the right lobe is the left turned 90°: `permo-kroge`, `hvirvel`, `kogle`,
   `origami`, `plus`, `plus3`, `sun`); then that lobe's mark is on the right side, `(W, R)`.
   The PDF prints the shared template twice, the first copy with ⊗ and the
-  second with ×; a template shown once (heart page, tracing mode) carries
+  second with ×, and once where it needs no marks (`printsOneTemplate`: both
+  copies would be the same, as for the classic and 25 more of the gallery's
+  61 shared templates; the user, 23 Oct 2026: "They are the same, so we only
+  need one"; the design page's note then reads `generatorPaperHintOne`); a template shown once (heart page, tracing mode) carries
   both, or one ⊗ when they fall on the same corner; a laser piece carries
   its own lobe's mark above the fold and the other lobe's mirrored below it,
   which folding lays on the same corner.

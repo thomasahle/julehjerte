@@ -16,7 +16,7 @@ import { heartScale } from '$lib/laser/unfold';
 import { layoutSheet, type Placement, type SheetSize } from '$lib/laser/sheet';
 import { lobesShareTemplate, SHARED_TEMPLATE_LOBE } from '$lib/utils/symmetry';
 import { getTemplateData, type TemplateLobe } from '$lib/utils/templateSvg';
-import { templateMarks, type PlacedMark } from '$lib/utils/orientationMarks';
+import { printsOneTemplate, templateMarks, type PlacedMark } from '$lib/utils/orientationMarks';
 import { layoutEar, picturePixels, type EarLayout, type MeasureText } from './earLayout';
 
 /**
@@ -97,13 +97,15 @@ export function templatePair(design: HeartDesign, widthMm: number): [TemplatePie
 
 /**
  * Every template the PDF prints: two per heart (a heart is two pieces), so
- * `hearts` copies of each design's pair, design by design.
+ * `hearts` copies of each design's pair, design by design; one where both
+ * pieces are cut from the same template (`printsOneTemplate`).
  */
 export function templatePieces(designs: readonly HeartDesign[], widthMm: number, hearts: number): TemplatePiece[] {
 	const pieces: TemplatePiece[] = [];
 	for (const design of designs) {
 		const pair = templatePair(design, widthMm);
-		for (let i = 0; i < hearts; i++) pieces.push(...pair);
+		const printed = printsOneTemplate(design) ? [pair[0]] : pair;
+		for (let i = 0; i < hearts; i++) pieces.push(...printed);
 	}
 	return pieces;
 }

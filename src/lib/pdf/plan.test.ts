@@ -13,8 +13,10 @@ import { serializeTemplatePageSvg } from './preview';
 
 const classic = loadHeart('classic-3x3');
 
+/** `hearts` hearts of two templates each, as a heart whose halves differ
+ * prints them: the classic's, 80 × 120 mm at 80 mm. */
 function plan(hearts: number, sheet: SheetSize, widthMm = 80) {
-	const pieces = templatePieces([classic], widthMm, hearts);
+	const pieces = Array.from({ length: hearts }, () => templatePair(classic, widthMm)).flat();
 	return { pieces, plan: planTemplatePages(pieces, { sheet }) };
 }
 
@@ -44,6 +46,19 @@ function expectClean({ plan: p, pieces }: { plan: TemplatePagePlan; pieces: { wi
 	// Every piece once, in order.
 	expect([...seen].sort((a, b) => a - b)).toEqual(pieces.map((_, i) => i));
 }
+
+describe('templatePieces', () => {
+	it('prints a template both halves share once, where its two copies would be the same', () => {
+		// The classic: both pieces cut from one template, which has no marks.
+		expect(templatePieces([classic], 80, 1)).toEqual([templatePair(classic, 80)[0]]);
+		expect(templatePieces([classic], 80, 3)).toHaveLength(3);
+		// The angel's two copies carry ⊗ and × (orientation marks): both are printed.
+		const angel = loadHeart('angel'), [left, right] = templatePair(angel, 80);
+		expect(left.shared).toBe(true);
+		expect(left.marks.map((m) => m.kind)).toEqual(['circled']);
+		expect(templatePieces([angel], 80, 1)).toEqual([left, right]);
+	});
+});
 
 describe('templatePair', () => {
 	it('gives the classic heart one template twice, 80 × 120 mm', () => {

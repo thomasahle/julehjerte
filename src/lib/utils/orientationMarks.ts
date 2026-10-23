@@ -231,6 +231,15 @@ export function needsOrientationMarks(design: HeartDesign): boolean {
 	return classify(design).marks;
 }
 
+/**
+ * Whether one printed template makes both pieces of the heart: its halves
+ * share a template (`lobesShareTemplate`) that needs no marks, so its two
+ * copies would be the same. The PDF prints it once ($lib/pdf/plan).
+ */
+export function printsOneTemplate(design: HeartDesign): boolean {
+	return lobesShareTemplate(design.fingers, design.gridSize) && !needsOrientationMarks(design);
+}
+
 interface Classification {
 	marks: boolean;
 	/** A shared template whose other lobe takes it turned over. */
