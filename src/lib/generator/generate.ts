@@ -33,7 +33,7 @@ import {
 import type { HeartColors, HeartDesign, Vec } from '$lib/types/heart';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { lobesShareTemplate, mapPointBetweenLobes } from '$lib/utils/symmetry';
-import { paperFaults } from '$lib/geometry/paperNecks';
+import { paperFaults, PAPER_NECK_MM, PRINT_WIDTH_MM } from '$lib/geometry/paperNecks';
 import { intersectionMarginPx } from '$lib/editor/curveIssues';
 import { findSearchIssues, searchFingerIssues } from './searchClearance';
 import { rasterizeDesign } from '$lib/paint/rasterize';
@@ -2588,21 +2588,29 @@ function generateUsingRecipes(request: GeneratorRequest,
 		for (const attempts of [sizes(mode, size, placement, undefined, whole, true), [.85, .7].flatMap(factor => sizes(mode, size, placement, fills(size, placement, factor, gap, whole), whole, true)),
 			nearby.flatMap(other => sizes(mode, other, placement, undefined, whole, true))]) {
 			const rejected: Parameters<typeof hardToCutResult>[1] = [];
-			let best: GeneratorResult | undefined, rawTips: [number, number] | undefined, working = 0;
-			for (const attempt of attempts) try {
-				const construction = build(attempt);
-				// Worse tips before the curve fitting are skipped, unless the
-				// best so far tears.
-				const tips = cutTipCounts(construction.geometry);
-				if (rawTips && best && !paperTears(exported(best).design) && !fewerCutTips(tips, rawTips)) continue;
-				rejected.push({ construction, recipe: 'nested' });
-				const candidate = finish(construction, 'nested');
-				if (!ranked) return kept(candidate);
-				if (!best || cutsBetter(candidate, best, true)) [best, rawTips] = [candidate, tips];
-				if (!paperTears(exported(best).design) && !cutTipCounts(exported(best).design)[1] || ++working === 4) break;
-			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-				last = error;
+			let best: GeneratorResult | undefined, rawTips: [number, number] | undefined;
+			// Where the best of them tears, those that worked again with the
+			// motif's connections kept as far from it as paper holds printed.
+			const worked: typeof attempts = [];
+			for (const tried of ranked ? [attempts, worked] : [attempts]) {
+				if (tried === worked && (!best || !paperTears(exported(best).design))) break;
+				let working = 0;
+				for (const attempt of tried === worked ? worked.map(({ layout, ...attempt }) => ({ ...attempt, layout: { ...layout, margin: PAPER_NECK_MM / PRINT_WIDTH_MM * 100 } })) : tried) try {
+					const construction = build(attempt);
+					// Worse tips before the curve fitting are skipped, unless the
+					// best so far tears.
+					const tips = cutTipCounts(construction.geometry);
+					if (rawTips && best && !paperTears(exported(best).design) && !fewerCutTips(tips, rawTips)) continue;
+					rejected.push({ construction, recipe: 'nested' });
+					const candidate = finish(construction, 'nested');
+					if (!ranked) return kept(candidate);
+					if (tried !== worked) worked.push(attempt);
+					if (!best || cutsBetter(candidate, best, true)) [best, rawTips] = [candidate, tips];
+					if (!paperTears(exported(best).design) && !cutTipCounts(exported(best).design)[1] || ++working === 4) break;
+				} catch (error) {
+					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					last = error;
+				}
 			}
 			if (best) return kept(best);
 			const hard = hardToCutResult(request, rejected, curveFitter);

@@ -163,7 +163,7 @@ export function generateTextGrid(
 	font: Font,
 	air: boolean | number = false,
 	frame?: Frame,
-	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; nested?: boolean; bases?: boolean; around?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point; completion?: BoardPattern } = {}
+	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; nested?: boolean; bases?: boolean; around?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point; completion?: BoardPattern; margin?: number } = {}
 ) {
 	const { matrix, rows, cols, height, cy, padding, cellHeight, widths, inkWidths, shifts, span, fullHeight, scale, boundary, points } =
 		measureTextGrid(text, font, air, frame, layout);
@@ -190,7 +190,7 @@ export function generateTextGrid(
 		cells: Point[][][] = [],
 		background: Ring[] = [];
 	const cached = new Map<string, { x: number; y: number; edges: Edge[]; gates?: Point[]; shifted?: boolean }>();
-	const margin = gridClearance(cols * columns + rows * slices + 1);
+	const margin = layout.margin ?? gridClearance(cols * columns + rows * slices + 1);
 	// A divided glyph must keep both neighbours' seam contacts aligned.
 	// Independent shifts are only safe for whole-letter cells.
 	const adaptive = layout.adaptGates && columns === 1 && slices === 1;

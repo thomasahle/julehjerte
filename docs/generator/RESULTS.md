@@ -1,5 +1,21 @@
 # Generator robustness results
 
+## Board hearts' connections kept as far off as paper holds
+
+Of the cuts that remained to tear on five strips, most ran between the
+motif's outline and its connections out to the gates, which the cell's
+routing kept only the room for a cut (1.2 units, about 1 mm printed) from it.
+Where the best of a board heart's first cuts still tears, the constructions
+that worked are tried again with that routing kept 2.5 units off, the 2 mm
+paper holds (`layout.margin` in `generateTextGrid`), and ranked with the rest.
+The picture is the same. The star at 73% and 80% now holds printed 80 mm wide.
+
+Over the 49 featured motifs at the same 12 sizes: hearts that tear fall from
+288 to 238 (24/24/22/22/20 to 19/19/17/16/14 at 71–80%, 19/20/19 to 15/15/15
+at 81–85%), hearts that cut cleanly and hold from 275 to 325 of 576, the mean
+print width that holds from 94 mm to 91; none changes status or tears more,
+and the time is the same.
+
 ## Board hearts ranked by their paper
 
 The board circle took the first construction that finished. On five strips
