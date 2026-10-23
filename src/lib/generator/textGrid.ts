@@ -107,6 +107,33 @@ export function measureTextGrid(
 		: Math.max(height * .1, height * .45 - padding, ...matrix.map((row) => ink(row[col].glyph))));
 	const span = widths.reduce((a, b) => a + b, 0),
 		fullHeight = rows * cellHeight;
+	// Fitted cells set each line as a word. A column is as wide as its widest
+	// letter, so a narrower one (F under M) would leave a hole in its word;
+	// it moves within the column's ink instead, never into the room around it,
+	// to even out the gaps to its neighbours, and a line's end letters close up
+	// to the line. The columns stay, as they share the weave's strips.
+	const shifts = matrix.map((line) => line.map(() => 0));
+	if (layout.fittedCells && !centre && (layout.columns ?? 1) === 1) {
+		const drawn = (glyph: Font['glyphs'][string]) => ink(glyph) * (layout.letterScale ?? 1);
+		const middles = widths.map((_, col) => widths.slice(0, col).reduce((a, b) => a + b, 0) + widths[col] / 2);
+		for (const [row, line] of matrix.entries()) {
+			const inked = (col: number) => col >= 0 && col < cols && line[col].glyph.contours.length > 0;
+			const edge = (col: number, side: -1 | 1) => middles[col] + shifts[row][col] + side * drawn(line[col].glyph) / 2;
+			const slack = line.map(({ glyph }, col) => Math.max(0, (inkWidths[col] - drawn(glyph)) / 2));
+			// The least sum of the gaps' squares, and a little of the shifts' own
+			// to keep a letter with room on both sides in the middle.
+			for (let sweep = 0; sweep < 60; sweep++)
+				for (let col = 0; col < cols; col++) {
+					if (!inked(col) || !slack[col]) continue;
+					shifts[row][col] = 0;
+					const left = inked(col - 1) ? edge(col, -1) - edge(col - 1, 1) : undefined,
+						right = inked(col + 1) ? edge(col + 1, -1) - edge(col, 1) : undefined;
+					const shift = left === undefined ? right === undefined ? 0 : right / 1.001
+						: right === undefined ? -left / 1.001 : (right - left) / 2.001;
+					shifts[row][col] = Math.max(-slack[col], Math.min(slack[col], shift));
+				}
+		}
+	}
 	// Square cells without a frame lie on the regular checkerboard: each cell,
 	// or each of its square panels, is one square's diagonal wide. The lines
 	// leaving the block's sides, and the outer strips beyond them, are then all
@@ -128,7 +155,7 @@ export function measureTextGrid(
 					((layout.frameFill ?? 0.88) * distance(hit.point, [50, 50])) / Math.hypot(x, y)
 				);
 			}
-	return { matrix, rows, cols, height, cy, padding, cellHeight, widths, inkWidths, span, fullHeight, regular, scale, boundary, points };
+	return { matrix, rows, cols, height, cy, padding, cellHeight, widths, inkWidths, shifts, span, fullHeight, regular, scale, boundary, points };
 }
 
 export function generateTextGrid(
@@ -138,7 +165,7 @@ export function generateTextGrid(
 	frame?: Frame,
 	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; nested?: boolean; bases?: boolean; around?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point; completion?: BoardPattern } = {}
 ) {
-	const { matrix, rows, cols, height, cy, padding, cellHeight, widths, inkWidths, span, fullHeight, scale, boundary, points } =
+	const { matrix, rows, cols, height, cy, padding, cellHeight, widths, inkWidths, shifts, span, fullHeight, scale, boundary, points } =
 		measureTextGrid(text, font, air, frame, layout);
 	let edges: Edge[] = [];
 	const slices = layout.slices ?? 1;
@@ -173,7 +200,10 @@ export function generateTextGrid(
 		for (let col = 0; col < cols * columns; col++) {
 			const sourceCol = Math.floor(col / columns);
 			const { char, glyph } = matrix[Math.floor(row / slices)][sourceCol];
-			const glyphX = (cursor + (.5 - (col % columns) / columns) * widths[sourceCol]) * scale,
+			// A letter set closer to its neighbours keeps its cell (see `measureTextGrid`).
+			const shift = shifts[Math.floor(row / slices)][sourceCol],
+				cellX = (cursor + (.5 - (col % columns) / columns) * widths[sourceCol]) * scale,
+				glyphX = cellX + shift * scale,
 				glyphY = (-fullHeight / 2 + (Math.floor(row / slices) + .5) * cellHeight) * scale;
 			let x = (cursor + widths[sourceCol] / columns / 2) * scale,
 				y = (-fullHeight / 2 + (row + 0.5) * cellHeight / slices) * scale;
@@ -184,7 +214,8 @@ export function generateTextGrid(
 				// Retain the outside gates and distribute only the internal seams
 				// over the ink dimensions. Blank cells still need positive widths.
 				const inkWidth = inkWidths[sourceCol];
-				const xLine = (i: number) => glyphX + (i === 0 ? -widths[sourceCol] / 2 : i === columns ? widths[sourceCol] / 2 : splitsX?.[sourceCol][i - 1] ?? (i / columns - .5) * inkWidth) * scale;
+				const xLine = (i: number) => i === 0 || i === columns ? cellX + (i ? .5 : -.5) * widths[sourceCol] * scale
+					: glyphX + (splitsX?.[sourceCol][i - 1] ?? (i / columns - .5) * inkWidth) * scale;
 				const yLine = (i: number) => glyphY + (i === 0 ? -cellHeight / 2 : i === slices ? cellHeight / 2 : splitsY?.[i - 1] ?? (i / slices - .5) * height) * scale;
 				const lo = xLine(col % columns), hi = xLine(col % columns + 1),
 					up = yLine(row % slices), down = yLine(row % slices + 1);
@@ -274,7 +305,7 @@ export function generateTextGrid(
 			}
 			const contours = upright.map(r => r.map(uprightToSheet));
 			// Identical cells share routing across rows and columns.
-			const key = char + ':' + widths[sourceCol] + ':' + row % slices + ':' + col % columns +
+			const key = char + ':' + widths[sourceCol] + ':' + shift + ':' + row % slices + ':' + col % columns +
 				(layout.adaptivePanels ? ':' + sourceCol : ''),
 				prior = cached.get(key);
 			if (prior) {

@@ -1181,7 +1181,10 @@ severe-pinch precheck that skips hopeless curve fits; otherwise, and when that i
 fitted cells with every recipe; square cells with every recipe only as the last resort.
 Text entry accepts six lines of ten characters. Multiline layouts
 connect a matrix of letter cells; shorter rows are centred on the grid and empty positions continue
-the ordinary weave. Counters use shared bridges in every row. North/south connections get separate frame gates rather than routing
+the ordinary weave. With letter-sized cells a column is as wide as its widest letter, so each line is
+set as a word: a narrower letter moves within its column's ink (never into the room around it) to even
+out the gaps to its neighbours, and a line's end letters close up to it. MOR over FAR had a hole after
+the F, centred in the M's width (the user, 23 Oct 2026: "Too much space after the F"). Counters use shared bridges in every row. North/south connections get separate frame gates rather than routing
 an entire word through two long cuts. Complicated figures first try neighbouring panels; paired
 clipped boundaries cancel or become shared cuts, preserving every visible detail. Prefer more
 manageable strips over fewer cuts, while retaining the full clearance and fidelity checks. Two-dimensional

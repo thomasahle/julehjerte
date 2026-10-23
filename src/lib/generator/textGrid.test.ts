@@ -34,6 +34,22 @@ it('fits cells to the letters as the fallback when square cells leave too little
 	expect(Math.max(...steps) - Math.min(...steps)).toBeGreaterThan(1);
 });
 
+it('sets each line of letter-sized cells as a word, a narrow letter under a wide one closing up', async () => {
+	const oswald = await shippedFont('oswald');
+	const { artwork } = generateTextGrid('MOR\nFAR', oswald, .22, undefined, { fittedCells: true });
+	// Each letter's ink across the line, letter by letter.
+	let ring = 0;
+	const [mor, far] = ['MOR', 'FAR'].map(line => [...line].map(char => {
+		const xs = artwork.slice(ring, ring += oswald.glyphs[char].contours.length).flat().map(([x, y]) => (x - y) * Math.SQRT1_2);
+		return [Math.min(...xs), Math.max(...xs)];
+	}));
+	// F shares its column with the wider M, yet stands as near the A as the A does the R.
+	const [fa, ar] = far.slice(1).map(([left], i) => left - far[i][1]);
+	expect(fa).toBeCloseTo(ar, 1);
+	// The letters keep their columns: the R under the R.
+	expect(far[2][0]).toBeCloseTo(mor[2][0], 6);
+});
+
 it('measures how much smaller square cells make narrow letters', () => {
 	// Letters of similar widths lose little; i, l and j would leave gaps.
 	expect(squareCellScale('ANNA', font)).toBeGreaterThan(.9);
