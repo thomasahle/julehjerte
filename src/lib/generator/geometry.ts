@@ -278,11 +278,33 @@ function block(
 	add(edges, [previous, outPort.point], 'AB', 'shared');
 }
 
+const nestedBlocks = new WeakMap<Contour, Map<string, Edge[] | null>>();
 /** A nested contour may have its two external attachments on the same side.
  * The straight sibling chain then cannot alternate with those attachments.
  * Open its counters around either attachment instead, preserving one complete
  * entry-to-exit path on each sheet. Try this only in the nested fallback. */
 function nestedBlock(...args: Parameters<typeof block>) {
+	const [edges, node, entry, exit, first] = args;
+	// A contour's attachments recur across its parent's candidate routes:
+	// each pair is worked out once.
+	const known = nestedBlocks.get(node) ?? new Map<string, Edge[] | null>(), key = `${entry.point};${exit.point};${first}`;
+	nestedBlocks.set(node, known);
+	if (!known.has(key)) {
+		try {
+			const found: Edge[] = [];
+			openNestedBlock(found, node, entry, exit, first);
+			known.set(key, found);
+		} catch (error) {
+			if (!(error instanceof ConstructionError)) throw error;
+			known.set(key, null);
+		}
+	}
+	const found = known.get(key);
+	if (!found) throw new ConstructionError('topology', 'No open nested contour construction');
+	edges.push(...found.map(edge => ({ ...edge })));
+}
+/** `nestedBlock` for attachments not seen before. */
+function openNestedBlock(...args: Parameters<typeof block>) {
 	const [edges, node, entry, exit, first] = args;
 	const original: Edge[] = [];
 	try {
@@ -332,7 +354,8 @@ export function contourChain(
 	first: 'A' | 'B' = 'A',
 	visible = false,
 	nested = false,
-	boundaryGates = false
+	boundaryGates = false,
+	nearest = false
 ) {
 	const ordered = nodes
 		.slice()
@@ -352,8 +375,14 @@ export function contourChain(
 	let previous = start;
 	for (const [index, node] of ordered.entries()) {
 		const c = centroid(node.ring), next = index + 1 < ordered.length ? centroid(ordered[index + 1].ring) : end;
-		const entry = visible ? (boundaryGates ? ringPort(node.ring, previous) : undefined) ?? ray(node.ring, previous, Math.atan2(c[1] - previous[1], c[0] - previous[0])) : support(node.ring, angle + Math.PI),
-			exit = visible ? (boundaryGates ? ringPort(node.ring, next) : undefined) ?? ray(node.ring, next, Math.atan2(c[1] - next[1], c[0] - next[0])) : support(node.ring, angle);
+		// A hidden island is entered and left at its extremes along the chain,
+		// or, `nearest`, where it comes nearest the way in and the way on: a
+		// long bent one (the back card of a pair) has its extremes at its ends.
+		const entry = visible ? (boundaryGates ? ringPort(node.ring, previous) : undefined) ?? ray(node.ring, previous, Math.atan2(c[1] - previous[1], c[0] - previous[0]))
+				: nearest ? closestPort(node.ring, previous) : support(node.ring, angle + Math.PI),
+			exit = visible ? (boundaryGates ? ringPort(node.ring, next) : undefined) ?? ray(node.ring, next, Math.atan2(c[1] - next[1], c[0] - next[0]))
+				: nearest ? closestPort(node.ring, next) : support(node.ring, angle);
+		if (nearest && near(entry.point, exit.point)) throw new ConstructionError('topology', 'Coincident island ports');
 		add(edges, [previous, entry.point], 'AB', 'shared');
 		(nested ? nestedBlock : block)(edges, node, entry, exit, first);
 		previous = exit.point;
@@ -814,6 +843,37 @@ export function withVisibleIslands<T>(build: () => T): T {
 		visibleIslands = before;
 	}
 }
+/** The points' convex hull, its sides moved out by `padding`: the outer
+ * connections of a fitted grid clear every island, including the ones in
+ * other cells, along their common envelope (see `generateComponentLanes`). */
+export function convexEnvelope(points: Ring, padding = 0): Ring {
+	const sorted = [...points].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+	const chain = (points: Ring) => {
+		const result: Ring = [];
+		for (const p of points) {
+			while (result.length > 1 && cross(sub(result.at(-1)!, result.at(-2)!), sub(p, result.at(-1)!)) <= 1e-9)
+				result.pop();
+			result.push(p);
+		}
+		return result;
+	};
+	const hull = [...chain(sorted).slice(0, -1), ...chain([...sorted].reverse()).slice(0, -1)];
+	if (hull.length < 3) throw new ConstructionError('empty', 'No component envelope');
+	if (!padding) return hull;
+	// Intersect outward-offset supporting lines. Radial scaling would leave
+	// less room beside a long flat side than beside a corner. This envelope
+	// locates invisible joins only; no new outline is drawn around the motif.
+	const normals = hull.map((p, i): Point => {
+		const v = sub(hull[(i + 1) % hull.length], p), length = Math.hypot(...v);
+		return [v[1] / length, -v[0] / length];
+	});
+	return hull.map((p, i): Point => {
+		const a = normals[(i + hull.length - 1) % hull.length], b = normals[i], denominator = 1 + dot(a, b);
+		if (denominator < 1e-8) throw new ConstructionError('topology', 'Degenerate component envelope');
+		return [p[0] + padding * (a[0] + b[0]) / denominator, p[1] + padding * (a[1] + b[1]) / denominator];
+	});
+}
+
 /** Boundary cells restrict counters to inward gates, so opening an outer cap
  * cannot discard a counter or its bridges. Their route validator checks the
  * retained paths with the new paper-edge endpoints, instead of the cap that
@@ -826,7 +886,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; connectionAllowed?: (point: Point) => boolean; safeAttachments?: boolean; routed?: { fallback?: Edge[] } } = {}
+	options: { root?: Ring; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; around?: boolean; connectionAllowed?: (point: Point) => boolean; safeAttachments?: boolean; routed?: { fallback?: Edge[] } } = {}
 ) {
 	if (options.alternateIslandGates) {
 		// Different letters can need different gates. Finish each cell locally
@@ -863,6 +923,55 @@ function contourMotif(
 		}
 	);
 	const base = nodes[0];
+	// With `around`, a spoke another piece of the motif blocks goes round
+	// it: the shortest way past the corners of the pieces' hulls, kept clear
+	// of them and inside the circle through the gates (the back card of a
+	// pair hides the front one from two gates; a bell's ringing arcs).
+	const middle: Point = [gates.reduce((sum, p) => sum + p[0], 0) / count, gates.reduce((sum, p) => sum + p[1], 0) / count],
+		inner = Math.min(...gates.map(p => distance(p, middle))) - margin;
+	const corners = options.around ? nodes.slice(1).flatMap(node => {
+		try {
+			return convexEnvelope(node.ring, 2 * margin);
+		} catch (error) {
+			if (!(error instanceof ConstructionError)) throw error;
+			return [];
+		}
+	}).filter(p => distance(p, middle) < inner) : [];
+	const clear = new Map<string, boolean>(), detours = new Map<string, Ring>();
+	const open = (a: Point, b: Point) => {
+		const key = `${a};${b}`;
+		let seen = clear.get(key);
+		if (seen === undefined) clear.set(key, seen = clearSharedCuts([{ from: a, to: b, family: 'AB', kind: 'shared' }]));
+		return seen;
+	};
+	const spoke = (gate: Point, port: Point): Ring => {
+		if (!corners.length || open(gate, port)) return [gate, port];
+		const key = `${gate};${port}`;
+		let path = detours.get(key);
+		if (path) return path;
+		// A* over the corners, each step a shared cut that crosses nothing.
+		const points = [gate, ...corners, port], end = points.length - 1;
+		const cost = points.map((_, i) => i ? Infinity : 0), from = points.map(() => -1), done = points.map(() => false);
+		for (;;) {
+			let i = -1;
+			for (let k = 0; k <= end; k++) if (!done[k] && cost[k] < Infinity &&
+				(i < 0 || cost[k] + distance(points[k], port) < cost[i] + distance(points[i], port))) i = k;
+			if (i < 0 || i === end) break;
+			done[i] = true;
+			for (let k = 1; k <= end; k++) {
+				const step = cost[i] + distance(points[i], points[k]);
+				if (!done[k] && step < cost[k] && open(points[i], points[k])) {
+					cost[k] = step;
+					from[k] = i;
+				}
+			}
+		}
+		path = [port];
+		for (let k = from[end]; k >= 0; k = from[k]) path.unshift(points[k]);
+		if (path.length < 2) path = [gate, port];
+		detours.set(key, path);
+		return path;
+	};
 	// A clipped quadrilateral may have no usable vertices away from its seams.
 	// Offer points along its unchanged edges when the ordinary fan is blocked.
 	// Replace those blocked choices only; retain the same attachment budget.
@@ -974,9 +1083,9 @@ function contourMotif(
 					// separate an arc from the nearby stem on the same sheet.
 					const first = !!(options.boundaryIslands && j % 2 === 0) !== !!options.islandFlip ? 'B' : 'A';
 					contourChain(exterior, extras[j], angle, gates[j], ports[j].point, first,
-						options.visibleIslands, options.nested, options.boundaryIslands);
+						options.visibleIslands, options.nested, options.boundaryIslands, options.around);
 				}
-				else add(exterior, spokes?.[j][indices[j]] ?? [gates[j], ports[j].point], 'AB', 'shared');
+				else add(exterior, spokes?.[j][indices[j]] ?? spoke(gates[j], ports[j].point), 'AB', 'shared');
 			}
 		} catch (error) {
 			if (!(error instanceof ConstructionError)) throw error;
@@ -1209,6 +1318,19 @@ function ringPort(ring: Ring, point: Point): Port | null {
 			return { point, index: (i + Math.max(0, Math.min(1, t))) % ring.length };
 	}
 	return null;
+}
+/** The point of a ring nearest to a point. */
+function closestPort(ring: Ring, point: Point): Port {
+	let best: Port = { point: ring[0], index: 0 }, nearest = Infinity;
+	for (let i = 0; i < ring.length; i++) {
+		const a = ring[i], b = ring[(i + 1) % ring.length], d = sub(b, a), length = dot(d, d);
+		const t = length ? Math.max(0, Math.min(1, dot(sub(point, a), d) / length)) : 0, p = mix(a, b, t);
+		if (distance(p, point) < nearest) {
+			nearest = distance(p, point);
+			best = { point: p, index: (i + t) % ring.length };
+		}
+	}
+	return best;
 }
 /** Whether a point can lie within `EPS` of the segment from `a` to `b`,
  * extended by `EPS` of its length at either end: inside their box widened

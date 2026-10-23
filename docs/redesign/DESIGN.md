@@ -982,7 +982,13 @@ other division, so a motif that divides without it keeps its cuts. A seam that w
 corner of the outline, or nearly (the star's top tip lies just beside the seam through its centre),
 cannot be built or halves the tip into slivers; at the size itself, after everything else, it is
 tried a fiftieth of the motif beside the corner, either way. As a last resort it decides nothing
-else: whether the motif is divided and where it sits stay as they were. That is the one change of
+else: whether the motif is divided and where it sits stay as they were. A motif of several pieces,
+or with islands in its holes, that would be refused even so is decided and built again with every
+way of reaching its pieces, after every other way: the gates' spokes meet each other piece in
+turn (of three in a row, the middle one), islands in a ring's hole are reached round either
+attachment (the peace sign), and a motif kept whole has its spokes go round the pieces in their
+way (a back card that hides the front one from two gates). It is the last of the last resorts
+(`withEveryWay`), so every heart built without it keeps its cuts. That is the one change of
 construction, between 70% and 71%. Whether a motif can be built each way is decided once, so a
 solid motif (the bell, the tree), which cannot be divided so, stays at the touching circle above
 70%, and one that cannot be kept whole (the gift) takes the large circle's smallest size below it.

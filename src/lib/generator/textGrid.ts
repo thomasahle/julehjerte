@@ -16,7 +16,9 @@ import {
 	usableMotif,
 	add,
 	compile,
-	connectCellGrid
+	connectCellGrid,
+	forest,
+	area
 } from './geometry';
 import { gridClearance } from '$lib/geometry/clearance';
 import type { BoardPattern } from './boardCompletion';
@@ -61,7 +63,7 @@ export function measureTextGrid(
 	font: Font,
 	air: boolean | number = false,
 	frame?: Frame,
-	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point; completion?: BoardPattern } = {}
+	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; nested?: boolean; bases?: boolean; around?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point; completion?: BoardPattern } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -134,7 +136,7 @@ export function generateTextGrid(
 	font: Font,
 	air: boolean | number = false,
 	frame?: Frame,
-	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point; completion?: BoardPattern } = {}
+	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; nested?: boolean; bases?: boolean; around?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point; completion?: BoardPattern } = {}
 ) {
 	const { matrix, rows, cols, height, cy, padding, cellHeight, widths, inkWidths, span, fullHeight, scale, boundary, points } =
 		measureTextGrid(text, font, air, frame, layout);
@@ -305,16 +307,30 @@ export function generateTextGrid(
 					[row % slices > 0, col % columns < columns - 1, row % slices < slices - 1, col % columns > 0],
 					layout.guardedAttachments ? contours : undefined, layout.guardedAttachments ? margin * 1.1 : 0
 				) : undefined;
-				const construct = () => {
+				const route = (root?: Ring) => {
 					const local: Edge[] = [];
 					fourPortMotif(
 						local, contours, gates,
 						centre ? gates.map(p => Math.atan2(centre[1] - p[1], centre[0] - p[0]))
 							: [Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4],
 						margin, [0, 1, 2, 3], undefined,
-						{ practical: layout.practical, compound: layout.compound, onCompound: layout.onCompound, balanced: layout.balanced, onCrowded: layout.onCrowded, bentSpokes: layout.bentSpokes, boundaryIslands: layout.boundaryIslands, connectionAllowed, safeAttachments: layout.guardedAttachments }
+						{ root, practical: layout.practical, compound: layout.compound, onCompound: layout.onCompound, balanced: layout.balanced, onCrowded: layout.onCrowded, bentSpokes: layout.bentSpokes, boundaryIslands: layout.boundaryIslands, nested: layout.nested, around: layout.around, connectionAllowed, safeAttachments: layout.guardedAttachments }
 					);
 					return local;
+				};
+				// The gates' spokes meet the largest piece, or with `bases`, where
+				// they cannot, each other piece in turn, largest first: of three
+				// pieces in a row, the middle one.
+				const construct = () => {
+					if (!layout.bases) return route();
+					let last: unknown;
+					for (const { ring } of forest(contours).sort((a, b) => Math.abs(area(b.ring)) - Math.abs(area(a.ring)))) try {
+						return route(ring);
+					} catch (error) {
+						if (!(error instanceof ConstructionError)) throw error;
+						last = error;
+					}
+					throw last;
 				};
 				let local: Edge[] | undefined, shifted = false;
 				if (adaptive) {

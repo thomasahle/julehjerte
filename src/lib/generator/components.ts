@@ -1,6 +1,6 @@
 import {
-	forest, centroid, area, sub, dot, cross, inside, distance, mix, frameRing, ray,
-	uprightToSheet, fourPortMotif, connectCellGrid, compile, ConstructionError,
+	forest, centroid, area, sub, dot, inside, distance, mix, frameRing, ray,
+	uprightToSheet, fourPortMotif, connectCellGrid, compile, convexEnvelope, ConstructionError,
 	type Ring, type Point, type Edge, type Contour, type Frame, type OpenFrame
 } from './geometry';
 import { clipContours, stitch, filledSeamGate } from './panels';
@@ -8,36 +8,6 @@ import { rerouteSharedCuts } from './sharedCuts';
 import { gridClearance } from '$lib/geometry/clearance';
 
 const contoursOf = (node: Contour): Ring[] => [node.ring, ...node.children.flatMap(contoursOf)];
-
-/** The outer connections of a fitted grid must clear every island, including
- * the ones in other cells. Their common convex envelope supplies those gates. */
-function componentEnvelope(points: Ring, padding = 0): Ring {
-	const sorted = [...points].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
-	const chain = (points: Ring) => {
-		const result: Ring = [];
-		for (const p of points) {
-			while (result.length > 1 && cross(sub(result.at(-1)!, result.at(-2)!), sub(p, result.at(-1)!)) <= 1e-9)
-				result.pop();
-			result.push(p);
-		}
-		return result;
-	};
-	const hull = [...chain(sorted).slice(0, -1), ...chain([...sorted].reverse()).slice(0, -1)];
-	if (hull.length < 3) throw new ConstructionError('empty', 'No component envelope');
-	if (!padding) return hull;
-	// Intersect outward-offset supporting lines. Radial scaling would leave
-	// less room beside a long flat side than beside a corner. This envelope
-	// locates invisible joins only; no new outline is drawn around the motif.
-	const normals = hull.map((p, i): Point => {
-		const v = sub(hull[(i + 1) % hull.length], p), length = Math.hypot(...v);
-		return [v[1] / length, -v[0] / length];
-	});
-	return hull.map((p, i): Point => {
-		const a = normals[(i + hull.length - 1) % hull.length], b = normals[i], denominator = 1 + dot(a, b);
-		if (denominator < 1e-8) throw new ConstructionError('topology', 'Degenerate component envelope');
-		return [p[0] + padding * (a[0] + b[0]) / denominator, p[1] + padding * (a[1] + b[1]) / denominator];
-	});
-}
 
 /** Give separate motif islands their own cells instead of clipping all of them
  * with the same rectangular dividers. Counters stay with their parent island.
@@ -127,7 +97,7 @@ export function generateComponentFigure(rings: Ring[], frame: Frame | OpenFrame 
 		}
 		return uprightToSheet(p);
 	};
-	const envelope = boundary ?? componentEnvelope(upright.flat().map(uprightToSheet), margin * envelopePadding + (open?.gap ?? 0));
+	const envelope = boundary ?? convexEnvelope(upright.flat().map(uprightToSheet), margin * envelopePadding + (open?.gap ?? 0));
 	const origin: Point = boundary ? [50, 50] : [
 		envelope.reduce((sum, p) => sum + p[0], 0) / envelope.length,
 		envelope.reduce((sum, p) => sum + p[1], 0) / envelope.length

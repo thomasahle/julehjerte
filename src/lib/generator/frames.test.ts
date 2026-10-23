@@ -44,6 +44,9 @@ import heart from '../../../static/generator/motifs/heart.json';
 import fish from '../../../static/generator/motifs/ph-fish.json';
 import butterflyMotif from '../../../static/generator/motifs/ph-butterfly.json';
 import tablerFlower from '../../../static/generator/motifs/tb-flower.json';
+import columnsPlus from '../../../static/generator/motifs/ph-columns-plus-left.json';
+import peace from '../../../static/generator/motifs/ph-peace.json';
+import copyPlus from '../../../static/generator/motifs/tb-copy-plus.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -708,6 +711,18 @@ describe('frames from real hearts', () => {
   expect(full.point).toBeGreaterThan(180);
   expect(full.area).toBeGreaterThan(middle.area);
  }, 30000);
+ it('reaches every piece of a motif kept whole that the usual spokes cannot', () => {
+  // Three pieces in a row meet the gates at the middle one, not the largest
+  // (`bases`); islands in a ring's hole are reached round either attachment
+  // (`nested`); a back card hiding the front one from two gates is passed
+  // round its end (`around`). The board circle refused all three.
+  const cell = (motif: { contours: unknown }, layout: object) => () => generateTextGrid(MOTIF, { glyphs: { [MOTIF]: { advance: 1, contours: normalizeContours(motif.contours as Ring[]) } } },
+   false, 'circle', { padding: .22, ...layout, board: 5, circle: 50, scale: 40 });
+  for (const [motif, layout] of [[columnsPlus, { bases: true }], [peace, { nested: true }], [copyPlus, { around: true }]] as const) {
+   expect(cell(motif, {}), JSON.stringify(layout)).toThrow(ConstructionError);
+   expect(cell(motif, layout)().edges.length, JSON.stringify(layout)).toBeGreaterThan(0);
+  }
+ });
  it('moves a seam that would run through a corner of the motif beside it', () => {
   // The star's top tip lies nearly on the seam through its centre, which
   // then cannot be built, and the seam through its lower notch halves the

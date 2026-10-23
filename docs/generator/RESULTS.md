@@ -1,5 +1,59 @@
 # Generator robustness results
 
+## Every motif file on the board circle
+
+The board circle had only been swept over the corpus and the featured motifs.
+All 2668 motif files at the default setting, five strips and 70%, gave 2477
+clean hearts, 138 hard to cut and 53 refused (2%). Nearly all the refusals were
+"No open four-port construction": a motif of several pieces whose pieces the
+gates' four spokes could not all reach.
+
+Three ways of reaching them are now tried as the last of the last resorts
+(`withEveryWay`). A request that is refused without them tries again with
+them, only if the board passed over a motif of several pieces, or with islands
+in its holes, on the way. So every heart built without them keeps its cuts.
+
+- **Each piece as the one the spokes meet (`bases`).** Of three pieces in a
+  row (ph-columns-plus, ph-rows-plus), the largest is an end piece, and the
+  middle one then lies across every route from the far gate. The spokes now
+  try each other piece in turn, largest first.
+- **Islands in a ring's hole (`nested`).** ph-peace is a ring with four
+  sectors in its hole. The hole's islands were chained in a straight row
+  across it, which cannot alternate with its attachments. The nested routing
+  the double border already uses reaches them round either attachment. The
+  cell never passed it on.
+- **Spokes round the pieces in their way (`around`, kept whole only).** A
+  back card (tb-copy, tb-library) hides the front one from two gates. A spoke
+  another piece blocks now takes the shortest way past the corners of the
+  pieces' hulls, kept clear of them and inside the circle through the gates.
+  Hidden islands are then entered and left where they come nearest the way
+  in and the way on, rather than at their extremes, which for a bent back
+  card are its ends.
+
+Divided in four, the first two are tried too; spokes round pieces are not,
+as they do not know the panel's sides.
+
+Of the 53 refused motifs, 37 now build at five strips and 70%: 19 clean and
+18 hard to cut. Most take 1–15 s (ph-columns-plus 1.0 s, tb-copy-plus 1.9 s,
+ph-peace 15 s, refused before after 4, 8 and 99 s). The 16 left are odd shapes:
+pieces touching at a point (ph-codepen-logo), slivers (ph-graduation-cap's
+tassel), islands in a winding hole (ph-command), the polar star's needles and
+the elephant. Their refusals take longer, mostly 1.5–2 times as long
+(tb-car-suv 60 → 102 s), ph-command 18 → 88 s. Remembering each nested
+contour's construction per pair of attachments (`nestedBlock`) took a quarter
+of that off. The double border, which uses the same nested routing, keeps its
+hearts bit for bit (ten motifs with islands in holes, at 70 and 85%).
+
+Every heart built without the new ways keeps its cuts by construction. A
+check on 22 motifs that take the other last resorts, the curved retries,
+the smaller circles and both constructions (264 hearts on five, seven and nine
+strips) found all of them bit for bit and as fast. Two placements were
+tried first and dropped. With the new ways among the decisions, the gift and
+the candy cane on five strips, which take the large circle's smallest size
+at 70%, were kept whole there instead (the gift on nine strips turning hard).
+As a second pass inside the board circle, they ran before the curved retries
+and the other last resorts, and changed the santa hat, ph-coffee and tb-paw.
+
 ## The board circle normalises its motif
 
 70 motif files carry rings of zero area or with repeated points. Examples are

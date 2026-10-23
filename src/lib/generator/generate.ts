@@ -549,11 +549,28 @@ function generateTextFigure(request: GeneratorRequest): GeneratorResult {
 	throw last;
 }
 
+/** Whether the board circle reaches the pieces of its motif every way it
+ * can (see `generateUsingRecipes`), and how many motifs of several pieces it
+ * could not build at their size without: only a request refused without
+ * them tries again with them, so every heart built without them keeps its
+ * cuts. */
+let everyWay = false, everyWayPassed = 0;
+const everyWaySetAside = () => everyWayPassed;
+function withEveryWay<T>(build: () => T): T {
+	const before = everyWay;
+	everyWay = true;
+	try {
+		return build();
+	} finally {
+		everyWay = before;
+	}
+}
 /** Constructions set aside where a clean one might follow, each with how
  * many it set aside so far: islands entered along visible spokes where
- * nothing else routes (see `withVisibleIslands`), and in the checks hidden
- * cuts that come too close (see `withCrowdedHiddenCuts`). */
-const LAST_RESORTS = [[withVisibleIslands, visibleIslandsSetAside], [withCrowdedHiddenCuts, crowdedHiddenCutsSetAside]] as const;
+ * nothing else routes (see `withVisibleIslands`), in the checks hidden cuts
+ * that come too close (see `withCrowdedHiddenCuts`), and on the board circle
+ * every way of reaching a motif's pieces (see `withEveryWay`). */
+const LAST_RESORTS = [[withVisibleIslands, visibleIslandsSetAside], [withCrowdedHiddenCuts, crowdedHiddenCutsSetAside], [withEveryWay, everyWaySetAside]] as const;
 /** A heart for the request at its own size, else one with a construction
  * set aside while making it (see `LAST_RESORTS`), hard to cut rather than
  * refused. */
@@ -1986,13 +2003,21 @@ function generateUsingRecipes(request: GeneratorRequest,
 				.filter(moved => corners.every(p => Math.abs(p[axis] - centre[axis] - moved) >= near / 2))
 				.map((moved): Point => axis ? [junction[0], moved] : [moved, junction[1]]);
 		});
+		// Every way of reaching the motif's pieces, after every other way, as a
+		// last resort (see `withEveryWay`): the gates' spokes meet each other
+		// piece in turn (of three in a row, the middle one), islands in a
+		// ring's hole are reached round either attachment, and a motif kept
+		// whole has spokes go round the pieces in their way (a back card hiding
+		// the front one from two gates).
+		const pieces = forest(contours), rest = (layouts: object[]) => everyWay ? [layouts.map(layout => ({ ...compound, nested: true, bases: true, ...layout }))] : [];
 		const layouts = (range: readonly [number, number], { centre }: Placement, whole = false, atSize = false) => {
-			if (whole || panels(range) === 1) return [[{}, compound]];
+			if (whole || panels(range) === 1) return [[{}, compound], ...rest([{}, ...pieces.length > 1 ? [{ around: true }] : []])];
 			const junctions = background.map((p): Point => [p[0] - centre[0], p[1] - centre[1]]);
 			const moved = atSize ? [[0, 0] as Point, ...junctions].flatMap(junction => beside(centre, junction)) : [];
 			return [[{ columns: 2, slices: 2 }, { ...compound, columns: 2, slices: 2 }, ...junctions.map(junction => ({ columns: 2, slices: 2, junction }))],
 				[undefined, ...junctions].map(junction => ({ ...islands, columns: 2, slices: 2, ...junction && { junction } })),
-				...moved.length ? [moved.map(junction => ({ columns: 2, slices: 2, junction }))] : []];
+				...moved.length ? [moved.map(junction => ({ columns: 2, slices: 2, junction }))] : [],
+				...rest([undefined, ...junctions].map(junction => ({ columns: 2, slices: 2, ...junction && { junction } })))];
 		};
 		// A circle wider than the paper leaves the motif no more room than the paper.
 		const fills = (radius: number, { reach }: Placement, factor = 1, space = gap, whole = false) =>
@@ -2108,6 +2133,9 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const hard = hardToCutResult(request, rejected, curveFitter);
 			if (hard) return kept(hard);
 		}
+		// A motif of several pieces, or with islands in its holes, may still
+		// be reached another way (see `withEveryWay`).
+		if (!everyWay && (pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length)))) everyWayPassed++;
 		// Over the corner squares, a motif that cannot be built at all at its
 		// size keeps the largest circle short of them, at 85% on five strips, and
 		// so on past each junction further out; with more space than usual, one
