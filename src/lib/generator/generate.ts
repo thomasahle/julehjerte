@@ -571,24 +571,60 @@ function withEveryWay<T>(build: () => T): T {
  * that come too close (see `withCrowdedHiddenCuts`), and on the board circle
  * every way of reaching a motif's pieces (see `withEveryWay`). */
 const LAST_RESORTS = [[withVisibleIslands, visibleIslandsSetAside], [withCrowdedHiddenCuts, crowdedHiddenCutsSetAside], [withEveryWay, everyWaySetAside]] as const;
+/** The last resorts allowed while a heart is made (see `allowingLastResort`). */
+const allowed = LAST_RESORTS.map(() => false);
+function allowingLastResort<T>(k: number, build: () => T): T {
+	const before = allowed[k];
+	allowed[k] = true;
+	try {
+		return LAST_RESORTS[k][0](build);
+	} finally {
+		allowed[k] = before;
+	}
+}
+/** The alternatives that failed at the size being made (see
+ * `generateAtSizeOrLastResort`), each with the last resorts allowed then and
+ * those it set a construction aside for. Allowed besides only last resorts
+ * it set nothing aside for, an alternative fails the same way again: it is
+ * not made again (a swan refused in the wedges was made seven times a size,
+ * three of them so). */
+type Failed = { allowed: boolean[]; setAside: boolean[]; error: unknown };
+let failedAtSize: Map<string, Failed[]> | undefined;
+function alternativeOnce(request: GeneratorRequest, kind: string, build: () => GeneratorResult): { result: GeneratorResult } | Failed {
+	const key = kind + JSON.stringify(request, (name, value) => name === 'contours' || name === 'font' ? undefined : value);
+	const known = failedAtSize?.get(key)?.find(failed => failed.allowed.every((then, k) => then ? allowed[k] : !allowed[k] || !failed.setAside[k]));
+	if (known) return known;
+	const before = LAST_RESORTS.map(([, setAside]) => setAside());
+	try {
+		return { result: build() };
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		const failed = { allowed: [...allowed], setAside: LAST_RESORTS.map(([, setAside], k) => setAside() !== before[k]), error };
+		if (failedAtSize) failedAtSize.set(key, [...failedAtSize.get(key) ?? [], failed]);
+		return failed;
+	}
+}
 /** A heart for the request at its own size, else one with a construction
  * set aside while making it (see `LAST_RESORTS`), hard to cut rather than
  * refused. */
 function generateAtSizeOrLastResort(request: GeneratorRequest): GeneratorResult {
-	const before = LAST_RESORTS.map(([, setAside]) => setAside());
+	const before = LAST_RESORTS.map(([, setAside]) => setAside()), outer = failedAtSize;
+	failedAtSize = new Map();
 	try {
 		return generateAtSize(request);
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-		for (const [k, [allowing, setAside]] of LAST_RESORTS.entries()) {
+		for (const [k, [, setAside]] of LAST_RESORTS.entries()) {
 			if (setAside() === before[k]) continue;
 			try {
-				return allowing(() => generateAtSize(request));
+				return allowingLastResort(k, () => generateAtSize(request));
 			} catch (lastError) {
 				if (!(lastError instanceof ConstructionError) && !(lastError instanceof CutGeometryError)) throw lastError;
 			}
 		}
 		throw error;
+	} finally {
+		failedAtSize = outer;
 	}
 }
 
@@ -621,16 +657,12 @@ function generateAtSize(request: GeneratorRequest): GeneratorResult {
 		const hard: [number, () => GeneratorResult | undefined][] = [];
 		for (const [index, { request: alternative, retries, lastResort }] of alternatives.entries()) {
 			if (lastResort || again !== undefined && !setAsideBy.get(index)?.[again]) continue;
-			const before = LAST_RESORTS.map(([, setAside]) => setAside());
-			try {
-				// Identical small motifs gain little from other junctions; a
-				// smaller board is the better next choice.
-				return named(generateOnce(alternative, finish => hard.push([index, finish]), 1, retries), index);
-			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-				last = error;
-				if (again === undefined) setAsideBy.set(index, LAST_RESORTS.map(([, setAside], k) => setAside() !== before[k]));
-			}
+			// Identical small motifs gain little from other junctions; a
+			// smaller board is the better next choice.
+			const tried = alternativeOnce(alternative, 'preferred', () => generateOnce(alternative, finish => hard.push([index, finish]), 1, retries));
+			if ('result' in tried) return named(tried.result, index);
+			last = tried.error;
+			if (again === undefined) setAsideBy.set(index, tried.setAside);
 		}
 		for (const [index, finish] of hard) {
 			const result = finish();
@@ -643,22 +675,19 @@ function generateAtSize(request: GeneratorRequest): GeneratorResult {
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 	}
-	for (const [k, [allowing]] of LAST_RESORTS.entries()) {
+	for (const k of LAST_RESORTS.keys()) {
 		if (![...setAsideBy.values()].some(aside => aside[k])) continue;
 		try {
-			return allowing(() => preferred(k));
+			return allowingLastResort(k, () => preferred(k));
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 		}
 	}
 	for (const [index, { request: alternative, lastResort }] of alternatives.entries()) {
 		if (!lastResort) continue;
-		try {
-			return named(generateOnce(alternative), index);
-		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-			last = error;
-		}
+		const tried = alternativeOnce(alternative, 'last', () => generateOnce(alternative));
+		if ('result' in tried) return named(tried.result, index);
+		last = tried.error;
 	}
 	throw last;
 }

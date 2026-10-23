@@ -1,5 +1,18 @@
 # Generator robustness results
 
+## No alternative made twice where it would fail the same way
+
+A request that cannot be built at its size is made again with each last
+resort allowed, and before this the whole size again: a swan refused in the
+wedges was made seven times a size, the same request with the same last
+resorts twice. An alternative that failed is now not made again at that size
+where every last resort newly allowed is one it set nothing aside for. Over
+7 figure frames (rays, checks, double border, checked tips, wedges,
+silhouette, close-fitting) at 70, 85 and 100% for the 49 featured motifs
+(1029 hearts), every heart is unchanged and the sweep takes 6752 s instead
+of 8731 s: the swan's refusals in the silhouette 169 → 114 s at 70% and
+700 → 406 s at 85%, in the wedges 505 → 435 s at 85%.
+
 ## Checked tips: side lanes bent past a large motif
 
 At 92–100% the checked tips' side lanes run a straight leg from beside the

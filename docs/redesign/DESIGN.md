@@ -1080,7 +1080,9 @@ or cells asked for, a request tries again with the constructions set aside on
 the way to a clean one, where some were: islands entered along visible spokes where no
 hidden chain routes (a paw's toes, a sun's rays), and in the checks two hidden cuts across one square
 that only come too close; such hearts are hard to cut, and every heart built without them keeps its
-cuts.
+cuts. Within one size an alternative that failed is not made again where the only constructions
+newly allowed are of a kind it set none aside of: it would fail the same way (a swan refused in
+the wedges was made seven times a size, three of them so).
 On them a motif keeps, at every size, the choice its default size made on its strips, since
 another would make it jump in size: which squares hold the small copies, or for equal squares the
 motif up to a tenth larger in its square, or with the spacious frame's room around it. Each choice
