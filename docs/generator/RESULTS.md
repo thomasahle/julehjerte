@@ -1,5 +1,21 @@
 # Generator robustness results
 
+## Checked tips: side lanes bent past a large motif
+
+At 92–100% the checked tips' side lanes run a straight leg from beside the
+motif to each checked tip, and a large star's lower tips came within 0.37 of
+it (the house's eave 0.67): hard to cut. As the last retry before a heart is
+called hard, every layout runs again with a leg that passes nearer another cut
+than the six-strip clearance bent out past it, a corner the space asked for
+from the nearest point, on its side away from the middle, inside the bands'
+border and crossing no other cut. Over the 49 featured motifs at 70, 85, 92
+and 100% (196 hearts): 188 identical; the house, star and yule goat hard → clean
+at 92% and 100%; the owl at 100% hard at 94% → clean at 97%; the penguin, clean
+at 100% either way, now has bent legs and its checked tips at the space asked
+for, where they stood further out. Hard or refused 36 → 29. Still hard at 100%: the bauble, butterfly,
+rabbit and unicorn (94%), gift, holly and church (97%); the swan and elephant
+are refused there.
+
 ## Paper by the edge for motifs kept whole
 
 Measured as paper (each template cut at the download's 80 mm print, every

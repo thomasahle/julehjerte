@@ -140,6 +140,12 @@ describe('complete motif frames', () => {
   expect(design).not.toHaveProperty('rightCutouts');
   expect(design).not.toHaveProperty('leftCutouts');
  });
+ it('bends the checked-tip frame\'s side lanes out past a full-size star', () => {
+  // At 100% the star's lower tips came within half a unit of the side lanes'
+  // straight legs to the bottom tip: hard to cut.
+  const result = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'corners', scale: 1 });
+  expect(result.hardToCut).toBeUndefined();
+ });
  for (const style of ['fitted', 'corners', 'layers'] as const) {
   for (const [name, motif] of Object.entries(examples)) {
    it(`constructs ${name} with ${style} using validated open cuts`, () => {

@@ -973,6 +973,8 @@ function generateOnce(request: GeneratorRequest,
 		if (widerConnections) return widerConnections;
 		const guardedPanels = retryGuardedPanels(request, curveFitter);
 		if (guardedPanels) return guardedPanels;
+		const bentLegs = retryBentCornerLegs(request, curveFitter);
+		if (bentLegs) return bentLegs;
 		const finishHard = () => hardToCutResult(request, [...curvedCandidates,
 			...closePanels.map(construction => ({ construction, recipe: 'letters' as const }))], curveFitter);
 		if (deferHard) {
@@ -1057,6 +1059,30 @@ function retryCornerLanes(request: GeneratorRequest, curveFitter: ReturnType<typ
 		}
 	}
 	return best;
+}
+
+/** The checked tips' layouts: routing in the lanes, outside routes fitted
+ * into the border, bent approaches to the motif. */
+const CORNER_LAYOUTS = [
+	['chain', false, false], ['practical', false, false], ['separated', false, false],
+	['practical', true, false], ['separated', true, false],
+	['practical', false, true], ['separated', false, true],
+	['practical', true, true], ['separated', true, true]
+] as const;
+
+/** A side lane's straight leg to a checked tip can pass too near the motif (a
+ * full-size star's lower tips reach across it): the layouts again with such
+ * legs bent out past it, before the heart is called hard to cut. */
+function retryBentCornerLegs(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	if (request.mode !== 'figure' || request.style !== 'corners') return;
+	for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) try {
+		const construction = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes,
+			undefined, undefined, request.gap, true);
+		if (!construction.bentLegs || routing === 'separated' && !construction.separated || fitBorder && !construction.borderAdjusted) continue;
+		return improveSharedConnections(finishConstruction(request, construction, 'silhouette', undefined, curveFitter));
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
 }
 
 /** A near contact can pinch even when both component outlines are individually
@@ -2194,12 +2220,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 	}
 	if (request.style === 'corners') {
 		let last: unknown;
-		for (const [routing, fitBorder, bentSpokes] of [
-			['chain', false, false], ['practical', false, false], ['separated', false, false],
-			['practical', true, false], ['separated', true, false],
-			['practical', false, true], ['separated', false, true],
-			['practical', true, true], ['separated', true, true]
-		] as const) {
+		for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) {
 			try {
 				const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes,
 					undefined, undefined, request.gap);

@@ -1225,6 +1225,13 @@ inside those bands and shorten its vertical range accordingly; preserve the
 selected motif size, the checked tips and the six-strip layout. These are final
 fallbacks after the established constructions, with the same full-sheet topology,
 spacing and artwork checks.
+Last of all, before the heart is called hard to cut, each layout runs once more
+with the side lanes' straight legs to the checked tips bent out past the motif
+(after every other retry, so hearts built before keep their legs): a leg passing nearer another
+cut than the six-strip clearance (a full-size star's lower tips reach across the
+leg to the bottom tip) takes a corner the space asked for out from the nearest
+point, on its side away from the middle, kept only inside the bands' border and
+crossing no other cut. A layout with no leg to bend is skipped.
 Checked-tip lanes may also use short bent approaches to the motif outline after
 the straight connections fail. General framed figures use the same option on
 their initial panel and four-port layouts, after their established recipes fail.

@@ -76,9 +76,49 @@ export function checkedTips(artwork: Ring[], gap = 0, inset = CORNER_INSET) {
 	return { s, d: (s - inset) / 3, e, f: (100 - inset - e) / 3 };
 }
 
+const toSegment = (p: Point, a: Point, b: Point) => {
+	const dx = b[0] - a[0], dy = b[1] - a[1], l = dx * dx + dy * dy;
+	const t = l ? Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / l)) : 0;
+	return Math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy);
+};
+const crosses = (a: Point, b: Point, c: Point, d: Point) => {
+	const side = (p: Point, q: Point, r: Point) => (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]);
+	return side(a, b, c) * side(a, b, d) < 0 && side(c, d, a) * side(c, d, b) < 0;
+};
+
+/** A side lane's leg past the motif, bent out where it passes nearer than
+ * `limit` to the points of other cuts (a large star's lower tips reach across
+ * the leg from the side to the bottom tip): a corner `room` out from the
+ * nearest, on the leg's side away from the middle, and again on each half
+ * while either still passes near. The leg as it was where that leaves the
+ * bands' border. */
+function pastMotif(path: Point[], cuts: Point[], room: number, limit: number, safe: number): Point[] {
+	let kept = true;
+	const bend = (a: Point, b: Point, depth: number): Point[] => {
+		let d = Infinity, m = a;
+		for (const p of cuts) {
+			const e = toSegment(p, a, b);
+			if (e < d) [d, m] = [e, p];
+		}
+		if (d >= limit) return [a, b];
+		const length = Math.hypot(b[0] - a[0], b[1] - a[1]);
+		let n: Point = [(a[1] - b[1]) / length, (b[0] - a[0]) / length];
+		if (n[0] * (50 - m[0]) + n[1] * (50 - m[1]) > 0) n = [-n[0], -n[1]];
+		const v: Point = [m[0] + n[0] * room, m[1] + n[1] * room];
+		if (depth === 6 || v.some(c => c < safe || c > 100 - safe)) {
+			kept = false;
+			return [a, b];
+		}
+		return [...bend(a, v, depth + 1), ...bend(v, b, depth + 1).slice(1)];
+	};
+	const out = [path[0]];
+	for (let i = 1; i < path.length; i++) out.push(...bend(path[i - 1], path[i], 0).slice(1));
+	return kept ? out : path;
+}
+
 export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 	routing: 'chain' | 'practical' | 'separated' = 'chain', fitBorder = false, bentSpokes = false,
-	contacts?: { tilt: number; invert: boolean }, laneSplit?: number, gap = 0) {
+	contacts?: { tilt: number; invert: boolean }, laneSplit?: number, gap = 0, bendLegs = false) {
 	const points = rings.flat();
 	if (!points.length) throw new ConstructionError('empty', 'No contour');
 	const artwork = rings.map(r => r.map(([x, y]) => uprightToSheet([x * size * scale, y * size * scale])));
@@ -104,6 +144,13 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 		return clamped;
 	};
 	let edges: Edge[] = [];
+	// The side lanes' legs, to bend past the motif once every cut is in.
+	const legs: { at: number; count: number; path: Point[] }[] = [];
+	const leg = (path: Point[]) => {
+		const at = edges.length;
+		add(edges, path, 'AB', 'shared');
+		legs.push({ at, count: edges.length - at, path });
+	};
 	const chains: ContourChain[] = [];
 	const lanes = Array.from({ length: 3 }, () => [] as ReturnType<typeof forest>);
 	const separate = routing === 'separated';
@@ -167,9 +214,9 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 			// Approach a separate island near its own height, then continue
 			// outside the whole motif. A long diagonal from a steam curl to the
 			// bottom corner would otherwise cut through the coffee cup below it.
-			add(edges, [start, borderPoint(uprightToSheet([x, above])), entry], 'AB', 'shared');
+			leg([start, borderPoint(uprightToSheet([x, above])), entry]);
 			route(entry, exit);
-			add(edges, [exit, borderPoint(uprightToSheet([x, below])), end], 'AB', 'shared');
+			leg([exit, borderPoint(uprightToSheet([x, below])), end]);
 		}
 		add(edges, [end, [end[0], 100]], 'A', 'frame');
 		add(edges, [end, [100, end[1]]], 'B', 'frame');
@@ -179,10 +226,29 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 		add(edges, [[t, 0], [t, 100]], 'A', 'frame');
 		add(edges, [[0, t], [100, t]], 'B', 'frame');
 	}
+	// A leg nearer another cut than cutting allows (the motif's, not those
+	// it joins at its ends) bends out past it, at the space asked for, where
+	// that crosses no other cut.
+	const touches = (e: Edge, p: Point) => [e.from, e.to].some(q => Math.hypot(q[0] - p[0], q[1] - p[1]) < 1e-6);
+	let bentLegs = false;
+	if (bendLegs) for (const { at, count, path } of legs.reverse()) {
+		const others = edges.filter((_, i) => i < at || i >= at + count);
+		const points = others.filter(e => !touches(e, path[0]) && !touches(e, path.at(-1)!)).flatMap(({ from: p, to: q }) => {
+			const steps = Math.max(1, Math.ceil(Math.hypot(q[0] - p[0], q[1] - p[1]) / .5));
+			return Array.from({ length: steps + 1 }, (_, i): Point => [p[0] + (q[0] - p[0]) * i / steps, p[1] + (q[1] - p[1]) * i / steps]);
+		});
+		const bent = pastMotif(path, points, Math.max(gap, 1.5 * margin), margin, safe);
+		if (bent === path) continue;
+		if (bent.some((p, i) => i && others.some(e => crosses(bent[i - 1], p, e.from, e.to)))) continue;
+		const replaced: Edge[] = [];
+		add(replaced, bent, 'AB', 'shared');
+		edges.splice(at, count, ...replaced);
+		bentLegs = true;
+	}
 	if (dividers.length) edges = stitch(edges, dividers.map(x => x * size * scale));
 	// Exclude only the two checked corners and the narrow outer bands from the
 	// solid-field check. No decorative colours may appear elsewhere in the field.
 	const near = s + d, far = e - f;
 	const domain: Ring = [[near, inset], [100 - inset, inset], [100 - inset, far], [far, far], [far, 100 - inset], [inset, 100 - inset], [inset, near], [near, near]];
-	return { edges, geometry: compile(edges), artwork, domain: [domain, ...artwork], separated: changed, borderAdjusted };
+	return { edges, geometry: compile(edges), artwork, domain: [domain, ...artwork], separated: changed, borderAdjusted, bentLegs };
 }
