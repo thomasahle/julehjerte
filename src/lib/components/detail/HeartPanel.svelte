@@ -12,7 +12,6 @@
 <script lang="ts">
 	import DifficultyDots from '$lib/components/DifficultyDots.svelte';
 	import { t, type Language } from '$lib/i18n';
-	import { href } from '$lib/i18n/routes';
 	import type { HeartInfo } from '$lib/types/heart';
 	import { parseDescription } from '$lib/utils/descriptionLinks';
 
@@ -94,8 +93,6 @@
 			</p>
 		</div>
 	{/if}
-
-	<a class="guide-link" href={href('noPrinter', lang)}>{t('noPrinterLink', lang)} <span aria-hidden="true">→</span></a>
 
 	<div class="facts">
 		<div class="fact">
@@ -198,12 +195,6 @@
 		font-size: 17px;
 		line-height: 1.5;
 		color: var(--ink);
-	}
-
-	.guide-link {
-		color: var(--green);
-		font-size: 15px;
-		text-underline-offset: 3px;
 	}
 
 	.facts {
