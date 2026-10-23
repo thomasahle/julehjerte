@@ -61,6 +61,14 @@ Over the 49 featured motifs at the sizes these patterns draw (five strips at
 hard to cut before, is now clean. No heart turns hard or refused, none keeps a
 different size, and the time is the same (2479 s before, 2487 s after).
 
+A cut that could not leave its switch point slanted, and so went straight in
+and turned, now leaves it along the steepest way allowed (40°) where that keeps
+clear, and turns less. The hidden cuts' corners at the patterns above fall
+further (9 strips at 43.2: 52 to 48; the whole patterns on five strips: 8 to
+0), the star on nine strips at 90% to 385 corners and the tree to 94. Over the
+same featured motifs at eleven of those sizes (539 hearts), 276 have new cuts
+and none changes status.
+
 ## Every motif file on the rays frame
 
 At 70% the rays frame cuts 2623 of the 2668 motif files cleanly; 20 are hard

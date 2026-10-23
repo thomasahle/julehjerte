@@ -910,9 +910,10 @@ from everything else as it was there (or 1.6, 1.24), straight across a white squ
 leaving its switch point no more than 40° from straight in (further leaves one sheet a sharp tip of
 paper there), no nearer the centre at any angle than the drawn cuts came there or than a spacing
 inside the circle, outermost first so that an inner cut can swing out where its outer one went
-round. A spoke with no other spoke's gate or switch point in its
-turn runs straight out to its switch point once that keeps clear. This halves the corners of the
-cuts there (9×9 at 90%: 627 to about 400; a motif kept whole on 5×5: 206 to 110) without bringing
+round; one that still leaves its switch point straight in and then turns leaves along the steepest
+way allowed instead, where that keeps clear. A spoke with no other spoke's gate or switch point in
+its turn runs straight out to its switch point once that keeps clear. This halves the corners of the
+cuts there (9×9 at 90%: 627 to 385; a motif kept whole on 5×5: 206 to 94) without bringing
 any two nearer. Beyond, the heart
 leaves the middle lines out in both sheets: the outer two lines a side remain, met as on five
 strips with the motif in four (46.5 to 55.4 on seven, 48.2 to 58.2 on nine; `boardRangeLines`) out

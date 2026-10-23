@@ -332,38 +332,64 @@ function tighten(paths: Point[][], heights: number[], walls: Point[][], sides: (
 			}
 			return Math.abs(sum) > Math.PI;
 		};
-		const fits = (i: number, j: number) => {
-			const a = path[i], b = path[j], length = Math.hypot(b[0] - a[0], b[1] - a[1]), u: Point = [(b[0] - a[0]) / length, (b[1] - a[1]) / length];
+		// Whether a stretch from a to b keeps clear: each end a switch point
+		// (`end`, which) or a point of the cut with its room.
+		type Stop = { end?: 0 | 1; room: number };
+		const fitsSegment = (a: Point, b: Point, stops: [Stop, Stop]) => {
+			const length = Math.hypot(b[0] - a[0], b[1] - a[1]), u: Point = [(b[0] - a[0]) / length, (b[1] - a[1]) / length];
 			const at = (t: number): Point => [a[0] + u[0] * t, a[1] + u[1] * t];
 			const keeps = (near: typeof wall, from: number, to: number, need: number) => to <= from || near([at(from), at(to)], need) >= need - 1e-6;
 			// `clear` from everything, but within twice its shortfall of an
 			// end, as near as that end is (a switch point: as near the other
 			// cuts as its cut was, leaving straight in); and a switch point's
 			// own stretch of the boundary only once it can be.
-			const ending = [i === 0, j === last], skip = [0, 0];
+			const skip = [0, 0];
 			const apart = (near: typeof wall, needs: number[]) => {
 				const reach = needs.map((v, e) => skip[e] || Math.min(length / 2, 2 * (clear - v)));
 				return keeps(near, skip[0], reach[0], needs[0]) && keeps(near, length - reach[1], length - skip[1], needs[1]) && keeps(near, reach[0], length - reach[1], clear);
 			};
-			if (!apart(cuts, [ending[0] ? ends[0] : room[i], ending[1] ? ends[1] : room[j]])) return false;
+			if (!apart(cuts, stops.map(s => s.end === undefined ? s.room : ends[s.end]))) return false;
 			// Off the boundary at an end no more than `SLANT` from straight in
 			// (more leaves one sheet a sharp tip of paper there).
-			for (const [e, sign] of [[0, 1], [1, -1]] as const) {
-				if (!ending[e]) continue;
+			for (const [k, sign] of [[0, 1], [1, -1]] as const) {
+				const e = stops[k].end;
+				if (e === undefined) continue;
 				if ((u[0] * inward[e][0] + u[1] * inward[e][1]) * sign < Math.cos(SLANT)) return false;
-				skip[e] = Math.min(clear / Math.cos(SLANT), length / 2);
-				const q = e ? b : a, w: Point = [u[0] * sign, u[1] * sign];
-				if (wall([[q[0] + w[0] * .1, q[1] + w[1] * .1], [q[0] + w[0] * skip[e], q[1] + w[1] * skip[e]]], .05) < .05) return false;
+				skip[k] = Math.min(clear / Math.cos(SLANT), length / 2);
+				const q = k ? b : a, w: Point = [u[0] * sign, u[1] * sign];
+				if (wall([[q[0] + w[0] * .1, q[1] + w[1] * .1], [q[0] + w[0] * skip[k], q[1] + w[1] * skip[k]]], .05) < .05) return false;
 			}
-			if (!apart(wall, [ending[0] ? clear : room[i], ending[1] ? clear : room[j]])) return false;
-			return side !== 'centre' || (along(a, b, .25).every(q => Math.hypot(...q) >= floor[bin(q)] - 1e-6) && !round(i, j));
+			if (!apart(wall, stops.map(s => s.end === undefined ? s.room : clear))) return false;
+			return side !== 'centre' || along(a, b, .25).every(q => Math.hypot(...q) >= floor[bin(q)] - 1e-6);
 		};
-		const kept = [path[0]];
+		const stop = (k: number): Stop => k === 0 ? { end: 0, room: clear } : k === last ? { end: 1, room: clear } : { room: room[k] };
+		const fits = (i: number, j: number) => fitsSegment(path[i], path[j], [stop(i), stop(j)]) && (side !== 'centre' || !round(i, j));
+		let kept = [path[0]];
 		for (let i = 0; i < last;) {
 			let best = i + 1;
 			for (let j = i + 2, misses = 0; j <= last && misses < 12; j++) if (fits(i, j)) { best = j; misses = 0; } else misses++;
 			kept.push(path[best]);
 			i = best;
+		}
+		// A cut that still leaves a switch point straight in and then turns
+		// leaves it instead along the steepest way allowed towards where it
+		// goes, as far as keeps clear, and turns less.
+		for (const e of [0, 1] as const) {
+			const points = e ? [...kept].reverse() : [...kept], q = points[0], n = inward[e];
+			if (points.length < 3 || norm([points[1][0] - q[0], points[1][1] - q[1]]).reduce((sum, v, k) => sum + v * n[k], 0) < 1 - 1e-9) continue;
+			const towards = points[2], angle = Math.sign(n[0] * (towards[1] - q[1]) - n[1] * (towards[0] - q[0])) * (SLANT - 1e-3);
+			const u = [n[0] * Math.cos(angle) - n[1] * Math.sin(angle), n[0] * Math.sin(angle) + n[1] * Math.cos(angle)];
+			const roomOf = (p: Point) => Math.min(wall([p, p], clear), cuts([p, p], clear));
+			search: for (let t = 3 * clear; t >= .25; t -= .25) {
+				const r: Point = [q[0] + u[0] * t, q[1] + u[1] * t];
+				if (!fitsSegment(q, r, [{ end: e, room: clear }, { room: clear }])) continue;
+				for (let j = points.length - 1; j >= 2; j--)
+					if (fitsSegment(r, points[j], [{ room: clear }, j === points.length - 1 ? { end: e ? 0 : 1, room: clear } : { room: roomOf(points[j]) }])) {
+						points.splice(1, j - 1, r);
+						break search;
+					}
+			}
+			kept = e ? points.reverse() : points;
 		}
 		// The other three, turned: as far from this one as they were.
 		const gap = (a: Point[], b: Point[]) => Math.min(...open(a).map(s => Math.min(...open(b).map(t => segmentToSegment(s, t)))));
