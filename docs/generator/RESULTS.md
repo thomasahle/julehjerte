@@ -1,5 +1,57 @@
 # Generator robustness results
 
+## The board circle normalises its motif
+
+70 motif files carry rings of zero area or with repeated points. Examples are
+star, tree, ph-cat, ph-peace and ph-rabbit. Every frame and the board's picture
+already dropped these rings (`normalizeContours`). The board circle took the
+raw contours, and it now normalises them too.
+
+All 840 hearts of those motifs (five, seven and nine strips at 70–100%) are
+unchanged bit for bit. The sweep took 3352 s instead of 3488 s. ph-peace's
+refusals are up to 30 s quicker, and ph-rabbit is 10–20% quicker.
+
+## The featured motifs on the board circle
+
+Most of the 49 featured motifs (`MOTIF_GROUPS`: Jul, Dyr, Former) are not in
+the test corpus (`scripts/generator/corpus.json`). Only 10 are, so the board
+sweeps above never saw the rest.
+
+They were swept on five, seven and nine strips at 70, 80, 85, 90, 95 and 100%
+(882 hearts): 714 clean, 132 hard, 36 refused.
+
+**Refused at every size on every board:**
+
+- **gi-polar-star (Jul).** The motif in four fails every division. Its four
+  needle points lie on the seams through its centre ("Invalid A degree"). The
+  background between the points and the four pieces beside them keeps no
+  point 4% of the motif clear of the outline for the panels to meet at. Kept
+  whole, the single cell's four-port routing finds no construction, in any
+  frame's cell.
+- **pin-elephant (Dyr).** No construction either way ("No open four-port
+  construction", 25 s).
+
+Other frames make both: the rays frame cuts the polar star cleanly, with its
+nested recipe on six strips.
+
+These did not help:
+
+- Seams moved beside the needle points, both seams at once. They then cross
+  the needles' sides.
+- Junctions with 1.5% clearance (four in the background between the points).
+  Every panel's four-port routing failed.
+- Points blunted to 1% of the motif.
+- Island routing for the undivided motif.
+- Gates moved along the cell's sides (`adaptGates`) for an undivided motif.
+  This makes the elephant on three strips (hard to cut), and 10 hard hearts
+  clean, but one clean heart hard (gi-santa-hat, three strips, 60%). It is
+  also three times slower over the corpus (hi-pig 4.5 s → 45 s), because the
+  nine gate positions are tried in the decisions too. Not shipped.
+
+**Hard at most sizes:** hi-pig, gi-squirrel and pin-butterfly (kept whole; all
+18 hearts), nisse (15, from 80%), hi-cow (14), pin-dove (12), gi-swan (8) and
+mc-moon-stars (7). The star is now hard at four (see below).
+
 ## Seams beside the motif's corners
 
 The star was hard to cut on the board circle at most sizes past 80% (nine

@@ -1950,7 +1950,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// near it, so their seams cross its paper but not each other. On finer
 		// boards a larger circle reaches a third line a side, which follows it
 		// (see `boardLegs`).
-		const contours = request.contours ?? [];
+		const contours = normalizeContours(request.contours ?? []);
 		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } };
 		const xs = contours.flat().map(p => p[0]), ys = contours.flat().map(p => p[1]);
 		const middle: Point = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2];
