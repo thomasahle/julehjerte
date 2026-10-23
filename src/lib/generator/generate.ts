@@ -647,12 +647,15 @@ function exported(result: GeneratorResult): GeneratorResult {
 /** Whether `a` cuts better than `b`, both as exported: fewer needle-thin
  * paper tips, then fewer sharp tips, then fewer pieces that tear at print
  * size (`paperTears`). Tips first, as the search always ranked them: a heart
- * mended in its paper may not gain a tip (Nunito ANNA's keep none). */
-function cutsBetter(a: GeneratorResult, b: GeneratorResult): boolean {
+ * mended in its paper may not gain a tip (Nunito ANNA's keep none). With
+ * `paperFirst`, the pieces that tear come first. */
+function cutsBetter(a: GeneratorResult, b: GeneratorResult, paperFirst = false): boolean {
 	const x = exported(a).design, y = exported(b).design, [ta, tb] = [cutTipCounts(x), cutTipCounts(y)];
+	const [pa, pb] = [paperTears(x), paperTears(y)];
+	if (paperFirst && pa !== pb) return pa < pb;
 	if (ta[0] !== tb[0]) return ta[0] < tb[0];
 	if (ta[1] !== tb[1]) return ta[1] < tb[1];
-	return paperTears(x) < paperTears(y);
+	return pa < pb;
 }
 
 const BOARD_FRAMES: string[] = ['squares', 'motifs'];
@@ -2575,18 +2578,33 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// motif shrink a little, and then the circle grow a little.
 		const nearby = [size + 1.5, size + 3].map(other => Math.min(mode[1], other))
 			.filter(other => other - size > .5 && boardLines(strips).every(line => Math.abs(other - line) > .1));
+		// On five strips past the touching circle, of the first few working
+		// cuts, the one whose paper holds best, then with the fewest tips
+		// (`cutsBetter`): the attempts differ only in the invisible partition,
+		// so the picture stays. Tips first would leave the star at 73% needing
+		// a print 170 mm wide rather than 140.
+		const ranked = strips === 5 && range !== small;
 		let last: unknown;
 		for (const attempts of [sizes(mode, size, placement, undefined, whole, true), [.85, .7].flatMap(factor => sizes(mode, size, placement, fills(size, placement, factor, gap, whole), whole, true)),
 			nearby.flatMap(other => sizes(mode, other, placement, undefined, whole, true))]) {
 			const rejected: Parameters<typeof hardToCutResult>[1] = [];
+			let best: GeneratorResult | undefined, rawTips: [number, number] | undefined, working = 0;
 			for (const attempt of attempts) try {
 				const construction = build(attempt);
+				// Worse tips before the curve fitting are skipped, unless the
+				// best so far tears.
+				const tips = cutTipCounts(construction.geometry);
+				if (rawTips && best && !paperTears(exported(best).design) && !fewerCutTips(tips, rawTips)) continue;
 				rejected.push({ construction, recipe: 'nested' });
-				return kept(finish(construction, 'nested'));
+				const candidate = finish(construction, 'nested');
+				if (!ranked) return kept(candidate);
+				if (!best || cutsBetter(candidate, best, true)) [best, rawTips] = [candidate, tips];
+				if (!paperTears(exported(best).design) && !cutTipCounts(exported(best).design)[1] || ++working === 4) break;
 			} catch (error) {
 				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 				last = error;
 			}
+			if (best) return kept(best);
 			const hard = hardToCutResult(request, rejected, curveFitter);
 			// Shared cuts meeting the motif's outline in a narrow point can bend
 			// to cross it instead (see `curveSharedCuts`), where only that keeps

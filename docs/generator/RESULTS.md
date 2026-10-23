@@ -1,5 +1,23 @@
 # Generator robustness results
 
+## Board hearts ranked by their paper
+
+The board circle took the first construction that finished. On five strips
+past the touching circle it now finishes up to four and keeps the one with the
+fewest pieces that tear printed 80 mm wide, then the fewest tips (`cutsBetter`
+with `paperFirst`). They differ only in where the panels meet and the motif
+cell's padding, which the picture does not show. Ranked tips first, the star
+at 73% kept fewer tips but needed a print 170 mm wide rather than 140; ranked
+by its paper first it needs 110.
+
+Over the 49 featured motifs at 12 sizes from 71% to 100%, with the change
+below: hearts that tear fall from 29/30/26/26/25 to 24/24/22/22/20 at
+71/73/75/78/80%, from 36/37/35 to 19/20/19 at 81/83/85% (24/25/23 with the
+change below alone), and from 23/35/46 to 18/29/45 at 90/95/100%; the mean
+print width that holds falls from 113 mm to 103; the mouse at 90% is no longer
+hard to cut. Needle tips change by −11 to +4 a size elsewhere, and generating
+takes 10–30% longer.
+
 ## Motifs kept whole stop where their paper holds
 
 On five strips a motif kept whole (the tree, the bell, the angel) grew with

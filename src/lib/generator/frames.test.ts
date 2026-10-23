@@ -874,6 +874,12 @@ describe('frames from real hearts', () => {
   expect(scale).toBeLessThan(.82);
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
  });
+ it('keeps, of a five-strip board heart\'s working cuts, the one whose paper holds best', () => {
+  // The star's first division at 73% left four pieces hanging by paper under
+  // 2 mm; another through the same picture leaves three.
+  const { design } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .73 });
+  expect(paperFaults(design).weak).toBeLessThan(4);
+ });
  it('lays the figure in the checks on boards of three to six strips', () => {
   for (const strips of [3, 5, 6]) {
    const { design } = generate({ mode: 'figure', name: 'Heart', contours: heart.contours as Ring[], colors, style: 'strips', board: strips });
