@@ -2144,8 +2144,9 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const hard = hardToCutResult(request, rejected, curveFitter);
 			// Shared cuts meeting the motif's outline in a narrow point can bend
 			// to cross it instead (see `curveSharedCuts`), where only that keeps
-			// the heart from being hard to cut.
-			if (hard?.hardToCut) for (const { construction, recipe } of rejected) {
+			// the heart from being hard to cut: in the first few constructions
+			// tried, where it nearly always does if it can.
+			if (hard?.hardToCut) for (const { construction, recipe } of rejected.slice(0, 4)) {
 				const geometry = curveSharedCuts(construction.geometry);
 				if (!geometry) continue;
 				try {
