@@ -912,6 +912,14 @@ describe('frames from real hearts', () => {
    expect(paperFaults(design), style).toEqual({ weak: 0, loose: 0 });
   }
  });
+ it('keeps a checked-tips heart\'s side lanes a paper\'s width inside the outer strips', () => {
+  // At 80% the bell's side lanes turned beside the outer strips' lines, the
+  // paper between them 1.5 mm printed 80 mm wide: four places to tear.
+  const s = { ...defaults, mode: 'figure' as const, style: 'corners' as const, scale: 80 };
+  const { design } = generate({ mode: 'figure', name: 'Bell', contours: bell.contours as Ring[], colors, style: 'corners', scale: .8,
+   frame: s.frame, frameSize: s.frameSize, gap: frameGap(s) });
+  expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
+ });
  it('lays the figure in the checks on boards of three to six strips', () => {
   for (const strips of [3, 5, 6]) {
    const { design } = generate({ mode: 'figure', name: 'Heart', contours: heart.contours as Ring[], colors, style: 'strips', board: strips });

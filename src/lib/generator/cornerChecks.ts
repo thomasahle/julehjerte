@@ -5,6 +5,7 @@ import {
 	ConstructionError, type Contour, type Ring, type Edge, type Point
 } from './geometry';
 import { gridClearance } from '$lib/geometry/clearance';
+import { PAPER_NECK_MM, PRINT_WIDTH_MM } from '$lib/geometry/paperNecks';
 import { contactChains, type ContourChain } from './chainContacts';
 import { clipContours, stitch } from './panels';
 
@@ -118,7 +119,7 @@ function pastMotif(path: Point[], cuts: Point[], room: number, limit: number, sa
 
 export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 	routing: 'chain' | 'practical' | 'separated' = 'chain', fitBorder = false, bentSpokes = false,
-	contacts?: { tilt: number; invert: boolean }, laneSplit?: number, gap = 0, bendLegs = false) {
+	contacts?: { tilt: number; invert: boolean }, laneSplit?: number, gap = 0, bendLegs = false, holdLegs = false) {
 	const points = rings.flat();
 	if (!points.length) throw new ConstructionError('empty', 'No contour');
 	const artwork = rings.map(r => r.map(([x, y]) => uprightToSheet([x * size * scale, y * size * scale])));
@@ -134,13 +135,19 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 	if (inset < margin) throw new ConstructionError('clearance', 'No room for the outer strips');
 	const safe = inset + margin * 1.25;
 	let borderAdjusted = fitBorder && inset < 6 - 1e-6;
+	// A side lane's leg turns, and its ends lie, a paper's width (and half a
+	// unit for the cuts) inside the outer strips at least (`holdLegs`): nearer,
+	// the paper between them tears printed. It hides there, so the picture
+	// keeps.
+	const held = Math.max(safe, inset + PAPER_NECK_MM / PRINT_WIDTH_MM * 100 + .5);
 	const borderPoint = (point: Point): Point => {
-		if (!fitBorder) return point;
+		if (!holdLegs && !fitBorder) return point;
+		const bound = holdLegs ? held : safe;
 		const clamped: Point = [
-			Math.max(safe, Math.min(100 - safe, point[0])),
-			Math.max(safe, Math.min(100 - safe, point[1]))
+			Math.max(bound, Math.min(100 - bound, point[0])),
+			Math.max(bound, Math.min(100 - bound, point[1]))
 		];
-		if (clamped.some((value, axis) => Math.abs(value - point[axis]) > 1e-6)) borderAdjusted = true;
+		if (fitBorder && clamped.some((value, axis) => Math.abs(value - point[axis]) > 1e-6)) borderAdjusted = true;
 		return clamped;
 	};
 	let edges: Edge[] = [];
@@ -210,7 +217,7 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 			const low = Math.max(lower, ys.length ? Math.min(...ys) - 3 : above),
 				high = Math.min(upper, ys.length ? Math.max(...ys) + 3 : below);
 			if (Math.abs(low - Math.max(lower, above)) > 1e-6 || Math.abs(high - Math.min(upper, below)) > 1e-6) changed = true;
-			const entry = uprightToSheet([x, low]), exit = uprightToSheet([x, high]);
+			const entry = borderPoint(uprightToSheet([x, low])), exit = borderPoint(uprightToSheet([x, high]));
 			// Approach a separate island near its own height, then continue
 			// outside the whole motif. A long diagonal from a steam curl to the
 			// bottom corner would otherwise cut through the coffee cup below it.

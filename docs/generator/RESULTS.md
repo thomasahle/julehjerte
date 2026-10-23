@@ -1,5 +1,17 @@
 # Generator robustness results
 
+## Checked tips: side lanes held off the outer strips
+
+From about 80% a large motif pushed the checked tips' side lanes out until a
+lane's turn, and its ends, lay a unit from the outer strips' lines or past
+them: the paper between them was 1.1–1.5 mm printed 80 mm wide, four places to
+tear on nearly every heart at 85%. Each layout is now also tried with those
+points a paper's width (and half a unit for the cuts) inside the outer strips
+(`holdLegs`), and ranked with the rest; the lanes are hidden, so the picture
+stays. Over the 49 featured motifs at 50/70/85%, with the ranking above:
+hearts that tear fall from 88 to 78, places to tear from 356 to 261; none tears
+more or changes status. Generating takes a third longer.
+
 ## Frames ranked by their paper
 
 Rays, checks, the sunburst, the double border and the checked tips took the

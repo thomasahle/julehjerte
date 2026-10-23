@@ -2678,11 +2678,11 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// own: only where none of the others finish.
 		let finished = false;
 		const best = bestOfFirst((function* () {
-			for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) {
+			for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) for (const holdLegs of [true, false]) {
 				if (fitBorder && finished) return;
 				try {
 					const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes,
-						undefined, undefined, request.gap);
+						undefined, undefined, request.gap, false, holdLegs);
 					// Keep the established frame and skip another fit when moving
 					// separate components did not change any lane or connection.
 					if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
