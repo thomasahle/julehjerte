@@ -16,7 +16,7 @@ import { cutTipCounts, fewerCutTips } from './cutQuality';
 import { trickyLetters } from './trickyLetters';
 import { normalizeContours } from './contours';
 import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
-import { generatePanelFigure, backgroundJunctions } from './panels';
+import { generatePanelFigure, backgroundJunctions, squareJunctions } from './panels';
 import { generateComponentFigure } from './components';
 import { generateComponentLanes } from './componentLanes';
 import { rerouteSharedCuts, rerouteFrameCuts } from './sharedCuts';
@@ -1985,6 +1985,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		const boxed: Placement = { centre: middle, reach: Math.max(...contours.flat().map(p => distance(p, middle))) / box };
 		// The slower compound routing only where the panels meet at the centre.
 		const background = backgroundJunctions(contours);
+		let squared: Point[] | undefined;
 		// Panels holding separate pieces of the motif (an animal's legs) join
 		// them like a letter's dots and islands. These come after every other
 		// division, so a motif that divides without them keeps its cuts.
@@ -2022,6 +2023,11 @@ function generateUsingRecipes(request: GeneratorRequest,
 				// with the seams guarded, the gate keeps off it. Only at the size
 				// itself, after the others, so no heart cut without them changes.
 				...atSize ? [[undefined, ...junctions, ...moved].map(junction => ({ columns: 2, slices: 2, guardSeams: true, ...junction && { junction } }))] : [],
+				// Then through the points of its background where the seams cross
+				// its outline most nearly square (a dove's wing otherwise meets one
+				// almost along it), with the seams guarded or not.
+				...atSize ? [(squared ??= squareJunctions(contours)).map((p): Point => [p[0] - centre[0], p[1] - centre[1]])
+					.flatMap(junction => [{ columns: 2, slices: 2, junction }, { columns: 2, slices: 2, guardSeams: true, junction }])] : [],
 				...rest([undefined, ...junctions].map(junction => ({ columns: 2, slices: 2, ...junction && { junction } })))];
 		};
 		// A circle wider than the paper leaves the motif no more room than the paper.

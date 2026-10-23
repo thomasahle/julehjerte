@@ -1,5 +1,20 @@
 # Generator robustness results
 
+## Seams crossing the outline square
+
+The seams dividing a motif in four cross at a point of its background nearest
+its centre. Through the dove's, one meets its wing's lower edge almost along
+it, a needle of paper whichever way the seams are guarded or curved; on seven
+strips at 88% the heart was hard to cut. `squareJunctions` finds the points of
+the background, with paper in every panel round them, where the level and
+upright seams cross the outline most nearly square; last of all at the size
+itself, the board circle divides through those too.
+
+Over the 49 featured motifs at the same 637 sizes: the dove on seven strips at
+88% goes from hard to clean, and at seven other sizes, clean since the curved
+retry, is now cut along those seams straight; the other 629 are identical. The
+time rises 4%, all of it on hearts that stay hard.
+
 ## Spokes across to a point straight in from their switch point
 
 On seven strips at 88% the star's upper right gate lies past the switch point

@@ -260,6 +260,51 @@ export function backgroundJunctions(rings: Ring[], limit = 4): Point[] {
 	return chosen;
 }
 
+/** Points of the background where the seams through them (level and upright)
+ * cross the outline most nearly square: by the narrowest angle at any
+ * crossing, widest first, each with paper in every panel round it. */
+export function squareJunctions(rings: Ring[], limit = 3): Point[] {
+	const points = rings.flat();
+	if (!points.length) return [];
+	const xs = points.map(p => p[0]), ys = points.map(p => p[1]);
+	const [left, right, top, bottom] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+	const extent = Math.max(right - left, bottom - top);
+	const steps = 40, candidates: Point[] = [], ink: Point[] = [];
+	for (let i = 1; i < steps; i++) for (let j = 1; j < steps; j++) {
+		const p: Point = [left + (i / steps) * (right - left), top + (j / steps) * (bottom - top)];
+		(rings.filter(r => inside(p, r)).length % 2 ? ink : candidates).push(p);
+	}
+	const surrounded = (p: Point) => [[-1, -1], [1, -1], [1, 1], [-1, 1]].every(([sx, sy]) =>
+		ink.filter(q => (q[0] - p[0]) * sx > 0 && (q[1] - p[1]) * sy > 0).length >= .02 * ink.length);
+	const outline = (p: Point) => Math.min(...rings.flatMap(r => r.map((a, i) => {
+		const b = r[(i + 1) % r.length], d = sub(b, a), t = Math.max(0, Math.min(1, dot(sub(p, a), d) / (dot(d, d) || 1)));
+		return distance(p, [a[0] + t * d[0], a[1] + t * d[1]]);
+	})));
+	// The narrowest angle a seam through p makes with an edge it crosses.
+	const narrowest = (p: Point) => {
+		let least = Math.PI / 2;
+		for (const r of rings) for (const [i, a] of r.entries()) {
+			const b = r[(i + 1) % r.length];
+			for (const axis of [0, 1] as const) {
+				if ((a[axis] - p[axis]) * (b[axis] - p[axis]) > 0 || a[axis] === b[axis]) continue;
+				const d = sub(b, a), along = Math.abs(d[1 - axis]) / Math.hypot(d[0], d[1]);
+				// The seam runs along the other axis: the angle between them.
+				least = Math.min(least, Math.acos(Math.min(1, along)));
+			}
+		}
+		return least;
+	};
+	const scored = candidates.filter(p => outline(p) >= .04 * extent && surrounded(p)).map(p => ({ p, angle: narrowest(p) }))
+		.sort((a, b) => b.angle - a.angle);
+	const chosen: Point[] = [];
+	for (const { p } of scored) {
+		if (chosen.length >= limit) break;
+		if (chosen.some(q => distance(p, q) < .15 * extent)) continue;
+		chosen.push(p);
+	}
+	return chosen;
+}
+
 /** Shared cuts may meet an internal seam only at that seam's agreed gate.
  * Bounds and flags follow the gates: top, right, bottom, left, in upright space.
  * Outer sides are unrestricted. Use the same tolerance as divider stitching. */

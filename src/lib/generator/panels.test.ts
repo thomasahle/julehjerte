@@ -1,8 +1,10 @@
 import { it, expect } from 'vitest';
-import { clipContours, componentSeamGate, filledSeamGate, generatePanelFigure, panelDividers, panelSeamGuard } from './panels';
+import { backgroundJunctions, clipContours, componentSeamGate, filledSeamGate, generatePanelFigure, panelDividers, panelSeamGuard, squareJunctions } from './panels';
 import { convertValidatedCutGeometry } from '$lib/inverse/toHeartDesign';
 import { type Ring, type Point, inside, uprightToSheet } from './geometry';
 import cat from '../../../static/generator/motifs/ph-cat.json';
+import dove from '../../../static/generator/motifs/pin-dove.json';
+import { normalizeContours } from './contours';
 const square = (r: number): Ring => [
 	[-r, -r],
 	[r, -r],
@@ -137,4 +139,18 @@ it('leaves clearance beside a clipped seam while retaining its agreed gate', () 
 	expect(allowed(uprightToSheet([2, -3.5]))).toBe(true);
 	expect(allowed(uprightToSheet([5.5, -5.5]))).toBe(false);
 	expect(allowed(uprightToSheet([6, -6]))).toBe(true);
+});
+
+it('finds points of a motif\'s background whose seams cross its outline nearly square', () => {
+	// The narrowest angle a level or upright seam through p makes with an
+	// edge of the outline it crosses.
+	const narrowest = (rings: Ring[], p: Point) => Math.min(Math.PI / 2, ...rings.flatMap(r => r.flatMap((a, i) => {
+		const b = r[(i + 1) % r.length];
+		return ([0, 1] as const).flatMap(axis => (a[axis] - p[axis]) * (b[axis] - p[axis]) > 0 || a[axis] === b[axis] ? []
+			: [Math.acos(Math.min(1, Math.abs(b[1 - axis] - a[1 - axis]) / Math.hypot(b[0] - a[0], b[1] - a[1])))]);
+	})));
+	const rings = normalizeContours(dove.contours as Ring[]), near = backgroundJunctions(rings), square = squareJunctions(rings);
+	expect(square.length).toBeGreaterThan(0);
+	for (const p of square) expect(rings.filter(r => inside(p, r)).length % 2).toBe(0);
+	expect(narrowest(rings, square[0])).toBeGreaterThan(Math.max(...near.map(p => narrowest(rings, p))));
 });
