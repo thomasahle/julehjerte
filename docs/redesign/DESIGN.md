@@ -318,7 +318,9 @@ Categories (hearts.json, 2026-10-22): Klassiske, Stjerner, Mønstre, Fliser, Fig
 holds the Escher-like tilings, where the red and the white pieces are the same interlocking figure: Dag og nat,
 Puslespil, Drageskæl, Kroge, Alhambra, Kølbuer, Hanefod, Dråber, Fiskeskæl, Bølger. Plain polygon tilings (Sildeben,
 Flyvende gæs) and Hermann-gitter stay in Mønstre. Tekst holds five hearts made with the design page's text frames and checked
-as paper (each template drawn at 80 mm, every piece joined to its ear by paper about 2 mm wide or more, no red cut):
+as paper (each template drawn at 80 mm, every piece joined to its ear by paper about 2 mm wide or more, no red cut;
+`$lib/geometry/paperNecks`, the design page's own check, since 23 Oct 2026, when GOD JUL's and JUL 2026's letter
+curls were opened by hand by 0.3–0.7 units where they held pieces by 1.7–1.98 mm):
 GOD JUL (Cirkel), TAK (Store bogstaver), JUL i tern (Tern; J / UU / LLL / JJ / U in Righteous on 3×3, in place of
 2026 on 22 Oct 2026: "a little double to have both 2026 and JUL 2026"), JUL 2026 (Cirkel med dobbelt bort) and MOR & FAR
 (Store bogstaver); JUL, drawn by hand, stays in Klassiske. Mønstre, Fliser, Figurer and Tekst each end with a "make your own" card
