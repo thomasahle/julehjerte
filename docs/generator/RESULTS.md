@@ -1546,6 +1546,20 @@ and ❄ make hearts; Cinzel's €, Lobster's ñ and J, and 🎄 are hard to cut;
 雪 is refused by name. The fonts' own @ is slow in "Store bogstaver" (69 s
 alone; @%€ is refused after 208 s), quick on equal squares (3 s).
 
+## The same search, faster for nested outlines
+
+Nunito's @ in "Store bogstaver" took 78 s (node, this Mac): 34,704 choices of
+ports to its cell's gates, and behind them 1.7 million interiors (bridges to its
+counters), of which the crossing checks kept 1,132. Each interior had its
+outline drawn and its routes traced before those checks turned it away, and
+170,834 were skipped by throwing an error. The checks look at shared cuts only,
+so `perforatedOutline` now asks them before drawing the outline, the arcs that
+bridges are placed on are measured once, and a bridge meeting a port is skipped
+without an error. The choices and their order are unchanged: @ takes 6.8 s
+with the same cuts, @%€ is refused after 22 s, Kalam's @ after 57 s (317 s), and
+the 132 hearts of a sweep over every text and figure frame are bit for bit the
+same, 16% faster in all (216 → 182 s).
+
 ## Larger circles on equal squares for animals
 
 Product request (2026-10-20): the deer in "Cirkel · Lige store tern" stopped at

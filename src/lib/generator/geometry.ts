@@ -1140,11 +1140,18 @@ function contourMotif(
 		}
 		if (!allowedConnections(exterior) || !clearSharedCuts(exterior)) continue;
 		let attachmentAttempts = 0;
-		for (const interior of perforatedOutline(base, ports, bridgePorts, options.practical, options.touching, options.nested)) {
+		// The crossing checks look at shared cuts only, so they turn an interior
+		// away before its outline is drawn or its routes traced: they turn away
+		// nearly every interior of a glyph with nested outlines (@).
+		const clearInterior = (interior: Edge[]) => {
+			const local = [...interior, ...exterior];
+			return allowedConnections(local) && clearSharedCuts(local);
+		};
+		for (const interior of perforatedOutline(base, ports, bridgePorts, options.practical, options.touching, options.nested, clearInterior)) {
 			const local = [...interior, ...exterior];
 			try {
 				const routes = routeLocal(local, gates);
-				if (!routes || !allowedConnections(local) || !clearSharedCuts(local)) continue;
+				if (!routes) continue;
 				fallback ??= local;
 				if (!alternatives.has(portKey) && alternatives.size < (options.practical ? 64 : 8))
 					alternatives.set(portKey, { edges: local, ports });
@@ -1183,8 +1190,9 @@ function contourMotif(
 		for (const relieved of relieveNotches(local.edges, base.ring, local.ports, bridgePorts, options.practical, reliefCache)) {
 			if (options.practical && ++portAttempts > 8) break;
 			if (++reliefAttempts > 256) break relief;
+			if (!allowedConnections(relieved) || !clearSharedCuts(relieved)) continue;
 			const routes = routeLocal(relieved, gates);
-			if (!routes || !allowedConnections(relieved) || !clearSharedCuts(relieved)) continue;
+			if (!routes) continue;
 			if (options.practical) {
 				ranked.push({ edges: relieved, routes, score: cuttingCost(routes, margin) });
 				continue;
@@ -1491,12 +1499,15 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
 /** Add two shared bridges around one external port. Flipping the intervening
  * outline arcs preserves the four external path pairings. A bridge pair on an
  * arc with no external port would instead create a closed cutting cycle.
- * Sibling holes share a chain; nested contours use the two-terminal block. */
-function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly number[], practical = false, touching = false, nested = false): Generator<Edge[]> {
+ * Sibling holes share a chain; nested contours use the two-terminal block.
+ * `accept` sees each candidate's shared cuts before its outline is drawn, and
+ * turns it away there. */
+function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly number[], practical = false, touching = false, nested = false,
+	accept: (shared: Edge[]) => boolean = () => true): Generator<Edge[]> {
 	if (!node.children.length) {
 		const edges: Edge[] = [];
 		outline(edges, node.ring, ports, 'B');
-		yield edges;
+		if (accept(edges)) yield edges;
 		return;
 	}
 	const ring = node.ring,
@@ -1560,11 +1571,23 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 			Math.abs(exact().index - port.index) > EPS) arcSlips++;
 		return port;
 	};
+	// The arcs between two ports, and their lengths, asked again for every
+	// bridge placed on them.
+	const arcs = new Map<Port, Map<Port, { points: Ring; lengths: number[]; total: number }>>();
+	const arcBetween = (a: Port, b: Port) => {
+		let from = arcs.get(a);
+		if (!from) arcs.set(a, from = new Map());
+		let found = from.get(b);
+		if (!found) {
+			const points = arc(ring, a, b), lengths = points.slice(1).map((p, i) => distance(points[i], p));
+			from.set(b, found = { points, lengths, total: lengths.reduce((x, y) => x + y, 0) });
+		}
+		return found;
+	};
 	const at = (a: Port, b: Port, fraction: number): Port => {
 		if (exactArcs) return exactAt(a, b, fraction);
-		const points = arc(ring, a, b);
-		const lengths = points.slice(1).map((p, i) => distance(points[i], p));
-		let remaining = lengths.reduce((x, y) => x + y, 0) * fraction;
+		const { points, lengths, total } = arcBetween(a, b);
+		let remaining = total * fraction;
 		for (let i = 0; i < lengths.length; i++) {
 			if (remaining <= lengths[i] || i === lengths.length - 1) {
 				const start = i === 0 ? a.index : Math.floor(a.index) + i;
@@ -1584,7 +1607,7 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 	};
 	const closest = (a: Port, b: Port, point: Point): Port => {
 		if (exactArcs) return exactClosest(a, b, point);
-		const points = arc(ring, a, b);
+		const { points } = arcBetween(a, b);
 		let best = a,
 			distanceSquared = Infinity;
 		for (let i = 0; i < points.length - 1; i++) {
@@ -1642,7 +1665,9 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 		const key = assignment.join(',');
 		if (seenPartitions.has(key)) continue;
 		seenPartitions.add(key);
-		for (const corners of practical ? [true, false] : [false]) for (const [left, right] of [
+		// A bridge that would start at a port, or a counter met at one point, is
+		// no candidate: skipped without an error, as there are many (@).
+		for (const corners of practical ? [true, false] : [false]) candidate: for (const [left, right] of [
 			...contactPairs,
 			[-1, -1],
 			[0.5, 0.5],
@@ -1681,7 +1706,7 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 							ports.some((q) => near(p.point, q.point))
 						)
 					)
-						throw new ConstructionError('topology', 'Coincident bridge port');
+						continue candidate;
 					intervals.push([before, after]);
 					const d = sub(after.point, before.point);
 					children.sort(
@@ -1705,14 +1730,15 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 							next,
 							Math.atan2(c[1] - next[1], c[0] - next[0])
 						));
-						if (near(entry.point, exit.point))
-							throw new ConstructionError('topology', 'Coincident hole ports');
+						if (near(entry.point, exit.point)) continue candidate;
 						add(edges, [previous, entry.point], 'AB', 'shared');
 						(nested ? nestedBlock : block)(edges, h, entry, exit, 'A');
 						previous = exit.point;
 					}
 					add(edges, [previous, after.point], 'AB', 'shared');
 				}
+				// Every shared cut is in; the outline adds only A and B arcs.
+				if (!accept(edges)) continue;
 				const all = [...ports, ...intervals.flat()].sort(
 					(a, b) => a.index - b.index
 				);
