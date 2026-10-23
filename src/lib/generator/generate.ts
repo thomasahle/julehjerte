@@ -852,9 +852,12 @@ function generateOnce(request: GeneratorRequest,
 	try {
 		const result = generateUsingRecipes(request,
 			(construction, recipe) => rejected.push({ construction, recipe }), curveFitter, variants, retries);
-		// The checkerboard improves its shared connections as it compares sizes.
-		return request.mode === 'text' && request.textFrame === 'checkered'
-			? result : improveTextPanelTips(request, result, curveFitter);
+		// A clean figure's shared cuts that meet the motif in a sharp tip of
+		// paper bend to cross it instead (the board circle's do as it keeps
+		// them). The checkerboard improves its shared connections as it
+		// compares sizes.
+		if (request.mode === 'figure') return request.style === 'board' || result.hardToCut ? result : improveSharedConnections(result);
+		return request.textFrame === 'checkered' ? result : improveTextPanelTips(request, result, curveFitter);
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 		if (!retries) throw error;

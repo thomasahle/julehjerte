@@ -599,6 +599,12 @@ describe('frames from real hearts', () => {
   expect(hardToCut).toBeUndefined();
   expect(scale).toBeUndefined();
  });
+ it('bends a figure\'s shared cuts where they meet the motif in a sharp tip of paper, in every frame', () => {
+  // On the rays frame the star's spokes met one of its points under 30°.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'rays', scale: .7 });
+  expect(hardToCut).toBeUndefined();
+  expect(cutTipCounts(design)[0]).toBe(0);
+ });
  it('bends a board heart\'s shared cuts where they meet the motif in a sharp tip of paper', () => {
   // Divided in four on seven strips, the heart's seams and spokes met its
   // outline in four tips under 30° and six more under 45°.

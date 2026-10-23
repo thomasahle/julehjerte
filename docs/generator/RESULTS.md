@@ -1,5 +1,27 @@
 # Generator robustness results
 
+## Fewer sharp tips in every frame
+
+The bend at sharp tips the board circle now makes (below) also runs on every
+other frame's clean figures. Over the 49 featured motifs at 70% and 100% (90%
+on the sunburst), the swan and elephant left out (both refused or hard where
+they are slow):
+
+| Frame | Tips under 30° | under 45° | Hearts changed |
+|---|---|---|---|
+| rays | 112 → 94 | 266 → 209 | 24 of 98 |
+| check | 112 → 94 | 262 → 205 | 24 of 98 |
+| layers | 84 → 67 | 197 → 154 | 21 of 98 |
+| corners | 77 → 61 | 159 → 139 | 15 of 98 |
+| sunburst | 107 → 92 | 228 → 189 | 19 of 94 |
+| wedges | 77 → 67 | 146 → 129 | 8 of 98 |
+| silhouette | 83 → 71 | 156 → 137 | 9 of 98 |
+| fitted | 63 → 57 | 145 → 128 | 7 of 94 |
+
+Small motifs, equal squares and the figure in the checks build their hearts
+another way and are unchanged. No heart gets more tips or a different status,
+and the time is the same.
+
 ## Fewer sharp tips on the board circle
 
 A clean board heart's shared cuts (seams through the motif, spokes to its
