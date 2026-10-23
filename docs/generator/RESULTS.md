@@ -3,18 +3,18 @@
 ## Every motif file on the rays frame
 
 At 70% the rays frame cuts 2623 of the 2668 motif files cleanly; 20 are hard
-to cut and 25 refused (0.9%). Ten motifs are refused by both the rays frame and
+to cut and 25 refused (0.9%). Nine motifs are refused by both the rays frame and
 the board circle: ph-circuitry, ph-codepen-logo, ph-command,
 ph-fallout-shelter, ph-graduation-cap, ph-head-circuit, ph-steam-logo,
-tb-blender, tb-brand-signal and tb-radar. They have pieces touching at points,
-slivers, or islands in winding holes.
+tb-blender and tb-brand-signal. They have pieces touching at points, slivers,
+or islands in winding holes.
 
 The other refusals of each frame are built by the other. The board's
-remaining six include two featured motifs, the polar star (clean on the rays
-frame) and the elephant (hard to cut there). The rays frame's other fifteen
-(the ph-user-circle badges, ph-lasso, ph-subway and more) are all built by the
-board circle, four of them (ph-clock-countdown, ph-globe-stand, ph-yarn,
-tb-download) since the change below.
+remaining four include one featured motif, the elephant (hard to cut on the
+rays frame). The rays frame's other sixteen (the ph-user-circle badges,
+ph-lasso, ph-subway and more) are all built by the board circle, five of them
+(ph-clock-countdown, ph-globe-stand, ph-yarn, tb-download, tb-radar) since the
+change below.
 
 Every way of reaching a motif's pieces (below), tried as a route of the rays
 frame's panels too, builds none of its refusals. Those constructions then fail
@@ -48,17 +48,19 @@ in its holes, on the way. So every heart built without them keeps its cuts.
   pieces' hulls, kept clear of them and inside the circle through the gates.
   Hidden islands are then entered and left where they come nearest the way
   in and the way on, rather than at their extremes, which for a bent back
-  card are its ends.
+  card are its ends. An island about as near two gates takes the one next on
+  going round the cell: the polar star's four needles lie between the gates,
+  and the first gate took two of them, whose chain then crossed the star.
 
 Divided in four, the first two are tried too; spokes round pieces are not,
 as they do not know the panel's sides.
 
-Of the 53 refused motifs, 37 now build at five strips and 70%: 19 clean and
-18 hard to cut. Most take 1–15 s (ph-columns-plus 1.0 s, tb-copy-plus 1.9 s,
-ph-peace 15 s, refused before after 4, 8 and 99 s). The 16 left are odd shapes:
-pieces touching at a point (ph-codepen-logo), slivers (ph-graduation-cap's
-tassel), islands in a winding hole (ph-command), the polar star's needles and
-the elephant. Their refusals take longer, mostly 1.5–2 times as long
+Of the 53 refused motifs, 40 now build at five strips and 70%: 19 clean and
+21 hard to cut. Most take 1–15 s (ph-columns-plus 1.0 s, tb-copy-plus 1.9 s,
+the polar star 1.7 s, ph-peace 15 s, refused before after 4, 8, 3 and 99 s).
+The 13 left are odd shapes: pieces touching at a point (ph-codepen-logo),
+slivers (ph-graduation-cap's tassel), islands in a winding hole (ph-command),
+and the elephant. Their refusals take longer, mostly 1.5–2 times as long
 (tb-car-suv 60 → 102 s), ph-command 18 → 88 s. Remembering each nested
 contour's construction per pair of attachments (`nestedBlock`) took a quarter
 of that off. The double border, which uses the same nested routing, keeps its

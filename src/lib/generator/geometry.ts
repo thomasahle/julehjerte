@@ -1062,12 +1062,18 @@ function contourMotif(
 			const c = centroid(node.ring);
 			// The nearest gate can put a dot's approach across the letter's
 			// stem. A final retry may use the next nearest active gate instead.
+			const nearest = bridgePorts.reduce(
+				(best, i) => distance(c, gates[i]) < distance(c, gates[best]) ? i : best,
+				bridgePorts[0]
+			);
+			// With `around`, an island about as near two gates (one of a
+			// symmetric motif's, the polar star's needles) takes the one next on
+			// round the cell, so each gate gets one.
+			const turn = (i: number) => (Math.atan2(gates[i][1] - middle[1], gates[i][0] - middle[0]) - Math.atan2(c[1] - middle[1], c[0] - middle[0]) + 4 * Math.PI) % (2 * Math.PI);
 			const j = options.islandRank
 				? [...bridgePorts].sort((a, b) => distance(c, gates[a]) - distance(c, gates[b]))[options.islandRank % bridgePorts.length]
-				: bridgePorts.reduce(
-					(best, i) => distance(c, gates[i]) < distance(c, gates[best]) ? i : best,
-					bridgePorts[0]
-				);
+				: options.around ? bridgePorts.filter(i => distance(c, gates[i]) < distance(c, gates[nearest]) * 1.01).reduce((best, i) => turn(i) < turn(best) ? i : best)
+				: nearest;
 			extras[j].push(node);
 		}
 		try {

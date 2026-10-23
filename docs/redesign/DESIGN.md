@@ -987,7 +987,8 @@ or with islands in its holes, that would be refused even so is decided and built
 way of reaching its pieces, after every other way: the gates' spokes meet each other piece in
 turn (of three in a row, the middle one), islands in a ring's hole are reached round either
 attachment (the peace sign), and a motif kept whole has its spokes go round the pieces in their
-way (a back card that hides the front one from two gates). It is the last of the last resorts
+way (a back card that hides the front one from two gates) and gives an island as near two gates
+the next one round (the polar star's needles). It is the last of the last resorts
 (`withEveryWay`), so every heart built without it keeps its cuts. That is the one change of
 construction, between 70% and 71%. Whether a motif can be built each way is decided once, so a
 solid motif (the bell, the tree), which cannot be divided so, stays at the touching circle above

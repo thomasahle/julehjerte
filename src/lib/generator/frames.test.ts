@@ -47,6 +47,7 @@ import tablerFlower from '../../../static/generator/motifs/tb-flower.json';
 import columnsPlus from '../../../static/generator/motifs/ph-columns-plus-left.json';
 import peace from '../../../static/generator/motifs/ph-peace.json';
 import copyPlus from '../../../static/generator/motifs/tb-copy-plus.json';
+import polarStar from '../../../static/generator/motifs/gi-polar-star.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -715,10 +716,12 @@ describe('frames from real hearts', () => {
   // Three pieces in a row meet the gates at the middle one, not the largest
   // (`bases`); islands in a ring's hole are reached round either attachment
   // (`nested`); a back card hiding the front one from two gates is passed
-  // round its end (`around`). The board circle refused all three.
+  // round its end, and the polar star's needles, each as near two gates,
+  // take one gate each going round (`around`). The board circle refused all
+  // four.
   const cell = (motif: { contours: unknown }, layout: object) => () => generateTextGrid(MOTIF, { glyphs: { [MOTIF]: { advance: 1, contours: normalizeContours(motif.contours as Ring[]) } } },
    false, 'circle', { padding: .22, ...layout, board: 5, circle: 50, scale: 40 });
-  for (const [motif, layout] of [[columnsPlus, { bases: true }], [peace, { nested: true }], [copyPlus, { around: true }]] as const) {
+  for (const [motif, layout] of [[columnsPlus, { bases: true }], [peace, { nested: true }], [copyPlus, { around: true }], [polarStar, { around: true }]] as const) {
    expect(cell(motif, {}), JSON.stringify(layout)).toThrow(ConstructionError);
    expect(cell(motif, layout)().edges.length, JSON.stringify(layout)).toBeGreaterThan(0);
   }
