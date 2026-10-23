@@ -240,6 +240,9 @@ function norm([x, y]: number[]): [number, number] {
 const drawnCuts = new WeakMap<BoardPattern, Map<string, Point[][]>>();
 
 type Segment = [Point, Point];
+/** The narrowest neck of paper that holds through cutting and weaving: 2 mm
+ * on the download's 80 mm print. */
+const PAPER_NECK = 2.5;
 /** How far from straight in a pulled hidden cut may leave the boundary. */
 const SLANT = 40 * Math.PI / 180;
 /** Distance from a point to a segment. */
@@ -445,15 +448,23 @@ export function completionLegs(edges: Edge[], ring: Ring, strips: number, radius
 			const before = ids.slice(0, x).reverse().find(q => piece.has(q)), after = ids.slice(x + 1).find(q => piece.has(q));
 			piece.set(p, before !== undefined ? piece.get(before)! : after !== undefined ? piece.get(after)! : 0);
 		}
-		// Spread each piece's points evenly along it, clear of its ends.
+		// Spread each piece's points evenly along it, clear of its ends; a
+		// lone point that would lie nearer the paper's edge than a neck of
+		// paper, where the piece ends there (the paper between the edge and
+		// its hidden cut hangs by that), along the rest, if that is long
+		// enough. (Several crowd each other's cuts more than they gain.)
 		const { points, pieceStart } = polys[k];
 		const len = (a: number, b: number) => { let l = 0; for (let i = a; i < b; i++) l += Math.hypot(points[i + 1][0] - points[i][0], points[i + 1][1] - points[i][1]); return l; };
 		const pieces = quarter[k].pieces.length;
+		const atPaper = ([x, y]: Point) => Math.abs(Math.abs(x) - 50) < 1e-6 || Math.abs(Math.abs(y) - 50) < 1e-6;
 		for (let pc = 0; pc < pieces; pc++) {
 			const mine = ids.filter(p => piece.get(p) === pc), a = pieceStart[pc], b = pc + 1 < pieces ? pieceStart[pc + 1] : points.length - 1;
-			const total = len(a, b);
+			const total = len(a, b), edge = quarter[k].pieces[pc];
+			const [from, to] = edge.type === 'side' ? [atPaper(edge.from) ? PAPER_NECK : 0, atPaper(edge.to) ? PAPER_NECK : 0] : [0, 0];
+			const even = total / 2, [start, span] = mine.length === 1 && Math.max(from, to) > even && (total - from - to) / 2 >= .5
+				? [from, total - from - to] : [0, total];
 			mine.forEach((p, x) => {
-				let d = total * (x + 1) / (mine.length + 1), i = a;
+				let d = start + span * (x + 1) / (mine.length + 1), i = a;
 				while (i < b - 1 && d > len(i, i + 1)) { d -= len(i, i + 1); i++; }
 				const seg = len(i, i + 1) || 1, t = Math.min(1, d / seg);
 				placed[p] = { at: i + t, point: [points[i][0] + t * (points[i + 1][0] - points[i][0]), points[i][1] + t * (points[i + 1][1] - points[i][1])] };

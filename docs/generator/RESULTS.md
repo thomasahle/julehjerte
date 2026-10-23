@@ -1,5 +1,27 @@
 # Generator robustness results
 
+## Paper by the edge for motifs kept whole
+
+Measured as paper (each template cut at the download's 80 mm print, every
+piece hanging by a neck of at least 2 mm; `paperNecks` on the design-page
+branch), a motif kept whole on five strips at 91–93% tore in eight places:
+crescents between the circle and the paper's edge, held by the paper between
+the edge and the hidden cut from a switch point halfway along the short line
+from the edge to the circle (2.1 units, 1.7 mm). The pulled-taut completion
+had already taken the same hearts at 86–90% from 20 weak places (holding from
+130–140 mm) to none. A lone switch point on a piece that ends at the paper's
+edge now keeps a paper neck (2.5 units) from it where the piece is long enough;
+spreading several the same way crowded their own cuts (seven strips at 88%:
+weak places 19–24 → 25–48) and is left out.
+
+Over the featured motifs on five strips at 86–94%, seven at 78–90% and nine at
+75–90% (686 hearts): on five strips the hearts that tear at 80 mm fall from 145
+to 133 and their weak places from 756 to 612; seven and nine strips are
+unchanged; no heart tears more or changes status. Still torn: five strips at
+94–100%, where the circle (48.1–48.5) runs within 1.5–1.9 of the edge; and most
+of seven and nine strips at these sizes (9×9: 236 of 245 tear at 80 mm, 154 at
+any width up to 200 mm), mostly through the motif's own connections.
+
 ## Fewer sharp tips in every frame
 
 The bend at sharp tips the board circle now makes (below) also runs on every
