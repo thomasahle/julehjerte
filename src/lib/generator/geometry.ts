@@ -357,6 +357,8 @@ export function contourChain(
 	boundaryGates = false,
 	nearest = false
 ) {
+	const atExtremes = !visible && !nearest && !nearestIslands;
+	if (!visible && nearestIslands) nearest = true;
 	const ordered = nodes
 		.slice()
 		.sort(
@@ -383,6 +385,7 @@ export function contourChain(
 			exit = visible ? (boundaryGates ? ringPort(node.ring, next) : undefined) ?? ray(node.ring, next, Math.atan2(c[1] - next[1], c[0] - next[0]))
 				: nearest ? closestPort(node.ring, next) : support(node.ring, angle);
 		if (nearest && near(entry.point, exit.point)) throw new ConstructionError('topology', 'Coincident island ports');
+		if (atExtremes) portsAtExtremes.push(entry.point, exit.point);
 		add(edges, [previous, entry.point], 'AB', 'shared');
 		(nested ? nestedBlock : block)(edges, node, entry, exit, first);
 		previous = exit.point;
@@ -841,6 +844,27 @@ export function withExactArcs<T>(build: () => T): T {
 		return build();
 	} finally {
 		exactArcs = before;
+	}
+}
+/** Whether hidden islands are entered and left where they come nearest the
+ * way in and the way on, rather than at their extremes along the chain (see
+ * `contourChain`). Parallel stripes entered at their extremes are joined by
+ * cuts along their slanted sides, needles at both ends (a candy cane's six).
+ * Hearts built so keep their cuts; a clean one that came out with a sharp
+ * tip at a port where an island was entered so is made again (see
+ * `generate`), so the ports are kept, from the start of each heart. */
+let nearestIslands = false;
+const portsAtExtremes: Point[] = [];
+export const islandsAtExtremesSeen = () => portsAtExtremes.length;
+export const islandPortsSince = (from: number) => portsAtExtremes.slice(from);
+export const forgetIslandPorts = () => { portsAtExtremes.length = 0; };
+export function withNearestIslands<T>(build: () => T): T {
+	const before = nearestIslands;
+	nearestIslands = true;
+	try {
+		return build();
+	} finally {
+		nearestIslands = before;
 	}
 }
 /** Whether a construction whose islands only route along visible spokes is

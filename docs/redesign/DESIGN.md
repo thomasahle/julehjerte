@@ -1102,6 +1102,10 @@ A motif's outline first loses its hairline spurs, a catalogue path overshooting 
 back along itself: a vertex, or it and a neighbour, within a 400th of the motif of the line replacing
 them, where that leaves fewer needles nearby (a thin point of the motif only moves its needle when
 trimmed, and stays). On a board the motif keeps the choice its catalogue outline makes.
+A clean heart with a needle and a sharp tip where a hidden island was entered at its extremes along
+the chain is made again its first way with each entered where it comes nearest the way in and on,
+and kept where that cuts cleanly at no smaller size with fewer sharp tips (a candy cane's stripes
+had been joined along their slanted sides: six needles).
 On them a motif keeps, at every size, the choice its default size made on its strips, since
 another would make it jump in size: which squares hold the small copies, or for equal squares the
 motif up to a tenth larger in its square, or with the spacious frame's room around it. Each choice

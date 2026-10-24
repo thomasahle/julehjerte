@@ -644,11 +644,20 @@ describe('frames from real hearts', () => {
  it('bends a figure\'s shared cuts tip by tip where bending them all at once would cut too near', () => {
   // The candy cane in the rays, built by a retry (a nested construction):
   // bent all at once its cuts came too near each other, so it kept seven
-  // needles and eight sharp tips.
+  // needles and eight sharp tips; bent tip by tip, five of each. Its stripes
+  // entered where they come nearest, its first way, keep one sharp tip.
   const { design, hardToCut, recipe } = generate({ mode: 'figure', name: 'Candy cane', contours: candyCane.contours as Ring[], colors, style: 'rays', scale: .7, gap: 3 });
   expect(hardToCut).toBeUndefined();
   expect(recipe).toBe('nested');
-  expect(cutTipCounts(design)).toEqual([5, 5]);
+  expect(cutTipCounts(design)).toEqual([0, 1]);
+ });
+ it('joins the candy cane\'s stripes where they come nearest, not along their sides', () => {
+  // In the checked tips at 90% each stripe was entered and left at its
+  // extremes along the chain: the cuts between them ran along the stripes'
+  // slanted sides, six needles.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Candy cane', contours: candyCane.contours as Ring[], colors, style: 'corners', frame: 'circle', frameSize: 70, scale: .9, gap: 3 });
+  expect(hardToCut).toBeUndefined();
+  expect(cutTipCounts(design)).toEqual([0, 3]);
  });
  it('keeps a panel\'s gate off a seam through the motif\'s point', () => {
   // On nine strips at 100% the seams cross beside the star's centre, one

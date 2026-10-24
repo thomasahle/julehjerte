@@ -48,6 +48,10 @@ import {
 	visibleIslandsSetAside,
 	withExactArcs,
 	arcSlipsSeen,
+	withNearestIslands,
+	islandsAtExtremesSeen,
+	islandPortsSince,
+	forgetIslandPorts,
 	hasCounterContact,
 	generateCheckedText,
 	inside,
@@ -548,7 +552,19 @@ function catalogueLayout(request: GeneratorRequest): BoardLayout | undefined {
 	return layouts.get(key);
 }
 
+/** How many hearts are being made, one inside another (a board's choice at
+ * its default size, a text's outline as a figure). */
+let making = 0;
 export function generate(request: GeneratorRequest): GeneratorResult {
+	if (!making) forgetIslandPorts();
+	making++;
+	try {
+		return generateTried(request);
+	} finally {
+		making--;
+	}
+}
+function generateTried(request: GeneratorRequest): GeneratorResult {
 	// A motif's hairline spurs go (see `withoutSpurs`); a text's letters keep
 	// their glyphs. On a board the motif keeps the choice its catalogue
 	// outline makes at the default size: without them an earlier choice can
@@ -563,11 +579,11 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			request = { ...request, contours };
 		}
 	}
-	// Made with an outline index a vertex behind its point (see `withExactArcs`),
-	// a heart refused, hard to cut or with a needle is made again its first
-	// way with exact indices, and that one kept where it cuts cleanly at no
-	// smaller size with fewer sharp tips.
-	const slips = arcSlipsSeen();
+	// A heart refused, hard to cut or with a needle is made again its first
+	// way where a second try applies to how it was made (see `SECOND_TRIES`),
+	// and that one kept where it cuts cleanly at no smaller size with fewer
+	// sharp tips.
+	const before = SECOND_TRIES.map(([, seen]) => seen());
 	let result: GeneratorResult | undefined, failure: unknown;
 	try {
 		result = generateAsAsked(request);
@@ -575,29 +591,52 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 		failure = error;
 	}
-	if (arcSlipsSeen() === slips || result && !result.hardToCut && !cutTipCounts(result.design)[0]) {
-		if (result) return result;
-		throw failure;
-	}
-	quickAgain = true;
-	madeAgain = false;
-	try {
-		const again = withExactArcs(() => generateAsAsked(request));
-		const size = (r: GeneratorResult) => r.scale ?? request.scale ?? .7;
-		if (!result || !again.hardToCut && size(again) >= size(result) &&
-			(result.hardToCut || fewerCutTips(cutTipCounts(again.design), cutTipCounts(result.design)))) return again;
-	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-	} finally {
-		quickAgain = false;
+	const made = SECOND_TRIES.map(([, seen]) => seen());
+	const size = (r: GeneratorResult) => r.scale ?? request.scale ?? .7;
+	for (const [k, [again, , applies]] of SECOND_TRIES.entries()) {
+		if (made[k] === before[k] || result && !result.hardToCut && !cutTipCounts(result.design)[0] ||
+			!applies(result, before[k])) continue;
+		quickAgain = true;
+		madeAgain = false;
+		try {
+			const other = again(() => generateAsAsked(request));
+			if (!result || !other.hardToCut && size(other) >= size(result) &&
+				(result.hardToCut || fewerCutTips(cutTipCounts(other.design), cutTipCounts(result.design)))) result = other;
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		} finally {
+			quickAgain = false;
+		}
 	}
 	if (result) return result;
 	throw failure;
 }
-/** Set while a heart is made again with exact outline indices (see
- * `generate`): its first way only, at its own size, without retries, last
- * resorts or a smaller size, so that a heart it cannot improve costs one
- * construction more (a wreath hard in the wedges had cost four). */
+/** The ways a heart is made again, each with how often the way it was first
+ * made needed it, and whether it applies to the heart that came out: exact
+ * outline indices where a bridge's index slipped (see `withExactArcs`; a
+ * bauble hard → clean), and hidden islands entered where they come nearest,
+ * for a clean heart with a sharp tip where one was entered at its extremes
+ * (see `withNearestIslands`; tried for any heart with a needle it cost half
+ * again in the small motifs, mostly for nothing). */
+const SECOND_TRIES: [<T>(build: () => T) => T, () => number, (result: GeneratorResult | undefined, from: number) => boolean][] = [
+	[withExactArcs, arcSlipsSeen, () => true],
+	[withNearestIslands, islandsAtExtremesSeen, (result, from) => !!result && !result.hardToCut && tipAtIslandPort(result, from)]
+];
+/** Whether a sharp tip of the heart lies at a port where an island was
+ * entered at its extremes since `from`. */
+function tipAtIslandPort(result: GeneratorResult, from: number): boolean {
+	const ports = islandPortsSince(from);
+	if (!ports.length) return false;
+	const rect = inferOverlapRect(result.design.fingers, result.design.gridSize);
+	return cutTipPoints(result.design).some(({ x, y }) => {
+		const p: Point = [(x - rect.left) / rect.width * 100, (y - rect.top) / rect.height * 100];
+		return ports.some(q => distance(p, q) < .5);
+	});
+}
+/** Set while a heart is made again (see `SECOND_TRIES`): its first way
+ * only, at its own size, without retries, last resorts or a smaller size, so
+ * that a heart it cannot improve costs one construction more (a wreath hard
+ * in the wedges had cost four). */
 let quickAgain = false, madeAgain = false;
 
 function generateAsAsked(request: GeneratorRequest): GeneratorResult {

@@ -1,5 +1,32 @@
 # Generator robustness results
 
+## Islands joined where they come nearest
+
+A motif's separate pieces inside a hidden chain were entered and left at
+their extremes along the chain. Parallel stripes entered so are joined by cuts
+along their slanted sides, needles at both ends: the candy cane in the checked
+tips at 90% had six, in Stråler at 70% five. Entering each where it comes
+nearest the way in and the way on (the chain's existing `nearest` mode) joins
+them straight across, but made the default it changed hearts both ways (the
+santa hat in the wedges clean → refused, the elephant and squirrel sharper).
+So it is a second try, like exact outline indices: a clean heart with a needle
+and a sharp tip at a port where an island was entered at its extremes is made
+again its first way with islands entered where they come nearest, kept where
+it cuts cleanly at no smaller size with fewer sharp tips. Tried for any heart
+with a needle it cost half again in the small motifs and on the boards, mostly
+for nothing; for hearts hard to cut it made three clean but cost a tenth more
+time everywhere, so neither is tried.
+
+Hearts refused, hard or with a needle in seven figure frames at 70/80/90/100%:
+the candy cane [6,8] → [0,3] in the checked tips at 90%, [5,5] → [0,1] in
+Stråler and Tern at 70%; the gift in the silhouette at 80–100% [4,6] → [0,2];
+the owl in Stråler and Tern at 80% [2,2] → [0,0]; the sleigh and the mitten
+in the checked tips [1,1] → [0,0]; none worse. Equal squares, small motifs and
+strips (289): 4 better (the gift's small motifs at 85–100% [4,8] → [0,4]),
+none worse. The sunburst (58): the candy cane at 70% [5,5] → [0,1], at 80%
+clean at full size instead of 75%. Boards on 5, 7 and 9 strips (166): moon
+and stars [2,2] → [0,0] four times, none worse. No more time than before.
+
 ## Hairline spurs in motif outlines
 
 Many of the needles left in figure hearts were not points of the motif but
