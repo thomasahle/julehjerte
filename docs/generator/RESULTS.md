@@ -1,5 +1,16 @@
 # Generator robustness results
 
+## The double border: a paper's width off where it tears
+
+The double border (Cirkel med dobbelt bort) now gets the same second pass as
+rays and checks: where its best panels still tear printed 80 mm wide, the
+panels are routed again with the motif's connections a paper's width off, and
+that is kept only where its paper holds better. Over the 49 featured motifs
+at 50/70/85%, hearts that tear fall from 55 to 41 and clean ones rise from 86
+to 100; none gets worse, 2% more time. The church at the default size now
+holds. Paper comes first, so the polar star at 50% and the bird at 85% each
+trade a weak place for a needle-sharp tip.
+
 ## Rays, checks and the sunburst: a paper's width off where they tear
 
 Where the best of a figure's first few constructions in rays, checks or the

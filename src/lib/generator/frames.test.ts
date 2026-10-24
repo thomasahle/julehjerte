@@ -62,6 +62,7 @@ import circleMotif from '../../../static/generator/motifs/circle.json';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
 import elephant from '../../../static/generator/motifs/pin-elephant.json';
 import moonStars from '../../../static/generator/motifs/mc-moon-stars.json';
+import church from '../../../static/generator/motifs/mdi-church.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -184,6 +185,13 @@ describe('complete motif frames', () => {
   // under 2 mm printed 80 mm wide; its connections kept a paper's width off,
   // it holds.
   const { design, hardToCut } = generate({ mode: 'figure', name: 'Yule goat', contours: yuleGoat.contours as Ring[], colors, style: 'rays', scale: .7 });
+  expect(hardToCut).toBeUndefined();
+  expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
+ });
+ it('keeps the double border\'s cuts a paper\'s width from the motif where theirs would tear in print', () => {
+  // The church at the default size hung by paper under 2 mm in two places
+  // printed 80 mm wide; its connections kept a paper's width off, it holds.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Church', contours: church.contours as Ring[], colors, style: 'layers', scale: .7 });
   expect(hardToCut).toBeUndefined();
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
  });

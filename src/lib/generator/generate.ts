@@ -659,6 +659,11 @@ function cutsBetter(a: GeneratorResult, b: GeneratorResult, paperFirst = false):
 	return pa < pb;
 }
 
+// A motif's connections kept at least a paper's width from the cuts beside
+// them, as on the board (see `PAPER_NECK_MM`).
+const paperRoute: typeof fourPortMotif = (edges, contours, gates, angles, margin, ...rest) =>
+	fourPortMotif(edges, contours, gates, angles, Math.max(margin ?? 0, PAPER_NECK_MM / PRINT_WIDTH_MM * 100), ...rest);
+
 /** Of the first few results that finish on as many strips as the first, the
  * one whose paper holds best, then with the fewest tips (`cutsBetter`),
  * stopping at one that holds with no sharp tip: for constructions that differ
@@ -2473,6 +2478,18 @@ function generateUsingRecipes(request: GeneratorRequest,
 				}
 			}
 		})());
+		// Where its paper tears printed, the panels again with the motif's
+		// connections a paper's width off; kept only where they hold better.
+		if (best && paperTears(exported(best).design)) {
+			const again = bestOfFirst((function* () {
+				for (const panels of layouts) try {
+					yield finish(generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, panels, paperRoute), 'nested', false);
+				} catch (error) {
+					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				}
+			})());
+			if (again && cutsBetter(again, best, true)) return again;
+		}
 		if (best) return best;
 		// A motif inside the medallion can have counters whose attachments
 		// cannot alternate along a straight chain. Reconnect those counters
@@ -2902,8 +2919,6 @@ function generateUsingRecipes(request: GeneratorRequest,
 	// connections kept a paper's width from the cuts beside them, as on the
 	// board (see `PAPER_NECK_MM`); kept only where they hold better.
 	if (best && paperTears(exported(best).design)) {
-		const paperRoute: typeof fourPortMotif = (edges, contours, gates, angles, margin, ...rest) =>
-			fourPortMotif(edges, contours, gates, angles, Math.max(margin ?? 0, PAPER_NECK_MM / PRINT_WIDTH_MM * 100), ...rest);
 		const again = bestOfFirst((function* () {
 			for (const construct of recipes) try {
 				const construction = construct(paperRoute);
