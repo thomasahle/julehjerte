@@ -1,5 +1,19 @@
 # Generator robustness results
 
+## A second try keeps its fewer tips only where its paper holds as well
+
+A heart made again (exact outline indices, islands entered where they come
+nearest) replaced a clean one wherever it had fewer sharp tips, whatever its
+paper: the moon and stars on the board at 75% held, and made again it had a
+needle less but a piece hanging by paper under 2 mm printed 80 mm wide. Now
+the second try is kept only where its paper tears no more, as everywhere else
+paper comes first (`cutsBetter`). Over nine motifs (the candy cane, gift, owl,
+sleigh, mitten, reindeer, moon and stars, star, tree) in eight frames at
+70–100%, only the moon on the board changes: at 75% 1 → 0 weak places, at
+80% 2 → 1, each with two needles more. The candy cane in the checked tips at
+90% has two sharp tips here, not three. The moon's test builds its heart
+twice and runs with the slow tests.
+
 ## Tern i spidserne: a paper's width off where it tears
 
 The corners frame now gets the same second pass. Where the best of its

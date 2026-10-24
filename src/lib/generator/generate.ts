@@ -800,8 +800,10 @@ function generateTried(request: GeneratorRequest): GeneratorResult {
 		madeAgain = false;
 		try {
 			const other = again(() => generateAsAsked(request));
+			// Fewer tips only where its paper holds as well printed.
 			if (!result || !other.hardToCut && size(other) >= size(result) &&
-				(result.hardToCut || fewerCutTips(cutTipCounts(other.design), cutTipCounts(result.design)))) result = other;
+				(result.hardToCut || fewerCutTips(cutTipCounts(other.design), cutTipCounts(result.design)) &&
+					paperTears(exported(other).design) <= paperTears(exported(result).design))) result = other;
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 		} finally {

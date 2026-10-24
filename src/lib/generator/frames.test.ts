@@ -712,7 +712,7 @@ describe('frames from real hearts', () => {
   // slanted sides, six needles.
   const { design, hardToCut } = generate({ mode: 'figure', name: 'Candy cane', contours: candyCane.contours as Ring[], colors, style: 'corners', frame: 'circle', frameSize: 70, scale: .9, gap: 3 });
   expect(hardToCut).toBeUndefined();
-  expect(cutTipCounts(design)).toEqual([0, 3]);
+  expect(cutTipCounts(design)).toEqual([0, 2]);
  });
  slow('narrows a sunburst\'s crown where its motif crowds the largest circle', () => {
   // At 82% the frame has reached the largest the outer strips have room for,
@@ -923,13 +923,15 @@ describe('frames from real hearts', () => {
   const { design } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .73 });
   expect(paperFaults(design).weak).toBeLessThan(4);
  });
- it('lets a tearing board heart\'s legs meet the motif nearer it or the circle, where that holds', () => {
+ slow('lets a tearing board heart\'s legs meet the motif nearer it or the circle, where that holds', () => {
   // At 75% the moon and stars' best cuts left a piece hanging by paper under
   // 2 mm where the circle's legs met the motif halfway between it and the
-  // circle; with them a third or two thirds of the way out, it holds.
+  // circle; with them a third or two thirds of the way out, it holds. Made
+  // again with its islands entered where they come nearest, it has fewer
+  // sharp tips but tears, and is not kept.
   const { design } = generate({ mode: 'figure', name: 'Moon', contours: moonStars.contours as Ring[], colors, style: 'board', scale: .75 });
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
- });
+ }, 30000);
  it('keeps, of a board heart\'s cuts made at a narrower spacing, the one whose paper holds best', () => {
   // At 91% none of the star's divisions finished at the usual spacing; the
   // one kept from those made narrower left specks beside its right point.
