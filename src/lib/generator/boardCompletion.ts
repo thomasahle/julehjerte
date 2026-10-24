@@ -326,15 +326,17 @@ function tighten(paths: Point[][], heights: number[], walls: Point[][], sides: (
 		const drawn = paths[x], end = drawn.length - 1;
 		const ends = [cuts([drawn[0], drawn[1]], clear), cuts([drawn[end - 1], drawn[end]], clear)];
 		const inward = [norm([drawn[1][0] - drawn[0][0], drawn[1][1] - drawn[0][1]]), norm([drawn[end - 1][0] - drawn[end][0], drawn[end - 1][1] - drawn[end][1]])];
-		// Whether the stretch from i to j and back straight goes round the centre.
-		const round = (i: number, j: number) => {
+		// Whether points, and back straight from the last to the first, go
+		// round the centre.
+		const winds = (points: Point[]) => {
 			let sum = 0;
-			for (let k = i; k <= j; k++) {
-				const p = path[k], q = path[k === j ? i : k + 1];
+			points.forEach((p, k) => {
+				const q = points[(k + 1) % points.length];
 				sum += Math.atan2(p[0] * q[1] - p[1] * q[0], p[0] * q[0] + p[1] * q[1]);
-			}
+			});
 			return Math.abs(sum) > Math.PI;
 		};
+		const round = (i: number, j: number) => winds(path.slice(i, j + 1));
 		// Whether a stretch from a to b keeps clear: each end a switch point
 		// (`end`, which) or a point of the cut with its room.
 		type Stop = { end?: 0 | 1; room: number };
@@ -387,12 +389,38 @@ function tighten(paths: Point[][], heights: number[], walls: Point[][], sides: (
 				const r: Point = [q[0] + u[0] * t, q[1] + u[1] * t];
 				if (!fitsSegment(q, r, [{ end: e, room: clear }, { room: clear }])) continue;
 				for (let j = points.length - 1; j >= 2; j--)
-					if (fitsSegment(r, points[j], [{ room: clear }, j === points.length - 1 ? { end: e ? 0 : 1, room: clear } : { room: roomOf(points[j]) }])) {
+					// On from it, never back past the switch point (a zigzag).
+					if ((points[j][0] - r[0]) * u[0] + (points[j][1] - r[1]) * u[1] > 0 &&
+						fitsSegment(r, points[j], [{ room: clear }, j === points.length - 1 ? { end: e ? 0 : 1, room: clear } : { room: roomOf(points[j]) }])) {
 						points.splice(1, j - 1, r);
 						break search;
 					}
 			}
 			kept = e ? points.reverse() : points;
+		}
+		// Still bent more than once between its switch points, it is two
+		// straight stretches where it can be: each leaving its switch point
+		// at most `SLANT` from straight in, towards the other, meeting where
+		// those rays cross (two whose chord is just past `SLANT` from both
+		// ends otherwise leave straight in and hook round).
+		const turns = kept.slice(1, -1).map((p, k) => {
+			const u = norm([p[0] - kept[k][0], p[1] - kept[k][1]]), v = norm([kept[k + 2][0] - p[0], kept[k + 2][1] - p[1]]);
+			return Math.acos(Math.max(-1, Math.min(1, u[0] * v[0] + u[1] * v[1])));
+		});
+		if (kept.length > 3 && Math.max(...turns) > Math.PI / 3) {
+			const [a, b] = [kept[0], kept.at(-1)!];
+			// From a switch point towards the other, at most `SLANT` from straight in.
+			const ray = (n: Point, from: Point, to: Point): Point => {
+				const cross = n[0] * (to[1] - from[1]) - n[1] * (to[0] - from[0]), along = n[0] * (to[0] - from[0]) + n[1] * (to[1] - from[1]);
+				const angle = Math.sign(cross) * Math.min(Math.abs(Math.atan2(cross, along)), SLANT - 1e-3);
+				return [n[0] * Math.cos(angle) - n[1] * Math.sin(angle), n[0] * Math.sin(angle) + n[1] * Math.cos(angle)];
+			};
+			const u = ray(inward[0], a, b), v = ray(inward[1], b, a), det = v[0] * u[1] - u[0] * v[1];
+			const d: Point = [b[0] - a[0], b[1] - a[1]], s = (v[0] * d[1] - d[0] * v[1]) / det, t = (u[0] * d[1] - d[0] * u[1]) / det;
+			const m: Point = [a[0] + u[0] * s, a[1] + u[1] * s];
+			if (Math.abs(det) > 1e-9 && s > 1e-6 && t > 1e-6 && fitsSegment(a, m, [{ end: 0, room: clear }, { room: clear }]) &&
+				fitsSegment(m, b, [{ room: clear }, { end: 1, room: clear }]) && (side !== 'centre' || !winds([a, m, b])))
+				kept = [a, m, b];
 		}
 		// The other three, turned: as far from this one as they were.
 		const gap = (a: Point[], b: Point[]) => Math.min(...open(a).map(s => Math.min(...open(b).map(t => segmentToSegment(s, t)))));

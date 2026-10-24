@@ -44,4 +44,15 @@ describe('board circle completions', () => {
 				expect(apart(cuts[x], cuts[y]), `${label} ${x} ${y}`).toBeGreaterThan(.9);
 		}
 	});
+	it('never turns a hidden cut back on itself', () => {
+		// Two switch points whose chord lay just past the slant allowed from
+		// both left straight in and hooked round (nine strips at 90%), and a
+		// slanted exit could join a point behind its switch point (at 88%).
+		for (const { strips, lo, hi, pattern } of [...BOARD_PATTERNS, ...WHOLE_PATTERNS]) for (const radius of [lo + .01, (lo + hi) / 2, hi - .01])
+			for (const cut of hiddenCuts(strips, radius, pattern)) cut.slice(1, -1).forEach((p, i) => {
+				const a = [p[0] - cut[i][0], p[1] - cut[i][1]], b = [cut[i + 2][0] - p[0], cut[i + 2][1] - p[1]];
+				expect((a[0] * b[0] + a[1] * b[1]) / Math.hypot(a[0], a[1]) / Math.hypot(b[0], b[1]), `${strips} ${radius.toFixed(2)}`)
+					.toBeGreaterThan(Math.cos(135 * Math.PI / 180));
+			});
+	});
 });

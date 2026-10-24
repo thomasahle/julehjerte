@@ -911,7 +911,11 @@ leaving its switch point no more than 40° from straight in (further leaves one 
 paper there), no nearer the centre at any angle than the drawn cuts came there or than a spacing
 inside the circle, outermost first so that an inner cut can swing out where its outer one went
 round; one that still leaves its switch point straight in and then turns leaves along the steepest
-way allowed instead, where that keeps clear. A spoke with no other spoke's gate or switch point in
+way allowed instead, where that keeps clear, never on to a point back past its switch point (a
+zigzag on nine strips at 88%). One still turning sharply on the way is two straight stretches where
+that keeps clear, each leaving its switch point as steeply as allowed towards the other and meeting
+where they cross: two switch points whose chord lay just past 40° from both had left straight in and
+hooked round (nine strips at 90–91%). A spoke with no other spoke's gate or switch point in
 its turn runs straight out to its switch point once that keeps clear, or across to a point straight
 in from it and out (round to it, one whose gate lies past its switch point turned back on the motif's
 own cut to the gate in a needle: the star on seven strips at 88–90%, on nine at 82%). This halves the corners of the

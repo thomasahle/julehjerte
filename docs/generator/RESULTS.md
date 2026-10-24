@@ -1,5 +1,23 @@
 # Generator robustness results
 
+## Nine strips at 90–91%: no hidden cut hooks round
+
+The completion of the circle on nine strips at 90–91% joins pairs of switch
+points whose chord lies just past the 40° a hidden cut may leave its switch
+point from straight in, at both ends: pulled taut, such a cut left straight
+in, stepped aside and hooked back (a turn of over 135°, a sharp tip of paper
+in both sheets), eight a heart. A cut still turning that sharply is now two
+straight stretches where they keep clear, each leaving its switch point as
+steeply as allowed towards the other and meeting where they cross; and a
+cut's slanted exit no longer joins a point back past its switch point (a
+zigzag at the radius between 88 and 89%). Over the 49 featured motifs on
+the board circle at every completion and whole-motif size (five strips at
+86, 90 and 94%, seven at 87–91%, nine at 77–91%; 735 hearts): five and seven
+strips and nine below 90% unchanged; on nine at 90–91% 60 hearts change,
+none in status, each with 32 fewer corners and 16 fewer sharp tips (the
+heart [8,24] → [8,8], the star [8,27] → [8,11]); the eight needles left are
+the outer lines meeting the circle at 24°.
+
 ## Clean figures bent tip by tip, however they were made
 
 A clean figure's shared cuts bent at its sharp tips of paper all at once or
