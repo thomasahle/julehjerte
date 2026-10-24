@@ -881,7 +881,8 @@ function generateAsAsked(request: GeneratorRequest): GeneratorResult {
 }
 
 /** A heart at the size asked for, else above the default size the largest
- * of a few sizes below (see `generate`). */
+ * that can be below, of a few sizes and the whole percents just above the
+ * largest of them that can (see `generate`). */
 function generateAtSizeOrSmaller(request: GeneratorRequest): GeneratorResult {
 	const scale = request.scale ?? .7;
 	try {
@@ -895,11 +896,33 @@ function generateAtSizeOrSmaller(request: GeneratorRequest): GeneratorResult {
 		// a fixed few (so neighbouring sizes keep alike), down to the default
 		// size, rather than refusing, and says so. The circle on a board keeps
 		// its own (see `generateUsingRecipes`).
-		for (const size of [.97, .94, .91, .88, .85, .8, .75, .7].filter(size => size < scale - 1e-9)) try {
-			const result = generateAtSizeOrLastResort({ ...request, scale: size });
-			return { ...result, scale: result.scale ?? size };
-		} catch (smallerError) {
-			if (!(smallerError instanceof ConstructionError) && !(smallerError instanceof CutGeometryError)) throw smallerError;
+		const at = (size: number) => {
+			try {
+				const result = generateAtSizeOrLastResort({ ...request, scale: size });
+				return { ...result, scale: result.scale ?? size };
+			} catch (smallerError) {
+				if (!(smallerError instanceof ConstructionError) && !(smallerError instanceof CutGeometryError)) throw smallerError;
+			}
+		};
+		let above = scale;
+		for (const size of [.97, .94, .91, .88, .85, .8, .75, .7].filter(size => size < scale - 1e-9)) {
+			const result = at(size);
+			if (!result) {
+				above = size;
+				continue;
+			}
+			// Then the slider's whole percents above it, short of the one above
+			// that cannot be, while they can be: else a larger size asked would
+			// keep a smaller one (a mouse in the corners asked 97% had kept 94%,
+			// where 96% can be). One that can is quickly built; one that cannot
+			// runs the last resorts, so the first ends the search.
+			let largest = result;
+			for (let percent = Math.round(size * 100) + 1; percent < Math.ceil(above * 100 - 1e-9); percent++) {
+				const larger = at(percent / 100);
+				if (!larger) break;
+				largest = larger;
+			}
+			return largest;
 		}
 		throw error;
 	}

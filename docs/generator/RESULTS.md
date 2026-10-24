@@ -1,5 +1,21 @@
 # Generator robustness results
 
+## A size that cannot be built keeps the largest below that can
+
+Where nothing at all can be built at a size above the default, the motif
+kept the largest of a fixed few sizes below (97, 94, 91, …%), so a larger
+size asked could keep a smaller one: the mouse in the checked tips is 96% at
+96% but was 94% at 97–100%, the rabbit there 95% at 95% but 94% at 96–100%.
+Now, past the largest of those sizes that can be built, the whole percents
+above it are tried in turn while they can be, short of the one above that
+cannot. Over six motifs in the checked tips at 94–100% and three in the
+fitted frame at 96–100%, every size asked now keeps at least what a smaller
+one did (mouse 94 → 96%, unicorn 94 → 96%, rabbit 94 → 95%, church 97 → 99%
+at 100%, owl in the fitted frame 97 → 98%; the fitted fish at 100% 97 → 98%).
+A size tried that can be built costs little; one that cannot runs the last
+resorts, so the search ends at the first: such hearts take a third more
+time (the elephant in the rays at 90% is 81% in 95 s, not 80% in 69 s).
+
 ## A board's slanting cut steps straight in to the circle's gate
 
 A cut leaving a board circle's gate more than 60° off the circle's radius left

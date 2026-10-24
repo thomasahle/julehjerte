@@ -63,6 +63,7 @@ import { lobesShareTemplate } from '$lib/utils/symmetry';
 import elephant from '../../../static/generator/motifs/pin-elephant.json';
 import moonStars from '../../../static/generator/motifs/mc-moon-stars.json';
 import church from '../../../static/generator/motifs/mdi-church.json';
+import mouse from '../../../static/generator/motifs/gi-mouse.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -1023,11 +1024,16 @@ describe('frames from real hearts', () => {
   expect(area(1)).toBeGreaterThan(area(.85));
  }, 30000);
  slow('keeps a fitted fish a little smaller at 100% rather than refusing it, and says so', () => {
-  // Nothing can be built at 100%; 97% can.
+  // Nothing can be built at 100% or 99%; 98% can.
   const { design, scale } = generate({ mode: 'figure', name: 'Fish', contours: fish.contours as Ring[], colors, style: 'fitted', scale: 1 });
   expect(design.gridSize.x).toBeGreaterThanOrEqual(4);
-  expect(scale).toBe(.97);
+  expect(scale).toBe(.98);
  }, 30000);
+ slow('keeps a mouse in the corners asked a size it cannot have at the largest it can below, never smaller than a smaller size asked', () => {
+  // 97% cannot be built; 96% can, which the fixed sizes had passed for 94%.
+  const { scale } = generate({ mode: 'figure', name: 'Mouse', contours: mouse.contours as Ring[], colors, style: 'corners', scale: .97 });
+  expect(scale).toBe(.96);
+ }, 60000);
  slow('shows one small motif alone where no pattern of copies connects, rather than refusing', () => {
   const { design, layout } = generate({ mode: 'figure', name: 'Butterfly', contours: butterflyMotif.contours as Ring[], colors, style: 'motifs' });
   expect(design.gridSize).toEqual({ x: 3, y: 3 });
