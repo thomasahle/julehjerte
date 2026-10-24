@@ -817,7 +817,11 @@ export function arrangement(rings: Ring[], strips: number, reach: 'motif' | 'nea
 			apart.set(`${Math.min(p, q)},${Math.max(p, q)}`, [p, q]);
 	};
 	const heading = (q: number, v: number): Point => {
-		const pts = pieces[q].points, [a, b] = pieces[q].from === v ? [pts[0], pts[1]] : [pts.at(-1)!, pts.at(-2)!];
+		const pts = pieces[q].points;
+		// Two hidden cuts leaving one corner of a small counter cut its outline
+		// to a single point there, which heads nowhere.
+		if (pts.length < 2) return [0, 0];
+		const [a, b] = pieces[q].from === v ? [pts[0], pts[1]] : [pts.at(-1)!, pts.at(-2)!];
 		const l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
 		return [(b[0] - a[0]) / l, (b[1] - a[1]) / l];
 	};

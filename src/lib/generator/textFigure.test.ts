@@ -10,11 +10,12 @@ import { ConstructionError, inside, type Font, type Ring } from './geometry';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { arrangement, placeMotif, stripFigures, withCrowdedHiddenCuts } from './stripFigure';
 import { shippedFont } from './fonts.test-helpers';
+import { normalizeContours } from './contours';
 
-const [nunito, josefinsans, cinzel] = await Promise.all(['nunito', 'josefinsans', 'cinzel'].map(shippedFont));
+const [nunito, josefinsans, cinzel, kalam] = await Promise.all(['nunito', 'josefinsans', 'cinzel', 'kalam'].map(shippedFont));
 
 const colors = { left: '#ffffff', right: '#cc0000' };
-const fonts = { nunito: nunito as unknown as Font, josefinsans: josefinsans as unknown as Font, cinzel: cinzel as unknown as Font };
+const fonts = { nunito: nunito as unknown as Font, josefinsans: josefinsans as unknown as Font, cinzel: cinzel as unknown as Font, kalam: kalam as unknown as Font };
 const text = (value: string, textFrame: 'strips' | 'layers', font = fonts.nunito, board?: number): GeneratorRequest =>
 	({ mode: 'text', name: value, text: value, font, textFrame, colors, board });
 
@@ -65,6 +66,13 @@ describe('text in a figure frame', () => {
 		if (normal === 'degenerate' || crowded === 'degenerate') throw Error('degenerate');
 		expect(normal.crowdedLeftOut).toBe(true);
 		expect(crowded.pieces.length).toBeGreaterThan(normal.pieces.length);
+	});
+
+	it('lets two hidden cuts leave one corner of an outline', () => {
+		// In Kalam's ANNA on four strips, crowded hidden cuts are let stand and
+		// two meet the outline at one corner: the piece between is that point.
+		const rings = normalizeContours(textOutline('ANNA', fonts.kalam));
+		expect(() => withCrowdedHiddenCuts(() => stripFigures(rings, 4, .7).next())).not.toThrow();
 	});
 
 	it('moves a letter reaching into the one before until they are apart', () => {

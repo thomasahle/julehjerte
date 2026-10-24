@@ -1,5 +1,14 @@
 # Generator robustness results
 
+## Two hidden cuts at one corner of a letter in the checks
+
+Where crowded hidden cuts are let stand in the checks, two of them could meet
+a small outline at one corner, leaving the outline between them a single
+point; working out which way that piece leaves its corner then failed, and
+the text was refused with an error (Kalam's ANNA, EMMA, NOAH, OLIVIA and
+LUCAS). Such a piece now heads nowhere, and those texts are hard to cut
+instead.
+
 ## Text hearts ranked by their paper
 
 A text in the dense or airy frame took the first construction that finished.
