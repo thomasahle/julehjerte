@@ -1,5 +1,21 @@
 # Generator robustness results
 
+## Stored hidden cuts for the board circle
+
+The board circle's hidden cuts step and hook around the motif. Mal's
+exact-outline search finds straight hidden cuts for the same picture, from the
+motif's corners to the squares' corners, but takes seconds to minutes. Its
+templates are now solved offline and stored per picture topology (see
+RECIPES.md), drawn by the generator in milliseconds where they are better.
+
+The heart on five strips (45–100%): 5 solves cover 27 sizes. At 71–82% the
+stored hearts' hidden cuts turn 24–28 times against 52–64, the cuts are 3–13%
+shorter, and no paper is weak at the 80 mm print where the generator's had
+two places; at 45–49% and 60–70% the two are alike (the stored ones 1–2%
+shorter). At 50–59% the generator's four short symmetric cuts stay (the solved
+ones meet the heart's curve at two sharp tips), and from 83% the search found
+no template that passes. A stored heart takes 80–120 ms to make.
+
 ## The sunburst's crown narrows where its motif crowds the circle
 
 The sunburst's circle is four fifths of its frame, and the frame stops at the

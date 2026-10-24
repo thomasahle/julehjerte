@@ -8,6 +8,8 @@ import { NO_WHOLE_STRIPS, STRIPS, crowdedHiddenCutsSetAside, slidePlace, stripFi
 import { BOARD_STRIPS, MOTIF, boardPlacement, boardRadius, boardScale, boardSetting, boardSteps, enclosedAlong, motifChoices, squareChoices, type BoardStyle } from './boardMotif';
 import { TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
 import { CIRCLE_STYLES, fillSquare, fitCircle, withNarrowCrown, crowdsCrown } from './frameFit';
+import { chooseRecipe, recipeConstruction, recipeOutline, type Recipe } from './recipes';
+import { picture } from './picture';
 export { fillSquare, fitCircle } from './frameFit';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
 import { generateCheckeredGrid, checkeredGridCache, checkeredLayouts } from './checkeredGrid';
@@ -96,6 +98,8 @@ export type GeneratorRequest = {
 	/** The sunburst's circle as a share of its frame, four fifths unless its
 	 * crown narrows (see `fitCircle`). */
 	crown?: number;
+	/** Hidden cuts found once for the motif's pictures (see `recipes`). */
+	recipes?: readonly Recipe[];
 	style?: FigureStyle;
 	textFrame?: TextFrame;
 	/** How far the legs of a frame without a centre panel stop short of the
@@ -401,6 +405,26 @@ type Construction = ReturnType<typeof generateFigure> & {
 	strips?: number;
 };
 
+/** The whole sheet, the domain of a picture that fills it (a board's). */
+const SHEET: Ring = [[0, 0], [100, 0], [100, 100], [0, 100]];
+
+/** The heart a stored recipe draws on the request's picture, where one fits
+ * its outline and cuts cleanly (see `recipes`). */
+export function fromStoredRecipe(request: GeneratorRequest, recipes = request.recipes): GeneratorResult | undefined {
+	if (request.mode !== 'figure' || !recipes?.length) return;
+	const rings = picture(request)?.rings;
+	if (!rings?.length) return;
+	// The board the generator builds: the board circle's five strips where the visitor chose none.
+	const strips = request.style === 'board' ? request.board ?? BOARD_STRIPS.board.initial : request.board;
+	const recipe = chooseRecipe(recipes, request.style ?? 'rays', strips, request.scale ?? .7, request.gap ?? 3, recipeOutline(rings));
+	if (!recipe) return;
+	try {
+		return finishConstruction(request, { ...recipeConstruction(recipe, rings), ...request.style === 'board' ? { domain: [SHEET] } : {} }, 'nested');
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
+}
+
 function finishConstruction(request: GeneratorRequest, r: Construction, recipe: GeneratorResult['recipe'],
 	geometry = r.geometry, curveFitter?: ReturnType<typeof createExactCurveFitter>, spacing = 1,
 	precheck = request.mode !== 'text'): GeneratorResult {
@@ -559,7 +583,14 @@ function catalogueLayout(request: GeneratorRequest): BoardLayout | undefined {
  * its default size, a text's outline as a figure). */
 let making = 0;
 export function generate(request: GeneratorRequest): GeneratorResult {
-	if (!making) forgetIslandPorts();
+	// A picture solved once by the exact-outline search keeps the cuts found
+	// for it, where they cut cleanly at this size (see `recipes`); every other
+	// heart is built as below.
+	if (!making) {
+		const stored = fromStoredRecipe(request);
+		if (stored) return stored;
+		forgetIslandPorts();
+	}
 	making++;
 	try {
 		return generateTried(request);

@@ -53,6 +53,7 @@
 		GeneratorRequest
 	} from '$lib/generator/generate';
 	import type { Font, Ring } from '$lib/generator/geometry';
+	import type { RecipeFile } from '$lib/generator/recipes';
 	import {
 		DownloadIcon,
 		PencilIcon,
@@ -351,6 +352,14 @@
 			);
 		return requests.get(path)! as Promise<T>;
 	};
+	/** The hidden cuts found once for a motif in a frame (see `recipes`),
+	 * where the index lists any. */
+	const storedRecipes = async (motif: string, style: string) => {
+		const file = `${motif}.${style}`;
+		const index = await asset<{ files: string[] }>('recipes/index.json').catch(() => ({ files: [] as string[] }));
+		if (!index.files.includes(file)) return undefined;
+		return (await asset<RecipeFile>(`recipes/${file}.json`).catch(() => undefined))?.recipes;
+	};
 	async function requestFor(
 		snapshot: GeneratorState
 	): Promise<GeneratorRequest> {
@@ -385,10 +394,12 @@
 			request.font = isGoogleFont(snapshot.font)
 				? await loadGoogleFont(snapshot.font)
 				: await asset<Font>(`fonts/${snapshot.font}.json`);
-		else
+		else {
 			request.contours = (
 				await asset<{ contours: Ring[] }>(`motifs/${snapshot.motif}.json`)
 			).contours;
+			request.recipes = await storedRecipes(snapshot.motif, snapshot.style);
+		}
 		return request;
 	}
 	const label = (item: CatalogItem) => motifLabel(item, lang);
