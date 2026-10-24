@@ -20,6 +20,12 @@ export type ReadTemplate = {
 	design: HeartDesign;
 	confidence: number;
 	layout: 'in-place' | 'side-by-side' | 'single';
+	/**
+	 * The same heart with one half turned over, when the template cannot tell
+	 * the two apart (one template for both halves, or two drawn side by side)
+	 * and they weave differently; otherwise null.
+	 */
+	turned: HeartDesign | null;
 	/** Each lobe's square and cuts in the picture's pixels, for drawing over it. */
 	lobes: { square: Point[]; cuts: Point[][] }[];
 };

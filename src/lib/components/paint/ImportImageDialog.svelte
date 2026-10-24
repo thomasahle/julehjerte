@@ -162,6 +162,8 @@
 	let template = $state.raw<ReadTemplate | null>(null);
 	/** Whether the picture is still being looked at for a template. */
 	let readingTemplate = $state(false);
+	/** The template read with one half turned over (`ReadTemplate.turned`). */
+	let turnOver = $state(false);
 	/**
 	 * The paper model's first download, while the crop search waits for it:
 	 * about 16 MB, which on a slow connection is long enough to need a bar.
@@ -378,6 +380,7 @@
 			readingTemplate = false;
 			if (read) {
 				template = read;
+				turnOver = false;
 				showTemplate();
 				return;
 			}
@@ -408,9 +411,13 @@
 		previewError = null;
 	}
 
-	/** The read heart with the weave parity the checkbox sets: a template does not say it. */
+	/**
+	 * The read heart with the weave parity and the side up that the checkboxes
+	 * set: a template says neither for sure.
+	 */
 	function templateDesign(read: ReadTemplate): HeartDesign {
-		return { ...read.design, weaveParity: invert ? 1 : 0 };
+		const design = turnOver && read.turned ? read.turned : read.design;
+		return { ...design, weaveParity: invert ? 1 : 0 };
 	}
 
 	/** "Behandl som foto": the picture's corners after all, as for any picture. */
@@ -1056,6 +1063,13 @@
 					</label>
 					{#if template}
 						<p class="hint">{tr('paintTemplateParityHint')}</p>
+						{#if template.turned}
+							<label class="checkbox">
+								<input type="checkbox" bind:checked={turnOver} onchange={showTemplate} />
+								<span>{tr('paintTemplateTurnOver')}</span>
+							</label>
+							<p class="hint">{tr('paintTemplateTurnOverHint')}</p>
+						{/if}
 					{/if}
 
 					<h3 class="panel-title">{tr('paintPreview')}</h3>
