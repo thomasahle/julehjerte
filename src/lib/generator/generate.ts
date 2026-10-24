@@ -6,7 +6,7 @@ import { sunburstBorder } from './sunburst';
 import { generateTextGrid, roomOf, squareCellScale } from './textGrid';
 import { NO_WHOLE_STRIPS, STRIPS, crowdedHiddenCutsSetAside, slidePlace, stripFigures, withCrowdedHiddenCuts } from './stripFigure';
 import { BOARD_STRIPS, MOTIF, boardPlacement, boardRadius, boardScale, boardSetting, boardSteps, enclosedAlong, motifChoices, squareChoices, type BoardStyle } from './boardMotif';
-import { TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
+import { TEXT_LAST_STRIPS, TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
 import { CIRCLE_STYLES, fillSquare, fitCircle, withNarrowCrown, crowdsCrown } from './frameFit';
 import { isTopology, outlineFor, recipeConstruction, recipesAt, type Recipe } from './recipes';
 import { motifFit, topologyConstruction } from './topologyRecipes';
@@ -902,7 +902,7 @@ function generateAtSizeOrSmaller(request: GeneratorRequest): GeneratorResult {
  * in the checks keep the strips the visitor chose, hard to cut if need be;
  * otherwise, or where those can build nothing at all, they take the first
  * board that cuts cleanly, else the one that keeps the most of the cutting
- * clearance. */
+ * clearance, else a finer board than the visitor can choose. */
 function generateTextFigure(request: GeneratorRequest): GeneratorResult {
 	const figure = textFigureRequest(request);
 	if (figure.style !== 'strips') return generateAsAsked(figure);
@@ -917,6 +917,13 @@ function generateTextFigure(request: GeneratorRequest): GeneratorResult {
 		last ??= error;
 	}
 	if (hard) return hard;
+	// A long word no board up to six strips can weave whole may still weave on
+	// a finer one: there, rather than refused (KÆRLIGHED in Kalam on eight).
+	for (const board of TEXT_LAST_STRIPS) try {
+		return generateAtSizeOrSmaller({ ...figure, board });
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
 	throw last;
 }
 

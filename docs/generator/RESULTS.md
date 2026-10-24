@@ -1,5 +1,15 @@
 # Generator robustness results
 
+## Long words in the checks on a finer board, as a last resort
+
+The letters in the checks try four, five, six and three strips; a long word
+none of them can weave whole, no sheets keeping every strip whole, was
+refused (KÆRLIGHED in Kalam and in Cinzel, GLÆDELIG over JUL in Cinzel).
+Only then do they now try seven to ten strips, finer than the visitor can
+choose: KÆRLIGHED weaves on eight in Kalam and on seven in Cinzel, a little
+smaller, and GLÆDELIG over JUL on ten, all hard to cut. Each finer board
+that cannot takes about forty seconds, so such a heart can take minutes.
+
 ## Board legs meeting the motif nearer it or the circle, where its paper tears
 
 On the board, the circle's legs meet the motif's outer gates halfway between

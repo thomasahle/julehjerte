@@ -23,6 +23,9 @@ const TRACKING = .08, LEADING = 1.1;
  * finer boards, on which the letters cross more lines and fewer of their
  * counters lie alone in a square, and the coarsest last. */
 export const TEXT_STRIPS = [4, 5, 6, 3] as const;
+/** The finer boards the letters in the checks try only where none of those
+ * can weave them at all. */
+export const TEXT_LAST_STRIPS = [7, 8, 9, 10] as const;
 
 const outlines = new WeakMap<Font, Map<string, Ring[]>>();
 

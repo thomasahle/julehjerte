@@ -144,6 +144,12 @@ describe('text in a figure frame', () => {
 		expect(withCrowdedHiddenCuts(at)).toBe(false);
 	});
 
+	slow('weaves a long word no board up to six strips can on a finer one, rather than refuse it', () => {
+		// KÆRLIGHED in Kalam leaves no sheets that keep every strip whole on
+		// three to six strips; eight do.
+		const { design } = generate(text('KÆRLIGHED', 'strips', fonts.kalam));
+		expect(design.gridSize.x).toBeGreaterThan(6);
+	}, 120000);
 	slow('names the letters that are hard to cut in the checks', () => {
 		const { hardToCut } = generate(text('Søren', 'strips', fonts.nunito, 4));
 		expect(hardToCut?.letters).toContain('ø');
