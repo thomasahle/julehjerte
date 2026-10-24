@@ -56,7 +56,9 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
     if(traced){
       const search=await exactSearch(scaleTarget(traced,cfg.width,cfg.paperColors),solution,settings({...(solution.automaticSettings||raw),symmetry:cfg.symmetry}),{deadline:searchEnd,onProgress,symmetry,raster});
       report={...search.report,chosen:'fitter',fitter:fitted};
-      if(search.found&&better(search.found.assessment,fitted)){solution=search.found.solution;report.chosen='exact';}
+      // Only a passing one: a search that ends with rules broken may still
+      // rank above a failing fit, but its cuts can cross, which Mal cannot show.
+      if(search.found?.assessment.passes&&better(search.found.assessment,fitted)){solution=search.found.solution;report.chosen='exact';}
     }
   }else if(!symmetry.length){
     const scaled=scaleTarget(outline,cfg.width,cfg.paperColors);
