@@ -1,5 +1,15 @@
 # Generator robustness results
 
+## Tern i spidserne: a paper's width off where it tears
+
+The corners frame now gets the same second pass. Where the best of its
+layouts still tears printed 80 mm wide, the layouts are made again with the
+motif's connections in the lanes a paper's width off (`routeMargin` in
+`generateCornerChecks`), and that is kept only with the same border and where
+its paper holds better. Over the 49 featured motifs at 50/70/85%, hearts that
+tear fall from 81 to 74 and needle-sharp tips from 52 to 47; none gets worse,
+at 13% more time. The snowman at the default size now holds.
+
 ## Open frames: the same gates, a paper's width off where they tear
 
 The open frames (Stor silhuet, Tæt om figuren, Kiler) now get the same second

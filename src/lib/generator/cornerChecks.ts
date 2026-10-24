@@ -119,7 +119,7 @@ function pastMotif(path: Point[], cuts: Point[], room: number, limit: number, sa
 
 export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 	routing: 'chain' | 'practical' | 'separated' = 'chain', fitBorder = false, bentSpokes = false,
-	contacts?: { tilt: number; invert: boolean }, laneSplit?: number, gap = 0, bendLegs = false, holdLegs = false) {
+	contacts?: { tilt: number; invert: boolean }, laneSplit?: number, gap = 0, bendLegs = false, holdLegs = false, routeMargin = 0) {
 	const points = rings.flat();
 	if (!points.length) throw new ConstructionError('empty', 'No contour');
 	const artwork = rings.map(r => r.map(([x, y]) => uprightToSheet([x * size * scale, y * size * scale])));
@@ -198,7 +198,8 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 				// Each lane keeps one open path in each sheet. Counters and sharp
 				// shoulders can use the same coincident bridges as repeated letters.
 				// Three lanes plus two outer cuts give a six-strip grid.
-				twoPortMotif(edges, lanes[col].flatMap(contoursOf), [entry, exit], margin, {
+				// At `routeMargin`, the motif's connections keep further off.
+				twoPortMotif(edges, lanes[col].flatMap(contoursOf), [entry, exit], Math.max(margin, routeMargin), {
 					compound: true, balanced: true, bentSpokes,
 					// Its approaches pass the other lanes' parts of the motif.
 					obstacles: lanes.flatMap((nodes, other) => other === col ? [] : nodes.flatMap(contoursOf))

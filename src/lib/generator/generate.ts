@@ -2773,25 +2773,35 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// The layouts route the lanes unseen: of the first few, the best paper.
 		// One fitting the border narrows the outer strips, a picture of its
 		// own: only where none of the others finish.
-		let finished = false;
-		const best = bestOfFirst((function* () {
+		const fitted = new Set<GeneratorResult>();
+		const layouts = (routeMargin = 0) => bestOfFirst((function* () {
+			let finished = false;
 			for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) for (const holdLegs of [true, false]) {
 				if (fitBorder && finished) return;
 				try {
 					const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes,
-						undefined, undefined, request.gap, false, holdLegs);
+						undefined, undefined, request.gap, false, holdLegs, routeMargin);
 					// Keep the established frame and skip another fit when moving
 					// separate components did not change any lane or connection.
 					if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
-					const done = finish(result, 'silhouette');
+					const done = finish(result, 'silhouette', !routeMargin);
 					finished = true;
+					if (fitBorder) fitted.add(done);
 					yield done;
 				} catch (error) {
 					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-					last = error;
+					if (!routeMargin) last = error;
 				}
 			}
 		})());
+		const best = layouts();
+		// Where its paper tears printed, the layouts again with the motif's
+		// connections a paper's width off; kept only with the same border and
+		// where they hold better.
+		if (best && paperTears(exported(best).design)) {
+			const again = layouts(PAPER_NECK_MM / PRINT_WIDTH_MM * 100);
+			if (again && fitted.has(again) === fitted.has(best) && cutsBetter(again, best, true)) return again;
+		}
 		if (best) return best;
 		throw last;
 	}
