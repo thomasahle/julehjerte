@@ -81,6 +81,10 @@ export type PaintResult = {
 		motifMismatch?: number;
 		/** Permitted changes outside that motif, relative to the original drawing. */
 		borderChange?: number;
+		/** The heart was read from a picture of its template, not searched for. */
+		read?: boolean;
+		/** Some of its cuts come closer than Tegn allows (a read template, as drawn). */
+		tooClose?: boolean;
 	};
 };
 

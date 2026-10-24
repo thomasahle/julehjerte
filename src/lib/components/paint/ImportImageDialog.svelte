@@ -60,6 +60,10 @@
 	} from '$lib/paint/importImage';
 	import { rectifyPhoto, warmRectifier, type RectifiedPhoto } from '$lib/paint/rectify';
 	import { NO_SYMMETRY, type SymmetrySettings } from '$lib/paint/symmetry';
+	import { readTemplate, type ReadTemplate } from '$lib/paint/templateRead';
+	import { rasterizeDesign } from '$lib/paint/rasterize';
+	import { MASK_SIZE } from '$lib/paint/mask';
+	import type { HeartDesign } from '$lib/types/heart';
 
 	interface Props {
 		open: boolean;
@@ -80,10 +84,15 @@
 		 * The dialog closes itself afterwards, so this only has to store them.
 		 */
 		onUse: (mask: Mask, found: SymmetrySettings) => void;
+		/**
+		 * A picture of a cut template, read back as its heart: the design, its
+		 * woven mask and the symmetry detected in that. The page shows it as found.
+		 */
+		onUseTemplate: (design: HeartDesign, mask: Mask, found: SymmetrySettings) => void;
 		lang: Language;
 	}
 
-	let { open, onClose, detect, onUse, lang }: Props = $props();
+	let { open, onClose, detect, onUse, onUseTemplate, lang }: Props = $props();
 
 	const tr = (key: TranslationKey, params?: Record<string, string | number>) =>
 		t(key, lang, params);
@@ -143,6 +152,14 @@
 	let invert = $state(false);
 
 	let previewMask = $state.raw<Mask | null>(null);
+	/**
+	 * The heart a template picture is the template of (templateRead.ts), or null
+	 * for a picture of a heart. While there is one the dialog shows its weave
+	 * and offers it whole: the cuts are the template's own, not a fit.
+	 */
+	let template = $state.raw<ReadTemplate | null>(null);
+	/** Whether the picture is still being looked at for a template. */
+	let readingTemplate = $state(false);
 	let previewFound = $state<SymmetrySettings | null>(null);
 	let previewBusy = $state(false);
 	/** Why there is no preview, if the engine was asked and could not give one. */
@@ -297,6 +314,8 @@
 		previewBusy = false;
 		previewError = null;
 		livePhoto = null;
+		template = null;
+		readingTemplate = false;
 		// A gesture does not outlive the dialog. Escape while a corner is held
 		// closes the Modal and destroys the picture under the finger, so neither
 		// pointerup nor pointercancel ever reaches `endDrag` — and a `draggingCorner`
@@ -334,8 +353,53 @@
 			fileError = errorKey(error);
 			return;
 		}
+		// A template is read first: it is quick, and no photograph or drawing of
+		// a heart we have tried reads as one, so a picture that is not one goes on
+		// to the corners as before.
+		const input = decoded.input;
+		if (decoded.pixels && input.type === 'pixels') {
+			const mine = ++generation;
+			readingTemplate = true;
+			const read = await readTemplate({ width: input.imageWidth, height: input.imageHeight, data: input.rgba });
+			if (mine !== generation) return;
+			readingTemplate = false;
+			if (read) {
+				template = read;
+				showTemplate();
+				return;
+			}
+		}
 		if (decoded.pixels) await findCorners();
 		else schedulePreview();
+	}
+
+	/** The template's weave as the preview, with the strips over first that "Byt farverne" says. */
+	function showTemplate(): void {
+		if (!template) return;
+		quad = [];
+		outline = [];
+		region = null;
+		cropMode = 'quad';
+		cropTool = 'corners';
+		cornerStatus = null;
+		const mask = rasterizeDesign(templateDesign(template), MASK_SIZE);
+		previewMask = mask;
+		previewFound = detect(mask);
+		previewError = null;
+	}
+
+	/** The read heart with the weave parity the checkbox sets: a template does not say it. */
+	function templateDesign(read: ReadTemplate): HeartDesign {
+		return { ...read.design, weaveParity: invert ? 1 : 0 };
+	}
+
+	/** "Behandl som foto": the picture's corners after all, as for any picture. */
+	function treatAsPhoto(): void {
+		template = null;
+		invert = false;
+		previewMask = null;
+		previewFound = null;
+		void findCorners();
 	}
 
 	/** True when the picture is square, so it may be taken as the woven square whole. */
@@ -530,7 +594,8 @@
 	function use(): void {
 		if (!previewMask) return;
 		// Spread rather than hand the store a rune proxy of our own state.
-		onUse(previewMask, { ...(previewFound ?? NO_SYMMETRY) });
+		if (template) onUseTemplate(templateDesign(template), previewMask, { ...(previewFound ?? NO_SYMMETRY) });
+		else onUse(previewMask, { ...(previewFound ?? NO_SYMMETRY) });
 		// Using the mask is the end of the dialog's business (§2). Closing here
 		// rather than leaving it to the parent is what makes that true wherever the
 		// dialog is wired up.
@@ -699,6 +764,8 @@
 
 	let statusText = $derived.by(() => {
 		if (!decoded?.pixels) return '';
+		if (readingTemplate) return tr('paintReadingPicture');
+		if (template) return tr('paintTemplateFound');
 		if (cropMode === 'square') return tr('paintCornersWholeImageHint');
 		if (cropTool === 'region') return tr('paintCornersRegionHint');
 		switch (cornerStatus) {
@@ -837,6 +904,14 @@
 								{#each outline as arc, i (i)}
 									<polyline class="found" points={arc.map((p) => p.join(',')).join(' ')} />
 								{/each}
+								{#if template}
+									{#each template.lobes as lobe, i (i)}
+										<polygon class="crop" points={lobe.square.map((p) => p.join(',')).join(' ')} />
+										{#each lobe.cuts as cut, j (j)}
+											<polyline class="found" points={cut.map((p) => p.join(',')).join(' ')} />
+										{/each}
+									{/each}
+								{/if}
 								{#if region}
 									<rect
 										class="region"
@@ -867,7 +942,14 @@
 						{/if}
 					</div>
 
-					{#if decoded.pixels}
+					{#if decoded.pixels && template}
+						<div class="corner-actions">
+							<button type="button" class="btn btn-sm btn-ghost" onclick={treatAsPhoto}
+								>{tr('paintTemplateAsPhoto')}</button
+							>
+						</div>
+						<p class="hint" role="status">{statusText}</p>
+					{:else if decoded.pixels}
 						<div class="corner-actions">
 							<button
 								type="button"
@@ -905,6 +987,7 @@
 
 				<section class="controls">
 					<h3 class="panel-title">{tr('paintColours')}</h3>
+					{#if !template}
 					<div class="segmented" role="group" aria-label={tr('paintColoursMode')}>
 						{#each COLOUR_MODES as option (option.value)}
 							<button
@@ -917,7 +1000,9 @@
 						{/each}
 					</div>
 
-					{#if mode === 'swatches'}
+					{/if}
+
+					{#if mode === 'swatches' && !template}
 						<p class="hint">{tr('paintSwatchHint')}</p>
 						<div class="swatches">
 							<label class="swatch">
@@ -936,9 +1021,16 @@
 					{/if}
 
 					<label class="checkbox">
-						<input type="checkbox" bind:checked={invert} onchange={schedulePreview} />
+						<input
+							type="checkbox"
+							bind:checked={invert}
+							onchange={() => (template ? showTemplate() : schedulePreview())}
+						/>
 						<span>{tr('paintColoursInvert')}</span>
 					</label>
+					{#if template}
+						<p class="hint">{tr('paintTemplateParityHint')}</p>
+					{/if}
 
 					<h3 class="panel-title">{tr('paintPreview')}</h3>
 					<div class="preview">
@@ -995,7 +1087,7 @@
 		<span class="spacer"></span>
 		<button type="button" class="btn btn-sm btn-ghost" onclick={onClose}>{tr('cancel')}</button>
 		<button type="button" class="btn btn-sm btn-primary" disabled={!previewMask} onclick={use}>
-			{tr('paintUseAsMask')}
+			{tr(template ? 'paintUseTemplate' : 'paintUseAsMask')}
 		</button>
 	</footer>
 

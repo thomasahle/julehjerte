@@ -56,7 +56,9 @@
 	} from '$lib/editor/session.svelte';
 	import { clampFrameSize, frameMismatch, shapeCells } from '$lib/paint/frame';
 	import { cloneMask, createMask, isEmpty, maskMismatch, type Mask } from '$lib/paint/mask';
-	import { detectSymmetry, transformsFor } from '$lib/paint/symmetry';
+	import { detectSymmetry, NO_SYMMETRY, transformsFor } from '$lib/paint/symmetry';
+	import { fingerHasIntersectionIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
+	import { inferOverlapRect } from '$lib/utils/overlapRect';
 	import { rasterizeDesign } from '$lib/paint/rasterize';
 	import {
 		canRedo as historyCanRedo,
@@ -211,7 +213,7 @@
 
 	/** A destructive step waiting for the visitor to say yes. */
 	let confirming = $state<'clear' | 'import' | null>(null);
-	let pendingImport: { mask: Mask; found: SymmetrySettings; source: string } | null = null;
+	let pendingImport: { mask: Mask; found: SymmetrySettings; source: string; design?: HeartDesign } | null = null;
 
 	/** Something that went wrong outside the search: a save, a PDF, the example. */
 	let notice = $state<string | null>(null);
@@ -565,8 +567,46 @@
 	function confirmImport(): void {
 		confirming = null;
 		if (!pendingImport) return;
-		useMask(pendingImport.mask, pendingImport.found, pendingImport.source);
+		if (pendingImport.design) useTemplate(pendingImport.design, pendingImport.mask, pendingImport.found);
+		else useMask(pendingImport.mask, pendingImport.found, pendingImport.source);
 		pendingImport = null;
+	}
+
+	/** A template picture's heart (the import dialog read it): confirmed like any import. */
+	function onImportedTemplate(design: HeartDesign, mask: Mask, found: SymmetrySettings): void {
+		if (session.maskDirty && !maskEmpty) {
+			pendingImport = { mask, found, source: 'template', design };
+			confirming = 'import';
+			return;
+		}
+		useTemplate(design, mask, found);
+	}
+
+	/**
+	 * The template's weave becomes the mask and its heart the result, as if
+	 * found: the cuts are the template's own, so there is nothing to search for.
+	 * The rows stay off — folding would edit the weave the cuts make — and the
+	 * symmetry found in it is only reported.
+	 */
+	function useTemplate(design: HeartDesign, mask: Mask, found: SymmetrySettings): void {
+		setMask(mask, { sourceName: 'template', symmetry: { ...NO_SYMMETRY }, found });
+		resetHistory(history);
+		syncHistoryFlags();
+		revision++;
+		// A read template's fingers are its cuts and the lobe's two edges.
+		const cuts = (lobe: string) => design.fingers.filter((f) => f.lobe === lobe && !f.id.includes('-edge-')).length;
+		// Drawn templates are not always cuttable as drawn: Tegn's own check says
+		// where cuts come too close, and the panel says that it does.
+		const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize));
+		const tooClose = design.fingers.some((f) => fingerHasIntersectionIssues(f, design.fingers, margin));
+		session.result = {
+			design: { ...design, id: newHeartId(), name: t('paintHeartFromTemplate', lang) },
+			report: { cuts: [cuts('left'), cuts('right')], clearanceMm: null, mismatch: 0, identical: false, read: true, tooClose }
+		};
+		session.error = null;
+		session.status = 'done';
+		honoured = null;
+		showingResult = true;
 	}
 
 	/**
@@ -1124,6 +1164,7 @@
 		detect={detectOn}
 		onClose={() => (showImport = false)}
 		onUse={(mask, found) => onImported(mask, found)}
+		onUseTemplate={(design, mask, found) => onImportedTemplate(design, mask, found)}
 	/>
 
 	<Modal

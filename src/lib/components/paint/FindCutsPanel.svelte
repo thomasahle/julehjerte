@@ -396,7 +396,7 @@
 		<!-- The answer to a wait that may have lasted a minute or two: it has to say
 		     so on its own, not only to whoever is watching the panel. -->
 		<div class="summary" role="status">
-			<p class="lead">{tr(result.report.stoppedEarly ? 'paintStoppedEarly' : 'paintFound')}</p>
+			<p class="lead">{tr(result.report.read ? 'paintFoundTemplate' : result.report.stoppedEarly ? 'paintStoppedEarly' : 'paintFound')}</p>
 			{#if result.report.motifMismatch !== undefined}
 				<p class="numbers">
 					{t('paintFoundMotifSummary', lang, {
@@ -423,6 +423,9 @@
 			{/if}
 			{#if result.report.missingFeatures}
 				<p class="note">{tr('paintFoundMissingFeatures')}</p>
+			{/if}
+			{#if result.report.tooClose}
+				<p class="note">{tr('paintTemplateTooClose')}</p>
 			{/if}
 		</div>
 		{#if result.report.motifMismatch !== undefined}
