@@ -181,7 +181,16 @@ export function preprocessPixels({rgba,imageWidth,imageHeight,quad=null,cropProv
   // no template keeps and the fidelity check then counts as lost features.
   // It takes the colours just inside it (border.js), before anyone sees it.
   const border=quad?stabilizeBorder(classified.mask,n,width,1,settings.minWidth??2):null;
-  const quantized=border?{...classified,mask:border.mask,metadata:{...classified.metadata,cropBorder:border.metadata}}:classified;
+  // What is left of them: pieces of either colour on the edge smaller than
+  // 12 mm² (a 3.5 mm square, below any cell a design puts there). Inside,
+  // specks and holes under 6 mm² are glare, dust or print, not detail a
+  // template can cut, and the fidelity check would ask it to keep them.
+  let edgeSpecks=0,specks=null;
+  if(border){
+    for(const value of[0,1])for(const c of components(border.mask,n,value))if(c.border&&c.pixels.length*(width/n)**2<12){for(const p of c.pixels)border.mask[p]^=1;edgeSpecks+=c.pixels.length;}
+    specks=cleanupMask(border.mask,n,width,{removeSpecks:6,fillHoles:6});
+  }
+  const quantized=border?{...classified,mask:specks.mask,metadata:{...classified.metadata,cropBorder:{...border.metadata,edgeSpeckPixels:edgeSpecks,speckPixels:specks.changes}}}:classified;
   const target=settings.algorithm==='direct'?{width,phase:0,curves:[],metadata:{input:'photograph for direct fitting',paperColors:colorsSafe(settings.paperColors),direct:true,preprocessing:{...quantized.metadata,actualResolution:n,traceUsed:false,traceChangeFraction:0,totalChangeFraction:0,sourceMaskComponents:components(quantized.mask,n,1).length,vectorSampleComponents:components(quantized.mask,n,1).length}},sourceImage:{mask:quantized.mask,probability:quantized.probability||Float32Array.from(quantized.mask),resolution:n}}:preprocessMask(quantized.mask,n,{...settings,width},quantized.metadata);
   if(validMask){
     target.sourceImage.validMask=validMask;
