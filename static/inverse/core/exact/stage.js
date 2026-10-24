@@ -7,6 +7,7 @@
  * hidden runs, shorter. */
 import {validate, easeMetrics, sampleWeave} from '../validate.js';
 import {finalMaterialAudit} from '../geometric-material.js';
+import {verifiedPaperSettings} from '../material.js';
 import {auditFeatureFidelity} from '../feature-shapes.js';
 import {matchingSummary} from '../direct/matching.js';
 import {routedComplexity} from '../direct/routed-refinement.js';
@@ -43,11 +44,13 @@ export function exactSymmetry(spec) {
   return requested.map(name => FROM_APP[name]);
 }
 
-/** How a template ranks (lower is better), with what it measured. */
-export function assess(solution, cfg) {
+/** How a template ranks (lower is better), with what it measured. Its paper
+ * is audited as the export audits it (on a finer lattice the template was
+ * verified at), or `material` is that audit already made. */
+export function assess(solution, cfg, {material = null} = {}) {
   const check = validate(solution, cfg, {finalGeometry: true});
   let paper = false;
-  try { paper = check.passed && finalMaterialAudit(solution, cfg).passed; } catch { paper = false; }
+  try { paper = check.passed && (material ?? finalMaterialAudit(solution, verifiedPaperSettings(solution, cfg))).passed; } catch { paper = false; }
   const kinds = new Set(check.issues.map(i => i.type));
   if (check.passed && !paper) kinds.add('paper');
   const matching = matchingSummary(solution), hiddenRuns = routedComplexity(solution).hiddenRuns;

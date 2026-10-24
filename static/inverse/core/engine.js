@@ -57,7 +57,7 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
   // time or the ends do not pair up.)
   const cfgFitted=settings(solution.automaticSettings||raw);
   let repaired=repairFinal(solution,cfgFitted,{onProgress,deadline:searchEnd});
-  const fitted=assess(repaired.solution,cfgFitted);
+  const fitted=assess(repaired.solution,cfgFitted,{material:repaired.paperRepair.material});
   let report={chosen:'fitter',fitter:fitted,...(outline?{}:{error:cannot})};
   if(outline&&!fitted.passes){
     const search=await exactSearch(outline,solution,settings({...(solution.automaticSettings||raw),symmetry:cfg.symmetry}),{deadline:searchEnd,onProgress,symmetry,geometry:cfg.progressGeometry});
