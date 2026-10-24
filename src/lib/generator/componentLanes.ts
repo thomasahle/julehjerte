@@ -18,9 +18,11 @@ const contoursOf = (node: Contour): Ring[] => [node.ring, ...node.children.flatM
  * says whether one does), unless `pass`: then it moves within its column to
  * where it passes farthest from the motif, and an open frame's lane with no
  * place clear of it is left out. A moved lane runs straight above and below
- * the motif. Passing in a sunburst, the lanes also keep inside its border. */
+ * the motif. Passing in a sunburst, the lanes also keep inside its border.
+ * With `drop`, an open frame's moved lanes are left out too, while two stay:
+ * one moved to its column's edge can come too near the frame's legs. */
 export function generateComponentLanes(rings: Ring[], frame: Frame | OpenFrame, size = 70, scale = .7,
-	style: 'rays' | 'check' = 'rays', aligned = false, extraStrips = 0, pass = false) {
+	style: 'rays' | 'check' = 'rays', aligned = false, extraStrips = 0, pass = false, drop = false) {
 	const factor = size * scale;
 	const upright = rings.map(r => r.map(([x, y]): Point => [x * factor, y * factor]));
 	const points = upright.flat();
@@ -55,6 +57,8 @@ export function generateComponentLanes(rings: Ring[], frame: Frame | OpenFrame, 
 	// Two lanes at the least: one would leave two strips a side.
 	if (past.filter(x => x !== undefined).length < 2) past = past.map((x, col) => x ?? middles[col]);
 	const moving = past.map((x, col) => x === undefined || Math.abs(x - middles[col]) > 1e-9);
+	const kept = past.map((x, col) => moving[col] ? undefined : x);
+	if (drop && open && kept.filter(x => x !== undefined).length >= 2) past = kept;
 	const passes = moving.includes(true), lanes = pass ? past : middles, moved = pass ? moving : moving.map(() => false);
 	if (open) {
 		// Each lane's approach needs some room to reach the motif's outline.

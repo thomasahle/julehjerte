@@ -44,6 +44,25 @@ it('moves a lane holding no part of the motif past the parts reaching across it,
 	expect(crossingOutlines(generateComponentLanes(contours, open, 100, .6, 'check', true, 0, true).edges)).toBe(0);
 });
 
+it('leaves out an open frame\'s moved lane where asked, while two stay', () => {
+	// Moved to the edge of its column, the santa hat's empty lane can come too
+	// near the frame's legs to cut: without it, two lanes stay.
+	const contours = normalizeContours(santaHat.contours as Ring[]), open = { ...SILHOUETTE, gap: 3 };
+	const legs = (drop: boolean) => generateComponentLanes(contours, open, 100, .6, 'check', true, 0, true, drop)
+		.edges.filter(e => e.kind === 'frame').length;
+	expect(legs(false)).toBe(12);
+	expect(legs(true)).toBe(8);
+});
+
+slow('keeps the santa hat in the large silhouette at its size where its moved lane cannot be cut', () => {
+	// At 78% the lane moved past the hat ran too near the frame's legs, and
+	// the hat fell back to 75%, smaller than at 77%.
+	const { scale, hardToCut } = generate({ mode: 'figure', name: 'hat', contours: santaHat.contours as Ring[], style: 'silhouette', scale: .78, gap: 3,
+		colors: { left: '#fff', right: '#b91313' } });
+	expect(scale).toBeUndefined();
+	expect(hardToCut).toBeUndefined();
+}, 90000);
+
 slow('builds the santa hat in the large silhouette rather than refuse it', () => {
 	expect(() => generate({ mode: 'figure', name: 'hat', contours: santaHat.contours as Ring[], style: 'silhouette', scale: .7, gap: 3,
 		colors: { left: '#fff', right: '#b91313' } })).not.toThrow();

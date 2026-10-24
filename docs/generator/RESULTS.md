@@ -1,5 +1,19 @@
 # Generator robustness results
 
+## Open frames: a moved lane that cannot be cut is left out
+
+The santa hat in the large silhouette at 78–80% fell back to 75%, smaller
+than at 77%. The lane holding none of the hat ran through it, and moved past
+it (`withPassingLanes`) it could only lie on its column's edge, 2 units from
+the hat, too near the frame's legs to cut. Now an open frame whose moved lanes
+fail leaves them out instead, while two lanes stay (`drop` in
+`generateComponentLanes`), still only after the heart was refused. Over seven
+hard motifs (santa hat, elephant, polar star, candy cane, wreath, hedgehog,
+squirrel) in the three open frames at 45–100%, only the santa hat changes: in
+the silhouette at 78/80% it keeps its size with 2 weak places, not 4, in 20 s,
+not 68; in the wedges at 90% hard → clean; at 45–65% one weak place fewer.
+None gets worse. The elephant in the fitted frame is still refused at every size.
+
 ## A second try keeps its fewer tips only where its paper holds as well
 
 A heart made again (exact outline indices, islands entered where they come

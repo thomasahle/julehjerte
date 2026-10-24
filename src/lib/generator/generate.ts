@@ -2016,11 +2016,12 @@ function retryComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<
 	// Lanes without a centre panel always end above and below the motif.
 	// A completed construction that fails its checks stays a hard-to-cut candidate.
 	const recipe = open ? 'silhouette' : 'nested';
-	for (const aligned of open ? [true] : [false, true]) {
+	// Passing lanes an open frame cannot cut are left out (see `generateComponentLanes`).
+	for (const [aligned, drop] of open ? passingLanes ? [[true, false], [true, true]] : [[true, false]] : [[false, false], [true, false]]) {
 		let passes = false;
 		try {
 			const inner = generateComponentLanes(rings, frame, sunburst ? size * (request.crown ?? .8) : size,
-				request.scale, style, aligned, sunburst ? 2 : 0, passingLanes);
+				request.scale, style, aligned, sunburst ? 2 : 0, passingLanes, drop);
 			passes = inner.passes;
 			// Passing lanes that pass nothing were made already, but in a sunburst.
 			if (passingLanes && !passes && !sunburst) continue;
