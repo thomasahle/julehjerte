@@ -186,20 +186,27 @@ export function routeNogoods(outline, cand) {
 
 /** Each paper's slits as {line, piece} lists for labels on every position (the
  * lazy check's view): pieces ['run', e, i] or ['hid', key]. */
-export function slitPiecesOn(st, outline, cand, labels, used) {
+export function slitPiecesOn(st, outline, cand, labels, used, geometry = null) {
   const links = new Map(), link = (fam, at, entry) => { const k = `${fam}|${at}`; if (!links.has(k)) links.set(k, []); links.get(k).push(entry); };
   st.edges.forEach((ed, e) => {
     const grid = cand.positions.get(e) || [];
     const at = i => i === 0 ? `node:${pointKey(ed.u)}` : i === grid.length + 1 ? `node:${pointKey(ed.v)}` : `slot:${e}:${i}`;
     for (let i = 0; i <= grid.length; i++) {
       const s0 = i ? grid[i - 1] : 0, s1 = i < grid.length ? grid[i] : outline.L[e];
-      const line = subPolyline(ed.pts, outline.geo[e], s0, s1), fam = labels.get(`${e},${i}`) ? 'A' : 'B', piece = ['run', e, i];
+      const line = geometry ? geometry.line(e, s0, s1) : subPolyline(ed.pts, outline.geo[e], s0, s1), fam = labels.get(`${e},${i}`) ? 'A' : 'B', piece = ['run', e, i];
       link(fam, at(i), {piece, to: at(i + 1), line});
       link(fam, at(i + 1), {piece, to: at(i), line: [...line].reverse()});
     }
   });
   for (const key of used) {
-    const [, a, b] = cand.pair.get(key), p = `slot:${a[1]}:${a[2]}`, q = `slot:${b[1]}:${b[2]}`, line = cand.route.get(key), piece = ['hid', key];
+    const [, a, b] = cand.pair.get(key), p = `slot:${a[1]}:${a[2]}`, q = `slot:${b[1]}:${b[2]}`, piece = ['hid', key];
+    let line = cand.route.get(key);
+    // On `geometry` (refine.js) the route's ends move with the runs' ends.
+    if (geometry) {
+      const at = t => geometry.point(t[1], cand.arc(t)), pa = at(a), pb = at(b), first = cand.point(a);
+      const forward = Math.hypot(line[0][0] - first[0], line[0][1] - first[1]) <= Math.hypot(line.at(-1)[0] - first[0], line.at(-1)[1] - first[1]);
+      line = [forward ? pa : pb, ...line.slice(1, -1), forward ? pb : pa];
+    }
     for (const fam of ['A', 'B']) {
       link(fam, p, {piece, to: q, line});
       link(fam, q, {piece, to: p, line: [...line].reverse()});

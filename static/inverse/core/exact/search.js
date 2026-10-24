@@ -14,6 +14,8 @@ import {paperSpots, tightNogoods} from './paper.js';
 import {cheapBounds} from './bounds.js';
 import {StructureSymmetry, act, group} from './symmetry.js';
 import {solutionJSON} from '../graph.js';
+import {validate} from '../validate.js';
+import {edgesOnMask, geometryOn} from './refine.js';
 
 /** How often the search's improving solutions are drawn for the live view. */
 const DRAW_INTERVAL_MS = 400;
@@ -25,7 +27,7 @@ function holds(nogood, labels, used, switches) {
 }
 
 /** The exact template nearest the given one: {solution, report} or {error}. */
-export async function exactFromTemplate(target, template, cfg, {seconds = 20, neighbours = 8, spacing = .75, paperRetries = 2, exact = exactOutline(target, cfg), symmetry = [], sheets = true, witness: given = null, onProgress = () => {}, geometry = false} = {}) {
+export async function exactFromTemplate(target, template, cfg, {seconds = 20, neighbours = 8, spacing = .75, paperRetries = 2, exact = exactOutline(target, cfg), symmetry = [], sheets = true, witness: given = null, onProgress = () => {}, geometry = false, refine = false, refineSeconds = 2} = {}) {
   // The start: `witness` (exactStart's, start.js), or the template read here.
   const t0 = performance.now(), {st, outline, routes} = exact, witness = given || await readTemplate(template, outline);
   if (witness.error) return {error: witness.error};
@@ -134,13 +136,38 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
     const xy = drawing(slitPiecesOn(st, outline, cand, lab, chosen)), solution = drawingSolution(xy, target, cfg);
     let spots = null;
     try { spots = report.penalty > 1e-6 ? null : paperSpots(solution, cfg); } catch { spots = null; }
-    const result = {solution, xy, report, paperPassed: !spots};
+    const result = {solution, xy, report, paperPassed: !spots, lab, chosen};
     if (!best || (result.paperPassed && !best.paperPassed)) best = result;
     if (result.paperPassed || !spots || performance.now() > deadline - 2000) break;
     extra = [...extra, ...tightNogoods(model, values, spots)];
   }
   if (!best) return {error: 'No exact template found.', report: attempts.at(-1)};
-  return {solution: best.solution, xy: best.xy, report: {...best.report, bound, attempts, candidates: cand.cost.size, statics: statics.length,
+  // With `refine`, the solution redrawn on the mask's own edge too (refine.js):
+  // every edge if that keeps the editor's checks, else edge by edge, the
+  // longest first, each kept when the drawing still passes, for at most
+  // `refineSeconds`.
+  let refined = null;
+  const source = target.sourceImage;
+  if (refine && source?.mask) {
+    try {
+      const moved = edgesOnMask(outline, source.mask, source.resolution);
+      const drawn = set => drawingSolution(drawing(slitPiecesOn(st, outline, cand, best.lab, best.chosen,
+        geometryOn(outline, moved.map((pts, e) => set.has(e) ? pts : outline.E[e].pts)))), target, cfg);
+      const passes = solution => validate(solution, cfg, {finalGeometry: true}).passed;
+      let kept = new Set(moved.keys()), result = drawn(kept);
+      if (!passes(result)) {
+        const order = [...moved.keys()].sort((a, b) => outline.L[b] - outline.L[a]), until = performance.now() + refineSeconds * 1000;
+        kept = new Set(); result = null;
+        for (const e of order) {
+          if (performance.now() > until) break;
+          const trial = new Set([...kept, e]), solution = drawn(trial);
+          if (passes(solution)) { kept = trial; result = solution; }
+        }
+      }
+      refined = result;
+    } catch { refined = null; }
+  }
+  return {solution: best.solution, refined, xy: best.xy, report: {...best.report, bound, attempts, candidates: cand.cost.size, statics: statics.length,
     softStart: soft.size, uncuttableStart: fallback.size, buildSeconds: (built - t0) / 1000, seconds: (performance.now() - t0) / 1000}};
 }
 

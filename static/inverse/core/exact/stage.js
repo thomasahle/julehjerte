@@ -50,7 +50,7 @@ export function assess(solution, cfg) {
   try { paper = check.passed && finalMaterialAudit(solution, cfg).passed; } catch { paper = false; }
   const kinds = new Set(check.issues.map(i => i.type));
   if (check.passed && !paper) kinds.add('paper');
-  const matching = matchingSummary(solution), hidden = routedComplexity(solution).hiddenRuns;
+  const matching = matchingSummary(solution), hiddenRuns = routedComplexity(solution).hiddenRuns;
   const shared = Boolean(matching.identical || (matching.rmsTemplateDifferenceMm ?? Infinity) <= .1);
   const length = easeMetrics(solution, cfg).totalCutLength;
   // A picture's traced outline is no design: whether the weave keeps the
@@ -61,8 +61,36 @@ export function assess(solution, cfg) {
   const error = woven ? maskError(source, woven) : 0;
   let features = true;
   try { features = !woven || auditFeatureFidelity(source, woven, cfg).passed; } catch { features = true; }
-  return {passes: check.passed && paper, failures: kinds.size, issues: [...kinds], shared, hidden, length, maskError: error, features,
-    rank: [check.passed && paper ? 0 : 1, kinds.size, features ? 0 : 1, Math.round(error / .005), shared ? 0 : 1, hidden, Math.round(length)]};
+  // Hidden cut as the weave shows it, alike for the fitter's template and the
+  // exact search's (their own counts of hidden runs differ in kind), in steps
+  // of 10 mm.
+  const hidden = woven ? hiddenCutLength(solution, woven, source.resolution) : 0;
+  return {passes: check.passed && paper, failures: kinds.size, issues: [...kinds], shared, hidden, hiddenRuns, length, maskError: error, features,
+    rank: [check.passed && paper ? 0 : 1, kinds.size, features ? 0 : 1, Math.round(error / .005), shared ? 0 : 1, Math.round(hidden / 10), Math.round(length)]};
+}
+
+/** The length (mm) of the solution's cuts the `woven` weave (n x n) does not
+ * show: where it has the same colour 0.75 mm to either side of the cut. */
+export function hiddenCutLength(solution, woven, n, offset = .75) {
+  const w = solution.graph.target.width, at = (x, y) => {
+    const i = Math.floor(x * n / w), j = Math.floor(y * n / w);
+    return i < 0 || j < 0 || i >= n || j >= n ? -1 : woven[j * n + i];
+  };
+  let hidden = 0;
+  for (const paths of solution.paths) for (const slit of paths) for (const [e] of slit) {
+    const pts = solution.graph.edges[e].curve.flatten(.02);
+    for (let k = 1; k < pts.length; k++) {
+      const [a, b] = [pts[k - 1], pts[k]], len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+      if (!len) continue;
+      const nx = -(b[1] - a[1]) / len * offset, ny = (b[0] - a[0]) / len * offset, steps = Math.max(1, Math.ceil(len / .25));
+      for (let s = 0; s < steps; s++) {
+        const x = a[0] + (b[0] - a[0]) * (s + .5) / steps, y = a[1] + (b[1] - a[1]) * (s + .5) / steps;
+        const left = at(x + nx, y + ny), right = at(x - nx, y - ny);
+        if (left >= 0 && left === right) hidden += len / steps;
+      }
+    }
+  }
+  return hidden;
 }
 
 /** The share of the source's observed mask cells the `woven` weave gets wrong. */
@@ -77,7 +105,7 @@ export const better = (a, b) => { for (let i = 0; i < a.rank.length; i++) if (a.
 /** The exact search on the traced `outline` from the fitter's `template`
  * within `deadline`, under the `symmetry` ties: {found: {solution,
  * assessment} or null, report}. */
-export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false} = {}) {
+export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true} = {}) {
   const seconds = (deadline - performance.now()) / 1000 - reserve;
   const report = {attempted: false, symmetry};
   if (seconds < 1) return {found: null, report: {...report, reason: 'no time left'}};
@@ -93,11 +121,18 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     report.start = start.how ?? start.error;
     if (start.error) return {found: null, report: {...report, error: start.error}};
     const left = seconds - (performance.now() - began) / 1000, coarse = start.how !== 'template' ? {spacing: 1.5, neighbours: 4} : {};
-    found = await exactFromTemplate(outline, template, cfg, {seconds: left, symmetry, exact, witness: start.witness, onProgress, geometry, ...coarse});
+    found = await exactFromTemplate(outline, template, cfg, {seconds: left, symmetry, exact, witness: start.witness, onProgress, geometry, refine, ...coarse});
   } catch (error) {
     return {found: null, report: {...report, error: String(error.message || error)}};
   }
   if (found.error) return {found: null, report: {...report, error: found.error, search: found.report}};
-  const assessment = assess(found.solution, cfg);
-  return {found: {solution: found.solution, assessment}, report: {...report, search: found.report, exactOutline: assessment}};
+  let solution = found.solution, assessment = assess(solution, cfg);
+  // Redrawn on the mask's own edge: taken when it ranks no worse and lies nearer the mask.
+  if (found.refined) {
+    let finer = null;
+    try { finer = assess(found.refined, cfg); } catch { finer = null; }
+    report.refined = finer && {passes: finer.passes, maskError: finer.maskError, issues: finer.issues};
+    if (finer && !better(assessment, finer) && finer.maskError < assessment.maskError) { solution = found.refined; assessment = finer; report.refined.taken = true; }
+  }
+  return {found: {solution, assessment}, report: {...report, search: found.report, exactOutline: assessment}};
 }
