@@ -996,6 +996,15 @@ describe('frames from real hearts', () => {
   expect(design.gridSize).toEqual({ x: 3, y: 3 });
   expect(hardToCut).toBeDefined();
  }, 30000);
+ it('lays the candy cane on equal squares, its stripes reached every way, rather than refusing it', () => {
+  // Five separate stripes, which the cell's usual routes cannot all reach:
+  // the request is refused, then tried again as the board circle reaches pieces.
+  for (const scale of [.7, .85]) {
+   const { design, hardToCut } = generate({ mode: 'figure', name: 'Cane', contours: candyCane.contours as Ring[], colors, style: 'squares', scale });
+   expect(design.gridSize, String(scale)).toEqual({ x: 3, y: 3 });
+   expect(hardToCut, String(scale)).toBeUndefined();
+  }
+ });
  slow('weaves outlines that touch into the checks', () => {
   // The bicycle's wheels touch its frame at single points.
   const { design } = generate({ mode: 'figure', name: 'Bicycle', contours: bicycle.contours as Ring[], colors, style: 'strips' });

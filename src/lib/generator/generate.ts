@@ -920,11 +920,11 @@ function generateTextFigure(request: GeneratorRequest): GeneratorResult {
 	throw last;
 }
 
-/** Whether the board circle reaches the pieces of its motif every way it
- * can (see `generateUsingRecipes`), and how many motifs of several pieces it
- * could not build at their size without: only a request refused without
- * them tries again with them, so every heart built without them keeps its
- * cuts. */
+/** Whether the board circle, and a text cell, reach the pieces of a motif or
+ * letter every way they can (see `generateUsingRecipes`), and how many of
+ * several pieces they could not build at their size without: only a request
+ * refused without them tries again with them, so every heart built without
+ * them keeps its cuts. */
 let everyWay = false, everyWayPassed = 0;
 const everyWaySetAside = () => everyWayPassed;
 function withEveryWay<T>(build: () => T): T {
@@ -2415,6 +2415,12 @@ function generateUsingRecipes(request: GeneratorRequest,
 				if (padding) looks.set(bent, 'padded');
 			}
 		}
+		// A letter or motif of several pieces is reached every way the board
+		// circle's are (see `withEveryWay`): a refused one tries again so.
+		const pieced = [...new Set(text.replace(/\s/g, ''))].some(char => forest(font.glyphs[char]?.contours ?? []).length > 1);
+		if (everyWay && pieced) for (const around of [false, true])
+			recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+				spread: true, practical: true, compound: true, nested: true, bases: true, around }));
 		let last: unknown;
 		// The recipes differ in how the letters' cuts spread over panels and
 		// route to their gates, unseen: of a text's first few, the best paper.
@@ -2442,6 +2448,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			}
 		})(), request.letterScale === undefined ? 4 : 1, true);
 		if (best) return best;
+		if (!everyWay && pieced) everyWayPassed++;
 		throw last;
 	}
 	if (request.style === 'layers') {

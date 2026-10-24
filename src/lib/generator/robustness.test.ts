@@ -298,7 +298,9 @@ describe('generator robustness regressions', () => {
 		['kalam', 'ANNA', 'checkered'], ['kalam', 'A\u030A', 'checkered'],
 		['righteous', 'Sofie', 'checkered'], ['oswald', 'æøå', 'woven'],
 		['kalam', 'ANNA', 'air'], ['kalam', 'ÆØÅ', 'circle'],
-		['kalam', 'A\nB\nO', 'air'], ['righteous', 'Hej!', 'air']
+		['kalam', 'A\nB\nO', 'air'], ['righteous', 'Hej!', 'air'],
+		// The slash of Righteous's % nearly touches its rings: reached every way.
+		['righteous', '100%', 'woven']
 	] as [string, string, TextFrame][])
 		slow(`keeps ${text} in ${fontId} through the ${textFrame} frame`, () => {
 			validateHandoffs(generate({ mode: 'text', name: text, text, font: fonts[fontId], textFrame, colors }).design);

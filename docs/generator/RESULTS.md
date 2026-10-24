@@ -1,5 +1,19 @@
 # Generator robustness results
 
+## Letters and motifs of several pieces reached every way, as a last resort
+
+A text cell's routes could not reach every piece of a letter or motif of
+several pieces in some: the candy cane's five stripes on equal squares at
+70% and 85%, and the % of Righteous, whose slash nearly touches its rings,
+were refused. Only after such a refusal, the cell now tries again the ways
+the board circle reaches a motif's pieces (`withEveryWay`): spokes meeting
+each piece in turn, islands in a ring's hole reached round either attachment,
+spokes going round pieces in their way. The candy cane comes out clean on
+equal squares at 70% and 85% (in half a second, where it was refused after
+5 to 40), the polar star hard to cut there and among small motifs at 50%,
+and "100%" in Righteous clean in the dense, airy and circle frames. Every
+heart built before keeps its cuts.
+
 ## Lanes past the motif, as a last resort
 
 A motif of a few separate parts can be kept in three lanes, each part in the
