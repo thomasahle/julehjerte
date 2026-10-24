@@ -1013,6 +1013,12 @@ describe('frames from real hearts', () => {
   const area = (scale: number) => swapped(generate({ mode: 'figure', name: 'Snow', contours: snow.contours as Ring[], colors, style: 'strips', scale }).design).area;
   expect(area(.75)).toBeGreaterThanOrEqual(area(.7));
  }, 30000);
+ it('keeps the figure in the checks no smaller for a larger size asked', () => {
+  // At 86–94% no sheets keep every strip whole at the tree's place: 91%
+  // kept 81%, below 90%'s 85%, stepping down 5% at a time.
+  const kept = (scale: number) => generate({ mode: 'figure', name: 'Tree', contours: tree.contours as Ring[], colors, style: 'strips', scale }).scale ?? scale;
+  expect(kept(.91)).toBeGreaterThanOrEqual(kept(.9));
+ }, 30000);
  slow('lets the figure in the checks grow to the paper\'s edge, like the frames with room for it', () => {
   const state = { ...defaults, mode: 'figure' as const, style: 'strips' as const, scale: 100 };
   const link = (s: typeof state | (Omit<typeof state, 'style'> & { style: 'rays' | 'silhouette' })) => '#make=' + encodeURIComponent(JSON.stringify(s));

@@ -1,5 +1,19 @@
 # Generator robustness results
 
+## The figure in the checks never shrinks for a larger size
+
+Where no sheets keep every strip whole at the figure's place in the checks,
+the motif kept its place at a size 1–3% smaller, else 5% steps towards the
+default size, all counted from the size asked, so neighbouring sizes landed
+on a saw: the tree was 85% at 90% but 81% at 91%, the swan 81% at 91% and
+77% at 92%. Now it keeps the nearest of the slider's whole percents towards
+the default size that its place can have (moving at a size only where cuts
+there failed, as before, or where its place has none at all). At every
+whole percent from 45 to 100 over 49 motifs, a larger size asked kept a
+smaller one 385 times; now never. The sizes kept are nearer those asked (in
+all 3968 percent short, not 4894), and wherever the size is the same, so is
+the heart; the sweep takes 1.5% longer.
+
 ## A size that cannot be built keeps the largest below that can
 
 Where nothing at all can be built at a size above the default, the motif

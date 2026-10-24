@@ -1138,35 +1138,46 @@ function generateStrips(request: GeneratorRequest): GeneratorResult {
 	// At some sizes of an intricate motif no sheets keep every strip whole at
 	// its place, a snowflake's arms crossing the lines just so, or a crown's
 	// fine points on a small board. There the motif keeps its place at the
-	// nearest size it can have there, a little smaller, else in steps towards
+	// nearest size it can have there, of the slider's whole percents towards
 	// the default size, which has it: the slider then waits rather than the
-	// motif jumping. Only where its place is no use does the motif move.
+	// motif jumping, and never turns back (a larger size asked never keeps a
+	// smaller one). Only where its place is no use does the motif move.
 	const at = (size: number) => Math.round(size * 1e6) / 1e6;
 	// The place the visitor chose, kept as it is; else the default size's,
 	// slid towards where the motif fits largest above that size.
 	const chosen = request.place ?? stripShifts.get(key), kept = chosen !== undefined;
 	const placeAt = (size: number) => request.place ?? (chosen === undefined ? undefined : slidePlace(contours, size, chosen));
-	const towards: number[] = [], step = scale > .7 ? -.05 : .05;
-	for (let size = scale + step; step < 0 ? size > .7 + 1e-9 : size < .7 - 1e-9; size += step) towards.push(size);
-	towards.push(scale === .7 ? .6 : .7);
-	const plans = [
-		{ where: 'alone', sizes: kept ? [scale, scale - .01, scale - .02, scale - .03, ...towards] : [] },
-		{ where: kept ? 'elsewhere' : 'first', sizes: [scale, scale - .02, scale - .05] },
-		{ where: 'first', sizes: towards }
-	] as const;
+	const towards: number[] = [];
+	if (scale > .7) for (let percent = Math.ceil(scale * 100 - 1e-9) - 1; percent >= 70; percent--) towards.push(percent / 100);
+	else if (scale < .7) for (let percent = Math.floor(scale * 100 + 1e-9) + 1; percent <= 70; percent++) towards.push(percent / 100);
+	else towards.push(.6);
 	let last: unknown;
-	const curveFitter = createExactCurveFitter();
-	for (const { where, sizes } of plans)
-		for (const size of sizes) try {
+	const curveFitter = createExactCurveFitter(), moved = new Set<number>();
+	const tried = (size: number, where: Parameters<typeof stripFigures>[5]) => {
+		try {
 			return stripsAt(request, key, at(size), where, curveFitter, placeAt(at(size)));
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			last ??= error;
-			// Past the place's own sizes only while nothing at all could be
-			// built there, which is quickly known, unlike cuts that failed to
-			// finish: those are the place's answer.
-			if (where === 'alone' && error.message !== NO_WHOLE_STRIPS) break;
+			// Nothing at all could be built there, which is quickly known,
+			// unlike cuts that failed to finish: those are the place's answer.
+			if (where === 'alone' && error.message !== NO_WHOLE_STRIPS && !moved.has(size)) {
+				moved.add(size);
+				return tried(size, 'elsewhere');
+			}
 		}
+	};
+	// The nearest size the place can have, or the motif elsewhere at one where
+	// cuts at the place failed; only where neither is found, the nearest size
+	// the motif can have elsewhere.
+	if (kept) for (const size of [scale, ...towards]) {
+		const result = tried(size, 'alone');
+		if (result) return result;
+	}
+	for (const size of [scale, ...towards]) {
+		const result = moved.has(size) ? undefined : tried(size, kept ? 'elsewhere' : 'first');
+		if (result) return result;
+	}
 	throw last;
 }
 
