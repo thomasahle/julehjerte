@@ -662,13 +662,21 @@ function cutsBetter(a: GeneratorResult, b: GeneratorResult, paperFirst = false):
  * one whose paper holds best, then with the fewest tips (`cutsBetter`),
  * stopping at one that holds with no sharp tip: for constructions that differ
  * only in their hidden cuts. */
-function bestOfFirst(results: Iterable<GeneratorResult>, count = 4): GeneratorResult | undefined {
+function bestOfFirst(results: Iterable<GeneratorResult>, count = 4, asReturned = false): GeneratorResult | undefined {
 	let best: GeneratorResult | undefined, first: GeneratorResult | undefined, working = 0;
+	// Text hearts mend their tips their own way (`improveTextPanelTips`): theirs
+	// are compared as they are.
+	const shown = (result: GeneratorResult) => asReturned ? result : exported(result);
+	const better = (a: GeneratorResult, b: GeneratorResult) => {
+		const [x, y] = [shown(a).design, shown(b).design], [pa, pb] = [paperTears(x), paperTears(y)];
+		if (pa !== pb) return pa < pb;
+		return fewerCutTips(cutTipCounts(x), cutTipCounts(y));
+	};
 	for (const result of results) {
 		first ??= result;
 		if (result.design.gridSize.x !== first.design.gridSize.x || result.design.gridSize.y !== first.design.gridSize.y) continue;
-		if (!best || cutsBetter(result, best, true)) best = result;
-		if (!paperTears(exported(best).design) && !cutTipCounts(exported(best).design)[1] || ++working === count) break;
+		if (!best || better(result, best)) best = result;
+		if (!paperTears(shown(best).design) && !cutTipCounts(shown(best).design)[1] || ++working === count) break;
 	}
 	return best;
 }
@@ -2293,19 +2301,26 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// little larger inside its cell; its connections then meet it elsewhere.
 		// A figure keeps the size the visitor asked for (see `frameAlternatives`).
 		const regularGrid = !request.fittedCells && (frame === 'woven' || frame === 'air');
-		if (regularGrid && request.letterScale === undefined) for (const letterScale of [1.05 * size, 1.1 * size]) recipes.push(text.includes('\n')
-			? () => generateTextGrid(text, font, textRoom(request), shape, { letterScale })
-			: () => generateCheckedText(text, font, textRoom(request), shape, false, letterScale));
+		// How a recipe shows the letters, where it differs from as asked.
+		const looks = new Map<(typeof recipes)[number], string>();
+		if (regularGrid && request.letterScale === undefined) for (const letterScale of [1.05 * size, 1.1 * size]) {
+			recipes.push(text.includes('\n')
+				? () => generateTextGrid(text, font, textRoom(request), shape, { letterScale })
+				: () => generateCheckedText(text, font, textRoom(request), shape, false, letterScale));
+			looks.set(recipes.at(-1)!, `larger ${letterScale}`);
+		}
 		// Give difficult counters/shoulders more room, and spread the projections
 		// around the frame. The requested font, frame and text are retained.
 		// Text with that much room already has it, and no decorative frame. On
 		// the regular board more room makes a letter smaller in its cell, so a
 		// figure there keeps the size asked for instead.
-		if (roomOf(textRoom(request)) < .5 && !(regularGrid && request.letterScale !== undefined))
+		if (roomOf(textRoom(request)) < .5 && !(regularGrid && request.letterScale !== undefined)) {
 			recipes.push(() => generateTextGrid(text, font, false, shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 				padding: .5,
 				spread: true
 			}));
+			looks.set(recipes.at(-1)!, 'padded');
+		}
 		// A quick attempt keeps every cell square and skips the slow attachment
 		// searches: panels that split letters unevenly, moved gates and bent
 		// spokes follow, for fitted cells, when it fails. Square cells on the
@@ -2371,20 +2386,36 @@ function generateUsingRecipes(request: GeneratorRequest,
 					}) : undefined;
 				recipes.push(bent);
 				fittedOnly.add(bent);
+				if (padding) looks.set(bent, 'padded');
 			}
 		}
 		let last: unknown;
-		for (const construct of allRecipes && !regularGrid ? recipes : recipes.filter(recipe => !fittedOnly.has(recipe))) {
-			try {
-				const result = construct();
-				if (result) return finish(result, 'letters');
+		// The recipes differ in how the letters' cuts spread over panels and
+		// route to their gates, unseen: of a text's first few, the best paper.
+		// A motif in the board frames' cells (sized by `letterScale`) keeps the
+		// first: its several choices would each make more, slowly.
+		const tried = allRecipes && !regularGrid ? recipes : recipes.filter(recipe => !fittedOnly.has(recipe));
+		// Only those that show the letters as the first to finish does.
+		let look: string | undefined;
+		const best = bestOfFirst((function* () {
+			for (const construct of tried) {
+				if (look !== undefined && (looks.get(construct) ?? '') !== look) continue;
+				try {
+					const result = construct();
+					if (result) {
+						const done = finish(result, 'letters');
+						look ??= looks.get(construct) ?? '';
+						yield done;
+					}
+				}
+				catch (error) {
+					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
+					last = error;
+				}
 			}
-			catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-				if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
-				last = error;
-			}
-		}
+		})(), request.letterScale === undefined ? 4 : 1, true);
+		if (best) return best;
 		throw last;
 	}
 	if (request.style === 'layers') {

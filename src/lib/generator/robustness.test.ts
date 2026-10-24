@@ -32,6 +32,7 @@ import moonStars from '../../../static/generator/motifs/ph-moon-stars.json';
 import tablerStars from '../../../static/generator/motifs/tb-stars.json';
 import crown from '../../../static/generator/motifs/ph-crown.json';
 import { shippedFont } from './fonts.test-helpers';
+import { paperFaults } from '$lib/geometry/paperNecks';
 
 const [nunito, breeserif, oswald, kalam, cinzel, righteous] = await Promise.all(['nunito', 'breeserif', 'oswald', 'kalam', 'cinzel', 'righteous'].map(shippedFont));
 const colors = { left: '#fffdf5', right: '#b72f2b' };
@@ -136,6 +137,14 @@ describe('generator robustness regressions', () => {
 			expect(findSearchIssues(design.fingers, margin * 1.1).size).toBe(0);
 			validateHandoffs(design);
 		}, 20000);
+	it('keeps, of a text\'s first constructions, the one whose paper holds best', () => {
+		// The first that finished left paper under 2 mm printed 80 mm wide:
+		// EMMA in Oswald, JUL in Cinzel, both close round the letters.
+		for (const [text, font] of [['EMMA', fonts.oswald], ['JUL', fonts.cinzel]] as const) {
+			const { design } = generate({ mode: 'text', name: text, text, font, textFrame: 'woven', colors });
+			expect(paperFaults(design), text).toEqual({ weak: 0, loose: 0 });
+		}
+	});
 	it('opens all three crown counters without closed cuts in the layered frame', () => {
 		const { design } = generate({ mode: 'figure', name: 'Crown', contours: crown.contours as Ring[],
 			style: 'layers', colors });

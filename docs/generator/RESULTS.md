@@ -1,5 +1,21 @@
 # Generator robustness results
 
+## Text hearts ranked by their paper
+
+A text in the dense or airy frame took the first construction that finished.
+Of its first four with the letters as the first shows them (not a little
+larger, nor with more room round them), it now keeps the one whose paper holds
+best, then with the fewest tips (`bestOfFirst`, comparing the designs as they
+are: text hearts mend their tips their own way). The recipes differ in how the
+letters' cuts spread over panels and reach their gates, which the picture does
+not show. A motif in the board frames' cells keeps the first: its several
+choices would each make more, slowly.
+
+Over 140 text hearts (14 words and names, five of our fonts, both frames, at
+the default size): hearts that tear printed 80 mm wide fall from 105 to 91,
+places to tear from 879 to 767, needle tips from 211 to 138; none tears more
+or changes status. Generating takes a quarter longer.
+
 ## Checked tips: side lanes held off the outer strips
 
 From about 80% a large motif pushed the checked tips' side lanes out until a
