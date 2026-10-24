@@ -211,6 +211,7 @@ function linesCross(a: Point, b: Point, c: Point, d: Point) {
 		s = cross(sub(c, a), u) / det;
 	return t >= 0 && t <= 1 && s >= 0 && s <= 1;
 }
+const CUTS_CROSS = 'Cut paths intersect';
 /** Validate the actual polygon cuts, not just their graph endpoints. */
 function audit(edges: Edge[]) {
 	// Repeated letters produce many distant segments. Sweep their bounding
@@ -233,7 +234,7 @@ function audit(edges: Edge[]) {
 			)
 				continue;
 			if (linesCross(a.from, a.to, b.from, b.to))
-				throw new ConstructionError('topology', 'Cut paths intersect');
+				throw new ConstructionError('topology', CUTS_CROSS);
 		}
 }
 /** A conservative precheck for the straight contour construction. Final fitting
@@ -935,12 +936,29 @@ function withEveryWay<T>(build: () => T): T {
 		everyWay = before;
 	}
 }
+/** Whether lanes holding no part of the motif move past the parts reaching
+ * across them (see `generateComponentLanes`), and how many lane constructions
+ * failed for running such a lane through the motif: only a request refused
+ * without them tries again with them, so every heart built without them keeps
+ * its cuts. */
+let passingLanes = false, passingLanesFailed = 0;
+const passingLanesSetAside = () => passingLanesFailed;
+function withPassingLanes<T>(build: () => T): T {
+	const before = passingLanes;
+	passingLanes = true;
+	try {
+		return build();
+	} finally {
+		passingLanes = before;
+	}
+}
 /** Constructions set aside where a clean one might follow, each with how
  * many it set aside so far: islands entered along visible spokes where
  * nothing else routes (see `withVisibleIslands`), in the checks hidden cuts
- * that come too close (see `withCrowdedHiddenCuts`), and on the board circle
- * every way of reaching a motif's pieces (see `withEveryWay`). */
-const LAST_RESORTS = [[withVisibleIslands, visibleIslandsSetAside], [withCrowdedHiddenCuts, crowdedHiddenCutsSetAside], [withEveryWay, everyWaySetAside]] as const;
+ * that come too close (see `withCrowdedHiddenCuts`), on the board circle
+ * every way of reaching a motif's pieces (see `withEveryWay`), and lanes run
+ * through parts of the motif they do not hold (see `withPassingLanes`). */
+const LAST_RESORTS = [[withVisibleIslands, visibleIslandsSetAside], [withCrowdedHiddenCuts, crowdedHiddenCutsSetAside], [withEveryWay, everyWaySetAside], [withPassingLanes, passingLanesSetAside]] as const;
 /** The last resorts allowed while a heart is made (see `allowingLastResort`). */
 const allowed = LAST_RESORTS.map(() => false);
 function allowingLastResort<T>(k: number, build: () => T): T {
@@ -1983,20 +2001,28 @@ function retryComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<
 	// Lanes without a centre panel always end above and below the motif.
 	// A completed construction that fails its checks stays a hard-to-cut candidate.
 	const recipe = open ? 'silhouette' : 'nested';
-	for (const aligned of open ? [true] : [false, true]) try {
-		const inner = generateComponentLanes(rings, frame, sunburst ? size * (request.crown ?? .8) : size,
-			request.scale, style, aligned, sunburst ? 2 : 0);
-		const construction = sunburst ? sunburstBorder(inner, size, request.crown) : inner;
-		rejected.push({ construction, recipe });
-		const result = improveSharedConnections(finishConstruction(request, construction, recipe, undefined, curveFitter));
-		const rect = inferOverlapRect(result.design.fingers, result.design.gridSize),
-			margin = intersectionMarginPx(rect, gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
-		if (findSearchIssues(result.design.fingers, margin * 1.1).size) continue;
-		const tips = cutTipCounts(result.design);
-		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
-		if (tips[0] === 0 && tips[1] === 0) return best;
-	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	for (const aligned of open ? [true] : [false, true]) {
+		let passes = false;
+		try {
+			const inner = generateComponentLanes(rings, frame, sunburst ? size * (request.crown ?? .8) : size,
+				request.scale, style, aligned, sunburst ? 2 : 0, passingLanes);
+			passes = inner.passes;
+			// Passing lanes that pass nothing were made already.
+			if (passingLanes && !passes) continue;
+			const construction = sunburst ? sunburstBorder(inner, size, request.crown) : inner;
+			rejected.push({ construction, recipe });
+			const result = improveSharedConnections(finishConstruction(request, construction, recipe, undefined, curveFitter));
+			const rect = inferOverlapRect(result.design.fingers, result.design.gridSize),
+				margin = intersectionMarginPx(rect, gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
+			if (findSearchIssues(result.design.fingers, margin * 1.1).size) continue;
+			const tips = cutTipCounts(result.design);
+			if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+			if (tips[0] === 0 && tips[1] === 0) return best;
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			// A lane run through the motif crosses its outline (see `withPassingLanes`).
+			if (passes && !passingLanes && error.message === CUTS_CROSS) passingLanesFailed++;
+		}
 	}
 	return best;
 }

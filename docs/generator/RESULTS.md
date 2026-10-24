@@ -1,5 +1,23 @@
 # Generator robustness results
 
+## Lanes past the motif, as a last resort
+
+A motif of a few separate parts can be kept in three lanes, each part in the
+lane of its centre. A lane left without a part ran straight through the motif
+wherever a wide part reached into its column, and its cuts crossed the
+motif's outline: the santa hat's bobble keeps the left lane and its hat and
+brim the middle one, reaching across the right-hand lane, so it was refused
+after a minute in the large silhouette at 70%, and at 50% there, in the
+wedges and in the fitted frame. Now, only after a heart is refused, such
+a lane moves within its column to where it passes farthest from the motif,
+running above and below it; in a frame without a centre panel a lane with no
+place clear of the motif is left out, two lanes staying at the least
+(`withPassingLanes`, a last resort
+beside the others, tried only where such a lane's cuts crossed the motif, so
+every heart built before keeps its cuts and other refusals take no longer). The santa hat now
+comes out clean in the large silhouette at 70% (in 20 s, where it was refused
+in a minute), and hard to cut at 50% in those three frames.
+
 ## Two hidden cuts at one corner of a letter in the checks
 
 Where crowded hidden cuts are let stand in the checks, two of them could meet
