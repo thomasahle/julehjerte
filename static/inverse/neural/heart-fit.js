@@ -171,8 +171,7 @@ export function refineHeartOutline(input, quad, {lobes = null, ...options} = {})
   return round && round.edges[4] >= .7 && round.edges[0] >= .5 && round.edges[1] >= .5 ? round : lines;
 }
 
-function refineFrom({rgba, imageWidth: W, imageHeight: H}, quad, {lobes = 0, rounds = 12, reach = .03, debug = null, arcs = false} = {}) {
-  let lastFound = [];
+function refineFrom({rgba, imageWidth: W, imageHeight: H}, quad, {lobes = 0, rounds = 12, reach = .03, arcs = false} = {}) {
   const side = Math.hypot(quad[1][0] - quad[0][0], quad[1][1] - quad[0][1]);
   if (!(side > 20)) return null;
   // Quads are in pixel-edge coordinates (pixel i spans [i, i + 1]); a pixel's
@@ -245,8 +244,7 @@ function refineFrom({rgba, imageWidth: W, imageHeight: H}, quad, {lobes = 0, rou
       const peak = grads[at], g0 = grads[at - 1] ?? peak, g2 = grads[at + 1] ?? peak, curve = g0 - 2 * peak + g2, shift = curve < 0 ? Math.max(-.5, Math.min(.5, .5 * (g0 - g2) / curve)) : 0;
       found.push({u, v, n, offset: -radius + (at + shift) * step - step / 2, strength: best, edge: u === 1 ? 0 : v === 1 ? 1 : v === 0 ? 2 : u === 0 ? 3 : 4});
     }
-    lastFound = found.map(f => ({at: h(f.u, f.v), n: f.n, offset: f.offset}));
-    if (found.length < samples.length * .4) { if (debug) debug.push(...lastFound); return null; }
+    if (found.length < samples.length * .4) return null;
     // Robust Gauss–Newton on the offsets: numeric derivatives of each sample's
     // image point along its normal, Huber weights at one pixel.
     const J = found.map(() => new Float64Array(9)), r = found.map(f => f.offset);
@@ -255,24 +253,18 @@ function refineFrom({rgba, imageWidth: W, imageHeight: H}, quad, {lobes = 0, rou
       const p2 = params.slice(), d = k < 8 ? .5 : .002; p2[k] += d;
       const h2 = map(p2);
       if (!h2) continue;
-      const s2 = k === 8 ? outlineSamples(Math.max(0, p2[8])) : null;
       found.forEach((f, i) => {
-        let pt;
-        if (k === 8) {
-          // The lobes' straight run moves the lobe samples by e along -v (right) or -u (left).
-          const [u, v] = f.v < 0 && f.u > 0 ? [f.u, f.v - .002] : f.u < 0 && f.v > 0 ? [f.u - .002, f.v] : [f.u, f.v];
-          pt = h(u, v);
-        } else pt = h2(f.u, f.v);
+        // The lobes' straight run moves a lobe's samples along -v (right) or -u (left).
+        const pt = k < 8 ? h2(f.u, f.v) : f.v < 0 && f.u > 0 ? h(f.u, f.v - d) : f.u < 0 && f.v > 0 ? h(f.u - d, f.v) : base[i];
         J[i][k] = ((pt[0] - base[i][0]) * f.n[0] + (pt[1] - base[i][1]) * f.n[1]) / d;
       });
-      void s2;
     }
     const w = r.map(x => Math.min(1, 1 / Math.max(1e-9, Math.abs(x)))), A = Array.from({length: 9}, () => new Float64Array(9)), g = new Float64Array(9);
     found.forEach((_, i) => { for (let a = 0; a < 9; a++) { g[a] += w[i] * J[i][a] * r[i]; for (let b = 0; b < 9; b++) A[a][b] += w[i] * J[i][a] * J[i][b]; } });
     for (let a = 0; a < 9; a++) A[a][a] += 1e-3 * (A[a][a] + 1);
     const delta = solve(A, g);
     if (!delta) return null;
-    params = params.map((x, k) => x + delta[k] * (k === 8 ? 1 : 1));
+    params = params.map((x, k) => x + delta[k]);
     params[8] = Math.min(1, Math.max(0, params[8]));
     const inliers = r.filter(x => Math.abs(x) <= 1.5), per = [0, 0, 0, 0, 0], total = [0, 0, 0, 0, 0];
     for (const [u, v] of samples) total[u === 1 ? 0 : v === 1 ? 1 : v === 0 ? 2 : u === 0 ? 3 : 4]++;
@@ -281,7 +273,6 @@ function refineFrom({rgba, imageWidth: W, imageHeight: H}, quad, {lobes = 0, rou
     if (round >= 4 && last.step < .05) break;
   }
   const out = [[params[0], params[1]], [params[2], params[3]], [params[4], params[5]], [params[6], params[7]]];
-  if (debug) debug.push(...lastFound);
   const moved = Math.max(...out.map((p, k) => Math.hypot(p[0] - quad[k][0], p[1] - quad[k][1]))) / side;
   return {quad: out, lobes: params[8], rms: last.rms, inliers: last.inliers, edges: last.edges, moved};
 }

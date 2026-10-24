@@ -1,5 +1,5 @@
 /** Whole-image automatic suggestions. Manual regions and corners stay explicit. */
-import {detectHeartCrops,refineHeartCrop} from '../core/crop.js';
+import {detectHeartCrops} from '../core/crop.js';
 import {fitHeartSilhouette,refineHeartOutline} from './heart-fit.js';
 import {detectForegroundCrop} from './foreground-crop.js';
 import {detectBodyCrop} from './body-crop.js';
@@ -60,16 +60,10 @@ async function detectUnrefinedPhotoCrops(input,{roi=input.roi,onProgress=()=>{},
 }
 
 /** A crop from the silhouette fit (heart-fit.js) when it covers the paper
- * closely (IoU at least `minIou`); its corners sharpened by the colour locator
- * inside its region when that agrees with it to `agree` of a side. */
-export function detectSilhouetteCrop(input,body,{minIou=.9,agree=.08,refine=refineHeartCrop}={}){
+ * closely (IoU at least `minIou`). detectPhotoCrops then moves its corners
+ * onto the outline like any other crop's. */
+export function detectSilhouetteCrop(input,body,{minIou=.9}={}){
  const fit=fitHeartSilhouette(body);
  if(!fit||!(fit.iou>=minIou))return null;
- const side=Math.hypot(fit.quad[1][0]-fit.quad[0][0],fit.quad[1][1]-fit.quad[0][1]);
- let quad=fit.quad,method='paper-silhouette';
- try{
-  const sharp=refine(input,fit.quad).candidates?.[0]?.quad;
-  if(sharp&&sharp.every((p,k)=>Math.hypot(p[0]-fit.quad[k][0],p[1]-fit.quad[k][1])<=agree*side)){quad=sharp;method='paper-silhouette-sharpened';}
- }catch{}
- return{quad,status:'needs_review',needsReview:true,warnings:[],provenance:{method,iou:fit.iou,lobes:fit.lobes,modelSha256:body.modelSha256,colourEvidenceUsed:method!=='paper-silhouette',humanReviewed:false}};
+ return{quad:fit.quad,status:'needs_review',needsReview:true,warnings:[],provenance:{method:'paper-silhouette',iou:fit.iou,lobes:fit.lobes,modelSha256:body.modelSha256,colourEvidenceUsed:false,humanReviewed:false}};
 }

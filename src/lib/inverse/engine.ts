@@ -74,6 +74,14 @@ export const DEFAULT_MIN_WIDTH_MM = 2;
 export const MAX_TIME_LIMIT_SECONDS = 180;
 
 /**
+ * How long Find snit searches: a minute, whichever way the engine goes (the
+ * fitter alone, or the fitter and the exact search rescuing it). In the
+ * benchmarks no template that passes took the fitter longer, and those it
+ * fails it still failed after three.
+ */
+export const SEARCH_SECONDS = 60;
+
+/**
  * Whether the engine is asked to hold the symmetry itself.
  *
  * True since the `paint-engine-symmetry` lane landed on `redesign` (PAINT.md
@@ -564,7 +572,7 @@ export function solveSettings(settings: FindSettings): Record<string, unknown> {
 		width: clampAdvanced('widthMm', settings.widthMm ?? DEFAULT_WIDTH_MM),
 		minWidth: clampAdvanced('minWidthMm', settings.minWidthMm ?? DEFAULT_MIN_WIDTH_MM),
 		cutError: 0.25,
-		timeLimit: MAX_TIME_LIMIT_SECONDS,
+		timeLimit: SEARCH_SECONDS,
 		// Redraw the fitter's template on the mask's own traced outline where
 		// that ranks better (core/exact/): at most a minute for the whole search.
 		exactOutline: true,

@@ -33,15 +33,12 @@ test('paper filling the whole picture fits no heart', () => {
   assert.equal(fitHeartSilhouette({probability, resolution: n, window: [0, 0, 600, 600]}), null);
 });
 
-test('a silhouette crop needs a close fit and keeps the colour locator only where it agrees', () => {
+test('a silhouette crop needs a close fit and is always for review', () => {
   const quad = [[300, 150], [500, 350], [300, 550], [100, 350]], body = heartProbability(quad, 640, 640);
-  const input = {type: 'pixels', imageWidth: 640, imageHeight: 640};
-  const agreeing = detectSilhouetteCrop(input, body, {refine: () => ({candidates: [{quad: quad.map(([x, y]) => [x + 2, y - 1])}]})});
-  assert.equal(agreeing.provenance.method, 'paper-silhouette-sharpened');
-  assert.deepEqual(agreeing.quad[0], [302, 149]);
-  const far = detectSilhouetteCrop(input, body, {refine: () => ({candidates: [{quad: quad.map(([x, y]) => [x + 90, y])}]})});
-  assert.equal(far.provenance.method, 'paper-silhouette');
-  assert.equal(far.needsReview, true);
+  const crop = detectSilhouetteCrop({type: 'pixels', imageWidth: 640, imageHeight: 640}, body);
+  assert.equal(crop.provenance.method, 'paper-silhouette');
+  assert.equal(crop.needsReview, true);
+  crop.quad.forEach((p, k) => assert.ok(Math.hypot(p[0] - quad[k][0], p[1] - quad[k][1]) < 6, `corner ${k}`));
   const noise = {...body, probability: body.probability.map((_, i) => (i * 7919) % 13 < 6 ? .9 : .1)};
-  assert.equal(detectSilhouetteCrop(input, noise, {refine: () => ({candidates: []})}), null);
+  assert.equal(detectSilhouetteCrop({type: 'pixels', imageWidth: 640, imageHeight: 640}, noise), null);
 });
