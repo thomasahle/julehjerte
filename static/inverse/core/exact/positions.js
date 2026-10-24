@@ -144,11 +144,15 @@ function symmetricGrid(outline, sym, spacing, floor, forced, extra) {
         if (closed.every(c => outline.along(e0, t, c) >= apart)) closed.push(t);
       }
     }
-    // A position near a corner, on it.
+    // A position near a corner, on it; but not a mirror's fixed point onto a
+    // corner off the mirror (a traced outline's corner lands a little off it),
+    // whose image would then be no position.
+    const offMirror = (u, c) => stab.some(n => sym.edge[n][e0][1] === -1 && outline.along(e0, sym.arcImage(n, e0, u)[1], u) < 1e-6
+      && outline.along(e0, sym.arcImage(n, e0, c)[1], c) > 1e-3);
     for (const c of outline.corners[e0]) {
       let k = -1;
       closed.forEach((u, i) => { if (k < 0 || outline.along(e0, u, c) < outline.along(e0, closed[k], c)) k = i; });
-      if (k >= 0 && outline.along(e0, closed[k], c) < apart) closed[k] = c;
+      if (k >= 0 && outline.along(e0, closed[k], c) < apart && !offMirror(closed[k], c)) closed[k] = c;
     }
     // Images are projections: two positions either side of a corner can land on
     // one point of an image edge (khatam). Keep the first, and only positions

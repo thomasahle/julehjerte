@@ -19,15 +19,20 @@ import {rasterOutline} from './raster.js';
 import {cheapBounds} from './bounds.js';
 
 /** The outline the exact search reads: traced from the picture's mask with
- * the settings `cfg` (raster.js), or null. */
-export function exactTarget(target, cfg) {
-  return rasterOutline(target, cfg);
+ * the settings `cfg` (raster.js, `options` its tracing), or null. */
+export function exactTarget(target, cfg, options = {}) {
+  return rasterOutline(target, cfg, options);
 }
 
-/** Whether the exact search can start on `outline` at all: the cut ends on
- * opposite sides of the square must pair up (bounds.js). Tens of milliseconds. */
-export function exactCanStart(outline, cfg) {
-  try { return !cheapBounds(exactOutline(outline, cfg).st).impossible; } catch { return false; }
+/** Why the exact search cannot start on `outline`, or null when it can: its
+ * structure must build, and the cut ends on opposite sides of the square must
+ * pair up (bounds.js). Tens of milliseconds. */
+export function exactCannotStart(outline, cfg) {
+  try {
+    return cheapBounds(exactOutline(outline, cfg).st).impossible ? 'The outline ends unevenly on opposite sides.' : null;
+  } catch (error) {
+    return String(error.message || error);
+  }
 }
 
 /** The reference-frame symmetries the exact search ties for the requested

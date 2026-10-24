@@ -19,7 +19,7 @@ import {materialAudit,perturbationAudit,verifiedPaperSettings} from './material.
 import {roundHidden} from './rounding.js';
 import {boundarySVG,targetSVG,resultFiles} from './export.js';
 import {solvePolynomialTarget} from './direct/polynomial.js';
-import {exactSearch,exactSymmetry,exactTarget,exactCanStart,assess,better} from './exact/stage.js';
+import {exactSearch,exactSymmetry,exactTarget,exactCannotStart,assess,better} from './exact/stage.js';
 /** Structured cloning retains coordinates but not Cubic methods, including
  * the cached boundary seed used by the topology initializer. Rebuild derived
  * curve caches locally; a transferred cache must not hide edited coordinates. */
@@ -47,8 +47,8 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
   // The outline traced from the mask first (tens of milliseconds): where its
   // cut ends cannot pair up the exact search cannot start, and the fitter
   // takes three quarters of the minute instead of half.
-  let outline=null;
-  try{const traced=exactTarget(target,cfg),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);outline=scaled&&exactCanStart(scaled,cfg)?scaled:null;}catch{outline=null;}
+  let outline=null,cannot='No outline was traced from the mask.';
+  try{const traced=exactTarget(target,cfg),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);if(scaled){cannot=exactCannotStart(scaled,cfg);outline=cannot?null:scaled;}}catch(error){cannot=String(error.message||error);}
   let solution=await solveTarget(target,{...raw,timeLimit:Math.max(.1,seconds*(outline?.5:.75))},onProgress,options);
   // The fitter's template as it would be exported: the final repairs make
   // most failing fits pass, and the exact search is only for those that still
@@ -58,7 +58,7 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
   const cfgFitted=settings(solution.automaticSettings||raw);
   let repaired=repairFinal(solution,cfgFitted,{onProgress,deadline:searchEnd});
   const fitted=assess(repaired.solution,cfgFitted);
-  let report={chosen:'fitter',fitter:fitted,...(outline?{}:{error:'The outline ends unevenly on opposite sides.'})};
+  let report={chosen:'fitter',fitter:fitted,...(outline?{}:{error:cannot})};
   if(outline&&!fitted.passes){
     const search=await exactSearch(outline,solution,settings({...(solution.automaticSettings||raw),symmetry:cfg.symmetry}),{deadline:searchEnd,onProgress,symmetry,geometry:cfg.progressGeometry});
     report={...search.report,chosen:'fitter',fitter:fitted};

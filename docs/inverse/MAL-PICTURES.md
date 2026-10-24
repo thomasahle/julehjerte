@@ -159,6 +159,12 @@ pages, baskets), and gets 2 wrong, both above Mal's threshold of 0.5 (0.58 and
 was dropped). No photograph or drawn heart
 of the 755 tried reads as a template.
 
+A template fixes each half only up to turning it over. A page drawing both
+halves as they sit in the heart (101 of the 119 read) says which side is up;
+one template for both halves (15) or two drawn side by side (3) does not, and
+for 11 of those the two readings weave differently. The dialog then offers
+"Vend den ene halvdel om" next to the colour swap.
+
 ### In the browser
 
 The production build (`npm run build`, `vite preview`), driven through Mal's own
