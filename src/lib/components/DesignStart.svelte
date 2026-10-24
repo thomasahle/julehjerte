@@ -27,7 +27,7 @@
 	import Landscape from '$lib/components/Landscape.svelte';
 	import { ArrowRightIcon } from '$lib/components/icons';
 	import { t, type Language } from '$lib/i18n';
-	import { escherEditorHref, href } from '$lib/i18n/routes';
+	import { escherEditorHref, href, paintImportHref } from '$lib/i18n/routes';
 
 	let {
 		lang,
@@ -109,7 +109,7 @@
 				<span class="arrow"><ArrowRightIcon /></span>
 			</div>
 		</a>
-		<a class="choice other" href={href('paint', lang)}>
+		<a class="choice other" href={paintImportHref(lang)}>
 			<div class="art picture" aria-hidden="true">
 				<img class="photo" src="{base}/hearts/photos/5star-small.jpg" alt="" width="231" height="240" />
 				<span class="flow"><ArrowRightIcon /></span>

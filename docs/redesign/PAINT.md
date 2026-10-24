@@ -28,6 +28,8 @@ Everything else in docs/redesign/DESIGN.md still applies (tokens, `.btn`, floati
   table). Pages live where the other differing-slug pages live: `src/routes/editor/mal/+page.svelte` and
   `src/routes/en/editor/paint/+page.svelte`, each a thin wrapper rendering `$lib/components/paint/PaintPage.svelte`
   with `lang`. Prerendered like every page; the engine is never touched at build or SSR time.
+- `?import` on either route opens the import dialog at once (owner, 2026-10-24): /design's "Fra et billede" card
+  links there (`paintImportHref`). The page drops the parameter from the address as it opens the dialog.
 - `PageHeader` (variant `editor`) gains an optional `mode` prop: `{ current: 'draw' | 'paint' }`. When given it
   renders a segmented switch in the middle of the bar (grid `1fr auto 1fr`): "Tegn" with the pencil icon and "Mal"
   with the image icon (en: Draw / Paint), links to the two routes, `aria-current` on the active one. Both editor pages

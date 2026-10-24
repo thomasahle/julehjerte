@@ -86,6 +86,11 @@ export function escherEditorHref(lang: Language): string {
 	return `${href('editor', lang)}escher/`;
 }
 
+/** Mal opened with its picture import dialog up: `/editor/mal/?import`, `/en/editor/paint/?import`. */
+export function paintImportHref(lang: Language): string {
+	return `${href('paint', lang)}?import`;
+}
+
 /** What the design page makes once past its start, and the last part of its address then. */
 export const GENERATOR_MODES = ['figure', 'text'] as const;
 export type GeneratorMode = (typeof GENERATOR_MODES)[number];

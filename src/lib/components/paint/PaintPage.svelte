@@ -12,7 +12,7 @@
 -->
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import { goto } from '$app/navigation';
+	import { goto, replaceState } from '$app/navigation';
 	import { base } from '$app/paths';
 	import CanvasBackdrop from '$lib/components/editor/CanvasBackdrop.svelte';
 	import Modal from '$lib/components/Modal.svelte';
@@ -296,7 +296,27 @@
 		// not the absence of one, so the heart is on screen from the first frame.
 		if (!session.mask) setMask(createMask(0));
 		measureHeader();
+		// `?import` (the design page's "Fra et billede") opens the import dialog.
+		// It is taken once and dropped from the address, so a reload or a step
+		// back lands on the plain paint page. The router finishes mounting after
+		// this, so the address is rewritten a task later, as GeneratorPage does —
+		// and before the dialog opens, because the open dialog pushes a history
+		// entry of its own (Back closes it) that a later rewrite would replace.
+		const url = new URL(window.location.href);
+		let importTimer: ReturnType<typeof setTimeout> | undefined;
+		if (url.searchParams.has('import')) {
+			url.searchParams.delete('import');
+			importTimer = setTimeout(() => {
+				try {
+					replaceState(url, {});
+				} catch {
+					// The router is not up; the address keeps `?import`, the dialog still opens.
+				}
+				showImport = true;
+			}, 0);
+		}
 		return () => {
+			clearTimeout(importTimer);
 			window.removeEventListener('pagehide', keepThroughReload);
 			narrow.removeEventListener('change', syncNarrow);
 			unsubscribe();
