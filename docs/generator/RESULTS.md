@@ -1,5 +1,16 @@
 # Generator robustness results
 
+## Checked tips: approaches clear of the motif's other parts
+
+The checked tips keep a motif's separate parts in three lanes and route each
+lane's cuts to its parts on their own. An approach to a part could run
+through a part in another lane: the elephant, whose parts are separated by
+thin gaps, was refused at every size. A lane's shared cuts now also keep off
+the other lanes' parts (`obstacles` in `contourMotif`). Over the 49 featured
+motifs at 50/70/85%: refusals fall from 9 to 6 (the elephant is clean at 70%
+and 85%, hard to cut at 50%), and of the hearts built before only the moon
+and stars at 50% changes, from three places to tear to one.
+
 ## Equal squares ranked by their paper
 
 The motif on equal squares, a letter of the woven text frame in the centre

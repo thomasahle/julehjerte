@@ -199,7 +199,9 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 				// shoulders can use the same coincident bridges as repeated letters.
 				// Three lanes plus two outer cuts give a six-strip grid.
 				twoPortMotif(edges, lanes[col].flatMap(contoursOf), [entry, exit], margin, {
-					compound: true, balanced: true, bentSpokes
+					compound: true, balanced: true, bentSpokes,
+					// Its approaches pass the other lanes' parts of the motif.
+					obstacles: lanes.flatMap((nodes, other) => other === col ? [] : nodes.flatMap(contoursOf))
 				});
 			} else add(edges, [entry, exit], 'AB', 'shared');
 		};

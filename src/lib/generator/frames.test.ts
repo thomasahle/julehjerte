@@ -60,6 +60,7 @@ import candy from '../../../static/generator/motifs/mc-candy.json';
 import faFish from '../../../static/generator/motifs/fa-fish.json';
 import circleMotif from '../../../static/generator/motifs/circle.json';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
+import elephant from '../../../static/generator/motifs/pin-elephant.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -176,6 +177,13 @@ describe('complete motif frames', () => {
   expect(design.gridSize).toEqual({ x: 6, y: 6 });
   expect(design).not.toHaveProperty('rightCutouts');
   expect(design).not.toHaveProperty('leftCutouts');
+ });
+ it('keeps a lane\'s approaches in the checked-tip frame clear of the motif\'s parts in the other lanes', () => {
+  // The elephant's separate parts lie in different lanes: an approach to one
+  // ran through another, and the frame refused it at every size.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Elephant', contours: elephant.contours as Ring[], colors, style: 'corners', scale: .7 });
+  expect(design.gridSize).toEqual({ x: 6, y: 6 });
+  expect(hardToCut).toBeUndefined();
  });
  it('bends the checked-tip frame\'s side lanes out past a full-size star', () => {
   // At 100% the star's lower tips came within half a unit of the side lanes'
