@@ -1,5 +1,29 @@
 # Generator robustness results
 
+## Many gates in a corner: legs straight to the paper's edge
+
+Where a figure needs four or more gates a side (the spread panel layouts and
+the component lanes in Stråler and Tern, and the circle frame's text cells),
+the legs of the gates in the two corners the heart's middle runs through
+stepped round the paper's corner, each nested in the next: boxes in boxes.
+The pig at its default 70% in Stråler had 160 corners, the polar star at every
+size, the owl at 80%. Each leg now steps a quarter of the margin off the
+circle and runs straight to the edge: fanned to the same staggered ends in
+the rays, square in the checks (straight out from points past the corner's
+diagonal, a step aside first from those before it). Legs of one sheet still
+never cross; legs of the two sheets cross however they run there.
+
+Featured motifs in Stråler and Tern at 70/80/90/100% (384 hearts): 24 change,
+none in status or sharp tips, all with fewer corners (pig 160 → 128, owl
+154 → 122–126, santa hat 94 → 70–74, candy cane 85 → 61–65, polar star
+118–120 → 102–104), and paper at 80 mm holds as well or better (owl at 80%
+from 8 weak places to 2, candy cane at 100% from 5 to 1). Strålekrans (147)
+is unchanged. Text (330 hearts in five fonts and six frames): 18 circle-frame
+hearts change, none in status, each with fewer corners and fewer weak places
+(Glædelig Jul 54 → 30 in Cinzel, 54 → 28 in Alfa Slab One). In a sample of
+150 library motifs in Stråler and Tern at 70% and 100% (600 hearts) 54 change,
+none in status or tips, each with 8–40 fewer corners.
+
 ## Nine strips at 85%: no specks in hidden cuts
 
 At a completion range's end (nine strips at 35.6, the 85% setting) a hidden

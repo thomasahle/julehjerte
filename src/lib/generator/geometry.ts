@@ -1802,24 +1802,25 @@ export function framedGate(
 				];
 	const route = (point: Point, family: 'A' | 'B'): Ring => {
 		if (!spread || quadrant % 2) return [point, edge(point, family)];
-		// A direct projection would stack several cuts at the same endpoint.
-		// Stagger their routes around the corner. Reflect every quadrant into
-		// the upper-left corner, reversing the angular order for a single-axis
-		// reflection.
+		// Where many gates share a corner the heart's middle runs through, a
+		// direct projection would run a leg along the circle. Each leg steps a
+		// quarter of the margin off it instead, then runs straight to the edge:
+		// square in the checks, fanned to ends spread in the gates' order in
+		// the rays, so legs of one sheet never cross. (Routes stepping round
+		// the corner nested every leg in the next, boxes in boxes.) Reflect
+		// every quadrant into the upper-left corner, reversing the angular
+		// order for a single-axis reflection.
 		const reflect = (p: Point): Point =>
 			[quadrant === 0 || quadrant === 3 ? 100 - p[0] : p[0],
 				quadrant === 0 || quadrant === 1 ? 100 - p[1] : p[1]];
 		const p = reflect(point),
 			rawFraction = (angle - (quadrant * Math.PI) / 2) / (Math.PI / 2),
 			fraction = quadrant % 2 ? 1 - rawFraction : rawFraction;
+		const aside = Math.min(...ring.map((p) => p[0])) / 4;
 		const topRoute = (p: Point, t: number): Ring => {
-			const margin = Math.min(...ring.map((p) => p[0]));
-			const lane = margin * (0.1 + 0.8 * (1 - t));
-			const endX = 50 * t,
-				out = margin - lane;
-			return p[0] < p[1] - EPS
-				? [p, [out, p[1]], [out, out], [endX, out], [endX, 0]]
-				: [p, [p[0], out], [endX, out], [endX, 0]];
+			if (fan === 1) return p[0] < p[1] - EPS ? [p, [p[0] - aside, p[1]], [p[0] - aside, 0]] : [p, [p[0], 0]];
+			const r = distance(p, [50, 50]);
+			return [p, [50 + (p[0] - 50) * (r + aside) / r, 50 + (p[1] - 50) * (r + aside) / r], [50 * t, 0]];
 		};
 		const points =
 			family === 'A'

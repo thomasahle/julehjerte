@@ -15,7 +15,10 @@ import {
 	inside,
 	type Font,
 	type Ring,
-	type Edge
+	type Edge,
+	type Point,
+	framedGate,
+	frameRing
 } from './geometry';
 import {
 	normalizeHeartDesign,
@@ -175,6 +178,26 @@ describe('constructive figure generator', () => {
 			kind: 'outline'
 		}));
 		expect(() => compile([...r.edges, ...cycle])).toThrow(/Closed/);
+	});
+	it('runs many gates\' legs straight from the circle to the paper\'s edge', () => {
+		// Five gates in a corner the heart's middle runs through (a pig's
+		// panels in the rays): their legs stepped round the corner, every leg
+		// nested in the next. Now each leaves the circle in two stretches at
+		// most, and legs of one sheet never cross.
+		const ring = frameRing('circle', 70), count = 5, step = Math.PI / 2 / count;
+		const crosses = (a: Edge, b: Edge) => {
+			const side = (p: Point, q: Point, r: Point) => Math.sign((q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]));
+			return side(a.from, a.to, b.from) * side(a.from, a.to, b.to) < 0 && side(b.from, b.to, a.from) * side(b.from, b.to, a.to) < 0;
+		};
+		for (const fan of [.72, 1]) for (const quadrant of [0, 2]) {
+			const edges: Edge[] = [];
+			for (let i = 0; i < count; i++)
+				framedGate(edges, ring, quadrant * Math.PI / 2 + (i + .5) * step, step * .3, fan, true);
+			const legs = edges.filter(e => [e.from, e.to].some(p => Math.hypot(p[0] - 50, p[1] - 50) > 35 + 1e-6));
+			expect(legs.length, `${fan} ${quadrant}`).toBeLessThanOrEqual(4 * count);
+			for (const [i, a] of legs.entries()) for (const b of legs.slice(i + 1))
+				if (a.family === b.family) expect(crosses(a, b), `${fan} ${quadrant}`).toBe(false);
+		}
 	});
 });
 

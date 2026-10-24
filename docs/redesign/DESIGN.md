@@ -1172,6 +1172,10 @@ avoiding counters. Keep both complete outer bands and validate the joined cuts.
 General framed figures can also use filled seam intervals after their existing
 layouts fail. Try bounded 2×2 and spread 5×2 panel layouts; both neighbours must
 agree on each shared gate. Keep the selected frame and the motif's visible shape.
+Where several gates share a corner the heart's middle runs through, each frame
+leg steps a quarter of the margin off the circle, then runs straight to the
+paper's edge: fanned to staggered ends in the rays, square in the checks. Legs
+nested round the corner made boxes in boxes.
 When clipping creates an even-degree junction at touching contours, extract
 closed walks at each repeated vertex instead of rejecting the shared point or
 returning one self-touching outline. Retain the same boundary edges and even-odd
