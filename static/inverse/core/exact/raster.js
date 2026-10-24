@@ -25,10 +25,10 @@ export function withoutSlivers(mask, n) {
 }
 
 /** A raster target's traced outline, as a target with vector curves, or null. */
-export function rasterOutline(target, cfg, {tolerance = +(globalThis.process?.env?.RASTER_TOL ?? .35), smoothRadius = +(globalThis.process?.env?.RASTER_SMOOTH ?? 0), borderRadius = 1} = {}) {
+export function rasterOutline(target, cfg, {tolerance = .35, smoothRadius = 0, borderRadius = 1} = {}) {
   const source = target.sourceImage;
   if (!source?.mask || !source.resolution) return null;
-  const mask = globalThis.process?.env?.RASTER_SLIVERS === '0' ? source.mask : withoutSlivers(source.mask, source.resolution);
+  const mask = withoutSlivers(source.mask, source.resolution);
   const trace = prepareMaskTrace(mask, source.resolution, {...cfg, width: target.width, maxSpan: 40, smoothRadius, snapRadius: 0,
     borderRadius, polygonal: false, mixedBoundaries: true});
   const traced = trace(tolerance).target;

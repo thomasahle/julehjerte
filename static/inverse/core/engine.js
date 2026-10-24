@@ -19,7 +19,7 @@ import {materialAudit,perturbationAudit,verifiedPaperSettings} from './material.
 import {roundHidden} from './rounding.js';
 import {boundarySVG,targetSVG,resultFiles} from './export.js';
 import {solvePolynomialTarget} from './direct/polynomial.js';
-import {exactStage,exactSearch,exactSymmetry,exactTarget,assess,better} from './exact/stage.js';
+import {exactSearch,exactSymmetry,exactTarget,exactCanStart,assess,better} from './exact/stage.js';
 /** Structured cloning retains coordinates but not Cubic methods, including
  * the cached boundary seed used by the topology initializer. Rebuild derived
  * curve caches locally; a transferred cache must not hide edited coordinates. */
@@ -30,58 +30,42 @@ export const MAX_TRACED_CURVES=1000;
 export function prepare(input,raw={},onProgress=()=>{}){if(raw.algorithm==='auto')return prepareAutomatic(input,raw,onProgress);const cfg=settings(raw),pre={resolution:400,fitTolerance:.5,maxSpan:15,...raw,width:cfg.width,nominalWidth:cfg.nominalWidth,paperColors:colorsSafe(cfg.paperColors),geometryTolerance:cfg.geometryTolerance};for(const[k,lo,hi]of[['fitTolerance',.01,3],['maxSpan',2,40],['snapRadius',0,3]])if(pre[k]!==undefined&&(!Number.isFinite(pre[k])||pre[k]<lo||pre[k]>hi))throw new Error(`${k} must be between ${lo} and ${hi}.`);onProgress({stage:'preprocessing'});let target,rgb=null,mask=null,n=240;
   if(input.type==='svg'){target=loadSVG(input.text,{width:cfg.width,maxSpan:pre.maxSpan||12,tolerance:cfg.geometryTolerance});target.metadata.paperColors=colorsSafe(cfg.paperColors);if(raw.invert)target.phase^=1;mask=sampleTarget(target,n);}else if(input.type==='pixels'){({target,rgb,mask,n}=preprocessPixels({...input,settings:pre}));}else if(input.type==='mask'){if(!['direct','polynomial'].includes(cfg.algorithm))throw new Error('Binary masks use automatic, direct or polynomial fitting.');({target,mask,n}=preprocessBinaryMask(input,{...pre,algorithm:'direct'}));}else throw new Error('Prepare accepts pixels, a binary mask or a plain SVG.');if(cfg.algorithm==='direct'&&input.type==='svg'){const source=sampleTarget(target,256);target={...target,curves:[],sourceImage:{mask:source,probability:Float32Array.from(source),resolution:256},metadata:{...target.metadata,direct:true,input:'Rasterized visible SVG for direct fitting'}};n=256;mask=source;}if(raw.identicalSheets&&cfg.algorithm!=='direct'&&cfg.algorithm!=='polynomial')target=transposeTarget(target);if(target.curves.length>MAX_TRACED_CURVES&&!raw.manyCurves)throw new Error('Too much traced detail. Increase fitting tolerance or remove small details.');const vector=target.metadata.direct?maskSVG(mask,n):targetSVG(target);return{target,preview:{vector,boundaries:boundarySVG(target),mask,rgb,resolution:n,...(target.sourceImage?.validMask?{validMask:target.sourceImage.validMask}:{}),...(target.sourceImage?.weights?{weights:target.sourceImage.weights}:{}),metadata:{...target.metadata,curves:target.curves.length,width:target.width}}};}
 export async function solveTarget(target,raw={},onProgress=()=>{},{onCandidate}={}){const cfg=settings(raw),scaled=scaleTarget(target,cfg.width,cfg.paperColors);onProgress=progressReporter(onProgress,cfg.progressGeometry,{onCandidate});if(cfg.algorithm==='auto')return solveAutomatic(scaled,cfg,onProgress);if(cfg.algorithm==='polynomial')return solvePolynomialTarget(scaled,cfg);if(cfg.algorithm==='direct'){if(!target.metadata.direct)throw new Error('Prepare the image with direct fitting selected first.');return fitDirect(scaled,cfg,onProgress);}return solveBoundary(scaled,cfg,{onProgress,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});}
-/** The most seconds a design with the exact-outline stage takes, fitter included,
- * of which the last EXACT_FINISH_SECONDS are the final checks' and export's. */
+/** The most seconds a design with the exact-outline rescue takes, fitter
+ * included, of which the last EXACT_FINISH_SECONDS are the final checks' and export's. */
 export const EXACT_SECONDS=60,EXACT_FINISH_SECONDS=10;
 export async function design(target,raw={},onProgress=()=>{},options={}){const cfg=settings(raw),symmetry=exactSymmetry(cfg.symmetry);
-  // The exact-outline stage (exactOutline, Mal's) redraws a template on the
-  // target's own vector outline. With it a design takes at most EXACT_SECONDS.
+  // A picture in Mal (`exactOutline`, a mask without curves): the fitter's
+  // template stands when it passes. Otherwise the exact search lays the cuts
+  // on the outline traced from the mask, with the requested symmetry's ties,
+  // and its template is taken only when it passes and ranks better (stage.js).
   // It cannot keep identical sheets, a free frame band or a symmetry within
-  // each curve, so those keep the fitter's alone.
-  // A picture (`exactRaster`, a mask without curves) has its outline traced
-  // from its pixels, and only when the fitter's template needs rescuing.
-  const raster=raw.exactRaster===true&&!target.curves?.length,outline=cfg.exactOutline&&!raster?exactTarget(target):null,exactOn=cfg.exactOutline&&(raster||Boolean(outline))&&!raw.identicalSheets&&!target.sourceImage?.weights&&symmetry!==null;
+  // each curve, so those keep the fitter's alone; with it a design takes at
+  // most EXACT_SECONDS.
+  const exactOn=cfg.exactOutline&&!target.curves?.length&&!raw.identicalSheets&&!target.sourceImage?.weights&&symmetry!==null;
   if(!exactOn){const deadline=performance.now()+1000*cfg.timeLimit,solution=await solveTarget(target,raw,onProgress,options);return finish(solution,settings(solution.automaticSettings||raw),onProgress,{deadline});}
   const seconds=Math.min(cfg.timeLimit,EXACT_SECONDS),start=performance.now(),deadline=start+1000*seconds,searchEnd=deadline-1000*EXACT_FINISH_SECONDS;
-  let solution,report;
-  if(raster){
-    // A picture: the fitter's template stands when it passes. On a traced
-    // outline exactness means little, so the exact search only rescues one
-    // that does not, with the requested symmetry's ties, and wins only by the
-    // ranking that counts the weave's disagreement with the mask.
-    solution=await solveTarget(target,{...raw,timeLimit:Math.max(.1,seconds*.5)},onProgress,options);
-    const fitted=assess(solution,settings(solution.automaticSettings||raw),{raster});
-    report={chosen:'fitter',fitter:fitted};
-    const traced=fitted.passes?null:exactTarget(target,{raster:cfg});
-    if(traced){
-      const search=await exactSearch(scaleTarget(traced,cfg.width,cfg.paperColors),solution,settings({...(solution.automaticSettings||raw),symmetry:cfg.symmetry}),{deadline:searchEnd,onProgress,symmetry,raster});
-      report={...search.report,chosen:'fitter',fitter:fitted};
-      // Only a passing one: a search that ends with rules broken may still
-      // rank above a failing fit, but its cuts can cross, which Mal cannot show.
-      if(search.found?.assessment.passes&&better(search.found.assessment,fitted)){solution=search.found.solution;report.chosen='exact';}
-    }
-  }else if(!symmetry.length){
-    const scaled=scaleTarget(outline,cfg.width,cfg.paperColors);
-    // The fitter's template, in half the time, is both the start and the rival.
-    solution=await solveTarget(target,{...raw,timeLimit:Math.max(.1,seconds*.5)},onProgress,options);
-    ({solution,report}=await exactStage(scaled,solution,settings(solution.automaticSettings||raw),{deadline:searchEnd,onProgress,raster}));
-  }else{
-    // A requested symmetry makes the fitter fit the image, slowly and off the
-    // outline. The exact stage starts from a quick trace without it, its ties
-    // keeping the symmetry, and the fitter runs only when that does not pass.
-    const scaled=scaleTarget(outline,cfg.width,cfg.paperColors),plain=await solveTarget(target,{...raw,symmetry:null,timeLimit:Math.max(.1,seconds*.15)},onProgress,options);
-    const search=await exactSearch(scaled,plain,settings({...(plain.automaticSettings||raw),symmetry:cfg.symmetry}),{deadline:start+1000*seconds*.6,onProgress,symmetry,raster});
-    report=search.report;
-    if(search.found?.assessment.passes){solution=search.found.solution;report={...report,chosen:'exact'};}
-    else{
-      solution=await solveTarget(target,{...raw,timeLimit:Math.max(.1,(searchEnd-performance.now())/1000)},onProgress,options);
-      const fitted=assess(solution,settings(solution.automaticSettings||raw),{raster});
-      if(search.found&&better(search.found.assessment,fitted))solution=search.found.solution;
-      report={...report,chosen:solution===search.found?.solution?'exact':'fitter',fitter:fitted};
-    }
+  // The outline traced from the mask first (tens of milliseconds): where its
+  // cut ends cannot pair up the exact search cannot start, and the fitter
+  // takes three quarters of the minute instead of half.
+  let outline=null;
+  try{const traced=exactTarget(target,cfg),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);outline=scaled&&exactCanStart(scaled,cfg)?scaled:null;}catch{outline=null;}
+  let solution=await solveTarget(target,{...raw,timeLimit:Math.max(.1,seconds*(outline?.5:.75))},onProgress,options);
+  // The fitter's template as it would be exported: the final repairs make
+  // most failing fits pass, and the exact search is only for those that still fail.
+  const cfgFitted=settings(solution.automaticSettings||raw);
+  let repaired=repairFinal(solution,cfgFitted,{onProgress,deadline:searchEnd});
+  const fitted=assess(repaired.solution,cfgFitted);
+  let report={chosen:'fitter',fitter:fitted,...(outline?{}:{error:'The outline ends unevenly on opposite sides.'})};
+  if(outline&&!fitted.passes){
+    const search=await exactSearch(outline,solution,settings({...(solution.automaticSettings||raw),symmetry:cfg.symmetry}),{deadline:searchEnd,onProgress,symmetry,geometry:cfg.progressGeometry});
+    report={...search.report,chosen:'fitter',fitter:fitted};
+    // Only a passing one: a search that ends with rules broken may still
+    // rank above a failing fit, but its cuts can cross, which Mal cannot show.
+    if(search.found?.assessment.passes&&better(search.found.assessment,fitted)){solution=search.found.solution;repaired=null;report.chosen='exact';}
   }
   solution.report={...solution.report,exactOutline:report};
-  return finish(solution,settings(solution.automaticSettings||raw),onProgress,{deadline});}
+  if(repaired)repaired.solution.report=solution.report;
+  return finish(repaired?.solution??solution,settings(solution.automaticSettings||raw),onProgress,{deadline,repaired});}
 export function inspectSaved(text,raw={},onProgress=()=>{}){const cfg=settings(raw),solution=loadSolutionJSON(text),factor=cfg.width/solution.graph.target.width;solution.graph.edges.forEach(e=>e.curve=new Cubic(e.curve.p.map(p=>p.map(x=>x*factor))));solution.graph.target=scaleTarget(solution.graph.target,cfg.width,cfg.paperColors);reindex(solution.graph);return finish(solution,cfg,onProgress);}
 export function inputImageError(solution){
   const source=solution.graph.target.sourceImage;
@@ -93,9 +77,13 @@ function errorFromSamples(source,rendered){
   if(!Number.isFinite(error.mismatchFraction))throw new Error('The crop contains no observed image pixels.');
   return{reference:source.validMask?'Observed image pixels; outside-source padding is excluded and observed coverage is reported separately':source.weights?'Original artwork with image-importance weights; whole-image and permitted changes reported separately':'Classified input crop before border repair, cleanup or tracing',resolution:source.resolution,...error,method:'Forward sampling of both slit families at input resolution',independentExportRenderer:false};
 }
-export function finish(solution,cfg,onProgress=()=>{},{refine=true,stoppedEarly=false,alternatives=[],deadline=Infinity}={}){
+/** The repairs before export: hidden cuts rounded, then the editor's
+ * complete-cut rule and the paper audit's bounded repairs. design() runs them
+ * before deciding whether the exact search must rescue a template, and hands
+ * them to finish() as `repaired`. */
+export function repairFinal(solution,cfg,{onProgress=()=>{},refine=true,deadline=Infinity}={}){
   cfg=verifiedPaperSettings(solution,cfg);
-  const started=performance.now();onProgress({stage:'validating'});
+  onProgress({stage:'validating'});
   let refinement=null;
   if(refine&&cfg.roundHidden&&cfg.minRadius>0&&validate(solution,cfg).passed){
     onProgress({stage:'rounding'});
@@ -110,8 +98,13 @@ export function finish(solution,cfg,onProgress=()=>{},{refine=true,stoppedEarly=
   // Saved-template inspection has no finite caller budget and keeps its cap.
   const paperRepairMilliseconds=Number.isFinite(deadline)?Math.min(4500,Math.max(1500,deadline-performance.now()-1000)):1500;
   const paperRepair=repairFinalPaper(returnRepair.solution,cfg,{deadline,maxMilliseconds:paperRepairMilliseconds,includeMaps:true});
+  return {solution:paperRepair.solution,cfg,refinement,returnRepair,paperRepair};
+}
+export function finish(solution,cfg,onProgress=()=>{},{refine=true,stoppedEarly=false,alternatives=[],deadline=Infinity,repaired=null}={}){
+  const started=performance.now();
+  const done=repaired??repairFinal(solution,cfg,{onProgress,refine,deadline}),{refinement,returnRepair,paperRepair}=done;
   solution=paperRepair.solution;
-  cfg=verifiedPaperSettings(solution,cfg);
+  cfg=verifiedPaperSettings(solution,done.cfg);
   const check=validate(solution,cfg,{finalGeometry:true});
   onProgress({stage:'paper'});const material=paperRepair.material||finalMaterialAudit(solution,cfg,{includeMaps:true}),perturbation=check.passed?perturbationAudit(solution,cfg,{onProgress}):{summary:{trials:0,skipped:'Nominal geometry failed validation.'},trials:[],worst:null},metrics=easeMetrics(solution,cfg),source=solution.graph.target.sourceImage,comparison={resolution:source?.resolution??240,wovenMask:sampleWeave(solution,source?.resolution??240),validMask:source?.validMask,...(source?.weights?{weights:source.weights}:{})},imageError=errorFromSamples(source,comparison.wovenMask),imagePassed=!imageError||imageError.mismatchFraction<=cfg.maxImageError,features=auditFeatureFidelity(source,comparison.wovenMask,cfg),allowTemplates=features.passed&&check.passed&&(!cfg.requireMaterialCore||material.passed)&&imagePassed,symmetry=symmetryReport(solution,cfg.symmetry),warnings=[];
   // A dropped symmetry request belongs in the warnings the app already reads,

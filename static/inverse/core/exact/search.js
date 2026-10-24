@@ -13,6 +13,10 @@ import {drawing, drawingSolution} from './draw.js';
 import {paperSpots, tightNogoods} from './paper.js';
 import {cheapBounds} from './bounds.js';
 import {StructureSymmetry, act, group} from './symmetry.js';
+import {solutionJSON} from '../graph.js';
+
+/** How often the search's improving solutions are drawn for the live view. */
+const DRAW_INTERVAL_MS = 400;
 
 // Whether every literal of a nogood holds for labels, used keys and switches.
 function holds(nogood, labels, used, switches) {
@@ -21,7 +25,7 @@ function holds(nogood, labels, used, switches) {
 }
 
 /** The exact template nearest the given one: {solution, report} or {error}. */
-export async function exactFromTemplate(target, template, cfg, {seconds = 20, neighbours = 8, spacing = .75, paperRetries = 2, exact = exactOutline(target, cfg), symmetry = [], sheets = true, witness: given = null} = {}) {
+export async function exactFromTemplate(target, template, cfg, {seconds = 20, neighbours = 8, spacing = .75, paperRetries = 2, exact = exactOutline(target, cfg), symmetry = [], sheets = true, witness: given = null, onProgress = () => {}, geometry = false} = {}) {
   // The start: `witness` (exactStart's, start.js), or the template read here.
   const t0 = performance.now(), {st, outline, routes} = exact, witness = given || await readTemplate(template, outline);
   if (witness.error) return {error: witness.error};
@@ -94,19 +98,25 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
     if (labels.get(`${e},${j - 1}`) !== labels.get(`${e},${j}`)) switches.add(`${e},${j}`);
   const statics = [...visibleNogoods(outline, cand), ...routeNogoods(outline, cand)];
   const soft = new Set(statics.filter(n => holds(n, labels, used, switches)).map(nogoodKey));
-  if (globalThis.process?.env?.EXACT_DEBUG) {
-    const kinds = new Map();
-    for (const n of statics) { const k = n.map(l => l[0]).sort().join('+'); kinds.set(k, (kinds.get(k) || 0) + 1); }
-    console.error('statics', visibleNogoods(outline, cand).length, 'visible', [...kinds].map(([k, c]) => `${k} ${c}`).join(', '), 'soft', soft.size);
-  }
   // The count's lower bound lets the count stage stop once the start's count is proven.
   const bound = Math.min(cheapBounds(st, outline).lb, used.size);
   const built = performance.now(), deadline = t0 + seconds * 1000, attempts = [];
   // Solve; a drawing the paper audit rejects is solved again with the narrow
   // paper around what it doubts forbidden (paper.js), while time is left.
-  let extra = [], best = null;
+  let extra = [], best = null, nextDrawing = -Infinity;
   for (let attempt = 0; attempt <= paperRetries; attempt++) {
     const model = new ExactModel({st, outline, cand, h: bound, statics: [...statics, ...extra], soft, fallback, ties});
+    // With `geometry`, the live view draws the search's solutions as the
+    // fitter's candidates are drawn (progress.js), at most every DRAW_INTERVAL_MS.
+    const onSolution = geometry ? values => {
+      if (performance.now() < nextDrawing) return;
+      nextDrawing = performance.now() + DRAW_INTERVAL_MS;
+      try {
+        const {labels: lab, used: chosen} = model.read(values);
+        const shown = drawingSolution(drawing(slitPiecesOn(st, outline, cand, lab, chosen)), target, cfg);
+        onProgress({stage: 'exactOutline', geometry: JSON.stringify(solutionJSON(shown))});
+      } catch { /* a drawing that fails is only not shown */ }
+    } : null;
     const start = model.startValues(labels, [...used]);
     // The paper audit as a lazy check: where it doubts the paper of a solution
     // keeping every rule, the narrow paper there is penalised from then on.
@@ -117,7 +127,7 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
       if (!spots) return [];
       return tightNogoods(model, values, spots).map(n => model.rowOf(n)).filter(Boolean).map(([terms, rhs]) => ['paper', terms, rhs]);
     };
-    const {values, report} = await model.solve({start, deadline, audit});
+    const {values, report} = await model.solve({start, deadline, audit, onSolution});
     attempts.push({...report, extra: extra.length, startBroken: model.broken(start)});
     if (!values) break;
     const {labels: lab, used: chosen} = model.read(values);

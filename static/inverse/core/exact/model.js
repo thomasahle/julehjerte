@@ -4,10 +4,10 @@
  *
  * Variables: which paper cuts each run of each edge (lab), which positions
  * switch (sw) and to which side (side), which candidate hidden segments are used
- * (x), and per paper the directions it takes along runs and segments (arcs),
- * with a commodity flow per paper so that every cut is reached from its border.
+ * (x), and per paper the directions it takes along runs and segments (arcs).
  * The rules are rows (or rows with a penalised slack, for a start that breaks
- * them), checked again exactly on each solution and added lazily. */
+ * them), checked again exactly on each solution and added lazily, as are cuts
+ * of a detached loop or a slit joining the wrong borders. */
 import {LinearModel, solverRuntime} from '../solver.js';
 import {pointKey} from './structure.js';
 import {tokenKey} from './candidates.js';
@@ -66,7 +66,7 @@ export function cliqueCover(edges) {
 }
 
 export class ExactModel {
-  constructor({st, outline, cand, h = 0, statics = [], soft = new Set(), penalty = 1000, fallback = new Map(), paper = [], paperPenalty = 50, ties = [], commodity = false}) {
+  constructor({st, outline, cand, h = 0, statics = [], soft = new Set(), penalty = 1000, fallback = new Map(), paper = [], paperPenalty = 50, ties = []}) {
     this.st = st;
     this.outline = outline;
     this.cand = cand;
@@ -149,7 +149,6 @@ export class ExactModel {
     m.row([...x.values()].map(v => [v, 1]), h, Infinity);
     section('flows');
     const nodes = st.nodes, points = new Set([...ins.keys(), ...outs.keys()].map(k => k.slice(2)));
-    this.sources = new Set([...nodes].filter(([, n]) => n.typ === 'end' && 'TL'.includes(n.side)).map(([k]) => `node:${k}`));
     for (const p of points) {
       const node = p.startsWith('node:') ? nodes.get(p.slice(5)) : null;
       for (const family of ['A', 'B']) {
@@ -171,26 +170,6 @@ export class ExactModel {
     this.entering = new Map();
     for (const [family, s0, s1, v] of arcs) push(this.entering, `${family}|${s1}`, [s0, v]);
     this.connected = new Set();
-    section('commodity');
-    // With `commodity`, one commodity per paper: each point a cut passes
-    // consumes a unit from that paper's border sources, so no detached loop is
-    // feasible. Without (the default, as the reference solver with HiGHS),
-    // violations() cuts loops and wrong-border slits lazily: a third of the
-    // columns and rows fewer, and HiGHS's root relaxation that much faster.
-    const size = points.size, flowIn = new Map(), flowOut = new Map(), usedIn = new Map();
-    this.flowOf = new Map();
-    for (const [family, s0, s1, v] of commodity ? arcs : []) {
-      const g = m.variable({cost: 0, lo: 0, hi: size});
-      this.flowOf.set(v, g);
-      m.row([[g, 1], [v, -size]], -Infinity, 0);
-      push(flowOut, `${family}|${s0}`, g);
-      push(flowIn, `${family}|${s1}`, g);
-      push(usedIn, `${family}|${s1}`, v);
-    }
-    for (const k of new Set([...flowIn.keys(), ...flowOut.keys()])) {
-      if (this.sources.has(k.slice(2))) continue;
-      m.row([...(flowIn.get(k) || []).map(g => [g, 1]), ...(flowOut.get(k) || []).map(g => [g, -1]), ...(usedIn.get(k) || []).map(v => [v, -1])], 0, 0);
-    }
     section('crossings');
     // Segments joining one boundary cycle of a face at interleaved points cross,
     // in any face (each cuts the face in two, the other's ends one on either
@@ -363,70 +342,68 @@ export class ExactModel {
     // Each paper's slits: from every border end along its pieces and the used
     // segments; one ending on the wrong border, and any piece not reached (a
     // detached loop), cut (sat_length.LengthModel.violations).
-    if (!this.flowOf.size) {
-      const E = this.st.edges, nodes = this.st.nodes, endOf = p => p.startsWith('node:') && nodes.get(p.slice(5))?.typ === 'end';
-      for (const member of [1, 0]) {
-        const links = new Map(), link = (p, item, q) => { if (!links.has(p)) links.set(p, []); links.get(p).push([item, q]); };
-        E.forEach((_, e) => {
-          for (let i = 0; i <= this.q[e]; i++) if ((val[this.lab.get(`${e},${i}`)] > .5 ? 1 : 0) === member) {
-            const item = `seg:${e},${i}`, p = this.point(e, i), q = this.point(e, i + 1);
-            link(p, item, q); link(q, item, p);
-          }
-        });
-        for (const key of used) {
-          const [, a, b] = this.cand.pair.get(key), p = `slot:${a[1]}:${a[2]}`, q = `slot:${b[1]}:${b[2]}`;
-          link(p, `x:${key}`, q); link(q, `x:${key}`, p);
+    const E = this.st.edges, nodes = this.st.nodes, endOf = p => p.startsWith('node:') && nodes.get(p.slice(5))?.typ === 'end';
+    for (const member of [1, 0]) {
+      const links = new Map(), link = (p, item, q) => { if (!links.has(p)) links.set(p, []); links.get(p).push([item, q]); };
+      E.forEach((_, e) => {
+        for (let i = 0; i <= this.q[e]; i++) if ((val[this.lab.get(`${e},${i}`)] > .5 ? 1 : 0) === member) {
+          const item = `seg:${e},${i}`, p = this.point(e, i), q = this.point(e, i + 1);
+          link(p, item, q); link(q, item, p);
         }
-        const cut = items => {
-          const terms = [];
-          let rhs = items.length - 1;
-          for (const item of items) {
-            if (item.startsWith('x:')) terms.push([this.x.get(item.slice(2)), 1]);
-            else if (member) terms.push([this.lab.get(item.slice(4)), 1]);
-            else { terms.push([this.lab.get(item.slice(4)), -1]); rhs -= 1; }  // B cuts the piece when its label is 0
-          }
-          return [terms, rhs];
-        };
-        const done = new Set();
-        for (const p0 of [...links.keys()].filter(endOf)) {
-          if (links.get(p0).some(([item]) => done.has(item))) continue;
-          const items = [];
-          let prev = null, p = p0;
-          for (;;) {
-            const step = links.get(p).find(([item]) => item !== prev && !done.has(item));
-            if (!step) break;
-            [prev, p] = step;
-            done.add(prev);
-            items.push(prev);
-            if (endOf(p)) break;
-          }
-          const sides = new Set([nodes.get(p0.slice(5)).side, endOf(p) ? nodes.get(p.slice(5)).side : null]);
-          const fine = (sides.has('T') && sides.has('B')) || (sides.has('L') && sides.has('R'));
-          if (!fine) out.push(['path', ...cut(items)]);
-        }
-        const all = new Set([...links.values()].flatMap(list => list.map(([item]) => item)));
-        for (const item0 of all) {
-          if (done.has(item0)) continue;
-          const items = [], stack = [item0];
-          while (stack.length) {
-            const item = stack.pop();
-            if (done.has(item)) continue;
-            done.add(item);
-            items.push(item);
-            for (const [p] of ends(item)) for (const [other] of links.get(p) || []) if (!done.has(other)) stack.push(other);
-          }
-          const touched = new Set(items.map(item => item.startsWith('x:') ? this.cand.pair.get(item.slice(2)).slice(1).map(t => t[1]) : [+item.slice(4).split(',')[0]]).flat());
-          const rows = this.connectivityRows(touched);
-          out.push(...(rows.length ? rows : [['cycle', ...cut(items)]]));
-        }
-        function ends(item) {
-          if (item.startsWith('x:')) { const [, a, b] = this_.cand.pair.get(item.slice(2)); return [[`slot:${a[1]}:${a[2]}`], [`slot:${b[1]}:${b[2]}`]]; }
-          const [e, i] = item.slice(4).split(',').map(Number);
-          return [[this_.point(e, i)], [this_.point(e, i + 1)]];
-        }
+      });
+      for (const key of used) {
+        const [, a, b] = this.cand.pair.get(key), p = `slot:${a[1]}:${a[2]}`, q = `slot:${b[1]}:${b[2]}`;
+        link(p, `x:${key}`, q); link(q, `x:${key}`, p);
       }
-      if (out.length) return out;
+      const cut = items => {
+        const terms = [];
+        let rhs = items.length - 1;
+        for (const item of items) {
+          if (item.startsWith('x:')) terms.push([this.x.get(item.slice(2)), 1]);
+          else if (member) terms.push([this.lab.get(item.slice(4)), 1]);
+          else { terms.push([this.lab.get(item.slice(4)), -1]); rhs -= 1; }  // B cuts the piece when its label is 0
+        }
+        return [terms, rhs];
+      };
+      const done = new Set();
+      for (const p0 of [...links.keys()].filter(endOf)) {
+        if (links.get(p0).some(([item]) => done.has(item))) continue;
+        const items = [];
+        let prev = null, p = p0;
+        for (;;) {
+          const step = links.get(p).find(([item]) => item !== prev && !done.has(item));
+          if (!step) break;
+          [prev, p] = step;
+          done.add(prev);
+          items.push(prev);
+          if (endOf(p)) break;
+        }
+        const sides = new Set([nodes.get(p0.slice(5)).side, endOf(p) ? nodes.get(p.slice(5)).side : null]);
+        const fine = (sides.has('T') && sides.has('B')) || (sides.has('L') && sides.has('R'));
+        if (!fine) out.push(['path', ...cut(items)]);
+      }
+      const all = new Set([...links.values()].flatMap(list => list.map(([item]) => item)));
+      for (const item0 of all) {
+        if (done.has(item0)) continue;
+        const items = [], stack = [item0];
+        while (stack.length) {
+          const item = stack.pop();
+          if (done.has(item)) continue;
+          done.add(item);
+          items.push(item);
+          for (const [p] of ends(item)) for (const [other] of links.get(p) || []) if (!done.has(other)) stack.push(other);
+        }
+        const touched = new Set(items.map(item => item.startsWith('x:') ? this.cand.pair.get(item.slice(2)).slice(1).map(t => t[1]) : [+item.slice(4).split(',')[0]]).flat());
+        const rows = this.connectivityRows(touched);
+        out.push(...(rows.length ? rows : [['cycle', ...cut(items)]]));
+      }
+      function ends(item) {
+        if (item.startsWith('x:')) { const [, a, b] = this_.cand.pair.get(item.slice(2)); return [[`slot:${a[1]}:${a[2]}`], [`slot:${b[1]}:${b[2]}`]]; }
+        const [e, i] = item.slice(4).split(',').map(Number);
+        return [[this_.point(e, i)], [this_.point(e, i + 1)]];
+      }
     }
+    if (out.length) return out;
     const byFace = new Map();
     for (const key of used) { const fi = this.cand.pair.get(key)[0]; if (!byFace.has(fi)) byFace.set(fi, []); byFace.get(fi).push(key); }
     for (const [fi, mine] of byFace) {
@@ -461,8 +438,7 @@ export class ExactModel {
     }
     for (const key of used) for (const t of this.cand.pair.get(key).slice(1)) val[this.side.get(tokenKey(t))] = 1;
     for (const [k, v] of this.x) val[v] = usedSet.has(k) ? 1 : 0;
-    // Each paper's slits from its sources: the arcs it takes, and the commodity
-    // each arc carries (one unit per point still ahead).
+    // Each paper's slits from its sources: the arcs it takes.
     const links = new Map(), link = (fam, at, entry) => { const k = `${fam}|${at}`; if (!links.has(k)) links.set(k, []); links.get(k).push(entry); };
     this.st.edges.forEach((_, e) => {
       for (let i = 0; i <= this.q[e]; i++) {
@@ -490,7 +466,7 @@ export class ExactModel {
           path.push(step[0].arc);
           if (cur.startsWith('node:') && this.st.nodes.get(cur.slice(5)).typ === 'end') break;
         }
-        path.forEach((arc, k) => { val[arc] = 1; if (this.flowOf.has(arc)) val[this.flowOf.get(arc)] = path.length - k; });
+        for (const arc of path) val[arc] = 1;
       }
     }
     for (const {U, wrap, len, segments} of this.annuli) {
@@ -533,8 +509,9 @@ export class ExactModel {
   }
 
   /** Minimise: violations and hidden segments first (with a length tie-break
-   * under one), then the length at that count. Lazy rows each round. */
-  async solve({start = null, deadline = performance.now() + 30000, gap = .02, onProgress = () => {}, audit = null} = {}) {
+   * under one), then the length at that count. Lazy rows each round.
+   * `onSolution` sees each improving solution that keeps every rule. */
+  async solve({start = null, deadline = performance.now() + 30000, gap = .02, onProgress = () => {}, audit = null, onSolution = null} = {}) {
     const highs = await solverRuntime(), m = this.m, chords = new Set(this.x.values());
     const invalid = new Set([...this.invalid].filter(k => this.x.has(k)).map(k => this.x.get(k)));
     const slacks = new Set(this.slacks), paperSlacks = new Set(this.paperSlacks);
@@ -545,15 +522,14 @@ export class ExactModel {
     const stageLengths = m.cost.map((_, j) => hard[j] + lengths[j] + (paperSlacks.has(j) ? this.paperPenalty : 0));
     const native = highs.createModel(m.data());
     try {
-      return await this.run(highs, native, {start, deadline, gap, onProgress, chords, mixed, stageLengths, audit});
+      return await this.run(highs, native, {start, deadline, gap, onProgress, chords, mixed, stageLengths, audit, onSolution});
     } finally {
       native.dispose();
     }
   }
 
-  async run(highs, native, {start, deadline, gap, onProgress, chords, mixed, stageLengths, audit}) {
+  async run(highs, native, {start, deadline, gap, onProgress, chords, mixed, stageLengths, audit, onSolution}) {
     const this_ = this, m = this.m, report = {rounds: 0, cuts: this.cuts};
-    if (globalThis.process?.env?.EXACT_DEBUG) console.error('sections', this.sections.map(([name, at], k) => `${name} ${(this.sections[k + 1]?.[1] ?? m.rows.length) - at}`).join(', '), 'x', this.x.size);
     let best = null;
     const setCosts = costs => costs.forEach((c, j) => native.changeColCost(j, c));
     // New lazily checked rules as rows with a slack at the penalty (elastic):
@@ -592,10 +568,6 @@ export class ExactModel {
     const stage = async (costs, until, relGap, enough, absGap = null, patience = 0) => {
       current = costs;
       setCosts(costs);
-      if (globalThis.process?.env?.EXACT_DUMP && !this.dumped) {
-        this.dumped = true;
-        (await import('node:fs')).writeFileSync(process.env.EXACT_DUMP, JSON.stringify({cost: m.cost, lb: m.lb, ub: m.ub, integer: m.integer, rows: m.rows, costs, start: best ? best.values : Array.from(start || []), chords: [...chords]}));
-      }
       native.options.set({output_flag: false, mip_rel_gap: relGap, ...(absGap !== null ? {mip_abs_gap: absGap} : {})});
       let bound = -Infinity, status = 'time limit';
       for (let round = 0; round < 200; round++) {
@@ -605,8 +577,6 @@ export class ExactModel {
         native.raw.zeroAllClocks();
         if (best) native.setSolution({colValue: Float64Array.from(best.values)});
         else if (start) native.setSolution({colValue: start});
-        const log = globalThis.process?.env?.EXACT_DEBUG === '2';
-        if (log) native.options.set({output_flag: true});
         // Every improving solution's broken lazy rules, not only the last's:
         // each run then brings several (one at a time, starcircle took a run
         // of 7 s per row).
@@ -620,16 +590,16 @@ export class ExactModel {
           if (values?.length !== m.cost.length) return;
           const rows = this_.violations(Array.from(values));
           found.push(...rows);
-          if (!rows.length && !(this_.penaltyOf(values) > 1e-6)) clean = performance.now();
+          if (rows.length || this_.penaltyOf(values) > 1e-6) return;
+          clean = performance.now();
+          onSolution?.(Array.from(values));
         }};
         if (patience) callbacks[highs.constants.callbackType.mipInterrupt] = event => {
           const now = performance.now();
           if (clean !== null && now - clean > Math.max(patience * (until - began), .5 * (clean - began))) event.interrupt();
         };
-        if (log) callbacks[highs.constants.callbackType.logging] = event => process.stderr.write(event.message);
         const t = performance.now(), result = native.run(callbacks);
         report.rounds++;
-        if (globalThis.process?.env?.EXACT_DEBUG) console.error('highs', result.modelStatus, ((performance.now() - t) / 1000).toFixed(1), 's nodes', native.info.get('mip_node_count'), 'obj', native.info.get('objective_function_value'), 'bound', native.info.get('mip_dual_bound'), 'cols', m.cost.length, 'rows', m.rows.length);
         const db = native.info.get('mip_dual_bound');
         if (Number.isFinite(db)) bound = Math.max(bound, db);
         if (native.info.get('primal_solution_status') !== highs.constants.solutionStatus.feasible) {
@@ -640,13 +610,6 @@ export class ExactModel {
         // The lazily checked rules it breaks join elastically: it stays a
         // solution, at their penalty, and the best so far whenever it is.
         const last = this.violations(values);
-        if (globalThis.process?.env?.EXACT_DEBUG) {
-          console.error('violations', last.map(([k, terms]) => `${k}/${terms.length}`).join(' '), 'improving', found.length);
-          for (const [kind, terms, rhs] of last) {
-            const k = `${kind}|${terms.map(t => t.join(':')).sort().join(',')}|${rhs}`, at = this.slackRows.findIndex(([, t, r]) => `${kind}|${t.map(u => u.join(':')).sort().join(',')}|${r}` === k);
-            console.error('  ', k, 'seen', this.seen.has(k), 'row', at, at >= 0 ? `slack ${values[this.slackRows[at][0]]} cost ${costs[this.slackRows[at][0]]}` : '', 'x', terms.map(([v]) => values[v]).join(','));
-          }
-        }
         let rows = elastic([...last, ...found]);
         // Then the paper audit, on a solution keeping every rule.
         if (!rows && audit && !(this.penaltyOf(values) > 1e-6)) rows = elastic(await audit(values));

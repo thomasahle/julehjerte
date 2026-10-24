@@ -37,10 +37,15 @@ minute.
    either colour on the edge under 12 mm² and specks or holes inside under
    6 mm² are cleared: glare, dust and print are not detail a template can cut.
 4. **Finding the cuts** (`static/inverse/core/engine.js`, `exact/`). The fitter
-   runs first (half the minute). Only when its template fails does the exact
-   search (HiGHS, the cuts laid exactly on the outline traced from the mask)
-   try to rescue it, and its template is taken only when it passes. Find snit
-   stops within a minute on every path.
+   runs first, for half the minute, and its template gets the final repairs
+   (hidden cuts rounded, returns and paper). Only when it still fails does the
+   exact search (HiGHS, the cuts laid exactly on the outline traced from the
+   mask) try to rescue it, and its template is taken only when it passes. The
+   outline is traced before the fitter starts: when its cut ends cannot pair
+   up across the square (most noisy photographs) the exact search cannot start,
+   and the fitter gets three quarters of the minute instead. The live view
+   draws whichever search is running: the fitter's candidates, then the exact
+   search's improving solutions. Find snit stops within a minute on every path.
 
 ## Results
 

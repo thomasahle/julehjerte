@@ -62,8 +62,15 @@ test('a template whose cuts leave the outline at necks reads as hidden segments 
 });
 
 test('the exact search redraws that template on the exact outline, passing the editor\'s checks', async () => {
-  const found = await exactFromTemplate(permoTarget(), loadSolutionJSON(permo.template), cfg, {seconds: 15, paperRetries: 0});
+  const shown = [];
+  const found = await exactFromTemplate(permoTarget(), loadSolutionJSON(permo.template), cfg, {seconds: 15, paperRetries: 0, geometry: true, onProgress: event => shown.push(event)});
   assert.ok(!found.error, found.error);
+  // The live view sees the search's own solutions, as the fitter's snapshots.
+  assert.ok(shown.length >= 1);
+  for (const event of shown) {
+    assert.equal(event.stage, 'exactOutline');
+    assert.equal(loadSolutionJSON(event.geometry).paths.length, 2);
+  }
   assert.equal(found.report.attempts[0].startFeasible, true);
   assert.ok(found.report.hidden <= 9);
   const check = validate(found.solution, cfg, {finalGeometry: true});

@@ -590,10 +590,9 @@ export function solveSettings(settings: FindSettings): Record<string, unknown> {
 		minWidth: clampAdvanced('minWidthMm', settings.minWidthMm ?? DEFAULT_MIN_WIDTH_MM),
 		cutError: 0.25,
 		timeLimit: SEARCH_SECONDS,
-		// Redraw the fitter's template on the mask's own traced outline where
-		// that ranks better (core/exact/): at most a minute for the whole search.
+		// When the fitter's template fails, try the exact search on the mask's
+		// traced outline as a rescue (core/exact/): a minute for the whole search.
 		exactOutline: true,
-		exactRaster: true,
 		// Prefer a reusable template even when a photograph has no detected
 		// symmetry. This does not fold the mask. A requested symmetry
 		// overrules it inside `settings()`: the transpose implies matching sheets,
