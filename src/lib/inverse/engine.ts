@@ -523,7 +523,10 @@ export function prepareImage(
 				paperColors: settings.paperColors,
 				mode: settings.mode ?? 'auto',
 				swatches: settings.swatches ?? settings.paperColors,
-				invert: settings.invert ?? false
+				invert: settings.invert ?? false,
+				// A crop of a photograph is read as Mal reads one: its papers from
+				// its lobes, its edge band and specks cleared (core/input.js).
+				photoImport: true
 			},
 			onStage
 		)

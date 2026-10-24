@@ -171,16 +171,18 @@ export function preprocessPixels({rgba,imageWidth,imageHeight,quad=null,cropProv
   const requestedResolution=settings.resolution??400;
   if(!Number.isInteger(requestedResolution)||requestedResolution<32||requestedResolution>600)throw new Error('Tracing resolution must be 32–600.');
   const n=Math.min(requestedResolution,Math.max(32,Math.min(imageWidth,imageHeight))),width=settings.width||100;
-  // A photograph's crop in `auto`: its two papers are its lobes' colours,
-  // which a third colour (a glued motif, a shadow, glare) cannot steal as it
-  // can a two-cluster split of the square alone.
-  const lobes=quad&&(settings.mode??'auto')==='auto'?lobeColours(rgba,imageWidth,imageHeight,quad):null;
+  // Mal's import of a photograph's crop (`photoImport`, its prepareImage
+  // settings): in `auto` its two papers are its lobes' colours, which a third
+  // colour (a glued motif, a shadow, glare) cannot steal as it can a
+  // two-cluster split of the square alone.
+  const photo=Boolean(quad)&&settings.photoImport===true;
+  const lobes=photo&&(settings.mode??'auto')==='auto'?lobeColours(rgba,imageWidth,imageHeight,quad):null;
   const {rgb,validMask}=rectifyWithCoverage(rgba,imageWidth,imageHeight,n,quad,settings.background||'#ffffff'),classified=quantize(rgb,{...settings,validMask,...(lobes?{mode:'lobes',lobes}:{})});
   // A crop's outermost millimetre is the least sure of the photo:
   // a corner slightly off leaves slivers of a lobe or the table there, which
   // no template keeps and the fidelity check then counts as lost features.
   // It takes the colours just inside it (border.js), before anyone sees it.
-  const border=quad?stabilizeBorder(classified.mask,n,width,1,settings.minWidth??2):null;
+  const border=photo?stabilizeBorder(classified.mask,n,width,1,settings.minWidth??2):null;
   // What is left of them: pieces of either colour on the edge smaller than
   // 12 mm² (a 3.5 mm square, below any cell a design puts there). Inside,
   // specks and holes under 6 mm² are glare, dust or print, not detail a
