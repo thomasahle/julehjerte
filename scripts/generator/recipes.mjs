@@ -4,9 +4,10 @@
 // rings); each group is covered by solves of the exact-outline search (static/inverse/core/exact)
 // at its first size not yet covered, each solve kept at every size of the group where the
 // generator's own path (`fromStoredRecipe`) cuts it cleanly and better than the generator's
-// construction, judged in turn by weak paper at the 80 mm print (where the paper check is there,
-// src/lib/geometry/paperNecks.ts), needles, sharp tips, turns along the hidden cuts and the cuts'
-// length: the first that differs decides, and a tie keeps the generator's. The recipes go to static/generator/recipes/<motif>.<style>.json,
+// construction, judged in turn by the places the paper may tear (weak paper at the 80 mm print,
+// where the paper check is there, src/lib/geometry/paperNecks.ts, and needles), sharp tips, turns
+// along the hidden cuts and the cuts' length: the first that differs decides, and a tie keeps the
+// generator's. The recipes go to static/generator/recipes/<motif>.<style>.json,
 // replacing that board's, and the file is listed in index.json.
 //
 //   node scripts/generator/recipes.mjs <motif> <style> [strips] [from to]
@@ -33,8 +34,9 @@ try {
 	const { cutTipCounts } = await load('/src/lib/generator/cutQuality.ts');
 	const paper = await load('/src/lib/geometry/paperNecks.ts').catch(() => null), weak = design => paper ? paper.paperFaults(design).weak : 0;
 	const { inferOverlapRect } = await load('/src/lib/utils/overlapRect.ts');
-	// A heart's measures, in the order they decide: weak paper, needles, sharp tips, turns over 25°
-	// along its hidden cuts (where the picture has one colour on both sides), its cuts' length.
+	// A heart's measures, in the order they decide: places its paper may tear (weak necks and
+	// needles), sharp tips, turns over 25° along its hidden cuts (where the picture has one colour
+	// on both sides), its cuts' length.
 	const inside = (x, y, ring) => {
 		let c = false;
 		for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
@@ -72,14 +74,15 @@ try {
 				from = p;
 			}
 		}
-		return [weak(design), ...cutTipCounts(design), turns, Math.round(length)];
+		const [needles, sharp] = cutTipCounts(design);
+		return [weak(design) + needles, sharp, turns, Math.round(length)];
 	};
 	const better = (a, b) => { const i = a.findIndex((x, k) => x !== b[k]); return i >= 0 && a[i] < b[i]; };
 	const { DEFAULT_COLORS, DEFAULT_COLORS_HEX } = await load('/src/lib/stores/colors.ts');
 	const mal = await load('/src/lib/inverse/engine.ts');
 	const { prepare, restorePrepared, scaleTarget } = await core('engine.js');
 	const { settings } = await core('settings.js');
-	const { exactTarget, assess, exactSymmetry } = await core('exact/stage.js');
+	const { exactTarget, exactSymmetry } = await core('exact/stage.js');
 	const { exactOutline } = await core('exact/snap.js');
 	const { exactStart } = await core('exact/start.js');
 	const { exactFromTemplate } = await core('exact/search.js');
@@ -120,8 +123,9 @@ try {
 		// An outline a hair from symmetric (the circle through a corner of the board) is solved untied.
 		if (found.error && /not symmetric enough/.test(found.error)) found = await search([]);
 		if (found.error) return { error: found.error, seconds: took() };
-		const verdict = assess(found.solution, cfg, { exact: true });
-		if (!verdict.passes) return { error: verdict.issues.join(', '), seconds: took() };
+		// The engine's clearance is stricter than the site's (it fails the generator's own clean
+		// hearts on the 5×5 board at 72–95%): a solve it doubts is still drawn, and the
+		// generator's own path judges it below.
 		return { xy: { A: found.xy.A.map(l => l.map(toSheet)), B: found.xy.B.map(l => l.map(toSheet)) }, seconds: took() };
 	}
 

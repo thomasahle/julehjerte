@@ -49,9 +49,14 @@ The script groups the sizes by topology and solves each group at its first
 size not yet covered, then draws that solve at every size of the group through
 the generator's own path (`fromStoredRecipe`). A size keeps it where the heart
 cuts cleanly and is better than the generator's own heart, judged in turn by
-weak paper at the 80 mm print (where the paper check is there), needles,
-sharp tips, turns along its hidden cuts and its cuts' length: the first that
-differs decides, and a tie keeps the generator's. (The heart at 55% on five
+the places its paper may tear (weak paper at the 80 mm print, where the paper
+check is there, and needles), sharp tips, turns along its hidden cuts and its
+cuts' length: the first that differs decides, and a tie keeps the
+generator's. (Weak paper alone first let in solves with six needles.)
+
+The engine's own checks are stricter about clearance than the site's: they
+fail the generator's clean star hearts on five strips at 72–95%. So a solve
+the engine doubts is drawn all the same, and the generator's path judges it. (The heart at 55% on five
 strips keeps its own four short symmetric cuts: the solved one meets the
 heart's curve at two sharp tips.) It tries up to four solves a group and writes the motif's file for
 the frame, replacing that board's recipes.

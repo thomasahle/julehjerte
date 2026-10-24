@@ -16,6 +16,19 @@ shorter). At 50–59% the generator's four short symmetric cuts stay (the solved
 ones meet the heart's curve at two sharp tips), and from 83% the search found
 no template that passes. A stored heart takes 80–120 ms to make.
 
+Then the star, the diamond and the angel on five strips, judged by the places
+the paper may tear first (weak necks and needles together: weak paper alone
+let in solves with six needles), and every solve drawn and judged by the
+generator even where the engine doubts it (its clearance fails the
+generator's own clean star hearts at 72–95%). The star (solved on a copy made
+exactly mirror-symmetric, checked on its own outline) keeps 45 of 56 sizes:
+at 45–70% two sharp tips where there were five; at 71–82% two places that
+may tear where there were three to seven and under half the hidden turns;
+at 88–96% a third of the hidden turns. The diamond keeps 5 sizes, at 81–85%
+no weak paper where there were eight places (elsewhere its own construction
+is the one the search finds); the angel 2. The gift's start search runs out
+of time (30 s) at every size.
+
 ## The sunburst's crown narrows where its motif crowds the circle
 
 The sunburst's circle is four fifths of its frame, and the frame stops at the
