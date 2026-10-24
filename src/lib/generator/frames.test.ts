@@ -51,6 +51,7 @@ import polarStar from '../../../static/generator/motifs/gi-polar-star.json';
 import dove from '../../../static/generator/motifs/pin-dove.json';
 import pinCat from '../../../static/generator/motifs/pin-cat.json';
 import candyCane from '../../../static/generator/motifs/mdi-candy-cane.json';
+import faFish from '../../../static/generator/motifs/fa-fish.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -96,6 +97,14 @@ describe('complete motif frames', () => {
    expect(result.edges).toContainEqual({ from: [t, 0], to: [t, 100], family: 'A', kind: 'frame' });
    expect(result.edges).toContainEqual({ from: [0, t], to: [100, t], family: 'B', kind: 'frame' });
   }
+ });
+ it('cuts the fish\'s outline on from its eye\'s bridge without turning back', () => {
+  // The bridge met the outline a hair from a vertex, which the arc it split
+  // left out: the bridge's index lay a vertex behind its point, so one sheet
+  // cut back along the outline and out again, three needles at 80%.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Fish', contours: faFish.contours as Ring[], colors, style: 'silhouette', frame: 'circle', frameSize: 70, scale: .8, gap: 3 });
+  expect(hardToCut).toBeUndefined();
+  expect(cutTipCounts(design)).toEqual([0, 0]);
  });
  slow('bends a hard-to-cut figure at sharp tips where its narrowest paper keeps', () => {
   // The cat's tail meets its body in a notch the double border leaves on one

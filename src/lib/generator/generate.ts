@@ -46,6 +46,8 @@ import {
 	touchingFourPortMotif,
 	withVisibleIslands,
 	visibleIslandsSetAside,
+	withExactArcs,
+	arcSlipsSeen,
 	hasCounterContact,
 	generateCheckedText,
 	inside,
@@ -526,6 +528,44 @@ function withLayout(request: GeneratorRequest): GeneratorRequest {
 }
 
 export function generate(request: GeneratorRequest): GeneratorResult {
+	// Made with an outline index a vertex behind its point (see `withExactArcs`),
+	// a heart refused, hard to cut or with a needle is made again its first
+	// way with exact indices, and that one kept where it cuts cleanly at no
+	// smaller size with fewer sharp tips.
+	const slips = arcSlipsSeen();
+	let result: GeneratorResult | undefined, failure: unknown;
+	try {
+		result = generateAsAsked(request);
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		failure = error;
+	}
+	if (arcSlipsSeen() === slips || result && !result.hardToCut && !cutTipCounts(result.design)[0]) {
+		if (result) return result;
+		throw failure;
+	}
+	quickAgain = true;
+	madeAgain = false;
+	try {
+		const again = withExactArcs(() => generateAsAsked(request));
+		const size = (r: GeneratorResult) => r.scale ?? request.scale ?? .7;
+		if (!result || !again.hardToCut && size(again) >= size(result) &&
+			(result.hardToCut || fewerCutTips(cutTipCounts(again.design), cutTipCounts(result.design)))) return again;
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	} finally {
+		quickAgain = false;
+	}
+	if (result) return result;
+	throw failure;
+}
+/** Set while a heart is made again with exact outline indices (see
+ * `generate`): its first way only, at its own size, without retries, last
+ * resorts or a smaller size, so that a heart it cannot improve costs one
+ * construction more (a wreath hard in the wedges had cost four). */
+let quickAgain = false, madeAgain = false;
+
+function generateAsAsked(request: GeneratorRequest): GeneratorResult {
 	if (request.mode === 'text' && isTextFigure(request.textFrame)) return generateTextFigure(request);
 	try {
 		return generateAtSizeOrSmaller(request);
@@ -555,7 +595,7 @@ function generateAtSizeOrSmaller(request: GeneratorRequest): GeneratorResult {
 		return generateAtSizeOrLastResort(request);
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) || scale <= .7
-			|| request.mode === 'figure' && request.style === 'board') throw error;
+			|| request.mode === 'figure' && request.style === 'board' || quickAgain) throw error;
 		// Above the default size a frame takes a motif larger than its
 		// constructions were first made for. Where nothing at all can be built
 		// at that size, the motif keeps the largest size below that can be, of
@@ -579,7 +619,7 @@ function generateAtSizeOrSmaller(request: GeneratorRequest): GeneratorResult {
  * clearance. */
 function generateTextFigure(request: GeneratorRequest): GeneratorResult {
 	const figure = textFigureRequest(request);
-	if (figure.style !== 'strips') return generate(figure);
+	if (figure.style !== 'strips') return generateAsAsked(figure);
 	const asked = figure.board, boards = asked ? [asked, ...TEXT_STRIPS.filter(n => n !== asked)] : TEXT_STRIPS;
 	let hard: GeneratorResult | undefined, last: unknown;
 	for (const board of boards) try {
@@ -659,7 +699,7 @@ function generateAtSizeOrLastResort(request: GeneratorRequest): GeneratorResult 
 	try {
 		return generateAtSize(request);
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) || quickAgain) throw error;
 		for (const [k, [, setAside]] of LAST_RESORTS.entries()) {
 			if (setAside() === before[k]) continue;
 			try {
@@ -906,7 +946,11 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
  * hard-to-cut result is made. */
 function generateOnce(request: GeneratorRequest,
 	deferHard?: (finish: () => GeneratorResult | undefined) => void, variants = Infinity, retries = true): GeneratorResult {
-	const result = generateOnceMade(request, deferHard, variants, retries);
+	if (quickAgain) {
+		if (madeAgain) throw new ConstructionError('topology', 'Made again its first way only');
+		madeAgain = true;
+	}
+	const result = generateOnceMade(request, quickAgain ? undefined : deferHard, variants, retries && !quickAgain);
 	// A clean figure's shared cuts that meet the motif in a sharp tip of paper
 	// bend to cross it instead, however it was made (a retry's too: a candy
 	// cane's nested construction in the rays); the board circle's do as it

@@ -1,5 +1,28 @@
 # Generator robustness results
 
+## A bridge a hair from an outline's vertex
+
+Placing a bridge along an outline arc, the figure construction counted its
+index along the arc's points as `arc` returns them, but `arc` leaves out a
+vertex that meets a port: from there each index lay a vertex behind its point,
+and the outline cut from such a bridge ran back to that vertex and out again,
+a needle in the paper (the fish's eye bridge in the silhouette at 80%, three
+needles). Counting the arc's own points fixes it, but made at once it changed
+18 of 743 hearts both ways (previously invalid candidates now pass first: the
+gift in the checked tips at 100% gained two sharp tips, a woven Jørgen a
+needle). So the construction keeps the old count, notes where it slips, and a
+heart refused, hard to cut or with a needle after a slip is made again its
+first way only (no retries, last resorts or smaller size) with exact indices,
+kept where it cuts cleanly at no smaller size with fewer sharp tips.
+
+Seven figure frames at 70/80/90/100% (1344 hearts; only the 392 refused, hard
+or needled ones can change): 8 change, all better (the bauble in Stråler and
+Tern at 100% hard → clean, the fish [3,3] → [0,0] twice, the owl in Kiler and
+Tæt om figuren at 70% [2,2] → [0,0]), for 7% more time on those 392 (one more
+construction where a slip shows; the santa hat's refusal in the silhouette at
+70% +27 s). Board hearts hard or needled on 5, 7 and 9 strips (173) and text
+(330) are unchanged.
+
 ## Many gates in a corner: legs straight to the paper's edge
 
 Where a figure needs four or more gates a side (the spread panel layouts and

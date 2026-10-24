@@ -1093,7 +1093,11 @@ hidden chain routes (a paw's toes, a sun's rays), and in the checks two hidden c
 that only come too close; such hearts are hard to cut, and every heart built without them keeps its
 cuts. Within one size an alternative that failed is not made again where the only constructions
 newly allowed are of a kind it set none aside of: it would fail the same way (a swan refused in
-the wedges was made seven times a size, three of them so).
+the wedges was made seven times a size, three of them so). A bridge placed along an outline a hair
+from a vertex took its index from the arc without that vertex, a vertex behind its point (a fish's
+outline cut ran back and out again: three needles); a heart refused, hard to cut or with a needle
+after such a slip is made again its first way with exact indices, and kept where that one cuts
+cleanly at no smaller size with fewer sharp tips (a bauble at 100% in the rays, hard → clean).
 On them a motif keeps, at every size, the choice its default size made on its strips, since
 another would make it jump in size: which squares hold the small copies, or for equal squares the
 motif up to a tenth larger in its square, or with the spacious frame's room around it. Each choice

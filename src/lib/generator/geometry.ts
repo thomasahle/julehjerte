@@ -826,6 +826,23 @@ function attachmentOrder(fan: number, count: number) {
 	}
 	return choices;
 }
+/** Whether a port placed along an outline arc takes its index from the arc's
+ * own points (see `perforatedOutline`). `arc` leaves out a vertex that meets
+ * a port, and an index counted along what is left lies a vertex behind its
+ * point, so the outline arc from there doubled back on itself. Hearts built
+ * so keep their cuts; one that came out refused, hard to cut or with a needle
+ * after such a slip is made again with exact indices (see `generate`). */
+let exactArcs = false, arcSlips = 0;
+export const arcSlipsSeen = () => arcSlips;
+export function withExactArcs<T>(build: () => T): T {
+	const before = exactArcs;
+	exactArcs = true;
+	try {
+		return build();
+	} finally {
+		exactArcs = before;
+	}
+}
 /** Whether a construction whose islands only route along visible spokes is
  * kept for the final check (see `contourMotif`). Earlier, it can stand where
  * a later construction would be clean, so only a request refused without it
@@ -1464,7 +1481,63 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 		? child.ring.map(point => ringPort(ring, point)).filter((port): port is Port => !!port)
 		: []]));
 	const contactPairs = [...contacts.values()].some(ports => ports.length) ? [[-2, -1], [-1, -2]] : [];
+	// The arc's points, each with its index on the ring, none left out.
+	const indexed = (a: Port, b: Port) => {
+		const end = b.index <= a.index + EPS ? b.index + n : b.index,
+			points = [a.point], indices = [a.index];
+		for (let i = Math.floor(a.index) + 1; i < end - EPS; i++) {
+			points.push(ring[i % n]);
+			indices.push(i);
+		}
+		points.push(b.point);
+		indices.push(a.index + ((b.index - a.index + n) % n));
+		return { points, indices };
+	};
+	const exactAt = (a: Port, b: Port, fraction: number): Port => {
+		const { points, indices } = indexed(a, b);
+		const lengths = points.slice(1).map((p, i) => distance(points[i], p));
+		let remaining = lengths.reduce((x, y) => x + y, 0) * fraction;
+		for (let i = 0; i < lengths.length; i++) {
+			if (lengths[i] && remaining <= lengths[i] || i === lengths.length - 1) {
+				const t = lengths[i] ? remaining / lengths[i] : 0;
+				return {
+					point: mix(points[i], points[i + 1], t),
+					index: (indices[i] + (indices[i + 1] - indices[i]) * t) % n
+				};
+			}
+			remaining -= lengths[i];
+		}
+		throw new ConstructionError('topology', 'Empty contour arc');
+	};
+	const exactClosest = (a: Port, b: Port, point: Point): Port => {
+		const { points, indices } = indexed(a, b);
+		let best = a,
+			distanceSquared = Infinity;
+		for (let i = 0; i < points.length - 1; i++) {
+			const delta = sub(points[i + 1], points[i]);
+			if (!delta[0] && !delta[1]) continue;
+			const t = Math.max(
+				0,
+				Math.min(1, dot(sub(point, points[i]), delta) / dot(delta, delta))
+			);
+			const p = mix(points[i], points[i + 1], t),
+				d = dot(sub(p, point), sub(p, point));
+			if (d < distanceSquared) {
+				best = { point: p, index: (indices[i] + (indices[i + 1] - indices[i]) * t) % n };
+				distanceSquared = d;
+			}
+		}
+		return best;
+	};
+	// Where `arc` left a vertex out, count the slip if the index differs.
+	const slipped = (a: Port, b: Port, points: Ring, port: Port, exact: () => Port) => {
+		const end = b.index <= a.index + EPS ? b.index + n : b.index;
+		if (points.length !== 2 + Math.max(0, Math.ceil(end - EPS) - Math.floor(a.index) - 1) &&
+			Math.abs(exact().index - port.index) > EPS) arcSlips++;
+		return port;
+	};
 	const at = (a: Port, b: Port, fraction: number): Port => {
+		if (exactArcs) return exactAt(a, b, fraction);
 		const points = arc(ring, a, b);
 		const lengths = points.slice(1).map((p, i) => distance(points[i], p));
 		let remaining = lengths.reduce((x, y) => x + y, 0) * fraction;
@@ -1476,16 +1549,17 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 						? a.index + ((b.index - a.index + n) % n)
 						: Math.floor(a.index) + i + 1;
 				const t = remaining / lengths[i];
-				return {
+				return slipped(a, b, points, {
 					point: mix(points[i], points[i + 1], t),
 					index: (start + (end - start) * t) % n
-				};
+				}, () => exactAt(a, b, fraction));
 			}
 			remaining -= lengths[i];
 		}
 		throw new ConstructionError('topology', 'Empty contour arc');
 	};
 	const closest = (a: Port, b: Port, point: Point): Port => {
+		if (exactArcs) return exactClosest(a, b, point);
 		const points = arc(ring, a, b);
 		let best = a,
 			distanceSquared = Infinity;
@@ -1507,7 +1581,7 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 				distanceSquared = d;
 			}
 		}
-		return best;
+		return slipped(a, b, points, best, () => exactClosest(a, b, point));
 	};
 
 	// Each counter's box, and a group's box centre from theirs: the numbers
