@@ -439,15 +439,15 @@ function finishConstruction(request: GeneratorRequest, r: Construction, recipe: 
 /** Improve only the selected construction, once. Shared curves meet the artwork
  * across its outline rather than forming a narrow point along it. Keep the
  * original whenever bending fails full-sheet checks or does not improve the
- * actual exported cuts. Visible outlines, strip count and connections stay fixed. */
+ * actual exported cuts: all at once, else tip by tip (a polar star in the
+ * rays from twelve sharp tips to six). Visible outlines, strip count and
+ * connections stay fixed. */
 function improveSharedConnections(result: GeneratorResult): GeneratorResult {
-	const design = bentAtTips(result.design);
-	if (!design) return result;
-	const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(design.gridSize.x, design.gridSize.y));
-	if (findSearchIssues(design.fingers, margin).size) return result;
+	const design = bentWhere(result.design, design => !findSearchIssues(design.fingers, intersectionMarginPx(
+		inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(design.gridSize.x, design.gridSize.y))).size);
 	// Endpoints, visible curves and strip connections are unchanged. Each moved
 	// curve is still exactly coincident on both sheets, preserving the weave.
-	return { ...result, design };
+	return design ? { ...result, design } : result;
 }
 
 /** A figure hard to cut, bent at its sharp tips of paper as a clean one is
@@ -469,16 +469,22 @@ function improveHardConnections(result: GeneratorResult): GeneratorResult {
 	}
 	if (!low) return result;
 	const flagged = findSearchIssues(original.fingers, full);
-	const kept = (design: HeartDesign) => !findSearchIssues(design.fingers, full * low, full).size &&
-		![...findSearchIssues(design.fingers, full)].some(id => !flagged.has(id));
+	const design = bentWhere(original, design => !findSearchIssues(design.fingers, full * low, full).size &&
+		![...findSearchIssues(design.fingers, full)].some(id => !flagged.has(id)));
+	return design ? { ...result, design } : result;
+}
+
+/** The design bent at its sharp tips of paper where `kept` keeps it: all at
+ * once, else tip by tip, each kept bend building on the last. */
+function bentWhere(original: HeartDesign, kept: (design: HeartDesign) => boolean): HeartDesign | undefined {
 	const all = bentAtTips(original);
-	if (all && kept(all)) return { ...result, design: all };
+	if (all && kept(all)) return all;
 	let design = original;
 	for (const tip of cutTipPoints(original)) {
 		const bent = bentAtTips(design, point => Math.hypot(point.x - tip.x, point.y - tip.y) < 1e-7);
 		if (bent && kept(bent)) design = bent;
 	}
-	return design === original ? result : { ...result, design };
+	return design === original ? undefined : design;
 }
 
 /** The design bent at its sharp tips of paper (those `only` keeps), where that
@@ -899,6 +905,15 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
  * hard-to-cut result is made. */
 function generateOnce(request: GeneratorRequest,
 	deferHard?: (finish: () => GeneratorResult | undefined) => void, variants = Infinity, retries = true): GeneratorResult {
+	const result = generateOnceMade(request, deferHard, variants, retries);
+	// A clean figure's shared cuts that meet the motif in a sharp tip of paper
+	// bend to cross it instead, however it was made (a retry's too: a candy
+	// cane's nested construction in the rays); the board circle's do as it
+	// keeps them.
+	return request.mode === 'figure' && request.style !== 'board' && !result.hardToCut ? improveSharedConnections(result) : result;
+}
+function generateOnceMade(request: GeneratorRequest,
+	deferHard?: (finish: () => GeneratorResult | undefined) => void, variants = Infinity, retries = true): GeneratorResult {
 	const curveFitter = createExactCurveFitter();
 	const counterLanes = request.mode === 'figure' && request.style === 'corners' &&
 		hasThreeCounterLanes(normalizeContours(request.contours ?? []));
@@ -920,11 +935,10 @@ function generateOnce(request: GeneratorRequest,
 	try {
 		const result = generateUsingRecipes(request,
 			(construction, recipe) => rejected.push({ construction, recipe }), curveFitter, variants, retries);
-		// A clean figure's shared cuts that meet the motif in a sharp tip of
-		// paper bend to cross it instead (the board circle's do as it keeps
-		// them). The checkerboard improves its shared connections as it
-		// compares sizes.
-		if (request.mode === 'figure') return request.style === 'board' || result.hardToCut ? result : improveSharedConnections(result);
+		// A figure bends its shared cuts at sharp tips once made (see
+		// `generateOnce`). The checkerboard improves its shared connections
+		// as it compares sizes.
+		if (request.mode === 'figure') return result;
 		return request.textFrame === 'checkered' ? result : improveTextPanelTips(request, result, curveFitter);
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;

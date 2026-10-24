@@ -1,5 +1,21 @@
 # Generator robustness results
 
+## Clean figures bent tip by tip, however they were made
+
+A clean figure's shared cuts bent at its sharp tips of paper all at once or
+not at all, and only on the recipes' own path: a heart a retry made (the
+candy cane's nested construction in the rays) kept every tip. Every clean
+figure is now bent once it is made, all at once or, where that brings cuts
+too near, tip by tip, each bend kept where the heart still cuts cleanly. Over
+47 featured motifs (the swan and elephant left out), 7 figure frames at 70
+and 100% and the board circle on 5, 7 and 9 strips at 72, 88 and 100%:
+22 of 658 frame hearts, 14 of 141 on five strips and 6 of 141 on seven and
+on nine change, none in status, all to fewer sharp tips (needles, sharp):
+the polar star in the rays at 100% [11,12] → [6,6], the pig in the rays at
+70% [1,6] → [0,1], the candy cane [7,8] → [5,5]; on five strips at 88% the
+star [9,14] → [1,2], the heart [8,14] → [2,2], the bear [7,10] → [1,1].
+Time is unchanged (frames 948 → 961 s, boards 652 → 635 s).
+
 ## Hard-to-cut figures bent at their sharp tips
 
 A clean figure's shared cuts bend where they meet the motif in a sharp tip of

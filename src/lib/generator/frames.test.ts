@@ -50,6 +50,7 @@ import copyPlus from '../../../static/generator/motifs/tb-copy-plus.json';
 import polarStar from '../../../static/generator/motifs/gi-polar-star.json';
 import dove from '../../../static/generator/motifs/pin-dove.json';
 import pinCat from '../../../static/generator/motifs/pin-cat.json';
+import candyCane from '../../../static/generator/motifs/mdi-candy-cane.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -625,6 +626,15 @@ describe('frames from real hearts', () => {
   const { design, hardToCut } = generate({ mode: 'figure', name: 'Heart', contours: heart.contours as Ring[], colors, style: 'board', board: 7, scale: .72 });
   expect(hardToCut).toBeUndefined();
   expect(cutTipCounts(design)).toEqual([0, 0]);
+ });
+ it('bends a figure\'s shared cuts tip by tip where bending them all at once would cut too near', () => {
+  // The candy cane in the rays, built by a retry (a nested construction):
+  // bent all at once its cuts came too near each other, so it kept seven
+  // needles and eight sharp tips.
+  const { design, hardToCut, recipe } = generate({ mode: 'figure', name: 'Candy cane', contours: candyCane.contours as Ring[], colors, style: 'rays', scale: .7, gap: 3 });
+  expect(hardToCut).toBeUndefined();
+  expect(recipe).toBe('nested');
+  expect(cutTipCounts(design)).toEqual([5, 5]);
  });
  it('keeps a panel\'s gate off a seam through the motif\'s point', () => {
   // On nine strips at 100% the seams cross beside the star's centre, one
