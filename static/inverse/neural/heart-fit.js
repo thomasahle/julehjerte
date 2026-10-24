@@ -69,10 +69,43 @@ function polish(p, grid, steps, rounds) {
   return {p, value: best};
 }
 
+/** The paper's largest piece with its holes filled, as 0/1: the heart, not
+ * the sweets around it, nor the dark motif inside it the network was unsure of. */
+function largestFilled(probability, n, threshold) {
+  const on = Uint8Array.from(probability, p => p >= threshold), label = new Int32Array(n * n).fill(-1), sizes = [];
+  const flood = (seed, value, id) => {
+    const stack = [seed]; label[seed] = id; let size = 0;
+    while (stack.length) {
+      const p = stack.pop(), x = p % n, y = (p - x) / n; size++;
+      for (const q of [x > 0 ? p - 1 : -1, x < n - 1 ? p + 1 : -1, y > 0 ? p - n : -1, y < n - 1 ? p + n : -1])
+        if (q >= 0 && label[q] < 0 && on[q] === value) { label[q] = id; stack.push(q); }
+    }
+    return size;
+  };
+  for (let i = 0; i < n * n; i++) if (on[i] && label[i] < 0) sizes.push(flood(i, 1, sizes.length));
+  if (!sizes.length) return new Float32Array(n * n);
+  const keep = sizes.indexOf(Math.max(...sizes)), out = Float32Array.from(label, l => l === keep ? 1 : 0);
+  // Background pieces enclosed by the heart are holes.
+  const seen = label.map(l => l === keep ? 1 : 0);
+  for (let i = 0; i < n * n; i++) {
+    if (seen[i]) continue;
+    const stack = [i], piece = []; seen[i] = 1; let edge = false;
+    while (stack.length) {
+      const p = stack.pop(), x = p % n, y = (p - x) / n; piece.push(p);
+      if (x === 0 || y === 0 || x === n - 1 || y === n - 1) edge = true;
+      for (const q of [x > 0 ? p - 1 : -1, x < n - 1 ? p + 1 : -1, y > 0 ? p - n : -1, y < n - 1 ? p + n : -1])
+        if (q >= 0 && !seen[q]) { seen[q] = 1; stack.push(q); }
+    }
+    if (!edge) for (const p of piece) out[p] = 1;
+  }
+  return out;
+}
+
 /** {quad, iou, lobes, visible} or null: the silhouette fitted to
  * `probability` (`resolution`² values over `window` = [x0, y0, x1, y1] in
  * image pixels), null when less than `minVisible` of it is in the window. */
 export function fitHeartSilhouette({probability, resolution, window}, {threshold = .5, minVisible = .6} = {}) {
+  probability = largestFilled(probability, resolution, threshold);
   const coarse = gridOf(probability, resolution, window, 80);
   // Where the paper is: its centroid, extent and area (in image pixels).
   let mass = 0, mx = 0, my = 0;
