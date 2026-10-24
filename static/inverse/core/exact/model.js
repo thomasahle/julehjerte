@@ -529,7 +529,7 @@ export class ExactModel {
   }
 
   async run(highs, native, {start, deadline, gap, onProgress, chords, mixed, stageLengths, audit, onSolution}) {
-    const this_ = this, m = this.m, report = {rounds: 0, cuts: this.cuts};
+    const this_ = this, m = this.m, report = {rounds: 0, cuts: this.cuts, columns: m.cost.length, rows: m.rows.length};
     let best = null;
     const setCosts = costs => costs.forEach((c, j) => native.changeColCost(j, c));
     // New lazily checked rules as rows with a slack at the penalty (elastic):

@@ -18,7 +18,8 @@ const [listFile, out, ...flags] = process.argv.slice(2);
 const flag = name => flags.find(f => f.startsWith(`--${name}=`))?.slice(name.length + 3);
 const exactMode = flag('exact') ?? 'raster', stageOnly = flag('stage'), saveMasks = flags.includes('--save-masks'), ids = flag('ids')?.split(','), [shard, shards] = (flag('shard') ?? '0/1').split('/').map(Number);
 const ROOT = process.env.E2E_ROOT ?? path.resolve(new URL('../..', import.meta.url).pathname);
-const server = await createServer({root: ROOT, configFile: `${ROOT}/vite.config.ts`, server: {middlewareMode: true, hmr: false}, appType: 'custom', logLevel: 'error'});
+// Each run its own dependency cache: two servers sharing one fail each other ('outdated optimized dep').
+const server = await createServer({root: ROOT, configFile: `${ROOT}/vite.config.ts`, server: {middlewareMode: true, hmr: false}, appType: 'custom', logLevel: 'error', cacheDir: path.resolve(out, '.vite')});
 const load = p => server.ssrLoadModule(p);
 const [{maskFromPrepared}, {detectSymmetry, transformsFor, symmetrize}, {cloneMask, maskMismatch}, mal, {DEFAULT_COLORS, DEFAULT_COLORS_HEX}, {convertValidatedCutGeometry}, {rasterizeDesign}] = await Promise.all([
   load('/src/lib/paint/importImage.ts'), load('/src/lib/paint/symmetry.ts'), load('/src/lib/paint/mask.ts'), load('/src/lib/inverse/engine.ts'),
