@@ -50,7 +50,8 @@ async function detectUnrefinedPhotoCrops(input,{roi=input.roi,onProgress=()=>{},
  // and whole-body checks before replacing that unresolved suggestion.
  if(roi)return production;
  try{
-  const body=await predictBody(input);check();if(!body)return production;
+  // The paper model's first load reports its bytes (stage 'paper-model').
+  const body=await predictBody(input,{onProgress});check();if(!body)return production;
   onBody(body);
   const selected=await selectWholeBodyPhotoCrop(input,{body,weighting:'balanced-confidence',productionCrop:()=>production,
    learnedCrop:()=>learnedCrop(input,{...body,paletteMode:'confidence-weighted',outerBoundarySampling:true}),

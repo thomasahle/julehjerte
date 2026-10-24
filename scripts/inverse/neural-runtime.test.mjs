@@ -50,3 +50,14 @@ test('cancelled inference never falls back to a stale crop',async()=>{
  await new Promise(resolve=>setImmediate(resolve));cancelled=true;complete(null);
  await assert.rejects(()=>pending,{name:'AbortError'});
 });
+test('a first load tells whoever waits its bytes, then that it is done',async()=>{
+ const {ort}=runtime(),events=[];
+ const predict=createBodyPredictor({loadRuntime:async()=>({ort}),loadModel:async onBytes=>{onBytes(1000000);onBytes(4615895);return new Uint8Array([1]);}});
+ await predict(input,{onProgress:event=>events.push(event)});
+ assert.ok(events.every(e=>e.stage==='paper-model'&&e.total===4615895));
+ assert.deepEqual(events.filter(e=>!e.done).map(e=>e.loaded),[0,1000000,4615895]);
+ assert.equal(events.at(-1).done,true);
+ // Loaded, a later prediction reports nothing; warm() starts nothing new.
+ const later=[];predict.warm();await predict(input,{onProgress:event=>later.push(event)});
+ assert.equal(later.length,0);
+});

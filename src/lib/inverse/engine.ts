@@ -542,8 +542,22 @@ export function prepareImage(
  * the engine expects everywhere — the top cleft first, then clockwise — so it
  * can go straight back as `ArtworkInput.quad`.
  */
-export function detectCorners(input: PixelsInput, roi?: number[]): Promise<DetectedCrops> {
-	return queue(() => engine().request<DetectedCrops>('detect-crops', { ...input, roi }, {}));
+export function detectCorners(
+	input: PixelsInput,
+	roi?: number[],
+	onStage: StageListener = () => {}
+): Promise<DetectedCrops> {
+	return queue(() => engine().request<DetectedCrops>('detect-crops', { ...input, roi }, {}, onStage));
+}
+
+/**
+ * Start fetching the paper model the crop search uses (about 16 MB the first
+ * time), while the visitor is still choosing a picture. The answer is
+ * immediate; a search that has to wait for the download reports its progress
+ * as `{stage: 'paper-model', loaded, total}`.
+ */
+export function warmPaperModel(): void {
+	void queue(() => engine().request<null>('warm-neural', undefined, {})).catch(() => {});
 }
 
 /**

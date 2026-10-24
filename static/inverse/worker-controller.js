@@ -42,6 +42,13 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
         if(!result)throw new Error('Generate or check templates first.');
         const archive=zipFiles(result.files);scope.postMessage({id,type:'archive',archive},[archive.buffer]);return;
       }
+      if(action==='warm-neural'){
+        // The paper model, fetched while the visitor still chooses a picture;
+        // the crop search waits for the same load and reports its bytes. Not a
+        // job: the answer is immediate, and nothing else is held up.
+        import('./neural/runtime.js').then(module=>module.predictPaperBody.warm(),()=>{});
+        scope.postMessage({id,type:'result',result:null});return;
+      }
       result=null;
       if(action==='detect-crops'||action==='refine-crop'){
         prepared=null;
