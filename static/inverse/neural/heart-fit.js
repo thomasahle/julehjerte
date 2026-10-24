@@ -109,7 +109,10 @@ export function fitHeartSilhouette(body, {threshold = null, minVisible = .6} = {
   // woven square itself, which a split at one half then leaves out: the fit
   // at a half and at a quarter, whichever covers its paper better.
   if (threshold === null) {
-    const fits = [.5, .25].map(t => fitAt(body, t, minVisible)).filter(Boolean);
+    // A quarter also takes in more of what is not paper (a dress, branches, a
+    // shadow), so that fit must lie wholly in the picture and cover it closely.
+    const half = fitAt(body, .5, minVisible), quarter = fitAt(body, .25, .95);
+    const fits = [half, quarter && quarter.iou >= .915 ? quarter : null].filter(Boolean);
     return fits.sort((a, b) => b.iou - a.iou)[0] ?? null;
   }
   return fitAt(body, threshold, minVisible);
