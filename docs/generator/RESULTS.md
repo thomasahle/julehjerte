@@ -1,5 +1,30 @@
 # Generator robustness results
 
+## The sunburst's crown narrows where its motif crowds the circle
+
+The sunburst's circle is four fifths of its frame, and the frame stops at the
+largest the outer strips have room for (80). Above about 83% a motif with the
+space around it asked for no longer fits that circle: the flower's petals met
+it at 84–88%, so it was hard to cut. A heart refused, hard to cut or kept
+smaller there is made again with the crown narrowed, the circle up to nine
+tenths of the frame, at its own size only (the size ladder again cost the
+elephant twice the time for a heart no larger); kept where that is larger, or
+as large and clean. Made the default the narrower crown was mixed (40 better,
+13 worse: the gift at 86–90% clean → hard), so every heart cut cleanly keeps
+its frame.
+
+The sunburst's 124 hearts refused or hard to cut among 539 (49 featured motifs
+at 70–100% in steps of 2): 28 changed, none to a worse status. Clean instead of
+hard (27): the flower at 84–88%, the mitten at 82/84/90%, the bell, hedgehog and
+wreath at 90%, the santa hat at 86%, the cow at 84/86%, the pig at 88/90%, the
+candy at 82–90%, moon and stars at 82–90%, the church at 82–90%, the candle at
+86%, the elephant at 70%; the elephant at 72% hard at its size instead of at
+70%. Paper at the 80 mm print (`paperFaults`): the flower, mitten and santa hat
+at 84–86%, moon and stars at 84/90% and the elephant now hold at 80 mm where
+they held at no width, others at a narrower one; two worse, the church at 84%
+and the mitten at 90% (hard with no weak place → clean with two, holding at
+100 and 130 mm). Those hearts take 10–50% longer; clean hearts are untouched.
+
 ## Islands joined where they come nearest
 
 A motif's separate pieces inside a hidden chain were entered and left at

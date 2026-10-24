@@ -26,10 +26,29 @@ export function fillSquare(request: GeneratorRequest): GeneratorRequest {
 export const CIRCLE_STYLES: readonly FigureStyle[] = ['rays', 'check', 'sunburst', 'layers'];
 /** The largest circle frame the outer strips have room for. */
 const LARGEST_CIRCLE = 80;
+/** Whether the sunburst's crown may narrow, its circle more than four fifths
+ * of the frame, where the frame has reached the largest the outer strips have
+ * room for: only for a heart refused, hard to cut or kept smaller with the
+ * crown as it is (see `generate`), so every heart cut cleanly keeps its
+ * frame. */
+let narrowCrown = false;
+export function withNarrowCrown<T>(build: () => T): T {
+	const before = narrowCrown;
+	narrowCrown = true;
+	try {
+		return build();
+	} finally {
+		narrowCrown = before;
+	}
+}
+/** Whether the sunburst's crown would narrow for the request (see
+ * `withNarrowCrown`). */
+export const crowdsCrown = (request: GeneratorRequest) => request.style === 'sunburst' && withNarrowCrown(() => (fitCircle(request).crown ?? .8) > .8);
 /** A circle frame given space around the motif draws its circle that far
  * outside the motif's outline. The motif keeps its size (frame size × scale);
  * the circle's diameter follows, within the frame sizes the outer strips have
- * room for. The sunburst's circle is four fifths of its frame. The double
+ * room for. The sunburst's circle is four fifths of its frame, up to nine tenths
+ * where its crown narrows (see `withNarrowCrown`). The double
  * border's medallion holds the whole motif: one that would reach past its
  * largest circle at 100% grows over the sizes above the default to the
  * largest it holds, the cutting clearance inside it, rather than stopping
@@ -44,6 +63,10 @@ export function fitCircle(request: GeneratorRequest): GeneratorRequest {
 	const largest = (LARGEST_CIRCLE / 2 - BASE_CLEARANCE) / reach, base = frame * .7;
 	if (request.style === 'layers' && setting > .7 && largest < frame && largest > base)
 		size = base + (setting - .7) / .3 * (largest - base);
-	const frameSize = Math.max(50, Math.min(LARGEST_CIRCLE, 2 * (size * reach + request.gap) / inner));
-	return { ...request, frameSize, scale: size / (frameSize * inner) };
+	const need = 2 * (size * reach + request.gap), frameSize = Math.max(50, Math.min(LARGEST_CIRCLE, need / inner));
+	// The sunburst's crown may narrow, its circle up to nine tenths of the
+	// frame, where the frame has reached the largest the outer strips have
+	// room for (see `withNarrowCrown`).
+	const crown = request.style === 'sunburst' && narrowCrown ? Math.min(.9, Math.max(.8, need / frameSize)) : undefined;
+	return { ...request, frameSize, scale: size / (frameSize * (crown ?? inner)), ...crown !== undefined && crown > .8 ? { crown } : {} };
 }

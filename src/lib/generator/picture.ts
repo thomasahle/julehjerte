@@ -154,13 +154,14 @@ function woven(text: string, font: Font, air: boolean | number, letterScale = 1)
 	return { rings };
 }
 
-/** The sunburst: the rays around the motif at four fifths of the frame, and
+/** The sunburst: the rays around the motif at four fifths of the frame (more
+ * where its crown narrows, see `fitCircle`), and
  * the four cuts of its border, each from one edge of the paper around a
  * quarter of the outer circle to the other, turning the strip beyond it
  * over (see `sunburstBorder`). */
 function sunburstPicture(request: GeneratorRequest): Picture | undefined {
 	const fitted = fitCircle(request), size = fitted.frameSize ?? 70;
-	const rays = raysPicture(request, 'circle', size * .8, fitted.scale ?? .7, 'rays');
+	const rays = raysPicture(request, 'circle', size * (fitted.crown ?? .8), fitted.scale ?? .7, 'rays');
 	if (!rays) return;
 	const circle = frameRing('circle', size), inset = Math.max(4, (100 - size) * .25);
 	const [se, sw, nw, ne] = [1, 3, 5, 7].map(i => ray(circle, [50, 50], i * Math.PI / 4));

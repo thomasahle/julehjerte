@@ -7,7 +7,7 @@ import { generateTextGrid, roomOf, squareCellScale } from './textGrid';
 import { NO_WHOLE_STRIPS, STRIPS, crowdedHiddenCutsSetAside, slidePlace, stripFigures, withCrowdedHiddenCuts } from './stripFigure';
 import { BOARD_STRIPS, MOTIF, boardPlacement, boardRadius, boardScale, boardSetting, boardSteps, enclosedAlong, motifChoices, squareChoices, type BoardStyle } from './boardMotif';
 import { TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
-import { CIRCLE_STYLES, fillSquare, fitCircle } from './frameFit';
+import { CIRCLE_STYLES, fillSquare, fitCircle, withNarrowCrown, crowdsCrown } from './frameFit';
 export { fillSquare, fitCircle } from './frameFit';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
 import { generateCheckeredGrid, checkeredGridCache, checkeredLayouts } from './checkeredGrid';
@@ -93,6 +93,9 @@ export type GeneratorRequest = {
 	frame?: Frame;
 	frameSize?: number;
 	scale?: number;
+	/** The sunburst's circle as a share of its frame, four fifths unless its
+	 * crown narrows (see `fitCircle`). */
+	crown?: number;
 	style?: FigureStyle;
 	textFrame?: TextFrame;
 	/** How far the legs of a frame without a centre panel stop short of the
@@ -608,6 +611,20 @@ function generateTried(request: GeneratorRequest): GeneratorResult {
 			quickAgain = false;
 		}
 	}
+	// A sunburst refused, hard to cut or kept smaller where its motif crowds
+	// the circle is made again with its crown narrowed, the circle up to nine
+	// tenths of the frame: kept where that is larger, or as large and clean
+	// (a flower at 88% whose petals met the circle).
+	const asked = request.scale ?? .7;
+	if ((!result || result.hardToCut || size(result) < asked - 1e-9) && request.mode === 'figure' && crowdsCrown(request)) try {
+		atSizeOnly = true;
+		const other = withNarrowCrown(() => generateAsAsked(request));
+		if (!result || size(other) > size(result) + 1e-9 || result.hardToCut && !other.hardToCut && size(other) >= size(result) - 1e-9) result = other;
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	} finally {
+		atSizeOnly = false;
+	}
 	if (result) return result;
 	throw failure;
 }
@@ -633,6 +650,9 @@ function tipAtIslandPort(result: GeneratorResult, from: number): boolean {
 		return ports.some(q => distance(p, q) < .5);
 	});
 }
+/** Set while a sunburst is made again with its crown narrowed (see
+ * `generate`): at its own size only, since a smaller one is what it is for. */
+let atSizeOnly = false;
 /** Set while a heart is made again (see `SECOND_TRIES`): its first way
  * only, at its own size, without retries, last resorts or a smaller size, so
  * that a heart it cannot improve costs one construction more (a wreath hard
@@ -669,7 +689,7 @@ function generateAtSizeOrSmaller(request: GeneratorRequest): GeneratorResult {
 		return generateAtSizeOrLastResort(request);
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) || scale <= .7
-			|| request.mode === 'figure' && request.style === 'board' || quickAgain) throw error;
+			|| request.mode === 'figure' && request.style === 'board' || quickAgain || atSizeOnly) throw error;
 		// Above the default size a frame takes a motif larger than its
 		// constructions were first made for. Where nothing at all can be built
 		// at that size, the motif keeps the largest size below that can be, of
@@ -1087,8 +1107,8 @@ function generateOnceMade(request: GeneratorRequest,
 			try {
 				const size = request.frameSize ?? 70;
 				const construction = generateFourPortFigure(normalizeContours(request.contours ?? []),
-					'circle', size * .8, request.scale ?? .7, 'rays', fourPortMotif, 2);
-				retry = sunburstBorder(construction, size);
+					'circle', size * (request.crown ?? .8), request.scale ?? .7, 'rays', fourPortMotif, 2);
+				retry = sunburstBorder(construction, size, request.crown);
 				return finishConstruction(request, retry, 'nested', undefined, curveFitter);
 			} catch (retryError) {
 				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
@@ -1395,8 +1415,8 @@ function retrySunburstComponents(request: GeneratorRequest, curveFitter: ReturnT
 	const size = request.frameSize ?? 70;
 	let best: GeneratorResult | undefined;
 	for (const columns of [4, 3, 2] as const) for (const route of [fourPortMotif, balancedFourPortMotif]) try {
-		const inner = generateComponentFigure(rings, 'circle', size * .8, request.scale ?? .7,
-			'check', route, columns, 2, true, false), outer = sunburstBorder(inner, size);
+		const inner = generateComponentFigure(rings, 'circle', size * (request.crown ?? .8), request.scale ?? .7,
+			'check', route, columns, 2, true, false), outer = sunburstBorder(inner, size, request.crown);
 		const margin = gridClearance(outer.geometry.A_overlap_paths.length + 1,
 			outer.geometry.B_overlap_paths.length + 1);
 		const leads = inner.edges.filter(e => e.kind === 'frame' &&
@@ -1431,9 +1451,9 @@ function retrySunburstPanels(request: GeneratorRequest, curveFitter: ReturnType<
 		};
 		// 'check' selects axial frame projections; sunburstBorder supplies
 		// the same outer circular rays, without changing either circle.
-		const inner = generatePanelFigure(rings, 'circle', size * .8, request.scale ?? .7,
+		const inner = generatePanelFigure(rings, 'circle', size * (request.crown ?? .8), request.scale ?? .7,
 			columns, 'check', rows, false, route, 'components');
-		const result = improveSharedConnections(finishConstruction(request, sunburstBorder(inner, size),
+		const result = improveSharedConnections(finishConstruction(request, sunburstBorder(inner, size, request.crown),
 			'nested', undefined, curveFitter)), design = result.design;
 		const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
 			gridClearanceScale(design.gridSize.x, design.gridSize.y));
@@ -1646,9 +1666,9 @@ function retryWideComponentContacts(request: GeneratorRequest, curveFitter: Retu
 			: request.style === 'sunburst' ? 'rays' : (request.style ?? 'rays');
 	let best: GeneratorResult | undefined;
 	for (const columns of [4, 3, 2] as const) for (const route of [fourPortMotif, balancedFourPortMotif]) try {
-		const inner = generateComponentFigure(rings, frame, sunburst ? size * .8 : size,
+		const inner = generateComponentFigure(rings, frame, sunburst ? size * (request.crown ?? .8) : size,
 			scale, style, route, columns, sunburst ? 2 : 0, true);
-		const construction = sunburst ? sunburstBorder(inner, size) : inner;
+		const construction = sunburst ? sunburstBorder(inner, size, request.crown) : inner;
 		const result = improveSharedConnections(finishConstruction(request, construction,
 			open ? 'silhouette' : 'nested', undefined, curveFitter));
 		const margin = intersectionMarginPx(inferOverlapRect(result.design.fingers, result.design.gridSize),
@@ -1685,8 +1705,8 @@ function retryFigureIslandPorts(request: GeneratorRequest, curveFitter: ReturnTy
 		const inner = style === 'fitted' || style === 'wedges' || style === 'silhouette'
 			? generateFittedFigure(rings, size, scale, route, undefined, 0, openFrame(request), balanced)
 			: generateFourPortFigure(rings, sunburst ? 'circle' : request.frame,
-				sunburst ? size * .8 : size, scale, sunburst ? 'rays' : style, route, sunburst ? 2 : 0);
-		const construction = sunburst ? sunburstBorder(inner, size) : inner;
+				sunburst ? size * (request.crown ?? .8) : size, scale, sunburst ? 'rays' : style, route, sunburst ? 2 : 0);
+		const construction = sunburst ? sunburstBorder(inner, size, request.crown) : inner;
 		const result = improveSharedConnections(finishConstruction(request, construction,
 			style === 'fitted' || style === 'wedges' || style === 'silhouette' ? 'silhouette' : 'nested', undefined, curveFitter));
 		const rect = inferOverlapRect(result.design.fingers, result.design.gridSize),
@@ -1773,9 +1793,9 @@ function retryComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<
 	// A completed construction that fails its checks stays a hard-to-cut candidate.
 	const recipe = open ? 'silhouette' : 'nested';
 	for (const aligned of open ? [true] : [false, true]) try {
-		const inner = generateComponentLanes(rings, frame, sunburst ? size * .8 : size,
+		const inner = generateComponentLanes(rings, frame, sunburst ? size * (request.crown ?? .8) : size,
 			request.scale, style, aligned, sunburst ? 2 : 0);
-		const construction = sunburst ? sunburstBorder(inner, size) : inner;
+		const construction = sunburst ? sunburstBorder(inner, size, request.crown) : inner;
 		rejected.push({ construction, recipe });
 		const result = improveSharedConnections(finishConstruction(request, construction, recipe, undefined, curveFitter));
 		const rect = inferOverlapRect(result.design.fingers, result.design.gridSize),
@@ -1858,9 +1878,9 @@ function retryPanelLayouts(request: GeneratorRequest, curveFitter?: ReturnType<t
 				style = request.style === 'sunburst' ? 'rays' : (request.style ?? 'rays');
 			recipe = rings.length === 1 ? 'silhouette' : 'nested';
 			recipes.push(() => {
-				const result = generatePanelFigure(rings, shape, sunburst ? size * .8 : size,
+				const result = generatePanelFigure(rings, shape, sunburst ? size * (request.crown ?? .8) : size,
 					scale, 1, style, 2, true, fourPortMotif, 'ray');
-				return sunburst ? sunburstBorder(result, size) : result;
+				return sunburst ? sunburstBorder(result, size, request.crown) : result;
 			});
 		}
 	}
@@ -2498,7 +2518,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 	const outerSize = request.frameSize ?? 70;
 	const rings = request.contours ?? [],
 		shape = sunburst ? 'circle' : (request.frame ?? 'circle'),
-		size = sunburst ? outerSize * 0.8 : outerSize,
+		size = sunburst ? outerSize * (request.crown ?? .8) : outerSize,
 		scale = request.scale ?? 0.7,
 		style = sunburst
 			? 'rays'
@@ -2544,7 +2564,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const construction = construct(route);
 			constructed = true;
 			return finish(
-				sunburst ? sunburstBorder(construction, outerSize) : construction,
+				sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction,
 				rings.length === 1 ? 'silhouette' : 'nested'
 			);
 		} catch (e) {
@@ -2557,7 +2577,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 	// within its cells before refusing the figure, keeping its exact outline.
 	try {
 		const construction = generatePanelFigure(rings, shape, size, scale, 3, style, 1, false, fourPortMotif, 'support', true);
-		return finish(sunburst ? sunburstBorder(construction, outerSize) : construction, rings.length === 1 ? 'silhouette' : 'nested');
+		return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested');
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 		errors.push(error);
@@ -2565,7 +2585,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 	if (hasCounterContact(rings)) for (const construct of balancedRecipes) {
 		try {
 			const construction = construct(touchingFourPortMotif);
-			return finish(sunburst ? sunburstBorder(construction, outerSize) : construction, 'nested');
+			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, 'nested');
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			errors.push(error);
@@ -2576,7 +2596,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 	for (const [columns, rows, spread] of [[2, 2, false], [5, 2, true]] as const) {
 		try {
 			const construction = generatePanelFigure(rings, shape, size, scale, columns, style, rows, spread, fourPortMotif, 'filled');
-			return finish(sunburst ? sunburstBorder(construction, outerSize) : construction, rings.length === 1 ? 'silhouette' : 'nested');
+			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested');
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			errors.push(error);
@@ -2587,7 +2607,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 	for (const construct of balancedRecipes) {
 		try {
 			const construction = construct(bentFourPortMotif);
-			return finish(sunburst ? sunburstBorder(construction, outerSize) : construction, rings.length === 1 ? 'silhouette' : 'nested');
+			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested');
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			errors.push(error);
@@ -2600,7 +2620,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		try {
 			const construction = generateComponentFigure(rings, shape, size, scale, style,
 				fourPortMotif, columns, sunburst && columns > 2 ? 2 : 0);
-			return finish(sunburst ? sunburstBorder(construction, outerSize) : construction, 'nested');
+			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, 'nested');
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			errors.push(error);

@@ -1066,7 +1066,8 @@ from there, after the close-fitting retries. Every figure frame has the same two
 **space around the figure** (Luft om figuren, 0–15% of the square, 3% by default). The former
 frame-size slider is gone: in most frames it only scaled the motif a second time. A circle frame
 draws its circle that far outside the motif's outline (the sunburst's circle is four fifths of its
-frame), within the 50–80 frame sizes its outer strips have room for, and the motif keeps its size.
+frame, up to nine tenths for a motif that would otherwise be hard to cut at its largest frame),
+within the 50–80 frame sizes its outer strips have room for, and the motif keeps its size.
 The wedges stop that far short of the motif; the silhouette's and the checked tips' corner checks
 move that far toward the paper's corners (the gallery's simple five-point star is the silhouette at
 about 65% size and 9% space); the close-fitting frame keeps its lines on the motif and moves its

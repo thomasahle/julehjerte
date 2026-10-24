@@ -51,6 +51,7 @@ import polarStar from '../../../static/generator/motifs/gi-polar-star.json';
 import dove from '../../../static/generator/motifs/pin-dove.json';
 import pinCat from '../../../static/generator/motifs/pin-cat.json';
 import candyCane from '../../../static/generator/motifs/mdi-candy-cane.json';
+import candy from '../../../static/generator/motifs/mc-candy.json';
 import faFish from '../../../static/generator/motifs/fa-fish.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
@@ -658,6 +659,14 @@ describe('frames from real hearts', () => {
   const { design, hardToCut } = generate({ mode: 'figure', name: 'Candy cane', contours: candyCane.contours as Ring[], colors, style: 'corners', frame: 'circle', frameSize: 70, scale: .9, gap: 3 });
   expect(hardToCut).toBeUndefined();
   expect(cutTipCounts(design)).toEqual([0, 3]);
+ });
+ it('narrows a sunburst\'s crown where its motif crowds the largest circle', () => {
+  // At 82% the frame has reached the largest the outer strips have room for,
+  // and the circle at four fifths of it met the candy: hard to cut. Its
+  // crown narrowed, the circle a little more of the frame, it cuts cleanly.
+  const { hardToCut, scale } = generate({ mode: 'figure', name: 'Candy', contours: candy.contours as Ring[], colors, style: 'sunburst', frame: 'circle', frameSize: 70, scale: .82, gap: 3 });
+  expect(hardToCut).toBeUndefined();
+  expect(scale).toBeUndefined();
  });
  it('keeps a panel\'s gate off a seam through the motif\'s point', () => {
   // On nine strips at 100% the seams cross beside the star's centre, one

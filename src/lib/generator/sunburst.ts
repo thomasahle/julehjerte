@@ -13,7 +13,8 @@ import {
 } from './geometry';
 export function sunburstBorder<T extends { edges: Edge[]; artwork: Ring[] }>(
 	inner: T,
-	size: number
+	size: number,
+	crown = .8
 ) {
 	const circle = frameRing('circle', size),
 		edges = inner.edges.slice();
@@ -35,6 +36,6 @@ export function sunburstBorder<T extends { edges: Edge[]; artwork: Ring[] }>(
 		...inner,
 		edges,
 		geometry: compile(edges),
-		domain: [frameRing('circle', size * 0.8)]
+		domain: [frameRing('circle', size * crown)]
 	};
 }
