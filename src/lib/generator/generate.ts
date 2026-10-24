@@ -14,7 +14,7 @@ import { generateCheckeredGrid, checkeredGridCache, checkeredLayouts } from './c
 import { generateMixedCheckeredGrid, mixedCheckeredGridCache } from './mixedCheckeredGrid';
 import { cutTipCounts, cutTipPoints, fewerCutTips } from './cutQuality';
 import { trickyLetters } from './trickyLetters';
-import { normalizeContours } from './contours';
+import { normalizeContours, withoutSpurs } from './contours';
 import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
 import { generatePanelFigure, backgroundJunctions, squareJunctions } from './panels';
 import { generateComponentFigure } from './components';
@@ -527,7 +527,42 @@ function withLayout(request: GeneratorRequest): GeneratorRequest {
 	return { ...request, layout: layouts.get(key) };
 }
 
+/** Set while a board's choice is made from a motif's catalogue outline,
+ * spurs and all (see `generate`). */
+let keepSpurs = false;
+function catalogueLayout(request: GeneratorRequest): BoardLayout | undefined {
+	const key = `${request.style} ${request.board ?? ''} ${JSON.stringify(request.contours ?? [])}`;
+	if (!layouts.has(key)) {
+		let layout: BoardLayout | undefined;
+		keepSpurs = true;
+		try {
+			layout = generate({ ...request, scale: .7 }).layout;
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		} finally {
+			keepSpurs = false;
+		}
+		if (layouts.size > 64) layouts.clear();
+		layouts.set(key, layout);
+	}
+	return layouts.get(key);
+}
+
 export function generate(request: GeneratorRequest): GeneratorResult {
+	// A motif's hairline spurs go (see `withoutSpurs`); a text's letters keep
+	// their glyphs. On a board the motif keeps the choice its catalogue
+	// outline makes at the default size: without them an earlier choice can
+	// build there that is hard to cut larger (three horses for two).
+	if (request.mode === 'figure' && !request.font && request.contours && !keepSpurs) {
+		const contours = withoutSpurs(request.contours);
+		if (contours !== request.contours) {
+			if (BOARD_FRAMES.includes(request.style ?? '') && !request.layout) {
+				const layout = catalogueLayout(request);
+				if (layout) request = { ...request, layout };
+			}
+			request = { ...request, contours };
+		}
+	}
 	// Made with an outline index a vertex behind its point (see `withExactArcs`),
 	// a heart refused, hard to cut or with a needle is made again its first
 	// way with exact indices, and that one kept where it cuts cleanly at no

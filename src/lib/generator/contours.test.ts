@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { normalizeContours, contoursWithinBoundary } from './contours';
+import { normalizeContours, contoursWithinBoundary, withoutSpurs } from './contours';
 import { inside, forest, type Ring } from './geometry';
 import rabbit from '../../../static/generator/motifs/ph-rabbit.json';
 import sun from '../../../static/generator/motifs/ph-sun.json';
@@ -73,4 +73,17 @@ describe('rounded contour normalization', () => {
 				expect(filled(result, px, py)).toBe(filled(original, px, py));
 			}
 		});
+});
+
+describe('hairline spurs', () => {
+	it('drops an outline that overshoots a corner and comes back along itself', () => {
+		// The bottom runs 0.4 past its corner and back: nothing to see, but a
+		// needle in every cut along it.
+		const ring: Ring = [[0, 0], [10.4, 0], [10, .01], [10, 10], [0, 10]];
+		expect(withoutSpurs([ring])).toEqual([[[0, 0], [10, .01], [10, 10], [0, 10]]]);
+	});
+	it('keeps a thin point of the motif, whose needle trimming only moves', () => {
+		const ring: Ring = [[0, 0], [10, -.5], [10, .5], [.2, .0067]], rings = [ring];
+		expect(withoutSpurs(rings)).toBe(rings);
+	});
 });

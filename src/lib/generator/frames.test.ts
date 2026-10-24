@@ -106,6 +106,11 @@ describe('complete motif frames', () => {
   expect(hardToCut).toBeUndefined();
   expect(cutTipCounts(design)).toEqual([0, 0]);
  });
+ it('cuts the dove without the needles of its outline\'s hairline zigzag', () => {
+  // Its outline ran 0.7 back and forth along itself under the wing.
+  const { design } = generate({ mode: 'figure', name: 'Dove', contours: dove.contours as Ring[], colors, style: 'rays', frame: 'circle', frameSize: 70, scale: .7, gap: 3 });
+  expect(cutTipCounts(design)).toEqual([0, 0]);
+ });
  slow('bends a hard-to-cut figure at sharp tips where its narrowest paper keeps', () => {
   // The cat's tail meets its body in a notch the double border leaves on one
   // sheet (hard to cut); its connections' sharp tips bend as a clean heart's.

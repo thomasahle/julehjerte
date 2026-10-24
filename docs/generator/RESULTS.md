@@ -1,5 +1,29 @@
 # Generator robustness results
 
+## Hairline spurs in motif outlines
+
+Many of the needles left in figure hearts were not points of the motif but
+catalogue overshoots: an outline running a fraction of a unit past a corner and
+back along itself, or zigzagging back and forth (the horse's back, under the
+dove's wing, a star of the moon and stars). They draw nothing anyone sees, but
+every cut along them turns back, a needle of paper. A figure's outline now
+loses such a vertex, or it and a neighbour, where they lie within a 400th of
+the motif of the line that replaces them and that leaves fewer needles nearby;
+the motif's own thin points (the butterfly's antennae, a crescent's tip) only
+move their needle when trimmed, and keep their vertices. Text keeps its
+glyphs. 43 of the 2668 library motifs change. On a board (equal squares, small
+motifs) the motif keeps the choice its catalogue outline makes at the default
+size: without the spur the horse's three-horse layout builds there, hard to
+cut larger.
+
+The horse, dove and moon and stars in every frame at 70/85/100% (108 hearts):
+every one changes and none is worse (the horse [3,3] → [1,1] everywhere, the
+dove [2,2] → [0,0], in the checked tips at 100% now at full size instead of
+88%, the dove's small motifs [6,8] → [0,2], the horse's [4,4] → [0,0]). The
+other 40 library motifs with spurs in Stråler, Tern, silhouette, double border
+and checked tips at 70% and 100% (400 hearts): 382 better, 18 alike, none
+worse, in 36% less time.
+
 ## A bridge a hair from an outline's vertex
 
 Placing a bridge along an outline arc, the figure construction counted its

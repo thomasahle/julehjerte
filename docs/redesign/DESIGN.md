@@ -1098,6 +1098,10 @@ from a vertex took its index from the arc without that vertex, a vertex behind i
 outline cut ran back and out again: three needles); a heart refused, hard to cut or with a needle
 after such a slip is made again its first way with exact indices, and kept where that one cuts
 cleanly at no smaller size with fewer sharp tips (a bauble at 100% in the rays, hard → clean).
+A motif's outline first loses its hairline spurs, a catalogue path overshooting a corner and coming
+back along itself: a vertex, or it and a neighbour, within a 400th of the motif of the line replacing
+them, where that leaves fewer needles nearby (a thin point of the motif only moves its needle when
+trimmed, and stays). On a board the motif keeps the choice its catalogue outline makes.
 On them a motif keeps, at every size, the choice its default size made on its strips, since
 another would make it jump in size: which squares hold the small copies, or for equal squares the
 motif up to a tenth larger in its square, or with the spacious frame's room around it. Each choice
