@@ -1,5 +1,15 @@
 # Generator robustness results
 
+## A narrowed crown's heart only where its paper holds as well
+
+The sunburst's narrower crown (47c425cd) replaced a hard heart with a clean
+one of the same size whatever its paper: the church at 84% and the mitten at
+90% were hard to cut with no weak place, and became clean with two each
+(holding only at 100 and 130 mm). As everywhere else, paper comes first: the
+narrowed crown's heart is kept there only where its paper tears no more, so
+both keep their old hearts. A larger heart is still kept as before. The
+sunburst's paper retry now narrows its crown too, as the recipes it retries do.
+
 ## The figure in the checks never shrinks for a larger size
 
 Where no sheets keep every strip whole at the figure's place in the checks,

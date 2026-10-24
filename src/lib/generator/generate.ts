@@ -813,12 +813,14 @@ function generateTried(request: GeneratorRequest): GeneratorResult {
 	// A sunburst refused, hard to cut or kept smaller where its motif crowds
 	// the circle is made again with its crown narrowed, the circle up to nine
 	// tenths of the frame: kept where that is larger, or as large and clean
-	// (a flower at 88% whose petals met the circle).
+	// (a flower at 88% whose petals met the circle), its paper holding as well
+	// printed (a church at 84% hard to cut, not clean with two weak places).
 	const asked = request.scale ?? .7;
 	if ((!result || result.hardToCut || size(result) < asked - 1e-9) && request.mode === 'figure' && crowdsCrown(request)) try {
 		atSizeOnly = true;
 		const other = withNarrowCrown(() => generateAsAsked(request));
-		if (!result || size(other) > size(result) + 1e-9 || result.hardToCut && !other.hardToCut && size(other) >= size(result) - 1e-9) result = other;
+		if (!result || size(other) > size(result) + 1e-9 || result.hardToCut && !other.hardToCut && size(other) >= size(result) - 1e-9 &&
+			paperTears(exported(other).design) <= paperTears(exported(result).design)) result = other;
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 	} finally {
@@ -2997,7 +2999,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		const again = bestOfFirst((function* () {
 			for (const construct of recipes) try {
 				const construction = construct(paperRoute);
-				yield finish(sunburst ? sunburstBorder(construction, outerSize) : construction, rings.length === 1 ? 'silhouette' : 'nested', false);
+				yield finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested', false);
 			} catch (e) {
 				if (!(e instanceof ConstructionError) && !(e instanceof CutGeometryError)) throw e;
 			}
