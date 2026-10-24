@@ -9,25 +9,38 @@ import {predictPaperBody} from './runtime.js';
 /** The crops, each moved onto the heart's outline in the photograph where
  * that fits closely (refineHeartOutline): a found square's corners are
  * otherwise a percent or two of a side off, which costs a fine pattern several
- * percent of its cells. */
+ * percent of its cells. The silhouette fit is a second start. */
 export async function detectPhotoCrops(input,options={}){
- const found=await detectUnrefinedPhotoCrops(input,options),candidates=found.candidates.map(candidate=>sharpenCrop(input,candidate,options.outline));
+ let body=null;
+ const found=await detectUnrefinedPhotoCrops(input,{...options,onBody:value=>{body=value;}});
+ let silhouette=null;
+ try{silhouette=body?fitHeartSilhouette(body):null;}catch{silhouette=null;}
+ const starts=silhouette&&silhouette.iou>=.9?[silhouette.quad]:[];
+ const candidates=found.candidates.map(candidate=>sharpenCrop(input,candidate,{starts,...options.outline}));
  return candidates.every((candidate,k)=>candidate===found.candidates[k])?found:{...found,candidates};
 }
 
-/** `candidate` with its quad on the outline, when the fit is close and near. */
-export function sharpenCrop(input,candidate,{minLower=.5,minUpper=.2,maxRms=1,maxMove=.06,refine=refineHeartOutline}={}){
- let fit=null;
- try{fit=refine(input,candidate.quad);}catch{fit=null;}
- // Each of the square's four edges pinned: the lower ones along most of the
- // outline, the upper ones wherever cells of the other paper meet the lobe,
- // or else by the lobes' half circles.
- const pinned=fit?.edges&&fit.edges[0]>=minLower&&fit.edges[1]>=minLower&&(fit.edges[4]>=.7||fit.edges[2]>=minUpper&&fit.edges[3]>=minUpper);
- if(!fit||!(pinned&&fit.rms<=maxRms&&fit.moved<=maxMove))return candidate;
+/** `candidate` with its quad on the outline, when the fit is close and near.
+ * A fit whose lobes' half circles hold (a drawn heart) wins, from the
+ * candidate or from one of `starts`: only they tell the square's upper edge
+ * from a band of the lobe's own colour along it, which a crop can take for
+ * the edge. Otherwise the fit from the candidate must pin all four edges. */
+export function sharpenCrop(input,candidate,{starts=[],minLower=.5,minUpper=.2,maxRms=1,maxMove=.06,maxArcMove=.12,refine=refineHeartOutline}={}){
+ const q=candidate.quad,side=Math.hypot(q[1][0]-q[0][0],q[1][1]-q[0][1]);
+ const fits=[q,...starts].map((start,k)=>{
+  let fit=null;
+  try{fit=refine(input,start);}catch{fit=null;}
+  if(!fit?.edges)return null;
+  return{...fit,own:k===0,moved:Math.max(...fit.quad.map((p,i)=>Math.hypot(p[0]-q[i][0],p[1]-q[i][1])))/side};
+ }).filter(Boolean);
+ const lower=f=>f.edges[0]>=minLower&&f.edges[1]>=minLower&&f.rms<=maxRms;
+ const round=fits.filter(f=>lower(f)&&f.edges[4]>=.7&&f.moved<=maxArcMove).sort((a,b)=>a.rms-b.rms)[0];
+ const fit=round??fits.find(f=>f.own&&lower(f)&&f.edges[2]>=minUpper&&f.edges[3]>=minUpper&&f.moved<=maxMove);
+ if(!fit)return candidate;
  return{...candidate,quad:fit.quad,provenance:{...candidate.provenance,outlineRefined:{rms:fit.rms,edges:fit.edges,moved:fit.moved}}};
 }
 
-async function detectUnrefinedPhotoCrops(input,{roi=input.roi,onProgress=()=>{},cancelled=()=>false,
+async function detectUnrefinedPhotoCrops(input,{roi=input.roi,onProgress=()=>{},cancelled=()=>false,onBody=()=>{},
  productionCrop=detectHeartCrops,predictBody=predictPaperBody,learnedCrop=detectForegroundCrop,outlineCrop=detectBodyCrop,silhouetteCrop=detectSilhouetteCrop}={}){
  const production=await productionCrop(input,{roi,onProgress});
  const check=()=>{if(cancelled())throw new DOMException('Cancelled','AbortError');};check();
@@ -38,6 +51,7 @@ async function detectUnrefinedPhotoCrops(input,{roi=input.roi,onProgress=()=>{},
  if(roi)return production;
  try{
   const body=await predictBody(input);check();if(!body)return production;
+  onBody(body);
   const selected=await selectWholeBodyPhotoCrop(input,{body,weighting:'balanced-confidence',productionCrop:()=>production,
    learnedCrop:()=>learnedCrop(input,{...body,paletteMode:'confidence-weighted',outerBoundarySampling:true}),
    outlineCrop:()=>{check();return outlineCrop(input,{...body,outerBoundarySampling:true});}});
