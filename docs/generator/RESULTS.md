@@ -1,5 +1,17 @@
 # Generator robustness results
 
+## Open frames: the same gates, a paper's width off where they tear
+
+The open frames (Stor silhuet, Tæt om figuren, Kiler) now get the same second
+pass as rays, checks and the double border. Where the chosen heart still tears
+printed 80 mm wide, it is made again through the same gates with the motif's
+connections a paper's width off, and that is kept only where its paper holds
+better; the gates are visible, so only the hidden cuts move. Over the 49
+featured motifs at 50/70/85%, hearts that tear fall from 48 to 41 (silhouette),
+45 to 37 (fitted) and 50 to 38 (wedges); none gets worse, needle-sharp tips
+stay as they were, at most 2% more time. The cat at the default size now holds
+in all three.
+
 ## The double border: a paper's width off where it tears
 
 The double border (Cirkel med dobbelt bort) now gets the same second pass as

@@ -2797,19 +2797,37 @@ function generateUsingRecipes(request: GeneratorRequest,
 	}
 	const open = openFrame(request);
 	if (open) {
+		// How each finished heart was made, to make it again a paper's width off.
+		const made = new Map<GeneratorResult, (route: typeof fourPortMotif) => Construction>();
 		const single = (symmetric: GateTies, angles?: [number, number, number, number], axisGap = 0, onMiddle = false) => {
+			const construct = (route: typeof fourPortMotif) => generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, route,
+				angles, 0, open, symmetric, axisGap, onMiddle);
 			for (const route of [fourPortMotif, originalFourPortMotif]) {
 				let constructed = false;
 				try {
-					const result = generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, route,
-						angles, 0, open, symmetric, axisGap, onMiddle);
+					const construction = construct(route);
 					constructed = true;
-					return finish(result, 'silhouette');
+					const result = finish(construction, 'silhouette');
+					made.set(result, construct);
+					return result;
 				}
 				catch (error) {
 					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 					if (!constructed && !(error instanceof CompilationError)) break;
 				}
+			}
+		};
+		// Where its paper tears printed, the same gates with the motif's
+		// connections a paper's width off; kept only where they hold better.
+		const held = (result: GeneratorResult) => {
+			const construct = made.get(result);
+			if (!construct || !paperTears(exported(result).design)) return result;
+			try {
+				const again = finish(construct(paperRoute), 'silhouette', false);
+				return cutsBetter(again, result, true) ? again : result;
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				return result;
 			}
 		};
 		// Symmetric gates come first, kept only without needle-sharp paper.
@@ -2818,7 +2836,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// it turned alike, with the fewest needle-sharp tips. Otherwise every
 		// construction uses the motif's own extreme points.
 		const balanced = single(true);
-		if (balanced && !cutTipCounts(balanced.design)[0]) return balanced;
+		if (balanced && !cutTipCounts(balanced.design)[0]) return held(balanced);
 		if (mirrorSymmetric(normalizeContours(request.contours ?? []))) {
 			let best = balanced;
 			for (const { ties = true, angles, axisGap, onMiddle } of SYMMETRIC_GATES) {
@@ -2826,10 +2844,10 @@ function generateUsingRecipes(request: GeneratorRequest,
 				if (result && (!best || fewerCutTips(cutTipCounts(result.design), cutTipCounts(best.design)))) best = result;
 				if (best && !cutTipCounts(best.design)[0]) break;
 			}
-			if (best) return best;
+			if (best) return held(best);
 		}
 		const extreme = single(false);
-		if (extreme) return extreme;
+		if (extreme) return held(extreme);
 		for (const [columns, rows] of [[2, 1], [2, 2], [3, 1], [3, 2], [3, 3], [4, 2]]) {
 			try {
 				return finish(generatePanelFigure(request.contours ?? [], open, request.frameSize ?? 70, request.scale ?? .7, columns, 'check', rows), 'silhouette');

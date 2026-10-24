@@ -188,6 +188,13 @@ describe('complete motif frames', () => {
   expect(hardToCut).toBeUndefined();
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
  });
+ it.each(['silhouette', 'fitted', 'wedges'] as const)('keeps the %s frame\'s cuts a paper\'s width from the motif where theirs would tear in print', style => {
+  // The cat at the default size hung by paper under 2 mm printed 80 mm wide;
+  // through the same gates with its connections a paper's width off, it holds.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Cat', contours: pinCat.contours as Ring[], colors, style, scale: .7 });
+  expect(hardToCut).toBeUndefined();
+  expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
+ });
  it('keeps the double border\'s cuts a paper\'s width from the motif where theirs would tear in print', () => {
   // The church at the default size hung by paper under 2 mm in two places
   // printed 80 mm wide; its connections kept a paper's width off, it holds.
