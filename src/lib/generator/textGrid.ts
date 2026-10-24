@@ -163,7 +163,7 @@ export function generateTextGrid(
 	font: Font,
 	air: boolean | number = false,
 	frame?: Frame,
-	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; nested?: boolean; bases?: boolean; around?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point; completion?: BoardPattern; margin?: number } = {}
+	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; nested?: boolean; bases?: boolean; around?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point; completion?: BoardPattern; margin?: number; gate?: number } = {}
 ) {
 	const { matrix, rows, cols, height, cy, padding, cellHeight, widths, inkWidths, shifts, span, fullHeight, scale, boundary, points } =
 		measureTextGrid(text, font, air, frame, layout);
@@ -257,7 +257,8 @@ export function generateTextGrid(
 				// The circle's legs run straight in to the motif's outer gates. A
 				// gate the circle passes inside of, the cell being square and the
 				// motif large, moves in towards the centre, to midway between the
-				// circle and the motif's farthest point, while it stays in its panel.
+				// circle and the motif's farthest point (or `gate` of the way out
+				// from that point), while it stays in its panel.
 				// A circle wider than the paper is cut off by its edges: there the
 				// gate moves to three fifths of the way out from the motif to the
 				// edge, or to the circle where that is nearer, which cuts cleanly
@@ -273,7 +274,8 @@ export function generateTextGrid(
 					// A completion whose cuts across the circle run deep keeps its
 					// gates just outside the motif instead (see `BOARD_PATTERNS`).
 					const near = layout.completion?.gates;
-					const k = (near !== undefined ? reach + near : layout.circle! > 100 ? reach + .6 * (rim() - reach) : (reach + layout.circle! / 2) / 2) / Math.hypot(u, v);
+					const k = (near !== undefined ? reach + near : layout.circle! > 100 ? reach + .6 * (rim() - reach)
+						: layout.gate === undefined ? (reach + layout.circle! / 2) / 2 : reach + layout.gate * (layout.circle! / 2 - reach)) / Math.hypot(u, v);
 					if (outer[i] && k < 1 && Math.abs(u * k - x) <= w / 2 + 1e-9 && Math.abs(v * k - y) <= h / 2 + 1e-9)
 						gates[i] = uprightToSheet([u * k, v * k]);
 				});

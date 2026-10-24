@@ -61,6 +61,7 @@ import faFish from '../../../static/generator/motifs/fa-fish.json';
 import circleMotif from '../../../static/generator/motifs/circle.json';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
 import elephant from '../../../static/generator/motifs/pin-elephant.json';
+import moonStars from '../../../static/generator/motifs/mc-moon-stars.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -891,6 +892,13 @@ describe('frames from real hearts', () => {
   // 2 mm; another through the same picture leaves three.
   const { design } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .73 });
   expect(paperFaults(design).weak).toBeLessThan(4);
+ });
+ it('lets a tearing board heart\'s legs meet the motif nearer it or the circle, where that holds', () => {
+  // At 75% the moon and stars' best cuts left a piece hanging by paper under
+  // 2 mm where the circle's legs met the motif halfway between it and the
+  // circle; with them a third or two thirds of the way out, it holds.
+  const { design } = generate({ mode: 'figure', name: 'Moon', contours: moonStars.contours as Ring[], colors, style: 'board', scale: .75 });
+  expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
  });
  it('keeps, of a board heart\'s cuts made at a narrower spacing, the one whose paper holds best', () => {
   // At 91% none of the star's divisions finished at the usual spacing; the

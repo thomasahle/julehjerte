@@ -2673,12 +2673,19 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const rejected: Parameters<typeof hardToCutResult>[1] = [];
 			let best: GeneratorResult | undefined, rawTips: [number, number] | undefined;
 			// Where the best of them tears, those that worked again with the
-			// motif's connections kept as far from it as paper holds printed.
+			// motif's connections kept as far from it as paper holds printed;
+			// where it still does, with the circle's legs meeting the motif a
+			// third or two thirds of the way out from it rather than halfway.
 			const worked: typeof attempts = [];
-			for (const tried of [attempts, worked]) {
-				if (tried === worked && (!best || !paperTears(exported(best).design))) break;
+			const again = (pass: number) => pass === 1
+				? worked.map(({ layout, ...attempt }) => ({ ...attempt, layout: { ...layout, margin: PAPER_NECK_MM / PRINT_WIDTH_MM * 100 } }))
+				: worked.flatMap(({ layout, ...attempt }) => [.3, .7].map(gate => ({ ...attempt, layout: { ...layout, gate } })));
+			// The gates move on five strips only: on finer boards, where most
+			// tear printed whatever they do, that bought little for its time.
+			for (const pass of strips === 5 ? [0, 1, 2] : [0, 1]) {
+				if (pass && (!best || !paperTears(exported(best).design))) break;
 				let working = 0;
-				for (const attempt of tried === worked ? worked.map(({ layout, ...attempt }) => ({ ...attempt, layout: { ...layout, margin: PAPER_NECK_MM / PRINT_WIDTH_MM * 100 } })) : tried) try {
+				for (const attempt of pass ? again(pass) : attempts) try {
 					const construction = build(attempt);
 					// Worse tips before the curve fitting are skipped, unless the
 					// best so far tears.
@@ -2686,7 +2693,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 					if (rawTips && best && !paperTears(exported(best).design) && !fewerCutTips(tips, rawTips)) continue;
 					rejected.push({ construction, recipe: 'nested' });
 					const candidate = finish(construction, 'nested');
-					if (tried !== worked) worked.push(attempt);
+					if (!pass) worked.push(attempt);
 					if (!best || cutsBetter(candidate, best, true)) [best, rawTips] = [candidate, tips];
 					if (!paperTears(exported(best).design) && !cutTipCounts(exported(best).design)[1] || ++working === 4) break;
 				} catch (error) {

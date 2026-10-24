@@ -1,5 +1,20 @@
 # Generator robustness results
 
+## Board legs meeting the motif nearer it or the circle, where its paper tears
+
+On the board, the circle's legs meet the motif's outer gates halfway between
+the circle and the motif's farthest point. Where the best working cuts still
+tear printed, after the retry with the connections kept a paper's width off,
+those cuts are tried again with the gates a third and two thirds of the way
+out from the motif, and ranked with the rest; the legs are hidden, so the
+picture stays. Only on five strips: on seven and nine, where most completion
+sizes tear printed whatever the gates do, it bought little for a seventh more
+time. Over the 48 featured motifs on the five-strip board at every
+size from 71% to 100%, with the ranking above: 10 more hearts improve (the
+moon and stars at 75–77% and the candy cane at 93% now hold), none gets worse.
+Together: hearts that tear 656 → 639, places to tear 2428 → 2342, clean
+hearts with specks under 1 mm² 61 → 53.
+
 ## The hard-to-cut fallback ranked by its paper
 
 Where no construction finishes at the usual cutting spacing, a heart keeps
