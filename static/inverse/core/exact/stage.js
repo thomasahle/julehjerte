@@ -130,12 +130,15 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   }
   if (found.error) return {found: null, report: {...report, error: found.error, search: found.report}};
   let solution = found.solution, assessment = assess(solution, cfg);
-  // Redrawn on the mask's own edge: taken when it ranks no worse and lies nearer the mask.
+  // Redrawn on the mask's own edge: taken when it lies nearer the mask and
+  // keeps the rest (passing, the picture's regions, one template, hidden cut
+  // within a step); its pixel-step edges are a little longer, which is no loss.
   if (found.refined) {
     let finer = null;
     try { finer = assess(found.refined, cfg); } catch { finer = null; }
     report.refined = finer && {passes: finer.passes, maskError: finer.maskError, issues: finer.issues};
-    if (finer && !better(assessment, finer) && finer.maskError < assessment.maskError) { solution = found.refined; assessment = finer; report.refined.taken = true; }
+    const keeps = finer && [0, 1, 2, 4].every(k => finer.rank[k] <= assessment.rank[k]) && finer.rank[5] <= assessment.rank[5] + 1;
+    if (keeps && finer.maskError < assessment.maskError) { solution = found.refined; assessment = finer; report.refined.taken = true; }
   }
   return {found: {solution, assessment}, report: {...report, search: found.report, exactOutline: assessment}};
 }

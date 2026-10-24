@@ -33,6 +33,9 @@ export async function solveTarget(target,raw={},onProgress=()=>{},{onCandidate}=
 /** The most seconds a design with the exact-outline rescue takes, fitter
  * included, of which the last EXACT_FINISH_SECONDS are the final checks' and export's. */
 export const EXACT_SECONDS=60,EXACT_FINISH_SECONDS=10;
+/** With `exactCompete`, the least time left for the exact search to compete
+ * with a passing fitted template. */
+const COMPETE_SECONDS=15;
 export async function design(target,raw={},onProgress=()=>{},options={}){const cfg=settings(raw),symmetry=exactSymmetry(cfg.symmetry);
   // A picture in Mal (`exactOutline`, a mask without curves): the fitter's
   // template stands when it passes. Otherwise the exact search lays the cuts
@@ -59,7 +62,9 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
   let repaired=repairFinal(solution,cfgFitted,{onProgress,deadline:searchEnd});
   const fitted=assess(repaired.solution,cfgFitted,{material:repaired.paperRepair.material});
   let report={chosen:'fitter',fitter:fitted,...(outline?{}:{error:cannot})};
-  if(outline&&!fitted.passes){
+  // With `exactCompete` it also competes with a passing one, given the time:
+  // on drawn pictures it often cuts far less hidden.
+  if(outline&&(!fitted.passes||cfg.exactCompete&&searchEnd-performance.now()>=1000*COMPETE_SECONDS)){
     const search=await exactSearch(outline,solution,settings({...(solution.automaticSettings||raw),symmetry:cfg.symmetry}),{deadline:searchEnd,onProgress,symmetry,geometry:cfg.progressGeometry});
     report={...search.report,chosen:'fitter',fitter:fitted};
     // Only a passing one: a search that ends with rules broken may still

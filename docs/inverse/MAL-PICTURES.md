@@ -172,6 +172,45 @@ dialog: starcircle.png 15.5 s in Chromium and 17.1 s in WebKit (0.2% from the
 mask, the exact search's template); a template page read in 0.85 s, used, and
 opened in Tegn. (Playwright's Firefox does not start on this machine.)
 
+## The exact search on pictures (2026-10-25)
+
+What the exact search (HiGHS, cuts on the traced outline) does with a picture,
+from experiments on the 64 designs' masks and 47 scraped photographs
+(`tmp/e2e/topo/` harness: Mal's fitter and final repairs, then the exact search
+from the fitter's template):
+
+- **Precision was the tracer's.** The outline traced at 0.35 px runs along the
+  pixels' staircase and lies 0.2–0.6% off the mask before any cut is placed; the
+  exact search's templates were that far off too. A finer trace follows the
+  staircase closer but is jagged (15–25% longer) and slows the search past its
+  time. A found solution is now redrawn on the same outline with each edge moved
+  onto the mask's sub-pixel edge (`exact/refine.js`), kept edge by edge while the
+  editor's checks pass: on the six cases tried, 0.07–0.31% instead of 0.10–0.63%,
+  as close as the fitter's.
+- **Hidden cut, measured alike.** The fitter's and the exact search's own counts
+  of hidden runs differ in kind (koelbuer: "0" against "16", but 57 mm against 61
+  mm). Hidden cut is now the cut length the woven picture shows the same colour on
+  both sides of, and the exact rescue ranks by it.
+- **Symmetric ties on traced outlines.** A traced outline is only nearly
+  symmetric, and the symmetric search failed on symmetric pictures (the folded
+  masks of snowflake, alhambra and hvirvel, and photographs; permo-cirkler at a
+  finer trace). Positions now close orbit by orbit and snap only onto symmetric
+  corners; the ties hold on all of these.
+- **The paper verdict.** The rescue's check audited paper on a coarser lattice
+  than the export, and called templates failing that the export passes (all 13
+  "rescue" cases measured, six of 18 photographs). It now uses the export's own
+  verdict, so the exact search runs only for templates that really fail.
+- **Photographs.** In 30% the traced outline's cut ends do not pair up across the
+  square (a strip end or a corner piece at the border), and where the search
+  starts, its templates on a photograph's outline break the cutting rules: the
+  outline has necks and gaps narrower than a strip, which the fitter's smooth
+  curves never follow. Taking the topology from the fitter's weave where they
+  differ in small pieces, or a majority vote at 1 mm, makes a few more start
+  (20 of 26), but of the 15 found only 4 pass, none better than the fitter's.
+- **Where it is better.** On drawn pictures it often cuts far less hidden:
+  alhambra 61 mm against the fitter's 318 at 0.23% against 0.25% from the mask;
+  the photographs it was taking before, 113 against 720 mm and 45 against 278.
+
 ## Open
 
 - A pale lobe on a pale background: the paper network barely sees it, and

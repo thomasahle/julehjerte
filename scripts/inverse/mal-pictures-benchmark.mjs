@@ -7,7 +7,7 @@
 // (and against `truth` when a case has one). Statuses: template, pass,
 // fidelity (cut and shown, with the page's note that details are missing),
 // fail, no_crop, *_error. E2E_ROOT=<another checkout> measures that one.
-//   node scripts/inverse/mal-pictures-benchmark.mjs LIST.json OUT_DIR [--exact=off] [--ids=a,b] [--shard=k/n] [--stage=mask] [--save-masks]
+//   node scripts/inverse/mal-pictures-benchmark.mjs LIST.json OUT_DIR [--exact=off|compete] [--ids=a,b] [--shard=k/n] [--stage=mask] [--save-masks]
 // LIST.json: [{id, file, roi?, quad?, truth?}] (truth: a {size: 400, data} mask of the true design). One JSON line per case on stdout and in OUT_DIR/results.jsonl.
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -94,7 +94,7 @@ for (const c of list) {
     row.stage = 'solve';
     const target = cloneMask(mask), t = performance.now();
     const preparedMask = prepare(mal.maskToArtwork(target), mal.maskPrepareSettings(colors));
-    const settings = {...mal.solveSettings({colors, symmetry}), ...(exactMode === 'off' ? {exactOutline: false} : {})};
+    const settings = {...mal.solveSettings({colors, symmetry}), ...(exactMode === 'off' ? {exactOutline: false} : exactMode === 'compete' ? {exactCompete: true} : {})};
     const answer = await design(restorePrepared(structuredClone(preparedMask.target)), settings);
     row.solveSeconds = +((performance.now() - t) / 1000).toFixed(1);
     const rep = answer.report;
@@ -103,7 +103,9 @@ for (const c of list) {
     row.checks = {geometry: rep.validation?.passed !== false, paper: rep.manufacturing?.status, fidelity: rep.imageFidelity?.passed !== false, features: rep.imageFidelity?.features?.passed !== false};
     row.issues = [...new Set((rep.issues || []).map(i => i.type || i.kind || String(i)).slice(0, 20))];
     const ex = rep.solver?.exactOutline;
-    if (ex) row.exact = {chosen: ex.chosen, error: ex.error, start: ex.start, attempts: (ex.search?.attempts || []).map(a => [a.hidden, a.countStatus, a.lengthStatus, a.status])};
+    if (ex) row.exact = {chosen: ex.chosen, error: ex.error, start: ex.start, attempts: (ex.search?.attempts || []).map(a => [a.hidden, a.countStatus, a.lengthStatus, a.status]),
+      // Hidden cut (mm, as the weave shows it) of the fitter's template and the exact search's.
+      hidden: [ex.fitter?.hidden, ex.exactOutline?.hidden].map(v => v === undefined ? null : Math.round(v)), refined: ex.refined?.taken ?? null};
     row.stage = 'convert';
     const converted = convertValidatedCutGeometry(answer.files['cut_geometry.json'], {name: 'e2e', colors: DEFAULT_COLORS_HEX, enforce: symmetry, reference: {mask: target}});
     const woven = rasterizeDesign(converted.design, target.size);
