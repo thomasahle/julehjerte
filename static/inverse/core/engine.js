@@ -18,15 +18,68 @@ import {validate,easeMetrics,sampleWeave} from './validate.js';
 import {materialAudit,perturbationAudit,verifiedPaperSettings} from './material.js';
 import {roundHidden} from './rounding.js';
 import {boundarySVG,targetSVG,resultFiles} from './export.js';
+import {solvePolynomialTarget} from './direct/polynomial.js';
+import {exactStage,exactSearch,exactSymmetry,exactTarget,assess,better} from './exact/stage.js';
 /** Structured cloning retains coordinates but not Cubic methods, including
  * the cached boundary seed used by the topology initializer. Rebuild derived
  * curve caches locally; a transferred cache must not hide edited coordinates. */
 export function restorePrepared(target){return{...target,curves:target.curves.map(c=>new Cubic(c.p)),...(target.boundarySeed?{boundarySeed:restorePrepared(target.boundarySeed)}:{})};}
 export function scaleTarget(target,width,colors){const factor=width/target.width;return{...target,width,curves:target.curves.map(c=>new Cubic(c.p.map(p=>p.map(v=>v*factor)))),metadata:{...target.metadata,paperColors:colorsSafe(colors||target.metadata.paperColors)}};}
+/** The most curves the traced routes take; the automatic route fits more as an image. */
+export const MAX_TRACED_CURVES=1000;
 export function prepare(input,raw={},onProgress=()=>{}){if(raw.algorithm==='auto')return prepareAutomatic(input,raw,onProgress);const cfg=settings(raw),pre={resolution:400,fitTolerance:.5,maxSpan:15,...raw,width:cfg.width,nominalWidth:cfg.nominalWidth,paperColors:colorsSafe(cfg.paperColors),geometryTolerance:cfg.geometryTolerance};for(const[k,lo,hi]of[['fitTolerance',.01,3],['maxSpan',2,40],['snapRadius',0,3]])if(pre[k]!==undefined&&(!Number.isFinite(pre[k])||pre[k]<lo||pre[k]>hi))throw new Error(`${k} must be between ${lo} and ${hi}.`);onProgress({stage:'preprocessing'});let target,rgb=null,mask=null,n=240;
-  if(input.type==='svg'){target=loadSVG(input.text,{width:cfg.width,maxSpan:pre.maxSpan||12,tolerance:cfg.geometryTolerance});target.metadata.paperColors=colorsSafe(cfg.paperColors);if(raw.invert)target.phase^=1;mask=sampleTarget(target,n);}else if(input.type==='pixels'){({target,rgb,mask,n}=preprocessPixels({...input,settings:pre}));}else if(input.type==='mask'){if(cfg.algorithm!=='direct')throw new Error('Binary masks use automatic or direct fitting.');({target,mask,n}=preprocessBinaryMask(input,pre));}else throw new Error('Prepare accepts pixels, a binary mask or a plain SVG.');if(cfg.algorithm==='direct'&&input.type==='svg'){const source=sampleTarget(target,256);target={...target,curves:[],sourceImage:{mask:source,probability:Float32Array.from(source),resolution:256},metadata:{...target.metadata,direct:true,input:'Rasterized visible SVG for direct fitting'}};n=256;mask=source;}if(raw.identicalSheets&&cfg.algorithm!=='direct')target=transposeTarget(target);if(target.curves.length>1000)throw new Error('Too much traced detail. Increase fitting tolerance or remove small details.');const vector=target.metadata.direct?maskSVG(mask,n):targetSVG(target);return{target,preview:{vector,boundaries:boundarySVG(target),mask,rgb,resolution:n,...(target.sourceImage?.validMask?{validMask:target.sourceImage.validMask}:{}),...(target.sourceImage?.weights?{weights:target.sourceImage.weights}:{}),metadata:{...target.metadata,curves:target.curves.length,width:target.width}}};}
-export async function solveTarget(target,raw={},onProgress=()=>{},{onCandidate}={}){const cfg=settings(raw),scaled=scaleTarget(target,cfg.width,cfg.paperColors);onProgress=progressReporter(onProgress,cfg.progressGeometry,{onCandidate});if(cfg.algorithm==='auto')return solveAutomatic(scaled,cfg,onProgress);if(cfg.algorithm==='direct'){if(!target.metadata.direct)throw new Error('Prepare the image with direct fitting selected first.');return fitDirect(scaled,cfg,onProgress);}return solveBoundary(scaled,cfg,{onProgress,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});}
-export async function design(target,raw={},onProgress=()=>{},options={}){const deadline=performance.now()+1000*settings(raw).timeLimit,solution=await solveTarget(target,raw,onProgress,options);return finish(solution,settings(solution.automaticSettings||raw),onProgress,{deadline});}
+  if(input.type==='svg'){target=loadSVG(input.text,{width:cfg.width,maxSpan:pre.maxSpan||12,tolerance:cfg.geometryTolerance});target.metadata.paperColors=colorsSafe(cfg.paperColors);if(raw.invert)target.phase^=1;mask=sampleTarget(target,n);}else if(input.type==='pixels'){({target,rgb,mask,n}=preprocessPixels({...input,settings:pre}));}else if(input.type==='mask'){if(!['direct','polynomial'].includes(cfg.algorithm))throw new Error('Binary masks use automatic, direct or polynomial fitting.');({target,mask,n}=preprocessBinaryMask(input,{...pre,algorithm:'direct'}));}else throw new Error('Prepare accepts pixels, a binary mask or a plain SVG.');if(cfg.algorithm==='direct'&&input.type==='svg'){const source=sampleTarget(target,256);target={...target,curves:[],sourceImage:{mask:source,probability:Float32Array.from(source),resolution:256},metadata:{...target.metadata,direct:true,input:'Rasterized visible SVG for direct fitting'}};n=256;mask=source;}if(raw.identicalSheets&&cfg.algorithm!=='direct'&&cfg.algorithm!=='polynomial')target=transposeTarget(target);if(target.curves.length>MAX_TRACED_CURVES&&!raw.manyCurves)throw new Error('Too much traced detail. Increase fitting tolerance or remove small details.');const vector=target.metadata.direct?maskSVG(mask,n):targetSVG(target);return{target,preview:{vector,boundaries:boundarySVG(target),mask,rgb,resolution:n,...(target.sourceImage?.validMask?{validMask:target.sourceImage.validMask}:{}),...(target.sourceImage?.weights?{weights:target.sourceImage.weights}:{}),metadata:{...target.metadata,curves:target.curves.length,width:target.width}}};}
+export async function solveTarget(target,raw={},onProgress=()=>{},{onCandidate}={}){const cfg=settings(raw),scaled=scaleTarget(target,cfg.width,cfg.paperColors);onProgress=progressReporter(onProgress,cfg.progressGeometry,{onCandidate});if(cfg.algorithm==='auto')return solveAutomatic(scaled,cfg,onProgress);if(cfg.algorithm==='polynomial')return solvePolynomialTarget(scaled,cfg);if(cfg.algorithm==='direct'){if(!target.metadata.direct)throw new Error('Prepare the image with direct fitting selected first.');return fitDirect(scaled,cfg,onProgress);}return solveBoundary(scaled,cfg,{onProgress,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});}
+/** The most seconds a design with the exact-outline stage takes, fitter included,
+ * of which the last EXACT_FINISH_SECONDS are the final checks' and export's. */
+export const EXACT_SECONDS=60,EXACT_FINISH_SECONDS=10;
+export async function design(target,raw={},onProgress=()=>{},options={}){const cfg=settings(raw),symmetry=exactSymmetry(cfg.symmetry);
+  // The exact-outline stage (exactOutline, Mal's) redraws a template on the
+  // target's own vector outline. With it a design takes at most EXACT_SECONDS.
+  // It cannot keep identical sheets, a free frame band or a symmetry within
+  // each curve, so those keep the fitter's alone.
+  // A picture (`exactRaster`, a mask without curves) has its outline traced
+  // from its pixels, and only when the fitter's template needs rescuing.
+  const raster=raw.exactRaster===true&&!target.curves?.length,outline=cfg.exactOutline&&!raster?exactTarget(target):null,exactOn=cfg.exactOutline&&(raster||Boolean(outline))&&!raw.identicalSheets&&!target.sourceImage?.weights&&symmetry!==null;
+  if(!exactOn){const deadline=performance.now()+1000*cfg.timeLimit,solution=await solveTarget(target,raw,onProgress,options);return finish(solution,settings(solution.automaticSettings||raw),onProgress,{deadline});}
+  const seconds=Math.min(cfg.timeLimit,EXACT_SECONDS),start=performance.now(),deadline=start+1000*seconds,searchEnd=deadline-1000*EXACT_FINISH_SECONDS;
+  let solution,report;
+  if(raster){
+    // A picture: the fitter's template stands when it passes within 1% of the
+    // mask. On a traced outline exactness means little, so the exact search
+    // only rescues one that does not, with the requested symmetry's ties, and wins only by the
+    // ranking that counts the weave's disagreement with the mask.
+    solution=await solveTarget(target,{...raw,timeLimit:Math.max(.1,seconds*.5)},onProgress,options);
+    const fitted=assess(solution,settings(solution.automaticSettings||raw),{raster});
+    report={chosen:'fitter',fitter:fitted};
+    const traced=fitted.passes&&fitted.maskError<=.01?null:exactTarget(target,{raster:cfg});
+    if(traced){
+      const search=await exactSearch(scaleTarget(traced,cfg.width,cfg.paperColors),solution,settings({...(solution.automaticSettings||raw),symmetry:cfg.symmetry}),{deadline:searchEnd,onProgress,symmetry,raster});
+      report={...search.report,chosen:'fitter',fitter:fitted};
+      if(search.found&&better(search.found.assessment,fitted)){solution=search.found.solution;report.chosen='exact';}
+    }
+  }else if(!symmetry.length){
+    const scaled=scaleTarget(outline,cfg.width,cfg.paperColors);
+    // The fitter's template, in half the time, is both the start and the rival.
+    solution=await solveTarget(target,{...raw,timeLimit:Math.max(.1,seconds*.5)},onProgress,options);
+    ({solution,report}=await exactStage(scaled,solution,settings(solution.automaticSettings||raw),{deadline:searchEnd,onProgress,raster}));
+  }else{
+    // A requested symmetry makes the fitter fit the image, slowly and off the
+    // outline. The exact stage starts from a quick trace without it, its ties
+    // keeping the symmetry, and the fitter runs only when that does not pass.
+    const scaled=scaleTarget(outline,cfg.width,cfg.paperColors),plain=await solveTarget(target,{...raw,symmetry:null,timeLimit:Math.max(.1,seconds*.15)},onProgress,options);
+    const search=await exactSearch(scaled,plain,settings({...(plain.automaticSettings||raw),symmetry:cfg.symmetry}),{deadline:start+1000*seconds*.6,onProgress,symmetry,raster});
+    report=search.report;
+    if(search.found?.assessment.passes){solution=search.found.solution;report={...report,chosen:'exact'};}
+    else{
+      solution=await solveTarget(target,{...raw,timeLimit:Math.max(.1,(searchEnd-performance.now())/1000)},onProgress,options);
+      const fitted=assess(solution,settings(solution.automaticSettings||raw),{raster});
+      if(search.found&&better(search.found.assessment,fitted))solution=search.found.solution;
+      report={...report,chosen:solution===search.found?.solution?'exact':'fitter',fitter:fitted};
+    }
+  }
+  solution.report={...solution.report,exactOutline:report};
+  return finish(solution,settings(solution.automaticSettings||raw),onProgress,{deadline});}
 export function inspectSaved(text,raw={},onProgress=()=>{}){const cfg=settings(raw),solution=loadSolutionJSON(text),factor=cfg.width/solution.graph.target.width;solution.graph.edges.forEach(e=>e.curve=new Cubic(e.curve.p.map(p=>p.map(x=>x*factor))));solution.graph.target=scaleTarget(solution.graph.target,cfg.width,cfg.paperColors);reindex(solution.graph);return finish(solution,cfg,onProgress);}
 export function inputImageError(solution){
   const source=solution.graph.target.sourceImage;

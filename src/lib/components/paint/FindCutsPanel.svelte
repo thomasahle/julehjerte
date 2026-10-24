@@ -140,7 +140,8 @@
 		rounding: 'paintStageRounding',
 		paper: 'paintStagePaper',
 		tolerances: 'paintStageTolerances',
-		exporting: 'paintStageExporting'
+		exporting: 'paintStageExporting',
+		exactOutline: 'paintStageExactOutline'
 	};
 
 	/**

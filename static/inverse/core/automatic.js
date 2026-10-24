@@ -1,5 +1,5 @@
 /** One public workflow. Choose routing from the artwork, never its filename. */
-import {prepare} from './engine.js';
+import {prepare,MAX_TRACED_CURVES} from './engine.js';
 import {GENERAL_PRESET,DIRECT_PRESET} from './presets.js';
 import {sampleTarget} from './input.js';
 import {normalizeSymmetry,requestedSymmetry,settings} from './settings.js';
@@ -25,11 +25,15 @@ export function prepareAutomatic(input,raw,onProgress){
   const cfg={...DIRECT_PRESET,...raw,algorithm:'direct'},fitterOnly=fitterOnlySymmetry(normalizeSymmetry(raw.symmetry));
   let value;
   if(input.type==='svg'){
-    value=prepare(input,{...GENERAL_PRESET,...raw,algorithm:'trace',identicalSheets:false},onProgress);
+    value=prepare(input,{...GENERAL_PRESET,...raw,algorithm:'trace',identicalSheets:false,manyCurves:true},onProgress);
     const resolution=raw.resolution??400,mask=sampleTarget(value.target,resolution);
     value.target.sourceImage={mask,probability:Float32Array.from(mask),resolution};
     Object.assign(value.preview,{mask,resolution});
-    value.target.metadata.automatic={route:'vector',reason:'Preserve original vector boundaries'};
+    // Too many curves for the traced routes: fit the image instead. The curves
+    // stay for the exact-outline stage, which redraws the fit on them.
+    value.target.metadata.automatic=value.target.curves.length>MAX_TRACED_CURVES
+      ?{route:'direct',reason:'Too much vector detail for traced routes; fit the image and keep the vector outline for the exact stage'}
+      :{route:'vector',reason:'Preserve original vector boundaries'};
   }else{
     value=prepare(input,cfg,onProgress);
     value.target.metadata.automatic={route:'direct',reason:'Joint cubic and straight-span refinement against the original classified image'};

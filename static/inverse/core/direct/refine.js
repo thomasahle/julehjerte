@@ -2,7 +2,7 @@
  * separation, curvature and join costs, and independent geometry checkpoints.
  */
 import {addFoldSeparation} from './fold-separation.js';
-import {Adam,bernstein,dbernstein,ddbernstein,clamp} from './math.js';
+import {Adam,dbernstein,ddbernstein,clamp} from './math.js';
 import {boundaryGradient,createBoundaryEvaluator} from './boundary.js';
 import {renderCurves} from './curves.js';
 import {mismatch} from './grid.js';
@@ -100,7 +100,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12,paperRecovery
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,geometryRecoveryDeadline=deadline,repairDeadline=deadline,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false,paperVerificationResolution=700,paperVerificationReserve=250,paperVerificationDeadline=deadline,retryPaperSeparation=false,paperSeparationErrorThreshold=null,paperRecovery=null,paperAudit=materialAudit}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,geometryRecoveryDeadline=deadline,repairDeadline=deadline,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false,paperVerificationResolution=700,paperVerificationReserve=250,paperVerificationDeadline=deadline,retryPaperSeparation=false,paperSeparationErrorThreshold=null,paperRecovery=null,paperAudit=materialAudit,preserveVisibleBoundary=false}={}){
   if(!Number.isInteger(checkpointEvery)||checkpointEvery<1)throw new RangeError('Checkpoint interval must be a positive integer.');
   // Compile the weighted force field once, not on every optimization step.
   let penaltySettings=cfg,paperSeparationRetry=null;
@@ -119,7 +119,10 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
   const ties=symmetryTies(graph,cfg.symmetry),groups=identicalSheets&&!ties?matchingGroups(graph):null;let stoppedEarly=false;
   const clampAxes=new Uint8Array(points.length);
   graph.paths.forEach((p,pi)=>{for(const[e]of p)for(const id of graph.edges[e])clampAxes[2*id+graph.family[pi]]=1;});
-  const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);const projected=!ties||applyTies(ties,points,points,{fixed:graph.fixed,original:initial});if(groups)projectMatching(points,groups,graph.fixed,initial);return projected;};
+  const preserved=new Uint8Array(points.length);
+  if(preserveVisibleBoundary)for(const [e,ids]of graph.edges.entries())if(graph.visible[e])for(const id of ids)preserved[2*id]=preserved[2*id+1]=1;
+  const restorePreserved=values=>{if(!preserveVisibleBoundary)return;for(let i=0;i<values.length;i++)if(preserved[i])values[i]=initial[i];};
+  const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]||preserved[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);const projected=!ties||applyTies(ties,points,points,{fixed:graph.fixed,original:initial});if(groups)projectMatching(points,groups,graph.fixed,initial);restorePreserved(points);return projected;};
   clampPoints();let safe=null,best=null,bestUncertain=null,bestRejectedPaper=null,bestInvalid=null,completed=0,skippedSteps=0,lastRollback=null,initialReturnProjectionFailed=false;
   let geometricCheckpoint=false,needsGeometryRecovery=false,recoveringGeometry=false,geometryRecoverySteps=0;
   // A preferred image checkpoint competes only within the same physical
@@ -131,6 +134,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
     const straightPassed=!straight||!ties||applyTies(ties,straight,straight,{fixed:graph.fixed,original:initial});
     if(straight&&groups)projectMatching(straight,groups,graph.fixed,initial);
     const proposals=[points,...(straight&&straightPassed?[straight]:[])].map(p=>{
+      restorePreserved(p);
       const error=mismatch(renderCurves(graph,p,phase,n,32),prob,weights),imageScore=(imageValue(p,phase)+transposedImageValue(p,phase))/2+objective.offset;
       const score=imageScore+primitiveCost(graph,p,n)+(cfg.preferMatchingSheets?matchingPenalty(graph,p).loss:0);
       return{graph,points:p.slice(),phase,error,score,primitives:primitiveComplexity(graph,p),straightened:p===straight};
@@ -269,6 +273,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
     for(let i=0;i<g.length;i++)g[i]=graph.fixed[i]?0:g[i]+penalty.gradient[i]+.000004*(points[i]-initial[i])/points.length;
     if(ties&&!applyTies(ties,g,points,{fixed:graph.fixed,tangent:true}))break;
     if(groups)projectMatching(g,groups,graph.fixed,new Float64Array(g.length));
+    if(preserveVisibleBoundary)for(let i=0;i<g.length;i++)if(preserved[i])g[i]=0;
     const previous=ties?.withinCurve?points.slice():null;
     adam.update(points,g,1);
     if(!clampPoints()&&previous){

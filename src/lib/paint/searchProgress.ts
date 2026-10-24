@@ -45,6 +45,7 @@ export type StageKey =
 	| 'paper'
 	| 'tolerances'
 	| 'exporting'
+	| 'exactOutline'
 	| 'working';
 
 const STAGE_KEYS: readonly StageKey[] = [
@@ -64,7 +65,8 @@ const STAGE_KEYS: readonly StageKey[] = [
 	'rounding',
 	'paper',
 	'tolerances',
-	'exporting'
+	'exporting',
+	'exactOutline'
 ];
 
 /**
