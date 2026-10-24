@@ -630,9 +630,10 @@ function allowingLastResort<T>(k: number, build: () => T): T {
 /** The alternatives that failed at the size being made (see
  * `generateAtSizeOrLastResort`), each with the last resorts allowed then and
  * those it set a construction aside for. Allowed besides only last resorts
- * it set nothing aside for, an alternative fails the same way again: it is
- * not made again (a swan refused in the wedges was made seven times a size,
- * three of them so). */
+ * it set nothing aside for, an alternative made the same way (`kind`: with
+ * its retries or without, an equal square's first try being the same
+ * request without) fails the same way again: it is not made again (a swan
+ * refused in the wedges was made seven times a size, three of them so). */
 type Failed = { allowed: boolean[]; setAside: boolean[]; error: unknown };
 let failedAtSize: Map<string, Failed[]> | undefined;
 function alternativeOnce(request: GeneratorRequest, kind: string, build: () => GeneratorResult): { result: GeneratorResult } | Failed {
@@ -704,7 +705,7 @@ function generateAtSize(request: GeneratorRequest): GeneratorResult {
 			if (lastResort || again !== undefined && !setAsideBy.get(index)?.[again]) continue;
 			// Identical small motifs gain little from other junctions; a
 			// smaller board is the better next choice.
-			const tried = alternativeOnce(alternative, 'preferred', () => generateOnce(alternative, finish => hard.push([index, finish]), 1, retries));
+			const tried = alternativeOnce(alternative, `preferred ${retries}`, () => generateOnce(alternative, finish => hard.push([index, finish]), 1, retries));
 			if ('result' in tried) return named(tried.result, index);
 			last = tried.error;
 			if (again === undefined) setAsideBy.set(index, tried.setAside);
