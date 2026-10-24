@@ -179,6 +179,14 @@ describe('complete motif frames', () => {
   expect(design).not.toHaveProperty('rightCutouts');
   expect(design).not.toHaveProperty('leftCutouts');
  });
+ it('keeps the rays\' cuts a paper\'s width from the motif where theirs would tear in print', () => {
+  // The yule goat at the default size left three pieces hanging by paper
+  // under 2 mm printed 80 mm wide; its connections kept a paper's width off,
+  // it holds.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Yule goat', contours: yuleGoat.contours as Ring[], colors, style: 'rays', scale: .7 });
+  expect(hardToCut).toBeUndefined();
+  expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
+ });
  it('keeps a lane\'s approaches in the checked-tip frame clear of the motif\'s parts in the other lanes', () => {
   // The elephant's separate parts lie in different lanes: an approach to one
   // ran through another, and the frame refused it at every size.

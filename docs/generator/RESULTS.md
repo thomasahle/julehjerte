@@ -1,5 +1,15 @@
 # Generator robustness results
 
+## Rays, checks and the sunburst: a paper's width off where they tear
+
+Where the best of a figure's first few constructions in rays, checks or the
+sunburst still tears printed 80 mm wide, its recipes are made again with the
+motif's connections kept a paper's width from the cuts beside them, as on the
+board, and that is kept only where its paper holds better; the picture stays.
+Over the 49 featured motifs at 50/70/85%: hearts that tear fall from 51 to 46
+in rays, 52 to 47 in checks and 55 to 50 in the sunburst; none gets worse, at
+no cost in time. The yule goat at the default size now holds.
+
 ## Long words in the checks on a finer board, as a last resort
 
 The letters in the checks try four, five, six and three strips; a long word

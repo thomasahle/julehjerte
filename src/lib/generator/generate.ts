@@ -2879,7 +2879,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 	const balancedRecipes = recipes.slice(0, 4).filter(recipe => recipe !== baseFigure);
 	// Of the first few that finish, the best paper (`bestOfFirst`): they differ
 	// only in how the motif's cuts spread over its panels, so the picture stays.
-	const best = bestOfFirst((function* () {
+	let best = bestOfFirst((function* () {
 		for (const route of [fourPortMotif, originalFourPortMotif, balancedFourPortMotif])
 		for (const construct of route === balancedFourPortMotif ? balancedRecipes : recipes) {
 			if (route === originalFourPortMotif && (!retryOriginal.has(construct) || construct === baseFigure)) continue;
@@ -2898,6 +2898,22 @@ function generateUsingRecipes(request: GeneratorRequest,
 			}
 		}
 	})());
+	// Where its paper tears printed, the recipes again with the motif's
+	// connections kept a paper's width from the cuts beside them, as on the
+	// board (see `PAPER_NECK_MM`); kept only where they hold better.
+	if (best && paperTears(exported(best).design)) {
+		const paperRoute: typeof fourPortMotif = (edges, contours, gates, angles, margin, ...rest) =>
+			fourPortMotif(edges, contours, gates, angles, Math.max(margin ?? 0, PAPER_NECK_MM / PRINT_WIDTH_MM * 100), ...rest);
+		const again = bestOfFirst((function* () {
+			for (const construct of recipes) try {
+				const construction = construct(paperRoute);
+				yield finish(sunburst ? sunburstBorder(construction, outerSize) : construction, rings.length === 1 ? 'silhouette' : 'nested', false);
+			} catch (e) {
+				if (!(e instanceof ConstructionError) && !(e instanceof CutGeometryError)) throw e;
+			}
+		})());
+		if (again && again.design.gridSize.x === best.design.gridSize.x && cutsBetter(again, best, true)) best = again;
+	}
 	if (best) return best;
 	// A uniform seam can graze a motif's tip. Shift one modest three-panel layout
 	// within its cells before refusing the figure, keeping its exact outline.
