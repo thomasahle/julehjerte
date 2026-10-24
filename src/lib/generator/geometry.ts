@@ -2335,7 +2335,7 @@ type End = { angle: number; family: 'A' | 'B'; port: Port };
  * Where the paper's edges cut the circle off, a line that would meet the
  * circle past an edge, or within `BOARD_STUB` of it, ends where the circle
  * meets that edge, so the squares there come to points along the circle. */
-function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number, around?: number, d = boardLines(strips)):
+function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number, around?: number, d = boardLines(strips), stepIn = false):
 	(side: number, index: number, framed: (angle: number, half: number) => Point, from: Point) => Point[] {
 	const turn = 2 * Math.PI, lines: { axis: number; line: number; ends: End[] }[] = [];
 	// A line's place among those in play, out from the centre; none for the
@@ -2437,7 +2437,14 @@ function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number, aro
 		// the circle, and out to the gate, clear of the lines' ends beside it,
 		// not along the circle past them.
 		const facing = (Math.atan2(from[1] - 50, from[0] - 50) + turn) % turn;
-		if (!following && !neighbours || around === undefined || facing > gate.low && facing < gate.high) return [gate.point];
+		if (!following && !neighbours || around === undefined || facing > gate.low && facing < gate.high) {
+			// With `stepIn`, a cut that would meet the circle at a slant, more
+			// than 60° off its radius, steps a unit straight in to its gate.
+			const out = [gate.point[0] - 50, gate.point[1] - 50], back = [gate.point[0] - from[0], gate.point[1] - from[1]];
+			const slant = (out[0] * back[0] + out[1] * back[1]) / Math.hypot(out[0], out[1]) / Math.hypot(back[0], back[1]) < .5;
+			const radius = Math.hypot(out[0], out[1]);
+			return stepIn && slant ? [[gate.point[0] - out[0] / radius, gate.point[1] - out[1] / radius], gate.point] : [gate.point];
+		}
 		const reach = Math.max(around, distance(from, [50, 50])), toward = (gate.low + gate.high) / 2;
 		const delta = ((toward - facing + 3 * Math.PI) % turn) - Math.PI, steps = Math.max(1, Math.ceil(Math.abs(delta) / (Math.PI / 90)));
 		return [...Array.from({ length: steps + 1 }, (_, i): Point => {
@@ -2524,7 +2531,8 @@ export function connectCellGrid(
 	strips = 2 * cells[0].length + 1,
 	around?: number,
 	lines?: number[],
-	completion?: BoardPattern
+	completion?: BoardPattern,
+	stepIn = false
 ) {
 	const rows = cells.length,
 		cols = cells[0].length;
@@ -2536,7 +2544,7 @@ export function connectCellGrid(
 	const completed = style === 'board' && boundary && completion
 		? completionLegs(edges, boundary, strips, Math.max(...boundary.map(p => distance(p, [50, 50]))), completion, around ?? 0) : undefined;
 	const legs = completed ? (side: number, index: number, _framed: unknown, from: Point) => completed(side, index, from)
-		: style === 'board' && boundary ? boardLegs(edges, boundary, strips, cols, around, lines) : undefined;
+		: style === 'board' && boundary ? boardLegs(edges, boundary, strips, cols, around, lines, stepIn) : undefined;
 	const connect = (gate: Point, side: number, index: number, count: number) => {
 		if (boundary) {
 			const step = Math.PI / (2 * count);

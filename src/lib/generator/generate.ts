@@ -2728,6 +2728,16 @@ function generateUsingRecipes(request: GeneratorRequest,
 					last = error;
 				}
 			}
+			// Where it still has a needle, those that worked again with the cuts
+			// that would meet the circle's gates at a slant stepping in to them
+			// straight (see `boardLegs`); kept only where they cut better.
+			const stepped = worked.map(({ layout, ...attempt }) => ({ ...attempt, layout: { ...layout, stepIn: true } }));
+			if (best && cutTipCounts(exported(best).design)[0]) for (const attempt of stepped) try {
+				const candidate = finish(build(attempt), 'nested');
+				if (cutsBetter(candidate, best, true)) best = candidate;
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			}
 			if (best) return kept(best);
 			const hard = hardToCutResult(request, rejected, curveFitter);
 			// Shared cuts meeting the motif's outline in a narrow point can bend

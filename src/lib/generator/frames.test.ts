@@ -917,6 +917,14 @@ describe('frames from real hearts', () => {
   expect(scale).toBeLessThan(.82);
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
  });
+ it('steps a seven-strip board heart\'s slanting cut straight in to the circle\'s gate where it leaves a needle', () => {
+  // At 96% on seven strips the heart's outer gate lies near the paper's edge,
+  // and the cut from it met the circle's gate almost along the circle, whose
+  // legs leave along it: two needles. A unit straight in, none.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Heart', contours: heart.contours as Ring[], colors, style: 'board', board: 7, scale: .96 });
+  expect(hardToCut).toBeUndefined();
+  expect(cutTipCounts(design)).toEqual([0, 0]);
+ });
  it('keeps, of a five-strip board heart\'s working cuts, the one whose paper holds best', () => {
   // The star's first division at 73% left four pieces hanging by paper under
   // 2 mm; another through the same picture leaves three.

@@ -1,5 +1,16 @@
 # Generator robustness results
 
+## A board's slanting cut steps straight in to the circle's gate
+
+A cut leaving a board circle's gate more than 60° off the circle's radius left
+a needle of paper between itself and the circle. Where the chosen board heart
+still has a needle, the layouts that worked are built again with such cuts
+stepping a unit straight in to their gate (`stepIn` in `boardLegs`), kept only
+where they cut better, paper first (c7's idea). Over 49 motifs on five strips
+at 75–100% nothing changes; on seven strips at 90–100% three hearts at 96%
+lose their needles (the heart 2 → 0, the moon and the bear 1 → 0) for 1% more
+time; on nine strips nothing changes, for 3.6% more time. None gets worse.
+
 ## Open frames: a moved lane that cannot be cut is left out
 
 The santa hat in the large silhouette at 78–80% fell back to 75%, smaller
