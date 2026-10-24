@@ -1,5 +1,18 @@
 # Generator robustness results
 
+## The hard-to-cut fallback ranked by its paper
+
+Where no construction finishes at the usual cutting spacing, a heart keeps
+the one that holds the widest spacing, then has the fewest strips with narrow
+paper, then the fewest sharp tips; often several tie, all clean at a smaller
+spacing. Between those it now keeps the one whose paper holds best printed
+80 mm wide before comparing tips: they differ only in hidden cuts. The star
+on the five-strip board at 91% left specks of 0.1–0.5 mm² beside its right
+point and now holds; over the 48 featured motifs on that board at every size
+from 71% to 100%, 37 hearts improve and none gets worse, and in the checked
+tips, double border, rays and equal squares at 50/70/85% a few improve and
+none gets worse, at no cost in time.
+
 ## Sunburst lanes inside its border, as a last resort
 
 Where nothing else builds, the lanes that keep a motif's separate parts apart

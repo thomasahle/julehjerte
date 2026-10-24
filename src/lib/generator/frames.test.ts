@@ -892,6 +892,13 @@ describe('frames from real hearts', () => {
   const { design } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .73 });
   expect(paperFaults(design).weak).toBeLessThan(4);
  });
+ it('keeps, of a board heart\'s cuts made at a narrower spacing, the one whose paper holds best', () => {
+  // At 91% none of the star's divisions finished at the usual spacing; the
+  // one kept from those made narrower left specks beside its right point.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .91 });
+  expect(hardToCut).toBeUndefined();
+  expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
+ });
  it('keeps a five-strip board heart\'s connections as far from the motif as paper holds, where its cuts would tear', () => {
   // The star's best division at 80% still left three pieces hanging by paper
   // under 2 mm, its connections the room for a cut from its points.

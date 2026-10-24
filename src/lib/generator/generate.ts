@@ -1422,11 +1422,12 @@ function generateOnceMade(request: GeneratorRequest,
  * refusing, keep a completed construction whose weave and picture are valid and
  * whose cuts stay apart, and flag it as hard to cut, naming the letters beside
  * its narrow paper. Prefer the widest spacing kept, then the fewest strips with
- * narrow paper, then the fewest sharp tips. Clean results never get here. */
+ * narrow paper, then the paper that holds best printed, then the fewest sharp
+ * tips. Clean results never get here. */
 function hardToCutResult(request: GeneratorRequest,
 	candidates: { construction: Construction; recipe: GeneratorResult['recipe'] }[],
 	curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
-	type Choice = { result: GeneratorResult; construction: Construction; spacing: number; narrow: number; tips: [number, number] };
+	type Choice = { result: GeneratorResult; construction: Construction; spacing: number; narrow: number; tears: number; tips: [number, number] };
 	let best: Choice | undefined;
 	const seen = new Set<string>(), lowest = HARD_TO_CUT_SPACINGS.at(-1)!;
 	for (const { construction, recipe } of candidates) {
@@ -1441,10 +1442,10 @@ function hardToCutResult(request: GeneratorRequest,
 				narrow = findSearchIssues(design.fingers, full).size,
 				spacing = narrow ? HARD_TO_CUT_SPACINGS.find(fraction => fraction === lowest ||
 					!findSearchIssues(design.fingers, full * fraction, full).size)! : 1,
-				tips = cutTipCounts(design);
+				tips = cutTipCounts(design), tears = paperTears(exported(result).design);
 			if (!best || spacing > best.spacing || spacing === best.spacing && (narrow < best.narrow ||
-				narrow === best.narrow && fewerCutTips(tips, best.tips)))
-				best = { result, construction, spacing, narrow, tips };
+				narrow === best.narrow && (tears < best.tears || tears === best.tears && fewerCutTips(tips, best.tips))))
+				best = { result, construction, spacing, narrow, tears, tips };
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 		}
