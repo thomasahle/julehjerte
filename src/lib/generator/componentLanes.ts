@@ -18,7 +18,7 @@ const contoursOf = (node: Contour): Ring[] => [node.ring, ...node.children.flatM
  * says whether one does), unless `pass`: then it moves within its column to
  * where it passes farthest from the motif, and an open frame's lane with no
  * place clear of it is left out. A moved lane runs straight above and below
- * the motif. */
+ * the motif. Passing in a sunburst, the lanes also keep inside its border. */
 export function generateComponentLanes(rings: Ring[], frame: Frame | OpenFrame, size = 70, scale = .7,
 	style: 'rays' | 'check' = 'rays', aligned = false, extraStrips = 0, pass = false) {
 	const factor = size * scale;
@@ -77,11 +77,15 @@ export function generateComponentLanes(rings: Ring[], frame: Frame | OpenFrame, 
 	}
 	const boundary = frameRing(frame as Frame, size), fan = style === 'rays' ? .72 : 1,
 		half = Math.PI / (2 * columns) * .3;
+	// A sunburst's border (`extraStrips`) reaches the paper's edges near its
+	// corners, where the legs stepping round them cross it: passing, its lanes
+	// leave the circle nearer the diagonals and run straight to the edges.
+	const diagonal = pass && extraStrips > 0;
 	for (let col = 0; col < columns; col++) {
-		const angle = (col + .5) * Math.PI / (2 * columns);
+		const angle = diagonal ? Math.PI / 4 + (col - 1) * .25 + .05 : (col + .5) * Math.PI / (2 * columns);
 		const outside = [
-			framedGate(edges, boundary, Math.PI + angle, half, fan, true),
-			framedGate(edges, boundary, Math.PI / 2 - angle, half, fan, true)
+			framedGate(edges, boundary, Math.PI + angle, half, fan, !diagonal),
+			framedGate(edges, boundary, Math.PI / 2 - angle, half, fan, !diagonal)
 		];
 		// Aligned approaches run above and below the artwork before meeting the
 		// frame. The direct variant can be better when the frame is very flat.

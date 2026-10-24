@@ -13,6 +13,7 @@ import { normalizeHeartDesign, serializeHeartDesign, serializeHeartToSVG, parseH
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import coffee from '../../../static/generator/motifs/ph-coffee.json';
 import santaHat from '../../../static/generator/motifs/gi-santa-hat.json';
+import candyCane from '../../../static/generator/motifs/mdi-candy-cane.json';
 
 it('keeps the cup, its handle and separate steam contours in the original frame', () => {
 	const contours = normalizeContours(coffee.contours as Ring[]);
@@ -47,6 +48,11 @@ slow('builds the santa hat in the large silhouette rather than refuse it', () =>
 	expect(() => generate({ mode: 'figure', name: 'hat', contours: santaHat.contours as Ring[], style: 'silhouette', scale: .7, gap: 3,
 		colors: { left: '#fff', right: '#b91313' } })).not.toThrow();
 }, 60000);
+
+slow('builds the candy cane in the sunburst at half size, its lanes inside the border, rather than refuse it', () => {
+	expect(() => generate({ mode: 'figure', name: 'cane', contours: candyCane.contours as Ring[], style: 'sunburst', scale: .5, gap: 3,
+		colors: { left: '#fff', right: '#b91313' } })).not.toThrow();
+}, 30000);
 
 for (const [name, motif, frame, style, tips] of [
 	['coffee', coffee, 'circle', 'check', [0, 2]]

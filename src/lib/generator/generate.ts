@@ -937,10 +937,10 @@ function withEveryWay<T>(build: () => T): T {
 	}
 }
 /** Whether lanes holding no part of the motif move past the parts reaching
- * across them (see `generateComponentLanes`), and how many lane constructions
- * failed for running such a lane through the motif: only a request refused
- * without them tries again with them, so every heart built without them keeps
- * its cuts. */
+ * across them, and a sunburst's lanes keep inside its border (see
+ * `generateComponentLanes`), and how many lane constructions failed for
+ * crossing those: only a request refused without them tries again with them,
+ * so every heart built without them keeps its cuts. */
 let passingLanes = false, passingLanesFailed = 0;
 const passingLanesSetAside = () => passingLanesFailed;
 function withPassingLanes<T>(build: () => T): T {
@@ -2007,8 +2007,8 @@ function retryComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<
 			const inner = generateComponentLanes(rings, frame, sunburst ? size * (request.crown ?? .8) : size,
 				request.scale, style, aligned, sunburst ? 2 : 0, passingLanes);
 			passes = inner.passes;
-			// Passing lanes that pass nothing were made already.
-			if (passingLanes && !passes) continue;
+			// Passing lanes that pass nothing were made already, but in a sunburst.
+			if (passingLanes && !passes && !sunburst) continue;
 			const construction = sunburst ? sunburstBorder(inner, size, request.crown) : inner;
 			rejected.push({ construction, recipe });
 			const result = improveSharedConnections(finishConstruction(request, construction, recipe, undefined, curveFitter));
@@ -2020,8 +2020,9 @@ function retryComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<
 			if (tips[0] === 0 && tips[1] === 0) return best;
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-			// A lane run through the motif crosses its outline (see `withPassingLanes`).
-			if (passes && !passingLanes && error.message === CUTS_CROSS) passingLanesFailed++;
+			// A lane run through the motif crosses its outline, or one round a
+			// sunburst's corner its border (see `withPassingLanes`).
+			if ((passes || sunburst) && !passingLanes && error.message === CUTS_CROSS) passingLanesFailed++;
 		}
 	}
 	return best;

@@ -1,5 +1,16 @@
 # Generator robustness results
 
+## Sunburst lanes inside its border, as a last resort
+
+Where nothing else builds, the lanes that keep a motif's separate parts apart
+also serve the sunburst, inside its border. Their legs stepped round the
+paper's corners, where the border's own lines reach the edges, and crossed
+them: the candy cane was refused at 45–55%. Only after such a refusal (see
+`withPassingLanes`), a sunburst's lanes now leave the circle nearer its
+diagonals and run straight to the edges, inside the border's corners. The
+candy cane is hard to cut there instead of refused; over the 49 featured
+motifs at 50/70/85% no other heart changes.
+
 ## Checked tips: approaches clear of the motif's other parts
 
 The checked tips keep a motif's separate parts in three lanes and route each
