@@ -51,7 +51,10 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
   try{const traced=exactTarget(target,cfg),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);outline=scaled&&exactCanStart(scaled,cfg)?scaled:null;}catch{outline=null;}
   let solution=await solveTarget(target,{...raw,timeLimit:Math.max(.1,seconds*(outline?.5:.75))},onProgress,options);
   // The fitter's template as it would be exported: the final repairs make
-  // most failing fits pass, and the exact search is only for those that still fail.
+  // most failing fits pass, and the exact search is only for those that still
+  // fail. (Also for those losing a region of the picture, a letter or an eye,
+  // it found nothing in time: on text and photographs its start runs out of
+  // time or the ends do not pair up.)
   const cfgFitted=settings(solution.automaticSettings||raw);
   let repaired=repairFinal(solution,cfgFitted,{onProgress,deadline:searchEnd});
   const fitted=assess(repaired.solution,cfgFitted);

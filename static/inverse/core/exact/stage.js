@@ -1,11 +1,13 @@
 /** The exact search as Mal's rescue for a picture: when the fitter's template
  * fails, the cuts are laid exactly on the outline traced from the picture's
- * mask, and that template replaces the fitter's when it passes and ranks
- * better: fewer kinds of failed check, closer to the mask (in steps of half a
- * percent, so closeness never buys hidden cuts), one template for both papers,
- * fewer hidden runs, shorter. */
+ * mask, and that template replaces the
+ * fitter's when it passes and ranks better: fewer kinds of failed check, every
+ * region of the picture kept, closer to the mask (in steps of half a percent,
+ * so closeness never buys hidden cuts), one template for both papers, fewer
+ * hidden runs, shorter. */
 import {validate, easeMetrics, sampleWeave} from '../validate.js';
 import {finalMaterialAudit} from '../geometric-material.js';
+import {auditFeatureFidelity} from '../feature-shapes.js';
 import {matchingSummary} from '../direct/matching.js';
 import {routedComplexity} from '../direct/routed-refinement.js';
 import {requestedSymmetry} from '../settings.js';
@@ -46,19 +48,20 @@ export function assess(solution, cfg) {
   const matching = matchingSummary(solution), hidden = routedComplexity(solution).hiddenRuns;
   const shared = Boolean(matching.identical || (matching.rmsTemplateDifferenceMm ?? Infinity) <= .1);
   const length = easeMetrics(solution, cfg).totalCutLength;
-  // A picture's traced outline is no design: the weave's disagreement with the
-  // mask counts, in steps of half a percent, so a closer fit never buys hidden
-  // cuts or a second template.
-  const error = maskError(solution);
-  return {passes: check.passed && paper, failures: kinds.size, issues: [...kinds], shared, hidden, length, maskError: error,
-    rank: [check.passed && paper ? 0 : 1, kinds.size, Math.round(error / .005), shared ? 0 : 1, hidden, Math.round(length)]};
+  // A picture's traced outline is no design: whether the weave keeps the
+  // picture's regions (the export's own check) counts, then its disagreement
+  // with the mask, in steps of half a percent, so a closer fit never buys
+  // hidden cuts or a second template.
+  const source = solution.graph.target.sourceImage, woven = source?.mask && source.resolution ? sampleWeave(solution, source.resolution) : null;
+  const error = woven ? maskError(source, woven) : 0;
+  let features = true;
+  try { features = !woven || auditFeatureFidelity(source, woven, cfg).passed; } catch { features = true; }
+  return {passes: check.passed && paper, failures: kinds.size, issues: [...kinds], shared, hidden, length, maskError: error, features,
+    rank: [check.passed && paper ? 0 : 1, kinds.size, features ? 0 : 1, Math.round(error / .005), shared ? 0 : 1, hidden, Math.round(length)]};
 }
 
-/** The share of the target's observed mask cells the solution weaves wrong. */
-function maskError(solution) {
-  const source = solution.graph.target.sourceImage;
-  if (!source?.mask || !source.resolution) return 0;
-  const woven = sampleWeave(solution, source.resolution);
+/** The share of the source's observed mask cells the `woven` weave gets wrong. */
+function maskError(source, woven) {
   let wrong = 0, counted = 0;
   for (let i = 0; i < woven.length; i++) if (!source.validMask || source.validMask[i]) { counted++; wrong += woven[i] !== source.mask[i]; }
   return counted ? wrong / counted : 0;

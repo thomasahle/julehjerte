@@ -29,7 +29,12 @@ minute.
    with the background or the lobe's colour on the outside, then the corners by
    robust Gauss–Newton. Kept only when each edge is pinned. On drawn hearts this
    takes the corners from 1–2% of a side off to about 0.1%, which is most of
-   the difference between a picture and its design.
+   the difference between a picture and its design. Whether the dialog says
+   the corners were found or asks the visitor to check them comes from the
+   silhouette, fitted on the paper probability alone: a crop within 3% of a
+   side of it is found, one over 10% off is for checking (on 160 scraped
+   photographs no crop within 3% was wrong; on 80 others, all 27 crops called
+   found were right; found crops went from 32 to 59 of 137).
 3. **The two papers** (`static/inverse/core/input.js`). In automatic colour
    mode a crop's papers are read off its lobes (each lobe is one paper), so a
    glued motif, a shadow or glare cannot take one of the two clusters. The

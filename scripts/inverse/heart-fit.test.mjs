@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {fitHeartSilhouette} from '../../static/inverse/neural/heart-fit.js';
-import {detectSilhouetteCrop} from '../../static/inverse/neural/photo-crop.js';
+import {detectSilhouetteCrop, checkedBySilhouette} from '../../static/inverse/neural/photo-crop.js';
 
 // A heart's paper probability on a 320² grid over a W x H picture: the square
 // with corners cleft, right, tip, left and a half-disc lobe on each upper side.
@@ -41,4 +41,22 @@ test('a silhouette crop needs a close fit and is always for review', () => {
   crop.quad.forEach((p, k) => assert.ok(Math.hypot(p[0] - quad[k][0], p[1] - quad[k][1]) < 6, `corner ${k}`));
   const noise = {...body, probability: body.probability.map((_, i) => (i * 7919) % 13 < 6 ? .9 : .1)};
   assert.equal(detectSilhouetteCrop({type: 'pixels', imageWidth: 640, imageHeight: 640}, noise), null);
+});
+
+test('a crop the silhouette agrees with is confident, one far from it is for review', () => {
+  const quad = [[300, 150], [500, 350], [300, 550], [100, 350]], side = 200 * Math.SQRT2;
+  const silhouette = {quad: quad.map(([x, y]) => [x + .02 * side, y]), iou: .97};
+  const crop = (dx, method = 'colour-locator', needsReview = true) => ({quad: quad.map(([x, y]) => [x + dx * side, y]), status: needsReview ? 'needs_review' : 'candidate', needsReview, provenance: {method}});
+  const near = checkedBySilhouette(crop(0), silhouette);
+  assert.equal(near.needsReview, false);
+  assert.equal(near.status, 'candidate');
+  assert.ok(Math.abs(near.provenance.silhouetteAgreement - .02) < 1e-9);
+  // Between the two, the crop keeps its own flag; far off, it is for review.
+  assert.equal(checkedBySilhouette(crop(-.04), silhouette).needsReview, true);
+  assert.equal(checkedBySilhouette(crop(-.04, 'colour-locator', false), silhouette).needsReview, false);
+  assert.equal(checkedBySilhouette(crop(.2, 'colour-locator', false), silhouette).needsReview, true);
+  // The silhouette's own crop, or a loose silhouette, decides nothing.
+  const own = crop(0, 'paper-silhouette');
+  assert.equal(checkedBySilhouette(own, silhouette), own);
+  assert.equal(checkedBySilhouette(crop(0), {...silhouette, iou: .8}).needsReview, true);
 });

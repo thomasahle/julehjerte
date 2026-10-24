@@ -9,15 +9,32 @@ import {predictPaperBody} from './runtime.js';
 /** The crops, each moved onto the heart's outline in the photograph where
  * that fits closely (refineHeartOutline): a found square's corners are
  * otherwise a percent or two of a side off, which costs a fine pattern several
- * percent of its cells. The silhouette fit is a second start. */
+ * percent of its cells. The silhouette fit is a second start, and its
+ * agreement says whether a crop needs review (checkedBySilhouette). */
 export async function detectPhotoCrops(input,options={}){
  let body=null;
  const found=await detectUnrefinedPhotoCrops(input,{...options,onBody:value=>{body=value;}});
  let silhouette=null;
  try{silhouette=body?fitHeartSilhouette(body):null;}catch{silhouette=null;}
  const starts=silhouette&&silhouette.iou>=.9?[silhouette.quad]:[];
- const candidates=found.candidates.map(candidate=>sharpenCrop(input,candidate,{starts,...options.outline}));
- return candidates.every((candidate,k)=>candidate===found.candidates[k])?found:{...found,candidates};
+ const candidates=found.candidates.map(candidate=>checkedBySilhouette(sharpenCrop(input,candidate,{starts,...options.outline}),silhouette));
+ if(candidates.every((candidate,k)=>candidate===found.candidates[k]))return found;
+ const status=['candidate','needs_review'].includes(found.status)&&candidates.length?(candidates[0].needsReview?'needs_review':'candidate'):found.status;
+ return{...found,status,candidates};
+}
+
+/** `candidate` with its review flag from the silhouette, which is fitted on the
+ * paper probability alone: corners within `close` of a side of it are
+ * confident, and over `far` off are for review, whatever found the crop. On
+ * 160 scraped photographs no crop within 3% was wrong, and most wrong crops
+ * were over 10% off. A crop from the silhouette itself has nothing
+ * independent to agree with and is left as it is. */
+export function checkedBySilhouette(candidate,silhouette,{close=.03,far=.1,minIou=.9}={}){
+ if(!silhouette||!(silhouette.iou>=minIou)||candidate.provenance?.method==='paper-silhouette')return candidate;
+ const q=candidate.quad,side=Math.hypot(q[1][0]-q[0][0],q[1][1]-q[0][1]);
+ const agreement=Math.max(...q.map((p,i)=>Math.hypot(p[0]-silhouette.quad[i][0],p[1]-silhouette.quad[i][1])))/side;
+ const needsReview=agreement<=close?false:agreement>far?true:candidate.needsReview===true;
+ return{...candidate,needsReview,status:needsReview?'needs_review':'candidate',provenance:{...candidate.provenance,silhouetteAgreement:agreement}};
 }
 
 /** `candidate` with its quad on the outline, when the fit is close and near.
