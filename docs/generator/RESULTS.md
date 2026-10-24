@@ -1,5 +1,17 @@
 # Generator robustness results
 
+## Equal squares ranked by their paper
+
+The motif on equal squares, a letter of the woven text frame in the centre
+square, took the first cell construction that finished; ranking its first
+four had made it 2.6 times slower. It now keeps, of the first three that
+finish, the one whose paper holds best, then with the fewest tips: they
+differ in how the cuts spread over the cell's panels and reach its gates,
+which the picture does not show. Over the 49 featured motifs at 50/70/85%:
+hearts that tear printed 80 mm wide fall from 55 to 47, places to tear from
+144 to 121, needle tips from 127 to 120; none tears more or changes status,
+and generating takes 5% longer. Small motifs are unchanged.
+
 ## Letters and motifs of several pieces reached every way, as a last resort
 
 A text cell's routes could not reach every piece of a letter or motif of

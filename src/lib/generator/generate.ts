@@ -2424,8 +2424,8 @@ function generateUsingRecipes(request: GeneratorRequest,
 		let last: unknown;
 		// The recipes differ in how the letters' cuts spread over panels and
 		// route to their gates, unseen: of a text's first few, the best paper.
-		// A motif in the board frames' cells (sized by `letterScale`) keeps the
-		// first: its several choices would each make more, slowly.
+		// A motif in the board frames' cells (sized by `letterScale`) compares
+		// its first three: its several choices each make more.
 		const tried = allRecipes && !regularGrid ? recipes : recipes.filter(recipe => !fittedOnly.has(recipe));
 		// Only those that show the letters as the first to finish does.
 		let look: string | undefined;
@@ -2446,7 +2446,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 					last = error;
 				}
 			}
-		})(), request.letterScale === undefined ? 4 : 1, true);
+		})(), request.letterScale === undefined ? 4 : 3, true);
 		if (best) return best;
 		if (!everyWay && pieced) everyWayPassed++;
 		throw last;
