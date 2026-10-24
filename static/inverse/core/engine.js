@@ -36,6 +36,9 @@ export const EXACT_SECONDS=60,EXACT_FINISH_SECONDS=10;
 /** With `exactCompete`, the least time left for the exact search to compete
  * with a passing fitted template. */
 const COMPETE_SECONDS=15;
+/** A second exact search, on the outline with tips rounded by TIP_ROUNDING_MM,
+ * when the first one's template fails and this much time is left. */
+const RETRY_SECONDS=8,TIP_ROUNDING_MM=.5;
 export async function design(target,raw={},onProgress=()=>{},options={}){const cfg=settings(raw),symmetry=exactSymmetry(cfg.symmetry);
   // A picture in Mal (`exactOutline`, a mask without curves): the fitter's
   // template stands when it passes. Otherwise the exact search lays the cuts
@@ -65,7 +68,19 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
   // With `exactCompete` it also competes with a passing one, given the time:
   // on drawn pictures it often cuts far less hidden.
   if(outline&&(!fitted.passes||cfg.exactCompete&&searchEnd-performance.now()>=1000*COMPETE_SECONDS)){
-    const search=await exactSearch(outline,solution,settings({...(solution.automaticSettings||raw),symmetry:cfg.symmetry}),{deadline:searchEnd,onProgress,symmetry,geometry:cfg.progressGeometry});
+    const cfgExact=settings({...(solution.automaticSettings||raw),symmetry:cfg.symmetry}),exactOptions={deadline:searchEnd,onProgress,symmetry,geometry:cfg.progressGeometry};
+    let search=await exactSearch(outline,solution,cfgExact,exactOptions);
+    // A template failing the cutting rules mostly follows a tip narrower than
+    // a cut's clearance: again, if the time allows, on the outline with tips
+    // rounded by TIP_ROUNDING_MM (raster.js openClose).
+    if(!search.found?.assessment.passes&&searchEnd-performance.now()>=1000*RETRY_SECONDS){
+      let rounded=null;
+      try{const source=target.sourceImage,radius=Math.max(1,Math.round(TIP_ROUNDING_MM*source.resolution/target.width)),traced=exactTarget(target,cfg,{open:radius}),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);rounded=scaled&&!exactCannotStart(scaled,cfg)?scaled:null;}catch{rounded=null;}
+      if(rounded){
+        const again=await exactSearch(rounded,solution,cfgExact,exactOptions);
+        if(again.found&&(!search.found||better(again.found.assessment,search.found.assessment)))search={...again,report:{...again.report,rounded:true}};
+      }
+    }
     report={...search.report,chosen:'fitter',fitter:fitted};
     // Only a passing one: a search that ends with rules broken may still
     // rank above a failing fit, but its cuts can cross, which Mal cannot show.
