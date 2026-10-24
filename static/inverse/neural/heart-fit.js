@@ -104,13 +104,24 @@ function largestFilled(probability, n, threshold) {
 /** {quad, iou, lobes, visible} or null: the silhouette fitted to
  * `probability` (`resolution`² values over `window` = [x0, y0, x1, y1] in
  * image pixels), null when less than `minVisible` of it is in the window. */
-export function fitHeartSilhouette({probability, resolution, window}, {threshold = .5, minVisible = .6} = {}) {
+export function fitHeartSilhouette(body, {threshold = null, minVisible = .6} = {}) {
+  // The network is surest of the lobes and often lukewarm (0.3–0.6) about the
+  // woven square itself, which a split at one half then leaves out: the fit
+  // at a half and at a quarter, whichever covers its paper better.
+  if (threshold === null) {
+    const fits = [.5, .25].map(t => fitAt(body, t, minVisible)).filter(Boolean);
+    return fits.sort((a, b) => b.iou - a.iou)[0] ?? null;
+  }
+  return fitAt(body, threshold, minVisible);
+}
+
+function fitAt({probability, resolution, window}, threshold, minVisible) {
   probability = largestFilled(probability, resolution, threshold);
   const coarse = gridOf(probability, resolution, window, 80);
   // Where the paper is: its centroid, extent and area (in image pixels).
   let mass = 0, mx = 0, my = 0;
   for (let j = 0; j < coarse.n; j++) for (let i = 0; i < coarse.n; i++) {
-    const q = coarse.prob[j * coarse.n + i] >= threshold ? 1 : 0;
+    const q = coarse.prob[j * coarse.n + i] >= .5 ? 1 : 0;
     mass += q; mx += q * coarse.xs[i]; my += q * coarse.ys[j];
   }
   if (mass < 20) return null;
