@@ -46,6 +46,8 @@
 		paperPair,
 		prepareImage,
 		refineCorners,
+		warmPaperModel,
+		type EngineProgress,
 		type ImportSettings
 	} from '$lib/inverse/engine';
 	import type { Mask } from '$lib/paint/mask';
@@ -160,6 +162,11 @@
 	let template = $state.raw<ReadTemplate | null>(null);
 	/** Whether the picture is still being looked at for a template. */
 	let readingTemplate = $state(false);
+	/**
+	 * The paper model's first download, while the crop search waits for it:
+	 * about 16 MB, which on a slow connection is long enough to need a bar.
+	 */
+	let modelLoad = $state<{ loaded: number; total: number } | null>(null);
 	let previewFound = $state<SymmetrySettings | null>(null);
 	let previewBusy = $state(false);
 	/** Why there is no preview, if the engine was asked and could not give one. */
@@ -208,7 +215,12 @@
 	// the live crop's locator is a fetch — so it is started here, while the
 	// visitor is still choosing a file, rather than under the first finger.
 	$effect(() => {
-		if (open) warmRectifier();
+		// The paper model too: most visitors take longer to choose a picture
+		// than it takes to download, so the first search rarely waits for it.
+		if (open) {
+			warmRectifier();
+			warmPaperModel();
+		}
 		else reset();
 	});
 
@@ -316,6 +328,7 @@
 		livePhoto = null;
 		template = null;
 		readingTemplate = false;
+		modelLoad = null;
 		// A gesture does not outlive the dialog. Escape while a corner is held
 		// closes the Modal and destroys the picture under the finger, so neither
 		// pointerup nor pointercancel ever reaches `endDrag` — and a `draggingCorner`
@@ -371,6 +384,13 @@
 		}
 		if (decoded.pixels) await findCorners();
 		else schedulePreview();
+	}
+
+	/** The paper model's download, from the crop search's progress. */
+	function followModel(event: EngineProgress): void {
+		const e = event as { stage?: string; loaded?: number; total?: number; done?: boolean };
+		if (e.stage !== 'paper-model') return;
+		modelLoad = e.done || !e.total ? null : { loaded: e.loaded ?? 0, total: e.total };
 	}
 
 	/** The template's weave as the preview, with the strips over first that "Byt farverne" says. */
@@ -435,7 +455,8 @@
 		try {
 			const crops = refine
 				? await refineCorners({ ...source, quad: corners })
-				: await detectCorners(source, roi);
+				: await detectCorners(source, roi, followModel);
+			modelLoad = null;
 			if (mine !== generation) return;
 			const candidate = crops.candidates[0];
 			if (candidate) useCandidate(candidate);
@@ -770,7 +791,9 @@
 		if (cropTool === 'region') return tr('paintCornersRegionHint');
 		switch (cornerStatus) {
 			case 'searching':
-				return tr('paintCornersSearching');
+				return modelLoad
+					? tr('paintModelLoading', { percent: Math.round((100 * modelLoad.loaded) / modelLoad.total) })
+					: tr('paintCornersSearching');
 			case 'found':
 				return tr('paintCornersFound');
 			case 'uncertain':
@@ -982,6 +1005,9 @@
 							{/if}
 						</div>
 						<p class="hint" role="status">{statusText}</p>
+						{#if modelLoad && cornerStatus === 'searching'}
+							<progress class="model-load" max={modelLoad.total} value={modelLoad.loaded}></progress>
+						{/if}
 					{/if}
 				</section>
 
@@ -1244,6 +1270,13 @@
 		width: 100%;
 		height: 100%;
 		pointer-events: none;
+	}
+
+	.model-load {
+		display: block;
+		width: 100%;
+		height: 6px;
+		accent-color: var(--deep);
 	}
 
 	.photo .crop {

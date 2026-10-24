@@ -107,7 +107,7 @@ export class InverseWorker {
   constructor(private url: string, private createWorker = (url: string) => new Worker(url)) {}
 
   request<T>(
-    action: 'prepare' | 'solve' | 'saved' | 'archive' | 'detect-crops' | 'refine-crop',
+    action: 'prepare' | 'solve' | 'saved' | 'archive' | 'detect-crops' | 'refine-crop' | 'warm-neural',
     input: ArtworkInput | undefined,
     settings: Record<string, unknown>,
     progress: (event: EngineProgress) => void = () => {}
