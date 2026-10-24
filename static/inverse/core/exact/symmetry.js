@@ -21,6 +21,9 @@ export function act(name, p, size = 12) {
   const [a, b, c, d] = ELEMENTS[name], h = size / 2;
   return [h + a * (p[0] - h) + b * (p[1] - h), h + c * (p[0] - h) + d * (p[1] - h)];
 }
+/** Positions this close (reference units) are one in a symmetric grid's
+ * closure under its stabilizer (positions.js). */
+export const MERGED = .05;
 export const swapsSheets = name => ELEMENTS[name][1] !== 0;
 export const determinant = name => { const [a, b, c, d] = ELEMENTS[name]; return a * d - b * c; };
 
@@ -105,9 +108,11 @@ export class StructureSymmetry {
         theirs.forEach((t, i) => { if (k < 0 || dist(t) < dist(theirs[k])) k = i; });
         if (k < 0) throw new Error(`${name} maps position ${j + 1} of edge ${e} onto an edge without positions.`);
         // Unambiguous: nearer than half the distance to the next position (a
-        // hand-drawn outline's images land a few hundredths off).
-        const second = Math.min(Infinity, ...theirs.filter((_, i) => i !== k).map(dist));
-        if (dist(theirs[k]) > Math.min(this.tolerance, second / 2))
+        // hand-drawn outline's images land a few hundredths off), or within the
+        // distance at which the grid's closure took an image as present
+        // (positions.js) and clearly nearer than the next.
+        const second = Math.min(Infinity, ...theirs.filter((_, i) => i !== k).map(dist)), d = dist(theirs[k]);
+        if (d > this.tolerance || (d > second / 2 && !(d < MERGED && d < .75 * second)))
           throw new Error(`${name} maps position ${j + 1} of edge ${e} onto no position.`);
         m.set(`${e},${j + 1}`, [f, k + 1]);
       });
