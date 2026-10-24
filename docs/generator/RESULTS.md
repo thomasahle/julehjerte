@@ -1,5 +1,16 @@
 # Generator robustness results
 
+## Nine strips at 85%: no specks in hidden cuts
+
+At a completion range's end (nine strips at 35.6, the 85% setting) a hidden
+cut stepped straight in from its switch point and then on to the drawn cut's
+corner 0.014 behind that step: the fitted cut turned back on itself in a
+speck, a needle and a sharp tip in both sheets, eight of each a heart. Points
+of a pulled-taut cut a hair apart (0.05) now go. Over the board circle at
+every completion and whole-motif size (735 hearts) only nine strips at 85%
+change: 30 hearts, none in status, each with 16 fewer corners and eight fewer
+needles (the heart [8,16] → [0,0], the star [8,20] → [0,4]).
+
 ## Nine strips at 90–91%: no hidden cut hooks round
 
 The completion of the circle on nine strips at 90–91% joins pairs of switch

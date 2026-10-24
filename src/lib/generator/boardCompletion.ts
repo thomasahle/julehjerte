@@ -422,6 +422,11 @@ function tighten(paths: Point[][], heights: number[], walls: Point[][], sides: (
 				fitsSegment(m, b, [{ room: clear }, { end: 1, room: clear }]) && (side !== 'centre' || !winds([a, m, b])))
 				kept = [a, m, b];
 		}
+		// Points a hair apart (a step straight in from a switch point, then the
+		// drawn cut's corner just behind it) make a cut turn back on itself in
+		// a speck: the later one goes.
+		kept = kept.filter((p, k) => k === 0 || k === kept.length - 1 || Math.hypot(p[0] - kept[k - 1][0], p[1] - kept[k - 1][1]) >= .05 &&
+			Math.hypot(p[0] - kept.at(-1)![0], p[1] - kept.at(-1)![1]) >= .05);
 		// The other three, turned: as far from this one as they were.
 		const gap = (a: Point[], b: Point[]) => Math.min(...open(a).map(s => Math.min(...open(b).map(t => segmentToSegment(s, t)))));
 		const turned = [1, 2, 3].map(q => kept.map(p => turn(p, q)));

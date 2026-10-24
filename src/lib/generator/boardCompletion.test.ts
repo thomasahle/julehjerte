@@ -44,6 +44,14 @@ describe('board circle completions', () => {
 				expect(apart(cuts[x], cuts[y]), `${label} ${x} ${y}`).toBeGreaterThan(.9);
 		}
 	});
+	it('leaves no speck in a hidden cut', () => {
+		// At a range's end (nine strips at 35.6, 85%) a step straight in from a
+		// switch point and the drawn cut's corner a hair behind it turned the
+		// cut back on itself in a 0.014 speck: a needle in both sheets.
+		for (const { strips, lo, hi, pattern } of [...BOARD_PATTERNS, ...WHOLE_PATTERNS]) for (const radius of [lo, (lo + hi) / 2, hi])
+			for (const cut of hiddenCuts(strips, radius, pattern)) cut.slice(1).forEach((q, i) =>
+				expect(Math.hypot(q[0] - cut[i][0], q[1] - cut[i][1]), `${strips} ${radius.toFixed(2)}`).toBeGreaterThan(.05));
+	});
 	it('never turns a hidden cut back on itself', () => {
 		// Two switch points whose chord lay just past the slant allowed from
 		// both left straight in and hooked round (nine strips at 90%), and a

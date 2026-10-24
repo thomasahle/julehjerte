@@ -915,7 +915,9 @@ way allowed instead, where that keeps clear, never on to a point back past its s
 zigzag on nine strips at 88%). One still turning sharply on the way is two straight stretches where
 that keeps clear, each leaving its switch point as steeply as allowed towards the other and meeting
 where they cross: two switch points whose chord lay just past 40° from both had left straight in and
-hooked round (nine strips at 90–91%). A spoke with no other spoke's gate or switch point in
+hooked round (nine strips at 90–91%). Points a hair apart go (a step straight in from a switch point
+and the drawn cut's corner just behind it had turned a cut back on itself in a speck, a needle in
+both sheets: nine strips at 85%). A spoke with no other spoke's gate or switch point in
 its turn runs straight out to its switch point once that keeps clear, or across to a point straight
 in from it and out (round to it, one whose gate lies past its switch point turned back on the motif's
 own cut to the gate in a needle: the star on seven strips at 88–90%, on nine at 82%). This halves the corners of the
