@@ -131,19 +131,23 @@ function symmetricGrid(outline, sym, spacing, floor, forced, extra) {
       else fixed.push(settle(n, L / 2));
     }
     const base = merged(outline, e0, grid(outline, e0, spacing, floor, more, fixed, near), added, .25);
-    // Closed under the stabilizer: each point's whole orbit, unless a position
-    // lies within `apart` of it already (on a hand-drawn outline an image lands
-    // a little off its original, and two switches that close degenerate).
-    // Mirror fixed points first, then corners, then the rest.
+    // Closed under the stabilizer: each point's whole orbit or none of it. A
+    // point within `apart` of a position, or with an image within `apart` of
+    // one, is (nearly) in that position's orbit already: on a traced outline
+    // an image lands a little off its original, and two switches that close
+    // degenerate. A point whose mirror image lands that close to itself is on
+    // the mirror: its fixed point. Mirror fixed points first, then corners,
+    // then the rest.
     const apart = MERGED, isCorner = s => outline.corners[e0].some(c => Math.abs(c - s) < 1e-9);
-    const closed = [];
+    const closed = [], within = (t, list) => list.some(c => outline.along(e0, t, c) < apart);
     const order = [...fixed.filter(f => base.some(b => Math.abs(f - b) < 1e-9)), ...base.filter(isCorner), ...base.filter(b => !isCorner(b))];
-    for (const s of order) {
-      if (closed.some(c => outline.along(e0, s, c) < apart)) continue;
-      for (const n of stab) {
-        const t = sym.arcImage(n, e0, s)[1];
-        if (closed.every(c => outline.along(e0, t, c) >= apart)) closed.push(t);
-      }
+    for (let s of order) {
+      for (const n of stab) if (sym.edge[n][e0][1] === -1 && outline.along(e0, sym.arcImage(n, e0, s)[1], s) < apart) s = settle(n, s);
+      if (within(s, closed)) continue;
+      const images = [];
+      for (const n of stab) { const t = sym.arcImage(n, e0, s)[1]; if (!within(t, images)) images.push(t); }
+      if (images.some(t => within(t, closed))) continue;
+      closed.push(...images);
     }
     // A position near a corner, on it; but only onto a corner whose images are
     // corners too. A traced outline's corner lands a little off its mirror
