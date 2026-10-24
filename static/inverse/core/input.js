@@ -175,7 +175,13 @@ export function preprocessPixels({rgba,imageWidth,imageHeight,quad=null,cropProv
   // which a third colour (a glued motif, a shadow, glare) cannot steal as it
   // can a two-cluster split of the square alone.
   const lobes=quad&&(settings.mode??'auto')==='auto'?lobeColours(rgba,imageWidth,imageHeight,quad):null;
-  const {rgb,validMask}=rectifyWithCoverage(rgba,imageWidth,imageHeight,n,quad,settings.background||'#ffffff'),quantized=quantize(rgb,{...settings,validMask,...(lobes?{mode:'lobes',lobes}:{})});
+  const {rgb,validMask}=rectifyWithCoverage(rgba,imageWidth,imageHeight,n,quad,settings.background||'#ffffff'),classified=quantize(rgb,{...settings,validMask,...(lobes?{mode:'lobes',lobes}:{})});
+  // A crop's outermost millimetre and a half is the least sure of the photo:
+  // a corner slightly off leaves slivers of a lobe or the table there, which
+  // no template keeps and the fidelity check then counts as lost features.
+  // It takes the colours just inside it (border.js), before anyone sees it.
+  const border=quad?stabilizeBorder(classified.mask,n,width,1.5,settings.minWidth??2):null;
+  const quantized=border?{...classified,mask:border.mask,metadata:{...classified.metadata,cropBorder:border.metadata}}:classified;
   const target=settings.algorithm==='direct'?{width,phase:0,curves:[],metadata:{input:'photograph for direct fitting',paperColors:colorsSafe(settings.paperColors),direct:true,preprocessing:{...quantized.metadata,actualResolution:n,traceUsed:false,traceChangeFraction:0,totalChangeFraction:0,sourceMaskComponents:components(quantized.mask,n,1).length,vectorSampleComponents:components(quantized.mask,n,1).length}},sourceImage:{mask:quantized.mask,probability:quantized.probability||Float32Array.from(quantized.mask),resolution:n}}:preprocessMask(quantized.mask,n,{...settings,width},quantized.metadata);
   if(validMask){
     target.sourceImage.validMask=validMask;

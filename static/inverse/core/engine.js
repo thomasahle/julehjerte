@@ -45,14 +45,14 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
   const seconds=Math.min(cfg.timeLimit,EXACT_SECONDS),start=performance.now(),deadline=start+1000*seconds,searchEnd=deadline-1000*EXACT_FINISH_SECONDS;
   let solution,report;
   if(raster){
-    // A picture: the fitter's template stands when it passes within 1% of the
-    // mask. On a traced outline exactness means little, so the exact search
-    // only rescues one that does not, with the requested symmetry's ties, and wins only by the
+    // A picture: the fitter's template stands when it passes. On a traced
+    // outline exactness means little, so the exact search only rescues one
+    // that does not, with the requested symmetry's ties, and wins only by the
     // ranking that counts the weave's disagreement with the mask.
     solution=await solveTarget(target,{...raw,timeLimit:Math.max(.1,seconds*.5)},onProgress,options);
     const fitted=assess(solution,settings(solution.automaticSettings||raw),{raster});
     report={chosen:'fitter',fitter:fitted};
-    const traced=fitted.passes&&fitted.maskError<=.01?null:exactTarget(target,{raster:cfg});
+    const traced=fitted.passes?null:exactTarget(target,{raster:cfg});
     if(traced){
       const search=await exactSearch(scaleTarget(traced,cfg.width,cfg.paperColors),solution,settings({...(solution.automaticSettings||raw),symmetry:cfg.symmetry}),{deadline:searchEnd,onProgress,symmetry,raster});
       report={...search.report,chosen:'fitter',fitter:fitted};
