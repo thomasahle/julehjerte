@@ -213,6 +213,20 @@ from the fitter's template):
 - **Where it is better.** On drawn pictures it often cuts far less hidden:
   alhambra 61 mm against the fitter's 318 at 0.23% against 0.25% from the mask;
   the photographs it was taking before, 113 against 720 mm and 45 against 278.
+  Run on all 64 folded design masks next to the fitter (13 have a symmetry
+  within each curve, which it cannot keep): of 50, it finds a template for 41,
+  30 pass, and 17 rank above the fitter's (passing, regions, mask error in 0.5%
+  steps, one template, hidden cut), with hidden cut 2574 → 1637 mm and the
+  same one-template count. Capped at 16 s it keeps 16 of the 17 and adds about
+  6 s a design. On photographs it wins twice in 23 (23 mm) for about 11 s each,
+  and neither the start it takes nor how ragged the mask is tells the two
+  apart in advance. `exactCompete` (off by default) lets it compete, capped.
+- **What still stops it.** Its start on 6 of 50 designs: the fitter's template
+  reads onto the outline without the short hidden crossings between
+  near-touching shapes, and the topological search finds none in 30 s; its
+  templates' self-returns at sharp tips (8 of 11 failing ones), which a retry
+  on the outline with tips rounded by 0.5 mm passes for 3; HiGHS overrunning
+  its time at the root on a large model (amy-weave-1, 46 s for 26).
 
 ## Open
 
