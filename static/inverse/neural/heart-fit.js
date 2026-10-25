@@ -101,6 +101,50 @@ function largestFilled(probability, n, threshold) {
   return out;
 }
 
+/** Inside a selection `roi` ([x0, y0, x1, y1] image pixels) of an RGBA
+ * `input`, how far each place is from the background, as a probability like
+ * the paper network's (`resolution`² over the selection): the background is
+ * the colours holding at least `share` of the selection's outer `band` (pieces
+ * of this heart and its neighbours there hold less), and a place is heart
+ * beyond three times the background's own spread there (at least 20 in RGB).
+ * For papers the network and the colour locator do not see: printed patterns
+ * on a plain table or wall. */
+export function backgroundBody(input, roi, {resolution: n = 160, band = .07, clusters = 4, share = .3} = {}) {
+  const {imageWidth: W, imageHeight: H, rgba} = input, [x0, y0, x1, y1] = roi;
+  const col = new Float32Array(n * n * 3);
+  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
+    let r = 0, g = 0, b = 0;
+    for (const [dx, dy] of [[.25, .25], [.75, .25], [.25, .75], [.75, .75]]) {
+      const x = Math.min(W - 1, Math.floor(x0 + (i + dx) * (x1 - x0) / n)), y = Math.min(H - 1, Math.floor(y0 + (j + dy) * (y1 - y0) / n)), p = 4 * (y * W + x);
+      r += rgba[p]; g += rgba[p + 1]; b += rgba[p + 2];
+    }
+    col.set([r / 4, g / 4, b / 4], 3 * (j * n + i));
+  }
+  const m = Math.max(1, Math.round(band * n)), border = [];
+  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) if (i < m || j < m || i >= n - m || j >= n - m) border.push(j * n + i);
+  const dist = (c, q) => Math.hypot(c[0] - col[3 * q], c[1] - col[3 * q + 1], c[2] - col[3 * q + 2]);
+  const seed = c => border[Math.floor((c + .5) * border.length / clusters)];
+  let centres = Array.from({length: clusters}, (_, c) => Array.from(col.subarray(3 * seed(c), 3 * seed(c) + 3))), counts = [];
+  for (let round = 0; round < 15; round++) {
+    const sum = centres.map(() => [0, 0, 0, 0]);
+    for (const q of border) {
+      let best = 0;
+      centres.forEach((c, t) => { if (dist(c, q) < dist(centres[best], q)) best = t; });
+      for (let k = 0; k < 3; k++) sum[best][k] += col[3 * q + k];
+      sum[best][3]++;
+    }
+    centres = sum.map((s, t) => s[3] ? [s[0] / s[3], s[1] / s[3], s[2] / s[3]] : centres[t]);
+    counts = sum.map(s => s[3]);
+  }
+  const background = centres.filter((_, t) => counts[t] >= share * border.length);
+  if (!background.length) return null;
+  const d = new Float32Array(n * n);
+  for (let q = 0; q < n * n; q++) d[q] = Math.min(...background.map(c => dist(c, q)));
+  const own = border.map(q => d[q]).filter(v => v < 60).sort((a, b) => a - b);
+  const limit = Math.max(20, 3 * (own[Math.floor(.9 * own.length)] ?? 10)), ramp = limit / 3;
+  return {probability: Float32Array.from(d, v => Math.min(1, Math.max(0, .5 + (v - limit) / (2 * ramp)))), resolution: n, window: [x0, y0, x1, y1]};
+}
+
 /** {quad, iou, lobes, visible} or null: the silhouette fitted to
  * `probability` (`resolution`² values over `window` = [x0, y0, x1, y1] in
  * image pixels), null when less than `minVisible` of it is in the window. */

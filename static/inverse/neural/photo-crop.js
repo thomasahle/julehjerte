@@ -1,6 +1,6 @@
 /** Whole-image automatic suggestions. Manual regions and corners stay explicit. */
 import {detectHeartCrops} from '../core/crop.js';
-import {fitHeartSilhouette,refineHeartOutline} from './heart-fit.js';
+import {fitHeartSilhouette,refineHeartOutline,backgroundBody} from './heart-fit.js';
 import {detectForegroundCrop} from './foreground-crop.js';
 import {detectBodyCrop} from './body-crop.js';
 import {selectWholeBodyPhotoCrop} from './crop-selection.js';
@@ -65,7 +65,7 @@ async function detectUnrefinedPhotoCrops(input,{roi=input.roi,onProgress=()=>{},
  // not override it. A colour-based crowded-frame warning, however, can be a
  // false split of one heart; the learned locator applies its own component
  // and whole-body checks before replacing that unresolved suggestion.
- if(roi)return production;
+ if(roi)return production.candidates?.length?production:selectedSilhouette(input,roi,production);
  try{
   // The paper model's first load reports its bytes (stage 'paper-model').
   const body=await predictBody(input,{onProgress});check();if(!body)return production;
@@ -89,6 +89,18 @@ async function detectUnrefinedPhotoCrops(input,{roi=input.roi,onProgress=()=>{},
      modelSha256:body.modelSha256,bodyReview:decision}})),
    bodyReview:decision};
  }catch(error){check();return{...production,bodyReview:{status:'unavailable',reason:error.message}};}
+}
+
+/** In a selection nothing else found a heart in, the heart as what differs
+ * from the selection's background (backgroundBody), its silhouette fitted
+ * when it covers that closely (IoU at least `minIou`): printed papers the
+ * colour locator cannot split into two. For review, as every selection is. */
+export function selectedSilhouette(input,roi,detection,{minIou=.85}={}){
+ let fit=null;
+ try{const body=backgroundBody(input,roi);fit=body?fitHeartSilhouette(body):null;}catch{fit=null;}
+ if(!fit||!(fit.iou>=minIou))return detection;
+ return{...detection,status:'needs_review',candidates:[{quad:fit.quad,status:'needs_review',needsReview:true,warnings:[],
+  provenance:{method:'background-silhouette',iou:fit.iou,lobes:fit.lobes,colourEvidenceUsed:false,humanReviewed:false}}]};
 }
 
 /** A crop from the silhouette fit (heart-fit.js) when it covers the paper
