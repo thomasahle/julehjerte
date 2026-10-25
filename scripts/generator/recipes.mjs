@@ -34,6 +34,16 @@ try {
 	const { cutTipCounts } = await load('/src/lib/generator/cutQuality.ts');
 	const paper = await load('/src/lib/geometry/paperNecks.ts').catch(() => null), weak = design => paper ? paper.paperFaults(design).weak : 0;
 	const { inferOverlapRect } = await load('/src/lib/utils/overlapRect.ts');
+	const { rasterizeDesign } = await load('/src/lib/paint/rasterize.ts');
+	// How far two hearts' woven pictures are apart, as a share of a 200 × 200 raster: a recipe may
+	// not change what a size shows (the generator keeps some motifs whole past the touching circle,
+	// or places them on their enclosing circle, which the plain picture does not).
+	const apart = (a, b) => {
+		const A = rasterizeDesign(a, 200).data, B = rasterizeDesign(b, 200).data;
+		let d = 0;
+		for (let i = 0; i < A.length; i++) d += A[i] !== B[i];
+		return d / A.length;
+	};
 	// A heart's measures, in the order they decide: places its paper may tear (weak necks and
 	// needles), sharp tips, turns over 25° along its hidden cuts (where the picture has one colour
 	// on both sides), its cuts' length.
@@ -218,8 +228,9 @@ try {
 				const made = fromStoredRecipe(request(step.p / 100), [{ ...recipe, steps: [step.p] }]);
 				if (!made) continue;
 				const rings = picture(request(step.p / 100)).rings;
-				step.own ??= (() => { try { const own = generate(request(step.p / 100)); return own.hardToCut ? null : measures(own.design, rings); } catch { return null; } })();
-				if (step.own && !better(measures(made.design, rings), step.own)) continue;
+				step.own ??= (() => { try { const own = generate(request(step.p / 100)); return { design: own.design, measures: own.hardToCut ? null : measures(own.design, rings) }; } catch { return null; } })();
+				if (step.own && apart(made.design, step.own.design) > .005) continue;
+				if (step.own?.measures && !better(measures(made.design, rings), step.own.measures)) continue;
 				recipe.steps.push(step.p);
 				covered.add(step.p);
 			}

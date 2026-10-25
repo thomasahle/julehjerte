@@ -47,6 +47,14 @@ does not lower the places the paper may tear must not be much busier than
 the generator's (a quarter more hidden turns, a twentieth more length) to
 win by a sharp tip: the snowflake's at 72–77% had twice the turns.
 
+Then a stored heart must show the same picture as the generator's own (within
+half a percent of a raster): the recipes were solved on the plain picture,
+while the generator keeps the diamond whole at 80–85% (the circle in the edge
+squares' colour, half the raster apart) and places the star on its enclosing
+circle at 88–96% (1–8% apart). The diamond's recipes go, and the star's on
+five strips at 88–96% and on seven at 92% and 98–100%: the star keeps 53, 37
+and 26 sizes on three, five and seven strips.
+
 ## The sunburst's crown narrows where its motif crowds the circle
 
 The sunburst's circle is four fifths of its frame, and the frame stops at the

@@ -64,6 +64,13 @@ strips keeps its own four short symmetric cuts: the solved one meets the
 heart's curve at two sharp tips.) It tries up to four solves a group and writes the motif's file for
 the frame, replacing that board's recipes.
 
+A recipe may not change what a size shows: its heart's woven picture must be
+within half a percent of the generator's own. The plain picture is not always
+the generator's: on a board past the touching circle it keeps some motifs
+whole (the diamond at 80–85%, the circle in the edge squares' colour) and
+places large ones on their enclosing circle (the star at 88–96%), as the page
+learns from the hearts it has made. Those sizes keep the generator's heart.
+
 A motif drawn mirror-symmetric is solved with the heart's two halves tied: a
 few seconds a solve rather than minutes, and the heart symmetric. The ties
 need the picture exactly symmetric, and a motif drawn by hand is off by a hair
