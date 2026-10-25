@@ -204,6 +204,13 @@ describe('complete motif frames', () => {
   expect(hardToCut).toBeUndefined();
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
  });
+ it('bends an empty side lane of the checked-tip frame a paper\'s width past a large motif', () => {
+  // At 80% the tree's widest boughs lay under 2 mm printed from the straight
+  // line between the side lane's held corners; bent out along its length, it holds.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Tree', contours: tree.contours as Ring[], colors, style: 'corners', scale: .8 });
+  expect(hardToCut).toBeUndefined();
+  expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
+ });
  it('keeps the double border\'s cuts a paper\'s width from the motif where theirs would tear in print', () => {
   // The church at the default size hung by paper under 2 mm in two places
   // printed 80 mm wide; its connections kept a paper's width off, it holds.
