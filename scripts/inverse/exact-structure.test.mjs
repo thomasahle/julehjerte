@@ -7,7 +7,7 @@ import {settings} from '../../static/inverse/core/settings.js';
 import {loadSVG} from '../../static/inverse/core/input.js';
 import {exactPositions} from '../../static/inverse/core/exact/positions.js';
 import {cheapBounds} from '../../static/inverse/core/exact/bounds.js';
-import {colouredRings, targetSegments} from '../../static/inverse/core/exact/target.js';
+import {colouredRings, targetSegments, joinNearTouchings} from '../../static/inverse/core/exact/target.js';
 
 // The reference solver's structures (minwit.build_from_segments) of eight
 // juleflet.dk designs, with the segments it built them from.
@@ -76,3 +76,33 @@ for (const [name, ref] of Object.entries(fixtures)) {
     assert.deepEqual({lb: b.lb, meet: b.meet, parity: b.parity, detached: b.detached}, ref.bounds);
   });
 }
+
+test('corners a sampled checker opened a fraction apart join into a touching; edges running close stay apart', () => {
+  // Reference units (12 to the square). Two squares' corners 0.03 apart (0.25 mm on a 100 mm heart).
+  const corners = [[[4, 0], [4, 4], [0, 4]], [[4.03, 8], [4.03, 4.03], [8, 4.03]]];
+  assert.equal(joinNearTouchings(corners, .072), 1);
+  assert.deepEqual(corners[0][1], corners[1][1]);
+  // Two edges 0.05 apart side by side: no corner, no join.
+  const parallel = [[[2, 4], [6, 4]], [[2, 4.05], [6, 4.05]]];
+  assert.equal(joinNearTouchings(parallel, .072), 0);
+  // A corner and a smooth curve passing it: the curve does not turn there.
+  const arc = Array.from({length: 41}, (_, k) => [7.04 + 3 * Math.cos(Math.PI * (5 / 6 + k / 120)), 4 + 3 * Math.sin(Math.PI * (5 / 6 + k / 120))]);
+  assert.equal(joinNearTouchings([[[4, 0], [4, 4], [0, 4]], arc], .072), 0);
+  // A traced corner chamfered by a pixel (two turns of 45 degrees) still is one.
+  const chamfered = [[[4, 0], [4, 3.98], [3.98, 4], [0, 4]], [[4.03, 8], [4.03, 4.03], [8, 4.03]]];
+  assert.equal(joinNearTouchings(chamfered, .072), 1);
+});
+
+test('a strip narrower than the joining distance is joined at one end, not both', () => {
+  // Two dark regions either side of a light strip 0.02 wide, 3 long: its four
+  // corners pair up across it at both ends.
+  const lines = [[[0, 4], [4, 4], [4, 7], [0, 7]], [[8, 4], [4.02, 4], [4.02, 7], [8, 7]]];
+  assert.equal(joinNearTouchings(lines, .072), 1);
+  // The strip keeps its width at the other end.
+  assert.ok([4, 7].some(y => Math.abs(lines[0].find(p => p[1] === y)?.[0] - 4) < 1e-12 && lines[1].some(p => p[1] === y && p[0] === 4.02)));
+});
+
+test('two corners a pixel apart along one boundary (a notch) do not join', () => {
+  const lines = [[[0, 4.02], [4, 4.02]], [[4, 4.02], [4, 4]], [[4, 4], [4.03, 4]], [[4.03, 4], [4.03, 0]]];
+  assert.equal(joinNearTouchings(lines, .072), 0);
+});

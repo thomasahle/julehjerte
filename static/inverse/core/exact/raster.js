@@ -3,6 +3,12 @@
  * with the border band stabilised first: an import's crop leaves strips of the
  * other colour along the edges, which would otherwise be outline there. */
 import {prepareMaskTrace} from '../input.js';
+import {SIZE} from './structure.js';
+
+/** Two corners of a picture's outline this close (mm) are one touching:
+ * sampled checker corners open 0.04-0.5 mm; at 0.8-1 mm a design's own gaps
+ * (lilje1's petals) began to close. */
+const NEAR_TOUCH_MM = .6;
 
 /** The mask without features one pixel thin, of either colour: a pixel stays
  * only inside a 2 x 2 block of its colour (an opening, judged on the original
@@ -57,5 +63,7 @@ export function rasterOutline(target, cfg, {tolerance = .35, smoothRadius = 0, b
   const trace = prepareMaskTrace(mask, source.resolution, {...cfg, width: target.width, maxSpan: 40, smoothRadius, snapRadius: 0,
     borderRadius, polygonal: false, mixedBoundaries: true});
   const traced = trace(tolerance).target;
-  return traced.curves.length ? {...traced, sourceImage: source, metadata: {...target.metadata, ...traced.metadata}} : null;
+  // Corners of the picture nearly touching join (exact/target.js).
+  const nearTouch = NEAR_TOUCH_MM * SIZE / (cfg.width || 100);
+  return traced.curves.length ? {...traced, sourceImage: source, metadata: {...target.metadata, ...traced.metadata, nearTouch}} : null;
 }

@@ -142,6 +142,12 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   } catch (error) {
     return {found: null, report: {...report, error: String(error.message || error)}};
   }
+  // Corners joined on one side of a mirror but not on the other (exact/target.js
+  // joinNearTouchings) leave the outline not quite symmetric: then without them.
+  if (found.error && /not symmetric/.test(found.error) && outline.metadata?.nearTouch > 0) {
+    const again = await exactSearch({...outline, metadata: {...outline.metadata, nearTouch: 0}}, template, cfg, {deadline, reserve, onProgress, symmetry, geometry, refine});
+    return {...again, report: {...again.report, unjoined: found.error}};
+  }
   if (found.error) return {found: null, report: {...report, error: found.error, search: found.report}};
   let solution = found.solution, assessment = assess(solution, cfg);
   // Redrawn on the mask's own edge: taken when it lies nearer the mask and
