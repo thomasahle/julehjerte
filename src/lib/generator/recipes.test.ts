@@ -41,6 +41,23 @@ describe('stored recipes', () => {
 		expect(hidden[1].to).toEqual([40, 20]);
 	});
 
+	it('draws a place where two rings cross at a vertex of neither at their crossing, for both stretches', () => {
+		// The first square's right side crosses the second's bottom at (60, 30).
+		const rings = [square(0, 0, 60), square(30, 30, 60)], o = recipeOutline(rings);
+		// Named on the first ring, half way up its right side (corners 1 and 2:
+		// (60, 0) and (60, 60)), slightly off the crossing; the other ring as x.
+		const place = { r: 0, k: 1, u: .499, x: 1 };
+		const recipe: Recipe = {
+			style: 'board', steps: [70], gap: 3, sig: [4, 4],
+			A: [[{ v: 0, a: { r: 0, k: 1, u: 0 }, b: place, f: true }, { v: 1, a: place, b: { r: 1, k: 1, u: 0 }, f: true }]],
+			B: []
+		};
+		const edges = recipeEdges(recipe, o);
+		expect(edges[0].to).toEqual([60, 30]);
+		expect(edges[1].from).toEqual([60, 30]);
+		expect(edges.at(-1)!.to).toEqual([90, 30]);
+	});
+
 	it('is only chosen at the sizes and space it was checked at, on its own outline', () => {
 		const o = recipeOutline([square(20, 20, 60)]);
 		const recipe: Recipe = { style: 'board', strips: 5, steps: [71, 72], gap: 3, sig: [4], A: [], B: [] };
