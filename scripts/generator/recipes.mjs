@@ -163,7 +163,8 @@ try {
 			});
 			return best;
 		};
-		// Whether the picture changes colour across a piece: two rings' common side cancels (even–odd),
+		// Whether the picture changes colour across a piece (looked at a twentieth of a unit either side,
+		// or a quarter of the piece where it is shorter: a tooth of the outline): two rings' common side cancels (even–odd),
 		// and a cut along it is hidden though it lies on both rings.
 		const colourAt = (x, y) => o.rings.reduce((v, ring) => {
 			let c = false;
@@ -174,15 +175,18 @@ try {
 			return v ^ Number(c);
 		}, 0);
 		const edgeOfColour = (a, b) => {
-			const l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1, n = [-(b[1] - a[1]) / l * .05, (b[0] - a[0]) / l * .05], m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+			const l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1, e = Math.min(.05, l / 4), n = [-(b[1] - a[1]) / l * e, (b[0] - a[0]) / l * e], m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
 			return colourAt(m[0] + n[0], m[1] + n[1]) !== colourAt(m[0] - n[0], m[1] - n[1]);
 		};
 		const anchor = (p, only, plain = false) => {
-			// A corner of any ring there names the place.
+			// The nearest corner of any ring within the engine's merge (0.002 of its 12 units, 0.017 here)
+			// names the place: two corners closer than that are one point to the search (a hairline side).
+			let best = null;
 			for (let r = 0; r < o.rings.length; r++) for (const [k, i] of o.corners[r].entries()) {
-				const v = o.rings[r][i];
-				if (Math.abs(v[0] - p[0]) < 1e-4 && Math.abs(v[1] - p[1]) < 1e-4) return { r, k, u: 0 };
+				const v = o.rings[r][i], d = Math.hypot(v[0] - p[0], v[1] - p[1]);
+				if (d < .017 && (!best || d < best.d)) best = { r, k, d };
 			}
+			if (best) return { r: best.r, k: best.k, u: 0 };
 			// Two rings crossing at a vertex of neither: one place for every stretch there, on the first
 			// ring, the other as `x` (see recipes.ts).
 			if (!plain) {
