@@ -7,7 +7,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('$app/environment', () => ({ browser: true, dev: false }));
 
-const { isPageViewNavigation, trackColorMode, trackPageView } = await import('./analytics');
+const { isPageViewNavigation, trackColorMode, trackHeartDownload, trackMultiDownload, trackMultiLaserDownload, trackPageView } =
+	await import('./analytics');
 
 const nav = (from: string | null, to: string) => ({
 	from: from === null ? null : { url: new URL(from, 'https://juleflet.dk') },
@@ -91,5 +92,32 @@ describe('trackColorMode', () => {
 			['event', 'color_mode', { on: true, shuffle: 2 }],
 			['event', 'color_mode', { on: false }]
 		]);
+	});
+});
+
+describe('Plausible downloads', () => {
+	afterEach(() => {
+		delete (window as { plausible?: unknown }).plausible;
+	});
+
+	it('sends one Download per heart, with the heart and the file type', () => {
+		const plausible = vi.fn();
+		window.plausible = plausible;
+		trackHeartDownload('jul', 'JUL');
+		trackMultiDownload([
+			{ id: 'stjerne', name: 'Stjerne' },
+			{ id: 'classic-3x3', name: 'Klassisk 3×3' }
+		]);
+		trackMultiLaserDownload([{ id: 'sun', name: 'Sol' }], 'dxf', 120);
+		expect(plausible.mock.calls).toEqual([
+			['Download', { props: { heart: 'jul', file: 'pdf' } }],
+			['Download', { props: { heart: 'stjerne', file: 'pdf' } }],
+			['Download', { props: { heart: 'classic-3x3', file: 'pdf' } }],
+			['Download', { props: { heart: 'sun', file: 'dxf' } }]
+		]);
+	});
+
+	it('does nothing without Plausible', () => {
+		expect(() => trackHeartDownload('jul', 'JUL')).not.toThrow();
 	});
 });

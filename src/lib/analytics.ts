@@ -13,6 +13,16 @@ function trackEvent(
   window.gtag('event', eventName, params);
 }
 
+/**
+ * Send one heart's download to Plausible, as its "Download" goal with the
+ * heart's id and the file type as properties. Only downloads go there: GA
+ * keeps every event, and Plausible counts custom events against the plan.
+ */
+function trackPlausibleDownload(heartId: string, file: 'pdf' | 'svg' | 'dxf') {
+  if (!browser || typeof window.plausible !== 'function') return;
+  window.plausible('Download', { props: { heart: heartId, file } });
+}
+
 /** The two ends of a SvelteKit navigation, as far as page views care. */
 interface NavigationEnds {
   /**
@@ -85,6 +95,7 @@ export function trackHeartDownload(heartId: string, heartName: string) {
     download_id: newDownloadId(),
     download_count: 1,
   });
+  trackPlausibleDownload(heartId, 'pdf');
 }
 
 /**
@@ -102,6 +113,7 @@ export function trackMultiDownload(hearts: ReadonlyArray<{ id: string; name: str
       download_id: downloadId,
       download_count: hearts.length,
     });
+    trackPlausibleDownload(heart.id, 'pdf');
   }
   trackEvent('download_multi_hearts', {
     download_id: downloadId,
@@ -193,6 +205,7 @@ export function trackLaserDownload(heartId: string, heartName: string, format: '
     format,
     width_mm: widthMm,
   });
+  trackPlausibleDownload(heartId, format);
 }
 
 /**
@@ -215,6 +228,7 @@ export function trackMultiLaserDownload(
       download_id: downloadId,
       download_count: hearts.length,
     });
+    trackPlausibleDownload(heart.id, format);
   }
 }
 
