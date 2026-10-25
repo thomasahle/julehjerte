@@ -252,8 +252,12 @@ from the fitter's template):
   templates' self-returns at sharp tips (8 of 11 failing ones), which a retry
   on the outline with tips rounded by 0.5 mm passes for 3. A trace vertex of
   six curves (amy-pattern, stjernegitter), gone on the mask opened by a pixel.
-  Still: HiGHS overrunning its time at the root on a large model (amy-weave-1,
-  46 s for 26).
+  HiGHS overrunning its time at the root on a large model (amy-weave-1, 46 s
+  for 26): its presolve spent 41 s in probing and four other rules, checking
+  its time limit only between passes. They are now left out: amy-weave-1 takes
+  2 s, and on the 47 designs the exact search starts on the same templates come
+  out for 41, 34 pass instead of 33 (khatam), in 360 s instead of 552 (median
+  4.9 s instead of 7.6, slowest 31.6 instead of 47.6).
 
 ## Details lost on photographs (2026-10-25)
 

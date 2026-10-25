@@ -13,6 +13,13 @@ import {pointKey} from './structure.js';
 import {tokenKey} from './candidates.js';
 import {geometryNogoods, nogoodKey} from './nogoods.js';
 
+/** HiGHS presolve rules left out (its presolve_rule_off bits): dependent free
+ * columns (11), parallel rows and columns (13), sparsify (14), probing (15) and
+ * enumeration (16). On some models presolve spent 41 s in them, beyond its own
+ * time limit, which it checks only between passes (amy-weave-1: 44 s, now
+ * 2 s); on the others they took seconds and changed no template. */
+const SLOW_PRESOLVE_RULES = (1 << 11) | (1 << 13) | (1 << 14) | (1 << 15) | (1 << 16);
+
 /** Whether a face's hidden segments can be drawn without crossing (sat_weave.embeddable). */
 export function embeddable(cycles, pairs) {
   let rings = cycles.map(c => [...c]);
@@ -568,7 +575,7 @@ export class ExactModel {
     const stage = async (costs, until, relGap, enough, absGap = null, patience = 0) => {
       current = costs;
       setCosts(costs);
-      native.options.set({output_flag: false, mip_rel_gap: relGap, ...(absGap !== null ? {mip_abs_gap: absGap} : {})});
+      native.options.set({output_flag: false, presolve_rule_off: SLOW_PRESOLVE_RULES, mip_rel_gap: relGap, ...(absGap !== null ? {mip_abs_gap: absGap} : {})});
       let bound = -Infinity, status = 'time limit';
       for (let round = 0; round < 200; round++) {
         const left = (until - performance.now()) / 1000;
