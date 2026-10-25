@@ -1,5 +1,14 @@
 # Generator robustness results
 
+## Stored hidden cuts in the rays: the candy
+
+With the producer's place names fixed (63c17232), the candy's solves draw:
+three recipes cover all 46 of its sizes in the rays (55–100%), one straight
+hidden cut down its middle where the generator's hooked round it. Weak places
+at 80 mm 3 → 0, 17% less cut, the picture the same. Most other motifs whose
+own rays hearts are hard or tear solve but do not draw yet: the drawn recipe
+fails to compile ("Invalid A/B degree") at a place where pieces meet.
+
 ## Stored hidden cuts in the rays: yule goat, bauble, gingerbread man, reindeer
 
 The exact-outline search, started from the generator's own heart in the rays
