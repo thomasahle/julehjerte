@@ -261,7 +261,9 @@ from the fitter's template):
   neither the colour locator nor the silhouette finds the square (most of the
   remaining "no crop" photographs).
 - Fine motif detail (thin limbs, small stars, letters) the fitter cannot keep at
-  this size: shown with Mal's note.
+  this size: shown with Mal's note. Nor the exact search, even from an empty
+  start: on the gallery's text hearts it finds nothing passing; TAK's template
+  is 0.08% from the mask but its slits come closer than a strip allows.
 - The exact search rescues few photographs (its outline, traced from a noisy
   mask, is rarely a weavable structure in time); it rescues drawn ones.
 - Templates: slits that stop inside the square or meet in T-junctions (the site
