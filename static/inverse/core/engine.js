@@ -40,6 +40,11 @@ const COMPETE_SECONDS=15,COMPETE_CAP_SECONDS=16;
 /** A second exact search, on the outline with tips rounded by TIP_ROUNDING_MM,
  * when the first one's template fails and this much time is left. */
 const RETRY_SECONDS=8,TIP_ROUNDING_MM=.5;
+/** The fitter's share of the minute. A fitted template rarely needs the exact
+ * rescue, which takes the time the fitter leaves; on photographs more time
+ * keeps more of the motif's small regions (12 losing them: at 30 s 1 passed,
+ * at 45 s 2, at 60 s 5). */
+const FITTER_SHARE=.75;
 export async function design(target,raw={},onProgress=()=>{},options={}){const cfg=settings(raw),symmetry=exactSymmetry(cfg.symmetry);
   // A picture in Mal (`exactOutline`, a mask without curves): the fitter's
   // template stands when it passes. Otherwise the exact search lays the cuts
@@ -52,8 +57,7 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
   if(!exactOn){const deadline=performance.now()+1000*cfg.timeLimit,solution=await solveTarget(target,raw,onProgress,options);return finish(solution,settings(solution.automaticSettings||raw),onProgress,{deadline});}
   const seconds=Math.min(cfg.timeLimit,EXACT_SECONDS),start=performance.now(),deadline=start+1000*seconds,searchEnd=deadline-1000*EXACT_FINISH_SECONDS;
   // The outline traced from the mask first (tens of milliseconds): where its
-  // cut ends cannot pair up the exact search cannot start, and the fitter
-  // takes three quarters of the minute instead of half.
+  // cut ends cannot pair up the exact search cannot start.
   // A trace whose curves meet where the pixels only nearly touch (a vertex of
   // six curves) or a border sliver can stop it: then the mask opened by a
   // pixel or two first (raster.js openClose), a tenth of a second each.
@@ -61,7 +65,7 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
   for(const open of [0,1,2]){
     try{const traced=exactTarget(target,cfg,{open}),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);if(scaled){const why=exactCannotStart(scaled,cfg);if(!why){outline=scaled;break;}if(!open)cannot=why;}}catch(error){if(!open)cannot=String(error.message||error);}
   }
-  let solution=await solveTarget(target,{...raw,timeLimit:Math.max(.1,seconds*(outline?.5:.75))},onProgress,options);
+  let solution=await solveTarget(target,{...raw,timeLimit:Math.max(.1,seconds*FITTER_SHARE)},onProgress,options);
   // The fitter's template as it would be exported: the final repairs make
   // most failing fits pass, and the exact search is only for those that still
   // fail. (Also for those losing a region of the picture, a letter or an eye,

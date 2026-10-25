@@ -255,6 +255,27 @@ from the fitter's template):
   Still: HiGHS overrunning its time at the root on a large model (amy-weave-1,
   46 s for 26).
 
+## Details lost on photographs (2026-10-25)
+
+The 68 photographs whose template keeps every rule but loses a region of the
+motif (`tmp/e2e/fid/`): 303 regions lost in 58 of them, a median of two each,
+mostly small, median 11 mm² (a dot of about 3.5 mm), with a core 2-3 mm wide
+(174), 3-5 mm (64) or under a strip's 2 mm (64); 215 of them gone entirely, 39
+kept but opened to the background. They are not too thin to cut: they are dots
+and eyes a template could keep as islands, with hidden cuts out to them, and the
+fitter weighs them by their share of the square's cells, a fifth of a percent
+each. Its feature start does find templates keeping them (16-fold weight), but
+they lose to fewer slits on error, and its routing recovery gets a second or two.
+
+Time is what helps: the fitter alone on 12 of them passed 1 at 30 s, 2 at 45 s
+and 5 at 60 s. The minute leaves it 45 s, so it now gets three quarters of it
+instead of half (the exact rescue, which rarely runs, takes what it leaves): on
+all 68, 13 pass instead of 9, 270 regions are lost instead of 303, 15 lose none
+instead of 10, at the same median time and the slowest within the minute (60.9 s
+instead of 72.5 s). Putting the lost regions back as discs on the fitter's own
+weave and laying the exact search's cuts on that keeps one more star on the
+camel, but takes 20-28 s more and fails on other photographs; not used.
+
 ## Open
 
 - A pale lobe on a pale background: the paper network barely sees it, and
