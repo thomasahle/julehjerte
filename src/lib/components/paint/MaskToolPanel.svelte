@@ -8,29 +8,62 @@
 <script lang="ts">
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
 	import { Tooltip, TooltipContent, TooltipTrigger } from '$lib/components/ui/tooltip';
+	import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '$lib/components/ui/dropdown-menu';
 	import {
+		BulgeIcon,
+		ChecksIcon,
 		EraserIcon,
 		ImageIcon,
 		LineIcon,
 		PaintBucketIcon,
 		PencilIcon,
+		PushIcon,
 		RedoIcon,
 		SelectIcon,
+		SmudgeIcon,
 		SquareIcon,
 		TrashIcon,
+		TwirlIcon,
 		UndoIcon
 	} from '$lib/components/icons';
 	import type { IconProps } from '$lib/components/icons/types';
 	import type { Component } from 'svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import type { HeartColors } from '$lib/types/heart';
-	import { MIN_BRUSH_SIZE, MAX_BRUSH_SIZE, clampBrush, type BrushSize, type PaintTool, type PaintValue } from '$lib/paint/toolset';
+	import {
+		MIN_BRUSH_SIZE,
+		MAX_BRUSH_SIZE,
+		MIN_SMUDGE_SIZE,
+		MAX_SMUDGE_SIZE,
+		clampBrush,
+		clampSmudge,
+		type BrushShape,
+		type BrushSize,
+		type PaintTool,
+		type PaintValue,
+		type SmudgeMode
+	} from '$lib/paint/toolset';
+	import { checksKeepSymmetry } from '$lib/paint/tools';
+	import { NO_SYMMETRY, transformsFor, type SymmetrySettings } from '$lib/paint/symmetry';
 
 	interface Props {
 		tool: PaintTool;
 		onTool: (tool: PaintTool) => void;
 		brushSize: BrushSize;
 		onBrushSize: (size: BrushSize) => void;
+		/** The brush's head, round or square. */
+		brushShape?: BrushShape;
+		onBrushShape?: (shape: BrushShape) => void;
+		/** What Udtvær does: push, twirl or bulge. */
+		smudgeMode?: SmudgeMode;
+		onSmudgeMode?: (mode: SmudgeMode) => void;
+		/** The symmetries on, which an even board of Tern cannot always follow. */
+		symmetry?: SymmetrySettings;
+		/** A put-down selection holds the tools inside it. */
+		fenceHeld?: boolean;
+		onDeselect?: () => void;
+		/** Tern: lay an `n` × `n` board, over the mask or inside the selection. */
+		onChecks?: (n: number) => void;
 		/** Paper colour or XOR action; the eraser always paints the left paper. */
 		paintValue: PaintValue;
 		onPaintValue: (value: PaintValue) => void;
@@ -53,6 +86,14 @@
 		onTool,
 		brushSize,
 		onBrushSize,
+		brushShape = 'round',
+		onBrushShape = () => {},
+		smudgeMode = 'push',
+		onSmudgeMode = () => {},
+		symmetry = NO_SYMMETRY,
+		fenceHeld = false,
+		onDeselect = () => {},
+		onChecks = () => {},
 		paintValue,
 		onPaintValue,
 		colors,
@@ -69,15 +110,29 @@
 
 	const tr = (key: TranslationKey) => t(key, lang);
 
-	/** The six tools, their glyphs, and the letter that picks each one. */
+	/** The seven tools, their glyphs, and the letter that picks each one. */
 	const TOOLS: { id: PaintTool; label: TranslationKey; icon: Component<IconProps>; key: string }[] = [
 		{ id: 'pen', label: 'paintPen', icon: PencilIcon, key: 'P' },
 		{ id: 'eraser', label: 'paintEraser', icon: EraserIcon, key: 'E' },
 		{ id: 'fill', label: 'paintFill', icon: PaintBucketIcon, key: 'F' },
 		{ id: 'line', label: 'paintLine', icon: LineIcon, key: 'L' },
 		{ id: 'rect', label: 'paintRect', icon: SquareIcon, key: 'R' },
+		{ id: 'smudge', label: 'paintSmudge', icon: SmudgeIcon, key: 'U' },
 		{ id: 'select', label: 'paintSelect', icon: SelectIcon, key: 'M' }
 	];
+
+	/** Udtvær's three ways with the paper, each with its own glyph. */
+	const SMUDGE_MODES: { id: SmudgeMode; label: TranslationKey; icon: Component<IconProps> }[] = [
+		{ id: 'push', label: 'paintSmudgePush', icon: PushIcon },
+		{ id: 'twirl', label: 'paintSmudgeTwirl', icon: TwirlIcon },
+		{ id: 'bulge', label: 'paintSmudgeBulge', icon: BulgeIcon }
+	];
+
+	/** The boards Tern offers: a plain heart of three strips up to nine. */
+	const BOARDS = [3, 4, 5, 6, 7, 8, 9];
+
+	let transforms = $derived(transformsFor(symmetry));
+
 
 	/** The two history buttons, in the order a hand reaches for them. */
 	const HISTORY: { id: 'undo' | 'redo'; label: TranslationKey; icon: Component<IconProps> }[] = [
@@ -113,7 +168,30 @@
 	</div>
 
 	<section class="editor-panel">
-		<h2 class="panel-title">{tr('paintTools')}</h2>
+		<!-- Tern sits at the heading's far end: a way to start the mask over, like
+		     the two buttons above the panel, but one whose answer is painted with
+		     these tools, and the heading's row was free. -->
+		<div class="panel-head">
+			<h2 class="panel-title">{tr('paintTools')}</h2>
+			<DropdownMenu>
+				<DropdownMenuTrigger {disabled}>
+					{#snippet child({ props })}
+						<button {...props} type="button" class="checks-btn" title={tr(fenceHeld ? 'paintChecksInSelection' : 'paintChecksHint')}>
+							<ChecksIcon size={14} />
+							{tr('paintChecks')}
+						</button>
+					{/snippet}
+				</DropdownMenuTrigger>
+				<DropdownMenuContent align="start">
+					{#each BOARDS as n (n)}
+						{@const kept = checksKeepSymmetry(n, transforms)}
+						<DropdownMenuItem disabled={!kept} onSelect={() => onChecks(n)} title={kept ? undefined : tr('paintChecksEvenMirror')}>
+							{t('paintChecksSize', lang, { n })}
+						</DropdownMenuItem>
+					{/each}
+				</DropdownMenuContent>
+			</DropdownMenu>
+		</div>
 
 		<div class="tool-grid" role="group" aria-label={tr('paintTools')}>
 			{#each TOOLS as item (item.id)}
@@ -161,20 +239,67 @@
 			<p class="tool-hint" role="status">{tr('paintSelectionShort')}</p>
 		{/if}
 
+		<!-- Udtvær's three ways with the paper, only while it is the tool in hand:
+		     what each does is in its name and tooltip, and Alt's reversal in Hjælp. -->
+		{#if tool === 'smudge'}
+			<div class="smudge-modes" role="group" aria-label={tr('paintSmudgeModes')}>
+				{#each SMUDGE_MODES as mode (mode.id)}
+					<button
+						type="button"
+						class="mode-btn"
+						class:active={smudgeMode === mode.id}
+						aria-pressed={smudgeMode === mode.id}
+						title={tr('paintSmudgeAlt')}
+						onclick={() => onSmudgeMode(mode.id)}
+						{disabled}
+					>
+						<mode.icon size={16} />
+						{tr(mode.label)}
+					</button>
+				{/each}
+			</div>
+		{/if}
+
+		<!-- While a selection holds the tools, say so where the tools are, with the
+		     way out beside it: a stroke that stops at an edge nobody remembers
+		     drawing reads as a broken pen. -->
+		{#if fenceHeld}
+			<p class="tool-hint fence-note" role="status">
+				{tr('paintFenceActive')}
+				<button type="button" class="link-btn" onclick={onDeselect} {disabled}>{tr('paintDeselect')}</button>
+			</p>
+		{/if}
+
 		<label class="field brush-field">
 			<span class="field-label brush-label">
 				<span>{tr('paintBrush')}</span>
+				<span class="brush-heads" role="group" aria-label={tr('paintBrushShape')}>
+					{#each ['round', 'square'] as const as shape (shape)}
+						<button
+							type="button"
+							class="head-btn"
+							class:active={brushShape === shape}
+							aria-pressed={brushShape === shape}
+							aria-label={tr(shape === 'round' ? 'paintBrushRound' : 'paintBrushSquare')}
+							title={tr(shape === 'round' ? 'paintBrushRound' : 'paintBrushSquare')}
+							onclick={() => onBrushShape(shape)}
+							{disabled}
+						>
+							<span class="head {shape}" aria-hidden="true"></span>
+						</button>
+					{/each}
+				</span>
 				<output>{t('paintBrushRadius', lang, { size: brushSize })}</output>
 			</span>
 			<input
 				type="range"
-				min={MIN_BRUSH_SIZE}
-				max={MAX_BRUSH_SIZE}
+				min={tool === 'smudge' ? MIN_SMUDGE_SIZE : MIN_BRUSH_SIZE}
+				max={tool === 'smudge' ? MAX_SMUDGE_SIZE : MAX_BRUSH_SIZE}
 				step="1"
 				value={brushSize}
 				aria-label={tr('paintBrush')}
 				aria-valuetext={t('paintBrushRadius', lang, { size: brushSize })}
-				oninput={(event) => onBrushSize(clampBrush(event.currentTarget.valueAsNumber))}
+				oninput={(event) => onBrushSize((tool === 'smudge' ? clampSmudge : clampBrush)(event.currentTarget.valueAsNumber))}
 				{disabled}
 			/>
 		</label>
@@ -268,11 +393,138 @@
 		background: var(--white);
 	}
 
-	/* Six 40px icon buttons, as wide as the panel allows. */
+	.panel-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+	}
+
+	.checks-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		height: 26px;
+		padding: 0 10px;
+		border: 1.5px solid var(--line);
+		border-radius: 8px;
+		background: var(--white);
+		color: var(--green);
+		font: inherit;
+		font-size: 12px;
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	.checks-btn:hover:not(:disabled) {
+		background: var(--cream2);
+	}
+
+	.checks-btn:disabled {
+		opacity: 0.35;
+		cursor: not-allowed;
+	}
+
+	/* Seven 40px icon buttons, as wide as the panel allows. */
 	.tool-grid {
 		display: grid;
-		grid-template-columns: repeat(6, 1fr);
+		grid-template-columns: repeat(7, 1fr);
 		gap: 4px;
+	}
+
+	/* Udtvær's modes: three words with their glyphs, sharing the panel's width,
+	   in the tools' own square and colours. */
+	.smudge-modes {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 4px;
+	}
+
+	.mode-btn,
+	.head-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		padding: 0;
+		border: 1.5px solid var(--line);
+		border-radius: 10px;
+		background: var(--white);
+		color: var(--green);
+		font: inherit;
+		font-size: 13px;
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	.mode-btn {
+		height: 32px;
+	}
+
+	.mode-btn:hover:not(:disabled),
+	.head-btn:hover:not(:disabled) {
+		background: var(--cream2);
+	}
+
+	.mode-btn.active,
+	.head-btn.active {
+		background: var(--green);
+		border-color: var(--green);
+		color: var(--white);
+	}
+
+	.mode-btn:disabled,
+	.head-btn:disabled {
+		opacity: 0.35;
+		cursor: not-allowed;
+	}
+
+	.fence-note {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0 6px;
+		align-items: baseline;
+	}
+
+	.link-btn {
+		padding: 0;
+		border: 0;
+		background: none;
+		color: var(--green);
+		font: inherit;
+		font-weight: 600;
+		text-decoration: underline;
+		cursor: pointer;
+	}
+
+	/* The brush's two heads, as small as the label row they sit in. */
+	.brush-heads {
+		display: inline-flex;
+		gap: 3px;
+		margin-right: auto;
+	}
+
+	.head-btn {
+		width: 26px;
+		height: 20px;
+		border-radius: 6px;
+	}
+
+	.head {
+		display: block;
+		width: 9px;
+		height: 9px;
+		background: currentColor;
+	}
+
+	.head.round {
+		border-radius: 50%;
+	}
+
+	/* On the mask the square lies along the strips, which the heart turns on
+	   their corner: drawn as it will look on the drawing. */
+	.head.square {
+		transform: rotate(45deg) scale(0.9);
 	}
 
 	/* The tools and the two history buttons are one square under one name.

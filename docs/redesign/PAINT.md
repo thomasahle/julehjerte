@@ -59,7 +59,7 @@ of an overlay scrollbar until a gesture starts):
 
 - Row of two buttons: `Importér billede` (outline, opens the dialog) and `Ryd` (ghost, clears to all-0 after a
   confirm if the mask is not empty; uses the site `Modal`, no `confirm()`).
-- Panel "Værktøj": tools Pen, Viskelæder, Fyld, Linje, Rektangel, Markér as 40px icon buttons (lucide: pencil,
+- Panel "Værktøj": tools Pen, Viskelæder, Fyld, Linje, Rektangel, Udtvær, Markér as 40px icon buttons (lucide: pencil,
   eraser, paint-bucket, minus (rotated 45°) or a simple line glyph, square, square-dashed); a labelled brush-radius
   slider (1–40 cells, default 6) with its current value; "Maler med" offers the two paper swatches plus XOR.
   XOR inverts each covered cell once per gesture, including overlapping dabs and mirrored copies; pen, line,
@@ -103,7 +103,32 @@ of an overlay scrollbar until a gesture starts):
   All three panels in the column stand down — every control inside really disabled, which is what a screen reader
   reads — while the found heart is on screen, because there is no mask under the pointer then; "Tilbage til masken"
   brings them back.
-- Keyboard: P pen, E eraser, F fill, L line, R rectangle, M select, X swaps the painting colour, `[`/`]` brush size.
+- **Udtvær, Tern, the brush head and a selection that stays** (the owner's request, 2026-10-25), for hearts like Hvirvel and
+  Glaskuppel, which are a plain board turned or swelled:
+  - *Brush head*: round or square, two small buttons in the brush label's row (no row of their own). The square
+    stands on the mask's axes, which are the strips, so on screen it is a diamond, and its outline is drawn so.
+  - *Udtvær* (lucide pointer, key U) moves the paper rather than painting it: **Skub** drags it along with the
+    pointer, **Hvirvl** turns it about the brush and **Bul** swells it out, both for as long as the pointer is held;
+    Alt turns the other way or draws in. Its three modes are one row under the tools, shown only while it is the
+    tool in hand. It has its own radius (8–200 cells, default 80, `[`/`]` in steps of 5), because a hvirvel turns most
+    of the square at once. A stroke never resamples its own output: it keeps the mask it started from and a field
+    of where each cell's paper comes from, reads bilinearly and cuts at one half (`src/lib/paint/smudge.ts`), so
+    the mask stays two papers and edges do not wear into steps. Under symmetry the dab is made at every image of
+    the brush in one summed step, so a symmetric mask stays exactly symmetric with nothing copied afterwards.
+  - *Tern* (lucide grid-3x3) sits at the far end of the Værktøj heading: a menu of 3 × 3 to 9 × 9, laying a plain
+    woven heart's board (corner squares the left paper, as a classic 3 × 3), over the whole mask or inside the
+    selection. One undo step, so no confirm. An even board is not its own mirror image within a lobe, so those
+    sizes are disabled, with the reason as their title, while Kurverne i hver lap is Spejlet.
+  - *A selection that stays*: Markér's frame, once put down (Enter, a click outside, or another tool), stays on
+    screen and holds every tool inside it — pen, eraser, line, rectangle, fill (walled in by it), Udtvær and Tern
+    — until Esc or the panel's "Fravælg" beside a one-line "Du maler kun i markeringen." Under symmetry its images
+    hold too, since the paint lands there as well. Esc on a patch not yet moved removes the selection; on a moved
+    one it puts the cells back and keeps the selection. With Markér in hand an unturned selection shows its
+    handles again and is taken up where it is grabbed; a new frame replaces it, a click that frames nothing is
+    Fravælg. Ryd and an import remove it. The tools paint as always and what a gesture wrote outside is put back
+    from the mask it began with (`keepOutside`), so each tool, its XOR and its mirrored copies keep inside alike.
+- Keyboard: P pen, E eraser, F fill, L line, R rectangle, U smudge, M select, X swaps the painting colour, `[`/`]`
+  brush size, Esc removes a put-down selection.
   A floating Markér patch owns Enter, Escape and Delete, but only where the canvas has the keyboard: Enter on a
   control the visitor has tabbed to presses the control, and pressing one by key puts the patch down first.
 

@@ -105,10 +105,10 @@ describe('MaskToolPanel', () => {
 	it('gives every tool button its own click', () => {
 		const panel = render();
 		try {
-			expect(panel.buttons).toHaveLength(6);
+			expect(panel.buttons).toHaveLength(7);
 			for (const button of panel.buttons) button.click();
 			flushSync();
-			expect(panel.picked).toEqual(['pen', 'eraser', 'fill', 'line', 'rect', 'select']);
+			expect(panel.picked).toEqual(['pen', 'eraser', 'fill', 'line', 'rect', 'smudge', 'select']);
 		} finally {
 			panel.cleanup();
 		}
@@ -129,7 +129,7 @@ describe('MaskToolPanel', () => {
 	it('really disables the tools while the engine is working', () => {
 		const panel = render({ disabled: true });
 		try {
-			expect(panel.buttons.map((b) => b.disabled)).toEqual([true, true, true, true, true, true]);
+			expect(panel.buttons.map((b) => b.disabled)).toEqual([true, true, true, true, true, true, true]);
 			panel.byLabel('Viskelæder')?.click();
 			flushSync();
 			expect(panel.picked).toEqual([]);
@@ -163,6 +163,64 @@ describe('MaskToolPanel', () => {
 			panel.historyButtons[1]?.click();
 			flushSync();
 			expect(panel.history).toEqual([]);
+		} finally {
+			panel.cleanup();
+		}
+	});
+
+	it('switches the brush between a round and a square head', () => {
+		const shapes: string[] = [];
+		const panel = render({ brushShape: 'round', onBrushShape: (shape) => shapes.push(shape) });
+		try {
+			const heads = [...panel.target.querySelectorAll<HTMLButtonElement>('.brush-heads button')];
+			expect(heads.map((b) => [b.getAttribute('aria-label'), b.getAttribute('aria-pressed')])).toEqual([
+				['Rund pensel', 'true'],
+				['Firkantet pensel', 'false']
+			]);
+			heads[1]!.click();
+			flushSync();
+			expect(shapes).toEqual(['square']);
+		} finally {
+			panel.cleanup();
+		}
+	});
+
+	it('offers Udtvær\'s three ways only while it is the tool in hand', () => {
+		const modes: string[] = [];
+		const pen = render();
+		try {
+			expect(pen.target.querySelector('.smudge-modes')).toBeNull();
+		} finally {
+			pen.cleanup();
+		}
+		const panel = render({ tool: 'smudge', smudgeMode: 'push', onSmudgeMode: (mode) => modes.push(mode) });
+		try {
+			const buttons = [...panel.target.querySelectorAll<HTMLButtonElement>('.smudge-modes button')];
+			expect(buttons.map((b) => b.textContent?.trim())).toEqual(['Skub', 'Hvirvl', 'Bul']);
+			expect(buttons.map((b) => b.getAttribute('aria-pressed'))).toEqual(['true', 'false', 'false']);
+			buttons[1]!.click();
+			flushSync();
+			expect(modes).toEqual(['twirl']);
+		} finally {
+			panel.cleanup();
+		}
+	});
+
+	it('says a selection holds the tools, with Fravælg beside it', () => {
+		let deselected = 0;
+		const free = render();
+		try {
+			expect(free.target.querySelector('.fence-note')).toBeNull();
+		} finally {
+			free.cleanup();
+		}
+		const panel = render({ fenceHeld: true, onDeselect: () => deselected++ });
+		try {
+			const note = panel.target.querySelector('.fence-note')!;
+			expect(note.textContent).toContain('kun i markeringen');
+			note.querySelector('button')!.click();
+			flushSync();
+			expect(deselected).toBe(1);
 		} finally {
 			panel.cleanup();
 		}

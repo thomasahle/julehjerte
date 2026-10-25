@@ -24,9 +24,10 @@
 	import { LOBE_OUTLINE_COLORS } from '$lib/editor/outlineColors';
 	import { inferOverlapRect } from '$lib/utils/overlapRect';
 	import type { HeartColors, HeartDesign } from '$lib/types/heart';
-	import { cloneMask, clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask } from '$lib/paint/mask';
-	import { applySymmetric, applySymmetricEdit, floodFill, rect, stroke } from '$lib/paint/tools';
+	import { cloneMask, clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask, type MaskRaster } from '$lib/paint/mask';
+	import { applySymmetric, applySymmetricEdit, checks, floodFill, rect, stroke } from '$lib/paint/tools';
 	import { createXorGesture } from '$lib/paint/xorGesture';
+	import { createSmudge, type Smudge } from '$lib/paint/smudge';
 	import {
 		GRAB_PX,
 		HANDLES,
@@ -37,10 +38,13 @@
 		contains,
 		cornerAt,
 		corners,
+		fenceOf,
 		isUnmoved,
+		keepOutside,
 		lift,
 		middleRect,
 		moveBy,
+		placementOf,
 		rectFrom,
 		resizeBy,
 		rotateHandleAt,
@@ -52,7 +56,7 @@
 		type Placement,
 		type Selection
 	} from '$lib/paint/selection';
-	import { transformsFor, type SymmetrySettings } from '$lib/paint/symmetry';
+	import { closedPointMaps, transformsFor, type SymmetrySettings } from '$lib/paint/symmetry';
 	import { colourChannels, missingPixelChannels } from '$lib/paint/drawHeart';
 	import { fitHeart, insideSquare, toMask, toSquare, type HeartLayout, type Pt } from '$lib/paint/heartLayout';
 	import {
@@ -62,7 +66,7 @@
 		type Frame,
 		type FrameAxis
 	} from '$lib/paint/frame';
-	import { shortcutFor, type PaintAction, type PaintTool, type PaintValue } from '$lib/paint/toolset';
+	import { shortcutFor, type BrushShape, type PaintAction, type PaintTool, type PaintValue, type SmudgeMode } from '$lib/paint/toolset';
 
 	interface Props {
 		mask: Mask | null;
@@ -71,6 +75,10 @@
 		tool: PaintTool;
 		/** Brush radius in mask cells. */
 		brush: number;
+		/** The brush's head, for the pen, the eraser and the line. */
+		brushShape?: BrushShape;
+		/** What Udtvær does to the paper under it. */
+		smudgeMode?: SmudgeMode;
 		/** Which paper the pen lays down; the eraser always lays down 0. */
 		paintValue: PaintValue;
 		/** Bumped by the page when the mask changed other than by painting. */
@@ -121,6 +129,11 @@
 		onEditEnd: () => void;
 		/** A keystroke the canvas recognised; the page owns the state it changes. */
 		onShortcut: (action: PaintAction) => void;
+		/**
+		 * A selection now holds the other tools inside it, or no longer does — for
+		 * the panel's Fravælg and for Tern, which then fills the selection.
+		 */
+		onFenceChange?: (held: boolean) => void;
 		lang: Language;
 	}
 
@@ -130,6 +143,8 @@
 		symmetry,
 		tool,
 		brush,
+		brushShape = 'round',
+		smudgeMode = 'push',
 		paintValue,
 		revision,
 		frame,
@@ -141,8 +156,13 @@
 		onEditStart,
 		onEditEnd,
 		onShortcut,
+		onFenceChange,
 		lang
 	}: Props = $props();
+
+	/** How far a held Hvirvl turns the paper at its centre each frame, and Bul swells it. */
+	const TWIRL_PER_FRAME = 0.03;
+	const BULGE_PER_FRAME = 0.03;
 
 	/** Air between the heart and the edges of the drawing band. */
 	const PADDING = 24;
@@ -191,9 +211,11 @@
 	/** Local CSS pixels, shared with the existing screen-to-mask transform. */
 	let hover = $state<Pt | null>(null);
 	let hoverVisible = $derived(!!hover && !!mask && !disabled && !keyboardBusy &&
-		(tool === 'pen' || tool === 'eraser' || tool === 'line') &&
+		(tool === 'pen' || tool === 'eraser' || tool === 'line' || tool === 'smudge') &&
 		insideSquare(toMask(layout, mask.size, hover.x, hover.y), mask.size));
 	let hoverRadius = $derived(mask ? brush * layout.scale / mask.size : 0);
+	/** A square head stands on the mask's axes, which the heart turns a quarter of a right angle. */
+	let hoverSquare = $derived(brushShape === 'square' && tool !== 'smudge');
 	let last: Pt | null = null;
 	let start: Pt | null = null;
 	let preview: { from: Pt; to: Pt } | null = null;
@@ -234,6 +256,26 @@
 	 * something happens, so the live region says nothing on the way in.
 	 */
 	let selectionNote = $state('');
+
+	/**
+	 * The selection once it is put down: where it stands, and the cells it holds
+	 * every other tool inside until Fravælg or Esc (PAINT.md §2). Geometry, not
+	 * cells, so undo and the symmetry rows leave it where it is; the cells are
+	 * worked out again whenever the symmetries change, because a selection's
+	 * mirror images are where its paint lands too.
+	 */
+	let fence: Placement | null = null;
+	let fenceCache: { placement: Placement; transforms: unknown; size: number; cells: Uint8Array } | null = null;
+	/** The mask as a gesture found it, to put back what it wrote outside the fence. */
+	let fenceBefore: MaskRaster | null = null;
+
+	// Udtvær's stroke, where the pointer is, and the frame loop that keeps
+	// turning or swelling the paper while the pointer is held still.
+	let smudge: Smudge | null = null;
+	let smudgeAt: Pt | null = null;
+	let smudgeReverse = false;
+	let smudgeLoop = 0;
+	let smudgeTime = 0;
 
 	/** The design tokens the canvas paints with, read once from the document. */
 	let chrome: {
@@ -345,6 +387,7 @@
 		// put down — at which point the hatch does cover it, which is the band
 		// saying what it always says: these cells are not the visitor's to keep.
 		drawSelection(ctx);
+		drawFence(ctx);
 
 		// A faint edge, so the square reads as the woven part even where the mask
 		// happens to be the same colour as the lobe beside it.
@@ -517,7 +560,7 @@
 			ctx.fillRect(from.x, from.y, to.x - from.x, to.y - from.y);
 		} else {
 			ctx.strokeStyle = colour;
-			ctx.lineCap = 'round';
+			ctx.lineCap = brushShape === 'square' ? 'square' : 'round';
 			ctx.lineWidth = (2 * brush + 1) / mask.size;
 			ctx.beginPath();
 			ctx.moveTo(from.x, from.y);
@@ -533,7 +576,7 @@
 		const proposed = cloneMask(mask);
 		const edit = createXorGesture(proposed, transforms);
 		if (tool === 'rect') edit.rect(preview.from, preview.to);
-		else edit.stroke(preview.from, preview.to, brush);
+		else edit.stroke(preview.from, preview.to, brush, brushShape);
 		const image = new ImageData(mask.size, mask.size);
 		for (let i = 0; i < mask.data.length; i++) {
 			if (proposed.data[i] === mask.data[i]) continue;
@@ -635,6 +678,24 @@
 			corners(placement).map((c) => ({ x: c.x / size, y: c.y / size }))
 		);
 		drawHandles(ctx, placement);
+	}
+
+	/**
+	 * The put-down selection, and its images where symmetry paints too: the same
+	 * dashed frame the marquee wears, so it reads as the selection still. With
+	 * Markér in hand an unturned one has its handles back, to be taken up again.
+	 */
+	function drawFence(ctx: CanvasRenderingContext2D): void {
+		if (!mask || !fence || selection || marquee) return;
+		const size = mask.size, outline = corners(fence);
+		frameOf(ctx, outline.map((c) => ({ x: c.x / size, y: c.y / size })));
+		// The maps take cells to cells; a corner is a cell's edge, half a cell off.
+		for (const map of closedPointMaps(transforms))
+			frameOf(ctx, outline.map((c) => {
+				const q = map(c.x - 0.5, c.y - 0.5, size);
+				return { x: (q.x + 0.5) / size, y: (q.y + 0.5) / size };
+			}));
+		if (tool === 'select' && !fence.angle) drawHandles(ctx, fence);
 	}
 
 	/**
@@ -784,24 +845,94 @@
 	function commit(box: Box, value: 0 | 1): void {
 		if (!mask || isEmptyBox(box)) return;
 		const changed = transforms.length ? applySymmetric(mask, box, transforms, value) : box;
+		fenced(changed);
 		syncOffscreen(changed);
 		schedule();
+	}
+
+	/** The cells the put-down selection holds the tools inside, or null for the whole square. */
+	function fenceCells(): Uint8Array | null {
+		if (!fence || !mask) return null;
+		if (fenceCache?.placement !== fence || fenceCache.transforms !== transforms || fenceCache.size !== mask.size)
+			fenceCache = { placement: fence, transforms, size: mask.size, cells: fenceOf(fence, mask.size, transforms) };
+		return fenceCache.cells;
+	}
+
+	/** Put back whatever a gesture wrote outside the selection, within `box`. */
+	function fenced(box: Box): void {
+		const cells = fenceCells();
+		if (mask && cells && fenceBefore && !isEmptyBox(box)) keepOutside(mask, fenceBefore, cells, box);
+	}
+
+	/** Hold the tools inside a selection put down here, or (null) let them go anywhere. */
+	function setFence(next: Placement | null): void {
+		const held = !!fence;
+		fence = next;
+		if (held !== !!next) onFenceChange?.(!!next);
+		schedule();
+	}
+
+	/** Fravælg: the tools may paint anywhere again. A floating patch is put down first. */
+	export function deselect(): void {
+		if (selection) endSelection();
+		if (!fence) return;
+		setFence(null);
+		announce(t('paintSelectionRemoved', lang));
+	}
+
+	/**
+	 * Tern: an `n` × `n` checkerboard over the mask, or inside the selection when
+	 * there is one. One undo step, like a stroke.
+	 */
+	export function layChecks(n: number): void {
+		if (!mask || disabled) return;
+		if (selection) endSelection();
+		onEditStart();
+		const changed = checks(mask, n, fenceCells());
+		syncOffscreen(changed);
+		schedule();
+		onEditEnd();
+	}
+
+	/** Udtvær's dab where the pointer is held, for twirl and bulge, scaled to the frame's length. */
+	function smudgeFrame(time: number): void {
+		smudgeLoop = 0;
+		if (!smudge || !smudgeAt || !mask) return;
+		const step = Math.min(3, smudgeTime ? (time - smudgeTime) / (1000 / 60) : 1);
+		smudgeTime = time;
+		const sign = smudgeReverse ? -1 : 1;
+		const box = smudgeMode === 'twirl'
+			? smudge.twirl(smudgeAt, brush, sign * TWIRL_PER_FRAME * step)
+			: smudge.bulge(smudgeAt, brush, sign * BULGE_PER_FRAME * step);
+		fenced(box);
+		syncOffscreen(box);
+		schedule();
+		smudgeLoop = requestAnimationFrame(smudgeFrame);
+	}
+
+	/** End Udtvær's stroke: the loop stops, and the stroke's kept mask goes. */
+	function stopSmudge(): void {
+		if (smudgeLoop) cancelAnimationFrame(smudgeLoop);
+		smudgeLoop = 0;
+		smudgeTime = 0;
+		smudge = null;
+		smudgeAt = null;
 	}
 
 	/**
 	 * What the pointer would take hold of: the turner, one corner, the patch
 	 * itself, or nothing — which is the click that puts the selection down.
 	 */
-	function grabAt(point: Pt): Handle | 'rotate' | 'inside' | null {
-		if (!selection) return null;
+	function grabAt(point: Pt, placement = selection?.placement): Handle | 'rotate' | 'inside' | null {
+		if (!placement) return null;
 		const reach = GRAB_PX * cellsPerPixel();
-		const turner = rotateHandleAt(selection.placement, ROTATE_GAP_PX * cellsPerPixel());
+		const turner = rotateHandleAt(placement, ROTATE_GAP_PX * cellsPerPixel());
 		if (Math.hypot(point.x - turner.x, point.y - turner.y) <= reach) return 'rotate';
 		for (const handle of HANDLES) {
-			const c = cornerAt(selection.placement, handle);
+			const c = cornerAt(placement, handle);
 			if (Math.hypot(point.x - c.x, point.y - c.y) <= reach) return handle;
 		}
-		return contains(selection.placement, point) ? 'inside' : null;
+		return contains(placement, point) ? 'inside' : null;
 	}
 
 	/**
@@ -857,6 +988,8 @@
 	function endSelection(erase = false): void {
 		const sel = selection;
 		dropSelection();
+		// Put down, the selection stays where it was put, holding the other tools.
+		if (sel) setFence({ ...sel.placement });
 		if (sel && mask && (erase || !isUnmoved(sel))) {
 			onEditStart();
 			spread(erase ? clearSelection(mask, sel) : commitCells(mask, sel));
@@ -884,6 +1017,14 @@
 	/** The selection tool's own gestures; the painting tools never reach this. */
 	function selectPointerDown(event: PointerEvent, point: Pt): void {
 		if (!mask) return;
+		// A put-down selection is taken up again where it is grabbed, as long as
+		// it stands square: a turned one has no rectangle of cells to lift.
+		if (!selection && fence && !fence.angle && grabAt(point, fence)) {
+			selection = lift(mask, clampBox(mask, fence.cx - fence.width / 2, fence.cy - fence.height / 2,
+				fence.cx + fence.width / 2, fence.cy + fence.height / 2));
+			patch = null;
+			patchFor = null;
+		}
 		const grab = grabAt(point);
 		if (grab && selection) {
 			pointerId = event.pointerId;
@@ -900,6 +1041,8 @@
 		// lands on the square, the start of the next frame in the same gesture.
 		if (selection) endSelection();
 		if (!insideSquare(point, mask.size)) return;
+		// A new frame replaces the selection; a click that frames nothing is Fravælg.
+		setFence(null);
 		pointerId = event.pointerId;
 		canvasEl?.setPointerCapture(event.pointerId);
 		selectionDrag = { kind: 'marquee', from: point };
@@ -936,6 +1079,7 @@
 			patch = null;
 			patchFor = null;
 			if (selection) announceSelection(selection);
+			setFence(selection ? { ...selection.placement } : null);
 		}
 		selectionDrag = null;
 		releasePointer();
@@ -981,6 +1125,7 @@
 
 	function repaintXor(box: Box): void {
 		if (isEmptyBox(box)) return;
+		fenced(box);
 		syncOffscreen(box);
 		schedule();
 	}
@@ -1008,12 +1153,20 @@
 		pointerId = event.pointerId;
 		canvasEl?.setPointerCapture(event.pointerId);
 		onEditStart();
-		xorGesture = paintValue === 'xor' && tool !== 'eraser' ? createXorGesture(mask, transforms) : null;
+		fenceBefore = fence ? { size: mask.size, data: mask.data.slice(), ...(mask.validMask ? { validMask: mask.validMask.slice() } : {}) } : null;
 		updateHover(event);
+		if (tool === 'smudge') {
+			smudge = createSmudge(mask, transforms);
+			smudgeAt = last = point;
+			smudgeReverse = event.altKey;
+			if (smudgeMode !== 'push') smudgeLoop = requestAnimationFrame(smudgeFrame);
+			return;
+		}
+		xorGesture = paintValue === 'xor' && tool !== 'eraser' ? createXorGesture(mask, transforms) : null;
 		const value = toolValue();
 		if (tool === 'fill') {
-			if (xorGesture) repaintXor(xorGesture.fill(point.x, point.y));
-			else commit(floodFill(mask, point.x, point.y, value), value);
+			if (xorGesture) repaintXor(xorGesture.fill(point.x, point.y, fenceCells()));
+			else commit(floodFill(mask, point.x, point.y, value, fenceCells()), value);
 			finish();
 			return;
 		}
@@ -1024,8 +1177,8 @@
 			return;
 		}
 		last = point;
-		if (xorGesture) repaintXor(xorGesture.stroke(point, point, brush));
-		else commit(stroke(mask, point, point, { radius: brush, value }), value);
+		if (xorGesture) repaintXor(xorGesture.stroke(point, point, brush, brushShape));
+		else commit(stroke(mask, point, point, { radius: brush, value, shape: brushShape }), value);
 	}
 
 	function onPointerMove(event: PointerEvent): void {
@@ -1055,14 +1208,28 @@
 		// a line and not a row of dots.
 		const coalesced = event.getCoalescedEvents?.();
 		const steps = coalesced?.length ? coalesced : [event];
+		if (smudge) {
+			smudgeReverse = event.altKey;
+			let moved = emptyBox();
+			for (const step of steps) {
+				const point = pointAt(step);
+				if (!point) continue;
+				if (smudgeMode === 'push' && last) moved = unionBox(moved, smudge.push(last, point, brush));
+				last = smudgeAt = point;
+			}
+			fenced(moved);
+			if (!isEmptyBox(moved)) syncOffscreen(moved);
+			schedule();
+			return;
+		}
 		const value = toolValue();
 		let changed = emptyBox();
 		for (const step of steps) {
 			const point = pointAt(step);
 			if (!point) continue;
 			if (last) changed = unionBox(changed, xorGesture
-				? xorGesture.stroke(last, point, brush)
-				: stroke(mask, last, point, { radius: brush, value }));
+				? xorGesture.stroke(last, point, brush, brushShape)
+				: stroke(mask, last, point, { radius: brush, value, shape: brushShape }));
 			last = point;
 		}
 		if (xorGesture) repaintXor(changed);
@@ -1081,26 +1248,31 @@
 			selectPointerUp(pointAt(event) ?? marquee?.to ?? { x: 0, y: 0 });
 			return;
 		}
+		if (smudge) {
+			stopSmudge();
+			finish();
+			return;
+		}
 		if ((tool === 'line' || tool === 'rect') && start) {
 			const point = pointAt(event) ?? start;
 			const value = toolValue();
 			preview = null;
 			if (xorGesture) repaintXor(tool === 'rect'
 				? xorGesture.rect(start, point)
-				: xorGesture.stroke(start, point, brush));
+				: xorGesture.stroke(start, point, brush, brushShape));
 			else commit(
 				tool === 'rect'
 					? rect(mask, start, point, value)
-					: stroke(mask, start, point, { radius: brush, value }),
+					: stroke(mask, start, point, { radius: brush, value, shape: brushShape }),
 				value
 			);
 		} else if (last) {
 			// The release can carry a newer position than the last move event.
 			const point = pointAt(event) ?? last;
-			if (xorGesture) repaintXor(xorGesture.stroke(last, point, brush));
+			if (xorGesture) repaintXor(xorGesture.stroke(last, point, brush, brushShape));
 			else {
 				const value = toolValue();
-				commit(stroke(mask, last, point, { radius: brush, value }), value);
+				commit(stroke(mask, last, point, { radius: brush, value, shape: brushShape }), value);
 			}
 		}
 		finish();
@@ -1135,6 +1307,8 @@
 		start = null;
 		last = null;
 		preview = null;
+		fenceBefore = null;
+		stopSmudge();
 	}
 
 	function finish(): void {
@@ -1218,7 +1392,11 @@
 			return true;
 		}
 		if (event.key === 'Escape') {
+			// A patch not yet moved is a selection the visitor no longer wants; a
+			// moved one goes back where it came from, still selected.
+			const unmoved = isUnmoved(sel);
 			dropSelection();
+			setFence(unmoved ? null : placementOf(sel.source));
 			announce(t('paintSelectionDropped', lang));
 			schedule();
 			return true;
@@ -1256,6 +1434,11 @@
 			event.preventDefault();
 			return;
 		}
+		if (event.key === 'Escape' && fence && !selection && pointerId === null && ours(event.target)) {
+			event.preventDefault();
+			deselect();
+			return;
+		}
 		const action = shortcutFor(event);
 		if (!action) return;
 		event.preventDefault();
@@ -1283,6 +1466,7 @@
 		return () => {
 			observer.disconnect();
 			if (rafHandle) cancelAnimationFrame(rafHandle);
+			stopSmudge();
 		};
 	});
 
@@ -1308,7 +1492,9 @@
 		void revision;
 		untrack(() => {
 			if (selection || marquee) {
+				const sel = selection;
 				dropSelection();
+				if (sel) setFence(placementOf(sel.source));
 				schedule();
 			}
 		});
@@ -1334,6 +1520,7 @@
 		void frame.mode;
 		void frame.shape;
 		void frame.size;
+		void tool;
 		// A whole design, replaced rather than mutated: reading the reference is
 		// enough, and reading into it would subscribe to a heart nobody edits here.
 		void candidate;
@@ -1387,6 +1574,7 @@
 	{#if hoverVisible && hover}
 		<div
 			class="brush-outline"
+			class:square={hoverSquare}
 			aria-hidden="true"
 			style:left="{hover.x}px"
 			style:top="{hover.y}px"
@@ -1408,6 +1596,12 @@
 		border-radius: 50%;
 		transform: translate(-50%, -50%);
 		box-sizing: border-box;
+	}
+
+	/* A square head lies along the strips, which the heart stands on their corner. */
+	.brush-outline.square {
+		border-radius: 0;
+		transform: translate(-50%, -50%) rotate(45deg);
 	}
 
 	.mask-canvas {

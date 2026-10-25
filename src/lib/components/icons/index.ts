@@ -17,7 +17,11 @@
  */
 export { default as ArrowLeftIcon } from '@lucide/svelte/icons/arrow-left';
 export { default as ArrowRightIcon } from '@lucide/svelte/icons/arrow-right';
+/** Udtvær's Bul: the paper swelled out from the brush. */
+export { default as BulgeIcon } from '@lucide/svelte/icons/expand';
 export { default as CheckIcon } from '@lucide/svelte/icons/check';
+/** Tern: the plain board a woven heart starts from. */
+export { default as ChecksIcon } from '@lucide/svelte/icons/grid-3x3';
 export { default as ChevronDownIcon } from '@lucide/svelte/icons/chevron-down';
 export { default as ChevronRightIcon } from '@lucide/svelte/icons/chevron-right';
 export { default as CloseIcon } from '@lucide/svelte/icons/x';
@@ -39,6 +43,8 @@ export { default as PaintbrushIcon } from '@lucide/svelte/icons/paintbrush';
 export { default as PencilIcon } from '@lucide/svelte/icons/pencil';
 export { default as PlusIcon } from '@lucide/svelte/icons/plus';
 export { default as PrinterIcon } from '@lucide/svelte/icons/printer';
+/** Udtvær's Skub: the paper dragged along with the brush. */
+export { default as PushIcon } from '@lucide/svelte/icons/move';
 export { default as RedoIcon } from '@lucide/svelte/icons/redo-2';
 export { default as RestartIcon } from '@lucide/svelte/icons/rotate-ccw';
 export { default as SaveIcon } from '@lucide/svelte/icons/save';
@@ -46,11 +52,15 @@ export { default as ScissorsIcon } from '@lucide/svelte/icons/scissors';
 /** The marquee of the selection tool. lucide's box-select ships no Svelte build. */
 export { default as SelectIcon } from '@lucide/svelte/icons/square-dashed';
 export { default as ShareIcon } from '@lucide/svelte/icons/share-2';
+/** Udtvær: a finger through wet paint, as the smudge tool is drawn everywhere. */
+export { default as SmudgeIcon } from '@lucide/svelte/icons/pointer';
 export { default as SquareIcon } from '@lucide/svelte/icons/square';
 export { default as StarIcon } from '@lucide/svelte/icons/star';
 export { default as SwapIcon } from '@lucide/svelte/icons/arrow-left-right';
 export { default as TabletIcon } from '@lucide/svelte/icons/tablet';
 export { default as TrashIcon } from '@lucide/svelte/icons/trash-2';
+/** Udtvær's Hvirvl: the paper turned about the brush. */
+export { default as TwirlIcon } from '@lucide/svelte/icons/tornado';
 export { default as UndoIcon } from '@lucide/svelte/icons/undo-2';
 export { default as UploadIcon } from '@lucide/svelte/icons/upload';
 

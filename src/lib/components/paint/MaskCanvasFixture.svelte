@@ -36,6 +36,16 @@
 	export function commitSelection(): void {
 		canvas?.commitSelection();
 	}
+
+	/** Fravælg, as the panel's button calls it. */
+	export function deselect(): void {
+		canvas?.deselect();
+	}
+
+	/** Tern, as the panel's menu calls it. */
+	export function layChecks(n: number): void {
+		canvas?.layChecks(n);
+	}
 </script>
 
 <MaskCanvas bind:this={canvas} {...rest} tool={current} brush={currentBrush} disabled={currentDisabled} />

@@ -74,11 +74,16 @@
 	} from '$lib/paint/history';
 	import {
 		DEFAULT_BRUSH_SIZE,
+		DEFAULT_SMUDGE_SIZE,
+		SMUDGE_STEP,
+		clampSmudge,
 		stepBrush,
 		type BrushSize,
 		type PaintAction,
 		type PaintValue,
-		type PaintTool
+		type BrushShape,
+		type PaintTool,
+		type SmudgeMode
 	} from '$lib/paint/toolset';
 	import { decodeImageFile, maskFromPrepared, type DecodedImage } from '$lib/paint/importImage';
 	import {
@@ -133,6 +138,12 @@
 
 	let tool = $state<PaintTool>('pen');
 	let brushSize = $state<BrushSize>(DEFAULT_BRUSH_SIZE);
+	let brushShape = $state<BrushShape>('round');
+	/** Udtvær's radius, kept apart from the pen's: it reaches much further. */
+	let smudgeSize = $state<BrushSize>(DEFAULT_SMUDGE_SIZE);
+	let smudgeMode = $state<SmudgeMode>('push');
+	/** A put-down selection holds the tools inside it (the canvas says when). */
+	let fenceHeld = $state(false);
 	let paintValue = $state<PaintValue>(1);
 	let panelCollapsed = $state(false);
 	/**
@@ -471,7 +482,10 @@
 		else if (action.kind === 'swapColour') paintValue = paintValue ? 0 : 1;
 		else if (action.kind === 'undo') undo();
 		else if (action.kind === 'redo') redo();
-		else if (action.kind === 'brush') brushSize = stepBrush(brushSize, action.delta);
+		else if (action.kind === 'brush') {
+			if (tool === 'smudge') smudgeSize = clampSmudge(smudgeSize + action.delta * SMUDGE_STEP);
+			else brushSize = stepBrush(brushSize, action.delta);
+		}
 	}
 
 	/**
@@ -565,6 +579,7 @@
 
 	function doClear(): void {
 		confirming = null;
+		maskCanvas?.deselect();
 		clearMask();
 		resetHistory(history);
 		syncHistoryFlags();
@@ -573,6 +588,7 @@
 	}
 
 	function useMask(mask: Mask, found: SymmetrySettings, source: string): void {
+		maskCanvas?.deselect();
 		setMask(mask, { sourceName: source, symmetry: found, found });
 		resetHistory(history);
 		syncHistoryFlags();
@@ -621,6 +637,7 @@
 	 * symmetry found in it is only reported.
 	 */
 	function useTemplate(design: HeartDesign, mask: Mask, found: SymmetrySettings): void {
+		maskCanvas?.deselect();
 		setMask(mask, { sourceName: 'template', symmetry: { ...NO_SYMMETRY }, found });
 		resetHistory(history);
 		syncHistoryFlags();
@@ -1031,11 +1048,14 @@
 							{colors}
 							symmetry={session.symmetry}
 							{tool}
-							brush={brushSize}
+							brush={tool === 'smudge' ? smudgeSize : brushSize}
+							{brushShape}
+							{smudgeMode}
 							{paintValue}
 							{revision}
 							frame={session.frame}
 							{candidate}
+							onFenceChange={(held) => (fenceHeld = held)}
 							onFrameSizeStart={recordFrameFold}
 							onFrameSize={resizeFrame}
 							disabled={busy}
@@ -1167,10 +1187,18 @@
 							{lang}
 							{tool}
 							onTool={(next) => (tool = next)}
-							{brushSize}
-							onBrushSize={(next) => (brushSize = next)}
+							brushSize={tool === 'smudge' ? smudgeSize : brushSize}
+							onBrushSize={(next) => (tool === 'smudge' ? (smudgeSize = next) : (brushSize = next))}
+							{brushShape}
+							onBrushShape={(next) => (brushShape = next)}
+							{smudgeMode}
+							onSmudgeMode={(next) => (smudgeMode = next)}
 							{paintValue}
 							onPaintValue={(next) => (paintValue = next)}
+							symmetry={session.symmetry}
+							{fenceHeld}
+							onDeselect={() => maskCanvas?.deselect()}
+							onChecks={(n) => maskCanvas?.layChecks(n)}
 							{colors}
 							{canUndo}
 							{canRedo}

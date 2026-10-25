@@ -72,6 +72,10 @@ type Harness = {
 	setBrush: (brush: number) => void;
 	setDisabled: (disabled: boolean) => void;
 	commitSelection: () => void;
+	deselect: () => void;
+	layChecks: (n: number) => void;
+	/** What the canvas said about its selection holding the tools, in order. */
+	fences: boolean[];
 	cell: (x: number, y: number) => number;
 	cleanup: () => void;
 };
@@ -94,6 +98,7 @@ function render(
 	const target = document.createElement('div');
 	document.body.appendChild(target);
 	const harness = { edits: 0 };
+	const fences: boolean[] = [];
 	const component = mount(MaskCanvasFixture, {
 		target,
 		props: {
@@ -113,6 +118,7 @@ function render(
 				harness.edits++;
 			},
 			onShortcut: () => {},
+			onFenceChange: (held: boolean) => fences.push(held),
 			lang: 'da' as const
 		}
 	});
@@ -140,6 +146,15 @@ function render(
 			component.commitSelection();
 			flushSync();
 		},
+		deselect: () => {
+			component.deselect();
+			flushSync();
+		},
+		layChecks: (n: number) => {
+			component.layChecks(n);
+			flushSync();
+		},
+		fences,
 		cell: (x: number, y: number) => mask.data[y * SIZE + x]!,
 		cleanup
 	};
@@ -663,5 +678,67 @@ describe('MaskCanvas drawing a candidate', () => {
 		// visitor chose. The mask is all zeroes here, so the white left paper is the
 		// only other thing on the square.
 		expect(pixelsNear(c.canvas, '#000000', 20)).toBeGreaterThan(100);
+	});
+});
+
+describe('a selection put down', () => {
+	/** A frame over cells 10–19 each way, put down by reaching for `tool`. */
+	function fencedWith(tool: PaintTool) {
+		const c = render({ tool: 'select' });
+		drag(c.canvas, [10, 10], [19, 19]);
+		c.setTool(tool);
+		return c;
+	}
+
+	it('holds the pen inside it, and says so to the page', () => {
+		const c = fencedWith('pen');
+		expect(c.fences.at(-1)).toBe(true);
+		drag(c.canvas, [4, 15], [34, 15]);
+		expect(c.cell(15, 15)).toBe(1);
+		expect(c.cell(5, 15)).toBe(0);
+		expect(c.cell(30, 15)).toBe(0);
+	});
+
+	it('fills only the selected part of a region', () => {
+		const c = fencedWith('fill');
+		send(c.canvas, 'pointerdown', at(15, 15));
+		send(c.canvas, 'pointerup', at(15, 15));
+		expect(c.cell(15, 15)).toBe(1);
+		expect(c.cell(10, 10)).toBe(1);
+		expect(c.cell(9, 15)).toBe(0);
+		expect(c.mask.data.reduce((a, b) => a + b, 0)).toBe(100);
+	});
+
+	it('lets the tools paint anywhere again on Escape', () => {
+		const c = fencedWith('pen');
+		press('Escape');
+		expect(c.fences.at(-1)).toBe(false);
+		drag(c.canvas, [4, 15], [34, 15]);
+		expect(c.cell(5, 15)).toBe(1);
+		expect(c.cell(30, 15)).toBe(1);
+	});
+
+	it('lays Tern inside it, or over the whole mask once deselected', () => {
+		const c = fencedWith('pen');
+		c.layChecks(5);
+		expect(c.edits).toBe(1);
+		// A 5 × 5 board on 40 cells: squares of 8, the one holding (16, 10) is the right paper.
+		expect(c.cell(16, 10)).toBe(1);
+		expect(c.cell(24, 4)).toBe(0);
+		c.deselect();
+		c.layChecks(5);
+		expect(c.cell(24, 4)).toBe(1);
+		expect(c.edits).toBe(2);
+	});
+});
+
+describe('Udtvær', () => {
+	it('drags the paper under the brush along with the pointer, as one edit', () => {
+		const c = render({ tool: 'smudge', brush: 10 });
+		for (let y = 16; y < 24; y++) for (let x = 10; x < 18; x++) c.mask.data[y * SIZE + x] = 1;
+		drag(c.canvas, [14, 20], [24, 20]);
+		expect(c.cell(22, 20)).toBe(1);
+		expect(c.cell(11, 20)).toBe(0);
+		expect(c.edits).toBe(1);
 	});
 });

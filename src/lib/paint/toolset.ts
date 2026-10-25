@@ -39,6 +39,22 @@ export function stepBrush(current: BrushSize, delta: number): BrushSize {
 	return clampBrush(current + delta);
 }
 
+/**
+ * Udtvær's own radius, in cells: a hvirvel turns most of the square at once, so
+ * it reaches much further than a pen, and keeps its size apart from the pen's.
+ */
+export const MIN_SMUDGE_SIZE = 8;
+export const MAX_SMUDGE_SIZE = 200;
+export const DEFAULT_SMUDGE_SIZE = 80;
+/** One press of `[` or `]` with Udtvær in hand. */
+export const SMUDGE_STEP = 5;
+
+export function clampSmudge(size: number): BrushSize {
+	return Number.isFinite(size)
+		? Math.max(MIN_SMUDGE_SIZE, Math.min(MAX_SMUDGE_SIZE, Math.round(size)))
+		: DEFAULT_SMUDGE_SIZE;
+}
+
 export type PaintAction =
 	| { kind: 'tool'; tool: PaintTool }
 	| { kind: 'brush'; delta: -1 | 1 }
