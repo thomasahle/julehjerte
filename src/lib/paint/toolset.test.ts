@@ -24,6 +24,7 @@ describe('shortcutFor', () => {
 		expect(shortcutFor({ key: 'f' })).toEqual({ kind: 'tool', tool: 'fill' });
 		expect(shortcutFor({ key: 'l' })).toEqual({ kind: 'tool', tool: 'line' });
 		expect(shortcutFor({ key: 'r' })).toEqual({ kind: 'tool', tool: 'rect' });
+		expect(shortcutFor({ key: 'u' })).toEqual({ kind: 'tool', tool: 'smudge' });
 		expect(shortcutFor({ key: 'm' })).toEqual({ kind: 'tool', tool: 'select' });
 	});
 

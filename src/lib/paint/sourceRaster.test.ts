@@ -5,7 +5,7 @@ import { frameWeights, maskToArtwork } from '$lib/inverse/engine';
 import { maskFromPrepared } from './importImage';
 import { cloneMask, MASK_SIZE, solverRaster } from './mask';
 import { createHistory, record, redo, undo } from './history';
-import { stampCircle } from './tools';
+import { stamp } from './tools';
 import { NO_SYMMETRY, symmetrize } from './symmetry';
 import { DEFAULT_FRAME } from './frame';
 
@@ -36,7 +36,7 @@ describe('original sampling of an imported mask', () => {
 	it('uses every current painted pixel after an edit and restores original sampling on undo', () => {
 		const { mask } = imported(), history = createHistory();
 		record(history, { mask, symmetry: NO_SYMMETRY });
-		stampCircle(mask, 3, 3, { radius: 0, value: 1 });
+		stamp(mask, 3, 3, { radius: 0, value: 1 });
 		const edited = maskToArtwork(mask);
 		expect(edited.resolution).toBe(MASK_SIZE);
 		expect(edited.mask).toEqual(mask.data);
@@ -53,7 +53,7 @@ describe('original sampling of an imported mask', () => {
 		const original = maskToArtwork(mask);
 		expect(original.validMask).toEqual(prepared.validMask);
 		expect(original.validMask).not.toBe(mask.sourceRaster?.validMask);
-		stampCircle(mask, 3, 3, { radius: 0, value: 0 });
+		stamp(mask, 3, 3, { radius: 0, value: 0 });
 		const edited = maskToArtwork(mask);
 		expect(edited.resolution).toBe(MASK_SIZE);
 		expect(edited.validMask).toEqual(mask.validMask);

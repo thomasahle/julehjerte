@@ -8,6 +8,8 @@ import {
 	contains,
 	cornerAt,
 	corners,
+	fenceOf,
+	keepOutside,
 	isEmptyRect,
 	isUnmoved,
 	lift,
@@ -22,7 +24,8 @@ import {
 	stamp,
 	turnBy
 } from './selection';
-import { EDIT_CLEARED, EDIT_LAID, EDIT_NONE } from './tools';
+import { EDIT_CLEARED, EDIT_LAID, EDIT_NONE, stroke } from './tools';
+import { transformsFor } from './symmetry';
 
 /** A mask from rows of `.` and `#`, so a patch can be read at a glance. */
 function maskOf(rows: string[]): Mask {
@@ -331,5 +334,41 @@ describe('the keyboard’s own gestures', () => {
 		expect(middleRect(m)).toEqual({ x0: 10, y0: 10, x1: 30, y1: 30 });
 		// However small the mask, the frame has cells in it.
 		expect(isEmptyRect(middleRect(createMask(0, 3)))).toBe(false);
+	});
+});
+
+describe('fenceOf', () => {
+	it('holds the cells whose centres a put-down selection covers', () => {
+		const fence = fenceOf(placementOf({ x0: 2, y0: 3, x1: 6, y1: 5 }), 10);
+		const held = [...fence].flatMap((v, i) => (v ? [`${i % 10},${Math.floor(i / 10)}`] : []));
+		expect(held).toEqual(['2,3', '3,3', '4,3', '5,3', '2,4', '3,4', '4,4', '5,4']);
+	});
+
+	it('follows a turned selection rather than its bounding box', () => {
+		const p = { cx: 10, cy: 10, width: 8, height: 8, angle: Math.PI / 4 };
+		const fence = fenceOf(p, 20);
+		expect(fence[10 * 20 + 10]).toBe(1);
+		// The bounding box's corner, which the turned square does not reach.
+		expect(fence[5 * 20 + 5]).toBe(0);
+	});
+
+	it('takes in the selection\'s images under symmetry, where its paint lands too', () => {
+		const transforms = transformsFor({ curve: 'off', lobe: 'off', lobes: 'sym' });
+		const fence = fenceOf(placementOf({ x0: 1, y0: 6, x1: 3, y1: 8 }), 10, transforms);
+		expect(fence[6 * 10 + 1]).toBe(1);
+		expect(fence[1 * 10 + 6]).toBe(1); // its transpose
+		expect(fence.reduce((a, b) => a + b, 0)).toBe(8);
+	});
+});
+
+describe('keepOutside', () => {
+	it('puts back what a stroke painted past the fence, and keeps what it painted inside', () => {
+		const m = createMask(0, 20);
+		const before = { size: 20, data: m.data.slice() };
+		const fence = fenceOf(placementOf({ x0: 0, y0: 0, x1: 10, y1: 20 }), 20);
+		const box = stroke(m, { x: 2, y: 10 }, { x: 18, y: 10 }, { radius: 1, value: 1 });
+		keepOutside(m, before, fence, box);
+		expect(m.data[10 * 20 + 5]).toBe(1);
+		expect(m.data[10 * 20 + 15]).toBe(0);
 	});
 });

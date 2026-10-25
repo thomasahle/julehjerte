@@ -10,23 +10,31 @@
 import type { Vec } from '$lib/types/heart';
 import { clampBox, emptyBox, get, isEmptyBox, paintCell, unionBox, type Box, type Mask } from './mask';
 import { closedPointMaps, type Transform } from './symmetry';
+import type { BrushShape } from './toolset';
 
-/** What the pen lays down: a radius in cells, and the paper colour it paints. */
-export type Brush = { radius: number; value: 0 | 1 };
+/**
+ * What the pen lays down: a radius in cells, the paper colour it paints, and
+ * its head — round unless it says square.
+ */
+export type Brush = { radius: number; value: 0 | 1; shape?: BrushShape };
 
-/** Fill one disc of the brush. Cells are inside when their centre is within the radius. */
-export function stampCircle(m: Mask, x: number, y: number, brush: Brush): Box {
+/**
+ * Fill one dab of the brush. Cells are inside when their centre is within the
+ * radius: of the point for a round head, along both axes for a square one.
+ */
+export function stamp(m: Mask, x: number, y: number, brush: Brush): Box {
 	const r = Math.max(0, brush.radius);
 	const box = clampBox(m, x - r, y - r, x + r + 1, y + r + 1);
 	if (isEmptyBox(box)) return box;
-	const r2 = r * r;
+	const r2 = r * r, square = brush.shape === 'square';
 	let changed = emptyBox();
 	for (let cy = box.y0; cy < box.y1; cy++) {
 		const dy = cy - y;
 		const row = cy * m.size;
+		if (square && Math.abs(dy) > r) continue;
 		for (let cx = box.x0; cx < box.x1; cx++) {
 			const dx = cx - x;
-			if (dx * dx + dy * dy > r2) continue;
+			if (square ? Math.abs(dx) > r : dx * dx + dy * dy > r2) continue;
 			if (!paintCell(m, row + cx, brush.value)) continue;
 			changed = unionBox(changed, { x0: cx, y0: cy, x1: cx + 1, y1: cy + 1 });
 		}
@@ -38,7 +46,7 @@ export function stampCircle(m: Mask, x: number, y: number, brush: Brush): Box {
  * Paint from one point to another.
  *
  * Pointer events arrive metres apart when the hand moves fast, so a stroke is
- * discs stamped along the segment. They are stamped one cell apart rather than a
+ * dabs stamped along the segment. They are stamped one cell apart rather than a
  * brush-width apart: that is gapless for every brush size including the finest,
  * and the cost is a few hundred stamps for a stroke across the whole mask.
  */
@@ -46,10 +54,10 @@ export function stroke(m: Mask, from: Vec, to: Vec, brush: Brush): Box {
 	const dx = to.x - from.x;
 	const dy = to.y - from.y;
 	const steps = Math.max(1, Math.ceil(Math.hypot(dx, dy)));
-	let changed = stampCircle(m, from.x, from.y, brush);
+	let changed = stamp(m, from.x, from.y, brush);
 	for (let i = 1; i <= steps; i++) {
 		const t = i / steps;
-		changed = unionBox(changed, stampCircle(m, from.x + dx * t, from.y + dy * t, brush));
+		changed = unionBox(changed, stamp(m, from.x + dx * t, from.y + dy * t, brush));
 	}
 	return changed;
 }
@@ -87,16 +95,22 @@ export function rect(m: Mask, a: Vec, b: Vec, value: 0 | 1): Box {
  * Scanline flood fill, iterative: recursion overflows the stack long before a
  * 400 × 400 region is done, and this pushes one seed per span rather than one per
  * cell, so the stack stays in the hundreds even when the whole mask is filled.
+ *
+ * With a `fence` (one byte per cell, the visitor's selection), cells outside it
+ * are walls: the fill stays in the part of its region that is selected, and
+ * does not leak out of the selection and back in somewhere else.
  */
-export function floodFill(m: Mask, x: number, y: number, value: 0 | 1): Box {
+export function floodFill(m: Mask, x: number, y: number, value: 0 | 1, fence?: Uint8Array | null): Box {
 	const sx = Math.round(x);
 	const sy = Math.round(y);
 	if (sx < 0 || sy < 0 || sx >= m.size || sy >= m.size) return emptyBox();
+	if (fence && !fence[sy * m.size + sx]) return emptyBox();
 	const target = get(m, sx, sy);
 	if (target === value && (!m.validMask || m.validMask.every(Boolean))) return emptyBox();
 	// Same-colour fill still observes missing cells. Colour cannot mark visited
 	// spans in that case, so track them separately to avoid cycling forever.
 	const seen = target === value ? new Uint8Array(m.data.length) : null;
+	const open = (i: number) => m.data[i] === target && !seen?.[i] && (!fence || !!fence[i]);
 
 	let changed = emptyBox();
 	const stack: number[] = [sx, sy];
@@ -104,12 +118,12 @@ export function floodFill(m: Mask, x: number, y: number, value: 0 | 1): Box {
 		const py = stack.pop()!;
 		const px = stack.pop()!;
 		const row = py * m.size;
-		if (m.data[row + px] !== target || seen?.[row + px]) continue;
+		if (!open(row + px)) continue;
 
 		let left = px;
-		while (left > 0 && m.data[row + left - 1] === target && !seen?.[row + left - 1]) left--;
+		while (left > 0 && open(row + left - 1)) left--;
 		let right = px;
-		while (right < m.size - 1 && m.data[row + right + 1] === target && !seen?.[row + right + 1]) right++;
+		while (right < m.size - 1 && open(row + right + 1)) right++;
 		let first = right + 1, last = left - 1;
 		for (let i = left; i <= right; i++) {
 			if (paintCell(m, row + i, value)) { first = Math.min(first, i); last = i; }
@@ -122,7 +136,7 @@ export function floodFill(m: Mask, x: number, y: number, value: 0 | 1): Box {
 			const nrow = ny * m.size;
 			let inSpan = false;
 			for (let i = left; i <= right; i++) {
-				if (m.data[nrow + i] === target && !seen?.[nrow + i]) {
+				if (open(nrow + i)) {
 					if (!inSpan) {
 						stack.push(i, ny);
 						inSpan = true;
@@ -134,6 +148,53 @@ export function floodFill(m: Mask, x: number, y: number, value: 0 | 1): Box {
 		}
 	}
 	return changed;
+}
+
+/**
+ * Which paper cell (x, y) of an `n` × `n` checkerboard is: a plain woven heart
+ * of `n` strips, its corner squares the left paper as in a classic 3 × 3. A
+ * cell belongs to the square its centre lies in. On the 400-cell mask no
+ * square's edge passes through a centre unless 32 divides `n`, so the squares
+ * mirror exactly.
+ */
+export function checkAt(x: number, y: number, n: number, size: number): 0 | 1 {
+	return ((Math.floor((x + .5) * n / size) + Math.floor((y + .5) * n / size)) & 1) as 0 | 1;
+}
+
+/**
+ * Lay an `n` × `n` checkerboard over the mask (Tern), inside `fence` only when
+ * there is one: the selection is then a window onto the same board.
+ */
+export function checks(m: Mask, n: number, fence?: Uint8Array | null): Box {
+	let changed = emptyBox();
+	for (let y = 0; y < m.size; y++) {
+		const row = y * m.size;
+		let x0 = m.size, x1 = -1;
+		for (let x = 0; x < m.size; x++) {
+			if (fence && !fence[row + x]) continue;
+			if (!paintCell(m, row + x, checkAt(x, y, n, m.size))) continue;
+			x0 = Math.min(x0, x);
+			x1 = x;
+		}
+		if (x1 >= x0) changed = unionBox(changed, { x0, y0: y, x1: x1 + 1, y1: y + 1 });
+	}
+	return changed;
+}
+
+/**
+ * Whether an `n` × `n` checkerboard is its own image under every symmetry on.
+ * Not for even `n` under a mirror within the lobe: a mirror carries an even
+ * board's corner square onto the opposite corner, which is the other paper.
+ */
+export function checksKeepSymmetry(n: number, transforms: Transform[]): boolean {
+	const maps = closedPointMaps(transforms);
+	for (let y = 0; y < n; y++)
+		for (let x = 0; x < n; x++)
+			for (const map of maps) {
+				const p = map(x, y, n);
+				if (checkAt(p.x, p.y, n, n) !== checkAt(x, y, n, n)) return false;
+			}
+	return true;
 }
 
 /** A point map of the closed symmetry group, as `closedPointMaps` hands them out. */

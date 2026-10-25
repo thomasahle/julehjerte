@@ -4,7 +4,7 @@ import { maskToArtwork } from '$lib/inverse/engine';
 import { resetSession, restore, serialize, session, setMask } from '$lib/editor/session.svelte';
 import { maskFromPrepared } from './importImage';
 import { cloneMask, createMask, maskMismatch } from './mask';
-import { stampCircle, rect, floodFill, applySymmetric, applySymmetricEdit } from './tools';
+import { stamp, rect, floodFill, applySymmetric, applySymmetricEdit } from './tools';
 import { lift, commit, moveBy } from './selection';
 import { symmetrize, detectSymmetry, NO_SYMMETRY } from './symmetry';
 import { createHistory, record, undo, redo } from './history';
@@ -29,7 +29,7 @@ describe('photographic observation through editing and solving', () => {
 
   it('same-colour brush, rectangle and flood fill make only their cells known', () => {
     const mask = partial(), before = cloneMask(mask);
-    expect(stampCircle(mask, 2, 2, { radius: 0, value: 0 })).toEqual({ x0: 2, y0: 2, x1: 3, y1: 3 });
+    expect(stamp(mask, 2, 2, { radius: 0, value: 0 })).toEqual({ x0: 2, y0: 2, x1: 3, y1: 3 });
     expect(mask.validMask[14]).toBe(1); expect(before.validMask?.[14]).toBe(0);
     rect(mask, { x: 4, y: 0 }, { x: 5, y: 1 }, 0);
     expect(mask.validMask.reduce((s, v) => s + v, 0)).toBe(5);
@@ -56,14 +56,14 @@ describe('photographic observation through editing and solving', () => {
     symmetrize(mask, ['transpose']);
     expect(mask.data[6]).toBe(1); expect(mask.validMask[6]).toBe(0);
     expect(detectSymmetry(mask)).toEqual(NO_SYMMETRY);
-    const box = stampCircle(mask, 2, 1, { radius: 0, value: 1 });
+    const box = stamp(mask, 2, 1, { radius: 0, value: 1 });
     applySymmetric(mask, box, ['transpose'], 1);
     expect(mask.validMask[8]).toBe(1); expect(mask.validMask[13]).toBe(1);
   });
 
   it('undo and redo own both colour and observation state', () => {
     const mask = partial(), history = createHistory();
-    record(history, { mask, symmetry: NO_SYMMETRY }); stampCircle(mask, 2, 2, { radius: 0, value: 0 });
+    record(history, { mask, symmetry: NO_SYMMETRY }); stamp(mask, 2, 2, { radius: 0, value: 0 });
     const previous = undo(history, { mask, symmetry: NO_SYMMETRY })!;
     expect(previous.mask.validMask?.[14]).toBe(0);
     const next = redo(history, previous)!; expect(next.mask.validMask?.[14]).toBe(1);

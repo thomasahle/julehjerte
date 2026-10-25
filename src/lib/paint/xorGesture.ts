@@ -3,6 +3,7 @@ import type { Vec } from '$lib/types/heart';
 import { cloneMask, createMask, emptyBox, isEmptyBox, paintCell, unionBox, type Box, type Mask } from './mask';
 import { applySymmetric, floodFill, rect, stroke } from './tools';
 import type { Transform } from './symmetry';
+import type { BrushShape } from './toolset';
 
 export function createXorGesture(mask: Mask, transforms: Transform[] = []) {
 	const before = cloneMask(mask);
@@ -24,18 +25,18 @@ export function createXorGesture(mask: Mask, transforms: Transform[] = []) {
 	}
 
 	return {
-		stroke(from: Vec, to: Vec, radius: number): Box {
-			return invert(stroke(covered, from, to, { radius, value: 1 }));
+		stroke(from: Vec, to: Vec, radius: number, shape?: BrushShape): Box {
+			return invert(stroke(covered, from, to, { radius, value: 1, shape }));
 		},
 		rect(from: Vec, to: Vec): Box {
 			return invert(rect(covered, from, to, 1));
 		},
-		fill(x: number, y: number): Box {
+		fill(x: number, y: number, fence?: Uint8Array | null): Box {
 			const sx = Math.round(x), sy = Math.round(y);
 			if (sx < 0 || sy < 0 || sx >= mask.size || sy >= mask.size) return emptyBox();
 			// Flood membership comes from the original picture, not the coverage mask.
 			const filled = cloneMask(before);
-			const box = floodFill(filled, x, y, before.data[sy * mask.size + sx] ? 0 : 1);
+			const box = floodFill(filled, x, y, before.data[sy * mask.size + sx] ? 0 : 1, fence);
 			for (let row = box.y0; row < box.y1; row++) {
 				for (let col = box.x0; col < box.x1; col++) {
 					const i = row * mask.size + col;

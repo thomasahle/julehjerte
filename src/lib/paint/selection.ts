@@ -18,7 +18,8 @@
  */
 
 import type { Vec } from '$lib/types/heart';
-import { clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask } from './mask';
+import { clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask, type MaskRaster } from './mask';
+import { closedPointMaps, type Transform } from './symmetry';
 import { EDIT_CLEARED, EDIT_LAID, rect } from './tools';
 
 /** Half-open cell rectangle, `x0 <= x < x1`, in the same coordinates as `Box`. */
@@ -365,4 +366,52 @@ export function isUnmoved(sel: Selection): boolean {
 		p.height === home.height &&
 		p.angle === 0
 	);
+}
+
+/**
+ * The cells a selection holds once it is put down and another tool is taken
+ * up: the fence the pen, the fill and the rest keep inside (PAINT.md §2). A
+ * cell is in when its centre is. Under symmetry the fence is the selection and
+ * its images, because whatever is painted in it is painted there too.
+ */
+export function fenceOf(p: Placement, size: number, transforms: Transform[] = []): Uint8Array {
+	const fence = new Uint8Array(size * size);
+	const maps = transforms.length ? closedPointMaps(transforms) : [];
+	const all = corners(p);
+	const box = clampBox(
+		{ size, data: fence },
+		Math.min(...all.map((c) => c.x)) - 1,
+		Math.min(...all.map((c) => c.y)) - 1,
+		Math.max(...all.map((c) => c.x)) + 1,
+		Math.max(...all.map((c) => c.y)) + 1
+	);
+	for (let y = box.y0; y < box.y1; y++) {
+		for (let x = box.x0; x < box.x1; x++) {
+			if (!contains(p, { x: x + 0.5, y: y + 0.5 })) continue;
+			fence[y * size + x] = 1;
+			for (const map of maps) {
+				const q = map(x, y, size);
+				fence[q.y * size + q.x] = 1;
+			}
+		}
+	}
+	return fence;
+}
+
+/**
+ * Put back what an edit wrote outside the fence, within `box`, from the mask as
+ * it was when the gesture began. The tools paint as they always do and the
+ * fence is applied after, so every tool keeps inside it the same way — its
+ * mirrored copies included.
+ */
+export function keepOutside(m: Mask, before: MaskRaster, fence: Uint8Array, box: Box): void {
+	for (let y = box.y0; y < box.y1; y++) {
+		const row = y * m.size;
+		for (let x = box.x0; x < box.x1; x++) {
+			const i = row + x;
+			if (fence[i]) continue;
+			m.data[i] = before.data[i]!;
+			if (m.validMask && before.validMask) m.validMask[i] = before.validMask[i]!;
+		}
+	}
 }

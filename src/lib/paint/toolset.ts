@@ -1,5 +1,5 @@
 /**
- * The six painting tools, brush radius, and the keys that pick them.
+ * The seven painting tools, brush radius and head, and the keys that pick them.
  *
  * `tools.ts` says what an operation does to the cells; this says which of them
  * the visitor has chosen and what a keystroke means. It is plain data and one
@@ -7,7 +7,17 @@
  * being spelled out inside a keydown handler.
  */
 
-export type PaintTool = 'pen' | 'eraser' | 'fill' | 'line' | 'rect' | 'select';
+export type PaintTool = 'pen' | 'eraser' | 'fill' | 'line' | 'rect' | 'smudge' | 'select';
+
+/** The brush's head: a disc, or a square standing on the mask's own axes. */
+export type BrushShape = 'round' | 'square';
+
+/**
+ * What Udtvær does to the paper under it: drags it along with the pointer, turns
+ * it about the brush (a hvirvel), or swells it out from there (a glaskuppel).
+ * Alt reverses the turn and draws the swell in instead.
+ */
+export type SmudgeMode = 'push' | 'twirl' | 'bulge';
 
 /** XOR is an editing action; the mask still contains only paper 0 and paper 1. */
 export type PaintValue = 0 | 1 | 'xor';
@@ -43,6 +53,7 @@ const TOOL_KEYS: Record<string, PaintTool> = {
 	f: 'fill',
 	l: 'line',
 	r: 'rect',
+	u: 'smudge',
 	m: 'select'
 };
 

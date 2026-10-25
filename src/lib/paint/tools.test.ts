@@ -5,10 +5,13 @@ import { commit, lift, moveBy } from './selection';
 import {
 	applySymmetric,
 	applySymmetricEdit,
+	checkAt,
+	checks,
+	checksKeepSymmetry,
 	floodFill,
 	line,
 	rect,
-	stampCircle,
+	stamp,
 	stroke
 } from './tools';
 
@@ -29,10 +32,10 @@ function count(m: Mask, value: 0 | 1): number {
 	return n;
 }
 
-describe('stampCircle', () => {
+describe('stamp', () => {
 	it('fills a disc and reports the cells it changed', () => {
 		const m = createMask(0, 32);
-		const box = stampCircle(m, 10, 10, PEN);
+		const box = stamp(m, 10, 10, PEN);
 		expect(box).toEqual({ x0: 8, y0: 8, x1: 13, y1: 13 });
 		expect(get(m, 10, 10)).toBe(1);
 		expect(get(m, 12, 10)).toBe(1);
@@ -41,7 +44,7 @@ describe('stampCircle', () => {
 
 	it('clips at the edge instead of wrapping to the other side', () => {
 		const m = createMask(0, 32);
-		stampCircle(m, 0, 0, { radius: 3, value: 1 });
+		stamp(m, 0, 0, { radius: 3, value: 1 });
 		expect(get(m, 0, 0)).toBe(1);
 		expect(get(m, 31, 31)).toBe(0);
 		expect(get(m, 31, 0)).toBe(0);
@@ -49,8 +52,26 @@ describe('stampCircle', () => {
 
 	it('reports an empty box when the cells are already that colour', () => {
 		const m = createMask(0, 32);
-		expect(isEmptyBox(stampCircle(m, 10, 10, { radius: 3, value: 0 }))).toBe(true);
+		expect(isEmptyBox(stamp(m, 10, 10, { radius: 3, value: 0 }))).toBe(true);
 		expect(isEmpty(m)).toBe(true);
+	});
+});
+
+describe('a square brush head', () => {
+	it('fills the whole square of its radius, corners and all', () => {
+		const m = createMask(0, 32);
+		const box = stamp(m, 10, 10, { radius: 2, value: 1, shape: 'square' });
+		expect(box).toEqual({ x0: 8, y0: 8, x1: 13, y1: 13 });
+		expect(count(m, 1)).toBe(25);
+		expect(get(m, 12, 12)).toBe(1); // a round head leaves this corner out
+		expect(get(m, 13, 10)).toBe(0);
+	});
+
+	it('draws a stroke as wide as the square, without gaps', () => {
+		const m = createMask(0, 64);
+		stroke(m, { x: 10, y: 20 }, { x: 50, y: 20 }, { radius: 3, value: 1, shape: 'square' });
+		for (let x = 7; x <= 53; x++) for (let y = 17; y <= 23; y++) expect(get(m, x, y)).toBe(1);
+		expect(get(m, 30, 24)).toBe(0);
 	});
 });
 
@@ -73,7 +94,7 @@ describe('stroke', () => {
 		const m = createMask(0, 32);
 		stroke(m, { x: 16, y: 16 }, { x: 16, y: 16 }, PEN);
 		const dab = createMask(0, 32);
-		stampCircle(dab, 16, 16, PEN);
+		stamp(dab, 16, 16, PEN);
 		expect([...m.data]).toEqual([...dab.data]);
 	});
 
@@ -140,6 +161,73 @@ describe('floodFill', () => {
 		expect(isEmptyBox(floodFill(m, 8, 8, 1))).toBe(true);
 		expect(isEmptyBox(floodFill(m, -1, 8, 0))).toBe(true);
 		expect(count(m, 1)).toBe(16 * 16);
+	});
+});
+
+describe('floodFill with a fence', () => {
+	it('fills only the fenced part of the region, and not around the fence back in', () => {
+		const m = createMask(0, 20);
+		// A fence of two boxes joined only through cells outside it.
+		const fence = new Uint8Array(400);
+		for (let y = 2; y < 8; y++) for (let x = 2; x < 8; x++) fence[y * 20 + x] = 1;
+		for (let y = 12; y < 18; y++) for (let x = 2; x < 8; x++) fence[y * 20 + x] = 1;
+		floodFill(m, 4, 4, 1, fence);
+		expect(count(m, 1)).toBe(36);
+		expect(get(m, 4, 14)).toBe(0);
+		expect(get(m, 10, 4)).toBe(0);
+	});
+
+	it('does nothing from a seed outside the fence', () => {
+		const m = createMask(0, 20);
+		const fence = new Uint8Array(400);
+		fence[0] = 1;
+		expect(isEmptyBox(floodFill(m, 10, 10, 1, fence))).toBe(true);
+		expect(isEmpty(m)).toBe(true);
+	});
+});
+
+describe('checks', () => {
+	it('lays a plain board whose corner squares are the left paper, as a classic 3 × 3', () => {
+		const m = createMask(1, 30);
+		checks(m, 3);
+		const at = (x: number, y: number) => get(m, x * 10 + 5, y * 10 + 5);
+		expect([0, 1, 2].map((y) => [0, 1, 2].map((x) => at(x, y)).join('')).join('/')).toBe('010/101/010');
+	});
+
+	it('cuts every square to the same width on the painting mask', () => {
+		const widths = new Map<number, number>();
+		for (let x = 0; x < MASK_SIZE; x++) {
+			const square = Math.floor((x + 0.5) * 7 / MASK_SIZE);
+			widths.set(square, (widths.get(square) ?? 0) + 1);
+		}
+		expect([...widths.values()].every((w) => w === 57 || w === 58)).toBe(true);
+		expect(checkAt(0, 0, 7, MASK_SIZE)).toBe(0);
+	});
+
+	it('stays inside a fence', () => {
+		const m = createMask(0, 30);
+		const fence = new Uint8Array(900);
+		for (let x = 0; x < 30; x++) fence[15 * 30 + x] = 1;
+		checks(m, 3, fence);
+		// The middle row crosses the right paper's two squares beside the middle one.
+		expect(count(m, 1)).toBe(20);
+		expect([...m.data].every((v, i) => !v || (i >= 450 && i < 480))).toBe(true);
+	});
+
+	it('mirrors exactly at the painting size, so a board under symmetry needs no folding', () => {
+		for (const n of [3, 5, 7, 9]) {
+			const m = createMask(0);
+			checks(m, n);
+			for (const t of ['mirrorX', 'mirrorY', 'transpose', 'antiTranspose', 'rotate180'] as Transform[])
+				expect(disagreement(m, t)).toBe(0);
+		}
+	});
+
+	it('knows an even board turns paper over under a mirror within the lobe', () => {
+		expect(checksKeepSymmetry(4, transformsFor({ curve: 'off', lobe: 'sym', lobes: 'off' }))).toBe(false);
+		expect(checksKeepSymmetry(5, transformsFor({ curve: 'off', lobe: 'sym', lobes: 'off' }))).toBe(true);
+		expect(checksKeepSymmetry(4, transformsFor({ curve: 'off', lobe: 'anti', lobes: 'sym' }))).toBe(true);
+		expect(checksKeepSymmetry(6, [])).toBe(true);
 	});
 });
 
