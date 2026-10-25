@@ -7,7 +7,7 @@
 // (and against `truth` when a case has one). Statuses: template, pass,
 // fidelity (cut and shown, with the page's note that details are missing),
 // fail, no_crop, *_error. E2E_ROOT=<another checkout> measures that one.
-//   node scripts/inverse/mal-pictures-benchmark.mjs LIST.json OUT_DIR [--exact=off|compete] [--ids=a,b] [--shard=k/n] [--stage=mask] [--save-masks]
+//   node scripts/inverse/mal-pictures-benchmark.mjs LIST.json OUT_DIR [--exact=off] [--ids=a,b] [--shard=k/n] [--stage=mask] [--save-masks]
 // LIST.json: [{id, file, roi?, quad?, truth?}] (truth: a {size: 400, data} mask of the true design). One JSON line per case on stdout and in OUT_DIR/results.jsonl.
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -95,9 +95,24 @@ for (const c of list) {
     row.stage = 'solve';
     const target = cloneMask(mask), t = performance.now();
     const preparedMask = prepare(mal.maskToArtwork(target), mal.maskPrepareSettings(colors));
-    const settings = {...mal.solveSettings({colors, symmetry}), ...(exactMode === 'off' ? {exactOutline: false} : exactMode === 'compete' ? {exactCompete: true} : {})};
-    const answer = await design(restorePrepared(structuredClone(preparedMask.target)), settings);
-    row.solveSeconds = +((performance.now() - t) / 1000).toFixed(1);
+    const settings = {...mal.solveSettings({colors, symmetry}), ...(exactMode === 'off' ? {exactOutline: false} : {})};
+    // As the page's workers run it (worker-controller.js): the exact search and
+    // the fitter side by side, the exact template taken when it comes. Here one
+    // after the other, the fitter only when the exact search has none, and
+    // timed as side by side: the exact search's time, or the longer of the two.
+    const run = more => design(restorePrepared(structuredClone(preparedMask.target)), {...settings, ...more});
+    let answer, solveSeconds;
+    if (settings.exactParallel && settings.exactOutline) {
+      try { answer = await run({exactRoute: 'exact'}); solveSeconds = (performance.now() - t) / 1000; }
+      catch (error) {
+        if (error?.code !== 'NO_EXACT_TEMPLATE') throw error;
+        const exactSeconds = (performance.now() - t) / 1000, t1 = performance.now();
+        answer = await run({exactRoute: 'fitter'});
+        answer.report.solver = {...answer.report.solver, exactOutline: error.report?.exactOutline};
+        solveSeconds = Math.max(exactSeconds, (performance.now() - t1) / 1000);
+      }
+    } else { answer = await run({}); solveSeconds = (performance.now() - t) / 1000; }
+    row.solveSeconds = +solveSeconds.toFixed(1);
     const rep = answer.report;
     row.passes = Boolean(rep.templateChecksPassed);
     // Which checks: a template failing only image fidelity is still cut and shown, with a note.

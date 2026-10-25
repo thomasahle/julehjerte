@@ -19,7 +19,7 @@ import {materialAudit,perturbationAudit,verifiedPaperSettings} from './material.
 import {roundHidden} from './rounding.js';
 import {boundarySVG,targetSVG,resultFiles} from './export.js';
 import {solvePolynomialTarget} from './direct/polynomial.js';
-import {exactSearch,exactSymmetry,exactTarget,exactCannotStart,assess,better} from './exact/stage.js';
+import {exactSearch,exactSymmetry,exactTarget,exactCannotStart,exportable} from './exact/stage.js';
 /** Structured cloning retains coordinates but not Cubic methods, including
  * the cached boundary seed used by the topology initializer. Rebuild derived
  * curve caches locally; a transferred cache must not hide edited coordinates. */
@@ -30,76 +30,78 @@ export const MAX_TRACED_CURVES=1000;
 export function prepare(input,raw={},onProgress=()=>{}){if(raw.algorithm==='auto')return prepareAutomatic(input,raw,onProgress);const cfg=settings(raw),pre={resolution:400,fitTolerance:.5,maxSpan:15,...raw,width:cfg.width,nominalWidth:cfg.nominalWidth,paperColors:colorsSafe(cfg.paperColors),geometryTolerance:cfg.geometryTolerance};for(const[k,lo,hi]of[['fitTolerance',.01,3],['maxSpan',2,40],['snapRadius',0,3]])if(pre[k]!==undefined&&(!Number.isFinite(pre[k])||pre[k]<lo||pre[k]>hi))throw new Error(`${k} must be between ${lo} and ${hi}.`);onProgress({stage:'preprocessing'});let target,rgb=null,mask=null,n=240;
   if(input.type==='svg'){target=loadSVG(input.text,{width:cfg.width,maxSpan:pre.maxSpan||12,tolerance:cfg.geometryTolerance});target.metadata.paperColors=colorsSafe(cfg.paperColors);if(raw.invert)target.phase^=1;mask=sampleTarget(target,n);}else if(input.type==='pixels'){({target,rgb,mask,n}=preprocessPixels({...input,settings:pre}));}else if(input.type==='mask'){if(!['direct','polynomial'].includes(cfg.algorithm))throw new Error('Binary masks use automatic, direct or polynomial fitting.');({target,mask,n}=preprocessBinaryMask(input,{...pre,algorithm:'direct'}));}else throw new Error('Prepare accepts pixels, a binary mask or a plain SVG.');if(cfg.algorithm==='direct'&&input.type==='svg'){const source=sampleTarget(target,256);target={...target,curves:[],sourceImage:{mask:source,probability:Float32Array.from(source),resolution:256},metadata:{...target.metadata,direct:true,input:'Rasterized visible SVG for direct fitting'}};n=256;mask=source;}if(raw.identicalSheets&&cfg.algorithm!=='direct'&&cfg.algorithm!=='polynomial')target=transposeTarget(target);if(target.curves.length>MAX_TRACED_CURVES&&!raw.manyCurves)throw new Error('Too much traced detail. Increase fitting tolerance or remove small details.');const vector=target.metadata.direct?maskSVG(mask,n):targetSVG(target);return{target,preview:{vector,boundaries:boundarySVG(target),mask,rgb,resolution:n,...(target.sourceImage?.validMask?{validMask:target.sourceImage.validMask}:{}),...(target.sourceImage?.weights?{weights:target.sourceImage.weights}:{}),metadata:{...target.metadata,curves:target.curves.length,width:target.width}}};}
 export async function solveTarget(target,raw={},onProgress=()=>{},{onCandidate}={}){const cfg=settings(raw),scaled=scaleTarget(target,cfg.width,cfg.paperColors);onProgress=progressReporter(onProgress,cfg.progressGeometry,{onCandidate});if(cfg.algorithm==='auto')return solveAutomatic(scaled,cfg,onProgress);if(cfg.algorithm==='polynomial')return solvePolynomialTarget(scaled,cfg);if(cfg.algorithm==='direct'){if(!target.metadata.direct)throw new Error('Prepare the image with direct fitting selected first.');return fitDirect(scaled,cfg,onProgress);}return solveBoundary(scaled,cfg,{onProgress,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});}
-/** The most seconds a design with the exact-outline rescue takes, fitter
- * included, of which the last EXACT_FINISH_SECONDS are the final checks' and export's. */
+/** The most seconds a design with the exact search takes, fitter included, of
+ * which the last EXACT_FINISH_SECONDS are the final checks' and export's. */
 export const EXACT_SECONDS=60,EXACT_FINISH_SECONDS=10;
-/** With `exactCompete`, the least time left for the exact search to compete
- * with a passing fitted template, and the most it then takes: on drawn
- * pictures it wins within that, on photographs it mostly spends it for nothing. */
-const COMPETE_SECONDS=15,COMPETE_CAP_SECONDS=16;
-/** A second exact search, on the outline with tips rounded by TIP_ROUNDING_MM,
- * when the first one's template fails and this much time is left. */
-const RETRY_SECONDS=8,TIP_ROUNDING_MM=.5;
-/** The fitter's share of the minute. A fitted template rarely needs the exact
- * rescue, which takes the time the fitter leaves; on photographs more time
- * keeps more of the motif's small regions (12 losing them: at 30 s 1 passed,
- * at 45 s 2, at 60 s 5). */
-const FITTER_SHARE=.75;
+/** In a picture's minute: the exact search on the traced outline until
+ * TRACED_SECONDS, then (its template failing) on the outline with tips rounded
+ * by TIP_ROUNDING_MM until ROUNDED_SECONDS, given ROUNDED_LEAST at least. On
+ * the 128 juleflet pictures 79 of the 82 traced outlines passing did so within
+ * 20 s, and 49 of the 54 rounded ones; a rounded outline hides more cut and lies
+ * further from the mask, so it comes second. The fitter has what is left.
+ * Alone (`exactRoute: 'exact'`, the fitter in a worker beside it), the traced
+ * outline has until ALONE_TRACED_SECONDS and the rounded one the rest. */
+const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,ROUNDED_LEAST=6,TIP_ROUNDING_MM=.5;
+/** The fitter's seconds beside the exact search (`exactRoute: 'fitter'`): what
+ * it had when it came first, which photographs need to keep their details. */
+const FITTER_SECONDS=45;
 export async function design(target,raw={},onProgress=()=>{},options={}){const cfg=settings(raw),symmetry=exactSymmetry(cfg.symmetry);
-  // A picture in Mal (`exactOutline`, a mask without curves): the fitter's
-  // template stands when it passes. Otherwise the exact search lays the cuts
-  // on the outline traced from the mask, with the requested symmetry's ties,
-  // and its template is taken only when it passes and ranks better (stage.js).
-  // It cannot keep identical sheets, a free frame band or a symmetry within
-  // each curve, so those keep the fitter's alone; with it a design takes at
-  // most EXACT_SECONDS.
-  const exactOn=cfg.exactOutline&&!target.curves?.length&&!raw.identicalSheets&&!target.sourceImage?.weights&&symmetry!==null;
-  if(!exactOn){const deadline=performance.now()+1000*cfg.timeLimit,solution=await solveTarget(target,raw,onProgress,options);return finish(solution,settings(solution.automaticSettings||raw),onProgress,{deadline});}
+  // A picture in Mal (`exactOutline`, a mask without curves): the exact search
+  // lays the cuts on the outline traced from the mask, with the requested
+  // symmetry's ties, and its template stands whenever the export passes it
+  // (cutting rules, paper, the picture's regions and fidelity); the fitter's
+  // only when it finds none. It cannot keep identical sheets, a free frame band
+  // or each curve turned about its middle, so those have the fitter's alone;
+  // with it a design takes at most EXACT_SECONDS. `exactRoute` splits the two
+  // for workers side by side (worker-controller.js): 'exact' the exact search
+  // alone, failing with code NO_EXACT_TEMPLATE, 'fitter' the fitter alone.
+  const route=raw.exactRoute,exactOn=cfg.exactOutline&&!target.curves?.length&&!raw.identicalSheets&&!target.sourceImage?.weights&&symmetry!==null;
+  const noExact=report=>Object.assign(new Error('The exact search found no template the export passes.'),{code:'NO_EXACT_TEMPLATE',report:{exactOutline:report}});
+  if(route==='exact'&&!exactOn)throw noExact({chosen:'fitter',error:'The exact search cannot keep these settings.'});
+  if(!exactOn||route==='fitter'){
+    const limit=exactOn?Math.min(cfg.timeLimit,FITTER_SECONDS):cfg.timeLimit,deadline=performance.now()+1000*(exactOn?Math.min(cfg.timeLimit,EXACT_SECONDS):cfg.timeLimit);
+    const solution=await solveTarget(target,{...raw,timeLimit:limit},onProgress,options);
+    return finish(solution,settings(solution.automaticSettings||raw),onProgress,{deadline});
+  }
   const seconds=Math.min(cfg.timeLimit,EXACT_SECONDS),start=performance.now(),deadline=start+1000*seconds,searchEnd=deadline-1000*EXACT_FINISH_SECONDS;
+  const alone=route==='exact',cfgExact=settings({...raw,symmetry:cfg.symmetry});
+  const {solution,report}=await exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{
+    tracedEnd:Math.min(searchEnd,start+1000*(alone?ALONE_TRACED_SECONDS:TRACED_SECONDS)),roundedEnd:alone?searchEnd:Math.min(searchEnd,start+1000*ROUNDED_SECONDS)});
+  if(solution){solution.report={...solution.report,exactOutline:{...report,chosen:'exact'}};return finish(solution,cfgExact,onProgress,{deadline});}
+  if(alone)throw noExact(report);
+  const fitted=await solveTarget(target,{...raw,timeLimit:Math.max(.1,(searchEnd-performance.now())/1000)},onProgress,options);
+  fitted.report={...fitted.report,exactOutline:report};
+  return finish(fitted,settings(fitted.automaticSettings||raw),onProgress,{deadline});}
+/** The exact search's template for a picture the export passes, or none:
+ * {solution, report}. On the outline traced from the mask until `tracedEnd`,
+ * then on it with its tips rounded until `roundedEnd`. */
+async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,roundedEnd}){
   // The outline traced from the mask first (tens of milliseconds): where its
   // cut ends cannot pair up the exact search cannot start.
   // A trace whose curves meet where the pixels only nearly touch (a vertex of
   // six curves) or a border sliver can stop it: then the mask opened by a
   // pixel or two first (raster.js openClose), a tenth of a second each.
+  const traceAt=open=>{const traced=exactTarget(target,cfg,{open}),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);return scaled?{scaled,why:exactCannotStart(scaled,cfg)}:null;};
   let outline=null,cannot='No outline was traced from the mask.';
   for(const open of [0,1,2]){
-    try{const traced=exactTarget(target,cfg,{open}),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);if(scaled){const why=exactCannotStart(scaled,cfg);if(!why){outline=scaled;break;}if(!open)cannot=why;}}catch(error){if(!open)cannot=String(error.message||error);}
+    try{const traced=traceAt(open);if(traced){if(!traced.why){outline=traced.scaled;break;}if(!open)cannot=traced.why;}}catch(error){if(!open)cannot=String(error.message||error);}
   }
-  let solution=await solveTarget(target,{...raw,timeLimit:Math.max(.1,seconds*FITTER_SHARE)},onProgress,options);
-  // The fitter's template as it would be exported: the final repairs make
-  // most failing fits pass, and the exact search is only for those that still
-  // fail. (Also for those losing a region of the picture, a letter or an eye,
-  // it found nothing in time: on text and photographs its start runs out of
-  // time or the ends do not pair up.)
-  const cfgFitted=settings(solution.automaticSettings||raw);
-  let repaired=repairFinal(solution,cfgFitted,{onProgress,deadline:searchEnd});
-  const fitted=assess(repaired.solution,cfgFitted,{material:repaired.paperRepair.material});
-  let report={chosen:'fitter',fitter:fitted,...(outline?{}:{error:cannot})};
-  // With `exactCompete` it also competes with a passing one, given the time:
-  // on drawn pictures it often cuts far less hidden.
-  if(outline&&(!fitted.passes||cfg.exactCompete&&searchEnd-performance.now()>=1000*COMPETE_SECONDS)){
-    const exactEnd=fitted.passes?Math.min(searchEnd,performance.now()+1000*COMPETE_CAP_SECONDS):searchEnd;
-    const cfgExact=settings({...(solution.automaticSettings||raw),symmetry:cfg.symmetry}),exactOptions={deadline:exactEnd,onProgress,symmetry,geometry:cfg.progressGeometry};
-    let search=await exactSearch(outline,solution,cfgExact,exactOptions);
-    // A template failing the cutting rules mostly follows a tip narrower than
-    // a cut's clearance: again, if the time allows, on the outline with tips
-    // rounded by TIP_ROUNDING_MM (raster.js openClose).
-    if(!search.found?.assessment.passes&&exactEnd-performance.now()>=1000*RETRY_SECONDS){
-      let rounded=null;
-      try{const source=target.sourceImage,radius=Math.max(1,Math.round(TIP_ROUNDING_MM*source.resolution/target.width)),traced=exactTarget(target,cfg,{open:radius}),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);rounded=scaled&&!exactCannotStart(scaled,cfg)?scaled:null;}catch{rounded=null;}
-      if(rounded){
-        const again=await exactSearch(rounded,solution,cfgExact,exactOptions);
-        if(again.found&&(!search.found||better(again.found.assessment,search.found.assessment)))search={...again,report:{...again.report,rounded:true}};
-      }
+  if(!outline)return{solution:null,report:{chosen:'fitter',error:cannot}};
+  const search=end=>({deadline:end,onProgress,symmetry,geometry:cfg.progressGeometry});
+  let found=await exactSearch(outline,null,cfgExact,search(tracedEnd));
+  // A template failing the cutting rules mostly follows a tip narrower than
+  // a cut's clearance: again on the outline with its tips rounded.
+  if(!exportable(found.found?.assessment,cfgExact)&&roundedEnd-performance.now()>=1000*ROUNDED_LEAST){
+    let rounded=null;
+    try{const traced=traceAt(Math.max(1,Math.round(TIP_ROUNDING_MM*target.sourceImage.resolution/target.width)));rounded=traced&&!traced.why?traced.scaled:null;}catch{rounded=null;}
+    if(rounded){
+      const again=await exactSearch(rounded,null,cfgExact,search(roundedEnd));
+      if(exportable(again.found?.assessment,cfgExact)||!found.found&&again.found)found={...again,report:{...again.report,rounded:true}};
     }
-    report={...search.report,chosen:'fitter',fitter:fitted};
-    // Only a passing one: a search that ends with rules broken may still
-    // rank above a failing fit, but its cuts can cross, which Mal cannot show.
-    if(search.found?.assessment.passes&&better(search.found.assessment,fitted)){solution=search.found.solution;repaired=null;report.chosen='exact';}
   }
-  solution.report={...solution.report,exactOutline:report};
-  if(repaired)repaired.solution.report=solution.report;
-  return finish(repaired?.solution??solution,settings(solution.automaticSettings||raw),onProgress,{deadline,repaired});}
+  const report={...found.report,chosen:'fitter'};
+  return{solution:exportable(found.found?.assessment,cfgExact)?found.found.solution:null,report};
+}
 export function inspectSaved(text,raw={},onProgress=()=>{}){const cfg=settings(raw),solution=loadSolutionJSON(text),factor=cfg.width/solution.graph.target.width;solution.graph.edges.forEach(e=>e.curve=new Cubic(e.curve.p.map(p=>p.map(x=>x*factor))));solution.graph.target=scaleTarget(solution.graph.target,cfg.width,cfg.paperColors);reindex(solution.graph);return finish(solution,cfg,onProgress);}
 export function inputImageError(solution){
   const source=solution.graph.target.sourceImage;

@@ -144,11 +144,6 @@ describe('the settings a search is run with', () => {
 		expect(defaultAdvanced().matchingSheets).toBe(true);
 	});
 
-	it('lets the exact search compete only on a painted mask', () => {
-		expect(engineSettings(solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY })).exactCompete).toBe(false);
-		expect(engineSettings(solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY, painted: true })).exactCompete).toBe(true);
-	});
-
 	it('keeps forced symmetry separate from the optional matching preference', () => {
 		const forced = engineSettings(solveSettings({ colors: COLORS, symmetry: { ...NO_SYMMETRY, lobes: 'sym' }, matchingSheets: false }));
 		expect(forced.symmetry).toMatchObject({ transpose: true });

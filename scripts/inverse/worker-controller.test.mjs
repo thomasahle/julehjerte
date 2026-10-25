@@ -98,3 +98,50 @@ test('crop provider failures clear the busy state and permit a later request',as
  await h.send(1,'detect-crops',{input});assert.equal(h.messages.at(-1).message,'load failed');
  await h.send(2,'detect-crops',{input});assert.equal(h.messages.at(-1).type,'crops');
 });
+
+// Mal's solve: the exact search and the fitter in two workers side by side.
+const both={...config,exactOutline:true,exactParallel:true};
+const exactValue={report:{solver:{exactOutline:{chosen:'exact'}}},files:{'cut_geometry.json':packet.geometry}};
+
+test('side by side, the exact search\'s template is taken when it comes and the fitter is ended',async()=>{
+  const h=harness();await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});
+  const [fitter,exact]=h.workers;
+  assert.equal(fitter.sent[0].settings.exactRoute,'fitter');assert.equal(exact.sent[0].settings.exactRoute,'exact');
+  // The live view follows the exact search while it runs.
+  h.reply(fitter,2,'progress',{event:{stage:'directRefining'}});h.reply(exact,2,'progress',{event:{stage:'exactOutline'}});
+  assert.deepEqual(h.messages.filter(m=>m.type==='progress'&&m.id===2).map(m=>m.event.stage),['exactOutline']);
+  // A fitted answer first is held for it.
+  h.reply(fitter,2,'result',{result:value});assert.equal(h.messages.filter(m=>m.type==='result').length,0);
+  h.reply(exact,2,'result',{result:exactValue});await solving;
+  assert.deepEqual(h.messages.at(-1),{id:2,type:'result',result:exactValue});
+  assert.equal(fitter.terminated,1);
+});
+
+test('side by side, the fitter\'s template stands once the exact search finds none',async()=>{
+  const h=harness();await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});
+  const [fitter,exact]=h.workers;
+  h.reply(exact,2,'error',{message:'The exact search found no template the export passes.',code:'NO_EXACT_TEMPLATE'});
+  assert.equal(exact.terminated,1);assert.equal(h.messages.filter(m=>m.type==='error').length,0);
+  // From then on the fitter's progress is shown, and its answer taken.
+  h.reply(fitter,2,'progress',{event:{stage:'directRefining'}});assert.equal(h.messages.at(-1).event.stage,'directRefining');
+  h.reply(fitter,2,'result',{result:value});await solving;
+  assert.deepEqual(h.messages.at(-1),{id:2,type:'result',result:value});
+});
+
+test('side by side, an exact search overrunning its minute is ended and the fitter\'s answer taken',async t=>{
+  t.mock.timers.enable({apis:['setTimeout']});
+  const h=harness();await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});
+  const [fitter,exact]=h.workers;
+  h.reply(fitter,2,'result',{result:value});
+  t.mock.timers.tick(1000*64);assert.equal(exact.terminated,0);
+  t.mock.timers.tick(1000*2);assert.equal(exact.terminated,1);
+  await solving;assert.deepEqual(h.messages.at(-1),{id:2,type:'result',result:value});
+  // A late exact answer is ignored.
+  exact.onmessage?.({data:{id:2,type:'result',result:exactValue}});assert.equal(h.messages.filter(m=>m.type==='result').length,1);
+});
+
+test('side by side, Cancel ends both workers',async()=>{
+  const h=harness();await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});
+  await h.send(2,'cancel');await solving;
+  assert.deepEqual(h.workers.map(w=>w.terminated),[1,1]);assert.equal(h.messages.at(-1).type,'cancelled');
+});

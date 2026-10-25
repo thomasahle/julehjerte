@@ -1,10 +1,6 @@
-/** The exact search as Mal's rescue for a picture: when the fitter's template
- * fails, the cuts are laid exactly on the outline traced from the picture's
- * mask, and that template replaces the
- * fitter's when it passes and ranks better: fewer kinds of failed check, every
- * region of the picture kept, closer to the mask (in steps of half a percent,
- * so closeness never buys hidden cuts), one template for both papers, fewer
- * hidden runs, shorter. */
+/** The exact search for a picture in Mal: the cuts laid exactly on the outline
+ * traced from the picture's mask, its template taken whenever the export passes
+ * it (`exportable`), the fitter's otherwise (engine.js design). */
 import {validate, easeMetrics, sampleWeave} from '../validate.js';
 import {finalMaterialAudit} from '../geometric-material.js';
 import {verifiedPaperSettings} from '../material.js';
@@ -13,7 +9,7 @@ import {auditFeatureFidelity} from '../feature-shapes.js';
 import {matchingSummary} from '../direct/matching.js';
 import {routedComplexity} from '../direct/routed-refinement.js';
 import {requestedSymmetry} from '../settings.js';
-import {exactFromTemplate} from './search.js';
+import {exactFromTemplate, NO_TEMPLATE} from './search.js';
 import {exactOutline} from './snap.js';
 import {exactStart} from './start.js';
 import {FROM_APP} from './symmetry.js';
@@ -44,9 +40,12 @@ export function exactCannotStart(outline, cfg) {
 }
 
 /** The reference-frame symmetries the exact search ties for the requested
- * ones, or null when one of them is beyond it (a symmetry within each curve). */
+ * ones, or null when one of them is beyond it (each curve turned onto itself
+ * about its middle). */
 export function exactSymmetry(spec) {
-  const requested = requestedSymmetry(spec);
+  // Symmetric within each curve comes with both mirrors (the app requests
+  // them together): their ties already map each curve onto itself.
+  const requested = requestedSymmetry(spec).filter(name => !(name === 'withinCurve:sym' && spec.mirrorX && spec.mirrorY));
   if (requested.some(name => !FROM_APP[name])) return null;
   return requested.map(name => FROM_APP[name]);
 }
@@ -113,7 +112,9 @@ function maskError(source, woven) {
   return counted ? wrong / counted : 0;
 }
 
-export const better = (a, b) => { for (let i = 0; i < a.rank.length; i++) if (a.rank[i] !== b.rank[i]) return a.rank[i] < b.rank[i]; return false; };
+/** Whether a template's assessment passes what the export asks of it: the
+ * cutting rules and paper, the picture's regions kept, and its fidelity. */
+export const exportable = (a, cfg) => Boolean(a?.passes && a.features && a.maskError <= cfg.maxImageError);
 
 /** The exact search on the traced `outline` from the fitter's `template`
  * within `deadline`, under the `symmetry` ties: {found: {solution,
@@ -128,7 +129,11 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   try {
     // The start: the template's reading where it holds on this outline, else
     // a topological witness (start.js). One that is not the template's breaks
-    // rules wherever its switches were spread: HiGHS gets a coarser model then.
+    // rules wherever its switches were spread: HiGHS gets a coarser model then,
+    // hidden segments between positions 3 units apart to their 2 nearest. On
+    // the 128 juleflet pictures that found the same templates as 1.5 and 4 in
+    // two thirds of the time; HiGHS's root, which overruns its time limit,
+    // grows faster than the model (dagognat-shot: 65k rows 57 s, 34k 3 s).
     const exact = exactOutline(outline, cfg), began = performance.now();
     const start = await exactStart(exact, template, {deadline: began + Math.min(10, seconds / 4) * 1000});
     report.start = start.how ?? start.error;
@@ -137,8 +142,16 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     // start runs out of time even in 30 s).
     const witness = start.witness ?? {positions: new Map(), labels: new Map(), chords: []};
     if (start.error) report.start = `none (${start.error})`;
-    const left = seconds - (performance.now() - began) / 1000, coarse = start.how !== 'template' ? {spacing: 1.5, neighbours: 4} : {};
+    const left = seconds - (performance.now() - began) / 1000, coarse = start.how !== 'template' ? {spacing: 3, neighbours: 2} : {};
     found = await exactFromTemplate(outline, template, cfg, {seconds: left, symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
+    // With two partners a position may have too few hidden segments for any
+    // template under symmetric ties (starcircle's transpose, found to have none
+    // in a second): then four, 1.5 units apart, in the time left.
+    const rest = seconds - (performance.now() - began) / 1000;
+    if (found.error === NO_TEMPLATE && start.how !== 'template' && rest >= 4) {
+      const finer = await exactFromTemplate(outline, template, cfg, {seconds: rest, symmetry, exact, witness, onProgress, geometry, refine, spacing: 1.5, neighbours: 4});
+      found = finer.error ? found : {...finer, report: {...finer.report, finer: true}};
+    }
   } catch (error) {
     return {found: null, report: {...report, error: String(error.message || error)}};
   }

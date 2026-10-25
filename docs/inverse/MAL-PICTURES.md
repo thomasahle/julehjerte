@@ -41,16 +41,17 @@ minute.
    crop's outermost millimetre takes the colours just inside it, pieces of
    either colour on the edge under 12 mm² and specks or holes inside under
    6 mm² are cleared: glare, dust and print are not detail a template can cut.
-4. **Finding the cuts** (`static/inverse/core/engine.js`, `exact/`). The fitter
-   runs first, for half the minute, and its template gets the final repairs
-   (hidden cuts rounded, returns and paper). Only when it still fails does the
-   exact search (HiGHS, the cuts laid exactly on the outline traced from the
-   mask) try to rescue it, and its template is taken only when it passes. The
-   outline is traced before the fitter starts: when its cut ends cannot pair
-   up across the square (most noisy photographs) the exact search cannot start,
-   and the fitter gets three quarters of the minute instead. The live view
-   draws whichever search is running: the fitter's candidates, then the exact
-   search's improving solutions. Find snit stops within a minute on every path.
+4. **Finding the cuts** (`static/inverse/core/engine.js`, `exact/`,
+   `static/inverse/worker-controller.js`). The exact search (HiGHS, the cuts
+   laid exactly on the outline traced from the mask) and the fitter run side by
+   side in two workers. The exact search's template is taken whenever the
+   export passes it, and the fitter's (with its final repairs: hidden cuts
+   rounded, returns and paper) only when the exact search has none: its
+   outline's cut ends cannot pair up across the square (most noisy
+   photographs), or no template keeps the rules in its time. The live view
+   draws the exact search's improving solutions, then the fitter's candidates
+   once it has given up. Find snit stops within a minute on every path (see
+   "The exact search first" below).
 
 ## Results
 
@@ -259,6 +260,72 @@ from the fitter's template):
   out for 41, 34 pass instead of 33 (khatam), in 360 s instead of 552 (median
   4.9 s instead of 7.6, slowest 31.6 instead of 47.6).
 
+## The exact search first (2026-10-25)
+
+Mal ran two algorithms and kept one by a rank the visitor never saw: the
+fitter's template stood whenever it passed, and the exact search competed only
+on painted masks (and, through a bug, on most imports). Now the exact search's
+template is taken whenever the export passes it (cutting rules, paper, the
+picture's regions and its fidelity: `exportable` in `exact/stage.js`), and the
+fitter's only when the exact search has none.
+
+- **Touchings the trace opened.** A sampled checker corner, its pixels blending
+  four colours, is traced as two corners 0.04-0.5 mm apart, and the exact
+  search paid a hidden segment for each (the triangle at a plain crossing in
+  5-3-heart). Corners of different boundaries, or far apart along one, within
+  0.6 mm now meet (`joinNearTouchings` in `exact/target.js`); never both ends of
+  a strip narrower than that, which would lay its sides on top of each other.
+  On 111 masks 68 gain touchings and the lower bound on hidden segments drops
+  for 57; on 47 photographs passing exact templates went from 8 to 10 and their
+  hidden cut from 440 to 235 mm where both passed. 5-3-heart now has the
+  minimum of 11 hidden segments.
+- **Side by side.** The two run in two workers (`worker-controller.js`,
+  `exactRoute` in `design`), each with its own time: the exact search on the
+  traced outline until 30 s, then with its tips rounded by 0.5 mm until 50 s;
+  the fitter its 45 s as before. The exact search's template is taken when it
+  comes and the fitter's worker ended; the fitter's is taken once the exact
+  search has none, or overruns its minute (its worker is then ended at 65 s:
+  HiGHS's root does not keep its time limit). One after the other in one
+  worker the fitter was left about 10 s on photographs that the exact search
+  fails, and 8 of 80 lost a detail.
+- **A smaller model.** Without the fitter's template to start from, HiGHS gets
+  hidden segments between positions 3 units apart to their 2 nearest (1.5 and
+  4 before). On 72 juleflet pictures it found the same templates in two thirds
+  of the time and passed 42 instead of 36; HiGHS's root, which overruns its
+  time limit, grows faster than the model (dagognat-shot: 65k rows 57 s, 34k
+  rows 3 s; no HiGHS option shortens it). Where that leaves a symmetric outline
+  no template at all (starcircle's transpose), the search goes again with 1.5
+  and 4.
+- **Symmetric within each curve** comes with both mirrors, whose ties already
+  map each curve onto itself, so those pictures (a quarter of the juleflet ones)
+  now have the exact search too. The export's symmetry report cannot pair the
+  exact search's cuts ("no paired cuts"); Mal's converter restores the symmetry
+  where it costs little, as before.
+- Mal no longer runs the twelve synthetic cutting-error trials it never shows:
+  on an exact template's many short curves they took up to 17 s.
+
+| | deployed (f7d8a0f9) | exact first, side by side |
+|---|---|---|
+| juleflet pictures: pass | 128 / 128 | 128 / 128 |
+| exact template | 0 | 98 |
+| from the true design (mean) | 0.708% | 0.672% |
+| from the mask (mean) | 0.485% | 0.335% |
+| solve median / 90% / slowest | 7.3 / 17.0 / 33.4 s | 8.6 / 45.1 / 49.1 s |
+| 80 scraped photographs: pass / detail lost | 46 / 10 | 46 / 10 (7 exact) |
+| solve median | 21.4 s | 43.0 s |
+| 44 web photographs: pass / detail lost | 18 / 16 | 18 / 16 (4 exact) |
+
+On the 98 exact templates the woven heart is 0.606% from the true design
+instead of 0.652%, 13 more than 0.2 points closer (david4-shot, squares,
+fisk-kors-shot, stjerne-ramme) and 5 that much further (drageskael-shot,
+lilje2, roserude, amy-pattern-shot, stjernegitter); hidden cut 9854 -> 8445 mm,
+less on 24 and more on 28. The fitter's 30 are as before. Photographs wait
+for the exact search to give up: 94 of the 98 exact templates came within 30 s
+and all within 40 s, so stopping it there would cost none of them. Rounded tips
+are visible (5star's points are blunt where the fitter's stay sharp): its tip
+on the mirror is cut sharp only by a hidden segment leaving outwards along the
+mirror, to the checker's touching, and hidden segments end on edges only.
+
 ## Details lost on photographs (2026-10-25)
 
 The 68 photographs whose template keeps every rule but loses a region of the
@@ -289,7 +356,8 @@ camel, but takes 20-28 s more and fails on other photographs; not used.
   this size: shown with Mal's note. Nor the exact search, even from an empty
   start: on the gallery's text hearts it finds nothing passing; TAK's template
   is 0.08% from the mask but its slits come closer than a strip allows.
-- The exact search rescues few photographs (its outline, traced from a noisy
-  mask, is rarely a weavable structure in time); it rescues drawn ones.
+- The exact search takes few photographs (7 of 80, 4 of 44: its outline,
+  traced from a noisy mask, is rarely a weavable structure in time); it takes
+  three quarters of drawn ones.
 - Templates: slits that stop inside the square or meet in T-junctions (the site
   cannot represent them), dimension lines drawn along a slit.

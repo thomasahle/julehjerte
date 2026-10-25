@@ -17,6 +17,9 @@ import {solutionJSON} from '../graph.js';
 import {validate} from '../validate.js';
 import {edgesOnMask, geometryOn} from './refine.js';
 
+/** exactFromTemplate's error when no solution keeps every rule. */
+export const NO_TEMPLATE = 'No exact template found.';
+
 /** How often the search's improving solutions are drawn for the live view. */
 const DRAW_INTERVAL_MS = 400;
 
@@ -141,7 +144,7 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
     if (result.paperPassed || !spots || performance.now() > deadline - 2000) break;
     extra = [...extra, ...tightNogoods(model, values, spots)];
   }
-  if (!best) return {error: 'No exact template found.', report: attempts.at(-1)};
+  if (!best) return {error: NO_TEMPLATE, report: attempts.at(-1)};
   // With `refine`, the solution redrawn on the mask's own edge too (refine.js):
   // every edge if that keeps the editor's checks, else edge by edge, the
   // longest first, each kept when the drawing still passes, for at most

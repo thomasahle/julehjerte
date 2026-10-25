@@ -12,6 +12,7 @@ import {exactOutline} from '../../static/inverse/core/exact/snap.js';
 import {readTemplate} from '../../static/inverse/core/exact/template.js';
 import {exactFromTemplate} from '../../static/inverse/core/exact/search.js';
 import {gridWitness} from '../../static/inverse/core/exact/grid.js';
+import {prepare, restorePrepared, design} from '../../static/inverse/core/engine.js';
 
 const svgOf = rings => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path fill="#b91313" fill-rule="evenodd" d="${
   rings.map(ring => 'M' + ring.map(([x, y]) => `${x.toFixed(9)},${(12 - y).toFixed(9)}`).join('L') + 'Z').join('')}"/></svg>`;
@@ -29,6 +30,21 @@ test('two shapes overlapping by a hair at a corner touch there once, without sli
     for (let i = 1; i < e.pts.length; i++) length += Math.hypot(e.pts[i][0] - e.pts[i - 1][0], e.pts[i][1] - e.pts[i - 1][1]);
     assert.ok(length > 1e-3, 'no sliver edge');
   }
+});
+
+test('a picture takes the exact search\'s template, exported, when it passes', async () => {
+  // A classic 3 x 3 heart as Mal sends a mask: the exact template follows the
+  // squares' edges with no hidden cut, and the fitter is never run.
+  const n = 400, mask = new Uint8Array(n * n), colors = ['#b91313', '#ffffff'];
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) mask[y * n + x] = (Math.floor(3 * x / n) + Math.floor(3 * y / n)) % 2 ? 0 : 1;
+  const prepared = prepare({type: 'mask', mask, resolution: n}, {...AUTOMATIC_PRESET, width: 100, resolution: n, paperColors: colors, mode: 'swatches', swatches: colors, invert: false, removeSpecks: 0});
+  const stages = new Set();
+  const answer = await design(restorePrepared(prepared.target), {...AUTOMATIC_PRESET, width: 100, minWidth: 2, cutError: .25, timeLimit: 60, exactOutline: true, paperColors: colors, trials: 0}, event => stages.add(event.stage));
+  assert.equal(answer.report.solver.exactOutline.chosen, 'exact');
+  assert.ok(answer.report.templateChecksPassed);
+  assert.ok(answer.files['cut_geometry.json']);
+  assert.ok(stages.has('exactOutline'));
+  assert.ok(![...stages].some(stage => String(stage).startsWith('direct')), [...stages].join());
 });
 
 test('the exact-outline stage is off unless asked for', () => {

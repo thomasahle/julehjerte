@@ -182,13 +182,6 @@ export type FindSettings = {
 	minWidthMm?: number;
 	/** Prefer one template within 1 percentage point of error, independently of symmetry. */
 	matchingSheets?: boolean;
-	/**
-	 * The mask was painted here rather than imported: its edges are clean, and
-	 * the exact search, laying the cuts on them, competes with the fitter's
-	 * template (on the library's clean design masks it cut 36% less hidden where
-	 * it won; on imported pictures it rarely won and only cost time).
-	 */
-	painted?: boolean;
 };
 
 /**
@@ -597,11 +590,16 @@ export function solveSettings(settings: FindSettings): Record<string, unknown> {
 		minWidth: clampAdvanced('minWidthMm', settings.minWidthMm ?? DEFAULT_MIN_WIDTH_MM),
 		cutError: 0.25,
 		timeLimit: SEARCH_SECONDS,
-		// When the fitter's template fails, try the exact search on the mask's
-		// traced outline as a rescue (core/exact/): a minute for the whole search.
-		// On a painted mask it competes with a passing template too.
+		// The exact search lays the cuts on the mask's traced outline and its
+		// template stands whenever the export passes it; the fitter's only when
+		// it finds none (core/engine.js design). The two run side by side in
+		// two workers, each with its own time (worker-controller.js): a minute
+		// for the whole search.
 		exactOutline: true,
-		exactCompete: settings.painted === true,
+		exactParallel: true,
+		// No synthetic cutting-error trials: the page never shows them, and on an
+		// exact template's many short curves twelve took up to 17 s of the minute.
+		trials: 0,
 		// Prefer a reusable template even when a photograph has no detected
 		// symmetry. This does not fold the mask. A requested symmetry
 		// overrules it inside `settings()`: the transpose implies matching sheets,
@@ -617,7 +615,6 @@ export function solveSettings(settings: FindSettings): Record<string, unknown> {
 		kerf: 0,
 		printShrinkPercent: 0.2,
 		materialResolution: 360,
-		trials: 12,
 		requireMaterialCore: true,
 		paperColors: paperPair(settings.colors),
 		resolution: MASK_SIZE,
