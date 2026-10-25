@@ -35,13 +35,14 @@ export async function solveTarget(target,raw={},onProgress=()=>{},{onCandidate}=
 export const EXACT_SECONDS=60,EXACT_FINISH_SECONDS=10;
 /** In a picture's minute: the exact search on the traced outline until
  * TRACED_SECONDS, then (its template failing) on the outline with tips rounded
- * by TIP_ROUNDING_MM until ROUNDED_SECONDS, given ROUNDED_LEAST at least. On
+ * by TIP_ROUNDING_MM (within TIP_SPOT_MM of where the template comes too close to
+ * itself) until ROUNDED_SECONDS, given ROUNDED_LEAST at least. On
  * the 128 juleflet pictures 79 of the 82 traced outlines passing did so within
  * 20 s, and 49 of the 54 rounded ones; a rounded outline hides more cut and lies
  * further from the mask, so it comes second. The fitter has what is left.
  * Alone (`exactRoute: 'exact'`, the fitter in a worker beside it), the traced
  * outline has until ALONE_TRACED_SECONDS and the rounded one the rest. */
-const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,ROUNDED_LEAST=6,TIP_ROUNDING_MM=.5;
+const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,ROUNDED_LEAST=6,TIP_ROUNDING_MM=.5,TIP_SPOT_MM=4;
 /** The fitter's seconds beside the exact search (`exactRoute: 'fitter'`): what
  * it had when it came first, which photographs need to keep their details. */
 const FITTER_SECONDS=45;
@@ -81,7 +82,7 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
   // A trace whose curves meet where the pixels only nearly touch (a vertex of
   // six curves) or a border sliver can stop it: then the mask opened by a
   // pixel or two first (raster.js openClose), a tenth of a second each.
-  const traceAt=open=>{const traced=exactTarget(target,cfg,{open}),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);return scaled?{scaled,why:exactCannotStart(scaled,cfg)}:null;};
+  const traceAt=(open,near={})=>{const traced=exactTarget(target,cfg,{open,...near}),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);return scaled?{scaled,why:exactCannotStart(scaled,cfg)}:null;};
   let outline=null,cannot='No outline was traced from the mask.';
   for(const open of [0,1,2]){
     try{const traced=traceAt(open);if(traced){if(!traced.why){outline=traced.scaled;break;}if(!open)cannot=traced.why;}}catch(error){if(!open)cannot=String(error.message||error);}
@@ -90,13 +91,22 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
   const search=end=>({deadline:end,onProgress,symmetry,geometry:cfg.progressGeometry});
   let found=await exactSearch(outline,null,cfgExact,search(tracedEnd));
   // A template failing the cutting rules mostly follows a tip narrower than
-  // a cut's clearance: again on the outline with its tips rounded.
+  // a cut's clearance: again on the outline with its tips rounded, first only
+  // within TIP_SPOT_MM of where it comes too close to itself when it says
+  // (sharp corners elsewhere stay sharp: 5star, triple-heart), then everywhere
+  // (fisk-kors-shot), the first with 3/5 of the time when both are to run.
   if(!exportable(found.found?.assessment,cfgExact)&&roundedEnd-performance.now()>=1000*ROUNDED_LEAST){
-    let rounded=null;
-    try{const traced=traceAt(Math.max(1,Math.round(TIP_ROUNDING_MM*target.sourceImage.resolution/target.width)));rounded=traced&&!traced.why?traced.scaled:null;}catch{rounded=null;}
-    if(rounded){
-      const again=await exactSearch(rounded,null,cfgExact,search(roundedEnd));
-      if(exportable(again.found?.assessment,cfgExact)||!found.found&&again.found)found={...again,report:{...again.report,rounded:true}};
+    const n=target.sourceImage.resolution,px=n/cfgExact.width,radius=Math.max(1,Math.round(TIP_ROUNDING_MM*n/target.width));
+    const spots=found.found?validate(found.found.solution,cfgExact,{finalGeometry:true}).issues.filter(i=>i.type==='short_self_clearance'&&i.points).flatMap(i=>i.points.map(([x,y])=>[x*px,y*px])):[];
+    const ways=spots.length?[{spots,within:TIP_SPOT_MM*px},{}]:[{}];
+    for(const [k,near] of ways.entries()){
+      if(exportable(found.found?.assessment,cfgExact)||roundedEnd-performance.now()<1000*ROUNDED_LEAST)break;
+      let rounded=null;
+      try{const traced=traceAt(radius,near);rounded=traced&&!traced.why?traced.scaled:null;}catch{rounded=null;}
+      if(!rounded)continue;
+      const end=k<ways.length-1?performance.now()+.6*(roundedEnd-performance.now()):roundedEnd;
+      const again=await exactSearch(rounded,null,cfgExact,search(end));
+      if(exportable(again.found?.assessment,cfgExact)||!found.found&&again.found)found={...again,report:{...again.report,rounded:near.spots?'near':true}};
     }
   }
   const report={...found.report,chosen:'fitter'};

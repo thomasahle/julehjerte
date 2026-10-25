@@ -53,13 +53,27 @@ export function openClose(mask, n, radius) {
   return Uint8Array.from(zero, v => 1 - v);
 }
 
+/** The mask opened and closed (openClose) only within `within` pixels of
+ * `spots` ([x, y] pixels), as it is elsewhere. */
+export function openCloseNear(mask, n, radius, spots, within) {
+  const opened = openClose(mask, n, radius), out = mask.slice();
+  for (const [sx, sy] of spots) {
+    for (let y = Math.max(0, Math.floor(sy - within)); y <= Math.min(n - 1, Math.ceil(sy + within)); y++)
+      for (let x = Math.max(0, Math.floor(sx - within)); x <= Math.min(n - 1, Math.ceil(sx + within)); x++)
+        if ((x - sx) ** 2 + (y - sy) ** 2 <= within * within) out[y * n + x] = opened[y * n + x];
+  }
+  return out;
+}
+
 /** A raster target's traced outline, as a target with vector curves, or null.
  * With `open`, traced from the mask opened and closed by a disc of that many
- * pixels (openClose); its source stays the picture's own mask. */
-export function rasterOutline(target, cfg, {tolerance = .35, smoothRadius = 0, borderRadius = 1, open = 0} = {}) {
+ * pixels (openClose), only within `within` pixels of `spots` when given; its
+ * source stays the picture's own mask. */
+export function rasterOutline(target, cfg, {tolerance = .35, smoothRadius = 0, borderRadius = 1, open = 0, spots = null, within = 0} = {}) {
   const source = target.sourceImage;
   if (!source?.mask || !source.resolution) return null;
-  const mask = withoutSlivers(open ? openClose(source.mask, source.resolution, open) : source.mask, source.resolution);
+  const n = source.resolution;
+  const mask = withoutSlivers(!open ? source.mask : spots?.length ? openCloseNear(source.mask, n, open, spots, within) : openClose(source.mask, n, open), n);
   const trace = prepareMaskTrace(mask, source.resolution, {...cfg, width: target.width, maxSpan: 40, smoothRadius, snapRadius: 0,
     borderRadius, polygonal: false, mixedBoundaries: true});
   const traced = trace(tolerance).target;
