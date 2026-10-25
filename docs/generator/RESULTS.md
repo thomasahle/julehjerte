@@ -1,5 +1,16 @@
 # Generator robustness results
 
+## Text skips the fits where its cuts already pinch
+
+A construction whose straight cuts already leave a sliver narrower than half
+the clearance cannot be fitted wide enough (fitting moves cuts at most 0.025
+units), so the generator refuses it before fitting, but not for text, whose
+full attempts fitted every such layout three ways before refusing it. With
+Nunito's own TrueType outlines, the first layout for "Anna" has a cut doubling
+back 0.27 units from itself past a letter's stroke: 650 ms to refuse, 1.5 s
+for the heart. Text now refuses it at once: 0.95 s. On 140 text hearts (13
+words, 5 fonts, woven and airy) not one heart changed.
+
 ## The checked tips' lanes pass the motif's other parts only where plain routes are refused
 
 The lanes' routes in the checked tips passed the other lanes' parts of the

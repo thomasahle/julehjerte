@@ -499,8 +499,7 @@ export function fromTopology(request: GeneratorRequest, own?: GeneratorResult): 
 }
 
 function finishConstruction(request: GeneratorRequest, r: Construction, recipe: GeneratorResult['recipe'],
-	geometry = r.geometry, curveFitter?: ReturnType<typeof createExactCurveFitter>, spacing = 1,
-	precheck = request.mode !== 'text'): GeneratorResult {
+	geometry = r.geometry, curveFitter?: ReturnType<typeof createExactCurveFitter>, spacing = 1): GeneratorResult {
 	const curved = geometry !== r.geometry;
 	if (request.board && r.geometry.A_overlap_paths.length + 1 !== (r.strips ?? request.board))
 		throw new ConstructionError('topology', 'Not the board the default size chose');
@@ -511,8 +510,10 @@ function finishConstruction(request: GeneratorRequest, r: Construction, recipe: 
 		r.geometry.A_overlap_paths.length + 1,
 		r.geometry.B_overlap_paths.length + 1
 	), clearanceScale = resolutionScale * spacing;
-	// Avoid expensive curve fitting when cuts already leave a severe sliver.
-	if (!curved && spacing === 1 && precheck && hasSeverePinch(r.geometry, clearanceScale))
+	// Avoid expensive curve fitting when cuts already leave a severe sliver,
+	// which no fit can widen (a text's cut doubling back past a letter's
+	// stroke: Anna in Nunito's first layout, three fits and 650 ms to refuse).
+	if (!curved && spacing === 1 && hasSeverePinch(r.geometry, clearanceScale))
 		throw new ConstructionError(
 			'clearance',
 			'The original cuts have a severe pinch'
@@ -2183,9 +2184,8 @@ function generateUsingRecipes(request: GeneratorRequest,
 		if (!contours.length) throw new ConstructionError('empty', 'No contour');
 		request = { ...request, contours };
 	}
-	// A quick attempt has a fallback, so it also skips text with severe pinches.
 	const finish = (construction: Construction, recipe: GeneratorResult['recipe'], keep = true) => {
-		try { return finishConstruction(request, construction, recipe, undefined, curveFitter, 1, !allRecipes || undefined); }
+		try { return finishConstruction(request, construction, recipe, undefined, curveFitter); }
 		catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			if (keep) onRejected(construction, recipe);
