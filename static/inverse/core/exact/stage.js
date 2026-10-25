@@ -27,11 +27,17 @@ export function exactTarget(target, cfg, options = {}) {
 }
 
 /** Why the exact search cannot start on `outline`, or null when it can: its
- * structure must build, and the cut ends on opposite sides of the square must
- * pair up (bounds.js). Tens of milliseconds. */
+ * structure must build, the cut ends on opposite sides of the square must pair
+ * up (bounds.js), and both pairs of sides must have some: each of its slits
+ * starts where the outline meets a side, so a figure clear of the sides (a
+ * motif painted in the middle) has none, and only the fitter's hidden cuts
+ * from the border reach it. Tens of milliseconds. */
 export function exactCannotStart(outline, cfg) {
   try {
-    return cheapBounds(exactOutline(outline, cfg).st).impossible ? 'The outline ends unevenly on opposite sides.' : null;
+    const bounds = cheapBounds(exactOutline(outline, cfg).st);
+    if (bounds.impossible) return 'The outline ends unevenly on opposite sides.';
+    if (!bounds.k || !bounds.ell) return 'The outline does not reach both pairs of sides.';
+    return null;
   } catch (error) {
     return String(error.message || error);
   }
