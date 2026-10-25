@@ -29,6 +29,12 @@ no weak paper where there were eight places (elsewhere its own construction
 is the one the search finds); the angel 2. The gift's start search runs out
 of time (30 s) at every size.
 
+The church keeps 15 sizes, all of 86–100%, where the other motifs' solves
+fail: no sharp tip where the generator's had up to four, under half the
+hidden turns, and less weak paper at 99–100%. The heart adds 83–84% (a
+third of the hidden turns, no weak paper at 83% where there were two
+places); from 86% the generator refuses its solves.
+
 ## The sunburst's crown narrows where its motif crowds the circle
 
 The sunburst's circle is four fifths of its frame, and the frame stops at the
