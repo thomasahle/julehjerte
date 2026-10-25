@@ -8,7 +8,7 @@ import { NO_WHOLE_STRIPS, STRIPS, crowdedHiddenCutsSetAside, slidePlace, stripFi
 import { BOARD_STRIPS, MOTIF, boardPlacement, boardRadius, boardScale, boardSetting, boardSteps, enclosedAlong, motifChoices, squareChoices, type BoardStyle } from './boardMotif';
 import { TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
 import { CIRCLE_STYLES, fillSquare, fitCircle, withNarrowCrown, crowdsCrown } from './frameFit';
-import { chooseRecipe, recipeConstruction, recipeOutline, type Recipe } from './recipes';
+import { fitsOutline, recipeConstruction, recipeOutline, recipesAt, type Recipe } from './recipes';
 import { picture } from './picture';
 export { fillSquare, fitCircle } from './frameFit';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
@@ -412,16 +412,17 @@ const SHEET: Ring = [[0, 0], [100, 0], [100, 100], [0, 100]];
  * its outline and cuts cleanly (see `recipes`). */
 export function fromStoredRecipe(request: GeneratorRequest, recipes = request.recipes): GeneratorResult | undefined {
 	if (request.mode !== 'figure' || !recipes?.length) return;
-	const rings = picture(request)?.rings;
-	if (!rings?.length) return;
 	// The board the generator builds: the board circle's five strips where the visitor chose none.
 	const strips = request.style === 'board' ? request.board ?? BOARD_STRIPS.board.initial : request.board;
-	const recipe = chooseRecipe(recipes, request.style ?? 'rays', strips, request.scale ?? .7, request.gap ?? 3, recipeOutline(rings));
-	if (!recipe) return;
-	try {
-		return finishConstruction(request, { ...recipeConstruction(recipe, rings), ...request.style === 'board' ? { domain: [SHEET] } : {} }, 'nested');
-	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	for (const recipe of recipesAt(recipes, request.style ?? 'rays', strips, request.scale ?? .7, request.gap ?? 3)) {
+		// On the picture it was solved on: the generator's own, as it told it.
+		const rings = picture(request, recipe.known)?.rings;
+		if (!rings?.length || !fitsOutline(recipe, recipeOutline(rings))) continue;
+		try {
+			return finishConstruction(request, { ...recipeConstruction(recipe, rings), ...request.style === 'board' ? { domain: [SHEET] } : {} }, 'nested');
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		}
 	}
 }
 

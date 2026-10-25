@@ -25,6 +25,7 @@
  * the cut's own frame: along it and across it, as shares of its length).
  */
 import { compile, ConstructionError, type Edge, type Point, type Ring } from './geometry';
+import type { Known } from './picture';
 
 /** A place on the outline: ring `r`, `u` of the way from its `k`-th corner to the next. */
 export type RecipeAnchor = { r: number; k: number; u: number };
@@ -44,6 +45,10 @@ export type Recipe = {
 	gap: number;
 	/** The corners of each ring: an outline with others is another. */
 	sig: number[];
+	/** What the generator's own heart told the picture it was solved on
+	 * (where it keeps a motif whole, or on its enclosing circle; see
+	 * `picture`), so the stored heart shows the picture the generator's would. */
+	known?: Known;
 	A: RecipePiece[][];
 	B: RecipePiece[][];
 };
@@ -167,13 +172,19 @@ export function recipeEdges(recipe: Recipe, o: RecipeOutline): Edge[] {
 	return edges;
 }
 
-/** The stored recipe for a picture: the one found to hold at its size
- * setting and space, whose outline is this one's; none for a size or space
- * no recipe was checked at. */
-export function chooseRecipe(recipes: readonly Recipe[], style: string, strips: number | undefined, setting: number, gap: number, o: RecipeOutline): Recipe | undefined {
+/** The stored recipes for a request's size setting and space: those found to
+ * hold there; none for a size or space no recipe was checked at. Each is drawn
+ * only on its own outline (see `fitsOutline`). */
+export function recipesAt(recipes: readonly Recipe[], style: string, strips: number | undefined, setting: number, gap: number): Recipe[] {
 	const step = Math.round(setting * 100);
-	if (Math.abs(setting * 100 - step) > 1e-6) return;
-	return recipes.find(r => r.style === style && r.strips === strips && r.gap === gap && r.steps.includes(step) && fitsOutline(r, o));
+	if (Math.abs(setting * 100 - step) > 1e-6) return [];
+	return recipes.filter(r => r.style === style && r.strips === strips && r.gap === gap && r.steps.includes(step));
+}
+
+/** The stored recipe for a picture: one that holds at its size and space,
+ * whose outline is this one's. */
+export function chooseRecipe(recipes: readonly Recipe[], style: string, strips: number | undefined, setting: number, gap: number, o: RecipeOutline): Recipe | undefined {
+	return recipesAt(recipes, style, strips, setting, gap).find(r => fitsOutline(r, o));
 }
 
 /** A recipe drawn as a construction: its edges compiled into slits. */

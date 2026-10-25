@@ -55,6 +55,12 @@ circle at 88–96% (1–8% apart). The diamond's recipes go, and the star's on
 five strips at 88–96% and on seven at 92% and 98–100%: the star keeps 53, 37
 and 26 sizes on three, five and seven strips.
 
+A recipe now records the picture the generator's own heart tells (whole,
+enclosed, circle, board, place, as the page's preview takes them) and is
+solved and drawn on it. Solved so, the star on five strips at 88–94% shows the
+generator's picture (0.02–0.14% apart) with no weak paper where there were two
+to five places and under half the hidden turns: 44 sizes on five strips.
+
 ## The sunburst's crown narrows where its motif crowds the circle
 
 The sunburst's circle is four fifths of its frame, and the frame stops at the

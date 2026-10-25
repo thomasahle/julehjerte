@@ -11,6 +11,7 @@
 // replacing that board's, and the file is listed in index.json.
 //
 //   node scripts/generator/recipes.mjs <motif> <style> [strips] [from to]
+//   REJUDGE=1 node scripts/generator/recipes.mjs <motif> <style> [strips]   # judge the file's recipes again
 //   env: SYMMETRY=1    solve on the motif made exactly mirror-symmetric (each point averaged with its
 //                      mirror image's), the heart's two halves tied: seconds rather than minutes; the
 //                      recipes are checked on the motif itself
@@ -33,6 +34,8 @@ try {
 	const { recipeOutline } = await load('/src/lib/generator/recipes.ts');
 	const { cutTipCounts } = await load('/src/lib/generator/cutQuality.ts');
 	const paper = await load('/src/lib/geometry/paperNecks.ts').catch(() => null), weak = design => paper ? paper.paperFaults(design).weak : 0;
+	// Without the paper check weak paper counts as none, and recipes that win by their paper are lost.
+	if (!paper && !process.env.NO_PAPER) throw new Error('The paper check (src/lib/geometry/paperNecks.ts) is missing: run in a tree that has it, or set NO_PAPER=1 to judge without it.');
 	const { inferOverlapRect } = await load('/src/lib/utils/overlapRect.ts');
 	const { rasterizeDesign } = await load('/src/lib/paint/rasterize.ts');
 	// How far two hearts' woven pictures are apart, as a share of a 200 × 200 raster: a recipe may
@@ -202,49 +205,73 @@ try {
 	}
 
 	const from = Number(fromArg ?? 45), to = Number(toArg ?? 100), steps = [];
+	// What the generator's own heart tells the picture at each size, as the page's preview takes it
+	// (a motif kept whole past the touching circle, or on its enclosing circle): a recipe is solved
+	// and drawn on that picture, so it shows what the generator's heart would.
+	const knownOf = (own, asked) => Object.fromEntries(Object.entries({
+		place: own.place, board: own.board ?? own.design.gridSize.x,
+		circle: own.scale !== undefined ? (own.scale < asked ? own.scale : 'large') : undefined,
+		enclosed: asked > .85 ? !!own.enclosed : undefined, whole: asked > .7 ? !!own.whole : undefined
+	}).filter(([, v]) => v !== undefined));
 	for (let p = from; p <= to; p++) {
-		const rings = picture(request(p / 100, solvedOn)).rings, o = recipeOutline(rings);
-		steps.push({ p, rings, o, sig: o.corners.map(c => c.length).join('.') });
+		let own = null;
+		try { own = generate(request(p / 100)); } catch { own = null; }
+		const known = own ? knownOf(own, p / 100) : {}, rings = picture(request(p / 100, solvedOn), known).rings, o = recipeOutline(rings);
+		steps.push({ p, rings, o, known, own, sig: o.corners.map(c => c.length).join('.') + JSON.stringify(known) });
 	}
-	const groups = [];
-	for (const step of steps) {
-		const group = groups.find(g => g.sig === step.sig && g.steps.at(-1).p === step.p - 1);
-		if (group) group.steps.push(step); else groups.push({ sig: step.sig, steps: [step] });
-	}
-	console.log(`${motif} ${style}${strips ? ` ${strips}` : ''}: ${groups.length} outlines over ${from}-${to}%`);
-	const recipes = [], covered = new Set(), maxSolves = Number(process.env.MAX_SOLVES ?? 4);
-	for (const group of groups) {
-		const tried = new Set();
-		for (let k = 0; k < maxSolves; k++) {
-			const next = group.steps.find(s => !covered.has(s.p) && !tried.has(s.p));
-			if (!next) break;
-			tried.add(next.p);
-			// The engine refuses some outlines outright (an edge with one face on both sides).
-			const solved = await solve(next.rings).catch(error => ({ error: error.message, seconds: 0 }));
-			if (!solved.xy) { console.log(`  ${next.p}%: no template (${solved.error}, ${solved.seconds.toFixed(0)} s)`); continue; }
-			const recipe = { style, ...strips ? { strips } : {}, steps: [], gap: GAP, sig: next.o.corners.map(c => c.length), ...piecesOf(solved.xy, next.o) };
-			for (const step of group.steps) {
-				if (covered.has(step.p)) continue;
-				const made = fromStoredRecipe(request(step.p / 100), [{ ...recipe, steps: [step.p] }]);
-				if (!made) continue;
-				const rings = picture(request(step.p / 100)).rings;
-				step.own ??= (() => { try { const own = generate(request(step.p / 100)); return { design: own.design, measures: own.hardToCut ? null : measures(own.design, rings) }; } catch { return null; } })();
-				if (step.own && apart(made.design, step.own.design) > .005) continue;
-				if (step.own?.measures && !better(measures(made.design, rings), step.own.measures)) continue;
-				recipe.steps.push(step.p);
-				covered.add(step.p);
+	// Whether a recipe draws the size better than the generator's own heart, on the same picture.
+	const keeps = (recipe, step) => {
+		const made = fromStoredRecipe(request(step.p / 100), [{ ...recipe, steps: [step.p] }]);
+		if (!made) return false;
+		if (!step.own) return true;
+		if (apart(made.design, step.own.design) > .005) return false;
+		const rings = picture(request(step.p / 100), recipe.known).rings;
+		return Boolean(step.own.hardToCut) || better(measures(made.design, rings), measures(step.own.design, rings));
+	};
+	const dir = 'static/generator/recipes', name = `${motif}.${style}`, file = path.join(dir, `${name}.json`);
+	const old = JSON.parse(await fs.readFile(file, 'utf8').catch(() => '{"version":1,"recipes":[]}'));
+	const recipes = [];
+	if (process.env.REJUDGE) {
+		// The file's recipes for this board judged again at their sizes, by the rules as they are now.
+		const at = new Map(steps.map(step => [step.p, step]));
+		for (const recipe of old.recipes.filter(r => r.style === style && r.strips === strips)) {
+			const held = recipe.steps.filter(p => !at.has(p) || keeps(recipe, at.get(p)));
+			console.log(`  recipe of ${recipe.steps.join(',')}: kept at ${held.join(',') || 'none'}`);
+			if (held.length) recipes.push({ ...recipe, steps: held });
+		}
+	} else {
+		const groups = [];
+		for (const step of steps) {
+			const group = groups.find(g => g.sig === step.sig && g.steps.at(-1).p === step.p - 1);
+			if (group) group.steps.push(step); else groups.push({ sig: step.sig, steps: [step] });
+		}
+		console.log(`${motif} ${style}${strips ? ` ${strips}` : ''}: ${groups.length} outlines over ${from}-${to}%`);
+		const covered = new Set(), maxSolves = Number(process.env.MAX_SOLVES ?? 4);
+		for (const group of groups) {
+			const tried = new Set();
+			for (let k = 0; k < maxSolves; k++) {
+				const next = group.steps.find(s => !covered.has(s.p) && !tried.has(s.p));
+				if (!next) break;
+				tried.add(next.p);
+				// The engine refuses some outlines outright (an edge with one face on both sides).
+				const solved = await solve(next.rings).catch(error => ({ error: error.message, seconds: 0 }));
+				if (!solved.xy) { console.log(`  ${next.p}%: no template (${solved.error}, ${solved.seconds.toFixed(0)} s)`); continue; }
+				const recipe = { style, ...strips ? { strips } : {}, steps: [], gap: GAP, ...Object.keys(next.known).length ? { known: next.known } : {},
+					sig: next.o.corners.map(c => c.length), ...piecesOf(solved.xy, next.o) };
+				for (const step of group.steps) if (!covered.has(step.p) && keeps(recipe, step)) {
+					recipe.steps.push(step.p);
+					covered.add(step.p);
+				}
+				if (recipe.steps.length) recipes.push(recipe);
+				console.log(`  ${next.p}%: solved in ${solved.seconds.toFixed(0)} s, kept at ${recipe.steps.length ? recipe.steps.join(',') : 'none'}`);
 			}
-			if (recipe.steps.length) recipes.push(recipe);
-			console.log(`  ${next.p}%: solved in ${solved.seconds.toFixed(0)} s, kept at ${recipe.steps.length ? recipe.steps.join(',') : 'none'}`);
 		}
 	}
-	console.log(`${motif} ${style}${strips ? ` ${strips}` : ''}: ${recipes.length} recipes cover ${covered.size} of ${steps.length} sizes`);
+	console.log(`${motif} ${style}${strips ? ` ${strips}` : ''}: ${recipes.length} recipes cover ${recipes.reduce((n, r) => n + r.steps.length, 0)} of ${steps.length} sizes`);
 
-	// Into the motif's file for the frame, replacing this board's (or frame's) recipes.
-	const dir = 'static/generator/recipes', name = `${motif}.${style}`, file = path.join(dir, `${name}.json`);
+	// Into the motif's file for the frame, replacing this board's (or frame's) recipes in the range.
 	await fs.mkdir(dir, { recursive: true });
-	const old = JSON.parse(await fs.readFile(file, 'utf8').catch(() => '{"version":1,"recipes":[]}'));
-	const kept = old.recipes.filter(r => r.strips !== strips || r.steps.every(s => s < from || s > to));
+	const kept = old.recipes.filter(r => r.style !== style || r.strips !== strips || (!process.env.REJUDGE && r.steps.every(s => s < from || s > to)));
 	const all = [...kept, ...recipes];
 	await fs.writeFile(file, JSON.stringify({ version: 1, recipes: all }) + '\n');
 	const indexFile = path.join(dir, 'index.json'), index = JSON.parse(await fs.readFile(indexFile, 'utf8').catch(() => '{"files":[]}'));

@@ -69,7 +69,16 @@ within half a percent of the generator's own. The plain picture is not always
 the generator's: on a board past the touching circle it keeps some motifs
 whole (the diamond at 80–85%, the circle in the edge squares' colour) and
 places large ones on their enclosing circle (the star at 88–96%), as the page
-learns from the hearts it has made. Those sizes keep the generator's heart.
+learns from the hearts it has made. So the script makes the generator's own
+heart at each size first, solves on the picture it tells (`picture(request,
+known)`: place, board, circle, enclosed, whole), and stores that as the
+recipe's `known`; the generator draws the recipe on the same picture.
+
+`REJUDGE=1` solves nothing: it draws the file's recipes for the board again at
+every size they list and keeps only the sizes that still pass, for files made
+under older rules. The script needs the paper check
+(src/lib/geometry/paperNecks.ts): without it weak paper counts as none and
+recipes that win by their paper would be lost, so it stops unless `NO_PAPER=1`.
 
 A motif drawn mirror-symmetric is solved with the heart's two halves tied: a
 few seconds a solve rather than minutes, and the heart symmetric. The ties
