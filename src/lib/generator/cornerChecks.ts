@@ -239,7 +239,8 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 	}
 	// A leg nearer another cut than cutting allows (the motif's, not those
 	// it joins at its ends) bends out past it, at the space asked for, where
-	// that crosses no other cut.
+	// that crosses no other cut; at `routeMargin`, nearer than that, and as
+	// far past it.
 	const touches = (e: Edge, p: Point) => [e.from, e.to].some(q => Math.hypot(q[0] - p[0], q[1] - p[1]) < 1e-6);
 	let bentLegs = false;
 	if (bendLegs) for (const { at, count, path } of legs.reverse()) {
@@ -248,7 +249,7 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 			const steps = Math.max(1, Math.ceil(Math.hypot(q[0] - p[0], q[1] - p[1]) / .5));
 			return Array.from({ length: steps + 1 }, (_, i): Point => [p[0] + (q[0] - p[0]) * i / steps, p[1] + (q[1] - p[1]) * i / steps]);
 		});
-		const bent = pastMotif(path, points, Math.max(gap, 1.5 * margin), margin, safe);
+		const bent = pastMotif(path, points, Math.max(gap, 1.5 * margin, routeMargin && routeMargin + .5), Math.max(margin, routeMargin), safe);
 		if (bent === path) continue;
 		if (bent.some((p, i) => i && others.some(e => crosses(bent[i - 1], p, e.from, e.to)))) continue;
 		const replaced: Edge[] = [];

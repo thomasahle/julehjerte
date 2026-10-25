@@ -1,5 +1,17 @@
 # Generator robustness results
 
+## Tern i spidserne bends its side legs a paper's width off the motif
+
+Where a heart in checked tips tears printed, the layouts are tried again with
+the motif's connections a paper's width off. The side lanes' legs, the hidden
+cuts from each checked tip past the motif's side, still kept only cutting
+clearance from it, so a large motif's tips and corners left paper narrower
+than 2 mm against them (the gift's bow and boxes from 78%). In that retry they
+now bend out where they pass nearer than a paper's width, half a unit further
+off, as they did only where every layout was refused. On 49 motifs at eight
+sizes from 76% to 100%: weak places 1242 → 1074, tearing hearts 276 → 266,
+none worse, no slower.
+
 ## Text skips the fits where its cuts already pinch
 
 A construction whose straight cuts already leave a sliver narrower than half
