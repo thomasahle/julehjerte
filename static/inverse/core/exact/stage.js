@@ -122,9 +122,13 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     const exact = exactOutline(outline, cfg), began = performance.now();
     const start = await exactStart(exact, template, {deadline: began + Math.min(10, seconds / 4) * 1000});
     report.start = start.how ?? start.error;
-    if (start.error) return {found: null, report: {...report, error: start.error}};
+    // No start found in time: HiGHS finds the papers itself from an empty one,
+    // on the coarser grid (amy-flowering, david4, where the search for a
+    // start runs out of time even in 30 s).
+    const witness = start.witness ?? {positions: new Map(), labels: new Map(), chords: []};
+    if (start.error) report.start = `none (${start.error})`;
     const left = seconds - (performance.now() - began) / 1000, coarse = start.how !== 'template' ? {spacing: 1.5, neighbours: 4} : {};
-    found = await exactFromTemplate(outline, template, cfg, {seconds: left, symmetry, exact, witness: start.witness, onProgress, geometry, refine, ...coarse});
+    found = await exactFromTemplate(outline, template, cfg, {seconds: left, symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
   } catch (error) {
     return {found: null, report: {...report, error: String(error.message || error)}};
   }
