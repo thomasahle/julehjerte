@@ -17,6 +17,10 @@
 //   env: SYMMETRY=1    solve on the motif made exactly mirror-symmetric (each point averaged with its
 //                      mirror image's), the heart's two halves tied: seconds rather than minutes; the
 //                      recipes are checked on the motif itself
+//        TEMPLATE=1     start each solve from the generator's own heart at that size (its cuts read as the
+//                      search's template): seconds where a search from nothing runs out of time
+//                      (the rays and checks)
+//        VERBOSE=1      print each size's measures beside the generator's, and why one is not kept
 //        SOLVE_SECONDS  per solve (120), MAX_SOLVES per group (4)
 //
 // Run one at a time: each solve keeps a core busy for up to two minutes.
@@ -54,6 +58,7 @@ try {
 	const { exactOutline } = await core('exact/snap.js');
 	const { exactStart } = await core('exact/start.js');
 	const { exactFromTemplate } = await core('exact/search.js');
+	const { Cubic } = await core('bezier.js');
 
 	const [motif, style, stripsArg, fromArg, toArg] = process.argv.slice(2);
 	if (!motif || !style) throw new Error('Usage: node scripts/generator/recipes.mjs <motif> <style> [strips] [from to]');
@@ -78,15 +83,44 @@ try {
 	// The engine's square (12 units, y up) in the picture's sheet (0..100, y down).
 	const toSheet = ([x, y]) => [x / .12, (12 - y) / .12];
 
-	/** The exact-outline search on a picture: its slits in the sheet, or why there are none. */
-	async function solve(rings) {
+	/** The generator's heart as the search's template: its cuts in short straight pieces in the
+	 * engine's square (its design's square, which depends on its board, as 0..width), each hidden
+	 * where the picture has one colour on both sides. */
+	const templateOf = (design, rings, width) => {
+		const rect = inferOverlapRect(design.fingers, design.gridSize), unit = ([x, y]) => [(x - rect.left) / rect.width * 100, (y - rect.top) / rect.height * 100];
+		const colour = (x, y) => rings.reduce((v, r) => v ^ Number(inside(x, y, r)), 0);
+		const edges = [], paths = [[], []];
+		for (const finger of design.fingers) {
+			if (!finger.id.includes('-cut-')) continue;
+			const pts = [];
+			for (const sg of finger.segments) for (let k = pts.length ? 1 : 0; k <= 8; k++) {
+				const t = k / 8, u = 1 - t, at = c => u * u * u * sg.p0[c] + 3 * u * u * t * sg.p1[c] + 3 * u * t * t * sg.p2[c] + t * t * t * sg.p3[c];
+				pts.push(unit([at('x'), at('y')]));
+			}
+			const slit = [];
+			for (let i = 1; i < pts.length; i++) {
+				const a = pts[i - 1], b = pts[i], l = Math.hypot(b[0] - a[0], b[1] - a[1]);
+				if (l < 1e-6) continue;
+				const m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], n = [-(b[1] - a[1]) / l, (b[0] - a[0]) / l];
+				edges.push({ curve: Cubic.line(...[a, b].map(p => p.map(v => v / 100 * width))), visible: colour(m[0] + .15 * n[0], m[1] + .15 * n[1]) !== colour(m[0] - .15 * n[0], m[1] - .15 * n[1]) });
+				slit.push([edges.length - 1, true]);
+			}
+			paths[finger.lobe === 'right' ? 0 : 1].push(slit);
+		}
+		return { graph: { target: { width }, edges }, paths };
+	};
+
+	/** The exact-outline search on a picture, from the generator's heart `own` where TEMPLATE is
+	 * set: its slits in the sheet, or why there are none. */
+	async function solve(rings, own) {
 		const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path fill="#b91313" fill-rule="evenodd" d="${rings.map(r => 'M' + r.map(([x, y]) => `${(x * .12).toFixed(6)},${(y * .12).toFixed(6)}`).join('L') + 'Z').join('')}"/></svg>`;
 		const target = scaleTarget(exactTarget(restorePrepared(prepare({ type: 'svg', text: svg }, { ...raw, resolution: 400 }).target)), cfg.width, cfg.paperColors);
 		const exact = exactOutline(target, cfg), started = performance.now(), seconds = Number(process.env.SOLVE_SECONDS ?? 120);
-		const start = await exactStart(exact, null, { deadline: performance.now() + Math.min(30, seconds / 4) * 1000 });
+		const template = process.env.TEMPLATE && own ? templateOf(own, rings, cfg.width) : null;
+		const start = await exactStart(exact, template, { deadline: performance.now() + Math.min(30, seconds / 4) * 1000 });
 		const took = () => (performance.now() - started) / 1000;
 		if (start.error) return { error: start.error, seconds: took() };
-		const search = symmetry => exactFromTemplate(target, null, cfg, { seconds: seconds - took(), exact, witness: start.witness, symmetry, ...start.how !== 'template' ? { spacing: 1.5, neighbours: 4 } : {} });
+		const search = symmetry => exactFromTemplate(target, template, cfg, { seconds: seconds - took(), exact, witness: start.witness, symmetry, ...start.how !== 'template' ? { spacing: 1.5, neighbours: 4 } : {} });
 		let found = await search(exactSymmetry(cfg.symmetry));
 		// An outline a hair from symmetric (the circle through a corner of the board) is solved untied.
 		if (found.error && /not symmetric enough/.test(found.error)) found = await search([]);
@@ -186,20 +220,27 @@ try {
 		circle: own.scale !== undefined ? (own.scale < asked ? own.scale : 'large') : undefined,
 		enclosed: asked > .85 ? !!own.enclosed : undefined, whole: asked > .7 ? !!own.whole : undefined
 	}).filter(([, v]) => v !== undefined));
+	const unshown = new Set();
 	for (let p = from; p <= to; p++) {
 		let own = null;
 		try { own = generate(request(p / 100)); } catch { own = null; }
-		const known = own ? knownOf(own, p / 100) : {}, rings = picture(request(p / 100, solvedOn), known).rings, o = recipeOutline(rings);
+		const known = own ? knownOf(own, p / 100) : {}, shown = picture(request(p / 100, solvedOn), known);
+		// None where the frame has no picture for the generator's heart (the rays on a finer board).
+		if (!shown) { unshown.add(p); continue; }
+		const rings = shown.rings, o = recipeOutline(rings);
 		steps.push({ p, rings, o, known, own, sig: o.corners.map(c => c.length).join('.') + JSON.stringify(known) });
 	}
 	// Whether a recipe draws the size better than the generator's own heart, on the same picture.
 	const keeps = (recipe, step) => {
+		const say = (kept, why) => { if (process.env.VERBOSE) console.log(`    ${step.p}%: ${why}`); return kept; };
 		const made = fromStoredRecipe(request(step.p / 100), [{ ...recipe, steps: [step.p] }]);
-		if (!made) return false;
-		if (!step.own) return true;
-		if (apart(made.design, step.own.design) > .005) return false;
-		const rings = picture(request(step.p / 100), recipe.known).rings;
-		return Boolean(step.own.hardToCut) || better(measures(made.design, rings), measures(step.own.design, rings));
+		if (!made) return say(false, 'not drawn, or not clean');
+		if (!step.own) return say(true, 'over a refused heart');
+		const off = apart(made.design, step.own.design);
+		if (off > .005) return say(false, `another picture than the generator's (${(off * 100).toFixed(1)}% apart)`);
+		const rings = picture(request(step.p / 100), recipe.known).rings, mine = measures(made.design, rings), its = measures(step.own.design, rings);
+		if (step.own.hardToCut) return say(true, `${JSON.stringify(mine)} over a hard heart`);
+		return better(mine, its) ? say(true, `${JSON.stringify(mine)} over ${JSON.stringify(its)}`) : say(false, `${JSON.stringify(mine)} not better than ${JSON.stringify(its)}`);
 	};
 	const solves = style === 'board', dir = solves ? 'scripts/generator/solves' : 'static/generator/recipes', name = `${motif}.${style}`, file = path.join(dir, `${name}.json`);
 	const old = JSON.parse(await fs.readFile(file, 'utf8').catch(() => '{"version":1,"recipes":[]}'));
@@ -208,7 +249,7 @@ try {
 		// The file's recipes for this board judged again at their sizes, by the rules as they are now.
 		const at = new Map(steps.map(step => [step.p, step]));
 		for (const recipe of old.recipes.filter(r => r.style === style && r.strips === strips)) {
-			const held = recipe.steps.filter(p => !at.has(p) || keeps(recipe, at.get(p)));
+			const held = recipe.steps.filter(p => at.has(p) ? keeps(recipe, at.get(p)) : !unshown.has(p));
 			console.log(`  recipe of ${recipe.steps.join(',')}: kept at ${held.join(',') || 'none'}`);
 			if (held.length) recipes.push({ ...recipe, steps: held });
 		}
@@ -227,7 +268,7 @@ try {
 				if (!next) break;
 				tried.add(next.p);
 				// The engine refuses some outlines outright (an edge with one face on both sides).
-				const solved = await solve(next.rings).catch(error => ({ error: error.message, seconds: 0 }));
+				const solved = await solve(next.rings, next.own?.design).catch(error => ({ error: error.message, seconds: 0 }));
 				if (!solved.xy) { console.log(`  ${next.p}%: no template (${solved.error}, ${solved.seconds.toFixed(0)} s)`); continue; }
 				const recipe = { style, ...strips ? { strips } : {}, steps: [], gap: GAP, ...Object.keys(next.known).length ? { known: next.known } : {},
 					sig: next.o.corners.map(c => c.length), ...piecesOf(solved.xy, next.o) };

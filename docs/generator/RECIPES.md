@@ -135,6 +135,7 @@ outline like the star (an owl, with its eyes as holes, is another topology).
 
     node scripts/generator/recipes.mjs <motif> board 5          # solves, every size, 45–100%
     SYMMETRY=1 node scripts/generator/recipes.mjs heart board 5   # a mirror-symmetric motif
+    TEMPLATE=1 node scripts/generator/recipes.mjs gi-squirrel rays 0 80 90   # from the generator's hearts
     node scripts/generator/topology.mjs board 5 <motif>...         # the topologies' recipes
 
 A board's solves go to `scripts/generator/solves/<motif>.board.json`; they are
@@ -207,3 +208,10 @@ checks the recipes on the motif itself: a place is a corner, so the recipe
 draws on both. A size whose outline the ties still refuse (the circle through
 a corner of the board) is solved untied. Without ties the search fails more
 often, mostly on paper and slits crossing on the largest boards.
+
+`TEMPLATE=1` starts each solve from the generator's own heart at that size: its
+cuts are read onto the picture's outline as the search's template, which it
+repairs where they do not fit. In the rays a search from nothing runs out of
+time at the start (the squirrel at 80–84%); from the generator's heart it takes
+three to five seconds. `VERBOSE=1` prints each size's measures beside the
+generator's, and why a size is not kept.
