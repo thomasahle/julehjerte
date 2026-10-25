@@ -16,7 +16,9 @@
  * check and the circle over it), so its outline can turn from one ring to
  * another at a corner of one lying on the other's side: a place there is
  * named by that corner, and a stretch along the other ring starts or ends
- * where the corner meets it.
+ * where the corner meets it. Where two rings cross at a vertex of neither (a
+ * motif over a check's side), the place is their crossing, named on one of
+ * them with the other as `x`.
  *
  * Each slit of each paper (A crosses the sheet in y, B in x, as `compile`
  * reads them) is a list of pieces: a stretch of a ring's outline, which that
@@ -27,8 +29,10 @@
 import { compile, ConstructionError, type Edge, type Point, type Ring } from './geometry';
 import type { Known } from './picture';
 
-/** A place on the outline: ring `r`, `u` of the way from its `k`-th corner to the next. */
-export type RecipeAnchor = { r: number; k: number; u: number };
+/** A place on the outline: ring `r`, `u` of the way from its `k`-th corner to
+ * the next; where ring `x` crosses it there (two rings crossing at a vertex of
+ * neither), the crossing itself. */
+export type RecipeAnchor = { r: number; k: number; u: number; x?: number };
 /** A stretch of ring `v` from `a` to `b`, in the ring's own order (`f`) or against it. */
 export type RecipeStretch = { v: number; a: RecipeAnchor; b: RecipeAnchor; f: boolean };
 /** A hidden cut from one place to another, through its bends. */
@@ -112,6 +116,25 @@ function pointAt(o: RecipeOutline, r: number, s: number): Point {
 	return t ? [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])] : a;
 }
 
+/** Where two rings' sides cross nearest to `q` (`q` itself where they do not cross). */
+function crossingNear(a: Ring, b: Ring, q: Point): Point {
+	let best: Point = q, least = Infinity;
+	for (let i = 0; i < a.length; i++) {
+		const p0 = a[i], p1 = a[(i + 1) % a.length];
+		for (let j = 0; j < b.length; j++) {
+			const q0 = b[j], q1 = b[(j + 1) % b.length];
+			const d = (p1[0] - p0[0]) * (q1[1] - q0[1]) - (p1[1] - p0[1]) * (q1[0] - q0[0]);
+			if (!d) continue;
+			const t = ((q0[0] - p0[0]) * (q1[1] - q0[1]) - (q0[1] - p0[1]) * (q1[0] - q0[0])) / d;
+			const u = ((q0[0] - p0[0]) * (p1[1] - p0[1]) - (q0[1] - p0[1]) * (p1[0] - p0[0])) / d;
+			if (t < 0 || t > 1 || u < 0 || u > 1) continue;
+			const c: Point = [p0[0] + t * (p1[0] - p0[0]), p0[1] + t * (p1[1] - p0[1])], e = Math.hypot(c[0] - q[0], c[1] - q[1]);
+			if (e < least) { least = e; best = c; }
+		}
+	}
+	return best;
+}
+
 /** The arc of ring `r` nearest to `p`. */
 function project(o: RecipeOutline, r: number, p: Point): number {
 	const ring = o.rings[r], { cum } = o.arcs[r];
@@ -137,11 +160,12 @@ export function recipeEdges(recipe: Recipe, o: RecipeOutline): Edge[] {
 	// ring's corner lies on another's side, the place on that side is the corner.
 	const vertices = o.rings.flat(), places = new Map<string, Point>();
 	const at = (an: RecipeAnchor) => {
-		const k = `${an.r}:${an.k}:${an.u}`;
+		const k = `${an.r}:${an.k}:${an.u}:${an.x ?? ''}`;
 		let p = places.get(k);
 		if (!p) {
 			const q = pointAt(o, an.r, arcOf(o, an));
-			p = vertices.find(v => Math.abs(v[0] - q[0]) < 1e-4 && Math.abs(v[1] - q[1]) < 1e-4) ?? q;
+			p = an.x !== undefined ? crossingNear(o.rings[an.r], o.rings[an.x], q)
+				: vertices.find(v => Math.abs(v[0] - q[0]) < 1e-4 && Math.abs(v[1] - q[1]) < 1e-4) ?? q;
 			places.set(k, p);
 		}
 		return p;
@@ -162,7 +186,7 @@ export function recipeEdges(recipe: Recipe, o: RecipeOutline): Edge[] {
 				.sort((i, j) => piece.f ? ahead(s0, cum[i], length) - ahead(s0, cum[j], length) : ahead(cum[i], s0, length) - ahead(cum[j], s0, length));
 			line([at(piece.a), ...inner.map(i => ring[i]), at(piece.b)], family, 'outline');
 		} else {
-			const [a, b] = piece.h, id = [a, b].map(an => `${an.r}:${an.k}:${an.u}`).sort().join('|');
+			const [a, b] = piece.h, id = [a, b].map(an => `${an.r}:${an.k}:${an.u}:${an.x ?? ''}`).sort().join('|');
 			if (chords.has(id)) continue;
 			chords.add(id);
 			const P = at(a), Q = at(b), d = [Q[0] - P[0], Q[1] - P[1]];

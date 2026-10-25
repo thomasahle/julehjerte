@@ -163,11 +163,31 @@ try {
 			});
 			return best;
 		};
-		const anchor = (p, only) => {
+		// Whether the picture changes colour across a piece: two rings' common side cancels (even–odd),
+		// and a cut along it is hidden though it lies on both rings.
+		const colourAt = (x, y) => o.rings.reduce((v, ring) => {
+			let c = false;
+			for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+				const [xi, yi] = ring[i], [xj, yj] = ring[j];
+				if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c;
+			}
+			return v ^ Number(c);
+		}, 0);
+		const edgeOfColour = (a, b) => {
+			const l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1, n = [-(b[1] - a[1]) / l * .05, (b[0] - a[0]) / l * .05], m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+			return colourAt(m[0] + n[0], m[1] + n[1]) !== colourAt(m[0] - n[0], m[1] - n[1]);
+		};
+		const anchor = (p, only, plain = false) => {
 			// A corner of any ring there names the place.
 			for (let r = 0; r < o.rings.length; r++) for (const [k, i] of o.corners[r].entries()) {
 				const v = o.rings[r][i];
 				if (Math.abs(v[0] - p[0]) < 1e-4 && Math.abs(v[1] - p[1]) < 1e-4) return { r, k, u: 0 };
+			}
+			// Two rings crossing at a vertex of neither: one place for every stretch there, on the first
+			// ring, the other as `x` (see recipes.ts).
+			if (!plain) {
+				const on = o.rings.map((_, r) => near(p, r)).filter(n => n.d < 1e-5);
+				if (on.length > 1) return { ...anchor(p, on[0].r, true), x: on[1].r };
 			}
 			const n = near(p, only), corners = o.corners[n.r], { cum, length } = o.arcs[n.r];
 			let k = corners.length - 1;
@@ -183,7 +203,7 @@ try {
 			const pieces = [];
 			for (let i = 0; i + 1 < line.length; i++) {
 				const a = line[i], b = line[i + 1], n = near([(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]), last = pieces.at(-1);
-				if (n.d < .05) {
+				if (n.d < .05 && edgeOfColour(a, b)) {
 					if (last?.kind === 'outline' && last.r === n.r) last.to = b;
 					else pieces.push({ kind: 'outline', r: n.r, from: a, to: b, mid: n.s });
 				} else if (last?.kind === 'hidden') last.points.push(b);
