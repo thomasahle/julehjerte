@@ -1,5 +1,19 @@
 # Generator robustness results
 
+## Stored hidden cuts in the rays: yule goat, bauble, gingerbread man, reindeer
+
+The exact-outline search, started from the generator's own heart in the rays
+(`TEMPLATE=1`), finds straighter hidden cuts for four featured motifs on the
+frame's own three strips; stored as recipes (scripts/generator/recipes.mjs,
+judged again with `REJUDGE=1`) they draw the same picture as the generator's
+heart, within half a percent. Over the sizes they cover (yule goat 55, bauble
+39, gingerbread man 33, reindeer 30 of 56): weak places at 80 mm 5 → 0,
+50 → 0, 54 → 3 and 13 → 6; hard to cut 10 → 0 (bauble) and 2 → 0
+(reindeer); 3–13% less cut. The bauble has 15 sharp tips where it had none
+(it was hard to cut at ten of those sizes, or tore), the gingerbread man 27
+fewer, the reindeer 18 fewer. These are the first of the 25 motifs whose own
+rays hearts were hard, tore or had needles.
+
 ## The figure in the checks moves a little rather than wait
 
 Where no sheets keep every strip whole at the figure's place in the checks,
