@@ -54,8 +54,13 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
   // The outline traced from the mask first (tens of milliseconds): where its
   // cut ends cannot pair up the exact search cannot start, and the fitter
   // takes three quarters of the minute instead of half.
+  // A trace whose curves meet where the pixels only nearly touch (a vertex of
+  // six curves) or a border sliver can stop it: then the mask opened by a
+  // pixel or two first (raster.js openClose), a tenth of a second each.
   let outline=null,cannot='No outline was traced from the mask.';
-  try{const traced=exactTarget(target,cfg),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);if(scaled){cannot=exactCannotStart(scaled,cfg);outline=cannot?null:scaled;}}catch(error){cannot=String(error.message||error);}
+  for(const open of [0,1,2]){
+    try{const traced=exactTarget(target,cfg,{open}),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);if(scaled){const why=exactCannotStart(scaled,cfg);if(!why){outline=scaled;break;}if(!open)cannot=why;}}catch(error){if(!open)cannot=String(error.message||error);}
+  }
   let solution=await solveTarget(target,{...raw,timeLimit:Math.max(.1,seconds*(outline?.5:.75))},onProgress,options);
   // The fitter's template as it would be exported: the final repairs make
   // most failing fits pass, and the exact search is only for those that still
