@@ -175,6 +175,17 @@ dialog: starcircle.png 15.5 s in Chromium and 17.1 s in WebKit (0.2% from the
 mask, the exact search's template); a template page read in 0.85 s, used, and
 opened in Tegn. (Playwright's Firefox does not start on this machine.)
 
+### Rerun after the 2026-10-25 changes
+
+The same harness on this branch: the juleflet pictures 128/128 pass, median
+0.63% from the true design (109 within 1%), solve 90th percentile 18 s and
+slowest 31 s (were 23 s and 47 s: the exact search no longer runs on templates
+the export passes); the web photographs and the 80-case scraped sample as on
+the deployed commit (pass 18 and 46, medians 0.77% and 0.75% from the mask),
+with crops shown as found 4 and 31 (were 2 and 17). The production build in
+Chromium, WebKit and Firefox 158 (stock, through WebDriver BiDi):
+starcircle.png 7-9 s at 0.2%, starstar.png 22-26 s.
+
 ## The exact search on pictures (2026-10-25)
 
 What the exact search (HiGHS, cuts on the traced outline) does with a picture,
