@@ -2825,13 +2825,13 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// One fitting the border narrows the outer strips, a picture of its
 		// own: only where none of the others finish.
 		const fitted = new Set<GeneratorResult>();
-		const layouts = (routeMargin = 0) => bestOfFirst((function* () {
+		const layouts = (routeMargin = 0, avoid = false) => bestOfFirst((function* () {
 			let finished = false;
 			for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) for (const holdLegs of [true, false]) {
 				if (fitBorder && finished) return;
 				try {
 					const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes,
-						undefined, undefined, request.gap, false, holdLegs, routeMargin);
+						undefined, undefined, request.gap, false, holdLegs, routeMargin, avoid);
 					// Keep the established frame and skip another fit when moving
 					// separate components did not change any lane or connection.
 					if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
@@ -2845,12 +2845,15 @@ function generateUsingRecipes(request: GeneratorRequest,
 				}
 			}
 		})());
-		const best = layouts();
+		// The lanes' routes passing the other lanes' parts of the motif only
+		// where none of the plain ones finish (the elephant).
+		let best = layouts(), avoided = false;
+		if (!best) [best, avoided] = [layouts(0, true), true];
 		// Where its paper tears printed, the layouts again with the motif's
 		// connections a paper's width off; kept only with the same border and
 		// where they hold better.
 		if (best && paperTears(exported(best).design)) {
-			const again = layouts(PAPER_NECK_MM / PRINT_WIDTH_MM * 100);
+			const again = layouts(PAPER_NECK_MM / PRINT_WIDTH_MM * 100, avoided);
 			if (again && fitted.has(again) === fitted.has(best) && cutsBetter(again, best, true)) return again;
 		}
 		if (best) return best;

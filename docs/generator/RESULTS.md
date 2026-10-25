@@ -1,5 +1,15 @@
 # Generator robustness results
 
+## The checked tips' lanes pass the motif's other parts only where plain routes are refused
+
+The lanes' routes in the checked tips passed the other lanes' parts of the
+motif as obstacles every time, which rescued the elephant but made every
+heart route against them: the snowflake and four stars took 2.9 s, not the
+0.3 s before. They now route plainly first, and pass those parts only where
+no layout finishes so (as relaxations come after a refusal): 1.9 s. The
+elephant is still built (50% hard to cut, 70% and 90% clean); the moon and
+stars at 50% is clean with no needles.
+
 ## Stored hidden cuts in the rays: the candy
 
 With the producer's place names fixed (63c17232), the candy's solves draw:
