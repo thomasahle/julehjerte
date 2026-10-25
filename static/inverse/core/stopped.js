@@ -21,6 +21,20 @@ export function stoppedWithoutCandidate(){
   error.report={status:'no_validated_solution',termination:'user_stop'};return error;
 }
 
+/** The exact search's last drawing (exact/search.js), finished as a stopped
+ * search's answer when it passes the export's geometry and paper checks, else
+ * null: what the live view showed when Stop was pressed. */
+export function finishExactStopped(target,cfg,geometry,onProgress=()=>{},{startedAt=performance.now()}={}){
+  let solution;try{solution=loadSolutionJSON(geometry);}catch{return null;}
+  if(solution.graph.target.width!==cfg.width)return null;
+  solution.graph.target.sourceImage=target.sourceImage??{resolution:400,mask:sampleTarget(target,400)};
+  solution.graph.target.metadata={...target.metadata,input:'Stopped exact search',paperColors:solution.graph.target.metadata.paperColors};
+  if(!validate(solution,cfg,{finalGeometry:true}).passed)return null;
+  solution.report={algorithm:'stopped-exact',termination:'user_stop',stoppedEarly:true,seconds:(performance.now()-startedAt)/1000};
+  const result=finish(solution,cfg,onProgress,{refine:false,stoppedEarly:true});
+  return result.report.validation.passed&&(!cfg.requireMaterialCore||result.report.manufacturing.status==='pass')?result:null;
+}
+
 export async function finishStopped(target,cfg,packets,onProgress=()=>{},{cancelled=()=>false,yieldControl=yieldTask,startedAt=performance.now(),cleanup=finalizeFittedSolution}={}){
   const alive=()=>{if(cancelled())throw new DOMException('Cancelled','AbortError');};
   alive();if(!packets.length)throw stoppedWithoutCandidate();

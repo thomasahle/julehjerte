@@ -107,9 +107,11 @@ test('side by side, the exact search\'s template is taken when it comes and the 
   const h=harness();await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});
   const [fitter,exact]=h.workers;
   assert.equal(fitter.sent[0].settings.exactRoute,'fitter');assert.equal(exact.sent[0].settings.exactRoute,'exact');
-  // The live view follows the exact search while it runs.
-  h.reply(fitter,2,'progress',{event:{stage:'directRefining'}});h.reply(exact,2,'progress',{event:{stage:'exactOutline'}});
-  assert.deepEqual(h.messages.filter(m=>m.type==='progress'&&m.id===2).map(m=>m.event.stage),['exactOutline']);
+  // The live view shows the fitter's progress until the exact search draws,
+  // then the exact search's.
+  h.reply(exact,2,'progress',{event:{stage:'exactOutline'}});h.reply(fitter,2,'progress',{event:{stage:'directRefining'}});
+  h.reply(exact,2,'progress',{event:{stage:'exactOutline',geometry:packet.geometry}});h.reply(fitter,2,'progress',{event:{stage:'directPolishing'}});
+  assert.deepEqual(h.messages.filter(m=>m.type==='progress'&&m.id===2).map(m=>m.event.stage+(m.event.geometry?'+':'')),['directRefining','exactOutline+']);
   // A fitted answer first is held for it.
   h.reply(fitter,2,'result',{result:value});assert.equal(h.messages.filter(m=>m.type==='result').length,0);
   h.reply(exact,2,'result',{result:exactValue});await solving;
@@ -144,4 +146,25 @@ test('side by side, Cancel ends both workers',async()=>{
   const h=harness();await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});
   await h.send(2,'cancel');await solving;
   assert.deepEqual(h.workers.map(w=>w.terminated),[1,1]);assert.equal(h.messages.at(-1).type,'cancelled');
+});
+
+test('side by side, Stop gives the exact search\'s drawing the live view shows, else the fitter\'s best',async()=>{
+  const drawn=[];
+  const h=harness({finalizeExact:(target,cfg,geometry)=>{drawn.push(geometry);return geometry==='bad'?null:exactValue;},finalize:async()=>value});
+  await h.send(1,'prepare',{input});let solving=h.send(2,'solve',{settings:both});
+  h.reply(h.workers[1],2,'progress',{event:{stage:'exactOutline',geometry:packet.geometry}});
+  await h.send(2,'stop');await solving;
+  assert.deepEqual(drawn,[packet.geometry]);assert.deepEqual(h.messages.at(-1).result,exactValue);
+  // A drawing that does not pass: the fitter's checkpoints, as before.
+  solving=h.send(3,'solve',{settings:both});
+  h.reply(h.workers.at(-1),3,'progress',{event:{stage:'exactOutline',geometry:'bad'}});
+  await h.send(3,'stop');await solving;assert.deepEqual(h.messages.at(-1).result,value);
+});
+
+test('side by side, a fitted answer waiting for the exact search says so, and Stop takes it',async()=>{
+  const h=harness({finalize:async()=>{throw new Error('the checkpoints should not be needed');}});
+  await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});
+  h.reply(h.workers[0],2,'result',{result:value});
+  assert.equal(h.messages.at(-1).event.stage,'exactOutline');
+  await h.send(2,'stop');await solving;assert.deepEqual(h.messages.at(-1).result,value);
 });
