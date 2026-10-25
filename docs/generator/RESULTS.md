@@ -75,6 +75,13 @@ strips gets 86–90% and 93–96% in 7–34 s a solve: no needle where the
 generator's had two, as much or less weak paper, half the hidden turns,
 about 15% shorter. It keeps 38 of 56 sizes on five strips.
 
+So solved from the generator's heart, the star on seven strips at 70–100%
+has no weak paper where the generator's had two to eight places, and half
+the hidden turns, for a needle and a few sharp tips more (48 sizes on seven
+strips), and on five strips at 99–100% no weak paper where there were
+fourteen and eight places (46 sizes). The tree keeps 47 sizes on five strips
+(as sharp, fewer turns and 1–9% shorter); the heart 17 on nine.
+
 ## The sunburst's crown narrows where its motif crowds the circle
 
 The sunburst's circle is four fifths of its frame, and the frame stops at the
