@@ -1345,9 +1345,9 @@
 	}
 
 	/**
-	 * The tab's "Centrér": the whole pattern moved to where the most of the heart is whole figures, in its
-	 * middle (`escher.centredTile`), in one Fortryd step; nothing, where it sits there already or no such
-	 * move weaves.
+	 * The tab's "Centrér": the whole pattern turned and moved to where the most of the heart is whole
+	 * figures, in its middle (`escher.centredTile`), in one Fortryd step; nothing, where it sits there
+	 * already or no such placement weaves.
 	 */
 	function centreEscherTile() {
 		if (!patternTile || !escher) return;

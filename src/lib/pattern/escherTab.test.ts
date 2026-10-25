@@ -145,6 +145,16 @@ describe("Tegn's Escher tab", () => {
 		expect(centredTile(centred)!.pan).toEqual(centred.pan);
 	});
 
+	it("centres the gallery's Dag og nat at 3 × 3 turned half a degree, where its birds fill nearly twice as much", () => {
+		const design = loadHeart('dagognat');
+		const fingers = sortedAsTegn(design.fingers);
+		const tile = resizedTile(resumedTile(null, { fingers, gridSize: design.gridSize, rect: inferOverlapRect(fingers, design.gridSize), weaveParity: design.weaveParity as 0 | 1 })!, 3)!;
+		const centred = centredTile(tile)!;
+		expect(wholeTileArea(tile)).toBeCloseTo(1138, 0);
+		expect(wholeTileArea(centred)).toBeCloseTo(2222, 0);
+		expect(turnDegrees(centred)).toBeCloseTo(-0.5, 6);
+	});
+
 	it("opens the gallery's tilings (Fliser) on the Escher tab, as Tegn does: on the tile each was saved with, else on one its cuts are", () => {
 		// Not one tile, so none of the tab's types: a real puzzle's knobs turn either way; each row of
 		// hooks leans the other way, so the crossings are no grid the tab's tiles make; the arrows were

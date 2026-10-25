@@ -668,13 +668,15 @@ more than 2.5 strips, or, for tiles, an edge of the square the cuts leave bare f
 (`weavesWell`). GA4 event `random_heart`: `mode` (normal / escher), the grid and rows or the type and size, and the
 press's number in the page view.
 
-**Centrér / Centre** beside the Escher tab's Start forfra (`CentreButton`, `$lib/pattern/centre`) moves the whole
-pattern, as dragging a cut does, to where the most of the woven square is whole figures: of every move within
-one repeat of the tiling (48 × 48 tried), the one leaving the largest area to tiles inside the square whose every
-side the heart cuts; of those as good, the one keeping them furthest from the square's edges, so the figures
-sit in the middle, and of those the least move, so a second press leaves it be. Only a move whose heart weaves,
-in one Fortryd step. The gallery's Dag og nat, its birds sized by hand, goes from two whole birds to four; a
-pattern at one of the size buttons' sizes already has the most it can.
+**Centrér / Centre** beside the Escher tab's Start forfra (`CentreButton`, `$lib/pattern/centre`) turns and moves
+the whole pattern, as the turn control and dragging a cut do, to where the most of the woven square is whole
+figures: of every turn the control can take, to its half degree, and every move within one repeat of the tiling
+(48 × 48 tried), the one leaving the largest area to tiles inside the square whose every side the heart cuts; of
+those as good, the least turn, then the one keeping them furthest from the square's edges, so the figures sit in
+the middle, then the least move, so a second press leaves it be. Only a placement whose heart weaves, in one
+Fortryd step; 130–200 ms. The gallery's Dag og nat, its birds sized by hand, goes from two whole birds to four;
+at 3 × 3 a half-degree turn takes it from 1.5 to 2.8; a pattern at one of the size buttons' larger sizes already
+has the most it can.
 
 Symmetri has two tabs at its top, **Normal** (the rows above) and **Escher**, which draws the whole heart from
 one tile, repeated the way Escher's regular divisions repeat one shape (`$lib/pattern`): an edit to one stretch

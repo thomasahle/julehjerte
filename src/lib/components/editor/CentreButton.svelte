@@ -1,7 +1,7 @@
 <!--
-  "Centrér" beside "Start forfra" in Tegn's Escher tab: the whole pattern moved to where the most of the
-  heart is whole figures, in its middle ($lib/pattern/centre). Fortryd moves it back. Looks as
-  RestartButton does.
+  "Centrér" beside "Start forfra" in Tegn's Escher tab: the whole pattern turned and moved to where the
+  most of the heart is whole figures, in its middle ($lib/pattern/centre). Fortryd puts it back. Looks
+  as RestartButton does.
 -->
 <script lang="ts">
 	import { CentreIcon } from '$lib/components/icons';

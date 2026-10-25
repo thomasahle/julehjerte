@@ -11,8 +11,8 @@
   compact     Tegn below 900px: the type glyphs alone, and no hint once a type is chosen.
   onRandom    "Tilfældig flise": a random type, size and tile ($lib/pattern/randomTile), with or
               without a type chosen.
-  onCentre    "Centrér": the whole pattern moved to where the most of the heart is whole figures, in
-              its middle ($lib/pattern/centre).
+  onCentre    "Centrér": the whole pattern turned and moved to where the most of the heart is whole
+              figures, in its middle ($lib/pattern/centre).
 -->
 <script lang="ts">
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
@@ -38,7 +38,7 @@
 		onRestart: () => void;
 		/** "Tilfældig flise": a random type, size and tile. */
 		onRandom: () => void;
-		/** "Centrér": the pattern moved to where the most of the heart is whole figures. */
+		/** "Centrér": the pattern turned and moved to where the most of the heart is whole figures. */
 		onCentre: () => void;
 		compact?: boolean;
 		disabled?: boolean;

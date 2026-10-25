@@ -41,7 +41,7 @@ import { ALL_RULES, COMMON_RULES, latticeOf, ruleInfo, ruleKey, ruleSymmetry, sa
 import { cutCounts, fitLines, tileShape, tileTurn, type PatternTile, type SideCurve } from './tiling';
 import { isStraightTile, ruleStart, switchRule } from './starts';
 import { isFigure, randomTileDraw, randomTileKind } from './randomTile';
-import { centredPans } from './centre';
+import { centredPlacements } from './centre';
 
 export { cutOfFinger, cutsAre, followEdit, generateEditorFingers, READ_TOLERANCE, sameRule, specialNodes, weaveParityOf };
 export type { PatternTile, SpecialNode, TileRule };
@@ -201,13 +201,19 @@ export function openedTile(last: PatternTile | null, heart: EscherHeart): { tile
 export const restartedTile = (tile: PatternTile): PatternTile => fitLines(ruleStart(tile.rule, tile.cuts));
 
 /**
- * The whole pattern moved to where the most of the heart's square is whole
- * tiles, and those in its middle (`centredPans`): the tab's "Centrér". The best
- * such move whose heart weaves, its lines fitted; null where none does.
+ * The whole pattern turned and moved to where the most of the heart's square
+ * is whole tiles, and those in its middle (`centredPlacements`): the tab's
+ * "Centrér". Every turn the turn control can take, to its half degree, is tried.
+ * The best such placement whose heart weaves, its lines fitted; null where none does.
  */
 export function centredTile(tile: PatternTile): PatternTile | null {
-	for (const pan of centredPans(tile)) {
-		const next = fitLines({ ...tile, pan });
+	const [lo, hi] = turnRange(tile), own = turnDegrees(tile), turned = [tile];
+	for (let degrees = Math.ceil(lo * 2) / 2; degrees <= hi + 1e-9; degrees += 0.5) {
+		const variant = Math.abs(degrees - own) > 1e-6 ? turnedTile(tile, degrees) : null;
+		if (variant) turned.push(variant);
+	}
+	for (const { tile: placed, pan } of centredPlacements(tile, turned)) {
+		const next = fitLines({ ...placed, pan });
 		if (tileWeaves(next)) return next;
 	}
 	return null;
