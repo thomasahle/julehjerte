@@ -121,44 +121,60 @@ function templateFaults(fingers: Finger[], lobe: LobeId,
 		const steps = Math.max(1, Math.ceil(chord(seg) * px * 3));
 		for (let i = 0; i <= steps; i++) mark(...point(i / steps));
 	}
-	const dist = distances(cut, W, H);
+	const dist = distances(cut, W, H), n = W * H;
 	// Paper: what the knife left. Held: joined to the ear's band, the top row.
-	const paper = (i: number) => !cut[i];
+	const paper = new Uint8Array(n);
+	for (let i = 0; i < n; i++) paper[i] = cut[i] ? 0 : 1;
 	const loose = components(paper, W, H).list.filter((c) => !c.top && c.size > pxPerMm * pxPerMm / 4).length;
 	// The paper at least a neck wide, and at least a bulge's: pieces of the first not joined to the ear.
 	// A cut's cells lie up to half a cell's diagonal beside it, so the paper is that much wider than they say.
 	const within = (r: number) => (r * pxPerMm - Math.SQRT1_2) ** 2;
-	const wide = (r: number) => components((i) => dist[i] >= within(r), W, H);
-	const neck = wide(neckMm / 2), bulge = wide(bulgeMm / 2);
+	const wide = (r: number) => {
+		const least = within(r), keep = new Uint8Array(n);
+		for (let i = 0; i < n; i++) keep[i] = dist[i]! >= least ? 1 : 0;
+		return components(keep, W, H);
+	};
+	const neck = wide(neckMm / 2);
 	// What a piece is: paper wider than the neck it hangs by, at least a tenth of a millimetre (a strip
 	// about as wide as the neck all along holds nothing up). Under a square millimetre at the neck's
-	// width it is a bulge, held well enough by the bulge's.
+	// width it is a bulge, held well enough by the bulge's, which is looked at only where there is one.
 	const widest = new Float64Array(neck.list.length);
-	for (let i = 0; i < W * H; i++) {
+	for (let i = 0; i < n; i++) {
 		const label = neck.labels[i]!;
 		if (label >= 0 && dist[i]! > widest[label]!) widest[label] = dist[i]!;
 	}
-	const weak = neck.list.filter((piece, label) => !piece.top && widest[label]! >= within(neckMm / 2 + .1) &&
-		(piece.size >= pxPerMm * pxPerMm || !bulge.list[bulge.labels[piece.first]!]!.top)).length;
+	const pieces = neck.list.filter((piece, label) => !piece.top && widest[label]! >= within(neckMm / 2 + .1));
+	const bulge = pieces.some((piece) => piece.size < pxPerMm * pxPerMm) ? wide(bulgeMm / 2) : null;
+	const weak = pieces.filter((piece) => piece.size >= pxPerMm * pxPerMm || !bulge!.list[bulge!.labels[piece.first]!]!.top).length;
 	return { weak, loose };
 }
 
 type Component = { size: number; top: boolean; first: number };
 
-/** The 4-connected components of the cells `keep` takes, each with whether it reaches the top row, and each cell's. */
-function components(keep: (i: number) => boolean, W: number, H: number): { list: Component[]; labels: Int32Array } {
-	const labels = new Int32Array(W * H).fill(-1), list: Component[] = [], stack: number[] = [];
-	for (let i = 0; i < W * H; i++) {
-		if (labels[i] !== -1 || !keep(i)) continue;
-		const c: Component = { size: 0, top: false, first: i };
-		labels[i] = list.length;
-		stack.push(i);
-		while (stack.length) {
-			const j = stack.pop()!, x = j % W;
+/** The 4-connected components of the cells `keep` marks, each with whether it reaches the top row, and each cell's. */
+function components(keep: Uint8Array, W: number, H: number): { list: Component[]; labels: Int32Array } {
+	const n = W * H, labels = new Int32Array(n).fill(-1), list: Component[] = [], stack = new Int32Array(n);
+	for (let i = 0; i < n; i++) {
+		if (labels[i] !== -1 || !keep[i]) continue;
+		const label = list.length, c: Component = { size: 0, top: false, first: i };
+		let depth = 0;
+		labels[i] = label;
+		stack[depth++] = i;
+		// Each cell goes on the stack once, marked as it does.
+		const visit = (k: number) => {
+			if (labels[k] === -1 && keep[k]) {
+				labels[k] = label;
+				stack[depth++] = k;
+			}
+		};
+		while (depth) {
+			const j = stack[--depth]!, x = j % W;
 			c.size++;
 			if (j < W) c.top = true;
-			for (const k of [x > 0 ? j - 1 : -1, x < W - 1 ? j + 1 : -1, j - W, j + W])
-				if (k >= 0 && k < W * H && labels[k] === -1 && keep(k)) { labels[k] = list.length; stack.push(k); }
+			if (x > 0) visit(j - 1);
+			if (x < W - 1) visit(j + 1);
+			if (j >= W) visit(j - W);
+			if (j + W < n) visit(j + W);
 		}
 		list.push(c);
 	}
