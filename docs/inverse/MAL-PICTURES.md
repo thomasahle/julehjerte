@@ -218,9 +218,10 @@ from the fitter's template):
   30 pass, and 17 rank above the fitter's (passing, regions, mask error in 0.5%
   steps, one template, hidden cut), with hidden cut 2574 → 1637 mm and the
   same one-template count. Capped at 16 s it keeps 16 of the 17 and adds about
-  6 s a design. On photographs it wins twice in 23 (23 mm) for about 11 s each,
-  and neither the start it takes nor how ragged the mask is tells the two
-  apart in advance. `exactCompete` (off by default) lets it compete, capped.
+  6 s a design. On the 47 photographs it ranks above the fitter's three times,
+  for closeness alone (its hidden cut is 14 mm more), at about 11 s for each
+  photograph it can start on; neither the start it takes nor how ragged the
+  mask is tells drawings and photographs apart in advance. `exactCompete` (off by default) lets it compete, capped.
 - **What still stops it.** Its start on 6 of 50 designs: the fitter's template
   reads onto the outline without the short hidden crossings between
   near-touching shapes, and the topological search finds none in 30 s; its
