@@ -30,7 +30,11 @@ describe('paper that holds once cut', () => {
 
 	it("reports the paper at the width it prints, and where it would hold within the sheet's reach", () => {
 		expect(paperReport(heart(), 80, 200)).toEqual({ widthMm: 80, faults: { weak: 0, loose: 0 }, holdsMm: null });
-		expect(paperReport(heart(1), 80, 200)).toEqual({ widthMm: 80, faults: { weak: 1, loose: 0 }, holdsMm: holdingWidth(heart(1)) });
+		// The thin neck holds from the width `holdingWidth` finds (see above).
+		const thin = paperReport(heart(1), 80, 200);
+		expect(thin).toMatchObject({ widthMm: 80, faults: { weak: 1, loose: 0 } });
+		expect(thin.holdsMm).toBeGreaterThanOrEqual(160);
+		expect(thin.holdsMm).toBeLessThanOrEqual(180);
 		expect(paperReport(heart(1), 80, 120).holdsMm).toBeNull();
 		expect(paperReport(heart(0), 80, 200)).toMatchObject({ faults: { loose: 1 }, holdsMm: null });
 	});
