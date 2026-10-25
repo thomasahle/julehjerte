@@ -1344,6 +1344,20 @@
 		pushUndo(before);
 	}
 
+	/**
+	 * The tab's "Centrér": the whole pattern moved to where the most of the heart is whole figures, in its
+	 * middle (`escher.centredTile`), in one Fortryd step; nothing, where it sits there already or no such
+	 * move weaves.
+	 */
+	function centreEscherTile() {
+		if (!patternTile || !escher) return;
+		const next = escher.centredTile(patternTile);
+		if (!next || sameCuts(escher.tileFingers(next), fingers)) return;
+		const before = snapshotState();
+		showTile(next);
+		pushUndo(before);
+	}
+
 	/** How many hearts "Tilfældigt mønster" has drawn on this page, for its analytics event. */
 	let randomPresses = 0;
 
@@ -4513,6 +4527,7 @@
 									onTurnDone={endPatternTurn}
 									onRestart={restartEscherTile}
 									onRandom={drawRandomTile}
+									onCentre={centreEscherTile}
 									compact={isMobileLayout}
 									disabled={readonly}
 								/>

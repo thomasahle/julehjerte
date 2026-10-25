@@ -10,7 +10,9 @@ import { carryNodeTypes, cutCounts, fitLines, tileTurn, unturnedShape, type Patt
 import { splitBezierAt } from '$lib/geometry/bezierSegments';
 import { ruleStart } from './starts';
 import { knobTile } from './examples';
+import { wholeTileArea } from './centre';
 import {
+	centredTile,
 	cutsAre,
 	dragTile,
 	editTile,
@@ -127,6 +129,20 @@ describe("Tegn's Escher tab", () => {
 		expect(Math.hypot(y.x, y.y) / (tile.cuts + 1)).toBeCloseTo(0.28, 3);
 		expect(Math.abs(x.y) + Math.abs(y.x)).toBeLessThan(1e-6);
 		expect(weaveParityOf(tile)).toBe(heart.weaveParity);
+	});
+
+	it("centres the gallery's Dag og nat: the pattern moved so that twice as much of the heart is whole birds, and there it stays", () => {
+		const design = loadHeart('dagognat');
+		const fingers = sortedAsTegn(design.fingers);
+		const tile = resumedTile(null, { fingers, gridSize: design.gridSize, rect: inferOverlapRect(fingers, design.gridSize), weaveParity: design.weaveParity as 0 | 1 })!;
+		const centred = centredTile(tile)!;
+		// Two birds whole of the square's 10 000, then four.
+		expect(wholeTileArea(tile)).toBeCloseTo(1568, 0);
+		expect(wholeTileArea(centred)).toBeCloseTo(3136, 0);
+		const made = tileFingers(centred), grid = tileGrid(centred);
+		expect(findFingersWithIssues(made, intersectionMarginPx(inferOverlapRect(made, grid), gridClearanceScale(grid.x, grid.y))).size).toBe(0);
+		// Pressed again, nothing moves.
+		expect(centredTile(centred)!.pan).toEqual(centred.pan);
 	});
 
 	it("opens the gallery's tilings (Fliser) on the Escher tab, as Tegn does: on the tile each was saved with, else on one its cuts are", () => {

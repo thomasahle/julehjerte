@@ -11,10 +11,13 @@
   compact     Tegn below 900px: the type glyphs alone, and no hint once a type is chosen.
   onRandom    "Tilfældig flise": a random type, size and tile ($lib/pattern/randomTile), with or
               without a type chosen.
+  onCentre    "Centrér": the whole pattern moved to where the most of the heart is whole figures, in
+              its middle ($lib/pattern/centre).
 -->
 <script lang="ts">
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import type { TileRule } from '$lib/pattern/rules';
+	import CentreButton from '$lib/components/editor/CentreButton.svelte';
 	import RandomButton from '$lib/components/editor/RandomButton.svelte';
 	import RestartButton from '$lib/components/editor/RestartButton.svelte';
 	import SizeButtons from '$lib/components/editor/SizeButtons.svelte';
@@ -35,11 +38,13 @@
 		onRestart: () => void;
 		/** "Tilfældig flise": a random type, size and tile. */
 		onRandom: () => void;
+		/** "Centrér": the pattern moved to where the most of the heart is whole figures. */
+		onCentre: () => void;
 		compact?: boolean;
 		disabled?: boolean;
 	}
 
-	let { lang, rule, size, frameHint, turn, onChoose, onSize, onTurn, onTurnDone, onRestart, onRandom, compact = false, disabled = false }: Props = $props();
+	let { lang, rule, size, frameHint, turn, onChoose, onSize, onTurn, onTurnDone, onRestart, onRandom, onCentre, compact = false, disabled = false }: Props = $props();
 
 	const tr = (key: TranslationKey) => t(key, lang);
 	/** The most the pattern turns either way, in degrees: further, the lines near the corners would leave the square at its sides. */
@@ -77,6 +82,7 @@
 	<div class="pattern-actions">
 		{#if rule}
 			<RestartButton label={tr('patternRestart')} title={tr('patternRestartHint')} onclick={onRestart} {disabled} />
+			<CentreButton label={tr('patternCentre')} title={tr('patternCentreHint')} onclick={onCentre} {disabled} />
 		{/if}
 		<RandomButton label={tr('patternRandom')} title={tr('patternRandomHint')} onclick={onRandom} {disabled} />
 	</div>

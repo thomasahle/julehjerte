@@ -19,6 +19,8 @@ export { default as ArrowLeftIcon } from '@lucide/svelte/icons/arrow-left';
 export { default as ArrowRightIcon } from '@lucide/svelte/icons/arrow-right';
 /** Udtvær's Bul: the paper swelled out from the brush. */
 export { default as BulgeIcon } from '@lucide/svelte/icons/expand';
+/** A frame with its middle marked: the Escher tab's "Centrér", the pattern placed in the heart. */
+export { default as CentreIcon } from '@lucide/svelte/icons/focus';
 export { default as CheckIcon } from '@lucide/svelte/icons/check';
 /** Tern: the plain board a woven heart starts from. */
 export { default as ChecksIcon } from '@lucide/svelte/icons/grid-3x3';

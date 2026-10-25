@@ -41,6 +41,7 @@ import { ALL_RULES, COMMON_RULES, latticeOf, ruleInfo, ruleKey, ruleSymmetry, sa
 import { cutCounts, fitLines, tileShape, tileTurn, type PatternTile, type SideCurve } from './tiling';
 import { isStraightTile, ruleStart, switchRule } from './starts';
 import { isFigure, randomTileDraw, randomTileKind } from './randomTile';
+import { centredPans } from './centre';
 
 export { cutOfFinger, cutsAre, followEdit, generateEditorFingers, READ_TOLERANCE, sameRule, specialNodes, weaveParityOf };
 export type { PatternTile, SpecialNode, TileRule };
@@ -198,6 +199,19 @@ export function openedTile(last: PatternTile | null, heart: EscherHeart): { tile
 
 /** The tile drawn again as its type starts, at its size: the tab's "Start forfra". */
 export const restartedTile = (tile: PatternTile): PatternTile => fitLines(ruleStart(tile.rule, tile.cuts));
+
+/**
+ * The whole pattern moved to where the most of the heart's square is whole
+ * tiles, and those in its middle (`centredPans`): the tab's "Centrér". The best
+ * such move whose heart weaves, its lines fitted; null where none does.
+ */
+export function centredTile(tile: PatternTile): PatternTile | null {
+	for (const pan of centredPans(tile)) {
+		const next = fitLines({ ...tile, pan });
+		if (tileWeaves(next)) return next;
+	}
+	return null;
+}
 
 /** Whether the tile is just its type's start at its size, as the tab draws it: nothing drawn on it yet. */
 export const isStartTile = (tile: PatternTile): boolean =>
