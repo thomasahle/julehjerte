@@ -126,6 +126,13 @@
     },
     "difficulty": "medium"
   },
+  "hjerte-paa-hjerte": {
+    "name": "Hjerte på hjerte",
+    "names": {
+      "en": "Heart on heart"
+    },
+    "difficulty": "hard"
+  },
   "nemt-hjerte": {
     "name": "Nemt Hjerte",
     "names": {

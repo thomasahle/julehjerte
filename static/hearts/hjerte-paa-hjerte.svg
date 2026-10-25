@@ -1,0 +1,28 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="1">
+  <title>Hjerte på hjerte</title>
+  <title xml:lang="en">Heart on heart</title>
+  <desc xml:lang="da">Et lille 3 × 3-hjerte lagt oven på et klassisk 5 × 5-hjerte med farverne byttet om, så den lille venstre runding er rød og den højre hvid. Fem striber i hver halvdel. Inde i det lille hjerte følger klippene dets mindre felter, og under det springer de tilbage til det store mønster i små trin. Det lille hjertes felter er ni tiendedele af de store, og flere steder ligger de to halvdeles klip oven på hinanden, så de ikke ses. Halvdelene er forskellige, så der er to skabeloner, og sværhedsgraden er svær; klip de korte stykker ved det lille hjertes kløft præcist.</desc>
+  <desc xml:lang="en">A small 3 × 3 heart laid on top of a classic 5 × 5 heart with the colours swapped, so the small left lobe is red and the right one white. Five strips in each half. Inside the small heart the cuts follow its smaller fields, and below it they step back to the big pattern in small jogs. The small heart's fields are nine tenths the size of the big ones, and in several places the cuts of the two halves lie on top of each other, so they do not show. The halves differ, so there are two templates, and the difficulty is hard; cut the short pieces at the small heart's cleft precisely.</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Hjerte på hjerte</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Thomas Ahle &amp; Claude</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:source>juleflet.dk</dc:source>
+        <dc:date>2026-10-26</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 0 20 L 36.335681 20 C 37.352056 18.14986 38.581895 16.425296 40 14.861643 C 43.00412 11.549193 46.783939 9.034759 51 7.544156 L 51 33 L 87 33 C 87 28.454982 85.852661 23.983509 83.664319 20 L 100 20" stroke="orange" fill="none"/>
+  <path d="M 0 40 L 14.861643 40 C 16.425296 38.581895 18.14986 37.352056 20 36.335681 C 23.983509 34.147339 28.454982 33 33 33 C 33 30.771493 33.275898 28.551558 33.8214 26.390847 C 37.15633 26.805319 39.66 29.639413 39.66 33 L 39.66 51 L 87 51 L 87 40 L 100 40" stroke="orange" fill="none"/>
+  <path d="M 0 60 L 6 60 L 33 42 L 33 69 L 87 69 L 87 60 L 100 60" stroke="orange" fill="none"/>
+  <path d="M 0 80 L 14.861643 80 C 16.425296 81.418105 18.14986 82.647944 20 83.664319 C 23.983509 85.852661 28.454982 87 33 87 L 87 87 L 87 80 L 100 80" stroke="orange" fill="none"/>
+  <path d="M 20 0 L 20 36.335681 C 23.983509 34.147339 28.454982 33 33 33 L 33 42 L 6 60 C 6 67.618313 9.218448 74.882086 14.861643 80 C 16.425296 81.418105 18.14986 82.647944 20 83.664319 L 20 100" stroke="green" fill="none"/>
+  <path d="M 40 0 L 40 14.861643 C 38.581895 16.425296 37.352056 18.14986 36.335681 20 C 35.228973 22.014576 34.384046 24.162227 33.8214 26.390847 C 37.15633 26.805319 39.66 29.639413 39.66 33 L 39.66 51 L 33 51 L 33 87 L 40 87 L 40 100" stroke="green" fill="none"/>
+  <path d="M 60 0 L 60 6 C 56.934088 6 53.89057 6.522185 51 7.544156 L 51 33 L 51 87 L 60 87 L 60 100" stroke="green" fill="none"/>
+  <path d="M 80 0 L 80 14.861643 C 81.418105 16.425296 82.647944 18.14986 83.664319 20 C 85.852661 23.983509 87 28.454982 87 33 L 69 33 L 69 87 L 80 87 L 80 100" stroke="green" fill="none"/>
+</svg>

@@ -72,7 +72,7 @@ export const PINTEREST_ORDER: readonly string[] = [
 	'permo-draaber', 'khatam', 'tulipan', 'permo-cirkler', 'fiskeskael', 'stjernerogkors',
 	'boelger', 'stjernegitter', 'roed-blomst', 'blomster-hjerte', 'aar-2026', 'skraa-kryds',
 	'hjertekloever', 'fejlternet', 'firkloever-hjerte', 'gitterhjerte', 'kloeverblad-hjerte', 'cirkelhjerte',
-	'groen-stjerne', 'firkanthjerte'
+	'groen-stjerne', 'firkanthjerte', 'hjerte-paa-hjerte'
 ];
 
 /** A gallery category as hearts.json lists it. */

@@ -488,6 +488,32 @@
     },
     "photo": null
   },
+  "hjerte-paa-hjerte": {
+    "name": "Hjerte på hjerte",
+    "names": {
+      "en": "Heart on heart"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-26",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
   "nemt-hjerte": {
     "name": "Nemt Hjerte",
     "names": {
