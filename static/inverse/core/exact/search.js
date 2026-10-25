@@ -135,7 +135,7 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
     const {labels: lab, used: chosen} = model.read(values);
     const xy = drawing(slitPiecesOn(st, outline, cand, lab, chosen)), solution = drawingSolution(xy, target, cfg);
     let spots = null;
-    try { spots = report.penalty > 1e-6 ? null : paperSpots(solution, cfg); } catch { spots = null; }
+    try { spots = report.penalty > 1e-6 ? null : paperSpots(solution, cfg, {final: true}); } catch { spots = null; }
     const result = {solution, xy, report, paperPassed: !spots, lab, chosen};
     if (!best || (result.paperPassed && !best.paperPassed)) best = result;
     if (result.paperPassed || !spots || performance.now() > deadline - 2000) break;

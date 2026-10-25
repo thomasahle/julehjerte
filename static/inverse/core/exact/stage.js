@@ -8,6 +8,7 @@
 import {validate, easeMetrics, sampleWeave} from '../validate.js';
 import {finalMaterialAudit} from '../geometric-material.js';
 import {verifiedPaperSettings} from '../material.js';
+import {verifyPaper} from './paper.js';
 import {auditFeatureFidelity} from '../feature-shapes.js';
 import {matchingSummary} from '../direct/matching.js';
 import {routedComplexity} from '../direct/routed-refinement.js';
@@ -50,7 +51,10 @@ export function exactSymmetry(spec) {
 export function assess(solution, cfg, {material = null} = {}) {
   const check = validate(solution, cfg, {finalGeometry: true});
   let paper = false;
-  try { paper = check.passed && (material ?? finalMaterialAudit(solution, verifiedPaperSettings(solution, cfg))).passed; } catch { paper = false; }
+  try {
+    if (check.passed && !material) verifyPaper(solution, cfg);
+    paper = check.passed && (material ?? finalMaterialAudit(solution, verifiedPaperSettings(solution, cfg))).passed;
+  } catch { paper = false; }
   const kinds = new Set(check.issues.map(i => i.type));
   if (check.passed && !paper) kinds.add('paper');
   const matching = matchingSummary(solution), hiddenRuns = routedComplexity(solution).hiddenRuns;
