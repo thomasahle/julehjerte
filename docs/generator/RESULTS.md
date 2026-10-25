@@ -35,6 +35,10 @@ hidden turns, and less weak paper at 99–100%. The heart adds 83–84% (a
 third of the hidden turns, no weak paper at 83% where there were two
 places); from 86% the generator refuses its solves.
 
+On three strips the star keeps 53 of 56 sizes (two sharp tips where there
+were five, 4–6 hidden turns where there were 10), the heart 19 (as sharp,
+4–6% shorter).
+
 ## The sunburst's crown narrows where its motif crowds the circle
 
 The sunburst's circle is four fifths of its frame, and the frame stops at the
