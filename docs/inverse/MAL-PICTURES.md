@@ -221,13 +221,26 @@ from the fitter's template):
   6 s a design. On the 47 photographs it ranks above the fitter's three times,
   for closeness alone (its hidden cut is 14 mm more), at about 11 s for each
   photograph it can start on; neither the start it takes nor how ragged the
-  mask is tells drawings and photographs apart in advance. `exactCompete` (off by default) lets it compete, capped.
-- **What still stops it.** Its start on 6 of 50 designs: the fitter's template
-  reads onto the outline without the short hidden crossings between
-  near-touching shapes, and the topological search finds none in 30 s; its
+  mask is tells drawings and photographs apart in advance.
+  Through Mal's whole pipeline on the juleflet pictures, though (imported, so
+  their masks are a little noisier than the designs' own), competing it was
+  chosen once in the first 38 (16 have a symmetry within each curve; where it
+  found a template it mostly hid more cut than the fitter's), at a solve
+  median of 18.7 s instead of 7.7 s. `exactCompete` (capped at 16 s) therefore
+  stays off: the gain belongs to clean masks, such as ones painted in Mal.
+- **What stopped it, and what still does.** Its start on 6 of 50 designs: the
+  fitter's template reads onto the outline without the short hidden crossings
+  between near-touching shapes, and the topological search finds none in 30
+  s. HiGHS now searches from an empty start then (amy-flowering passes, and
+  david4 at 0.16% from the mask with 466 mm hidden against the fitter's 1.26%
+  and 960 mm). Its paper was judged differently from the export's (lattice
+  only, an undecided lattice never refined, paper cut off whole giving the
+  retry nothing to forbid); now as the export (ball passes at 0.025%). Its
   templates' self-returns at sharp tips (8 of 11 failing ones), which a retry
-  on the outline with tips rounded by 0.5 mm passes for 3; HiGHS overrunning
-  its time at the root on a large model (amy-weave-1, 46 s for 26).
+  on the outline with tips rounded by 0.5 mm passes for 3. A trace vertex of
+  six curves (amy-pattern, stjernegitter), gone on the mask opened by a pixel.
+  Still: HiGHS overrunning its time at the root on a large model (amy-weave-1,
+  46 s for 26).
 
 ## Open
 
