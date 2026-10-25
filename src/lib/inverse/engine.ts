@@ -182,6 +182,13 @@ export type FindSettings = {
 	minWidthMm?: number;
 	/** Prefer one template within 1 percentage point of error, independently of symmetry. */
 	matchingSheets?: boolean;
+	/**
+	 * The mask was painted here rather than imported: its edges are clean, and
+	 * the exact search, laying the cuts on them, competes with the fitter's
+	 * template (on the library's clean design masks it cut 36% less hidden where
+	 * it won; on imported pictures it rarely won and only cost time).
+	 */
+	painted?: boolean;
 };
 
 /**
@@ -592,7 +599,9 @@ export function solveSettings(settings: FindSettings): Record<string, unknown> {
 		timeLimit: SEARCH_SECONDS,
 		// When the fitter's template fails, try the exact search on the mask's
 		// traced outline as a rescue (core/exact/): a minute for the whole search.
+		// On a painted mask it competes with a passing template too.
 		exactOutline: true,
+		exactCompete: settings.painted === true,
 		// Prefer a reusable template even when a photograph has no detected
 		// symmetry. This does not fold the mask. A requested symmetry
 		// overrules it inside `settings()`: the transpose implies matching sheets,

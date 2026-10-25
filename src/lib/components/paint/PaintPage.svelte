@@ -725,7 +725,9 @@
 					symmetry: session.symmetry,
 					widthMm: advanced.widthMm,
 					minWidthMm: advanced.minWidthMm,
-					matchingSheets: advanced.matchingSheets
+					matchingSheets: advanced.matchingSheets,
+					// No picture behind it: painted here, with clean edges.
+					painted: !mask.sourceRaster
 				},
 				onProgress
 			);

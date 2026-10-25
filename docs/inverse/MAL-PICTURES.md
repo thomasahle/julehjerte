@@ -237,8 +237,10 @@ from the fitter's template):
   their masks are a little noisier than the designs' own), competing it was
   chosen once in the first 38 (16 have a symmetry within each curve; where it
   found a template it mostly hid more cut than the fitter's), at a solve
-  median of 18.7 s instead of 7.7 s. `exactCompete` (capped at 16 s) therefore
-  stays off: the gain belongs to clean masks, such as ones painted in Mal.
+  median of 18.7 s instead of 7.7 s. `exactCompete` (capped at 16 s) is
+  therefore on only for a mask painted in Mal, with no picture behind it: on
+  "Prøv stjernen" its template is taken, 262 mm hidden against the fitter's 404
+  at 0.1% from the mask, in 16 s.
 - **What stopped it, and what still does.** Its start on 6 of 50 designs: the
   fitter's template reads onto the outline without the short hidden crossings
   between near-touching shapes, and the topological search finds none in 30
