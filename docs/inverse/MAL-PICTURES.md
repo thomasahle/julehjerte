@@ -90,9 +90,12 @@ the beige background, and its crop stays 6% off.
 
 ### The 64 designs as masks
 
-The solver alone, on each design's exact mask: pass 57 → **60** (the exact
-search rescues amy-pinecone, fisk and tulipan), one template 44 → 44, hidden
-cuts where both pass 264 → 253, median 6.6 → 6.3 s.
+The solver alone, on each design's exact mask: pass 57 → **60**, one template
+44 → 44, hidden cuts where both pass 264 → 253, median 6.6 → 6.3 s. (The
+exact search's templates were taken for amy-pinecone, fisk and tulipan, but
+the fitter's pass too: the rescue judged paper more strictly than the export.
+With the export's own verdict the fitter's templates pass all 64 folded masks,
+2026-10-25.)
 
 ### The web photographs (44 instances, 29 with a rough selection)
 
