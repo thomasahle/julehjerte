@@ -2825,13 +2825,14 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// One fitting the border narrows the outer strips, a picture of its
 		// own: only where none of the others finish.
 		const fitted = new Set<GeneratorResult>();
-		const layouts = (routeMargin = 0, avoid = false) => bestOfFirst((function* () {
+		const layouts = (routeMargin = 0, avoid = false, border?: boolean, wholeLanes = false) => bestOfFirst((function* () {
 			let finished = false;
 			for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) for (const holdLegs of [true, false]) {
 				if (fitBorder && finished) return;
+				if (border !== undefined && fitBorder !== border) continue;
 				try {
 					const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes,
-						undefined, undefined, request.gap, routeMargin > 0, holdLegs, routeMargin, avoid);
+						undefined, undefined, request.gap, routeMargin > 0, holdLegs, routeMargin, avoid, wholeLanes);
 					// Keep the established frame and skip another fit when moving
 					// separate components did not change any lane or connection.
 					if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
@@ -2849,12 +2850,18 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// where none of the plain ones finish (the elephant).
 		let best = layouts(), avoided = false;
 		if (!best) [best, avoided] = [layouts(0, true), true];
-		// Where its paper tears printed, the layouts again with the motif's
-		// connections, and the side lanes' legs, a paper's width off; kept only
-		// with the same border and where they hold better.
+		// Where its paper tears printed, the layouts with the same border again
+		// with the motif's connections, and the side lanes' legs, a paper's
+		// width off, kept where they hold better; where that still tears, with
+		// an empty side lane's whole line bent too (a mitten's thumb against
+		// it), which elsewhere can bend into another part (a bird's wing).
 		if (best && paperTears(exported(best).design)) {
-			const again = layouts(PAPER_NECK_MM / PRINT_WIDTH_MM * 100, avoided);
-			if (again && fitted.has(again) === fitted.has(best) && cutsBetter(again, best, true)) return again;
+			const paper = PAPER_NECK_MM / PRINT_WIDTH_MM * 100, border = fitted.has(best);
+			for (const wholeLanes of [false, true]) {
+				if (wholeLanes && !paperTears(exported(best).design)) break;
+				const again = layouts(paper, avoided, border, wholeLanes);
+				if (again && cutsBetter(again, best, true)) best = again;
+			}
 		}
 		if (best) return best;
 		throw last;

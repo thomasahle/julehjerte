@@ -1,5 +1,19 @@
 # Generator robustness results
 
+## Tern i spidserne: the paper retry keeps its border, then bends whole side lanes
+
+The paper retry's result is kept only with the first heart's border, but the
+retry still built the other border's layouts, and a plain layout finishing
+first ended it before any fitted one: the gift at 84%, whose fitted retry held
+(0 weak), kept its first heart (10) once a plain retry finished first. The
+retry now builds only the first heart's border. Where it still tears, it runs
+once more with an empty side lane's whole line as one leg, bent out past the
+motif along its length: the mitten's thumb at 84% lay against the straight
+line between the lane's held corners (6 weak → 1). Not first: the same bend
+pushes a bird's line into its wing (88%: 4 → 7), so it is kept only where it
+holds better. 49 motifs at 76–100%: weak places 889 → 819, tearing hearts
+205 → 184, none worse, 3% slower.
+
 ## Tern i spidserne bends its side legs a paper's width off the motif
 
 Where a heart in checked tips tears printed, the layouts are tried again with

@@ -119,7 +119,8 @@ function pastMotif(path: Point[], cuts: Point[], room: number, limit: number, sa
 
 export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 	routing: 'chain' | 'practical' | 'separated' = 'chain', fitBorder = false, bentSpokes = false,
-	contacts?: { tilt: number; invert: boolean }, laneSplit?: number, gap = 0, bendLegs = false, holdLegs = false, routeMargin = 0, avoid = false) {
+	contacts?: { tilt: number; invert: boolean }, laneSplit?: number, gap = 0, bendLegs = false, holdLegs = false, routeMargin = 0, avoid = false,
+	wholeLanes = false) {
 	const points = rings.flat();
 	if (!points.length) throw new ConstructionError('empty', 'No contour');
 	const artwork = rings.map(r => r.map(([x, y]) => uprightToSheet([x * size * scale, y * size * scale])));
@@ -225,9 +226,16 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 			// Approach a separate island near its own height, then continue
 			// outside the whole motif. A long diagonal from a steam curl to the
 			// bottom corner would otherwise cut through the coffee cup below it.
-			leg([start, borderPoint(uprightToSheet([x, above])), entry]);
-			route(entry, exit);
-			leg([exit, borderPoint(uprightToSheet([x, below])), end]);
+			const before = borderPoint(uprightToSheet([x, above])), after = borderPoint(uprightToSheet([x, below]));
+			// With `wholeLanes`, an empty lane is one leg from tip to tip, to bend
+			// out past the motif along its whole length.
+			if (wholeLanes && bendLegs && !contacts && !lanes[col].length)
+				leg([start, before, entry, exit, after, end].filter((p, i, all) => !i || Math.hypot(p[0] - all[i - 1][0], p[1] - all[i - 1][1]) > 1e-6));
+			else {
+				leg([start, before, entry]);
+				route(entry, exit);
+				leg([exit, after, end]);
+			}
 		}
 		add(edges, [end, [end[0], 100]], 'A', 'frame');
 		add(edges, [end, [100, end[1]]], 'B', 'frame');
