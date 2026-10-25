@@ -660,7 +660,7 @@ describe('frames from real hearts', () => {
   expect(hardToCut).toBeUndefined();
   expect(cutTipCounts(design)).toEqual([0, 3]);
  });
- it('narrows a sunburst\'s crown where its motif crowds the largest circle', () => {
+ slow('narrows a sunburst\'s crown where its motif crowds the largest circle', () => {
   // At 82% the frame has reached the largest the outer strips have room for,
   // and the circle at four fifths of it met the candy: hard to cut. Its
   // crown narrowed, the circle a little more of the frame, it cuts cleanly.
