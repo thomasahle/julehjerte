@@ -30,7 +30,12 @@ the cut as a share of its length. A place is the k-th corner of ring r and a
 share u of the way to the next. The picture's rings overlap where its parts
 are combined even–odd (a check and the circle laid over it), so its outline
 can turn from one ring to another at a corner of one on the other's side; a
-place there is named by that corner.
+place there is named by that corner. Two rings can also cross at a vertex of
+neither (a motif over a check's side): a place there is their crossing, named
+on one ring with the other as `x`. And two rings can share a side that
+cancels (two checks of a colour side by side): a cut along it is hidden, so
+the script calls a piece of a slit visible only where the picture's colour
+changes across it, not wherever it lies on a ring.
 
 A recipe lists the sizes (whole percents) and the space around the motif it
 was checked at, and the corners of each ring. The page loads
