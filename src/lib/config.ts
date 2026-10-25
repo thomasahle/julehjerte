@@ -16,4 +16,7 @@ export const SITE_KEYWORDS =
 // Google Analytics 4 Measurement ID (leave empty to disable)
 export const GA_MEASUREMENT_ID = 'G-FTTXTT5KYB';
 
+// Plausible's script for juleflet.dk (leave empty to disable)
+export const PLAUSIBLE_SCRIPT_URL = 'https://plausible.io/js/pa-1UAdy6yAd9coNhzZGaGbD.js';
+
 // For dynamic UI text, use the i18n system: import { t } from '$lib/i18n';

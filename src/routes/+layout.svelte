@@ -4,7 +4,7 @@
 	import { browser, dev } from "$app/environment";
 	import { afterNavigate } from "$app/navigation";
 	import { page } from "$app/stores";
-	import { SITE_NAME, SITE_DESCRIPTION, SITE_DESCRIPTION_EN, SITE_KEYWORDS, SITE_URL, GA_MEASUREMENT_ID } from "$lib/config";
+	import { SITE_NAME, SITE_DESCRIPTION, SITE_DESCRIPTION_EN, SITE_KEYWORDS, SITE_URL, GA_MEASUREMENT_ID, PLAUSIBLE_SCRIPT_URL } from "$lib/config";
 	import { FRONT_PAGE_SOCIAL_IMAGE, ROBOTS_INDEX, pageTitle, socialImage } from "$lib/seo";
 	import { langFromPathname, t } from "$lib/i18n";
 	import { alternatePaths, routeKeyFromPathname } from "$lib/i18n/routes";
@@ -215,6 +215,33 @@
 				if (internal) { params.traffic_type = 'internal'; }
 				return params;
 			})());
+		</script>`}
+	{/if}
+
+	<!-- Plausible, Plausible's own snippet. Cookieless too, but its dashboard
+	     shows these visits, where GA4's reports leave consent-denied pings out.
+	     It is 6 KB, so it loads right away rather than after idle as GA does.
+	     What it records besides page views (outbound links, file downloads, form
+	     submissions) is set in Plausible's site settings and baked into the
+	     script. It counts a page view on load and on each history step that
+	     changes the pathname, the same rule as GA's page views here, and it skips
+	     localhost and automated browsers by itself. Browsers marked with
+	     localStorage juleflet:internal = "1" are dropped here, as GA's
+	     internal-traffic filter drops them. -->
+	{#if PLAUSIBLE_SCRIPT_URL && !dev}
+		{@html `<script async src="${PLAUSIBLE_SCRIPT_URL}"></script>
+		<script>
+			window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); };
+			window.plausible.init = window.plausible.init || function (options) { window.plausible.o = options || {}; };
+			window.plausible.init({
+				transformRequest: function (request) {
+					try {
+						return localStorage.getItem('juleflet:internal') === '1' ? null : request;
+					} catch (_e) {
+						return request;
+					}
+				}
+			});
 		</script>`}
 	{/if}
 
