@@ -701,7 +701,11 @@
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
-    "photo": null
+    "photo": {
+      "src": "/hearts/photos/kogle.jpg",
+      "width": 502,
+      "height": 502
+    }
   },
   "plus": {
     "name": "Plus",
