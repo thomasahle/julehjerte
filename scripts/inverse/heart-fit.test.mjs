@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {fitHeartSilhouette} from '../../static/inverse/neural/heart-fit.js';
-import {detectSilhouetteCrop, checkedBySilhouette} from '../../static/inverse/neural/photo-crop.js';
+import {detectSilhouetteCrop, checkedBySilhouette, selectedSilhouette} from '../../static/inverse/neural/photo-crop.js';
 
 // A heart's paper probability on a 320² grid over a W x H picture: the square
 // with corners cleft, right, tip, left and a half-disc lobe on each upper side.
@@ -60,3 +60,27 @@ test('a crop the silhouette agrees with is confident, one far from it is for rev
   assert.equal(checkedBySilhouette(own, silhouette), own);
   assert.equal(checkedBySilhouette(crop(0), {...silhouette, iou: .8}).needsReview, true);
 });
+
+test('in a selection, a heart of printed papers is found by what differs from its background', () => {
+  // Two printed papers (pink with white dots, red with white stripes) on a
+  // dark table, a neighbour's lobe poking into the selection's corner.
+  const W = 700, H = 600, quad = [[350, 150], [550, 350], [350, 550], [150, 350]], rgba = new Uint8ClampedArray(W * H * 4);
+  const on = heartProbability(quad, W, H, 700).probability;
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const p = 4 * (y * W + x), inside = on[Math.floor(y * 700 / H) * 700 + Math.floor(x * 700 / W)] > .5;
+    const neighbour = Math.hypot(x - 690, y - 590) < 70;
+    let c = [40, 38, 42];
+    if (inside) c = (x + y) % 80 < 40 ? ((x % 12 < 3 && y % 12 < 3) ? [250, 250, 250] : [240, 170, 180]) : (x % 16 < 3 ? [250, 250, 250] : [190, 40, 50]);
+    else if (neighbour) c = [200, 160, 90];
+    rgba.set([...c, 255], p);
+  }
+  const input = {type: 'pixels', imageWidth: W, imageHeight: H, rgba}, roi = [60, 60, 680, 580];
+  const found = selectedSilhouette(input, roi, {status: 'needs_review', candidates: []});
+  assert.equal(found.candidates.length, 1);
+  assert.equal(found.candidates[0].provenance.method, 'background-silhouette');
+  const side = 200 * Math.SQRT2;
+  found.candidates[0].quad.forEach((p, k) => assert.ok(Math.hypot(p[0] - quad[k][0], p[1] - quad[k][1]) < .06 * side, `corner ${k}: ${p} vs ${quad[k]}`));
+  // A selection of plain background finds nothing.
+  assert.equal(selectedSilhouette(input, [0, 0, 120, 120], {status: 'needs_review', candidates: []}).candidates.length, 0);
+});
+
