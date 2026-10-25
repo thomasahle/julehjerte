@@ -52,7 +52,10 @@ cuts cleanly and is better than the generator's own heart, judged in turn by
 the places its paper may tear (weak paper at the 80 mm print, where the paper
 check is there, and needles), sharp tips, turns along its hidden cuts and its
 cuts' length: the first that differs decides, and a tie keeps the
-generator's. (Weak paper alone first let in solves with six needles.)
+generator's, and a heart with no fewer places that may tear wins by its
+tips only if its cuts are not much busier (at most a quarter more hidden
+turns and a twentieth more length). (Weak paper alone first let in solves
+with six needles; tips alone, a snowflake with twice the hidden turns.)
 
 The engine's own checks are stricter about clearance than the site's: they
 fail the generator's clean star hearts on five strips at 72–95%. So a solve

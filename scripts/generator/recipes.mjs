@@ -77,7 +77,13 @@ try {
 		const [needles, sharp] = cutTipCounts(design);
 		return [weak(design) + needles, sharp, turns, Math.round(length)];
 	};
-	const better = (a, b) => { const i = a.findIndex((x, k) => x !== b[k]); return i >= 0 && a[i] < b[i]; };
+	// Fewer places that may tear win outright; otherwise the first measure that differs decides, but a
+	// sharp tip less buys no cuts much busier (a quarter more hidden turns, a twentieth more length).
+	const better = (a, b) => {
+		if (a[0] !== b[0]) return a[0] < b[0];
+		const i = a.findIndex((x, k) => x !== b[k]);
+		return i >= 0 && a[i] < b[i] && a[2] <= 1.25 * b[2] + 2 && a[3] <= 1.05 * b[3];
+	};
 	const { DEFAULT_COLORS, DEFAULT_COLORS_HEX } = await load('/src/lib/stores/colors.ts');
 	const mal = await load('/src/lib/inverse/engine.ts');
 	const { prepare, restorePrepared, scaleTarget } = await core('engine.js');

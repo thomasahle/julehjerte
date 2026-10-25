@@ -39,6 +39,14 @@ On three strips the star keeps 53 of 56 sizes (two sharp tips where there
 were five, 4–6 hidden turns where there were 10), the heart 19 (as sharp,
 4–6% shorter).
 
+On seven strips the star keeps 30 sizes (at 45–70% two sharp tips where
+there were five and half the hidden turns; at 100% no weak paper where
+there were thirteen places, for two needles), the heart 25 (as sharp,
+shorter). The snowflake keeps 7 sizes on five strips. A stored heart that
+does not lower the places the paper may tear must not be much busier than
+the generator's (a quarter more hidden turns, a twentieth more length) to
+win by a sharp tip: the snowflake's at 72–77% had twice the turns.
+
 ## The sunburst's crown narrows where its motif crowds the circle
 
 The sunburst's circle is four fifths of its frame, and the frame stops at the
