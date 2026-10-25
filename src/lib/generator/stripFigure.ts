@@ -52,6 +52,9 @@ const MARGIN = 3;
 /** The paper upright is |x| + |y| ≤ 50√2 about its centre; the motif keeps
  * within |x| + |y| ≤ PAPER. */
 const PAPER = (50 - MARGIN) * Math.SQRT2;
+/** The farthest the motif moves from its place at a size the place cannot
+ * have (`nearby`), so that it grows with the slider rather than jumping. */
+const NEARBY = 3;
 
 export type StripFigure = {
 	edges: Edge[];
@@ -77,15 +80,23 @@ export function generateStripFigure(rings: Ring[], strips: number, scale = .7, b
  * sheets leave the fewest cuts of one sheet too close, then the fewest hidden
  * cuts, come first; the further places follow, should none of those finish.
  * A shift to `keep` comes before them all, or is the only place tried
- * (`alone`), or is left out (`elsewhere`). */
+ * (`alone`), or is left out: the places where the motif keeps its full size
+ * coming first (`elsewhere`), or alone (`full`), or alone within NEARBY of
+ * it, the nearest first (`nearby`). */
 export function* stripFigures(rings: Ring[], strips: number, scale = .7, budget = 4000, keep?: number,
-	places: 'first' | 'alone' | 'elsewhere' = 'first', side = 0): Generator<StripFigure> {
+	places: 'first' | 'alone' | 'elsewhere' | 'full' | 'nearby' = 'first', side = 0): Generator<StripFigure> {
 	if (!rings.flat().length) throw new ConstructionError('empty', 'No contour');
 	rings = untouch(rings);
 	type Choice = { placed: Ring[]; graph: StripGraph; values: Value[]; crowded: number; hidden: number; order: number };
 	const order = shifts(rings, strips, scale, side), choices: Choice[] = [];
-	if (keep !== undefined) order.splice(0, order.length, ...places === 'elsewhere' ? [] : [keep],
+	if (keep !== undefined) order.splice(0, order.length, ...places === 'first' || places === 'alone' ? [keep] : [],
 		...places === 'alone' ? [] : order.filter(shift => shift !== keep));
+	if (keep !== undefined && places !== 'first' && places !== 'alone') {
+		const reach = reaches(rings), full = motifSize(reach, scale), keeps = (shift: number) => fits(reach, shift, side) >= full - 1e-9;
+		order.splice(0, order.length, ...places === 'nearby'
+			? order.filter(shift => keeps(shift) && Math.abs(shift - keep) <= NEARBY).sort((a, b) => Math.abs(a - keep) - Math.abs(b - keep))
+			: [...order.filter(keeps), ...places === 'full' ? [] : order.filter(shift => !keeps(shift))]);
+	}
 	const evaluate = (k: number) => {
 		const found: Choice[] = [];
 		// A line through a vertex of the outline, or a junction on it, would

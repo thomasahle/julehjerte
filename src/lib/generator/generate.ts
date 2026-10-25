@@ -1126,7 +1126,7 @@ const stripShifts = new Map<string, number>();
  * colour inside the motif, at the size the visitor sets. The motif keeps, at
  * every size, the place on the board its default size chose, so that it
  * only grows with the slider: cut cleanly if it can be there, else as hard to
- * cut. Only where it cannot be built there at all does it move. */
+ * cut. Where it cannot be built there at all it moves, as little as it can. */
 function generateStrips(request: GeneratorRequest): GeneratorResult {
 	const contours = normalizeContours(request.contours ?? []);
 	if (!contours.length) throw new ConstructionError('empty', 'No contour');
@@ -1139,11 +1139,11 @@ function generateStrips(request: GeneratorRequest): GeneratorResult {
 	}
 	// At some sizes of an intricate motif no sheets keep every strip whole at
 	// its place, a snowflake's arms crossing the lines just so, or a crown's
-	// fine points on a small board. There the motif keeps its place at the
-	// nearest size it can have there, of the slider's whole percents towards
-	// the default size, which has it: the slider then waits rather than the
-	// motif jumping, and never turns back (a larger size asked never keeps a
-	// smaller one). Only where its place is no use does the motif move.
+	// fine points on a small board. There the motif moves to the nearest place
+	// where it keeps that size, else keeps its place at the nearest size it can
+	// have there, of the slider's whole percents towards the default size,
+	// which has it: the slider waits only where neither is had, and never turns
+	// back (a larger size asked never keeps a smaller one).
 	const at = (size: number) => Math.round(size * 1e6) / 1e6;
 	// The place the visitor chose, kept as it is; else the default size's,
 	// slid towards where the motif fits largest above that size.
@@ -1161,23 +1161,25 @@ function generateStrips(request: GeneratorRequest): GeneratorResult {
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			last ??= error;
-			// Nothing at all could be built there, which is quickly known,
-			// unlike cuts that failed to finish: those are the place's answer.
-			if (where === 'alone' && error.message !== NO_WHOLE_STRIPS && !moved.has(size)) {
+			// Where nothing at all could be built there, which is quickly known,
+			// the nearest place where the motif keeps its size; where cuts there
+			// failed to finish, those are the place's answer: the clearest such.
+			if (where === 'alone' && error.message === NO_WHOLE_STRIPS) return tried(size, 'nearby');
+			if (where === 'alone' && !moved.has(size)) {
 				moved.add(size);
-				return tried(size, 'elsewhere');
+				return tried(size, 'full');
 			}
 		}
 	};
-	// The nearest size the place can have, or the motif elsewhere at one where
-	// cuts at the place failed; only where neither is found, the nearest size
-	// the motif can have elsewhere.
+	// The nearest size the place can have, or a place near it can where the
+	// motif keeps that size; only where none is found at any size, the nearest
+	// size the motif can have anywhere, there smaller if it must.
 	if (kept) for (const size of [scale, ...towards]) {
 		const result = tried(size, 'alone');
 		if (result) return result;
 	}
 	for (const size of [scale, ...towards]) {
-		const result = moved.has(size) ? undefined : tried(size, kept ? 'elsewhere' : 'first');
+		const result = tried(size, kept ? 'elsewhere' : 'first');
 		if (result) return result;
 	}
 	throw last;

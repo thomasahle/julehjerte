@@ -1,5 +1,20 @@
 # Generator robustness results
 
+## The figure in the checks moves a little rather than wait
+
+Where no sheets keep every strip whole at the figure's place in the checks,
+it kept its place at the nearest size the place could have, so the slider
+waited, often long: the gift at 81% from 82% to 100%, the yule goat at 85%
+from 86%. Now it first moves, at the size asked, to the nearest place within
+three units where it keeps its full size (the bird at 74–78% three quarters
+of a unit, where it waited at 70%); where cuts at its place failed, it moves
+to the clearest place where it keeps its full size, no longer to one where it
+is drawn smaller. Over 49 motifs at every whole percent from 45 to 100, the
+hearts kept below the size asked are 239, not 652, short by 1245 percent in
+all, not 3968; none is drawn smaller than a smaller size asked, and the
+slowest heart takes 6.7 s as before (2% more time in all). 16 more are hard
+to cut, 14 fewer tear, and 69 needles fewer.
+
 ## A narrowed crown's heart only where its paper holds as well
 
 The sunburst's narrower crown (47c425cd) replaced a hard heart with a clean

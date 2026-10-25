@@ -64,6 +64,7 @@ import elephant from '../../../static/generator/motifs/pin-elephant.json';
 import moonStars from '../../../static/generator/motifs/mc-moon-stars.json';
 import church from '../../../static/generator/motifs/mdi-church.json';
 import mouse from '../../../static/generator/motifs/gi-mouse.json';
+import mdiBird from '../../../static/generator/motifs/mdi-bird.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -1018,6 +1019,13 @@ describe('frames from real hearts', () => {
   // kept 81%, below 90%'s 85%, stepping down 5% at a time.
   const kept = (scale: number) => generate({ mode: 'figure', name: 'Tree', contours: tree.contours as Ring[], colors, style: 'strips', scale }).scale ?? scale;
   expect(kept(.91)).toBeGreaterThanOrEqual(kept(.9));
+ }, 30000);
+ it('moves the figure in the checks a little where its place cannot have the size asked', () => {
+  // At 74–78% no sheets keep every strip whole where the bird slides to; it
+  // waited at 70%. Three quarters of a unit from there it keeps the size.
+  const { scale, place } = generate({ mode: 'figure', name: 'Bird', contours: mdiBird.contours as Ring[], colors, style: 'strips', scale: .76 });
+  expect(scale ?? .76).toBe(.76);
+  expect(place).toBeDefined();
  }, 30000);
  slow('lets the figure in the checks grow to the paper\'s edge, like the frames with room for it', () => {
   const state = { ...defaults, mode: 'figure' as const, style: 'strips' as const, scale: 100 };

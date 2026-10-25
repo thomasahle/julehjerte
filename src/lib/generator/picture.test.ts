@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { slow } from './slow.test-helpers';
 import { generate, type GeneratorRequest } from './generate';
 import { picture } from './picture';
-import { clampPlace } from './stripFigure';
+import { clampPlace, slidePlace } from './stripFigure';
+import { normalizeContours } from './contours';
 import { checkedTips } from './cornerChecks';
 import { inside, uprightToSheet, type Ring } from './geometry';
 import { rasterizeDesign } from '$lib/paint/rasterize';
@@ -24,15 +25,20 @@ const colors = { left: '#ffffff', right: '#cc0000' };
 function mismatch(request: GeneratorRequest, n = 100): number {
 	const result = generate(request), mask = rasterizeDesign(result.design, n).data;
 	// Where its strips could not all be whole at the size asked for, the
-	// generator says which it kept; a board circle's kept size says which
-	// circle the motif keeps.
+	// generator says which it kept, or in the checks where it moved to (see
+	// `generateStrips`); a board circle's kept size says which circle the
+	// motif keeps.
 	const board = request.mode === 'figure' && request.style === 'board';
 	// The page knows what the default size chose once it has made it: where
 	// the figure in the checks lies, which pattern the small motifs repeat
 	// (nothing a board circle's picture needs).
 	const fixed = board || request.place !== undefined || (request.scale ?? .7) === .7, base = fixed ? result : generate({ ...request, scale: .7 });
 	const circle = board && result.scale !== undefined ? result.scale < (request.scale ?? .7) ? result.scale : 'large' as const : undefined;
-	const { rings } = picture({ ...request, scale: board ? request.scale : result.scale ?? request.scale, layout: base.layout },
+	const scale = board ? request.scale : result.scale ?? request.scale;
+	const slid = request.style === 'strips' && request.place === undefined && base.place !== undefined
+		? slidePlace(normalizeContours(request.contours ?? []), scale ?? .7, base.place) : undefined;
+	const moved = slid !== undefined && result.place !== undefined && Math.abs(result.place - slid) > 1e-6;
+	const { rings } = picture({ ...request, scale, layout: base.layout, ...moved ? { place: result.place } : {} },
 		{ place: base.place, circle, enclosed: !!result.enclosed, whole: !!result.whole })!;
 	let differ = 0;
 	for (let y = 0; y < n; y++)
