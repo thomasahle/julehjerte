@@ -69,6 +69,12 @@ The gingerbread man's start search runs out of time at every size.
 On nine strips the star keeps 26 sizes, all of 45–70%; from 71% to 91% the
 search finds no template in 85 s.
 
+Started from the generator's own heart (its compiled cuts read as the
+search's template), and with the two drawing fixes, the heart on five
+strips gets 86–90% and 93–96% in 7–34 s a solve: no needle where the
+generator's had two, as much or less weak paper, half the hidden turns,
+about 15% shorter. It keeps 38 of 56 sizes on five strips.
+
 ## The sunburst's crown narrows where its motif crowds the circle
 
 The sunburst's circle is four fifths of its frame, and the frame stops at the
