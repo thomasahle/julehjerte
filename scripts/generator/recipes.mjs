@@ -146,9 +146,8 @@ try {
 			});
 			return best;
 		};
-		// Whether the picture changes colour across a piece (looked at a twentieth of a unit either side,
-		// or a quarter of the piece where it is shorter: a tooth of the outline): two rings' common side cancels (even–odd),
-		// and a cut along it is hidden though it lies on both rings.
+		// The picture's colour at a point (see `edgeOfColour`): two rings' common side cancels
+		// (even–odd), and a cut along it is hidden though it lies on both rings.
 		const colourAt = (x, y) => o.rings.reduce((v, ring) => {
 			let c = false;
 			for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
@@ -157,9 +156,16 @@ try {
 			}
 			return v ^ Number(c);
 		}, 0);
+		// Whether the colour changes across a piece, looked at nearer and nearer it: a thin tooth (the
+		// horse's at 80% in the rays, 0.004 wide where the first look reaches past it to the outside on
+		// both sides) is seen at the second, while a side two rings share, cancelled, changes at none.
 		const edgeOfColour = (a, b) => {
-			const l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1, e = Math.min(.05, l / 4), n = [-(b[1] - a[1]) / l * e, (b[0] - a[0]) / l * e], m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
-			return colourAt(m[0] + n[0], m[1] + n[1]) !== colourAt(m[0] - n[0], m[1] - n[1]);
+			const l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1, m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+			for (let e = Math.min(.05, l / 4); e > 1e-5; e /= 4) {
+				const n = [-(b[1] - a[1]) / l * e, (b[0] - a[0]) / l * e];
+				if (colourAt(m[0] + n[0], m[1] + n[1]) !== colourAt(m[0] - n[0], m[1] - n[1])) return true;
+			}
+			return false;
 		};
 		const anchor = (p, only, plain = false) => {
 			// The nearest corner of any ring within the engine's merge (0.002 of its 12 units, 0.017 here)
