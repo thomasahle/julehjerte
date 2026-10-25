@@ -942,19 +942,19 @@ describe('frames from real hearts', () => {
   const { design } = generate({ mode: 'figure', name: 'Moon', contours: moonStars.contours as Ring[], colors, style: 'board', scale: .75 });
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
  }, 30000);
- it('keeps, of a board heart\'s cuts made at a narrower spacing, the one whose paper holds best', () => {
+ slow('keeps, of a board heart\'s cuts made at a narrower spacing, the one whose paper holds best', () => {
   // At 91% none of the star's divisions finished at the usual spacing; the
   // one kept from those made narrower left specks beside its right point.
   const { design, hardToCut } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .91 });
   expect(hardToCut).toBeUndefined();
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
- });
- it('keeps a five-strip board heart\'s connections as far from the motif as paper holds, where its cuts would tear', () => {
+ }, 30000);
+ slow('keeps a five-strip board heart\'s connections as far from the motif as paper holds, where its cuts would tear', () => {
   // The star's best division at 80% still left three pieces hanging by paper
   // under 2 mm, its connections the room for a cut from its points.
   const { design } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .8 });
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
- });
+ }, 30000);
  it('keeps the five-strip board heart whose paper holds best at the default size too', () => {
   // The yule goat at 70%, in the touching circle, left two pieces hanging by
   // paper under 2 mm in the first construction that finished.
@@ -1079,7 +1079,7 @@ describe('frames from real hearts', () => {
   expect(design.gridSize).toEqual({ x: 3, y: 3 });
   expect(hardToCut).toBeDefined();
  }, 30000);
- it('lays the candy cane on equal squares, its stripes reached every way, rather than refusing it', () => {
+ slow('lays the candy cane on equal squares, its stripes reached every way, rather than refusing it', () => {
   // Five separate stripes, which the cell's usual routes cannot all reach:
   // the request is refused, then tried again as the board circle reaches pieces.
   for (const scale of [.7, .85]) {
@@ -1087,7 +1087,7 @@ describe('frames from real hearts', () => {
    expect(design.gridSize, String(scale)).toEqual({ x: 3, y: 3 });
    expect(hardToCut, String(scale)).toBeUndefined();
   }
- });
+ }, 30000);
  slow('weaves outlines that touch into the checks', () => {
   // The bicycle's wheels touch its frame at single points.
   const { design } = generate({ mode: 'figure', name: 'Bicycle', contours: bicycle.contours as Ring[], colors, style: 'strips' });

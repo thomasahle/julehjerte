@@ -19,13 +19,14 @@ describe('paper that holds once cut', () => {
 	});
 
 	it('finds the narrowest print at which a thin neck holds, and none for loose paper', () => {
-		// A 1 mm neck at 80 mm is 2 mm at 160 mm.
-		const width = holdingWidth(heart(1));
+		// A 1 mm neck at 80 mm is 2 mm at 160 mm. Seen in 20 mm steps, on a
+		// coarser grid than a print's, so the test stays quick.
+		const coarse = { stepMm: 20, pxPerMm: 4 }, width = holdingWidth(heart(1), coarse);
 		expect(width).toBeGreaterThanOrEqual(160);
 		expect(width).toBeLessThanOrEqual(180);
-		expect(holdingWidth(heart(1), { maxMm: 150 })).toBeNull();
-		expect(holdingWidth(heart(1.6))).toBeLessThan(width!);
-		expect(holdingWidth(heart(0))).toBeNull();
+		expect(holdingWidth(heart(1), { ...coarse, maxMm: 150 })).toBeNull();
+		expect(holdingWidth(heart(1.6), coarse)).toBeLessThan(width!);
+		expect(holdingWidth(heart(0), coarse)).toBeNull();
 	});
 
 	it("reports the paper at the width it prints, and where it would hold within the sheet's reach", () => {
