@@ -61,6 +61,11 @@ solved and drawn on it. Solved so, the star on five strips at 88–94% shows the
 generator's picture (0.02–0.14% apart) with no weak paper where there were two
 to five places and under half the hidden turns: 44 sizes on five strips.
 
+The flower keeps 29 sizes on five strips (at 76–100% half the hidden turns
+and 10–15% shorter, as sharp), the circle 17 (a turn or two fewer below 60%;
+at 85% no weak paper where there were eight places, for nine sharp tips).
+The gingerbread man's start search runs out of time at every size.
+
 ## The sunburst's crown narrows where its motif crowds the circle
 
 The sunburst's circle is four fifths of its frame, and the frame stops at the
