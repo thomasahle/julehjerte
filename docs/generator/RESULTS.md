@@ -1,5 +1,18 @@
 # Generator robustness results
 
+## Separate islands find their joins through a grid
+
+Where a motif's islands get cells of their own (`generateComponentFigure`),
+each pair's join is chosen among every pair of their outline points, and
+each candidate is tried against every other island's outline. The swan, whose
+wing lies in its body's bay, tried some hundred thousand candidates against
+every segment, each time it was tried: 75 of the 87 s its refusal in the big
+silhouette took at 70%. The outlines' segments now go into a grid of cells
+as wide as the clearance, so a candidate is tried only against the segments
+around it, and against an island only within its box. The swan refuses in
+25 s, and 150 hearts of ten motifs with separate islands in five frames at
+three sizes are identical, in 317 s instead of 402.
+
 ## Tern i spidserne: the paper retry keeps its border, then bends whole side lanes
 
 The paper retry's result is kept only with the first heart's border, but the

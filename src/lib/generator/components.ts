@@ -73,8 +73,36 @@ export function generateComponentFigure(rings: Ring[], frame: Frame | OpenFrame 
 			const d = sub(b, a), t = Math.max(0, Math.min(1, dot(sub(p, a), d) / Math.max(1e-20, dot(d, d))));
 			return distance(p, mix(a, b, t));
 		};
-		const clear = (p: Point) => !obstacles.some(r => inside(p, r) ||
-			r.some((a, i) => segmentDistance(p, a, r[(i + 1) % r.length]) < margin * 1.5));
+		// Thousands of candidate joins are tried against every other island:
+		// the outlines' segments go into a grid of cells as wide as the
+		// clearance, so the segments within it of a point are those in its
+		// cell and the eight around it, and a point beyond an island's box by
+		// the clearance cannot be inside it.
+		const reach = margin * 1.5, cells = new Map<number, [Point, Point][]>();
+		const key = (x: number, y: number) => x * 65536 + y;
+		for (const r of obstacles) for (let i = 0; i < r.length; i++) {
+			const u = r[i]!, w = r[(i + 1) % r.length]!;
+			for (let x = Math.floor(Math.min(u[0], w[0]) / reach); x <= Math.floor(Math.max(u[0], w[0]) / reach); x++)
+				for (let y = Math.floor(Math.min(u[1], w[1]) / reach); y <= Math.floor(Math.max(u[1], w[1]) / reach); y++) {
+					const list = cells.get(key(x, y));
+					if (list) list.push([u, w]);
+					else cells.set(key(x, y), [[u, w]]);
+				}
+		}
+		const boxes = obstacles.map(r => {
+			const xs = r.map(p => p[0]), ys = r.map(p => p[1]);
+			return [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+		});
+		const near = (p: Point) => {
+			const x = Math.floor(p[0] / reach), y = Math.floor(p[1] / reach);
+			for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++)
+				for (const [u, w] of cells.get(key(x + dx, y + dy)) ?? []) if (segmentDistance(p, u, w) < reach) return true;
+			return false;
+		};
+		const clear = (p: Point) => !near(p) && !obstacles.some((r, k) => {
+			const [x0, x1, y0, y1] = boxes[k]!;
+			return p[0] >= x0 && p[0] <= x1 && p[1] >= y0 && p[1] <= y1 && inside(p, r);
+		});
 		if (!clear(p)) {
 			// Closest points can lie in a pinched gap between two toes. Prefer
 			// a short join whose midpoint clears both participating outlines
