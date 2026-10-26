@@ -119,7 +119,7 @@ export const exportable = (a, cfg) => Boolean(a?.passes && a.features && a.maskE
 /** The exact search on the traced `outline` from the fitter's `template`
  * within `deadline`, under the `symmetry` ties: {found: {solution,
  * assessment} or null, report}. */
-export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true} = {}) {
+export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true, fallback = true} = {}) {
   const seconds = (deadline - performance.now()) / 1000 - reserve;
   const report = {attempted: false, symmetry};
   if (seconds < 1) return {found: null, report: {...report, reason: 'no time left'}};
@@ -157,9 +157,14 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   }
   // Corners joined on one side of a mirror but not on the other (exact/target.js
   // joinNearTouchings) leave the outline not quite symmetric: then without them.
-  if (found.error && /not symmetric/.test(found.error) && outline.metadata?.nearTouch > 0) {
-    const again = await exactSearch({...outline, metadata: {...outline.metadata, nearTouch: 0}}, template, cfg, {deadline, reserve, onProgress, symmetry, geometry, refine});
-    return {...again, report: {...again.report, unjoined: found.error}};
+  // An outline not symmetric enough for the ties even so (a traced lily's
+  // petals): searched untied, the converter makes the cuts symmetric where that
+  // costs little.
+  if (found.error && /not symmetric/.test(found.error) && symmetry.length && fallback) {
+    const options = {deadline, reserve, onProgress, geometry, refine, fallback: false};
+    let again = outline.metadata?.nearTouch > 0 ? await exactSearch({...outline, metadata: {...outline.metadata, nearTouch: 0}}, template, cfg, {...options, symmetry}) : {found: null, report: {error: found.error}};
+    if (!again.found && /not symmetric/.test(again.report.error ?? '')) again = {...await exactSearch(outline, template, cfg, {...options, symmetry: []}), untied: true};
+    return {...again, report: {...again.report, unjoined: found.error, ...(again.untied ? {untied: true} : {})}};
   }
   if (found.error) return {found: null, report: {...report, error: found.error, search: found.report}};
   let solution = found.solution, assessment = assess(solution, cfg);
