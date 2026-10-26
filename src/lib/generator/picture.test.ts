@@ -58,7 +58,7 @@ describe('the picture drawn before the cuts are found', () => {
 		expect(mismatch({ ...request, scale: 1 })).toBeLessThan(.01);
 	});
 
-	it('follows the strips and the place the visitor chose', () => {
+	slow('follows the strips and the place the visitor chose', () => {
 		const request: GeneratorRequest = { mode: 'figure', name: 'Heart', contours: heart.contours as Ring[], colors, style: 'strips', board: 3 };
 		expect(mismatch(request)).toBeLessThan(.01);
 		expect(mismatch({ ...request, place: -8 })).toBeLessThan(.01);
@@ -101,7 +101,7 @@ describe('the picture drawn before the cuts are found', () => {
 		expect(across).toBeGreaterThan(side - .25);
 	});
 
-	it('is the small motifs the cuts make, on the strips they choose or the visitor chooses', () => {
+	slow('is the small motifs the cuts make, on the strips they choose or the visitor chooses', () => {
 		const request: GeneratorRequest = { mode: 'figure', name: 'Tree', contours: tree.contours as Ring[], colors, style: 'motifs' };
 		expect(mismatch(request)).toBeLessThan(.01);
 		expect(mismatch({ ...request, board: 6 })).toBeLessThan(.01);
@@ -148,12 +148,12 @@ describe('the picture drawn before the cuts are found', () => {
 
 	describe('is the circle on a board the cuts make', () => {
 		const request: GeneratorRequest = { mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', gap: 3 };
-		it('small and large', () => {
+		slow('small and large', () => {
 			expect(mismatch({ ...request, scale: .6 })).toBeLessThan(.01);
 			// Reaching into the outer ring, the checks are woven the other way round.
 			expect(mismatch({ ...request, scale: .8 })).toBeLessThan(.01);
 		});
-		it('kept', () => {
+		slow('kept', () => {
 			// A solid tree stays whole past the touching circle, as its heart says,
 			// the circle keeping its colour, and keeps the largest such circle.
 			expect(mismatch({ ...request, name: 'Tree', contours: tree.contours as Ring[], scale: .8 })).toBeLessThan(.01);
@@ -164,7 +164,7 @@ describe('the picture drawn before the cuts are found', () => {
 			// a house on its smallest enclosing circle.
 			expect(mismatch({ ...request, name: 'House', contours: house.contours as Ring[], scale: 1 })).toBeLessThan(.01);
 		});
-		it('on the strips the visitor chooses', () => {
+		slow('on the strips the visitor chooses', () => {
 			expect(mismatch({ ...request, board: 3, scale: .8 })).toBeLessThan(.01);
 			expect(mismatch({ ...request, board: 7, scale: .8 })).toBeLessThan(.01);
 		});
@@ -197,7 +197,7 @@ describe('the picture drawn before the cuts are found', () => {
 			.toEqual(picture({ ...base, style: 'squares', layout: { alternative: 0, board: 3 } })!.rings);
 	});
 
-	it('is the checks in the tips the cuts make, at any space around the motif', () => {
+	slow('is the checks in the tips the cuts make, at any space around the motif', () => {
 		for (const gap of [0, 3, 15])
 			expect(mismatch({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'corners', gap }), `${gap}`).toBeLessThan(.01);
 		// The tips come as near as cutting allows at no space: the star's top

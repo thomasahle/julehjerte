@@ -269,7 +269,7 @@ describe('hidden cuts meeting an outline', () => {
 
 describe('letter construction and export', () => {
 	for (const value of ['ANNA', 'JUL', 'ÅSE', 'BØ', 'Anna', 'A+M', 'AOBØ'])
-		it(`constructs ${value}`, () => {
+		(['BØ', 'Anna', 'AOBØ'].includes(value) ? slow : it)(`constructs ${value}`, () => {
 			const result = text(value);
 			expect(result.design.name).toBe(value);
 			expect(result.design.gridSize.x).toBeGreaterThan(1);
@@ -278,7 +278,7 @@ describe('letter construction and export', () => {
 		it(`constructs JUL in ${name}`, () => {
 			expect(text('JUL', font).design.fingers.length).toBeGreaterThan(4);
 		});
-	it('keeps both frames functional and visibly different', () => {
+	slow('keeps both frames functional and visibly different', () => {
 		const dense = text('ANNA'),
 			air = text('ANNA', fonts.nunito, 'air');
 		expect(dense.design).not.toHaveProperty('rightCutouts');

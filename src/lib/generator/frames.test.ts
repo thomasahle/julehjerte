@@ -121,7 +121,7 @@ describe('complete motif frames', () => {
   expect(hardToCut).toBeUndefined();
   expect(cutTipCounts(design)).toEqual([0, 0]);
  });
- it('cuts the dove without the needles of its outline\'s hairline zigzag', () => {
+ slow('cuts the dove without the needles of its outline\'s hairline zigzag', () => {
   // Its outline ran 0.7 back and forth along itself under the wing.
   const { design } = generate({ mode: 'figure', name: 'Dove', contours: dove.contours as Ring[], colors, style: 'rays', frame: 'circle', frameSize: 70, scale: .7, gap: 3 });
   expect(cutTipCounts(design)).toEqual([0, 0]);
@@ -168,7 +168,7 @@ describe('complete motif frames', () => {
   }, 20000);
  }
  for (const [name, motif] of Object.entries({ gift, bicycle, coffee, snow, sailboat })) {
-  it(`keeps ${name} and its counters in the six-strip checked-tip frame`, () => {
+  (name === 'snow' || name === 'gift' ? slow : it)(`keeps ${name} and its counters in the six-strip checked-tip frame`, () => {
    const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'corners' });
    expect(design.gridSize).toEqual({ x: 6, y: 6 });
    expect(design).not.toHaveProperty('rightCutouts');
@@ -178,7 +178,7 @@ describe('complete motif frames', () => {
    expect(rasterizeDesign(restored!, 160).data).toEqual(rasterizeDesign(design, 160).data);
   });
  }
- it('fits a large motif between the corner checks without crossing the outer bands', () => {
+ slow('fits a large motif between the corner checks without crossing the outer bands', () => {
   const { design } = generate({ mode: 'figure', name: 'Large gift', contours: gift.contours as Ring[], colors, style: 'corners', scale: .85 });
   expect(design.gridSize).toEqual({ x: 6, y: 6 });
   expect(design).not.toHaveProperty('rightCutouts');
@@ -240,7 +240,7 @@ describe('complete motif frames', () => {
   expect(hardToCut).toBeUndefined();
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
  });
- it('keeps the double border\'s cuts a paper\'s width from the motif where theirs would tear in print', () => {
+ slow('keeps the double border\'s cuts a paper\'s width from the motif where theirs would tear in print', () => {
   // The church at the default size hung by paper under 2 mm in two places
   // printed 80 mm wide; its connections kept a paper's width off, it holds.
   const { design, hardToCut } = generate({ mode: 'figure', name: 'Church', contours: church.contours as Ring[], colors, style: 'layers', scale: .7 });
@@ -262,7 +262,7 @@ describe('complete motif frames', () => {
  });
  for (const style of ['fitted', 'corners', 'layers'] as const) {
   for (const [name, motif] of Object.entries(examples)) {
-   it(`constructs ${name} with ${style} using validated open cuts`, () => {
+   (name === 'star' && style === 'layers' ? slow : it)(`constructs ${name} with ${style} using validated open cuts`, () => {
     const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style });
     const strips = style === 'fitted' ? 5 : style === 'corners' ? 6 : 7;
     expect(design.gridSize).toEqual({ x: strips, y: strips });
@@ -411,7 +411,7 @@ describe('frames from real hearts', () => {
   for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) differ += Number(mask[y * n + x] === mask[x * n + y]);
   expect(Math.min(differ, n * n - differ) / n / n).toBeLessThan(.01);
  });
- it('lays small motifs on the other colour of four strips where the first cannot be cut', () => {
+ slow('lays small motifs on the other colour of four strips where the first cannot be cut', () => {
   // The bell cannot stand in the top and bottom squares of four strips; the
   // other colour's eight squares hold it, before fewer copies on a smaller board.
   const { design, hardToCut, layout } = generate({ mode: 'figure', name: 'Bell', contours: bell.contours as Ring[], colors, style: 'motifs' });
@@ -421,7 +421,7 @@ describe('frames from real hearts', () => {
   const restored = parseHeartFromSVG(serializeHeartToSVG(design));
   expect(rasterizeDesign(restored!, 240).data).toEqual(rasterizeDesign(design, 240).data);
  }, 30000);
- it('lays as many small motifs as the strips the visitor chose hold', () => {
+ slow('lays as many small motifs as the strips the visitor chose hold', () => {
   for (const board of [2, 6, 8]) {
    const { design, hardToCut, layout } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'motifs', board });
    expect(design.gridSize.x, `${board}`).toBe(board);
@@ -489,7 +489,7 @@ describe('frames from real hearts', () => {
   expect(result.scale).toBeUndefined();
   expect(result.hardToCut).toBeUndefined();
  }, 20000);
- it('grows the circle past 85% over the corner squares, every square still equal', () => {
+ slow('grows the circle past 85% over the corner squares, every square still equal', () => {
   const { design, hardToCut, scale } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .93 });
   expect(hardToCut).toBeUndefined();
   expect(scale).toBeUndefined();
@@ -540,7 +540,7 @@ describe('frames from real hearts', () => {
   expect(inner.length).toBe(8);
   for (const a of inner) expect(Math.abs(a - 50), `${a}`).toBeCloseTo(Math.sqrt(52 ** 2 - 50 ** 2), 1);
  });
- it('brings the squares to points where the circle meets the paper\'s edges, not to stubs of line', () => {
+ slow('brings the squares to points where the circle meets the paper\'s edges, not to stubs of line', () => {
   // On three strips a line would meet the circle 0.7 short of the edge at
   // 86%, and lies inside it at 100%, where it meets the edges halfway along
   // the corner squares; on five, the middle lines 0.3 short at 98%.
@@ -592,7 +592,7 @@ describe('frames from real hearts', () => {
    expect(last, `${board}`).toBe(largest);
   }
  });
- it('grows the circle on finer boards past the third lines, which follow it', () => {
+ slow('grows the circle on finer boards past the third lines, which follow it', () => {
   // On seven and nine strips the largest circles reach the third line a
   // side, which follows the circle while the middle lines of the other sheet
   // cross it to their gates, the motif still divided in four: the circle
@@ -661,7 +661,7 @@ describe('frames from real hearts', () => {
    expect(scale, `${radius}`).toBeUndefined();
   }
  });
- it('reaches past the paper\'s edges on finer boards, leaving out the middle lines it covers', () => {
+ slow('reaches past the paper\'s edges on finer boards, leaving out the middle lines it covers', () => {
   // Once the circle covers the middle lines from edge to edge they show
   // nothing: the heart leaves them out, and the circle reaches past the
   // paper's edges as on five strips, the outer two lines a side meeting it
@@ -734,7 +734,7 @@ describe('frames from real hearts', () => {
   expect(hardToCut).toBeUndefined();
   expect(cutTipCounts(design)).toEqual([0, 0]);
  });
- it('bends a figure\'s shared cuts tip by tip where bending them all at once would cut too near', () => {
+ slow('bends a figure\'s shared cuts tip by tip where bending them all at once would cut too near', () => {
   // The candy cane in the rays, built by a retry (a nested construction):
   // bent all at once its cuts came too near each other, so it kept seven
   // needles and eight sharp tips; bent tip by tip, five of each. Its stripes
@@ -910,7 +910,7 @@ describe('frames from real hearts', () => {
    expect(cell(motif, layout)().edges.length, JSON.stringify(layout)).toBeGreaterThan(0);
   }
  });
- it('moves a seam that would run through a corner of the motif beside it', () => {
+ slow('moves a seam that would run through a corner of the motif beside it', () => {
   // The star's top tip lies nearly on the seam through its centre, which
   // then cannot be built, and the seam through its lower notch halves the
   // tip into slivers: moved a fiftieth of the motif beside the tip, the seam
@@ -1003,7 +1003,7 @@ describe('frames from real hearts', () => {
   const { design } = generate({ mode: 'figure', name: 'Snowman', contours: snowman.contours as Ring[], colors, style: 'board', board: 3, scale: .6 });
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
  });
- it('keeps, of the first constructions that finish in a frame, the one whose paper holds best', () => {
+ slow('keeps, of the first constructions that finish in a frame, the one whose paper holds best', () => {
   // The first that finished left pieces hanging by paper under 2 mm: the
   // candle's in rays at 85%, the sleigh's in the checked tips at 70%.
   for (const [style, motif, scale] of [['rays', candle, 85], ['corners', sleigh, 70]] as const) {

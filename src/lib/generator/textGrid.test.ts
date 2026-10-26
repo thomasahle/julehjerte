@@ -127,7 +127,7 @@ it('lays square cells on a regular board, as in Brodal’s hearts', () => {
 	expect(() => onBoard(generateCheckedText('William', font, false, undefined, true))).toThrow();
 });
 
-it('weaves the geometric, poster and block fonts, with every letter the generator takes', async () => {
+slow('weaves the geometric, poster and block fonts, with every letter the generator takes', async () => {
 	const colors = { left: '#fffdf5', right: '#b72f2b' };
 	for (const id of ['josefinsans', 'alfaslabone', 'bungee']) {
 		const added = await shippedFont(id);

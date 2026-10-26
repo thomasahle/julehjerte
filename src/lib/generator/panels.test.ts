@@ -1,4 +1,5 @@
 import { it, expect } from 'vitest';
+import { slow } from './slow.test-helpers';
 import { backgroundJunctions, clipContours, componentSeamGate, filledSeamGate, generatePanelFigure, panelDividers, panelSeamGuard, squareJunctions } from './panels';
 import { convertValidatedCutGeometry } from '$lib/inverse/toHeartDesign';
 import { type Ring, type Point, inside, uprightToSheet } from './geometry';
@@ -72,7 +73,7 @@ it('gives a small nested island an agreed gate on both sides of a divider', () =
 		}
 	expect(componentSeamGate(rings, 0, 0, 0)).toBeUndefined();
 });
-it('spreads cat details across several cuts', () => {
+slow('spreads cat details across several cuts', () => {
 	const r = generatePanelFigure(cat.contours as Ring[], 'circle', 70, 0.7);
 	const { design } = convertValidatedCutGeometry(r.geometry, {
 		name: 'Cat',

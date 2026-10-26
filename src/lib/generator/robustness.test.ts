@@ -89,7 +89,7 @@ describe('generator robustness regressions', () => {
 			validateHandoffs(design);
 		});
 	for (const textFrame of ['circle'] as const)
-		it(`joins branched Cinzel Hej! letters through clear gaps in ${textFrame}`, () => {
+		slow(`joins branched Cinzel Hej! letters through clear gaps in ${textFrame}`, () => {
 			const { design } = generate({ mode: 'text', name: 'Hej!', text: 'Hej!', font: fonts.cinzel, textFrame, colors });
 			expect(design.gridSize).toEqual({ x: 10, y: 10 });
 			// Two sharp tips, no needle, since Cinzel is grown from its font file:

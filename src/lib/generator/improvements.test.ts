@@ -55,7 +55,7 @@ describe('longer and multiline text', () => {
 			expect(findSearchIssues(design.fingers, margin).size).toBe(0);
 		});
 	for (const textFrame of FRAMES)
-		it(`supports two rows in the ${textFrame} frame`, () => {
+		(textFrame === 'circle' ? slow : it)(`supports two rows in the ${textFrame} frame`, () => {
 			const { design } = generate({
 				mode: 'text',
 				name: 'JULE\nMAND',
@@ -66,7 +66,7 @@ describe('longer and multiline text', () => {
 			});
 			expect(design.gridSize).toEqual({ x: 7, y: 7 });
 		});
-	it('keeps line breaks through saved designs and SVG', () => {
+	slow('keeps line breaks through saved designs and SVG', () => {
 		const { design } = generate({
 			mode: 'text',
 			name: 'JULE\nMAND',
@@ -108,7 +108,7 @@ describe('figures and complete templates', () => {
 		['Stjerner', stars.contours],
 		['Juletræ', tablerTree.contours]
 	] as const)
-		(name === 'Gave' ? slow : it)(`weaves ${name} without cutouts`, () => {
+		(name === 'Gave' || name === 'Juletræ' ? slow : it)(`weaves ${name} without cutouts`, () => {
 			const { design } = generate({
 				mode: 'figure',
 				name,
