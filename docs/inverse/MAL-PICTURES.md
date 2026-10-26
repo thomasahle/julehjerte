@@ -495,7 +495,11 @@ On the 80 scraped photographs 5 more take the exact template first (03e90,
 fe904, 8b555 among the six; 17e0c, 52652), the same 46 passing; their templates
 lie 0.7-1.5% from their masks where the fitter's lay 0.3-1.0%, the difference
 in the border band read anew, where the photograph's own edge is the one that
-cannot be woven. No juleflet picture ends unevenly or misses pixels.
+cannot be woven. No juleflet picture ends unevenly or misses pixels. Four of
+the five are over 1%, where the panel says the heart is only close; so the
+page shows a second template first when only the first is merely close
+(`isMediocre`, paint/verdict.ts): their fitted templates, the exact one still
+offered.
 
 Tried and left out: where the traced search never keeps the model's rules
 (13 photographs), an outline traced from the mask smoothed by 1 mm passes 4 of
