@@ -6,8 +6,7 @@
         "classic-3x3",
         "ramme",
         "gaver",
-        "jul",
-        "mor-og-barn"
+        "jul"
       ]
     },
     {
@@ -30,6 +29,7 @@
       "id": "hjerter",
       "hearts": [
         "triple-heart",
+        "mor-og-barn",
         "h4h2",
         "hjerte-paa-hjerte",
         "nemt-hjerte",

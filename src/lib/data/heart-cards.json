@@ -25,13 +25,6 @@
     "name": "JUL",
     "difficulty": "hard"
   },
-  "mor-og-barn": {
-    "name": "Mor og barn",
-    "names": {
-      "en": "Mother and child"
-    },
-    "difficulty": "medium"
-  },
   "stjerne": {
     "name": "Stjerne",
     "names": {
@@ -116,6 +109,13 @@
     "names": {
       "da": "Tre hjerter",
       "en": "Triple heart"
+    },
+    "difficulty": "medium"
+  },
+  "mor-og-barn": {
+    "name": "Mor og barn",
+    "names": {
+      "en": "Mother and child"
     },
     "difficulty": "medium"
   },
