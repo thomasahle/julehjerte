@@ -134,9 +134,9 @@ test('side by side, an exact search overrunning its minute is ended and the fitt
   t.mock.timers.enable({apis:['setTimeout']});
   const h=harness();await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});
   const [fitter,exact]=h.workers;
-  h.reply(fitter,2,'result',{result:value});
   t.mock.timers.tick(1000*64);assert.equal(exact.terminated,0);
   t.mock.timers.tick(1000*2);assert.equal(exact.terminated,1);
+  h.reply(fitter,2,'result',{result:value});
   await solving;assert.deepEqual(h.messages.at(-1),{id:2,type:'result',result:value});
   // A late exact answer is ignored.
   exact.onmessage?.({data:{id:2,type:'result',result:exactValue}});assert.equal(h.messages.filter(m=>m.type==='result').length,1);
@@ -168,3 +168,14 @@ test('side by side, a fitted answer waiting for the exact search says so, and St
   assert.equal(h.messages.at(-1).event.stage,'exactOutline');
   await h.send(2,'stop');await solving;assert.deepEqual(h.messages.at(-1).result,value);
 });
+
+test('side by side, once the fitter\'s answer waits, the exact search has until 40 s',async t=>{
+  t.mock.timers.enable({apis:['setTimeout','Date']});
+  const h=harness({now:()=>Date.now()});await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});
+  const [fitter,exact]=h.workers;
+  t.mock.timers.tick(1000*10);h.reply(fitter,2,'result',{result:value});
+  t.mock.timers.tick(1000*29);assert.equal(exact.terminated,0);
+  t.mock.timers.tick(1000*2);assert.equal(exact.terminated,1);
+  await solving;assert.deepEqual(h.messages.at(-1).result,value);
+});
+

@@ -4,14 +4,17 @@ import {finishStopped,finishExactStopped} from './core/stopped.js';
 import {zipFiles} from './core/zip.js';
 import {refineHeartCrop} from './core/crop.js';
 
-/** Seconds past its minute before a side-by-side exact search is ended. */
-const EXACT_GRACE_SECONDS=5;
+/** Seconds past its minute before a side-by-side exact search is ended; and
+ * from the start, once the fitter's answer waits for it: on the juleflet
+ * pictures every exact template came within 40 s, while photographs it fails
+ * on waited out the whole minute. */
+const EXACT_GRACE_SECONDS=5,EXACT_WAIT_SECONDS=40;
 
 /** One prepared artwork and one public request at a time. The private fitting
  * worker can be terminated without discarding the artwork or the result queue.
  * Candidate packets stay here; only throttled progress pictures reach the UI.
  */
-export function workerController(scope,{createWorker=()=>new Worker(new URL('./compute-worker.js',import.meta.url),{type:'module'}),finalize=finishStopped,finalizeExact=finishExactStopped,
+export function workerController(scope,{createWorker=()=>new Worker(new URL('./compute-worker.js',import.meta.url),{type:'module'}),finalize=finishStopped,finalizeExact=finishExactStopped,now=()=>performance.now(),
  detectCrops=(input,options)=>import('./neural/photo-crop.js').then(module=>module.detectPhotoCrops(input,options))}={}){
   let prepared=null,result=null,compute=null,exactCompute=null,active=null;
   const end=worker=>{if(worker){worker.onmessage=null;worker.onerror=null;worker.onmessageerror=null;worker.terminate();}};
@@ -85,7 +88,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
         compute??=createWorker();
         if(both)exactCompute??=createWorker();
         await new Promise(resolve=>{
-          const job={id,cfg,startedAt:performance.now(),candidates:new Map(),phase:'searching',done:resolve,exact:both?'running':'none',drawn:false,drawing:null,held:null,timer:null};active=job;
+          const job={id,cfg,startedAt:now(),candidates:new Map(),phase:'searching',done:resolve,exact:both?'running':'none',drawn:false,drawing:null,held:null,timer:null};active=job;
           const live=()=>active===job&&job.phase==='searching';
           const fail=(message,code)=>Object.assign(new Error(message),{code});
           // The fitter's answer, once the exact search has given up.
@@ -108,6 +111,8 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
             // says it is still running.
             job.held=held;
             if(!job.drawn)progress({stage:'exactOutline'});
+            clearTimeout(job.timer);
+            job.timer=setTimeout(()=>{if(live()&&job.exact==='running')exactDone();},Math.max(0,job.startedAt+1000*EXACT_WAIT_SECONDS-now()));
           };
           compute.onerror=event=>{event.preventDefault?.();disposeFitter();const error=fail(event.message||'The fitting worker could not load.','ENGINE_UNAVAILABLE');if(job.exact==='running')job.held={error};else finish(job,null,error);};
           compute.onmessageerror=()=>{disposeFitter();const error=fail('The fitting response could not be read.','ENGINE_UNAVAILABLE');if(job.exact==='running')job.held={error};else finish(job,null,error);};
