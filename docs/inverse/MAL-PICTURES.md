@@ -326,6 +326,25 @@ are visible (5star's points are blunt where the fitter's stay sharp): its tip
 on the mirror is cut sharp only by a hidden segment leaving outwards along the
 mirror, to the checker's touching, and hidden segments end on edges only.
 
+## Where it stands (2026-10-26)
+
+Mal's whole pipeline on the three sets, against the version deployed on
+2026-10-25 (the fitter first, the exact search only as a rescue):
+
+| | 2026-10-25 | 2026-10-26 |
+|---|---|---|
+| juleflet pictures (128): pass | 128 | 128 |
+| exact template taken | 0 | 104 |
+| from the true design (mean) | 0.708% | 0.676% |
+| solve median / 90% / slowest | 7.3 / 17.0 / 33.4 s | 8.4 / 40.0 / 40 s |
+| 80 scraped photographs: pass / detail lost | 46 / 10 | 47 / 9 (8 exact) |
+| solve median | 21.4 s | 40.0 s |
+| 44 web photographs: pass / detail lost / no heart | 18 / 16 / 10 | 34 / 8 / 2 (7 exact) |
+| solve median | 28.0 s | 13.9 s |
+
+The photographs wait longer where the exact search fails: once the fitter's
+template is in, the exact search has until 40 s.
+
 ## Tips, untied outlines and their symmetry (2026-10-26)
 
 - A tip narrower than a cut's clearance (1.5 mm) is rounded off only within
