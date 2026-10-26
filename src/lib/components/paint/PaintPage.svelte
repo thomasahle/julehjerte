@@ -216,6 +216,8 @@
 	 * fitter is done). Swapping exchanges the two; a new search clears it.
 	 */
 	let alternative = $state.raw<{ result: PaintResult; honoured: SymmetrySettings } | null>(null);
+	/** The most of the mask correcting an exact template's symmetry may cost (see toResult). */
+	const EXACT_SYMMETRY_COST = 0.01;
 	/** Which search an alternative belongs to: one arriving for an older one is dropped. */
 	let searchCount = 0;
 	/** "Vis det beskyttede motiv": the outline over the found heart. */
@@ -733,10 +735,17 @@
 		if (!geometry) {
 			throw new CutGeometryError('paintErrorGeometrySchema', 'The engine returned no geometry.');
 		}
+		const kind: PaintResult['report']['kind'] = solved.report.solver?.exactOutline?.chosen === 'exact' ? 'exact' : 'smooth';
+		// The exact search's cuts follow the picture: made symmetric at more than
+		// EXACT_SYMMETRY_COST of the mask (cuts searched without the symmetry's
+		// ties do not pair up, permo-kroge 1.9 %) they lose what they are for, so
+		// they stay as found, with the rows marked as not held, and the fitter's
+		// symmetric cuts beside them.
 		const converted = convertValidatedCutGeometry(geometry, {
 			name: session.sourceName ? t('paintHeartFromImage', lang) : t('paintHeartFromMask', lang),
 			colors: toHexColors(colors, DEFAULT_COLORS_HEX),
 			enforce: session.symmetry,
+			...(kind === 'exact' ? { enforceCostLimit: EXACT_SYMMETRY_COST } : {}),
 			reference: { mask: target, weights: frame.mode === 'free' ? shapeCells(frame, target.size) : undefined }
 		});
 
@@ -764,7 +773,6 @@
 		if (asked && asked.honoured.length < asked.requested.length) {
 			console.warn('The engine could not hold every symmetry that was asked of it', asked);
 		}
-		const kind: PaintResult['report']['kind'] = solved.report.solver?.exactOutline?.chosen === 'exact' ? 'exact' : 'smooth';
 		return {
 			honoured: converted.honoured,
 			result: {

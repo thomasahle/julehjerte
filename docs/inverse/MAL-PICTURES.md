@@ -326,6 +326,22 @@ are visible (5star's points are blunt where the fitter's stay sharp): its tip
 on the mirror is cut sharp only by a hidden segment leaving outwards along the
 mirror, to the checker's touching, and hidden segments end on edges only.
 
+## Tips, untied outlines and their symmetry (2026-10-26)
+
+- A tip narrower than a cut's clearance (1.5 mm) is rounded off only within
+  4 mm of where the traced template comes too close to itself, then everywhere
+  if that fails, by a disc of 0.8 mm: 0.5 mm left the part 1-1.5 mm wide, where
+  the slit still came too close to itself. On the juleflet pictures 104 take
+  the exact template instead of 98, as close to the true designs (0.600% on
+  the 95 taken both ways, 0.606% before); fisk-kors 1.67 -> 0.51%, lilje1
+  1.76 -> 0.68%.
+- An outline not symmetric enough for its symmetry's ties is searched untied
+  (lilje2, stjernegitter). Mal's converter then makes the cuts symmetric; where
+  that costs more than 1% of the mask (untied cuts that do not pair up,
+  permo-kroge 1.9%) the exact template stays as found, the rows marked as not
+  held, and the fitter's symmetric one is the alternative (permo-kroge 2.68 ->
+  0.88% from its true design).
+
 ## Two templates to choose from (2026-10-26)
 
 The exact search's template and the fitter's are better on different
@@ -406,6 +422,10 @@ camel, but takes 20-28 s more and fails on other photographs; not used.
   three quarters of drawn ones.
 - Templates: slits that stop inside the square or meet in T-junctions (the site
   cannot represent them), dimension lines drawn along a slit.
+- A selected heart among touching neighbours (two of the web scenes): the
+  background colour cannot part them. Counting only the band's largest colour
+  as background finds a heart there, but the union with its neighbours; so it
+  stays unfound.
 - Fewer hidden cuts or shorter ones: the exact search takes the fewest hidden
   segments, then the shortest of those, so where the fitter's template places
   them differently it can hide more cut in all (tulipan's photograph 89 mm in

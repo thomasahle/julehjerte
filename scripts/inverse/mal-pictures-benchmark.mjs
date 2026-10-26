@@ -129,7 +129,11 @@ for (const c of list) {
       // Hidden cut (mm, as the weave shows it) of the fitter's template and the exact search's.
       hidden: [ex.fitter?.hidden, ex.exactOutline?.hidden].map(v => v === undefined ? null : Math.round(v)), refined: ex.refined?.taken ?? null};
     row.stage = 'convert';
-    const converted = convertValidatedCutGeometry(answer.files['cut_geometry.json'], {name: 'e2e', colors: DEFAULT_COLORS_HEX, enforce: symmetry, reference: {mask: target}});
+    // As the page converts it (PaintPage toResult): an exact template whose
+    // symmetry would cost over 1% of the mask to correct stays as found.
+    const converted = convertValidatedCutGeometry(answer.files['cut_geometry.json'], {name: 'e2e', colors: DEFAULT_COLORS_HEX, enforce: symmetry, reference: {mask: target},
+      ...(rep.solver?.exactOutline?.chosen === 'exact' ? {enforceCostLimit: .01} : {})});
+    row.honoured = `${converted.honoured.curve}/${converted.honoured.lobe}/${converted.honoured.lobes}`;
     const woven = rasterizeDesign(converted.design, target.size);
     row.mismatch = +maskMismatch(woven.data, target.data, target.validMask).toFixed(5);
     row.cuts = converted.design.fingers.filter(f => f.id.includes('-cut-')).length;

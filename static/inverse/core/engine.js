@@ -42,7 +42,7 @@ export const EXACT_SECONDS=60,EXACT_FINISH_SECONDS=10;
  * further from the mask, so it comes second. The fitter has what is left.
  * Alone (`exactRoute: 'exact'`, the fitter in a worker beside it), the traced
  * outline has until ALONE_TRACED_SECONDS and the rounded one the rest. */
-const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,ROUNDED_LEAST=6,TIP_ROUNDING_MM=.5,TIP_SPOT_MM=4;
+const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,ROUNDED_LEAST=6,TIP_ROUNDING_MM=.8,TIP_SPOT_MM=4;
 /** The fitter's seconds beside the exact search (`exactRoute: 'fitter'`): what
  * it had when it came first, which photographs need to keep their details. */
 const FITTER_SECONDS=45;
