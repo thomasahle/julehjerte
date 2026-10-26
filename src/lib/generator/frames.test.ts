@@ -53,6 +53,8 @@ import pinCat from '../../../static/generator/motifs/pin-cat.json';
 import candyCane from '../../../static/generator/motifs/mdi-candy-cane.json';
 import candy from '../../../static/generator/motifs/mc-candy.json';
 import faFish from '../../../static/generator/motifs/fa-fish.json';
+import circleMotif from '../../../static/generator/motifs/circle.json';
+import { lobesShareTemplate } from '$lib/utils/symmetry';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -111,6 +113,12 @@ describe('complete motif frames', () => {
   // Its outline ran 0.7 back and forth along itself under the wing.
   const { design } = generate({ mode: 'figure', name: 'Dove', contours: dove.contours as Ring[], colors, style: 'rays', frame: 'circle', frameSize: 70, scale: .7, gap: 3 });
   expect(cutTipCounts(design)).toEqual([0, 0]);
+ });
+ it('cuts the plain circle with one template for both lobes', () => {
+  // Its points lie in mirror pairs across the heart's middle: a 63-gon from
+  // 5.7° did not, and in the rays below 78% its lobes' cuts differed.
+  const { design } = generate({ mode: 'figure', name: 'Circle', contours: circleMotif.contours as Ring[], colors, style: 'rays', frame: 'circle', frameSize: 70, scale: .7, gap: 3 });
+  expect(lobesShareTemplate(design.fingers, design.gridSize)).toBe(true);
  });
  slow('bends a hard-to-cut figure at sharp tips where its narrowest paper keeps', () => {
   // The cat's tail meets its body in a notch the double border leaves on one

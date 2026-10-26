@@ -143,7 +143,11 @@ not shipped. Beside them, `<motif>.board-<strips>.sym.json` holds tied
 sizes a board, from the generator's own heart as the search's start, each kept at
 every size of its outline where it cuts cleanly, for `topology.mjs` to judge:
 `recipes.mjs` itself starts from nothing and keeps a solve only where it beats
-the generator. `topology.mjs` turns every one into its topology's (`topologyOf`),
+the generator. A file of solves made on an outline the motif has since
+changed carries that outline (`contours`), and its solves are turned into
+topology recipes on it: the circle's, made on a 63-gon before the circle
+became an exactly symmetric 64-gon, are `circle.board-5.63gon.json` and
+`circle.board-5.sym.json`. `topology.mjs` turns every one into its topology's (`topologyOf`),
 draws each, held and made short, on every motif given of its topology at
 every third size, beside the generator's own heart, and keeps at each size the
 up to three that make the page's choice beat the generator's own heart for the

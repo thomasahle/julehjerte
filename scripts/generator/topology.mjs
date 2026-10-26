@@ -62,9 +62,10 @@ try {
 	const candidates = new Map(), shapes = new Set(), made = [], listed = new Set();
 	const convert = (id, contours, recipe, p) => { const shown = picture(request(contours, id, p), recipe.known); return shown && topologyOf(recipe, shown); };
 	for (const [id, file] of sources) {
-		const contours = await contoursOf(id).catch(() => null);
+		// Solves made on an outline the motif has since changed keep it (`contours`): their places lie on it.
+		const solved = JSON.parse(await fs.readFile(file, 'utf8')), contours = solved.contours ?? await contoursOf(id).catch(() => null);
 		if (!contours) continue;
-		for (const recipe of JSON.parse(await fs.readFile(file, 'utf8')).recipes) {
+		for (const recipe of solved.recipes) {
 			if (recipe.style !== style || recipe.strips !== strips || !recipe.steps.length || 'outline' in recipe) continue;
 			let topology;
 			for (const p of recipe.steps) if ((topology = convert(id, contours, recipe, p))) break;

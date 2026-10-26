@@ -125,6 +125,24 @@ rabbit's eye as a hole) or whose thin parts need a place the four cuts to the
 board cannot give (the cat below 80%). A heart takes 0.4 s longer on average
 (147 → 564 ms over 20 sizes of five motifs), in the page's worker.
 
+### The circle, its own mirror image
+
+The plain circle was a 63-gon from 5.7°: within an eighth of a percent of
+its mirror image, but no point of it was another's mirror image, so its lobes'
+visible cuts never matched and one template for both was out of reach. As a
+64-gon with its points at half steps (an exact mirror image of itself across
+the heart's middle), over 12 frames at 8 sizes it shares one template at 67
+of 96 where it shared 25, with no more weak paper (32 places, 34 before), sharp
+tips or hard hearts anywhere; one size lost the one template (the sunburst at
+78%). Its solves on the board keep the 63-gon they were made on, and the board's
+recipes stay those chosen with it: chosen again, the circle's own heart beats
+more of them, and the sets that win for the most motifs change for the others
+too (on the 18 symmetric motifs 98 sizes better, 29 worse, mostly by two hidden
+turns, with two tie-breaks tried alike). A 64-gon with
+points on the axes made the strips frame hard at 70%; the star and the flower
+made exactly symmetric the same way share one template far more often (8 → 61
+and 2 → 17 of 96) but tear or turn more in some frames, so they are not.
+
 ## The sunburst's crown narrows where its motif crowds the circle
 
 The sunburst's circle is four fifths of its frame, and the frame stops at the
