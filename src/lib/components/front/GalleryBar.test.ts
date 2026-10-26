@@ -4,7 +4,7 @@
  * download and select controls only while something is ticked
  * (docs/redesign/FRONT-SIMPLIFY.md).
  */
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, tick, unmount } from 'svelte';
 import GalleryBar from './GalleryBar.svelte';
 import type { DifficultyLevel } from '$lib/utils/difficulty';
@@ -23,6 +23,10 @@ afterEach(() => {
 	for (const dispose of cleanup.splice(0)) dispose();
 	vi.unstubAllGlobals();
 });
+
+// Closed, the difficulty menu gives the body its style back 24 ms later (bits-ui's
+// scroll lock): let that run before the page is taken down, or it finds no document.
+afterAll(() => new Promise((resolve) => setTimeout(resolve, 50)));
 
 /** Fakes an element's box: jsdom has no layout, so every rect is all zeros. */
 function placeAt(el: Element, top: number, height = 40) {
