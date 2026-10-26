@@ -1,4 +1,5 @@
 import { it, expect } from 'vitest';
+import { slow } from './slow.test-helpers';
 import { generateTextGrid, squareCellScale } from './textGrid';
 import { generateCheckedText, type Font } from './geometry';
 import { generate, type GeneratorRequest } from './generate';
@@ -85,7 +86,7 @@ it('offers square and letter-sized cells as a pair, with a slider for the space 
 	}
 });
 
-it('weaves the space around the text the visitor sets, the former airy frame at 25%', () => {
+slow('weaves the space around the text the visitor sets, the former airy frame at 25%', () => {
 	const colors = { left: '#fffdf5', right: '#b72f2b' };
 	const cuts = (request: Partial<GeneratorRequest>) => JSON.stringify(generate({
 		mode: 'text', name: 'KIM', text: 'KIM', font, colors, textFrame: 'woven', fittedCells: false, ...request }).design.fingers);
@@ -94,7 +95,7 @@ it('weaves the space around the text the visitor sets, the former airy frame at 
 	expect(cuts({ room: .35 })).not.toBe(cuts({}));
 });
 
-it('weaves the chosen kind of cells, even where the automatic choice differs', () => {
+slow('weaves the chosen kind of cells, even where the automatic choice differs', () => {
 	const colors = { left: '#fffdf5', right: '#b72f2b' };
 	const cuts = (fittedCells?: boolean) => JSON.stringify(generate({
 		mode: 'text', name: 'William', text: 'William', font, colors, textFrame: 'woven', fittedCells }).design.fingers);

@@ -128,7 +128,7 @@ describe('constructive figure generator', () => {
 							expect(mask.data[y * 240 + x]).toBe(1);
 					}
 			});
-	it('constructs enclosed symbol details using ordinary open cuts', () => {
+	slow('constructs enclosed symbol details using ordinary open cuts', () => {
 		expect(figure(tree.contours as Ring[]).design).not.toHaveProperty(
 			'rightCutouts'
 		);

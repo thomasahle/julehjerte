@@ -108,7 +108,7 @@ describe('figures and complete templates', () => {
 		['Stjerner', stars.contours],
 		['Juletræ', tablerTree.contours]
 	] as const)
-		it(`weaves ${name} without cutouts`, () => {
+		(name === 'Gave' ? slow : it)(`weaves ${name} without cutouts`, () => {
 			const { design } = generate({
 				mode: 'figure',
 				name,

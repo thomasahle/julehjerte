@@ -115,14 +115,14 @@ describe('the picture drawn before the cuts are found', () => {
 		expect(mismatch({ mode: 'figure', name: 'Heart', contours: heart.contours as Ring[], colors, style: 'motifs', scale: .85 })).toBeLessThan(.01);
 	}, 30000);
 
-	it('is the circle frames the cuts make, rays, checks, sunburst and double border, on their usual boards', () => {
+	slow('is the circle frames the cuts make, rays, checks, sunburst and double border, on their usual boards', () => {
 		for (const style of ['rays', 'check', 'sunburst', 'layers'] as const)
 			expect(mismatch({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style, gap: 3 }), style).toBeLessThan(.01);
 		// A motif that needed a finer board there gets no picture.
 		expect(picture({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'rays' }, { board: 5 })).toBeUndefined();
 	});
 
-	it('is the woven letters the cuts make, with the space around them the visitor sets', () => {
+	slow('is the woven letters the cuts make, with the space around them the visitor sets', () => {
 		for (const room of [undefined, .35, .5])
 			for (const text of ['KIM', 'GOD\nJUL'])
 				expect(mismatch({ mode: 'text', name: text, text, font: oswald as unknown as Font, colors, textFrame: 'woven', fittedCells: false, room }), `${room} ${text}`).toBeLessThan(.01);

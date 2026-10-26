@@ -324,7 +324,7 @@ describe('complete motif frames', () => {
    expect(rasterizeDesign(restored!, 240).data).toEqual(rasterizeDesign(design, 240).data);
   });
  }
- it('distributes separate stars and a snowflake over the three central lanes', () => {
+ slow('distributes separate stars and a snowflake over the three central lanes', () => {
   const contours: Ring[] = (snowflake.contours as Ring[]).map(r => r.map(([x,y]) => [x*.6,y*.6]));
   for (const x of [-.36,.36]) for (const y of [-.3,.3])
    contours.push(...(star.contours as Ring[]).map(r => r.map(([u,v]) => [x+u*.18,y+v*.18] as [number,number])));
@@ -515,7 +515,7 @@ describe('frames from real hearts', () => {
   for (const [x, y] of [[30, 3], [3, 30], [70, 3], [97, 30], [3, 70], [30, 97], [70, 97], [97, 70]])
    expect(colour(x, y), `${x} ${y}`).not.toBe(ground);
  });
- it('sets a motif that cuts cleanly so on its smallest enclosing circle in the largest circles', () => {
+ slow('sets a motif that cuts cleanly so on its smallest enclosing circle in the largest circles', () => {
   // A house's roof and walls then reach equally far; a star keeps its box's
   // centre, which leaves its tips further from the circle's connections.
   const house = generate({ mode: 'figure', name: 'House', contours: houseMotif.contours as Ring[], colors, style: 'board', scale: 1 });
@@ -617,7 +617,7 @@ describe('frames from real hearts', () => {
    expect(Math.min(...cut.segments.map(({ p3 }) => sheet(p3)[0])), `${board}`).toBeLessThan(third - 2);
   }
  });
- it('weaves every line past the third lines\' junctions on seven and nine strips, every square equal', () => {
+ slow('weaves every line past the third lines\' junctions on seven and nine strips, every square equal', () => {
   // Past the junction of the third line out with the second, the circle's
   // edge switches sheet at points of its own, joined in pairs by hidden cuts
   // across the circle or round the red squares beside it (see
@@ -634,7 +634,7 @@ describe('frames from real hearts', () => {
    expect(scale, `${board}`).toBeUndefined();
   }
  });
- it('weaves every line of nine strips past the outer lines\' junctions with the middle ones, every square equal', () => {
+ slow('weaves every line of nine strips past the outer lines\' junctions with the middle ones, every square equal', () => {
   // Past the junctions at 39.3, a completion whose cuts across the circle
   // reach past one chain to the next keeps all nine strips a side.
   const range = boardRanges(9).find(r => boardRangePattern(r) && r[0] > Math.hypot(boardLines(9)[3], boardLines(9)[0]))!;
@@ -646,7 +646,7 @@ describe('frames from real hearts', () => {
    expect(scale, `${setting}`).toBeUndefined();
   }
  });
- it('weaves every line of nine strips just short of the outer lines and past their junctions with the second', () => {
+ slow('weaves every line of nine strips just short of the outer lines and past their junctions with the second', () => {
   // Completions with the fewest switch points the crossings allow carry the
   // circle on short of the outer lines and past their junctions with the
   // second lines, their cuts across the circle nested so deep that the
@@ -918,7 +918,7 @@ describe('frames from real hearts', () => {
   for (const [board, scale] of [[9, .8], [5, 1]])
    expect(generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', board, scale }).hardToCut, `${board} ${scale}`).toBeUndefined();
  });
- it('keeps a motif that cannot be divided whole past the touching circle, and says how far it went', () => {
+ slow('keeps a motif that cannot be divided whole past the touching circle, and says how far it went', () => {
   // A solid motif has no background point for four panels to meet at: it
   // stays whole, the outer lines following the circle, until its gates near
   // the corner junctions; past them a completion about the whole motif
@@ -1214,7 +1214,7 @@ describe('frames from real hearts', () => {
   expect(scale).toBeUndefined();
   expect(design.gridSize).toEqual({ x: 7, y: 7 });
  });
- it('sizes the motif on a board frame by the visitor\'s size', () => {
+ slow('sizes the motif on a board frame by the visitor\'s size', () => {
   for (const style of ['squares', 'motifs', 'board'] as const) {
    const ink = (scale: number) => {
     const { design } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style, scale });
