@@ -37,8 +37,13 @@
 	/** The front page's gallery section (Gallery.svelte), in both languages. */
 	const GALLERY_ANCHOR = 'skabeloner';
 
-	/** Which of the editor's two modes the page is (docs/redesign/PAINT.md §1). */
-	type EditorMode = { current: 'draw' | 'paint' };
+	/**
+	 * Which of the editor's two modes the page is (docs/redesign/PAINT.md §1), and
+	 * what a plain click on the other one does instead of following its link, for
+	 * a page that carries something over (Tegn takes its heart to Mal). A click
+	 * that opens a new tab follows the link as it is.
+	 */
+	type EditorMode = { current: 'draw' | 'paint'; switchTo?: () => void };
 
 	interface Props {
 		lang: Language;
@@ -114,6 +119,13 @@
 	});
 
 
+	function switchMode(e: MouseEvent, id: EditorMode['current']): void {
+		if (!mode?.switchTo || id === mode.current || e.defaultPrevented || e.button !== 0 ||
+			e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+		e.preventDefault();
+		mode.switchTo();
+	}
+
 	function onKeydown(e: KeyboardEvent) {
 		if (e.key !== 'Escape' || !menuOpen) return;
 		menuOpen = false;
@@ -160,6 +172,7 @@
 					href={item.href}
 					aria-current={mode.current === item.id ? 'page' : undefined}
 					title={item.label}
+					onclick={(e) => switchMode(e, item.id)}
 				>
 					<item.icon size={16} />
 					<span>{item.label}</span>

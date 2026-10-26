@@ -433,15 +433,24 @@
    * keeps them out of the draw page's bundle. A visitor who never presses the
    * button never downloads them.
    */
-  async function openInPaint(): Promise<void> {
-    const [{ rasterizeDesign }, { detectSymmetry: detectMaskSymmetry }, { setMask }] =
+  async function openInPaint(keepFound = false): Promise<void> {
+    const [{ rasterizeDesign }, { detectSymmetry: detectMaskSymmetry }, { session, setMaskFromDraw }, { maskMismatch }] =
       await Promise.all([
         import('$lib/paint/rasterize'),
         import('$lib/paint/symmetry'),
-        import('$lib/editor/session.svelte')
+        import('$lib/editor/session.svelte'),
+        import('$lib/paint/mask')
       ]);
     const design = createHeartDesign();
     const mask = rasterizeDesign(design);
+    // With `keepFound`, a heart that is still the one Find snit found weaves the
+    // same picture: Mal opens as it was left, on that heart and the drawing it
+    // was found for, rather than on the heart's own picture.
+    if (keepFound && session.result &&
+        maskMismatch(rasterizeDesign(session.result.design, mask.size).data, mask.data) === 0) {
+      await goto(href('paint', lang));
+      return;
+    }
     // What the mask turns out to be symmetric under becomes both the setting Mal
     // paints under and the "fundet" tags on its rows (PAINT.md §5).
     const found = detectMaskSymmetry(mask);
@@ -450,7 +459,8 @@
     // hands back carries its own `name` (see `sessionDesign` above), so deriving one
     // from this would turn a Tegn → Mal → Tegn round trip into "Mit hjerte fra
     // billede".
-    setMask(mask, { sourceName: design.name, symmetry: found, found });
+    // What was painted in Mal comes back with its Fortryd.
+    setMaskFromDraw(mask, { sourceName: design.name, symmetry: found, found });
     // The confirmation just closed; its history entry has to be off before
     // the navigation pushes one, or the back would land after it.
     await settleOverlayHistory();
@@ -488,6 +498,19 @@
     } finally {
       paintBusy = false;
     }
+  }
+
+  // The header's Mal tab: this heart over to Mal as "Mal på hjertet" takes it,
+  // without the question, since Fortryd in Mal brings back what was painted
+  // there; but a heart still as Find snit found it leaves Mal as it was.
+  function switchToPaint(): void {
+    if (paintBusy) return;
+    paintBusy = true;
+    openInPaint(true)
+      .catch(reportPaintError)
+      .finally(() => {
+        paintBusy = false;
+      });
   }
 
   function closePaintConfirm(): void {
@@ -882,7 +905,7 @@
        EN/GitHub pills belong on content pages, not in the full-screen tool. The
        `mode` switch is the other half of PAINT.md §2's ask of Tegn: with the
        paint route landed, the header carries the way back and forth. -->
-  <PageHeader bind:ref={headerEl} {lang} variant="editor" mode={{ current: 'draw' }}>
+  <PageHeader bind:ref={headerEl} {lang} variant="editor" mode={{ current: 'draw', switchTo: switchToPaint }}>
     <button
       type="button"
       class="btn btn-sm btn-ghost btn-icon icon-button"

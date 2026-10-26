@@ -28,7 +28,7 @@
 import type { HeartDesign } from '$lib/types/heart';
 import { clearHandoff, handoffToDraw, takeHandoff } from './handoff';
 import { packMask, unpackMask, type Mask } from '$lib/paint/mask';
-import { defaultMask } from '$lib/paint/tools';
+import { defaultMask, isDefaultMask } from '$lib/paint/tools';
 import {
 	clampFrameSize,
 	DEFAULT_FRAME,
@@ -241,6 +241,29 @@ function foldToSymmetry(): void {
 	if (session.mask) symmetrize(session.mask, transformsFor(session.symmetry), symmetryRegion());
 }
 
+/**
+ * The mask a heart carried over from Tegn replaced, with the rows it was folded
+ * under, kept for Mal's Fortryd: Mal's undo history lives in its page, which the
+ * way to Tegn took down, so the page takes this as it opens and puts it on the
+ * new history (PaintPage). Null when there was nothing painted to lose — no
+ * mask, or still the board Mal starts on.
+ */
+let replaced: { mask: Mask; symmetry: SymmetrySettings } | null = null;
+
+/** `setMask` for a heart carried over from Tegn, the mask it replaces kept (see `replaced`). */
+export function setMaskFromDraw(mask: Mask, options: Parameters<typeof setMask>[1] = {}): void {
+	const before = session.mask;
+	replaced = before && !isDefaultMask(before) ? { mask: before, symmetry: { ...session.symmetry } } : null;
+	setMask(mask, options);
+}
+
+/** The mask a heart from Tegn replaced, taken once (see `replaced`). */
+export function takeReplacedMask(): { mask: Mask; symmetry: SymmetrySettings } | null {
+	const before = replaced;
+	replaced = null;
+	return before;
+}
+
 /** Ryd: the board Mal starts on, and nothing left to say about where it came from. */
 export function clearMask(): void {
 	setMask(defaultMask());
@@ -254,6 +277,7 @@ export function markMaskDirty(): void {
 /** Everything back to the start. Tests lean on this; the UI has no reason to. */
 export function resetSession(): void {
 	Object.assign(session, freshSession());
+	replaced = null;
 	clearHandoff();
 }
 

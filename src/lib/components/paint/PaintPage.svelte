@@ -50,6 +50,7 @@
 		setFrame,
 		setMask,
 		setSymmetry,
+		takeReplacedMask,
 		type Frame,
 		type PaintError,
 		type PaintResult,
@@ -338,6 +339,13 @@
 		// board (see `defaultMask`), never an empty mask, so the heart is on screen
 		// from the first frame.
 		if (!session.mask) setMask(defaultMask());
+		// A heart carried over from Tegn replaced what was painted here: Fortryd
+		// brings that back, as it does after an import.
+		const replaced = takeReplacedMask();
+		if (replaced) {
+			record(history, replaced);
+			syncHistoryFlags();
+		}
 		measureHeader();
 		// `?import` (the design page's "Fra et billede") opens the import dialog.
 		// It is taken once and dropped from the address, so a reload or a step

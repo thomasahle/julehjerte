@@ -13,9 +13,11 @@ import {
 	session,
 	setFrame,
 	setMask,
+	setMaskFromDraw,
 	setSymmetry,
 	symmetryRegion,
-	takeHandoff
+	takeHandoff,
+	takeReplacedMask
 } from './session.svelte';
 
 const design = { id: 'h', name: 'Stjerne fra billede', author: '', gridSize: { x: 4, y: 4 }, fingers: [] } satisfies HeartDesign;
@@ -123,6 +125,27 @@ describe('the handoff to Tegn', () => {
 
 	it('is empty until Find snit has found something', () => {
 		expect(takeHandoff()).toBeNull();
+	});
+});
+
+describe('a heart carried over from Tegn', () => {
+	it('keeps the mask it replaces, with its rows, for Mal to undo once', () => {
+		const rows = { curve: 'sym', lobe: 'off', lobes: 'off' } as const;
+		const painted = createMask(0);
+		setMask(painted, { symmetry: rows });
+		const heart = createMask(1);
+		setMaskFromDraw(heart);
+		expect(session.mask).toBe(heart);
+		expect(takeReplacedMask()).toEqual({ mask: painted, symmetry: rows });
+		expect(takeReplacedMask()).toBeNull();
+	});
+
+	it('keeps nothing where nothing was painted: no mask yet, or the board Mal starts on', () => {
+		setMaskFromDraw(createMask(1));
+		expect(takeReplacedMask()).toBeNull();
+		clearMask();
+		setMaskFromDraw(createMask(1));
+		expect(takeReplacedMask()).toBeNull();
 	});
 });
 

@@ -88,6 +88,39 @@ describe('PageHeader', () => {
 		]);
 	});
 
+	it("takes a plain click on the other mode to the page's own way there, and leaves other clicks to the link", () => {
+		url.current = new URL('http://localhost/editor/');
+		const target = document.createElement('div');
+		document.body.appendChild(target);
+		const switchTo = vi.fn();
+		const component = mount(PageHeader, { target, props: { lang: 'da', variant: 'editor', mode: { current: 'draw', switchTo } } });
+		// Whether the header took the click, read after it, and no navigation in jsdom either way.
+		let taken = false;
+		const settle = (e: Event) => {
+			taken = e.defaultPrevented;
+			e.preventDefault();
+		};
+		document.addEventListener('click', settle);
+		cleanup.push(() => {
+			document.removeEventListener('click', settle);
+			unmount(component);
+			target.remove();
+		});
+		flushSync();
+		const [draw, paint] = target.querySelectorAll<HTMLAnchorElement>('.mode-link');
+		const click = (link: HTMLAnchorElement, init: MouseEventInit = {}) => {
+			link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, button: 0, ...init }));
+			return taken;
+		};
+		expect(paint.getAttribute('href')).toBe('/editor/mal/');
+		expect(click(paint)).toBe(true);
+		expect(switchTo).toHaveBeenCalledTimes(1);
+		expect(click(paint, { metaKey: true })).toBe(false);
+		expect(click(paint, { button: 1 })).toBe(false);
+		expect(click(draw)).toBe(false);
+		expect(switchTo).toHaveBeenCalledTimes(1);
+	});
+
 	it('keeps them in the bar of the design tools, which have no colour controls of their own', () => {
 		const { target } = render('/editor/', 'da', undefined, 'editor');
 		const groups = [...target.querySelectorAll('[role="group"]')];
