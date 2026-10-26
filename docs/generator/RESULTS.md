@@ -788,6 +788,14 @@ topologies, all at 71–94%. The page's heart is better at 14 of 912 (the
 elephant left out) and worse at none: the wreath at 78–84% has no place that
 may tear where it had three to five, the mitten half the hidden turns.
 
+On seven strips 7 of the first 15 motifs searched solved (the angel, bell,
+sleigh, holly, gingerbread man, polar star and hedgehog), giving 25 recipes
+for 12 new topologies. The page's heart is better at 60 of 912 and worse at
+none: places that may tear there go from 136 to 42 (the polar star at 78–81%
+from 21 and 27 to 8, the gingerbread man and the moon at 45–54% from one to
+three places to none), and the angel at 45 and 48%, hard to cut, is cut cleanly
+(with a template for each lobe, where the hard heart shared one).
+
 ### The circle, its own mirror image
 
 The plain circle was a 63-gon from 5.7°: within an eighth of a percent of
