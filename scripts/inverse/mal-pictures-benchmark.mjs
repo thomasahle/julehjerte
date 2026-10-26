@@ -99,23 +99,42 @@ for (const c of list) {
     const settings = {...mal.solveSettings({colors, symmetry}), ...(exactMode === 'off' ? {exactOutline: false} : {})};
     // As the page's workers run it (worker-controller.js): the exact search and
     // the fitter side by side, the exact template taken when it comes, by 40 s
-    // or the fitter's answer, whichever is later. Here one after the other, the
-    // fitter only when needed, and timed as side by side.
-    const run = more => design(restorePrepared(structuredClone(preparedMask.target)), {...settings, ...more});
+    // or the fitter's answer, whichever is later; but a passing answer of the
+    // fitter's waits only until 30 s while the exact search has drawn no
+    // template keeping every rule. Here one after the other, the fitter only
+    // when needed, and timed as side by side.
+    let drawnAt = null;
+    const drawn = event => { if (drawnAt === null && event?.geometry) drawnAt = (performance.now() - t) / 1000; };
+    const run = (more, onProgress) => design(restorePrepared(structuredClone(preparedMask.target)), {...settings, ...more}, onProgress);
     let answer, solveSeconds;
     if (settings.exactParallel && settings.exactOutline) {
-      let exact = null, failure = null;
-      try { exact = await run({exactRoute: 'exact'}); } catch (error) { if (error?.code !== 'NO_EXACT_TEMPLATE') throw error; failure = error; }
+      let exact = null, failure = null, fitted = null, fitterSeconds = null;
+      try { exact = await run({exactRoute: 'exact'}, drawn); } catch (error) { if (error?.code !== 'NO_EXACT_TEMPLATE') throw error; failure = error; }
       const exactSeconds = (performance.now() - t) / 1000;
-      if (exact && exactSeconds <= 40) { answer = exact; solveSeconds = exactSeconds; }
+      row.exactSeconds = +exactSeconds.toFixed(1);
+      row.exactDrawnSeconds = drawnAt === null ? null : +drawnAt.toFixed(1);
+      const fit = async () => {
+        if (fitted) return;
+        const t1 = performance.now();
+        fitted = await run({exactRoute: 'fitter'});
+        fitterSeconds = (performance.now() - t1) / 1000;
+        row.fitterSeconds = +fitterSeconds.toFixed(1);
+      };
+      // Taken whatever the fitter's time: in by 30 s, or drawn by then and in by 40.
+      let taken = exact && (exactSeconds <= 30 || (drawnAt !== null && drawnAt <= 30 && exactSeconds <= 40));
+      let waitEnd = null;
+      if (!taken) {
+        await fit();
+        const early = fitted.report.templateChecksPassed === true && !(drawnAt !== null && drawnAt <= Math.max(fitterSeconds, 30));
+        waitEnd = early ? Math.max(fitterSeconds, 30) : Math.max(fitterSeconds, 40);
+        taken = exact && exactSeconds <= waitEnd;
+      }
+      if (taken) { answer = exact; solveSeconds = exactSeconds; }
       else {
-        const t1 = performance.now(), fitted = await run({exactRoute: 'fitter'}), fitterSeconds = (performance.now() - t1) / 1000, wait = Math.max(fitterSeconds, 40);
-        if (exact && exactSeconds <= wait) { answer = exact; solveSeconds = exactSeconds; }
-        else {
-          answer = fitted;
-          answer.report.solver = {...answer.report.solver, exactOutline: failure?.report?.exactOutline ?? {chosen: 'fitter', error: 'ended at 40 s'}};
-          solveSeconds = Math.max(fitterSeconds, Math.min(exactSeconds, wait));
-        }
+        answer = fitted;
+        if (exact) row.exactLate = true;
+        answer.report.solver = {...answer.report.solver, exactOutline: failure?.report?.exactOutline ?? {chosen: 'fitter', error: exact ? `came at ${exactSeconds.toFixed(0)} s` : 'ended'}};
+        solveSeconds = Math.max(fitterSeconds, Math.min(exactSeconds, waitEnd));
       }
     } else { answer = await run({}); solveSeconds = (performance.now() - t) / 1000; }
     row.solveSeconds = +solveSeconds.toFixed(1);

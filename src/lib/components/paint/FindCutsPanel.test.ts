@@ -488,4 +488,15 @@ describe('FindCutsPanel while searching', () => {
 			panel.cleanup();
 		}
 	});
+
+	it('says the exact template is still coming when the smoother one went out first', () => {
+		const smooth = { ...result({ kind: 'smooth' }), design: { ...DESIGN, id: 'smooth' } };
+		const panel = render({ lang: 'en', result: smooth, alternativePending: true });
+		try {
+			expect(panel.text).toContain('Still looking for a version exactly as the picture');
+			expect(panel.text).not.toContain('smoother cuts …');
+		} finally {
+			panel.cleanup();
+		}
+	});
 });

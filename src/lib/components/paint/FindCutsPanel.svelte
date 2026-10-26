@@ -437,8 +437,8 @@
 				<p class="note">{tr('paintTemplateTooClose')}</p>
 			{/if}
 		</div>
-		{#if alternativePending && !alternative && result.report.kind === 'exact'}
-			<p class="note">{tr('paintTemplateSmoothPending')}</p>
+		{#if alternativePending && !alternative && result.report.kind}
+			<p class="note">{tr(result.report.kind === 'exact' ? 'paintTemplateSmoothPending' : 'paintTemplateExactPending')}</p>
 		{/if}
 		{#if alternative && result.report.kind && alternative.report.kind && onSwap}
 			<!-- Two templates for the same picture: the exact search's cuts along its

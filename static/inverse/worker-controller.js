@@ -7,8 +7,12 @@ import {refineHeartCrop} from './core/crop.js';
 /** Seconds past its minute before a side-by-side exact search is ended; and
  * from the start, once the fitter's answer waits for it: on the juleflet
  * pictures every exact template came within 40 s, while photographs it fails
- * on waited out the whole minute. */
-const EXACT_GRACE_SECONDS=5,EXACT_WAIT_SECONDS=40;
+ * on waited out the whole minute. Until the exact search has drawn a template
+ * keeping every rule, a passing answer of the fitter's waits only until
+ * EXACT_UNDRAWN_SECONDS, then goes out (the exact search's to follow as an
+ * alternative): a search that finds none draws none, and of 52 exact templates
+ * on the juleflet pictures 45 had drawn by 30 s (42 by 20). */
+const EXACT_GRACE_SECONDS=5,EXACT_WAIT_SECONDS=40,EXACT_UNDRAWN_SECONDS=30;
 
 /** One prepared artwork and one public request at a time. The private fitting
  * worker can be terminated without discarding the artwork or the result queue.
@@ -16,8 +20,9 @@ const EXACT_GRACE_SECONDS=5,EXACT_WAIT_SECONDS=40;
  */
 export function workerController(scope,{createWorker=()=>new Worker(new URL('./compute-worker.js',import.meta.url),{type:'module'}),finalize=finishStopped,finalizeExact=finishExactStopped,now=()=>performance.now(),
  detectCrops=(input,options)=>import('./neural/photo-crop.js').then(module=>module.detectPhotoCrops(input,options))}={}){
-  // `trailing`: a side-by-side fitter still running after the exact search's
-  // template went out, its passing answer to follow as an alternative.
+  // `trailing`: a side-by-side worker still running after the other's template
+  // went out, its passing answer to follow as an alternative: the fitter's, or
+  // the exact search's ({exact: true}, with the timer ending it).
   let prepared=null,result=null,compute=null,exactCompute=null,active=null,trailing=null;
   const end=worker=>{if(worker){worker.onmessage=null;worker.onerror=null;worker.onmessageerror=null;worker.terminate();}};
   const disposeFitter=()=>{end(compute);compute=null;},disposeExact=()=>{end(exactCompute);exactCompute=null;};
@@ -34,8 +39,8 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
   return async({data})=>{
     const {id,action,input,settings}=data;
     const progress=event=>scope.postMessage({id,type:'progress',event});
-    // Any new request ends a fitter still working on an alternative.
-    if(trailing&&action!=='archive'&&action!=='warm-neural'){trailing=null;disposeFitter();}
+    // Any new request ends a worker still working on an alternative.
+    if(trailing&&action!=='archive'&&action!=='warm-neural'){const ending=trailing;trailing=null;clearTimeout(ending.timer);if(ending.exact)disposeExact();else disposeFitter();}
     if(action==='cancel'){
       if(active&&active.id!==id)return;
       const job=active;active=null;dispose();prepared=null;result=null;job?.done();
@@ -99,9 +104,25 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
           // The fitter's answer, once the exact search has given up.
           const settle=()=>{if(job.held)finish(job,job.held.result,job.held.error);};
           const exactDone=()=>{job.exact='failed';job.drawing=null;disposeExact();settle();};
+          // With the fitter's answer held: the exact search's waited for until
+          // EXACT_WAIT_SECONDS once it has drawn, else until EXACT_UNDRAWN_SECONDS
+          // when the fitter's passes, which then goes out (trail).
+          const wait=()=>{
+            clearTimeout(job.timer);
+            const early=!job.drawn&&passes(job.held?.result);
+            job.timer=setTimeout(()=>{if(live()&&job.exact==='running'){if(early)trail();else exactDone();}},Math.max(0,job.startedAt+1000*(early?EXACT_UNDRAWN_SECONDS:EXACT_WAIT_SECONDS)-now()));
+          };
+          const trail=()=>{
+            job.exact='trailing';
+            const timer=setTimeout(()=>{if(trailing?.id===id&&trailing.exact){trailing=null;disposeExact();scope.postMessage({id,type:'alternative',pending:false});}},
+              Math.max(0,job.startedAt+1000*(Math.min(cfg.timeLimit,EXACT_SECONDS)+EXACT_GRACE_SECONDS)-now()));
+            finish(job,job.held.result);
+            trailing={id,exact:true,timer};
+            scope.postMessage({id,type:'alternative',pending:true});
+          };
           compute.onmessage=({data:message})=>{
             if(message.id!==id)return;
-            if(trailing?.id===id){
+            if(trailing?.id===id&&!trailing.exact){
               if(message.type!=='result'&&message.type!=='error')return;
               trailing=null;
               scope.postMessage(message.type==='result'&&passes(message.result)?{id,type:'alternative',result:message.result}:{id,type:'alternative',pending:false});
@@ -123,17 +144,25 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
             // says it is still running.
             job.held=held;
             if(!job.drawn)progress({stage:'exactOutline'});
-            clearTimeout(job.timer);
-            job.timer=setTimeout(()=>{if(live()&&job.exact==='running')exactDone();},Math.max(0,job.startedAt+1000*EXACT_WAIT_SECONDS-now()));
+            wait();
           };
-          compute.onerror=event=>{event.preventDefault?.();disposeFitter();if(trailing?.id===id){trailing=null;scope.postMessage({id,type:'alternative',pending:false});return;}const error=fail(event.message||'The fitting worker could not load.','ENGINE_UNAVAILABLE');if(job.exact==='running')job.held={error};else finish(job,null,error);};
+          compute.onerror=event=>{event.preventDefault?.();disposeFitter();if(trailing?.id===id&&!trailing.exact){trailing=null;scope.postMessage({id,type:'alternative',pending:false});return;}const error=fail(event.message||'The fitting worker could not load.','ENGINE_UNAVAILABLE');if(job.exact==='running')job.held={error};else finish(job,null,error);};
           compute.onmessageerror=()=>{disposeFitter();const error=fail('The fitting response could not be read.','ENGINE_UNAVAILABLE');if(job.exact==='running')job.held={error};else finish(job,null,error);};
           if(both){
+            // The exact search's answer after the fitter's went out: an alternative.
+            const trailed=answer=>{clearTimeout(trailing.timer);trailing=null;scope.postMessage(answer&&passes(answer)?{id,type:'alternative',result:answer}:{id,type:'alternative',pending:false});};
             exactCompute.onmessage=({data:message})=>{
-              if(!live()||job.exact!=='running'||message.id!==id)return;
+              if(message.id!==id)return;
+              if(trailing?.id===id&&trailing.exact){if(message.type==='result')trailed(message.result);else if(message.type==='error')trailed(null);return;}
+              if(!live()||job.exact!=='running')return;
               if(message.type==='progress'){
                 const geometry=message.event?.geometry;
-                if(typeof geometry==='string'?geometry.trim():geometry&&typeof geometry==='object'){job.drawn=true;if(typeof geometry==='string')job.drawing=geometry;}
+                if(typeof geometry==='string'?geometry.trim():geometry&&typeof geometry==='object'){
+                  // A first drawing while the fitter's answer waits: the longer wait.
+                  const first=!job.drawn;
+                  job.drawn=true;if(typeof geometry==='string')job.drawing=geometry;
+                  if(first&&job.held)wait();
+                }
                 if(job.drawn)progress(message.event);
               }else if(message.type==='result'){
                 // The fitter's template as a second choice: at once when it is in,
@@ -146,8 +175,8 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
               }
               else exactDone();
             };
-            exactCompute.onerror=event=>{event.preventDefault?.();if(live()&&job.exact==='running')exactDone();};
-            exactCompute.onmessageerror=()=>{if(live()&&job.exact==='running')exactDone();};
+            exactCompute.onerror=event=>{event.preventDefault?.();if(trailing?.id===id&&trailing.exact){disposeExact();trailed(null);return;}if(live()&&job.exact==='running')exactDone();};
+            exactCompute.onmessageerror=()=>{if(trailing?.id===id&&trailing.exact){disposeExact();trailed(null);return;}if(live()&&job.exact==='running')exactDone();};
             // HiGHS can overrun its time limit at its root: the minute is kept here.
             job.timer=setTimeout(()=>{if(live()&&job.exact==='running')exactDone();},1000*(Math.min(cfg.timeLimit,EXACT_SECONDS)+EXACT_GRACE_SECONDS));
           }
