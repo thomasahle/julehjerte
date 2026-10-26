@@ -1,5 +1,5 @@
 /**
- * The seven painting tools, brush radius and head, and the keys that pick them.
+ * The six painting tools, brush radius and head, and the keys that pick them.
  *
  * `tools.ts` says what an operation does to the cells; this says which of them
  * the visitor has chosen and what a keystroke means. It is plain data and one
@@ -7,7 +7,7 @@
  * being spelled out inside a keydown handler.
  */
 
-export type PaintTool = 'pen' | 'eraser' | 'fill' | 'line' | 'rect' | 'smudge' | 'select';
+export type PaintTool = 'pen' | 'fill' | 'line' | 'rect' | 'smudge' | 'select';
 
 /** The brush's head: a disc, or a square standing on the mask's own axes. */
 export type BrushShape = 'round' | 'square';
@@ -22,10 +22,13 @@ export type SmudgeMode = 'push' | 'twirl' | 'bulge';
 /** XOR is an editing action; the mask still contains only paper 0 and paper 1. */
 export type PaintValue = 0 | 1 | 'xor';
 
-/** Brush radius in mask cells, shared by the slider and keyboard shortcuts. */
+/**
+ * Brush radius in mask cells, shared by the slider and keyboard shortcuts: up
+ * to half the mask, as Udtvær's, so one dab can cover a lobe.
+ */
 export type BrushSize = number;
 export const MIN_BRUSH_SIZE = 1;
-export const MAX_BRUSH_SIZE = 40;
+export const MAX_BRUSH_SIZE = 200;
 export const DEFAULT_BRUSH_SIZE = 6;
 
 export function clampBrush(size: number): BrushSize {
@@ -34,9 +37,28 @@ export function clampBrush(size: number): BrushSize {
 		: DEFAULT_BRUSH_SIZE;
 }
 
-/** The brush one step bigger or smaller, stopping at both ends. */
+/**
+ * The brush one step bigger or smaller, stopping at both ends: a cell at a
+ * time while it is fine, about a tenth of its size once it is broad.
+ */
 export function stepBrush(current: BrushSize, delta: number): BrushSize {
-	return clampBrush(current + delta);
+	return clampBrush(current + delta * Math.max(1, Math.round(current / 10)));
+}
+
+/**
+ * The size slider's positions. A size grows by the same ratio for each step
+ * along it, so a pen of 2 is as easy to set as one of 150.
+ */
+export const SIZE_SLIDER_STEPS = 1000;
+
+/** Where a size sits on a slider from `min` to `max`. */
+export function sliderOfSize(size: number, min: number, max: number): number {
+	return Math.round(SIZE_SLIDER_STEPS * Math.log(Math.max(min, Math.min(max, size)) / min) / Math.log(max / min));
+}
+
+/** The size at a slider position, whole cells. */
+export function sizeOfSlider(position: number, min: number, max: number): number {
+	return Math.round(min * (max / min) ** (Math.max(0, Math.min(SIZE_SLIDER_STEPS, position)) / SIZE_SLIDER_STEPS));
 }
 
 /**
@@ -55,6 +77,22 @@ export function clampSmudge(size: number): BrushSize {
 		: DEFAULT_SMUDGE_SIZE;
 }
 
+/**
+ * How hard Udtvær works, in percent: at 100 a push carries the paper under the
+ * brush's centre all the way with the pointer and a held turn or swell goes at
+ * its full pace; lower, the paper lags behind and a turn creeps, for a gentle
+ * smear.
+ */
+export const MIN_SMUDGE_STRENGTH = 10;
+export const MAX_SMUDGE_STRENGTH = 100;
+export const DEFAULT_SMUDGE_STRENGTH = 100;
+
+export function clampStrength(strength: number): number {
+	return Number.isFinite(strength)
+		? Math.max(MIN_SMUDGE_STRENGTH, Math.min(MAX_SMUDGE_STRENGTH, Math.round(strength)))
+		: DEFAULT_SMUDGE_STRENGTH;
+}
+
 export type PaintAction =
 	| { kind: 'tool'; tool: PaintTool }
 	| { kind: 'brush'; delta: -1 | 1 }
@@ -65,7 +103,6 @@ export type PaintAction =
 /** Which letter picks which tool (PAINT.md §2). */
 const TOOL_KEYS: Record<string, PaintTool> = {
 	p: 'pen',
-	e: 'eraser',
 	f: 'fill',
 	l: 'line',
 	r: 'rect',

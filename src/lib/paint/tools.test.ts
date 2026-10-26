@@ -98,6 +98,30 @@ describe('stroke', () => {
 		expect([...m.data]).toEqual([...dab.data]);
 	});
 
+	it('covers the dabs a stamp at every cell would, and nothing beyond the brush', () => {
+		for (const shape of ['round', 'square'] as const) {
+			const swept = createMask(0, 64), dabbed = createMask(0, 64);
+			const from = { x: 7.3, y: 50.6 }, to = { x: 49.8, y: 12.1 }, brush = { radius: 5, value: 1 as const, shape };
+			stroke(swept, from, to, brush);
+			const steps = Math.ceil(Math.hypot(to.x - from.x, to.y - from.y));
+			for (let i = 0; i <= steps; i++) stamp(dabbed, from.x + (to.x - from.x) * i / steps, from.y + (to.y - from.y) * i / steps, brush);
+			for (let i = 0; i < dabbed.data.length; i++) if (dabbed.data[i]) expect(swept.data[i]).toBe(1);
+			// What the sweep adds lies between two neighbouring dabs: under a cell more.
+			expect(count(swept, 1) - count(dabbed, 1)).toBeLessThan(count(dabbed, 1) * 0.05);
+		}
+	});
+
+	it('paints a stroke of the broadest brush in one pass', () => {
+		const m = createMask(0, 400);
+		const started = performance.now();
+		stroke(m, { x: 20, y: 30 }, { x: 380, y: 370 }, { radius: 200, value: 1 });
+		// All but the two far corners, each more than 200 cells off the stroke.
+		expect(get(m, 200, 200)).toBe(1);
+		expect(get(m, 399, 0)).toBe(0);
+		expect(count(m, 1)).toBeGreaterThan(400 * 400 * .9);
+		expect(performance.now() - started).toBeLessThan(500);
+	});
+
 	it('is what the line tool draws', () => {
 		const a = createMask(0, 64);
 		const b = createMask(0, 64);
@@ -268,7 +292,7 @@ describe('applySymmetric', () => {
 		expect(get(m, 12, 4)).toBe(1);
 	});
 
-	it('mirrors the eraser the same way', () => {
+	it('mirrors the left paper the same way', () => {
 		const m = createMask(1, 32);
 		const box = stroke(m, { x: 4, y: 12 }, { x: 22, y: 5 }, { radius: 2, value: 0 });
 		applySymmetric(m, box, ['transpose'], 0);

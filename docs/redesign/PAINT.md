@@ -8,7 +8,8 @@ can go back and forth: Find snit turns the mask into a heart, "Mal på hjertet" 
 Owner's decisions (2026-09-08, mockup https://claude.ai/code/artifact/cc56e263-9cfc-459d-9a6f-9ae00db680aa):
 
 1. The mask is a **fixed high-resolution image** (400 × 400 cells of the woven square, the engine's resolution).
-   No cell size setting, no visible grid. Brush radius: an integer slider from 1–40 cells, default 6 (updated by the owner, 2026-10-19).
+   No cell size setting, no visible grid. Brush radius: an integer slider from 1–40 cells, default 6 (updated by the owner, 2026-10-19);
+   1–200 since 2026-10-26, as far as Udtvær reaches (the owner's request), on a slider that grows the size by ratio.
 2. **Symmetry belongs to Find snit**, using the editor's own three rows (Inden i kurve, Inden i lap, Mellem
    lapper; Fra / Sym / Anti). Symmetries found in the mask are switched on and tagged "fundet".
 3. **No search time setting.** Find snit runs until it has an answer or the visitor presses Afbryd.
@@ -59,11 +60,13 @@ of an overlay scrollbar until a gesture starts):
 
 - Row of two buttons: `Importér billede` (outline, opens the dialog) and `Ryd` (ghost, clears to all-0 after a
   confirm if the mask is not empty; uses the site `Modal`, no `confirm()`).
-- Panel "Værktøj": tools Pen, Viskelæder, Fyld, Linje, Rektangel, Udtvær, Markér as 40px icon buttons (lucide: pencil,
-  eraser, paint-bucket, minus (rotated 45°) or a simple line glyph, square, square-dashed); a labelled brush-radius
-  slider (1–40 cells, default 6) with its current value; "Maler med" offers the two paper swatches plus XOR.
+- Panel "Værktøj": tools Pen, Fyld, Linje, Rektangel, Udtvær, Markér as 40px icon buttons (lucide: pencil,
+  paint-bucket, minus (rotated 45°) or a simple line glyph, square, square-dashed); a labelled brush-radius
+  slider (1–200 cells, default 6; each step along it the same ratio, so a fine pen is as easy to set as a broad one;
+  `[`/`]` a cell at a time while fine, a tenth of the size once broad) with its current value; "Maler med" offers the two paper swatches plus XOR.
   XOR inverts each covered cell once per gesture, including overlapping dabs and mirrored copies; pen, line,
-  rectangle and fill support it, while Viskelæder always paints 0. The mask remains binary. A noninteractive
+  rectangle and fill support it. There is no eraser: with two papers, erasing is painting the other one (the white
+  swatch, or X). The user had it removed on 2026-10-26. The mask remains binary. A noninteractive
   circular outline follows the brush over the diamond, at the current on-screen radius, and hides on leave,
   cancellation and touch release. Choosing XOR does not change the paper colours. Undo / redo (lucide undo-2 / redo-2) are two 40px icon buttons —
   the tools' own square (`.tool-btn`, not the site's `.btn-icon`: the two differ by a glyph size, a ground and a
@@ -111,7 +114,10 @@ of an overlay scrollbar until a gesture starts):
     pointer, **Hvirvl** turns it about the brush and **Bul** swells it out, both for as long as the pointer is held;
     Alt turns the other way or draws in. Its three modes are one row under the tools, shown only while it is the
     tool in hand. It has its own radius (8–200 cells, default 80, `[`/`]` in steps of 5), because a hvirvel turns most
-    of the square at once. A stroke never resamples its own output: it keeps the mask it started from and a field
+    of the square at once. It follows the brush head (a square hold fades to a square rim) and has a **Styrke**
+    slider of its own under the modes, 10–100 %, default 100 % (2026-10-26, the owner's request): at 100 % a push
+    carries the paper under the brush's centre all the way with the pointer and a held turn or swell goes at its
+    full pace; lower, the paper lags behind and a turn creeps. A stroke never resamples its own output: it keeps the mask it started from and a field
     of where each cell's paper comes from, reads bilinearly and cuts at one half (`src/lib/paint/smudge.ts`), so
     the mask stays two papers and edges do not wear into steps. Under symmetry the dab is made at every image of
     the brush in one summed step, so a symmetric mask stays exactly symmetric with nothing copied afterwards.
@@ -120,14 +126,14 @@ of an overlay scrollbar until a gesture starts):
     selection. One undo step, so no confirm. An even board is not its own mirror image within a lobe, so those
     sizes are disabled, with the reason as their title, while Kurverne i hver lap is Spejlet.
   - *A selection that stays*: Markér's frame, once put down (Enter, a click outside, or another tool), stays on
-    screen and holds every tool inside it — pen, eraser, line, rectangle, fill (walled in by it), Udtvær and Tern
+    screen and holds every tool inside it — pen, line, rectangle, fill (walled in by it), Udtvær and Tern
     — until Esc or the panel's "Fravælg" beside a one-line "Du maler kun i markeringen." Under symmetry its images
     hold too, since the paint lands there as well. Esc on a patch not yet moved removes the selection; on a moved
     one it puts the cells back and keeps the selection. With Markér in hand an unturned selection shows its
     handles again and is taken up where it is grabbed; a new frame replaces it, a click that frames nothing is
     Fravælg. Ryd and an import remove it. The tools paint as always and what a gesture wrote outside is put back
     from the mask it began with (`keepOutside`), so each tool, its XOR and its mirrored copies keep inside alike.
-- Keyboard: P pen, E eraser, F fill, L line, R rectangle, U smudge, M select, X swaps the painting colour, `[`/`]`
+- Keyboard: P pen, F fill, L line, R rectangle, U smudge, M select, X swaps the painting colour, `[`/`]`
   brush size, Esc removes a put-down selection.
   A floating Markér patch owns Enter, Escape and Delete, but only where the canvas has the keyboard: Enter on a
   control the visitor has tabbed to presses the control, and pressing one by key puts the patch down first.
@@ -425,10 +431,10 @@ export function detectCorners(input: PixelsInput, roi?: number[]): Promise<Detec
 export function cancel(): void;
 ```
 
-`applySymmetric` takes the brush colour as a fourth argument — 0 for the eraser — and spreads exactly that colour from
+`applySymmetric` takes the brush colour as a fourth argument — 0 for the left paper — and spreads exactly that colour from
 the cells of `box` to their images, rather than copying the box wholesale. A copy is wrong at a mirror line, where the
 box lands on its own image and the copy reads cells it has just written; a snapshot-based copy that ignores the colour
-degenerates to a swap there; and folding by majority gives the pen and the eraser the same answer where they need
+degenerates to a swap there; and folding by majority gives the two papers the same answer where they need
 opposite ones. Spreading one colour is order-free and idempotent. In return it needs the mask to have been symmetric
 before the edit: `box` is the rectangle a tool changed, not the cells it wrote, so older paint of the brush colour
 lying inside it spreads too. **Switching a row on therefore goes through `setSymmetry` in the session store, which
@@ -590,7 +596,7 @@ these rows (Family A, see the Symmetri-ikoner artifact) is a separate task and m
 ## 7. i18n
 
 All strings in `src/lib/i18n/translations.ts`, both languages, key prefix `paint` (e.g. `paintModeDraw` "Tegn" /
-"Draw", `paintModePaint` "Mal" / "Paint", `paintImportImage`, `paintClear`, `paintTools`, `paintPen`, `paintEraser`,
+"Draw", `paintModePaint` "Mal" / "Paint", `paintImportImage`, `paintClear`, `paintTools`, `paintPen`,
 `paintFill`, `paintLine`, `paintRect`, `paintBrush`, `paintBrushRadius`, `paintsWith`, `paintsWithXor`, `paintFindCuts`,
 `paintFindCutsHint`, `paintAdvanced`, `paintSearching`, `paintStage*`, `paintCancel`, `paintFound`,
 `paintFoundSummary` with `{left}`, `{right}`, `{clearance}`, `{mismatch}`, `paintOpenInDraw`, `paintBackToMask`,
@@ -609,6 +615,17 @@ them.
   none` on the canvas). Coalesced pointer events (`getCoalescedEvents`) for smooth strokes.
 - Repaint only the changed box (the mask lives in an offscreen canvas as an ImageData; the on-screen canvas draws
   lobes + the rotated offscreen canvas each frame with `requestAnimationFrame`, one frame per pointer batch).
+- The mask is drawn smooth (2026-10-26, the owner's request: "no antialiasing ... makes the drawings sometimes
+  ugly"): the offscreen picture has as many pixels a cell as the screen shows, up to 3, and each paper's edge is the
+  curve where the cells, read bilinearly between their centres, cross one half (Udtvær's edge), with a rim about a
+  pixel wide mixing the two papers (`src/lib/paint/smoothRaster.ts`). Only the picture: every cell's centre is in its
+  own paper, the mask stays two papers, and Find snit reads the same cells. A full redraw takes about 18 ms. A
+  floating Markér patch and the XOR preview are still drawn cell for cell.
+- A stroke fills the shape the head sweeps along the segment in one pass, not a dab per cell, so the 200-cell pen
+  costs one pass over its box.
+- With the header's colourful mode on, the heart takes the shuffle's first pair (the colourful button's first cell;
+  `shownColors` in `$lib/stores/colorMode`): a canvas cannot read the mode's CSS variables, so this is how each
+  press deals it a new pair, as it does the gallery's hearts. The XOR swatch shows the two papers on show.
 - The paint page must not load the engine or its WASM until Find snit / import / "Prøv stjernen" is used, and the
   draw page's bundle must not grow because of Mal (dynamic import of the paint modules from the draw page's "Mal på
   hjertet" action is fine; the paint page itself may import them statically).

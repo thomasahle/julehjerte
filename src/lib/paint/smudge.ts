@@ -14,6 +14,10 @@
  * mirrored turns the other way), so a symmetric mask stays symmetric without
  * copying cells about afterwards.
  *
+ * The brush's hold fades from its centre to its rim: round, as the pen's round
+ * head, or square, standing on the mask's axes as the pen's square head does,
+ * which every symmetry of the mask maps onto itself.
+ *
  * Nothing here knows about pointers or canvases; cells have their centres on
  * whole coordinates, as the pen's do.
  */
@@ -21,15 +25,19 @@
 import type { Vec } from '$lib/types/heart';
 import { clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask } from './mask';
 import { closedPointMaps, type Transform } from './symmetry';
+import type { BrushShape } from './toolset';
 
 type PointMap = (x: number, y: number, size: number) => { x: number; y: number };
 
 /** How a point under the brush is moved: where its paper is now read from. */
 type Warp = (x: number, y: number, weight: number) => [number, number];
 
-/** The brush's hold on a cell at squared distance `d2`: whole at the centre, none at the rim. */
-function weightAt(d2: number, r2: number): number {
-	const t = 1 - d2 / r2;
+/**
+ * The brush's hold on a cell `dx`, `dy` from its centre: whole at the centre,
+ * none at the rim, the rim a circle or, for a square head, a square.
+ */
+function weightAt(dx: number, dy: number, r2: number, square: boolean): number {
+	const t = 1 - (square ? Math.max(dx * dx, dy * dy) : dx * dx + dy * dy) / r2;
 	return t > 0 ? t * t : 0;
 }
 
@@ -45,8 +53,8 @@ export type Smudge = ReturnType<typeof createSmudge>;
  * One Udtvær stroke on `mask`, from its press to its release. Each call changes
  * the mask in place and returns the box it changed, as the other tools do.
  */
-export function createSmudge(mask: Mask, transforms: Transform[] = []) {
-	const n = mask.size;
+export function createSmudge(mask: Mask, transforms: Transform[] = [], shape: BrushShape = 'round') {
+	const n = mask.size, square = shape === 'square';
 	const source = mask.data.slice(), observed = mask.validMask?.slice();
 	// Where each cell's paper comes from, as an offset from the cell.
 	const fx = new Float32Array(n * n), fy = new Float32Array(n * n);
@@ -102,7 +110,7 @@ export function createSmudge(mask: Mask, transforms: Transform[] = []) {
 			for (let x = box.x0; x < box.x1; x++) {
 				let mx = 0, my = 0;
 				for (const { at, warp } of dabs) {
-					const weight = weightAt((x - at.x) ** 2 + (y - at.y) ** 2, r2);
+					const weight = weightAt(x - at.x, y - at.y, r2, square);
 					if (!weight) continue;
 					const [px, py] = warp(x, y, weight);
 					mx += px - x;
@@ -146,10 +154,12 @@ export function createSmudge(mask: Mask, transforms: Transform[] = []) {
 	return {
 		/**
 		 * Drag the paper from `from` to `to`: whole at the brush's centre, less
-		 * towards its rim. A long move is made in steps of a quarter brush, so the
-		 * paper is carried along the way and not lifted and dropped at the end.
+		 * towards its rim, and at a `strength` under 1 only that share of the way,
+		 * so the paper lags behind the pointer. A long move is made in steps of a
+		 * quarter brush, so the paper is carried along the way and not lifted and
+		 * dropped at the end.
 		 */
-		push(from: Vec, to: Vec, radius: number): Box {
+		push(from: Vec, to: Vec, radius: number, strength = 1): Box {
 			const length = Math.hypot(to.x - from.x, to.y - from.y);
 			const steps = Math.max(1, Math.ceil(length / Math.max(1, radius / 4)));
 			const vx = (to.x - from.x) / steps, vy = (to.y - from.y) / steps;
@@ -158,7 +168,7 @@ export function createSmudge(mask: Mask, transforms: Transform[] = []) {
 				const c = { x: from.x + vx * k, y: from.y + vy * k };
 				changed = unionBox(changed, dab(c, radius, Math.hypot(vx, vy), (image, at) => {
 					const end = place(image.map, c.x + vx, c.y + vy), ux = end.x - at.x, uy = end.y - at.y;
-					return (x, y, weight) => [x - weight * ux, y - weight * uy];
+					return (x, y, weight) => [x - strength * weight * ux, y - strength * weight * uy];
 				}));
 			}
 			return changed;

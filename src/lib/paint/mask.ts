@@ -108,7 +108,7 @@ export function solverRaster(mask: Mask): MaskRaster {
 	return source;
 }
 
-/** An explicit brush/eraser write also specifies previously unknown cells. */
+/** An explicit brush write also specifies previously unknown cells. */
 export function paintCell(m: Mask, index: number, value: 0 | 1): boolean {
 	const changed = m.data[index] !== value || !!m.validMask && !m.validMask[index];
 	m.data[index] = value;

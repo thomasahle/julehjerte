@@ -104,6 +104,22 @@ describe('colourful mode store', () => {
 		expect(seen).toEqual([true, false]);
 	});
 
+	it("deals a canvas's heart the shuffle's first pair, and the site's pair again when off", async () => {
+		const store = await freshStore();
+		const colors = await import('./colors');
+		colors.setColors({ left: '#ffffff', right: '#c8102e' });
+		const seen: { left: string; right: string }[] = [];
+		const leave = store.subscribeShownColors((pair) => seen.push(pair));
+		expect(store.shownColors()).toEqual({ left: '#ffffff', right: '#c8102e' });
+		const first = store.shuffleColorMode();
+		const second = store.shuffleColorMode();
+		store.turnOffColorMode();
+		leave();
+		store.shuffleColorMode();
+		const pair = (index: number) => ({ left: PALETTE[index].left, right: PALETTE[index].right });
+		expect(seen).toEqual([pair(first[0]), pair(second[0]), { left: '#ffffff', right: '#c8102e' }]);
+	});
+
 	it('still shuffles, for the page view, with storage blocked', async () => {
 		blockLocalStorage();
 		const store = await freshStore();

@@ -49,6 +49,44 @@ describe('push', () => {
 	});
 });
 
+describe('the square head', () => {
+	it("moves paper in the square's corners, which the round brush leaves", () => {
+		const round = createMask(0, 64), square = createMask(0, 64);
+		checks(round, 8);
+		checks(square, 8);
+		// One dab: a push of up to a quarter brush is made in one step.
+		createSmudge(round).push({ x: 32, y: 32 }, { x: 35, y: 32 }, 12);
+		createSmudge(square, [], 'square').push({ x: 32, y: 32 }, { x: 35, y: 32 }, 12);
+		const moved = (m: Mask, before: Mask, near: (x: number, y: number) => boolean) => {
+			let n = 0;
+			for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) if (near(x, y) && m.data[y * 64 + x] !== before.data[y * 64 + x]) n++;
+			return n;
+		};
+		const plain = createMask(0, 64);
+		checks(plain, 8);
+		// Beyond the round brush's rim but inside the square's.
+		const corners = (x: number, y: number) => (x - 32) ** 2 + (y - 32) ** 2 > 144 && Math.abs(x - 32) < 12 && Math.abs(y - 32) < 12;
+		expect(moved(round, plain, corners)).toBe(0);
+		expect(moved(square, plain, corners)).toBeGreaterThan(0);
+		// And nothing beyond the square.
+		expect(moved(square, plain, (x, y) => Math.abs(x - 32) > 12 || Math.abs(y - 32) > 12)).toBe(0);
+	});
+});
+
+describe('strength', () => {
+	it('carries the paper only that share of the way', () => {
+		const full = createMask(0, 64), half = createMask(0, 64);
+		stamp(full, 30, 32, { radius: 4, value: 1 });
+		stamp(half, 30, 32, { radius: 4, value: 1 });
+		const before = centroid(full)!;
+		createSmudge(full).push({ x: 30, y: 32 }, { x: 38, y: 32 }, 12);
+		createSmudge(half).push({ x: 30, y: 32 }, { x: 38, y: 32 }, 12, .5);
+		const fullWay = centroid(full)!.x - before.x, halfWay = centroid(half)!.x - before.x;
+		expect(halfWay).toBeGreaterThan(fullWay * .3);
+		expect(halfWay).toBeLessThan(fullWay * .7);
+	});
+});
+
 describe('twirl', () => {
 	it('turns a bar through the brush about its centre', () => {
 		const m = createMask(0, 64);

@@ -2,7 +2,7 @@
  * The canvas, driven through its own pointer handlers.
  *
  * The tools live in `tools.ts` and are tested there, cell by cell. What no pure
- * test can see is the wiring between a pointer and them: the eraser paints the
+ * test can see is the wiring between a pointer and them: the left paper is the
  * value 0, which is falsy, so any `if (value)` on that path silently does
  * nothing; and Linje and Rektangel do all their work on pointer *up*, so a
  * cleared `start`, a lost pointer capture or a swallowed event leaves the mask
@@ -260,15 +260,11 @@ describe('painting tools through the canvas', () => {
 		expect(c.edits).toBe(1);
 	});
 
-	it('XOR fills either paper, while the eraser keeps painting paper zero', () => {
+	it('XOR fills either paper', () => {
 		const c = render({ tool: 'fill', paintValue: 'xor', fill: 1 });
 		send(c.canvas, 'pointerdown', at(10, 10));
 		expect(c.cell(30, 30)).toBe(0);
 		send(c.canvas, 'pointerdown', at(10, 10));
-		expect(c.cell(30, 30)).toBe(1);
-		c.setTool('eraser');
-		drag(c.canvas, [10, 10], [20, 10]);
-		expect(c.cell(15, 10)).toBe(0);
 		expect(c.cell(30, 30)).toBe(1);
 	});
 
@@ -318,8 +314,8 @@ describe('painting tools through the canvas', () => {
 		expect(c.edits).toBe(1);
 	});
 
-	it('erases, though the value it lays down is falsy', () => {
-		const c = render({ tool: 'eraser', brush: 1, fill: 1 });
+	it('paints the left paper, though the value it lays down is falsy', () => {
+		const c = render({ tool: 'pen', paintValue: 0, brush: 1, fill: 1 });
 		drag(c.canvas, [10, 10], [20, 10]);
 		expect(c.cell(10, 10)).toBe(0);
 		expect(c.cell(20, 10)).toBe(0);
@@ -376,10 +372,11 @@ describe('painting tools through the canvas', () => {
 	});
 
 	it('keeps the tool the visitor picked after mounting', () => {
-		const c = render({ tool: 'pen', brush: 1, fill: 1 });
-		c.setTool('eraser');
+		const c = render({ tool: 'fill', paintValue: 0, brush: 1, fill: 1 });
+		c.setTool('pen');
 		drag(c.canvas, [10, 10], [10, 10]);
 		expect(c.cell(10, 10)).toBe(0);
+		expect(c.cell(30, 30)).toBe(1);
 	});
 
 	it('mirrors a stroke under an active symmetry', () => {

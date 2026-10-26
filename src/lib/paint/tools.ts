@@ -43,21 +43,44 @@ export function stamp(m: Mask, x: number, y: number, brush: Brush): Box {
 }
 
 /**
- * Paint from one point to another.
+ * Paint from one point to another: every cell the brush's head passes over as
+ * it slides along the segment, so the stroke is gapless however fast the hand
+ * moved between two pointer events.
  *
- * Pointer events arrive metres apart when the hand moves fast, so a stroke is
- * dabs stamped along the segment. They are stamped one cell apart rather than a
- * brush-width apart: that is gapless for every brush size including the finest,
- * and the cost is a few hundred stamps for a stroke across the whole mask.
+ * The swept shape is filled in one pass over its box, a cell at a time: a round
+ * head sweeps the cells within its radius of the segment, a square one those
+ * whose two axis distances fall within it at one and the same point of the
+ * segment. Stamping a dab every cell along the way gives nearly the same cells,
+ * but a broad brush (radius 200) then visits each cell of its box hundreds of
+ * times over.
  */
 export function stroke(m: Mask, from: Vec, to: Vec, brush: Brush): Box {
-	const dx = to.x - from.x;
-	const dy = to.y - from.y;
-	const steps = Math.max(1, Math.ceil(Math.hypot(dx, dy)));
-	let changed = stamp(m, from.x, from.y, brush);
-	for (let i = 1; i <= steps; i++) {
-		const t = i / steps;
-		changed = unionBox(changed, stamp(m, from.x + dx * t, from.y + dy * t, brush));
+	const r = Math.max(0, brush.radius), square = brush.shape === 'square';
+	const dx = to.x - from.x, dy = to.y - from.y, length2 = dx * dx + dy * dy;
+	const box = clampBox(m, Math.min(from.x, to.x) - r, Math.min(from.y, to.y) - r, Math.max(from.x, to.x) + r + 1, Math.max(from.y, to.y) + r + 1);
+	if (isEmptyBox(box)) return box;
+	const r2 = r * r, eps = 1e-9;
+	/** The part of the segment (0 to 1) along which the head's axis `d` covers offset `p`. */
+	const span = (p: number, d: number): [number, number] => {
+		if (Math.abs(d) < eps) return Math.abs(p) <= r ? [0, 1] : [1, 0];
+		const a = (p - r) / d, b = (p + r) / d;
+		return a < b ? [a, b] : [b, a];
+	};
+	let changed = emptyBox();
+	for (let cy = box.y0; cy < box.y1; cy++) {
+		const py = cy - from.y, row = cy * m.size;
+		for (let cx = box.x0; cx < box.x1; cx++) {
+			const px = cx - from.x;
+			if (square) {
+				const [ax, bx] = span(px, dx), [ay, by] = span(py, dy);
+				if (Math.max(0, ax, ay) > Math.min(1, bx, by) + eps) continue;
+			} else {
+				const t = length2 ? Math.max(0, Math.min(1, (px * dx + py * dy) / length2)) : 0;
+				if ((px - t * dx) ** 2 + (py - t * dy) ** 2 > r2 + eps) continue;
+			}
+			if (!paintCell(m, row + cx, brush.value)) continue;
+			changed = unionBox(changed, { x0: cx, y0: cy, x1: cx + 1, y1: cy + 1 });
+		}
 	}
 	return changed;
 }
@@ -235,8 +258,8 @@ function imagesOf(m: Mask, box: Box, maps: PointMap[]): Box {
  * cells the same copy has just written. Spreading the painted colour along each
  * orbit has no such order: a cell of `value` inside the box hands `value` to its
  * images, everything else is left as it was, and running it twice changes nothing.
- * The eraser is the same operation with `value` 0, which a colour-blind rule could
- * not do — at a mirror line the pen and the eraser want opposite answers from the
+ * Painting the left paper is the same operation with `value` 0, which a colour-blind
+ * rule could not do — at a mirror line the two papers want opposite answers from the
  * very same pair of cells.
  *
  * The mask must have been symmetric before the edit, and that requirement is real:

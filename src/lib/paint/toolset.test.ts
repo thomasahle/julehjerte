@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { MIN_BRUSH_SIZE, MAX_BRUSH_SIZE, DEFAULT_BRUSH_SIZE, clampBrush, shortcutFor, stepBrush } from './toolset';
+import { MIN_BRUSH_SIZE, MAX_BRUSH_SIZE, DEFAULT_BRUSH_SIZE, MIN_SMUDGE_SIZE, MAX_SMUDGE_SIZE, SIZE_SLIDER_STEPS, clampBrush, clampStrength, shortcutFor, sizeOfSlider, sliderOfSize, stepBrush } from './toolset';
 
 describe('brush sizes', () => {
 	it('keeps the medium default and accepts sizes between the old presets', () => {
@@ -7,6 +7,34 @@ describe('brush sizes', () => {
 		expect(clampBrush(9)).toBe(9);
 		expect(clampBrush(9.7)).toBe(10);
 		expect(clampBrush(NaN)).toBe(DEFAULT_BRUSH_SIZE);
+	});
+
+	it('reaches as far as Udtvær, half the mask', () => {
+		expect(MAX_BRUSH_SIZE).toBe(MAX_SMUDGE_SIZE);
+		expect(clampBrush(500)).toBe(MAX_BRUSH_SIZE);
+	});
+
+	it('steps a cell at a time while fine, a tenth of its size once broad', () => {
+		expect(stepBrush(100, 1)).toBe(110);
+		expect(stepBrush(100, -1)).toBe(90);
+		expect(stepBrush(196, 1)).toBe(MAX_BRUSH_SIZE);
+	});
+
+	it('sets every size on the slider, the fine ones as easily as the broad', () => {
+		for (const [min, max] of [[MIN_BRUSH_SIZE, MAX_BRUSH_SIZE], [MIN_SMUDGE_SIZE, MAX_SMUDGE_SIZE]])
+			for (let size = min; size <= max; size++) expect(sizeOfSlider(sliderOfSize(size, min, max), min, max)).toBe(size);
+		expect(sizeOfSlider(0, MIN_BRUSH_SIZE, MAX_BRUSH_SIZE)).toBe(MIN_BRUSH_SIZE);
+		expect(sizeOfSlider(SIZE_SLIDER_STEPS, MIN_BRUSH_SIZE, MAX_BRUSH_SIZE)).toBe(MAX_BRUSH_SIZE);
+		// Sizes 1 to 10 take as much of the slider as 20 to 200.
+		const share = (a: number, b: number) => sliderOfSize(b, MIN_BRUSH_SIZE, MAX_BRUSH_SIZE) - sliderOfSize(a, MIN_BRUSH_SIZE, MAX_BRUSH_SIZE);
+		expect(Math.abs(share(1, 10) - share(20, 200))).toBeLessThanOrEqual(1);
+	});
+
+	it("keeps Udtvær's strength between a tenth and full", () => {
+		expect(clampStrength(5)).toBe(10);
+		expect(clampStrength(55.4)).toBe(55);
+		expect(clampStrength(120)).toBe(100);
+		expect(clampStrength(NaN)).toBe(100);
 	});
 
 	it('steps one cell at a time and stops at both ends', () => {
@@ -20,12 +48,12 @@ describe('brush sizes', () => {
 describe('shortcutFor', () => {
 	it('picks a tool with its own letter', () => {
 		expect(shortcutFor({ key: 'p' })).toEqual({ kind: 'tool', tool: 'pen' });
-		expect(shortcutFor({ key: 'E' })).toEqual({ kind: 'tool', tool: 'eraser' });
 		expect(shortcutFor({ key: 'f' })).toEqual({ kind: 'tool', tool: 'fill' });
 		expect(shortcutFor({ key: 'l' })).toEqual({ kind: 'tool', tool: 'line' });
 		expect(shortcutFor({ key: 'r' })).toEqual({ kind: 'tool', tool: 'rect' });
 		expect(shortcutFor({ key: 'u' })).toEqual({ kind: 'tool', tool: 'smudge' });
 		expect(shortcutFor({ key: 'm' })).toEqual({ kind: 'tool', tool: 'select' });
+		expect(shortcutFor({ key: 'e' })).toBeNull();
 	});
 
 	it('steps the brush with the bracket keys and swaps the colour with X', () => {

@@ -2,8 +2,8 @@
   MaskCanvas with a tool that can be changed after mounting, for MaskCanvas.test.ts.
 
   Two of the things the canvas has to get right happen when the tool changes —
-  Markér puts its selection down, and the eraser's falsy 0 has to survive being
-  picked up second — and a `.test.ts` file may hold no `$state`. So the state
+  Markér puts its selection down, and a tool picked up second has to paint with
+  the paper chosen — and a `.test.ts` file may hold no `$state`. So the state
   lives here and the test reaches it through the component's own export.
 -->
 <script lang="ts">

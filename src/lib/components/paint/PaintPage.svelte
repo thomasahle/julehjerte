@@ -75,6 +75,7 @@
 	import {
 		DEFAULT_BRUSH_SIZE,
 		DEFAULT_SMUDGE_SIZE,
+		DEFAULT_SMUDGE_STRENGTH,
 		SMUDGE_STEP,
 		clampSmudge,
 		stepBrush,
@@ -111,7 +112,8 @@
 		reduceProgress,
 		type SearchProgress
 	} from '$lib/paint/searchProgress';
-	import { DEFAULT_COLORS, DEFAULT_COLORS_HEX, getColors, subscribeColors } from '$lib/stores/colors';
+	import { DEFAULT_COLORS, DEFAULT_COLORS_HEX } from '$lib/stores/colors';
+	import { shownColors, subscribeShownColors } from '$lib/stores/colorMode';
 	import { saveUserDesign } from '$lib/stores/collection';
 	import { toHexColors } from '$lib/utils/heartColors';
 	import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
@@ -142,6 +144,7 @@
 	/** Udtvær's radius, kept apart from the pen's: it reaches much further. */
 	let smudgeSize = $state<BrushSize>(DEFAULT_SMUDGE_SIZE);
 	let smudgeMode = $state<SmudgeMode>('push');
+	let smudgeStrength = $state(DEFAULT_SMUDGE_STRENGTH);
 	/** A put-down selection holds the tools inside it (the canvas says when). */
 	let fenceHeld = $state(false);
 	let paintValue = $state<PaintValue>(1);
@@ -304,8 +307,8 @@
 		syncNarrow();
 		narrow.addEventListener('change', syncNarrow);
 
-		colors = getColors();
-		const unsubscribe = subscribeColors((next) => (colors = next));
+		colors = shownColors();
+		const unsubscribe = subscribeShownColors((next) => (colors = next));
 		panelCollapsed = readPanelCollapsed();
 		// Coming back from Tegn: the session still holds the heart Find snit found,
 		// so the page opens where it was left rather than on a mask the visitor has
@@ -1051,6 +1054,7 @@
 							brush={tool === 'smudge' ? smudgeSize : brushSize}
 							{brushShape}
 							{smudgeMode}
+							{smudgeStrength}
 							{paintValue}
 							{revision}
 							frame={session.frame}
@@ -1193,6 +1197,8 @@
 							onBrushShape={(next) => (brushShape = next)}
 							{smudgeMode}
 							onSmudgeMode={(next) => (smudgeMode = next)}
+							{smudgeStrength}
+							onSmudgeStrength={(next) => (smudgeStrength = next)}
 							{paintValue}
 							onPaintValue={(next) => (paintValue = next)}
 							symmetry={session.symmetry}

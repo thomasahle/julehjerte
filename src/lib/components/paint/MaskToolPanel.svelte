@@ -12,7 +12,6 @@
 	import {
 		BulgeIcon,
 		ChecksIcon,
-		EraserIcon,
 		ImageIcon,
 		LineIcon,
 		PaintBucketIcon,
@@ -35,8 +34,13 @@
 		MAX_BRUSH_SIZE,
 		MIN_SMUDGE_SIZE,
 		MAX_SMUDGE_SIZE,
-		clampBrush,
-		clampSmudge,
+		MIN_SMUDGE_STRENGTH,
+		MAX_SMUDGE_STRENGTH,
+		DEFAULT_SMUDGE_STRENGTH,
+		SIZE_SLIDER_STEPS,
+		clampStrength,
+		sizeOfSlider,
+		sliderOfSize,
 		type BrushShape,
 		type BrushSize,
 		type PaintTool,
@@ -57,6 +61,9 @@
 		/** What Udtvær does: push, twirl or bulge. */
 		smudgeMode?: SmudgeMode;
 		onSmudgeMode?: (mode: SmudgeMode) => void;
+		/** How hard Udtvær works, in percent. */
+		smudgeStrength?: number;
+		onSmudgeStrength?: (strength: number) => void;
 		/** The symmetries on, which an even board of Tern cannot always follow. */
 		symmetry?: SymmetrySettings;
 		/** A put-down selection holds the tools inside it. */
@@ -64,7 +71,7 @@
 		onDeselect?: () => void;
 		/** Tern: lay an `n` × `n` board, over the mask or inside the selection. */
 		onChecks?: (n: number) => void;
-		/** Paper colour or XOR action; the eraser always paints the left paper. */
+		/** Paper colour or XOR action. */
 		paintValue: PaintValue;
 		onPaintValue: (value: PaintValue) => void;
 		colors: HeartColors;
@@ -90,6 +97,8 @@
 		onBrushShape = () => {},
 		smudgeMode = 'push',
 		onSmudgeMode = () => {},
+		smudgeStrength = DEFAULT_SMUDGE_STRENGTH,
+		onSmudgeStrength = () => {},
 		symmetry = NO_SYMMETRY,
 		fenceHeld = false,
 		onDeselect = () => {},
@@ -110,10 +119,9 @@
 
 	const tr = (key: TranslationKey) => t(key, lang);
 
-	/** The seven tools, their glyphs, and the letter that picks each one. */
+	/** The six tools, their glyphs, and the letter that picks each one. */
 	const TOOLS: { id: PaintTool; label: TranslationKey; icon: Component<IconProps>; key: string }[] = [
 		{ id: 'pen', label: 'paintPen', icon: PencilIcon, key: 'P' },
-		{ id: 'eraser', label: 'paintEraser', icon: EraserIcon, key: 'E' },
 		{ id: 'fill', label: 'paintFill', icon: PaintBucketIcon, key: 'F' },
 		{ id: 'line', label: 'paintLine', icon: LineIcon, key: 'L' },
 		{ id: 'rect', label: 'paintRect', icon: SquareIcon, key: 'R' },
@@ -132,6 +140,10 @@
 	const BOARDS = [3, 4, 5, 6, 7, 8, 9];
 
 	let transforms = $derived(transformsFor(symmetry));
+
+	/** The sizes the brush slider spans: Udtvær keeps its own. */
+	let smallest = $derived(tool === 'smudge' ? MIN_SMUDGE_SIZE : MIN_BRUSH_SIZE);
+	let largest = $derived(tool === 'smudge' ? MAX_SMUDGE_SIZE : MAX_BRUSH_SIZE);
 
 
 	/** The two history buttons, in the order a hand reaches for them. */
@@ -258,6 +270,23 @@
 					</button>
 				{/each}
 			</div>
+			<label class="field brush-field">
+				<span class="field-label brush-label">
+					<span>{tr('paintSmudgeStrength')}</span>
+					<output>{t('paintSmudgeStrengthValue', lang, { n: smudgeStrength })}</output>
+				</span>
+				<input
+					type="range"
+					min={MIN_SMUDGE_STRENGTH}
+					max={MAX_SMUDGE_STRENGTH}
+					step="5"
+					value={smudgeStrength}
+					aria-label={tr('paintSmudgeStrength')}
+					aria-valuetext={t('paintSmudgeStrengthValue', lang, { n: smudgeStrength })}
+					oninput={(event) => onSmudgeStrength(clampStrength(event.currentTarget.valueAsNumber))}
+					{disabled}
+				/>
+			</label>
 		{/if}
 
 		<!-- While a selection holds the tools, say so where the tools are, with the
@@ -291,15 +320,17 @@
 				</span>
 				<output>{t('paintBrushRadius', lang, { size: brushSize })}</output>
 			</span>
+			<!-- The slider moves the size by ratio (see `sizeOfSlider`): a pen
+			     reaches 200 cells, and a fine one must stay easy to set. -->
 			<input
 				type="range"
-				min={tool === 'smudge' ? MIN_SMUDGE_SIZE : MIN_BRUSH_SIZE}
-				max={tool === 'smudge' ? MAX_SMUDGE_SIZE : MAX_BRUSH_SIZE}
+				min="0"
+				max={SIZE_SLIDER_STEPS}
 				step="1"
-				value={brushSize}
+				value={sliderOfSize(brushSize, smallest, largest)}
 				aria-label={tr('paintBrush')}
 				aria-valuetext={t('paintBrushRadius', lang, { size: brushSize })}
-				oninput={(event) => onBrushSize((tool === 'smudge' ? clampSmudge : clampBrush)(event.currentTarget.valueAsNumber))}
+				oninput={(event) => onBrushSize(sizeOfSlider(event.currentTarget.valueAsNumber, smallest, largest))}
 				{disabled}
 			/>
 		</label>
@@ -338,6 +369,7 @@
 							aria-label={tr('paintsWithXor')}
 							title={tr('paintsWithXor')}
 							class="xor-swatch"
+							style="--left-paper: {colors.left}; --right-paper: {colors.right}"
 						/>
 					</ToggleGroup>
 				</div>
@@ -632,12 +664,13 @@
 		cursor: not-allowed;
 	}
 
+	/* The two papers it swaps between, in the colours the header chose. */
 	.swatches :global(.xor-swatch) {
 		background: conic-gradient(
-			var(--white) 0% 25%,
-			var(--red) 25% 50%,
-			var(--white) 50% 75%,
-			var(--red) 75% 100%
+			var(--left-paper) 0% 25%,
+			var(--right-paper) 25% 50%,
+			var(--left-paper) 50% 75%,
+			var(--right-paper) 75% 100%
 		);
 	}
 

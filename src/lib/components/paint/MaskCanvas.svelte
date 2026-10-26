@@ -28,6 +28,7 @@
 	import { applySymmetric, applySymmetricEdit, checks, floodFill, rect, stroke } from '$lib/paint/tools';
 	import { createXorGesture } from '$lib/paint/xorGesture';
 	import { createSmudge, type Smudge } from '$lib/paint/smudge';
+	import { smoothPixels, smoothScale } from '$lib/paint/smoothRaster';
 	import {
 		GRAB_PX,
 		HANDLES,
@@ -66,7 +67,7 @@
 		type Frame,
 		type FrameAxis
 	} from '$lib/paint/frame';
-	import { shortcutFor, type BrushShape, type PaintAction, type PaintTool, type PaintValue, type SmudgeMode } from '$lib/paint/toolset';
+	import { DEFAULT_SMUDGE_STRENGTH, shortcutFor, type BrushShape, type PaintAction, type PaintTool, type PaintValue, type SmudgeMode } from '$lib/paint/toolset';
 
 	interface Props {
 		mask: Mask | null;
@@ -75,11 +76,13 @@
 		tool: PaintTool;
 		/** Brush radius in mask cells. */
 		brush: number;
-		/** The brush's head, for the pen, the eraser and the line. */
+		/** The brush's head, for the pen, the line and Udtvær. */
 		brushShape?: BrushShape;
 		/** What Udtvær does to the paper under it. */
 		smudgeMode?: SmudgeMode;
-		/** Which paper the pen lays down; the eraser always lays down 0. */
+		/** How hard Udtvær works, in percent (see `MIN_SMUDGE_STRENGTH`). */
+		smudgeStrength?: number;
+		/** Which paper the pen lays down, or XOR. */
 		paintValue: PaintValue;
 		/** Bumped by the page when the mask changed other than by painting. */
 		revision: number;
@@ -145,6 +148,7 @@
 		brush,
 		brushShape = 'round',
 		smudgeMode = 'push',
+		smudgeStrength = DEFAULT_SMUDGE_STRENGTH,
 		paintValue,
 		revision,
 		frame,
@@ -196,6 +200,8 @@
 	let offscreen: HTMLCanvasElement | null = null;
 	let offscreenData: ImageData | null = null;
 	let offscreenFor: Mask | null = null;
+	/** The offscreen picture's pixels per cell (see `smoothScale`). */
+	let offscreenScale = 1;
 
 	let layout = $derived<HeartLayout>(fitHeart(boxWidth, boxHeight, PADDING));
 	let transforms = $derived(transformsFor(symmetry));
@@ -211,11 +217,11 @@
 	/** Local CSS pixels, shared with the existing screen-to-mask transform. */
 	let hover = $state<Pt | null>(null);
 	let hoverVisible = $derived(!!hover && !!mask && !disabled && !keyboardBusy &&
-		(tool === 'pen' || tool === 'eraser' || tool === 'line' || tool === 'smudge') &&
+		(tool === 'pen' || tool === 'line' || tool === 'smudge') &&
 		insideSquare(toMask(layout, mask.size, hover.x, hover.y), mask.size));
 	let hoverRadius = $derived(mask ? brush * layout.scale / mask.size : 0);
 	/** A square head stands on the mask's axes, which the heart turns a quarter of a right angle. */
-	let hoverSquare = $derived(brushShape === 'square' && tool !== 'smudge');
+	let hoverSquare = $derived(brushShape === 'square');
 	let last: Pt | null = null;
 	let start: Pt | null = null;
 	let preview: { from: Pt; to: Pt } | null = null;
@@ -306,7 +312,7 @@
 			frameGround: style.getPropertyValue('--cream2').trim() || 'transparent',
 			frameHatch: style.getPropertyValue('--sage-dark').trim() || 'transparent',
 			// The band's outline and the marquee are both the page's green, and its
-			// handles are filled with the same white the eraser lays down.
+			// handles are filled with the left paper's white.
 			frameLine: green || 'transparent',
 			frameHandle: white || 'transparent'
 		};
@@ -331,7 +337,7 @@
 
 	/** The value the current tool lays down. */
 	function toolValue(): 0 | 1 {
-		return tool === 'eraser' || paintValue === 'xor' ? 0 : paintValue;
+		return paintValue === 'xor' ? 0 : paintValue;
 	}
 
 	function paint(): void {
@@ -370,13 +376,13 @@
 		ctx.closePath();
 		ctx.fill();
 
+		// The picture is drawn smooth (see `smoothRaster.ts`), as many pixels a
+		// cell as the screen shows; a heart drawn larger or smaller since asks
+		// for it again.
+		if (mask && offscreenFor === mask && smoothScale(layout.scale * dpr / mask.size) !== offscreenScale) syncOffscreen();
 		if (offscreen) {
-			// Cells, not a photograph: smoothing would blur the edge the visitor
-			// just painted into a colour neither paper explains. The outline below
-			// covers the stair-steps the turn leaves along the square's own edges.
-			ctx.imageSmoothingEnabled = false;
+			ctx.imageSmoothingQuality = 'high';
 			ctx.drawImage(offscreen, 0, 0, 1, 1);
-			ctx.imageSmoothingEnabled = true;
 		}
 
 		drawPreview(ctx);
@@ -796,42 +802,30 @@
 		});
 	}
 
-	/** Rewrite the offscreen picture, or just the box a tool reported changing. */
+	/**
+	 * Rewrite the offscreen picture, or just the box a tool reported changing:
+	 * the mask drawn smooth (see `smoothRaster.ts`), at as many pixels a cell as
+	 * the heart is drawn on screen.
+	 */
 	function syncOffscreen(box?: Box): void {
 		if (!mask || typeof document === 'undefined') return;
 		let area = box;
-		if (offscreenFor !== mask || !offscreen || !offscreenData) {
+		const dpr = Math.min(3, Math.max(1, window.devicePixelRatio || 1));
+		const scale = smoothScale(layout.scale * dpr / mask.size);
+		if (offscreenFor !== mask || !offscreen || !offscreenData || offscreenScale !== scale) {
 			offscreen = document.createElement('canvas');
-			offscreen.width = offscreen.height = mask.size;
-			offscreenData = new ImageData(mask.size, mask.size);
+			offscreen.width = offscreen.height = mask.size * scale;
+			offscreenData = new ImageData(mask.size * scale, mask.size * scale);
 			offscreenFor = mask;
+			offscreenScale = scale;
 			area = undefined;
 		}
 		const ctx = offscreen.getContext('2d');
 		if (!ctx) return;
-		const clipped = area ? clampBox(mask, area.x0, area.y0, area.x1, area.y1) : null;
-		const x0 = clipped ? clipped.x0 : 0;
-		const y0 = clipped ? clipped.y0 : 0;
-		const x1 = clipped ? clipped.x1 : mask.size;
-		const y1 = clipped ? clipped.y1 : mask.size;
-		if (x1 <= x0 || y1 <= y0) return;
-
-		const pixels = offscreenData.data;
-		const [left, right] = paper;
-		for (let y = y0; y < y1; y++) {
-			const row = y * mask.size;
-			for (let x = x0; x < x1; x++) {
-				const i = row + x;
-				// Only 1 is the right paper. A value the mask may grow (a "free" cell,
-				// PAINT.md §11) is neither paper and must not be painted as if it were.
-				const colour = mask.validMask && !mask.validMask[i] ? missingPixelChannels(i, mask.size) : mask.data[i] === 1 ? right! : left!;
-				pixels[4 * i] = colour[0]!;
-				pixels[4 * i + 1] = colour[1]!;
-				pixels[4 * i + 2] = colour[2]!;
-				pixels[4 * i + 3] = 255;
-			}
-		}
-		ctx.putImageData(offscreenData, 0, 0, x0, y0, x1 - x0, y1 - y0);
+		const clipped = area ? clampBox(mask, area.x0, area.y0, area.x1, area.y1) : clampBox(mask, 0, 0, mask.size, mask.size);
+		if (isEmptyBox(clipped)) return;
+		const written = smoothPixels(mask, paper, scale, offscreenData.data, clipped);
+		ctx.putImageData(offscreenData, 0, 0, written.x0, written.y0, written.x1 - written.x0, written.y1 - written.y0);
 	}
 
 	/** Where a pointer event lands, in mask cells. */
@@ -900,7 +894,7 @@
 		if (!smudge || !smudgeAt || !mask) return;
 		const step = Math.min(3, smudgeTime ? (time - smudgeTime) / (1000 / 60) : 1);
 		smudgeTime = time;
-		const sign = smudgeReverse ? -1 : 1;
+		const sign = (smudgeReverse ? -1 : 1) * smudgeStrength / 100;
 		const box = smudgeMode === 'twirl'
 			? smudge.twirl(smudgeAt, brush, sign * TWIRL_PER_FRAME * step)
 			: smudge.bulge(smudgeAt, brush, sign * BULGE_PER_FRAME * step);
@@ -1156,13 +1150,13 @@
 		fenceBefore = fence ? { size: mask.size, data: mask.data.slice(), ...(mask.validMask ? { validMask: mask.validMask.slice() } : {}) } : null;
 		updateHover(event);
 		if (tool === 'smudge') {
-			smudge = createSmudge(mask, transforms);
+			smudge = createSmudge(mask, transforms, brushShape);
 			smudgeAt = last = point;
 			smudgeReverse = event.altKey;
 			if (smudgeMode !== 'push') smudgeLoop = requestAnimationFrame(smudgeFrame);
 			return;
 		}
-		xorGesture = paintValue === 'xor' && tool !== 'eraser' ? createXorGesture(mask, transforms) : null;
+		xorGesture = paintValue === 'xor' ? createXorGesture(mask, transforms) : null;
 		const value = toolValue();
 		if (tool === 'fill') {
 			if (xorGesture) repaintXor(xorGesture.fill(point.x, point.y, fenceCells()));
@@ -1214,7 +1208,7 @@
 			for (const step of steps) {
 				const point = pointAt(step);
 				if (!point) continue;
-				if (smudgeMode === 'push' && last) moved = unionBox(moved, smudge.push(last, point, brush));
+				if (smudgeMode === 'push' && last) moved = unionBox(moved, smudge.push(last, point, brush, smudgeStrength / 100));
 				last = smudgeAt = point;
 			}
 			fenced(moved);

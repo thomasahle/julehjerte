@@ -35,7 +35,10 @@ import {
 	CUSTOM_COLORS_STORAGE_KEY,
 	CUSTOM_PAIR_CLASS,
 	DEFAULT_COLORS_HEX,
-	PAPER_KIND_CLASSES
+	PAPER_KIND_CLASSES,
+	getColors,
+	subscribeColors,
+	type HeartColors
 } from '$lib/stores/colors';
 
 /** Under the site's own `juleflet:` prefix, as its other stored settings. */
@@ -162,5 +165,28 @@ export function subscribeColorMode(fn: (on: boolean) => void): () => void {
 	subscribers.add(fn);
 	return () => {
 		subscribers.delete(fn);
+	};
+}
+
+/**
+ * The pair a heart drawn on a canvas shows (Mal's): the site's pair, or while
+ * the mode is on, the shuffle's first pair, the one in the colourful button's
+ * first cell. A canvas cannot read the mode's CSS variables, so this is how
+ * each press deals it a new pair, as it does the gallery's hearts.
+ */
+export function shownColors(): HeartColors {
+	const permutation = getPermutation();
+	if (!permutation) return getColors();
+	const { left, right } = PALETTE[permutation[0]];
+	return { left, right };
+}
+
+/** Tells `fn` the pair on show (see `shownColors`) whenever the site's pair or the shuffle changes. */
+export function subscribeShownColors(fn: (colors: HeartColors) => void): () => void {
+	const tell = () => fn(shownColors());
+	const leaveColors = subscribeColors(tell), leaveMode = subscribeColorMode(tell);
+	return () => {
+		leaveColors();
+		leaveMode();
 	};
 }
