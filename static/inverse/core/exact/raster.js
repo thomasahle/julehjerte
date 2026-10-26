@@ -3,6 +3,7 @@
  * with the border band stabilised first: an import's crop leaves strips of the
  * other colour along the edges, which would otherwise be outline there. */
 import {prepareMaskTrace} from '../input.js';
+import {pairedBorderReading} from '../border.js';
 import {SIZE} from './structure.js';
 
 /** Two corners of a picture's outline this close (mm) are one touching:
@@ -65,16 +66,42 @@ export function openCloseNear(mask, n, radius, spots, within) {
   return out;
 }
 
+/** The mask with each pixel `observed` does not hold (a photograph's crop
+ * reaching past the picture) taken from the nearest one it does, by steps
+ * across and along. */
+export function fillUnobserved(mask, observed, n) {
+  const out = mask.slice(), done = Uint8Array.from(observed), queue = [];
+  for (let i = 0; i < n * n; i++) if (done[i]) queue.push(i);
+  for (let k = 0; k < queue.length; k++) {
+    const i = queue[k], x = i % n, y = (i - x) / n;
+    for (const j of [x > 0 ? i - 1 : -1, x < n - 1 ? i + 1 : -1, y > 0 ? i - n : -1, y < n - 1 ? i + n : -1]) {
+      if (j < 0 || done[j]) continue;
+      done[j] = 1; out[j] = out[i]; queue.push(j);
+    }
+  }
+  return out;
+}
+
 /** A raster target's traced outline, as a target with vector curves, or null.
  * With `open`, traced from the mask opened and closed by a disc of that many
  * pixels (openClose), only within `within` pixels of `spots` when given; its
- * source stays the picture's own mask. */
-export function rasterOutline(target, cfg, {tolerance = .35, smoothRadius = 0, borderRadius = 1, open = 0, spots = null, within = 0} = {}) {
+ * source stays the picture's own mask. Pixels the picture does not show are
+ * traced as their nearest shown ones (fillUnobserved). With `paired`, its
+ * sides are read as deep as each pair of them needs to end evenly
+ * (border.js pairedBorderReading), changing at most the export's allowed
+ * error; null when they cannot. */
+export function rasterOutline(target, cfg, {tolerance = .35, smoothRadius = 0, borderRadius = 1, open = 0, spots = null, within = 0, paired = false} = {}) {
   const source = target.sourceImage;
   if (!source?.mask || !source.resolution) return null;
-  const n = source.resolution;
-  const mask = withoutSlivers(!open ? source.mask : spots?.length ? openCloseNear(source.mask, n, open, spots, within) : openClose(source.mask, n, open), n);
-  const trace = prepareMaskTrace(mask, source.resolution, {...cfg, width: target.width, maxSpan: 40, smoothRadius, snapRadius: 0,
+  const n = source.resolution, width = target.width;
+  let shown = source.validMask?.includes(0) ? fillUnobserved(source.mask, source.validMask, n) : source.mask;
+  if (paired) {
+    // Depths in millimetres of the traced square, the band as its tracer reads it.
+    shown = pairedBorderReading(shown, n, width, {seenAt: borderRadius, minimumStripWidth: cfg.nominalWidth ?? 2.5, maxChange: cfg.maxImageError ?? .03});
+    if (!shown) return null;
+  }
+  const mask = withoutSlivers(!open ? shown : spots?.length ? openCloseNear(shown, n, open, spots, within) : openClose(shown, n, open), n);
+  const trace = prepareMaskTrace(mask, source.resolution, {...cfg, width, maxSpan: 40, smoothRadius, snapRadius: 0,
     borderRadius, polygonal: false, mixedBoundaries: true});
   const traced = trace(tolerance).target;
   // Corners of the picture nearly touching join (exact/target.js).

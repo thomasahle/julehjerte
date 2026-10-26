@@ -467,6 +467,41 @@ and 3 (7 and none). At 20 s the scraped median would be 20 s and the juleflet
 pictures would show 91 exact templates first: 30 s keeps the exact template
 first where it is drawn late, mostly on drawings, for 10 s on photographs.
 
+## Photographs the exact search could not start on (2026-10-26)
+
+Of the 66 scraped photographs found as hearts, the exact search could not
+start on 24: 13 whose traced outline meets opposite sides of the square
+unevenly, and 10 (six hearts) whose crop reaches past the picture, which the
+exact search refused outright (it kept no weights).
+
+- **Pixels the photograph does not show.** The six hearts miss 0-0.6% of
+  their square (a corner past the picture's edge), the four instruction sheets
+  7-18%. With at most 2% missing (`exactWeights`, engine.js) the outline is now
+  traced with those pixels taken from the nearest shown one
+  (`fillUnobserved`, raster.js), and the template judged on the shown ones.
+- **Sides ending unevenly.** A slit of one paper runs from the top to the
+  bottom, so a weavable outline meets them as often (and the left and right
+  sides). A crop a little off the square shows a corner's strip on one side
+  only, or a lobe's colour along a whole side, and then both pairs of sides
+  disagree, which none of the fitter's border repairs (`oppositeBorderSeeds`
+  for one pair, `cornerBorderSeeds` for small corner pieces) mends. Now, when
+  the trace ends unevenly, each pair of sides is read from deeper inside, at
+  the shallowest depths (1-8 mm) at which the tracer's own band finds as many
+  colour changes on both (`pairedBorderReading`, border.js), when that changes
+  at most the export's allowed error (3%) of the mask; the template is judged
+  on the mask as it was.
+
+On the 80 scraped photographs 5 more take the exact template first (03e90,
+fe904, 8b555 among the six; 17e0c, 52652), the same 46 passing; their templates
+lie 0.7-1.5% from their masks where the fitter's lay 0.3-1.0%, the difference
+in the border band read anew, where the photograph's own edge is the one that
+cannot be woven. No juleflet picture ends unevenly or misses pixels.
+
+Tried and left out: where the traced search never keeps the model's rules
+(13 photographs), an outline traced from the mask smoothed by 1 mm passes 4 of
+them within 0.9% given 40 s alone, and by 2 mm 9 of them, but up to 2.8% off;
+after the traced search's 30 s it found one in time.
+
 ## Details lost on photographs (2026-10-25)
 
 The 68 photographs whose template keeps every rule but loses a region of the
@@ -499,12 +534,8 @@ camel, but takes 20-28 s more and fails on other photographs; not used.
   is 0.08% from the mask but its slits come closer than a strip allows.
 - The exact search takes few photographs (7 of 80, 4 of 44: its outline,
   traced from a noisy mask, is rarely a weavable structure in time); it takes
-  three quarters of drawn ones. 13 of the 80 scraped ones cannot start: their
-  outline meets opposite sides of the square unevenly (a motif at one corner of
-  a slightly turned crop, strips standing out past the square), with both
-  pairs of sides uneven, which none of the fitter's border repairs
-  (`oppositeBorderSeeds`, `cornerBorderSeeds`) mends; a 3 mm border band does
-  for 3.
+  three quarters of drawn ones. Of those it cannot start on, see above;
+  13 more break the model's rules until the deadline, on noisy outlines.
 - Templates: slits that stop inside the square or meet in T-junctions (the site
   cannot represent them), dimension lines drawn along a slit.
 - A selected heart among touching neighbours (two of the web scenes): the

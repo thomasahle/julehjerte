@@ -48,6 +48,28 @@ test('a picture takes the exact search\'s template, exported, when it passes', a
   assert.ok(![...stages].some(stage => String(stage).startsWith('direct')), [...stages].join());
 });
 
+// A photograph's mask as Mal sends it: the 3 x 3 heart, its top read a little
+// into the next cell (one more strip there than at the bottom), a corner the
+// photograph does not show.
+test('the exact search starts on a photograph whose sides end unevenly, or whose crop misses a corner', async () => {
+  const n = 400, colors = ['#b91313', '#ffffff'], mask = new Uint8Array(n * n), observed = new Uint8Array(n * n).fill(1);
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) mask[y * n + x] = (Math.floor(3 * x / n) + Math.floor(3 * y / n)) % 2 ? 0 : 1;
+  for (let y = 0; y < 12; y++) for (let x = 180; x < 200; x++) mask[y * n + x] = 1;
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (x + y > 2 * n - 40) { observed[y * n + x] = 0; mask[y * n + x] = 0; }
+  const raw = {...AUTOMATIC_PRESET, width: 100, minWidth: 2, cutError: .25, timeLimit: 60, exactOutline: true, paperColors: colors, trials: 0, exactRoute: 'exact'};
+  const run = validMask => {
+    const prepared = prepare({type: 'mask', mask, resolution: n, ...(validMask ? {validMask} : {})}, {...AUTOMATIC_PRESET, width: 100, resolution: n, paperColors: colors, mode: 'swatches', swatches: colors, invert: false, removeSpecks: 0});
+    return design(restorePrepared(prepared.target), raw);
+  };
+  const answer = await run(observed);
+  assert.equal(answer.report.solver.exactOutline.chosen, 'exact');
+  assert.equal(answer.report.solver.exactOutline.paired, true);
+  assert.ok(answer.report.templateChecksPassed);
+  // A crop missing much of the picture is the fitter's alone.
+  const most = Uint8Array.from(observed, (v, i) => v && (i % n) < 300 ? 1 : 0);
+  await assert.rejects(run(most), error => error.code === 'NO_EXACT_TEMPLATE' && /cannot keep/.test(error.report.exactOutline.error));
+});
+
 test('a stopped search finishes the exact search\'s last drawing as its answer', async () => {
   const n = 400, mask = new Uint8Array(n * n), colors = ['#b91313', '#ffffff'];
   for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) mask[y * n + x] = (Math.floor(3 * x / n) + Math.floor(3 * y / n)) % 2 ? 0 : 1;

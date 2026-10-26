@@ -53,12 +53,13 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
   // lays the cuts on the outline traced from the mask, with the requested
   // symmetry's ties, and its template stands whenever the export passes it
   // (cutting rules, paper, the picture's regions and fidelity); the fitter's
-  // only when it finds none. It cannot keep identical sheets, a free frame band
-  // or each curve turned about its middle, so those have the fitter's alone;
+  // only when it finds none. It cannot keep identical sheets, a free frame band,
+  // each curve turned about its middle or a photograph's crop missing much of
+  // the picture (exactWeights), so those have the fitter's alone;
   // with it a design takes at most EXACT_SECONDS. `exactRoute` splits the two
   // for workers side by side (worker-controller.js): 'exact' the exact search
   // alone, failing with code NO_EXACT_TEMPLATE, 'fitter' the fitter alone.
-  const route=raw.exactRoute,exactOn=cfg.exactOutline&&!target.curves?.length&&!raw.identicalSheets&&!target.sourceImage?.weights&&symmetry!==null;
+  const route=raw.exactRoute,exactOn=cfg.exactOutline&&!target.curves?.length&&!raw.identicalSheets&&exactWeights(target.sourceImage)&&symmetry!==null;
   const noExact=report=>Object.assign(new Error('The exact search found no template the export passes.'),{code:'NO_EXACT_TEMPLATE',report:{exactOutline:report}});
   if(route==='exact'&&!exactOn)throw noExact({chosen:'fitter',error:'The exact search cannot keep these settings.'});
   if(!exactOn||route==='fitter'){
@@ -75,6 +76,19 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
   const fitted=await solveTarget(target,{...raw,timeLimit:Math.max(.1,(searchEnd-performance.now())/1000)},onProgress,options);
   fitted.report={...fitted.report,exactOutline:report};
   return finish(fitted,settings(fitted.automaticSettings||raw),onProgress,{deadline});}
+/** Whether the exact search can keep a picture's weights: none, or only its
+ * observed pixels' (a photograph's crop reaching past the picture, which the
+ * outline is traced across: raster.js fillUnobserved) with at most
+ * MISSING_SHARE unobserved. Of the 80 scraped photographs six hearts miss up to
+ * 0.6% of their square, four instruction sheets 7-18%. */
+const MISSING_SHARE=.02;
+function exactWeights(source){
+  if(!source?.weights)return true;
+  const observed=source.validMask;if(!observed||observed.length!==source.weights.length)return false;
+  let missing=0;
+  for(let i=0;i<observed.length;i++){if(source.weights[i]!==observed[i])return false;missing+=observed[i]?0:1;}
+  return missing<=MISSING_SHARE*observed.length;
+}
 /** The exact search's template for a picture the export passes, or none:
  * {solution, report}. On the outline traced from the mask until `tracedEnd`,
  * then on it with its tips rounded until `roundedEnd`. */
@@ -83,11 +97,17 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
   // cut ends cannot pair up the exact search cannot start.
   // A trace whose curves meet where the pixels only nearly touch (a vertex of
   // six curves) or a border sliver can stop it: then the mask opened by a
-  // pixel or two first (raster.js openClose), a tenth of a second each.
-  const traceAt=(open,near={})=>{const traced=exactTarget(target,cfg,{open,...near}),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);return scaled?{scaled,why:exactCannotStart(scaled,cfg)}:null;};
+  // pixel or two first (raster.js openClose), a tenth of a second each. A
+  // photograph's crop a little off the square can end it unevenly on opposite
+  // sides: then first its sides read as deep as each pair needs (`paired`),
+  // as every later trace of it then is.
+  let base={};
+  const traceAt=(open,near={})=>{const traced=exactTarget(target,cfg,{...base,open,...near}),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);return scaled?{scaled,why:exactCannotStart(scaled,cfg)}:null;};
   let outline=null,cannot='No outline was traced from the mask.';
-  for(const open of [0,1,2]){
-    try{const traced=traceAt(open);if(traced){if(!traced.why){outline=traced.scaled;break;}if(!open)cannot=traced.why;}}catch(error){if(!open)cannot=String(error.message||error);}
+  for(const way of [{open:0},{open:0,paired:true},{open:1},{open:2}]){
+    if(way.paired&&!/unevenly/.test(cannot))continue;
+    const first=!way.open&&!way.paired;
+    try{const traced=traceAt(way.open,way);if(traced){if(!traced.why){outline=traced.scaled;if(way.paired)base={paired:true};break;}if(first)cannot=traced.why;}}catch(error){if(first)cannot=String(error.message||error);}
   }
   if(!outline)return{solution:null,report:{chosen:'fitter',error:cannot}};
   const search=end=>({deadline:end,onProgress,symmetry,geometry:cfg.progressGeometry});
@@ -117,18 +137,18 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
   // time when both are to run.
   if(!exportable(found.found?.assessment,cfgExact)&&roundedEnd-performance.now()>=1000*ROUNDED_LEAST){
     const spots=[...(found.found?validate(found.found.solution,cfgExact,{finalGeometry:true}).issues.filter(i=>i.type==='short_self_clearance'&&i.points).flatMap(i=>i.points.map(([x,y])=>[x*px,y*px])):[]),...tips];
-    const ways=spots.length?[{spots,within:TIP_SPOT_MM*px},{}]:[{}];
-    for(const [k,near] of ways.entries()){
+    const ways=[...(spots.length?[{open:radius,spots,within:TIP_SPOT_MM*px}]:[]),{open:radius}];
+    for(const [k,way] of ways.entries()){
       if(exportable(found.found?.assessment,cfgExact)||roundedEnd-performance.now()<1000*ROUNDED_LEAST)break;
-      let rounded=null;
-      try{const traced=traceAt(radius,near);rounded=traced&&!traced.why?traced.scaled:null;}catch{rounded=null;}
-      if(!rounded)continue;
+      let again=null;
+      try{const traced=traceAt(way.open,way);again=traced&&!traced.why?traced.scaled:null;}catch{again=null;}
+      if(!again)continue;
       const end=k<ways.length-1?performance.now()+.6*(roundedEnd-performance.now()):roundedEnd;
-      const again=await exactSearch(rounded,null,cfgExact,search(end));
-      if(exportable(again.found?.assessment,cfgExact)||!found.found&&again.found)found={...again,report:{...again.report,rounded:near.spots?'near':true}};
+      again=await exactSearch(again,null,cfgExact,search(end));
+      if(exportable(again.found?.assessment,cfgExact)||!found.found&&again.found)found={...again,report:{...again.report,rounded:way.spots?'near':true}};
     }
   }
-  const report={...found.report,chosen:'fitter'};
+  const report={...found.report,chosen:'fitter',...(base.paired?{paired:true}:{})};
   return{solution:exportable(found.found?.assessment,cfgExact)?found.found.solution:null,report};
 }
 export function inspectSaved(text,raw={},onProgress=()=>{}){const cfg=settings(raw),solution=loadSolutionJSON(text),factor=cfg.width/solution.graph.target.width;solution.graph.edges.forEach(e=>e.curve=new Cubic(e.curve.p.map(p=>p.map(x=>x*factor))));solution.graph.target=scaleTarget(solution.graph.target,cfg.width,cfg.paperColors);reindex(solution.graph);return finish(solution,cfg,onProgress);}

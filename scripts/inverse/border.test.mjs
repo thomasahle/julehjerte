@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { stabilizeBorder, borderTransitions, oppositeBorderSeeds } from '../../static/inverse/core/border.js';
+import { stabilizeBorder, borderTransitions, oppositeBorderSeeds, pairedBorderReading } from '../../static/inverse/core/border.js';
+import { fillUnobserved } from '../../static/inverse/core/exact/raster.js';
 import { prepare, design } from '../../static/inverse/core/engine.js';
 import { checkerPixels } from './fixtures.mjs';
 import { GENERAL_PRESET } from '../../src/lib/inverse/presets.js';
@@ -124,3 +125,35 @@ test('one-sided routing seeds recover hidden endpoints without rewriting the obs
     mask=Uint8Array.from(mask,(_,i)=>before[(n-1-i%n)*n+Math.floor(i/n)]);
   }
 });
+
+// A 3 x 3 heart whose top shows one more strip than its bottom (a crop a
+// little into the next cell there, 3 mm deep): read deeper there, both pairs
+// of sides end evenly; only the band read anew changes, the rest of the patch
+// stays as an island.
+const checker3 = n => Uint8Array.from({ length: n * n }, (_, i) => (Math.floor(3 * (i % n) / n) + Math.floor(3 * Math.floor(i / n) / n)) % 2 ? 0 : 1);
+test('opposite sides ending unevenly are read deeper until each pair ends evenly', () => {
+  const n = 400, plain = checker3(n), mask = plain.slice();
+  for (let y = 0; y < 12; y++) for (let x = 180; x < 200; x++) mask[y * n + x] = 1;
+  const seen = m => stabilizeBorder(m, n, 100, 1).metadata.transitionsAfter;
+  assert.deepEqual(seen(mask), [4, 2, 2, 2]);
+  const read = pairedBorderReading(mask, n, 100);
+  assert.deepEqual(seen(read), [2, 2, 2, 2]);
+  const changed = [...read.keys()].filter(i => read[i] !== mask[i]);
+  assert.ok(changed.length && changed.every(i => plain[i] === read[i] && Math.floor(i / n) < 12 && i % n >= 180 && i % n < 200));
+  assert.ok([...read.keys()].every(i => read[i] === mask[i] || Math.floor(i / n) < 8));
+  // A reading changing more than allowed is none.
+  assert.ok(pairedBorderReading(mask, n, 100, { maxChange: .0005 }) === null);
+  // Nor is a pair no depth evens out: a side of one colour as deep as it reads.
+  const plainTop = plain.slice();
+  for (let y = 0; y < 70; y++) for (let x = 0; x < n; x++) plainTop[y * n + x] = 1;
+  assert.ok(pairedBorderReading(plainTop, n, 100) === null);
+});
+
+test('pixels a photograph does not show take the nearest shown one', () => {
+  const n = 6, mask = Uint8Array.from({ length: n * n }, (_, i) => Number(i % n >= 3)), observed = new Uint8Array(n * n).fill(1);
+  for (const i of [5, 11, 0]) { observed[i] = 0; mask[i] = 0; }
+  const filled = fillUnobserved(mask, observed, n);
+  assert.deepEqual([filled[5], filled[11], filled[0]], [1, 1, 0]);
+  assert.deepEqual([...filled].filter((_, i) => observed[i]), [...mask].filter((_, i) => observed[i]));
+});
+

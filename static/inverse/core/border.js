@@ -76,6 +76,38 @@ function extendBorder(mask, n, width, radius, minimumStripWidth) {
   };
 }
 
+/** The mask with each pair of opposite sides read from deeper inside
+ * (extendBorder) at the shallowest `depths` (mm, at most 8% of the width) at
+ * which a band of `seenAt` mm (the exact search's tracer's) finds as many colour
+ * changes on both sides, and some: a photograph's crop a little off the square
+ * shows a corner's strip on one side only, or a lobe's colour along one. Null
+ * when a pair has no such depths, or the reading changes more than `maxChange`
+ * of the mask.
+ */
+export function pairedBorderReading(mask, n, width, {depths = [1, 1.5, 2, 3, 4, 5, 6, 7, 8], seenAt = 1, minimumStripWidth = 2.5, maxChange = 1} = {}) {
+  const usable = depths.filter(d => d <= .08 * width);
+  const read = usable.map(d => extendBorder(mask, n, width, d, minimumStripWidth).mask);
+  const seen = read.map(m => extendBorder(m, n, width, seenAt, minimumStripWidth).metadata.transitionsAfter);
+  const choice = [];
+  for (const [a, b] of [[0, 2], [1, 3]]) {
+    let best = null;
+    usable.forEach((da, i) => usable.forEach((db, j) => {
+      if (seen[i][a] && seen[i][a] === seen[j][b] && (!best || da + db < best.sum)) best = {i, j, sum: da + db};
+    }));
+    if (!best) return null;
+    choice[a] = best.i; choice[b] = best.j;
+  }
+  // Each pixel in a band takes its nearest side's reading, sides measured by their own depths.
+  const out = mask.slice(), depth = choice.map(i => usable[i] * n / width);
+  let changed = 0;
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+    const relative = [y, n - 1 - x, n - 1 - y, x].map((d, side) => d / depth[side]), nearest = Math.min(...relative), side = relative.indexOf(nearest);
+    if (nearest < 1) out[y * n + x] = read[choice[side]][y * n + x];
+    changed += out[y * n + x] !== mask[y * n + x];
+  }
+  return changed <= maxChange * n * n ? out : null;
+}
+
 /** Additional routing seeds when one pair of opposite edges disagrees.
  * Change one edge at a time, read no deeper than 16% of the square and edit
  * no wider than 8%. These are initialization masks, never image references.
