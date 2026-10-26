@@ -1,5 +1,23 @@
 # Generator robustness results
 
+## A heart's curve fits shared by every way it is tried
+
+A heart that cannot be built at its size is tried again its other ways, with
+its last resorts and at smaller sizes, and each of those fitted the motif's
+outline runs anew: the elephant in the sunburst at 75% fitted 5,280 runs, 1,308
+of them different. The fits are now kept for the whole heart, the 1,024 most
+recently used (a few thousand characters each), and dropped once it is made.
+Where a motif's islands are reached from, and their order along a chain, were
+worked out again for every choice of ports and at every comparison of a sort
+(9% of the elephant's time); now once.
+
+Every heart is the same: 45 featured motifs at 85% in the rays, the sunburst
+and the wedges, and the elephant at 75% in the sunburst, 136 hearts with
+identical cuts. They take 10–13% less time (the rays 71 → 64 s, the sunburst
+145 → 126 s, the wedges 217 → 196 s), the elephant 294 → 195 s. The slowest
+hearts at today's largest sunburst, 90%, keep theirs too: the elephant, asked
+90%, 581 → 395 s, the polar star 249 → 176 s.
+
 ## The sunburst never shrinks for a larger size
 
 Over 90–100% in steps of 2, nine of the 49 featured motifs kept a smaller

@@ -37,6 +37,15 @@ describe('exact curve fitting cache', () => {
     createExactCurveFitter()(input, .1);
     expect(spy).toHaveBeenCalledTimes(4);
   });
+
+  it('keeps the runs most recently used, however long ago they were first fitted', () => {
+    const spy = vi.spyOn(fitting, 'simplifyCubicChain'), fit = createExactCurveFitter(2);
+    const [a, b, c] = [0, 1, 2].map(x => translate(source(), x, 0));
+    for (const run of [a, b, a, c, a]) fit(run, .05);
+    expect(spy).toHaveBeenCalledTimes(3);
+    fit(b, .05);
+    expect(spy).toHaveBeenCalledTimes(4);
+  });
 });
 
 describe('translated curve fitting cache', () => {

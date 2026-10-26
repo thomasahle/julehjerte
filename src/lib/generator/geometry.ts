@@ -239,13 +239,9 @@ function block(
 			a = Math.atan2(v[1] - u[1], v[0] - u[0]);
 		}
 	}
-	const children = node.children
-		.slice()
-		.sort(
-			(u, v) =>
-				dot(centroid(u.ring), direction(a)) -
-				dot(centroid(v.ring), direction(a))
-		);
+	// Each child's place along the row once, not at every comparison.
+	const along = new Map(node.children.map(n => [n, dot(centroid(n.ring), direction(a))]));
+	const children = node.children.slice().sort((u, v) => along.get(u)! - along.get(v)!);
 	const starts = children.map((n) => support(n.ring, a + Math.PI)),
 		ends = children.map((n) => support(n.ring, a));
 	const inPort = ray(node.ring, starts[0].point, a + Math.PI),
@@ -360,13 +356,8 @@ export function contourChain(
 ) {
 	const atExtremes = !visible && !nearest && !nearestIslands;
 	if (!visible && nearestIslands) nearest = true;
-	const ordered = nodes
-		.slice()
-		.sort(
-			(a, b) =>
-				dot(centroid(a.ring), direction(angle)) -
-				dot(centroid(b.ring), direction(angle))
-		);
+	const along = new Map(nodes.map(n => [n, dot(centroid(n.ring), direction(angle))]));
+	const ordered = nodes.slice().sort((a, b) => along.get(a)! - along.get(b)!);
 	if (visible && boundaryGates) {
 		// A clipped island can own the panel's external gate. Enter that
 		// island first, even when its centre projects behind another island.
@@ -1137,6 +1128,32 @@ function contourMotif(
 	// every candidate has exactly the same visible boundary and topology.
 	const fan = options.practical ? 8 : 5;
 	const combinations = attachmentOrder(fan, count);
+	// The gate each island is reached from, and the way it is reached, are
+	// the same whatever the ports: found once, not for every choice of them.
+	const extras = Array.from({ length: count }, () => [] as Contour[]);
+	for (const node of nodes.slice(1)) {
+		const c = centroid(node.ring);
+		// The nearest gate can put a dot's approach across the letter's
+		// stem. A final retry may use the next nearest active gate instead.
+		const nearest = bridgePorts.reduce(
+			(best, i) => distance(c, gates[i]) < distance(c, gates[best]) ? i : best,
+			bridgePorts[0]
+		);
+		// With `around`, an island about as near two gates (one of a
+		// symmetric motif's, the polar star's needles) takes the one next on
+		// round the cell, so each gate gets one.
+		const turn = (i: number) => (Math.atan2(gates[i][1] - middle[1], gates[i][0] - middle[0]) - Math.atan2(c[1] - middle[1], c[0] - middle[0]) + 4 * Math.PI) % (2 * Math.PI);
+		const j = options.islandRank
+			? [...bridgePorts].sort((a, b) => distance(c, gates[a]) - distance(c, gates[b]))[options.islandRank % bridgePorts.length]
+			: options.around ? bridgePorts.filter(i => distance(c, gates[i]) < distance(c, gates[nearest]) * 1.01).reduce((best, i) => turn(i) < turn(best) ? i : best)
+			: nearest;
+		extras[j].push(node);
+	}
+	const islandAngles = extras.map((group, j) => {
+		if (!group.length || !options.visibleIslands) return angles[j];
+		const c = centroid(group.flatMap(n => n.ring)), b = centroid(base.ring);
+		return Math.atan2(b[1] - c[1], b[0] - c[0]);
+	});
 	const seenPorts = new Set<string>();
 	routing: for (const indices of combinations) {
 		const ports = indices.map((index, j) => candidates[j][index]);
@@ -1149,30 +1166,10 @@ function contourMotif(
 		// Spokes are independent of the internal bridges. Check them once rather
 		// than retrying the same blocked attachment for every counter route.
 		const exterior: Edge[] = [];
-		const extras = Array.from({ length: count }, () => [] as Contour[]);
-		for (const node of nodes.slice(1)) {
-			const c = centroid(node.ring);
-			// The nearest gate can put a dot's approach across the letter's
-			// stem. A final retry may use the next nearest active gate instead.
-			const nearest = bridgePorts.reduce(
-				(best, i) => distance(c, gates[i]) < distance(c, gates[best]) ? i : best,
-				bridgePorts[0]
-			);
-			// With `around`, an island about as near two gates (one of a
-			// symmetric motif's, the polar star's needles) takes the one next on
-			// round the cell, so each gate gets one.
-			const turn = (i: number) => (Math.atan2(gates[i][1] - middle[1], gates[i][0] - middle[0]) - Math.atan2(c[1] - middle[1], c[0] - middle[0]) + 4 * Math.PI) % (2 * Math.PI);
-			const j = options.islandRank
-				? [...bridgePorts].sort((a, b) => distance(c, gates[a]) - distance(c, gates[b]))[options.islandRank % bridgePorts.length]
-				: options.around ? bridgePorts.filter(i => distance(c, gates[i]) < distance(c, gates[nearest]) * 1.01).reduce((best, i) => turn(i) < turn(best) ? i : best)
-				: nearest;
-			extras[j].push(node);
-		}
 		try {
 			for (let j = 0; j < count; j++) {
 				if (extras[j].length) {
-					const c = centroid(extras[j].flatMap(n => n.ring)), b = centroid(base.ring);
-					const angle = options.visibleIslands ? Math.atan2(b[1] - c[1], b[0] - c[0]) : angles[j];
+					const angle = islandAngles[j];
 					// At an island's seam gate, the outline arcs must follow the
 					// panel's alternating A/B phase. A fixed phase can close a
 					// cutting loop when the neighbouring half is stitched on.

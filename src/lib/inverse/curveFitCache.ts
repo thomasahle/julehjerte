@@ -10,19 +10,24 @@ const clone = (segments: BezierSegment[]): BezierSegment[] => segments.map(s => 
 }));
 
 /** Candidate layouts often reuse exactly the same outline runs. Retain their
- * fits for one generation request, with no coordinate quantisation or movement.
- * Include the tolerance and clone both on storage and reuse: conversion snaps
- * endpoints and can edit handles after fitting. */
-export function createExactCurveFitter(): typeof simplifyCubicChain {
+ * fits for one generation request, with no coordinate quantisation or movement,
+ * the `size` most recently used. Include the tolerance and clone both on
+ * storage and reuse: conversion snaps endpoints and can edit handles after
+ * fitting. */
+export function createExactCurveFitter(size = MAX_ENTRIES): typeof simplifyCubicChain {
   const entries = new Map<string, BezierSegment[]>();
   return (segments, tolerance = FIT_TOLERANCE) => {
     if (segments.length <= 1 || !(tolerance > 0)) return simplifyCubicChain(segments, tolerance);
     const key = tolerance + ':' + JSON.stringify(segments);
     const previous = entries.get(key);
-    if (previous) return clone(previous);
+    if (previous) {
+      entries.delete(key);
+      entries.set(key, previous);
+      return clone(previous);
+    }
     const result = simplifyCubicChain(segments, tolerance);
     entries.set(key, clone(result));
-    if (entries.size > MAX_ENTRIES) entries.delete(entries.keys().next().value!);
+    if (entries.size > size) entries.delete(entries.keys().next().value!);
     return result;
   };
 }

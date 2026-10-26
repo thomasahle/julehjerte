@@ -1,4 +1,5 @@
 import { createExactCurveFitter } from '$lib/inverse/curveFitCache';
+import { simplifyCubicChain } from '$lib/inverse/simplifyCurves';
 import { generateLayeredFigure } from './layers';
 import { CORNER_GAP, generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { generateFittedFigure, mirrorSymmetric, type GateTies } from './fitted';
@@ -756,6 +757,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (stored) return stored;
 		forgetIslandPorts();
 		triedExactly = false;
+		fits = createExactCurveFitter(FITS_KEPT);
 	}
 	making++;
 	try {
@@ -772,9 +774,18 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (own) return own;
 		throw failure;
 	} finally {
-		making--;
+		if (!--making) fits = undefined;
 	}
 }
+/** The curve fits of the heart being made, shared by every way and size it is
+ * made (see `generateOnceMade`): its alternatives and last resorts fit the same
+ * outline runs again, the elephant in the sunburst three of four times. Each
+ * holds a few thousand characters; the most recently used are kept, until the
+ * heart is made (its design keeps only `sharedFits`, see `madeFrom`). */
+let fits: ReturnType<typeof createExactCurveFitter> | undefined;
+const FITS_KEPT = 1024;
+const sharedFits: ReturnType<typeof createExactCurveFitter> = (segments, tolerance) =>
+	(fits ?? simplifyCubicChain)(segments, tolerance);
 function generateTried(request: GeneratorRequest): GeneratorResult {
 	// A motif's hairline spurs go (see `withoutSpurs`); a text's letters keep
 	// their glyphs. On a board the motif keeps the choice its catalogue
@@ -1347,7 +1358,7 @@ function generateOnce(request: GeneratorRequest,
 }
 function generateOnceMade(request: GeneratorRequest,
 	deferHard?: (finish: () => GeneratorResult | undefined) => void, variants = Infinity, retries = true): GeneratorResult {
-	const curveFitter = createExactCurveFitter();
+	const curveFitter = fits ? sharedFits : createExactCurveFitter();
 	const counterLanes = request.mode === 'figure' && request.style === 'corners' &&
 		hasThreeCounterLanes(normalizeContours(request.contours ?? []));
 	if (counterLanes) {
