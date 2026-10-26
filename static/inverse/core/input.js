@@ -60,9 +60,7 @@ export function rgbToLab(rgb){const linear=rgb.map(v=>{v/=255;return v<=.04045?v
  * (1,1), (0,1)). [right, left] in Lab, or null unless each lobe is mostly one
  * colour (`within` ΔE of its median) and the two differ by `apart` ΔE. */
 export function lobeColours(rgba,width,height,quad,{within=20,apart=15,share=.6}={}){
-  const a=[],b=[];[[0,0],[1,0],[1,1],[0,1]].forEach(([u,v],i)=>{const [x,y]=quad[i];a.push([u,v,1,0,0,0,-u*x,-v*x],[0,0,0,u,v,1,-u*y,-v*y]);b.push(x,y);});
-  let h;try{h=gaussianSolve(a,b);}catch{return null;}
-  const sample=(u,v)=>{const den=h[6]*u+h[7]*v+1,x=Math.floor((h[0]*u+h[1]*v+h[2])/den),y=Math.floor((h[3]*u+h[4]*v+h[5])/den);if(!(den>0)||x<0||y<0||x>=width||y>=height)return null;const k=4*(y*width+x);return rgbToLab([rgba[k],rgba[k+1],rgba[k+2]]);};
+  const sample=lobeSampler(rgba,width,height,quad);if(!sample)return null;
   const lobe=(at)=>{
     const labs=[];let tried=0;
     for(let i=0;i<12;i++)for(let j=0;j<5;j++){tried++;const lab=sample(...at(.2+.6*(i+.5)/12,.08+.27*(j+.5)/5));if(lab)labs.push(lab);}
@@ -74,6 +72,50 @@ export function lobeColours(rgba,width,height,quad,{within=20,apart=15,share=.6}
   const right=lobe((t,d)=>[t,-d]),left=lobe((t,d)=>[-d,t]);
   return right&&left&&Math.hypot(...right.map((x,c)=>x-left[c]))>=apart?[right,left]:null;
 }
+/** The Lab colour at the crop's square coordinates (u, v) (0..1 across the
+ * square, negative on a lobe's side), or null outside the picture. */
+function lobeSampler(rgba,width,height,quad){
+  const a=[],b=[];[[0,0],[1,0],[1,1],[0,1]].forEach(([u,v],i)=>{const [x,y]=quad[i];a.push([u,v,1,0,0,0,-u*x,-v*x],[0,0,0,u,v,1,-u*y,-v*y]);b.push(x,y);});
+  let h;try{h=gaussianSolve(a,b);}catch{return null;}
+  return(u,v)=>{const den=h[6]*u+h[7]*v+1,x=Math.floor((h[0]*u+h[1]*v+h[2])/den),y=Math.floor((h[3]*u+h[4]*v+h[5])/den);if(!(den>0)||x<0||y<0||x>=width||y>=height)return null;const k=4*(y*width+x);return rgbToLab([rgba[k],rgba[k+1],rgba[k+2]]);};
+}
+/** Each lobe's colours, [right, left] Lab samples across it, when at least one
+ * is printed: under `plain` of its samples within `within` ΔE of their median
+ * (a pattern's second colour, a motif). Else null: plain papers' two colours
+ * are their lobes' (lobeColours). */
+export function printedLobes(rgba,width,height,quad,{within=10,plain=.8}={}){
+  const sample=lobeSampler(rgba,width,height,quad);if(!sample)return null;
+  const lobe=at=>{const labs=[];for(let i=0;i<32;i++)for(let j=0;j<10;j++){const lab=sample(...at(.12+.76*(i+.5)/32,.05+.33*(j+.5)/10));if(lab)labs.push(lab);}return labs;};
+  const right=lobe((t,d)=>[t,-d]),left=lobe((t,d)=>[-d,t]);
+  if(right.length<100||left.length<100)return null;
+  const spread=labs=>{const median=[0,1,2].map(c=>labs.map(l=>l[c]).sort((p,q)=>p-q)[labs.length>>1]);return labs.filter(l=>Math.hypot(...l.map((x,c)=>x-median[c]))<=within).length/labs.length;};
+  return spread(right)<plain||spread(left)<plain?[right,left]:null;
+}
+/** Paper 1 (the right lobe's) where its colours are likelier than the left
+ * lobe's, each paper's colours a density of its lobe's samples (a kernel of
+ * `sigma` ΔE), the log ratio averaged over `radius` pixels, and `wide` times
+ * as far at a colour both papers have (its own ratio under `unsure`): a print
+ * colour they share takes the paper around it. */
+function printedPaperMask(labs,samples,{observed=null,sigma=7,radius=6,wide=3,unsure=1,cap=4}={}){
+  const count=labs.length/3,side=Math.round(Math.sqrt(count)),cache=new Map(),two=2*sigma*sigma;
+  const density=(lab,list)=>{let s=0;for(const q of list)s+=Math.exp(-((lab[0]-q[0])**2+(lab[1]-q[1])**2+(lab[2]-q[2])**2)/two);return s/list.length;};
+  const ratio=new Float32Array(count);
+  for(let i=0;i<count;i++){
+    const key=`${Math.round(labs[3*i]/2)},${Math.round(labs[3*i+1]/2)},${Math.round(labs[3*i+2]/2)}`;
+    let r=cache.get(key);
+    if(r===undefined){const lab=[labs[3*i],labs[3*i+1],labs[3*i+2]];r=Math.max(-cap,Math.min(cap,Math.log((density(lab,samples[0])+1e-6)/(density(lab,samples[1])+1e-6))));cache.set(key,r);}
+    ratio[i]=observed&&!observed[i]?0:r;
+  }
+  // The mean over a square of 2 radius + 1 pixels, by a summed table; where
+  // that is unsure (a print shape both papers share, wider than it), the mean
+  // over `wide` times as far.
+  const w=side,sum=new Float64Array((w+1)*(w+1));
+  for(let y=0;y<w;y++)for(let x=0;x<w;x++)sum[(y+1)*(w+1)+x+1]=ratio[y*w+x]+sum[y*(w+1)+x+1]+sum[(y+1)*(w+1)+x]-sum[y*(w+1)+x];
+  const mean=(x,y,r)=>{const x0=Math.max(0,x-r),y0=Math.max(0,y-r),x1=Math.min(w,x+r+1),y1=Math.min(w,y+r+1);return(sum[y1*(w+1)+x1]-sum[y0*(w+1)+x1]-sum[y1*(w+1)+x0]+sum[y0*(w+1)+x0])/((x1-x0)*(y1-y0));};
+  const mask=new Uint8Array(count);
+  for(let y=0;y<w;y++)for(let x=0;x<w;x++)mask[y*w+x]=mean(x,y,Math.abs(ratio[y*w+x])>=unsure?radius:wide*radius)>0?1:0;
+  return mask;
+}
 export function otsu(values){const hist=Array(256).fill(0);for(const v of values)hist[v]++;let sum=0;hist.forEach((c,i)=>sum+=c*i);let w0=0,s0=0,best=-1,t=128;for(let i=0;i<256;i++){w0+=hist[i];s0+=i*hist[i];const w1=values.length-w0;if(!w0||!w1)continue;const score=w0*w1*(s0/w0-(sum-s0)/w1)**2;if(score>best){best=score;t=i;}}return t;}
 /** Validate and own a binary observation field; absent means fully observed. */
 function observedMask(mask,length){
@@ -83,14 +125,14 @@ function observedMask(mask,length){
   return mask.every(v=>v===1)?null:Uint8Array.from(mask);
 }
 
-export function quantize(rgb,{mode='auto',threshold=128,swatches=['#bd1111','#ffffff'],invert=false,validMask=null,lobes=null}={}){
+export function quantize(rgb,{mode='auto',threshold=128,swatches=['#bd1111','#ffffff'],invert=false,validMask=null,lobes=null,printed=null}={}){
   const observed=observedMask(validMask,rgb.length/3);
-  if(observed&&mode!=='red-white-mixture'){
+  if(observed&&mode!=='red-white-mixture'&&mode!=='printed-lobes'){
     // Palette/threshold estimation must never see synthetic background.
     // Fitting weights cannot undo a classification already changed by it.
     const count=observed.reduce((sum,v)=>sum+v,0),samples=new Uint8Array(3*count);
     for(let i=0,j=0;i<observed.length;i++)if(observed[i]){samples.set(rgb.slice(3*i,3*i+3),3*j++);}
-    const classified=quantize(samples,{mode,threshold,swatches,invert,lobes});
+    const classified=quantize(samples,{mode,threshold,swatches,invert,lobes,printed});
     const mask=new Uint8Array(observed.length),probability=classified.probability?new Float32Array(observed.length).fill(.5):null;
     for(let i=0,j=0;i<observed.length;i++)if(observed[i]){mask[i]=classified.mask[j];if(probability)probability[i]=classified.probability[j];j++;}
     return{mask,probability,metadata:{...classified.metadata,observedPixels:count,missingPixels:observed.length-count}};
@@ -100,11 +142,12 @@ export function quantize(rgb,{mode='auto',threshold=128,swatches=['#bd1111','#ff
   if(['threshold','otsu'].includes(mode)){cutoff=mode==='otsu'?otsu(gray):threshold;if(!Number.isFinite(cutoff)||cutoff<0||cutoff>255)throw new Error('Threshold must be 0–255.');for(let i=0;i<n;i++)mask[i]=gray[i]<=cutoff?1:0;}
   else if(mode==='red-white-mixture'){const result=redWhiteMixture(rgb,{validMask:observed});mask.set(result.mask);mixture=result.metadata;probability=result.probability;}
   else if(mode==='red-white'){for(let i=0;i<n;i++)mask[i]=rgb[3*i]>1.5*rgb[3*i+1]&&rgb[3*i]>1.5*rgb[3*i+2]?1:0;}
-  else if(['lab','swatches','lobes'].includes(mode)){
+  else if(['lab','swatches','lobes','printed-lobes'].includes(mode)){
     const labs=new Float64Array(n*3);for(let i=0;i<n;i++)labs.set(rgbToLab(Array.from(rgb.slice(i*3,i*3+3))),3*i);
     const sq=(i,c)=>[0,1,2].reduce((s,k)=>s+(labs[3*i+k]-c[k])**2,0);
     if(mode==='swatches'){colorsSafe(swatches);centers=swatches.map(x=>rgbToLab(hexColor(x)));}
     else if(mode==='lobes'){if(!lobes)throw new Error('Lobe colours are required.');centers=lobes.map(c=>[...c]);}
+    else if(mode==='printed-lobes'){if(!printed)throw new Error('Lobe samples are required.');mask.set(printedPaperMask(labs,printed,{observed}));centers=printed.map(list=>[0,1,2].map(c=>list.reduce((s,l)=>s+l[c],0)/list.length));}
     else{let darkest=0,brightest=0;for(let i=0;i<n;i++){if(labs[3*i]<labs[3*darkest])darkest=i;if(labs[3*i]>labs[3*brightest])brightest=i;}centers=[Array.from(labs.slice(3*darkest,3*darkest+3)),Array.from(labs.slice(3*brightest,3*brightest+3))];if(sq(darkest,centers[1])<1e-6){let far=0;for(let i=1;i<n;i++)if(sq(i,centers[0])>sq(far,centers[0]))far=i;centers[1]=Array.from(labs.slice(3*far,3*far+3));}
       // Extremes alone can trap k-means on a few white background pixels.
       // Also seed from the paper population; keep the lowest full-image error.
@@ -123,7 +166,7 @@ export function quantize(rgb,{mode='auto',threshold=128,swatches=['#bd1111','#ff
         if(error<bestError){bestError=error;bestCenters=centers;}
       }
       centers=bestCenters.sort((a,b)=>a[0]-b[0]);}
-    for(let i=0;i<n;i++)mask[i]=sq(i,centers[0])<=sq(i,centers[1])?1:0;
+    if(mode!=='printed-lobes')for(let i=0;i<n;i++)mask[i]=sq(i,centers[0])<=sq(i,centers[1])?1:0;
   }else throw new Error('Unknown two-colour conversion mode.');
   if(invert)for(let i=0;i<n;i++){if(observed&&!observed[i])continue;mask[i]^=1;if(probability)probability[i]=1-probability[i];}return{mask,probability,metadata:{method:mode,threshold:cutoff,labCenters:centers,...(mixture?{mixture}:{}),inverted:invert,dither:false,...(observed?{observedPixels:observed.reduce((s,v)=>s+v,0),missingPixels:observed.reduce((s,v)=>s+1-v,0)}:{})}};
 }
@@ -176,8 +219,11 @@ export function preprocessPixels({rgba,imageWidth,imageHeight,quad=null,cropProv
   // colour (a glued motif, a shadow, glare) cannot steal as it can a
   // two-cluster split of the square alone.
   const photo=Boolean(quad)&&settings.photoImport===true;
-  const lobes=photo&&(settings.mode??'auto')==='auto'?lobeColours(rgba,imageWidth,imageHeight,quad):null;
-  const {rgb,validMask}=rectifyWithCoverage(rgba,imageWidth,imageHeight,n,quad,settings.background||'#ffffff'),classified=quantize(rgb,{...settings,validMask,...(lobes?{mode:'lobes',lobes}:{})});
+  // Printed papers (a pattern, motifs) are their lobes' whole colours, not one
+  // each: their print would otherwise go to whichever paper's colour is nearer.
+  const auto=photo&&(settings.mode??'auto')==='auto',printed=auto?printedLobes(rgba,imageWidth,imageHeight,quad):null;
+  const lobes=auto&&!printed?lobeColours(rgba,imageWidth,imageHeight,quad):null;
+  const {rgb,validMask}=rectifyWithCoverage(rgba,imageWidth,imageHeight,n,quad,settings.background||'#ffffff'),classified=quantize(rgb,{...settings,validMask,...(printed?{mode:'printed-lobes',printed}:lobes?{mode:'lobes',lobes}:{})});
   // A crop's outermost millimetre is the least sure of the photo:
   // a corner slightly off leaves slivers of a lobe or the table there, which
   // no template keeps and the fidelity check then counts as lost features.

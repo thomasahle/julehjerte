@@ -326,6 +326,39 @@ are visible (5star's points are blunt where the fitter's stay sharp): its tip
 on the mirror is cut sharp only by a hidden segment leaving outwards along the
 mirror, to the checker's touching, and hidden segments end on edges only.
 
+## Printed papers (2026-10-26)
+
+Of the 44 web photographs, the 28 of printed papers (a pattern, motifs, the
+papers' own white print) were Mal's worst: 4 passed, 16 lost a detail and 8
+found no heart, where all 12 of two plain colours passed.
+
+- **Their colours.** A photograph's two papers were its lobes' two colours, and
+  every pixel went to the nearer, so a paper's white print went to whichever
+  paper is paler. Now, when a lobe is printed (under 80% of 320 samples across
+  it within 10 ΔE of their median: `printedLobes` in `core/input.js`), each
+  paper is its lobe's whole colours, a density of those samples (a kernel of
+  7 ΔE), and a pixel goes to the paper whose colours are likelier there, the log
+  ratio averaged over 1.5 mm, and over 4.5 mm at a colour both papers have
+  (their shared print takes the paper around it). No plain picture is taken for
+  printed: all 128 juleflet pictures keep their lobes' two colours.
+- **Finding the heart in a selection.** In a selection the visitor drew, only
+  the colour locator looked, which printed papers defeat. When it finds nothing
+  the heart is now what differs from the selection's background (the colours
+  holding 30% of its outer band; a place is heart beyond three times their own
+  spread there), with the heart's silhouette fitted to that, for review
+  (`backgroundBody`, `selectedSilhouette`). Eight of the ten selections that
+  found nothing find the right heart.
+
+| 44 web photographs | deployed | now |
+|---|---|---|
+| printed papers (28): pass / detail lost / no heart | 4 / 16 / 8 | 19 / 7 / 2 |
+| two plain colours (12): pass | 12 | 12 |
+| scenes (4): pass / detail lost / no heart | 2 / 0 / 2 | 3 / 1 / 0 |
+| all: pass | 18 | 34 |
+
+On the 80 scraped photographs 6 are taken for printed, their masks 1.57% ->
+0.86% from their templates, and one more passes (47); nothing else changes.
+
 ## Details lost on photographs (2026-10-25)
 
 The 68 photographs whose template keeps every rule but loses a region of the
@@ -361,3 +394,9 @@ camel, but takes 20-28 s more and fails on other photographs; not used.
   three quarters of drawn ones.
 - Templates: slits that stop inside the square or meet in T-junctions (the site
   cannot represent them), dimension lines drawn along a slit.
+- Fewer hidden cuts or shorter ones: the exact search takes the fewest hidden
+  segments, then the shortest of those, so where the fitter's template places
+  them differently it can hide more cut in all (tulipan's photograph 89 mm in
+  4 segments against the fitter's 32 mm, kogle-shot 561 against 249; 28 of the
+  98 exact templates hide more, 24 less). A second search on the finer grid
+  from its template finds the same.

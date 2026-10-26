@@ -81,6 +81,7 @@ for (const c of list) {
     const cp = pc.createImageData(S, S); cp.data.set(crop.data); pc.putImageData(cp, S, 0);
     row.stage = 'prepare';
     const prepared = prepare({...input, quad}, importSettings);
+    row.colourMode = prepared.target.metadata.preprocessing?.method;
     const mask = maskFromPrepared({mask: prepared.target.sourceImage.mask, resolution: prepared.target.sourceImage.resolution, validMask: prepared.target.sourceImage.validMask});
     // The page: rows from the import's mask, folded before the search.
     const symmetry = detectSymmetry(mask);
