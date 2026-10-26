@@ -755,6 +755,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		const stored = fromStoredRecipe(request);
 		if (stored) return stored;
 		forgetIslandPorts();
+		triedExactly = false;
 	}
 	making++;
 	try {
@@ -792,7 +793,8 @@ function generateTried(request: GeneratorRequest): GeneratorResult {
 	// A heart refused, hard to cut or with a needle is made again its first
 	// way where a second try applies to how it was made (see `SECOND_TRIES`),
 	// and that one kept where it cuts cleanly at no smaller size with fewer
-	// sharp tips.
+	// sharp tips; one made with its retries too where it is hard to cut at no
+	// smaller size, no harder, with fewer sharp tips.
 	const before = SECOND_TRIES.map(([, seen]) => seen());
 	let result: GeneratorResult | undefined, failure: unknown;
 	try {
@@ -803,21 +805,24 @@ function generateTried(request: GeneratorRequest): GeneratorResult {
 	}
 	const made = SECOND_TRIES.map(([, seen]) => seen());
 	const size = (r: GeneratorResult) => r.scale ?? request.scale ?? .7;
-	for (const [k, [again, , applies]] of SECOND_TRIES.entries()) {
+	for (const [k, [again, , applies, hard]] of SECOND_TRIES.entries()) {
 		if (made[k] === before[k] || result && !result.hardToCut && !cutTipCounts(result.design)[0] ||
 			!applies(result, before[k])) continue;
 		quickAgain = true;
 		madeAgain = false;
+		retriesAgain = hard(result);
 		try {
 			const other = again(() => generateAsAsked(request));
 			// Fewer tips only where its paper holds as well printed.
-			if (!result || !other.hardToCut && size(other) >= size(result) &&
-				(result.hardToCut || fewerCutTips(cutTipCounts(other.design), cutTipCounts(result.design)) &&
-					paperTears(exported(other).design) <= paperTears(exported(result).design))) result = other;
+			const fewer = () => fewerCutTips(cutTipCounts(other.design), cutTipCounts(result!.design)) &&
+				paperTears(exported(other).design) <= paperTears(exported(result!).design);
+			if (!result || size(other) >= size(result) && (!other.hardToCut ? result.hardToCut || fewer()
+				: result.hardToCut && other.hardToCut.spacing >= result.hardToCut.spacing && fewer())) result = other;
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 		} finally {
 			quickAgain = false;
+			retriesAgain = false;
 		}
 	}
 	// A sunburst refused, hard to cut or kept smaller where its motif crowds
@@ -840,16 +845,26 @@ function generateTried(request: GeneratorRequest): GeneratorResult {
 	throw failure;
 }
 /** The ways a heart is made again, each with how often the way it was first
- * made needed it, and whether it applies to the heart that came out: exact
- * outline indices where a bridge's index slipped (see `withExactArcs`; a
- * bauble hard → clean), and hidden islands entered where they come nearest,
- * for a clean heart with a sharp tip where one was entered at its extremes
- * (see `withNearestIslands`; tried for any heart with a needle it cost half
- * again in the small motifs, mostly for nothing). */
-const SECOND_TRIES: [<T>(build: () => T) => T, () => number, (result: GeneratorResult | undefined, from: number) => boolean][] = [
-	[withExactArcs, arcSlipsSeen, () => true],
-	[withNearestIslands, islandsAtExtremesSeen, (result, from) => !!result && !result.hardToCut && tipAtIslandPort(result, from)]
+ * made needed it, whether it applies to the heart that came out, and whether
+ * it is made with its retries, hard to cut if need be: exact outline indices
+ * where a bridge's index slipped (see `withExactArcs`; a bauble hard →
+ * clean), with its retries for a heart hard to cut with a needle (the wreath
+ * at 70% in the rays, two needles → none), unless the heart was made so
+ * already (see `generateOnceMade`), and hidden islands entered where they come
+ * nearest, for a clean heart with a sharp tip where one was entered at its
+ * extremes (see `withNearestIslands`; tried for any heart with a needle it
+ * cost half again in the small motifs, mostly for nothing). */
+const SECOND_TRIES: [<T>(build: () => T) => T, () => number, (result: GeneratorResult | undefined, from: number) => boolean,
+	(result: GeneratorResult | undefined) => boolean][] = [
+	[withExactArcs, arcSlipsSeen, result => !result || !madeExactly.has(result.design),
+		result => !!result?.hardToCut && cutTipCounts(result.design)[0] > 0],
+	[withNearestIslands, islandsAtExtremesSeen, (result, from) => !!result && !result.hardToCut && tipAtIslandPort(result, from), () => false]
 ];
+/** The hearts made again with exact outline indices where nothing else could
+ * be finished (see `generateOnceMade`), and whether the heart being made has
+ * been so already. */
+const madeExactly = new WeakSet<HeartDesign>();
+let triedExactly = false;
 /** Whether a sharp tip of the heart lies at a port where an island was
  * entered at its extremes since `from`. */
 function tipAtIslandPort(result: GeneratorResult, from: number): boolean {
@@ -865,10 +880,10 @@ function tipAtIslandPort(result: GeneratorResult, from: number): boolean {
  * `generate`): at its own size only, since a smaller one is what it is for. */
 let atSizeOnly = false;
 /** Set while a heart is made again (see `SECOND_TRIES`): its first way
- * only, at its own size, without retries, last resorts or a smaller size, so
- * that a heart it cannot improve costs one construction more (a wreath hard
- * in the wedges had cost four). */
-let quickAgain = false, madeAgain = false;
+ * only, at its own size, without retries (unless `retriesAgain`), last
+ * resorts or a smaller size, so that a heart it cannot improve costs one
+ * construction more (a wreath hard in the wedges had cost four). */
+let quickAgain = false, madeAgain = false, retriesAgain = false;
 
 function generateAsAsked(request: GeneratorRequest): GeneratorResult {
 	if (request.mode === 'text' && isTextFigure(request.textFrame)) return generateTextFigure(request);
@@ -1315,7 +1330,7 @@ function generateOnce(request: GeneratorRequest,
 		if (madeAgain) throw new ConstructionError('topology', 'Made again its first way only');
 		madeAgain = true;
 	}
-	const result = generateOnceMade(request, quickAgain ? undefined : deferHard, variants, retries && !quickAgain);
+	const result = generateOnceMade(request, quickAgain ? undefined : deferHard, variants, retries && (!quickAgain || retriesAgain));
 	// A clean figure's shared cuts that meet the motif in a sharp tip of paper
 	// bend to cross it instead, however it was made (a retry's too: a candy
 	// cane's nested construction in the rays); the board circle's do as it
@@ -1342,6 +1357,7 @@ function generateOnceMade(request: GeneratorRequest,
 		if (result) return result;
 	}
 	const rejected: { construction: Construction; recipe: GeneratorResult['recipe'] }[] = [];
+	const slips = arcSlipsSeen();
 	try {
 		const result = generateUsingRecipes(request,
 			(construction, recipe) => rejected.push({ construction, recipe }), curveFitter, variants, retries);
@@ -1467,8 +1483,29 @@ function generateOnceMade(request: GeneratorRequest,
 		if (guardedPanels) return guardedPanels;
 		const bentLegs = retryBentCornerLegs(request, curveFitter);
 		if (bentLegs) return bentLegs;
+		// Where a bridge's index slipped (see `withExactArcs`), the outline
+		// folded back over it can leave no candidate that finishes at all: the
+		// heart is then made again with exact indices, hard to cut if need be,
+		// before anything farther from what was asked (the wreath at 85% in the
+		// rays, whose every candidate crossed such a fold, had its lanes run
+		// through it instead). Once a heart, where nothing first finished (as a
+		// rule at the size and gap asked for): a swan refused had tried it at
+		// every smaller size and gap, for a quarter again of its time.
+		const slipped = arcSlipsSeen() !== slips;
+		const exactly = () => {
+			if (triedExactly) return;
+			triedExactly = true;
+			try {
+				const made = withExactArcs(() => generateOnce(request, undefined, variants, retries));
+				madeExactly.add(made.design);
+				return made;
+			} catch (exactError) {
+				if (!(exactError instanceof ConstructionError) && !(exactError instanceof CutGeometryError)) throw exactError;
+			}
+		};
 		const finishHard = () => hardToCutResult(request, [...curvedCandidates,
-			...closePanels.map(construction => ({ construction, recipe: 'letters' as const }))], curveFitter);
+			...closePanels.map(construction => ({ construction, recipe: 'letters' as const }))], curveFitter) ??
+			(slipped ? exactly() : undefined);
 		if (deferHard) {
 			deferHard(finishHard);
 			throw error;

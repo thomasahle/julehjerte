@@ -1,5 +1,41 @@
 # Generator robustness results
 
+## Hearts made again with exact outline indices where a slipped bridge left nothing to finish
+
+Where a bridge's index slipped (`withExactArcs`), the outline folds back over
+the cut, and a heart hard to cut can then have no candidate that finishes at
+all: every candidate of the wreath at 85% in the rays crossed such a fold, and
+lanes run through the wreath took its place (nine sharp tips, thirteen weak
+places). Such a heart is now made again with exact indices, hard to cut if
+need be, before anything farther from what was asked: once a heart, where
+nothing first finished. A heart hard to cut with a needle is made again with
+exact indices and its retries too, and kept at no smaller size, no harder to
+cut, with fewer sharp tips and its paper holding as well (the wreath at 70%,
+two needles → none). Exact indices everywhere were not kept: they change clean
+hearts both ways (the church at 70% in the fitted frame and the wedges, no
+weak place → two).
+
+The wreath, needles / sharp tips (under 30° / 45°), paper printed 80 mm wide:
+
+| frame | size | before | after |
+| --- | --- | --- | --- |
+| rays | 70% | 2 / 3, 4 weak | 0 / 1, 4 weak |
+| rays | 85% | 0 / 9, 13 weak | 0 / 1, 4 weak |
+| rays | 100% | 0 / 5, 17 weak, 6 loose | 0 / 1, 4 weak |
+| checks | 70% | 2 / 3, 4 weak | 0 / 1, 4 weak |
+| checks | 85% | 0 / 9, 13 weak | 0 / 1, 4 weak |
+| checks | 100% | 0 / 7, 16 weak, 6 loose | 0 / 1, 4 weak |
+| sunburst | 70% | 1 / 2, 13 weak, 5 loose | 0 / 1, 4 weak |
+
+All twelve frames, 49 motifs at 50/70/85/100% (the sunburst to 85%): every
+other heart identical. The wreath is faster (35 s → 22 s at 85%); the extra
+try costs where it fails: the swan refused in the large silhouette at 85%
+67 s → 71 s, the owl in the checked tips at 100% (made at 97%) 46 s → 55 s.
+Tried at every smaller size and gap instead, it cost the swan a quarter again,
+and the gift at 100% in the checked tips came out at 98% for 97% (a loose
+piece → seven more weak places) in twice the time; even so the ten figure
+frames took 6916 s against 6927.
+
 ## Hidden cuts that meet an outline close together move apart
 
 Where two hidden cuts meet a motif's outline nearer each other than a paper's

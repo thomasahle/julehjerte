@@ -66,6 +66,7 @@ import church from '../../../static/generator/motifs/mdi-church.json';
 import mouse from '../../../static/generator/motifs/gi-mouse.json';
 import mdiBird from '../../../static/generator/motifs/mdi-bird.json';
 import owl from '../../../static/generator/motifs/mdi-owl.json';
+import wreath from '../../../static/generator/motifs/mc-wreath.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -207,6 +208,24 @@ describe('complete motif frames', () => {
   expect(hardToCut).toBeUndefined();
   expect(paperFaults(design)).toEqual({ weak: 2, loose: 0 });
  }, 30000);
+ slow('makes the wreath again with exact outline indices where a slipped bridge\'s fold left nothing to finish', () => {
+  // At 85% in the rays every hard-to-cut candidate crossed the outline
+  // folded back at a bridge whose index had slipped, and lanes run through
+  // the wreath took its place: nine sharp tips, thirteen weak places.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Wreath', contours: wreath.contours as Ring[], colors, style: 'rays', scale: .85, gap: 3 });
+  expect(hardToCut).toBeDefined();
+  expect(cutTipCounts(design)).toEqual([0, 1]);
+  expect(paperFaults(design)).toEqual({ weak: 4, loose: 0 });
+ }, 60000);
+ slow('makes a wreath hard to cut with needles again with exact outline indices and its retries', () => {
+  // At 70% in the rays the wreath, hard to cut, kept two needles where its
+  // bridges' indices had slipped; made again with exact ones and its
+  // retries, it has none.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Wreath', contours: wreath.contours as Ring[], colors, style: 'rays', scale: .7, gap: 3 });
+  expect(hardToCut).toBeDefined();
+  expect(cutTipCounts(design)).toEqual([0, 1]);
+  expect(paperFaults(design)).toEqual({ weak: 4, loose: 0 });
+ }, 60000);
  it('keeps the corners\' cuts a paper\'s width from the motif where theirs would tear in print', () => {
   // The snowman at the default size hung by paper under 2 mm printed 80 mm
   // wide; its connections kept a paper's width off, it holds.
