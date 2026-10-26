@@ -21,6 +21,8 @@
 //        SOLVES=dir     further solves (<motif>.<style>.json, <motif>.<style>-<strips>.*.json) beside
 //                       scripts/generator/solves
 //        MERGE=1        keep the file's recipes for other strips
+//        ADD=1          keep all the shipped file's recipes, adding this run's only for the topologies
+//                       it has none for on this board (so no heart the page draws already changes)
 //        OUT=file       write there instead, unlisted (to merge runs on several boards)
 //        CACHE=dir      where each motif size's judgement is kept (tmp/generator/topology): the
 //                       generator's own heart under a hash of src/lib but the recipe code, the recipes'
@@ -236,9 +238,11 @@ try {
 	}
 	console.log(`${style} ${strips}: ${recipes.length} recipes kept; the site's choice beats the generator's own heart at ${won} of ${rows.length} motif sizes judged`);
 
-	const dir = 'static/generator/recipes', file = process.env.OUT ?? path.join(dir, `${style}.json`);
-	const old = JSON.parse(await fs.readFile(file, 'utf8').catch(() => '{"version":1,"recipes":[]}'));
-	const all = [...process.env.MERGE ? old.recipes.filter(r => r.strips !== strips) : [], ...recipes];
+	const dir = 'static/generator/recipes', shipped = path.join(dir, `${style}.json`), file = process.env.OUT ?? shipped;
+	const old = JSON.parse(await fs.readFile(process.env.ADD ? shipped : file, 'utf8').catch(() => '{"version":1,"recipes":[]}'));
+	const topologyKey = r => `${r.strips}|${r.outline}|${r.motif}`, had = new Set(old.recipes.map(topologyKey));
+	const all = process.env.ADD ? [...old.recipes, ...recipes.filter(r => !had.has(topologyKey(r)))]
+		: [...process.env.MERGE ? old.recipes.filter(r => r.strips !== strips) : [], ...recipes];
 	await fs.mkdir(path.dirname(file), { recursive: true });
 	await fs.writeFile(file, JSON.stringify({ version: 1, recipes: all }) + '\n');
 	if (process.env.OUT) process.exit(0);

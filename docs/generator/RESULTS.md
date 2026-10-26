@@ -677,6 +677,19 @@ rabbit's eye as a hole) or whose thin parts need a place the four cuts to the
 board cannot give (the cat below 80%). A heart takes 0.4 s longer on average
 (147 → 564 ms over 20 sizes of five motifs), in the page's worker.
 
+### Topologies no solve had
+
+The exact search then ran from the generator's own heart at a few sizes of the
+featured motifs whose topology had no recipe there. On three strips 9 of 15
+solved (`<motif>.board-3.cover.json`; not the swan, hedgehog, polar star,
+candle, candy cane or star; the generator refuses the elephant on the board,
+the search too), giving 26 recipes for 14 topologies the page had none for.
+They are added beside the recipes already shipped (`ADD=1`), which stay as
+they were. At every third size of the 49 featured motifs on three strips the
+page's heart is better at 136 of 931 and worse at none, and the places the
+paper may tear at those sizes go from 98 to 21 (the wreath from four to eight
+to none or two, the gingerbread man below 60% from one or two to none or one).
+
 ### The circle, its own mirror image
 
 The plain circle was a 63-gon from 5.7°: within an eighth of a percent of

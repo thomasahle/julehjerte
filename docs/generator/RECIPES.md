@@ -162,7 +162,11 @@ the first size where that draws worse than the solve itself (the bauble's
 made for keeps its cuts; a held solve whose pieces another solve has is judged
 on its own motif only. It writes `static/generator/recipes/board.json`.
 Give it the motifs the page features (`MOTIF_GROUPS` in catalog.ts), so its
-choice is not just the solved motifs'.
+choice is not just the solved motifs'. `<motif>.board-<strips>.cover.json` holds
+solves made where the motif's topology had no recipe, from the generator's own
+heart at a few sizes. `ADD=1` keeps every recipe the shipped file has and adds
+the run's only for topologies it has none for on that board, so no heart the
+page draws already changes.
 
 The script groups the sizes by topology and solves each group at its first
 size not yet covered, then draws that solve at every size of the group through
