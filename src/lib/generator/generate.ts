@@ -8,13 +8,15 @@ import { NO_WHOLE_STRIPS, STRIPS, crowdedHiddenCutsSetAside, slidePlace, stripFi
 import { BOARD_STRIPS, MOTIF, boardPlacement, boardRadius, boardScale, boardSetting, boardSteps, enclosedAlong, motifChoices, squareChoices, type BoardStyle } from './boardMotif';
 import { TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
 import { CIRCLE_STYLES, fillSquare, fitCircle, withNarrowCrown, crowdsCrown } from './frameFit';
-import { fitsOutline, recipeConstruction, recipeOutline, recipesAt, type Recipe } from './recipes';
-import { picture } from './picture';
+import { isTopology, outlineFor, recipeConstruction, recipesAt, type Recipe } from './recipes';
+import { motifFit, topologyConstruction } from './topologyRecipes';
+import { boardOutline } from './boardOutline';
+import { picture, type Known } from './picture';
 export { fillSquare, fitCircle } from './frameFit';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
 import { generateCheckeredGrid, checkeredGridCache, checkeredLayouts } from './checkeredGrid';
 import { generateMixedCheckeredGrid, mixedCheckeredGridCache } from './mixedCheckeredGrid';
-import { cutTipCounts, cutTipPoints, fewerCutTips } from './cutQuality';
+import { betterCuts, cutMeasures, cutTipCounts, cutTipPoints, fewerCutTips } from './cutQuality';
 import { trickyLetters } from './trickyLetters';
 import { normalizeContours, withoutSpurs } from './contours';
 import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
@@ -28,8 +30,9 @@ import {
 	CutGeometryError,
 	type CutGeometry
 } from '$lib/inverse/toHeartDesign';
-import type { HeartColors, HeartDesign } from '$lib/types/heart';
+import type { HeartColors, HeartDesign, Vec } from '$lib/types/heart';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
+import { lobesShareTemplate, mapPointBetweenLobes } from '$lib/utils/symmetry';
 import { intersectionMarginPx } from '$lib/editor/curveIssues';
 import { findSearchIssues, searchFingerIssues } from './searchClearance';
 import { rasterizeDesign } from '$lib/paint/rasterize';
@@ -408,22 +411,89 @@ type Construction = ReturnType<typeof generateFigure> & {
 /** The whole sheet, the domain of a picture that fills it (a board's). */
 const SHEET: Ring = [[0, 0], [100, 0], [100, 100], [0, 100]];
 
-/** The heart a stored recipe draws on the request's picture, where one fits
- * its outline and cuts cleanly (see `recipes`). */
-export function fromStoredRecipe(request: GeneratorRequest, recipes = request.recipes): GeneratorResult | undefined {
-	if (request.mode !== 'figure' || !recipes?.length) return;
+/** A figure's request with its motif's hairline spurs gone, as the generator
+ * draws it (see `withoutSpurs`). */
+export const spurless = (request: GeneratorRequest): GeneratorRequest =>
+	request.mode === 'figure' && !request.font && request.contours ? { ...request, contours: withoutSpurs(request.contours) } : request;
+
+/** The hearts stored recipes draw on the request's picture, where they fit
+ * its outline and cut cleanly (see `recipes`), up to `count`: a motif's own
+ * on the picture it was solved on, the generator's own as it told it; with
+ * `topology`, a topology's on the picture `known` tells (the generator's own
+ * heart's, see `fromTopology`), its motif's hairline spurs gone as the
+ * generator draws it. A board's heart says what its picture shows as the
+ * board circle's own does: the motif on its enclosing circle over the corner
+ * squares, and the strips where it leaves the middle lines out. */
+export function storedHearts(request: GeneratorRequest, recipes = request.recipes, topology = false, count = 1, known: Known = {}): GeneratorResult[] {
+	if (request.mode !== 'figure' || !recipes?.length) return [];
 	// The board the generator builds: the board circle's five strips where the visitor chose none.
 	const strips = request.style === 'board' ? request.board ?? BOARD_STRIPS.board.initial : request.board;
-	for (const recipe of recipesAt(recipes, request.style ?? 'rays', strips, request.scale ?? .7, request.gap ?? 3)) {
-		// On the picture it was solved on: the generator's own, as it told it.
-		const rings = picture(request, recipe.known)?.rings;
-		if (!rings?.length || !fitsOutline(recipe, recipeOutline(rings))) continue;
+	const hearts: GeneratorResult[] = [], listed = recipesAt(recipes, request.style ?? 'rays', strips, request.scale ?? .7, request.gap ?? 3);
+	const constructions: (() => ReturnType<typeof recipeConstruction> | undefined)[] = [];
+	if (topology) {
+		const shown = picture(spurless(request), known), mine = listed.filter(isTopology);
+		if (!shown?.rings.length || !mine.length || shown.motif === undefined) return [];
+		const o = boardOutline(shown.rings.slice(0, shown.motif));
+		// A topology's recipe solved on this very motif (its places lie on its
+		// outline) first, the one solved for this size first of those: it draws
+		// the solve itself.
+		const step = Math.round((request.scale ?? .7) * 100);
+		const own = mine.filter(recipe => motifFit(recipe, shown) < SOLVED_ON)
+			.sort((a, b) => Number(!a.solved?.includes(step)) - Number(!b.solved?.includes(step)));
+		for (const recipe of [...own, ...mine.filter(recipe => !own.includes(recipe))]) constructions.push(() => topologyConstruction(recipe, shown, o));
+	} else for (const recipe of listed) if (!isTopology(recipe)) constructions.push(() => {
+		const shown = picture(request, recipe.known), o = shown?.rings.length ? outlineFor(recipe, shown) : undefined;
+		return o && recipeConstruction(recipe, o);
+	});
+	for (const construct of constructions) {
 		try {
-			return finishConstruction(request, { ...recipeConstruction(recipe, rings), ...request.style === 'board' ? { domain: [SHEET] } : {} }, 'nested');
+			const construction = construct();
+			if (!construction) continue;
+			const heart = finishConstruction(request, { ...construction, ...request.style === 'board' ? { domain: [SHEET] } : {} }, 'nested');
+			hearts.push(request.style === 'board' ? { ...heart, enclosed: true, ...heart.design.gridSize.x !== strips && { board: strips } } : heart);
+			if (hearts.length >= count) break;
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 		}
 	}
+	return hearts;
+}
+
+/** The heart a motif's own stored recipe draws on the request's picture, where
+ * one fits its outline and cuts cleanly (see `recipes`). */
+export const fromStoredRecipe = (request: GeneratorRequest, recipes = request.recipes): GeneratorResult | undefined => storedHearts(request, recipes)[0];
+
+/** How many of its topology's stored recipes a heart is drawn with, the best
+ * kept (see `fromTopology`). */
+const TOPOLOGY_TRIES = 3;
+/** How near its outline, as a share of its size, a recipe's places lie on the
+ * motif it was solved on (see `motifFit`). */
+const SOLVED_ON = .005;
+
+/** What the generator's own heart tells its picture (see `Known`), as the page
+ * takes it at the size `asked`. */
+export const knownOf = (own: GeneratorResult, asked: number): Known => ({
+	place: own.place, board: own.board ?? own.design.gridSize.x,
+	circle: own.scale !== undefined ? own.scale < asked ? own.scale : 'large' : undefined,
+	enclosed: asked > .85 ? !!own.enclosed : undefined, whole: asked > .7 ? !!own.whole : undefined
+});
+
+/** The best heart its topology's stored recipes draw (see `recipes`) on the
+ * picture of the generator's own heart `own` (the motif kept whole, or on a
+ * larger circle, where it keeps one), the first `TOPOLOGY_TRIES` that cut
+ * cleanly compared, where it is better than `own` (see `betterCuts`), or
+ * that is hard to cut, or there is none. It tells the page the picture as
+ * `own` does. */
+export function fromTopology(request: GeneratorRequest, own?: GeneratorResult): GeneratorResult | undefined {
+	const known = own ? knownOf(own, request.scale ?? .7) : {};
+	const hearts = storedHearts(request, request.recipes, true, TOPOLOGY_TRIES, known).filter(heart => !heart.hardToCut);
+	if (!hearts.length) return;
+	const rings = picture(spurless(request), known)!.rings, measure = (heart: GeneratorResult) => cutMeasures(heart.design, rings);
+	const best = hearts.map(heart => ({ heart, m: measure(heart) })).reduce((a, b) => betterCuts(b.m, a.m) ? b : a);
+	const heart = improveSharedConnections(best.heart, true);
+	if (!own) return heart;
+	const told = { ...heart, scale: own.scale, enclosed: own.enclosed, whole: own.whole, board: own.board ?? heart.board };
+	return own.hardToCut || betterCuts(measure(heart), measure(own)) ? told : undefined;
 }
 
 function finishConstruction(request: GeneratorRequest, r: Construction, recipe: GeneratorResult['recipe'],
@@ -475,10 +545,16 @@ function finishConstruction(request: GeneratorRequest, r: Construction, recipe: 
  * original whenever bending fails full-sheet checks or does not improve the
  * actual exported cuts: all at once, else tip by tip (a polar star in the
  * rays from twelve sharp tips to six). Visible outlines, strip count and
- * connections stay fixed. */
-function improveSharedConnections(result: GeneratorResult): GeneratorResult {
+ * connections stay fixed. With `keepTemplate`, lobes sharing one template
+ * (see `lobesShareTemplate`) go on sharing it: each tip is bent with its
+ * mirror image in the other lobe. */
+function improveSharedConnections(result: GeneratorResult, keepTemplate = false): GeneratorResult {
+	const shared = keepTemplate && lobesShareTemplate(result.design.fingers, result.design.gridSize);
+	const rect = inferOverlapRect(result.design.fingers, result.design.gridSize);
 	const design = bentWhere(result.design, design => !findSearchIssues(design.fingers, intersectionMarginPx(
-		inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(design.gridSize.x, design.gridSize.y))).size);
+		inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(design.gridSize.x, design.gridSize.y))).size &&
+		(!shared || lobesShareTemplate(design.fingers, design.gridSize)),
+	shared ? p => mapPointBetweenLobes({ minX: rect.left, minY: rect.top, size: rect.width }, p) : undefined);
 	// Endpoints, visible curves and strip connections are unchanged. Each moved
 	// curve is still exactly coincident on both sheets, preserving the weave.
 	return design ? { ...result, design } : result;
@@ -508,14 +584,22 @@ function improveHardConnections(result: GeneratorResult): GeneratorResult {
 	return design ? { ...result, design } : result;
 }
 
+/** How near (in the design's pixels) a sharp tip lies to another's mirror
+ * image in the other lobe to be bent with it (see `bentWhere`), as near as
+ * lobes sharing a template may differ (see `lobesShareTemplate`). */
+const MIRROR_TIP = 5;
+
 /** The design bent at its sharp tips of paper where `kept` keeps it: all at
- * once, else tip by tip, each kept bend building on the last. */
-function bentWhere(original: HeartDesign, kept: (design: HeartDesign) => boolean): HeartDesign | undefined {
+ * once, else tip by tip, each kept bend building on the last; a tip with its
+ * mirror image in the other lobe where `mirror` maps one lobe to the other. */
+function bentWhere(original: HeartDesign, kept: (design: HeartDesign) => boolean, mirror?: (p: Vec) => Vec): HeartDesign | undefined {
 	const all = bentAtTips(original);
 	if (all && kept(all)) return all;
 	let design = original;
 	for (const tip of cutTipPoints(original)) {
-		const bent = bentAtTips(design, point => Math.hypot(point.x - tip.x, point.y - tip.y) < 1e-7);
+		const twin = mirror?.(tip);
+		const bent = bentAtTips(design, point => Math.hypot(point.x - tip.x, point.y - tip.y) < 1e-7 ||
+			!!twin && Math.hypot(point.x - twin.x, point.y - twin.y) < MIRROR_TIP);
 		if (bent && kept(bent)) design = bent;
 	}
 	return design === original ? undefined : design;
@@ -586,7 +670,8 @@ let making = 0;
 export function generate(request: GeneratorRequest): GeneratorResult {
 	// A picture solved once by the exact-outline search keeps the cuts found
 	// for it, where they cut cleanly at this size (see `recipes`); every other
-	// heart is built as below.
+	// heart is built as below, and a topology's stored cuts drawn on it where
+	// they are better.
 	if (!making) {
 		const stored = fromStoredRecipe(request);
 		if (stored) return stored;
@@ -594,7 +679,18 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	}
 	making++;
 	try {
-		return generateTried(request);
+		if (making > 1 || !request.recipes?.some(isTopology)) return generateTried(request);
+		let own: GeneratorResult | undefined, failure: unknown;
+		try {
+			own = generateTried(request);
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			failure = error;
+		}
+		const better = fromTopology(request, own);
+		if (better) return better;
+		if (own) return own;
+		throw failure;
 	} finally {
 		making--;
 	}

@@ -25,8 +25,9 @@ import { isTextFigure, textFigureRequest } from './textFigure';
 const clearest = new WeakMap<Ring[], Map<number, number>>();
 
 /** A heart's picture; for the figure in the checks, where it puts the motif
- * down the heart's middle, and how far the motif can move and keep its size. */
-export type Picture = { rings: Ring[]; place?: number; bounds?: PlaceBounds };
+ * down the heart's middle, and how far the motif can move and keep its size;
+ * on a board, where the motif's own rings begin after the board's. */
+export type Picture = { rings: Ring[]; place?: number; bounds?: PlaceBounds; motif?: number };
 
 /** What a heart already made of the motif in this frame, at its default size,
  * tells the next picture: where the figure in the checks lay, the board's
@@ -269,8 +270,9 @@ function boardPicture(request: GeneratorRequest, circle?: 'large' | number, encl
 				if (inside.length >= 3) rings.push(inside);
 			}
 	}
+	const motif = rings.length;
 	rings.push(...contours.map(ring => ring.map(([x, y]) => uprightToSheet([(x - cx) * scale, (y - cy) * scale]))));
-	return { rings };
+	return { rings, motif };
 }
 
 /** The part of a polygon inside a convex one, anticlockwise or not. */

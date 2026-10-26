@@ -4,11 +4,13 @@
 // rings); each group is covered by solves of the exact-outline search (static/inverse/core/exact)
 // at its first size not yet covered, each solve kept at every size of the group where the
 // generator's own path (`fromStoredRecipe`) cuts it cleanly and better than the generator's
-// construction, judged in turn by the places the paper may tear (weak paper at the 80 mm print,
-// where the paper check is there, src/lib/geometry/paperNecks.ts, and needles), sharp tips, turns
-// along the hidden cuts and the cuts' length: the first that differs decides, and a tie keeps the
-// generator's. The recipes go to static/generator/recipes/<motif>.<style>.json,
-// replacing that board's, and the file is listed in index.json.
+// construction, judged as the page compares hearts (`cutMeasures`, `betterCuts`): the places the
+// paper may tear (weak paper at the 80 mm print, src/lib/geometry/paperNecks.ts, and needles), one
+// template for both lobes over two, sharp tips, turns along the hidden cuts and the cuts' length,
+// and a tie keeps the generator's. A board's recipes are solves for its topologies' (scripts/generator/topology.mjs
+// chooses those): they go to scripts/generator/solves/<motif>.board.json. Another frame's are the
+// motif's stored recipes: they go to static/generator/recipes/<motif>.<style>.json, listed in
+// index.json. Either replaces that board's (or frame's).
 //
 //   node scripts/generator/recipes.mjs <motif> <style> [strips] [from to]
 //   REJUDGE=1 node scripts/generator/recipes.mjs <motif> <style> [strips]   # judge the file's recipes again
@@ -32,11 +34,8 @@ try {
 	const { generate, fromStoredRecipe } = await load('/src/lib/generator/generate.ts');
 	const { picture } = await load('/src/lib/generator/picture.ts');
 	const { recipeOutline } = await load('/src/lib/generator/recipes.ts');
-	const { cutTipCounts } = await load('/src/lib/generator/cutQuality.ts');
-	const paper = await load('/src/lib/geometry/paperNecks.ts').catch(() => null), weak = design => paper ? paper.paperFaults(design).weak : 0;
-	// Without the paper check weak paper counts as none, and recipes that win by their paper are lost.
-	if (!paper && !process.env.NO_PAPER) throw new Error('The paper check (src/lib/geometry/paperNecks.ts) is missing: run in a tree that has it, or set NO_PAPER=1 to judge without it.');
-	const { inferOverlapRect } = await load('/src/lib/utils/overlapRect.ts');
+	// A heart's measures and how they decide, as the page compares hearts (see cutQuality.ts).
+	const { cutMeasures: measures, betterCuts: better } = await load('/src/lib/generator/cutQuality.ts');
 	const { rasterizeDesign } = await load('/src/lib/paint/rasterize.ts');
 	// How far two hearts' woven pictures are apart, as a share of a 200 × 200 raster: a recipe may
 	// not change what a size shows (the generator keeps some motifs whole past the touching circle,
@@ -46,56 +45,6 @@ try {
 		let d = 0;
 		for (let i = 0; i < A.length; i++) d += A[i] !== B[i];
 		return d / A.length;
-	};
-	// A heart's measures, in the order they decide: places its paper may tear (weak necks and
-	// needles), sharp tips, turns over 25° along its hidden cuts (where the picture has one colour
-	// on both sides), its cuts' length.
-	const inside = (x, y, ring) => {
-		let c = false;
-		for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-			const [xi, yi] = ring[i], [xj, yj] = ring[j];
-			if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c;
-		}
-		return c;
-	};
-	const measures = (design, rings) => {
-		const rect = inferOverlapRect(design.fingers, design.gridSize), unit = p => [(p.x - rect.left) / rect.width * 100, (p.y - rect.top) / rect.height * 100];
-		const colour = (x, y) => rings.reduce((v, r) => v ^ Number(inside(x, y, r)), 0);
-		let length = 0, turns = 0;
-		for (const finger of design.fingers) {
-			if (!finger.id.includes('-cut-')) continue;
-			const pts = [];
-			for (const sg of finger.segments) for (let k = pts.length ? 1 : 0; k <= 8; k++) {
-				const t = k / 8, u = 1 - t, at = c => u * u * u * sg.p0[c] + 3 * u * u * t * sg.p1[c] + 3 * u * t * t * sg.p2[c] + t * t * t * sg.p3[c];
-				pts.push(unit({ x: at('x'), y: at('y') }));
-			}
-			let last = null, from = pts[0];
-			for (let i = 1; i < pts.length; i++) {
-				const p = pts[i], q = pts[i - 1], l = Math.hypot(p[0] - q[0], p[1] - q[1]);
-				if (!l) continue;
-				length += l;
-				const m = [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2], n = [-(p[1] - q[1]) / l, (p[0] - q[0]) / l];
-				const hidden = colour(m[0] + .15 * n[0], m[1] + .15 * n[1]) === colour(m[0] - .15 * n[0], m[1] - .15 * n[1]);
-				if (Math.hypot(p[0] - from[0], p[1] - from[1]) < .5) continue;
-				const direction = Math.atan2(p[1] - from[1], p[0] - from[0]);
-				if (last !== null && hidden) {
-					let a = Math.abs(direction - last);
-					if (a > Math.PI) a = 2 * Math.PI - a;
-					if (a > 25 * Math.PI / 180) turns++;
-				}
-				last = direction;
-				from = p;
-			}
-		}
-		const [needles, sharp] = cutTipCounts(design);
-		return [weak(design) + needles, sharp, turns, Math.round(length)];
-	};
-	// Fewer places that may tear win outright; otherwise the first measure that differs decides, but a
-	// sharp tip less buys no cuts much busier (a quarter more hidden turns, a twentieth more length).
-	const better = (a, b) => {
-		if (a[0] !== b[0]) return a[0] < b[0];
-		const i = a.findIndex((x, k) => x !== b[k]);
-		return i >= 0 && a[i] < b[i] && a[2] <= 1.25 * b[2] + 2 && a[3] <= 1.05 * b[3];
 	};
 	const { DEFAULT_COLORS, DEFAULT_COLORS_HEX } = await load('/src/lib/stores/colors.ts');
 	const mal = await load('/src/lib/inverse/engine.ts');
@@ -252,7 +201,7 @@ try {
 		const rings = picture(request(step.p / 100), recipe.known).rings;
 		return Boolean(step.own.hardToCut) || better(measures(made.design, rings), measures(step.own.design, rings));
 	};
-	const dir = 'static/generator/recipes', name = `${motif}.${style}`, file = path.join(dir, `${name}.json`);
+	const solves = style === 'board', dir = solves ? 'scripts/generator/solves' : 'static/generator/recipes', name = `${motif}.${style}`, file = path.join(dir, `${name}.json`);
 	const old = JSON.parse(await fs.readFile(file, 'utf8').catch(() => '{"version":1,"recipes":[]}'));
 	const recipes = [];
 	if (process.env.REJUDGE) {
@@ -298,9 +247,11 @@ try {
 	const kept = old.recipes.filter(r => r.style !== style || r.strips !== strips || (!process.env.REJUDGE && r.steps.every(s => s < from || s > to)));
 	const all = [...kept, ...recipes];
 	await fs.writeFile(file, JSON.stringify({ version: 1, recipes: all }) + '\n');
-	const indexFile = path.join(dir, 'index.json'), index = JSON.parse(await fs.readFile(indexFile, 'utf8').catch(() => '{"files":[]}'));
-	index.files = [...new Set([...index.files.filter(f => f !== name), ...all.length ? [name] : []])].sort();
-	await fs.writeFile(indexFile, JSON.stringify(index) + '\n');
+	if (!solves) {
+		const indexFile = path.join(dir, 'index.json'), index = JSON.parse(await fs.readFile(indexFile, 'utf8').catch(() => '{"files":[]}'));
+		index.files = [...new Set([...index.files.filter(f => f !== name), ...all.length ? [name] : []])].sort();
+		await fs.writeFile(indexFile, JSON.stringify(index) + '\n');
+	}
 } finally {
 	await server.close();
 }

@@ -82,6 +82,49 @@ strips), and on five strips at 99–100% no weak paper where there were
 fourteen and eight places (46 sizes). The tree keeps 47 sizes on five strips
 (as sharp, fewer turns and 1–9% shorter); the heart 17 on nine.
 
+### A topology's recipe, for every motif of it
+
+The recipes above were a motif's own. On the board circle the motif is an
+island in the circle (the board's lines are cleared there), so every motif
+whose rings nest alike has the same topology: the heart's and the star's
+solves at 60% and 72% on five strips are the same piece for piece. So the 358
+solves of 21 motifs (the mirror-symmetric motifs' tied solves among them) are
+each drawn as their topology's on any motif of it (its places on the motif
+found anew, see RECIPES.md), and the page draws up to three at a size and
+keeps the best where it beats the generator's own heart, judged with the
+paper check at 80 mm and one template for both lobes over two.
+
+Chosen on the 49 motifs the page features, every third size (`topology.mjs`):
+
+| Board | Recipes | Motif sizes where a stored heart beats the generator's |
+|---|---|---|
+| 3×3 | 34 | 280 of 931 |
+| 5×5 | 240 | 450 of 931 |
+| 7×7 | 67 | 239 of 931 |
+| 9×9 | 32 | 130 of 931 |
+
+Against the 18 motifs' own recipes the page drew before, at every third size
+of the boards they were solved for, the page's heart is better at 299 of 570
+and the same at the other 271. A solve is drawn where its places lay on its
+own motif (`held`) as well as made short, so each solved motif keeps its own
+solve's hearts; held, the nisse's 87% on five strips first lost a cut that
+runs on in the line of one of its sides (rounding made the line cross it).
+
+Of the 18 mirror-symmetric motifs at every third size, the heart's lobes
+share one template at 180 of 342 on five strips where the page had 158 (162
+where it had 160 on three, 122 where 120 on seven, 130 where 125 on nine): a
+recipe solved tied takes its places in mirror pairs on any motif its own
+mirror image. Where one is lost it is for fewer places the paper may tear:
+the star at 78, 81 and 90% on five strips has none instead of two, the church
+at 72, 75 and 84% two, one and one instead of four, four and two, the circle
+at 81% four instead of eight.
+
+Recipes are drawn on the generator's own picture (the polar star kept whole).
+Nothing yet for the motifs whose topology no solve has (the candle, the
+rabbit's eye as a hole) or whose thin parts need a place the four cuts to the
+board cannot give (the cat below 80%). A heart takes 0.4 s longer on average
+(147 → 564 ms over 20 sizes of five motifs), in the page's worker.
+
 ## The sunburst's crown narrows where its motif crowds the circle
 
 The sunburst's circle is four fifths of its frame, and the frame stops at the
