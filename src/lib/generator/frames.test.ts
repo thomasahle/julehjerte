@@ -752,6 +752,13 @@ describe('frames from real hearts', () => {
   expect(hardToCut).toBeUndefined();
   expect(cutTipCounts(design)).toEqual([0, 2]);
  });
+ slow('keeps the space around a sunburst\'s motif a little smaller, rather than drawing it at four fifths of the size it says', () => {
+  // At 90% no heart keeping the space around the cat can be finished. Without
+  // it the circle keeps the frame's own size and the motif fills it, at four
+  // fifths of 90%: it was so, said to be 90%. At 88% the space is kept.
+  const { scale } = generate({ mode: 'figure', name: 'Cat', contours: pinCat.contours as Ring[], colors, style: 'sunburst', frame: 'circle', frameSize: 70, scale: .9, gap: 3 });
+  expect(scale).toBeCloseTo(.88);
+ }, 30000);
  slow('narrows a sunburst\'s crown where its motif crowds the largest circle', () => {
   // At 82% the frame has reached the largest the outer strips have room for,
   // and the circle at four fifths of it met the candy: hard to cut. Its

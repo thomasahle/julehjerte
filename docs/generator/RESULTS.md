@@ -1,5 +1,47 @@
 # Generator robustness results
 
+## The sunburst's motif no longer drawn smaller than the heart says
+
+Where no heart keeping the space asked for around the motif could be finished
+at a size, the sunburst's last way kept the frame's own size without the
+space, and the motif filled its circle as it did before there was a space to
+set: at four fifths of the size asked, the circle being four fifths of the
+frame. The heart did not say so. At 90%, the most the slider gives, 12 of the
+46 featured motifs said to be at full size were drawn at 72% (the gift, santa
+hat, owl, rabbit, mouse, cow, swan …), and the size ladder's own sizes were
+made the same way (the polar star said 82% and was drawn at 66%, the unicorn
+said 88% and was drawn at 70%). The instant picture showed them larger.
+
+Now a heart made so says its size (four fifths of the size asked), and a
+sunburst first looks below the size asked, keeping the space, for one larger
+than that; the ladder's own sizes keep the space, and only where none does at
+any of them is the motif drawn smaller.
+
+The 49 featured motifs at 90%: 34 the same, 15 changed, each drawn larger than
+before:
+
+| motif | before (said / drawn) | now |
+| --- | --- | --- |
+| gift | clean 90 / 72 | hard 90 |
+| santa hat | clean 90 / 72 | clean 90 |
+| mitten | hard 90 / 72 | clean 90 |
+| cow | clean 90 / 72 | clean 90 |
+| swan | hard 90 / 72 | hard 90 |
+| flower | clean 90 / 72 | clean 90 |
+| cat | clean 90 / 72 | hard 88 |
+| candy cane | hard 90 / 72 | hard 85 |
+| owl | clean 90 / 72 | hard 85 |
+| holly, rabbit, mouse | hard 90 / 72 | hard 84 |
+| unicorn | hard 88 / 70 | hard 80 |
+| polar star | hard 82 / 66 | hard 76 |
+| elephant | hard 71 | hard 73 (the ladder's narrowed crown, below) |
+
+Three are hard to cut where they were clean, a fifth larger; the slider lowered
+gives a smaller heart that may cut cleanly. The 49 took 1,117 s before and
+1,228 s now (the santa hat 59 → 107 s, the holly 84 → 181 s, the owl 16 →
+83 s; the polar star 285 → 125 s, the elephant 395 → 295 s, its failing sizes
+no longer drawing it smaller). At 50, 60 and 70% no heart was drawn smaller.
+
 ## A heart's curve fits shared by every way it is tried
 
 A heart that cannot be built at its size is tried again its other ways, with

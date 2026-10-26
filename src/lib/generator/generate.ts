@@ -923,35 +923,46 @@ function generateAsAsked(request: GeneratorRequest): GeneratorResult {
  * that can be below, of a few sizes and the whole percents just above the
  * largest of them that can (see `generate`). */
 function generateAtSizeOrSmaller(request: GeneratorRequest): GeneratorResult {
-	const scale = request.scale ?? .7;
+	const scale = request.scale ?? .7, sunburst = request.mode === 'figure' && request.style === 'sunburst';
+	// A sunburst made without the space asked for draws its motif at four
+	// fifths of the size asked (see `frameAlternatives`): a larger one below,
+	// with the space, comes first (the gift asked 90% was drawn at 72%).
+	let drawnSmaller: GeneratorResult | undefined, failure: unknown;
 	try {
-		return generateAtSizeOrLastResort(request);
+		const result = generateAtSizeOrLastResort(request);
+		if (!sunburst || (result.scale ?? scale) >= scale - 1e-9) return result;
+		drawnSmaller = result;
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) || scale <= .7
-			|| request.mode === 'figure' && request.style === 'board' || quickAgain || atSizeOnly) throw error;
-		// Above the default size a frame takes a motif larger than its
-		// constructions were first made for. Where nothing at all can be built
-		// at that size, the motif keeps the largest size below that can be, of
-		// a fixed few (so neighbouring sizes keep alike), down to the default
-		// size, rather than refusing, and says so. The circle on a board keeps
-		// its own (see `generateUsingRecipes`). A sunburst whose motif crowds
-		// the circle at one of those sizes is made there with its crown
-		// narrowed too, as at the size asked (see `generate`), else a larger
-		// size asked keeps a smaller one (the gift asked 94% had 94% so, asked
-		// 96% only 92%).
-		const at = (size: number) => {
-			const sized = { ...request, scale: size };
-			const ways = [() => generateAtSizeOrLastResort(sized)];
-			if (request.mode === 'figure' && crowdsCrown(sized)) ways.push(() => withNarrowCrown(() => generateAtSizeOrLastResort(sized)));
-			for (const way of ways) try {
-				const result = way();
-				return { ...result, scale: result.scale ?? size };
-			} catch (smallerError) {
-				if (!(smallerError instanceof ConstructionError) && !(smallerError instanceof CutGeometryError)) throw smallerError;
-			}
-		};
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		failure = error;
+	}
+	if (scale <= .7 || request.mode === 'figure' && request.style === 'board' || quickAgain || atSizeOnly) {
+		if (drawnSmaller) return drawnSmaller;
+		throw failure;
+	}
+	// Above the default size a frame takes a motif larger than its
+	// constructions were first made for. Where nothing at all can be built at
+	// that size, the motif keeps the largest size below that can be, of a fixed
+	// few (so neighbouring sizes keep alike), down to the default size, rather
+	// than refusing, and says so. The circle on a board keeps its own (see
+	// `generateUsingRecipes`). A sunburst whose motif crowds the circle at one
+	// of those sizes is made there with its crown narrowed too, as at the size
+	// asked (see `generate`), else a larger size asked keeps a smaller one (the
+	// gift asked 94% had 94% so, asked 96% only 92%).
+	const at = (size: number) => {
+		const sized = { ...request, scale: size };
+		const ways = [() => generateAtSizeOrLastResort(sized)];
+		if (request.mode === 'figure' && crowdsCrown(sized)) ways.push(() => withNarrowCrown(() => generateAtSizeOrLastResort(sized)));
+		for (const way of ways) try {
+			const result = way();
+			return { ...result, scale: result.scale ?? size };
+		} catch (smallerError) {
+			if (!(smallerError instanceof ConstructionError) && !(smallerError instanceof CutGeometryError)) throw smallerError;
+		}
+	};
+	const largestAbove = (floor: number) => {
 		let above = scale;
-		for (const size of [.97, .94, .91, .88, .85, .8, .75, .7].filter(size => size < scale - 1e-9)) {
+		for (const size of [.97, .94, .91, .88, .85, .8, .75, .7].filter(size => size < scale - 1e-9 && size > floor + 1e-9)) {
 			const result = at(size);
 			if (!result) {
 				above = size;
@@ -970,7 +981,27 @@ function generateAtSizeOrSmaller(request: GeneratorRequest): GeneratorResult {
 			}
 			return largest;
 		}
-		throw error;
+	};
+	// A sunburst looks with the space kept first, larger than the one drawn
+	// smaller, and only where nothing keeps it at any of those sizes without.
+	const kept = sunburst ? keepingSpace(() => largestAbove(drawnSmaller?.scale ?? 0)) : largestAbove(0);
+	if (kept) return kept;
+	if (drawnSmaller) return drawnSmaller;
+	const any = sunburst ? largestAbove(0) : undefined;
+	if (any) return any;
+	throw failure;
+}
+/** Set while a sunburst's size ladder keeps the space around the motif (see
+ * `generateAtSizeOrSmaller`): its circle does not then keep the frame's own
+ * size at a smaller size (see `frameAlternatives`). */
+let spaceKept = false;
+function keepingSpace<T>(build: () => T): T {
+	const before = spaceKept;
+	spaceKept = true;
+	try {
+		return build();
+	} finally {
+		spaceKept = before;
 	}
 }
 
@@ -1111,6 +1142,8 @@ function generateAtSize(request: GeneratorRequest): GeneratorResult {
 	// made.
 	const named = (result: GeneratorResult, alternative: number): GeneratorResult => ({
 		...result,
+		// A motif drawn smaller than asked says so (see `frameAlternatives`).
+		...alternatives[alternative].smaller ? { scale: (request.scale ?? .7) * alternatives[alternative].smaller! } : {},
 		...request.mode === 'figure' && BOARD_FRAMES.includes(request.style ?? '')
 			? { layout: request.layout ?? { alternative, board: result.design.gridSize.x } } : {},
 		...result.hardToCut && request.mode === 'figure' && !request.font ? { hardToCut: { ...result.hardToCut, letters: [] } } : {}
@@ -1272,7 +1305,7 @@ const SQUARE_CELL_SCALE = .85;
  * wedges move nearer the motif, until they touch it; text fits its cells.
  * An alternative without `retries` is tried with the standard recipes only;
  * a last resort only when no other alternative gives even a hard-to-cut heart. */
-function frameAlternatives(request: GeneratorRequest): { request: GeneratorRequest; retries: boolean; lastResort?: boolean }[] {
+function frameAlternatives(request: GeneratorRequest): { request: GeneratorRequest; retries: boolean; lastResort?: boolean; smaller?: number }[] {
 	if (request.mode !== 'figure') {
 		const frame = request.textFrame ?? 'woven';
 		if (frame === 'checkered' || !request.font) return [{ request, retries: true }];
@@ -1330,9 +1363,16 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
 		const gap = request.gap ?? WEDGES.gap;
 		return [...new Set([gap, gap / 2, 0])].map((gap, i) => ({ request: fillSquare({ ...request, gap }), retries: true, lastResort: i > 0 }));
 	}
-	if (request.gap !== undefined && CIRCLE_STYLES.includes(style))
-		return [...[request.gap, request.gap + 4].map((gap, i) => ({ request: fitCircle({ ...request, gap }), retries: true, lastResort: i > 0 })),
-			{ request: { ...request, gap: undefined }, retries: true, lastResort: true }];
+	// Without the space, the circle keeps the frame's own size and the motif
+	// fills it as it did before there was a space to set: the sunburst's, its
+	// circle four fifths of its frame, at four fifths of the size asked, which
+	// the heart says (`smaller`), and not while its size ladder keeps the space
+	// (see `generateAtSizeOrSmaller`).
+	if (request.gap !== undefined && CIRCLE_STYLES.includes(style)) {
+		const spaced = [request.gap, request.gap + 4].map((gap, i) => ({ request: fitCircle({ ...request, gap }), retries: true, lastResort: i > 0 }));
+		if (style === 'sunburst' && spaceKept) return spaced;
+		return [...spaced, { request: { ...request, gap: undefined }, retries: true, lastResort: true, ...style === 'sunburst' ? { smaller: .8 } : {} }];
+	}
 	return [{ request: fillSquare(request), retries: true }];
 }
 
