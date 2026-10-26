@@ -38,6 +38,44 @@ export function spikes(outline) {
   return out;
 }
 
+/** Where one edge comes back within 1.5 mm of itself 3 mm to `local` further
+ * along, turning by 190 degrees or more between, which one slit cannot follow:
+ * [e, lo, hi, wraps, tip], the arcs from lo to hi (past the end of a loop when
+ * it wraps) and the vertex turning most between. */
+export function returns(outline) {
+  const R = outline.rules, gap = RETURN_GAP * R.mm, along = RETURN_ALONG * R.mm, out = [];
+  outline.E.forEach((ed, e) => {
+    const idx = [];
+    outline.edge.forEach((f, i) => { if (f === e) idx.push(i); });
+    if (idx.length < 2) return;
+    const poly = ed.pts, cl = outline.geo[e], L = outline.L[e], loop = ed.loop, vertex = [], turn = [], at = [];
+    for (let i = loop ? 0 : 1; i < poly.length - 1; i++) {
+      const prev = i ? poly[i - 1] : poly.at(-2);
+      vertex.push(cl[i]);
+      at.push(poly[i]);
+      turn.push(angle([poly[i][0] - prev[0], poly[i][1] - prev[1]], [poly[i + 1][0] - poly[i][0], poly[i + 1][1] - poly[i][1]]));
+    }
+    const local = new PointGrid(idx.map(i => outline.P[i]), Math.max(gap, .05));
+    idx.forEach((i, a) => {
+      for (const b of local.within(outline.P[i], gap)) {
+        if (b <= a) continue;
+        const [s, t] = [outline.arc[i], outline.arc[idx[b]]].sort((x, y) => x - y);
+        for (const [lo, hi, wraps] of [[s, t, false], ...(loop ? [[t, s + L, true]] : [])]) {
+          if (!(along <= hi - lo && hi - lo <= R.local)) continue;
+          let total = 0, tip = -1;
+          vertex.forEach((v, k) => {
+            if (!(wraps ? (v > lo || v < hi - L) : (v > lo && v < hi))) return;
+            total += turn[k];
+            if (tip < 0 || turn[k] > turn[tip]) tip = k;
+          });
+          if (total >= 190) out.push([e, lo, hi, wraps, at[tip]]);
+        }
+      }
+    });
+  });
+  return out;
+}
+
 /** The static rules on the outline: side borders, close visible pieces, sharp touchings, returns, spikes. */
 export function visibleNogoods(outline, cand) {
   const R = outline.rules, positions = cand.positions, out = new NogoodSet();
@@ -89,36 +127,12 @@ export function visibleNogoods(outline, cand) {
       out.add([['lab', ra, 0], ['lab', rb, 0]]);
     }
   }
-  // Returns: one slit back within 1.5 mm of itself 3 mm to `local` further along,
-  // turning by 190 degrees or more between: along one edge a switch lies between.
-  const gap = RETURN_GAP * R.mm, along = RETURN_ALONG * R.mm;
-  outline.E.forEach((ed, e) => {
-    const idx = [];
-    outline.edge.forEach((f, i) => { if (f === e) idx.push(i); });
-    if (idx.length < 2) return;
-    const poly = ed.pts, cl = outline.geo[e], L = outline.L[e], loop = ed.loop, vertex = [], turn = [];
-    for (let i = loop ? 0 : 1; i < poly.length - 1; i++) {
-      const prev = i ? poly[i - 1] : poly.at(-2);
-      vertex.push(cl[i]);
-      turn.push(angle([poly[i][0] - prev[0], poly[i][1] - prev[1]], [poly[i + 1][0] - poly[i][0], poly[i + 1][1] - poly[i][1]]));
-    }
-    const local = new PointGrid(idx.map(i => outline.P[i]), Math.max(gap, .05));
-    idx.forEach((i, a) => {
-      for (const b of local.within(outline.P[i], gap)) {
-        if (b <= a) continue;
-        const [s, t] = [outline.arc[i], outline.arc[idx[b]]].sort((x, y) => x - y);
-        for (const [lo, hi, wraps] of [[s, t, false], ...(loop ? [[t, s + L, true]] : [])]) {
-          if (!(along <= hi - lo && hi - lo <= R.local)) continue;
-          let total = 0;
-          vertex.forEach((v, k) => { if (wraps ? (v > lo || v < hi - L) : (v > lo && v < hi)) total += turn[k]; });
-          if (total < 190) continue;
-          const between = [];
-          (positions.get(e) || []).forEach((x, k) => { if (wraps ? (x > lo || x < hi - L) : (lo < x && x < hi)) between.push(k + 1); });
-          if (between.length) out.add(between.map(k => ['sw', [e, k], 0]));
-        }
-      }
-    });
-  });
+  // Returns: along one edge a switch lies between.
+  for (const [e, lo, hi, wraps] of returns(outline)) {
+    const L = outline.L[e], between = [];
+    (positions.get(e) || []).forEach((x, k) => { if (wraps ? (x > lo || x < hi - L) : (lo < x && x < hi)) between.push(k + 1); });
+    if (between.length) out.add(between.map(k => ['sw', [e, k], 0]));
+  }
   // A spike: the outline turns by more than the limit, so no paper follows it.
   for (const [e, c] of spikes(outline)) {
     const at = (positions.get(e) || []).findIndex(s => outline.along(e, s, c) < 1e-6);

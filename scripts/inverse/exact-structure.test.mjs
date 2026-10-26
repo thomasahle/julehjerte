@@ -8,6 +8,8 @@ import {loadSVG} from '../../static/inverse/core/input.js';
 import {exactPositions} from '../../static/inverse/core/exact/positions.js';
 import {cheapBounds} from '../../static/inverse/core/exact/bounds.js';
 import {colouredRings, targetSegments, joinNearTouchings} from '../../static/inverse/core/exact/target.js';
+import {returns} from '../../static/inverse/core/exact/nogoods.js';
+import {returnTips} from '../../static/inverse/core/exact/stage.js';
 
 // The reference solver's structures (minwit.build_from_segments) of eight
 // juleflet.dk designs, with the segments it built them from.
@@ -105,4 +107,18 @@ test('a strip narrower than the joining distance is joined at one end, not both'
 test('two corners a pixel apart along one boundary (a notch) do not join', () => {
   const lines = [[[0, 4.02], [4, 4.02]], [[4, 4.02], [4, 4]], [[4, 4], [4.03, 4]], [[4.03, 4], [4.03, 0]]];
   assert.equal(joinNearTouchings(lines, .072), 0);
+});
+
+// A dark band along the bottom with a spike up from it, half a millimetre wide
+// near its end: traced as a box (two pixels wide), the slit along it turns by
+// more than 190 degrees within 1.5 mm of itself, a pointed one by 163.
+test('a tip traced as a box comes back to itself, a pointed one does not', () => {
+  const cfg = settings({trials: 0}), spike = tip => loadSVG(svgOf([[[0, 0], [12, 0], [12, 4], [6.5, 4], ...tip, [5.5, 4], [0, 4]]]), {width: 100, maxSpan: 15, tolerance: cfg.geometryTolerance});
+  const outline = target => new Outline(buildStructure(targetSegments(target)), rules(cfg));
+  const box = spike([[6.03, 7], [6.03, 7.3], [5.97, 7.3], [5.97, 7]]);
+  assert.ok(returns(outline(box)).length);
+  assert.ok(returns(outline(box)).every(([, , , , tip]) => close(tip[1], 7.3, .01) && Math.abs(tip[0] - 6) < .05));
+  const [[x, y], ...more] = returnTips(box, cfg);
+  assert.ok(Math.abs(x - 50) < .5 && close(y, (12 - 7.3) * 100 / 12, .1) && more.every(([u, v]) => Math.hypot(u - x, v - y) < .6));
+  assert.equal(returns(outline(spike([[6, 7.3]]))).length, 0);
 });

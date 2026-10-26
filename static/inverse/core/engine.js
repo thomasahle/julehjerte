@@ -19,7 +19,7 @@ import {materialAudit,perturbationAudit,verifiedPaperSettings} from './material.
 import {roundHidden} from './rounding.js';
 import {boundarySVG,targetSVG,resultFiles} from './export.js';
 import {solvePolynomialTarget} from './direct/polynomial.js';
-import {exactSearch,exactSymmetry,exactTarget,exactCannotStart,exportable} from './exact/stage.js';
+import {exactSearch,exactSymmetry,exactTarget,exactCannotStart,exportable,returnTips} from './exact/stage.js';
 /** Structured cloning retains coordinates but not Cubic methods, including
  * the cached boundary seed used by the topology initializer. Rebuild derived
  * curve caches locally; a transferred cache must not hide edited coordinates. */
@@ -41,8 +41,10 @@ export const EXACT_SECONDS=60,EXACT_FINISH_SECONDS=10;
  * 20 s, and 49 of the 54 rounded ones; a rounded outline hides more cut and lies
  * further from the mask, so it comes second. The fitter has what is left.
  * Alone (`exactRoute: 'exact'`, the fitter in a worker beside it), the traced
- * outline has until ALONE_TRACED_SECONDS and the rounded one the rest. */
-const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,ROUNDED_LEAST=6,TIP_ROUNDING_MM=.8,TIP_SPOT_MM=4;
+ * outline has until ALONE_TRACED_SECONDS and the rounded one the rest. A
+ * passing template with tips coming back to themselves has RETURNS_LEAST (or
+ * as long as it took) for one with them rounded. */
+const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,ROUNDED_LEAST=6,RETURNS_LEAST=10,TIP_ROUNDING_MM=.8,TIP_SPOT_MM=4;
 /** The fitter's seconds beside the exact search (`exactRoute: 'fitter'`): what
  * it had when it came first, which photographs need to keep their details. */
 const FITTER_SECONDS=45;
@@ -89,15 +91,32 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
   }
   if(!outline)return{solution:null,report:{chosen:'fitter',error:cannot}};
   const search=end=>({deadline:end,onProgress,symmetry,geometry:cfg.progressGeometry});
+  const began=performance.now();
   let found=await exactSearch(outline,null,cfgExact,search(tracedEnd));
+  const tracedMs=performance.now()-began,n=target.sourceImage.resolution,px=n/cfgExact.width,radius=Math.max(1,Math.round(TIP_ROUNDING_MM*n/target.width));
+  const segments=f=>f.report.search?.attempts?.at(-1)?.hidden??Infinity;
+  // A tip that comes back within 1.5 mm of itself (mostly one or two pixels
+  // wide, traced as a box) makes the slit along it change papers there, which
+  // takes hidden segments: a template with more than the count's lower bound
+  // is searched for again with those tips rounded (within TIP_SPOT_MM), for as
+  // long as the first search took (RETURNS_LEAST at least: it has a template
+  // already), and taken with fewer (tulipan 4 -> 0, its true design's).
+  let tips=[];
+  try{tips=returnTips(outline,cfgExact).map(([x,y])=>[x*px,y*px]);}catch{tips=[];}
+  if(tips.length&&exportable(found.found?.assessment,cfgExact)&&segments(found)>(found.report.search?.bound??0)&&roundedEnd-performance.now()>=1000*ROUNDED_LEAST){
+    let rounded=null;
+    try{const traced=traceAt(radius,{spots:tips,within:TIP_SPOT_MM*px});rounded=traced&&!traced.why?traced.scaled:null;}catch{rounded=null;}
+    const again=rounded&&await exactSearch(rounded,null,cfgExact,search(Math.min(roundedEnd,performance.now()+Math.max(1000*RETURNS_LEAST,tracedMs))));
+    if(again&&exportable(again.found?.assessment,cfgExact)&&segments(again)<segments(found))found={...again,report:{...again.report,rounded:'returns'}};
+  }
   // A template failing the cutting rules mostly follows a tip narrower than
   // a cut's clearance: again on the outline with its tips rounded, first only
-  // within TIP_SPOT_MM of where it comes too close to itself when it says
-  // (sharp corners elsewhere stay sharp: 5star, triple-heart), then everywhere
-  // (fisk-kors-shot), the first with 3/5 of the time when both are to run.
+  // within TIP_SPOT_MM of where it comes too close to itself when it says, or
+  // comes back to itself (sharp corners elsewhere stay sharp: 5star,
+  // triple-heart), then everywhere (fisk-kors-shot), the first with 3/5 of the
+  // time when both are to run.
   if(!exportable(found.found?.assessment,cfgExact)&&roundedEnd-performance.now()>=1000*ROUNDED_LEAST){
-    const n=target.sourceImage.resolution,px=n/cfgExact.width,radius=Math.max(1,Math.round(TIP_ROUNDING_MM*n/target.width));
-    const spots=found.found?validate(found.found.solution,cfgExact,{finalGeometry:true}).issues.filter(i=>i.type==='short_self_clearance'&&i.points).flatMap(i=>i.points.map(([x,y])=>[x*px,y*px])):[];
+    const spots=[...(found.found?validate(found.found.solution,cfgExact,{finalGeometry:true}).issues.filter(i=>i.type==='short_self_clearance'&&i.points).flatMap(i=>i.points.map(([x,y])=>[x*px,y*px])):[]),...tips];
     const ways=spots.length?[{spots,within:TIP_SPOT_MM*px},{}]:[{}];
     for(const [k,near] of ways.entries()){
       if(exportable(found.found?.assessment,cfgExact)||roundedEnd-performance.now()<1000*ROUNDED_LEAST)break;

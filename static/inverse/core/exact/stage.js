@@ -15,6 +15,8 @@ import {exactStart} from './start.js';
 import {FROM_APP} from './symmetry.js';
 import {rasterOutline} from './raster.js';
 import {cheapBounds} from './bounds.js';
+import {returns} from './nogoods.js';
+import {SIZE} from './structure.js';
 
 /** The outline the exact search reads: traced from the picture's mask with
  * the settings `cfg` (raster.js, `options` its tracing), or null. */
@@ -37,6 +39,15 @@ export function exactCannotStart(outline, cfg) {
   } catch (error) {
     return String(error.message || error);
   }
+}
+
+/** The tips where `outline` comes back within 1.5 mm of itself (nogoods.js
+ * returns), in its own units: a slit along one changes papers there, which
+ * takes hidden segments. Mostly a tip one or two pixels wide, traced as a box. */
+export function returnTips(outline, cfg) {
+  const w = outline.width, tips = new Map();
+  for (const [, , , , [x, y]] of returns(exactOutline(outline, cfg).outline)) tips.set(`${x},${y}`, [x * w / SIZE, (SIZE - y) * w / SIZE]);
+  return [...tips.values()];
 }
 
 /** The reference-frame symmetries the exact search ties for the requested
