@@ -14,9 +14,10 @@
  * mirrored turns the other way), so a symmetric mask stays symmetric without
  * copying cells about afterwards.
  *
- * The brush's hold fades from its centre to its rim: round, as the pen's round
- * head, or square, standing on the mask's axes as the pen's square head does,
- * which every symmetry of the mask maps onto itself.
+ * The brush's hold fades from its centre to the rim of the pen's head, round,
+ * square, diamond or chisel (see `brushHead.ts`). Every symmetry of the mask
+ * maps the first three onto themselves; the chisel, a bar, an image whose
+ * symmetry swaps the mask's axes holds turned a quarter.
  *
  * Nothing here knows about pointers or canvases; cells have their centres on
  * whole coordinates, as the pen's do.
@@ -26,19 +27,23 @@ import type { Vec } from '$lib/types/heart';
 import { clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask } from './mask';
 import { closedPointMaps, type Transform } from './symmetry';
 import type { BrushShape } from './toolset';
+import { headGauge, headReach } from './brushHead';
 
 type PointMap = (x: number, y: number, size: number) => { x: number; y: number };
 
 /** How a point under the brush is moved: where its paper is now read from. */
 type Warp = (x: number, y: number, weight: number) => [number, number];
 
-/**
- * The brush's hold on a cell `dx`, `dy` from its centre: whole at the centre,
- * none at the rim, the rim a circle or, for a square head, a square.
- */
-function weightAt(dx: number, dy: number, r2: number, square: boolean): number {
-	const t = 1 - (square ? Math.max(dx * dx, dy * dy) : dx * dx + dy * dy) / r2;
+/** The hold at a point a `gauge` of the way out to the head's rim: whole at the centre, none at the rim. */
+function weightAt(gauge: number): number {
+	const t = 1 - gauge * gauge;
 	return t > 0 ? t * t : 0;
+}
+
+/** Whether a symmetry swaps the mask's two axes, turning a chisel a quarter. */
+function swapsAxes(map: PointMap, size: number): boolean {
+	const o = map(0, 0, size), a = map(1, 0, size);
+	return Math.abs(a.x - o.x) < 0.5;
 }
 
 /** Whether a symmetry turns the plane over, so that a turn under it runs the other way. */
@@ -54,15 +59,15 @@ export type Smudge = ReturnType<typeof createSmudge>;
  * the mask in place and returns the box it changed, as the other tools do.
  */
 export function createSmudge(mask: Mask, transforms: Transform[] = [], shape: BrushShape = 'round') {
-	const n = mask.size, square = shape === 'square';
+	const n = mask.size;
 	const source = mask.data.slice(), observed = mask.validMask?.slice();
 	// Where each cell's paper comes from, as an offset from the cell.
 	const fx = new Float32Array(n * n), fy = new Float32Array(n * n);
 	// The brush itself, and its images under the symmetries on (which
 	// `closedPointMaps` hands out without the identity).
-	const images: { map: PointMap | null; over: boolean }[] = [
-		{ map: null, over: false },
-		...(transforms.length ? closedPointMaps(transforms) : []).map((map) => ({ map, over: turnsOver(map, n) }))
+	const images: { map: PointMap | null; over: boolean; turned: boolean }[] = [
+		{ map: null, over: false, turned: false },
+		...(transforms.length ? closedPointMaps(transforms) : []).map((map) => ({ map, over: turnsOver(map, n), turned: swapsAxes(map, n) }))
 	];
 	const place = (map: PointMap | null, x: number, y: number): Vec => (map ? map(x, y, n) : { x, y });
 
@@ -81,10 +86,10 @@ export function createSmudge(mask: Mask, transforms: Transform[] = [], shape: Br
 	 * field. All at once and summed, so where a brush overlaps its own mirror
 	 * image the dab is still exactly as symmetric as the brushes are.
 	 */
-	function deform(dabs: { at: Vec; warp: Warp }[], radius: number, reach: number): Box {
-		const r = Math.max(1, radius), r2 = r * r;
+	function deform(dabs: { at: Vec; warp: Warp; turned: boolean }[], radius: number, reach: number): Box {
+		const r = Math.max(1, radius), held = headReach(shape, r), side = Math.max(held.x, held.y);
 		let box = emptyBox();
-		for (const { at } of dabs) box = unionBox(box, clampBox(mask, at.x - r, at.y - r, at.x + r + 1, at.y + r + 1));
+		for (const { at } of dabs) box = unionBox(box, clampBox(mask, at.x - side, at.y - side, at.x + side + 1, at.y + side + 1));
 		if (isEmptyBox(box)) return box;
 		// Every point the dab reads from lies within `reach` of the box.
 		const near = clampBox(mask, box.x0 - reach - 1, box.y0 - reach - 1, box.x1 + reach + 1, box.y1 + reach + 1);
@@ -109,8 +114,8 @@ export function createSmudge(mask: Mask, transforms: Transform[] = [], shape: Br
 		for (let y = box.y0; y < box.y1; y++) {
 			for (let x = box.x0; x < box.x1; x++) {
 				let mx = 0, my = 0;
-				for (const { at, warp } of dabs) {
-					const weight = weightAt(x - at.x, y - at.y, r2, square);
+				for (const { at, warp, turned } of dabs) {
+					const weight = weightAt(headGauge(shape, r, x - at.x, y - at.y, turned));
 					if (!weight) continue;
 					const [px, py] = warp(x, y, weight);
 					mx += px - x;
@@ -146,7 +151,7 @@ export function createSmudge(mask: Mask, transforms: Transform[] = [], shape: Br
 	function dab(c: Vec, radius: number, reach: number, warp: (image: { map: PointMap | null; over: boolean }, at: Vec) => Warp): Box {
 		const dabs = images.map((image) => {
 			const at = place(image.map, c.x, c.y);
-			return { at, warp: warp(image, at) };
+			return { at, warp: warp(image, at), turned: image.turned };
 		});
 		return render(deform(dabs, radius, reach));
 	}

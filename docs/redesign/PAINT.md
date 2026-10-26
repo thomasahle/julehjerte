@@ -50,7 +50,12 @@ Canvas (full-bleed, same `CanvasBackdrop` sky and landscape, same fit band betwe
   Painting happens directly on the diamond. Outside the diamond the pointer does nothing.
 - Mirror lines, dashed `--blue`, drawn in heart orientation for the symmetries that are on (see §5).
 - Top-left pill: "Maske · 400 × 400 · to farver" plus a one-line hint. Below 900px the pill goes away.
-- Wheel/pinch zoom and drag-to-pan like Tegn are **not** required in the first version; fit-to-band is enough.
+- Wheel/pinch zoom and pan as in Tegn (the owner's request, 2026-10-26): Ctrl + wheel, a trackpad's pinch or a
+  mouse wheel counting lines zoom about the pointer (0.5–20×); a trackpad's two-finger scroll pans; on a touch screen
+  two fingers zoom and pan, and a second finger gives up the first one's stroke (taken back with nothing to redo,
+  `history.takeBack`), the finger left behind painting nothing until both are lifted. "Tilpas visning" shows at the
+  canvas's lower left while the heart is zoomed or moved. Zoom and pan are the layout's scale and centre and nothing
+  else (`heartLayout.ts`), so drawing and pointers follow.
   Keep the canvas code ready for it (one transform matrix between screen and mask coordinates).
 
 Left floating panel (same column width and style as Tegn's tool rail area, 300px; two panels since the symmetry
@@ -60,8 +65,9 @@ of an overlay scrollbar until a gesture starts):
 
 - Row of two buttons: `Importér billede` (outline, opens the dialog) and `Ryd` (ghost, goes back to the 5 × 5 board after a
   confirm if the mask is not empty; uses the site `Modal`, no `confirm()`).
-- Panel "Værktøj": tools Pen, Fyld, Linje, Rektangel, Udtvær, Markér as 40px icon buttons (lucide: pencil,
-  paint-bucket, minus (rotated 45°) or a simple line glyph, square, square-dashed); a labelled brush-radius
+- Panel "Værktøj": tools Pen, Fyld, Linje, Rektangel, Ellipse (key O, 2026-10-26: the ellipse inscribed in the
+  rectangle the drag spans, along the strips as the rectangle is), Udtvær, Markér as 40px icon buttons (lucide:
+  pencil, paint-bucket, minus (rotated 45°) or a simple line glyph, square, ellipse, square-dashed); a labelled brush-radius
   slider (1–200 cells, default 6; each step along it the same ratio, so a fine pen is as easy to set as a broad one;
   `[`/`]` a cell at a time while fine, a tenth of the size once broad) with its current value; "Maler med" offers the two paper swatches plus XOR.
   XOR inverts each covered cell once per gesture, including overlapping dabs and mirrored copies; pen, line,
@@ -108,8 +114,12 @@ of an overlay scrollbar until a gesture starts):
   brings them back.
 - **Udtvær, Tern, the brush head and a selection that stays** (the owner's request, 2026-10-25), for hearts like Hvirvel and
   Glaskuppel, which are a plain board turned or swelled:
-  - *Brush head*: round or square, two small buttons in the brush label's row (no row of their own). The square
-    stands on the mask's axes, which are the strips, so on screen it is a diamond, and its outline is drawn so.
+  - *Brush head*: small buttons in the brush label's row (no row of their own), named by how they look on the
+    drawing (`src/lib/paint/brushHead.ts`): round; square along the strips (the mask's axes, so a diamond on
+    screen); square upright on screen (added 2026-10-26, a diamond on the mask); flat, a nib a quarter as thick as
+    it is long lying from lower left to upper right, for thick and thin strokes (added 2026-10-26). Every head
+    holds the disc of the radius; the pen, the line (whose preview is the hull of the head at both ends) and
+    Udtvær (whose hold fades to the head's rim, the nib turned in images whose symmetry swaps the axes) take it.
   - *Udtvær* (lucide pointer, key U) moves the paper rather than painting it: **Skub** drags it along with the
     pointer, **Hvirvl** turns it about the brush and **Bul** swells it out, both for as long as the pointer is held;
     Alt turns the other way or draws in. Its three modes are one row under the tools, shown only while it is the
@@ -623,7 +633,9 @@ them.
   curve where the cells, read bilinearly between their centres, cross one half (Udtvær's edge), with a rim about a
   pixel wide mixing the two papers (`src/lib/paint/smoothRaster.ts`). Only the picture: every cell's centre is in its
   own paper, the mask stays two papers, and Find snit reads the same cells. A full redraw takes about 18 ms. A
-  floating Markér patch and the XOR preview are still drawn cell for cell.
+  floating Markér patch (`smoothCells`), the XOR preview and the import dialog's mask are drawn the same way. Zoomed
+  in past what that picture holds, the cells on screen (a fifth more each side) are drawn again at the screen's
+  pixels a cell, up to 1.5 million pixels, 120 ms after the view settles; strokes update both pictures.
 - A stroke fills the shape the head sweeps along the segment in one pass, not a dab per cell, so the 200-cell pen
   costs one pass over its box.
 - With the header's colourful mode on, the heart takes the shuffle's first pair (the colourful button's first cell;
@@ -652,7 +664,7 @@ as they are. Update docs/inverse/README.md's first paragraph to say where the en
 
 ## 10. Out of scope (this version)
 
-Mask persistence across reloads, zoom/pan on the paint canvas, per-heart colour editing in Mal, the hero button on
+Mask persistence across reloads, per-heart colour editing in Mal, the hero button on
 the front page, the symmetry icons (separate task), format 2 of the heart model.
 
 ## 11. Decisions taken after round one (2026-09-08)

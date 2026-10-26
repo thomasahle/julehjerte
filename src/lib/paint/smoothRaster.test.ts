@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createMask, type Mask } from './mask';
-import { missingPixelChannels } from './drawHeart';
-import { smoothPixels, smoothScale } from './smoothRaster';
+import { missingPixelChannels, smoothCells, smoothPixels, smoothScale } from './smoothRaster';
 import { rect, stamp } from './tools';
 
 const PAPER = [[255, 255, 255], [185, 19, 19]] as const;
@@ -67,6 +66,19 @@ describe('the smooth picture', () => {
 		expect(written).toEqual({ x0: 8, y0: 10, x1: 16, y1: 18 });
 		expect(out[4 * (9 * 40 + 9)]).toBe(0);
 		expect(out[4 * (10 * 40 + 8)]).toBe(255);
+	});
+
+	it("draws Markér's floating patch as the mask draws the same cells", () => {
+		const m = createMask(0, 40);
+		stamp(m, 20, 20, { radius: 7, value: 1 });
+		const w = 12, h = 9, x0 = 14, y0 = 13, cells = new Uint8Array(w * h);
+		for (let y = 0; y < h; y++) cells.set(m.data.subarray((y0 + y) * 40 + x0, (y0 + y) * 40 + x0 + w), y * w);
+		const patch = smoothCells(cells, undefined, w, h, PAPER, 3);
+		const { at } = draw(m, 3);
+		// Away from the patch's own edge, where it reads past itself, the two agree pixel for pixel.
+		for (let py = 3; py < 3 * h - 3; py++)
+			for (let px = 3; px < 3 * w - 3; px++)
+				expect([...patch.slice(4 * (py * 3 * w + px), 4 * (py * 3 * w + px) + 3)]).toEqual(at(3 * x0 + px, 3 * y0 + py));
 	});
 
 	it('draws as many pixels a cell as the screen shows, up to three', () => {

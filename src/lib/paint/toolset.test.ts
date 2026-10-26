@@ -53,6 +53,7 @@ describe('shortcutFor', () => {
 		expect(shortcutFor({ key: 'r' })).toEqual({ kind: 'tool', tool: 'rect' });
 		expect(shortcutFor({ key: 'u' })).toEqual({ kind: 'tool', tool: 'smudge' });
 		expect(shortcutFor({ key: 'm' })).toEqual({ kind: 'tool', tool: 'select' });
+		expect(shortcutFor({ key: 'o' })).toEqual({ kind: 'tool', tool: 'ellipse' });
 		expect(shortcutFor({ key: 'e' })).toBeNull();
 	});
 

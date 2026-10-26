@@ -74,6 +74,14 @@ export function redo(history: MaskHistory, current: MaskStep): MaskStep | null {
 	return next;
 }
 
+/**
+ * The step an edit recorded, taken back because the edit was given up before it
+ * ended (a second finger came down to zoom): nothing is left to redo.
+ */
+export function takeBack(history: MaskHistory): MaskStep | null {
+	return history.past.pop() ?? null;
+}
+
 /** Forget everything, for a mask that is replaced wholesale (import, "Mal på hjertet", Ryd). */
 export function resetHistory(history: MaskHistory): void {
 	history.past.length = 0;

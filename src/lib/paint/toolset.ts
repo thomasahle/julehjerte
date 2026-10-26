@@ -1,5 +1,5 @@
 /**
- * The six painting tools, brush radius and head, and the keys that pick them.
+ * The seven painting tools, brush radius and head, and the keys that pick them.
  *
  * `tools.ts` says what an operation does to the cells; this says which of them
  * the visitor has chosen and what a keystroke means. It is plain data and one
@@ -7,10 +7,17 @@
  * being spelled out inside a keydown handler.
  */
 
-export type PaintTool = 'pen' | 'fill' | 'line' | 'rect' | 'smudge' | 'select';
+export type PaintTool = 'pen' | 'fill' | 'line' | 'rect' | 'ellipse' | 'smudge' | 'select';
 
-/** The brush's head: a disc, or a square standing on the mask's own axes. */
-export type BrushShape = 'round' | 'square';
+/**
+ * The brush's head, named by how it looks on the drawing (see `brushHead.ts`):
+ * a disc; a square along the strips (a diamond on screen); a square across
+ * them (upright on screen); a flat nib for thick and thin strokes.
+ */
+export type BrushShape = 'round' | 'square' | 'diamond' | 'chisel';
+
+/** The heads in the order the panel offers them. */
+export const BRUSH_SHAPES: readonly BrushShape[] = ['round', 'square', 'diamond', 'chisel'];
 
 /**
  * What Udtvær does to the paper under it: drags it along with the pointer, turns
@@ -106,6 +113,7 @@ const TOOL_KEYS: Record<string, PaintTool> = {
 	f: 'fill',
 	l: 'line',
 	r: 'rect',
+	o: 'ellipse',
 	u: 'smudge',
 	m: 'select'
 };

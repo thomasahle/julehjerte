@@ -12,6 +12,7 @@
 	import {
 		BulgeIcon,
 		ChecksIcon,
+		EllipseIcon,
 		ImageIcon,
 		LineIcon,
 		PaintBucketIcon,
@@ -38,6 +39,7 @@
 		MAX_SMUDGE_STRENGTH,
 		DEFAULT_SMUDGE_STRENGTH,
 		SIZE_SLIDER_STEPS,
+		BRUSH_SHAPES,
 		clampStrength,
 		sizeOfSlider,
 		sliderOfSize,
@@ -119,12 +121,13 @@
 
 	const tr = (key: TranslationKey) => t(key, lang);
 
-	/** The six tools, their glyphs, and the letter that picks each one. */
+	/** The seven tools, their glyphs, and the letter that picks each one. */
 	const TOOLS: { id: PaintTool; label: TranslationKey; icon: Component<IconProps>; key: string }[] = [
 		{ id: 'pen', label: 'paintPen', icon: PencilIcon, key: 'P' },
 		{ id: 'fill', label: 'paintFill', icon: PaintBucketIcon, key: 'F' },
 		{ id: 'line', label: 'paintLine', icon: LineIcon, key: 'L' },
 		{ id: 'rect', label: 'paintRect', icon: SquareIcon, key: 'R' },
+		{ id: 'ellipse', label: 'paintEllipse', icon: EllipseIcon, key: 'O' },
 		{ id: 'smudge', label: 'paintSmudge', icon: SmudgeIcon, key: 'U' },
 		{ id: 'select', label: 'paintSelect', icon: SelectIcon, key: 'M' }
 	];
@@ -135,6 +138,14 @@
 		{ id: 'twirl', label: 'paintSmudgeTwirl', icon: TwirlIcon },
 		{ id: 'bulge', label: 'paintSmudgeBulge', icon: BulgeIcon }
 	];
+
+	/** Each head's name, which says how it lies on the drawing (see `brushHead.ts`). */
+	const HEAD_LABELS: Record<BrushShape, TranslationKey> = {
+		round: 'paintBrushRound',
+		square: 'paintBrushSquare',
+		diamond: 'paintBrushDiamond',
+		chisel: 'paintBrushChisel'
+	};
 
 	/** The boards Tern offers: a plain heart of three strips up to nine. */
 	const BOARDS = [3, 4, 5, 6, 7, 8, 9];
@@ -303,14 +314,14 @@
 			<span class="field-label brush-label">
 				<span>{tr('paintBrush')}</span>
 				<span class="brush-heads" role="group" aria-label={tr('paintBrushShape')}>
-					{#each ['round', 'square'] as const as shape (shape)}
+					{#each BRUSH_SHAPES as shape (shape)}
 						<button
 							type="button"
 							class="head-btn"
 							class:active={brushShape === shape}
 							aria-pressed={brushShape === shape}
-							aria-label={tr(shape === 'round' ? 'paintBrushRound' : 'paintBrushSquare')}
-							title={tr(shape === 'round' ? 'paintBrushRound' : 'paintBrushSquare')}
+							aria-label={tr(HEAD_LABELS[shape])}
+							title={tr(HEAD_LABELS[shape])}
 							onclick={() => onBrushShape(shape)}
 							{disabled}
 						>
@@ -554,9 +565,20 @@
 	}
 
 	/* On the mask the square lies along the strips, which the heart turns on
-	   their corner: drawn as it will look on the drawing. */
+	   their corner: drawn as it will look on the drawing. The diamond lies across
+	   them, so it stands upright, and the chisel is a bar along a strip. */
 	.head.square {
 		transform: rotate(45deg) scale(0.9);
+	}
+
+	.head.diamond {
+		transform: scale(0.85);
+	}
+
+	.head.chisel {
+		width: 3px;
+		height: 11px;
+		transform: rotate(45deg);
 	}
 
 	/* The tools and the two history buttons are one square under one name.

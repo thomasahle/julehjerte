@@ -73,6 +73,21 @@ describe('the square head', () => {
 	});
 });
 
+describe('the chisel', () => {
+	it('turns a quarter in the images whose symmetry swaps the axes, so the mask stays symmetric', () => {
+		const symmetry = { curve: 'off', lobe: 'sym', lobes: 'sym' } as const;
+		const transforms = transformsFor(symmetry);
+		for (const shape of ['diamond', 'chisel'] as const) {
+			const m = createMask(0, 80);
+			checks(m, 5);
+			const smudge = createSmudge(m, transforms, shape);
+			smudge.push({ x: 20, y: 30 }, { x: 26, y: 26 }, 10);
+			for (let k = 0; k < 6; k++) smudge.twirl({ x: 24, y: 52 }, 12, 0.08);
+			for (const t of transforms) expect(disagreement(m, t)).toBe(0);
+		}
+	});
+});
+
 describe('strength', () => {
 	it('carries the paper only that share of the way', () => {
 		const full = createMask(0, 64), half = createMask(0, 64);

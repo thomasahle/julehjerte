@@ -15,8 +15,15 @@
  * it always was, its pattern over its whole square.
  */
 
-import { missingPixelChannels } from './drawHeart';
 import type { Box, Mask } from './mask';
+
+const UNKNOWN_LIGHT = [224, 224, 224, 255] as const;
+const UNKNOWN_DARK = [185, 185, 185, 255] as const;
+
+/** Missing photo pixels have neutral hatching, distinct from either paper. */
+export function missingPixelChannels(index: number, width: number): readonly number[] {
+	return Math.floor((index % width + Math.floor(index / width)) / 4) % 2 ? UNKNOWN_LIGHT : UNKNOWN_DARK;
+}
 
 /**
  * The pixels per cell a smooth picture needs at `screenPerCell` screen pixels a
@@ -30,23 +37,26 @@ export function smoothScale(screenPerCell: number): number {
 
 /**
  * Write the pixels of the cells in `box`, and of the half cell round them that
- * reads them too, into `out`: an RGBA picture of the mask `scale` pixels a cell
- * (`mask.size * scale` square). `paper` holds the two papers' RGB channels.
- * Returns the pixel box written.
+ * reads them too, into `out`: an RGBA picture `scale` pixels a cell of the
+ * cells in `window`, the whole mask unless it says less (a zoomed view draws
+ * only what it shows, finer). `paper` holds the two papers' RGB channels.
+ * Returns the pixel box written, in the picture's own pixels.
  */
 export function smoothPixels(
 	mask: Mask,
 	paper: readonly ArrayLike<number>[],
 	scale: number,
 	out: Uint8ClampedArray,
-	box: Box
+	box: Box,
+	window: Box = { x0: 0, y0: 0, x1: mask.size, y1: mask.size }
 ): Box {
-	const n = mask.size, width = n * scale, data = mask.data, known = mask.validMask;
+	const n = mask.size, data = mask.data, known = mask.validMask;
 	const [left, right] = paper as [ArrayLike<number>, ArrayLike<number>];
+	const ox = window.x0 * scale, oy = window.y0 * scale, width = (window.x1 - window.x0) * scale;
 	// A pixel reads the four cells round it, so a changed cell reaches a cell's
 	// width of pixels further on each side.
-	const px0 = Math.max(0, (box.x0 - 1) * scale), py0 = Math.max(0, (box.y0 - 1) * scale);
-	const px1 = Math.min(width, (box.x1 + 1) * scale), py1 = Math.min(width, (box.y1 + 1) * scale);
+	const px0 = Math.max(ox, (box.x0 - 1) * scale), py0 = Math.max(oy, (box.y0 - 1) * scale);
+	const px1 = Math.min(window.x1 * scale, (box.x1 + 1) * scale), py1 = Math.min(window.y1 * scale, (box.y1 + 1) * scale);
 	const put = (p: number, colour: ArrayLike<number>) => {
 		out[p] = colour[0]!;
 		out[p + 1] = colour[1]!;
@@ -61,7 +71,7 @@ export function smoothPixels(
 		for (let px = px0; px < px1; px++) {
 			const u = Math.max(0, Math.min(n - 1, (px + 0.5) / scale - 0.5));
 			const x0 = Math.min(Math.max(0, n - 2), Math.floor(u)), tx = u - x0, x1 = Math.min(n - 1, x0 + 1);
-			const p = 4 * (py * width + px);
+			const p = 4 * ((py - oy) * width + px - ox);
 			const ia = y0 * n + x0, ib = y0 * n + x1, ic = y1 * n + x0, id = y1 * n + x1;
 			if (known && !(known[ia] && known[ib] && known[ic] && known[id])) {
 				// Beside an unknown cell, the cells as they always were.
@@ -86,5 +96,34 @@ export function smoothPixels(
 			out[p + 3] = 255;
 		}
 	}
-	return { x0: px0, y0: py0, x1: px1, y1: py1 };
+	if (px1 <= px0 || py1 <= py0) return { x0: 0, y0: 0, x1: 0, y1: 0 };
+	return { x0: px0 - ox, y0: py0 - oy, x1: px1 - ox, y1: py1 - oy };
 }
+
+/**
+ * A rectangle of cells, `width` × `height` row by row, drawn smooth as the mask
+ * is: Markér's floating patch. Past its edges the cells read as the edge ones,
+ * so its rim is the patch's own and not a paper it does not hold.
+ */
+export function smoothCells(
+	cells: Uint8Array,
+	known: Uint8Array | undefined,
+	width: number,
+	height: number,
+	paper: readonly ArrayLike<number>[],
+	scale: number
+): Uint8ClampedArray<ArrayBuffer> {
+	const n = Math.max(2, width, height);
+	const data = new Uint8Array(n * n), valid = known ? new Uint8Array(n * n) : undefined;
+	for (let y = 0; y < n; y++)
+		for (let x = 0; x < n; x++) {
+			const i = Math.min(y, height - 1) * width + Math.min(x, width - 1);
+			data[y * n + x] = cells[i]!;
+			if (valid) valid[y * n + x] = known![i]!;
+		}
+	const out = new Uint8ClampedArray(new ArrayBuffer(width * scale * height * scale * 4));
+	const whole = { x0: 0, y0: 0, x1: width, y1: height };
+	smoothPixels({ size: n, data, ...(valid ? { validMask: valid } : {}) }, paper, scale, out, whole, whole);
+	return out;
+}
+

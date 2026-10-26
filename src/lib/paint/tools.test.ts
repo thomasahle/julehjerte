@@ -9,6 +9,7 @@ import {
 	checks,
 	checksKeepSymmetry,
 	defaultMask,
+	ellipse,
 	floodFill,
 	isDefaultMask,
 	line,
@@ -101,15 +102,16 @@ describe('stroke', () => {
 	});
 
 	it('covers the dabs a stamp at every cell would, and nothing beyond the brush', () => {
-		for (const shape of ['round', 'square'] as const) {
+		for (const shape of ['round', 'square', 'diamond', 'chisel'] as const) {
 			const swept = createMask(0, 64), dabbed = createMask(0, 64);
 			const from = { x: 7.3, y: 50.6 }, to = { x: 49.8, y: 12.1 }, brush = { radius: 5, value: 1 as const, shape };
 			stroke(swept, from, to, brush);
 			const steps = Math.ceil(Math.hypot(to.x - from.x, to.y - from.y));
 			for (let i = 0; i <= steps; i++) stamp(dabbed, from.x + (to.x - from.x) * i / steps, from.y + (to.y - from.y) * i / steps, brush);
 			for (let i = 0; i < dabbed.data.length; i++) if (dabbed.data[i]) expect(swept.data[i]).toBe(1);
-			// What the sweep adds lies between two neighbouring dabs: under a cell more.
-			expect(count(swept, 1) - count(dabbed, 1)).toBeLessThan(count(dabbed, 1) * 0.05);
+			// What the sweep adds lies between two neighbouring dabs: under a cell
+			// more, which is more of a thin nib's stroke.
+			expect(count(swept, 1) - count(dabbed, 1)).toBeLessThan(count(dabbed, 1) * (shape === 'chisel' ? 0.1 : 0.05));
 		}
 	});
 
@@ -130,6 +132,55 @@ describe('stroke', () => {
 		stroke(a, { x: 3, y: 60 }, { x: 55, y: 8 }, { radius: 6, value: 1 });
 		line(b, { x: 3, y: 60 }, { x: 55, y: 8 }, { radius: 6, value: 1 });
 		expect([...a.data]).toEqual([...b.data]);
+	});
+});
+
+describe('the diamond and chisel heads', () => {
+	it('stands the diamond upright on screen: the cells within the radius of it along both diagonals', () => {
+		const m = createMask(0, 32);
+		stamp(m, 16, 16, { radius: 4, value: 1, shape: 'diamond' });
+		for (let y = 0; y < 32; y++)
+			for (let x = 0; x < 32; x++) expect(get(m, x, y)).toBe(Math.abs(x - 16) + Math.abs(y - 16) <= 4 * Math.SQRT2 ? 1 : 0);
+	});
+
+	it('lays the chisel along a strip, a quarter as thick as it is long', () => {
+		const m = createMask(0, 32);
+		stamp(m, 16, 16, { radius: 8, value: 1, shape: 'chisel' });
+		for (let y = 0; y < 32; y++)
+			for (let x = 0; x < 32; x++) expect(get(m, x, y)).toBe(Math.abs(x - 16) <= 2 && Math.abs(y - 16) <= 8 ? 1 : 0);
+	});
+
+	it('draws thick and thin with the chisel, by the direction of the stroke', () => {
+		const across = createMask(0, 64), along = createMask(0, 64);
+		const nib = { radius: 8, value: 1 as const, shape: 'chisel' as const };
+		stroke(across, { x: 10, y: 32 }, { x: 50, y: 32 }, nib);
+		stroke(along, { x: 32, y: 10 }, { x: 32, y: 50 }, nib);
+		const column = (m: Mask, x: number) => Array.from({ length: 64 }, (_, y) => get(m, x, y)).filter(Boolean).length;
+		const row = (m: Mask, y: number) => Array.from({ length: 64 }, (_, x) => get(m, x, y)).filter(Boolean).length;
+		expect(column(across, 30)).toBe(17);
+		expect(row(along, 30)).toBe(5);
+	});
+});
+
+describe('ellipse', () => {
+	it('fills the ellipse inside the rectangle its corners span, in either order', () => {
+		const a = createMask(0, 64), b = createMask(0, 64), box = createMask(0, 64);
+		ellipse(a, { x: 10, y: 20 }, { x: 50, y: 40 }, 1);
+		ellipse(b, { x: 50, y: 40 }, { x: 10, y: 20 }, 1);
+		rect(box, { x: 10, y: 20 }, { x: 50, y: 40 }, 1);
+		expect([...a.data]).toEqual([...b.data]);
+		for (let i = 0; i < a.data.length; i++) if (a.data[i]) expect(box.data[i]).toBe(1);
+		// π·rx·ry, with the corner cells' halves counted: radii 20.5 and 10.5.
+		expect(Math.abs(count(a, 1) - Math.PI * 20.5 * 10.5) / count(a, 1)).toBeLessThan(0.03);
+		expect(get(a, 30, 20)).toBe(1);
+		expect(get(a, 10, 30)).toBe(1);
+		expect(get(a, 10, 20)).toBe(0);
+	});
+
+	it('paints a line for a drag one cell wide, as the rectangle does', () => {
+		const m = createMask(0, 32);
+		ellipse(m, { x: 5, y: 10 }, { x: 25, y: 10 }, 1);
+		expect(count(m, 1)).toBe(21);
 	});
 });
 

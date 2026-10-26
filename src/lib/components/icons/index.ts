@@ -27,6 +27,7 @@ export { default as ChevronRightIcon } from '@lucide/svelte/icons/chevron-right'
 export { default as CloseIcon } from '@lucide/svelte/icons/x';
 export { default as DiceIcon } from '@lucide/svelte/icons/dices';
 export { default as DownloadIcon } from '@lucide/svelte/icons/download';
+export { default as EllipseIcon } from '@lucide/svelte/icons/ellipse';
 export { default as ExternalIcon } from '@lucide/svelte/icons/external-link';
 export { default as FitIcon } from '@lucide/svelte/icons/maximize';
 export { default as GearIcon } from '@lucide/svelte/icons/settings';

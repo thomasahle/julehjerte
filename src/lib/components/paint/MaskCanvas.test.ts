@@ -68,6 +68,8 @@ type Harness = {
 	/** The wrapper that carries the label and, under Markér, the tab stop. */
 	box: HTMLElement;
 	edits: number;
+	/** Gestures the canvas gave up, for the page to take back. */
+	cancels: number;
 	setTool: (tool: PaintTool) => void;
 	setBrush: (brush: number) => void;
 	setDisabled: (disabled: boolean) => void;
@@ -97,7 +99,7 @@ function render(
 	const mask = createMask(options.fill ?? 0, SIZE);
 	const target = document.createElement('div');
 	document.body.appendChild(target);
-	const harness = { edits: 0 };
+	const harness = { edits: 0, cancels: 0 };
 	const fences: boolean[] = [];
 	const component = mount(MaskCanvasFixture, {
 		target,
@@ -117,6 +119,9 @@ function render(
 			onEditEnd: () => {
 				harness.edits++;
 			},
+			onEditCancel: () => {
+				harness.cancels++;
+			},
 			onShortcut: () => {},
 			onFenceChange: (held: boolean) => fences.push(held),
 			lang: 'da' as const
@@ -135,6 +140,9 @@ function render(
 		box: target.querySelector<HTMLElement>('.mask-canvas')!,
 		get edits() {
 			return harness.edits;
+		},
+		get cancels() {
+			return harness.cancels;
 		},
 		setTool: (tool: PaintTool) => {
 			component.setTool(tool);
@@ -739,3 +747,82 @@ describe('Udtvær', () => {
 		expect(c.edits).toBe(1);
 	});
 });
+
+describe('zoom and pan, as in Tegn', () => {
+	/** A wheel turned over the canvas at a screen point. */
+	function wheel(canvas: HTMLCanvasElement, where: { clientX: number; clientY: number }, deltaY: number, ctrlKey: boolean, deltaX = 0): void {
+		canvas.dispatchEvent(new WheelEvent('wheel', { deltaX, deltaY, ctrlKey, bubbles: true, cancelable: true, ...where }));
+		flushSync();
+	}
+
+	/** A finger's pointer event: each finger its own id. */
+	function finger(canvas: HTMLCanvasElement, type: 'pointerdown' | 'pointermove' | 'pointerup', id: number, where: { clientX: number; clientY: number }): void {
+		canvas.dispatchEvent(new PointerEvent(type, { pointerId: id, pointerType: 'touch', button: 0, buttons: type === 'pointerup' ? 0 : 1, bubbles: true, ...where }));
+		flushSync();
+	}
+
+	it('zooms about the pointer with Ctrl and the wheel, so the cell under it stays under it', () => {
+		const c = render({ brush: 1 });
+		const point = at(12, 25);
+		// Six notches in: about 1.8 times as large.
+		for (let k = 0; k < 6; k++) wheel(c.canvas, point, -100, true);
+		send(c.canvas, 'pointerdown', point);
+		send(c.canvas, 'pointerup', point);
+		expect(c.cell(12, 25)).toBe(1);
+		// Forty pixels to the right is fewer cells away now: unzoomed it would be
+		// 3.5 cells further along x (at 16), zoomed by e^0.6 ≈ 1.82 about 1.9.
+		const before = new Uint8Array(c.mask.data);
+		const away = { clientX: point.clientX + 40, clientY: point.clientY };
+		send(c.canvas, 'pointerdown', away);
+		send(c.canvas, 'pointerup', away);
+		const added: number[] = [];
+		for (let i = 0; i < c.mask.data.length; i++) if (c.mask.data[i] && !before[i]) added.push(i % SIZE);
+		const meanX = added.reduce((s, x) => s + x, 0) / added.length;
+		const unzoomed = toSquareX(away) * SIZE;
+		expect(unzoomed).toBeCloseTo(16);
+		expect(meanX).toBeCloseTo(12.5 + (unzoomed - 12.5) / Math.exp(0.6), 0);
+	});
+
+	it('pans with a two-finger scroll, and Tilpas visning puts the heart back', () => {
+		const c = render({ brush: 1 });
+		expect(document.querySelector('.fit-view')).toBeNull();
+		for (let k = 0; k < 4; k++) wheel(c.canvas, at(20, 20), -100, true);
+		wheel(c.canvas, at(20, 20), 30, false, 30);
+		const fit = document.querySelector<HTMLButtonElement>('.fit-view');
+		expect(fit?.textContent?.trim()).toBe('Tilpas visning');
+		fit!.click();
+		flushSync();
+		expect(document.querySelector('.fit-view')).toBeNull();
+		send(c.canvas, 'pointerdown', at(20, 20));
+		send(c.canvas, 'pointerup', at(20, 20));
+		expect(c.cell(20, 20)).toBe(1);
+	});
+
+	it('gives up the first finger\'s stroke when a second comes down, and paints nothing until both are lifted', () => {
+		const c = render({ brush: 1 });
+		finger(c.canvas, 'pointerdown', 7, at(10, 10));
+		expect(c.cell(10, 10)).toBe(1);
+		finger(c.canvas, 'pointerdown', 8, at(30, 30));
+		expect(c.cancels).toBe(1);
+		finger(c.canvas, 'pointermove', 8, at(34, 34));
+		finger(c.canvas, 'pointerup', 8, at(34, 34));
+		// The finger left behind neither paints nor ends an edit.
+		finger(c.canvas, 'pointermove', 7, at(14, 14));
+		finger(c.canvas, 'pointerup', 7, at(14, 14));
+		expect(c.cell(14, 14)).toBe(0);
+		expect(c.edits).toBe(0);
+		// The spread zoomed in.
+		expect(document.querySelector('.fit-view')).not.toBeNull();
+		// A new finger paints again.
+		finger(c.canvas, 'pointerdown', 9, at(20, 5));
+		finger(c.canvas, 'pointerup', 9, at(20, 5));
+		expect(c.edits).toBe(1);
+	});
+});
+
+/** A screen point's x across the square, at the unzoomed layout. */
+function toSquareX(where: { clientX: number; clientY: number }): number {
+	const R = Math.SQRT1_2, rx = (where.clientX - layout.cx) / layout.scale, ry = (where.clientY - layout.cy) / layout.scale;
+	return R * rx + R * ry + 0.5;
+}
+

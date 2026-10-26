@@ -107,10 +107,10 @@ describe('MaskToolPanel', () => {
 	it('gives every tool button its own click', () => {
 		const panel = render();
 		try {
-			expect(panel.buttons).toHaveLength(6);
+			expect(panel.buttons).toHaveLength(7);
 			for (const button of panel.buttons) button.click();
 			flushSync();
-			expect(panel.picked).toEqual(['pen', 'fill', 'line', 'rect', 'smudge', 'select']);
+			expect(panel.picked).toEqual(['pen', 'fill', 'line', 'rect', 'ellipse', 'smudge', 'select']);
 		} finally {
 			panel.cleanup();
 		}
@@ -131,7 +131,7 @@ describe('MaskToolPanel', () => {
 	it('really disables the tools while the engine is working', () => {
 		const panel = render({ disabled: true });
 		try {
-			expect(panel.buttons.map((b) => b.disabled)).toEqual([true, true, true, true, true, true]);
+			expect(panel.buttons.map((b) => b.disabled)).toEqual([true, true, true, true, true, true, true]);
 			panel.byLabel('Fyld')?.click();
 			flushSync();
 			expect(panel.picked).toEqual([]);
@@ -170,18 +170,20 @@ describe('MaskToolPanel', () => {
 		}
 	});
 
-	it('switches the brush between a round and a square head', () => {
+	it('switches the brush between its four heads', () => {
 		const shapes: string[] = [];
 		const panel = render({ brushShape: 'round', onBrushShape: (shape) => shapes.push(shape) });
 		try {
 			const heads = [...panel.target.querySelectorAll<HTMLButtonElement>('.brush-heads button')];
 			expect(heads.map((b) => [b.getAttribute('aria-label'), b.getAttribute('aria-pressed')])).toEqual([
 				['Rund pensel', 'true'],
-				['Firkantet pensel', 'false']
+				['Firkantet pensel, langs strimlerne', 'false'],
+				['Firkantet pensel, lodret', 'false'],
+				['Flad pensel, til tykke og tynde streger', 'false']
 			]);
-			heads[1]!.click();
+			for (const head of heads.slice(1)) head.click();
 			flushSync();
-			expect(shapes).toEqual(['square']);
+			expect(shapes).toEqual(['square', 'diamond', 'chisel']);
 		} finally {
 			panel.cleanup();
 		}

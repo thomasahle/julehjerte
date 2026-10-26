@@ -1,7 +1,7 @@
 /** Invert a gesture's footprint once, even when dabs or symmetry copies overlap. */
 import type { Vec } from '$lib/types/heart';
 import { cloneMask, createMask, emptyBox, isEmptyBox, paintCell, unionBox, type Box, type Mask } from './mask';
-import { applySymmetric, floodFill, rect, stroke } from './tools';
+import { applySymmetric, ellipse, floodFill, rect, stroke } from './tools';
 import type { Transform } from './symmetry';
 import type { BrushShape } from './toolset';
 
@@ -30,6 +30,9 @@ export function createXorGesture(mask: Mask, transforms: Transform[] = []) {
 		},
 		rect(from: Vec, to: Vec): Box {
 			return invert(rect(covered, from, to, 1));
+		},
+		ellipse(from: Vec, to: Vec): Box {
+			return invert(ellipse(covered, from, to, 1));
 		},
 		fill(x: number, y: number, fence?: Uint8Array | null): Box {
 			const sx = Math.round(x), sy = Math.round(y);

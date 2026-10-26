@@ -11,35 +11,20 @@ import type { Vec } from '$lib/types/heart';
 import { clampBox, createMask, emptyBox, get, isEmptyBox, MASK_SIZE, paintCell, unionBox, type Box, type Mask } from './mask';
 import { closedPointMaps, type Transform } from './symmetry';
 import type { BrushShape } from './toolset';
+import { headPlanes, headReach } from './brushHead';
 
 /**
  * What the pen lays down: a radius in cells, the paper colour it paints, and
- * its head — round unless it says square.
+ * its head — round unless it says otherwise (see `brushHead.ts`).
  */
 export type Brush = { radius: number; value: 0 | 1; shape?: BrushShape };
 
 /**
- * Fill one dab of the brush. Cells are inside when their centre is within the
- * radius: of the point for a round head, along both axes for a square one.
+ * Fill one dab of the brush: the cells whose centre lies in its head, placed
+ * at the point.
  */
 export function stamp(m: Mask, x: number, y: number, brush: Brush): Box {
-	const r = Math.max(0, brush.radius);
-	const box = clampBox(m, x - r, y - r, x + r + 1, y + r + 1);
-	if (isEmptyBox(box)) return box;
-	const r2 = r * r, square = brush.shape === 'square';
-	let changed = emptyBox();
-	for (let cy = box.y0; cy < box.y1; cy++) {
-		const dy = cy - y;
-		const row = cy * m.size;
-		if (square && Math.abs(dy) > r) continue;
-		for (let cx = box.x0; cx < box.x1; cx++) {
-			const dx = cx - x;
-			if (square ? Math.abs(dx) > r : dx * dx + dy * dy > r2) continue;
-			if (!paintCell(m, row + cx, brush.value)) continue;
-			changed = unionBox(changed, { x0: cx, y0: cy, x1: cx + 1, y1: cy + 1 });
-		}
-	}
-	return changed;
+	return stroke(m, { x, y }, { x, y }, brush);
 }
 
 /**
@@ -48,32 +33,35 @@ export function stamp(m: Mask, x: number, y: number, brush: Brush): Box {
  * moved between two pointer events.
  *
  * The swept shape is filled in one pass over its box, a cell at a time: a round
- * head sweeps the cells within its radius of the segment, a square one those
- * whose two axis distances fall within it at one and the same point of the
- * segment. Stamping a dab every cell along the way gives nearly the same cells,
+ * head sweeps the cells within its radius of the segment; a head with straight
+ * sides (a convex polygon, its half-planes) the cells it holds at some one point
+ * of the segment, which each half-plane narrows to an interval of the way
+ * along. Stamping a dab every cell along the way gives nearly the same cells,
  * but a broad brush (radius 200) then visits each cell of its box hundreds of
  * times over.
  */
 export function stroke(m: Mask, from: Vec, to: Vec, brush: Brush): Box {
-	const r = Math.max(0, brush.radius), square = brush.shape === 'square';
+	const r = Math.max(0, brush.radius), planes = headPlanes(brush.shape, r), reach = headReach(brush.shape, r);
 	const dx = to.x - from.x, dy = to.y - from.y, length2 = dx * dx + dy * dy;
-	const box = clampBox(m, Math.min(from.x, to.x) - r, Math.min(from.y, to.y) - r, Math.max(from.x, to.x) + r + 1, Math.max(from.y, to.y) + r + 1);
+	const box = clampBox(m, Math.min(from.x, to.x) - reach.x, Math.min(from.y, to.y) - reach.y, Math.max(from.x, to.x) + reach.x + 1, Math.max(from.y, to.y) + reach.y + 1);
 	if (isEmptyBox(box)) return box;
 	const r2 = r * r, eps = 1e-9;
-	/** The part of the segment (0 to 1) along which the head's axis `d` covers offset `p`. */
-	const span = (p: number, d: number): [number, number] => {
-		if (Math.abs(d) < eps) return Math.abs(p) <= r ? [0, 1] : [1, 0];
-		const a = (p - r) / d, b = (p + r) / d;
-		return a < b ? [a, b] : [b, a];
-	};
 	let changed = emptyBox();
 	for (let cy = box.y0; cy < box.y1; cy++) {
 		const py = cy - from.y, row = cy * m.size;
 		for (let cx = box.x0; cx < box.x1; cx++) {
 			const px = cx - from.x;
-			if (square) {
-				const [ax, bx] = span(px, dx), [ay, by] = span(py, dy);
-				if (Math.max(0, ax, ay) > Math.min(1, bx, by) + eps) continue;
+			if (planes) {
+				// The head at t along the way holds the cell where n·p − t·n·d ≤ h for each side.
+				let lo = 0, hi = 1;
+				for (const [nx, ny, h] of planes) {
+					const a = nx * dx + ny * dy, c = nx * px + ny * py - h;
+					if (Math.abs(a) < eps) {
+						if (c > eps) hi = -1;
+					} else if (a > 0) lo = Math.max(lo, c / a);
+					else hi = Math.min(hi, c / a);
+				}
+				if (lo > hi + eps) continue;
 			} else {
 				const t = length2 ? Math.max(0, Math.min(1, (px * dx + py * dy) / length2)) : 0;
 				if ((px - t * dx) ** 2 + (py - t * dy) ** 2 > r2 + eps) continue;
@@ -107,6 +95,30 @@ export function rect(m: Mask, a: Vec, b: Vec, value: 0 | 1): Box {
 		for (let cx = box.x0; cx < box.x1; cx++) {
 			if (!paintCell(m, row + cx, value)) continue;
 			changed = unionBox(changed, { x0: cx, y0: cy, x1: cx + 1, y1: cy + 1 });
+		}
+	}
+	return changed;
+}
+
+/**
+ * Fill the ellipse inscribed in the rectangle two corners span, in either
+ * order: the cells whose centre lies in it, the corner cells' own halves
+ * counted, so a drag one cell wide paints a line as the rectangle does.
+ */
+export function ellipse(m: Mask, a: Vec, b: Vec, value: 0 | 1): Box {
+	const x0 = Math.round(Math.min(a.x, b.x)), x1 = Math.round(Math.max(a.x, b.x));
+	const y0 = Math.round(Math.min(a.y, b.y)), y1 = Math.round(Math.max(a.y, b.y));
+	const box = clampBox(m, x0, y0, x1 + 1, y1 + 1);
+	if (isEmptyBox(box)) return box;
+	const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, rx = (x1 - x0) / 2 + 0.5, ry = (y1 - y0) / 2 + 0.5;
+	let changed = emptyBox();
+	for (let y = box.y0; y < box.y1; y++) {
+		const row = y * m.size, v = (y - cy) / ry;
+		for (let x = box.x0; x < box.x1; x++) {
+			const u = (x - cx) / rx;
+			if (u * u + v * v > 1 + 1e-9) continue;
+			if (!paintCell(m, row + x, value)) continue;
+			changed = unionBox(changed, { x0: x, y0: y, x1: x + 1, y1: y + 1 });
 		}
 	}
 	return changed;

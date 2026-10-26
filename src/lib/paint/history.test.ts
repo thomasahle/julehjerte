@@ -8,6 +8,7 @@ import {
 	record,
 	redo,
 	resetHistory,
+	takeBack,
 	undo,
 	type MaskStep
 } from './history';
@@ -26,6 +27,16 @@ function step(n: number, symmetry: SymmetrySettings = NO_SYMMETRY): MaskStep {
 }
 
 describe('history', () => {
+	it('takes back an edit given up before it ended, with nothing to redo', () => {
+		const history = createHistory();
+		record(history, step(1));
+		record(history, step(2));
+		expect(takeBack(history)?.mask.data[1]).toBe(2);
+		expect(canRedo(history)).toBe(false);
+		expect(undo(history, step(3))?.mask.data[1]).toBe(1);
+		expect(takeBack(createHistory())).toBeNull();
+	});
+
 	it('gives back the state before the edit, and takes it forward again', () => {
 		const history = createHistory();
 		record(history, step(1));

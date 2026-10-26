@@ -26,6 +26,7 @@ import type { HeartColors } from '$lib/types/heart';
 import { fitHeart, type HeartLayout } from './heartLayout';
 import type { Mask } from './mask';
 import type { RectifiedPhoto } from './rectify';
+import { smoothPixels, smoothScale } from './smoothRaster';
 
 /**
  * Where the heart sits on a canvas: the square's centre and its side in pixels,
@@ -66,7 +67,7 @@ export function drawHeart(
 	colors: HeartColors,
 	size: number
 ): void {
-	drawFramed(ctx, colors, size, maskCanvas(mask, colors), mask.size);
+	drawFramed(ctx, colors, size, maskCanvas(mask, colors, smoothScale(heartLayout(size).scale * (globalThis.devicePixelRatio || 1) / mask.size)), 0);
 }
 
 /**
@@ -112,6 +113,7 @@ function drawFramed(
 	colors: HeartColors,
 	size: number,
 	contents: HTMLCanvasElement | null,
+	/** The cells across a photograph's crop, drawn sharp when magnified; 0 for a mask already drawn smooth. */
 	cells: number
 ): void {
 	const { cx, cy, scale } = heartLayout(size);
@@ -144,7 +146,8 @@ function drawFramed(
 		ctx.beginPath();
 		ctx.rect(-0.5, -0.5, 1, 1);
 		ctx.clip();
-		ctx.imageSmoothingEnabled = scale < cells;
+		ctx.imageSmoothingEnabled = !cells || scale < cells;
+		ctx.imageSmoothingQuality = 'high';
 		ctx.drawImage(contents, -0.5, -0.5, 1, 1);
 	}
 	ctx.restore();
@@ -166,28 +169,19 @@ function photoCanvas(photo: RectifiedPhoto): HTMLCanvasElement | null {
 	return canvas;
 }
 
-const UNKNOWN_LIGHT = [224, 224, 224, 255] as const;
-const UNKNOWN_DARK = [185, 185, 185, 255] as const;
 
-/** Missing photo pixels have neutral hatching, distinct from either paper. */
-export function missingPixelChannels(index: number, width: number): readonly number[] {
-	return Math.floor((index % width + Math.floor(index / width)) / 4) % 2 ? UNKNOWN_LIGHT : UNKNOWN_DARK;
-}
-
-/** The mask as an image of its two paper colours, one pixel per cell. */
-function maskCanvas(mask: Mask, colors: HeartColors): HTMLCanvasElement | null {
+/** The mask as an image of its two paper colours, drawn smooth as the paint page draws it (`smoothRaster.ts`). */
+function maskCanvas(mask: Mask, colors: HeartColors, scale: number): HTMLCanvasElement | null {
 	const left = colourChannels(colors.left);
 	const right = colourChannels(colors.right);
 	if (!left || !right) return null;
 	const canvas = document.createElement('canvas');
-	canvas.width = mask.size;
-	canvas.height = mask.size;
+	canvas.width = mask.size * scale;
+	canvas.height = mask.size * scale;
 	const ctx = canvas.getContext('2d');
 	if (!ctx) return null;
-	const image = ctx.createImageData(mask.size, mask.size);
-	for (let i = 0; i < mask.data.length; i++) {
-		image.data.set(mask.validMask && !mask.validMask[i] ? missingPixelChannels(i, mask.size) : mask.data[i] ? right : left, i * 4);
-	}
+	const image = ctx.createImageData(mask.size * scale, mask.size * scale);
+	smoothPixels(mask, [left, right], scale, image.data, { x0: 0, y0: 0, x1: mask.size, y1: mask.size });
 	ctx.putImageData(image, 0, 0);
 	return canvas;
 }

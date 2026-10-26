@@ -25,10 +25,11 @@
 	import { inferOverlapRect } from '$lib/utils/overlapRect';
 	import type { HeartColors, HeartDesign } from '$lib/types/heart';
 	import { cloneMask, clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask, type MaskRaster } from '$lib/paint/mask';
-	import { applySymmetric, applySymmetricEdit, checks, floodFill, rect, stroke } from '$lib/paint/tools';
+	import { applySymmetric, applySymmetricEdit, checks, ellipse, floodFill, rect, stroke } from '$lib/paint/tools';
+	import { headReach, sweptCorners } from '$lib/paint/brushHead';
 	import { createXorGesture } from '$lib/paint/xorGesture';
 	import { createSmudge, type Smudge } from '$lib/paint/smudge';
-	import { smoothPixels, smoothScale } from '$lib/paint/smoothRaster';
+	import { smoothCells, smoothPixels, smoothScale } from '$lib/paint/smoothRaster';
 	import {
 		GRAB_PX,
 		HANDLES,
@@ -58,8 +59,10 @@
 		type Selection
 	} from '$lib/paint/selection';
 	import { closedPointMaps, transformsFor, type SymmetrySettings } from '$lib/paint/symmetry';
-	import { colourChannels, missingPixelChannels } from '$lib/paint/drawHeart';
-	import { fitHeart, insideSquare, toMask, toSquare, type HeartLayout, type Pt } from '$lib/paint/heartLayout';
+	import { colourChannels } from '$lib/paint/drawHeart';
+	import { fitHeart, HEART_HEIGHT, HEART_WIDTH, insideSquare, toMask, toSquare, type HeartLayout, type Pt } from '$lib/paint/heartLayout';
+	import { wheelZoomFactor } from '$lib/editor/wheelZoom';
+	import { FitIcon } from '$lib/components/icons';
 	import {
 		frameHandles,
 		shapeOutline,
@@ -130,6 +133,11 @@
 		onEditStart: () => void;
 		/** The gesture is over and the mask has changed. */
 		onEditEnd: () => void;
+		/**
+		 * The gesture was given up before it ended (a second finger came down to
+		 * zoom): the mask goes back to its snapshot, with nothing left to redo.
+		 */
+		onEditCancel?: () => void;
 		/** A keystroke the canvas recognised; the page owns the state it changes. */
 		onShortcut: (action: PaintAction) => void;
 		/**
@@ -159,6 +167,7 @@
 		keyboardBusy = false,
 		onEditStart,
 		onEditEnd,
+		onEditCancel = () => {},
 		onShortcut,
 		onFenceChange,
 		lang
@@ -202,8 +211,35 @@
 	let offscreenFor: Mask | null = null;
 	/** The offscreen picture's pixels per cell (see `smoothScale`). */
 	let offscreenScale = 1;
+	// Zoomed in past what that picture holds, the cells on screen drawn again as
+	// finely as the screen shows them, a little after the view settles: `detail`,
+	// over `detailWindow`'s cells at `detailScale` pixels a cell.
+	let detail: HTMLCanvasElement | null = null;
+	let detailData: ImageData | null = null;
+	let detailFor: Mask | null = null;
+	let detailWindow: Box | null = null;
+	let detailScale = 0;
+	let detailTimer: ReturnType<typeof setTimeout> | undefined;
+	/** The most pixels a zoomed view's finer picture holds: about 18 ms to draw. */
+	const DETAIL_PIXELS = 1_500_000;
+	/** How long the view stays still before its finer picture is drawn. */
+	const DETAIL_DELAY_MS = 120;
 
-	let layout = $derived<HeartLayout>(fitHeart(boxWidth, boxHeight, PADDING));
+	/** The heart fitted to the box, before any zoom. */
+	let fitted = $derived<HeartLayout>(fitHeart(boxWidth, boxHeight, PADDING));
+	/**
+	 * Zoom and pan, as Tegn has them (PaperHeart): Ctrl and the wheel, a
+	 * trackpad's pinch or two fingers zoom about the point under them; a
+	 * trackpad's two-finger scroll, or two fingers, pan; "Tilpas visning" puts
+	 * the whole heart back. They are the layout's scale and centre and nothing
+	 * else, so every drawing call and every pointer follows (`heartLayout.ts`).
+	 */
+	let zoom = $state(1);
+	let pan = $state<Pt>({ x: 0, y: 0 });
+	const MIN_ZOOM = 0.5;
+	const MAX_ZOOM = 20;
+	let layout = $derived<HeartLayout>({ scale: fitted.scale * zoom, cx: fitted.cx + pan.x, cy: fitted.cy + pan.y });
+	let zoomed = $derived(zoom !== 1 || pan.x !== 0 || pan.y !== 0);
 	let transforms = $derived(transformsFor(symmetry));
 	let paper = $derived([
 		channels(colors.left, FALLBACK_PAPER.left),
@@ -219,9 +255,15 @@
 	let hoverVisible = $derived(!!hover && !!mask && !disabled && !keyboardBusy &&
 		(tool === 'pen' || tool === 'line' || tool === 'smudge') &&
 		insideSquare(toMask(layout, mask.size, hover.x, hover.y), mask.size));
-	let hoverRadius = $derived(mask ? brush * layout.scale / mask.size : 0);
-	/** A square head stands on the mask's axes, which the heart turns a quarter of a right angle. */
-	let hoverSquare = $derived(brushShape === 'square');
+	/**
+	 * The head's outline on screen, its width and height before it is turned: a
+	 * chisel is a bar, every other head as wide as it is high (see `brushHead.ts`).
+	 */
+	let hoverBox = $derived.by(() => {
+		const reach = brushShape === 'chisel' ? headReach(brushShape, brush) : { x: brush, y: brush };
+		const perCell = mask ? layout.scale / mask.size : 0;
+		return { width: 2 * reach.x * perCell, height: 2 * reach.y * perCell };
+	});
 	let last: Pt | null = null;
 	let start: Pt | null = null;
 	let preview: { from: Pt; to: Pt } | null = null;
@@ -377,12 +419,21 @@
 		ctx.fill();
 
 		// The picture is drawn smooth (see `smoothRaster.ts`), as many pixels a
-		// cell as the screen shows; a heart drawn larger or smaller since asks
-		// for it again.
-		if (mask && offscreenFor === mask && smoothScale(layout.scale * dpr / mask.size) !== offscreenScale) syncOffscreen();
+		// cell as the fitted heart shows; a box resized since asks for it again.
+		// Zoomed in, the cells on screen are drawn finer over it.
+		if (mask && offscreenFor === mask && smoothScale(fitted.scale * dpr / mask.size) !== offscreenScale) syncOffscreen();
 		if (offscreen) {
 			ctx.imageSmoothingQuality = 'high';
 			ctx.drawImage(offscreen, 0, 0, 1, 1);
+		}
+		if (mask) {
+			const wanted = detailWanted(dpr);
+			if (!wanted) dropDetail();
+			else if (detailFor !== mask || detailScale !== wanted.scale || !detailWindow || !containsBox(detailWindow, wanted.shown)) askForDetail();
+			if (detail && detailWindow && detailFor === mask) {
+				const size = mask.size;
+				ctx.drawImage(detail, detailWindow.x0 / size, detailWindow.y0 / size, (detailWindow.x1 - detailWindow.x0) / size, (detailWindow.y1 - detailWindow.y0) / size);
+			}
 		}
 
 		drawPreview(ctx);
@@ -549,7 +600,7 @@
 		ctx.restore();
 	}
 
-	/** The line or rectangle under the pointer, before it is committed. */
+	/** The line, rectangle or ellipse under the pointer, before it is committed. */
 	function drawPreview(ctx: CanvasRenderingContext2D): void {
 		if (!preview || !mask) return;
 		if (paintValue === 'xor') {
@@ -561,12 +612,25 @@
 		const colour = toolValue() ? colors.right : colors.left;
 		ctx.save();
 		ctx.globalAlpha = 0.7;
+		const swept = tool === 'line' ? sweptCorners(brushShape, brush + 0.5, preview.from, preview.to) : null;
 		if (tool === 'rect') {
 			ctx.fillStyle = colour;
 			ctx.fillRect(from.x, from.y, to.x - from.x, to.y - from.y);
+		} else if (tool === 'ellipse') {
+			ctx.fillStyle = colour;
+			ctx.beginPath();
+			ctx.ellipse((from.x + to.x) / 2, (from.y + to.y) / 2, Math.abs(to.x - from.x) / 2 + 0.5 / mask.size, Math.abs(to.y - from.y) / 2 + 0.5 / mask.size, 0, 0, 2 * Math.PI);
+			ctx.fill();
+		} else if (swept) {
+			// A head with straight sides sweeps the hull of itself at both ends.
+			ctx.fillStyle = colour;
+			ctx.beginPath();
+			for (const c of swept) ctx.lineTo(c.x / mask.size, c.y / mask.size);
+			ctx.closePath();
+			ctx.fill();
 		} else {
 			ctx.strokeStyle = colour;
-			ctx.lineCap = brushShape === 'square' ? 'square' : 'round';
+			ctx.lineCap = 'round';
 			ctx.lineWidth = (2 * brush + 1) / mask.size;
 			ctx.beginPath();
 			ctx.moveTo(from.x, from.y);
@@ -576,49 +640,53 @@
 		ctx.restore();
 	}
 
-	/** Preview the actual two papers, including custom colours, without editing them. */
+	/**
+	 * Preview the actual two papers, including custom colours, without editing
+	 * them: the mask as the gesture would leave it, drawn smooth over the cells
+	 * it changes and a cell round them, where it meets the picture below.
+	 */
 	function drawXorPreview(ctx: CanvasRenderingContext2D): void {
 		if (!preview || !mask) return;
 		const proposed = cloneMask(mask);
 		const edit = createXorGesture(proposed, transforms);
-		if (tool === 'rect') edit.rect(preview.from, preview.to);
-		else edit.stroke(preview.from, preview.to, brush, brushShape);
-		const image = new ImageData(mask.size, mask.size);
-		for (let i = 0; i < mask.data.length; i++) {
-			if (proposed.data[i] === mask.data[i]) continue;
-			const colour = paper[proposed.data[i]!]!;
-			image.data.set(colour, 4 * i);
-		}
+		const changed = tool === 'rect'
+			? edit.rect(preview.from, preview.to)
+			: tool === 'ellipse'
+				? edit.ellipse(preview.from, preview.to)
+				: edit.stroke(preview.from, preview.to, brush, brushShape);
+		if (isEmptyBox(changed)) return;
+		const size = mask.size, scale = offscreenScale;
+		const area = clampBox(mask, changed.x0 - 1, changed.y0 - 1, changed.x1 + 1, changed.y1 + 1);
+		const width = (area.x1 - area.x0) * scale, height = (area.y1 - area.y0) * scale;
+		const image = new ImageData(width, height);
+		smoothPixels(proposed, paper, scale, image.data, area, area);
 		const overlay = document.createElement('canvas');
-		overlay.width = overlay.height = mask.size;
+		overlay.width = width;
+		overlay.height = height;
 		overlay.getContext('2d')?.putImageData(image, 0, 0);
 		ctx.save();
-		ctx.imageSmoothingEnabled = false;
-		ctx.drawImage(overlay, 0, 0, 1, 1);
+		ctx.imageSmoothingQuality = 'high';
+		ctx.drawImage(overlay, area.x0 / size, area.y0 / size, (area.x1 - area.x0) / size, (area.y1 - area.y0) / size);
 		ctx.restore();
 	}
 
-	/** The floating cells as a picture, built once per selection. */
+	/**
+	 * The floating cells as a picture, built once per selection: drawn smooth as
+	 * the mask is (see `smoothRaster.ts`), at its pixels a cell, so a patch in the
+	 * hand looks as it will once put down.
+	 */
 	function patchImage(sel: Selection): HTMLCanvasElement | null {
 		if (patchFor === sel && patch) return patch;
 		if (typeof document === 'undefined') return null;
 		const w = sel.source.x1 - sel.source.x0;
 		const h = sel.source.y1 - sel.source.y0;
+		const scale = offscreenScale;
 		const canvas = document.createElement('canvas');
-		canvas.width = w;
-		canvas.height = h;
+		canvas.width = w * scale;
+		canvas.height = h * scale;
 		const ctx = canvas.getContext('2d');
 		if (!ctx) return null;
-		const image = new ImageData(w, h);
-		const [left, right] = paper;
-		for (let i = 0; i < sel.cells.length; i++) {
-			const colour = sel.validMask && !sel.validMask[i] ? missingPixelChannels(i, w) : sel.cells[i] === 1 ? right! : left!;
-			image.data[4 * i] = colour[0]!;
-			image.data[4 * i + 1] = colour[1]!;
-			image.data[4 * i + 2] = colour[2]!;
-			image.data[4 * i + 3] = 255;
-		}
-		ctx.putImageData(image, 0, 0);
+		ctx.putImageData(new ImageData(smoothCells(sel.cells, sel.validMask, w, h, paper, scale), w * scale, h * scale), 0, 0);
 		patch = canvas;
 		patchFor = sel;
 		return canvas;
@@ -664,10 +732,9 @@
 		if (image) {
 			ctx.translate(placement.cx / size, placement.cy / size);
 			ctx.rotate(placement.angle);
-			// Cells, not a photograph — the same reason the mask itself is drawn
-			// unsmoothed, and what makes the preview show the nearest-neighbour
-			// picture the commit will actually lay down.
-			ctx.imageSmoothingEnabled = false;
+			// Drawn smooth, as the mask is; put down, the cells are laid nearest
+			// cell, which the mask then draws smooth again.
+			ctx.imageSmoothingQuality = 'high';
 			ctx.drawImage(
 				image,
 				-placement.width / (2 * size),
@@ -675,7 +742,6 @@
 				placement.width / size,
 				placement.height / size
 			);
-			ctx.imageSmoothingEnabled = true;
 		}
 		ctx.restore();
 
@@ -811,7 +877,7 @@
 		if (!mask || typeof document === 'undefined') return;
 		let area = box;
 		const dpr = Math.min(3, Math.max(1, window.devicePixelRatio || 1));
-		const scale = smoothScale(layout.scale * dpr / mask.size);
+		const scale = smoothScale(fitted.scale * dpr / mask.size);
 		if (offscreenFor !== mask || !offscreen || !offscreenData || offscreenScale !== scale) {
 			offscreen = document.createElement('canvas');
 			offscreen.width = offscreen.height = mask.size * scale;
@@ -826,6 +892,110 @@
 		if (isEmptyBox(clipped)) return;
 		const written = smoothPixels(mask, paper, scale, offscreenData.data, clipped);
 		ctx.putImageData(offscreenData, 0, 0, written.x0, written.y0, written.x1 - written.x0, written.y1 - written.y0);
+		// The finer picture follows a stroke at once; a whole new picture draws it again.
+		if (!area) detailFor = null;
+		else if (detail && detailData && detailWindow && detailFor === mask) {
+			const shown = smoothPixels(mask, paper, detailScale, detailData.data, clipped, detailWindow);
+			if (shown.x1 > shown.x0) detail.getContext('2d')?.putImageData(detailData, 0, 0, shown.x0, shown.y0, shown.x1 - shown.x0, shown.y1 - shown.y0);
+		}
+	}
+
+	/** Whether box `outer` holds box `inner`. */
+	const containsBox = (outer: Box, inner: Box) =>
+		inner.x0 >= outer.x0 && inner.y0 >= outer.y0 && inner.x1 <= outer.x1 && inner.y1 <= outer.y1;
+
+	/**
+	 * The cells the box shows (`shown`), a fifth more on each side (`window`),
+	 * and how many pixels a cell to draw them in; null while the whole picture
+	 * is fine enough for the zoom.
+	 */
+	function detailWanted(dpr: number): { shown: Box; window: Box; scale: number } | null {
+		if (!mask || !boxWidth || !boxHeight) return null;
+		const size = mask.size, perCell = layout.scale * dpr / size;
+		if (perCell <= offscreenScale + 0.5) return null;
+		const corners = [toMask(layout, size, 0, 0), toMask(layout, size, boxWidth, 0), toMask(layout, size, 0, boxHeight), toMask(layout, size, boxWidth, boxHeight)];
+		const x0 = Math.min(...corners.map((c) => c.x)), x1 = Math.max(...corners.map((c) => c.x));
+		const y0 = Math.min(...corners.map((c) => c.y)), y1 = Math.max(...corners.map((c) => c.y));
+		const shown = clampBox(mask, Math.floor(x0), Math.floor(y0), Math.ceil(x1) + 1, Math.ceil(y1) + 1);
+		if (isEmptyBox(shown)) return null;
+		const margin = Math.ceil(Math.max(shown.x1 - shown.x0, shown.y1 - shown.y0) / 5);
+		const window = clampBox(mask, shown.x0 - margin, shown.y0 - margin, shown.x1 + margin, shown.y1 + margin);
+		const cells = (window.x1 - window.x0) * (window.y1 - window.y0);
+		let scale = Math.min(16, Math.ceil(perCell));
+		while (scale > offscreenScale && cells * scale * scale > DETAIL_PIXELS) scale--;
+		return scale > offscreenScale ? { shown, window, scale } : null;
+	}
+
+	/** Draw the finer picture once the view has been still a moment. */
+	function askForDetail(): void {
+		clearTimeout(detailTimer);
+		detailTimer = setTimeout(() => {
+			detailTimer = undefined;
+			const dpr = Math.min(3, Math.max(1, window.devicePixelRatio || 1));
+			const wanted = detailWanted(dpr);
+			if (!mask || !wanted || typeof document === 'undefined') return dropDetail();
+			const width = (wanted.window.x1 - wanted.window.x0) * wanted.scale, height = (wanted.window.y1 - wanted.window.y0) * wanted.scale;
+			detail = document.createElement('canvas');
+			detail.width = width;
+			detail.height = height;
+			detailData = new ImageData(width, height);
+			smoothPixels(mask, paper, wanted.scale, detailData.data, wanted.window, wanted.window);
+			detail.getContext('2d')?.putImageData(detailData, 0, 0);
+			detailFor = mask;
+			detailWindow = wanted.window;
+			detailScale = wanted.scale;
+			schedule();
+		}, DETAIL_DELAY_MS);
+	}
+
+	function dropDetail(): void {
+		clearTimeout(detailTimer);
+		detailTimer = undefined;
+		detail = detailData = detailWindow = null;
+		detailFor = null;
+		detailScale = 0;
+	}
+
+	/** Keep some of the heart in the box, as Tegn does: no further out than the heart overhangs it. */
+	function clampPan(next: Pt, z = zoom): Pt {
+		const maxX = Math.abs(HEART_WIDTH * fitted.scale * z - boxWidth) / 2;
+		const maxY = Math.abs(HEART_HEIGHT * fitted.scale * z - boxHeight) / 2;
+		return { x: Math.max(-maxX, Math.min(maxX, next.x)), y: Math.max(-maxY, Math.min(maxY, next.y)) };
+	}
+
+	/** Zoom to `next`, keeping the point at (`x`, `y`) in the box where it is. */
+	function zoomAbout(next: number, x: number, y: number): void {
+		const z = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, next));
+		if (z === zoom) return;
+		const k = z / zoom;
+		pan = clampPan({ x: x - (x - layout.cx) * k - fitted.cx, y: y - (y - layout.cy) * k - fitted.cy }, z);
+		zoom = z;
+	}
+
+	/** "Tilpas visning": the whole heart in view again. */
+	export function fitView(): void {
+		zoom = 1;
+		pan = { x: 0, y: 0 };
+	}
+
+	/**
+	 * The wheel as in Tegn: with Ctrl (which a trackpad's pinch sends) or a
+	 * mouse wheel that counts lines it zooms about the pointer; otherwise a
+	 * trackpad's two-finger scroll pans, keeping the page from scrolling only
+	 * while the heart moves.
+	 */
+	function onWheel(event: WheelEvent): void {
+		if (!boxEl) return;
+		const bounds = boxEl.getBoundingClientRect();
+		if (event.ctrlKey || event.deltaMode === 1) {
+			event.preventDefault();
+			zoomAbout(zoom * wheelZoomFactor(event.deltaY, event.deltaMode), event.clientX - bounds.left, event.clientY - bounds.top);
+			return;
+		}
+		const next = clampPan({ x: pan.x - event.deltaX, y: pan.y - event.deltaY });
+		if (next.x === pan.x && next.y === pan.y) return;
+		event.preventDefault();
+		pan = next;
 	}
 
 	/** Where a pointer event lands, in mask cells. */
@@ -1124,7 +1294,85 @@
 		schedule();
 	}
 
+	// Two fingers zoom and pan, as in Tegn (GitHub issue #12): a second finger
+	// gives up the first one's gesture, and the finger left behind after a pinch
+	// neither paints nor pans until every finger is lifted.
+	const fingers = new Map<number, Pt>();
+	let pinch: { distance: number; zoom: number; at: Pt } | null = null;
+	let pinched = false;
+
+	/** A pointer in the box's own pixels. */
+	function inBox(event: PointerEvent): Pt {
+		const bounds = boxEl?.getBoundingClientRect();
+		return { x: event.clientX - (bounds?.left ?? 0), y: event.clientY - (bounds?.top ?? 0) };
+	}
+
+	const midpoint = (a: Pt, b: Pt): Pt => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
+
+	/** A finger down; true when it belongs to a pinch and must not paint. */
+	function fingerDown(event: PointerEvent): boolean {
+		fingers.set(event.pointerId, inBox(event));
+		if (fingers.size < 2) return pinched;
+		if (!pinch) {
+			abandonGesture();
+			const [a, b] = [...fingers.values()] as [Pt, Pt];
+			pinch = { distance: Math.max(1, Math.hypot(a.x - b.x, a.y - b.y)), zoom, at: midpoint(a, b) };
+			pinched = true;
+			for (const id of fingers.keys()) {
+				try {
+					canvasEl?.setPointerCapture(id);
+				} catch {
+					// A finger already lifted cannot be captured; the pinch goes on without it.
+				}
+			}
+		}
+		return true;
+	}
+
+	/** A finger moved; true when a pinch took it. */
+	function fingerMove(event: PointerEvent): boolean {
+		if (!fingers.has(event.pointerId)) return false;
+		fingers.set(event.pointerId, inBox(event));
+		if (!pinch || fingers.size < 2) return pinched;
+		const [a, b] = [...fingers.values()] as [Pt, Pt];
+		const at = midpoint(a, b);
+		// The two follow their midpoint, and spread or close about it.
+		pan = clampPan({ x: pan.x + at.x - pinch.at.x, y: pan.y + at.y - pinch.at.y });
+		pinch.at = at;
+		zoomAbout(pinch.zoom * Math.hypot(a.x - b.x, a.y - b.y) / pinch.distance, at.x, at.y);
+		return true;
+	}
+
+	/** A finger lifted; true when it had been part of a pinch. */
+	function fingerUp(event: PointerEvent): boolean {
+		if (!fingers.delete(event.pointerId)) return false;
+		if (fingers.size < 2) pinch = null;
+		const was = pinched;
+		if (fingers.size === 0) pinched = false;
+		return was;
+	}
+
+	/** Give up the gesture in hand without a trace. */
+	function abandonGesture(): void {
+		if (pointerId === null) return;
+		if (tool === 'select') {
+			selectionDrag = null;
+			marquee = null;
+			releasePointer();
+			schedule();
+			return;
+		}
+		if (frameAxis) {
+			finish();
+			return;
+		}
+		releasePointer();
+		onEditCancel();
+		schedule();
+	}
+
 	function onPointerDown(event: PointerEvent): void {
+		if (event.pointerType === 'touch' && fingerDown(event)) return;
 		if (disabled || !mask || pointerId !== null || event.button !== 0) return;
 		updateHover(event);
 		// A handle takes the gesture before the brush does: the handles sit on the
@@ -1164,7 +1412,7 @@
 			finish();
 			return;
 		}
-		if (tool === 'line' || tool === 'rect') {
+		if (tool === 'line' || tool === 'rect' || tool === 'ellipse') {
 			start = point;
 			preview = { from: point, to: point };
 			schedule();
@@ -1176,6 +1424,7 @@
 	}
 
 	function onPointerMove(event: PointerEvent): void {
+		if (event.pointerType === 'touch' && fingerMove(event)) return;
 		updateHover(event);
 		if (pointerId !== event.pointerId || !mask) return;
 		// The frame handle first, in the order pointer down took them: a gesture
@@ -1191,7 +1440,7 @@
 			if (point) selectPointerMove(point, event.shiftKey);
 			return;
 		}
-		if (tool === 'line' || tool === 'rect') {
+		if (tool === 'line' || tool === 'rect' || tool === 'ellipse') {
 			const point = pointAt(event);
 			if (!point || !start) return;
 			preview = { from: start, to: point };
@@ -1231,6 +1480,10 @@
 	}
 
 	function onPointerUp(event: PointerEvent): void {
+		if (event.pointerType === 'touch' && fingerUp(event)) {
+			hover = null;
+			return;
+		}
 		if (event.pointerType === 'touch') hover = null;
 		else updateHover(event);
 		if (pointerId !== event.pointerId || !mask) return;
@@ -1247,17 +1500,21 @@
 			finish();
 			return;
 		}
-		if ((tool === 'line' || tool === 'rect') && start) {
+		if ((tool === 'line' || tool === 'rect' || tool === 'ellipse') && start) {
 			const point = pointAt(event) ?? start;
 			const value = toolValue();
 			preview = null;
 			if (xorGesture) repaintXor(tool === 'rect'
 				? xorGesture.rect(start, point)
-				: xorGesture.stroke(start, point, brush, brushShape));
+				: tool === 'ellipse'
+					? xorGesture.ellipse(start, point)
+					: xorGesture.stroke(start, point, brush, brushShape));
 			else commit(
 				tool === 'rect'
 					? rect(mask, start, point, value)
-					: stroke(mask, start, point, { radius: brush, value, shape: brushShape }),
+					: tool === 'ellipse'
+						? ellipse(mask, start, point, value)
+						: stroke(mask, start, point, { radius: brush, value, shape: brushShape }),
 				value
 			);
 		} else if (last) {
@@ -1274,6 +1531,7 @@
 
 	function onPointerCancel(event: PointerEvent): void {
 		hover = null;
+		if (event.pointerType === 'touch' && fingerUp(event)) return;
 		// A cancelled drag drops its preview; anything already painted stays, and
 		// the visitor undoes it if they did not want it.
 		if (pointerId !== event.pointerId) return;
@@ -1460,6 +1718,7 @@
 		return () => {
 			observer.disconnect();
 			if (rafHandle) cancelAnimationFrame(rafHandle);
+			clearTimeout(detailTimer);
 			stopSmudge();
 		};
 	});
@@ -1510,6 +1769,8 @@
 		void transforms;
 		void boxWidth;
 		void boxHeight;
+		void zoom;
+		void pan;
 		void revision;
 		void frame.mode;
 		void frame.shape;
@@ -1564,19 +1825,27 @@
 		onpointercancel={onPointerCancel}
 		onlostpointercapture={(event) => { if (pointerId === event.pointerId) onPointerCancel(event); }}
 		onpointerleave={() => (hover = null)}
+		onwheel={onWheel}
 	></canvas>
 	{#if hoverVisible && hover}
 		<div
-			class="brush-outline"
-			class:square={hoverSquare}
+			class="brush-outline {brushShape}"
 			aria-hidden="true"
 			style:left="{hover.x}px"
 			style:top="{hover.y}px"
-			style:width="{hoverRadius * 2}px"
-			style:height="{hoverRadius * 2}px"
+			style:width="{hoverBox.width}px"
+			style:height="{hoverBox.height}px"
 		></div>
 	{/if}
 </div>
+<!-- Tegn's "Tilpas visning", while the heart is zoomed or moved: outside the
+     box, which is a picture (role="img") and would hide a button inside it. -->
+{#if zoomed}
+	<button type="button" class="fit-view" title={t('editorFitViewHint', lang)} onclick={fitView}>
+		<FitIcon size={16} />
+		{t('editorFitView', lang)}
+	</button>
+{/if}
 <!-- Outside the box on purpose: role="img" is a leaf, so anything inside it is
      hidden from the very readers this line is for. -->
 <p class="sr-only" role="status">{selectionNote}</p>
@@ -1592,15 +1861,46 @@
 		box-sizing: border-box;
 	}
 
-	/* A square head lies along the strips, which the heart stands on their corner. */
-	.brush-outline.square {
+	/* A square head lies along the strips, which the heart stands on their
+	   corner; a diamond lies across them, so it stands upright; the chisel's bar
+	   lies along a strip, from lower left to upper right. */
+	.brush-outline.square,
+	.brush-outline.chisel {
 		border-radius: 0;
 		transform: translate(-50%, -50%) rotate(45deg);
+	}
+
+	.brush-outline.diamond {
+		border-radius: 0;
 	}
 
 	.mask-canvas {
 		position: absolute;
 		inset: 0;
+	}
+
+	.fit-view {
+		position: absolute;
+		left: 16px;
+		bottom: 16px;
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		height: 32px;
+		padding: 0 12px;
+		border: 1.5px solid var(--line);
+		border-radius: 10px;
+		background: var(--white);
+		color: var(--green);
+		font: inherit;
+		font-size: 13px;
+		font-weight: 600;
+		cursor: pointer;
+		box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+	}
+
+	.fit-view:hover {
+		background: var(--cream2);
 	}
 
 	/* The box is a tab stop while Markér is in hand, so it has to show that it has

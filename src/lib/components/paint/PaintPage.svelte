@@ -70,6 +70,7 @@
 		record,
 		redo as historyRedo,
 		resetHistory,
+		takeBack,
 		undo as historyUndo,
 		type MaskStep
 	} from '$lib/paint/history';
@@ -427,6 +428,12 @@
 		if (!step) return;
 		record(history, step);
 		syncHistoryFlags();
+	}
+
+	/** A stroke given up before it ended (a second finger came down to zoom): the mask as it was. */
+	function onEditCancel(): void {
+		const before = takeBack(history);
+		if (before) restore(before);
 	}
 
 	function onEditEnd(): void {
@@ -1079,6 +1086,7 @@
 							keyboardBusy={dialogOpen}
 							{onEditStart}
 							{onEditEnd}
+							{onEditCancel}
 							{onShortcut}
 						/>
 						{#if maskUntouched}
