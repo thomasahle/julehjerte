@@ -8,7 +8,7 @@
  */
 
 import type { Vec } from '$lib/types/heart';
-import { clampBox, emptyBox, get, isEmptyBox, paintCell, unionBox, type Box, type Mask } from './mask';
+import { clampBox, createMask, emptyBox, get, isEmptyBox, MASK_SIZE, paintCell, unionBox, type Box, type Mask } from './mask';
 import { closedPointMaps, type Transform } from './symmetry';
 import type { BrushShape } from './toolset';
 
@@ -182,6 +182,29 @@ export function floodFill(m: Mask, x: number, y: number, value: 0 | 1, fence?: U
  */
 export function checkAt(x: number, y: number, n: number, size: number): 0 | 1 {
 	return ((Math.floor((x + .5) * n / size) + Math.floor((y + .5) * n / size)) & 1) as 0 | 1;
+}
+
+/**
+ * The board Mal starts on and Ryd goes back to: a plain woven heart of five
+ * strips, never an empty mask (the owner's choice, 2026-10-26).
+ */
+export const DEFAULT_CHECKS = 5;
+
+/** A mask holding the board Mal starts on (see `DEFAULT_CHECKS`). */
+export function defaultMask(size: number = MASK_SIZE): Mask {
+	const m = createMask(0, size);
+	checks(m, DEFAULT_CHECKS);
+	return m;
+}
+
+/** Whether a mask is still the board Mal starts on, every cell known and untouched. */
+export function isDefaultMask(m: Mask): boolean {
+	for (let y = 0; y < m.size; y++)
+		for (let x = 0; x < m.size; x++) {
+			const i = y * m.size + x;
+			if (m.data[i] !== checkAt(x, y, DEFAULT_CHECKS, m.size) || (m.validMask && !m.validMask[i])) return false;
+		}
+	return true;
 }
 
 /**

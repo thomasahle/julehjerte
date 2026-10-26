@@ -27,7 +27,8 @@
 
 import type { HeartDesign } from '$lib/types/heart';
 import { clearHandoff, handoffToDraw, takeHandoff } from './handoff';
-import { createMask, packMask, unpackMask, type Mask } from '$lib/paint/mask';
+import { packMask, unpackMask, type Mask } from '$lib/paint/mask';
+import { defaultMask } from '$lib/paint/tools';
 import {
 	clampFrameSize,
 	DEFAULT_FRAME,
@@ -240,9 +241,9 @@ function foldToSymmetry(): void {
 	if (session.mask) symmetrize(session.mask, transformsFor(session.symmetry), symmetryRegion());
 }
 
-/** Ryd: an empty mask, and nothing left to say about where it came from. */
+/** Ryd: the board Mal starts on, and nothing left to say about where it came from. */
 export function clearMask(): void {
-	setMask(createMask(0));
+	setMask(defaultMask());
 }
 
 /** Record that the visitor has painted, so the next destructive step asks first. */

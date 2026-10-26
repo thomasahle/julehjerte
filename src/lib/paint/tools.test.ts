@@ -8,7 +8,9 @@ import {
 	checkAt,
 	checks,
 	checksKeepSymmetry,
+	defaultMask,
 	floodFill,
+	isDefaultMask,
 	line,
 	rect,
 	stamp,
@@ -207,6 +209,28 @@ describe('floodFill with a fence', () => {
 		fence[0] = 1;
 		expect(isEmptyBox(floodFill(m, 10, 10, 1, fence))).toBe(true);
 		expect(isEmpty(m)).toBe(true);
+	});
+});
+
+describe('the board Mal starts on', () => {
+	it('is a plain woven heart of five strips, never an empty mask', () => {
+		const m = defaultMask();
+		expect(m.size).toBe(MASK_SIZE);
+		expect(isEmpty(m)).toBe(false);
+		const board = createMask(1, MASK_SIZE);
+		checks(board, 5);
+		expect([...m.data]).toEqual([...board.data]);
+		expect(isDefaultMask(m)).toBe(true);
+	});
+
+	it('stops being it at the first changed cell, or one not known', () => {
+		const m = defaultMask(40);
+		stamp(m, 20, 20, { radius: 0, value: get(m, 20, 20) ? 0 : 1 });
+		expect(isDefaultMask(m)).toBe(false);
+		const unknown = { ...defaultMask(40), validMask: new Uint8Array(1600).fill(1) };
+		expect(isDefaultMask(unknown)).toBe(true);
+		unknown.validMask[7] = 0;
+		expect(isDefaultMask(unknown)).toBe(false);
 	});
 });
 

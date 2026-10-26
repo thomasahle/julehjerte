@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import type { HeartDesign } from '$lib/types/heart';
-import { createMask } from '$lib/paint/mask';
+import { createMask, isEmpty } from '$lib/paint/mask';
 import { disagreement } from '$lib/paint/symmetry';
-import { rect } from '$lib/paint/tools';
+import { isDefaultMask, rect } from '$lib/paint/tools';
 import {
 	clearMask,
 	handoffToDraw,
@@ -59,6 +59,13 @@ describe('the session', () => {
 		setMask(createMask(0));
 		expect(session.result).toBeNull();
 		expect(session.status).toBe('idle');
+	});
+
+	it('goes back to the board Mal starts on with Ryd, never an empty mask', () => {
+		setMask(createMask(1, 32));
+		clearMask();
+		expect(isDefaultMask(session.mask!)).toBe(true);
+		expect(isEmpty(session.mask!)).toBe(false);
 	});
 
 	it('remembers that the visitor has painted until the mask is replaced', () => {

@@ -58,7 +58,7 @@ rows moved in, so on a short viewport the column stops centring itself — `just
 scrolls from the top, with a fade over its bottom edge while there is more below it, because macOS draws nothing
 of an overlay scrollbar until a gesture starts):
 
-- Row of two buttons: `Importér billede` (outline, opens the dialog) and `Ryd` (ghost, clears to all-0 after a
+- Row of two buttons: `Importér billede` (outline, opens the dialog) and `Ryd` (ghost, goes back to the 5 × 5 board after a
   confirm if the mask is not empty; uses the site `Modal`, no `confirm()`).
 - Panel "Værktøj": tools Pen, Fyld, Linje, Rektangel, Udtvær, Markér as 40px icon buttons (lucide: pencil,
   paint-bucket, minus (rotated 45°) or a simple line glyph, square, square-dashed); a labelled brush-radius
@@ -285,9 +285,12 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
 - After failure: a notice in the panel: what happened (timed out / no weavable pattern / engine could not load) and
   what to try (paint with fewer thin details, switch off a symmetry, try again), plus `Prøv igen`.
 
-Empty state (no mask yet): the heart with an all-0 diamond, and a small card beside it: "Eller importér et billede,
+Starting state: the heart with a plain 5 × 5 board, never an empty mask (the owner's choice, 2026-10-26: "always
+default to a 5x5 grid. Don't start with an empty canvas"); Ryd goes back to it too (`defaultMask` in
+`src/lib/paint/tools.ts`). While the board is untouched a small card sits beside it: "Eller importér et billede,
 så fyldes masken fra fotoet" with a link that opens the dialog, and "Prøv stjernen" which imports
-`static/inverse/examples/star.png`.
+`static/inverse/examples/star.png`; Ryd is disabled, and an import or a reload has nothing to lose. Find snit works on
+the board itself (it is a heart), and stands down only for a mask of one paper.
 
 Import dialog (`ImportImageDialog`, built on the site `Modal`, `column` layout, ~860px):
 
@@ -571,7 +574,7 @@ disagreeing fraction is ≤ tolerance (3%). That fraction is counted **against t
 colour — not against the whole square: over the square, any mask with under about 1.5% ink agrees with all five of its
 images whatever is drawn on it, so every row would come back "fundet" and `symmetrize` would then fold the visitor's
 motif away before the engine saw it. At half coverage the two readings are the same number, so a photograph is judged
-as before. A mask with no ink at all (straight after Ryd) reports nothing. Rules: transpose → Mellem lapper Sym; else
+as before. A mask with no ink at all reports nothing. Rules: transpose → Mellem lapper Sym; else
 antiTranspose → Mellem lapper Anti; mirrorX ∧ mirrorY → Inden i lap Sym and Inden i kurve Sym; else rotate180 → Inden
 i lap Anti. Everything else off. Run it after import and after "Mal på hjertet"; the result becomes both
 `session.symmetry` and `session.found`.

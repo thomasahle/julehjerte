@@ -57,7 +57,8 @@
 	} from '$lib/editor/session.svelte';
 	import type { DesignResult } from '$lib/inverse/client';
 	import { clampFrameSize, frameMismatch, shapeCells } from '$lib/paint/frame';
-	import { cloneMask, createMask, isEmpty, maskMismatch, type Mask } from '$lib/paint/mask';
+	import { cloneMask, isEmpty, maskMismatch, type Mask } from '$lib/paint/mask';
+	import { defaultMask, isDefaultMask } from '$lib/paint/tools';
 	import { detectSymmetry, NO_SYMMETRY, transformsFor } from '$lib/paint/symmetry';
 	import { fingerHasIntersectionIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 	import { inferOverlapRect } from '$lib/utils/overlapRect';
@@ -244,10 +245,21 @@
 	/** Something that went wrong outside the search: a save, a PDF, the example. */
 	let notice = $state<string | null>(null);
 
+	/** One paper only: nothing for Find snit to find. */
 	let maskEmpty = $derived.by(() => {
 		void revision;
 		void strokes;
 		return !session.mask || isEmpty(session.mask);
+	});
+	/**
+	 * Still the board Mal starts on (see `defaultMask`): nothing painted yet, so
+	 * the hint shows, Ryd has nothing to undo, and an import or a reload loses
+	 * nothing.
+	 */
+	let maskUntouched = $derived.by(() => {
+		void revision;
+		void strokes;
+		return !session.mask || isDefaultMask(session.mask);
 	});
 	let hasMissingPhotoPixels = $derived.by(() => {
 		void revision;
@@ -281,10 +293,10 @@
 	/**
 	 * The session, written once as the page unloads, for this tab to take back as Mal opens again:
 	 * a drawing survives a reload, though nothing is stored while painting
-	 * ($lib/editor/session.svelte.ts). Only a mask with paint on it.
+	 * ($lib/editor/session.svelte.ts). Only a mask painted on, or with a heart found for it.
 	 */
 	function keepThroughReload(): void {
-		if (!session.mask || isEmpty(session.mask)) return;
+		if (!session.mask || isDefaultMask(session.mask) && !session.result) return;
 		writeStorage(RELOAD_KEY, JSON.stringify(serializeSession()), getSessionStorage());
 	}
 
@@ -318,9 +330,10 @@
 		// written as the page unloaded comes back, once.
 		if (!session.mask) takeBackAfterReload();
 		window.addEventListener('pagehide', keepThroughReload);
-		// The page always has a mask to paint on: the empty state is an empty mask,
-		// not the absence of one, so the heart is on screen from the first frame.
-		if (!session.mask) setMask(createMask(0));
+		// The page always has a mask to paint on: it starts on the plain 5 × 5
+		// board (see `defaultMask`), never an empty mask, so the heart is on screen
+		// from the first frame.
+		if (!session.mask) setMask(defaultMask());
 		measureHeader();
 		// `?import` (the design page's "Fra et billede") opens the import dialog.
 		// It is taken once and dropped from the address, so a reload or a step
@@ -576,7 +589,7 @@
 
 	function askToClear(): void {
 		settle();
-		if (maskEmpty) return;
+		if (maskUntouched) return;
 		confirming = 'clear';
 	}
 
@@ -607,7 +620,7 @@
 
 	/** The dialog's answer. A mask with unsaved strokes is confirmed away first. */
 	function onImported(mask: Mask, found: SymmetrySettings, source = 'image'): void {
-		if (session.maskDirty && !maskEmpty) {
+		if (session.maskDirty && !maskUntouched) {
 			pendingImport = { mask, found, source };
 			confirming = 'import';
 			return;
@@ -625,7 +638,7 @@
 
 	/** A template picture's heart (the import dialog read it): confirmed like any import. */
 	function onImportedTemplate(design: HeartDesign, mask: Mask, found: SymmetrySettings): void {
-		if (session.maskDirty && !maskEmpty) {
+		if (session.maskDirty && !maskUntouched) {
 			pendingImport = { mask, found, source: 'template', design };
 			confirming = 'import';
 			return;
@@ -1068,7 +1081,7 @@
 							{onEditEnd}
 							{onShortcut}
 						/>
-						{#if maskEmpty}
+						{#if maskUntouched}
 							<div class="empty-card">
 								<p>{t('paintEmptyHint', lang)}</p>
 								<div class="empty-actions">
@@ -1212,7 +1225,7 @@
 							onRedo={redo}
 							onImport={openImport}
 							onClear={askToClear}
-							clearDisabled={maskEmpty}
+							clearDisabled={maskUntouched}
 							disabled={busy || showingResult}
 						/>
 					</div>
