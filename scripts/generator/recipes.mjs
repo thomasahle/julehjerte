@@ -40,6 +40,7 @@ try {
 	const { recipeOutline } = await load('/src/lib/generator/recipes.ts');
 	// A heart's measures and how they decide, as the page compares hearts (see cutQuality.ts).
 	const { cutMeasures: measures, betterCuts: better } = await load('/src/lib/generator/cutQuality.ts');
+	const { inferOverlapRect } = await load('/src/lib/utils/overlapRect.ts');
 	const { rasterizeDesign } = await load('/src/lib/paint/rasterize.ts');
 	// How far two hearts' woven pictures are apart, as a share of a 200 × 200 raster: a recipe may
 	// not change what a size shows (the generator keeps some motifs whole past the touching circle,
@@ -54,7 +55,7 @@ try {
 	const mal = await load('/src/lib/inverse/engine.ts');
 	const { prepare, restorePrepared, scaleTarget } = await core('engine.js');
 	const { settings } = await core('settings.js');
-	const { exactTarget, exactSymmetry } = await core('exact/stage.js');
+	const { exactSymmetry } = await core('exact/stage.js');
 	const { exactOutline } = await core('exact/snap.js');
 	const { exactStart } = await core('exact/start.js');
 	const { exactFromTemplate } = await core('exact/search.js');
@@ -83,6 +84,15 @@ try {
 	// The engine's square (12 units, y up) in the picture's sheet (0..100, y down).
 	const toSheet = ([x, y]) => [x / .12, (12 - y) / .12];
 
+	// Whether a point of the picture's sheet lies inside a ring (even–odd).
+	const inside = (x, y, ring) => {
+		let c = false;
+		for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+			const [xi, yi] = ring[i], [xj, yj] = ring[j];
+			if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c;
+		}
+		return c;
+	};
 	/** The generator's heart as the search's template: its cuts in short straight pieces in the
 	 * engine's square (its design's square, which depends on its board, as 0..width), each hidden
 	 * where the picture has one colour on both sides. */
@@ -114,7 +124,9 @@ try {
 	 * set: its slits in the sheet, or why there are none. */
 	async function solve(rings, own) {
 		const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path fill="#b91313" fill-rule="evenodd" d="${rings.map(r => 'M' + r.map(([x, y]) => `${(x * .12).toFixed(6)},${(y * .12).toFixed(6)}`).join('L') + 'Z').join('')}"/></svg>`;
-		const target = scaleTarget(exactTarget(restorePrepared(prepare({ type: 'svg', text: svg }, { ...raw, resolution: 400 }).target)), cfg.width, cfg.paperColors);
+		// The picture's own vector outline: the engine's exactTarget traces one from the pixels (Mal
+		// reads pictures), a pixel off the rings the recipe is drawn on.
+		const target = scaleTarget(restorePrepared(prepare({ type: 'svg', text: svg }, { ...raw, resolution: 400 }).target), cfg.width, cfg.paperColors);
 		const exact = exactOutline(target, cfg), started = performance.now(), seconds = Number(process.env.SOLVE_SECONDS ?? 120);
 		const template = process.env.TEMPLATE && own ? templateOf(own, rings, cfg.width) : null;
 		const start = await exactStart(exact, template, { deadline: performance.now() + Math.min(30, seconds / 4) * 1000 });
