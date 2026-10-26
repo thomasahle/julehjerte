@@ -326,6 +326,18 @@ are visible (5star's points are blunt where the fitter's stay sharp): its tip
 on the mirror is cut sharp only by a hidden segment leaving outwards along the
 mirror, to the checker's touching, and hidden segments end on edges only.
 
+## Two templates to choose from (2026-10-26)
+
+The exact search's template and the fitter's are better on different
+pictures (on twelve compared by eye, the exact one clearly better on seven,
+the fitter's on two: kogle's photograph and a lily the exact search could not
+start on), and a price per hidden cut hardly changes the exact one (the same
+on 9 of 12). So once the exact search's template is taken, the fitter's
+passing template follows as a second choice ("Smoother cuts", beside "Exactly
+as the picture"): at once when it was in first, else when the fitter finishes
+(worker-controller.js `alternative`; a new request ends the fitter). The
+visitor swaps between them; Open in Draw and the PDF take the one shown.
+
 ## Printed papers (2026-10-26)
 
 Of the 44 web photographs, the 28 of printed papers (a pattern, motifs, the

@@ -112,11 +112,27 @@ test('side by side, the exact search\'s template is taken when it comes and the 
   h.reply(exact,2,'progress',{event:{stage:'exactOutline'}});h.reply(fitter,2,'progress',{event:{stage:'directRefining'}});
   h.reply(exact,2,'progress',{event:{stage:'exactOutline',geometry:packet.geometry}});h.reply(fitter,2,'progress',{event:{stage:'directPolishing'}});
   assert.deepEqual(h.messages.filter(m=>m.type==='progress'&&m.id===2).map(m=>m.event.stage+(m.event.geometry?'+':'')),['directRefining','exactOutline+']);
-  // A fitted answer first is held for it.
-  h.reply(fitter,2,'result',{result:value});assert.equal(h.messages.filter(m=>m.type==='result').length,0);
+  // A fitted answer first is held for it, and offered after it when it passes.
+  const fitted={...value,report:{...value.report,templateChecksPassed:true}};
+  h.reply(fitter,2,'result',{result:fitted});assert.equal(h.messages.filter(m=>m.type==='result').length,0);
   h.reply(exact,2,'result',{result:exactValue});await solving;
-  assert.deepEqual(h.messages.at(-1),{id:2,type:'result',result:exactValue});
-  assert.equal(fitter.terminated,1);
+  assert.deepEqual(h.messages.slice(-2),[{id:2,type:'result',result:exactValue},{id:2,type:'alternative',result:fitted}]);
+});
+
+test('side by side, a fitter still running after the exact template offers its answer when it comes, unless asked something else first',async()=>{
+  const fitted={...value,report:{...value.report,templateChecksPassed:true}};
+  const h=harness();await h.send(1,'prepare',{input});let solving=h.send(2,'solve',{settings:both});
+  let [fitter,exact]=h.workers;
+  h.reply(exact,2,'result',{result:exactValue});await solving;
+  assert.equal(h.messages.at(-1).type,'result');assert.equal(fitter.terminated,0);
+  h.reply(fitter,2,'progress',{event:{stage:'directRefining'}});assert.equal(h.messages.at(-1).type,'result');
+  h.reply(fitter,2,'result',{result:fitted});
+  assert.deepEqual(h.messages.at(-1),{id:2,type:'alternative',result:fitted});
+  // A failing fitted answer is no alternative; a new request ends the fitter.
+  solving=h.send(3,'solve',{settings:both});[fitter,exact]=h.workers.slice(-2);
+  h.reply(exact,3,'result',{result:exactValue});await solving;
+  await h.send(4,'prepare',{input});assert.equal(fitter.terminated,1);
+  h.reply(fitter,3,'result',{result:fitted});assert.equal(h.messages.filter(m=>m.type==='alternative').length,1);
 });
 
 test('side by side, the fitter\'s template stands once the exact search finds none',async()=>{

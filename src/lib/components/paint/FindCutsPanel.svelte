@@ -37,6 +37,10 @@
 		status: PaintStatus;
 		error: PaintError | null;
 		result: PaintResult | null;
+		/** The other template beside the shown one (the fitter's smooth cuts), once it is in. */
+		alternative?: PaintResult | null;
+		/** Show the alternative instead: the two change places. */
+		onSwap?: () => void;
 		/**
 		 * Whether the page is showing the found heart rather than the mask.
 		 *
@@ -77,6 +81,8 @@
 		status,
 		error,
 		result,
+		alternative = null,
+		onSwap,
 		showingResult,
 		honoured,
 		showMotif,
@@ -428,6 +434,29 @@
 				<p class="note">{tr('paintTemplateTooClose')}</p>
 			{/if}
 		</div>
+		{#if alternative && result.report.kind && alternative.report.kind && onSwap}
+			<!-- Two templates for the same picture: the exact search's cuts along its
+			     own edges, and the fitter's smoother ones. Which is better depends on
+			     the picture and on who cuts it, so the visitor chooses; the shown one
+			     is pressed. -->
+			<div class="templates" role="group" aria-label={tr('paintTemplatesLabel')}>
+				{#each result.report.kind === 'exact' ? [result, alternative] : [alternative, result] as option (option.design.id)}
+					<button
+						type="button"
+						class="template"
+						aria-pressed={option === result}
+						onclick={() => { if (option !== result) onSwap(); }}
+					>
+						<span class="template-name">{tr(option.report.kind === 'exact' ? 'paintTemplateExact' : 'paintTemplateSmooth')}</span>
+						<span class="template-note">{t('paintTemplateNumbers', lang, {
+							left: option.report.cuts[0],
+							right: option.report.cuts[1],
+							mismatch: decimal(option.report.mismatch, 100)
+						})}</span>
+					</button>
+				{/each}
+			</div>
+		{/if}
 		{#if result.report.motifMismatch !== undefined}
 			<label class="checkbox">
 				<input
@@ -745,6 +774,49 @@
 
 	.field input:focus {
 		border-color: var(--green);
+	}
+
+	/* The two templates side by side, the one shown pressed. */
+	.templates {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 8px;
+	}
+
+	.template {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		padding: 8px 10px;
+		border: 1.5px solid var(--line);
+		border-radius: 8px;
+		background: var(--white);
+		color: var(--ink);
+		font: inherit;
+		text-align: left;
+		cursor: pointer;
+	}
+
+	.template[aria-pressed='true'] {
+		border-color: var(--deep);
+		box-shadow: 0 0 0 3px rgb(var(--deep-rgb) / 0.12);
+		cursor: default;
+	}
+
+	.template:focus-visible {
+		outline: 2px solid var(--deep);
+		outline-offset: 2px;
+	}
+
+	.template-name {
+		font-size: 13px;
+		font-weight: 600;
+	}
+
+	.template-note {
+		font-size: 12px;
+		line-height: 1.4;
+		color: var(--muted);
 	}
 
 	.checkbox {

@@ -632,9 +632,10 @@ export function solveSettings(settings: FindSettings): Record<string, unknown> {
  */
 export function findCuts(
 	settings: FindSettings,
-	onStage: StageListener = () => {}
+	onStage: StageListener = () => {},
+	onAlternative: (result: DesignResult) => void = () => {}
 ): Promise<DesignResult> {
 	return queue(() =>
-		engine().request<DesignResult>('solve', undefined, solveSettings(settings), onStage)
+		engine().request<DesignResult>('solve', undefined, solveSettings(settings), onStage, onAlternative)
 	);
 }

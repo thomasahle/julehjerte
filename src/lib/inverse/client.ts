@@ -64,7 +64,7 @@ export interface DesignResult {
     templateExportAllowed: boolean;
     templateChecksPassed: boolean;
     slits: { left: number; right: number };
-    solver: { imported?: boolean; status?: string; mipGap?: number; matchingPreference?: { enabled: boolean; identical: boolean; minimumIdenticalImageError: number; maximumMatchingImageError?: number; baselineImageError?: number; additionalImageError?: number; maximumAdditionalImageError?: number } };
+    solver: { imported?: boolean; status?: string; mipGap?: number; exactOutline?: { chosen?: 'exact' | 'fitter' }; matchingPreference?: { enabled: boolean; identical: boolean; minimumIdenticalImageError: number; maximumMatchingImageError?: number; baselineImageError?: number; additionalImageError?: number; maximumAdditionalImageError?: number } };
     // null when no two slits could be measured against each other (validate.js).
     validation: { passed: boolean; minimumInterSlitDistanceLower: number | null };
     manufacturing: { status: 'pass' | 'fail' | 'uncertain' };
@@ -110,7 +110,8 @@ export class InverseWorker {
     action: 'prepare' | 'solve' | 'saved' | 'archive' | 'detect-crops' | 'refine-crop' | 'warm-neural',
     input: ArtworkInput | undefined,
     settings: Record<string, unknown>,
-    progress: (event: EngineProgress) => void = () => {}
+    progress: (event: EngineProgress) => void = () => {},
+    alternative: (result: T) => void = () => {}
   ): Promise<T> {
     if (this.rejectPending) return Promise.reject(new Error('The engine is already working.'));
     return new Promise((resolve, reject) => {
@@ -121,6 +122,13 @@ export class InverseWorker {
         this.pendingAction = action;
         worker.onmessage = ({ data }) => {
           if (data.id !== this.sequence) return;
+          // A second answer to a solve already answered (the fitter's template
+          // beside the exact search's): until the next request, which moves the
+          // sequence on.
+          if (data.type === 'alternative') {
+            alternative(data.result as T);
+            return;
+          }
           if (data.type === 'progress') {
             // The whole event, not `data.event.stage`: everything the search can
             // say about itself while it runs — the counts it is trying, the

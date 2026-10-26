@@ -694,6 +694,10 @@ export const translations = {
     paintFound: 'Skabelonen er fundet.',
     /** {left}, {right} = snit i hver lap; {clearance} = mm; {mismatch} = procent */
     paintFoundSummary: '{left} + {right} snit · mindst {clearance} mm mellem snittene · {mismatch}% forskel fra masken',
+    paintTemplatesLabel: 'To skabeloner til samme billede',
+    paintTemplateExact: 'Præcis efter billedet',
+    paintTemplateSmooth: 'Blødere snit',
+    paintTemplateNumbers: '{left} + {right} snit · {mismatch}% fra masken',
     /** {motif} = afvigelse inden i formen; {mismatch} = afvigelse i hele firkanten */
     paintFoundMotifSummary: '{motif}% afvigelse i motivet · {border}% af den frie kant ændret',
     /** {left}, {right} = snit i hver lap; {clearance} = mm */
@@ -1756,6 +1760,10 @@ export const translations = {
     paintFound: 'The template has been found.',
     /** {left}, {right} = cuts per lobe; {clearance} = mm; {mismatch} = per cent */
     paintFoundSummary: '{left} + {right} cuts · at least {clearance} mm between cuts · {mismatch}% different from the mask',
+    paintTemplatesLabel: 'Two templates for the same picture',
+    paintTemplateExact: 'Exactly as the picture',
+    paintTemplateSmooth: 'Smoother cuts',
+    paintTemplateNumbers: '{left} + {right} cuts · {mismatch}% off the mask',
     /** {motif} = difference inside the shape; {mismatch} = difference over the whole square */
     paintFoundMotifSummary: '{motif}% different in the motif · {border}% of the free border changed',
     /** {left}, {right} = cuts in each lobe; {clearance} = mm */

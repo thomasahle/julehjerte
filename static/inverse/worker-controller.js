@@ -16,10 +16,13 @@ const EXACT_GRACE_SECONDS=5,EXACT_WAIT_SECONDS=40;
  */
 export function workerController(scope,{createWorker=()=>new Worker(new URL('./compute-worker.js',import.meta.url),{type:'module'}),finalize=finishStopped,finalizeExact=finishExactStopped,now=()=>performance.now(),
  detectCrops=(input,options)=>import('./neural/photo-crop.js').then(module=>module.detectPhotoCrops(input,options))}={}){
-  let prepared=null,result=null,compute=null,exactCompute=null,active=null;
+  // `trailing`: a side-by-side fitter still running after the exact search's
+  // template went out, its passing answer to follow as an alternative.
+  let prepared=null,result=null,compute=null,exactCompute=null,active=null,trailing=null;
   const end=worker=>{if(worker){worker.onmessage=null;worker.onerror=null;worker.onmessageerror=null;worker.terminate();}};
   const disposeFitter=()=>{end(compute);compute=null;},disposeExact=()=>{end(exactCompute);exactCompute=null;};
   const dispose=()=>{disposeFitter();disposeExact();};
+  const passes=value=>value?.report?.templateChecksPassed===true;
   const failure=(id,error)=>scope.postMessage({id,type:'error',message:error.message||String(error),code:error.code,report:error.report||null});
   const finish=(job,value,error)=>{
     if(active!==job)return;
@@ -31,6 +34,8 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
   return async({data})=>{
     const {id,action,input,settings}=data;
     const progress=event=>scope.postMessage({id,type:'progress',event});
+    // Any new request ends a fitter still working on an alternative.
+    if(trailing&&action!=='archive'&&action!=='warm-neural'){trailing=null;disposeFitter();}
     if(action==='cancel'){
       if(active&&active.id!==id)return;
       const job=active;active=null;dispose();prepared=null;result=null;job?.done();
@@ -95,7 +100,14 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
           const settle=()=>{if(job.held)finish(job,job.held.result,job.held.error);};
           const exactDone=()=>{job.exact='failed';job.drawing=null;disposeExact();settle();};
           compute.onmessage=({data:message})=>{
-            if(!live()||message.id!==id)return;
+            if(message.id!==id)return;
+            if(trailing?.id===id){
+              if(message.type!=='result'&&message.type!=='error')return;
+              trailing=null;
+              if(message.type==='result'&&passes(message.result))scope.postMessage({id,type:'alternative',result:message.result});
+              return;
+            }
+            if(!live())return;
             if(message.type==='candidate'){
               const packet=message.candidate;
               if(typeof packet?.geometry==='string'&&!job.candidates.has(packet.geometry))job.candidates.set(packet.geometry,packet);
@@ -114,7 +126,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
             clearTimeout(job.timer);
             job.timer=setTimeout(()=>{if(live()&&job.exact==='running')exactDone();},Math.max(0,job.startedAt+1000*EXACT_WAIT_SECONDS-now()));
           };
-          compute.onerror=event=>{event.preventDefault?.();disposeFitter();const error=fail(event.message||'The fitting worker could not load.','ENGINE_UNAVAILABLE');if(job.exact==='running')job.held={error};else finish(job,null,error);};
+          compute.onerror=event=>{event.preventDefault?.();disposeFitter();if(trailing?.id===id){trailing=null;return;}const error=fail(event.message||'The fitting worker could not load.','ENGINE_UNAVAILABLE');if(job.exact==='running')job.held={error};else finish(job,null,error);};
           compute.onmessageerror=()=>{disposeFitter();const error=fail('The fitting response could not be read.','ENGINE_UNAVAILABLE');if(job.exact==='running')job.held={error};else finish(job,null,error);};
           if(both){
             exactCompute.onmessage=({data:message})=>{
@@ -123,7 +135,15 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
                 const geometry=message.event?.geometry;
                 if(typeof geometry==='string'?geometry.trim():geometry&&typeof geometry==='object'){job.drawn=true;if(typeof geometry==='string')job.drawing=geometry;}
                 if(job.drawn)progress(message.event);
-              }else if(message.type==='result'){job.exact='done';disposeFitter();finish(job,message.result);}
+              }else if(message.type==='result'){
+                // The fitter's template as a second choice: at once when it is in,
+                // else when it comes (or not, should another request come first).
+                job.exact='done';
+                const held=job.held;
+                finish(job,message.result);
+                if(held?.result&&passes(held.result))scope.postMessage({id,type:'alternative',result:held.result});
+                else if(!held)trailing={id};
+              }
               else exactDone();
             };
             exactCompute.onerror=event=>{event.preventDefault?.();if(live()&&job.exact==='running')exactDone();};

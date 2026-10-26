@@ -447,4 +447,34 @@ describe('FindCutsPanel while searching', () => {
 			panel.cleanup();
 		}
 	});
+
+	it('offers the fitter\'s smoother template beside the exact one, exact first, the shown one pressed', () => {
+		const swaps: string[] = [];
+		const exact = { ...result({ kind: 'exact', cuts: [5, 5], mismatch: 0.002 }), design: { ...DESIGN, id: 'exact' } };
+		const smooth = { ...result({ kind: 'smooth', cuts: [4, 4], mismatch: 0.007 }), design: { ...DESIGN, id: 'smooth' } };
+		for (const [shown, other] of [[exact, smooth], [smooth, exact]]) {
+			const panel = render({ lang: 'en', result: shown, alternative: other, onSwap: () => swaps.push('swap') });
+			try {
+				const buttons = [...panel.root.querySelectorAll<HTMLButtonElement>('.templates button')];
+				expect(buttons.map((b) => b.querySelector('.template-name')?.textContent)).toEqual(['Exactly as the picture', 'Smoother cuts']);
+				expect(buttons.map((b) => b.getAttribute('aria-pressed'))).toEqual(shown === exact ? ['true', 'false'] : ['false', 'true']);
+				expect(buttons[0].textContent).toContain('5 + 5 cuts · 0.2% off the mask');
+				buttons.find((b) => b.getAttribute('aria-pressed') === 'true')?.click();
+				buttons.find((b) => b.getAttribute('aria-pressed') === 'false')?.click();
+			} finally {
+				panel.cleanup();
+			}
+		}
+		// Pressing the shown one does nothing; the other swaps.
+		expect(swaps).toEqual(['swap', 'swap']);
+	});
+
+	it('shows no choice without an alternative', () => {
+		const panel = render({ result: result({ kind: 'exact' }) });
+		try {
+			expect(panel.root.querySelector('.templates')).toBeNull();
+		} finally {
+			panel.cleanup();
+		}
+	});
 });

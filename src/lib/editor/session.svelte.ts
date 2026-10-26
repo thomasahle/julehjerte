@@ -68,6 +68,8 @@ export type PaintError = { kind: PaintErrorKind; detail?: string };
 export type PaintResult = {
 	design: HeartDesign;
 	report: {
+		/** The exact search's template (cuts along the picture's own edges) or the fitter's smooth one; absent for a read template. */
+		kind?: 'exact' | 'smooth';
 		cuts: [number, number];
 		/** Null when no sheet has two distinct slits to measure between. */
 		clearanceMm: number | null;

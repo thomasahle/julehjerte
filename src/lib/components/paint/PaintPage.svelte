@@ -52,8 +52,10 @@
 		setSymmetry,
 		type Frame,
 		type PaintError,
+		type PaintResult,
 		type SymmetrySettings
 	} from '$lib/editor/session.svelte';
+	import type { DesignResult } from '$lib/inverse/client';
 	import { clampFrameSize, frameMismatch, shapeCells } from '$lib/paint/frame';
 	import { cloneMask, createMask, isEmpty, maskMismatch, type Mask } from '$lib/paint/mask';
 	import { detectSymmetry, NO_SYMMETRY, transformsFor } from '$lib/paint/symmetry';
@@ -208,6 +210,14 @@
 	});
 	/** The rows the converter could hold the last heart to (PAINT.md §11). */
 	let honoured = $state<SymmetrySettings | null>(null);
+	/**
+	 * The other template beside the one shown: the fitter's smooth cuts when the
+	 * exact search's template came first (worker-controller.js sends it once the
+	 * fitter is done). Swapping exchanges the two; a new search clears it.
+	 */
+	let alternative = $state.raw<{ result: PaintResult; honoured: SymmetrySettings } | null>(null);
+	/** Which search an alternative belongs to: one arriving for an older one is dropped. */
+	let searchCount = 0;
 	/** "Vis det beskyttede motiv": the outline over the found heart. */
 	let showMotif = $state(false);
 
@@ -712,6 +722,68 @@
 		if (geometry) candidates.push(geometry);
 	}
 
+	/**
+	 * A found template as the page shows it: the engine's cut geometry converted
+	 * into the editor's heart, measured against the mask it was searched for, with
+	 * the symmetry rows it holds. The first answer and the fitter's alternative
+	 * beside it both come through here.
+	 */
+	function toResult(solved: DesignResult, target: Mask, frame: Frame): { result: PaintResult; honoured: SymmetrySettings } {
+		const geometry = solved.files['cut_geometry.json'];
+		if (!geometry) {
+			throw new CutGeometryError('paintErrorGeometrySchema', 'The engine returned no geometry.');
+		}
+		const converted = convertValidatedCutGeometry(geometry, {
+			name: session.sourceName ? t('paintHeartFromImage', lang) : t('paintHeartFromMask', lang),
+			colors: toHexColors(colors, DEFAULT_COLORS_HEX),
+			enforce: session.symmetry,
+			reference: { mask: target, weights: frame.mode === 'free' ? shapeCells(frame, target.size) : undefined }
+		});
+
+		// Measure the actual editable heart against the original drawing. Changes
+		// outside the protected motif are permitted, and reported separately.
+		// Score at the drawing's resolution: shrinking a binary mask moves edge
+		// pixels and can exaggerate the disagreement with the fitted curves.
+		const woven = rasterizeDesign(converted.design, target.size).data;
+		const wanted = target.data;
+		const mismatch = maskMismatch(woven, wanted, target.validMask);
+		const regions = frame.mode === 'free'
+			? frameMismatch(woven, wanted, target.size, frame, target.validMask) : undefined;
+
+		// The rows the panel shows are the converter's, not `solved.report.symmetry.
+		// honoured` (PAINT.md §11). Both are true statements about different
+		// things: the engine's says which symmetries its own cuts came out with,
+		// the converter's says which ones the heart on screen has. Where the
+		// engine could not hold one and correcting it was cheap, the heart does
+		// have it — and it is the heart the visitor is looking at. Where the
+		// correction was too expensive the converter drops every row and the
+		// panel says so, which is the same notice the engine's report would ask
+		// for. The engine's own answer goes to the console, because a search that
+		// surprises someone is diagnosed from what the fitter managed.
+		const asked = solved.report.symmetry;
+		if (asked && asked.honoured.length < asked.requested.length) {
+			console.warn('The engine could not hold every symmetry that was asked of it', asked);
+		}
+		const kind: PaintResult['report']['kind'] = solved.report.solver?.exactOutline?.chosen === 'exact' ? 'exact' : 'smooth';
+		return {
+			honoured: converted.honoured,
+			result: {
+				design: { ...converted.design, id: newHeartId() },
+				report: {
+					kind,
+					cuts: [solved.report.slits.left, solved.report.slits.right],
+					clearanceMm: solved.report.validation.minimumInterSlitDistanceLower,
+					mismatch,
+					missingFeatures: solved.report.imageFidelity?.features.passed === false,
+					motifMismatch: regions?.inside,
+					borderChange: regions?.outside,
+					identical: solved.report.solver.matchingPreference?.identical ?? false,
+					stoppedEarly: solved.report.stoppedEarly ?? false
+				}
+			}
+		};
+	}
+
 	async function find(): Promise<void> {
 		settle();
 		const mask = session.mask;
@@ -722,6 +794,8 @@
 		// the very heart they had just been told was not good enough.
 		backToMask();
 		notice = null;
+		alternative = null;
+		const search = ++searchCount;
 		session.error = null;
 		session.status = 'searching';
 		progress = reduceProgress(IDLE_PROGRESS, { stage: 'preprocessing' });
@@ -747,58 +821,21 @@
 					minWidthMm: advanced.minWidthMm,
 					matchingSheets: advanced.matchingSheets
 				},
-				onProgress
+				onProgress,
+				(other) => {
+					if (search !== searchCount) return;
+					try {
+						alternative = toResult(other, target, frame);
+					} catch (err) {
+						// A second template that does not convert is simply not offered.
+						console.warn('The alternative template could not be converted', err);
+					}
+				}
 			);
 
-			const geometry = solved.files['cut_geometry.json'];
-			if (!geometry) {
-				throw new CutGeometryError('paintErrorGeometrySchema', 'The engine returned no geometry.');
-			}
-			const converted = convertValidatedCutGeometry(geometry, {
-				name: session.sourceName ? t('paintHeartFromImage', lang) : t('paintHeartFromMask', lang),
-				colors: toHexColors(colors, DEFAULT_COLORS_HEX),
-				enforce: session.symmetry,
-				reference: { mask: target, weights: frame.mode === 'free' ? shapeCells(frame, target.size) : undefined }
-			});
-
-			// Measure the actual editable heart against the original drawing. Changes
-			// outside the protected motif are permitted, and reported separately.
-			// Score at the drawing's resolution: shrinking a binary mask moves edge
-			// pixels and can exaggerate the disagreement with the fitted curves.
-			const woven = rasterizeDesign(converted.design, target.size).data;
-			const wanted = target.data;
-			const mismatch = maskMismatch(woven, wanted, target.validMask);
-			const regions = frame.mode === 'free'
-				? frameMismatch(woven, wanted, target.size, frame, target.validMask) : undefined;
-
-			// The rows the panel shows are the converter's, not `solved.report.symmetry.
-			// honoured` (PAINT.md §11). Both are true statements about different
-			// things: the engine's says which symmetries its own cuts came out with,
-			// the converter's says which ones the heart on screen has. Where the
-			// engine could not hold one and correcting it was cheap, the heart does
-			// have it — and it is the heart the visitor is looking at. Where the
-			// correction was too expensive the converter drops every row and the
-			// panel says so, which is the same notice the engine's report would ask
-			// for. The engine's own answer goes to the console, because a search that
-			// surprises someone is diagnosed from what the fitter managed.
-			const asked = solved.report.symmetry;
-			if (asked && asked.honoured.length < asked.requested.length) {
-				console.warn('The engine could not hold every symmetry that was asked of it', asked);
-			}
-			honoured = converted.honoured;
-			session.result = {
-				design: { ...converted.design, id: newHeartId() },
-				report: {
-					cuts: [solved.report.slits.left, solved.report.slits.right],
-					clearanceMm: solved.report.validation.minimumInterSlitDistanceLower,
-					mismatch,
-					missingFeatures: solved.report.imageFidelity?.features.passed === false,
-					motifMismatch: regions?.inside,
-					borderChange: regions?.outside,
-					identical: solved.report.solver.matchingPreference?.identical ?? false,
-					stoppedEarly: solved.report.stoppedEarly ?? false
-				}
-			};
+			const found = toResult(solved, target, frame);
+			honoured = found.honoured;
+			session.result = found.result;
 			session.status = 'done';
 			showingResult = true;
 		} catch (err) {
@@ -813,6 +850,15 @@
 		} finally {
 			stopTimer();
 		}
+	}
+
+	/** Show the other template: the alternative and the shown one change places. */
+	function swapTemplate(): void {
+		if (!alternative || !session.result) return;
+		const shown = { result: session.result, honoured: honoured ?? { ...NO_SYMMETRY } };
+		session.result = alternative.result;
+		honoured = alternative.honoured;
+		alternative = shown;
 	}
 
 	function abort(): void {
@@ -929,14 +975,16 @@
 				<div class="stage">
 					{#if showingResult && session.result}
 						<div class="result">
-							<PaperHeartSVG
-								readonly
-								idPrefix="paint-result"
-								initialFingers={session.result.design.fingers}
-								initialGridSize={session.result.design.gridSize}
-								initialWeaveParity={session.result.design.weaveParity ?? 0}
-								size={520}
-							/>
+							{#key session.result.design.id}
+								<PaperHeartSVG
+									readonly
+									idPrefix="paint-result"
+									initialFingers={session.result.design.fingers}
+									initialGridSize={session.result.design.gridSize}
+									initialWeaveParity={session.result.design.weaveParity ?? 0}
+									size={520}
+								/>
+							{/key}
 							{#if showMotif && session.result.report.motifMismatch !== undefined}
 								<FrameOutline design={session.result.design} frame={session.frame} size={520} />
 							{/if}
@@ -1159,6 +1207,8 @@
 						status={session.status}
 						error={session.error}
 						result={session.result}
+						alternative={alternative?.result ?? null}
+						onSwap={swapTemplate}
 						{showingResult}
 						{honoured}
 						{showMotif}
