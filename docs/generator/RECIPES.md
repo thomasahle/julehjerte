@@ -199,6 +199,15 @@ every size they list and keeps only the sizes that still pass, for files made
 under older rules. The script judges hearts as the page compares them
 (`cutMeasures`, `betterCuts` in cutQuality.ts, with the paper check).
 
+A frame's recipe (not the board's solves, which `topology.mjs` takes as they
+are) is kept only over runs of at least three neighbouring sizes (`RUN`, 3 by
+default): a size drawn with another template than both its neighbours jumps as
+the slider passes it, mostly for a few turns or a shorter cut. Without the
+rule the nisse in the rays kept recipes at 45, 47–48, 56, 69, 71, 75–76, 93
+and 99–100%, four templates taking turns with the generator's; with it, 49–51%,
+where the recipe holds paper the generator's heart leaves weak.
+`frameRecipes.test.ts` checks the stored files keep to it.
+
 A motif drawn mirror-symmetric is solved with the heart's two halves tied: a
 few seconds a solve rather than minutes, and the heart symmetric. The ties
 need the picture exactly symmetric, and a motif drawn by hand is off by a hair

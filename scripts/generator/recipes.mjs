@@ -299,6 +299,25 @@ try {
 			}
 		}
 	}
+	// A frame's recipe is kept only over runs of at least RUN neighbouring sizes: a size drawn with
+	// another template than both its neighbours jumps as the slider passes it (the user, 2026-10-26, of
+	// two neighbouring sizes: "why are the templates so different ... the topology should be the
+	// same?"), mostly for a few turns or a shorter cut. Board solves feed topology.mjs as they are.
+	if (!solves) {
+		const RUN = Number(process.env.RUN ?? 3);
+		const runOf = (sizes, p) => {
+			let lo = p, hi = p;
+			while (sizes.includes(lo - 1)) lo--;
+			while (sizes.includes(hi + 1)) hi++;
+			return hi - lo + 1;
+		};
+		for (const recipe of recipes) {
+			const lone = recipe.steps.filter(p => runOf(recipe.steps, p) < RUN);
+			if (lone.length) console.log(`  recipe of ${recipe.steps.join(',')}: dropped at ${lone.join(',')}, runs under ${RUN}`);
+			recipe.steps = recipe.steps.filter(p => !lone.includes(p));
+		}
+		recipes.splice(0, recipes.length, ...recipes.filter(r => r.steps.length));
+	}
 	console.log(`${motif} ${style}${strips ? ` ${strips}` : ''}: ${recipes.length} recipes cover ${recipes.reduce((n, r) => n + r.steps.length, 0)} of ${steps.length} sizes`);
 
 	// Into the motif's file for the frame, replacing this board's (or frame's) recipes in the range.

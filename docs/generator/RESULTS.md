@@ -1,5 +1,27 @@
 # Generator robustness results
 
+## Rays recipes for the star, wreath, angel, nisse and snowflake, in runs of three sizes or more
+
+The recipe producer, mended to solve on the picture's vector outline
+(5fac6b4c had made the engine trace it from the raster), ran over the fifteen
+motifs worst in the rays, a solve a group of sizes, from the generator's own
+heart. Nine kept nothing: the pig, holly, mitten, candle, santa hat, gift and
+bird were not drawn clean or not better at any size; the polar star, cow and
+candy cane have no rays sizes the producer reaches. Five kept recipes, then
+judged again on this branch with a new rule, kept only over runs of at least
+three neighbouring sizes (a lone size jumps template as the slider passes it):
+
+| motif | sizes before the rule | kept | what the recipe changes |
+| --- | --- | --- | --- |
+| star | 45–100% | 45–100% | fewer hidden cuts, one template a third of the slider |
+| wreath | 54–56, 70, 71–100% | 54–56, 71–100% | at 92%: 4 weak places → 0 |
+| angel | 59, 66, 71–74, 76–88% | 71–74, 76–88% | cuts 8% shorter, paper and turns as before |
+| nisse | 14 sizes in 9 runs | 49–51% | 1 weak place → 0 |
+| snowflake | 12 sizes in 7 runs | 72–75, 79–83% | both lobes on one template |
+
+The rule also dropped the yule goat's lone recipe at 93%. Every recipe already
+shipped passed again at every size it lists.
+
 ## Hearts made again with exact outline indices where a slipped bridge left nothing to finish
 
 Where a bridge's index slipped (`withExactArcs`), the outline folds back over
