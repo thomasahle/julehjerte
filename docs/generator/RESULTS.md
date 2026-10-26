@@ -782,6 +782,12 @@ page's heart is better at 136 of 931 and worse at none, and the places the
 paper may tear at those sizes go from 98 to 21 (the wreath from four to eight
 to none or two, the gingerbread man below 60% from one or two to none or one).
 
+On five strips, where far fewer sizes lacked a recipe, 5 of 15 motifs solved
+(the owl, hedgehog, wreath, mitten and penguin), giving 7 recipes for 5 new
+topologies, all at 71–94%. The page's heart is better at 14 of 912 (the
+elephant left out) and worse at none: the wreath at 78–84% has no place that
+may tear where it had three to five, the mitten half the hidden turns.
+
 ### The circle, its own mirror image
 
 The plain circle was a 63-gon from 5.7°: within an eighth of a percent of
