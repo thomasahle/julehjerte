@@ -233,6 +233,8 @@
 	let alternative = $state.raw<{ result: PaintResult; honoured: SymmetrySettings } | null>(null);
 	/** A smoother template is still being found (the fitter after the exact search's answer). */
 	let alternativePending = $state(false);
+	/** Two hearts weaving pictures this close (share of cells) with as many cuts are the same. */
+	const SAME_HEART = 0.0005;
 	/** The most of the mask correcting an exact template's symmetry may cost (see toResult). */
 	const EXACT_SYMMETRY_COST = 0.01;
 	/** Which search an alternative belongs to: one arriving for an older one is dropped. */
@@ -887,7 +889,12 @@
 					alternativePending = pending;
 					if (!other) return;
 					try {
-						alternative = toResult(other, target, frame);
+						const found = toResult(other, target, frame), shown = session.result;
+						// The same heart is no choice: an alternative weaving the same picture
+						// with as many cuts (the 3 x 3 heart's straight cuts) is not offered.
+						const same = shown && found.result.report.cuts.every((n, k) => n === shown.report.cuts[k])
+							&& maskMismatch(rasterizeDesign(found.result.design, target.size).data, rasterizeDesign(shown.design, target.size).data) < SAME_HEART;
+						if (!same) alternative = found;
 					} catch (err) {
 						// A second template that does not convert is simply not offered.
 						console.warn('The alternative template could not be converted', err);
