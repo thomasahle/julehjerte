@@ -1,5 +1,37 @@
 # Generator robustness results
 
+## The sunburst never shrinks for a larger size
+
+Over 90–100% in steps of 2, nine of the 49 featured motifs kept a smaller
+heart for a larger size asked: the gift asked 94% had 94%, asked 96% only 92%;
+the cow asked 98% had 98%, asked 100% only 95%. A sunburst whose motif crowds
+the circle at the size asked is made again there with its crown narrowed (see
+below), but the size ladder under a size that cannot be built tried each of its
+sizes with the circle at four fifths of the frame only. Each of the ladder's
+sizes that crowds the circle is now tried with the crown narrowed too, where the
+usual crown builds nothing there.
+
+The nine, sizes kept asked 90, 92, … 100%:
+
+| motif | before | now |
+| --- | --- | --- |
+| gift | 90 92 94 92 92 92 | 90 92 94 94 94 94 |
+| candy cane | 90 92 91 91 91 91 | 90 92 92 92 92 92 |
+| mitten | 90 92 94 92 92 92 | 90 92 94 95 95 95 |
+| church | 90 92 94 92 92 92 | 90 92 94 95 95 95 |
+| moon and stars | 90 92 94 93 93 93 | 90 92 94 95 95 95 |
+| candy | 90 92 94 96 94 94 | 90 92 94 96 97 97 |
+| cow | 90 92 94 96 98 95 | 90 92 94 96 98 98 |
+| swan | 90 92 94 92 92 92 | 90 92 94 95 95 95 |
+| hedgehog | 90 92 94 96 98 96 | 90 92 94 96 98 99 |
+
+23 of their 54 hearts changed, each larger; the candy cane tears less (12 weak
+places → 2), the gift too (20 → 7, hard to cut where it was clean at 92%). The
+54 took 3,699 s before and after. Of the slowest at 90% today, the polar star,
+unicorn and holly keep their hearts; the elephant asked 90% has 73% rather than
+71%, in 581 s rather than 369 s, since each of the ladder's sizes it fails at
+now fails with both crowns (but see the entry above).
+
 ## Rays recipes for the star, wreath, angel, nisse and snowflake, in runs of three sizes or more
 
 The recipe producer, mended to solve on the picture's vector outline

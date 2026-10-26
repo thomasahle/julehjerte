@@ -877,7 +877,8 @@ function tipAtIslandPort(result: GeneratorResult, from: number): boolean {
 	});
 }
 /** Set while a sunburst is made again with its crown narrowed (see
- * `generate`): at its own size only, since a smaller one is what it is for. */
+ * `generate`): at its own size only, the sizes below having been tried so
+ * already (see `generateAtSizeOrSmaller`). */
 let atSizeOnly = false;
 /** Set while a heart is made again (see `SECOND_TRIES`): its first way
  * only, at its own size, without retries (unless `retriesAgain`), last
@@ -922,10 +923,17 @@ function generateAtSizeOrSmaller(request: GeneratorRequest): GeneratorResult {
 		// at that size, the motif keeps the largest size below that can be, of
 		// a fixed few (so neighbouring sizes keep alike), down to the default
 		// size, rather than refusing, and says so. The circle on a board keeps
-		// its own (see `generateUsingRecipes`).
+		// its own (see `generateUsingRecipes`). A sunburst whose motif crowds
+		// the circle at one of those sizes is made there with its crown
+		// narrowed too, as at the size asked (see `generate`), else a larger
+		// size asked keeps a smaller one (the gift asked 94% had 94% so, asked
+		// 96% only 92%).
 		const at = (size: number) => {
-			try {
-				const result = generateAtSizeOrLastResort({ ...request, scale: size });
+			const sized = { ...request, scale: size };
+			const ways = [() => generateAtSizeOrLastResort(sized)];
+			if (request.mode === 'figure' && crowdsCrown(sized)) ways.push(() => withNarrowCrown(() => generateAtSizeOrLastResort(sized)));
+			for (const way of ways) try {
+				const result = way();
 				return { ...result, scale: result.scale ?? size };
 			} catch (smallerError) {
 				if (!(smallerError instanceof ConstructionError) && !(smallerError instanceof CutGeometryError)) throw smallerError;
