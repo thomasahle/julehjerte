@@ -9,6 +9,9 @@
 
 export type PaintTool = 'pen' | 'fill' | 'line' | 'rect' | 'ellipse' | 'smudge' | 'select';
 
+/** The tools that paint with the brush, its head and its size: the others have no use for them. */
+export const BRUSH_TOOLS: readonly PaintTool[] = ['pen', 'line', 'smudge'];
+
 /**
  * The brush's head, named by how it looks on the drawing (see `brushHead.ts`):
  * a disc; a square along the strips (a diamond on screen); a square across
@@ -92,7 +95,8 @@ export function clampSmudge(size: number): BrushSize {
  */
 export const MIN_SMUDGE_STRENGTH = 10;
 export const MAX_SMUDGE_STRENGTH = 100;
-export const DEFAULT_SMUDGE_STRENGTH = 100;
+/** A gentle smear to start with (the owner's choice, 2026-10-26). */
+export const DEFAULT_SMUDGE_STRENGTH = 30;
 
 export function clampStrength(strength: number): number {
 	return Number.isFinite(strength)

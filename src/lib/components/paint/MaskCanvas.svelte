@@ -70,7 +70,7 @@
 		type Frame,
 		type FrameAxis
 	} from '$lib/paint/frame';
-	import { DEFAULT_SMUDGE_STRENGTH, shortcutFor, type BrushShape, type PaintAction, type PaintTool, type PaintValue, type SmudgeMode } from '$lib/paint/toolset';
+	import { BRUSH_TOOLS, DEFAULT_SMUDGE_STRENGTH, shortcutFor, type BrushShape, type PaintAction, type PaintTool, type PaintValue, type SmudgeMode } from '$lib/paint/toolset';
 
 	interface Props {
 		mask: Mask | null;
@@ -253,7 +253,7 @@
 	/** Local CSS pixels, shared with the existing screen-to-mask transform. */
 	let hover = $state<Pt | null>(null);
 	let hoverVisible = $derived(!!hover && !!mask && !disabled && !keyboardBusy &&
-		(tool === 'pen' || tool === 'line' || tool === 'smudge') &&
+		BRUSH_TOOLS.includes(tool) &&
 		insideSquare(toMask(layout, mask.size, hover.x, hover.y), mask.size));
 	/**
 	 * The head's outline on screen, its width and height before it is turned: a

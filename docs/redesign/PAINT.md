@@ -64,7 +64,7 @@ scrolls from the top, with a fade over its bottom edge while there is more below
 of an overlay scrollbar until a gesture starts):
 
 - Row of two buttons: `Importér billede` (outline, opens the dialog) and `Ryd` (ghost, goes back to the 5 × 5 board after a
-  confirm if the mask is not empty; uses the site `Modal`, no `confirm()`).
+  confirm if the mask is not that board; uses the site `Modal`, no `confirm()`; one undo step).
 - Panel "Værktøj": tools Pen, Fyld, Linje, Rektangel, Ellipse (key O, 2026-10-26: the ellipse inscribed in the
   rectangle the drag spans, along the strips as the rectangle is), Udtvær, Markér as 40px icon buttons (lucide:
   pencil, paint-bucket, minus (rotated 45°) or a simple line glyph, square, ellipse, square-dashed); a labelled brush-radius
@@ -114,7 +114,8 @@ of an overlay scrollbar until a gesture starts):
   brings them back.
 - **Udtvær, Tern, the brush head and a selection that stays** (the owner's request, 2026-10-25), for hearts like Hvirvel and
   Glaskuppel, which are a plain board turned or swelled:
-  - *Brush head*: small buttons in the brush label's row (no row of their own), named by how they look on the
+  - *Brush head*: small buttons in the brush label's row (no row of their own), shown with the size slider only for
+    the tools that paint with the brush (pen, line, Udtvær; `BRUSH_TOOLS`), named by how they look on the
     drawing (`src/lib/paint/brushHead.ts`): round; square along the strips (the mask's axes, so a diamond on
     screen); square upright on screen (added 2026-10-26, a diamond on the mask); flat, a nib a quarter as thick as
     it is long lying from lower left to upper right, for thick and thin strokes (added 2026-10-26). Every head
@@ -125,7 +126,7 @@ of an overlay scrollbar until a gesture starts):
     Alt turns the other way or draws in. Its three modes are one row under the tools, shown only while it is the
     tool in hand. It has its own radius (8–200 cells, default 80, `[`/`]` in steps of 5), because a hvirvel turns most
     of the square at once. It follows the brush head (a square hold fades to a square rim) and has a **Styrke**
-    slider of its own under the modes, 10–100 %, default 100 % (2026-10-26, the owner's request): at 100 % a push
+    slider of its own under the modes, 10–100 %, default 30 % (2026-10-26, the owner's request and choice): at 100 % a push
     carries the paper under the brush's centre all the way with the pointer and a held turn or swell goes at its
     full pace; lower, the paper lags behind and a turn creeps. A stroke never resamples its own output: it keeps the mask it started from and a field
     of where each cell's paper comes from, reads bilinearly and cuts at one half (`src/lib/paint/smudge.ts`), so
@@ -737,6 +738,10 @@ exposed yet. Geometry and paper constraints still apply everywhere, including th
   grids. Every proposal is ranked against the original weighted drawing, so neither checker colour nor checker
   count is a required part of the answer. The former advanced "Rammens felter" control has been removed.
   `substituteCheckerBand` and `solveTargetMask` remain only to reproduce the historical checker benchmarks.
+- **Ryd, an import and "Prøv stjernen" are one undo step each** (2026-10-26, the owner: "we need to have undo/redo"):
+  they record the mask as it was before replacing it, as a stroke does, rather than ending the history; Ryd's
+  confirmation says Fortryd brings the painting back. Fortryd and Gentag sit beside the paper swatches, and
+  Cmd/Ctrl+Z, Shift+Cmd/Ctrl+Z and Ctrl+Y work as everywhere on the site.
 - Changing "Kanten" **is an edit**, not only a setting: the region the rows fold over moves with the shape, so a
   change folds band paint away or stops folding motif paint. Mal records one undo step per gesture
   (`recordFrameFold`; the Størrelse slider and the canvas handle both say when a gesture begins, so a drag is one

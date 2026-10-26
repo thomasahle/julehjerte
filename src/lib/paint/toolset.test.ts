@@ -34,7 +34,7 @@ describe('brush sizes', () => {
 		expect(clampStrength(5)).toBe(10);
 		expect(clampStrength(55.4)).toBe(55);
 		expect(clampStrength(120)).toBe(100);
-		expect(clampStrength(NaN)).toBe(100);
+		expect(clampStrength(NaN)).toBe(30);
 	});
 
 	it('steps one cell at a time and stops at both ends', () => {

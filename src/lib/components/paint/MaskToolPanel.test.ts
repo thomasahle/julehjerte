@@ -170,6 +170,19 @@ describe('MaskToolPanel', () => {
 		}
 	});
 
+	it('shows the brush, its head and size, only for the tools that paint with it', () => {
+		const shown: Record<string, boolean> = {};
+		for (const tool of ['pen', 'fill', 'line', 'rect', 'ellipse', 'smudge', 'select'] as const) {
+			const panel = render({ tool });
+			try {
+				shown[tool] = !!panel.target.querySelector('.brush-heads');
+			} finally {
+				panel.cleanup();
+			}
+		}
+		expect(shown).toEqual({ pen: true, fill: false, line: true, rect: false, ellipse: false, smudge: true, select: false });
+	});
+
 	it('switches the brush between its four heads', () => {
 		const shapes: string[] = [];
 		const panel = render({ brushShape: 'round', onBrushShape: (shape) => shapes.push(shape) });

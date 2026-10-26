@@ -69,7 +69,6 @@
 		createHistory,
 		record,
 		redo as historyRedo,
-		resetHistory,
 		takeBack,
 		undo as historyUndo,
 		type MaskStep
@@ -594,6 +593,16 @@
 
 	// -------------------------------------------------------- replacing the mask
 
+	/**
+	 * The mask as it was, kept for Fortryd before Ryd, an import or "Prøv
+	 * stjernen" replaces it: a whole new mask is one undo step, as a stroke is,
+	 * rather than the end of the history.
+	 */
+	function rememberBeforeReplacing(): void {
+		const step = currentStep();
+		if (step) record(history, step);
+	}
+
 	function askToClear(): void {
 		settle();
 		if (maskUntouched) return;
@@ -603,8 +612,8 @@
 	function doClear(): void {
 		confirming = null;
 		maskCanvas?.deselect();
+		rememberBeforeReplacing();
 		clearMask();
-		resetHistory(history);
 		syncHistoryFlags();
 		showingResult = false;
 		revision++;
@@ -612,8 +621,8 @@
 
 	function useMask(mask: Mask, found: SymmetrySettings, source: string): void {
 		maskCanvas?.deselect();
+		rememberBeforeReplacing();
 		setMask(mask, { sourceName: source, symmetry: found, found });
-		resetHistory(history);
 		syncHistoryFlags();
 		showingResult = false;
 		honoured = null;
@@ -661,8 +670,8 @@
 	 */
 	function useTemplate(design: HeartDesign, mask: Mask, found: SymmetrySettings): void {
 		maskCanvas?.deselect();
+		rememberBeforeReplacing();
 		setMask(mask, { sourceName: 'template', symmetry: { ...NO_SYMMETRY }, found });
-		resetHistory(history);
 		syncHistoryFlags();
 		revision++;
 		// A read template's fingers are its cuts and the lobe's two edges.

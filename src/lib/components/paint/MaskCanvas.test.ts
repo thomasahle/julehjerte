@@ -94,6 +94,8 @@ function render(
 		frame?: Frame;
 		/** The cuts of the search in progress, drawn over the mask (PAINT.md §12). */
 		candidate?: HeartDesign | null;
+		/** Udtvær's strength in percent, its default unless said. */
+		smudgeStrength?: number;
 	} = {}
 ): Harness {
 	const mask = createMask(options.fill ?? 0, SIZE);
@@ -115,6 +117,7 @@ function render(
 			// protected, so the band draws nothing over the cells they sample.
 			frame: options.frame ?? { ...DEFAULT_FRAME },
 			candidate: options.candidate ?? null,
+			...(options.smudgeStrength !== undefined ? { smudgeStrength: options.smudgeStrength } : {}),
 			onEditStart: () => {},
 			onEditEnd: () => {
 				harness.edits++;
@@ -739,11 +742,21 @@ describe('a selection put down', () => {
 
 describe('Udtvær', () => {
 	it('drags the paper under the brush along with the pointer, as one edit', () => {
-		const c = render({ tool: 'smudge', brush: 10 });
+		const c = render({ tool: 'smudge', brush: 10, smudgeStrength: 100 });
 		for (let y = 16; y < 24; y++) for (let x = 10; x < 18; x++) c.mask.data[y * SIZE + x] = 1;
 		drag(c.canvas, [14, 20], [24, 20]);
 		expect(c.cell(22, 20)).toBe(1);
 		expect(c.cell(11, 20)).toBe(0);
+		expect(c.edits).toBe(1);
+	});
+
+	it('smears gently at its default strength, the paper lagging behind the pointer', () => {
+		const c = render({ tool: 'smudge', brush: 10 });
+		for (let y = 16; y < 24; y++) for (let x = 10; x < 18; x++) c.mask.data[y * SIZE + x] = 1;
+		drag(c.canvas, [14, 20], [24, 20]);
+		// Ten cells of drag carry the block's middle about three along, not ten.
+		expect(c.cell(18, 20)).toBe(1);
+		expect(c.cell(22, 20)).toBe(0);
 		expect(c.edits).toBe(1);
 	});
 });

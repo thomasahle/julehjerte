@@ -40,6 +40,7 @@
 		DEFAULT_SMUDGE_STRENGTH,
 		SIZE_SLIDER_STEPS,
 		BRUSH_SHAPES,
+		BRUSH_TOOLS,
 		clampStrength,
 		sizeOfSlider,
 		sliderOfSize,
@@ -310,41 +311,44 @@
 			</p>
 		{/if}
 
-		<label class="field brush-field">
-			<span class="field-label brush-label">
-				<span>{tr('paintBrush')}</span>
-				<span class="brush-heads" role="group" aria-label={tr('paintBrushShape')}>
-					{#each BRUSH_SHAPES as shape (shape)}
-						<button
-							type="button"
-							class="head-btn"
-							class:active={brushShape === shape}
-							aria-pressed={brushShape === shape}
-							aria-label={tr(HEAD_LABELS[shape])}
-							title={tr(HEAD_LABELS[shape])}
-							onclick={() => onBrushShape(shape)}
-							{disabled}
-						>
-							<span class="head {shape}" aria-hidden="true"></span>
-						</button>
-					{/each}
+		<!-- The brush's head and size, only for the tools that paint with it. -->
+		{#if BRUSH_TOOLS.includes(tool)}
+			<label class="field brush-field">
+				<span class="field-label brush-label">
+					<span>{tr('paintBrush')}</span>
+					<span class="brush-heads" role="group" aria-label={tr('paintBrushShape')}>
+						{#each BRUSH_SHAPES as shape (shape)}
+							<button
+								type="button"
+								class="head-btn"
+								class:active={brushShape === shape}
+								aria-pressed={brushShape === shape}
+								aria-label={tr(HEAD_LABELS[shape])}
+								title={tr(HEAD_LABELS[shape])}
+								onclick={() => onBrushShape(shape)}
+								{disabled}
+							>
+								<span class="head {shape}" aria-hidden="true"></span>
+							</button>
+						{/each}
+					</span>
+					<output>{t('paintBrushRadius', lang, { size: brushSize })}</output>
 				</span>
-				<output>{t('paintBrushRadius', lang, { size: brushSize })}</output>
-			</span>
-			<!-- The slider moves the size by ratio (see `sizeOfSlider`): a pen
-			     reaches 200 cells, and a fine one must stay easy to set. -->
-			<input
-				type="range"
-				min="0"
-				max={SIZE_SLIDER_STEPS}
-				step="1"
-				value={sliderOfSize(brushSize, smallest, largest)}
-				aria-label={tr('paintBrush')}
-				aria-valuetext={t('paintBrushRadius', lang, { size: brushSize })}
-				oninput={(event) => onBrushSize(sizeOfSlider(event.currentTarget.valueAsNumber, smallest, largest))}
-				{disabled}
-			/>
-		</label>
+				<!-- The slider moves the size by ratio (see `sizeOfSlider`): a pen
+				     reaches 200 cells, and a fine one must stay easy to set. -->
+				<input
+					type="range"
+					min="0"
+					max={SIZE_SLIDER_STEPS}
+					step="1"
+					value={sliderOfSize(brushSize, smallest, largest)}
+					aria-label={tr('paintBrush')}
+					aria-valuetext={t('paintBrushRadius', lang, { size: brushSize })}
+					oninput={(event) => onBrushSize(sizeOfSlider(event.currentTarget.valueAsNumber, smallest, largest))}
+					{disabled}
+				/>
+			</label>
+		{/if}
 
 		<!-- Fortryd and Gentag share the swatches' row rather than taking a row of
 		     their own: two labelled buttons across the panel cost a line the column
