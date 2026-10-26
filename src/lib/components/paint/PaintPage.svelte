@@ -64,6 +64,7 @@
 	import { fingerHasIntersectionIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 	import { inferOverlapRect } from '$lib/utils/overlapRect';
 	import { rasterizeDesign } from '$lib/paint/rasterize';
+	import { isMediocre } from '$lib/paint/verdict';
 	import {
 		canRedo as historyCanRedo,
 		canUndo as historyCanUndo,
@@ -902,7 +903,13 @@
 						// with as many cuts (the 3 x 3 heart's straight cuts) is not offered.
 						const same = shown && found.result.report.cuts.every((n, k) => n === shown.report.cuts[k])
 							&& maskMismatch(rasterizeDesign(found.result.design, target.size).data, rasterizeDesign(shown.design, target.size).data) < SAME_HEART;
-						if (!same) alternative = found;
+						if (!same) {
+							alternative = found;
+							// A heart only close (the panel's "close, but not right") gives way to
+							// one that is not: the photographs whose sides the exact search reads
+							// deeper than their edge come out over 1 %, the fitter's under it.
+							if (shown && isMediocre(shown.report) && !isMediocre(found.result.report)) swapTemplate();
+						}
 					} catch (err) {
 						// A second template that does not convert is simply not offered.
 						console.warn('The alternative template could not be converted', err);
