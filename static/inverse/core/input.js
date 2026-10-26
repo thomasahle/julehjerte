@@ -83,7 +83,7 @@ function lobeSampler(rgba,width,height,quad){
  * is printed: under `plain` of its samples within `within` ΔE of their median
  * (a pattern's second colour, a motif). Else null: plain papers' two colours
  * are their lobes' (lobeColours). */
-export function printedLobes(rgba,width,height,quad,{within=10,plain=.8}={}){
+export function printedLobes(rgba,width,height,quad,{within=10,plain=.9}={}){
   const sample=lobeSampler(rgba,width,height,quad);if(!sample)return null;
   const lobe=at=>{const labs=[];for(let i=0;i<32;i++)for(let j=0;j<10;j++){const lab=sample(...at(.12+.76*(i+.5)/32,.05+.33*(j+.5)/10));if(lab)labs.push(lab);}return labs;};
   const right=lobe((t,d)=>[t,-d]),left=lobe((t,d)=>[-d,t]);
@@ -96,7 +96,7 @@ export function printedLobes(rgba,width,height,quad,{within=10,plain=.8}={}){
  * `sigma` ΔE), the log ratio averaged over `radius` pixels, and `wide` times
  * as far at a colour both papers have (its own ratio under `unsure`): a print
  * colour they share takes the paper around it. */
-function printedPaperMask(labs,samples,{observed=null,sigma=7,radius=6,wide=3,unsure=1,cap=4}={}){
+function printedPaperMask(labs,samples,{observed=null,sigma=7,radius=6,wide=3,unsure=2.5,cap=4}={}){
   const count=labs.length/3,side=Math.round(Math.sqrt(count)),cache=new Map(),two=2*sigma*sigma;
   const density=(lab,list)=>{let s=0;for(const q of list)s+=Math.exp(-((lab[0]-q[0])**2+(lab[1]-q[1])**2+(lab[2]-q[2])**2)/two);return s/list.length;};
   const ratio=new Float32Array(count);

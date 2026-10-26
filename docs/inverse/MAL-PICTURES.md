@@ -381,13 +381,16 @@ found no heart, where all 12 of two plain colours passed.
 
 - **Their colours.** A photograph's two papers were its lobes' two colours, and
   every pixel went to the nearer, so a paper's white print went to whichever
-  paper is paler. Now, when a lobe is printed (under 80% of 320 samples across
+  paper is paler. Now, when a lobe is printed (under 90% of 320 samples across
   it within 10 ΔE of their median: `printedLobes` in `core/input.js`), each
   paper is its lobe's whole colours, a density of those samples (a kernel of
   7 ΔE), and a pixel goes to the paper whose colours are likelier there, the log
   ratio averaged over 1.5 mm, and over 4.5 mm at a colour both papers have
-  (their shared print takes the paper around it). No plain picture is taken for
-  printed: all 128 juleflet pictures keep their lobes' two colours.
+  (one whose own log ratio is under 2.5: their shared print takes the paper
+  around it). No plain picture is taken for printed: all 128 juleflet pictures
+  keep their lobes' two colours. (A lobe was printed under 80% at first, the
+  shared colours' ratio under 1: 90% and 2.5 pass 4 more web photographs, as
+  the second table shows, and lose one scraped photograph, a pendant.)
 - **Finding the heart in a selection.** In a selection the visitor drew, only
   the colour locator looked, which printed papers defeat. When it finds nothing
   the heart is now what differs from the selection's background (the colours
@@ -396,15 +399,18 @@ found no heart, where all 12 of two plain colours passed.
   (`backgroundBody`, `selectedSilhouette`). Eight of the ten selections that
   found nothing find the right heart.
 
-| 44 web photographs | deployed | now |
-|---|---|---|
-| printed papers (28): pass / detail lost / no heart | 4 / 16 / 8 | 19 / 7 / 2 |
-| two plain colours (12): pass | 12 | 12 |
-| scenes (4): pass / detail lost / no heart | 2 / 0 / 2 | 3 / 1 / 0 |
-| all: pass | 18 | 34 |
+| 44 web photographs | deployed | now | 90% and 2.5 |
+|---|---|---|---|
+| printed papers (28): pass / detail lost / no heart | 4 / 16 / 8 | 19 / 7 / 2 | 23 / 3 / 2 |
+| two plain colours (12): pass | 12 | 12 | 12 |
+| scenes (4): pass / detail lost / no heart | 2 / 0 / 2 | 3 / 1 / 0 | 3 / 1 / 0 |
+| all: pass | 18 | 34 | 38 |
 
 On the 80 scraped photographs 6 are taken for printed, their masks 1.57% ->
 0.86% from their templates, and one more passes (47); nothing else changes.
+With 90% and 2.5, 9 are taken for printed (a black-and-gold heart whose gold
+shines among them, cut as before), their masks 1.14% -> 0.70% from their
+templates, and 46 pass: a necklace pendant loses a detail.
 
 ## Details lost on photographs (2026-10-25)
 

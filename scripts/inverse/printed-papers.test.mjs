@@ -28,10 +28,13 @@ const agreement = ({mask, n}) => {
   return right / (n * n);
 };
 
+// The white both papers are printed with takes the paper around it over the
+// wider radius, which rounds the squares' corners a little (98.5% -> 98.47%):
+// on 44 web photographs that rule passed 4 more.
 test('printed papers are told apart by their lobes\' whole colours, print and all', () => {
   const out = preprocessPixels({...photo(), settings});
   assert.equal(out.target.metadata.preprocessing.method, 'printed-lobes');
-  assert.ok(agreement(out) > .985, `agreement ${agreement(out)}`);
+  assert.ok(agreement(out) > .98, `agreement ${agreement(out)}`);
 });
 
 test('plain papers keep their lobes\' two colours', () => {
