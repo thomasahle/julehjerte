@@ -331,19 +331,23 @@ mirror, to the checker's touching, and hidden segments end on edges only.
 Mal's whole pipeline on the three sets, against the version deployed on
 2026-10-25 (the fitter first, the exact search only as a rescue):
 
-| | 2026-10-25 | 2026-10-26 |
-|---|---|---|
-| juleflet pictures (128): pass | 128 | 128 |
-| exact template taken | 0 | 104 |
-| from the true design (mean) | 0.708% | 0.676% |
-| solve median / 90% / slowest | 7.3 / 17.0 / 33.4 s | 8.4 / 40.0 / 40 s |
-| 80 scraped photographs: pass / detail lost | 46 / 10 | 47 / 9 (8 exact) |
-| solve median | 21.4 s | 40.0 s |
-| 44 web photographs: pass / detail lost / no heart | 18 / 16 / 10 | 34 / 8 / 2 (7 exact) |
-| solve median | 28.0 s | 13.9 s |
+| | 2026-10-25 | 2026-10-26 | 2026-10-26, later |
+|---|---|---|---|
+| juleflet pictures (128): pass | 128 | 128 | 128 |
+| exact template first (and second) | 0 | 104 | 94 (16) |
+| from the true design (mean) | 0.708% | 0.676% | 0.658% |
+| solve median / 90% / slowest | 7.3 / 17.0 / 33.4 s | 8.4 / 40.0 / 40 s | 10.2 s median |
+| 80 scraped photographs: pass / detail lost | 46 / 10 | 47 / 9 (8 exact) | 46 / 10 (8 exact, 4 second) |
+| solve median | 21.4 s | 40.0 s | 30.0 s |
+| 44 web photographs: pass / detail lost / no heart | 18 / 16 / 10 | 34 / 8 / 2 (7 exact) | 38 / 4 / 2 (5 exact, 3 second) |
+| solve median | 28.0 s | 13.9 s | 14.0 s |
 
-The photographs wait longer where the exact search fails: once the fitter's
-template is in, the exact search has until 40 s.
+The photographs waited longer where the exact search fails: once the fitter's
+template was in, the exact search had until 40 s. The last column has printed
+papers read as below, tips that come back to themselves rounded, and the
+fitter's passing template sent at 30 s while the exact search has drawn nothing
+(both below); it was timed while other jobs loaded the machine, so its times
+run long.
 
 ## Tips, untied outlines and their symmetry (2026-10-26)
 
@@ -412,6 +416,57 @@ With 90% and 2.5, 9 are taken for printed (a black-and-gold heart whose gold
 shines among them, cut as before), their masks 1.14% -> 0.70% from their
 templates, and 46 pass: a necklace pendant loses a detail.
 
+## Tips that come back to themselves (2026-10-26)
+
+The tulip's true design (tulipan) hides no cut, and the exact search finds that
+on the true design's mask, but on its imported picture it took 4 hidden
+segments. Six petal tips there are two pixels wide (one on the true mask, which
+`withoutSlivers` drops), traced as little boxes: a slit along one turns by over
+190 degrees within 1.5 mm of itself, which the cutting rules forbid (the return
+rule), so the model changes papers there, and each change takes hidden
+segments. With those tips rounded (the 0.8 mm disc of the tips narrower than
+the clearance, within 4 mm of each) it takes none.
+
+`returns` (exact/nogoods.js) finds where an outline comes back to itself, for
+the model's rule and for the rounding (`returnTips`, stage.js). A traced
+template with more hidden segments than the count's lower bound is searched for
+again with those tips rounded, for as long as the first search took (10 s at
+least), and taken with fewer; a traced template that fails has them rounded
+along with the places it comes too close to itself.
+
+On the 128 juleflet pictures the exact search finds a template the export
+passes for 110 (104 before), 0.658% from the true designs on average (0.676%);
+on the 91 exact both ways hidden cut 9129 -> 8542 mm. tulipan 4 -> 0 segments
+(89 -> 19 mm), tulipan-shot 5 -> 4 (64 -> 20 mm), stjernerogkors 8 -> 0,
+stjernegitter-shot 26 -> 14, juletrae 1 -> 0, roserude 9 -> 7 (0.68 -> 0.44%
+from its true design).
+
+## Waiting for the exact search (2026-10-26)
+
+Once the fitter's template was in, the page waited for the exact search until
+40 s, so a photograph the exact search fails on took 40 s (the median of the 80
+scraped ones). A search that finds no template draws none (the live view shows
+only drawings keeping every rule), so now a passing template of the fitter's
+waits only until 30 s while the exact search has drawn nothing, then goes out
+with "Still looking for a version exactly as the picture …"; the exact search
+goes on to its minute, and its template, should it find one, comes as the
+second choice (worker-controller.js `EXACT_UNDRAWN_SECONDS`). Once it has
+drawn, the fitter's template waits until 40 s as before.
+
+On the juleflet pictures 94 then show the exact template first and 16 second;
+of those 16 the fitter's is the closer to the true design on 9. Exact templates
+drawn late are mostly found on the rounded outline after the traced one failed.
+(Timed while other jobs loaded the machine 8-45: the benchmark records when the
+exact search first draws, and `tmp/e2e/topo/waitrule.mjs` replays the rule for
+other limits: 20 s would show 91 first, 40 s 104.)
+
+The 80 scraped photographs then take 30 s at the median (40 s before), the
+same 46 passing, 8 with the exact template first and 4 more with it as the
+second choice (8 and none); the 44 web photographs 14 s (15 s), 38 passing, 5
+and 3 (7 and none). At 20 s the scraped median would be 20 s and the juleflet
+pictures would show 91 exact templates first: 30 s keeps the exact template
+first where it is drawn late, mostly on drawings, for 10 s on photographs.
+
 ## Details lost on photographs (2026-10-25)
 
 The 68 photographs whose template keeps every rule but loses a region of the
@@ -444,7 +499,12 @@ camel, but takes 20-28 s more and fails on other photographs; not used.
   is 0.08% from the mask but its slits come closer than a strip allows.
 - The exact search takes few photographs (7 of 80, 4 of 44: its outline,
   traced from a noisy mask, is rarely a weavable structure in time); it takes
-  three quarters of drawn ones.
+  three quarters of drawn ones. 13 of the 80 scraped ones cannot start: their
+  outline meets opposite sides of the square unevenly (a motif at one corner of
+  a slightly turned crop, strips standing out past the square), with both
+  pairs of sides uneven, which none of the fitter's border repairs
+  (`oppositeBorderSeeds`, `cornerBorderSeeds`) mends; a 3 mm border band does
+  for 3.
 - Templates: slits that stop inside the square or meet in T-junctions (the site
   cannot represent them), dimension lines drawn along a slit.
 - A selected heart among touching neighbours (two of the web scenes): the
@@ -453,7 +513,7 @@ camel, but takes 20-28 s more and fails on other photographs; not used.
   stays unfound.
 - Fewer hidden cuts or shorter ones: the exact search takes the fewest hidden
   segments, then the shortest of those, so where the fitter's template places
-  them differently it can hide more cut in all (tulipan's photograph 89 mm in
-  4 segments against the fitter's 32 mm, kogle-shot 561 against 249; 28 of the
-  98 exact templates hide more, 24 less). A second search on the finer grid
-  from its template finds the same.
+  them differently it can hide more cut in all (kogle-shot 561 mm against 249;
+  28 of the 98 exact templates hid more, 24 less). A second search on the
+  finer grid from its template finds the same. (Tulipan's 89 mm against 32
+  were its tips: above.)
