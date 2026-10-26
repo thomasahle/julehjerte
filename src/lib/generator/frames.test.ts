@@ -65,6 +65,7 @@ import moonStars from '../../../static/generator/motifs/mc-moon-stars.json';
 import church from '../../../static/generator/motifs/mdi-church.json';
 import mouse from '../../../static/generator/motifs/gi-mouse.json';
 import mdiBird from '../../../static/generator/motifs/mdi-bird.json';
+import owl from '../../../static/generator/motifs/mdi-owl.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -197,6 +198,15 @@ describe('complete motif frames', () => {
   expect(hardToCut).toBeUndefined();
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
  });
+ slow('moves hidden cuts that meet the motif a paper\'s width apart where they came nearer', () => {
+  // The owl at 50% in the rays: the cut into an eye's outer ring and the one
+  // on to its inner ring met the ring two units apart, so the other sheet's
+  // band between the rings hung by 1.9 mm printed. Moved apart, only the
+  // bands' own narrow places are left.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Owl', contours: owl.contours as Ring[], colors, style: 'rays', scale: .5, gap: 3 });
+  expect(hardToCut).toBeUndefined();
+  expect(paperFaults(design)).toEqual({ weak: 2, loose: 0 });
+ }, 30000);
  it('keeps the corners\' cuts a paper\'s width from the motif where theirs would tear in print', () => {
   // The snowman at the default size hung by paper under 2 mm printed 80 mm
   // wide; its connections kept a paper's width off, it holds.

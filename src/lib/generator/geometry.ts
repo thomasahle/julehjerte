@@ -1914,6 +1914,89 @@ export function usableMotif(edges: Edge[], gates: Point[], margin: number): bool
 	return !!routes && usableRoutes(routes, margin);
 }
 
+/** Where two hidden cuts meet an outline nearer each other than `gap`, the
+ * other sheet's paper hangs between them by that much: the outline between
+ * them is cut on one sheet only (see `outline`): the band of an owl's eye
+ * hung by 1.9 mm printed. Move one along the outline, away from the other,
+ * until they are `gap` apart, where the outline beyond leaves room for it:
+ * the cut's last point moves with it and the outline it passes changes
+ * sheet, so the picture stays. The moves, with the ports moved; only the
+ * ports `only` keeps move (and their mirror images). */
+export function spreadPorts(edges: Edge[], gap: number, only: (port: Point) => boolean = () => true): { edges: Edge[]; ports: Point[] } | undefined {
+	let spread: { edges: Edge[]; ports: Point[] } | undefined;
+	for (let moves = 0; moves < 32; moves++) {
+		const next = spreadOnePort(spread?.edges ?? edges, gap, only);
+		if (!next) break;
+		// Its mirror image across the heart's middle as well, where the
+		// heart is symmetric, so that it stays so.
+		const [x, y] = next.port, mirror = spreadOnePort(next.edges, gap, p => near(p, [y, x]));
+		spread = { edges: (mirror ?? next).edges, ports: [...spread?.ports ?? [], next.port] };
+	}
+	return spread;
+}
+/** One move of `spreadPorts`, and the port it moved. */
+function spreadOnePort(edges: Edge[], gap: number, only: (port: Point) => boolean): { edges: Edge[]; port: Point } | undefined {
+	const key = (p: Point) => p[0].toFixed(6) + ',' + p[1].toFixed(6), at = new Map<string, number[]>();
+	edges.forEach((e, i) => {
+		for (const p of [e.from, e.to]) {
+			const k = key(p), list = at.get(k);
+			if (list) list.push(i);
+			else at.set(k, [i]);
+		}
+	});
+	// A port: one hidden cut meeting an outline whose sides are cut on different sheets.
+	const port = (k: string) => {
+		const ids = at.get(k)!, sides = ids.filter(i => edges[i].kind === 'outline'), cut = ids.find(i => edges[i].kind === 'shared');
+		return ids.length === 3 && sides.length === 2 && cut !== undefined && edges[sides[0]].family !== edges[sides[1]].family
+			? { sides, cut } : undefined;
+	};
+	// The outline from a vertex through one of its edges, as far as `reach`
+	// or a vertex that is not the outline's own.
+	const walk = (start: Point, edge: number, reach: number) => {
+		const steps: { edge: number; a: Point; b: Point }[] = [];
+		let a = start, length = 0;
+		for (;;) {
+			const e = edges[edge], b = key(e.from) === key(a) ? e.to : e.from, ids = at.get(key(b))!;
+			steps.push({ edge, a, b });
+			length += distance(a, b);
+			if (length > reach || ids.length !== 2 || ids.some(i => edges[i].kind !== 'outline')) return { steps, end: b };
+			edge = ids[0] === edge ? ids[1] : ids[0];
+			a = b;
+		}
+	};
+	for (const [k, ids] of at) {
+		const here = port(k);
+		if (!here) continue;
+		const p = key(edges[ids[0]].from) === k ? edges[ids[0]].from : edges[ids[0]].to;
+		if (!only(p)) continue;
+		for (const [toward, away] of [here.sides, [...here.sides].reverse()]) {
+			const { end: q } = walk(p, toward, gap);
+			if (!port(key(q)) || distance(p, q) >= gap) continue;
+			// The first point along the other way a gap from the other port,
+			// with a gap left before whatever the outline meets next.
+			const { steps, end } = walk(p, away, 3 * gap);
+			let found: { step: number; point: Point } | undefined;
+			for (const [s, { a, b }] of steps.entries()) {
+				for (let t = 1 / 16; t <= 1 + 1e-9 && !found; t += 1 / 16)
+					if (distance(mix(a, b, t), q) >= gap) found = { step: s, point: mix(a, b, t) };
+				if (found) break;
+			}
+			if (!found || distance(found.point, end) < gap && (at.get(key(end))!.length !== 2 ||
+				at.get(key(end))!.some(i => edges[i].kind !== 'outline'))) continue;
+			const family = edges[toward].family, out = edges.slice(), last = steps[found.step];
+			for (const { edge } of steps.slice(0, found.step)) out[edge] = { ...edges[edge], family };
+			const e = edges[last.edge], ends = key(e.from) === key(last.a);
+			if (near(found.point, last.b)) out[last.edge] = { ...e, family };
+			else {
+				out[last.edge] = ends ? { ...e, to: found.point, family } : { ...e, from: found.point, family };
+				out.push(ends ? { ...e, from: found.point } : { ...e, to: found.point });
+			}
+			const cut = edges[here.cut];
+			out[here.cut] = key(cut.from) === k ? { ...cut, from: found.point } : { ...cut, to: found.point };
+			return { edges: out, port: p };
+		}
+	}
+}
 /** Divide a sharp outline corner with one additional coincident cut. Reuse the
  * working letter's external connections: no new attachment search or outline
  * changes. This simple operation applies to one solid contour; counters and

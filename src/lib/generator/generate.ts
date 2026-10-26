@@ -44,6 +44,8 @@ import {
 	generateFigure,
 	generateFourPortFigure,
 	compile,
+	spreadPorts,
+	near,
 	fourPortMotif,
 	nestedFourPortMotif,
 	originalFourPortMotif,
@@ -540,8 +542,13 @@ function finishConstruction(request: GeneratorRequest, r: Construction, recipe: 
 		frameRing(request.frame ?? 'circle', request.frameSize ?? 70)
 	];
 	fidelity(design, r.artwork, domain, r.edges, r.background);
+	if (!curved && spacing === 1) madeFrom.set(design, { request, construction: r, curveFitter });
 	return { design, recipe };
 }
+
+/** What each clean design was finished from, to make it again with its
+ * hidden cuts moved (see `withSpreadPorts`). */
+const madeFrom = new WeakMap<HeartDesign, { request: GeneratorRequest; construction: Construction; curveFitter?: ReturnType<typeof createExactCurveFitter> }>();
 
 /** Improve only the selected construction, once. Shared curves meet the artwork
  * across its outline rather than forming a narrow point along it. Keep the
@@ -560,6 +567,8 @@ function improveSharedConnections(result: GeneratorResult, keepTemplate = false)
 	shared ? p => mapPointBetweenLobes({ minX: rect.left, minY: rect.top, size: rect.width }, p) : undefined);
 	// Endpoints, visible curves and strip connections are unchanged. Each moved
 	// curve is still exactly coincident on both sheets, preserving the weave.
+	const made = design && madeFrom.get(result.design);
+	if (made) madeFrom.set(design, made);
 	return design ? { ...result, design } : result;
 }
 
@@ -1311,7 +1320,7 @@ function generateOnce(request: GeneratorRequest,
 	// bend to cross it instead, however it was made (a retry's too: a candy
 	// cane's nested construction in the rays); the board circle's do as it
 	// keeps them.
-	return request.mode === 'figure' && request.style !== 'board' && !result.hardToCut ? improveSharedConnections(result) : result;
+	return request.mode === 'figure' && request.style !== 'board' && !result.hardToCut ? withSpreadPorts(result) : result;
 }
 function generateOnceMade(request: GeneratorRequest,
 	deferHard?: (finish: () => GeneratorResult | undefined) => void, variants = Infinity, retries = true): GeneratorResult {
@@ -1470,6 +1479,47 @@ function generateOnceMade(request: GeneratorRequest,
 	}
 }
 
+/** A clean figure as exported (`improveSharedConnections`); where its paper
+ * tears printed, made again with the hidden cuts that meet an outline nearer
+ * each other than a paper's width moved apart along it (see `spreadPorts`):
+ * all at once, else one by one (a few), each kept where the heart is still
+ * clean and its paper holds better, building on the last. The owl at 50% in
+ * the rays: the cuts into an eye's outer ring and on to its inner ring met it
+ * two units apart, and the other sheet's band between the rings hung there. */
+function withSpreadPorts(result: GeneratorResult): GeneratorResult {
+	const shown = exported(result), made = madeFrom.get(result.design);
+	if (!made || !paperTears(shown.design)) return shown;
+	const all = spreadPorts(made.construction.edges, PORT_GAP);
+	if (!all) return shown;
+	const finished = (edges: Edge[]) => {
+		try {
+			return finishConstruction(made.request, { ...made.construction, edges, geometry: compile(edges) }, result.recipe,
+				undefined, made.curveFitter);
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		}
+	};
+	let best = result, edges = made.construction.edges;
+	const whole = finished(all.edges);
+	if (whole && cutsBetter(whole, best, true)) best = whole;
+	else for (const port of all.ports.slice(0, SPREAD_ONE_BY_ONE)) {
+		const one = spreadPorts(edges, PORT_GAP, p => near(p, port)), next = one && finished(one.edges);
+		if (next && cutsBetter(next, best, true)) {
+			best = next;
+			edges = one.edges;
+		}
+	}
+	return best === result ? shown : { ...shown, design: exported(best).design };
+}
+/** How far apart hidden cuts that meet an outline are moved (see
+ * `spreadPorts`): a paper's width and a fifth, as the paper check measures
+ * the neck between them on a grid (moved a paper's width apart, half as many
+ * hearts held better; half a width more, no more did). */
+const PORT_GAP = PAPER_NECK_MM / PRINT_WIDTH_MM * 100 * 1.2;
+/** The most ports moved one by one (see `withSpreadPorts`): those that helped
+ * were among the first three. */
+const SPREAD_ONE_BY_ONE = 8;
+
 /** Fine serifs and narrow gaps can need more paper than the clearance allows,
  * even with exact outlines and every established construction. Rather than
  * refusing, keep a completed construction whose weave and picture are valid and
@@ -1480,13 +1530,10 @@ function generateOnceMade(request: GeneratorRequest,
 function hardToCutResult(request: GeneratorRequest,
 	candidates: { construction: Construction; recipe: GeneratorResult['recipe'] }[],
 	curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
-	type Choice = { result: GeneratorResult; construction: Construction; spacing: number; narrow: number; tears: number; tips: [number, number] };
+	type Choice = { result: GeneratorResult; construction: Construction; recipe: GeneratorResult['recipe']; spacing: number; narrow: number; tears: number; tips: [number, number] };
 	let best: Choice | undefined;
 	const seen = new Set<string>(), lowest = HARD_TO_CUT_SPACINGS.at(-1)!;
-	for (const { construction, recipe } of candidates) {
-		const key = JSON.stringify(construction.edges);
-		if (seen.has(key)) continue;
-		seen.add(key);
+	const choice = (construction: Construction, recipe: GeneratorResult['recipe']): Choice | undefined => {
 		try {
 			// Finish once at the narrowest spacing, then record the widest one kept.
 			const result = finishConstruction(request, construction, recipe, undefined, curveFitter, lowest),
@@ -1496,12 +1543,37 @@ function hardToCutResult(request: GeneratorRequest,
 				spacing = narrow ? HARD_TO_CUT_SPACINGS.find(fraction => fraction === lowest ||
 					!findSearchIssues(design.fingers, full * fraction, full).size)! : 1,
 				tips = cutTipCounts(design), tears = paperTears(exported(result).design);
-			if (!best || spacing > best.spacing || spacing === best.spacing && (narrow < best.narrow ||
-				narrow === best.narrow && (tears < best.tears || tears === best.tears && fewerCutTips(tips, best.tips))))
-				best = { result, construction, spacing, narrow, tears, tips };
+			return { result, construction, recipe, spacing, narrow, tears, tips };
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 		}
+	};
+	for (const { construction, recipe } of candidates) {
+		const key = JSON.stringify(construction.edges);
+		if (seen.has(key)) continue;
+		seen.add(key);
+		const made = choice(construction, recipe);
+		if (made && (!best || made.spacing > best.spacing || made.spacing === best.spacing && (made.narrow < best.narrow ||
+			made.narrow === best.narrow && (made.tears < best.tears || made.tears === best.tears && fewerCutTips(made.tips, best.tips)))))
+			best = made;
+	}
+	// A figure whose paper tears printed, with the hidden cuts that meet an
+	// outline nearer each other than a paper's width moved apart (see
+	// `spreadPorts`), as a clean one's are (see `withSpreadPorts`): kept where
+	// it is no harder to cut and its paper holds better.
+	if (best?.tears && request.mode === 'figure') {
+		let kept: Choice = best;
+		const all = spreadPorts(kept.construction.edges, PORT_GAP);
+		const better = (next: Choice | undefined): next is Choice => !!next && next.spacing >= kept.spacing &&
+			next.narrow <= kept.narrow && next.tears < kept.tears;
+		const spread = (edges: Edge[]) => choice({ ...kept.construction, edges, geometry: compile(edges) }, kept.recipe);
+		const whole = all && spread(all.edges);
+		if (better(whole)) kept = whole;
+		else if (all) for (const port of all.ports.slice(0, SPREAD_ONE_BY_ONE)) {
+			const one = spreadPorts(kept.construction.edges, PORT_GAP, p => near(p, port)), next = one && spread(one.edges);
+			if (better(next)) kept = next;
+		}
+		best = kept;
 	}
 	if (!best?.narrow) return best?.result;
 	const { construction, spacing } = best, letters = request.font

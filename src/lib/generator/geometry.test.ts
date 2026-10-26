@@ -18,7 +18,8 @@ import {
 	type Edge,
 	type Point,
 	framedGate,
-	frameRing
+	frameRing,
+	spreadPorts
 } from './geometry';
 import {
 	normalizeHeartDesign,
@@ -214,6 +215,55 @@ describe('constructive figure generator', () => {
 			for (const [i, a] of legs.entries()) for (const b of legs.slice(i + 1))
 				if (a.family === b.family) expect(crosses(a, b), `${fan} ${quadrant}`).toBe(false);
 		}
+	});
+});
+
+describe('hidden cuts meeting an outline', () => {
+	it('moves one of two that meet it nearer each other than the gap apart along it', () => {
+		// A square's outline, cut on one sheet from one hidden cut to the
+		// other the short way (B) and on the other sheet the long way (A):
+		// sheet A's paper hung between the two by one unit.
+		const p: Point = [45, 40], q: Point = [46, 40];
+		const loop: Point[] = [q, [50, 40], [50, 50], [40, 50], [40, 40], p];
+		const edges: Edge[] = [
+			{ from: [45, 30], to: p, family: 'AB', kind: 'shared' },
+			{ from: [46, 30], to: q, family: 'AB', kind: 'shared' },
+			{ from: p, to: q, family: 'B', kind: 'outline' },
+			...loop.slice(1).map((to, i): Edge => ({ from: loop[i], to, family: 'A', kind: 'outline' }))
+		];
+		const spread = spreadPorts(edges, 2.5)!;
+		expect(spread.ports).toHaveLength(1);
+		const ends = spread.edges.filter(e => e.kind === 'shared').map(e => e.to);
+		// The hidden cuts still start where they did, one now ending further
+		// along the outline, the two a gap apart.
+		expect(spread.edges.filter(e => e.kind === 'shared').map(e => e.from)).toEqual([[45, 30], [46, 30]]);
+		expect(ends.every(e => e[1] === 40 && e[0] > 40 && e[0] < 50)).toBe(true);
+		expect(Math.abs(ends[0][0] - ends[1][0])).toBeGreaterThanOrEqual(2.5);
+		expect(Math.abs(ends[0][0] - ends[1][0])).toBeLessThan(3);
+		// The outline between them is sheet B's, the rest sheet A's, all of it
+		// still there.
+		const outline = spread.edges.filter(e => e.kind === 'outline'), length = (es: Edge[]) =>
+			es.reduce((sum, e) => sum + Math.hypot(e.to[0] - e.from[0], e.to[1] - e.from[1]), 0);
+		const [low, high] = ends.map(e => e[0]).sort((a, b) => a - b);
+		for (const e of outline)
+			expect(e.family, `${e.from} ${e.to}`).toBe(e.from[1] === 40 && e.to[1] === 40 &&
+				Math.min(e.from[0], e.to[0]) >= low - 1e-9 && Math.max(e.from[0], e.to[0]) <= high + 1e-9 ? 'B' : 'A');
+		expect(length(outline)).toBeCloseTo(40);
+		expect(length(outline.filter(e => e.family === 'B'))).toBeCloseTo(high - low);
+	});
+
+	it('leaves hidden cuts a gap apart, and ones with no room to move, as they are', () => {
+		const ring = (p: Point, q: Point, family: 'A' | 'B'): Edge[] => [
+			{ from: [p[0], 30], to: p, family: 'AB', kind: 'shared' },
+			{ from: [q[0], 30], to: q, family: 'AB', kind: 'shared' },
+			{ from: p, to: q, family, kind: 'outline' },
+			{ from: q, to: [q[0], 41], family: family === 'A' ? 'B' : 'A', kind: 'outline' },
+			{ from: [q[0], 41], to: [p[0], 41], family: family === 'A' ? 'B' : 'A', kind: 'outline' },
+			{ from: [p[0], 41], to: p, family: family === 'A' ? 'B' : 'A', kind: 'outline' }
+		];
+		expect(spreadPorts(ring([40, 40], [44, 40], 'B'), 2.5)).toBeUndefined();
+		// A sliver of an island, a unit across: nowhere along it is a gap from both.
+		expect(spreadPorts(ring([40, 40], [41, 40], 'B'), 2.5)).toBeUndefined();
 	});
 });
 

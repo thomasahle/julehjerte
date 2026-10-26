@@ -1,5 +1,44 @@
 # Generator robustness results
 
+## Hidden cuts that meet an outline close together move apart
+
+Where two hidden cuts meet a motif's outline nearer each other than a paper's
+width, the outline between them is cut on one sheet only, so the other
+sheet's paper hangs there by that gap: at 50% in the rays the cut into an
+owl's eye ring and the one on to its inner ring met the ring two units apart,
+and the band between the rings hung by 1.9 mm printed 80 mm wide. Of the
+weak places in the rays and the checks, more than half had a hidden cut on
+one side, not the motif's own narrow parts. A figure whose paper tears
+printed is now made again with such cuts moved apart along the outline, to a
+paper's width and a fifth (`spreadPorts`): the cut's last point moves and the
+outline it passes is cut on the other sheet, so the picture stays, and a
+cut's mirror image moves with it, so a symmetric heart stays symmetric. All
+at once, else one by one (the angel's wings, where all at once pinched), kept
+where the heart is no harder to cut and its paper holds better; hard to cut
+hearts too (the hedgehog at 50% in the rays, 12 weak places → 8).
+
+49 motifs at 50/70/85/100% (the sunburst to 85%), weak places printed:
+
+| frame | before | after | hearts better |
+| --- | --- | --- | --- |
+| rays | 218 | 198 | 14 |
+| checks | 221 | 201 | 14 |
+| double border | 158 | 145 | 12 |
+| wedges | 158 | 148 | 8 |
+| large silhouette | 163 | 153 | 4 |
+| fitted | 179 | 168 | 7 |
+| sunburst | 144 | 139 | 4 |
+| checked tips | 456 | 442 | 10 |
+| equal squares, small motifs | 1719 | 1719 | 0 |
+
+None worse, refused or smaller; the bauble in the checked tips at 85% and
+100% is clean instead of hard to cut (a loose piece and two weak places → one
+weak place), with two needle tips. Text in the double border (14 words, 5
+fonts): 396 → 384, 10 better, none worse. Moved a paper's width apart, about
+half as many hearts held better; half a width more, no more did. The moves
+cost 8 s of the 209 the 104 hearts that try them take; whole frames timed
+side by side are as fast.
+
 ## Separate islands find their joins through a grid
 
 Where a motif's islands get cells of their own (`generateComponentFigure`),
