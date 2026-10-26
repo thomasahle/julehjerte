@@ -127,6 +127,8 @@ function maskError(source, woven) {
  * cutting rules and paper, the picture's regions kept, and its fidelity. */
 export const exportable = (a, cfg) => Boolean(a?.passes && a.features && a.maskError <= cfg.maxImageError);
 
+const START_SECONDS = 3;
+
 /** The exact search on the traced `outline` from the fitter's `template`
  * within `deadline`, under the `symmetry` ties: {found: {solution,
  * assessment} or null, report}. */
@@ -145,8 +147,13 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     // the 128 juleflet pictures that found the same templates as 1.5 and 4 in
     // two thirds of the time; HiGHS's root, which overruns its time limit,
     // grows faster than the model (dagognat-shot: 65k rows 57 s, 34k 3 s).
+    // The start gets START_SECONDS at most: on 160 traced outlines the grid's
+    // took 0.07 s at the median, 4 s at most, and 19 of 24 topological ones
+    // under 1 s, while 28 found none in 30 s; on those and the one taking
+    // 5.5 s, the search found as many templates (9) with 3 s for the start as
+    // with 9, in half the time (10.8 s for 21 at the median).
     const exact = exactOutline(outline, cfg), began = performance.now();
-    const start = await exactStart(exact, template, {deadline: began + Math.min(10, seconds / 4) * 1000});
+    const start = await exactStart(exact, template, {deadline: began + Math.min(START_SECONDS, seconds / 4) * 1000});
     report.start = start.how ?? start.error;
     // No start found in time: HiGHS finds the papers itself from an empty one,
     // on the coarser grid (amy-flowering, david4, where the search for a
