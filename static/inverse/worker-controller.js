@@ -104,7 +104,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
             if(trailing?.id===id){
               if(message.type!=='result'&&message.type!=='error')return;
               trailing=null;
-              if(message.type==='result'&&passes(message.result))scope.postMessage({id,type:'alternative',result:message.result});
+              scope.postMessage(message.type==='result'&&passes(message.result)?{id,type:'alternative',result:message.result}:{id,type:'alternative',pending:false});
               return;
             }
             if(!live())return;
@@ -126,7 +126,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
             clearTimeout(job.timer);
             job.timer=setTimeout(()=>{if(live()&&job.exact==='running')exactDone();},Math.max(0,job.startedAt+1000*EXACT_WAIT_SECONDS-now()));
           };
-          compute.onerror=event=>{event.preventDefault?.();disposeFitter();if(trailing?.id===id){trailing=null;return;}const error=fail(event.message||'The fitting worker could not load.','ENGINE_UNAVAILABLE');if(job.exact==='running')job.held={error};else finish(job,null,error);};
+          compute.onerror=event=>{event.preventDefault?.();disposeFitter();if(trailing?.id===id){trailing=null;scope.postMessage({id,type:'alternative',pending:false});return;}const error=fail(event.message||'The fitting worker could not load.','ENGINE_UNAVAILABLE');if(job.exact==='running')job.held={error};else finish(job,null,error);};
           compute.onmessageerror=()=>{disposeFitter();const error=fail('The fitting response could not be read.','ENGINE_UNAVAILABLE');if(job.exact==='running')job.held={error};else finish(job,null,error);};
           if(both){
             exactCompute.onmessage=({data:message})=>{
@@ -142,7 +142,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
                 const held=job.held;
                 finish(job,message.result);
                 if(held?.result&&passes(held.result))scope.postMessage({id,type:'alternative',result:held.result});
-                else if(!held)trailing={id};
+                else if(!held){trailing={id};scope.postMessage({id,type:'alternative',pending:true});}
               }
               else exactDone();
             };

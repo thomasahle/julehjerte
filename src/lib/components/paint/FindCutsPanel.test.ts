@@ -477,4 +477,15 @@ describe('FindCutsPanel while searching', () => {
 			panel.cleanup();
 		}
 	});
+
+	it('says a smoother template is coming while it is', () => {
+		const exact = { ...result({ kind: 'exact' }), design: { ...DESIGN, id: 'exact' } };
+		const panel = render({ lang: 'en', result: exact, alternativePending: true });
+		try {
+			expect(panel.text).toContain('Also looking for a version with smoother cuts');
+			expect(panel.root.querySelector('.templates')).toBeNull();
+		} finally {
+			panel.cleanup();
+		}
+	});
 });

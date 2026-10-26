@@ -111,7 +111,7 @@ export class InverseWorker {
     input: ArtworkInput | undefined,
     settings: Record<string, unknown>,
     progress: (event: EngineProgress) => void = () => {},
-    alternative: (result: T) => void = () => {}
+    alternative: (result: T | null, pending: boolean) => void = () => {}
   ): Promise<T> {
     if (this.rejectPending) return Promise.reject(new Error('The engine is already working.'));
     return new Promise((resolve, reject) => {
@@ -125,8 +125,9 @@ export class InverseWorker {
           // A second answer to a solve already answered (the fitter's template
           // beside the exact search's): until the next request, which moves the
           // sequence on.
+          // `pending`: one is on its way; without a result and not pending, none comes.
           if (data.type === 'alternative') {
-            alternative(data.result as T);
+            alternative(data.result ? (data.result as T) : null, data.pending === true);
             return;
           }
           if (data.type === 'progress') {

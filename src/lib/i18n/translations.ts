@@ -720,6 +720,7 @@ export const translations = {
     paintTemplatesLabel: 'To skabeloner til samme billede',
     paintTemplateExact: 'Præcis efter billedet',
     paintTemplateSmooth: 'Blødere snit',
+    paintTemplateSmoothPending: 'Leder også efter en udgave med blødere snit …',
     paintTemplateNumbers: '{left} + {right} snit · {mismatch}% fra masken',
     /** {motif} = afvigelse inden i formen; {mismatch} = afvigelse i hele firkanten */
     paintFoundMotifSummary: '{motif}% afvigelse i motivet · {border}% af den frie kant ændret',
@@ -1813,6 +1814,7 @@ export const translations = {
     paintTemplatesLabel: 'Two templates for the same picture',
     paintTemplateExact: 'Exactly as the picture',
     paintTemplateSmooth: 'Smoother cuts',
+    paintTemplateSmoothPending: 'Also looking for a version with smoother cuts …',
     paintTemplateNumbers: '{left} + {right} cuts · {mismatch}% off the mask',
     /** {motif} = difference inside the shape; {mismatch} = difference over the whole square */
     paintFoundMotifSummary: '{motif}% different in the motif · {border}% of the free border changed',

@@ -231,6 +231,8 @@
 	 * fitter is done). Swapping exchanges the two; a new search clears it.
 	 */
 	let alternative = $state.raw<{ result: PaintResult; honoured: SymmetrySettings } | null>(null);
+	/** A smoother template is still being found (the fitter after the exact search's answer). */
+	let alternativePending = $state(false);
 	/** The most of the mask correcting an exact template's symmetry may cost (see toResult). */
 	const EXACT_SYMMETRY_COST = 0.01;
 	/** Which search an alternative belongs to: one arriving for an older one is dropped. */
@@ -852,6 +854,7 @@
 		backToMask();
 		notice = null;
 		alternative = null;
+		alternativePending = false;
 		const search = ++searchCount;
 		session.error = null;
 		session.status = 'searching';
@@ -879,8 +882,10 @@
 					matchingSheets: advanced.matchingSheets
 				},
 				onProgress,
-				(other) => {
+				(other, pending) => {
 					if (search !== searchCount) return;
+					alternativePending = pending;
+					if (!other) return;
 					try {
 						alternative = toResult(other, target, frame);
 					} catch (err) {
@@ -1280,6 +1285,7 @@
 						error={session.error}
 						result={session.result}
 						alternative={alternative?.result ?? null}
+						{alternativePending}
 						onSwap={swapTemplate}
 						{showingResult}
 						{honoured}

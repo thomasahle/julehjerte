@@ -41,6 +41,8 @@
 		alternative?: PaintResult | null;
 		/** Show the alternative instead: the two change places. */
 		onSwap?: () => void;
+		/** A smoother template is still being found. */
+		alternativePending?: boolean;
 		/**
 		 * Whether the page is showing the found heart rather than the mask.
 		 *
@@ -83,6 +85,7 @@
 		result,
 		alternative = null,
 		onSwap,
+		alternativePending = false,
 		showingResult,
 		honoured,
 		showMotif,
@@ -434,6 +437,9 @@
 				<p class="note">{tr('paintTemplateTooClose')}</p>
 			{/if}
 		</div>
+		{#if alternativePending && !alternative && result.report.kind === 'exact'}
+			<p class="note">{tr('paintTemplateSmoothPending')}</p>
+		{/if}
 		{#if alternative && result.report.kind && alternative.report.kind && onSwap}
 			<!-- Two templates for the same picture: the exact search's cuts along its
 			     own edges, and the fitter's smoother ones. Which is better depends on
