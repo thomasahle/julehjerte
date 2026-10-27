@@ -675,8 +675,20 @@ them.
   resamples it. A fill writes whole cells (its region meets the other paper nowhere), and one of the paper's own colour
   leaves the edge alone. The cells come out exactly as before (checked against the old pen on 2400 random
   strokes), so Find snit sees no difference; the screen, zoom, Udtvær and Markér read the level. It is saved with
-  the session on reload; a picture read in has whole cells. The broadest round pen costs about 4 ms a move
-  (0.6 before), square and diamond heads about 4 (16–29 before, now one span a row).
+  the session on reload. The broadest round pen costs about 4 ms a move (0.6 before), square and diamond heads
+  about 4 (16–29 before, now one span a row).
+- **A picture's edges** (2026-10-27, the owner asked whether it was "really possible", then "ok, do it"). The
+  engine reads a photograph one point a cell and keeps which paper each point is nearer, so its curves arrived as
+  the cells' stair. Where two papers meet, the photograph's pixels mix the two colours, so the import dialog reads
+  each cell beside the other paper again as the mean of its own patch of the photograph (about two points a pixel
+  each way) and gives it the share of the way that colour lies from one paper's colour to the other's, the
+  papers' colours taken from the whole cells within a block or so of it (`src/lib/paint/photoLevels.ts`). The
+  engine's cells stay as they are. On two Pinterest photographs a coarse mask read finer misplaced 0.56 % and
+  0.91 % of the area with these levels against 1.54 % and 1.67 % without; on a drawn photograph with noise,
+  shading and perspective, 0.09 % against 0.38 %. A photograph that does not look like two papers (more than 4 %
+  of the whole cells nearer the other paper's colour: a printed paper, corners that are off) keeps whole cells.
+  An SVG is drawn four times finer than the mask and read the same way, from how much of each pixel its shape
+  covers.
 - With the header's colourful mode on, the heart takes the shuffle's first pair (the colourful button's first cell;
   `shownColors` in `$lib/stores/colorMode`): a canvas cannot read the mode's CSS variables, so this is how each
   press deals it a new pair, as it does the gallery's hearts. The XOR swatch shows the two papers on show.

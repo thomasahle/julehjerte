@@ -124,6 +124,34 @@ export function maskFromPrepared(prepared: PreparedArtwork): Mask {
 	};
 }
 
+/**
+ * An SVG drawn over the woven square, `size` pixels a side, as a photograph of
+ * how much of each pixel its shape covers: grey from black (none) to white
+ * (all), whatever colour it is filled with. The engine reads an SVG's square
+ * viewBox as the woven square, so the picture lines up with the mask it
+ * prepares (`photoLevels` reads the edges from it). Null if it will not draw.
+ */
+export async function svgCoverage(url: string, size: number): Promise<{ rgba: Uint8ClampedArray; width: number; height: number } | null> {
+	const image = new Image();
+	image.src = url;
+	try {
+		await image.decode();
+	} catch {
+		return null;
+	}
+	const canvas = document.createElement('canvas');
+	canvas.width = canvas.height = size;
+	const context = canvas.getContext('2d', { willReadFrequently: true });
+	if (!context) return null;
+	context.drawImage(image, 0, 0, size, size);
+	const rgba = context.getImageData(0, 0, size, size).data;
+	for (let i = 0; i < rgba.length; i += 4) {
+		rgba[i] = rgba[i + 1] = rgba[i + 2] = rgba[i + 3]!;
+		rgba[i + 3] = 255;
+	}
+	return { rgba, width: size, height: size };
+}
+
 /** Twice the signed area of the triangle `a b c`; the sign is the turn's direction. */
 function cross(a: Point, b: Point, c: Point): number {
 	return (b[0] - a[0]) * (c[1] - b[1]) - (b[1] - a[1]) * (c[0] - b[0]);

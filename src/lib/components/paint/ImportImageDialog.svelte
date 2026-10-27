@@ -58,8 +58,10 @@
 		isConvexQuad,
 		maskFromPrepared,
 		orderQuad,
+		svgCoverage,
 		type DecodedImage
 	} from '$lib/paint/importImage';
+	import { photoLevels } from '$lib/paint/photoLevels';
 	import { rectifyPhoto, warmRectifier, type RectifiedPhoto } from '$lib/paint/rectify';
 	import { NO_SYMMETRY, type SymmetrySettings } from '$lib/paint/symmetry';
 	import { readTemplate, type ReadTemplate } from '$lib/paint/templateRead';
@@ -609,6 +611,14 @@
 			const prepared = await prepareImage(source, importSettings());
 			if (mine !== generation) return;
 			const mask = maskFromPrepared(prepared);
+			// Where between the cells the picture's edges lie, from its own mixed colours
+			// (an SVG's, from how much of each pixel its shape covers).
+			const photo = source.type === 'pixels'
+				? { rgba: source.rgba, width: source.imageWidth, height: source.imageHeight }
+				: source.type === 'svg' && decoded ? await svgCoverage(decoded.url, 4 * mask.size) : null;
+			if (mine !== generation) return;
+			const level = photo && photoLevels(mask, photo, source.type === 'pixels' ? source.quad ?? null : null);
+			if (level) mask.level = level;
 			previewMask = mask;
 			previewFound = detect(mask);
 		} catch (error) {
