@@ -7,7 +7,9 @@ import {
 	get,
 	isEmpty,
 	isEmptyBox,
+	levelAt,
 	MASK_SIZE,
+	paintCell,
 	maskMismatch,
 	packMask,
 	resample,
@@ -42,6 +44,34 @@ describe('createMask', () => {
 		const m = createMask();
 		m.data[MASK_SIZE * MASK_SIZE - 1] = 1;
 		expect(isEmpty(m)).toBe(false);
+	});
+});
+
+describe('level', () => {
+	it('is read where it agrees with the cell, and the cell itself where it does not', () => {
+		const m = createMask(0, 4);
+		m.data[1] = 1;
+		expect(levelAt(m, 1)).toBe(1);
+		m.level = Uint8Array.from([60, 200, 100, 0, ...new Array(12).fill(0)]);
+		expect(levelAt(m, 0)).toBeCloseTo(60 / 255);
+		expect(levelAt(m, 1)).toBeCloseTo(200 / 255);
+		expect(levelAt(m, 2)).toBeCloseTo(100 / 255);
+		m.data[2] = 1;
+		expect(levelAt(m, 2)).toBe(1);
+	});
+
+	it('goes with a clone, and a painted cell is whole again', () => {
+		const m = createMask(0, 4);
+		m.level = new Uint8Array(16).fill(90);
+		const copy = cloneMask(m);
+		expect(copy.level).toEqual(m.level);
+		expect(copy.level).not.toBe(m.level);
+		// Same paper, but no longer near an edge: a change, for the box a tool reports.
+		expect(paintCell(m, 3, 0)).toBe(true);
+		expect(m.level[3]).toBe(0);
+		expect(paintCell(m, 3, 0)).toBe(false);
+		paintCell(m, 4, 1);
+		expect(m.level[4]).toBe(255);
 	});
 });
 

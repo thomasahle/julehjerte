@@ -371,4 +371,15 @@ describe('keepOutside', () => {
 		expect(m.data[10 * 20 + 5]).toBe(1);
 		expect(m.data[10 * 20 + 15]).toBe(0);
 	});
+
+	it("puts back Udtvær's level past the fence too", () => {
+		const m = createMask(0, 20);
+		m.level = new Uint8Array(400).fill(60);
+		const before = { size: 20, data: m.data.slice(), level: m.level.slice() };
+		const fence = fenceOf(placementOf({ x0: 0, y0: 0, x1: 10, y1: 20 }), 20);
+		m.level.fill(90);
+		keepOutside(m, before, fence, { x0: 0, y0: 0, x1: 20, y1: 20 });
+		expect(m.level[10 * 20 + 5]).toBe(90);
+		expect(m.level[10 * 20 + 15]).toBe(60);
+	});
 });

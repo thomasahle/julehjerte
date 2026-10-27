@@ -51,6 +51,21 @@ describe('the smooth picture', () => {
 		}
 	});
 
+	it("draws an edge where Udtvær's level puts it, between the cells", () => {
+		const m = createMask(0, 20);
+		rect(m, { x: 10, y: 0 }, { x: 19, y: 19 }, 1);
+		// Half-way between columns 9 and 10, the edge falls between pixels 29 and 30.
+		expect(draw(m, 3).at(30, 30)[1]).toBe(19);
+		// Column 10 only just paper 1: the edge lies nearly on its centre.
+		m.level = Uint8Array.from(m.data, (v) => v * 255);
+		for (let y = 0; y < 20; y++) m.level[y * 20 + 10] = 140;
+		expect(draw(m, 3).at(30, 30)[1]).toBe(255);
+		expect(draw(m, 3).at(32, 30)[1]).toBe(19);
+		// A level the cells no longer agree with is not read.
+		for (let y = 0; y < 20; y++) m.level[y * 20 + 10] = 100;
+		expect(draw(m, 3).at(30, 30)[1]).toBe(19);
+	});
+
 	it('keeps the pattern of a cell the mask does not know', () => {
 		const m: Mask = { ...createMask(0, 8), validMask: new Uint8Array(64).fill(1) };
 		m.validMask![3 * 8 + 3] = 0;

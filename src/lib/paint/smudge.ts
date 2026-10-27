@@ -1,6 +1,6 @@
 /**
- * Udtvær: the paper under the brush dragged along, turned about it, or swelled
- * out from it — what makes a hvirvel or a glaskuppel out of a plain board.
+ * Udtvær: the paper under the brush dragged along, turned about it, swelled out
+ * from it or drawn in — what makes a hvirvel or a glaskuppel out of a plain board.
  *
  * A stroke never resamples its own output, which would wear an edge into steps
  * a little more with every dab. It keeps the mask as it was when the stroke
@@ -9,6 +9,15 @@
  * kept mask. Reading is bilinear and cut at one half, so an edge comes out as
  * the smooth curve between cell centres rather than as the stair of a nearest
  * cell, and the mask stays two papers.
+ *
+ * Nor does the next stroke, while nothing else has touched the mask: it carries
+ * on with the last one's kept mask and field, so four holds of Krymp are one
+ * long hold. Started afresh after a pen or an undo, a stroke reads the mask's
+ * `level`, which every stroke leaves: the share of paper it read, before the
+ * cut. That is where between the cells each edge lies, so neither a fresh
+ * stroke nor the screen sees the stair the cut leaves in `data`, which a
+ * stretching dab would otherwise magnify (2026-10-27: four holds of Krymp left
+ * the edges rugged).
  *
  * Under symmetry every dab is made at each image of the brush as well (a turn
  * mirrored turns the other way), so a symmetric mask stays symmetric without
@@ -24,7 +33,7 @@
  */
 
 import type { Vec } from '$lib/types/heart';
-import { clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask } from './mask';
+import { clampBox, emptyBox, isEmptyBox, levelAt, unionBox, type Box, type Mask } from './mask';
 import { closedPointMaps, type Transform } from './symmetry';
 import type { BrushShape } from './toolset';
 import { headGauge, headReach } from './brushHead';
@@ -38,6 +47,14 @@ type Warp = (x: number, y: number, weight: number) => [number, number];
 function weightAt(gauge: number): number {
 	const t = 1 - gauge * gauge;
 	return t > 0 ? t * t : 0;
+}
+
+/** Whether two optional cell arrays hold the same cells. */
+function same(a: Uint8Array | undefined, b: Uint8Array | undefined): boolean {
+	if (!a || !b) return a === b;
+	if (a.length !== b.length) return false;
+	for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
+	return true;
 }
 
 /** Whether a symmetry swaps the mask's two axes, turning a chisel a quarter. */
@@ -54,15 +71,32 @@ function turnsOver(map: PointMap, size: number): boolean {
 
 export type Smudge = ReturnType<typeof createSmudge>;
 
+/** What a stroke hands the next: the mask it reads from, and where each cell's paper comes from in it. */
+type Carried = { source: Float32Array; observed: Uint8Array | undefined; fx: Float32Array; fy: Float32Array };
+
 /**
  * One Udtvær stroke on `mask`, from its press to its release. Each call changes
  * the mask in place and returns the box it changed, as the other tools do.
+ * `previous` is the stroke before, carried on from if the mask is still exactly
+ * as it left it.
  */
-export function createSmudge(mask: Mask, transforms: Transform[] = [], shape: BrushShape = 'round') {
+export function createSmudge(
+	mask: Mask,
+	transforms: Transform[] = [],
+	shape: BrushShape = 'round',
+	previous: { carry(mask: Mask): Carried | null } | null = null
+) {
 	const n = mask.size;
-	const source = mask.data.slice(), observed = mask.validMask?.slice();
+	const carried = previous?.carry(mask) ?? null;
+	// A level the cells no longer agree with was left before a tool painted over it.
+	const level = (mask.level ??= new Uint8Array(n * n));
+	if (!carried) for (let i = 0; i < n * n; i++) level[i] = Math.round(levelAt(mask, i) * 255);
+	const source = carried?.source ?? Float32Array.from(level, (l) => l / 255);
+	const observed = carried ? carried.observed : mask.validMask?.slice();
 	// Where each cell's paper comes from, as an offset from the cell.
-	const fx = new Float32Array(n * n), fy = new Float32Array(n * n);
+	const fx = carried?.fx ?? new Float32Array(n * n), fy = carried?.fy ?? new Float32Array(n * n);
+	// The cells as this stroke leaves them, to tell whether the next may carry on.
+	const left = mask.data.slice(), leftKnown = mask.validMask?.slice();
 	// The brush itself, and its images under the symmetries on (which
 	// `closedPointMaps` hands out without the identity).
 	const images: { map: PointMap | null; over: boolean; turned: boolean }[] = [
@@ -130,17 +164,20 @@ export function createSmudge(mask: Mask, transforms: Transform[] = [], shape: Br
 		return box;
 	}
 
-	/** Read the cells of `box` afresh through the field. */
+	/** Read the cells of `box` afresh through the field, the share read kept as their level. */
 	function render(box: Box): Box {
 		let changed = emptyBox();
 		for (let y = box.y0; y < box.y1; y++) {
 			for (let x = box.x0; x < box.x1; x++) {
 				const i = y * n + x, sx = x + fx[i]!, sy = y + fy[i]!;
-				const value = sourceAt(sx, sy) >= .5 ? 1 : 0;
+				// Rounded, 127.5 goes up: a share of one half is paper 1 both ways.
+				const share = Math.round(sourceAt(sx, sy) * 255), value = share >= 128 ? 1 : 0;
 				const seen = observed?.[Math.max(0, Math.min(n - 1, Math.round(sy))) * n + Math.max(0, Math.min(n - 1, Math.round(sx)))];
-				if (mask.data[i] === value && (!mask.validMask || mask.validMask[i] === seen)) continue;
-				mask.data[i] = value;
+				if (mask.data[i] === value && level[i] === share && (!mask.validMask || mask.validMask[i] === seen)) continue;
+				mask.data[i] = left[i] = value;
+				level[i] = share;
 				if (mask.validMask && seen !== undefined) mask.validMask[i] = seen;
+				if (leftKnown && seen !== undefined) leftKnown[i] = seen;
 				changed = unionBox(changed, { x0: x, y0: y, x1: x + 1, y1: y + 1 });
 			}
 		}
@@ -157,6 +194,15 @@ export function createSmudge(mask: Mask, transforms: Transform[] = [], shape: Br
 	}
 
 	return {
+		/**
+		 * This stroke's kept mask and field, for the next stroke on `next` — only
+		 * if it is this mask, its cells exactly as this stroke left them: a pen,
+		 * a fence putting cells back or an undo since, and the next starts afresh.
+		 */
+		carry(next: Mask): Carried | null {
+			if (next !== mask || next.level !== level || !same(next.data, left) || !same(next.validMask, leftKnown)) return null;
+			return { source, observed, fx, fy };
+		},
 		/**
 		 * Drag the paper from `from` to `to`: whole at the brush's centre, less
 		 * towards its rim, and at a `strength` under 1 only that share of the way,

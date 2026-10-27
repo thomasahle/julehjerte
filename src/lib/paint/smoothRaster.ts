@@ -11,11 +11,13 @@
  * Only the picture changes. The mask keeps its two papers cell for cell, which
  * is what the tools write and what Find snit reads: every cell's centre is
  * drawn in its own paper, only the space between centres is drawn as a curve.
+ * Where Udtvær has left a `level`, the curve is read from it instead, so an edge
+ * it bent lies where it was bent and not on the cells' stair (see `smudge.ts`).
  * A cell the mask does not know yet (`validMask` 0, PAINT.md §11) is drawn as
  * it always was, its pattern over its whole square.
  */
 
-import type { Box, Mask } from './mask';
+import { levelAt, type Box, type Mask } from './mask';
 
 const UNKNOWN_LIGHT = [224, 224, 224, 255] as const;
 const UNKNOWN_DARK = [185, 185, 185, 255] as const;
@@ -50,7 +52,7 @@ export function smoothPixels(
 	box: Box,
 	window: Box = { x0: 0, y0: 0, x1: mask.size, y1: mask.size }
 ): Box {
-	const n = mask.size, data = mask.data, known = mask.validMask;
+	const n = mask.size, data = mask.data, known = mask.validMask, level = mask.level;
 	const [left, right] = paper as [ArrayLike<number>, ArrayLike<number>];
 	const ox = window.x0 * scale, oy = window.y0 * scale, width = (window.x1 - window.x0) * scale;
 	// A pixel reads the four cells round it, so a changed cell reaches a cell's
@@ -79,11 +81,12 @@ export function smoothPixels(
 				put(p, known[near] ? (data[near] === 1 ? right : left) : missingPixelChannels(near, n));
 				continue;
 			}
-			const a = data[ia]!, b = data[ib]!, c = data[ic]!, d = data[id]!;
-			if (a === b && b === c && c === d) {
-				put(p, a === 1 ? right : left);
+			if (data[ia] === data[ib] && data[ib] === data[ic] && data[ic] === data[id]) {
+				put(p, data[ia] === 1 ? right : left);
 				continue;
 			}
+			const a = level ? levelAt(mask, ia) : data[ia]!, b = level ? levelAt(mask, ib) : data[ib]!;
+			const c = level ? levelAt(mask, ic) : data[ic]!, d = level ? levelAt(mask, id) : data[id]!;
 			const value = (a * (1 - tx) + b * tx) * (1 - ty) + (c * (1 - tx) + d * tx) * ty;
 			// How far the pixel lies from the half-way curve, in pixels: the
 			// field's distance from one half over its slope per pixel.

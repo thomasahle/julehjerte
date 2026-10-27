@@ -24,7 +24,7 @@
 	import { LOBE_OUTLINE_COLORS } from '$lib/editor/outlineColors';
 	import { inferOverlapRect } from '$lib/utils/overlapRect';
 	import type { HeartColors, HeartDesign } from '$lib/types/heart';
-	import { cloneMask, clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask, type MaskRaster } from '$lib/paint/mask';
+	import { cloneMask, clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask } from '$lib/paint/mask';
 	import { applySymmetric, applySymmetricEdit, checks, ellipse, floodFill, rect, stroke } from '$lib/paint/tools';
 	import { headReach, sweptCorners } from '$lib/paint/brushHead';
 	import { createXorGesture } from '$lib/paint/xorGesture';
@@ -315,11 +315,13 @@
 	let fence: Placement | null = null;
 	let fenceCache: { placement: Placement; transforms: unknown; size: number; cells: Uint8Array } | null = null;
 	/** The mask as a gesture found it, to put back what it wrote outside the fence. */
-	let fenceBefore: MaskRaster | null = null;
+	let fenceBefore: Mask | null = null;
 
 	// Udtvær's stroke, where the pointer is, and the frame loop that keeps
 	// turning or swelling the paper while the pointer is held still.
 	let smudge: Smudge | null = null;
+	/** The last Udtvær stroke, for the next to carry on from (see `smudge.ts`). */
+	let lastSmudge: Smudge | null = null;
 	let smudgeAt: Pt | null = null;
 	let smudgeReverse = false;
 	let smudgeLoop = 0;
@@ -1074,11 +1076,12 @@
 		smudgeLoop = requestAnimationFrame(smudgeFrame);
 	}
 
-	/** End Udtvær's stroke: the loop stops, and the stroke's kept mask goes. */
+	/** End Udtvær's stroke: the loop stops, and the stroke waits for the next to carry on from it. */
 	function stopSmudge(): void {
 		if (smudgeLoop) cancelAnimationFrame(smudgeLoop);
 		smudgeLoop = 0;
 		smudgeTime = 0;
+		lastSmudge = smudge ?? lastSmudge;
 		smudge = null;
 		smudgeAt = null;
 	}
@@ -1395,10 +1398,10 @@
 		pointerId = event.pointerId;
 		canvasEl?.setPointerCapture(event.pointerId);
 		onEditStart();
-		fenceBefore = fence ? { size: mask.size, data: mask.data.slice(), ...(mask.validMask ? { validMask: mask.validMask.slice() } : {}) } : null;
+		fenceBefore = fence ? { size: mask.size, data: mask.data.slice(), ...(mask.validMask ? { validMask: mask.validMask.slice() } : {}), ...(mask.level ? { level: mask.level.slice() } : {}) } : null;
 		updateHover(event);
 		if (tool === 'smudge') {
-			smudge = createSmudge(mask, transforms, brushShape);
+			smudge = createSmudge(mask, transforms, brushShape, lastSmudge);
 			smudgeAt = last = point;
 			smudgeReverse = event.altKey;
 			if (smudgeMode !== 'push') smudgeLoop = requestAnimationFrame(smudgeFrame);

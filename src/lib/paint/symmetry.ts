@@ -224,6 +224,7 @@ export function symmetrize(m: Mask, transforms: Transform[], region?: Uint8Array
 			// still unobserved until the visitor explicitly paints them.
 			for (const index of cells) {
 				m.data[index] = value;
+				if (m.level) m.level[index] = value * 255;
 				done[index] = 1;
 			}
 		}

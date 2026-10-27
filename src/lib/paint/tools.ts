@@ -386,10 +386,12 @@ export function applySymmetricEdit(
 				// mirrored its own value over this very cell a moment ago.
 				m.data[row + x] = value;
 				if (m.validMask && observed) m.validMask[row + x] = observed[row + x]!;
+				if (m.level) m.level[row + x] = value * 255;
 				for (const map of maps) {
 					const p = map(x, y, m.size);
 					m.data[p.y * m.size + p.x] = value;
 					if (m.validMask && observed) m.validMask[p.y * m.size + p.x] = observed[row + x]!;
+					if (m.level) m.level[p.y * m.size + p.x] = value * 255;
 				}
 			}
 		}

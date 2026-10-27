@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { createMask, get, isEmptyBox, type Mask } from './mask';
+import { cloneMask, createMask, get, isEmptyBox, type Mask } from './mask';
 import { createSmudge } from './smudge';
 import { disagreement, transformsFor } from './symmetry';
 import { checks, rect, stamp } from './tools';
@@ -140,6 +140,60 @@ describe('bulge', () => {
 		}
 		expect(count(grown, 1)).toBeGreaterThan(area * 1.3);
 		expect(count(shrunk, 1)).toBeLessThan(area * 0.8);
+	});
+});
+
+describe('from one stroke to the next', () => {
+	/** A board bent by `strokes` holds of Krymp, each carried on from the last or each started afresh. */
+	function shrunk(strokes: number, frames: number, carry: boolean, keepLevel = true): Mask {
+		const m = createMask(0, 80);
+		checks(m, 5);
+		let last: ReturnType<typeof createSmudge> | null = null;
+		for (let s = 0; s < strokes; s++) {
+			if (!keepLevel) delete m.level;
+			last = createSmudge(m, [], 'round', carry ? last : null);
+			for (let f = 0; f < frames; f++) last.bulge({ x: 41, y: 38 }, 36, -0.03);
+		}
+		return m;
+	}
+
+	function differ(a: Mask, b: Mask): number {
+		let n = 0;
+		for (let i = 0; i < a.data.length; i++) n += a.data[i] !== b.data[i] ? 1 : 0;
+		return n;
+	}
+
+	it('carries on from the stroke before, so four holds are one long hold', () => {
+		const held = shrunk(4, 10, true), once = shrunk(1, 40, true);
+		expect(held.data).toEqual(once.data);
+		expect(held.level).toEqual(once.level);
+	});
+
+	it('starts afresh once anything else has touched the mask', () => {
+		const m = createMask(0, 40);
+		checks(m, 3);
+		const first = createSmudge(m);
+		first.twirl({ x: 20, y: 20 }, 15, 0.2);
+		expect(first.carry(m)).not.toBeNull();
+		expect(first.carry(cloneMask(m))).toBeNull();
+		stamp(m, 5, 5, { radius: 2, value: m.data[5 * 40 + 5] ? 0 : 1 });
+		expect(first.carry(m)).toBeNull();
+	});
+
+	it('leaves where each edge lies in the level, agreeing with the cells', () => {
+		const m = shrunk(1, 10, true);
+		let between = 0;
+		for (let i = 0; i < m.data.length; i++) {
+			expect(m.level![i]! >= 128).toBe(m.data[i] === 1);
+			if (m.level![i]! > 0 && m.level![i]! < 255) between++;
+		}
+		expect(between).toBeGreaterThan(100);
+	});
+
+	it('reads the level when it starts afresh, so a stretched edge does not grow the stair the cells cut', () => {
+		const once = shrunk(1, 40, true);
+		const fromLevel = differ(shrunk(4, 10, false), once), fromCells = differ(shrunk(4, 10, false, false), once);
+		expect(fromLevel).toBeLessThan(fromCells / 2);
 	});
 });
 

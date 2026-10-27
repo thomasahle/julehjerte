@@ -27,6 +27,16 @@ export type MaskRaster = {
 export type Mask = MaskRaster & {
 	/** Original imported cells. Usable only while their enlargement still matches. */
 	sourceRaster?: MaskRaster;
+	/**
+	 * Where between the cells an edge lies, for the screen and for Udtvær only:
+	 * each cell's paper as a share of 255, 128 and up being paper 1, so an edge
+	 * is the curve where the cells, read bilinearly, cross one half. Udtvær
+	 * leaves it (see `smudge.ts`), and a tool that paints a cell makes it a whole
+	 * cell of its paper again; the cells in `data` stay what everything else
+	 * reads. Trusted only where it agrees with `data` (see `levelAt`), so a write
+	 * that forgets it costs at most a sub-cell nudge. Absent until Udtvær is used.
+	 */
+	level?: Uint8Array;
 };
 
 /**
@@ -78,7 +88,17 @@ export function createMask(fill: 0 | 1 = 0, size: number = MASK_SIZE): Mask {
 }
 
 export function cloneMask(m: Mask): Mask {
-	return { ...cloneRaster(m), ...(m.sourceRaster ? { sourceRaster: cloneRaster(m.sourceRaster) } : {}) };
+	return {
+		...cloneRaster(m),
+		...(m.sourceRaster ? { sourceRaster: cloneRaster(m.sourceRaster) } : {}),
+		...(m.level ? { level: m.level.slice() } : {})
+	};
+}
+
+/** A cell's paper between 0 and 1: its `level` where that agrees with the cell, else the cell itself. */
+export function levelAt(m: Mask, index: number): number {
+	const value = m.data[index]!, level = m.level?.[index];
+	return level !== undefined && (level >= 128) === (value === 1) ? level / 255 : value;
 }
 
 function cloneRaster(m: MaskRaster): MaskRaster {
@@ -108,11 +128,12 @@ export function solverRaster(mask: Mask): MaskRaster {
 	return source;
 }
 
-/** An explicit brush write also specifies previously unknown cells. */
+/** An explicit brush write also specifies previously unknown cells, and makes the cell whole. */
 export function paintCell(m: Mask, index: number, value: 0 | 1): boolean {
-	const changed = m.data[index] !== value || !!m.validMask && !m.validMask[index];
+	const changed = m.data[index] !== value || !!m.validMask && !m.validMask[index] || !!m.level && m.level[index] !== value * 255;
 	m.data[index] = value;
 	if (m.validMask) m.validMask[index] = 1;
+	if (m.level) m.level[index] = value * 255;
 	return changed;
 }
 

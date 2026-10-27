@@ -133,7 +133,13 @@ of an overlay scrollbar until a gesture starts):
     carries the paper under the brush's centre all the way with the pointer and a held turn or swell goes at its
     full pace; lower, the paper lags behind and a turn creeps. A stroke never resamples its own output: it keeps the mask it started from and a field
     of where each cell's paper comes from, reads bilinearly and cuts at one half (`src/lib/paint/smudge.ts`), so
-    the mask stays two papers and edges do not wear into steps. Under symmetry the dab is made at every image of
+    the mask stays two papers and edges do not wear into steps. Nor does the next stroke (2026-10-27, the owner: four
+    holds of Krymp left the edges rugged, because each stroke read the stair the last one's cut left, and a
+    stretching dab magnified it): while nothing else has touched the mask it carries on with the last stroke's kept
+    mask and field, so several holds are exactly one long hold; started afresh (after a pen or an undo) it reads
+    the mask's `level`, the share of paper each cell read before the cut, which is where between the cells the
+    edge lies. The screen draws edges from that level too, so a bent edge is a curve and not the cells' stair. The
+    tools that paint a cell make it whole again, and a level the cells no longer agree with is not read. Under symmetry the dab is made at every image of
     the brush in one summed step, so a symmetric mask stays exactly symmetric with nothing copied afterwards.
   - *Tern* is the arrow beside Ryd (moved there from the Værktøj heading, 2026-10-27, the owner: "Add a dropdown
     to the side of Ryd that has the tern options"): a menu of 3 × 3 to 9 × 9 (each with lucide grid-3x3), laying a

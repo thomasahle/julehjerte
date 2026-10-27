@@ -18,7 +18,7 @@
  */
 
 import type { Vec } from '$lib/types/heart';
-import { clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask, type MaskRaster } from './mask';
+import { clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask } from './mask';
 import { closedPointMaps, type Transform } from './symmetry';
 import { EDIT_CLEARED, EDIT_LAID, rect } from './tools';
 
@@ -305,6 +305,7 @@ export function stamp(m: Mask, sel: Selection, marks?: Uint8Array): Box {
 			if (marks) marks[row + cx] = EDIT_LAID;
 			covered = unionBox(covered, { x0: cx, y0: cy, x1: cx + 1, y1: cy + 1 });
 			m.data[row + cx] = sel.cells[sy * w + sx]!;
+			if (m.level) m.level[row + cx] = m.data[row + cx]! * 255;
 			if (sel.validMask && !m.validMask) m.validMask = new Uint8Array(m.data.length).fill(1);
 			if (m.validMask) m.validMask[row + cx] = sel.validMask?.[sy * w + sx] ?? 1;
 		}
@@ -404,7 +405,7 @@ export function fenceOf(p: Placement, size: number, transforms: Transform[] = []
  * fence is applied after, so every tool keeps inside it the same way — its
  * mirrored copies included.
  */
-export function keepOutside(m: Mask, before: MaskRaster, fence: Uint8Array, box: Box): void {
+export function keepOutside(m: Mask, before: Mask, fence: Uint8Array, box: Box): void {
 	for (let y = box.y0; y < box.y1; y++) {
 		const row = y * m.size;
 		for (let x = box.x0; x < box.x1; x++) {
@@ -412,6 +413,7 @@ export function keepOutside(m: Mask, before: MaskRaster, fence: Uint8Array, box:
 			if (fence[i]) continue;
 			m.data[i] = before.data[i]!;
 			if (m.validMask && before.validMask) m.validMask[i] = before.validMask[i]!;
+			if (m.level) m.level[i] = before.level ? before.level[i]! : before.data[i]! * 255;
 		}
 	}
 }
