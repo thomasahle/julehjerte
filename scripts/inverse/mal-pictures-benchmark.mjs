@@ -100,7 +100,7 @@ for (const c of list) {
     // As the page's workers run it (worker-controller.js): the exact search and
     // the fitter side by side, the exact template taken when it comes, by 40 s
     // or the fitter's answer, whichever is later; but a passing answer of the
-    // fitter's waits only until 30 s while the exact search has drawn no
+    // fitter's waits only until 20 s while the exact search has drawn no
     // template keeping every rule. Here one after the other, the fitter only
     // when needed, and timed as side by side.
     let drawnAt = null;
@@ -120,13 +120,13 @@ for (const c of list) {
         fitterSeconds = (performance.now() - t1) / 1000;
         row.fitterSeconds = +fitterSeconds.toFixed(1);
       };
-      // Taken whatever the fitter's time: in by 30 s, or drawn by then and in by 40.
-      let taken = exact && (exactSeconds <= 30 || (drawnAt !== null && drawnAt <= 30 && exactSeconds <= 40));
+      // Taken whatever the fitter's time: in by 20 s, or drawn by then and in by 40.
+      let taken = exact && (exactSeconds <= 20 || (drawnAt !== null && drawnAt <= 20 && exactSeconds <= 40));
       let waitEnd = null;
       if (!taken) {
         await fit();
-        const early = fitted.report.templateChecksPassed === true && !(drawnAt !== null && drawnAt <= Math.max(fitterSeconds, 30));
-        waitEnd = early ? Math.max(fitterSeconds, 30) : Math.max(fitterSeconds, 40);
+        const early = fitted.report.templateChecksPassed === true && !(drawnAt !== null && drawnAt <= Math.max(fitterSeconds, 20));
+        waitEnd = early ? Math.max(fitterSeconds, 20) : Math.max(fitterSeconds, 40);
         taken = exact && exactSeconds <= waitEnd;
       }
       if (taken) { answer = exact; solveSeconds = exactSeconds; }

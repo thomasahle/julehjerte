@@ -467,6 +467,11 @@ and 3 (7 and none). At 20 s the scraped median would be 20 s and the juleflet
 pictures would show 91 exact templates first: 30 s keeps the exact template
 first where it is drawn late, mostly on drawings, for 10 s on photographs.
 
+With the start capped at 3 s (below), the exact search draws sooner, and on a
+rerun 20 s, 25 s and 30 s showed as many exact templates first (91 juleflet
+pictures, 14 scraped photographs, those 14 up from 11 with the cap); so the
+limit is 20 s, and the scraped photographs take 22 s at the median.
+
 ## Photographs the exact search could not start on (2026-10-26)
 
 Of the 66 scraped photographs found as hearts, the exact search could not

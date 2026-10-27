@@ -10,9 +10,11 @@ import {refineHeartCrop} from './core/crop.js';
  * on waited out the whole minute. Until the exact search has drawn a template
  * keeping every rule, a passing answer of the fitter's waits only until
  * EXACT_UNDRAWN_SECONDS, then goes out (the exact search's to follow as an
- * alternative): a search that finds none draws none, and of 52 exact templates
- * on the juleflet pictures 45 had drawn by 30 s (42 by 20). */
-const EXACT_GRACE_SECONDS=5,EXACT_WAIT_SECONDS=40,EXACT_UNDRAWN_SECONDS=30;
+ * alternative): a search that finds none draws none. With the exact search's
+ * start at most 3 s, as many exact templates came first by 20 s as by 30 on
+ * the juleflet pictures (91) and the scraped photographs (14), which then
+ * took 22 s at the median instead of 30. */
+const EXACT_GRACE_SECONDS=5,EXACT_WAIT_SECONDS=40,EXACT_UNDRAWN_SECONDS=20;
 
 /** One prepared artwork and one public request at a time. The private fitting
  * worker can be terminated without discarding the artwork or the result queue.

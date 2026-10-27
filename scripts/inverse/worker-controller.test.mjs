@@ -205,13 +205,13 @@ test('side by side, once the fitter\'s answer waits, the exact search has until 
 });
 
 
-test('side by side, a passing fitted answer goes out at 30 s while the exact search has drawn nothing, its template following as an alternative',async t=>{
+test('side by side, a passing fitted answer goes out at 20 s while the exact search has drawn nothing, its template following as an alternative',async t=>{
   t.mock.timers.enable({apis:['setTimeout','Date']});
   const fitted={...value,report:{...value.report,templateChecksPassed:true}},exactPassing={...exactValue,report:{...exactValue.report,templateChecksPassed:true}};
   const h=harness({now:()=>Date.now()});await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});
   const [fitter,exact]=h.workers;
   t.mock.timers.tick(1000*10);h.reply(fitter,2,'result',{result:fitted});
-  t.mock.timers.tick(1000*19);assert.equal(h.messages.filter(m=>m.type==='result').length,0);
+  t.mock.timers.tick(1000*9);assert.equal(h.messages.filter(m=>m.type==='result').length,0);
   t.mock.timers.tick(1000*2);await solving;
   assert.deepEqual(h.messages.slice(-2),[{id:2,type:'result',result:fitted},{id:2,type:'alternative',pending:true}]);assert.equal(exact.terminated,0);
   // Its progress is not shown any more; its template comes as the alternative.
@@ -226,8 +226,8 @@ test('side by side, an exact search that has drawn keeps the fitter\'s answer wa
   const h=harness({now:()=>Date.now()});await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});
   const [fitter,exact]=h.workers;
   t.mock.timers.tick(1000*10);h.reply(fitter,2,'result',{result:fitted});
-  t.mock.timers.tick(1000*15);h.reply(exact,2,'progress',{event:{stage:'exactOutline',geometry:packet.geometry}});
-  t.mock.timers.tick(1000*14);assert.equal(h.messages.filter(m=>m.type==='result').length,0);assert.equal(exact.terminated,0);
+  t.mock.timers.tick(1000*5);h.reply(exact,2,'progress',{event:{stage:'exactOutline',geometry:packet.geometry}});
+  t.mock.timers.tick(1000*24);assert.equal(h.messages.filter(m=>m.type==='result').length,0);assert.equal(exact.terminated,0);
   t.mock.timers.tick(1000*2);assert.equal(exact.terminated,1);
   await solving;assert.deepEqual(h.messages.at(-1),{id:2,type:'result',result:fitted});
 });
@@ -237,13 +237,13 @@ test('side by side, an exact search trailing the fitter\'s answer is ended at it
   const fitted={...value,report:{...value.report,templateChecksPassed:true}};
   const h=harness({now:()=>Date.now()});await h.send(1,'prepare',{input});let solving=h.send(2,'solve',{settings:both});
   let [fitter,exact]=h.workers;
-  h.reply(fitter,2,'result',{result:fitted});t.mock.timers.tick(1000*31);await solving;
+  h.reply(fitter,2,'result',{result:fitted});t.mock.timers.tick(1000*21);await solving;
   assert.equal(h.messages.at(-1).pending,true);
-  t.mock.timers.tick(1000*33);assert.equal(exact.terminated,0);
+  t.mock.timers.tick(1000*43);assert.equal(exact.terminated,0);
   t.mock.timers.tick(1000*2);assert.equal(exact.terminated,1);assert.deepEqual(h.messages.at(-1),{id:2,type:'alternative',pending:false});
   // The fitter's worker is reused, the ended exact search's made anew.
   solving=h.send(3,'solve',{settings:both});exact=h.workers.at(-1);assert.notEqual(exact,fitter);
-  h.reply(fitter,3,'result',{result:fitted});t.mock.timers.tick(1000*31);await solving;
+  h.reply(fitter,3,'result',{result:fitted});t.mock.timers.tick(1000*21);await solving;
   await h.send(4,'prepare',{input});assert.equal(exact.terminated,1);
   h.reply(exact,3,'result',{result:exactValue});assert.equal(h.messages.filter(m=>m.type==='alternative'&&m.result).length,0);
 });
