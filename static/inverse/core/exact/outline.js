@@ -33,31 +33,38 @@ export function rules(cfg, strictness = 'tight') {
   };
 }
 
-/** Arc lengths of a polyline's corners: vertices turning by more than
- * `threshold` degrees, none within `margin` of an open edge's ends; turns over
- * `least` within `cluster` of each other are one corner at the sharpest. */
-export function corners(pts, cl, loop, {threshold = 20, margin = .05, cluster = .05, least = 5} = {}) {
-  const turns = [];
+/** Arc lengths of a polyline's corners: vertices where the turns over `least`
+ * degrees within `cluster` either way add up to more than `threshold`, and
+ * still do within `persist` either way, the sharpest of those within `cluster`
+ * of each other; none within `margin` of an open edge's ends. Read alike from
+ * either end, so a mirror image has the mirrored corners. `persist`: a traced
+ * curve's pixel steps turn 30-50 degrees and back a pixel or two on, each a
+ * corner within `cluster` alone and not at its mirror image; every corner is
+ * a position, under ties with its images (Uret's inner circle, a circle, had
+ * 42 corners and 128 positions on the coarse grid). A corner keeps its turn.
+ * On the reference solver's eight fixtures, the corners of its own rule. */
+export function corners(pts, cl, loop, {threshold = 20, margin = .05, cluster = .05, persist = .15, least = 5} = {}) {
+  const L = cl.at(-1), turns = [];
   for (let i = loop ? 0 : 1; i < pts.length - 1; i++) {
     const a = i > 0 ? pts[i - 1] : pts.at(-2), u = [pts[i][0] - a[0], pts[i][1] - a[1]];
     const v = [pts[i + 1][0] - pts[i][0], pts[i + 1][1] - pts[i][1]];
     const t = angle(u, v) * (u[0] * v[1] - u[1] * v[0] >= 0 ? 1 : -1);
     if (Math.abs(t) > least) turns.push([cl[i], t]);
   }
-  const groups = [];
-  for (const [s, t] of turns) {
-    if (groups.length && s - groups.at(-1)[0][0] <= cluster) groups.at(-1).push([s, t]);
-    else groups.push([[s, t]]);
-  }
-  if (loop && groups.length > 1 && groups[0][0][0] + cl.at(-1) - groups.at(-1)[0][0] <= cluster)
-    groups[0] = [...groups.pop(), ...groups[0]];
-  const out = [];
-  for (const group of groups) {
-    const s = group.reduce((m, x) => Math.abs(x[1]) > Math.abs(m[1]) ? x : m)[0];
-    const total = group.reduce((sum, x) => sum + x[1], 0);
-    if (Math.abs(total) > threshold && (loop || (margin < s && s < cl.at(-1) - margin))) out.push(s);
-  }
-  return out.sort((a, b) => a - b);
+  // Window sums by prefix sums over the turns, a loop's laid out three times.
+  const laid = loop ? [-L, 0, L].flatMap(d => turns.map(([s, t]) => [s + d, t])) : turns, prefix = [0];
+  for (const [, t] of laid) prefix.push(prefix.at(-1) + t);
+  const first = x => { let lo = 0, hi = laid.length; while (lo < hi) { const m = (lo + hi) >> 1; if (laid[m][0] < x) lo = m + 1; else hi = m; } return lo; };
+  const within = (s, h) => { h = loop ? Math.min(h, L / 2 - 1e-9) : h; return prefix[first(s + h + 1e-12)] - prefix[first(s - h - 1e-12)]; };
+  const strong = turns.filter(([s]) => Math.abs(within(s, cluster)) > threshold && Math.abs(within(s, persist)) > threshold
+    && (loop || (margin < s && s < L - margin)));
+  // The sharpest, then the one turning most within `cluster` either way (the
+  // middle of a turn spread evenly), then the first.
+  const gap = (s, r) => { const d = Math.abs(s - r); return loop ? Math.min(d, L - d) : d; };
+  const rank = ([s, t]) => [Math.abs(t), Math.abs(within(s, cluster)), -s];
+  const before = (x, y) => Math.abs(x[0] - y[0]) > 1e-9 ? x[0] > y[0] : Math.abs(x[1] - y[1]) > 1e-9 ? x[1] > y[1] : x[2] >= y[2];
+  const out = strong.filter(c => strong.every(d => gap(d[0], c[0]) > cluster || before(rank(c), rank(d))));
+  return out.map(([s]) => s).sort((a, b) => a - b);
 }
 
 // Arc length on a closed curve, as Python's s % L: ((s % L) + L) % L rounds.

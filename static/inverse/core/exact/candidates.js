@@ -140,9 +140,13 @@ export class Candidates {
 
   /** Each token's `neighbours` cheapest segments (never two consecutive switches
    * of one edge, which would close a loop), its cheapest to every other edge of
-   * its face, the `required` token pairs, and the images of all these under
-   * the `ties`. */
-  prune(neighbours = 8, required = [], ties = []) {
+   * its face, its cheapest along its own edge in each band of arc distance
+   * doubling from `reach`, the `required` token pairs, and the images of all
+   * these under the `ties`. The bands keep a long cut across a face one edge
+   * bounds: Uret's inner circle, whose four hidden segments run a quarter of
+   * the way round it, past the nearest partners (the designer's template, read
+   * on the traced outline, then passes; without them its segments cross). */
+  prune(neighbours = 8, required = [], ties = [], {reach = 1} = {}) {
     const byToken = new Map(), push = (t, item) => { const k = tokenKey(t); if (!byToken.has(k)) byToken.set(k, []); byToken.get(k).push(item); };
     for (const [key, c] of this.cost) {
       const [, a, b] = this.pair.get(key);
@@ -154,12 +158,17 @@ export class Candidates {
     for (const [t, items] of byToken) {
       items.sort((x, y) => x[0] - y[0] || (x[1] < y[1] ? -1 : 1));
       for (const [, key] of items.slice(0, neighbours)) chosen.add(key);
-      const best = new Map(), e = Number(t.split(':')[0]);
+      const best = new Map(), far = new Map(), e = Number(t.split(':')[0]);
       for (const [c, key] of items) {
         const [, a, b] = this.pair.get(key), other = tokenKey(a) === t ? b : a;
-        if (other[1] !== e && (!best.has(other[1]) || c < best.get(other[1])[0])) best.set(other[1], [c, key]);
+        if (other[1] !== e) {
+          if (!best.has(other[1]) || c < best.get(other[1])[0]) best.set(other[1], [c, key]);
+          continue;
+        }
+        const band = Math.floor(Math.log2(this.outline.along(e, this.arc(a), this.arc(b)) / reach));
+        if (band >= 0 && (!far.has(band) || c < far.get(band)[0])) far.set(band, [c, key]);
       }
-      for (const [, key] of best.values()) chosen.add(key);
+      for (const [, key] of [...best.values(), ...far.values()]) chosen.add(key);
     }
     const wanted = new Set(required.map(([a, b]) => [tokenKey(a), tokenKey(b)].sort().join('|')));
     for (const key of this.cost.keys()) {

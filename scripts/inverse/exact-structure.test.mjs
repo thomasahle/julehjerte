@@ -2,7 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {buildStructure, describe} from '../../static/inverse/core/exact/structure.js';
-import {Outline, rules} from '../../static/inverse/core/exact/outline.js';
+import {Outline, corners, rules} from '../../static/inverse/core/exact/outline.js';
+import {cumlen} from '../../static/inverse/core/exact/polyline.js';
+import {Candidates, tokenKey} from '../../static/inverse/core/exact/candidates.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {loadSVG} from '../../static/inverse/core/input.js';
 import {exactPositions} from '../../static/inverse/core/exact/positions.js';
@@ -136,4 +138,40 @@ test('an image between two positions a tenth apart takes the nearer, as long as 
   assert.deepEqual([...maps.mirrorX],[['0,1',[1,1]],['0,2',[1,2]],['0,3',[1,3]],['1,1',[0,1]],['1,2',[0,2]],['1,3',[0,3]]]);
   // Two positions taking one image are no symmetry.
   assert.throws(()=>mirrored(new Map([[0,[.92,1,3]],[1,[1.034,3]]])),/not a bijection|onto no position/);
+});
+
+test('a traced curve\'s pixel steps are no corners, a corner is, and they read alike from either end', () => {
+  // Along y = 0 a step up two pixels (0.06 units) and on: turns of 45 degrees
+  // and back 0.085 apart, each a corner on its own. Then a right angle.
+  const step = [[0, 0], [1, 0], [1.06, .06], [3, .06], [3, 2]], cl = cumlen(step);
+  assert.deepEqual(corners(step, cl, false), [cl[3]]);
+  // Three turns of 15 degrees 0.04 apart are one corner, at the middle one,
+  // whichever way the edge runs.
+  const turn = [[0, 0], [2, 0]];
+  for (const deg of [15, 30, 45]) {
+    const [x, y] = turn.at(-1), a = deg * Math.PI / 180, d = deg === 45 ? 2 : .04;
+    turn.push([x + d * Math.cos(a), y + d * Math.sin(a)]);
+  }
+  const forward = corners(turn, cumlen(turn), false), back = [...turn].reverse(), L = cumlen(turn).at(-1);
+  assert.deepEqual(forward, [cumlen(turn)[2]]);
+  assert.deepEqual(corners(back, cumlen(back), false).map(s => +(L - s).toFixed(9)), forward.map(s => +s.toFixed(9)));
+});
+
+test('pruned to its nearest partners, a position keeps one along its own edge in each band of distance', () => {
+  // Twenty positions round a loop 20 long, a face's only edge (Uret's inner
+  // circle), every pair a candidate costing its distance round the loop.
+  const L = 20, tok = j => ['s', 0, j, 'R'], along = (e, s, t) => Math.min(Math.abs(s - t), L - Math.abs(s - t));
+  const longest = options => {
+    const cand = Object.assign(Object.create(Candidates.prototype), {positions: new Map([[0, Array.from({length: 20}, (_, k) => k)]]),
+      outline: {along}, cost: new Map(), pair: new Map(), route: new Map(), kind: new Map()});
+    for (let i = 1; i <= 20; i++) for (let j = i + 1; j <= 20; j++) {
+      const key = `0|${tokenKey(tok(i))}|${tokenKey(tok(j))}`;
+      cand.cost.set(key, along(0, i - 1, j - 1));
+      cand.pair.set(key, [0, tok(i), tok(j)]);
+    }
+    cand.prune(2, [], [], options);
+    return Math.max(...[...cand.pair.values()].map(([, a, b]) => along(0, a[2] - 1, b[2] - 1)));
+  };
+  assert.equal(longest({reach: Infinity}), 2);
+  assert.equal(longest({}), 8);
 });

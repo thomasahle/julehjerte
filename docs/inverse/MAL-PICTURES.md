@@ -584,6 +584,58 @@ tied and proves its 16 crossing segments, and lilje2 finds a template (0.74%
 from its design, none before); on their 14 juleflet pictures balls now stays
 tied, and every result is as before.
 
+## Uret's exact template: long cuts, steady corners, no start under ties (2026-10-27)
+
+Uret's own template, read on the traced outline of its Tegn picture
+(`tmp/e2e/routes/theirs.mjs`, `diag.mjs`), has 16 hidden segments, each a
+straight route the rules allow; four of them cross the inner disc, a face one
+edge bounds, a quarter of the way round it. Given as the start, the search
+finds a template keeping every rule in 16 s. It never offered those four: a
+position keeps its 2-8 cheapest partners and its cheapest on each other edge
+of its face, and the disc has no other edge. It now also keeps the cheapest
+along its own edge in each band of distance doubling from 1 unit (candidates.js
+`prune`).
+
+That alone did not do: the inner circle traced with 42 corners, pixel steps
+turning 30-50 degrees and back 0.06-0.09 units on, each a position with eight
+images under the ties (128 positions on the coarse grid). A corner must now
+keep its turn within 0.15 units either way, and reads alike from either end of
+its edge (outline.js `corners`; on the reference solver's eight fixtures, the
+corners of its own rule). Then a start that is not the template's still spreads
+its switches where no template has them, each with its images: on the juleflet
+picture 320 positions instead of 128, 74k rows, crossing cuts after 30 s. Under
+ties the search therefore first takes the fine grid (0.75 apart, 4 partners)
+from no start, for half its time, and keeps that template when the export would
+take it; otherwise the coarse search from the start runs in the rest, and the
+one breaking fewer of the model's rules is kept (stage.js `BARE_SHARE`).
+
+Uret: its Tegn picture gets 16 hidden segments under all eight symmetries,
+the fewest and shortest its grid has, in 4.9 s (no template before; in the browser,
+Tegn → Mal → Find snit in 7 s, "0.0% different from the mask"); the juleflet
+picture in 7.7 s; the photograph still none. The 130 juleflet pictures, the
+exact search alone for 40 s: 87 templates the export takes instead of 84
+(5-3-heart, amy-pattern, circle, flyvendegaes, jul and lilje1 gain one;
+hjertekloever, jul-shot and origami take the fitter's now). On the 81 both
+find, 0.147% from the mask at the median instead of 0.160%, 1% more hidden cut,
+6.0 s instead of 5.5 s; overall 9.6 s instead of 8.6 s at the median, the
+slowest change fisk-shot 12 s → 37 s and stjernegitter 15 s → 39 s.
+
+Tried and not used: either change alone (the corners alone lose hjertekloever
+and slow three asymmetric pictures to 37 s; the bands alone leave Uret's cuts
+crossing); the steady corners only under ties (as many templates, different
+ones); the start's switches on the symmetric grid (it puts 10 on one short
+edge); no start on the coarse grid; corners projected onto curved edges, a
+denser grid on the circle, cheapest partners in bands along other edges too.
+Each of the grids solves one of the Uret pictures and loses another: a fixed
+grid has the positions a cut needs or not, and pruning to the nearest partners
+throws different ones away as it gets denser.
+
+The earlier exact search in Python (`julehjerte-solver-initialization`,
+2026-10-23) found Uret 14 hidden segments where its designer's template breaks
+the turn and crossing rules, but on the design's own curves, read with
+touchings at two of the eight junctions; the picture has none, and 16 is its
+bound.
+
 ## Details lost on photographs (2026-10-25)
 
 The 68 photographs whose template keeps every rule but loses a region of the
@@ -623,19 +675,16 @@ camel, but takes 20-28 s more and fails on other photographs; not used.
   trace helps given the time alone, above), and printed papers often still end
   unevenly where reading their sides deeper would change more than the error
   allowed.
-- The exact search's hard designs: circle, balls, venus, khatam, santa,
-  dagognat and davidsstjerne-circ get the fitter's template (passing, 0.7-1.5%
-  from the mask). The circle's 16 hidden segments, the count's bound, can only
-  cross each other at its four junctions (an embedding row stays broken);
-  neither a finer grid (1.5 units, 4 neighbours) nor searching untied finds a
-  template keeping every rule in 40 s.
+- The exact search's hard designs: balls, venus, khatam, santa, dagognat and
+  davidsstjerne-circ get the fitter's template (passing, 0.7-1.5% from the
+  mask), and the circle's photograph, whose cuts come too close (above).
 - A graph for the exact search fitted to the mask before it runs (the user's
-  suggestion, 2026-10-27), for the outlines it cannot use as traced: one
-  symmetric by construction, corners found the same either way along an edge,
-  and hidden-segment candidates along curved routes through one colour (the
-  circle's inner circle; the candidates are straight chords within a region,
-  or a template's own routes) and along a heart's own seams when it comes from
-  Tegn (venus).
+  suggestion, 2026-10-27): steady corners and long cuts along one edge are in
+  (above). Still open: an outline symmetric by construction (the mask is, but
+  the tracer fits each curve from one end: Uret's corner discs trace with a
+  notch on three of four), positions added where the model's rules break
+  instead of a fixed grid, and a heart's own seams as candidates when it comes
+  from Tegn (venus).
 - Templates: slits that stop inside the square or meet in T-junctions (the site
   cannot represent them), dimension lines drawn along a slit.
 - A selected heart among touching neighbours (two of the web scenes): the

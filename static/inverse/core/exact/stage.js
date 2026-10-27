@@ -129,6 +129,10 @@ export const exportable = (a, cfg) => Boolean(a?.passes && a.features && a.maskE
 
 const START_SECONDS = 3;
 
+/** Under ties, the share of the search's time the fine grid from no start
+ * gets first, if at least BARE_FLOOR seconds are left (exactSearch). */
+const BARE_SHARE = .5, BARE_FLOOR = 8;
+
 /** The exact search on the traced `outline` from the fitter's `template`
  * within `deadline`, under the `symmetry` ties: {found: {solution,
  * assessment} or null, report}. */
@@ -158,14 +162,32 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     // No start found in time: HiGHS finds the papers itself from an empty one,
     // on the coarser grid (amy-flowering, david4, where the search for a
     // start runs out of time even in 30 s).
-    const witness = start.witness ?? {positions: new Map(), labels: new Map(), chords: []};
+    const empty = {positions: new Map(), labels: new Map(), chords: []}, witness = start.witness ?? empty;
     if (start.error) report.start = `none (${start.error})`;
-    const left = seconds - (performance.now() - began) / 1000, coarse = start.how !== 'template' ? {spacing: 3, neighbours: 2} : {};
-    found = await exactFromTemplate(outline, template, cfg, {seconds: left, symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
+    const left = () => seconds - (performance.now() - began) / 1000, coarse = start.how !== 'template' ? {spacing: 3, neighbours: 2} : {};
+    // Under ties, first the fine grid from no start, for a share of the time:
+    // a start's switches each bring their images as positions, and one not the
+    // template's spreads them where no template has them (Uret's juleflet
+    // picture: 74k rows, crossing cuts after 30 s; the fine grid from none:
+    // 45k, a template in 6 s). Taken when the export would take it. On the 130
+    // juleflet pictures, 87 templates the export takes instead of 84.
+    let bare = null;
+    if (symmetry.length && start.how !== 'template' && left() >= BARE_FLOOR) {
+      bare = await exactFromTemplate(outline, template, cfg, {seconds: left() * BARE_SHARE, symmetry, exact, witness: empty, onProgress, geometry, refine, spacing: .75, neighbours: 4});
+      report.bare = bare.error ?? bare.report.penalty;
+    }
+    const bareFound = bare && !bare.error && !(bare.report.penalty > 1e-6);
+    if (bareFound && [bare.solution, bare.refined].some(drawn => { try { return drawn && exportable(assess(drawn, cfg), cfg); } catch { return false; } })) {
+      found = {...bare, report: {...bare.report, bare: true}};
+    } else {
+      found = await exactFromTemplate(outline, template, cfg, {seconds: left(), symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
+      // The bare one where it breaks fewer of the model's rules.
+      if (bare && !bare.error && (found.error || bare.report.penalty < found.report.penalty)) found = {...bare, report: {...bare.report, bare: true}};
+    }
     // With two partners a position may have too few hidden segments for any
     // template under symmetric ties (starcircle's transpose, found to have none
     // in a second): then four, 1.5 units apart, in the time left.
-    const rest = seconds - (performance.now() - began) / 1000;
+    const rest = left();
     if (found.error === NO_TEMPLATE && start.how !== 'template' && rest >= 4) {
       const finer = await exactFromTemplate(outline, template, cfg, {seconds: rest, symmetry, exact, witness, onProgress, geometry, refine, spacing: 1.5, neighbours: 4});
       found = finer.error ? found : {...finer, report: {...finer.report, finer: true}};
