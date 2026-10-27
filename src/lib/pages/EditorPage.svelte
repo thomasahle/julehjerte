@@ -1,7 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { beforeNavigate, goto, replaceState } from '$app/navigation';
-  import { settleOverlayHistory } from '$lib/utils/overlayHistory';
   import { onMount, tick } from 'svelte';
   import PaperHeart from '$lib/components/PaperHeart.svelte';
   import { pageTitle } from '$lib/seo';
@@ -59,11 +58,6 @@
     tick().then(() => helpButtonEl?.focus());
   }
 
-  // "Mal på hjertet" and the confirmation it asks before replacing a mask that
-  // has strokes on it. Same dialog rules as the help modal above.
-  let showPaintConfirm = $state(false);
-  let paintButtonEl: HTMLButtonElement | null = $state(null);
-  let paintCancelButtonEl: HTMLButtonElement | null = $state(null);
   // The whole way over to Mal is lazy (see openInPaint), so on a cold cache the
   // press is a network round trip with nothing on screen to show for it. The
   // button is disabled meanwhile: it stops a second press from rasterising and
@@ -461,9 +455,6 @@
     // billede".
     // What was painted in Mal comes back with its Fortryd.
     setMaskFromDraw(mask, { sourceName: design.name, symmetry: found, found });
-    // The confirmation just closed; its history entry has to be off before
-    // the navigation pushes one, or the back would land after it.
-    await settleOverlayHistory();
     await goto(href('paint', lang));
   }
 
@@ -481,48 +472,14 @@
     showStatus('load', 'error', t('paintOpenFailed', lang));
   }
 
-  // A mask the visitor has painted on is work they may not want to lose; one that
-  // only ever arrived from an import or an earlier heart is replaced in silence.
-  async function paintOnHeart(): Promise<void> {
+  // "Mal på hjertet" and the header's Mal tab: this heart over to Mal without a
+  // question, since Fortryd in Mal brings back what was painted there. The tab
+  // keeps the found heart (see openInPaint): a heart still as Find snit found it
+  // leaves Mal as it was.
+  function paintOnHeart(keepFound = false): void {
     if (paintBusy) return;
     paintBusy = true;
-    try {
-      const { session } = await import('$lib/editor/session.svelte');
-      if (session.mask && session.maskDirty) {
-        showPaintConfirm = true;
-        return;
-      }
-      await openInPaint();
-    } catch (err) {
-      reportPaintError(err);
-    } finally {
-      paintBusy = false;
-    }
-  }
-
-  // The header's Mal tab: this heart over to Mal as "Mal på hjertet" takes it,
-  // without the question, since Fortryd in Mal brings back what was painted
-  // there; but a heart still as Find snit found it leaves Mal as it was.
-  function switchToPaint(): void {
-    if (paintBusy) return;
-    paintBusy = true;
-    openInPaint(true)
-      .catch(reportPaintError)
-      .finally(() => {
-        paintBusy = false;
-      });
-  }
-
-  function closePaintConfirm(): void {
-    if (!showPaintConfirm) return;
-    showPaintConfirm = false;
-    tick().then(() => paintButtonEl?.focus());
-  }
-
-  function confirmPaintOnHeart(): void {
-    showPaintConfirm = false;
-    paintBusy = true;
-    openInPaint()
+    openInPaint(keepFound)
       .catch(reportPaintError)
       .finally(() => {
         paintBusy = false;
@@ -867,8 +824,7 @@
       <button
         type="button"
         class="btn btn-outline action"
-        bind:this={paintButtonEl}
-        onclick={paintOnHeart}
+        onclick={() => paintOnHeart()}
         disabled={paintBusy}
         aria-busy={paintBusy}
       >
@@ -905,7 +861,7 @@
        EN/GitHub pills belong on content pages, not in the full-screen tool. The
        `mode` switch is the other half of PAINT.md §2's ask of Tegn: with the
        paint route landed, the header carries the way back and forth. -->
-  <PageHeader bind:ref={headerEl} {lang} variant="editor" mode={{ current: 'draw', switchTo: switchToPaint }}>
+  <PageHeader bind:ref={headerEl} {lang} variant="editor" mode={{ current: 'draw', switchTo: () => paintOnHeart(true) }}>
     <button
       type="button"
       class="btn btn-sm btn-ghost btn-icon icon-button"
@@ -970,29 +926,6 @@
     </aside>
   {/if}
   </main>
-
-  <Modal
-    open={showPaintConfirm}
-    labelledBy="paint-confirm-title"
-    initialFocus={paintCancelButtonEl}
-    onClose={closePaintConfirm}
-  >
-    <h2 id="paint-confirm-title" class="confirm-title">{t('paintReplaceMaskTitle', lang)}</h2>
-    <p class="confirm-text">{t('paintReplaceMaskPrompt', lang)}</p>
-    <div class="confirm-actions">
-      <button
-        type="button"
-        class="btn btn-ghost"
-        bind:this={paintCancelButtonEl}
-        onclick={closePaintConfirm}
-      >
-        {t('cancel', lang)}
-      </button>
-      <button type="button" class="btn btn-primary" onclick={confirmPaintOnHeart}>
-        {t('paintReplaceMaskConfirm', lang)}
-      </button>
-    </div>
-  </Modal>
 
   <Modal
     open={showHelp}
@@ -1293,27 +1226,6 @@
       grid-template-columns: 1fr;
       max-width: 420px;
     }
-  }
-
-  /* The "Mal på hjertet" confirmation inside <Modal>: a question, one line of
-     consequence, and the two answers right-aligned. */
-  .confirm-title {
-    margin: 0 0 8px;
-    font-size: 20px;
-    color: var(--deep);
-  }
-
-  .confirm-text {
-    margin: 0;
-    line-height: 1.5;
-    color: var(--ink);
-  }
-
-  .confirm-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: 20px;
   }
 
   /* <Modal> owns the scrim and the card; what follows is the help content. */

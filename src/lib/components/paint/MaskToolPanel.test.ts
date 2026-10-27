@@ -143,10 +143,10 @@ describe('MaskToolPanel', () => {
 	// Fortryd and Gentag went through the same tooltip trigger as the tools above
 	// them, so they inherited the same one-line trap: the trigger's props carry an
 	// `onclick`, and spreading them last would swallow the undo without a word.
-	it('gives Fortryd and Gentag their own click through the tooltip', () => {
+	it('labels Fortryd and Gentag in words and gives each its own click', () => {
 		const panel = render({ canUndo: true, canRedo: true });
 		try {
-			expect(panel.historyButtons.map((b) => b.getAttribute('aria-label'))).toEqual([
+			expect(panel.historyButtons.map((b) => b.textContent?.trim())).toEqual([
 				'Fortryd',
 				'Gentag'
 			]);

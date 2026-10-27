@@ -350,74 +350,51 @@
 			</label>
 		{/if}
 
-		<!-- Fortryd and Gentag share the swatches' row rather than taking a row of
-		     their own: two labelled buttons across the panel cost a line the column
-		     has not got, and both are already at Cmd/Ctrl+Z. As icons they are the
-		     same 40px square as the tools above, so the panel reads as one grid of
-		     buttons with the two papers set into it — and the words survive in the
-		     tooltip and the accessible name, which is what a labelled button gave.
-
-		     They sit beside "Maler med" and not inside it: the field's label heads
-		     the swatches alone, and two history buttons under a heading that says
-		     "Maler med" read as a third and fourth thing to paint with. -->
-		<div class="paper-row">
-			<div class="field">
-				<span class="field-label">{tr('paintsWith')}</span>
-				<div class="swatches">
-					<ToggleGroup
-						type="single"
-						role="radiogroup"
-						aria-label={tr('paintsWith')}
-						bind:value={() => String(paintValue), choosePaper}
-						{disabled}
-					>
-						{#each PAPERS as value (value)}
-							<ToggleGroupItem
-								value={String(value)}
-								aria-label={value ? tr('paintsWithRight') : tr('paintsWithLeft')}
-								title={value ? tr('paintsWithRight') : tr('paintsWithLeft')}
-								style="background: {value ? colors.right : colors.left}"
-							/>
-						{/each}
+		<div class="field">
+			<span class="field-label">{tr('paintsWith')}</span>
+			<div class="swatches">
+				<ToggleGroup
+					type="single"
+					role="radiogroup"
+					aria-label={tr('paintsWith')}
+					bind:value={() => String(paintValue), choosePaper}
+					{disabled}
+				>
+					{#each PAPERS as value (value)}
 						<ToggleGroupItem
-							value="xor"
-							aria-label={tr('paintsWithXor')}
-							title={tr('paintsWithXor')}
-							class="xor-swatch"
-							style="--left-paper: {colors.left}; --right-paper: {colors.right}"
+							value={String(value)}
+							aria-label={value ? tr('paintsWithRight') : tr('paintsWithLeft')}
+							title={value ? tr('paintsWithRight') : tr('paintsWithLeft')}
+							style="background: {value ? colors.right : colors.left}"
 						/>
-					</ToggleGroup>
-				</div>
+					{/each}
+					<ToggleGroupItem
+						value="xor"
+						aria-label={tr('paintsWithXor')}
+						title={tr('paintsWithXor')}
+						class="xor-swatch"
+						style="--left-paper: {colors.left}; --right-paper: {colors.right}"
+					/>
+				</ToggleGroup>
 			</div>
+		</div>
 
-			<!-- The same Tooltip the six tools above wear, rather than a native
-			     `title`: a title never fires on keyboard focus, and these two are the
-			     only glyph-only buttons in the panel a visitor could tab to and be
-			     told nothing about. `aria-label` stays either way, for the reader
-			     that has no pointer and no tooltip. -->
-			<div class="history" role="group" aria-label={tr('editorHistory')}>
-				{#each HISTORY as item (item.id)}
-					<Tooltip>
-						<TooltipTrigger>
-							{#snippet child({ props })}
-								<!-- The tooltip's props first, as in the tool grid above: they carry
-								     an `onclick` of their own and the last spread wins. -->
-								<button
-									{...props}
-									type="button"
-									class="tool-btn"
-									aria-label={tr(item.label)}
-									onclick={item.id === 'undo' ? onUndo : onRedo}
-									disabled={disabled || !(item.id === 'undo' ? canUndo : canRedo)}
-								>
-									<item.icon size={20} />
-								</button>
-							{/snippet}
-						</TooltipTrigger>
-						<TooltipContent>{tr(item.label)}</TooltipContent>
-					</Tooltip>
-				{/each}
-			</div>
+		<!-- Fortryd and Gentag in words, on a row of their own under the papers:
+		     Ryd, an import and a heart brought over from Tegn replace the mask
+		     without asking, and Fortryd is the way back, so it has to be found
+		     without hovering for a tooltip. Both are also at Cmd/Ctrl+Z. -->
+		<div class="history" role="group" aria-label={tr('editorHistory')}>
+			{#each HISTORY as item (item.id)}
+				<button
+					type="button"
+					class="tool-btn"
+					onclick={item.id === 'undo' ? onUndo : onRedo}
+					disabled={disabled || !(item.id === 'undo' ? canUndo : canRedo)}
+				>
+					<item.icon size={18} />
+					{tr(item.label)}
+				</button>
+			{/each}
 		</div>
 	</section>
 </div>
@@ -585,15 +562,14 @@
 		transform: rotate(45deg);
 	}
 
-	/* The tools and the two history buttons are one square under one name.
-	   `app.css` declares the site's own 40px glyph button as `.btn .btn-sm
-	   .btn-icon`, and the history buttons could wear it — but they stand in a row
-	   with the six tools directly above them, and the site's square differs from
-	   the tools' in three small ways at once (an 18px glyph against 20, a
-	   transparent ground against white, and 0.5 opacity when disabled against
-	   0.35). Two nearly-but-not-quite identical squares in one panel is worse than
-	   one local name, so the tools' square wins here and there is no second one.
-	   Only the tools are ever `.active`, so the rules below belong to them alone. */
+	/* The tools and the two history buttons are one button under one name.
+	   `app.css` has the site's own 40px `.btn .btn-sm`, and the history buttons
+	   could wear it, but it differs from the tools' button in small ways at once
+	   (a transparent ground against white, 0.5 opacity when disabled against
+	   0.35). Two nearly-but-not-quite identical buttons in one panel is worse
+	   than one local name, so the tools' button wins here; the history buttons
+	   only add their words (see `.history`). Only the tools are ever `.active`,
+	   so the rules below belong to them alone. */
 	.tool-btn {
 		display: inline-flex;
 		align-items: center;
@@ -608,12 +584,6 @@
 		transition:
 			background-color 0.15s,
 			color 0.15s;
-	}
-
-	/* In the grid above, the six squares stretch to their column; in the history
-	   row there is no grid to stretch to, so the square is stated. */
-	.history .tool-btn {
-		width: 40px;
 	}
 
 	.tool-btn:hover:not(:disabled) {
@@ -702,6 +672,7 @@
 
 	.swatches :global([data-slot='toggle-group']) {
 		display: flex;
+		justify-content: flex-start;
 		gap: 10px;
 		padding: 0;
 		background: none;
@@ -729,20 +700,16 @@
 		cursor: not-allowed;
 	}
 
-	/* The swatches sit under their label as every other control does; the two
-	   history buttons are pushed to the far end, where they read as a pair of
-	   their own rather than as a third and fourth paper. Aligned at the bottom,
-	   so the 40px squares sit on the same line as the 34px swatches beside them
-	   rather than floating against the label above. */
-	.paper-row {
-		display: flex;
-		align-items: flex-end;
-		gap: 10px;
-	}
-
 	.history {
 		display: flex;
-		gap: 4px;
-		margin-left: auto;
+		gap: 8px;
+	}
+
+	.history .tool-btn {
+		flex: 1 1 0;
+		gap: 6px;
+		font: inherit;
+		font-size: 13px;
+		font-weight: 600;
 	}
 </style>

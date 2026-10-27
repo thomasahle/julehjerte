@@ -646,13 +646,6 @@ export const translations = {
     paintFrameHintFixed: 'Hele firkanten væves, som du har malet den.',
     paintFrameHintFree: 'Motivet inden for formen holdes; uden om vælger maskinen selv et vævet mønster. Du kan stadig male i båndet – det tælles bare ikke med.',
     paintShowMotif: 'Vis det beskyttede motiv',
-    paintClearTitle: 'Ryd masken?',
-    paintClearPrompt: 'Alt det, du har malet, forsvinder, og masken starter forfra med 5 × 5 tern. Fortryd henter det tilbage.',
-    paintClearConfirm: 'Ryd masken',
-    paintReplaceTitle: 'Erstat masken?',
-    paintReplacePrompt: 'Billedet erstatter det, du har malet.',
-    paintReplaceConfirm: 'Brug billedet',
-    paintCancelAction: 'Annuller',
     paintSymmetry: 'Symmetri',
     paintSymmetryHint: 'Fundet i masken og slået til; alt du maler, spejles med.',
     /** {panel} = panelets overskrift, så to knapper på siden kan skelnes */
@@ -828,9 +821,6 @@ export const translations = {
 
     // Mal (docs/redesign/PAINT.md): what Tegn says about the second mode
     paintOnHeart: 'Mal på hjertet',
-    paintReplaceMaskTitle: 'Erstat masken?',
-    paintReplaceMaskPrompt: 'Du er i gang med at male på en maske. Tager du hjertet med over i Mal, bliver den erstattet.',
-    paintReplaceMaskConfirm: 'Erstat masken',
     paintOpenFailed: 'Mal kunne ikke åbnes. Tjek din forbindelse, genindlæs siden og prøv igen.',
     paintEngineLicences: 'Motorens licenser',
 
@@ -1752,13 +1742,6 @@ export const translations = {
     paintFrameHintFixed: 'The whole square is woven exactly as you painted it.',
     paintFrameHintFree: 'The motif inside the shape is kept; outside it the machine picks a woven pattern of its own. You can still paint in the band — it simply does not count.',
     paintShowMotif: 'Show the protected motif',
-    paintClearTitle: 'Clear the mask?',
-    paintClearPrompt: 'Everything you have painted goes, and the mask starts over with 5 × 5 checks. Undo brings it back.',
-    paintClearConfirm: 'Clear the mask',
-    paintReplaceTitle: 'Replace the mask?',
-    paintReplacePrompt: 'The picture replaces what you have painted.',
-    paintReplaceConfirm: 'Use the picture',
-    paintCancelAction: 'Cancel',
     paintSymmetry: 'Symmetry',
     paintSymmetryHint: 'Found in the mask and switched on; everything you paint is mirrored with it.',
     /** {panel} = the panel's heading, so two buttons on the page can be told apart */
@@ -1933,9 +1916,6 @@ export const translations = {
 
     // Paint mode (docs/redesign/PAINT.md): what Draw says about the second mode
     paintOnHeart: 'Paint on the heart',
-    paintReplaceMaskTitle: 'Replace the mask?',
-    paintReplaceMaskPrompt: 'You are painting on a mask right now. Taking this heart into Paint replaces it.',
-    paintReplaceMaskConfirm: 'Replace the mask',
     paintOpenFailed: 'Paint could not be opened. Check your connection, reload the page and try again.',
     paintEngineLicences: 'Engine licences',
 

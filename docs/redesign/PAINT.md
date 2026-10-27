@@ -63,8 +63,8 @@ rows moved in, so on a short viewport the column stops centring itself — `just
 scrolls from the top, with a fade over its bottom edge while there is more below it, because macOS draws nothing
 of an overlay scrollbar until a gesture starts):
 
-- Row of two buttons: `Importér billede` (outline, opens the dialog) and `Ryd` (ghost, goes back to the 5 × 5 board after a
-  confirm if the mask is not that board; uses the site `Modal`, no `confirm()`; one undo step).
+- Row of two buttons: `Importér billede` (outline, opens the dialog) and `Ryd` (ghost, goes back to the 5 × 5 board
+  without asking; one undo step, so Fortryd brings the painting back).
 - Panel "Værktøj": tools Pen, Fyld, Linje, Rektangel, Ellipse (key O, 2026-10-26: the ellipse inscribed in the
   rectangle the drag spans, along the strips as the rectangle is), Udtvær, Markér as 40px icon buttons (lucide:
   pencil, paint-bucket, minus (rotated 45°) or a simple line glyph, square, ellipse, square-dashed); a labelled brush-radius
@@ -322,13 +322,15 @@ Import dialog (`ImportImageDialog`, built on the site `Modal`, `column` layout, 
   "uden knæk" message. This is what the old generator page did (`d0150f8`, "Render source pixels with the same
   half-pixel convention as preprocessing"), and the half-pixel offset — the dialog counts pixel edges, the locator
   pixel centres — is the whole of the conversion.
-- Footer: `Annuller`, `Brug som maske` (primary). Using replaces the session mask (confirm via Modal if the current
-  mask has unsaved strokes), sets the suggested symmetries, closes the dialog.
+- Footer: `Annuller`, `Brug som maske` (primary). Using replaces the session mask without asking (one undo step), sets
+  the suggested symmetries, closes the dialog.
 
 Tegn additions:
 
 - "Handlinger" gets `Mal på hjertet` (outline, first in the list): rasterises the current heart into the session
-  mask (§4) and navigates to the paint route. If a mask with strokes already exists, ask first (Modal).
+  mask (§4) and navigates to the paint route without asking: the mask it replaces is put on Mal's undo history,
+  so Fortryd there brings it back. The header's Mal tab does the same (2026-10-26), except that a heart still as
+  Find snit found it leaves Mal as it was.
 - The top-bar mode switch (§1).
 
 ## 3. State: the editor session
@@ -616,7 +618,7 @@ All strings in `src/lib/i18n/translations.ts`, both languages, key prefix `paint
 `paintFoundSummary` with `{left}`, `{right}`, `{clearance}`, `{mismatch}`, `paintOpenInDraw`, `paintBackToMask`,
 `paintFailedTimeout`, `paintFailedNoSolution`, `paintFailedEngine`, `paintTryAgain`, `paintEmptyHint`,
 `paintTryStar`, `paintMaskPill`, `paintOnHeart` "Mal på hjertet", dialog keys `paintImportTitle`, `paintDrop`,
-`paintFormats`, `paintCorners*`, `paintColours*`, `paintUseAsMask`, `paintFoundSymmetry`, confirm texts, and the
+`paintFormats`, `paintCorners*`, `paintColours*`, `paintUseAsMask`, `paintFoundSymmetry`, and the
 tooltips for the disabled top-bar buttons). The old `src/lib/inverse/messages.ts` is deleted with the old page (§9);
 copy over only the phrases that are still shown. `translations.test.ts` fails on unused keys, so add keys as you use
 them.
@@ -739,9 +741,11 @@ exposed yet. Geometry and paper constraints still apply everywhere, including th
   count is a required part of the answer. The former advanced "Rammens felter" control has been removed.
   `substituteCheckerBand` and `solveTargetMask` remain only to reproduce the historical checker benchmarks.
 - **Ryd, an import and "Prøv stjernen" are one undo step each** (2026-10-26, the owner: "we need to have undo/redo"):
-  they record the mask as it was before replacing it, as a stroke does, rather than ending the history; Ryd's
-  confirmation says Fortryd brings the painting back. Fortryd and Gentag sit beside the paper swatches, and
-  Cmd/Ctrl+Z, Shift+Cmd/Ctrl+Z and Ctrl+Y work as everywhere on the site.
+  they record the mask as it was before replacing it, as a stroke does, rather than ending the history. Since
+  Fortryd brings the painting back, none of them asks first (2026-10-27, the owner), nor does "Mal på hjertet".
+  Fortryd and Gentag are labelled buttons on a row of their own under the paper swatches, where a visitor who
+  has just lost a painting finds them, and Cmd/Ctrl+Z, Shift+Cmd/Ctrl+Z and Ctrl+Y work as everywhere on the
+  site.
 - Changing "Kanten" **is an edit**, not only a setting: the region the rows fold over moves with the shape, so a
   change folds band paint away or stops folding motif paint. Mal records one undo step per gesture
   (`recordFrameFold`; the Størrelse slider and the canvas handle both say when a gesture begins, so a drag is one

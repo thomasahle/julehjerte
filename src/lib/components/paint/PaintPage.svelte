@@ -244,10 +244,6 @@
 	/** "Vis det beskyttede motiv": the outline over the found heart. */
 	let showMotif = $state(false);
 
-	/** A destructive step waiting for the visitor to say yes. */
-	let confirming = $state<'clear' | 'import' | null>(null);
-	let pendingImport: { mask: Mask; found: SymmetrySettings; source: string; design?: HeartDesign } | null = null;
-
 	/** Something that went wrong outside the search: a save, a PDF, the example. */
 	let notice = $state<string | null>(null);
 
@@ -259,8 +255,7 @@
 	});
 	/**
 	 * Still the board Mal starts on (see `defaultMask`): nothing painted yet, so
-	 * the hint shows, Ryd has nothing to undo, and an import or a reload loses
-	 * nothing.
+	 * the hint shows, Ryd has nothing to clear, and a reload loses nothing.
 	 */
 	let maskUntouched = $derived.by(() => {
 		void revision;
@@ -278,11 +273,11 @@
 	 *
 	 * The canvas listens on the window, and `Modal` stops nothing but Escape, so
 	 * the paint shortcuts have to stand down themselves: P and X would otherwise
-	 * change the tool behind the scrim, and Cmd/Ctrl+Z would undo the very mask the
-	 * Ryd or Erstat dialog is asking about. Pointer input is a separate question —
-	 * `disabled` answers that one — so this gates only the keys.
+	 * change the tool behind the scrim, and Cmd/Ctrl+Z would undo a stroke nobody
+	 * can see. Pointer input is a separate question — `disabled` answers that
+	 * one — so this gates only the keys.
 	 */
-	let dialogOpen = $derived(showHelp || showImport || confirming !== null);
+	let dialogOpen = $derived(showHelp || showImport);
 	/**
 	 * The found heart is on screen, so there is no mask under the pointer and the
 	 * left column can do nothing at all. It used to stay bright and clickable and
@@ -616,14 +611,11 @@
 		if (step) record(history, step);
 	}
 
-	function askToClear(): void {
+	// Ryd, an import and "Prøv stjernen" replace the mask without asking: the
+	// mask they replace is Fortryd away.
+	function clear(): void {
 		settle();
 		if (maskUntouched) return;
-		confirming = 'clear';
-	}
-
-	function doClear(): void {
-		confirming = null;
 		maskCanvas?.deselect();
 		rememberBeforeReplacing();
 		clearMask();
@@ -645,34 +637,6 @@
 	function openImport(): void {
 		settle();
 		showImport = true;
-	}
-
-	/** The dialog's answer. A mask with unsaved strokes is confirmed away first. */
-	function onImported(mask: Mask, found: SymmetrySettings, source = 'image'): void {
-		if (session.maskDirty && !maskUntouched) {
-			pendingImport = { mask, found, source };
-			confirming = 'import';
-			return;
-		}
-		useMask(mask, found, source);
-	}
-
-	function confirmImport(): void {
-		confirming = null;
-		if (!pendingImport) return;
-		if (pendingImport.design) useTemplate(pendingImport.design, pendingImport.mask, pendingImport.found);
-		else useMask(pendingImport.mask, pendingImport.found, pendingImport.source);
-		pendingImport = null;
-	}
-
-	/** A template picture's heart (the import dialog read it): confirmed like any import. */
-	function onImportedTemplate(design: HeartDesign, mask: Mask, found: SymmetrySettings): void {
-		if (session.maskDirty && !maskUntouched) {
-			pendingImport = { mask, found, source: 'template', design };
-			confirming = 'import';
-			return;
-		}
-		useTemplate(design, mask, found);
 	}
 
 	/**
@@ -724,7 +688,7 @@
 			const prepared = await prepareImage(decoded.input, { paperColors: paperPair(colors) });
 			const mask = maskFromPrepared(prepared);
 			session.status = 'idle';
-			onImported(mask, detectOn(mask), 'star.png');
+			useMask(mask, detectOn(mask), 'star.png');
 		} catch (err) {
 			console.error('Loading the star example failed', err);
 			session.status = 'idle';
@@ -1268,7 +1232,7 @@
 							onUndo={undo}
 							onRedo={redo}
 							onImport={openImport}
-							onClear={askToClear}
+							onClear={clear}
 							clearDisabled={maskUntouched}
 							disabled={busy || showingResult}
 						/>
@@ -1333,34 +1297,9 @@
 		open={showImport}
 		detect={detectOn}
 		onClose={() => (showImport = false)}
-		onUse={(mask, found) => onImported(mask, found)}
-		onUseTemplate={(design, mask, found) => onImportedTemplate(design, mask, found)}
+		onUse={(mask, found) => useMask(mask, found, 'image')}
+		onUseTemplate={useTemplate}
 	/>
-
-	<Modal
-		open={confirming !== null}
-		labelledBy="paint-confirm-title"
-		onClose={() => (confirming = null)}
-	>
-		<h2 id="paint-confirm-title" class="confirm-title">
-			{t(confirming === 'import' ? 'paintReplaceTitle' : 'paintClearTitle', lang)}
-		</h2>
-		<p class="confirm-text">
-			{t(confirming === 'import' ? 'paintReplacePrompt' : 'paintClearPrompt', lang)}
-		</p>
-		<div class="confirm-actions">
-			<button type="button" class="btn btn-sm btn-ghost" onclick={() => (confirming = null)}>
-				{t('paintCancelAction', lang)}
-			</button>
-			<button
-				type="button"
-				class="btn btn-sm btn-primary"
-				onclick={confirming === 'import' ? confirmImport : doClear}
-			>
-				{t(confirming === 'import' ? 'paintReplaceConfirm' : 'paintClearConfirm', lang)}
-			</button>
-		</div>
-	</Modal>
 
 	<Modal open={showHelp} labelledBy="paint-help-title" width="min(640px, 100%)" column onClose={closeHelp}>
 		<div class="help-header">
@@ -1717,24 +1656,6 @@
 		font-size: 12px;
 		font-weight: 600;
 		text-decoration: underline;
-	}
-
-	.confirm-title {
-		margin: 0 0 8px;
-		font-size: 20px;
-		color: var(--deep);
-	}
-
-	.confirm-text {
-		margin: 0 0 20px;
-		color: var(--ink);
-		line-height: 1.5;
-	}
-
-	.confirm-actions {
-		display: flex;
-		justify-content: flex-end;
-		gap: 8px;
 	}
 
 	.help-header {
