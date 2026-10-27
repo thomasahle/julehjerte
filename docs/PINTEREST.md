@@ -72,7 +72,8 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   Christmas rather than after Hjerte på hjerte, which is also in Hjerter.
   Fire stjerner went in the same day at day 34 (2026-11-24), between
   Puslespil and Permo-sol, so that it is out before Christmas and away from
-  the other Mønstre hearts.
+  the other Mønstre hearts. Hjerte i hjerte i hjerte followed at day 47
+  (2026-12-07), between Drageskæl and MOR & FAR, for the same reasons.
 - The feed holds the released items only (nothing future-dated), newest first,
   at most 30 (`PINTEREST_MAX_ITEMS`). When every heart is out, the feed stops
   growing: it does not cycle.

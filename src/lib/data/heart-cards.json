@@ -133,6 +133,13 @@
     },
     "difficulty": "hard"
   },
+  "hjerte-i-hjerte-i-hjerte": {
+    "name": "Hjerte i hjerte i hjerte",
+    "names": {
+      "en": "Heart in heart in heart"
+    },
+    "difficulty": "expert"
+  },
   "nemt-hjerte": {
     "name": "Nemt Hjerte",
     "names": {

@@ -514,6 +514,32 @@
     },
     "photo": null
   },
+  "hjerte-i-hjerte-i-hjerte": {
+    "name": "Hjerte i hjerte i hjerte",
+    "names": {
+      "en": "Heart in heart in heart"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-27",
+    "description": null,
+    "gridSize": {
+      "x": 7,
+      "y": 7
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
   "nemt-hjerte": {
     "name": "Nemt Hjerte",
     "names": {

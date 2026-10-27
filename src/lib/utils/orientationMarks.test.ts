@@ -26,7 +26,7 @@ import {
 const MARKED = [
 	'5star', 'alhambra', 'amy-weave-1', 'amy-weave-2', 'angel', 'boelgebrud', 'boelger',
 	'dagognat', 'david4', 'davidsstjerne-circ', 'fejlternet', 'fisk', 'fiskeskael', 'flower',
-	'flyvendegaes', 'god-jul', 'h4h2', 'hanefod', 'hermanngitter', 'hjerte-paa-hjerte',
+	'flyvendegaes', 'god-jul', 'h4h2', 'hanefod', 'hermanngitter', 'hjerte-i-hjerte-i-hjerte', 'hjerte-paa-hjerte',
 	'hvirvel', 'jul', 'jul-2026', 'jul-tern',
 	'juletrae', 'khatam', 'koelbuer', 'kogle', 'lilje1', 'lilje2', 'mor-far', 'mor-og-barn',
 	'nemt-hjerte', 'ni-hjerter-i-tern', 'origami', 'permo-cirkler', 'permo-draaber', 'permo-kroge',

@@ -66,7 +66,7 @@ export const PINTEREST_ORDER: readonly string[] = [
 	'h4h2', 'tak', 'alhambra', 'angel', 'squares', 'sun', 'ni-hjerter-i-tern',
 	'sildeben', 'snowflake', 'puslespil', 'fire-stjerner', 'permo-sol', 'koelbuer', 'nemt-hjerte',
 	'roserude', 'santa', 'hanefod', 'explosion', 'flyvendegaes', 'mor-og-barn',
-	'origami', 'nihon', 'drageskael', 'mor-far', 'dagognat', 'hermanngitter',
+	'origami', 'nihon', 'drageskael', 'hjerte-i-hjerte-i-hjerte', 'mor-far', 'dagognat', 'hermanngitter',
 	'lilje1', 'tragt', 'davidsstjerne-circ', 'boelgebrud', 'ball', 'glaskuppel',
 	'lilje2', 'hvirvel', 'david4', 'jul-2026', 'permo-kroge', 'fisk',
 	'permo-draaber', 'khatam', 'tulipan', 'permo-cirkler', 'fiskeskael', 'stjernerogkors',
