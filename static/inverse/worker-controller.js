@@ -136,7 +136,11 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
               if(typeof packet?.geometry==='string'&&!job.candidates.has(packet.geometry))job.candidates.set(packet.geometry,packet);
               return;
             }
-            if(message.type==='progress'){if(job.exact!=='running'||!job.drawn)progress(message.event);return;}
+            if(message.type==='progress'){
+              // The exact search alone in this worker (Avanceret): its drawing is what Stop finishes.
+              if(settings.exactRoute==='exact'&&typeof message.event?.geometry==='string'&&message.event.geometry.trim())job.drawing=message.event.geometry;
+              if(job.exact!=='running'||!job.drawn)progress(message.event);return;
+            }
             let held;
             if(message.type==='result')held={result:message.result};
             else if(message.type==='error')held={error:Object.assign(new Error(message.message),{code:message.code,report:message.report})};

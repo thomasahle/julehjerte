@@ -134,6 +134,20 @@ describe('the settings a search is run with', () => {
 		expect(engineSettings(on)).not.toHaveProperty('identicalSheets');
 	});
 
+	it('runs both searches side by side, or one alone, as Avanceret says', () => {
+		const run = (method?: 'both' | 'exact' | 'smooth') => solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY, ...(method ? { method } : {}) });
+		for (const both of [run(), run('both')]) {
+			expect(both).toMatchObject({ exactOutline: true, exactParallel: true });
+			expect(both).not.toHaveProperty('exactRoute');
+		}
+		// The exact search alone fails when it finds nothing; the fitter alone never waits for it.
+		expect(run('exact')).toMatchObject({ exactOutline: true, exactParallel: false, exactRoute: 'exact' });
+		expect(run('smooth')).toMatchObject({ exactOutline: false, exactParallel: false });
+		expect(run('smooth')).not.toHaveProperty('exactRoute');
+		expect(engineSettings(run('smooth')).exactOutline).toBe(false);
+		expect(defaultAdvanced().method).toBe('both');
+	});
+
 	it('prefers matching sheets without requiring or adding mask symmetry', () => {
 		const sym = solveSettings({ colors: COLORS, symmetry: { ...NO_SYMMETRY, lobes: 'sym' } });
 		expect(sym.preferMatchingSheets).toBe(true);

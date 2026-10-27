@@ -62,7 +62,7 @@ export type PaintStatus = 'idle' | 'importing' | 'searching' | 'done' | 'failed'
  * out of time, the mask has no weavable pattern (including one our grid cannot hold),
  * or the engine itself never loaded.
  */
-export type PaintErrorKind = 'timeout' | 'noSolution' | 'engine';
+export type PaintErrorKind = 'timeout' | 'noSolution' | 'noExact' | 'engine';
 export type PaintError = { kind: PaintErrorKind; detail?: string };
 
 /** A found heart and the numbers the panel reports: cuts per lobe, clearance, difference. */

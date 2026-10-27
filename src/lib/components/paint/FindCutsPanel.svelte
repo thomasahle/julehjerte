@@ -19,7 +19,8 @@
 		clampAdvanced,
 		ENGINE_GRACEFUL_STOP,
 		type AdvancedNumber,
-		type AdvancedSettings
+		type AdvancedSettings,
+		type SearchMethod
 	} from '$lib/inverse/engine';
 	import type {
 		AttemptState,
@@ -163,6 +164,7 @@
 	const FAILURES: Record<PaintError['kind'], TranslationKey> = {
 		timeout: 'paintFailedTimeout',
 		noSolution: 'paintFailedNoSolution',
+		noExact: 'paintFailedNoExact',
 		engine: 'paintFailedEngine'
 	};
 
@@ -500,6 +502,17 @@
 		<details class="advanced">
 			<summary>{tr('paintAdvanced')}</summary>
 			<label class="field">
+				<span>{tr('paintSearchMethod')}</span>
+				<select
+					value={advanced.method}
+					onchange={(e) => onAdvanced({ ...advanced, method: e.currentTarget.value as SearchMethod })}
+				>
+					<option value="both">{tr('paintMethodBoth')}</option>
+					<option value="exact">{tr('paintTemplateExact')}</option>
+					<option value="smooth">{tr('paintTemplateSmooth')}</option>
+				</select>
+			</label>
+			<label class="field">
 				<span>{tr('paintPaperWidth')}</span>
 				<input
 					type="number"
@@ -752,8 +765,22 @@
 		color: var(--ink);
 	}
 
-	.field input:focus {
+	.field input:focus,
+	.field select:focus {
 		border-color: var(--green);
+	}
+
+	/* The choice of templates reads as the numbers do, wide enough for its longest option. */
+	.field select {
+		height: 32px;
+		max-width: 60%;
+		padding: 4px 8px;
+		border: 1.5px solid var(--line);
+		border-radius: 8px;
+		background: var(--white);
+		font-family: inherit;
+		font-size: 13px;
+		color: var(--ink);
 	}
 
 	/* The two templates side by side, the one shown pressed. */

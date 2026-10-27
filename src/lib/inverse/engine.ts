@@ -182,10 +182,20 @@ export type FindSettings = {
 	minWidthMm?: number;
 	/** Prefer one template within 1 percentage point of error, independently of symmetry. */
 	matchingSheets?: boolean;
+	/** Which searches run: both side by side (the default), or one alone. */
+	method?: SearchMethod;
 };
 
 /**
- * What the "Avanceret" disclosure offers (PAINT.md §2 and §11): three knobs on
+ * Which templates a search looks for: the exact search's (cuts along the
+ * picture's own edges) and the fitter's (smoother cuts) side by side, the
+ * second offered as a choice, or one of them alone: the exact search without
+ * the fitter to fall back on, or the fitter without the exact search's wait.
+ */
+export type SearchMethod = 'both' | 'exact' | 'smooth';
+
+/**
+ * What the "Avanceret" disclosure offers (PAINT.md §2 and §11): four knobs on
  * the engine, and one on the target the engine is given.
  *
  * Everything else the engine can be told is either meaningless to a hobbyist or
@@ -195,6 +205,7 @@ export type AdvancedSettings = {
 	widthMm: number;
 	minWidthMm: number;
 	matchingSheets: boolean;
+	method: SearchMethod;
 };
 
 /** The settings in it that are numbers, which are the ones that have bounds. */
@@ -232,7 +243,8 @@ export function defaultAdvanced(): AdvancedSettings {
 	return {
 		widthMm: DEFAULT_WIDTH_MM,
 		minWidthMm: DEFAULT_MIN_WIDTH_MM,
-		matchingSheets: true
+		matchingSheets: true,
+		method: 'both'
 	};
 }
 
@@ -584,6 +596,7 @@ export function refineCorners(input: PixelsInput): Promise<DetectedCrops> {
  * key, read off the raw object by `core/engine.js`, and never reaches a solve.
  */
 export function solveSettings(settings: FindSettings): Record<string, unknown> {
+	const method = settings.method ?? 'both';
 	return {
 		...AUTOMATIC_PRESET,
 		width: clampAdvanced('widthMm', settings.widthMm ?? DEFAULT_WIDTH_MM),
@@ -594,9 +607,12 @@ export function solveSettings(settings: FindSettings): Record<string, unknown> {
 		// template stands whenever the export passes it; the fitter's only when
 		// it finds none (core/engine.js design). The two run side by side in
 		// two workers, each with its own time (worker-controller.js): a minute
-		// for the whole search.
-		exactOutline: true,
-		exactParallel: true,
+		// for the whole search. Chosen alone (`method`), the exact search runs
+		// in one worker and fails when it finds no template (exactRoute
+		// 'exact'), and the fitter runs as it did before the exact search.
+		exactOutline: method !== 'smooth',
+		exactParallel: method === 'both',
+		...(method === 'exact' ? { exactRoute: 'exact' } : {}),
 		// No synthetic cutting-error trials: the page never shows them, and on an
 		// exact template's many short curves twelve took up to 17 s of the minute.
 		trials: 0,

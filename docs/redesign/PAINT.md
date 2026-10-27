@@ -179,7 +179,9 @@ the column — is served by the same line.
 Right floating panel (340px, collapsible with the same "Skjul panel" control as Tegn):
 
 - Panel "Find snit": one sentence about the search ("Computeren leder efter de snit, der væver netop dit mønster."),
-  the primary button `Find snit`, a disclosure "Avanceret" with the engine settings that matter to a hobbyist: Papirets bredde (mm, default 100), Mindste strimmelbredde (mm, 2),
+  the primary button `Find snit`, a disclosure "Avanceret" with the engine settings that matter to a hobbyist: Skabelon (Begge slags,
+  the default: the exact search and the fitter side by side, the second offered as a choice; Præcis efter billedet: the exact search
+  alone, saying so when it finds none; Blødere snit: the fitter alone), Papirets bredde (mm, default 100), Mindste strimmelbredde (mm, 2),
   Foretræk samme skabelon til begge sider (checkbox, on by default independently of the symmetry rows), and a "Nulstil" link. Nothing else.
   The checkbox is a preference with an absolute one-percentage-point mask-error allowance, not a command to fold
   the mask. Import, symmetry changes and undo/redo preserve an explicit choice; Reset restores it to on.

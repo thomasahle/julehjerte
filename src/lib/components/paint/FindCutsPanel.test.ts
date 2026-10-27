@@ -99,6 +99,31 @@ describe('FindCutsPanel', () => {
 			} finally { panel.cleanup(); }
 		});
 	}
+	for (const lang of ['da', 'en'] as const) {
+		it(`offers both kinds of template, or one alone, under Avanceret (${lang})`, () => {
+			const changed = vi.fn();
+			const panel = render({ lang, status: 'idle', showingResult: false, result: null, onAdvanced: changed });
+			try {
+				const select = panel.root.querySelector<HTMLSelectElement>('.advanced select')!;
+				expect(select.value).toBe('both');
+				expect([...select.options].map((o) => o.textContent)).toEqual(lang === 'en'
+					? ['Both kinds', 'Exactly as the picture', 'Smoother cuts']
+					: ['Begge slags', 'Præcis efter billedet', 'Blødere snit']);
+				select.value = 'exact';
+				select.dispatchEvent(new Event('change', { bubbles: true }));
+				expect(changed).toHaveBeenCalledWith({ ...defaultAdvanced(), method: 'exact' });
+			} finally { panel.cleanup(); }
+		});
+	}
+
+	it('says what to choose when the exact search alone found no template', () => {
+		const panel = render({ lang: 'en', status: 'failed', showingResult: false, result: null, error: { kind: 'noExact' } });
+		try {
+			expect(panel.text).toContain('No template exactly as the picture was found');
+			expect(panel.text).toContain('Both kinds');
+		} finally { panel.cleanup(); }
+	});
+
 	for (const lang of ['da', 'en'] as const) for (const free of [false, true]) {
 		it(`shows a one-cut result without inventing clearance (${lang}, ${free ? 'free' : 'fixed'} border)`, () => {
 			const panel = render({ lang, result: result({ cuts: [1, 1], clearanceMm: null, ...(free ? { motifMismatch: 0.004, borderChange: 0.12 } : {}) }) });

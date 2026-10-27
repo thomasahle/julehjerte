@@ -247,3 +247,14 @@ test('side by side, an exact search trailing the fitter\'s answer is ended at it
   await h.send(4,'prepare',{input});assert.equal(exact.terminated,1);
   h.reply(exact,3,'result',{result:exactValue});assert.equal(h.messages.filter(m=>m.type==='alternative'&&m.result).length,0);
 });
+
+test('the exact search alone runs in one worker, and Stop finishes its drawing',async()=>{
+  const drawn=[];
+  const h=harness({finalizeExact:(target,cfg,geometry)=>{drawn.push(geometry);return exactValue;},finalize:async()=>{throw new Error('no fitter checkpoints in this mode');}});
+  await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:{...config,exactOutline:true,exactRoute:'exact'}});
+  assert.equal(h.workers.length,1);assert.equal(h.workers[0].sent[0].settings.exactRoute,'exact');
+  h.reply(h.workers[0],2,'progress',{event:{stage:'exactOutline',geometry:packet.geometry}});
+  assert.equal(h.messages.at(-1).event.geometry,packet.geometry);
+  await h.send(2,'stop');await solving;
+  assert.deepEqual(drawn,[packet.geometry]);assert.deepEqual(h.messages.at(-1).result,exactValue);
+});

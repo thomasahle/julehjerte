@@ -689,6 +689,8 @@
 	function classify(err: unknown): PaintError {
 		if (err instanceof CutGeometryError) return { kind: 'noSolution', detail: err.key };
 		if (err instanceof EngineError) {
+			// The exact search alone (Avanceret) found no template: say so, and what else to choose.
+			if (err.code === 'NO_EXACT_TEMPLATE') return { kind: 'noExact' };
 			if (searchTimedOut(err.report)) return { kind: 'timeout' };
 			// A solve that failed says why in its report; a worker that never loaded
 			// has none, and that is a different thing to tell the visitor.
@@ -816,7 +818,8 @@
 					symmetry: session.symmetry,
 					widthMm: advanced.widthMm,
 					minWidthMm: advanced.minWidthMm,
-					matchingSheets: advanced.matchingSheets
+					matchingSheets: advanced.matchingSheets,
+					method: advanced.method
 				},
 				onProgress,
 				(other, pending) => {
