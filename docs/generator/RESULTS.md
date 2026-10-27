@@ -841,7 +841,9 @@ three places to none), and the angel at 45 and 48%, hard to cut, is cut cleanly
 Four more motifs solved later (the snowman, bauble, wreath and penguin: 26
 recipes for 13 more topologies) make 36 more sizes better and none worse:
 places that may tear there go from 86 to 16, and the wreath at 45–69%, hard
-to cut, is cut cleanly.
+to cut, is cut cleanly. The mitten's (8 recipes for 5 more) make its own
+hearts at 72–81% and 93–99% better, with half the hidden turns and none of
+the 13 places that may tear there.
 
 On nine strips 10 of 21 motifs solved (the star, angel, bell, gingerbread
 man, snowman, mitten, bauble, wreath, owl and penguin), giving 27 recipes for
