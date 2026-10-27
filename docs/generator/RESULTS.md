@@ -862,6 +862,12 @@ bird, fish, cow and flower at 71–77%: seven of their sizes better, the cow
 at 72% no longer hard to cut). None got worse; the holly (for the polar
 star's topology), squirrel, santa hat and the candy on seven strips did not
 solve.
+A third round added the owl on three strips at sizes its first search had
+not tried (45–85%): both lobes share one template at nine sizes where they
+had two, and at 45% two places may tear where six did. The holly, heart,
+flower and candy on three strips and the circle, diamond and santa hat on
+nine did not solve, and the flower's one solve on nine did not beat the
+generator's heart.
 
 ### The circle, its own mirror image
 
