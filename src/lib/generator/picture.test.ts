@@ -175,10 +175,9 @@ describe('the picture drawn before the cuts are found', () => {
 	});
 
 	it('keeps the board\'s squares their own colours where the circle nears the paper\'s edges, as the cuts do', () => {
-		// On three strips at 86% the line beside a corner square would meet the
-		// circle 0.7 short of the edge; the circle keeps the cutting clearance
-		// there, and the square beyond the line keeps its own colour, not the
-		// corner's, up to the line.
+		// On three strips at 86% the line beside a corner square meets the
+		// circle 0.7 short of the edge: the square beyond the line keeps its own
+		// colour, not the corner's, up to the line.
 		const request: GeneratorRequest = { mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', board: 3, scale: .86 };
 		const n = 1000, mask = rasterizeDesign(generate(request).design, n).data, { rings } = picture(request)!;
 		const drawn = (p: [number, number]) => rings.reduce((n, ring) => n ^ Number(inside(p, ring as Ring)), 0);

@@ -7,7 +7,7 @@ import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSide } from './state';
 import { templateVariants } from './templates';
-import { inside, uprightToSheet, distance, BOARD_STUB, boardFill, boardLines, boardRangeLines, boardRangePattern, boardRanges, boardWholeRadius, boardWholeTop, layerInset, withVisibleIslands, ConstructionError, WEDGES, type Point, type Ring } from './geometry';
+import { inside, uprightToSheet, distance, boardFill, boardLines, boardRangeLines, boardRangePattern, boardRanges, boardWholeRadius, boardWholeTop, layerInset, withVisibleIslands, ConstructionError, WEDGES, type Point, type Ring } from './geometry';
 import { generateTextGrid } from './textGrid';
 import { geometryKey } from './cache';
 import { MOTIF, boardRadius, boardSetting, boardSteps, motifChoices, motifPatterns, squareChoices } from './boardMotif';
@@ -556,11 +556,10 @@ describe('frames from real hearts', () => {
   expect(inner.length).toBe(8);
   for (const a of inner) expect(Math.abs(a - 50), `${a}`).toBeCloseTo(Math.sqrt(52 ** 2 - 50 ** 2), 1);
  });
- slow('brings the squares to points where the circle meets the paper\'s edges, not to stubs of line', () => {
-  // On three strips a line lies inside the circle at 88%, the first size past
-  // where it would meet it short of the edge (see the test below), and at
-  // 100%, where the circle meets the edges halfway along the corner squares;
-  // on five, the middle lines at 99%.
+ slow('brings the squares to points where the circle meets the paper\'s edges past a line', () => {
+  // On three strips a line lies inside the circle at 88%, the first size
+  // where the circle meets the edge past it, and at 100%, where it meets the
+  // edges halfway along the corner squares; on five, the middle lines at 99%.
   expect(Math.sqrt(boardRadius(1, 3).radius ** 2 - 50 ** 2)).toBeCloseTo(100 / 3, 6);
   for (const [board, scale, outer] of [[3, .88, []], [3, 1, []], [5, .99, [20, 80]]] as const) {
    const { design, hardToCut } = generate({ mode: 'figure', name: 'House', contours: houseMotif.contours as Ring[], colors, style: 'board', board, scale });
@@ -578,17 +577,6 @@ describe('frames from real hearts', () => {
    for (const a of inner) expect(Math.abs(a - 50), `${board} ${scale} ${a}`).toBeCloseTo(Math.sqrt(boardRadius(scale, board).radius ** 2 - 50 ** 2), 1);
   }
  });
- it('keeps a line from meeting the circle within the cutting clearance of an edge, at every size', () => {
-  // There a line would end in a stub, or the square beyond it take the
-  // colour of the one before as far as the circle reaches the edge, the two
-  // squares of a side all but joined (five strips at 97% did): the circle
-  // keeps the clearance until a size takes it past the line.
-  for (const board of [3, 5, 7, 9]) for (let percent = 45; percent <= 100; percent++) {
-   const { radius } = boardRadius(percent / 100, board);
-   for (const line of boardLines(board)) if (radius > line && radius < Math.hypot(line, 50))
-    expect(50 - Math.sqrt(radius ** 2 - line ** 2), `${board} ${percent} ${line}`).toBeGreaterThanOrEqual(BOARD_STUB);
-  }
- });
  it('grows the circle without jumps, on every board', () => {
   // From the smallest to the largest, the circle and the motif in it never
   // shrink, and the circle steps by little more than the step over the
@@ -601,11 +589,6 @@ describe('frames from real hearts', () => {
   // with the circle, but grows on evenly (see `boardFill`).
   // Each step takes a percent of the slider, so on nine strips, with the most
   // ranges, the circle grows a little faster from one percent to the next.
-  // Over the radii where a line would meet it within the cutting clearance of
-  // an edge it steps at once, from short of them (see the test below).
-  const clearance = (last: number, radius: number) => boardLines(9).concat(boardLines(7), boardLines(5), boardLines(3))
-   .filter(line => last <= Math.hypot(line, 50 - BOARD_STUB) && radius >= Math.hypot(line, 50))
-   .reduce((most, line) => Math.max(most, Math.hypot(line, 50) + .1 - Math.hypot(line, 50 - BOARD_STUB)), 0);
   for (const [board, largest, step, growth] of [[3, boardRanges(3)[0][1], 0, 1.25], [5, 52, 0, 1.25], [7, boardRanges(7).at(-1)![1], 3.1, 1.25], [9, boardRanges(9).at(-1)![1], 4.7, 1.45]]) {
    const ranges = boardRanges(board), past = ranges.filter((range, i) => ranges[i - 1]?.[1] < range[0]
     && (boardRangePattern(range) || boardRangeLines(range, board).length < boardLines(board).length));
@@ -616,13 +599,10 @@ describe('frames from real hearts', () => {
     expect(boardFill(radius, board) - boardFill(last, board), `${board} ${percent}`).toBeGreaterThanOrEqual(0);
     const onto = past.find(range => radius === range[0]);
     if (onto) {
-     // From the previous range's end, or short of it where a line would meet
-     // the circle there within the cutting clearance of an edge.
-     const end = ranges[ranges.indexOf(onto) - 1][1], stub = boardLines(board).find(line => end > line && end < Math.hypot(line, 50) && 50 - Math.sqrt(end ** 2 - line ** 2) < BOARD_STUB);
-     expect(last, `${board}`).toBeCloseTo(stub === undefined ? end : Math.hypot(stub, 50 - BOARD_STUB) - .01, 9);
+     expect(last, `${board}`).toBeCloseTo(ranges[ranges.indexOf(onto) - 1][1], 9);
      expect(radius - last, `${board}`).toBeLessThan(step);
      expect(boardFill(radius, board) - boardFill(last, board), `${board} ${percent}`).toBeLessThan(2.5);
-    } else expect(radius - last, `${board} ${percent}`).toBeLessThanOrEqual(growth + clearance(last, radius));
+    } else expect(radius - last, `${board} ${percent}`).toBeLessThanOrEqual(growth);
     last = radius;
    }
    expect(last, `${board}`).toBe(largest);

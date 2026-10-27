@@ -2355,11 +2355,6 @@ export function boardWholeTop(strips: number): number {
 	}
 	return low;
 }
-/** The shortest stretch a board line keeps between the circle and an edge of
- * the paper, the cutting clearance: the circles step over the radii where one
- * would keep less (see `boardRadius`), to where the circle meets the edge past
- * the line and the square beyond it comes to a point. */
-export const BOARD_STUB = 1.5;
 /** The radii on the board of five strips, the frame's own (see `boardRanges`). */
 export const BOARD_RADII: readonly (readonly [number, number])[] = boardRanges(5);
 
