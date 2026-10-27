@@ -292,7 +292,7 @@ export const translations = {
     savedToMyHearts: 'Gemt i Mine hjerter',
     sharedLinkInvalid: 'Linket indeholder ikke et gyldigt hjerte.',
     viewHeart: 'Hjerte',
-    photoAlt: 'Foto af det færdige hjerte',
+    photoAlt: 'Foto af det færdige hjerte: {name}',
     /** {n} = the grid, already formatted as "3 × 3" by formatStrips() */
     stripsCount: '{n} striber',
     symmetryOneTemplate: 'Spejlsymmetri – én skabelon til begge sider',
@@ -1392,7 +1392,7 @@ export const translations = {
     savedToMyHearts: 'Saved to My hearts',
     sharedLinkInvalid: 'This link does not contain a valid heart.',
     viewHeart: 'Heart',
-    photoAlt: 'Photo of the finished heart',
+    photoAlt: 'Photo of the finished heart: {name}',
     /** {n} = the grid, already formatted as "3 × 3" by formatStrips() */
     stripsCount: '{n} strips',
     symmetryOneTemplate: 'Mirror symmetry – one template for both sides',

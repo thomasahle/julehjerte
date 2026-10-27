@@ -124,6 +124,9 @@ function authorPersons(author: string | null, authorUrl: string | null): JsonLd[
 	}));
 }
 
+/** The HowTo's node id, so the page's WebPage can name it as its main entity. */
+const howToId = (url: string) => `${url}#howto`;
+
 /**
  * A gallery heart page's structured data: a schema.org HowTo for making that
  * heart. The steps are the guide's three stages, in the guide's own words, each
@@ -140,6 +143,7 @@ export function heartHowToJsonLd(heart: {
 	lang: Language;
 }): JsonLd {
 	const { id, lang } = heart;
+	const url = `${SITE_URL}${heartPath(id, lang)}`;
 	const guide = `${SITE_URL}${ROUTES.howTo[lang]}`;
 	const step = (name: string, text: string, anchor: string) => ({
 		'@type': 'HowToStep',
@@ -151,9 +155,10 @@ export function heartHowToJsonLd(heart: {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'HowTo',
+		'@id': howToId(url),
 		name: heart.name,
 		description: heart.description,
-		url: `${SITE_URL}${heartPath(id, lang)}`,
+		url,
 		inLanguage: lang,
 		image: [
 			{
@@ -172,6 +177,32 @@ export function heartHowToJsonLd(heart: {
 			step(t('guideFinishTitle', lang), t('guideFinishText', lang), 'finish-heading')
 		],
 		...(author.length ? { author: author.length === 1 ? author[0] : author } : {})
+	};
+}
+
+/**
+ * A gallery heart page's other structured data: the page itself, a schema.org
+ * WebPage whose primary image is the square picture and whose main entity is
+ * the HowTo (heartHowToJsonLd). These are two of the ways Google lets a page
+ * say which picture its search result should show.
+ */
+export function heartWebPageJsonLd(heart: { id: string; name: string; lang: Language }): JsonLd {
+	const { id, lang } = heart;
+	const url = `${SITE_URL}${heartPath(id, lang)}`;
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'WebPage',
+		'@id': url,
+		url,
+		name: heartPageTitle(id, heart.name, lang),
+		inLanguage: lang,
+		primaryImageOfPage: {
+			'@type': 'ImageObject',
+			url: heartImageUrl(id),
+			width: HEART_IMAGE_SIZE,
+			height: HEART_IMAGE_SIZE
+		},
+		mainEntity: { '@id': howToId(url) }
 	};
 }
 

@@ -1,9 +1,10 @@
 /**
  * What a search engine reads on a gallery heart's page, rendered from the
- * page's own load data: one ld+json script with the HowTo, the robots
- * directive that allows a large image preview, and a real <img> of the heart's
- * square picture in the "Hjerte" thumbnail, beside the inline SVG it lies over.
- * A heart that is no gallery heart gets none of them.
+ * page's own load data: ld+json scripts with the HowTo and the WebPage that
+ * names the square picture as its primary image, the robots directive that
+ * allows a large image preview, a real <img> of the heart's square picture in
+ * the "Hjerte" thumbnail, beside the inline SVG it lies over, and alt text on
+ * the photo's thumbnail. A heart that is no gallery heart gets none of them.
  */
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, unmount, type Component } from 'svelte';
@@ -68,9 +69,11 @@ describe('heart page search appearance', () => {
 	])('writes the HowTo, the robots directive and the image (lang %s)', async (lang, inLanguage) => {
 		const target = await render('jul', lang);
 		const scripts = ldJson();
-		expect(scripts).toHaveLength(1);
+		expect(scripts).toHaveLength(2);
 		expect(scripts[0]).toMatchObject({ '@type': 'HowTo', name: 'JUL', inLanguage });
 		expect(scripts[0].image[0].url).toBe('https://juleflet.dk/og/hearts/jul.png');
+		expect(scripts[1]).toMatchObject({ '@type': 'WebPage', inLanguage, mainEntity: { '@id': scripts[0]['@id'] } });
+		expect(scripts[1].primaryImageOfPage.url).toBe('https://juleflet.dk/og/hearts/jul.png');
 		expect(scripts[0].description).toBe(
 			document.head.querySelector('meta[name="description"]')!.getAttribute('content')
 		);
@@ -84,6 +87,16 @@ describe('heart page search appearance', () => {
 		expect(img.getAttribute('alt')).toContain('JUL');
 		// The inline SVG stays under it for the colourful mode and other pairs.
 		expect(img.closest('.thumb')!.querySelector(':scope > svg')).not.toBeNull();
+	});
+
+	it.each([
+		[undefined, 'Foto af det færdige hjerte: Femstjerne'],
+		['en', 'Photo of the finished heart: Five-pointed star']
+	])("names the heart in its photo's alt text (lang %s)", async (lang, alt) => {
+		const target = await render('5star', lang);
+		const img = target.querySelector<HTMLImageElement>('img.thumb-photo')!;
+		expect(img.getAttribute('src')).toBe('/hearts/photos/5star.jpg');
+		expect(img.getAttribute('alt')).toBe(alt);
 	});
 
 	it('gives a heart that is no gallery heart neither', async () => {

@@ -2,6 +2,7 @@ import { SITE_URL } from '$lib/config';
 import { ALL_HEART_IDS } from '$lib/data/categories';
 import { ROUTES, heartPath, type RouteKey } from '$lib/i18n/routes';
 import { heartImageUrl } from '$lib/seo';
+import { readLastModified } from '$lib/server/lastModified';
 import type { RequestHandler } from './$types';
 
 export const prerender = true;
@@ -26,35 +27,39 @@ const staticPages: { key: RouteKey; priority: string }[] = [
 ];
 
 export const GET: RequestHandler = async () => {
+	// A heart page last changed when its heart did, the front page when the
+	// gallery did. The other pages get no date: what changes them is code
+	// shared by every page, so no date would say more than the build date,
+	// which is the same for every page and tells a search engine nothing.
+	const dates = readLastModified();
+
 	// One entry per page, carrying both language variants of that page.
 	const pages = [
 		...staticPages.map(({ key, priority }) => ({
 			da: ROUTES[key].da,
 			en: ROUTES[key].en,
 			priority,
+			lastmod: key === 'home' ? (dates?.gallery ?? null) : null,
 			images: key === 'home' ? ALL_HEART_IDS.slice(0, FRONT_PAGE_SITEMAP_IMAGES).map(heartImageUrl) : []
 		})),
 		...ALL_HEART_IDS.map((heartId) => ({
 			da: heartPath(heartId, 'da'),
 			en: heartPath(heartId, 'en'),
 			priority: '0.6',
+			lastmod: dates?.hearts.get(heartId) ?? null,
 			// The square picture of the heart ($lib/heartImage), on both language variants.
 			images: [heartImageUrl(heartId)]
 		}))
 	];
 
-	// The site is prerendered, so the build date is the last time any page could have changed.
-	const lastmod = new Date().toISOString().slice(0, 10);
-
 	// One <url> per language variant; both variants list the same da/en/x-default alternates.
-	const urls = pages.flatMap(({ da, en, priority, images }) => {
+	const urls = pages.flatMap(({ da, en, priority, lastmod, images }) => {
 		const daUrl = `${SITE_URL}${da}`;
 		const enUrl = `${SITE_URL}${en}`;
 		return [daUrl, enUrl].map(
 			(loc) => `  <url>
     <loc>${loc}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <priority>${priority}</priority>
+${lastmod ? `    <lastmod>${lastmod}</lastmod>\n` : ''}    <priority>${priority}</priority>
     <xhtml:link rel="alternate" hreflang="da" href="${daUrl}" />
     <xhtml:link rel="alternate" hreflang="en" href="${enUrl}" />
     <xhtml:link rel="alternate" hreflang="x-default" href="${daUrl}" />

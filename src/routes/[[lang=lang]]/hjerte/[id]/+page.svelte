@@ -38,7 +38,7 @@
     SITE_NAME,
     SITE_URL,
   } from "$lib/config";
-  import { ROBOTS_INDEX, heartHowToJsonLd, heartMetaDescription, heartPageTitle, jsonLdScript, socialImage } from "$lib/seo";
+  import { ROBOTS_INDEX, heartHowToJsonLd, heartMetaDescription, heartPageTitle, heartWebPageJsonLd, jsonLdScript, socialImage } from "$lib/seo";
   import { langFromParam, stripsLabel as formatStrips, t } from "$lib/i18n";
   import { slugify } from "$lib/utils/slug";
   import { editorHref, heartPath, homeAnchorHref, href as routeHref } from "$lib/i18n/routes";
@@ -172,7 +172,9 @@
   });
 
   // Photo of the finished heart (gallery hearts only; resolved at build time).
-  let photo = $derived(isUserCreated ? null : (meta?.photo ?? null));
+  let photo = $derived(
+    !isUserCreated && meta?.photo && info ? { ...meta.photo, alt: t("photoAlt", lang, { name: info.name }) } : null,
+  );
 
   // A gallery heart's paragraph is written in both languages and resolved in +page.ts.
   // Anything else — a heart the visitor drew or one shared by link — shows whatever
@@ -202,8 +204,9 @@
   let ogImage = $derived(socialImage(lang, meta ? heartId : undefined));
   let ogImageAlt = $derived(meta ? t("heartSocialImageAlt", lang, { name: info?.name ?? "" }) : t("socialImageAlt", lang));
   // A gallery heart's page is indexed and gets structured data (a schema.org
-  // HowTo whose first image is the square picture, $lib/heartImage); a heart
-  // that only lives in a browser has neither.
+  // HowTo whose first image is the square picture, $lib/heartImage, and the
+  // WebPage naming that picture as its primary image); a heart that only lives
+  // in a browser has neither.
   let isGalleryPage = $derived(meta !== null && !isShared && !notFound);
   let jsonLd = $derived(
     isGalleryPage && meta && info
@@ -216,7 +219,7 @@
             authorUrl: meta.authorUrl,
             lang,
           }),
-        )
+        ) + jsonLdScript(heartWebPageJsonLd({ id: heartId, name: info.name, lang }))
       : "",
   );
 

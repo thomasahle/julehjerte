@@ -39,7 +39,7 @@
 		/** Null while a user/shared heart is still being read in the browser. */
 		design: HeartDesign | null;
 		/** Photo of the finished heart, if this gallery heart has one. */
-		photo?: { src: string; width: number; height: number } | null;
+		photo?: { src: string; width: number; height: number; alt: string } | null;
 		/** False when the lobes need one template each. */
 		sharedTemplate?: boolean;
 		lang: Language;
@@ -93,7 +93,7 @@
 				height={photo.height}
 				loading="lazy"
 				decoding="async"
-				alt={t('photoAlt', lang)}
+				alt={photo.alt}
 			/>
 		</div>
 	{:else}
@@ -148,7 +148,9 @@
 						</span>
 					{/if}
 				{:else if v.id === 'photo' && photo}
-					<img class="thumb-photo" src={photo.src} alt="" loading="lazy" decoding="async" />
+					<!-- Alt text for search engines: until the photo is chosen, this
+					     is the only <img> of it on the page. -->
+					<img class="thumb-photo" src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
 				{:else if design}
 					<TemplatePreview {design} lobe={v.id === 'right' ? 'right' : 'left'} size={200} marks={false} />
 				{/if}

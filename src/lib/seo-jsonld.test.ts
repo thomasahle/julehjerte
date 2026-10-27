@@ -1,6 +1,6 @@
 /**
  * The structured data the heart pages and the front page write
- * ($lib/seo heartHowToJsonLd, frontPageJsonLd, jsonLdScript): parseable JSON in
+ * ($lib/seo heartHowToJsonLd, heartWebPageJsonLd, frontPageJsonLd, jsonLdScript): parseable JSON in
  * one script element, the schema.org fields search engines need, absolute
  * URLs, and no way for a string to close the script element.
  */
@@ -10,7 +10,14 @@ import { ALL_HEART_IDS } from '$lib/data/categories';
 import { SITE_URL } from '$lib/config';
 import type { Language } from '$lib/i18n';
 import { heartName } from '$lib/utils/heartName';
-import { FRONT_PAGE_SOCIAL_IMAGE, frontPageJsonLd, heartHowToJsonLd, jsonLdScript } from './seo';
+import {
+	FRONT_PAGE_SOCIAL_IMAGE,
+	frontPageJsonLd,
+	heartHowToJsonLd,
+	heartPageTitle,
+	heartWebPageJsonLd,
+	jsonLdScript
+} from './seo';
 
 type Meta = { name: string; names?: { da?: string; en?: string }; author: string | null; authorUrl: string | null };
 const META = heartMeta as unknown as Record<string, Meta>;
@@ -133,6 +140,30 @@ describe('heartHowToJsonLd', () => {
 			{ '@type': 'Person', name: 'Thomas Ahle' },
 			{ '@type': 'Person', name: 'Claude' }
 		]);
+	});
+});
+
+describe('heartWebPageJsonLd', () => {
+	it.each(LANGS)('names the square picture as the primary image and the HowTo as the main entity (%s)', (lang) => {
+		for (const id of ALL_HEART_IDS) {
+			const name = heartName(META[id], lang);
+			const page = parse(jsonLdScript(heartWebPageJsonLd({ id, name, lang })));
+			const recipe = howTo(id, lang);
+			expect(page['@context']).toBe('https://schema.org');
+			expect(page['@type']).toBe('WebPage');
+			expect(page.url).toBe(recipe.url);
+			expect(page.inLanguage).toBe(lang);
+			expect(page.name).toBe(heartPageTitle(id, name, lang));
+			expect(page.primaryImageOfPage).toEqual({
+				'@type': 'ImageObject',
+				url: `${SITE_URL}/og/hearts/${id}.png`,
+				width: 800,
+				height: 800
+			});
+			expect(page.mainEntity).toEqual({ '@id': recipe['@id'] });
+			expect(recipe['@id']).toMatch(/^https:\/\/juleflet\.dk\//);
+			expect(recipe['@id']).not.toBe(page['@id']);
+		}
 	});
 });
 
