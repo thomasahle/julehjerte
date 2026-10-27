@@ -579,8 +579,6 @@ export const translations = {
     /** {size} = celler pr. side af masken */
     paintCanvasLabel: 'Masken som hjerte, {size} × {size} celler i to papirfarver',
     paintCanvasEmptyLabel: 'Tomt hjerte uden maske',
-    paintEmptyHint: 'Mal med musen eller fingeren – eller importér et billede, så fyldes masken fra fotoet.',
-    paintTryStar: 'Prøv stjernen',
     paintImportImage: 'Importér billede',
     paintClear: 'Ryd',
     paintTools: 'Værktøj',
@@ -1675,8 +1673,6 @@ export const translations = {
     /** {size} = cells per side of the mask */
     paintCanvasLabel: 'The mask as a heart, {size} × {size} cells in two paper colours',
     paintCanvasEmptyLabel: 'An empty heart with no mask',
-    paintEmptyHint: 'Paint with the mouse or your finger – or import a picture and the mask is filled from the photo.',
-    paintTryStar: 'Try the star',
     paintImportImage: 'Import picture',
     paintClear: 'Clear',
     paintTools: 'Tools',

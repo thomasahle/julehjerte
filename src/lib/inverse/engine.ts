@@ -496,7 +496,7 @@ export function prepareMask(
 
 /**
  * Turn a picture into the engine's two-colour target: the import dialog's
- * preview and its "Brug som maske", and "Prøv stjernen" on the empty page.
+ * preview and its "Brug som maske".
  *
  * Only the keys preparation reads are sent. The solve settings (time limit,
  * clearances, matching sheets) belong to Find snit and are none of this call's

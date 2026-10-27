@@ -13,7 +13,6 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
 	import { goto, replaceState } from '$app/navigation';
-	import { base } from '$app/paths';
 	import CanvasBackdrop from '$lib/components/editor/CanvasBackdrop.svelte';
 	import Modal from '$lib/components/Modal.svelte';
 	import PageHeader from '$lib/components/PageHeader.svelte';
@@ -24,8 +23,7 @@
 		CloseIcon,
 		DownloadIcon,
 		HelpIcon,
-		SaveIcon,
-		StarIcon
+		SaveIcon
 	} from '$lib/components/icons';
 	import FrameOutline from './FrameOutline.svelte';
 	import FramePanel from './FramePanel.svelte';
@@ -89,13 +87,10 @@
 		type PaintTool,
 		type SmudgeMode
 	} from '$lib/paint/toolset';
-	import { decodeImageFile, maskFromPrepared, type DecodedImage } from '$lib/paint/importImage';
 	import {
 		cancel as cancelEngine,
 		defaultAdvanced,
 		findCuts,
-		paperPair,
-		prepareImage,
 		prepareMask,
 		useBest as useBestResult,
 		type AdvancedSettings,
@@ -255,7 +250,7 @@
 	});
 	/**
 	 * Still the board Mal starts on (see `defaultMask`): nothing painted yet, so
-	 * the hint shows, Ryd has nothing to clear, and a reload loses nothing.
+	 * Ryd has nothing to clear and a reload loses nothing.
 	 */
 	let maskUntouched = $derived.by(() => {
 		void revision;
@@ -575,9 +570,9 @@
 	 *
 	 * With a free band the band is about to be replaced by a woven pattern, so its
 	 * colours must not decide whether the picture is symmetric (PAINT.md §11).
-	 * Every mask that arrives is judged here — "Prøv stjernen" and the import
-	 * dialog alike, which is why the dialog is handed this function rather than
-	 * calling `detectSymmetry` itself: a photo crop's corners are exactly the part
+	 * Every mask that arrives from the import dialog is judged here, which is
+	 * why the dialog is handed this function rather than calling
+	 * `detectSymmetry` itself: a photo crop's corners are exactly the part
 	 * a free band throws away, so they must not decide the rows either.
 	 */
 	function detectOn(mask: Mask): SymmetrySettings {
@@ -602,17 +597,17 @@
 	// -------------------------------------------------------- replacing the mask
 
 	/**
-	 * The mask as it was, kept for Fortryd before Ryd, an import or "Prøv
-	 * stjernen" replaces it: a whole new mask is one undo step, as a stroke is,
-	 * rather than the end of the history.
+	 * The mask as it was, kept for Fortryd before Ryd or an import replaces it:
+	 * a whole new mask is one undo step, as a stroke is, rather than the end of
+	 * the history.
 	 */
 	function rememberBeforeReplacing(): void {
 		const step = currentStep();
 		if (step) record(history, step);
 	}
 
-	// Ryd, an import and "Prøv stjernen" replace the mask without asking: the
-	// mask they replace is Fortryd away.
+	// Ryd and an import replace the mask without asking: the mask they replace
+	// is Fortryd away.
 	function clear(): void {
 		settle();
 		if (maskUntouched) return;
@@ -665,39 +660,6 @@
 		session.status = 'done';
 		honoured = null;
 		showingResult = true;
-	}
-
-	/**
-	 * "Prøv stjernen": the example picture, through the very path the import
-	 * dialog uses, so the two cannot behave differently.
-	 */
-	async function tryStar(): Promise<void> {
-		if (busy) return;
-		settle();
-		session.status = 'importing';
-		notice = null;
-		let decoded: DecodedImage | null = null;
-		try {
-			const response = await fetch(`${base}/inverse/examples/star.png`);
-			if (!response.ok) throw new Error(`star.png: ${response.status}`);
-			const blob = await response.blob();
-			decoded = await decodeImageFile(new File([blob], 'star.png', { type: 'image/png' }));
-			// The example is square, so the whole picture is the woven square: no
-			// quad, and the colour reading left to the engine, exactly as the dialog
-			// does for a square picture taken whole.
-			const prepared = await prepareImage(decoded.input, { paperColors: paperPair(colors) });
-			const mask = maskFromPrepared(prepared);
-			session.status = 'idle';
-			useMask(mask, detectOn(mask), 'star.png');
-		} catch (err) {
-			console.error('Loading the star example failed', err);
-			session.status = 'idle';
-			notice = t('paintImportFailed', lang);
-		} finally {
-			// The decoder hands back an object URL for showing the picture, which
-			// this path never shows; releasing it is the caller's job either way.
-			if (decoded) URL.revokeObjectURL(decoded.url);
-		}
 	}
 
 	// ------------------------------------------------------------- find the cuts
@@ -1089,30 +1051,6 @@
 							{onEditCancel}
 							{onShortcut}
 						/>
-						{#if maskUntouched}
-							<div class="empty-card">
-								<p>{t('paintEmptyHint', lang)}</p>
-								<div class="empty-actions">
-									<button
-										type="button"
-										class="btn btn-sm btn-outline"
-										onclick={openImport}
-										disabled={busy}
-									>
-										{t('paintImportImage', lang)}
-									</button>
-									<button
-										type="button"
-										class="btn btn-sm btn-ghost"
-										onclick={tryStar}
-										disabled={busy}
-									>
-										<StarIcon size={16} />
-										{t('paintTryStar', lang)}
-									</button>
-								</div>
-							</div>
-						{/if}
 					{/if}
 
 					<p class="canvas-pill">
@@ -1518,7 +1456,6 @@
 	   white pill the editor's hint does. */
 	.canvas-pill,
 	.canvas-notice,
-	.empty-card,
 	.mask-card {
 		position: absolute;
 		z-index: 22;
@@ -1572,34 +1509,6 @@
 		background: transparent;
 		color: inherit;
 		cursor: pointer;
-	}
-
-	/* Bottom right rather than bottom centre: the heart's tip is at the bottom of
-	   the middle, and a card over it hides the one corner that says which way up
-	   the heart goes. */
-	.empty-card {
-		right: 16px;
-		bottom: 20px;
-		width: min(320px, calc(100% - 32px));
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-		color: var(--muted);
-		box-shadow: var(--shadow-panel);
-	}
-
-	/* The two buttons share the line while their words fit and wrap onto two
-	   full-width lines when they do not: at equal halves "Prøv stjernen" was
-	   wider than its half and stuck out of the card by 4px (18px on an iPhone). */
-	.empty-actions {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 8px;
-	}
-
-	.empty-actions .btn {
-		flex: 1 1 auto;
-		background: var(--white);
 	}
 
 	.result {
@@ -1730,14 +1639,6 @@
 		.paint-top {
 			height: 62dvh;
 			min-height: 320px;
-		}
-
-		/* No floating columns down here, so the card goes back under the heart. */
-		.empty-card {
-			left: 50%;
-			right: auto;
-			bottom: 12px;
-			transform: translateX(-50%);
 		}
 	}
 

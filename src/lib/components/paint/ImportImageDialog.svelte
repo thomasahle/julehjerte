@@ -77,8 +77,8 @@
 		 * on "Kanten", which lives in Mal and not in this dialog: while the band is
 		 * free the rows are judged on the protected motif alone (PAINT.md §11), and
 		 * a photo crop's corners — the untrustworthy part, and the reason the band
-		 * exists at all — must not decide them. It is the same function that judges
-		 * "Prøv stjernen", so what this dialog reports is what the page adopts.
+		 * exists at all — must not decide them. It is the page's own function, so
+		 * what this dialog reports is what the page adopts.
 		 */
 		detect: (mask: Mask) => SymmetrySettings;
 		/**

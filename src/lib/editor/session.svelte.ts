@@ -153,7 +153,7 @@ class Session implements PaintSession {
 export const session: PaintSession = new Session();
 
 /**
- * Replace the mask wholesale — an import, "Mal på hjertet", "Prøv stjernen".
+ * Replace the mask wholesale — an import, "Mal på hjertet".
  *
  * The mask is not dirty afterwards: nothing has been painted on it yet, so leaving
  * for Tegn or importing again may go ahead without asking. Detection results come

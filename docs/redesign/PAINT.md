@@ -298,9 +298,10 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
 
 Starting state: the heart with a plain 5 × 5 board, never an empty mask (the owner's choice, 2026-10-26: "always
 default to a 5x5 grid. Don't start with an empty canvas"); Ryd goes back to it too (`defaultMask` in
-`src/lib/paint/tools.ts`). While the board is untouched a small card sits beside it: "Eller importér et billede,
-så fyldes masken fra fotoet" with a link that opens the dialog, and "Prøv stjernen" which imports
-`static/inverse/examples/star.png`; Ryd is disabled, and an import or a reload has nothing to lose. Find snit works on
+`src/lib/paint/tools.ts`). While the board is untouched Ryd is disabled and a reload has nothing to lose. Nothing
+is drawn over the board: the card that sat beside it ("Mal med musen eller fingeren – eller importér et billede"
+with `Importér billede` and "Prøv stjernen") was removed (the owner, 2026-10-27: "let's get rid of this box"), and
+with it "Prøv stjernen"; `Importér billede` stays at the top of the tool column. Find snit works on
 the board itself (it is a heart), and stands down only for a mask of one paper.
 
 Import dialog (`ImportImageDialog`, built on the site `Modal`, `column` layout, ~860px):
@@ -616,8 +617,7 @@ All strings in `src/lib/i18n/translations.ts`, both languages, key prefix `paint
 `paintFill`, `paintLine`, `paintRect`, `paintBrush`, `paintBrushRadius`, `paintsWith`, `paintsWithXor`, `paintFindCuts`,
 `paintFindCutsHint`, `paintAdvanced`, `paintSearching`, `paintStage*`, `paintCancel`, `paintFound`,
 `paintFoundSummary` with `{left}`, `{right}`, `{clearance}`, `{mismatch}`, `paintOpenInDraw`, `paintBackToMask`,
-`paintFailedTimeout`, `paintFailedNoSolution`, `paintFailedEngine`, `paintTryAgain`, `paintEmptyHint`,
-`paintTryStar`, `paintMaskPill`, `paintOnHeart` "Mal på hjertet", dialog keys `paintImportTitle`, `paintDrop`,
+`paintFailedTimeout`, `paintFailedNoSolution`, `paintFailedEngine`, `paintTryAgain`, `paintMaskPill`, `paintOnHeart` "Mal på hjertet", dialog keys `paintImportTitle`, `paintDrop`,
 `paintFormats`, `paintCorners*`, `paintColours*`, `paintUseAsMask`, `paintFoundSymmetry`, and the
 tooltips for the disabled top-bar buttons). The old `src/lib/inverse/messages.ts` is deleted with the old page (§9);
 copy over only the phrases that are still shown. `translations.test.ts` fails on unused keys, so add keys as you use
@@ -644,7 +644,7 @@ them.
 - With the header's colourful mode on, the heart takes the shuffle's first pair (the colourful button's first cell;
   `shownColors` in `$lib/stores/colorMode`): a canvas cannot read the mode's CSS variables, so this is how each
   press deals it a new pair, as it does the gallery's hearts. The XOR swatch shows the two papers on show.
-- The paint page must not load the engine or its WASM until Find snit / import / "Prøv stjernen" is used, and the
+- The paint page must not load the engine or its WASM until Find snit or an import is used, and the
   draw page's bundle must not grow because of Mal (dynamic import of the paint modules from the draw page's "Mal på
   hjertet" action is fine; the paint page itself may import them statically).
 - Prefers-reduced-motion: no animated progress bar sweep, a plain determinate/indeterminate bar.
@@ -740,9 +740,9 @@ exposed yet. Geometry and paper constraints still apply everywhere, including th
   grids. Every proposal is ranked against the original weighted drawing, so neither checker colour nor checker
   count is a required part of the answer. The former advanced "Rammens felter" control has been removed.
   `substituteCheckerBand` and `solveTargetMask` remain only to reproduce the historical checker benchmarks.
-- **Ryd, an import and "Prøv stjernen" are one undo step each** (2026-10-26, the owner: "we need to have undo/redo"):
+- **Ryd and an import are one undo step each** (2026-10-26, the owner: "we need to have undo/redo"):
   they record the mask as it was before replacing it, as a stroke does, rather than ending the history. Since
-  Fortryd brings the painting back, none of them asks first (2026-10-27, the owner), nor does "Mal på hjertet".
+  Fortryd brings the painting back, neither asks first (2026-10-27, the owner), nor does "Mal på hjertet".
   Fortryd and Gentag are labelled buttons on a row of their own under the paper swatches, where a visitor who
   has just lost a painting finds them, and Cmd/Ctrl+Z, Shift+Cmd/Ctrl+Z and Ctrl+Y work as everywhere on the
   site.
