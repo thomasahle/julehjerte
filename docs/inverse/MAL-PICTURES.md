@@ -552,7 +552,8 @@ the median of 40, while the paper model takes about a second.
 
 Node, 12 photographs, alternating: 115 s before, 68 s now, the same corners,
 status and method for each. The live import dialog on six of them: 44 s before
-(3.1-12.2 s each), 25 s now (2.6-5.9 s).
+(3.1-12.2 s each), 28 s now (2.8-6.8 s, the first with the paper model's
+download).
 
 The orientation search stops at a 2 s deadline between hypotheses, so a slower
 or busier machine can try fewer of them; that was so before as well.
