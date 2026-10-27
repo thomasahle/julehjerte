@@ -349,7 +349,7 @@ Most are motifs no solve was made for, now drawn with a solved motif's cuts:
 the dog, bear, horse, moon and mouse at nearly every size (fewer hidden
 turns, up to a sixth less cut), the heart and tree at 45–72%. The wreath is
 better at every size from 54%: hard to cut at 57–69%, clean there, and its
-solve's sharp tips bent at 72–99% (3 → 0, two weak places → none at 72%), as
+solve's sharp tips bent at 72–99% (two or three → none, and two weak places → none at 72%), as
 its own recipes did not. The star shares one template for both lobes at
 45–72% (one sharp tip more). Weak places at the sizes that changed 74 → 66.
 (A first count compared the hearts' pictures, in which hidden cuts do not
