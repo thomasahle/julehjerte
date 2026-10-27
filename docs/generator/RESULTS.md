@@ -819,6 +819,10 @@ none: places that may tear there go from 136 to 42 (the polar star at 78–81%
 from 21 and 27 to 8, the gingerbread man and the moon at 45–54% from one to
 three places to none), and the angel at 45 and 48%, hard to cut, is cut cleanly
 (with a template for each lobe, where the hard heart shared one).
+Four more motifs solved later (the snowman, bauble, wreath and penguin: 26
+recipes for 13 more topologies) make 36 more sizes better and none worse:
+places that may tear there go from 86 to 16, and the wreath at 45–69%, hard
+to cut, is cut cleanly.
 
 ### The circle, its own mirror image
 
