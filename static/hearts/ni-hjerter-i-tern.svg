@@ -1,0 +1,32 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="1">
+  <title>Ni hjerter i tern</title>
+  <title xml:lang="en">Nine hearts in checks</title>
+  <desc xml:lang="da">Ni små røde hjerter i et skakbræt af røde og hvide tern. Hvert hjerte er et rødt felt med to halvcirkler ind i de hvide naboer; syv striber i hver halvdel, og hvert andet klip har tre runde buer, mens resten er lige. Halvdelene er spejlvendte, så én skabelon dækker begge. Sværhedsgraden er ekspert; klip hver bue helt ind til hjørnet, så hjerternes kløft bliver skarp.</desc>
+  <desc xml:lang="en">Nine small red hearts in a chequerboard of red and white squares. Each heart is a red field with two half circles reaching into its white neighbours; seven strips in each half, and every other cut has three round bumps while the rest are straight. The halves mirror each other, so one template covers both. Expert difficulty; cut each bump right into the corner so the hearts' clefts come out sharp.</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Ni hjerter i tern</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Susanne Dybdahl Ahle</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:source>juleflet.dk</dc:source>
+        <dc:date>2026-10-27</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 0 14.2857 L 14.2857 14.2857 C 14.2857 10.3408 17.4837 7.1429 21.4286 7.1429 C 25.3735 7.1429 28.5714 10.3408 28.5714 14.2857 L 42.8571 14.2857 C 42.8571 10.3408 46.0551 7.1429 50 7.1429 C 53.9449 7.1429 57.1429 10.3408 57.1429 14.2857 L 71.4286 14.2857 C 71.4286 10.3408 74.6265 7.1429 78.5714 7.1429 C 82.5163 7.1429 85.7143 10.3408 85.7143 14.2857 L 100 14.2857" stroke="orange" fill="none"/>
+  <path d="M 0 28.5714 L 100 28.5714" stroke="orange" fill="none"/>
+  <path d="M 0 42.8571 L 14.2857 42.8571 C 14.2857 38.9123 17.4837 35.7143 21.4286 35.7143 C 25.3735 35.7143 28.5714 38.9123 28.5714 42.8571 L 42.8571 42.8571 C 42.8571 38.9123 46.0551 35.7143 50 35.7143 C 53.9449 35.7143 57.1429 38.9123 57.1429 42.8571 L 71.4286 42.8571 C 71.4286 38.9123 74.6265 35.7143 78.5714 35.7143 C 82.5163 35.7143 85.7143 38.9123 85.7143 42.8571 L 100 42.8571" stroke="orange" fill="none"/>
+  <path d="M 0 57.1429 L 100 57.1429" stroke="orange" fill="none"/>
+  <path d="M 0 71.4286 L 14.2857 71.4286 C 14.2857 67.4837 17.4837 64.2857 21.4286 64.2857 C 25.3735 64.2857 28.5714 67.4837 28.5714 71.4286 L 42.8571 71.4286 C 42.8571 67.4837 46.0551 64.2857 50 64.2857 C 53.9449 64.2857 57.1429 67.4837 57.1429 71.4286 L 71.4286 71.4286 C 71.4286 67.4837 74.6265 64.2857 78.5714 64.2857 C 82.5163 64.2857 85.7143 67.4837 85.7143 71.4286 L 100 71.4286" stroke="orange" fill="none"/>
+  <path d="M 0 85.7143 L 100 85.7143" stroke="orange" fill="none"/>
+  <path d="M 14.2857 0 L 14.2857 14.2857 C 10.3408 14.2857 7.1429 17.4837 7.1429 21.4286 C 7.1429 25.3735 10.3408 28.5714 14.2857 28.5714 L 14.2857 42.8571 C 10.3408 42.8571 7.1429 46.0551 7.1429 50 C 7.1429 53.9449 10.3408 57.1429 14.2857 57.1429 L 14.2857 71.4286 C 10.3408 71.4286 7.1429 74.6265 7.1429 78.5714 C 7.1429 82.5163 10.3408 85.7143 14.2857 85.7143 L 14.2857 100" stroke="green" fill="none"/>
+  <path d="M 28.5714 0 L 28.5714 100" stroke="green" fill="none"/>
+  <path d="M 42.8571 0 L 42.8571 14.2857 C 38.9123 14.2857 35.7143 17.4837 35.7143 21.4286 C 35.7143 25.3735 38.9123 28.5714 42.8571 28.5714 L 42.8571 42.8571 C 38.9123 42.8571 35.7143 46.0551 35.7143 50 C 35.7143 53.9449 38.9123 57.1429 42.8571 57.1429 L 42.8571 71.4286 C 38.9123 71.4286 35.7143 74.6265 35.7143 78.5714 C 35.7143 82.5163 38.9123 85.7143 42.8571 85.7143 L 42.8571 100" stroke="green" fill="none"/>
+  <path d="M 57.1429 0 L 57.1429 100" stroke="green" fill="none"/>
+  <path d="M 71.4286 0 L 71.4286 14.2857 C 67.4837 14.2857 64.2857 17.4837 64.2857 21.4286 C 64.2857 25.3735 67.4837 28.5714 71.4286 28.5714 L 71.4286 42.8571 C 67.4837 42.8571 64.2857 46.0551 64.2857 50 C 64.2857 53.9449 67.4837 57.1429 71.4286 57.1429 L 71.4286 71.4286 C 67.4837 71.4286 64.2857 74.6265 64.2857 78.5714 C 64.2857 82.5163 67.4837 85.7143 71.4286 85.7143 L 71.4286 100" stroke="green" fill="none"/>
+  <path d="M 85.7143 0 L 85.7143 100" stroke="green" fill="none"/>
+</svg>

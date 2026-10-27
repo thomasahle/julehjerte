@@ -141,6 +141,13 @@
     },
     "difficulty": "easy"
   },
+  "ni-hjerter-i-tern": {
+    "name": "Ni hjerter i tern",
+    "names": {
+      "en": "Nine hearts in checks"
+    },
+    "difficulty": "expert"
+  },
   "lilje1": {
     "name": "Lilje 1",
     "names": {

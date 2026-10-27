@@ -67,7 +67,9 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   took day 70 from 2026 the same evening, before either was out. When Khatam,
   Stjernegitter and Stjerner og kors moved to Mønstre the same day, three swaps
   of hearts not yet out (days 62/63, 68/69 and 65/72) kept every day's
-  neighbours of another category.
+  neighbours of another category. Ni hjerter i tern went in on 2026-10-27 at
+  day 30 (2026-11-20), between Sun and Sildeben, so that it is out before
+  Christmas rather than after Hjerte på hjerte, which is also in Hjerter.
 - The feed holds the released items only (nothing future-dated), newest first,
   at most 30 (`PINTEREST_MAX_ITEMS`). When every heart is out, the feed stops
   growing: it does not cycle.
