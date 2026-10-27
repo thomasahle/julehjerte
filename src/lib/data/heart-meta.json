@@ -565,7 +565,11 @@
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
-    "photo": null
+    "photo": {
+      "src": "/hearts/photos/ni-hjerter-i-tern.jpg",
+      "width": 900,
+      "height": 1200
+    }
   },
   "lilje1": {
     "name": "Lilje 1",
