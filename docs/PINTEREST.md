@@ -70,6 +70,9 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   neighbours of another category. Ni hjerter i tern went in on 2026-10-27 at
   day 30 (2026-11-20), between Sun and Sildeben, so that it is out before
   Christmas rather than after Hjerte på hjerte, which is also in Hjerter.
+  Fire stjerner went in the same day at day 34 (2026-11-24), between
+  Puslespil and Permo-sol, so that it is out before Christmas and away from
+  the other Mønstre hearts.
 - The feed holds the released items only (nothing future-dated), newest first,
   at most 30 (`PINTEREST_MAX_ITEMS`). When every heart is out, the feed stops
   growing: it does not cycle.

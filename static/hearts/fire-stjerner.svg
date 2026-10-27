@@ -1,0 +1,40 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="1">
+  <title>Fire stjerner</title>
+  <title xml:lang="en">Four stars</title>
+  <desc xml:lang="da">Fire stjerner i et skakbræt, der trækkes sammen om fire punkter og svulmer op imellem dem. Ved hver stjerne knækker de to nærmeste klip på hver side ind mod stjernens linje, så felterne omkring den bliver til spidser, og mellem stjernerne vokser den midterste stribe til over dobbelt bredde; elleve striber i hver halvdel, og alle klip er lige stykker. Halvdelene er spejlvendte, så én skabelon dækker begge. Sværhedsgraden er mellem; klip knækkene skarpt, hvor klippene krydser en stjernes linje.</desc>
+  <desc xml:lang="en">Four stars in a chequerboard that is drawn together at four points and swells out between them. At each star the two nearest cuts on either side bend in towards the star's line, so the fields around it become points, and between the stars the middle strip grows to more than twice its width; eleven strips in each half, and every cut is made of straight pieces. The halves mirror each other, so one template covers both. Medium difficulty; make the bends sharp where the cuts cross a star's line.</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Fire stjerner</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Susanne Dybdahl Ahle</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:source>juleflet.dk</dc:source>
+        <dc:date>2026-10-27</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 0 9.0909 L 9.0909 9.0909 L 27.2727 14.5455 L 45.4545 9.0909 L 54.5455 9.0909 L 72.7273 14.5455 L 90.9091 9.0909 L 100 9.0909" stroke="orange" fill="none"/>
+  <path d="M 0 18.1818 L 9.0909 18.1818 L 27.2727 20.9091 L 45.4545 18.1818 L 54.5455 18.1818 L 72.7273 20.9091 L 90.9091 18.1818 L 100 18.1818" stroke="orange" fill="none"/>
+  <path d="M 0 27.2727 L 100 27.2727" stroke="orange" fill="none"/>
+  <path d="M 0 36.3636 L 4.5455 36.3636 L 27.2727 33.6364 L 50 36.3636 L 72.7273 33.6364 L 95.4545 36.3636 L 100 36.3636" stroke="orange" fill="none"/>
+  <path d="M 0 45.4545 L 4.5455 45.4545 L 27.2727 40 L 50 45.4545 L 72.7273 40 L 95.4545 45.4545 L 100 45.4545" stroke="orange" fill="none"/>
+  <path d="M 0 54.5455 L 4.5455 54.5455 L 27.2727 60 L 50 54.5455 L 72.7273 60 L 95.4545 54.5455 L 100 54.5455" stroke="orange" fill="none"/>
+  <path d="M 0 63.6364 L 4.5455 63.6364 L 27.2727 66.3636 L 50 63.6364 L 72.7273 66.3636 L 95.4545 63.6364 L 100 63.6364" stroke="orange" fill="none"/>
+  <path d="M 0 72.7273 L 100 72.7273" stroke="orange" fill="none"/>
+  <path d="M 0 81.8182 L 9.0909 81.8182 L 27.2727 79.0909 L 45.4545 81.8182 L 54.5455 81.8182 L 72.7273 79.0909 L 90.9091 81.8182 L 100 81.8182" stroke="orange" fill="none"/>
+  <path d="M 0 90.9091 L 9.0909 90.9091 L 27.2727 85.4545 L 45.4545 90.9091 L 54.5455 90.9091 L 72.7273 85.4545 L 90.9091 90.9091 L 100 90.9091" stroke="orange" fill="none"/>
+  <path d="M 9.0909 0 L 9.0909 9.0909 L 14.5455 27.2727 L 9.0909 45.4545 L 9.0909 54.5455 L 14.5455 72.7273 L 9.0909 90.9091 L 9.0909 100" stroke="green" fill="none"/>
+  <path d="M 18.1818 0 L 18.1818 9.0909 L 20.9091 27.2727 L 18.1818 45.4545 L 18.1818 54.5455 L 20.9091 72.7273 L 18.1818 90.9091 L 18.1818 100" stroke="green" fill="none"/>
+  <path d="M 27.2727 0 L 27.2727 100" stroke="green" fill="none"/>
+  <path d="M 36.3636 0 L 36.3636 4.5455 L 33.6364 27.2727 L 36.3636 50 L 33.6364 72.7273 L 36.3636 95.4545 L 36.3636 100" stroke="green" fill="none"/>
+  <path d="M 45.4545 0 L 45.4545 4.5455 L 40 27.2727 L 45.4545 50 L 40 72.7273 L 45.4545 95.4545 L 45.4545 100" stroke="green" fill="none"/>
+  <path d="M 54.5455 0 L 54.5455 4.5455 L 60 27.2727 L 54.5455 50 L 60 72.7273 L 54.5455 95.4545 L 54.5455 100" stroke="green" fill="none"/>
+  <path d="M 63.6364 0 L 63.6364 4.5455 L 66.3636 27.2727 L 63.6364 50 L 66.3636 72.7273 L 63.6364 95.4545 L 63.6364 100" stroke="green" fill="none"/>
+  <path d="M 72.7273 0 L 72.7273 100" stroke="green" fill="none"/>
+  <path d="M 81.8182 0 L 81.8182 9.0909 L 79.0909 27.2727 L 81.8182 45.4545 L 81.8182 54.5455 L 79.0909 72.7273 L 81.8182 90.9091 L 81.8182 100" stroke="green" fill="none"/>
+  <path d="M 90.9091 0 L 90.9091 9.0909 L 85.4545 27.2727 L 90.9091 45.4545 L 90.9091 54.5455 L 85.4545 72.7273 L 90.9091 90.9091 L 90.9091 100" stroke="green" fill="none"/>
+</svg>

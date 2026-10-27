@@ -1447,6 +1447,32 @@
     },
     "photo": null
   },
+  "fire-stjerner": {
+    "name": "Fire stjerner",
+    "names": {
+      "en": "Four stars"
+    },
+    "author": "Susanne Dybdahl Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-27",
+    "description": null,
+    "gridSize": {
+      "x": 11,
+      "y": 11
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "stjernerogkors": {
     "name": "Stjerner og kors",
     "names": {

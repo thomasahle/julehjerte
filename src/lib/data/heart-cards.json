@@ -370,6 +370,13 @@
     },
     "difficulty": "expert"
   },
+  "fire-stjerner": {
+    "name": "Fire stjerner",
+    "names": {
+      "en": "Four stars"
+    },
+    "difficulty": "medium"
+  },
   "stjernerogkors": {
     "name": "Stjerner og kors",
     "names": {

@@ -64,7 +64,7 @@ export const PINTEREST_ORDER: readonly string[] = [
 	'god-jul', 'amy-weave-1', 'flower', 'amy-weave-2', 'triple-heart', 'amy-rosette',
 	'5star', 'amy-pattern', 'venus', 'amy-flowering', 'simple-5star', 'amy-pinecone',
 	'h4h2', 'tak', 'alhambra', 'angel', 'squares', 'sun', 'ni-hjerter-i-tern',
-	'sildeben', 'snowflake', 'puslespil', 'permo-sol', 'koelbuer', 'nemt-hjerte',
+	'sildeben', 'snowflake', 'puslespil', 'fire-stjerner', 'permo-sol', 'koelbuer', 'nemt-hjerte',
 	'roserude', 'santa', 'hanefod', 'explosion', 'flyvendegaes', 'mor-og-barn',
 	'origami', 'nihon', 'drageskael', 'mor-far', 'dagognat', 'hermanngitter',
 	'lilje1', 'tragt', 'davidsstjerne-circ', 'boelgebrud', 'ball', 'glaskuppel',
