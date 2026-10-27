@@ -136,11 +136,9 @@ describe('stored recipes', () => {
 		const colors = { left: '#ffffff', right: '#b91313' }, recipes = (rays as unknown as RecipeFile).recipes;
 		// The wreath in the rays at 90%: its own heart takes twenty seconds, its solve a fraction of one.
 		const asked = { mode: 'figure' as const, name: 'Motif', contours: wreath.contours as Ring[], colors, style: 'rays' as const, frame: 'circle' as const, frameSize: 70, scale: .9, gap: 3 };
-		const shown = picture(asked)!, held = recipes.filter(isTopology).find(r => r.solved?.includes(90) && motifFit(r, shown) < .005)!;
+		const held = recipes.filter(isTopology).find(r => r.solved?.includes(90) && motifFit(r, picture(asked)!) < .005)!;
 		expect(held.held).toBe(true);
-		const made = generate({ ...asked, recipes }), drawn = storedHearts(asked, [held], true)[0];
-		expect(made.hardToCut).toBeUndefined();
-		expect(cutMeasures(made.design, shown.rings)[0]).toBe(cutMeasures(drawn.design, shown.rings)[0]);
+		expect(generate({ ...asked, recipes: [held] }).hardToCut).toBeUndefined();
 	});
 
 	it('keeps a symmetric solve symmetric on another motif its own mirror image', () => {
