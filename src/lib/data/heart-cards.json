@@ -195,13 +195,6 @@
     "name": "Polka",
     "difficulty": "expert"
   },
-  "kogle": {
-    "name": "Kogle",
-    "names": {
-      "en": "Pinecone"
-    },
-    "difficulty": "expert"
-  },
   "plus": {
     "name": "Plus",
     "difficulty": "medium"

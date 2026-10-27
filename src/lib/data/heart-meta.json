@@ -759,36 +759,6 @@
     },
     "photo": null
   },
-  "kogle": {
-    "name": "Kogle",
-    "names": {
-      "en": "Pinecone"
-    },
-    "author": "Thomas",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
-    "description": "Et mønster inspireret af en kogles skæl",
-    "gridSize": {
-      "x": 6,
-      "y": 6
-    },
-    "difficulty": "expert",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": {
-      "src": "/hearts/photos/kogle.jpg",
-      "width": 502,
-      "height": 502
-    }
-  },
   "plus": {
     "name": "Plus",
     "author": "Thomas",

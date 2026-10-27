@@ -73,7 +73,7 @@ function checkContinuity(segments: BezierSegment[], tolerance: number = 0.1): st
 /**
  * Check that finger endpoints align with expected grid edges (0 or 100)
  * Note: Some designs intentionally have fingers that don't span edge-to-edge
- * (e.g., kogle with bump patterns, juletrae with custom shapes)
+ * (e.g., juletrae with custom shapes)
  * So this check is informational only - not a hard requirement
  */
 function checkEndpointAlignment(

@@ -27,7 +27,8 @@ describe('pinterest.xml', () => {
 	it('has a week of hearts with Danish texts on 27 October', async () => {
 		const doc = await feed('2026-10-27T08:00:00+01:00');
 		const items = Array.from(doc.getElementsByTagName('item'));
-		expect(items).toHaveLength(7);
+		// Seven days out, one of them Kogle's, which left the gallery that day.
+		expect(items).toHaveLength(6);
 		const titles = items.map((item) => item.getElementsByTagName('title')[0].textContent);
 		expect(titles.at(-1)).toBe('Klassisk 3×3 – flettet julehjerte');
 		expect(titles).toContain('Gaver – flettet julehjerte');

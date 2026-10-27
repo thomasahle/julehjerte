@@ -56,7 +56,9 @@ export const PINTEREST_FIRST = ['classic-3x3', 'gaver', 'jul', 'juletrae', 'stje
  * before the new year, MOR & FAR between Drageskæl and Dag og nat, which Fliser
  * had made two of one category. When Khatam, Stjernegitter and Stjerner og kors
  * moved to Mønstre the same day, three swaps of hearts not yet out (days 62/63,
- * 68/69 and 65/72) kept every day's neighbours of another category.
+ * 68/69 and 65/72) kept every day's neighbours of another category. Kogle left
+ * the gallery on 2026-10-27, its own day (6); it stays here so that every later
+ * heart keeps its day.
  */
 export const PINTEREST_ORDER: readonly string[] = [
 	'classic-3x3', 'juletrae', 'circle', 'gaver', 'balls', 'jul',

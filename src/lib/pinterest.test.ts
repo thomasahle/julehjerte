@@ -23,6 +23,8 @@ import {
 } from './pinterest';
 
 const GALLERY = hearts.categories.flatMap((category) => category.hearts);
+/** Hearts taken out of the gallery after their day was out: they keep it, empty (PINTEREST_ORDER). */
+const REMOVED = ['kogle'];
 const CATEGORY = new Map(hearts.categories.flatMap((c) => c.hearts.map((id) => [id, c.id] as const)));
 
 const heart = (id: string): PinterestHeart => ({ name: `Navn ${id}`, description: `Om ${id}. Flet det.` });
@@ -39,9 +41,9 @@ function copenhagenWallClock(date: Date): string {
 }
 
 describe('the order', () => {
-	it('lists every gallery heart once', () => {
+	it('lists every gallery heart once, and the removed ones', () => {
 		expect(new Set(PINTEREST_ORDER).size).toBe(PINTEREST_ORDER.length);
-		expect([...PINTEREST_ORDER].sort()).toEqual([...GALLERY].sort());
+		expect([...PINTEREST_ORDER].sort()).toEqual([...GALLERY, ...REMOVED].sort());
 	});
 
 	it('starts with the most popular hearts', () => {
@@ -115,7 +117,8 @@ describe('items', () => {
 	it('lists the released hearts newest first, none from the future', () => {
 		const now = new Date('2026-10-27T07:30:00+01:00');
 		const list = items(now.toISOString());
-		expect(list.map(({ id }) => id)).toEqual(PINTEREST_ORDER.slice(0, 7).reverse());
+		const released = PINTEREST_ORDER.slice(0, 7).filter((id) => !REMOVED.includes(id));
+		expect(list.map(({ id }) => id)).toEqual(released.reverse());
 		for (const item of list) expect(item.pubDate.getTime()).toBeLessThanOrEqual(now.getTime());
 		const times = list.map(({ pubDate }) => pubDate.getTime());
 		expect(times).toEqual([...times].sort((a, b) => b - a));

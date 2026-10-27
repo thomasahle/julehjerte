@@ -74,6 +74,9 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   Puslespil and Permo-sol, so that it is out before Christmas and away from
   the other Mønstre hearts. Hjerte i hjerte i hjerte followed at day 47
   (2026-12-07), between Drageskæl and MOR & FAR, for the same reasons.
+  Kogle left the gallery on 2026-10-27, the morning its own day (6) was out.
+  It stays in `PINTEREST_ORDER`, so every later heart keeps its day, and its
+  pin now leads to a page that no longer exists: delete that pin on Pinterest.
 - The feed holds the released items only (nothing future-dated), newest first,
   at most 30 (`PINTEREST_MAX_ITEMS`). When every heart is out, the feed stops
   growing: it does not cycle.

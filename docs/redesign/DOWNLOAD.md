@@ -336,7 +336,7 @@ of each other. Juleflet does the same (`$lib/utils/orientationMarks`).
   heart looks as on the site.
 - **Shared templates.** The other lobe's own template is either the printed
   one (lobes mirrored across the diagonal) or the printed one turned over
-  (the right lobe is the left turned 90°: `permo-kroge`, `hvirvel`, `kogle`,
+  (the right lobe is the left turned 90°: `permo-kroge`, `hvirvel`,
   `origami`, `plus`, `plus3`, `sun`); then that lobe's mark is on the right side, `(W, R)`.
   The PDF prints the shared template twice, the first copy with ⊗ and the
   second with ×, and once where it needs no marks (`printsOneTemplate`: both
