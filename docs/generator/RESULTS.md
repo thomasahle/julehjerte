@@ -343,12 +343,17 @@ are now their topologies' as on the board (`rays.json`: 34 recipes for 5
 topologies, 26 held on the motif solved), the picture's four corners first so
 that the frame's corners are the topology's board. Over the 49 featured
 motifs at every third size from 45 to 99% (931 hearts), against the motifs'
-own files: 180 better, none worse, none refused. Most are motifs no solve was
-made for, now drawn with a solved motif's cuts: the dog, bear, horse, moon
-and mouse at nearly every size (fewer hidden turns, up to a sixth less cut), the
-heart at 45–72% and 90%. The wreath, hard to cut at 57–69%, is clean there;
-the star shares one template for both lobes at 45–72% (one sharp tip more).
-Tear places at the sizes that changed 65 → 64.
+own files, by their cut measures: 202 better, none worse, 435 cut the same
+(the other 294 are on a finer board, with no rays picture, and unchanged).
+Most are motifs no solve was made for, now drawn with a solved motif's cuts:
+the dog, bear, horse, moon and mouse at nearly every size (fewer hidden
+turns, up to a sixth less cut), the heart and tree at 45–72%. The wreath is
+better at every size from 54%: hard to cut at 57–69%, clean there, and its
+solve's sharp tips bent at 72–99% (3 → 0, two weak places → none at 72%), as
+its own recipes did not. The star shares one template for both lobes at
+45–72% (one sharp tip more). Weak places at the sizes that changed 74 → 66.
+(A first count compared the hearts' pictures, in which hidden cuts do not
+show, and found 180.)
 
 The page draws a topology's recipes after the generator's own heart, which
 they must beat, and that cost the wreath 13–30 s where its own recipes drew
