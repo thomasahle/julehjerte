@@ -843,6 +843,14 @@ recipes for 13 more topologies) make 36 more sizes better and none worse:
 places that may tear there go from 86 to 16, and the wreath at 45–69%, hard
 to cut, is cut cleanly.
 
+On nine strips 10 of 21 motifs solved (the star, angel, bell, gingerbread
+man, snowman, mitten, bauble, wreath, owl and penguin), giving 27 recipes for
+16 new topologies. The page's heart is better at 59 of 912 and worse at none:
+places that may tear there go from 207 to 109 (the penguin and the snowman
+below 60% from one to three to none, the gingerbread man and the mitten at
+99% from nine or ten to none), and the snowman at 54%, hard to cut, is cut
+cleanly.
+
 ### The circle, its own mirror image
 
 The plain circle was a 63-gon from 5.7°: within an eighth of a percent of
