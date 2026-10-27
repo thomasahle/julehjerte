@@ -178,20 +178,21 @@ describe('the picture drawn before the cuts are found', () => {
 		// On three strips at 86% the line beside a corner square meets the circle
 		// 0.7 short of the edge: the corner square's colour runs on along the
 		// circle past it, to where the circle meets the edge.
-		const sheet = (request: GeneratorRequest) => {
-			const n = 1000, mask = rasterizeDesign(generate(request).design, n).data, { rings } = picture(request)!;
-			const drawn = (p: [number, number]) => rings.reduce((n, ring) => n ^ Number(inside(p, ring as Ring)), 0);
-			const woven = ([x, y]: [number, number]) => mask[Math.floor(y / 100 * n) * n + Math.floor(x / 100 * n)];
-			return [drawn, woven];
+		const drawn = (request: GeneratorRequest) => {
+			const { rings } = picture(request)!;
+			return (p: [number, number]) => rings.reduce((n, ring) => n ^ Number(inside(p, ring as Ring)), 0);
 		};
-		for (const colour of sheet({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', board: 3, scale: .86 })) {
+		const request: GeneratorRequest = { mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', board: 3, scale: .86 };
+		const n = 1000, mask = rasterizeDesign(generate(request).design, n).data;
+		const woven = ([x, y]: [number, number]) => mask[Math.floor(y / 100 * n) * n + Math.floor(x / 100 * n)];
+		for (const colour of [drawn(request), woven]) {
 			expect(colour([33.85, .15])).toBe(colour([5, 5]));
 			expect(colour([36.05, .15])).not.toBe(colour([5, 5]));
 		}
 		// Not where the circle has only just reached the edge, the two squares of
 		// a side so swapped all but meeting across it: five strips at 97%.
-		for (const colour of sheet({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', board: 5, scale: .97 }))
-			expect(colour([41, .2])).not.toBe(colour([30, 1]));
+		const justReached = drawn({ ...request, board: 5, scale: .97 });
+		expect(justReached([41, .2])).not.toBe(justReached([30, 1]));
 	});
 
 	it('is one small motif alone in the centre square, as equal squares draw it, where no pattern connects', () => {
