@@ -1,5 +1,26 @@
 # Generator robustness results
 
+## Pieces in the rays reached every way
+
+A motif of several pieces in the rays was refused where the rays' own links
+could not reach every piece, though the board circle's last resort of reaching
+pieces every way (see `withEveryWay`) had never been tried for it. Now a
+refused request of several pieces, or with islands in its holes, tries again
+so, at the space asked for, before the wider space.
+
+All 2,668 motifs at 70% in the rays: 2,605 clean, 39 hard to cut and 24
+refused before; 2,607 clean, 40 hard and 21 refused now. The bug beetle and
+the download icon are clean, the radar hard to cut. Three hearts that were
+only built with the space around the motif widened from 3 to 7 mm (the
+headlights, the peace sign and tb-file-vector) now keep the 3 mm asked for,
+their cuts reached every way: the peace sign has no weak place where it had 2,
+the file 0 where it had 9, the headlights 1 where it had none. The other 2,662
+hearts are the same. The 21 still refused are line art whose strokes wrap
+around each other (podcasts, circuitry, user-circle-gear …); a try that routed
+the links crossing an outline round it instead rescued one of the first three
+of them, hard to cut, after 13 minutes, and took 70 minutes to refuse another,
+so it was dropped.
+
 ## The polar star in the corners, its wedges reached one at a time
 
 In Tern i spidserne the polar star was refused at every size below 100%. Its

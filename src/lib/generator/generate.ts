@@ -3244,6 +3244,23 @@ function generateUsingRecipes(request: GeneratorRequest,
 			errors.push(error);
 		}
 	}
+	// A motif of several pieces, or with islands in its holes, may still be
+	// reached the ways the board circle's are (see `withEveryWay`): a refused
+	// one tries again so, on the first layouts.
+	const pieces = forest(rings), pieced = pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length));
+	if (pieced && everyWay) for (const around of [false, true]) for (const construct of balancedRecipes) {
+		try {
+			const construction = construct((...args) => {
+				args[7] = { ...args[7], practical: true, compound: true, nested: true, around };
+				return fourPortMotif(...args);
+			});
+			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested');
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			errors.push(error);
+		}
+	}
+	if (pieced && !everyWay) everyWayPassed++;
 	const last = errors.at(-1)!;
 	throw new ConstructionError(
 		last instanceof ConstructionError ? last.code : 'clearance',

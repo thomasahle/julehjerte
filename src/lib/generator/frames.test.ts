@@ -67,6 +67,7 @@ import mouse from '../../../static/generator/motifs/gi-mouse.json';
 import mdiBird from '../../../static/generator/motifs/mdi-bird.json';
 import owl from '../../../static/generator/motifs/mdi-owl.json';
 import wreath from '../../../static/generator/motifs/mc-wreath.json';
+import download from '../../../static/generator/motifs/tb-download.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -214,6 +215,14 @@ describe('complete motif frames', () => {
   const { design, hardToCut } = generate({ mode: 'figure', name: 'Owl', contours: owl.contours as Ring[], colors, style: 'rays', scale: .5, gap: 3 });
   expect(hardToCut).toBeUndefined();
   expect(paperFaults(design)).toEqual({ weak: 2, loose: 0 });
+ }, 30000);
+ slow('reaches the download icon\'s separate pieces in the rays every way, rather than refusing it', () => {
+  // The rays' usual links could not reach all of its pieces: refused, then
+  // tried again as the board circle reaches pieces, at the size and space
+  // asked for.
+  const { hardToCut, scale } = generate({ mode: 'figure', name: 'Download', contours: download.contours as Ring[], colors, style: 'rays', scale: .7, gap: 3 });
+  expect(hardToCut).toBeUndefined();
+  expect(scale ?? .7).toBeCloseTo(.7);
  }, 30000);
  slow('makes the wreath again with exact outline indices where a slipped bridge\'s fold left nothing to finish', () => {
   // At 85% in the rays every hard-to-cut candidate crossed the outline
