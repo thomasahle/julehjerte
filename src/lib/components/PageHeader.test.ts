@@ -26,7 +26,7 @@ afterEach(() => {
 function render(
 	path: string,
 	lang: 'da' | 'en',
-	active?: 'templates' | 'howto' | 'about',
+	active?: 'templates' | 'design' | 'howto' | 'about',
 	variant: 'site' | 'editor' = 'site'
 ) {
 	url.current = new URL(`http://localhost${path}`);
