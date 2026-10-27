@@ -140,11 +140,11 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
     const ways=[...(spots.length?[{open:radius,spots,within:TIP_SPOT_MM*px}]:[]),{open:radius}];
     for(const [k,way] of ways.entries()){
       if(exportable(found.found?.assessment,cfgExact)||roundedEnd-performance.now()<1000*ROUNDED_LEAST)break;
-      let again=null;
-      try{const traced=traceAt(way.open,way);again=traced&&!traced.why?traced.scaled:null;}catch{again=null;}
-      if(!again)continue;
+      let rounded=null;
+      try{const traced=traceAt(way.open,way);rounded=traced&&!traced.why?traced.scaled:null;}catch{rounded=null;}
+      if(!rounded)continue;
       const end=k<ways.length-1?performance.now()+.6*(roundedEnd-performance.now()):roundedEnd;
-      again=await exactSearch(again,null,cfgExact,search(end));
+      const again=await exactSearch(rounded,null,cfgExact,search(end));
       if(exportable(again.found?.assessment,cfgExact)||!found.found&&again.found)found={...again,report:{...again.report,rounded:way.spots?'near':true}};
     }
   }
