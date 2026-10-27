@@ -10,6 +10,7 @@ import {cheapBounds} from '../../static/inverse/core/exact/bounds.js';
 import {colouredRings, targetSegments, joinNearTouchings} from '../../static/inverse/core/exact/target.js';
 import {returns} from '../../static/inverse/core/exact/nogoods.js';
 import {returnTips} from '../../static/inverse/core/exact/stage.js';
+import {StructureSymmetry} from '../../static/inverse/core/exact/symmetry.js';
 
 // The reference solver's structures (minwit.build_from_segments) of eight
 // juleflet.dk designs, with the segments it built them from.
@@ -121,4 +122,18 @@ test('a tip traced as a box comes back to itself, a pointed one does not', () =>
   const [[x, y], ...more] = returnTips(box, cfg);
   assert.ok(Math.abs(x - 50) < .5 && close(y, (12 - 7.3) * 100 / 12, .1) && more.every(([u, v]) => Math.hypot(u - x, v - y) < .6));
   assert.equal(returns(outline(spike([[6, 7.3]]))).length, 0);
+});
+
+// Two edges a mirror swaps, as positionMaps sees them: arcs map straight across.
+const mirrored=(positions)=>StructureSymmetry.prototype.positionMaps.call({outline:{along:(e,a,b)=>Math.abs(a-b)},names:['identity','mirrorX'],tolerance:.2,
+  arcImage:(name,e,s)=>name==='identity'?[e,s]:[1-e,s]},positions);
+
+test('an image between two positions a tenth apart takes the nearer, as long as the map stays one to one', () => {
+  // A traced outline's corners can come out differently either way along an
+  // edge (Uret: 9 on one junction, 2 on its mirror image), and the images land
+  // a few hundredths off between two positions a tenth apart.
+  const maps=mirrored(new Map([[0,[.92,1,3]],[1,[.958,1.034,3]]]));
+  assert.deepEqual([...maps.mirrorX],[['0,1',[1,1]],['0,2',[1,2]],['0,3',[1,3]],['1,1',[0,1]],['1,2',[0,2]],['1,3',[0,3]]]);
+  // Two positions taking one image are no symmetry.
+  assert.throws(()=>mirrored(new Map([[0,[.92,1,3]],[1,[1.034,3]]])),/not a bijection|onto no position/);
 });

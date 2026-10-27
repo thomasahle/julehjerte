@@ -573,9 +573,15 @@ there too). Uret's fitter template is no better (1.01% -> 1.05%): its holes
 are at the junctions of the bands and the ring, which the exact search proves
 need 16 hidden segments that cross there, while the designer routes them round
 an inner circle through the middle, far-apart positions the search never
-offers as a hidden segment. Its traced outline also breaks the symmetry ties:
+offers as a hidden segment. Its traced outline also broke the symmetry ties:
 the corners of one junction come out 9 and of its mirror image 2 (corners in
-exact/outline.js cluster greedily from one end).
+exact/outline.js cluster greedily from one end), leaving two positions a tenth
+apart with an image between them. An image within `MERGED` of a position now
+takes the nearer (symmetry.js `positionMaps`; two taking one image still fail).
+On the Tegn pictures of the seven hearts that went untied, the circle stays
+tied and proves its 16 crossing segments, and lilje2 finds a template (0.74%
+from its design, none before); on their 14 juleflet pictures balls now stays
+tied, and every result is as before.
 
 ## Details lost on photographs (2026-10-25)
 
@@ -624,12 +630,11 @@ camel, but takes 20-28 s more and fails on other photographs; not used.
   template keeping every rule in 40 s.
 - A graph for the exact search fitted to the mask before it runs (the user's
   suggestion, 2026-10-27), for the outlines it cannot use as traced: one
-  symmetric by construction (the circle's ties break on its traced corners;
-  taking a position's nearest image within `MERGED` keeps them, and the search
-  then proves its 16 crossing segments), corners found the same either way
-  along an edge, and hidden-segment candidates along long routes through one
-  colour (the circle's inner circle) and along a heart's own seams when it
-  comes from Tegn (venus).
+  symmetric by construction, corners found the same either way along an edge,
+  and hidden-segment candidates along curved routes through one colour (the
+  circle's inner circle; the candidates are straight chords within a region,
+  or a template's own routes) and along a heart's own seams when it comes from
+  Tegn (venus).
 - Templates: slits that stop inside the square or meet in T-junctions (the site
   cannot represent them), dimension lines drawn along a slit.
 - A selected heart among touching neighbours (two of the web scenes): the

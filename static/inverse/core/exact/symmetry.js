@@ -110,9 +110,13 @@ export class StructureSymmetry {
         // Unambiguous: nearer than half the distance to the next position (a
         // hand-drawn outline's images land a few hundredths off), or within the
         // distance at which the grid's closure took an image as present
-        // (positions.js) and clearly nearer than the next.
+        // (positions.js) and nearer than the next: a traced outline's corners
+        // can come out differently either way along an edge (outline.js
+        // corners), leaving two positions a tenth apart where the image falls
+        // between them (circle, lilje2, untied before). Two positions taking one
+        // image still fail as no bijection.
         const second = Math.min(Infinity, ...theirs.filter((_, i) => i !== k).map(dist)), d = dist(theirs[k]);
-        if (d > this.tolerance || (d > second / 2 && !(d < MERGED && d < .75 * second)))
+        if (d > this.tolerance || (d > second / 2 && !(d < MERGED && d < second)))
           throw new Error(`${name} maps position ${j + 1} of edge ${e} onto no position.`);
         m.set(`${e},${j + 1}`, [f, k + 1]);
       });
