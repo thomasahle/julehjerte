@@ -9,7 +9,7 @@
  * Frames without a picture here return none.
  */
 import type { GeneratorRequest } from './generate';
-import { arc, boardFill, boardLines, boardPanels, boardRangeLines, boardRanges, boardWholeFill, boardWholeRadius, frameRing, layerInset, outerFrame, ray, uprightToSheet, BOARD_STUB, FITTED, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
+import { arc, boardFill, boardLines, boardPanels, boardRangeLines, boardRanges, boardWholeFill, boardWholeRadius, frameRing, layerInset, outerFrame, ray, uprightToSheet, FITTED, SILHOUETTE, WEDGES, type Font, type Frame, type Point, type Ring } from './geometry';
 import { fillSquare, fitCircle } from './frameFit';
 import { fittedPicture } from './fitted';
 import { normalizeContours } from './contours';
@@ -257,21 +257,6 @@ function boardPicture(request: GeneratorRequest, circle?: 'large' | number, encl
 			const inside = clipConvex(square, disc);
 			if (inside.length >= 3) rings.push(inside);
 		}
-	// A line the circle meets just short of an edge it reaches ends where the
-	// circle meets that edge (see `boardLegs`): the square beyond the line
-	// there takes the colour of the one before it, up to that point.
-	const meets = radius > 50 ? Math.sqrt(radius ** 2 - 2500) : 50;
-	for (let k = 1; k < strips; k++) {
-		const line = k * side, d = Math.abs(line - 50);
-		if (d <= meets || 50 - Math.sqrt(radius ** 2 - d ** 2) >= BOARD_STUB) continue;
-		const [low, high] = line < 50 ? [line, 50 - meets] : [50 + meets, line];
-		for (const [from, to] of [[0, side], [100 - side, 100]])
-			for (const part of [[[low, from], [high, from], [high, to], [low, to]], [[from, low], [to, low], [to, high], [from, high]]] as Ring[]) {
-				rings.push(part);
-				const inside = clipConvex(part, disc);
-				if (inside.length >= 3) rings.push(inside);
-			}
-	}
 	const motif = rings.length;
 	rings.push(...contours.map(ring => ring.map(([x, y]) => uprightToSheet([(x - cx) * scale, (y - cy) * scale]))));
 	return { rings, motif };

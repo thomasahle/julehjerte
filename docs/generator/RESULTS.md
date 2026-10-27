@@ -363,6 +363,39 @@ topology's next two, without it (`fromSolve`): the same hearts at all 190
 sizes of the ten motifs, in half the time. A heart takes 2.7 s on average,
 not 2.3 s (median 0.9 s, not 0.5 s), the slowest no slower.
 
+## The board circle keeps clear of the paper's edges where a line nears them
+
+On five strips at 97% the two red squares of each side ran together along
+the edge (the user: "You somehow merge the two red squares on the side, which
+were never merged before … from 86% to 100% the topology is the same: 9
+floating red blobs, 8 of them being on the sides"). The rule of 10-20 (see
+"The circle on equal squares meeting the paper's edges in points") had a line
+the circle met closer to an edge than the cutting clearance (1.5) end where
+the circle meets that edge, the square beyond it taking the colour of the one
+before as far: where the circle had only just reached the edge, both squares
+of a side ran over most of the middle square. That rule misread the request
+of 10-20, which was for the circle to grow on until the squares come to sharp
+points at the edges, not for a little extra at a straight angle. Now the
+circle keeps the clearance at those settings, a line meeting it 1.5 from the
+edge, and steps past the line at the first setting whose circle is past it,
+where the square beyond comes to a point; nothing is recoloured, in the
+picture or the cuts. The settings moved: 3×3 85–87%, 5×5 97–98%, 7×7 94–95%
+and 98–99%, 9×9 93%, 95% and 99%; every other size has the same circle as
+before. The circle steps over the radii between at once (on five strips 49.5
+→ 51.3 from 98% to 99%, where the slider's steps are 0.65), and the moved
+settings take the recipes of the setting before, whose picture they now share
+(9×9 at 95% and 99% chosen again there, `topology.mjs`).
+
+Over the 49 featured motifs at the moved settings (588 hearts), against the
+pictures before: 282 better, 131 worse, 163 the same; weak places at 80 mm
+3660 → 3670, hard to cut 51 and refused 12 as before. Three strips gain at
+every moved setting (140 better, 1 worse; 168 → 150 weak places), five at
+both (97%: 187 → 144). The worse are 7×7 at 98–99% (458 → about 510 weak
+places each) and 9×9 at 99% (548 → 589), where the pictures before had
+recipes solved for them; the generator's own hearts there are as good as
+before (7×7: 1094 → 1102 weak places, 9×9: 614 → 612), so new solves for the
+new pictures should win those back.
+
 ## The figure in the checks moves a little rather than wait
 
 Where no sheets keep every strip whole at the figure's place in the checks,

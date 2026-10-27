@@ -4,7 +4,7 @@
  * generator and the pictures drawn before the cuts (see `picture`).
  */
 import type { GeneratorRequest } from './generate';
-import { boardLines, boardRangeLines, boardRangePattern, boardRanges, type Point, type Ring } from './geometry';
+import { BOARD_STUB, boardLines, boardRangeLines, boardRangePattern, boardRanges, type Point, type Ring } from './geometry';
 import { checkeredLayouts } from './checkeredGrid';
 
 /** The motif in place of a letter: repeated on the checkerboard by the small
@@ -110,10 +110,38 @@ export function boardScale(request: GeneratorRequest): number {
  * junctions at 85%, past which it overlaps the corner squares; on three
  * strips one construction all the way. It passes a line's tangent slightly
  * beyond it, and steps a little further beyond the touching circle, the
- * corners just past it being too close to cut. `range` is the
- * construction's. */
+ * corners just past it being too close to cut, and keeps short of the radii
+ * where a line would meet it within the cutting clearance of a paper's edge
+ * (see below). `range` is the construction's. */
 export function boardRadius(scale: number, strips = 5) {
-	const ranges = boardRanges(strips), setting = Math.max(.45, Math.min(1, scale));
+	const setting = Math.max(.45, Math.min(1, scale)), at = (s: number) => radiusAt(s, strips), { radius, range } = at(setting);
+	// Where a line would meet the circle closer to a paper's edge than the
+	// cutting clearance, the line would end in a stub there, or the square
+	// beyond it take the colour of the one before as far as the circle reaches
+	// that edge, the two squares of a side all but joined (at 97% on five
+	// strips): the circle keeps the clearance there, the settings spread evenly
+	// from the one before, and steps past the line, where the square beyond it
+	// comes to a point, at the first setting whose circle is past it.
+	const near = stubLine(radius, strips);
+	if (near === undefined) return { radius, range };
+	const step = .01, same = (s: number) => s >= .45 && s <= 1 && at(s).range === range && stubLine(at(s).radius, strips) === near;
+	let first = setting, last = setting;
+	while (same(first - step)) first -= step;
+	while (same(last + step)) last += step;
+	const count = Math.round((last - first) / step) + 1, i = Math.round((setting - first) / step);
+	const keeps = Math.hypot(near, 50 - BOARD_STUB) - .01, before = first - step >= .45 ? at(first - step).radius : range[0];
+	return { radius: before + (i + 1) / count * (keeps - before), range };
+}
+
+/** The line a circle meets closer than the cutting clearance to a paper's
+ * edge (as its distance from the middle), short of meeting the edge past it. */
+function stubLine(radius: number, strips: number): number | undefined {
+	return boardLines(strips).find(line => radius > line && radius < Math.hypot(line, 50) && 50 - Math.sqrt(radius ** 2 - line ** 2) < BOARD_STUB);
+}
+
+/** The circle at a size setting before it keeps clear of the paper's edges (see `boardRadius`). */
+function radiusAt(setting: number, strips: number) {
+	const ranges = boardRanges(strips);
 	const [small, large] = ranges;
 	let radius = !large ? small[0] + (setting - .45) / .55 * (small[1] - small[0])
 		: small[0] + (setting - .45) / .25 * (small[1] - small[0]), range = small;
