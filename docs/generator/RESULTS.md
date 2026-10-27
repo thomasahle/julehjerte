@@ -1,5 +1,24 @@
 # Generator robustness results
 
+## The polar star in the corners, its wedges reached one at a time
+
+In Tern i spidserne the polar star was refused at every size below 100%. Its
+four small wedges lie in the notches between its points, so a hidden link
+straight from one to the next crosses the point between them: in the middle
+lane (every wedge there up to 85%, the lanes' split being relative to the motif
+plus a fixed four units) and in the separated layouts' side lanes alike, every
+construction failed its audit with crossing cuts. Now, where no layout finishes
+otherwise, a side lane reaches the parts of the motif in it one at a time from
+its own line, a step down the line between them, so the link passes outside the
+point (`stepped`).
+
+The 49 featured motifs at 50, 70, 85 and 100% (196 hearts): the polar star
+refused → clean at 50, 70 and 85% (2–4 weak places, in 2 s rather than 4–94 s
+refused), and at 100%, where a fallback had built it, clean with 2 weak places
+rather than 8 (16 needles rather than 8); the holly at 100%, which also took a
+fallback, keeps hard to cut at 99% with the same paper. The other 192 hearts
+are the same. The swan is still refused (hole ports that do not alternate).
+
 ## The sunburst to 100%
 
 The sunburst's slider stopped at 90%: above it most motifs were kept a little

@@ -184,6 +184,13 @@ describe('complete motif frames', () => {
   expect(design).not.toHaveProperty('rightCutouts');
   expect(design).not.toHaveProperty('leftCutouts');
  });
+ slow('reaches the polar star\'s wedges in the corners one at a time from the side lanes, rather than refusing it', () => {
+  // Its four wedges lie in the notches between its points, so a link straight
+  // from one to the next crosses the point between them: every layout was
+  // refused below 100%.
+  const { design } = generate({ mode: 'figure', name: 'Polar star', contours: polarStar.contours as Ring[], colors, style: 'corners', scale: .7 });
+  expect(design.gridSize).toEqual({ x: 6, y: 6 });
+ });
  it('keeps the rays\' cuts a paper\'s width from the motif where theirs would tear in print', () => {
   // The yule goat at the default size left three pieces hanging by paper
   // under 2 mm printed 80 mm wide; its connections kept a paper's width off,

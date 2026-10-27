@@ -2993,14 +2993,14 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// One fitting the border narrows the outer strips, a picture of its
 		// own: only where none of the others finish.
 		const fitted = new Set<GeneratorResult>();
-		const layouts = (routeMargin = 0, avoid = false, border?: boolean, wholeLanes = false) => bestOfFirst((function* () {
+		const layouts = (routeMargin = 0, avoid = false, border?: boolean, wholeLanes = false, stepped = false) => bestOfFirst((function* () {
 			let finished = false;
 			for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) for (const holdLegs of [true, false]) {
 				if (fitBorder && finished) return;
 				if (border !== undefined && fitBorder !== border) continue;
 				try {
 					const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes,
-						undefined, undefined, request.gap, routeMargin > 0, holdLegs, routeMargin, avoid, wholeLanes);
+						undefined, undefined, request.gap, routeMargin > 0, holdLegs, routeMargin, avoid, wholeLanes, stepped);
 					// Keep the established frame and skip another fit when moving
 					// separate components did not change any lane or connection.
 					if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
@@ -3016,8 +3016,12 @@ function generateUsingRecipes(request: GeneratorRequest,
 		})());
 		// The lanes' routes passing the other lanes' parts of the motif only
 		// where none of the plain ones finish (the elephant).
-		let best = layouts(), avoided = false;
+		let best = layouts(), avoided = false, stepped = false;
 		if (!best) [best, avoided] = [layouts(0, true), true];
+		// Where none of those finish either, the side lanes reach the parts of
+		// the motif in them one at a time (the polar star's wedges, a straight
+		// link between two of which crosses its point).
+		if (!best) [best, avoided, stepped] = [layouts(0, false, undefined, false, true), false, true];
 		// Where its paper tears printed, the layouts with the same border again
 		// with the motif's connections, and the side lanes' legs, a paper's
 		// width off, kept where they hold better; where that still tears, with
@@ -3027,7 +3031,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const paper = PAPER_NECK_MM / PRINT_WIDTH_MM * 100, border = fitted.has(best);
 			for (const wholeLanes of [false, true]) {
 				if (wholeLanes && !paperTears(exported(best).design)) break;
-				const again = layouts(paper, avoided, border, wholeLanes);
+				const again = layouts(paper, avoided, border, wholeLanes, stepped);
 				if (again && cutsBetter(again, best, true)) best = again;
 			}
 		}

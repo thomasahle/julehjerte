@@ -120,7 +120,7 @@ function pastMotif(path: Point[], cuts: Point[], room: number, limit: number, sa
 export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 	routing: 'chain' | 'practical' | 'separated' = 'chain', fitBorder = false, bentSpokes = false,
 	contacts?: { tilt: number; invert: boolean }, laneSplit?: number, gap = 0, bendLegs = false, holdLegs = false, routeMargin = 0, avoid = false,
-	wholeLanes = false) {
+	wholeLanes = false, stepped = false) {
 	const points = rings.flat();
 	if (!points.length) throw new ConstructionError('empty', 'No contour');
 	const artwork = rings.map(r => r.map(([x, y]) => uprightToSheet([x * size * scale, y * size * scale])));
@@ -187,22 +187,24 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 		if (lane !== laneAt(.45)) changed = true;
 		lanes[lane].push(node);
 	}
+	// Stepped, a layout with no side lane of several parts is the plain one.
+	if (stepped && !lanes.some((nodes, col) => col !== 1 && nodes.length > 1)) throw new ConstructionError('topology', 'No side lane to step');
 	for (let col = 0; col < 3; col++) {
 		// Space around the motif moves both checked tips toward their corners.
 		const start: Point = [s - d + col * d, s + d - col * d], end: Point = [e - f + col * f, e + f - col * f];
 		add(edges, [[start[0], 0], start], 'A', 'frame');
 		add(edges, [[0, start[1]], start], 'B', 'frame');
-		const route = (entry: Point, exit: Point) => {
-			if (contacts) chains.push({ nodes: lanes[col], start: entry, end: exit });
-			else if (routing === 'chain') contourChain(edges, lanes[col], Math.PI / 4, entry, exit, 'B');
-			else if (lanes[col].length) {
+		const route = (entry: Point, exit: Point, nodes = lanes[col]) => {
+			if (contacts) chains.push({ nodes, start: entry, end: exit });
+			else if (routing === 'chain') contourChain(edges, nodes, Math.PI / 4, entry, exit, 'B');
+			else if (nodes.length) {
 				// Each lane keeps one open path in each sheet. Counters and sharp
 				// shoulders can use the same coincident bridges as repeated letters.
 				// Three lanes plus two outer cuts give a six-strip grid.
 				// At `routeMargin`, the motif's connections keep further off.
 				// With `avoid`, its approaches pass the other lanes' parts of the
 				// motif: slower, so only where the plain routes are refused.
-				twoPortMotif(edges, lanes[col].flatMap(contoursOf), [entry, exit], Math.max(margin, routeMargin), {
+				twoPortMotif(edges, nodes.flatMap(contoursOf), [entry, exit], Math.max(margin, routeMargin), {
 					compound: true, balanced: true, bentSpokes,
 					...avoid ? { obstacles: lanes.flatMap((nodes, other) => other === col ? [] : nodes.flatMap(contoursOf)) } : {}
 				});
@@ -233,7 +235,17 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 				leg([start, before, entry, exit, after, end].filter((p, i, all) => !i || Math.hypot(p[0] - all[i - 1][0], p[1] - all[i - 1][1]) > 1e-6));
 			else {
 				leg([start, before, entry]);
-				route(entry, exit);
+				if (stepped && lanes[col].length > 1) {
+					// With `stepped`, the lane reaches the parts of the motif in it
+					// one at a time from its own line, a step down it between them:
+					// a link straight from one to the next would cross the motif
+					// between them (two of the polar star's wedges, its point).
+					const heights = (node: (typeof lanes)[number][number]) => node.ring.map(p => (p[0] + p[1] - 100) * Math.SQRT1_2);
+					const nodes = [...lanes[col]].sort((a, b) => Math.min(...heights(a)) - Math.min(...heights(b)));
+					const stops = [entry, ...nodes.slice(1).map((node, k) =>
+						borderPoint(uprightToSheet([x, (Math.max(...heights(nodes[k])) + Math.min(...heights(node))) / 2]))), exit];
+					nodes.forEach((node, k) => route(stops[k], stops[k + 1], [node]));
+				} else route(entry, exit);
 				leg([exit, after, end]);
 			}
 		}
