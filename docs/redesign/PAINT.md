@@ -63,8 +63,10 @@ rows moved in, so on a short viewport the column stops centring itself — `just
 scrolls from the top, with a fade over its bottom edge while there is more below it, because macOS draws nothing
 of an overlay scrollbar until a gesture starts):
 
-- Row of two buttons: `Importér billede` (outline, opens the dialog) and `Ryd` (ghost, goes back to the 5 × 5 board
-  without asking; one undo step, so Fortryd brings the painting back).
+- Row of two buttons: `Importér billede` (outline, opens the dialog) and `Ryd` (ghost, a split button). `Ryd`
+  itself leaves one blank paper, the left lobe's (the owner, 2026-10-27: "The Ryd button itself should give a blank
+  canvas"), and stands down while the mask already is one; the arrow beside it is *Tern*'s menu (below). Neither
+  asks first: each is one undo step, so Fortryd brings the painting back.
 - Panel "Værktøj": tools Pen, Fyld, Linje, Rektangel, Ellipse (key O, 2026-10-26: the ellipse inscribed in the
   rectangle the drag spans, along the strips as the rectangle is), Udtvær, Markér as 40px icon buttons (lucide:
   pencil, paint-bucket, minus (rotated 45°) or a simple line glyph, square, ellipse, square-dashed); a labelled brush-radius
@@ -122,9 +124,10 @@ of an overlay scrollbar until a gesture starts):
     holds the disc of the radius; the pen, the line (whose preview is the hull of the head at both ends) and
     Udtvær (whose hold fades to the head's rim, the nib turned in images whose symmetry swaps the axes) take it.
   - *Udtvær* (lucide pointer, key U) moves the paper rather than painting it: **Skub** drags it along with the
-    pointer, **Hvirvl** turns it about the brush and **Bul** swells it out, both for as long as the pointer is held;
-    Alt turns the other way or draws in. Its three modes are one row under the tools, shown only while it is the
-    tool in hand. It has its own radius (8–200 cells, default 80, `[`/`]` in steps of 5), because a hvirvel turns most
+    pointer, **Hvirvl** turns it about the brush, **Bul** swells it out and **Krymp** (lucide shrink, added
+    2026-10-27 at the owner's request: "the opposite of Bul") draws it in, the last three for as long as the
+    pointer is held; Alt turns the other way or swaps Bul and Krymp. Its four modes are one row under the tools,
+    shown only while it is the tool in hand. It has its own radius (8–200 cells, default 80, `[`/`]` in steps of 5), because a hvirvel turns most
     of the square at once. It follows the brush head (a square hold fades to a square rim) and has a **Styrke**
     slider of its own under the modes, 10–100 %, default 30 % (2026-10-26, the owner's request and choice): at 100 % a push
     carries the paper under the brush's centre all the way with the pointer and a held turn or swell goes at its
@@ -132,8 +135,9 @@ of an overlay scrollbar until a gesture starts):
     of where each cell's paper comes from, reads bilinearly and cuts at one half (`src/lib/paint/smudge.ts`), so
     the mask stays two papers and edges do not wear into steps. Under symmetry the dab is made at every image of
     the brush in one summed step, so a symmetric mask stays exactly symmetric with nothing copied afterwards.
-  - *Tern* (lucide grid-3x3) sits at the far end of the Værktøj heading: a menu of 3 × 3 to 9 × 9, laying a plain
-    woven heart's board (corner squares the left paper, as a classic 3 × 3), over the whole mask or inside the
+  - *Tern* is the arrow beside Ryd (moved there from the Værktøj heading, 2026-10-27, the owner: "Add a dropdown
+    to the side of Ryd that has the tern options"): a menu of 3 × 3 to 9 × 9 (each with lucide grid-3x3), laying a
+    plain woven heart's board (corner squares the left paper, as a classic 3 × 3), over the whole mask or inside the
     selection. One undo step, so no confirm. An even board is not its own mirror image within a lobe, so those
     sizes are disabled, with the reason as their title, while Kurverne i hver lap is Spejlet.
   - *A selection that stays*: Markér's frame, once put down (Enter, a click outside, or another tool), stays on
@@ -299,8 +303,9 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
   what to try (paint with fewer thin details, switch off a symmetry, try again), plus `Prøv igen`.
 
 Starting state: the heart with a plain 5 × 5 board, never an empty mask (the owner's choice, 2026-10-26: "always
-default to a 5x5 grid. Don't start with an empty canvas"); Ryd goes back to it too (`defaultMask` in
-`src/lib/paint/tools.ts`). While the board is untouched Ryd is disabled and a reload has nothing to lose. Nothing
+default to a 5x5 grid. Don't start with an empty canvas"; `defaultMask` in `src/lib/paint/tools.ts`). Ryd went
+back to it too until 2026-10-27; now it gives a blank paper, and the board is Tern's 5 × 5 in the menu beside it.
+While the board is untouched a reload has nothing to lose. Nothing
 is drawn over the board: the card that sat beside it ("Mal med musen eller fingeren – eller importér et billede"
 with `Importér billede` and "Prøv stjernen") was removed (the owner, 2026-10-27: "let's get rid of this box"), and
 with it "Prøv stjernen"; `Importér billede` stays at the top of the tool column. Find snit works on

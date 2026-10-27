@@ -14,7 +14,7 @@
  * where a cell lands on screen comes from `heartLayout`, exactly as the
  * component's own `pointAt` reads it back.
  */
-import { afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
 import MaskCanvasFixture from './MaskCanvasFixture.svelte';
 import { createMask, type Mask } from '$lib/paint/mask';
@@ -26,7 +26,7 @@ import { LOBE_OUTLINE_COLORS } from '$lib/editor/outlineColors';
 import { cutGeometryToDesign, type CutGeometry } from '$lib/inverse/toHeartDesign';
 import starSolution from '../../../../static/inverse/examples/star.saved.json';
 import type { HeartDesign } from '$lib/types/heart';
-import type { PaintTool, PaintValue } from '$lib/paint/toolset';
+import type { PaintTool, PaintValue, SmudgeMode } from '$lib/paint/toolset';
 
 const BOX = 600;
 const PADDING = 24;
@@ -96,6 +96,7 @@ function render(
 		candidate?: HeartDesign | null;
 		/** Udtvær's strength in percent, its default unless said. */
 		smudgeStrength?: number;
+		smudgeMode?: SmudgeMode;
 	} = {}
 ): Harness {
 	const mask = createMask(options.fill ?? 0, SIZE);
@@ -118,6 +119,7 @@ function render(
 			frame: options.frame ?? { ...DEFAULT_FRAME },
 			candidate: options.candidate ?? null,
 			...(options.smudgeStrength !== undefined ? { smudgeStrength: options.smudgeStrength } : {}),
+			...(options.smudgeMode ? { smudgeMode: options.smudgeMode } : {}),
 			onEditStart: () => {},
 			onEditEnd: () => {
 				harness.edits++;
@@ -758,6 +760,26 @@ describe('Udtvær', () => {
 		expect(c.cell(18, 20)).toBe(1);
 		expect(c.cell(22, 20)).toBe(0);
 		expect(c.edits).toBe(1);
+	});
+
+	it('draws the paper in with Krymp, as Bul swells it out, for as long as the pointer is held', () => {
+		// The held modes work frame by frame, so the frames are the fake clock's.
+		vi.useFakeTimers();
+		try {
+			const held = (smudgeMode: SmudgeMode) => {
+				const c = render({ tool: 'smudge', brush: 12, smudgeStrength: 100, smudgeMode });
+				for (let y = 15; y < 25; y++) for (let x = 15; x < 25; x++) c.mask.data[y * SIZE + x] = 1;
+				send(c.canvas, 'pointerdown', atPoint({ x: 20, y: 20 }));
+				vi.advanceTimersByTime(200);
+				send(c.canvas, 'pointerup', atPoint({ x: 20, y: 20 }));
+				expect(c.edits).toBe(1);
+				return c.mask.data.reduce((sum, v) => sum + v, 0);
+			};
+			expect(held('bulge')).toBeGreaterThan(110);
+			expect(held('shrink')).toBeLessThan(90);
+		} finally {
+			vi.useRealTimers();
+		}
 	});
 });
 

@@ -27,8 +27,8 @@
 
 import type { HeartDesign } from '$lib/types/heart';
 import { clearHandoff, handoffToDraw, takeHandoff } from './handoff';
-import { packMask, unpackMask, type Mask } from '$lib/paint/mask';
-import { defaultMask, isDefaultMask } from '$lib/paint/tools';
+import { createMask, isEmpty, packMask, unpackMask, type Mask } from '$lib/paint/mask';
+import { isDefaultMask } from '$lib/paint/tools';
 import {
 	clampFrameSize,
 	DEFAULT_FRAME,
@@ -246,14 +246,14 @@ function foldToSymmetry(): void {
  * under, kept for Mal's Fortryd: Mal's undo history lives in its page, which the
  * way to Tegn took down, so the page takes this as it opens and puts it on the
  * new history (PaintPage). Null when there was nothing painted to lose — no
- * mask, or still the board Mal starts on.
+ * mask, the board Mal starts on, or Ryd's blank paper.
  */
 let replaced: { mask: Mask; symmetry: SymmetrySettings } | null = null;
 
 /** `setMask` for a heart carried over from Tegn, the mask it replaces kept (see `replaced`). */
 export function setMaskFromDraw(mask: Mask, options: Parameters<typeof setMask>[1] = {}): void {
 	const before = session.mask;
-	replaced = before && !isDefaultMask(before) ? { mask: before, symmetry: { ...session.symmetry } } : null;
+	replaced = before && !isDefaultMask(before) && !isEmpty(before) ? { mask: before, symmetry: { ...session.symmetry } } : null;
 	setMask(mask, options);
 }
 
@@ -264,9 +264,13 @@ export function takeReplacedMask(): { mask: Mask; symmetry: SymmetrySettings } |
 	return before;
 }
 
-/** Ryd: the board Mal starts on, and nothing left to say about where it came from. */
+/**
+ * Ryd: one blank paper, the left lobe's, so the pen's default paper shows on
+ * it, and nothing left to say about where it came from. The board Mal starts on
+ * is Tern's 5 × 5, in the menu beside Ryd.
+ */
 export function clearMask(): void {
-	setMask(defaultMask());
+	setMask(createMask(0));
 }
 
 /** Record that the visitor has painted, so the next destructive step asks first. */

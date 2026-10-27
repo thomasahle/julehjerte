@@ -248,20 +248,13 @@
 		void strokes;
 		return !session.mask || isEmpty(session.mask);
 	});
-	/**
-	 * Still the board Mal starts on (see `defaultMask`): nothing painted yet, so
-	 * Ryd has nothing to clear and a reload loses nothing.
-	 */
-	let maskUntouched = $derived.by(() => {
-		void revision;
-		void strokes;
-		return !session.mask || isDefaultMask(session.mask);
-	});
 	let hasMissingPhotoPixels = $derived.by(() => {
 		void revision;
 		void strokes;
 		return session.mask?.validMask?.some(v => !v) ?? false;
 	});
+	/** Already the blank paper Ryd gives: nothing for it to clear. */
+	let maskBlank = $derived(maskEmpty && !hasMissingPhotoPixels);
 	let busy = $derived(session.status === 'searching' || session.status === 'importing');
 	/**
 	 * A dialog is on screen, so it owns the keyboard.
@@ -610,7 +603,7 @@
 	// is Fortryd away.
 	function clear(): void {
 		settle();
-		if (maskUntouched) return;
+		if (maskBlank) return;
 		maskCanvas?.deselect();
 		rememberBeforeReplacing();
 		clearMask();
@@ -1174,7 +1167,7 @@
 							onRedo={redo}
 							onImport={openImport}
 							onClear={clear}
-							clearDisabled={maskUntouched}
+							clearDisabled={maskBlank}
 							disabled={busy || showingResult}
 						/>
 					</div>

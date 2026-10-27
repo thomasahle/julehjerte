@@ -12,6 +12,7 @@
 	import {
 		BulgeIcon,
 		ChecksIcon,
+		ChevronDownIcon,
 		EllipseIcon,
 		ImageIcon,
 		LineIcon,
@@ -20,6 +21,7 @@
 		PushIcon,
 		RedoIcon,
 		SelectIcon,
+		ShrinkIcon,
 		SmudgeIcon,
 		SquareIcon,
 		TrashIcon,
@@ -61,7 +63,7 @@
 		/** The brush's head, round or square. */
 		brushShape?: BrushShape;
 		onBrushShape?: (shape: BrushShape) => void;
-		/** What Udtvær does: push, twirl or bulge. */
+		/** What Udtvær does: push, twirl, bulge or shrink. */
 		smudgeMode?: SmudgeMode;
 		onSmudgeMode?: (mode: SmudgeMode) => void;
 		/** How hard Udtvær works, in percent. */
@@ -72,7 +74,7 @@
 		/** A put-down selection holds the tools inside it. */
 		fenceHeld?: boolean;
 		onDeselect?: () => void;
-		/** Tern: lay an `n` × `n` board, over the mask or inside the selection. */
+		/** Tern, Ryd's menu: lay an `n` × `n` board, over the mask or inside the selection. */
 		onChecks?: (n: number) => void;
 		/** Paper colour or XOR action. */
 		paintValue: PaintValue;
@@ -83,6 +85,7 @@
 		onUndo: () => void;
 		onRedo: () => void;
 		onImport: () => void;
+		/** Ryd: one blank paper. */
 		onClear: () => void;
 		/** Nothing to clear: the mask is already blank. */
 		clearDisabled?: boolean;
@@ -133,11 +136,12 @@
 		{ id: 'select', label: 'paintSelect', icon: SelectIcon, key: 'M' }
 	];
 
-	/** Udtvær's three ways with the paper, each with its own glyph. */
+	/** Udtvær's four ways with the paper, each with its own glyph. */
 	const SMUDGE_MODES: { id: SmudgeMode; label: TranslationKey; icon: Component<IconProps> }[] = [
 		{ id: 'push', label: 'paintSmudgePush', icon: PushIcon },
 		{ id: 'twirl', label: 'paintSmudgeTwirl', icon: TwirlIcon },
-		{ id: 'bulge', label: 'paintSmudgeBulge', icon: BulgeIcon }
+		{ id: 'bulge', label: 'paintSmudgeBulge', icon: BulgeIcon },
+		{ id: 'shrink', label: 'paintSmudgeShrink', icon: ShrinkIcon }
 	];
 
 	/** Each head's name, which says how it lies on the drawing (see `brushHead.ts`). */
@@ -180,42 +184,49 @@
 			<ImageIcon size={16} />
 			{tr('paintImportImage')}
 		</button>
-		<button
-			type="button"
-			class="btn btn-sm btn-ghost"
-			onclick={onClear}
-			disabled={disabled || clearDisabled}
-		>
-			<TrashIcon size={16} />
-			{tr('paintClear')}
-		</button>
-	</div>
-
-	<section class="editor-panel">
-		<!-- Tern sits at the heading's far end: a way to start the mask over, like
-		     the two buttons above the panel, but one whose answer is painted with
-		     these tools, and the heading's row was free. -->
-		<div class="panel-head">
-			<h2 class="panel-title">{tr('paintTools')}</h2>
+		<!-- Ryd and Tern are one split button: Ryd starts over on a blank paper,
+		     and the arrow beside it starts over on a board of checks instead (or
+		     fills the selection with them). Both replace the mask, and both are
+		     one undo step. -->
+		<div class="clear-split">
+			<button
+				type="button"
+				class="btn btn-sm btn-ghost clear-btn"
+				onclick={onClear}
+				disabled={disabled || clearDisabled}
+			>
+				<TrashIcon size={16} />
+				{tr('paintClear')}
+			</button>
 			<DropdownMenu>
 				<DropdownMenuTrigger {disabled}>
 					{#snippet child({ props })}
-						<button {...props} type="button" class="checks-btn" title={tr(fenceHeld ? 'paintChecksInSelection' : 'paintChecksHint')}>
-							<ChecksIcon size={14} />
-							{tr('paintChecks')}
+						<button
+							{...props}
+							type="button"
+							class="btn btn-sm btn-ghost btn-icon checks-btn"
+							aria-label={tr('paintChecks')}
+							title={tr(fenceHeld ? 'paintChecksInSelection' : 'paintChecksHint')}
+						>
+							<ChevronDownIcon size={16} />
 						</button>
 					{/snippet}
 				</DropdownMenuTrigger>
-				<DropdownMenuContent align="start">
+				<DropdownMenuContent align="end">
 					{#each BOARDS as n (n)}
 						{@const kept = checksKeepSymmetry(n, transforms)}
 						<DropdownMenuItem disabled={!kept} onSelect={() => onChecks(n)} title={kept ? undefined : tr('paintChecksEvenMirror')}>
+							<ChecksIcon size={14} />
 							{t('paintChecksSize', lang, { n })}
 						</DropdownMenuItem>
 					{/each}
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</div>
+	</div>
+
+	<section class="editor-panel">
+		<h2 class="panel-title">{tr('paintTools')}</h2>
 
 		<div class="tool-grid" role="group" aria-label={tr('paintTools')}>
 			{#each TOOLS as item (item.id)}
@@ -263,7 +274,7 @@
 			<p class="tool-hint" role="status">{tr('paintSelectionShort')}</p>
 		{/if}
 
-		<!-- Udtvær's three ways with the paper, only while it is the tool in hand:
+		<!-- Udtvær's four ways with the paper, only while it is the tool in hand:
 		     what each does is in its name and tooltip, and Alt's reversal in Hjælp. -->
 		{#if tool === 'smudge'}
 			<div class="smudge-modes" role="group" aria-label={tr('paintSmudgeModes')}>
@@ -412,41 +423,32 @@
 		gap: 8px;
 	}
 
-	.mask-actions .btn {
+	.mask-actions > .btn,
+	.clear-split {
 		flex: 1 1 0;
+	}
+
+	.mask-actions .btn {
 		background: var(--white);
 	}
 
-	.panel-head {
+	/* The two halves share one border between them, as one button split in two. */
+	.clear-split {
 		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 8px;
+		min-width: 0;
+	}
+
+	.clear-btn {
+		flex: 1 1 0;
+		min-width: 0;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
 	}
 
 	.checks-btn {
-		display: inline-flex;
-		align-items: center;
-		gap: 5px;
-		height: 26px;
-		padding: 0 10px;
-		border: 1.5px solid var(--line);
-		border-radius: 8px;
-		background: var(--white);
-		color: var(--green);
-		font: inherit;
-		font-size: 12px;
-		font-weight: 600;
-		cursor: pointer;
-	}
-
-	.checks-btn:hover:not(:disabled) {
-		background: var(--cream2);
-	}
-
-	.checks-btn:disabled {
-		opacity: 0.35;
-		cursor: not-allowed;
+		margin-left: -1.5px;
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
 	}
 
 	/* Seven 40px icon buttons, as wide as the panel allows. */
@@ -456,11 +458,11 @@
 		gap: 4px;
 	}
 
-	/* Udtvær's modes: three words with their glyphs, sharing the panel's width,
+	/* Udtvær's modes: four words with their glyphs, sharing the panel's width,
 	   in the tools' own square and colours. */
 	.smudge-modes {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(4, 1fr);
 		gap: 4px;
 	}
 
@@ -481,8 +483,12 @@
 		cursor: pointer;
 	}
 
+	/* Four words to a row: a little smaller than the tools' own, so Krymp and
+	   Shrink fit beside their glyphs in the narrowest column. */
 	.mode-btn {
 		height: 32px;
+		gap: 4px;
+		font-size: 12px;
 	}
 
 	.mode-btn:hover:not(:disabled),

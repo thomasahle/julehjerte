@@ -173,7 +173,7 @@
 		lang
 	}: Props = $props();
 
-	/** How far a held Hvirvl turns the paper at its centre each frame, and Bul swells it. */
+	/** How far a held Hvirvl turns the paper at its centre each frame, and Bul swells it (Krymp draws it in). */
 	const TWIRL_PER_FRAME = 0.03;
 	const BULGE_PER_FRAME = 0.03;
 
@@ -1058,7 +1058,7 @@
 		onEditEnd();
 	}
 
-	/** Udtvær's dab where the pointer is held, for twirl and bulge, scaled to the frame's length. */
+	/** Udtvær's dab where the pointer is held, for twirl, bulge and shrink, scaled to the frame's length. */
 	function smudgeFrame(time: number): void {
 		smudgeLoop = 0;
 		if (!smudge || !smudgeAt || !mask) return;
@@ -1067,7 +1067,7 @@
 		const sign = (smudgeReverse ? -1 : 1) * smudgeStrength / 100;
 		const box = smudgeMode === 'twirl'
 			? smudge.twirl(smudgeAt, brush, sign * TWIRL_PER_FRAME * step)
-			: smudge.bulge(smudgeAt, brush, sign * BULGE_PER_FRAME * step);
+			: smudge.bulge(smudgeAt, brush, (smudgeMode === 'shrink' ? -sign : sign) * BULGE_PER_FRAME * step);
 		fenced(box);
 		syncOffscreen(box);
 		schedule();

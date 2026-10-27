@@ -54,6 +54,8 @@ export { default as ScissorsIcon } from '@lucide/svelte/icons/scissors';
 /** The marquee of the selection tool. lucide's box-select ships no Svelte build. */
 export { default as SelectIcon } from '@lucide/svelte/icons/square-dashed';
 export { default as ShareIcon } from '@lucide/svelte/icons/share-2';
+/** Udtvær's Krymp: the paper drawn in towards the brush, Bul's glyph turned inwards. */
+export { default as ShrinkIcon } from '@lucide/svelte/icons/shrink';
 /** Udtvær: a finger through wet paint, as the smudge tool is drawn everywhere. */
 export { default as SmudgeIcon } from '@lucide/svelte/icons/pointer';
 export { default as SquareIcon } from '@lucide/svelte/icons/square';

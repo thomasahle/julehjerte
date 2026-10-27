@@ -24,10 +24,10 @@ export const BRUSH_SHAPES: readonly BrushShape[] = ['round', 'square', 'diamond'
 
 /**
  * What Udtvær does to the paper under it: drags it along with the pointer, turns
- * it about the brush (a hvirvel), or swells it out from there (a glaskuppel).
- * Alt reverses the turn and draws the swell in instead.
+ * it about the brush (a hvirvel), swells it out from there (a glaskuppel), or
+ * draws it in, as Bul backwards. Alt reverses the turn, the swell and the draw.
  */
-export type SmudgeMode = 'push' | 'twirl' | 'bulge';
+export type SmudgeMode = 'push' | 'twirl' | 'bulge' | 'shrink';
 
 /** XOR is an editing action; the mask still contains only paper 0 and paper 1. */
 export type PaintValue = 0 | 1 | 'xor';

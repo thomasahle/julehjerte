@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import type { HeartDesign } from '$lib/types/heart';
 import { createMask, isEmpty } from '$lib/paint/mask';
 import { disagreement } from '$lib/paint/symmetry';
-import { isDefaultMask, rect } from '$lib/paint/tools';
+import { defaultMask, rect } from '$lib/paint/tools';
 import {
 	clearMask,
 	handoffToDraw,
@@ -63,11 +63,12 @@ describe('the session', () => {
 		expect(session.status).toBe('idle');
 	});
 
-	it('goes back to the board Mal starts on with Ryd, never an empty mask', () => {
+	it('clears to one blank paper with Ryd, the left lobe\'s, at the full size', () => {
 		setMask(createMask(1, 32));
 		clearMask();
-		expect(isDefaultMask(session.mask!)).toBe(true);
-		expect(isEmpty(session.mask!)).toBe(false);
+		expect(isEmpty(session.mask!)).toBe(true);
+		expect(session.mask!.size).toBe(createMask(0).size);
+		expect(session.mask!.validMask).toBeUndefined();
 	});
 
 	it('remembers that the visitor has painted until the mask is replaced', () => {
@@ -132,6 +133,7 @@ describe('a heart carried over from Tegn', () => {
 	it('keeps the mask it replaces, with its rows, for Mal to undo once', () => {
 		const rows = { curve: 'sym', lobe: 'off', lobes: 'off' } as const;
 		const painted = createMask(0);
+		rect(painted, { x: 150, y: 150 }, { x: 250, y: 250 }, 1);
 		setMask(painted, { symmetry: rows });
 		const heart = createMask(1);
 		setMaskFromDraw(heart);
@@ -140,7 +142,10 @@ describe('a heart carried over from Tegn', () => {
 		expect(takeReplacedMask()).toBeNull();
 	});
 
-	it('keeps nothing where nothing was painted: no mask yet, or the board Mal starts on', () => {
+	it('keeps nothing where nothing was painted: no mask yet, the board Mal starts on, or Ryd\'s blank paper', () => {
+		setMaskFromDraw(createMask(1));
+		expect(takeReplacedMask()).toBeNull();
+		setMask(defaultMask());
 		setMaskFromDraw(createMask(1));
 		expect(takeReplacedMask()).toBeNull();
 		clearMask();

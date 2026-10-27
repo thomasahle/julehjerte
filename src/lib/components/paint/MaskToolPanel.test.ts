@@ -202,7 +202,7 @@ describe('MaskToolPanel', () => {
 		}
 	});
 
-	it('offers Udtvær\'s three ways only while it is the tool in hand', () => {
+	it('offers Udtvær\'s four ways only while it is the tool in hand', () => {
 		const modes: string[] = [];
 		const pen = render();
 		try {
@@ -213,13 +213,38 @@ describe('MaskToolPanel', () => {
 		const panel = render({ tool: 'smudge', smudgeMode: 'push', onSmudgeMode: (mode) => modes.push(mode) });
 		try {
 			const buttons = [...panel.target.querySelectorAll<HTMLButtonElement>('.smudge-modes button')];
-			expect(buttons.map((b) => b.textContent?.trim())).toEqual(['Skub', 'Hvirvl', 'Bul']);
-			expect(buttons.map((b) => b.getAttribute('aria-pressed'))).toEqual(['true', 'false', 'false']);
+			expect(buttons.map((b) => b.textContent?.trim())).toEqual(['Skub', 'Hvirvl', 'Bul', 'Krymp']);
+			expect(buttons.map((b) => b.getAttribute('aria-pressed'))).toEqual(['true', 'false', 'false', 'false']);
 			buttons[1]!.click();
+			buttons[3]!.click();
 			flushSync();
-			expect(modes).toEqual(['twirl']);
+			expect(modes).toEqual(['twirl', 'shrink']);
 		} finally {
 			panel.cleanup();
+		}
+	});
+
+	it('splits Ryd, which clears, from the arrow beside it, which offers Tern', () => {
+		let cleared = 0;
+		const panel = render({ onClear: () => cleared++ });
+		try {
+			const ryd = [...panel.target.querySelectorAll<HTMLButtonElement>('.clear-split button')];
+			expect(ryd.map((b) => b.textContent?.trim() || b.getAttribute('aria-label'))).toEqual(['Ryd', 'Tern']);
+			expect(ryd[1]!.getAttribute('aria-haspopup')).toBe('menu');
+			ryd[0]!.click();
+			flushSync();
+			expect(cleared).toBe(1);
+			expect(panel.target.querySelector('.editor-panel')!.textContent).not.toContain('Tern');
+		} finally {
+			panel.cleanup();
+		}
+		const blank = render({ clearDisabled: true });
+		try {
+			const [ryd, checks] = [...blank.target.querySelectorAll<HTMLButtonElement>('.clear-split button')];
+			expect(ryd!.disabled).toBe(true);
+			expect(checks!.disabled).toBe(false);
+		} finally {
+			blank.cleanup();
 		}
 	});
 
