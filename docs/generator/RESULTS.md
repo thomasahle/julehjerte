@@ -1,5 +1,29 @@
 # Generator robustness results
 
+## The sunburst to 100%
+
+The sunburst's slider stopped at 90%: above it most motifs were kept a little
+smaller after minutes. With its sizes now told as they are drawn (see below)
+and its ladder narrowing the crown, it goes to 100% as the other circle frames
+do; a visitor who wants a heart easier to cut sets it smaller. The 49 featured
+motifs from 90% to 100% (the 90% row is the entry below), none refused:
+
+| asked | clean / hard | at the size asked | median size kept | median time | 9 in 10 within | slowest |
+| --- | --- | --- | --- | --- | --- | --- |
+| 90% | 33 / 16 | 40 | 90% | 4 s | 83 s | 295 s |
+| 92% | 30 / 19 | 37 | 92% | 15 s | 142 s | 531 s |
+| 94% | 25 / 24 | 34 | 94% | 30 s | 180 s | 523 s |
+| 96% | 22 / 27 | 28 | 96% | 38 s | 186 s | 595 s |
+| 98% | 21 / 28 | 25 | 98% | 33 s | 290 s | 666 s |
+| 100% | 14 / 35 | 22 | 98% | 52 s | 224 s | 686 s |
+
+The slowest are the motifs kept well below the size asked, each size the
+ladder tries above them failing with both crowns: the holly (84%, 11 minutes
+at 100%), elephant (73%, 11), santa hat (90%, 6–7), owl (85%, 6) and swan (95%,
+4–5). One motif still keeps less for a larger size: the candy cane, 92% asked
+92%, but 85% from 94% on, since 92% builds with its crown narrowed where 91%
+does not, and the ladder from above stops at 85%.
+
 ## The sunburst's motif no longer drawn smaller than the heart says
 
 Where no heart keeping the space asked for around the motif could be finished
