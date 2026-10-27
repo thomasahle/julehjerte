@@ -556,12 +556,13 @@ describe('frames from real hearts', () => {
   expect(inner.length).toBe(8);
   for (const a of inner) expect(Math.abs(a - 50), `${a}`).toBeCloseTo(Math.sqrt(52 ** 2 - 50 ** 2), 1);
  });
- slow('brings the squares to points where the circle meets the paper\'s edges past a line', () => {
-  // On three strips a line lies inside the circle at 88%, the first size
-  // where the circle meets the edge past it, and at 100%, where it meets the
-  // edges halfway along the corner squares; on five, the middle lines at 99%.
+ slow('brings the squares to points where the circle meets the paper\'s edges, not to stubs of line', () => {
+  // On three strips a line would meet the circle 0.7 short of the edge at
+  // 86%, its sliver swapping its colour, and lies inside it at 100%, where it
+  // meets the edges halfway along the corner squares; on five, the middle
+  // lines 0.3 short at 98%.
   expect(Math.sqrt(boardRadius(1, 3).radius ** 2 - 50 ** 2)).toBeCloseTo(100 / 3, 6);
-  for (const [board, scale, outer] of [[3, .88, []], [3, 1, []], [5, .99, [20, 80]]] as const) {
+  for (const [board, scale, outer] of [[3, .86, []], [3, 1, []], [5, .98, [20, 80]]] as const) {
    const { design, hardToCut } = generate({ mode: 'figure', name: 'House', contours: houseMotif.contours as Ring[], colors, style: 'board', board, scale });
    expect(hardToCut, `${board} ${scale}`).toBeUndefined();
    const rect = inferOverlapRect(design.fingers, design.gridSize);

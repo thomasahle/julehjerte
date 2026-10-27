@@ -392,8 +392,21 @@ Over the 49 featured motifs at the sizes where a line meets the circle within
 better, 127 worse, 282 the same; weak places at 80 mm 3660 → 3991, hard to
 cut 51 → 60, refused 12 as before. The thin piece of paper left between such
 a line, the circle and the edge tears (five strips at 97% 187 → 239 weak
-places, seven at 98–99% 458 → about 555); swapping its colour, where that
-joins no squares, is what is left to help there.
+places, seven at 98–99% 458 → about 555).
+
+So that sliver swaps its colour again, the square before the line running on
+to where the circle meets the edge, but only where the circle meets the edge
+along a quarter of a strip or more (`swapsBoardSliver`): where it has only
+just reached the edge (five strips at 97%, 3.5 units), the two squares of a
+side swapped so would all but meet across it. Only lines in play swap: from
+92% on seven strips the heart leaves the middle lines out, and the rule of
+10-20 had painted a red sliver along the edge there (95%) from a line no
+longer drawn. Against the plain pictures: five strips at 98% 194 → 174 weak
+places (23 hearts better, 7 worse), seven at 98% 558 → 458 and at 99% 554 →
+458 (27 and 25 better, 4 and 2 worse), nine at 99% 614 → 548 (28 better, 2
+worse); three strips at 85–87% a little worse (the cuts 0.1–4.6% longer, at
+85% three weak places more), the rest as before. In all 3991 → 3712 weak
+places, hard to cut 60 as before.
 
 ## The figure in the checks moves a little rather than wait
 

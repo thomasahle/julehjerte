@@ -2355,6 +2355,19 @@ export function boardWholeTop(strips: number): number {
 	}
 	return low;
 }
+/** The shortest stretch a board line keeps between the circle and an edge of
+ * the paper the circle reaches, the cutting clearance: the sliver of the
+ * square beyond a line the circle meets closer takes the colour of the square
+ * before it, where that joins no squares (see `swapsBoardSliver`). */
+export const BOARD_STUB = 1.5;
+/** Whether the sliver of the square beyond a line the circle meets within the
+ * cutting clearance of an edge it reaches takes the colour of the square
+ * before, the line ending where the circle meets the edge (see `boardLegs`),
+ * the circle meeting that edge for `meets` either side of its middle: only
+ * along a quarter of a strip or more, so that the two squares of a side so
+ * swapped stay apart across it (on five strips at 97% the circle had only
+ * just reached the edges, and they read as one). */
+export const swapsBoardSliver = (meets: number, strips: number) => 2 * meets >= 100 / strips / 4;
 /** The radii on the board of five strips, the frame's own (see `boardRanges`). */
 export const BOARD_RADII: readonly (readonly [number, number])[] = boardRanges(5);
 
@@ -2409,8 +2422,9 @@ type End = { angle: number; family: 'A' | 'B'; port: Port };
  * squares, their legs overlapping along the corner square's arc.
  *
  * Where the paper's edges cut the circle off, a line that would meet the
- * circle past an edge ends where the circle meets that edge, so the squares
- * there come to points along the circle. */
+ * circle past an edge, or within `BOARD_STUB` of it where its sliver swaps its
+ * colour, ends where the circle meets that edge, so the squares there come to
+ * points along the circle. */
 function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number, around?: number, d = boardLines(strips), stepIn = false):
 	(side: number, index: number, framed: (angle: number, half: number) => Point, from: Point) => Point[] {
 	const turn = 2 * Math.PI, lines: { axis: number; line: number; ends: End[] }[] = [];
@@ -2437,6 +2451,19 @@ function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number, aro
 			const t = (line - p[axis]) / (q[axis] - p[axis]);
 			const point: Point = [p[0] + t * (q[0] - p[0]), p[1] + t * (q[1] - p[1])];
 			point[axis] = line;
+			// One the circle meets just short of an edge it reaches ends where
+			// the circle meets that edge, on its near side, where the sliver
+			// beyond it swaps its colour (see `swapsBoardSliver`): the square
+			// beyond the line comes to a point along the circle.
+			const bound = point[1 - axis] < 50 ? 0 : 100, along = ring.filter(v => v[1 - axis] === bound).map(v => v[axis]);
+			if (Math.abs(point[1 - axis] - bound) < BOARD_STUB && along.length && swapsBoardSliver((Math.max(...along) - Math.min(...along)) / 2, strips)) {
+				let meets = -1;
+				ring.forEach((v, j) => {
+					if (v[1 - axis] === bound && (v[axis] - line) * (50 - line) > 0
+						&& (meets < 0 || Math.abs(v[axis] - line) < Math.abs(ring[meets][axis] - line))) meets = j;
+				});
+				if (meets >= 0) return end(ring[meets], meets);
+			}
 			end(point, i + t);
 		});
 		if (!ends.length) add(edges, axis ? [[0, line], [100, line]] : [[line, 0], [line, 100]], axis ? 'B' : 'A', 'frame');
