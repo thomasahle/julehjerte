@@ -99,6 +99,56 @@ test('crop provider failures clear the busy state and permit a later request',as
  await h.send(2,'detect-crops',{input});assert.equal(h.messages.at(-1).type,'crops');
 });
 
+// The colour locator in a worker of its own, beside the paper model.
+function cropHarness(){
+ const crops=[],calls=[];
+ const createCropWorker=()=>{
+  const worker={sent:[],terminated:0,onmessage:null,onerror:null,onmessageerror:null,
+   postMessage(data){this.sent.push(data);},terminate(){this.terminated++;}};
+  crops.push(worker);return worker;
+ };
+ const h=harness({createCropWorker,detectCrops:async(source,opts)=>{const call={opts,colour:opts.productionCrop(source,{roi:source.roi,onProgress:opts.onProgress})};calls.push(call);return call.colour;}});
+ return{...h,crops,calls};
+}
+const pixels={type:'pixels',imageWidth:20,imageHeight:20,rgba:new Uint8ClampedArray(1600)};
+
+test('a photograph\'s colour locator answers from its own worker, which later searches reuse',async()=>{
+ const h=cropHarness(),found={status:'candidate',candidates:[{quad:[[0,0],[1,0],[1,1],[0,1]]}]};
+ const detecting=h.send(1,'detect-crops',{input:pixels});await null;
+ const [worker]=h.crops,[sent]=worker.sent;
+ assert.equal(sent.input,pixels);assert.equal(sent.roi,undefined);
+ assert.deepEqual(h.messages.filter(m=>m.type==='progress').map(m=>m.event.stage),['detecting']);
+ worker.onmessage({data:{id:sent.id+1,crops:{wrong:true}}});
+ worker.onmessage({data:{id:sent.id,crops:found}});await detecting;
+ assert.deepEqual(h.messages.at(-1),{id:1,type:'crops',crops:found});
+ const again=h.send(2,'detect-crops',{input:pixels});await null;
+ assert.equal(h.crops.length,1);assert.equal(worker.sent.length,2);
+ worker.onmessage({data:{id:worker.sent[1].id,message:'locator failed'}});await again;
+ assert.equal(h.messages.at(-1).message,'locator failed');
+});
+
+test('a cancel ends the colour locator\'s worker, and the next search starts another',async()=>{
+ const h=cropHarness();
+ const detecting=h.send(1,'detect-crops',{input:pixels});await null;
+ await h.send(1,'cancel');await assert.rejects(h.calls[0].colour,{name:'AbortError'});await detecting;
+ assert.equal(h.crops[0].terminated,1);assert.equal(h.messages.at(-1).type,'cancelled');
+ const again=h.send(2,'detect-crops',{input:pixels});await null;
+ assert.equal(h.crops.length,2);
+ h.crops[1].onmessage({data:{id:h.crops[1].sent[0].id,crops:{status:'not_found',candidates:[]}}});await again;
+ assert.equal(h.messages.at(-1).type,'crops');
+});
+
+test('a colour locator worker that fails or cannot start is run in the engine\'s own worker',async()=>{
+ const h=cropHarness();
+ const detecting=h.send(1,'detect-crops',{input:pixels});await null;
+ h.crops[0].onerror({preventDefault(){}});await detecting;
+ assert.equal(h.crops[0].terminated,1);
+ assert.deepEqual(h.messages.at(-1),{id:1,type:'crops',crops:{status:'not_found',reason:'The image is too small for automatic outline fitting.',candidates:[]}});
+ const none=harness({createCropWorker:()=>{throw new ReferenceError('Worker is not defined');},detectCrops:async(source,opts)=>opts.productionCrop(source,{})});
+ await none.send(1,'detect-crops',{input:pixels});
+ assert.equal(none.messages.at(-1).crops.status,'not_found');
+});
+
 // Mal's solve: the exact search and the fitter in two workers side by side.
 const both={...config,exactOutline:true,exactParallel:true};
 const exactValue={report:{solver:{exactOutline:{chosen:'exact'}}},files:{'cut_geometry.json':packet.geometry}};

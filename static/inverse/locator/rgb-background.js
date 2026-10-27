@@ -26,7 +26,7 @@ export function makeRGBBackgroundFields(image,{roi=[0,0,image.width,image.height
   for(const p of samples){
    let winner=0,best=Infinity;
    for(let k=0;k<3;k++){
-    const d=p.reduce((s,v,j)=>s+(v-colors[k][j])**2,0);
+    const c=colors[k],d=0+(p[0]-c[0])**2+(p[1]-c[1])**2+(p[2]-c[2])**2;
     if(d<best){best=d;winner=k;}
    }
    counts[winner]++;
@@ -37,13 +37,12 @@ export function makeRGBBackgroundFields(image,{roi=[0,0,image.width,image.height
  }
  const vector=colors[1].map((v,k)=>v-colors[0][k]),den=vector.reduce((s,v)=>s+v*v,0);
  if(den<.18**2)return null;
- const residual=p=>{
-  const d=p.map((v,k)=>v-colors[0][k]),t=Math.max(0,Math.min(1,d.reduce((s,v,k)=>s+v*vector[k],0)/den));
-  return Math.hypot(...d.map((v,k)=>v-t*vector[k]));
- };
+ // Per pixel without arrays: the same arithmetic in the same order.
+ const [base,,ground]=colors,[v0,v1,v2]=vector;
  const paper=f.paper.map((v,i)=>{
-  const p=[f.r[i],f.g[i],f.b[i]],bg=Math.hypot(...p.map((x,k)=>x-colors[2][k]));
-  return Math.min(v,sigmoid((bg-residual(p))/.02));
+  const R=f.r[i],G=f.g[i],B=f.b[i],bg=Math.hypot(R-ground[0],G-ground[1],B-ground[2]);
+  const d0=R-base[0],d1=G-base[1],d2=B-base[2],t=Math.max(0,Math.min(1,(0+d0*v0+d1*v1+d2*v2)/den));
+  return Math.min(v,sigmoid((bg-Math.hypot(d0-t*v0,d1-t*v1,d2-t*v2))/.02));
  });
  const red=f.red.map((v,i)=>Math.min(v,paper[i])),white=f.white.map((v,i)=>Math.min(v,paper[i]));
  return{...f,paper,red,white,mask:close(paper,w,h,2),

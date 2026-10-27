@@ -59,19 +59,29 @@ export function sharpenCrop(input,candidate,{starts=[],minLower=.5,minUpper=.2,m
 
 async function detectUnrefinedPhotoCrops(input,{roi=input.roi,onProgress=()=>{},cancelled=()=>false,onBody=()=>{},
  productionCrop=detectHeartCrops,predictBody=predictPaperBody,learnedCrop=detectForegroundCrop,outlineCrop=detectBodyCrop,silhouetteCrop=detectSilhouetteCrop}={}){
- const production=await productionCrop(input,{roi,onProgress});
- const check=()=>{if(cancelled())throw new DOMException('Cancelled','AbortError');};check();
+ // The colour locator may answer from a worker of its own (worker-controller.js):
+ // the paper model then runs beside it, not after it.
+ const colour=Promise.resolve(productionCrop(input,{roi,onProgress}));
+ let colourDone=false;colour.then(()=>{colourDone=true;},()=>{colourDone=true;});
+ const check=()=>{if(cancelled())throw new DOMException('Cancelled','AbortError');};
  // An explicit selection identifies an instance. Whole-image saliency must
  // not override it. A colour-based crowded-frame warning, however, can be a
  // false split of one heart; the learned locator applies its own component
  // and whole-body checks before replacing that unresolved suggestion.
- if(roi)return production.candidates?.length?production:selectedSilhouette(input,roi,production);
+ if(roi){const production=await colour;check();return production.candidates?.length?production:selectedSilhouette(input,roi,production);}
+ let production=null;
  try{
   // The paper model's first load reports its bytes (stage 'paper-model').
-  const body=await predictBody(input,{onProgress});check();if(!body)return production;
+  const body=await predictBody(input,{onProgress});
+  // While the colour locator still works, the learned crop the selection asks
+  // for whenever the colour crop falls short: mostly when it is slow.
+  const learn=()=>learnedCrop(input,{...body,paletteMode:'confidence-weighted',outerBoundarySampling:true});
+  const learned=body&&!colourDone?Promise.resolve().then(learn):null;
+  learned?.catch(()=>{});
+  production=await colour;check();if(!body)return production;
   onBody(body);
   const selected=await selectWholeBodyPhotoCrop(input,{body,weighting:'balanced-confidence',productionCrop:()=>production,
-   learnedCrop:()=>learnedCrop(input,{...body,paletteMode:'confidence-weighted',outerBoundarySampling:true}),
+   learnedCrop:()=>learned??learn(),
    outlineCrop:()=>{check();return outlineCrop(input,{...body,outerBoundarySampling:true});}});
   check();const {decision,detection}=selected;
   // Nothing found: the heart's silhouette in the paper probability, which a
@@ -88,7 +98,7 @@ async function detectUnrefinedPhotoCrops(input,{roi=input.roi,onProgress=()=>{},
     provenance:{...candidate.provenance,method:decision.selected==='outline'?'learned-paper-outline':decision.selected==='learned'?'learned-paper-body':candidate.provenance?.method,
      modelSha256:body.modelSha256,bodyReview:decision}})),
    bodyReview:decision};
- }catch(error){check();return{...production,bodyReview:{status:'unavailable',reason:error.message}};}
+ }catch(error){production??=await colour;check();return{...production,bodyReview:{status:'unavailable',reason:error.message}};}
 }
 
 /** In a selection nothing else found a heart in, the heart as what differs

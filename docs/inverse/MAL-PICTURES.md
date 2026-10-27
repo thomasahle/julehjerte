@@ -528,6 +528,30 @@ topological ones under 1 s (five photographs 4.8-19 s), and 28 found none in
 found as many templates (9 of 29) in half the time (10.8 s for 21 at the
 median); every other search runs as before.
 
+## Finding the corners faster (2026-10-27)
+
+On the live site a photograph's corners took 3-12 s (six photographs, the
+first with the paper model's download). Most of it is the colour locator
+(core/crop.js and locator/): up to seven colour models upright, then turned,
+each fitting the heart's shape by Nelder-Mead; 0.7-31 s a photograph, 2.7 s at
+the median of 40, while the paper model takes about a second.
+
+- It runs in a worker of its own (`crop-worker.js`, worker-controller.js)
+  beside the paper model, and the learned crop starts while it still works,
+  since the selection asks for that crop whenever the colour crop falls short,
+  which is mostly when it is slow. In this thread, where the colour answer is
+  already in, nothing starts early. A worker that cannot start or fails runs it
+  here as before. On 12 photographs the whole search took 54 s instead of 81,
+  with the same corners, status and method for each.
+- Its arithmetic without arrays: the palettes' per-pixel loops, sorting as a
+  typed copy (`trimMean`, `quantile`), and the square close as two sliding
+  passes. Every field is bit for bit the same (four palettes on 30
+  photographs), as is every answer on 40; the locator took 77 s instead of
+  103 on them, run back to back.
+
+The orientation search stops at a 2 s deadline between hypotheses, so a slower
+or busier machine can try fewer of them; that was so before as well.
+
 ## Details lost on photographs (2026-10-25)
 
 The 68 photographs whose template keeps every rule but loses a region of the

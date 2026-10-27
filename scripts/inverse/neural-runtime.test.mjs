@@ -44,6 +44,20 @@ test('unresolved multiple components still request a user selection',async()=>{
   learnedCrop:()=>({status:'needs_selection',candidates:[]})});
  assert.equal(result.status,'needs_selection');assert.deepEqual(result.candidates,[]);
 });
+test('a colour locator answering later runs beside the paper model and the learned crop, to the same answer',async()=>{
+ const production={status:'needs_selection',candidates:[]},events=[];
+ const body={probability:new Float32Array(400).fill(1),resolution:20,window:[0,0,24,24]};
+ const learnedCrop=()=>{events.push('learned');return{status:'needs_selection',candidates:[]};};
+ const before=await detectPhotoCrops(input,{productionCrop:()=>production,predictBody:()=>body,learnedCrop});
+ assert.deepEqual(events,['learned']);events.length=0;
+ let answer;
+ const pending=detectPhotoCrops(input,{productionCrop:()=>new Promise(resolve=>{answer=resolve;}),
+  predictBody:async()=>{events.push('model');return body;},learnedCrop});
+ for(let i=0;i<5;i++)await new Promise(resolve=>setImmediate(resolve));
+ assert.deepEqual(events,['model','learned']);
+ answer(production);
+ assert.deepEqual(await pending,before);assert.deepEqual(events,['model','learned']);
+});
 test('cancelled inference never falls back to a stale crop',async()=>{
  let complete,cancelled=false;
  const pending=detectPhotoCrops(input,{productionCrop:()=>({status:'not_found',candidates:[]}),predictBody:()=>new Promise(resolve=>{complete=resolve;}),cancelled:()=>cancelled});

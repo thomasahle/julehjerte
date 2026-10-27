@@ -21,7 +21,8 @@ const EXACT_GRACE_SECONDS=5,EXACT_WAIT_SECONDS=40,EXACT_UNDRAWN_SECONDS=20;
  * Candidate packets stay here; only throttled progress pictures reach the UI.
  */
 export function workerController(scope,{createWorker=()=>new Worker(new URL('./compute-worker.js',import.meta.url),{type:'module'}),finalize=finishStopped,finalizeExact=finishExactStopped,now=()=>performance.now(),
- detectCrops=(input,options)=>import('./neural/photo-crop.js').then(module=>module.detectPhotoCrops(input,options))}={}){
+ detectCrops=(input,options)=>import('./neural/photo-crop.js').then(module=>module.detectPhotoCrops(input,options)),
+ createCropWorker=()=>new Worker(new URL('./crop-worker.js',import.meta.url),{type:'module'})}={}){
   // `trailing`: a side-by-side worker still running after the other's template
   // went out, its passing answer to follow as an alternative: the fitter's, or
   // the exact search's ({exact: true}, with the timer ending it).
@@ -29,6 +30,24 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
   const end=worker=>{if(worker){worker.onmessage=null;worker.onerror=null;worker.onmessageerror=null;worker.terminate();}};
   const disposeFitter=()=>{end(compute);compute=null;},disposeExact=()=>{end(exactCompute);exactCompute=null;};
   const dispose=()=>{disposeFitter();disposeExact();};
+  // The colour locator in a worker of its own (crop-worker.js): a photograph's
+  // crop search runs it beside the paper model, its two longest steps, instead
+  // of before it. One at a time: a new search, or a cancel, ends one still
+  // running. Where the worker cannot start or fails, it runs here as before.
+  let cropWorker=null,cropJob=null,cropIds=0;
+  const endCrop=()=>{end(cropWorker);cropWorker=null;const job=cropJob;cropJob=null;job?.reject(new DOMException('Cancelled','AbortError'));};
+  const here=(input,options)=>import('./core/crop.js').then(module=>module.detectHeartCrops(input,options));
+  const colourCrop=(input,options={})=>{
+    if(cropJob)endCrop();
+    try{cropWorker??=createCropWorker();}catch{return here(input,options);}
+    options.onProgress?.({stage:'detecting'});
+    return new Promise((resolve,reject)=>{
+      const job={id:++cropIds,reject},worker=cropWorker;cropJob=job;
+      worker.onmessage=({data})=>{if(cropJob!==job||data.id!==job.id)return;cropJob=null;if(data.crops)resolve(data.crops);else reject(new Error(data.message));};
+      worker.onerror=event=>{event?.preventDefault?.();if(cropJob!==job)return;cropJob=null;end(worker);if(cropWorker===worker)cropWorker=null;here(input,{roi:options.roi}).then(resolve,reject);};
+      worker.postMessage({id:job.id,input,roi:options.roi});
+    });
+  };
   const passes=value=>value?.report?.templateChecksPassed===true;
   const failure=(id,error)=>scope.postMessage({id,type:'error',message:error.message||String(error),code:error.code,report:error.report||null});
   const finish=(job,value,error)=>{
@@ -45,7 +64,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
     if(trailing&&action!=='archive'&&action!=='warm-neural'){const ending=trailing;trailing=null;clearTimeout(ending.timer);if(ending.exact)disposeExact();else disposeFitter();}
     if(action==='cancel'){
       if(active&&active.id!==id)return;
-      const job=active;active=null;dispose();prepared=null;result=null;job?.done();
+      const job=active;active=null;dispose();endCrop();prepared=null;result=null;job?.done();
       scope.postMessage({id,type:'cancelled'});scope.close?.();return;
     }
     if(action==='stop'){
@@ -78,7 +97,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
         prepared=null;
         const job={id,phase:'detecting',done:()=>{}};active=job;
         try{
-          const crops=action==='detect-crops'?await detectCrops(input,{onProgress:event=>{if(active===job)progress(event);},cancelled:()=>active!==job}):refineHeartCrop(input,input.quad);
+          const crops=action==='detect-crops'?await detectCrops(input,{onProgress:event=>{if(active===job)progress(event);},cancelled:()=>active!==job,productionCrop:colourCrop}):refineHeartCrop(input,input.quad);
           if(active!==job)return;
           active=null;scope.postMessage({id,type:'crops',crops});
         }catch(error){if(active!==job)return;active=null;throw error;}

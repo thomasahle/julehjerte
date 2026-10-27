@@ -21,7 +21,11 @@ export function makeInteriorPaletteFields(image){
   const rgb=i=>[f.r[i],f.g[i],f.b[i]];
   // A single strongly tinted region is enough to start; requiring an existing
   // two-colour fit would fail precisely when the pale sheet was missed.
-  for(let i=0;i<colored.length;i++)colored[i]=f.paper[i]*sigmoid((distance(normalize(rgb(i)),backgroundHue)-.06)/.01);
+  // Per pixel without arrays: the same arithmetic in the same order.
+  for(let i=0;i<colored.length;i++){
+    const R=f.r[i],G=f.g[i],B=f.b[i],sum=Math.max(.001,0+R+G+B);
+    colored[i]=f.paper[i]*sigmoid((Math.hypot(R/sum-backgroundHue[0],G/sum-backgroundHue[1],B/sum-backgroundHue[2])-.06)/.01);
+  }
   const component=mainComponent(close(colored,w,h,3),w,h);
   if(!component)return null;
   const hull=hullMask(component,w,h),pool=[];
@@ -44,14 +48,15 @@ export function makeInteriorPaletteFields(image){
   const paper=new Float32Array(w*h),chroma=new Float32Array(w*h);
   const red=new Float32Array(w*h),white=new Float32Array(w*h);
   for(let i=0;i<paper.length;i++){
-    const p=rgb(i),hue=normalize(p),d=distance(hue,paleHue);
-    const dBackground=distance(hue,backgroundHue),alpha=image.data[4*i+3]/255;
+    const R=f.r[i],G=f.g[i],B=f.b[i],sum=Math.max(.001,0+R+G+B),h0=R/sum,h1=G/sum,h2=B/sum;
+    const d=Math.hypot(h0-paleHue[0],h1-paleHue[1],h2-paleHue[2]);
+    const dBackground=Math.hypot(h0-backgroundHue[0],h1-backgroundHue[1],h2-backgroundHue[2]),alpha=image.data[4*i+3]/255;
     const paleProbability=Math.min(
       sigmoid((dBackground-d)/(hueSeparation*.15)),
       sigmoid((hueRadius-d)/(hueRadius*.15))
     )*alpha;
     paper[i]=Math.max(colored[i],paleProbability);
-    const z=sigmoid((distance(p,pale)-distance(p,color))/Math.max(.02,separation*.08));
+    const z=sigmoid((Math.hypot(R-pale[0],G-pale[1],B-pale[2])-Math.hypot(R-color[0],G-color[1],B-color[2]))/Math.max(.02,separation*.08));
     chroma[i]=z;red[i]=z*paper[i];white[i]=(1-z)*paper[i];
   }
   // JPEG colour noise can put isolated holes on the centre scanline. Fill

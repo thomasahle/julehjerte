@@ -18,9 +18,28 @@ export function makeFields(image){
  const pd=signedDistance(pm,w,h),rd=signedDistance(rm,w,h),wd=signedDistance(wm,w,h);
  return {w,h,paper,red,white,chroma,pd,rd,wd,mask:close(paper,w,h,2),r,g,b};
 }
-export function close(prob,w,h,radius){const n=w*h,m=new Uint8Array(n),d=new Uint8Array(n),out=new Uint8Array(n);for(let i=0;i<n;i++)m[i]=prob[i]>.5?1:0;
- for(let y=0;y<h;y++)for(let x=0;x<w;x++){let v=0;for(let dy=-radius;dy<=radius&&!v;dy++)for(let dx=-radius;dx<=radius;dx++){const xx=x+dx,yy=y+dy;if(xx>=0&&xx<w&&yy>=0&&yy<h&&m[yy*w+xx]){v=1;break;}}d[y*w+x]=v;}
- for(let y=0;y<h;y++)for(let x=0;x<w;x++){let v=1;for(let dy=-radius;dy<=radius&&v;dy++)for(let dx=-radius;dx<=radius;dx++){const xx=clamp(x+dx,0,w-1),yy=clamp(y+dy,0,h-1);if(!d[yy*w+xx]){v=0;break;}}out[y*w+x]=v;}
+/** The mask `prob > .5` closed by a square of side 2·radius+1: dilated, then
+ * eroded. Both stop at the image's edge (an eroded window repeating its edge
+ * pixels holds no other values), so each is a row pass then a column pass. */
+export function close(prob,w,h,radius){const n=w*h,m=new Uint8Array(n);for(let i=0;i<n;i++)m[i]=prob[i]>.5?1:0;
+ return square(square(m,w,h,radius,true),w,h,radius,false);
+}
+/** Each pixel 1 where any (`any`) or every pixel of its square window within
+ * the image is 1. */
+function square(mask,w,h,radius,any){
+ const pass=(src,dst,lines,length,along,across)=>{
+  for(let line=0;line<lines;line++){
+   const o=line*across;let sum=0;
+   for(let k=0;k<Math.min(length,radius);k++)sum+=src[o+k*along];
+   for(let k=0;k<length;k++){
+    if(k+radius<length)sum+=src[o+(k+radius)*along];
+    if(k-radius>0)sum-=src[o+(k-radius-1)*along];
+    dst[o+k*along]=any?(sum>0?1:0):(sum===Math.min(length-1,k+radius)-Math.max(0,k-radius)+1?1:0);
+   }
+  }
+ };
+ const rows=new Uint8Array(w*h),out=new Uint8Array(w*h);
+ pass(mask,rows,h,w,1,w);pass(rows,out,w,h,w,1);
  return out;
 }
 /** Small enclosed omissions in a physical-paper registration mask. Eight-way

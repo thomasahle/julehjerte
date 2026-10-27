@@ -2,8 +2,11 @@
 export const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export const sigmoid=x=>1/(1+Math.exp(-clamp(x,-40,40)));
 export const mean=a=>a.reduce((s,x)=>s+x,0)/Math.max(a.length,1);
-export function quantile(a,q){if(!a.length)return NaN;const v=[...a].sort((x,y)=>x-y),i=clamp(q,0,1)*(v.length-1),k=Math.floor(i);return v[k]+(v[Math.min(k+1,v.length-1)]-v[k])*(i-k);}
-export function trimMean(a,keep=.85){return mean([...a].sort((x,y)=>x-y).slice(0,Math.max(1,Math.ceil(a.length*keep))));}
+// Sorted as a typed copy: the same values in the same order as a comparator
+// sort, natively, which the shape fits' objective spends most of its time on.
+const sorted=a=>Float64Array.from(a).sort();
+export function quantile(a,q){if(!a.length)return NaN;const v=sorted(a),i=clamp(q,0,1)*(v.length-1),k=Math.floor(i);return v[k]+(v[Math.min(k+1,v.length-1)]-v[k])*(i-k);}
+export function trimMean(a,keep=.85){return mean(sorted(a).subarray(0,Math.max(1,Math.ceil(a.length*keep))));}
 export function bilinear(a,w,h,x,y,outside=0){if(x<0||y<0||x>w-1||y>h-1)return outside;const ix=Math.floor(x),iy=Math.floor(y),jx=Math.min(ix+1,w-1),jy=Math.min(iy+1,h-1),u=x-ix,v=y-iy;return (1-v)*((1-u)*a[iy*w+ix]+u*a[iy*w+jx])+v*((1-u)*a[jy*w+ix]+u*a[jy*w+jx]);}
 export function solveLinear(A,b){const n=b.length,m=A.map((r,i)=>[...r,b[i]]);for(let c=0;c<n;c++){let k=c;for(let j=c+1;j<n;j++)if(Math.abs(m[j][c])>Math.abs(m[k][c]))k=j;if(Math.abs(m[k][c])<1e-12)throw new Error('Singular geometry');[m[c],m[k]]=[m[k],m[c]];let z=m[c][c];for(let j=c;j<=n;j++)m[c][j]/=z;for(let i=0;i<n;i++)if(i!==c){z=m[i][c];for(let j=c;j<=n;j++)m[i][j]-=z*m[c][j];}}return m.map(r=>r[n]);}
 export function homography(src,dst){if(src.length!==4||dst.length!==4)throw new Error('Four point pairs required');const A=[],b=[];for(let i=0;i<4;i++){const [x,y]=src[i],[u,v]=dst[i];A.push([x,y,1,0,0,0,-u*x,-u*y],[0,0,0,x,y,1,-v*x,-v*y]);b.push(u,v);}return [...solveLinear(A,b),1];}
