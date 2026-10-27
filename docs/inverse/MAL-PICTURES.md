@@ -552,16 +552,27 @@ camel, but takes 20-28 s more and fails on other photographs; not used.
 ## Open
 
 - A pale lobe on a pale background: the paper network barely sees it, and
-  neither the colour locator nor the silhouette finds the square (most of the
-  remaining "no crop" photographs).
+  neither the colour locator nor the silhouette finds the square. Of the 10
+  scraped photographs with no heart found, though, most are no woven paper
+  heart (printed templates, drawings, crochet, glitter, garlands of small
+  hearts a selection would find).
 - Fine motif detail (thin limbs, small stars, letters) the fitter cannot keep at
   this size: shown with Mal's note. Nor the exact search, even from an empty
   start: on the gallery's text hearts it finds nothing passing; TAK's template
   is 0.08% from the mask but its slits come closer than a strip allows.
-- The exact search takes few photographs (7 of 80, 4 of 44: its outline,
-  traced from a noisy mask, is rarely a weavable structure in time); it takes
-  three quarters of drawn ones. Of those it cannot start on, see above;
-  13 more break the model's rules until the deadline, on noisy outlines.
+- The exact search takes few photographs (14 of 80 first and 7 more second,
+  7 and 6 of 44: its outline, traced from a noisy mask, is rarely a weavable
+  structure in time); it takes three quarters of drawn ones. 13 scraped ones
+  break the model's rules until the deadline, on noisy outlines (a smoothed
+  trace helps given the time alone, above), and printed papers often still end
+  unevenly where reading their sides deeper would change more than the error
+  allowed.
+- The exact search's hard designs: circle, balls, venus, khatam, santa,
+  dagognat and davidsstjerne-circ get the fitter's template (passing, 0.7-1.5%
+  from the mask). The circle's 16 hidden segments, the count's bound, can only
+  cross each other at its four junctions (an embedding row stays broken);
+  neither a finer grid (1.5 units, 4 neighbours) nor searching untied finds a
+  template keeping every rule in 40 s.
 - Templates: slits that stop inside the square or meet in T-junctions (the site
   cannot represent them), dimension lines drawn along a slit.
 - A selected heart among touching neighbours (two of the web scenes): the
