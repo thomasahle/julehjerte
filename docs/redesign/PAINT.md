@@ -92,8 +92,10 @@ of an overlay scrollbar until a gesture starts):
 - **Markér** (owner, 2026-09-08): drag a frame on the mask to lift a rectangle of cells; a dashed marquee with four
   corner handles and a turner above it. Dragging inside moves the cells (what they leave becomes paper 0), a corner
   scales — uniform, and free with Shift — and the turner turns about the centre by any angle. Enter or a click
-  outside commits, Escape drops it, Delete/Backspace clears the selected cells. Resampling is nearest-neighbour at
-  the mask's own cells, so a two-colour mask stays two-colour. The mask is not touched until a commit: undo takes one
+  outside commits, Escape drops it, Delete/Backspace clears the selected cells. Resampling reads the patch's edge levels
+  bilinearly and cuts them at one half (since 2026-10-27; nearest-neighbour before), so a two-colour mask stays
+  two-colour and a scaled or turned patch keeps its curves; along its sides the patch is laid over what was there by
+  how much of each cell it covers, so a turned patch on a strip leaves a straight side. The mask is not touched until a commit: undo takes one
   snapshot per commit, Escape has nothing to take back, and a patch put down where it was lifted takes no snapshot
   at all. A commit spreads under the active transforms like any other edit, but it lays down both colours at once
   (the vacated cells and the placed ones), so it cannot be spread by colour the way a stroke is: the commit marks
@@ -138,8 +140,8 @@ of an overlay scrollbar until a gesture starts):
     stretching dab magnified it): while nothing else has touched the mask it carries on with the last stroke's kept
     mask and field, so several holds are exactly one long hold; started afresh (after a pen or an undo) it reads
     the mask's `level`, the share of paper each cell read before the cut, which is where between the cells the
-    edge lies. The screen draws edges from that level too, so a bent edge is a curve and not the cells' stair. The
-    tools that paint a cell make it whole again, and a level the cells no longer agree with is not read. Under symmetry the dab is made at every image of
+    edge lies. The screen draws edges from that level too, so a bent edge is a curve and not the cells' stair. A
+    level the cells no longer agree with is not read (see *Edges between the cells* below). Under symmetry the dab is made at every image of
     the brush in one summed step, so a symmetric mask stays exactly symmetric with nothing copied afterwards.
   - *Tern* is the arrow beside Ryd (moved there from the Værktøj heading, 2026-10-27, the owner: "Add a dropdown
     to the side of Ryd that has the tern options"): a menu of 3 × 3 to 9 × 9 (each with lucide grid-3x3), laying a
@@ -393,7 +395,7 @@ All pure logic is plain TypeScript under `src/lib/paint/` with vitest coverage; 
 ```ts
 // src/lib/paint/mask.ts
 export const MASK_SIZE = 400;
-export type Mask = { size: number; data: Uint8Array };          // row-major, y*size+x, values 0 | 1
+export type Mask = { size: number; data: Uint8Array; level?: Uint8Array };   // row-major, y*size+x, values 0 | 1; level: where between the cells the edge lies
 export type Box = { x0: number; y0: number; x1: number; y1: number };   // half-open, so the empty box exists
 export function createMask(fill?: 0 | 1, size?: number): Mask;  // `size` for the rasteriser and the tests
 export function cloneMask(m: Mask): Mask;
@@ -425,7 +427,7 @@ export function resizeBy(p: Placement, du: number, dv: number): Placement;   // 
 export function turnBy(p: Placement, radians: number): Placement;           // the turn keys
 export function middleRect(m: Mask): CellRect;                  // where a keyboard selection starts
 export function isUnmoved(sel: Selection): boolean;             // a commit that would write back what it took
-export function stamp(m: Mask, sel: Selection, marks?: Uint8Array): Box;    // nearest neighbour, mapped backwards so a turn leaves no holes
+export function stamp(m: Mask, sel: Selection, marks?: Uint8Array): Box;    // bilinear in the levels, mapped backwards so a turn leaves no holes
 export function commit(m: Mask, sel: Selection): Edit;          // vacate the source to 0, then stamp; the marks are for applySymmetricEdit
 
 // src/lib/paint/symmetry.ts
@@ -653,13 +655,28 @@ them.
 - The mask is drawn smooth (2026-10-26, the owner's request: "no antialiasing ... makes the drawings sometimes
   ugly"): the offscreen picture has as many pixels a cell as the screen shows, up to 3, and each paper's edge is the
   curve where the cells, read bilinearly between their centres, cross one half (Udtvær's edge), with a rim about a
-  pixel wide mixing the two papers (`src/lib/paint/smoothRaster.ts`). Only the picture: every cell's centre is in its
-  own paper, the mask stays two papers, and Find snit reads the same cells. A full redraw takes about 18 ms. A
+  pixel wide mixing the two papers (`src/lib/paint/smoothRaster.ts`), read from the mask's edge levels where it has
+  them (see *Edges between the cells*). Only the picture: every cell's centre is more its own paper than the other,
+  the mask stays two papers, and Find snit reads the same cells. A full redraw takes about 18 ms. A
   floating Markér patch (`smoothCells`), the XOR preview and the import dialog's mask are drawn the same way. Zoomed
   in past what that picture holds, the cells on screen (a fifth more each side) are drawn again at the screen's
   pixels a cell, up to 1.5 million pixels, 120 ms after the view settles; strokes update both pictures.
 - A stroke fills the shape the head sweeps along the segment in one pass, not a dab per cell, so the 200-cell pen
   costs one pass over its box.
+- **Edges between the cells** (2026-10-27, the owner: "Would it be nicer to save the edges in the other tools too?
+  It could allow better zoom and scaling" and "Move as much as you can to this framework"). `Mask.level` holds
+  each cell's paper as a share of 255, and an edge is where the cells, read bilinearly, cross one half. Every tool
+  writes it: the pen, line, rectangle and ellipse give each cell within a cell of the shape's edge its distance from
+  it, half a paper a cell (`EDGE_RAMP`; a straight edge then lands within a hundredth of a cell of where it was
+  drawn, a circle of radius 3 within a twentieth, against up to half a cell for the cells alone), and keep the
+  nearer of the shape's edge and the paper's own (`paintEdge`); Tern puts its squares' sides 400/n cells apart;
+  symmetry hands each image the greater (or lesser) of the two levels and the fold takes an orbit's mean; XOR
+  reads the footprint and the picture as one paper or the other; Udtvær keeps the share it read; Markér
+  resamples it. A fill writes whole cells (its region meets the other paper nowhere), and one of the paper's own colour
+  leaves the edge alone. The cells come out exactly as before (checked against the old pen on 2400 random
+  strokes), so Find snit sees no difference; the screen, zoom, Udtvær and Markér read the level. It is saved with
+  the session on reload; a picture read in has whole cells. The broadest round pen costs about 4 ms a move
+  (0.6 before), square and diamond heads about 4 (16–29 before, now one span a row).
 - With the header's colourful mode on, the heart takes the shuffle's first pair (the colourful button's first cell;
   `shownColors` in `$lib/stores/colorMode`): a canvas cannot read the mode's CSS variables, so this is how each
   press deals it a new pair, as it does the gallery's hearts. The XOR swatch shows the two papers on show.

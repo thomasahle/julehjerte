@@ -688,7 +688,7 @@
 		canvas.height = h * scale;
 		const ctx = canvas.getContext('2d');
 		if (!ctx) return null;
-		ctx.putImageData(new ImageData(smoothCells(sel.cells, sel.validMask, w, h, paper, scale), w * scale, h * scale), 0, 0);
+		ctx.putImageData(new ImageData(smoothCells(sel, w, h, paper, scale), w * scale, h * scale), 0, 0);
 		patch = canvas;
 		patchFor = sel;
 		return canvas;

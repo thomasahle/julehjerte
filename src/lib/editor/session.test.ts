@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import type { HeartDesign } from '$lib/types/heart';
 import { createMask, isEmpty } from '$lib/paint/mask';
 import { disagreement } from '$lib/paint/symmetry';
-import { defaultMask, rect } from '$lib/paint/tools';
+import { defaultMask, rect, stamp } from '$lib/paint/tools';
 import {
 	clearMask,
 	handoffToDraw,
@@ -172,6 +172,19 @@ describe('serialize and restore', () => {
 		expect(session.symmetry).toEqual({ curve: 'off', lobe: 'sym', lobes: 'sym' });
 		expect(session.found).toEqual({ curve: 'off', lobe: 'sym', lobes: 'sym' });
 		expect([...session.mask!.data]).toEqual([...mask.data]);
+	});
+
+	it('puts back where between the cells the edges lie', () => {
+		const mask = createMask(0, 400);
+		stamp(mask, 200, 200, { radius: 30.3, value: 1 });
+		setMask(mask);
+		const level = session.mask!.level!.slice();
+		const saved = JSON.parse(JSON.stringify(serialize()));
+
+		resetSession();
+		expect(restore(saved)).toBe(true);
+		expect([...session.mask!.level!]).toEqual([...level]);
+		expect(restore({ ...saved, mask: { ...saved.mask, levels: 'AAAA' } })).toBe(false);
 	});
 
 	it('survives a session with no mask', () => {

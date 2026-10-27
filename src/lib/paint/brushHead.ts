@@ -2,10 +2,10 @@
  * The brush's heads as shapes on the mask, about the brush's centre, in cells.
  *
  * Each head is convex, so the pen's stroke (the head slid along a segment) is
- * what `stroke` fills, Udtvær's hold fades out to the head's own rim, and the
- * line tool's preview is the hull of the head at both ends. The heart turns
- * the mask a quarter of a right angle, so a head is named by how it looks on
- * the drawing:
+ * the convex hull `stroke` fills, Udtvær's hold fades out to the head's own
+ * rim, and the line tool's preview is the hull of the head at both ends. The
+ * heart turns the mask a quarter of a right angle, so a head is named by how
+ * it looks on the drawing:
  *
  *   - round: a disc of the radius;
  *   - square: a square along the mask's axes, the strips — a diamond on screen;
@@ -29,22 +29,8 @@ const CHISEL = 1 / 4;
 /** The chisel's half-thickness at a radius: never thinner than a cell. */
 const chiselThickness = (r: number) => Math.max(0.5, r * CHISEL);
 
-/** A half-plane `nx·x + ny·y ≤ h` about the head's centre. */
+/** A half-plane `nx·x + ny·y ≤ h`, its normal of unit length. */
 export type HeadPlane = readonly [nx: number, ny: number, h: number];
-
-/** The half-planes that bound a head, or null for the round one. */
-export function headPlanes(shape: BrushShape | undefined, r: number): HeadPlane[] | null {
-	if (shape === 'square') return [[1, 0, r], [-1, 0, r], [0, 1, r], [0, -1, r]];
-	if (shape === 'diamond') {
-		const d = r * DIAMOND;
-		return [[1, 1, d], [1, -1, d], [-1, 1, d], [-1, -1, d]];
-	}
-	if (shape === 'chisel') {
-		const t = chiselThickness(r);
-		return [[1, 0, t], [-1, 0, t], [0, 1, r], [0, -1, r]];
-	}
-	return null;
-}
 
 /** A head's corners in order round it, for drawing it; null for the round one. */
 export function headCorners(shape: BrushShape | undefined, r: number): Vec[] | null {
@@ -91,6 +77,30 @@ export function sweptCorners(shape: BrushShape | undefined, r: number, from: Vec
 	if (!corners) return null;
 	const points = [...corners.map((c) => ({ x: from.x + c.x, y: from.y + c.y })), ...corners.map((c) => ({ x: to.x + c.x, y: to.y + c.y }))];
 	return hull(points);
+}
+
+/**
+ * What a head sweeps sliding from `from` to `to`, on the mask: a convex
+ * polygon, by the half-planes that bound it, or the points within `r` of the
+ * segment `a`–`b` (the round head's capsule, and a head with no width left).
+ * How far a point lies inside the polygon is the least of `h - n·p` over its
+ * sides: exact inside, and short of the distance only off a corner outside.
+ */
+export type Sweep = { sides: HeadPlane[] } | { a: Vec; b: Vec; r: number };
+
+export function sweep(shape: BrushShape | undefined, r: number, from: Vec, to: Vec): Sweep {
+	const corners = sweptCorners(shape, r, from, to);
+	if (!corners) return { a: from, b: to, r };
+	// A square or diamond of no size sweeps a segment, as a chisel of none does along its nib.
+	if (corners.length < 3) return { a: corners[0]!, b: corners[corners.length - 1]!, r: 0 };
+	// The hull runs counter-clockwise, so each side's outward normal is its direction turned back a quarter.
+	return {
+		sides: corners.map((a, i) => {
+			const b = corners[(i + 1) % corners.length]!, length = Math.hypot(b.x - a.x, b.y - a.y);
+			const nx = (b.y - a.y) / length, ny = (a.x - b.x) / length;
+			return [nx, ny, nx * a.x + ny * a.y] as const;
+		})
+	};
 }
 
 /** The convex hull of a few points, counter-clockwise (Andrew's monotone chain). */

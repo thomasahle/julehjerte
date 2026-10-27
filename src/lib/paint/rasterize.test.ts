@@ -159,6 +159,27 @@ describe('rasterizeDesign', () => {
 		expect(maskMismatch(rasterizeDesign(design, 200).data, straightened.data)).toBeGreaterThan(0.01);
 	});
 
+	it('says where between the cells each cut runs, for Mal to draw the curves', () => {
+		const design = galleryDesign('jul');
+		const coarse = rasterizeDesign(design, 100, { levels: true }), fine = rasterizeDesign(design, 800);
+		expect([...coarse.data]).toEqual([...rasterizeDesign(design, 100).data]);
+		// The coarse mask read between its cells at the fine one's, as the screen reads it.
+		const misread = (share: (i: number) => number) => {
+			let wrong = 0;
+			for (let fy = 0; fy < 800; fy++) {
+				const v = Math.max(0, Math.min(99, (fy + 0.5) / 8 - 0.5)), y0 = Math.min(98, Math.floor(v)), ty = v - y0;
+				for (let fx = 0; fx < 800; fx++) {
+					const u = Math.max(0, Math.min(99, (fx + 0.5) / 8 - 0.5)), x0 = Math.min(98, Math.floor(u)), tx = u - x0, i = y0 * 100 + x0;
+					const value = (share(i) * (1 - tx) + share(i + 1) * tx) * (1 - ty) + (share(i + 100) * (1 - tx) + share(i + 101) * tx) * ty;
+					if ((value >= 127.5) !== (fine.data[fy * 800 + fx] === 1)) wrong++;
+				}
+			}
+			return wrong / 800 ** 2;
+		};
+		const fromLevels = misread((i) => coarse.level![i]!), fromCells = misread((i) => coarse.data[i]! * 255);
+		expect(fromLevels).toBeLessThan(fromCells / 3);
+	});
+
 	it('gives an empty mask for a heart with no fingers, at the mask resolution', () => {
 		const design: HeartDesign = {
 			id: 'x',

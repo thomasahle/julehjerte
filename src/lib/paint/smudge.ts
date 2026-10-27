@@ -13,11 +13,11 @@
  * Nor does the next stroke, while nothing else has touched the mask: it carries
  * on with the last one's kept mask and field, so four holds of Krymp are one
  * long hold. Started afresh after a pen or an undo, a stroke reads the mask's
- * `level`, which every stroke leaves: the share of paper it read, before the
- * cut. That is where between the cells each edge lies, so neither a fresh
- * stroke nor the screen sees the stair the cut leaves in `data`, which a
- * stretching dab would otherwise magnify (2026-10-27: four holds of Krymp left
- * the edges rugged).
+ * `level`, which every stroke leaves, the share of paper it read before the
+ * cut, as the other tools leave theirs (see `Mask.level`). That is where
+ * between the cells each edge lies, so neither a fresh stroke nor the screen
+ * sees the stair the cut leaves in `data`, which a stretching dab would
+ * otherwise magnify (2026-10-27: four holds of Krymp left the edges rugged).
  *
  * Under symmetry every dab is made at each image of the brush as well (a turn
  * mirrored turns the other way), so a symmetric mask stays symmetric without
@@ -33,7 +33,7 @@
  */
 
 import type { Vec } from '$lib/types/heart';
-import { clampBox, emptyBox, isEmptyBox, levelAt, unionBox, type Box, type Mask } from './mask';
+import { clampBox, emptyBox, isEmptyBox, shareAt, unionBox, type Box, type Mask } from './mask';
 import { closedPointMaps, type Transform } from './symmetry';
 import type { BrushShape } from './toolset';
 import { headGauge, headReach } from './brushHead';
@@ -90,7 +90,7 @@ export function createSmudge(
 	const carried = previous?.carry(mask) ?? null;
 	// A level the cells no longer agree with was left before a tool painted over it.
 	const level = (mask.level ??= new Uint8Array(n * n));
-	if (!carried) for (let i = 0; i < n * n; i++) level[i] = Math.round(levelAt(mask, i) * 255);
+	if (!carried) for (let i = 0; i < n * n; i++) level[i] = shareAt(mask, i);
 	const source = carried?.source ?? Float32Array.from(level, (l) => l / 255);
 	const observed = carried ? carried.observed : mask.validMask?.slice();
 	// Where each cell's paper comes from, as an offset from the cell.

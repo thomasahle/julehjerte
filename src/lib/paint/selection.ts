@@ -6,11 +6,13 @@
  * stands now. That is what makes Escape free (there is nothing to put back) and
  * undo one snapshot per commit rather than one per drag: only `commit` writes.
  *
- * Resampling is nearest-neighbour, and it has to be: the mask is two colours, and
- * an interpolating turn would invent greys that neither paper explains. The
- * mapping runs backwards — every destination cell asks which source cell its
- * centre falls in — so a turn or an enlargement leaves no holes, which a forward
- * scatter would.
+ * Resampling reads the patch's edge levels bilinearly and cuts them at one half,
+ * as Udtvær does (see `smudge.ts`): the cells come out two papers, and an edge
+ * comes out where it lay between the cells, so a turned or enlarged patch keeps
+ * its curves and not its cells' stair. Unknown cells are read from the nearest
+ * cell. The mapping runs backwards — every destination cell asks where in the
+ * patch its centre falls — so a turn or an enlargement leaves no holes, which a
+ * forward scatter would.
  *
  * Nothing here knows about pointers, canvases or symmetry; `MaskCanvas` turns
  * pointer positions into cells and spreads the committed box under the active
@@ -18,9 +20,11 @@
  */
 
 import type { Vec } from '$lib/types/heart';
-import { clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask } from './mask';
+import {
+	clampBox, EDGE_BAND, EDGE_RAMP, emptyBox, growBox, isEmptyBox, levels, paintCell, shareAt, unionBox, type Box, type Mask
+} from './mask';
 import { closedPointMaps, type Transform } from './symmetry';
-import { EDIT_CLEARED, EDIT_LAID, rect } from './tools';
+import { EDIT_CLEARED, EDIT_LAID } from './tools';
 
 /** Half-open cell rectangle, `x0 <= x < x1`, in the same coordinates as `Box`. */
 export type CellRect = Box;
@@ -39,6 +43,8 @@ export type Selection = {
 	cells: Uint8Array;
 	/** Observation follows the same transform as the selected colours. */
 	validMask?: Uint8Array;
+	/** Where between those cells the edges lie, as `Mask.level`; absent for whole cells. */
+	level?: Uint8Array;
 	/** Where they stand now. A fresh selection stands exactly where it was lifted. */
 	placement: Placement;
 };
@@ -130,12 +136,14 @@ export function lift(m: Mask, r: CellRect): Selection | null {
 	const w = r.x1 - r.x0;
 	const h = r.y1 - r.y0;
 	const cells = new Uint8Array(w * h), validMask = m.validMask ? new Uint8Array(w * h) : undefined;
+	const level = m.level ? new Uint8Array(w * h) : undefined;
 	for (let y = 0; y < h; y++) {
 		const from = (r.y0 + y) * m.size + r.x0;
 		cells.set(m.data.subarray(from, from + w), y * w);
 		if (validMask) validMask.set(m.validMask!.subarray(from, from + w), y * w);
+		if (level) for (let x = 0; x < w; x++) level[y * w + x] = shareAt(m, from + x);
 	}
-	return { source: { ...r }, cells, ...(validMask ? { validMask } : {}), placement: placementOf(r) };
+	return { source: { ...r }, cells, ...(validMask ? { validMask } : {}), ...(level ? { level } : {}), placement: placementOf(r) };
 }
 
 /** The placement's own axes on the mask: `u` across it, `v` down it. */
@@ -268,30 +276,46 @@ export function boundsOf(p: Placement, m: Mask): CellRect {
 }
 
 /**
- * Draw the lifted cells where the placement puts them, nearest-neighbour.
+ * Draw the lifted cells where the placement puts them.
  *
- * Backwards: each destination cell's centre is carried into the patch's own frame
- * and rounded down to a source cell. Cells whose centre falls outside the patch are
- * left alone, so a turned selection lays down a turned rectangle and not its
- * bounding box.
+ * Backwards: each destination cell's centre is carried into the patch's own
+ * frame and the patch is read there, bilinearly, cut at one half. Cells whose
+ * centre falls outside the patch are left alone, so a turned selection lays
+ * down a turned rectangle and not its bounding box. Along its sides the patch
+ * is laid over what was there by how much of each cell it covers, so a patch
+ * turned on a strip leaves a straight side and not a stair, and a picture that
+ * runs on across the side is left as it was.
  *
  * `marks`, when given, is where the cells the patch covered are recorded — every
  * one of them, including any that already held the value being laid on it, which
- * is what `Edit` above explains. The box that comes back is the bounding box of
- * that same area, which is what the canvas repaints.
+ * is what `Edit` above explains; the cells beside it whose level its side moved
+ * are marked as cleared. The box that comes back is the bounding box of that
+ * same area, which is what the canvas repaints.
  */
 export function stamp(m: Mask, sel: Selection, marks?: Uint8Array): Box {
 	const p = sel.placement;
 	const w = sel.source.x1 - sel.source.x0;
 	const h = sel.source.y1 - sel.source.y0;
 	if (w <= 0 || h <= 0 || p.width <= 0 || p.height <= 0) return emptyBox();
-	const area = boundsOf(p, m);
-	if (isEmptyBox(area)) return area;
+	const outer = boundsOf(p, m);
+	if (isEmptyBox(outer)) return outer;
+	const area = clampBox(m, outer.x0 - EDGE_BAND, outer.y0 - EDGE_BAND, outer.x1 + EDGE_BAND, outer.y1 + EDGE_BAND);
+	if (sel.validMask && !m.validMask) m.validMask = new Uint8Array(m.data.length).fill(1);
+	const level = levels(m);
+
+	/** The patch, bilinear, at a point in its cells (centres on whole coordinates); its edge cells reach on past it. */
+	const patchAt = (u: number, v: number): number => {
+		const x = Math.max(0, Math.min(w - 1, u)), y = Math.max(0, Math.min(h - 1, v));
+		const x0 = Math.floor(x), y0 = Math.floor(y), x1 = Math.min(w - 1, x0 + 1), y1 = Math.min(h - 1, y0 + 1);
+		const tx = x - x0, ty = y - y0;
+		const at = (i: number) => (sel.level ? sel.level[i]! : sel.cells[i]! * 255);
+		return (at(y0 * w + x0) * (1 - tx) + at(y0 * w + x1) * tx) * (1 - ty) + (at(y1 * w + x0) * (1 - tx) + at(y1 * w + x1) * tx) * ty;
+	};
 
 	// The inverse turn: the placement turns by +angle, so reading back turns by −.
 	const cos = Math.cos(-p.angle);
 	const sin = Math.sin(-p.angle);
-	let covered = emptyBox();
+	const covered = growBox();
 	for (let cy = area.y0; cy < area.y1; cy++) {
 		const dy = cy + 0.5 - p.cy;
 		const row = cy * m.size;
@@ -299,18 +323,24 @@ export function stamp(m: Mask, sel: Selection, marks?: Uint8Array): Box {
 			const dx = cx + 0.5 - p.cx;
 			const ux = cos * dx - sin * dy;
 			const uy = sin * dx + cos * dy;
-			const sx = Math.floor((ux / p.width + 0.5) * w);
-			const sy = Math.floor((uy / p.height + 0.5) * h);
-			if (sx < 0 || sy < 0 || sx >= w || sy >= h) continue;
-			if (marks) marks[row + cx] = EDIT_LAID;
-			covered = unionBox(covered, { x0: cx, y0: cy, x1: cx + 1, y1: cy + 1 });
-			m.data[row + cx] = sel.cells[sy * w + sx]!;
-			if (m.level) m.level[row + cx] = m.data[row + cx]! * 255;
-			if (sel.validMask && !m.validMask) m.validMask = new Uint8Array(m.data.length).fill(1);
-			if (m.validMask) m.validMask[row + cx] = sel.validMask?.[sy * w + sx] ?? 1;
+			// How far inside the rectangle's sides, in cells.
+			const depth = Math.min(p.width / 2 - Math.abs(ux), p.height / 2 - Math.abs(uy));
+			if (depth <= -EDGE_BAND) continue;
+			const sx = (ux / p.width + 0.5) * w, sy = (uy / p.height + 0.5) * h;
+			const inside = sx >= 0 && sy >= 0 && sx < w && sy < h;
+			// The patch over what was there, by how much of the cell its side covers.
+			const cover = Math.max(0, Math.min(1, 0.5 + EDGE_RAMP * depth));
+			const share = Math.round(cover * patchAt(sx - 0.5, sy - 0.5) + (1 - cover) * shareAt(m, row + cx));
+			if (!inside && share === level[row + cx]) continue;
+			// Beside the patch only an edge moved, which a patch landing there in mirror must win over.
+			if (marks) marks[row + cx] = inside ? EDIT_LAID : marks[row + cx] || EDIT_CLEARED;
+			covered.add(cx, cy);
+			m.data[row + cx] = share >= 128 ? 1 : 0;
+			level[row + cx] = share;
+			if (inside && m.validMask) m.validMask[row + cx] = sel.validMask?.[Math.floor(sy) * w + Math.floor(sx)] ?? 1;
 		}
 	}
-	return covered;
+	return covered.box();
 }
 
 /**
@@ -320,9 +350,10 @@ export function stamp(m: Mask, sel: Selection, marks?: Uint8Array): Box {
  */
 export function fill(m: Mask, r: CellRect, value: 0 | 1, marks?: Uint8Array): Box {
 	if (isEmptyRect(r)) return emptyBox();
-	rect(m, { x: r.x0, y: r.y0 }, { x: r.x1 - 1, y: r.y1 - 1 }, value);
-	if (marks) {
-		for (let y = r.y0; y < r.y1; y++) marks.fill(EDIT_CLEARED, y * m.size + r.x0, y * m.size + r.x1);
+	// Whole cells: the rectangle's sides lie on the cells' own.
+	for (let y = r.y0; y < r.y1; y++) {
+		for (let x = r.x0; x < r.x1; x++) paintCell(m, y * m.size + x, value);
+		if (marks) marks.fill(EDIT_CLEARED, y * m.size + r.x0, y * m.size + r.x1);
 	}
 	return { ...r };
 }

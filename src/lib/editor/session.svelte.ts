@@ -27,7 +27,7 @@
 
 import type { HeartDesign } from '$lib/types/heart';
 import { clearHandoff, handoffToDraw, takeHandoff } from './handoff';
-import { createMask, isEmpty, packMask, unpackMask, type Mask } from '$lib/paint/mask';
+import { createMask, isEmpty, packLevels, packMask, unpackLevels, unpackMask, type Mask } from '$lib/paint/mask';
 import { isDefaultMask } from '$lib/paint/tools';
 import {
 	clampFrameSize,
@@ -299,7 +299,7 @@ export { handoffToDraw, takeHandoff };
 
 /** The session as plain JSON-safe data. Unused for now; see the note at the top. */
 export type SerializedSession = {
-	mask: { size: number; cells: string; observed?: string } | null;
+	mask: { size: number; cells: string; observed?: string; levels?: string } | null;
 	symmetry: SymmetrySettings;
 	found: SymmetrySettings | null;
 	sourceName: string | null;
@@ -310,7 +310,8 @@ export function serialize(): SerializedSession {
 	return {
 		mask: session.mask ? {
 			size: session.mask.size, cells: packMask(session.mask),
-			...(session.mask.validMask ? { observed: packMask({ size: session.mask.size, data: session.mask.validMask }) } : {})
+			...(session.mask.validMask ? { observed: packMask({ size: session.mask.size, data: session.mask.validMask }) } : {}),
+			...(session.mask.level ? { levels: packLevels(session.mask.level) } : {})
 		} : null,
 		symmetry: { ...session.symmetry },
 		found: session.found ? { ...session.found } : null,
@@ -362,6 +363,11 @@ export function restore(raw: unknown): boolean {
 			const observed = unpackMask(m.size, m.observed);
 			if (!observed) return false;
 			mask.validMask = observed.data;
+		}
+		if (m.levels !== undefined) {
+			const level = typeof m.levels === 'string' ? unpackLevels(m.size, m.levels) : null;
+			if (!level) return false;
+			mask.level = level;
 		}
 	}
 

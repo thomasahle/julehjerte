@@ -9,10 +9,11 @@
  * mixes the two papers, so the curve is antialiased at the size it is drawn.
  *
  * Only the picture changes. The mask keeps its two papers cell for cell, which
- * is what the tools write and what Find snit reads: every cell's centre is
- * drawn in its own paper, only the space between centres is drawn as a curve.
- * Where Udtvær has left a `level`, the curve is read from it instead, so an edge
- * it bent lies where it was bent and not on the cells' stair (see `smudge.ts`).
+ * is what Find snit reads: every cell's centre is drawn more its own paper than
+ * the other, only the space between centres is drawn as a curve. Where the
+ * mask has a `level`, the curve is read from it instead, so an edge lies where
+ * the tool drew it, Udtvær bent it or Markér moved it, and not on the cells'
+ * stair (see `Mask.level`).
  * A cell the mask does not know yet (`validMask` 0, PAINT.md §11) is drawn as
  * it always was, its pattern over its whole square.
  */
@@ -105,28 +106,29 @@ export function smoothPixels(
 
 /**
  * A rectangle of cells, `width` × `height` row by row, drawn smooth as the mask
- * is: Markér's floating patch. Past its edges the cells read as the edge ones,
- * so its rim is the patch's own and not a paper it does not hold.
+ * is, its edge levels and all: Markér's floating patch. Past its edges the
+ * cells read as the edge ones, so its rim is the patch's own and not a paper
+ * it does not hold.
  */
 export function smoothCells(
-	cells: Uint8Array,
-	known: Uint8Array | undefined,
+	patch: { cells: Uint8Array; validMask?: Uint8Array; level?: Uint8Array },
 	width: number,
 	height: number,
 	paper: readonly ArrayLike<number>[],
 	scale: number
 ): Uint8ClampedArray<ArrayBuffer> {
-	const n = Math.max(2, width, height);
+	const n = Math.max(2, width, height), { cells, validMask: known, level: shares } = patch;
 	const data = new Uint8Array(n * n), valid = known ? new Uint8Array(n * n) : undefined;
+	const level = shares ? new Uint8Array(n * n) : undefined;
 	for (let y = 0; y < n; y++)
 		for (let x = 0; x < n; x++) {
 			const i = Math.min(y, height - 1) * width + Math.min(x, width - 1);
 			data[y * n + x] = cells[i]!;
 			if (valid) valid[y * n + x] = known![i]!;
+			if (level) level[y * n + x] = shares![i]!;
 		}
 	const out = new Uint8ClampedArray(new ArrayBuffer(width * scale * height * scale * 4));
 	const whole = { x0: 0, y0: 0, x1: width, y1: height };
-	smoothPixels({ size: n, data, ...(valid ? { validMask: valid } : {}) }, paper, scale, out, whole, whole);
+	smoothPixels({ size: n, data, ...(valid ? { validMask: valid } : {}), ...(level ? { level } : {}) }, paper, scale, out, whole, whole);
 	return out;
 }
-

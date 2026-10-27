@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { createMask, type Mask } from './mask';
 import { missingPixelChannels, smoothCells, smoothPixels, smoothScale } from './smoothRaster';
 import { rect, stamp } from './tools';
+import { lift } from './selection';
 
 const PAPER = [[255, 255, 255], [185, 19, 19]] as const;
 const WHOLE = (m: Mask) => ({ x0: 0, y0: 0, x1: m.size, y1: m.size });
@@ -18,6 +19,12 @@ describe('the smooth picture', () => {
 		const m = createMask(0, 40);
 		stamp(m, 20, 20, { radius: 9, value: 1 });
 		rect(m, { x: 3, y: 30 }, { x: 4, y: 30 }, 1);
+		// More its own paper than the other, where the pen's edge passes beside it.
+		const smooth = draw(m, 3);
+		for (let y = 0; y < m.size; y++)
+			for (let x = 0; x < m.size; x++) expect(smooth.at(3 * x + 1, 3 * y + 1)[1]! < 137).toBe(m.data[y * m.size + x] === 1);
+		// And wholly so, read from the cells alone.
+		delete m.level;
 		const { at } = draw(m, 3);
 		for (let y = 0; y < m.size; y++)
 			for (let x = 0; x < m.size; x++) expect(at(3 * x + 1, 3 * y + 1)).toEqual([...PAPER[m.data[y * m.size + x]!]]);
@@ -86,9 +93,8 @@ describe('the smooth picture', () => {
 	it("draws Markér's floating patch as the mask draws the same cells", () => {
 		const m = createMask(0, 40);
 		stamp(m, 20, 20, { radius: 7, value: 1 });
-		const w = 12, h = 9, x0 = 14, y0 = 13, cells = new Uint8Array(w * h);
-		for (let y = 0; y < h; y++) cells.set(m.data.subarray((y0 + y) * 40 + x0, (y0 + y) * 40 + x0 + w), y * w);
-		const patch = smoothCells(cells, undefined, w, h, PAPER, 3);
+		const w = 12, h = 9, x0 = 14, y0 = 13;
+		const patch = smoothCells(lift(m, { x0, y0, x1: x0 + w, y1: y0 + h })!, w, h, PAPER, 3);
 		const { at } = draw(m, 3);
 		// Away from the patch's own edge, where it reads past itself, the two agree pixel for pixel.
 		for (let py = 3; py < 3 * h - 3; py++)

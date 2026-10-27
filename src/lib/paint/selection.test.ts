@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createMask, type Mask } from './mask';
+import { createMask, shareAt, type Mask } from './mask';
 import {
 	MIN_SIZE,
 	boundsOf,
@@ -24,7 +24,7 @@ import {
 	stamp,
 	turnBy
 } from './selection';
-import { EDIT_CLEARED, EDIT_LAID, EDIT_NONE, stroke } from './tools';
+import { EDIT_CLEARED, EDIT_LAID, EDIT_NONE, stamp as dab, stroke } from './tools';
 import { transformsFor } from './symmetry';
 
 /** A mask from rows of `.` and `#`, so a patch can be read at a glance. */
@@ -36,6 +36,16 @@ function maskOf(rows: string[]): Mask {
 		});
 	});
 	return m;
+}
+
+/** Where along row `y` the edge crosses, between the cells' centres. */
+function crossings(m: Mask, y: number): number[] {
+	const out: number[] = [];
+	for (let x = 0; x + 1 < m.size; x++) {
+		const a = shareAt(m, y * m.size + x), b = shareAt(m, y * m.size + x + 1);
+		if ((a >= 128) !== (b >= 128)) out.push(x + (127.5 - a) / (b - a));
+	}
+	return out;
 }
 
 function rowsOf(m: Mask): string[] {
@@ -123,8 +133,9 @@ describe('commit', () => {
 		const m = maskOf(['.#..', '.##.', '....', '....']);
 		const sel = lift(m, { x0: 1, y0: 0, x1: 3, y1: 2 })!;
 		// The box is what to repaint, not what ended up different: vacating cleared
-		// the ink and the stamp wrote it back, so both passes touched those cells.
-		expect(commit(m, sel).box).toEqual({ x0: 1, y0: 0, x1: 3, y1: 2 });
+		// the ink and the stamp wrote it back, so both passes touched those cells,
+		// and the cell round them where the patch's side says where the edge lies.
+		expect(commit(m, sel).box).toEqual({ x0: 0, y0: 0, x1: 4, y1: 3 });
 		expect(rowsOf(m)).toEqual(['.#..', '.##.', '....', '....']);
 	});
 
@@ -134,8 +145,11 @@ describe('commit', () => {
 		sel.placement = moveBy(sel.placement, 1, 0);
 		const { marks } = commit(m, sel);
 		// The column the patch still covers was vacated first and laid on after, and
-		// symmetry has to be told the patch won there.
-		expect([...marks.slice(0, 4)]).toEqual([EDIT_CLEARED, EDIT_LAID, EDIT_LAID, EDIT_NONE]);
+		// symmetry has to be told the patch won there. Beside it, its side moved
+		// only the edge, and that gives way to a patch.
+		expect([...marks.slice(0, 4)]).toEqual([EDIT_CLEARED, EDIT_LAID, EDIT_LAID, EDIT_CLEARED]);
+		expect([...marks.slice(8, 12)]).toEqual([EDIT_CLEARED, EDIT_CLEARED, EDIT_CLEARED, EDIT_CLEARED]);
+		expect([...marks.slice(12, 16)]).toEqual([EDIT_NONE, EDIT_NONE, EDIT_NONE, EDIT_NONE]);
 		// Cells the patch covered but did not change are marked all the same: the
 		// hole's mirror image would otherwise be the only claim on them.
 		const blank = maskOf(['##..', '##..', '....', '....']);
@@ -150,6 +164,45 @@ describe('commit', () => {
 		sel.placement = scaleTo(sel.placement, 'se', { x: 7, y: 7 }, true);
 		commit(m, sel);
 		expect(m.data.every((v) => v === 0 || v === 1)).toBe(true);
+	});
+});
+
+describe('edges between the cells', () => {
+	it('carries an edge along by a fraction of a cell', () => {
+		const m = createMask(0, 40);
+		dab(m, 20, 20, { radius: 6, value: 1 });
+		const sel = lift(m, { x0: 10, y0: 10, x1: 30, y1: 30 })!;
+		sel.placement = moveBy(sel.placement, 0.4, 0);
+		commit(m, sel);
+		const [left, right] = crossings(m, 20);
+		expect(left).toBeCloseTo(14.4, 1);
+		expect(right).toBeCloseTo(26.4, 1);
+	});
+
+	it('keeps a disc round when the patch is scaled up, and not a stair of its cells', () => {
+		const m = createMask(0, 40);
+		dab(m, 10, 10, { radius: 4, value: 1 });
+		const sel = lift(m, { x0: 4, y0: 4, x1: 17, y1: 17 })!;
+		sel.placement = { cx: 20, cy: 20, width: 32.5, height: 32.5, angle: 0 };
+		commit(m, sel);
+		// Radius 10 about 19.5.
+		for (const y of [20, 22, 25]) {
+			const chord = Math.sqrt(100 - (y - 19.5) ** 2), [left, right] = crossings(m, y);
+			expect(Math.abs(left! - (19.5 - chord))).toBeLessThan(0.15);
+			expect(Math.abs(right! - (19.5 + chord))).toBeLessThan(0.15);
+		}
+	});
+
+	it('lays a turned patch on a strip with a straight side', () => {
+		const m = createMask(0, 40);
+		for (let y = 0; y < 40; y++) for (let x = 0; x < 40; x++) if (y >= 12 && y < 28) m.data[y * 40 + x] = 1;
+		const sel = lift(m, { x0: 0, y0: 0, x1: 10, y1: 10 })!;
+		sel.placement = { cx: 20, cy: 20, width: 12, height: 12, angle: 0.3 };
+		commit(m, sel);
+		// The patch's left paper meets the strip along the turned square's side.
+		const side = (y: number) => crossings(m, y)[0]!;
+		const slope = (side(22) - side(18)) / 4;
+		for (const y of [17, 19, 21, 23]) expect(Math.abs(side(y) - side(18) - slope * (y - 18))).toBeLessThan(0.05);
 	});
 });
 
@@ -204,12 +257,13 @@ describe('stamp', () => {
 		expect(rowsOf(m)).toEqual(['#...', '....', '....', '....']);
 	});
 
-	it('reports the box it covered and nothing wider', () => {
+	it('reports the box it covered, and the cell round it its side reaches, and nothing wider', () => {
 		const m = createMask(0, 8);
 		const sel = lift(m, { x0: 0, y0: 0, x1: 2, y1: 2 })!;
 		sel.cells.fill(1);
 		sel.placement = moveBy(sel.placement, 4, 4);
-		expect(stamp(m, sel)).toEqual({ x0: 4, y0: 4, x1: 6, y1: 6 });
+		expect(stamp(m, sel)).toEqual({ x0: 3, y0: 3, x1: 7, y1: 7 });
+		expect(rowsOf(m).slice(3, 7)).toEqual(['........', '....##..', '....##..', '........']);
 	});
 });
 

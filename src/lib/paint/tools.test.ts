@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { cloneMask, createMask, get, isEmpty, isEmptyBox, MASK_SIZE, type Box, type Mask } from './mask';
+import { cloneMask, createMask, get, isEmpty, isEmptyBox, MASK_SIZE, shareAt, type Box, type Mask } from './mask';
 import { disagreement, symmetrize, transformsFor, type Transform } from './symmetry';
 import { commit, lift, moveBy } from './selection';
 import {
@@ -25,6 +25,20 @@ function cells(m: Mask, value: 0 | 1): Set<string> {
 	const out = new Set<string>();
 	for (let y = 0; y < m.size; y++) {
 		for (let x = 0; x < m.size; x++) if (get(m, x, y) === value) out.add(`${x},${y}`);
+	}
+	return out;
+}
+
+/**
+ * Where along a line of cells the edge crosses, between their centres, read
+ * as the screen reads it: `count` cells from cell `start`, `step` apart, in
+ * cells from the first one's centre.
+ */
+function crossings(m: Mask, start: number, step: number, count: number): number[] {
+	const out: number[] = [];
+	for (let k = 0; k + 1 < count; k++) {
+		const a = shareAt(m, start + k * step), b = shareAt(m, start + (k + 1) * step);
+		if ((a >= 128) !== (b >= 128)) out.push(k + (127.5 - a) / (b - a));
 	}
 	return out;
 }
@@ -197,7 +211,8 @@ describe('rect', () => {
 	it('clamps corners that fall outside the mask', () => {
 		const m = createMask(0, 32);
 		const box = rect(m, { x: -50, y: -12 }, { x: 5, y: 5 }, 1);
-		expect(box).toEqual({ x0: 0, y0: 0, x1: 6, y1: 6 });
+		// The cells beyond it say where its edge lies.
+		expect(box).toEqual({ x0: 0, y0: 0, x1: 7, y1: 7 });
 		expect(count(m, 1)).toBe(36);
 		expect(get(m, 0, 0)).toBe(1);
 	});
@@ -344,7 +359,7 @@ describe('applySymmetric', () => {
 			}
 		}
 		expect(cells(m, 1)).toEqual(expected);
-		expect(changed).toEqual({ x0: 1, y0: 1, x1: 5, y1: 5 });
+		expect(changed).toEqual({ x0: 0, y0: 0, x1: 6, y1: 6 });
 	});
 
 	it('copies the box as it was, not as the copies leave it', () => {
@@ -531,5 +546,87 @@ describe('applySymmetricEdit', () => {
 		expect(changed).toEqual(box);
 		expect(changed).not.toBe(box);
 		expect(isEmpty(m)).toBe(true);
+	});
+});
+
+describe('edges between the cells', () => {
+	it("puts the pen's edge where the head went, not on the cells' side", () => {
+		const m = createMask(0, 40);
+		stamp(m, 20.3, 20, { radius: 6.4, value: 1 });
+		const [left, right] = crossings(m, 20 * 40, 1, 40);
+		expect(left).toBeCloseTo(20.3 - 6.4, 1);
+		expect(right).toBeCloseTo(20.3 + 6.4, 1);
+	});
+
+	it('draws a shallow line as a line, a hundredth of a cell or so off at most', () => {
+		const m = createMask(0, 60);
+		stroke(m, { x: 5, y: 20 }, { x: 55, y: 24 }, { radius: 2, value: 1 });
+		for (let x = 10; x <= 50; x++) {
+			// The top of the stroke: the line moved up by its radius, square to it.
+			const top = 20 + 0.08 * (x - 5) - 2 * Math.hypot(1, 0.08);
+			expect(Math.abs(crossings(m, x, 60, 60)[0]! - top)).toBeLessThan(0.03);
+		}
+	});
+
+	it('changes nothing the second time over, edges and all', () => {
+		const m = createMask(0, 40);
+		stroke(m, { x: 8.2, y: 9.7 }, { x: 30.6, y: 21.1 }, { radius: 3.3, value: 1, shape: 'diamond' });
+		expect(isEmptyBox(stroke(m, { x: 8.2, y: 9.7 }, { x: 30.6, y: 21.1 }, { radius: 3.3, value: 1, shape: 'diamond' }))).toBe(true);
+	});
+
+	it('keeps the edges of two shapes a cell apart where each was drawn', () => {
+		const m = createMask(0, 40);
+		rect(m, { x: 0, y: 0 }, { x: 9, y: 39 }, 1);
+		stamp(m, 14, 20, { radius: 3, value: 1 });
+		const [rectSide, discSide] = crossings(m, 20 * 40, 1, 40);
+		expect(rectSide).toBeCloseTo(9.5, 2);
+		expect(discSide).toBeCloseTo(11, 1);
+	});
+
+	it("puts the ellipse's edge on its own curve", () => {
+		const m = createMask(0, 40);
+		ellipse(m, { x: 10, y: 10 }, { x: 30, y: 20 }, 1);
+		expect(crossings(m, 15 * 40, 1, 40).map((x) => x.toFixed(2))).toEqual(['9.50', '30.50']);
+		expect(crossings(m, 20, 40, 40).map((y) => y.toFixed(2))).toEqual(['9.50', '20.50']);
+	});
+
+	it("lays Tern's squares 400/n cells wide, and mirrored exactly", () => {
+		const m = createMask(0, MASK_SIZE);
+		checks(m, 7);
+		const sides = crossings(m, 3 * MASK_SIZE, 1, MASK_SIZE);
+		expect(sides).toHaveLength(6);
+		sides.forEach((x, k) => expect(Math.abs(x - ((k + 1) * MASK_SIZE) / 7 + 0.5)).toBeLessThan(0.01));
+		for (let y = 0; y < MASK_SIZE; y += 13)
+			for (let x = 0; x < MASK_SIZE; x++) expect(m.level![y * MASK_SIZE + x]).toBe(m.level![y * MASK_SIZE + MASK_SIZE - 1 - x]);
+	});
+
+	it("carries a stroke's edge to its images, across the mirror line too", () => {
+		const m = createMask(0, 40);
+		applySymmetric(m, stroke(m, { x: 5.3, y: 12.7 }, { x: 17.1, y: 9.2 }, { radius: 2.6, value: 1 }), ['mirrorX'], 1);
+		applySymmetric(m, stroke(m, { x: 15.2, y: 20 }, { x: 24.9, y: 23.3 }, { radius: 2.2, value: 1 }), ['mirrorX'], 1);
+		applySymmetric(m, stroke(m, { x: 11.5, y: 21 }, { x: 22.4, y: 30.8 }, { radius: 1.7, value: 0 }), ['mirrorX'], 0);
+		for (let y = 0; y < 40; y++)
+			for (let x = 0; x < 40; x++) expect(m.level![y * 40 + x]).toBe(m.level![y * 40 + 39 - x]);
+		expect(crossings(m, 11 * 40, 1, 40).length).toBeGreaterThan(0);
+	});
+
+	it('folds an edge drawn a little differently on each side to the one between', () => {
+		const m = createMask(0, 40);
+		stamp(m, 10.2, 20, { radius: 5, value: 1 });
+		stamp(m, 39 - 10.6, 20, { radius: 5, value: 1 });
+		symmetrize(m, ['mirrorX']);
+		const [left] = crossings(m, 20 * 40, 1, 40);
+		expect(left).toBeCloseTo(10.4 - 5, 1);
+		for (let x = 0; x < 40; x++) expect(m.level![20 * 40 + x]).toBe(m.level![20 * 40 + 39 - x]);
+	});
+
+	it("leaves an edge where it was when a fill of the paper's own colour only observes it", () => {
+		const m = { ...createMask(0, 40), validMask: new Uint8Array(1600).fill(1) };
+		stamp(m, 20.4, 20, { radius: 6.2, value: 1 });
+		m.validMask.fill(0, 0, 40);
+		const level = m.level!.slice();
+		floodFill(m, 0, 0, 0);
+		expect(m.validMask.every(Boolean)).toBe(true);
+		expect([...m.level!]).toEqual([...level]);
 	});
 });

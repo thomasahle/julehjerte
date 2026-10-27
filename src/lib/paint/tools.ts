@@ -8,10 +8,13 @@
  */
 
 import type { Vec } from '$lib/types/heart';
-import { clampBox, createMask, emptyBox, get, isEmptyBox, MASK_SIZE, paintCell, unionBox, type Box, type Mask } from './mask';
+import {
+	clampBox, createMask, EDGE_BAND, edgeShare, emptyBox, get, growBox, isEmptyBox, levels, MASK_SIZE, paintCell, paintEdge,
+	shareAt, unionBox, type Box, type Mask
+} from './mask';
 import { closedPointMaps, type Transform } from './symmetry';
 import type { BrushShape } from './toolset';
-import { headPlanes, headReach } from './brushHead';
+import { headReach, sweep } from './brushHead';
 
 /**
  * What the pen lays down: a radius in cells, the paper colour it paints, and
@@ -33,44 +36,79 @@ export function stamp(m: Mask, x: number, y: number, brush: Brush): Box {
  * moved between two pointer events.
  *
  * The swept shape is filled in one pass over its box, a cell at a time: a round
- * head sweeps the cells within its radius of the segment; a head with straight
- * sides (a convex polygon, its half-planes) the cells it holds at some one point
- * of the segment, which each half-plane narrows to an interval of the way
- * along. Stamping a dab every cell along the way gives nearly the same cells,
- * but a broad brush (radius 200) then visits each cell of its box hundreds of
- * times over.
+ * head sweeps the cells within its radius of the segment, a head with straight
+ * sides the convex hull of itself at both ends (see `brushHead.ts`). Stamping
+ * a dab every cell along the way gives nearly the same cells, but a broad
+ * brush (radius 200) then visits each cell of its box hundreds of times over.
+ * Each cell within a cell of the shape's edge is told how far it lies from it
+ * (`paintEdge`), so the stroke's edge is drawn where the head went and not on
+ * the cells' stair.
  */
 export function stroke(m: Mask, from: Vec, to: Vec, brush: Brush): Box {
-	const r = Math.max(0, brush.radius), planes = headPlanes(brush.shape, r), reach = headReach(brush.shape, r);
-	const dx = to.x - from.x, dy = to.y - from.y, length2 = dx * dx + dy * dy;
-	const box = clampBox(m, Math.min(from.x, to.x) - reach.x, Math.min(from.y, to.y) - reach.y, Math.max(from.x, to.x) + reach.x + 1, Math.max(from.y, to.y) + reach.y + 1);
+	const r = Math.max(0, brush.radius), swept = sweep(brush.shape, r, from, to), reach = headReach(brush.shape, r);
+	const box = clampBox(m, Math.min(from.x, to.x) - reach.x - EDGE_BAND, Math.min(from.y, to.y) - reach.y - EDGE_BAND,
+		Math.max(from.x, to.x) + reach.x + EDGE_BAND + 1, Math.max(from.y, to.y) + reach.y + EDGE_BAND + 1);
 	if (isEmptyBox(box)) return box;
-	const r2 = r * r, eps = 1e-9;
-	let changed = emptyBox();
-	for (let cy = box.y0; cy < box.y1; cy++) {
-		const py = cy - from.y, row = cy * m.size;
-		for (let cx = box.x0; cx < box.x1; cx++) {
-			const px = cx - from.x;
-			if (planes) {
-				// The head at t along the way holds the cell where n·p − t·n·d ≤ h for each side.
-				let lo = 0, hi = 1;
-				for (const [nx, ny, h] of planes) {
-					const a = nx * dx + ny * dy, c = nx * px + ny * py - h;
-					if (Math.abs(a) < eps) {
-						if (c > eps) hi = -1;
-					} else if (a > 0) lo = Math.max(lo, c / a);
-					else hi = Math.min(hi, c / a);
+	const value = brush.value, whole = value * 255, data = m.data, level = levels(m), known = m.validMask, eps = 1e-9;
+	let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+	/** One cell `depth` inside the edge (negative outside), deep enough inside or not: whole, or its edge's level. */
+	const lay = (x: number, y: number, depth: number, inside: boolean) => {
+		const i = y * m.size + x;
+		if (depth >= EDGE_BAND) {
+			if (data[i] === value && level[i] === whole && (!known || known[i])) return;
+			data[i] = value;
+			level[i] = whole;
+			if (known) known[i] = 1;
+		} else if (!paintEdge(m, i, value, depth, inside)) return;
+		if (x < x0) x0 = x;
+		if (x > x1) x1 = x;
+		if (y < y0) y0 = y;
+		y1 = y;
+	};
+	if ('sides' in swept) {
+		const sides = swept.sides;
+		for (let cy = box.y0; cy < box.y1; cy++) {
+			// Along a row each side bounds x on one side, so the cells within the
+			// edge's reach, and those deep inside, are each one span of the row.
+			let near0 = box.x0, near1 = box.x1 - 1, deep0 = box.x0, deep1 = box.x1 - 1;
+			for (const [nx, ny, h] of sides) {
+				const c = h - ny * cy;
+				if (Math.abs(nx) < eps) {
+					if (c <= -EDGE_BAND) near1 = -1;
+					if (c < EDGE_BAND) deep1 = -1;
+				} else if (nx > 0) {
+					near1 = Math.min(near1, Math.floor((c + EDGE_BAND) / nx + 1e-7));
+					deep1 = Math.min(deep1, Math.floor((c - EDGE_BAND) / nx - 1e-7));
+				} else {
+					near0 = Math.max(near0, Math.ceil((c + EDGE_BAND) / nx - 1e-7));
+					deep0 = Math.max(deep0, Math.ceil((c - EDGE_BAND) / nx + 1e-7));
 				}
-				if (lo > hi + eps) continue;
-			} else {
-				const t = length2 ? Math.max(0, Math.min(1, (px * dx + py * dy) / length2)) : 0;
-				if ((px - t * dx) ** 2 + (py - t * dy) ** 2 > r2 + eps) continue;
 			}
-			if (!paintCell(m, row + cx, brush.value)) continue;
-			changed = unionBox(changed, { x0: cx, y0: cy, x1: cx + 1, y1: cy + 1 });
+			for (let cx = near0; cx <= near1; cx++) {
+				if (cx >= deep0 && cx <= deep1) {
+					lay(cx, cy, EDGE_BAND, true);
+					continue;
+				}
+				let depth = Infinity;
+				for (const [nx, ny, h] of sides) depth = Math.min(depth, h - nx * cx - ny * cy);
+				if (depth > -EDGE_BAND) lay(cx, cy, depth, depth >= -eps);
+			}
+		}
+	} else {
+		const { a, b, r: rr } = swept, dx = b.x - a.x, dy = b.y - a.y, length2 = dx * dx + dy * dy;
+		const r2 = rr * rr, deep2 = rr >= EDGE_BAND ? (rr - EDGE_BAND) ** 2 : -1, far2 = (rr + EDGE_BAND) ** 2;
+		for (let cy = box.y0; cy < box.y1; cy++) {
+			const py = cy - a.y;
+			for (let cx = box.x0; cx < box.x1; cx++) {
+				const px = cx - a.x, t = length2 ? Math.max(0, Math.min(1, (px * dx + py * dy) / length2)) : 0;
+				const d2 = (px - t * dx) ** 2 + (py - t * dy) ** 2;
+				if (d2 >= far2) continue;
+				if (d2 <= deep2) lay(cx, cy, EDGE_BAND, true);
+				else lay(cx, cy, rr - Math.sqrt(d2), d2 <= r2 + eps);
+			}
 		}
 	}
-	return changed;
+	return x1 < x0 ? emptyBox() : { x0, y0, x1: x1 + 1, y1: y1 + 1 };
 }
 
 /**
@@ -81,23 +119,27 @@ export function line(m: Mask, from: Vec, to: Vec, brush: Brush): Box {
 	return stroke(m, from, to, brush);
 }
 
-/** Fill the rectangle spanned by two corners, in either order, clipped to the mask. */
+/**
+ * Fill the rectangle spanned by two corners, in either order, clipped to the
+ * mask: the cells from the one under the first corner to the one under the
+ * second, its sides half a cell beyond their centres.
+ */
 export function rect(m: Mask, a: Vec, b: Vec, value: 0 | 1): Box {
 	const x0 = Math.round(Math.min(a.x, b.x));
 	const y0 = Math.round(Math.min(a.y, b.y));
 	const x1 = Math.round(Math.max(a.x, b.x));
 	const y1 = Math.round(Math.max(a.y, b.y));
-	const box = clampBox(m, x0, y0, x1 + 1, y1 + 1);
-	if (isEmptyBox(box)) return box;
-	let changed = emptyBox();
+	if (x1 < 0 || y1 < 0 || x0 >= m.size || y0 >= m.size) return emptyBox();
+	const box = clampBox(m, x0 - EDGE_BAND, y0 - EDGE_BAND, x1 + EDGE_BAND + 1, y1 + EDGE_BAND + 1);
+	const changed = growBox();
 	for (let cy = box.y0; cy < box.y1; cy++) {
 		const row = cy * m.size;
 		for (let cx = box.x0; cx < box.x1; cx++) {
-			if (!paintCell(m, row + cx, value)) continue;
-			changed = unionBox(changed, { x0: cx, y0: cy, x1: cx + 1, y1: cy + 1 });
+			const depth = Math.min(cx - x0, x1 - cx, cy - y0, y1 - cy) + 0.5;
+			if (paintEdge(m, row + cx, value, depth, depth > 0)) changed.add(cx, cy);
 		}
 	}
-	return changed;
+	return changed.box();
 }
 
 /**
@@ -108,20 +150,22 @@ export function rect(m: Mask, a: Vec, b: Vec, value: 0 | 1): Box {
 export function ellipse(m: Mask, a: Vec, b: Vec, value: 0 | 1): Box {
 	const x0 = Math.round(Math.min(a.x, b.x)), x1 = Math.round(Math.max(a.x, b.x));
 	const y0 = Math.round(Math.min(a.y, b.y)), y1 = Math.round(Math.max(a.y, b.y));
-	const box = clampBox(m, x0, y0, x1 + 1, y1 + 1);
-	if (isEmptyBox(box)) return box;
+	if (x1 < 0 || y1 < 0 || x0 >= m.size || y0 >= m.size) return emptyBox();
+	const box = clampBox(m, x0 - EDGE_BAND, y0 - EDGE_BAND, x1 + EDGE_BAND + 1, y1 + EDGE_BAND + 1);
 	const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, rx = (x1 - x0) / 2 + 0.5, ry = (y1 - y0) / 2 + 0.5;
-	let changed = emptyBox();
+	const changed = growBox();
 	for (let y = box.y0; y < box.y1; y++) {
 		const row = y * m.size, v = (y - cy) / ry;
 		for (let x = box.x0; x < box.x1; x++) {
 			const u = (x - cx) / rx;
-			if (u * u + v * v > 1 + 1e-9) continue;
-			if (!paintCell(m, row + x, value)) continue;
-			changed = unionBox(changed, { x0: x, y0: y, x1: x + 1, y1: y + 1 });
+			// How far inside the edge, near it: Quílez's estimate, exact for a circle.
+			const k0 = Math.hypot(u, v), k1 = Math.hypot(u / rx, v / ry);
+			const depth = k1 > 0 ? (k0 * (1 - k0)) / k1 : Math.min(rx, ry);
+			if (depth <= -EDGE_BAND || !paintEdge(m, row + x, value, depth, u * u + v * v <= 1 + 1e-9)) continue;
+			changed.add(x, y);
 		}
 	}
-	return changed;
+	return changed.box();
 }
 
 /**
@@ -161,7 +205,8 @@ export function floodFill(m: Mask, x: number, y: number, value: 0 | 1, fence?: U
 		while (right < m.size - 1 && open(row + right + 1)) right++;
 		let first = right + 1, last = left - 1;
 		for (let i = left; i <= right; i++) {
-			if (paintCell(m, row + i, value)) { first = Math.min(first, i); last = i; }
+			// Paper of its own colour keeps the edge it has: the fill only observes it.
+			if (seen ? observe(m, row + i) : paintCell(m, row + i, value)) { first = Math.min(first, i); last = i; }
 			if (seen) seen[row + i] = 1;
 		}
 		if (first <= last) changed = unionBox(changed, { x0: first, y0: py, x1: last + 1, y1: py + 1 });
@@ -183,6 +228,13 @@ export function floodFill(m: Mask, x: number, y: number, value: 0 | 1, fence?: U
 		}
 	}
 	return changed;
+}
+
+/** Mark an unknown cell known, its paper as it is; whether it was unknown. */
+function observe(m: Mask, index: number): boolean {
+	if (!m.validMask || m.validMask[index]) return false;
+	m.validMask[index] = 1;
+	return true;
 }
 
 /**
@@ -221,22 +273,34 @@ export function isDefaultMask(m: Mask): boolean {
 
 /**
  * Lay an `n` × `n` checkerboard over the mask (Tern), inside `fence` only when
- * there is one: the selection is then a window onto the same board.
+ * there is one: the selection is then a window onto the same board. Each cell
+ * is told how far its centre lies inside its square, so the squares' sides lie
+ * where they fall, 400/n cells apart, and not on the nearest cell's side.
  */
 export function checks(m: Mask, n: number, fence?: Uint8Array | null): Box {
-	let changed = emptyBox();
+	const level = levels(m), span = 2 * m.size;
+	// A centre's distance to its square's nearest side, in 1/(2n) of a cell:
+	// whole numbers, so the board mirrors exactly.
+	const inset = (x: number) => {
+		const offset = ((2 * x + 1) * n) % span;
+		return Math.min(offset, span - offset);
+	};
+	const changed = growBox();
 	for (let y = 0; y < m.size; y++) {
-		const row = y * m.size;
-		let x0 = m.size, x1 = -1;
+		const row = y * m.size, insetY = inset(y);
 		for (let x = 0; x < m.size; x++) {
-			if (fence && !fence[row + x]) continue;
-			if (!paintCell(m, row + x, checkAt(x, y, n, m.size))) continue;
-			x0 = Math.min(x0, x);
-			x1 = x;
+			const i = row + x;
+			if (fence && !fence[i]) continue;
+			const value = checkAt(x, y, n, m.size), own = edgeShare(Math.min(inset(x), insetY) / (2 * n), true);
+			const share = value ? own : 255 - own;
+			if (m.data[i] === value && level[i] === share && (!m.validMask || m.validMask[i])) continue;
+			m.data[i] = value;
+			level[i] = share;
+			if (m.validMask) m.validMask[i] = 1;
+			changed.add(x, y);
 		}
-		if (x1 >= x0) changed = unionBox(changed, { x0, y0: y, x1: x1 + 1, y1: y + 1 });
 	}
-	return changed;
+	return changed.box();
 }
 
 /**
@@ -297,6 +361,11 @@ function imagesOf(m: Mask, box: Box, maps: PointMap[]): Box {
  * rule could not do — at a mirror line the two papers want opposite answers from the
  * very same pair of cells.
  *
+ * The edge goes along: where `value` is 1 a cell hands each image the greater
+ * of their two levels, where 0 the lesser, so a stroke's edge lies where the
+ * stroke's own does in every image, and cells beside the stroke that only had
+ * their level moved (see `paintEdge`) move their images' too.
+ *
  * The mask must have been symmetric before the edit, and that requirement is real:
  * `box` is the rectangle a tool changed, not the cells it wrote, and the box of a
  * diagonal stroke is most of the mask — so paint of the same colour laid down
@@ -313,14 +382,21 @@ export function applySymmetric(m: Mask, box: Box, transforms: Transform[], value
 	if (!maps.length) return { ...box };
 
 	const changed = imagesOf(m, box, maps);
-
+	// A cell whole of the other paper has nothing to hand on.
+	const nothing = value ? 0 : 255;
 	for (let y = box.y0; y < box.y1; y++) {
 		const row = y * m.size;
 		for (let x = box.x0; x < box.x1; x++) {
-			if (m.data[row + x] !== value || m.validMask && !m.validMask[row + x]) continue;
+			const i = row + x, own = shareAt(m, i);
+			if (own === nothing || m.validMask && !m.validMask[i]) continue;
+			// A cell of the painted paper makes its images known, as painting them would.
+			const painted = m.data[i] === value;
 			for (const map of maps) {
-				const p = map(x, y, m.size);
-				paintCell(m, p.y * m.size + p.x, value);
+				const p = map(x, y, m.size), j = p.y * m.size + p.x, theirs = shareAt(m, j);
+				const share = value ? Math.max(own, theirs) : Math.min(own, theirs);
+				m.data[j] = share >= 128 ? 1 : 0;
+				if (share % 255 || m.level) levels(m)[j] = share;
+				if (painted && m.validMask) m.validMask[j] = 1;
 			}
 		}
 	}
@@ -338,7 +414,7 @@ export function applySymmetric(m: Mask, box: Box, transforms: Transform[], value
  * The marks say which claim wins.
  */
 export const EDIT_NONE = 0;
-/** Cleared on the way: the area a moved patch was lifted from. */
+/** Cleared on the way: the area a moved patch was lifted from, and the cells beside it where only an edge moved. */
 export const EDIT_CLEARED = 1;
 /** Laid down: the patch itself. This wins where the two mirror onto each other. */
 export const EDIT_LAID = 2;
@@ -376,6 +452,7 @@ export function applySymmetricEdit(
 
 	const changed = imagesOf(m, box, maps);
 	const before = m.data.slice(), observed = m.validMask?.slice();
+	const shares = m.level ? Uint8Array.from(before, (_, i) => shareAt(m, i)) : null;
 	for (const layer of EDIT_LAYERS) {
 		for (let y = box.y0; y < box.y1; y++) {
 			const row = y * m.size;
@@ -386,12 +463,12 @@ export function applySymmetricEdit(
 				// mirrored its own value over this very cell a moment ago.
 				m.data[row + x] = value;
 				if (m.validMask && observed) m.validMask[row + x] = observed[row + x]!;
-				if (m.level) m.level[row + x] = value * 255;
+				if (m.level) m.level[row + x] = shares![row + x]!;
 				for (const map of maps) {
 					const p = map(x, y, m.size);
 					m.data[p.y * m.size + p.x] = value;
 					if (m.validMask && observed) m.validMask[p.y * m.size + p.x] = observed[row + x]!;
-					if (m.level) m.level[p.y * m.size + p.x] = value * 255;
+					if (m.level) m.level[p.y * m.size + p.x] = shares![row + x]!;
 				}
 			}
 		}

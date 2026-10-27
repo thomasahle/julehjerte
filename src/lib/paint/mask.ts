@@ -28,13 +28,15 @@ export type Mask = MaskRaster & {
 	/** Original imported cells. Usable only while their enlargement still matches. */
 	sourceRaster?: MaskRaster;
 	/**
-	 * Where between the cells an edge lies, for the screen and for Udtvær only:
-	 * each cell's paper as a share of 255, 128 and up being paper 1, so an edge
-	 * is the curve where the cells, read bilinearly, cross one half. Udtvær
-	 * leaves it (see `smudge.ts`), and a tool that paints a cell makes it a whole
-	 * cell of its paper again; the cells in `data` stay what everything else
-	 * reads. Trusted only where it agrees with `data` (see `levelAt`), so a write
-	 * that forgets it costs at most a sub-cell nudge. Absent until Udtvær is used.
+	 * Where between the cells an edge lies: each cell's paper as a share of 255,
+	 * 128 and up being paper 1, so an edge is the curve where the cells, read
+	 * bilinearly, cross one half. A tool that draws a shape gives the cells
+	 * round its edge their distance from it (`paintEdge`), Udtvær the share it
+	 * read (see `smudge.ts`) and Markér the share it moved; the screen, Udtvær
+	 * and Markér read it. The cells in `data` stay what everything else reads,
+	 * Find snit included. Trusted only where it agrees with `data` (see
+	 * `shareAt`), so a write that forgets it costs at most a sub-cell nudge.
+	 * Absent means whole cells, as a mask read from a picture is.
 	 */
 	level?: Uint8Array;
 };
@@ -68,6 +70,25 @@ export function unionBox(a: Box, b: Box): Box {
 	};
 }
 
+/**
+ * A box grown a cell at a time, for a tool to report the cells it changed
+ * without a box made for each of them.
+ */
+export function growBox() {
+	let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+	return {
+		add(x: number, y: number): void {
+			if (x < x0) x0 = x;
+			if (x > x1) x1 = x;
+			if (y < y0) y0 = y;
+			if (y > y1) y1 = y;
+		},
+		box(): Box {
+			return x1 < x0 ? emptyBox() : { x0, y0, x1: x1 + 1, y1: y1 + 1 };
+		}
+	};
+}
+
 /** The box `[x0,x1) × [y0,y1)` cut down to the mask, empty when it misses entirely. */
 export function clampBox(m: Mask, x0: number, y0: number, x1: number, y1: number): Box {
 	const cx0 = Math.max(0, Math.min(m.size, Math.floor(x0)));
@@ -95,10 +116,66 @@ export function cloneMask(m: Mask): Mask {
 	};
 }
 
-/** A cell's paper between 0 and 1: its `level` where that agrees with the cell, else the cell itself. */
-export function levelAt(m: Mask, index: number): number {
+/** A cell's paper as a share of 255: its `level` where that agrees with the cell, else the cell itself, whole. */
+export function shareAt(m: Mask, index: number): number {
 	const value = m.data[index]!, level = m.level?.[index];
-	return level !== undefined && (level >= 128) === (value === 1) ? level / 255 : value;
+	return level !== undefined && (level >= 128) === (value === 1) ? level : value * 255;
+}
+
+/** A cell's paper between 0 and 1 (see `shareAt`). */
+export function levelAt(m: Mask, index: number): number {
+	return shareAt(m, index) / 255;
+}
+
+/** The mask's levels, made from its cells, whole, if it has none yet. */
+export function levels(m: Mask): Uint8Array {
+	if (!m.level) {
+		m.level = new Uint8Array(m.data.length);
+		for (let i = 0; i < m.data.length; i++) m.level[i] = m.data[i]! * 255;
+	}
+	return m.level;
+}
+
+/**
+ * How steeply a drawn edge's level runs across it: half a paper a cell, so the
+ * cells within a cell of the edge say where it lies. Read bilinearly, that
+ * puts a straight edge within a hundredth of a cell of where it was drawn and
+ * a circle of radius 3 within a twentieth; the cells alone, up to half a cell
+ * off. Steeper misplaces edges that cross a cell's corners, shallower lets two
+ * shapes a cell or two apart run together (scratchpad edge/slope2.mjs).
+ */
+export const EDGE_RAMP = 0.5;
+
+/** How far outside a shape its edge still reaches a cell's level, in cells. */
+export const EDGE_BAND = 0.5 / EDGE_RAMP;
+
+/**
+ * A shape's own share of a cell `depth` cells inside its edge (negative
+ * outside), kept on the side of one half that `inside` says: the shape decides
+ * by its own test which cells it holds, and the share only where its edge lies.
+ */
+export function edgeShare(depth: number, inside: boolean): number {
+	const share = Math.round(255 * (0.5 + EDGE_RAMP * depth));
+	return inside ? Math.max(128, Math.min(255, share)) : Math.max(0, Math.min(127, share));
+}
+
+/**
+ * Lay paper `value` over a cell `depth` cells inside a shape's edge (negative
+ * outside): the cell takes the paper where `inside`, as `paintCell` would
+ * have it, and its level keeps whichever edge is nearer, the shape's or the
+ * paper's own, so the two papers' edge is the shape's where it lies outside
+ * the paper and the paper's where it lies inside. A cell within `EDGE_BAND`
+ * outside changes no paper, only where the edge beside it lies.
+ */
+export function paintEdge(m: Mask, index: number, value: 0 | 1, depth: number, inside: boolean): boolean {
+	const level = levels(m), own = edgeShare(depth, inside), was = shareAt(m, index);
+	const share = value ? Math.max(was, own) : Math.min(was, 255 - own);
+	const cell = share >= 128 ? 1 : 0;
+	const changed = m.data[index] !== cell || level[index] !== share || inside && !!m.validMask && !m.validMask[index];
+	m.data[index] = cell;
+	level[index] = share;
+	if (inside && m.validMask) m.validMask[index] = 1;
+	return changed;
 }
 
 function cloneRaster(m: MaskRaster): MaskRaster {
@@ -128,7 +205,11 @@ export function solverRaster(mask: Mask): MaskRaster {
 	return source;
 }
 
-/** An explicit brush write also specifies previously unknown cells, and makes the cell whole. */
+/**
+ * An explicit write also specifies previously unknown cells, and makes the
+ * cell whole: for writes with no edge of their own to say where between the
+ * cells it lies, such as a fill's, whose region meets the other paper nowhere.
+ */
 export function paintCell(m: Mask, index: number, value: 0 | 1): boolean {
 	const changed = m.data[index] !== value || !!m.validMask && !m.validMask[index] || !!m.level && m.level[index] !== value * 255;
 	m.data[index] = value;
@@ -230,4 +311,28 @@ export function unpackMask(size: number, packed: string): Mask | null {
 		mask.data[i] = (binary.charCodeAt(i >> 3) >> (7 - (i & 7))) & 1;
 	}
 	return mask;
+}
+
+/** A mask's levels as ASCII, a byte a cell in base64, for the same save as `packMask`. */
+export function packLevels(level: Uint8Array): string {
+	let binary = '';
+	for (let i = 0; i < level.length; i += 8192) {
+		binary += String.fromCharCode(...level.subarray(i, i + 8192));
+	}
+	return btoa(binary);
+}
+
+/** The inverse of `packLevels`; null when the text is not the levels of a mask of that size. */
+export function unpackLevels(size: number, packed: string): Uint8Array | null {
+	if (!Number.isInteger(size) || size <= 0) return null;
+	let binary: string;
+	try {
+		binary = atob(packed);
+	} catch {
+		return null;
+	}
+	if (binary.length !== size * size) return null;
+	const level = new Uint8Array(size * size);
+	for (let i = 0; i < level.length; i++) level[i] = binary.charCodeAt(i);
+	return level;
 }

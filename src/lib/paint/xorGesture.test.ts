@@ -1,10 +1,23 @@
 import { describe, expect, it } from 'vitest';
-import { cloneMask, createMask } from './mask';
+import { cloneMask, createMask, shareAt } from './mask';
+import { stroke } from './tools';
 import { createXorGesture } from './xorGesture';
 import { createHistory, record, redo, undo } from './history';
 import { NO_SYMMETRY } from './symmetry';
 
 describe('XOR gestures', () => {
+	it("draws the footprint's edge between the cells, on either paper", () => {
+		const plain = createMask(0, 30);
+		stroke(plain, { x: 4.3, y: 7.8 }, { x: 25.1, y: 19.6 }, { radius: 3.4, value: 1 });
+		const blank = createMask(0, 30), full = createMask(1, 30);
+		createXorGesture(blank).stroke({ x: 4.3, y: 7.8 }, { x: 25.1, y: 19.6 }, 3.4);
+		createXorGesture(full).stroke({ x: 4.3, y: 7.8 }, { x: 25.1, y: 19.6 }, 3.4);
+		for (let i = 0; i < 900; i++) {
+			expect(shareAt(blank, i)).toBe(shareAt(plain, i));
+			expect(shareAt(full, i)).toBe(255 - shareAt(plain, i));
+		}
+	});
+
 	it('inverts both papers once across overlapping dabs and a retraced stroke', () => {
 		const mask = createMask(0, 20);
 		for (let y = 0; y < 20; y++) for (let x = 10; x < 20; x++) mask.data[y * 20 + x] = 1;

@@ -405,7 +405,7 @@
 		cropMode = 'quad';
 		cropTool = 'corners';
 		cornerStatus = null;
-		const mask = rasterizeDesign(templateDesign(template), MASK_SIZE);
+		const mask = rasterizeDesign(templateDesign(template), MASK_SIZE, { levels: true });
 		previewMask = mask;
 		previewFound = detect(mask);
 		previewError = null;

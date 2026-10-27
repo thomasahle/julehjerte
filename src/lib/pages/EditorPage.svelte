@@ -428,7 +428,7 @@
    * button never downloads them.
    */
   async function openInPaint(keepFound = false): Promise<void> {
-    const [{ rasterizeDesign }, { detectSymmetry: detectMaskSymmetry }, { session, setMaskFromDraw }, { maskMismatch }] =
+    const [{ rasterizeDesign }, { detectSymmetry: detectMaskSymmetry }, { session, setMaskFromDraw }, { MASK_SIZE, maskMismatch }] =
       await Promise.all([
         import('$lib/paint/rasterize'),
         import('$lib/paint/symmetry'),
@@ -436,7 +436,8 @@
         import('$lib/paint/mask')
       ]);
     const design = createHeartDesign();
-    const mask = rasterizeDesign(design);
+    // With where between the cells each cut runs, so Mal draws the cuts as curves.
+    const mask = rasterizeDesign(design, MASK_SIZE, { levels: true });
     // With `keepFound`, a heart that is still the one Find snit found weaves the
     // same picture: Mal opens as it was left, on that heart and the drawing it
     // was found for, rather than on the heart's own picture.

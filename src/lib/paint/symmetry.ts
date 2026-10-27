@@ -21,7 +21,7 @@
  * table above needs; the two quarter turns exist only inside the closure.
  */
 
-import type { Mask } from './mask';
+import { shareAt, type Mask } from './mask';
 
 export type SymmetryMode = 'off' | 'sym' | 'anti';
 
@@ -189,7 +189,9 @@ function orbit(elements: Element[], x: number, y: number, size: number): number[
  *
  * Each orbit takes the value most of its cells already have, and a tie goes to the
  * first cell in row order — so the result does not depend on which cell we happen
- * to visit first, and running it twice changes nothing. Solving wants a symmetric
+ * to visit first, and running it twice changes nothing. Its level is the mean of
+ * theirs, so an edge drawn a little differently on each side is folded to the
+ * edge between, not to the cells' stair. Solving wants a symmetric
  * target: asking the engine for a symmetric answer to an almost-symmetric picture
  * only spends search time proving the difference away.
  */
@@ -217,14 +219,21 @@ export function symmetrize(m: Mask, transforms: Transform[], region?: Uint8Array
 				continue;
 			}
 			const known = m.validMask ? cells.filter(index => m.validMask![index]) : cells;
-			let ones = 0;
-			for (const index of known) ones += m.data[index]!;
+			let ones = 0, shares = 0;
+			for (const index of known) {
+				ones += m.data[index]!;
+				shares += shareAt(m, index);
+			}
 			const value = !known.length ? 0 : ones * 2 === known.length ? m.data[known[0]!]! : ones * 2 > known.length ? 1 : 0;
+			// The edge is folded too: its level the mean of the orbit's, on the
+			// side of one half the cells came down on.
+			const mean = known.length ? Math.round(shares / known.length) : 0;
+			const share = value ? Math.max(128, mean) : Math.min(127, mean);
 			// Symmetry can propose colours for missing photo cells, but these are
 			// still unobserved until the visitor explicitly paints them.
 			for (const index of cells) {
 				m.data[index] = value;
-				if (m.level) m.level[index] = value * 255;
+				if (m.level) m.level[index] = share;
 				done[index] = 1;
 			}
 		}

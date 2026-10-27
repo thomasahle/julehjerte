@@ -3,6 +3,7 @@ import {
 	clampBox,
 	cloneMask,
 	createMask,
+	edgeShare,
 	emptyBox,
 	get,
 	isEmpty,
@@ -11,9 +12,12 @@ import {
 	MASK_SIZE,
 	paintCell,
 	maskMismatch,
+	packLevels,
 	packMask,
+	paintEdge,
 	resample,
 	unionBox,
+	unpackLevels,
 	unpackMask
 } from './mask';
 
@@ -72,6 +76,46 @@ describe('level', () => {
 		expect(paintCell(m, 3, 0)).toBe(false);
 		paintCell(m, 4, 1);
 		expect(m.level[4]).toBe(255);
+	});
+});
+
+describe('paintEdge', () => {
+	it("keeps the nearer edge: the shape's outside the paper, the paper's inside the shape", () => {
+		const m = createMask(0, 4);
+		// Three tenths inside: paper 1, its edge three tenths of a cell off.
+		expect(paintEdge(m, 0, 1, 0.3, true)).toBe(true);
+		expect([m.data[0], m.level![0]]).toEqual([1, 166]);
+		// Another shape's edge further off changes nothing there.
+		expect(paintEdge(m, 0, 1, -0.2, false)).toBe(false);
+		// Beside a shape a cell changes no paper, only where the edge beside it lies.
+		expect(paintEdge(m, 1, 1, -0.2, false)).toBe(true);
+		expect([m.data[1], m.level![1]]).toEqual([0, 102]);
+		// The left paper laid the same way takes it back.
+		paintEdge(m, 0, 0, 0.3, true);
+		expect([m.data[0], m.level![0]]).toEqual([0, 89]);
+	});
+
+	it("holds a shape's share to the side of one half its own test says", () => {
+		expect(edgeShare(-1e-12, true)).toBe(128);
+		expect(edgeShare(0, false)).toBe(127);
+		expect(edgeShare(5, true)).toBe(255);
+		expect(edgeShare(-5, false)).toBe(0);
+	});
+
+	it('makes known the cells inside the shape and only those', () => {
+		const m = { ...createMask(0, 4), validMask: new Uint8Array(16) };
+		paintEdge(m, 0, 1, 0.5, true);
+		paintEdge(m, 1, 1, -0.5, false);
+		expect([...m.validMask.slice(0, 2)]).toEqual([1, 0]);
+	});
+});
+
+describe('packLevels', () => {
+	it('round-trips a full-size mask, and refuses text of another size', () => {
+		const level = Uint8Array.from({ length: MASK_SIZE ** 2 }, (_, i) => (i * 37) % 256);
+		expect([...unpackLevels(MASK_SIZE, packLevels(level))!]).toEqual([...level]);
+		expect(unpackLevels(4, packLevels(level))).toBeNull();
+		expect(unpackLevels(4, '!!!!')).toBeNull();
 	});
 });
 
