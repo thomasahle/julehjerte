@@ -853,6 +853,16 @@ below 60% from one to three to none, the gingerbread man and the mitten at
 99% from nine or ten to none), and the snowman at 54%, hard to cut, is cut
 cleanly.
 
+A topology whose first motif did not solve may solve on another of its
+motifs, and its recipes serve them all. A second round tried such motifs:
+the candy on five strips (the gingerbread man's topology at 71–80%: the
+candy at 72–78% from three to five places that may tear to none or one) and
+the flower on seven (the topology of the sleigh, stocking, church, dove,
+bird, fish, cow and flower at 71–77%: seven of their sizes better, the cow
+at 72% no longer hard to cut). None got worse; the holly (for the polar
+star's topology), squirrel, santa hat and the candy on seven strips did not
+solve.
+
 ### The circle, its own mirror image
 
 The plain circle was a 63-gon from 5.7°: within an eighth of a percent of
