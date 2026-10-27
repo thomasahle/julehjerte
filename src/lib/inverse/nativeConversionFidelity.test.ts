@@ -24,10 +24,12 @@ describe('conversion of unchanged imported masks', () => {
     const prior = convertValidatedCutGeometry(geometry, { name: 'puppy', reference: { mask: paintOnly } });
     const nativeCheck = conversionFidelity(original, { mask: mask.sourceRaster! });
     expect(prior.editorValidation?.fidelity?.passed).toBe(true);
-    // The old guard missed six additional errors on the original 390px mask.
+    // The paint grid alone once let six more errors through on the original
+    // 390px mask: the rasterizer drew the puppy's seams as slivers (rasterize.ts
+    // SEAM_GAP), which made a simplified heart look as good as the faithful one.
     const priorNative = nativeCheck(prior.design);
-    expect(priorNative.passed).toBe(false);
-    expect(Math.round((priorNative.sourceError! - priorNative.originalSourceError!) * 390 ** 2)).toBe(6);
+    expect(priorNative.passed).toBe(true);
+    expect(Math.round((priorNative.sourceError! - priorNative.originalSourceError!) * 390 ** 2)).toBe(0);
 
     const result = convertValidatedCutGeometry(geometry, { name: 'puppy', reference: { mask } });
     expect(nativeCheck(result.design).passed).toBe(true);

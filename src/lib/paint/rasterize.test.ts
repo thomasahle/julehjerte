@@ -43,6 +43,26 @@ describe('rasterizeDesign', () => {
 		expect(ones(mask)).toBe(4 * 100 * 100);
 	});
 
+	it('draws no line where both families cut along one seam', () => {
+		// Round Uret's ring a cut of each family runs along the same seam, each drawn
+		// on its own a hair from the other. The sliver between them came out as lines
+		// and dots of the other colour across the ring and in its empty middle, and
+		// Find snit cut them into the ring.
+		const mask = rasterizeDesign(galleryDesign('circle'), 400);
+		let thin = 0;
+		for (let y = 1; y < 399; y++) {
+			for (let x = 1; x < 399; x++) {
+				const v = get(mask, x, y);
+				const across = get(mask, x - 1, y) !== v && get(mask, x + 1, y) !== v;
+				const along = get(mask, x, y - 1) !== v && get(mask, x, y + 1) !== v;
+				if (across || along) thin++;
+			}
+		}
+		// Only the tips of the eight wedges between the bands and the ring are a cell
+		// wide (174 cells were, with the slivers).
+		expect(thin).toBeLessThanOrEqual(8);
+	});
+
 	it('lifts the other family of strips when the parity is 1', () => {
 		// weaveParity 0 means the top-left cell has the left lobe on top, which is the
 		// colour the mask calls 0. Parity 1 takes the other right-lobe strips, and on a

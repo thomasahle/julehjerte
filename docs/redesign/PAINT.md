@@ -556,6 +556,12 @@ folds the mask with `symmetrize` first**, and `setMask` folds an arriving mask t
 - `rasterizeDesign` draws exactly what `computeWeaveData` draws: base 0, then the even-odd union of all strips
   (`rightOnTopStrips` + `leftOnTopStrips`) as 1, in the overlap rect mapped to [0,size)². Flatten Béziers adaptively
   (max 0.25 cell error), fill with an even-odd scanline at pixel centres.
+- Except across a seam: where a cut of each family runs along the same line, both papers are cut there and the
+  picture has no edge, but the two cuts are drawn separately (Uret's a tenth of a millimetre apart), and the sliver
+  between them came out as lines and dots of the other colour, which Find snit then cut into the heart. Two
+  neighbouring crossings of a scanline, one of each family, running within 20° of each other and nearer than 0.2%
+  of the side (SEAM_GAP, a tenth of the narrowest strip) are left out together; every other crossing keeps its
+  parity. Of the 82 site hearts 33 change at 400 px (16–352 cells, all on seams).
 - The flattening adapts per cubic rather than by recursive subdivision: the deviation of an n-piece uniform
   flattening is at most 3·D/(4n²) for D the larger second difference of the control points, so the piece count
   follows in closed form and needs no recursion, no depth guard and no array per curve. Both lanes wrote a

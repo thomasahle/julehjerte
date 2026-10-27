@@ -552,6 +552,26 @@ the median of 40, while the paper model takes about a second.
 The orientation search stops at a 2 s deadline between hypotheses, so a slower
 or busier machine can try fewer of them; that was so before as well.
 
+## Seams in a heart carried over from Tegn (2026-10-27)
+
+Where a cut of each family runs along the same seam, the rasterizer drew the
+sliver between the two drawn cuts as lines and dots of the other colour (Uret:
+174 cells a cell wide at 400 px; rasterize.ts `SEAM_GAP` now leaves such pairs
+of crossings out). Mal's exact search alone on the Tegn → Mal pictures of the
+12 hearts that changed most: david4 0.55% -> 0.22% from its design, 5star
+0.18% -> 0.14%, six the same (fiskeskael 0.39% -> 0.42%), four finding none
+either way (circle, balls, kogle, davidsstjerne-circ), and venus losing its
+template (0.36%, then the fitter's 0.69%): the line through its cross, the
+artefact, lay where the designer's seam runs and the search cut along it. The
+juleflet pictures, drawn and imported, never had it (venus takes the fitter's
+there too). Uret's fitter template is no better (1.01% -> 1.05%): its holes
+are at the junctions of the bands and the ring, which the exact search proves
+need 16 hidden segments that cross there, while the designer routes them round
+an inner circle through the middle, far-apart positions the search never
+offers as a hidden segment. Its traced outline also breaks the symmetry ties:
+the corners of one junction come out 9 and of its mirror image 2 (corners in
+exact/outline.js cluster greedily from one end).
+
 ## Details lost on photographs (2026-10-25)
 
 The 68 photographs whose template keeps every rule but loses a region of the
@@ -597,6 +617,14 @@ camel, but takes 20-28 s more and fails on other photographs; not used.
   cross each other at its four junctions (an embedding row stays broken);
   neither a finer grid (1.5 units, 4 neighbours) nor searching untied finds a
   template keeping every rule in 40 s.
+- A graph for the exact search fitted to the mask before it runs (the user's
+  suggestion, 2026-10-27), for the outlines it cannot use as traced: one
+  symmetric by construction (the circle's ties break on its traced corners;
+  taking a position's nearest image within `MERGED` keeps them, and the search
+  then proves its 16 crossing segments), corners found the same either way
+  along an edge, and hidden-segment candidates along long routes through one
+  colour (the circle's inner circle) and along a heart's own seams when it
+  comes from Tegn (venus).
 - Templates: slits that stop inside the square or meet in T-junctions (the site
   cannot represent them), dimension lines drawn along a slit.
 - A selected heart among touching neighbours (two of the web scenes): the
