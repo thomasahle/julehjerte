@@ -90,6 +90,8 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
         // the crop search waits for the same load and reports its bytes. Not a
         // job: the answer is immediate, and nothing else is held up.
         import('./neural/runtime.js').then(module=>module.predictPaperBody.warm(),()=>{});
+        // And the colour locator's worker, whose modules then load meanwhile.
+        if(!cropJob)try{cropWorker??=createCropWorker();}catch{}
         scope.postMessage({id,type:'result',result:null});return;
       }
       result=null;

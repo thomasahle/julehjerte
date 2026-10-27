@@ -127,6 +127,16 @@ test('a photograph\'s colour locator answers from its own worker, which later se
  assert.equal(h.messages.at(-1).message,'locator failed');
 });
 
+test('warming the paper model starts the colour locator\'s worker, which the search then uses',async()=>{
+ const h=cropHarness();
+ await h.send(1,'warm-neural');assert.equal(h.crops.length,1);assert.equal(h.crops[0].sent.length,0);
+ await h.send(2,'warm-neural');assert.equal(h.crops.length,1);
+ const detecting=h.send(3,'detect-crops',{input:pixels});await null;
+ assert.equal(h.crops.length,1);assert.equal(h.crops[0].sent.length,1);
+ h.crops[0].onmessage({data:{id:h.crops[0].sent[0].id,crops:{status:'not_found',candidates:[]}}});await detecting;
+ assert.equal(h.messages.at(-1).type,'crops');
+});
+
 test('a cancel ends the colour locator\'s worker, and the next search starts another',async()=>{
  const h=cropHarness();
  const detecting=h.send(1,'detect-crops',{input:pixels});await null;

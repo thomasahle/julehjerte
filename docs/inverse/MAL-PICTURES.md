@@ -541,13 +541,18 @@ the median of 40, while the paper model takes about a second.
   since the selection asks for that crop whenever the colour crop falls short,
   which is mostly when it is slow. In this thread, where the colour answer is
   already in, nothing starts early. A worker that cannot start or fails runs it
-  here as before. On 12 photographs the whole search took 54 s instead of 81,
-  with the same corners, status and method for each.
+  here as before. The worker starts when the import dialog opens, as the paper
+  model's download does: a worker started from the busy engine worker only got
+  going once that was done, so beside it gained little in the browser.
 - Its arithmetic without arrays: the palettes' per-pixel loops, sorting as a
-  typed copy (`trimMean`, `quantile`), and the square close as two sliding
-  passes. Every field is bit for bit the same (four palettes on 30
-  photographs), as is every answer on 40; the locator took 77 s instead of
-  103 on them, run back to back.
+  typed copy (`trimMean`, `quantile`), the square close as two sliding passes,
+  and turned fields with one set of weights for all ten channels. Every field
+  is bit for bit the same (four palettes on 30 photographs, the turn on random
+  fields), as is every answer on 40.
+
+Node, 12 photographs, alternating: 115 s before, 68 s now, the same corners,
+status and method for each. The live import dialog on six of them: 44 s before
+(3.1-12.2 s each), 25 s now (2.6-5.9 s).
 
 The orientation search stops at a 2 s deadline between hypotheses, so a slower
 or busier machine can try fewer of them; that was so before as well.
