@@ -334,9 +334,9 @@ Mal's whole pipeline on the three sets, against the version deployed on
 | | 2026-10-25 | 2026-10-26 | 2026-10-26, later | 2026-10-27 |
 |---|---|---|---|---|
 | juleflet pictures (128): pass | 128 | 128 | 128 | 128 |
-| exact template first (and second) | 0 | 104 | 94 (16) | 91 (13) |
-| from the true design (mean) | 0.708% | 0.676% | 0.658% | 0.675% |
-| solve median / 90% / slowest | 7.3 / 17.0 / 33.4 s | 8.4 / 40.0 / 40 s | 10.2 s median | 14.4 s median |
+| exact template first (and second) | 0 | 104 | 94 (16) | 92 (18) |
+| from the true design (mean) | 0.708% | 0.676% | 0.658% | 0.657% |
+| solve median / 90% / slowest | 7.3 / 17.0 / 33.4 s | 8.4 / 40.0 / 40 s | 10.2 s median | 8.6 / 20.0 / 40 s |
 | 80 scraped photographs: pass / detail lost | 46 / 10 | 47 / 9 (8 exact) | 46 / 10 (8 exact, 4 second) | 46 / 10 (14 exact, 7 second) |
 | solve median | 21.4 s | 40.0 s | 30.0 s | 21.9 s |
 | 44 web photographs: pass / detail lost / no heart | 18 / 16 / 10 | 34 / 8 / 2 (7 exact) | 38 / 4 / 2 (5 exact, 3 second) | 38 / 4 / 2 (7 exact, 6 second) |
@@ -349,9 +349,11 @@ fitter's passing template sent at 30 s while the exact search has drawn nothing
 (both below); it was timed while other jobs loaded the machine, so its times
 run long. The 2026-10-27 column adds the photographs whose sides end unevenly
 or whose crop misses a corner, the start capped at 3 s and the 20 s limit
-(below); its juleflet run ran slow too (the crop took 5.7 s at the median
-against 3.2 s calm), so its exact templates first fell from 94 to 91 there,
-while the web photographs ran calm.
+(below), all three sets run on a calm machine (the crop 3.4 s at the median;
+under load it took 5.7 s, and the juleflet pictures showed 91 exact templates
+first). With the traced outline's stage alone cut from 30 s to 20 s, run beside
+it, 93 came first and 112 in all (92 and 110): three rounded templates came in
+time, two traced ones (hvirvel's at 19.5 s) did not; it stays at 30 s.
 
 ## Tips, untied outlines and their symmetry (2026-10-26)
 

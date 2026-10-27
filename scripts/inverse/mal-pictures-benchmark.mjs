@@ -113,6 +113,8 @@ for (const c of list) {
       const exactSeconds = (performance.now() - t) / 1000;
       row.exactSeconds = +exactSeconds.toFixed(1);
       row.exactDrawnSeconds = drawnAt === null ? null : +drawnAt.toFixed(1);
+      // The outline the exact template came from, taken or late: 'traced', or its rounding.
+      if (exact) { const eo = exact.report.solver?.exactOutline ?? {}; row.exactFrom = eo.rounded ? `rounded ${eo.rounded}` : 'traced'; }
       const fit = async () => {
         if (fitted) return;
         const t1 = performance.now();
@@ -146,7 +148,9 @@ for (const c of list) {
     const ex = rep.solver?.exactOutline;
     if (ex) row.exact = {chosen: ex.chosen, error: ex.error, start: ex.start, attempts: (ex.search?.attempts || []).map(a => [a.hidden, a.countStatus, a.lengthStatus, a.status]),
       // Hidden cut (mm, as the weave shows it) of the fitter's template and the exact search's.
-      hidden: [ex.fitter?.hidden, ex.exactOutline?.hidden].map(v => v === undefined ? null : Math.round(v)), refined: ex.refined?.taken ?? null};
+      hidden: [ex.fitter?.hidden, ex.exactOutline?.hidden].map(v => v === undefined ? null : Math.round(v)), refined: ex.refined?.taken ?? null,
+      // Which outline gave it: rounded ('returns', 'near', true), its sides read deeper (paired), untied.
+      ...(ex.rounded ? {rounded: ex.rounded} : {}), ...(ex.paired ? {paired: true} : {}), ...(ex.untied ? {untied: true} : {})};
     row.stage = 'convert';
     // As the page converts it (PaintPage toResult): an exact template whose
     // symmetry would cost over 1% of the mask to correct stays as found.
