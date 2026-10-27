@@ -506,6 +506,17 @@ Tried and left out: where the traced search never keeps the model's rules
 them within 0.9% given 40 s alone, and by 2 mm 9 of them, but up to 2.8% off;
 after the traced search's 30 s it found one in time.
 
+## The start's time (2026-10-27)
+
+The exact search first looks for a start (a grid witness, else a topological
+one) for up to a quarter of its time, 6.5 s on a traced outline in Mal. On 160
+traced outlines the grid's took 0.07 s at the median and 4 s at most, 19 of 24
+topological ones under 1 s (five photographs 4.8-19 s), and 28 found none in
+30 s, which then took the whole quarter for nothing. With at most 3 s for it
+(`START_SECONDS`, stage.js), on those 28 and the one taking 5.5 s the search
+found as many templates (9 of 29) in half the time (10.8 s for 21 at the
+median); every other search runs as before.
+
 ## Details lost on photographs (2026-10-25)
 
 The 68 photographs whose template keeps every rule but loses a region of the
