@@ -79,12 +79,12 @@ Order: nav → hero → gallery (with decorative frame) → footer. One fluid do
 900, 700, 600 (the media queries in `HELMET` are the reference — port them, do not invent new ones).
 
 ### Nav
-Logo "Juleflet.dk" 28px/600 `--deep`; links **Skabeloner · Sådan gør du · Om** (15px/500 green; active = red
+Logo "Juleflet.dk" 28px/600 `--deep`; links **Skabeloner · Design · Sådan gør du · Om** (15px/500 green; active = red
 text with a 2px red bottom border); right: paper colours (see below), EN pill, GitHub pill with star count.
 Height 62px, padding 0 40px,
 1px `--line` bottom border, `--page` background. Below 900px: padding 0 16px, height 58, logo 24px, links and
 GitHub pill hidden, a 44px burger button (white, 1.5px `--line` border, radius 10) opens a menu with
-Skabeloner, Sådan gør du, Om, the paper colours, EN, GitHub. Adapt the existing `PageHeader.svelte`.
+Skabeloner, Design, Sådan gør du, Om, the paper colours, EN, GitHub. Design is the design page (`/design/`). Adapt the existing `PageHeader.svelte`.
 Without JavaScript (`html.no-js`) the burger is swapped for a `<label>` of a visually hidden checkbox that
 opens the same menu by CSS alone; with JavaScript both are `display: none`. The menu is shown by an `open`
 class, not the `hidden` attribute, because Tailwind's preflight makes `[hidden]` `display: none !important`.

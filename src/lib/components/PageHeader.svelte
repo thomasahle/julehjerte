@@ -2,7 +2,7 @@
   The site nav — docs/redesign/DESIGN.md §3 "Nav".
 
   Two variants:
-    site   (default) logo · Skabeloner / Sådan gør du / Om · paper colours ·
+    site   (default) logo · Skabeloner / Design / Sådan gør du / Om · paper colours ·
            EN pill · GitHub pill, collapsing to a 44px burger with a drop-down
            menu under 900px, where the paper colours are a row of their own.
     editor logo at the left and the page's own buttons (passed as
@@ -15,7 +15,7 @@
 
   Every page mounts this component, so keep the prop names stable:
     lang      the page language
-    active    which nav link is current: 'templates' | 'howto' | 'about'
+    active    which nav link is current: 'templates' | 'design' | 'howto' | 'about'
     variant   'site' | 'editor'
     mode      editor variant: which of the editor's two modes this page is, and
               with it the Tegn / Mal switch in the middle of the bar
@@ -32,7 +32,7 @@
 	import GitHubLink from '$lib/components/GitHubLink.svelte';
 	import ColorControls from '$lib/components/ColorControls.svelte';
 
-	type NavSection = 'templates' | 'howto' | 'about';
+	type NavSection = 'templates' | 'design' | 'howto' | 'about';
 
 	/** The front page's gallery section (Gallery.svelte), in both languages. */
 	const GALLERY_ANCHOR = 'skabeloner';
@@ -86,6 +86,7 @@
 		// and the landscape band above the first heart. The front page lands
 		// the hash under the gallery bar once the gallery has been measured.
 		{ id: 'templates' as NavSection, href: `${homeHref}#${GALLERY_ANCHOR}`, label: t('navTemplates', lang) },
+		{ id: 'design' as NavSection, href: routeHref('generator', lang), label: t('navDesign', lang) },
 		{ id: 'howto' as NavSection, href: routeHref('howTo', lang), label: t('navHowTo', lang) },
 		{ id: 'about' as NavSection, href: routeHref('about', lang), label: t('navAbout', lang) }
 	]);

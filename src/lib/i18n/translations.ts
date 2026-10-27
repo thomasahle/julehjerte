@@ -189,6 +189,7 @@ export const translations = {
     // Site navigation, the header and the skip link
     siteNavigation: 'Hovedmenu',
     navTemplates: 'Skabeloner',
+    navDesign: 'Design',
     navHowTo: 'Sådan gør du',
     navAbout: 'Om',
     navOpenMenu: 'Åbn menu',
@@ -1289,6 +1290,7 @@ export const translations = {
     // Site navigation, the header and the skip link
     siteNavigation: 'Main navigation',
     navTemplates: 'Templates',
+    navDesign: 'Design',
     navHowTo: 'How to',
     navAbout: 'About',
     navOpenMenu: 'Open menu',

@@ -55,6 +55,18 @@ describe('PageHeader', () => {
 		expect(render('/om/', 'da').target.querySelector('.nav-logo')!.getAttribute('href')).toBe('/');
 	});
 
+	it('links the design page, current on it', () => {
+		const da = render('/design/', 'da', 'design').links('Design');
+		expect(da).toHaveLength(2);
+		for (const a of da) {
+			expect(a.getAttribute('href')).toBe('/design/');
+			expect(a.getAttribute('aria-current')).toBe('page');
+		}
+		const en = render('/en/about/', 'en', 'about').links('Design');
+		expect(en[0]!.getAttribute('href')).toBe('/en/design/');
+		expect(en[0]!.hasAttribute('aria-current')).toBe(false);
+	});
+
 	it('goes to the English gallery from English pages', () => {
 		const { links } = render('/en/about/', 'en', 'about');
 		expect(links('Templates')[0]!.getAttribute('href')).toBe('/en/#skabeloner');

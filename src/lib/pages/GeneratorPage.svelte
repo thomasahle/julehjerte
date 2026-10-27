@@ -791,6 +791,7 @@
 <svelte:head><title>{pageTitle('generator', lang)}</title></svelte:head>
 <PageHeader
 	{lang}
+	active="design"
 	variant={config.mode === 'start' ? 'site' : 'editor'}
 	{languageUrl}
 ></PageHeader>
