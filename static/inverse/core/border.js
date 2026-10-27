@@ -79,33 +79,38 @@ function extendBorder(mask, n, width, radius, minimumStripWidth) {
 /** The mask with each pair of opposite sides read from deeper inside
  * (extendBorder) at the shallowest `depths` (mm, at most 8% of the width) at
  * which a band of `seenAt` mm (the exact search's tracer's) finds as many colour
- * changes on both sides, and some: a photograph's crop a little off the square
- * shows a corner's strip on one side only, or a lobe's colour along one. Null
- * when a pair has no such depths, or the reading changes more than `maxChange`
+ * changes on both sides of each pair, and some: a photograph's crop a little
+ * off the square shows a corner's strip on one side only, or a lobe's colour
+ * along one. Each pair's depths are chosen on its own, so the sides read
+ * together are checked again (their bands meet at the corners), shallowest
+ * first, up to `tries` of them. Null when none ends evenly within `maxChange`
  * of the mask.
  */
-export function pairedBorderReading(mask, n, width, {depths = [1, 1.5, 2, 3, 4, 5, 6, 7, 8], seenAt = 1, minimumStripWidth = 2.5, maxChange = 1} = {}) {
-  const usable = depths.filter(d => d <= .08 * width);
-  const read = usable.map(d => extendBorder(mask, n, width, d, minimumStripWidth).mask);
-  const seen = read.map(m => extendBorder(m, n, width, seenAt, minimumStripWidth).metadata.transitionsAfter);
-  const choice = [];
-  for (const [a, b] of [[0, 2], [1, 3]]) {
-    let best = null;
-    usable.forEach((da, i) => usable.forEach((db, j) => {
-      if (seen[i][a] && seen[i][a] === seen[j][b] && (!best || da + db < best.sum)) best = {i, j, sum: da + db};
-    }));
-    if (!best) return null;
-    choice[a] = best.i; choice[b] = best.j;
+export function pairedBorderReading(mask, n, width, {depths = [1, 1.5, 2, 3, 4, 5, 6, 7, 8], seenAt = 1, minimumStripWidth = 2.5, maxChange = 1, tries = 24} = {}) {
+  const usable = depths.filter(d => d <= .08 * width), seenOf = m => extendBorder(m, n, width, seenAt, minimumStripWidth).metadata.transitionsAfter;
+  const read = usable.map(d => extendBorder(mask, n, width, d, minimumStripWidth).mask), seen = read.map(seenOf);
+  // Each pair's depths with as many changes on both sides, shallowest first.
+  const options = [[0, 2], [1, 3]].map(([a, b]) => {
+    const list = [];
+    usable.forEach((da, i) => usable.forEach((db, j) => { if (seen[i][a] && seen[i][a] === seen[j][b]) list.push({i, j, sum: da + db}); }));
+    return list.sort((p, q) => p.sum - q.sum);
+  });
+  if (options.some(list => !list.length)) return null;
+  const pairs = options[0].flatMap(v => options[1].map(h => ({v, h, sum: v.sum + h.sum}))).sort((p, q) => p.sum - q.sum).slice(0, tries);
+  for (const {v, h} of pairs) {
+    // Each pixel in a band takes its nearest side's reading, sides measured by their own depths.
+    const choice = [v.i, h.i, v.j, h.j], depth = choice.map(i => usable[i] * n / width), out = mask.slice();
+    let changed = 0;
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+      const relative = [y, n - 1 - x, n - 1 - y, x].map((d, side) => d / depth[side]), nearest = Math.min(...relative), side = relative.indexOf(nearest);
+      if (nearest < 1) out[y * n + x] = read[choice[side]][y * n + x];
+      changed += out[y * n + x] !== mask[y * n + x];
+    }
+    if (changed > maxChange * n * n) continue;
+    const ends = seenOf(out);
+    if (ends[0] && ends[1] && ends[0] === ends[2] && ends[1] === ends[3]) return out;
   }
-  // Each pixel in a band takes its nearest side's reading, sides measured by their own depths.
-  const out = mask.slice(), depth = choice.map(i => usable[i] * n / width);
-  let changed = 0;
-  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
-    const relative = [y, n - 1 - x, n - 1 - y, x].map((d, side) => d / depth[side]), nearest = Math.min(...relative), side = relative.indexOf(nearest);
-    if (nearest < 1) out[y * n + x] = read[choice[side]][y * n + x];
-    changed += out[y * n + x] !== mask[y * n + x];
-  }
-  return changed <= maxChange * n * n ? out : null;
+  return null;
 }
 
 /** Additional routing seeds when one pair of opposite edges disagrees.
