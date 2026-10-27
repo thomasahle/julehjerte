@@ -7,10 +7,10 @@
 // construction, judged as the page compares hearts (`cutMeasures`, `betterCuts`): the places the
 // paper may tear (weak paper at the 80 mm print, src/lib/geometry/paperNecks.ts, and needles), one
 // template for both lobes over two, sharp tips, turns along the hidden cuts and the cuts' length,
-// and a tie keeps the generator's. A board's recipes are solves for its topologies' (scripts/generator/topology.mjs
-// chooses those): they go to scripts/generator/solves/<motif>.board.json. Another frame's are the
-// motif's stored recipes: they go to static/generator/recipes/<motif>.<style>.json, listed in
-// index.json. Either replaces that board's (or frame's).
+// and a tie keeps the generator's. The recipes are solves for the frame's topologies'
+// (scripts/generator/topology.mjs chooses those, and the page draws them on every motif of a
+// topology): they go to scripts/generator/solves/<motif>.<style>.json, replacing that board's (or
+// frame's). No motif's own recipes are shipped.
 //
 //   node scripts/generator/recipes.mjs <motif> <style> [strips] [from to]
 //   REJUDGE=1 node scripts/generator/recipes.mjs <motif> <style> [strips]   # judge the file's recipes again
@@ -260,7 +260,7 @@ try {
 		if (step.own.hardToCut) return say(true, `${JSON.stringify(mine)} over a hard heart`);
 		return better(mine, its) ? say(true, `${JSON.stringify(mine)} over ${JSON.stringify(its)}`) : say(false, `${JSON.stringify(mine)} not better than ${JSON.stringify(its)}`);
 	};
-	const solves = style === 'board', dir = solves ? 'scripts/generator/solves' : 'static/generator/recipes', name = `${motif}.${style}`, file = path.join(dir, `${name}.json`);
+	const dir = 'scripts/generator/solves', file = path.join(dir, `${motif}.${style}.json`);
 	const old = JSON.parse(await fs.readFile(file, 'utf8').catch(() => '{"version":1,"recipes":[]}'));
 	const recipes = [];
 	if (process.env.REJUDGE) {
@@ -299,25 +299,6 @@ try {
 			}
 		}
 	}
-	// A frame's recipe is kept only over runs of at least RUN neighbouring sizes: a size drawn with
-	// another template than both its neighbours jumps as the slider passes it (the user, 2026-10-26, of
-	// two neighbouring sizes: "why are the templates so different ... the topology should be the
-	// same?"), mostly for a few turns or a shorter cut. Board solves feed topology.mjs as they are.
-	if (!solves) {
-		const RUN = Number(process.env.RUN ?? 3);
-		const runOf = (sizes, p) => {
-			let lo = p, hi = p;
-			while (sizes.includes(lo - 1)) lo--;
-			while (sizes.includes(hi + 1)) hi++;
-			return hi - lo + 1;
-		};
-		for (const recipe of recipes) {
-			const lone = recipe.steps.filter(p => runOf(recipe.steps, p) < RUN);
-			if (lone.length) console.log(`  recipe of ${recipe.steps.join(',')}: dropped at ${lone.join(',')}, runs under ${RUN}`);
-			recipe.steps = recipe.steps.filter(p => !lone.includes(p));
-		}
-		recipes.splice(0, recipes.length, ...recipes.filter(r => r.steps.length));
-	}
 	console.log(`${motif} ${style}${strips ? ` ${strips}` : ''}: ${recipes.length} recipes cover ${recipes.reduce((n, r) => n + r.steps.length, 0)} of ${steps.length} sizes`);
 
 	// Into the motif's file for the frame, replacing this board's (or frame's) recipes in the range.
@@ -325,11 +306,6 @@ try {
 	const kept = old.recipes.filter(r => r.style !== style || r.strips !== strips || (!process.env.REJUDGE && r.steps.every(s => s < from || s > to)));
 	const all = [...kept, ...recipes];
 	await fs.writeFile(file, JSON.stringify({ version: 1, recipes: all }) + '\n');
-	if (!solves) {
-		const indexFile = path.join(dir, 'index.json'), index = JSON.parse(await fs.readFile(indexFile, 'utf8').catch(() => '{"files":[]}'));
-		index.files = [...new Set([...index.files.filter(f => f !== name), ...all.length ? [name] : []])].sort();
-		await fs.writeFile(indexFile, JSON.stringify(index) + '\n');
-	}
 } finally {
 	await server.close();
 }

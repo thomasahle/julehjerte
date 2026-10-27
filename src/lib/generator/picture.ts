@@ -26,7 +26,8 @@ const clearest = new WeakMap<Ring[], Map<number, number>>();
 
 /** A heart's picture; for the figure in the checks, where it puts the motif
  * down the heart's middle, and how far the motif can move and keep its size;
- * on a board, where the motif's own rings begin after the board's. */
+ * on a board or in the rays, where the motif's own rings begin after the
+ * board's or the frame's corners. */
 export type Picture = { rings: Ring[]; place?: number; bounds?: PlaceBounds; motif?: number };
 
 /** What a heart already made of the motif in this frame, at its default size,
@@ -110,7 +111,8 @@ function circlePicture(request: GeneratorRequest): Picture | undefined {
 }
 
 /** The motif at `size` × `scale` in its circle of `size`, with the corners the
- * frame's cuts turn over. */
+ * frame's cuts turn over: the corners first, then the motif's rings (`motif`),
+ * an island in the circle as on the board circle (see `topologyRecipes`). */
 function raysPicture(request: GeneratorRequest, shape: Frame, size: number, scale: number, style: 'rays' | 'check'): Picture | undefined {
 	const contours = normalizeContours(request.contours ?? []);
 	if (!contours.length) return;
@@ -119,7 +121,7 @@ function raysPicture(request: GeneratorRequest, shape: Frame, size: number, scal
 	const corner = (angle: number): Point => [50 + 50 * Math.sign(Math.cos(angle)), 50 + 50 * Math.sign(Math.sin(angle))];
 	const corners = outerFrame([], frame, [0, 1, 2, 3], style).map(gate =>
 		[gate.lp, ...arc(frame, gate.low, gate.high), gate.hp, corner(gate.angle)]);
-	return { rings: [...motif, ...corners] };
+	return { rings: [...corners, ...motif], motif: corners.length };
 }
 
 /** Letters in square cells on the regular checkerboard of the woven and airy

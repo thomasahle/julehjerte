@@ -371,13 +371,13 @@
 			);
 		return requests.get(path)! as Promise<T>;
 	};
-	/** The hidden cuts found once for a frame's topologies and for a motif in
-	 * it (see `recipes`), where the index lists any. */
-	const storedRecipes = async (motif: string, style: string) => {
+	/** The hidden cuts found once for a frame's topologies (see `recipes`),
+	 * where the index lists any. */
+	const storedRecipes = async (style: string) => {
 		const index = await asset<{ files: string[] }>('recipes/index.json').catch(() => ({ files: [] as string[] }));
-		const files = [style, `${motif}.${style}`].filter(file => index.files.includes(file));
-		const recipes = (await Promise.all(files.map(file => asset<RecipeFile>(`recipes/${file}.json`).catch(() => undefined)))).flatMap(f => f?.recipes ?? []);
-		return recipes.length ? recipes : undefined;
+		if (!index.files.includes(style)) return;
+		const recipes = (await asset<RecipeFile>(`recipes/${style}.json`).catch(() => undefined))?.recipes;
+		return recipes?.length ? recipes : undefined;
 	};
 	async function requestFor(
 		snapshot: GeneratorState
@@ -417,7 +417,7 @@
 			request.contours = (
 				await asset<{ contours: Ring[] }>(`motifs/${snapshot.motif}.json`)
 			).contours;
-			request.recipes = await storedRecipes(snapshot.motif, snapshot.style);
+			request.recipes = await storedRecipes(snapshot.style);
 		}
 		return request;
 	}

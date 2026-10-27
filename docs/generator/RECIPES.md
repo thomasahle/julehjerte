@@ -38,12 +38,13 @@ the script calls a piece of a slit visible only where the picture's colour
 changes across it, not wherever it lies on a ring.
 
 A recipe lists the sizes (whole percents) and the space around the motif it
-was checked at, and the corners of each ring. The page loads
-`static/generator/recipes/<motif>.<style>.json` for the motif and frame chosen
-where `index.json` lists it and passes the recipes in the request. `generate`
-draws the recipe for the request's size, space and outline, if any, as the
-edges of a construction and finishes it like any other; it keeps it only where
-it cuts cleanly, and builds the heart as before everywhere else.
+was checked at, and the corners of each ring. Such a recipe is a motif's solve
+(`scripts/generator/solves`); `generate` draws one for the request's size,
+space and outline, if any, as the edges of a construction and finishes it like
+any other, keeping it only where it cuts cleanly. The page ships no motif's
+own: it loads `static/generator/recipes/<style>.json` for the frame chosen
+(its topologies' recipes, below), where `index.json` lists it, and passes them
+in the request.
 
 ## A topology's recipe
 
@@ -56,6 +57,11 @@ heart's and the star's solves at 60% on five strips are the same, piece for
 piece; only where the hidden cuts land on the motif differs (the heart's dip,
 the star's tip). So the topology is the board's outline and how the motif's
 rings nest (`nestingOf`), and one recipe draws every motif of it.
+
+In the rays the motif is likewise an island in its circle, and the four
+corners the frame's cuts turn over outside the circle take the board's place:
+the picture lists them first and the motif's rings after (`motif`: 4), and the
+corners' outline is the topology's board.
 
 The board's outline is what the picture shows (`boardOutline`): where the
 colour changes, the sides that cancel even–odd left out, as a graph whose
@@ -131,15 +137,24 @@ where it places them: on its own motif at the size solved. A motif no recipe was
 draws its topology's all the same: the butterfly, which never solved, is one
 outline like the star (an owl, with its eyes as holes, is another topology).
 
+Off a board, whose circle the generator's own heart tells its picture, a
+recipe held on the motif at a size it is `solved` for is drawn before that
+heart is made, and where it cuts cleanly the topology's next two beside it,
+the best kept (`fromSolve`): `topology.mjs` lists it there only where it beats
+the generator's heart, so any that beats it does too. In the rays the
+wreath's own heart takes 13–30 s past 54%, its solve a fifth of a second.
+
 ## Making recipes
 
     node scripts/generator/recipes.mjs <motif> board 5          # solves, every size, 45–100%
     SYMMETRY=1 node scripts/generator/recipes.mjs heart board 5   # a mirror-symmetric motif
     TEMPLATE=1 node scripts/generator/recipes.mjs gi-squirrel rays 0 80 90   # from the generator's hearts
     node scripts/generator/topology.mjs board 5 <motif>...         # the topologies' recipes
+    node scripts/generator/topology.mjs rays - <motif>...          # a frame without a board
 
-A board's solves go to `scripts/generator/solves/<motif>.board.json`; they are
-not shipped. Beside them, `<motif>.board-<strips>.sym.json` holds tied
+A frame's solves go to `scripts/generator/solves/<motif>.<style>.json` (the
+board's `.board.json`, the rays' `.rays.json`); they are not shipped.
+`topology.mjs` writes the frame's `static/generator/recipes/<style>.json`. Beside them, `<motif>.board-<strips>.sym.json` holds tied
 (mirror-symmetric) solves of the symmetric motifs, made at five to ten fixed
 sizes a board, from the generator's own heart as the search's start, each kept at
 every size of its outline where it cuts cleanly, for `topology.mjs` to judge:
@@ -203,14 +218,15 @@ every size they list and keeps only the sizes that still pass, for files made
 under older rules. The script judges hearts as the page compares them
 (`cutMeasures`, `betterCuts` in cutQuality.ts, with the paper check).
 
-A frame's recipe (not the board's solves, which `topology.mjs` takes as they
-are) is kept only over runs of at least three neighbouring sizes (`RUN`, 3 by
-default): a size drawn with another template than both its neighbours jumps as
-the slider passes it, mostly for a few turns or a shorter cut. Without the
-rule the nisse in the rays kept recipes at 45, 47–48, 56, 69, 71, 75–76, 93
-and 99–100%, four templates taking turns with the generator's; with it, 49–51%,
-where the recipe holds paper the generator's heart leaves weak.
-`frameRecipes.test.ts` checks the stored files keep to it.
+The rays' solves were first shipped as each motif's own recipes, kept only
+over runs of at least three neighbouring sizes so that the slider never met a
+lone template (without the rule the nisse kept recipes at 45, 47–48, 56, 69,
+71, 75–76, 93 and 99–100%, four templates taking turns with the generator's).
+As solves they now keep every size they cut at, and `topology.mjs` chooses
+the topologies' recipes every third size, a size between taking the nearest's.
+They were renumbered once for the picture with the frame's corners first.
+`frameRecipes.test.ts` checks that the page's files are one a frame, its
+topologies' recipes, none a motif's own.
 
 A motif drawn mirror-symmetric is solved with the heart's two halves tied: a
 few seconds a solve rather than minutes, and the heart symmetric. The ties

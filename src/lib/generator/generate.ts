@@ -475,6 +475,24 @@ const TOPOLOGY_TRIES = 3;
  * motif it was solved on (see `motifFit`). */
 const SOLVED_ON = .005;
 
+/** The best heart its topology's stored recipes draw where one held on this
+ * very motif is drawn at a size it was solved for (`solved`): topology.mjs
+ * lists it there only where it beats the generator's own heart, and so does
+ * any that beats it, so the page draws them without making that one (the
+ * wreath's in the rays takes twenty seconds), with the next `TOPOLOGY_TRIES`
+ * less one compared (see `fromTopology`); off a board, whose circle that
+ * heart tells the picture. */
+function fromSolve(request: GeneratorRequest): GeneratorResult | undefined {
+	const step = Math.round((request.scale ?? .7) * 100), shown = request.style === 'board' ? undefined : picture(spurless(request), {});
+	if (shown?.motif === undefined) return;
+	const recipes = request.recipes?.filter(isTopology) ?? [], solved = recipes.filter(recipe => recipe.solved?.includes(step) && motifFit(recipe, shown) < SOLVED_ON);
+	const [held] = solved.length ? storedHearts(request, solved, true) : [];
+	if (!held || held.hardToCut) return;
+	const others = storedHearts(request, recipes.filter(recipe => !solved.includes(recipe)), true, TOPOLOGY_TRIES - 1).filter(heart => !heart.hardToCut);
+	const measured = [held, ...others].map(heart => ({ heart, m: cutMeasures(heart.design, shown.rings) }));
+	return improveSharedConnections(measured.reduce((a, b) => betterCuts(b.m, a.m) ? b : a).heart, true);
+}
+
 /** What the generator's own heart tells its picture (see `Known`), as the page
  * takes it at the size `asked`. */
 export const knownOf = (own: GeneratorResult, asked: number): Known => ({
@@ -753,7 +771,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	// heart is built as below, and a topology's stored cuts drawn on it where
 	// they are better.
 	if (!making) {
-		const stored = fromStoredRecipe(request);
+		const stored = fromStoredRecipe(request) ?? fromSolve(request);
 		if (stored) return stored;
 		forgetIslandPorts();
 		triedExactly = false;

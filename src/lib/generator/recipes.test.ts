@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { chooseRecipe, recipeEdges, recipeOutline, ringCorners, type MotifRecipe, type RecipeFile } from './recipes';
-import { islandOn, motifRings, nestingOf, topologyConstruction, topologyOf } from './topologyRecipes';
+import { chooseRecipe, isTopology, recipeEdges, recipeOutline, ringCorners, type MotifRecipe, type RecipeFile } from './recipes';
+import { islandOn, motifFit, motifRings, nestingOf, topologyConstruction, topologyOf } from './topologyRecipes';
 import { boardOutline } from './boardOutline';
 import { generate, storedHearts } from './generate';
 import { betterCuts, cutMeasures } from './cutQuality';
@@ -11,9 +11,12 @@ import heart from '../../../static/generator/motifs/heart.json';
 import star from '../../../static/generator/motifs/star.json';
 import tree from '../../../static/generator/motifs/tree.json';
 import nisse from '../../../static/generator/motifs/nisse.json';
+import wreath from '../../../static/generator/motifs/mc-wreath.json';
 import heartSolves from '../../../scripts/generator/solves/heart.board.json';
 import nisseSolves from '../../../scripts/generator/solves/nisse.board.json';
+import starRays from '../../../scripts/generator/solves/star.rays.json';
 import board from '../../../static/generator/recipes/board.json';
+import rays from '../../../static/generator/recipes/rays.json';
 
 const square = (x: number, y: number, size: number): Ring => [[x, y], [x + size, y], [x + size, y + size], [x, y + size]];
 const circle = (c: Point, r: number, n = 64): Ring => Array.from({ length: n }, (_, i): Point =>
@@ -112,6 +115,32 @@ describe('stored recipes', () => {
 		const made = storedHearts(request(star.contours as Ring[], .6), [{ ...topology, steps: [60] }], true);
 		expect(made).toHaveLength(1);
 		expect(made[0].hardToCut).toBeUndefined();
+	});
+
+	it('draws a solve in the rays as its topology\'s on another motif, the frame\'s corners its board', () => {
+		const colors = { left: '#ffffff', right: '#b91313' };
+		const request = (contours: Ring[], scale: number) => ({ mode: 'figure' as const, name: 'Motif', contours, colors, style: 'rays' as const, frame: 'circle' as const, frameSize: 70, scale, gap: 3 });
+		const solve = (starRays as { recipes: MotifRecipe[] }).recipes.find(r => r.steps.includes(72))!;
+		const shown = picture(request(star.contours as Ring[], .72), solve.known)!, topology = topologyOf(solve, shown)!;
+		// The four corners the frame's cuts turn over come first, then the motif, an island in its circle.
+		expect(shown.motif).toBe(4);
+		expect(topology.motif).toBe('()');
+		expect(topology.outline).toBe(boardOutline(shown.rings.slice(0, 4)).sig);
+		// The star's solve draws on the heart.
+		const made = storedHearts(request(heart.contours as Ring[], .72), [{ ...topology, steps: [72] }], true);
+		expect(made).toHaveLength(1);
+		expect(made[0].hardToCut).toBeUndefined();
+	});
+
+	it('draws a motif\'s own solve at a size it was solved for without the generator\'s own heart', () => {
+		const colors = { left: '#ffffff', right: '#b91313' }, recipes = (rays as unknown as RecipeFile).recipes;
+		// The wreath in the rays at 90%: its own heart takes twenty seconds, its solve a fraction of one.
+		const asked = { mode: 'figure' as const, name: 'Motif', contours: wreath.contours as Ring[], colors, style: 'rays' as const, frame: 'circle' as const, frameSize: 70, scale: .9, gap: 3 };
+		const shown = picture(asked)!, held = recipes.filter(isTopology).find(r => r.solved?.includes(90) && motifFit(r, shown) < .005)!;
+		expect(held.held).toBe(true);
+		const made = generate({ ...asked, recipes }), drawn = storedHearts(asked, [held], true)[0];
+		expect(made.hardToCut).toBeUndefined();
+		expect(cutMeasures(made.design, shown.rings)[0]).toBe(cutMeasures(drawn.design, shown.rings)[0]);
 	});
 
 	it('keeps a symmetric solve symmetric on another motif its own mirror image', () => {

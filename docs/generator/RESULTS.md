@@ -336,6 +336,28 @@ heart, within half a percent. Over the sizes they cover (yule goat 55, bauble
 fewer, the reindeer 18 fewer. These are the first of the 25 motifs whose own
 rays hearts were hard, tore or had needles.
 
+## The rays' hidden cuts per topology
+
+The rays' solves (ten motifs) were shipped as each motif's own recipes; they
+are now their topologies' as on the board (`rays.json`: 34 recipes for 5
+topologies, 26 held on the motif solved), the picture's four corners first so
+that the frame's corners are the topology's board. Over the 49 featured
+motifs at every third size from 45 to 99% (931 hearts), against the motifs'
+own files: 180 better, none worse, none refused. Most are motifs no solve was
+made for, now drawn with a solved motif's cuts: the dog, bear, horse, moon
+and mouse at nearly every size (fewer hidden turns, up to a sixth less cut), the
+heart at 45–72% and 90%. The wreath, hard to cut at 57–69%, is clean there;
+the star shares one template for both lobes at 45–72% (one sharp tip more).
+Tear places at the sizes that changed 65 → 64.
+
+The page draws a topology's recipes after the generator's own heart, which
+they must beat, and that cost the wreath 13–30 s where its own recipes drew
+in a fifth of a second. A recipe held on the motif at a size it was solved
+for already beats that heart there, so it is drawn first, with the
+topology's next two, without it (`fromSolve`): the same hearts at all 190
+sizes of the ten motifs, in half the time. A heart takes 2.7 s on average,
+not 2.3 s (median 0.9 s, not 0.5 s), the slowest no slower.
+
 ## The figure in the checks moves a little rather than wait
 
 Where no sheets keep every strip whole at the figure's place in the checks,

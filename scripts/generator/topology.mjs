@@ -15,7 +15,7 @@
 // that draws worse than the solve itself, so each of its sizes keeps the solve's cuts.
 // Writes static/generator/recipes/<style>.json, listed in index.json.
 //
-//   node scripts/generator/topology.mjs <style> <strips> <motif>...
+//   node scripts/generator/topology.mjs <style> <strips> <motif>...   (strips - for a frame without a board: the rays)
 //   env: STEPS=45-100   the sizes, in percent
 //        EVERY=3        judge every third size (the others take the nearest's recipes)
 //        SOLVES=dir     further solves (<motif>.<style>.json, <motif>.<style>-<strips>.*.json) beside
@@ -47,8 +47,8 @@ try {
 	const { DEFAULT_COLORS_HEX } = await load('/src/lib/stores/colors.ts');
 
 	const [style, stripsArg, ...motifs] = process.argv.slice(2);
-	const strips = Number(stripsArg);
-	if (!style || !strips || !motifs.length) throw new Error('Usage: node scripts/generator/topology.mjs <style> <strips> <motif>...');
+	const strips = stripsArg === '-' ? undefined : Number(stripsArg), on = strips ? ` ${strips}` : '';
+	if (!style || strips === 0 || Number.isNaN(strips) || !motifs.length) throw new Error('Usage: node scripts/generator/topology.mjs <style> <strips or -> <motif>...');
 	const [lo, hi] = (process.env.STEPS ?? '45-100').split('-').map(Number), every = Number(process.env.EVERY ?? 3);
 	const contoursOf = async id => JSON.parse(await fs.readFile(`static/generator/motifs/${id}.json`, 'utf8')).contours;
 	const request = (contours, name, p) => ({ mode: 'figure', name, contours, style, frame: 'circle', frameSize: 70, scale: p / 100, gap: 3, colors: DEFAULT_COLORS_HEX, board: strips });
@@ -84,7 +84,7 @@ try {
 			listed.add(held);
 		}
 	}
-	console.log(`${style} ${strips}: ${[...candidates.values()].flat().length} topology recipes from ${sources.length} files, over ${candidates.size} topologies`);
+	console.log(`${style}${on}: ${[...candidates.values()].flat().length} topology recipes from ${sources.length} files, over ${candidates.size} topologies`);
 
 	// What is already judged under the code as it is (a hash of src/lib), each motif's sizes in a file.
 	const hash = text => crypto.createHash('sha1').update(text).digest('hex').slice(0, 16);
@@ -93,8 +93,8 @@ try {
 	const cacheRoot = process.env.CACHE ?? 'tmp/generator/topology';
 	// The generator's own heart draws no recipe.
 	const recipeCode = ['recipes.ts', 'topologyRecipes.ts'].map(f => path.join('generator', f));
-	const ownDir = path.join(cacheRoot, `${style}-${strips}-own-${await code(lib.filter(f => !recipeCode.includes(f)))}`);
-	const cacheDir = path.join(cacheRoot, `${style}-${strips}-${await code()}`);
+	const ownDir = path.join(cacheRoot, `${style}${on.replace(' ', '-')}-own-${await code(lib.filter(f => !recipeCode.includes(f)))}`);
+	const cacheDir = path.join(cacheRoot, `${style}${on.replace(' ', '-')}-${await code()}`);
 	await fs.mkdir(ownDir, { recursive: true });
 	await fs.mkdir(cacheDir, { recursive: true });
 	const recipeHash = ({ steps: _steps, solved: _solved, ...recipe }) => hash(JSON.stringify(recipe));
@@ -115,7 +115,8 @@ try {
 			let own;
 			try { own = generate(req); } catch { own = null; }
 			const known = own ? knownOf(own, p / 100) : {}, shown = picture(spurless(req), known);
-			owns[p] = { known, own: own && cutMeasures(own.design, shown.rings), hard: !!own?.hardToCut };
+			// A frame with no picture for the generator's heart (the rays on a finer board) has no topology there.
+			owns[p] = { known, own: own && shown ? cutMeasures(own.design, shown.rings) : null, hard: !!own?.hardToCut };
 			await fs.writeFile(ownFile, JSON.stringify(owns));
 		}
 		const seen = { ...owns[p], drawn: cache[p] ??= {} };
@@ -236,7 +237,7 @@ try {
 		const { solved, ...rest } = held, id = solvedOn.get(held), own = solved.filter(p => bestHeld.get(`${id} ${p}`)?.held === held);
 		if (own.length) recipes.push({ ...rest, steps: own, solved: own });
 	}
-	console.log(`${style} ${strips}: ${recipes.length} recipes kept; the site's choice beats the generator's own heart at ${won} of ${rows.length} motif sizes judged`);
+	console.log(`${style}${on}: ${recipes.length} recipes kept; the site's choice beats the generator's own heart at ${won} of ${rows.length} motif sizes judged`);
 
 	const dir = 'static/generator/recipes', shipped = path.join(dir, `${style}.json`), file = process.env.OUT ?? shipped;
 	const old = JSON.parse(await fs.readFile(process.env.ADD ? shipped : file, 'utf8').catch(() => '{"version":1,"recipes":[]}'));
