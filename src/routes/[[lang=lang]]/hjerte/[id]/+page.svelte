@@ -42,7 +42,7 @@
   import { langFromParam, stripsLabel as formatStrips, t } from "$lib/i18n";
   import { slugify } from "$lib/utils/slug";
   import { editorHref, heartPath, homeAnchorHref, href as routeHref } from "$lib/i18n/routes";
-  import { lobesShareTemplate } from "$lib/utils/symmetry";
+  import { lobeTemplateSymmetry } from "$lib/utils/symmetry";
   import { calculateDifficulty } from "$lib/utils/difficulty";
   import { normalizeHeartDesign, serializeHeartDesign } from "$lib/utils/heartDesign";
   import { decodeSharedDesign, encodeSharedDesign, sharedDesignUrl } from "$lib/utils/shareDesign";
@@ -338,12 +338,19 @@
     }
   }
 
-  // One template for both lobes? Shared with the PDF generator so preview and PDF
-  // agree. The build-time metadata carries the same answer for gallery hearts, so
-  // the prerendered page already names the right number of templates.
-  let sharedTemplate = $derived(
-    design ? lobesShareTemplate(design.fingers, design.gridSize) : (meta?.symmetry.sharedTemplate ?? true),
+  // One template for both lobes, and why: the halves mirror each other, or one
+  // is the other turned (lobeTemplateSymmetry, which the PDF generator's
+  // lobesShareTemplate shares, so preview and PDF agree). Gallery hearts have
+  // their design at prerender; until a browser-only heart's design has loaded,
+  // the build-time metadata's answer stands in.
+  let templateSymmetry = $derived(
+    design
+      ? lobeTemplateSymmetry(design.fingers, design.gridSize)
+      : (meta?.symmetry.sharedTemplate ?? true)
+        ? "mirror"
+        : null,
   );
+  let sharedTemplate = $derived(templateSymmetry !== null);
 
   // "af Thomas · 3 × 3 striber" — the panel's one-line credit (DESIGN.md §4).
   let stripsLabel = $derived(info ? formatStrips(info.gridSize, lang) : "");
@@ -480,7 +487,7 @@
             {stripsLabel}
             {description}
             {extraMeta}
-            {sharedTemplate}
+            {templateSymmetry}
             {isShared}
           />
 

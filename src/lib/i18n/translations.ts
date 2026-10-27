@@ -296,6 +296,7 @@ export const translations = {
     /** {n} = the grid, already formatted as "3 × 3" by formatStrips() */
     stripsCount: '{n} striber',
     symmetryOneTemplate: 'Spejlsymmetri – én skabelon til begge sider',
+    symmetryOneTemplateTurned: 'Drejningssymmetri – én skabelon, vendt om til den ene side',
     symmetryTwoTemplates: 'Ingen spejlsymmetri – én skabelon til hver side',
     /** {category} = lower-case category name */
     moreInCategory: 'Flere {category}',
@@ -1396,6 +1397,7 @@ export const translations = {
     /** {n} = the grid, already formatted as "3 × 3" by formatStrips() */
     stripsCount: '{n} strips',
     symmetryOneTemplate: 'Mirror symmetry – one template for both sides',
+    symmetryOneTemplateTurned: 'Rotational symmetry – one template, turned over for one side',
     symmetryTwoTemplates: 'No mirror symmetry – one template for each side',
     /** {category} = lower-case category name */
     moreInCategory: 'More {category}',

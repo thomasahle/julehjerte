@@ -14,6 +14,7 @@
 	import { t, type Language } from '$lib/i18n';
 	import type { HeartInfo } from '$lib/types/heart';
 	import { parseDescription } from '$lib/utils/descriptionLinks';
+	import type { TemplateSymmetry } from '$lib/utils/symmetry';
 
 	/** One "Udgiver: …" row under the credit line, optionally a link. */
 	interface MetaRow {
@@ -30,8 +31,8 @@
 		description?: string | null;
 		/** Publisher, source, date … whichever the heart carries. */
 		extraMeta?: MetaRow[];
-		/** One template for both lobes, or one per side. */
-		sharedTemplate: boolean;
+		/** One template for both lobes (and why), or null for one per side. */
+		templateSymmetry: TemplateSymmetry;
 		/** A heart someone sent by link, not one from the gallery. */
 		isShared?: boolean;
 	}
@@ -42,7 +43,7 @@
 		stripsLabel,
 		description = null,
 		extraMeta = [],
-		sharedTemplate,
+		templateSymmetry,
 		isShared = false
 	}: Props = $props();
 </script>
@@ -102,7 +103,14 @@
 		<div class="fact">
 			<span class="fact-label">{t('symmetry', lang)}</span>
 			<span class="fact-value">
-				{sharedTemplate ? t('symmetryOneTemplate', lang) : t('symmetryTwoTemplates', lang)}
+				{t(
+					templateSymmetry === 'mirror'
+						? 'symmetryOneTemplate'
+						: templateSymmetry === 'rotation'
+							? 'symmetryOneTemplateTurned'
+							: 'symmetryTwoTemplates',
+					lang
+				)}
 			</span>
 		</div>
 	</div>

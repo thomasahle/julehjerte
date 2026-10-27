@@ -3,7 +3,7 @@ import classicSvg from '../../../static/hearts/classic-3x3.svg?raw';
 import sunSvg from '../../../static/hearts/sun.svg?raw';
 import santaSvg from '../../../static/hearts/santa.svg?raw';
 import { parseHeartFromSVG } from '$lib/utils/heartDesign';
-import { lobesShareTemplate } from '$lib/utils/symmetry';
+import { lobesShareTemplate, lobeTemplateSymmetry } from '$lib/utils/symmetry';
 
 function load(svg: string, filename: string) {
   const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
@@ -35,5 +35,21 @@ describe('lobesShareTemplate', () => {
   it('needs two templates when the grid is not square', () => {
     const design = load(classicSvg, 'classic-3x3.svg');
     expect(lobesShareTemplate(design.fingers, { x: 3, y: 4 })).toBe(false);
+  });
+});
+
+describe('lobeTemplateSymmetry', () => {
+  it('says why the lobes share a template: mirrored or turned', () => {
+    const classic = load(classicSvg, 'classic-3x3.svg');
+    const sun = load(sunSvg, 'sun.svg');
+    expect(lobeTemplateSymmetry(classic.fingers, classic.gridSize)).toBe('mirror');
+    expect(lobeTemplateSymmetry(sun.fingers, sun.gridSize)).toBe('rotation');
+  });
+
+  it('is null exactly when the lobes need a template each', () => {
+    const santa = load(santaSvg, 'santa.svg');
+    const classic = load(classicSvg, 'classic-3x3.svg');
+    expect(lobeTemplateSymmetry(santa.fingers, santa.gridSize)).toBeNull();
+    expect(lobeTemplateSymmetry(classic.fingers, { x: 3, y: 4 })).toBeNull();
   });
 });

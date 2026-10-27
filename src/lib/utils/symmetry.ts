@@ -274,22 +274,35 @@ function areLobesRotated(fingers: Finger[]): boolean {
 }
 
 /**
- * Whether a single printed template can be used for both lobes.
+ * Why a single printed template can be used for both lobes, or null when it
+ * cannot.
  *
  * The right-lobe template is the right lobe translated; the left-lobe template
  * is the left lobe rotated onto the same orientation. Both pieces come out the
  * same (allowing the folded piece to be turned over) exactly when the right lobe
- * is the left lobe mirrored across the square's diagonal or rotated 90°
- * clockwise. Anti-diagonal mirroring is *not* enough: it swaps the ear and fold
- * ends of the cut pattern.
+ * is the left lobe mirrored across the square's diagonal ('mirror': both
+ * pieces go in the same way round) or rotated 90° clockwise ('rotation': one
+ * piece goes in turned over, as in Kroge). Anti-diagonal mirroring is *not*
+ * enough: it swaps the ear and fold ends of the cut pattern. A heart with both
+ * counts as 'mirror'.
+ */
+export type TemplateSymmetry = 'mirror' | 'rotation' | null;
+
+export function lobeTemplateSymmetry(fingers: Finger[], gridSize: GridSize): TemplateSymmetry {
+  if (gridSize.x !== gridSize.y) return null;
+  if (fingers.length === 0 || areLobesMirroredUnder(fingers, false)) return 'mirror';
+  return areLobesRotated(fingers) ? 'rotation' : null;
+}
+
+/**
+ * Whether a single printed template can be used for both lobes
+ * (lobeTemplateSymmetry).
  *
  * This is the single source of truth for "one template or two" - the detail
  * page preview and the PDF generator must both use it so they never disagree.
  */
 export function lobesShareTemplate(fingers: Finger[], gridSize: GridSize): boolean {
-  if (gridSize.x !== gridSize.y) return false;
-  if (fingers.length === 0) return true;
-  return areLobesMirroredUnder(fingers, false) || areLobesRotated(fingers);
+  return lobeTemplateSymmetry(fingers, gridSize) !== null;
 }
 
 /**
