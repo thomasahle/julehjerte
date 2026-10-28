@@ -3,15 +3,15 @@
   old printed pages some gallery hearts are drawn after, each with our
   versions of its hearts beside it.
 
-  Andersen's heart is shown as our own drawing (static/about/history/hca-hjerte.svg,
-  the renderer's plain 5 × 5 heart in his yellow and green); the photograph of
-  the original stays with Museum Odense, linked. Of the printed pages only those
-  free to show are pictured: Hans H. Koch died in 1922, and the 1922
-  Familie-Journal page names no designer. Their scans are copies, with the
-  metadata stripped, of the ones aldus.dk and the Papermatrix blog publish,
-  credited and linked under each picture. Later sources (Per V. Mortensen's
-  drawings, the books of the 1970s–90s) are still under copyright, so the last
-  paragraph names and links them without pictures.
+  Andersen's heart is shown in Museum Odense's photograph, credited and linked
+  as the museum asks; our copy, with the metadata stripped, is the one
+  hcandersen-homepage.dk publishes. Of the printed pages only those free to show
+  are pictured: Hans H. Koch died in 1922, and the 1922 Familie-Journal page
+  names no designer. Their scans are copies, with the metadata stripped, of the
+  ones aldus.dk and the Papermatrix blog publish, credited and linked under each
+  picture. Later sources (Per V. Mortensen's drawings, the books of the
+  1970s–90s) are still under copyright, so the last paragraph names and links
+  them without pictures.
 -->
 <script lang="ts">
 	import { base } from '$app/paths';
@@ -31,7 +31,7 @@
 		image: string;
 		width: number;
 		height: number;
-		/** Drawn small: a single heart, not a page to read. */
+		/** Shown small, beside its text: a single heart, not a page to read. */
 		small?: boolean;
 		title: TranslationKey;
 		text: TranslationKey;
@@ -47,9 +47,9 @@
 	const SOURCES: Source[] = [
 		{
 			id: 'andersen',
-			image: 'hca-hjerte.svg',
-			width: 400,
-			height: 400,
+			image: 'hca-hjerte.jpg',
+			width: 550,
+			height: 531,
 			small: true,
 			title: 'historyAndersenTitle',
 			text: 'historyAndersenText',
@@ -235,14 +235,9 @@
 		max-width: 420px;
 	}
 
-	/* One heart, drawn: no frame, and not much bigger than the real one. */
+	/* One heart: not much bigger than the real one. */
 	figure.small {
 		max-width: 240px;
-	}
-
-	figure.small img {
-		border: 0;
-		background: none;
 	}
 
 	/* A small picture stands beside its text, which wraps round it. */
