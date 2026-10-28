@@ -169,7 +169,7 @@ export function subgroupsOf(symmetry) {
 /** The exact search on the traced `outline` from the fitter's `template`
  * within `deadline`, under the `symmetry` ties: {found: {solution,
  * assessment} or null, report}. */
-export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true, fallback = true} = {}) {
+export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true, fallback = true, even = false} = {}) {
   const seconds = (deadline - performance.now()) / 1000 - reserve;
   const report = {attempted: false, symmetry};
   if (seconds < 1) return {found: null, report: {...report, reason: 'no time left'}};
@@ -189,7 +189,9 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     // under 1 s, while 28 found none in 30 s; on those and the one taking
     // 5.5 s, the search found as many templates (9) with 3 s for the start as
     // with 9, in half the time (10.8 s for 21 at the median).
-    const exact = exactOutline(outline, cfg), began = performance.now();
+    // With `even`, on the outline made symmetric under the ties (target.js
+    // symmetricLines).
+    const exact = exactOutline(outline, cfg, 'tight', {symmetry: even ? symmetry : []}), began = performance.now();
     const start = await exactStart(exact, template, {deadline: began + Math.min(START_SECONDS, seconds / 4) * 1000});
     report.start = start.how ?? start.error;
     // No start found in time: HiGHS finds the papers itself from an empty one,
@@ -233,6 +235,17 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   // An outline not symmetric enough for the ties even so (a traced lily's
   // petals): searched untied, the converter makes the cuts symmetric where that
   // costs little.
+  // An outline not symmetric enough for the ties, its curves fitted from one
+  // end on a symmetric mask (balls, davidsstjerne-circ; amy-flowering, 12
+  // hidden segments where untied 32): made symmetric (target.js
+  // symmetricLines). Not before: on the 109 pictures with ties, outlines the
+  // ties already hold made symmetric gave as many templates but other ones
+  // (hermanngitter-shot's failing the paper, hvirvel's of 12 hidden segments,
+  // not 8).
+  if (found.error && /not symmetric/.test(found.error) && symmetry.length && fallback && !even) {
+    const evened = await exactSearch(outline, template, cfg, {deadline, reserve, onProgress, geometry, refine, symmetry, even: true});
+    if (evened.found || !/not symmetric/.test(evened.report.error ?? '')) return {...evened, report: {...evened.report, even: found.error}};
+  }
   if (found.error && /not symmetric/.test(found.error) && symmetry.length && fallback) {
     const options = {deadline, reserve, onProgress, geometry, refine, fallback: false};
     let again = outline.metadata?.nearTouch > 0 ? await exactSearch({...outline, metadata: {...outline.metadata, nearTouch: 0}}, template, cfg, {...options, symmetry}) : {found: null, report: {error: found.error}};
@@ -253,7 +266,7 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     const left = (deadline - performance.now()) / 1000 - reserve;
     if (left < TURNS_FLOOR) break;
     const share = k < subgroups.length - 1 ? Math.max(TURNS_FLOOR, left / (subgroups.length - k)) : left;
-    const again = await exactSearch(outline, template, cfg, {deadline: performance.now() + 1000 * (share + reserve), reserve, onProgress, geometry, refine, fallback: false, symmetry: ties});
+    const again = await exactSearch(outline, template, cfg, {deadline: performance.now() + 1000 * (share + reserve), reserve, onProgress, geometry, refine, fallback: false, symmetry: ties, even});
     if (again.found) return {...again, report: {...again.report, subgroup: {from: symmetry, to: ties, error: found.error}}};
   }
   if (found.error) return {found: null, report: {...report, error: found.error, search: found.report}};

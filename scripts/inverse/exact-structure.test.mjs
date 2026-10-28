@@ -3,16 +3,16 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {buildStructure, describe} from '../../static/inverse/core/exact/structure.js';
 import {Outline, corners, rules} from '../../static/inverse/core/exact/outline.js';
-import {cumlen} from '../../static/inverse/core/exact/polyline.js';
+import {cumlen, project} from '../../static/inverse/core/exact/polyline.js';
 import {Candidates, tokenKey} from '../../static/inverse/core/exact/candidates.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {loadSVG} from '../../static/inverse/core/input.js';
 import {exactPositions} from '../../static/inverse/core/exact/positions.js';
 import {cheapBounds} from '../../static/inverse/core/exact/bounds.js';
-import {colouredRings, targetSegments, joinNearTouchings, withoutClosedSlivers} from '../../static/inverse/core/exact/target.js';
+import {colouredRings, targetSegments, joinNearTouchings, withoutClosedSlivers, symmetricLines} from '../../static/inverse/core/exact/target.js';
 import {returns} from '../../static/inverse/core/exact/nogoods.js';
 import {returnTips} from '../../static/inverse/core/exact/stage.js';
-import {StructureSymmetry} from '../../static/inverse/core/exact/symmetry.js';
+import {StructureSymmetry, act, group} from '../../static/inverse/core/exact/symmetry.js';
 
 // The reference solver's structures (minwit.build_from_segments) of eight
 // juleflet.dk designs, with the segments it built them from.
@@ -96,6 +96,64 @@ test('corners a sampled checker opened a fraction apart join into a touching; ed
   // A traced corner chamfered by a pixel (two turns of 45 degrees) still is one.
   const chamfered = [[[4, 0], [4, 3.98], [3.98, 4], [0, 4]], [[4.03, 8], [4.03, 4.03], [8, 4.03]]];
   assert.equal(joinNearTouchings(chamfered, .072), 1);
+});
+
+test('a traced outline nearly symmetric is made symmetric: each line\'s image lies on a line', () => {
+  // Reference units. A ring round the middle with a bump on one side, started
+  // anywhere, and an arc across each corner of the square, one notched, one
+  // with more vertices than the rest.
+  const ring = Array.from({length: 61}, (_, k) => {
+    const a = 2 * Math.PI * (k % 60) / 60 + .3, r = 3 + (k % 60 === 7 ? .04 : 0);
+    return [6 + r * Math.cos(a), 6 + r * Math.sin(a)];
+  });
+  const corner = (cx, cy, n, notch = 0) => Array.from({length: n + 1}, (_, k) => {
+    const a = Math.PI / 2 * k / n, r = 2 + (k === n >> 1 ? notch : 0);
+    return [Math.abs(cx - r * Math.cos(a)), Math.abs(cy - r * Math.sin(a))];
+  });
+  const lines = [ring, corner(0, 0, 12, .03), corner(12, 0, 12), corner(0, 12, 20), corner(12, 12, 12)];
+  const names = ['mirrorX', 'mirrorY', 'antiTranspose'], even = symmetricLines(lines, names);
+  assert.ok(even);
+  for (const g of group(names)) for (const pts of even) {
+    const off = Math.max(...pts.map(p => Math.min(...even.map(q => project(q, cumlen(q), act(g, p)).distance))));
+    // Within a thousandth (0.01 mm of a 100 mm heart): the mean of images
+    // sampled by arc length, which a notch shifts a little along.
+    assert.ok(off < 1e-9, `${g}: ${off}`);
+  }
+  // The arcs still end on the square's sides, and the ring is closed.
+  const closed = even.filter(pts => pts[0] === pts.at(-1));
+  assert.equal(closed.length, 1);
+  for (const pts of even) if (!closed.includes(pts)) for (const p of [pts[0], pts.at(-1)]) assert.ok(p.some(v => v === 0 || v === 12));
+  // With one corner's arc missing, three have no image: as traced.
+  assert.equal(symmetricLines(lines.slice(0, 4), names), null);
+});
+
+test('under symmetry a pair of corners joins with its images or not at all', () => {
+  // A corner on the mirror's axis and two corners its mirror images of each
+  // other, as near it as each other: alone, the first pair joined takes the
+  // axis corner from its image's pair.
+  const lines = () => [[[5, 3], [6, 4], [7, 3]], [[4, 6], [5.97, 4.05], [4, 2]], [[8, 6], [6.03, 4.05], [8, 2]]];
+  const plain = lines();
+  assert.equal(joinNearTouchings(plain, .072), 1);
+  assert.ok(plain[0][1][0] !== 6);
+  const even = lines();
+  assert.equal(joinNearTouchings(even, .072, {symmetry: ['mirrorX']}), 1);
+  // The two mirror corners meet on the axis; the axis corner stays.
+  assert.deepEqual(even[1][1], [6, 4.05]);
+  assert.deepEqual(even[2][1], [6, 4.05]);
+  assert.deepEqual(even[0][1], [6, 4]);
+});
+
+test('lines made symmetric keep a touching in their middles on both sides', () => {
+  // Two lines passing through one vertex (corners joined in the middle of
+  // curves), and their mirror images a little off.
+  const lines = [[[2, 0], [3, 1], [4, 0]], [[2, 2], [3, 1], [4, 2]], [[10.02, 0], [9.01, 1.01], [8, 0]], [[10, 2], [9.01, 1.01], [8, 2.01]]];
+  const even = symmetricLines(lines, ['mirrorX']);
+  assert.ok(even);
+  const count = new Map();
+  for (const pts of even) for (const p of pts) count.set(p.join(','), (count.get(p.join(',')) || 0) + 1);
+  const shared = [...count].filter(([, n]) => n > 1).map(([k]) => k.split(',').map(Number));
+  assert.equal(shared.length, 2);
+  assert.ok(Math.abs(shared[0][0] + shared[1][0] - 12) < 1e-12 && shared[0][1] === shared[1][1]);
 });
 
 test('a strip narrower than the joining distance is joined at one end, not both', () => {

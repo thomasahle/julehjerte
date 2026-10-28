@@ -768,6 +768,46 @@ On 21 of them the fitter's template is no start of its own: its reading has no
 completion, or strays a third of the way from the traced outline. Where it is
 one, HiGHS does not repair its rule breaks in time. Not used.
 
+## The outline made symmetric (2026-10-28)
+
+A symmetric mask is traced into an outline only roughly symmetric: the tracer
+fits each curve from one end, and a corner on one side is sampled a pixel off
+its image on the other. Under the ties, positions on one side then find no
+image on the other ("not a bijection on the positions", balls,
+davidsstjerne-circ), or a curve none (amy-flowering, alhambra-shot), and the
+search ran untied: its cuts broke the rules there, or took more hidden
+segments than the symmetric ones (amy-flowering 32, not 12). Now such an
+outline is first made symmetric (exact/target.js `symmetricLines`):
+
+- its chains between junctions, each matched with its image under every
+  element within 0.2 units, and each orbit's mean taken on its first chain's
+  own vertices (each the mean of its nearest points on the others carried
+  back), so a corner stays one corner and sharp;
+- a chain an element maps onto itself made exactly so: its half up to the
+  mirror's axis and that half's image, or a ring's arc between two crossings
+  of axes unfolded mirror by mirror, or one turn of it turned round;
+- corners nearly touching joined with all their images or not at all
+  (`joinNearTouchings` with `symmetry`): of two pairs as near, the first took a
+  corner from the other's image;
+- a vertex two curves pass through, a junction.
+
+Averaging along arc length, the first version, cut every corner a little off
+its image into two (a star's points; a notch on a diagonal) and lost the
+position where the mirror crosses it (positions.js now keeps a mirror's
+fixed point off a corner beside the axis). Made symmetric always, on the 109
+juleflet and gallery pictures with ties, it found as many templates but
+other ones where the traced outline held the ties already (hermanngitter-shot's
+failing the paper, hvirvel's of 12 hidden segments where 8). So it comes only
+when the traced outline is not symmetric enough (stage.js `even`): 98 of the
+109 exact as before, the same median distance from the mask, 773 hidden
+segments where 863, a median of 11.8 s where 13.3; alhambra-shot 25 hidden
+segments to 8, amy-pinecone 36 to 8, amy-flowering 32 to 12, glaskuppel-shot
+24 to 16, kogle in 18 s where 50.
+
+Balls and davidsstjerne-circ keep their ties now, and have no template under
+them (balls' under all eight, davidsstjerne-circ's under its diagonal and half
+turn), nor one found under part of them in the time: the fitter's still.
+
 ## Details lost on photographs (2026-10-25)
 
 The 68 photographs whose template keeps every rule but loses a region of the
@@ -817,9 +857,7 @@ camel, but takes 20-28 s more and fails on other photographs; not used.
   side.
 - A graph for the exact search fitted to the mask before it runs (the user's
   suggestion, 2026-10-27): steady corners and long cuts along one edge are in
-  (above). Still open: an outline symmetric by construction (the mask is, but
-  the tracer fits each curve from one end: Uret's corner discs trace with a
-  notch on three of four), positions added where the model's rules break
+  (above). Still open: positions added where the model's rules break
   instead of a fixed grid, and a heart's own seams as candidates when it comes
   from Tegn (venus).
 - Templates: slits that stop inside the square or meet in T-junctions (the site

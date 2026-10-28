@@ -6,7 +6,7 @@ import {targetSegments} from './target.js';
 import {RouteRules} from './routes.js';
 
 /** The exact outline of a prepared target: {st, outline, routes}. */
-export function exactOutline(target, cfg, strictness = 'tight') {
-  const st = buildStructure(targetSegments(target)), outline = new Outline(st, rules(cfg, strictness));
+export function exactOutline(target, cfg, strictness = 'tight', {symmetry = []} = {}) {
+  const st = buildStructure(targetSegments(target, {symmetry})), outline = new Outline(st, rules(cfg, strictness));
   return {st, outline, routes: new RouteRules(st, outline)};
 }

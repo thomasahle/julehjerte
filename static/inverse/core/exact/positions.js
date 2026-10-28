@@ -153,11 +153,17 @@ function symmetricGrid(outline, sym, spacing, floor, forced, extra) {
     // corners too. A traced outline's corner lands a little off its mirror
     // image, and a position snapped onto it alone would leave its own image on
     // no position.
+    // Nor a mirror's fixed point onto a corner beside its axis: the run
+    // between the corner and its image would be its own image, and the
+    // papers swapped across it (a notch on a diagonal: venus, simple-5star
+    // traced symmetric).
     const symmetricCorner = c => stab.every(n => outline.corners[e0].some(d => outline.along(e0, sym.arcImage(n, e0, c)[1], d) < 1e-3));
+    const fixedBy = s => stab.find(n => sym.edge[n][e0][1] === -1 && outline.along(e0, sym.arcImage(n, e0, s)[1], s) < 1e-6);
     for (const c of outline.corners[e0]) {
       let k = -1;
       closed.forEach((u, i) => { if (k < 0 || outline.along(e0, u, c) < outline.along(e0, closed[k], c)) k = i; });
-      if (k >= 0 && outline.along(e0, closed[k], c) < apart && symmetricCorner(c)) closed[k] = c;
+      const n = k >= 0 && fixedBy(closed[k]);
+      if (k >= 0 && outline.along(e0, closed[k], c) < apart && symmetricCorner(c) && (!n || outline.along(e0, sym.arcImage(n, e0, c)[1], c) < 1e-3)) closed[k] = c;
     }
     // Images are projections: two positions either side of a corner can land on
     // one point of an image edge (khatam). Keep the first, and only positions
