@@ -15,7 +15,7 @@ import {gridWitness} from '../../static/inverse/core/exact/grid.js';
 import {prepare, restorePrepared, design} from '../../static/inverse/core/engine.js';
 import {finishExactStopped} from '../../static/inverse/core/stopped.js';
 import {smoothEdges} from '../../static/inverse/core/exact/refine.js';
-import {turnsOf, subgroupsOf} from '../../static/inverse/core/exact/stage.js';
+import {turnsOf, subgroupsOf, appSymmetry} from '../../static/inverse/core/exact/stage.js';
 
 const svgOf = rings => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path fill="#b91313" fill-rule="evenodd" d="${
   rings.map(ring => 'M' + ring.map(([x, y]) => `${x.toFixed(9)},${(12 - y).toFixed(9)}`).join('L') + 'Z').join('')}"/></svg>`;
@@ -217,4 +217,12 @@ test('with none under all of a picture\'s symmetry, its turns are searched, then
   assert.deepEqual(subgroupsOf(['transpose', 'antiTranspose']), [['rotate180'], ['antiTranspose']]);
   assert.deepEqual(subgroupsOf(['transpose']), []);
   assert.deepEqual(subgroupsOf(['rotate90']), []);
+});
+
+test('a template under part of the symmetry holds, in the app\'s names, what its ties generate', () => {
+  // The reference frame's antiTranspose is the app's transpose (the two lobes alike).
+  assert.deepEqual(appSymmetry(['antiTranspose']), ['transpose']);
+  assert.deepEqual(appSymmetry(['rotate90']), ['rotate180']);
+  assert.deepEqual(new Set(appSymmetry(['mirrorX', 'mirrorY', 'antiTranspose'])), new Set(['mirrorX', 'mirrorY', 'rotate180', 'transpose', 'antiTranspose']));
+  assert.deepEqual(appSymmetry([]), []);
 });

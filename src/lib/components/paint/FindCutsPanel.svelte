@@ -280,6 +280,18 @@
 			(['curve', 'lobe', 'lobes'] as const).some((row) => honoured[row] !== symmetry[row])
 	);
 
+	// The rows it did hold, when some: an exact template searched under part of
+	// the symmetry (Rød blomst's "de to lapper spejlet").
+	const ROW_NAMES = { curve: 'editorWithinCurve', lobe: 'editorWithinLobe', lobes: 'editorBetweenLobes' } as const;
+	let heldRows = $derived(
+		honoured
+			? (['curve', 'lobe', 'lobes'] as const)
+					.filter((row) => honoured[row] !== 'off')
+					.map((row) => `${tr(ROW_NAMES[row])} ${tr(honoured[row] === 'sym' ? 'editorSym' : 'editorAnti')}`.toLowerCase())
+					.join(', ')
+			: ''
+	);
+
 	/**
 	 * A typed number, passed on only once it is already in range.
 	 *
@@ -468,7 +480,7 @@
 			<p class="note">{tr('paintFoundIdentical')}</p>
 		{/if}
 		{#if symmetryDropped}
-			<p class="note">{tr('paintSymmetryNotHeld')}</p>
+			<p class="note">{heldRows ? t('paintSymmetryHeldInPart', lang, { rows: heldRows }) : tr('paintSymmetryNotHeld')}</p>
 		{/if}
 		<div class="actions">
 			<button type="button" class="btn btn-sm btn-primary" onclick={onOpenInDraw}>

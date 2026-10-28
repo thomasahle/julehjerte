@@ -749,6 +749,18 @@ the 16 pictures where the full symmetry has none, two more get an exact
 template (roed-blomst; permo-cirkler-shot now 0.31% from the mask, not 0.55%),
 and none fewer.
 
+On the page the fitter's template still goes out first, at 20 s (0.7%, its
+corners), and the exact one came 42 s in as the second choice, shown only had
+the first been merely close. An exact template now takes the place of the
+fitter's it follows unless it is merely close itself: the fitter's only stood
+in for it. And it is held to the rows its part of the symmetry carries (engine
+`held`, the group its ties generate in the app's names; paint/symmetry.ts
+`rowsWithin`): Rød blomst's to "de to lapper spejlet", where the converter,
+held to all three rows, had dropped every one. The panel names the rows kept.
+The engine's own symmetry report still says none: its control points pair up
+cut for cut, and the exact template's cuts are split into different numbers
+of curves (28 and 29).
+
 The fitter's template as the exact search's start, in the fitter's worker once
 the fitter is done: of the 28 gallery and juleflet pictures left to the
 fitter, it saved one in what was left of the minute, and none even with 50 s.

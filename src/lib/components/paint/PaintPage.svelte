@@ -59,7 +59,7 @@
 	import { clampFrameSize, frameMismatch, shapeCells } from '$lib/paint/frame';
 	import { cloneMask, isEmpty, maskMismatch, type Mask } from '$lib/paint/mask';
 	import { defaultMask, isDefaultMask } from '$lib/paint/tools';
-	import { detectSymmetry, NO_SYMMETRY, transformsFor } from '$lib/paint/symmetry';
+	import { detectSymmetry, NO_SYMMETRY, rowsWithin, transformsFor } from '$lib/paint/symmetry';
 	import { fingerHasIntersectionIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 	import { inferOverlapRect } from '$lib/utils/overlapRect';
 	import { rasterizeDesign } from '$lib/paint/rasterize';
@@ -725,13 +725,24 @@
 		// ties do not pair up, permo-kroge 1.9 %) they lose what they are for, so
 		// they stay as found, with the rows marked as not held, and the fitter's
 		// symmetric cuts beside them.
-		const converted = convertValidatedCutGeometry(geometry, {
+		const convert = (enforce: SymmetrySettings) => convertValidatedCutGeometry(geometry, {
 			name: session.sourceName ? t('paintHeartFromImage', lang) : t('paintHeartFromMask', lang),
 			colors: toHexColors(colors, DEFAULT_COLORS_HEX),
-			enforce: session.symmetry,
+			enforce,
 			...(kind === 'exact' ? { enforceCostLimit: EXACT_SYMMETRY_COST } : {}),
 			reference: { mask: target, weights: frame.mode === 'free' ? shapeCells(frame, target.size) : undefined }
 		});
+		let converted = convert(session.symmetry);
+		// An exact template searched under only part of the symmetry, none keeping
+		// all of it, is held to the rows that part carries rather than to none
+		// (Rød blomst: its two lobes alike, not mirrored in themselves).
+		const held = kind === 'exact' ? solved.report.solver?.exactOutline?.held : undefined;
+		const rows = (s: SymmetrySettings) => (['curve', 'lobe', 'lobes'] as const).filter((row) => s[row] !== 'off').length;
+		const within = held && rowsWithin(session.symmetry, held);
+		if (within && rows(within) < rows(session.symmetry) && rows(within) > rows(converted.honoured)) {
+			const part = convert(within);
+			if (rows(part.honoured) > rows(converted.honoured)) converted = part;
+		}
 
 		// Measure the actual editable heart against the original drawing. Changes
 		// outside the protected motif are permitted, and reported separately.
@@ -831,7 +842,11 @@
 							// A heart only close (the panel's "close, but not right") gives way to
 							// one that is not: the photographs whose sides the exact search reads
 							// deeper than their edge come out over 1 %, the fitter's under it.
-							if (shown && isMediocre(shown.report) && !isMediocre(found.result.report)) swapTemplate();
+							// The fitter's, shown while the exact search was still looking, gives
+							// way too: it only stood in for an exact one (Rød blomst: the fitter's
+							// corners at 0.7 % after 20 s, the exact template at 0.2 % after 42 s).
+							if (shown && !isMediocre(found.result.report)
+								&& (isMediocre(shown.report) || (shown.report.kind === 'smooth' && found.result.report.kind === 'exact'))) swapTemplate();
 						}
 					} catch (err) {
 						// A second template that does not convert is simply not offered.

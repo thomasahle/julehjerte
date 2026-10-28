@@ -64,7 +64,7 @@ export interface DesignResult {
     templateExportAllowed: boolean;
     templateChecksPassed: boolean;
     slits: { left: number; right: number };
-    solver: { imported?: boolean; status?: string; mipGap?: number; exactOutline?: { chosen?: 'exact' | 'fitter' }; matchingPreference?: { enabled: boolean; identical: boolean; minimumIdenticalImageError: number; maximumMatchingImageError?: number; baselineImageError?: number; additionalImageError?: number; maximumAdditionalImageError?: number } };
+    solver: { imported?: boolean; status?: string; mipGap?: number; exactOutline?: { chosen?: 'exact' | 'fitter'; held?: string[] }; matchingPreference?: { enabled: boolean; identical: boolean; minimumIdenticalImageError: number; maximumMatchingImageError?: number; baselineImageError?: number; additionalImageError?: number; maximumAdditionalImageError?: number } };
     // null when no two slits could be measured against each other (validate.js).
     validation: { passed: boolean; minimumInterSlitDistanceLower: number | null };
     manufacturing: { status: 'pass' | 'fail' | 'uncertain' };

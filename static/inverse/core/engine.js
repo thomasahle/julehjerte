@@ -19,7 +19,7 @@ import {materialAudit,perturbationAudit,verifiedPaperSettings} from './material.
 import {roundHidden} from './rounding.js';
 import {boundarySVG,targetSVG,resultFiles} from './export.js';
 import {solvePolynomialTarget} from './direct/polynomial.js';
-import {exactSearch,exactSymmetry,exactTarget,exactCannotStart,exportable,returnTips} from './exact/stage.js';
+import {appSymmetry,exactSearch,exactSymmetry,exactTarget,exactCannotStart,exportable,returnTips} from './exact/stage.js';
 /** Structured cloning retains coordinates but not Cubic methods, including
  * the cached boundary seed used by the topology initializer. Rebuild derived
  * curve caches locally; a transferred cache must not hide edited coordinates. */
@@ -152,7 +152,10 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
       if(exportable(again.found?.assessment,cfgExact)||!found.found&&again.found)found={...again,report:{...again.report,rounded:way.spots?'near':true}};
     }
   }
-  const report={...found.report,chosen:'fitter',...(base.paired?{paired:true}:{})};
+  // `held`: the symmetries the template was searched under, in the app's
+  // names, for the page to hold the rows it can when that is only part of
+  // those asked for (roed-blomst: its two lobes alike, not their mirrors).
+  const report={...found.report,chosen:'fitter',held:appSymmetry(found.report.symmetry??[]),...(base.paired?{paired:true}:{})};
   return{solution:exportable(found.found?.assessment,cfgExact)?found.found.solution:null,report};
 }
 export function inspectSaved(text,raw={},onProgress=()=>{}){const cfg=settings(raw),solution=loadSolutionJSON(text),factor=cfg.width/solution.graph.target.width;solution.graph.edges.forEach(e=>e.curve=new Cubic(e.curve.p.map(p=>p.map(x=>x*factor))));solution.graph.target=scaleTarget(solution.graph.target,cfg.width,cfg.paperColors);reindex(solution.graph);return finish(solution,cfg,onProgress);}

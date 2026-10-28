@@ -6,6 +6,7 @@ import {
 	detectSymmetry,
 	disagreement,
 	NO_SYMMETRY,
+	rowsWithin,
 	symmetrize,
 	transformsFor,
 	type SymmetrySettings,
@@ -84,6 +85,27 @@ describe('transformsFor', () => {
 			'mirrorX',
 			'mirrorY'
 		]);
+	});
+});
+
+describe('rowsWithin', () => {
+	const all: SymmetrySettings = { curve: 'sym', lobe: 'sym', lobes: 'sym' };
+
+	it('keeps a row when the symmetries held include all it asks for', () => {
+		// Rød blomst: searched under the lobes' diagonal alone.
+		expect(rowsWithin(all, ['transpose'])).toEqual({ curve: 'off', lobe: 'off', lobes: 'sym' });
+		expect(rowsWithin(all, ['mirrorX', 'mirrorY', 'rotate180'])).toEqual({ curve: 'sym', lobe: 'sym', lobes: 'off' });
+		expect(rowsWithin(all, NAMED)).toEqual(all);
+	});
+
+	it('keeps a turned row under the turns', () => {
+		// Fejlternet: a pinwheel, its quarter turns holding the half turn.
+		expect(rowsWithin({ curve: 'off', lobe: 'anti', lobes: 'anti' }, ['rotate180'])).toEqual({ curve: 'off', lobe: 'anti', lobes: 'off' });
+	});
+
+	it('never holds Inden i kurve Anti, or anything with nothing held', () => {
+		expect(rowsWithin({ curve: 'anti', lobe: 'off', lobes: 'off' }, NAMED)).toEqual(NO_SYMMETRY);
+		expect(rowsWithin(all, [])).toEqual(NO_SYMMETRY);
 	});
 });
 

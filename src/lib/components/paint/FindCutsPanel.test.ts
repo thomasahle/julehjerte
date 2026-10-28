@@ -116,6 +116,17 @@ describe('FindCutsPanel', () => {
 		});
 	}
 
+	it('names the rows a template held when it could hold only part of the symmetry', () => {
+		const all = { curve: 'sym', lobe: 'sym', lobes: 'sym' } as const;
+		const part = render({ symmetry: all, honoured: { curve: 'off', lobe: 'off', lobes: 'sym' } });
+		const none = render({ lang: 'en', symmetry: all, honoured: { ...NO_SYMMETRY } });
+		try {
+			// Rød blomst: its two lobes alike, not mirrored in themselves.
+			expect(part.text).toContain('Symmetrien kunne kun holdes delvist; skabelonen har: de to lapper spejlet.');
+			expect(none.text).toContain('The symmetry could not be held exactly');
+		} finally { part.cleanup(); none.cleanup(); }
+	});
+
 	it('says what to choose when the exact search alone found no template', () => {
 		const panel = render({ lang: 'en', status: 'failed', showingResult: false, result: null, error: { kind: 'noExact' } });
 		try {

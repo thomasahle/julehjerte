@@ -61,6 +61,13 @@ export function exactSymmetry(spec) {
   return requested.map(name => FROM_APP[name]);
 }
 
+/** The app's names (settings.js SYMMETRIES) of the symmetries the `ties`
+ * keep, the group they generate: what of a request a template searched under
+ * part of it still holds (subgroupsOf). FROM_APP is its own inverse. */
+export function appSymmetry(ties) {
+  return group(ties).map(name => FROM_APP[name]).filter(Boolean);
+}
+
 /** How a template ranks (lower is better), with what it measured. Its paper
  * is audited as the export audits it (on a finer lattice the template was
  * verified at), or `material` is that audit already made. */
