@@ -25,7 +25,7 @@
             "Vis flere" is a glyph of its own.
 -->
 <script lang="ts">
-	import { untrack } from 'svelte';
+	import { untrack, type Snippet } from 'svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import { ToggleGroup, ToggleGroupItem, keepChosen } from '$lib/components/ui/toggle-group';
 	import { COMMON_RULES, THREE_NUMBERS, TWO_NUMBERS, neighbours, ofType, opposite, ruleKey, threeShapes, twoShapes, type TileRule } from '$lib/pattern/rules';
@@ -39,9 +39,11 @@
 		onChoose: (rule: TileRule) => void;
 		compact?: boolean;
 		disabled?: boolean;
+		/** What goes under the chosen type's description, where "Vis flere" cannot push it out of sight: how its crossings open. */
+		children?: Snippet;
 	}
 
-	let { lang, active, onChoose, compact = false, disabled = false }: Props = $props();
+	let { lang, active, onChoose, compact = false, disabled = false, children }: Props = $props();
 
 	const tr = (key: TranslationKey) => t(key, lang);
 
@@ -93,6 +95,7 @@
 			</span>
 			<span>{tr(text.hint)}</span>
 		</p>
+		{@render children?.()}
 	{/if}
 	<div class="choices">
 	<ToggleGroup type="single" role="radiogroup" aria-label={tr('patternRuleTitle')} value={chosen} onValueChange={choose} {disabled}>

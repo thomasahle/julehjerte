@@ -12,11 +12,11 @@ import { ruleStart } from './starts';
 import { knobTile } from './examples';
 import { wholeTileArea } from './centre';
 import {
-	canFloat,
 	centredTile,
 	cutsAre,
-	floatedTile,
-	floatingOf,
+	openingOf,
+	openingsOf,
+	withOpening,
 	dragTile,
 	editTile,
 	followedPoint,
@@ -323,21 +323,31 @@ describe("Tegn's Escher tab", () => {
 	});
 
 	it('floats one colour of a type of two shapes, the other joining across the joints, and keeps it through saving and reading back', () => {
-		expect(ALL_RULES.filter(canFloat).map(ruleKey)).toEqual(ALL_RULES.filter((r) => r.sides === 'free' || r.sides === 'two' || r.sides === 'three').map(ruleKey));
+		const floats = (r: (typeof ALL_RULES)[number]) => openingsOf(r).includes('red');
+		expect(ALL_RULES.filter(floats).map(ruleKey)).toEqual(ALL_RULES.filter((r) => r.sides === 'free' || r.sides === 'two' || r.sides === 'three').map(ruleKey));
 		const tile = fitLines(ruleStart(twoShapes(14), 4));
-		expect(floatingOf(tile)).toBeNull();
-		const red = floatedTile(tile, 'red')!;
-		expect(floatingOf(red)).toBe('red');
+		expect(openingOf(tile)).toBeNull();
+		const red = withOpening(tile, 'red')!;
+		expect(openingOf(red)).toBe('red');
 		expect(red.joints!.join).toBe('white');
-		expect(floatingOf(floatedTile(red, 'white')!)).toBe('white');
-		expect(floatedTile(red, null)).toEqual(fitLines(tile));
+		expect(openingOf(withOpening(red, 'white')!)).toBe('white');
+		const closed = withOpening(red, null)!;
+		expect(closed.joints).toBeUndefined();
+		expect(tileFingers(closed)).toEqual(tileFingers(fitLines(tile)));
 		const back = tileOfPattern(JSON.parse(JSON.stringify(savedPattern(red))))!;
 		expect(back.joints).toEqual(red.joints);
 		expect(restoredTile(savedPattern(red), heartOf(red))).not.toBeNull();
 		// and the tab reads the cuts back as the same tile, joints and all
 		expect(resumedTile(null, heartOf(red))?.joints?.join).toBe('white');
-		// a type whose motions swap the colours lets neither float
-		expect(floatedTile(fitLines(ruleStart(opposite('move', 'move'), 4)), 'red')).toBeNull();
+		// a type whose motions swap the colours lets neither float, but may join its tiles in rows or columns
+		const moved = fitLines(ruleStart(opposite('move', 'move'), 4));
+		expect(openingsOf(moved.rule)).toEqual(['level', 'upright']);
+		expect(withOpening(moved, 'red')).toBeNull();
+		const rows = withOpening(moved, 'level')!;
+		expect(openingOf(rows)).toBe('level');
+		expect(resumedTile(null, heartOf(rows))?.joints?.join).toBe('level');
+		// a quarter turn takes rows onto columns: neither
+		expect(openingsOf(neighbours('turn'))).toEqual([]);
 	});
 
 	it('opens a saved heart on its tile only while the cuts are still its own', () => {

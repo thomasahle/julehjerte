@@ -38,11 +38,11 @@ import {
 } from './editorBridge';
 import { MAX_GRID_SIZE, MIN_GRID_SIZE } from '$lib/constants';
 import { ALL_RULES, COMMON_RULES, latticeOf, ruleInfo, ruleKey, ruleSymmetry, sameRule, type TileRule } from './rules';
-import { cutCounts, fitLines, tileShape, tileTurn, type PatternTile, type SideCurve } from './tiling';
+import { cutCounts, fitLines, tileShape, tileTurn, withLinesOf, type PatternTile, type SideCurve } from './tiling';
 import { isStraightTile, ruleStart, switchRule } from './starts';
 import { isFigure, randomTileDraw, randomTileKind } from './randomTile';
 import { centredPlacements } from './centre';
-import { cornerFreedom, cornersMove, jointFreedom, jointsOfLength, type JoinColour } from './corners';
+import { cornerFreedom, cornersMove, jointFreedom, jointsOfLength, type Join } from './corners';
 
 export { cornersMove, cutOfFinger, cutsAre, followEdit, generateEditorFingers, READ_TOLERANCE, sameRule, specialNodes, weaveParityOf };
 export type { PatternTile, SpecialNode, TileRule };
@@ -238,33 +238,51 @@ export function resizedTile(tile: PatternTile, n: number): PatternTile | null {
 	return tileWeaves(next) ? next : null;
 }
 
-/** Which colour's tiles float in a tile, the other joining across its crossings' joints (`PatternTile.joints`), or null for none. */
-export type Floating = 'red' | 'white' | null;
+/**
+ * How a tile's crossings open out into joints (`PatternTile.joints`), as the heart
+ * shows it: not at all; red or white tiles floating, the other colour joining
+ * across the joints, as Khatam's pinwheels float on its stars; or the tiles joining
+ * in rows or in columns, left and right of each crossing or above and below it.
+ */
+export type Opening = 'red' | 'white' | 'level' | 'upright' | null;
 
-/** Which colour floats in the heart: the tiling's red tiles show white where its colours are swapped (`PatternTile.inverted`). */
-export const floatingOf = (tile: PatternTile): Floating => (tile.joints ? ((tile.joints.join === 'white') === !tile.inverted ? 'red' : 'white') : null);
+/** The joints that open a tile's crossings as `opening` says, in the tiling's own colours (`PatternTile.inverted`). */
+function joinOf(opening: Exclude<Opening, null>, inverted: boolean): Join {
+	if (opening === 'level' || opening === 'upright') return opening;
+	// A colour floating is the other joining.
+	return (opening === 'red') === !inverted ? 'white' : 'red';
+}
 
-/** Whether a type's tiles can float: two shapes only, where no motion swaps the colours (`jointFreedom`). */
-export const canFloat = (rule: TileRule): boolean => !!jointFreedom(rule, 'white');
+/** How a tile's crossings open, in the heart's colours. */
+export function openingOf(tile: PatternTile): Opening {
+	const join = tile.joints?.join;
+	if (!join) return null;
+	if (join === 'level' || join === 'upright') return join;
+	return (join === 'white') === !tile.inverted ? 'red' : 'white';
+}
+
+/** The ways a type lets its crossings open (`jointFreedom`), but for not at all. */
+export const openingsOf = (rule: TileRule): Array<Exclude<Opening, null>> =>
+	(['red', 'white', 'level', 'upright'] as const).filter((opening) => !!jointFreedom(rule, joinOf(opening, false))?.free.length);
 
 /** How long the joints are to begin with, in cells: the longest of these the heart weaves with. */
 const JOINT_LENGTHS = [0.25, 0.18, 0.12, 0.06];
 
 /**
- * The tile with its crossings opened out into joints, so that `floating`'s tiles
- * float apart and the other colour's join across the joints, as Khatam's pinwheels
- * float on its stars; or, `floating` null, closed again. The joints start along the
- * diagonals, as long as weaves (`JOINT_LENGTHS`). Null where the type lets no tiles
- * float, or no length weaves.
+ * The tile with its crossings opened out into joints as `opening` says, or closed
+ * again. The joints start along the diagonals, as long as weaves (`JOINT_LENGTHS`).
+ * Null where the type does not let them open so, or no length weaves.
  */
-export function floatedTile(tile: PatternTile, floating: Floating): PatternTile | null {
+export function withOpening(tile: PatternTile, opening: Opening): PatternTile | null {
 	const { joints: _joints, ...closed } = tile;
-	if (!floating) return fitLines(closed);
-	const join: JoinColour = (floating === 'red') === !tile.inverted ? 'white' : 'red';
+	// The heart keeps its strips while they fit.
+	const lined = (next: PatternTile) => withLinesOf(next, tile) ?? fitLines(next);
+	if (!opening) return lined(closed);
+	const join = joinOf(opening, !!tile.inverted);
 	const freedom = jointFreedom(tile.rule, join);
 	if (!freedom?.free.length) return null;
 	for (const length of JOINT_LENGTHS) {
-		const next = fitLines({ ...closed, joints: { join, free: jointsOfLength(freedom, join, length) } });
+		const next = lined({ ...closed, joints: { join, free: jointsOfLength(freedom, join, length) } });
 		if (tileWeaves(next)) return next;
 	}
 	return null;

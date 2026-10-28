@@ -108,7 +108,7 @@ export interface HeartPattern {
   cuts: number;
   curves: Record<string, number[][]>;
   corners?: number[];
-  joints?: { join: 'red' | 'white'; free: number[] };
+  joints?: { join: 'red' | 'white' | 'level' | 'upright'; free: number[] };
   inverted?: boolean;
   offset?: [number, number];
   shape?: [number, number, number, number];

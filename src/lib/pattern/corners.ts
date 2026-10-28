@@ -213,38 +213,64 @@ function solve(m: number[][], k: number): number[] {
 	return m.map((row, r) => (Math.abs(row[r]!) < 1e-15 ? 0 : row[k]! / row[r]!));
 }
 
-/** Which colour's tiles join across a crossing opened into a joint: the other colour's tiles float (`jointFreedom`). */
-export type JoinColour = 'red' | 'white';
+/**
+ * Which tiles join across the joints the crossings open into (`jointFreedom`):
+ * those of one colour at every crossing, so that the other colour's float ('red',
+ * 'white'); or at every crossing the two beside it, left and right of it in the
+ * heart, so that tiles join in rows ('level'), or the two above and below it, in
+ * columns ('upright').
+ */
+export type Join = 'red' | 'white' | 'level' | 'upright';
+export const JOINS: Join[] = ['red', 'white', 'level', 'upright'];
 
 /**
  * Whether the two cuts at crossing (i, j) run along its joint the same way: so they do where the tiles that
  * join, across the joint, are the ones beside the crossing to one side and the other, cells (i, j − 1) and
  * (i − 1, j); the other way where they are the ones above and below it, (i − 1, j − 1) and (i, j).
  */
-export const sameWayAt = (join: JoinColour, i: number, j: number): boolean => isRedCell(i, j - 1) === (join === 'red');
+export const sameWayAt = (join: Join, i: number, j: number): boolean =>
+	join === 'level' ? true : join === 'upright' ? false : isRedCell(i, j - 1) === (join === 'red');
+
+/** The two cells joined across crossing (i, j), as `cornerClass` keys of their lower corners. */
+function joinedAt(join: Join, i: number, j: number): string {
+	const pair = sameWayAt(join, i, j) ? [cornerClass(i, j - 1), cornerClass(i - 1, j)] : [cornerClass(i - 1, j - 1), cornerClass(i, j)];
+	return pair.sort((a, b) => a - b).join(',');
+}
 
 const jointsByRule = new Map<string, CornerFreedom | null>();
 
 /**
- * How far a rule lets its crossings open, where `join`'s tiles join across them
- * and the other colour's float apart: at crossing c the cuts run together along a
+ * How far a rule lets its crossings open, the tiles `join` says joining across
+ * them: at crossing c the cuts run together along a
  * straight joint from c − u(c) to c + u(c), the right lobe's cut coming in at the
  * first end, the left lobe's at the first end too where they run the same way
  * (`sameWayAt`) and at the second where not. Every motion of the rule has to take
  * every joint onto a joint, the end a cut comes in at onto the end its image comes
  * in at, so that u(g(c)) = ±M·u(c): linear, like the corners (`cornerFreedom`).
- * Null where the rule's motions swap the colours: a joint that joins white tiles
- * would join red ones where a motion takes it, so no colour floats.
+ * Null where a motion takes tiles joined at a crossing onto tiles not joined where
+ * it takes it: where a motion swaps the colours, joining white tiles would join red
+ * ones; where it turns the heart a quarter, joining rows would join columns.
  */
-export function jointFreedom(rule: TileRule, join: JoinColour): CornerFreedom | null {
+export function jointFreedom(rule: TileRule, join: Join): CornerFreedom | null {
 	const key = `${ruleKey(rule)}:${join}`;
 	if (jointsByRule.has(key)) return jointsByRule.get(key)!;
 	const motions = ruleMotions(rule);
-	const swaps = motions.some((m) => {
-		const centre = moveBy(m, { x: 0.5, y: 0.5 });
-		return !isRedCell(Math.floor(centre.x), Math.floor(centre.y));
+	// Every motion has to take the tiles joined at a crossing onto those joined where it takes the crossing.
+	const cellOf = (m: (typeof motions)[number], c: number, d: number) => {
+		const corners = [moveBy(m, { x: c, y: d }), moveBy(m, { x: c + 1, y: d }), moveBy(m, { x: c, y: d + 1 }), moveBy(m, { x: c + 1, y: d + 1 })];
+		return cornerClass(Math.round(Math.min(...corners.map((p) => p.x))), Math.round(Math.min(...corners.map((p) => p.y))));
+	};
+	const keeps = motions.every((m) => {
+		for (let i = 0; i < N; i++)
+			for (let j = 0; j < N; j++) {
+				const to = moveBy(m, { x: i, y: j });
+				const pair = sameWayAt(join, i, j) ? [[i, j - 1], [i - 1, j]] : [[i - 1, j - 1], [i, j]];
+				const moved = pair.map(([c, d]) => cellOf(m, c!, d!)).sort((a, b) => a - b).join(',');
+				if (moved !== joinedAt(join, Math.round(to.x), Math.round(to.y))) return false;
+			}
+		return true;
 	});
-	const freedom = swaps
+	const freedom = !keeps
 		? null
 		: spaceOf(0, (row) => {
 				for (const m of motions)
@@ -272,7 +298,7 @@ export function jointFreedom(rule: TileRule, join: JoinColour): CornerFreedom | 
  * The free coordinates of joints `length` cells long, as near as the rule lets them, each along the diagonal
  * its cuts run along it by (`sameWayAt`): where a joint opens out to begin with.
  */
-export function jointsOfLength(freedom: CornerFreedom, join: JoinColour, length: number): number[] {
+export function jointsOfLength(freedom: CornerFreedom, join: Join, length: number): number[] {
 	const h = length / 2 / Math.SQRT2;
 	const shifts = Array.from({ length: N * N }, (_, k) => ({ i: Math.floor(k / N), j: k % N })).map(({ i, j }) => ({
 		i,

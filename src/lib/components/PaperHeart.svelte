@@ -1455,17 +1455,18 @@
 	/** What the Escher tab's hint says the black points do, for the chosen rule. */
 	let escherFrameHint = $derived<TranslationKey | null>(patternTile && escher ? escher.frameHint(patternTile) : null);
 	let escherCornersHint = $derived<TranslationKey | null>(patternTile && escher && escher.cornersMove(patternTile.rule) ? 'patternPointsCorners' : null);
-	/** Which colour's tiles float, for a type of two shapes; undefined for the others, which offer no such choice. */
-	let escherFloating = $derived(patternTile && escher && escher.canFloat(patternTile.rule) ? escher.floatingOf(patternTile) : undefined);
+	/** How the crossings open, and the ways the type lets them (`escher.openingsOf`). */
+	let escherOpening = $derived(patternTile && escher ? escher.openingOf(patternTile) : null);
+	let escherOpenings = $derived(patternTile && escher ? escher.openingsOf(patternTile.rule) : []);
 
 	/**
-	 * The Escher tab's floating tiles: the crossings opened out into joints, so that one colour's tiles
-	 * float on the other's, or closed again (`escher.floatedTile`); refused, with a line above the heart,
-	 * where the tiles are too close for that.
+	 * The Escher tab's open crossings: opened out into joints, so that one colour's tiles float on the
+	 * other's or the tiles join in rows or columns, or closed again (`escher.withOpening`); refused, with a
+	 * line above the heart, where the tiles are too close for that.
 	 */
-	function floatEscherTiles(floating: 'red' | 'white' | null) {
-		if (readonly || !patternTile || !escher || escher.floatingOf(patternTile) === floating) return;
-		const next = escher.floatedTile(patternTile, floating);
+	function openEscherCrossings(opening: 'red' | 'white' | 'level' | 'upright' | null) {
+		if (readonly || !patternTile || !escher || escher.openingOf(patternTile) === opening) return;
+		const next = escher.withOpening(patternTile, opening);
 		if (!next) {
 			noteRefused(tr('patternFloatTooTight'));
 			return;
@@ -4549,8 +4550,9 @@
 									size={patternSize}
 									frameHint={escherFrameHint}
 									cornersHint={escherCornersHint}
-									floating={escherFloating}
-									onFloat={floatEscherTiles}
+									opening={escherOpening}
+									openings={escherOpenings}
+									onOpen={openEscherCrossings}
 									turn={patternTurn}
 									onChoose={chooseEscherRule}
 									onSize={setPatternSize}
@@ -4768,8 +4770,10 @@
 			max-width: calc(100% - 250px);
 		}
 
+		/* Never wider than the room the hint leaves it: a long label wraps rather than covering the hint. */
 		.canvas-selection {
 			right: 16px;
+			max-width: 220px;
 			color: var(--ink);
 			font-weight: 500;
 		}

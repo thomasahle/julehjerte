@@ -43,7 +43,7 @@ import { reverseSegments, segmentsToPathData } from '$lib/geometry/bezierSegment
 import { normalizeHeartDesign } from '$lib/utils/heartDesign';
 import { HEART_CLEARANCE_UNITS } from '$lib/geometry/returnSearch';
 import { halfOf, latticeOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
-import { cornerFreedom, cornerShift, jointFreedom, meanShift, sameWayAt, type JoinColour } from './corners';
+import { cornerFreedom, cornerShift, jointFreedom, meanShift, sameWayAt, type Join } from './corners';
 
 /** A side curve in its stretch's own frame (see the module comment). */
 export type SideCurve = BezierSegment[];
@@ -80,7 +80,7 @@ export interface PatternTile {
 	 * pinwheels float on its stars. `free`: the free coordinates of the joints' half
 	 * lengths and directions, in cells.
 	 */
-	joints?: { join: JoinColour; free: number[] };
+	joints?: { join: Join; free: number[] };
 	/**
 	 * The tiling's colours swapped in the heart: its red tiles, the ones the type's
 	 * template shows red, show in the left lobe's colour, and its white ones in the
@@ -664,6 +664,20 @@ function lineFits(tile: PatternTile, kind: StretchKind, line: number): boolean {
 		}
 	}
 	return true;
+}
+
+/**
+ * The tile cutting the same lines as `from` does, where every one of them still
+ * fits in the square (`lineFits`); null where one does not. For edits that move
+ * the corners or open the crossings, which should not change how many strips the
+ * heart has while they need not: refitting the lines (`fitLines`) would take a
+ * line in or leave one out the moment an edge strip grew or shrank a hair.
+ */
+export function withLinesOf(tile: PatternTile, from: PatternTile): PatternTile | null {
+	const lines = { V: heartLines(from, 'V'), H: heartLines(from, 'H') };
+	const kept: PatternTile = { ...tile, lines };
+	const fits = (['V', 'H'] as const).every((kind) => Array.from({ length: lines[kind].count }, (_, k) => lines[kind].first + k).every((line) => lineFits(kept, kind, line)));
+	return fits ? kept : null;
 }
 
 /**

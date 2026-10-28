@@ -745,12 +745,15 @@ onto itself, which leaves each type a space of corner shifts of its own — none
 either way under To former and Halv omgang (the old lean), every other column sliding along its cut under Flyttet
 og spejlet, and so on, 18 of the 46 types some freedom. Dragging a round dot moves that corner of every tile as far
 along the pointer as the type lets it, the crossings that hold the cells' size and shape staying where they are,
-and near the grid it is drawn to it and settles on it as the cells do. For the types of two and three shapes, "Svævende
-fliser / Floating tiles" under the sizes (Ingen, Røde, Hvide; `floatedTile`, `jointFreedom`) opens every crossing
-into a short straight joint the two cuts run along together, so that one colour's tiles join across the joints
-and the other's float on them, as Khatam's red pinwheels float on its white stars (4.8.8, the truncated square
-tiling, two shapes that no one-tile type can make). Only where no motion swaps the colours: a joint that joined
-white tiles would join red ones where such a motion takes it. The joints start a quarter of a cell long along the
+and near the grid it is drawn to it and settles on it as the cells do. "Åbne kryds / Open crossings", right under the
+chosen type's description where the type list cannot push it out of sight (an agent tester never found it below
+the sizes), opens every crossing into a short straight joint the two cuts run along together (`withOpening`,
+`jointFreedom`): Røde svæver / Hvide svæver, one colour's tiles joining across the joints and the other's floating
+on them, as Khatam's red pinwheels float on its white stars (4.8.8, the truncated square tiling, two shapes that no
+one-tile type can make), only where no motion swaps the colours; I rækker / I søjler, the tiles joining left and
+right of every crossing or above and below it, where no motion takes rows onto columns (one-tile types too: Flyttet,
+Halv omgang and others). It shows only the ways the type allows, and not at all where it allows none. Dragging a
+round dot or a joint's end keeps the heart's strips while every cut still fits, so the strip count does not jump. The joints start a quarter of a cell long along the
 diagonals (shorter where that does not weave), their ends are black points that turn and stretch every joint
 about its middle as far as the type lets them, and a heart whose cuts share a segment at every crossing reads
 back as joints (or, where no type of two shapes fits, as sides that run together of themselves, as Permo

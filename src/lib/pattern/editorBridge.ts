@@ -25,7 +25,7 @@ import { reverseSegments, splitBezierAt } from '$lib/geometry/bezierSegments';
 import type { OverlapRect } from '$lib/utils/overlapRect';
 import { READ_TOLERANCE, sharedCrossings, type SharedCrossing } from './crossings';
 import { isRedCell, keepsColours, latticeOf, ruleRepeat, halfOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
-import { cornerClass, cornerFreedom, cornerShift, crossingMoves, jointFreedom, meanShift, nearestCorners, sameWayAt, type JoinColour } from './corners';
+import { cornerClass, cornerFreedom, cornerShift, crossingMoves, JOINS, jointFreedom, meanShift, nearestCorners, sameWayAt, type Join } from './corners';
 import {
 	carryNodeTypes,
 	cellsToRaw,
@@ -45,6 +45,7 @@ import {
 	stretchCurve,
 	stretchFrame,
 	tileTurn,
+	withLinesOf,
 	toFrame,
 	unturnedShape,
 	tracedCut,
@@ -428,12 +429,11 @@ function readCrossings(
  */
 function withJointsRead(tile: PatternTile, joints: Array<{ i: number; j: number; first: Vec; second: Vec; sameWay: boolean }>, first: Vec): PatternTile | null {
 	const at = joints.map((k) => ({ ...k, i: first.x + k.i - 1, j: first.y + k.j - 1 }));
-	// Where the cuts run along a joint the same way, the tiles that join are those beside it (`sameWayAt`).
-	const joins = new Set(at.map((k) => (k.sameWay === isRedCell(k.i, k.j - 1) ? 'red' : 'white')));
-	if (joins.size !== 1) return null;
-	const join = [...joins][0] as JoinColour;
-	const freedom = jointFreedom(tile.rule, join);
-	if (!freedom?.free.length) return null;
+	// Which tiles join across them, the same at every one: the cuts run along a joint the same way where the tiles
+	// beside it join (`sameWayAt`). A colour floating first, then rows, then columns.
+	const join = JOINS.find((j) => at.every((k) => k.sameWay === sameWayAt(j, k.i, k.j)) && jointFreedom(tile.rule, j)?.free.length);
+	const freedom = join ? jointFreedom(tile.rule, join) : null;
+	if (!join || !freedom) return null;
 	const half = (k: (typeof at)[number]) => times(minus(rawToCells(tile, k.second), rawToCells(tile, k.first)), 0.5);
 	return { ...tile, joints: { join, free: nearestCorners(freedom, at.map((k) => ({ i: k.i, j: k.j, shift: half(k) }))) } };
 }
@@ -733,7 +733,8 @@ export function jointTo(base: PatternTile, fingerId: string, anchor: number, del
 	// The first end is the middle less half the joint, the second the middle and it.
 	const want = times(minus(rawToCells(base, to), rawToCells(base, from)), end.end === 'first' ? -1 : 1);
 	const step = nearestCorners(freedom, [{ i: end.i, j: end.j, shift: want }]);
-	const next = fitLines({ ...base, joints: { join: joints.join, free: freedom.free.map((_, k) => (joints.free[k] ?? 0) + step[k]!) } });
+	const opened: PatternTile = { ...base, joints: { join: joints.join, free: freedom.free.map((_, k) => (joints.free[k] ?? 0) + step[k]!) } };
+	const next = withLinesOf(opened, base) ?? fitLines(opened);
 	const counts = cutCounts(next);
 	return counts.V > 0 && counts.H > 0 ? next : null;
 }
@@ -743,9 +744,11 @@ function withCorners(base: PatternTile, corners: number[]): PatternTile | null {
 	const freedom = cornerFreedom(base.rule);
 	const { corners: _was, ...rest } = base;
 	const next: PatternTile = corners.some((w) => w !== 0) ? { ...rest, corners } : rest;
-	// The middle moves with the corners' mean: the pan moves with it, so that the cells stay put.
+	// The middle moves with the corners' mean: the pan moves with it, so that the cells stay put. The heart cuts the
+	// same lines while they all fit, so that its strips do not come and go as an edge strip grows a hair.
 	const shift = minus(meanShift(freedom, corners), meanShift(freedom, base.corners ?? []));
-	const moved = fitLines(panned(next, shift));
+	const pan = plus(base.pan ?? { x: 0, y: 0 }, shift);
+	const moved = withLinesOf({ ...next, pan }, base) ?? fitLines(panned(next, shift));
 	const counts = cutCounts(moved);
 	return counts.V > 0 && counts.H > 0 ? moved : null;
 }
