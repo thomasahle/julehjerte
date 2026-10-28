@@ -25,6 +25,8 @@ export function act(name, p, size = 12) {
  * closure under its stabilizer (positions.js). */
 export const MERGED = .05;
 export const swapsSheets = name => ELEMENTS[name][1] !== 0;
+/** The element undoing `name`. */
+export const inverse = name => Object.keys(ELEMENTS).find(h => { const p = act(h, act(name, [1, 2])); return Math.abs(p[0] - 1) < 1e-9 && Math.abs(p[1] - 2) < 1e-9; });
 export const determinant = name => { const [a, b, c, d] = ELEMENTS[name]; return a * d - b * c; };
 
 const nameOf = m => Object.keys(ELEMENTS).find(n => ELEMENTS[n].every((v, i) => v === m[i]));

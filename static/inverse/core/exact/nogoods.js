@@ -208,8 +208,10 @@ export function slitPiecesOn(st, outline, cand, labels, used, geometry = null) {
     for (let i = 0; i <= grid.length; i++) {
       const s0 = i ? grid[i - 1] : 0, s1 = i < grid.length ? grid[i] : outline.L[e];
       const line = geometry ? geometry.line(e, s0, s1) : subPolyline(ed.pts, outline.geo[e], s0, s1), fam = labels.get(`${e},${i}`) ? 'A' : 'B', piece = ['run', e, i];
-      link(fam, at(i), {piece, to: at(i + 1), line});
-      link(fam, at(i + 1), {piece, to: at(i), line: [...line].reverse()});
+      // On a geometry with curves (refine.js geometryOnCurves), the run's cubics too.
+      const curves = geometry?.curves?.(e, s0, s1) ?? null;
+      link(fam, at(i), {piece, to: at(i + 1), line, curves});
+      link(fam, at(i + 1), {piece, to: at(i), line: [...line].reverse(), curves: curves && curves.map(c => [...c].reverse()).reverse()});
     }
   });
   for (const key of used) {
@@ -235,10 +237,10 @@ export function slitPiecesOn(st, outline, cand, labels, used, geometry = null) {
       for (let guard = 0; guard < 100000; guard++) {
         const step = (links.get(`${fam}|${cur}`) || []).filter(x => !same(x.piece, prev));
         if (!step.length) break;
-        const {piece, to, line} = step[0];
+        const {piece, to, line, curves} = step[0];
         prev = piece;
         cur = to;
-        slit.push({line, piece});
+        slit.push({line, piece, curves});
         if (cur.startsWith('node:') && st.nodes.get(cur.slice(5)).typ === 'end') break;
       }
       out[fam].push(slit);

@@ -9,13 +9,13 @@ import {visibleNogoods, routeNogoods, runOf, nogoodKey} from './nogoods.js';
 import {ExactModel} from './model.js';
 import {exactOutline} from './snap.js';
 import {slitPiecesOn} from './nogoods.js';
-import {drawing, drawingSolution} from './draw.js';
+import {curveDrawing, drawing, drawingSolution} from './draw.js';
 import {paperSpots, tightNogoods} from './paper.js';
 import {cheapBounds} from './bounds.js';
 import {StructureSymmetry, act, group} from './symmetry.js';
 import {solutionJSON} from '../graph.js';
 import {validate} from '../validate.js';
-import {edgesOnMask, geometryOn} from './refine.js';
+import {edgesOnMask, geometryOnCurves, smoothEdges} from './refine.js';
 
 /** exactFromTemplate's error when no solution keeps every rule. */
 export const NO_TEMPLATE = 'No exact template found.';
@@ -145,26 +145,38 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
     extra = [...extra, ...tightNogoods(model, values, spots)];
   }
   if (!best) return {error: NO_TEMPLATE, report: attempts.at(-1)};
-  // With `refine`, the solution redrawn on the mask's own edge too (refine.js):
-  // every edge if that keeps the editor's checks, else edge by edge, the
-  // longest first, each kept when the drawing still passes, for at most
-  // `refineSeconds`.
+  // With `refine`, the solution redrawn on the mask's own edge too, each edge
+  // a few cubics (refine.js): every edge if that keeps the editor's checks,
+  // else orbit by orbit of the ties' symmetry, the longest first, each kept
+  // when the drawing still passes, for at most `refineSeconds`, the others as
+  // traced (boelgebrud 27 cubics a cut), or where none passes so, on the mask's
+  // edge in pixel steps (262; a narrow tip a smooth edge rounds into its other
+  // side, which the pixel steps clear: triple-heart-shot).
   let refined = null;
   const source = target.sourceImage;
   if (refine && source?.mask) {
     try {
       const moved = edgesOnMask(outline, source.mask, source.resolution);
-      const drawn = set => drawingSolution(drawing(slitPiecesOn(st, outline, cand, best.lab, best.chosen,
-        geometryOn(outline, moved.map((pts, e) => set.has(e) ? pts : outline.E[e].pts)))), target, cfg);
+      const switches = new Map([...cand.positions].map(([e, grid]) => [e, grid.filter((s, i) => (best.lab.get(`${e},${i}`) ?? 0) !== (best.lab.get(`${e},${i + 1}`) ?? 0))]));
+      const smooth = smoothEdges(outline, moved, source.resolution, {switches, positions: cand.positions, sym});
+      const drawn = (set, base) => drawingSolution(curveDrawing(slitPiecesOn(st, outline, cand, best.lab, best.chosen,
+        geometryOnCurves(outline, smooth.map((chain, e) => set.has(e) ? chain : null), base))), target, cfg);
       const passes = solution => validate(solution, cfg, {finalGeometry: true}).passed;
-      let kept = new Set(moved.keys()), result = drawn(kept);
+      let result = drawn(new Set(smooth.keys()), moved);
       if (!passes(result)) {
-        const order = [...moved.keys()].sort((a, b) => outline.L[b] - outline.L[a]), until = performance.now() + refineSeconds * 1000;
-        kept = new Set(); result = null;
-        for (const e of order) {
-          if (performance.now() > until) break;
-          const trial = new Set([...kept, e]), solution = drawn(trial);
-          if (passes(solution)) { kept = trial; result = solution; }
+        // An orbit's edges together, or the two sheets lose their one template.
+        const groups = (sym ? sym.orbits() : [...smooth.keys()].map(e => [e])).sort((a, b) => outline.L[b[0]] - outline.L[a[0]]);
+        const until = performance.now() + refineSeconds * 1000;
+        result = null;
+        for (const base of [outline.E.map(ed => ed.pts), moved]) {
+          let kept = new Set(), here = drawn(kept, base);
+          if (!passes(here)) here = null;
+          for (const group of groups) {
+            if (performance.now() > until) break;
+            const trial = new Set([...kept, ...group]), solution = drawn(trial, base);
+            if (passes(solution)) { kept = trial; here = solution; }
+          }
+          if (here) { result = here; break; }
         }
       }
       refined = result;

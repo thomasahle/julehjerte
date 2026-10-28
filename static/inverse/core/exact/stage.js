@@ -12,7 +12,7 @@ import {requestedSymmetry} from '../settings.js';
 import {exactFromTemplate, NO_TEMPLATE} from './search.js';
 import {exactOutline} from './snap.js';
 import {exactStart} from './start.js';
-import {FROM_APP} from './symmetry.js';
+import {FROM_APP, determinant, group} from './symmetry.js';
 import {rasterOutline} from './raster.js';
 import {cheapBounds} from './bounds.js';
 import {returns} from './nogoods.js';
@@ -133,6 +133,21 @@ const START_SECONDS = 3;
  * gets first, if at least BARE_FLOOR seconds are left (exactSearch). */
 const BARE_SHARE = .5, BARE_FLOOR = 8;
 
+/** How much further from the mask (a share of its cells) the exact search's
+ * template may lie drawn in a few cubics than on the traced polyline. */
+const SMOOTH_SLACK = .005;
+
+/** The seconds a search under the requested symmetry's turns alone needs at
+ * least, once none keeps all of it (exactSearch). */
+const TURNS_FLOOR = 6;
+
+/** The turns of the group `symmetry` generates, as their generator (a quarter
+ * turn, else a half turn), or none when it has no mirror to drop. */
+export function turnsOf(symmetry) {
+  const all = group(symmetry), turn = ['rotate90', 'rotate180'].find(name => all.includes(name));
+  return turn && all.some(name => determinant(name) < 0) ? [turn] : [];
+}
+
 /** The exact search on the traced `outline` from the fitter's `template`
  * within `deadline`, under the `symmetry` ties: {found: {solution,
  * assessment} or null, report}. */
@@ -206,17 +221,35 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     if (!again.found && /not symmetric/.test(again.report.error ?? '')) again = {...await exactSearch(outline, template, cfg, {...options, symmetry: []}), untied: true};
     return {...again, report: {...again.report, unjoined: found.error, ...(again.untied ? {untied: true} : {})}};
   }
+  // A picture symmetric under mirrors whose templates all turn one way:
+  // fejlternet's hidden cuts wheel round its middle square, the designer's
+  // and every other, and under its mirrors the search proves there is none
+  // in seconds. Then under its turns alone (a pinwheel of 12 hidden segments,
+  // the designer's count, where the fitter's rounded its corners).
+  const turns = turnsOf(symmetry);
+  if (found.error === NO_TEMPLATE && fallback && turns.length && (deadline - performance.now()) / 1000 - reserve >= TURNS_FLOOR) {
+    const again = await exactSearch(outline, template, cfg, {deadline, reserve, onProgress, geometry, refine, fallback: false, symmetry: turns});
+    if (again.found) return {...again, report: {...again.report, turned: {from: symmetry, error: found.error}}};
+  }
   if (found.error) return {found: null, report: {...report, error: found.error, search: found.report}};
   let solution = found.solution, assessment = assess(solution, cfg);
-  // Redrawn on the mask's own edge: taken when it lies nearer the mask and
-  // keeps the rest (passing, the picture's regions, one template, hidden cut
-  // within a step); its pixel-step edges are a little longer, which is no loss.
+  // Redrawn on the mask's own edge in a few cubics (search.js, refine.js):
+  // taken when it does better on passing, its failures, the picture's regions
+  // or one template, or as well, with hidden cut within a step and at most
+  // SMOOTH_SLACK further from the mask, within the export's limit. The traced outline it replaces
+  // is a polyline the editor shows as a node a pixel; on a photograph's jagged
+  // staircase a smooth edge misses a few boundary pixels more (amy-pattern-shot
+  // 0.58% from its mask, its pixel steps 0.16%).
   if (found.refined) {
     let finer = null;
     try { finer = assess(found.refined, cfg); } catch { finer = null; }
-    report.refined = finer && {passes: finer.passes, maskError: finer.maskError, issues: finer.issues};
-    const keeps = finer && [0, 1, 2, 4].every(k => finer.rank[k] <= assessment.rank[k]) && finer.rank[5] <= assessment.rank[5] + 1;
-    if (keeps && finer.maskError < assessment.maskError) { solution = found.refined; assessment = finer; report.refined.taken = true; }
+    report.refined = finer && {passes: finer.passes, maskError: finer.maskError, issues: finer.issues, rank: finer.rank, traced: assessment.rank};
+    // Compared in that order: passing where the traced drawing does not
+    // (a tip its pixel steps clear: triple-heart-shot) settles it.
+    const order = [0, 1, 2, 4], diff = order.map(k => finer ? finer.rank[k] - assessment.rank[k] : 1).find(d => d !== 0) ?? 0;
+    const keeps = finer && (diff < 0 || (diff === 0 && finer.rank[5] <= assessment.rank[5] + 1
+      && finer.maskError <= Math.min(assessment.maskError + SMOOTH_SLACK, Math.max(assessment.maskError, cfg.maxImageError))));
+    if (keeps) { solution = found.refined; assessment = finer; report.refined.taken = true; }
   }
   return {found: {solution, assessment}, report: {...report, search: found.report, exactOutline: assessment}};
 }

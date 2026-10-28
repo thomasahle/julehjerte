@@ -88,6 +88,7 @@ describe('translated curve fitting cache', () => {
     const second = createTranslatedCurveFitter();
     second(source(), .05);
     expect(spy).toHaveBeenCalledTimes(2);
-    expect(second(source(), 0)).toEqual(source());
+    // At zero tolerance only the pieces of one cubic are joined, exactly.
+    expect(second(source(), 0)).toEqual(fitting.joinSplitCubics(source()));
   });
 });

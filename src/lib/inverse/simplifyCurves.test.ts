@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import type { BezierSegment } from '$lib/geometry/bezierSegments';
 import { splitBezierAt } from '$lib/geometry/bezierSegments';
-import { simplifyCubicChain, sampleChain, chainDeviation, FIT_TOLERANCE } from '$lib/inverse/simplifyCurves';
+import { simplifyCubicChain, sampleChain, chainDeviation, joinSplitCubics, FIT_TOLERANCE } from '$lib/inverse/simplifyCurves';
 import { type CutGeometry } from '$lib/inverse/toHeartDesign';
 import starSolution from '../../../static/inverse/examples/star.saved.json';
 
@@ -110,10 +110,11 @@ describe('simplifyCubicChain', () => {
     expect(joints.some((p) => Math.hypot(p.x - 50, p.y - 0) < 0.25)).toBe(true);
   });
 
-  it('leaves a single cubic and a zero tolerance alone', () => {
+  it('leaves a single cubic alone, and at zero tolerance only joins what was split', () => {
     expect(simplifyCubicChain([S_CURVE], 0.25)).toEqual([S_CURVE]);
-    const pieces = subdivide(S_CURVE, 6);
-    expect(simplifyCubicChain(pieces, 0)).toEqual(pieces);
+    expectSame(simplifyCubicChain(subdivide(S_CURVE, 6), 0), [S_CURVE]);
+    const corner = [line([0, 0], [50, 0]), line([50, 0], [50, 50])];
+    expect(simplifyCubicChain(corner, 0)).toEqual(corner);
     expect(simplifyCubicChain([], 0.25)).toEqual([]);
   });
 
@@ -121,6 +122,38 @@ describe('simplifyCubicChain', () => {
     for (const chain of starChains()) {
       expect(simplifyCubicChain(chain, 0.01).length).toBeLessThanOrEqual(chain.length);
     }
+  });
+});
+
+/** The same cubics, to within rounding. */
+function expectSame(actual: BezierSegment[], expected: BezierSegment[]): void {
+  expect(actual).toHaveLength(expected.length);
+  actual.forEach((seg, i) => {
+    for (const k of ['p0', 'p1', 'p2', 'p3'] as const) {
+      expect(seg[k].x).toBeCloseTo(expected[i]![k].x, 6);
+      expect(seg[k].y).toBeCloseTo(expected[i]![k].y, 6);
+    }
+  });
+}
+
+describe('joinSplitCubics', () => {
+  it('joins pieces of one cubic back into it exactly, wherever it was split', () => {
+    const [head, rest] = splitBezierAt(S_CURVE, 0.2);
+    const [middle, tail] = splitBezierAt(rest, 0.6);
+    expectSame(joinSplitCubics([head, middle, tail]), [S_CURVE]);
+    // The engine's JSON rounds control points.
+    const round = (seg: BezierSegment): BezierSegment => Object.fromEntries(Object.entries(seg)
+      .map(([k, p]) => [k, { x: +p.x.toFixed(6), y: +p.y.toFixed(6) }])) as BezierSegment;
+    expect(joinSplitCubics([head, middle, tail].map(round))).toHaveLength(1);
+  });
+
+  it('joins collinear straight pieces, and nothing that only meets smoothly or at a corner', () => {
+    expectSame(joinSplitCubics([line([0, 0], [30, 0]), line([30, 0], [100, 0])]), [line([0, 0], [100, 0])]);
+    // S_CURVE and its mirror image meet smoothly at its end, but are no one cubic.
+    const mirror: BezierSegment = { p0: S_CURVE.p3, p1: { x: 2 * S_CURVE.p3.x - S_CURVE.p2.x, y: 2 * S_CURVE.p3.y - S_CURVE.p2.y },
+      p2: { x: 2 * S_CURVE.p3.x - S_CURVE.p1.x, y: 2 * S_CURVE.p3.y - S_CURVE.p1.y }, p3: { x: 2 * S_CURVE.p3.x - S_CURVE.p0.x, y: 2 * S_CURVE.p3.y - S_CURVE.p0.y } };
+    expect(joinSplitCubics([S_CURVE, mirror])).toHaveLength(2);
+    expect(joinSplitCubics([line([0, 0], [50, 0]), line([50, 0], [50, 50])])).toHaveLength(2);
   });
 });
 

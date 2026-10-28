@@ -14,6 +14,8 @@ import {exactFromTemplate} from '../../static/inverse/core/exact/search.js';
 import {gridWitness} from '../../static/inverse/core/exact/grid.js';
 import {prepare, restorePrepared, design} from '../../static/inverse/core/engine.js';
 import {finishExactStopped} from '../../static/inverse/core/stopped.js';
+import {smoothEdges} from '../../static/inverse/core/exact/refine.js';
+import {turnsOf} from '../../static/inverse/core/exact/stage.js';
 
 const svgOf = rings => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path fill="#b91313" fill-rule="evenodd" d="${
   rings.map(ring => 'M' + ring.map(([x, y]) => `${x.toFixed(9)},${(12 - y).toFixed(9)}`).join('L') + 'Z').join('')}"/></svg>`;
@@ -174,4 +176,36 @@ test('every engine module imports only what the site serves, under static/invers
   };
   await walk(root);
   assert.deepEqual(out, []);
+});
+
+test('a mask\'s wavy edge of a circle is drawn as a few cubics, split at its switches', () => {
+  // A circle of 100 pixels on a 400-pixel mask, its edge waving 0.4 pixels
+  // over 20 as a staircase's sub-pixel edge does, at 1-pixel steps.
+  const n = 400, scale = n / 12, r = 100 / scale, c = [6, 6], count = Math.round(2 * Math.PI * 100);
+  const pts = Array.from({length: count + 1}, (_, k) => {
+    const a = 2 * Math.PI * k / count, wave = .4 * Math.sin(2 * Math.PI * k / 20) / scale;
+    return [c[0] + (r + wave) * Math.cos(a), c[1] + (r + wave) * Math.sin(a)];
+  });
+  pts[count] = pts[0];
+  const outline = {E: [{loop: true}], L: [2 * Math.PI * r], corners: [[]]};
+  const off = cubics => Math.max(...cubics.flatMap(cubic => cubic.flatten(.001).map(p => Math.abs(Math.hypot(p[0] - c[0], p[1] - c[1]) - r) * scale)));
+  const [plain] = smoothEdges(outline, [pts], n);
+  assert.ok(plain.cubics.length <= 6, `${plain.cubics.length} cubics`);
+  assert.ok(off(plain.cubics) < .75, `${off(plain.cubics).toFixed(2)} pixels off the circle`);
+  // Switches a third and two thirds of the way round start cubics of their own.
+  const s = [outline.L[0] / 3, 2 * outline.L[0] / 3], at = new Map([[0, s]]), [split] = smoothEdges(outline, [pts], n, {switches: at, positions: at});
+  for (const arc of s) {
+    const [i, t] = split.at.get(arc), k = Math.round(arc / outline.L[0] * count);
+    assert.ok(i > 0 && t === 0, 'a cubic starts at the switch');
+    assert.ok(Math.hypot(split.cubics[i].p[0][0] - pts[k][0], split.cubics[i].p[0][1] - pts[k][1]) * scale < .5);
+  }
+  assert.ok(off(split.cubics) < .75);
+});
+
+test('a picture symmetric under mirrors may keep only its turns, the search\'s fallback', () => {
+  assert.deepEqual(turnsOf(['mirrorX', 'mirrorY', 'transpose']), ['rotate90']);
+  assert.deepEqual(turnsOf(['mirrorX', 'mirrorY']), ['rotate180']);
+  assert.deepEqual(turnsOf(['transpose', 'antiTranspose']), ['rotate180']);
+  assert.deepEqual(turnsOf(['mirrorX']), []);
+  assert.deepEqual(turnsOf(['rotate180']), []);
 });

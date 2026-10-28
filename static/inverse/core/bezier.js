@@ -40,6 +40,31 @@ export function splitLong(c,max=12){if(c.length()<=max)return[c];return c.split(
 export function pathPolyline(cs,tol=.01,maxStep=Infinity){let p=[];for(const c of cs){const a=c.flatten(tol,maxStep);p.push(...(p.length?a.slice(1):a));}return p;}
 export function rdp(p,eps){if(p.length<3)return p;let d=0,k=0;for(let i=1;i<p.length-1;i++){const v=segmentDistance(p[i],p[0],p.at(-1));if(v>d){d=v;k=i;}}return d<=eps?[p[0],p.at(-1)]:[...rdp(p.slice(0,k+1),eps).slice(0,-1),...rdp(p.slice(k),eps)];}
 function polyDistance(p,line){let best=Infinity;for(let i=1;i<line.length;i++)best=Math.min(best,segmentDistance(p,line[i-1],line[i]));return best;}
+/** One run of points as cubics within `tolerance`, its ends' unit tangents
+ * `tan0` and `tan1` (from its first and last legs when null): one cubic where
+ * it fits, else split at the worst point with a tangent both halves share. */
+export function fitPoints(q,tolerance,maxSpan=Infinity,tan0=null,tan1=null,depth=0){
+  if(q.length===2)return splitLong(Cubic.line(q[0],q[1]),maxSpan);
+  const lengths=[0];for(let i=1;i<q.length;i++)lengths.push(lengths.at(-1)+distance(q[i-1],q[i]));const total=lengths.at(-1),t0=tan0||unit(sub(q[1],q[0])),t1=tan1||unit(sub(q.at(-1),q.at(-2)));
+  let ts=lengths.map(x=>x/total),err,initialError;
+  // Chord length is only an initial parameterization. Refine point parameters
+  // before splitting an otherwise good cubic into unnecessary short segments.
+  for(let iteration=0;iteration<5;iteration++){
+    let aa=0,ab=0,bb=0,ar=0,br=0;
+    for(let i=0;i<q.length;i++){const t=ts[i],u=1-t,b0=u**3,b1=3*t*u*u,b2=3*t*t*u,b3=t**3,v=mul(t0,b1),z=mul(t1,-b2),r=sub(q[i],add(mul(q[0],b0+b1),mul(q.at(-1),b2+b3)));aa+=dot(v,v);ab+=dot(v,z);bb+=dot(z,z);ar+=dot(v,r);br+=dot(z,r);}
+    const det=aa*bb-ab*ab;let a=(ar*bb-br*ab)/det,b=(aa*br-ab*ar)/det;if(!(a>0&&b>0&&a<3*total&&b<3*total))a=b=distance(q[0],q.at(-1))/3;
+    const c=new Cubic([q[0],add(q[0],mul(t0,a)),sub(q.at(-1),mul(t1,b)),q.at(-1)]),flat=c.flatten(Math.max(.003,.12*tolerance)),haus=Math.max(...flat.map(p=>polyDistance(p,q)),...q.map(p=>polyDistance(p,flat)));
+    err=q.map((p,i)=>distance(p,c.point(ts[i])));
+    if(iteration===0)initialError=err;
+    if(haus<=.8*tolerance&&(Math.max(...err)<=1.5*tolerance||q.length<=4))return splitLong(c,maxSpan);
+    const next=ts.map((t,i)=>{if(i===0||i===q.length-1)return t;const delta=sub(c.point(t),q[i]),d=c.derivative(t),den=dot(d,d)+dot(delta,c.second(t));return Math.abs(den)>1e-12?clamp(t-dot(delta,d)/den):t;});
+    if(next.some((t,i)=>i>0&&t<=next[i-1])||next.every((t,i)=>Math.abs(t-ts[i])<1e-8))break;
+    ts=next;
+  }
+  // If refinement cannot meet the checks, preserve the original subdivision.
+  err=initialError;
+  if(depth>=20)return q.slice(1).map((b,i)=>Cubic.line(q[i],b));let k=err.indexOf(Math.max(...err));if(k<=0||k>=q.length-1)k=Math.floor(q.length/2);const tan=unit(sub(q[Math.min(k+1,q.length-1)],q[Math.max(0,k-1)]));return [...fitPoints(q.slice(0,k+1),tolerance,maxSpan,t0,tan,depth+1),...fitPoints(q.slice(k),tolerance,maxSpan,tan,t1,depth+1)];
+}
 export function fitPolyline(raw,tolerance=.25,maxSpan=12,cornerDegrees=65,cornerSupport=0){
   const p=raw.filter((v,i)=>!i||distance(v,raw[i-1])>1e-9);if(p.length<2)return[];
   if(distance(p[0],p.at(-1))<1e-9){const k=Math.floor(p.length/2);return [...fitPolyline(p.slice(0,k+1),tolerance,maxSpan,cornerDegrees,cornerSupport),...fitPolyline(p.slice(k),tolerance,maxSpan,cornerDegrees,cornerSupport)];}
@@ -54,29 +79,7 @@ export function fitPolyline(raw,tolerance=.25,maxSpan=12,cornerDegrees=65,corner
     if(local>=cornerDegrees&&supported>=cornerDegrees)corners.push(i);
   }
   corners.push(simple.length-1);
-  function rec(q,tan0=null,tan1=null,depth=0){
-    if(q.length===2)return splitLong(Cubic.line(q[0],q[1]),maxSpan);
-    const lengths=[0];for(let i=1;i<q.length;i++)lengths.push(lengths.at(-1)+distance(q[i-1],q[i]));const total=lengths.at(-1),t0=tan0||unit(sub(q[1],q[0])),t1=tan1||unit(sub(q.at(-1),q.at(-2)));
-    let ts=lengths.map(x=>x/total),err,initialError;
-    // Chord length is only an initial parameterization. Refine point parameters
-    // before splitting an otherwise good cubic into unnecessary short segments.
-    for(let iteration=0;iteration<5;iteration++){
-      let aa=0,ab=0,bb=0,ar=0,br=0;
-      for(let i=0;i<q.length;i++){const t=ts[i],u=1-t,b0=u**3,b1=3*t*u*u,b2=3*t*t*u,b3=t**3,v=mul(t0,b1),z=mul(t1,-b2),r=sub(q[i],add(mul(q[0],b0+b1),mul(q.at(-1),b2+b3)));aa+=dot(v,v);ab+=dot(v,z);bb+=dot(z,z);ar+=dot(v,r);br+=dot(z,r);}
-      const det=aa*bb-ab*ab;let a=(ar*bb-br*ab)/det,b=(aa*br-ab*ar)/det;if(!(a>0&&b>0&&a<3*total&&b<3*total))a=b=distance(q[0],q.at(-1))/3;
-      const c=new Cubic([q[0],add(q[0],mul(t0,a)),sub(q.at(-1),mul(t1,b)),q.at(-1)]),flat=c.flatten(Math.max(.003,.12*tolerance)),haus=Math.max(...flat.map(p=>polyDistance(p,q)),...q.map(p=>polyDistance(p,flat)));
-      err=q.map((p,i)=>distance(p,c.point(ts[i])));
-      if(iteration===0)initialError=err;
-      if(haus<=.8*tolerance&&(Math.max(...err)<=1.5*tolerance||q.length<=4))return splitLong(c,maxSpan);
-      const next=ts.map((t,i)=>{if(i===0||i===q.length-1)return t;const delta=sub(c.point(t),q[i]),d=c.derivative(t),den=dot(d,d)+dot(delta,c.second(t));return Math.abs(den)>1e-12?clamp(t-dot(delta,d)/den):t;});
-      if(next.some((t,i)=>i>0&&t<=next[i-1])||next.every((t,i)=>Math.abs(t-ts[i])<1e-8))break;
-      ts=next;
-    }
-    // If refinement cannot meet the checks, preserve the original subdivision.
-    err=initialError;
-    if(depth>=20)return q.slice(1).map((b,i)=>Cubic.line(q[i],b));let k=err.indexOf(Math.max(...err));if(k<=0||k>=q.length-1)k=Math.floor(q.length/2);const tan=unit(sub(q[Math.min(k+1,q.length-1)],q[Math.max(0,k-1)]));return [...rec(q.slice(0,k+1),t0,tan,depth+1),...rec(q.slice(k),tan,t1,depth+1)];
-  }
-  let result=[];for(let ci=1;ci<corners.length;ci++){const q=simple.slice(corners[ci-1],corners[ci]+1),dense=[q[0]];for(let i=1;i<q.length;i++){const n=Math.max(1,Math.ceil(distance(q[i-1],q[i])/Math.max(.1,maxSpan/8)));for(let j=1;j<=n;j++)dense.push(j===n?q[i]:mix(q[i-1],q[i],j/n));}result.push(...rec(dense));}return result;
+  let result=[];for(let ci=1;ci<corners.length;ci++){const q=simple.slice(corners[ci-1],corners[ci]+1),dense=[q[0]];for(let i=1;i<q.length;i++){const n=Math.max(1,Math.ceil(distance(q[i-1],q[i])/Math.max(.1,maxSpan/8)));for(let j=1;j<=n;j++)dense.push(j===n?q[i]:mix(q[i-1],q[i],j/n));}result.push(...fitPoints(dense,tolerance,maxSpan));}return result;
 }
 // Polynomial-root isolation by derivative recursion on [0,1]. Repeated roots
 // are checked at critical points; these remain floating-point computations.

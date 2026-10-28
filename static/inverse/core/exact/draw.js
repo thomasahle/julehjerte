@@ -69,15 +69,27 @@ export function drawing(pieces) {
   return out;
 }
 
+/** {A, B}: each slit as its parts in order, a run's cubics where it has them
+ * (four control points each) and each leg of a polyline else (two points). */
+export function curveDrawing(pieces) {
+  const out = {};
+  for (const fam of ['A', 'B']) out[fam] = pieces[fam].map(slit => slit.flatMap(({line, curves}) => curves?.length ? curves
+    : line.slice(1).map((p, i) => [line[i], p]).filter(([a, b]) => Math.hypot(b[0] - a[0], b[1] - a[1]) > 1e-9)));
+  return out;
+}
+
 // A segment both papers cut, in either direction, must become the same cubic,
 // or the app sees two edges there: build it from its lexicographically first end.
 const segment = (a, b) => a[0] < b[0] || (a[0] === b[0] && a[1] <= b[1]) ? Cubic.line(a, b).p : Cubic.line(b, a).p.toReversed();
 
-/** The app solution of a drawing on `target` (its source image decides the colour phase). */
+/** The app solution of a drawing on `target` (its source image decides the
+ * colour phase): drawing's polylines, or curveDrawing's parts. */
 export function drawingSolution(xy, target, cfg) {
   const width = target.width;
-  const paths = ['A', 'B'].map(f => xy[f].map(line => {
-    const pts = line.map(p => toApp(p, width));
+  const paths = ['A', 'B'].map(f => xy[f].map(slit => {
+    if (Array.isArray(slit[0]?.[0])) return slit.map(part => part.length === 2
+      ? segment(toApp(part[0], width), toApp(part[1], width)) : part.map(p => toApp(p, width)));
+    const pts = slit.map(p => toApp(p, width));
     return pts.slice(1).map((p, i) => segment(pts[i], p));
   }));
   const graph = new CurveGraph(paths, width);

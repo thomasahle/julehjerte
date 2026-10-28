@@ -642,6 +642,59 @@ the turn and crossing rules, but on the design's own curves, read with
 touchings at two of the eight junctions; the picture has none, and 16 is its
 bound.
 
+## The exact template's cuts as a designer draws them (2026-10-28)
+
+Opened in Tegn, Uret's exact template had a node every pixel along its
+outline (338 cubics a cut): the search's drawing on the mask's own edge
+(refine.js) followed the pixels' staircase in a polyline, every leg a cubic,
+and Mal's converter cannot simplify that without moving pixels, which its
+fidelity check forbids (a smooth curve passes within a tenth of a pixel of so
+many pixel centres that any refit flips a tenth of a percent of them).
+
+The search now draws that edge in a few cubics (refine.js `smoothEdges`): the
+mask's sub-pixel edge averaged along the outline over a Gaussian of at most 3
+pixels (it waves with the staircase, 0.6 pixels at most on Uret's ring, 0.23
+after), never across a corner, then fitted within 0.75 pixels by least squares,
+split at the corners and switches and nowhere else unless the fit needs it.
+At a corner both control points are free: a tangent estimated from its few
+pixels was 8-16 degrees off and took three cubics where one fits. Each switch
+and corner is a join, at its exact arc, so a run between two switches is whole
+cubics and a hidden cut ends at a join. Under the ties' symmetry each orbit of
+edges is fitted once, on its points averaged with their images', and drawn as
+that fit's images; an edge that is its own image splits where its images do and
+at the middle, on the axis where a switch lies across it (fitted one by one,
+5star-shot's two sheets came out 0.2 mm apart and no longer had one template;
+now 0.03 mm, nearer than the traced polyline's 0.07). The converter joins the
+pieces of one cubic back exactly (simplifyCurves.ts `joinSplitCubics`): the
+engine's cut graph splits a cut wherever the other sheet's crosses it.
+
+Where the drawing with every edge smoothed breaks a rule, orbits are smoothed
+one by one on the traced outline (boelgebrud: 27 cubics a cut; on the pixel
+steps instead, 262), or where none passes so, on the pixel steps
+(triple-heart-shot, whose narrow tip only those clear). The smooth drawing is
+taken when it passes where the traced one does not, else when it keeps the
+rest and lies at most half a percent further from the mask.
+
+Uret: 12 cubics a cut instead of 338 (every arc one cubic, the inner ring's
+quarters too), 0.21% from the mask instead of 0.0%, all eight symmetries kept.
+The 130 juleflet pictures, the exact search alone for 40 s: 92 templates the
+export takes instead of 87 (fisk-kors and its photograph, jul-shot, juletrae,
+origami and permo-kroge gain one; drageskael-shot, at the deadline, passed
+again on its own), 8.6 s at the median instead of 9.6 s; the smooth drawing
+taken for 87 of them, at 0.31% from the mask at the median instead of 0.15%,
+with 18-30 cubics a cut for most (puslespil 66, drageskael-shot 84, where the
+fallback keeps traced edges). The templates that fail Tegn's own checks in
+conversion are the 18 the export rejects anyway, as before.
+
+Fejlternet (the gallery's): its picture is symmetric under both mirrors and
+the diagonals, but its hidden cuts wheel round the middle square, the
+designer's and every other template's, so under all eight ties the search
+proves in seconds there is none, and Mal gave the fitter's rounded corners.
+Where the requested symmetry's ties leave no template, the search now tries its
+turns alone (stage.js `turnsOf`, a quarter turn here): 12 hidden segments, the
+designer's count, 0.25% from the mask, in 16 s; its rows show as not held, as
+a pinwheel has no mirror.
+
 ## Details lost on photographs (2026-10-25)
 
 The 68 photographs whose template keeps every rule but loses a region of the
@@ -684,6 +737,11 @@ camel, but takes 20-28 s more and fails on other photographs; not used.
 - The exact search's hard designs: balls, venus, khatam, santa, dagognat and
   davidsstjerne-circ get the fitter's template (passing, 0.7-1.5% from the
   mask), and the circle's photograph, whose cuts come too close (above).
+- The exact template's smooth drawing where its every-edge version breaks a
+  rule: which edges, rather than orbits added one by one for two seconds
+  (puslespil keeps 66 cubics a cut); a pinwheel's turns as Tegn's Drejet rows
+  (fejlternet's show as not held); tiny legs where a cut meets the square's
+  side.
 - A graph for the exact search fitted to the mask before it runs (the user's
   suggestion, 2026-10-27): steady corners and long cuts along one edge are in
   (above). Still open: an outline symmetric by construction (the mask is, but

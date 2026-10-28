@@ -360,7 +360,8 @@ function subdivide(
  * the same angle.
  */
 export function simplifyCubicChain(segments: BezierSegment[], tolerance = FIT_TOLERANCE): BezierSegment[] {
-  if (segments.length <= 1 || !(tolerance > 0)) return segments.map((s) => ({ ...s }));
+  if (!(tolerance > 0)) return joinSplitCubics(segments);
+  if (segments.length <= 1) return segments.map((s) => ({ ...s }));
 
   // Refitting across a right angle would undo the fitter's straight-span and
   // corner preservation. Fit the smooth runs on either side independently.
@@ -406,6 +407,59 @@ export function simplifyCubicChain(segments: BezierSegment[], tolerance = FIT_TO
 
   // A fit that came out no shorter is not worth the loss of fidelity.
   return merged.length < segments.length ? merged : segments.map((s) => ({ ...s }));
+}
+
+/** How far (0–100 frame) a joined cubic's halves may lie from the two it
+ * replaces: the engine's JSON rounds control points to a few decimals. */
+const JOIN_TOLERANCE = 1e-4;
+
+/**
+ * The chain with every run of cubics that are pieces of one cubic joined back
+ * into it, exactly: without refitting, so not a pixel moves.
+ *
+ * The engine's cut graph splits each cut wherever a cut of the other sheet
+ * crosses it, so a cut drawn as a few smooth cubics (the exact search's, on the
+ * outline it traced) arrives in tens of pieces. Refitting them, however finely,
+ * moves the curve by a hair; a smooth curve passes that close to so many pixel
+ * centres that a tenth of a pixel flips a tenth of a percent of them, and the
+ * fidelity check then keeps every piece (Uret: 30 cubics a cut, 10 joined).
+ * Two cubics are one split at s when the joint lies on the segment between the
+ * handles either side of it, s along it: then the whole has the first's start
+ * handle stretched by 1/s and the second's end handle by 1/(1 − s), and is
+ * taken where splitting it at s gives both back.
+ */
+export function joinSplitCubics(segments: BezierSegment[]): BezierSegment[] {
+  const out: BezierSegment[] = [];
+  for (const seg of segments) {
+    const prev = out[out.length - 1];
+    const joined = prev && joinPair(prev, seg);
+    if (joined) out[out.length - 1] = joined;
+    else out.push({ ...seg });
+  }
+  return out;
+}
+
+function joinPair(a: BezierSegment, b: BezierSegment): BezierSegment | null {
+  if (len(sub(a.p3, b.p0)) > JOIN_TOLERANCE) return null;
+  const before = len(sub(a.p3, a.p2)), after = len(sub(b.p1, b.p0));
+  if (before < 1e-9 || after < 1e-9) return null;
+  const s = before / (before + after);
+  const whole: BezierSegment = {
+    p0: a.p0,
+    p1: add(a.p0, mul(sub(a.p1, a.p0), 1 / s)),
+    p2: add(b.p3, mul(sub(b.p2, b.p3), 1 / (1 - s))),
+    p3: b.p3
+  };
+  const [left, right] = splitAt(whole, s);
+  const keys = ['p0', 'p1', 'p2', 'p3'] as const;
+  const off = Math.max(...keys.map((k) => len(sub(left[k], a[k]))), ...keys.map((k) => len(sub(right[k], b[k]))));
+  return off <= JOIN_TOLERANCE ? whole : null;
+}
+
+function splitAt(c: BezierSegment, t: number): [BezierSegment, BezierSegment] {
+  const mix = (p: Pt, q: Pt) => add(mul(p, 1 - t), mul(q, t));
+  const a = mix(c.p0, c.p1), b = mix(c.p1, c.p2), d = mix(c.p2, c.p3), e = mix(a, b), f = mix(b, d), g = mix(e, f);
+  return [{ p0: c.p0, p1: a, p2: e, p3: g }, { p0: g, p1: f, p2: d, p3: c.p3 }];
 }
 
 /**

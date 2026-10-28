@@ -198,10 +198,16 @@ describe('cutGeometryToDesign', () => {
       // The star's cuts turn hard — 67 corners over 25° across the eight of
       // them — and a corner always costs its own cubic, so about nine per cut is
       // the floor no tolerance gets under. `sharpTurns` below measures it.
-      const before = segmentsPerCut(cutGeometryToDesign(EXAMPLES.star, { name: 'star', tolerance: 0 }));
+      // The engine's own pieces; at zero tolerance those of one cubic are
+      // joined back (its cut graph splits a cut wherever the other sheet's
+      // crosses it), and simplifying takes the rest.
+      const paths = [...EXAMPLES.star.A_overlap_paths, ...EXAMPLES.star.B_overlap_paths];
+      const engine = paths.reduce((sum, cut) => sum + cut.length, 0) / paths.length;
+      const joined = segmentsPerCut(cutGeometryToDesign(EXAMPLES.star, { name: 'star', tolerance: 0 }));
       const after = segmentsPerCut(cutGeometryToDesign(EXAMPLES.star, { name: 'star' }));
-      expect(before.average).toBeGreaterThan(20);
-      expect(after.average).toBeLessThan(before.average * 0.6);
+      expect(engine).toBeGreaterThan(20);
+      expect(joined.average).toBeLessThan(engine);
+      expect(after.average).toBeLessThan(engine * 0.6);
       expect(after.average).toBeLessThanOrEqual(12);
     });
 
