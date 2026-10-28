@@ -328,6 +328,14 @@
     },
     "difficulty": "hard"
   },
+  "ni-ruder": {
+    "name": "Ni ruder",
+    "names": {
+      "da": "Ni ruder",
+      "en": "Nine panes"
+    },
+    "difficulty": "hard"
+  },
   "fejlternet": {
     "name": "Fejlternet hjerte",
     "names": {

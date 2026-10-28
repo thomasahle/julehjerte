@@ -62,7 +62,8 @@ export const PINTEREST_FIRST = ['classic-3x3', 'gaver', 'jul', 'juletrae', 'stje
  * in on 2026-10-28, before Christmas and between hearts of other categories.
  * The same day Plus, Khatam, Stjernegitter, Stjerner og kors, Sildeben, Flyvende
  * gæs and Origami moved to Fliser, which made neighbours of Fliser at days
- * 65–72; swaps among days 66–78, none of them out, kept them apart.
+ * 65–72; swaps among days 66–78, none of them out, kept them apart. Ni ruder
+ * went in at day 34, between Snefnug and Puslespil.
  */
 export const PINTEREST_ORDER: readonly string[] = [
 	'classic-3x3', 'juletrae', 'circle', 'gaver', 'balls', 'jul',
@@ -70,7 +71,7 @@ export const PINTEREST_ORDER: readonly string[] = [
 	'god-jul', 'amy-weave-1', 'flower', 'amy-weave-2', 'triple-heart', 'amy-rosette',
 	'5star', 'amy-pattern', 'venus', 'amy-flowering', 'simple-5star', 'amy-pinecone',
 	'h4h2', 'tak', 'alhambra', 'kompasrose', 'angel', 'squares', 'sun', 'ni-hjerter-i-tern',
-	'sildeben', 'snowflake', 'puslespil', 'fire-stjerner', 'permo-sol', 'koelbuer', 'nemt-hjerte',
+	'sildeben', 'snowflake', 'ni-ruder', 'puslespil', 'fire-stjerner', 'permo-sol', 'koelbuer', 'nemt-hjerte',
 	'roserude', 'santa', 'andreaskors', 'hanefod', 'explosion', 'flyvendegaes', 'mor-og-barn',
 	'origami', 'nihon', 'drageskael', 'hjerte-i-hjerte-i-hjerte', 'mor-far', 'dagognat', 'hermanngitter',
 	'lilje1', 'tragt', 'davidsstjerne-circ', 'boelgebrud', 'ball', 'glaskuppel',

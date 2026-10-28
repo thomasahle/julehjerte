@@ -1257,6 +1257,33 @@
     },
     "photo": null
   },
+  "ni-ruder": {
+    "name": "Ni ruder",
+    "names": {
+      "da": "Ni ruder",
+      "en": "Nine panes"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-28",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "fejlternet": {
     "name": "Fejlternet hjerte",
     "names": {

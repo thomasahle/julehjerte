@@ -83,6 +83,8 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   and Hans H. Koch's Andreaskors (Børnenes Magasin, 1916) at day 41
   (2026-12-01), between Julemand and Hanefod, so both are out before Christmas
   and away from their own categories.
+  Ni ruder followed the same day at day 34 (2026-11-24), between Snefnug and
+  Puslespil.
 - The feed holds the released items only (nothing future-dated), newest first,
   at most 30 (`PINTEREST_MAX_ITEMS`). When every heart is out, the feed stops
   growing: it does not cycle.
