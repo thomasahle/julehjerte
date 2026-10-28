@@ -6,12 +6,15 @@
   all 18 ways of two shapes, red and white each its own tile, and all 10 of three, the white tiles of
   two kinds (two.test.ts). Types of two or three shapes show those tiles too, the red one tinted.
 
-  All of them at once, as a table of glyphs: a column for one, two and three shapes, and a row for
-  what the red tile is of itself (`tileSymmetry`): no symmetry, the same upside down, the same turned
-  a quarter, its own mirror image across one line, two or four. A cell holds its types in the order
-  they were offered before (moved and moved-and-mirrored first, the ones tiled.art's gallery uses
-  most); empty rows are left out. The owner chose this table, 2026-10-28, over sections, questions and
-  a window of examples, after agent testers lost their way in the long list it replaces.
+  Four come first, the standard ones, each a glyph and its name: moved and moved-and-mirrored, the two
+  quadrilateral types tiled.art's gallery uses most; two shapes; and symmetric, every tile its own
+  mirror image. "Avanceret" opens the others as a table of glyphs: a column for one, two and three
+  shapes, and a row for what the red tile is of itself (`tileSymmetry`): no symmetry, the same upside
+  down, the same turned a quarter, its own mirror image across one line, two or four. A cell holds its
+  types in the order they were offered before; empty rows are left out. The table is open while a
+  type of it is chosen. The owner chose the table, 2026-10-28, over sections, questions and a window
+  of examples, after agent testers lost their way in the long list it replaces, and the four standard
+  ones above it, the table under "Avanceret".
 
   One glyph per type, its name its accessible name, its tooltip its name and what it does, so a type
   can be read about before it is chosen. Opposite pairs tied two different ways can lie either way
@@ -22,10 +25,11 @@
   (`children`).
 
   compact   Tegn below 900px, where the panel leaves its column for a row under the drawing and can
-            be 235px wide: smaller glyphs and row names.
+            be 235px wide: the standard four as glyphs alone, their names their accessible names, and
+            smaller glyphs and row names in the table.
 -->
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import { untrack, type Snippet } from 'svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import { ToggleGroup, ToggleGroupItem, keepChosen } from '$lib/components/ui/toggle-group';
 	import { COMMON_RULES, THREE_NUMBERS, TWO_NUMBERS, neighbours, ofType, opposite, ruleKey, threeShapes, tileSymmetry, twoShapes, type TileRule, type TileSymmetry } from '$lib/pattern/rules';
@@ -53,9 +57,8 @@
 		return rule.sides === 'opposite' ? `opposite:${[rule.v, rule.h].sort().join(':')}` : ruleKey(rule);
 	}
 
-	/** Every type once, in the order they were offered before the table: the four most used first. */
+	/** The others, each once, in the order they were offered before the table. */
 	const TYPES: TileRule[] = [
-		...COMMON_RULES,
 		opposite('turn', 'turn'),
 		opposite('mirror', 'turn'),
 		opposite('move', 'turn'),
@@ -68,7 +71,8 @@
 		...TWO_NUMBERS.map(twoShapes),
 		...THREE_NUMBERS.map(threeShapes)
 	];
-	const RULES = new Map(TYPES.map((rule) => [typeKey(rule), rule]));
+	const RULES = new Map([...COMMON_RULES, ...TYPES].map((rule) => [typeKey(rule), rule]));
+	const isAdvanced = (rule: TileRule) => TYPES.some((r) => typeKey(r) === typeKey(rule));
 
 	const COLUMNS: Array<{ shapes: 1 | 2 | 3; name: TranslationKey }> = [
 		{ shapes: 1, name: 'patternOneShape' },
@@ -86,6 +90,12 @@
 	const ROWS = (Object.keys(ROW_NAMES) as TileSymmetry[])
 		.map((symmetry) => ({ symmetry, cells: COLUMNS.map(({ shapes }) => TYPES.filter((rule) => shapesOf(rule) === shapes && tileSymmetry(rule) === symmetry)) }))
 		.filter((row) => row.cells.some((cell) => cell.length));
+
+	// Open on a type of the table, and open again when one comes back (undo, say).
+	let advanced = $state(untrack(() => !!active && isAdvanced(active)));
+	$effect(() => {
+		if (active && isAdvanced(active)) advanced = true;
+	});
 
 	let chosen = $derived(active ? typeKey(active) : '');
 
@@ -110,6 +120,15 @@
 		{@render children?.()}
 	{/if}
 	<ToggleGroup type="single" role="radiogroup" aria-label={tr('patternRuleTitle')} value={chosen} onValueChange={choose} {disabled}>
+		<div class="standard">
+			{#each COMMON_RULES as rule (typeKey(rule))}
+				{@render segment(rule)}
+			{/each}
+		</div>
+		<button type="button" class="advanced" aria-expanded={advanced} onclick={() => (advanced = !advanced)}>
+			<span class="marker" class:open={advanced} aria-hidden="true">▸</span>{tr('patternAdvanced')}
+		</button>
+		{#if advanced}
 		<div class="table">
 			<span></span>
 			{#each COLUMNS as column (column.shapes)}
@@ -126,8 +145,17 @@
 				{/each}
 			{/each}
 		</div>
+		{/if}
 	</ToggleGroup>
 </div>
+
+{#snippet segment(rule: TileRule)}
+	{@const name = tr(ruleText(rule).name)}
+	<ToggleGroupItem value={typeKey(rule)} aria-label={name} title={`${name}\n${tr(ruleText(rule).hint)}`} {...keepChosen(chosen === typeKey(rule))}>
+		<TemplateGlyph {rule} size={compact ? 34 : 48} />
+		<span class:sr-only={compact}>{name}</span>
+	</ToggleGroupItem>
+{/snippet}
 
 {#snippet glyph(rule: TileRule)}
 	{@const name = tr(ruleText(rule).name)}
@@ -144,9 +172,101 @@
 	}
 
 	.rule-templates :global([data-slot='toggle-group']) {
-		display: block;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 6px;
 		padding: 0;
 		background: none;
+	}
+
+	/* The standard four, two to a row, glyph beside its name. */
+	.standard {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 6px;
+	}
+
+	.standard :global([data-slot='toggle-group-item']) {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+		gap: 6px;
+		min-width: 0;
+		height: auto;
+		padding: 4px 8px 4px 4px;
+		border: 1.5px solid var(--line);
+		border-radius: 10px;
+		background: var(--white);
+		color: var(--green);
+		font-size: 12px;
+		font-weight: 600;
+		line-height: 1.25;
+		text-align: left;
+		white-space: normal;
+		box-shadow: none;
+	}
+
+	.standard :global([data-slot='toggle-group-item']:hover) {
+		background: var(--cream2);
+		color: var(--green);
+	}
+
+	.standard :global([data-slot='toggle-group-item'][data-state='on']) {
+		border-color: var(--green);
+		background: var(--green);
+		color: var(--white);
+	}
+
+	/* The glyph keeps its own white ground on the chosen, green segment. */
+	.standard :global([data-slot='toggle-group-item'] .template) {
+		border-radius: 8px;
+		background: var(--white);
+	}
+
+	/* Below 900px: the standard four as glyphs alone, in one row. */
+	.compact .standard {
+		grid-template-columns: repeat(4, auto);
+		justify-content: start;
+		gap: 4px;
+	}
+
+	.compact .standard :global([data-slot='toggle-group-item']) {
+		justify-content: center;
+		padding: 3px;
+	}
+
+	/* As Mal's "Avanceret" (FindCutsPanel): green, its marker turning as it opens. */
+	.advanced {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		align-self: flex-start;
+		padding: 2px 0;
+		border: none;
+		background: none;
+		color: var(--green);
+		font: inherit;
+		font-size: 13px;
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	.marker {
+		display: inline-block;
+		font-size: 11px;
+		transition: transform 0.15s ease;
+	}
+
+	.marker.open {
+		transform: rotate(90deg);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.marker {
+			transition: none;
+		}
 	}
 
 	/* A column of row names, then one for each number of shapes: one shape holds the most types. */
@@ -186,7 +306,7 @@
 		background: var(--cream2, #f3f6f2);
 	}
 
-	.rule-templates :global([data-slot='toggle-group-item']) {
+	.table :global([data-slot='toggle-group-item']) {
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -200,12 +320,12 @@
 		box-shadow: none;
 	}
 
-	.rule-templates :global([data-slot='toggle-group-item']:hover) {
+	.table :global([data-slot='toggle-group-item']:hover) {
 		border-color: var(--line);
 		background: var(--white);
 	}
 
-	.rule-templates :global([data-slot='toggle-group-item'][data-state='on']) {
+	.table :global([data-slot='toggle-group-item'][data-state='on']) {
 		border-color: var(--green);
 		background: var(--white);
 		box-shadow: 0 0 0 1px var(--green);
