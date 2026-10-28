@@ -1301,7 +1301,7 @@
       "x": 5,
       "y": 5
     },
-    "difficulty": "hard",
+    "difficulty": "medium",
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": true,
