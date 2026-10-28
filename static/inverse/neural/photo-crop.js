@@ -57,7 +57,10 @@ export function sharpenCrop(input,candidate,{starts=[],minLower=.5,minUpper=.2,m
  return{...candidate,quad:fit.quad,provenance:{...candidate.provenance,outlineRefined:{rms:fit.rms,edges:fit.edges,moved:fit.moved}}};
 }
 
-async function detectUnrefinedPhotoCrops(input,{roi=input.roi,onProgress=()=>{},cancelled=()=>false,onBody=()=>{},
+/** How far apart two quads' corners are, at most, in sides of the first. */
+const apart=(q,p)=>Math.max(...q.map((c,i)=>Math.hypot(c[0]-p[i][0],c[1]-p[i][1])))/Math.hypot(q[1][0]-q[0][0],q[1][1]-q[0][1]);
+
+async function detectUnrefinedPhotoCrops(input,{roi=input.roi,onProgress=()=>{},cancelled=()=>false,onBody=()=>{},far=.1,
  productionCrop=detectHeartCrops,predictBody=predictPaperBody,learnedCrop=detectForegroundCrop,outlineCrop=detectBodyCrop,silhouetteCrop=detectSilhouetteCrop}={}){
  // The colour locator may answer from a worker of its own (worker-controller.js):
  // the paper model then runs beside it, not after it.
@@ -85,10 +88,15 @@ async function detectUnrefinedPhotoCrops(input,{roi=input.roi,onProgress=()=>{},
    outlineCrop:()=>{check();return outlineCrop(input,{...body,outerBoundarySampling:true});}});
   check();const {decision,detection}=selected;
   // Nothing found: the heart's silhouette in the paper probability, which a
-  // photograph's edge, a turn or a handle does not hide.
-  if(!detection.candidates.length){
+  // photograph's edge, a turn or a handle does not hide. So too when the
+  // colour crop is kept only because nothing else passed, the paper not where
+  // it says (its whole-body evidence failed), and the silhouette lies over
+  // `far` of a side from it: a Pinterest pin's page round the photograph
+  // takes the colour locator to a square half off the heart.
+  const kept=detection.candidates[0],unsound=decision.selected==='production'&&!decision.productionBody?.passed;
+  if(!kept||unsound){
    const silhouette=silhouetteCrop(input,body);check();
-   if(silhouette)return{...detection,status:'needs_review',candidates:[silhouette],bodyReview:decision};
+   if(silhouette&&(!kept||apart(kept.quad,silhouette.quad)>far))return{...detection,status:'needs_review',candidates:[silhouette],bodyReview:decision};
   }
   const needsReview=decision.requiresReview||decision.selected==='learned';
   return{...detection,...(needsReview&&detection.candidates.length?{status:'needs_review'}:{}),

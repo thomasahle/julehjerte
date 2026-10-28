@@ -23,7 +23,13 @@ minute.
    heart's silhouette (the square and its two lobes under an affine map) is
    fitted to the paper network's probability — the largest piece, holes
    filled — so a heart the photograph cuts off, turns, or surrounds with other
-   things is still found. Every crop is then moved onto the square's own edges:
+   things is still found. The silhouette also replaces a colour crop that was
+   kept only because nothing else passed, when the paper is not where that
+   crop says and the silhouette lies over 10% of a side from it: on a
+   Pinterest pin the page round the photograph took the colour locator to a
+   square half off the heart (190% of a side off, now 4.7%; on 117 scraped
+   photographs 3 crops changed, one for the better, two wrong either way).
+   Every crop is then moved onto the square's own edges:
    at each point of the square's straight edges (and the lobes' half circles,
    where they really are half circles) the strongest colour edge across it,
    with the background or the lobe's colour on the outside, then the corners by

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {fitHeartSilhouette} from '../../static/inverse/neural/heart-fit.js';
-import {detectSilhouetteCrop, checkedBySilhouette, selectedSilhouette} from '../../static/inverse/neural/photo-crop.js';
+import {detectPhotoCrops, detectSilhouetteCrop, checkedBySilhouette, selectedSilhouette} from '../../static/inverse/neural/photo-crop.js';
 
 // A heart's paper probability on a 320² grid over a W x H picture: the square
 // with corners cleft, right, tip, left and a half-disc lobe on each upper side.
@@ -59,6 +59,32 @@ test('a crop the silhouette agrees with is confident, one far from it is for rev
   const own = crop(0, 'paper-silhouette');
   assert.equal(checkedBySilhouette(own, silhouette), own);
   assert.equal(checkedBySilhouette(crop(0), {...silhouette, iou: .8}).needsReview, true);
+});
+
+test('a colour crop the paper is not under gives way to the silhouette when that lies far from it', async () => {
+  // A heart in a 640 x 640 picture. The colour locator's crop comes with its
+  // outline: the lobes as half circles on the square's upper sides.
+  const quad = [[300, 150], [500, 350], [300, 550], [100, 350]], side = 200 * Math.SQRT2, W = 640;
+  const lobe = (a, b) => Array.from({length: 9}, (_, i) => {
+    const t = Math.PI * (i + 1) / 10, m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], r = [(a[0] - b[0]) / 2, (a[1] - b[1]) / 2];
+    // From a over the side's outer half circle (away from the square) to b.
+    return [m[0] + r[0] * Math.cos(t) + r[1] * Math.sin(t), m[1] + r[1] * Math.cos(t) - r[0] * Math.sin(t)];
+  });
+  const colour = (q, lobes = true) => ({status: 'needs_review', candidates: [{quad: q, status: 'needs_review', needsReview: true, provenance: {method: 'colour'},
+    outline: [lobes ? lobe(q[0], q[1]) : [q[0], q[1]], [q[1], q[2]], [q[2], q[3]], lobes ? lobe(q[3], q[0]) : [q[3], q[0]]]}]});
+  const none = () => ({status: 'not_found', candidates: []}), body = heartProbability(quad, W, W);
+  const input = {type: 'pixels', imageWidth: W, imageHeight: W, rgba: new Uint8ClampedArray(W * W * 4)};
+  const find = production => detectPhotoCrops(input, {productionCrop: () => production, predictBody: () => body, learnedCrop: none, outlineCrop: none});
+  const shifted = (dx, dy) => quad.map(([x, y]) => [x + dx, y + dy]);
+  // Half off the heart: the silhouette's corners instead, for review.
+  const off = await find(colour(shifted(150, -110)));
+  assert.equal(off.candidates[0].provenance.method, 'paper-silhouette');
+  assert.equal(off.status, 'needs_review');
+  off.candidates[0].quad.forEach((p, k) => assert.ok(Math.hypot(p[0] - quad[k][0], p[1] - quad[k][1]) < .05 * side, `corner ${k}: ${p} vs ${quad[k]}`));
+  // On the heart, the colour crop stands.
+  assert.deepEqual((await find(colour(quad))).candidates[0].quad, quad);
+  // Its evidence failed (no lobes in its outline) but it is near the silhouette: it stands too.
+  assert.deepEqual((await find(colour(shifted(8, 0), false))).candidates[0].quad, shifted(8, 0));
 });
 
 test('in a selection, a heart of printed papers is found by what differs from its background', () => {
