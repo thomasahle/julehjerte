@@ -138,18 +138,20 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
   // within TIP_SPOT_MM of where it comes too close to itself when it says, or
   // comes back to itself (sharp corners elsewhere stay sharp: 5star,
   // triple-heart), then everywhere (fisk-kors-shot), the first with 3/5 of the
-  // time when both are to run.
+  // time when both are to run; in what time that leaves, everywhere twice as
+  // much (mor-og-barn: a template 0.52% from its mask in 4 s, where 0.8 mm
+  // left its chin and its child's nose closer than a slit may come).
   if(!exportable(found.found?.assessment,cfgExact)&&roundedEnd-performance.now()>=1000*ROUNDED_LEAST){
     const spots=[...(found.found?validate(found.found.solution,cfgExact,{finalGeometry:true}).issues.filter(i=>i.type==='short_self_clearance'&&i.points).flatMap(i=>i.points.map(([x,y])=>[x*px,y*px])):[]),...tips];
-    const ways=[...(spots.length?[{open:radius,spots,within:TIP_SPOT_MM*px}]:[]),{open:radius}];
+    const ways=[...(spots.length?[{open:radius,spots,within:TIP_SPOT_MM*px}]:[]),{open:radius},{open:2*radius,wider:true}];
     for(const [k,way] of ways.entries()){
       if(exportable(found.found?.assessment,cfgExact)||roundedEnd-performance.now()<1000*ROUNDED_LEAST)break;
       let rounded=null;
       try{const traced=traceAt(way.open,way);rounded=traced&&!traced.why?traced.scaled:null;}catch{rounded=null;}
       if(!rounded)continue;
-      const end=k<ways.length-1?performance.now()+.6*(roundedEnd-performance.now()):roundedEnd;
+      const end=way.spots?performance.now()+.6*(roundedEnd-performance.now()):roundedEnd;
       const again=await exactSearch(rounded,null,cfgExact,search(end));
-      if(exportable(again.found?.assessment,cfgExact)||!found.found&&again.found)found={...again,report:{...again.report,rounded:way.spots?'near':true}};
+      if(exportable(again.found?.assessment,cfgExact)||!found.found&&again.found)found={...again,report:{...again.report,rounded:way.spots?'near':way.wider?'wider':true}};
     }
   }
   // `held`: the symmetries the template was searched under, in the app's

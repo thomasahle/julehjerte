@@ -807,6 +807,20 @@ segments to 8, amy-pinecone 36 to 8, amy-flowering 32 to 12, glaskuppel-shot
 Balls and davidsstjerne-circ keep their ties now, and have no template under
 them (balls' under all eight, davidsstjerne-circ's under its diagonal and half
 turn), nor one found under part of them in the time: the fitter's still.
+Balls' designer keeps all eight; from its template the model still breaks two
+rules (a slit 2.4 mm from the square's side, turns of 177 degrees).
+Davidsstjerne-circ's designer keeps the diagonal alone, and its template on
+the traced outline breaks 27 of the rules even untied.
+
+Where the tips rounded by 0.8 mm fail too, the outline rounded everywhere by
+twice as much gets what time is left (engine.js, `rounded: 'wider'`): of the 26
+juleflet and gallery pictures left to the fitter, mor-og-barn now has an exact
+template, 0.52% from its mask in 32 s (0.8 mm left its chin and the child's
+nose closer than a slit may come), and dagognat-shot one 2.0% from it, which
+the page shows only after a fitted one 1% or more off. Triple-heart's comes
+where its outline meets the square's side at a shallow angle: the border
+band, read 1 mm in, turns it there sharply, a corner no rounding before
+the band clears (2 mm passes, 2.2% from the mask).
 
 ## Details lost on photographs (2026-10-25)
 
@@ -847,9 +861,11 @@ camel, but takes 20-28 s more and fails on other photographs; not used.
   trace helps given the time alone, above), and printed papers often still end
   unevenly where reading their sides deeper would change more than the error
   allowed.
-- The exact search's hard designs: balls, venus, khatam, santa, dagognat and
-  davidsstjerne-circ get the fitter's template (passing, 0.7-1.5% from the
-  mask), and the circle's photograph, whose cuts come too close (above).
+- The exact search's hard designs: balls, venus, khatam, santa, dagognat,
+  triple-heart and davidsstjerne-circ get the fitter's template (passing,
+  0.7-1.5% from the mask), and the circle's photograph, whose cuts come too
+  close (above). Triple-heart's border corner wants the band's stub rounded
+  into the curve, not the mask before the band is read.
 - The exact template's smooth drawing where its every-edge version breaks a
   rule: which edges, rather than orbits added one by one for two seconds
   (puslespil keeps 66 cubics a cut); a pinwheel's turns as Tegn's Drejet rows
