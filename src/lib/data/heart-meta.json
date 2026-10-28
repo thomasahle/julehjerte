@@ -1763,16 +1763,16 @@
     "date": "1916-12-01",
     "description": null,
     "gridSize": {
-      "x": 5,
-      "y": 5
+      "x": 4,
+      "y": 4
     },
     "difficulty": "medium",
     "symmetry": {
       "isClassic": false,
-      "curveSymmetry": true,
+      "curveSymmetry": false,
       "lobeSymmetry": false,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
     },
     "photo": null
   },
