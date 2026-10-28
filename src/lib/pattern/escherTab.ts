@@ -38,7 +38,7 @@ import {
 } from './editorBridge';
 import { MAX_GRID_SIZE, MIN_GRID_SIZE } from '$lib/constants';
 import { ALL_RULES, COMMON_RULES, latticeOf, ruleInfo, ruleKey, ruleSymmetry, sameRule, type TileRule } from './rules';
-import { cutCounts, fitLines, tileShape, tileTurn, withLinesOf, type PatternTile, type SideCurve } from './tiling';
+import { cutCounts, fitLines, tileShape, tileTurn, type PatternTile, type SideCurve } from './tiling';
 import { isStraightTile, ruleStart, switchRule } from './starts';
 import { isFigure, randomTileDraw, randomTileKind } from './randomTile';
 import { centredPlacements } from './centre';
@@ -275,14 +275,12 @@ const JOINT_LENGTHS = [0.25, 0.18, 0.12, 0.06];
  */
 export function withOpening(tile: PatternTile, opening: Opening): PatternTile | null {
 	const { joints: _joints, ...closed } = tile;
-	// The heart keeps its strips while they fit.
-	const lined = (next: PatternTile) => withLinesOf(next, tile) ?? fitLines(next);
-	if (!opening) return lined(closed);
+	if (!opening) return fitLines(closed);
 	const join = joinOf(opening, !!tile.inverted);
 	const freedom = jointFreedom(tile.rule, join);
 	if (!freedom?.free.length) return null;
 	for (const length of JOINT_LENGTHS) {
-		const next = lined({ ...closed, joints: { join, free: jointsOfLength(freedom, join, length) } });
+		const next = fitLines({ ...closed, joints: { join, free: jointsOfLength(freedom, join, length) } });
 		if (tileWeaves(next)) return next;
 	}
 	return null;

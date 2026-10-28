@@ -753,7 +753,8 @@ on them, as Khatam's red pinwheels float on its white stars (4.8.8, the truncate
 one-tile type can make), only where no motion swaps the colours; I rækker / I søjler, the tiles joining left and
 right of every crossing or above and below it, where no motion takes rows onto columns (one-tile types too: Flyttet,
 Halv omgang and others). It shows only the ways the type allows, and not at all where it allows none. Dragging a
-round dot or a joint's end keeps the heart's strips while every cut still fits, so the strip count does not jump. The joints start a quarter of a cell long along the
+round dot or a joint's end refits the heart's strips, as sizing the tiles does: a strip comes or goes as an edge
+strip grows or shrinks, so that a pattern pressed together one way leaves no blank band (the owner, 2026-10-28). The joints start a quarter of a cell long along the
 diagonals (shorter where that does not weave), their ends are black points that turn and stretch every joint
 about its middle as far as the type lets them, and a heart whose cuts share a segment at every crossing reads
 back as joints (or, where no type of two shapes fits, as sides that run together of themselves, as Permo

@@ -331,9 +331,7 @@ describe("Tegn's Escher tab", () => {
 		expect(openingOf(red)).toBe('red');
 		expect(red.joints!.join).toBe('white');
 		expect(openingOf(withOpening(red, 'white')!)).toBe('white');
-		const closed = withOpening(red, null)!;
-		expect(closed.joints).toBeUndefined();
-		expect(tileFingers(closed)).toEqual(tileFingers(fitLines(tile)));
+		expect(withOpening(red, null)).toEqual(fitLines(tile));
 		const back = tileOfPattern(JSON.parse(JSON.stringify(savedPattern(red))))!;
 		expect(back.joints).toEqual(red.joints);
 		expect(restoredTile(savedPattern(red), heartOf(red))).not.toBeNull();

@@ -667,20 +667,6 @@ function lineFits(tile: PatternTile, kind: StretchKind, line: number): boolean {
 }
 
 /**
- * The tile cutting the same lines as `from` does, where every one of them still
- * fits in the square (`lineFits`); null where one does not. For edits that move
- * the corners or open the crossings, which should not change how many strips the
- * heart has while they need not: refitting the lines (`fitLines`) would take a
- * line in or leave one out the moment an edge strip grew or shrank a hair.
- */
-export function withLinesOf(tile: PatternTile, from: PatternTile): PatternTile | null {
-	const lines = { V: heartLines(from, 'V'), H: heartLines(from, 'H') };
-	const kept: PatternTile = { ...tile, lines };
-	const fits = (['V', 'H'] as const).every((kind) => Array.from({ length: lines[kind].count }, (_, k) => lines[kind].first + k).every((line) => lineFits(kept, kind, line)));
-	return fits ? kept : null;
-}
-
-/**
  * The tile with the lines the heart cuts fitted to where the pattern now is:
  * every line of the tiling whose whole cut keeps `edgeMargin` from the edges,
  * from the first to the last. So the pattern fills the heart like a window onto

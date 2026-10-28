@@ -310,8 +310,6 @@ describe("the bridge between a tile and Tegn's cuts", () => {
 				}
 				expect(was).toBeDefined();
 				expect(problems(next), id).toEqual([]);
-				// and the heart keeps its strips
-				expect(cutCounts(next), id).toEqual(cutCounts(tile));
 			}
 			expect(dragged).toBeGreaterThan(0);
 		}

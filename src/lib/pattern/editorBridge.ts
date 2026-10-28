@@ -45,7 +45,6 @@ import {
 	stretchCurve,
 	stretchFrame,
 	tileTurn,
-	withLinesOf,
 	toFrame,
 	unturnedShape,
 	tracedCut,
@@ -733,8 +732,7 @@ export function jointTo(base: PatternTile, fingerId: string, anchor: number, del
 	// The first end is the middle less half the joint, the second the middle and it.
 	const want = times(minus(rawToCells(base, to), rawToCells(base, from)), end.end === 'first' ? -1 : 1);
 	const step = nearestCorners(freedom, [{ i: end.i, j: end.j, shift: want }]);
-	const opened: PatternTile = { ...base, joints: { join: joints.join, free: freedom.free.map((_, k) => (joints.free[k] ?? 0) + step[k]!) } };
-	const next = withLinesOf(opened, base) ?? fitLines(opened);
+	const next = fitLines({ ...base, joints: { join: joints.join, free: freedom.free.map((_, k) => (joints.free[k] ?? 0) + step[k]!) } });
 	const counts = cutCounts(next);
 	return counts.V > 0 && counts.H > 0 ? next : null;
 }
@@ -744,11 +742,9 @@ function withCorners(base: PatternTile, corners: number[]): PatternTile | null {
 	const freedom = cornerFreedom(base.rule);
 	const { corners: _was, ...rest } = base;
 	const next: PatternTile = corners.some((w) => w !== 0) ? { ...rest, corners } : rest;
-	// The middle moves with the corners' mean: the pan moves with it, so that the cells stay put. The heart cuts the
-	// same lines while they all fit, so that its strips do not come and go as an edge strip grows a hair.
+	// The middle moves with the corners' mean: the pan moves with it, so that the cells stay put.
 	const shift = minus(meanShift(freedom, corners), meanShift(freedom, base.corners ?? []));
-	const pan = plus(base.pan ?? { x: 0, y: 0 }, shift);
-	const moved = withLinesOf({ ...next, pan }, base) ?? fitLines(panned(next, shift));
+	const moved = fitLines(panned(next, shift));
 	const counts = cutCounts(moved);
 	return counts.V > 0 && counts.H > 0 ? moved : null;
 }
