@@ -14,8 +14,8 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg" data-weave-parity="0" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
    <title>Plus</title>
-   <desc xml:lang="da">Fire røde plusser omkring et enkelt hvidt plus i midten. Kun tre striber i hver halvdel, men hver stribe knækker ind og ud for at tegne korsarmene, så der er godt tredive hjørner at klippe. Begge halvdele klippes efter samme skabelon. De rette vinkler skal se rette ud; brug en skarp saks, og klip helt ind i hvert hjørne.</desc>
-   <desc xml:lang="en">Four red crosses around a single white one in the middle. Only three strips in each half, but every strip steps in and out to draw the arms, which adds some thirty corners to cut. Both halves are cut from the same template. The right angles have to look right, so use sharp scissors and cut all the way into each corner.</desc>
+   <desc xml:lang="da">Fire røde plusser omkring et enkelt hvidt plus i midten. Kun tre striber i hver halvdel, men hver stribe knækker ind og ud for at tegne korsarmene, så der er godt tredive hjørner at klippe. Begge halvdele klippes efter samme skabelon. De rette vinkler skal se rette ud; brug en skarp saks, og klip helt ind i hvert hjørne. Mønsteret er nr. 365h i [Hjerter til Juletræet](https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg), som Alfred Jacobsens Kunstforlag udgav i 1924; tegneren signerede kun ThLL.</desc>
+   <desc xml:lang="en">Four red crosses around a single white one in the middle. Only three strips in each half, but every strip steps in and out to draw the arms, which adds some thirty corners to cut. Both halves are cut from the same template. The right angles have to look right, so use sharp scissors and cut all the way into each corner. The pattern is no. 365h in [Hjerter til Juletræet](https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg), published by Alfred Jacobsens Kunstforlag in 1924; the designer signed only ThLL.</desc>
    <desc>4 røde plusser omrking et enkelt hvidt plus</desc>
   <metadata>
     <rdf:RDF>
@@ -23,11 +23,17 @@
         <dc:title>Plus</dc:title>
         <dc:creator>
           <cc:Agent>
-            <dc:title>Thomas</dc:title>
+            <dc:title>Ukendt</dc:title>
           </cc:Agent>
         </dc:creator>
         <dc:description>4 røde plusser omrking et enkelt hvidt plus</dc:description>
-        <dc:source>juleflet.dk</dc:source>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Alfred Jacobsens Kunstforlag</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:source>https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg</dc:source>
+        <dc:date>1924</dc:date>
       </cc:Work>
     </rdf:RDF>
   </metadata>

@@ -20,8 +20,8 @@
    xmlns:dc="http://purl.org/dc/elements/1.1/"><title
      id="title5">Blomst</title>
   <title xml:lang="en">Flower</title>
-  <desc xml:lang="da">En blomst med seks spidse kronblade omkring en lille stjerneformet kerne. Fire striber i hver halvdel, og omkring halvdelen af klippene er buer, der former bladenes sider. Halvdelene er spejlvendte, og én skabelon dækker begge. Kronbladene mødes i en spids; klip de to buer, der danner hver spids, i samme arbejdsgang, så de mødes præcist.</desc>
-  <desc xml:lang="en">A flower with six pointed petals around a small star-shaped core. Four strips in each half, and about half the cuts are curves that shape the sides of the petals. The halves mirror each other, and one template covers both. The petals meet at a point, so cut the two curves that form each point in one go and they will meet cleanly.</desc><sodipodi:namedview
+  <desc xml:lang="da">En blomst med seks spidse kronblade omkring en lille stjerneformet kerne. Fire striber i hver halvdel, og omkring halvdelen af klippene er buer, der former bladenes sider. Halvdelene er spejlvendte, og én skabelon dækker begge. Kronbladene mødes i en spids; klip de to buer, der danner hver spids, i samme arbejdsgang, så de mødes præcist. Mønsteret er nr. 366h i [Hjerter til Juletræet](https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg), som Alfred Jacobsens Kunstforlag udgav i 1924; tegneren signerede kun ThLL.</desc>
+  <desc xml:lang="en">A flower with six pointed petals around a small star-shaped core. Four strips in each half, and about half the cuts are curves that shape the sides of the petals. The halves mirror each other, and one template covers both. The petals meet at a point, so cut the two curves that form each point in one go and they will meet cleanly. The pattern is no. 366h in [Hjerter til Juletræet](https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg), published by Alfred Jacobsens Kunstforlag in 1924; the designer signed only ThLL.</desc><sodipodi:namedview
      id="namedview1"
      pagecolor="#ffffff"
      bordercolor="#000000"
@@ -75,4 +75,4 @@
        transform="matrix(0,1,1,0,-0.08231034,0.08230974)"
        style="stroke:#8ff0a4" /></g><metadata
      id="metadata5"><rdf:RDF><cc:Work
-         rdf:about=""><dc:title>Blomst</dc:title><dc:creator><cc:Agent><dc:title>Klassisk</dc:title></cc:Agent></dc:creator></cc:Work></rdf:RDF></metadata></svg>
+         rdf:about=""><dc:title>Blomst</dc:title><dc:creator><cc:Agent><dc:title>Ukendt</dc:title></cc:Agent></dc:creator><dc:publisher><cc:Agent><dc:title>Alfred Jacobsens Kunstforlag</dc:title></cc:Agent></dc:publisher><dc:source>https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg</dc:source><dc:date>1924</dc:date></cc:Work></rdf:RDF></metadata></svg>

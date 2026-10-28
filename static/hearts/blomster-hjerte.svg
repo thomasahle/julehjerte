@@ -2,8 +2,8 @@
   <title>Blomster-hjerte</title>
   <title xml:lang="da"></title>
   <title xml:lang="en">Flower heart</title>
-  <desc xml:lang="da">En blomst af cirkler: en rund midte, fire kronblade omkring den og skæl ud mod kanterne. Fem striber i hver halvdel, og alle klip er rækker af kvartcirkler. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er svær. Begynd fletningen ved midten, hvor de hele cirkler skal sidde præcist.</desc>
-  <desc xml:lang="en">A flower of circles: a round centre, four petals around it and scales towards the edges. Five strips in each half, and every cut is a row of quarter circles. The halves mirror each other, so one template covers both, and the difficulty is hard. Start weaving at the centre, where the whole circles have to line up exactly.</desc>
+  <desc xml:lang="da">En blomst af cirkler: en rund midte, fire kronblade omkring den og skæl ud mod kanterne. Fem striber i hver halvdel, og alle klip er rækker af kvartcirkler. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er svær. Begynd fletningen ved midten, hvor de hele cirkler skal sidde præcist. Mønsteret er nr. 365e i [Hjerter til Juletræet](https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg), som Alfred Jacobsens Kunstforlag udgav i 1924; tegneren signerede kun ThLL.</desc>
+  <desc xml:lang="en">A flower of circles: a round centre, four petals around it and scales towards the edges. Five strips in each half, and every cut is a row of quarter circles. The halves mirror each other, so one template covers both, and the difficulty is hard. Start weaving at the centre, where the whole circles have to line up exactly. The pattern is no. 365e in [Hjerter til Juletræet](https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg), published by Alfred Jacobsens Kunstforlag in 1924; the designer signed only ThLL.</desc>
   <metadata>
     <rdf:RDF>
       <cc:Work rdf:about="">
@@ -13,8 +13,13 @@
             <dc:title>Ukendt</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:source>juleflet.dk</dc:source>
-        <dc:date>2026-10-21</dc:date>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Alfred Jacobsens Kunstforlag</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:source>https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg</dc:source>
+        <dc:date>1924</dc:date>
       </cc:Work>
     </rdf:RDF>
   </metadata>

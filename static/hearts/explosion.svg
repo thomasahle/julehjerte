@@ -1,8 +1,8 @@
 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" data-weave-parity="0" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <title>Eksplosion</title>
   <title xml:lang="en">Explosion</title>
-  <desc xml:lang="da">Røde kiler, der stråler ud fra et lille ternet felt i midten. Fem striber i hver halvdel, alle klippet som lige linjer, der bare ikke er parallelle; det er hældningen, der giver strålerne. Halvdelene er spejlvendte, og én skabelon dækker begge. Trods de fem striber er hjertet let, for der er ikke et eneste knæk at ramme.</desc>
-  <desc xml:lang="en">Red wedges radiating from a small checked field at the centre. Five strips in each half, all cut as straight lines that simply are not parallel; the taper is what makes the rays. The halves mirror each other, and one template covers both. Despite the five strips the heart is easy, because there is not a single corner to hit.</desc>
+  <desc xml:lang="da">Røde kiler, der stråler ud fra et lille ternet felt i midten. Fem striber i hver halvdel, alle klippet som lige linjer, der bare ikke er parallelle; det er hældningen, der giver strålerne. Halvdelene er spejlvendte, og én skabelon dækker begge. Trods de fem striber er hjertet let, for der er ikke et eneste knæk at ramme. Mønsteret er nr. 365f i [Hjerter til Juletræet](https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg), som Alfred Jacobsens Kunstforlag udgav i 1924; tegneren signerede kun ThLL.</desc>
+  <desc xml:lang="en">Red wedges radiating from a small checked field at the centre. Five strips in each half, all cut as straight lines that simply are not parallel; the taper is what makes the rays. The halves mirror each other, and one template covers both. Despite the five strips the heart is easy, because there is not a single corner to hit. The pattern is no. 365f in [Hjerter til Juletræet](https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg), published by Alfred Jacobsens Kunstforlag in 1924; the designer signed only ThLL.</desc>
   <desc>Strålende farver fra midten der skyder ud i alle retninger.</desc>
   <metadata>
     <rdf:RDF>
@@ -10,11 +10,17 @@
         <dc:title>Eksplosion</dc:title>
         <dc:creator>
           <cc:Agent>
-            <dc:title>Traditional</dc:title>
+            <dc:title>Ukendt</dc:title>
           </cc:Agent>
         </dc:creator>
         <dc:description>Strålende farver fra midten der skyder ud i alle retninger.</dc:description>
-        <dc:source>juleflet.dk</dc:source>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Alfred Jacobsens Kunstforlag</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:source>https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg</dc:source>
+        <dc:date>1924</dc:date>
       </cc:Work>
     </rdf:RDF>
   </metadata>

@@ -6,10 +6,11 @@
   Andersen's heart is shown in Museum Odense's photograph, credited and linked
   as the museum asks; our copy, with the metadata stripped, is the one
   hcandersen-homepage.dk publishes. Of the printed pages only those free to show
-  are pictured: Hans H. Koch died in 1922, and the 1922 Familie-Journal page
-  names no designer. Their scans are copies, with the metadata stripped, of the
-  ones aldus.dk and the Papermatrix blog publish, credited and linked under each
-  picture. Later sources (Per V. Mortensen's drawings, the books of the
+  are pictured: Hans H. Koch died in 1922, the 1922 Familie-Journal page names
+  no designer, and the designer of Alfred Jacobsen's 1924 sheet signed only
+  "ThLL" (Jacobsen himself died in 1924). Their scans are copies, with the
+  metadata stripped, of the ones aldus.dk and the Papermatrix blog publish,
+  credited and linked under each picture. Later sources (Per V. Mortensen's drawings, the books of the
   1970s–90s) are still under copyright, so the last paragraph names and links
   them without pictures.
 -->
@@ -40,8 +41,8 @@
 		caption: TranslationKey;
 		/** How the page's own numbering of a heart reads, "Kochs nr. 3". */
 		number?: TranslationKey;
-		/** Our hearts drawn after the page, with the source's own number. */
-		hearts: { id: string; number: number }[];
+		/** Our hearts drawn after the page, with the source's own number (3, or 365e). */
+		hearts: { id: string; number: number | string }[];
 	}
 
 	const SOURCES: Source[] = [
@@ -91,6 +92,24 @@
                               { id: 'andreaskors', number: 2 },
                               { id: 'kompasrose', number: 4 }
                         ]
+		},
+		{
+			id: 'jacobsen-1924',
+			image: 'hjerter-til-juletraeet-1924.jpg',
+			width: 1613,
+			height: 1013,
+			title: 'historyJacobsenTitle',
+			text: 'historyJacobsenText',
+			alt: 'historyJacobsenAlt',
+			caption: 'historyJacobsenCaption',
+			number: 'historyHeartNumber',
+			hearts: [
+				{ id: 'blomster-hjerte', number: '365e' },
+				{ id: 'explosion', number: '365f' },
+				{ id: 'plus', number: '365h' },
+				{ id: 'circle', number: '366b' },
+				{ id: 'flower', number: '366h' }
+			]
 		}
 	];
 </script>
