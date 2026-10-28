@@ -4,32 +4,33 @@
   woven heart can make, four tiles at every corner, and that the engine draws (tiling.ts
   `TileRule`): 28 of the 36 four-at-a-corner types — the others have no side that can take a shape —
   all 18 ways of two shapes, red and white each its own tile, and all 10 of three, the white tiles of
-  two kinds (two.test.ts). Four come first: moved and moved-and-mirrored, the two
-  quadrilateral types tiled.art's gallery uses most; two shapes; and symmetric, every tile its own
-  mirror image. The others are behind "Vis flere", in four groups: the rest of the ones with no
-  straight side and no symmetry of the tile's own, the more used first; the ones with mirror edges,
-  straight sides the tiles are mirrored in; the ones whose tile has a symmetry of its own; and the
-  other ways of two shapes, red and white each its own tile, turned or mirrored as well as moved
-  (these show both tiles, the red one tinted); and the ways of three shapes, the white tiles of two
-  kinds (these show a white tile of each kind), numbered, each tile's symmetry in its hint.
+  two kinds (two.test.ts). Types of two or three shapes show those tiles too, the red one tinted.
 
-  One segment per type. Opposite pairs tied two different ways can lie either way round in the
-  heart; a segment chooses its type the way its glyph shows it, and shows as chosen either way.
-  The chosen rule is told above the types, where "Vis flere" cannot push it out of sight: its name,
-  what it does and, small, Heesch's name for the type (its tooltip spells the letters out), or
-  Grünbaum and Shephard's number where Heesch has none. Every segment's tooltip tells its name and
-  what it does, so a type can be read about before it is chosen.
+  All of them at once, as a table of glyphs: a column for one, two and three shapes, and a row for
+  what the red tile is of itself (`tileSymmetry`): no symmetry, the same upside down, the same turned
+  a quarter, its own mirror image across one line, two or four. A cell holds its types in the order
+  they were offered before (moved and moved-and-mirrored first, the ones tiled.art's gallery uses
+  most); empty rows are left out. The owner chose this table, 2026-10-28, over sections, questions and
+  a window of examples, after agent testers lost their way in the long list it replaces.
+
+  One glyph per type, its name its accessible name, its tooltip its name and what it does, so a type
+  can be read about before it is chosen. Opposite pairs tied two different ways can lie either way
+  round in the heart; a glyph chooses its type the way it shows it, and shows as chosen either way.
+  The chosen rule is told above the table: its name, what it does and, small, Heesch's name for the
+  type (its tooltip spells the letters out), Grünbaum and Shephard's number where Heesch has none, or
+  the pattern's wallpaper group for two and three shapes; under that, how its crossings open
+  (`children`).
 
   compact   Tegn below 900px, where the panel leaves its column for a row under the drawing and can
-            be 235px wide: the segments keep their glyph alone, its name their accessible name, and
-            "Vis flere" is a glyph of its own.
+            be 235px wide: smaller glyphs and row names.
 -->
 <script lang="ts">
-	import { untrack, type Snippet } from 'svelte';
+	import type { Snippet } from 'svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import { ToggleGroup, ToggleGroupItem, keepChosen } from '$lib/components/ui/toggle-group';
-	import { COMMON_RULES, THREE_NUMBERS, TWO_NUMBERS, neighbours, ofType, opposite, ruleKey, threeShapes, twoShapes, type TileRule } from '$lib/pattern/rules';
+	import { COMMON_RULES, THREE_NUMBERS, TWO_NUMBERS, neighbours, ofType, opposite, ruleKey, threeShapes, tileSymmetry, twoShapes, type TileRule, type TileSymmetry } from '$lib/pattern/rules';
 	import { ruleCode, ruleText } from '$lib/pattern/names';
+	import { shapesOf } from '$lib/pattern/template';
 	import TemplateGlyph from './TemplateGlyph.svelte';
 
 	interface Props {
@@ -39,7 +40,7 @@
 		onChoose: (rule: TileRule) => void;
 		compact?: boolean;
 		disabled?: boolean;
-		/** What goes under the chosen type's description, where "Vis flere" cannot push it out of sight: how its crossings open. */
+		/** What goes under the chosen type's description: how its crossings open. */
 		children?: Snippet;
 	}
 
@@ -52,26 +53,39 @@
 		return rule.sides === 'opposite' ? `opposite:${[rule.v, rule.h].sort().join(':')}` : ruleKey(rule);
 	}
 
-	const COMMON = COMMON_RULES;
-	const GROUPS: { title: TranslationKey | null; rules: TileRule[] }[] = [
-		{
-			title: null,
-			rules: [opposite('turn', 'turn'), opposite('mirror', 'turn'), opposite('move', 'turn'), opposite('mirror', 'mirror'), neighbours('mirror'), neighbours('turn'), ofType(53)]
-		},
-		{ title: 'patternMoreMirrorEdges', rules: ([42, 45, 49, 50, 54, 56] as const).map(ofType) },
-		{ title: 'patternMoreOwnSymmetry', rules: ([57, 58, 59, 61, 62, 64, 66, 67, 68, 69, 71, 74] as const).map(ofType) },
-		{ title: 'patternMoreTwoShapes', rules: TWO_NUMBERS.map(twoShapes) },
-		{ title: 'patternMoreThreeShapes', rules: THREE_NUMBERS.map(threeShapes) }
+	/** Every type once, in the order they were offered before the table: the four most used first. */
+	const TYPES: TileRule[] = [
+		...COMMON_RULES,
+		opposite('turn', 'turn'),
+		opposite('mirror', 'turn'),
+		opposite('move', 'turn'),
+		opposite('mirror', 'mirror'),
+		neighbours('mirror'),
+		neighbours('turn'),
+		ofType(53),
+		...([42, 45, 49, 50, 54, 56] as const).map(ofType),
+		...([57, 58, 59, 61, 62, 64, 66, 67, 68, 69, 71, 74] as const).map(ofType),
+		...TWO_NUMBERS.map(twoShapes),
+		...THREE_NUMBERS.map(threeShapes)
 	];
-	const MORE = GROUPS.flatMap((g) => g.rules);
-	const RULES = new Map([...COMMON, ...MORE].map((rule) => [typeKey(rule), rule]));
-	const isMore = (rule: TileRule) => MORE.some((r) => typeKey(r) === typeKey(rule));
+	const RULES = new Map(TYPES.map((rule) => [typeKey(rule), rule]));
 
-	// Open on a rule from the others, and open again when one comes back (undo, say).
-	let expanded = $state(untrack(() => !!active && isMore(active)));
-	$effect(() => {
-		if (active && isMore(active)) expanded = true;
-	});
+	const COLUMNS: Array<{ shapes: 1 | 2 | 3; name: TranslationKey }> = [
+		{ shapes: 1, name: 'patternOneShape' },
+		{ shapes: 2, name: 'patternTwoShapes' },
+		{ shapes: 3, name: 'patternThreeShapes' }
+	];
+	const ROW_NAMES: Record<TileSymmetry, TranslationKey> = {
+		none: 'patternSymmetryNone',
+		half: 'patternSymmetryHalf',
+		quarter: 'patternSymmetryQuarter',
+		mirror: 'patternSymmetryMirror',
+		twoMirrors: 'patternSymmetryTwoMirrors',
+		fourMirrors: 'patternSymmetryFourMirrors'
+	};
+	const ROWS = (Object.keys(ROW_NAMES) as TileSymmetry[])
+		.map((symmetry) => ({ symmetry, cells: COLUMNS.map(({ shapes }) => TYPES.filter((rule) => shapesOf(rule) === shapes && tileSymmetry(rule) === symmetry)) }))
+		.filter((row) => row.cells.some((cell) => cell.length));
 
 	let chosen = $derived(active ? typeKey(active) : '');
 
@@ -85,8 +99,6 @@
 </script>
 
 <div class="rule-templates" class:compact>
-	<!-- The chosen type first, so that what it does stays in sight above the types, though "Vis flere"
-	     makes them a long list. -->
 	{#if active && text}
 		<p class="chosen">
 			<span class="chosen-name">
@@ -97,163 +109,115 @@
 		</p>
 		{@render children?.()}
 	{/if}
-	<div class="choices">
 	<ToggleGroup type="single" role="radiogroup" aria-label={tr('patternRuleTitle')} value={chosen} onValueChange={choose} {disabled}>
-		{#each COMMON as rule (typeKey(rule))}
-			{@render segment(rule, false)}
-		{/each}
-		{#if expanded}
-			{#each GROUPS as group, g (g)}
-				{#if group.title}<p class="group-title">{tr(group.title)}</p>{/if}
-				<!-- An odd group's last segment takes its whole row, so the next title starts a row. -->
-				{#each group.rules as rule, k (typeKey(rule))}
-					{@render segment(rule, !compact && group.rules.length % 2 === 1 && k === group.rules.length - 1)}
+		<div class="table">
+			<span></span>
+			{#each COLUMNS as column (column.shapes)}
+				<span class="column-name">{tr(column.name)}</span>
+			{/each}
+			{#each ROWS as row (row.symmetry)}
+				<span class="row-name">{tr(ROW_NAMES[row.symmetry])}</span>
+				{#each row.cells as cell, k (k)}
+					<div class="cell">
+						{#each cell as rule (typeKey(rule))}
+							{@render glyph(rule)}
+						{/each}
+					</div>
 				{/each}
 			{/each}
-		{/if}
+		</div>
 	</ToggleGroup>
-	<button type="button" class="more" aria-expanded={expanded} title={tr(expanded ? 'patternShowFewer' : 'patternShowMore')} onclick={() => (expanded = !expanded)}>
-		<span class:sr-only={compact}>{tr(expanded ? 'patternShowFewer' : 'patternShowMore')}</span>
-		<span class="chevron" class:open={expanded} aria-hidden="true">▾</span>
-	</button>
-	</div>
-
 </div>
 
-{#snippet segment(rule: TileRule, wide: boolean)}
+{#snippet glyph(rule: TileRule)}
 	{@const name = tr(ruleText(rule).name)}
-	<ToggleGroupItem
-		value={typeKey(rule)}
-		aria-label={name}
-		title={`${name}\n${tr(ruleText(rule).hint)}`}
-		class={wide ? 'wide' : undefined}
-		{...keepChosen(chosen === typeKey(rule))}
-	>
-		<TemplateGlyph {rule} size={compact ? 34 : 48} />
-		<span class:sr-only={compact}>{name}</span>
+	<ToggleGroupItem value={typeKey(rule)} aria-label={name} title={`${name}\n${tr(ruleText(rule).hint)}`} {...keepChosen(chosen === typeKey(rule))}>
+		<TemplateGlyph {rule} size={compact ? 24 : 28} />
 	</ToggleGroupItem>
 {/snippet}
 
 <style>
-	.rule-templates,
-	.choices {
+	.rule-templates {
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
 	}
 
-	.choices {
-		gap: 4px;
-	}
-
-	/* Two to a row, glyph beside its name. */
 	.rule-templates :global([data-slot='toggle-group']) {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		align-items: stretch;
-		gap: 6px;
+		display: block;
 		padding: 0;
 		background: none;
+	}
+
+	/* A column of row names, then one for each number of shapes: one shape holds the most types. */
+	.table {
+		display: grid;
+		grid-template-columns: auto 3fr 2fr 1fr;
+		gap: 3px;
+		align-items: stretch;
+	}
+
+	.column-name,
+	.row-name {
+		font-size: 11px;
+		font-weight: 600;
+		line-height: 1.25;
+		color: var(--muted);
+	}
+
+	.column-name {
+		padding: 0 2px 2px;
+	}
+
+	.row-name {
+		align-self: center;
+		max-width: 68px;
+		padding-right: 2px;
+	}
+
+	.cell {
+		display: flex;
+		flex-wrap: wrap;
+		align-content: flex-start;
+		gap: 2px;
+		min-width: 0;
+		padding: 3px;
+		border-radius: 8px;
+		background: var(--cream2, #f3f6f2);
 	}
 
 	.rule-templates :global([data-slot='toggle-group-item']) {
 		display: flex;
-		flex-direction: row;
 		align-items: center;
-		justify-content: flex-start;
-		gap: 6px;
+		justify-content: center;
+		width: auto;
 		min-width: 0;
 		height: auto;
-		padding: 4px 8px 4px 4px;
-		border: 1.5px solid var(--line);
-		border-radius: 10px;
+		padding: 1px;
+		border: 1.5px solid transparent;
+		border-radius: 7px;
 		background: var(--white);
-		color: var(--green);
-		font-size: 12px;
-		font-weight: 600;
-		line-height: 1.25;
-		text-align: left;
-		white-space: normal;
 		box-shadow: none;
 	}
 
 	.rule-templates :global([data-slot='toggle-group-item']:hover) {
-		background: var(--cream2);
-		color: var(--green);
+		border-color: var(--line);
+		background: var(--white);
 	}
 
 	.rule-templates :global([data-slot='toggle-group-item'][data-state='on']) {
 		border-color: var(--green);
-		background: var(--green);
-		color: var(--white);
-	}
-
-	/* The glyph keeps its own white ground on the chosen, green segment. */
-	.rule-templates :global([data-slot='toggle-group-item'] .template) {
-		border-radius: 8px;
 		background: var(--white);
+		box-shadow: 0 0 0 1px var(--green);
 	}
 
-	.rule-templates :global([data-slot='toggle-group-item'].wide) {
-		grid-column: 1 / -1;
+	.compact .row-name {
+		max-width: 54px;
+		font-size: 10px;
 	}
 
-	.group-title {
-		grid-column: 1 / -1;
-		margin: 6px 0 0;
-		font-size: 12px;
-		font-weight: 600;
-		color: var(--muted);
-	}
-
-	.more {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 6px;
-		padding: 4px 8px;
-		border: none;
-		background: none;
-		color: var(--green);
-		font: inherit;
-		font-size: 13px;
-		font-weight: 600;
-		cursor: pointer;
-	}
-
-	.more:hover {
-		text-decoration: underline;
-	}
-
-	.chevron {
-		display: inline-block;
-		transition: transform 0.15s ease;
-	}
-
-	.chevron.open {
-		transform: rotate(180deg);
-	}
-
-	/* Below 900px: the glyphs alone, five to a row, and the toggle a glyph of its own beside them. */
-	.compact .choices {
-		flex-direction: row;
-		align-items: flex-start;
-	}
-
-	.compact :global([data-slot='toggle-group']) {
-		flex: 1;
-		grid-template-columns: repeat(5, 1fr);
-		gap: 4px;
-	}
-
-	.compact :global([data-slot='toggle-group-item']) {
-		justify-content: center;
-		padding: 3px;
-	}
-
-	.compact .more {
-		padding: 0;
-		font-size: 18px;
+	.compact .column-name {
+		font-size: 10px;
 	}
 
 	.chosen {
@@ -284,11 +248,5 @@
 		font-variant-numeric: tabular-nums;
 		letter-spacing: 0.04em;
 		color: var(--muted);
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.chevron {
-			transition: none;
-		}
 	}
 </style>

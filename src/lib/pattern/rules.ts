@@ -532,6 +532,34 @@ function motionGroup(rule: TileRule): Set<string> {
 }
 
 /**
+ * What the red tile is of itself in a rule's tiling: the motions that take it onto
+ * itself. None but staying put; turned half round ('half'); turned a quarter
+ * round ('quarter'); its own mirror image across one line ('mirror'), two
+ * ('twoMirrors'), or four, turned a quarter as well ('fourMirrors'). The type
+ * picker's rows.
+ */
+export type TileSymmetry = 'none' | 'half' | 'quarter' | 'mirror' | 'twoMirrors' | 'fourMirrors';
+
+export function tileSymmetry(rule: TileRule): TileSymmetry {
+	let half = false;
+	let quarter = false;
+	let mirrors = 0;
+	for (const key of motionGroup(rule)) {
+		const [a, b, c, d, e, f] = key.split(',').map(Number) as [number, number, number, number, number, number];
+		if (a === 1 && b === 0 && c === 0 && d === 1) continue;
+		// It takes the red tile (0, 0) onto itself, a move by four cells aside.
+		const centre = moveBy(gm(a, b, c, d, e, f), { x: 0.5, y: 0.5 });
+		if (mod4(Math.floor(centre.x)) !== 0 || mod4(Math.floor(centre.y)) !== 0) continue;
+		if (a * d - b * c < 0) mirrors++;
+		else if (b === 0) half = true;
+		else quarter = true;
+	}
+	if (quarter) return mirrors ? 'fourMirrors' : 'quarter';
+	if (mirrors) return mirrors > 1 ? 'twoMirrors' : 'mirror';
+	return half ? 'half' : 'none';
+}
+
+/**
  * How far a rule's tiling repeats along each axis, in cells, colours and all: the
  * shortest moves straight along x and along y its motions make that take every
  * tile onto one of its own colour. Two or four: a move of one cell takes the

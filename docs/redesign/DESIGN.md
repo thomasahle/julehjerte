@@ -700,17 +700,18 @@ tile's sides not drawing them all). Every type of two or three shapes can show i
 (`PatternTile.inverted`), as a heart drawn with the other colour as the red one reads back. Each is drawn as
 Tom McLean draws one (`RuleTemplates`, `TemplateGlyph`): the red tile with half arrowheads on its sides, one
 colour per shape, two half arrowheads for a side that is its own S, a bow tie for one that is its own mirror
-image, and a whole arrowhead for a straight side the tiles are mirrored in, which stays straight. Four come
-first — Flyttet, Flyttet og spejlet, To former and Symmetrisk — and "Vis flere" opens the rest in four groups:
-the other types with neither a straight side nor a symmetry of the tile's own, those with mirror edges,
-those whose tile has a symmetry of its own, the other ways of two shapes (To former), whose glyphs show the
-red tile, tinted, and the white one beside it, since the red tile's arrowheads alone do not tell them apart, and
-the ways of three shapes (Tre former), whose glyphs show a white tile of each kind below the red one. The tab always has a type chosen: opened on cuts that are a tile
+image, and a whole arrowhead for a straight side the tiles are mirrored in, which stays straight; for two shapes the
+red tile, tinted, and the white one beside it, since the red tile's arrowheads alone do not tell them apart, and for
+three a white tile of each kind below the red one. All 56 show at once, as a table of glyphs (since 2026-10-28; the
+owner picked it from four mock-ups after agent testers lost their way in the long list with "Vis flere" it
+replaces): a column each for one, two and three shapes, and a row for what the red tile is of itself
+(`tileSymmetry`: Uden symmetri, Ens på hovedet, Ens hele vejen rundt, Sit eget spejlbillede, To spejle, Fire
+spejle), each cell's types in the order the list had them, Flyttet and Flyttet og spejlet first. The tab always has a type chosen: opened on cuts that are a tile
 (the one it was left with, or a heart drawn in it), it takes that tile up; where the cuts were changed in the
 Normal tab since, it draws them again as the tile it was left with; on any other heart it draws the cuts as the
 first type, Flyttet, starts. Fortryd takes either back to the Normal tab and the cuts as they were.
 Every type's tooltip gives its name and what it does, so a type can be read about before it is picked.
-Above the picker, where "Vis flere" cannot push it out of sight: the chosen type's name, what it does and,
+Above the table: the chosen type's name, what it does and,
 small, Heesch's name for it, its tooltip spelling the letters out (T moved, C half turn, G mirrored and moved,
 C4 quarter turn; or its IH number where he has none; for two shapes, the pattern's wallpaper group, p1 to p4m). Under the picker the size, 3 × 3 to 7 × 7, the hint,
 and "Start forfra", which draws the tile again as its type starts, at its size. Picking
