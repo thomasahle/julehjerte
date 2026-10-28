@@ -101,32 +101,32 @@
     },
     "photo": null
   },
-  "stjerne": {
-    "name": "Stjerne",
+  "sun": {
+    "name": "Sol",
     "names": {
-      "en": "Star"
+      "en": "Sun"
     },
-    "author": "Thomas",
+    "author": "Per V. Mortensen",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
-    "source": "juleflet.dk",
+    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
     "date": null,
-    "description": "Klassisk design",
+    "description": "To yin-yang symboler der sammen giver en roterende sol",
     "gridSize": {
-      "x": 3,
-      "y": 3
+      "x": 4,
+      "y": 4
     },
     "difficulty": "medium",
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": true,
       "lobeSymmetry": true,
-      "mirrorSymmetry": true,
+      "mirrorSymmetry": false,
       "sharedTemplate": true
     },
     "photo": {
-      "src": "/hearts/photos/stjerne.jpg",
+      "src": "/hearts/photos/sun.jpg",
       "width": 900,
       "height": 1200
     }
@@ -157,6 +157,36 @@
     },
     "photo": null
   },
+  "stjerne": {
+    "name": "Stjerne",
+    "names": {
+      "en": "Star"
+    },
+    "author": "Thomas",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "Klassisk design",
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": {
+      "src": "/hearts/photos/stjerne.jpg",
+      "width": 900,
+      "height": 1200
+    }
+  },
   "explosion": {
     "name": "Eksplosion",
     "names": {
@@ -172,6 +202,113 @@
     "gridSize": {
       "x": 5,
       "y": 5
+    },
+    "difficulty": "easy",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "kompasrose": {
+    "name": "Kompasrose",
+    "names": {
+      "da": "Kompasrose",
+      "en": "Compass rose"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": "Illustreret Familie-Journal",
+    "publisherUrl": null,
+    "source": "https://papermatrix.wordpress.com/wp-content/uploads/2010/04/koch-1.jpg",
+    "date": "1922",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "permo-sol": {
+    "name": "Solstråler",
+    "names": {
+      "en": "Sunbeams"
+    },
+    "author": "Per V. Mortensen",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "easy",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "nihon": {
+    "name": "Nihon",
+    "author": "Bjørn",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2025-12-21",
+    "description": null,
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "easy",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": {
+      "src": "/hearts/photos/nihon.jpeg",
+      "width": 904,
+      "height": 1200
+    }
+  },
+  "andreaskors": {
+    "name": "Andreaskors",
+    "names": {
+      "da": "Andreaskors",
+      "en": "St Andrew's cross"
+    },
+    "author": "Hans H. Koch",
+    "authorUrl": null,
+    "publisher": "Børnenes Magasin",
+    "publisherUrl": null,
+    "source": "https://aldus.dk/hanskoch/julehjerter.php",
+    "date": "1916-12-01",
+    "description": null,
+    "gridSize": {
+      "x": 3,
+      "y": 3
     },
     "difficulty": "easy",
     "symmetry": {
@@ -268,89 +405,6 @@
     },
     "photo": null
   },
-  "sun": {
-    "name": "Sol",
-    "names": {
-      "en": "Sun"
-    },
-    "author": "Per V. Mortensen",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
-    "date": null,
-    "description": "To yin-yang symboler der sammen giver en roterende sol",
-    "gridSize": {
-      "x": 4,
-      "y": 4
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": false,
-      "sharedTemplate": true
-    },
-    "photo": {
-      "src": "/hearts/photos/sun.jpg",
-      "width": 900,
-      "height": 1200
-    }
-  },
-  "permo-sol": {
-    "name": "Solstråler",
-    "names": {
-      "en": "Sunbeams"
-    },
-    "author": "Per V. Mortensen",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 3,
-      "y": 3
-    },
-    "difficulty": "easy",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "nihon": {
-    "name": "Nihon",
-    "author": "Bjørn",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2025-12-21",
-    "description": null,
-    "gridSize": {
-      "x": 3,
-      "y": 3
-    },
-    "difficulty": "easy",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": {
-      "src": "/hearts/photos/nihon.jpeg",
-      "width": 904,
-      "height": 1200
-    }
-  },
   "davidsstjerne-circ": {
     "name": "Davidsstjerne Cirkel",
     "names": {
@@ -409,32 +463,62 @@
       "height": 1200
     }
   },
-  "kompasrose": {
-    "name": "Kompasrose",
+  "nemt-hjerte": {
+    "name": "Nemt Hjerte",
     "names": {
-      "da": "Kompasrose",
-      "en": "Compass rose"
+      "da": "Nemt hjerte",
+      "en": "Easy heart"
     },
-    "author": "Ukendt",
+    "author": "Thomas Ahle",
     "authorUrl": null,
-    "publisher": "Illustreret Familie-Journal",
+    "publisher": null,
     "publisherUrl": null,
-    "source": "https://papermatrix.wordpress.com/wp-content/uploads/2010/04/koch-1.jpg",
-    "date": "1922",
+    "source": "juleflet.dk",
+    "date": "2025-12-20",
     "description": null,
     "gridSize": {
-      "x": 5,
-      "y": 5
+      "x": 3,
+      "y": 3
     },
-    "difficulty": "medium",
+    "difficulty": "easy",
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": true,
-      "lobeSymmetry": true,
+      "lobeSymmetry": false,
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
     "photo": null
+  },
+  "ni-hjerter-i-tern": {
+    "name": "Ni hjerter i tern",
+    "names": {
+      "en": "Nine hearts in checks"
+    },
+    "author": "Susanne Dybdahl Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-27",
+    "description": null,
+    "gridSize": {
+      "x": 7,
+      "y": 7
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": {
+      "src": "/hearts/photos/ni-hjerter-i-tern.jpg",
+      "width": 900,
+      "height": 1200
+    }
   },
   "triple-heart": {
     "name": "Triple Hjerte",
@@ -458,6 +542,62 @@
       "isClassic": false,
       "curveSymmetry": false,
       "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "hjertekloever": {
+    "name": "Hjertekløver",
+    "names": {
+      "en": "Heart clover"
+    },
+    "author": "Hans H. Koch",
+    "authorUrl": null,
+    "publisher": "Børnenes Magasin",
+    "publisherUrl": null,
+    "source": "https://aldus.dk/hanskoch/julehjerter.php",
+    "date": "1916-12-01",
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": {
+      "src": "/hearts/photos/hjertekloever.jpg",
+      "width": 1200,
+      "height": 1116
+    }
+  },
+  "firkloever-hjerte": {
+    "name": "Firkløver-hjerte",
+    "names": {
+      "en": "Four-leaf clover heart"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
@@ -567,63 +707,6 @@
     },
     "photo": null
   },
-  "nemt-hjerte": {
-    "name": "Nemt Hjerte",
-    "names": {
-      "da": "Nemt hjerte",
-      "en": "Easy heart"
-    },
-    "author": "Thomas Ahle",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2025-12-20",
-    "description": null,
-    "gridSize": {
-      "x": 3,
-      "y": 3
-    },
-    "difficulty": "easy",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "ni-hjerter-i-tern": {
-    "name": "Ni hjerter i tern",
-    "names": {
-      "en": "Nine hearts in checks"
-    },
-    "author": "Susanne Dybdahl Ahle",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2026-10-27",
-    "description": null,
-    "gridSize": {
-      "x": 7,
-      "y": 7
-    },
-    "difficulty": "expert",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": {
-      "src": "/hearts/photos/ni-hjerter-i-tern.jpg",
-      "width": 900,
-      "height": 1200
-    }
-  },
   "lilje1": {
     "name": "Lilje 1",
     "names": {
@@ -670,191 +753,6 @@
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "hjertekloever": {
-    "name": "Hjertekløver",
-    "names": {
-      "en": "Heart clover"
-    },
-    "author": "Hans H. Koch",
-    "authorUrl": null,
-    "publisher": "Børnenes Magasin",
-    "publisherUrl": null,
-    "source": "https://aldus.dk/hanskoch/julehjerter.php",
-    "date": "1916-12-01",
-    "description": null,
-    "gridSize": {
-      "x": 4,
-      "y": 4
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": {
-      "src": "/hearts/photos/hjertekloever.jpg",
-      "width": 1200,
-      "height": 1116
-    }
-  },
-  "firkloever-hjerte": {
-    "name": "Firkløver-hjerte",
-    "names": {
-      "en": "Four-leaf clover heart"
-    },
-    "author": "Ukendt",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2026-10-21",
-    "description": null,
-    "gridSize": {
-      "x": 6,
-      "y": 6
-    },
-    "difficulty": "expert",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "circle": {
-    "name": "Uret v2",
-    "names": {
-      "da": "Uret",
-      "en": "The clock"
-    },
-    "author": "Thomas Ahle",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
-    "description": "A simple clock",
-    "gridSize": {
-      "x": 5,
-      "y": 5
-    },
-    "difficulty": "hard",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": {
-      "src": "/hearts/photos/circle.jpg",
-      "width": 1000,
-      "height": 1000
-    }
-  },
-  "balls": {
-    "name": "Polka",
-    "author": "Thomas Ahle",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
-    "description": "Polka prikker",
-    "gridSize": {
-      "x": 7,
-      "y": 7
-    },
-    "difficulty": "expert",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "plus": {
-    "name": "Plus",
-    "author": "Thomas",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
-    "description": "4 røde plusser omrking et enkelt hvidt plus",
-    "gridSize": {
-      "x": 3,
-      "y": 3
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": false,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "amy-weave-1": {
-    "name": "Weave 1",
-    "names": {
-      "da": "Flet 1"
-    },
-    "author": "Amy Young",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": null,
-    "date": "2025-12-20",
-    "description": null,
-    "gridSize": {
-      "x": 8,
-      "y": 7
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": false,
-      "sharedTemplate": false
-    },
-    "photo": null
-  },
-  "amy-weave-2": {
-    "name": "Weave 2",
-    "names": {
-      "da": "Flet 2"
-    },
-    "author": "Amy Young",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": null,
-    "date": "2025-12-20",
-    "description": null,
-    "gridSize": {
-      "x": 8,
-      "y": 8
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
       "lobeSymmetry": false,
       "mirrorSymmetry": true,
       "sharedTemplate": true
@@ -936,85 +834,6 @@
     },
     "photo": null
   },
-  "amy-pinecone": {
-    "name": "Pinecone",
-    "names": {
-      "da": "Grankogle",
-      "en": "Fir cone"
-    },
-    "author": "Amy",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2025-12-20",
-    "description": null,
-    "gridSize": {
-      "x": 7,
-      "y": 7
-    },
-    "difficulty": "hard",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "squares": {
-    "name": "Squares",
-    "names": {
-      "da": "Firkanter"
-    },
-    "author": "Thomas Ahle",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": null,
-    "date": null,
-    "description": "Kræver lidt koncentration at flette",
-    "gridSize": {
-      "x": 2,
-      "y": 2
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": false,
-      "sharedTemplate": false
-    },
-    "photo": null
-  },
-  "sildeben": {
-    "name": "Sildeben",
-    "names": {
-      "en": "Herringbone"
-    },
-    "author": "Thomas Ahle & Claude",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2026-10-14",
-    "description": null,
-    "gridSize": {
-      "x": 6,
-      "y": 6
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": false,
-      "sharedTemplate": false
-    },
-    "photo": null
-  },
   "roserude": {
     "name": "Roserude",
     "names": {
@@ -1041,23 +860,103 @@
     },
     "photo": null
   },
-  "flyvendegaes": {
-    "name": "Flyvende gæs",
+  "blomster-hjerte": {
+    "name": "Blomster-hjerte",
     "names": {
-      "en": "Flying geese"
+      "en": "Flower heart"
     },
-    "author": "Thomas Ahle & Claude",
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "circle": {
+    "name": "Uret v2",
+    "names": {
+      "da": "Uret",
+      "en": "The clock"
+    },
+    "author": "Thomas Ahle",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
     "source": "juleflet.dk",
     "date": null,
-    "description": null,
+    "description": "A simple clock",
     "gridSize": {
-      "x": 6,
-      "y": 6
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": {
+      "src": "/hearts/photos/circle.jpg",
+      "width": 1000,
+      "height": 1000
+    }
+  },
+  "balls": {
+    "name": "Polka",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "Polka prikker",
+    "gridSize": {
+      "x": 7,
+      "y": 7
     },
     "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "permo-cirkler": {
+    "name": "Cirkler",
+    "names": {
+      "en": "Circles"
+    },
+    "author": "Hans H. Koch",
+    "authorUrl": null,
+    "publisher": "Børnenes Magasin",
+    "publisherUrl": null,
+    "source": "https://aldus.dk/hanskoch/julehjerter.php",
+    "date": "1916-12-01",
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": false,
@@ -1067,8 +966,11 @@
     },
     "photo": null
   },
-  "origami": {
-    "name": "Origami",
+  "glaskuppel": {
+    "name": "Glaskuppel",
+    "names": {
+      "en": "Glass dome"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -1080,37 +982,63 @@
       "x": 7,
       "y": 7
     },
-    "difficulty": "hard",
+    "difficulty": "medium",
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": false,
       "lobeSymmetry": true,
-      "mirrorSymmetry": false,
+      "mirrorSymmetry": true,
       "sharedTemplate": true
     },
     "photo": null
   },
-  "hermanngitter": {
-    "name": "Hermann-gitter",
+  "amy-weave-1": {
+    "name": "Weave 1",
     "names": {
-      "en": "Hermann grid"
+      "da": "Flet 1"
     },
-    "author": "Thomas Ahle & Claude",
+    "author": "Amy Young",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
+    "source": null,
+    "date": "2025-12-20",
     "description": null,
     "gridSize": {
-      "x": 6,
-      "y": 6
+      "x": 8,
+      "y": 7
     },
-    "difficulty": "expert",
+    "difficulty": "medium",
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": true,
-      "lobeSymmetry": true,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "amy-weave-2": {
+    "name": "Weave 2",
+    "names": {
+      "da": "Flet 2"
+    },
+    "author": "Amy Young",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": "2025-12-20",
+    "description": null,
+    "gridSize": {
+      "x": 8,
+      "y": 8
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": false,
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
@@ -1142,203 +1070,22 @@
     },
     "photo": null
   },
-  "boelgebrud": {
-    "name": "Bølgebrud",
+  "amy-pinecone": {
+    "name": "Pinecone",
     "names": {
-      "en": "Breakers"
+      "da": "Grankogle",
+      "en": "Fir cone"
     },
-    "author": "Thomas Ahle & Claude",
+    "author": "Amy",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
     "source": "juleflet.dk",
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 6,
-      "y": 6
-    },
-    "difficulty": "expert",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": false,
-      "sharedTemplate": false
-    },
-    "photo": null
-  },
-  "glaskuppel": {
-    "name": "Glaskuppel",
-    "names": {
-      "en": "Glass dome"
-    },
-    "author": "Thomas Ahle & Claude",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
+    "date": "2025-12-20",
     "description": null,
     "gridSize": {
       "x": 7,
       "y": 7
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "hvirvel": {
-    "name": "Hvirvel",
-    "names": {
-      "en": "Whirl"
-    },
-    "author": "Thomas Ahle & Claude",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 5,
-      "y": 5
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": false,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "permo-cirkler": {
-    "name": "Cirkler",
-    "names": {
-      "en": "Circles"
-    },
-    "author": "Hans H. Koch",
-    "authorUrl": null,
-    "publisher": "Børnenes Magasin",
-    "publisherUrl": null,
-    "source": "https://aldus.dk/hanskoch/julehjerter.php",
-    "date": "1916-12-01",
-    "description": null,
-    "gridSize": {
-      "x": 4,
-      "y": 4
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "permo-kroge": {
-    "name": "Kroge",
-    "names": {
-      "en": "Hooks"
-    },
-    "author": "Per V. Mortensen",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 4,
-      "y": 4
-    },
-    "difficulty": "hard",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": false,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "blomster-hjerte": {
-    "name": "Blomster-hjerte",
-    "names": {
-      "en": "Flower heart"
-    },
-    "author": "Ukendt",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2026-10-21",
-    "description": null,
-    "gridSize": {
-      "x": 5,
-      "y": 5
-    },
-    "difficulty": "hard",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "fejlternet": {
-    "name": "Fejlternet hjerte",
-    "names": {
-      "en": "Bias-check heart"
-    },
-    "author": "Ukendt",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2026-10-21",
-    "description": null,
-    "gridSize": {
-      "x": 5,
-      "y": 5
-    },
-    "difficulty": "hard",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": false,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "gitterhjerte": {
-    "name": "Gitterhjerte",
-    "names": {
-      "en": "Lattice heart"
-    },
-    "author": "Ukendt",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2026-10-21",
-    "description": null,
-    "gridSize": {
-      "x": 5,
-      "y": 5
     },
     "difficulty": "hard",
     "symmetry": {
@@ -1402,55 +1149,6 @@
     },
     "photo": null
   },
-  "khatam": {
-    "name": "Khatam",
-    "author": "Thomas Ahle",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": null,
-    "date": "Dec 25, 2025",
-    "description": "A Khatam star is an eight-pointed star prominent in Islamic art and architecture",
-    "gridSize": {
-      "x": 6,
-      "y": 6
-    },
-    "difficulty": "expert",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": false,
-      "sharedTemplate": false
-    },
-    "photo": null
-  },
-  "stjernegitter": {
-    "name": "Stjernegitter",
-    "names": {
-      "en": "Star lattice"
-    },
-    "author": "Thomas Ahle & Claude",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 7,
-      "y": 7
-    },
-    "difficulty": "expert",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
   "fire-stjerner": {
     "name": "Fire stjerner",
     "names": {
@@ -1481,10 +1179,36 @@
       "height": 1200
     }
   },
-  "stjernerogkors": {
-    "name": "Stjerner og kors",
+  "squares": {
+    "name": "Squares",
     "names": {
-      "en": "Stars and crosses"
+      "da": "Firkanter"
+    },
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": null,
+    "description": "Kræver lidt koncentration at flette",
+    "gridSize": {
+      "x": 2,
+      "y": 2
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "hermanngitter": {
+    "name": "Hermann-gitter",
+    "names": {
+      "en": "Hermann grid"
     },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
@@ -1492,6 +1216,32 @@
     "publisherUrl": null,
     "source": "juleflet.dk",
     "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "gitterhjerte": {
+    "name": "Gitterhjerte",
+    "names": {
+      "en": "Lattice heart"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
     "description": null,
     "gridSize": {
       "x": 5,
@@ -1507,29 +1257,106 @@
     },
     "photo": null
   },
-  "andreaskors": {
-    "name": "Andreaskors",
+  "fejlternet": {
+    "name": "Fejlternet hjerte",
     "names": {
-      "da": "Andreaskors",
-      "en": "St Andrew's cross"
+      "en": "Bias-check heart"
     },
-    "author": "Hans H. Koch",
+    "author": "Ukendt",
     "authorUrl": null,
-    "publisher": "Børnenes Magasin",
+    "publisher": null,
     "publisherUrl": null,
-    "source": "https://aldus.dk/hanskoch/julehjerter.php",
-    "date": "1916-12-01",
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
     "description": null,
     "gridSize": {
-      "x": 3,
-      "y": 3
+      "x": 5,
+      "y": 5
     },
-    "difficulty": "easy",
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": false,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "boelgebrud": {
+    "name": "Bølgebrud",
+    "names": {
+      "en": "Breakers"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "hvirvel": {
+    "name": "Hvirvel",
+    "names": {
+      "en": "Whirl"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": false,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "permo-kroge": {
+    "name": "Kroge",
+    "names": {
+      "en": "Hooks"
+    },
+    "author": "Per V. Mortensen",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "hard",
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": true,
       "lobeSymmetry": true,
-      "mirrorSymmetry": true,
+      "mirrorSymmetry": false,
       "sharedTemplate": true
     },
     "photo": null
@@ -1659,6 +1486,29 @@
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": false,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "plus": {
+    "name": "Plus",
+    "author": "Thomas",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "4 røde plusser omrking et enkelt hvidt plus",
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
       "lobeSymmetry": true,
       "mirrorSymmetry": false,
       "sharedTemplate": true
@@ -1814,6 +1664,156 @@
       "curveSymmetry": true,
       "lobeSymmetry": false,
       "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "khatam": {
+    "name": "Khatam",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": "Dec 25, 2025",
+    "description": "A Khatam star is an eight-pointed star prominent in Islamic art and architecture",
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "stjernegitter": {
+    "name": "Stjernegitter",
+    "names": {
+      "en": "Star lattice"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 7,
+      "y": 7
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "stjernerogkors": {
+    "name": "Stjerner og kors",
+    "names": {
+      "en": "Stars and crosses"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "sildeben": {
+    "name": "Sildeben",
+    "names": {
+      "en": "Herringbone"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-14",
+    "description": null,
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "flyvendegaes": {
+    "name": "Flyvende gæs",
+    "names": {
+      "en": "Flying geese"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "origami": {
+    "name": "Origami",
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 7,
+      "y": 7
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": false,
       "sharedTemplate": true
     },
     "photo": null

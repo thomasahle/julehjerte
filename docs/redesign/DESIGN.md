@@ -315,11 +315,11 @@ padding-bottom 4, margin-bottom 10, no rule under it). Section ids `klassiske`, 
 `repeat(auto-fill, minmax(204px, 1fr))`, column-gap 16, row-gap 28 (2 columns, gaps 14/32 below 600).
 
 Categories (hearts.json, 2026-10-22): Klassiske, Stjerner, Mønstre, Fliser, Figurer, Tekst, Hjerter. Fliser ("Tilings")
-holds the Escher-like tilings, where the red and the white pieces are the same interlocking figure: Dag og nat,
-Puslespil, Drageskæl, Alhambra, Skrå kryds, Plus 3, Kølbuer, Hanefod, Dråber, Fiskeskæl, Bølger, each a tile of Tegn's
-Escher tab, so that "Rediger" opens it there (since 28 Oct 2026, when Skrå kryds and Plus 3 came from Mønstre and Kroge
-went there: its half circles cross each other three times, which no tile's cuts do). Plain polygon tilings (Sildeben,
-Flyvende gæs), Hermann-gitter and Stjerner og kors (two figures) stay in Mønstre. Tekst holds five hearts made with the design page's text frames and checked
+holds the tilings, the whole woven square one repeated figure or two: Dag og nat, Puslespil, Drageskæl, Alhambra,
+Skrå kryds, Plus, Plus 3, Kølbuer, Hanefod, Dråber, Fiskeskæl, Bølger, Khatam, Stjernegitter, Stjerner og kors,
+Sildeben, Flyvende gæs, Origami (the owner's order, 28 Oct 2026; Kroge went to Mønstre the same day: its half circles
+cross each other three times, which no tile's cuts do). "Rediger" opens each on Tegn's Escher tab except Plus,
+Khatam, Stjernegitter, Sildeben and Origami, which the tab has no type for yet (escherTab.test.ts says why). Tekst holds five hearts made with the design page's text frames and checked
 as paper (each template drawn at 80 mm, every piece joined to its ear by paper about 2 mm wide or more, no red cut;
 `$lib/geometry/paperNecks`, the design page's own check, since 23 Oct 2026, when GOD JUL's and JUL 2026's letter
 curls were opened by hand by 0.3–0.7 units where they held pieces by 1.7–1.98 mm):

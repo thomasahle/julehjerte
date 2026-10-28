@@ -31,9 +31,9 @@ describe('heart page load', () => {
 
 	it("names the related hearts in the page's language", async () => {
 		const names = async (lang?: string) =>
-			((await run('amy-weave-2', lang)).related as { id: string; name: string }[]).find((h) => h.id === 'amy-weave-1')
+			((await run('amy-pattern', lang)).related as { id: string; name: string }[]).find((h) => h.id === 'amy-flowering')
 				?.name;
-		expect(await names()).toBe('Flet 1');
-		expect(await names('en')).toBe('Weave 1');
+		expect(await names()).toBe('Blomstring');
+		expect(await names('en')).toBe('Flowering');
 	});
 });

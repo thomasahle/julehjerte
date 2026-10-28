@@ -25,10 +25,10 @@
     "name": "JUL",
     "difficulty": "hard"
   },
-  "stjerne": {
-    "name": "Stjerne",
+  "sun": {
+    "name": "Sol",
     "names": {
-      "en": "Star"
+      "en": "Sun"
     },
     "difficulty": "medium"
   },
@@ -39,10 +39,44 @@
     },
     "difficulty": "medium"
   },
+  "stjerne": {
+    "name": "Stjerne",
+    "names": {
+      "en": "Star"
+    },
+    "difficulty": "medium"
+  },
   "explosion": {
     "name": "Eksplosion",
     "names": {
       "en": "Explosion"
+    },
+    "difficulty": "easy"
+  },
+  "kompasrose": {
+    "name": "Kompasrose",
+    "names": {
+      "da": "Kompasrose",
+      "en": "Compass rose"
+    },
+    "difficulty": "medium"
+  },
+  "permo-sol": {
+    "name": "Solstråler",
+    "names": {
+      "en": "Sunbeams"
+    },
+    "difficulty": "easy"
+  },
+  "nihon": {
+    "name": "Nihon",
+    "difficulty": "easy"
+  },
+  "andreaskors": {
+    "name": "Andreaskors",
+    "names": {
+      "da": "Andreaskors",
+      "en": "St Andrew's cross"
     },
     "difficulty": "easy"
   },
@@ -70,24 +104,6 @@
     },
     "difficulty": "easy"
   },
-  "sun": {
-    "name": "Sol",
-    "names": {
-      "en": "Sun"
-    },
-    "difficulty": "medium"
-  },
-  "permo-sol": {
-    "name": "Solstråler",
-    "names": {
-      "en": "Sunbeams"
-    },
-    "difficulty": "easy"
-  },
-  "nihon": {
-    "name": "Nihon",
-    "difficulty": "easy"
-  },
   "davidsstjerne-circ": {
     "name": "Davidsstjerne Cirkel",
     "names": {
@@ -104,13 +120,20 @@
     },
     "difficulty": "medium"
   },
-  "kompasrose": {
-    "name": "Kompasrose",
+  "nemt-hjerte": {
+    "name": "Nemt Hjerte",
     "names": {
-      "da": "Kompasrose",
-      "en": "Compass rose"
+      "da": "Nemt hjerte",
+      "en": "Easy heart"
     },
-    "difficulty": "medium"
+    "difficulty": "easy"
+  },
+  "ni-hjerter-i-tern": {
+    "name": "Ni hjerter i tern",
+    "names": {
+      "en": "Nine hearts in checks"
+    },
+    "difficulty": "expert"
   },
   "triple-heart": {
     "name": "Triple Hjerte",
@@ -119,6 +142,20 @@
       "en": "Triple heart"
     },
     "difficulty": "medium"
+  },
+  "hjertekloever": {
+    "name": "Hjertekløver",
+    "names": {
+      "en": "Heart clover"
+    },
+    "difficulty": "medium"
+  },
+  "firkloever-hjerte": {
+    "name": "Firkløver-hjerte",
+    "names": {
+      "en": "Four-leaf clover heart"
+    },
+    "difficulty": "expert"
   },
   "mor-og-barn": {
     "name": "Mor og barn",
@@ -148,21 +185,6 @@
     },
     "difficulty": "expert"
   },
-  "nemt-hjerte": {
-    "name": "Nemt Hjerte",
-    "names": {
-      "da": "Nemt hjerte",
-      "en": "Easy heart"
-    },
-    "difficulty": "easy"
-  },
-  "ni-hjerter-i-tern": {
-    "name": "Ni hjerter i tern",
-    "names": {
-      "en": "Nine hearts in checks"
-    },
-    "difficulty": "expert"
-  },
   "lilje1": {
     "name": "Lilje 1",
     "names": {
@@ -176,50 +198,6 @@
       "en": "Lily 2"
     },
     "difficulty": "expert"
-  },
-  "hjertekloever": {
-    "name": "Hjertekløver",
-    "names": {
-      "en": "Heart clover"
-    },
-    "difficulty": "medium"
-  },
-  "firkloever-hjerte": {
-    "name": "Firkløver-hjerte",
-    "names": {
-      "en": "Four-leaf clover heart"
-    },
-    "difficulty": "expert"
-  },
-  "circle": {
-    "name": "Uret v2",
-    "names": {
-      "da": "Uret",
-      "en": "The clock"
-    },
-    "difficulty": "hard"
-  },
-  "balls": {
-    "name": "Polka",
-    "difficulty": "expert"
-  },
-  "plus": {
-    "name": "Plus",
-    "difficulty": "medium"
-  },
-  "amy-weave-1": {
-    "name": "Weave 1",
-    "names": {
-      "da": "Flet 1"
-    },
-    "difficulty": "medium"
-  },
-  "amy-weave-2": {
-    "name": "Weave 2",
-    "names": {
-      "da": "Flet 2"
-    },
-    "difficulty": "medium"
   },
   "amy-rosette": {
     "name": "Rosette",
@@ -239,94 +217,12 @@
     },
     "difficulty": "hard"
   },
-  "amy-pinecone": {
-    "name": "Pinecone",
-    "names": {
-      "da": "Grankogle",
-      "en": "Fir cone"
-    },
-    "difficulty": "hard"
-  },
-  "squares": {
-    "name": "Squares",
-    "names": {
-      "da": "Firkanter"
-    },
-    "difficulty": "medium"
-  },
-  "sildeben": {
-    "name": "Sildeben",
-    "names": {
-      "en": "Herringbone"
-    },
-    "difficulty": "medium"
-  },
   "roserude": {
     "name": "Roserude",
     "names": {
       "en": "Rose window"
     },
     "difficulty": "medium"
-  },
-  "flyvendegaes": {
-    "name": "Flyvende gæs",
-    "names": {
-      "en": "Flying geese"
-    },
-    "difficulty": "expert"
-  },
-  "origami": {
-    "name": "Origami",
-    "difficulty": "hard"
-  },
-  "hermanngitter": {
-    "name": "Hermann-gitter",
-    "names": {
-      "en": "Hermann grid"
-    },
-    "difficulty": "expert"
-  },
-  "tragt": {
-    "name": "Tragt",
-    "names": {
-      "en": "Funnel"
-    },
-    "difficulty": "medium"
-  },
-  "boelgebrud": {
-    "name": "Bølgebrud",
-    "names": {
-      "en": "Breakers"
-    },
-    "difficulty": "expert"
-  },
-  "glaskuppel": {
-    "name": "Glaskuppel",
-    "names": {
-      "en": "Glass dome"
-    },
-    "difficulty": "medium"
-  },
-  "hvirvel": {
-    "name": "Hvirvel",
-    "names": {
-      "en": "Whirl"
-    },
-    "difficulty": "medium"
-  },
-  "permo-cirkler": {
-    "name": "Cirkler",
-    "names": {
-      "en": "Circles"
-    },
-    "difficulty": "medium"
-  },
-  "permo-kroge": {
-    "name": "Kroge",
-    "names": {
-      "en": "Hooks"
-    },
-    "difficulty": "hard"
   },
   "blomster-hjerte": {
     "name": "Blomster-hjerte",
@@ -335,17 +231,58 @@
     },
     "difficulty": "hard"
   },
-  "fejlternet": {
-    "name": "Fejlternet hjerte",
+  "circle": {
+    "name": "Uret v2",
     "names": {
-      "en": "Bias-check heart"
+      "da": "Uret",
+      "en": "The clock"
     },
     "difficulty": "hard"
   },
-  "gitterhjerte": {
-    "name": "Gitterhjerte",
+  "balls": {
+    "name": "Polka",
+    "difficulty": "expert"
+  },
+  "permo-cirkler": {
+    "name": "Cirkler",
     "names": {
-      "en": "Lattice heart"
+      "en": "Circles"
+    },
+    "difficulty": "medium"
+  },
+  "glaskuppel": {
+    "name": "Glaskuppel",
+    "names": {
+      "en": "Glass dome"
+    },
+    "difficulty": "medium"
+  },
+  "amy-weave-1": {
+    "name": "Weave 1",
+    "names": {
+      "da": "Flet 1"
+    },
+    "difficulty": "medium"
+  },
+  "amy-weave-2": {
+    "name": "Weave 2",
+    "names": {
+      "da": "Flet 2"
+    },
+    "difficulty": "medium"
+  },
+  "tragt": {
+    "name": "Tragt",
+    "names": {
+      "en": "Funnel"
+    },
+    "difficulty": "medium"
+  },
+  "amy-pinecone": {
+    "name": "Pinecone",
+    "names": {
+      "da": "Grankogle",
+      "en": "Fir cone"
     },
     "difficulty": "hard"
   },
@@ -363,17 +300,6 @@
     },
     "difficulty": "medium"
   },
-  "khatam": {
-    "name": "Khatam",
-    "difficulty": "expert"
-  },
-  "stjernegitter": {
-    "name": "Stjernegitter",
-    "names": {
-      "en": "Star lattice"
-    },
-    "difficulty": "expert"
-  },
   "fire-stjerner": {
     "name": "Fire stjerner",
     "names": {
@@ -381,20 +307,54 @@
     },
     "difficulty": "medium"
   },
-  "stjernerogkors": {
-    "name": "Stjerner og kors",
+  "squares": {
+    "name": "Squares",
     "names": {
-      "en": "Stars and crosses"
+      "da": "Firkanter"
+    },
+    "difficulty": "medium"
+  },
+  "hermanngitter": {
+    "name": "Hermann-gitter",
+    "names": {
+      "en": "Hermann grid"
+    },
+    "difficulty": "expert"
+  },
+  "gitterhjerte": {
+    "name": "Gitterhjerte",
+    "names": {
+      "en": "Lattice heart"
     },
     "difficulty": "hard"
   },
-  "andreaskors": {
-    "name": "Andreaskors",
+  "fejlternet": {
+    "name": "Fejlternet hjerte",
     "names": {
-      "da": "Andreaskors",
-      "en": "St Andrew's cross"
+      "en": "Bias-check heart"
     },
-    "difficulty": "easy"
+    "difficulty": "hard"
+  },
+  "boelgebrud": {
+    "name": "Bølgebrud",
+    "names": {
+      "en": "Breakers"
+    },
+    "difficulty": "expert"
+  },
+  "hvirvel": {
+    "name": "Hvirvel",
+    "names": {
+      "en": "Whirl"
+    },
+    "difficulty": "medium"
+  },
+  "permo-kroge": {
+    "name": "Kroge",
+    "names": {
+      "en": "Hooks"
+    },
+    "difficulty": "hard"
   },
   "dagognat": {
     "name": "Dag og nat",
@@ -426,6 +386,10 @@
     "names": {
       "en": "Slanted crosses"
     },
+    "difficulty": "medium"
+  },
+  "plus": {
+    "name": "Plus",
     "difficulty": "medium"
   },
   "plus3": {
@@ -466,6 +430,42 @@
       "en": "Waves"
     },
     "difficulty": "medium"
+  },
+  "khatam": {
+    "name": "Khatam",
+    "difficulty": "expert"
+  },
+  "stjernegitter": {
+    "name": "Stjernegitter",
+    "names": {
+      "en": "Star lattice"
+    },
+    "difficulty": "expert"
+  },
+  "stjernerogkors": {
+    "name": "Stjerner og kors",
+    "names": {
+      "en": "Stars and crosses"
+    },
+    "difficulty": "hard"
+  },
+  "sildeben": {
+    "name": "Sildeben",
+    "names": {
+      "en": "Herringbone"
+    },
+    "difficulty": "medium"
+  },
+  "flyvendegaes": {
+    "name": "Flyvende gæs",
+    "names": {
+      "en": "Flying geese"
+    },
+    "difficulty": "expert"
+  },
+  "origami": {
+    "name": "Origami",
+    "difficulty": "hard"
   },
   "juletrae": {
     "name": "Juletræ",

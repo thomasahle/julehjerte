@@ -60,6 +60,9 @@ export const PINTEREST_FIRST = ['classic-3x3', 'gaver', 'jul', 'juletrae', 'stje
  * the gallery on 2026-10-27, its own day (6); it stays here so that every later
  * heart keeps its day. Kompasrose (day 27) and Koch's Andreaskors (day 41) went
  * in on 2026-10-28, before Christmas and between hearts of other categories.
+ * The same day Plus, Khatam, Stjernegitter, Stjerner og kors, Sildeben, Flyvende
+ * gæs and Origami moved to Fliser, which made neighbours of Fliser at days
+ * 65–72; swaps among days 66–78, none of them out, kept them apart.
  */
 export const PINTEREST_ORDER: readonly string[] = [
 	'classic-3x3', 'juletrae', 'circle', 'gaver', 'balls', 'jul',
@@ -72,9 +75,9 @@ export const PINTEREST_ORDER: readonly string[] = [
 	'origami', 'nihon', 'drageskael', 'hjerte-i-hjerte-i-hjerte', 'mor-far', 'dagognat', 'hermanngitter',
 	'lilje1', 'tragt', 'davidsstjerne-circ', 'boelgebrud', 'ball', 'glaskuppel',
 	'lilje2', 'hvirvel', 'david4', 'jul-2026', 'permo-kroge', 'fisk',
-	'permo-draaber', 'khatam', 'tulipan', 'permo-cirkler', 'fiskeskael', 'stjernerogkors',
-	'boelger', 'stjernegitter', 'roed-blomst', 'blomster-hjerte', 'jul-tern', 'skraa-kryds',
-	'hjertekloever', 'fejlternet', 'firkloever-hjerte', 'gitterhjerte', 'kloeverblad-hjerte', 'cirkelhjerte',
+	'permo-draaber', 'tulipan', 'khatam', 'permo-cirkler', 'fiskeskael', 'roed-blomst',
+	'boelger', 'blomster-hjerte', 'stjernerogkors', 'fejlternet', 'jul-tern', 'skraa-kryds',
+	'hjertekloever', 'stjernegitter', 'firkloever-hjerte', 'gitterhjerte', 'kloeverblad-hjerte', 'cirkelhjerte',
 	'groen-stjerne', 'firkanthjerte', 'hjerte-paa-hjerte'
 ];
 
