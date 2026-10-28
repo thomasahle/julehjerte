@@ -1,0 +1,34 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="1">
+  <title>Ni firkanter</title>
+  <title xml:lang="da">Ni firkanter</title>
+  <title xml:lang="en">Nine squares</title>
+  <desc xml:lang="da">Ni lige store røde firkanter på en hvid ottekant med røde hjørner: fem står på spidsen som et plus, og fire står lige imellem dem. Fem striber i hver halvdel, og alle klip er lige med knæk. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er svær. Klip hvert knæk helt ud i hjørnet, så firkanterne får skarpe spidser. Fra arkitekt Hans H. Kochs [julehjerter i Børnenes Magasin 1916](https://aldus.dk/hanskoch/julehjerter.php).</desc>
+  <desc xml:lang="en">Nine equal red squares on a white octagon with red corners: five stand on their points in the shape of a plus, and four stand upright between them. Five strips in each half, and every cut is straight with bends. The halves mirror each other, so one template covers both, and the difficulty is hard. Cut each bend right into its corner so that the squares get sharp points. From the architect Hans H. Koch's [Christmas hearts in Børnenes Magasin 1916](https://aldus.dk/hanskoch/julehjerter.php).</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Ni firkanter</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Hans H. Koch</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Børnenes Magasin</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:source>https://aldus.dk/hanskoch/julehjerter.php</dc:source>
+        <dc:date>1916-12-01</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 0 24.3 C 4.05 20.25 8.1 16.2 12.15 12.15 C 20.233 12.15 28.317 12.15 36.4 12.15 C 40.933 16.683 45.467 21.217 50 25.75 C 54.533 21.217 59.067 16.683 63.6 12.15 C 71.683 12.15 79.767 12.15 87.85 12.15 C 91.9 16.2 95.95 20.25 100 24.3" stroke="orange" fill="none"/>
+  <path d="M 0 41.455 C 2.868 38.588 5.735 35.72 8.603 32.853 C 9.785 34.035 10.968 35.218 12.15 36.4 C 20.233 36.4 28.317 36.4 36.4 36.4 C 36.892 36.892 37.383 37.383 37.875 37.875 C 45.958 37.875 54.042 37.875 62.125 37.875 C 62.617 37.383 63.108 36.892 63.6 36.4 C 71.683 36.4 79.767 36.4 87.85 36.4 C 89.032 35.218 90.215 34.035 91.397 32.853 C 94.265 35.72 97.132 38.588 100 41.455" stroke="orange" fill="none"/>
+  <path d="M 0 58.545 C 2.868 61.412 5.735 64.28 8.603 67.147 C 9.785 65.965 10.968 64.782 12.15 63.6 C 20.233 63.6 28.317 63.6 36.4 63.6 C 36.892 63.108 37.383 62.617 37.875 62.125 C 45.958 62.125 54.042 62.125 62.125 62.125 C 62.617 62.617 63.108 63.108 63.6 63.6 C 71.683 63.6 79.767 63.6 87.85 63.6 C 89.032 64.782 90.215 65.965 91.397 67.147 C 94.265 64.28 97.132 61.412 100 58.545" stroke="orange" fill="none"/>
+  <path d="M 0 75.7 C 4.05 79.75 8.1 83.8 12.15 87.85 C 20.233 87.85 28.317 87.85 36.4 87.85 C 40.933 83.317 45.467 78.783 50 74.25 C 54.533 78.783 59.067 83.317 63.6 87.85 C 71.683 87.85 79.767 87.85 87.85 87.85 C 91.9 83.8 95.95 79.75 100 75.7" stroke="orange" fill="none"/>
+  <path d="M 24.3 0 C 20.25 4.05 16.2 8.1 12.15 12.15 C 12.15 20.233 12.15 28.317 12.15 36.4 C 16.683 40.933 21.217 45.467 25.75 50 C 21.217 54.533 16.683 59.067 12.15 63.6 C 12.15 71.683 12.15 79.767 12.15 87.85 C 16.2 91.9 20.25 95.95 24.3 100" stroke="green" fill="none"/>
+  <path d="M 41.455 0 C 38.588 2.868 35.72 5.735 32.853 8.603 C 34.035 9.785 35.218 10.968 36.4 12.15 C 36.4 20.233 36.4 28.317 36.4 36.4 C 36.892 36.892 37.383 37.383 37.875 37.875 C 37.875 45.958 37.875 54.042 37.875 62.125 C 37.383 62.617 36.892 63.108 36.4 63.6 C 36.4 71.683 36.4 79.767 36.4 87.85 C 35.218 89.032 34.035 90.215 32.853 91.397 C 35.72 94.265 38.588 97.132 41.455 100" stroke="green" fill="none"/>
+  <path d="M 58.545 0 C 61.412 2.868 64.28 5.735 67.147 8.603 C 65.965 9.785 64.782 10.968 63.6 12.15 C 63.6 20.233 63.6 28.317 63.6 36.4 C 63.108 36.892 62.617 37.383 62.125 37.875 C 62.125 45.958 62.125 54.042 62.125 62.125 C 62.617 62.617 63.108 63.108 63.6 63.6 C 63.6 71.683 63.6 79.767 63.6 87.85 C 64.782 89.032 65.965 90.215 67.147 91.397 C 64.28 94.265 61.412 97.132 58.545 100" stroke="green" fill="none"/>
+  <path d="M 75.7 0 C 79.75 4.05 83.8 8.1 87.85 12.15 C 87.85 20.233 87.85 28.317 87.85 36.4 C 83.317 40.933 78.783 45.467 74.25 50 C 78.783 54.533 83.317 59.067 87.85 63.6 C 87.85 71.683 87.85 79.767 87.85 87.85 C 83.8 91.9 79.75 95.95 75.7 100" stroke="green" fill="none"/>
+</svg>

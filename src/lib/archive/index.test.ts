@@ -214,9 +214,9 @@ describe('the complete heart archive', () => {
 		// of the five juleflet hearts built from those pages (Sol and three permo-*);
 		// Cirkler is credited to Hans H. Koch, who published it in 1916.
 		expect(mortensen).toHaveLength(36);
-		// Fiskeskæl, Bølger, Cirkler, Hjertekløver, Andreaskors and Stjerneblomst, from
-		// Børnenes Magasin 1916.
-		expect(filterArchive(records, 'hans h. koch', '', 'juleflet')).toHaveLength(6);
+		// Fiskeskæl, Bølger, Cirkler, Hjertekløver, Andreaskors, Stjerneblomst, Ni
+		// firkanter and Potteplante, from Børnenes Magasin 1916.
+		expect(filterArchive(records, 'hans h. koch', '', 'juleflet')).toHaveLength(8);
 		expect(filterArchive(records, 'krummel', 'krymmel.dk', 'templates').length).toBeGreaterThan(25);
 		expect(filterArchive(records, 'nonexistentzzzyyy', '', 'all')).toEqual([]);
 		expect(filterArchive(records, '', '', 'juleflet')).toHaveLength(ALL_HEART_IDS.length);

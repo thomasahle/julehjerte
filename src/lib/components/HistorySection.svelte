@@ -71,7 +71,9 @@
 				{ id: 'boelger', number: 1 },
 				{ id: 'andreaskors', number: 2 },
 				{ id: 'permo-cirkler', number: 3 },
+				{ id: 'ni-firkanter', number: 4 },
 				{ id: 'stjerneblomst', number: 5 },
+				{ id: 'potteplante', number: 6 },
 				{ id: 'hjertekloever', number: 7 },
 				{ id: 'fiskeskael', number: 1 }
 			]

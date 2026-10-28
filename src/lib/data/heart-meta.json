@@ -1284,6 +1284,33 @@
     },
     "photo": null
   },
+  "ni-firkanter": {
+    "name": "Ni firkanter",
+    "names": {
+      "da": "Ni firkanter",
+      "en": "Nine squares"
+    },
+    "author": "Hans H. Koch",
+    "authorUrl": null,
+    "publisher": "Børnenes Magasin",
+    "publisherUrl": null,
+    "source": "https://aldus.dk/hanskoch/julehjerter.php",
+    "date": "1916-12-01",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "fejlternet": {
     "name": "Fejlternet hjerte",
     "names": {
@@ -2128,6 +2155,33 @@
       "isClassic": false,
       "curveSymmetry": true,
       "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "potteplante": {
+    "name": "Potteplante",
+    "names": {
+      "da": "Potteplante",
+      "en": "Potted plant"
+    },
+    "author": "Hans H. Koch",
+    "authorUrl": null,
+    "publisher": "Børnenes Magasin",
+    "publisherUrl": null,
+    "source": "https://aldus.dk/hanskoch/julehjerter.php",
+    "date": "1916-12-01",
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },

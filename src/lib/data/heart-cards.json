@@ -336,6 +336,14 @@
     },
     "difficulty": "hard"
   },
+  "ni-firkanter": {
+    "name": "Ni firkanter",
+    "names": {
+      "da": "Ni firkanter",
+      "en": "Nine squares"
+    },
+    "difficulty": "hard"
+  },
   "fejlternet": {
     "name": "Fejlternet hjerte",
     "names": {
@@ -547,6 +555,14 @@
     "names": {
       "da": "Stjerneblomst",
       "en": "Star flower"
+    },
+    "difficulty": "medium"
+  },
+  "potteplante": {
+    "name": "Potteplante",
+    "names": {
+      "da": "Potteplante",
+      "en": "Potted plant"
     },
     "difficulty": "medium"
   },

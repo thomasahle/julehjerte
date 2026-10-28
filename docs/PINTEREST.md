@@ -86,6 +86,9 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   Ni ruder followed the same day at day 34 (2026-11-24), between Snefnug and
   Puslespil, and Koch's Stjerneblomst at day 32 (2026-11-22), between Ni
   hjerter i tern and Sildeben, which moved Ni ruder to day 35.
+  Koch's last two hearts came after: Ni firkanter at day 45 (2026-12-05),
+  between Hanefod and Explosion, and Potteplante at day 50 (2026-12-10),
+  between Origami and Nihon.
 - The feed holds the released items only (nothing future-dated), newest first,
   at most 30 (`PINTEREST_MAX_ITEMS`). When every heart is out, the feed stops
   growing: it does not cycle.
