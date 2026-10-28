@@ -320,6 +320,33 @@
     },
     "photo": null
   },
+  "kors-i-ramme": {
+    "name": "Kors i ramme",
+    "names": {
+      "da": "Kors i ramme",
+      "en": "Cross in a frame"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": "Alfred Jacobsens Kunstforlag",
+    "publisherUrl": null,
+    "source": "https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg",
+    "date": "1924",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "easy",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "stjerne-ramme": {
     "name": "Stjerne Ramme",
     "names": {
@@ -1302,6 +1329,33 @@
       "y": 5
     },
     "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "firkant-i-firkant": {
+    "name": "Firkant i firkant",
+    "names": {
+      "da": "Firkant i firkant",
+      "en": "Square in a square"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": "Alfred Jacobsens Kunstforlag",
+    "publisherUrl": null,
+    "source": "https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg",
+    "date": "1924",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "easy",
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": true,

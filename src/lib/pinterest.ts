@@ -66,7 +66,10 @@ export const PINTEREST_FIRST = ['classic-3x3', 'gaver', 'jul', 'juletrae', 'stje
  * went in at day 34, between Snefnug and Puslespil; Koch's Stjerneblomst then
  * took day 32, between Ni hjerter i tern and Sildeben, which moved Ni ruder to 35.
  * Koch's Ni firkanter then went in at day 45, between Hanefod and Explosion, and
- * his Potteplante at day 50, between Origami and Nihon.
+ * his Potteplante at day 50, between Origami and Nihon. Two hearts from Alfred
+ * Jacobsen's 1924 sheet followed: Kors i ramme at day 48, between Flyvende gæs and
+ * Mor og barn (which moved Potteplante to 51), and Firkant i firkant at day 55, between Hjerte i hjerte i hjerte
+ * and MOR & FAR.
  */
 export const PINTEREST_ORDER: readonly string[] = [
 	'classic-3x3', 'juletrae', 'circle', 'gaver', 'balls', 'jul',
@@ -75,8 +78,8 @@ export const PINTEREST_ORDER: readonly string[] = [
 	'5star', 'amy-pattern', 'venus', 'amy-flowering', 'simple-5star', 'amy-pinecone',
 	'h4h2', 'tak', 'alhambra', 'kompasrose', 'angel', 'squares', 'sun', 'ni-hjerter-i-tern',
 	'stjerneblomst', 'sildeben', 'snowflake', 'ni-ruder', 'puslespil', 'fire-stjerner', 'permo-sol', 'koelbuer', 'nemt-hjerte',
-	'roserude', 'santa', 'andreaskors', 'hanefod', 'ni-firkanter', 'explosion', 'flyvendegaes', 'mor-og-barn',
-	'origami', 'potteplante', 'nihon', 'drageskael', 'hjerte-i-hjerte-i-hjerte', 'mor-far', 'dagognat', 'hermanngitter',
+	'roserude', 'santa', 'andreaskors', 'hanefod', 'ni-firkanter', 'explosion', 'flyvendegaes', 'kors-i-ramme', 'mor-og-barn',
+	'origami', 'potteplante', 'nihon', 'drageskael', 'hjerte-i-hjerte-i-hjerte', 'firkant-i-firkant', 'mor-far', 'dagognat', 'hermanngitter',
 	'lilje1', 'tragt', 'davidsstjerne-circ', 'boelgebrud', 'ball', 'glaskuppel',
 	'lilje2', 'hvirvel', 'david4', 'jul-2026', 'permo-kroge', 'fisk',
 	'permo-draaber', 'tulipan', 'khatam', 'permo-cirkler', 'fiskeskael', 'roed-blomst',

@@ -88,7 +88,10 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   hjerter i tern and Sildeben, which moved Ni ruder to day 35.
   Koch's last two hearts came after: Ni firkanter at day 45 (2026-12-05),
   between Hanefod and Explosion, and Potteplante at day 50 (2026-12-10),
-  between Origami and Nihon.
+  between Origami and Nihon. Then two hearts from Alfred Jacobsen's 1924 sheet
+  Hjerter til Juletræet: Kors i ramme at day 48 (2026-12-08), between Flyvende
+  gæs and Mor og barn, which moved Potteplante to day 51, and Firkant i firkant at day 55 (2026-12-15), between
+  Hjerte i hjerte i hjerte and MOR & FAR.
 - The feed holds the released items only (nothing future-dated), newest first,
   at most 30 (`PINTEREST_MAX_ITEMS`). When every heart is out, the feed stops
   growing: it does not cycle.

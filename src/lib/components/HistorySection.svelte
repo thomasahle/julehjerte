@@ -103,10 +103,12 @@
 			caption: 'historyJacobsenCaption',
 			number: 'historyHeartNumber',
 			hearts: [
+				{ id: 'kors-i-ramme', number: '365d' },
 				{ id: 'blomster-hjerte', number: '365e' },
 				{ id: 'explosion', number: '365f' },
 				{ id: 'plus', number: '365h' },
 				{ id: 'circle', number: '366b' },
+				{ id: 'firkant-i-firkant', number: '366g' },
 				{ id: 'flower', number: '366h' }
 			]
 		}

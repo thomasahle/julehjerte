@@ -80,6 +80,14 @@
     },
     "difficulty": "easy"
   },
+  "kors-i-ramme": {
+    "name": "Kors i ramme",
+    "names": {
+      "da": "Kors i ramme",
+      "en": "Cross in a frame"
+    },
+    "difficulty": "easy"
+  },
   "stjerne-ramme": {
     "name": "Stjerne Ramme",
     "names": {
@@ -343,6 +351,14 @@
       "en": "Nine squares"
     },
     "difficulty": "medium"
+  },
+  "firkant-i-firkant": {
+    "name": "Firkant i firkant",
+    "names": {
+      "da": "Firkant i firkant",
+      "en": "Square in a square"
+    },
+    "difficulty": "easy"
   },
   "fejlternet": {
     "name": "Fejlternet hjerte",

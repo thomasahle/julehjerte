@@ -1,0 +1,34 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="1">
+  <title>Kors i ramme</title>
+  <title xml:lang="da">Kors i ramme</title>
+  <title xml:lang="en">Cross in a frame</title>
+  <desc xml:lang="da">Et opretstående rødt kors med arme, der er spidse i midten og brede ved kanten, i en smal rød ramme med hvide stykker ved hjørnerne. Fem striber i hver halvdel: de yderste klip er lige, og de to midterste er lige med to knæk. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er let. Klip knækkene skarpt, så armene mødes i hjørnerne af den lille firkant i midten. Mønsteret er nr. 365d i [Hjerter til Juletræet](https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg), som Alfred Jacobsens Kunstforlag udgav i 1924; tegneren signerede kun ThLL.</desc>
+  <desc xml:lang="en">An upright red cross with arms that are pointed at the centre and broad at the edge, in a narrow red frame with white pieces at the corners. Five strips in each half: the outer cuts are straight, and the middle two are straight with two bends. The halves mirror each other, so one template covers both, and the difficulty is easy. Cut the bends sharply so that the arms meet at the corners of the small square in the middle. The pattern is no. 365d in [Hjerter til Juletræet](https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg), published by Alfred Jacobsens Kunstforlag in 1924; the designer signed only ThLL.</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Kors i ramme</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Ukendt</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Alfred Jacobsens Kunstforlag</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:source>https://papermatrix.wordpress.com/wp-content/uploads/2010/04/ajacobsen.jpg</dc:source>
+        <dc:date>1924</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 0 7 C 33.333 7 66.667 7 100 7" stroke="orange" fill="none"/>
+  <path d="M 0 20 C 15.333 28.667 30.667 37.333 46 46 C 48.667 46 51.333 46 54 46 C 69.333 37.333 84.667 28.667 100 20" stroke="orange" fill="none"/>
+  <path d="M 0 80 C 15.333 71.333 30.667 62.667 46 54 C 48.667 54 51.333 54 54 54 C 69.333 62.667 84.667 71.333 100 80" stroke="orange" fill="none"/>
+  <path d="M 0 93 C 33.333 93 66.667 93 100 93" stroke="orange" fill="none"/>
+  <path d="M 7 0 C 7 33.333 7 66.667 7 100" stroke="green" fill="none"/>
+  <path d="M 20 0 C 28.667 15.333 37.333 30.667 46 46 C 46 48.667 46 51.333 46 54 C 37.333 69.333 28.667 84.667 20 100" stroke="green" fill="none"/>
+  <path d="M 80 0 C 71.333 15.333 62.667 30.667 54 46 C 54 48.667 54 51.333 54 54 C 62.667 69.333 71.333 84.667 80 100" stroke="green" fill="none"/>
+  <path d="M 93 0 C 93 33.333 93 66.667 93 100" stroke="green" fill="none"/>
+</svg>
