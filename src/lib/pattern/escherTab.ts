@@ -42,8 +42,9 @@ import { cutCounts, fitLines, tileShape, tileTurn, type PatternTile, type SideCu
 import { isStraightTile, ruleStart, switchRule } from './starts';
 import { isFigure, randomTileDraw, randomTileKind } from './randomTile';
 import { centredPlacements } from './centre';
+import { cornerFreedom, cornersMove } from './corners';
 
-export { cutOfFinger, cutsAre, followEdit, generateEditorFingers, READ_TOLERANCE, sameRule, specialNodes, weaveParityOf };
+export { cornersMove, cutOfFinger, cutsAre, followEdit, generateEditorFingers, READ_TOLERANCE, sameRule, specialNodes, weaveParityOf };
 export type { PatternTile, SpecialNode, TileRule };
 
 /** The heart as the Escher tab finds it: its cuts, edges and all, its grid, the square they fill, and which of its cells show the right lobe's colour. */
@@ -351,7 +352,7 @@ export function savedPattern(tile: PatternTile): HeartPattern {
 		rule: ruleKey(tile.rule),
 		cuts: tile.cuts,
 		curves: Object.fromEntries(Object.entries(tile.curves).map(([key, curve]) => [key, numbers(curve!)])),
-		...(tile.offset ? { offset: pair(tile.offset) } : {}),
+		...(tile.corners?.length ? { corners: [...tile.corners] } : {}),
 		...(tile.shape ? { shape: [tile.shape.x.x, tile.shape.x.y, tile.shape.y.x, tile.shape.y.y] } : {}),
 		...(tile.turn !== undefined ? { turn: tile.turn } : {}),
 		...(tile.nodeTypes ? { nodeTypes: structuredClone(tile.nodeTypes) as Record<string, Record<string, NodeType>> } : {}),
@@ -367,6 +368,18 @@ function nodeTypesOf(saved: Record<string, Record<string, NodeType>>, reads: Set
 			.filter(([key]) => reads.has(key))
 			.map(([key, types]) => [key, { ...types }])
 	);
+}
+
+/**
+ * The corners a heart kept: as many numbers as its type lets corners move, or, from
+ * before corners could move under every type, how far the tiles lean (`offset`),
+ * which are those numbers for the two types that let tiles lean then.
+ */
+function cornersOf(saved: HeartPattern, rule: TileRule): { corners?: number[] } {
+	const free = cornerFreedom(rule).free.length;
+	if (saved.corners) return saved.corners.length === free && saved.corners.some((w) => w !== 0) ? { corners: [...saved.corners] } : {};
+	const leans = rule.sides === 'free' || (rule.sides === 'opposite' && rule.v === 'turn' && rule.h === 'turn');
+	return saved.offset && leans ? { corners: [...saved.offset] } : {};
 }
 
 /**
@@ -393,7 +406,7 @@ export function tileOfPattern(saved: HeartPattern): PatternTile | null {
 				.filter(([key]) => reads.has(key))
 				.map(([key, segments]) => [key, curve(segments)])
 		),
-		...(saved.offset ? { offset: vec(...saved.offset) } : {}),
+		...cornersOf(saved, rule),
 		...(saved.shape ? { shape: { x: vec(saved.shape[0], saved.shape[1]), y: vec(saved.shape[2], saved.shape[3]) } } : {}),
 		...(saved.turn !== undefined ? { turn: saved.turn } : {}),
 		...(saved.nodeTypes ? { nodeTypes: nodeTypesOf(saved.nodeTypes, reads) } : {}),

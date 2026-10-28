@@ -76,15 +76,6 @@ export type CurveKey = 'nw' | 'ne' | 'se' | 'sw' | 'vertical' | 'horizontal' | '
 export type StretchKind = 'V' | 'H';
 
 /**
- * Whether a rule lets its tiles lean (see `PatternTile.offset`): its motions keep
- * the tiles' odd corners together. Free sides do, and opposite sides that are all
- * S; moving a pair across the tile takes odd corners onto even ones.
- */
-export function canLean(rule: TileRule): boolean {
-	return rule.sides === 'free' || (rule.sides === 'opposite' && rule.v === 'turn' && rule.h === 'turn');
-}
-
-/**
  * Which shapes a rule's cells may take in the heart (see `PatternTile.shape`),
  * from the motions that make its tiling: each must stay a motion once the grid
  * is stretched or turned, a true mirror or turn and not a skewed one. Moves and

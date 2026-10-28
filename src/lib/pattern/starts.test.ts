@@ -16,7 +16,7 @@ describe('the tiles the rules start from, and what a new rule keeps', () => {
 		const tile = ruleStart(rule, 3);
 		expect(sameRule(tile.rule, rule)).toBe(true);
 		expect(tile.cuts).toBe(3);
-		expect(tile.offset).toBeUndefined();
+		expect(tile.corners).toBeUndefined();
 		expect(isStraightTile(tile)).toBe(false);
 		// one piece a curve, bent: the visitor adds the nodes
 		for (const curve of Object.values(tile.curves)) {
@@ -49,17 +49,19 @@ describe('the tiles the rules start from, and what a new rule keeps', () => {
 		expect(cc.curves.se).toEqual(windmill.curves.se);
 		// a whole side is not half an S: with nothing to keep, the new rule's start
 		expect(carryCurves(windmill, freeSides())).toEqual(ruleStart(freeSides(), 3));
-		// the lean goes along only where the new rule lets tiles lean
-		const waves = { ...ruleStart(freeSides(), 3), offset: { x: 0.2, y: -0.1 } };
+		// the corners go along as near as the new rule lets them: mirrored neighbours let every other corner
+		// move only along the mirror, (1, −1), so the lean (0.2, −0.1) comes to 0.15 of that
+		const waves = { ...ruleStart(freeSides(), 3), corners: [0.2, -0.1] };
 		const arrows = carryCurves(waves, neighbours('mirror'));
 		expect(arrows.curves.nw).toEqual(waves.curves.nw);
 		expect(arrows.curves.se).toEqual(waves.curves.se);
-		expect(arrows.offset).toBeUndefined();
+		expect(arrows.corners![0]).toBeCloseTo(0.15, 9);
+		expect(carryCurves(waves, neighbours('turn')).corners).toBeUndefined();
 		// and a tile that does not lean takes no lean: mirrored neighbours, given two shapes, keep their
 		// two curves on the plain grid and take the other two from the new rule's start
 		const mirrored = exampleTile(EXAMPLES.find((p) => p.id === 'arrows')!);
 		const shapes = carryCurves(mirrored, freeSides());
-		expect(shapes.offset).toBeUndefined();
+		expect(shapes.corners).toBeUndefined();
 		expect(shapes.curves.nw).toEqual(mirrored.curves.nw);
 		expect(shapes.curves.ne).toEqual(ruleStart(freeSides(), 3).curves.ne);
 	});

@@ -1454,6 +1454,7 @@
 	let patternNodes = $derived(patternTile && selectedFingerId && escher ? escher.specialNodes(patternTile, selectedFingerId) : null);
 	/** What the Escher tab's hint says the black points do, for the chosen rule. */
 	let escherFrameHint = $derived<TranslationKey | null>(patternTile && escher ? escher.frameHint(patternTile) : null);
+	let escherCornersHint = $derived<TranslationKey | null>(patternTile && escher && escher.cornersMove(patternTile.rule) ? 'patternPointsCorners' : null);
 	/** What the line above the heart says a black point chosen does, for the chosen rule. */
 	let escherFrameChip = $derived<TranslationKey | null>(patternTile && escher ? escher.frameChip(patternTile) : null);
 
@@ -3829,7 +3830,7 @@
 	 * to give, so the type buttons are off for them and say why.
 	 */
 	let tileCornersChosen = $derived(
-		selectedAnchors.length > 0 && !!patternNodes && selectedAnchors.every((a) => patternNodes!.get(a) === 'frame')
+		selectedAnchors.length > 0 && !!patternNodes && selectedAnchors.every((a) => patternNodes!.get(a) === 'frame' || patternNodes!.get(a) === 'corner')
 	);
 	let nodeTypeSelected = $derived.by(() => {
 		if (!selectedFinger || !validAnchors.length || tileCornersChosen) return null;
@@ -3844,7 +3845,9 @@
 	let selectedNodeTypeLabel = $derived(
 		selectedPatternNode === 'frame'
 			? tr(escherFrameChip ?? 'patternPointStretch')
-			: selectedPatternNode === 'slide'
+			: selectedPatternNode === 'corner'
+				? tr('patternPointCorner')
+				: selectedPatternNode === 'slide'
 				? tr('patternEdgeSlide')
 				: nodeTypeSelected === 'corner'
 					? tr('editorCornerNode')
@@ -3871,7 +3874,7 @@
 		if (selectedSegments.length || selectedAnchors.length === 0) return escher ? 'hintEscherCut' : 'hintCut';
 		if (selectedAnchors.length > 1) return 'hintNodes';
 		const node = selectedAnchors[0]!;
-		if (patternNodes?.get(node) === 'frame') return 'hintEscherCut';
+		if (patternNodes?.get(node) === 'frame' || patternNodes?.get(node) === 'corner') return 'hintEscherCut';
 		return node === 0 || node === last ? 'hintEnd' : 'hintNode';
 	});
 
@@ -4291,6 +4294,7 @@
 													y={a.y - ring / 2}
 													width={ring}
 													height={ring}
+													rx={special === 'corner' ? ring / 2 : 0}
 													fill="#ffcc00"
 													stroke="#111"
 													stroke-width="1"
@@ -4300,11 +4304,13 @@
 												/>
 											{/if}
 											<!-- svelte-ignore a11y_no_static_element_interactions -->
+											<!-- A corner the type lets move is round, so that it does not pass for a black point that sizes the tiles. -->
 											<rect
 												x={a.x - s / 2}
 												y={a.y - s / 2}
 												width={s}
 												height={s}
+												rx={special === 'corner' ? s / 2 : 0}
 												fill={black ? '#1e2a25' : selected ? '#ffcc00' : '#fff'}
 												stroke="#111"
 												stroke-width="1"
@@ -4315,7 +4321,7 @@
 												onpointerdown={(e) => handleAnchorPointerDown(e, selectedFinger.id, aIdx)}
 											>
 												<!-- A black point is no node of the curve: hovered, it says what dragging it does. -->
-												{#if black}<title>{tr(escherFrameChip ?? 'patternPointStretch')}</title>{:else if special === 'slide'}<title>{tr('patternEdgeSlide')}</title>{/if}
+												{#if special === 'corner'}<title>{tr('patternPointCorner')}</title>{:else if black}<title>{tr(escherFrameChip ?? 'patternPointStretch')}</title>{:else if special === 'slide'}<title>{tr('patternEdgeSlide')}</title>{/if}
 											</rect>
 										{/each}
 									{/if}
@@ -4335,7 +4341,7 @@
 				<p class="canvas-hint">{@render hintLine()}</p>
 				{#if selectedNodeTypeLabel}
 					<p class="canvas-selection">
-						<span class="canvas-selection-dot" class:black={selectedPatternNode === 'frame'} aria-hidden="true"></span>{selectedNodeTypeLabel}
+						<span class="canvas-selection-dot" class:black={selectedPatternNode === 'frame' || selectedPatternNode === 'corner'} aria-hidden="true"></span>{selectedNodeTypeLabel}
 					</p>
 				{/if}
 				<p class="canvas-strips">{stripsLabel}</p>
@@ -4520,6 +4526,7 @@
 									rule={patternRule === 'off' ? null : patternRule}
 									size={patternSize}
 									frameHint={escherFrameHint}
+									cornersHint={escherCornersHint}
 									turn={patternTurn}
 									onChoose={chooseEscherRule}
 									onSize={setPatternSize}

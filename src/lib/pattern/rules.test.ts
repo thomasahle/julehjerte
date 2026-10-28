@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { BezierSegment, Vec } from '$lib/types/heart';
-import { ALL_RULES, SIDE_LINKS, canLean, freeSides, halfOf, isRedCell, latticeOf, moveBy, neighbours, ofType, opposite, ruleInfo, ruleKey, ruleMotions, type Lattice, type SideLink, type TileRule } from './rules';
+import { ALL_RULES, SIDE_LINKS, freeSides, halfOf, isRedCell, latticeOf, moveBy, neighbours, ofType, opposite, ruleInfo, ruleKey, ruleMotions, type Lattice, type SideLink, type TileRule } from './rules';
 import { cellOutline, crossing, type PatternTile, type SideCurve } from './tiling';
 import { ruleStart } from './starts';
 
@@ -188,14 +188,14 @@ describe('every way of tying the sides does what the Escher tab says', () => {
 	});
 
 	it('the rules that let tiles lean keep their word when they lean', () => {
-		expect(ALL_RULES.filter(canLean).map(ruleKey)).toEqual(['free', 'opposite:turn:turn']);
 		for (const offset of [{ x: 0.35, y: -0.2 }, { x: -0.6, y: 0.45 }]) {
+			const corners = [offset.x, offset.y];
 			// Two shapes: the red tiles are still copies of one another, moved
-			const free: PatternTile = { ...lopsidedTile(freeSides()), offset };
+			const free: PatternTile = { ...lopsidedTile(freeSides()), corners };
 			const step = { x: crossing(free, 1, 1).x - crossing(free, 0, 0).x, y: crossing(free, 1, 1).y - crossing(free, 0, 0).y };
 			expect(sameOutline(move(cellOutline(free, 0, 0), (p) => ({ x: p.x + step.x, y: p.y + step.y })), cellOutline(free, 1, 1))).toBe(true);
 			// S sides: turned half round about the middle of the side the red tile shares with each white neighbour
-			const half: PatternTile = { ...lopsidedTile(opposite('turn', 'turn')), offset };
+			const half: PatternTile = { ...lopsidedTile(opposite('turn', 'turn')), corners };
 			for (const [[a, b], [c, d]] of [
 				[[crossing(half, 1, 0), crossing(half, 1, 1)], [1, 0]],
 				[[crossing(half, 0, 1), crossing(half, 1, 1)], [0, 1]]

@@ -121,8 +121,8 @@ describe("Tegn's Escher tab", () => {
 		const heart = { fingers, gridSize: design.gridSize, rect: inferOverlapRect(fingers, design.gridSize), weaveParity: design.weaveParity as 0 | 1 };
 		const tile = resumedTile(null, heart)!;
 		expect(ruleKey(tile.rule)).toBe('free');
-		expect(tile.offset!.x).toBeCloseTo(0.9795, 3);
-		expect(tile.offset!.y).toBeCloseTo(-0.6626, 3);
+		expect(tile.corners![0]).toBeCloseTo(0.9795, 3);
+		expect(tile.corners![1]).toBeCloseTo(-0.6626, 3);
 		// the size of a cell, as a part of the square, and not turned
 		const { x, y } = tile.shape!;
 		expect(Math.hypot(x.x, x.y) / (tile.cuts + 1)).toBeCloseTo(0.28, 3);
@@ -310,7 +310,7 @@ describe("Tegn's Escher tab", () => {
 	});
 
 	it('keeps a moved, leaning, stretched and turned tile through saving and reading back, the lines it cuts with it', () => {
-		const tile = fitLines({ ...ruleStart(freeSides(), 2), offset: { x: 0.1, y: -0.05 }, shape: { x: { x: 0.8, y: 0.15 }, y: { x: -0.1, y: 1.2 } }, pan: { x: 0.4, y: 0.1 } });
+		const tile = fitLines({ ...ruleStart(freeSides(), 2), corners: [0.1, -0.05], shape: { x: { x: 0.8, y: 0.15 }, y: { x: -0.1, y: 1.2 } }, pan: { x: 0.4, y: 0.1 } });
 		expect(tile.lines).toBeDefined();
 		const saved = JSON.parse(JSON.stringify(savedPattern(tile)));
 		expect(saved.rule).toBe('free');

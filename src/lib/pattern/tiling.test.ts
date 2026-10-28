@@ -44,7 +44,7 @@ describe('pattern tiling', () => {
 
 	it('maps a stretch frame to the square and back, the tiles moved, leaning, stretched and turned or not', () => {
 		const plain = { rule: freeSides(), cuts: 3, curves: {} };
-		const bent = { ...plain, offset: { x: 0.2, y: -0.1 }, shape: { x: { x: 0.9, y: 0.2 }, y: { x: -0.3, y: 1.3 } }, pan: { x: 0.4, y: -0.7 } };
+		const bent = { ...plain, corners: [0.2, -0.1], shape: { x: { x: 0.9, y: 0.2 }, y: { x: -0.3, y: 1.3 } }, pan: { x: 0.4, y: -0.7 } };
 		for (const tile of [plain, bent]) {
 			for (const kind of ['V', 'H'] as const) {
 				const frame = stretchFrame(tile, kind, 2, 3);
@@ -116,7 +116,7 @@ describe('pattern tiling', () => {
 	it('leaning tiles: a window onto the tiling, with every cut still edge to edge and no curve problems', () => {
 		const curves = EXAMPLES.find((p) => p.id === 'windmill')!.curves;
 		for (const offset of [{ x: 0.3, y: -0.2 }, { x: -0.4, y: 0.35 }]) {
-			const tile: PatternTile = { rule: opposite('turn', 'turn'), cuts: 4, curves, offset };
+			const tile: PatternTile = { rule: opposite('turn', 'turn'), cuts: 4, curves, corners: [offset.x, offset.y] };
 			const { left, right } = patternCuts(tile);
 			for (const cut of right) {
 				expect(cut[0]!.p0.y).toBeCloseTo(0);
@@ -147,9 +147,9 @@ describe('pattern tiling', () => {
 		expect([...findFingersWithIssues(design.fingers, intersectionMarginPx(rect))]).toEqual([]);
 	});
 
-	it('a rule that keeps the plain grid ignores an offset', () => {
+	it('a rule that keeps the plain grid ignores corners', () => {
 		const tile: PatternTile = { rule: neighbours('turn'), cuts: 3, curves: EXAMPLES.find((p) => p.id === 'leaf')!.curves };
-		const leaning = { ...tile, offset: { x: 0.4, y: 0.4 } };
+		const leaning = { ...tile, corners: [0.4, 0.4] };
 		expect(patternCuts(leaning)).toEqual(patternCuts(tile));
 	});
 

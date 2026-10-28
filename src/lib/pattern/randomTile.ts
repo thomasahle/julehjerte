@@ -21,7 +21,8 @@
 import { chamfer } from '$lib/editor/slivers';
 import { randomChain } from '$lib/geometry/randomChain';
 import type { Vec } from '$lib/types/heart';
-import { ALL_RULES, canLean, halfOf, ruleInfo, type HalfKind, type TileRule } from './rules';
+import { ALL_RULES, halfOf, ruleInfo, type HalfKind, type TileRule } from './rules';
+import { cornerFreedom } from './corners';
 import { cellOutline, shapeFields, shapeFor, type PatternTile, type SideCurve } from './tiling';
 
 type Rng = () => number;
@@ -256,8 +257,10 @@ export function randomTileDraw(rng: Rng, kind: { rule: TileRule; cuts: number },
 	const curves = Object.fromEntries(
 		ruleInfo(rule).curves.map((key) => [key, randomSide(halfOf(rule, key), reach * between(rng, 0.6, 1), rng)])
 	);
-	// Escher's birds lean their tiles almost a cell (0.98 and −0.66): a strong lean makes a figure as much as the sides do.
-	const lean = canLean(rule) && rng() < 0.7 ? { offset: v(between(rng, -0.9, 0.9) * shrink, between(rng, -0.9, 0.9) * shrink) } : {};
+	// Escher's birds lean their tiles almost a cell (0.98 and −0.66): corners well off the grid make a figure as much
+	// as the sides do.
+	const free = cornerFreedom(rule).free.length;
+	const lean = free && rng() < 0.7 ? { corners: Array.from({ length: free }, () => between(rng, -0.9, 0.9) * shrink) } : {};
 	// The cells' size and stretch: never more than about 1.3 to 1, or the tiles read as stripes.
 	const stretch = 1 + between(rng, -0.2, 0.3) * shrink;
 	const aspect = 1 + between(rng, -0.2, 0.25) * shrink;

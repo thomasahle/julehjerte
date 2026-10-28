@@ -127,11 +127,11 @@ describe('randomTile', () => {
 		}
 	});
 
-	it('leans the tiles of the types that lean, now and then', () => {
+	it('moves the corners of the types that let them, now and then', () => {
 		const leaned = Array.from({ length: 40 }, (_, i) => {
 			const rng = seeded(300 + i);
 			return randomTileDraw(rng, { rule: { sides: 'free' }, cuts: 3 });
-		}).filter((t) => t.offset && (t.offset.x !== 0 || t.offset.y !== 0));
+		}).filter((t) => t.corners?.some((w) => w !== 0));
 		expect(leaned.length).toBeGreaterThan(15);
 	});
 

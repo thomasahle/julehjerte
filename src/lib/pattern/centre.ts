@@ -14,7 +14,7 @@
  */
 import type { BezierSegment, Vec } from '$lib/types/heart';
 import { ruleRepeat } from './rules';
-import { cellOutline, cellsToRaw, fitLines, heartLines, rawToCells, tileOffset, tileShape, tileTurn, type PatternTile } from './tiling';
+import { cellOutline, cellsToRaw, fitLines, heartLines, rawToCells, tileShape, tileTurn, type PatternTile } from './tiling';
 
 /** Moves tried each way across one repeat of the tiling. */
 const STEPS = 48;
@@ -155,7 +155,7 @@ function allCut(fitted: PatternTile, t: Tile): boolean {
  */
 export function centredPlacements(tile: PatternTile, turned: PatternTile[]): { tile: PatternTile; pan: Vec }[] {
 	const placements: Placement[] = [], outlines = new Map<string, Outline>();
-	const sameCells = (variant: PatternTile) => variant.curves === tile.curves && tileOffset(variant).x === tileOffset(tile).x && tileOffset(variant).y === tileOffset(tile).y;
+	const sameCells = (variant: PatternTile) => variant.curves === tile.curves && variant.corners === tile.corners;
 	for (const variant of turned) {
 		const tiles = tilesNear(variant, sameCells(variant) ? outlines : undefined), repeat = ruleRepeat(variant.rule), from = variant.pan ?? { x: 0, y: 0 };
 		const h = 100 / (variant.cuts + 1), { x: a, y: b } = tileShape(variant), turn = Math.abs(tileTurn(variant) - tileTurn(tile));

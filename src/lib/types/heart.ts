@@ -93,7 +93,9 @@ export interface HeartDesign {
  * A tile of Tegn's Escher tab as a heart keeps it ($lib/pattern/escherTab
  * reads and writes it): the type by its key ('opposite:move:mirror', 'ih42', …),
  * the size, the curves — each segment eight numbers, p0 to p3, in its side's own
- * frame — how far the tiles lean (`offset`), how they are sized, stretched,
+ * frame — where the tiles' corners stand off the grid (`corners`, as many numbers
+ * as its type lets corners move; hearts saved before kept how far the tiles lean
+ * as `offset`), how they are sized, stretched,
  * slanted and turned (`shape`, where a cell's two sides go: x and y of one, then
  * of the other), how far of that is the whole pattern turned (`turn`, radians),
  * how far the pattern has moved (`pan`), the lines of the tiling the heart cuts
@@ -104,6 +106,7 @@ export interface HeartPattern {
   rule: string;
   cuts: number;
   curves: Record<string, number[][]>;
+  corners?: number[];
   offset?: [number, number];
   shape?: [number, number, number, number];
   turn?: number;

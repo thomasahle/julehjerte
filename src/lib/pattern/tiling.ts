@@ -42,9 +42,8 @@ import type { BezierSegment, HeartDesign, NodeType, Vec } from '$lib/types/heart
 import { reverseSegments, segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { normalizeHeartDesign } from '$lib/utils/heartDesign';
 import { HEART_CLEARANCE_UNITS } from '$lib/geometry/returnSearch';
-import { canLean, halfOf, latticeOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
-
-const mod2 = (x: number) => ((x % 2) + 2) % 2;
+import { halfOf, latticeOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
+import { cornerFreedom, cornerShift, meanShift } from './corners';
 
 /** A side curve in its stretch's own frame (see the module comment). */
 export type SideCurve = BezierSegment[];
@@ -65,12 +64,15 @@ export interface PatternTile {
 	/** The rule's curves, by key. A key the rule needs and the tile lacks reads as a straight side. */
 	curves: Partial<Record<CurveKey, SideCurve>>;
 	/**
-	 * How far the tile's two odd corners stand off the plain grid, in cells (the
-	 * rules that `canLean`). Escher's tiles are seldom squares: moving a
-	 * corner moves the same corner of every tile, and the heart becomes a window
-	 * onto the tiling, its cuts clipped at the square's edges.
+	 * Where the tiles' corners stand off the plain grid, as the free coordinates
+	 * of the corners the rule lets move (`cornerFreedom`): how far particular
+	 * crossings stand off it, in cells, the others following by the rule. Escher's
+	 * tiles are seldom squares: moving a corner moves the same corner of every
+	 * tile, and the heart becomes a window onto the tiling, its cuts clipped at
+	 * the square's edges. Under two shapes, and opposite sides each their own S,
+	 * the two numbers are how far every other corner stands off (the tiles lean).
 	 */
-	offset?: Vec;
+	corners?: number[];
 	/**
 	 * How the cells are sized, stretched, slanted and turned in the heart (`Shape`),
 	 * about the middle of its square: absent, the plain grid, cuts + 1 cells across.
@@ -182,12 +184,15 @@ export function shapeFor(rule: TileRule, shape: Shape): Shape {
 	return { x, y: scale(turned(x), (lattice === 'square' ? len(x) : len(shape.y)) / len(x)) };
 }
 
-/** The tile's corner offset, or none for a rule that keeps the plain grid. */
-export function tileOffset(tile: PatternTile): Vec {
-	return canLean(tile.rule) && tile.offset ? tile.offset : { x: 0, y: 0 };
+const ZERO: Vec = { x: 0, y: 0 };
+
+/** How far crossing (i, j) stands off the plain grid, in cells: where the tile's corners put it (`PatternTile.corners`). */
+export function cornerOffset(tile: PatternTile, i: number, j: number): Vec {
+	return tile.corners?.length ? cornerShift(cornerFreedom(tile.rule), tile.corners, i, j) : ZERO;
 }
 
-const ZERO: Vec = { x: 0, y: 0 };
+/** Where the tile's corners have taken the middle of the tiling, in cells: their offsets' mean over a repeat. */
+const cornersMiddle = (tile: PatternTile): Vec => (tile.corners?.length ? meanShift(cornerFreedom(tile.rule), tile.corners) : ZERO);
 function lineSegment(a: Vec, b: Vec): BezierSegment {
 	return {
 		p0: a,
@@ -296,9 +301,9 @@ export function carryNodeTypes(before: PatternTile, after: PatternTile): Pattern
 	return Object.keys(next).length ? { ...rest, nodeTypes: next } : rest;
 }
 
-/** Crossing (i, j) of the infinite tiling, in cells: on the plain grid, the odd ones moved by the offset. */
+/** Crossing (i, j) of the infinite tiling, in cells: on the plain grid, moved as the tile's corners say. */
 export function crossing(tile: PatternTile, i: number, j: number): Vec {
-	const o = mod2(i + j) === 1 ? tileOffset(tile) : { x: 0, y: 0 };
+	const o = cornerOffset(tile, i, j);
 	return { x: i + o.x, y: j + o.y };
 }
 
@@ -470,15 +475,16 @@ function snapEnds(chain: BezierSegment[], axis: 'x' | 'y', lo: number, hi: numbe
 /**
  * The point of the infinite tiling, in cells, at the middle of the heart's
  * square: on the plain grid the square lies exactly over cells 0…n−1; with
- * leaning tiles it moves by half the lean, so the cuts keep an even margin from
- * the edges; and it moves by the opposite of the tile's `pan`, which moves the
- * pattern within the heart. The tile's shape turns and stretches about it.
+ * corners off the grid it moves as far as they moved on average (half the lean,
+ * for leaning tiles), so the cuts keep an even margin from the edges; and it
+ * moves by the opposite of the tile's `pan`, which moves the pattern within the
+ * heart. The tile's shape turns and stretches about it.
  */
 function patternMiddle(tile: PatternTile): Vec {
 	const n = tile.cuts + 1;
-	const o = tileOffset(tile);
+	const o = cornersMiddle(tile);
 	const pan = tile.pan ?? { x: 0, y: 0 };
-	return { x: n / 2 + o.x / 2 - pan.x, y: n / 2 + o.y / 2 - pan.y };
+	return { x: n / 2 + o.x - pan.x, y: n / 2 + o.y - pan.y };
 }
 
 /** A point of the infinite tiling, in cells, in the raw 0–100 square. */

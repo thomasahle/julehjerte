@@ -5,8 +5,9 @@
  */
 
 import type { Vec } from '$lib/types/heart';
-import { canLean, halfOf, ruleInfo, type HalfKind, type TileRule } from './rules';
-import { shapeFields, shapeFor, tileTurn, unturnedShape, type PatternTile, type SideCurve } from './tiling';
+import { halfOf, ruleInfo, type HalfKind, type TileRule } from './rules';
+import { cornerFreedom, nearestCorners } from './corners';
+import { cornerOffset, shapeFields, shapeFor, tileTurn, unturnedShape, type PatternTile, type SideCurve } from './tiling';
 
 const v = (x: number, y: number): Vec => ({ x, y });
 
@@ -52,8 +53,8 @@ export function ruleStart(rule: TileRule, cuts: number): PatternTile {
 /**
  * A tile moved to another rule, keeping what can be kept: every curve the new
  * rule reads that the tile has, drawn the same way (whole, or as the same kind
- * of half), is the visitor's own; the rest are the new rule's start; the tiles
- * lean only as they did, where the new rule lets them, and keep their size,
+ * of half), is the visitor's own; the rest are the new rule's start; the corners
+ * stand as near where they stood as the new rule lets them, and the tiles keep their size,
  * slant and turn, slanted and stretched only as the new rule lets them
  * (`shapeFor`). Changing how one
  * pair of sides is tied leaves the other pair as drawn. With nothing to keep,
@@ -64,13 +65,27 @@ export function carryCurves(tile: PatternTile, rule: TileRule, cuts = tile.cuts)
 	if (!kept.length) return ruleStart(rule, cuts);
 	const curves = { ...ruleStart(rule, cuts).curves };
 	for (const k of kept) curves[k] = structuredClone(tile.curves[k]!);
-	const offset = canLean(rule) && canLean(tile.rule) ? tile.offset : undefined;
-	const lean = offset ? { offset: { ...offset } } : {};
+	const corners = carriedCorners(tile, rule);
+	const lean = corners ? { corners } : {};
 	const shape = tile.shape ? shapeFields(rule, shapeFor(rule, unturnedShape(tile)), tileTurn(tile)) : {};
 	// The node types the visitor gave a curve kept come with it.
 	const typed = kept.filter((k) => tile.nodeTypes?.[k]);
 	const nodeTypes = typed.length ? { nodeTypes: Object.fromEntries(typed.map((k) => [k, { ...tile.nodeTypes![k] }])) } : {};
 	return { rule, cuts, curves, ...lean, ...shape, ...nodeTypes, ...(tile.pan ? { pan: { ...tile.pan } } : {}) };
+}
+
+/**
+ * The tile's corners under another rule: where its crossings stood off the grid,
+ * as near as the new rule lets them (`nearestCorners`); none where it lets none
+ * move, or where they stood on the grid.
+ */
+function carriedCorners(tile: PatternTile, rule: TileRule): number[] | undefined {
+	if (!tile.corners?.some((w) => w !== 0)) return undefined;
+	const freedom = cornerFreedom(rule);
+	if (!freedom.free.length) return undefined;
+	const shifts = Array.from({ length: 16 }, (_, k) => ({ i: Math.floor(k / 4), j: k % 4 })).map(({ i, j }) => ({ i, j, shift: cornerOffset(tile, i, j) }));
+	const corners = nearestCorners(freedom, shifts);
+	return corners.some((w) => Math.abs(w) > 1e-9) ? corners : undefined;
 }
 
 /**

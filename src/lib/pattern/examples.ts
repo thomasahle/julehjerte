@@ -20,7 +20,7 @@ export interface PatternExample {
 	rule: TileRule;
 	cuts: number;
 	curves: Partial<Record<CurveKey, SideCurve>>;
-	/** Leaning tiles: where the odd corners stand off the grid (see `PatternTile.offset`). */
+	/** Leaning tiles (two shapes, or opposite sides each their own S): where the odd corners stand off the grid (see `PatternTile.corners`). */
 	offset?: Vec;
 	name: { da: string; en: string };
 }
@@ -205,7 +205,7 @@ export function exampleTile(preset: PatternExample): PatternTile {
 		rule: preset.rule,
 		cuts: preset.cuts,
 		curves: structuredClone(preset.curves),
-		...(preset.offset ? { offset: { ...preset.offset } } : {})
+		...(preset.offset ? { corners: [preset.offset.x, preset.offset.y] } : {})
 	};
 }
 

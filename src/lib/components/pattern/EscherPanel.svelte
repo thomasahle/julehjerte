@@ -8,6 +8,8 @@
               points, which stretch and slant the tiles but never turn them (as tiled.art keeps its
               rotation tool apart from its corner points). onTurn as it moves, onTurnDone let go.
   frameHint   what the hint adds about the black points for the chosen type, or null.
+  cornersHint what it adds about the round ones, which move the tiles' corners, where the type lets
+              any move; or null.
   compact     Tegn below 900px: the type glyphs alone, and no hint once a type is chosen.
   onRandom    "Tilfældig flise": a random type, size and tile ($lib/pattern/randomTile), with or
               without a type chosen.
@@ -29,6 +31,7 @@
 		rule: TileRule | null;
 		size: number | null;
 		frameHint: TranslationKey | null;
+		cornersHint?: TranslationKey | null;
 		turn: number;
 		onChoose: (rule: TileRule) => void;
 		onSize: (n: number) => void;
@@ -44,7 +47,7 @@
 		disabled?: boolean;
 	}
 
-	let { lang, rule, size, frameHint, turn, onChoose, onSize, onTurn, onTurnDone, onRestart, onRandom, onCentre, compact = false, disabled = false }: Props = $props();
+	let { lang, rule, size, frameHint, cornersHint = null, turn, onChoose, onSize, onTurn, onTurnDone, onRestart, onRandom, onCentre, compact = false, disabled = false }: Props = $props();
 
 	const tr = (key: TranslationKey) => t(key, lang);
 	/** The most the pattern turns either way, in degrees: further, the lines near the corners would leave the square at its sides. */
@@ -74,7 +77,7 @@
 			/>
 		</label>
 		{#if !compact}
-			<p class="pattern-hint">{frameHint ? `${tr('patternDragHint')} ${tr(frameHint)}` : tr('patternDragHint')}</p>
+			<p class="pattern-hint">{[tr('patternDragHint'), frameHint && tr(frameHint), cornersHint && tr(cornersHint)].filter(Boolean).join(' ')}</p>
 		{/if}
 	{:else}
 		<p class="pattern-hint">{tr('patternTabChoose')}</p>
