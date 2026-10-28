@@ -552,12 +552,12 @@
     "names": {
       "en": "Heart clover"
     },
-    "author": "Hans H. Koch",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
-    "publisher": "Børnenes Magasin",
+    "publisher": null,
     "publisherUrl": null,
-    "source": "https://aldus.dk/hanskoch/julehjerter.php",
-    "date": "1916-12-01",
+    "source": "juleflet.dk",
+    "date": null,
     "description": null,
     "gridSize": {
       "x": 4,

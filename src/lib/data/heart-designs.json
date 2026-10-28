@@ -1556,10 +1556,8 @@
     "id": "hjertekloever",
     "name": "Hjertekløver",
     "names": {"en":"Heart clover"},
-    "author": "Hans H. Koch",
-    "publisher": "Børnenes Magasin",
-    "source": "https://aldus.dk/hanskoch/julehjerter.php",
-    "date": "1916-12-01",
+    "author": "Thomas Ahle & Claude",
+    "source": "juleflet.dk",
     "weaveParity": 0,
     "gridSize": {"x":4,"y":4},
     "fingers": [

@@ -75,7 +75,6 @@
 				{ id: 'ni-firkanter', number: 4 },
 				{ id: 'stjerneblomst', number: 5 },
 				{ id: 'potteplante', number: 6 },
-				{ id: 'hjertekloever', number: 7 },
 			]
 		},
 		{
