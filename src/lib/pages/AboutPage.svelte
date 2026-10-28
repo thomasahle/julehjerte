@@ -1,7 +1,8 @@
 <!--
   The "Om" / "About" page — docs/redesign/DESIGN.md §6, following `om()` in the
   mockup generator: what Juleflet.dk is, the editor, open source, who drew the
-  templates, "Mangler der et hjerte?", contact, and the credits list of other
+  templates, the history (the old printed pages some hearts are drawn after),
+  "Mangler der et hjerte?", contact, and the credits list of other
   good sites about woven hearts in the right-hand column.
 
   Same shape as HowToPage.svelte: /om/ and /en/about/ sit OUTSIDE the
@@ -13,6 +14,7 @@
 -->
 <script lang="ts">
 	import TopologyExamples from '$lib/components/TopologyExamples.svelte';
+	import HistorySection from '$lib/components/HistorySection.svelte';
 	import GitHubLink from '$lib/components/GitHubLink.svelte';
 	import PageHeader from '$lib/components/PageHeader.svelte';
 	import { ExternalIcon, PencilIcon, PlusIcon } from '$lib/components/icons';
@@ -81,6 +83,7 @@
 		</div>
 		<p>{t('aboutDesigners', lang)}</p>
 		<TopologyExamples {lang} />
+		<HistorySection {lang} />
 
 		<section class="callout" aria-labelledby="missing-heading">
 			<h2 id="missing-heading">{t('aboutMissingTitle', lang)}</h2>
