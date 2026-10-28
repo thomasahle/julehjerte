@@ -1,13 +1,17 @@
 <!--
-  The about page's history: the old printed pages some gallery hearts are drawn
-  after, each with our versions of its hearts beside it. Only pages that are
+  The about page's history: H.C. Andersen's heart, the oldest known, then the
+  old printed pages some gallery hearts are drawn after, each with our
+  versions of its hearts beside it.
+
+  Andersen's heart is shown as our own drawing (static/about/history/hca-hjerte.svg,
+  the renderer's plain 5 × 5 heart in his yellow and green); the photograph of
+  the original stays with Museum Odense, linked. Of the printed pages only those
   free to show are pictured: Hans H. Koch died in 1922, and the 1922
-  Familie-Journal page names no designer. Later sources (Per V. Mortensen's
+  Familie-Journal page names no designer. Their scans are copies, with the
+  metadata stripped, of the ones aldus.dk and the Papermatrix blog publish,
+  credited and linked under each picture. Later sources (Per V. Mortensen's
   drawings, the books of the 1970s–90s) are still under copyright, so the last
   paragraph names and links them without pictures.
-
-  The scans are copies, with the metadata stripped, of the ones aldus.dk and
-  the Papermatrix blog publish; each is credited and linked under its picture.
 -->
 <script lang="ts">
 	import { base } from '$app/paths';
@@ -17,7 +21,6 @@
 	import { heartHref } from '$lib/i18n/routes';
 	import { parseDescription } from '$lib/utils/descriptionLinks';
 	import { heartName, type Named } from '$lib/utils/heartName';
-	import { ExternalIcon } from '$lib/components/icons';
 
 	let { lang }: { lang: Language } = $props();
 
@@ -28,17 +31,32 @@
 		image: string;
 		width: number;
 		height: number;
+		/** Drawn small: a single heart, not a page to read. */
+		small?: boolean;
 		title: TranslationKey;
 		text: TranslationKey;
 		alt: TranslationKey;
+		/** Under the picture: whose scan it is, or where the original is; may hold a link. */
+		caption: TranslationKey;
 		/** How the page's own numbering of a heart reads, "Kochs nr. 3". */
-		number: TranslationKey;
-		scan: { name: string; url: string };
+		number?: TranslationKey;
 		/** Our hearts drawn after the page, with the source's own number. */
 		hearts: { id: string; number: number }[];
 	}
 
 	const SOURCES: Source[] = [
+		{
+			id: 'andersen',
+			image: 'hca-hjerte.svg',
+			width: 400,
+			height: 400,
+			small: true,
+			title: 'historyAndersenTitle',
+			text: 'historyAndersenText',
+			alt: 'historyAndersenAlt',
+			caption: 'historyAndersenCaption',
+			hearts: []
+		},
 		{
 			id: 'koch-1916',
 			image: 'boernenes-magasin-1916.jpg',
@@ -47,8 +65,8 @@
 			title: 'historyKochTitle',
 			text: 'historyKochText',
 			alt: 'historyKochAlt',
+			caption: 'historyKochCaption',
 			number: 'historyKochNumber',
-			scan: { name: 'aldus.dk', url: 'https://aldus.dk/hanskoch/julehjerter.php' },
 			hearts: [
 				{ id: 'boelger', number: 1 },
 				{ id: 'andreaskors', number: 2 },
@@ -66,12 +84,19 @@
 			title: 'historyFamilieJournalTitle',
 			text: 'historyFamilieJournalText',
 			alt: 'historyFamilieJournalAlt',
+			caption: 'historyFamilieJournalCaption',
 			number: 'historyHeartNumber',
-			scan: { name: 'Papermatrix', url: 'https://papermatrix.wordpress.com/links/' },
 			hearts: [{ id: 'kompasrose', number: 4 }]
 		}
 	];
 </script>
+
+{#snippet linked(text: string)}
+	{#each parseDescription(text) as segment, i (i)}
+		{#if segment.href}<a href={segment.href} target="_blank" rel="noopener">{segment.text}</a
+			>{:else}{segment.text}{/if}
+	{/each}
+{/snippet}
 
 <section class="history" aria-labelledby="history-heading">
 	<h2 id="history-heading">{t('historyTitle', lang)}</h2>
@@ -81,8 +106,8 @@
 		{@const src = `${base}/about/history/${source.image}`}
 		<article class="source" aria-labelledby={`history-${source.id}`}>
 			<h3 id={`history-${source.id}`}>{t(source.title, lang)}</h3>
-			<figure class:portrait={source.height > source.width}>
-				<a href={src} target="_blank" rel="noopener">
+			<figure class:portrait={source.height > source.width} class:small={source.small}>
+				{#if source.small}
 					<img
 						{src}
 						alt={t(source.alt, lang)}
@@ -90,44 +115,45 @@
 						height={source.height}
 						loading="lazy"
 					/>
-				</a>
-				<figcaption>
-					{t('historyScan', lang)}:
-					<a href={source.scan.url} target="_blank" rel="noopener">
-						{source.scan.name}
-						<ExternalIcon size={12} />
+				{:else}
+					<a href={src} target="_blank" rel="noopener">
+						<img
+							{src}
+							alt={t(source.alt, lang)}
+							width={source.width}
+							height={source.height}
+							loading="lazy"
+						/>
 					</a>
-				</figcaption>
+				{/if}
+				<figcaption>{@render linked(t(source.caption, lang))}</figcaption>
 			</figure>
 			<p>{t(source.text, lang)}</p>
-			<h4>{t('historyOurVersions', lang)}</h4>
-			<ul class="hearts">
-				{#each source.hearts as heart (heart.id)}
-					<li>
-						<a href={heartHref(heart.id, lang)}>
-							<img
-								src={`${base}${heartImagePath(heart.id)}`}
-								alt=""
-								width="800"
-								height="800"
-								loading="lazy"
-							/>
-							<span class="name">{heartName(CARDS[heart.id]!, lang)}</span>
-							<span class="number">{t(source.number, lang, { n: String(heart.number) })}</span>
-						</a>
-					</li>
-				{/each}
-			</ul>
+			{#if source.hearts.length && source.number}
+				{@const number = source.number}
+				<h4>{t('historyOurVersions', lang)}</h4>
+				<ul class="hearts">
+					{#each source.hearts as heart (heart.id)}
+						<li>
+							<a href={heartHref(heart.id, lang)}>
+								<img
+									src={`${base}${heartImagePath(heart.id)}`}
+									alt=""
+									width="800"
+									height="800"
+									loading="lazy"
+								/>
+								<span class="name">{heartName(CARDS[heart.id]!, lang)}</span>
+								<span class="number">{t(number, lang, { n: String(heart.number) })}</span>
+							</a>
+						</li>
+					{/each}
+				</ul>
+			{/if}
 		</article>
 	{/each}
 
-	<p>
-		{#each parseDescription(t('historyMore', lang)) as segment, i (i)}
-			{#if segment.href}<a href={segment.href} target="_blank" rel="noopener"
-					>{segment.text}</a
-				>{:else}{segment.text}{/if}
-		{/each}
-	</p>
+	<p>{@render linked(t('historyMore', lang))}</p>
 </section>
 
 <style>
@@ -155,7 +181,8 @@
 		color: var(--ink);
 	}
 
-	p a {
+	p a,
+	figcaption a {
 		color: var(--green);
 		font-weight: 600;
 	}
@@ -204,17 +231,19 @@
 		max-width: 420px;
 	}
 
+	/* One heart, drawn: no frame, and not much bigger than the real one. */
+	figure.small {
+		max-width: 240px;
+	}
+
+	figure.small img {
+		border: 0;
+		background: none;
+	}
+
 	figcaption {
 		font-size: 13px;
 		color: var(--muted);
-	}
-
-	figcaption a {
-		display: inline-flex;
-		align-items: center;
-		gap: 4px;
-		color: var(--green);
-		text-decoration: none;
 	}
 
 	.hearts {
