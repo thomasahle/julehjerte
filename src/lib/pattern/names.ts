@@ -38,6 +38,26 @@ const TYPE_TEXT: Record<TypeNumber, { name: TranslationKey; hint: TranslationKey
 	74: { name: 'patternType74', hint: 'patternType74Hint' }
 };
 
+const TWO_TEXT: Record<TwoNumber, { name: TranslationKey; hint: TranslationKey }> = {
+	2: { name: 'patternTwo2', hint: 'patternTwo2Hint' },
+	3: { name: 'patternTwo3', hint: 'patternTwo3Hint' },
+	4: { name: 'patternTwo4', hint: 'patternTwo4Hint' },
+	5: { name: 'patternTwo5', hint: 'patternTwo5Hint' },
+	6: { name: 'patternTwo6', hint: 'patternTwo6Hint' },
+	7: { name: 'patternTwo7', hint: 'patternTwo7Hint' },
+	8: { name: 'patternTwo8', hint: 'patternTwo8Hint' },
+	9: { name: 'patternTwo9', hint: 'patternTwo9Hint' },
+	10: { name: 'patternTwo10', hint: 'patternTwo10Hint' },
+	11: { name: 'patternTwo11', hint: 'patternTwo11Hint' },
+	12: { name: 'patternTwo12', hint: 'patternTwo12Hint' },
+	13: { name: 'patternTwo13', hint: 'patternTwo13Hint' },
+	14: { name: 'patternTwo14', hint: 'patternTwo14Hint' },
+	15: { name: 'patternTwo15', hint: 'patternTwo15Hint' },
+	16: { name: 'patternTwo16', hint: 'patternTwo16Hint' },
+	17: { name: 'patternTwo17', hint: 'patternTwo17Hint' },
+	18: { name: 'patternTwo18', hint: 'patternTwo18Hint' }
+};
+
 /** The wallpaper group of each way of two shapes (two.test.ts holds the symmetries to it). */
 export const TWO_GROUP: Record<TwoNumber, string> = {
 	2: 'p2',
@@ -68,7 +88,7 @@ export function ruleText(rule: TileRule): { name: TranslationKey; hint: Translat
 	if (rule.sides === 'free') return { name: 'patternRuleShift', hint: 'patternRuleShiftHint' };
 	if (rule.sides === 'neighbour') return NEIGHBOUR_TEXT[rule.link];
 	if (rule.sides === 'type') return TYPE_TEXT[rule.ih];
-	if (rule.sides === 'two') return { name: `patternTwo${rule.n}`, hint: `patternTwo${rule.n}Hint` };
+	if (rule.sides === 'two') return TWO_TEXT[rule.n];
 	const pair = [rule.v, rule.h].sort().join('+');
 	const TEXT: Record<string, [TranslationKey, TranslationKey]> = {
 		'move+move': ['patternRuleSame', 'patternRuleSameHint'],

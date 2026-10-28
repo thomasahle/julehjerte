@@ -1789,7 +1789,7 @@
     "difficulty": "medium",
     "symmetry": {
       "isClassic": false,
-      "curveSymmetry": true,
+      "curveSymmetry": false,
       "lobeSymmetry": false,
       "mirrorSymmetry": false,
       "sharedTemplate": false

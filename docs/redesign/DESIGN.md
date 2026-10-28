@@ -319,7 +319,7 @@ holds the tilings, the whole woven square one repeated figure or two: Dag og nat
 Skrå kryds, Plus, Plus 3, Kølbuer, Hanefod, Dråber, Fiskeskæl, Bølger, Khatam, Stjernegitter, Stjerner og kors,
 Sildeben, Flyvende gæs, Origami (the owner's order, 28 Oct 2026; Kroge went to Mønstre the same day: its half circles
 cross each other three times, which no tile's cuts do). "Rediger" opens each on Tegn's Escher tab except Plus,
-Khatam, Stjernegitter, Sildeben and Origami, which the tab has no type for yet (escherTab.test.ts says why). Tekst holds five hearts made with the design page's text frames and checked
+Khatam and Origami, which the tab has no type for yet (escherTab.test.ts says why). Tekst holds five hearts made with the design page's text frames and checked
 as paper (each template drawn at 80 mm, every piece joined to its ear by paper about 2 mm wide or more, no red cut;
 `$lib/geometry/paperNecks`, the design page's own check, since 23 Oct 2026, when GOD JUL's and JUL 2026's letter
 curls were opened by hand by 0.3–0.7 units where they held pieces by 1.7–1.98 mm):
@@ -657,7 +657,7 @@ lobe's other half and the right lobe made from the first by their rows), so the 
 and true. **Tilfældig flise / Random tile** below the Escher tab's types (`$lib/pattern/randomTile`) draws any
 type and a size of 3–7 tiles, every side the type draws as one to three features (lobes, knobs, beaks, swoops,
 with straight runs between) or a random chain of 1–4 pieces (halves completed as the type completes them), and
-at random a lean of up to 0.9 of a cell (Escher's birds lean 0.98), a stretch and slant of the cells
+at random corners moved up to 0.9 of a cell where the type lets them (Escher's birds lean 0.98), a stretch and slant of the cells
 (`shapeFor`) and a turn of the whole pattern; it keeps only tiles that read as figures (`tileFigure`: the widest
 disc inside a tile is 0.45–0.75 of its size, as Escher's birds' 0.64, so neither a splinter nor a square with
 dents, and at most 5 % of it is teeth; one round in seven may be squarer, to 0.9, for scales and plain
@@ -684,20 +684,24 @@ Symmetri has two tabs at its top, **Normal** (the rows above) and **Escher**, wh
 one tile, repeated the way Escher's regular divisions repeat one shape (`$lib/pattern`): an edit to one stretch
 of cut between two crossings reaches every stretch that carries the same curve. The visitor picks a tile type
 from the 28 isohedral types with four tiles at every corner that have a side to shape (Grünbaum and Shephard's
-IH41–IH74; the other eight of the 36 have only straight sides), or two shapes, no rule at all. Each is drawn as
+IH41–IH74; the other eight of the 36 have only straight sides), or the 18 ways of two shapes, red and white each a
+tile of its own: only moved (To former), or turned or mirrored as well (since 2026-10-28). Those are all there are:
+every group of motions of the grid that takes every red tile onto every other is one of the 36 types where one of
+its motions swaps the colours, and one of the 18 where none does (`two.test.ts` finds them all). Each is drawn as
 Tom McLean draws one (`RuleTemplates`, `TemplateGlyph`): the red tile with half arrowheads on its sides, one
 colour per shape, two half arrowheads for a side that is its own S, a bow tie for one that is its own mirror
 image, and a whole arrowhead for a straight side the tiles are mirrored in, which stays straight. Four come
-first — Flyttet, Flyttet og spejlet, To former and Symmetrisk — and "Vis flere" opens the rest in three groups:
-the other types with neither a straight side nor a symmetry of the tile's own, those with mirror edges, and
-those whose tile has a symmetry of its own. The tab always has a type chosen: opened on cuts that are a tile
+first — Flyttet, Flyttet og spejlet, To former and Symmetrisk — and "Vis flere" opens the rest in four groups:
+the other types with neither a straight side nor a symmetry of the tile's own, those with mirror edges,
+those whose tile has a symmetry of its own, and the other ways of two shapes (To former), whose glyphs show the
+red tile, tinted, and the white one beside it, since the red tile's arrowheads alone do not tell them apart. The tab always has a type chosen: opened on cuts that are a tile
 (the one it was left with, or a heart drawn in it), it takes that tile up; where the cuts were changed in the
 Normal tab since, it draws them again as the tile it was left with; on any other heart it draws the cuts as the
 first type, Flyttet, starts. Fortryd takes either back to the Normal tab and the cuts as they were.
 Every type's tooltip gives its name and what it does, so a type can be read about before it is picked.
 Above the picker, where "Vis flere" cannot push it out of sight: the chosen type's name, what it does and,
 small, Heesch's name for it, its tooltip spelling the letters out (T moved, C half turn, G mirrored and moved,
-C4 quarter turn; or its IH number where he has none). Under the picker the size, 3 × 3 to 7 × 7, the hint,
+C4 quarter turn; or its IH number where he has none; for two shapes, the pattern's wallpaper group, p1 to p4m). Under the picker the size, 3 × 3 to 7 × 7, the hint,
 and "Start forfra", which draws the tile again as its type starts, at its size. Picking
 another type keeps the curves it reads the same way, if the heart they make with its own still weaves, and
 starts afresh if not; a size the pattern is too tight for (by the gap the red cuts keep at that size, finer
@@ -723,7 +727,14 @@ together, no side lies more than 15° off its axis (every cut has to run from ed
 the lines near the corners could not), with between two and twelve strips a side; near the plain grid the cells
 are drawn to it, square and straight, easing in so that the point never stands still and then jumps (held there
 until the pointer left a 2.5° zone, it did, which the owner found jarring), and let go a hair from it they settle
-on it exactly. A type whose cells cannot slant takes the slant it is given as the turn. Dragging a
+on it exactly. A type whose cells cannot slant takes the slant it is given as the turn. Where the type lets a
+tile's corners move off the grid, the crossings that move are round black dots, not squares (since 2026-10-28;
+`corners.ts`): a type keeps its rule wherever its corners stand so long as every motion still takes the tiling
+onto itself, which leaves each type a space of corner shifts of its own — none under Flyttet, every other corner
+either way under To former and Halv omgang (the old lean), every other column sliding along its cut under Flyttet
+og spejlet, and so on, 18 of the 46 types some freedom. Dragging a round dot moves that corner of every tile as far
+along the pointer as the type lets it, the crossings that hold the cells' size and shape staying where they are,
+and near the grid it is drawn to it and settles on it as the cells do. Dragging a
 cut, or one of the square's edges, moves the whole pattern, which comes back in at the other edge without end: in
 this tab no strip is pulled in from an edge or dragged out, and nothing done in the tab takes the heart out of
 it. A click on a cut only chooses it, its points shown. (For a day only the edges moved the pattern, after an
@@ -739,7 +750,7 @@ exported SVG (`data-pattern`) — and opens on the Escher tab with it, its type 
 still the tile's. So does a heart whose cuts are a tile though none was saved with it, like the gallery's Dag og
 nat, drawn from Escher's birds before the tab was there: where every cut of one lobe crosses every cut of the
 other at a node of both (a cheap check, so the tab's code loads only for such hearts), Tegn reads the most
-symmetric tile the cuts are, however its tiles were moved, sized, turned or leant (`readTile`), and takes it up
+symmetric tile the cuts are, however its tiles were moved, sized or turned, or their corners moved (`readTile`), and takes it up
 only if it makes every cut node for node, to a hundredth of a pixel. A heart whose cuts are no tile opens as any
 other heart. The gallery's tilings (Fliser) that were drawn by scripts before the tab, Drageskæl, Kølbuer,
 Hanefod, Fiskeskæl and Bølger, are their tiles' cuts with the tile in `data-pattern` (made 2026-10-22, each
@@ -749,7 +760,11 @@ are Skrå kryds and Stjerner og kors, whose cuts cross midway along straight seg
 (0.4, 0.2), (0.6, −0.2) of Skrå kryds; legs at right angles, 2 : 1), sized to stay nearest the drawing (within 0.5 and
 0.8 mm), each keeping its symmetry; and Puslespil, whose knobs turned either way at random and now follow one tile, a
 ribbon-cut puzzle (Naboer, Drejet: two knobs and two holes on every piece, every other piece turned a quarter).
-Kroge, whose half circles cross each other three times, is no tile and opens in the Normal tab. Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both
+Kroge, whose half circles cross each other three times, is no tile and opens in the Normal tab. Since corners and
+the other ways of two shapes came in (2026-10-28), Stjernegitter reads as two shapes as drawn (p4g: red rhombi
+their own mirror images both ways, white squares that turn a quarter onto themselves, every other corner slid
+along the cuts), and Sildeben is its tile's cuts: Flyttet og spejlet, every other column of corners slid 0.6 of a
+cell along its cut (its straight cuts drawn with no node where the tiling's next line, outside the heart, crosses). Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both
 tabs, a drag that cannot go where the pointer is stops at the last place that weaves, and a line above the heart
 says why: two cuts would cross, a curve would cross itself, or it would leave the woven square. Cuts of a
 lobe that come too close without crossing are not stopped but drawn red, and the warning above the heart says

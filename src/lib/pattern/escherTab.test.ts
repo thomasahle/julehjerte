@@ -156,10 +156,10 @@ describe("Tegn's Escher tab", () => {
 	});
 
 	it("opens the gallery's tilings (Fliser) on the Escher tab, as Tegn does: on the tile each was saved with, else on one its cuts are", () => {
-		// Tilings the tab has no type for yet: the crossings of Sildeben, Origami and Stjernegitter
-		// zigzag from one column or row to the next, which no lean of the tab's lattices does; Khatam's
-		// lie on no lattice at all; Plus repeats only in its middle, its cut ends each their own.
-		const noTypeYet = ['plus', 'khatam', 'sildeben', 'origami'];
+		// Tilings the tab has no type for yet: Origami's red tiles are two shapes and its white ones a third;
+		// in Khatam, every left-lobe cut runs along a right-lobe one for a stretch; Plus repeats only in its
+		// middle, its cut ends each their own.
+		const noTypeYet = ['plus', 'khatam', 'origami'];
 		const fliser = hearts.categories.find((c) => c.id === 'fliser')!.hearts;
 		for (const id of fliser) {
 			const design = loadHeart(id);
