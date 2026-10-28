@@ -654,12 +654,12 @@
     "names": {
       "en": "Heart clover"
     },
-    "author": "Thomas Ahle & Claude",
+    "author": "Hans H. Koch",
     "authorUrl": null,
-    "publisher": null,
+    "publisher": "Børnenes Magasin",
     "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
+    "source": "https://aldus.dk/hanskoch/julehjerter.php",
+    "date": "1916-12-01",
     "description": null,
     "gridSize": {
       "x": 4,
@@ -1198,12 +1198,12 @@
     "names": {
       "en": "Circles"
     },
-    "author": "Per V. Mortensen",
+    "author": "Hans H. Koch",
     "authorUrl": null,
-    "publisher": null,
+    "publisher": "Børnenes Magasin",
     "publisherUrl": null,
-    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
-    "date": null,
+    "source": "https://aldus.dk/hanskoch/julehjerter.php",
+    "date": "1916-12-01",
     "description": null,
     "gridSize": {
       "x": 4,
@@ -1717,12 +1717,12 @@
     "names": {
       "en": "Fish scales"
     },
-    "author": "Ukendt",
+    "author": "Hans H. Koch",
     "authorUrl": null,
-    "publisher": null,
+    "publisher": "Børnenes Magasin",
     "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2026-10-21",
+    "source": "https://aldus.dk/hanskoch/julehjerter.php",
+    "date": "1916-12-01",
     "description": null,
     "gridSize": {
       "x": 5,
