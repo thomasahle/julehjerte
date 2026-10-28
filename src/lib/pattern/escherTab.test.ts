@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import hearts from '../../../hearts.json';
+import { HEARTS_INDEX as hearts } from '$lib/data/heartsIndex';
 import { loadHeart } from '$lib/laser/testHearts.test-helpers';
 import type { Finger } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';

@@ -21,7 +21,7 @@
  *
  * Which heart gets which, in two steps. First a heart gets a *slot*, fixed in
  * its markup: a gallery heart the slot at its position in the gallery order
- * (all categories, as hearts.json lists them), cycling through the twelve. Two
+ * (all categories, as hearts.jsonc lists them), cycling through the twelve. Two
  * gallery hearts then share a slot only when they are a multiple of
  * PALETTE.length apart in that order, and the gallery grid is at most six
  * columns wide, so a card's neighbours left, right, above, below and

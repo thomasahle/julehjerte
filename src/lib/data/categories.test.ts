@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import hearts from '../../../hearts.json';
+import { HEARTS_INDEX as hearts } from '$lib/data/heartsIndex';
 import {
 	ALL_HEART_IDS,
 	CATEGORIES,
@@ -16,7 +16,7 @@ import heartDesigns from './heart-designs.json';
 import { translations } from '$lib/i18n/translations';
 
 describe('categories', () => {
-	it('keeps the ids and the order of hearts.json', () => {
+	it('keeps the ids and the order of hearts.jsonc', () => {
 		expect(CATEGORY_IDS).toEqual(hearts.categories.map((c) => c.id));
 		expect(ALL_HEART_IDS).toEqual(hearts.categories.flatMap((c) => c.hearts));
 	});

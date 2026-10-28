@@ -1,3 +1,7 @@
+// The gallery: its categories in front-page order, and in each the heart ids in
+// the order they are shown. Comments like this one are allowed, e.g. to mark
+// groups of hearts within a category; the site shows only the order.
+// See docs/ADDING-A-HEART.md.
 {
   "categories": [
     {

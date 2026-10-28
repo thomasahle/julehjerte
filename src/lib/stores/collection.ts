@@ -68,7 +68,7 @@ export function deleteUserDesign(id: string): void {
 
 /**
  * A gallery heart's design, read from its SVG under /hearts/. Every SVG there
- * is in the gallery index (hearts.json), so an id that is not names no file:
+ * is in the gallery index (hearts.jsonc), so an id that is not names no file:
  * it gets null without a request, rather than a 404 in the network log on
  * every mistyped or stale heart link.
  */

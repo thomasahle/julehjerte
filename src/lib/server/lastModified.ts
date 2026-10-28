@@ -3,7 +3,8 @@
  * date of the last commit that touched its SVG (static/hearts/<id>.svg: the
  * picture, name and description) or its photo (static/hearts/photos/<id>.*);
  * and, as `gallery`, the date of the last commit that touched any of them or
- * hearts.json, which is when the front page's gallery last changed.
+ * hearts.jsonc (hearts.json before 2026-10-28), which is when the front page's
+ * gallery last changed.
  *
  * Read from git when the site is built. Null when there is no history to read:
  * not a git checkout, or a shallow one (CI checks out a single commit unless
@@ -24,7 +25,7 @@ export function readLastModified(): LastModified | null {
 		execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
 	try {
 		if (git('rev-parse', '--is-shallow-repository').trim() !== 'false') return null;
-		return parseLastModified(git('log', '--format=@%cs', '--name-only', '--', 'static/hearts', 'hearts.json'));
+		return parseLastModified(git('log', '--format=@%cs', '--name-only', '--', 'static/hearts', 'hearts.jsonc', 'hearts.json'));
 	} catch {
 		return null;
 	}

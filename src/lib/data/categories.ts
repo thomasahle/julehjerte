@@ -2,7 +2,7 @@
  * The gallery's categories: their ids, their order, the hearts in them and
  * their names in both languages.
  *
- * The ids and the heart lists are the ones in `hearts.json` — that file is the
+ * The ids and the heart lists are the ones in `hearts.jsonc` — that file is the
  * single source of truth for *which* hearts exist and in what order; each
  * heart's texts live in its own SVG. What lives here is the
  * mapping from a category id to its translation keys, plus the lookups several
@@ -13,7 +13,7 @@
  * (`/#stjerner`), so they must not be renamed — see `categoryHref()` in
  * `$lib/i18n/routes`.
  */
-import hearts from '../../../hearts.json';
+import { HEARTS_INDEX } from './heartsIndex';
 import { SITE_DOMAIN, SITE_URL } from '$lib/config';
 import { t, type Language } from '$lib/i18n';
 import { escherEditorHref, generatorHref, heartPath, href } from '$lib/i18n/routes';
@@ -23,7 +23,7 @@ export type CategoryId = 'klassiske' | 'stjerner' | 'moenstre' | 'fliser' | 'fig
 
 /**
  * The synthetic category the front page appends for hearts the visitor drew
- * themselves. It is not in `hearts.json` (those hearts live in localStorage),
+ * themselves. It is not in `hearts.jsonc` (those hearts live in localStorage),
  * but it is titled the same way, so it gets a title key here too.
  */
 export const MY_HEARTS_CATEGORY_ID = 'mine';
@@ -63,8 +63,8 @@ const LOWER_TITLE_KEYS: Record<CategoryId, TranslationKey> = {
 	hjerter: 'categoryHjerterLower'
 };
 
-/** Every category, in the order `hearts.json` lists them (= gallery order). */
-export const CATEGORIES: Category[] = hearts.categories.map((category) => {
+/** Every category, in the order `hearts.jsonc` lists them (= gallery order). */
+export const CATEGORIES: Category[] = HEARTS_INDEX.categories.map((category) => {
 	const id = category.id as CategoryId;
 	return {
 		id,
@@ -88,7 +88,7 @@ const BY_HEART_ID = new Map<string, Category>(
 const GALLERY_IDS = new Set<string>(ALL_HEART_IDS);
 
 /**
- * Whether `id` is a gallery heart: one of hearts.json's, with a page of its
+ * Whether `id` is a gallery heart: one of hearts.jsonc's, with a page of its
  * own. A heart drawn in the editor, or received by link (/hjerte/delt/), is not.
  */
 export function isGalleryHeart(id: string): boolean {

@@ -1,7 +1,7 @@
 # Adding a heart to the gallery
 
-A gallery heart is one SVG and one id in `hearts.json` in the project root. The SVG
-holds everything about the heart, its names and two descriptions included; `hearts.json` only
+A gallery heart is one SVG and one id in `hearts.jsonc` in the project root. The SVG
+holds everything about the heart, its names and two descriptions included; `hearts.jsonc` only
 says which category it is in and where. Everything else is generated from those two.
 
 1. **The SVG.** Either draw the heart in the editor (`/editor/`) and save it with
@@ -83,16 +83,27 @@ says which category it is in and where. Everything else is generated from those 
    page shows it as one; everywhere else (the meta description, the social cards) only the
    words remain. Only `https://` links are honoured.
 
-4. **The id.** Add `"<id>"` to the right category's `hearts` list in `hearts.json`
+4. **The id.** Add `"<id>"` to the right category's `hearts` list in `hearts.jsonc`
    (project root), at the place it should appear in the gallery. The file holds only
-   the categories and their ids:
+   the categories and their ids, in gallery order:
 
-   ```json
-   { "categories": [ { "id": "klassiske", "hearts": ["classic-3x3", "ramme", …] }, … ] }
+   ```jsonc
+   { "categories": [ { "id": "moenstre", "hearts": [
+       // Circle patterns
+       "permo-cirkler", "cirkelhjerte",
+       // Line patterns
+       "skraa-kryds", "andreaskors"
+   ] }, … ] }
    ```
 
-   The categories are `klassiske`, `stjerner`, `moenstre`, `figurer` and `hjerter`;
-   a new category also needs translation keys in `src/lib/data/categories.ts`.
+   It is JSONC: JSON plus `//` and `/* */` comments and trailing commas. Comments
+   can name groups of hearts within a category; the site shows only the order,
+   no headings. Everything reads the file through `parseJsonc`
+   (`src/lib/utils/jsonc.js`; the site through `src/lib/data/heartsIndex.ts`).
+
+   The categories are `klassiske`, `stjerner`, `hjerter`, `moenstre`, `fliser`,
+   `figurer` and `tekst`; a new category also needs translation keys in
+   `src/lib/data/categories.ts`.
 
 5. **Generate the data:** `npm run generate:heart-data`. This rewrites
    `src/lib/data/heart-designs.json`, `heart-meta.json`, `heart-cards.json` (these
@@ -109,5 +120,5 @@ says which category it is in and where. Everything else is generated from those 
 7. **Preview:** `npx vite preview` and look at the front page and
    `/hjerte/<id>/` and `/en/hjerte/<id>/`.
 
-8. **Commit** `static/hearts/<id>.svg`, `hearts.json` and the four generated JSON
+8. **Commit** `static/hearts/<id>.svg`, `hearts.jsonc` and the four generated JSON
    files together.

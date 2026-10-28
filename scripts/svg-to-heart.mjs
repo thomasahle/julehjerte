@@ -129,7 +129,7 @@ try {
     fs.writeFileSync(outPath, serializeHeartToSVG({ ...design, descriptions: undefined }) + '\n');
     console.error(
       `Wrote ${path.relative(root, outPath)}. Next: write the two <desc xml:lang> paragraphs, ` +
-        'add the id to hearts.json and run npm run generate:heart-data (docs/ADDING-A-HEART.md).'
+        'add the id to hearts.jsonc and run npm run generate:heart-data (docs/ADDING-A-HEART.md).'
     );
   } else {
     const json = JSON.stringify(serializeHeartDesign(design), null, 2) + '\n';

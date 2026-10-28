@@ -56,9 +56,10 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   (classic-3x3, juletrae, gaver, stjerne-ramme, jul, ramme within the first
   eight days), then every other gallery heart, spread so that no two
   consecutive days share a gallery category. It was made by
-  `interleaveByCategory()` from `hearts.json` as it was on 2026-10-20.
+  `interleaveByCategory()` from the gallery index (`hearts.jsonc`, then
+  `hearts.json`) as it was on 2026-10-20.
 - Because it is frozen, editing the gallery never moves a heart to another
-  day: a heart removed from `hearts.json` leaves its day empty, and a heart
+  day: a heart removed from `hearts.jsonc` leaves its day empty, and a heart
   added to it is released after the last listed heart, in gallery order. To
   place a new heart elsewhere, insert it in `PINTEREST_ORDER` only at a
   position after today's (inserting before today would shift released days).

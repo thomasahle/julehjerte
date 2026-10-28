@@ -63,7 +63,7 @@ export function entries() {
 // hearts (localStorage) have neither here and are loaded entirely in the browser.
 //
 // The related row is resolved here too — categoryOfHeart()/siblingHeartIds() are
-// synchronous lookups over hearts.json — so "Flere {kategori}" is in the
+// synchronous lookups over hearts.jsonc — so "Flere {kategori}" is in the
 // prerendered HTML and its links are crawlable.
 export const load: PageLoad = async ({ params }) => {
 	// Imported lazily so the ~330 KB of design data gets its own cacheable chunk.

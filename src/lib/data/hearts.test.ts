@@ -1,11 +1,11 @@
 /**
- * hearts.json is the one file a new gallery heart is listed in (see
+ * hearts.jsonc is the one file a new gallery heart is listed in (see
  * docs/ADDING-A-HEART.md), so it is checked here as it is on disk: the shape,
  * the categories and the ids against static/hearts/. The texts live in the SVGs
  * themselves; heartSvgDescriptions.test.ts checks those.
  */
 import { describe, expect, it } from 'vitest';
-import hearts from '../../../hearts.json';
+import { HEARTS_INDEX as hearts } from '$lib/data/heartsIndex';
 import type { CategoryId } from './categories';
 
 const KNOWN_CATEGORIES: CategoryId[] = ['klassiske', 'stjerner', 'hjerter', 'moenstre', 'fliser', 'figurer', 'tekst'];
@@ -17,7 +17,7 @@ const SVGS = new Set(
 );
 const IDS: unknown[] = hearts.categories.flatMap((category) => category.hearts);
 
-describe('hearts.json', () => {
+describe('hearts.jsonc', () => {
 	it('has only a categories list', () => {
 		expect(Object.keys(hearts)).toEqual(['categories']);
 	});

@@ -2,7 +2,7 @@
 /**
  * Generate the build-time data for the gallery hearts from static/hearts/<id>.svg.
  *
- * For every heart id in hearts.json (project root) this parses the SVG with the same
+ * For every heart id in hearts.jsonc (project root) this parses the SVG with the same
  * parser the site uses (parseHeartFromSVG) and writes:
  *
  *   src/lib/data/heart-designs.json  the parsed HeartDesign per heart (fingers in
@@ -58,9 +58,10 @@ import { createServer } from 'vite';
 import { JSDOM } from 'jsdom';
 import { Resvg } from '@resvg/resvg-js';
 import { socialCardBuilder } from './social-cards.mjs';
+import { parseJsonc } from '../src/lib/utils/jsonc.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const heartsJsonPath = path.join(root, 'hearts.json');
+const heartsJsonPath = path.join(root, 'hearts.jsonc');
 const metaPath = path.join(root, 'src/lib/data/heart-meta.json');
 const cardsPath = path.join(root, 'src/lib/data/heart-cards.json');
 const descriptionsPath = path.join(root, 'src/lib/data/heart-descriptions.json');
@@ -244,7 +245,7 @@ try {
   const heartImage = await server.ssrLoadModule('/src/lib/heartImage.ts');
   const pinImage = await server.ssrLoadModule('/src/lib/pinImage.ts');
 
-  const heartsData = JSON.parse(fs.readFileSync(heartsJsonPath, 'utf8'));
+  const heartsData = parseJsonc(fs.readFileSync(heartsJsonPath, 'utf8'));
   const ids = heartsData.categories.flatMap((category) => category.hearts);
 
   // The parser logs a warning per skipped path; keep the build output readable.
@@ -258,7 +259,7 @@ try {
     for (const id of ids) {
       const svgPath = path.join(svgDir, `${id}.svg`);
       if (!fs.existsSync(svgPath)) {
-        throw new Error(`hearts.json lists "${id}" but ${path.relative(root, svgPath)} does not exist`);
+        throw new Error(`hearts.jsonc lists "${id}" but ${path.relative(root, svgPath)} does not exist`);
       }
       const parsed = parseHeartFromSVG(fs.readFileSync(svgPath, 'utf8'), `${id}.svg`);
       if (!parsed) {
@@ -359,7 +360,7 @@ try {
     }
   }
   fs.writeFileSync(path.join(socialDir, 'gallery.png'), renderOgPng(builder.gallery(GALLERY_CARD_HEARTS.map((id) => {
-    if (!heartImages[id]) throw new Error(`heart-data: the front page card's heart "${id}" is not in hearts.json`);
+    if (!heartImages[id]) throw new Error(`heart-data: the front page card's heart "${id}" is not in hearts.jsonc`);
     return heartImages[id];
   })), fontFiles));
   console.log(

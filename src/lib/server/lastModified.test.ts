@@ -6,7 +6,7 @@ static/hearts/fejlternet.svg
 src/lib/data/heart-meta.json
 
 @2026-10-25
-hearts.json
+hearts.jsonc
 
 @2026-10-20
 static/hearts/photos/5star.jpg

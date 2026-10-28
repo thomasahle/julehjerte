@@ -46,7 +46,7 @@ export const PINTEREST_FIRST = ['classic-3x3', 'gaver', 'jul', 'juletrae', 'stje
 
 /**
  * The order the hearts are pinned in, one a day from PINTEREST_START_DATE.
- * Frozen (made once by interleaveByCategory from hearts.json as it was on
+ * Frozen (made once by interleaveByCategory from hearts.jsonc as it was on
  * 2026-10-21, after the feed's first day) so that editing the gallery never moves a heart that is already
  * out to another day: a heart removed from the gallery leaves its day empty,
  * and a heart added to the gallery is pinned after the last of these
@@ -81,7 +81,7 @@ export const PINTEREST_ORDER: readonly string[] = [
 	'groen-stjerne', 'firkanthjerte', 'hjerte-paa-hjerte'
 ];
 
-/** A gallery category as hearts.json lists it. */
+/** A gallery category as hearts.jsonc lists it. */
 export interface PinterestCategory {
 	id: string;
 	hearts: readonly string[];

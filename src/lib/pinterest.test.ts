@@ -2,7 +2,7 @@
  * The Pinterest feed's schedule and XML ($lib/pinterest, docs/PINTEREST.md).
  */
 import { describe, expect, it } from 'vitest';
-import hearts from '../../hearts.json';
+import { HEARTS_INDEX as hearts } from '$lib/data/heartsIndex';
 import {
 	PINTEREST_CALL_TO_ACTION,
 	PINTEREST_DESCRIPTION_MAX,
@@ -60,7 +60,7 @@ describe('the order', () => {
 	});
 
 	it('was made by interleaveByCategory, which spreads every category of the gallery out', () => {
-		// The order is frozen and kept when hearts.json changes (new hearts go to the end), so it is
+		// The order is frozen and kept when hearts.jsonc changes (new hearts go to the end), so it is
 		// the function's order only for the gallery as it was then; for the gallery as it is now, the
 		// function still lists every heart once and never two of one category in a row.
 		const now = interleaveByCategory(hearts.categories, PINTEREST_FIRST);

@@ -6,6 +6,7 @@ import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
 import {cpus} from 'node:os';
+import {parseJsonc} from '../../../src/lib/utils/jsonc.js';
 import {Resvg} from '@resvg/resvg-js';
 import {referenceEnvironment} from '../reference.mjs';
 import {renderExportedWeave} from '../export-renderer.mjs';
@@ -246,7 +247,7 @@ export async function runGraphOracle({ids,output,seconds=3,repeats=1,study='conn
 if(process.argv[1]&&import.meta.url===pathToFileURL(path.resolve(process.argv[1])).href){
   const args=Object.fromEntries(process.argv.slice(2).map(v=>v.replace(/^--/,'').split('=')));
   const ids=args.ids==='all'
-    ?JSON.parse(await fs.readFile('src/lib/data/hearts.json','utf8')).categories.flatMap(c=>c.hearts)
+    ?parseJsonc(await fs.readFile('hearts.jsonc','utf8')).categories.flatMap(c=>c.hearts)
     :args.ids?.split(',')||['classic-3x3','5star','flower','ramme','sun','circle','juletrae','amy-pattern'];
   const output=args.output||`tmp/graph-oracle-${new Date().toISOString().replace(/[:.]/g,'-')}`;
   const report=await runGraphOracle({ids,output,seconds:Number(args.seconds||3),repeats:Number(args.repeats||1),study:args.study||'connectors',neighborRetry:args['neighbor-retry']==='true'});
