@@ -21,7 +21,7 @@ type Tie =
  */
 function ties(rule: TileRule): Tie[] {
 	// McLean's other types are held to their motions below
-	if (rule.sides === 'free' || rule.sides === 'type' || rule.sides === 'two') return [];
+	if (rule.sides === 'free' || rule.sides === 'type' || rule.sides === 'two' || rule.sides === 'three') return [];
 	if (rule.sides === 'opposite') {
 		const pair = (link: SideLink, sides: [Side, Side]): Tie[] => (link === 'turn' ? sides.map((side): Tie => ({ kind: 'half', side })) : [{ kind: link, sides }]);
 		return [...pair(rule.v, ['nw', 'se']), ...pair(rule.h, ['ne', 'sw'])];

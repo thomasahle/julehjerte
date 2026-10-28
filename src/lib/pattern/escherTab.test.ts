@@ -159,8 +159,9 @@ describe("Tegn's Escher tab", () => {
 	});
 
 	it("opens the gallery's tilings (Fliser) on the Escher tab, as Tegn does: on the tile each was saved with, else on one its cuts are", () => {
-		// Tilings the tab has no type for yet: Origami's red tiles are two shapes and its white ones a third;
-		// Plus repeats only in its middle, its cut ends each their own.
+		// Tilings that open in the Normal tab: Origami is Tre former 6 (its red tiles two shapes, its white
+		// ones a third, the colours swapped) in its middle, but its edge strips are cut off straight where the
+		// tiling would go on; Plus repeats only in its middle, its cut ends each their own.
 		const noTypeYet = ['plus', 'origami'];
 		const fliser = hearts.categories.find((c) => c.id === 'fliser')!.hearts;
 		for (const id of fliser) {
@@ -322,7 +323,7 @@ describe("Tegn's Escher tab", () => {
 	});
 
 	it('floats one colour of a type of two shapes, the other joining across the joints, and keeps it through saving and reading back', () => {
-		expect(ALL_RULES.filter(canFloat).map(ruleKey)).toEqual(ALL_RULES.filter((r) => r.sides === 'free' || r.sides === 'two').map(ruleKey));
+		expect(ALL_RULES.filter(canFloat).map(ruleKey)).toEqual(ALL_RULES.filter((r) => r.sides === 'free' || r.sides === 'two' || r.sides === 'three').map(ruleKey));
 		const tile = fitLines(ruleStart(twoShapes(14), 4));
 		expect(floatingOf(tile)).toBeNull();
 		const red = floatedTile(tile, 'red')!;

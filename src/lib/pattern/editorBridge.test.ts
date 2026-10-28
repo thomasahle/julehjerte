@@ -299,7 +299,8 @@ describe("the bridge between a tile and Tegn's cuts", () => {
 				const moved = { x: cellsToRaw(next, crossing(next, i, j)).x - cellsToRaw(tile, crossing(tile, i, j)).x, y: cellsToRaw(next, crossing(next, i, j)).y - cellsToRaw(tile, crossing(tile, i, j)).y };
 				const px = { x: (moved.x / 100) * rect.width, y: (moved.y / 100) * rect.height };
 				const ways = cornerFreedom(rule).basis.map((field) => field[cornerClass(i, j)]!).filter((v) => v.x || v.y);
-				const span = Math.abs(ways.reduce((d, v, k) => (k ? d : 0) + (ways[1] ? v.x * ways[1].y - v.y * ways[1].x : 0), 0)) > 1e-9;
+				// whether the corner may move both ways: some two of the ways it moves are not in line
+				const span = ways.some((v) => ways.some((w) => Math.abs(v.x * w.y - v.y * w.x) > 1e-9));
 				if (span) expect(near(px, delta, 1e-6), id).toBe(true);
 				else {
 					const u = ways[0]!;
@@ -765,7 +766,9 @@ describe('a pattern moved within the heart', () => {
 				}
 				grew ||= cutCounts(tile).V > base.cuts || cutCounts(tile).H > base.cuts;
 				// Every cut keeps a strip of paper from the edge, and no edge strip is much wider than a cell:
-				// the bends the rule starts from stand less than a fifth of a cell off their line.
+				// the bends the rule starts from stand less than a fifth of a cell off their line (where every
+				// stretch of a cut is an arch bulging the same way, as under some ways of three shapes, the cut
+				// lies that much off its line).
 				const { left, right } = patternCuts(tile);
 				const extent = (cuts: BezierSegment[][], axis: 'x' | 'y') => cuts.map((cut) => cut.flatMap((s) => [s.p0[axis], s.p3[axis]]));
 				for (const [cuts, axis] of [[right, 'x'], [left, 'y']] as const) {
@@ -773,8 +776,8 @@ describe('a pattern moved within the heart', () => {
 					expect(Math.min(...ends.flat()), where).toBeGreaterThan(0.15 * cell - 1e-6);
 					expect(Math.max(...ends.flat()), where).toBeLessThan(100 - 0.15 * cell + 1e-6);
 					const middles = ends.map((e) => e.reduce((a, b) => a + b, 0) / e.length / cell);
-					expect(Math.min(...middles), where).toBeLessThan(1.3);
-					expect(Math.max(...middles), where).toBeGreaterThan(n - 1.3);
+					expect(Math.min(...middles), where).toBeLessThan(1.35);
+					expect(Math.max(...middles), where).toBeGreaterThan(n - 1.35);
 				}
 				expect(problems(tile), where).toEqual([]);
 				// A pan of one repeat more is the same heart.

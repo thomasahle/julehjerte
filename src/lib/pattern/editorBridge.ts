@@ -24,7 +24,7 @@ import { MAX_GRID_SIZE, MIN_GRID_SIZE } from '$lib/constants';
 import { reverseSegments, splitBezierAt } from '$lib/geometry/bezierSegments';
 import type { OverlapRect } from '$lib/utils/overlapRect';
 import { READ_TOLERANCE, sharedCrossings, type SharedCrossing } from './crossings';
-import { isRedCell, latticeOf, ruleRepeat, halfOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
+import { isRedCell, keepsColours, latticeOf, ruleRepeat, halfOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
 import { cornerClass, cornerFreedom, cornerShift, crossingMoves, jointFreedom, meanShift, nearestCorners, sameWayAt, type JoinColour } from './corners';
 import {
 	carryNodeTypes,
@@ -379,17 +379,23 @@ function readCrossings(
 		})
 	);
 	// Where the tiling's repeat can start under the heart, the colours the heart's own.
-	const starts = [0, 1, 2, 3].flatMap((x) => [0, 1, 2, 3].map((y) => ({ x, y }))).filter((f) => (f.x + f.y + 1) % 2 === weaveParity);
+	const starts = [0, 1, 2, 3].flatMap((x) => [0, 1, 2, 3].map((y) => ({ x, y })));
+	// Showing the drawn tiles in the heart's own colours; for two or three shapes, either colour, the tiling's red
+	// tiles shown white where they are (`PatternTile.inverted`).
+	const inverts = (f: Vec) => (f.x + f.y + 1) % 2 !== weaveParity;
 	for (const rule of rules) {
 		// The least moved first: a tile drawn in the tab and not moved comes back as it was drawn, not
 		// as one of the other tiles its heart is also made of.
 		const tiles = starts.flatMap((first) => {
+			if (inverts(first) && !keepsColours(rule)) return [];
 			const fit = fitCrossings(points, rule, first);
 			const grid = fit && fit.off <= tol ? gridTile(rule, fit, first, counts, tol) : null;
-			const tile = grid && joints.length ? withJointsRead(grid, joints, first) : grid;
+			const read = grid && joints.length ? withJointsRead(grid, joints, first) : grid;
+			const tile = read && inverts(first) ? { ...read, inverted: true as const } : read;
 			return fit && tile ? [{ tile, first, fit }] : [];
 		});
-		const moved = (t: PatternTile) => Math.hypot(t.pan?.x ?? 0, t.pan?.y ?? 0);
+		// The colours as drawn first, then the least moved.
+		const moved = (t: PatternTile) => (t.inverted ? 100 : 0) + Math.hypot(t.pan?.x ?? 0, t.pan?.y ?? 0);
 		tiles.sort((a, b) => moved(a.tile) - moved(b.tile));
 		for (const { tile, first, fit } of tiles) {
 			// Each stretch in its own frame, its ends exactly on its crossings.
@@ -628,7 +634,8 @@ export function panBy(base: PatternTile, delta: Vec, rect: OverlapRect): Pattern
  * cells those are.
  */
 export function weaveParityOf(tile: PatternTile): 0 | 1 {
-	return ((((firstLine(tile, 'V') + firstLine(tile, 'H') + 1) % 2) + 2) % 2) as 0 | 1;
+	const parity = (((firstLine(tile, 'V') + firstLine(tile, 'H') + 1) % 2) + 2) % 2;
+	return (tile.inverted ? 1 - parity : parity) as 0 | 1;
 }
 
 /**
@@ -700,8 +707,11 @@ export function cornerTo(base: PatternTile, fingerId: string, anchor: number, de
 	const want = minus(rawToCells(base, to), rawToCells(base, from));
 	const step = nearestCorners(freedom, [{ i: c.i, j: c.j, shift: want }]);
 	const was = base.corners ?? [];
-	const corners = freedom.free.map((_, k) => magnet((was[k] ?? 0) + step[k]!, SNAP_CORNER));
-	return withCorners(base, corners);
+	const moved = freedom.free.map((_, k) => (was[k] ?? 0) + step[k]!);
+	// Drawn to the grid as a whole, so that a corner several coordinates move together still follows the pointer.
+	const far = Math.max(...moved.map(Math.abs));
+	const pull = far > 0 ? magnet(far, SNAP_CORNER) / far : 1;
+	return withCorners(base, moved.map((w) => w * pull));
 }
 
 /**

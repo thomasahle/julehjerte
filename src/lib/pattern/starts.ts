@@ -62,7 +62,7 @@ export function ruleStart(rule: TileRule, cuts: number): PatternTile {
  */
 export function carryCurves(tile: PatternTile, rule: TileRule, cuts = tile.cuts): PatternTile {
 	const kept = ruleInfo(rule).curves.filter((k) => tile.curves[k] && halfOf(tile.rule, k) === halfOf(rule, k) && ruleInfo(tile.rule).curves.includes(k));
-	if (!kept.length) return ruleStart(rule, cuts);
+	if (!kept.length) return { ...ruleStart(rule, cuts), ...(tile.inverted ? { inverted: true as const } : {}) };
 	const curves = { ...ruleStart(rule, cuts).curves };
 	for (const k of kept) curves[k] = structuredClone(tile.curves[k]!);
 	const corners = carriedCorners(tile, rule);
@@ -72,7 +72,7 @@ export function carryCurves(tile: PatternTile, rule: TileRule, cuts = tile.cuts)
 	// The node types the visitor gave a curve kept come with it.
 	const typed = kept.filter((k) => tile.nodeTypes?.[k]);
 	const nodeTypes = typed.length ? { nodeTypes: Object.fromEntries(typed.map((k) => [k, { ...tile.nodeTypes![k] }])) } : {};
-	return { rule, cuts, curves, ...lean, ...(joints ? { joints } : {}), ...shape, ...nodeTypes, ...(tile.pan ? { pan: { ...tile.pan } } : {}) };
+	return { rule, cuts, curves, ...lean, ...(joints ? { joints } : {}), ...shape, ...nodeTypes, ...(tile.pan ? { pan: { ...tile.pan } } : {}), ...(tile.inverted ? { inverted: true as const } : {}) };
 }
 
 /**
@@ -108,7 +108,9 @@ function carriedJoints(tile: PatternTile, rule: TileRule): PatternTile['joints']
  */
 export function switchRule(tile: PatternTile, rule: TileRule, cuts: number, weaves: (tile: PatternTile) => boolean): PatternTile {
 	const carried = carryCurves(tile, rule, cuts);
-	return weaves(carried) ? carried : ruleStart(rule, cuts);
+	// The heart keeps its colours, red where it was red.
+	const colours = tile.inverted ? { inverted: true as const } : {};
+	return weaves(carried) ? carried : { ...ruleStart(rule, cuts), ...colours };
 }
 
 /** Whether every side of the tile is straight: a plain chequerboard, which fits every rule and has nothing to keep. */

@@ -319,7 +319,9 @@ holds the tilings, the whole woven square one repeated figure or two: Dag og nat
 Skrå kryds, Plus, Plus 3, Kølbuer, Hanefod, Dråber, Fiskeskæl, Bølger, Khatam, Stjernegitter, Stjerner og kors,
 Sildeben, Flyvende gæs, Origami (the owner's order, 28 Oct 2026; Kroge went to Mønstre the same day: its half circles
 cross each other three times, which no tile's cuts do). "Rediger" opens each on Tegn's Escher tab except Plus,
-and Origami, which the tab has no type for yet (escherTab.test.ts says why). Khatam opens on it since 2026-10-28 as
+and Origami, which is Tre former 6 (its colours swapped, its corners turned) in its middle, but its edge strips are
+cut off straight where the tiling would go on, 3.5 mm off it at the 80 mm print; it stays as drawn (escherTab.test.ts
+says why). Khatam opens on it since 2026-10-28 as
 two shapes, every tile the same turned a quarter round (p4), its red pinwheels floating: its tile's cuts, fitted to
 all of the drawing's stretches at once (its drawn crossings lay 20.0 by 19.8 units apart, not square), within
 0.3 mm of the drawing at the 80 mm print. Tekst holds five hearts made with the design page's text frames and checked
@@ -688,16 +690,22 @@ one tile, repeated the way Escher's regular divisions repeat one shape (`$lib/pa
 of cut between two crossings reaches every stretch that carries the same curve. The visitor picks a tile type
 from the 28 isohedral types with four tiles at every corner that have a side to shape (Grünbaum and Shephard's
 IH41–IH74; the other eight of the 36 have only straight sides), or the 18 ways of two shapes, red and white each a
-tile of its own: only moved (To former), or turned or mirrored as well (since 2026-10-28). Those are all there are:
-every group of motions of the grid that takes every red tile onto every other is one of the 36 types where one of
-its motions swaps the colours, and one of the 18 where none does (`two.test.ts` finds them all). Each is drawn as
+tile of its own: only moved (To former), or turned or mirrored as well (since 2026-10-28), or the 10 ways of three
+shapes, the red tiles one and the white ones two (Tre former 1–10, each tile's own symmetry in its hint, its
+wallpaper group as its code). Those are all there are: every group of motions of the grid that takes every red tile
+onto every other is one of the 36 types where one of its motions swaps the colours, and one of the 18 where none
+does; and every one that keeps the colours and leaves the white tiles two kinds is one of the 10 (`two.test.ts`
+finds them all; the 13 groups whose tiles fall into three kinds each both red and white are left out, the red
+tile's sides not drawing them all). Every type of two or three shapes can show its tiles' colours either way round
+(`PatternTile.inverted`), as a heart drawn with the other colour as the red one reads back. Each is drawn as
 Tom McLean draws one (`RuleTemplates`, `TemplateGlyph`): the red tile with half arrowheads on its sides, one
 colour per shape, two half arrowheads for a side that is its own S, a bow tie for one that is its own mirror
 image, and a whole arrowhead for a straight side the tiles are mirrored in, which stays straight. Four come
 first — Flyttet, Flyttet og spejlet, To former and Symmetrisk — and "Vis flere" opens the rest in four groups:
 the other types with neither a straight side nor a symmetry of the tile's own, those with mirror edges,
-those whose tile has a symmetry of its own, and the other ways of two shapes (To former), whose glyphs show the
-red tile, tinted, and the white one beside it, since the red tile's arrowheads alone do not tell them apart. The tab always has a type chosen: opened on cuts that are a tile
+those whose tile has a symmetry of its own, the other ways of two shapes (To former), whose glyphs show the
+red tile, tinted, and the white one beside it, since the red tile's arrowheads alone do not tell them apart, and
+the ways of three shapes (Tre former), whose glyphs show a white tile of each kind below the red one. The tab always has a type chosen: opened on cuts that are a tile
 (the one it was left with, or a heart drawn in it), it takes that tile up; where the cuts were changed in the
 Normal tab since, it draws them again as the tile it was left with; on any other heart it draws the cuts as the
 first type, Flyttet, starts. Fortryd takes either back to the Normal tab and the cuts as they were.
@@ -737,7 +745,7 @@ onto itself, which leaves each type a space of corner shifts of its own — none
 either way under To former and Halv omgang (the old lean), every other column sliding along its cut under Flyttet
 og spejlet, and so on, 18 of the 46 types some freedom. Dragging a round dot moves that corner of every tile as far
 along the pointer as the type lets it, the crossings that hold the cells' size and shape staying where they are,
-and near the grid it is drawn to it and settles on it as the cells do. For the types of two shapes, "Svævende
+and near the grid it is drawn to it and settles on it as the cells do. For the types of two and three shapes, "Svævende
 fliser / Floating tiles" under the sizes (Ingen, Røde, Hvide; `floatedTile`, `jointFreedom`) opens every crossing
 into a short straight joint the two cuts run along together, so that one colour's tiles join across the joints
 and the other's float on them, as Khatam's red pinwheels float on its white stars (4.8.8, the truncated square

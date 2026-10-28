@@ -82,6 +82,14 @@ export interface PatternTile {
 	 */
 	joints?: { join: JoinColour; free: number[] };
 	/**
+	 * The tiling's colours swapped in the heart: its red tiles, the ones the type's
+	 * template shows red, show in the left lobe's colour, and its white ones in the
+	 * right lobe's (`weaveParityOf`). For two or three shapes, where red and white are
+	 * not the same tile, so that a heart can show either as it likes; under the other
+	 * types, the same as the pattern moved a cell.
+	 */
+	inverted?: true;
+	/**
 	 * How the cells are sized, stretched, slanted and turned in the heart (`Shape`),
 	 * about the middle of its square: absent, the plain grid, cuts + 1 cells across.
 	 * Dragging a point the tile places sizes, stretches and slants the cells, within

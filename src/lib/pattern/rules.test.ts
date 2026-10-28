@@ -128,6 +128,7 @@ function claims(rule: TileRule): Motion[] {
 			return [...claims(neighbours('mirror')), ...claims(neighbours('turn')), ...OWN_MIRRORS.slice(0, 2)];
 		case 'type':
 		case 'two':
+		case 'three':
 			// McLean's other types say what they are by the motions that make them (types.test holds
 			// those to his and Kaplan's descriptions, two.test finds every way of two shapes); here, that
 			// the tiles drawn keep to them
@@ -157,9 +158,9 @@ function holds(tile: PatternTile, m: Motion): boolean {
 
 describe('every way of tying the sides does what the Escher tab says', () => {
 	it('has every way of tying the sides, once, and the types a woven heart allows besides', () => {
-		// thirteen ways of tying the sides in three families, nineteen more of McLean's types, and seventeen more
-		// ways of two shapes
-		expect(ALL_RULES).toHaveLength(49);
+		// thirteen ways of tying the sides in three families, nineteen more of McLean's types, seventeen more
+		// ways of two shapes, and ten of three
+		expect(ALL_RULES).toHaveLength(59);
 		expect(new Set(ALL_RULES.map(ruleKey)).size).toBe(ALL_RULES.length);
 	});
 
@@ -209,18 +210,34 @@ describe('every way of tying the sides does what the Escher tab says', () => {
 		}
 	});
 
-	// Two shapes: whatever else the tiles keep to, no motion of the grid takes the red tiles onto white ones, in
-	// the tiles the tab starts from too.
-	it.each(ALL_RULES.filter((rule) => rule.sides === 'two').map((rule) => [ruleKey(rule), rule] as const))('%s: the white tile is none of the red one\'s images', (_key, rule) => {
+	// Two and three shapes: no motion of the grid but the type's own takes the tiling onto itself, in the tiles the
+	// tab starts from too: the red tiles onto no white ones, and the white ones of one kind onto none of the other.
+	it.each(ALL_RULES.filter((rule) => rule.sides === 'two' || rule.sides === 'three').map((rule) => [ruleKey(rule), rule] as const))('%s keeps no motion but its own', (_key, rule) => {
 		const LINEAR = [[1, 0, 0, 1], [-1, 0, 0, -1], [0, -1, 1, 0], [0, 1, -1, 0], [-1, 0, 0, 1], [1, 0, 0, -1], [0, 1, 1, 0], [0, -1, -1, 0]] as const;
+		const mod4 = (v: number) => ((v % 4) + 4) % 4;
+		const key = (m: { a: number; b: number; c: number; d: number; e: number; f: number }) => [m.a, m.b, m.c, m.d, mod4(m.e), mod4(m.f)].join(',');
+		// the type's own motions, modulo moves by four
+		const own = new Set([key({ a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 })]);
+		const queue = [{ a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 }];
+		while (queue.length) {
+			const m = queue.pop()!;
+			for (const g of ruleMotions(rule)) {
+				const n = { a: g.a * m.a + g.b * m.c, b: g.a * m.b + g.b * m.d, c: g.c * m.a + g.d * m.c, d: g.c * m.b + g.d * m.d, e: mod4(g.a * m.e + g.b * m.f + g.e), f: mod4(g.c * m.e + g.d * m.f + g.f) };
+				if (!own.has(key(n))) {
+					own.add(key(n));
+					queue.push(n);
+				}
+			}
+		}
 		for (const [what, tile] of [['lopsided', lopsidedTile(rule)], ['start', start(rule)]] as const) {
 			for (const [a, b, c, d] of LINEAR)
 				for (let e = 0; e < 4; e++)
 					for (let f = 0; f < 4; f++) {
+						if (own.has(key({ a, b, c, d, e, f }))) continue;
 						const map = (p: Vec) => ({ x: a * p.x + b * p.y + e, y: c * p.x + d * p.y + f });
 						const centre = map({ x: 0.5, y: 0.5 });
-						if (isRedCell(Math.floor(centre.x), Math.floor(centre.y))) continue;
-						expect(holds(tile, { name: 'swap', map, swaps: true }), `${what}: ${[a, b, c, d, e, f]}`).toBe(false);
+						const swaps = !isRedCell(Math.floor(centre.x), Math.floor(centre.y));
+						expect(holds(tile, { name: 'not its own', map, swaps }), `${what}: ${[a, b, c, d, e, f]}`).toBe(false);
 					}
 		}
 	});

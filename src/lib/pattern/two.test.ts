@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ALL_RULES, edgeClasses, ruleKey, ruleMotions, type GridMotion, type TileRule } from './rules';
-import { TWO_GROUP } from './names';
+import { THREE_GROUP, TWO_GROUP } from './names';
 
 // Which tilings a woven heart's chequerboard can be, all of them: every group of motions of the square
 // grid that takes every red tile onto every other, up to turning or mirroring the whole grid and
@@ -117,7 +117,7 @@ describe('the tilings a woven heart can be, all of them', () => {
 		const isohedral = new Map<string, Set<number>>();
 		for (const group of groups) if (swaps(group) && onto(group, reds)) isohedral.set(classOf(group), group);
 		expect(isohedral.size).toBe(36);
-		const ours = ALL_RULES.filter((r) => r.sides !== 'free' && r.sides !== 'two').map((rule) => classOf(groupOf(rule)));
+		const ours = ALL_RULES.filter((r) => r.sides !== 'free' && r.sides !== 'two' && r.sides !== 'three').map((rule) => classOf(groupOf(rule)));
 		// the three families' rules name some types twice, each pair of opposite sides tied either way round
 		expect(new Set(ours).size).toBe(28);
 		for (const key of ours) expect(isohedral.has(key)).toBe(true);
@@ -148,6 +148,38 @@ describe('the tilings a woven heart can be, all of them', () => {
 			expect(edgeClasses(rule).some((c) => c.shape !== 'I'), ruleKey(rule)).toBe(true);
 			// and the wallpaper group the tab names
 			expect(wallpaper(group), ruleKey(rule)).toBe(rule.sides === 'two' ? TWO_GROUP[rule.n] : 'p1');
+		}
+	});
+
+	it('has every way of three shapes that keeps the colours, once, red the colour of one kind: the tab offers all ten', () => {
+		const orbits = (group: Set<number>) => {
+			const seen = new Set<number>();
+			const out: Set<number>[] = [];
+			for (let k = 0; k < 16; k++) {
+				if (seen.has(k)) continue;
+				const o = orbit(group, k);
+				o.forEach((c) => seen.add(c));
+				out.push(o);
+			}
+			return out;
+		};
+		const three = new Set<string>();
+		for (const group of groups) if (!swaps(group) && orbits(group).length === 3) three.add(classOf(group));
+		expect(three.size).toBe(10);
+		const ours = ALL_RULES.filter((r) => r.sides === 'three');
+		const keys = ours.map((rule) => classOf(groupOf(rule)));
+		expect(new Set(keys).size).toBe(10);
+		expect(keys.every((key) => three.has(key))).toBe(true);
+		for (const rule of ours) {
+			const group = groupOf(rule);
+			const o = orbits(group);
+			expect(swaps(group), ruleKey(rule)).toBe(false);
+			// red one kind, every side bordering one; white two, the tiles beside the red one's lower sides one of each
+			expect(onto(group, reds), ruleKey(rule)).toBe(true);
+			expect(orbit(group, 4).has(1), ruleKey(rule)).toBe(false);
+			expect(edgeClasses(rule).some((c) => c.shape !== 'I'), ruleKey(rule)).toBe(true);
+			expect(wallpaper(group), ruleKey(rule)).toBe(rule.sides === 'three' ? THREE_GROUP[rule.n] : '');
+			expect(o).toHaveLength(3);
 		}
 	});
 });

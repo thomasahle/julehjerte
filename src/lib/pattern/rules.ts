@@ -38,13 +38,16 @@ const NEIGHBOUR_LINKS: NeighbourLink[] = ['mirror', 'turn', 'both'];
  * - `two`: two shapes again, red and white each its own tile, but each turned or
  *   mirrored as well as moved onto the others of its colour, by our number
  *   (`TWO_MOTIONS`).
+ * - `three`: three shapes, the red tiles one and the white ones two, by our number
+ *   (`THREE_MOTIONS`).
  */
 export type TileRule =
 	| { sides: 'free' }
 	| { sides: 'opposite'; v: SideLink; h: SideLink }
 	| { sides: 'neighbour'; link: NeighbourLink }
 	| { sides: 'type'; ih: TypeNumber }
-	| { sides: 'two'; n: TwoNumber };
+	| { sides: 'two'; n: TwoNumber }
+	| { sides: 'three'; n: ThreeNumber };
 
 export const freeSides = (): TileRule => ({ sides: 'free' });
 export const opposite = (v: SideLink, h: SideLink): TileRule => ({ sides: 'opposite', v, h });
@@ -62,6 +65,19 @@ export const TWO_NUMBERS: TwoNumber[] = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
 export const twoShapes = (n: TwoNumber): TileRule => ({ sides: 'two', n });
 
 /**
+ * The ways of three shapes: every group of motions of the grid that keeps the
+ * colours, takes every red tile onto every other, and the white ones onto one of
+ * two kinds, but for turning the whole grid or swapping its colours (two.test.ts
+ * finds them all; red the colour of one kind, which every side borders). Numbered
+ * from the fewest motions up. (Groups whose tiles fall into three kinds and that
+ * swap the colours, each kind both red and white, are left out: every side borders
+ * no one kind, so the red tile's four sides do not draw them all.)
+ */
+export type ThreeNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+export const THREE_NUMBERS: ThreeNumber[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+export const threeShapes = (n: ThreeNumber): TileRule => ({ sides: 'three', n });
+
+/**
  * Every rule: no sides tied, the nine ways of tying opposite pairs, the three of tying neighbours, McLean's
  * other types, and the other ways of two shapes.
  */
@@ -70,7 +86,8 @@ export const ALL_RULES: TileRule[] = [
 	...SIDE_LINKS.flatMap((v) => SIDE_LINKS.map((h) => opposite(v, h))),
 	...NEIGHBOUR_LINKS.map((link) => neighbours(link)),
 	...([42, 45, 49, 50, 53, 54, 56, 57, 58, 59, 61, 62, 64, 66, 67, 68, 69, 71, 74] as const).map((ih): TileRule => ({ sides: 'type', ih })),
-	...TWO_NUMBERS.map((n): TileRule => ({ sides: 'two', n }))
+	...TWO_NUMBERS.map((n): TileRule => ({ sides: 'two', n })),
+	...THREE_NUMBERS.map((n): TileRule => ({ sides: 'three', n }))
 ];
 
 /**
@@ -86,10 +103,17 @@ export function ruleKey(rule: TileRule): string {
 	if (rule.sides === 'opposite') return `opposite:${rule.v}:${rule.h}`;
 	if (rule.sides === 'type') return `ih${rule.ih}`;
 	if (rule.sides === 'two') return `two${rule.n}`;
+	if (rule.sides === 'three') return `three${rule.n}`;
 	return `neighbour:${rule.link}`;
 }
 
 export const sameRule = (a: TileRule, b: TileRule) => ruleKey(a) === ruleKey(b);
+
+/**
+ * Whether no motion of a rule's tiling takes a red tile onto a white one: two or three shapes, red and
+ * white tiles of their own.
+ */
+export const keepsColours = (rule: TileRule): boolean => rule.sides === 'free' || rule.sides === 'two' || rule.sides === 'three';
 
 /** A curve the visitor draws: a side of the red tile, a family's one curve, or the one curve of all sides. */
 export type CurveKey = 'nw' | 'ne' | 'se' | 'sw' | 'vertical' | 'horizontal' | 'side';
@@ -304,6 +328,35 @@ const TWO_MOTIONS: Record<TwoNumber, GridMotion[]> = {
 	18: [quarterTurn(-0.5, 0.5), quarterTurn(0.5, -0.5), quarterTurn(0.5, 0.5), andThen(mirrorX(0), shift(0, 1))]
 };
 
+/**
+ * Each way of three shapes as motions that make its tiling, as `TWO_MOTIONS`; the
+ * white tile beside the red one at its lower right is of one kind, the one at its
+ * lower left of the other. After each, the wallpaper group, what each tile is of
+ * itself, and what the red tile's sides can be.
+ */
+const THREE_MOTIONS: Record<ThreeNumber, GridMotion[]> = {
+	// p2: red no symmetry; white the same upside down, and the same upside down; sides JJJJ
+	1: [halfTurn(0, 1), halfTurn(0.5, -0.5)],
+	// pgg: red no symmetry; white the same upside down, and the same upside down; sides JJJJ
+	2: [halfTurn(0.5, -0.5), halfTurn(-0.5, 0.5), andThen(mirrorDiagonal(0), shift(1, 1))],
+	// pm: red no symmetry; white its own mirror image top and bottom, and its own mirror image top and bottom; sides JJJJ
+	3: [mirrorAntidiagonal(0), andThen(mirrorAntidiagonal(1), shift(-1, 1))],
+	// pm: red no symmetry; white its own mirror image left and right, and its own mirror image left and right; sides JJJJ
+	4: [andThen(mirrorDiagonal(-1), shift(1, 1)), mirrorDiagonal(1)],
+	// pmg: red no symmetry; white its own mirror image top and bottom, and its own mirror image top and bottom; sides JJJJ
+	5: [halfTurn(0, 1), halfTurn(1, 0), mirrorAntidiagonal(0)],
+	// p4: red the same upside down; white the same turned a quarter, and the same turned a quarter; sides JJ
+	6: [quarterTurn(-0.5, 0.5), quarterTurn(0.5, -0.5)],
+	// p4g: red its own mirror image on the slant; white two slanted mirrors, and the same turned a quarter; sides UUJ
+	7: [quarterTurn(0.5, -0.5), quarterTurn(0.5, 1.5), mirrorX(-0.5)],
+	// pmm: red the same upside down; white two mirrors, and two mirrors; sides JJ
+	8: [halfTurn(0.5, 0.5), halfTurn(0.5, -0.5), halfTurn(-0.5, 0.5), mirrorAntidiagonal(0)],
+	// pmm: red its own mirror image top and bottom; white two mirrors, and two mirrors; sides JJ
+	9: [halfTurn(0, 1), halfTurn(0.5, -0.5), mirrorAntidiagonal(0)],
+	// p4m: red two slanted mirrors; white four mirrors, and four mirrors; sides UU
+	10: [quarterTurn(-0.5, 0.5), quarterTurn(0.5, -0.5), mirrorX(0.5)]
+};
+
 /** The motion a way of tying a pair of opposite sides takes the red tile across its lower-right side (`v`) or lower-left one (`h`) with. */
 const ACROSS_MOTIONS: Record<'v' | 'h', Record<SideLink, GridMotion>> = {
 	v: { move: shift(1, 0), mirror: andThen(mirrorY(0.5), shift(1, 0)), turn: halfTurn(1, 0.5) },
@@ -335,6 +388,8 @@ export function ruleMotions(rule: TileRule): GridMotion[] {
 			return TYPE_MOTIONS[rule.ih];
 		case 'two':
 			return TWO_MOTIONS[rule.n];
+		case 'three':
+			return THREE_MOTIONS[rule.n];
 	}
 }
 

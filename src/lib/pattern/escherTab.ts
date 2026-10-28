@@ -199,7 +199,7 @@ export function openedTile(last: PatternTile | null, heart: EscherHeart): { tile
 }
 
 /** The tile drawn again as its type starts, at its size: the tab's "Start forfra". */
-export const restartedTile = (tile: PatternTile): PatternTile => fitLines(ruleStart(tile.rule, tile.cuts));
+export const restartedTile = (tile: PatternTile): PatternTile => fitLines({ ...ruleStart(tile.rule, tile.cuts), ...(tile.inverted ? { inverted: true as const } : {}) });
 
 /**
  * The whole pattern turned and moved to where the most of the heart's square
@@ -241,7 +241,8 @@ export function resizedTile(tile: PatternTile, n: number): PatternTile | null {
 /** Which colour's tiles float in a tile, the other joining across its crossings' joints (`PatternTile.joints`), or null for none. */
 export type Floating = 'red' | 'white' | null;
 
-export const floatingOf = (tile: PatternTile): Floating => (tile.joints ? (tile.joints.join === 'white' ? 'red' : 'white') : null);
+/** Which colour floats in the heart: the tiling's red tiles show white where its colours are swapped (`PatternTile.inverted`). */
+export const floatingOf = (tile: PatternTile): Floating => (tile.joints ? ((tile.joints.join === 'white') === !tile.inverted ? 'red' : 'white') : null);
 
 /** Whether a type's tiles can float: two shapes only, where no motion swaps the colours (`jointFreedom`). */
 export const canFloat = (rule: TileRule): boolean => !!jointFreedom(rule, 'white');
@@ -259,7 +260,7 @@ const JOINT_LENGTHS = [0.25, 0.18, 0.12, 0.06];
 export function floatedTile(tile: PatternTile, floating: Floating): PatternTile | null {
 	const { joints: _joints, ...closed } = tile;
 	if (!floating) return fitLines(closed);
-	const join: JoinColour = floating === 'red' ? 'white' : 'red';
+	const join: JoinColour = (floating === 'red') === !tile.inverted ? 'white' : 'red';
 	const freedom = jointFreedom(tile.rule, join);
 	if (!freedom?.free.length) return null;
 	for (const length of JOINT_LENGTHS) {
@@ -385,6 +386,7 @@ export function savedPattern(tile: PatternTile): HeartPattern {
 		curves: Object.fromEntries(Object.entries(tile.curves).map(([key, curve]) => [key, numbers(curve!)])),
 		...(tile.corners?.length ? { corners: [...tile.corners] } : {}),
 		...(tile.joints ? { joints: { join: tile.joints.join, free: [...tile.joints.free] } } : {}),
+		...(tile.inverted ? { inverted: true } : {}),
 		...(tile.shape ? { shape: [tile.shape.x.x, tile.shape.x.y, tile.shape.y.x, tile.shape.y.y] } : {}),
 		...(tile.turn !== undefined ? { turn: tile.turn } : {}),
 		...(tile.nodeTypes ? { nodeTypes: structuredClone(tile.nodeTypes) as Record<string, Record<string, NodeType>> } : {}),
@@ -447,6 +449,7 @@ export function tileOfPattern(saved: HeartPattern): PatternTile | null {
 		),
 		...cornersOf(saved, rule),
 		...jointsOf(saved, rule),
+		...(saved.inverted ? { inverted: true as const } : {}),
 		...(saved.shape ? { shape: { x: vec(saved.shape[0], saved.shape[1]), y: vec(saved.shape[2], saved.shape[3]) } } : {}),
 		...(saved.turn !== undefined ? { turn: saved.turn } : {}),
 		...(saved.nodeTypes ? { nodeTypes: nodeTypesOf(saved.nodeTypes, reads) } : {}),

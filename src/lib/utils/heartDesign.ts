@@ -122,6 +122,7 @@ function normalizePattern(raw: unknown): HeartPattern | undefined {
   const joints = r.joints as { join?: unknown; free?: unknown } | undefined;
   if (joints !== undefined && !(joints && (joints.join === 'red' || joints.join === 'white') && Array.isArray(joints.free) && joints.free.length <= 32 && joints.free.every(finite))) return undefined;
   if (r.offset !== undefined && !pair(r.offset)) return undefined;
+  if (r.inverted !== undefined && r.inverted !== true) return undefined;
   if (r.shape !== undefined && !four(r.shape)) return undefined;
   if (r.turn !== undefined && !finite(r.turn)) return undefined;
   // The node types the visitor gave the curves: by curve, by node, each one of ours.
@@ -140,6 +141,7 @@ function normalizePattern(raw: unknown): HeartPattern | undefined {
     ...(r.corners ? { corners: [...(r.corners as number[])] } : {}),
     ...(joints ? { joints: { join: joints.join as 'red' | 'white', free: [...(joints.free as number[])] } } : {}),
     ...(r.offset ? { offset: [...(r.offset as [number, number])] as [number, number] } : {}),
+    ...(r.inverted ? { inverted: true } : {}),
     ...(r.shape ? { shape: [...(r.shape as [number, number, number, number])] as [number, number, number, number] } : {}),
     ...(r.turn !== undefined ? { turn: r.turn as number } : {}),
     ...(r.nodeTypes !== undefined

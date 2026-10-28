@@ -3,13 +3,15 @@
   tile with half arrowheads on its sides, the same colour for sides of the same shape. Only types a
   woven heart can make, four tiles at every corner, and that the engine draws (tiling.ts
   `TileRule`): 28 of the 36 four-at-a-corner types — the others have no side that can take a shape —
-  and all 18 ways of two shapes, red and white each its own tile (two.test.ts). Four come first: moved and moved-and-mirrored, the two
+  all 18 ways of two shapes, red and white each its own tile, and all 10 of three, the white tiles of
+  two kinds (two.test.ts). Four come first: moved and moved-and-mirrored, the two
   quadrilateral types tiled.art's gallery uses most; two shapes; and symmetric, every tile its own
   mirror image. The others are behind "Vis flere", in four groups: the rest of the ones with no
   straight side and no symmetry of the tile's own, the more used first; the ones with mirror edges,
   straight sides the tiles are mirrored in; the ones whose tile has a symmetry of its own; and the
   other ways of two shapes, red and white each its own tile, turned or mirrored as well as moved
-  (these show both tiles, the red one tinted).
+  (these show both tiles, the red one tinted); and the ways of three shapes, the white tiles of two
+  kinds (these show a white tile of each kind), numbered, each tile's symmetry in its hint.
 
   One segment per type. Opposite pairs tied two different ways can lie either way round in the
   heart; a segment chooses its type the way its glyph shows it, and shows as chosen either way.
@@ -26,7 +28,7 @@
 	import { untrack } from 'svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import { ToggleGroup, ToggleGroupItem, keepChosen } from '$lib/components/ui/toggle-group';
-	import { COMMON_RULES, TWO_NUMBERS, neighbours, ofType, opposite, ruleKey, twoShapes, type TileRule } from '$lib/pattern/rules';
+	import { COMMON_RULES, THREE_NUMBERS, TWO_NUMBERS, neighbours, ofType, opposite, ruleKey, threeShapes, twoShapes, type TileRule } from '$lib/pattern/rules';
 	import { ruleCode, ruleText } from '$lib/pattern/names';
 	import TemplateGlyph from './TemplateGlyph.svelte';
 
@@ -56,7 +58,8 @@
 		},
 		{ title: 'patternMoreMirrorEdges', rules: ([42, 45, 49, 50, 54, 56] as const).map(ofType) },
 		{ title: 'patternMoreOwnSymmetry', rules: ([57, 58, 59, 61, 62, 64, 66, 67, 68, 69, 71, 74] as const).map(ofType) },
-		{ title: 'patternMoreTwoShapes', rules: TWO_NUMBERS.map(twoShapes) }
+		{ title: 'patternMoreTwoShapes', rules: TWO_NUMBERS.map(twoShapes) },
+		{ title: 'patternMoreThreeShapes', rules: THREE_NUMBERS.map(threeShapes) }
 	];
 	const MORE = GROUPS.flatMap((g) => g.rules);
 	const RULES = new Map([...COMMON, ...MORE].map((rule) => [typeKey(rule), rule]));

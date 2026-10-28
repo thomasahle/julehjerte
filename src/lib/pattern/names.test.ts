@@ -9,9 +9,9 @@ describe('the rules in words', () => {
 			expect(name, ruleKey(rule)).not.toBe(hint);
 		}
 		for (const v of SIDE_LINKS) for (const h of SIDE_LINKS) expect(ruleText(opposite(v, h))).toEqual(ruleText(opposite(h, v)));
-		// thirteen ways, three of them the same tile type turned a quarter, nineteen types more, and seventeen
-		// more ways of two shapes
-		expect(new Set(ALL_RULES.map((r) => ruleText(r).name)).size).toBe(46);
+		// thirteen ways, three of them the same tile type turned a quarter, nineteen types more, seventeen more
+		// ways of two shapes, and ten of three
+		expect(new Set(ALL_RULES.map((r) => ruleText(r).name)).size).toBe(56);
 	});
 
 	it("gives Heesch's name for each of his four-sided types a woven heart allows, Grünbaum and Shephard's number for the others, and two shapes their wallpaper group", () => {
@@ -49,7 +49,9 @@ describe('the rules in words', () => {
 			'IH71',
 			'IH74',
 			// two shapes, each turned or mirrored as well as moved
-			...['p2', 'pg', 'pg', 'pgg', 'pgg', 'p2', 'pgg', 'pm', 'pm', 'pmg', 'pmg', 'pmm', 'p4', 'p4g', 'pmm', 'pmm', 'p4m']
+			...['p2', 'pg', 'pg', 'pgg', 'pgg', 'p2', 'pgg', 'pm', 'pm', 'pmg', 'pmg', 'pmm', 'p4', 'p4g', 'pmm', 'pmm', 'p4m'],
+			// three shapes
+			...['p2', 'pgg', 'pm', 'pm', 'pmg', 'p4', 'p4g', 'pmm', 'pmm', 'p4m']
 		]);
 	});
 

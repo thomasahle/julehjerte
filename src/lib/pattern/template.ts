@@ -107,20 +107,26 @@ export function arrowheadsOn(rule: TileRule, kind: StretchKind, i: number, j: nu
 
 /**
  * The white tile (1, 0) beside the red one, across its lower-right side, as a template of two shapes
- * shows it: its three other sides.
+ * shows it: its three other sides; and for three shapes, the white tile (0, 1) across its lower-left
+ * side too, of the other kind.
  */
 const WHITE_SIDES: Array<{ side: 'nw' | 'ne' | 'se' | 'sw'; kind: StretchKind; i: number; j: number }> = [
 	{ side: 'ne', kind: 'H', i: 1, j: 0 },
 	{ side: 'se', kind: 'V', i: 2, j: 0 },
 	{ side: 'sw', kind: 'H', i: 1, j: 1 }
 ];
+const OTHER_WHITE_SIDES: Array<{ side: 'nw' | 'ne' | 'se' | 'sw'; kind: StretchKind; i: number; j: number }> = [
+	{ side: 'nw', kind: 'V', i: 0, j: 1 },
+	{ side: 'se', kind: 'V', i: 1, j: 1 },
+	{ side: 'sw', kind: 'H', i: 0, j: 2 }
+];
 
-/** Whether a rule's red and white tiles are two shapes, so that its template shows both (`templateOf`). */
-export const twoShaped = (rule: TileRule): boolean => rule.sides === 'free' || rule.sides === 'two';
+/** How many shapes a rule's tiles come in, and so how many tiles its template shows (`templateOf`): one, two or three. */
+export const shapesOf = (rule: TileRule): 1 | 2 | 3 => (rule.sides === 'three' ? 3 : rule.sides === 'free' || rule.sides === 'two' ? 2 : 1);
 
-/** A side in a template, of the red tile (0, 0) or the white one beside it: the curve it carries and its arrowheads, each a triangle, in cells. */
+/** A side in a template, of the red tile (0, 0) or a white one beside it: the curve it carries and its arrowheads, each a triangle, in cells. */
 export interface TemplateSide {
-	tile: 'red' | 'white';
+	tile: 'red' | 'white' | 'other';
 	side: (typeof TILE_SIDES)[number]['side'];
 	curve: CurveKey;
 	arrowheads: Vec[][];
@@ -128,14 +134,16 @@ export interface TemplateSide {
 
 /**
  * A rule's template: the red tile's four sides, and where red and white are two shapes, which no
- * arrowheads on the red tile alone tell apart, the white tile's other three beside them.
+ * arrowheads on the red tile alone tell apart, the white tile's other three beside them; where the
+ * white ones are of two kinds, the other's three too.
  */
 export function templateOf(rule: TileRule): TemplateSide[] {
-	const of = (tile: 'red' | 'white') => ({ side, kind, i, j }: (typeof TILE_SIDES)[number]): TemplateSide => ({
+	const of = (tile: TemplateSide['tile']) => ({ side, kind, i, j }: (typeof TILE_SIDES)[number]): TemplateSide => ({
 		tile,
 		side,
 		curve: stretchSource(rule, kind, i, j).curve,
 		arrowheads: arrowheadsOn(rule, kind, i, j)
 	});
-	return [...TILE_SIDES.map(of('red')), ...(twoShaped(rule) ? WHITE_SIDES.map(of('white')) : [])];
+	const shapes = shapesOf(rule);
+	return [...TILE_SIDES.map(of('red')), ...(shapes > 1 ? WHITE_SIDES.map(of('white')) : []), ...(shapes > 2 ? OTHER_WHITE_SIDES.map(of('other')) : [])];
 }

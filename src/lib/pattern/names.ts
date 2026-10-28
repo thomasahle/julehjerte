@@ -6,7 +6,7 @@
  */
 
 import type { TranslationKey } from '$lib/i18n';
-import type { NeighbourLink, SideLink, TileRule, TwoNumber, TypeNumber } from './rules';
+import type { NeighbourLink, SideLink, ThreeNumber, TileRule, TwoNumber, TypeNumber } from './rules';
 
 const LETTER: Record<SideLink, string> = { move: 'T', mirror: 'G', turn: 'C' };
 
@@ -58,6 +58,33 @@ const TWO_TEXT: Record<TwoNumber, { name: TranslationKey; hint: TranslationKey }
 	18: { name: 'patternTwo18', hint: 'patternTwo18Hint' }
 };
 
+const THREE_TEXT: Record<ThreeNumber, { name: TranslationKey; hint: TranslationKey }> = {
+	1: { name: 'patternThree1', hint: 'patternThree1Hint' },
+	2: { name: 'patternThree2', hint: 'patternThree2Hint' },
+	3: { name: 'patternThree3', hint: 'patternThree3Hint' },
+	4: { name: 'patternThree4', hint: 'patternThree4Hint' },
+	5: { name: 'patternThree5', hint: 'patternThree5Hint' },
+	6: { name: 'patternThree6', hint: 'patternThree6Hint' },
+	7: { name: 'patternThree7', hint: 'patternThree7Hint' },
+	8: { name: 'patternThree8', hint: 'patternThree8Hint' },
+	9: { name: 'patternThree9', hint: 'patternThree9Hint' },
+	10: { name: 'patternThree10', hint: 'patternThree10Hint' }
+};
+
+/** The wallpaper group of each way of three shapes (two.test.ts holds the symmetries to it). */
+export const THREE_GROUP: Record<ThreeNumber, string> = {
+	1: 'p2',
+	2: 'pgg',
+	3: 'pm',
+	4: 'pm',
+	5: 'pmg',
+	6: 'p4',
+	7: 'p4g',
+	8: 'pmm',
+	9: 'pmm',
+	10: 'p4m'
+};
+
 /** The wallpaper group of each way of two shapes (two.test.ts holds the symmetries to it). */
 export const TWO_GROUP: Record<TwoNumber, string> = {
 	2: 'p2',
@@ -89,6 +116,7 @@ export function ruleText(rule: TileRule): { name: TranslationKey; hint: Translat
 	if (rule.sides === 'neighbour') return NEIGHBOUR_TEXT[rule.link];
 	if (rule.sides === 'type') return TYPE_TEXT[rule.ih];
 	if (rule.sides === 'two') return TWO_TEXT[rule.n];
+	if (rule.sides === 'three') return THREE_TEXT[rule.n];
 	const pair = [rule.v, rule.h].sort().join('+');
 	const TEXT: Record<string, [TranslationKey, TranslationKey]> = {
 		'move+move': ['patternRuleSame', 'patternRuleSameHint'],
@@ -114,6 +142,7 @@ export function ruleText(rule: TileRule): { name: TranslationKey; hint: Translat
 export function ruleCode(rule: TileRule): string | null {
 	if (rule.sides === 'free') return 'p1';
 	if (rule.sides === 'two') return TWO_GROUP[rule.n];
+	if (rule.sides === 'three') return THREE_GROUP[rule.n];
 	if (rule.sides === 'type') return rule.ih === 53 ? 'CCGG' : `IH${rule.ih}`;
 	if (rule.sides === 'neighbour') return { mirror: 'G1G1G2G2', turn: 'C4C4C4C4', both: 'IH73' }[rule.link];
 	if (rule.v === 'mirror' && rule.h === 'mirror') return 'G1G2G1G2';

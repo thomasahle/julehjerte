@@ -93,9 +93,9 @@ describe('corners off the grid', () => {
 		}
 	);
 
-	it('lets crossings open into joints where no motion swaps the colours: two shapes, and only they', () => {
+	it('lets crossings open into joints where no motion swaps the colours: two and three shapes, and only they', () => {
 		for (const rule of ALL_RULES) {
-			const two = rule.sides === 'free' || rule.sides === 'two';
+			const two = rule.sides === 'free' || rule.sides === 'two' || rule.sides === 'three';
 			for (const join of ['red', 'white'] as const) expect(!!jointFreedom(rule, join)?.free.length, `${ruleKey(rule)} ${join}`).toBe(two);
 		}
 	});
