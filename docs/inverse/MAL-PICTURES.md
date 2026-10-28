@@ -717,7 +717,8 @@ now go (exact/target.js `withoutClosedSlivers`; of 213 masks only this one
 has them; 15 hidden segments). The 14 left to the fitter: the five text
 hearts, balls, davidsstjerne-circ, hjerte-i-hjerte-i-hjerte, khatam, venus,
 santa, roed-blomst (the designer's template keeps only the diagonal mirror,
-and on the traced outline its petals' notches come back on themselves),
+and on the traced outline its petals' notches come back on themselves; now
+exact, below),
 mor-og-barn and triple-heart (a wedge where the outline meets the square's
 side at a shallow angle, which 0.8 mm of rounding does not clear).
 
@@ -726,6 +727,34 @@ graphs, Voronoi diagrams of random sites, plain and under the square's
 symmetries. Of 80, 30 get an exact template (22 s at the median); 19 end
 unevenly on opposite sides, which no template reproduces; a plain cross of two
 bands has none under any of its symmetries, nor untied in 20 s.
+
+## Part of the symmetry, and the fitter's template as a start (2026-10-28)
+
+Rød blomst (roed-blomst) in Mal gave the fitter's template, with a white
+square in each corner where the picture is red. Its mask has all eight of the
+square's symmetries, and under them it has no template: the search proves so
+in 20 s (3 s looking for a start, then the fine, coarse and middle grids
+finding none). Its designer's template keeps one diagonal mirror, while the
+fallback tried only its quarter turns (fejlternet's pinwheels), under which it
+has none either. Now, after the turns, one mirror alone is searched (stage.js
+`subgroupsOf`, the one making both papers alike first), each with a share of
+the time left; under all eight, the two diagonals' templates turn into each
+other, so one is enough. Searches on the outline with tips rounded keep to a
+part that worked. Rød blomst: 7 hidden segments under its diagonal, 0.17% off
+the mask, in 42 s, found on the outline with tips rounded (the turns use up
+the traced outline's time). Giving the traced outline's fallbacks the rounded
+outline's time as well found it there in 47 s, but lost permo-cirkler: its
+template exists under all of its symmetry only once its tips are rounded. On
+the 16 pictures where the full symmetry has none, two more get an exact
+template (roed-blomst; permo-cirkler-shot now 0.31% from the mask, not 0.55%),
+and none fewer.
+
+The fitter's template as the exact search's start, in the fitter's worker once
+the fitter is done: of the 28 gallery and juleflet pictures left to the
+fitter, it saved one in what was left of the minute, and none even with 50 s.
+On 21 of them the fitter's template is no start of its own: its reading has no
+completion, or strays a third of the way from the traced outline. Where it is
+one, HiGHS does not repair its rule breaks in time. Not used.
 
 ## Details lost on photographs (2026-10-25)
 

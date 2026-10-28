@@ -137,7 +137,7 @@ const BARE_SHARE = .5, BARE_FLOOR = 8;
  * template may lie drawn in a few cubics than on the traced polyline. */
 const SMOOTH_SLACK = .005;
 
-/** The seconds a search under the requested symmetry's turns alone needs at
+/** The seconds a search under part of the requested symmetry needs at
  * least, once none keeps all of it (exactSearch). */
 const TURNS_FLOOR = 6;
 
@@ -146,6 +146,17 @@ const TURNS_FLOOR = 6;
 export function turnsOf(symmetry) {
   const all = group(symmetry), turn = ['rotate90', 'rotate180'].find(name => all.includes(name));
   return turn && all.some(name => determinant(name) < 0) ? [turn] : [];
+}
+
+/** The ties searched under, in turn, once the group `symmetry` generates has
+ * no template: its turns, then one of its mirrors alone where it has more,
+ * the one making both papers alike first (the app's transpose). A picture
+ * symmetric under all eight has its two diagonals' templates turned into
+ * each other, so one of them is enough. */
+export function subgroupsOf(symmetry) {
+  const mirrors = group(symmetry).filter(name => determinant(name) < 0), turns = turnsOf(symmetry);
+  const mirror = mirrors.length > 1 && ['antiTranspose', 'transpose', 'mirrorX', 'mirrorY'].find(name => mirrors.includes(name));
+  return [...(turns.length ? [turns] : []), ...(mirror ? [[mirror]] : [])];
 }
 
 /** The exact search on the traced `outline` from the fitter's `template`
@@ -221,15 +232,22 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     if (!again.found && /not symmetric/.test(again.report.error ?? '')) again = {...await exactSearch(outline, template, cfg, {...options, symmetry: []}), untied: true};
     return {...again, report: {...again.report, unjoined: found.error, ...(again.untied ? {untied: true} : {})}};
   }
-  // A picture symmetric under mirrors whose templates all turn one way:
-  // fejlternet's hidden cuts wheel round its middle square, the designer's
-  // and every other, and under its mirrors the search proves there is none
-  // in seconds. Then under its turns alone (a pinwheel of 12 hidden segments,
-  // the designer's count, where the fitter's rounded its corners).
-  const turns = turnsOf(symmetry);
-  if (found.error === NO_TEMPLATE && fallback && turns.length && (deadline - performance.now()) / 1000 - reserve >= TURNS_FLOOR) {
-    const again = await exactSearch(outline, template, cfg, {deadline, reserve, onProgress, geometry, refine, fallback: false, symmetry: turns});
-    if (again.found) return {...again, report: {...again.report, turned: {from: symmetry, error: found.error}}};
+  // A picture symmetric under mirrors whose templates keep only part of its
+  // symmetry: fejlternet's hidden cuts wheel round its middle square, the
+  // designer's and every other, and under its mirrors the search proves there
+  // is none in seconds; roed-blomst's designer keeps one diagonal, and under
+  // all eight there is none in 20 s. Then under part of it (subgroupsOf),
+  // each a share of the time left: fejlternet's pinwheel of 12 hidden
+  // segments, the designer's count, and roed-blomst's 7 under its diagonal
+  // (on its outline with tips rounded, the time left on the traced one too
+  // little for both).
+  const subgroups = fallback && found.error === NO_TEMPLATE ? subgroupsOf(symmetry) : [];
+  for (const [k, ties] of subgroups.entries()) {
+    const left = (deadline - performance.now()) / 1000 - reserve;
+    if (left < TURNS_FLOOR) break;
+    const share = k < subgroups.length - 1 ? Math.max(TURNS_FLOOR, left / (subgroups.length - k)) : left;
+    const again = await exactSearch(outline, template, cfg, {deadline: performance.now() + 1000 * (share + reserve), reserve, onProgress, geometry, refine, fallback: false, symmetry: ties});
+    if (again.found) return {...again, report: {...again.report, subgroup: {from: symmetry, to: ties, error: found.error}}};
   }
   if (found.error) return {found: null, report: {...report, error: found.error, search: found.report}};
   let solution = found.solution, assessment = assess(solution, cfg);

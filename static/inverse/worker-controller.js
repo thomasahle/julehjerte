@@ -64,7 +64,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
     if(trailing&&action!=='archive'&&action!=='warm-neural'){const ending=trailing;trailing=null;clearTimeout(ending.timer);if(ending.exact)disposeExact();else disposeFitter();}
     if(action==='cancel'){
       if(active&&active.id!==id)return;
-      const job=active;active=null;dispose();endCrop();prepared=null;result=null;job?.done();
+      const job=active;active=null;clearTimeout(job?.timer);dispose();endCrop();prepared=null;result=null;job?.done();
       scope.postMessage({id,type:'cancelled'});scope.close?.();return;
     }
     if(action==='stop'){

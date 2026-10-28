@@ -15,7 +15,7 @@ import {gridWitness} from '../../static/inverse/core/exact/grid.js';
 import {prepare, restorePrepared, design} from '../../static/inverse/core/engine.js';
 import {finishExactStopped} from '../../static/inverse/core/stopped.js';
 import {smoothEdges} from '../../static/inverse/core/exact/refine.js';
-import {turnsOf} from '../../static/inverse/core/exact/stage.js';
+import {turnsOf, subgroupsOf} from '../../static/inverse/core/exact/stage.js';
 
 const svgOf = rings => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path fill="#b91313" fill-rule="evenodd" d="${
   rings.map(ring => 'M' + ring.map(([x, y]) => `${x.toFixed(9)},${(12 - y).toFixed(9)}`).join('L') + 'Z').join('')}"/></svg>`;
@@ -208,4 +208,13 @@ test('a picture symmetric under mirrors may keep only its turns, the search\'s f
   assert.deepEqual(turnsOf(['transpose', 'antiTranspose']), ['rotate180']);
   assert.deepEqual(turnsOf(['mirrorX']), []);
   assert.deepEqual(turnsOf(['rotate180']), []);
+});
+
+test('with none under all of a picture\'s symmetry, its turns are searched, then one mirror, the one making both papers alike first', () => {
+  // roed-blomst: none under all eight, its designer's keeps one diagonal.
+  assert.deepEqual(subgroupsOf(['mirrorX', 'mirrorY', 'antiTranspose']), [['rotate90'], ['antiTranspose']]);
+  assert.deepEqual(subgroupsOf(['mirrorX', 'mirrorY']), [['rotate180'], ['mirrorX']]);
+  assert.deepEqual(subgroupsOf(['transpose', 'antiTranspose']), [['rotate180'], ['antiTranspose']]);
+  assert.deepEqual(subgroupsOf(['transpose']), []);
+  assert.deepEqual(subgroupsOf(['rotate90']), []);
 });

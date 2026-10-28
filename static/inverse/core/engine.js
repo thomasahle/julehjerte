@@ -110,9 +110,13 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
     try{const traced=traceAt(way.open,way);if(traced){if(!traced.why){outline=traced.scaled;if(way.paired)base={paired:true};break;}if(first)cannot=traced.why;}}catch(error){if(first)cannot=String(error.message||error);}
   }
   if(!outline)return{solution:null,report:{chosen:'fitter',error:cannot}};
-  const search=end=>({deadline:end,onProgress,symmetry,geometry:cfg.progressGeometry});
+  let ties=symmetry;
+  const search=end=>({deadline:end,onProgress,symmetry:ties,geometry:cfg.progressGeometry});
   const began=performance.now();
   let found=await exactSearch(outline,null,cfgExact,search(tracedEnd));
+  // A template under part of the symmetry (exact/stage.js subgroupsOf): the
+  // searches with tips rounded keep to that part.
+  if(found.report.subgroup)ties=found.report.subgroup.to;
   const tracedMs=performance.now()-began,n=target.sourceImage.resolution,px=n/cfgExact.width,radius=Math.max(1,Math.round(TIP_ROUNDING_MM*n/target.width));
   const segments=f=>f.report.search?.attempts?.at(-1)?.hidden??Infinity;
   // A tip that comes back within 1.5 mm of itself (mostly one or two pixels
