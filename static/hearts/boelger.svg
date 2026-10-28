@@ -2,19 +2,24 @@
   <title>Bølger</title>
   <title xml:lang="da"></title>
   <title xml:lang="en">Waves</title>
-  <desc xml:lang="da">Dråber, der hænger i snore ned gennem hjertet, så mønstret bølger fra side til side. Fem striber i hver halvdel med buede klip af kvartcirkler. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er mellem. Flet roligt, så buerne ikke knækker, hvor de mødes i en spids.</desc>
-  <desc xml:lang="en">Drops hanging in strings down through the heart, so the pattern waves from side to side. Five strips in each half with curved cuts made of quarter circles. The halves mirror each other, so one template covers both, and the difficulty is medium. Weave gently so the arcs do not crease where they meet in a point.</desc>
+  <desc xml:lang="da">Dråber, der hænger i snore ned gennem hjertet, så mønstret bølger fra side til side. Fem striber i hver halvdel med buede klip af kvartcirkler. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er mellem. Flet roligt, så buerne ikke knækker, hvor de mødes i en spids. Mønsteret er arkitekt Hans H. Kochs Fiskeskæl fra [Børnenes Magasin 1916](https://aldus.dk/hanskoch/julehjerter.php), med skællene vendt som hos ham.</desc>
+  <desc xml:lang="en">Drops hanging in strings down through the heart, so the pattern waves from side to side. Five strips in each half with curved cuts made of quarter circles. The halves mirror each other, so one template covers both, and the difficulty is medium. Weave gently so the arcs do not crease where they meet in a point. The pattern is the architect Hans H. Koch's Fiskeskæl (fish scales) from [Børnenes Magasin 1916](https://aldus.dk/hanskoch/julehjerter.php), with the scales turned as he drew them.</desc>
   <metadata>
     <rdf:RDF>
       <cc:Work rdf:about="">
         <dc:title>Bølger</dc:title>
         <dc:creator>
           <cc:Agent>
-            <dc:title>Ukendt</dc:title>
+            <dc:title>Hans H. Koch</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:source>juleflet.dk</dc:source>
-        <dc:date>2026-10-21</dc:date>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Børnenes Magasin</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:source>https://aldus.dk/hanskoch/julehjerter.php</dc:source>
+        <dc:date>1916-12-01</dc:date>
       </cc:Work>
     </rdf:RDF>
   </metadata>

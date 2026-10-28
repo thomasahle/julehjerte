@@ -333,7 +333,7 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 			expect(css).toContain(`.cat-grid > [data-level="${level}"]{display:none}`);
 		}
 		expect(css).not.toContain('[data-level="easy"]{display:none}');
-		expect(css).toContain('#skabeloner > #moenstre{display:none}');
+		expect(css).toContain('#skabeloner > #fliser{display:none}');
 		expect(css).toContain('#skabeloner > #figurer{display:none}');
 		expect(css).not.toContain('#klassiske{display:none}');
 		// Klassiske still has a heart on show, so it keeps the first margin.
@@ -391,7 +391,7 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 		width = 390;
 		window.history.replaceState(null, '', '/?level=let');
 		run(FILTERED);
-		expect(style()).toContain('#skabeloner > #moenstre{display:none}');
+		expect(style()).toContain('#skabeloner > #fliser{display:none}');
 		expect(style()).not.toContain('--strand');
 		expect(root().getAttribute('style')).toBeNull();
 		expect(root().className).toBe('');
@@ -400,7 +400,7 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 	it('leaves out a filter that hides what the page was entered at', () => {
 		// A heart's breadcrumb links to its category; a card's anchor to it.
 		sessionStorage.setItem(LEVEL_STORAGE_KEY, 'let');
-		window.history.replaceState(null, '', '/#moenstre');
+		window.history.replaceState(null, '', '/#fliser');
 		run(FILTERED);
 		expect(style()).toBeNull();
 
@@ -411,11 +411,11 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 		// Shown by the filter: it stays.
 		window.history.replaceState(null, '', '/#stjerner');
 		run(FILTERED);
-		expect(style()).toContain('#skabeloner > #moenstre{display:none}');
+		expect(style()).toContain('#skabeloner > #fliser{display:none}');
 		clearLevelBootstrap();
 		window.history.replaceState(null, '', '/#heart-classic-3x3');
 		run(FILTERED);
-		expect(style()).toContain('#skabeloner > #moenstre{display:none}');
+		expect(style()).toContain('#skabeloner > #fliser{display:none}');
 	});
 
 	it('ignores unknown words', () => {

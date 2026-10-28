@@ -77,6 +77,11 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   Kogle left the gallery on 2026-10-27, the morning its own day (6) was out.
   It stays in `PINTEREST_ORDER`, so every later heart keeps its day, and its
   pin now leads to a page that no longer exists: delete that pin on Pinterest.
+  Two old classics went in on 2026-10-28: Kompasrose (Illustreret
+  Familie-Journal, 1922) at day 27 (2026-11-17), between Alhambra and Engel,
+  and Hans H. Koch's Andreaskors (Børnenes Magasin, 1916) at day 41
+  (2026-12-01), between Julemand and Hanefod, so both are out before Christmas
+  and away from their own categories.
 - The feed holds the released items only (nothing future-dated), newest first,
   at most 30 (`PINTEREST_MAX_ITEMS`). When every heart is out, the feed stops
   growing: it does not cycle.

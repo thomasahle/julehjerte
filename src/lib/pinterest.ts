@@ -58,16 +58,17 @@ export const PINTEREST_FIRST = ['classic-3x3', 'gaver', 'jul', 'juletrae', 'stje
  * moved to Mønstre the same day, three swaps of hearts not yet out (days 62/63,
  * 68/69 and 65/72) kept every day's neighbours of another category. Kogle left
  * the gallery on 2026-10-27, its own day (6); it stays here so that every later
- * heart keeps its day.
+ * heart keeps its day. Kompasrose (day 27) and Koch's Andreaskors (day 41) went
+ * in on 2026-10-28, before Christmas and between hearts of other categories.
  */
 export const PINTEREST_ORDER: readonly string[] = [
 	'classic-3x3', 'juletrae', 'circle', 'gaver', 'balls', 'jul',
 	'kogle', 'stjerne-ramme', 'plus', 'ramme', 'plus3', 'stjerne',
 	'god-jul', 'amy-weave-1', 'flower', 'amy-weave-2', 'triple-heart', 'amy-rosette',
 	'5star', 'amy-pattern', 'venus', 'amy-flowering', 'simple-5star', 'amy-pinecone',
-	'h4h2', 'tak', 'alhambra', 'angel', 'squares', 'sun', 'ni-hjerter-i-tern',
+	'h4h2', 'tak', 'alhambra', 'kompasrose', 'angel', 'squares', 'sun', 'ni-hjerter-i-tern',
 	'sildeben', 'snowflake', 'puslespil', 'fire-stjerner', 'permo-sol', 'koelbuer', 'nemt-hjerte',
-	'roserude', 'santa', 'hanefod', 'explosion', 'flyvendegaes', 'mor-og-barn',
+	'roserude', 'santa', 'andreaskors', 'hanefod', 'explosion', 'flyvendegaes', 'mor-og-barn',
 	'origami', 'nihon', 'drageskael', 'hjerte-i-hjerte-i-hjerte', 'mor-far', 'dagognat', 'hermanngitter',
 	'lilje1', 'tragt', 'davidsstjerne-circ', 'boelgebrud', 'ball', 'glaskuppel',
 	'lilje2', 'hvirvel', 'david4', 'jul-2026', 'permo-kroge', 'fisk',

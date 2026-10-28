@@ -1,0 +1,35 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" data-weave-parity="0" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title>Kompasrose</title>
+  <title xml:lang="da">Kompasrose</title>
+  <title xml:lang="en">Compass rose</title>
+  <desc xml:lang="da">En ottetakket stjerne af kantede blade, parvis omkring et lille ternet midterfelt. Hver halvdel har fem striber: to klip er zigzag med to tænder hver, og to er svage buer. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er mellem. Klip zigzaggen langs en lineal, ét knæk ad gangen. Mønsteret er fra [Illustreret Familie-Journal 1922](https://papermatrix.wordpress.com/wp-content/uploads/2010/04/koch-1.jpg), der ikke nævner tegneren.</desc>
+  <desc xml:lang="en">An eight-pointed star of angular petals, set in pairs around a small checked centre. Each half has five strips: two cuts zigzag with two teeth each, and two are gentle curves. The halves mirror each other, so one template covers both, and the difficulty is medium. Cut the zigzags along a ruler, one bend at a time. The pattern is from [Illustreret Familie-Journal 1922](https://papermatrix.wordpress.com/wp-content/uploads/2010/04/koch-1.jpg), which does not name its designer.</desc>
+  <!-- Attribution: the 1922 page carries no byline in its heading, opening paragraph or captions. The scan comes from the papermatrix.wordpress.com Links page, whose author writes: "In 1922 patterns for an additional four baskets were published in Illustreret Familie Journal. Although not indicated it is most likely that Hans H. Koch also designed these." Koch (1873-1922, d. 5 Sept 1922) signed his 1916 Boernenes Magasin hearts; aldus.dk, the main source on Koch, does not mention the 1922 page. Designer therefore unknown. -->
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Kompasrose</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Ukendt</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Illustreret Familie-Journal</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:source>https://papermatrix.wordpress.com/wp-content/uploads/2010/04/koch-1.jpg</dc:source>
+        <dc:date>1922</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 0 74 C 4.867 78.167 9.733 82.333 14.6 86.5 C 22.9 82.333 31.2 78.167 39.5 74 C 46.5 74 53.5 74 60.5 74 C 68.8 78.167 77.1 82.333 85.4 86.5 C 90.267 82.333 95.133 78.167 100 74" stroke="orange" fill="none"/>
+  <path d="M 0 57.5 C 32.93 64.833 67.07 64.833 100 57.5" stroke="orange" fill="none"/>
+  <path d="M 0 42.5 C 32.93 35.167 67.07 35.167 100 42.5" stroke="orange" fill="none"/>
+  <path d="M 0 26 C 4.867 21.833 9.733 17.667 14.6 13.5 C 22.9 17.667 31.2 21.833 39.5 26 C 46.5 26 53.5 26 60.5 26 C 68.8 21.833 77.1 17.667 85.4 13.5 C 90.267 17.667 95.133 21.833 100 26" stroke="orange" fill="none"/>
+  <path d="M 74 0 C 78.167 4.867 82.333 9.733 86.5 14.6 C 82.333 22.9 78.167 31.2 74 39.5 C 74 46.5 74 53.5 74 60.5 C 78.167 68.8 82.333 77.1 86.5 85.4 C 82.333 90.267 78.167 95.133 74 100" stroke="green" fill="none"/>
+  <path d="M 57.5 0 C 64.833 32.93 64.833 67.07 57.5 100" stroke="green" fill="none"/>
+  <path d="M 42.5 0 C 35.167 32.93 35.167 67.07 42.5 100" stroke="green" fill="none"/>
+  <path d="M 26 0 C 21.833 4.867 17.667 9.733 13.5 14.6 C 17.667 22.9 21.833 31.2 26 39.5 C 26 46.5 26 53.5 26 60.5 C 21.833 68.8 17.667 77.1 13.5 85.4 C 17.667 90.267 21.833 95.133 26 100" stroke="green" fill="none"/>
+</svg>

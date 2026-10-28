@@ -104,6 +104,14 @@
     },
     "difficulty": "medium"
   },
+  "kompasrose": {
+    "name": "Kompasrose",
+    "names": {
+      "da": "Kompasrose",
+      "en": "Compass rose"
+    },
+    "difficulty": "medium"
+  },
   "triple-heart": {
     "name": "Triple Hjerte",
     "names": {
@@ -379,6 +387,14 @@
       "en": "Stars and crosses"
     },
     "difficulty": "hard"
+  },
+  "andreaskors": {
+    "name": "Andreaskors",
+    "names": {
+      "da": "Andreaskors",
+      "en": "St Andrew's cross"
+    },
+    "difficulty": "easy"
   },
   "dagognat": {
     "name": "Dag og nat",

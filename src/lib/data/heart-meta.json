@@ -409,6 +409,33 @@
       "height": 1200
     }
   },
+  "kompasrose": {
+    "name": "Kompasrose",
+    "names": {
+      "da": "Kompasrose",
+      "en": "Compass rose"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": "Illustreret Familie-Journal",
+    "publisherUrl": null,
+    "source": "https://papermatrix.wordpress.com/wp-content/uploads/2010/04/koch-1.jpg",
+    "date": "1922",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "triple-heart": {
     "name": "Triple Hjerte",
     "names": {
@@ -1480,6 +1507,33 @@
     },
     "photo": null
   },
+  "andreaskors": {
+    "name": "Andreaskors",
+    "names": {
+      "da": "Andreaskors",
+      "en": "St Andrew's cross"
+    },
+    "author": "Hans H. Koch",
+    "authorUrl": null,
+    "publisher": "Børnenes Magasin",
+    "publisherUrl": null,
+    "source": "https://aldus.dk/hanskoch/julehjerter.php",
+    "date": "1916-12-01",
+    "description": null,
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "easy",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "dagognat": {
     "name": "Dag og nat",
     "names": {
@@ -1743,12 +1797,12 @@
     "names": {
       "en": "Waves"
     },
-    "author": "Ukendt",
+    "author": "Hans H. Koch",
     "authorUrl": null,
-    "publisher": null,
+    "publisher": "Børnenes Magasin",
     "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2026-10-21",
+    "source": "https://aldus.dk/hanskoch/julehjerter.php",
+    "date": "1916-12-01",
     "description": null,
     "gridSize": {
       "x": 5,

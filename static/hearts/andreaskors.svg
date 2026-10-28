@@ -1,0 +1,30 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="0">
+  <title>Andreaskors</title>
+  <title xml:lang="da">Andreaskors</title>
+  <title xml:lang="en">St Andrew's cross</title>
+  <desc xml:lang="da">Et kors med fire arme, der bliver bredere ud mod kanten og mødes om en lille hvid firkant i midten. Tre striber i hver halvdel; begge klip er lige med to knæk, så den midterste stribe bliver smal som et timeglas. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er let. Klip knækkene skarpt, så armene mødes præcist i den hvide firkants hjørner. Fra arkitekt Hans H. Kochs [julehjerter i Børnenes Magasin 1916](https://aldus.dk/hanskoch/julehjerter.php), hvor det hedder Jernkorset.</desc>
+  <desc xml:lang="en">A cross whose four arms widen towards the edge and meet round a small white square in the middle. Three strips in each half; both cuts are straight with two bends, so the middle strip narrows like an hourglass. The halves mirror each other, so one template covers both, and the difficulty is easy. Cut the bends sharply so that the arms meet exactly at the corners of the white square. From the architect Hans H. Koch's [Christmas hearts in Børnenes Magasin 1916](https://aldus.dk/hanskoch/julehjerter.php), where it is called Jernkorset, the Iron Cross.</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Andreaskors</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Hans H. Koch</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Børnenes Magasin</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:source>https://aldus.dk/hanskoch/julehjerter.php</dc:source>
+        <dc:date>1916-12-01</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 0 20 C 13.333 26.667 26.667 33.333 40 40 C 46.667 40 53.333 40 60 40 C 73.333 33.333 86.667 26.667 100 20" stroke="orange" fill="none"/>
+  <path d="M 0 80 C 13.333 73.333 26.667 66.667 40 60 C 46.667 60 53.333 60 60 60 C 73.333 66.667 86.667 73.333 100 80" stroke="orange" fill="none"/>
+  <path d="M 20 0 C 26.667 13.333 33.333 26.667 40 40 C 40 46.667 40 53.333 40 60 C 33.333 73.333 26.667 86.667 20 100" stroke="green" fill="none"/>
+  <path d="M 80 0 C 73.333 13.333 66.667 26.667 60 40 C 60 46.667 60 53.333 60 60 C 66.667 73.333 73.333 86.667 80 100" stroke="green" fill="none"/>
+</svg>
