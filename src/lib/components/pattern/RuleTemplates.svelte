@@ -3,11 +3,13 @@
   tile with half arrowheads on its sides, the same colour for sides of the same shape. Only types a
   woven heart can make, four tiles at every corner, and that the engine draws (tiling.ts
   `TileRule`): 28 of the 36 four-at-a-corner types — the others have no side that can take a shape —
-  and two shapes, no rule at all. Four come first: moved and moved-and-mirrored, the two
+  and all 18 ways of two shapes, red and white each its own tile (two.test.ts). Four come first: moved and moved-and-mirrored, the two
   quadrilateral types tiled.art's gallery uses most; two shapes; and symmetric, every tile its own
-  mirror image. The others are behind "Vis flere", in three groups: the rest of the ones with no
+  mirror image. The others are behind "Vis flere", in four groups: the rest of the ones with no
   straight side and no symmetry of the tile's own, the more used first; the ones with mirror edges,
-  straight sides the tiles are mirrored in; and the ones whose tile has a symmetry of its own.
+  straight sides the tiles are mirrored in; the ones whose tile has a symmetry of its own; and the
+  other ways of two shapes, red and white each its own tile, turned or mirrored as well as moved
+  (these show both tiles, the red one tinted).
 
   One segment per type. Opposite pairs tied two different ways can lie either way round in the
   heart; a segment chooses its type the way its glyph shows it, and shows as chosen either way.
@@ -24,7 +26,7 @@
 	import { untrack } from 'svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import { ToggleGroup, ToggleGroupItem, keepChosen } from '$lib/components/ui/toggle-group';
-	import { COMMON_RULES, neighbours, ofType, opposite, ruleKey, type TileRule } from '$lib/pattern/rules';
+	import { COMMON_RULES, TWO_NUMBERS, neighbours, ofType, opposite, ruleKey, twoShapes, type TileRule } from '$lib/pattern/rules';
 	import { ruleCode, ruleText } from '$lib/pattern/names';
 	import TemplateGlyph from './TemplateGlyph.svelte';
 
@@ -53,7 +55,8 @@
 			rules: [opposite('turn', 'turn'), opposite('mirror', 'turn'), opposite('move', 'turn'), opposite('mirror', 'mirror'), neighbours('mirror'), neighbours('turn'), ofType(53)]
 		},
 		{ title: 'patternMoreMirrorEdges', rules: ([42, 45, 49, 50, 54, 56] as const).map(ofType) },
-		{ title: 'patternMoreOwnSymmetry', rules: ([57, 58, 59, 61, 62, 64, 66, 67, 68, 69, 71, 74] as const).map(ofType) }
+		{ title: 'patternMoreOwnSymmetry', rules: ([57, 58, 59, 61, 62, 64, 66, 67, 68, 69, 71, 74] as const).map(ofType) },
+		{ title: 'patternMoreTwoShapes', rules: TWO_NUMBERS.map(twoShapes) }
 	];
 	const MORE = GROUPS.flatMap((g) => g.rules);
 	const RULES = new Map([...COMMON, ...MORE].map((rule) => [typeKey(rule), rule]));
@@ -83,7 +86,7 @@
 		<p class="chosen">
 			<span class="chosen-name">
 				<strong>{tr(text.name)}</strong>
-				{#if code}<span class="code" title={tr(code.startsWith('IH') ? 'patternIhNumber' : 'patternHeeschCode')}>{code}</span>{/if}
+				{#if code}<span class="code" title={tr(code.startsWith('IH') ? 'patternIhNumber' : code.startsWith('p') ? 'patternWallpaperGroup' : 'patternHeeschCode')}>{code}</span>{/if}
 			</span>
 			<span>{tr(text.hint)}</span>
 		</p>

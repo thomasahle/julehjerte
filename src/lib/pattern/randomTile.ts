@@ -132,6 +132,9 @@ function featureSide(end: number, reach: number, rng: Rng): Seg[] {
 		}
 		at = next;
 	});
+	// A last run too short to draw leaves the chain a rounding error short of `end`: it ends there exactly.
+	const last = segs[segs.length - 1];
+	if (last) segs[segs.length - 1] = { ...last, p3: v(end, last.p3.y) };
 	return segs;
 }
 

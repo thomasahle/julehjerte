@@ -1,13 +1,14 @@
 <!--
   A tile type as one of Tom McLean's templates (`$lib/pattern/template.ts`): the red tile standing
   on its corner as in the heart, a half arrowhead on each side in the colour of the curve the side
-  carries (the tile editor's colours, so the same colour is the same curve). Decorative: the
-  segment it sits on carries the name.
+  carries (the tile editor's colours, so the same colour is the same curve). Where red and white
+  are two shapes, the white tile beside it too, across its lower-right side, and the red one tinted
+  red. Decorative: the segment it sits on carries the name.
 -->
 <script lang="ts">
 	import type { Vec } from '$lib/types/heart';
 	import type { TileRule } from '$lib/pattern/rules';
-	import { CURVE_COLORS, templateOf } from '$lib/pattern/template';
+	import { CURVE_COLORS, templateOf, twoShaped } from '$lib/pattern/template';
 
 	interface Props {
 		rule: TileRule;
@@ -23,7 +24,7 @@
 	let heads = $derived(
 		templateOf(rule).flatMap((s) =>
 			s.arrowheads.map((t, k) => ({
-				key: `${s.side}-${k}`,
+				key: `${s.tile}-${s.side}-${k}`,
 				d: `M ${t.map((p) => toSvg(p)).map((q) => `${fmt(q.x)} ${fmt(q.y)}`).join(' L ')} Z`,
 				color: CURVE_COLORS[s.curve]
 			}))
@@ -31,8 +32,12 @@
 	);
 </script>
 
-<svg class="template" width={size} height={size} viewBox="-14.5 -4.5 29 29" aria-hidden="true">
-	<path class="tile" d="M 0 0 L 10 10 L 0 20 L -10 10 Z" />
+<!-- Two tiles take a box a half again as wide and high. -->
+<svg class="template" width={size} height={size} viewBox={twoShaped(rule) ? '-13.5 -3.5 37 37' : '-14.5 -4.5 29 29'} aria-hidden="true">
+	{#if twoShaped(rule)}
+		<path class="tile white" d="M 10 10 L 20 20 L 10 30 L 0 20 Z" />
+	{/if}
+	<path class="tile" class:red={twoShaped(rule)} d="M 0 0 L 10 10 L 0 20 L -10 10 Z" />
 	{#each heads as h (h.key)}
 		<path class="head" d={h.d} fill={h.color} />
 	{/each}
@@ -49,6 +54,10 @@
 		stroke: var(--ink);
 		stroke-width: 0.9;
 		stroke-linejoin: round;
+	}
+
+	.tile.red {
+		fill: color-mix(in srgb, var(--paper-right) 22%, var(--white));
 	}
 
 	.head {

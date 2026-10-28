@@ -21,7 +21,7 @@ type Tie =
  */
 function ties(rule: TileRule): Tie[] {
 	// McLean's other types are held to their motions below
-	if (rule.sides === 'free' || rule.sides === 'type') return [];
+	if (rule.sides === 'free' || rule.sides === 'type' || rule.sides === 'two') return [];
 	if (rule.sides === 'opposite') {
 		const pair = (link: SideLink, sides: [Side, Side]): Tie[] => (link === 'turn' ? sides.map((side): Tie => ({ kind: 'half', side })) : [{ kind: link, sides }]);
 		return [...pair(rule.v, ['nw', 'se']), ...pair(rule.h, ['ne', 'sw'])];
@@ -72,7 +72,7 @@ describe('McLean templates', () => {
 	it('puts the arrowheads where the rule ties the sides', () => {
 		for (const rule of ALL_RULES) {
 			const template = templateOf(rule);
-			const heads = (s: Side) => template.find((x) => x.side === s)!.arrowheads;
+			const heads = (s: Side) => template.find((x) => x.tile === 'red' && x.side === s)!.arrowheads;
 			const all = template.flatMap((s) => s.arrowheads);
 			for (const tie of ties(rule)) {
 				const where = `${ruleKey(rule)} ${tie.kind}`;
@@ -119,7 +119,7 @@ describe('McLean templates', () => {
 	it('draws every rule differently', () => {
 		const drawings = ALL_RULES.map((rule) =>
 			templateOf(rule)
-				.map((s) => `${s.side}:${s.curve}:${key(s.arrowheads)}`)
+				.map((s) => `${s.tile}:${s.side}:${s.curve}:${key(s.arrowheads)}`)
 				.join(' / ')
 		);
 		expect(new Set(drawings).size).toBe(ALL_RULES.length);

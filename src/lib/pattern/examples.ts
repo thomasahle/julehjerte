@@ -239,7 +239,7 @@ const sHalf = (h: number) => knob(h, 0.06, 0.38, 0.5);
  */
 export function knobTile(rule: TileRule): PatternTile {
 	const tile = (curves: Partial<Record<CurveKey, SideCurve>>): PatternTile => ({ rule, cuts: 3, curves });
-	if (rule.sides === 'type') return ruleStart(rule, 3);
+	if (rule.sides === 'type' || rule.sides === 'two') return ruleStart(rule, 3);
 	if (rule.sides === 'free') return tile({ nw: knob(-0.26, 0.1, 0.6) });
 	if (rule.sides === 'neighbour') {
 		if (rule.link === 'mirror') return tile({ nw: knob(-0.24, 0.1, 0.55) });

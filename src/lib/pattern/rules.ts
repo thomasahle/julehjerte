@@ -2,7 +2,8 @@
  * The rules a woven Escher heart's tile follows: which of the red tile's sides
  * are tied together, and how. Three families say it in words — no sides tied (two
  * shapes), opposite sides moved, mirrored or turned onto each other, neighbours
- * mirrored, turned or both — and McLean's other types say it by number. Each rule
+ * mirrored, turned or both — McLean's other types say it by number, and the
+ * other ways of two shapes, red and white each its own tile, by ours. Each rule
  * is the motions of the infinite square grid that make its tiling
  * (`ruleMotions`); following them gives which stretches of cut carry one curve,
  * which way round, and what each side may be: any shape, its own S, its own
@@ -34,23 +35,42 @@ const NEIGHBOUR_LINKS: NeighbourLink[] = ['mirror', 'turn', 'both'];
  *   its own mirror image.
  * - `type`: another of the types a woven heart can make, by Grünbaum and Shephard's
  *   number, as the motions that make its tiling (`TYPE_MOTIONS`).
+ * - `two`: two shapes again, red and white each its own tile, but each turned or
+ *   mirrored as well as moved onto the others of its colour, by our number
+ *   (`TWO_MOTIONS`).
  */
 export type TileRule =
 	| { sides: 'free' }
 	| { sides: 'opposite'; v: SideLink; h: SideLink }
 	| { sides: 'neighbour'; link: NeighbourLink }
-	| { sides: 'type'; ih: TypeNumber };
+	| { sides: 'type'; ih: TypeNumber }
+	| { sides: 'two'; n: TwoNumber };
 
 export const freeSides = (): TileRule => ({ sides: 'free' });
 export const opposite = (v: SideLink, h: SideLink): TileRule => ({ sides: 'opposite', v, h });
 export const neighbours = (link: NeighbourLink): TileRule => ({ sides: 'neighbour', link });
 
-/** Every rule: no sides tied, the nine ways of tying opposite pairs, the three of tying neighbours, and McLean's other types. */
+/**
+ * The ways of two shapes besides moving alone (`free`, which is the first): every
+ * group of motions of the grid that keeps the colours and takes every red tile onto
+ * every other, and every white one onto every other, but for turning the whole
+ * grid or swapping its colours (two.test.ts finds them all). By our number, from
+ * the fewest motions up.
+ */
+export type TwoNumber = 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18;
+export const TWO_NUMBERS: TwoNumber[] = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+export const twoShapes = (n: TwoNumber): TileRule => ({ sides: 'two', n });
+
+/**
+ * Every rule: no sides tied, the nine ways of tying opposite pairs, the three of tying neighbours, McLean's
+ * other types, and the other ways of two shapes.
+ */
 export const ALL_RULES: TileRule[] = [
 	freeSides(),
 	...SIDE_LINKS.flatMap((v) => SIDE_LINKS.map((h) => opposite(v, h))),
 	...NEIGHBOUR_LINKS.map((link) => neighbours(link)),
-	...([42, 45, 49, 50, 53, 54, 56, 57, 58, 59, 61, 62, 64, 66, 67, 68, 69, 71, 74] as const).map((ih): TileRule => ({ sides: 'type', ih }))
+	...([42, 45, 49, 50, 53, 54, 56, 57, 58, 59, 61, 62, 64, 66, 67, 68, 69, 71, 74] as const).map((ih): TileRule => ({ sides: 'type', ih })),
+	...TWO_NUMBERS.map((n): TileRule => ({ sides: 'two', n }))
 ];
 
 /**
@@ -65,6 +85,7 @@ export function ruleKey(rule: TileRule): string {
 	if (rule.sides === 'free') return 'free';
 	if (rule.sides === 'opposite') return `opposite:${rule.v}:${rule.h}`;
 	if (rule.sides === 'type') return `ih${rule.ih}`;
+	if (rule.sides === 'two') return `two${rule.n}`;
 	return `neighbour:${rule.link}`;
 }
 
@@ -239,6 +260,50 @@ const TYPE_MOTIONS: Record<TypeNumber, GridMotion[]> = {
 
 export const ofType = (ih: TypeNumber): TileRule => ({ sides: 'type', ih });
 
+
+/**
+ * Each way of two shapes as motions that make its tiling, in cells, as `TYPE_MOTIONS`;
+ * every one keeps the colours. After each, the wallpaper group, what each tile is
+ * of itself (turned half or a quarter round onto itself, its own mirror image), and
+ * what its sides can be.
+ */
+const TWO_MOTIONS: Record<TwoNumber, GridMotion[]> = {
+	// p2: turned half round about every corner; any sides
+	2: [halfTurn(0, 0), halfTurn(0, 1), halfTurn(1, 0)],
+	// pg: mirrored and moved along every left-lobe cut; any sides
+	3: [andThen(mirrorX(0), shift(0, 1)), andThen(mirrorX(1), shift(0, 1))],
+	// pg: mirrored and moved along every other diagonal, across the tiles; any sides
+	4: [andThen(mirrorAntidiagonal(1), shift(-1, 1)), andThen(mirrorAntidiagonal(0), shift(1, -1))],
+	// pgg: turned half round about every corner, and mirrored and moved along the cuts one way; any sides
+	5: [halfTurn(0, 0), halfTurn(0, 1), andThen(mirrorX(1), shift(0, 1))],
+	// pgg: turned half round about every other corner, mirrored and moved along the diagonals; any sides
+	6: [halfTurn(0, 0), halfTurn(1, 1), andThen(mirrorDiagonal(-1), shift(1, 1))],
+	// p2: every tile turned half round onto itself, and about every corner; two curves
+	7: [halfTurn(0, 0), halfTurn(0, 1), halfTurn(0.5, 0.5)],
+	// pgg: every tile turned half round onto itself, and mirrored and moved along the cuts; two curves
+	8: [halfTurn(0.5, 0.5), halfTurn(0.5, -0.5), halfTurn(-0.5, 0.5), andThen(mirrorX(0), shift(0, 1))],
+	// pm: every tile its own mirror image across a diagonal; two curves
+	9: [mirrorDiagonal(0), andThen(mirrorDiagonal(-1), shift(1, 1)), andThen(mirrorDiagonal(0), shift(1, 1))],
+	// pm: every tile its own mirror image across the line through two sides' middles; a curve and two halves
+	10: [andThen(mirrorX(0), shift(0, 1)), mirrorX(0.5)],
+	// pmg: red tiles turned half round onto themselves, white ones their own mirror images; two curves
+	11: [halfTurn(0, 0), halfTurn(0.5, 0.5), andThen(mirrorDiagonal(-1), shift(1, 1))],
+	// pmg: every tile its own mirror image across the line through two sides' middles; a curve and two halves
+	12: [halfTurn(0, 0), halfTurn(0, 1), halfTurn(1, 0), andThen(mirrorX(0), shift(0, 1))],
+	// pmm: red tiles their own mirror images across one diagonal, white ones across the other; two curves
+	13: [halfTurn(0, 0), halfTurn(0, 1), halfTurn(1, 0), mirrorDiagonal(0)],
+	// p4: every tile turned a quarter round onto itself; one curve
+	14: [quarterTurn(-0.5, 0.5), quarterTurn(0.5, -0.5), quarterTurn(0.5, 0.5)],
+	// p4g: red tiles their own mirror images across both diagonals, white ones turned a quarter round onto themselves; one curve
+	15: [quarterTurn(-0.5, 0.5), quarterTurn(0.5, -0.5), andThen(mirrorX(0), shift(0, 1))],
+	// pmm: every tile its own mirror image across both diagonals; one curve
+	16: [halfTurn(0, 0), halfTurn(0, 1), halfTurn(0.5, 0.5), mirrorDiagonal(0)],
+	// pmm: every tile its own mirror image across both lines through its sides' middles; two halves
+	17: [halfTurn(0, 0), halfTurn(0, 1), halfTurn(0.5, 0.5), andThen(mirrorX(0), shift(0, 1))],
+	// p4m: every tile its own mirror image four ways, and turned a quarter round onto itself; one half
+	18: [quarterTurn(-0.5, 0.5), quarterTurn(0.5, -0.5), quarterTurn(0.5, 0.5), andThen(mirrorX(0), shift(0, 1))]
+};
+
 /** The motion a way of tying a pair of opposite sides takes the red tile across its lower-right side (`v`) or lower-left one (`h`) with. */
 const ACROSS_MOTIONS: Record<'v' | 'h', Record<SideLink, GridMotion>> = {
 	v: { move: shift(1, 0), mirror: andThen(mirrorY(0.5), shift(1, 0)), turn: halfTurn(1, 0.5) },
@@ -268,6 +333,8 @@ export function ruleMotions(rule: TileRule): GridMotion[] {
 		}
 		case 'type':
 			return TYPE_MOTIONS[rule.ih];
+		case 'two':
+			return TWO_MOTIONS[rule.n];
 	}
 }
 

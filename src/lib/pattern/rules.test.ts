@@ -127,11 +127,13 @@ function claims(rule: TileRule): Motion[] {
 			// opposite sides
 			return [...claims(neighbours('mirror')), ...claims(neighbours('turn')), ...OWN_MIRRORS.slice(0, 2)];
 		case 'type':
+		case 'two':
 			// McLean's other types say what they are by the motions that make them (types.test holds
-			// those to his and Kaplan's descriptions); here, that the tiles drawn keep to them
+			// those to his and Kaplan's descriptions, two.test finds every way of two shapes); here, that
+			// the tiles drawn keep to them
 			return ruleMotions(rule).map((m, k) => {
 				const centre = moveBy(m, { x: 0.5, y: 0.5 });
-				return { name: `IH${rule.ih} motion ${k}`, map: (p) => moveBy(m, p), swaps: !isRedCell(Math.floor(centre.x), Math.floor(centre.y)) };
+				return { name: `${ruleKey(rule)} motion ${k}`, map: (p) => moveBy(m, p), swaps: !isRedCell(Math.floor(centre.x), Math.floor(centre.y)) };
 			});
 	}
 }
@@ -155,8 +157,9 @@ function holds(tile: PatternTile, m: Motion): boolean {
 
 describe('every way of tying the sides does what the Escher tab says', () => {
 	it('has every way of tying the sides, once, and the types a woven heart allows besides', () => {
-		// thirteen ways of tying the sides in three families, and nineteen more of McLean's types
-		expect(ALL_RULES).toHaveLength(32);
+		// thirteen ways of tying the sides in three families, nineteen more of McLean's types, and seventeen more
+		// ways of two shapes
+		expect(ALL_RULES).toHaveLength(49);
 		expect(new Set(ALL_RULES.map(ruleKey)).size).toBe(ALL_RULES.length);
 	});
 
@@ -203,6 +206,22 @@ describe('every way of tying the sides does what the Escher tab says', () => {
 				const m = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
 				expect(sameOutline(move(cellOutline(half, 0, 0), (p) => ({ x: 2 * m.x - p.x, y: 2 * m.y - p.y })), cellOutline(half, c, d))).toBe(true);
 			}
+		}
+	});
+
+	// Two shapes: whatever else the tiles keep to, no motion of the grid takes the red tiles onto white ones, in
+	// the tiles the tab starts from too.
+	it.each(ALL_RULES.filter((rule) => rule.sides === 'two').map((rule) => [ruleKey(rule), rule] as const))('%s: the white tile is none of the red one\'s images', (_key, rule) => {
+		const LINEAR = [[1, 0, 0, 1], [-1, 0, 0, -1], [0, -1, 1, 0], [0, 1, -1, 0], [-1, 0, 0, 1], [1, 0, 0, -1], [0, 1, 1, 0], [0, -1, -1, 0]] as const;
+		for (const [what, tile] of [['lopsided', lopsidedTile(rule)], ['start', start(rule)]] as const) {
+			for (const [a, b, c, d] of LINEAR)
+				for (let e = 0; e < 4; e++)
+					for (let f = 0; f < 4; f++) {
+						const map = (p: Vec) => ({ x: a * p.x + b * p.y + e, y: c * p.x + d * p.y + f });
+						const centre = map({ x: 0.5, y: 0.5 });
+						if (isRedCell(Math.floor(centre.x), Math.floor(centre.y))) continue;
+						expect(holds(tile, { name: 'swap', map, swaps: true }), `${what}: ${[a, b, c, d, e, f]}`).toBe(false);
+					}
 		}
 	});
 
