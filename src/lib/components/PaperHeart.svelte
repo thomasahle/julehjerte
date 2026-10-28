@@ -1455,6 +1455,26 @@
 	/** What the Escher tab's hint says the black points do, for the chosen rule. */
 	let escherFrameHint = $derived<TranslationKey | null>(patternTile && escher ? escher.frameHint(patternTile) : null);
 	let escherCornersHint = $derived<TranslationKey | null>(patternTile && escher && escher.cornersMove(patternTile.rule) ? 'patternPointsCorners' : null);
+	/** Which colour's tiles float, for a type of two shapes; undefined for the others, which offer no such choice. */
+	let escherFloating = $derived(patternTile && escher && escher.canFloat(patternTile.rule) ? escher.floatingOf(patternTile) : undefined);
+
+	/**
+	 * The Escher tab's floating tiles: the crossings opened out into joints, so that one colour's tiles
+	 * float on the other's, or closed again (`escher.floatedTile`); refused, with a line above the heart,
+	 * where the tiles are too close for that.
+	 */
+	function floatEscherTiles(floating: 'red' | 'white' | null) {
+		if (readonly || !patternTile || !escher || escher.floatingOf(patternTile) === floating) return;
+		const next = escher.floatedTile(patternTile, floating);
+		if (!next) {
+			noteRefused(tr('patternFloatTooTight'));
+			return;
+		}
+		noteRefused(null);
+		const before = snapshotState();
+		showTile(next);
+		pushUndo(before);
+	}
 	/** What the line above the heart says a black point chosen does, for the chosen rule. */
 	let escherFrameChip = $derived<TranslationKey | null>(patternTile && escher ? escher.frameChip(patternTile) : null);
 
@@ -3830,7 +3850,7 @@
 	 * to give, so the type buttons are off for them and say why.
 	 */
 	let tileCornersChosen = $derived(
-		selectedAnchors.length > 0 && !!patternNodes && selectedAnchors.every((a) => patternNodes!.get(a) === 'frame' || patternNodes!.get(a) === 'corner')
+		selectedAnchors.length > 0 && !!patternNodes && selectedAnchors.every((a) => ['frame', 'corner', 'joint'].includes(patternNodes!.get(a) ?? ''))
 	);
 	let nodeTypeSelected = $derived.by(() => {
 		if (!selectedFinger || !validAnchors.length || tileCornersChosen) return null;
@@ -3847,6 +3867,8 @@
 			? tr(escherFrameChip ?? 'patternPointStretch')
 			: selectedPatternNode === 'corner'
 				? tr('patternPointCorner')
+				: selectedPatternNode === 'joint'
+					? tr('patternPointJoint')
 				: selectedPatternNode === 'slide'
 				? tr('patternEdgeSlide')
 				: nodeTypeSelected === 'corner'
@@ -3874,7 +3896,7 @@
 		if (selectedSegments.length || selectedAnchors.length === 0) return escher ? 'hintEscherCut' : 'hintCut';
 		if (selectedAnchors.length > 1) return 'hintNodes';
 		const node = selectedAnchors[0]!;
-		if (patternNodes?.get(node) === 'frame' || patternNodes?.get(node) === 'corner') return 'hintEscherCut';
+		if (['frame', 'corner', 'joint'].includes(patternNodes?.get(node) ?? '')) return 'hintEscherCut';
 		return node === 0 || node === last ? 'hintEnd' : 'hintNode';
 	});
 
@@ -4321,7 +4343,7 @@
 												onpointerdown={(e) => handleAnchorPointerDown(e, selectedFinger.id, aIdx)}
 											>
 												<!-- A black point is no node of the curve: hovered, it says what dragging it does. -->
-												{#if special === 'corner'}<title>{tr('patternPointCorner')}</title>{:else if black}<title>{tr(escherFrameChip ?? 'patternPointStretch')}</title>{:else if special === 'slide'}<title>{tr('patternEdgeSlide')}</title>{/if}
+												{#if special === 'corner'}<title>{tr('patternPointCorner')}</title>{:else if special === 'joint'}<title>{tr('patternPointJoint')}</title>{:else if black}<title>{tr(escherFrameChip ?? 'patternPointStretch')}</title>{:else if special === 'slide'}<title>{tr('patternEdgeSlide')}</title>{/if}
 											</rect>
 										{/each}
 									{/if}
@@ -4341,7 +4363,7 @@
 				<p class="canvas-hint">{@render hintLine()}</p>
 				{#if selectedNodeTypeLabel}
 					<p class="canvas-selection">
-						<span class="canvas-selection-dot" class:black={selectedPatternNode === 'frame' || selectedPatternNode === 'corner'} aria-hidden="true"></span>{selectedNodeTypeLabel}
+						<span class="canvas-selection-dot" class:black={!!selectedPatternNode && selectedPatternNode !== 'slide'} aria-hidden="true"></span>{selectedNodeTypeLabel}
 					</p>
 				{/if}
 				<p class="canvas-strips">{stripsLabel}</p>
@@ -4527,6 +4549,8 @@
 									size={patternSize}
 									frameHint={escherFrameHint}
 									cornersHint={escherCornersHint}
+									floating={escherFloating}
+									onFloat={floatEscherTiles}
 									turn={patternTurn}
 									onChoose={chooseEscherRule}
 									onSize={setPatternSize}

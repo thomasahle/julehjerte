@@ -1701,7 +1701,7 @@
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
-    "source": null,
+    "source": "juleflet.dk",
     "date": "Dec 25, 2025",
     "description": "A Khatam star is an eight-pointed star prominent in Islamic art and architecture",
     "gridSize": {
@@ -1711,8 +1711,8 @@
     "difficulty": "expert",
     "symmetry": {
       "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
       "mirrorSymmetry": false,
       "sharedTemplate": false
     },

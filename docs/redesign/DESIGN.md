@@ -319,7 +319,10 @@ holds the tilings, the whole woven square one repeated figure or two: Dag og nat
 Skrå kryds, Plus, Plus 3, Kølbuer, Hanefod, Dråber, Fiskeskæl, Bølger, Khatam, Stjernegitter, Stjerner og kors,
 Sildeben, Flyvende gæs, Origami (the owner's order, 28 Oct 2026; Kroge went to Mønstre the same day: its half circles
 cross each other three times, which no tile's cuts do). "Rediger" opens each on Tegn's Escher tab except Plus,
-Khatam and Origami, which the tab has no type for yet (escherTab.test.ts says why). Tekst holds five hearts made with the design page's text frames and checked
+and Origami, which the tab has no type for yet (escherTab.test.ts says why). Khatam opens on it since 2026-10-28 as
+two shapes, every tile the same turned a quarter round (p4), its red pinwheels floating: its tile's cuts, fitted to
+all of the drawing's stretches at once (its drawn crossings lay 20.0 by 19.8 units apart, not square), within
+0.3 mm of the drawing at the 80 mm print. Tekst holds five hearts made with the design page's text frames and checked
 as paper (each template drawn at 80 mm, every piece joined to its ear by paper about 2 mm wide or more, no red cut;
 `$lib/geometry/paperNecks`, the design page's own check, since 23 Oct 2026, when GOD JUL's and JUL 2026's letter
 curls were opened by hand by 0.3–0.7 units where they held pieces by 1.7–1.98 mm):
@@ -734,7 +737,16 @@ onto itself, which leaves each type a space of corner shifts of its own — none
 either way under To former and Halv omgang (the old lean), every other column sliding along its cut under Flyttet
 og spejlet, and so on, 18 of the 46 types some freedom. Dragging a round dot moves that corner of every tile as far
 along the pointer as the type lets it, the crossings that hold the cells' size and shape staying where they are,
-and near the grid it is drawn to it and settles on it as the cells do. Dragging a
+and near the grid it is drawn to it and settles on it as the cells do. For the types of two shapes, "Svævende
+fliser / Floating tiles" under the sizes (Ingen, Røde, Hvide; `floatedTile`, `jointFreedom`) opens every crossing
+into a short straight joint the two cuts run along together, so that one colour's tiles join across the joints
+and the other's float on them, as Khatam's red pinwheels float on its white stars (4.8.8, the truncated square
+tiling, two shapes that no one-tile type can make). Only where no motion swaps the colours: a joint that joined
+white tiles would join red ones where such a motion takes it. The joints start a quarter of a cell long along the
+diagonals (shorter where that does not weave), their ends are black points that turn and stretch every joint
+about its middle as far as the type lets them, and a heart whose cuts share a segment at every crossing reads
+back as joints (or, where no type of two shapes fits, as sides that run together of themselves, as Permo
+dråber's do). Dragging a
 cut, or one of the square's edges, moves the whole pattern, which comes back in at the other edge without end: in
 this tab no strip is pulled in from an edge or dragged out, and nothing done in the tab takes the heart out of
 it. A click on a cut only chooses it, its points shown. (For a day only the edges moved the pattern, after an

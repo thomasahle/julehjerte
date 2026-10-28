@@ -5,15 +5,18 @@ import type { Finger } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
-import { ALL_RULES, COMMON_RULES, freeSides, neighbours, opposite, ruleInfo, ruleKey } from './rules';
+import { ALL_RULES, COMMON_RULES, freeSides, neighbours, opposite, ruleInfo, ruleKey, twoShapes } from './rules';
 import { carryNodeTypes, cutCounts, fitLines, tileTurn, unturnedShape, type PatternTile, type SideCurve } from './tiling';
 import { splitBezierAt } from '$lib/geometry/bezierSegments';
 import { ruleStart } from './starts';
 import { knobTile } from './examples';
 import { wholeTileArea } from './centre';
 import {
+	canFloat,
 	centredTile,
 	cutsAre,
+	floatedTile,
+	floatingOf,
 	dragTile,
 	editTile,
 	followedPoint,
@@ -157,9 +160,8 @@ describe("Tegn's Escher tab", () => {
 
 	it("opens the gallery's tilings (Fliser) on the Escher tab, as Tegn does: on the tile each was saved with, else on one its cuts are", () => {
 		// Tilings the tab has no type for yet: Origami's red tiles are two shapes and its white ones a third;
-		// in Khatam, every left-lobe cut runs along a right-lobe one for a stretch; Plus repeats only in its
-		// middle, its cut ends each their own.
-		const noTypeYet = ['plus', 'khatam', 'origami'];
+		// Plus repeats only in its middle, its cut ends each their own.
+		const noTypeYet = ['plus', 'origami'];
 		const fliser = hearts.categories.find((c) => c.id === 'fliser')!.hearts;
 		for (const id of fliser) {
 			const design = loadHeart(id);
@@ -317,6 +319,24 @@ describe("Tegn's Escher tab", () => {
 		expect(tileOfPattern(saved)).toEqual(tile);
 		// a shape turned inside out is none of ours
 		expect(tileOfPattern({ ...saved, shape: [0, 1, 1, 0] })).toBeNull();
+	});
+
+	it('floats one colour of a type of two shapes, the other joining across the joints, and keeps it through saving and reading back', () => {
+		expect(ALL_RULES.filter(canFloat).map(ruleKey)).toEqual(ALL_RULES.filter((r) => r.sides === 'free' || r.sides === 'two').map(ruleKey));
+		const tile = fitLines(ruleStart(twoShapes(14), 4));
+		expect(floatingOf(tile)).toBeNull();
+		const red = floatedTile(tile, 'red')!;
+		expect(floatingOf(red)).toBe('red');
+		expect(red.joints!.join).toBe('white');
+		expect(floatingOf(floatedTile(red, 'white')!)).toBe('white');
+		expect(floatedTile(red, null)).toEqual(fitLines(tile));
+		const back = tileOfPattern(JSON.parse(JSON.stringify(savedPattern(red))))!;
+		expect(back.joints).toEqual(red.joints);
+		expect(restoredTile(savedPattern(red), heartOf(red))).not.toBeNull();
+		// and the tab reads the cuts back as the same tile, joints and all
+		expect(resumedTile(null, heartOf(red))?.joints?.join).toBe('white');
+		// a type whose motions swap the colours lets neither float
+		expect(floatedTile(fitLines(ruleStart(opposite('move', 'move'), 4)), 'red')).toBeNull();
 	});
 
 	it('opens a saved heart on its tile only while the cuts are still its own', () => {

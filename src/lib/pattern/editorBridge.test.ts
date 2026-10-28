@@ -6,7 +6,7 @@ import { splitBezierAt } from '$lib/geometry/bezierSegments';
 import { ALL_RULES, freeSides, halfOf, latticeOf, neighbours, opposite, ruleRepeat, ruleInfo, ruleKey, stretchSource, type CurveKey, type TileRule } from './rules';
 import { cellsToRaw, crossing, cutCounts, firstLine, fitLines, patternCuts, patternToDesign, rawToCells, sourceCurve, straightCurve, tileShape, tileTurn, unturnedShape, type PatternTile, type SideCurve } from './tiling';
 import { ruleStart } from './starts';
-import { cornerClass, cornerFreedom } from './corners';
+import { cornerClass, cornerFreedom, jointFreedom, jointsOfLength } from './corners';
 import { EXAMPLES, exampleTile, knobTile } from './examples';
 import {
 	cutOfFinger,
@@ -313,6 +313,42 @@ describe("the bridge between a tile and Tegn's cuts", () => {
 			expect(dragged).toBeGreaterThan(0);
 		}
 	);
+
+	it.each(ALL_RULES.filter((rule) => jointFreedom(rule, 'white')).map((rule) => [ruleKey(rule), rule] as const))(
+		'reads the %s tile back with its crossings opened into joints, either colour joining',
+		(_key, rule) => {
+			for (const join of ['white', 'red'] as const) {
+				const freedom = jointFreedom(rule, join)!;
+				const tile = fitLines({ ...ruleStart(rule, 4), joints: { join, free: jointsOfLength(freedom, join, 0.25) } });
+				const back = readTile(heartOf(tile), [rule]);
+				expect(back?.joints?.join, join).toBe(join);
+				back!.joints!.free.forEach((w, k) => expect(w, `${join} ${k}`).toBeCloseTo(tile.joints!.free[k]!, 6));
+				expect(makesSame(back!, tile), join).toBe(true);
+			}
+		}
+	);
+
+	it('turns and stretches every joint when an end of one is dragged, its middle staying', () => {
+		const rule = { sides: 'two', n: 14 } as const;
+		const freedom = jointFreedom(rule, 'white')!;
+		const tile = fitLines({ ...ruleStart(rule, 4), joints: { join: 'white' as const, free: jointsOfLength(freedom, 'white', 0.2) } });
+		const rect = getCenteredRectParams({ x: 5, y: 5 });
+		const special = specialNodes(tile, 'L-2');
+		const ends = [...special.entries()].filter(([, k]) => k === 'joint').map(([a]) => a);
+		// every crossing on the cut is a joint, two ends each, those on the square's edges too
+		expect(ends.length).toBe(2 * 6);
+		const anchor = ends[4]!;
+		const next = dragPlacedPoint(tile, 'L-2', anchor, { x: 6, y: 4 }, rect)!;
+		expect(next.joints!.free).not.toEqual(tile.joints!.free);
+		// the crossings, the joints' middles, stay where they were
+		for (let i = 0; i <= 5; i++) for (let j = 0; j <= 5; j++) expect(near(cellsToRaw(tile, crossing(tile, i, j)), cellsToRaw(next, crossing(next, i, j)), 1e-9)).toBe(true);
+		// the end followed the pointer: the type lets a joint turn and grow either way
+		const point = placedPointAt(tile, 'L-2', anchor)!;
+		const was = nodeOf(generateEditorFingers(tile, rect).find((f) => f.id === 'L-2')!.segments, anchor);
+		const at = locatePlacedPoint(next, point, 'H', { x: was.x + 6, y: was.y + 4 }, rect)!;
+		expect(near(nodeOf(generateEditorFingers(next, rect).find((f) => f.id === at.fingerId)!.segments, at.anchor), { x: was.x + 6, y: was.y + 4 }, 1e-6)).toBe(true);
+		expect(problems(next)).toEqual([]);
+	});
 
 	it('slants the cells where the type lets them be any parallelogram: the side along the dragged cut follows, the other stays', () => {
 		const tile = ruleStart(opposite('move', 'move'), 4);

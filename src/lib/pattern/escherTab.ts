@@ -42,7 +42,7 @@ import { cutCounts, fitLines, tileShape, tileTurn, type PatternTile, type SideCu
 import { isStraightTile, ruleStart, switchRule } from './starts';
 import { isFigure, randomTileDraw, randomTileKind } from './randomTile';
 import { centredPlacements } from './centre';
-import { cornerFreedom, cornersMove } from './corners';
+import { cornerFreedom, cornersMove, jointFreedom, jointsOfLength, type JoinColour } from './corners';
 
 export { cornersMove, cutOfFinger, cutsAre, followEdit, generateEditorFingers, READ_TOLERANCE, sameRule, specialNodes, weaveParityOf };
 export type { PatternTile, SpecialNode, TileRule };
@@ -238,6 +238,37 @@ export function resizedTile(tile: PatternTile, n: number): PatternTile | null {
 	return tileWeaves(next) ? next : null;
 }
 
+/** Which colour's tiles float in a tile, the other joining across its crossings' joints (`PatternTile.joints`), or null for none. */
+export type Floating = 'red' | 'white' | null;
+
+export const floatingOf = (tile: PatternTile): Floating => (tile.joints ? (tile.joints.join === 'white' ? 'red' : 'white') : null);
+
+/** Whether a type's tiles can float: two shapes only, where no motion swaps the colours (`jointFreedom`). */
+export const canFloat = (rule: TileRule): boolean => !!jointFreedom(rule, 'white');
+
+/** How long the joints are to begin with, in cells: the longest of these the heart weaves with. */
+const JOINT_LENGTHS = [0.25, 0.18, 0.12, 0.06];
+
+/**
+ * The tile with its crossings opened out into joints, so that `floating`'s tiles
+ * float apart and the other colour's join across the joints, as Khatam's pinwheels
+ * float on its stars; or, `floating` null, closed again. The joints start along the
+ * diagonals, as long as weaves (`JOINT_LENGTHS`). Null where the type lets no tiles
+ * float, or no length weaves.
+ */
+export function floatedTile(tile: PatternTile, floating: Floating): PatternTile | null {
+	const { joints: _joints, ...closed } = tile;
+	if (!floating) return fitLines(closed);
+	const join: JoinColour = floating === 'red' ? 'white' : 'red';
+	const freedom = jointFreedom(tile.rule, join);
+	if (!freedom?.free.length) return null;
+	for (const length of JOINT_LENGTHS) {
+		const next = fitLines({ ...closed, joints: { join, free: jointsOfLength(freedom, join, length) } });
+		if (tileWeaves(next)) return next;
+	}
+	return null;
+}
+
 /** The size the tab's buttons show the tile at: n for tiles a cell of the n × n grid in size, stretched, slanted or turned or not; null for a size dragged by hand. */
 export function patternSize(tile: PatternTile): number | null {
 	const { x, y } = tileShape(tile);
@@ -353,6 +384,7 @@ export function savedPattern(tile: PatternTile): HeartPattern {
 		cuts: tile.cuts,
 		curves: Object.fromEntries(Object.entries(tile.curves).map(([key, curve]) => [key, numbers(curve!)])),
 		...(tile.corners?.length ? { corners: [...tile.corners] } : {}),
+		...(tile.joints ? { joints: { join: tile.joints.join, free: [...tile.joints.free] } } : {}),
 		...(tile.shape ? { shape: [tile.shape.x.x, tile.shape.x.y, tile.shape.y.x, tile.shape.y.y] } : {}),
 		...(tile.turn !== undefined ? { turn: tile.turn } : {}),
 		...(tile.nodeTypes ? { nodeTypes: structuredClone(tile.nodeTypes) as Record<string, Record<string, NodeType>> } : {}),
@@ -382,6 +414,13 @@ function cornersOf(saved: HeartPattern, rule: TileRule): { corners?: number[] } 
 	return saved.offset && leans ? { corners: [...saved.offset] } : {};
 }
 
+/** The joints a heart kept, where its type lets that colour join, with as many numbers as it lets joints move. */
+function jointsOf(saved: HeartPattern, rule: TileRule): { joints?: PatternTile['joints'] } {
+	const joints = saved.joints;
+	const freedom = joints ? jointFreedom(rule, joints.join) : null;
+	return joints && freedom && joints.free.length === freedom.free.length ? { joints: { join: joints.join, free: [...joints.free] } } : {};
+}
+
 /**
  * The tile a heart kept, or null where it cannot be one of ours: a type we do not
  * have, a move past any repeat, a shape turned inside out, or no line or more
@@ -407,6 +446,7 @@ export function tileOfPattern(saved: HeartPattern): PatternTile | null {
 				.map(([key, segments]) => [key, curve(segments)])
 		),
 		...cornersOf(saved, rule),
+		...jointsOf(saved, rule),
 		...(saved.shape ? { shape: { x: vec(saved.shape[0], saved.shape[1]), y: vec(saved.shape[2], saved.shape[3]) } } : {}),
 		...(saved.turn !== undefined ? { turn: saved.turn } : {}),
 		...(saved.nodeTypes ? { nodeTypes: nodeTypesOf(saved.nodeTypes, reads) } : {}),

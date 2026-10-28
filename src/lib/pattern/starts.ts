@@ -6,8 +6,8 @@
 
 import type { Vec } from '$lib/types/heart';
 import { halfOf, ruleInfo, type HalfKind, type TileRule } from './rules';
-import { cornerFreedom, nearestCorners } from './corners';
-import { cornerOffset, shapeFields, shapeFor, tileTurn, unturnedShape, type PatternTile, type SideCurve } from './tiling';
+import { cornerFreedom, jointFreedom, nearestCorners } from './corners';
+import { cornerOffset, jointHalf, shapeFields, shapeFor, tileTurn, unturnedShape, type PatternTile, type SideCurve } from './tiling';
 
 const v = (x: number, y: number): Vec => ({ x, y });
 
@@ -67,11 +67,12 @@ export function carryCurves(tile: PatternTile, rule: TileRule, cuts = tile.cuts)
 	for (const k of kept) curves[k] = structuredClone(tile.curves[k]!);
 	const corners = carriedCorners(tile, rule);
 	const lean = corners ? { corners } : {};
+	const joints = carriedJoints(tile, rule);
 	const shape = tile.shape ? shapeFields(rule, shapeFor(rule, unturnedShape(tile)), tileTurn(tile)) : {};
 	// The node types the visitor gave a curve kept come with it.
 	const typed = kept.filter((k) => tile.nodeTypes?.[k]);
 	const nodeTypes = typed.length ? { nodeTypes: Object.fromEntries(typed.map((k) => [k, { ...tile.nodeTypes![k] }])) } : {};
-	return { rule, cuts, curves, ...lean, ...shape, ...nodeTypes, ...(tile.pan ? { pan: { ...tile.pan } } : {}) };
+	return { rule, cuts, curves, ...lean, ...(joints ? { joints } : {}), ...shape, ...nodeTypes, ...(tile.pan ? { pan: { ...tile.pan } } : {}) };
 }
 
 /**
@@ -86,6 +87,16 @@ function carriedCorners(tile: PatternTile, rule: TileRule): number[] | undefined
 	const shifts = Array.from({ length: 16 }, (_, k) => ({ i: Math.floor(k / 4), j: k % 4 })).map(({ i, j }) => ({ i, j, shift: cornerOffset(tile, i, j) }));
 	const corners = nearestCorners(freedom, shifts);
 	return corners.some((w) => Math.abs(w) > 1e-9) ? corners : undefined;
+}
+
+/** The tile's joints under another rule: as near as it lets them, where its tiles of that colour can float too; none else. */
+function carriedJoints(tile: PatternTile, rule: TileRule): PatternTile['joints'] | undefined {
+	const join = tile.joints?.join;
+	const freedom = join ? jointFreedom(rule, join) : null;
+	if (!join || !freedom?.free.length) return undefined;
+	const shifts = Array.from({ length: 16 }, (_, k) => ({ i: Math.floor(k / 4), j: k % 4 })).map(({ i, j }) => ({ i, j, shift: jointHalf(tile, i, j) }));
+	const free = nearestCorners(freedom, shifts);
+	return free.some((w) => Math.abs(w) > 1e-9) ? { join, free } : undefined;
 }
 
 /**

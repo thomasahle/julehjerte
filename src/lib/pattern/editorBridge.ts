@@ -23,15 +23,17 @@ import type { BezierSegment, Finger, GridSize, NodeType, Vec } from '$lib/types/
 import { MAX_GRID_SIZE, MIN_GRID_SIZE } from '$lib/constants';
 import { reverseSegments, splitBezierAt } from '$lib/geometry/bezierSegments';
 import type { OverlapRect } from '$lib/utils/overlapRect';
-import { READ_TOLERANCE, sharedCrossings } from './crossings';
-import { latticeOf, ruleRepeat, halfOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
-import { cornerClass, cornerFreedom, cornerShift, crossingMoves, meanShift, nearestCorners } from './corners';
+import { READ_TOLERANCE, sharedCrossings, type SharedCrossing } from './crossings';
+import { isRedCell, latticeOf, ruleRepeat, halfOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
+import { cornerClass, cornerFreedom, cornerShift, crossingMoves, jointFreedom, meanShift, nearestCorners, sameWayAt, type JoinColour } from './corners';
 import {
 	carryNodeTypes,
 	cellsToRaw,
 	chosenNodeType,
 	crossing,
 	curveNodeOf,
+	jointHalf,
+	samePiece,
 	cutCounts,
 	firstLine,
 	fitLines,
@@ -195,11 +197,11 @@ function freeCurveOf(rule: TileRule, src: StretchSource, curve: SideCurve, edite
 	return firstHalf(at >= count / 2 ? other(free) : free, half === 'mirror', middle);
 }
 
-/** Whether a stretch is a straight side, one the tiling mirrors its tiles across: nothing on it is drawn. */
-const isStraightStretch = (rule: TileRule, piece: CutPiece) => ruleInfo(rule).straight.includes(stretchSource(rule, piece.kind, piece.i, piece.j).curve);
+/** Whether a piece is straight and drawn by no curve: a side the tiling mirrors its tiles across, or a joint. Nothing on it is drawn. */
+const isStraightStretch = (rule: TileRule, piece: CutPiece) => !!piece.joint || ruleInfo(rule).straight.includes(stretchSource(rule, piece.kind, piece.i, piece.j).curve);
 
 /** Whether a stretch is an S (its curve drawn as half, completed by a half turn), whose middle the side turns about. */
-const isSStretch = (rule: TileRule, piece: CutPiece) => halfOf(rule, stretchSource(rule, piece.kind, piece.i, piece.j).curve) === 'turn';
+const isSStretch = (rule: TileRule, piece: CutPiece) => !piece.joint && halfOf(rule, stretchSource(rule, piece.kind, piece.i, piece.j).curve) === 'turn';
 
 const EPS = 1e-6;
 const samePt = (p: Vec, q: Vec, eps = EPS) => Math.abs(p.x - q.x) < eps && Math.abs(p.y - q.y) < eps;
@@ -323,28 +325,59 @@ export { READ_TOLERANCE };
  * first stretch that carries it.
  */
 export function readTile(heart: { fingers: Finger[]; gridSize: GridSize; rect: OverlapRect; weaveParity: 0 | 1 }, rules: TileRule[], tolerance = READ_TOLERANCE): PatternTile | null {
-	const { fingers, gridSize, rect, weaveParity } = heart;
-	const counts = { x: gridSize.x - 1, y: gridSize.y - 1 };
-	if (counts.x < 2 || counts.y < 2) return null;
+	const { fingers, gridSize } = heart;
+	if (gridSize.x < 3 || gridSize.y < 3) return null;
 	const crossings = sharedCrossings(fingers, gridSize, tolerance);
 	if (!crossings) return null;
+	// Cuts that run together along a stretch at their crossings are a tile with joints, or a tile whose sides run
+	// together there of themselves, crossing at one end (`sharedCrossings` would have chosen the other).
+	const read = readCrossings(heart, crossings, rules, tolerance);
+	if (read || !crossings.some((row) => row.some((c) => c.along))) return read;
+	return readCrossings(heart, crossings.map((row) => row.map((c) => (c.along ? { ...c.along } : c))), rules, tolerance);
+}
+
+/** `readTile`, the heart's cuts crossing where `crossings` has them. */
+function readCrossings(
+	heart: { fingers: Finger[]; gridSize: GridSize; rect: OverlapRect; weaveParity: 0 | 1 },
+	crossings: SharedCrossing[][],
+	rules: TileRule[],
+	tolerance: number
+): PatternTile | null {
+	const { fingers, gridSize, rect, weaveParity } = heart;
+	const counts = { x: gridSize.x - 1, y: gridSize.y - 1 };
 	const square = fromPx(rect);
-	const points = crossings.map((row) => row.map((c) => square(c.at)));
+	// Where each crossing is: the crossing itself, or the middle of its joint.
+	const points = crossings.map((row) => row.map((c) => (c.along ? times(plus(square(c.at), square(c.along.at)), 0.5) : square(c.at))));
 	const tol = (tolerance / rect.width) * 100;
 	const byId = new Map(fingers.map((f) => [f.id, f]));
+	/** A crossing's anchors on a cut, raw, as the cut runs: where it comes in and goes out (one anchor but at a joint). */
+	const span = (c: (typeof crossings)[number][number], side: 'left' | 'right', length: number): [number, number] => {
+		const at = [c[side], c.along?.[side] ?? c[side]].map((a) => length - a);
+		return [Math.min(...at), Math.max(...at)];
+	};
 	// Every whole stretch of an inner cut, in the square's frame from its low end: between the crossings
 	// with two neighbouring cuts of the other lobe, by heart indices.
 	const stretches: Array<{ kind: StretchKind; i: number; j: number; segments: BezierSegment[] }> = [];
 	for (let j = 1; j <= counts.y; j++) {
 		const cut = rawCut(byId.get(`L-${j}`)!, rect);
-		const at = crossings[j - 1]!.map((c) => cut.length - c.left);
-		for (let i = 1; i < counts.x; i++) stretches.push({ kind: 'H', i, j, segments: cut.slice(at[i - 1], at[i]) });
+		const at = crossings[j - 1]!.map((c) => span(c, 'left', cut.length));
+		for (let i = 1; i < counts.x; i++) stretches.push({ kind: 'H', i, j, segments: cut.slice(at[i - 1]![1], at[i]![0]) });
 	}
 	for (let i = 1; i <= counts.x; i++) {
 		const cut = rawCut(byId.get(`R-${i}`)!, rect);
-		const at = crossings.map((row) => cut.length - row[i - 1]!.right);
-		for (let j = 1; j < counts.y; j++) stretches.push({ kind: 'V', i, j, segments: cut.slice(at[j - 1], at[j]) });
+		const at = crossings.map((row) => span(row[i - 1]!, 'right', cut.length));
+		for (let j = 1; j < counts.y; j++) stretches.push({ kind: 'V', i, j, segments: cut.slice(at[j - 1]![1], at[j]![0]) });
 	}
+	// The joints, by heart indices: the end the right lobe's cut comes in at, raw (the one it reaches first), the
+	// other, and whether the left lobe's cut comes in there too.
+	const joints = crossings.flatMap((row, j) =>
+		row.flatMap((c, i) => {
+			if (!c.along) return [];
+			const [first, second] = c.along.right < c.right ? [c.at, c.along.at] : [c.along.at, c.at];
+			const leftFirst = c.along.left < c.left ? c.at : c.along.at;
+			return [{ i: i + 1, j: j + 1, first: square(first), second: square(second), sameWay: leftFirst === first }];
+		})
+	);
 	// Where the tiling's repeat can start under the heart, the colours the heart's own.
 	const starts = [0, 1, 2, 3].flatMap((x) => [0, 1, 2, 3].map((y) => ({ x, y }))).filter((f) => (f.x + f.y + 1) % 2 === weaveParity);
 	for (const rule of rules) {
@@ -352,7 +385,8 @@ export function readTile(heart: { fingers: Finger[]; gridSize: GridSize; rect: O
 		// as one of the other tiles its heart is also made of.
 		const tiles = starts.flatMap((first) => {
 			const fit = fitCrossings(points, rule, first);
-			const tile = fit && fit.off <= tol ? gridTile(rule, fit, first, counts, tol) : null;
+			const grid = fit && fit.off <= tol ? gridTile(rule, fit, first, counts, tol) : null;
+			const tile = grid && joints.length ? withJointsRead(grid, joints, first) : grid;
 			return fit && tile ? [{ tile, first, fit }] : [];
 		});
 		const moved = (t: PatternTile) => Math.hypot(t.pan?.x ?? 0, t.pan?.y ?? 0);
@@ -379,7 +413,26 @@ export function readTile(heart: { fingers: Finger[]; gridSize: GridSize; rect: O
 	return null;
 }
 
-const sameStretch = (a: CutPiece, b: CutPiece) => a.kind === b.kind && a.i === b.i && a.j === b.j;
+/**
+ * The tile with the joints its heart's crossings open out into (`readTile`'s
+ * `joints`, by heart indices, the heart lying on the tiling from `first`): the
+ * colour that joins across them, the same at every one, and their free
+ * coordinates, as near as the rule lets them (`nearestCorners`). Null where the
+ * colour is not the same everywhere, or the rule lets none join.
+ */
+function withJointsRead(tile: PatternTile, joints: Array<{ i: number; j: number; first: Vec; second: Vec; sameWay: boolean }>, first: Vec): PatternTile | null {
+	const at = joints.map((k) => ({ ...k, i: first.x + k.i - 1, j: first.y + k.j - 1 }));
+	// Where the cuts run along a joint the same way, the tiles that join are those beside it (`sameWayAt`).
+	const joins = new Set(at.map((k) => (k.sameWay === isRedCell(k.i, k.j - 1) ? 'red' : 'white')));
+	if (joins.size !== 1) return null;
+	const join = [...joins][0] as JoinColour;
+	const freedom = jointFreedom(tile.rule, join);
+	if (!freedom?.free.length) return null;
+	const half = (k: (typeof at)[number]) => times(minus(rawToCells(tile, k.second), rawToCells(tile, k.first)), 0.5);
+	return { ...tile, joints: { join, free: nearestCorners(freedom, at.map((k) => ({ i: k.i, j: k.j, shift: half(k) }))) } };
+}
+
+const sameStretch = samePiece;
 const plus = (p: Vec, d: Vec): Vec => ({ x: p.x + d.x, y: p.y + d.y });
 const minus = (p: Vec, q: Vec): Vec => ({ x: p.x - q.x, y: p.y - q.y });
 const times = (p: Vec, k: number): Vec => ({ x: p.x * k, y: p.y * k });
@@ -409,13 +462,43 @@ function tracedFinger(tile: PatternTile, fingerId: string) {
  */
 function cornerAt(pieces: CutPiece[], r: number): { i: number; j: number } | null {
 	const m = pieces.length;
-	if (r > 0 && r < m) return sameStretch(pieces[r - 1]!, pieces[r]!) ? null : crossingAfter(pieces[r - 1]!);
+	if (r > 0 && r < m) return sameStretch(pieces[r - 1]!, pieces[r]!) || pieces[r - 1]!.joint || pieces[r]!.joint ? null : crossingAfter(pieces[r - 1]!);
 	if (r === 0) {
 		const p = pieces[0];
 		return p && !p.clipped && p.index === 0 ? { i: p.i, j: p.j } : null;
 	}
 	const p = pieces[m - 1];
 	return r === m && p && !p.clipped && p.index === p.count - 1 ? crossingAfter(p) : null;
+}
+
+/**
+ * The end of a joint at the cut's raw anchor `r`, or null: where the cut comes
+ * off a stretch onto a crossing's joint, or off the joint onto the next stretch —
+ * which of the joint's ends (`crossingEnds`: the first, where the right lobe's
+ * cut comes in, or the second).
+ */
+function jointEndAt(tile: PatternTile, pieces: CutPiece[], r: number): JointEnd | null {
+	const [before, after] = [pieces[r - 1], pieces[r]];
+	const joint = after?.joint && (!before || !before.joint) ? after : before?.joint && (!after || !after.joint) ? before : null;
+	if (!joint) return null;
+	// The cut comes in at the joint's start, its first anchor, and goes out at its end.
+	const coming = joint === after;
+	const forward = joint.kind === 'V' || !tile.joints || sameWayAt(tile.joints.join, joint.i, joint.j);
+	return { i: joint.i, j: joint.j, end: coming === forward ? 'first' : 'second' };
+}
+
+/** An end of the joint crossing (i, j) opens out into: the first, where the right lobe's cut comes in, or the second. */
+export interface JointEnd {
+	i: number;
+	j: number;
+	end: 'first' | 'second';
+}
+
+/** Where a joint's end is, in cells. */
+function jointEndPoint(tile: PatternTile, end: JointEnd): Vec {
+	const c = crossing(tile, end.i, end.j);
+	const u = jointHalf(tile, end.i, end.j);
+	return end.end === 'first' ? minus(c, u) : plus(c, u);
 }
 
 /**
@@ -427,11 +510,14 @@ function cornerAt(pieces: CutPiece[], r: number): { i: number; j: number } | nul
  * - 'corner': a crossing the rule lets move off the grid (`crossingMoves`): it
  *   follows the pointer as far as the rule lets it, and the same corner of every
  *   tile with it, the cells keeping their size and shape (`cornerTo`).
+ * - 'joint': an end of a joint a crossing opens out into (`PatternTile.joints`):
+ *   it follows the pointer as far as the rule lets it, the joint turning and
+ *   growing about its middle, and every joint with it (`jointTo`).
  * - 'slide': an end of the cut where the edge cuts a curve: it slides along the
  *   edge, reshaping the curve in every copy.
  * None of them is locked, and none moves the pattern: dragging a cut does that.
  */
-export type SpecialNode = 'frame' | 'corner' | 'slide';
+export type SpecialNode = 'frame' | 'corner' | 'joint' | 'slide';
 
 /** The nodes of a cut the tile makes that it places itself, by Tegn's anchor index (see `SpecialNode`). */
 export function specialNodes(tile: PatternTile, fingerId: string): Map<number, SpecialNode> {
@@ -446,14 +532,15 @@ export function specialNodes(tile: PatternTile, fingerId: string): Map<number, S
 		const end = r === 0 || r === m;
 		const corner = cornerAt(pieces, r);
 		if (corner) out.set(m - r, crossingMoves(tile.rule, corner.i, corner.j) ? 'corner' : 'frame');
+		else if (jointEndAt(tile, pieces, r)) out.set(m - r, 'joint');
 		else if (end) out.set(m - r, isStraightStretch(tile.rule, pieces[r === 0 ? 0 : m - 1]!) ? 'frame' : 'slide');
 		else if (pieces[r]!.index === pieces[r]!.count / 2 && isSStretch(tile.rule, pieces[r]!)) out.set(m - r, 'frame');
 	}
 	return out;
 }
 
-/** A point the tile places, by what it is: a crossing, or the middle of a stretch. Kept across a drag that remakes the cuts. */
-export type PlacedPoint = { crossing: { i: number; j: number } } | { middle: { kind: StretchKind; i: number; j: number } };
+/** A point the tile places, by what it is: a crossing, the middle of a stretch, or an end of a joint. Kept across a drag that remakes the cuts. */
+export type PlacedPoint = { crossing: { i: number; j: number } } | { middle: { kind: StretchKind; i: number; j: number } } | { joint: JointEnd };
 
 /** What the node at Tegn's anchor `anchor` of a cut the tile makes is, if the tile places it. */
 export function placedPointAt(tile: PatternTile, fingerId: string, anchor: number): PlacedPoint | null {
@@ -462,6 +549,8 @@ export function placedPointAt(tile: PatternTile, fingerId: string, anchor: numbe
 	const r = traced.pieces.length - anchor;
 	const corner = cornerAt(traced.pieces, r);
 	if (corner) return { crossing: { i: corner.i, j: corner.j } };
+	const joint = jointEndAt(tile, traced.pieces, r);
+	if (joint) return { joint };
 	const piece = traced.pieces[r];
 	if (piece && r > 0 && piece.index === piece.count / 2 && isSStretch(tile.rule, piece)) return { middle: { kind: piece.kind, i: piece.i, j: piece.j } };
 	return null;
@@ -472,6 +561,14 @@ export function anchorOfPlacedPoint(tile: PatternTile, fingerId: string, point: 
 	if ('crossing' in point) return anchorOfCrossing(tile, fingerId, point.crossing);
 	const traced = tracedFinger(tile, fingerId);
 	if (!traced) return -1;
+	if ('joint' in point) {
+		const { i, j, end } = point.joint;
+		for (let r = 0; r <= traced.pieces.length; r++) {
+			const at = jointEndAt(tile, traced.pieces, r);
+			if (at && at.i === i && at.j === j && at.end === end) return traced.pieces.length - r;
+		}
+		return -1;
+	}
 	const { kind, i, j } = point.middle;
 	const m = traced.pieces.length;
 	for (let r = 1; r < m; r++) {
@@ -542,15 +639,25 @@ export function weaveParityOf(tile: PatternTile): 0 | 1 {
  * when that copy is not on a cut the heart shows.
  */
 export function locatePlacedPoint(tile: PatternTile, point: PlacedPoint, kind: StretchKind, near: Vec, rect: OverlapRect): { fingerId: string; anchor: number } | null {
-	const at = 'crossing' in point ? crossing(tile, point.crossing.i, point.crossing.j) : toFrame(stretchFrame(tile, point.middle.kind, point.middle.i, point.middle.j), { x: 0.5, y: 0 });
+	const at =
+		'crossing' in point
+			? crossing(tile, point.crossing.i, point.crossing.j)
+			: 'joint' in point
+				? jointEndPoint(tile, point.joint)
+				: toFrame(stretchFrame(tile, point.middle.kind, point.middle.i, point.middle.j), { x: 0.5, y: 0 });
 	const target = rawToCells(tile, fromPx(rect)(near));
 	const repeat = ruleRepeat(tile.rule);
 	const dx = Math.round((target.x - at.x) / repeat.x) * repeat.x;
 	const dy = Math.round((target.y - at.y) / repeat.y) * repeat.y;
 	const moved: PlacedPoint =
-		'crossing' in point ? { crossing: { i: point.crossing.i + dx, j: point.crossing.j + dy } } : { middle: { ...point.middle, i: point.middle.i + dx, j: point.middle.j + dy } };
-	// The cut the copy's line is, of the family dragged.
-	const line = 'crossing' in moved ? (kind === 'V' ? moved.crossing.i : moved.crossing.j) : moved.middle.kind === kind ? (kind === 'V' ? moved.middle.i : moved.middle.j) : null;
+		'crossing' in point
+			? { crossing: { i: point.crossing.i + dx, j: point.crossing.j + dy } }
+			: 'joint' in point
+				? { joint: { ...point.joint, i: point.joint.i + dx, j: point.joint.j + dy } }
+				: { middle: { ...point.middle, i: point.middle.i + dx, j: point.middle.j + dy } };
+	// The cut the copy's line is, of the family dragged: a crossing and its joint lie on one of each.
+	const onBoth = 'crossing' in moved ? moved.crossing : 'joint' in moved ? moved.joint : null;
+	const line = onBoth ? (kind === 'V' ? onBoth.i : onBoth.j) : 'middle' in moved && moved.middle.kind === kind ? (kind === 'V' ? moved.middle.i : moved.middle.j) : null;
 	if (line === null) return null;
 	const k = line - firstLine(tile, kind) + 1;
 	if (k < 1 || k > heartLines(tile, kind).count) return null;
@@ -563,6 +670,7 @@ export function locatePlacedPoint(tile: PatternTile, point: PlacedPoint, kind: S
 export function dragPlacedPoint(base: PatternTile, fingerId: string, anchor: number, delta: Vec, rect: OverlapRect): PatternTile | null {
 	const special = specialNodes(base, fingerId).get(anchor);
 	if (special === 'corner') return cornerTo(base, fingerId, anchor, delta, rect);
+	if (special === 'joint') return jointTo(base, fingerId, anchor, delta, rect);
 	return special === 'frame' ? frameTo(base, fingerId, anchor, delta, rect) : null;
 }
 
@@ -594,6 +702,30 @@ export function cornerTo(base: PatternTile, fingerId: string, anchor: number, de
 	const was = base.corners ?? [];
 	const corners = freedom.free.map((_, k) => magnet((was[k] ?? 0) + step[k]!, SNAP_CORNER));
 	return withCorners(base, corners);
+}
+
+/**
+ * The tile with the end of a joint at Tegn's anchor `anchor` of cut `fingerId`
+ * (`SpecialNode` 'joint') moved by `delta` pixels as far as the rule lets it: the
+ * joint turns and grows about its middle, which stays, the least change of the
+ * joints that does (`nearestCorners`), and every joint the rule ties to it with it.
+ * Null for an anchor that is no end of a joint, or where no line would fit.
+ */
+export function jointTo(base: PatternTile, fingerId: string, anchor: number, delta: Vec, rect: OverlapRect): PatternTile | null {
+	const traced = tracedFinger(base, fingerId);
+	const joints = base.joints;
+	if (!traced || !joints) return null;
+	const end = jointEndAt(base, traced.pieces, traced.pieces.length - anchor);
+	const freedom = jointFreedom(base.rule, joints.join);
+	if (!end || !freedom) return null;
+	const from = cellsToRaw(base, jointEndPoint(base, end));
+	const to = { x: from.x + (delta.x / rect.width) * 100, y: from.y + (delta.y / rect.height) * 100 };
+	// The first end is the middle less half the joint, the second the middle and it.
+	const want = times(minus(rawToCells(base, to), rawToCells(base, from)), end.end === 'first' ? -1 : 1);
+	const step = nearestCorners(freedom, [{ i: end.i, j: end.j, shift: want }]);
+	const next = fitLines({ ...base, joints: { join: joints.join, free: freedom.free.map((_, k) => (joints.free[k] ?? 0) + step[k]!) } });
+	const counts = cutCounts(next);
+	return counts.V > 0 && counts.H > 0 ? next : null;
 }
 
 /** The tile with its corners at `corners`, the crossings that hold the cells where they were (see `cornerTo`). */
@@ -844,6 +976,7 @@ export function nodeAtCutEnd(tile: PatternTile, fingerId: string, anchor: number
 	const r = m - anchor;
 	if ((r !== 0 && r !== m) || cornerAt(traced.pieces, r)) return null;
 	const piece = r === 0 ? traced.pieces[0]! : traced.pieces[m - 1]!;
+	if (piece.joint) return null;
 	if (!piece.clipped) return tile;
 	const { curve, src } = editableStretch(tile, piece);
 	const [a, b] = splitBezierAt(curve[piece.index]!, r === 0 ? piece.range[0] : piece.range[1]);
@@ -865,7 +998,7 @@ export function slideCutEnd(base: PatternTile, fingerId: string, end: 'first' | 
 	const atStart = end === 'last';
 	const piece = atStart ? traced.pieces[0]! : traced.pieces[m - 1]!;
 	const q = piece.index;
-	if (piece.clipped || (atStart ? q === 0 : q === piece.count - 1)) return null;
+	if (piece.joint || piece.clipped || (atStart ? q === 0 : q === piece.count - 1)) return null;
 	const axis = edgeAxis(traced.cut.kind);
 	const node = atStart ? traced.segments[0]!.p0 : traced.segments[m - 1]!.p3;
 	// Less than half a pixel along the edge is no move yet: the tile as it was (the same one, so a caller can tell).

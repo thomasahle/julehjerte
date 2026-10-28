@@ -119,6 +119,8 @@ function normalizePattern(raw: unknown): HeartPattern | undefined {
   const lines = r.lines as { V?: unknown; H?: unknown } | undefined;
   const four = (v: unknown): v is [number, number, number, number] => Array.isArray(v) && v.length === 4 && v.every(finite);
   if (r.corners !== undefined && !(Array.isArray(r.corners) && r.corners.length <= 32 && r.corners.every(finite))) return undefined;
+  const joints = r.joints as { join?: unknown; free?: unknown } | undefined;
+  if (joints !== undefined && !(joints && (joints.join === 'red' || joints.join === 'white') && Array.isArray(joints.free) && joints.free.length <= 32 && joints.free.every(finite))) return undefined;
   if (r.offset !== undefined && !pair(r.offset)) return undefined;
   if (r.shape !== undefined && !four(r.shape)) return undefined;
   if (r.turn !== undefined && !finite(r.turn)) return undefined;
@@ -136,6 +138,7 @@ function normalizePattern(raw: unknown): HeartPattern | undefined {
     cuts: r.cuts,
     curves,
     ...(r.corners ? { corners: [...(r.corners as number[])] } : {}),
+    ...(joints ? { joints: { join: joints.join as 'red' | 'white', free: [...(joints.free as number[])] } } : {}),
     ...(r.offset ? { offset: [...(r.offset as [number, number])] as [number, number] } : {}),
     ...(r.shape ? { shape: [...(r.shape as [number, number, number, number])] as [number, number, number, number] } : {}),
     ...(r.turn !== undefined ? { turn: r.turn as number } : {}),

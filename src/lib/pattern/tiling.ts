@@ -43,7 +43,7 @@ import { reverseSegments, segmentsToPathData } from '$lib/geometry/bezierSegment
 import { normalizeHeartDesign } from '$lib/utils/heartDesign';
 import { HEART_CLEARANCE_UNITS } from '$lib/geometry/returnSearch';
 import { halfOf, latticeOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
-import { cornerFreedom, cornerShift, meanShift } from './corners';
+import { cornerFreedom, cornerShift, jointFreedom, meanShift, sameWayAt, type JoinColour } from './corners';
 
 /** A side curve in its stretch's own frame (see the module comment). */
 export type SideCurve = BezierSegment[];
@@ -73,6 +73,14 @@ export interface PatternTile {
 	 * the two numbers are how far every other corner stands off (the tiles lean).
 	 */
 	corners?: number[];
+	/**
+	 * Where the crossings open out (two shapes only, `jointFreedom`): at every
+	 * crossing the two cuts run together along a straight joint, so that the tiles of
+	 * colour `join` join across it and the other colour's float apart, as Khatam's
+	 * pinwheels float on its stars. `free`: the free coordinates of the joints' half
+	 * lengths and directions, in cells.
+	 */
+	joints?: { join: JoinColour; free: number[] };
 	/**
 	 * How the cells are sized, stretched, slanted and turned in the heart (`Shape`),
 	 * about the middle of its square: absent, the plain grid, cuts + 1 cells across.
@@ -266,7 +274,7 @@ export function curveNodeOf(tile: PatternTile, src: StretchSource, s: number): n
 export function chosenNodeType(tile: PatternTile, traced: TracedCut, r: number): NodeType | undefined {
 	const a = traced.pieces[r - 1];
 	const b = traced.pieces[r];
-	if (!a || !b || a.kind !== b.kind || a.i !== b.i || a.j !== b.j || b.index !== a.index + 1) return undefined;
+	if (!a || !b || !samePiece(a, b) || a.joint || b.index !== a.index + 1) return undefined;
 	const src = stretchSource(tile.rule, b.kind, b.i, b.j);
 	const node = curveNodeOf(tile, src, b.index);
 	return node === null ? undefined : tile.nodeTypes?.[src.curve]?.[String(node)];
@@ -301,10 +309,38 @@ export function carryNodeTypes(before: PatternTile, after: PatternTile): Pattern
 	return Object.keys(next).length ? { ...rest, nodeTypes: next } : rest;
 }
 
-/** Crossing (i, j) of the infinite tiling, in cells: on the plain grid, moved as the tile's corners say. */
+/** Crossing (i, j) of the infinite tiling, in cells: on the plain grid, moved as the tile's corners say; the middle of its joint where it opens out. */
 export function crossing(tile: PatternTile, i: number, j: number): Vec {
 	const o = cornerOffset(tile, i, j);
 	return { x: i + o.x, y: j + o.y };
+}
+
+/** Half the joint crossing (i, j) opens out into, in cells, from its middle to its second end (`PatternTile.joints`); none where it stays a crossing. */
+export function jointHalf(tile: PatternTile, i: number, j: number): Vec {
+	const joints = tile.joints;
+	const freedom = joints?.free.length ? jointFreedom(tile.rule, joints.join) : null;
+	return freedom ? cornerShift(freedom, joints!.free, i, j) : ZERO;
+}
+
+/** Whether crossing (i, j) opens out into a joint. */
+export const isOpen = (tile: PatternTile, i: number, j: number): boolean => {
+	const u = jointHalf(tile, i, j);
+	return Math.abs(u.x) + Math.abs(u.y) > 1e-12;
+};
+
+/**
+ * Where a cut of family `kind` comes into crossing (i, j) and goes out of it, in
+ * cells: the crossing itself, or the ends of its joint — the right lobe's cut in at
+ * the first and out at the second, the left lobe's the same way where the two run
+ * along it the same way (`sameWayAt`) and the other way round where not.
+ */
+export function crossingEnds(tile: PatternTile, kind: StretchKind, i: number, j: number): { in: Vec; out: Vec } {
+	const c = crossing(tile, i, j);
+	const u = jointHalf(tile, i, j);
+	const first = { x: c.x - u.x, y: c.y - u.y };
+	const second = { x: c.x + u.x, y: c.y + u.y };
+	const forward = kind === 'V' || !tile.joints || sameWayAt(tile.joints.join, i, j);
+	return forward ? { in: first, out: second } : { in: second, out: first };
 }
 
 /**
@@ -320,8 +356,9 @@ export interface StretchFrame {
 }
 
 export function stretchFrame(tile: PatternTile, kind: StretchKind, i: number, j: number): StretchFrame {
-	const a = crossing(tile, i, j);
-	const b = kind === 'V' ? crossing(tile, i, j + 1) : crossing(tile, i + 1, j);
+	// From where the cut goes out of the crossing at its low end to where it comes into the next.
+	const a = crossingEnds(tile, kind, i, j).out;
+	const b = (kind === 'V' ? crossingEnds(tile, kind, i, j + 1) : crossingEnds(tile, kind, i + 1, j)).in;
 	const d = { x: b.x - a.x, y: b.y - a.y };
 	return { a, d, n: kind === 'V' ? { x: d.y, y: -d.x } : { x: -d.y, y: d.x } };
 }
@@ -392,8 +429,9 @@ function firstCrossing(s: BezierSegment, axis: 'x' | 'y', v: number): number | n
 
 /**
  * Where a segment of a generated cut comes from: segment `index` of stretch
- * `kind (i, j)`'s curve, of `count` segments. When the square's edge cuts it
- * short (`clipped`), `range` is the part of the segment's parameter it keeps.
+ * `kind (i, j)`'s curve, of `count` segments; or, `joint`, the straight joint
+ * crossing (i, j) opens out into, which the cut runs along. When the square's edge
+ * cuts it short (`clipped`), `range` is the part of the segment's parameter it keeps.
  */
 export interface CutPiece {
 	kind: StretchKind;
@@ -403,7 +441,11 @@ export interface CutPiece {
 	count: number;
 	clipped: boolean;
 	range: [number, number];
+	joint?: true;
 }
+
+/** Whether two pieces of a cut come from the same stretch, or the same joint. */
+export const samePiece = (a: CutPiece, b: CutPiece): boolean => a.kind === b.kind && a.i === b.i && a.j === b.j && !a.joint === !b.joint;
 
 /** The part of a piece kept when its segment is split at `t` (of the part it already keeps). */
 function keepPart(piece: CutPiece, t: number, keep: 'after' | 'before'): CutPiece {
@@ -557,6 +599,12 @@ function traceLine(tile: PatternTile, kind: StretchKind, line: number): TracedCu
 	const [from, to] = squareSpan(tile, kind === 'V' ? 'y' : 'x');
 	for (let a = Math.floor(from) - 2; a < Math.ceil(to) + 2; a++) {
 		const [i, j] = kind === 'V' ? [line, a] : [a, line];
+		// The joint the crossing at the stretch's low end opens out into, between it and the stretch before.
+		if (a > Math.floor(from) - 2 && isOpen(tile, i, j)) {
+			const ends = crossingEnds(tile, kind, i, j);
+			chain.push(lineSegment(cellsToRaw(tile, ends.in), cellsToRaw(tile, ends.out)));
+			pieces.push({ kind, i, j, index: 0, count: 1, clipped: false, range: [0, 1], joint: true });
+		}
 		const frame = stretchFrame(tile, kind, i, j);
 		const curve = stretchCurve(tile, kind, i, j);
 		mapCurve(curve, (p) => cellsToRaw(tile, toFrame(frame, p))).forEach((seg, index) => {
@@ -638,19 +686,28 @@ export function fitLines(tile: PatternTile): PatternTile {
 	return moved ? { ...plain, lines } : plain;
 }
 
-/** The outline of cell (c, d), counter-clockwise in the square's frame, in units of a cell. */
+/**
+ * The outline of cell (c, d), counter-clockwise in the square's frame, in units of a
+ * cell: its four sides, and where a corner opens out into a joint the cell lies
+ * along, the joint between them.
+ */
 export function cellOutline(tile: PatternTile, c: number, d: number): BezierSegment[] {
 	const place = (kind: StretchKind, i: number, j: number, backwards: boolean) => {
 		const frame = stretchFrame(tile, kind, i, j);
 		const curve = mapCurve(stretchCurve(tile, kind, i, j), (p) => toFrame(frame, p));
 		return backwards ? reverseSegments(curve) : curve;
 	};
-	return [
-		...place('H', c, d, false), // low y, from (c, d) to (c + 1, d)
-		...place('V', c + 1, d, false), // high x, up to (c + 1, d + 1)
-		...place('H', c, d + 1, true), // high y, back to (c, d + 1)
-		...place('V', c, d, true) // low x, back to (c, d)
+	const sides = [
+		place('H', c, d, false), // low y, from (c, d) to (c + 1, d)
+		place('V', c + 1, d, false), // high x, up to (c + 1, d + 1)
+		place('H', c, d + 1, true), // high y, back to (c, d + 1)
+		place('V', c, d, true) // low x, back to (c, d)
 	];
+	return sides.flatMap((side, k) => {
+		const end = side[side.length - 1]!.p3;
+		const next = sides[(k + 1) % 4]![0]!.p0;
+		return samePoint(end, next) ? side : [...side, lineSegment(end, next)];
+	});
 }
 
 const SMOOTH_COS = Math.cos((10 * Math.PI) / 180);

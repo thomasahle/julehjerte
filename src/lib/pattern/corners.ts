@@ -23,7 +23,7 @@
  */
 
 import type { Vec } from '$lib/types/heart';
-import { ruleKey, ruleMotions, type TileRule } from './rules';
+import { isRedCell, moveBy, ruleKey, ruleMotions, type TileRule } from './rules';
 
 /** Every tiling here repeats within four cells each way: its shifts are those of the 4 × 4 crossings (i, j), i, j in 0…3. */
 const N = 4;
@@ -61,44 +61,50 @@ export function cornerFreedom(rule: TileRule): CornerFreedom {
 	const cached = byRule.get(key);
 	if (cached) return cached;
 	const motions = ruleMotions(rule);
-	// Columns: each motion's own shift s (x, y), then the crossings' shifts in ORDER.
-	const S = 2 * motions.length;
+	const freedom = spaceOf(2 * motions.length, (row) => {
+		motions.forEach((m, g) => {
+			for (let i = 0; i < N; i++)
+				for (let j = 0; j < N; j++) {
+					const to = { i: m.a * i + m.b * j + m.e, j: m.c * i + m.d * j + m.f };
+					// δ(g(c)) − M·δ(c) − s = 0, along x and along y: each motion's own shift s is its columns 2g, 2g + 1.
+					row([[to, 'x', 1], [{ i, j }, 'x', -m.a], [{ i, j }, 'y', -m.b]], [2 * g, -1]);
+					row([[to, 'y', 1], [{ i, j }, 'x', -m.c], [{ i, j }, 'y', -m.d]], [2 * g + 1, -1]);
+				}
+		});
+		// The crossing (0, 0) stays where it is: moving everything is no freedom.
+		row([[{ i: 0, j: 0 }, 'x', 1]]);
+		row([[{ i: 0, j: 0 }, 'y', 1]]);
+	});
+	byRule.set(key, freedom);
+	return freedom;
+}
+
+type Term = [{ i: number; j: number }, 'x' | 'y', number];
+
+/**
+ * The space of the 16 crossings' vectors the rows `build` adds keep to (each row a sum
+ * of terms, a crossing's x or y times a number, and of an extra unknown of the S given,
+ * that is 0), by its free coordinates: brought to reduced row echelon form, the extra
+ * unknowns first, so that they are never free.
+ */
+function spaceOf(S: number, build: (row: (terms: Term[], extra?: [number, number]) => void) => void): CornerFreedom {
 	const width = S + ORDER.length;
 	const column = new Map(ORDER.map((c, k) => [`${cornerClass(c.i, c.j)}${c.axis}`, S + k]));
 	const col = (i: number, j: number, axis: 'x' | 'y') => column.get(`${cornerClass(i, j)}${axis}`)!;
 	const rows: number[][] = [];
-	motions.forEach((m, g) => {
-		for (let i = 0; i < N; i++)
-			for (let j = 0; j < N; j++) {
-				const to = { i: m.a * i + m.b * j + m.e, j: m.c * i + m.d * j + m.f };
-				// δ(g(c)) − M·δ(c) − s = 0, along x and along y.
-				for (const [axis, mx, my] of [
-					['x', m.a, m.b],
-					['y', m.c, m.d]
-				] as const) {
-					const row = new Array<number>(width).fill(0);
-					row[col(to.i, to.j, axis)]! += 1;
-					row[col(i, j, 'x')]! -= mx;
-					row[col(i, j, 'y')]! -= my;
-					row[2 * g + (axis === 'x' ? 0 : 1)]! -= 1;
-					rows.push(row);
-				}
-			}
-	});
-	// The crossing (0, 0) stays where it is: moving everything is no freedom.
-	for (const axis of ['x', 'y'] as const) {
+	build((terms, extra) => {
 		const row = new Array<number>(width).fill(0);
-		row[col(0, 0, axis)] = 1;
+		for (const [{ i, j }, axis, v] of terms) row[col(i, j, axis)]! += v;
+		if (extra) row[extra[0]]! += extra[1];
 		rows.push(row);
-	}
+	});
 	const pivots = reduce(rows, width);
 	const pivotOf = new Map(pivots.map((c, r) => [c, r]));
 	// The free coordinates nearest (0, 0) first, x before y.
 	const freeCols = Array.from({ length: ORDER.length }, (_, k) => S + k)
 		.filter((c) => !pivotOf.has(c))
 		.reverse();
-	// Each motion's shift is never free: it is what its crossings' shifts make it.
-	if (Array.from({ length: S }, (_, c) => c).some((c) => !pivotOf.has(c))) throw new Error(`A motion of ${key} moves nothing.`);
+	if (Array.from({ length: S }, (_, c) => c).some((c) => !pivotOf.has(c))) throw new Error('An extra unknown is free.');
 	const basis = freeCols.map((f) => {
 		const value = (c: number) => (c === f ? 1 : pivotOf.has(c) ? -rows[pivotOf.get(c)!]![f]! : 0);
 		return Array.from({ length: N * N }, (_, k) => {
@@ -106,9 +112,7 @@ export function cornerFreedom(rule: TileRule): CornerFreedom {
 			return { x: clean(value(col(i, j, 'x'))), y: clean(value(col(i, j, 'y'))) };
 		});
 	});
-	const freedom = { free: freeCols.map((c) => ORDER[c - S]!), basis };
-	byRule.set(key, freedom);
-	return freedom;
+	return { free: freeCols.map((c) => ORDER[c - S]!), basis };
 }
 
 const clean = (v: number) => (Math.abs(v) < 1e-9 ? 0 : Math.round(v * 1e9) / 1e9);
@@ -207,4 +211,73 @@ function solve(m: number[][], k: number): number[] {
 		}
 	}
 	return m.map((row, r) => (Math.abs(row[r]!) < 1e-15 ? 0 : row[k]! / row[r]!));
+}
+
+/** Which colour's tiles join across a crossing opened into a joint: the other colour's tiles float (`jointFreedom`). */
+export type JoinColour = 'red' | 'white';
+
+/**
+ * Whether the two cuts at crossing (i, j) run along its joint the same way: so they do where the tiles that
+ * join, across the joint, are the ones beside the crossing to one side and the other, cells (i, j − 1) and
+ * (i − 1, j); the other way where they are the ones above and below it, (i − 1, j − 1) and (i, j).
+ */
+export const sameWayAt = (join: JoinColour, i: number, j: number): boolean => isRedCell(i, j - 1) === (join === 'red');
+
+const jointsByRule = new Map<string, CornerFreedom | null>();
+
+/**
+ * How far a rule lets its crossings open, where `join`'s tiles join across them
+ * and the other colour's float apart: at crossing c the cuts run together along a
+ * straight joint from c − u(c) to c + u(c), the right lobe's cut coming in at the
+ * first end, the left lobe's at the first end too where they run the same way
+ * (`sameWayAt`) and at the second where not. Every motion of the rule has to take
+ * every joint onto a joint, the end a cut comes in at onto the end its image comes
+ * in at, so that u(g(c)) = ±M·u(c): linear, like the corners (`cornerFreedom`).
+ * Null where the rule's motions swap the colours: a joint that joins white tiles
+ * would join red ones where a motion takes it, so no colour floats.
+ */
+export function jointFreedom(rule: TileRule, join: JoinColour): CornerFreedom | null {
+	const key = `${ruleKey(rule)}:${join}`;
+	if (jointsByRule.has(key)) return jointsByRule.get(key)!;
+	const motions = ruleMotions(rule);
+	const swaps = motions.some((m) => {
+		const centre = moveBy(m, { x: 0.5, y: 0.5 });
+		return !isRedCell(Math.floor(centre.x), Math.floor(centre.y));
+	});
+	const freedom = swaps
+		? null
+		: spaceOf(0, (row) => {
+				for (const m of motions)
+					for (let i = 0; i < N; i++)
+						for (let j = 0; j < N; j++) {
+							// Where the motion takes the right lobe's cut coming in at (i, j): which cut, and in or out.
+							const from = moveBy(m, { x: i, y: j - 1 });
+							const to = moveBy(m, { x: i, y: j });
+							const right = Math.abs(from.x - to.x) < 1e-9;
+							const coming = right ? to.y > from.y : to.x > from.x;
+							const t = { i: Math.round(to.x), j: Math.round(to.y) };
+							// The first end there takes the right lobe's cut coming in, and the left lobe's coming in where
+							// they run the same way.
+							const first = right ? coming : coming === sameWayAt(join, t.i, t.j);
+							const e = first ? 1 : -1;
+							row([[t, 'x', 1], [{ i, j }, 'x', -e * m.a], [{ i, j }, 'y', -e * m.b]]);
+							row([[t, 'y', 1], [{ i, j }, 'x', -e * m.c], [{ i, j }, 'y', -e * m.d]]);
+						}
+			});
+	jointsByRule.set(key, freedom);
+	return freedom;
+}
+
+/**
+ * The free coordinates of joints `length` cells long, as near as the rule lets them, each along the diagonal
+ * its cuts run along it by (`sameWayAt`): where a joint opens out to begin with.
+ */
+export function jointsOfLength(freedom: CornerFreedom, join: JoinColour, length: number): number[] {
+	const h = length / 2 / Math.SQRT2;
+	const shifts = Array.from({ length: N * N }, (_, k) => ({ i: Math.floor(k / N), j: k % N })).map(({ i, j }) => ({
+		i,
+		j,
+		shift: { x: sameWayAt(join, i, j) ? h : -h, y: h }
+	}));
+	return nearestCorners(freedom, shifts);
 }

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { BezierSegment, Vec } from '$lib/types/heart';
 import { ALL_RULES, freeSides, halfOf, moveBy, neighbours, opposite, ruleInfo, ruleKey, ruleMotions, type TileRule } from './rules';
-import { cornerFreedom, cornerShift, nearestCorners } from './corners';
+import { cornerFreedom, cornerShift, jointFreedom, jointsOfLength, nearestCorners } from './corners';
 import { cellOutline, type PatternTile, type SideCurve } from './tiling';
 
 // A rule's motions have to take its tiling onto itself wherever the corners it lets move stand: each motion
@@ -87,6 +87,37 @@ describe('corners off the grid', () => {
 						const cell = { c: Math.min(...image.map((p) => p.x)), d: Math.min(...image.map((p) => p.y)) };
 						const moved = cellOutline(tile, c, d).map((seg) => ({ p0: motion(seg.p0), p1: motion(seg.p1), p2: motion(seg.p2), p3: motion(seg.p3) }));
 						expect(sameOutline(moved, cellOutline(tile, cell.c, cell.d)), `cell (${c}, ${d}) seed ${seed}`).toBe(true);
+					}
+				}
+			}
+		}
+	);
+
+	it('lets crossings open into joints where no motion swaps the colours: two shapes, and only they', () => {
+		for (const rule of ALL_RULES) {
+			const two = rule.sides === 'free' || rule.sides === 'two';
+			for (const join of ['red', 'white'] as const) expect(!!jointFreedom(rule, join)?.free.length, `${ruleKey(rule)} ${join}`).toBe(two);
+		}
+	});
+
+	it.each(ALL_RULES.filter((rule) => jointFreedom(rule, 'white')).map((rule) => [ruleKey(rule), rule] as const))(
+		'%s keeps its word with its crossings opened into joints, either colour joining',
+		(_key, rule) => {
+			for (const join of ['white', 'red'] as const) {
+				const freedom = jointFreedom(rule, join)!;
+				const tile: PatternTile = { ...lopsidedTile(rule, []), joints: { join, free: jointsOfLength(freedom, join, 0.2).map((w, k) => w * (1 + 0.1 * k)) } };
+				for (const m of ruleMotions(rule)) {
+					const motion = (p: Vec): Vec => moveBy(m, p);
+					for (const [c, d] of [
+						[0, 0],
+						[1, 0],
+						[0, 1],
+						[1, 1]
+					] as const) {
+						const image = [moveBy(m, { x: c, y: d }), moveBy(m, { x: c + 1, y: d }), moveBy(m, { x: c, y: d + 1 }), moveBy(m, { x: c + 1, y: d + 1 })];
+						const cell = { c: Math.min(...image.map((p) => p.x)), d: Math.min(...image.map((p) => p.y)) };
+						const moved = cellOutline(tile, c, d).map((seg) => ({ p0: motion(seg.p0), p1: motion(seg.p1), p2: motion(seg.p2), p3: motion(seg.p3) }));
+						expect(sameOutline(moved, cellOutline(tile, cell.c, cell.d)), `${join}: cell (${c}, ${d})`).toBe(true);
 					}
 				}
 			}

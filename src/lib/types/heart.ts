@@ -95,7 +95,8 @@ export interface HeartDesign {
  * the size, the curves — each segment eight numbers, p0 to p3, in its side's own
  * frame — where the tiles' corners stand off the grid (`corners`, as many numbers
  * as its type lets corners move; hearts saved before kept how far the tiles lean
- * as `offset`), how they are sized, stretched,
+ * as `offset`), where the crossings open out into joints (`joints`: which colour's
+ * tiles join across them, and as many numbers as its type lets them move), how they are sized, stretched,
  * slanted and turned (`shape`, where a cell's two sides go: x and y of one, then
  * of the other), how far of that is the whole pattern turned (`turn`, radians),
  * how far the pattern has moved (`pan`), the lines of the tiling the heart cuts
@@ -107,6 +108,7 @@ export interface HeartPattern {
   cuts: number;
   curves: Record<string, number[][]>;
   corners?: number[];
+  joints?: { join: 'red' | 'white'; free: number[] };
   offset?: [number, number];
   shape?: [number, number, number, number];
   turn?: number;

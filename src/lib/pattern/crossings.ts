@@ -15,11 +15,28 @@ import type { Finger, GridSize, Vec } from '$lib/types/heart';
  */
 export const READ_TOLERANCE = 0.01;
 
-/** Where left-lobe cut `L-j` and right-lobe cut `R-i` cross: a node of each, by Tegn's anchor index, and the point. */
+/**
+ * Where left-lobe cut `L-j` and right-lobe cut `R-i` cross: a node of each, by
+ * Tegn's anchor index, and the point. Where they run together along a joint
+ * instead (`PatternTile.joints`), `along` is its other end, the next node of each.
+ */
 export interface SharedCrossing {
 	left: number;
 	right: number;
 	at: Vec;
+	along?: { left: number; right: number; at: Vec };
+}
+
+/**
+ * Whether the segments of the two cuts between two places they share, a node of each at either end, are one
+ * segment, run either way: the cuts run along each other there, a joint.
+ */
+function sameSegment(left: Finger, right: Finger, p: SharedCrossing, q: SharedCrossing, tolerance: number): boolean {
+	if (Math.abs(p.left - q.left) !== 1 || Math.abs(p.right - q.right) !== 1) return false;
+	const l = left.segments[Math.min(p.left, q.left)]!;
+	const r = right.segments[Math.min(p.right, q.right)]!;
+	const near = (a: Vec, b: Vec) => Math.hypot(a.x - b.x, a.y - b.y) <= tolerance;
+	return (near(l.p0, r.p0) && near(l.p1, r.p1) && near(l.p2, r.p2) && near(l.p3, r.p3)) || (near(l.p0, r.p3) && near(l.p1, r.p2) && near(l.p2, r.p1) && near(l.p3, r.p0));
 }
 
 const anchors = (f: Finger): Vec[] => (f.segments.length ? [f.segments[0]!.p0, ...f.segments.map((s) => s.p3)] : []);
@@ -27,8 +44,10 @@ const anchors = (f: Finger): Vec[] => (f.segments.length ? [f.segments[0]!.p0, .
 /**
  * The crossings of a heart's inner cuts, `[j - 1][i - 1]` for `L-j` and `R-i`,
  * each where a node of one lies within `tolerance` pixels of a node of the other,
- * the cuts' ends aside; or null where some pair has no such nodes. Along each cut
- * the crossings come in order, as the other lobe's cuts do.
+ * the cuts' ends aside, or where two such nodes follow one another along both, the
+ * cuts running together between them (a joint); or null where some pair has no such
+ * nodes, or more. Along each cut the crossings come in order, as the other lobe's
+ * cuts do.
  */
 export function sharedCrossings(fingers: Finger[], gridSize: GridSize, tolerance: number): SharedCrossing[][] | null {
 	const byId = new Map(fingers.map((f) => [f.id, f]));
@@ -41,20 +60,24 @@ export function sharedCrossings(fingers: Finger[], gridSize: GridSize, tolerance
 	for (const l of left) {
 		const la = anchors(l!);
 		const row: SharedCrossing[] = [];
-		for (const ra of rightAnchors) {
-			let best: SharedCrossing | null = null;
-			let bestD = tolerance;
+		for (const [ri, ra] of rightAnchors.entries()) {
+			const r = right[ri];
+			const near: SharedCrossing[] = [];
 			for (let a = 1; a < la.length - 1; a++) {
 				for (let b = 1; b < ra.length - 1; b++) {
-					const d = Math.hypot(la[a]!.x - ra[b]!.x, la[a]!.y - ra[b]!.y);
-					if (d <= bestD) {
-						bestD = d;
-						best = { left: a, right: b, at: la[a]! };
-					}
+					if (Math.hypot(la[a]!.x - ra[b]!.x, la[a]!.y - ra[b]!.y) <= tolerance) near.push({ left: a, right: b, at: la[a]! });
 				}
 			}
-			if (!best) return null;
-			row.push(best);
+			// Nodes a hair apart (a cut drawn with a node twice over) are one place.
+			const places = near.filter((c, k) => near.findIndex((d) => Math.hypot(c.at.x - d.at.x, c.at.y - d.at.y) <= tolerance) === k);
+			// The nearest pair of nodes, the last of those as near.
+			const gap = (c: SharedCrossing) => Math.hypot(c.at.x - ra[c.right]!.x, c.at.y - ra[c.right]!.y);
+			if (!near.length) return null;
+			if (places.length === 2 && near.length === 2 && sameSegment(l!, r!, near[0]!, near[1]!, tolerance)) {
+				// A joint: its end first along the left cut as Tegn runs it, the other along.
+				const [first, other] = near[0]!.left < near[1]!.left ? [near[0]!, near[1]!] : [near[1]!, near[0]!];
+				row.push({ ...first, along: other });
+			} else row.push(near.reduce((best, c) => (gap(c) <= gap(best) ? c : best)));
 		}
 		rows.push(row);
 	}

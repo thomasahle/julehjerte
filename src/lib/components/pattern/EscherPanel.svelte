@@ -10,6 +10,8 @@
   frameHint   what the hint adds about the black points for the chosen type, or null.
   cornersHint what it adds about the round ones, which move the tiles' corners, where the type lets
               any move; or null.
+  floating    which colour's tiles float (FloatButtons), for a type of two shapes; undefined for the
+              others, which show no such choice. onFloat picks another.
   compact     Tegn below 900px: the type glyphs alone, and no hint once a type is chosen.
   onRandom    "Tilfældig flise": a random type, size and tile ($lib/pattern/randomTile), with or
               without a type chosen.
@@ -24,6 +26,8 @@
 	import RestartButton from '$lib/components/editor/RestartButton.svelte';
 	import SizeButtons from '$lib/components/editor/SizeButtons.svelte';
 	import RuleTemplates from './RuleTemplates.svelte';
+	import FloatButtons from './FloatButtons.svelte';
+	import type { Floating } from '$lib/pattern/escherTab';
 
 	interface Props {
 		lang: Language;
@@ -32,6 +36,8 @@
 		size: number | null;
 		frameHint: TranslationKey | null;
 		cornersHint?: TranslationKey | null;
+		floating?: Floating;
+		onFloat?: (floating: Floating) => void;
 		turn: number;
 		onChoose: (rule: TileRule) => void;
 		onSize: (n: number) => void;
@@ -47,7 +53,7 @@
 		disabled?: boolean;
 	}
 
-	let { lang, rule, size, frameHint, cornersHint = null, turn, onChoose, onSize, onTurn, onTurnDone, onRestart, onRandom, onCentre, compact = false, disabled = false }: Props = $props();
+	let { lang, rule, size, frameHint, cornersHint = null, floating = undefined, onFloat = () => {}, turn, onChoose, onSize, onTurn, onTurnDone, onRestart, onRandom, onCentre, compact = false, disabled = false }: Props = $props();
 
 	const tr = (key: TranslationKey) => t(key, lang);
 	/** The most the pattern turns either way, in degrees: further, the lines near the corners would leave the square at its sides. */
@@ -59,6 +65,9 @@
 	<RuleTemplates {lang} active={rule} {onChoose} {compact} {disabled} />
 	{#if rule}
 		<SizeButtons sizes={[3, 4, 5, 6, 7]} {size} name={tr('patternSizes')} {onSize} {disabled} />
+		{#if floating !== undefined}
+			<FloatButtons {lang} {floating} {onFloat} {disabled} />
+		{/if}
 		<label class="pattern-turn">
 			<span class="pattern-turn-head">
 				<span>{tr('patternTurn')}</span>
