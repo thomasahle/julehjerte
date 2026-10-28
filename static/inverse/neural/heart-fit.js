@@ -15,6 +15,16 @@ function inside(u, v, e) {
   return false;
 }
 
+/** Whether canonical (u, v) is where a heart hangs from its handle: a band out
+ * of the cleft between the lobes, along the heart's axis, a quarter of a side
+ * wide and about two sides long. */
+const onHandle = (u, v) => u < 0 && v < 0 && Math.abs(u - v) < .25 && u + v > -3;
+
+/** How much closer a fit that leaves the handle out must cover the paper to be
+ * taken: a strip the heart hangs from is a real share of the paper, while the
+ * band's freedom alone moves a fit's agreement by a point or so. */
+const HANDLE_GAIN = .03;
+
 /** p = [cx, cy, s, angle, aspect, shear, e]: the affine map (u, v) -> image
  * point sending the square's centre to (cx, cy), and the lobes' straight run. */
 function affine([cx, cy, s, angle, aspect, shear]) {
@@ -25,7 +35,8 @@ function affine([cx, cy, s, angle, aspect, shear]) {
 }
 
 /** Soft intersection over union of the model with the probability, over the
- * grid's pixels (all in the picture). */
+ * grid's pixels (all in the picture); for a grid that is `held`, paper on the
+ * handle (`onHandle`) is not counted against the model. */
 function score(p, grid) {
   const {a, b, d, f, tx, ty} = affine(p), det = a * f - b * d;
   if (!(Math.abs(det) > 1e-9) || !(p[6] >= 0 && p[6] <= 1.2) || !(p[4] > .4 && p[4] < 2.5) || Math.abs(p[5]) > 1) return -1;
@@ -36,7 +47,7 @@ function score(p, grid) {
     const y = ys[j] - ty;
     for (let i = 0; i < n; i++) {
       const x = xs[i] - tx, u = ia * x + ib * y, v = id * x + ifx * y, q = prob[j * n + i];
-      if (inside(u, v, p[6])) { both += q; union += 1; } else union += q;
+      if (inside(u, v, p[6])) { both += q; union += 1; } else if (!(grid.held && onHandle(u, v))) union += q;
     }
   }
   return union ? both / union : 0;
@@ -145,26 +156,44 @@ export function backgroundBody(input, roi, {resolution: n = 160, band = .07, clu
   return {probability: Float32Array.from(d, v => Math.min(1, Math.max(0, .5 + (v - limit) / (2 * ramp)))), resolution: n, window: [x0, y0, x1, y1]};
 }
 
-/** {quad, iou, lobes, visible} or null: the silhouette fitted to
+/** {quad, iou, lobes, visible, held} or null: the silhouette fitted to
  * `probability` (`resolution`² values over `window` = [x0, y0, x1, y1] in
- * image pixels), null when less than `minVisible` of it is in the window. */
-export function fitHeartSilhouette(body, {threshold = null, minVisible = .6} = {}) {
+ * image pixels), null when less than `minVisible` of it is in the window.
+ * A heart photographed hanging from its strip has paper the silhouette cannot
+ * hold: a heart lying on its side scored under 0.9 for its strip alone, and
+ * one whose strip ran up out of the picture was fitted turned and too low. So
+ * the fit is made a second time leaving the handle out, and taken (`held`)
+ * when that covers the paper at least HANDLE_GAIN closer. */
+export function fitHeartSilhouette(body, options = {}) {
+  // The crop search asks twice for one body's fit (photo-crop.js), and each is two fits.
+  const key = JSON.stringify(options), known = fitted.get(body) ?? new Map();
+  if (known.has(key)) return known.get(key);
+  const plain = fitEither(body, options, false), held = fitEither(body, options, true);
+  const fit = held && (!plain || held.iou >= plain.iou + HANDLE_GAIN) ? held : plain;
+  fitted.set(body, known.set(key, fit));
+  return fit;
+}
+
+/** The fits made, by body and options. */
+const fitted = new WeakMap();
+
+function fitEither(body, {threshold = null, minVisible = .6}, held) {
   // The network is surest of the lobes and often lukewarm (0.3–0.6) about the
   // woven square itself, which a split at one half then leaves out: the fit
   // at a half and at a quarter, whichever covers its paper better.
   if (threshold === null) {
     // A quarter also takes in more of what is not paper (a dress, branches, a
     // shadow), so that fit must lie wholly in the picture and cover it closely.
-    const half = fitAt(body, .5, minVisible), quarter = fitAt(body, .25, .95);
+    const half = fitAt(body, .5, minVisible, held), quarter = fitAt(body, .25, .95, held);
     const fits = [half, quarter && quarter.iou >= .915 ? quarter : null].filter(Boolean);
     return fits.sort((a, b) => b.iou - a.iou)[0] ?? null;
   }
-  return fitAt(body, threshold, minVisible);
+  return fitAt(body, threshold, minVisible, held);
 }
 
-function fitAt({probability, resolution, window}, threshold, minVisible) {
+function fitAt({probability, resolution, window}, threshold, minVisible, held) {
   probability = largestFilled(probability, resolution, threshold);
-  const coarse = gridOf(probability, resolution, window, 80);
+  const coarse = {...gridOf(probability, resolution, window, 80), held};
   // Where the paper is: its centroid, extent and area (in image pixels).
   let mass = 0, mx = 0, my = 0;
   for (let j = 0; j < coarse.n; j++) for (let i = 0; i < coarse.n; i++) {
@@ -185,7 +214,7 @@ function fitAt({probability, resolution, window}, threshold, minVisible) {
     starts.push(polish(start, coarse, [s0 * .08, s0 * .08, s0 * .08, .06, .05, .05, .1], 12));
   }
   starts.sort((x, y) => y.value - x.value);
-  const fine = gridOf(probability, resolution, window, 160);
+  const fine = {...gridOf(probability, resolution, window, 160), held};
   let best = null;
   for (const {p} of starts.slice(0, 3)) {
     const result = polish(p, fine, [s0 * .03, s0 * .03, s0 * .03, .02, .02, .02, .05], 40);
@@ -206,7 +235,7 @@ function fitAt({probability, resolution, window}, threshold, minVisible) {
   const cleft = at(0, 0), sides = [at(1, 0), at(0, 1)], tip = at(1, 1);
   const turn = (o, p, q) => (p[0] - o[0]) * (q[1] - o[1]) - (p[1] - o[1]) * (q[0] - o[0]);
   const [first, last] = turn(cleft, sides[0], tip) > 0 ? sides : [sides[1], sides[0]];
-  return {quad: [cleft, first, tip, last], iou: best.value, lobes: best.p[6], visible};
+  return {quad: [cleft, first, tip, last], iou: best.value, lobes: best.p[6], visible, held};
 }
 
 /** The homography taking the unit square's (0,0), (1,0), (1,1), (0,1) to `quad`. */

@@ -28,6 +28,23 @@ test('the silhouette fit finds a turned heart that the picture cuts off, cleft f
   fit.quad.forEach((p, k) => assert.ok(Math.hypot(p[0] - quad[k][0], p[1] - quad[k][1]) < .05 * side, `corner ${k}: ${p} vs ${quad[k]}`));
 });
 
+test('a heart hanging from its strip is fitted with the strip left out', () => {
+  // On its side, cleft to the right, and a strip a sixth of a side wide running
+  // a side and a half out of the cleft along the heart's axis.
+  const quad = [[520, 300], [370, 450], [220, 300], [370, 150]], side = 150 * Math.SQRT2;
+  const body = heartProbability(quad, 800, 600), n = body.resolution;
+  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
+    const x = (i + .5) * 800 / n, y = (j + .5) * 600 / n;
+    if (x > 520 && x < 520 + 1.5 * side && Math.abs(y - 300) < side / 12) body.probability[j * n + i] = .99;
+  }
+  const fit = fitHeartSilhouette(body);
+  assert.equal(fit.held, true);
+  assert.ok(fit.iou > .95, `iou ${fit.iou}`);
+  fit.quad.forEach((p, k) => assert.ok(Math.hypot(p[0] - quad[k][0], p[1] - quad[k][1]) < .03 * side, `corner ${k}: ${p} vs ${quad[k]}`));
+  // Without a strip, the plain fit stands.
+  assert.equal(fitHeartSilhouette(heartProbability(quad, 800, 600)).held, false);
+});
+
 test('paper filling the whole picture fits no heart', () => {
   const n = 320, probability = new Float32Array(n * n).fill(.99);
   assert.equal(fitHeartSilhouette({probability, resolution: n, window: [0, 0, 600, 600]}), null);

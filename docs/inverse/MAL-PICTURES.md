@@ -29,6 +29,15 @@ minute.
    Pinterest pin the page round the photograph took the colour locator to a
    square half off the heart (190% of a side off, now 4.7%; on 117 scraped
    photographs 3 crops changed, one for the better, two wrong either way).
+   A heart photographed hanging from its strip has paper the silhouette
+   cannot hold, so it is fitted a second time leaving out a band a quarter of
+   a side wide and two sides long out of the cleft along the heart's axis, and
+   that fit is taken when it covers the paper at least 0.03 closer (IoU): a
+   heart on its side went from 0.896, under the 0.9 a silhouette needs, to
+   0.985, and one whose strip ran out of the picture from a turned fit at 0.84
+   to its square at 0.94. A wider or always-taken band let the fit hide other
+   paper in it; with the margin, none of 56 photographs with reviewed corners
+   moved, and on 117 scraped ones 4 crops changed, all for the better.
    Every crop is then moved onto the square's own edges:
    at each point of the square's straight edges (and the lobes' half circles,
    where they really are half circles) the strongest colour edge across it,

@@ -127,5 +127,5 @@ export function selectedSilhouette(input,roi,detection,{minIou=.85}={}){
 export function detectSilhouetteCrop(input,body,{minIou=.9}={}){
  const fit=fitHeartSilhouette(body);
  if(!fit||!(fit.iou>=minIou))return null;
- return{quad:fit.quad,status:'needs_review',needsReview:true,warnings:[],provenance:{method:'paper-silhouette',iou:fit.iou,lobes:fit.lobes,modelSha256:body.modelSha256,colourEvidenceUsed:false,humanReviewed:false}};
+ return{quad:fit.quad,status:'needs_review',needsReview:true,warnings:[],provenance:{method:'paper-silhouette',iou:fit.iou,lobes:fit.lobes,held:fit.held,modelSha256:body.modelSha256,colourEvidenceUsed:false,humanReviewed:false}};
 }
