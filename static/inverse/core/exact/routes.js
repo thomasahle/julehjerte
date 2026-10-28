@@ -16,9 +16,12 @@ export class RouteRules {
   /** The face a token's hidden cut runs into. */
   face(t) { return t[3] === 'L' ? this.st.faceL.get(t[1]) : this.st.faceR.get(t[1]); }
 
-  /** The normal into the token's side, averaged over both legs at a corner. */
+  /** The normal into the token's side, averaged over both legs at a corner;
+   * at an open edge's very end (a topological start's position can lie there:
+   * flower), along its one leg. */
   normal(t, s) {
-    const [back, fwd] = this.outline.sides(t[1], s), d = [fwd[0] - back[0], fwd[1] - back[1]], n = Math.hypot(d[0], d[1]) || 1;
+    const sides = this.outline.sides(t[1], s), [back, fwd] = sides.length > 1 ? sides : s <= 0 ? [[-sides[0][0], -sides[0][1]], sides[0]] : [sides[0], [-sides[0][0], -sides[0][1]]];
+    const d = [fwd[0] - back[0], fwd[1] - back[1]], n = Math.hypot(d[0], d[1]) || 1;
     const left = [-d[1] / n, d[0] / n];
     return t[3] === 'L' ? left : [-left[0], -left[1]];
   }

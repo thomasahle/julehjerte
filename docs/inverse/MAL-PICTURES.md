@@ -619,7 +619,7 @@ Uret: its Tegn picture gets 16 hidden segments under all eight symmetries,
 the fewest and shortest its grid has, in 4.9 s (no template before; in the browser,
 Tegn → Mal → Find snit in 7 s, "0.0% different from the mask"); the juleflet
 picture in 7.7 s; the photograph still none. The 130 juleflet pictures, the
-exact search alone for 40 s: 87 templates the export takes instead of 84
+exact search alone for 40 s: 89 templates the export takes instead of 86
 (5-3-heart, amy-pattern, circle, flyvendegaes, jul and lilje1 gain one;
 hjertekloever, jul-shot and origami take the fitter's now). On the 81 both
 find, 0.147% from the mask at the median instead of 0.160%, 1% more hidden cut,
@@ -677,8 +677,8 @@ rest and lies at most half a percent further from the mask.
 
 Uret: 12 cubics a cut instead of 338 (every arc one cubic, the inner ring's
 quarters too), 0.21% from the mask instead of 0.0%, all eight symmetries kept.
-The 130 juleflet pictures, the exact search alone for 40 s: 92 templates the
-export takes instead of 87 (fisk-kors and its photograph, jul-shot, juletrae,
+The 130 juleflet pictures, the exact search alone for 40 s: 94 templates the
+export takes instead of 89 (fisk-kors and its photograph, jul-shot, juletrae,
 origami and permo-kroge gain one; drageskael-shot, at the deadline, passed
 again on its own), 8.6 s at the median instead of 9.6 s; the smooth drawing
 taken for 87 of them, at 0.31% from the mask at the median instead of 0.15%,
