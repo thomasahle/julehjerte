@@ -200,12 +200,43 @@ function segmentsOf(lines, target, tolerance, merge) {
   });
   const point = new Map();
   ends.forEach((p, i) => { const r = find(i); if (!point.has(r) || onBorder(p)) point.set(r, p); });
-  const merged = lines.map((pts, k) => [point.get(find(2 * k)), ...pts.slice(1, -1), point.get(find(2 * k + 1))])
+  let merged = lines.map((pts, k) => [point.get(find(2 * k)), ...pts.slice(1, -1), point.get(find(2 * k + 1))])
     .map(pts => pts.filter((p, i, a) => i === 0 || pointKey(p) !== pointKey(a[i - 1])))
     // A sliver the merge closed up goes; a short piece to a merged point stays.
     .filter(pts => pts.length >= 2 && (pts[0] !== pts.at(-1) || pts.some(p => Math.hypot(p[0] - pts[0][0], p[1] - pts[0][1]) > tolerance)));
+  merged = withoutClosedSlivers(merged, tolerance);
   const segs = merged.flatMap(pts => pts.slice(1).map((p, i) => [pts[i], p]));
   return orient(segs, target.phase === 1);
+}
+
+/** `lines` without the chains of them, through points only two share, that
+ * leave a point and come back to it within three `tolerance`s of it: two touchings a
+ * hair apart, joined by tiny curves either way round, merged into one point
+ * (stjernegitter's rhombi, traced as touchings 0.06 pixels apart, became one
+ * point of eight curves, which no template has). */
+export function withoutClosedSlivers(lines, tolerance) {
+  const at = new Map();
+  lines.forEach((pts, i) => { for (const end of [0, 1]) { const k = pointKey(end ? pts.at(-1) : pts[0]); if (!at.has(k)) at.set(k, []); at.get(k).push([i, end]); } });
+  const drop = new Set();
+  lines.forEach((pts, i) => {
+    if (drop.has(i)) return;
+    const start = pointKey(pts[0]);
+    if (at.get(start).length <= 2) return;
+    // Along the chain from this line's start until a point not two lines share.
+    const chain = [i];
+    let line = i, far = pts.at(-1), key = pointKey(far), size = 0;
+    for (const p of pts) size = Math.max(size, Math.hypot(p[0] - pts[0][0], p[1] - pts[0][1]));
+    while (at.get(key).length === 2 && chain.length < 64) {
+      const [next, end] = at.get(key).find(([j]) => j !== line);
+      if (chain.includes(next)) break;
+      chain.push(next); line = next;
+      const q = lines[next];
+      for (const p of q) size = Math.max(size, Math.hypot(p[0] - pts[0][0], p[1] - pts[0][1]));
+      far = end ? q[0] : q.at(-1); key = pointKey(far);
+    }
+    if (key === start && chain.length > 1 && size <= 3 * tolerance) chain.forEach(j => drop.add(j));
+  });
+  return drop.size ? lines.filter((_, i) => !drop.has(i)) : lines;
 }
 
 /** The segments oriented with the coloured faces on their left. The faces of the

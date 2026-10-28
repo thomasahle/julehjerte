@@ -704,6 +704,29 @@ turns alone (stage.js `turnsOf`, a quarter turn here): 12 hidden segments, the
 designer's count, 0.25% from the mask, in 16 s; its rows show as not held, as
 a pinwheel has no mirror.
 
+## The gallery's hearts through the whole exact route (2026-10-28)
+
+All 83 gallery hearts as Tegn hands them to Mal, through the page's exact
+route (the traced outline, then tips rounded): 69 get an exact template. Two
+were bugs: flower's topological start put a position at an open edge's very
+end, where the normal into its side had one leg to average, and the search
+crashed (now 5 hidden segments); stjernegitter's rhombi meet in touchings
+traced 0.06 pixels apart, joined by tiny curves either way round, and merged
+into one point of eight curves, which no structure has: such closed slivers
+now go (exact/target.js `withoutClosedSlivers`; of 213 masks only this one
+has them; 15 hidden segments). The 14 left to the fitter: the five text
+hearts, balls, davidsstjerne-circ, hjerte-i-hjerte-i-hjerte, khatam, venus,
+santa, roed-blomst (the designer's template keeps only the diagonal mirror,
+and on the traced outline its petals' notches come back on themselves),
+mor-og-barn and triple-heart (a wedge where the outline meets the square's
+side at a shallow angle, which 0.8 mm of rounding does not clear).
+
+Harder pictures (tmp/e2e/cubic/gen.mjs): thick drawings of planar cubic
+graphs, Voronoi diagrams of random sites, plain and under the square's
+symmetries. Of 80, 30 get an exact template (22 s at the median); 19 end
+unevenly on opposite sides, which no template reproduces; a plain cross of two
+bands has none under any of its symmetries, nor untied in 20 s.
+
 ## Details lost on photographs (2026-10-25)
 
 The 68 photographs whose template keeps every rule but loses a region of the

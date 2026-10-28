@@ -9,7 +9,7 @@ import {settings} from '../../static/inverse/core/settings.js';
 import {loadSVG} from '../../static/inverse/core/input.js';
 import {exactPositions} from '../../static/inverse/core/exact/positions.js';
 import {cheapBounds} from '../../static/inverse/core/exact/bounds.js';
-import {colouredRings, targetSegments, joinNearTouchings} from '../../static/inverse/core/exact/target.js';
+import {colouredRings, targetSegments, joinNearTouchings, withoutClosedSlivers} from '../../static/inverse/core/exact/target.js';
 import {returns} from '../../static/inverse/core/exact/nogoods.js';
 import {returnTips} from '../../static/inverse/core/exact/stage.js';
 import {StructureSymmetry} from '../../static/inverse/core/exact/symmetry.js';
@@ -174,4 +174,15 @@ test('pruned to its nearest partners, a position keeps one along its own edge in
   };
   assert.equal(longest({reach: Infinity}), 2);
   assert.equal(longest({}), 8);
+});
+
+test('two touchings a hair apart, merged, lose the tiny curves between them and keep four', () => {
+  // As stjernegitter traced: two points 0.06 pixels apart joined by two tiny
+  // curves either way round, each through a point only it and its partner share.
+  const p = [5, 5], m1 = [5.0012, 5.0008], m2 = [4.9989, 4.999], out = [[5, 8], [8, 5], [5, 2], [2, 5]].map(q => [p, q]);
+  const kept = withoutClosedSlivers([[p, m1], [m1, p], ...out, [p, m2], [m2, p]], .002);
+  assert.deepEqual(kept, out);
+  // A loop of real size through the point stays.
+  const big = [[p, [6, 6]], [[6, 6], p]];
+  assert.equal(withoutClosedSlivers([...big, ...out], .002).length, 6);
 });
