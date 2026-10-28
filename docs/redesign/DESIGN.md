@@ -316,8 +316,10 @@ padding-bottom 4, margin-bottom 10, no rule under it). Section ids `klassiske`, 
 
 Categories (hearts.json, 2026-10-22): Klassiske, Stjerner, Mønstre, Fliser, Figurer, Tekst, Hjerter. Fliser ("Tilings")
 holds the Escher-like tilings, where the red and the white pieces are the same interlocking figure: Dag og nat,
-Puslespil, Drageskæl, Kroge, Alhambra, Kølbuer, Hanefod, Dråber, Fiskeskæl, Bølger. Plain polygon tilings (Sildeben,
-Flyvende gæs) and Hermann-gitter stay in Mønstre. Tekst holds five hearts made with the design page's text frames and checked
+Puslespil, Drageskæl, Alhambra, Skrå kryds, Plus 3, Kølbuer, Hanefod, Dråber, Fiskeskæl, Bølger, each a tile of Tegn's
+Escher tab, so that "Rediger" opens it there (since 28 Oct 2026, when Skrå kryds and Plus 3 came from Mønstre and Kroge
+went there: its half circles cross each other three times, which no tile's cuts do). Plain polygon tilings (Sildeben,
+Flyvende gæs), Hermann-gitter and Stjerner og kors (two figures) stay in Mønstre. Tekst holds five hearts made with the design page's text frames and checked
 as paper (each template drawn at 80 mm, every piece joined to its ear by paper about 2 mm wide or more, no red cut;
 `$lib/geometry/paperNecks`, the design page's own check, since 23 Oct 2026, when GOD JUL's and JUL 2026's letter
 curls were opened by hand by 0.3–0.7 units where they held pieces by 1.7–1.98 mm):
@@ -741,9 +743,13 @@ symmetric tile the cuts are, however its tiles were moved, sized, turned or lean
 only if it makes every cut node for node, to a hundredth of a pixel. A heart whose cuts are no tile opens as any
 other heart. The gallery's tilings (Fliser) that were drawn by scripts before the tab, Drageskæl, Kølbuer,
 Hanefod, Fiskeskæl and Bølger, are their tiles' cuts with the tile in `data-pattern` (made 2026-10-22, each
-within 0.05 mm of the drawing at the 80 mm print), so "Rediger" opens them on the Escher tab; Puslespil (a real
-puzzle's knobs turn either way), Kroge (each row leans the other way) and Alhambra (drawn up to a quarter unit off
-its tiling) are no one tile and open in the Normal tab. Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both
+within 0.05 mm of the drawing at the 80 mm print), so "Rediger" opens them on the Escher tab. So, since 2026-10-28,
+are Skrå kryds and Stjerner og kors, whose cuts cross midway along straight segments, at no node of both (moved by
+0.03 mm at most); Plus 3 and Alhambra, drawn up to a unit off their tilings and now their clean tiles (the side curve
+(0.4, 0.2), (0.6, −0.2) of Skrå kryds; legs at right angles, 2 : 1), sized to stay nearest the drawing (within 0.5 and
+0.8 mm), each keeping its symmetry; and Puslespil, whose knobs turned either way at random and now follow one tile, a
+ribbon-cut puzzle (Naboer, Drejet: two knobs and two holes on every piece, every other piece turned a quarter).
+Kroge, whose half circles cross each other three times, is no tile and opens in the Normal tab. Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both
 tabs, a drag that cannot go where the pointer is stops at the last place that weaves, and a line above the heart
 says why: two cuts would cross, a curve would cross itself, or it would leave the woven square. Cuts of a
 lobe that come too close without crossing are not stopped but drawn red, and the warning above the heart says

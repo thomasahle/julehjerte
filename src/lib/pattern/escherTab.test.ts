@@ -155,11 +155,7 @@ describe("Tegn's Escher tab", () => {
 		expect(turnDegrees(centred)).toBeCloseTo(-0.5, 6);
 	});
 
-	it("opens the gallery's tilings (Fliser) on the Escher tab, as Tegn does: on the tile each was saved with, else on one its cuts are", () => {
-		// Not one tile, so none of the tab's types: a real puzzle's knobs turn either way; each row of
-		// hooks leans the other way, so the crossings are no grid the tab's tiles make; the arrows were
-		// drawn up to a quarter unit off their tiling, which as a tile would move cut ends by 0.8 mm.
-		const notTiles = ['puslespil', 'permo-kroge', 'alhambra'];
+	it("opens every one of the gallery's tilings (Fliser) on the Escher tab, as Tegn does: on the tile each was saved with, else on one its cuts are", () => {
 		const fliser = hearts.categories.find((c) => c.id === 'fliser')!.hearts;
 		for (const id of fliser) {
 			const design = loadHeart(id);
@@ -167,9 +163,7 @@ describe("Tegn's Escher tab", () => {
 			const heart = { fingers, gridSize: design.gridSize, rect: inferOverlapRect(fingers, design.gridSize), weaveParity: design.weaveParity as 0 | 1 };
 			const saved = design.pattern ? restoredTile(design.pattern, heart) : null;
 			if (design.pattern) expect(saved, `${id} is its saved tile`).not.toBeNull();
-			const tile = saved ?? resumedTile(null, heart);
-			if (notTiles.includes(id)) expect(tile, id).toBeNull();
-			else expect(tile, id).not.toBeNull();
+			expect(saved ?? resumedTile(null, heart), id).not.toBeNull();
 		}
 	});
 

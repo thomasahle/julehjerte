@@ -1,86 +1,32 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width="100mm"
-   height="100mm"
-   viewBox="0 0 100 100"
-   version="1.1"
-   id="svg1"
-   xml:space="preserve"
-   inkscape:version="1.3 (0e150ed, 2023-07-21)"
-   sodipodi:docname="alhambra.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:dc="http://purl.org/dc/elements/1.1/"><title
-     id="title10">Alhambra</title>
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="0" data-pattern="{&quot;rule&quot;:&quot;opposite:mirror:mirror&quot;,&quot;cuts&quot;:5,&quot;curves&quot;:{&quot;vertical&quot;:[[0,0,0.06666666666666667,0.13333333333333333,0.13333333333333333,0.26666666666666666,0.2,0.4],[0.2,0.4,0.4666666666666667,0.2666666666666667,0.7333333333333334,0.13333333333333336,1,0]],&quot;horizontal&quot;:[[0,0,0.06666666666666667,-0.13333333333333333,0.13333333333333333,-0.26666666666666666,0.2,-0.4],[0.2,-0.4,0.4666666666666667,-0.2666666666666667,0.7333333333333334,-0.13333333333333336,1,0]]},&quot;shape&quot;:[1.0658,0,0,1.0658],&quot;pan&quot;:[0,-1],&quot;lines&quot;:{&quot;V&quot;:[1,5],&quot;H&quot;:[2,5]}}">
+  <title>Alhambra</title>
+  <title xml:lang="da"></title>
+  <title xml:lang="en"></title>
   <desc xml:lang="da">Et mønster inspireret af flisemønstrene i Alhambra: røde og hvide møllefigurer, der griber ind i hinanden over hele fladen. Seks striber i hver halvdel, alle klip lige, men med mange skarpe hjørner. Halvdelene er spejlvendte, og én skabelon dækker begge. Hjørnerne har det med at hænge fast under flettingen, så hjertet er ikke det første, man skal give sig i kast med.</desc>
-  <desc xml:lang="en">A pattern inspired by the tilings of the Alhambra: red and white pinwheel figures interlocking across the whole field. Six strips in each half, every cut straight, but with a lot of sharp corners. The halves mirror each other, and one template covers both. The corners tend to snag while weaving, so this should not be your first braiding project.</desc><sodipodi:namedview
-     id="namedview1"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="mm"
-     inkscape:zoom="1.1951438"
-     inkscape:cx="176.96615"
-     inkscape:cy="176.12943"
-     inkscape:window-width="1368"
-     inkscape:window-height="834"
-     inkscape:window-x="200"
-     inkscape:window-y="75"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="layer1" /><defs
-     id="defs1" /><g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"><g
-       id="g5"><path
-         style="fill:none;stroke:#ff7800;stroke-width:0.3;stroke-opacity:0.495935"
-         d="M 6.8875224,-0.07088146 21.563433,28.689243 7.1258109,35.945757 21.589694,64.318028 7.0879321,71.595275 21.685876,100.14374"
-         id="path1"
-         sodipodi:nodetypes="cccccc" /><path
-         style="fill:none;stroke:#ff7800;stroke-width:0.3;stroke-opacity:0.495935"
-         d="M 42.451896,-0.07088146 57.127807,28.689243 42.690185,35.945757 57.154068,64.318028 42.652306,71.595275 57.25025,100.14374"
-         id="path2"
-         sodipodi:nodetypes="cccccc" /><path
-         style="fill:none;stroke:#ff7800;stroke-width:0.3;stroke-opacity:0.495935"
-         d="M 78.115604,-0.07088146 92.791515,28.689243 78.353893,35.945757 92.817776,64.318028 78.316014,71.595275 92.913958,100.14374"
-         id="path3"
-         sodipodi:nodetypes="cccccc" /><path
-         style="fill:none;stroke:#ff7800;stroke-width:0.3;stroke-opacity:0.495935"
-         d="M 31.330429,-0.0436661 25.19534,10.938358 39.577729,18.323774 25.160756,46.577128 39.587805,53.947599 25.179231,82.195113 39.422146,89.485112 33.410802,100.13439"
-         id="path4" /><path
-         style="fill:none;stroke:#ff7800;stroke-width:0.3;stroke-opacity:0.495935"
-         d="M 66.953577,-0.0436661 60.818488,10.938358 75.200877,18.323774 60.783904,46.577128 75.210953,53.947599 60.802379,82.195113 75.045294,89.485112 69.03395,100.13439"
-         id="path5" /></g><g
-       id="g10"
-       transform="matrix(0,1,1,0,-0.135773,0.13577354)"
-       style="stroke:#57e389"><path
-         style="fill:none;stroke:#57e389;stroke-width:0.3;stroke-opacity:0.495935"
-         d="M 6.8875224,-0.07088146 21.563433,28.689243 7.1258109,35.945757 21.589694,64.318028 7.0879321,71.595275 21.685876,100.14374"
-         id="path6"
-         sodipodi:nodetypes="cccccc" /><path
-         style="fill:none;stroke:#57e389;stroke-width:0.3;stroke-opacity:0.495935"
-         d="M 42.451896,-0.07088146 57.127807,28.689243 42.690185,35.945757 57.154068,64.318028 42.652306,71.595275 57.25025,100.14374"
-         id="path7"
-         sodipodi:nodetypes="cccccc" /><path
-         style="fill:none;stroke:#57e389;stroke-width:0.3;stroke-opacity:0.495935"
-         d="M 78.115604,-0.07088146 92.791515,28.689243 78.353893,35.945757 92.817776,64.318028 78.316014,71.595275 92.913958,100.14374"
-         id="path8"
-         sodipodi:nodetypes="cccccc" /><path
-         style="fill:none;stroke:#57e389;stroke-width:0.3;stroke-opacity:0.495935"
-         d="M 31.330429,-0.0436661 25.19534,10.938358 39.577729,18.323774 25.160756,46.577128 39.587805,53.947599 25.179231,82.195113 39.422146,89.485112 33.410802,100.13439"
-         id="path9" /><path
-         style="fill:none;stroke:#57e389;stroke-width:0.3;stroke-opacity:0.495935"
-         d="M 66.953577,-0.0436661 60.818488,10.938358 75.200877,18.323774 60.783904,46.577128 75.210953,53.947599 60.802379,82.195113 75.045294,89.485112 69.03395,100.13439"
-         id="path10" /></g></g><metadata
-     id="metadata10"><rdf:RDF><cc:Work
-         rdf:about=""><dc:title>Alhambra</dc:title><dc:creator><cc:Agent rdf:about="https://hjemmesider.diku.dk/~torbenm/"><dc:title>Torben Mogensen</dc:title></cc:Agent></dc:creator><dc:description>A pattern inspired by the Alhambra tiling. Note that it is somewhat tricky to braid, as the corners tend to snag, so it should not be your first braiding project.</dc:description><dc:source>https://hjemmesider.diku.dk/~torbenm/hearts.pdf#page=9</dc:source></cc:Work></rdf:RDF></metadata></svg>
+  <desc xml:lang="en">A pattern inspired by the tilings of the Alhambra: red and white pinwheel figures interlocking across the whole field. Six strips in each half, every cut straight, but with a lot of sharp corners. The halves mirror each other, and one template covers both. The corners tend to snag while weaving, so this should not be your first braiding project.</desc>
+  <desc>A pattern inspired by the Alhambra tiling. Note that it is somewhat tricky to braid, as the corners tend to snag, so it should not be your first braiding project.</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Alhambra</dc:title>
+        <dc:creator>
+          <cc:Agent rdf:about="https://hjemmesider.diku.dk/~torbenm/">
+            <dc:title>Torben Mogensen</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:description>A pattern inspired by the Alhambra tiling. Note that it is somewhat tricky to braid, as the corners tend to snag, so it should not be your first braiding project.</dc:description>
+        <dc:source>https://hjemmesider.diku.dk/~torbenm/hearts.pdf#page=9</dc:source>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 100 21.0533 C 99.9124 21.2284 99.8249 21.4036 99.7373 21.5787 C 95.0004 19.2102 90.2636 16.8418 85.5267 14.4733 C 80.7898 12.1049 76.0529 9.7364 71.316 7.368 C 70.1318 9.7364 68.9476 12.1049 67.7633 14.4733 C 66.5791 16.8418 65.3949 19.2102 64.2107 21.5787 C 59.4738 19.2102 54.7369 16.8418 50 14.4733 C 45.2631 12.1049 40.5262 9.7364 35.7893 7.368 C 34.6051 9.7364 33.4209 12.1049 32.2367 14.4733 C 31.0524 16.8418 29.8682 19.2102 28.684 21.5787 C 23.9471 19.2102 19.2102 16.8418 14.4733 14.4733 C 9.7364 12.1049 4.9996 9.7364 0.2627 7.368 C 0.1751 7.5431 0.0876 7.7182 0 7.8933" stroke="orange" fill="none"/>
+  <path d="M 100 33.8817 C 96.3598 35.7018 92.7196 37.5219 89.0793 39.342 C 87.8951 36.9736 86.7109 34.6051 85.5267 32.2367 C 84.3424 29.8682 83.1582 27.4998 81.974 25.1313 C 77.2371 27.4998 72.5002 29.8682 67.7633 32.2367 C 63.0264 34.6051 58.2896 36.9736 53.5527 39.342 C 52.3684 36.9736 51.1842 34.6051 50 32.2367 C 48.8158 29.8682 47.6316 27.4998 46.4473 25.1313 C 41.7104 27.4998 36.9736 29.8682 32.2367 32.2367 C 27.4998 34.6051 22.7629 36.9736 18.026 39.342 C 16.8418 36.9736 15.6576 34.6051 14.4733 32.2367 C 13.2891 29.8682 12.1049 27.4998 10.9207 25.1313 C 7.2804 26.9514 3.6402 28.7716 0 30.5917" stroke="orange" fill="none"/>
+  <path d="M 100 56.58 C 99.9124 56.7551 99.8249 56.9302 99.7373 57.1053 C 95.0004 54.7369 90.2636 52.3684 85.5267 50 C 80.7898 47.6316 76.0529 45.2631 71.316 42.8947 C 70.1318 45.2631 68.9476 47.6316 67.7633 50 C 66.5791 52.3684 65.3949 54.7369 64.2107 57.1053 C 59.4738 54.7369 54.7369 52.3684 50 50 C 45.2631 47.6316 40.5262 45.2631 35.7893 42.8947 C 34.6051 45.2631 33.4209 47.6316 32.2367 50 C 31.0524 52.3684 29.8682 54.7369 28.684 57.1053 C 23.9471 54.7369 19.2102 52.3684 14.4733 50 C 9.7364 47.6316 4.9996 45.2631 0.2627 42.8947 C 0.1751 43.0698 0.0876 43.2449 0 43.42" stroke="orange" fill="none"/>
+  <path d="M 100 69.4083 C 96.3598 71.2284 92.7196 73.0486 89.0793 74.8687 C 87.8951 72.5002 86.7109 70.1318 85.5267 67.7633 C 84.3424 65.3949 83.1582 63.0264 81.974 60.658 C 77.2371 63.0264 72.5002 65.3949 67.7633 67.7633 C 63.0264 70.1318 58.2896 72.5002 53.5527 74.8687 C 52.3684 72.5002 51.1842 70.1318 50 67.7633 C 48.8158 65.3949 47.6316 63.0264 46.4473 60.658 C 41.7104 63.0264 36.9736 65.3949 32.2367 67.7633 C 27.4998 70.1318 22.7629 72.5002 18.026 74.8687 C 16.8418 72.5002 15.6576 70.1318 14.4733 67.7633 C 13.2891 65.3949 12.1049 63.0264 10.9207 60.658 C 7.2804 62.4781 3.6402 64.2982 0 66.1183" stroke="orange" fill="none"/>
+  <path d="M 100 92.1067 C 99.9124 92.2818 99.8249 92.4569 99.7373 92.632 C 95.0004 90.2636 90.2636 87.8951 85.5267 85.5267 C 80.7898 83.1582 76.0529 80.7898 71.316 78.4213 C 70.1318 80.7898 68.9476 83.1582 67.7633 85.5267 C 66.5791 87.8951 65.3949 90.2636 64.2107 92.632 C 59.4738 90.2636 54.7369 87.8951 50 85.5267 C 45.2631 83.1582 40.5262 80.7898 35.7893 78.4213 C 34.6051 80.7898 33.4209 83.1582 32.2367 85.5267 C 31.0524 87.8951 29.8682 90.2636 28.684 92.632 C 23.9471 90.2636 19.2102 87.8951 14.4733 85.5267 C 9.7364 83.1582 4.9996 80.7898 0.2627 78.4213 C 0.1751 78.5964 0.0876 78.7716 0 78.9467" stroke="orange" fill="none"/>
+  <path d="M 21.0533 100 C 21.2284 99.9124 21.4036 99.8249 21.5787 99.7373 C 19.2102 95.0004 16.8418 90.2636 14.4733 85.5267 C 12.1049 80.7898 9.7364 76.0529 7.368 71.316 C 9.7364 70.1318 12.1049 68.9476 14.4733 67.7633 C 16.8418 66.5791 19.2102 65.3949 21.5787 64.2107 C 19.2102 59.4738 16.8418 54.7369 14.4733 50 C 12.1049 45.2631 9.7364 40.5262 7.368 35.7893 C 9.7364 34.6051 12.1049 33.4209 14.4733 32.2367 C 16.8418 31.0524 19.2102 29.8682 21.5787 28.684 C 19.2102 23.9471 16.8418 19.2102 14.4733 14.4733 C 12.1049 9.7364 9.7364 4.9996 7.368 0.2627 C 7.5431 0.1751 7.7182 0.0876 7.8933 0" stroke="green" fill="none"/>
+  <path d="M 33.8817 100 C 35.7018 96.3598 37.5219 92.7196 39.342 89.0793 C 36.9736 87.8951 34.6051 86.7109 32.2367 85.5267 C 29.8682 84.3424 27.4998 83.1582 25.1313 81.974 C 27.4998 77.2371 29.8682 72.5002 32.2367 67.7633 C 34.6051 63.0264 36.9736 58.2896 39.342 53.5527 C 36.9736 52.3684 34.6051 51.1842 32.2367 50 C 29.8682 48.8158 27.4998 47.6316 25.1313 46.4473 C 27.4998 41.7104 29.8682 36.9736 32.2367 32.2367 C 34.6051 27.4998 36.9736 22.7629 39.342 18.026 C 36.9736 16.8418 34.6051 15.6576 32.2367 14.4733 C 29.8682 13.2891 27.4998 12.1049 25.1313 10.9207 C 26.9514 7.2804 28.7716 3.6402 30.5917 0" stroke="green" fill="none"/>
+  <path d="M 56.58 100 C 56.7551 99.9124 56.9302 99.8249 57.1053 99.7373 C 54.7369 95.0004 52.3684 90.2636 50 85.5267 C 47.6316 80.7898 45.2631 76.0529 42.8947 71.316 C 45.2631 70.1318 47.6316 68.9476 50 67.7633 C 52.3684 66.5791 54.7369 65.3949 57.1053 64.2107 C 54.7369 59.4738 52.3684 54.7369 50 50 C 47.6316 45.2631 45.2631 40.5262 42.8947 35.7893 C 45.2631 34.6051 47.6316 33.4209 50 32.2367 C 52.3684 31.0524 54.7369 29.8682 57.1053 28.684 C 54.7369 23.9471 52.3684 19.2102 50 14.4733 C 47.6316 9.7364 45.2631 4.9996 42.8947 0.2627 C 43.0698 0.1751 43.2449 0.0876 43.42 0" stroke="green" fill="none"/>
+  <path d="M 69.4083 100 C 71.2284 96.3598 73.0486 92.7196 74.8687 89.0793 C 72.5002 87.8951 70.1318 86.7109 67.7633 85.5267 C 65.3949 84.3424 63.0264 83.1582 60.658 81.974 C 63.0264 77.2371 65.3949 72.5002 67.7633 67.7633 C 70.1318 63.0264 72.5002 58.2896 74.8687 53.5527 C 72.5002 52.3684 70.1318 51.1842 67.7633 50 C 65.3949 48.8158 63.0264 47.6316 60.658 46.4473 C 63.0264 41.7104 65.3949 36.9736 67.7633 32.2367 C 70.1318 27.4998 72.5002 22.7629 74.8687 18.026 C 72.5002 16.8418 70.1318 15.6576 67.7633 14.4733 C 65.3949 13.2891 63.0264 12.1049 60.658 10.9207 C 62.4781 7.2804 64.2982 3.6402 66.1183 0" stroke="green" fill="none"/>
+  <path d="M 92.1067 100 C 92.2818 99.9124 92.4569 99.8249 92.632 99.7373 C 90.2636 95.0004 87.8951 90.2636 85.5267 85.5267 C 83.1582 80.7898 80.7898 76.0529 78.4213 71.316 C 80.7898 70.1318 83.1582 68.9476 85.5267 67.7633 C 87.8951 66.5791 90.2636 65.3949 92.632 64.2107 C 90.2636 59.4738 87.8951 54.7369 85.5267 50 C 83.1582 45.2631 80.7898 40.5262 78.4213 35.7893 C 80.7898 34.6051 83.1582 33.4209 85.5267 32.2367 C 87.8951 31.0524 90.2636 29.8682 92.632 28.684 C 90.2636 23.9471 87.8951 19.2102 85.5267 14.4733 C 83.1582 9.7364 80.7898 4.9996 78.4213 0.2627 C 78.5964 0.1751 78.7716 0.0876 78.9467 0" stroke="green" fill="none"/>
+</svg>

@@ -782,29 +782,6 @@
     },
     "photo": null
   },
-  "plus3": {
-    "name": "Plus 3",
-    "author": "Thomas Ahle",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 5,
-      "y": 5
-    },
-    "difficulty": "hard",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": false,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
   "amy-weave-1": {
     "name": "Weave 1",
     "names": {
@@ -1242,6 +1219,32 @@
     },
     "photo": null
   },
+  "permo-kroge": {
+    "name": "Kroge",
+    "names": {
+      "en": "Hooks"
+    },
+    "author": "Per V. Mortensen",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": false,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "blomster-hjerte": {
     "name": "Blomster-hjerte",
     "names": {
@@ -1264,32 +1267,6 @@
       "curveSymmetry": true,
       "lobeSymmetry": true,
       "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
-  "skraa-kryds": {
-    "name": "Skrå kryds",
-    "names": {
-      "en": "Slanted crosses"
-    },
-    "author": "Ukendt",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "juleflet.dk",
-    "date": "2026-10-21",
-    "description": null,
-    "gridSize": {
-      "x": 4,
-      "y": 4
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": false,
       "sharedTemplate": true
     },
     "photo": null
@@ -1581,32 +1558,6 @@
     },
     "photo": null
   },
-  "permo-kroge": {
-    "name": "Kroge",
-    "names": {
-      "en": "Hooks"
-    },
-    "author": "Per V. Mortensen",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": "https://web.archive.org/web/20070821003348/http://permo.homepage.dk/hjcir-01.htm",
-    "date": null,
-    "description": null,
-    "gridSize": {
-      "x": 4,
-      "y": 4
-    },
-    "difficulty": "hard",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": true,
-      "lobeSymmetry": true,
-      "mirrorSymmetry": false,
-      "sharedTemplate": true
-    },
-    "photo": null
-  },
   "alhambra": {
     "name": "Alhambra",
     "author": "Torben Mogensen",
@@ -1633,6 +1584,55 @@
       "width": 1065,
       "height": 1200
     }
+  },
+  "skraa-kryds": {
+    "name": "Skrå kryds",
+    "names": {
+      "en": "Slanted crosses"
+    },
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-21",
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": false,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "plus3": {
+    "name": "Plus 3",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": false,
+      "sharedTemplate": true
+    },
+    "photo": null
   },
   "koelbuer": {
     "name": "Kølbuer",

@@ -199,10 +199,6 @@
     "name": "Plus",
     "difficulty": "medium"
   },
-  "plus3": {
-    "name": "Plus 3",
-    "difficulty": "hard"
-  },
   "amy-weave-1": {
     "name": "Weave 1",
     "names": {
@@ -317,19 +313,19 @@
     },
     "difficulty": "medium"
   },
+  "permo-kroge": {
+    "name": "Kroge",
+    "names": {
+      "en": "Hooks"
+    },
+    "difficulty": "hard"
+  },
   "blomster-hjerte": {
     "name": "Blomster-hjerte",
     "names": {
       "en": "Flower heart"
     },
     "difficulty": "hard"
-  },
-  "skraa-kryds": {
-    "name": "Skrå kryds",
-    "names": {
-      "en": "Slanted crosses"
-    },
-    "difficulty": "medium"
   },
   "fejlternet": {
     "name": "Fejlternet hjerte",
@@ -405,16 +401,20 @@
     },
     "difficulty": "medium"
   },
-  "permo-kroge": {
-    "name": "Kroge",
-    "names": {
-      "en": "Hooks"
-    },
-    "difficulty": "hard"
-  },
   "alhambra": {
     "name": "Alhambra",
     "difficulty": "expert"
+  },
+  "skraa-kryds": {
+    "name": "Skrå kryds",
+    "names": {
+      "en": "Slanted crosses"
+    },
+    "difficulty": "medium"
+  },
+  "plus3": {
+    "name": "Plus 3",
+    "difficulty": "hard"
   },
   "koelbuer": {
     "name": "Kølbuer",

@@ -1,21 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width="100mm"
-   height="100mm"
-   viewBox="0 0 100 100"
-   version="1.1"
-   id="svg1"
-   xml:space="preserve"
-   inkscape:version="1.3 (0e150ed, 2023-07-21)"
-   sodipodi:docname="plus3.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="0" data-pattern="{&quot;rule&quot;:&quot;ih61&quot;,&quot;cuts&quot;:3,&quot;curves&quot;:{&quot;side&quot;:[[0,0,0.13333333333333333,0.06666666666666667,0.26666666666666666,0.13333333333333333,0.4,0.2],[0.4,0.2,0.4666666666666667,0.06666666666666668,0.5333333333333333,-0.06666666666666665,0.6,-0.2],[0.6,-0.2,0.7333333333333333,-0.13333333333333336,0.8666666666666667,-0.06666666666666668,1,0]]},&quot;shape&quot;:[1.0627,0,0,1.0627],&quot;pan&quot;:[-0.5,0.5],&quot;lines&quot;:{&quot;V&quot;:[1,4],&quot;H&quot;:[0,4]}}">
   <title>Plus 3</title>
+  <title xml:lang="da"></title>
+  <title xml:lang="en"></title>
   <desc xml:lang="da">Det samme korsmotiv gentaget over hele fladen, så røde og hvide plusser griber ind i hinanden. Fem striber i hver halvdel og lige klip hele vejen, men knap halvtreds hjørner at følge. Begge halvdele klippes efter samme skabelon. Mønsteret går kun op, hvis over-under-rytmen holder hele vejen, så tæl efter for hver stribe, du fletter.</desc>
   <desc xml:lang="en">The same cross motif repeated across the whole field, so red and white crosses interlock. Five strips in each half and straight cuts throughout, but close to fifty corners to follow. Both halves are cut from the same template. The pattern only comes out right if the over-under rhythm holds all the way, so count again after every strip you weave.</desc>
   <metadata>
@@ -31,66 +17,12 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <sodipodi:namedview
-     id="namedview1"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="mm"
-     inkscape:zoom="0.91579024"
-     inkscape:cx="74.798788"
-     inkscape:cy="124.48265"
-     inkscape:window-width="1496"
-     inkscape:window-height="991"
-     inkscape:window-x="0"
-     inkscape:window-y="34"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="layer1" /><defs
-     id="defs1" /><g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"><path
-       style="fill:#ffffff;stroke:#2ec27e;stroke-width:0.3"
-       d="M 94.528467,100.11561 84.109194,78.97506 94.67947,73.689923 84.109194,52.322864 94.67947,47.037728 84.109194,25.746172 94.67947,20.461034 84.486704,-0.22650591"
-       id="path1" /><use
-       x="0"
-       y="0"
-       xlink:href="#path1"
-       id="use1"
-       transform="translate(-26.391363)"
-       style="fill:none" /><use
-       x="0"
-       y="0"
-       xlink:href="#use1"
-       id="use2"
-       transform="translate(-26.077669)"
-       style="fill:none" /><use
-       x="0"
-       y="0"
-       xlink:href="#use2"
-       id="use3"
-       transform="translate(-26.64151)" /><use
-       x="0"
-       y="0"
-       xlink:href="#path1"
-       id="use4"
-       transform="rotate(90,49.839061,49.944561)" /><use
-       x="0"
-       y="0"
-       xlink:href="#use1"
-       id="use5"
-       transform="rotate(90,49.839061,49.944561)" /><use
-       x="0"
-       y="0"
-       xlink:href="#use2"
-       id="use6"
-       transform="rotate(90,49.839061,49.944561)" /><use
-       x="0"
-       y="0"
-       xlink:href="#use3"
-       id="use7"
-       transform="rotate(90,49.839061,49.944561)" /></g></svg>
+  <path d="M 100 5.0744 C 96.6171 6.7658 93.2342 8.4573 89.8512 10.1488 C 86.3089 11.9199 82.7666 13.6911 79.2242 15.4622 C 77.4531 11.9199 75.6819 8.3776 73.9107 4.8353 C 70.3684 6.6064 66.8261 8.3776 63.2837 10.1488 C 59.7414 11.9199 56.1991 13.6911 52.6568 15.4622 C 50.8856 11.9199 49.1144 8.3776 47.3432 4.8353 C 43.8009 6.6064 40.2586 8.3776 36.7163 10.1488 C 33.1739 11.9199 29.6316 13.6911 26.0893 15.4622 C 24.3181 11.9199 22.5469 8.3776 20.7758 4.8353 C 17.2334 6.6064 13.6911 8.3776 10.1488 10.1488 C 6.7658 11.8402 3.3829 13.5317 0 15.2231" stroke="orange" fill="none"/>
+  <path d="M 100 31.6419 C 96.6171 33.3333 93.2342 35.0248 89.8512 36.7163 C 86.3089 38.4874 82.7666 40.2586 79.2242 42.0297 C 77.4531 38.4874 75.6819 34.9451 73.9107 31.4028 C 70.3684 33.1739 66.8261 34.9451 63.2837 36.7163 C 59.7414 38.4874 56.1991 40.2586 52.6568 42.0297 C 50.8856 38.4874 49.1144 34.9451 47.3432 31.4028 C 43.8009 33.1739 40.2586 34.9451 36.7163 36.7163 C 33.1739 38.4874 29.6316 40.2586 26.0893 42.0297 C 24.3181 38.4874 22.5469 34.9451 20.7758 31.4028 C 17.2334 33.1739 13.6911 34.9451 10.1488 36.7163 C 6.7658 38.4077 3.3829 40.0992 0 41.7906" stroke="orange" fill="none"/>
+  <path d="M 100 58.2094 C 96.6171 59.9008 93.2342 61.5923 89.8512 63.2837 C 86.3089 65.0549 82.7666 66.8261 79.2242 68.5973 C 77.4531 65.0549 75.6819 61.5126 73.9107 57.9703 C 70.3684 59.7414 66.8261 61.5126 63.2837 63.2837 C 59.7414 65.0549 56.1991 66.8261 52.6568 68.5973 C 50.8856 65.0549 49.1144 61.5126 47.3432 57.9703 C 43.8009 59.7414 40.2586 61.5126 36.7163 63.2837 C 33.1739 65.0549 29.6316 66.8261 26.0893 68.5973 C 24.3181 65.0549 22.5469 61.5126 20.7758 57.9703 C 17.2334 59.7414 13.6911 61.5126 10.1488 63.2837 C 6.7658 64.9752 3.3829 66.6667 0 68.3581" stroke="orange" fill="none"/>
+  <path d="M 100 84.7769 C 96.6171 86.4683 93.2342 88.1598 89.8512 89.8512 C 86.3089 91.6224 82.7666 93.3936 79.2242 95.1648 C 77.4531 91.6224 75.6819 88.0801 73.9107 84.5377 C 70.3684 86.3089 66.8261 88.0801 63.2837 89.8512 C 59.7414 91.6224 56.1991 93.3936 52.6568 95.1648 C 50.8856 91.6224 49.1144 88.0801 47.3432 84.5377 C 43.8009 86.3089 40.2586 88.0801 36.7163 89.8512 C 33.1739 91.6224 29.6316 93.3936 26.0893 95.1648 C 24.3181 91.6224 22.5469 88.0801 20.7758 84.5377 C 17.2334 86.3089 13.6911 88.0801 10.1488 89.8512 C 6.7658 91.5427 3.3829 93.2342 0 94.9256" stroke="orange" fill="none"/>
+  <path d="M 15.2231 100 C 13.5317 96.6171 11.8402 93.2342 10.1488 89.8512 C 8.3776 86.3089 6.6064 82.7666 4.8353 79.2242 C 8.3776 77.4531 11.9199 75.6819 15.4622 73.9107 C 13.6911 70.3684 11.9199 66.8261 10.1488 63.2837 C 8.3776 59.7414 6.6064 56.1991 4.8353 52.6568 C 8.3776 50.8856 11.9199 49.1144 15.4622 47.3432 C 13.6911 43.8009 11.9199 40.2586 10.1488 36.7163 C 8.3776 33.1739 6.6064 29.6316 4.8353 26.0892 C 8.3776 24.3181 11.9199 22.5469 15.4622 20.7758 C 13.6911 17.2334 11.9199 13.6911 10.1488 10.1488 C 8.4573 6.7658 6.7658 3.3829 5.0744 0" stroke="green" fill="none"/>
+  <path d="M 41.7906 100 C 40.0992 96.6171 38.4077 93.2342 36.7163 89.8512 C 34.9451 86.3089 33.1739 82.7666 31.4028 79.2242 C 34.9451 77.4531 38.4874 75.6819 42.0297 73.9107 C 40.2586 70.3684 38.4874 66.8261 36.7163 63.2837 C 34.9451 59.7414 33.1739 56.1991 31.4028 52.6568 C 34.9451 50.8856 38.4874 49.1144 42.0297 47.3432 C 40.2586 43.8009 38.4874 40.2586 36.7163 36.7163 C 34.9451 33.1739 33.1739 29.6316 31.4028 26.0892 C 34.9451 24.3181 38.4874 22.5469 42.0297 20.7758 C 40.2586 17.2334 38.4874 13.6911 36.7163 10.1488 C 35.0248 6.7658 33.3333 3.3829 31.6419 0" stroke="green" fill="none"/>
+  <path d="M 68.3581 100 C 66.6667 96.6171 64.9752 93.2342 63.2837 89.8512 C 61.5126 86.3089 59.7414 82.7666 57.9702 79.2242 C 61.5126 77.4531 65.0549 75.6819 68.5973 73.9107 C 66.8261 70.3684 65.0549 66.8261 63.2837 63.2837 C 61.5126 59.7414 59.7414 56.1991 57.9702 52.6568 C 61.5126 50.8856 65.0549 49.1144 68.5973 47.3432 C 66.8261 43.8009 65.0549 40.2586 63.2837 36.7163 C 61.5126 33.1739 59.7414 29.6316 57.9702 26.0892 C 61.5126 24.3181 65.0549 22.5469 68.5973 20.7758 C 66.8261 17.2334 65.0549 13.6911 63.2837 10.1488 C 61.5923 6.7658 59.9008 3.3829 58.2094 0" stroke="green" fill="none"/>
+  <path d="M 94.9256 100 C 93.2342 96.6171 91.5427 93.2342 89.8512 89.8512 C 88.0801 86.3089 86.3089 82.7666 84.5377 79.2242 C 88.0801 77.4531 91.6224 75.6819 95.1648 73.9107 C 93.3936 70.3684 91.6224 66.8261 89.8512 63.2837 C 88.0801 59.7414 86.3089 56.1991 84.5377 52.6568 C 88.0801 50.8856 91.6224 49.1144 95.1648 47.3432 C 93.3936 43.8009 91.6224 40.2586 89.8512 36.7163 C 88.0801 33.1739 86.3089 29.6316 84.5377 26.0892 C 88.0801 24.3181 91.6224 22.5469 95.1648 20.7758 C 93.3936 17.2334 91.6224 13.6911 89.8512 10.1488 C 88.1598 6.7658 86.4683 3.3829 84.7769 0" stroke="green" fill="none"/>
+</svg>
