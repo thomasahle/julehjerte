@@ -12,70 +12,67 @@
     {
       "id": "stjerner",
       "hearts": [
-        "stjerne",
+        "sun",
         "groen-stjerne",
+        "stjerne",
         "explosion",
+        "kompasrose",
+        "permo-sol",
+        "nihon",
+        "andreaskors",
         "stjerne-ramme",
         "5star",
         "simple-5star",
-        "sun",
-        "permo-sol",
-        "nihon",
         "davidsstjerne-circ",
-        "david4",
-        "kompasrose"
+        "david4"
       ]
     },
     {
       "id": "hjerter",
       "hearts": [
+        "nemt-hjerte",
+        "ni-hjerter-i-tern",
         "triple-heart",
+        "hjertekloever",
+        "firkloever-hjerte",
         "mor-og-barn",
         "h4h2",
         "hjerte-paa-hjerte",
         "hjerte-i-hjerte-i-hjerte",
-        "nemt-hjerte",
-        "ni-hjerter-i-tern",
         "lilje1",
-        "lilje2",
-        "hjertekloever",
-        "firkloever-hjerte"
+        "lilje2"
       ]
     },
     {
       "id": "moenstre",
       "hearts": [
-        "circle",
-        "balls",
-        "plus",
-        "amy-weave-1",
-        "amy-weave-2",
         "amy-rosette",
         "amy-pattern",
         "amy-flowering",
-        "amy-pinecone",
-        "squares",
-        "sildeben",
         "roserude",
-        "flyvendegaes",
-        "origami",
-        "hermanngitter",
-        "tragt",
-        "boelgebrud",
-        "glaskuppel",
-        "hvirvel",
-        "permo-cirkler",
-        "permo-kroge",
+
         "blomster-hjerte",
-        "fejlternet",
-        "gitterhjerte",
+        "circle",
+        "balls",
+        "permo-cirkler",
+        "glaskuppel",
+
+        "amy-weave-1",
+        "amy-weave-2",
+        "tragt",
+        "amy-pinecone",
         "cirkelhjerte",
         "firkanthjerte",
-        "khatam",
-        "stjernegitter",
         "fire-stjerner",
-        "stjernerogkors",
-        "andreaskors"
+
+        "squares",
+        "hermanngitter",
+        "gitterhjerte",
+        "fejlternet",
+
+        "boelgebrud",
+        "hvirvel",
+        "permo-kroge"
       ]
     },
     {
@@ -86,12 +83,19 @@
         "drageskael",
         "alhambra",
         "skraa-kryds",
+        "plus",
         "plus3",
         "koelbuer",
         "hanefod",
         "permo-draaber",
         "fiskeskael",
-        "boelger"
+        "boelger",
+        "khatam",
+        "stjernegitter",
+        "stjernerogkors",
+        "sildeben",
+        "flyvendegaes",
+        "origami"
       ]
     },
     {
