@@ -21,6 +21,7 @@
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
 	import { t, type Language } from '$lib/i18n';
+	import { formatMm, SQUARE_MM } from '$lib/paint/units';
 	import { LOBE_OUTLINE_COLORS } from '$lib/editor/outlineColors';
 	import { inferOverlapRect } from '$lib/utils/overlapRect';
 	import type { HeartColors, HeartDesign } from '$lib/types/heart';
@@ -1133,12 +1134,13 @@
 		selectionNote = note;
 	}
 
-	/** The marquee as it stands, in whole cells, for the live region to read out. */
+	/** The marquee as it stands, in millimetres of the 100 mm square, for the live region to read out. */
 	function announceSelection(sel: Selection): void {
+		const size = mask?.size;
 		announce(
 			t('paintSelectionLifted', lang, {
-				width: Math.round(sel.placement.width),
-				height: Math.round(sel.placement.height)
+				width: formatMm(sel.placement.width, lang, size),
+				height: formatMm(sel.placement.height, lang, size)
 			})
 		);
 	}
@@ -1796,7 +1798,7 @@
 	 * the column is spent on it, and it is read out where they are standing.
 	 */
 	let label = $derived(
-		(mask ? t('paintCanvasLabel', lang, { size: mask.size }) : t('paintCanvasEmptyLabel', lang)) +
+		(mask ? t('paintCanvasLabel', lang, { size: SQUARE_MM }) : t('paintCanvasEmptyLabel', lang)) +
 			(tool === 'select' && !disabled ? `. ${t('paintSelectionKeyboard', lang)}` : '')
 	);
 </script>

@@ -31,6 +31,7 @@
 	import type { IconProps } from '$lib/components/icons/types';
 	import type { Component } from 'svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
+	import { formatMm } from '$lib/paint/units';
 	import type { HeartColors } from '$lib/types/heart';
 	import {
 		MIN_BRUSH_SIZE,
@@ -343,7 +344,7 @@
 							</button>
 						{/each}
 					</span>
-					<output>{t('paintBrushRadius', lang, { size: brushSize })}</output>
+					<output>{t('paintBrushRadius', lang, { size: formatMm(brushSize, lang) })}</output>
 				</span>
 				<!-- The slider moves the size by ratio (see `sizeOfSlider`): a pen
 				     reaches 200 cells, and a fine one must stay easy to set. -->
@@ -354,7 +355,7 @@
 					step="1"
 					value={sliderOfSize(brushSize, smallest, largest)}
 					aria-label={tr('paintBrush')}
-					aria-valuetext={t('paintBrushRadius', lang, { size: brushSize })}
+					aria-valuetext={t('paintBrushRadius', lang, { size: formatMm(brushSize, lang) })}
 					oninput={(event) => onBrushSize(sizeOfSlider(event.currentTarget.valueAsNumber, smallest, largest))}
 					{disabled}
 				/>

@@ -49,7 +49,11 @@ Canvas (full-bleed, same `CanvasBackdrop` sky and landscape, same fit band betwe
   the woven diamond carrying the mask (mask 0 = left colour, 1 = right colour), a faint outline of the diamond.
   Painting happens directly on the diamond. Outside the diamond the pointer does nothing.
 - Mirror lines, dashed `--blue`, drawn in heart orientation for the symmetries that are on (see §5).
-- Top-left pill: "Maske · 400 × 400 · to farver" plus a one-line hint. Below 900px the pill goes away.
+- Top-left pill: "Maske · 100 × 100 mm · to farver" plus a one-line hint. Below 900px the pill goes away.
+- Sizes are told in millimetres, the woven square taken as 100 mm (the owner's request, 2026-10-28: "instead of
+  writing sizes of things in pixels, we should instead use mm"): a 400-cell mask's cell is 0,25 mm, so the radius
+  reads "Radius: 0,25 mm" to "Radius: 50 mm", and a selection and the canvas's label say mm too (`$lib/paint/units`).
+  The tools still count cells.
 - Wheel/pinch zoom and pan as in Tegn (the owner's request, 2026-10-26): Ctrl + wheel, a trackpad's pinch or a
   mouse wheel counting lines zoom about the pointer (0.5–20×); a trackpad's two-finger scroll pans; on a touch screen
   two fingers zoom and pan, and a second finger gives up the first one's stroke (taken back with nothing to redo,
@@ -71,7 +75,7 @@ of an overlay scrollbar until a gesture starts):
   rectangle the drag spans, along the strips as the rectangle is), Udtvær, Markér as 40px icon buttons (lucide:
   pencil, paint-bucket, minus (rotated 45°) or a simple line glyph, square, ellipse, square-dashed); a labelled brush-radius
   slider (1–200 cells, default 6; each step along it the same ratio, so a fine pen is as easy to set as a broad one;
-  `[`/`]` a cell at a time while fine, a tenth of the size once broad) with its current value; "Maler med" offers the two paper swatches plus XOR.
+  `[`/`]` a cell at a time while fine, a tenth of the size once broad) with its current value in mm; "Maler med" offers the two paper swatches plus XOR.
   XOR inverts each covered cell once per gesture, including overlapping dabs and mirrored copies; pen, line,
   rectangle and fill support it. There is no eraser: with two papers, erasing is painting the other one (the white
   swatch, or X). The user had it removed on 2026-10-26. The mask remains binary. A noninteractive

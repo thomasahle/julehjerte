@@ -81,7 +81,7 @@ describe('MaskToolPanel', () => {
 		try {
 			const slider = panel.target.querySelector<HTMLInputElement>('input[type="range"]')!;
 			expect(slider.getAttribute('aria-label')).toBe('Pensel');
-			expect(slider.getAttribute('aria-valuetext')).toBe('Radius: 6 px');
+			expect(slider.getAttribute('aria-valuetext')).toBe('Radius: 1,5 mm');
 			expect([slider.min, slider.max, slider.step, slider.value]).toEqual(['0', '1000', '1', String(sliderOfSize(6, 1, 200))]);
 			for (const size of [9, 1, 200]) {
 				slider.value = String(sliderOfSize(size, 1, 200));

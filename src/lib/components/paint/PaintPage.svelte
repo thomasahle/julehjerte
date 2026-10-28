@@ -34,6 +34,7 @@
 	import ImportImageDialog from './ImportImageDialog.svelte';
 	import { pageTitle } from '$lib/seo';
 	import { t, tArray, type Language } from '$lib/i18n';
+	import { SQUARE_MM } from '$lib/paint/units';
 	import { editorHref, homeAnchorHref } from '$lib/i18n/routes';
 	import { NARROW_QUERY } from '$lib/breakpoints';
 	import { readPanelCollapsed, writePanelCollapsed } from '$lib/editor/panelState';
@@ -1050,7 +1051,7 @@
 					{/if}
 
 					<p class="canvas-pill">
-						<strong>{t('paintMaskPill', lang, { size: session.mask?.size ?? 400 })}</strong>
+						<strong>{t('paintMaskPill', lang, { size: SQUARE_MM })}</strong>
 						<span>{t('paintCanvasHint', lang)}</span>
 						{#if hasMissingPhotoPixels}
 							<span>{t('paintMissingPhotoPixels', lang)}</span>

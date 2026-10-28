@@ -574,12 +574,12 @@ export const translations = {
     paintModeSwitch: 'Skift mellem Tegn og Mal',
     paintPageTitle: 'Mal et hjerte',
     paintNeedsHeart: 'Find snit først',
-    /** {size} = celler pr. side af masken */
-    paintMaskPill: 'Maske · {size} × {size} · to farver',
+    /** {size} = sidelængden af masken i mm, når det vævede kvadrat regnes som 100 mm */
+    paintMaskPill: 'Maske · {size} × {size} mm · to farver',
     paintCanvasHint: 'Mal på den flettede firkant. Lapperne uden om viser papirfarverne.',
     paintMissingPhotoPixels: 'Skraverede områder ligger uden for billedet. Mal på dem for at vælge en farve.',
-    /** {size} = celler pr. side af masken */
-    paintCanvasLabel: 'Masken som hjerte, {size} × {size} celler i to papirfarver',
+    /** {size} = sidelængden af masken i mm, når det vævede kvadrat regnes som 100 mm */
+    paintCanvasLabel: 'Masken som hjerte, {size} × {size} mm i to papirfarver',
     paintCanvasEmptyLabel: 'Tomt hjerte uden maske',
     paintImportImage: 'Importér billede',
     paintClear: 'Ryd',
@@ -599,8 +599,8 @@ export const translations = {
      */
     paintSelectionKeyboard:
       'Markér uden mus: Enter markerer midten, piletaster flytter, Skift og en piletast skalerer, komma og punktum drejer.',
-    /** {width} × {height} = markeringens størrelse i celler */
-    paintSelectionLifted: 'Markering, {width} × {height} felter',
+    /** {width} × {height} = markeringens størrelse i mm, når det vævede kvadrat regnes som 100 mm */
+    paintSelectionLifted: 'Markering, {width} × {height} mm',
     paintSelectionPlaced: 'Markeringen er lagt fast',
     paintSelectionCleared: 'Markeringen er ryddet',
     paintSelectionDropped: 'Markeringen er fortrudt',
@@ -609,7 +609,8 @@ export const translations = {
     paintFenceActive: 'Du maler kun i markeringen.',
     paintDeselect: 'Fravælg',
     paintBrush: 'Pensel',
-    paintBrushRadius: 'Radius: {size} px',
+    /** {size} = penslens radius i mm, når det vævede kvadrat regnes som 100 mm */
+    paintBrushRadius: 'Radius: {size} mm',
     paintBrushShape: 'Penselspids',
     paintBrushRound: 'Rund pensel',
     paintBrushSquare: 'Firkantet pensel, langs strimlerne',
@@ -1674,12 +1675,12 @@ export const translations = {
     paintModeSwitch: 'Switch between Draw and Paint',
     paintPageTitle: 'Paint a heart',
     paintNeedsHeart: 'Find the cuts first',
-    /** {size} = cells per side of the mask */
-    paintMaskPill: 'Mask · {size} × {size} · two colours',
+    /** {size} = the mask's side in mm, the woven square taken as 100 mm */
+    paintMaskPill: 'Mask · {size} × {size} mm · two colours',
     paintCanvasHint: 'Paint on the woven square. The lobes around it show the paper colours.',
     paintMissingPhotoPixels: 'Shaded areas are outside the photo. Paint them to choose a colour.',
-    /** {size} = cells per side of the mask */
-    paintCanvasLabel: 'The mask as a heart, {size} × {size} cells in two paper colours',
+    /** {size} = the mask's side in mm, the woven square taken as 100 mm */
+    paintCanvasLabel: 'The mask as a heart, {size} × {size} mm in two paper colours',
     paintCanvasEmptyLabel: 'An empty heart with no mask',
     paintImportImage: 'Import picture',
     paintClear: 'Clear',
@@ -1699,8 +1700,8 @@ export const translations = {
      */
     paintSelectionKeyboard:
       'Select without a mouse: Enter marks the middle, the arrow keys move it, Shift and an arrow key scale it, comma and full stop turn it.',
-    /** {width} × {height} = the size of the selection in cells */
-    paintSelectionLifted: 'Selection, {width} × {height} cells',
+    /** {width} × {height} = the size of the selection in mm, the woven square taken as 100 mm */
+    paintSelectionLifted: 'Selection, {width} × {height} mm',
     paintSelectionPlaced: 'The selection is put down',
     paintSelectionCleared: 'The selection is cleared',
     paintSelectionDropped: 'The selection is dropped',
@@ -1709,7 +1710,8 @@ export const translations = {
     paintFenceActive: 'You only paint inside the selection.',
     paintDeselect: 'Deselect',
     paintBrush: 'Brush',
-    paintBrushRadius: 'Radius: {size} px',
+    /** {size} = the brush's radius in mm, the woven square taken as 100 mm */
+    paintBrushRadius: 'Radius: {size} mm',
     paintsWith: 'Paints with',
     paintsWithLeft: 'The left lobe\'s colour',
     paintsWithRight: 'The right lobe\'s colour',
