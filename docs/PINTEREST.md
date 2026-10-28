@@ -84,7 +84,8 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   (2026-12-01), between Julemand and Hanefod, so both are out before Christmas
   and away from their own categories.
   Ni ruder followed the same day at day 34 (2026-11-24), between Snefnug and
-  Puslespil.
+  Puslespil, and Koch's Stjerneblomst at day 32 (2026-11-22), between Ni
+  hjerter i tern and Sildeben, which moved Ni ruder to day 35.
 - The feed holds the released items only (nothing future-dated), newest first,
   at most 30 (`PINTEREST_MAX_ITEMS`). When every heart is out, the feed stops
   growing: it does not cycle.

@@ -2106,6 +2106,33 @@
     },
     "photo": null
   },
+  "stjerneblomst": {
+    "name": "Stjerneblomst",
+    "names": {
+      "da": "Stjerneblomst",
+      "en": "Star flower"
+    },
+    "author": "Hans H. Koch",
+    "authorUrl": null,
+    "publisher": "Børnenes Magasin",
+    "publisherUrl": null,
+    "source": "https://aldus.dk/hanskoch/julehjerter.php",
+    "date": "1916-12-01",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "kloeverblad-hjerte": {
     "name": "Kløverblads-hjerte",
     "names": {

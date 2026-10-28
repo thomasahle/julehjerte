@@ -542,6 +542,14 @@
     },
     "difficulty": "medium"
   },
+  "stjerneblomst": {
+    "name": "Stjerneblomst",
+    "names": {
+      "da": "Stjerneblomst",
+      "en": "Star flower"
+    },
+    "difficulty": "medium"
+  },
   "kloeverblad-hjerte": {
     "name": "Kløverblads-hjerte",
     "names": {

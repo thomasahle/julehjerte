@@ -1,0 +1,34 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="1">
+  <title>Stjerneblomst</title>
+  <title xml:lang="da">Stjerneblomst</title>
+  <title xml:lang="en">Star flower</title>
+  <desc xml:lang="da">En blomst af otte ens røde kronblade jævnt fordelt om en rund midte, med en ring af hvid bund om midten og det hele i en hvid ottekant. Fem striber i hver halvdel med buede klip. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er mellem. Klip de korte lige stykker hen over ringen skarpt; de ligger oven i hinanden i de to halvdele. Fra arkitekt Hans H. Kochs [julehjerter i Børnenes Magasin 1916](https://aldus.dk/hanskoch/julehjerter.php).</desc>
+  <desc xml:lang="en">A flower of eight identical red petals spaced evenly round a round centre, with a ring of white ground round the centre and the whole in a white octagon. Five strips in each half with curved cuts. The halves mirror each other, so one template covers both, and the difficulty is medium. Cut the short straight pieces across the ring sharply; they lie on top of each other in the two halves. From the architect Hans H. Koch's [Christmas hearts in Børnenes Magasin 1916](https://aldus.dk/hanskoch/julehjerter.php).</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Stjerneblomst</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Hans H. Koch</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Børnenes Magasin</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:source>https://aldus.dk/hanskoch/julehjerter.php</dc:source>
+        <dc:date>1916-12-01</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 0 23.166 C 3.861 19.305 7.722 15.444 11.583 11.583 C 13.193 12.014 14.803 12.446 16.412 12.877 C 28.004 15.983 36.737 23.271 41.964 30.599 C 48.049 39.13 51.951 39.13 58.036 30.599 C 63.263 23.271 71.996 15.983 83.588 12.877 C 85.197 12.446 86.807 12.014 88.417 11.583 C 92.278 15.444 96.139 19.305 100 23.166" stroke="orange" fill="none"/>
+  <path d="M 0 47.5 C 10.392 41.5 21.722 40.478 30.599 41.964 C 33.557 42.459 37.626 43.99 40.808 40.808 C 41.986 41.986 43.165 43.165 44.343 44.343 C 47.467 41.219 52.533 41.219 55.657 44.343 C 56.835 43.165 58.014 41.986 59.192 40.808 C 62.374 43.99 66.443 42.459 69.401 41.964 C 78.278 40.478 89.608 41.5 100 47.5" stroke="orange" fill="none"/>
+  <path d="M 0 52.5 C 10.392 58.5 21.722 59.522 30.599 58.036 C 33.557 57.541 37.626 56.01 40.808 59.192 C 41.986 58.014 43.165 56.835 44.343 55.657 C 47.467 58.781 52.533 58.781 55.657 55.657 C 56.835 56.835 58.014 58.014 59.192 59.192 C 62.374 56.01 66.443 57.541 69.401 58.036 C 78.278 59.522 89.608 58.5 100 52.5" stroke="orange" fill="none"/>
+  <path d="M 0 76.834 C 3.861 80.695 7.722 84.556 11.583 88.417 C 13.193 87.986 14.803 87.554 16.412 87.123 C 28.004 84.017 36.737 76.729 41.964 69.401 C 48.049 60.87 51.951 60.87 58.036 69.401 C 63.263 76.729 71.996 84.017 83.588 87.123 C 85.197 87.554 86.807 87.986 88.417 88.417 C 92.278 84.556 96.139 80.695 100 76.834" stroke="orange" fill="none"/>
+  <path d="M 23.166 0 C 19.305 3.861 15.444 7.722 11.583 11.583 C 12.014 13.193 12.446 14.803 12.877 16.412 C 15.983 28.004 23.271 36.737 30.599 41.964 C 39.13 48.049 39.13 51.951 30.599 58.036 C 23.271 63.263 15.983 71.996 12.877 83.588 C 12.446 85.197 12.014 86.807 11.583 88.417 C 15.444 92.278 19.305 96.139 23.166 100" stroke="green" fill="none"/>
+  <path d="M 47.5 0 C 41.5 10.392 40.478 21.722 41.964 30.599 C 42.459 33.557 43.99 37.626 40.808 40.808 C 41.986 41.986 43.165 43.165 44.343 44.343 C 41.219 47.467 41.219 52.533 44.343 55.657 C 43.165 56.835 41.986 58.014 40.808 59.192 C 43.99 62.374 42.459 66.443 41.964 69.401 C 40.478 78.278 41.5 89.608 47.5 100" stroke="green" fill="none"/>
+  <path d="M 52.5 0 C 58.5 10.392 59.522 21.722 58.036 30.599 C 57.541 33.557 56.01 37.626 59.192 40.808 C 58.014 41.986 56.835 43.165 55.657 44.343 C 58.781 47.467 58.781 52.533 55.657 55.657 C 56.835 56.835 58.014 58.014 59.192 59.192 C 56.01 62.374 57.541 66.443 58.036 69.401 C 59.522 78.278 58.5 89.608 52.5 100" stroke="green" fill="none"/>
+  <path d="M 76.834 0 C 80.695 3.861 84.556 7.722 88.417 11.583 C 87.986 13.193 87.554 14.803 87.123 16.412 C 84.017 28.004 76.729 36.737 69.401 41.964 C 60.87 48.049 60.87 51.951 69.401 58.036 C 76.729 63.263 84.017 71.996 87.123 83.588 C 87.554 85.197 87.986 86.807 88.417 88.417 C 84.556 92.278 80.695 96.139 76.834 100" stroke="green" fill="none"/>
+</svg>

@@ -53,6 +53,7 @@
 				{ id: 'boelger', number: 1 },
 				{ id: 'andreaskors', number: 2 },
 				{ id: 'permo-cirkler', number: 3 },
+				{ id: 'stjerneblomst', number: 5 },
 				{ id: 'hjertekloever', number: 7 },
 				{ id: 'fiskeskael', number: 1 }
 			]
