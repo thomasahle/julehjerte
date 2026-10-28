@@ -106,7 +106,7 @@
 
 	{#each SOURCES as source (source.id)}
 		{@const src = `${base}/about/history/${source.image}`}
-		<article class="source" aria-labelledby={`history-${source.id}`}>
+		<article class="source" class:floated={source.small} aria-labelledby={`history-${source.id}`}>
 			<h3 id={`history-${source.id}`}>{t(source.title, lang)}</h3>
 			<figure class:portrait={source.height > source.width} class:small={source.small}>
 				{#if source.small}
@@ -241,6 +241,29 @@
 	figure.small img {
 		border: 0;
 		background: none;
+	}
+
+	/* A small picture stands beside its text, which wraps round it. */
+	.source.floated {
+		display: flow-root;
+	}
+
+	.source.floated > * + * {
+		margin-top: 12px;
+	}
+
+	.source.floated figure {
+		float: left;
+		width: 200px;
+		margin-right: 24px;
+		margin-bottom: 8px;
+	}
+
+	@media (max-width: 480px) {
+		.source.floated figure {
+			width: 140px;
+			margin-right: 16px;
+		}
 	}
 
 	figcaption {
