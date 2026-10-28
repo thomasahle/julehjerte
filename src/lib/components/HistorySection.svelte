@@ -75,7 +75,6 @@
 				{ id: 'stjerneblomst', number: 5 },
 				{ id: 'potteplante', number: 6 },
 				{ id: 'hjertekloever', number: 7 },
-				{ id: 'fiskeskael', number: 1 }
 			]
 		},
 		{
@@ -88,7 +87,10 @@
 			alt: 'historyFamilieJournalAlt',
 			caption: 'historyFamilieJournalCaption',
 			number: 'historyHeartNumber',
-			hearts: [{ id: 'kompasrose', number: 4 }]
+			hearts: [
+                              { id: 'andreaskors', number: 2 },
+                              { id: 'kompasrose', number: 4 }
+                        ]
 		}
 	];
 </script>
