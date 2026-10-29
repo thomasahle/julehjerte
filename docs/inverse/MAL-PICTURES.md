@@ -915,7 +915,12 @@ rises (ball 0.44% to 0.86%, amy-weave-2 0.30% to 1.4%: the template cannot
 follow every flipped pixel), and hidden cut grows where a wobble forces a
 cut across a narrow neck (flyvendegaes 5 to 24 segments, ball 4 to 16,
 snowflake 5 to 9); ten others keep their count. So painting a mask that is a
-little rough costs quality before it costs the template.
+little rough costs quality before it costs the template. Rounding the wobbling
+outline first (1 to 3 pixels) does not recover the clean count: hidden cut fell
+on some (juletrae 45 to 14 mm) and rose on others (ball, amy-pattern). The
+extra hidden cut is the route falling back: flyvendegaes' traced search ends
+at 11 segments by 19 s but breaks the inter-slit clearance at two places
+(penalty 2, as the near misses above), so the rounded outline's 24 stand.
 
 ## Time spent after the template (2026-10-29)
 
