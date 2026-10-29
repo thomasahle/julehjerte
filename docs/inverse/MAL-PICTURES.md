@@ -951,7 +951,9 @@ faces up to 400 candidates in 0.2 s, 2048 for the 728 of tak's background in
 5.5 s): the lazy embedding rows fell from 8 to 4 in 60 s, and tak still ended
 with the crossing; the sets left are 5 chords in a face of 4 cycles (28 of
 them in 80 s), which cannot be listed (728 to the fifth). Only an encoding of
-such faces in the model (as the annuli of one hole have theirs) would do.
+such faces in the model (as the annuli of one hole have theirs) would do. Nor
+do the rounds get quicker with HiGHS's options: tak's runs take 0.8 to 11.7 s,
+7 to 11 s with presolve off, the same with the heuristic effort at 0.01.
 
 ## Painted edges (2026-10-29)
 
