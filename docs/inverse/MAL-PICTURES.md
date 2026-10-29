@@ -927,7 +927,10 @@ the polygon offsets (its own audit says "pass", it returns the template
 unchanged in 0.6 s however long it is given), so it cannot mend it; the
 search's own paper loop (narrow paper around the doubted spots forbidden, three
 tries; six gave the same template, the loop ending on its time or on no spot
-left to forbid) is the only repair there. Stjernerogkors and drageskael-shot flip between
+left to forbid) is the only repair there. Without its symmetry ties venus
+does not pass either (g-venus, venus and venus-shot each end with a cutting
+rule broken, the inter-slit clearance, where tied one fails the paper), so
+searching untied and correcting the symmetry afterwards would not rescue it. Stjernerogkors and drageskael-shot flip between
 0 and 8 or 8 and 16 hidden segments between runs of the same code (HiGHS
 time limits), which is why comparisons here are repeated alone.
 
