@@ -121,6 +121,34 @@ export function generateEditorFingers(tile: PatternTile, rect: OverlapRect): Fin
 	return [...family('H'), ...family('V')];
 }
 
+/**
+ * How far above its chord a side curve stands at abscissa `x`, in the stretch's own frame (the curve
+ * runs from (0, 0) to (1, 0)): found by sampling, the first time the curve passes `x`; 0 where it does not.
+ */
+export function sideHeight(curve: SideCurve): (x: number) => number {
+	const points: Vec[] = [curve[0]?.p0 ?? { x: 0, y: 0 }];
+	for (const s of curve) {
+		for (let k = 1; k <= 16; k++) {
+			const t = k / 16;
+			const u = 1 - t;
+			points.push({
+				x: u * u * u * s.p0.x + 3 * u * u * t * s.p1.x + 3 * u * t * t * s.p2.x + t * t * t * s.p3.x,
+				y: u * u * u * s.p0.y + 3 * u * u * t * s.p1.y + 3 * u * t * t * s.p2.y + t * t * t * s.p3.y
+			});
+		}
+	}
+	return (x) => {
+		for (let k = 1; k < points.length; k++) {
+			const [a, b] = [points[k - 1]!, points[k]!];
+			if ((a.x - x) * (b.x - x) <= 0 && a.x !== b.x) return a.y + ((x - a.x) / (b.x - a.x)) * (b.y - a.y);
+		}
+		return 0;
+	};
+}
+
+/** How tall the half arrowheads stand on the heart's cell, against their buttons': they are the cell's marks, not its picture. */
+const HEAD_SCALE = 0.6;
+
 /** The raw square's four corners. */
 const SQUARE_CORNERS: Vec[] = [
 	{ x: 0, y: 0 },
@@ -135,9 +163,9 @@ const SQUARE_CORNERS: Vec[] = [
  * the curves bend from it shows, and what the corners and the black points move; and the outline of
  * the tile's own cell, the one drawn — the red cell nearest the heart's middle — with its curved
  * sides, and the half arrowheads of the type's template on its sides (`templateStretches`), as on
- * the type's button. All follow the tile as it is dragged.
+ * the type's button, standing on the curves. All follow the tile as it is dragged.
  */
-export function cellOverlay(tile: PatternTile, rect: OverlapRect): { grid: string; cell: string; at: { c: number; d: number }; heads: Array<{ d: string; color: string }> } {
+export function cellOverlay(tile: PatternTile, rect: OverlapRect, headScale = HEAD_SCALE): { grid: string; cell: string; at: { c: number; d: number }; heads: Array<{ d: string; color: string }> } {
 	const px = toPx(rect);
 	const at = (i: number, j: number) => px(cellsToRaw(tile, crossing(tile, i, j)));
 	const cells = SQUARE_CORNERS.map((q) => rawToCells(tile, q));
@@ -165,7 +193,13 @@ export function cellOverlay(tile: PatternTile, rect: OverlapRect): { grid: strin
 		const [si, sj] = [best.c + i, best.d + j];
 		const frame = stretchFrame(tile, kind, si, sj);
 		const color = CURVE_COLORS[stretchSource(tile.rule, kind, si, sj).curve];
-		return arrowheadsInFrame(tile.rule, kind, si, sj).map((head) => ({ d: `${through(head.map((p) => px(cellsToRaw(tile, toFrame(frame, p)))))} Z`, color }));
+		// Each stands on the side's curve, not on its chord: a vertex on the side keeps its place along it and
+		// lies on the curve, one off it is the same distance above.
+		const along = sideHeight(stretchCurve(tile, kind, si, sj));
+		return arrowheadsInFrame(tile.rule, kind, si, sj).map((head) => ({
+			d: `${through(head.map((p) => px(cellsToRaw(tile, toFrame(frame, { x: p.x, y: p.y * headScale + along(p.x) })))))} Z`,
+			color
+		}));
 	});
 	return { grid: lines.join(' '), cell: `${segmentsToPathData(outline)} Z`, at: { c: best.c, d: best.d }, heads };
 }

@@ -23,6 +23,7 @@ import {
 	placedPointAt,
 	slideCutEnd,
 	readTile,
+	sideHeight,
 	specialNodes,
 	settledTile,
 	tileAfterFingerEdit,
@@ -152,11 +153,37 @@ describe("the bridge between a tile and Tegn's cuts", () => {
 		if (ruleKey(rule) === 'opposite:move:move') expect(numbers(cell).length).toBeGreaterThanOrEqual(8);
 	});
 
+	it('measures how far above its chord a side curve stands, to put the half arrowheads on it', () => {
+		const flat = sideHeight(straightCurve());
+		expect([0, 0.3, 1].map(flat)).toEqual([0, 0, 0]);
+		// a bump rising to 0.2 over the middle, symmetric
+		const bump = sideHeight([{ p0: { x: 0, y: 0 }, p1: { x: 0.25, y: 0.2667 }, p2: { x: 0.75, y: 0.2667 }, p3: { x: 1, y: 0 } }]);
+		expect(bump(0)).toBeCloseTo(0, 6);
+		expect(bump(0.5)).toBeCloseTo(0.2, 2);
+		expect(bump(0.25)).toBeCloseTo(bump(0.75), 2);
+		expect(bump(0.25)).toBeGreaterThan(0.1);
+		expect(bump(2)).toBe(0);
+	});
+
+	it('stands the half arrowheads on a curved side, not on its chord, and smaller than on the buttons', () => {
+		const tile = knobTile(opposite('move', 'move'));
+		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
+		const [small, whole] = [cellOverlay(tile, rect), cellOverlay(tile, rect, 1)];
+		expect(small.heads).toHaveLength(whole.heads.length);
+		const numbers = (d: string) => (d.match(/-?\d+(\.\d+)?/g) ?? []).map(Number);
+		const span = (d: string) => {
+			const n = numbers(d);
+			const [xs, ys] = [n.filter((_, k) => k % 2 === 0), n.filter((_, k) => k % 2 === 1)];
+			return Math.hypot(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+		};
+		small.heads.forEach((head, k) => expect(span(head.d), `arrowhead ${k}`).toBeLessThan(span(whole.heads[k]!.d)));
+	});
+
 	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))('%s: "Vis felter" marks the cell with its type\'s template: the arrowheads of its button, where the cell is', (_key, rule) => {
 		// On a plain tile the stretches are the plain grid's, where `arrowheadsOn` places the button's arrowheads.
 		const tile = straightTile(rule, 3);
 		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
-		const { heads, at } = cellOverlay(tile, rect);
+		const { heads, at } = cellOverlay(tile, rect, 1);
 		const expected = templateStretches(rule).flatMap(({ kind, i, j }) => arrowheadsOn(rule, kind, at.c + i, at.d + j).map((head) => head.map((p) => cellsToPx(tile, rect, p))));
 		expect(heads).toHaveLength(expected.length);
 		heads.forEach((head, k) => {

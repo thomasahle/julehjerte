@@ -641,7 +641,8 @@ far the curves bend from the cells' grid shows, and the tile's own cell, the red
 and edged with a wide soft stroke under the cuts (`cellOverlay`), with the type's template on it, the half
 arrowheads its button shows (`templateStretches`, `arrowheadsInFrame`), on the cell's sides and, where the
 template has white tiles beside it, on theirs: the same colour is the same curve, drawn on the stretches the heart
-really has, the corners as moved (the owner's suggestion, 2026-10-29). All follow the tile as it is dragged; off by
+really has, the corners as moved, standing on the side's curve and 0.6 as tall as on the button (the owner's
+suggestion, 2026-10-29; the first version, on the chord and full size, "didn't look very good"). All follow the tile as it is dragged; off by
 default, kept for the visit only, and drawn under the cuts, so nothing in it takes a click.
 
 Where cyan and orange cut strokes overlap, alternate their colours along the shared

@@ -4111,16 +4111,16 @@
 										<path
 											d={cellLayer.cell}
 											fill="#2f5242"
-											fill-opacity="0.2"
+											fill-opacity="0.1"
 											stroke="#1e2a25"
-											stroke-opacity="0.55"
-											stroke-width="9"
+											stroke-opacity="0.4"
+											stroke-width="7"
 											stroke-linejoin="round"
 											vector-effect="non-scaling-stroke"
 										/>
 										<!-- The type's half arrowheads on its sides, as on its button: the same colour is the same curve. -->
 										{#each cellLayer.heads as head, k (k)}
-											<path d={head.d} fill={head.color} stroke="#1e2a25" stroke-opacity="0.7" stroke-width="1" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+											<path d={head.d} fill={head.color} fill-opacity="0.92" stroke="#1e2a25" stroke-opacity="0.55" stroke-width="0.8" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
 										{/each}
 									</g>
 								{/if}
