@@ -920,7 +920,13 @@ Of the 24 pictures that ended on the fitter's template, hanefod-shot,
 khatam-shot and g-khatam are exact (0.43%, 0.16% and 0.22% from their masks,
 the fitter's for khatam 0.7 to 1.5%), at 49 to 54 s; none lost on 143. Khatam
 (without its crop-shot) has more than a return broken, tak crossing slits,
-which repair does not mend. Stjernerogkors and drageskael-shot flip between
+which repair does not mend. The paper's repair (repairFinalPaper) does not
+apply the same way: venus' template, keeping every cutting rule, fails the
+paper check's floating-core test on the lattice, and that repair looks only at
+the polygon offsets (its own audit says "pass", it returns the template
+unchanged in 0.6 s however long it is given), so it cannot mend it; the
+search's own paper loop (narrow paper around the doubted spots forbidden, three
+tries) is the only repair there. Stjernerogkors and drageskael-shot flip between
 0 and 8 or 8 and 16 hidden segments between runs of the same code (HiGHS
 time limits), which is why comparisons here are repeated alone.
 
