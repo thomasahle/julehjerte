@@ -897,6 +897,14 @@ with the same templates): the coarse search usually only confirms the fine one.
 Capped at 10 s it saved little (its set-up and both stages remain) and lost
 drageskael-shot's gain.
 
+Also measured for hidden cut (nothing changed): without symmetry the coarse
+(3/2) and finer (1.5/4) grids from a topological start give the same hidden
+count on 33 pictures but boelgebrud-shot's (8 to 7, still breaking a rule); and
+the outline rounded by 3 pixels instead of the traced one gives less hidden
+cut on 2 of 41 passing pictures (circle 16 to 8 segments, simple-5star-shot
+220 to 133 mm), more on 26 and the same on 13, so choosing the better of the
+two would pay twice the time for two pictures.
+
 ## Time spent after the template (2026-10-29)
 
 Where a search succeeds, HiGHS takes 80% of its time (the lazy rules' checks
