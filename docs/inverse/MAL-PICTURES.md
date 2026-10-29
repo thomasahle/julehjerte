@@ -895,7 +895,13 @@ less (permo-draaber 10 s to 6, ramme 8 to 3, plus3 7 to 3, permo-kroge 24 to
 count stage, which runs to its budget where the minimal hidden count is not
 proven; its patience at a tenth instead of a quarter changed nothing on the 25
 (545.0 s in all, 544.9 s): there the first solution keeping every rule comes
-late, and until it does the patience does not apply.
+late, and until it does the patience does not apply. Jul's count stage is five
+rounds of 1.6, 4.3, 4.5, 6.0 and 8.4 s, each adding one or two "geometry" rows
+(slits too close, which depend on the papers chosen), the first solution
+keeping every rule at 25 s of the 27; fisk-shot has none in its 28 s. Ending a
+round at the first improving solution that breaks a new row did not shorten
+them (26.1 s against 26.9 s on jul): the time goes into finding the next
+improving solution from the incumbent, not into proving the last optimal.
 
 ## Why the searches that fail do (2026-10-29)
 
