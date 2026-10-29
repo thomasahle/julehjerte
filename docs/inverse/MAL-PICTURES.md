@@ -827,6 +827,23 @@ triple-heart exact, 0.24% from its mask in 14 s, and mor-og-barn 0.35% with 5
 hidden segments where 0.52% with 9. Of the 28 pictures taking a rounded
 outline before, the same templates (roserude in 26 s, not 11).
 
+## Where the hard pictures stand (2026-10-29)
+
+The generated Voronoi pictures ending evenly (tmp/e2e/cubic/fair, 108): 60
+exact where 50 on 10-28, none lost; those exact both times in a median of
+5.4 s where 8.4, as close to their masks. The gains are mostly two mirrors
+(d2), where the traced outline missed its ties. Turned four ways (c4, 6 of
+18) the app asks only for the half turn, and tied to all four turns these
+fare no better: three have none, the rest break a rule (two cuts of one paper
+crossing beside a junction of three bands).
+
+Of the 23 juleflet and gallery pictures still left to the fitter, given the
+traced outline 50 s alone, venus (0.20%, its first template passing the
+paper) and god-jul pass; the paper retried into the rounded outline's time
+does not (venus's retry breaks a rule). The rest break one rule or a few,
+each its own way (tak: a hidden cut ending at a touching of two checks, the
+cuts through it 0.8 mm apart).
+
 ## Details lost on photographs (2026-10-25)
 
 The 68 photographs whose template keeps every rule but loses a region of the
