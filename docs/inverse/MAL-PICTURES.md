@@ -938,6 +938,15 @@ search passes the cutting rules and paper at 42 s alone, 0.56% from its mask,
 but its template loses a region of the lettering, which the export refuses) and boelgebrud-shot, david4 and circle-shot lost to their rounded
 outlines' time. Kept at 30 s.
 
+Tak (the lettering, 12 hidden segments, 31585 rows) ends with two hidden cuts
+of one paper crossing (edges 49 and 127), which the model's lazy check knows
+(it covers hidden against hidden) and has paid for elastically; 60 s gives 10
+rounds and 150 s 15, each of about 10 s adding one more embedding row (13 of
+them) and no clean alternative. The background there is a face with several
+holes (the letters), the same shape as the Voronoi near miss, whose conflicts
+the model finds one a round; every set up front, or a direct encoding of faces
+with holes, would be the next step, and none was built.
+
 ## Painted edges (2026-10-29)
 
 A mask painted by hand has wobbling edges. 40 gallery masks with 20% of their
