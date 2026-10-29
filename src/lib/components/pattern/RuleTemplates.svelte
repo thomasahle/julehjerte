@@ -11,7 +11,9 @@
   mirror image. "Avanceret" opens the others as a table of glyphs: a column for one, two and three
   shapes, and a row for what the red tile is of itself (`tileSymmetry`): no symmetry, the same upside
   down, the same turned a quarter, its own mirror image across one line, two or four. A cell holds its
-  types in the order they were offered before; empty rows are left out. The table is open while a
+  types in the order they were offered before; empty rows are left out. The row names are turned a
+  quarter, read from below, so the width goes to the glyphs, which are as large as the panel lets six
+  be across (the owner asked for it, 2026-10-29). The table is open while a
   type of it is chosen. The owner chose the table, 2026-10-28, over sections, questions and a window
   of examples, after agent testers lost their way in the long list it replaces, and the four standard
   ones above it, the table under "Avanceret".
@@ -26,7 +28,7 @@
 
   compact   Tegn below 900px, where the panel leaves its column for a row under the drawing and can
             be 235px wide: the standard four as glyphs alone, their names their accessible names, and
-            smaller glyphs and row names in the table.
+            smaller names in the table.
 -->
 <script lang="ts">
 	import { untrack, type Snippet } from 'svelte';
@@ -129,21 +131,23 @@
 			<span class="marker" class:open={advanced} aria-hidden="true">▸</span>{tr('patternAdvanced')}
 		</button>
 		{#if advanced}
-		<div class="table">
-			<span></span>
-			{#each COLUMNS as column (column.shapes)}
-				<span class="column-name">{tr(column.name)}</span>
-			{/each}
-			{#each ROWS as row (row.symmetry)}
-				<span class="row-name">{tr(ROW_NAMES[row.symmetry])}</span>
-				{#each row.cells as cell, k (k)}
-					<div class="cell">
-						{#each cell as rule (typeKey(rule))}
-							{@render glyph(rule)}
-						{/each}
-					</div>
+		<div class="table-box">
+			<div class="table">
+				<span></span>
+				{#each COLUMNS as column (column.shapes)}
+					<span class="column-name">{tr(column.name)}</span>
 				{/each}
-			{/each}
+				{#each ROWS as row (row.symmetry)}
+					<span class="row-name"><span>{tr(ROW_NAMES[row.symmetry])}</span></span>
+					{#each row.cells as cell, k (k)}
+						<div class="cell" style:--across={3 - k}>
+							{#each cell as rule (typeKey(rule))}
+								{@render glyph(rule)}
+							{/each}
+						</div>
+					{/each}
+				{/each}
+			</div>
 		</div>
 		{/if}
 	</ToggleGroup>
@@ -269,19 +273,41 @@
 		}
 	}
 
-	/* A column of row names, then one for each number of shapes: one shape holds the most types. */
+	/*
+	  A column of row names, turned a quarter so that the table gets the width: then one column for each
+	  number of shapes, holding three, two and one glyph across. The glyphs are as large as the table's
+	  width lets six of them be (--glyph); the size the markup gives is the fallback where container
+	  queries are unknown.
+	*/
+	.table-box {
+		container-type: inline-size;
+	}
+
 	.table {
+		--label: 26px;
+		/* a glyph's button: the glyph, 1px of padding and a 1.5px border each side */
+		--button: calc(var(--glyph) + 5px);
+		--glyph: 28px;
 		display: grid;
-		grid-template-columns: auto 3fr 2fr 1fr;
+		grid-template-columns: var(--label) calc(3 * var(--button) + 10px) calc(2 * var(--button) + 8px) calc(var(--button) + 6px);
 		gap: 3px;
 		align-items: stretch;
+	}
+
+	@supports (width: 1cqw) {
+		.table {
+			/* the width, less the label and what is not a button (the column gaps 9, the cells' padding 18
+			   and gaps 6), over the six buttons a row holds across the three cells, less each button's own
+			   5px; the cells' buttons are centred in them, so a pixel too many or too few shows on neither side */
+			--glyph: max(20px, calc((100cqw - var(--label) - 33px) / 6 - 5px));
+		}
 	}
 
 	.column-name,
 	.row-name {
 		font-size: 11px;
 		font-weight: 600;
-		line-height: 1.25;
+		line-height: 1.2;
 		color: var(--muted);
 	}
 
@@ -289,18 +315,32 @@
 		padding: 0 2px 2px;
 	}
 
+	/* Read from below, as the label of a vertical axis; it wraps to the row's height, which it does not
+	   add to (rows of a single glyph are given 60px, room for "Ens hele / vejen rundt"). */
 	.row-name {
-		align-self: center;
-		max-width: 68px;
-		padding-right: 2px;
+		position: relative;
+	}
+
+	.row-name > span {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		writing-mode: vertical-rl;
+		transform: rotate(180deg);
+		text-wrap: balance;
 	}
 
 	.cell {
-		display: flex;
-		flex-wrap: wrap;
-		align-content: flex-start;
+		display: grid;
+		grid-template-columns: repeat(var(--across), var(--button));
+		justify-content: center;
+		align-content: start;
 		gap: 2px;
 		min-width: 0;
+		min-height: 60px;
 		padding: 3px;
 		border-radius: 8px;
 		background: var(--cream2, #f3f6f2);
@@ -320,6 +360,11 @@
 		box-shadow: none;
 	}
 
+	.table :global(.template) {
+		width: var(--glyph);
+		height: var(--glyph);
+	}
+
 	.table :global([data-slot='toggle-group-item']:hover) {
 		border-color: var(--line);
 		background: var(--white);
@@ -331,11 +376,11 @@
 		box-shadow: 0 0 0 1px var(--green);
 	}
 
-	.compact .row-name {
-		max-width: 54px;
-		font-size: 10px;
+	.compact .table {
+		--label: 22px;
 	}
 
+	.compact .row-name,
 	.compact .column-name {
 		font-size: 10px;
 	}

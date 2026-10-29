@@ -708,7 +708,8 @@ three a white tile of each kind below the red one. Four standard types come firs
 their way in the long list with "Vis flere" it replaces, then asked for the standard four above it and the table
 only under Avanceret): a column each for one, two and three shapes, and a row for what the red tile is of itself
 (`tileSymmetry`: Uden symmetri, Ens på hovedet, Ens hele vejen rundt, Sit eget spejlbillede, To spejle, Fire
-spejle), each cell's types in the order the list had them. The table is open whenever a type of it is chosen,
+spejle; the names turned a quarter and read from below, so the glyphs get the width and are as large as the
+panel lets six be across), each cell's types in the order the list had them. The table is open whenever a type of it is chosen,
 an undo back to one included. The tab always has a type chosen: opened on cuts that are a tile
 (the one it was left with, or a heart drawn in it), it takes that tile up; where the cuts were changed in the
 Normal tab since, it draws them again as the tile it was left with; on any other heart it draws the cuts as the
