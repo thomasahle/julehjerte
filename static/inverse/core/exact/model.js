@@ -18,8 +18,10 @@ import {geometryNogoods, nogoodKey} from './nogoods.js';
  * enumeration (16). On some models presolve spent 41 s in them, beyond its own
  * time limit, which it checks only between passes (amy-weave-1: 44 s, now
  * 2 s); on the others they took seconds and changed no template. */
-/** The most variables the rows for faces with holes may add to one face (ExactModel, `multi`). */
-const MULTI_HOLE_BITS = 1500;
+/** The most variables the rows for faces with holes may add to one face, and the
+ * most rows a model has had when it gets them by itself (ExactModel, `multi`: 'auto'; the
+ * larger models lost more time than the rows saved). */
+const MULTI_HOLE_BITS = 1500, MULTI_AUTO_ROWS = 10000;
 const SLOW_PRESOLVE_RULES = (1 << 11) | (1 << 13) | (1 << 14) | (1 << 15) | (1 << 16);
 
 /** Whether a face's hidden segments can be drawn without crossing (sat_weave.embeddable). */
@@ -79,7 +81,7 @@ export function cliqueCover(edges) {
 const LENGTH_PATIENCE = .1;
 
 export class ExactModel {
-  constructor({st, outline, cand, h = 0, statics = [], soft = new Set(), penalty = 1000, fallback = new Map(), paper = [], paperPenalty = 50, ties = [], multi = false}) {
+  constructor({st, outline, cand, h = 0, statics = [], soft = new Set(), penalty = 1000, fallback = new Map(), paper = [], paperPenalty = 50, ties = [], multi = 'auto'}) {
     this.st = st;
     this.outline = outline;
     this.cand = cand;
@@ -258,7 +260,7 @@ export class ExactModel {
     // those from outside none if inside, and the segments between two other
     // cycles none if they lie on different sides: summed over the segments,
     // not a row for each pair (big-M, a row per segment and cycle).
-    if (multi) {
+    if (multi === true || (multi === 'auto' && m.rows.length <= MULTI_AUTO_ROWS)) {
       for (const [fi, all] of byFace) {
         const cycles = cand.faces[fi].map(c => c.map(tokenKey));
         if (cycles.length < 3) continue;
@@ -304,7 +306,7 @@ export class ExactModel {
       }
     }
     this.multiHole = [];
-    if (multi) {
+    if (multi === true || (multi === 'auto' && m.rows.length <= MULTI_AUTO_ROWS)) {
       for (const [fi, all] of byFace) {
         const cycles = cand.faces[fi].map(c => c.map(tokenKey));
         if (cycles.length < 3 || cycles[0].length < 3) continue;

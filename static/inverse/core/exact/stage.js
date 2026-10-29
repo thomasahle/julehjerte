@@ -169,7 +169,7 @@ export function subgroupsOf(symmetry) {
 /** The exact search on the traced `outline` from the fitter's `template`
  * within `deadline`, under the `symmetry` ties: {found: {solution,
  * assessment} or null, report}. */
-export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true, fallback = true, even = false, multi = false} = {}) {
+export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true, fallback = true, even = false, multi = 'auto'} = {}) {
   const seconds = (deadline - performance.now()) / 1000 - reserve;
   const report = {attempted: false, symmetry};
   if (seconds < 1) return {found: null, report: {...report, reason: 'no time left'}};

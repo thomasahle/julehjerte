@@ -30,7 +30,7 @@ function holds(nogood, labels, used, switches) {
 }
 
 /** The exact template nearest the given one: {solution, report} or {error}. */
-export async function exactFromTemplate(target, template, cfg, {seconds = 20, neighbours = 8, spacing = .75, paperRetries = 2, multi = false, exact = exactOutline(target, cfg), symmetry = [], sheets = true, witness: given = null, onProgress = () => {}, geometry = false, refine = false, refineSeconds = 2} = {}) {
+export async function exactFromTemplate(target, template, cfg, {seconds = 20, neighbours = 8, spacing = .75, paperRetries = 2, multi = 'auto', exact = exactOutline(target, cfg), symmetry = [], sheets = true, witness: given = null, onProgress = () => {}, geometry = false, refine = false, refineSeconds = 2} = {}) {
   // The start: `witness` (exactStart's, start.js), or the template read here.
   const t0 = performance.now(), {st, outline, routes} = exact, witness = given || await readTemplate(template, outline);
   if (witness.error) return {error: witness.error};

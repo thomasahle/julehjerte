@@ -956,7 +956,7 @@ the chords between two different holes of such a face (the ones whose winding
 looked like the trouble) changed nothing on the Voronoi near misses and made
 tak worse (22 hidden segments, the same crossing): their conflict sets are of
 chords from the outer boundary too. The encoding that works (exact/model.js, the `multi` option of
-ExactModel, off by default). The alternation of segments from the outer
+ExactModel). The alternation of segments from the outer
 boundary to different holes, walked along the boundary as an automaton: when
 hole z appears again, each hole that appeared since z's last appearance is
 closed; a few variables per position and pair of holes, rows that only force
@@ -968,7 +968,18 @@ segment and cycle (big-M) instead of a row for each pair: on the Voronoi
 near miss (tmp/e2e/cubic fair k6 w30 seed 47) no lazy embedding rows at all, 3
 rounds, a passing template in 18 to 20 s, 0.16% from its mask (without: 24
 rounds, over 60 s, one rule broken; fixture voronoi-holes-mask.json and its
-test, which fails without the option). Not enabled: always on, the added
+test, which fails without the option). Now on by itself for small models (ExactModel `multi: 'auto'`, true forces,
+false disables): at most 10 000 rows when the rows would be added (the near miss's
+is 6 000). Measured on a quiet machine, load 6: of the gallery's pictures with
+such a face, squares, david4, permo-cirkler and davidsstjerne-circ (with their
+crop-shots) are unchanged within a few seconds (a loaded machine had made
+david4 look like a gain); on the 108 generated pictures ending evenly, 60 exact
+before and 61 now: gained f-none-k6-w30-s47 (0.16%), f-mx-k3-w30-s1 (0.12%),
+f-c2-k5-w20-s3 (0.57%) and f-mx-k5-w30-s5 (1.0%); lost f-c4-k3-w20-s3 and
+f-mx-k5-w30-s2, whose templates were 2.4% and 2.2% from their masks, the
+search with the rows ending on one 3.2% that the export refuses (a third,
+f-tr-k5-w30-s11, is the fitter either way); time 770 s to 786 s over the 57
+exact both. Earlier, always on and without the size limit: the added
 variables slow the big faces (hermanngitter-shot 28 to 43 s, khatam-shot's
 model doubles to 41k columns and finds nothing; origami-shot's loss was
 noise), 6 pictures lost for 1 gained of the 143; as a retry after a failed
@@ -977,8 +988,7 @@ stage's time and loses dagognat-shot, david4, g-khatam, khatam-shot and
 lilje2-shot to gain none of them (the gain is on the generated pictures); and
 tak, with 728 candidates in its face, still returns nothing with it (35k rows,
 no first solution in 90 s). A face-size cap on the extra variables (1500) is
-in. What would make it usable is a cheap test of when a face has such
-conflicts before the search, which I do not have.
+in, as is the 10 000-row limit above: the larger models are left as they were.
 
 What the conflicts are, found by
 printing the sets (face of 3 cycles, 69/22/28 tokens): every set is four
