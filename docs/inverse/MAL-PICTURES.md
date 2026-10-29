@@ -931,6 +931,13 @@ left to forbid) is the only repair there. Stjernerogkors and drageskael-shot fli
 0 and 8 or 8 and 16 hidden segments between runs of the same code (HiGHS
 time limits), which is why comparisons here are repeated alone.
 
+The traced outline's budget for the exact search alone (30 s of 50) at 42
+instead: on the 50 pictures that end on the fitter's template or pass only
+with the outline rounded, 27 exact where 30, none gained (god-jul's traced
+search passes at 42 s alone, 0.56% from its mask, but not through the route's
+finish) and boelgebrud-shot, david4 and circle-shot lost to their rounded
+outlines' time. Kept at 30 s.
+
 ## Painted edges (2026-10-29)
 
 A mask painted by hand has wobbling edges. 40 gallery masks with 20% of their
