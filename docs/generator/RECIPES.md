@@ -100,6 +100,28 @@ its outline comes back near itself, as the generator's severe pinch has it)
 needs a place in it, so that the paper on either side is cut by different
 papers.
 
+Where that finds no places (a recipe solved on another motif, whose straight
+cuts the motif's branches block, or whose cuts end in the narrow corners
+between the circle, the board's circle and its lines), it is placed twice
+more; a heart drawn so already is drawn as before. First a cut whose straight
+way is blocked goes round the motif (`ways`): through bends two clearances
+off the corners of its outline (to within half a clearance) and of the
+board's, on the side each corner points to, by the shortest way through them
+that keeps clear as a straight cut must. Then the cuts need only cross
+nothing, as a held recipe's on its own motif, each place staying where it
+lay where its cuts do: the generator judges their paper as it judges a
+solve's. Neither is tried where the board's own hidden cuts cross the motif. The
+page tries every listed recipe straight before any of these, and draws one
+so only where fewer than three drew straight: a recipe drawn only so never
+takes the place of one that drew as before. The nisse's 5×5 cuts at 71–77%
+then draw on the tree, the yule goat and the snowflake, and the circle's at
+86% on the star, tree, heart and diamond. Each such try costs a few tenths
+of a second, and a heart's tries together stop once they have checked
+`FALLBACK_WORK` straight pieces of cut: the polar star in the rays, where
+none draws so, took 2.5 s more a size without it (a third pass, searching
+for places with the cuts only crossing nothing, drew 2 of 64 recipes and was
+dropped).
+
 A recipe whose places lie in mirror pairs across the heart's middle (the
 sheet's diagonal; a solve tied so, its places at the corners nearest each
 other across it) keeps them in mirror pairs on any motif that is its own

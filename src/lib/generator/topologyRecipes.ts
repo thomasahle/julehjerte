@@ -430,7 +430,147 @@ function cheapestInOrder(count: number, n: number, cost: (i: number, s: number) 
 /** A place's hidden cut (see `placeMotif`): where it goes (a point on the
  * board, or a place on the motif), its bends (from the cut's first end,
  * `first` where that is this place), and whether it runs through the motif. */
-type Cut = { to: { at: Point } | { m: number; i: number }; inside: boolean; bends: [number, number][]; first: boolean };
+type Cut = { to: { at: Point } | { m: number; i: number }; inside: boolean; bends: [number, number][]; first: boolean; chord?: object };
+
+/** How far off a corner of the motif, in gaps, a cut going round it bends (see `ways`). */
+const ROUND = 2;
+/** How many of its first bends a cut going round the motif tries, the nearest way first (see `ways`). */
+const ROUND_TRIES = 16;
+/** How many straight pieces of hidden cut the placements going round the
+ * motif and crossing nothing may check, all a heart's recipes together
+ * (see `topologyConstruction`): the polar star's in the rays, none of which
+ * draws so, took 2.5 s a size without it. */
+export const FALLBACK_WORK = 150_000;
+
+/** A ring's corners: its points, those within `tolerance` of the line
+ * between the corners either side dropped (Douglas–Peucker, from its point
+ * farthest from its first). */
+function corners(ring: Ring, tolerance: number): Point[] {
+	const n = ring.length;
+	if (n < 4) return [...ring];
+	const far = ring.reduce((best, p, k) => Math.hypot(p[0] - ring[0][0], p[1] - ring[0][1]) > Math.hypot(ring[best][0] - ring[0][0], ring[best][1] - ring[0][1]) ? k : best, 0);
+	const keep = new Uint8Array(n);
+	keep[0] = keep[far] = 1;
+	const split = (a: number, b: number) => {
+		let worst = -1, d = tolerance;
+		for (let k = (a + 1) % n; k !== b; k = (k + 1) % n) {
+			const e = fromSide(ring[k], ring[a], ring[b]);
+			if (e > d) { d = e; worst = k; }
+		}
+		if (worst < 0) return;
+		keep[worst] = 1;
+		split(a, worst);
+		split(worst, b);
+	};
+	split(0, far);
+	split(far, 0);
+	return ring.filter((_, k) => keep[k]);
+}
+
+/** Ways round the motif and the board for a hidden cut whose straight way
+ * is blocked: its bends ROUND gaps off each corner the cut may go round (one
+ * jutting into where it runs): at each corner of the motif's rings (see
+ * `corners`, to within half a gap) and of the board's outline and hidden
+ * cuts, through the middle of the wedge between two sides meeting there
+ * wider than 186°, and past 240° also off each side, where they keep the gap
+ * from every side; from a point, the shortest way to `to` through them, each
+ * piece crossing nothing and keeping clear as a straight cut must (see
+ * `meeting`), within the motif (`inside`) or outside it; its cost as
+ * `meeting` reckons it, length and all. */
+function ways(motif: Ring[], sides: Sides, gap: number, work: { left: number }) {
+	const bends: Point[] = [];
+	// Each corner and the ways its sides leave it.
+	const at = new Map<string, { v: Point; out: Point[] }>();
+	const leave = (v: Point, to: Point) => {
+		const l = Math.hypot(to[0] - v[0], to[1] - v[1]), key = `${v[0].toFixed(6)},${v[1].toFixed(6)}`;
+		if (!l) return;
+		const corner = at.get(key) ?? { v, out: [] };
+		corner.out.push([(to[0] - v[0]) / l, (to[1] - v[1]) / l]);
+		at.set(key, corner);
+	};
+	for (const ring of motif) {
+		const pts = corners(ring, gap / 2), n = pts.length;
+		pts.forEach((v, k) => { leave(v, pts[(k + n - 1) % n]); leave(v, pts[(k + 1) % n]); });
+	}
+	for (const side of sides.all) if (side.of < 0) { leave(side.a, side.b); leave(side.b, side.a); }
+	const turn = (d: Point, a: number): Point => [d[0] * Math.cos(a) - d[1] * Math.sin(a), d[0] * Math.sin(a) + d[1] * Math.cos(a)];
+	for (const { v, out } of at.values()) {
+		const angle = (d: Point) => Math.atan2(d[1], d[0]);
+		out.sort((a, b) => angle(a) - angle(b));
+		out.forEach((d, k) => {
+			const e = out[(k + 1) % out.length];
+			let wedge = angle(e) - angle(d);
+			if (wedge <= 1e-9) wedge += 2 * Math.PI;
+			if (wedge < 186 * Math.PI / 180) return;
+			const off = [turn(d, wedge / 2), ...wedge > 240 * Math.PI / 180 ? [turn(d, Math.PI / 2), turn(e, -Math.PI / 2)] : []];
+			for (const o of off) {
+				const w: Point = [v[0] + ROUND * gap * o[0], v[1] + ROUND * gap * o[1]];
+				if (!sides.near(w, w, gap).some(side => fromSide(w, side.a, side.b) < gap)) bends.push(w);
+			}
+		});
+	}
+	const colour = bends.map(w => colourAt(w, motif)), count = bends.length;
+	const between = new Map<number, number>();
+	const clear = (u: number, v: number) => {
+		const key = Math.min(u, v) * count + Math.max(u, v);
+		let cost = between.get(key);
+		if (cost === undefined) { work.left--; between.set(key, cost = meeting(bends[u], NaN, bends[v], NaN, sides, gap)); }
+		return cost;
+	};
+	// From each bend, the shortest way on to a point (Dijkstra's, from the point).
+	const trees = new Map<string, { dist: Float64Array; next: Int32Array }>();
+	const tree = (to: Point, toOf: number, inside: boolean) => {
+		const key = `${to[0]},${to[1]},${toOf},${inside}`;
+		let found = trees.get(key);
+		if (found) return found;
+		const dist = new Float64Array(count).fill(Infinity), next = new Int32Array(count).fill(-1), done = new Uint8Array(count);
+		for (let k = 0; k < count; k++) if (colour[k] === Number(inside)) {
+			work.left--;
+			const c = meeting(bends[k], NaN, to, toOf, sides, gap);
+			if (Number.isFinite(c)) dist[k] = Math.hypot(to[0] - bends[k][0], to[1] - bends[k][1]) + c;
+		}
+		for (;;) {
+			let u = -1;
+			for (let k = 0; k < count; k++) if (!done[k] && Number.isFinite(dist[k]) && (u < 0 || dist[k] < dist[u])) u = k;
+			if (u < 0) break;
+			done[u] = 1;
+			for (let v = 0; v < count; v++) {
+				if (done[v] || colour[v] !== colour[u]) continue;
+				const length = Math.hypot(bends[u][0] - bends[v][0], bends[u][1] - bends[v][1]);
+				if (dist[u] + length >= dist[v]) continue;
+				const c = clear(u, v);
+				if (dist[u] + length + c < dist[v]) { dist[v] = dist[u] + length + c; next[v] = u; }
+			}
+		}
+		trees.set(key, found = { dist, next });
+		return found;
+	};
+	// From each point, what the way to each bend costs (NaN: not yet asked), whatever the cut goes on to.
+	const seen = new Map<string, Float64Array>(), totals = new Float64Array(count);
+	return (p: Point, pOf: number, to: Point, toOf: number, inside: boolean): { path: Point[]; cost: number } | undefined => {
+		if (work.left <= 0) return;
+		const { dist, next } = tree(to, toOf, inside), key = `${p[0]},${p[1]},${pOf}`;
+		let from = seen.get(key);
+		if (!from) seen.set(key, from = new Float64Array(count).fill(NaN));
+		for (let k = 0; k < count; k++) totals[k] = dist[k] + Math.hypot(bends[k][0] - p[0], bends[k][1] - p[1]);
+		// The bends by the way through them, nearest first.
+		for (let tries = 0; tries < ROUND_TRIES; tries++) {
+			let k = -1;
+			for (let j = 0; j < count; j++) if (totals[j] < Infinity && (k < 0 || totals[j] < totals[k])) k = j;
+			if (k < 0) return;
+			const total = totals[k];
+			totals[k] = Infinity;
+			if (work.left <= 0) return;
+			if (Number.isNaN(from[k])) { work.left--; from[k] = meeting(p, pOf, bends[k], NaN, sides, gap); }
+			const c = from[k];
+			if (!Number.isFinite(c)) continue;
+			const path = [p];
+			for (let j = k; j >= 0; j = next[j]) path.push(bends[j]);
+			path.push(to);
+			return { path, cost: total + c };
+		}
+	};
+}
 
 /** Where a topology recipe's places (`wanted`, see `TopologyRecipe`) fall on
  * a motif (its rings as `motifRings` gives them), given each place's cuts,
@@ -442,8 +582,13 @@ type Cut = { to: { at: Point } | { m: number; i: number }; inside: boolean; bend
  * ring and a held recipe's cuts cross nothing from them, they are the solve
  * itself; else the places are found in order, the hidden cuts to the board
  * as short as they can be without crossing or crowding the outline, a cut
- * between two places on the motif then shortened in turns. */
-function placeMotif(motif: Ring[], wanted: [number, number][][], cuts: Cut[][][], papers: (string | undefined)[][], board: Side[], strips: number, held: boolean): { rings: Ring[]; places: number[][] } | undefined {
+ * between two places on the motif then shortened in turns. With `round`, a
+ * cut whose straight way is blocked goes round the motif (see `ways`), the
+ * ways round it returned by the chord they draw (`routes`); `loose`, the
+ * cuts need only cross nothing, as a held recipe's on its own motif, each
+ * place staying where it lay on the motif solved where its cuts do; with
+ * `work`, none once it has checked that many straight pieces. */
+function placeMotif(motif: Ring[], wanted: [number, number][][], cuts: Cut[][][], papers: (string | undefined)[][], board: Side[], strips: number, held: boolean, round = false, loose = false, known = new Map<Cut, Map<string, number>>(), work?: { left: number }): { rings: Ring[]; places: number[][]; routes: Map<object, Point[]> } | undefined {
 	const sides = new Sides([...board, ...motif.flatMap((ring, m) => ring.map((a, j) => ({ a, b: ring[(j + 1) % ring.length], of: m })))]);
 	// The paper the generator leaves between cuts on this board (see `gridClearance`).
 	const gap = gridClearance(strips);
@@ -474,12 +619,24 @@ function placeMotif(motif: Ring[], wanted: [number, number][][], cuts: Cut[][][]
 		const path = [P, ...cut.bends.map(([u, v]): Point => [P[0] + u * d[0] - v * d[1], P[1] + u * d[1] + v * d[0]]), Q];
 		return cut.first ? path : path.reverse();
 	};
-	// A cut's length from a point, Infinity where it crosses the outline or runs on the other side of the motif.
-	const reach = (p: Point, m: number, cut: Cut) => {
+	// A cut's length from a point, Infinity where it crosses the outline or runs on the other side of the motif;
+	// kept by where it runs from and to and how strictly judged (`known`, shared by a drawing's passes).
+	const straight = (p: Point, m: number, cut: Cut) => {
+		const q = 'at' in cut.to ? cut.to.at : pointOf(cut.to.m, cut.to.i), key = `${+(!lenient && !loose)}${p[0]},${p[1]},${q[0]},${q[1]}`;
+		let mine = known.get(cut), cost = mine?.get(key);
+		if (cost === undefined) {
+			if (!mine) known.set(cut, mine = new Map());
+			mine.set(key, cost = straightCost(p, m, cut));
+		}
+		return cost;
+	};
+	const straightCost = (p: Point, m: number, cut: Cut) => {
+		if (work && work.left <= 0) return Infinity;
 		const path = pathOf(p, cut), last = path.length - 2;
+		if (work) work.left -= last + 1;
 		let length = 0, extra = 0;
 		for (let k = 0; k <= last && Number.isFinite(extra); k++) {
-			extra += meeting(path[k], k ? NaN : m, path[k + 1], k < last ? NaN : 'at' in cut.to ? -1 : cut.to.m, sides, gap, !lenient);
+			extra += meeting(path[k], k ? NaN : m, path[k + 1], k < last ? NaN : 'at' in cut.to ? -1 : cut.to.m, sides, gap, !lenient && !loose);
 			length += Math.hypot(path[k + 1][0] - path[k][0], path[k + 1][1] - path[k][1]);
 		}
 		if (!Number.isFinite(extra)) return Infinity;
@@ -487,6 +644,18 @@ function placeMotif(motif: Ring[], wanted: [number, number][][], cuts: Cut[][][]
 		if (colourAt([(mid[0] + next[0]) / 2, (mid[1] + next[1]) / 2], motif) !== Number(cut.inside)) return Infinity;
 		return length + extra;
 	};
+	// With `round`, a cut whose way is blocked goes round the motif (see `ways`).
+	const route = round ? ways(motif, sides, gap, work ?? { left: Infinity }) : undefined, rounds = new Map<string, { path: Point[]; cost: number } | undefined>();
+	const roundWay = (p: Point, m: number, cut: Cut) => {
+		const q = 'at' in cut.to ? cut.to.at : pointOf(cut.to.m, cut.to.i), key = `${p}|${q}|${cut.inside}`;
+		if (!rounds.has(key)) rounds.set(key, route!(p, m, q, 'at' in cut.to ? -1 : cut.to.m, cut.inside));
+		return rounds.get(key);
+	};
+	const reach = (p: Point, m: number, cut: Cut) => {
+		const cost = straight(p, m, cut);
+		return Number.isFinite(cost) || !route ? cost : roundWay(p, m, cut)?.cost ?? Infinity;
+	};
+	const wayOf = (p: Point, m: number, cut: Cut) => !route || Number.isFinite(straight(p, m, cut)) ? pathOf(p, cut) : roundWay(p, m, cut)?.path ?? pathOf(p, cut);
 	// How far a point lies from where a place lay on the motif solved, as the ring's centre and size place it.
 	const off = motif.map(ring => {
 		const c = centre(ring), radius = meanRadius(ring, c);
@@ -527,10 +696,11 @@ function placeMotif(motif: Ring[], wanted: [number, number][][], cuts: Cut[][][]
 				let least = Infinity;
 				for (let d = -GUESS_SPREAD; d <= GUESS_SPREAD; d++) {
 					chosen[other][j] = (guess + d + count) % count;
-					least = Math.min(least, reach(p, m, cut));
+					least = Math.min(least, straight(p, m, cut));
 				}
 				chosen[other][j] = guess;
-				return sum + least;
+				// Round the motif only to the partner's guess (the same where there is no way round).
+				return sum + (Number.isFinite(least) || !route ? least : reach(p, m, cut));
 			}, 0) + off[m](p, places[i]) / 10;
 		};
 		const picks = cheapestInOrder(places.length, spots[m].length, cost, thin[m]);
@@ -539,20 +709,35 @@ function placeMotif(motif: Ring[], wanted: [number, number][][], cuts: Cut[][][]
 	}
 	// The cuts between places on the motif made short, a place at a time, each kept between its neighbours.
 	// A place's cuts, Infinity where one comes within the gap of another cut to the motif (one it shares an end with aside).
-	const ends = (m: number, i: number) => cuts[m][i].flatMap(cut => { const path = pathOf(pointOf(m, i), cut); return path.slice(1).map((q, k): [Point, Point] => [path[k], q]); });
+	// Its pieces: their ends, which of those are the cut's own (not a bend), and the cut's chord.
+	const ends = (m: number, i: number) => cuts[m][i].flatMap(cut => {
+		const path = wayOf(pointOf(m, i), m, cut), last = path.length - 1;
+		return path.slice(1).map((b, k) => ({ a: path[k], b, own: [k === 0, k + 1 === last], chord: cut.chord }));
+	});
+	type Piece = ReturnType<typeof ends>[number];
+	const same = (x: Point, y: Point) => Math.hypot(x[0] - y[0], x[1] - y[1]) < 1e-9;
+	// Pieces checked against each other: not sharing an end; going round the
+	// motif, of other cuts, sharing none of their own ends (a bend shared is a
+	// cut touching another).
+	const apart = (x: Piece, y: Piece) => round
+		? x.chord !== y.chord && ![x.a, x.b].some((e, k) => x.own[k] && [y.a, y.b].some((f, l) => y.own[l] && same(e, f)))
+		: ![x.a, x.b].some(e => [y.a, y.b].some(f => same(e, f)));
 	const total = (m: number, i: number, s: number) => {
 		const held = chosen[m][i];
 		chosen[m][i] = s;
 		let sum = cuts[m][i].reduce((sum, cut) => sum + reach(spots[m][s].p, m, cut), 0);
 		const mine = ends(m, i);
+		const check = (x: Piece, y: Piece) => {
+			if (!apart(x, y)) return;
+			const { a, b } = x, { a: p, b: q } = y;
+			if ((!lenient && !loose && Math.min(fromSide(a, p, q), fromSide(b, p, q), fromSide(p, a, b), fromSide(q, a, b)) < gap) || crosses(p, q, a, b)) sum = Infinity;
+		};
 		for (const [mm, places] of wanted.entries()) for (let j = 0; j < places.length && Number.isFinite(sum); j++) {
 			if (mm === m && j === i) continue;
-			for (const [a, b] of ends(mm, j)) for (const [p, q] of mine) {
-				const shared = [a, b].some(x => [p, q].some(y => Math.hypot(x[0] - y[0], x[1] - y[1]) < 1e-9));
-				if (shared) continue;
-				if ((!lenient && Math.min(fromSide(a, p, q), fromSide(b, p, q), fromSide(p, a, b), fromSide(q, a, b)) < gap) || crosses(p, q, a, b)) sum = Infinity;
-			}
+			for (const x of ends(mm, j)) for (const y of mine) check(x, y);
 		}
+		// Going round the motif, a place's own cuts may meet too.
+		if (round) mine.forEach((x, k) => mine.slice(k + 1).forEach(y => check(x, y)));
 		chosen[m][i] = held;
 		return sum;
 	};
@@ -683,7 +868,7 @@ function placeMotif(motif: Ring[], wanted: [number, number][][], cuts: Cut[][][]
 	for (let round = 0; round < 3 && !lenient; round++) for (const [m, places] of wanted.entries()) for (let i = 0; i < places.length; i++) {
 		if (cuts[m][i].every(cut => 'at' in cut.to) && round) continue;
 		// A held recipe's place stays where it lay on the motif solved, wherever its cuts are clear from there.
-		if (held && Number.isFinite(total(m, i, chosen[m][i]))) continue;
+		if ((held || loose) && Number.isFinite(total(m, i, chosen[m][i]))) continue;
 		const count = spots[m].length, prev = chosen[m][(i + places.length - 1) % places.length], next = chosen[m][(i + 1) % places.length];
 		let best = chosen[m][i], least = total(m, i, best);
 		// A place in a thin part stays in its core; one outside stays outside them.
@@ -698,6 +883,14 @@ function placeMotif(motif: Ring[], wanted: [number, number][][], cuts: Cut[][][]
 	}
 	if (!lenient) mirrorPlaces();
 	if (wanted.some((places, m) => places.some((_, i) => !Number.isFinite(total(m, i, chosen[m][i]))))) return;
+	// The ways round the motif the cuts take, each from its chord's first end.
+	const routes = new Map<object, Point[]>();
+	if (route) for (const [m, places] of wanted.entries()) for (let i = 0; i < places.length; i++) for (const cut of cuts[m][i]) {
+		const p = pointOf(m, i);
+		if (!cut.chord || routes.has(cut.chord) || Number.isFinite(straight(p, m, cut))) continue;
+		const way = roundWay(p, m, cut)!.path;
+		routes.set(cut.chord, cut.first ? way : [...way].reverse());
+	}
 	// Each ring with a vertex at each of its places.
 	const rings: Ring[] = [], at: number[][] = [];
 	for (const [m, ring] of motif.entries()) {
@@ -710,7 +903,7 @@ function placeMotif(motif: Ring[], wanted: [number, number][][], cuts: Cut[][][]
 		rings.push(out);
 		at.push(index);
 	}
-	return { rings, places: at };
+	return { rings, places: at, routes };
 }
 
 /** The stretch of a ring from vertex `a` to vertex `b`, in its order (`forward`) or against it. */
@@ -739,8 +932,10 @@ const bent = (P: Point, Q: Point, bends: [number, number][]): Point[] => {
  * compiled into slits, and the picture's rings with the motif's places on
  * them; none where the picture is another topology (another board outline,
  * or a motif nesting otherwise or crossing the board), or a cut finds no way
- * to the motif. */
-export function topologyConstruction(recipe: TopologyRecipe, picture: { rings: Ring[]; motif?: number }, o?: BoardOutline) {
+ * to the motif. Its places found straight, then (`fallback`) going round the
+ * motif and crossing nothing (see `placeMotif`), within `work`; `fallback`
+ * 'only': only so. */
+export function topologyConstruction(recipe: TopologyRecipe, picture: { rings: Ring[]; motif?: number }, o?: BoardOutline, fallback: boolean | 'only' = true, work = { left: FALLBACK_WORK }) {
 	if (picture.motif === undefined) return;
 	const board = picture.rings.slice(0, picture.motif), figure = picture.rings.slice(picture.motif);
 	if (recipe.places.length !== figure.length || nestingOf(figure) !== recipe.motif) return;
@@ -761,8 +956,8 @@ export function topologyConstruction(recipe: TopologyRecipe, picture: { rings: R
 	const end = (an: TopologyAnchor): Cut['to'] => 'm' in an ? { m: an.m, i: an.i } : { at: boardPoint(an) };
 	for (const chord of chords.values()) {
 		const [a, b] = chord.h, inside = !!chord.inside, bends = bendsOf(recipe, chord);
-		if ('m' in a) cuts[a.m][a.i].push({ to: end(b), inside, bends, first: true });
-		if ('m' in b) cuts[b.m][b.i].push({ to: end(a), inside, bends, first: false });
+		if ('m' in a) cuts[a.m][a.i].push({ to: end(b), inside, bends, first: true, chord });
+		if ('m' in b) cuts[b.m][b.i].push({ to: end(a), inside, bends, first: false, chord });
 	}
 	const papers = recipe.places.map(ring => ring.map(() => undefined as string | undefined));
 	for (const family of ['A', 'B'] as const) for (const slit of recipe[family]) for (const piece of slit) {
@@ -771,7 +966,15 @@ export function topologyConstruction(recipe: TopologyRecipe, picture: { rings: R
 		for (let k = piece.f ? i0 : i1; k !== (piece.f ? i1 : i0); k = (k + 1) % count) paper[k] = paper[k] && paper[k] !== family ? '?' : family;
 	}
 	const strips = recipe.A.length + 1;
-	const placed = placeMotif(motifRings(figure, recipe.rings).map(({ ring }) => ring), recipe.places, cuts, papers, sides, strips, !!recipe.held);
+	// Where the cuts find no clear way straight, they go round the motif, and
+	// where that finds none, they need only cross nothing, the generator
+	// judging their paper as it judges a solve's (see `placeMotif`); not where
+	// the board's own hidden cuts cross the motif.
+	const rings = motifRings(figure, recipe.rings).map(({ ring }) => ring);
+	const across = () => sides.some(({ a, b, of }) => of < 0 && rings.some(ring => ring.some((p, j) => crosses(a, b, p, ring[(j + 1) % ring.length]))));
+	const known = new Map<Cut, Map<string, number>>();
+	const place = (round = false, loose = false) => placeMotif(rings, recipe.places, cuts, papers, sides, strips, !!recipe.held, round, loose, known, round ? work : undefined);
+	const placed = (fallback !== 'only' ? place() : undefined) ?? (!fallback || across() ? undefined : place(true) ?? place(true, true));
 	if (!placed) return;
 	// A held recipe's place where the solve had it, a hair off the outline; else on it.
 	const exact = (m: number, i: number) => {
@@ -791,7 +994,10 @@ export function topologyConstruction(recipe: TopologyRecipe, picture: { rings: R
 			line([...from ? [from] : [], ...ringStretch(placed.rings[piece.m], placed.places[piece.m][piece.i[0]], placed.places[piece.m][piece.i[1]], piece.f), ...to ? [to] : []], family, 'outline');
 		}
 	}
-	for (const chord of chords.values()) line(bent(point(chord.h[0]), point(chord.h[1]), bendsOf(recipe, chord)), 'AB', 'shared');
+	for (const chord of chords.values()) {
+		const way = placed.routes.get(chord);
+		line(way ? [point(chord.h[0]), ...way.slice(1, -1), point(chord.h[1])] : bent(point(chord.h[0]), point(chord.h[1]), bendsOf(recipe, chord)), 'AB', 'shared');
+	}
 	const artwork = [...board, ...placed.rings];
 	return { geometry: compile(edges), edges, artwork, strips };
 }

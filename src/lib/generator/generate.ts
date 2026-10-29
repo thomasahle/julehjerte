@@ -9,8 +9,8 @@ import { NO_WHOLE_STRIPS, STRIPS, crowdedHiddenCutsSetAside, slidePlace, stripFi
 import { BOARD_STRIPS, MOTIF, boardPlacement, boardRadius, boardScale, boardSetting, boardSteps, enclosedAlong, motifChoices, squareChoices, type BoardStyle } from './boardMotif';
 import { TEXT_LAST_STRIPS, TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
 import { CIRCLE_STYLES, fillSquare, fitCircle, withNarrowCrown, crowdsCrown } from './frameFit';
-import { isTopology, outlineFor, recipeConstruction, recipesAt, type Recipe } from './recipes';
-import { motifFit, topologyConstruction } from './topologyRecipes';
+import { isTopology, outlineFor, recipeConstruction, recipesAt, type Recipe, type TopologyRecipe } from './recipes';
+import { FALLBACK_WORK, motifFit, topologyConstruction } from './topologyRecipes';
 import { boardOutline } from './boardOutline';
 import { picture, type Known } from './picture';
 export { fillSquare, fitCircle } from './frameFit';
@@ -426,7 +426,11 @@ export const spurless = (request: GeneratorRequest): GeneratorRequest =>
  * on the picture it was solved on, the generator's own as it told it; with
  * `topology`, a topology's on the picture `known` tells (the generator's own
  * heart's, see `fromTopology`), its motif's hairline spurs gone as the
- * generator draws it. A board's heart says what its picture shows as the
+ * generator draws it: each placed straight first, then on a board those that
+ * drew no heart so going round the motif (see `topologyConstruction`), so
+ * that one drawn only so takes no place another drew straight (in the rays,
+ * over ten motifs at every sixth size, going round drew no better heart and
+ * made the wreath's 4 s slower). A board's heart says what its picture shows as the
  * board circle's own does: the motif on its enclosing circle over the corner
  * squares, and the strips where it leaves the middle lines out. */
 export function storedHearts(request: GeneratorRequest, recipes = request.recipes, topology = false, count = 1, known: Known = {}): GeneratorResult[] {
@@ -434,7 +438,8 @@ export function storedHearts(request: GeneratorRequest, recipes = request.recipe
 	// The board the generator builds: the board circle's five strips where the visitor chose none.
 	const strips = request.style === 'board' ? request.board ?? BOARD_STRIPS.board.initial : request.board;
 	const hearts: GeneratorResult[] = [], listed = recipesAt(recipes, request.style ?? 'rays', strips, request.scale ?? .7, request.gap ?? 3);
-	const constructions: (() => ReturnType<typeof recipeConstruction> | undefined)[] = [];
+	// Each construction, and the recipe it draws where a later one may draw it again.
+	const constructions: { construct: () => ReturnType<typeof recipeConstruction> | undefined; of?: TopologyRecipe }[] = [], drew = new Set<TopologyRecipe>();
 	if (topology) {
 		const shown = picture(spurless(request), known), mine = listed.filter(isTopology);
 		if (!shown?.rings.length || !mine.length || shown.motif === undefined) return [];
@@ -445,17 +450,22 @@ export function storedHearts(request: GeneratorRequest, recipes = request.recipe
 		const step = Math.round((request.scale ?? .7) * 100);
 		const own = mine.filter(recipe => motifFit(recipe, shown) < SOLVED_ON)
 			.sort((a, b) => Number(!a.solved?.includes(step)) - Number(!b.solved?.includes(step)));
-		for (const recipe of [...own, ...mine.filter(recipe => !own.includes(recipe))]) constructions.push(() => topologyConstruction(recipe, shown, o));
-	} else for (const recipe of listed) if (!isTopology(recipe)) constructions.push(() => {
+		const ordered = [...own, ...mine.filter(recipe => !own.includes(recipe))];
+		for (const recipe of ordered) constructions.push({ construct: () => topologyConstruction(recipe, shown, o, false), of: recipe });
+		// Those going round the motif share one allowance of work (FALLBACK_WORK).
+		const work = { left: FALLBACK_WORK };
+		if (request.style === 'board') for (const recipe of ordered) constructions.push({ construct: () => drew.has(recipe) ? undefined : topologyConstruction(recipe, shown, o, 'only', work), of: recipe });
+	} else for (const recipe of listed) if (!isTopology(recipe)) constructions.push({ construct: () => {
 		const shown = picture(request, recipe.known), o = shown?.rings.length ? outlineFor(recipe, shown) : undefined;
 		return o && recipeConstruction(recipe, o);
-	});
-	for (const construct of constructions) {
+	} });
+	for (const { construct, of } of constructions) {
 		try {
 			const construction = construct();
 			if (!construction) continue;
 			const heart = finishConstruction(request, { ...construction, ...request.style === 'board' ? { domain: [SHEET] } : {} }, 'nested');
 			hearts.push(request.style === 'board' ? { ...heart, enclosed: true, ...heart.design.gridSize.x !== strips && { board: strips } } : heart);
+			if (of) drew.add(of);
 			if (hearts.length >= count) break;
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;

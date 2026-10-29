@@ -12,8 +12,10 @@ import star from '../../../static/generator/motifs/star.json';
 import tree from '../../../static/generator/motifs/tree.json';
 import nisse from '../../../static/generator/motifs/nisse.json';
 import wreath from '../../../static/generator/motifs/mc-wreath.json';
+import circleMotif from '../../../static/generator/motifs/circle.json';
 import heartSolves from '../../../scripts/generator/solves/heart.board.json';
 import nisseSolves from '../../../scripts/generator/solves/nisse.board.json';
+import circleSolves from '../../../scripts/generator/solves/circle.board-5.sym.json';
 import starRays from '../../../scripts/generator/solves/star.rays.json';
 import board from '../../../static/generator/recipes/board.json';
 import rays from '../../../static/generator/recipes/rays.json';
@@ -170,5 +172,24 @@ describe('stored recipes', () => {
 		const rings = picture(asked)!.rings;
 		expect(made.design.fingers).not.toEqual(own.design.fingers);
 		expect(betterCuts(cutMeasures(made.design, rings), cutMeasures(own.design, rings))).toBe(true);
+	});
+
+	it('takes a cut its straight way is blocked round the motif', () => {
+		const colors = { left: '#ffffff', right: '#b91313' };
+		const request = (contours: Ring[]) => ({ mode: 'figure' as const, name: 'Motif', contours, colors, style: 'board' as const, frame: 'circle' as const, frameSize: 70, scale: .77, gap: 3 });
+		const solve = (nisseSolves as { recipes: MotifRecipe[] }).recipes.find(r => r.strips === 5 && r.steps.includes(77))!;
+		const topology = { ...topologyOf(solve, picture(request(nisse.contours as Ring[]), solve.known)!)!, steps: [77] };
+		// The nisse's cuts on the tree at 77%: one finds no straight way past its branches.
+		expect(storedHearts(request(tree.contours as Ring[]), [topology], true, 1, solve.known)).toHaveLength(1);
+	});
+
+	it('places a cut where the board meets the circle as the solve did, the generator judging its paper', () => {
+		const colors = { left: '#ffffff', right: '#b91313' };
+		const request = (contours: Ring[]) => ({ mode: 'figure' as const, name: 'Motif', contours, colors, style: 'board' as const, frame: 'circle' as const, frameSize: 70, scale: .86, gap: 3 });
+		const solve = (circleSolves as { recipes: MotifRecipe[] }).recipes.find(r => r.strips === 5 && r.steps.includes(86))!;
+		const topology = { ...topologyOf(solve, picture(request(circleMotif.contours as Ring[]), solve.known)!)!, steps: [86] };
+		// The circle's cuts at 86% end in the narrow corners between it, the
+		// board's circle and its lines, nearer the outline than the gap.
+		for (const motif of [circleMotif, star]) expect(storedHearts(request(motif.contours as Ring[]), [topology], true, 1, solve.known)).toHaveLength(1);
 	});
 });
