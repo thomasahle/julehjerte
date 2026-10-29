@@ -945,7 +945,13 @@ rounds and 150 s 15, each of about 10 s adding one more embedding row (13 of
 them) and no clean alternative. The background there is a face with several
 holes (the letters), the same shape as the Voronoi near miss, whose conflicts
 the model finds one a round; every set up front, or a direct encoding of faces
-with holes, would be the next step, and none was built.
+with holes, would be the next step. Tried the first: every pair of chords in a
+face with holes that cannot be drawn together as a row up front (931 rows for
+faces up to 400 candidates in 0.2 s, 2048 for the 728 of tak's background in
+5.5 s): the lazy embedding rows fell from 8 to 4 in 60 s, and tak still ended
+with the crossing; the sets left are 5 chords in a face of 4 cycles (28 of
+them in 80 s), which cannot be listed (728 to the fifth). Only an encoding of
+such faces in the model (as the annuli of one hole have theirs) would do.
 
 ## Painted edges (2026-10-29)
 
