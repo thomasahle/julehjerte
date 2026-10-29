@@ -26,7 +26,7 @@ import type { OverlapRect } from '$lib/utils/overlapRect';
 import { READ_TOLERANCE, sharedCrossings, type SharedCrossing } from './crossings';
 import { arrowheadsInFrame, CURVE_COLORS, templateStretches } from './template';
 import { isRedCell, keepsColours, latticeOf, ruleRepeat, halfOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
-import { cornerClass, cornerFreedom, cornerShift, crossingMoves, JOINS, jointFreedom, meanShift, nearestCorners, sameWayAt, type Join } from './corners';
+import { cornerClass, cornerFreedom, cornerShift, crossingMoves, JOINS, jointFreedom, meanShift, nearestCorners, sameWayAt } from './corners';
 import {
 	carryNodeTypes,
 	cellOutline,
