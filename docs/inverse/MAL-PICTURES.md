@@ -905,6 +905,18 @@ cut on 2 of 41 passing pictures (circle 16 to 8 segments, simple-5star-shot
 220 to 133 mm), more on 26 and the same on 13, so choosing the better of the
 two would pay twice the time for two pictures.
 
+## Painted edges (2026-10-29)
+
+A mask painted by hand has wobbling edges. 40 gallery masks with 20% of their
+boundary pixels flipped (seeded), then folded to their symmetry as the page
+does (tmp/e2e/even/jitter.mjs): of the 24 that are exact clean, 22 stay exact;
+hermanngitter and lilje1, both slow clean, lose their template. The mask error
+rises (ball 0.44% to 0.86%, amy-weave-2 0.30% to 1.4%: the template cannot
+follow every flipped pixel), and hidden cut grows where a wobble forces a
+cut across a narrow neck (flyvendegaes 5 to 24 segments, ball 4 to 16,
+snowflake 5 to 9); ten others keep their count. So painting a mask that is a
+little rough costs quality before it costs the template.
+
 ## Time spent after the template (2026-10-29)
 
 Where a search succeeds, HiGHS takes 80% of its time (the lazy rules' checks
