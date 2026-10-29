@@ -893,7 +893,9 @@ and kogle-shot 6 to 7 s sooner, and on the 143 pictures quick ones took
 less (permo-draaber 10 s to 6, ramme 8 to 3, plus3 7 to 3, permo-kroge 24 to
 10) with none lost. What holds the 30 to 42 s ones (fisk-shot, jul) is the
 count stage, which runs to its budget where the minimal hidden count is not
-proven; stopping it sooner would risk more hidden cuts.
+proven; its patience at a tenth instead of a quarter changed nothing on the 25
+(545.0 s in all, 544.9 s): there the first solution keeping every rule comes
+late, and until it does the patience does not apply.
 
 ## Why the searches that fail do (2026-10-29)
 
