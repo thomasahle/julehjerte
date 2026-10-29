@@ -4118,6 +4118,10 @@
 											stroke-linejoin="round"
 											vector-effect="non-scaling-stroke"
 										/>
+										<!-- The type's half arrowheads on its sides, as on its button: the same colour is the same curve. -->
+										{#each cellLayer.heads as head, k (k)}
+											<path d={head.d} fill={head.color} stroke="#1e2a25" stroke-opacity="0.7" stroke-width="1" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+										{/each}
 									</g>
 								{/if}
 

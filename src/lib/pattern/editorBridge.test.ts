@@ -6,6 +6,7 @@ import { splitBezierAt } from '$lib/geometry/bezierSegments';
 import { ALL_RULES, freeSides, halfOf, latticeOf, neighbours, opposite, ruleRepeat, ruleInfo, ruleKey, stretchSource, type CurveKey, type TileRule } from './rules';
 import { cellsToRaw, crossing, cutCounts, firstLine, fitLines, patternCuts, patternToDesign, rawToCells, sourceCurve, straightCurve, tileShape, tileTurn, unturnedShape, type PatternTile, type SideCurve } from './tiling';
 import { ruleStart } from './starts';
+import { arrowheadsOn, templateStretches } from './template';
 import { cornerClass, cornerFreedom, jointFreedom, jointsOfLength } from './corners';
 import { EXAMPLES, exampleTile, knobTile } from './examples';
 import {
@@ -40,6 +41,12 @@ const straightTile = (rule: TileRule, cuts: number): PatternTile => ({
 const isCrossing = (tile: PatternTile, fingerId: string, anchor: number) => {
 	const point = placedPointAt(tile, fingerId, anchor);
 	return !!point && 'crossing' in point;
+};
+
+/** A point of the infinite tiling, in cells, in the heart's pixels. */
+const cellsToPx = (tile: PatternTile, rect: { left: number; top: number; width: number; height: number }, p: Vec): Vec => {
+	const q = cellsToRaw(tile, p);
+	return { x: rect.left + (q.x / 100) * rect.width, y: rect.top + (q.y / 100) * rect.height };
 };
 
 /** Tegn's anchor `a` of a cut: the start of segment a, or the cut's end. */
@@ -143,6 +150,22 @@ describe("the bridge between a tile and Tegn's cuts", () => {
 		expect(Math.hypot(middle.x - (rect.left + rect.width / 2), middle.y - (rect.top + rect.height / 2))).toBeLessThan(rect.width / 2);
 		// a plain tile's red cell is a cell of the grid: four corners where the grid has crossings
 		if (ruleKey(rule) === 'opposite:move:move') expect(numbers(cell).length).toBeGreaterThanOrEqual(8);
+	});
+
+	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))('%s: "Vis felter" marks the cell with its type\'s template: the arrowheads of its button, where the cell is', (_key, rule) => {
+		// On a plain tile the stretches are the plain grid's, where `arrowheadsOn` places the button's arrowheads.
+		const tile = straightTile(rule, 3);
+		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
+		const { heads, at } = cellOverlay(tile, rect);
+		const expected = templateStretches(rule).flatMap(({ kind, i, j }) => arrowheadsOn(rule, kind, at.c + i, at.d + j).map((head) => head.map((p) => cellsToPx(tile, rect, p))));
+		expect(heads).toHaveLength(expected.length);
+		heads.forEach((head, k) => {
+			const got = (head.d.match(/-?\d+(\.\d+)?/g) ?? []).map(Number);
+			const want = expected[k]!.flatMap((p) => [p.x, p.y]);
+			expect(got, `arrowhead ${k}`).toHaveLength(want.length);
+			got.forEach((v, m) => expect(Math.abs(v - want[m]!), `arrowhead ${k} number ${m}`).toBeLessThan(0.011));
+			expect(head.color).toMatch(/^#[0-9a-f]{6}$/i);
+		});
 	});
 
 	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))('reads the %s tile back however its tiles were moved, sized, stretched or turned', (_key, rule) => {

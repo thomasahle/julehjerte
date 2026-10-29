@@ -638,7 +638,10 @@ The Escher tab leaves Snap out: the points the lobes share there are the crossin
 and has "Vis felter / Show cells" in its place (2026-10-29, the owner's idea; tiled.art has the like as "Show
 overlays"): a dashed straight line through the crossings along every row and column, cut to the square, so how
 far the curves bend from the cells' grid shows, and the tile's own cell, the red one nearest the middle, tinted
-and edged with a wide soft stroke under the cuts (`cellOverlay`). Both follow the tile as it is dragged; off by
+and edged with a wide soft stroke under the cuts (`cellOverlay`), with the type's template on it, the half
+arrowheads its button shows (`templateStretches`, `arrowheadsInFrame`), on the cell's sides and, where the
+template has white tiles beside it, on theirs: the same colour is the same curve, drawn on the stretches the heart
+really has, the corners as moved (the owner's suggestion, 2026-10-29). All follow the tile as it is dragged; off by
 default, kept for the visit only, and drawn under the cuts, so nothing in it takes a click.
 
 Where cyan and orange cut strokes overlap, alternate their colours along the shared

@@ -24,6 +24,7 @@ import { MAX_GRID_SIZE, MIN_GRID_SIZE } from '$lib/constants';
 import { reverseSegments, segmentsToPathData, splitBezierAt } from '$lib/geometry/bezierSegments';
 import type { OverlapRect } from '$lib/utils/overlapRect';
 import { READ_TOLERANCE, sharedCrossings, type SharedCrossing } from './crossings';
+import { arrowheadsInFrame, CURVE_COLORS, templateStretches } from './template';
 import { isRedCell, keepsColours, latticeOf, ruleRepeat, halfOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
 import { cornerClass, cornerFreedom, cornerShift, crossingMoves, JOINS, jointFreedom, meanShift, nearestCorners, sameWayAt, type Join } from './corners';
 import {
@@ -133,9 +134,10 @@ const SQUARE_CORNERS: Vec[] = [
  * each crossing joined to the next along its row and its column by a straight line, so that how far
  * the curves bend from it shows, and what the corners and the black points move; and the outline of
  * the tile's own cell, the one drawn — the red cell nearest the heart's middle — with its curved
- * sides. Both follow the tile as it is dragged.
+ * sides, and the half arrowheads of the type's template on its sides (`templateStretches`), as on
+ * the type's button. All follow the tile as it is dragged.
  */
-export function cellOverlay(tile: PatternTile, rect: OverlapRect): { grid: string; cell: string } {
+export function cellOverlay(tile: PatternTile, rect: OverlapRect): { grid: string; cell: string; at: { c: number; d: number }; heads: Array<{ d: string; color: string }> } {
 	const px = toPx(rect);
 	const at = (i: number, j: number) => px(cellsToRaw(tile, crossing(tile, i, j)));
 	const cells = SQUARE_CORNERS.map((q) => rawToCells(tile, q));
@@ -157,7 +159,15 @@ export function cellOverlay(tile: PatternTile, rect: OverlapRect): { grid: strin
 		}
 	}
 	const outline = cellOutline(tile, best.c, best.d).map((s) => ({ p0: px(cellsToRaw(tile, s.p0)), p1: px(cellsToRaw(tile, s.p1)), p2: px(cellsToRaw(tile, s.p2)), p3: px(cellsToRaw(tile, s.p3)) }));
-	return { grid: lines.join(' '), cell: `${segmentsToPathData(outline)} Z` };
+	// The type's template laid over it, as on its button: half an arrowhead on each of the cell's sides, and
+	// where the template shows white tiles beside it, on theirs, in the colour of the curve the side carries.
+	const heads = templateStretches(tile.rule).flatMap(({ kind, i, j }) => {
+		const [si, sj] = [best.c + i, best.d + j];
+		const frame = stretchFrame(tile, kind, si, sj);
+		const color = CURVE_COLORS[stretchSource(tile.rule, kind, si, sj).curve];
+		return arrowheadsInFrame(tile.rule, kind, si, sj).map((head) => ({ d: `${through(head.map((p) => px(cellsToRaw(tile, toFrame(frame, p)))))} Z`, color }));
+	});
+	return { grid: lines.join(' '), cell: `${segmentsToPathData(outline)} Z`, at: { c: best.c, d: best.d }, heads };
 }
 
 /**

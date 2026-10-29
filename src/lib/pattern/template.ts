@@ -88,18 +88,27 @@ const WHOLE_HEADS: Vec[][] = [
  */
 export function arrowheadsOn(rule: TileRule, kind: StretchKind, i: number, j: number): Vec[][] {
 	const frame = stretchFrame({ rule, cuts: 3, curves: {} }, kind, i, j);
+	return arrowheadsInFrame(rule, kind, i, j).map((head) => head.map((p) => toFrame(frame, p)));
+}
+
+/**
+ * The same triangles in the stretch's own frame, before any frame places them: along the stretch
+ * from 0 to 1, y to its high side. The Escher tab's "Vis felter" places them on the stretches the
+ * heart really has, with the corners as they are moved to, where `arrowheadsOn` has the plain grid.
+ */
+export function arrowheadsInFrame(rule: TileRule, kind: StretchKind, i: number, j: number): Vec[][] {
 	const src = stretchSource(rule, kind, i, j);
 	const straight = edgeClasses(rule).find((c) => c.key === src.curve && c.shape === 'I');
 	if (straight) {
 		const heads = straight.eitherWay ? WHOLE_HEADS : WHOLE_HEAD;
-		return heads.map((head) => head.map((p) => toFrame(frame, { x: src.reverse ? 1 - p.x : p.x, y: src.negate ? -p.y : p.y })));
+		return heads.map((head) => head.map((p) => ({ x: src.reverse ? 1 - p.x : p.x, y: src.negate ? -p.y : p.y })));
 	}
 	const marks: PatternTile = {
 		rule,
 		cuts: 3,
 		curves: Object.fromEntries(ruleInfo(rule).curves.map((key) => [key, halfOf(rule, key) ? HALF : WHOLE]))
 	};
-	const corners = stretchCurve(marks, kind, i, j).map((s) => toFrame(frame, s.p0));
+	const corners = stretchCurve(marks, kind, i, j).map((s) => s.p0);
 	const heads: Vec[][] = [];
 	for (let k = 0; k + 3 <= corners.length; k += 3) heads.push(corners.slice(k, k + 3));
 	return heads;
@@ -120,6 +129,15 @@ const OTHER_WHITE_SIDES: Array<{ side: 'nw' | 'ne' | 'se' | 'sw'; kind: StretchK
 	{ side: 'se', kind: 'V', i: 1, j: 1 },
 	{ side: 'sw', kind: 'H', i: 0, j: 2 }
 ];
+
+/**
+ * The stretches a rule's template marks, as offsets from its red tile: that tile's four sides, and
+ * where its template shows white tiles beside it, their other sides (`templateOf`).
+ */
+export function templateStretches(rule: TileRule): Array<{ kind: StretchKind; i: number; j: number }> {
+	const shapes = shapesOf(rule);
+	return [...TILE_SIDES, ...(shapes > 1 ? WHITE_SIDES : []), ...(shapes > 2 ? OTHER_WHITE_SIDES : [])].map(({ kind, i, j }) => ({ kind, i, j }));
+}
 
 /** How many shapes a rule's tiles come in, and so how many tiles its template shows (`templateOf`): one, two or three. */
 export const shapesOf = (rule: TileRule): 1 | 2 | 3 => (rule.sides === 'three' ? 3 : rule.sides === 'free' || rule.sides === 'two' ? 2 : 1);
