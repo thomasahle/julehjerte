@@ -264,7 +264,11 @@
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
-    "photo": null
+    "photo": {
+      "src": "/hearts/photos/permo-sol.jpg",
+      "width": 383,
+      "height": 350
+    }
   },
   "nihon": {
     "name": "Nihon",
@@ -991,7 +995,11 @@
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
-    "photo": null
+    "photo": {
+      "src": "/hearts/photos/permo-cirkler.jpg",
+      "width": 380,
+      "height": 348
+    }
   },
   "glaskuppel": {
     "name": "Glaskuppel",
@@ -1467,7 +1475,11 @@
       "mirrorSymmetry": false,
       "sharedTemplate": true
     },
-    "photo": null
+    "photo": {
+      "src": "/hearts/photos/permo-kroge.jpg",
+      "width": 374,
+      "height": 343
+    }
   },
   "dagognat": {
     "name": "Dag og nat",
@@ -1722,7 +1734,11 @@
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
-    "photo": null
+    "photo": {
+      "src": "/hearts/photos/permo-draaber.jpg",
+      "width": 381,
+      "height": 348
+    }
   },
   "fiskeskael": {
     "name": "Fiskeskæl",
