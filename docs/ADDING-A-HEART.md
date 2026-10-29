@@ -122,3 +122,19 @@ says which category it is in and where. Everything else is generated from those 
 
 8. **Commit** `static/hearts/<id>.svg`, `hearts.jsonc` and the four generated JSON
    files together.
+
+## Redrawing a gallery heart
+
+Open the heart in the editor (its page's **Redigér**), redraw it, save it with
+**Eksportér SVG** and put the file over `static/hearts/<id>.svg`. The editor treats
+it as a visitor's copy: it is named "<name> (Kopi)", and its texts, author,
+publisher, source and date are left out. `npm run generate:heart-data` puts them back
+from the generated data, which still holds the heart as it was
+(`scripts/restore-resaved-hearts.mjs`). It keeps a name typed in place of the copy's,
+and drops the colours the editor pins. CI does the same before its tests, so a file
+pushed as the editor saved it still deploys, though the file in git keeps the
+copy's header until the data is next generated.
+
+The texts were written for the heart as it was. When the redrawn one has other
+strips, no longer shares one template between its halves (or now does), or has
+another difficulty, the generator says so: read its two `<desc>` again.

@@ -48,6 +48,11 @@
  * use 3-5 px tolerances) so the JSON stays small and diffs stay readable. The
  * TypeScript modules are loaded through Vite in SSR mode with jsdom providing DOMParser.
  *
+ * First, a gallery heart saved over from the editor gets back the names, texts and
+ * credit an editor copy leaves out (scripts/restore-resaved-hearts.mjs). Then every
+ * heart whose strips, shared template or difficulty changed since the data was last
+ * written is named, as its texts tell of those.
+ *
  * Usage: node scripts/generate-heart-data.mjs   (also run by `npm run prebuild`)
  */
 
@@ -59,6 +64,7 @@ import { JSDOM } from 'jsdom';
 import { Resvg } from '@resvg/resvg-js';
 import { socialCardBuilder } from './social-cards.mjs';
 import { parseJsonc } from '../src/lib/utils/jsonc.js';
+import { restoreResavedHearts, warn } from './restore-resaved-hearts.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const heartsJsonPath = path.join(root, 'hearts.jsonc');
@@ -248,6 +254,12 @@ try {
   const heartsData = parseJsonc(fs.readFileSync(heartsJsonPath, 'utf8'));
   const ids = heartsData.categories.flatMap((category) => category.hearts);
 
+  // A gallery heart saved over from the editor gets its names, texts and credit back
+  // from the data below as it still is (scripts/restore-resaved-hearts.mjs), and that
+  // data is what the texts were written for: the redrawn heart is held up to it.
+  for (const { file, message } of restoreResavedHearts(root)) warn(file, message);
+  const previous = fs.existsSync(metaPath) ? JSON.parse(fs.readFileSync(metaPath, 'utf8')) : {};
+
   // The parser logs a warning per skipped path; keep the build output readable.
   const originalWarn = console.warn;
   console.warn = () => {};
@@ -304,6 +316,25 @@ try {
     }
   } finally {
     console.warn = originalWarn;
+  }
+
+  // The texts tell how many strips a heart has, whether one template covers both
+  // halves and how hard it is (docs/ADDING-A-HEART.md); when a redrawn heart changes
+  // any of these, they are to be read again.
+  for (const id of ids) {
+    const was = previous[id];
+    if (!was) continue;
+    const now = meta[id];
+    const grid = (g) => `${g.x} × ${g.y}`;
+    const changes = [
+      grid(was.gridSize) !== grid(now.gridSize) && `strips ${grid(was.gridSize)} → ${grid(now.gridSize)}`,
+      was.symmetry?.sharedTemplate !== now.symmetry.sharedTemplate &&
+        (now.symmetry.sharedTemplate ? 'one template covers both halves now' : 'one template no longer covers both halves'),
+      was.difficulty !== now.difficulty && `difficulty ${was.difficulty} → ${now.difficulty}`
+    ].filter(Boolean);
+    if (changes.length) {
+      warn(`static/hearts/${id}.svg`, `${id} was redrawn (${changes.join('; ')}): read its texts again`);
+    }
   }
 
   const cards = Object.fromEntries(

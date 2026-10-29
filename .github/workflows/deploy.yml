@@ -76,6 +76,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # A gallery heart redrawn in the editor and saved over its file has lost its texts
+      # and credit; put them back so the tests and the build take it as it was meant.
+      - name: Restore gallery hearts saved over from the editor
+        run: node scripts/restore-resaved-hearts.mjs
+
       - name: Check
         if: env.REBUILD_LIVE != 'true'
         run: npm run check
