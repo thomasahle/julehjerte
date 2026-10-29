@@ -996,6 +996,19 @@ rules, penalty 1, either way; nothing the rows add), so tak's silence with
 them is the search not finding a first solution in the time, not the rows. Nor
 is it the start: with the topological search for a start witness given 10 or 20
 s instead of 3, tak still has none ("ran out of time") and ends the same.
+The start search is a SAT problem in JavaScript (exact/topology.js) with the
+same one-conflict-at-a-time loop for faces with holes: on tak it goes through
+about 3000 lazy iterations in 30 s (sets of 2: 508, 3: 1163, 4: 1047, 5: 282)
+and never returns a witness, at any number of switch slots, in 90 s (the near
+miss takes 1.8 s). The exact model's rules for such faces as clauses up
+front (two segments within one cycle whose ends alternate; the automaton
+around every cycle; the sides of every other cycle for a segment within one;
+the order of every three segments between two cycles, its orientation set
+by the exact embeddability test, for pairs of at most 90) bring the lazy
+sets down to 170 in 90 s, and a witness appears for the first time: at 73 s
+with 4 slots, 41 segments where the bound is 10, which is no use to a start
+given 3 s. The conflicts left are mixed sets of 3 to 5 segments across
+several cycles; not kept (the patch is not in the repository).
 
 What the conflicts are, found by
 printing the sets (face of 3 cycles, 69/22/28 tokens): every set is four
