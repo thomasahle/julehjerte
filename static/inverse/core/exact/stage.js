@@ -169,7 +169,7 @@ export function subgroupsOf(symmetry) {
 /** The exact search on the traced `outline` from the fitter's `template`
  * within `deadline`, under the `symmetry` ties: {found: {solution,
  * assessment} or null, report}. */
-export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true, fallback = true, even = false} = {}) {
+export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true, fallback = true, even = false, multi = false} = {}) {
   const seconds = (deadline - performance.now()) / 1000 - reserve;
   const report = {attempted: false, symmetry};
   if (seconds < 1) return {found: null, report: {...report, reason: 'no time left'}};
@@ -208,7 +208,7 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     // juleflet pictures, 87 templates the export takes instead of 84.
     let bare = null;
     if (symmetry.length && start.how !== 'template' && left() >= BARE_FLOOR) {
-      bare = await exactFromTemplate(outline, template, cfg, {seconds: left() * BARE_SHARE, symmetry, exact, witness: empty, onProgress, geometry, refine, spacing: .75, neighbours: 4});
+      bare = await exactFromTemplate(outline, template, cfg, {multi, seconds: left() * BARE_SHARE, symmetry, exact, witness: empty, onProgress, geometry, refine, spacing: .75, neighbours: 4});
       report.bare = bare.error ?? bare.report.penalty;
     }
     const bareFound = bare && !bare.error && !(bare.report.penalty > 1e-6);
@@ -218,7 +218,7 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
       // in the time left, the better kept (ramme: the fine grid proves 4
       // hidden its best, where the coarse has the designer's none).
       if (bare.report.hidden > (bare.report.bound ?? 0) && left() >= COARSE_AFTER_BARE) {
-        const second = await exactFromTemplate(outline, template, cfg, {seconds: left(), symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
+        const second = await exactFromTemplate(outline, template, cfg, {multi, seconds: left(), symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
         const rank = result => { try { return assess(result.solution, cfg).rank; } catch { return null; } };
         if (!second.error && !(second.report.penalty > 1e-6)) {
           const [a, b] = [rank(second), rank(found)];
@@ -226,7 +226,7 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
         }
       }
     } else {
-      found = await exactFromTemplate(outline, template, cfg, {seconds: left(), symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
+      found = await exactFromTemplate(outline, template, cfg, {multi, seconds: left(), symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
       // The bare one where it breaks fewer of the model's rules.
       if (bare && !bare.error && (found.error || bare.report.penalty < found.report.penalty)) found = {...bare, report: {...bare.report, bare: true}};
     }
@@ -235,7 +235,7 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     // in a second): then four, 1.5 units apart, in the time left.
     const rest = left();
     if (found.error === NO_TEMPLATE && start.how !== 'template' && rest >= 4) {
-      const finer = await exactFromTemplate(outline, template, cfg, {seconds: rest, symmetry, exact, witness, onProgress, geometry, refine, spacing: 1.5, neighbours: 4});
+      const finer = await exactFromTemplate(outline, template, cfg, {multi, seconds: rest, symmetry, exact, witness, onProgress, geometry, refine, spacing: 1.5, neighbours: 4});
       found = finer.error ? found : {...finer, report: {...finer.report, finer: true}};
     }
   } catch (error) {
@@ -277,7 +277,7 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     const left = (deadline - performance.now()) / 1000 - reserve;
     if (left < TURNS_FLOOR) break;
     const share = k < subgroups.length - 1 ? Math.max(TURNS_FLOOR, left / (subgroups.length - k)) : left;
-    const again = await exactSearch(outline, template, cfg, {deadline: performance.now() + 1000 * (share + reserve), reserve, onProgress, geometry, refine, fallback: false, symmetry: ties, even});
+    const again = await exactSearch(outline, template, cfg, {deadline: performance.now() + 1000 * (share + reserve), reserve, onProgress, geometry, refine, fallback: false, symmetry: ties, even, multi});
     if (again.found) return {...again, report: {...again.report, subgroup: {from: symmetry, to: ties, error: found.error}}};
   }
   if (found.error) return {found: null, report: {...report, error: found.error, search: found.report}};

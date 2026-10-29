@@ -18,6 +18,8 @@ import {geometryNogoods, nogoodKey} from './nogoods.js';
  * enumeration (16). On some models presolve spent 41 s in them, beyond its own
  * time limit, which it checks only between passes (amy-weave-1: 44 s, now
  * 2 s); on the others they took seconds and changed no template. */
+/** The most variables the rows for faces with holes may add to one face (ExactModel, `multi`). */
+const MULTI_HOLE_BITS = 1500;
 const SLOW_PRESOLVE_RULES = (1 << 11) | (1 << 13) | (1 << 14) | (1 << 15) | (1 << 16);
 
 /** Whether a face's hidden segments can be drawn without crossing (sat_weave.embeddable). */
@@ -77,7 +79,7 @@ export function cliqueCover(edges) {
 const LENGTH_PATIENCE = .1;
 
 export class ExactModel {
-  constructor({st, outline, cand, h = 0, statics = [], soft = new Set(), penalty = 1000, fallback = new Map(), paper = [], paperPenalty = 50, ties = []}) {
+  constructor({st, outline, cand, h = 0, statics = [], soft = new Set(), penalty = 1000, fallback = new Map(), paper = [], paperPenalty = 50, ties = [], multi = false}) {
     this.st = st;
     this.outline = outline;
     this.cand = cand;
@@ -239,6 +241,112 @@ export class ExactModel {
         segments.push([key, j, at]);
       }
       this.annuli.push({U, wrap, len, segments});
+    }
+    // A face with holes: the holes' segments from the outer boundary cannot
+    // alternate (hole a, b, a, b) around it, which the lazy rows found one set
+    // at a time (tak, the Voronoi near misses: over 200 000 of them in a face).
+    // Walked along the outer boundary: when a hole z appears again, each hole
+    // that appeared since z's last appearance is closed (appears no more).
+    // seen[z][j]: z appeared before position j; f[y][z][j]: y appeared since z's
+    // last appearance; closed[y][j]: y may not appear at j or after. Rows only
+    // force them up from what is used (a larger value restricts more), so the
+    // smallest ones are the true ones.
+    // A segment between two tokens of one cycle splits the face, and each other
+    // cycle lies on one side of it, as the segment is routed: a bit per segment
+    // and other cycle for which. With the segment used, the segments from the
+    // cycle's tokens inside it to that other cycle are none if it lies outside,
+    // those from outside none if inside, and the segments between two other
+    // cycles none if they lie on different sides: summed over the segments,
+    // not a row for each pair (big-M, a row per segment and cycle).
+    if (multi) {
+      for (const [fi, all] of byFace) {
+        const cycles = cand.faces[fi].map(c => c.map(tokenKey));
+        if (cycles.length < 3) continue;
+        const cycleOf = new Map(cycles.flatMap((c, ci) => c.map(t => [t, ci]))), ring = cycles.map(c => new Map(c.map((t, i) => [t, i])));
+        const ends = key => { const [, a, b] = cand.pair.get(key); return [tokenKey(a), tokenKey(b)]; };
+        const same = [], between = new Map(), toCycle = new Map();
+        for (const key of all) {
+          const [ka, kb] = ends(key), [ca, cb] = [cycleOf.get(ka), cycleOf.get(kb)];
+          if (ca === cb) { same.push(key); continue; }
+          const id = `${Math.min(ca, cb)}|${Math.max(ca, cb)}`;
+          if (!between.has(id)) between.set(id, []);
+          between.get(id).push(x.get(key));
+          for (const [t, other] of [[ka, cb], [kb, ca]]) { const k = `${t}|${other}`; if (!toCycle.has(k)) toCycle.set(k, []); toCycle.get(k).push(x.get(key)); }
+        }
+        const Mfor = list => Math.max(1, list.length);
+        // Not on a face where the bits alone would swell the model: the larger
+        // models (hermanngitter, khatam) lost more time than the rows saved.
+        if (same.length * (cycles.length - 1) > MULTI_HOLE_BITS) continue;
+        for (const C of same) {
+          const [ka, kb] = ends(C), c = cycleOf.get(ka), [lo, hi] = [ring[c].get(ka), ring[c].get(kb)].sort((u, w) => u - w), xc = x.get(C);
+          const bits = new Map(), bit = h => { if (!bits.has(h)) bits.set(h, bin()); return bits.get(h); };
+          for (let h = 0; h < cycles.length; h++) {
+            if (h === c) continue;
+            const inside = [], outside = [];
+            for (const [t, i] of ring[c]) {
+              if (t === ka || t === kb) continue;
+              (lo < i && i < hi ? inside : outside).push(...(toCycle.get(`${t}|${h}`) || []));
+            }
+            if (!inside.length && !outside.length) continue;
+            const v = bit(h);
+            // used with h inside: none from outside tokens; with h outside: none from inside tokens
+            if (outside.length) m.row([...outside.map(u => [u, 1]), [v, -Mfor(outside)], [xc, Mfor(outside)]], -Infinity, Mfor(outside));
+            if (inside.length) m.row([...inside.map(u => [u, 1]), [v, Mfor(inside)], [xc, Mfor(inside)]], -Infinity, 2 * Mfor(inside));
+          }
+          for (const [id, list] of between) {
+            const [h1, h2] = id.split('|').map(Number);
+            if (h1 === c || h2 === c) continue;
+            const [v1, v2] = [bit(h1), bit(h2)], M = Mfor(list);
+            m.row([...list.map(u => [u, 1]), [xc, M], [v1, M], [v2, -M]], -Infinity, 2 * M);
+            m.row([...list.map(u => [u, 1]), [xc, M], [v1, -M], [v2, M]], -Infinity, 2 * M);
+          }
+        }
+      }
+    }
+    this.multiHole = [];
+    if (multi) {
+      for (const [fi, all] of byFace) {
+        const cycles = cand.faces[fi].map(c => c.map(tokenKey));
+        if (cycles.length < 3 || cycles[0].length < 3) continue;
+        const outer = new Map(cycles[0].map((t, i) => [t, i])), holeOf = new Map(cycles.slice(1).flatMap((c, k) => c.map(t => [t, k])));
+        const n = cycles[0].length, h = cycles.length - 1, at = Array.from({length: n}, () => Array.from({length: h}, () => []));
+        let any = 0;
+        for (const key of all) {
+          const [, a, b] = cand.pair.get(key), [ka, kb] = [tokenKey(a), tokenKey(b)];
+          const [o, q] = outer.has(ka) && holeOf.has(kb) ? [ka, kb] : outer.has(kb) && holeOf.has(ka) ? [kb, ka] : [null, null];
+          if (o === null) continue;
+          at[outer.get(o)][holeOf.get(q)].push(x.get(key)); any++;
+        }
+        const live = [...Array(h).keys()].filter(y => at.some(row => row[y].length));
+        if (live.length < 2 || any < 4 || n * (2 * live.length + live.length * live.length) > MULTI_HOLE_BITS) continue;
+        const L = (j, y) => at[j][y].map(v => [v, 1]), neg = terms => terms.map(([v, c]) => [v, -c]);
+        const seen = live.map(() => Array.from({length: n + 1}, (_, j) => j ? bin() : null));
+        const closed = live.map(() => Array.from({length: n + 1}, (_, j) => j ? bin() : null));
+        const f = live.map(() => live.map(() => Array.from({length: n + 1}, (_, j) => j ? bin() : null)));
+        const idx = new Map(live.map((y, i) => [y, i]));
+        for (const y of live) {
+          const yi = idx.get(y);
+          for (let j = 0; j < n; j++) {
+            const Ly = L(j, y);
+            // closed holes do not appear
+            if (Ly.length) m.row([...Ly, ...(j ? [[closed[yi][j], 1]] : [])], -Infinity, 1);
+            // seen and closed only rise
+            if (j) { m.row([[seen[yi][j + 1], 1], [seen[yi][j], -1]], 0, Infinity); m.row([[closed[yi][j + 1], 1], [closed[yi][j], -1]], 0, Infinity); }
+            if (Ly.length) m.row([[seen[yi][j + 1], 1], ...neg(Ly)], 0, Infinity);
+            for (const z of live) {
+              if (z === y) continue;
+              const zi = idx.get(z), Lz = L(j, z);
+              // y appeared at j: since z's last appearance
+              if (Ly.length) m.row([[f[yi][zi][j + 1], 1], ...neg(Ly)], 0, Infinity);
+              // stays so until z appears
+              if (j) m.row([[f[yi][zi][j + 1], 1], [f[yi][zi][j], -1], ...Lz], 0, Infinity);
+              // z appears again with y between: y closed afterwards
+              if (Lz.length && j) m.row([[closed[yi][j + 1], 1], ...neg(Lz), [seen[zi][j], -1], [f[yi][zi][j], -1]], -2, Infinity);
+            }
+          }
+        }
+        this.multiHole.push({fi, n, live, at, idx, seen, closed, f});
+      }
     }
     section('ties');
     // Symmetry ties (StructureSymmetry.ties): equal labels, complementary where
@@ -424,6 +532,7 @@ export class ExactModel {
       for (const c of mine) { const trial = bad.filter(d => d !== c); if (!embeddable(cycles, pairs(trial))) bad = trial; }
       // Whether segments embed depends only on the tokens they join, and a
       // token has one segment at most: the row takes every route between them.
+      if (globalThis.DBG_BAD) { const ci = new Map(cycles.flatMap((c, k) => c.map((t, i) => [t, [k, i]]))); console.log('BADSET', cycles.map(c => c.length).join('/'), bad.map(c => { const [, a, b] = this.cand.pair.get(c); return `${ci.get(tokenKey(a)).join('.')}-${ci.get(tokenKey(b)).join('.')}`; }).join('  ')); }
       out.push(['embedding', bad.flatMap(c => this.joining(c).map(v => [v, 1])), bad.length - 1]);
     }
     if (out.length) return out;
@@ -479,6 +588,25 @@ export class ExactModel {
         }
         for (const arc of path) val[arc] = 1;
       }
+    }
+    for (const {n, live, at, seen, closed, f} of this.multiHole) {
+      // The alternation automaton along the outer boundary, as the rows force it.
+      const st = live.map(() => ({seen: false, closed: false})), since = live.map(() => live.map(() => false));
+      for (let j = 0; j < n; j++) {
+        const label = live.findIndex(y => at[j][y].some(v => val[v] > .5));
+        for (let yi = 0; yi < live.length; yi++) {
+          if (j) { val[seen[yi][j]] = st[yi].seen ? 1 : 0; val[closed[yi][j]] = st[yi].closed ? 1 : 0; for (let zi = 0; zi < live.length; zi++) if (zi !== yi) val[f[yi][zi][j]] = since[yi][zi] ? 1 : 0; }
+        }
+        if (label < 0) continue;
+        for (let yi = 0; yi < live.length; yi++) {
+          if (yi === label) continue;
+          if (st[label].seen && since[yi][label]) st[yi].closed = true;
+          since[yi][label] = false;
+        }
+        for (let zi = 0; zi < live.length; zi++) if (zi !== label) since[label][zi] = true;
+        st[label].seen = true;
+      }
+      for (let yi = 0; yi < live.length; yi++) { val[seen[yi][n]] = st[yi].seen ? 1 : 0; val[closed[yi][n]] = st[yi].closed ? 1 : 0; for (let zi = 0; zi < live.length; zi++) if (zi !== yi) val[f[yi][zi][n]] = since[yi][zi] ? 1 : 0; }
     }
     for (const {U, wrap, len, segments} of this.annuli) {
       // Along the outer cycle, a used segment wraps once its inner position falls behind.

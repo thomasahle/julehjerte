@@ -30,7 +30,7 @@ function holds(nogood, labels, used, switches) {
 }
 
 /** The exact template nearest the given one: {solution, report} or {error}. */
-export async function exactFromTemplate(target, template, cfg, {seconds = 20, neighbours = 8, spacing = .75, paperRetries = 2, exact = exactOutline(target, cfg), symmetry = [], sheets = true, witness: given = null, onProgress = () => {}, geometry = false, refine = false, refineSeconds = 2} = {}) {
+export async function exactFromTemplate(target, template, cfg, {seconds = 20, neighbours = 8, spacing = .75, paperRetries = 2, multi = false, exact = exactOutline(target, cfg), symmetry = [], sheets = true, witness: given = null, onProgress = () => {}, geometry = false, refine = false, refineSeconds = 2} = {}) {
   // The start: `witness` (exactStart's, start.js), or the template read here.
   const t0 = performance.now(), {st, outline, routes} = exact, witness = given || await readTemplate(template, outline);
   if (witness.error) return {error: witness.error};
@@ -110,7 +110,7 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
   // paper around what it doubts forbidden (paper.js), while time is left.
   let extra = [], best = null, nextDrawing = -Infinity;
   for (let attempt = 0; attempt <= paperRetries; attempt++) {
-    const model = new ExactModel({st, outline, cand, h: bound, statics: [...statics, ...extra], soft, fallback, ties});
+    const model = new ExactModel({st, outline, cand, h: bound, statics: [...statics, ...extra], soft, fallback, ties, multi});
     // With `geometry`, the live view draws the search's solutions as the
     // fitter's candidates are drawn (progress.js), at most every DRAW_INTERVAL_MS.
     const onSolution = geometry ? values => {

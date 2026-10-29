@@ -955,7 +955,32 @@ such faces in the model (as the annuli of one hole have theirs) would do. Droppi
 the chords between two different holes of such a face (the ones whose winding
 looked like the trouble) changed nothing on the Voronoi near misses and made
 tak worse (22 hidden segments, the same crossing): their conflict sets are of
-chords from the outer boundary too. What the conflicts are, found by
+chords from the outer boundary too. The encoding that works (exact/model.js, the `multi` option of
+ExactModel, off by default). The alternation of segments from the outer
+boundary to different holes, walked along the boundary as an automaton: when
+hole z appears again, each hole that appeared since z's last appearance is
+closed; a few variables per position and pair of holes, rows that only force
+them up from the used segments, so the smallest are the true ones (the start's
+values are filled in too). With it, the sets that mix a segment between two
+tokens of one cycle (which splits the face, each other cycle on one side, a
+bit for which) and segments joining cycles are tied to that bit, summed per
+segment and cycle (big-M) instead of a row for each pair: on the Voronoi
+near miss (tmp/e2e/cubic fair k6 w30 seed 47) no lazy embedding rows at all, 3
+rounds, a passing template in 18 to 20 s, 0.16% from its mask (without: 24
+rounds, over 60 s, one rule broken; fixture voronoi-holes-mask.json and its
+test, which fails without the option). Not enabled: always on, the added
+variables slow the big faces (hermanngitter-shot 28 to 43 s, khatam-shot's
+model doubles to 41k columns and finds nothing; origami-shot's loss was
+noise), 6 pictures lost for 1 gained of the 143; as a retry after a failed
+traced search with four or more lazy embedding rows, it takes the rounded
+stage's time and loses dagognat-shot, david4, g-khatam, khatam-shot and
+lilje2-shot to gain none of them (the gain is on the generated pictures); and
+tak, with 728 candidates in its face, still returns nothing with it (35k rows,
+no first solution in 90 s). A face-size cap on the extra variables (1500) is
+in. What would make it usable is a cheap test of when a face has such
+conflicts before the search, which I do not have.
+
+What the conflicts are, found by
 printing the sets (face of 3 cycles, 69/22/28 tokens): every set is four
 segments from the outer boundary to two different holes whose outer ends
 alternate hole 1, hole 2, hole 1, hole 2 around the boundary (positions 24,
