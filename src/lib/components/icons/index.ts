@@ -74,6 +74,7 @@ export { default as UploadIcon } from '@lucide/svelte/icons/upload';
  * square, which lucide has nothing for, and they carry a little more line than
  * the rest, so they take `size = 28` and stroke 1.8 rather than 20 and 2.
  */
+export { default as CellsIcon } from './CellsIcon.svelte';
 export { default as OutlineIcon } from './OutlineIcon.svelte';
 export { default as SnapIcon } from './SnapIcon.svelte';
 export { default as SymmetryIcon } from './SymmetryIcon.svelte';

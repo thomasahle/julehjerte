@@ -14,6 +14,7 @@ import { halvesCrossCleanly, MIN_PIECE, smallestPiece, weavesWell } from '$lib/e
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { getCenteredRectParams, inferOverlapRect, type OverlapRect } from '$lib/utils/overlapRect';
 import {
+	cellOverlay,
 	cutOfFinger,
 	cutsAre,
 	dragPlacedPoint,
@@ -44,7 +45,7 @@ import { isFigure, randomTileDraw, randomTileKind } from './randomTile';
 import { centredPlacements } from './centre';
 import { cornerFreedom, cornersMove, jointFreedom, jointsOfLength, type Join } from './corners';
 
-export { cornersMove, cutOfFinger, cutsAre, followEdit, generateEditorFingers, READ_TOLERANCE, sameRule, specialNodes, weaveParityOf };
+export { cellOverlay, cornersMove, cutOfFinger, cutsAre, followEdit, generateEditorFingers, READ_TOLERANCE, sameRule, specialNodes, weaveParityOf };
 export type { PatternTile, SpecialNode, TileRule };
 
 /** The heart as the Escher tab finds it: its cuts, edges and all, its grid, the square they fill, and which of its cells show the right lobe's colour. */

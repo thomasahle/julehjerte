@@ -21,13 +21,14 @@
 
 import type { BezierSegment, Finger, GridSize, NodeType, Vec } from '$lib/types/heart';
 import { MAX_GRID_SIZE, MIN_GRID_SIZE } from '$lib/constants';
-import { reverseSegments, splitBezierAt } from '$lib/geometry/bezierSegments';
+import { reverseSegments, segmentsToPathData, splitBezierAt } from '$lib/geometry/bezierSegments';
 import type { OverlapRect } from '$lib/utils/overlapRect';
 import { READ_TOLERANCE, sharedCrossings, type SharedCrossing } from './crossings';
 import { isRedCell, keepsColours, latticeOf, ruleRepeat, halfOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
 import { cornerClass, cornerFreedom, cornerShift, crossingMoves, JOINS, jointFreedom, meanShift, nearestCorners, sameWayAt, type Join } from './corners';
 import {
 	carryNodeTypes,
+	cellOutline,
 	cellsToRaw,
 	chosenNodeType,
 	crossing,
@@ -117,6 +118,46 @@ export function generateEditorFingers(tile: PatternTile, rect: OverlapRect): Fin
 	};
 	const family = (kind: StretchKind) => Array.from({ length: counts[kind] }, (_, k) => finger(kind, k + 1));
 	return [...family('H'), ...family('V')];
+}
+
+/** The raw square's four corners. */
+const SQUARE_CORNERS: Vec[] = [
+	{ x: 0, y: 0 },
+	{ x: 100, y: 0 },
+	{ x: 0, y: 100 },
+	{ x: 100, y: 100 }
+];
+
+/**
+ * The cells over the heart ("Vis felter"), in Tegn's pixels: the grid the tile's crossings make,
+ * each crossing joined to the next along its row and its column by a straight line, so that how far
+ * the curves bend from it shows, and what the corners and the black points move; and the outline of
+ * the tile's own cell, the one drawn — the red cell nearest the heart's middle — with its curved
+ * sides. Both follow the tile as it is dragged.
+ */
+export function cellOverlay(tile: PatternTile, rect: OverlapRect): { grid: string; cell: string } {
+	const px = toPx(rect);
+	const at = (i: number, j: number) => px(cellsToRaw(tile, crossing(tile, i, j)));
+	const cells = SQUARE_CORNERS.map((q) => rawToCells(tile, q));
+	// Every crossing the square can show, and one more each way for the corners that move.
+	const [i0, i1] = [Math.floor(Math.min(...cells.map((p) => p.x))) - 1, Math.ceil(Math.max(...cells.map((p) => p.x))) + 1];
+	const [j0, j1] = [Math.floor(Math.min(...cells.map((p) => p.y))) - 1, Math.ceil(Math.max(...cells.map((p) => p.y))) + 1];
+	const num = (n: number) => Math.round(n * 100) / 100;
+	const through = (points: Vec[]) => points.map((p, k) => `${k ? 'L' : 'M'} ${num(p.x)} ${num(p.y)}`).join(' ');
+	const lines: string[] = [];
+	for (let j = j0; j <= j1; j++) lines.push(through(Array.from({ length: i1 - i0 + 1 }, (_, k) => at(i0 + k, j))));
+	for (let i = i0; i <= i1; i++) lines.push(through(Array.from({ length: j1 - j0 + 1 }, (_, k) => at(i, j0 + k))));
+	// The tile's own cell: of the red ones, that whose middle is nearest the heart's.
+	const middle = rawToCells(tile, { x: 50, y: 50 });
+	let best = { c: 0, d: 0, away: Infinity };
+	for (let c = Math.floor(middle.x) - 2; c <= Math.floor(middle.x) + 2; c++) {
+		for (let d = Math.floor(middle.y) - 2; d <= Math.floor(middle.y) + 2; d++) {
+			const away = Math.hypot(c + 0.5 - middle.x, d + 0.5 - middle.y);
+			if (isRedCell(c, d) && away < best.away) best = { c, d, away };
+		}
+	}
+	const outline = cellOutline(tile, best.c, best.d).map((s) => ({ p0: px(cellsToRaw(tile, s.p0)), p1: px(cellsToRaw(tile, s.p1)), p2: px(cellsToRaw(tile, s.p2)), p3: px(cellsToRaw(tile, s.p3)) }));
+	return { grid: lines.join(' '), cell: `${segmentsToPathData(outline)} Z` };
 }
 
 /**

@@ -8,6 +8,7 @@
 		ChevronRightIcon,
 		CloseIcon,
 		FitIcon,
+		CellsIcon,
 		OutlineIcon,
 		RedoIcon,
 		SnapIcon,
@@ -279,6 +280,8 @@
 	type SymmetryMode = 'off' | 'sym' | 'anti';
 
 	let showCurves = $state(true);
+	/** The Escher tab's "Vis felter": the grid of cells the tile is laid out in, and the tile's own cell, over the heart. */
+	let showCells = $state(false);
 	// Snap dragged anchors to nearby anchors of the opposite lobe (GitHub issue #2). Off by default.
 	let snapToOpposite = $state(false);
 	let withinCurveMode = $state<SymmetryMode>('off');
@@ -1452,6 +1455,8 @@
 
 	/** On the selected cut, the nodes the Escher tab treats specially: points of the tiling, which size and slant the tiles, and ends that slide. */
 	let patternNodes = $derived(patternTile && selectedFingerId && escher ? escher.specialNodes(patternTile, selectedFingerId) : null);
+	/** The cells "Vis felter" draws, in the heart's pixels; none while it is off, or outside the Escher tab. */
+	let cellLayer = $derived(showCells && escherTab && patternTile && escher ? escher.cellOverlay(patternTile, getOverlapRect()) : null);
 	/** What the Escher tab's hint says the black points do, for the chosen rule. */
 	let escherFrameHint = $derived<TranslationKey | null>(patternTile && escher ? escher.frameHint(patternTile) : null);
 	let escherCornersHint = $derived<TranslationKey | null>(patternTile && escher && escher.cornersMove(patternTile.rule) ? 'patternPointsCorners' : null);
@@ -4084,6 +4089,38 @@
 									<HeartWeaveFill {fingers} weave={weaveData} colors={heartColors} idPrefix={componentId} />
 								</g>
 
+								{#if cellLayer}
+									<!-- "Vis felter": the grid of straight lines through the crossings, cut to the square, and the
+									     tile's own cell, the one drawn, edged thick and tinted. Under the cuts, none of it takes a click. -->
+									{@const square = getOverlapRect()}
+									<g pointer-events="none">
+										<clipPath id="cells-clip-{componentId}">
+											<rect x={square.left} y={square.top} width={square.width} height={square.height} />
+										</clipPath>
+										<path
+											d={cellLayer.grid}
+											clip-path="url(#cells-clip-{componentId})"
+											fill="none"
+											stroke="#1e2a25"
+											stroke-opacity="0.55"
+											stroke-width="1.5"
+											stroke-dasharray="7 5"
+											vector-effect="non-scaling-stroke"
+										/>
+										<!-- Its edge lies along the cuts, drawn over it: a wide soft stroke, so that it shows either side of them. -->
+										<path
+											d={cellLayer.cell}
+											fill="#2f5242"
+											fill-opacity="0.2"
+											stroke="#1e2a25"
+											stroke-opacity="0.55"
+											stroke-width="9"
+											stroke-linejoin="round"
+											vector-effect="non-scaling-stroke"
+										/>
+									</g>
+								{/if}
+
 								{#if !readonly}
 									{#each fingers as finger (finger.id)}
 											{@const isSelected = finger.id === selectedFingerId}
@@ -4606,6 +4643,14 @@
 							<OutlineIcon />
 							<span>{tr('editorOutlines')}</span>
 						</label>
+						<!-- Only in the Escher tab: the cells the tile is laid out in, over the heart. -->
+						{#if escherTab}
+							<label class="checkbox" title={tr('editorShowCells')}>
+								<input type="checkbox" bind:checked={showCells} />
+								<CellsIcon />
+								<span>{tr('editorCells')}</span>
+							</label>
+						{/if}
 						<!-- Not in the Escher tab: the points the lobes share there are the crossings, which
 						     the tile places itself. -->
 						{#if !escherTab}

@@ -634,7 +634,12 @@ laps punkter" — drawn in the canvas's own cut colours, cyan for the left lobe 
 ($lib/editor/outlineColors, which the canvas reads too), because the colours are half of what those two icons
 say. Where a narrow phone column costs the Snap label a third line for the glyph,
 nothing is clipped, and no glyph small enough to win the line back is still worth drawing, so it is accepted.
-The Escher tab leaves Snap out: the points the lobes share there are the crossings, which the tile places.
+The Escher tab leaves Snap out: the points the lobes share there are the crossings, which the tile places,
+and has "Vis felter / Show cells" in its place (2026-10-29, the owner's idea; tiled.art has the like as "Show
+overlays"): a dashed straight line through the crossings along every row and column, cut to the square, so how
+far the curves bend from the cells' grid shows, and the tile's own cell, the red one nearest the middle, tinted
+and edged with a wide soft stroke under the cuts (`cellOverlay`). Both follow the tile as it is dragged; off by
+default, kept for the visit only, and drawn under the cuts, so nothing in it takes a click.
 
 Where cyan and orange cut strokes overlap, alternate their colours along the shared
 screen stroke (4px per colour, 2px wide). Keep the cadence fixed while zooming and let

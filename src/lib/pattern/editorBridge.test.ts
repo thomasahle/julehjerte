@@ -9,6 +9,7 @@ import { ruleStart } from './starts';
 import { cornerClass, cornerFreedom, jointFreedom, jointsOfLength } from './corners';
 import { EXAMPLES, exampleTile, knobTile } from './examples';
 import {
+	cellOverlay,
 	cutOfFinger,
 	cutsAre,
 	followEdit,
@@ -126,6 +127,23 @@ describe("the bridge between a tile and Tegn's cuts", () => {
 			}
 		}
 	);
+
+	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))('%s: the cells "Vis felter" draws are a grid through the crossings and the red cell nearest the middle', (_key, rule) => {
+		const tile = knobTile(rule);
+		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
+		const { grid, cell } = cellOverlay(tile, rect);
+		const numbers = (path: string) => (path.match(/-?\d+(\.\d+)?/g) ?? []).map(Number);
+		expect(grid.split('M').length - 1, 'a line each way through every row and column').toBeGreaterThanOrEqual(2 * (tile.cuts + 1));
+		expect(numbers(grid).every(Number.isFinite)).toBe(true);
+		expect(cell.startsWith('M') && cell.endsWith('Z')).toBe(true);
+		// the cell lies in the square, near its middle
+		const xs = numbers(cell).filter((_, k) => k % 2 === 0);
+		const ys = numbers(cell).filter((_, k) => k % 2 === 1);
+		const middle = { x: (Math.min(...xs) + Math.max(...xs)) / 2, y: (Math.min(...ys) + Math.max(...ys)) / 2 };
+		expect(Math.hypot(middle.x - (rect.left + rect.width / 2), middle.y - (rect.top + rect.height / 2))).toBeLessThan(rect.width / 2);
+		// a plain tile's red cell is a cell of the grid: four corners where the grid has crossings
+		if (ruleKey(rule) === 'opposite:move:move') expect(numbers(cell).length).toBeGreaterThanOrEqual(8);
+	});
 
 	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))('reads the %s tile back however its tiles were moved, sized, stretched or turned', (_key, rule) => {
 		const tile = knobTile(rule);
