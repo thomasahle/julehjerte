@@ -817,10 +817,15 @@ twice as much gets what time is left (engine.js, `rounded: 'wider'`): of the 26
 juleflet and gallery pictures left to the fitter, mor-og-barn now has an exact
 template, 0.52% from its mask in 32 s (0.8 mm left its chin and the child's
 nose closer than a slit may come), and dagognat-shot one 2.0% from it, which
-the page shows only after a fitted one 1% or more off. Triple-heart's comes
-where its outline meets the square's side at a shallow angle: the border
-band, read 1 mm in, turns it there sharply, a corner no rounding before
-the band clears (2 mm passes, 2.2% from the mask).
+the page shows only after a fitted one 1% or more off.
+
+Triple-heart's slit came too close to itself where its outline meets the
+square's side at a shallow angle: the border band, read 1 mm in, squared the
+outline there again after the rounding (2 mm of rounding passed, 2.2% from
+the mask). A rounded outline now has its band read first (exact/raster.js):
+triple-heart exact, 0.24% from its mask in 14 s, and mor-og-barn 0.35% with 5
+hidden segments where 0.52% with 9. Of the 28 pictures taking a rounded
+outline before, the same templates (roserude in 26 s, not 11).
 
 ## Details lost on photographs (2026-10-25)
 
@@ -861,11 +866,9 @@ camel, but takes 20-28 s more and fails on other photographs; not used.
   trace helps given the time alone, above), and printed papers often still end
   unevenly where reading their sides deeper would change more than the error
   allowed.
-- The exact search's hard designs: balls, venus, khatam, santa, dagognat,
-  triple-heart and davidsstjerne-circ get the fitter's template (passing,
-  0.7-1.5% from the mask), and the circle's photograph, whose cuts come too
-  close (above). Triple-heart's border corner wants the band's stub rounded
-  into the curve, not the mask before the band is read.
+- The exact search's hard designs: balls, venus, khatam, santa, dagognat and
+  davidsstjerne-circ get the fitter's template (passing, 0.7-1.5% from the
+  mask), and the circle's photograph, whose cuts come too close (above).
 - The exact template's smooth drawing where its every-edge version breaks a
   rule: which edges, rather than orbits added one by one for two seconds
   (puslespil keeps 66 cubics a cut); a pinwheel's turns as Tegn's Drejet rows

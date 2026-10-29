@@ -3,7 +3,7 @@
  * with the border band stabilised first: an import's crop leaves strips of the
  * other colour along the edges, which would otherwise be outline there. */
 import {prepareMaskTrace} from '../input.js';
-import {pairedBorderReading} from '../border.js';
+import {pairedBorderReading, stabilizeBorder} from '../border.js';
 import {SIZE} from './structure.js';
 
 /** Two corners of a picture's outline this close (mm) are one touching:
@@ -100,9 +100,14 @@ export function rasterOutline(target, cfg, {tolerance = .35, smoothRadius = 0, b
     shown = pairedBorderReading(shown, n, width, {seenAt: borderRadius, minimumStripWidth: cfg.nominalWidth ?? 2.5, maxChange: cfg.maxImageError ?? .03});
     if (!shown) return null;
   }
+  // Rounded, its border band read first: read after, the band squared again
+  // where an outline meets the square's side at a shallow angle the corner
+  // the rounding took off (triple-heart's outer heart, a slit there too close
+  // to itself; read first, 0.62% from its mask).
+  if (open) shown = stabilizeBorder(shown, n, width, borderRadius, cfg.nominalWidth ?? 2.5).mask;
   const mask = withoutSlivers(!open ? shown : spots?.length ? openCloseNear(shown, n, open, spots, within) : openClose(shown, n, open), n);
   const trace = prepareMaskTrace(mask, source.resolution, {...cfg, width, maxSpan: 40, smoothRadius, snapRadius: 0,
-    borderRadius, polygonal: false, mixedBoundaries: true});
+    borderRadius: open ? 0 : borderRadius, polygonal: false, mixedBoundaries: true});
   const traced = trace(tolerance).target;
   // Corners of the picture nearly touching join (exact/target.js).
   const nearTouch = NEAR_TOUCH_MM * SIZE / (cfg.width || 100);
