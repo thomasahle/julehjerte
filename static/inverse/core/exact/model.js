@@ -72,6 +72,10 @@ export function cliqueCover(edges) {
   return out;
 }
 
+/** The share of the length stage a solution keeping every rule may stand
+ * unimproved before it stops (the count stage's is a quarter). */
+const LENGTH_PATIENCE = .1;
+
 export class ExactModel {
   constructor({st, outline, cand, h = 0, statics = [], soft = new Set(), penalty = 1000, fallback = new Map(), paper = [], paperPenalty = 50, ties = []}) {
     this.st = st;
@@ -681,8 +685,11 @@ export class ExactModel {
     }
     if (best) best = {values: best.values, objective: stageLengths.reduce((s, c, j) => s + c * best.values[j], 0)};
     native.changeRowBounds(this.countRow, hidden, hidden);
-    let length = await stage(stageLengths, trusted ? deadline : performance.now() + (deadline - performance.now()) / 3, gap, null, 0);
-    if (best && !trusted && deadline - performance.now() > 200) length = await stage(stageLengths, deadline, gap, null, 0);
+    // The length stage stops once its drawing has not got shorter for a tenth
+    // of the stage (kogle: a template found at 8 s, polished for 11 s more to
+    // the same length).
+    let length = await stage(stageLengths, trusted ? deadline : performance.now() + (deadline - performance.now()) / 3, gap, null, 0, LENGTH_PATIENCE);
+    if (best && !trusted && deadline - performance.now() > 200) length = await stage(stageLengths, deadline, gap, null, 0, LENGTH_PATIENCE);
     // A count taken from the start, which then has no solution: the count stage after all.
     if (!best && report.countStatus.startsWith('at bound')) {
       native.changeRowBounds(this.countRow, this.h, Infinity);

@@ -878,6 +878,23 @@ for the exact search alone, one pixel more and one less in turn took only
 dagognat (1.3%) and permo-kroge-shot, which flips between runs, for 30 s more
 on every picture that still fails. Not used.
 
+## Time spent after the template (2026-10-29)
+
+Where a search succeeds, HiGHS takes 80% of its time (the lazy rules' checks
+and the paper audit under 5%), and its options change nothing: heuristic
+effort 0.3 to 0.9, no symmetry detection, presolve off, a gap of 0.3 or 0.5
+gave the same times to 0.2 s on 25 pictures, because what ends a search is its
+stage's budget. The length stage kept polishing a passing template's cut
+length to its deadline (kogle: found at 8 s, polished 11 s to the same
+length). It now stops once the length has not got shorter for a tenth of the
+stage (model.js `LENGTH_PATIENCE`, the count stage's being a quarter); on 25
+slower pictures the templates, lengths and hidden cuts were the same, kogle
+and kogle-shot 6 to 7 s sooner, and on the 143 pictures quick ones took
+less (permo-draaber 10 s to 6, ramme 8 to 3, plus3 7 to 3, permo-kroge 24 to
+10) with none lost. What holds the 30 to 42 s ones (fisk-shot, jul) is the
+count stage, which runs to its budget where the minimal hidden count is not
+proven; stopping it sooner would risk more hidden cuts.
+
 ## Why the searches that fail do (2026-10-29)
 
 Of 12 pictures left to the fitter, run for 25 s with the lazy rules counted:
