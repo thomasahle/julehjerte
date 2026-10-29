@@ -868,6 +868,16 @@ other, of two near the minute's end missing in a run with two at a time,
 each exact alone: roed-blomst takes 41 s). Rounding the outline itself near
 the sides, tried first, cost hermanngitter and fisk-shot their templates.
 
+Rounding widths tried for the 24 pictures left to the fitter, the traced
+outline's search alone (25 s each; the engine rounds by 3 pixels, 6 for the
+last way): 2 pixels passes khatam (0.7%, 0.6% for its photograph), 4 pixels
+hanefod-shot (1.0%), dagognat (1.3%) and permo-kroge-shot (0.6%); balls,
+davidsstjerne-circ, santa, venus and the text hearts pass at none. They need
+5 to 20 s each past the 40 to 50 s the stages before them use: given 30 s more
+for the exact search alone, one pixel more and one less in turn took only
+dagognat (1.3%) and permo-kroge-shot, which flips between runs, for 30 s more
+on every picture that still fails. Not used.
+
 ## Details lost on photographs (2026-10-25)
 
 The 68 photographs whose template keeps every rule but loses a region of the
