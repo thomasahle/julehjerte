@@ -955,7 +955,10 @@ such faces in the model (as the annuli of one hole have theirs) would do. Droppi
 the chords between two different holes of such a face (the ones whose winding
 looked like the trouble) changed nothing on the Voronoi near misses and made
 tak worse (22 hidden segments, the same crossing): their conflict sets are of
-chords from the outer boundary too. Nor
+chords from the outer boundary too. Ending a round at the
+first improving solution that breaks a row not yet in the model gave 33 rounds
+instead of 26 on the Voronoi near miss, tak 10 instead of 9, both with the
+same violation left: a new conflict only exposes the next. Nor
 do the rounds get quicker with HiGHS's options: tak's runs take 0.8 to 11.7 s,
 7 to 11 s with presolve off, the same with the heuristic effort at 0.01.
 
