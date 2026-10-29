@@ -5,7 +5,7 @@ import type { Finger } from '$lib/types/heart';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
-import { ALL_RULES, COMMON_RULES, freeSides, neighbours, opposite, ruleInfo, ruleKey, twoShapes } from './rules';
+import { ALL_RULES, COMMON_RULES, freeSides, neighbours, opposite, ruleInfo, ruleKey, tileSymmetry, twoShapes } from './rules';
 import { carryNodeTypes, cutCounts, fitLines, tileTurn, unturnedShape, type PatternTile, type SideCurve } from './tiling';
 import { splitBezierAt } from '$lib/geometry/bezierSegments';
 import { ruleStart } from './starts';
@@ -172,6 +172,31 @@ describe("Tegn's Escher tab", () => {
 			if (design.pattern) expect(saved, `${id} is its saved tile`).not.toBeNull();
 			if (noTypeYet.includes(id)) expect(saved ?? resumedTile(null, heart), id).toBeNull();
 			else expect(saved ?? resumedTile(null, heart), id).not.toBeNull();
+		}
+	});
+
+	it("opens the gallery's Permo-cirkler on the Escher tab as two shapes with four mirror lines, its cuts the tile's", () => {
+		// Circles that touch: white circles in a red field, each side a circular arc, the cells 1.1 % smaller than the strips.
+		const design = loadHeart('permo-cirkler');
+		const fingers = sortedAsTegn(design.fingers);
+		const heart = { fingers, gridSize: design.gridSize, rect: inferOverlapRect(fingers, design.gridSize), weaveParity: design.weaveParity as 0 | 1 };
+		expect(design.pattern).toBeDefined();
+		const tile = restoredTile(design.pattern!, heart)!;
+		expect(ruleKey(tile.rule)).toBe('two18');
+		expect(tileSymmetry(tile.rule)).toBe('fourMirrors');
+		// the cuts of the file are the tile's, to a twentieth of a unit of the heart's hundred
+		const made = sortedAsTegn(tileFingers(tile, heart.rect));
+		const sample = (f: Finger) =>
+			f.segments.flatMap((s) =>
+				Array.from({ length: 200 }, (_, k) => {
+					const t = k / 200, u = 1 - t;
+					return { x: u * u * u * s.p0.x + 3 * u * u * t * s.p1.x + 3 * u * t * t * s.p2.x + t * t * t * s.p3.x, y: u * u * u * s.p0.y + 3 * u * u * t * s.p1.y + 3 * u * t * t * s.p2.y + t * t * t * s.p3.y };
+				})
+			);
+		for (const f of fingers) {
+			const [a, b] = [sample(f), sample(made.find((m) => m.id === f.id)!)];
+			const away = (p: typeof a, q: typeof a) => Math.max(...p.map((x) => Math.min(...q.map((y) => Math.hypot(x.x - y.x, x.y - y.y)))));
+			expect(Math.max(away(a, b), away(b, a)) / (heart.rect.width / 100), f.id).toBeLessThan(0.1);
 		}
 	});
 

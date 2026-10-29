@@ -986,8 +986,8 @@
     "difficulty": "medium",
     "symmetry": {
       "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
