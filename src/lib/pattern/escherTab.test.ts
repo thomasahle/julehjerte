@@ -159,10 +159,10 @@ describe("Tegn's Escher tab", () => {
 	});
 
 	it("opens the gallery's tilings (Fliser) on the Escher tab, as Tegn does: on the tile each was saved with, else on one its cuts are", () => {
-		// Tilings that open in the Normal tab: Origami is Tre former 6 (its red tiles two shapes, its white
-		// ones a third, the colours swapped) in its middle, but its edge strips are cut off straight where the
-		// tiling would go on; Plus repeats only in its middle, its cut ends each their own.
-		const noTypeYet = ['plus', 'origami'];
+		// The tiling that opens in the Normal tab: Plus repeats only in its middle, its cut ends each their own.
+		// (Origami is Tre former 6, its red tiles two shapes, its white ones a third, the colours swapped; its
+		// edge strips were cut off straight until 2026-10-29, when the tiling was let go on to the edges.)
+		const noTypeYet = ['plus'];
 		const fliser = hearts.categories.find((c) => c.id === 'fliser')!.hearts;
 		for (const id of fliser) {
 			const design = loadHeart(id);
