@@ -878,6 +878,18 @@ for the exact search alone, one pixel more and one less in turn took only
 dagognat (1.3%) and permo-kroge-shot, which flips between runs, for 30 s more
 on every picture that still fails. Not used.
 
+## Photographs, 2026-10-29
+
+Of 56 real photographs' masks (tmp/e2e/dev-masks-all) the exact search takes
+21 first, in 15.7 s at the median and 0.47% from the mask. The 35 left to the
+fitter: 13 end unevenly on opposite sides (the sides' colour changes differ,
+2 against 3 on the top and bottom of real-20d44f, and reading them deeper
+changes more than the export allows), 19 find no template passing the rules on
+a noisy outline or none in the time, and 3 have no outline to trace or reach
+the sides. The outline smoothed by 1 mm (given 30 s alone) passes 4 of the 19
+(three about 1% from the mask, one 3.7%), none unsmoothed: not used, for 3 of
+56 photographs at the fitter's distance and the time on every other one.
+
 ## Details lost on photographs (2026-10-25)
 
 The 68 photographs whose template keeps every rule but loses a region of the
