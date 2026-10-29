@@ -926,7 +926,8 @@ paper check's floating-core test on the lattice, and that repair looks only at
 the polygon offsets (its own audit says "pass", it returns the template
 unchanged in 0.6 s however long it is given), so it cannot mend it; the
 search's own paper loop (narrow paper around the doubted spots forbidden, three
-tries) is the only repair there. Stjernerogkors and drageskael-shot flip between
+tries; six gave the same template, the loop ending on its time or on no spot
+left to forbid) is the only repair there. Stjernerogkors and drageskael-shot flip between
 0 and 8 or 8 and 16 hidden segments between runs of the same code (HiGHS
 time limits), which is why comparisons here are repeated alone.
 
