@@ -175,28 +175,36 @@ describe("Tegn's Escher tab", () => {
 		}
 	});
 
-	it("opens the gallery's Permo-cirkler on the Escher tab as two shapes with four mirror lines, its cuts the tile's", () => {
-		// Circles that touch: white circles in a red field, each side a circular arc, the cells 1.1 % smaller than the strips.
-		const design = loadHeart('permo-cirkler');
+	// Circles that touch, or dots between them: hand-drawn hearts that are one tile repeated, saved as that tile with
+	// their cuts redrawn from it (0.05 and 0.11 units of the heart's hundred from the drawn ones, a tenth of a mm at 80).
+	// `within` is the file's own rounding, in thousandths of the square's width.
+	it.each([
+		['permo-cirkler', 'two18', 'fourMirrors', 0.1],
+		['balls', 'three6', 'half', 0.1]
+	] as const)("opens the gallery's %s on the Escher tab as %s, its cuts the tile's", (id, rule, symmetry, within) => {
+		const design = loadHeart(id);
 		const fingers = sortedAsTegn(design.fingers);
 		const heart = { fingers, gridSize: design.gridSize, rect: inferOverlapRect(fingers, design.gridSize), weaveParity: design.weaveParity as 0 | 1 };
 		expect(design.pattern).toBeDefined();
 		const tile = restoredTile(design.pattern!, heart)!;
-		expect(ruleKey(tile.rule)).toBe('two18');
-		expect(tileSymmetry(tile.rule)).toBe('fourMirrors');
-		// the cuts of the file are the tile's, to a twentieth of a unit of the heart's hundred
+		expect(ruleKey(tile.rule)).toBe(rule);
+		expect(tileSymmetry(tile.rule)).toBe(symmetry);
+		expect(tileGrid(tile)).toEqual(design.gridSize);
+		// the cuts of the file are the tile's: the same segments, point for point, to a ten-thousandth of a unit
 		const made = sortedAsTegn(tileFingers(tile, heart.rect));
-		const sample = (f: Finger) =>
-			f.segments.flatMap((s) =>
-				Array.from({ length: 200 }, (_, k) => {
-					const t = k / 200, u = 1 - t;
-					return { x: u * u * u * s.p0.x + 3 * u * u * t * s.p1.x + 3 * u * t * t * s.p2.x + t * t * t * s.p3.x, y: u * u * u * s.p0.y + 3 * u * u * t * s.p1.y + 3 * u * t * t * s.p2.y + t * t * t * s.p3.y };
-				})
-			);
+		expect(made.map((f) => f.id)).toEqual(fingers.map((f) => f.id));
 		for (const f of fingers) {
-			const [a, b] = [sample(f), sample(made.find((m) => m.id === f.id)!)];
-			const away = (p: typeof a, q: typeof a) => Math.max(...p.map((x) => Math.min(...q.map((y) => Math.hypot(x.x - y.x, x.y - y.y)))));
-			expect(Math.max(away(a, b), away(b, a)) / (heart.rect.width / 100), f.id).toBeLessThan(0.1);
+			const g = made.find((m) => m.id === f.id)!;
+			expect(g.segments.length, f.id).toBe(f.segments.length);
+			g.segments.forEach((seg, k) => {
+				for (const key of ['p0', 'p1', 'p2', 'p3'] as const) {
+					expect(Math.hypot(seg[key].x - f.segments[k]![key].x, seg[key].y - f.segments[k]![key].y), `${f.id} segment ${k} ${key}`).toBeLessThan(within * heart.rect.width / 1000);
+				}
+			});
+		}
+		// and none of its curves holds a segment of no length, which would show as a second node on the same spot
+		for (const curve of Object.values(tile.curves)) {
+			for (const seg of curve!) expect(Math.hypot(seg.p3.x - seg.p0.x, seg.p3.y - seg.p0.y)).toBeGreaterThan(1e-6);
 		}
 	});
 
