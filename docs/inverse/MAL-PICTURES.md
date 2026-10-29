@@ -878,6 +878,25 @@ for the exact search alone, one pixel more and one less in turn took only
 dagognat (1.3%) and permo-kroge-shot, which flips between runs, for 30 s more
 on every picture that still fails. Not used.
 
+## The designers' hidden cuts, and the coarse grid after the fine one (2026-10-29)
+
+Hidden stretches measured by the weave itself (both sides of a cut the same
+colour, 3 mm or more) on the gallery's exact templates and on the designers'
+own, converted to cut geometry alike (tmp/e2e/even/hidden.mjs): of 72 the same
+count on 61, more on 10 (boelger, ball, glaskuppel, ramme, squares, fisk,
+roed-blomst, ...). Ramme's designer has none, where ours bridged the four
+inner corners of the frame with hidden chords: under ties the fine grid from no
+start (0.75/4, tried first) proves 4 its best, and the coarse grids (3/2, 1.5/4)
+find 0. A template with more hidden segments than the lower bound now has the
+coarse search too, in the time left, the better kept by the export's own rank
+(stage.js `COARSE_AFTER_BARE`). On the 143 pictures: none lost or worse, hidden
+segments down on five (ball 8 to 4, drageskael-shot 16 to 8, g-fejlternet 16 to
+12, juletrae-shot and permo-kroge-shot to none), ramme's template 22 cubics a
+cut to 9; but 15% more time (circle 6.7 s to 28 s, amy-pattern 14 s to 40 s,
+with the same templates): the coarse search usually only confirms the fine one.
+Capped at 10 s it saved little (its set-up and both stages remain) and lost
+drageskael-shot's gain.
+
 ## Time spent after the template (2026-10-29)
 
 Where a search succeeds, HiGHS takes 80% of its time (the lazy rules' checks

@@ -138,7 +138,7 @@ const START_SECONDS = 3;
 
 /** Under ties, the share of the search's time the fine grid from no start
  * gets first, if at least BARE_FLOOR seconds are left (exactSearch). */
-const BARE_SHARE = .5, BARE_FLOOR = 8;
+const BARE_SHARE = .5, BARE_FLOOR = 8, COARSE_AFTER_BARE = 4;
 
 /** How much further from the mask (a share of its cells) the exact search's
  * template may lie drawn in a few cubics than on the traced polyline. */
@@ -214,6 +214,17 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     const bareFound = bare && !bare.error && !(bare.report.penalty > 1e-6);
     if (bareFound && [bare.solution, bare.refined].some(drawn => { try { return drawn && exportable(assess(drawn, cfg), cfg); } catch { return false; } })) {
       found = {...bare, report: {...bare.report, bare: true}};
+      // With more hidden segments than the lower bound, the coarse grid's too,
+      // in the time left, the better kept (ramme: the fine grid proves 4
+      // hidden its best, where the coarse has the designer's none).
+      if (bare.report.hidden > (bare.report.bound ?? 0) && left() >= COARSE_AFTER_BARE) {
+        const second = await exactFromTemplate(outline, template, cfg, {seconds: left(), symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
+        const rank = result => { try { return assess(result.solution, cfg).rank; } catch { return null; } };
+        if (!second.error && !(second.report.penalty > 1e-6)) {
+          const [a, b] = [rank(second), rank(found)];
+          if (a && b && (a.find((v, k) => v !== b[k]) !== undefined ? a[a.findIndex((v, k) => v !== b[k])] < b[a.findIndex((v, k) => v !== b[k])] : false)) found = {...second, report: {...second.report, bareThenCoarse: true}};
+        }
+      }
     } else {
       found = await exactFromTemplate(outline, template, cfg, {seconds: left(), symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
       // The bare one where it breaks fewer of the model's rules.

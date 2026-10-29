@@ -214,6 +214,21 @@ test('an edge meeting the square\'s side through the border band\'s leg is drawn
   assert.deepEqual(drawn.cubics.at(-1).p[3], end);
 });
 
+test('a fine grid\'s template with more hidden segments than the bound has the coarse grid\'s too, the better kept', async () => {
+  // ramme (the gallery's frame of curved bands): under its eight symmetries the
+  // fine grid from no start proves 4 hidden segments its best, where the
+  // coarse grid has the designer's none.
+  const fixture = JSON.parse(await fs.readFile(new URL('./fixtures/ramme-mask.json', import.meta.url))), n = fixture.size;
+  const data = new Uint8Array(n * n);
+  for (const [from, length] of fixture.runs) data.fill(1, from, from + length);
+  const {scaleTarget} = await import('../../static/inverse/core/engine.js');
+  const {exactTarget, exactSearch} = await import('../../static/inverse/core/exact/stage.js');
+  const c = settings({...AUTOMATIC_PRESET, width: 100, minWidth: 2, cutError: .25, exactOutline: true}), outline = scaleTarget(exactTarget({sourceImage: {mask: data, resolution: n}, width: 100, curves: [], metadata: {}}, c), c.width, c.paperColors);
+  const found = await exactSearch(outline, null, c, {deadline: performance.now() + 20000, symmetry: ['mirrorX', 'mirrorY', 'antiTranspose']});
+  assert.ok(found.found, found.report.error);
+  assert.equal(found.report.search.hidden, 0);
+});
+
 test('a picture symmetric under mirrors may keep only its turns, the search\'s fallback', () => {
   assert.deepEqual(turnsOf(['mirrorX', 'mirrorY', 'transpose']), ['rotate90']);
   assert.deepEqual(turnsOf(['mirrorX', 'mirrorY']), ['rotate180']);
