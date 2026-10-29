@@ -69,7 +69,9 @@ export const PINTEREST_FIRST = ['classic-3x3', 'gaver', 'jul', 'juletrae', 'stje
  * his Potteplante at day 50, between Origami and Nihon. Two hearts from Alfred
  * Jacobsen's 1924 sheet followed: Kors i ramme at day 48, between Flyvende gæs and
  * Mor og barn (which moved Potteplante to 51), and Firkant i firkant at day 55, between Hjerte i hjerte i hjerte
- * and MOR & FAR.
+ * and MOR & FAR. Kronblade, a variant of Familie-Journal 1922's heart 3, went in
+ * on 2026-10-29 between Explosion and Flyvende gæs, which moved every later heart
+ * one day on.
  */
 export const PINTEREST_ORDER: readonly string[] = [
 	'classic-3x3', 'juletrae', 'circle', 'gaver', 'balls', 'jul',
@@ -78,7 +80,7 @@ export const PINTEREST_ORDER: readonly string[] = [
 	'5star', 'amy-pattern', 'venus', 'amy-flowering', 'simple-5star', 'amy-pinecone',
 	'h4h2', 'tak', 'alhambra', 'kompasrose', 'angel', 'squares', 'sun', 'ni-hjerter-i-tern',
 	'stjerneblomst', 'sildeben', 'snowflake', 'ni-ruder', 'puslespil', 'fire-stjerner', 'permo-sol', 'koelbuer', 'nemt-hjerte',
-	'roserude', 'santa', 'andreaskors', 'hanefod', 'ni-firkanter', 'explosion', 'flyvendegaes', 'kors-i-ramme', 'mor-og-barn',
+	'roserude', 'santa', 'andreaskors', 'hanefod', 'ni-firkanter', 'explosion', 'kronblade', 'flyvendegaes', 'kors-i-ramme', 'mor-og-barn',
 	'origami', 'potteplante', 'nihon', 'drageskael', 'hjerte-i-hjerte-i-hjerte', 'firkant-i-firkant', 'mor-far', 'dagognat', 'hermanngitter',
 	'lilje1', 'tragt', 'davidsstjerne-circ', 'boelgebrud', 'ball', 'glaskuppel',
 	'lilje2', 'hvirvel', 'david4', 'jul-2026', 'permo-kroge', 'fisk',

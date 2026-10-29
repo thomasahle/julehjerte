@@ -582,6 +582,14 @@
     },
     "difficulty": "medium"
   },
+  "kronblade": {
+    "name": "Kronblade",
+    "names": {
+      "da": "Kronblade",
+      "en": "Petals"
+    },
+    "difficulty": "easy"
+  },
   "kloeverblad-hjerte": {
     "name": "Kløverblads-hjerte",
     "names": {

@@ -89,6 +89,7 @@
 			number: 'historyHeartNumber',
 			hearts: [
                               { id: 'andreaskors', number: 2 },
+                              { id: 'kronblade', number: 3 },
                               { id: 'kompasrose', number: 4 }
                         ]
 		},

@@ -2241,6 +2241,33 @@
     },
     "photo": null
   },
+  "kronblade": {
+    "name": "Kronblade",
+    "names": {
+      "da": "Kronblade",
+      "en": "Petals"
+    },
+    "author": "Thomas Dybdahl Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-29",
+    "description": null,
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "easy",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "kloeverblad-hjerte": {
     "name": "Kløverblads-hjerte",
     "names": {

@@ -1,0 +1,25 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="0" data-color-left="#ffffff" data-color-right="#b91313">
+  <title>Kronblade</title>
+  <title xml:lang="da">Kronblade</title>
+  <title xml:lang="en">Petals</title>
+  <desc xml:lang="da">En rund skive i midten med fire kronblade, der breder sig ud mod kanten som en blomst set ovenfra. To bløde klip i hver halvdel giver tre striber, og klippene bugter sig ind mod midten og ud igen. Halvdelene er spejlvendte, så én skabelon dækker begge, og sværhedsgraden er let. Klip i ét langsomt træk, så skiven bliver rund. Kronblade er en variant af hjerte nr. 3 i [Illustreret Familie-Journal 1922](https://papermatrix.wordpress.com/wp-content/uploads/2010/04/koch-1.jpg), hvor skiven er omgivet af en ring.</desc>
+  <desc xml:lang="en">A round disc in the middle with four petals spreading towards the edge, like a flower seen from above. Two soft cuts in each half give three strips, and the cuts curve in towards the middle and out again. The halves mirror each other, so one template covers both, and the difficulty is easy. Cut in one slow stroke so the disc comes out round. Petals is a variant of heart no. 3 in [Illustreret Familie-Journal 1922](https://papermatrix.wordpress.com/wp-content/uploads/2010/04/koch-1.jpg), where a ring surrounds the disc.</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Kronblade</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Thomas Dybdahl Ahle</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:source>juleflet.dk</dc:source>
+        <dc:date>2026-10-29</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 100 32.139218963162726 C 78.27471294853983 20.51429070523151 68.08048967586784 32.32759100327353 68.08048967586784 32.32759100327353 C 59.11900722816396 22.501625675802543 40.88099277183604 22.501625675802543 31.919510324132183 32.32759100327353 C 31.919510324132183 32.32759100327353 21.725287051460203 20.51429070523151 0 32.139218963162726" stroke="orange" fill="none"/>
+  <path d="M 100 67.86078103683728 C 78.27471294853983 79.4857092947685 68.08048967586784 67.67240899672646 68.08048967586784 67.67240899672646 C 59.11900722816396 77.49837432419746 40.88099277183604 77.49837432419746 31.919510324132183 67.67240899672646 C 31.919510324132183 67.67240899672646 21.725287051460203 79.4857092947685 0 67.86078103683728" stroke="orange" fill="none"/>
+  <path d="M 32.139218963162726 100 C 20.51429070523151 78.27471294853983 32.32759100327353 68.08048967586784 32.32759100327353 68.08048967586784 C 22.501625675802543 59.11900722816396 22.501625675802543 40.88099277183604 32.32759100327353 31.919510324132183 C 32.32759100327353 31.919510324132183 20.51429070523151 21.725287051460203 32.139218963162726 0" stroke="green" fill="none"/>
+  <path d="M 67.86078103683728 100 C 79.4857092947685 78.27471294853983 67.67240899672646 68.08048967586784 67.67240899672646 68.08048967586784 C 77.49837432419746 59.11900722816396 77.49837432419746 40.88099277183604 67.67240899672646 31.919510324132183 C 67.67240899672646 31.919510324132183 79.4857092947685 21.725287051460203 67.86078103683728 0" stroke="green" fill="none"/>
+</svg>
