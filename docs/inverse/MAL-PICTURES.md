@@ -955,7 +955,20 @@ such faces in the model (as the annuli of one hole have theirs) would do. Droppi
 the chords between two different holes of such a face (the ones whose winding
 looked like the trouble) changed nothing on the Voronoi near misses and made
 tak worse (22 hidden segments, the same crossing): their conflict sets are of
-chords from the outer boundary too. Ending a round at the
+chords from the outer boundary too. What the conflicts are, found by
+printing the sets (face of 3 cycles, 69/22/28 tokens): every set is four
+segments from the outer boundary to two different holes whose outer ends
+alternate hole 1, hole 2, hole 1, hole 2 around the boundary (positions 24,
+49, 61, 70), which cannot be drawn. Two encodings tried for faces with holes:
+the annulus rows for every pair of the face's cycles (sound: any two cycles
+bound an annulus), embedding cuts 5 to 2 on tak and 30 to 24 on the Voronoi
+near miss; a bit per same-cycle segment and other hole for which side it lies
+on, with rows tying the segments that join cycles (15k rows instead of 6.5k),
+embedding cuts 23: neither reaches the alternation, which a pair of segments
+to one hole makes as a separator. Listing the alternating fours explicitly is
+out of reach (over 200 000 for each of the two faces); what is left is an
+encoding aggregating them (a region label per gap of the outer boundary and
+which holes may share a region), not built. Ending a round at the
 first improving solution that breaks a row not yet in the model gave 33 rounds
 instead of 26 on the Voronoi near miss, tak 10 instead of 9, both with the
 same violation left: a new conflict only exposes the next. Nor
