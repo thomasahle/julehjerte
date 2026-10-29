@@ -878,6 +878,23 @@ for the exact search alone, one pixel more and one less in turn took only
 dagognat (1.3%) and permo-kroge-shot, which flips between runs, for 30 s more
 on every picture that still fails. Not used.
 
+## Why the searches that fail do (2026-10-29)
+
+Of 12 pictures left to the fitter, run for 25 s with the lazy rules counted:
+2 to 6 rounds each, on models of 17k to 157k rows, about 10 s a round (balls:
+157k rows, 3536 connectivity cuts): HiGHS does not settle a model that size in
+the time, which no cut makes faster. The exception is a generated Voronoi
+picture (f-none-k6-w30-s47: 3079 columns, 4 hidden segments, 6009 rows) that
+ends one rule short (two hidden cuts crossing in a band) after 22 rounds in
+37 s and 42 in 117 s: every round finds one more set of 4 chords a face of 3
+boundary cycles cannot hold (67 of them, from 212 candidates there, the exact
+check `embeddable`), the model's lazy rows for faces with holes (annuli have
+variables of their own, faces of 3 cycles none). Adding, with each set, every
+variant with one chord swapped for another candidate that also does not embed
+(exactly checked, up to 400) made rounds 4 s dearer on 2003 rows and the
+result no better. A direct encoding of such faces would help only those, and
+none of the gallery's.
+
 ## Photographs, 2026-10-29
 
 Of 56 real photographs' masks (tmp/e2e/dev-masks-all) the exact search takes
