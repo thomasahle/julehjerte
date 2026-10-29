@@ -184,17 +184,38 @@ function solve(M) {
  * image, and its other edges are drawn as that fit's images: fitted one by
  * one, a picture's two sheets no longer had the one template it was searched
  * for (5star-shot). */
+/** How near an end on the square's side a corner is the border band's leg,
+ * and how far before it the edge is drawn straight on to the side (reference
+ * units: 1.7 and 0.5 mm of a 100 mm heart). */
+const SIDE_LEG = .2, LEG_LEAD = .06;
+
 export function smoothEdges(outline, edges, n, {switches = new Map(), positions = new Map(), sym = null, tolerance = .75, bias = .1, widest = 3, reach = 8} = {}) {
   const scale = n / SIZE, tol = tolerance / scale;
   const info = edges.map((raw, e) => {
     const count = raw.length - 1, loop = Boolean(outline.E[e].loop), L = outline.L[e];
     if (count < 1) return null;
     const spacing = L * scale / count, wrap = k => ((k % count) + count) % count;
-    const get = k => loop ? raw[wrap(k)] : raw[Math.min(count, Math.max(0, k))];
     // A point's index (a loop's from 0 to count, one point), and the arc of an index.
     const index = s => loop ? wrap(Math.round(s * count / L)) : Math.min(count - 1, Math.max(1, Math.round(s * count / L)));
     const inside = s => loop || (s > 0 && s < L);
-    const corners = outline.corners[e].filter(inside), ends = [...corners, ...(switches.get(e) ?? [])].filter(inside);
+    // A corner within SIDE_LEG of an end on the square's side is the border
+    // band's (raster.js reads the band 1 mm in): dropped, and the edge drawn
+    // straight on to that end from a little before it, so that a cut meets
+    // the side without a leg there (flower: a hook and a 1 mm leg).
+    const dropped = [];
+    if (!loop) for (const end of [0, 1]) {
+      const p = end ? raw[count] : raw[0], s0 = end ? L : 0;
+      if (Math.min(p[0], p[1], SIZE - p[0], SIZE - p[1]) > 1e-9) continue;
+      const near = outline.corners[e].filter(c => inside(c) && Math.abs(c - s0) < SIDE_LEG);
+      if (!near.length) continue;
+      dropped.push(...near);
+      const from = end ? index(Math.max(0, Math.min(...near) - LEG_LEAD)) : index(Math.min(L, Math.max(...near) + LEG_LEAD));
+      raw = raw.slice();
+      const [a, b] = end ? [from, count] : [0, from];
+      for (let k = a + 1; k < b; k++) { const t = (k - a) / (b - a); raw[k] = [raw[a][0] + t * (raw[b][0] - raw[a][0]), raw[a][1] + t * (raw[b][1] - raw[a][1])]; }
+    }
+    const get = k => loop ? raw[wrap(k)] : raw[Math.min(count, Math.max(0, k))];
+    const corners = outline.corners[e].filter(c => inside(c) && !dropped.includes(c)), ends = [...corners, ...(switches.get(e) ?? [])].filter(inside);
     // Each point's room: how many points it is from the nearest corner or end.
     const fixed = [...(loop ? [] : [0, count]), ...corners.map(index)];
     const room = k => fixed.length ? Math.min(...fixed.map(c => loop ? Math.min(wrap(k - c), wrap(c - k)) : Math.abs(k - c))) : Infinity;

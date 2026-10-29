@@ -844,6 +844,30 @@ does not (venus's retry breaks a rule). The rest break one rule or a few,
 each its own way (tak: a hidden cut ending at a touching of two checks, the
 cuts through it 0.8 mm apart).
 
+## Legs and nodes in Tegn (2026-10-29)
+
+An exact template opened in Tegn had, on 30 of the 72 gallery hearts with
+one, a leg at the end of its cuts: where a curve meets the square's side, the
+border band (read 1 mm in) leaves a stub straight onto the side, and the cut
+followed it with a hook and a millimetre-long cubic (282 of the 1218 cut
+ends). The same stub made a smooth drawing come too close to itself there, so
+the template kept its traced drawing, a node every pixel (permo-draaber 98
+cubics a cut, boelger 88, ni-hjerter-i-tern 54). The smooth drawing now drops
+a corner within 1.7 mm of an end on the side and draws the edge straight on to
+that end from 0.5 mm before it (refine.js `SIDE_LEG`); the search's outline
+and so its templates stay as they were. And a smooth drawing is taken with
+up to a quarter more hidden cut as the weave shows it (a step at least): it is
+the same solution, whose cuts beside a junction run closer when smooth
+(amy-pinecone 9 steps to 11 and 0.86% from its mask to 0.52%).
+
+On the 83 gallery masks: the same templates, kinked ends 282 to 67 (on 9
+hearts, not 30), pieces under 1% of the square 2118 to 771, 20% fewer cubics
+and none with more (boelger 10.5 a cut, ni-hjerter-i-tern 16, permo-draaber
+14). On the 143 juleflet and gallery pictures, as many exact (one, then the
+other, of two near the minute's end missing in a run with two at a time,
+each exact alone: roed-blomst takes 41 s). Rounding the outline itself near
+the sides, tried first, cost hermanngitter and fisk-shot their templates.
+
 ## Details lost on photographs (2026-10-25)
 
 The 68 photographs whose template keeps every rule but loses a region of the

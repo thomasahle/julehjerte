@@ -273,8 +273,11 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   let solution = found.solution, assessment = assess(solution, cfg);
   // Redrawn on the mask's own edge in a few cubics (search.js, refine.js):
   // taken when it does better on passing, its failures, the picture's regions
-  // or one template, or as well, with hidden cut within a step and at most
-  // SMOOTH_SLACK further from the mask, within the export's limit. The traced outline it replaces
+  // or one template, or as well, with hidden cut within a quarter (a step at
+  // least) and at most SMOOTH_SLACK further from the mask, within the
+  // export's limit. The same solution drawn so, its hidden cut as the weave
+  // shows it grows where cuts run closer beside a junction (amy-pinecone 9
+  // steps to 11, 0.86% from its mask to 0.52%). The traced outline it replaces
   // is a polyline the editor shows as a node a pixel; on a photograph's jagged
   // staircase a smooth edge misses a few boundary pixels more (amy-pattern-shot
   // 0.58% from its mask, its pixel steps 0.16%).
@@ -285,7 +288,7 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     // Compared in that order: passing where the traced drawing does not
     // (a tip its pixel steps clear: triple-heart-shot) settles it.
     const order = [0, 1, 2, 4], diff = order.map(k => finer ? finer.rank[k] - assessment.rank[k] : 1).find(d => d !== 0) ?? 0;
-    const keeps = finer && (diff < 0 || (diff === 0 && finer.rank[5] <= assessment.rank[5] + 1
+    const keeps = finer && (diff < 0 || (diff === 0 && finer.rank[5] <= assessment.rank[5] + Math.max(1, Math.round(assessment.rank[5] / 4))
       && finer.maskError <= Math.min(assessment.maskError + SMOOTH_SLACK, Math.max(assessment.maskError, cfg.maxImageError))));
     if (keeps) { solution = found.refined; assessment = finer; report.refined.taken = true; }
   }

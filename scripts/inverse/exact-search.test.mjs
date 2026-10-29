@@ -202,6 +202,18 @@ test('a mask\'s wavy edge of a circle is drawn as a few cubics, split at its swi
   assert.ok(off(split.cubics) < .75);
 });
 
+test('an edge meeting the square\'s side through the border band\'s leg is drawn on to its end without it', () => {
+  // A slanting edge to 0.15 units above the bottom side, then a leg straight
+  // down to it, as the band read 1 mm in leaves one; points a pixel apart.
+  const n = 400, scale = n / 12, a = [3, 4], b = [5.5, .15], end = [5.5, 0];
+  const line = (p, q) => { const k = Math.max(1, Math.round(Math.hypot(q[0] - p[0], q[1] - p[1]) * scale)); return Array.from({length: k}, (_, i) => [p[0] + (q[0] - p[0]) * i / k, p[1] + (q[1] - p[1]) * i / k]); };
+  const pts = [...line(a, b), ...line(b, end), end], L = Math.hypot(b[0] - a[0], b[1] - a[1]) + .15;
+  const outline = {E: [{loop: false}], L: [L], corners: [[L - .15]]};
+  const [drawn] = smoothEdges(outline, [pts], n);
+  assert.ok(drawn.cubics.every(cubic => Math.hypot(cubic.p[0][0] - b[0], cubic.p[0][1] - b[1]) > .1), 'no cubic starts at the leg');
+  assert.deepEqual(drawn.cubics.at(-1).p[3], end);
+});
+
 test('a picture symmetric under mirrors may keep only its turns, the search\'s fallback', () => {
   assert.deepEqual(turnsOf(['mirrorX', 'mirrorY', 'transpose']), ['rotate90']);
   assert.deepEqual(turnsOf(['mirrorX', 'mirrorY']), ['rotate180']);
