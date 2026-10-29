@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseHeartColors, parseHexColor, toHexColor, toHexColors } from './heartColors';
+import { dampenColors, parseHeartColors, parseHexColor, toHexColor, toHexColors } from './heartColors';
 
 describe('parseHexColor', () => {
 	it('accepts #rrggbb and lowercases it', () => {
@@ -86,3 +86,16 @@ describe('toHexColor', () => {
 		).toEqual({ left: '#ffffff', right: '#b91313' });
 	});
 });
+
+describe('dampenColors', () => {
+	it('draws each colour more than half way to a light grey, keeping the two lobes apart', () => {
+		const dim = dampenColors({ left: '#ffffff', right: '#b91313' });
+		expect(dim).toEqual({ left: '#eaeaea', right: '#ca7f7f' });
+		expect(dim.left).not.toBe(dim.right);
+	});
+
+	it('takes the store\'s rgb() form too, and falls back to grey on anything else', () => {
+		expect(dampenColors({ left: 'rgb(185, 19, 19)', right: 'nonsense' })).toEqual({ left: '#ca7f7f', right: '#d3d3d3' });
+	});
+});
+

@@ -34,6 +34,7 @@
 	import { readPanelCollapsed, writePanelCollapsed } from '$lib/editor/panelState';
 	import type { Finger, GridSize, HeartPattern, Vec, LobeId, NodeType } from '$lib/types/heart';
 	import { clamp, clampInt } from '$lib/utils/math';
+	import { dampenColors } from '$lib/utils/heartColors';
 	import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
 	import { BASE_CANVAS_SIZE, CENTER, MAX_GRID_SIZE, MIN_GRID_SIZE, PRECISION_GRID_SIZE, STRIP_WIDTH } from '$lib/constants';
 	import { computeWeaveData } from '$lib/rendering/svgWeave';
@@ -1457,6 +1458,9 @@
 	let patternNodes = $derived(patternTile && selectedFingerId && escher ? escher.specialNodes(patternTile, selectedFingerId) : null);
 	/** The cells "Vis felter" draws, in the heart's pixels; none while it is off, or outside the Escher tab. */
 	let cellLayer = $derived(showCells && escherTab && patternTile && escher ? escher.cellOverlay(patternTile, getOverlapRect()) : null);
+	/** While the cells show, the paper and the cuts are held back so that they stand out: the paper paler, every cut but the chosen one faint. */
+	let paperColors = $derived(cellLayer ? dampenColors(heartColors) : heartColors);
+	let cutDimming = $derived(cellLayer ? 0.3 : 1);
 	/** What the Escher tab's hint says the black points do, for the chosen rule. */
 	let escherFrameHint = $derived<TranslationKey | null>(patternTile && escher ? escher.frameHint(patternTile) : null);
 	let escherCornersHint = $derived<TranslationKey | null>(patternTile && escher && escher.cornersMove(patternTile.rule) ? 'patternPointsCorners' : null);
@@ -4086,7 +4090,7 @@
 								</defs>
 
 								<g filter="url(#heart-shadow-{componentId})">
-									<HeartWeaveFill {fingers} weave={weaveData} colors={heartColors} idPrefix={componentId} />
+									<HeartWeaveFill {fingers} weave={weaveData} colors={paperColors} idPrefix={componentId} />
 								</g>
 
 								{#if cellLayer}
@@ -4158,6 +4162,7 @@
 													d={fingerPathData}
 													fill="none"
 													stroke={outlineColor}
+													opacity={isSelected ? 1 : cutDimming}
 													stroke-width={isSelected ? 6 : 4}
 												stroke-linecap="round"
 												stroke-linejoin="round"
@@ -4169,6 +4174,7 @@
 													d={fingerPathData}
 													fill="none"
 													stroke={strokeColor}
+													opacity={isSelected ? 1 : cutDimming}
 													stroke-width={isSelected ? 4 : 2}
 												stroke-linecap="round"
 												stroke-linejoin="round"
@@ -4180,8 +4186,10 @@
 									{/each}
 
 									{#if showCurves}
-										<SharedCutOverlay {fingers} excluded={overlapExcluded} idPrefix={componentId}
-											unitsPerPixel={curveUiScale} bounds={weaveData.overlap} />
+										<g opacity={cutDimming}>
+											<SharedCutOverlay {fingers} excluded={overlapExcluded} idPrefix={componentId}
+												unitsPerPixel={curveUiScale} bounds={weaveData.overlap} />
+										</g>
 									{/if}
 
 									<!-- The cut under the pointer, darkened: last, over the stripes where two cuts share a stroke too,

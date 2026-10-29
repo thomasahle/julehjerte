@@ -69,3 +69,26 @@ export function toHexColors(colors: HeartColors, fallback: HeartColors): HeartCo
 		right: toHexColor(colors.right, fallback.right)
 	};
 }
+
+/** How far a dampened colour is drawn to grey, 0 to 1. */
+const DAMPEN = 0.55;
+/** The light grey a dampened colour is drawn to. */
+const DAMP_GREY = 0xd8;
+
+/**
+ * The pair held back, for a heart seen under an overlay that is to stand out (the Escher tab's
+ * "Vis felter"): each colour drawn more than half way to a light grey, so red goes dusty pink and
+ * white a pale grey, and the two lobes still tell apart.
+ */
+export function dampenColors(colors: HeartColors): HeartColors {
+	const one = (value: string): string => {
+		const hex = toHexColor(value, '#cccccc');
+		const channel = (at: number) => {
+			const v = parseInt(hex.slice(at, at + 2), 16);
+			return Math.round(v * (1 - DAMPEN) + DAMP_GREY * DAMPEN).toString(16).padStart(2, '0');
+		};
+		return `#${channel(1)}${channel(3)}${channel(5)}`;
+	};
+	return { left: one(colors.left), right: one(colors.right) };
+}
+

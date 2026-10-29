@@ -643,7 +643,10 @@ arrowheads its button shows (`templateStretches`, `arrowheadsInFrame`), on the c
 template has white tiles beside it, on theirs: the same colour is the same curve, drawn on the stretches the heart
 really has, the corners as moved, on the straight side of the grid (the dashed line) and 0.6 as tall as on the
 button (the owner's suggestion, 2026-10-29; full size they "didn't look very good", and made to follow the curve
-they would be bent out of shape on curves with bends, which the owner found likely to confuse). All follow the tile as it is dragged; off by
+they would be bent out of shape on curves with bends, which the owner found likely to confuse). All follow the
+tile as it is dragged. While it is on, the paper is held back (`dampenColors`: each colour drawn
+55 % to a light grey, red to dusty pink, white to pale grey) and every cut but the chosen one drawn at 30 %, so that
+the overlay stands out (the owner's request, 2026-10-29); the chosen cut and its points stay as they are. Off by
 default, kept for the visit only, and drawn under the cuts, so nothing in it takes a click.
 
 Where cyan and orange cut strokes overlap, alternate their colours along the shared
