@@ -19,7 +19,7 @@ import {materialAudit,perturbationAudit,verifiedPaperSettings} from './material.
 import {roundHidden} from './rounding.js';
 import {boundarySVG,targetSVG,resultFiles} from './export.js';
 import {solvePolynomialTarget} from './direct/polynomial.js';
-import {appSymmetry,exactSearch,exactSymmetry,exactTarget,exactCannotStart,exportable,returnTips} from './exact/stage.js';
+import {appSymmetry,assess,exactSearch as searchExact,exactSymmetry,exactTarget,exactCannotStart,exportable,returnTips} from './exact/stage.js';
 /** Structured cloning retains coordinates but not Cubic methods, including
  * the cached boundary seed used by the topology initializer. Rebuild derived
  * curve caches locally; a transferred cache must not hide edited coordinates. */
@@ -44,7 +44,7 @@ export const EXACT_SECONDS=60,EXACT_FINISH_SECONDS=10;
  * outline has until ALONE_TRACED_SECONDS and the rounded one the rest. A
  * passing template with tips coming back to themselves has RETURNS_LEAST (or
  * as long as it took) for one with them rounded. */
-const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,ROUNDED_LEAST=6,RETURNS_LEAST=10,TIP_ROUNDING_MM=.8,TIP_SPOT_MM=4;
+const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,ROUNDED_LEAST=6,RETURNS_LEAST=10,TIP_ROUNDING_MM=.8,TIP_SPOT_MM=4,RETURN_REPAIR_SECONDS=4,RETURN_REPAIR_TRIES=2;
 /** The fitter's seconds beside the exact search (`exactRoute: 'fitter'`): what
  * it had when it came first, which photographs need to keep their details. */
 const FITTER_SECONDS=45;
@@ -89,6 +89,32 @@ function exactWeights(source){
   for(let i=0;i<observed.length;i++){if(source.weights[i]!==observed[i])return false;missing+=observed[i]?0:1;}
   return missing<=MISSING_SHARE*observed.length;
 }
+/** `exactSearch`, the templates it finds that the export rejects set aside
+ * in `options.sink` for exactTemplate's last resort (returnRepaired). */
+async function exactSearch(outline,template,cfg,options){
+  const found=await searchExact(outline,template,cfg,options);
+  if(found.found&&!exportable(found.found.assessment,cfg))options.sink?.push(found);
+  return found;
+}
+/** The last resort once every stage has failed: a rejected template whose only
+ * broken rule is a short return of a cut onto itself, repaired as the export
+ * repairs one (repairFinal: the returns moved apart, 0.4 to 3.3 s on the near
+ * misses, RETURN_REPAIR_SECONDS each whatever the stages have left) and taken
+ * when it then passes the export: hanefod-shot, khatam, triple-heart, 0.1 to
+ * 0.4% from their masks, where the fitter's was the only one. First, not
+ * instead of the rounded outline's, whose templates hide less (stjernerogkors,
+ * 0 against the traced one's 8). */
+function returnRepaired(candidates,cfg){
+  const near=candidates.filter(c=>{const a=c.found.assessment;return a.issues.length&&a.issues.every(issue=>issue==='short_self_clearance');})
+    .sort((x,y)=>x.found.assessment.maskError-y.found.assessment.maskError);
+  for(const found of near.slice(0,RETURN_REPAIR_TRIES)){
+    try{
+      const done=repairFinal(found.found.solution,cfg,{refine:false,deadline:performance.now()+1000*RETURN_REPAIR_SECONDS}),repaired=assess(done.solution,cfg);
+      if(exportable(repaired,cfg))return {...found,found:{solution:done.solution,assessment:repaired},report:{...found.report,exactOutline:repaired,repairedReturns:true}};
+    }catch{/* the next */}
+  }
+  return null;
+}
 /** The exact search's template for a picture the export passes, or none:
  * {solution, report}. On the outline traced from the mask until `tracedEnd`,
  * then on it with its tips rounded until `roundedEnd`. */
@@ -111,7 +137,7 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
   }
   if(!outline)return{solution:null,report:{chosen:'fitter',error:cannot}};
   let ties=symmetry;
-  const search=end=>({deadline:end,onProgress,symmetry:ties,geometry:cfg.progressGeometry});
+  const sink=[],search=end=>({deadline:end,onProgress,symmetry:ties,geometry:cfg.progressGeometry,sink});
   const began=performance.now();
   let found=await exactSearch(outline,null,cfgExact,search(tracedEnd));
   // A template under part of the symmetry (exact/stage.js subgroupsOf): the
@@ -154,6 +180,7 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
       if(exportable(again.found?.assessment,cfgExact)||!found.found&&again.found)found={...again,report:{...again.report,rounded:way.spots?'near':way.wider?'wider':true}};
     }
   }
+  if(!exportable(found.found?.assessment,cfgExact)){const repaired=returnRepaired(sink,cfgExact);if(repaired)found=repaired;}
   // `held`: the symmetries the template was searched under, in the app's
   // names, for the page to hold the rows it can when that is only part of
   // those asked for (roed-blomst: its two lobes alike, not their mirrors).

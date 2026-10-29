@@ -905,6 +905,25 @@ cut on 2 of 41 passing pictures (circle 16 to 8 segments, simple-5star-shot
 220 to 133 mm), more on 26 and the same on 13, so choosing the better of the
 two would pay twice the time for two pictures.
 
+## Near misses repaired as the export repairs them (2026-10-29)
+
+The export repairs a template's short returns (repairFinal: cuts that come
+back within 1.5 mm of themselves moved apart, 0.4 to 3.3 s) only after the
+exact stage has accepted it, and the stage judged a template by what it was as
+found: a template whose one broken rule was such a return went to the fitter
+(hanefod-shot, khatam, triple-heart). Now, when every stage has failed, the
+rejected templates whose only issue is a short return (the two nearest their
+mask) are repaired, 4 s each, and the first to pass the export taken
+(engine.js `returnRepaired`, a last resort: first, it took the traced
+outline's 8 hidden segments for stjernerogkors' 0 from the rounded one's).
+Of the 24 pictures that ended on the fitter's template, hanefod-shot,
+khatam-shot and g-khatam are exact (0.43%, 0.16% and 0.22% from their masks,
+the fitter's for khatam 0.7 to 1.5%), at 49 to 54 s; none lost on 143. Khatam
+(without its crop-shot) has more than a return broken, tak crossing slits,
+which repair does not mend. Stjernerogkors and drageskael-shot flip between
+0 and 8 or 8 and 16 hidden segments between runs of the same code (HiGHS
+time limits), which is why comparisons here are repeated alone.
+
 ## Painted edges (2026-10-29)
 
 A mask painted by hand has wobbling edges. 40 gallery masks with 20% of their
