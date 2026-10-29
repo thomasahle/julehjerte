@@ -99,6 +99,10 @@ const TITLES: Record<string, string> = {
 
 /** The chips as the front page's load hands them over: the real categories, with the filter. */
 const CARDS = heartCards as Record<string, { difficulty: string }>;
+/** The categories in chip order, and how many hearts of `level` each has: what the filter leaves on show. */
+const CHIP_IDS = ['klassiske', 'stjerner', 'moenstre', 'fliser', 'figurer', 'tekst', 'hjerter'] as const;
+const leftAt = (level: string) => CHIP_IDS.map((id) => CATEGORIES.find((category) => category.id === id)!.hearts.filter((heart) => CARDS[heart]!.difficulty === level).length);
+
 const FILTERED: StrandChips = {
 	...CHIPS,
 	categories: CATEGORIES.map((category) => ({
@@ -333,8 +337,13 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 			expect(css).toContain(`.cat-grid > [data-level="${level}"]{display:none}`);
 		}
 		expect(css).not.toContain('[data-level="easy"]{display:none}');
-		expect(css).toContain('#skabeloner > #fliser{display:none}');
-		expect(css).toContain('#skabeloner > #figurer{display:none}');
+		// A category with no easy heart is hidden, one with some is not: as the gallery stands, whatever hearts are added.
+		CHIP_IDS.forEach((id, k) => {
+			const hidden = `#skabeloner > #${id}{display:none}`;
+			if (leftAt('easy')[k] === 0) expect(css, id).toContain(hidden);
+			else expect(css, id).not.toContain(hidden);
+		});
+		expect(leftAt('easy')[0], 'Klassiske has an easy heart').toBeGreaterThan(0);
 		expect(css).not.toContain('#klassiske{display:none}');
 		// Klassiske still has a heart on show, so it keeps the first margin.
 		expect(css).not.toContain('margin-top');
@@ -346,9 +355,9 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 	});
 
 	it('estimates the chips with the counts the filter leaves, at every desktop width', () => {
-		// "Let": Klassiske 1, Stjerner 4, Mønstre 0, Fliser 0, Figurer 0, Tekst 0,
-		// Hjerter 1, the emptied ones dimmed but still in the row; the difficulty chip says 1.
-		const counts = ['1', '4', '0', '0', '0', '0', '1'];
+		// "Let": the easy hearts each category has, the emptied ones dimmed but still in the row;
+		// the difficulty chip says 1, the one level chosen.
+		const counts = leftAt('easy').map(String);
 		for (const viewport of [900, 1024, 1199, 1200, 1440, 1920]) {
 			width = viewport;
 			window.history.replaceState(null, '', '/?level=let');
@@ -391,7 +400,8 @@ describe('the difficulty filter in the strand bootstrap script', () => {
 		width = 390;
 		window.history.replaceState(null, '', '/?level=let');
 		run(FILTERED);
-		expect(style()).toContain('#skabeloner > #fliser{display:none}');
+		const emptied = CHIP_IDS[leftAt('easy').indexOf(0)]!;
+		expect(style()).toContain(`#skabeloner > #${emptied}{display:none}`);
 		expect(style()).not.toContain('--strand');
 		expect(root().getAttribute('style')).toBeNull();
 		expect(root().className).toBe('');
