@@ -993,7 +993,9 @@ A check that the rows do not exclude a valid solution on a big face: tak's
 designer's own template as the start, with the rows forced on (92 951 rows,
 21 483 columns): as feasible as without (the template breaks one of our
 rules, penalty 1, either way; nothing the rows add), so tak's silence with
-them is the search not finding a first solution in the time, not the rows.
+them is the search not finding a first solution in the time, not the rows. Nor
+is it the start: with the topological search for a start witness given 10 or 20
+s instead of 3, tak still has none ("ran out of time") and ends the same.
 
 What the conflicts are, found by
 printing the sets (face of 3 cycles, 69/22/28 tokens): every set is four
