@@ -989,6 +989,11 @@ lilje2-shot to gain none of them (the gain is on the generated pictures); and
 tak, with 728 candidates in its face, still returns nothing with it (35k rows,
 no first solution in 90 s). A face-size cap on the extra variables (1500) is
 in, as is the 10 000-row limit above: the larger models are left as they were.
+A check that the rows do not exclude a valid solution on a big face: tak's
+designer's own template as the start, with the rows forced on (92 951 rows,
+21 483 columns): as feasible as without (the template breaks one of our
+rules, penalty 1, either way; nothing the rows add), so tak's silence with
+them is the search not finding a first solution in the time, not the rows.
 
 What the conflicts are, found by
 printing the sets (face of 3 cycles, 69/22/28 tokens): every set is four
