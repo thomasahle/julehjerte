@@ -105,6 +105,28 @@ describe("the bridge between a tile and Tegn's cuts", () => {
 		}
 	});
 
+	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))(
+		'%s: a point of the tiling is a corner node though its handles lie in line, so a handle dragged leaves the other alone',
+		(_key, rule) => {
+			// Straight sides: the handles at every crossing and joint lie in line, which Tegn takes for a smooth node.
+			const tile = ruleStart(rule, 3);
+			const smoothTile = { ...tile, curves: Object.fromEntries(Object.entries(tile.curves).map(([key, curve]) => [key, straightCurve(!!halfOf(rule, key as CurveKey))])) };
+			for (const withJoints of [false, true]) {
+				const jointed = jointFreedom(rule, 'white');
+				if (withJoints && !jointed) continue;
+				const made = withJoints ? { ...smoothTile, joints: { join: 'white' as const, free: jointsOfLength(jointed!, 'white', 0.2) } } : smoothTile;
+				const rect = getCenteredRectParams({ x: made.cuts + 1, y: made.cuts + 1 });
+				for (const finger of generateEditorFingers(made, rect)) {
+					const points = [...specialNodes(made, finger.id).keys()].filter((a) => {
+						const point = placedPointAt(made, finger.id, a);
+						return a > 0 && a < finger.segments.length && !!point && !('middle' in point);
+					});
+					for (const a of points) expect(finger.nodeTypes?.[String(a)], `${finger.id} anchor ${a}${withJoints ? ' with joints' : ''}`).toBe('corner');
+				}
+			}
+		}
+	);
+
 	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))('reads the %s tile back however its tiles were moved, sized, stretched or turned', (_key, rule) => {
 		const tile = knobTile(rule);
 		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });

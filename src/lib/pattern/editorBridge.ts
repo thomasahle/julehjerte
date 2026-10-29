@@ -93,7 +93,8 @@ function nodeTypesFor(segments: BezierSegment[]): Record<string, NodeType> {
  * The tile's inner cuts as Tegn's fingers, in Tegn's frame, ids and direction. A
  * node is smooth where its handles lie in line and a corner where not, unless the
  * visitor gave that node of the curve a type (`PatternTile.nodeTypes`): then every
- * copy of it has that.
+ * copy of it has that. A point of the tiling (a crossing, a joint's end) is a corner
+ * always, its two handles each their own.
  */
 export function generateEditorFingers(tile: PatternTile, rect: OverlapRect): Finger[] {
 	const counts = cutCounts(tile);
@@ -107,6 +108,10 @@ export function generateEditorFingers(tile: PatternTile, rect: OverlapRect): Fin
 		for (let r = 1; r < n; r++) {
 			const chosen = chosenNodeType(tile, traced, r);
 			if (chosen) nodeTypes[String(n - r)] = chosen;
+			// A point of the tiling, where the cut goes on from one curve to the next, keeps its two handles
+			// apart whichever way they lie: drawn smooth, as they start, a handle dragged would turn the other
+			// with it, and the corner could never be made sharp.
+			else if (cornerAt(traced.pieces, r) || jointEndAt(tile, traced.pieces, r)) nodeTypes[String(n - r)] = 'corner';
 		}
 		return { id: `${kind === 'H' ? 'L' : 'R'}-${k}`, lobe: kind === 'H' ? 'left' : 'right', segments, nodeTypes };
 	};
