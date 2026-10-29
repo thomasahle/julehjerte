@@ -185,7 +185,7 @@ const GUESS_SPREAD = 6;
  * middle must lie to it for the motif to count as its own mirror image there,
  * well within what the heart's lobes may differ by and still share a template
  * (see `lobesShareTemplate`). */
-const MIRROR_NEAR = 1;
+export const MIRROR_NEAR = 1;
 /** How near, as a share of its ring's mean radius, a place's mirror image
  * must lie to another's where it lay on the motif solved for the two to be a
  * mirror pair (a solve tied so, its places at the corners nearest each other
@@ -587,8 +587,11 @@ function ways(motif: Ring[], sides: Sides, gap: number, work: { left: number }) 
  * ways round it returned by the chord they draw (`routes`); `loose`, the
  * cuts need only cross nothing, as a held recipe's on its own motif, each
  * place staying where it lay on the motif solved where its cuts do; with
- * `work`, none once it has checked that many straight pieces. */
-function placeMotif(motif: Ring[], wanted: [number, number][][], cuts: Cut[][][], papers: (string | undefined)[][], board: Side[], strips: number, held: boolean, round = false, loose = false, known = new Map<Cut, Map<string, number>>(), work?: { left: number }): { rings: Ring[]; places: number[][]; routes: Map<object, Point[]> } | undefined {
+ * `work`, none once it has checked that many straight pieces. A place in
+ * `moves` (by ring and place, "m,i") is then moved that many units round its
+ * ring, the way the ring runs, the places keeping their order and their cuts
+ * crossing nothing. */
+function placeMotif(motif: Ring[], wanted: [number, number][][], cuts: Cut[][][], papers: (string | undefined)[][], board: Side[], strips: number, held: boolean, round = false, loose = false, known = new Map<Cut, Map<string, number>>(), work?: { left: number }, moves?: Map<string, number>): { rings: Ring[]; places: number[][]; routes: Map<object, Point[]> } | undefined {
 	const sides = new Sides([...board, ...motif.flatMap((ring, m) => ring.map((a, j) => ({ a, b: ring[(j + 1) % ring.length], of: m })))]);
 	// The paper the generator leaves between cuts on this board (see `gridClearance`).
 	const gap = gridClearance(strips);
@@ -882,6 +885,24 @@ function placeMotif(motif: Ring[], wanted: [number, number][][], cuts: Cut[][][]
 		chosen[m][i] = best;
 	}
 	if (!lenient) mirrorPlaces();
+	// Places moved round their rings (`moves`, see `refined` in generate.ts)
+	// keep the recipe's order round each ring, their cuts crossing nothing; the
+	// generator judges their paper.
+	if (moves?.size) {
+		const along = motif.map(arcs), at = (m: number, s: number) => along[m].cum[spots[m][s].side] + spots[m][s].t * (along[m].cum[spots[m][s].side + 1] - along[m].cum[spots[m][s].side]);
+		for (const [key, by] of moves) {
+			const [m, i] = key.split(',').map(Number), ring = motif[m], { cum, length } = along[m];
+			if (!chosen[m] || chosen[m][i] === undefined) return;
+			const to = ((at(m, chosen[m][i]) + by) % length + length) % length;
+			let j = 0;
+			while (j < ring.length - 1 && cum[j + 1] < to) j++;
+			const a = ring[j], b = ring[(j + 1) % ring.length], t = cum[j + 1] > cum[j] ? (to - cum[j]) / (cum[j + 1] - cum[j]) : 0;
+			spots[m].push({ p: [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])], side: j, t });
+			chosen[m][i] = spots[m].length - 1;
+		}
+		if (!chosen.every((ring, m) => inOrder(ring.map(s => at(m, s))))) return;
+		lenient = true;
+	}
 	if (wanted.some((places, m) => places.some((_, i) => !Number.isFinite(total(m, i, chosen[m][i]))))) return;
 	// The ways round the motif the cuts take, each from its chord's first end.
 	const routes = new Map<object, Point[]>();
@@ -934,8 +955,9 @@ const bent = (P: Point, Q: Point, bends: [number, number][]): Point[] => {
  * or a motif nesting otherwise or crossing the board), or a cut finds no way
  * to the motif. Its places found straight, then (`fallback`) going round the
  * motif and crossing nothing (see `placeMotif`), within `work`; `fallback`
- * 'only': only so. */
-export function topologyConstruction(recipe: TopologyRecipe, picture: { rings: Ring[]; motif?: number }, o?: BoardOutline, fallback: boolean | 'only' = true, work = { left: FALLBACK_WORK }) {
+ * 'only': only so; with `moves`, places moved round their rings from there.
+ * With it, where the motif's places fell (`places`). */
+export function topologyConstruction(recipe: TopologyRecipe, picture: { rings: Ring[]; motif?: number }, o?: BoardOutline, fallback: boolean | 'only' = true, work = { left: FALLBACK_WORK }, moves?: Map<string, number>) {
 	if (picture.motif === undefined) return;
 	const board = picture.rings.slice(0, picture.motif), figure = picture.rings.slice(picture.motif);
 	if (recipe.places.length !== figure.length || nestingOf(figure) !== recipe.motif) return;
@@ -973,7 +995,7 @@ export function topologyConstruction(recipe: TopologyRecipe, picture: { rings: R
 	const rings = motifRings(figure, recipe.rings).map(({ ring }) => ring);
 	const across = () => sides.some(({ a, b, of }) => of < 0 && rings.some(ring => ring.some((p, j) => crosses(a, b, p, ring[(j + 1) % ring.length]))));
 	const known = new Map<Cut, Map<string, number>>();
-	const place = (round = false, loose = false) => placeMotif(rings, recipe.places, cuts, papers, sides, strips, !!recipe.held, round, loose, known, round ? work : undefined);
+	const place = (round = false, loose = false) => placeMotif(rings, recipe.places, cuts, papers, sides, strips, !!recipe.held, round, loose, known, round ? work : undefined, moves);
 	const placed = (fallback !== 'only' ? place() : undefined) ?? (!fallback || across() ? undefined : place(true) ?? place(true, true));
 	if (!placed) return;
 	// A held recipe's place where the solve had it, a hair off the outline; else on it.
@@ -999,7 +1021,47 @@ export function topologyConstruction(recipe: TopologyRecipe, picture: { rings: R
 		line(way ? [point(chord.h[0]), ...way.slice(1, -1), point(chord.h[1])] : bent(point(chord.h[0]), point(chord.h[1]), bendsOf(recipe, chord)), 'AB', 'shared');
 	}
 	const artwork = [...board, ...placed.rings];
-	return { geometry: compile(edges), edges, artwork, strips };
+	return { geometry: compile(edges), edges, artwork, strips, places: recipe.places.map((ring, m) => ring.map((_, i) => motifPoint({ m, i }))) };
+}
+
+/** How near, in the sheet's units, a hidden cut's board end comes to the next
+ * end along its edge, or to the edge's end, when it is moved (see `movedEnd`). */
+const END_ROOM = 1;
+
+/** A recipe's hidden cuts as drawn (`places`, where its motif's places fell,
+ * see `topologyConstruction`), each straight from end to end (`a`, `b`), and
+ * those of its ends that may move: on the board between its edge's ends (see
+ * `movedEnd`), or on the motif. */
+export function hiddenCuts(recipe: TopologyRecipe, o: BoardOutline, places: Point[][]): { a: Point; b: Point; ends: ({ e: number; t: number } | { m: number; i: number })[] }[] {
+	const cuts = new Map<string, { a: Point; b: Point; ends: ({ e: number; t: number } | { m: number; i: number })[] }>();
+	const point = (an: TopologyAnchor) => 'e' in an ? alongEdge(o.edges[an.e], an.t) : 'm' in an ? places[an.m][an.i] : an.p;
+	for (const slit of [...recipe.A, ...recipe.B]) for (const piece of slit) {
+		if (!('h' in piece)) continue;
+		const key = piece.h.map(an => JSON.stringify(an)).sort().join('|');
+		if (cuts.has(key)) continue;
+		const ends = piece.h.filter((an): an is { e: number; t: number } | { m: number; i: number } => 'm' in an || ('e' in an && an.t > 0 && an.t < 1));
+		cuts.set(key, { a: point(piece.h[0]), b: point(piece.h[1]), ends });
+	}
+	return [...cuts.values()];
+}
+
+/** The recipe with the board end at `t` of its edge `e` moved `by` units
+ * along the edge, the cuts ending there and the edge's stretches with it;
+ * none where that brings it past or within END_ROOM of another end on the
+ * edge, or of the edge's end. */
+export function movedEnd(recipe: TopologyRecipe, o: BoardOutline, e: number, t: number, by: number): TopologyRecipe | undefined {
+	const length = o.edges[e].cum[o.edges[e].cum.length - 1], to = t + by / length, room = END_ROOM / length;
+	const same = (x: number) => Math.abs(x - t) < 1e-12, others: number[] = [0, 1];
+	for (const slit of [...recipe.A, ...recipe.B]) for (const piece of slit) {
+		if ('e' in piece && piece.e === e) others.push(...piece.t.filter(x => !same(x)));
+		if ('h' in piece) for (const an of piece.h) if ('e' in an && an.e === e && !same(an.t)) others.push(an.t);
+	}
+	if (others.some(x => (x - t) * (x - to) <= 0 || Math.abs(x - to) < room)) return;
+	const move = (x: number) => same(x) ? to : x;
+	const moved = (slits: TopologyPiece[][]) => slits.map(slit => slit.map((piece): TopologyPiece =>
+		'e' in piece ? piece.e === e ? { e, t: [move(piece.t[0]), move(piece.t[1])] } : piece
+		: 'h' in piece ? { ...piece, h: piece.h.map(an => 'e' in an && an.e === e ? { e, t: move(an.t) } : an) as [TopologyAnchor, TopologyAnchor] } : piece));
+	return { ...recipe, A: moved(recipe.A), B: moved(recipe.B) };
 }
 
 /** How far, as a share of its ring's mean radius, the recipe's place lying

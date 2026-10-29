@@ -122,6 +122,34 @@ none draws so, took 2.5 s more a size without it (a third pass, searching
 for places with the cuts only crossing nothing, drew 2 of 64 recipes and was
 dropped).
 
+A recipe's cuts end where they ended on the motif solved, carried to this
+board and motif, and the placement keeps them only the generator's clearance
+apart (1.2 units on five strips, 0.86 on seven), less than paper needs (2 mm
+of an 80 mm print, 2.5 units): its heart may leave a sliver of paper by a
+line, the paper's edge or the motif that tears. So the page refines the best
+heart a topology's recipes drew straight while its paper may tear (`refined`
+in generate.ts): it finds where (`paperFaults`' `where`, each weak piece's
+widest point), takes the hidden cuts nearest (within `REFINE_NEAR`), and
+moves an end of the nearest a step along its board edge (`movedEnd`: the
+stretches of the edge ending there move with it, and it keeps a unit from
+every other end on the edge) or round its ring of the motif (`placeMotif`'s
+`moves`), ±1.5 and ±3 units; where the lobes share a template, the end's
+mirror image across the heart's middle moves too, the mirrored way, so they
+still do. The first move whose heart has better cuts (`betterCuts`) is kept,
+and it starts again from there, until no move helps or it has drawn
+`REFINE_DRAWS` hearts. It compares hearts before their connections are bent
+(`improveSharedConnections`), which may rank them otherwise (the wreath at
+57% on seven strips: no tear unrefined, one refined), so `fromTopology` bends
+both and keeps the better: a heart so only ever gets better. Where a weak
+piece is paper boxed in by the cuts, held only where they meet the motif (the
+house at 87% on five strips, one recipe for its pair), no move frees it:
+refining moves where cuts end, never which cuts there are. On every 6th size
+of the 48 featured motifs (every second of those, both run at once, for the
+times) it made 11 page hearts better and none worse on five strips (311
+places the paper may tear → 294) and 14 better, none worse, on seven (888 →
+878); a size took 13% longer on average (2.2 s → 2.5 s on five strips), most
+no longer, the butterfly at 99% on five 8 s longer (its tears 15 → 11).
+
 A recipe whose places lie in mirror pairs across the heart's middle (the
 sheet's diagonal; a solve tied so, its places at the corners nearest each
 other across it) keeps them in mirror pairs on any motif that is its own

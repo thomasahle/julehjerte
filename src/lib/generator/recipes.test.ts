@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { chooseRecipe, isTopology, recipeEdges, recipeOutline, ringCorners, type MotifRecipe, type RecipeFile } from './recipes';
 import { islandOn, motifFit, motifRings, nestingOf, topologyConstruction, topologyOf } from './topologyRecipes';
 import { boardOutline } from './boardOutline';
-import { generate, storedHearts } from './generate';
+import { fromTopology, generate, storedHearts } from './generate';
 import { betterCuts, cutMeasures } from './cutQuality';
 import { picture } from './picture';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
@@ -191,5 +191,16 @@ describe('stored recipes', () => {
 		// The circle's cuts at 86% end in the narrow corners between it, the
 		// board's circle and its lines, nearer the outline than the gap.
 		for (const motif of [circleMotif, star]) expect(storedHearts(request(motif.contours as Ring[]), [topology], true, 1, solve.known)).toHaveLength(1);
+	});
+
+	it('refines a recipe drawn on another motif where its paper may tear, moving its cuts\' ends', () => {
+		const colors = { left: '#ffffff', right: '#b91313' };
+		const request = (contours: Ring[]) => ({ mode: 'figure' as const, name: 'Motif', contours, colors, style: 'board' as const, frame: 'circle' as const, frameSize: 70, scale: .71, gap: 3 });
+		const solve = (heartSolves as { recipes: MotifRecipe[] }).recipes.find(r => r.strips === 5 && r.steps[0] === 71)!;
+		const topology = { ...topologyOf(solve, picture(request(heart.contours as Ring[]), solve.known)!)!, steps: [71] };
+		// The heart's cuts on the star at 71% leave slivers of paper by the board's lines.
+		const on = request(star.contours as Ring[]), rings = picture(on, {})!.rings;
+		const [plain] = storedHearts(on, [topology], true, 1, {}), made = fromTopology({ ...on, recipes: [topology] })!;
+		expect(cutMeasures(made.design, rings)[0]).toBeLessThan(cutMeasures(plain.design, rings)[0]);
 	});
 });

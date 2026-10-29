@@ -29,7 +29,13 @@ export type PaperOptions = {
 	/** The narrowest a bulge (a piece whose part that wide is under a square millimetre) may hang by. */
 	bulgeMm?: number;
 	pxPerMm?: number;
+	/** Where to note each weak piece (see `WeakPiece`). */
+	where?: WeakPiece[];
 };
+
+/** A piece of paper held by too narrow a neck: its lobe's template, and its
+ * widest point in the design's coordinates. */
+export type WeakPiece = { lobe: LobeId; x: number; y: number };
 
 /** What tears off a lobe's template: pieces held by a narrower neck, and paper not held at all. */
 export type PaperFaults = { weak: number; loose: number };
@@ -138,14 +144,18 @@ function templateFaults(fingers: Finger[], lobe: LobeId,
 	// What a piece is: paper wider than the neck it hangs by, at least a tenth of a millimetre (a strip
 	// about as wide as the neck all along holds nothing up). Under a square millimetre at the neck's
 	// width it is a bulge, held well enough by the bulge's, which is looked at only where there is one.
-	const widest = new Float64Array(neck.list.length);
+	const widest = new Float64Array(neck.list.length), widestAt = new Int32Array(neck.list.length);
 	for (let i = 0; i < n; i++) {
 		const label = neck.labels[i]!;
-		if (label >= 0 && dist[i]! > widest[label]!) widest[label] = dist[i]!;
+		if (label >= 0 && dist[i]! > widest[label]!) { widest[label] = dist[i]!; widestAt[label] = i; }
 	}
 	const pieces = neck.list.filter((piece, label) => !piece.top && widest[label]! >= within(neckMm / 2 + .1));
 	const bulge = pieces.some((piece) => piece.size < pxPerMm * pxPerMm) ? wide(bulgeMm / 2) : null;
-	const weak = pieces.filter((piece) => piece.size >= pxPerMm * pxPerMm || !bulge!.list[bulge!.labels[piece.first]!]!.top).length;
+	const weakPieces = pieces.filter((piece) => piece.size >= pxPerMm * pxPerMm || !bulge!.list[bulge!.labels[piece.first]!]!.top), weak = weakPieces.length;
+	if (options.where) for (const piece of weakPieces) {
+		const i = widestAt[neck.labels[piece.first]!]!, u = (i % W - .5) / px, v = (Math.floor(i / W) - ear + .5) / px;
+		options.where.push(lobe === 'left' ? { lobe, x: v + rect.left, y: u + rect.top } : { lobe, x: u + rect.left, y: v + rect.top });
+	}
 	return { weak, loose };
 }
 

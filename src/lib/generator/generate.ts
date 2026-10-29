@@ -10,8 +10,8 @@ import { BOARD_STRIPS, MOTIF, boardPlacement, boardRadius, boardScale, boardSett
 import { TEXT_LAST_STRIPS, TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
 import { CIRCLE_STYLES, fillSquare, fitCircle, withNarrowCrown, crowdsCrown } from './frameFit';
 import { isTopology, outlineFor, recipeConstruction, recipesAt, type Recipe, type TopologyRecipe } from './recipes';
-import { FALLBACK_WORK, motifFit, topologyConstruction } from './topologyRecipes';
-import { boardOutline } from './boardOutline';
+import { FALLBACK_WORK, MIRROR_NEAR, hiddenCuts, motifFit, movedEnd, topologyConstruction } from './topologyRecipes';
+import { alongEdge, boardOutline } from './boardOutline';
 import { picture, type Known } from './picture';
 export { fillSquare, fitCircle } from './frameFit';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
@@ -34,7 +34,7 @@ import {
 import type { HeartColors, HeartDesign, Vec } from '$lib/types/heart';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { lobesShareTemplate, mapPointBetweenLobes } from '$lib/utils/symmetry';
-import { paperFaults, PAPER_NECK_MM, PRINT_WIDTH_MM } from '$lib/geometry/paperNecks';
+import { paperFaults, PAPER_NECK_MM, PRINT_WIDTH_MM, type WeakPiece } from '$lib/geometry/paperNecks';
 import { intersectionMarginPx } from '$lib/editor/curveIssues';
 import { findSearchIssues, searchFingerIssues } from './searchClearance';
 import { rasterizeDesign } from '$lib/paint/rasterize';
@@ -433,13 +433,28 @@ export const spurless = (request: GeneratorRequest): GeneratorRequest =>
  * made the wreath's 4 s slower). A board's heart says what its picture shows as the
  * board circle's own does: the motif on its enclosing circle over the corner
  * squares, and the strips where it leaves the middle lines out. */
-export function storedHearts(request: GeneratorRequest, recipes = request.recipes, topology = false, count = 1, known: Known = {}): GeneratorResult[] {
+export const storedHearts = (request: GeneratorRequest, recipes = request.recipes, topology = false, count = 1, known: Known = {}): GeneratorResult[] =>
+	storedDrawings(request, recipes, topology, count, known).map(drawn => drawn.heart);
+
+/** A stored recipe's heart (see `storedHearts`): the topology recipe it drew
+ * (`of`), whether its places were found straight, and where they fell (see
+ * `topologyConstruction`). */
+type Drawing = { heart: GeneratorResult; of?: TopologyRecipe; straight: boolean; places?: Point[][] };
+
+/** A construction a stored recipe drew, finished as the page shows its heart. */
+function finishedStored(request: GeneratorRequest, construction: ReturnType<typeof recipeConstruction>, strips: number | undefined): GeneratorResult {
+	const heart = finishConstruction(request, { ...construction, ...request.style === 'board' ? { domain: [SHEET] } : {} }, 'nested');
+	return request.style === 'board' ? { ...heart, enclosed: true, ...heart.design.gridSize.x !== strips && { board: strips } } : heart;
+}
+
+/** See `storedHearts`. */
+function storedDrawings(request: GeneratorRequest, recipes = request.recipes, topology = false, count = 1, known: Known = {}): Drawing[] {
 	if (request.mode !== 'figure' || !recipes?.length) return [];
 	// The board the generator builds: the board circle's five strips where the visitor chose none.
 	const strips = request.style === 'board' ? request.board ?? BOARD_STRIPS.board.initial : request.board;
-	const hearts: GeneratorResult[] = [], listed = recipesAt(recipes, request.style ?? 'rays', strips, request.scale ?? .7, request.gap ?? 3);
+	const hearts: Drawing[] = [], listed = recipesAt(recipes, request.style ?? 'rays', strips, request.scale ?? .7, request.gap ?? 3);
 	// Each construction, and the recipe it draws where a later one may draw it again.
-	const constructions: { construct: () => ReturnType<typeof recipeConstruction> | undefined; of?: TopologyRecipe }[] = [], drew = new Set<TopologyRecipe>();
+	const constructions: { construct: () => (ReturnType<typeof recipeConstruction> & { places?: Point[][] }) | undefined; of?: TopologyRecipe; straight?: boolean }[] = [], drew = new Set<TopologyRecipe>();
 	if (topology) {
 		const shown = picture(spurless(request), known), mine = listed.filter(isTopology);
 		if (!shown?.rings.length || !mine.length || shown.motif === undefined) return [];
@@ -451,7 +466,7 @@ export function storedHearts(request: GeneratorRequest, recipes = request.recipe
 		const own = mine.filter(recipe => motifFit(recipe, shown) < SOLVED_ON)
 			.sort((a, b) => Number(!a.solved?.includes(step)) - Number(!b.solved?.includes(step)));
 		const ordered = [...own, ...mine.filter(recipe => !own.includes(recipe))];
-		for (const recipe of ordered) constructions.push({ construct: () => topologyConstruction(recipe, shown, o, false), of: recipe });
+		for (const recipe of ordered) constructions.push({ construct: () => topologyConstruction(recipe, shown, o, false), of: recipe, straight: true });
 		// Those going round the motif share one allowance of work (FALLBACK_WORK).
 		const work = { left: FALLBACK_WORK };
 		if (request.style === 'board') for (const recipe of ordered) constructions.push({ construct: () => drew.has(recipe) ? undefined : topologyConstruction(recipe, shown, o, 'only', work), of: recipe });
@@ -459,12 +474,11 @@ export function storedHearts(request: GeneratorRequest, recipes = request.recipe
 		const shown = picture(request, recipe.known), o = shown?.rings.length ? outlineFor(recipe, shown) : undefined;
 		return o && recipeConstruction(recipe, o);
 	} });
-	for (const { construct, of } of constructions) {
+	for (const { construct, of, straight } of constructions) {
 		try {
 			const construction = construct();
 			if (!construction) continue;
-			const heart = finishConstruction(request, { ...construction, ...request.style === 'board' ? { domain: [SHEET] } : {} }, 'nested');
-			hearts.push(request.style === 'board' ? { ...heart, enclosed: true, ...heart.design.gridSize.x !== strips && { board: strips } } : heart);
+			hearts.push({ heart: finishedStored(request, construction, strips), of, straight: !!straight, places: construction.places });
 			if (of) drew.add(of);
 			if (hearts.length >= count) break;
 		} catch (error) {
@@ -519,14 +533,107 @@ export const knownOf = (own: GeneratorResult, asked: number): Known => ({
  * `own` does. */
 export function fromTopology(request: GeneratorRequest, own?: GeneratorResult): GeneratorResult | undefined {
 	const known = own ? knownOf(own, request.scale ?? .7) : {};
-	const hearts = storedHearts(request, request.recipes, true, TOPOLOGY_TRIES, known).filter(heart => !heart.hardToCut);
-	if (!hearts.length) return;
-	const rings = picture(spurless(request), known)!.rings, measure = (heart: GeneratorResult) => cutMeasures(heart.design, rings);
-	const best = hearts.map(heart => ({ heart, m: measure(heart) })).reduce((a, b) => betterCuts(b.m, a.m) ? b : a);
-	const heart = improveSharedConnections(best.heart, true);
+	const drawn = storedDrawings(request, request.recipes, true, TOPOLOGY_TRIES, known).filter(({ heart }) => !heart.hardToCut);
+	if (!drawn.length) return;
+	const shown = picture(spurless(request), known)!, rings = shown.rings, measure = (heart: GeneratorResult) => cutMeasures(heart.design, rings);
+	const first = drawn.map(d => ({ ...d, m: measure(d.heart) })).reduce((a, b) => betterCuts(b.m, a.m) ? b : a);
+	// Refining compares hearts before their connections are bent, which may
+	// rank them otherwise: the refined heart is kept only if still better bent.
+	const best = refined(request, first, shown).heart, unbent = best === first.heart ? [best] : [first.heart, best];
+	const heart = unbent.map(heart => improveSharedConnections(heart, true)).reduce((a, b) => betterCuts(measure(b), measure(a)) ? b : a);
 	if (!own) return heart;
 	const told = { ...heart, scale: own.scale, enclosed: own.enclosed, whole: own.whole, board: own.board ?? heart.board };
 	return own.hardToCut || betterCuts(measure(heart), measure(own)) ? told : undefined;
+}
+
+/** How many hearts refining a recipe's heart draws at most (see `refined`). */
+const REFINE_DRAWS = 12;
+/** The moves, in the sheet's units along its edge, a hidden cut's board end
+ * makes in refining, and how near a place the paper may tear the cut ends or
+ * runs to be moved. */
+const REFINE_STEPS = [1.5, -1.5, 3, -3], REFINE_NEAR = 10;
+
+/** Where a heart's paper may tear (see `paperFaults`), in its picture's units. */
+function weakPoints(design: HeartDesign): Point[] {
+	const where: WeakPiece[] = [], rect = inferOverlapRect(design.fingers, design.gridSize);
+	paperFaults(design, { where });
+	return where.map(({ x, y }): Point => [(x - rect.left) / rect.width * 100, (y - rect.top) / rect.height * 100]);
+}
+
+/** A board heart a topology recipe drew straight, refined: while its paper
+ * may tear, an end of the hidden cut nearest where is moved a step along its
+ * edge of the board (see `movedEnd`) or its ring of the motif, its mirror
+ * image's too where the lobes share a template, then those of the next
+ * nearest, and the first move whose heart has better cuts is kept (see
+ * `betterCuts`), up to REFINE_DRAWS hearts drawn. One recipe for a topology
+ * so fits each motif and size of it, its cuts' ends taken from another
+ * motif's solve leaving a sliver of paper by a line, the paper's edge or the
+ * motif. */
+function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest, drawn: T, shown: { rings: Ring[]; motif?: number }): T {
+	if (request.style !== 'board' || !drawn.of || !drawn.straight || !drawn.places || !drawn.m[0] || shown.motif === undefined) return drawn;
+	const o = boardOutline(shown.rings.slice(0, shown.motif)), strips = request.board ?? BOARD_STRIPS.board.initial;
+	const draw = (recipe: TopologyRecipe, moves: Map<string, number>) => {
+		try {
+			const construction = topologyConstruction(recipe, shown, o, false, undefined, moves);
+			if (!construction) return;
+			const heart = finishedStored(request, construction, strips);
+			return heart.hardToCut ? undefined : { heart, places: construction.places, m: cutMeasures(heart.design, shown.rings) };
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		}
+	};
+	type End = { e: number; t: number } | { m: number; i: number };
+	let best = { ...drawn, places: drawn.places, moves: new Map<string, number>() }, draws = 0;
+	// A point `by` units along an edge from `t` of the way along it; where an end lies.
+	const edgeAt = (e: number, t: number, by = 0) => alongEdge(o.edges[e], t + by / o.edges[e].cum[o.edges[e].cum.length - 1]);
+	const at = (end: End): Point => 'e' in end ? edgeAt(end.e, end.t) : best.places[end.m][end.i];
+	const near = (p: Point, q: Point) => Math.hypot(p[0] - q[0], p[1] - q[1]) < MIRROR_NEAR;
+	// The recipe and the places' moves with an end moved `by` along its edge or ring.
+	const move = (step: { recipe: TopologyRecipe; moves: Map<string, number> } | undefined, end: End, by: number) => {
+		if (!step) return;
+		if ('m' in end) {
+			const key = `${end.m},${end.i}`;
+			return { recipe: step.recipe, moves: new Map(step.moves).set(key, (step.moves.get(key) ?? 0) + by) };
+		}
+		const recipe = movedEnd(step.recipe, o, end.e, end.t, by);
+		return recipe && { recipe, moves: step.moves };
+	};
+	while (best.m[0] && draws < REFINE_DRAWS) {
+		const weak = weakPoints(best.heart.design), cuts = hiddenCuts(best.of!, o, best.places);
+		const ends = cuts.flatMap(cut => cut.ends);
+		const mirror = (end: End) => {
+			const p = at(end), q: Point = [p[1], p[0]];
+			return near(p, q) ? null : ends.find(other => near(at(other), q));
+		};
+		const shared = !best.m[1];
+		const nearest = cuts.map(cut => ({ ...cut, d: Math.min(...weak.map(w => pointDistance(w, cut.a, cut.b))) }))
+			.filter(cut => cut.d < REFINE_NEAR).sort((a, b) => a.d - b.d);
+		let better: typeof best | undefined;
+		search: for (const cut of nearest) for (const end of cut.ends) {
+			const partner = shared ? mirror(end) : undefined;
+			// One a lobe's template shares with the other's moves with its image or not at all.
+			if (shared && !partner) continue;
+			for (const by of REFINE_STEPS) {
+				let step = move({ recipe: best.of!, moves: best.moves }, end, by);
+				// Its image the mirrored way: along its edge as it goes, round a ring against its order.
+				if (partner && step) {
+					let sign = -1;
+					if ('e' in end && 'e' in partner) {
+						const p = edgeAt(end.e, end.t, by), off = (k: number) => { const q = edgeAt(partner.e, partner.t, k * by); return Math.hypot(q[0] - p[1], q[1] - p[0]); };
+						sign = off(1) < off(-1) ? 1 : -1;
+					}
+					step = move(step, partner, sign * by);
+				}
+				if (!step) continue;
+				if (draws++ >= REFINE_DRAWS) break search;
+				const next = draw(step.recipe, step.moves);
+				if (next && betterCuts(next.m, best.m)) { better = { ...best, ...next, of: step.recipe, moves: step.moves }; break search; }
+			}
+		}
+		if (!better) break;
+		best = better;
+	}
+	return best;
 }
 
 function finishConstruction(request: GeneratorRequest, r: Construction, recipe: GeneratorResult['recipe'],
