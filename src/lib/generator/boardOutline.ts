@@ -2,8 +2,8 @@
  * A board's outline as its picture shows it: where the colour changes, the
  * sides that cancel even–odd (a check and its part inside the circle, two
  * checks of one colour side by side) left out. As a graph: its vertices are
- * where three or more pieces of it meet, where it meets the paper's edge, or
- * where it turns more than `CORNER_TURN`; its edges the stretches between
+ * where three or more pieces of it meet, where it meets the paper's edge (not
+ * along it), or where it turns more than `CORNER_TURN`; its edges the stretches between
  * them. A lens the circle cuts into a check as it passes a line leaves the
  * graph as it was (the check's edge just follows the circle there), so two
  * pictures with the same graph are one topology for the stored cuts (see
@@ -69,8 +69,11 @@ export function outlinePieces(rings: Ring[]): [Point, Point][] {
 }
 
 
-/** The board's outline as a graph (see the module's comment). */
-export function boardOutline(board: Ring[]): BoardOutline {
+/** The board's outline as a graph (see the module's comment): a point where
+ * it turns more than `turn` degrees a vertex; with none, its blobs' outline,
+ * whose vertices are only where pieces meet or meet the paper's edge (see
+ * `transferTopology`). */
+export function boardOutline(board: Ring[], turn = TURN): BoardOutline {
 	const pieces = outlinePieces(board), key = (p: Point) => `${p[0].toFixed(5)},${p[1].toFixed(5)}`;
 	const nodes = new Map<string, { p: Point; to: Point[] }>();
 	for (const [p, q] of pieces) for (const [u, v] of [[p, q], [q, p]]) {
@@ -78,11 +81,15 @@ export function boardOutline(board: Ring[]): BoardOutline {
 		if (!nodes.has(k)) nodes.set(k, { p: u, to: [] });
 		nodes.get(k)!.to.push(v);
 	}
-	const turn = (n: { p: Point; to: Point[] }) => {
+	const turning = (n: { p: Point; to: Point[] }) => {
 		const [a, b] = n.to, u = [n.p[0] - a[0], n.p[1] - a[1]], v = [b[0] - n.p[0], b[1] - n.p[1]];
 		return Math.abs(Math.atan2(u[0] * v[1] - u[1] * v[0], u[0] * v[0] + u[1] * v[1])) * 180 / Math.PI;
 	};
-	const isVertex = (n: { p: Point; to: Point[] }) => n.to.length !== 2 || n.p.some(c => Math.abs(c) < 1e-6 || Math.abs(c - 100) < 1e-6) || turn(n) > TURN;
+	// Where it meets the paper's edge, but not a point along a stretch of the edge itself (where a
+	// line no longer drawn met it, its squares' colours swapped alike).
+	const onEdge = (p: Point) => p.some(c => Math.abs(c) < 1e-6 || Math.abs(c - 100) < 1e-6);
+	const sameEdge = (p: Point, q: Point) => [0, 1].some(k => [0, 100].some(e => Math.abs(p[k] - e) < 1e-6 && Math.abs(q[k] - e) < 1e-6));
+	const isVertex = (n: { p: Point; to: Point[] }) => n.to.length !== 2 || (onEdge(n.p) && !n.to.every(q => sameEdge(n.p, q))) || turning(n) > turn;
 	const vertexKeys = [...nodes.entries()].filter(([, n]) => isVertex(n)).map(([k]) => k);
 	const at = new Map(vertexKeys.map((k, i) => [k, i]));
 	const used = new Set<string>(), raw: { a: number; b: number; points: Point[] }[] = [];

@@ -10,7 +10,8 @@ import { BOARD_STRIPS, MOTIF, boardPlacement, boardRadius, boardScale, boardSett
 import { TEXT_LAST_STRIPS, TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
 import { CIRCLE_STYLES, fillSquare, fitCircle, withNarrowCrown, crowdsCrown } from './frameFit';
 import { isTopology, outlineFor, recipeConstruction, recipesAt, type Recipe, type TopologyRecipe } from './recipes';
-import { FALLBACK_WORK, MIRROR_NEAR, hiddenCuts, motifFit, movedEnd, topologyConstruction } from './topologyRecipes';
+import { FALLBACK_WORK, MIRROR_NEAR, hiddenCuts, motifFit, movedEnd, nestingOf, topologyConstruction } from './topologyRecipes';
+import { blobsOf, carryTopology } from './topologyTransfer';
 import { alongEdge, boardOutline } from './boardOutline';
 import { picture, type Known } from './picture';
 export { fillSquare, fitCircle } from './frameFit';
@@ -456,9 +457,17 @@ function storedDrawings(request: GeneratorRequest, recipes = request.recipes, to
 	// Each construction, and the recipe it draws where a later one may draw it again.
 	const constructions: { construct: () => (ReturnType<typeof recipeConstruction> & { places?: Point[][] }) | undefined; of?: TopologyRecipe; straight?: boolean }[] = [], drew = new Set<TopologyRecipe>();
 	if (topology) {
-		const shown = picture(spurless(request), known), mine = listed.filter(isTopology);
-		if (!shown?.rings.length || !mine.length || shown.motif === undefined) return [];
-		const o = boardOutline(shown.rings.slice(0, shown.motif));
+		const shown = picture(spurless(request), known);
+		if (!shown?.rings.length || shown.motif === undefined) return [];
+		// Those listed at this size, and a pair's (see `frame`) carried to this
+		// board's outline wherever the picture is of its pair.
+		const board = shown.rings.slice(0, shown.motif), nesting = nestingOf(shown.rings.slice(shown.motif));
+		const framed = recipes.filter((r): r is TopologyRecipe => isTopology(r) && !!r.frame && r.style === request.style && r.motif === nesting);
+		const blobs = framed.length ? blobsOf(board).sig : undefined;
+		const carried = framed.filter(r => r.frame!.blobs === blobs).map(r => carryTopology(r, r.frame!, board)).filter((r): r is TopologyRecipe => !!r);
+		const mine = [...listed.filter(isTopology), ...carried];
+		if (!mine.length) return [];
+		const o = boardOutline(board);
 		// A topology's recipe solved on this very motif (its places lie on its
 		// outline) first, the one solved for this size first of those: it draws
 		// the solve itself.

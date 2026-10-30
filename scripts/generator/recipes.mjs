@@ -22,6 +22,9 @@
 //                      (the rays and checks)
 //        VERBOSE=1      print each size's measures beside the generator's, and why one is not kept
 //        SOLVE_SECONDS  per solve (120), MAX_SOLVES per group (4)
+//        KEEP_ALL=1     keep a solve at every size it draws cleanly, beating the generator's or not (a
+//                       pair's candidate, judged on every motif of its pair by pairs.mjs)
+//        OUT_FILE=path  write there (only this run's recipes and the file's others) rather than the motif's file
 //
 // Run one at a time: each solve keeps a core busy for up to two minutes.
 import fs from 'node:fs/promises';
@@ -256,11 +259,12 @@ try {
 		if (!step.own) return say(true, 'over a refused heart');
 		const off = apart(made.design, step.own.design);
 		if (off > .005) return say(false, `another picture than the generator's (${(off * 100).toFixed(1)}% apart)`);
+		if (process.env.KEEP_ALL) return say(true, 'kept, drawn cleanly');
 		const rings = picture(request(step.p / 100), recipe.known).rings, mine = measures(made.design, rings), its = measures(step.own.design, rings);
 		if (step.own.hardToCut) return say(true, `${JSON.stringify(mine)} over a hard heart`);
 		return better(mine, its) ? say(true, `${JSON.stringify(mine)} over ${JSON.stringify(its)}`) : say(false, `${JSON.stringify(mine)} not better than ${JSON.stringify(its)}`);
 	};
-	const dir = 'scripts/generator/solves', file = path.join(dir, `${motif}.${style}.json`);
+	const dir = 'scripts/generator/solves', file = process.env.OUT_FILE ?? path.join(dir, `${motif}.${style}.json`);
 	const old = JSON.parse(await fs.readFile(file, 'utf8').catch(() => '{"version":1,"recipes":[]}'));
 	const recipes = [];
 	if (process.env.REJUDGE) {

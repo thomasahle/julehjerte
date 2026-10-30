@@ -194,6 +194,59 @@ the best kept (`fromSolve`): `topology.mjs` lists it there only where it beats
 the generator's heart, so any that beats it does too. In the rays the
 wreath's own heart takes 13–30 s past 54%, its solve a fifth of a second.
 
+## One recipe for each pair, on every board
+
+On the board circle a picture is of two topologies: the outer one, the
+board's outline as blobs (`boardOutline` with no corner for a turn): where the
+circle stands among the squares, whatever its size; and the inner one, how
+the motif's rings nest. Some outer ones are the same on several boards (the
+circle past the middle lines' ends on five, seven and nine strips). The
+board's recipes are one for each pair of an outer and an inner topology ("We
+don't need a separate recipe for each motif x size. Only one for each
+topology"), up to three for a pair: `pairs.mjs` chooses them. Every solve on
+any board is a candidate for each pair it was solved in, held and made short;
+at each motif and size judged it is carried to the outline there
+(`transferTopology`: a place keeps its share along its blob's edge between
+the corners both outlines have, one gone with the stretch to it) and drawn
+beside the generator's own heart, first at one size of each board and motif,
+then the best few at every size judged. The one that beats the generator's
+heart at the most motif sizes (then: the fewest places the paper may tear,
+the fewest hidden turns) is kept, then each next that adds the most motif
+sizes where the best of those kept beats it.
+
+Each is stored once, with the outline it was solved on (`frame`: the blobs'
+signature, each blob edge's ends, middle and whether it runs along the
+paper's edge, the corners along each, and the blob edge each of its own
+edges lies along). The page carries it from there to the outline of any
+picture of its pair, at any size on any board (`carryTopology`), draws it,
+refines it (above) and keeps it where it beats the generator's own heart: no
+sizes are listed, and a motif nobody solved draws its pair's recipes on
+whatever outline its picture has. A blob edge can run from a vertex round
+back to it (two blobs touching at a corner of the squares); a stretch from
+that vertex lies at either end of it.
+
+The 114 recipes shipped (78 pairs; 1.3 MB, where the topologies' 505 listed
+recipes took 2.2 MB) were chosen on the 49 featured motifs, every third size
+of each board, on a slider tried on a branch (the circle's radius growing
+evenly over the settings). On this slider, every sixth size, against the
+topologies' recipes (both refined): on 30 motifs nobody solved, as good (five
+strips 28 sizes better, 27 worse, 178 places the paper may tear → 184; seven
+17 better, 10 worse, 1107 → 1099); on the featured motifs, whose own solves
+the topologies' recipes listed, five strips 72 better, 119 worse (621 → 601),
+seven 46 better, 62 worse (2381 → 2389), most of those turns and length only;
+as fast (2.2 s a size on five strips, 2.0 s on seven). Where no candidate
+beat the generator's heart in a pair (203 pairs of 281, 1196 of 3724 motif
+sizes judged, most on seven and nine strips), the page draws the generator's
+own. `UNSOLVED=file` writes those pairs; one solve for each with five or more
+motif sizes, at its most common motif's middle size, kept wherever it draws
+cleanly (`recipes.mjs` with `KEEP_ALL` and `OUT_FILE`, into
+`<motif>.board-<strips>.pair<size>.json`, from nothing and then from the
+generator's own heart), gave 18 of 85 (the 13 pairs more): those solves name
+their sizes as that slider had them (`slider: 'even'`), and `pairs.mjs`
+converts them on the circle they were made for (`solvedAt`).
+
+    node scripts/generator/pairs.mjs <motif>...      # every board, up to three recipes a pair
+
 ## Making recipes
 
     node scripts/generator/recipes.mjs <motif> board 5          # solves, every size, 45–100%
@@ -204,7 +257,8 @@ wreath's own heart takes 13–30 s past 54%, its solve a fifth of a second.
 
 A frame's solves go to `scripts/generator/solves/<motif>.<style>.json` (the
 board's `.board.json`, the rays' `.rays.json`); they are not shipped.
-`topology.mjs` writes the frame's `static/generator/recipes/<style>.json`. Beside them, `<motif>.board-<strips>.sym.json` holds tied
+`topology.mjs` writes the frame's `static/generator/recipes/<style>.json` (the
+rays'; the board's is `pairs.mjs`'s, above). Beside them, `<motif>.board-<strips>.sym.json` holds tied
 (mirror-symmetric) solves of the symmetric motifs, made at five to ten fixed
 sizes a board, from the generator's own heart as the search's start, each kept at
 every size of its outline where it cuts cleanly, for `topology.mjs` to judge:
@@ -225,7 +279,8 @@ three, and with every clean tied solve kept the star had six of its own at
 the first size where that draws worse than the solve itself (the bauble's
 93–96% solve, converted at 93%, left a sharp tip at 96%), so each size it was
 made for keeps its cuts; a held solve whose pieces another solve has is judged
-on its own motif only. It writes `static/generator/recipes/board.json`.
+on its own motif only. For the board it wrote `static/generator/recipes/board.json`
+until the pairs' recipes replaced its choice (2026-10-30).
 Give it the motifs the page features (`MOTIF_GROUPS` in catalog.ts), so its
 choice is not just the solved motifs'. `<motif>.board-<strips>.cover.json` holds
 solves made where the motif's topology had no recipe, from the generator's own

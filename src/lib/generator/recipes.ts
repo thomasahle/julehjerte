@@ -38,6 +38,7 @@
  */
 import { compile, ConstructionError, type Edge, type Point, type Ring } from './geometry';
 import type { Known } from './picture';
+import type { OutlineFrame } from './topologyTransfer';
 
 /** A place on the outline: ring `r`, `u` of the way from its `k`-th corner to
  * the next; where ring `x` crosses it there (two rings crossing at a vertex of
@@ -109,6 +110,11 @@ export type TopologyRecipe = {
 	/** The sizes its solve was made for on its own motif: there it is drawn
 	 * first of that motif's own (see `storedHearts`). */
 	solved?: number[];
+	/** A pair's recipe (see pairs.mjs): its board's outline as it is carried
+	 * to every other of the pair's (the board's blobs and its motif's nesting;
+	 * see `carryTopology`), where it is drawn at every size on every board,
+	 * its `steps` and `strips` aside. */
+	frame?: OutlineFrame;
 	A: TopologyPiece[][];
 	B: TopologyPiece[][];
 };
