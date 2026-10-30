@@ -537,23 +537,6 @@ export class ExactModel {
       // token has one segment at most: the row takes every route between them.
       if (globalThis.DBG_BAD) { const ci = new Map(cycles.flatMap((c, k) => c.map((t, i) => [t, [k, i]]))); console.log('BADSET', cycles.map(c => c.length).join('/'), bad.map(c => { const [, a, b] = this.cand.pair.get(c); return `${ci.get(tokenKey(a)).join('.')}-${ci.get(tokenKey(b)).join('.')}`; }).join('  ')); }
       out.push(['embedding', bad.flatMap(c => this.joining(c).map(v => [v, 1])), bad.length - 1]);
-      if (globalThis.EXP_MORE) {
-        // More minimal bad sets: with each chord of this one taken out in turn.
-        const seenSets = new Set([[...bad].sort().join('|')]);
-        const queue = [bad];
-        for (let q = 0; q < queue.length && queue.length < globalThis.EXP_MORE; q++) {
-          for (const c of queue[q]) {
-            const rest = mine.filter(d => d !== c);
-            if (embeddable(cycles, pairs(rest))) continue;
-            let bad2 = [...rest];
-            for (const d of rest) { const trial = bad2.filter(e => e !== d); if (!embeddable(cycles, pairs(trial))) bad2 = trial; }
-            const key = [...bad2].sort().join('|');
-            if (seenSets.has(key)) continue;
-            seenSets.add(key); queue.push(bad2);
-            out.push(['embedding', bad2.flatMap(d => this.joining(d).map(v => [v, 1])), bad2.length - 1]);
-          }
-        }
-      }
     }
     if (out.length) return out;
     const labels = new Map([...this.lab].map(([k, v]) => [k, val[v] > .5 ? 1 : 0]));

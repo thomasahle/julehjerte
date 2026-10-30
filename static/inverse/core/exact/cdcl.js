@@ -5,7 +5,7 @@
 import {Sat} from './sat.js';
 
 export class EmbedTheory {
-  constructor(chords, embeds) { this.chords = chords; this.raw = embeds; this.cache = new Map(); this.embeds = (face, pairs) => { const key = face + '|' + pairs.map(p => p.join('>')).sort().join(','); let r = this.cache.get(key); if (r === undefined) { r = this.raw(face, pairs); this.cache.set(key, r); } return r; }; this.faces = new Map(); this.log = []; }
+  constructor(chords, embeds) { this.chords = chords; this.embeds = embeds; this.faces = new Map(); this.log = []; }
   assign(l, trail) {
     const c = this.chords.get(l);
     if (!c) return null;
