@@ -225,7 +225,7 @@ whatever outline its picture has. A blob edge can run from a vertex round
 back to it (two blobs touching at a corner of the squares); a stretch from
 that vertex lies at either end of it.
 
-The 114 recipes shipped (78 pairs; 1.3 MB, where the topologies' 505 listed
+The first 114 recipes shipped (78 pairs; 1.3 MB, where the topologies' 505 listed
 recipes took 2.2 MB) were chosen on the 49 featured motifs, every third size
 of each board, on a slider tried on a branch (the circle's radius growing
 evenly over the settings). On this slider, every sixth size, against the
@@ -243,9 +243,18 @@ cleanly (`recipes.mjs` with `KEEP_ALL` and `OUT_FILE`, into
 `<motif>.board-<strips>.pair<size>.json`, from nothing and then from the
 generator's own heart), gave 18 of 85 (the 13 pairs more): those solves name
 their sizes as that slider had them (`slider: 'even'`), and `pairs.mjs`
-converts them on the circle they were made for (`solvedAt`).
+converts them on the circle they were made for (`solvedAt`). A second round,
+one solve for each pair still without (203, those of one motif size too),
+kept 28. `ADD=1` chose only for the pairs without recipes and kept the
+shipped ones as they were, so a heart the page drew changes only where a new
+pair's recipe beats it: 11 pairs more, 126 recipes (89 pairs, 1.5 MB). Every
+sixth size on the page's slider, 34 motif sizes better and none worse (the
+featured motifs on five strips 4, seven 10, nine 16; the 30 nobody solved on
+nine strips 4). 192 pairs, 1144 of the 3724 motif sizes, still draw the
+generator's own heart; 69 of those pairs have five or more motif sizes.
 
     node scripts/generator/pairs.mjs <motif>...      # every board, up to three recipes a pair
+    ADD=1 node scripts/generator/pairs.mjs <motif>... # only for the pairs the page has none for
 
 ## Making recipes
 

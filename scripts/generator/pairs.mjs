@@ -26,6 +26,8 @@
 //        OUT=file         write there (else static/generator/recipes/board.json)
 //        ROWS_ONLY=1      only judge the generator's own hearts (to run boards apart beforehand)
 //        UNSOLVED=file    write the pairs no candidate beats the generator's heart in, with their motif sizes
+//        ADD=1 BASE=file  keep the recipes of every pair the file (else the page's) has any for, and choose
+//                         only for the others
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -186,10 +188,15 @@ try {
 	// Each pair: its candidates first at one size (the middle judged) of each board and motif, then the
 	// best `keep` at all of them; the one that beats the generator's heart most often kept.
 	const chosen = new Map(), unsolved = [];
+	// ADD=1: the pairs the shipped file (BASE, else the page's) has recipes for keep them as they are, so
+	// no heart the page draws already changes; only pairs without any are chosen for.
+	const base = process.env.ADD ? JSON.parse(await fs.readFile(process.env.BASE ?? 'static/generator/recipes/board.json', 'utf8')).recipes.filter(r => r.frame) : [];
+	const had = new Set(base.map(r => `${r.frame.blobs}|${r.motif}`));
 	let n = 0;
 	for (const [pair, mine] of rowsOf) {
 		const list = byPair.get(pair) ?? [];
 		n++;
+		if (had.has(pair)) { console.log(`  pair ${n}/${rowsOf.size} (${mine.length} motif sizes): kept as shipped`); continue; }
 		if (!list.length) { console.log(`  pair ${n}/${rowsOf.size} (${mine.length} motif sizes): no solve`); unsolved.push({ pair, candidates: 0, rows: mine.map(r => [r.strips, r.id, r.p]) }); continue; }
 		const started = performance.now(), groups = new Map();
 		for (const r of mine) groups.set(`${r.strips} ${r.id}`, [...groups.get(`${r.strips} ${r.id}`) ?? [], r]);
@@ -241,8 +248,9 @@ try {
 		const c = candidates[pick.i], { solved: _solved, ...recipe } = c.recipe;
 		return { ...recipe, style: 'board', strips: c.strips, steps: [], frame: rounded(outlineFrame(c.board)) };
 	})).filter(r => r.frame);
+	recipes.unshift(...base);
 	const won = [...chosen.values()].reduce((s, b) => s + b.won, 0);
-	console.log(`${chosen.size} pairs of ${rowsOf.size} have a recipe, ${recipes.length} kept; they beat the generator's own heart at ${won} of ${rows.length} motif sizes judged`);
+	console.log(`${chosen.size} pairs of ${rowsOf.size} have a recipe chosen${had.size ? ` (and ${had.size} kept as shipped)` : ''}, ${recipes.length} kept; the chosen beat the generator's own heart at ${won} of ${rows.length} motif sizes judged`);
 
 	// The pairs no solve beats the generator's heart in (none, or none of their candidates), to solve.
 	if (process.env.UNSOLVED) await fs.writeFile(process.env.UNSOLVED, JSON.stringify(unsolved));
