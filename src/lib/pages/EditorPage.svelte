@@ -612,8 +612,33 @@
     clearDraft();
   }
 
+  // A name the visitor has not typed ("Bølger (Kopi)", "Mit hjerte") is asked for once, as the heart is
+  // saved or exported, so it does not end up in "Mine hjerter" or a file as a copy of something.
+  let askName = $state<null | (() => void)>(null);
+  let nameDraft = $state('');
+  let nameInput = $state<HTMLInputElement | null>(null);
+  function hasDefaultName(): boolean {
+    if (nameTyped) return false;
+    const name = heartName.trim();
+    return (['da', 'en'] as const).some((l) => name === t('myHeart', l) || name.endsWith(t('copy', l)));
+  }
+  function withName(action: () => void): void {
+    if (!hasDefaultName()) return action();
+    nameDraft = heartName;
+    askName = action;
+  }
+  function confirmName(event: SubmitEvent): void {
+    event.preventDefault();
+    const action = askName;
+    askName = null;
+    if (nameDraft.trim()) heartName = nameDraft.trim();
+    nameTyped = true; // asked once; an empty answer keeps the name as it was
+    editField();
+    action?.();
+  }
+
   function downloadSVG() {
-    downloadHeartSvg(createHeartDesign());
+    withName(() => downloadHeartSvg(createHeartDesign()));
   }
 
   function downloadTemplateSVG() {
@@ -641,6 +666,7 @@
    */
   function save() {
     if (!browser) return;
+    if (hasDefaultName() && !askName) return withName(save);
 
     // The save below writes exactly what the pending autosave would have.
     clearAutosaveTimer();
@@ -929,6 +955,30 @@
   </main>
 
   <Modal
+    open={askName !== null}
+    labelledBy="name-title"
+    width="min(420px, 100%)"
+    initialFocus={nameInput}
+    onClose={() => (askName = null)}
+  >
+    <form onsubmit={confirmName}>
+      <h2 id="name-title">{t('nameThisHeart', lang)}</h2>
+      <input
+        bind:this={nameInput}
+        type="text"
+        autocomplete="off"
+        aria-labelledby="name-title"
+        bind:value={nameDraft}
+        onfocus={(e) => e.currentTarget.select()}
+      />
+      <div class="name-actions">
+        <button type="button" class="btn btn-sm btn-ghost" onclick={() => (askName = null)}>{t('cancel', lang)}</button>
+        <button type="submit" class="btn btn-sm btn-dark">{t('nameThisHeartSave', lang)}</button>
+      </div>
+    </form>
+  </Modal>
+
+  <Modal
     open={showHelp}
     labelledBy="help-title"
     width="min(700px, 100%)"
@@ -1016,6 +1066,9 @@
 </div>
 
 <style>
+  #name-title { margin: 0 0 12px; font-size: 1.1rem; }
+  .name-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+  form input[type='text'] { width: 100%; box-sizing: border-box; }
   .editor {
     position: relative;
     z-index: 1;
