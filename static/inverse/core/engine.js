@@ -118,12 +118,15 @@ function returnRepaired(candidates,cfg){
 }
 /** Pixels of boundary of a mask over those of its opening by a pixel (1 for a
  * smooth one): 0 when the mask is smooth enough, else the pixels to open by. */
-/** Pixels below which a region is a stray speck of a hand painting (64 of 400²
- * pixels; a speck of 2 to 4 pixels' radius is 13 to 49), 0 when the mask has none. */
+/** Pixels below which a region is a stray speck of a hand painting (120 of 400²
+ * pixels, n²/1333; a blob of 4 pixels' radius is 49, of 6 is 113), 0 when the
+ * mask has none. The 211 gallery, library and web masks have no interior region of
+ * 121 to 160 pixels but jul-2026's four digit counters (144), which a higher
+ * limit would take; blobs of radius 7 (153) are left. */
 export function maskSpecks(source){
   const n=source?.resolution;
   if(!source?.mask||!n)return 0;
-  const limit=Math.round(n*n/2500);
+  const limit=Math.round(n*n/1333);
   return withoutSpecks(source.mask,n,limit,true)?limit:0;
 }
 export function maskRoughness(source){
