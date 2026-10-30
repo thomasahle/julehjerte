@@ -39,7 +39,7 @@ const onBorder = (p, eps = 1e-9) => Math.min(p[0], p[1], SIZE - p[0], SIZE - p[1
  * radians within `window` either way; curves running close side by side do not
  * turn, and stay apart. The two are of different boundaries or far apart along
  * one. Every curve ending at a corner moves with it, in place. */
-export function joinNearTouchings(lines, distance, {turn = .8, window = Math.max(distance, .15), symmetry = []} = {}) {
+export function joinNearTouchings(lines, distance, {turn = .7, window = Math.max(distance, .15), symmetry = []} = {}) {
   const at = new Map();
   lines.forEach((pts, i) => pts.forEach((p, k) => {
     const key = pointKey(p);

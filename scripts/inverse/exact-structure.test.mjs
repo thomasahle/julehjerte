@@ -96,6 +96,9 @@ test('corners a sampled checker opened a fraction apart join into a touching; ed
   // A traced corner chamfered by a pixel (two turns of 45 degrees) still is one.
   const chamfered = [[[4, 0], [4, 3.98], [3.98, 4], [0, 4]], [[4.03, 8], [4.03, 4.03], [8, 4.03]]];
   assert.equal(joinNearTouchings(chamfered, .072), 1);
+  // A corner of 45 degrees and a little less (a petal's tip fitted from one end, 0.78 radian) touching another is a touching too: its mirror image, fitted from the other end, may turn 0.79, and the two must join alike (stjernegitter: 15 hidden segments untied, 0 tied).
+  const petal = [[[4, 0], [4, 4], [4 + 4 * Math.cos(0.78), 4 - 4 * Math.sin(0.78) * -1]], [[4.03, 8], [4.03, 4.03], [8, 4.03]]];
+  assert.equal(joinNearTouchings(petal, .072), 1);
 });
 
 test('a traced outline nearly symmetric is made symmetric: each line\'s image lies on a line', () => {
