@@ -19,7 +19,7 @@ import {materialAudit,perturbationAudit,verifiedPaperSettings} from './material.
 import {roundHidden} from './rounding.js';
 import {boundarySVG,targetSVG,resultFiles} from './export.js';
 import {solvePolynomialTarget} from './direct/polynomial.js';
-import {openClose} from './exact/raster.js';
+import {openClose,withoutSpecks} from './exact/raster.js';
 import {appSymmetry,assess,exactSearch as searchExact,exactSymmetry,exactTarget,exactCannotStart,exportable,returnTips} from './exact/stage.js';
 /** Structured cloning retains coordinates but not Cubic methods, including
  * the cached boundary seed used by the topology initializer. Rebuild derived
@@ -118,8 +118,16 @@ function returnRepaired(candidates,cfg){
 }
 /** Pixels of boundary of a mask over those of its opening by a pixel (1 for a
  * smooth one): 0 when the mask is smooth enough, else the pixels to open by. */
+/** Pixels below which a region is a stray speck of a hand painting (64 of 400²
+ * pixels; a speck of 2 to 4 pixels' radius is 13 to 49), 0 when the mask has none. */
+export function maskSpecks(source){
+  const n=source?.resolution;
+  if(!source?.mask||!n)return 0;
+  const limit=Math.round(n*n/2500);
+  return withoutSpecks(source.mask,n,limit,true)?limit:0;
+}
 export function maskRoughness(source){
-  const mask=source?.mask,n=source?.resolution;
+  const n=source?.resolution,limit=maskSpecks(source),mask=limit?withoutSpecks(source.mask,n,limit):source?.mask;
   if(!mask||!n)return 0;
   const edges=m=>{let k=0;for(let y=0;y<n;y++)for(let x=0;x<n;x++){if(x+1<n&&m[y*n+x]!==m[y*n+x+1])k++;if(y+1<n&&m[y*n+x]!==m[(y+1)*n+x])k++;}return k;};
   const opened=edges(openClose(mask,n,1));
@@ -138,7 +146,7 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
   // photograph's crop a little off the square can end it unevenly on opposite
   // sides: then first its sides read as deep as each pair needs (`paired`),
   // as every later trace of it then is.
-  let base={};
+  let base={specks:maskSpecks(target.sourceImage)};
   const traceAt=(open,near={})=>{const traced=exactTarget(target,cfg,{...base,open,...near}),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);return scaled?{scaled,why:exactCannotStart(scaled,cfg)}:null;};
   let outline=null,cannot='No outline was traced from the mask.';
   // A mask with wobbling edges (hand-painted, its boundary a tenth longer than
@@ -149,7 +157,7 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
   for(const way of [{open:first},{open:first,paired:true},{open:1},{open:2}]){
     if(way.paired&&!/unevenly/.test(cannot))continue;
     const first=!way.open&&!way.paired;
-    try{const traced=traceAt(way.open,way);if(traced){if(!traced.why){outline=traced.scaled;if(way.paired)base={paired:true};break;}if(first)cannot=traced.why;}}catch(error){if(first)cannot=String(error.message||error);}
+    try{const traced=traceAt(way.open,way);if(traced){if(!traced.why){outline=traced.scaled;if(way.paired)base={...base,paired:true};break;}if(first)cannot=traced.why;}}catch(error){if(first)cannot=String(error.message||error);}
   }
   if(!outline)return{solution:null,report:{chosen:'fitter',error:cannot}};
   let ties=symmetry;
@@ -200,7 +208,7 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
   // `held`: the symmetries the template was searched under, in the app's
   // names, for the page to hold the rows it can when that is only part of
   // those asked for (roed-blomst: its two lobes alike, not their mirrors).
-  const report={...found.report,chosen:'fitter',held:appSymmetry(found.report.symmetry??[]),...(base.paired?{paired:true}:{})};
+  const report={...found.report,chosen:'fitter',held:appSymmetry(found.report.symmetry??[]),...(base.paired?{paired:true}:{}),...(base.specks?{specks:base.specks}:{})};
   return{solution:exportable(found.found?.assessment,cfgExact)?found.found.solution:null,report};
 }
 export function inspectSaved(text,raw={},onProgress=()=>{}){const cfg=settings(raw),solution=loadSolutionJSON(text),factor=cfg.width/solution.graph.target.width;solution.graph.edges.forEach(e=>e.curve=new Cubic(e.curve.p.map(p=>p.map(x=>x*factor))));solution.graph.target=scaleTarget(solution.graph.target,cfg.width,cfg.paperColors);reindex(solution.graph);return finish(solution,cfg,onProgress);}

@@ -270,6 +270,25 @@ test('a mask with wobbling edges is opened by a pixel or two before tracing; a c
   assert.equal(maskRoughness({}), 0);
 });
 
+test('stray specks of a hand painting are taken into their surroundings, checker corners and big regions stay', async () => {
+  const {maskSpecks} = await import('../../static/inverse/core/engine.js');
+  const {withoutSpecks} = await import('../../static/inverse/core/exact/raster.js');
+  const n = 400, mask = new Uint8Array(n * n);
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) mask[y * n + x] = x < 200 ? 1 : 0;
+  assert.equal(maskSpecks({mask, resolution: n}), 0);
+  const speckled = mask.slice(), disc = (cx, cy, r, v) => { for (let y = cy - r; y <= cy + r; y++) for (let x = cx - r; x <= cx + r; x++) if ((x - cx) ** 2 + (y - cy) ** 2 <= r * r) speckled[y * n + x] = v; };
+  disc(50, 50, 3, 0); disc(300, 120, 2, 1);
+  speckled[200 * n + 20] = 0;
+  const limit = maskSpecks({mask: speckled, resolution: n});
+  assert.ok(limit > 0);
+  const cleaned = withoutSpecks(speckled, n, limit);
+  assert.equal(cleaned[50 * n + 50], 1);
+  assert.equal(cleaned[120 * n + 300], 0);
+  assert.equal(cleaned[200 * n + 20], 0, 'a single pixel is a corner of the pixels, not a speck');
+  assert.equal(cleaned[200 * n + 80], 1);
+  assert.equal(withoutSpecks(speckled, n, limit, true), 2);
+});
+
 test('a picture symmetric under mirrors may keep only its turns, the search\'s fallback', () => {
   assert.deepEqual(turnsOf(['mirrorX', 'mirrorY', 'transpose']), ['rotate90']);
   assert.deepEqual(turnsOf(['mirrorX', 'mirrorY']), ['rotate180']);

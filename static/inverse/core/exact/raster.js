@@ -31,6 +31,28 @@ export function withoutSlivers(mask, n) {
   return out;
 }
 
+/** Regions of 3 to `limit` pixels (4-connected, not touching the square's
+ * edge) taken into their surroundings: the stray dots and holes of a hand
+ * painting, which no opening by a pixel or two removes. One or two pixels are
+ * checker corners, which stay. With `count`, only how many there are. */
+export function withoutSpecks(mask, n, limit, count = false) {
+  const out = mask.slice(), seen = new Uint8Array(n * n);
+  let found = 0;
+  for (let s = 0; s < n * n; s++) {
+    if (seen[s]) continue;
+    const v = mask[s], queue = [s];
+    let edge = false;
+    seen[s] = 1;
+    for (let k = 0; k < queue.length; k++) {
+      const i = queue[k], x = i % n, y = (i - x) / n;
+      if (!x || !y || x === n - 1 || y === n - 1) edge = true;
+      for (const j of [x > 0 ? i - 1 : -1, x < n - 1 ? i + 1 : -1, y > 0 ? i - n : -1, y < n - 1 ? i + n : -1]) if (j >= 0 && !seen[j] && mask[j] === v) { seen[j] = 1; queue.push(j); }
+    }
+    if (queue.length >= 3 && queue.length <= limit && !edge) { found++; for (const i of queue) out[i] = 1 - v; }
+  }
+  return count ? found : out;
+}
+
 /** The mask opened, then closed, by a disc of `radius` pixels: parts of either
  * colour narrower than its diameter go, and sharp tips round off by about its
  * radius. A cut cannot follow a tip narrower than its clearance anyway. */
@@ -90,11 +112,12 @@ export function fillUnobserved(mask, observed, n) {
  * sides are read as deep as each pair of them needs to end evenly
  * (border.js pairedBorderReading), changing at most the export's allowed
  * error; null when they cannot. */
-export function rasterOutline(target, cfg, {tolerance = .35, smoothRadius = 0, borderRadius = 1, open = 0, spots = null, within = 0, paired = false} = {}) {
+export function rasterOutline(target, cfg, {tolerance = .35, smoothRadius = 0, borderRadius = 1, open = 0, spots = null, within = 0, paired = false, specks = 0} = {}) {
   const source = target.sourceImage;
   if (!source?.mask || !source.resolution) return null;
   const n = source.resolution, width = target.width;
   let shown = source.validMask?.includes(0) ? fillUnobserved(source.mask, source.validMask, n) : source.mask;
+  if (specks) shown = withoutSpecks(shown, n, specks);
   if (paired) {
     // Depths in millimetres of the traced square, the band as its tracer reads it.
     shown = pairedBorderReading(shown, n, width, {seenAt: borderRadius, minimumStripWidth: cfg.nominalWidth ?? 2.5, maxChange: cfg.maxImageError ?? .03});
@@ -111,5 +134,5 @@ export function rasterOutline(target, cfg, {tolerance = .35, smoothRadius = 0, b
   const traced = trace(tolerance).target;
   // Corners of the picture nearly touching join (exact/target.js).
   const nearTouch = NEAR_TOUCH_MM * SIZE / (cfg.width || 100);
-  return traced.curves.length ? {...traced, sourceImage: source, metadata: {...target.metadata, ...traced.metadata, nearTouch}} : null;
+  return traced.curves.length ? {...traced, sourceImage: specks ? {...source, mask: withoutSpecks(source.mask, n, specks)} : source, metadata: {...target.metadata, ...traced.metadata, nearTouch}} : null;
 }

@@ -1203,3 +1203,7 @@ camel, but takes 20-28 s more and fails on other photographs; not used.
   28 of the 98 exact templates hid more, 24 less). A second search on the
   finer grid from its template finds the same. (Tulipan's 89 mm against 32
   were its tips: above.)
+
+### Stray specks (2026-10-30)
+
+Six stray discs (radius 2 to 4 px, opposite colour, folded to the picture's symmetry) painted into the 24 gallery masks that are exact when clean: 16 stayed exact, 8 lost their template (hvirvel, lilje1, nemt-hjerte, plus, simple-5star, permo-kroge, puslespil, snowflake), the worst painting error measured. An opening by 1 or 2 px cannot remove them. Now regions of 3 to n²/2500 pixels (64 at 400²) that do not touch the square's edge are taken into their surroundings before tracing (`withoutSpecks`, raster.js; 1 and 2 pixels are checker corners and stay); the roughness rule reads the despeckled mask, and the traced target's source image is the despeckled mask (otherwise the export's feature audit demands the specks back). Result: 24 of 24 exact, median 6.3 s against 11.3 s (clean baseline, other machine load), hidden 3.5 against 4. Only santa (a genuine 44-pixel region) is a clean mask this changes, and it fails either way. Specks touching an edge are not islands and are not removed.
