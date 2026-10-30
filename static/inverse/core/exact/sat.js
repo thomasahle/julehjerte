@@ -69,7 +69,6 @@ export class Sat {
     this.pos = [0];       // per variable: its place on the trail
     this.cqhead = 0;      // trail entries whose constraint counts are made
     this.cardConflict = null;
-    this.theory = null;   // {assign(lit, trailIndex) -> conflict literals or null, undo(trailLength)}
     this.clauses = [];  // {lits: Int32Array, learnt, act, deleted}
     this.learnts = 0;
     this.trail = [];
@@ -185,10 +184,6 @@ export class Sat {
     const {clauses, watches, assign} = this;
     while (this.qhead < this.trail.length) {
       const p = this.trail[this.qhead++], f = -p, ws = watches[index(f)], occ = this.occ[index(p)];
-      if (this.theory) {
-        const conflict = this.theory.assign(p, this.qhead - 1);
-        if (conflict) { this.cardConflict = conflict; this.qhead = this.trail.length; return -2; }
-      }
       if (occ.length) {
         for (const id of occ) this.cards[id].count++;
         this.cqhead = this.qhead;
@@ -330,7 +325,6 @@ export class Sat {
     this.lim.length = lvl;
     this.qhead = this.trail.length;
     this.cqhead = Math.min(this.cqhead, this.trail.length);
-    if (this.theory) this.theory.undo(this.trail.length);
   }
 
   /** Half of the learnt clauses, the least active not locked as reasons, go. */
