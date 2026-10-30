@@ -64,6 +64,11 @@ export class Sat {
     this.phase = [0];
     this.seen = [0];
     this.watches = [[], []];
+    this.cards = [];      // at-most-k constraints: {lits, k, count}
+    this.occ = [[], []];  // per literal index: the constraints it counts in
+    this.pos = [0];       // per variable: its place on the trail
+    this.cqhead = 0;      // trail entries whose constraint counts are made
+    this.cardConflict = null;
     this.clauses = [];  // {lits: Int32Array, learnt, act, deleted}
     this.learnts = 0;
     this.trail = [];
@@ -81,6 +86,8 @@ export class Sat {
     const v = ++this.n;
     this.assign.push(0); this.level.push(0); this.reason.push(-1); this.activity.push(0); this.phase.push(0); this.seen.push(0);
     this.watches.push([], []);
+    this.occ.push([], []);
+    this.pos.push(0);
     this.heap.insert(v);
     return v;
   }
@@ -104,18 +111,61 @@ export class Sat {
     if (!lits.length) return (this.ok = false);
     if (lits.length === 1) {
       this.enqueue(lits[0], -1);
-      if (this.propagate() >= 0) this.ok = false;
+      if (this.propagate() !== -1) this.ok = false;
       return this.ok;
     }
     this.attach(Int32Array.from(lits), false);
     return true;
   }
 
+  /** At most `k` of `input` true, kept as a counter (not as clauses): false once unsatisfiable. */
+  addAtMost(input, k) {
+    if (!this.ok) return false;
+    this.cancelUntil(0);
+    if (this.propagate() !== -1) return (this.ok = false);
+    // A literal and its negation always count one between them; a literal
+    // twice counts twice (and so stays twice in the constraint).
+    const pos = new Map(), neg = new Map();
+    for (const l of input) { const m = l > 0 ? pos : neg, v = l > 0 ? l : -l; m.set(v, (m.get(v) || 0) + 1); }
+    const drop = new Map();
+    for (const [v, c] of pos) { const d = neg.get(v) ? Math.min(c, neg.get(v)) : 0; if (d) { drop.set(v, d); k -= d; } }
+    const lits = [], dropped = new Map(drop), droppedNeg = new Map(drop);
+    for (const l of input) {
+      const v = l > 0 ? l : -l, left = l > 0 ? dropped : droppedNeg;
+      if (left.get(v) > 0) { left.set(v, left.get(v) - 1); continue; }
+      const x = this.value(l);
+      if (x === 1) k--;
+      else if (x === 0) lits.push(l);
+    }
+    if (k < 0) return (this.ok = false);
+    if (k >= lits.length) return true;
+    if (k === 0) { for (const l of lits) if (this.value(-l) === 0) this.enqueue(-l, -1); this.ok = this.propagate() === -1; return this.ok; }
+    const id = this.cards.length;
+    this.cards.push({lits: Int32Array.from(lits), k, count: 0});
+    for (const l of lits) this.occ[index(l)].push(id);
+    return true;
+  }
+
+  /** At least `k` of `input` true. */
+  addAtLeast(input, k) { return this.addAtMost(input.map(l => -l), input.length - k); }
+
+  /** The literals of the reason of v's value: its literal first, the others false. */
+  explain(v) {
+    const r = this.reason[v];
+    if (r >= 0) return this.clauses[r].lits;
+    const card = this.cards[-2 - r], pv = this.pos[v], out = [this.assign[v] > 0 ? v : -v];
+    for (const t of card.lits) {
+      const u = t > 0 ? t : -t;
+      if (this.assign[u] === (t > 0 ? 1 : -1) && this.pos[u] < pv) out.push(-t);
+    }
+    return out;
+  }
+
   attach(lits, learnt) {
     const c = this.clauses.length;
     this.clauses.push({lits, learnt, act: 0, deleted: false});
-    this.watches[index(lits[0])].push(c);
-    this.watches[index(lits[1])].push(c);
+    this.watches[index(lits[0])].push(c, lits[1]);
+    this.watches[index(lits[1])].push(c, lits[0]);
     if (learnt) this.learnts++;
     return c;
   }
@@ -125,39 +175,67 @@ export class Sat {
     this.assign[v] = l > 0 ? 1 : -1;
     this.level[v] = this.decisionLevel;
     this.reason[v] = reason;
+    this.pos[v] = this.trail.length;
     this.trail.push(l);
   }
 
   /** Unit propagation: the conflicting clause, or -1. */
   propagate() {
-    const {clauses, watches} = this;
+    const {clauses, watches, assign} = this;
     while (this.qhead < this.trail.length) {
-      const p = this.trail[this.qhead++], f = -p, ws = watches[index(f)];
+      const p = this.trail[this.qhead++], f = -p, ws = watches[index(f)], occ = this.occ[index(p)];
+      if (occ.length) {
+        for (const id of occ) this.cards[id].count++;
+        this.cqhead = this.qhead;
+        for (const id of occ) {
+          const card = this.cards[id];
+          if (card.count > card.k) {
+            const conflict = [];
+            for (const t of card.lits) {
+              const u = t > 0 ? t : -t;
+              if (this.assign[u] === (t > 0 ? 1 : -1) && this.pos[u] < this.qhead) conflict.push(-t);
+            }
+            this.cardConflict = conflict;
+            this.qhead = this.trail.length;
+            return -2;
+          }
+          if (card.count === card.k) {
+            for (const t of card.lits) if (this.assign[t > 0 ? t : -t] === 0) this.enqueue(-t, -2 - id);
+          }
+        }
+      } else this.cqhead = this.qhead;
       let i = 0, j = 0;
-      while (i < ws.length) {
-        const c = ws[i++], cl = clauses[c];
+      const n = ws.length;
+      while (i < n) {
+        const c = ws[i], blocker = ws[i + 1];
+        i += 2;
+        // The clause's blocker literal already true: it stays satisfied, no look at it.
+        if ((blocker > 0 ? assign[blocker] : -assign[-blocker]) === 1) { ws[j++] = c; ws[j++] = blocker; continue; }
+        const cl = clauses[c];
         if (cl.deleted) continue;
         const lits = cl.lits;
         if (lits[0] === f) { lits[0] = lits[1]; lits[1] = f; }
-        if (this.value(lits[0]) === 1) { ws[j++] = c; continue; }
+        const first = lits[0], fv = first > 0 ? assign[first] : -assign[-first];
+        if (fv === 1) { ws[j++] = c; ws[j++] = first; continue; }
         let moved = false;
         for (let k = 2; k < lits.length; k++) {
-          if (this.value(lits[k]) !== -1) {
-            lits[1] = lits[k]; lits[k] = f;
-            watches[index(lits[1])].push(c);
+          const q = lits[k];
+          if ((q > 0 ? assign[q] : -assign[-q]) !== -1) {
+            lits[1] = q; lits[k] = f;
+            watches[index(q)].push(c, first);
             moved = true;
             break;
           }
         }
         if (moved) continue;
-        ws[j++] = c;
-        if (this.value(lits[0]) === -1) {
-          while (i < ws.length) ws[j++] = ws[i++];
+        ws[j++] = c; ws[j++] = first;
+        if (fv === -1) {
+          while (i < n) ws[j++] = ws[i++];
           ws.length = j;
           this.qhead = this.trail.length;
           return c;
         }
-        this.enqueue(lits[0], c);
+        this.enqueue(first, c);
       }
       ws.length = j;
     }
@@ -184,10 +262,17 @@ export class Sat {
     const {seen, level, reason, trail} = this, learnt = [0];
     let pathC = 0, p = 0, i = trail.length - 1;
     do {
-      const cl = this.clauses[confl];
-      if (cl.learnt) this.bumpClause(cl);
-      for (let k = p === 0 ? 0 : 1; k < cl.lits.length; k++) {
-        const q = cl.lits[k], v = q > 0 ? q : -q;
+      let lits;
+      if (p === 0) {
+        if (confl === -2) lits = this.cardConflict;
+        else { const cl = this.clauses[confl]; if (cl.learnt) this.bumpClause(cl); lits = cl.lits; }
+      } else {
+        const pv = p > 0 ? p : -p, r = this.reason[pv];
+        if (r >= 0 && this.clauses[r].learnt) this.bumpClause(this.clauses[r]);
+        lits = this.explain(pv);
+      }
+      for (let k = p === 0 ? 0 : 1; k < lits.length; k++) {
+        const q = lits[k], v = q > 0 ? q : -q;
         if (!seen[v] && level[v] > 0) {
           this.bumpVar(v);
           seen[v] = 1;
@@ -198,7 +283,6 @@ export class Sat {
       while (!seen[trail[i] > 0 ? trail[i] : -trail[i]]) i--;
       p = trail[i--];
       const v = p > 0 ? p : -p;
-      confl = reason[v];
       seen[v] = 0;
       pathC--;
     } while (pathC > 0);
@@ -207,8 +291,8 @@ export class Sat {
     const out = [learnt[0]];
     for (let k = 1; k < learnt.length; k++) {
       const v = learnt[k] > 0 ? learnt[k] : -learnt[k], r = reason[v];
-      if (r < 0) { out.push(learnt[k]); continue; }
-      const lits = this.clauses[r].lits;
+      if (r === -1) { out.push(learnt[k]); continue; }
+      const lits = this.explain(v);
       let redundant = true;
       for (let m = 1; m < lits.length; m++) {
         const u = lits[m] > 0 ? lits[m] : -lits[m];
@@ -231,6 +315,7 @@ export class Sat {
     if (this.decisionLevel <= lvl) return;
     for (let c = this.trail.length - 1; c >= this.lim[lvl]; c--) {
       const l = this.trail[c], v = l > 0 ? l : -l;
+      if (c < this.cqhead) for (const id of this.occ[l > 0 ? 2 * l : -2 * l + 1]) this.cards[id].count--;
       this.assign[v] = 0;
       this.reason[v] = -1;
       this.phase[v] = l > 0 ? 1 : 0;
@@ -239,6 +324,7 @@ export class Sat {
     this.trail.length = this.lim[lvl];
     this.lim.length = lvl;
     this.qhead = this.trail.length;
+    this.cqhead = Math.min(this.cqhead, this.trail.length);
   }
 
   /** Half of the learnt clauses, the least active not locked as reasons, go. */
@@ -262,8 +348,8 @@ export class Sat {
     for (let i = trail.length - 1; i >= this.lim[0]; i--) {
       const l = trail[i], v = Math.abs(l);
       if (!seen[v]) continue;
-      if (reason[v] < 0) core.push(l);
-      else for (const q of this.clauses[reason[v]].lits.subarray(1)) if (this.level[Math.abs(q)] > 0) seen[Math.abs(q)] = 1;
+      if (reason[v] === -1) core.push(l);
+      else { const lits = this.explain(v); for (let m = 1; m < lits.length; m++) if (this.level[Math.abs(lits[m])] > 0) seen[Math.abs(lits[m])] = 1; }
       seen[v] = 0;
     }
     seen[v0] = 0;
@@ -277,11 +363,11 @@ export class Sat {
     this.core = null;
     if (!this.ok) return false;
     this.cancelUntil(0);
-    if (this.propagate() >= 0) return (this.ok = false);
+    if (this.propagate() !== -1) return (this.ok = false);
     let restart = 0, budget = 100 * luby(restart), maxLearnts = Math.max(1000, this.clauses.length / 3);
     for (let tick = 0; ; tick++) {
       const confl = this.propagate();
-      if (confl >= 0) {
+      if (confl !== -1) {
         this.conflicts++;
         if (this.decisionLevel === 0) { this.ok = false; return false; }
         const [learnt, back] = this.analyze(confl);

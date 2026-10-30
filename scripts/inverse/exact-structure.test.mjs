@@ -9,6 +9,7 @@ import {settings} from '../../static/inverse/core/settings.js';
 import {loadSVG} from '../../static/inverse/core/input.js';
 import {exactPositions} from '../../static/inverse/core/exact/positions.js';
 import {cheapBounds} from '../../static/inverse/core/exact/bounds.js';
+import {Sat, totalizer} from '../../static/inverse/core/exact/sat.js';
 import {colouredRings, targetSegments, joinNearTouchings, withoutClosedSlivers, symmetricLines} from '../../static/inverse/core/exact/target.js';
 import {returns} from '../../static/inverse/core/exact/nogoods.js';
 import {returnTips} from '../../static/inverse/core/exact/stage.js';
@@ -246,4 +247,41 @@ test('two touchings a hair apart, merged, lose the tiny curves between them and 
   // A loop of real size through the point stays.
   const big = [[p, [6, 6]], [[6, 6], p]];
   assert.equal(withoutClosedSlivers([...big, ...out], .002).length, 6);
+});
+
+test('the CDCL solver agrees with brute force on random clauses and counts, incrementally and under assumptions', () => {
+  let a = 2024;
+  const random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  // Constraints: {clause: [...]} or {lits, atMost: k} or {lits, atLeast: k}.
+  const brute = (n, constraints, assumed) => {
+    for (let m = 0; m < 1 << n; m++) {
+      const holds = l => ((m >> (Math.abs(l) - 1)) & 1) === (l > 0 ? 1 : 0);
+      if (assumed.every(holds) && constraints.every(c => c.clause ? c.clause.some(holds) : c.atMost !== undefined ? c.lits.filter(holds).length <= c.atMost : c.lits.filter(holds).length >= c.atLeast)) return true;
+    }
+    return false;
+  };
+  const satisfied = (sat, c) => c.clause ? c.clause.some(l => sat.modelValue(l)) : c.atMost !== undefined ? c.lits.filter(l => sat.modelValue(l)).length <= c.atMost : c.lits.filter(l => sat.modelValue(l)).length >= c.atLeast;
+  const literal = n => (1 + Math.floor(random() * n)) * (random() < .5 ? -1 : 1);
+  for (let round = 0; round < 300; round++) {
+    const n = 4 + Math.floor(random() * 9), sat = new Sat(), constraints = [];
+    for (let v = 0; v < n; v++) sat.newVar();
+    const total = Math.floor(n * (1.5 + random() * 2.5));
+    for (let k = 0; k < total; k++) {
+      const size = 1 + Math.floor(random() * 5), lits = Array.from({length: size}, () => literal(n)), kind = random();
+      if (kind < .5) { constraints.push({clause: lits}); sat.addClause(lits); }
+      else if (kind < .8) { const bound = Math.floor(random() * (size + 1)); constraints.push({lits, atMost: bound}); sat.addAtMost(lits, bound); }
+      else { const bound = Math.floor(random() * (size + 1)); constraints.push({lits, atLeast: bound}); sat.addAtLeast(lits, bound); }
+      if (k % 4 === 3 || k === total - 1) {
+        const assumed = random() < .5 ? [] : [literal(n)];
+        const result = sat.solve({assumptions: assumed});
+        assert.equal(result, brute(n, constraints, assumed), `round ${round} after ${k + 1} constraints`);
+        if (result) for (const c of constraints) assert.ok(satisfied(sat, c), 'the model satisfies every constraint');
+      }
+    }
+  }
+  // A totalizer bounds a count: at most 2 of 6 allows exactly the sets of 2.
+  const sat = new Sat(), xs = Array.from({length: 6}, () => sat.newVar()), out = totalizer(sat, xs, 3);
+  sat.addClause([-out[2]]);
+  assert.equal(sat.solve({assumptions: [xs[0], xs[1], xs[2]]}), false);
+  assert.equal(sat.solve({assumptions: [xs[0], xs[1]]}), true);
 });
