@@ -19,6 +19,7 @@ import {materialAudit,perturbationAudit,verifiedPaperSettings} from './material.
 import {roundHidden} from './rounding.js';
 import {boundarySVG,targetSVG,resultFiles} from './export.js';
 import {solvePolynomialTarget} from './direct/polynomial.js';
+import {openClose} from './exact/raster.js';
 import {appSymmetry,assess,exactSearch as searchExact,exactSymmetry,exactTarget,exactCannotStart,exportable,returnTips} from './exact/stage.js';
 /** Structured cloning retains coordinates but not Cubic methods, including
  * the cached boundary seed used by the topology initializer. Rebuild derived
@@ -44,7 +45,7 @@ export const EXACT_SECONDS=60,EXACT_FINISH_SECONDS=10;
  * outline has until ALONE_TRACED_SECONDS and the rounded one the rest. A
  * passing template with tips coming back to themselves has RETURNS_LEAST (or
  * as long as it took) for one with them rounded. */
-const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,ROUNDED_LEAST=6,RETURNS_LEAST=10,TIP_ROUNDING_MM=.8,TIP_SPOT_MM=4,RETURN_REPAIR_SECONDS=4,RETURN_REPAIR_TRIES=2;
+const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,ROUNDED_LEAST=6,RETURNS_LEAST=10,TIP_ROUNDING_MM=.8,TIP_SPOT_MM=4,RETURN_REPAIR_SECONDS=4,RETURN_REPAIR_TRIES=2,ROUGH_ONE=1.1,ROUGH_TWO=1.3;
 /** The fitter's seconds beside the exact search (`exactRoute: 'fitter'`): what
  * it had when it came first, which photographs need to keep their details. */
 const FITTER_SECONDS=45;
@@ -115,6 +116,16 @@ function returnRepaired(candidates,cfg){
   }
   return null;
 }
+/** Pixels of boundary of a mask over those of its opening by a pixel (1 for a
+ * smooth one): 0 when the mask is smooth enough, else the pixels to open by. */
+export function maskRoughness(source){
+  const mask=source?.mask,n=source?.resolution;
+  if(!mask||!n)return 0;
+  const edges=m=>{let k=0;for(let y=0;y<n;y++)for(let x=0;x<n;x++){if(x+1<n&&m[y*n+x]!==m[y*n+x+1])k++;if(y+1<n&&m[y*n+x]!==m[(y+1)*n+x])k++;}return k;};
+  const opened=edges(openClose(mask,n,1));
+  const ratio=opened?edges(mask)/opened:1;
+  return ratio>=ROUGH_TWO?2:ratio>=ROUGH_ONE?1:0;
+}
 /** The exact search's template for a picture the export passes, or none:
  * {solution, report}. On the outline traced from the mask until `tracedEnd`,
  * then on it with its tips rounded until `roundedEnd`. */
@@ -130,7 +141,12 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
   let base={};
   const traceAt=(open,near={})=>{const traced=exactTarget(target,cfg,{...base,open,...near}),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);return scaled?{scaled,why:exactCannotStart(scaled,cfg)}:null;};
   let outline=null,cannot='No outline was traced from the mask.';
-  for(const way of [{open:0},{open:0,paired:true},{open:1},{open:2}]){
+  // A mask with wobbling edges (hand-painted, its boundary a tenth longer than
+  // after opening by a pixel) is traced from it opened by 1 pixel, 2 from a
+  // third longer: its model otherwise grows with every wobble (h4h2 at 40%
+  // jitter: 43 s with none found, 3 s opened).
+  const first=maskRoughness(target.sourceImage);
+  for(const way of [{open:first},{open:first,paired:true},{open:1},{open:2}]){
     if(way.paired&&!/unevenly/.test(cannot))continue;
     const first=!way.open&&!way.paired;
     try{const traced=traceAt(way.open,way);if(traced){if(!traced.why){outline=traced.scaled;if(way.paired)base={paired:true};break;}if(first)cannot=traced.why;}}catch(error){if(first)cannot=String(error.message||error);}

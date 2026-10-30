@@ -249,6 +249,27 @@ test('a face with several holes: with its alternation rows the lazy embedding ro
   assert.equal(found.report.search.cuts.embedding, 0);
 });
 
+test('a mask with wobbling edges is opened by a pixel or two before tracing; a clean one is not', async () => {
+  const {maskRoughness} = await import('../../static/inverse/core/engine.js');
+  const n = 200, clean = new Uint8Array(n * n);
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) clean[y * n + x] = (x - 100) ** 2 + (y - 100) ** 2 < 60 ** 2 ? 1 : 0;
+  assert.equal(maskRoughness({mask: clean, resolution: n}), 0);
+  // The disc with a fifth of its boundary pixels flipped (a seeded generator), and with two fifths.
+  const wobble = share => {
+    let a = 12345;
+    const random = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+    const out = clean.slice();
+    for (let y = 1; y < n - 1; y++) for (let x = 1; x < n - 1; x++) {
+      const v = clean[y * n + x];
+      if ([clean[y * n + x - 1], clean[y * n + x + 1], clean[(y - 1) * n + x], clean[(y + 1) * n + x]].some(u => u !== v) && random() < share) out[y * n + x] = 1 - v;
+    }
+    return out;
+  };
+  assert.ok(maskRoughness({mask: wobble(.2), resolution: n}) >= 1);
+  assert.equal(maskRoughness({mask: wobble(.45), resolution: n}), 2);
+  assert.equal(maskRoughness({}), 0);
+});
+
 test('a picture symmetric under mirrors may keep only its turns, the search\'s fallback', () => {
   assert.deepEqual(turnsOf(['mirrorX', 'mirrorY', 'transpose']), ['rotate90']);
   assert.deepEqual(turnsOf(['mirrorX', 'mirrorY']), ['rotate180']);

@@ -1033,6 +1033,26 @@ same violation left: a new conflict only exposes the next. Nor
 do the rounds get quicker with HiGHS's options: tak's runs take 0.8 to 11.7 s,
 7 to 11 s with presolve off, the same with the heuristic effort at 0.01.
 
+## Rough masks traced from the mask opened (2026-10-30)
+
+A mask with wobbling edges makes the exact model grow with every wobble (the
+tracer keeps each as a corner): at 40% of the boundary pixels flipped the
+median search takes 36 s where 10 s clean, with the mask error from 0.4% to
+1.45%. Roughness, the boundary length over the boundary length after opening
+by a pixel, is 1.00 to 1.05 for all 143 clean gallery and juleflet masks (the
+highest hjertekloever's 1.046), 1.00 to 1.20 at 20% jitter and 1.14 to 1.47 at
+40%; 1.00 to 1.59 for 56 photographs' masks, median 1.01, four at 1.10 or more
+and none exact today. A mask at 1.10 or more is now traced from it opened by a
+pixel (2 pixels from 1.30), the first traced stage's way (engine.js
+`maskRoughness`); clean masks are untouched, so no existing result changes.
+On the 80 jittered masks: at 20% exact 31 to 34 (none lost, time 612 to 576
+s); at 40% 22 to 24 (gained alhambra, dagognat, firkloever-hjerte,
+fiskeskael, hermanngitter; lost amy-weave-2, blomster-hjerte, cirkelhjerte,
+whose templates were 2.6%, 1.3% and 2.9% from their masks) and the time down
+31% (609 to 420 s), the median error 1.33% to 1.27%. The same rounding on the 21
+photographs that fail on noisy outlines: 2 pass (1 or 2 pixels), so their
+trouble is not pixel noise. The four rough photographs stay with the fitter.
+
 ## Painted edges (2026-10-29)
 
 A mask painted by hand has wobbling edges. 40 gallery masks with 20% of their
