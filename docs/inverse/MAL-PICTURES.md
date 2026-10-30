@@ -1053,6 +1053,21 @@ whose templates were 2.6%, 1.3% and 2.9% from their masks) and the time down
 photographs that fail on noisy outlines: 2 pass (1 or 2 pixels), so their
 trouble is not pixel noise. The four rough photographs stay with the fitter.
 
+## Painted too thick or too thin (2026-10-30)
+
+27 gallery masks (of 40 grown or shrunk; the rest are not in the 143 compared
+with) with every coloured area grown, or shrunk, by 3 pixels (0.75 mm), folded to
+their symmetry (tmp/e2e/even/thick.mjs): of the 24 exact clean, 23 stay exact
+each way (lost: lilje1 grown, permo-kroge shrunk), the time unchanged (11 to
+11 s, 11.6 to 13 s), the median mask error lower (0.43% to 0.25%, no wobble).
+The hidden cut is not: median 4 segments clean, 16 grown and 16 shrunk (alhambra
+11 to 25, amy-pattern 4 to 36, amy-weave-2 0 to 49, stjerne-ramme 4 to 68, tragt
+0 to 81), the same grown as shrunk because for balanced pictures shrinking one
+colour is growing the other. Not the search: these designs hold together at
+touching corners, and 3 pixels more or less turn each touching into a bridge or
+a gap, a different picture needing more hidden cut. Painting that much too
+thick or thin costs quality before it costs the template, as wobble does.
+
 ## Painted edges (2026-10-29)
 
 A mask painted by hand has wobbling edges. 40 gallery masks with 20% of their
