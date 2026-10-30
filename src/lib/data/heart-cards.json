@@ -367,6 +367,22 @@
     },
     "difficulty": "hard"
   },
+  "kagome": {
+    "name": "Kagome",
+    "names": {
+      "da": "Kagome",
+      "en": "Kagome"
+    },
+    "difficulty": "hard"
+  },
+  "stjernefliser": {
+    "name": "Stjernefliser",
+    "names": {
+      "da": "Stjernefliser",
+      "en": "Star Tiles"
+    },
+    "difficulty": "expert"
+  },
   "boelgebrud": {
     "name": "Bølgebrud",
     "names": {

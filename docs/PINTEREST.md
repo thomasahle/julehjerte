@@ -93,7 +93,10 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   gæs and Mor og barn, which moved Potteplante to day 51, and Firkant i firkant at day 55 (2026-12-15), between
   Hjerte i hjerte i hjerte and MOR & FAR. Kronblade, a variant of Familie-Journal
   1922's heart 3, went in on 2026-10-29 between Explosion and Flyvende gæs, which
-  moved every later heart one day on.
+  moved every later heart one day on. Kagome and Stjernefliser (Mønstre, 2026-10-30) went in late, between
+  Hjertekløver and Stjernegitter and between Jul tern and Skrå kryds, so
+  that no two Mønstre hearts are pinned on consecutive days; the hearts after
+  each moved one day on.
 - The feed holds the released items only (nothing future-dated), newest first,
   at most 30 (`PINTEREST_MAX_ITEMS`). When every heart is out, the feed stops
   growing: it does not cycle.

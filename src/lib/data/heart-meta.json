@@ -1399,6 +1399,60 @@
     },
     "photo": null
   },
+  "kagome": {
+    "name": "Kagome",
+    "names": {
+      "da": "Kagome",
+      "en": "Kagome"
+    },
+    "author": "Thomas Dybdahl Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-30",
+    "description": null,
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "stjernefliser": {
+    "name": "Stjernefliser",
+    "names": {
+      "da": "Stjernefliser",
+      "en": "Star Tiles"
+    },
+    "author": "Thomas Dybdahl Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-10-30",
+    "description": null,
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
   "boelgebrud": {
     "name": "Bølgebrud",
     "names": {
