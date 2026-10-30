@@ -8,6 +8,7 @@
  * The rules are rows (or rows with a penalised slack, for a start that breaks
  * them), checked again exactly on each solution and added lazily, as are cuts
  * of a detached loop or a slit joining the wrong borders. */
+import {cdclStart} from './cdcl.js';
 import {LinearModel, solverRuntime} from '../solver.js';
 import {pointKey} from './structure.js';
 import {tokenKey} from './candidates.js';
@@ -636,6 +637,40 @@ export class ExactModel {
     return {labels: new Map([...this.lab].map(([k, v]) => [k, val[v] > .5 ? 1 : 0])), used: [...this.x].filter(([, v]) => val[v] > .5).map(([k]) => k)};
   }
 
+  cycleItems() {
+    const out = [];
+    this.st.edges.forEach((_, e) => {
+      for (let i = 0; i <= this.q[e]; i++) {
+        const v = this.lab.get(`${e},${i}`), p = this.point(e, i), q = this.point(e, i + 1);
+        out.push([v, 1, [[0, p, q]]], [v, 0, [[1, p, q]]]);
+      }
+    });
+    for (const [key, v] of this.x) {
+      const [, a, b] = this.cand.pair.get(key), p = `slot:${a[1]}:${a[2]}`, q = `slot:${b[1]}:${b[2]}`;
+      out.push([v, 1, [[0, p, q], [1, p, q]]]);
+    }
+    return out;
+  }
+  embedItems() {
+    const faceCycles = new Map(), chords = [];
+    for (const [key, v] of this.x) {
+      const [fi, a, b] = this.cand.pair.get(key);
+      if (!faceCycles.has(fi)) faceCycles.set(fi, this.cand.faces[fi].map(c => c.map(tokenKey)));
+      chords.push([v, fi, [tokenKey(a), tokenKey(b)]]);
+    }
+    return {chords, embeds: (fi, pairs) => embeddable(faceCycles.get(fi), pairs)};
+  }
+  /** Initial activities: the piece labels and segments of the edges at the border ends first (`mode` 1), or last (2). */
+  borderBoost(mode) {
+    const out = [], nodes = this.st.nodes, endOf = p => p.startsWith('node:') && nodes.get(p.slice(5))?.typ === 'end';
+    this.st.edges.forEach((_, e) => {
+      let near = false;
+      for (let i = 0; i <= this.q[e] + 1; i++) if (endOf(this.point(e, i))) near = true;
+      if (near === (mode === 1)) for (let i = 0; i <= this.q[e]; i++) out.push([this.lab.get(`${e},${i}`), 1]);
+    });
+    return out;
+  }
+
   /** The rows `values` breaks, counted by kind: {kind: count}. */
   broken(values, eps = 1e-6) {
     const out = {}, bounds = [...this.sections.map(([, r]) => r), Infinity];
@@ -779,6 +814,13 @@ export class ExactModel {
     // (Hard, they would cost HiGHS the incumbent: a start from a topological
     // witness, its switches spread evenly, breaks dozens.)
     report.startFeasible = Boolean(start) && !Object.keys(this.broken(start)).length;
+    if (!report.startFeasible && globalThis.EXP_CDCL) {
+      const began = performance.now(), stats = {}, th = globalThis.EXP_THEORY ?? 0;
+      const found = cdclStart(m, {deadline: now + 1000 * globalThis.EXP_CDCL, phase: start, stats, cycles: th ? this.cycleItems() : null, embedding: th > 1 ? this.embedItems() : null, boost: globalThis.EXP_BOOST ? this.borderBoost(globalThis.EXP_BOOST) : null, lazy: values => this.violations(Array.from(values))});
+      report.cdcl = {seconds: +((performance.now() - began) / 1000).toFixed(2), found: Boolean(found), rounds: found?.rounds, kinds: stats};
+      if (globalThis.EXP_DBG) console.error('CDCL', JSON.stringify(report.cdcl));
+      if (found) { start = fill(found.values); report.startFeasible = !Object.keys(this.broken(start)).length; }
+    }
     if (report.startFeasible) {
       const added = elastic(this.violations(Array.from(start)));
       if (added) { start = fill(start); report.startElastic = added; }
