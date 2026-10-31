@@ -253,8 +253,23 @@ featured motifs on five strips 4, seven 10, nine 16; the 30 nobody solved on
 nine strips 4). A third, at a motif or size of each pair not tried before
 (`pair-queue.mjs`; 159 pairs, the 33 others have only sizes tried), kept 14:
 6 pairs more, 133 recipes (95 pairs, 1.7 MB), 13 motif sizes better and none
-worse (featured seven strips 5, nine 2; the 30 on seven 5, nine 1). 186 pairs, 1127 of the 3724 motif sizes, still draw the
-generator's own heart; 69 of those pairs have five or more motif sizes.
+worse (featured seven strips 5, nine 2; the 30 on seven 5, nine 1).
+
+Most of those solves found no start in time (101 of 159; 120 s instead of 30
+found none of 8 either). The generator's own heart is a solve too:
+`recipes.mjs` with `OWN` reads its cuts as the solve's, with no search (each
+point a hair off a ring put on it, the ring's own points followed between, its
+hidden cuts straightened), into `<motif>.board-<strips>.own<size>.json`. For
+each pair without a recipe, each motif's best heart and middle size (up to
+eight a pair): 159 of 678 draw (most of the others meet themselves wrongly
+where the heart's curve runs along a ring), and carried to the other sizes of
+their pairs they beat the generator's heart there: 60 pairs more, 202 recipes
+(155 pairs; 2.9 MB, 0.38 MB as sent), 118 motif sizes better and none worse
+(featured three strips 16, five 27, seven 45, nine 20; the 30 on five 3, seven
+2, nine 5); a size draws more recipes, so the page takes longer (median on
+seven strips 1.7 → 1.9 s, nine strips' unseen 1.0 → 1.2 s). 126 pairs, 567 of
+the 3724 motif sizes, still draw the generator's own heart: 93 with no
+candidate that draws, 33 whose candidates beat it nowhere.
 
     node scripts/generator/pairs.mjs <motif>...      # every board, up to three recipes a pair
     ADD=1 node scripts/generator/pairs.mjs <motif>... # only for the pairs the page has none for

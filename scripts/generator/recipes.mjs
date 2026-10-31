@@ -25,6 +25,9 @@
 //        KEEP_ALL=1     keep a solve at every size it draws cleanly, beating the generator's or not (a
 //                       pair's candidate, judged on every motif of its pair by pairs.mjs)
 //        OUT_FILE=path  write there (only this run's recipes and the file's others) rather than the motif's file
+//        OWN=1          no search: the generator's own heart at the size as the solve (a pair's candidate where
+//                       the search finds none), OWN_TOL its hidden cuts' straightening (.01; .03 where that
+//                       fails the editor's checks)
 //
 // Run one at a time: each solve keeps a core busy for up to two minutes.
 import fs from 'node:fs/promises';
@@ -126,6 +129,88 @@ try {
 	/** The exact-outline search on a picture, from the generator's heart `own` where TEMPLATE is
 	 * set: its slits in the sheet, or why there are none. */
 	async function solve(rings, own) {
+		// OWN=1: no search, the generator's own heart's cuts as the solve (a pair's candidate from it): its
+		// right lobe's cuts the A family, as the engine's.
+		if (process.env.OWN) {
+			if (!own) return { error: 'no heart of the generator', seconds: 0 };
+			const rect = inferOverlapRect(own.fingers, own.gridSize), unit = ([x, y]) => [(x - rect.left) / rect.width * 100, (y - rect.top) / rect.height * 100];
+			const lines = [[], []];
+			for (const finger of own.fingers) {
+				if (!finger.id.includes('-cut-')) continue;
+				const pts = [];
+				for (const sg of finger.segments) for (let k = pts.length ? 1 : 0; k <= 16; k++) {
+					const t = k / 16, u = 1 - t, at = c => u * u * u * sg.p0[c] + 3 * u * u * t * sg.p1[c] + 3 * u * t * t * sg.p2[c] + t * t * t * sg.p3[c];
+					pts.push(unit([at('x'), at('y')]));
+				}
+				lines[finger.lobe === 'right' ? 0 : 1].push(pts);
+			}
+			// A point of the heart's within .04 of a ring is put on it, and between two such points on
+			// one ring the line follows the ring's own points: the heart's cut along an outline is a smooth
+			// curve a hair off the rings' polygons, which piecesOf would read as outline and hidden by turns.
+			const crossings = [];
+			const segs = rings.flatMap((r, i) => r.map((a, k) => [a, r[(k + 1) % r.length], i]));
+			for (let i = 0; i < segs.length; i++) for (let j = i + 1; j < segs.length; j++) {
+				const [a, b, ri] = segs[i], [c, d, rj] = segs[j];
+				if (ri === rj) continue;
+				const den = (b[0] - a[0]) * (d[1] - c[1]) - (b[1] - a[1]) * (d[0] - c[0]);
+				if (Math.abs(den) < 1e-12) continue;
+				const t = ((c[0] - a[0]) * (d[1] - c[1]) - (c[1] - a[1]) * (d[0] - c[0])) / den, u = ((c[0] - a[0]) * (b[1] - a[1]) - (c[1] - a[1]) * (b[0] - a[0])) / den;
+				if (t >= 0 && t <= 1 && u >= 0 && u <= 1) crossings.push([a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])]);
+			}
+			// A ring's point or two rings' crossing within .05 is where the heart's cut turns (its
+			// curve a hair off the polygon's): before the nearest side.
+			const ringSnap = .04, vertexSnap = .05;
+			const onRing = p => {
+				let best = null, vertex = null;
+				rings.forEach((ring, r) => { for (let i = 0; i < ring.length; i++) {
+					const a = ring[i], b = ring[(i + 1) % ring.length], dx = b[0] - a[0], dy = b[1] - a[1], l = dx * dx + dy * dy;
+					const t = l ? Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / l)) : 0, q = [a[0] + t * dx, a[1] + t * dy], d = Math.hypot(q[0] - p[0], q[1] - p[1]);
+					if (!best || d < best.d) best = { r, i, q, d };
+					const dv = Math.hypot(a[0] - p[0], a[1] - p[1]);
+					if (dv < vertexSnap && (!vertex || dv < vertex.d)) vertex = { r, i, q: a, d: dv };
+				} });
+				const crossing = crossings.find(c => Math.hypot(c[0] - p[0], c[1] - p[1]) < vertexSnap);
+				if (crossing && (!vertex || Math.hypot(crossing[0] - p[0], crossing[1] - p[1]) < vertex.d)) return { ...best, q: crossing };
+				return vertex ?? (best && best.d < ringSnap ? best : null);
+			};
+			for (const family of lines) for (let l = 0; l < family.length; l++) {
+				const out = [];
+				let prev = null;
+				for (const p of family[l]) {
+					const at = onRing(p);
+					if (at && prev && prev.r === at.r) {
+						const ring = rings[at.r], n = ring.length, fwd = ((at.i - prev.i) % n + n) % n, back = ((prev.i - at.i) % n + n) % n;
+						const between = fwd <= back ? Array.from({ length: fwd }, (_, k) => ring[(prev.i + k + 1) % n]) : Array.from({ length: back }, (_, k) => ring[(prev.i - k + n) % n]);
+						const path = [prev.q, ...between, at.q], arc = path.slice(1).reduce((s, q, k) => s + Math.hypot(q[0] - path[k][0], q[1] - path[k][1]), 0);
+						if (arc <= 3 * Math.hypot(at.q[0] - prev.q[0], at.q[1] - prev.q[1]) + .3) out.push(...between);
+					}
+					out.push(at ? at.q : p);
+					prev = at;
+				}
+				family[l] = out;
+			}
+			// Where two rings cross, a point of the heart's a hair off both is put on the crossing (piecesOf
+			// names a crossing at a vertex of neither only within 1e-5 of both), and repeated points go.
+			const snap = .02;
+			for (const family of lines) for (let l = 0; l < family.length; l++) {
+				const out = [];
+				for (const p of family[l]) {
+					const c = crossings.find(c => Math.hypot(c[0] - p[0], c[1] - p[1]) < snap), q = c ?? p, last = out.at(-1);
+					if (!last || Math.hypot(q[0] - last[0], q[1] - last[1]) > 1e-6) out.push(q);
+				}
+				// The rings' points a segment passes (a corner of the squares the cut runs along) are its own.
+				const vertices = [...rings.flat(), ...crossings], full = [out[0]];
+				for (let i = 1; i < out.length; i++) {
+					const a = out[i - 1], b = out[i], dx = b[0] - a[0], dy = b[1] - a[1], l2 = dx * dx + dy * dy;
+					const on = vertices.map(v => ({ v, t: ((v[0] - a[0]) * dx + (v[1] - a[1]) * dy) / l2 }))
+						.filter(({ v, t }) => t > 1e-6 && t < 1 - 1e-6 && Math.hypot(a[0] + t * dx - v[0], a[1] + t * dy - v[1]) < 1e-4).sort((x, y) => x.t - y.t);
+					for (const { v } of on) if (Math.hypot(v[0] - full.at(-1)[0], v[1] - full.at(-1)[1]) > 1e-6) full.push(v);
+					full.push(b);
+				}
+				family[l] = full;
+			}
+			return { xy: { A: lines[0], B: lines[1] }, seconds: 0 };
+		}
 		const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path fill="#b91313" fill-rule="evenodd" d="${rings.map(r => 'M' + r.map(([x, y]) => `${(x * .12).toFixed(6)},${(y * .12).toFixed(6)}`).join('L') + 'Z').join('')}"/></svg>`;
 		// The picture's own vector outline: the engine's exactTarget traces one from the pixels (Mal
 		// reads pictures), a pixel off the rings the recipe is drawn on.
@@ -294,6 +379,19 @@ try {
 				if (!solved.xy) { console.log(`  ${next.p}%: no template (${solved.error}, ${solved.seconds.toFixed(0)} s)`); continue; }
 				const recipe = { style, ...strips ? { strips } : {}, steps: [], gap: GAP, ...Object.keys(next.known).length ? { known: next.known } : {},
 					sig: next.o.corners.map(c => c.length), ...piecesOf(solved.xy, next.o) };
+				// OWN: a hidden piece's sampled bends kept only where they turn it (Douglas–Peucker, in its own
+				// frame: the piece from 0,0 to 1,0).
+				if (process.env.OWN) {
+					const tol = Number(process.env.OWN_TOL ?? .01);
+					const dp = pts => {
+						if (pts.length < 3) return pts;
+						const [a, b] = [pts[0], pts.at(-1)], dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1;
+						let far = 0, at = 0;
+						for (let i = 1; i < pts.length - 1; i++) { const d = Math.abs((pts[i][0] - a[0]) * dy - (pts[i][1] - a[1]) * dx) / l; if (d > far) { far = d; at = i; } }
+						return far < tol ? [a, b] : [...dp(pts.slice(0, at + 1)).slice(0, -1), ...dp(pts.slice(at))];
+					};
+					for (const family of [recipe.A, recipe.B]) for (const line of family) for (const piece of line) if (piece.bends) piece.bends = dp([[0, 0], ...piece.bends, [1, 0]]).slice(1, -1);
+				}
 				for (const step of group.steps) if (!covered.has(step.p) && keeps(recipe, step)) {
 					recipe.steps.push(step.p);
 					covered.add(step.p);
