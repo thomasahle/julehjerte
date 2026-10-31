@@ -1,4 +1,4 @@
-import {prepare,inspectSaved,EXACT_SECONDS} from './core/engine.js';
+import {prepare,inspectSaved,timeScale} from './core/engine.js';
 import {settings as normalizeSettings} from './core/settings.js';
 import {finishStopped,finishExactStopped} from './core/stopped.js';
 import {zipFiles} from './core/zip.js';
@@ -133,12 +133,12 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
           const wait=()=>{
             clearTimeout(job.timer);
             const early=!job.drawn&&passes(job.held?.result);
-            job.timer=setTimeout(()=>{if(live()&&job.exact==='running'){if(early)trail();else exactDone();}},Math.max(0,job.startedAt+1000*(early?EXACT_UNDRAWN_SECONDS:EXACT_WAIT_SECONDS)-now()));
+            job.timer=setTimeout(()=>{if(live()&&job.exact==='running'){if(early)trail();else exactDone();}},Math.max(0,job.startedAt+1000*timeScale(cfg.timeLimit)*(early?EXACT_UNDRAWN_SECONDS:EXACT_WAIT_SECONDS)-now()));
           };
           const trail=()=>{
             job.exact='trailing';
             const timer=setTimeout(()=>{if(trailing?.id===id&&trailing.exact){trailing=null;disposeExact();scope.postMessage({id,type:'alternative',pending:false});}},
-              Math.max(0,job.startedAt+1000*(Math.min(cfg.timeLimit,EXACT_SECONDS)+EXACT_GRACE_SECONDS)-now()));
+              Math.max(0,job.startedAt+1000*(cfg.timeLimit+EXACT_GRACE_SECONDS)-now()));
             finish(job,job.held.result);
             trailing={id,exact:true,timer};
             scope.postMessage({id,type:'alternative',pending:true});
@@ -205,7 +205,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
             exactCompute.onerror=event=>{event.preventDefault?.();if(trailing?.id===id&&trailing.exact){disposeExact();trailed(null);return;}if(live()&&job.exact==='running')exactDone();};
             exactCompute.onmessageerror=()=>{if(trailing?.id===id&&trailing.exact){disposeExact();trailed(null);return;}if(live()&&job.exact==='running')exactDone();};
             // HiGHS can overrun its time limit at its root: the minute is kept here.
-            job.timer=setTimeout(()=>{if(live()&&job.exact==='running')exactDone();},1000*(Math.min(cfg.timeLimit,EXACT_SECONDS)+EXACT_GRACE_SECONDS));
+            job.timer=setTimeout(()=>{if(live()&&job.exact==='running')exactDone();},1000*(cfg.timeLimit+EXACT_GRACE_SECONDS));
           }
           try{
             compute.postMessage({id,target:prepared,settings:both?{...settings,exactRoute:'fitter'}:settings});

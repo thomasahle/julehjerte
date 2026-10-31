@@ -824,7 +824,8 @@
 					widthMm: advanced.widthMm,
 					minWidthMm: advanced.minWidthMm,
 					matchingSheets: advanced.matchingSheets,
-					method: advanced.method
+					method: advanced.method,
+					seconds: advanced.seconds
 				},
 				onProgress,
 				(other, pending) => {

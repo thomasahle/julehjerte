@@ -12,6 +12,9 @@ import {
 	maskPrepareSettings,
 	maskToArtwork,
 	maskToPixels,
+	MAX_TIME_LIMIT_SECONDS,
+	SEARCH_SECONDS,
+	SEARCH_SECONDS_CHOICES,
 	solveSettings,
 	type ImportSettings
 } from '$lib/inverse/engine';
@@ -146,6 +149,17 @@ describe('the settings a search is run with', () => {
 		expect(run('smooth')).not.toHaveProperty('exactRoute');
 		expect(engineSettings(run('smooth')).exactOutline).toBe(false);
 		expect(defaultAdvanced().method).toBe('both');
+	});
+
+	it('searches as long as Avanceret says, within what the engine accepts', () => {
+		const run = (seconds?: number) =>
+			engineSettings(solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY, ...(seconds ? { seconds } : {}) })).timeLimit;
+		expect(defaultAdvanced().seconds).toBe(SEARCH_SECONDS);
+		expect(run()).toBe(SEARCH_SECONDS);
+		for (const seconds of SEARCH_SECONDS_CHOICES) expect(run(seconds)).toBe(seconds);
+		// Outside the choices: brought into range, never thrown on in the worker.
+		expect(run(10)).toBe(SEARCH_SECONDS);
+		expect(run(900)).toBe(MAX_TIME_LIMIT_SECONDS);
 	});
 
 	it('prefers matching sheets without requiring or adding mask symmetry', () => {

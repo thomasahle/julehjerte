@@ -82,6 +82,14 @@ export const MAX_TIME_LIMIT_SECONDS = 180;
 export const SEARCH_SECONDS = 60;
 
 /**
+ * The search times Avanceret offers. The engine's stages grow in proportion
+ * with the time (core/engine.js timeScale), so a longer search is for the
+ * pictures that finished near the minute, and a shorter one is not offered:
+ * the stages are written for a minute and are not cut down.
+ */
+export const SEARCH_SECONDS_CHOICES = [60, 120, MAX_TIME_LIMIT_SECONDS] as const;
+
+/**
  * Whether the engine is asked to hold the symmetry itself.
  *
  * True since the `paint-engine-symmetry` lane landed on `redesign` (PAINT.md
@@ -184,6 +192,8 @@ export type FindSettings = {
 	matchingSheets?: boolean;
 	/** Which searches run: both side by side (the default), or one alone. */
 	method?: SearchMethod;
+	/** How long the search may take, in seconds; one of SEARCH_SECONDS_CHOICES. */
+	seconds?: number;
 };
 
 /**
@@ -206,6 +216,7 @@ export type AdvancedSettings = {
 	minWidthMm: number;
 	matchingSheets: boolean;
 	method: SearchMethod;
+	seconds: number;
 };
 
 /** The settings in it that are numbers, which are the ones that have bounds. */
@@ -244,7 +255,8 @@ export function defaultAdvanced(): AdvancedSettings {
 		widthMm: DEFAULT_WIDTH_MM,
 		minWidthMm: DEFAULT_MIN_WIDTH_MM,
 		matchingSheets: true,
-		method: 'both'
+		method: 'both',
+		seconds: SEARCH_SECONDS
 	};
 }
 
@@ -602,7 +614,7 @@ export function solveSettings(settings: FindSettings): Record<string, unknown> {
 		width: clampAdvanced('widthMm', settings.widthMm ?? DEFAULT_WIDTH_MM),
 		minWidth: clampAdvanced('minWidthMm', settings.minWidthMm ?? DEFAULT_MIN_WIDTH_MM),
 		cutError: 0.25,
-		timeLimit: SEARCH_SECONDS,
+		timeLimit: Math.min(MAX_TIME_LIMIT_SECONDS, Math.max(SEARCH_SECONDS, settings.seconds ?? SEARCH_SECONDS)),
 		// The exact search lays the cuts on the mask's traced outline and its
 		// template stands whenever the export passes it; the fitter's only when
 		// it finds none (core/engine.js design). The two run side by side in

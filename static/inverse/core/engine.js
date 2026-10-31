@@ -34,6 +34,10 @@ export async function solveTarget(target,raw={},onProgress=()=>{},{onCandidate}=
 /** The most seconds a design with the exact search takes, fitter included, of
  * which the last EXACT_FINISH_SECONDS are the final checks' and export's. */
 export const EXACT_SECONDS=60,EXACT_FINISH_SECONDS=10;
+/** How many minutes' worth of stages a time limit buys: the stages below are
+ * written for the standard minute and grow in proportion with a longer limit
+ * (the visitor's choice, Avanceret), never shrink with a shorter one. */
+export const timeScale=limit=>Math.max(1,limit/EXACT_SECONDS);
 /** In a picture's minute: the exact search on the traced outline until
  * TRACED_SECONDS, then (its template failing) on the outline with tips rounded
  * by TIP_ROUNDING_MM (within TIP_SPOT_MM of where the template comes too close to
@@ -64,14 +68,14 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
   const noExact=report=>Object.assign(new Error('The exact search found no template the export passes.'),{code:'NO_EXACT_TEMPLATE',report:{exactOutline:report}});
   if(route==='exact'&&!exactOn)throw noExact({chosen:'fitter',error:'The exact search cannot keep these settings.'});
   if(!exactOn||route==='fitter'){
-    const limit=exactOn?Math.min(cfg.timeLimit,FITTER_SECONDS):cfg.timeLimit,deadline=performance.now()+1000*(exactOn?Math.min(cfg.timeLimit,EXACT_SECONDS):cfg.timeLimit);
+    const limit=exactOn?Math.min(cfg.timeLimit,FITTER_SECONDS*timeScale(cfg.timeLimit)):cfg.timeLimit,deadline=performance.now()+1000*cfg.timeLimit;
     const solution=await solveTarget(target,{...raw,timeLimit:limit},onProgress,options);
     return finish(solution,settings(solution.automaticSettings||raw),onProgress,{deadline});
   }
-  const seconds=Math.min(cfg.timeLimit,EXACT_SECONDS),start=performance.now(),deadline=start+1000*seconds,searchEnd=deadline-1000*EXACT_FINISH_SECONDS;
+  const seconds=cfg.timeLimit,scale=timeScale(seconds),start=performance.now(),deadline=start+1000*seconds,searchEnd=deadline-1000*EXACT_FINISH_SECONDS;
   const alone=route==='exact',cfgExact=settings({...raw,symmetry:cfg.symmetry});
   const {solution,report}=await exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{
-    tracedEnd:Math.min(searchEnd,start+1000*(alone?ALONE_TRACED_SECONDS:TRACED_SECONDS)),roundedEnd:alone?searchEnd:Math.min(searchEnd,start+1000*ROUNDED_SECONDS)});
+    tracedEnd:Math.min(searchEnd,start+1000*scale*(alone?ALONE_TRACED_SECONDS:TRACED_SECONDS)),roundedEnd:alone?searchEnd:Math.min(searchEnd,start+1000*scale*ROUNDED_SECONDS)});
   if(solution){solution.report={...solution.report,exactOutline:{...report,chosen:'exact'}};return finish(solution,cfgExact,onProgress,{deadline});}
   if(alone)throw noExact(report);
   const fitted=await solveTarget(target,{...raw,timeLimit:Math.max(.1,(searchEnd-performance.now())/1000)},onProgress,options);

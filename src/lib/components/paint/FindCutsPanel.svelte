@@ -17,6 +17,7 @@
 	import {
 		ADVANCED_LIMITS,
 		clampAdvanced,
+		SEARCH_SECONDS_CHOICES,
 		ENGINE_GRACEFUL_STOP,
 		type AdvancedNumber,
 		type AdvancedSettings,
@@ -522,6 +523,17 @@
 					<option value="both">{tr('paintMethodBoth')}</option>
 					<option value="exact">{tr('paintTemplateExact')}</option>
 					<option value="smooth">{tr('paintTemplateSmooth')}</option>
+				</select>
+			</label>
+			<label class="field">
+				<span>{tr('paintSearchTime')}</span>
+				<select
+					value={advanced.seconds}
+					onchange={(e) => onAdvanced({ ...advanced, seconds: Number(e.currentTarget.value) })}
+				>
+					{#each SEARCH_SECONDS_CHOICES as choice (choice)}
+						<option value={choice}>{t('paintSearchMinutes', lang, { n: choice / 60 })}</option>
+					{/each}
 				</select>
 			</label>
 			<label class="field">

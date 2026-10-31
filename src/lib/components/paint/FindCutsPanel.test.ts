@@ -115,6 +115,19 @@ describe('FindCutsPanel', () => {
 			} finally { panel.cleanup(); }
 		});
 	}
+	it('offers a longer search under Avanceret', () => {
+		const changed = vi.fn();
+		const panel = render({ lang: 'en', status: 'idle', showingResult: false, result: null, onAdvanced: changed });
+		try {
+			const select = panel.root.querySelectorAll<HTMLSelectElement>('.advanced select')[1];
+			expect(select.closest('label')?.textContent).toContain('Search time');
+			expect(select.value).toBe('60');
+			expect([...select.options].map((o) => o.textContent)).toEqual(['1 min.', '2 min.', '3 min.']);
+			select.value = '180';
+			select.dispatchEvent(new Event('change', { bubbles: true }));
+			expect(changed).toHaveBeenCalledWith({ ...defaultAdvanced(), seconds: 180 });
+		} finally { panel.cleanup(); }
+	});
 
 	it('names the rows a template held when it could hold only part of the symmetry', () => {
 		const all = { curve: 'sym', lobe: 'sym', lobes: 'sym' } as const;
