@@ -12,6 +12,7 @@ import {exactOutline} from '../../static/inverse/core/exact/snap.js';
 import {readTemplate} from '../../static/inverse/core/exact/template.js';
 import {exactFromTemplate} from '../../static/inverse/core/exact/search.js';
 import {gridWitness} from '../../static/inverse/core/exact/grid.js';
+import {cheapBounds} from '../../static/inverse/core/exact/bounds.js';
 import {prepare, restorePrepared, design} from '../../static/inverse/core/engine.js';
 import {finishExactStopped} from '../../static/inverse/core/stopped.js';
 import {smoothEdges} from '../../static/inverse/core/exact/refine.js';
@@ -129,6 +130,16 @@ test('the exact search redraws that template on the exact outline, passing the e
   assert.ok(found.report.hidden <= 9);
   const check = validate(found.solution, cfg, {finalGeometry: true});
   assert.ok(check.passed, JSON.stringify(check.issues.slice(0, 3)));
+});
+
+test('a ladder rung, starting from no template, reports the outline\'s lower bound', async () => {
+  const n = 32, maps = {size: n, hidden: new Float32Array(n * n).fill(.5), switch: new Float32Array(n * n).fill(.5), dir: [new Float32Array(n * n), new Float32Array(n * n)]};
+  const target = permoTarget(), exact = exactOutline(target, cfg);
+  const found = await exactFromTemplate(target, loadSolutionJSON(permo.template), cfg, {seconds: 8, paperRetries: 0, exact, spacing: .75,
+    witness: {positions: new Map(), labels: new Map(), chords: []}, rank: {maps, k: 100000, short: 0}});
+  const {lb} = cheapBounds(exact.st, exact.outline);
+  assert.ok(lb > 0);
+  assert.equal(found.report.bound, lb);
 });
 
 test('under a requested symmetry the exact search ties the template to its image, still passing', async () => {

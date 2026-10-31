@@ -111,8 +111,10 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
     if (labels.get(`${e},${j - 1}`) !== labels.get(`${e},${j}`)) switches.add(`${e},${j}`);
   const statics = [...visibleNogoods(outline, cand), ...routeNogoods(outline, cand)];
   const soft = new Set(statics.filter(n => holds(n, labels, used, switches)).map(nogoodKey));
-  // The count's lower bound lets the count stage stop once the start's count is proven.
-  const bound = Math.min(cheapBounds(st, outline).lb, used.size);
+  // The count's lower bound lets the count stage stop once the start's count is proven. A ladder rung
+  // (`rank`) starts from no template, so it takes the outline's bound alone: capped by its empty start, it
+  // would be 0, and the rung could neither stop at the bound nor report it.
+  const bound = rank ? cheapBounds(st, outline).lb : Math.min(cheapBounds(st, outline).lb, used.size);
   const built = performance.now(), deadline = t0 + seconds * 1000, attempts = [];
   // Solve; a drawing the paper audit rejects is solved again with the narrow
   // paper around what it doubts forbidden (paper.js), while time is left.
