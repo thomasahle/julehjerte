@@ -28,10 +28,10 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
   // `trailing`: a side-by-side worker still running after the other's template
   // went out, its passing answer to follow as an alternative: the fitter's, or
   // the exact search's ({exact: true}, with the timer ending it).
-  let prepared=null,result=null,compute=null,exactCompute=null,active=null,trailing=null;
+  let prepared=null,result=null,compute=null,exactCompute=null,ladderCompute=null,active=null,trailing=null;
   const end=worker=>{if(worker){worker.onmessage=null;worker.onerror=null;worker.onmessageerror=null;worker.terminate();}};
-  const disposeFitter=()=>{end(compute);compute=null;},disposeExact=()=>{end(exactCompute);exactCompute=null;};
-  const dispose=()=>{disposeFitter();disposeExact();};
+  const disposeFitter=()=>{end(compute);compute=null;},disposeExact=()=>{end(exactCompute);exactCompute=null;},disposeLadder=()=>{end(ladderCompute);ladderCompute=null;};
+  const dispose=()=>{disposeFitter();disposeExact();disposeLadder();};
   // The colour locator in a worker of its own (crop-worker.js): a photograph's
   // crop search runs it beside the paper model, its two longest steps, instead
   // of before it. One at a time: a new search, or a cancel, ends one still
@@ -54,7 +54,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
   const failure=(id,error)=>scope.postMessage({id,type:'error',message:error.message||String(error),code:error.code,report:error.report||null});
   const finish=(job,value,error)=>{
     if(active!==job)return;
-    clearTimeout(job.timer);
+    clearTimeout(job.timer);disposeLadder();
     active=null;result=value??null;
     if(error)failure(job.id,error);else scope.postMessage({id:job.id,type:'result',result});
     job.done();
@@ -130,9 +130,14 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
         if(cfg.exactOutline&&settings.cutModel===true&&prepared.sourceImage?.mask){
           try{cutMaps=await (await import('./neural/cuts.js')).predictCutMaps(prepared.sourceImage,{wait:CUT_MODEL_WAIT_MS});}catch{cutMaps=null;}
         }
-        const exactSettings=cutMaps?{...settings,cutMaps}:settings;
+        // Side by side, the network's ladder runs in a third worker beside
+        // today's exact search, which keeps its whole time: the first exact
+        // template stands, so the ladder costs no time where it finds none.
+        // The exact search alone (Avanceret) runs the ladder before it.
+        const race=both&&cutMaps!==null,exactSettings=cutMaps&&!race?{...settings,cutMaps}:settings;
         compute??=createWorker();
         if(both)exactCompute??=createWorker();
+        if(race)ladderCompute??=createWorker();
         await new Promise(resolve=>{
           const job={id,cfg,startedAt:now(),candidates:new Map(),phase:'searching',done:resolve,exact:both?'running':'none',drawn:false,drawing:null,held:null,timer:null};active=job;
           const live=()=>active===job&&job.phase==='searching';
@@ -217,12 +222,28 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
             };
             exactCompute.onerror=event=>{event.preventDefault?.();if(trailing?.id===id&&trailing.exact){disposeExact();trailed(null);return;}if(live()&&job.exact==='running')exactDone();};
             exactCompute.onmessageerror=()=>{if(trailing?.id===id&&trailing.exact){disposeExact();trailed(null);return;}if(live()&&job.exact==='running')exactDone();};
+            if(race){
+              ladderCompute.onmessage=({data:message})=>{
+                if(message.id!==id||message.type==='progress'||message.type==='candidate')return;
+                if(message.type!=='result'||!live()||job.exact!=='running'){disposeLadder();return;}
+                // The ladder's template first: today's exact search is ended, and
+                // the fitter's answer follows as an alternative, as for an exact one.
+                disposeExact();job.exact='done';
+                const held=job.held;
+                finish(job,message.result);
+                if(held?.result&&passes(held.result))scope.postMessage({id,type:'alternative',result:held.result});
+                else if(!held){trailing={id};scope.postMessage({id,type:'alternative',pending:true});}
+              };
+              ladderCompute.onerror=event=>{event.preventDefault?.();disposeLadder();};
+              ladderCompute.onmessageerror=()=>disposeLadder();
+            }
             // HiGHS can overrun its time limit at its root: the minute is kept here.
             job.timer=setTimeout(()=>{if(live()&&job.exact==='running')exactDone();},1000*(cfg.timeLimit+EXACT_GRACE_SECONDS));
           }
           try{
             compute.postMessage({id,target:prepared,settings:both?{...settings,exactRoute:'fitter'}:exactSettings});
             if(both)exactCompute.postMessage({id,target:prepared,settings:{...exactSettings,exactRoute:'exact'}});
+            if(race)ladderCompute.postMessage({id,target:prepared,settings:{...settings,cutMaps,exactRoute:'exact',ladderOnly:true}});
           }catch(error){dispose();finish(job,null,error);}
         });
       }else if(action==='saved'){

@@ -75,7 +75,7 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
   const seconds=cfg.timeLimit,scale=timeScale(seconds),start=performance.now(),deadline=start+1000*seconds,searchEnd=deadline-1000*EXACT_FINISH_SECONDS;
   const alone=route==='exact',cfgExact=settings({...raw,symmetry:cfg.symmetry});
   const {solution,report}=await exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{
-    tracedEnd:Math.min(searchEnd,start+1000*scale*(alone?ALONE_TRACED_SECONDS:TRACED_SECONDS)),roundedEnd:alone?searchEnd:Math.min(searchEnd,start+1000*scale*ROUNDED_SECONDS),maps:raw.cutMaps??null});
+    tracedEnd:Math.min(searchEnd,start+1000*scale*(alone?ALONE_TRACED_SECONDS:TRACED_SECONDS)),roundedEnd:alone?searchEnd:Math.min(searchEnd,start+1000*scale*ROUNDED_SECONDS),maps:raw.cutMaps??null,ladderOnly:raw.ladderOnly===true});
   if(solution){solution.report={...solution.report,exactOutline:{...report,chosen:'exact'}};return finish(solution,cfgExact,onProgress,{deadline});}
   if(alone)throw noExact(report);
   const fitted=await solveTarget(target,{...raw,timeLimit:Math.max(.1,(searchEnd-performance.now())/1000)},onProgress,options);
@@ -144,7 +144,7 @@ export function maskRoughness(source){
 /** The exact search's template for a picture the export passes, or none:
  * {solution, report}. On the outline traced from the mask until `tracedEnd`,
  * then on it with its tips rounded until `roundedEnd`. */
-async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,roundedEnd,maps=null}){
+async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,roundedEnd,maps=null,ladderOnly=false}){
   // The outline traced from the mask first (tens of milliseconds): where its
   // cut ends cannot pair up the exact search cannot start.
   // A trace whose curves meet where the pixels only nearly touch (a vertex of
@@ -172,7 +172,9 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
   const began=performance.now();
   // The cut-proposal network's maps (raw.cutMaps, made by the worker from the
   // mask: neural/cuts.js) give the traced outline's search its ladder first.
-  let found=await exactSearch(outline,null,cfgExact,{...search(tracedEnd),maps});
+  let found=await exactSearch(outline,null,cfgExact,{...search(tracedEnd),maps,ladderOnly});
+  // The ladder alone (a worker beside today's search, worker-controller.js): its answer, whatever it is.
+  if(ladderOnly)return found.found?{solution:found.found.solution,report:{...found.report,chosen:'exact',ladderOnly:true}}:{solution:null,report:{...found.report,chosen:'fitter',ladderOnly:true}};
   // A template under part of the symmetry (exact/stage.js subgroupsOf): the
   // searches with tips rounded keep to that part.
   if(found.report.subgroup)ties=found.report.subgroup.to;

@@ -139,7 +139,7 @@ const START_SECONDS = 3;
  * of a search's time it takes, and the short candidates (mm) every rung keeps:
  * 42% of the hidden cuts in the gallery's exact templates were under 3 mm, the
  * stubs of tips and crossings the network's field hardly shows. */
-const LADDER = [[10, 2], [30, 2], [100, 3], [300, 4]], LADDER_SHARE = .25, SHORT_MM = 3, LADDER_BUILD = 8;
+const LADDER = [[10, 2], [30, 2], [100, 3], [300, 4]], LADDER_SHARE = .25, SHORT_MM = 3, LADDER_BUILD = 8, LADDER_ALONE = [[1000, 10]];
 
 /** Under ties, the share of the search's time the fine grid from no start
  * gets first, if at least BARE_FLOOR seconds are left (exactSearch). */
@@ -184,10 +184,11 @@ export function subgroupsOf(symmetry) {
  * gallery designs held out of the network's training (2026-10-31) the ladder
  * found the template of today's search, or one as good, on most in a tenth to
  * a third of its time (5star 37.6 s to 3.6, roed-blomst 43.6 to 1.4). */
-async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, multi, onProgress, geometry, refine, maps}) {
-  const until = performance.now() + 1000 * seconds * LADDER_SHARE, reuse = {}, rungs = [];
+async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, multi, onProgress, geometry, refine, maps, alone = false}) {
+  // Alone (a worker beside today's search) it may take all the time, and a wider last rung.
+  const until = performance.now() + 1000 * seconds * (alone ? 1 : LADDER_SHARE), reuse = {}, rungs = [];
   const short = SHORT_MM * SIZE / cfg.width, empty = {positions: new Map(), labels: new Map(), chords: []};
-  for (const [k, rungSeconds] of LADDER) {
+  for (const [k, rungSeconds] of alone ? [...LADDER, ...LADDER_ALONE] : LADDER) {
     const room = Math.min(rungSeconds, (until - performance.now()) / 1000);
     if (room < .5) break;
     const began = performance.now();
@@ -210,7 +211,7 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
   return {found: null, rungs};
 }
 
-export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true, fallback = true, even = false, multi = 'auto', maps = null} = {}) {
+export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true, fallback = true, even = false, multi = 'auto', maps = null, ladderOnly = false} = {}) {
   const seconds = (deadline - performance.now()) / 1000 - reserve;
   const report = {attempted: false, symmetry};
   if (seconds < 1) return {found: null, report: {...report, reason: 'no time left'}};
@@ -234,9 +235,10 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     // symmetricLines).
     const exact = exactOutline(outline, cfg, 'tight', {symmetry: even ? symmetry : []});
     // With the network's maps, its ladder first; today's search after it, in the time left.
-    const ladder = maps ? await networkLadder(outline, template, cfg, exact, {seconds, symmetry, multi, onProgress, geometry, refine, maps}) : null;
+    const ladder = maps ? await networkLadder(outline, template, cfg, exact, {seconds, symmetry, multi, onProgress, geometry, refine, maps, alone: ladderOnly}) : null;
     if (ladder) report.ladder = ladder.rungs;
     if (ladder?.found) found = ladder.found;
+    else if (ladderOnly) return {found: null, report: {...report, error: 'The network\'s ladder found no template.'}};
     else {
       const began = performance.now(), budget = (deadline - began) / 1000 - reserve;
       const start = await exactStart(exact, template, {deadline: began + Math.min(START_SECONDS, budget / 4) * 1000});
