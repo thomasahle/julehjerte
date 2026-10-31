@@ -303,7 +303,12 @@ where it is no harder to cut (as wide a spacing kept, no more narrow strips)
 and cuts better (`harderStored`): the cow on seven strips at 45% from five
 places the paper may tear to none. Every sixth size: the featured motifs 20,
 27, 17 and 23 sizes better on three, five, seven and nine strips, none worse,
-the 30 others unchanged; 0.3 to 0.5 s more at the sizes it tries.
+the 30 others unchanged; 0.3 to 0.5 s more at the sizes it tries. `pairs.mjs`
+judges a candidate so too (where the generator's heart is hard to cut and the
+candidate does not finish clean, through `fromTopology`): 14 pairs more, 225
+recipes (176 of 281 pairs), the featured motifs 10 and 13 sizes better on three
+and five strips, none worse. 105 pairs, 423 of the 3724 motif sizes, still draw
+the generator's heart: 77 with candidates that beat it nowhere, 28 with none.
 
     node scripts/generator/pairs.mjs <motif>...      # every board, up to three recipes a pair
     ADD=1 node scripts/generator/pairs.mjs <motif>... # only for the pairs the page has none for

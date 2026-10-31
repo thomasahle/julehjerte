@@ -38,7 +38,7 @@ const server = await createServer({ root, configFile: `${root}/vite.config.ts`, 
 console.warn = () => {};
 const load = p => server.ssrLoadModule(p);
 try {
-	const { generate, storedHearts, spurless, knownOf } = await load('/src/lib/generator/generate.ts');
+	const { generate, storedHearts, fromTopology, spurless, knownOf } = await load('/src/lib/generator/generate.ts');
 	const { picture } = await load('/src/lib/generator/picture.ts');
 	const { topologyOf, nestingOf } = await load('/src/lib/generator/topologyRecipes.ts');
 	const { transferTopology, outlineFrame } = await load('/src/lib/generator/topologyTransfer.ts');
@@ -144,7 +144,7 @@ try {
 		}
 		const { known, own, hard } = file.owns[p], shown = picture(spurless(req), known);
 		if (shown?.motif === undefined) return;
-		return { strips, id, p, req, known, shown, own: own && !hard ? own : null, fine: fineOf(shown), pair: pairOf(shown), file };
+		return { strips, id, p, req, known, shown, own: own && !hard ? own : null, hard, fine: fineOf(shown), pair: pairOf(shown), file };
 	};
 
 	// A candidate on an outline of a board: itself on its own, else carried there (once an outline).
@@ -157,14 +157,20 @@ try {
 		}
 		return carriedTo.get(key);
 	};
-	// Its measures drawn there, the site's way (none where it does not cut cleanly).
+	// Its measures drawn there, the site's way (none where it does not cut cleanly, unless the
+	// generator's heart is hard to cut there too and the page finishes it so, see `fromTopology`).
+	const owns = new Map(), ownOf = r => { const k = `${r.strips} ${r.id} ${r.p}`; if (!owns.has(k)) { try { owns.set(k, generate(r.req)); } catch { owns.set(k, null); } } return owns.get(k); };
 	const draw = (i, r) => {
 		const recipe = carry(i, r);
 		if (!recipe) return null;
 		const at = r.file.drawn[r.p] ??= {}, h = recipeHash(recipe);
 		if (!(h in at)) {
-			const heart = storedHearts(r.req, [{ ...recipe, steps: [r.p] }], true, 1, r.known)[0];
-			at[h] = heart && !heart.hardToCut ? cutMeasures(heart.design, r.shown.rings) : null;
+			let heart = storedHearts(r.req, [{ ...recipe, steps: [r.p] }], true, 1, r.known)[0];
+			if ((!heart || heart.hardToCut) && r.hard) {
+				const own = ownOf(r);
+				heart = own ? fromTopology({ ...r.req, recipes: [{ ...recipe, steps: [r.p] }] }, own) : undefined;
+			}
+			at[h] = heart && (!heart.hardToCut || r.hard) ? cutMeasures(heart.design, r.shown.rings) : null;
 		}
 		return at[h];
 	};
