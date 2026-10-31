@@ -15,3 +15,13 @@ docs/inverse/datasets/u2netp-balanced-body-results.json.
 
 ONNX Runtime Web 1.19.2 is distributed separately under the MIT license.
 See ../vendor/onnxruntime-1.19.2/LICENSE and ThirdPartyNotices.txt.
+
+Cut-proposal model (cuts-*.onnx, loaded by cuts.js)
+
+A U-Net whose encoder is EfficientNet-B0, initialised from the timm weights
+efficientnet_b0.ra_in1k (ImageNet; Apache 2.0, https://huggingface.co/timm/efficientnet_b0.ra_in1k),
+and whose decoder was trained from scratch on exact templates of the gallery's
+pictures, of the site generator's designs and of generated pictures (warps and
+the square's symmetries). Exported to ONNX opset 17, weights in float16. It
+proposes where hidden cuts may lie; the exact search and its checks decide the
+template. Training records: docs/inverse/HYBRID-NN-SOLVER.md.

@@ -3,6 +3,7 @@
  * tokens with a straight route the rules allow, the template's own routes, and
  * pruning to each token's nearest partners. Tokens are ['s', e, j, side]. */
 import {act} from './symmetry.js';
+import {SIZE} from './structure.js';
 
 export const tokenKey = t => `${t[1]}:${t[2]}:${t[3]}`;
 
@@ -17,6 +18,44 @@ export function faceTokens(st, positions) {
     }
     return cycle;
   }));
+}
+
+const routeLength = route => route.reduce((sum, p, i) => i ? sum + Math.hypot(p[0] - route[i - 1][0], p[1] - route[i - 1][1]) : sum, 0);
+
+/** Each candidate's score from a cut-proposal network's maps ({size, hidden,
+ * switch, dir: [cos 2a, sin 2a], ...}, size x size, rows from the top of the
+ * square): the hidden-cut probability along its route, counted fully where the
+ * predicted direction agrees with the route's and half where it does not, as a
+ * mean, plus half the smaller switch probability near its two ends (within two
+ * pixels), as OpenPose scores limbs. A Map key -> score. */
+export function rankScores(cand, maps) {
+  // The reference frame's y runs up (target.js toReference), the maps' rows down.
+  const n = maps.size, row = y => Math.min(n - 1, Math.max(0, Math.floor((SIZE - y) * n / SIZE))), cell = (x, y) => row(y) * n + Math.min(n - 1, Math.max(0, Math.floor(x * n / SIZE)));
+  const near = ([x, y]) => {
+    let best = 0;
+    const x0 = Math.floor(x * n / SIZE), y0 = Math.floor((SIZE - y) * n / SIZE);
+    for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) {
+      const u = x0 + dx, v = y0 + dy;
+      if (u >= 0 && v >= 0 && u < n && v < n) best = Math.max(best, maps.switch[v * n + u]);
+    }
+    return best;
+  };
+  const out = new Map();
+  for (const [key, route] of cand.route) {
+    if (!cand.cost.has(key)) continue;
+    let sum = 0, count = 0;
+    for (let i = 1; i < route.length; i++) {
+      const [x0, y0] = route[i - 1], [x1, y1] = route[i], steps = Math.max(1, Math.ceil(Math.hypot(x1 - x0, y1 - y0) * n / SIZE * 2)), a = 2 * Math.atan2(y0 - y1, x1 - x0);
+      for (let k = 0; k < steps; k++) {
+        const j = cell(x0 + (x1 - x0) * (k + .5) / steps, y0 + (y1 - y0) * (k + .5) / steps);
+        sum += maps.hidden[j] * (.5 + .5 * Math.max(0, Math.cos(a) * maps.dir[0][j] + Math.sin(a) * maps.dir[1][j]));
+        count++;
+      }
+    }
+    const [, a, b] = cand.pair.get(key);
+    out.set(key, (count ? sum / count : 0) + .5 * Math.min(near(cand.point(a)), near(cand.point(b))));
+  }
+  return out;
 }
 
 export class Candidates {
@@ -145,8 +184,11 @@ export class Candidates {
    * these under the `ties`. The bands keep a long cut across a face one edge
    * bounds: Uret's inner circle, whose four hidden segments run a quarter of
    * the way round it, past the nearest partners (the designer's template, read
-   * on the traced outline, then passes; without them its segments cross). */
-  prune(neighbours = 8, required = [], ties = [], {reach = 1} = {}) {
+   * on the traced outline, then passes; without them its segments cross).
+   * With `rank` ({maps, k, short}: a cut-proposal network's maps, rankScores)
+   * the `k` best ranked and every one up to `short` units long instead. */
+  prune(neighbours = 8, required = [], ties = [], {reach = 1, rank = null} = {}) {
+    if (rank) return this.keep(this.ranked(rank), required, ties);
     const byToken = new Map(), push = (t, item) => { const k = tokenKey(t); if (!byToken.has(k)) byToken.set(k, []); byToken.get(k).push(item); };
     for (const [key, c] of this.cost) {
       const [, a, b] = this.pair.get(key);
@@ -170,6 +212,21 @@ export class Candidates {
       }
       for (const [, key] of [...best.values(), ...far.values()]) chosen.add(key);
     }
+    this.keep(chosen, required, ties);
+  }
+
+  /** The `k` candidates the maps rank best (rankScores), and every one up to
+   * `short` units long: the stubs of crossings and tips, which the hidden-cut
+   * field hardly shows. */
+  ranked({maps, k, short = 0}) {
+    const scores = rankScores(this, maps), chosen = new Set([...scores].sort((x, y) => y[1] - x[1]).slice(0, k).map(([key]) => key));
+    if (short > 0) for (const [key, route] of this.route) if (routeLength(route) <= short) chosen.add(key);
+    return chosen;
+  }
+
+  /** Only the `chosen` candidates kept, with the `required` token pairs and the
+   * images of all of them under the `ties`. */
+  keep(chosen, required = [], ties = []) {
     const wanted = new Set(required.map(([a, b]) => [tokenKey(a), tokenKey(b)].sort().join('|')));
     for (const key of this.cost.keys()) {
       const [, a, b] = this.pair.get(key);

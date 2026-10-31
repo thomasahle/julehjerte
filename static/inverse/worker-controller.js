@@ -15,6 +15,8 @@ import {refineHeartCrop} from './core/crop.js';
  * the juleflet pictures (91) and the scraped photographs (14), which then
  * took 22 s at the median instead of 30. */
 const EXACT_GRACE_SECONDS=5,EXACT_WAIT_SECONDS=40,EXACT_UNDRAWN_SECONDS=20;
+/** The longest a search waits for the cut-proposal network's first load. */
+const CUT_MODEL_WAIT_MS=1500;
 
 /** One prepared artwork and one public request at a time. The private fitting
  * worker can be terminated without discarding the artwork or the result queue.
@@ -106,6 +108,8 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
       }else if(action==='prepare'){
         prepared=null;
         const value=prepare(input,settings,progress);prepared=value.target;
+        // A painted picture (Mal) is solved next: the cut model loads meanwhile.
+        if(input.type==='mask'&&settings.cutModel===true)import('./neural/cuts.js').then(module=>module.predictCutMaps.warm(),()=>{});
         scope.postMessage({id,type:'prepared',preview:value.preview});
       }else if(action==='solve'){
         if(!prepared)throw new Error('Prepare and inspect the artwork first.');
@@ -118,6 +122,15 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
         // search draws a template keeping every rule, then the exact search's,
         // and the fitter's again if it gives up.
         const both=settings.exactParallel===true&&cfg.exactOutline;
+        // The cut-proposal network's maps for the exact search's ladder
+        // (neural/cuts.js; Mal asks for it with `cutModel`), when its model is
+        // in within CUT_MODEL_WAIT_MS: a search never waits longer for it, and
+        // without it runs as before.
+        let cutMaps=null;
+        if(cfg.exactOutline&&settings.cutModel===true&&prepared.sourceImage?.mask){
+          try{cutMaps=await (await import('./neural/cuts.js')).predictCutMaps(prepared.sourceImage,{wait:CUT_MODEL_WAIT_MS});}catch{cutMaps=null;}
+        }
+        const exactSettings=cutMaps?{...settings,cutMaps}:settings;
         compute??=createWorker();
         if(both)exactCompute??=createWorker();
         await new Promise(resolve=>{
@@ -208,8 +221,8 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
             job.timer=setTimeout(()=>{if(live()&&job.exact==='running')exactDone();},1000*(cfg.timeLimit+EXACT_GRACE_SECONDS));
           }
           try{
-            compute.postMessage({id,target:prepared,settings:both?{...settings,exactRoute:'fitter'}:settings});
-            if(both)exactCompute.postMessage({id,target:prepared,settings:{...settings,exactRoute:'exact'}});
+            compute.postMessage({id,target:prepared,settings:both?{...settings,exactRoute:'fitter'}:exactSettings});
+            if(both)exactCompute.postMessage({id,target:prepared,settings:{...exactSettings,exactRoute:'exact'}});
           }catch(error){dispose();finish(job,null,error);}
         });
       }else if(action==='saved'){

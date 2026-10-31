@@ -30,7 +30,7 @@ function holds(nogood, labels, used, switches) {
 }
 
 /** The exact template nearest the given one: {solution, report} or {error}. */
-export async function exactFromTemplate(target, template, cfg, {seconds = 20, neighbours = 8, spacing = .75, paperRetries = 2, multi = 'auto', exact = exactOutline(target, cfg), symmetry = [], sheets = true, witness: given = null, onProgress = () => {}, geometry = false, refine = false, refineSeconds = 2} = {}) {
+export async function exactFromTemplate(target, template, cfg, {seconds = 20, neighbours = 8, spacing = .75, paperRetries = 2, multi = 'auto', exact = exactOutline(target, cfg), symmetry = [], sheets = true, witness: given = null, onProgress = () => {}, geometry = false, refine = false, refineSeconds = 2, rank = null, reuse = null} = {}) {
   // The start: `witness` (exactStart's, start.js), or the template read here.
   const t0 = performance.now(), {st, outline, routes} = exact, witness = given || await readTemplate(template, outline);
   if (witness.error) return {error: witness.error};
@@ -52,7 +52,15 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
     return best + 1;
   };
   const move = t => ['s', t[1], indexOf(t[1], witness.positions.get(t[1])[t[2] - 1]), t[3]];
-  const cand = new Candidates(st, outline, routes, positions, {deadline: t0 + seconds * 400});
+  // `reuse` ({}): the candidates before pruning built once for every search
+  // given the same object (the network's ladder: the same grid each rung).
+  const copy = c => Object.assign(Object.create(Object.getPrototypeOf(c)), c, {cost: new Map(c.cost), route: new Map(c.route), kind: new Map(c.kind), pair: new Map(c.pair)});
+  let cand;
+  if (reuse?.cand && reuse.exact === exact && reuse.spacing === spacing) cand = copy(reuse.cand);
+  else {
+    cand = new Candidates(st, outline, routes, positions, {deadline: t0 + seconds * 400});
+    if (reuse) Object.assign(reuse, {cand: copy(cand), exact, spacing});
+  }
   // Each route from its tokens' grid points: under symmetry the grid holds a
   // switch's image, a little off where the template had it.
   const pairs = witness.chords.map(c => {
@@ -70,7 +78,7 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
     for (let i = 0; i < fixed.length; i++) for (let j = i + 1; j < fixed.length; j++)
       if (cand.faceOf.get(tokenKey(fixed[i])) === cand.faceOf.get(tokenKey(fixed[j]))) along.push([fixed[i], fixed[j]]);
   }
-  cand.prune(neighbours, [...pairs.map(c => [c.a, c.b]), ...along], ties);
+  cand.prune(neighbours, [...pairs.map(c => [c.a, c.b]), ...along], ties, {rank});
   // Segments of the start without a candidate: uncuttable, at a penalty, drawn
   // as the template drew them; under ties, their images too.
   const fallback = new Map(), used = new Set(), length = route => route.reduce((s, p, i) => i ? s + Math.hypot(p[0] - route[i - 1][0], p[1] - route[i - 1][1]) : 0, 0);

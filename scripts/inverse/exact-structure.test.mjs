@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import {buildStructure, describe} from '../../static/inverse/core/exact/structure.js';
 import {Outline, corners, rules} from '../../static/inverse/core/exact/outline.js';
 import {cumlen, project} from '../../static/inverse/core/exact/polyline.js';
-import {Candidates, tokenKey} from '../../static/inverse/core/exact/candidates.js';
+import {Candidates, rankScores, tokenKey} from '../../static/inverse/core/exact/candidates.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {loadSVG} from '../../static/inverse/core/input.js';
 import {exactPositions} from '../../static/inverse/core/exact/positions.js';
@@ -284,4 +284,17 @@ test('the CDCL solver agrees with brute force on random clauses and counts, incr
   sat.addClause([-out[2]]);
   assert.equal(sat.solve({assumptions: [xs[0], xs[1], xs[2]]}), false);
   assert.equal(sat.solve({assumptions: [xs[0], xs[1]]}), true);
+});
+
+test('the network\'s ranking reads its maps the right way up (the reference frame\'s y runs up, the maps\' rows down)', () => {
+  // Two candidate routes, one along the reference frame's y = 9 (near the top of the square) and one along
+  // y = 3; maps whose hidden-cut field lies along a row a quarter of the way down, where y = 9 is.
+  const n = 128, hidden = new Float32Array(n * n), dir = [new Float32Array(n * n).fill(1), new Float32Array(n * n)];
+  for (let x = 0; x < n; x++) hidden[Math.floor(n / 4) * n + x] = 1;
+  const cand = {route: new Map([['top', [[2, 9], [10, 9]]], ['bottom', [[2, 3], [10, 3]]]]), cost: new Map([['top', 1], ['bottom', 1]]),
+    pair: new Map([['top', [0, ['s', 0, 1, 'L'], ['s', 0, 2, 'L']]], ['bottom', [0, ['s', 0, 3, 'L'], ['s', 0, 4, 'L']]]]),
+    point: t => t[2] < 3 ? [2, t[2] === 1 ? 9 : 9] : [2, 3]};
+  const scores = rankScores(cand, {size: n, hidden, switch: new Float32Array(n * n), dir});
+  assert.ok(scores.get('top') > .9, `top ${scores.get('top')}`);
+  assert.equal(scores.get('bottom'), 0);
 });

@@ -481,6 +481,9 @@ export function maskPrepareSettings(colors: HeartColors): Record<string, unknown
 		mode: 'swatches',
 		swatches: pair,
 		invert: false,
+		// The cut-proposal network (static/inverse/neural/cuts.js) loads while the
+		// picture is prepared, for the exact search's ladder (solveSettings).
+		cutModel: true,
 		// The mask is the visitor's drawing, not a photograph: a stray cell is
 		// something they painted, and cleaning it away would be editing it.
 		removeSpecks: 0,
@@ -624,6 +627,9 @@ export function solveSettings(settings: FindSettings): Record<string, unknown> {
 		// 'exact'), and the fitter runs as it did before the exact search.
 		exactOutline: method !== 'smooth',
 		exactParallel: method === 'both',
+		// The cut-proposal network's ladder before the exact search
+		// (worker-controller.js; neural/cuts.js).
+		cutModel: method !== 'smooth',
 		...(method === 'exact' ? { exactRoute: 'exact' } : {}),
 		// No synthetic cutting-error trials: the page never shows them, and on an
 		// exact template's many short curves twelve took up to 17 s of the minute.

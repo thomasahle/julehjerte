@@ -135,6 +135,11 @@ function maskError(source, woven) {
 export const exportable = (a, cfg) => Boolean(a?.passes && a.features && a.maskError <= cfg.maxImageError);
 
 const START_SECONDS = 3;
+/** The network's ladder (networkLadder): its rungs as [K, seconds], the most
+ * of a search's time it takes, and the short candidates (mm) every rung keeps:
+ * 42% of the hidden cuts in the gallery's exact templates were under 3 mm, the
+ * stubs of tips and crossings the network's field hardly shows. */
+const LADDER = [[10, 2], [30, 2], [100, 3], [300, 4]], LADDER_SHARE = .25, SHORT_MM = 3;
 
 /** Under ties, the share of the search's time the fine grid from no start
  * gets first, if at least BARE_FLOOR seconds are left (exactSearch). */
@@ -169,7 +174,32 @@ export function subgroupsOf(symmetry) {
 /** The exact search on the traced `outline` from the fitter's `template`
  * within `deadline`, under the `symmetry` ties: {found: {solution,
  * assessment} or null, report}. */
-export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true, fallback = true, even = false, multi = 'auto'} = {}) {
+/** The cut-proposal network's ladder: the exact model from no start on the
+ * fine grid, its hidden segments only the K candidates the network's `maps`
+ * rank best (candidates.js rankScores) and every one up to SHORT_MM, K
+ * growing (LADDER: K and the rung's seconds), the candidates built once; the
+ * first template the export takes, within LADDER_SHARE of `seconds` at most,
+ * stands. A rung without one costs little: a model without the right
+ * candidates has no solution, which HiGHS finds in a second or two. On 21
+ * gallery designs held out of the network's training (2026-10-31) the ladder
+ * found the template of today's search, or one as good, on most in a tenth to
+ * a third of its time (5star 37.6 s to 3.6, roed-blomst 43.6 to 1.4). */
+async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, multi, onProgress, geometry, refine, maps}) {
+  const until = performance.now() + 1000 * seconds * LADDER_SHARE, reuse = {}, rungs = [];
+  const short = SHORT_MM * SIZE / cfg.width, empty = {positions: new Map(), labels: new Map(), chords: []};
+  for (const [k, rungSeconds] of LADDER) {
+    const room = Math.min(rungSeconds, (until - performance.now()) / 1000);
+    if (room < .5) break;
+    const began = performance.now();
+    const result = await exactFromTemplate(outline, template, cfg, {multi, seconds: room, symmetry, exact, witness: empty, onProgress, geometry, refine, spacing: .75, neighbours: 8, rank: {maps, k, short}, reuse});
+    const ok = !result.error && !(result.report.penalty > 1e-6) && [result.solution, result.refined].some(drawn => { try { return drawn && exportable(assess(drawn, cfg), cfg); } catch { return false; } });
+    rungs.push({k, seconds: +((performance.now() - began) / 1000).toFixed(2), found: ok, hidden: result.report?.hidden});
+    if (ok) return {found: {...result, report: {...result.report, ladder: k}}, rungs};
+  }
+  return {found: null, rungs};
+}
+
+export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true, fallback = true, even = false, multi = 'auto', maps = null} = {}) {
   const seconds = (deadline - performance.now()) / 1000 - reserve;
   const report = {attempted: false, symmetry};
   if (seconds < 1) return {found: null, report: {...report, reason: 'no time left'}};
@@ -191,52 +221,59 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     // with 9, in half the time (10.8 s for 21 at the median).
     // With `even`, on the outline made symmetric under the ties (target.js
     // symmetricLines).
-    const exact = exactOutline(outline, cfg, 'tight', {symmetry: even ? symmetry : []}), began = performance.now();
-    const start = await exactStart(exact, template, {deadline: began + Math.min(START_SECONDS, seconds / 4) * 1000});
-    report.start = start.how ?? start.error;
-    // No start found in time: HiGHS finds the papers itself from an empty one,
-    // on the coarser grid (amy-flowering, david4, where the search for a
-    // start runs out of time even in 30 s).
-    const empty = {positions: new Map(), labels: new Map(), chords: []}, witness = start.witness ?? empty;
-    if (start.error) report.start = `none (${start.error})`;
-    const left = () => seconds - (performance.now() - began) / 1000, coarse = start.how !== 'template' ? {spacing: 3, neighbours: 2} : {};
-    // Under ties, first the fine grid from no start, for a share of the time:
-    // a start's switches each bring their images as positions, and one not the
-    // template's spreads them where no template has them (Uret's juleflet
-    // picture: 74k rows, crossing cuts after 30 s; the fine grid from none:
-    // 45k, a template in 6 s). Taken when the export would take it. On the 130
-    // juleflet pictures, 87 templates the export takes instead of 84.
-    let bare = null;
-    if (symmetry.length && start.how !== 'template' && left() >= BARE_FLOOR) {
-      bare = await exactFromTemplate(outline, template, cfg, {multi, seconds: left() * BARE_SHARE, symmetry, exact, witness: empty, onProgress, geometry, refine, spacing: .75, neighbours: 4});
-      report.bare = bare.error ?? bare.report.penalty;
-    }
-    const bareFound = bare && !bare.error && !(bare.report.penalty > 1e-6);
-    if (bareFound && [bare.solution, bare.refined].some(drawn => { try { return drawn && exportable(assess(drawn, cfg), cfg); } catch { return false; } })) {
-      found = {...bare, report: {...bare.report, bare: true}};
-      // With more hidden segments than the lower bound, the coarse grid's too,
-      // in the time left, the better kept (ramme: the fine grid proves 4
-      // hidden its best, where the coarse has the designer's none).
-      if (bare.report.hidden > (bare.report.bound ?? 0) && left() >= COARSE_AFTER_BARE) {
-        const second = await exactFromTemplate(outline, template, cfg, {multi, seconds: left(), symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
-        const rank = result => { try { return assess(result.solution, cfg).rank; } catch { return null; } };
-        if (!second.error && !(second.report.penalty > 1e-6)) {
-          const [a, b] = [rank(second), rank(found)];
-          if (a && b && (a.find((v, k) => v !== b[k]) !== undefined ? a[a.findIndex((v, k) => v !== b[k])] < b[a.findIndex((v, k) => v !== b[k])] : false)) found = {...second, report: {...second.report, bareThenCoarse: true}};
-        }
+    const exact = exactOutline(outline, cfg, 'tight', {symmetry: even ? symmetry : []});
+    // With the network's maps, its ladder first; today's search after it, in the time left.
+    const ladder = maps ? await networkLadder(outline, template, cfg, exact, {seconds, symmetry, multi, onProgress, geometry, refine, maps}) : null;
+    if (ladder) report.ladder = ladder.rungs;
+    if (ladder?.found) found = ladder.found;
+    else {
+      const began = performance.now(), budget = (deadline - began) / 1000 - reserve;
+      const start = await exactStart(exact, template, {deadline: began + Math.min(START_SECONDS, budget / 4) * 1000});
+      report.start = start.how ?? start.error;
+      // No start found in time: HiGHS finds the papers itself from an empty one,
+      // on the coarser grid (amy-flowering, david4, where the search for a
+      // start runs out of time even in 30 s).
+      const empty = {positions: new Map(), labels: new Map(), chords: []}, witness = start.witness ?? empty;
+      if (start.error) report.start = `none (${start.error})`;
+      const left = () => budget - (performance.now() - began) / 1000, coarse = start.how !== 'template' ? {spacing: 3, neighbours: 2} : {};
+      // Under ties, first the fine grid from no start, for a share of the time:
+      // a start's switches each bring their images as positions, and one not the
+      // template's spreads them where no template has them (Uret's juleflet
+      // picture: 74k rows, crossing cuts after 30 s; the fine grid from none:
+      // 45k, a template in 6 s). Taken when the export would take it. On the 130
+      // juleflet pictures, 87 templates the export takes instead of 84.
+      let bare = null;
+      if (symmetry.length && start.how !== 'template' && left() >= BARE_FLOOR) {
+        bare = await exactFromTemplate(outline, template, cfg, {multi, seconds: left() * BARE_SHARE, symmetry, exact, witness: empty, onProgress, geometry, refine, spacing: .75, neighbours: 4});
+        report.bare = bare.error ?? bare.report.penalty;
       }
-    } else {
-      found = await exactFromTemplate(outline, template, cfg, {multi, seconds: left(), symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
-      // The bare one where it breaks fewer of the model's rules.
-      if (bare && !bare.error && (found.error || bare.report.penalty < found.report.penalty)) found = {...bare, report: {...bare.report, bare: true}};
-    }
-    // With two partners a position may have too few hidden segments for any
-    // template under symmetric ties (starcircle's transpose, found to have none
-    // in a second): then four, 1.5 units apart, in the time left.
-    const rest = left();
-    if (found.error === NO_TEMPLATE && start.how !== 'template' && rest >= 4) {
-      const finer = await exactFromTemplate(outline, template, cfg, {multi, seconds: rest, symmetry, exact, witness, onProgress, geometry, refine, spacing: 1.5, neighbours: 4});
-      found = finer.error ? found : {...finer, report: {...finer.report, finer: true}};
+      const bareFound = bare && !bare.error && !(bare.report.penalty > 1e-6);
+      if (bareFound && [bare.solution, bare.refined].some(drawn => { try { return drawn && exportable(assess(drawn, cfg), cfg); } catch { return false; } })) {
+        found = {...bare, report: {...bare.report, bare: true}};
+        // With more hidden segments than the lower bound, the coarse grid's too,
+        // in the time left, the better kept (ramme: the fine grid proves 4
+        // hidden its best, where the coarse has the designer's none).
+        if (bare.report.hidden > (bare.report.bound ?? 0) && left() >= COARSE_AFTER_BARE) {
+          const second = await exactFromTemplate(outline, template, cfg, {multi, seconds: left(), symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
+          const rank = result => { try { return assess(result.solution, cfg).rank; } catch { return null; } };
+          if (!second.error && !(second.report.penalty > 1e-6)) {
+            const [a, b] = [rank(second), rank(found)];
+            if (a && b && (a.find((v, k) => v !== b[k]) !== undefined ? a[a.findIndex((v, k) => v !== b[k])] < b[a.findIndex((v, k) => v !== b[k])] : false)) found = {...second, report: {...second.report, bareThenCoarse: true}};
+          }
+        }
+      } else {
+        found = await exactFromTemplate(outline, template, cfg, {multi, seconds: left(), symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
+        // The bare one where it breaks fewer of the model's rules.
+        if (bare && !bare.error && (found.error || bare.report.penalty < found.report.penalty)) found = {...bare, report: {...bare.report, bare: true}};
+      }
+      // With two partners a position may have too few hidden segments for any
+      // template under symmetric ties (starcircle's transpose, found to have none
+      // in a second): then four, 1.5 units apart, in the time left.
+      const rest = left();
+      if (found.error === NO_TEMPLATE && start.how !== 'template' && rest >= 4) {
+        const finer = await exactFromTemplate(outline, template, cfg, {multi, seconds: rest, symmetry, exact, witness, onProgress, geometry, refine, spacing: 1.5, neighbours: 4});
+        found = finer.error ? found : {...finer, report: {...finer.report, finer: true}};
+      }
     }
   } catch (error) {
     return {found: null, report: {...report, error: String(error.message || error)}};
