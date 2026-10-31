@@ -139,7 +139,7 @@ const START_SECONDS = 3;
  * of a search's time it takes, and the short candidates (mm) every rung keeps:
  * 42% of the hidden cuts in the gallery's exact templates were under 3 mm, the
  * stubs of tips and crossings the network's field hardly shows. */
-const LADDER = [[10, 2], [30, 2], [100, 3], [300, 4]], LADDER_SHARE = .25, SHORT_MM = 3, LADDER_BUILD = 8, LADDER_ALONE = [[1000, 10]];
+const LADDER = [[10, 2], [30, 2], [100, 3], [300, 4]], LADDER_SHARE = .25, SHORT_MM = 3, LADDER_BUILD = 8, LADDER_ALONE = [[1000, 10]], LADDER_SAMPLES = 2, LADDER_NOISE = .15;
 
 /** Under ties, the share of the search's time the fine grid from no start
  * gets first, if at least BARE_FLOOR seconds are left (exactSearch). */
@@ -188,7 +188,12 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
   // Alone (a worker beside today's search) it may take all the time, and a wider last rung.
   const until = performance.now() + 1000 * seconds * (alone ? 1 : LADDER_SHARE), reuse = {}, rungs = [];
   const short = SHORT_MM * SIZE / cfg.width, empty = {positions: new Map(), labels: new Map(), chords: []};
-  for (const [k, rungSeconds] of alone ? [...LADDER, ...LADDER_ALONE] : LADDER) {
+  // Alone, each rung also tries LADDER_SAMPLES sampled rankings of the same maps after the plain one: on the
+  // hard pictures (2026-11-01) samples found khatam at K100 in 18 s where the plain ranking needed the
+  // second outline and 36 s, and venus at K100 where it needed K300.
+  const rungList = [];
+  for (const [k, rungSeconds] of alone ? [...LADDER, ...LADDER_ALONE] : LADDER) for (let seed = 0; seed <= (alone ? LADDER_SAMPLES : 0); seed++) rungList.push([k, rungSeconds, seed]);
+  for (const [k, rungSeconds, seed] of rungList) {
     const room = Math.min(rungSeconds, (until - performance.now()) / 1000);
     if (room < .5) break;
     const began = performance.now();
@@ -197,7 +202,7 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
     // positions take more than a rung's share).
     let result;
     try {
-      result = await exactFromTemplate(outline, template, cfg, {multi, seconds: room, symmetry, exact, witness: empty, onProgress, geometry, refine, spacing: .75, neighbours: 8, rank: {maps, k, short}, reuse,
+      result = await exactFromTemplate(outline, template, cfg, {multi, seconds: room, symmetry, exact, witness: empty, onProgress, geometry, refine, spacing: .75, neighbours: 8, rank: {maps, k, short, seed, noise: LADDER_NOISE}, reuse,
         buildSeconds: reuse.cand ? null : Math.max(room * .4, Math.min(LADDER_BUILD, (until - performance.now()) / 1000))});
     } catch (error) {
       // A rung that fails ends the ladder, never the search: today's runs after it.
@@ -205,7 +210,7 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
       break;
     }
     const ok = !result.error && !(result.report.penalty > 1e-6) && [result.solution, result.refined].some(drawn => { try { return drawn && exportable(assess(drawn, cfg), cfg); } catch { return false; } });
-    rungs.push({k, seconds: +((performance.now() - began) / 1000).toFixed(2), found: ok, hidden: result.report?.hidden});
+    rungs.push({k, seed, seconds: +((performance.now() - began) / 1000).toFixed(2), found: ok, hidden: result.report?.hidden});
     if (ok) return {found: {...result, report: {...result.report, ladder: k}}, rungs};
   }
   return {found: null, rungs};
