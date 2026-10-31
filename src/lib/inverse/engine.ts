@@ -194,6 +194,8 @@ export type FindSettings = {
 	method?: SearchMethod;
 	/** How long the search may take, in seconds; one of SEARCH_SECONDS_CHOICES. */
 	seconds?: number;
+	/** The cut-proposal network's ladder beside the exact search (Avanceret; static/inverse/neural/cuts.js). */
+	network?: boolean;
 };
 
 /**
@@ -217,6 +219,7 @@ export type AdvancedSettings = {
 	matchingSheets: boolean;
 	method: SearchMethod;
 	seconds: number;
+	network: boolean;
 };
 
 /** The settings in it that are numbers, which are the ones that have bounds. */
@@ -256,7 +259,8 @@ export function defaultAdvanced(): AdvancedSettings {
 		minWidthMm: DEFAULT_MIN_WIDTH_MM,
 		matchingSheets: true,
 		method: 'both',
-		seconds: SEARCH_SECONDS
+		seconds: SEARCH_SECONDS,
+		network: false
 	};
 }
 
@@ -469,7 +473,7 @@ export function maskToPixels(mask: Mask, colors: HeartColors): PixelsInput {
  * Exported for the same reason as `maskToPixels`: the test proves the round trip
  * on the settings the page really sends, not on a copy of them.
  */
-export function maskPrepareSettings(colors: HeartColors): Record<string, unknown> {
+export function maskPrepareSettings(colors: HeartColors, { network = false }: { network?: boolean } = {}): Record<string, unknown> {
 	const pair = paperPair(colors);
 	return {
 		...AUTOMATIC_PRESET,
@@ -481,9 +485,9 @@ export function maskPrepareSettings(colors: HeartColors): Record<string, unknown
 		mode: 'swatches',
 		swatches: pair,
 		invert: false,
-		// The cut-proposal network (static/inverse/neural/cuts.js) loads while the
-		// picture is prepared, for the exact search's ladder (solveSettings).
-		cutModel: true,
+		// The cut-proposal network (static/inverse/neural/cuts.js), when asked for
+		// (Avanceret), loads while the picture is prepared, for the exact search's ladder.
+		cutModel: network,
 		// The mask is the visitor's drawing, not a photograph: a stray cell is
 		// something they painted, and cleaning it away would be editing it.
 		removeSpecks: 0,
@@ -508,14 +512,15 @@ export function prepareMask(
 	mask: Mask,
 	colors: HeartColors,
 	onStage: StageListener = () => {},
-	frame?: Frame
+	frame?: Frame,
+	network = false
 ): Promise<PreparedArtwork> {
 	const input = maskToArtwork(mask, frame);
 	return queue(() =>
 		engine().request<PreparedArtwork>(
 			'prepare',
 			input,
-			maskPrepareSettings(colors),
+			maskPrepareSettings(colors, { network }),
 			onStage
 		)
 	);
@@ -627,9 +632,9 @@ export function solveSettings(settings: FindSettings): Record<string, unknown> {
 		// 'exact'), and the fitter runs as it did before the exact search.
 		exactOutline: method !== 'smooth',
 		exactParallel: method === 'both',
-		// The cut-proposal network's ladder before the exact search
-		// (worker-controller.js; neural/cuts.js).
-		cutModel: method !== 'smooth',
+		// The cut-proposal network's ladder beside the exact search, when asked for
+		// (Avanceret; worker-controller.js, neural/cuts.js): 9.5 MB the first time.
+		cutModel: settings.network === true && method !== 'smooth',
 		...(method === 'exact' ? { exactRoute: 'exact' } : {}),
 		// No synthetic cutting-error trials: the page never shows them, and on an
 		// exact template's many short curves twelve took up to 17 s of the minute.

@@ -571,6 +571,16 @@
 				<span>{tr('paintMatchingSheets')}</span>
 			</label>
 			<p id="matching-sheets-hint" class="note">{tr('paintMatchingSheetsHint')}</p>
+			<label class="checkbox">
+				<input
+					type="checkbox"
+					checked={advanced.network}
+					aria-describedby="network-hint"
+					onchange={(e) => onAdvanced({ ...advanced, network: e.currentTarget.checked })}
+				/>
+				<span>{tr('paintNetwork')}</span>
+			</label>
+			<p id="network-hint" class="note">{tr('paintNetworkHint')}</p>
 			<div class="advanced-footer">
 				<button type="button" class="link" onclick={onResetAdvanced}>{tr('paintReset')}</button>
 				<!-- The engine is somebody else's work; its licences travel with it.

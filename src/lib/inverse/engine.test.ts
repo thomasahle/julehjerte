@@ -151,6 +151,17 @@ describe('the settings a search is run with', () => {
 		expect(defaultAdvanced().method).toBe('both');
 	});
 
+	it('asks for the cut-proposal network only when Avanceret does, and never for smoother cuts alone', () => {
+		const run = (network?: boolean, method?: 'both' | 'exact' | 'smooth') =>
+			solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY, ...(network === undefined ? {} : { network }), ...(method ? { method } : {}) }).cutModel;
+		expect(defaultAdvanced().network).toBe(false);
+		expect(run()).toBe(false);
+		expect(run(true)).toBe(true);
+		expect(run(true, 'exact')).toBe(true);
+		expect(run(true, 'smooth')).toBe(false);
+		expect(maskPrepareSettings(COLORS).cutModel).toBe(false);
+		expect(maskPrepareSettings(COLORS, { network: true }).cutModel).toBe(true);
+	});
 	it('searches as long as Avanceret says, within what the engine accepts', () => {
 		const run = (seconds?: number) =>
 			engineSettings(solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY, ...(seconds ? { seconds } : {}) })).timeLimit;

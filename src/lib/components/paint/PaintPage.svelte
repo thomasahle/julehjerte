@@ -815,7 +815,7 @@
 			// Checker patterns may seed the search, but never replace this target.
 			const frame = { ...session.frame };
 			const target = cloneMask(mask);
-			await prepareMask(target, colors, onProgress, frame);
+			await prepareMask(target, colors, onProgress, frame, advanced.network);
 			solveStarted = true;
 			const solved = await findCuts(
 				{
@@ -825,7 +825,8 @@
 					minWidthMm: advanced.minWidthMm,
 					matchingSheets: advanced.matchingSheets,
 					method: advanced.method,
-					seconds: advanced.seconds
+					seconds: advanced.seconds,
+					network: advanced.network
 				},
 				onProgress,
 				(other, pending) => {
