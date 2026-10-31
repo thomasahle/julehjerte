@@ -1,8 +1,8 @@
 # A cut-proposal network and the exact solver for Mal
 
-State on 2026-10-31, late evening. The production version is on the local branch `claude/nn-ladder`
-(commits 7a4eeb72, 5af99576, 088e08ac), which is **not pushed**. Experiments are in `tmp/e2e/nn/` and in an
-instrumented copy of the engine (`tmp/e2e/even/timed/core`).
+State on 2026-11-01. The network is on main and live (14531051, sampled rungs 0f5e7be7): a choice under
+Avanceret, "Hurtigere søgning med et neuralt netværk", off unless asked for. Experiments are in
+`tmp/e2e/nn/` and in an instrumented copy of the engine (`tmp/e2e/even/timed/core`).
 
 ## 1. Summary and decisions
 
@@ -31,19 +31,19 @@ whole time.
   in Chromium, network on against off was 6.8 against 6.3 s and 4.2 against 4.3 s on the two worst cases.
 - **In Chromium:** tak is exact in 4.1 s with the network, and gets only the fitter's template after
   27.5 s without it.
+- **Retrained models** (section 3a): GRPO v2 changes nothing measurable; round 5 is faster on clean
+  designs but misses hermanngitter and venus. v3 stays shipped.
+- **Diverse proposals** (section 4a): sampled rankings and a second model's ranking make the solvable hard
+  pictures faster (khatam 36 → 8.8 s in production), but crack none of the unsolved seven.
 
 **Still failing:** santa, balls, davidsstjerne-circ and the four text hearts (god-jul, jul-tern, mor-far,
 hjerte-i-hjerte-i-hjerte). jul-2026 cannot start, as before. Their ladders fail up to K = 3000; whether
 any template keeping our rules exists for them is unknown.
 
-**Decisions that are yours:**
+**Decided:** shipped behind the Avanceret switch (14531051, live); the 1/2/3-minute search time pushed;
+no DINOv3 for now (ImageNet encoders are doing well and are free of the Hugging Face gate).
 
-1. **Ship the network in Mal?** It costs 9.5 MB extra on the first exact search; the ONNX runtime is
-   already shipped for the photo model. A cautious alternative is to ship it behind an Avanceret switch
-   first.
-2. **Push the 1/2/3-minute search time** (942af891)? It can go separately from the network.
-3. **DINOv3** (behind the Hugging Face gate) as an offline teacher? I recommend not for now: ImageNet
-   encoders are doing well and are free of the gate.
+**Still yours:** make the network the default? It costs 9.5 MB on the first exact search.
 
 ## 2. Terms
 
@@ -96,6 +96,25 @@ table, so only 18 can be compared:
 | r4 | upper 9 | 8 | 8 | 6.2× |
 | r4 | lower 9 | 8 (fisk yes, circle no) | 8 | 10.9× |
 | ensemble (average of v3, r3, r4 maps) | — | not better than v3 alone | | |
+| GRPO v2 (from v3) | upper 9 | 9 | 9 | 5.8× |
+| r5 | upper 9 | 8 (hermanngitter no) | 8 | 9.1× |
+| r5 | lower 9 | 9 | 9 | 12.0× |
+
+## 3a. The retrained models
+
+- **GRPO v2** (80 steps from v3, maps the right way up, K 30 and 100, prompts with mixed outcomes
+  favoured): within noise of v3 on every design. Its reward rose during training (solved share 45 → 49%),
+  but that did not carry over to the held-out designs. The reward at this level (did the top K solve?) is
+  too coarse to teach more than the supervised labels already do.
+- **r5** (all packs including round 5's solved variations of real pictures, from ImageNet, 2 epochs):
+  the best of the models on the clean designs taken together, 17 of 18 found, against r4's 16. It is
+  faster than v3 on most designs (5star 3.9 against 6.5 s, kogle 4.1 against 6.3 s, roed-blomst 0.9
+  against 1.6 s) and finds fisk, which v3 misses. But it misses hermanngitter (v3: 6.6 s), gives david4
+  19 hidden cuts against 17, and on the hard pictures solves tak and khatam (65.6 s, second outline) but
+  not venus.
+- **Why v3 stays:** the side-by-side worker means a ladder miss costs nothing, so what counts is the set
+  of pictures the ladder solves at all. r5 and v3 each solve pictures the other misses. Shipping both
+  doubles the download; one model trained to match both (distillation) is the cheaper way to get both.
 
 ## 4. Hard pictures, after the fix
 
@@ -118,6 +137,44 @@ Today's search finds no exact template for any of these in 1 or in 3 minutes.
 | ranking and start | 13.3 s | 36.8 s |
 
 The gains come from the ranking. The paper-map start adds nothing measurable.
+
+## 4a. Diverse proposals on the hard pictures (2026-11-01)
+
+Each rung tried eight top-K sets instead of one: v3's and r4's rankings, each plain and with three
+sampled rankings (Gumbel noise of 0.15 on the scores, seeded). 3 minutes, rungs K = 30, 100, 300, 1000.
+
+| Picture | Before | With the eight proposals |
+|---|---|---|
+| tak | v3, 10.8 s | 11.8 s through K100, v3 plain: 13 hidden |
+| khatam | v3, 36 s (second outline) | 17.9 s through K100, v3 sample 1, first outline: 25 hidden |
+| venus | r4, 29 s through K300 | 32.3 s through K100, r4 sample 1: 20 hidden = lower bound 20, so optimal |
+| the unsolved seven | none | none |
+
+In production (`prodcheck`, ladder alone, v3 plain plus two samples per rung): khatam exact in 8.8 s
+through K100 sample 1. Production now runs two samples per rung in the side-by-side worker
+(`LADDER_SAMPLES`, 0f5e7be7); beside today's search they cost it nothing.
+
+**What the failures say.** Counting the solver's verdicts over all rungs (r5, three samples):
+
+| Picture | No witness | Rules violated | Found, export fails |
+|---|---|---|---|
+| tak | 15 | 1 | (solved) |
+| khatam | 16 | 2 | (solved) |
+| venus | 20 | 8 | 0 |
+| santa | 40 | 2 | 0 |
+| god-jul | 32 | 7 | 1 |
+
+"No witness" means the restricted model has no solution at all, or none within the rung's time; "rules
+violated" means it had one, but the lazy rules (crossings, connectivity, geometry) cut it away until the
+time ran out. So the rungs mostly fail for missing candidates, and the conflicts the solver adds lazily
+are rarely there to learn from.
+
+**Where the missing candidates are** (santa, K300, HiGHS `feasibilityRelaxation` with every row
+violable at cost 1): the cheapest repair breaks 4 rows, all paper-flow rows at strip ends, for example
+the bottom end at (1.77, 0) and the top end at (10.23, 12). A paper strip cannot be routed between
+those ends with the K300 candidates. At K1000 the base model is solvable, and the lazy rules then do not
+settle within 40 s. Santa thus fails in two ways: too few candidates at small K, and too many rules to
+add lazily at large K. The relaxation fails (HiGHS status −1) on models of 1000 candidates or more.
 
 ## 5. Easy pictures: overhead, and the side-by-side worker
 
@@ -165,17 +222,17 @@ With the exact search alone (Avanceret) the ladder still runs before it, within 
   full set with its usual pruning. A rung that throws ends the ladder, never the search (commit 5af99576:
   venus's 420 positions had overrun a rung's build time and ended the whole search).
 
-## 7. Production design (branch claude/nn-ladder)
+## 7. Production design (main)
 
 | Part | What |
 |---|---|
 | `static/inverse/neural/cuts.js`, `cuts-bbd773ab.onnx` | v3, float16, checksum, loaded like the photo model; NOTICE.txt credits the Apache-2.0 encoder weights |
 | `exact/candidates.js` `rankScores`, `ranked`, `keep` | candidate scores from the maps (hidden field along the route by direction, plus the switches at the ends), the top K plus every candidate under 3 mm |
 | `exact/search.js` `rank`, `reuse`, `buildSeconds` | rank pruning on a copy; candidates built once per ladder; the build's own time |
-| `exact/stage.js` `networkLadder`, `ladderOnly` | rungs (K, s) = (10, 2), (30, 2), (100, 3), (300, 4), plus (1000, 10) when alone; at most a quarter of the time before today's search |
+| `exact/stage.js` `networkLadder`, `ladderOnly` | rungs (K, s) = (10, 2), (30, 2), (100, 3), (300, 4), plus (1000, 10) when alone, each also with two sampled rankings when alone; at most a quarter of the time before today's search |
 | `engine.js` | `raw.cutMaps` to the traced outline's search; `raw.ladderOnly` |
 | `worker-controller.js` | the maps from the mask (`cutModel`, Mal only; loads while the picture is prepared; waits at most 1.5 s); the ladder worker beside today's |
-| `src/lib/inverse/engine.ts` | `cutModel` on for Mal unless "smoother cuts" alone |
+| `src/lib/inverse/engine.ts` | `cutModel` when Avanceret's network choice is on, unless "smoother cuts" alone |
 
 **Tests:** exact 72, worker controller 24, compute worker and runtime 10, app 227; all passing.
 
@@ -209,16 +266,52 @@ Distinct designs ("bases"; a design's warps and turns count once) and pictures p
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);
-  - the GRPO-trained network (v2 under way: solved share 45% → 49% over 57 steps, reward −0.09 → −0.02,
-    to be benchmarked);
-  - a second model's ranking as another rung (v3 and r4 solve different pictures).
-- **Round 5** (more variations of real pictures): best held-out losses so far (hidden 0.485, against r4's
-  0.590); its benchmark is pending.
+  - a feedback ladder (section 9a);
+  - one model distilled from v3, r4 and r5 (each solves hard pictures the others miss).
 - **Stubs at crossings** in the tracer: amy-pattern's 0.08 mm case is unexplained.
 - **Curved candidates:** clearly bent hidden runs are a minority (designers 11%, generator 6%), mildly
   curved ones common. Straight lines stay the first representation; one or two bent variants along the
   predicted direction would come later.
 - **Reranker:** a candidate-conditioned reranker trained on whole-design splits.
+
+## 9a. Next architecture: looping over the solver's answers
+
+Today's ladder is open loop: the rung K300 is only a larger slice of the same fixed ranking, and a
+failed rung's verdict is thrown away. The aim is a loop where the network's proposal goes to the solver,
+the solver's answer comes back, and the proposal is revised. The same weights run more often for more
+compute, and the exact solver stays the verifier, so the network's mistakes cost time, never
+correctness.
+
+In order, each step only if the previous one pays:
+
+1. **Diverse proposals:** done (section 4a). It speeds up what already solves, and cracks nothing new.
+2. **A hand-written feedback ladder:** after a failed rung, add candidates where the solver says the
+   model breaks. That measures whether the feedback carries signal before anything learns from it.
+   Tried on tak (2026-11-01; v3, rungs K30 ×3 then K100; plain ladder: exact at K100 in 10.8 s), two
+   ways, both no better:
+   - *Where strips break:* a feasibility relaxation with the strip ends hard and the flow through
+     interior points soft names the points where a strip is cut off (tak: two slots, on edges 0 and
+     19; 0.3–0.5 s). Adding the best-ranked candidates with an end near them: 200 within 12 mm lost the
+     K100 solve; 30 within 6 mm and 10 within 4 mm left K30 failing and K100 solving as before.
+   - *Column generation:* the LP relaxation over every candidate, those outside the failed set dearer by
+     2, used only 2–25 outside candidates fractionally. Adding them (30 or 100) left the next K30
+     failing in 0.1 s, and each probe cost about 10 s (building the full model, then the LP at its 5 s
+     limit).
+   So the relaxations are too weak to say which candidates are missing: the infeasibility comes from
+   the integer structure (crossings, switches, which side the paper is on), not from a shortage the LP
+   sees. A learned loop would need a stronger signal than these.
+3. **A recurrent network over the candidate graph:** one node per candidate (its map evidence, length,
+   kind, whether it is chosen, how often it was in a conflict), edges for crossings and shared ends, and
+   the solver's state (verdict, violated rows, incumbent, bound). It is run T = 1, 2, 4, 8 times. Its
+   training data are solver trajectories, which `server.mjs` produces once it reports the rows each
+   proposal breaks. This is also where a GRPO reward becomes informative (fewer broken rows, a smaller
+   gap to the bound), unlike the all-or-nothing reward of section 3a.
+4. **Later:** neighbourhood search around an incumbent (reopen one face or kind, keep the rest), and a
+   continuous refiner for curved cuts once the topology is fixed.
+
+Raster diffusion over the maps would sharpen what the maps see. But the failures of section 4a are
+combinatorial (candidates missing for a strip, lazy rules that do not settle), so a loop over the
+solver's answers addresses them more directly.
 
 ## 10. History (before the orientation fix; not for judging the network)
 
