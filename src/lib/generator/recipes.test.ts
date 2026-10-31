@@ -2,10 +2,11 @@ import { describe, it, expect } from 'vitest';
 import { chooseRecipe, isTopology, recipeEdges, recipeOutline, ringCorners, type MotifRecipe, type RecipeChord, type RecipeFile } from './recipes';
 import { islandOn, motifFit, motifRings, nestingOf, topologyConstruction, topologyOf } from './topologyRecipes';
 import { boardOutline } from './boardOutline';
-import { fromTopology, generate, storedHearts } from './generate';
+import { fromTopology, generate, knownOf, spurless, storedHearts } from './generate';
 import { betterCuts, cutMeasures } from './cutQuality';
 import { picture } from './picture';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
+import { slow } from './slow.test-helpers';
 import type { Point, Ring } from './geometry';
 import heart from '../../../static/generator/motifs/heart.json';
 import star from '../../../static/generator/motifs/star.json';
@@ -13,6 +14,7 @@ import tree from '../../../static/generator/motifs/tree.json';
 import nisse from '../../../static/generator/motifs/nisse.json';
 import wreath from '../../../static/generator/motifs/mc-wreath.json';
 import circleMotif from '../../../static/generator/motifs/circle.json';
+import cow from '../../../static/generator/motifs/hi-cow.json';
 import heartSolves from '../../../scripts/generator/solves/heart.board.json';
 import nisseSolves from '../../../scripts/generator/solves/nisse.board.json';
 import circleSolves from '../../../scripts/generator/solves/circle.board-5.sym.json';
@@ -217,5 +219,16 @@ describe('stored recipes', () => {
 		const on = request(star.contours as Ring[]), rings = picture(on, {})!.rings;
 		const [plain] = storedHearts(on, [topology], true, 1, {}), made = fromTopology({ ...on, recipes: [topology] })!;
 		expect(cutMeasures(made.design, rings)[0]).toBeLessThan(cutMeasures(plain.design, rings)[0]);
+	});
+
+	slow('finishes a pair\'s recipe hard to cut where the generator\'s heart is, shown where that cuts better', () => {
+		// The cow on seven strips at 45%: no recipe of its pair finishes clean, the generator's heart is
+		// hard to cut with five places the paper may tear, a recipe's hard to cut as narrow with none.
+		const asked = { mode: 'figure' as const, name: 'Cow', contours: cow.contours as Ring[], colors: { left: '#ffffff', right: '#b91313' }, style: 'board' as const, board: 7, frame: 'circle' as const, frameSize: 70, scale: .45, gap: 3 };
+		const own = generate(asked), made = generate({ ...asked, recipes: (board as unknown as RecipeFile).recipes });
+		const rings = picture(spurless(asked), knownOf(own, .45))!.rings;
+		expect(own.hardToCut && made.hardToCut).toBeTruthy();
+		expect(cutMeasures(own.design, rings)[0]).toBe(5);
+		expect(cutMeasures(made.design, rings)[0]).toBe(0);
 	});
 });

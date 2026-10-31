@@ -291,6 +291,20 @@ meeting wrongly still), and 91 of the 119 pairs left have one; 7 pairs more,
 paper may tear to 1, 2 and 3). The 91 pairs' candidates beat the generator's
 heart nowhere: most are its own heart at some size, the same there.
 
+Where the generator wins at a size whose pair has recipes, mostly a recipe
+carried from another motif does not finish (five and seven strips: 100 and 109
+of 241 and 269 such sizes), its paper too narrow there: the editor's crossing
+or spacing check, or a severe pinch. Moving one of its places round its ring
+rescues almost none (3 of 3360 hearts finished). But the generator itself
+finishes such a heart as hard to cut (see `hardToCutResult`), and a recipe's
+never did: where the generator's heart is hard to cut and no recipe's
+finishes clean, the recipes' cuts are finished its way, and the heart shown
+where it is no harder to cut (as wide a spacing kept, no more narrow strips)
+and cuts better (`harderStored`): the cow on seven strips at 45% from five
+places the paper may tear to none. Every sixth size: the featured motifs 20,
+27, 17 and 23 sizes better on three, five, seven and nine strips, none worse,
+the 30 others unchanged; 0.3 to 0.5 s more at the sizes it tries.
+
     node scripts/generator/pairs.mjs <motif>...      # every board, up to three recipes a pair
     ADD=1 node scripts/generator/pairs.mjs <motif>... # only for the pairs the page has none for
     node scripts/generator/pair-queue.mjs <unsolved.json> <solves>... # the next round's solves

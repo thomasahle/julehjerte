@@ -448,8 +448,9 @@ function finishedStored(request: GeneratorRequest, construction: ReturnType<type
 	return request.style === 'board' ? { ...heart, enclosed: true, ...heart.design.gridSize.x !== strips && { board: strips } } : heart;
 }
 
-/** See `storedHearts`. */
-function storedDrawings(request: GeneratorRequest, recipes = request.recipes, topology = false, count = 1, known: Known = {}): Drawing[] {
+/** See `storedHearts`. Those whose cuts a recipe placed but that do not finish
+ * clean (paper too narrow) go to `unfinished` (see `harderStored`). */
+function storedDrawings(request: GeneratorRequest, recipes = request.recipes, topology = false, count = 1, known: Known = {}, unfinished?: Construction[]): Drawing[] {
 	if (request.mode !== 'figure' || !recipes?.length) return [];
 	// The board the generator builds: the board circle's five strips where the visitor chose none.
 	const strips = request.style === 'board' ? request.board ?? BOARD_STRIPS.board.initial : request.board;
@@ -484,14 +485,16 @@ function storedDrawings(request: GeneratorRequest, recipes = request.recipes, to
 		return o && recipeConstruction(recipe, o);
 	} });
 	for (const { construct, of, straight } of constructions) {
+		let construction: ReturnType<typeof construct>;
 		try {
-			const construction = construct();
+			construction = construct();
 			if (!construction) continue;
 			hearts.push({ heart: finishedStored(request, construction, strips), of, straight: !!straight, places: construction.places });
 			if (of) drew.add(of);
 			if (hearts.length >= count) break;
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			if (construction && unfinished) unfinished.push({ ...construction, ...request.style === 'board' ? { domain: [SHEET] } : {} });
 		}
 	}
 	return hearts;
@@ -541,9 +544,9 @@ export const knownOf = (own: GeneratorResult, asked: number): Known => ({
  * that is hard to cut, or there is none. It tells the page the picture as
  * `own` does. */
 export function fromTopology(request: GeneratorRequest, own?: GeneratorResult): GeneratorResult | undefined {
-	const known = own ? knownOf(own, request.scale ?? .7) : {};
-	const drawn = storedDrawings(request, request.recipes, true, TOPOLOGY_TRIES, known).filter(({ heart }) => !heart.hardToCut);
-	if (!drawn.length) return;
+	const known = own ? knownOf(own, request.scale ?? .7) : {}, unfinished: Construction[] = [];
+	const drawn = storedDrawings(request, request.recipes, true, TOPOLOGY_TRIES, known, unfinished).filter(({ heart }) => !heart.hardToCut);
+	if (!drawn.length) return own?.hardToCut ? harderStored(request, own, unfinished, known) : undefined;
 	const shown = picture(spurless(request), known)!, rings = shown.rings, measure = (heart: GeneratorResult) => cutMeasures(heart.design, rings);
 	const first = drawn.map(d => ({ ...d, m: measure(d.heart) })).reduce((a, b) => betterCuts(b.m, a.m) ? b : a);
 	// Refining compares hearts before their connections are bent, which may
@@ -553,6 +556,31 @@ export function fromTopology(request: GeneratorRequest, own?: GeneratorResult): 
 	if (!own) return heart;
 	const told = { ...heart, scale: own.scale, enclosed: own.enclosed, whole: own.whole, board: own.board ?? heart.board };
 	return own.hardToCut || betterCuts(measure(heart), measure(own)) ? told : undefined;
+}
+
+/** Where the generator's own heart is hard to cut and no recipe's finishes
+ * clean: the recipes' cuts on the picture finished as hard to cut, the
+ * generator's way (see `hardToCutResult`), shown where that is no harder to
+ * cut (as wide a spacing kept, no more narrow strips) and its cuts are better
+ * (`betterCuts`): a cow on seven strips at 45% from five places the paper may
+ * tear to none. */
+function harderStored(request: GeneratorRequest, own: GeneratorResult, unfinished: Construction[], known: Known): GeneratorResult | undefined {
+	if (request.style !== 'board' || !unfinished.length) return;
+	const heart = hardToCutResult(request, unfinished.map(construction => ({ construction, recipe: 'nested' as const })), sharedFits);
+	if (!heart) return;
+	const strips = request.board ?? BOARD_STRIPS.board.initial, rings = picture(spurless(request), known)!.rings;
+	const told = { ...heart, enclosed: own.enclosed, scale: own.scale, whole: own.whole, board: own.board ?? (heart.design.gridSize.x !== strips ? strips : undefined) };
+	if (!heart.hardToCut) return told;
+	const a = hardness(heart), b = hardness(own);
+	return a.spacing >= b.spacing && a.narrow <= b.narrow && betterCuts(cutMeasures(heart.design, rings), cutMeasures(own.design, rings)) ? told : undefined;
+}
+
+/** How hard a heart is to cut, as `hardToCutResult` ranks: the spacing kept
+ * (see `HARD_TO_CUT_SPACINGS`), and how many strips are narrower than the
+ * clearance. */
+function hardness(result: GeneratorResult) {
+	const { design } = result, full = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(design.gridSize.x, design.gridSize.y));
+	return { spacing: result.hardToCut?.spacing ?? 1, narrow: findSearchIssues(design.fingers, full).size };
 }
 
 /** How many hearts refining a recipe's heart draws at most (see `refined`). */
