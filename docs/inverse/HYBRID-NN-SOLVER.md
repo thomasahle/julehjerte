@@ -180,9 +180,9 @@ add lazily at large K. The relaxation fails (HiGHS status −1) on models of 100
 from the published heart's cuts, converted by `routes/theirs.mjs`): the ladder still fails on every rung
 to K1000 (2 minutes; god-jul 9 rungs without witness and 3 with rules violated, jul-tern 10 with rules
 violated). So on the text hearts even a perfect ranking does not give a template: the obstacle is the
-exact model on the traced outline, not the network. Reading those templates as a start on the traced
-outline (`readTemplate`) throws (`outline.E[e]` undefined), a crash to look into: the engine's own
-templates read fine.
+exact model on the traced outline, not the network. (The converted templates themselves fail our
+validator on edge parity, which may be the converter's doubled shared cuts; the cuts' places, which is
+all the oracle maps use, are the published heart's.)
 
 **davidsstjerne-circ with every candidate:** its first outline is not symmetric under its ties; on the
 next (its turns), HiGHS proves the base model infeasible with all 16,626 columns (every straight
