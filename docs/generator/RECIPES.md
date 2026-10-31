@@ -250,11 +250,15 @@ shipped ones as they were, so a heart the page drew changes only where a new
 pair's recipe beats it: 11 pairs more, 126 recipes (89 pairs, 1.5 MB). Every
 sixth size on the page's slider, 34 motif sizes better and none worse (the
 featured motifs on five strips 4, seven 10, nine 16; the 30 nobody solved on
-nine strips 4). 192 pairs, 1144 of the 3724 motif sizes, still draw the
+nine strips 4). A third, at a motif or size of each pair not tried before
+(`pair-queue.mjs`; 159 pairs, the 33 others have only sizes tried), kept 14:
+6 pairs more, 133 recipes (95 pairs, 1.7 MB), 13 motif sizes better and none
+worse (featured seven strips 5, nine 2; the 30 on seven 5, nine 1). 186 pairs, 1127 of the 3724 motif sizes, still draw the
 generator's own heart; 69 of those pairs have five or more motif sizes.
 
     node scripts/generator/pairs.mjs <motif>...      # every board, up to three recipes a pair
     ADD=1 node scripts/generator/pairs.mjs <motif>... # only for the pairs the page has none for
+    node scripts/generator/pair-queue.mjs <unsolved.json> <solves>... # the next round's solves
 
 ## Making recipes
 
