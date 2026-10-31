@@ -176,6 +176,30 @@ those ends with the K300 candidates. At K1000 the base model is solvable, and th
 settle within 40 s. Santa thus fails in two ways: too few candidates at small K, and too many rules to
 add lazily at large K. The relaxation fails (HiGHS status −1) on models of 1000 candidates or more.
 
+**Oracle maps from the gallery's own templates** (god-jul and jul-tern; maps rasterized by `labels.py`
+from the published heart's cuts, converted by `routes/theirs.mjs`): the ladder still fails on every rung
+to K1000 (2 minutes; god-jul 9 rungs without witness and 3 with rules violated, jul-tern 10 with rules
+violated). So on the text hearts even a perfect ranking does not give a template: the obstacle is the
+exact model on the traced outline, not the network. Reading those templates as a start on the traced
+outline (`readTemplate`) throws (`outline.E[e]` undefined), a crash to look into: the engine's own
+templates read fine.
+
+**davidsstjerne-circ with every candidate:** its first outline is not symmetric under its ties; on the
+next (its turns), HiGHS proves the base model infeasible with all 16,626 columns (every straight
+candidate, before any lazy rule), and the one after runs out of time at 39k columns and 284k rows. So
+no ranking can solve it: on this outline and its positions, no template of straight hidden cuts keeps
+the turn symmetry. A way out would change the representation (finer positions, curved candidates, or
+less symmetry), not the network.
+
+**balls with every candidate:** 77k columns and 977k rows (69k and 798k on the next outline); building
+takes most of 2 minutes and HiGHS does not finish the root. So balls is the opposite case: too big
+whole, without a witness when cut to K ≤ 3000.
+
+**So of the unsolved seven,** davidsstjerne-circ is proved not to be a ranking problem (infeasible
+with every candidate). On god-jul and jul-tern even the oracle maps fail within 2 minutes, which is
+strong evidence but no proof. Santa's designer template fails our own checks. For these, a better
+network is unlikely to help; the exact model's representation is the place to look.
+
 ## 5. Easy pictures: overhead, and the side-by-side worker
 
 **Production engine, ladder before today's search (sequential), with and without the network**
