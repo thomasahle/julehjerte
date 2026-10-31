@@ -139,7 +139,7 @@ const START_SECONDS = 3;
  * of a search's time it takes, and the short candidates (mm) every rung keeps:
  * 42% of the hidden cuts in the gallery's exact templates were under 3 mm, the
  * stubs of tips and crossings the network's field hardly shows. */
-const LADDER = [[10, 2], [30, 2], [100, 3], [300, 4]], LADDER_SHARE = .25, SHORT_MM = 3;
+const LADDER = [[10, 2], [30, 2], [100, 3], [300, 4]], LADDER_SHARE = .25, SHORT_MM = 3, LADDER_BUILD = 8;
 
 /** Under ties, the share of the search's time the fine grid from no start
  * gets first, if at least BARE_FLOOR seconds are left (exactSearch). */
@@ -191,7 +191,18 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
     const room = Math.min(rungSeconds, (until - performance.now()) / 1000);
     if (room < .5) break;
     const began = performance.now();
-    const result = await exactFromTemplate(outline, template, cfg, {multi, seconds: room, symmetry, exact, witness: empty, onProgress, geometry, refine, spacing: .75, neighbours: 8, rank: {maps, k, short}, reuse});
+    // The first rung builds the candidates every rung reuses: it may take up
+    // to LADDER_BUILD seconds of the ladder's time for that (venus's 420
+    // positions take more than a rung's share).
+    let result;
+    try {
+      result = await exactFromTemplate(outline, template, cfg, {multi, seconds: room, symmetry, exact, witness: empty, onProgress, geometry, refine, spacing: .75, neighbours: 8, rank: {maps, k, short}, reuse,
+        buildSeconds: reuse.cand ? null : Math.max(room * .4, Math.min(LADDER_BUILD, (until - performance.now()) / 1000))});
+    } catch (error) {
+      // A rung that fails ends the ladder, never the search: today's runs after it.
+      rungs.push({k, seconds: +((performance.now() - began) / 1000).toFixed(2), found: false, error: String(error.message || error).slice(0, 80)});
+      break;
+    }
     const ok = !result.error && !(result.report.penalty > 1e-6) && [result.solution, result.refined].some(drawn => { try { return drawn && exportable(assess(drawn, cfg), cfg); } catch { return false; } });
     rungs.push({k, seconds: +((performance.now() - began) / 1000).toFixed(2), found: ok, hidden: result.report?.hidden});
     if (ok) return {found: {...result, report: {...result.report, ladder: k}}, rungs};

@@ -30,7 +30,7 @@ function holds(nogood, labels, used, switches) {
 }
 
 /** The exact template nearest the given one: {solution, report} or {error}. */
-export async function exactFromTemplate(target, template, cfg, {seconds = 20, neighbours = 8, spacing = .75, paperRetries = 2, multi = 'auto', exact = exactOutline(target, cfg), symmetry = [], sheets = true, witness: given = null, onProgress = () => {}, geometry = false, refine = false, refineSeconds = 2, rank = null, reuse = null} = {}) {
+export async function exactFromTemplate(target, template, cfg, {seconds = 20, neighbours = 8, spacing = .75, paperRetries = 2, multi = 'auto', exact = exactOutline(target, cfg), symmetry = [], sheets = true, witness: given = null, onProgress = () => {}, geometry = false, refine = false, refineSeconds = 2, rank = null, reuse = null, buildSeconds = null} = {}) {
   // The start: `witness` (exactStart's, start.js), or the template read here.
   const t0 = performance.now(), {st, outline, routes} = exact, witness = given || await readTemplate(template, outline);
   if (witness.error) return {error: witness.error};
@@ -58,7 +58,7 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
   let cand;
   if (reuse?.cand && reuse.exact === exact && reuse.spacing === spacing) cand = copy(reuse.cand);
   else {
-    cand = new Candidates(st, outline, routes, positions, {deadline: t0 + seconds * 400});
+    cand = new Candidates(st, outline, routes, positions, {deadline: t0 + (buildSeconds ?? seconds * .4) * 1000});
     if (reuse) Object.assign(reuse, {cand: copy(cand), exact, spacing});
   }
   // Each route from its tokens' grid points: under symmetry the grid holds a
