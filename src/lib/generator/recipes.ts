@@ -46,8 +46,10 @@ import type { OutlineFrame } from './topologyTransfer';
 export type RecipeAnchor = { r: number; k: number; u: number; x?: number };
 /** A stretch of ring `v` from `a` to `b`, in the ring's own order (`f`) or against it. */
 export type RecipeStretch = { v: number; a: RecipeAnchor; b: RecipeAnchor; f: boolean };
-/** A hidden cut from one place to another, through its bends. */
-export type RecipeChord = { h: [RecipeAnchor, RecipeAnchor]; bends: [number, number][] };
+/** A hidden cut from one place to another, through its bends: both papers
+ * cut it, or (`one`) only its own line's, where the other paper covers it (the
+ * generator's lines crossing the board circle to the motif). */
+export type RecipeChord = { h: [RecipeAnchor, RecipeAnchor]; bends: [number, number][]; one?: true };
 export type RecipePiece = RecipeStretch | RecipeChord;
 /** A motif's own recipe, solved on its picture in a frame. */
 export type MotifRecipe = {
@@ -75,11 +77,11 @@ export type MotifRecipe = {
 export type TopologyAnchor = { e: number; t: number } | { m: number; i: number } | { p: Point };
 /** A stretch of the board's edge `e`, from `t[0]` of the way along it to
  * `t[1]`; a stretch of the motif's ring `m` from its place `i[0]` to `i[1]`,
- * in the ring's order (`f`) or against it; or a hidden cut both papers cut,
- * from one place to another through its bends, `inside` where it runs
- * through the motif. */
+ * in the ring's order (`f`) or against it; or a hidden cut both papers cut
+ * (or only its own line's, `one`, see `RecipeChord`), from one place to
+ * another through its bends, `inside` where it runs through the motif. */
 export type TopologyPiece = { e: number; t: [number, number] } | { m: number; i: [number, number]; f: boolean }
-	| { h: [TopologyAnchor, TopologyAnchor]; bends: [number, number][]; inside?: boolean };
+	| { h: [TopologyAnchor, TopologyAnchor]; bends: [number, number][]; inside?: boolean; one?: true };
 /** A topology's recipe (see `topologyRecipes`), for every motif of it. */
 export type TopologyRecipe = {
 	style: string;
@@ -254,11 +256,11 @@ export function recipeEdges(recipe: MotifRecipe, o: RecipeOutline): Edge[] {
 				.sort((i, j) => piece.f ? ahead(s0, cum[i], length) - ahead(s0, cum[j], length) : ahead(cum[i], s0, length) - ahead(cum[j], s0, length));
 			line([at(piece.a), ...inner.map(i => ring[i]), at(piece.b)], family, 'outline');
 		} else {
-			const [a, b] = piece.h, id = [a, b].map(an => `${an.r}:${an.k}:${an.u}:${an.x ?? ''}`).sort().join('|');
+			const [a, b] = piece.h, id = (piece.one ? family : '') + [a, b].map(an => `${an.r}:${an.k}:${an.u}:${an.x ?? ''}`).sort().join('|');
 			if (chords.has(id)) continue;
 			chords.add(id);
 			const P = at(a), Q = at(b), d = [Q[0] - P[0], Q[1] - P[1]];
-			line([P, ...piece.bends.map(([u, v]): Point => [P[0] + u * d[0] - v * d[1], P[1] + u * d[1] + v * d[0]]), Q], 'AB', 'shared');
+			line([P, ...piece.bends.map(([u, v]): Point => [P[0] + u * d[0] - v * d[1], P[1] + u * d[1] + v * d[0]]), Q], piece.one ? family : 'AB', piece.one ? 'frame' : 'shared');
 		}
 	}
 	return edges;

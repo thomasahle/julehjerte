@@ -966,9 +966,14 @@ export function topologyConstruction(recipe: TopologyRecipe, picture: { rings: R
 	const boardPoint = (an: { e: number; t: number } | { p: Point }) => 'p' in an ? an.p : alongEdge(o!.edges[an.e], an.t);
 	// The board's sides and hidden cuts, which the cuts to the motif keep clear of.
 	const sides: Side[] = o.pieces.map(([a, b]) => ({ a, b, of: -1 }));
-	const chords = new Map<string, { h: [TopologyAnchor, TopologyAnchor]; bends: [number, number][]; inside?: boolean }>();
+	const chords = new Map<string, { h: [TopologyAnchor, TopologyAnchor]; bends: [number, number][]; inside?: boolean; one?: true }>();
 	const id = (an: TopologyAnchor) => 'e' in an ? `e${an.e}:${an.t}` : 'p' in an ? `p${an.p.join(',')}` : `m${an.m}:${an.i}`;
-	for (const slit of [...recipe.A, ...recipe.B]) for (const piece of slit) if ('h' in piece) chords.set(piece.h.map(id).sort().join('|'), piece);
+	// A cut only its own line's paper cuts (`one`) is that family's alone.
+	const family = new Map<object, 'A' | 'B'>();
+	for (const f of ['A', 'B'] as const) for (const slit of recipe[f]) for (const piece of slit) if ('h' in piece) {
+		chords.set((piece.one ? f : '') + piece.h.map(id).sort().join('|'), piece);
+		if (piece.one) family.set(piece, f);
+	}
 	for (const chord of chords.values()) if (chord.h.every(an => !('m' in an))) {
 		const path = bent(boardPoint(chord.h[0] as { e: number; t: number }), boardPoint(chord.h[1] as { e: number; t: number }), chord.bends);
 		for (let k = 1; k < path.length; k++) sides.push({ a: path[k - 1], b: path[k], of: -1 });
@@ -1018,7 +1023,7 @@ export function topologyConstruction(recipe: TopologyRecipe, picture: { rings: R
 	}
 	for (const chord of chords.values()) {
 		const way = placed.routes.get(chord);
-		line(way ? [point(chord.h[0]), ...way.slice(1, -1), point(chord.h[1])] : bent(point(chord.h[0]), point(chord.h[1]), bendsOf(recipe, chord)), 'AB', 'shared');
+		line(way ? [point(chord.h[0]), ...way.slice(1, -1), point(chord.h[1])] : bent(point(chord.h[0]), point(chord.h[1]), bendsOf(recipe, chord)), family.get(chord) ?? 'AB', family.has(chord) ? 'frame' : 'shared');
 	}
 	const artwork = [...board, ...placed.rings];
 	return { geometry: compile(edges), edges, artwork, strips, places: recipe.places.map((ring, m) => ring.map((_, i) => motifPoint({ m, i }))) };
@@ -1182,7 +1187,7 @@ export function topologyOf(recipe: MotifRecipe, picture: { rings: Ring[]; motif?
 		while (i < lengths.length - 1 && half > lengths[i]) half -= lengths[i++];
 		const u = lengths[i] ? half / lengths[i] : 0, mid: Point = [path[i][0] + u * (path[i + 1][0] - path[i][0]), path[i][1] + u * (path[i + 1][1] - path[i][1])];
 		const inside = piece.h.some(an => onMotif(an)) && colourAt(mid, figure) === 1;
-		return [{ h: [anchor(piece.h[0]), anchor(piece.h[1])], bends: piece.bends, ...inside ? { inside: true } : {} }];
+		return [{ h: [anchor(piece.h[0]), anchor(piece.h[1])], bends: piece.bends, ...inside ? { inside: true } : {}, ...piece.one ? { one: true } : {} }];
 	};
 	const A = recipe.A.map(slit => slit.flatMap(convert)), B = recipe.B.map(slit => slit.flatMap(convert));
 	if (lost) return;

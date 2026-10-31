@@ -26,8 +26,10 @@
 //                       pair's candidate, judged on every motif of its pair by pairs.mjs)
 //        OUT_FILE=path  write there (only this run's recipes and the file's others) rather than the motif's file
 //        OWN=1          no search: the generator's own heart at the size as the solve (a pair's candidate where
-//                       the search finds none), OWN_TOL its hidden cuts' straightening (.01; .03 where that
-//                       fails the editor's checks)
+//                       the search finds none), read from the cuts it was built from (`constructionOf`), else
+//                       from its curves (OWN_SAMPLED=1 always so), OWN_TOL its hidden cuts' straightening (.01;
+//                       .03 where that fails the editor's checks); with KEEP_ALL kept wherever its cuts make a
+//                       weave, though it does not finish at its own size
 //
 // Run one at a time: each solve keeps a core busy for up to two minutes.
 import fs from 'node:fs/promises';
@@ -41,9 +43,9 @@ const server = await createServer({ root, configFile: `${root}/vite.config.ts`, 
 console.warn = () => {};
 const load = p => server.ssrLoadModule(p), core = p => import(`${root}/static/inverse/core/${p}`);
 try {
-	const { generate, fromStoredRecipe } = await load('/src/lib/generator/generate.ts');
+	const { generate, fromStoredRecipe, constructionOf } = await load('/src/lib/generator/generate.ts');
 	const { picture } = await load('/src/lib/generator/picture.ts');
-	const { recipeOutline } = await load('/src/lib/generator/recipes.ts');
+	const { recipeOutline, recipeConstruction, outlineFor } = await load('/src/lib/generator/recipes.ts');
 	// A heart's measures and how they decide, as the page compares hearts (see cutQuality.ts).
 	const { cutMeasures: measures, betterCuts: better } = await load('/src/lib/generator/cutQuality.ts');
 	const { inferOverlapRect } = await load('/src/lib/utils/overlapRect.ts');
@@ -133,6 +135,50 @@ try {
 		// right lobe's cuts the A family, as the engine's.
 		if (process.env.OWN) {
 			if (!own) return { error: 'no heart of the generator', seconds: 0 };
+			// The heart's own cuts as it was built (see `constructionOf`), where it was: each family's paths
+			// across the sheet as compile walks them, each piece of them the construction's (a cut of one
+			// family along a ring is outline, a shared one hidden), on the picture with the construction's
+			// own motif (the generator shrinks a motif a little where nothing finishes at its size).
+			const made = !process.env.OWN_SAMPLED && constructionOf(own);
+			if (!made && process.env.VERBOSE) console.log('    no construction: its cuts read from the curves');
+			if (made) {
+				const art = made.artwork, from = rings.length - art.length;
+				if (from < 0 || art.some((ring, m) => ring.length !== rings[from + m].length)) return { error: "the construction's motif is not the picture's", seconds: 0 };
+				const built = [...rings.slice(0, from), ...art], o = recipeOutline(built);
+				const off = p => { let m = Infinity; for (const r of built) for (let i = 0; i < r.length; i++) { const a = r[i], b = r[(i + 1) % r.length], dx = b[0] - a[0], dy = b[1] - a[1], l = dx * dx + dy * dy, t = l ? Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / l)) : 0; m = Math.min(m, Math.hypot(a[0] + t * dx - p[0], a[1] + t * dy - p[1])); } return m; };
+				const key = p => p.map(x => x.toFixed(6)).join(','), xy = { A: [], B: [] }, kinds = { A: [], B: [] };
+				for (const family of ['A', 'B']) {
+					const ids = made.edges.map((e, i) => e.family.includes(family) ? i : -1).filter(i => i >= 0), adj = new Map();
+					for (const i of ids) for (const p of [made.edges[i].from, made.edges[i].to]) adj.set(key(p), [...adj.get(key(p)) ?? [], i]);
+					const axis = family === 'A' ? 1 : 0, seen = new Set();
+					const starts = [...adj.keys()].filter(k => +k.split(',')[axis] === 0).sort((a, b) => +a.split(',')[1 - axis] - +b.split(',')[1 - axis]);
+					for (const start of starts) {
+						let at = start;
+						const pts = [start.split(',').map(Number)], ks = [];
+						for (;;) {
+							const id = adj.get(at).find(i => !seen.has(i));
+							if (id === undefined) break;
+							const e = made.edges[id], next = key(e.to) === at ? e.from : e.to, a = pts.at(-1);
+							seen.add(id);
+							// Split where it passes a ring's point (a corner of the squares the line runs along, from one
+							// square's side to the next's): each part outline on its ring, or a leg off them.
+							const dx = next[0] - a[0], dy = next[1] - a[1], l2 = dx * dx + dy * dy;
+							const on = l2 ? built.flat().map(v => ({ v, t: ((v[0] - a[0]) * dx + (v[1] - a[1]) * dy) / l2 }))
+								.filter(({ v, t }) => t > 1e-9 && t < 1 - 1e-9 && Math.hypot(a[0] + t * dx - v[0], a[1] + t * dy - v[1]) < 1e-7).sort((x, y) => x.t - y.t) : [];
+							for (const q of [...on.map(({ v }) => v), next]) {
+								const b = pts.at(-1);
+								if (Math.hypot(q[0] - b[0], q[1] - b[1]) < 1e-9) continue;
+								pts.push([...q]);
+								ks.push(e.family === 'AB' ? 'hidden' : off([(b[0] + q[0]) / 2, (b[1] + q[1]) / 2]) < 1e-4 ? 'outline' : 'leg');
+							}
+							at = key(next);
+						}
+						xy[family].push(pts);
+						kinds[family].push(ks);
+					}
+				}
+				return { xy, kinds, o, seconds: 0 };
+			}
 			const rect = inferOverlapRect(own.fingers, own.gridSize), unit = ([x, y]) => [(x - rect.left) / rect.width * 100, (y - rect.top) / rect.height * 100];
 			const lines = [[], []];
 			for (const finger of own.fingers) {
@@ -232,7 +278,7 @@ try {
 	}
 
 	/** Solved slits as pieces on the picture's rings (see recipes.ts for the format). */
-	function piecesOf(xy, o) {
+	function piecesOf(xy, o, kinds) {
 		const ahead = (from, to, length) => ((to - from) % length + length) % length;
 		const near = (p, only) => {
 			let best = null;
@@ -292,15 +338,19 @@ try {
 			return { r: n.r, k, u: u < 1e-6 ? 0 : +u.toFixed(9) };
 		};
 		const out = { A: [], B: [] };
-		for (const family of ['A', 'B']) for (const line of xy[family]) {
+		for (const family of ['A', 'B']) for (const [l, line] of xy[family].entries()) {
 			const pieces = [];
 			for (let i = 0; i + 1 < line.length; i++) {
-				const a = line[i], b = line[i + 1], n = near([(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]), last = pieces.at(-1);
-				if (n.d < .05 && edgeOfColour(a, b)) {
+				const a = line[i], b = line[i + 1], n = near([(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]), last = pieces.at(-1), kind = kinds?.[family][l][i];
+				if (kind ? kind === 'outline' : n.d < .05 && edgeOfColour(a, b)) {
 					if (last?.kind === 'outline' && last.r === n.r) last.to = b;
 					else pieces.push({ kind: 'outline', r: n.r, from: a, to: b, mid: n.s });
-				} else if (last?.kind === 'hidden') last.points.push(b);
-				else pieces.push({ kind: 'hidden', points: [a, b] });
+				} else {
+					// A cut of one family off the rings (OWN's construction: a line crossing the circle to the motif).
+					const one = kind === 'leg';
+					if (last?.kind === 'hidden' && last.one === one) last.points.push(b);
+					else pieces.push({ kind: 'hidden', one, points: [a, b] });
+				}
 			}
 			out[family].push(pieces.map(piece => {
 				if (piece.kind === 'outline') {
@@ -311,7 +361,7 @@ try {
 				return { h: [anchor(P), anchor(Q)], bends: piece.points.slice(1, -1).map(p => {
 					const v = [p[0] - P[0], p[1] - P[1]];
 					return [+((v[0] * d[0] + v[1] * d[1]) / l2).toFixed(9), +((-v[0] * d[1] + v[1] * d[0]) / l2).toFixed(9)];
-				}) };
+				}), ...piece.one ? { one: true } : {} };
 			}));
 		}
 		return out;
@@ -340,10 +390,16 @@ try {
 	const keeps = (recipe, step) => {
 		const say = (kept, why) => { if (process.env.VERBOSE) console.log(`    ${step.p}%: ${why}`); return kept; };
 		const made = fromStoredRecipe(request(step.p / 100), [{ ...recipe, steps: [step.p] }]);
-		if (!made) return say(false, 'not drawn, or not clean');
+		if (!made) {
+			// Why, where VERBOSE asks: the construction's own error.
+			let why = '';
+			if (process.env.VERBOSE) try { const o = outlineFor(recipe, picture(request(step.p / 100), recipe.known)); why = o ? (recipeConstruction(recipe, o), 'it builds; the heart does not finish') : 'another outline'; } catch (error) { why = error.message.slice(0, 120); }
+			return say(false, `not drawn, or not clean${why ? ` (${why})` : ''}`);
+		}
 		if (!step.own) return say(true, 'over a refused heart');
 		const off = apart(made.design, step.own.design);
-		if (off > .005) return say(false, `another picture than the generator's (${(off * 100).toFixed(1)}% apart)`);
+		// A heart of the generator's (OWN) may be built on its motif made a little smaller: the page draws it on the picture.
+		if (off > .005 && !process.env.OWN) return say(false, `another picture than the generator's (${(off * 100).toFixed(1)}% apart)`);
 		if (process.env.KEEP_ALL) return say(true, 'kept, drawn cleanly');
 		const rings = picture(request(step.p / 100), recipe.known).rings, mine = measures(made.design, rings), its = measures(step.own.design, rings);
 		if (step.own.hardToCut) return say(true, `${JSON.stringify(mine)} over a hard heart`);
@@ -378,7 +434,7 @@ try {
 				const solved = await solve(next.rings, next.own?.design).catch(error => ({ error: error.message, seconds: 0 }));
 				if (!solved.xy) { console.log(`  ${next.p}%: no template (${solved.error}, ${solved.seconds.toFixed(0)} s)`); continue; }
 				const recipe = { style, ...strips ? { strips } : {}, steps: [], gap: GAP, ...Object.keys(next.known).length ? { known: next.known } : {},
-					sig: next.o.corners.map(c => c.length), ...piecesOf(solved.xy, next.o) };
+					sig: (solved.o ?? next.o).corners.map(c => c.length), ...piecesOf(solved.xy, solved.o ?? next.o, solved.kinds) };
 				// OWN: a hidden piece's sampled bends kept only where they turn it (Douglas–Peucker, in its own
 				// frame: the piece from 0,0 to 1,0).
 				if (process.env.OWN) {
@@ -396,6 +452,13 @@ try {
 					recipe.steps.push(step.p);
 					covered.add(step.p);
 				}
+				// A heart of the generator's whose cuts make a weave on its picture is a pair's candidate though it
+				// does not finish there (hard to cut, or its cuts a hair close on the picture's motif): pairs.mjs
+				// judges it on every motif and size of its pair.
+				if (process.env.OWN && process.env.KEEP_ALL && !recipe.steps.length) try {
+					const o = solved.o ?? outlineFor(recipe, picture(request(next.p / 100), recipe.known));
+					if (o) { recipeConstruction(recipe, o); recipe.steps.push(next.p); covered.add(next.p); }
+				} catch {}
 				if (recipe.steps.length) recipes.push(recipe);
 				console.log(`  ${next.p}%: solved in ${solved.seconds.toFixed(0)} s, kept at ${recipe.steps.length ? recipe.steps.join(',') : 'none'}`);
 			}

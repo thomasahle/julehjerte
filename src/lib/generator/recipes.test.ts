@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { chooseRecipe, isTopology, recipeEdges, recipeOutline, ringCorners, type MotifRecipe, type RecipeFile } from './recipes';
+import { chooseRecipe, isTopology, recipeEdges, recipeOutline, ringCorners, type MotifRecipe, type RecipeChord, type RecipeFile } from './recipes';
 import { islandOn, motifFit, motifRings, nestingOf, topologyConstruction, topologyOf } from './topologyRecipes';
 import { boardOutline } from './boardOutline';
 import { fromTopology, generate, storedHearts } from './generate';
@@ -53,6 +53,21 @@ describe('stored recipes', () => {
 		expect(hidden.map(e => e.family)).toEqual(['AB', 'AB']);
 		expect(hidden[0].from).toEqual([50, 80]);
 		expect(hidden[1].to).toEqual([40, 20]);
+	});
+
+	it('draws a hidden cut only its own line\'s paper cuts in that family alone, once for each family', () => {
+		const rings = [square(20, 20, 60)], o = recipeOutline(rings);
+		// The same two places joined in each paper alone (a line of each crossing to the motif where the
+		// other paper covers it), and two others once for both.
+		const one: RecipeChord = { h: [{ r: 0, k: 0, u: .5 }, { r: 0, k: 2, u: .5 }], bends: [], one: true };
+		const recipe: MotifRecipe = {
+			style: 'board', steps: [70], gap: 3, sig: [4],
+			A: [[one], [{ h: [{ r: 0, k: 1, u: .5 }, { r: 0, k: 3, u: .5 }], bends: [] }]],
+			B: [[one], [{ h: [{ r: 0, k: 3, u: .5 }, { r: 0, k: 1, u: .5 }], bends: [] }]]
+		};
+		const edges = recipeEdges(recipe, o);
+		expect(edges.filter(e => e.kind === 'frame').map(e => [e.family, e.from, e.to])).toEqual([['A', [50, 20], [50, 80]], ['B', [50, 20], [50, 80]]]);
+		expect(edges.filter(e => e.kind === 'shared').map(e => [e.family, e.from, e.to])).toEqual([['AB', [80, 50], [20, 50]]]);
 	});
 
 	it('draws a place where two rings cross at a vertex of neither at their crossing, for both stretches', () => {

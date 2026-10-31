@@ -688,12 +688,24 @@ function finishConstruction(request: GeneratorRequest, r: Construction, recipe: 
 	];
 	fidelity(design, r.artwork, domain, r.edges, r.background);
 	if (!curved && spacing === 1) madeFrom.set(design, { request, construction: r, curveFitter });
+	if (!curved) builtFrom.set(design, r);
 	return { design, recipe };
 }
 
 /** What each clean design was finished from, to make it again with its
  * hidden cuts moved (see `withSpreadPorts`). */
 const madeFrom = new WeakMap<HeartDesign, { request: GeneratorRequest; construction: Construction; curveFitter?: ReturnType<typeof createExactCurveFitter> }>();
+
+/** The straight cuts each heart was finished from, hard to cut or not, before
+ * their curves were fitted: its edges and its own copy of the motif (see
+ * `constructionOf`). */
+const builtFrom = new WeakMap<HeartDesign, Construction>();
+
+/** The cuts a heart was built from, as edges on its motif's rings and the
+ * board's lines: to store a heart of the generator's as a recipe
+ * (scripts/generator/recipes.mjs). None for a heart whose shared cuts were
+ * curved to build it. */
+export const constructionOf = (design: HeartDesign): Construction | undefined => builtFrom.get(design);
 
 /** Improve only the selected construction, once. Shared curves meet the artwork
  * across its outline rather than forming a narrow point along it. Keep the
@@ -714,6 +726,8 @@ function improveSharedConnections(result: GeneratorResult, keepTemplate = false)
 	// curve is still exactly coincident on both sheets, preserving the weave.
 	const made = design && madeFrom.get(result.design);
 	if (made) madeFrom.set(design, made);
+	const built = design && builtFrom.get(result.design);
+	if (built) builtFrom.set(design, built);
 	return design ? { ...result, design } : result;
 }
 
@@ -738,6 +752,8 @@ function improveHardConnections(result: GeneratorResult): GeneratorResult {
 	const flagged = findSearchIssues(original.fingers, full);
 	const design = bentWhere(original, design => !findSearchIssues(design.fingers, full * low, full).size &&
 		![...findSearchIssues(design.fingers, full)].some(id => !flagged.has(id)));
+	const built = design && builtFrom.get(original);
+	if (built) builtFrom.set(design, built);
 	return design ? { ...result, design } : result;
 }
 

@@ -271,6 +271,26 @@ seven strips 1.7 → 1.9 s, nine strips' unseen 1.0 → 1.2 s). 126 pairs, 567 o
 the 3724 motif sizes, still draw the generator's own heart: 93 with no
 candidate that draws, 33 whose candidates beat it nowhere.
 
+Read from its curves, a heart of the generator's met itself wrongly mostly
+for four reasons. It is now read from the cuts it was built from
+(`constructionOf`: each heart's straight edges and its own copy of the motif,
+hard to cut or not), each edge's family the construction's rather than the
+picture's colours (a line following the circle through a square of one
+colour), split where it passes a ring's point (the corner of the squares a
+line runs along), on the picture with the construction's motif (the generator
+shrinks a motif a little where nothing finishes at its size, by 2.5% for the
+mitten on seven strips at 78%). And a recipe's hidden cut can be one paper's
+alone (`one`, see `RecipeChord`): the generator's lines crossing the circle to
+the motif where the other paper covers them, which a recipe of shared hidden
+cuts could not hold. One that makes a weave but does not finish at its own size
+(hard to cut there) is still a candidate. Of 487 hearts, 375 are candidates
+(the others: the motif's rings not the picture's, cuts curved to build, or
+meeting wrongly still), and 91 of the 119 pairs left have one; 7 pairs more,
+210 recipes (162 pairs; 0.39 MB as sent), 13 motif sizes better and none worse
+(the snowman at 99% on five, seven and nine strips: 2, 10 and 10 places the
+paper may tear to 1, 2 and 3). The 91 pairs' candidates beat the generator's
+heart nowhere: most are its own heart at some size, the same there.
+
     node scripts/generator/pairs.mjs <motif>...      # every board, up to three recipes a pair
     ADD=1 node scripts/generator/pairs.mjs <motif>... # only for the pairs the page has none for
     node scripts/generator/pair-queue.mjs <unsolved.json> <solves>... # the next round's solves
