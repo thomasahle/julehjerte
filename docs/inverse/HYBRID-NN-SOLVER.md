@@ -51,7 +51,10 @@ no DINOv3 for now (ImageNet encoders are doing well and are free of the Hugging 
   `templateChecksPassed`). "Exact" in this note means this.
 - **Optimal hidden count:** proved only where the template's hidden count equals the count stage's lower
   bound (`cheapBounds`). For example, venus from oracle maps: 20 = 20. Otherwise a template is the best
-  found, not proved best.
+  found, not proved best. **The bound is the outline's:** another tracing of the same picture (tips
+  rounded, made symmetric) is another structure with its own bound, and can need far fewer hidden cuts
+  (koelbuer: 16 = bound on an outline with tips rounded, 2 on the traced one). So "optimal" means optimal
+  on that outline.
 - **No template found:** the search ran out of time. Today's search never proves that none exists, and
   neither does the ladder.
 
@@ -343,8 +346,27 @@ the race's hold (below) keeps today's where it has fewer. Examples, ladder alone
 david4 36.3 → 16.4 s, 5star 37.2 → 24.0 s, roserude 28.4 → 9.0 s with 2 = bound (today's has 2 at 28 s,
 the earlier ladder 4).
 
-**So the race now holds a ladder template above its bound** (bf4007e6): at its outline's lower bound
-it ends today's search at once; above it, it is shown and held, and today's template stands unless it
+**With the hold counted, and only the traced outline's bound trusted** (a7e871e9; `holdsum.py` on the
+benchmark that records each ladder template's outline). Of the ladder's 75 templates, 42 are on the
+traced outline, 4 on it made symmetric and 29 on outlines with tips rounded. Of those 29, where today's
+search is exact too (26), 16 have its hidden count, 3 fewer and 7 more, some far more (origami 28
+against 2, drageskael 16 against 0, koelbuer 16 against 2). So they wait for today's search:
+
+| | Today's search | Side by side, held as in the page |
+|---|---|---|
+| Exact (106) | 74 | **77** |
+| Median where today is exact | 10.8 s | 7.6 s |
+| Total time over those 74 | 1210 s | 1085 s |
+| Hidden cuts against today's | | fewer on 4, **more on none** |
+
+Capping the hold at 5, 10 or 20 s would save 220–440 s but give 4–5 pictures more hidden cuts than
+today's (the cases above), so the hold stays whole. The time the network saves is now mostly on the
+traced outline (42 templates); a ladder that finds the traced outline's templates more often, or that
+knows which outline to search, is where the remaining speed is.
+
+**So the race now holds a ladder template above its bound** (bf4007e6; a7e871e9: only the traced
+outline's bound counts, see Terms): at the traced outline's lower bound, found without a fallback, it ends
+today's search at once; above it, it is shown and held, and today's template stands unless it
 has more hidden cuts; when today's finds none (or runs out of time), and on Stop, the ladder's stands.
 In Chromium (the site's worker, `_dev/race.html`, not committed): khatam 25 = 25 at once in 8.4 s;
 simple-5star ends with today's 4 = 4 at 9.6 s (it was the ladder's 6); lilje1 shows the ladder's 8 at
