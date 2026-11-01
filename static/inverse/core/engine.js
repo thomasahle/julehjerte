@@ -49,7 +49,7 @@ export const timeScale=limit=>Math.max(1,limit/EXACT_SECONDS);
  * outline has until ALONE_TRACED_SECONDS and the rounded one the rest. A
  * passing template with tips coming back to themselves has RETURNS_LEAST (or
  * as long as it took) for one with them rounded. */
-const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,ROUNDED_LEAST=6,RETURNS_LEAST=10,TIP_ROUNDING_MM=.8,TIP_SPOT_MM=4,RETURN_REPAIR_SECONDS=4,RETURN_REPAIR_TRIES=2,ROUGH_ONE=1.1,ROUGH_TWO=1.3;
+const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,LADDER_FIRST_SHARE=.5,LADDER_LEAST=2,ROUNDED_LEAST=6,RETURNS_LEAST=10,TIP_ROUNDING_MM=.8,TIP_SPOT_MM=4,RETURN_REPAIR_SECONDS=4,RETURN_REPAIR_TRIES=2,ROUGH_ONE=1.1,ROUGH_TWO=1.3;
 /** The fitter's seconds beside the exact search (`exactRoute: 'fitter'`): what
  * it had when it came first, which photographs need to keep their details. */
 const FITTER_SECONDS=45;
@@ -171,11 +171,36 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
   let ties=symmetry;
   const sink=[],search=end=>({deadline:end,onProgress,symmetry:ties,geometry:cfg.progressGeometry,sink});
   const began=performance.now();
+  // The ladder alone (a worker beside today's search, worker-controller.js):
+  // the traced outline and the ones today's search goes on to, with tips
+  // rounded, each searched by the ladder in two phases (exact/stage.js): its
+  // cheap rungs on every outline first, then its long ones. 5star's 12 hidden
+  // cuts are on the rounded outline (today's search: 37 s; the ladder, once
+  // there: 3 s), and of its 54 templates on the 106 broad pictures the ladder
+  // on the traced outline found 48 within 12 s.
+  if(ladderOnly){
+    const n=target.sourceImage.resolution,px=n/cfgExact.width,radius=Math.max(1,Math.round(TIP_ROUNDING_MM*n/target.width));
+    let tips=[];
+    try{tips=returnTips(outline,cfgExact).map(([x,y])=>[x*px,y*px]);}catch{tips=[];}
+    const outlines=[outline];
+    for(const way of [...(tips.length?[{open:radius,spots:tips,within:TIP_SPOT_MM*px}]:[]),{open:radius},{open:2*radius,wider:true}]){
+      try{const traced=traceAt(way.open,way);if(traced&&!traced.why)outlines.push(traced.scaled);}catch{/* an outline that cannot be traced is left out */}
+    }
+    let last=null;
+    for(const [phase,share] of [['first',LADDER_FIRST_SHARE],['second',1]]){
+      const phaseEnd=performance.now()+share*(roundedEnd-performance.now());
+      for(const [k,traced] of outlines.entries()){
+        const left=phaseEnd-performance.now();
+        if(left<1000*LADDER_LEAST)break;
+        last=await exactSearch(traced,null,cfgExact,{...search(performance.now()+left/(outlines.length-k)),reserve:.5,maps,ladderOnly,phase});
+        if(last.found)return{solution:last.found.solution,report:{...last.report,chosen:'exact',ladderOnly:true,outline:k,phase}};
+      }
+    }
+    return{solution:null,report:{...(last?.report??{}),chosen:'fitter',ladderOnly:true}};
+  }
   // The cut-proposal network's maps (raw.cutMaps, made by the worker from the
   // mask: neural/cuts.js) give the traced outline's search its ladder first.
   let found=await exactSearch(outline,null,cfgExact,{...search(tracedEnd),maps,ladderOnly});
-  // The ladder alone (a worker beside today's search, worker-controller.js): its answer, whatever it is.
-  if(ladderOnly)return found.found?{solution:found.found.solution,report:{...found.report,chosen:'exact',ladderOnly:true}}:{solution:null,report:{...found.report,chosen:'fitter',ladderOnly:true}};
   // A template under part of the symmetry (exact/stage.js subgroupsOf): the
   // searches with tips rounded keep to that part.
   if(found.report.subgroup)ties=found.report.subgroup.to;

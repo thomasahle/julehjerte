@@ -142,6 +142,7 @@ const START_SECONDS = 3;
 const LADDER = [[10, 2], [30, 2], [100, 3], [300, 4]], LADDER_SHARE = .25, SHORT_MM = 3, LADDER_BUILD = 8, LADDER_SAMPLES = 2, LADDER_NOISE = .15;
 // Alone: K, the plain ranking's seconds, a sampled one's.
 const LADDER_ALONE = [[10, 3, 2], [30, 4, 2], [100, 6, 3], [300, 10, 4], [1000, 15, 10]];
+const LADDER_FIRST = [[10, 2, 1], [30, 2, 1], [100, 3, 2], [300, 4, 3]], LADDER_SECOND = [[300, 10, 4], [1000, 15, 10]];
 
 /** Under ties, the share of the search's time the fine grid from no start
  * gets first, if at least BARE_FLOOR seconds are left (exactSearch). */
@@ -186,7 +187,7 @@ export function subgroupsOf(symmetry) {
  * gallery designs held out of the network's training (2026-10-31) the ladder
  * found the template of today's search, or one as good, on most in a tenth to
  * a third of its time (5star 37.6 s to 3.6, roed-blomst 43.6 to 1.4). */
-async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, multi, onProgress, geometry, refine, maps, alone = false}) {
+async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, multi, onProgress, geometry, refine, maps, alone = false, phase = null}) {
   // Alone (a worker beside today's search) it may take all the time, and a wider last rung.
   const until = performance.now() + 1000 * seconds * (alone ? 1 : LADDER_SHARE), reuse = {}, rungs = [];
   let error = null;
@@ -197,7 +198,9 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
   // benchmark's times there (LADDER_ALONE): 5star's rungs to K300 found 12 hidden cuts in LADDER's, but
   // breaking rules still when their time ran out; in 10 s K300 had its template in 3.2 s.
   const rungList = [];
-  if (alone) for (const [k, plain, sample] of LADDER_ALONE) for (let seed = 0; seed <= LADDER_SAMPLES; seed++) rungList.push([k, seed ? sample : plain, seed]);
+  // Alone over several outlines (engine.js exactTemplate), a `phase`: its cheap rungs (LADDER_FIRST) on each
+  // outline first, then its long ones (LADDER_SECOND).
+  if (alone) for (const [k, plain, sample] of phase === 'first' ? LADDER_FIRST : phase === 'second' ? LADDER_SECOND : LADDER_ALONE) for (let seed = 0; seed <= LADDER_SAMPLES; seed++) rungList.push([k, seed ? sample : plain, seed]);
   else for (const [k, rungSeconds] of LADDER) rungList.push([k, rungSeconds, 0]);
   for (const [k, rungSeconds, seed] of rungList) {
     const room = Math.min(rungSeconds, (until - performance.now()) / 1000);
@@ -223,9 +226,9 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
   return {found: null, rungs, error};
 }
 
-export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true, fallback = true, even = false, multi = 'auto', maps = null, ladderOnly = false} = {}) {
+export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true, fallback = true, even = false, multi = 'auto', maps = null, ladderOnly = false, phase = null} = {}) {
   const seconds = (deadline - performance.now()) / 1000 - reserve;
-  const report = {attempted: false, symmetry}, alone = ladderOnly ? {maps, ladderOnly} : {};
+  const report = {attempted: false, symmetry}, alone = ladderOnly ? {maps, ladderOnly, phase} : {};
   if (seconds < 1) return {found: null, report: {...report, reason: 'no time left'}};
   report.attempted = true;
   onProgress({stage: 'exactOutline'});
@@ -247,7 +250,7 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     // symmetricLines).
     const exact = exactOutline(outline, cfg, 'tight', {symmetry: even ? symmetry : []});
     // With the network's maps, its ladder first; today's search after it, in the time left.
-    const ladder = maps ? await networkLadder(outline, template, cfg, exact, {seconds, symmetry, multi, onProgress, geometry, refine, maps, alone: ladderOnly}) : null;
+    const ladder = maps ? await networkLadder(outline, template, cfg, exact, {seconds, symmetry, multi, onProgress, geometry, refine, maps, alone: ladderOnly, phase}) : null;
     if (ladder) report.ladder = ladder.rungs;
     if (ladder?.found) found = ladder.found;
     // Alone, a ladder without a template goes on as today's search does after one: the outline made

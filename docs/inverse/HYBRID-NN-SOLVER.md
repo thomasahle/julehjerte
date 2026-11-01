@@ -323,6 +323,26 @@ today's on 46, are lower on 1 and higher on 6. Four of those it finds first: lil
 roserude 4 against 2, simple-5star 6 against 4, danish-tree-group-bottom 9 against 8. With the first
 template standing, the page showed the worse one.
 
+**The ladder worker over the rounded outlines too** (2026-11-01, later). The held-out benchmark had
+replayed today's winning outline (section 3's caveat), which for 5star, david4 and fisk is the one with
+tips rounded; the production ladder stopped at the traced one. The worker now builds the outlines
+today's search goes on to (tips rounded near the tips that come back, everywhere, everywhere twice as
+much) and runs the ladder over them in two phases: its cheap rungs (K10–K300, each with two samples,
+2–4 s) on every outline first, then its long ones (K300 10 s, K1000 15 s). On the 106 broad pictures:
+
+| | Before (ec5a9cb3) | Two phases |
+|---|---|---|
+| Ladder alone, exact | 54 | **75** (21 gained, none lost) |
+| Side by side, exact | 75 | **77** (khatam and two photographed hearts more than today's 74) |
+| Pictures today's search takes over 20 s for (24): under 20 s side by side | 8 | **19** |
+| Total time over today's 74 exact pictures (today: 1210 s) | 870 s | **621 s** |
+| Median where today is exact (today: 10.8 s) | 4.2 s | 5.3 s |
+
+Where both are exact the ladder's hidden counts match today's on 59, are lower on 4 and higher on 9;
+the race's hold (below) keeps today's where it has fewer. Examples, ladder alone: fisk 41.6 → 12.5 s,
+david4 36.3 → 16.4 s, 5star 37.2 → 24.0 s, roserude 28.4 → 9.0 s with 2 = bound (today's has 2 at 28 s,
+the earlier ladder 4).
+
 **So the race now holds a ladder template above its bound** (bf4007e6): at its outline's lower bound
 it ends today's search at once; above it, it is shown and held, and today's template stands unless it
 has more hidden cuts; when today's finds none (or runs out of time), and on Stop, the ladder's stands.
