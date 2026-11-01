@@ -117,6 +117,30 @@ table, so only 18 can be compared:
 
 ## 3a. The retrained models
 
+**syn1, shipped (2026-11-01, `cuts-c090b660.onnx`): trained on synthetic hearts only, every gallery heart
+test.** The user's rule: no gallery heart (the site's gallery and the juleflet library) in training. syn1
+is the ImageNet EfficientNet-B0 encoder trained three epochs on 42,788 synthetic pictures: the site's
+generator designs (the old `g-` ones and 1,356 new `s-` ones in every figure style with the circle frame
+at random frame sizes 50–80, motif scales and 2–9 strips), the generated motif, pattern and grid
+pictures; none of the gallery templates, designer templates, variations of real pictures or fed-back
+hard pictures. Measured through the browser's predictor (float16, within 0.029 of PyTorch) with the
+production ladder, side by side with today's search:
+
+| Test group (none seen in training) | Today's search | syn1 side by side |
+|---|---|---|
+| Library, 64 | 59 | **61** (khatam; **venus**, 20 = bound) |
+| Gallery not in the library, 21 | 15 | **17** (tak; **god-jul**, 23 hidden) |
+| Photographed hearts, 42 | 15 | 17 |
+| All 127 | 89 | **95** |
+
+Median where today's is exact: library 7.4 s against 10.1, the rest of the gallery 5.9 against 13.5,
+photographs 9.9 against 14.8; never more hidden cuts than today's. venus and god-jul are solved without
+having been seen: god-jul had resisted everything before, including the gallery template's cuts as the
+ranking on the traced outline; it is found on an outline with tips rounded, in the ladder's second phase.
+Against the gallery-trained models on the library: v3 60, r7 62 (its extra one, davidsstjerne-circ, from
+training on it). syn1 replaces r7.
+
+
 **r7, shipped (2026-11-01, `cuts-c6cd1ff7.onnx`):** v3 fine-tuned (lr 2e-4, one epoch) on every pack, the
 250 variations solved since r6, and the hard pictures' exact templates fed back (davidsstjerne-circ,
 solved with the designer's cuts as the ranking; tak and khatam by v3; venus by r4; each warped 12 ways and
