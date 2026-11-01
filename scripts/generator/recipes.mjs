@@ -23,13 +23,13 @@
 //        VERBOSE=1      print each size's measures beside the generator's, and why one is not kept
 //        SOLVE_SECONDS  per solve (120), MAX_SOLVES per group (4)
 //        KEEP_ALL=1     keep a solve at every size it draws cleanly, beating the generator's or not (a
-//                       pair's candidate, judged on every motif of its pair by pairs.mjs)
+//                       pair's candidate, judged on every motif of its pair by pairs.mjs), and wherever its
+//                       cuts make a weave, though it does not finish at its own size
 //        OUT_FILE=path  write there (only this run's recipes and the file's others) rather than the motif's file
 //        OWN=1          no search: the generator's own heart at the size as the solve (a pair's candidate where
 //                       the search finds none), read from the cuts it was built from (`constructionOf`), else
 //                       from its curves (OWN_SAMPLED=1 always so), OWN_TOL its hidden cuts' straightening (.01;
-//                       .03 where that fails the editor's checks); with KEEP_ALL kept wherever its cuts make a
-//                       weave, though it does not finish at its own size
+//                       .03 where that fails the editor's checks)
 //
 // Run one at a time: each solve keeps a core busy for up to two minutes.
 import fs from 'node:fs/promises';
@@ -452,10 +452,10 @@ try {
 					recipe.steps.push(step.p);
 					covered.add(step.p);
 				}
-				// A heart of the generator's whose cuts make a weave on its picture is a pair's candidate though it
-				// does not finish there (hard to cut, or its cuts a hair close on the picture's motif): pairs.mjs
-				// judges it on every motif and size of its pair.
-				if (process.env.OWN && process.env.KEEP_ALL && !recipe.steps.length) try {
+				// Cuts that make a weave on the picture are a pair's candidate though they do not finish there (hard
+				// to cut, or a hair close on the picture's motif): pairs.mjs judges them on every motif and size of
+				// their pair.
+				if (process.env.KEEP_ALL && !recipe.steps.length) try {
 					const o = solved.o ?? outlineFor(recipe, picture(request(next.p / 100), recipe.known));
 					if (o) { recipeConstruction(recipe, o); recipe.steps.push(next.p); covered.add(next.p); }
 				} catch {}

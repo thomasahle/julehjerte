@@ -307,8 +307,17 @@ the 30 others unchanged; 0.3 to 0.5 s more at the sizes it tries. `pairs.mjs`
 judges a candidate so too (where the generator's heart is hard to cut and the
 candidate does not finish clean, through `fromTopology`): 14 pairs more, 225
 recipes (176 of 281 pairs), the featured motifs 10 and 13 sizes better on three
-and five strips, none worse. 105 pairs, 423 of the 3724 motif sizes, still draw
-the generator's heart: 77 with candidates that beat it nowhere, 28 with none.
+and five strips, none worse.
+
+Where the generator's heart tears or is hard to cut, a search from it at its
+worst size (TEMPLATE=1) mostly finds no start: the model's own start fails. The
+counting CDCL's start from Mal's exact search (a prototype, on the local branch
+claude/cdcl-theories-proto: `CDCL=60`, its loop theory, in `model.js`) finds one
+for 30 of the 80 such pairs, kept as candidates (`.cdcl` solves, KEEP_ALL). One
+pair more, 226 recipes (177 pairs): the swan on nine strips at 51 and 57%, from
+11 and 10 narrow strips to 7 (no longer hard to cut at 57%), none worse. 104
+pairs, 421 of the 3724 motif sizes, still draw the generator's heart: 80 with
+candidates that beat it nowhere, 24 with none.
 
     node scripts/generator/pairs.mjs <motif>...      # every board, up to three recipes a pair
     ADD=1 node scripts/generator/pairs.mjs <motif>... # only for the pairs the page has none for
