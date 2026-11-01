@@ -16,7 +16,11 @@ In Mal's default mode the ladder runs in a worker of its own, beside today's exa
 export-valid template wins. A picture therefore never waits for the network, and today's search keeps its
 whole time.
 
-**What is established** (all measurements after the orientation fix, section 6):
+**What is established** (all measurements after the orientation fix, section 6). *Generalization* is
+judged only on the held-out designs (section 3): there the network adds speed, not coverage, since today's
+search alone solves the designs the ladder misses. The hard pictures solved without training on them
+are tak and khatam (v3). davidsstjerne-circ and venus are solved by training on them (r7; venus also r4).
+The 106 broad pictures mix seen and unseen ones.
 
 - **Held-out gallery designs:** v3 finds an export-valid template on all 9 measurable designs it never
   saw, each faster than today's search (median about 6×). The hidden-cut count is the same, except
@@ -125,14 +129,19 @@ turned). Measured on the production ladder with each model's maps (not `ladder.m
 | hard, now in r7's training | tak, khatam | tak, khatam (5.4 against 11.9 s), **davidsstjerne-circ** (49), **venus** (20 = bound) |
 | santa, balls, god-jul | none | none |
 
-On the 106 broad pictures through the browser's predictor (the hold and the traced-bound rule counted):
+On the 106 broad pictures through the browser's predictor (the hold and the traced-bound rule counted;
+**not a held-out set**: many of its pictures, or variations of them, are in the training data, so its
+counts mix seen and unseen pictures; the held-out designs above are the clean test):
 side by side 78 exact against v3's 77 and today's 74; the library 62 of 64 (davidsstjerne-circ and
 venus gained; santa and balls left, which fail even with the designer's cuts), the photographed hearts
 16 of 42 (gathering-hanging-trio-top lost, which v3's ladder had at 43 s); median 7.6 s against v3's
 7.2 s and today's 10.8 s; never more hidden cuts than today's.
 
 Per picture it moves both ways (hermanngitter 29.8 → 9.5 s, 5star 23.7 → 16.4 s, david4 15.7 → 43.0 s).
-No held-out design is lost, and two hard pictures are gained by feeding the solver's solutions back. Held-
+No held-out design is lost. **The two hard pictures are gained by training on them**: davidsstjerne-circ
+and venus are now in r7's training, so solving them shows memory, not a better solver (and venus was
+already in r4's training, through round 1's pack, so r4's venus was memory too). It helps whoever paints
+those designs; it is no evidence of generalization. On the held-out designs r7 equals v3. Held-
 out losses: hidden 0.479 against r6's 0.780, direction 0.243 against 0.301. The float16 export matches
 PyTorch within 0.011 (float32 0.0005), and through the browser predictor davidsstjerne-circ is exact in
 17.5 s and venus in 14.7 s.
