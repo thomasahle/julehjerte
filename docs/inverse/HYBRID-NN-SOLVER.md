@@ -159,6 +159,15 @@ the export's image-error limit against the original, one its regions check. So n
 next would be local hypotheses (the painted mask with the clean picture's correction in one small region
 at a time, so the image error stays small) or a clean picture at the mask's own resolution.
 
+**Local hypotheses, tried** (`nn/localhyp.py`, `even/hypcheck.mjs`): for the 33 test pictures today's search
+leaves without a template (27 photographs and the six hard gallery hearts), the regions where clean1's
+picture and the painted mask disagree, kept where flipping one changes the numbers of red and white regions
+(up to 1% of the square), the three largest one at a time and all together. 13 pictures had no such
+region; the other 20 got 58 hypotheses. One solves: vissevasse-arranged-r3c3 (a photograph; its template
+0.9% from the painted mask, limit 3%). On every other hypothesis today's search finds no template at all,
+the hard gallery hearts included. So small structural corrections of the outline rarely make a picture
+solvable; the hard ones need more than a near-touch or a neck changed.
+
 
 **r7, shipped (2026-11-01, `cuts-c6cd1ff7.onnx`):** v3 fine-tuned (lr 2e-4, one epoch) on every pack, the
 250 variations solved since r6, and the hard pictures' exact templates fed back (davidsstjerne-circ,
