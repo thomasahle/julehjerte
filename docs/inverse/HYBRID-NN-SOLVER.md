@@ -140,6 +140,14 @@ ranking on the traced outline; it is found on an outline with tips rounded, in t
 Against the gallery-trained models on the library: v3 60, r7 62 (its extra one, davidsstjerne-circ, from
 training on it). syn1 replaces r7.
 
+**syn2, not shipped:** syn1 warm-started two epochs with 60% of the inputs roughened (blur and threshold,
+smooth noise, pixelation, speckles; labels kept) and a tenth output, the clean picture, as the first step
+towards outline hypotheses from the network. On the same 127 test pictures it does worse: side by side
+92 against syn1's 95 (library 59 against 61, losing khatam and venus; photographs 16 against 17). The
+roughening as done cost the cut maps on clean pictures and did not help the photographs. Next try: the
+clean picture from a separate head or network, so the cut maps stay as they are, and its use measured by
+how often its outline matches the true one on roughened synthetic hearts.
+
 
 **r7, shipped (2026-11-01, `cuts-c6cd1ff7.onnx`):** v3 fine-tuned (lr 2e-4, one epoch) on every pack, the
 250 variations solved since r6, and the hard pictures' exact templates fed back (davidsstjerne-circ,
