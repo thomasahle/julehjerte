@@ -112,9 +112,10 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
   const statics = [...visibleNogoods(outline, cand), ...routeNogoods(outline, cand)];
   const soft = new Set(statics.filter(n => holds(n, labels, used, switches)).map(nogoodKey));
   // The count's lower bound lets the count stage stop once the start's count is proven. A ladder rung
-  // (`rank`) starts from no template, so it takes the outline's bound alone: capped by its empty start, it
-  // would be 0, and the rung could neither stop at the bound nor report it.
-  const bound = rank ? cheapBounds(st, outline).lb : Math.min(cheapBounds(st, outline).lb, used.size);
+  // (`rank`) starts from no template: the model keeps the bound its empty start caps at 0 (at the outline's
+  // bound the model would search that count alone first, and khatam's rung then ran out of time), and the
+  // report gives the outline's, so that a template at it shows as optimal.
+  const outlineBound = cheapBounds(st, outline).lb, bound = Math.min(outlineBound, used.size);
   const built = performance.now(), deadline = t0 + seconds * 1000, attempts = [];
   // Solve; a drawing the paper audit rejects is solved again with the narrow
   // paper around what it doubts forbidden (paper.js), while time is left.
@@ -192,7 +193,7 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
       refined = result;
     } catch { refined = null; }
   }
-  return {solution: best.solution, refined, xy: best.xy, report: {...best.report, bound, attempts, candidates: cand.cost.size, statics: statics.length,
+  return {solution: best.solution, refined, xy: best.xy, report: {...best.report, bound: rank ? outlineBound : bound, attempts, candidates: cand.cost.size, statics: statics.length,
     softStart: soft.size, uncuttableStart: fallback.size, buildSeconds: (built - t0) / 1000, seconds: (performance.now() - t0) / 1000}};
 }
 
