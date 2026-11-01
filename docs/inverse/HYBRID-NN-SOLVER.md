@@ -60,6 +60,13 @@ no DINOv3 for now (ImageNet encoders are doing well and are free of the Hugging 
 The ladder runs with the short candidates (under 3 mm) added, from the timed copy (`ladder.mjs`). "Today"
 is the page's exact route on the same machine. Times include every rung up to the first export-valid one.
 
+**Caveat (found 2026-11-01):** `ladder.mjs` reruns each rung in the context of today's search's winning
+call (`ref.call`: its outline, symmetry, sheets). For 5star, david4 and fisk that is the outline with its
+tips rounded, which today's search reaches only after the traced one fails. So these times are the
+ladder's given the right outline, not the production ladder's: in production (the ladder alone, which
+stopped at the traced outline) 5star, david4 and fisk found nothing and stayed at today's 36–42 s.
+Section 5a gives production numbers.
+
 | Design | Held out of | Today (exact search) | v3 ladder | r4 ladder | ensemble |
 |---|---|---|---|---|---|
 | 5star | v3, r4 | 37.7 s, 12 hidden | 6.5 s, 12 | 3.8 s, 12 | 4.9 s, 12 |
@@ -222,10 +229,17 @@ outlines found templates for all 64 library designs (59 passing every check), so
 outline traced from the mask, not the design. That is where the remaining library failures point:
 the tracer, not the network or the search.
 
-**So of the unsolved seven,** davidsstjerne-circ is proved not to be a ranking problem (infeasible
-with every candidate). On god-jul and jul-tern even the oracle maps fail within 2 minutes, which is
-strong evidence but no proof. Santa's designer template fails our own checks. For these, a better
-network is unlikely to help; the exact model's representation is the place to look.
+**Correction (2026-11-01, later): davidsstjerne-circ is a ranking problem after all.** Oracle maps
+from the designer's own template (juleflet.dk's `heart-designs.json`, converted by
+`routes/theirs-json.mjs`) lead the ladder to an export-valid template: 49 hidden cuts, at K300 in 5.8 s,
+on the fifth outline it tries (65.6 s in all). What was proved above is narrower: no template under its
+turns. Untied, the full model is too big to solve (39k columns, 284k rows) and v3's ranking misses the
+cuts it needs, but the right 300 candidates solve it. The same check fails on santa (K300 and K1000 run
+out of time on all three outlines) and balls (no template, then the candidates' build runs out of
+time), and the gallery's templates fail on god-jul and jul-tern.
+
+**So of the unsolved seven,** davidsstjerne-circ is within reach of a better ranking; on santa, balls,
+god-jul and jul-tern even the designer's cuts do not lead to a template in 2–3 minutes.
 
 ## 5. Easy pictures: overhead, and the side-by-side worker
 
