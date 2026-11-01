@@ -319,6 +319,21 @@ pair more, 226 recipes (177 pairs): the swan on nine strips at 51 and 57%, from
 pairs, 421 of the 3724 motif sizes, still draw the generator's heart: 80 with
 candidates that beat it nowhere, 24 with none.
 
+Screened at one size of a few of its motifs, a candidate that loses there was
+dropped though it wins at others; with TIES=1 a pair keeps the candidate drawn
+at the most of its sizes, beating the generator's heart or not (the page shows
+it only where it does, see `fromTopology`). And a point of the generator's
+cuts off every ring (where one paper's leg meets a shared cut) is anchored once
+for both papers, and a construction's motif a point or two off the picture's
+is still its own: 30 pairs more, 256 recipes (207 of 281 pairs; 11 of them
+beat the generator's heart where they were chosen), the featured motifs 5, 3
+and 5 sizes better on five, seven and nine strips, the unseen 2 on nine, none
+worse; at the same load 1 to 2% more time on seven and nine strips, the
+medians unchanged. 74 pairs, 329 motif sizes, have no recipe: 54 whose
+candidates draw at none of their screened sizes, the moon and stars' 3 whose
+candidates do not fit the picture's outline, and the elephant's 17 (the
+generator refuses it on every board, and the exact search finds no topology).
+
     node scripts/generator/pairs.mjs <motif>...      # every board, up to three recipes a pair
     ADD=1 node scripts/generator/pairs.mjs <motif>... # only for the pairs the page has none for
     node scripts/generator/pair-queue.mjs <unsolved.json> <solves>... # the next round's solves

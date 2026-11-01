@@ -143,7 +143,8 @@ try {
 			if (!made && process.env.VERBOSE) console.log('    no construction: its cuts read from the curves');
 			if (made) {
 				const art = made.artwork, from = rings.length - art.length;
-				if (from < 0 || art.some((ring, m) => ring.length !== rings[from + m].length)) return { error: "the construction's motif is not the picture's", seconds: 0 };
+				// The same rings, a point or two apart where the generator shrank the motif (the moon on seven strips at 75%).
+				if (from < 0 || art.some((ring, m) => Math.abs(ring.length - rings[from + m].length) > 2)) return { error: "the construction's motif is not the picture's", seconds: 0 };
 				const built = [...rings.slice(0, from), ...art], o = recipeOutline(built);
 				const off = p => { let m = Infinity; for (const r of built) for (let i = 0; i < r.length; i++) { const a = r[i], b = r[(i + 1) % r.length], dx = b[0] - a[0], dy = b[1] - a[1], l = dx * dx + dy * dy, t = l ? Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / l)) : 0; m = Math.min(m, Math.hypot(a[0] + t * dx - p[0], a[1] + t * dy - p[1])); } return m; };
 				const key = p => p.map(x => x.toFixed(6)).join(','), xy = { A: [], B: [] }, kinds = { A: [], B: [] };
@@ -337,6 +338,14 @@ try {
 			if (u > 1 - 1e-6) return { r: n.r, k: (k + 1) % corners.length, u: 0 };
 			return { r: n.r, k, u: u < 1e-6 ? 0 : +u.toFixed(9) };
 		};
+		// A point off every ring (OWN: where one paper's leg meets a shared cut) is put on the nearest, the
+		// same for both families: its two copies differ in their last bits, and between two rings as near
+		// they would land on different ones (the owl on seven strips at 69%).
+		const placed = new Map(), placeOf = p => {
+			const k = p.map(x => x.toFixed(6)).join(',');
+			if (!placed.has(k)) placed.set(k, anchor(p));
+			return placed.get(k);
+		};
 		const out = { A: [], B: [] };
 		for (const family of ['A', 'B']) for (const [l, line] of xy[family].entries()) {
 			const pieces = [];
@@ -358,7 +367,7 @@ try {
 					return { v: piece.r, a: anchor(piece.from, piece.r), b: anchor(piece.to, piece.r), f: ahead(s0, piece.mid, length) < length / 2 };
 				}
 				const P = piece.points[0], Q = piece.points.at(-1), d = [Q[0] - P[0], Q[1] - P[1]], l2 = d[0] * d[0] + d[1] * d[1];
-				return { h: [anchor(P), anchor(Q)], bends: piece.points.slice(1, -1).map(p => {
+				return { h: [placeOf(P), placeOf(Q)], bends: piece.points.slice(1, -1).map(p => {
 					const v = [p[0] - P[0], p[1] - P[1]];
 					return [+((v[0] * d[0] + v[1] * d[1]) / l2).toFixed(9), +((-v[0] * d[1] + v[1] * d[0]) / l2).toFixed(9)];
 				}), ...piece.one ? { one: true } : {} };

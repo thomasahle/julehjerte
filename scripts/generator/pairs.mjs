@@ -28,6 +28,8 @@
 //        UNSOLVED=file    write the pairs no candidate beats the generator's heart in, with their motif sizes
 //        ADD=1 BASE=file  keep the recipes of every pair the file (else the page's) has any for, and choose
 //                         only for the others
+//        TIES=1           a pair none of whose candidates beats the generator's heart keeps the one drawn at the
+//                         most of its motif sizes: the page shows it nowhere the generator's heart is better
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -219,8 +221,8 @@ try {
 			}
 			return { i, won, weak, turns, drawn };
 		};
-		const order = (a, b) => b.won - a.won || a.weak - b.weak || a.turns - b.turns;
-		const screened = list.map(i => score(i, middles)).sort(order).slice(0, keep).filter(s => s.won);
+		const ties = !!process.env.TIES, order = (a, b) => b.won - a.won || (ties ? b.drawn - a.drawn : 0) || a.weak - b.weak || a.turns - b.turns;
+		const screened = list.map(i => score(i, middles)).sort(order).slice(0, keep).filter(s => s.won || ties && s.drawn);
 		const judged = screened.map(s => score(s.i, mine)).sort(order);
 		// Several kept: at each motif size the best of their hearts (as `fromTopology` keeps it), and
 		// where that beats the generator's, its weak places.
@@ -232,7 +234,7 @@ try {
 			}
 			return { won, weak };
 		};
-		const picks = judged[0]?.won ? [judged[0]] : [];
+		const picks = judged[0]?.won || ties && judged[0]?.drawn ? [judged[0]] : [];
 		for (let now = together(picks); picks.length && picks.length < perPair;) {
 			const next = judged.filter(s => !picks.includes(s)).map(s => ({ s, t: together([...picks, s]) }))
 				.reduce((a, b) => !a || b.t.won > a.t.won || (b.t.won === a.t.won && b.t.weak < a.t.weak) ? b : a, null);
@@ -244,7 +246,8 @@ try {
 		if (picks.length) chosen.set(pair, { picks, won: together(picks).won });
 		else unsolved.push({ pair, candidates: list.length, rows: mine.map(r => [r.strips, r.id, r.p]) });
 		const named = s => `${candidates[s.i].from}${candidates[s.i].recipe.held ? ' held' : ''}`;
-		console.log(`  pair ${n}/${rowsOf.size} (${mine.length} motif sizes, ${list.length} candidates): ${picks.length ? `${picks.map(named).join(' + ')} beat${picks.length > 1 ? '' : 's'} the generator's at ${chosen.get(pair).won}` : 'none beats the generator\'s'} (${((performance.now() - started) / 1000).toFixed(0)} s)`);
+		const told = !picks.length ? 'none beats the generator\'s' : chosen.get(pair).won ? `${picks.map(named).join(' + ')} beat${picks.length > 1 ? '' : 's'} the generator's at ${chosen.get(pair).won}` : `${named(picks[0])} drawn at ${picks[0].drawn}, beating it nowhere`;
+		console.log(`  pair ${n}/${rowsOf.size} (${mine.length} motif sizes, ${list.length} candidates): ${told} (${((performance.now() - started) / 1000).toFixed(0)} s)`);
 	}
 
 	// Each pair's recipes as solved, with the outline they were solved on (`frame`): the page carries
