@@ -3,6 +3,7 @@ import {settings as normalizeSettings} from './core/settings.js';
 import {finishStopped,finishExactStopped} from './core/stopped.js';
 import {zipFiles} from './core/zip.js';
 import {refineHeartCrop} from './core/crop.js';
+import {betterResult} from './core/result-rank.js';
 
 /** Seconds past its minute before a side-by-side exact search is ended; and
  * from the start, once the fitter's answer waits for it: on the juleflet
@@ -93,7 +94,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
         // else the fitter's answer when it is in, else its best checkpoint.
         // A ladder template held for today's search (below) comes first.
         const exact=!job.ladder&&job.drawing?finalizeExact(prepared,job.cfg,job.drawing,progress,{startedAt:job.startedAt}):null;
-        const value=job.ladder??exact??job.held?.result??await finalize(prepared,job.cfg,[...job.candidates.values()],progress,{cancelled:()=>active!==job,startedAt:job.startedAt});
+        const value=job.ladder??exact??betterResult(job.nearExact??null,job.held?.result??null)??await finalize(prepared,job.cfg,[...job.candidates.values()],progress,{cancelled:()=>active!==job,startedAt:job.startedAt});
         finish(job,value);
       }catch(error){finish(job,null,error);}
       return;
@@ -160,7 +161,11 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
           const live=()=>active===job&&job.phase==='searching';
           const fail=(message,code)=>Object.assign(new Error(message),{code});
           // The fitter's answer, once the exact search has given up.
-          const settle=()=>{if(job.held)finish(job,job.held.result,job.held.error);};
+          // The race settled: the fitter's answer, or the exact search's best
+          // template that misses some check (job.nearExact) when that is better
+          // (result-rank.js): never nothing while there is a template.
+          const finishBest=held=>{const best=betterResult(job.nearExact??null,held?.result??null);if(best)finish(job,best);else finish(job,null,held?.error);};
+          const settle=()=>{if(job.held)finishBest(job.held);};
           const exactDone=()=>{if(job.ladder){disposeExact();takeExact(job.ladder);return;}job.exact='failed';job.drawing=null;disposeExact();settle();};
           // An exact template: the fitter's answer follows as an alternative.
           const takeExact=value=>{
@@ -212,7 +217,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
             if(message.type==='result')held={result:message.result};
             else if(message.type==='error')held={error:Object.assign(new Error(message.message),{code:message.code,report:message.report})};
             else{disposeFitter();held={error:new Error('Unexpected fitting worker response.')};}
-            if(job.exact!=='running'){finish(job,held.result,held.error);return;}
+            if(job.exact!=='running'){finishBest(held);return;}
             // The fitter's answer waits for the exact search's: the live view
             // says it is still running.
             job.held=held;
@@ -243,6 +248,9 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
                 }
                 if(job.drawn)progress(message.event);
               }else if(message.type==='result'){
+                // An exact template missing some check does not end the race: it is
+                // held, and the better of it and the fitter's answer stands.
+                if(message.result?.report?.solver?.exactOutline?.nearMiss===true){job.nearExact=message.result;exactDone();return;}
                 // The fitter's template as a second choice: at once when it is in,
                 // else when it comes (or not, should another request come first).
                 // A held ladder template stands only with fewer hidden segments.

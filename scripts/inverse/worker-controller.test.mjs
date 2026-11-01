@@ -300,6 +300,23 @@ test('side by side with the network, after a fitted answer goes out at 20 s the 
   assert.equal(exact.terminated,1);assert.deepEqual(h.messages.at(-1),{id:2,type:'alternative',result:found});
 });
 
+// A finished result as the ranking (core/result-rank.js) reads it.
+const resultWith=({passed=false,issues=[],mismatch=.01,nearMiss=false}={})=>({report:{templateChecksPassed:passed,validation:{issues},imageError:{mismatchFraction:mismatch},imageFidelity:{passed:true,features:{passed:true}},settings:{nominalWidth:2.5},
+  solver:{exactOutline:{chosen:'exact',...(nearMiss?{nearMiss:true}:{})}}},files:{'cut_geometry.json':packet.geometry}});
+
+test('side by side, an exact template missing a check by a hair is held, and the better of it and the fitter\'s answer stands',async()=>{
+  const near=resultWith({nearMiss:true,issues:[{type:'short_self_clearance',distanceUpper:1.476,required:1.5}]});
+  for (const [fitted, expect] of [[resultWith({passed:true}), 'fitted'], [resultWith({issues:[{type:'self_intersection'}]}), 'near'], [null, 'near']]) {
+    const h=harness();await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});
+    const [fitter,exact]=h.workers;
+    h.reply(exact,2,'result',{result:near});
+    assert.equal(h.messages.filter(m=>m.type==='result').length,0);
+    if (fitted) h.reply(fitter,2,'result',{result:fitted});else h.reply(fitter,2,'error',{message:'no template',code:'NONE'});
+    await solving;
+    assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,expect==='near'?near:fitted);
+  }
+});
+
 test('side by side, an exact search overrunning its minute is ended and the fitter\'s answer taken',async t=>{
   t.mock.timers.enable({apis:['setTimeout']});
   const h=harness();await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});

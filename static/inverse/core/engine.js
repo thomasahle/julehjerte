@@ -21,6 +21,7 @@ import {boundarySVG,targetSVG,resultFiles} from './export.js';
 import {solvePolynomialTarget} from './direct/polynomial.js';
 import {openClose,withoutSpecks} from './exact/raster.js';
 import {cheapBounds} from './exact/bounds.js';
+import {betterResult} from './result-rank.js';
 import {exactOutline} from './exact/snap.js';
 import {appSymmetry,assess,exactSearch as searchExact,exactSymmetry,exactTarget,exactCannotStart,exportable,returnTips} from './exact/stage.js';
 /** Structured cloning retains coordinates but not Cubic methods, including
@@ -76,14 +77,18 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
   }
   const seconds=cfg.timeLimit,scale=timeScale(seconds),start=performance.now(),deadline=start+1000*seconds,searchEnd=deadline-1000*EXACT_FINISH_SECONDS;
   const alone=route==='exact',cfgExact=settings({...raw,symmetry:cfg.symmetry});
-  const {solution,report}=await exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{
+  const {solution,nearest,report}=await exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{
     // The ladder alone (beside today's search, in its own worker) has nothing after the traced outline: all the time.
     tracedEnd:raw.ladderOnly===true?searchEnd:Math.min(searchEnd,start+1000*scale*(alone?ALONE_TRACED_SECONDS:TRACED_SECONDS)),roundedEnd:alone?searchEnd:Math.min(searchEnd,start+1000*scale*ROUNDED_SECONDS),maps:raw.cutMaps??null,ladderOnly:raw.ladderOnly===true});
   if(solution){solution.report={...solution.report,exactOutline:{...report,chosen:'exact'}};return finish(solution,cfgExact,onProgress,{deadline});}
-  if(alone)throw noExact(report);
+  // The exact search's best template that misses some check (a clearance by
+  // a hair, a lost region) is never thrown away: alone it is the answer, else
+  // the fitter's stands only when it is better (result-rank.js).
+  const near=nearest?(nearest.report={...nearest.report,exactOutline:{...report,chosen:'exact',nearMiss:true}},finish(nearest,cfgExact,onProgress,{deadline})):null;
+  if(alone){if(near)return near;throw noExact(report);}
   const fitted=await solveTarget(target,{...raw,timeLimit:Math.max(.1,(searchEnd-performance.now())/1000)},onProgress,options);
   fitted.report={...fitted.report,exactOutline:report};
-  return finish(fitted,settings(fitted.automaticSettings||raw),onProgress,{deadline});}
+  return betterResult(near,finish(fitted,settings(fitted.automaticSettings||raw),onProgress,{deadline}));}
 /** Whether the exact search can keep a picture's weights: none, or only its
  * observed pixels' (a photograph's crop reaching past the picture, which the
  * outline is traced across: raster.js fillUnobserved) with at most
@@ -254,7 +259,8 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
   // names, for the page to hold the rows it can when that is only part of
   // those asked for (roed-blomst: its two lobes alike, not their mirrors).
   const report={...found.report,chosen:'fitter',held:appSymmetry(found.report.symmetry??[]),...(base.paired?{paired:true}:{}),...(base.specks?{specks:base.specks}:{})};
-  return{solution:exportable(found.found?.assessment,cfgExact)?found.found.solution:null,report};
+  const passing=exportable(found.found?.assessment,cfgExact);
+  return{solution:passing?found.found.solution:null,nearest:!passing&&found.found?.solution?found.found.solution:null,report};
 }
 export function inspectSaved(text,raw={},onProgress=()=>{}){const cfg=settings(raw),solution=loadSolutionJSON(text),factor=cfg.width/solution.graph.target.width;solution.graph.edges.forEach(e=>e.curve=new Cubic(e.curve.p.map(p=>p.map(x=>x*factor))));solution.graph.target=scaleTarget(solution.graph.target,cfg.width,cfg.paperColors);reindex(solution.graph);return finish(solution,cfg,onProgress);}
 export function inputImageError(solution){

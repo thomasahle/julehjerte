@@ -525,6 +525,31 @@ None reaches a template on 5star. The broken rows do give a usable signal: a nei
 hundred candidates, not the thousands of a bigger rung. Doing it properly needs candidates that
 survive a moved grid (rebuild only the touched edges), and that is the next step for the loop.
 
+## 5b. Never empty-handed: the best template, not only a passing one (2026-11-01)
+
+The user's rule: never reject a template outright for missing a limit (santa's designer template comes
+1.476 mm close to itself where 1.5 mm is asked); find the best available. Until now the exact search's
+templates were kept only when the export passed them, and "exact search alone" ended in an error
+otherwise. Now (`core/result-rank.js`) a finished result is ranked by: passing every check; the number of
+kinds of failure that are not clearances (crossings, lost regions, the paper, the image limit); the
+clearances' total shortfall in mm; the share of the picture wrong. The engine keeps the exact search's best
+failing template (`nearMiss`): alone it is the answer, with the export's warnings; beside the fitter, the
+better of the two stands, in the sequential route and in the race (the controller holds a near miss and
+compares when it settles; a passing template from the ladder still ends the race).
+
+What it returns on the hard pictures (today's search alone): santa 8 hidden cuts, jul-tern 18 (= bound),
+hjerte-i-hjerte-i-hjerte 24 (= bound), davidsstjerne-circ 45, where before there was nothing; mor-far
+still none. But these templates are far from passing: santa's has 6 crossing slits and clearances short
+by 2.5 mm, jul-tern's 3 self-intersections and clearances short by up to 1.4 mm. So on these pictures the
+search on the traced outline finds nothing near the designer's solution; the ranking keeps such a template
+behind any better one, and it is shown with its problems marked.
+
+With the designer's cuts as the ranking, through today's whole ladder and 3 minutes: balls exact (44 hidden,
+on an outline made symmetric under part of its symmetry); davidsstjerne-circ exact (49); santa, jul-tern,
+mor-far, hjerte-i-hjerte-i-hjerte and god-jul none. Designer templates against our rules (the converter's
+doubled shared cuts set aside): santa 0.02 mm short of 1.5, mor-far about 0.05 mm, balls about 0.2 mm,
+davidsstjerne-circ about 0.27 mm; jul-tern's and hjerte-i-hjerte-i-hjerte's keep every rule.
+
 ## 6. Coordinates and checks
 
 - **The bug.** The tracer's reference frame has y running up (target.js `toReference`), while the maps
