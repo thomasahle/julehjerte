@@ -224,6 +224,84 @@ Chromium, through the page's worker:
 
 With the exact search alone (Avanceret) the ladder still runs before it, within a quarter of the time.
 
+## 5a. Broad benchmark (2026-11-01)
+
+The production engine in Node (`prodcheck.mjs`), with and without the network, on the 64 library masks
+(`jf-maskmode`, without the photographed `-shot` ones) and 42 photographed web hearts (`web44-masks`).
+In Node the ladder runs before today's search, as in the exact search alone: at most a quarter of the
+time, no sampled rungs, no K1000. "Certified" counts templates whose hidden count equals the outline's
+lower bound (the larger of the two runs' bounds; ladder runs before 05cf3f95 reported 0).
+
+| | Library (64) | Web (42) |
+|---|---|---|
+| Exact, with / without the network | 59 / 59 | 15 / 15 |
+| Gained, lost | none, none | none, none |
+| Median time where both exact | **6.2 / 10.1 s** | 11.7 / 14.8 s |
+| More than 2 s slower with the network | 8 | 4 |
+| Hidden cuts where both exact | 56 same, 2 fewer, 1 more | 13 same, 1 fewer, 1 more |
+| Certified optimal | 34 / 33 | 9 / 10 |
+
+From about the 51st picture on (01:20), the runs with the network had 05cf3f95, whose bound in the
+model made ladder rungs search the bound's count alone first and run out of time (fixed in 0a3cada0,
+see below). Today's search covered those pictures, so the counts above stand, but the second half's
+times with the network are pessimistic.
+
+Not exact either way: balls, davidsstjerne-circ, khatam, santa and venus in the library; 27 of the web
+hearts, which are photographs (photo clean-up was put off). khatam and venus need the sampled rungs or
+K1000, which only the side-by-side ladder has, and in Node the ladder runs inline. The slower cases are
+the inline ladder's time, which the side-by-side worker removes in the browser.
+
+**The ladder worker, checked on the production path** (`prodcheck2.mjs`, ladder alone, 2026-11-01),
+found three faults, now fixed:
+
+1. *The bound in the model* (05cf3f95, fixed in 0a3cada0): rungs started at the outline's bound, so
+   their empty start counted as at it, and the model searched that count alone first; khatam's K100
+   rung ran out of time (8.6 s exact before, none after; 8.4 s and certified with the fix).
+2. *The traced outline's 30 s:* the worker stopped there although nothing follows the ladder in it;
+   it now has the whole search time (0a3cada0).
+3. *No fallbacks:* a ladder without a template returned at once, so the outline made symmetric, the
+   untied one and part of the symmetry were never tried with it. alhambra's outline is not symmetric
+   enough for its mirror, and every rung stopped in 0.02 s. With the fallbacks: alhambra exact in
+   4.6 s (today's search 16.3 s), amy-pinecone 3.8 s (9.8 s) (ec5a9cb3).
+
+Still open: 5star. Its benchmark ladder (PyTorch maps) had a template at K300 in 3.2 s, while the
+production ladder's K300 (the float16 ONNX maps) ends both stages within their gap with a penalty of 8,
+so its 300 candidates differ in the cut that matters. Today's search beside it finds 5star in 37 s.
+
+**The browser's side-by-side estimate** (today's search from `broad.jsonl` racing the ladder alone,
+`broad-ladder.jsonl` with ec5a9cb3, prediction time added; `browsersum.py`; two cores assumed):
+
+| | Today's search | Side by side |
+|---|---|---|
+| Exact templates (106) | 74 | **75** (khatam gained, none lost) |
+| Median time where today is exact | 10.8 s | **4.2 s** (library 4.1 against 10.1 s; web 5.7 against 14.8 s) |
+| The ladder first | | 42 of 74 |
+
+The ladder alone finds 54 (48 before the fixes above). Where both are exact, its hidden counts match
+today's on 46, are lower on 1 and higher on 6. Four of those it finds first: lilje1 8 against 7,
+roserude 4 against 2, simple-5star 6 against 4, danish-tree-group-bottom 9 against 8. With the first
+template standing, the page showed the worse one.
+
+**So the race now holds a ladder template above its bound** (bf4007e6): at its outline's lower bound
+it ends today's search at once; above it, it is shown and held, and today's template stands unless it
+has more hidden cuts; when today's finds none (or runs out of time), and on Stop, the ladder's stands.
+In Chromium (the site's worker, `_dev/race.html`, not committed): khatam 25 = 25 at once in 8.4 s;
+simple-5star ends with today's 4 = 4 at 9.6 s (it was the ladder's 6); lilje1 shows the ladder's 8 at
+4.1 s and ends with it at 40.6 s, since today's 7 (42.8 s in Node) comes after the 40 s the page waits
+once the fitter has answered. Network off, lilje1 gets only the fitter's template at 40.2 s.
+
+The cost: of the 9 broad pictures where the ladder came first above its bound, 3 now end with fewer
+hidden cuts (2, 2 and 1 fewer) and 6 end with the same template later (4 to 36 s; it is on screen
+from the start, and Stop takes it).
+
+**Carrying the incumbent between rungs** (a prototype in a copy of the production core, 5star): a
+rung's best solution that still breaks rules becomes the next rung's start (its switches, papers and
+chords; its chords kept as candidates). It works as a repair: the penalties fell 20 → 2 → 1 where
+fresh rungs stayed at 2–10. But none reached 0, so no template, and 3 of the carried starts moved the
+grid (their switches forced positions), which costs a rebuild of the candidates (K1000 17 s). Not
+shipped; the rule left broken seems to need a cut outside the ranked candidates. This is the
+neighbourhood-search step of section 9a in its simplest form.
+
 ## 6. Coordinates and checks
 
 - **The bug.** The tracer's reference frame has y running up (target.js `toReference`), while the maps
@@ -253,7 +331,9 @@ With the exact search alone (Avanceret) the ladder still runs before it, within 
 | `static/inverse/neural/cuts.js`, `cuts-bbd773ab.onnx` | v3, float16, checksum, loaded like the photo model; NOTICE.txt credits the Apache-2.0 encoder weights |
 | `exact/candidates.js` `rankScores`, `ranked`, `keep` | candidate scores from the maps (hidden field along the route by direction, plus the switches at the ends), the top K plus every candidate under 3 mm |
 | `exact/search.js` `rank`, `reuse`, `buildSeconds` | rank pruning on a copy; candidates built once per ladder; the build's own time |
-| `exact/stage.js` `networkLadder`, `ladderOnly` | rungs (K, s) = (10, 2), (30, 2), (100, 3), (300, 4), plus (1000, 10) when alone, each also with two sampled rankings when alone; at most a quarter of the time before today's search |
+| `exact/stage.js` `networkLadder`, `ladderOnly` | rungs (K, s) = (10, 2), (30, 2), (100, 3), (300, 4), plus (1000, 10) when alone, each also with two sampled rankings when alone; at most a quarter of the time before today's search, the whole search time alone (0a3cada0) |
+| `exact/stage.js` `exactSearch`, alone | a ladder without a template takes today's fallbacks (outline made symmetric, untied, part of the symmetry), each with the ladder; plain rungs 3, 4, 6, 10, 15 s, sampled ones 2, 2, 3, 4, 10 s (ec5a9cb3) |
+| `exact/search.js` bound | a rung's model keeps the bound its empty start caps (0); its report gives the outline's `cheapBounds`, so a ladder template at it shows as optimal (0a3cada0) |
 | `engine.js` | `raw.cutMaps` to the traced outline's search; `raw.ladderOnly` |
 | `worker-controller.js` | the maps from the mask (`cutModel`, Mal only; loads while the picture is prepared; waits at most 1.5 s); the ladder worker beside today's |
 | `src/lib/inverse/engine.ts` | `cutModel` when Avanceret's network choice is on, unless "smoother cuts" alone |
