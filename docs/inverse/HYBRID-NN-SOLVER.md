@@ -364,6 +364,17 @@ today's (the cases above), so the hold stays whole. The time the network saves i
 traced outline (42 templates); a ladder that finds the traced outline's templates more often, or that
 knows which outline to search, is where the remaining speed is.
 
+**A ladder template within the traced outline's bound** (2026-11-01, the loop's first piece of solver
+state passed on): the ladder worker reports the traced outline's lower bound (`tracedBound`), and a
+template with no more hidden cuts than that, on whichever outline, ends today's search at once: no
+template on the traced outline can have fewer, and that is where today's search ends unless it fails
+there. On the 106 broad pictures it frees 16 of the 35 held templates (amy-rosette 8 at 12.4 s, where
+today's has 12 at 44 s; stjernerogkors 0 at 13.6 s against 8; roserude 2 at 8.7 s against 28.4 s), none
+of them beaten by today's search. Browser estimate: total 928 s against 1085 (today's alone 1210),
+median 7.2 s against 7.6, still never more hidden cuts than today's. (The caveat: when today's search
+fails on the traced outline and goes on to a rounded one, that outline's bound can be lower; in these
+data it never was.)
+
 A schedule with the traced outline's both phases first (half the time), then the rounded outlines, finds
 more templates on the traced outline (54 against 46) but fewer in all (72 against 75), and side by side
 76 exact against 77 at the same median: the two-phase schedule stays.

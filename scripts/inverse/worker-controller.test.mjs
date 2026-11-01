@@ -255,6 +255,12 @@ test('side by side with the network, a ladder template at the bound of a rounded
   }
 });
 
+test('side by side with the network, a ladder template within the traced outline\'s bound is taken at once, on any outline',async()=>{
+  const {h,solving,exact,ladder}=await racing(),found=ladderValue(12,12,{outline:2,tracedBound:12});
+  h.reply(ladder,2,'result',{result:found});await solving;
+  assert.equal(exact.terminated,1);assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,found);
+});
+
 test('side by side with the network, a held ladder template stands when today\'s search finds none, and Stop takes it',async()=>{
   {
     const {h,solving,exact,ladder}=await racing(),found=ladderValue(8,7);

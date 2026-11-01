@@ -249,8 +249,12 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
                 // with tips rounded koelbuer's ladder has 16 at its bound 16,
                 // today's search 2 on the traced one.
                 const hidden=hiddenOf(message.result),bound=searchOf(message.result)?.bound,outline=message.result?.report?.solver?.exactOutline;
-                const traced=!outline?.outline&&!['even','unjoined','untied','subgroup'].some(way=>outline?.[way]);
-                if(traced&&Number.isFinite(hidden)&&Number.isFinite(bound)&&hidden<=bound){disposeExact();takeExact(message.result);return;}
+                // On any outline, a template with no more hidden segments than the
+                // traced outline's bound (exactTemplate's tracedBound) is as good
+                // as today's search finds on it: on the 106 broad pictures 16 of
+                // 35 held ones, none of them beaten by today's.
+                const traced=!outline?.outline&&!['even','unjoined','untied','subgroup'].some(way=>outline?.[way]),tracedBound=outline?.tracedBound;
+                if(Number.isFinite(hidden)&&((traced&&Number.isFinite(bound)&&hidden<=bound)||(Number.isFinite(tracedBound)&&hidden<=tracedBound))){disposeExact();takeExact(message.result);return;}
                 job.ladder=message.result;
                 // A template in hand, which the live view shows: a fitted answer
                 // waits for today's search as for one that has drawn.

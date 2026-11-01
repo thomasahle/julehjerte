@@ -20,6 +20,8 @@ import {roundHidden} from './rounding.js';
 import {boundarySVG,targetSVG,resultFiles} from './export.js';
 import {solvePolynomialTarget} from './direct/polynomial.js';
 import {openClose,withoutSpecks} from './exact/raster.js';
+import {cheapBounds} from './exact/bounds.js';
+import {exactOutline} from './exact/snap.js';
 import {appSymmetry,assess,exactSearch as searchExact,exactSymmetry,exactTarget,exactCannotStart,exportable,returnTips} from './exact/stage.js';
 /** Structured cloning retains coordinates but not Cubic methods, including
  * the cached boundary seed used by the topology initializer. Rebuild derived
@@ -186,6 +188,12 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
     for(const way of [...(tips.length?[{open:radius,spots:tips,within:TIP_SPOT_MM*px}]:[]),{open:radius},{open:2*radius,wider:true}]){
       try{const traced=traceAt(way.open,way);if(traced&&!traced.why)outlines.push(traced.scaled);}catch{/* an outline that cannot be traced is left out */}
     }
+    // The traced outline's lower bound: no template on it has fewer hidden
+    // segments, so a ladder template with no more than that (on whichever
+    // outline) is as good as today's search can find there, and the page need
+    // not wait for it (worker-controller.js).
+    let tracedBound=null;
+    try{tracedBound=cheapBounds(...(ex=>[ex.st,ex.outline])(exactOutline(outline,cfgExact,'tight',{symmetry:[]}))).lb;}catch{tracedBound=null;}
     let last=null;
     for(const [phase,share] of [['first',LADDER_FIRST_SHARE],['second',1]]){
       const phaseEnd=performance.now()+share*(roundedEnd-performance.now());
@@ -193,7 +201,7 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
         const left=phaseEnd-performance.now();
         if(left<1000*LADDER_LEAST)break;
         last=await exactSearch(traced,null,cfgExact,{...search(performance.now()+left/(outlines.length-k)),reserve:.5,maps,ladderOnly,phase});
-        if(last.found)return{solution:last.found.solution,report:{...last.report,chosen:'exact',ladderOnly:true,outline:k,phase}};
+        if(last.found)return{solution:last.found.solution,report:{...last.report,chosen:'exact',ladderOnly:true,outline:k,phase,tracedBound}};
       }
     }
     return{solution:null,report:{...(last?.report??{}),chosen:'fitter',ladderOnly:true}};
