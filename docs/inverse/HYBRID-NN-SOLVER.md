@@ -375,6 +375,30 @@ median 7.2 s against 7.6, still never more hidden cuts than today's. (The caveat
 fails on the traced outline and goes on to a rounded one, that outline's bound can be lower; in these
 data it never was.)
 
+**Measured in Chromium** (2026-11-01; the site's worker on Mal's inputs, `_dev/race.html`, not committed;
+12 pictures chosen to cover each case, not a sample). Time to the first exact template, as the result or
+as the later alternative:
+
+| Picture | Network on | Network off |
+|---|---|---|
+| khatam | 8.4 s (25 = bound) | none |
+| lilje1 | 40.4 s (8) | none (the fitter's only) |
+| amy-rosette | 12.6 s (8 = bound) | 44.1 s (12) |
+| roserude | 8.8 s | 25.9 s |
+| kogle | 9.1 s | 28.1 s |
+| koelbuer | 7.6 s | 12.2 s |
+| 5star | 24.0 s (alternative, the ladder's; e9650f7e) | 37.2 s (alternative) |
+| fisk | 40.5 s | 41.7 s |
+| david4 | 36.4 s | 36.1 s |
+| origami | 27.6 s (4) | 28.5 s (4) |
+| hermanngitter | 27.3 s | 26.6 s |
+| simple-5star | 10.1 s | 9.3 s |
+
+12 exact against 10, median 18 s against 28 s where both are exact, never more hidden cuts. The run
+also showed the ladder ended when the fitter's passing answer goes out at 20 s while today's search has
+drawn nothing (5star, hermanngitter); since e9650f7e it goes on and its template is the alternative as
+in the race (5star's at 24.0 s, today's at 37 s).
+
 A schedule with the traced outline's both phases first (half the time), then the rounded outlines, finds
 more templates on the traced outline (54 against 46) but fewer in all (72 against 75), and side by side
 76 exact against 77 at the same median: the two-phase schedule stays.
