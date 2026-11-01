@@ -139,7 +139,9 @@ const START_SECONDS = 3;
  * of a search's time it takes, and the short candidates (mm) every rung keeps:
  * 42% of the hidden cuts in the gallery's exact templates were under 3 mm, the
  * stubs of tips and crossings the network's field hardly shows. */
-const LADDER = [[10, 2], [30, 2], [100, 3], [300, 4]], LADDER_SHARE = .25, SHORT_MM = 3, LADDER_BUILD = 8, LADDER_ALONE = [[1000, 10]], LADDER_SAMPLES = 2, LADDER_NOISE = .15;
+const LADDER = [[10, 2], [30, 2], [100, 3], [300, 4]], LADDER_SHARE = .25, SHORT_MM = 3, LADDER_BUILD = 8, LADDER_SAMPLES = 2, LADDER_NOISE = .15;
+// Alone: K, the plain ranking's seconds, a sampled one's.
+const LADDER_ALONE = [[10, 3, 2], [30, 4, 2], [100, 6, 3], [300, 10, 4], [1000, 15, 10]];
 
 /** Under ties, the share of the search's time the fine grid from no start
  * gets first, if at least BARE_FLOOR seconds are left (exactSearch). */
@@ -187,12 +189,16 @@ export function subgroupsOf(symmetry) {
 async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, multi, onProgress, geometry, refine, maps, alone = false}) {
   // Alone (a worker beside today's search) it may take all the time, and a wider last rung.
   const until = performance.now() + 1000 * seconds * (alone ? 1 : LADDER_SHARE), reuse = {}, rungs = [];
+  let error = null;
   const short = SHORT_MM * SIZE / cfg.width, empty = {positions: new Map(), labels: new Map(), chords: []};
   // Alone, each rung also tries LADDER_SAMPLES sampled rankings of the same maps after the plain one: on the
   // hard pictures (2026-11-01) samples found khatam at K100 in 18 s where the plain ranking needed the
-  // second outline and 36 s, and venus at K100 where it needed K300.
+  // second outline and 36 s, and venus at K100 where it needed K300. The plain one has the held-out
+  // benchmark's times there (LADDER_ALONE): 5star's rungs to K300 found 12 hidden cuts in LADDER's, but
+  // breaking rules still when their time ran out; in 10 s K300 had its template in 3.2 s.
   const rungList = [];
-  for (const [k, rungSeconds] of alone ? [...LADDER, ...LADDER_ALONE] : LADDER) for (let seed = 0; seed <= (alone ? LADDER_SAMPLES : 0); seed++) rungList.push([k, rungSeconds, seed]);
+  if (alone) for (const [k, plain, sample] of LADDER_ALONE) for (let seed = 0; seed <= LADDER_SAMPLES; seed++) rungList.push([k, seed ? sample : plain, seed]);
+  else for (const [k, rungSeconds] of LADDER) rungList.push([k, rungSeconds, 0]);
   for (const [k, rungSeconds, seed] of rungList) {
     const room = Math.min(rungSeconds, (until - performance.now()) / 1000);
     if (room < .5) break;
@@ -212,13 +218,14 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
     const ok = !result.error && !(result.report.penalty > 1e-6) && [result.solution, result.refined].some(drawn => { try { return drawn && exportable(assess(drawn, cfg), cfg); } catch { return false; } });
     rungs.push({k, seed, seconds: +((performance.now() - began) / 1000).toFixed(2), found: ok, hidden: result.report?.hidden});
     if (ok) return {found: {...result, report: {...result.report, ladder: k}}, rungs};
+    error = result.error ?? error;
   }
-  return {found: null, rungs};
+  return {found: null, rungs, error};
 }
 
 export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true, fallback = true, even = false, multi = 'auto', maps = null, ladderOnly = false} = {}) {
   const seconds = (deadline - performance.now()) / 1000 - reserve;
-  const report = {attempted: false, symmetry};
+  const report = {attempted: false, symmetry}, alone = ladderOnly ? {maps, ladderOnly} : {};
   if (seconds < 1) return {found: null, report: {...report, reason: 'no time left'}};
   report.attempted = true;
   onProgress({stage: 'exactOutline'});
@@ -243,7 +250,10 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     const ladder = maps ? await networkLadder(outline, template, cfg, exact, {seconds, symmetry, multi, onProgress, geometry, refine, maps, alone: ladderOnly}) : null;
     if (ladder) report.ladder = ladder.rungs;
     if (ladder?.found) found = ladder.found;
-    else if (ladderOnly) return {found: null, report: {...report, error: 'The network\'s ladder found no template.'}};
+    // Alone, a ladder without a template goes on as today's search does after one: the outline made
+    // symmetric, untied, or part of the symmetry (below), each with the ladder (alhambra's traced outline
+    // is not symmetric enough for its mirror, so every rung there stops at once).
+    else if (ladderOnly) found = {error: /not symmetric/.test(ladder?.error ?? "") ? ladder.error : NO_TEMPLATE};
     else {
       const began = performance.now(), budget = (deadline - began) / 1000 - reserve;
       const start = await exactStart(exact, template, {deadline: began + Math.min(START_SECONDS, budget / 4) * 1000});
@@ -309,11 +319,11 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   // (hermanngitter-shot's failing the paper, hvirvel's of 12 hidden segments,
   // not 8).
   if (found.error && /not symmetric/.test(found.error) && symmetry.length && fallback && !even) {
-    const evened = await exactSearch(outline, template, cfg, {deadline, reserve, onProgress, geometry, refine, symmetry, even: true});
+    const evened = await exactSearch(outline, template, cfg, {deadline, reserve, onProgress, geometry, refine, symmetry, even: true, ...alone});
     if (evened.found || !/not symmetric/.test(evened.report.error ?? '')) return {...evened, report: {...evened.report, even: found.error}};
   }
   if (found.error && /not symmetric/.test(found.error) && symmetry.length && fallback) {
-    const options = {deadline, reserve, onProgress, geometry, refine, fallback: false};
+    const options = {deadline, reserve, onProgress, geometry, refine, fallback: false, ...alone};
     let again = outline.metadata?.nearTouch > 0 ? await exactSearch({...outline, metadata: {...outline.metadata, nearTouch: 0}}, template, cfg, {...options, symmetry}) : {found: null, report: {error: found.error}};
     if (!again.found && /not symmetric/.test(again.report.error ?? '')) again = {...await exactSearch(outline, template, cfg, {...options, symmetry: []}), untied: true};
     return {...again, report: {...again.report, unjoined: found.error, ...(again.untied ? {untied: true} : {})}};
@@ -332,7 +342,7 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     const left = (deadline - performance.now()) / 1000 - reserve;
     if (left < TURNS_FLOOR) break;
     const share = k < subgroups.length - 1 ? Math.max(TURNS_FLOOR, left / (subgroups.length - k)) : left;
-    const again = await exactSearch(outline, template, cfg, {deadline: performance.now() + 1000 * (share + reserve), reserve, onProgress, geometry, refine, fallback: false, symmetry: ties, even, multi});
+    const again = await exactSearch(outline, template, cfg, {deadline: performance.now() + 1000 * (share + reserve), reserve, onProgress, geometry, refine, fallback: false, symmetry: ties, even, multi, ...alone});
     if (again.found) return {...again, report: {...again.report, subgroup: {from: symmetry, to: ties, error: found.error}}};
   }
   if (found.error) return {found: null, report: {...report, error: found.error, search: found.report}};
