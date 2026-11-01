@@ -519,10 +519,28 @@ In order, each step only if the previous one pays:
    rung without a witness, where the feasibility relaxation says strips break. Most rungs end without a
    witness, so the relaxation's break points are often the only answer. Step 2, the signal: does a
    re-ranker that sees a failed rung's answer put the reference cuts higher among the candidates the rung
-   did not use than the network's fixed order does (`nn/loop/signal.py`, designs split into train and
+   did not use than the network's fixed order does (`nn/loop/loopsignal.py`, designs split into train and
    test)? Only if it does: step 3, a small graph network over the candidates (conflicts and shared ends
    as edges) re-ranking between rungs in plain JS, trained on these trajectories and then on rewards
    from the solver; and which outline to search becomes one of its choices.
+   **First results (2026-11-01, 130 pictures collected, 87 with reference cuts):**
+   - *The solver's answers carry no signal.* After a failed rung, ranking the candidates it did not use
+     by v3's order puts 0.28 / 0.53 / 0.76 of the reference cuts among the first 20 / 70 / 200 added; a
+     re-ranker without the answer 0.30 / 0.59 / 0.75; with the incumbent, the broken rows, the break
+     points or all of them, 0.28–0.29 / 0.57–0.59 / 0.75–0.76 (five splits, spread 0.02–0.05). Most
+     failed rungs say only "no witness", and the rest adds nothing measurable.
+   - *A set-aware re-ranker improves recall offline but not the ladder.* From the candidate set alone
+     (rank within its kind, how many better-scored candidates share an end, kind and face sizes), a
+     small MLP puts 0.75 against 0.66 of the reference cuts in the first 100 and 0.93 against 0.88 in
+     the first 300 (held-out designs, five splits), and its JS port matches to 1e-5. In the production
+     ladder on the 106 broad pictures, though, the ladder alone finds 73 templates against 75, side by
+     side 76 against 77, at a median 8.4 against 7.6 s: it demotes near-copies of a cut, which are the
+     alternative positions a valid template often needs. Not shipped.
+   - *So candidate-level labels (does it match the reference?) are the wrong target:* what the solver
+     needs is a set that contains some complete valid template. The next version of the loop should
+     learn from set-level outcomes (did this set solve?), for example choosing among sampled sets, and
+     from which outline to search, where the signal is known to be strong (29 of the ladder's 75
+     templates are on outlines with tips rounded).
 4. **Later:** neighbourhood search around an incumbent (reopen one face or kind, keep the rest), and a
    continuous refiner for curved cuts once the topology is fixed.
 
