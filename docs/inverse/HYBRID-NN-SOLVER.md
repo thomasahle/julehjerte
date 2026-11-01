@@ -207,6 +207,11 @@ made symmetric, its turns, one mirror, and untied: every rung to K300 without a 
 0.1–1.2 s), santa or god-jul (rungs to K300 the same within a second at both spacings). Their rungs
 fail as fast with the finer grid as without, so missing positions are not what stops them either.
 
+**The mask smoothed** (santa, balls, god-jul; opened or closed by 1, 2, 3 pixels, 0.03–2.3% of the
+pixels changed; `fewspots.py`, production ladder alone): none of the 18 variants gets a template. Making
+the picture solvable would take edits at the spots that stop it, found from the model, not a smoothing
+of the whole mask.
+
 **So of the unsolved seven,** davidsstjerne-circ is proved not to be a ranking problem (infeasible
 with every candidate). On god-jul and jul-tern even the oracle maps fail within 2 minutes, which is
 strong evidence but no proof. Santa's designer template fails our own checks. For these, a better
