@@ -125,6 +125,12 @@ turned). Measured on the production ladder with each model's maps (not `ladder.m
 | hard, now in r7's training | tak, khatam | tak, khatam (5.4 against 11.9 s), **davidsstjerne-circ** (49), **venus** (20 = bound) |
 | santa, balls, god-jul | none | none |
 
+On the 106 broad pictures through the browser's predictor (the hold and the traced-bound rule counted):
+side by side 78 exact against v3's 77 and today's 74; the library 62 of 64 (davidsstjerne-circ and
+venus gained; santa and balls left, which fail even with the designer's cuts), the photographed hearts
+16 of 42 (gathering-hanging-trio-top lost, which v3's ladder had at 43 s); median 7.6 s against v3's
+7.2 s and today's 10.8 s; never more hidden cuts than today's.
+
 Per picture it moves both ways (hermanngitter 29.8 → 9.5 s, 5star 23.7 → 16.4 s, david4 15.7 → 43.0 s).
 No held-out design is lost, and two hard pictures are gained by feeding the solver's solutions back. Held-
 out losses: hidden 0.479 against r6's 0.780, direction 0.243 against 0.301. The float16 export matches
