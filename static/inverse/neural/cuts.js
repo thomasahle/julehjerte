@@ -4,8 +4,8 @@
  * exact templates of the gallery and of generated pictures, with the square's
  * symmetries; docs/inverse/HYBRID-NN-SOLVER.md. A search never waits for it:
  * without its maps in time the exact search runs as before. */
-export const CUTS_MODEL_SHA256='bbd773abee54b7a1f2dd97a40537f844608b66afdf1fb7dc845325ac5f2a48d9';
-const modelURL=new URL('./cuts-bbd773ab.onnx',import.meta.url);
+export const CUTS_MODEL_SHA256='c6cd1ff7fcf146449d2beca2a1f99b5b2e3942ca945798f046f88054ee2f6bb3';
+const modelURL=new URL('./cuts-c6cd1ff7.onnx',import.meta.url);
 const runtimeURL=new URL('../vendor/onnxruntime-1.19.2/',import.meta.url);
 const N=128;
 

@@ -113,6 +113,25 @@ table, so only 18 can be compared:
 
 ## 3a. The retrained models
 
+**r7, shipped (2026-11-01, `cuts-c6cd1ff7.onnx`):** v3 fine-tuned (lr 2e-4, one epoch) on every pack, the
+250 variations solved since r6, and the hard pictures' exact templates fed back (davidsstjerne-circ,
+solved with the designer's cuts as the ranking; tak and khatam by v3; venus by r4; each warped 12 ways and
+turned). Measured on the production ladder with each model's maps (not `ladder.mjs`):
+
+| | v3 | r7 |
+|---|---|---|
+| 9 designs held out of both | 8 exact, median 7.5 s | 8 exact, median 8.1 s |
+| 12 held out of r7 | 11 exact | 11 exact |
+| hard, now in r7's training | tak, khatam | tak, khatam (5.4 against 11.9 s), **davidsstjerne-circ** (49), **venus** (20 = bound) |
+| santa, balls, god-jul | none | none |
+
+Per picture it moves both ways (hermanngitter 29.8 → 9.5 s, 5star 23.7 → 16.4 s, david4 15.7 → 43.0 s).
+No held-out design is lost, and two hard pictures are gained by feeding the solver's solutions back. Held-
+out losses: hidden 0.479 against r6's 0.780, direction 0.243 against 0.301. The float16 export matches
+PyTorch within 0.011 (float32 0.0005), and through the browser predictor davidsstjerne-circ is exact in
+17.5 s and venus in 14.7 s.
+
+
 - **GRPO v2** (80 steps from v3, maps the right way up, K 30 and 100, prompts with mixed outcomes
   favoured): within noise of v3 on every design. Its reward rose during training (solved share 45 → 49%),
   but that did not carry over to the held-out designs. The reward at this level (did the top K solve?) is
@@ -465,7 +484,7 @@ survive a moved grid (rebuild only the touched edges), and that is the next step
 
 | Part | What |
 |---|---|
-| `static/inverse/neural/cuts.js`, `cuts-bbd773ab.onnx` | v3, float16, checksum, loaded like the photo model; NOTICE.txt credits the Apache-2.0 encoder weights |
+| `static/inverse/neural/cuts.js`, `cuts-c6cd1ff7.onnx` | r7 (v3 fine-tuned with the hard pictures fed back), float16, checksum, loaded like the photo model; NOTICE.txt credits the Apache-2.0 encoder weights |
 | `exact/candidates.js` `rankScores`, `ranked`, `keep` | candidate scores from the maps (hidden field along the route by direction, plus the switches at the ends), the top K plus every candidate under 3 mm |
 | `exact/search.js` `rank`, `reuse`, `buildSeconds` | rank pruning on a copy; candidates built once per ladder; the build's own time |
 | `exact/stage.js` `networkLadder`, `ladderOnly` | rungs (K, s) = (10, 2), (30, 2), (100, 3), (300, 4), plus (1000, 10) when alone, each also with two sampled rankings when alone; at most a quarter of the time before today's search, the whole search time alone (0a3cada0) |
