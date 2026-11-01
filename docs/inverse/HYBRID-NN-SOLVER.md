@@ -302,6 +302,21 @@ grid (their switches forced positions), which costs a rebuild of the candidates 
 shipped; the rule left broken seems to need a cut outside the ranked candidates. This is the
 neighbourhood-search step of section 9a in its simplest form.
 
+**Repairing from the broken rows** (same prototype, 5star). A rung that ends breaking rules has
+positive slacks on a few rows (lazy rules are soft, at a penalty), and each row names the chords in it
+(mostly one). The next rung then adds candidates around those chords:
+- every candidate of their kinds (face and edge sides): about 1,400 more, which swamps the model
+  (penalties 4 at best);
+- only those of the same kind whose two ends lie within 8 mm of a broken chord's: 100–430 more,
+  penalties 2–8;
+- with the incumbent carried as well: penalty 1 after one rung, but every carried rung after it fails
+  within a second, because the carried switches move the grid while the candidates are reused from the
+  old one (a rebuild costs up to 17 s).
+
+None reaches a template on 5star. The broken rows do give a usable signal: a neighbourhood of a few
+hundred candidates, not the thousands of a bigger rung. Doing it properly needs candidates that
+survive a moved grid (rebuild only the touched edges), and that is the next step for the loop.
+
 ## 6. Coordinates and checks
 
 - **The bug.** The tracer's reference frame has y running up (target.js `toReference`), while the maps
