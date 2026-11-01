@@ -99,6 +99,7 @@ table, so only 18 can be compared:
 | GRPO v2 (from v3) | upper 9 | 9 | 9 | 5.8× |
 | r5 | upper 9 | 8 (hermanngitter no) | 8 | 9.1× |
 | r5 | lower 9 | 9 | 9 | 12.0× |
+| r6 (v3 fine-tuned) | upper 9 | 7 (hermanngitter, kogle no) | 7 | 9.8× |
 
 ## 3a. The retrained models
 
@@ -112,6 +113,11 @@ table, so only 18 can be compared:
   against 1.6 s) and finds fisk, which v3 misses. But it misses hermanngitter (v3: 6.6 s), gives david4
   19 hidden cuts against 17, and on the hard pictures solves tak and khatam (65.6 s, second outline) but
   not venus.
+- **r6** (2026-11-01; v3 fine-tuned one epoch at lr 5e-4 on every pack plus 143 newly solved
+  variations, v3's own targets, the same designs held out): faster where it finds a template (5star
+  3.3 s, lilje1 4.4 s), but 7 of the 9 upper designs, missing hermanngitter (as r5) and kogle. So
+  neither from ImageNet (r5) nor from v3 (r6) has more data beaten v3 on the designs no model saw: each
+  round moves a picture or two either way, within what 9 designs can tell apart.
 - **Why v3 stays:** the side-by-side worker means a ladder miss costs nothing, so what counts is the set
   of pictures the ladder solves at all. r5 and v3 each solve pictures the other misses. Shipping both
   doubles the download; one model trained to match both (distillation) is the cheaper way to get both.
