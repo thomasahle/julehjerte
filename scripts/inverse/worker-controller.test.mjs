@@ -276,6 +276,30 @@ test('side by side with the network, a held ladder template stands when today\'s
   }
 });
 
+test('side by side with the network, after a fitted answer goes out at 20 s the ladder goes on, its template the alternative as in the race',async t=>{
+  t.mock.timers.enable({apis:['setTimeout','Date']});
+  const fitted={...value,report:{...value.report,templateChecksPassed:true}},pass=v=>({...v,report:{...v.report,templateChecksPassed:true}});
+  for (const [ladderHidden, todayHidden, expect] of [[4, 6, 'ladder'], [6, 4, 'today'], [4, null, 'ladder']]) {
+    const h=harness({now:()=>Date.now(),predictCutMaps:async()=>({size:1})});await h.send(1,'prepare',{input});
+    const solving=h.send(2,'solve',{settings:{...both,cutModel:true}});await new Promise(resolve=>setImmediate(resolve));
+    const [fitter,exact,ladder]=h.workers;
+    t.mock.timers.tick(1000*10);h.reply(fitter,2,'result',{result:fitted});t.mock.timers.tick(1000*11);await solving;
+    assert.deepEqual(h.messages.slice(-2),[{id:2,type:'result',result:fitted},{id:2,type:'alternative',pending:true}]);assert.equal(ladder.terminated,0);
+    const found=pass(ladderValue(ladderHidden,2)),theirs=todayHidden===null?null:pass(todayValue(todayHidden));
+    h.reply(ladder,2,'result',{result:found});assert.equal(exact.terminated,0);assert.equal(h.messages.at(-1).pending,true);
+    if (theirs) h.reply(exact,2,'result',{result:theirs});else h.reply(exact,2,'error',{message:'none',code:'NO_EXACT_TEMPLATE'});
+    assert.deepEqual(h.messages.at(-1),{id:2,type:'alternative',result:expect==='ladder'?found:theirs});
+
+  }
+  // At the bound it is the alternative at once.
+  const h=harness({now:()=>Date.now(),predictCutMaps:async()=>({size:1})});await h.send(1,'prepare',{input});
+  const solving=h.send(2,'solve',{settings:{...both,cutModel:true}});await new Promise(resolve=>setImmediate(resolve));
+  const [fitter,exact,ladder]=h.workers;
+  t.mock.timers.tick(1000*10);h.reply(fitter,2,'result',{result:fitted});t.mock.timers.tick(1000*11);await solving;
+  const found=pass(ladderValue(3,3));h.reply(ladder,2,'result',{result:found});
+  assert.equal(exact.terminated,1);assert.deepEqual(h.messages.at(-1),{id:2,type:'alternative',result:found});
+});
+
 test('side by side, an exact search overrunning its minute is ended and the fitter\'s answer taken',async t=>{
   t.mock.timers.enable({apis:['setTimeout']});
   const h=harness();await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});

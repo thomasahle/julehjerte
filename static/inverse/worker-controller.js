@@ -54,10 +54,23 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
   const passes=value=>value?.report?.templateChecksPassed===true;
   // An exact template's hidden segments and its outline's lower bound.
   const searchOf=value=>value?.report?.solver?.exactOutline?.search,hiddenOf=value=>searchOf(value)?.attempts?.at(-1)?.hidden??searchOf(value)?.hidden;
+  // A ladder template today's search cannot better: at its outline's lower
+  // bound on the traced outline, without a fallback (made symmetric, untied,
+  // part of the symmetry), the bound today's search would stop at too; or, on
+  // any outline, with no more hidden segments than the traced outline's bound
+  // (exactTemplate's tracedBound). On an outline with tips rounded koelbuer's
+  // ladder has 16 at its bound 16, today's search 2 on the traced one; within
+  // the traced bound were 16 of the 35 the 106 broad pictures held, none of
+  // them beaten by today's.
+  const settles=value=>{
+    const hidden=hiddenOf(value),outline=value?.report?.solver?.exactOutline,bound=outline?.search?.bound;
+    const traced=!outline?.outline&&!['even','unjoined','untied','subgroup'].some(way=>outline?.[way]);
+    return Number.isFinite(hidden)&&((traced&&Number.isFinite(bound)&&hidden<=bound)||(Number.isFinite(outline?.tracedBound)&&hidden<=outline.tracedBound));
+  };
   const failure=(id,error)=>scope.postMessage({id,type:'error',message:error.message||String(error),code:error.code,report:error.report||null});
-  const finish=(job,value,error)=>{
+  const finish=(job,value,error,keepLadder=false)=>{
     if(active!==job)return;
-    clearTimeout(job.timer);disposeLadder();
+    clearTimeout(job.timer);if(!keepLadder)disposeLadder();
     active=null;result=value??null;
     if(error)failure(job.id,error);else scope.postMessage({id:job.id,type:'result',result});
     job.done();
@@ -66,7 +79,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
     const {id,action,input,settings}=data;
     const progress=event=>scope.postMessage({id,type:'progress',event});
     // Any new request ends a worker still working on an alternative.
-    if(trailing&&action!=='archive'&&action!=='warm-neural'){const ending=trailing;trailing=null;clearTimeout(ending.timer);if(ending.exact)disposeExact();else disposeFitter();}
+    if(trailing&&action!=='archive'&&action!=='warm-neural'){const ending=trailing;trailing=null;clearTimeout(ending.timer);if(ending.exact){disposeExact();disposeLadder();}else disposeFitter();}
     if(action==='cancel'){
       if(active&&active.id!==id)return;
       const job=active;active=null;clearTimeout(job?.timer);dispose();endCrop();prepared=null;result=null;job?.done();
@@ -165,12 +178,15 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
             const early=!job.drawn&&passes(job.held?.result);
             job.timer=setTimeout(()=>{if(live()&&job.exact==='running'){if(early)trail();else exactDone();}},Math.max(0,job.startedAt+1000*timeScale(cfg.timeLimit)*(early?EXACT_UNDRAWN_SECONDS:EXACT_WAIT_SECONDS)-now()));
           };
+          // The network's ladder goes on with today's search after the fitter's
+          // answer (gathering-hanging-trio-top: the ladder's template at 43 s,
+          // none from today's), its template the alternative as in the race.
           const trail=()=>{
             job.exact='trailing';
-            const timer=setTimeout(()=>{if(trailing?.id===id&&trailing.exact){trailing=null;disposeExact();scope.postMessage({id,type:'alternative',pending:false});}},
+            const timer=setTimeout(()=>{if(trailing?.id===id&&trailing.exact){const ladder=trailing.ladder;trailing=null;disposeExact();disposeLadder();scope.postMessage(ladder&&passes(ladder)?{id,type:'alternative',result:ladder}:{id,type:'alternative',pending:false});}},
               Math.max(0,job.startedAt+1000*(cfg.timeLimit+EXACT_GRACE_SECONDS)-now()));
-            finish(job,job.held.result);
-            trailing={id,exact:true,timer};
+            finish(job,job.held.result,undefined,true);
+            trailing={id,exact:true,timer,ladder:null};
             scope.postMessage({id,type:'alternative',pending:true});
           };
           compute.onmessage=({data:message})=>{
@@ -207,7 +223,12 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
           compute.onmessageerror=()=>{disposeFitter();const error=fail('The fitting response could not be read.','ENGINE_UNAVAILABLE');if(job.exact==='running')job.held={error};else finish(job,null,error);};
           if(both){
             // The exact search's answer after the fitter's went out: an alternative.
-            const trailed=answer=>{clearTimeout(trailing.timer);trailing=null;scope.postMessage(answer&&passes(answer)?{id,type:'alternative',result:answer}:{id,type:'alternative',pending:false});};
+            // A held ladder template stands only with fewer hidden segments, or when today's has none.
+            const trailed=answer=>{
+              clearTimeout(trailing.timer);const ladder=trailing.ladder;trailing=null;disposeLadder();
+              const best=ladder&&!(answer&&hiddenOf(answer)<=(hiddenOf(ladder)??Infinity))?ladder:answer;
+              scope.postMessage(best&&passes(best)?{id,type:'alternative',result:best}:{id,type:'alternative',pending:false});
+            };
             exactCompute.onmessage=({data:message})=>{
               if(message.id!==id)return;
               if(trailing?.id===id&&trailing.exact){if(message.type==='result')trailed(message.result);else if(message.type==='error')trailed(null);return;}
@@ -235,26 +256,16 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
             if(race){
               ladderCompute.onmessage=({data:message})=>{
                 if(message.id!==id||message.type==='progress'||message.type==='candidate')return;
+                // After the fitter's answer went out: the alternative, as in the race.
+                if(trailing?.id===id&&trailing.exact){disposeLadder();if(message.type!=='result')return;if(settles(message.result)){disposeExact();trailed(message.result);}else trailing.ladder=message.result;return;}
                 if(message.type!=='result'||!live()||job.exact!=='running'){disposeLadder();return;}
                 disposeLadder();
-                // The ladder's template at its outline's lower bound (none has
-                // fewer hidden segments) first: today's exact search is ended, and
-                // the fitter's answer follows as an alternative. Above it, it is
-                // held while today's search goes on, whose template stands unless
-                // it has more (lilje1: the ladder's 8 in 4 s, today's 7 in 43 s;
-                // of the 106 broad pictures, 4 where the ladder came first).
-                // The bound is its outline's: only on the traced outline, without
-                // a fallback (made symmetric, untied, part of the symmetry), is
-                // it the bound today's search would stop at too. On an outline
-                // with tips rounded koelbuer's ladder has 16 at its bound 16,
-                // today's search 2 on the traced one.
-                const hidden=hiddenOf(message.result),bound=searchOf(message.result)?.bound,outline=message.result?.report?.solver?.exactOutline;
-                // On any outline, a template with no more hidden segments than the
-                // traced outline's bound (exactTemplate's tracedBound) is as good
-                // as today's search finds on it: on the 106 broad pictures 16 of
-                // 35 held ones, none of them beaten by today's.
-                const traced=!outline?.outline&&!['even','unjoined','untied','subgroup'].some(way=>outline?.[way]),tracedBound=outline?.tracedBound;
-                if(Number.isFinite(hidden)&&((traced&&Number.isFinite(bound)&&hidden<=bound)||(Number.isFinite(tracedBound)&&hidden<=tracedBound))){disposeExact();takeExact(message.result);return;}
+                // A ladder template today's search cannot better (settles) first:
+                // today's exact search is ended, and the fitter's answer follows as
+                // an alternative. Any other is held while today's search goes on,
+                // whose template stands unless it has more (lilje1: the ladder's 8
+                // in 4 s, today's 7 in 43 s).
+                if(settles(message.result)){disposeExact();takeExact(message.result);return;}
                 job.ladder=message.result;
                 // A template in hand, which the live view shows: a fitted answer
                 // waits for today's search as for one that has drawn.
