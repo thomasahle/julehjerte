@@ -216,7 +216,7 @@ test('side by side, the fitter\'s template stands once the exact search finds no
 });
 
 // With the network (cutModel), its ladder in a third worker beside them.
-const ladderValue=(hidden,bound)=>({report:{solver:{exactOutline:{chosen:'exact',search:{hidden,bound,ladder:100}}}},files:{'cut_geometry.json':packet.geometry}});
+const ladderValue=(hidden,bound,more={})=>({report:{solver:{exactOutline:{chosen:'exact',...more,search:{hidden,bound,ladder:100}}}},files:{'cut_geometry.json':packet.geometry}});
 const todayValue=hidden=>({report:{solver:{exactOutline:{chosen:'exact',search:{hidden,bound:0}}}},files:{'cut_geometry.json':packet.geometry}});
 async function racing(){
   const h=harness({predictCutMaps:async()=>({size:1})});await h.send(1,'prepare',{input});
@@ -242,6 +242,16 @@ test('side by side with the network, a ladder template above its bound waits for
     assert.equal(h.messages.filter(m=>m.type==='progress').at(-1).event.geometry,packet.geometry);
     h.reply(exact,2,'result',{result:theirs});await solving;
     assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,wins==='today'?theirs:found);
+  }
+});
+
+test('side by side with the network, a ladder template at the bound of a rounded or fallback outline waits for today\'s search',async()=>{
+  for (const more of [{outline:1},{untied:true},{subgroup:{to:['turn180']}}]) {
+    const {h,solving,exact,ladder}=await racing(),found=ladderValue(16,16,more),theirs=todayValue(2);
+    h.reply(ladder,2,'result',{result:found});
+    assert.equal(exact.terminated,0);assert.equal(h.messages.filter(m=>m.type==='result').length,0);
+    h.reply(exact,2,'result',{result:theirs});await solving;
+    assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,theirs);
   }
 });
 

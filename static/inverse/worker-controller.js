@@ -243,8 +243,14 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
                 // held while today's search goes on, whose template stands unless
                 // it has more (lilje1: the ladder's 8 in 4 s, today's 7 in 43 s;
                 // of the 106 broad pictures, 4 where the ladder came first).
-                const hidden=hiddenOf(message.result),bound=searchOf(message.result)?.bound;
-                if(Number.isFinite(hidden)&&Number.isFinite(bound)&&hidden<=bound){disposeExact();takeExact(message.result);return;}
+                // The bound is its outline's: only on the traced outline, without
+                // a fallback (made symmetric, untied, part of the symmetry), is
+                // it the bound today's search would stop at too. On an outline
+                // with tips rounded koelbuer's ladder has 16 at its bound 16,
+                // today's search 2 on the traced one.
+                const hidden=hiddenOf(message.result),bound=searchOf(message.result)?.bound,outline=message.result?.report?.solver?.exactOutline;
+                const traced=!outline?.outline&&!['even','unjoined','untied','subgroup'].some(way=>outline?.[way]);
+                if(traced&&Number.isFinite(hidden)&&Number.isFinite(bound)&&hidden<=bound){disposeExact();takeExact(message.result);return;}
                 job.ladder=message.result;
                 // A template in hand, which the live view shows: a fitted answer
                 // waits for today's search as for one that has drawn.
