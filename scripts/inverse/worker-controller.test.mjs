@@ -215,6 +215,51 @@ test('side by side, the fitter\'s template stands once the exact search finds no
   assert.deepEqual(h.messages.at(-1),{id:2,type:'result',result:value});
 });
 
+// With the network (cutModel), its ladder in a third worker beside them.
+const ladderValue=(hidden,bound)=>({report:{solver:{exactOutline:{chosen:'exact',search:{hidden,bound,ladder:100}}}},files:{'cut_geometry.json':packet.geometry}});
+const todayValue=hidden=>({report:{solver:{exactOutline:{chosen:'exact',search:{hidden,bound:0}}}},files:{'cut_geometry.json':packet.geometry}});
+async function racing(){
+  const h=harness({predictCutMaps:async()=>({size:1})});await h.send(1,'prepare',{input});
+  const solving=h.send(2,'solve',{settings:{...both,cutModel:true}});
+  await new Promise(resolve=>setImmediate(resolve));
+  const [fitter,exact,ladder]=h.workers;
+  assert.equal(ladder.sent[0].settings.ladderOnly,true);assert.ok(ladder.sent[0].settings.cutMaps);assert.equal(exact.sent[0].settings.cutMaps,undefined);
+  return {h,solving,fitter,exact,ladder};
+}
+
+test('side by side with the network, a ladder template at its lower bound is taken at once',async()=>{
+  const {h,solving,exact}=await racing(),found=ladderValue(4,4);
+  h.reply(h.workers[2],2,'result',{result:found});await solving;
+  assert.equal(exact.terminated,1);assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1),{id:2,type:'result',result:found});
+});
+
+test('side by side with the network, a ladder template above its bound waits for today\'s search, the one with fewer hidden segments standing',async()=>{
+  for (const [today, wins] of [[7, 'today'], [9, 'ladder']]) {
+    const {h,solving,exact,ladder}=await racing(),found=ladderValue(8,7),theirs=todayValue(today);
+    h.reply(ladder,2,'result',{result:found});
+    // Held and shown, today's search still running.
+    assert.equal(exact.terminated,0);assert.equal(h.messages.filter(m=>m.type==='result').length,0);
+    assert.equal(h.messages.filter(m=>m.type==='progress').at(-1).event.geometry,packet.geometry);
+    h.reply(exact,2,'result',{result:theirs});await solving;
+    assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,wins==='today'?theirs:found);
+  }
+});
+
+test('side by side with the network, a held ladder template stands when today\'s search finds none, and Stop takes it',async()=>{
+  {
+    const {h,solving,exact,ladder}=await racing(),found=ladderValue(8,7);
+    h.reply(ladder,2,'result',{result:found});
+    h.reply(exact,2,'error',{message:'The exact search found no template the export passes.',code:'NO_EXACT_TEMPLATE'});await solving;
+    assert.equal(exact.terminated,1);assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,found);
+  }
+  {
+    const {h,solving,ladder}=await racing(),found=ladderValue(8,7);
+    h.reply(ladder,2,'result',{result:found});
+    await h.send(2,'stop');await solving;
+    assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,found);
+  }
+});
+
 test('side by side, an exact search overrunning its minute is ended and the fitter\'s answer taken',async t=>{
   t.mock.timers.enable({apis:['setTimeout']});
   const h=harness();await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});
