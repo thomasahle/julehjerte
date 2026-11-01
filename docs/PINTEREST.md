@@ -96,7 +96,9 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   moved every later heart one day on. Kagome and Stjernefliser (Mønstre, 2026-10-30) went in late, between
   Hjertekløver and Stjernegitter and between Jul tern and Skrå kryds, so
   that no two Mønstre hearts are pinned on consecutive days; the hearts after
-  each moved one day on.
+  each moved one day on. Penrose-ring (between Fisk and Dråber) and
+  Penrose-stjerner (between Rød blomst and Bølger) went in on 2026-11-01, so
+  the hearts after each moved another day.
 - The feed holds the released items only (nothing future-dated), newest first,
   at most 30 (`PINTEREST_MAX_ITEMS`). When every heart is out, the feed stops
   growing: it does not cycle.

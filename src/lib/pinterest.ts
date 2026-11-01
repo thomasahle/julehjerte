@@ -83,8 +83,8 @@ export const PINTEREST_ORDER: readonly string[] = [
 	'roserude', 'santa', 'andreaskors', 'hanefod', 'ni-firkanter', 'explosion', 'kronblade', 'flyvendegaes', 'kors-i-ramme', 'mor-og-barn',
 	'origami', 'potteplante', 'nihon', 'drageskael', 'hjerte-i-hjerte-i-hjerte', 'firkant-i-firkant', 'mor-far', 'dagognat', 'hermanngitter',
 	'lilje1', 'tragt', 'davidsstjerne-circ', 'boelgebrud', 'ball', 'glaskuppel',
-	'lilje2', 'hvirvel', 'david4', 'jul-2026', 'permo-kroge', 'fisk',
-	'permo-draaber', 'tulipan', 'khatam', 'permo-cirkler', 'fiskeskael', 'roed-blomst',
+	'lilje2', 'hvirvel', 'david4', 'jul-2026', 'permo-kroge', 'fisk', 'penrose-ring',
+	'permo-draaber', 'tulipan', 'khatam', 'permo-cirkler', 'fiskeskael', 'roed-blomst', 'penrose-stjerner',
 	'boelger', 'blomster-hjerte', 'stjernerogkors', 'fejlternet', 'jul-tern', 'stjernefliser', 'skraa-kryds',
 	'hjertekloever', 'kagome', 'stjernegitter', 'firkloever-hjerte', 'gitterhjerte', 'kloeverblad-hjerte', 'cirkelhjerte',
 	'groen-stjerne', 'firkanthjerte', 'hjerte-paa-hjerte'

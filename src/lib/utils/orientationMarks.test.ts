@@ -29,7 +29,7 @@ const MARKED = [
 	'flyvendegaes', 'god-jul', 'h4h2', 'hanefod', 'hermanngitter', 'hjerte-i-hjerte-i-hjerte', 'hjerte-paa-hjerte',
 	'hvirvel', 'jul', 'jul-2026', 'jul-tern',
 	'juletrae', 'kagome', 'khatam', 'koelbuer', 'lilje1', 'lilje2', 'mor-far', 'mor-og-barn',
-	'nemt-hjerte', 'ni-hjerter-i-tern', 'origami', 'permo-cirkler', 'permo-draaber', 'permo-kroge',
+	'nemt-hjerte', 'ni-hjerter-i-tern', 'origami', 'penrose-ring', 'penrose-stjerner', 'permo-cirkler', 'permo-draaber', 'permo-kroge',
 	'plus', 'plus3', 'potteplante',
 	'puslespil', 'roed-blomst', 'roserude', 'santa', 'sildeben', 'simple-5star', 'skraa-kryds',
 	'snowflake', 'squares', 'stjernefliser', 'stjernegitter', 'sun', 'tak', 'triple-heart', 'tulipan', 'venus'

@@ -383,6 +383,22 @@
     },
     "difficulty": "expert"
   },
+  "penrose-ring": {
+    "name": "Penrose-ring",
+    "names": {
+      "da": "Penrose-ring",
+      "en": "Penrose Ring"
+    },
+    "difficulty": "hard"
+  },
+  "penrose-stjerner": {
+    "name": "Penrose-stjerner",
+    "names": {
+      "da": "Penrose-stjerner",
+      "en": "Penrose Stars"
+    },
+    "difficulty": "expert"
+  },
   "boelgebrud": {
     "name": "Bølgebrud",
     "names": {

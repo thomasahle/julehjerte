@@ -1453,6 +1453,60 @@
     },
     "photo": null
   },
+  "penrose-ring": {
+    "name": "Penrose-ring",
+    "names": {
+      "da": "Penrose-ring",
+      "en": "Penrose Ring"
+    },
+    "author": "Thomas Dybdahl Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-11-01",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "penrose-stjerner": {
+    "name": "Penrose-stjerner",
+    "names": {
+      "da": "Penrose-stjerner",
+      "en": "Penrose Stars"
+    },
+    "author": "Thomas Dybdahl Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-11-01",
+    "description": null,
+    "gridSize": {
+      "x": 7,
+      "y": 7
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
   "boelgebrud": {
     "name": "Bølgebrud",
     "names": {

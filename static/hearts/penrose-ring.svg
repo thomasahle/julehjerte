@@ -1,0 +1,29 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" data-weave-parity="0" data-color-left="#ffffff" data-color-right="#b91313" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title>Penrose-ring</title>
+  <title xml:lang="da">Penrose-ring</title>
+  <title xml:lang="en">Penrose Ring</title>
+  <desc xml:lang="da">Penrose-fliser, et mønster af to slags rudere der aldrig gentager sig: en ring af smalle røde ruder om en femtakket stjerne i midten, set som et udsnit af fliserne. Fire klip i hver halvdel, klippet i skarpe knæk langs rudernes kanter. Halvdelene er forskellige, så der skal to skabeloner til, og sværhedsgraden er svær. Klip langsomt og vend papiret ved hvert knæk, så de smalle striber ikke rives.</desc>
+  <desc xml:lang="en">Penrose tiling, a pattern of two kinds of rhombus that never repeats: a ring of narrow red rhombi around a five-pointed star in the middle, seen as a crop of the tiling. Each half has four cuts, made as sharp bends along the edges of the rhombi. The halves differ, so it takes two templates, and the difficulty is hard. Cut slowly and turn the paper at each bend so the narrow strips do not tear.</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Penrose-ring</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Thomas Dybdahl Ahle</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:source>juleflet.dk</dc:source>
+        <dc:date>2026-11-01</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 0.000 6.827 L 8.495 8.173 L 16.451 4.119 L 29.077 16.746 L 37.033 12.693 L 54.670 15.486 L 67.297 28.113 L 75.404 12.202 L 93.041 14.996 L 95.835 32.633 L 100.000 30.511" stroke="orange" fill="none"/>
+  <path d="M 0.000 24.281 L 0.388 24.084 L 4.442 16.128 L 17.069 28.755 L 21.122 20.800 L 23.915 38.437 L 41.553 41.231 L 54.180 53.857 L 70.091 45.751 L 68.694 36.932 L 83.674 56.499 L 87.728 48.544 L 100.000 42.291" stroke="orange" fill="none"/>
+  <path d="M 0.000 62.557 L 12.525 75.082 L 28.435 66.975 L 15.809 54.348 L 33.446 57.141 L 46.073 69.768 L 61.984 61.661 L 64.777 79.299 L 82.414 82.092 L 90.521 66.181 L 93.864 54.680 L 100.000 60.816" stroke="orange" fill="none"/>
+  <path d="M 0.000 85.374 L 2.691 80.092 L 15.318 92.719 L 31.229 84.612 L 48.866 87.406 L 55.163 93.703 L 66.503 90.199 L 71.404 95.100 L 95.041 94.719 L 95.261 70.921 L 100.000 75.660" stroke="orange" fill="none"/>
+  <path d="M 7.201 0.000 L 8.495 8.173 L 4.442 16.128 L 17.069 28.755 L 13.015 36.711 L 15.809 54.348 L 23.915 38.437 L 41.553 41.231 L 54.180 53.857 L 46.073 69.768 L 28.435 66.975 L 12.525 75.082 L 15.318 92.719 L 32.955 95.513 L 30.669 100.000" stroke="green" fill="none"/>
+  <path d="M 24.440 0.000 L 24.406 0.066 L 16.451 4.119 L 29.077 16.746 L 21.122 20.800 L 38.759 23.593 L 54.670 15.486 L 57.464 33.124 L 70.091 45.751 L 61.984 61.661 L 64.777 79.299 L 48.866 87.406 L 42.449 100.000" stroke="green" fill="none"/>
+  <path d="M 63.202 0.000 L 75.404 12.202 L 67.297 28.113 L 68.694 36.932 L 83.674 56.499 L 79.621 64.455 L 82.414 82.092 L 66.503 90.199 L 55.163 93.703 L 61.461 100.000" stroke="green" fill="none"/>
+  <path d="M 85.064 0.000 L 80.414 2.369 L 93.041 14.996 L 84.934 30.907 L 87.728 48.544 L 93.864 54.680 L 90.521 66.181 L 95.261 70.921 L 95.041 94.719 L 71.404 95.100 L 76.304 100.000" stroke="green" fill="none"/>
+</svg>
