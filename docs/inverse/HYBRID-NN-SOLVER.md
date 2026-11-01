@@ -364,6 +364,10 @@ today's (the cases above), so the hold stays whole. The time the network saves i
 traced outline (42 templates); a ladder that finds the traced outline's templates more often, or that
 knows which outline to search, is where the remaining speed is.
 
+A schedule with the traced outline's both phases first (half the time), then the rounded outlines, finds
+more templates on the traced outline (54 against 46) but fewer in all (72 against 75), and side by side
+76 exact against 77 at the same median: the two-phase schedule stays.
+
 **So the race now holds a ladder template above its bound** (bf4007e6; a7e871e9: only the traced
 outline's bound counts, see Terms): at the traced outline's lower bound, found without a fallback, it ends
 today's search at once; above it, it is shown and held, and today's template stands unless it
@@ -508,6 +512,17 @@ In order, each step only if the previous one pays:
    training data are solver trajectories, which `server.mjs` produces once it reports the rows each
    proposal breaks. This is also where a GRPO reward becomes informative (fewer broken rows, a smaller
    gap to the bound), unlike the all-or-nothing reward of section 3a.
+   **Started 2026-11-01** (the user's choice). Step 1, the data: `nn/loop/collect.mjs` runs the ladder's
+   rungs (K10–K300, 6 s each, in the context of today's winning search) on 200 solved training pictures
+   and records every candidate's features (score, rank, length, kind, ends) and whether it matches a
+   reference cut, and per rung the chosen set, the incumbent, the candidates in broken rows and, for a
+   rung without a witness, where the feasibility relaxation says strips break. Most rungs end without a
+   witness, so the relaxation's break points are often the only answer. Step 2, the signal: does a
+   re-ranker that sees a failed rung's answer put the reference cuts higher among the candidates the rung
+   did not use than the network's fixed order does (`nn/loop/signal.py`, designs split into train and
+   test)? Only if it does: step 3, a small graph network over the candidates (conflicts and shared ends
+   as edges) re-ranking between rungs in plain JS, trained on these trajectories and then on rewards
+   from the solver; and which outline to search becomes one of its choices.
 4. **Later:** neighbourhood search around an incumbent (reopen one face or kind, keep the rest), and a
    continuous refiner for curved cuts once the topology is fixed.
 
