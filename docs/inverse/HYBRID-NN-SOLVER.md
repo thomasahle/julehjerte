@@ -195,6 +195,12 @@ less symmetry), not the network.
 takes most of 2 minutes and HiGHS does not finish the root. So balls is the opposite case: too big
 whole, without a witness when cut to K ≤ 3000.
 
+**A finer grid through the ladder** (spacing 0.4 against 0.75; the ranking keeps each rung small, where
+today's search could not afford it): no change on davidsstjerne-circ (under its symmetry, the outline
+made symmetric, its turns, one mirror, and untied: every rung to K300 without a template within
+0.1–1.2 s), santa or god-jul (rungs to K300 the same within a second at both spacings). Their rungs
+fail as fast with the finer grid as without, so missing positions are not what stops them either.
+
 **So of the unsolved seven,** davidsstjerne-circ is proved not to be a ranking problem (infeasible
 with every candidate). On god-jul and jul-tern even the oracle maps fail within 2 minutes, which is
 strong evidence but no proof. Santa's designer template fails our own checks. For these, a better
