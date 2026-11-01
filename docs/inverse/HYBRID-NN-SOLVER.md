@@ -212,6 +212,16 @@ pixels changed; `fewspots.py`, production ladder alone): none of the 18 variants
 the picture solvable would take edits at the spots that stop it, found from the model, not a smoothing
 of the whole mask.
 
+**Where davidsstjerne-circ breaks** (untied, every candidate, the debug copy): its LP relaxation is
+infeasible too, so the obstacle is not combinatorial. HiGHS's `getIis` returns an empty set here, but a
+feasibility relaxation of the LP (bounds hard, every row soft at 1) breaks 17–20 paper-flow rows each
+time, at strip ends on all four sides and at two touch points near opposite corners ((1.485, 1.485),
+(10.515, 10.515)): the strips cannot be routed through the traced structure as a whole. Tracing without
+joined near-touchings does not change it. The CP-SAT run of 2026-10-22 on the designers' own vector
+outlines found templates for all 64 library designs (59 passing every check), so what fails is the
+outline traced from the mask, not the design. That is where the remaining library failures point:
+the tracer, not the network or the search.
+
 **So of the unsolved seven,** davidsstjerne-circ is proved not to be a ranking problem (infeasible
 with every candidate). On god-jul and jul-tern even the oracle maps fail within 2 minutes, which is
 strong evidence but no proof. Santa's designer template fails our own checks. For these, a better
