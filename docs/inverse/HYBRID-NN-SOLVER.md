@@ -148,6 +148,17 @@ roughening as done cost the cut maps on clean pictures and did not help the phot
 clean picture from a separate head or network, so the cut maps stay as they are, and its use measured by
 how often its outline matches the true one on roughened synthetic hearts.
 
+**clean1, a separate clean-picture model** (synthetic only, 80% roughened, from syn1's weights; the cut maps
+untouched). On 400 held-out synthetic designs, roughened: the true structure (numbers of red and white
+regions) comes back from the roughened input in 11%, from the clean picture at 0.5 in 21%, from one of
+three thresholds in 32%; wrong pixels 6.4% → 2.8%. But used as the picture to search (today's search on
+it, its template then checked against the painted mask, `even/cleancheck.mjs`): photographs 13 of 42
+against 15 on the original (one gained, three lost; 16 with either), the six hard gallery hearts none. The
+clean picture comes from 128 x 128 and moves too far from the painted mask: four templates found on it miss
+the export's image-error limit against the original, one its regions check. So not as a whole new picture:
+next would be local hypotheses (the painted mask with the clean picture's correction in one small region
+at a time, so the image error stays small) or a clean picture at the mask's own resolution.
+
 
 **r7, shipped (2026-11-01, `cuts-c6cd1ff7.onnx`):** v3 fine-tuned (lr 2e-4, one epoch) on every pack, the
 250 variations solved since r6, and the hard pictures' exact templates fed back (davidsstjerne-circ,
