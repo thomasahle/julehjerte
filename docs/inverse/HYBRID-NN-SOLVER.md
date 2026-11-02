@@ -140,6 +140,13 @@ ranking on the traced outline; it is found on an outline with tips rounded, in t
 Against the gallery-trained models on the library: v3 60, r7 62 (its extra one, davidsstjerne-circ, from
 training on it). syn1 replaces r7.
 
+**syn3, not shipped (2026-11-02):** syn1 warm-started two epochs on every synthetic pack plus 2,082 new hard
+designs (`gen-synth.mjs` HARD=1: dense boards and many small motifs from the upper half of each style's
+strips, motif scales from 0.70, and 40% text hearts; 16,656 pictures with their turns), 59,444 synthetic
+pictures in all. On the 127 test pictures: side by side 93 against syn1's 95 (library 60, losing venus;
+photographs 16). The harder designs did not bring the jump the first synthetic data did; within two
+pictures, so no clear gain either way.
+
 **syn2, not shipped:** syn1 warm-started two epochs with 60% of the inputs roughened (blur and threshold,
 smooth noise, pixelation, speckles; labels kept) and a tenth output, the clean picture, as the first step
 towards outline hypotheses from the network. On the same 127 test pictures it does worse: side by side
