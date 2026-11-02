@@ -1,11 +1,11 @@
 /** The cut-proposal network (as runtime.js loads the photo model, on the same
  * ONNX Runtime): a picture's mask in, the maps the exact search's ladder ranks
  * hidden-segment candidates by out (exact/candidates.js rankScores). Trained on
- * exact templates of the gallery and of generated pictures, with the square's
- * symmetries; docs/inverse/HYBRID-NN-SOLVER.md. A search never waits for it:
+ * generated hearts only, none of the gallery's, whose templates keep the export's
+ * cutting rules, with the square's symmetries; docs/inverse/HYBRID-NN-SOLVER.md. A search never waits for it:
  * without its maps in time the exact search runs as before. */
-export const CUTS_MODEL_SHA256='c090b66031ecec712d05c2f25a903e0a77e4c3fa58ab0d5bf0d0a51dddd911ac';
-const modelURL=new URL('./cuts-c090b660.onnx',import.meta.url);
+export const CUTS_MODEL_SHA256='7bb7216088e0c643cc4630705cdbf198c12bfdc05b82705be03c91df211d345a';
+const modelURL=new URL('./cuts-7bb72160.onnx',import.meta.url);
 const runtimeURL=new URL('../vendor/onnxruntime-1.19.2/',import.meta.url);
 const N=128;
 

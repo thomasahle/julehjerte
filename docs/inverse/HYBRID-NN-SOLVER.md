@@ -16,6 +16,12 @@ In Mal's default mode the ladder runs in a worker of its own, beside today's exa
 export-valid template wins. A picture therefore never waits for the network, and today's search keeps its
 whole time.
 
+**The shipped model** (2026-11-02, `cuts-7bb72160.onnx`, syn1v): trained on generated hearts only, none of
+the gallery's, and only on those whose templates keep the export's cutting rules (41% of the generator's
+do not: section 3a). Every gallery and library heart and every photograph is test. Without a template the
+export takes, the ladder hands back its nearest (section 5b), and the page never ends the search early on a
+failing fitted answer. The bullets below are the earlier models' story and are kept for the record.
+
 **What is established** (all measurements after the orientation fix, section 6). *Generalization* is
 judged only on the held-out designs (section 3): there the network adds speed, not coverage, since today's
 search alone solves the designs the ladder misses. The hard pictures solved without training on them
@@ -146,6 +152,45 @@ strips, motif scales from 0.70, and 40% text hearts; 16,656 pictures with their 
 pictures in all. On the 127 test pictures: side by side 93 against syn1's 95 (library 60, losing venus;
 photographs 16). The harder designs did not bring the jump the first synthetic data did; within two
 pictures, so no clear gain either way.
+
+**Expert iteration on synthetic hearts, tried (2026-11-02).** The loop the goal asks for, honestly: syn1's
+production ladder (30 s) on 240 of the hard designs it never trained on (`synth2`), then the solver
+labelling the ones it missed, then training on the solver's templates. syn1 found templates the export
+takes for 119 (median 7.3 s). The other 121 got no label: with the generator's own template as the
+ranking (oracle maps) the ladder found none on the first five, and today's search (60 s, its own start)
+none on the first eight, running up to 600 s past its time. The reason: **59% of these generated
+templates break our export's clearances on their own outline** (short-self, nonlocal and inter-slit,
+`even/genvalid.mjs`): the generator never refuses. Of syn1's 121 misses, 94 are such designs, which may
+have no template at all; on 48 others the solver found a template that keeps the rules where the
+generator's does not. Across every synthetic design syn1 trained on, **41% of the templates break a
+clearance** (1,346 of 3,299 `g-` designs, 552 of 1,356 `s-`): the network learned partly from cuts our
+solver must reject. (syn3's extra data, the hard designs, was the worst for this, which may be why it did
+not help.) Next: syn1's recipe without them (syn1v, below).
+
+**syn1v: syn1's recipe without the templates our export rejects (2026-11-02).** The same packs, encoder and
+three epochs, with every picture whose generated template breaks a clearance left out, turned and warped
+copies too (`train.py --drop`: 15,184 of 42,788 pictures). On the 127 test pictures, back to back with syn1
+per chunk of ten under the same load (both with PyTorch's maps): syn1v 91, syn1 87 (library 60 and 60,
+gallery-only 15 and 11, photographs 16 and 16). Three more runs of each on the six pictures where they
+differed:
+
+| Picture | syn1 | syn1v |
+|---|---|---|
+| hermanngitter | 0 of 3 | 3 of 3 (10 s) |
+| god-jul | 1 of 3 | 3 of 3 |
+| hjerte-paa-hjerte | 0 of 3 | 2 of 3 |
+| fire-stjerner, firkanthjerte | 2 of 3 each | 3 of 3 each |
+| santa | 3 of 3 (50 s) | 0 of 3 |
+
+So the gains on hermanngitter, god-jul and hjerte-paa-hjerte hold, and santa is lost (syn1 finds it only
+at 50 s). Through the browser's path (each model's float16 ONNX in `neural/cuts.js`, two runs each):
+hermanngitter exact both times against syn1's crossing near misses; god-jul both times against once;
+hjerte-paa-hjerte a near miss keeping every cutting rule (the paper audit fails) where syn1 has nothing;
+santa nothing where syn1's float16 maps give a near miss 0.083 mm short; fire-stjerner and firkanthjerte
+alike. Where both find a template, syn1v is a little slower (median 8.6 s against 7.1) and has more hidden
+cuts on 8 pictures, fewer on 4. Cleaner labels are the first data change since syn1 to beat it on unseen
+pictures. The float16 export matches PyTorch within 0.008. **Shipped** as `cuts-7bb72160.onnx`, replacing
+syn1.
 
 **syn2, not shipped:** syn1 warm-started two epochs with 60% of the inputs roughened (blur and threshold,
 smooth noise, pixelation, speckles; labels kept) and a tenth output, the clean picture, as the first step
@@ -625,7 +670,7 @@ side: the photo locator's crop, not the search.
 
 | Part | What |
 |---|---|
-| `static/inverse/neural/cuts.js`, `cuts-c090b660.onnx` | syn1 (trained on synthetic designs only, no gallery heart: section 3a), float16, checksum, loaded like the photo model; NOTICE.txt credits the Apache-2.0 encoder weights |
+| `static/inverse/neural/cuts.js`, `cuts-7bb72160.onnx` | syn1v (trained on synthetic designs only, no gallery heart, without the generated templates our export rejects: section 3a), float16, checksum, loaded like the photo model; NOTICE.txt credits the Apache-2.0 encoder weights |
 | `exact/candidates.js` `rankScores`, `ranked`, `keep` | candidate scores from the maps (hidden field along the route by direction, plus the switches at the ends), the top K plus every candidate under 3 mm |
 | `exact/search.js` `rank`, `reuse`, `buildSeconds` | rank pruning on a copy; candidates built once per ladder; the build's own time |
 | `exact/stage.js` `networkLadder`, `ladderOnly` | rungs (K, s) = (10, 2), (30, 2), (100, 3), (300, 4), plus (1000, 10) when alone, each also with two sampled rankings when alone; at most a quarter of the time before today's search, the whole search time alone (0a3cada0) |
