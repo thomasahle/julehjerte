@@ -1,7 +1,7 @@
 # A cut-proposal network and the exact solver for Mal
 
-State on 2026-11-01. The network is on main and live (14531051, sampled rungs 0f5e7be7): a choice under
-Avanceret, "Hurtigere søgning med et neuralt netværk", off unless asked for. Experiments are in
+State on 2026-11-02. The network is on main and live (14531051, sampled rungs 0f5e7be7): a choice under
+Avanceret, "Hurtigere søgning med et neuralt netværk", on unless turned off (the user's decision, 2026-11-02). Experiments are in
 `tmp/e2e/nn/` and in an instrumented copy of the engine (`tmp/e2e/even/timed/core`).
 
 ## 1. Summary and decisions
@@ -53,7 +53,7 @@ any template keeping our rules exists for them is unknown.
 **Decided:** shipped behind the Avanceret switch (14531051, live); the 1/2/3-minute search time pushed;
 no DINOv3 for now (ImageNet encoders are doing well and are free of the Hugging Face gate).
 
-**Still yours:** make the network the default? It costs 9.5 MB on the first exact search.
+**Decided 2026-11-02:** the network is on by default; it costs 9.5 MB on the first exact search.
 
 ## 2. Terms
 
@@ -680,7 +680,7 @@ side: the photo locator's crop, not the search.
 | `core/result-rank.js` | the best finished result when none passes: never empty-handed (section 5b) |
 | `engine.js` | `raw.cutMaps` to the traced outline's search; `raw.ladderOnly`; a near miss finished and marked `nearMiss` |
 | `worker-controller.js` | the maps from the mask (`cutModel`, Mal only; loads while the picture is prepared; waits at most 1.5 s); the ladder worker beside today's; near misses held and ranked, never taken as templates |
-| `src/lib/inverse/engine.ts` | `cutModel` when Avanceret's network choice is on, unless "smoother cuts" alone |
+| `src/lib/inverse/engine.ts` | `cutModel` when Avanceret's network choice is on (the default), unless "smoother cuts" alone |
 
 **Tests:** exact 72, worker controller 24, compute worker and runtime 10, app 227; all passing.
 
@@ -710,6 +710,48 @@ Distinct designs ("bases"; a design's warps and turns count once) and pictures p
 - **The test words** of the hard set (JUL, GOD, MOR, FAR, 2026) are kept out of the generator's words.
 
 ## 9. Open
+
+State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
+- **Seven pictures with no answer from the ladder** (balls, davidsstjerne-circ, hjerte-i-hjerte-i-hjerte,
+  hjerte-paa-hjerte, roed-blomst, two photographs): no rung there has any solution at all, so nothing to
+  rank, and graded clearance rows do not help. hjerte-i-hjerte-i-hjerte's designer template, read onto our
+  traced outline, breaks 20 rules (crossings, turns, clearances to 0.3 mm): the designer's cuts are not on
+  our outline. That needs visible cuts allowed off the traced outline within a budget, the user's decision.
+- **18 photographs end at once:** the outline traced from their mask ends unevenly on opposite sides.
+  Looked at one by one, 10 have no usable picture: the crop is tilted, catches the wrong object (a bauble
+  instead of the heart) or the colours are split wrongly on patterned paper. The other 8 are nearly right
+  but carry slivers of the heart's lobes or the background along an edge. Read as deep as the paired reading
+  goes (8% of the side) with no limit on the change, only one of those 8 ends evenly, changing 3.9% of
+  the picture against the export's 3%. The photo step's crop, not the search; the import dialog lets the
+  visitor drag the corners.
+- **A clearance tolerance: decided 2026-11-02, 0.1 mm.** The export's verdict and the exact search's
+  acceptance read a final validation through `verdict` (`validate.js`): a clearance missed by at most
+  `CLEARANCE_TOLERANCE_MM` passes and is listed under `tolerated`. Repairs, the smoothing of an exact
+  template onto the mask and the rounding of hidden cuts still aim for the whole clearance. santa with
+  syn1's ladder: its 0.083 mm miss now passes the geometry, which brings it to the paper check, which it
+  fails (a disconnected core), so it stays a near miss; syn1v's ladder draws nothing there.
+- **Solver labels for the dropped designs (expert iteration 2): no gain, not shipped.** syn1v's ladder
+  (30 s each) on 200 generated pictures whose own template breaks the export found 77 templates (39%);
+  each warped four ways and turned eight (3,080 pictures), syn1v fine-tuned one epoch on them with its own
+  data (lr 2e-4, `ei2-rest.sh`). Back to back through the browser's float16 path on the 127 test pictures:
+  ei2 91, syn1v 93 (library 60/61, gallery-only 14/15, photographs 17/17); ei2 loses tak and venus and
+  gains none; median 9.0 against 8.6 s.
+- **Visible cuts off the traced outline: approved 2026-11-02, in progress (not shipped).** The pictures no
+  search solves are designs whose own templates break our rules on the picture as painted. Read onto our
+  traced outline (`even/fromtemplate.mjs`), the designer templates break: balls only the outer strip
+  (its circles 2.14 and 2.25 mm from the paper's edge, against 2.5); davidsstjerne-circ two cuts 2.46 mm
+  apart (2.5), a return at 1.43 mm (1.5) and turns; hjerte-i-hjerte-i-hjerte cuts 1.92 mm apart and
+  returns down to 1.20 mm, turns and crossings. The designers accepted what our export does not, so a
+  template keeping our rules needs the picture moved a little. First probe, the outer strip: the mask
+  pulled back from a side where a shape dips within the strip's width without reaching it (an
+  `outerStripBand` in `border.js`, on the WIP patch `tmp/e2e/nn/nudge/outer-strip-wip.patch`): balls,
+  0.24% of the picture moved, the ladder finds a template there keeping every cutting rule but the turn
+  limit (the flattened bulges' corners), 0.67% from the painted picture, its paper uncertain (the outer
+  strips' cores within the lattice's grid of the limit). With 0.43% moved (cut ends at an angle squared
+  too) every cutting rule held, paper uncertain; 0.5 mm margin passed the paper and broke turns. Still
+  to do: a rounded pull-back instead of a flattened one, and today's search must not take a fallback's
+  drawing from the moved outline as a near miss (it took one 42% off the picture). 17 of the 127 test
+  pictures have such a dip: balls, dagognat and 15 photographs.
 
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
