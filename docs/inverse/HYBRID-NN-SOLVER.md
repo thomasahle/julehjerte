@@ -736,22 +736,31 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   data (lr 2e-4, `ei2-rest.sh`). Back to back through the browser's float16 path on the 127 test pictures:
   ei2 91, syn1v 93 (library 60/61, gallery-only 14/15, photographs 17/17); ei2 loses tak and venus and
   gains none; median 9.0 against 8.6 s.
-- **Visible cuts off the traced outline: approved 2026-11-02, in progress (not shipped).** The pictures no
-  search solves are designs whose own templates break our rules on the picture as painted. Read onto our
-  traced outline (`even/fromtemplate.mjs`), the designer templates break: balls only the outer strip
-  (its circles 2.14 and 2.25 mm from the paper's edge, against 2.5); davidsstjerne-circ two cuts 2.46 mm
-  apart (2.5), a return at 1.43 mm (1.5) and turns; hjerte-i-hjerte-i-hjerte cuts 1.92 mm apart and
-  returns down to 1.20 mm, turns and crossings. The designers accepted what our export does not, so a
-  template keeping our rules needs the picture moved a little. First probe, the outer strip: the mask
-  pulled back from a side where a shape dips within the strip's width without reaching it (an
-  `outerStripBand` in `border.js`, on the WIP patch `tmp/e2e/nn/nudge/outer-strip-wip.patch`): balls,
-  0.24% of the picture moved, the ladder finds a template there keeping every cutting rule but the turn
-  limit (the flattened bulges' corners), 0.67% from the painted picture, its paper uncertain (the outer
-  strips' cores within the lattice's grid of the limit). With 0.43% moved (cut ends at an angle squared
-  too) every cutting rule held, paper uncertain; 0.5 mm margin passed the paper and broke turns. Still
-  to do: a rounded pull-back instead of a flattened one, and today's search must not take a fallback's
-  drawing from the moved outline as a near miss (it took one 42% off the picture). 17 of the 127 test
-  pictures have such a dip: balls, dagognat and 15 photographs.
+- **Visible cuts off the traced outline: approved 2026-11-02; the outer strip shipped, the rest open.**
+  The pictures no search solves are designs whose own templates break our rules on the picture as
+  painted. Read onto our traced outline (`even/fromtemplate.mjs`), the designer templates break: balls
+  only the outer strip (its circles 2.14 and 2.25 mm from the paper's edge, against 2.5);
+  davidsstjerne-circ two cuts 2.46 mm apart (2.5), a return at 1.43 mm (1.5) and turns;
+  hjerte-i-hjerte-i-hjerte cuts 1.92 mm apart and returns down to 1.20 mm, turns and crossings. The
+  designers accepted what our export does not, so a template keeping our rules needs the picture moved
+  a little.
+  - **The outer strip (shipped).** `outerStripBand` (`border.js`) pulls a shape back from a side it dips
+    within the outer strip's width of without reaching it (cuts ending on the side, at any angle, are
+    left alone), to 0.5 mm past that width: at 0.1 and 0.3 mm past it the paper audit's lattice leaves
+    the outer strips' cores uncertain. `rasterOutline`'s `outerStrip` traces it, null when nothing moves
+    or more than the export's 3% would. The ladder gets it as one more outline; today's search tries it
+    with half its remaining time when the traced outline has no template, and the outlines with tips
+    rounded after it are moved too. balls: 0.76% of the picture moved, a template passing every check
+    in four runs of four (24 s, ladder alone). Of the 127 test pictures 20 have such a dip (balls,
+    jul-tern and 18 photographs); on those, with it off and on (`nudge/ab.sh`): ladder alone 7 → 8
+    (balls), today's search 7 → 7, none lost. The other 107 trace no such outline.
+  - Seen on the way: a run's template on balls' moved outline can run into the 0.09 mm cusps where its
+    small circles nearly touch the big ones ((29.4, 30.4) and mirrors), turning 177° (`even/turns.mjs`);
+    other runs route around them.
+  - **Still open:** cuts too close together inside the picture (davidsstjerne-circ,
+    hjerte-i-hjerte-i-hjerte). Neither search draws anything there, not even a template breaking rules,
+    so there is no near miss to say where to move the picture; the designer templates' readings do
+    (`even/designspots.mjs`).
 
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:

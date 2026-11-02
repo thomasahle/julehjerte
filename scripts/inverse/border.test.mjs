@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { stabilizeBorder, borderTransitions, oppositeBorderSeeds, pairedBorderReading } from '../../static/inverse/core/border.js';
+import { stabilizeBorder, borderTransitions, oppositeBorderSeeds, pairedBorderReading, outerStripBand } from '../../static/inverse/core/border.js';
 import { fillUnobserved } from '../../static/inverse/core/exact/raster.js';
 import { prepare, design } from '../../static/inverse/core/engine.js';
 import { checkerPixels } from './fixtures.mjs';
@@ -157,3 +157,23 @@ test('pixels a photograph does not show take the nearest shown one', () => {
   assert.deepEqual([...filled].filter((_, i) => observed[i]), [...mask].filter((_, i) => observed[i]));
 });
 
+
+test('a shape dipping into the outer strip without reaching the side is pulled back, one ending there left alone', () => {
+  // 100 px for 100 mm: a disc 2 mm from the left side (balls), a stripe ending on the top side at an angle.
+  const n = 100, mask = new Uint8Array(n * n);
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+    if (Math.hypot(x - 12, y - 50) <= 10) mask[y * n + x] = 1;
+    if (y < 30 && Math.abs(x - 60 - y / 3) <= 4) mask[y * n + x] = 1;
+  }
+  const {mask: out, changeFraction} = outerStripBand(mask, n, 100, 3);
+  assert.ok(changeFraction > 0 && changeFraction < .002);
+  // Nothing of the disc within 3 mm of the left side now, and nothing else on the left changed.
+  for (let y = 0; y < n; y++) for (let x = 0; x < 3; x++) assert.equal(out[y * n + x], 0);
+  for (let y = 0; y < n; y++) for (let x = 3; x < 50; x++) assert.equal(out[y * n + x], mask[y * n + x]);
+  // The stripe still reaches the top side where it did.
+  for (let x = 0; x < n; x++) assert.equal(out[x], mask[x]);
+  // A mask with nothing in its outer strips is unchanged.
+  const clear = new Uint8Array(n * n);
+  for (let y = 40; y < 60; y++) for (let x = 40; x < 60; x++) clear[y * n + x] = 1;
+  assert.equal(outerStripBand(clear, n, 100, 3).changeFraction, 0);
+});

@@ -201,6 +201,9 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
     for(const way of [...(tips.length?[{open:radius,spots:tips,within:TIP_SPOT_MM*px}]:[]),{open:radius},{open:2*radius,wider:true}]){
       try{const traced=traceAt(way.open,way);if(traced&&!traced.why)outlines.push(traced.scaled);}catch{/* an outline that cannot be traced is left out */}
     }
+    // The outline moved off the paper's sides where it runs closer to one than
+    // the outer strip may be wide (border.js outerStripBand), when it does.
+    try{const traced=traceAt(way.open,{outerStrip:true});if(traced&&!traced.why)outlines.push(traced.scaled);}catch{/* none */}
     // The traced outline's lower bound: no template on it has fewer hidden
     // segments, so a ladder template with no more than that (on whichever
     // outline) is as good as today's search can find there, and the page need
@@ -254,17 +257,32 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
   // time when both are to run; in what time that leaves, everywhere twice as
   // much (mor-og-barn: a template 0.52% from its mask in 4 s, where 0.8 mm
   // left its chin and its child's nose closer than a slit may come).
+  // An outline running closer to a side than the outer strip may be wide
+  // without reaching it has no template keeping the rules (border.js
+  // outerStripBand: balls' circles 2.14 mm from the edge, against 2.5): moved
+  // off the side there, it is searched next, with half the time left, and the
+  // outlines with tips rounded after it are moved too. Most pictures have none.
+  let strip={};
+  if(!exportable(found.found?.assessment,cfgExact)&&roundedEnd-performance.now()>=1000*ROUNDED_LEAST){
+    let moved=null;
+    try{const traced=traceAt(way.open,{outerStrip:true});moved=traced&&!traced.why?traced.scaled:null;}catch{moved=null;}
+    if(moved){
+      strip={outerStrip:true};
+      const again=await exactSearch(moved,null,cfgExact,search(performance.now()+.5*(roundedEnd-performance.now())));
+      if(exportable(again.found?.assessment,cfgExact)||closer(again.found?.assessment,found.found?.assessment))found={...again,report:{...again.report,outerStrip:true}};
+    }
+  }
   if(!exportable(found.found?.assessment,cfgExact)&&roundedEnd-performance.now()>=1000*ROUNDED_LEAST){
     const spots=[...(found.found?validate(found.found.solution,cfgExact,{finalGeometry:true}).issues.filter(i=>i.type==='short_self_clearance'&&i.points).flatMap(i=>i.points.map(([x,y])=>[x*px,y*px])):[]),...tips];
     const ways=[...(spots.length?[{open:radius,spots,within:TIP_SPOT_MM*px}]:[]),{open:radius},{open:2*radius,wider:true}];
     for(const [k,way] of ways.entries()){
       if(exportable(found.found?.assessment,cfgExact)||roundedEnd-performance.now()<1000*ROUNDED_LEAST)break;
       let rounded=null;
-      try{const traced=traceAt(way.open,way);rounded=traced&&!traced.why?traced.scaled:null;}catch{rounded=null;}
+      try{const traced=traceAt(way.open,{...way,...strip});rounded=traced&&!traced.why?traced.scaled:null;}catch{rounded=null;}
       if(!rounded)continue;
       const end=way.spots?performance.now()+.6*(roundedEnd-performance.now()):roundedEnd;
       const again=await exactSearch(rounded,null,cfgExact,search(end));
-      if(exportable(again.found?.assessment,cfgExact)||closer(again.found?.assessment,found.found?.assessment))found={...again,report:{...again.report,rounded:way.spots?'near':way.wider?'wider':true}};
+      if(exportable(again.found?.assessment,cfgExact)||closer(again.found?.assessment,found.found?.assessment))found={...again,report:{...again.report,...strip,rounded:way.spots?'near':way.wider?'wider':true}};
     }
   }
   if(!exportable(found.found?.assessment,cfgExact)){const repaired=returnRepaired(sink,cfgExact);if(repaired)found=repaired;}

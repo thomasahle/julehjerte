@@ -3,7 +3,7 @@
  * with the border band stabilised first: an import's crop leaves strips of the
  * other colour along the edges, which would otherwise be outline there. */
 import {prepareMaskTrace} from '../input.js';
-import {pairedBorderReading, stabilizeBorder} from '../border.js';
+import {outerStripBand, pairedBorderReading, stabilizeBorder} from '../border.js';
 import {SIZE} from './structure.js';
 
 /** Two corners of a picture's outline this close (mm) are one touching:
@@ -114,8 +114,14 @@ export function fillUnobserved(mask, observed, n) {
  * traced as their nearest shown ones (fillUnobserved). With `paired`, its
  * sides are read as deep as each pair of them needs to end evenly
  * (border.js pairedBorderReading), changing at most the export's allowed
- * error; null when they cannot. */
-export function rasterOutline(target, cfg, {tolerance = .35, smoothRadius = 0, borderRadius = 1, open = 0, spots = null, within = 0, paired = false, specks = 0} = {}) {
+ * error; null when they cannot. With `outerStrip`, no boundary runs closer to
+ * a side than the outermost strip may be wide without reaching it
+ * (border.js outerStripBand); null when none did, or when moving them would
+ * change more than the export's allowed error. */
+/** How far (mm) past the outer strip's width a shape is pulled back from a side (`outerStrip`). */
+const OUTER_STRIP_MARGIN_MM = .5;
+
+export function rasterOutline(target, cfg, {tolerance = .35, smoothRadius = 0, borderRadius = 1, open = 0, spots = null, within = 0, paired = false, specks = 0, outerStrip = false} = {}) {
   const source = target.sourceImage;
   if (!source?.mask || !source.resolution) return null;
   const n = source.resolution, width = target.width;
@@ -125,6 +131,14 @@ export function rasterOutline(target, cfg, {tolerance = .35, smoothRadius = 0, b
     // Depths in millimetres of the traced square, the band as its tracer reads it.
     shown = pairedBorderReading(shown, n, width, {seenAt: borderRadius, minimumStripWidth: cfg.nominalWidth ?? 2.5, maxChange: cfg.maxImageError ?? .03});
     if (!shown) return null;
+  }
+  if (outerStrip) {
+    // Half a millimetre over the strip's width, in the target's units, the paper
+    // `cfg.width` mm: the paper audit's lattice certifies the outer strips' cores
+    // from there (balls: uncertain at 0.1 and 0.3 mm over, passed at 0.5).
+    const banded = outerStripBand(shown, n, width, ((cfg.nominalWidth ?? 2.5) + OUTER_STRIP_MARGIN_MM) * width / (cfg.width || width));
+    if (!banded.changeFraction || banded.changeFraction > (cfg.maxImageError ?? .03)) return null;
+    shown = banded.mask;
   }
   // Rounded, its border band read first: read after, the band squared again
   // where an outline meets the square's side at a shallow angle the corner

@@ -76,6 +76,52 @@ function extendBorder(mask, n, width, radius, minimumStripWidth) {
   };
 }
 
+/** The mask with no colour boundary running within `depth` mm of a side
+ * without reaching it: the strip outside the outermost cut of a family is
+ * then at least that wide (validate.js outer_side_clearance), which no choice
+ * of cuts can mend on the picture as painted (balls: its circles 2.14 mm from
+ * the paper's edge, against 2.5). Along each side, each run of rays (pixel
+ * rows across the band) where the band's colour differs from the side's own
+ * either takes the side's colour to `depth` (the shape is pulled back) or the
+ * colour at `depth` out to the side (it is carried out to the side),
+ * whichever changes fewer pixels. Boundaries that end on the side are left as
+ * they are. Visible cuts thereby leave the painted
+ * outline (the user's decision, 2026-11-02), by at most `depth`.
+ */
+export function outerStripBand(mask, n, width, depth) {
+  const d = Math.min(Math.floor(n / 4), Math.ceil(depth * n / width)), out = mask.slice();
+  // Side 0 top, 1 right, 2 bottom, 3 left: pixel k deep on ray t.
+  const index = (side, t, k) => side === 0 ? k * n + t : side === 1 ? t * n + n - 1 - k : side === 2 ? (n - 1 - k) * n + t : t * n + k;
+  for (let side = 0; side < 4; side++) {
+    const differs = t => { for (let k = 1; k < d; k++) if (out[index(side, t, k)] !== out[index(side, t, 0)]) return true; return false; };
+    for (let t = 0; t < n;) {
+      if (!differs(t)) { t++; continue; }
+      let u = t;
+      while (u < n && differs(u)) u++;
+      // A boundary that reaches the side within the run, or at its ends, is a
+      // cut ending there, at an angle: left as it is.
+      const own = out[index(side, t, 0)];
+      let ends = false;
+      for (let r = Math.max(0, t - 1); r <= Math.min(n - 1, u); r++) if (out[index(side, r, 0)] !== own) { ends = true; break; }
+      if (ends) { t = u; continue; }
+      let pulled = 0, carried = 0;
+      for (let r = t; r < u; r++) for (let k = 0; k < d; k++) {
+        const v = out[index(side, r, k)];
+        pulled += v !== out[index(side, r, 0)];
+        carried += v !== out[index(side, r, d)];
+      }
+      for (let r = t; r < u; r++) {
+        const v = out[index(side, r, pulled <= carried ? 0 : d)];
+        for (let k = 0; k < d; k++) out[index(side, r, k)] = v;
+      }
+      t = u;
+    }
+  }
+  let changed = 0;
+  for (let i = 0; i < out.length; i++) changed += out[i] !== mask[i];
+  return {mask: out, changeFraction: changed / out.length};
+}
+
 /** The mask with each pair of opposite sides read from deeper inside
  * (extendBorder) at the shallowest `depths` (mm, at most 8% of the width) at
  * which a band of `seenAt` mm (the exact search's tracer's) finds as many colour
