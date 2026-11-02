@@ -780,7 +780,14 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   the outline they were found on (`cheapBounds`), so none on that outline has fewer: library 52 of 61,
   rest of the gallery 13 of 15, photographs 10 of 17. 64 meet the traced outline's own bound. The other
   18 stop above it (lilje2 34 against 15, origami 28 against 4, koelbuer 16 against 2, alhambra 3
-  against 2): whether the bound can be reached there is not known; the search stops at its time.
+  against 2). With 3 minutes instead of one they stay as they are (16 of 18 the same, `nudge/gap180.jsonl`):
+  the ladder returns at its first rung with a template, in 2 to 30 s, so time is not what stops them.
+  The count's bound (`cheapBounds`) is loose: flower's template has 1 hidden segment against a bound of
+  0, and the solver proves 1 the least. The solver's own gap is the proof (today's search alone, the 127
+  test pictures, `ATTEMPTS=1`, `nudge/today-gaps.jsonl`): of its 89 templates passing every check, 71 are
+  proven optimal (gap 0) among straight hidden cuts on the outline searched (library 49 of 59, rest of
+  the gallery 11 of 15, photographs 11 of 15) and 5 more within 1%; the rest stop far from a proof
+  (origami, flyvendegaes, dagognat, amy-rosette and jul with their bounds near 0).
 
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
