@@ -885,7 +885,7 @@ function placeMotif(motif: Ring[], wanted: [number, number][][], cuts: Cut[][][]
 		chosen[m][i] = best;
 	}
 	if (!lenient) mirrorPlaces();
-	// Places moved round their rings (`moves`, see `refined` in generate.ts)
+	// Places moved round their rings (`moves`, see `endsRefined` in generate.ts)
 	// keep the recipe's order round each ring, their cuts crossing nothing; the
 	// generator judges their paper.
 	if (moves?.size) {

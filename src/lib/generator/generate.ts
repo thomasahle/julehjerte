@@ -13,6 +13,7 @@ import { isTopology, outlineFor, recipeConstruction, recipesAt, type Recipe, typ
 import { FALLBACK_WORK, MIRROR_NEAR, hiddenCuts, motifFit, movedEnd, nestingOf, topologyConstruction } from './topologyRecipes';
 import { blobsOf, carryTopology } from './topologyTransfer';
 import { alongEdge, boardOutline } from './boardOutline';
+import { bendShared, sharedPieces, slideSwitch, switchesOf } from './cutMoves';
 import { picture, type Known } from './picture';
 export { fillSquare, fitCircle } from './frameFit';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
@@ -35,7 +36,7 @@ import {
 import type { HeartColors, HeartDesign, Vec } from '$lib/types/heart';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { lobesShareTemplate, mapPointBetweenLobes } from '$lib/utils/symmetry';
-import { paperFaults, PAPER_NECK_MM, PRINT_WIDTH_MM, type WeakPiece } from '$lib/geometry/paperNecks';
+import { holdingWidth, paperFaults, paperHolds, PAPER_NECK_MM, PRINT_WIDTH_MM, type WeakPiece } from '$lib/geometry/paperNecks';
 import { intersectionMarginPx } from '$lib/editor/curveIssues';
 import { findSearchIssues, searchFingerIssues } from './searchClearance';
 import { rasterizeDesign } from '$lib/paint/rasterize';
@@ -440,7 +441,7 @@ export const storedHearts = (request: GeneratorRequest, recipes = request.recipe
 /** A stored recipe's heart (see `storedHearts`): the topology recipe it drew
  * (`of`), whether its places were found straight, and where they fell (see
  * `topologyConstruction`). */
-type Drawing = { heart: GeneratorResult; of?: TopologyRecipe; straight: boolean; places?: Point[][] };
+type Drawing = { heart: GeneratorResult; of?: TopologyRecipe; straight: boolean; places?: Point[][]; construction?: ReturnType<typeof recipeConstruction> };
 
 /** A construction a stored recipe drew, finished as the page shows its heart. */
 function finishedStored(request: GeneratorRequest, construction: ReturnType<typeof recipeConstruction>, strips: number | undefined): GeneratorResult {
@@ -489,7 +490,7 @@ function storedDrawings(request: GeneratorRequest, recipes = request.recipes, to
 		try {
 			construction = construct();
 			if (!construction) continue;
-			hearts.push({ heart: finishedStored(request, construction, strips), of, straight: !!straight, places: construction.places });
+			hearts.push({ heart: finishedStored(request, construction, strips), of, straight: !!straight, places: construction.places, construction });
 			if (of) drew.add(of);
 			if (hearts.length >= count) break;
 		} catch (error) {
@@ -551,11 +552,11 @@ export function fromTopology(request: GeneratorRequest, own?: GeneratorResult): 
 	const first = drawn.map(d => ({ ...d, m: measure(d.heart) })).reduce((a, b) => betterCuts(b.m, a.m) ? b : a);
 	// Refining compares hearts before their connections are bent, which may
 	// rank them otherwise: the refined heart is kept only if still better bent.
-	const best = refined(request, first, shown).heart, unbent = best === first.heart ? [best] : [first.heart, best];
-	const heart = unbent.map(heart => improveSharedConnections(heart, true)).reduce((a, b) => betterCuts(measure(b), measure(a)) ? b : a);
+	const ended = endsRefined(request, first, shown), unbent = [...new Set([first.heart, ended.heart, refined(request, ended, shown).heart])];
+	const heart = unbent.map(heart => improveSharedConnections(heart, true)).reduce((a, b) => firmerCuts(b.design, measure(b), a.design, measure(a)) ? b : a);
 	if (!own) return heart;
 	const told = { ...heart, scale: own.scale, enclosed: own.enclosed, whole: own.whole, board: own.board ?? heart.board };
-	return own.hardToCut || betterCuts(measure(heart), measure(own)) ? told : undefined;
+	return own.hardToCut || firmerCuts(heart.design, measure(heart), own.design, measure(own)) ? told : undefined;
 }
 
 /** Where the generator's own heart is hard to cut and no recipe's finishes
@@ -583,30 +584,62 @@ function hardness(result: GeneratorResult) {
 	return { spacing: result.hardToCut?.spacing ?? 1, narrow: findSearchIssues(design.fingers, full).size };
 }
 
-/** How many hearts refining a recipe's heart draws at most (see `refined`). */
-const REFINE_DRAWS = 12;
-/** The moves, in the sheet's units along its edge, a hidden cut's board end
- * makes in refining, and how near a place the paper may tear the cut ends or
- * runs to be moved. */
-const REFINE_STEPS = [1.5, -1.5, 3, -3], REFINE_NEAR = 10;
+/** How many hearts refining a recipe's heart by its hidden cuts' ends draws
+ * at most, and the moves, in the sheet's units along its edge, an end makes
+ * (see `endsRefined`). */
+const ENDS_DRAWS = 12, ENDS_STEPS = [1.5, -1.5, 3, -3];
+/** How many hearts refining a recipe's heart on its construction's cuts draws
+ * at most since its last firmer one, and in all, and in how many places at
+ * most its paper may tear for that (see `refined`). */
+const REFINE_DRAWS = 12, REFINE_MOST = 32, REFINE_FEW = 5;
+/** The steps, in the sheet's units along its outline, a switch slides in
+ * refining, and how near where its paper may tear (a weak piece, or the neck
+ * it hangs by) a cut must be to be moved, here and in `endsRefined`. */
+const REFINE_STEPS = [.5, -.5, 1.5, -1.5, 3, -3], REFINE_NEAR = 10;
+/** How far, in the sheet's units, refining bends a shared cut across its course (see `refined`). */
+const REFINE_BENDS = [.5, -.5, 1.5, -1.5];
+/** The widest print `holdingWidth` looks at by default, and its steps. */
+const HOLDING_MOST = 200, HOLDING_STEP = 10;
 
-/** Where a heart's paper may tear (see `paperFaults`), in its picture's units. */
-function weakPoints(design: HeartDesign): Point[] {
-	const where: WeakPiece[] = [], rect = inferOverlapRect(design.fingers, design.gridSize);
-	paperFaults(design, { where });
-	return where.map(({ x, y }): Point => [(x - rect.left) / rect.width * 100, (y - rect.top) / rect.height * 100]);
+/** The narrowest print at which a heart's paper holds, as the design page
+ * offers it (see `holdingWidth`; past its widest, one step wider). */
+const holdingWidths = new WeakMap<HeartDesign, number>();
+function holdsAt(design: HeartDesign): number {
+	if (!holdingWidths.has(design)) holdingWidths.set(design, holdingWidth(design) ?? HOLDING_MOST + HOLDING_STEP);
+	return holdingWidths.get(design)!;
 }
 
-/** A board heart a topology recipe drew straight, refined: while its paper
- * may tear, an end of the hidden cut nearest where is moved a step along its
- * edge of the board (see `movedEnd`) or its ring of the motif, its mirror
- * image's too where the lobes share a template, then those of the next
- * nearest, and the first move whose heart has better cuts is kept (see
- * `betterCuts`), up to REFINE_DRAWS hearts drawn. One recipe for a topology
- * so fits each motif and size of it, its cuts' ends taken from another
- * motif's solve leaving a sliver of paper by a line, the paper's edge or the
- * motif. */
-function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest, drawn: T, shown: { rings: Ring[]; motif?: number }): T {
+/** Whether cuts measured `a` (see `cutMeasures`) on `designA` are firmer than
+ * `b`'s: better (`betterCuts`), or, as torn as each other, holding at a
+ * narrower print, and not sharper or much busier. */
+function firmerCuts(designA: HeartDesign, a: readonly number[], designB: HeartDesign, b: readonly number[]): boolean {
+	if (a[0] !== b[0] || a[1] !== b[1] || !a[0]) return betterCuts(a, b);
+	const ha = holdsAt(designA), hb = holdsAt(designB);
+	if (ha === hb) return betterCuts(a, b);
+	return ha < hb && a[2] <= b[2] && a[3] <= 1.25 * b[3] + 2 && a[4] <= 1.05 * b[4];
+}
+
+/** Where a heart's paper may tear (see `paperFaults`), in its picture's units:
+ * each weak piece, or, `byNecks`, the neck it hangs by (the piece itself
+ * where none is found). */
+function weakPoints(design: HeartDesign, byNecks: boolean): Point[] {
+	const where: WeakPiece[] = [], necks: (WeakPiece & { mm: number })[] = [], rect = inferOverlapRect(design.fingers, design.gridSize);
+	paperFaults(design, byNecks ? { where, necks } : { where });
+	return (necks.length ? necks : where).map(({ x, y }): Point => [(x - rect.left) / rect.width * 100, (y - rect.top) / rect.height * 100]);
+}
+
+/**
+ * A board heart a topology recipe drew straight, refined by its hidden cuts'
+ * ends: while its paper may tear, an end of the hidden cut nearest where is
+ * moved a step along its edge of the board (see `movedEnd`) or its ring of the
+ * motif, its mirror image's too where the lobes share a template, then those
+ * of the next nearest, and the first move whose heart has better cuts is kept
+ * (see `betterCuts`), up to ENDS_DRAWS hearts drawn, each its recipe drawn
+ * anew. One recipe for a topology so fits each motif and size of it, its cuts'
+ * ends taken from another motif's solve leaving a sliver of paper by a line,
+ * the paper's edge or the motif.
+ */
+function endsRefined<T extends Drawing & { m: number[] }>(request: GeneratorRequest, drawn: T, shown: { rings: Ring[]; motif?: number }): T {
 	if (request.style !== 'board' || !drawn.of || !drawn.straight || !drawn.places || !drawn.m[0] || shown.motif === undefined) return drawn;
 	const o = boardOutline(shown.rings.slice(0, shown.motif)), strips = request.board ?? BOARD_STRIPS.board.initial;
 	const draw = (recipe: TopologyRecipe, moves: Map<string, number>) => {
@@ -614,7 +647,7 @@ function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest,
 			const construction = topologyConstruction(recipe, shown, o, false, undefined, moves);
 			if (!construction) return;
 			const heart = finishedStored(request, construction, strips);
-			return heart.hardToCut ? undefined : { heart, places: construction.places, m: cutMeasures(heart.design, shown.rings) };
+			return heart.hardToCut ? undefined : { heart, places: construction.places, construction, m: cutMeasures(heart.design, shown.rings) };
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 		}
@@ -635,8 +668,8 @@ function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest,
 		const recipe = movedEnd(step.recipe, o, end.e, end.t, by);
 		return recipe && { recipe, moves: step.moves };
 	};
-	while (best.m[0] && draws < REFINE_DRAWS) {
-		const weak = weakPoints(best.heart.design), cuts = hiddenCuts(best.of!, o, best.places);
+	while (best.m[0] && draws < ENDS_DRAWS) {
+		const weak = weakPoints(best.heart.design, false), cuts = hiddenCuts(best.of!, o, best.places);
 		const ends = cuts.flatMap(cut => cut.ends);
 		const mirror = (end: End) => {
 			const p = at(end), q: Point = [p[1], p[0]];
@@ -650,7 +683,7 @@ function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest,
 			const partner = shared ? mirror(end) : undefined;
 			// One a lobe's template shares with the other's moves with its image or not at all.
 			if (shared && !partner) continue;
-			for (const by of REFINE_STEPS) {
+			for (const by of ENDS_STEPS) {
 				let step = move({ recipe: best.of!, moves: best.moves }, end, by);
 				// Its image the mirrored way: along its edge as it goes, round a ring against its order.
 				if (partner && step) {
@@ -662,7 +695,7 @@ function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest,
 					step = move(step, partner, sign * by);
 				}
 				if (!step) continue;
-				if (draws++ >= REFINE_DRAWS) break search;
+				if (draws++ >= ENDS_DRAWS) break search;
 				const next = draw(step.recipe, step.moves);
 				if (next && betterCuts(next.m, best.m)) { better = { ...best, ...next, of: step.recipe, moves: step.moves }; break search; }
 			}
@@ -671,6 +704,113 @@ function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest,
 		best = better;
 	}
 	return best;
+}
+
+/** A move of a construction's cuts (see `cutMoves`). */
+type CutMove = { kind: 'slide'; at: Point; by: number } | { kind: 'bend'; from: Point; to: Point; by: number };
+
+/**
+ * A board heart a topology recipe drew straight (and `endsRefined`), refined
+ * on its construction's own cuts: while its paper may tear (in REFINE_FEW
+ * places at most: where it tears in more, a move frees too little of it to pay
+ * for its draws), a switch by the neck a weak piece hangs by (the nearest
+ * first) is slid a step along its outline, then a shared cut there is bent
+ * across its course (see `cutMoves`), its mirror image's too where the lobes
+ * share a template, and the first move whose heart, its shared
+ * connections bent as shown, is firmer is kept (see `firmerCuts`: better cuts,
+ * or as torn holding at a narrower print) and tried again first; up to
+ * REFINE_DRAWS hearts drawn since the last firmer paper, REFINE_MOST in all,
+ * each the construction finished anew. One recipe for a topology so fits each
+ * motif and size of it, its cuts' ends taken from another motif's solve
+ * leaving a sliver of paper by a line, the paper's edge or the motif: the star
+ * on five strips at 100%, where cuts meet an inner corner, from paper holding
+ * at a 130 mm print to 90 mm.
+ */
+function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest, drawn: T, shown: { rings: Ring[]; motif?: number }): T {
+	if (request.style !== 'board' || !drawn.construction || !drawn.straight || !drawn.m[0] || drawn.m[0] > REFINE_FEW || shown.motif === undefined) return drawn;
+	const strips = request.board ?? BOARD_STRIPS.board.initial;
+	const draw = (edges: Edge[]) => {
+		try {
+			const construction = { ...drawn.construction!, edges, geometry: compile(edges) };
+			const unbent = finishedStored(request, construction, strips);
+			if (unbent.hardToCut) return;
+			// Judged as it is shown, its shared connections bent (see `fromTopology`).
+			const heart = improveSharedConnections(unbent, true);
+			return { unbent, heart, m: cutMeasures(heart.design, shown.rings) };
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) && !(error instanceof CompilationError)) throw error;
+		}
+	};
+	// As `firmerCuts`, against the best so far: whether a heart holds where the
+	// best does not (at its holding width less a step), one look at its paper,
+	// and where it may only be as firm, at the best's own.
+	const firmer = (a: { heart: GeneratorResult; m: number[] }, b: { heart: GeneratorResult; m: number[] }) => {
+		if (a.m[0] !== b.m[0] || a.m[1] !== b.m[1] || !a.m[0]) return betterCuts(a.m, b.m);
+		const hb = holdsAt(b.heart.design), holds = (widthMm: number) => paperHolds(a.heart.design, { widthMm });
+		if (hb > PRINT_WIDTH_MM + HOLDING_STEP && holds(hb - HOLDING_STEP)) return a.m[2] <= b.m[2] && a.m[3] <= 1.25 * b.m[3] + 2 && a.m[4] <= 1.05 * b.m[4];
+		return betterCuts(a.m, b.m) && holds(Math.min(hb, HOLDING_MOST));
+	};
+	const apply = (edges: Edge[] | undefined, move: CutMove) => edges && (move.kind === 'slide' ? slideSwitch(edges, move.at, move.by) : bendShared(edges, move.from, move.to, move.by));
+	const flip = (p: Point): Point => [p[1], p[0]];
+	// A move's mirror image: the papers trade places, and left is right.
+	const mirrored = (move: CutMove): CutMove => move.kind === 'slide' ? { ...move, at: flip(move.at), by: -move.by } : { ...move, from: flip(move.from), to: flip(move.to), by: -move.by };
+	const onDiagonal = (move: CutMove) => move.kind === 'slide' && Math.abs(move.at[0] - move.at[1]) < MIRROR_NEAR;
+	const named = (move: CutMove) => move.kind === 'slide' ? `s${move.at.map(v => v.toFixed(3))}:${move.by}` : `b${[...move.from, ...move.to].map(v => v.toFixed(3))}:${move.by}`;
+	// Where a move leaves what it moved: the switch or bend it newly makes.
+	const made = (before: Edge[], after: Edge[], move: CutMove): Point | undefined => {
+		const points = (edges: Edge[]) => move.kind === 'slide' ? switchesOf(edges) : sharedPieces(edges).flat();
+		const had = new Set(points(before).map(p => p.join(',')));
+		return points(after).find(p => !had.has(p.join(',')));
+	};
+	const bent = improveSharedConnections(drawn.heart, true);
+	let best = { ...drawn, unbent: drawn.heart, heart: bent, m: cutMeasures(bent.design, shown.rings), edges: drawn.construction.edges }, draws = 0, since = 0;
+	// The last move that helped, tried again first; and the moves that drew nothing, not again.
+	let last: CutMove | undefined;
+	const failed = new Set<string>();
+	while (best.m[0] && since < REFINE_DRAWS && draws < REFINE_MOST) {
+		const weak = weakPoints(best.heart.design, true), shared = !best.m[1];
+		const reach = (p: Point) => Math.min(...weak.map(w => Math.hypot(p[0] - w[0], p[1] - w[1])));
+		// The switches by the necks slid, nearest first; then the shared cuts there bent (a bend made
+		// at a straight piece's middle, a bend it has moved).
+		const slides: { move: CutMove; d: number }[] = [], bends: { move: CutMove; d: number }[] = [];
+		for (const at of switchesOf(best.edges)) {
+			const d = reach(at);
+			if (d < REFINE_NEAR) for (const by of REFINE_STEPS) slides.push({ move: { kind: 'slide', at, by }, d });
+		}
+		const ends = sharedPieces(best.edges).flat().map(p => p.join(',')), isBend = (p: Point) => ends.indexOf(p.join(',')) !== ends.lastIndexOf(p.join(','));
+		for (const [a, b] of sharedPieces(best.edges)) {
+			const d = Math.min(...weak.map(w => pointDistance(w, a, b)));
+			if (d >= REFINE_NEAR) continue;
+			for (const by of REFINE_BENDS) {
+				if (isBend(a) || !isBend(b)) bends.push({ move: { kind: 'bend', from: a, to: b, by }, d });
+				if (isBend(b)) bends.push({ move: { kind: 'bend', from: b, to: a, by }, d });
+			}
+		}
+		const moves = [...last ? [last] : [], ...[slides, bends].flatMap(list => list.sort((x, y) => x.d - y.d).map(({ move }) => move))];
+		let better: typeof best | undefined, moved: CutMove | undefined;
+		for (const move of moves) {
+			if (failed.has(named(move)) || (shared && onDiagonal(move))) continue;
+			let edges = apply(best.edges, move);
+			// One a lobe's template shares with the other's moves with its image or not at all.
+			if (edges && shared) edges = apply(edges, mirrored(move));
+			if (!edges) continue;
+			if (since++ >= REFINE_DRAWS || draws++ >= REFINE_MOST) break;
+			const next = draw(edges);
+			if (!next) { failed.add(named(move)); continue; }
+			if (firmer(next, best)) {
+				better = { ...best, ...next, edges };
+				const p = made(best.edges, edges, move);
+				moved = p && (move.kind === 'slide' ? { ...move, at: p } : { ...move, from: p });
+				break;
+			}
+		}
+		if (!better) break;
+		// Only firmer paper buys more draws, not a sharp tip or turn less.
+		if (better.m[0] < best.m[0] || holdsAt(better.heart.design) < holdsAt(best.heart.design)) since = 0;
+		best = better;
+		last = moved;
+	}
+	return { ...best, heart: best.unbent };
 }
 
 function finishConstruction(request: GeneratorRequest, r: Construction, recipe: GeneratorResult['recipe'],

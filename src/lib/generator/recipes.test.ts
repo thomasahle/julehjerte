@@ -15,6 +15,7 @@ import nisse from '../../../static/generator/motifs/nisse.json';
 import wreath from '../../../static/generator/motifs/mc-wreath.json';
 import circleMotif from '../../../static/generator/motifs/circle.json';
 import cow from '../../../static/generator/motifs/hi-cow.json';
+import house from '../../../static/generator/motifs/house.json';
 import heartSolves from '../../../scripts/generator/solves/heart.board.json';
 import nisseSolves from '../../../scripts/generator/solves/nisse.board.json';
 import circleSolves from '../../../scripts/generator/solves/circle.board-5.sym.json';
@@ -210,7 +211,7 @@ describe('stored recipes', () => {
 		for (const motif of [circleMotif, star]) expect(storedHearts(request(motif.contours as Ring[]), [topology], true, 1, solve.known)).toHaveLength(1);
 	});
 
-	it('refines a recipe drawn on another motif where its paper may tear, moving its cuts\' ends', () => {
+	it('refines a recipe drawn on another motif where its paper may tear, moving its cuts', () => {
 		const colors = { left: '#ffffff', right: '#b91313' };
 		const request = (contours: Ring[]) => ({ mode: 'figure' as const, name: 'Motif', contours, colors, style: 'board' as const, frame: 'circle' as const, frameSize: 70, scale: .71, gap: 3 });
 		const solve = (heartSolves as { recipes: MotifRecipe[] }).recipes.find(r => r.strips === 5 && r.steps[0] === 71)!;
@@ -219,6 +220,12 @@ describe('stored recipes', () => {
 		const on = request(star.contours as Ring[]), rings = picture(on, {})!.rings;
 		const [plain] = storedHearts(on, [topology], true, 1, {}), made = fromTopology({ ...on, recipes: [topology] })!;
 		expect(cutMeasures(made.design, rings)[0]).toBeLessThan(cutMeasures(plain.design, rings)[0]);
+	});
+
+	slow('refines the house on five strips at 99% until no paper tears where its recipe\'s cuts left two necks', () => {
+		const asked = { mode: 'figure' as const, name: 'House', contours: house.contours as Ring[], colors: { left: '#ffffff', right: '#b91313' }, style: 'board' as const, frame: 'circle' as const, frameSize: 70, scale: .99, gap: 3 };
+		const own = generate(asked), made = generate({ ...asked, recipes: (board as unknown as RecipeFile).recipes });
+		expect(cutMeasures(made.design, picture(spurless(asked), knownOf(own, .99))!.rings)[0]).toBe(0);
 	});
 
 	slow('finishes a pair\'s recipe hard to cut where the generator\'s heart is, shown where that cuts better', () => {
@@ -231,4 +238,5 @@ describe('stored recipes', () => {
 		expect(cutMeasures(own.design, rings)[0]).toBe(5);
 		expect(cutMeasures(made.design, rings)[0]).toBe(0);
 	});
+
 });

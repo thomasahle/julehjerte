@@ -127,9 +127,10 @@ board and motif, and the placement keeps them only the generator's clearance
 apart (1.2 units on five strips, 0.86 on seven), less than paper needs (2 mm
 of an 80 mm print, 2.5 units): its heart may leave a sliver of paper by a
 line, the paper's edge or the motif that tears. So the page refines the best
-heart a topology's recipes drew straight while its paper may tear (`refined`
-in generate.ts): it finds where (`paperFaults`' `where`, each weak piece's
-widest point), takes the hidden cuts nearest (within `REFINE_NEAR`), and
+heart a topology's recipes drew straight while its paper may tear, first by
+its hidden cuts' ends (`endsRefined` in generate.ts): it finds where
+(`paperFaults`' `where`, each weak piece's widest point), takes the hidden
+cuts nearest (within `REFINE_NEAR`), and
 moves an end of the nearest a step along its board edge (`movedEnd`: the
 stretches of the edge ending there move with it, and it keeps a unit from
 every other end on the edge) or round its ring of the motif (`placeMotif`'s
@@ -137,18 +138,54 @@ every other end on the edge) or round its ring of the motif (`placeMotif`'s
 mirror image across the heart's middle moves too, the mirrored way, so they
 still do. The first move whose heart has better cuts (`betterCuts`) is kept,
 and it starts again from there, until no move helps or it has drawn
-`REFINE_DRAWS` hearts. It compares hearts before their connections are bent
+`ENDS_DRAWS` hearts. It compares hearts before their connections are bent
 (`improveSharedConnections`), which may rank them otherwise (the wreath at
 57% on seven strips: no tear unrefined, one refined), so `fromTopology` bends
-both and keeps the better: a heart so only ever gets better. Where a weak
-piece is paper boxed in by the cuts, held only where they meet the motif (the
-house at 87% on five strips, one recipe for its pair), no move frees it:
-refining moves where cuts end, never which cuts there are. On every 6th size
-of the 48 featured motifs (every second of those, both run at once, for the
-times) it made 11 page hearts better and none worse on five strips (311
-places the paper may tear → 294) and 14 better, none worse, on seven (888 →
-878); a size took 13% longer on average (2.2 s → 2.5 s on five strips), most
-no longer, the butterfly at 99% on five 8 s longer (its tears 15 → 11).
+each and keeps the firmest (below): a heart so only ever gets better. Where
+a weak piece is paper boxed in by the cuts, held only where they meet the
+motif (the house at 87% on five strips, one recipe for its pair), no move
+frees it: refining moves where cuts end, never which cuts there are. On
+every 6th size of the 48 featured motifs (every second of those, both run at
+once, for the times) it made 11 page hearts better and none worse on five
+strips (311 places the paper may tear → 294) and 14 better, none worse, on
+seven (888 → 878); a size took 13% longer on average (2.2 s → 2.5 s on five
+strips), most no longer, the butterfly at 99% on five 8 s longer (its tears
+15 → 11).
+
+Then, where its paper still tears in a few places (`REFINE_FEW`), the page
+refines that heart on its construction's own cuts (`refined`, with the moves
+in `cutMoves.ts`): the star at 100% on five strips held only at a 130 mm
+print where a millimetre's move of its cuts by an inner corner holds it at
+90. A weak piece hangs by a neck: the narrowest place of the widest way from
+the piece up to the ear (`paperFaults`' `necks`, a bottleneck search on the
+template's grid; the piece is the paper wider than that about it, the neck
+where the shortest way on leaves it). By the necks, nearest first, it slides
+a switch (where one paper's outline gives way to the other's and a shared cut
+leaves: an A edge, a B edge and an AB edge) along its outline (`slideSwitch`,
+±0.5, ±1.5 and ±3 units: the outline it passes changes paper and the shared
+cut's end follows), then bends a shared cut there across its course
+(`bendShared`, ±0.5 and ±1.5 units, at a straight piece's middle, or a bend
+it made moved); where the lobes share a template, the move's mirror image
+across the heart's middle too. Each move is drawn by finishing the edited
+construction anew (no new placement: about twice as fast a draw as a
+recipe's) and judged as the page shows it, its shared connections bent. The
+first that is firmer is kept (`firmerCuts`: fewer places the paper may tear,
+or as many holding at a narrower print, in 10 mm steps, no sharper and not
+much busier) and tried again first; moves that draw nothing are not tried
+again; up to `REFINE_DRAWS` hearts since the last firmer paper, `REFINE_MOST`
+in all. `fromTopology` bends the first heart, the one refined by its ends and
+this one, keeps the firmest, and shows it only where it is firmer than the
+generator's own heart (a recipe's heart with fewer turns but holding at a
+wider print no longer wins). Alone, these moves lost to the ends' on twelve
+hearts on seven strips (the church at 75%: none weak → 4), so they come
+after them, and where the paper tears in many places a move frees too little
+of it to pay for its draws. Against refining by the ends alone, on every 6th
+size of the 48 featured motifs, no heart tears more or holds at a wider print:
+five strips 43 better (507 places the paper may tear → 471), seven 45 better
+(2180 → 2127); the 2 and 4 worse are as torn, a turn or a few millimetres
+busier, holding at a narrower print (the yule goat at 75% on seven strips:
+190 → 110 mm). A size took 7% longer on average (3.1 s → 3.3 s on five
+strips, 3.3 s → 3.5 s on seven), half no longer.
 
 A recipe whose places lie in mirror pairs across the heart's middle (the
 sheet's diagonal; a solve tied so, its places at the corners nearest each

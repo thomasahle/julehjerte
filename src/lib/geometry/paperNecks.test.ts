@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { holdingWidth, paperFaults, paperHolds, paperReport, papersAt } from './paperNecks';
+import { holdingWidth, paperFaults, paperHolds, paperReport, papersAt, type WeakPiece } from './paperNecks';
 import { bentHeart as heart } from './paperNecks.test-helpers';
+import { getCenteredRectParams } from '$lib/utils/overlapRect';
 
 describe('paper that holds once cut', () => {
 	it('holds on a plain heart', () => {
@@ -12,6 +13,18 @@ describe('paper that holds once cut', () => {
 		expect(paperHolds(heart(3))).toBe(true);
 		// The same heart printed two and a half times as wide has a 2.5 mm neck.
 		expect(paperHolds(heart(1), { widthMm: 200 })).toBe(true);
+	});
+
+	it('finds where the weak strip hangs by its neck, and how wide the neck is', () => {
+		// The bent cut comes within 1 mm of the next at three fifths of the way across, two thirds down.
+		const design = heart(1), rect = getCenteredRectParams(design.gridSize), necks: (WeakPiece & { mm: number })[] = [];
+		paperFaults(design, { necks });
+		expect(necks).toHaveLength(1);
+		const [{ x, y, mm }] = necks as [WeakPiece & { mm: number }];
+		expect(Math.abs(x - (rect.left + .6 * rect.width))).toBeLessThan(rect.width / 40);
+		expect(Math.abs(y - (rect.top + 2 / 3 * rect.height))).toBeLessThan(rect.height / 40);
+		expect(mm).toBeGreaterThan(.7);
+		expect(mm).toBeLessThan(1.3);
 	});
 
 	it('finds the paper that comes loose where two cuts meet', () => {
