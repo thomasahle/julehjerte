@@ -154,7 +154,7 @@ describe('the settings a search is run with', () => {
 	it('asks for the cut-proposal network only when Avanceret does, and never for smoother cuts alone', () => {
 		const run = (network?: boolean, method?: 'both' | 'exact' | 'smooth') =>
 			solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY, ...(network === undefined ? {} : { network }), ...(method ? { method } : {}) }).cutModel;
-		expect(defaultAdvanced().network).toBe(false);
+		expect(defaultAdvanced().network).toBe(true);
 		expect(run()).toBe(false);
 		expect(run(true)).toBe(true);
 		expect(run(true, 'exact')).toBe(true);

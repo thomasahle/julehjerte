@@ -115,16 +115,16 @@ describe('FindCutsPanel', () => {
 			} finally { panel.cleanup(); }
 		});
 	}
-	it('offers the network as a choice under Avanceret, off unless asked for', () => {
+	it('offers the network as a choice under Avanceret, on unless turned off', () => {
 		const changed = vi.fn();
 		const panel = render({ lang: 'en', status: 'idle', showingResult: false, result: null, onAdvanced: changed });
 		try {
 			const box = panel.root.querySelector<HTMLInputElement>('input[aria-describedby="network-hint"]')!;
-			expect(box.checked).toBe(false);
+			expect(box.checked).toBe(true);
 			expect(box.closest('label')?.textContent).toContain('neural network');
 			expect(panel.root.querySelector('#network-hint')?.textContent).toContain('10 MB');
 			box.click();
-			expect(changed).toHaveBeenCalledWith({ ...defaultAdvanced(), network: true });
+			expect(changed).toHaveBeenCalledWith({ ...defaultAdvanced(), network: false });
 		} finally { panel.cleanup(); }
 	});
 	it('offers a longer search under Avanceret', () => {

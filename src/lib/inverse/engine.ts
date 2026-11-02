@@ -194,7 +194,7 @@ export type FindSettings = {
 	method?: SearchMethod;
 	/** How long the search may take, in seconds; one of SEARCH_SECONDS_CHOICES. */
 	seconds?: number;
-	/** The cut-proposal network's ladder beside the exact search (Avanceret; static/inverse/neural/cuts.js). */
+	/** The cut-proposal network's ladder beside the exact search (Avanceret, on by default; static/inverse/neural/cuts.js). */
 	network?: boolean;
 };
 
@@ -260,7 +260,9 @@ export function defaultAdvanced(): AdvancedSettings {
 		matchingSheets: true,
 		method: 'both',
 		seconds: SEARCH_SECONDS,
-		network: false
+		// On unless turned off (the user's decision, 2026-11-02): 95 of 127 test
+		// pictures exact against 89 without it, for 9.5 MB the first time.
+		network: true
 	};
 }
 
@@ -633,7 +635,7 @@ export function solveSettings(settings: FindSettings): Record<string, unknown> {
 		exactOutline: method !== 'smooth',
 		exactParallel: method === 'both',
 		// The cut-proposal network's ladder beside the exact search, when asked for
-		// (Avanceret; worker-controller.js, neural/cuts.js): 9.5 MB the first time.
+		// (Avanceret, on by default; worker-controller.js, neural/cuts.js): 9.5 MB the first time.
 		cutModel: settings.network === true && method !== 'smooth',
 		...(method === 'exact' ? { exactRoute: 'exact' } : {}),
 		// No synthetic cutting-error trials: the page never shows them, and on an
