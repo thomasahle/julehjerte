@@ -766,9 +766,14 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     (25.4, 44.5); hjerte-i-hjerte-i-hjerte's at (42.75, 6.5) and (88.5, 56–60), and one pair of cuts
     1.92 mm apart near (55.6, 60.5). These are not wedges in the traced picture: its narrowest
     junction is 39° on davidsstjerne-circ and 86° on hjerte-i-hjerte-i-hjerte (`even/wedges.mjs`), and
-    the engine finds no tips there (`even/tipcheck.mjs`). The doubling back comes from reading the
-    designer's cuts onto our outline, so the designer templates do not show where the picture must
-    move. Why neither search draws anything on these two is still open.
+    the engine finds no tips there (`even/tipcheck.mjs`); reading onto our outline makes the turns
+    sharper. But the designer templates miss our rules on their own geometry too
+    (`even/ownverdict.mjs`, the converter's doubled shared cuts aside): davidsstjerne-circ turns 150.1°
+    (limit 150) at (19.8, 19.8) and its mirror, cuts 0.53 mm closer than allowed, self-necks 0.48 mm;
+    hjerte-i-hjerte-i-hjerte turns 153.5° and has self-necks 0.19 mm short. Woven, each reproduces its
+    gallery mask (0.26% and 0.04% off, `even/weavevsmask.mjs`), so mask and template are the same
+    picture: its designer did not keep our rules either, and a template keeping them may need the
+    picture moved. Neither search draws anything there, even with the symmetry off.
 
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
