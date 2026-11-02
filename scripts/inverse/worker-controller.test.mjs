@@ -395,14 +395,45 @@ test('side by side, a fitted answer waiting for the exact search says so, and St
   await h.send(2,'stop');await solving;assert.deepEqual(h.messages.at(-1).result,value);
 });
 
-test('side by side, once the fitter\'s answer waits, the exact search has until 40 s',async t=>{
+test('side by side, a fitted answer that fails the checks leaves the exact search its whole minute',async t=>{
   t.mock.timers.enable({apis:['setTimeout','Date']});
   const h=harness({now:()=>Date.now()});await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});
   const [fitter,exact]=h.workers;
   t.mock.timers.tick(1000*10);h.reply(fitter,2,'result',{result:value});
-  t.mock.timers.tick(1000*29);assert.equal(exact.terminated,0);
+  t.mock.timers.tick(1000*31);assert.equal(exact.terminated,0);
+  t.mock.timers.tick(1000*23);assert.equal(exact.terminated,0);assert.equal(h.messages.filter(m=>m.type==='result').length,0);
   t.mock.timers.tick(1000*2);assert.equal(exact.terminated,1);
   await solving;assert.deepEqual(h.messages.at(-1).result,value);
+});
+
+test('side by side with the network, the ladder\'s template after 40 s still beats a failing fitted answer',async t=>{
+  t.mock.timers.enable({apis:['setTimeout','Date']});
+  const h=harness({now:()=>Date.now(),predictCutMaps:async()=>({size:1})});await h.send(1,'prepare',{input});
+  const solving=h.send(2,'solve',{settings:{...both,cutModel:true}});await new Promise(resolve=>setImmediate(resolve));
+  const [fitter,exact,ladder]=h.workers,found=ladderValue(16,16);
+  t.mock.timers.tick(1000*20);h.reply(fitter,2,'result',{result:value});
+  t.mock.timers.tick(1000*25);assert.equal(h.messages.filter(m=>m.type==='result').length,0);assert.equal(ladder.terminated,0);
+  h.reply(ladder,2,'result',{result:found});await solving;
+  assert.equal(exact.terminated,1);assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,found);
+});
+
+test('side by side with the network, today\'s search giving up waits for the ladder while the fitted answer fails',async()=>{
+  for (const [ladderSays, expect] of [['template', 'ladder'], ['none', 'fitted'], ['crash', 'fitted']]) {
+    const {h,solving,fitter,exact,ladder}=await racing(),found=ladderValue(8,7);
+    h.reply(fitter,2,'result',{result:value});
+    h.reply(exact,2,'error',{message:'The exact search found no template the export passes.',code:'NO_EXACT_TEMPLATE'});
+    assert.equal(h.messages.filter(m=>m.type==='result').length,0);assert.equal(ladder.terminated,0);
+    if (ladderSays==='template') h.reply(ladder,2,'result',{result:found});
+    else if (ladderSays==='none') h.reply(ladder,2,'error',{message:'none',code:'NO_EXACT_TEMPLATE'});
+    else ladder.onerror?.({preventDefault(){}});
+    await solving;
+    assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,expect==='ladder'?found:value);
+  }
+  // A passing fitted answer goes out as before, the ladder ended.
+  const {h,solving,fitter,exact,ladder}=await racing(),fitted={...value,report:{...value.report,templateChecksPassed:true}};
+  h.reply(fitter,2,'result',{result:fitted});
+  h.reply(exact,2,'error',{message:'none',code:'NO_EXACT_TEMPLATE'});await solving;
+  assert.equal(ladder.terminated,1);assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,fitted);
 });
 
 

@@ -14,7 +14,9 @@ import {betterResult} from './core/result-rank.js';
  * alternative): a search that finds none draws none. With the exact search's
  * start at most 3 s, as many exact templates came first by 20 s as by 30 on
  * the juleflet pictures (91) and the scraped photographs (14), which then
- * took 22 s at the median instead of 30. */
+ * took 22 s at the median instead of 30. Both waits are for a fitted answer
+ * that passes: one failing the export's checks leaves the exact search and the
+ * network's ladder their whole search time. */
 const EXACT_GRACE_SECONDS=5,EXACT_WAIT_SECONDS=40,EXACT_UNDRAWN_SECONDS=20;
 /** The longest a search waits for the cut-proposal network's first load. */
 const CUT_MODEL_WAIT_MS=1500;
@@ -167,8 +169,14 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
           // template that misses some check (job.nearExact) when that is better
           // (result-rank.js): never nothing while there is a template.
           const finishBest=held=>{const best=betterResult(job.nearExact??null,held?.result??null);if(best)finish(job,best);else finish(job,null,held?.error);};
-          const settle=()=>{if(job.held)finishBest(job.held);};
+          // A ladder still searching while the fitter's answer fails the export's
+          // checks is waited for (within the search time): today's search giving up
+          // ends nothing then.
+          const ladderPending=()=>race&&ladderCompute!==null&&!passes(job.held?.result);
+          const settle=()=>{if(job.held&&!ladderPending())finishBest(job.held);};
           const exactDone=()=>{if(job.ladder){disposeExact();takeExact(job.ladder);return;}job.exact='failed';job.drawing=null;disposeExact();settle();};
+          // The search time is up: today's search ended, and a ladder still waited for.
+          const timeUp=()=>{if(!live())return;if(job.exact==='running')exactDone();if(live()&&job.exact==='failed'&&ladderCompute){disposeLadder();settle();}};
           // An exact template: the fitter's answer follows as an alternative.
           const takeExact=value=>{
             job.exact='done';
@@ -180,9 +188,14 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
           // With the fitter's answer held: the exact search's waited for until
           // EXACT_WAIT_SECONDS once it has drawn, else until EXACT_UNDRAWN_SECONDS
           // when the fitter's passes, which then goes out (trail).
+          // A fitted answer failing the export's checks shortens nothing: the exact
+          // search and the ladder keep the whole search time (a star in a circle on
+          // a loaded machine: the ladder's template at 45 s, after the 40 s that
+          // ended the race on the fitter's failing answer).
           const wait=()=>{
             clearTimeout(job.timer);
-            const early=!job.drawn&&passes(job.held?.result);
+            if(!passes(job.held?.result)){job.timer=setTimeout(timeUp,Math.max(0,job.startedAt+1000*(cfg.timeLimit+EXACT_GRACE_SECONDS)-now()));return;}
+            const early=!job.drawn;
             job.timer=setTimeout(()=>{if(live()&&job.exact==='running'){if(early)trail();else exactDone();}},Math.max(0,job.startedAt+1000*timeScale(cfg.timeLimit)*(early?EXACT_UNDRAWN_SECONDS:EXACT_WAIT_SECONDS)-now()));
           };
           // The network's ladder goes on with today's search after the fitter's
@@ -219,7 +232,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
             if(message.type==='result')held={result:message.result};
             else if(message.type==='error')held={error:Object.assign(new Error(message.message),{code:message.code,report:message.report})};
             else{disposeFitter();held={error:new Error('Unexpected fitting worker response.')};}
-            if(job.exact!=='running'){finishBest(held);return;}
+            if(job.exact!=='running'){job.held=held;if(job.exact==='failed'&&ladderPending())progress({stage:'exactOutline'});settle();return;}
             // The fitter's answer waits for the exact search's: the live view
             // says it is still running.
             job.held=held;
@@ -269,11 +282,14 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
                 // After the fitter's answer went out: the alternative, as in the race.
                 // After the fitter's passing answer went out, a near miss is no alternative.
                 if(trailing?.id===id&&trailing.exact){disposeLadder();if(message.type!=='result'||nearMiss(message.result))return;if(settles(message.result)){disposeExact();trailed(message.result);}else trailing.ladder=message.result;return;}
-                if(message.type!=='result'||!live()||job.exact!=='running'){disposeLadder();return;}
+                // Today's search may have given up (job.exact 'failed') while the ladder went on.
+                if(!live()||!['running','failed'].includes(job.exact)){disposeLadder();return;}
                 disposeLadder();
+                if(message.type!=='result'){if(job.exact==='failed')settle();return;}
                 // The ladder's nearest template (it found none the export takes): held
                 // beside today's near miss, the better of them against the fitter's.
-                if(nearMiss(message.result)){job.nearExact=betterResult(job.nearExact??null,message.result);return;}
+                if(nearMiss(message.result)){job.nearExact=betterResult(job.nearExact??null,message.result);if(job.exact==='failed')settle();return;}
+                if(job.exact==='failed'){takeExact(message.result);return;}
                 // A ladder template today's search cannot better (settles) first:
                 // today's exact search is ended, and the fitter's answer follows as
                 // an alternative. Any other is held while today's search goes on,
@@ -288,11 +304,11 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
                 const first=!job.drawn;job.drawn=true;
                 if(first&&job.held)wait();
               };
-              ladderCompute.onerror=event=>{event.preventDefault?.();disposeLadder();};
-              ladderCompute.onmessageerror=()=>disposeLadder();
+              ladderCompute.onerror=event=>{event.preventDefault?.();disposeLadder();if(live()&&job.exact==='failed')settle();};
+              ladderCompute.onmessageerror=()=>{disposeLadder();if(live()&&job.exact==='failed')settle();};
             }
             // HiGHS can overrun its time limit at its root: the minute is kept here.
-            job.timer=setTimeout(()=>{if(live()&&job.exact==='running')exactDone();},1000*(cfg.timeLimit+EXACT_GRACE_SECONDS));
+            job.timer=setTimeout(timeUp,1000*(cfg.timeLimit+EXACT_GRACE_SECONDS));
           }
           try{
             compute.postMessage({id,target:prepared,settings:both?{...settings,exactRoute:'fitter'}:exactSettings});
