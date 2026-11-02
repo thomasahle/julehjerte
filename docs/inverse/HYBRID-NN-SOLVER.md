@@ -761,6 +761,15 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     hjerte-i-hjerte-i-hjerte). Neither search draws anything there, not even a template breaking rules,
     so there is no near miss to say where to move the picture; the designer templates' readings do
     (`even/designspots.mjs`).
+    They say (2026-11-03): davidsstjerne-circ's two inter-slit misses are 0.04 mm (now tolerated); the
+    rest are turns of 177–180° and returns down to 1.08 mm at four places such as (37.5, 6.1) and
+    (25.4, 44.5), where its circle passes a fraction of a millimetre short of a checker square's corner:
+    the pixels leave a wedge tapering to nothing, and no cut follows both its sides 1.5 mm apart. On the
+    designer's own outline its template breaks only the 0.04 mm clearances: no wedge there.
+    hjerte-i-hjerte-i-hjerte the same at
+    (42.75, 6.5) and (88.5, 56–60), and one pair of cuts 1.92 mm apart near (55.6, 60.5). The outlines
+    with tips rounded do not mend it: they round every checker corner too. Next: cut such wedges off
+    where they are thinner than a slit's clearance, only where a curve nearly meets another's corner.
 
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
