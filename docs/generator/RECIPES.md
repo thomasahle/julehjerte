@@ -333,6 +333,12 @@ medians unchanged. 74 pairs, 329 motif sizes, have no recipe: 54 whose
 candidates draw at none of their screened sizes, the moon and stars' 3 whose
 candidates do not fit the picture's outline, and the elephant's 17 (the
 generator refuses it on every board, and the exact search finds no topology).
+A fourth round of exact solves for the 54 (`.r4pair`, two sizes each not yet
+solved with the counting CDCL's start, from the generator's heart and else from
+nothing): 57 of 70 find no topology in time, 18 kept; one pair more, 257
+recipes (208 pairs): the hedgehog on seven strips at 45 to 69%, the places the
+paper may tear from 6 to 8 to 1 to 5 (still hard to cut), each about 2 s slower
+to draw (finished hard to cut, see `harderStored`).
 
     node scripts/generator/pairs.mjs <motif>...      # every board, up to three recipes a pair
     ADD=1 node scripts/generator/pairs.mjs <motif>... # only for the pairs the page has none for
