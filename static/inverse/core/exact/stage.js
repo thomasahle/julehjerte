@@ -17,6 +17,7 @@ import {rasterOutline} from './raster.js';
 import {cheapBounds} from './bounds.js';
 import {returns} from './nogoods.js';
 import {SIZE} from './structure.js';
+import {issueKinds} from '../result-rank.js';
 
 /** The outline the exact search reads: traced from the picture's mask with
  * the settings `cfg` (raster.js, `options` its tracing), or null. */
@@ -95,8 +96,28 @@ export function assess(solution, cfg, {material = null} = {}) {
   // exact search's (their own counts of hidden runs differ in kind), in steps
   // of 10 mm.
   const hidden = woven ? hiddenCutLength(solution, woven, source.resolution) : 0;
-  return {passes: check.passed && paper, failures: kinds.size, issues: [...kinds], shared, hidden, hiddenRuns, length, maskError: error, features,
-    rank: [check.passed && paper ? 0 : 1, kinds.size, features ? 0 : 1, Math.round(error / .005), shared ? 0 : 1, Math.round(hidden / 10), Math.round(length)]};
+  // Among templates the export would not take, the nearest (result-rank.js):
+  // the fewest kinds of failure besides clearances, then the clearances'
+  // shortfall in mm, so a cut 0.02 mm too close to itself comes before a crossing.
+  const {kinds: others, shortfall} = issueKinds(check.issues, cfg.nominalWidth);
+  if (check.passed && !paper) others.add('paper');
+  const over = error > cfg.maxImageError, takes = check.passed && paper && features && !over;
+  return {passes: check.passed && paper, failures: kinds.size, issues: [...kinds], shared, hidden, hiddenRuns, length, maskError: error, features, shortfall,
+    rank: [check.passed && paper ? 0 : 1, kinds.size, features ? 0 : 1, Math.round(error / .005), shared ? 0 : 1, Math.round(hidden / 10), Math.round(length)],
+    near: [takes ? 0 : 1, others.size + (features ? 0 : 1) + (over ? 1 : 0), shortfall, Math.round(error / .005), Math.round(hidden / 10), Math.round(length)]};
+}
+
+/** assess, or null for no drawing or one it cannot assess. */
+function assessed(solution, cfg) {
+  try { return solution ? assess(solution, cfg) : null; } catch { return null; }
+}
+
+/** Whether assessment `a` is nearer what the export takes than `b` (assess's `near`). */
+export function closer(a, b) {
+  if (!b) return Boolean(a);
+  if (!a) return false;
+  const k = a.near.findIndex((v, i) => v !== b.near[i]);
+  return k >= 0 && a.near[k] < b.near[k];
 }
 
 /** The length (mm) of the solution's cuts the `woven` weave (n x n) does not
@@ -190,7 +211,10 @@ export function subgroupsOf(symmetry) {
 async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, multi, onProgress, geometry, refine, maps, alone = false, phase = null}) {
   // Alone (a worker beside today's search) it may take all the time, and a wider last rung.
   const until = performance.now() + 1000 * seconds * (alone ? 1 : LADDER_SHARE), reuse = {}, rungs = [];
-  let error = null;
+  // `broken`: the rung's result breaking the model's rules least, assessed only
+  // once the ladder ends without a template (on jul-tern assessing every rung's
+  // took 5 s of its 50); `nearest`: the template nearest what the export takes (closer).
+  let error = null, nearest = null, broken = null;
   const short = SHORT_MM * SIZE / cfg.width, empty = {positions: new Map(), labels: new Map(), chords: []};
   // Alone, each rung also tries LADDER_SAMPLES sampled rankings of the same maps after the plain one: on the
   // hard pictures (2026-11-01) samples found khatam at K100 in 18 s where the plain ranking needed the
@@ -218,12 +242,25 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
       rungs.push({k, seconds: +((performance.now() - began) / 1000).toFixed(2), found: false, error: String(error.message || error).slice(0, 80)});
       break;
     }
-    const ok = !result.error && !(result.report.penalty > 1e-6) && [result.solution, result.refined].some(drawn => { try { return drawn && exportable(assess(drawn, cfg), cfg); } catch { return false; } });
+    // A rung's template the export would not take is kept, the nearest of them:
+    // never nothing where a cut misses its clearance by a hair (santa's ladder:
+    // 0.083 mm, where today's search has crossing slits).
+    let ok = false;
+    if (!result.error && !(result.report.penalty > 1e-6)) for (const drawn of [result.solution, result.refined]) {
+      const assessment = assessed(drawn, cfg);
+      if (exportable(assessment, cfg)) { ok = true; break; }
+      if (closer(assessment, nearest?.assessment)) nearest = {solution: drawn, assessment, report: {...result.report, ladder: k}};
+    }
+    else if (!result.error && !(broken?.report.penalty <= result.report.penalty)) broken = {...result, report: {...result.report, ladder: k}};
     rungs.push({k, seed, seconds: +((performance.now() - began) / 1000).toFixed(2), found: ok, hidden: result.report?.hidden});
     if (ok) return {found: {...result, report: {...result.report, ladder: k}}, rungs};
     error = result.error ?? error;
   }
-  return {found: null, rungs, error};
+  for (const drawn of broken ? [broken.solution, broken.refined] : []) {
+    const assessment = assessed(drawn, cfg);
+    if (closer(assessment, nearest?.assessment)) nearest = {solution: drawn, assessment, report: broken.report};
+  }
+  return {found: null, nearest, rungs, error};
 }
 
 export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true, fallback = true, even = false, multi = 'auto', maps = null, ladderOnly = false, phase = null} = {}) {
@@ -232,7 +269,9 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   if (seconds < 1) return {found: null, report: {...report, reason: 'no time left'}};
   report.attempted = true;
   onProgress({stage: 'exactOutline'});
-  let found;
+  // `near`: the ladder's nearest template where it has none the export takes
+  // (networkLadder); `other`: a fallback's below, with its report.
+  let found, near = null, other = null;
   try {
     // The start: the template's reading where it holds on this outline, else
     // a topological witness (start.js). One that is not the template's breaks
@@ -252,6 +291,7 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     // With the network's maps, its ladder first; today's search after it, in the time left.
     const ladder = maps ? await networkLadder(outline, template, cfg, exact, {seconds, symmetry, multi, onProgress, geometry, refine, maps, alone: ladderOnly, phase}) : null;
     if (ladder) report.ladder = ladder.rungs;
+    near = ladder?.nearest ?? null;
     if (ladder?.found) found = ladder.found;
     // Alone, a ladder without a template goes on as today's search does after one: the outline made
     // symmetric, untied, or part of the symmetry (below), each with the ladder (alhambra's traced outline
@@ -347,8 +387,15 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     const share = k < subgroups.length - 1 ? Math.max(TURNS_FLOOR, left / (subgroups.length - k)) : left;
     const again = await exactSearch(outline, template, cfg, {deadline: performance.now() + 1000 * (share + reserve), reserve, onProgress, geometry, refine, fallback: false, symmetry: ties, even, multi, ...alone});
     if (again.found) return {...again, report: {...again.report, subgroup: {from: symmetry, to: ties, error: found.error}}};
+    if (closer(again.near?.assessment, other?.assessment)) other = {...again.near, report: {...again.near.report, subgroup: {from: symmetry, to: ties, error: found.error}}};
   }
-  if (found.error) return {found: null, report: {...report, error: found.error, search: found.report}};
+  // The ladder's nearest reported as exactSearch's own results are. Alone it is
+  // `near`, for the outlines after this one (engine.js exactTemplate) to better;
+  // with today's search after the ladder, taken where that has none or a farther one.
+  const own = near && {solution: near.solution, assessment: near.assessment, report: {...report, search: near.report, exactOutline: near.assessment, ladderNearest: true}};
+  const best = closer(other?.assessment, own?.assessment) ? other : own;
+  if (found.error && best && !ladderOnly) return {found: {solution: best.solution, assessment: best.assessment}, report: best.report};
+  if (found.error) return {found: null, ...(best ? {near: best} : {}), report: {...report, error: found.error, search: found.report}};
   let solution = found.solution, assessment = assess(solution, cfg);
   // Redrawn on the mask's own edge in a few cubics (search.js, refine.js):
   // taken when it does better on passing, its failures, the picture's regions
@@ -371,5 +418,6 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
       && finer.maskError <= Math.min(assessment.maskError + SMOOTH_SLACK, Math.max(assessment.maskError, cfg.maxImageError))));
     if (keeps) { solution = found.refined; assessment = finer; report.refined.taken = true; }
   }
+  if (best && !exportable(assessment, cfg) && closer(best.assessment, assessment)) return {found: {solution: best.solution, assessment: best.assessment}, report: best.report};
   return {found: {solution, assessment}, report: {...report, search: found.report, exactOutline: assessment}};
 }

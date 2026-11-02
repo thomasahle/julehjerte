@@ -317,6 +317,45 @@ test('side by side, an exact template missing a check by a hair is held, and the
   }
 });
 
+test('side by side with the network, the ladder\'s nearest template is held as a near miss, never taken as a template',async()=>{
+  const near=resultWith({nearMiss:true,issues:[{type:'short_self_clearance',distanceUpper:1.499,required:1.5}]});
+  near.report.solver.exactOutline.search={hidden:2,bound:4};
+  // Fewer hidden segments than its bound, yet today's passing template stands.
+  {
+    const {h,solving,exact,ladder}=await racing(),theirs=todayValue(9);
+    h.reply(ladder,2,'result',{result:near});
+    assert.equal(exact.terminated,0);assert.equal(h.messages.filter(m=>m.type==='result').length,0);
+    h.reply(exact,2,'result',{result:theirs});await solving;
+    assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,theirs);
+  }
+  // With no exact template, the better of it, today's near miss and the fitter's answer.
+  for (const [today, fitted, expect] of [[null, resultWith({issues:[{type:'self_intersection'}]}), 'ladder'], [null, resultWith({passed:true}), 'fitted'],
+    [resultWith({nearMiss:true,issues:[{type:'short_self_clearance',distanceUpper:1.4,required:1.5}]}), null, 'ladder'],
+    [resultWith({nearMiss:true,issues:[{type:'short_self_clearance',distanceUpper:1.4999,required:1.5}]}), null, 'today']]) {
+    const {h,solving,fitter,exact,ladder}=await racing();
+    h.reply(ladder,2,'result',{result:near});
+    if (today) h.reply(exact,2,'result',{result:today});else h.reply(exact,2,'error',{message:'none',code:'NO_EXACT_TEMPLATE'});
+    if (fitted) h.reply(fitter,2,'result',{result:fitted});else h.reply(fitter,2,'error',{message:'no template',code:'NONE'});
+    await solving;
+    assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,{ladder:near,today,fitted}[expect]);
+  }
+});
+
+test('side by side with the network, a near miss from the ladder after a passing fitted answer is no alternative',async t=>{
+  t.mock.timers.enable({apis:['setTimeout','Date']});
+  const fitted={...value,report:{...value.report,templateChecksPassed:true}},near=resultWith({nearMiss:true,issues:[{type:'short_self_clearance',distanceUpper:1.499,required:1.5}]});
+  near.report.solver.exactOutline.search={hidden:1,bound:1};
+  const h=harness({now:()=>Date.now(),predictCutMaps:async()=>({size:1})});await h.send(1,'prepare',{input});
+  const solving=h.send(2,'solve',{settings:{...both,cutModel:true}});await new Promise(resolve=>setImmediate(resolve));
+  const [fitter,exact,ladder]=h.workers;
+  t.mock.timers.tick(1000*10);h.reply(fitter,2,'result',{result:fitted});t.mock.timers.tick(1000*11);await solving;
+  h.reply(ladder,2,'result',{result:near});
+  assert.equal(exact.terminated,0);assert.equal(h.messages.at(-1).pending,true);
+  const theirs={...todayValue(3),report:{...todayValue(3).report,templateChecksPassed:true}};
+  h.reply(exact,2,'result',{result:theirs});
+  assert.deepEqual(h.messages.at(-1),{id:2,type:'alternative',result:theirs});
+});
+
 test('side by side, an exact search overrunning its minute is ended and the fitter\'s answer taken',async t=>{
   t.mock.timers.enable({apis:['setTimeout']});
   const h=harness();await h.send(1,'prepare',{input});const solving=h.send(2,'solve',{settings:both});

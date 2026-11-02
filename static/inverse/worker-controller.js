@@ -53,6 +53,8 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
     });
   };
   const passes=value=>value?.report?.templateChecksPassed===true;
+  // An exact template that misses some check (engine.js design): held to compare, never taken as one.
+  const nearMiss=value=>value?.report?.solver?.exactOutline?.nearMiss===true;
   // An exact template's hidden segments and its outline's lower bound.
   const searchOf=value=>value?.report?.solver?.exactOutline?.search,hiddenOf=value=>searchOf(value)?.attempts?.at(-1)?.hidden??searchOf(value)?.hidden;
   // A ladder template today's search cannot better: at its outline's lower
@@ -250,7 +252,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
               }else if(message.type==='result'){
                 // An exact template missing some check does not end the race: it is
                 // held, and the better of it and the fitter's answer stands.
-                if(message.result?.report?.solver?.exactOutline?.nearMiss===true){job.nearExact=message.result;exactDone();return;}
+                if(nearMiss(message.result)){job.nearExact=betterResult(job.nearExact??null,message.result);exactDone();return;}
                 // The fitter's template as a second choice: at once when it is in,
                 // else when it comes (or not, should another request come first).
                 // A held ladder template stands only with fewer hidden segments.
@@ -265,9 +267,13 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
               ladderCompute.onmessage=({data:message})=>{
                 if(message.id!==id||message.type==='progress'||message.type==='candidate')return;
                 // After the fitter's answer went out: the alternative, as in the race.
-                if(trailing?.id===id&&trailing.exact){disposeLadder();if(message.type!=='result')return;if(settles(message.result)){disposeExact();trailed(message.result);}else trailing.ladder=message.result;return;}
+                // After the fitter's passing answer went out, a near miss is no alternative.
+                if(trailing?.id===id&&trailing.exact){disposeLadder();if(message.type!=='result'||nearMiss(message.result))return;if(settles(message.result)){disposeExact();trailed(message.result);}else trailing.ladder=message.result;return;}
                 if(message.type!=='result'||!live()||job.exact!=='running'){disposeLadder();return;}
                 disposeLadder();
+                // The ladder's nearest template (it found none the export takes): held
+                // beside today's near miss, the better of them against the fitter's.
+                if(nearMiss(message.result)){job.nearExact=betterResult(job.nearExact??null,message.result);return;}
                 // A ladder template today's search cannot better (settles) first:
                 // today's exact search is ended, and the fitter's answer follows as
                 // an alternative. Any other is held while today's search goes on,

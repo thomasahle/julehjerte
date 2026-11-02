@@ -23,7 +23,7 @@ import {openClose,withoutSpecks} from './exact/raster.js';
 import {cheapBounds} from './exact/bounds.js';
 import {betterResult} from './result-rank.js';
 import {exactOutline} from './exact/snap.js';
-import {appSymmetry,assess,exactSearch as searchExact,exactSymmetry,exactTarget,exactCannotStart,exportable,returnTips} from './exact/stage.js';
+import {appSymmetry,assess,closer,exactSearch as searchExact,exactSymmetry,exactTarget,exactCannotStart,exportable,returnTips} from './exact/stage.js';
 /** Structured cloning retains coordinates but not Cubic methods, including
  * the cached boundary seed used by the topology initializer. Rebuild derived
  * curve caches locally; a transferred cache must not hide edited coordinates. */
@@ -199,7 +199,10 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
     // not wait for it (worker-controller.js).
     let tracedBound=null;
     try{tracedBound=cheapBounds(...(ex=>[ex.st,ex.outline])(exactOutline(outline,cfgExact,'tight',{symmetry:[]}))).lb;}catch{tracedBound=null;}
-    let last=null;
+    // With no template the export takes on any outline, the nearest the ladder
+    // had on any (design() finishes it as a near miss): the page never gets
+    // nothing from the ladder while it found a template.
+    let last=null,near=null;
     for(const [phase,share] of [['first',LADDER_FIRST_SHARE],['second',1]]){
       const phaseEnd=performance.now()+share*(roundedEnd-performance.now());
       for(const [k,traced] of outlines.entries()){
@@ -207,8 +210,10 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
         if(left<1000*LADDER_LEAST)break;
         last=await exactSearch(traced,null,cfgExact,{...search(performance.now()+left/(outlines.length-k)),reserve:.5,maps,ladderOnly,phase});
         if(last.found)return{solution:last.found.solution,report:{...last.report,chosen:'exact',ladderOnly:true,outline:k,phase,tracedBound}};
+        if(closer(last.near?.assessment,near?.assessment))near={...last.near,outline:k,phase};
       }
     }
+    if(near)return{solution:null,nearest:near.solution,report:{...near.report,chosen:'fitter',ladderOnly:true,outline:near.outline,phase:near.phase,tracedBound}};
     return{solution:null,report:{...(last?.report??{}),chosen:'fitter',ladderOnly:true}};
   }
   // The cut-proposal network's maps (raw.cutMaps, made by the worker from the
@@ -251,7 +256,7 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
       if(!rounded)continue;
       const end=way.spots?performance.now()+.6*(roundedEnd-performance.now()):roundedEnd;
       const again=await exactSearch(rounded,null,cfgExact,search(end));
-      if(exportable(again.found?.assessment,cfgExact)||!found.found&&again.found)found={...again,report:{...again.report,rounded:way.spots?'near':way.wider?'wider':true}};
+      if(exportable(again.found?.assessment,cfgExact)||closer(again.found?.assessment,found.found?.assessment))found={...again,report:{...again.report,rounded:way.spots?'near':way.wider?'wider':true}};
     }
   }
   if(!exportable(found.found?.assessment,cfgExact)){const repaired=returnRepaired(sink,cfgExact);if(repaired)found=repaired;}

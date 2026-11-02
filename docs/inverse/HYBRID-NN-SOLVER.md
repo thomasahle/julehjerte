@@ -557,6 +557,37 @@ mor-far, hjerte-i-hjerte-i-hjerte and god-jul none. Designer templates against o
 doubled shared cuts set aside): santa 0.02 mm short of 1.5, mor-far about 0.05 mm, balls about 0.2 mm,
 davidsstjerne-circ about 0.27 mm; jul-tern's and hjerte-i-hjerte-i-hjerte's keep every rule.
 
+**The ladder's near misses (2026-11-02).** The ladder still threw away every rung whose template the
+export would not take, so the ladder worker answered nothing on 17 of the 127 test pictures where it got
+going, and today's near miss was all the race could hold. Now it keeps the rung that breaks the model's
+rules least, assesses it once the ladder ends without a template (assessing every rung took 5 of
+jul-tern's 50 s), and takes the template nearest what the export takes (`assess`'s `near`: kinds of
+failure besides clearances, then the clearances' shortfall in mm, then the mask error), across the
+outlines. The engine finishes it as a near miss; the controller holds it beside today's near miss and
+never as a template (a near miss with fewer hidden cuts must not beat a passing template, nor be offered
+as the alternative after a passing fitted answer). On the 17 (syn1, ladder alone, 50 s):
+
+| Outcome | Pictures |
+|---|---|
+| passes (timing; it failed in the earlier run) | fisk-kors |
+| clearances short by hairs | santa (one, 0.083 mm; 14 hidden cuts, 1.3% off the picture), vissevasse r3c2 (three, ≤ 0.082 mm), r3c3 (0.096 and 0.011 mm) |
+| clearances short by more | vissevasse r4c1 (six, up to 0.8 mm), mor-far (22, up to 0.6 mm; in a second run three, up to 0.068 mm) |
+| every cutting rule kept, off the picture | jul-tern (4.9%), jul-2026 (8%), vissevasse r3c4 (3.4%): the solver leaves bits of outline uncut, at a penalty |
+| crossing slits | hermanngitter |
+| still nothing | balls, davidsstjerne-circ, hjerte-i-hjerte-i-hjerte, hjerte-paa-hjerte, roed-blomst, vissevasse r2c1, r2c2 |
+
+On the last seven every rung ends without any solution ("no witness", rung logs in
+`tmp/e2e/nn/hair01.jsonl`), so there is nothing to rank; today's search, which starts from a witness,
+still gives the race its near miss there.
+
+**Graded clearance rows (not shipped).** The lazy geometry rows charge the same penalty for a clearance
+missed by 0.001 mm as for a crossing. A prototype (`tmp/e2e/even/proto`, `HAIR_MM=0.1`) charged pairs
+within 0.1 mm of the limit 200 instead of 1000, returns included, so a rung would rather keep a hair miss
+than a crossing. On 11 of the pictures above: santa the same 0.083 mm; mor-far three short by
+≤ 0.068 mm, as a second run without the grading has too (the first had 22 by ≤ 0.6 mm: run-to-run
+variance); the seven still without a witness. The grading only acts once a rung has a solution, and the hard pictures' rungs
+mostly have none.
+
 ## 6. Coordinates and checks
 
 - **The bug.** The tracer's reference frame has y running up (target.js `toReference`), while the maps
@@ -583,14 +614,16 @@ davidsstjerne-circ about 0.27 mm; jul-tern's and hjerte-i-hjerte-i-hjerte's keep
 
 | Part | What |
 |---|---|
-| `static/inverse/neural/cuts.js`, `cuts-c6cd1ff7.onnx` | r7 (v3 fine-tuned with the hard pictures fed back), float16, checksum, loaded like the photo model; NOTICE.txt credits the Apache-2.0 encoder weights |
+| `static/inverse/neural/cuts.js`, `cuts-c090b660.onnx` | syn1 (trained on synthetic designs only, no gallery heart: section 3a), float16, checksum, loaded like the photo model; NOTICE.txt credits the Apache-2.0 encoder weights |
 | `exact/candidates.js` `rankScores`, `ranked`, `keep` | candidate scores from the maps (hidden field along the route by direction, plus the switches at the ends), the top K plus every candidate under 3 mm |
 | `exact/search.js` `rank`, `reuse`, `buildSeconds` | rank pruning on a copy; candidates built once per ladder; the build's own time |
 | `exact/stage.js` `networkLadder`, `ladderOnly` | rungs (K, s) = (10, 2), (30, 2), (100, 3), (300, 4), plus (1000, 10) when alone, each also with two sampled rankings when alone; at most a quarter of the time before today's search, the whole search time alone (0a3cada0) |
 | `exact/stage.js` `exactSearch`, alone | a ladder without a template takes today's fallbacks (outline made symmetric, untied, part of the symmetry), each with the ladder; plain rungs 3, 4, 6, 10, 15 s, sampled ones 2, 2, 3, 4, 10 s (ec5a9cb3) |
 | `exact/search.js` bound | a rung's model keeps the bound its empty start caps (0); its report gives the outline's `cheapBounds`, so a ladder template at it shows as optimal (0a3cada0) |
-| `engine.js` | `raw.cutMaps` to the traced outline's search; `raw.ladderOnly` |
-| `worker-controller.js` | the maps from the mask (`cutModel`, Mal only; loads while the picture is prepared; waits at most 1.5 s); the ladder worker beside today's |
+| `exact/stage.js` `networkLadder` `nearest`, `assess` `near`, `closer` | without a template the export takes, the ladder's nearest one (section 5b), across outlines |
+| `core/result-rank.js` | the best finished result when none passes: never empty-handed (section 5b) |
+| `engine.js` | `raw.cutMaps` to the traced outline's search; `raw.ladderOnly`; a near miss finished and marked `nearMiss` |
+| `worker-controller.js` | the maps from the mask (`cutModel`, Mal only; loads while the picture is prepared; waits at most 1.5 s); the ladder worker beside today's; near misses held and ranked, never taken as templates |
 | `src/lib/inverse/engine.ts` | `cutModel` when Avanceret's network choice is on, unless "smoother cuts" alone |
 
 **Tests:** exact 72, worker controller 24, compute worker and runtime 10, app 227; all passing.
