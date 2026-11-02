@@ -5,6 +5,30 @@ import {lineSimple,lineDistance,lineHits,nearbyPairs,segmentPairDistance,segment
 import {curvesOf} from './graph.js';
 import {sampleTarget} from './input.js';
 import {shortSelfReturns} from './self-returns.js';
+/** How far (mm) a clearance passes in the final verdict while missing what it requires. */
+export const CLEARANCE_TOLERANCE_MM=.1;
+/** How far (mm) a clearance issue of the final validation `check` falls short
+ * of what it requires (a return's own `required`; the strip width, or between
+ * slits the editor's clearance when wider, as validate reports them);
+ * Infinity for any other issue. */
+export function clearanceShortfall(issue,check){
+  const width=check.nominalWidthRequired,required=issue.type==='short_self_clearance'?issue.required:issue.type==='inter_slit_clearance'?Math.max(width,check.editorClearanceRequired??0):issue.type==='outer_side_clearance'||issue.type==='nonlocal_self_clearance'?width:undefined;
+  const distance=issue.distanceUpper??issue.distanceLower??issue.distance;
+  return Number.isFinite(required)&&Number.isFinite(distance)?Math.max(0,required-distance):Infinity;
+}
+/** A final validation as the verdict reads it: a clearance missed by at most
+ * CLEARANCE_TOLERANCE_MM passes (the user's decision, 2026-11-02: santa's
+ * nearest template is 0.083 mm short of 1.5 mm), kept in `tolerated` rather
+ * than `issues`. Repairs still aim for the whole clearance; only the export's
+ * verdict and the exact search's acceptance read it this way. The image
+ * comparison validate skips while any issue stands is not redone: no caller
+ * of the verdict reads it. */
+export function verdict(check){
+  const tolerated=check.issues.filter(issue=>clearanceShortfall(issue,check)<=CLEARANCE_TOLERANCE_MM+1e-9);
+  if(!tolerated.length)return check;
+  const issues=check.issues.filter(issue=>!tolerated.includes(issue));
+  return{...check,passed:issues.length===0,issues,tolerated};
+}
 export function easeMetrics(solution,cfg){const sharp=[],angles=[];let length=0,bending=0,minRadius=Infinity,hiddenBelow=0;const used=new Set();for(const k of[0,1])for(let pi=0;pi<solution.paths[k].length;pi++){const cs=curvesOf(solution,k,pi);for(const c of cs){length+=c.length();bending+=c.bending();const r=curvatureProfile(c).minimumRadius;if(r!==null)minRadius=Math.min(minRadius,r);}for(let i=1;i<cs.length;i++){const a=turnAngle(cs[i-1],cs[i]);angles.push(a);if(a>cfg.sharpTurn)sharp.push({family:k,slit:pi,angle:a,point:cs[i].p[0]});}for(const[e]of solution.paths[k][pi])used.add(e);}for(const e of used)if(!solution.graph.edges[e].visible){const r=curvatureProfile(solution.graph.edges[e].curve).minimumRadius;if(r!==null&&r<cfg.minRadius)hiddenBelow++;}const squared=angles.reduce((s,a)=>s+(a/90)**2,0),acute=angles.reduce((s,a)=>s+(Math.max(0,a-100)/25)**2,0);return{totalCutLength:length,sharpTurns:sharp.length,sharpLocations:sharp,maximumTurn:Math.max(0,...angles),bendingEnergy:bending,minimumRadius:Number.isFinite(minRadius)?minRadius:null,hiddenCurvesBelowRadius:hiddenBelow,weightedObjective:length+cfg.bendingPenalty*bending+cfg.turnPenalty*squared+cfg.sharpPenalty*sharp.length+cfg.acutePenalty*acute,curvatureMethod:'floating-point polynomial critical points; not an exact certificate'};}
 export function selfNecks(solution,cfg){const width=cfg.nominalWidth,tol=cfg.geometryTolerance,local=cfg.localNeighborhoodFactor*width,bad=[];if(width<=0)return bad;for(const k of[0,1])for(let pi=0;pi<solution.paths[k].length;pi++){const path=solution.paths[k][pi],cs=curvesOf(solution,k,pi),ss=[];let arc=0;cs.forEach((c,order)=>{const p=c.flatten(tol,width/5);for(let i=1;i<p.length;i++){const len=distance(p[i-1],p[i]);if(len<1e-10)continue;ss.push({p:[p[i-1],p[i]],mid:arc+len/2,r:len/2,order});arc+=len;}});const found=new Set();for(const[i,j]of nearbyPairs(ss.map(s=>s.p),width+2*tol)){if(Math.abs(ss[i].mid-ss[j].mid)-ss[i].r-ss[j].r<=local)continue;const a=Math.min(ss[i].order,ss[j].order),b=Math.max(ss[i].order,ss[j].order),key=`${a}:${b}`;if(found.has(key))continue;const d=segmentPairDistance(...ss[i].p,...ss[j].p);if(d<width+2*tol){found.add(key);bad.push({family:k,slit:pi,edgeChain:path.slice(a,b+1).map(([e])=>e),distanceLower:Math.max(0,d-2*tol),point:ss[i].p[0]});if(found.size>=4)break;}}}return bad;}
 export function closedRings(solution,tol=.01){const w=solution.graph.target.width;return solution.paths.map((f,k)=>f.map((_,pi)=>[[0,0],...pathPolyline(curvesOf(solution,k,pi),tol),k===0?[0,w]:[w,0],[0,0]]));}

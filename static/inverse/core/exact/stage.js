@@ -1,7 +1,7 @@
 /** The exact search for a picture in Mal: the cuts laid exactly on the outline
  * traced from the picture's mask, its template taken whenever the export passes
  * it (`exportable`), the fitter's otherwise (engine.js design). */
-import {validate, easeMetrics, sampleWeave} from '../validate.js';
+import {validate, verdict, easeMetrics, sampleWeave} from '../validate.js';
 import {finalMaterialAudit} from '../geometric-material.js';
 import {verifiedPaperSettings} from '../material.js';
 import {verifyPaper} from './paper.js';
@@ -73,7 +73,8 @@ export function appSymmetry(ties) {
  * is audited as the export audits it (on a finer lattice the template was
  * verified at), or `material` is that audit already made. */
 export function assess(solution, cfg, {material = null} = {}) {
-  const check = validate(solution, cfg, {finalGeometry: true});
+  // As the export's verdict reads it: a clearance up to 0.1 mm short passes.
+  const check = verdict(validate(solution, cfg, {finalGeometry: true}));
   let paper = false;
   try {
     if (check.passed && !material) verifyPaper(solution, cfg);

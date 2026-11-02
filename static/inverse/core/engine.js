@@ -14,7 +14,7 @@ import {loadSVG,preprocessPixels,preprocessBinaryMask,colorsSafe,sampleTarget} f
 import {referenceError} from './image-reference.js';
 import {loadSolutionJSON,reindex} from './graph.js';
 import {solveBoundary} from './routing.js';
-import {validate,easeMetrics,sampleWeave} from './validate.js';
+import {validate,verdict,easeMetrics,sampleWeave} from './validate.js';
 import {materialAudit,perturbationAudit,verifiedPaperSettings} from './material.js';
 import {roundHidden} from './rounding.js';
 import {boundarySVG,targetSVG,resultFiles} from './export.js';
@@ -314,7 +314,7 @@ export function finish(solution,cfg,onProgress=()=>{},{refine=true,stoppedEarly=
   const done=repaired??repairFinal(solution,cfg,{onProgress,refine,deadline}),{refinement,returnRepair,paperRepair}=done;
   solution=paperRepair.solution;
   cfg=verifiedPaperSettings(solution,done.cfg);
-  const check=validate(solution,cfg,{finalGeometry:true});
+  const check=verdict(validate(solution,cfg,{finalGeometry:true}));
   onProgress({stage:'paper'});const material=paperRepair.material||finalMaterialAudit(solution,cfg,{includeMaps:true}),perturbation=check.passed?perturbationAudit(solution,cfg,{onProgress}):{summary:{trials:0,skipped:'Nominal geometry failed validation.'},trials:[],worst:null},metrics=easeMetrics(solution,cfg),source=solution.graph.target.sourceImage,comparison={resolution:source?.resolution??240,wovenMask:sampleWeave(solution,source?.resolution??240),validMask:source?.validMask,...(source?.weights?{weights:source.weights}:{})},imageError=errorFromSamples(source,comparison.wovenMask),imagePassed=!imageError||imageError.mismatchFraction<=cfg.maxImageError,features=auditFeatureFidelity(source,comparison.wovenMask,cfg),allowTemplates=features.passed&&check.passed&&(!cfg.requireMaterialCore||material.passed)&&imagePassed,symmetry=symmetryReport(solution,cfg.symmetry),warnings=[];
   // A dropped symmetry request belongs in the warnings the app already reads,
   // not only in a report field: the traced routes cannot enforce one at all.

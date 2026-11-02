@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {resultSeverity, betterResult, issueKinds} from '../../static/inverse/core/result-rank.js';
 import {closer} from '../../static/inverse/core/exact/stage.js';
+import {verdict, clearanceShortfall} from '../../static/inverse/core/validate.js';
 
 const result = ({passed = false, issues = [], mismatch = .01, features = true, image = true} = {}) =>
   ({report: {templateChecksPassed: passed, validation: {issues}, imageError: {mismatchFraction: mismatch}, imageFidelity: {passed: image && features, features: {passed: features}}, settings: {nominalWidth: 2.5}}});
@@ -41,4 +42,23 @@ test('the exact search\'s own ranking of templates the export would not take agr
   assert.equal(closer(hair, hair), false);
   assert.equal(closer(hair, null), true);
   assert.equal(closer(null, hair), false);
+});
+
+test('the verdict lets a clearance up to 0.1 mm short pass, and nothing else', () => {
+  // As validate reports a final check: strips 2.5 mm wide, the editor's 1.5 mm between slits.
+  const report = {nominalWidthRequired: 2.5, editorClearanceRequired: 1.5};
+  const hair = {type: 'short_self_clearance', distanceUpper: 1.417, required: 1.5}, near = {type: 'inter_slit_clearance', distanceLower: 2.45};
+  const far = {type: 'nonlocal_self_clearance', distanceLower: 2.38}, crossing = {type: 'slit_intersection'}, side = {type: 'outer_side_clearance', distance: 2.41};
+  assert.equal(clearanceShortfall(hair, report), 1.5 - 1.417);
+  assert.equal(clearanceShortfall(near, report), 2.5 - 2.45);
+  assert.equal(clearanceShortfall(crossing, report), Infinity);
+  const passing = verdict({...report, passed: false, issues: [hair, near, side]});
+  assert.equal(passing.passed, true);
+  assert.deepEqual(passing.issues, []);
+  assert.deepEqual(passing.tolerated, [hair, near, side]);
+  const failing = verdict({...report, passed: false, issues: [hair, far, crossing]});
+  assert.equal(failing.passed, false);
+  assert.deepEqual(failing.issues, [far, crossing]);
+  const clean = {...report, passed: true, issues: []};
+  assert.equal(verdict(clean), clean);
 });
