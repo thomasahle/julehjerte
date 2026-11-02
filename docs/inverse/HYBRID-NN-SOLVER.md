@@ -775,6 +775,13 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     picture: its designer did not keep our rules either, and a template keeping them may need the
     picture moved. Neither search draws anything there, even with the symmetry off.
 
+- **How often the answer is proven best** (syn1v's ladder alone, the 127 test pictures, 2026-11-02): of
+  its 93 templates passing every check, 75 have exactly as many hidden segments as the lower bound on
+  the outline they were found on (`cheapBounds`), so none on that outline has fewer: library 52 of 61,
+  rest of the gallery 13 of 15, photographs 10 of 17. 64 meet the traced outline's own bound. The other
+  18 stop above it (lilje2 34 against 15, origami 28 against 4, koelbuer 16 against 2, alhambra 3
+  against 2): whether the bound can be reached there is not known; the search stops at its time.
+
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);
