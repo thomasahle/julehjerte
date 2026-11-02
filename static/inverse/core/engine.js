@@ -152,6 +152,23 @@ export function maskRoughness(source){
 /** The exact search's template for a picture the export passes, or none:
  * {solution, report}. On the outline traced from the mask until `tracedEnd`,
  * then on it with its tips rounded until `roundedEnd`. */
+/** The first outline the exact search can start from, traced by `traceAt(open, way)`
+ * ({scaled, why} or null), and the way that traced it; else why the first trace
+ * cannot start. A mask with wobbling edges (hand-painted, its boundary a tenth
+ * longer than after opening by a pixel) is traced opened by `rough` pixels (1, or
+ * 2 from a third longer: its model otherwise grows with every wobble, h4h2 at 40%
+ * jitter 43 s with none found, 3 s opened); one ending unevenly then read paired;
+ * then opened by 1 and 2. The first trace's reason stands, opened or not (the
+ * photographs' uneven crops were never read paired while only an unopened one
+ * counted: danish-tree-dots, gathering-hanging-trio-middle). */
+export function firstTrace(rough,traceAt){
+  let cannot='No outline was traced from the mask.';
+  for(const [k,way] of [{open:rough},{open:rough,paired:true},{open:1},{open:2}].entries()){
+    if(way.paired&&!/unevenly/.test(cannot))continue;
+    try{const traced=traceAt(way.open,way);if(traced){if(!traced.why)return{outline:traced.scaled,way};if(!k)cannot=traced.why;}}catch(error){if(!k)cannot=String(error.message||error);}
+  }
+  return{outline:null,way:null,cannot};
+}
 async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,roundedEnd,maps=null,ladderOnly=false}){
   // The outline traced from the mask first (tens of milliseconds): where its
   // cut ends cannot pair up the exact search cannot start.
@@ -163,18 +180,9 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
   // as every later trace of it then is.
   let base={specks:maskSpecks(target.sourceImage)};
   const traceAt=(open,near={})=>{const traced=exactTarget(target,cfg,{...base,open,...near}),scaled=traced&&scaleTarget(traced,cfg.width,cfg.paperColors);return scaled?{scaled,why:exactCannotStart(scaled,cfg)}:null;};
-  let outline=null,cannot='No outline was traced from the mask.';
-  // A mask with wobbling edges (hand-painted, its boundary a tenth longer than
-  // after opening by a pixel) is traced from it opened by 1 pixel, 2 from a
-  // third longer: its model otherwise grows with every wobble (h4h2 at 40%
-  // jitter: 43 s with none found, 3 s opened).
-  const first=maskRoughness(target.sourceImage);
-  for(const way of [{open:first},{open:first,paired:true},{open:1},{open:2}]){
-    if(way.paired&&!/unevenly/.test(cannot))continue;
-    const first=!way.open&&!way.paired;
-    try{const traced=traceAt(way.open,way);if(traced){if(!traced.why){outline=traced.scaled;if(way.paired)base={...base,paired:true};break;}if(first)cannot=traced.why;}}catch(error){if(first)cannot=String(error.message||error);}
-  }
+  const {outline,way,cannot}=firstTrace(maskRoughness(target.sourceImage),traceAt);
   if(!outline)return{solution:null,report:{chosen:'fitter',error:cannot}};
+  if(way.paired)base={...base,paired:true};
   let ties=symmetry;
   const sink=[],search=end=>({deadline:end,onProgress,symmetry:ties,geometry:cfg.progressGeometry,sink});
   const began=performance.now();

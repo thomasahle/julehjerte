@@ -588,6 +588,17 @@ than a crossing. On 11 of the pictures above: santa the same 0.083 mm; mor-far t
 variance); the seven still without a witness. The grading only acts once a rung has a solution, and the hard pictures' rungs
 mostly have none.
 
+**Photographs that never started (2026-11-02).** 20 of the 42 photographs ended at once, their traced
+outline ending unevenly on opposite sides (the crop off the heart's square: strip ends counted T0 B3,
+T1 B6 and so on). The engine reads such an outline paired (`border.js` `pairedBorderReading`, changing at
+most the export's 3% of the picture), but only when the unopened trace said so: a mask rough enough to
+be traced opened by a pixel never had its reason recorded, so danish-tree-dots and
+gathering-hanging-trio-middle never got the paired reading that traces them. Fixed (`engine.js`
+`firstTrace`); no other picture of the 127 traces differently. Both now come back with near misses (one
+inter-slit clearance 1.9 mm short; every cutting rule kept but a feature lost, 1.4% off the picture).
+The other 18 need more than 3% of the picture changed to pair, mostly crops with no strip end on a whole
+side: the photo locator's crop, not the search.
+
 ## 6. Coordinates and checks
 
 - **The bug.** The tracer's reference frame has y running up (target.js `toReference`), while the maps

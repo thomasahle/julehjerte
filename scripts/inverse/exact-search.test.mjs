@@ -281,6 +281,23 @@ test('a mask with wobbling edges is opened by a pixel or two before tracing; a c
   assert.equal(maskRoughness({}), 0);
 });
 
+test('a rough mask whose opened trace ends unevenly is read paired next, as an unopened one is', async () => {
+  const {firstTrace} = await import('../../static/inverse/core/engine.js');
+  const uneven = 'The outline ends unevenly on opposite sides.';
+  for (const rough of [0, 1, 2]) {
+    const tried = [], traceAt = (open, way) => { tried.push(`${open}${way.paired ? 'p' : ''}`); return way.paired ? {scaled: 'paired', why: null} : {scaled: 'plain', why: uneven}; };
+    const {outline, way} = firstTrace(rough, traceAt);
+    assert.equal(outline, 'paired');
+    assert.equal(way.paired, true);
+    assert.deepEqual(tried, [`${rough}`, `${rough}p`]);
+  }
+  // Another reason: no paired reading, the later traces' own reasons never replace the first's.
+  const tried = [], {outline, cannot} = firstTrace(1, (open, way) => { tried.push(`${open}${way.paired ? 'p' : ''}`); return {scaled: 'x', why: open === 1 && tried.length === 1 ? 'Six curves meet.' : uneven}; });
+  assert.equal(outline, null);
+  assert.equal(cannot, 'Six curves meet.');
+  assert.deepEqual(tried, ['1', '1', '2']);
+});
+
 test('stray specks of a hand painting are taken into their surroundings, checker corners and big regions stay', async () => {
   const {maskSpecks} = await import('../../static/inverse/core/engine.js');
   const {withoutSpecks} = await import('../../static/inverse/core/exact/raster.js');
