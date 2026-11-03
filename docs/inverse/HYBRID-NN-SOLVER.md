@@ -810,6 +810,16 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     In production `exactSearch` is always given no template, so `exactStart`'s reading and repair of
     one go unused; a better source of starts than the ladder's broken drawings is still to be found.
 
+- **What a visitor gets** (2026-11-03): counting the fitter, which runs beside the exact search and
+  whose passing template goes out when the exact search has none, 123 of the 127 test pictures get a
+  template passing every check: 97 an exact one (either search), 26 more a fitted one
+  (`FITTER_ONLY=1`, `nudge/fitter-misses.jsonl`) — among them davidsstjerne-circ,
+  hjerte-i-hjerte-i-hjerte, santa, jul-tern, mor-far and 21 of the photographs. The four without one
+  all lose a region of the picture (the features check; cuts and paper pass): jul-2026 and three
+  photographs, two of them cropped or split wrongly by the photo step (danish-red-gold,
+  danish-tree-group-top) and gathering-hanging-trio-middle. Where the notes below say a heart has no
+  template, they mean no exact one.
+
 - **How often the answer is proven best** (syn1v's ladder alone, the 127 test pictures, 2026-11-02): of
   its 93 templates passing every check, 75 have exactly as many hidden segments as the lower bound on
   the outline they were found on (`cheapBounds`), so none on that outline has fewer: library 52 of 61,
