@@ -788,9 +788,12 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     santa is the third such heart: its designer template turns over 150° three times, crosses itself
     once and has self-necks 0.40 mm short on its own geometry (`even/ownverdict.mjs`); today's search
     draws only cuts that cross (its paper falls apart), syn1v's ladder nothing, syn1's a template whose
-    clearance now passes but whose paper core is cut off. Of the 127 test pictures these three, whose
-    own designers did not keep our rules, are the hearts without a template; the rest of the misses are
-    photographs the photo step crops wrongly.
+    clearance now passes but whose paper core is cut off. Six drawn test pictures have no template from
+    either search (the 2026-11-02 ladder run, today's search on 2026-11-03, balls' moved outline): these
+    three, and three text hearts, jul-2026, jul-tern and mor-far, whose templates keep every cutting and
+    paper rule but lose a region of the picture (the features check; jul-2026 8% off). There the search
+    is short, not the rules: jul-tern's designer template keeps our rules with the 0.1 mm tolerance.
+    The other misses are 24 of the 42 photographs.
 
 - **How often the answer is proven best** (syn1v's ladder alone, the 127 test pictures, 2026-11-02): of
   its 93 templates passing every check, 75 have exactly as many hidden segments as the lower bound on
