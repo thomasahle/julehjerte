@@ -900,6 +900,13 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   bound 18), with or without it. With the repair pass the 47 no longer falls to 3 (those 3 were closed
   slits), and with 14 s a round, up to whole faces, no drawing near the start breaks less. A drawing
   keeping the rules there is not a repair of the start; it needs another start (the designer's has 25).
+- **The fitter's template as the exact search's start never applies on jul-tern** (2026-11-03). The
+  fitter's template passes every check there (1.8% from the mask), but the reader cannot place it on the
+  traced outline (`template.js` `readTemplate`: "The template's switches do not fit the outline", also
+  with its tolerances raised from 1 to about 4 mm), so `exactStart` falls back to the topological
+  witness and the search ends as without it (`FITTER_START=1`, with and without `MODEL_TOLERANCE`). A
+  start from the fitter needs a reader for templates whose hidden runs meet the outline elsewhere than
+  its switches allow, not looser tolerances.
 - **The three photographs without a template** are the photo step's, not the search's:
   danish-red-gold's mask splits one patterned paper into both colours; danish-tree-group-top's crop
   takes two overlapping hearts; gathering-hanging-trio-middle's fitted template keeps every cutting rule
