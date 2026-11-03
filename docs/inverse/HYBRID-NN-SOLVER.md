@@ -830,6 +830,13 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   solves, ranks its designer's cuts as low (7 of 12 within 1,000): the ladder finds other cuts keeping
   the rules there. So the network's ranking is not shown to be what fails on jul-tern; that two of its
   cuts are not candidates at all is a definite gap.
+  Why they are not: candidates are straight cuts only (`candidates.js`), kept where the straight line
+  stays clear of the outline; of the two, one is nearly straight (0.24 mm off), the other bent 1.1 mm,
+  while cuts bent as much elsewhere have straight candidates between their ends. One-bend candidates
+  (the middle pushed 0.5 to 1.5 mm either way where the straight one fails, `BENT=1` in the copy) add
+  2,552 to the 5,146 straight ones on jul-tern and change nothing (18 segments, rules broken); the
+  pruning that keeps each point's 8 cheapest probably drops them (a bend costs). Untried: keeping them
+  through the pruning, then the 127-picture comparison.
 
 - **How often the answer is proven best** (syn1v's ladder alone, the 127 test pictures, 2026-11-02): of
   its 93 templates passing every check, 75 have exactly as many hidden segments as the lower bound on
