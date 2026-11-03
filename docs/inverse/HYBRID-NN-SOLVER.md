@@ -785,6 +785,12 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     relaxed it finds one at once. One exists: the designer's cuts read onto our outline keep every
     hard row (penalty 20 from the lazily checked rules). There a better start would help, not looser
     rules; whether any start leads to a template keeping every rule is not known.
+    santa is the third such heart: its designer template turns over 150° three times, crosses itself
+    once and has self-necks 0.40 mm short on its own geometry (`even/ownverdict.mjs`); today's search
+    draws only cuts that cross (its paper falls apart), syn1v's ladder nothing, syn1's a template whose
+    clearance now passes but whose paper core is cut off. Of the 127 test pictures these three, whose
+    own designers did not keep our rules, are the hearts without a template; the rest of the misses are
+    photographs the photo step crops wrongly.
 
 - **How often the answer is proven best** (syn1v's ladder alone, the 127 test pictures, 2026-11-02): of
   its 93 templates passing every check, 75 have exactly as many hidden segments as the lower bound on
