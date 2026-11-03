@@ -34,11 +34,13 @@ function visitCutTips(cuts: Cuts, visit: (point: Vec, turn: number) => void) {
 
 /** Count narrow paper tips at joins of the actual cutting paths. A turn of
  * more than 150° leaves a tip below 30°; more than 135° leaves one below 45°.
- * Prefer removing the narrowest tips first. Spacing is checked separately. */
-export function cutTipCounts(cuts: Cuts): [number, number] {
+ * Prefer removing the narrowest tips first. Spacing is checked separately.
+ * A needle `forced` says is one the heart's symmetry cuts (see `cutMeasures`)
+ * counts as a sharp tip only. */
+export function cutTipCounts(cuts: Cuts, forced?: (point: Vec) => boolean): [number, number] {
 	let needles = 0, sharp = 0;
-	visitCutTips(cuts, (_point, turn) => {
-		if (turn > 5 * Math.PI / 6) needles++;
+	visitCutTips(cuts, (point, turn) => {
+		if (turn > 5 * Math.PI / 6 && !forced?.(point)) needles++;
 		sharp++;
 	});
 	return [needles, sharp];
@@ -102,8 +104,30 @@ export function cutMeasures(design: HeartDesign, rings: Ring[]): [number, number
 			from = p;
 		}
 	}
-	const [needles, sharp] = cutTipCounts(design);
-	return [paperFaults(design).weak + needles, lobesShareTemplate(design.fingers, design.gridSize) ? 0 : 1, sharp, turns, Math.round(length)];
+	// Where the lobes share a template, a tip of the picture on the heart's middle
+	// (the sheet's diagonal) is cut down its middle by both papers: the star's
+	// top tip, its 36° an 18° point of each paper. No such heart is without
+	// those needles, so they count as its sharp tips only.
+	const shared = lobesShareTemplate(design.fingers, design.gridSize);
+	const onMiddle = (p: Vec) => { const [x, y] = unit(p.x, p.y); return Math.abs(x - y) < MIDDLE_NEEDLE; };
+	const [needles, sharp] = cutTipCounts(design, shared ? onMiddle : undefined);
+	return [paperFaults(design).weak + needles, shared ? 0 : 1, sharp, turns, Math.round(length)];
+}
+
+/** How near the heart's middle, in the sheet's 100 units, a needle lies that
+ * its symmetry cuts (see `cutMeasures`). */
+const MIDDLE_NEEDLE = 1;
+
+/** The needles a heart's symmetry cuts (see `cutMeasures`), in its design's
+ * coordinates: none where its lobes do not share a template. */
+export function middleNeedles(design: HeartDesign): Vec[] {
+	if (!lobesShareTemplate(design.fingers, design.gridSize)) return [];
+	const rect = inferOverlapRect(design.fingers, design.gridSize), points: Vec[] = [];
+	visitCutTips(design, (p, turn) => {
+		const x = (p.x - rect.left) / rect.width * 100, y = (p.y - rect.top) / rect.height * 100;
+		if (turn > 5 * Math.PI / 6 && Math.abs(x - y) < MIDDLE_NEEDLE) points.push(p);
+	});
+	return points;
 }
 
 /** Whether cuts measured `a` (see `cutMeasures`) are better than `b`'s:

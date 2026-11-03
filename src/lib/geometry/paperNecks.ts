@@ -10,7 +10,7 @@
  * Plain arithmetic on a grid of `pxPerMm`, so it runs in a test and in the
  * design page's worker ($lib/generator/paperWorker).
  */
-import type { BezierSegment, Finger, HeartDesign, LobeId } from '$lib/types/heart';
+import type { BezierSegment, Finger, HeartDesign, LobeId, Vec } from '$lib/types/heart';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 
 /** The square's width on the printed templates unless the visitor asks for
@@ -86,14 +86,17 @@ export function holdingWidth(design: HeartDesign,
  * than its neck, as `paperFaults` sees a piece; bulges too), on either
  * template: how far paper that holds is from tearing, and how near paper that
  * tears is to holding. Infinity where nothing hangs by a neck. Where `at` is
- * given, the neck's place in the design's coordinates is noted there.
+ * given, the neck's place in the design's coordinates is noted there; the
+ * paper within `sparedMm` (SPARED_MM) of a point `spared` names (a tip no cuts
+ * can keep from a needle; on its `lobe`'s template alone where it names one,
+ * as far as its `mm` where it gives one) is left out, as if cut away.
  */
-export function thinnestNeck(design: HeartDesign, options: PaperOptions & { at?: WeakPiece[] } = {}): number {
+export function thinnestNeck(design: HeartDesign, options: PaperOptions & { at?: WeakPiece[]; spared?: (Vec & { lobe?: LobeId; mm?: number })[]; sparedMm?: number } = {}): number {
 	const rect = inferOverlapRect(design.fingers, design.gridSize);
 	const { widthMm = PRINT_WIDTH_MM, neckMm = PAPER_NECK_MM, pxPerMm = 5 } = options;
 	let least = Infinity, place: WeakPiece | undefined;
 	for (const lobe of ['left', 'right'] as const) {
-		const grid = templateGrid(design.fingers.filter((f) => f.lobe === lobe), lobe, rect, widthMm, neckMm, pxPerMm);
+		const grid = templateGrid(design.fingers.filter((f) => f.lobe === lobe), lobe, rect, widthMm, neckMm, pxPerMm, options.spared, options.sparedMm);
 		const { mm, from } = neckOn(grid, pxPerMm);
 		if (mm >= least) continue;
 		least = mm;
@@ -150,7 +153,7 @@ function templateFaults(fingers: Finger[], lobe: LobeId,
  * `widthMm` wide, with an ear's band on top deep enough for necks of
  * `neckMm`: its cut cells, and each cell's squared distance from one. */
 function templateGrid(fingers: Finger[], lobe: LobeId,
-	rect: { left: number; top: number; width: number; height: number }, widthMm: number, neckMm: number, pxPerMm: number) {
+	rect: { left: number; top: number; width: number; height: number }, widthMm: number, neckMm: number, pxPerMm: number, spared: (Vec & { lobe?: LobeId; mm?: number })[] = [], sparedMm = SPARED_MM) {
 	// Both templates share one scale, the wider side printed `widthMm` wide (as `heartScale`).
 	const px = (widthMm * pxPerMm) / Math.max(rect.width, rect.height);
 	const across = lobe === 'left' ? rect.height : rect.width, along = lobe === 'left' ? rect.width : rect.height;
@@ -175,8 +178,19 @@ function templateGrid(fingers: Finger[], lobe: LobeId,
 		const steps = Math.max(1, Math.ceil(chord(seg) * px * 3));
 		for (let i = 0; i <= steps; i++) mark(...point(i / steps));
 	}
+	// The paper about each spared point, as if cut away.
+	for (const p of spared) {
+		if (p.lobe && p.lobe !== lobe) continue;
+		const reach = Math.ceil((p.mm ?? sparedMm) * pxPerMm);
+		const [u, v] = lobe === 'left' ? [p.y - rect.top, p.x - rect.left] : [p.x - rect.left, p.y - rect.top], [cx, cy] = cell(u, v);
+		for (let dy = -reach; dy <= reach; dy++) for (let dx = -reach; dx <= reach; dx++)
+			if (dx * dx + dy * dy <= reach * reach) mark((cx + dx - 1 + .5) / px, (cy + dy - ear + .5) / px);
+	}
 	return { W, H, cut, ear, px, dist: distances(cut, W, H) };
 }
+
+/** How far about a spared point (see `thinnestNeck`) the paper is left out, in millimetres. */
+const SPARED_MM = 1.5;
 
 /** Where a piece of paper, from its cell `from`, hangs by its neck: the
  * widest way from it to the ear's band (the top row) is only as wide as some

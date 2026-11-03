@@ -28,6 +28,9 @@
 //        UNSOLVED=file    write the pairs no candidate beats the generator's heart in, with their motif sizes
 //        ADD=1 BASE=file  keep the recipes of every pair the file (else the page's) has any for, and choose
 //                         only for the others
+//        EXTRA=1 BASE=file  with ADD: a pair the file has recipes for keeps them and takes, after them, up to EXTRA_MOST
+//                         (2) more: the candidates that make the best of its hearts better (`betterCuts`) at the most
+//                         motif sizes, where the page draws them (in order, until three draw)
 //        TIES=1           a pair none of whose candidates beats the generator's heart keeps the one drawn at the
 //                         most of its motif sizes: the page shows it nowhere the generator's heart is better
 import fs from 'node:fs/promises';
@@ -154,7 +157,7 @@ try {
 	const carry = (i, r) => {
 		const key = `${i} ${r.strips} ${r.fine}`;
 		if (!carriedTo.has(key)) {
-			const c = candidates[i], recipe = c.strips === r.strips && c.recipe.outline === r.fine ? c.recipe : transferTopology(c.recipe, c.board, board(r.shown));
+			const c = candidates[i], recipe = c.shipped ? c.recipe : c.strips === r.strips && c.recipe.outline === r.fine ? c.recipe : transferTopology(c.recipe, c.board, board(r.shown));
 			carriedTo.set(key, recipe && { ...recipe, style: 'board', strips: r.strips });
 		}
 		return carriedTo.get(key);
@@ -200,11 +203,18 @@ try {
 	// no heart the page draws already changes; only pairs without any are chosen for.
 	const base = process.env.ADD ? JSON.parse(await fs.readFile(process.env.BASE ?? 'static/generator/recipes/board.json', 'utf8')).recipes.filter(r => r.frame) : [];
 	const had = new Set(base.map(r => `${r.frame.blobs}|${r.motif}`));
+	// EXTRA: each shipped recipe a candidate of its pair too, drawn as the page draws it.
+	const shipped = new Map();
+	if (process.env.EXTRA) for (const r of base) {
+		const pair = `${r.frame.blobs}|${r.motif}`;
+		candidates.push({ recipe: r, shipped: true, strips: r.strips, pair, from: 'shipped' });
+		shipped.set(pair, [...shipped.get(pair) ?? [], candidates.length - 1]);
+	}
 	let n = 0;
 	for (const [pair, mine] of rowsOf) {
 		const list = byPair.get(pair) ?? [];
 		n++;
-		if (had.has(pair)) { console.log(`  pair ${n}/${rowsOf.size} (${mine.length} motif sizes): kept as shipped`); continue; }
+		if (had.has(pair) && !process.env.EXTRA) { console.log(`  pair ${n}/${rowsOf.size} (${mine.length} motif sizes): kept as shipped`); continue; }
 		if (!list.length) { console.log(`  pair ${n}/${rowsOf.size} (${mine.length} motif sizes): no solve`); unsolved.push({ pair, candidates: 0, rows: mine.map(r => [r.strips, r.id, r.p]) }); continue; }
 		const started = performance.now(), groups = new Map();
 		for (const r of mine) groups.set(`${r.strips} ${r.id}`, [...groups.get(`${r.strips} ${r.id}`) ?? [], r]);
@@ -234,6 +244,29 @@ try {
 			}
 			return { won, weak };
 		};
+		const kept = shipped.get(pair);
+		if (kept) {
+			// EXTRA: the shipped recipes kept, and up to EXTRA_MOST more after them, each next one where it makes the
+			// best heart better at the most sizes, screened by that at the middle sizes, not by beating the
+			// generator's. The page draws a pair's recipes in order until TRIES of them draw (TOPOLOGY_TRIES in
+			// generate.ts): one after them shows only where fewer of those draw.
+			const TRIES = 3, most = Number(process.env.EXTRA_MOST ?? 2);
+			const bestOf = (picks, r) => picks.map(i => draw(i, r)).filter(Boolean).slice(0, TRIES).reduce((a, b) => !a || betterCuts(b, a) ? b : a, null);
+			const picks = [...kept], added = [];
+			const gainAt = (i, among) => among.filter(r => { const was = bestOf(picks, r), now = bestOf([...picks, i], r); return now && now !== was && wins(now, r) && (!was || betterCuts(now, was)); }).length;
+			const shortlist = list.map(i => ({ i, g: gainAt(i, middles) })).filter(x => x.g).sort((a, b) => b.g - a.g).slice(0, keep);
+			while (added.length < most) {
+				const gain = i => gainAt(i, mine);
+				const next = shortlist.map(s => ({ i: s.i, g: gain(s.i) })).filter(x => !picks.includes(x.i)).reduce((a, b) => !a || b.g > a.g ? b : a, null);
+				if (!next?.g) break;
+				picks.push(next.i);
+				added.push(next);
+			}
+			await save();
+			if (added.length) chosen.set(pair, { picks: added.map(x => ({ i: x.i })), won: 0 });
+			console.log(`  pair ${n}/${rowsOf.size} (${mine.length} motif sizes, ${list.length} candidates): ${added.length ? added.map(x => `${candidates[x.i].from}${candidates[x.i].recipe.held ? ' held' : ''} better at ${x.g}`).join(' + ') : 'shipped kept alone'} (${((performance.now() - started) / 1000).toFixed(0)} s)`);
+			continue;
+		}
 		const picks = judged[0]?.won || ties && judged[0]?.drawn ? [judged[0]] : [];
 		for (let now = together(picks); picks.length && picks.length < perPair;) {
 			const next = judged.filter(s => !picks.includes(s)).map(s => ({ s, t: together([...picks, s]) }))

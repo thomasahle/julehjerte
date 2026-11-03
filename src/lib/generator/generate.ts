@@ -13,13 +13,13 @@ import { isTopology, outlineFor, recipeConstruction, recipesAt, type Recipe, typ
 import { FALLBACK_WORK, MIRROR_NEAR, hiddenCuts, motifFit, movedEnd, nestingOf, topologyConstruction } from './topologyRecipes';
 import { blobsOf, carryTopology } from './topologyTransfer';
 import { alongEdge, boardOutline } from './boardOutline';
-import { bendShared, sharedPieces, slideSwitch, straightenShared, switchesOf } from './cutMoves';
+import { bendShared, followArc, sharedPieces, slideSwitch, straightenShared, switchesOf } from './cutMoves';
 import { picture, type Known } from './picture';
 export { fillSquare, fitCircle } from './frameFit';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
 import { CORNER_INSETS, generateCheckeredGrid, checkeredGridCache, checkeredLayouts, printCornerInsets } from './checkeredGrid';
 import { generateMixedCheckeredGrid, mixedCheckeredGridCache } from './mixedCheckeredGrid';
-import { betterCuts, cutMeasures, cutTipCounts, cutTipPoints, fewerCutTips } from './cutQuality';
+import { betterCuts, cutMeasures, cutTipCounts, cutTipPoints, fewerCutTips, middleNeedles } from './cutQuality';
 import { trickyLetters } from './trickyLetters';
 import { normalizeContours, withoutSpurs } from './contours';
 import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
@@ -596,7 +596,7 @@ const ENDS_DRAWS = 12, ENDS_STEPS = [1.5, -1.5, 3, -3];
  * at most since its last firmer one, and in all, and in how many places at
  * most its paper may tear for that; then tidying it, since its last tidier
  * one, and in all (see `refined`). */
-const REFINE_DRAWS = 12, REFINE_MOST = 32, REFINE_FEW = 5, TIDY_DRAWS = 6, TIDY_MOST = 16;
+const REFINE_DRAWS = 12, REFINE_MOST = 32, REFINE_FEW = 5, TIDY_DRAWS = 6, TIDY_MOST = 20;
 /** The steps, in the sheet's units along its outline, a switch slides in
  * refining, and how near where its paper may tear (a weak piece, or the neck
  * it hangs by) a cut must be to be moved, here and in `endsRefined`. */
@@ -610,8 +610,15 @@ const HOLDING_MOST = 200, HOLDING_STEP = 10;
 /** How much wider, in millimetres on a template printed PRINT_WIDTH_MM wide,
  * the thinnest neck a heart's paper hangs by must be to be firmer, and how
  * much longer its cuts may then be; past NECK_ENOUGH a neck is wide enough
- * (see `neckOf`). */
+ * (see `necksOf`). */
 const NECK_STEP = .25, NECK_LONGER = 1.02, NECK_ENOUGH = 2 * PAPER_NECK_MM;
+/** How near the board circle, in the sheet's units, a shared piece's ends lie
+ * for tidying to lay it along the circle, and how much longer the cuts may
+ * then be (see `refined`). */
+const ARC_NEAR = .05, ARC_LONGER = 1.03;
+/** How many more hidden turns a wider neck may cost (see `widerNeck`): the star's
+ * top on five strips at 100%, 1.18 mm → 2.68 mm for two. */
+const NECK_TURNS = 2;
 
 /** The narrowest print at which a heart's paper holds, as the design page
  * offers it (see `holdingWidth`; past its widest, one step wider). */
@@ -621,19 +628,54 @@ function holdsAt(design: HeartDesign): number {
 	return holdingWidths.get(design)!;
 }
 
-/** The thinnest neck a heart's paper hangs by printed PRINT_WIDTH_MM wide (see
- * `thinnestNeck`), NECK_ENOUGH where none is as thin; and, where `at` is
- * given, its place noted there. */
-const necks = new WeakMap<HeartDesign, number>();
-function neckOf(design: HeartDesign, at?: WeakPiece[]): number {
-	if (at || !necks.has(design)) necks.set(design, Math.min(thinnestNeck(design, { at }), NECK_ENOUGH));
-	return necks.get(design)!;
+/** How many of a heart's narrowest necks are looked at, how far about one
+ * found, in millimetres, the next is looked for, and how far about a needle
+ * its symmetry cuts (whose paper stays thin a while: an 18° point is 2.5 mm
+ * wide 8 mm in) (see `necksOf`). */
+const NECKS = 3, NECK_APART = 3, MIDDLE_APART = 8;
+
+/** The NECKS narrowest necks a heart's paper hangs by printed PRINT_WIDTH_MM
+ * wide (see `thinnestNeck`), narrowest first, each NECK_ENOUGH at most, and
+ * the places of those narrower: each next one found with the paper about those
+ * before left out, as about the needles its symmetry cuts, which no move
+ * widens (see `middleNeedles`). Around a star's tip several necks are thin:
+ * a move that widens one but the narrowest still counts. */
+type Necks = { mm: number[]; at: WeakPiece[]; spared: (Vec & { lobe?: WeakPiece['lobe']; mm?: number })[]; done: boolean };
+const necks = new WeakMap<HeartDesign, Necks>();
+/** The `k`-th narrowest neck (see above), found when first asked for. */
+function neckAt(design: HeartDesign, k: number): number {
+	let found = necks.get(design);
+	if (!found) necks.set(design, found = { mm: [], at: [], spared: middleNeedles(design).map(p => ({ ...p, mm: MIDDLE_APART })), done: false });
+	while (found.mm.length <= k && !found.done) {
+		const here: WeakPiece[] = [], w = Math.min(thinnestNeck(design, { at: here, spared: found.spared, sparedMm: NECK_APART }), NECK_ENOUGH);
+		found.mm.push(w);
+		if (w >= NECK_ENOUGH || !here.length) { found.done = true; break; }
+		found.at.push(here[0]!);
+		found.spared.push(here[0]!);
+	}
+	return found.mm[k] ?? NECK_ENOUGH;
 }
+function necksOf(design: HeartDesign): { mm: number[]; at: WeakPiece[] } {
+	const mm = Array.from({ length: NECKS }, (_, k) => neckAt(design, k));
+	return { mm, at: necks.get(design)!.at };
+}
+
+/** Whether `a`'s narrowest necks (see `necksOf`) are wider than `b`'s: the
+ * first that differs by NECK_STEP wider, each next looked for only while they
+ * are as wide; and whether none is that much narrower. */
+const neckWider = (a: HeartDesign, b: HeartDesign) => {
+	for (let k = 0; k < NECKS; k++) {
+		const x = neckAt(a, k), y = neckAt(b, k);
+		if (Math.abs(x - y) >= NECK_STEP) return x > y;
+	}
+	return false;
+};
+const neckAsWide = (a: HeartDesign, b: HeartDesign) => necksOf(a).mm.every((w, k) => w > neckAt(b, k) - NECK_STEP);
 
 /** Whether cuts measured `a` (see `cutMeasures`) on `designA` are firmer than
  * `b`'s: better (`betterCuts`), or, as torn as each other, holding at a
  * narrower print, and not sharper or much busier; or, holding as well,
- * hanging by a wider thinnest neck (`neckOf`), and no sharper, no busier and
+ * hanging by wider narrowest necks (`necksOf`), and no sharper, no busier and
  * hardly longer. */
 function firmerCuts(designA: HeartDesign, a: readonly number[], designB: HeartDesign, b: readonly number[]): boolean {
 	if (a[0] !== b[0] || a[1] !== b[1]) return betterCuts(a, b);
@@ -645,10 +687,11 @@ function firmerCuts(designA: HeartDesign, a: readonly number[], designB: HeartDe
 	return !widerNeck(designB, b, designA, a) && betterCuts(a, b);
 }
 
-/** Whether cuts measured `a` on `designA` hang by a wider thinnest neck than
- * `b`'s (see `firmerCuts`), and are no sharper, no busier and hardly longer. */
+/** Whether cuts measured `a` on `designA` hang by wider narrowest necks than
+ * `b`'s (see `neckWider`, `firmerCuts`), and are no sharper, hardly busier
+ * and hardly longer. */
 const widerNeck = (designA: HeartDesign, a: readonly number[], designB: HeartDesign, b: readonly number[]) =>
-	a[2] <= b[2] && a[3] <= b[3] && a[4] <= NECK_LONGER * b[4] && neckOf(designA) >= neckOf(designB) + NECK_STEP;
+	a[2] <= b[2] && a[3] <= b[3] + NECK_TURNS && a[4] <= NECK_LONGER * b[4] && neckWider(designA, designB);
 
 /** Pieces of paper a heart notes (see `paperNecks`), in its picture's units. */
 function inPicture(design: HeartDesign, pieces: WeakPiece[]): Point[] {
@@ -665,10 +708,9 @@ function weakPoints(design: HeartDesign, byNecks: boolean): Point[] {
 	return inPicture(design, necks.length ? necks : where);
 }
 
-/** Where a heart's thinnest neck is (see `neckOf`), in its picture's units, if narrower than NECK_ENOUGH. */
+/** Where a heart's narrowest necks are (see `necksOf`), in its picture's units, those narrower than NECK_ENOUGH. */
 function neckPoints(design: HeartDesign): Point[] {
-	const at: WeakPiece[] = [];
-	return neckOf(design, at) < NECK_ENOUGH ? inPicture(design, at) : [];
+	return inPicture(design, necksOf(design).at);
 }
 
 /**
@@ -750,7 +792,8 @@ function endsRefined<T extends Drawing & { m: number[] }>(request: GeneratorRequ
 }
 
 /** A move of a construction's cuts (see `cutMoves`). */
-type CutMove = { kind: 'slide'; at: Point; by: number } | { kind: 'bend'; from: Point; to: Point; by: number } | { kind: 'straighten'; at: Point };
+type CutMove = { kind: 'slide'; at: Point; by: number } | { kind: 'bend'; from: Point; to: Point; by: number } | { kind: 'straighten'; at: Point }
+	| { kind: 'arc'; from: Point; to: Point };
 
 /**
  * A board heart a topology recipe drew straight (and `endsRefined`), refined
@@ -773,7 +816,7 @@ type CutMove = { kind: 'slide'; at: Point; by: number } | { kind: 'bend'; from: 
  * makes the cuts better by as wide a neck; TIDY_DRAWS hearts since the last
  * tidier, TIDY_MOST in all.
  */
-function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest, drawn: T, shown: { rings: Ring[]; motif?: number }): T {
+function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest, drawn: T, shown: { rings: Ring[]; motif?: number; circle?: number }): T {
 	if (request.style !== 'board' || !drawn.construction || !drawn.straight || drawn.m[0] > REFINE_FEW || shown.motif === undefined) return drawn;
 	const strips = request.board ?? BOARD_STRIPS.board.initial;
 	const draw = (edges: Edge[]) => {
@@ -804,19 +847,40 @@ function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest,
 	// print it holds at, as the page finds it).
 	const tidier = (a: Drawn, b: Drawn) => {
 		if (a.m[0] !== b.m[0] || a.m[1] !== b.m[1]) return betterCuts(a.m, b.m);
-		const tidy = widerNeck(a.heart.design, a.m, b.heart.design, b.m) || (neckOf(a.heart.design) > neckOf(b.heart.design) - NECK_STEP && betterCuts(a.m, b.m));
+		const tidy = widerNeck(a.heart.design, a.m, b.heart.design, b.m) || (neckAsWide(a.heart.design, b.heart.design) && betterCuts(a.m, b.m));
 		if (!tidy || !a.m[0]) return tidy;
 		const hb = holdsAt(b.heart.design);
 		return hb > HOLDING_MOST || (paperHolds(a.heart.design, { widthMm: hb }) && holdsAt(a.heart.design) <= hb);
 	};
+	// Along the circle, as firm: as torn, holding as well, no neck narrower, no
+	// sharper or busier, and hardly longer (an arc a little longer than its chord).
+	const aligned = (a: Drawn, b: Drawn) => a.m[0] === b.m[0] && a.m[1] === b.m[1] && a.m[2] <= b.m[2] && a.m[3] <= b.m[3]
+		&& a.m[4] <= ARC_LONGER * b.m[4] && neckAsWide(a.heart.design, b.heart.design)
+		&& (!a.m[0] || holdsAt(a.heart.design) <= holdsAt(b.heart.design));
+	// Laid along the board circle, the arc where the picture shows none of it (see `followArc`).
+	const colour = (p: Point) => shown.rings.reduce((v, ring) => v ^ Number(inside(p, ring)), 0);
+	const onCircle = (p: Point) => shown.circle !== undefined && Math.abs(Math.hypot(p[0] - 50, p[1] - 50) - shown.circle) < ARC_NEAR;
+	const arcHidden = (a: Point, b: Point) => {
+		const t0 = Math.atan2(a[1] - 50, a[0] - 50);
+		let d = Math.atan2(b[1] - 50, b[0] - 50) - t0;
+		while (d > Math.PI) d -= 2 * Math.PI;
+		while (d < -Math.PI) d += 2 * Math.PI;
+		return [.2, .4, .6, .8].every(k => {
+			const t = t0 + d * k, at = (r: number): Point => [50 + r * Math.cos(t), 50 + r * Math.sin(t)];
+			return colour(at(shown.circle! - .2)) === colour(at(shown.circle! + .2));
+		});
+	};
 	const apply = (edges: Edge[] | undefined, move: CutMove) => edges && (move.kind === 'slide' ? slideSwitch(edges, move.at, move.by)
-		: move.kind === 'bend' ? bendShared(edges, move.from, move.to, move.by) : straightenShared(edges, move.at));
+		: move.kind === 'bend' ? bendShared(edges, move.from, move.to, move.by) : move.kind === 'arc' ? followArc(edges, move.from, move.to, [50, 50], shown.circle!)
+		: straightenShared(edges, move.at));
 	const flip = (p: Point): Point => [p[1], p[0]];
 	// A move's mirror image: the papers trade places, and left is right.
 	const mirrored = (move: CutMove): CutMove => move.kind === 'slide' ? { ...move, at: flip(move.at), by: -move.by }
-		: move.kind === 'bend' ? { ...move, from: flip(move.from), to: flip(move.to), by: -move.by } : { ...move, at: flip(move.at) };
-	const onDiagonal = (move: CutMove) => move.kind !== 'bend' && Math.abs(move.at[0] - move.at[1]) < MIRROR_NEAR;
-	const named = (move: CutMove) => move.kind === 'bend' ? `b${[...move.from, ...move.to].map(v => v.toFixed(3))}:${move.by}` : `${move.kind[0]}${move.at.map(v => v.toFixed(3))}:${move.kind === 'slide' ? move.by : ''}`;
+		: move.kind === 'bend' ? { ...move, from: flip(move.from), to: flip(move.to), by: -move.by }
+		: move.kind === 'arc' ? { ...move, from: flip(move.from), to: flip(move.to) } : { ...move, at: flip(move.at) };
+	const onDiagonal = (move: CutMove) => (move.kind === 'slide' || move.kind === 'straighten') && Math.abs(move.at[0] - move.at[1]) < MIRROR_NEAR;
+	const named = (move: CutMove) => move.kind === 'bend' || move.kind === 'arc' ? `${move.kind[0]}${[...move.from, ...move.to].map(v => v.toFixed(3))}:${move.kind === 'bend' ? move.by : ''}`
+		: `${move.kind[0]}${move.at.map(v => v.toFixed(3))}:${move.kind === 'slide' ? move.by : ''}`;
 	// Where a move leaves what it moved: the switch or bend it newly makes.
 	const made = (before: Edge[], after: Edge[], move: CutMove): Point | undefined => {
 		const points = (edges: Edge[]) => move.kind === 'slide' ? switchesOf(edges) : sharedPieces(edges).flat();
@@ -854,13 +918,19 @@ function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest,
 				if (isBend(b)) bends.push({ move: { kind: 'bend', from: b, to: a, by }, d });
 			}
 		}
+		// Tidying first lays shared pieces across the board circle's hidden stretches along it, the longest first.
+		const arcs: { move: CutMove; d: number }[] = [];
+		if (!firm) for (const [a, b] of pieces) {
+			const mid: Point = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+			if (onCircle(a) && onCircle(b) && !onCircle(mid) && arcHidden(a, b)) arcs.push({ move: { kind: 'arc', from: a, to: b }, d: -Math.hypot(b[0] - a[0], b[1] - a[1]) });
+		}
 		if (!firm) for (const key of new Set(ends.filter((k, i) => ends.indexOf(k) !== i))) {
 			// A bend's two pieces, from the far end of one through it to the far end of the other.
 			const [[a, b], [, c]] = pieces.filter(piece => piece.some(p => p.join(',') === key)).map(piece => piece[0].join(',') === key ? [piece[0], piece[1]] : [piece[1], piece[0]]) as [Point, Point][];
 			const turn = Math.abs(Math.atan2((a[0] - b[0]) * (c[1] - a[1]) - (a[1] - b[1]) * (c[0] - a[0]), (a[0] - b[0]) * (c[0] - a[0]) + (a[1] - b[1]) * (c[1] - a[1]))) * 180 / Math.PI;
 			if (turn > TIDY_BEND) straight.push({ move: { kind: 'straighten', at: a }, d: -turn });
 		}
-		const moves = [...last ? [last] : [], ...[straight, slides, bends].flatMap(list => list.sort((x, y) => x.d - y.d).map(({ move }) => move))];
+		const moves = [...last ? [last] : [], ...[arcs, straight, slides, bends].flatMap(list => list.sort((x, y) => x.d - y.d).map(({ move }) => move))];
 		let better: typeof best | undefined, moved: CutMove | undefined;
 		for (const move of moves) {
 			if (failed.has(named(move)) || (shared && onDiagonal(move))) continue;
@@ -871,9 +941,9 @@ function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest,
 			if (since++ >= (firm ? REFINE_DRAWS : TIDY_DRAWS) || draws++ >= (firm ? REFINE_MOST : TIDY_MOST)) break;
 			const next = draw(edges);
 			if (!next) { failed.add(named(move)); continue; }
-			if (firm ? firmer(next, best) : tidier(next, best)) {
+			if (firm ? firmer(next, best) : move.kind === 'arc' ? aligned(next, best) : tidier(next, best)) {
 				better = { ...best, ...next, edges };
-				const p = move.kind === 'straighten' ? undefined : made(best.edges, edges, move);
+				const p = move.kind === 'straighten' || move.kind === 'arc' ? undefined : made(best.edges, edges, move);
 				moved = p && (move.kind === 'slide' ? { ...move, at: p } : move.kind === 'bend' ? { ...move, from: p } : undefined);
 				break;
 			}

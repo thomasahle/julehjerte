@@ -2,8 +2,9 @@
  * Small moves of a construction's straight cuts that keep its weave: a switch
  * (where one paper's outline gives way to the other's and a shared cut leaves,
  * a point of an A edge, a B edge and an AB one) slid along its outline, the
- * edges it passes changing paper; and a shared cut bent, or its bend moved,
- * across its course. Each returns the edges anew, or nothing where the move
+ * edges it passes changing paper; a shared cut bent, or its bend moved,
+ * across its course, or straightened, or laid along a circle the picture shows
+ * elsewhere. Each returns the edges anew, or nothing where the move
  * does not fit (a switch slid past another, or off its outline's end); the
  * construction's own checks (`compile`, the cut audit, the editor's) judge the
  * rest.
@@ -113,4 +114,30 @@ export function straightenShared(edges: Edge[], at: Point): Edge[] | undefined {
 	const from = same(a.to, at) ? a.from : a.to, to = same(b.from, at) ? b.to : b.from;
 	if (same(from, to)) return;
 	return [...edges.filter((_, i) => i !== ids[0] && i !== ids[1]), { ...a, from, to }];
+}
+
+/** How near the circle, in the sheet's units, a shared piece's ends lie to be laid along it (see `followArc`). */
+const ON_CIRCLE = .05;
+
+/** The shared cut's straight piece from `from` to `to`, both ends on the
+ * circle about `centre` of `radius`, laid along the circle between them the
+ * shorter way round, in pieces of at most `step` radians: a hidden cut along a
+ * stretch of a line the picture shows elsewhere, which looks better than one
+ * across it. */
+export function followArc(edges: Edge[], from: Point, to: Point, centre: Point, radius: number, step = Math.PI / 60): Edge[] | undefined {
+	const i = edges.findIndex(e => e.family === 'AB' && ((same(e.from, from) && same(e.to, to)) || (same(e.from, to) && same(e.to, from))));
+	if (i < 0) return;
+	const e = edges[i]!, angle = (p: Point) => Math.atan2(p[1] - centre[1], p[0] - centre[0]);
+	if ([e.from, e.to].some(p => Math.abs(Math.hypot(p[0] - centre[0], p[1] - centre[1]) - radius) > ON_CIRCLE)) return;
+	const a = angle(e.from);
+	let d = angle(e.to) - a;
+	while (d > Math.PI) d -= 2 * Math.PI;
+	while (d < -Math.PI) d += 2 * Math.PI;
+	const n = Math.ceil(Math.abs(d) / step);
+	if (n < 2) return;
+	const points: Point[] = [e.from, ...Array.from({ length: n - 1 }, (_, k): Point => {
+		const t = a + d * (k + 1) / n;
+		return [centre[0] + radius * Math.cos(t), centre[1] + radius * Math.sin(t)];
+	}), e.to];
+	return [...edges.slice(0, i), ...points.slice(1).map((p, k) => ({ ...e, from: points[k]!, to: p })), ...edges.slice(i + 1)];
 }

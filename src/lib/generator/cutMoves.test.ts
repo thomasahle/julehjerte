@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { bendShared, sharedPieces, slideSwitch, straightenShared, switchesOf } from './cutMoves';
+import { bendShared, followArc, sharedPieces, slideSwitch, straightenShared, switchesOf } from './cutMoves';
 import type { Edge, Point } from './geometry';
 
 // A square ring cut by one shared cut from its top side to its bottom side: on
@@ -50,4 +50,18 @@ describe('moves of a construction\'s cuts', () => {
 		expect(sharedPieces(straightenShared(bent, [4, 5])!)).toEqual([[[5, 0], [5, 10]]]);
 		expect(straightenShared(edges, [5, 0])).toBeUndefined();
 	});
+
+	it('lays a shared piece between two points of a circle along the circle, the shorter way round', () => {
+		// A chord of the circle about (50, 50) of radius 40, a quarter of it apart.
+		const chord: Edge[] = [{ from: [90, 50], to: [50, 90], family: 'AB', kind: 'shared' }];
+		const arc = followArc(chord, [90, 50], [50, 90], [50, 50], 40)!;
+		expect(arc.length).toBeGreaterThan(10);
+		expect(arc[0]!.from).toEqual([90, 50]);
+		expect(arc.at(-1)!.to).toEqual([50, 90]);
+		for (const e of arc) expect(Math.hypot(e.to[0] - 50, e.to[1] - 50)).toBeCloseTo(40, 9);
+		expect(arc.every(e => e.family === 'AB' && e.to[0] >= 50 && e.to[1] >= 50)).toBe(true);
+		// Not where an end is off the circle.
+		expect(followArc(chord, [90, 50], [50, 90], [50, 50], 30)).toBeUndefined();
+	});
 });
+

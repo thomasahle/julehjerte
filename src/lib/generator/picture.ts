@@ -28,7 +28,9 @@ const clearest = new WeakMap<Ring[], Map<number, number>>();
  * down the heart's middle, and how far the motif can move and keep its size;
  * on a board or in the rays, where the motif's own rings begin after the
  * board's or the frame's corners. */
-export type Picture = { rings: Ring[]; place?: number; bounds?: PlaceBounds; motif?: number };
+/** A frame's picture: its even–odd rings (the motif's from `motif` on), and, on
+ * the board circle, its circle's radius about the sheet's middle (`circle`). */
+export type Picture = { rings: Ring[]; place?: number; bounds?: PlaceBounds; motif?: number; circle?: number };
 
 /** What a heart already made of the motif in this frame, at its default size,
  * tells the next picture: where the figure in the checks lay, the board's
@@ -276,7 +278,7 @@ function boardPicture(request: GeneratorRequest, circle?: 'large' | number, encl
 	}
 	const motif = rings.length;
 	rings.push(...contours.map(ring => ring.map(([x, y]) => uprightToSheet([(x - cx) * scale, (y - cy) * scale]))));
-	return { rings, motif };
+	return { rings, motif, circle: radius };
 }
 
 /** The part of a polygon inside a convex one, anticlockwise or not. */
