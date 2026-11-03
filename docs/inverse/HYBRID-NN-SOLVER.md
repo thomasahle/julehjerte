@@ -853,6 +853,35 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   the gallery 11 of 15, photographs 11 of 15) and 5 more within 1%; the rest stop far from a proof
   (origami, flyvendegaes, dagognat, amy-rosette and jul with their bounds near 0).
 
+- **A visitor's "no usable cuts" (2026-11-03, fixed 2c7018a6).** A star in a circle on a 5x5 board,
+  mirrored lobes, 0.5 mm minimum width, the exact template alone: the live view drew a good template,
+  then the page said "Der blev ikke fundet brugbare snit". The page (`PaintPage.svelte` `toResult`)
+  converted every answer through `convertValidatedCutGeometry`, Tegn's own crossing and spacing checks
+  at its fixed 1.5% of the square and with no tolerance, and showed a `CutGeometryError` as no
+  solution. So the engine's never-empty-handed near misses (2026-11-01) never reached the page when
+  their cuts cross or come close, nor did templates the export takes by the 0.1 mm tolerance
+  (inter-slit 1.4 to 1.5 mm on a 100 mm square). Now a template failing those checks is converted as
+  it is and shown with the read template's note (too close for Tegn; open it there to see where).
+  Reproduced on a mask rebuilt from the screenshot (`tmp/e2e/even/userstar.mjs`: the engine, then the
+  page's conversion, in Node) and checked on juleflet.dk. Whether Tegn should tolerate the same 0.1 mm
+  is the user's to decide.
+- **A repair pass after the count stage (2026-11-03): no template gained, not shipped** (branch
+  `wip/exact-repair`). A drawing the count stage leaves breaking rules is solved again with every
+  column held at its value except those near where it breaks them: within 4 then 8 mm, then whole faces
+  and rings of faces around them, the count free to rise there (`exact/repair.js`). On jul-tern it
+  takes the count stage's penalty from 47 to 3 in 2 s, but those 3 are closed slit loops (`cycle` rows),
+  which no neighbourhood small enough to solve in time mends; jul-2026's traced outline starts at 282
+  (273 of them connectivity rows) and stays there. On the 41 test pictures without a template from
+  both searches and 15 with one (`nudge/repair-ab.sh`, off and on side by side): ladder alone 23 and
+  23 of 56 (median 8.6 s against 9.8 s), today's search alone 18 and 18; two near misses lose a kind of
+  failure. The penalty that is left is topological, not local.
+- **The three photographs without a template** are the photo step's, not the search's:
+  danish-red-gold's mask splits one patterned paper into both colours; danish-tree-group-top's crop
+  takes two overlapping hearts; gathering-hanging-trio-middle's fitted template keeps every cutting rule
+  and the paper but loses two 8 and 10 mm² specks (a red island 76% kept but no longer enclosed, one
+  gone), noise in the photograph that the features check counts as the picture's (at least 3 mm²
+  with a 0.5 mm core). Tuning the photo step on test pictures would only tune it to them.
+
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);
