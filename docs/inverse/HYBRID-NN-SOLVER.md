@@ -805,6 +805,10 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     what jul-tern needs, and a floor on the count is not it: raised by 4 or 7 segments (the start, at the
     bound, dropped) the solver finds no drawing at all, aligned or not. It needs a start above the
     bound, as hjerte-i-hjerte-i-hjerte needs one at all.
+    The ladder's nearest drawing as today's start (`exactStart` given it as the template, in the copy):
+    jul-tern, jul-2026 and mor-far as without it (18 segments rules broken; a region lost; none).
+    In production `exactSearch` is always given no template, so `exactStart`'s reading and repair of
+    one go unused; a better source of starts than the ladder's broken drawings is still to be found.
 
 - **How often the answer is proven best** (syn1v's ladder alone, the 127 test pictures, 2026-11-02): of
   its 93 templates passing every check, 75 have exactly as many hidden segments as the lower bound on
