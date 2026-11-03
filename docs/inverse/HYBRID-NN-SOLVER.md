@@ -794,6 +794,15 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     paper rule but lose a region of the picture (the features check; jul-2026 8% off). There the search
     is short, not the rules: jul-tern's designer template keeps our rules with the 0.1 mm tolerance.
     The other misses are 24 of the 42 photographs.
+    jul-tern: the designer's cuts on our outline miss the model's own clearances by 0.001 mm (2.504
+    against 2.505, 1.499 against 1.5), so the model counts them broken though the export's verdict
+    takes them. With the model's clearances lowered by half the verdict's tolerance (0.05 mm, in a copy
+    of the engine) they keep every rule at 25 hidden segments: a template exists. Neither search finds
+    it: today's settles at the count's bound, 18, where every drawing breaks rules (3 minutes too).
+    Lowered on all 127 test pictures (`nudge/tol.sh`): ladder 94 → 92 (venus,
+    vissevasse-arranged-r3c2 lost, a return's clearance gone after smoothing), today's search 89 → 89,
+    either 97 → 95: not shipped. A search that trades segments for rules beyond the count's bound is
+    what jul-tern needs.
 
 - **How often the answer is proven best** (syn1v's ladder alone, the 127 test pictures, 2026-11-02): of
   its 93 templates passing every check, 75 have exactly as many hidden segments as the lower bound on
