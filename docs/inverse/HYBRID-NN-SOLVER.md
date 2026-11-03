@@ -906,7 +906,13 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   with its tolerances raised from 1 to about 4 mm), so `exactStart` falls back to the topological
   witness and the search ends as without it (`FITTER_START=1`, with and without `MODEL_TOLERANCE`). A
   start from the fitter needs a reader for templates whose hidden runs meet the outline elsewhere than
-  its switches allow, not looser tolerances.
+  its switches allow, not looser tolerances. Why it does not fit: the reader's switch choice
+  (`chooseSwitches`) is infeasible, its only hard rows being one place per hidden run's end and an even
+  number of switches on each closed edge, so the fitter's 68 ends switch an odd number of times on some
+  closed edge. With that parity a penalty (in the `filt` copy, `SOFT_LOOP`) the reading has 34 chords,
+  but searched from directly it gives no drawing in 55 s (its papers inconsistent), and as `exactStart`'s
+  hint the topological search repairing it runs out of time: the search then starts from nothing and
+  ends 13% from the picture.
 - **The three photographs without a template** are the photo step's, not the search's:
   danish-red-gold's mask splits one patterned paper into both colours; danish-tree-group-top's crop
   takes two overlapping hearts; gathering-hanging-trio-middle's fitted template keeps every cutting rule
