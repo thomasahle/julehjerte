@@ -819,6 +819,11 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   photographs, two of them cropped or split wrongly by the photo step (danish-red-gold,
   danish-tree-group-top) and gathering-hanging-trio-middle. Where the notes below say a heart has no
   template, they mean no exact one.
+  jul-2026 has one all the same: the designer's cuts read onto our traced outline break only a
+  clearance by 0.025 mm (2.480 against 2.505), which the verdict tolerates (13 hidden segments; woven,
+  the designer template is 0.08% from the mask). As on jul-tern, the model's own clearances count that
+  hair as broken (penalty 1) and the searches end far from it; what the text hearts need is a search
+  that reaches such templates, not looser rules.
 
 - **How often the answer is proven best** (syn1v's ladder alone, the 127 test pictures, 2026-11-02): of
   its 93 templates passing every check, 75 have exactly as many hidden segments as the lower bound on
