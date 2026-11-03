@@ -214,6 +214,53 @@ few units longer for their wider necks. A size took 13–21% longer on average
 (2.0 s → 2.4 s on three strips, 3.3 s → 4.0 s on five, 3.1 s → 3.5 s on nine),
 the median 4–6%.
 
+A heart whose lobes share a template (`lobesShareTemplate`) and a tip of
+whose picture lies on its middle (the sheet's diagonal: the star's top tip)
+is cut down that tip by both papers, each paper's point there an 18° needle
+of a 36° tip. No such heart is without them, so `cutMeasures` counts those
+needles (`middleNeedles`, within `MIDDLE_NEEDLE` of the middle) as sharp tips
+only, not as places the paper may tear: counted so, the star's symmetric
+solves on five strips at 87–100% lost to a recipe with two templates whose
+hidden cuts zigzag across the circle, and the page drew that (the start
+heart at 100%). Their paper is left out of the neck search (`thinnestNeck`'s
+`spared`, 8 mm about them, where an 18° point is still under 2.5 mm wide), and
+tidying looks at a heart's three narrowest necks (`necksOf`, each next found
+with the paper about those before left out), compared narrowest first and
+its moves tried by the narrowest first: around a star's tip several are thin.
+A wider neck may cost two hidden turns more (`NECK_TURNS`): the star at 100%,
+its paper by the top tip 1.18 mm → 2.84 mm wide, a sharp tip fewer, its cuts
+1.2% longer. Tidying also lays a shared piece whose ends lie on the board
+circle along it (`followArc`), where the picture shows none of the circle
+there, cuts no sharper, busier or narrower and at most 3% longer: a hidden
+cut is not quite invisible, and looks best along a line the picture shows
+elsewhere.
+
+A pair's recipes were chosen once; a better one found later for some of its
+motif sizes takes no other's place. `pairs.mjs` with `EXTRA=1` keeps a pair's
+shipped recipes and adds, after them, up to `EXTRA_MOST` (2) candidates that
+make its best heart better (`betterCuts`) at the most motif sizes, and each
+motif's own best solve where that makes one of its sizes better (the page
+draws a motif's own solves first for it, so one helping the star alone loses
+to others helping several motifs otherwise), screened only where the shipped
+recipes draw two templates or paper that may tear at a middle size. They are
+marked `extra`: the page draws a pair's first recipes as before, until
+`TOPOLOGY_TRIES` of them draw, and then up to as many extra ones
+(`storedDrawings`), and refines the best of the first and, where drawn it
+already tears less or shares a template the other does not, the best of the
+extras, keeping the firmest (`fromTopology`): the heart it drew before stays
+one to choose from. On the featured motifs, 257 recipes → 447 (186 extra; 208
+pairs with recipes → 212), 524 KB → 775 KB gzipped. The star on five strips
+at 100%: two templates, 29 hidden turns → one template, 26, its paper as
+firm; 87%: one place the paper may tear, two templates, 58 turns → one
+template, 26. Against the page before, on every 6th size of the featured
+motifs: places the paper may tear 437 → 424, 470 → 426, 2127 → 2043 and
+3944 → 3901 on three, five, seven and nine strips, thinnest necks wider on
+25, 39, 39 and 29 hearts and narrower on 0, 2, 1 and 2, none holding at a
+wider print; the hearts ranked worse are as firm with a turn or two more for
+wider necks, or clean where they were hard to cut, with paper that may tear
+in a place or more (the horse and unicorn on seven strips at 45%, the rabbit
+on nine at 51%: hard to cut with 2 → clean with 9).
+
 A recipe whose places lie in mirror pairs across the heart's middle (the
 sheet's diagonal; a solve tied so, its places at the corners nearest each
 other across it) keeps them in mirror pairs on any motif that is its own
@@ -406,6 +453,7 @@ to draw (finished hard to cut, see `harderStored`).
 
     node scripts/generator/pairs.mjs <motif>...      # every board, up to three recipes a pair
     ADD=1 node scripts/generator/pairs.mjs <motif>... # only for the pairs the page has none for
+    EXTRA=1 ADD=1 node scripts/generator/pairs.mjs <motif>... # and extra recipes for those it has
     node scripts/generator/pair-queue.mjs <unsolved.json> <solves>... # the next round's solves
 
 ## Making recipes

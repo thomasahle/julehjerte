@@ -454,8 +454,9 @@ function finishedStored(request: GeneratorRequest, construction: ReturnType<type
 }
 
 /** See `storedHearts`. Those whose cuts a recipe placed but that do not finish
- * clean (paper too narrow) go to `unfinished` (see `harderStored`). */
-function storedDrawings(request: GeneratorRequest, recipes = request.recipes, topology = false, count = 1, known: Known = {}, unfinished?: Construction[]): Drawing[] {
+ * clean (paper too narrow) go to `unfinished` (see `harderStored`). With
+ * `ownOnly`, only the recipes solved on this very motif. */
+function storedDrawings(request: GeneratorRequest, recipes = request.recipes, topology = false, count = 1, known: Known = {}, unfinished?: Construction[], ownOnly = false): Drawing[] {
 	if (request.mode !== 'figure' || !recipes?.length) return [];
 	// The board the generator builds: the board circle's five strips where the visitor chose none.
 	const strips = request.style === 'board' ? request.board ?? BOARD_STRIPS.board.initial : request.board;
@@ -470,7 +471,10 @@ function storedDrawings(request: GeneratorRequest, recipes = request.recipes, to
 		const board = shown.rings.slice(0, shown.motif), nesting = nestingOf(shown.rings.slice(shown.motif));
 		const framed = recipes.filter((r): r is TopologyRecipe => isTopology(r) && !!r.frame && r.style === request.style && r.motif === nesting);
 		const blobs = framed.length ? blobsOf(board).sig : undefined;
-		const carried = framed.filter(r => r.frame!.blobs === blobs).map(r => carryTopology(r, r.frame!, board)).filter((r): r is TopologyRecipe => !!r);
+		const carried = framed.filter(r => r.frame!.blobs === blobs).map(r => {
+			const c = carryTopology(r, r.frame!, board);
+			return c && r.extra ? { ...c, extra: true } : c;
+		}).filter((r): r is TopologyRecipe => !!r);
 		const mine = [...listed.filter(isTopology), ...carried];
 		if (!mine.length) return [];
 		const o = boardOutline(board);
@@ -480,7 +484,7 @@ function storedDrawings(request: GeneratorRequest, recipes = request.recipes, to
 		const step = Math.round((request.scale ?? .7) * 100);
 		const own = mine.filter(recipe => motifFit(recipe, shown) < SOLVED_ON)
 			.sort((a, b) => Number(!a.solved?.includes(step)) - Number(!b.solved?.includes(step)));
-		const ordered = [...own, ...mine.filter(recipe => !own.includes(recipe))];
+		const ordered = ownOnly ? own : [...own, ...mine.filter(recipe => !own.includes(recipe))];
 		for (const recipe of ordered) constructions.push({ construct: () => topologyConstruction(recipe, shown, o, false), of: recipe, straight: true });
 		// Those going round the motif share one allowance of work (FALLBACK_WORK).
 		const work = { left: FALLBACK_WORK };
@@ -489,14 +493,19 @@ function storedDrawings(request: GeneratorRequest, recipes = request.recipes, to
 		const shown = picture(request, recipe.known), o = shown?.rings.length ? outlineFor(recipe, shown) : undefined;
 		return o && recipeConstruction(recipe, o);
 	} });
-	for (const { construct, of, straight } of constructions) {
+	// A pair's extra recipes drawn besides the others, `count` of those first
+	// as without them, then up to as many of these.
+	const firsts = constructions.filter(c => !c.of?.extra), extras = constructions.filter(c => c.of?.extra);
+	let drawnFirst = 0;
+	for (const { construct, of, straight } of [...firsts, ...extras]) {
+		if (of?.extra ? hearts.length - drawnFirst >= count : drawnFirst >= count) continue;
 		let construction: ReturnType<typeof construct>;
 		try {
 			construction = construct();
 			if (!construction) continue;
 			hearts.push({ heart: finishedStored(request, construction, strips), of, straight: !!straight, places: construction.places, construction });
 			if (of) drew.add(of);
-			if (hearts.length >= count) break;
+			if (!of?.extra) drawnFirst++;
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			if (construction && unfinished) unfinished.push({ ...construction, ...request.style === 'board' ? { domain: [SHEET] } : {} });
@@ -550,13 +559,31 @@ export const knownOf = (own: GeneratorResult, asked: number): Known => ({
  * `own` does. */
 export function fromTopology(request: GeneratorRequest, own?: GeneratorResult): GeneratorResult | undefined {
 	const known = own ? knownOf(own, request.scale ?? .7) : {}, unfinished: Construction[] = [];
-	const drawn = storedDrawings(request, request.recipes, true, TOPOLOGY_TRIES, known, unfinished).filter(({ heart }) => !heart.hardToCut);
+	const recipes = request.recipes ?? [], usual = recipes.filter(r => !(isTopology(r) && r.extra)), extras = recipes.filter(r => isTopology(r) && r.extra);
+	const firsts = storedDrawings(request, usual, true, TOPOLOGY_TRIES, known, unfinished).filter(({ heart }) => !heart.hardToCut);
+	const shown = picture(spurless(request), known), measure = (heart: GeneratorResult) => cutMeasures(heart.design, shown!.rings);
+	// A pair's extra recipes, each a motif's own solve (see `pairs.mjs`), for that motif alone, where its others'
+	// best heart tears or needs two templates.
+	const wanting = shown && extras.length && !firsts.some(d => { const m = measure(d.heart); return !m[0] && !m[1]; });
+	const drawn = [...firsts, ...wanting ? storedDrawings(request, extras, true, TOPOLOGY_TRIES, known, undefined, true).filter(({ heart }) => !heart.hardToCut) : []];
 	if (!drawn.length) return own?.hardToCut ? harderStored(request, own, unfinished, known) : undefined;
-	const shown = picture(spurless(request), known)!, rings = shown.rings, measure = (heart: GeneratorResult) => cutMeasures(heart.design, rings);
-	const first = drawn.map(d => ({ ...d, m: measure(d.heart) })).reduce((a, b) => betterCuts(b.m, a.m) ? b : a);
+	// The best heart drawn (as its cuts are, before any refining) refined, by its
+	// hidden cuts' ends, then its construction's cuts; and where a pair's extra
+	// recipes are drawn, the best of theirs too: an extra one
+	// looking better drawn may refine less far than one of the pair's first
+	// (the candy on five strips at 81%, holding at 90 mm from the first, 170 mm
+	// from an extra), so the page's heart without them stays one to choose from.
 	// Refining compares hearts before their connections are bent, which may
 	// rank them otherwise: the refined heart is kept only if still better bent.
-	const ended = endsRefined(request, first, shown), unbent = [...new Set([first.heart, ended.heart, refined(request, ended, shown).heart])];
+	const measured = drawn.map(d => ({ ...d, m: measure(d.heart) }));
+	const bestOf = (list: typeof measured) => list.length ? [list.reduce((a, b) => betterCuts(b.m, a.m) ? b : a)] : [];
+	// The extra one only where drawn it already tears less or shares a template the other does not: refining costs seconds.
+	const [first] = bestOf(measured.filter(d => !d.of?.extra)), [extra] = bestOf(measured.filter(d => d.of?.extra));
+	const promising = extra && (!first || extra.m[0] < first.m[0] || (extra.m[0] === first.m[0] && extra.m[1] < first.m[1]));
+	const unbent = [...new Set([...first ? [first] : [], ...promising ? [extra!] : []].flatMap(first => {
+		const ended = endsRefined(request, first, shown!);
+		return [first.heart, ended.heart, refined(request, ended, shown!).heart];
+	}))];
 	const heart = unbent.map(heart => improveSharedConnections(heart, true)).reduce((a, b) => firmerCuts(b.design, measure(b), a.design, measure(a)) ? b : a);
 	if (!own) return heart;
 	const told = { ...heart, scale: own.scale, enclosed: own.enclosed, whole: own.whole, board: own.board ?? heart.board };
@@ -596,7 +623,7 @@ const ENDS_DRAWS = 12, ENDS_STEPS = [1.5, -1.5, 3, -3];
  * at most since its last firmer one, and in all, and in how many places at
  * most its paper may tear for that; then tidying it, since its last tidier
  * one, and in all (see `refined`). */
-const REFINE_DRAWS = 12, REFINE_MOST = 32, REFINE_FEW = 5, TIDY_DRAWS = 6, TIDY_MOST = 20;
+const REFINE_DRAWS = 12, REFINE_MOST = 32, REFINE_FEW = 5, TIDY_DRAWS = 6, TIDY_MOST = 16;
 /** The steps, in the sheet's units along its outline, a switch slides in
  * refining, and how near where its paper may tear (a weak piece, or the neck
  * it hangs by) a cut must be to be moved, here and in `endsRefined`. */
@@ -901,18 +928,24 @@ function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest,
 			continue;
 		}
 		const near = firm ? weakPoints(best.heart.design, true) : neckPoints(best.heart.design), shared = !best.m[1];
-		const reach = (p: Point) => Math.min(...near.map(w => Math.hypot(p[0] - w[0], p[1] - w[1])));
+		// Tidying, by the narrowest neck first, then the next: each move ranked by the first of them it is near.
+		const reach = (p: Point) => {
+			if (firm) return Math.min(...near.map(w => Math.hypot(p[0] - w[0], p[1] - w[1])));
+			const k = near.findIndex(w => Math.hypot(p[0] - w[0], p[1] - w[1]) < REFINE_NEAR);
+			return k < 0 ? Infinity : k * REFINE_NEAR + Math.hypot(p[0] - near[k]![0], p[1] - near[k]![1]);
+		};
 		// The switches by the necks slid, nearest first; then the shared cuts there bent (a bend made
 		// at a straight piece's middle, a bend it has moved). Tidying first straightens the sharpest bends.
 		const slides: { move: CutMove; d: number }[] = [], bends: { move: CutMove; d: number }[] = [], straight: { move: CutMove; d: number }[] = [];
 		for (const at of switchesOf(best.edges)) {
 			const d = reach(at);
-			if (d < REFINE_NEAR) for (const by of REFINE_STEPS) slides.push({ move: { kind: 'slide', at, by }, d });
+			if (firm ? d < REFINE_NEAR : d < Infinity) for (const by of REFINE_STEPS) slides.push({ move: { kind: 'slide', at, by }, d });
 		}
 		const pieces = sharedPieces(best.edges), ends = pieces.flat().map(p => p.join(',')), isBend = (p: Point) => ends.indexOf(p.join(',')) !== ends.lastIndexOf(p.join(','));
 		for (const [a, b] of pieces) {
-			const d = Math.min(...near.map(w => pointDistance(w, a, b)));
-			if (d >= REFINE_NEAR) continue;
+			const k = firm ? 0 : near.findIndex(w => pointDistance(w, a, b) < REFINE_NEAR);
+			const d = firm ? Math.min(...near.map(w => pointDistance(w, a, b))) : k < 0 ? Infinity : k * REFINE_NEAR + pointDistance(near[k]!, a, b);
+			if (firm ? d >= REFINE_NEAR : k < 0) continue;
 			for (const by of REFINE_BENDS) {
 				if (isBend(a) || !isBend(b)) bends.push({ move: { kind: 'bend', from: a, to: b, by }, d });
 				if (isBend(b)) bends.push({ move: { kind: 'bend', from: b, to: a, by }, d });

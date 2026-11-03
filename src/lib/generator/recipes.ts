@@ -117,6 +117,9 @@ export type TopologyRecipe = {
 	 * see `carryTopology`), where it is drawn at every size on every board,
 	 * its `steps` and `strips` aside. */
 	frame?: OutlineFrame;
+	/** A recipe its pair took after its first (pairs.mjs EXTRA): drawn besides
+	 * them, not in their place (see `storedDrawings`). */
+	extra?: boolean;
 	A: TopologyPiece[][];
 	B: TopologyPiece[][];
 };

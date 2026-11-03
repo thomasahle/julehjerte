@@ -1,6 +1,9 @@
 import { expect, it } from 'vitest';
 import type { Vec, BezierSegment, Finger } from '$lib/types/heart';
-import { cutTipCounts, cutTipPoints, cellTipCounts, fewerCutTips } from './cutQuality';
+import { cutTipCounts, cutTipPoints, cellTipCounts, fewerCutTips, cutMeasures, middleNeedles } from './cutQuality';
+import type { HeartDesign } from '$lib/types/heart';
+import type { Ring } from './geometry';
+import star from './fixtures/star-board-5-100.json';
 import type { Edge, Point } from './geometry';
 
 function line(p0: Vec, p3: Vec): BezierSegment {
@@ -58,3 +61,16 @@ it('includes both sheet continuations where a shared letter connection meets the
 		expect(cellTipCounts(moved, gates)).toEqual([2, 2]);
 	}
 });
+
+it('counts the needles a heart\'s symmetry cuts on its middle as sharp tips, not as paper that may tear', () => {
+	// The star on five strips at 100% with one template for both lobes: both
+	// papers cut its top tip, on the heart's middle, down its middle, an 18°
+	// point of each, which no heart sharing a template is without.
+	const design = star.design as unknown as HeartDesign, rings = star.rings as Ring[];
+	expect(middleNeedles(design)).toHaveLength(2);
+	expect(cutTipCounts(design)[0]).toBe(2);
+	const [torn, templates, sharp] = cutMeasures(design, rings);
+	expect([torn, templates]).toEqual([0, 0]);
+	expect(sharp).toBe(cutTipCounts(design)[1]);
+});
+

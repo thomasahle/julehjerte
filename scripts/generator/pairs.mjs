@@ -231,6 +231,42 @@ try {
 			}
 			return { i, won, weak, turns, drawn };
 		};
+		const kept = shipped.get(pair);
+		if (kept) {
+			// EXTRA: the shipped recipes kept, and up to EXTRA_MOST more after them, each next one where it makes the
+			// best heart better at the most sizes, screened by that at the middle sizes, not by beating the
+			// generator's. The page draws a pair's first recipes until TRIES of them draw (TOPOLOGY_TRIES in
+			// generate.ts), then up to as many extra ones (`extra`, see `storedDrawings`), refining each.
+			const TRIES = 3, most = Number(process.env.EXTRA_MOST ?? 2);
+			const bestOf = (picks, r) => { const firsts = picks.filter(i => kept.includes(i)).map(i => draw(i, r)).filter(Boolean).slice(0, TRIES), extras = picks.filter(i => !kept.includes(i) && candidates[i].from.startsWith(`${r.id} `)).map(i => draw(i, r)).filter(Boolean).slice(0, TRIES);
+				return [...firsts, ...extras].reduce((a, b) => !a || betterCuts(b, a) ? b : a, null); };
+			const picks = [...kept], added = [];
+			const gainAt = (i, among) => among.filter(r => { const was = bestOf(picks, r), now = bestOf([...picks, i], r); return now && now !== was && wins(now, r) && (!was || betterCuts(now, was)); }).length;
+			// Only where the shipped draw two templates or paper that may tear at a middle size is it worth screening.
+			const wanting = middles.some(r => { const m = bestOf(picks, r); return m && (m[0] || m[1]); });
+			const shortlist = wanting ? list.map(i => ({ i, g: gainAt(i, middles) })).filter(x => x.g).sort((a, b) => b.g - a.g).slice(0, keep) : [];
+			while (added.length < most) {
+				const gain = i => gainAt(i, mine);
+				const next = shortlist.map(s => ({ i: s.i, g: gain(s.i) })).filter(x => !picks.includes(x.i)).reduce((a, b) => !a || b.g > a.g ? b : a, null);
+				if (!next?.g) break;
+				picks.push(next.i);
+				added.push(next);
+			}
+			// And each motif its own solve, the best for its own sizes where that makes one better: the page draws a
+			// motif's own solves first for it (see `storedDrawings`), as no other of the pair's gains (the star on five
+			// strips at 87-100%, one template where the others draw two).
+			if (wanting) for (const id of new Set(mine.map(r => r.id))) {
+				const its = mine.filter(r => r.id === id), own = list.filter(i => candidates[i].from.startsWith(`${id} `) && !picks.includes(i));
+				const next = own.map(i => ({ i, g: gainAt(i, its) })).reduce((a, b) => !a || b.g > a.g ? b : a, null);
+				if (!next?.g) continue;
+				picks.push(next.i);
+				added.push(next);
+			}
+			await save();
+			if (added.length) chosen.set(pair, { picks: added.map(x => ({ i: x.i, extra: true })), won: 0 });
+			console.log(`  pair ${n}/${rowsOf.size} (${mine.length} motif sizes, ${list.length} candidates): ${added.length ? added.map(x => `${candidates[x.i].from}${candidates[x.i].recipe.held ? ' held' : ''} better at ${x.g}`).join(' + ') : 'shipped kept alone'} (${((performance.now() - started) / 1000).toFixed(0)} s)`);
+			continue;
+		}
 		const ties = !!process.env.TIES, order = (a, b) => b.won - a.won || (ties ? b.drawn - a.drawn : 0) || a.weak - b.weak || a.turns - b.turns;
 		const screened = list.map(i => score(i, middles)).sort(order).slice(0, keep).filter(s => s.won || ties && s.drawn);
 		const judged = screened.map(s => score(s.i, mine)).sort(order);
@@ -244,29 +280,6 @@ try {
 			}
 			return { won, weak };
 		};
-		const kept = shipped.get(pair);
-		if (kept) {
-			// EXTRA: the shipped recipes kept, and up to EXTRA_MOST more after them, each next one where it makes the
-			// best heart better at the most sizes, screened by that at the middle sizes, not by beating the
-			// generator's. The page draws a pair's recipes in order until TRIES of them draw (TOPOLOGY_TRIES in
-			// generate.ts): one after them shows only where fewer of those draw.
-			const TRIES = 3, most = Number(process.env.EXTRA_MOST ?? 2);
-			const bestOf = (picks, r) => picks.map(i => draw(i, r)).filter(Boolean).slice(0, TRIES).reduce((a, b) => !a || betterCuts(b, a) ? b : a, null);
-			const picks = [...kept], added = [];
-			const gainAt = (i, among) => among.filter(r => { const was = bestOf(picks, r), now = bestOf([...picks, i], r); return now && now !== was && wins(now, r) && (!was || betterCuts(now, was)); }).length;
-			const shortlist = list.map(i => ({ i, g: gainAt(i, middles) })).filter(x => x.g).sort((a, b) => b.g - a.g).slice(0, keep);
-			while (added.length < most) {
-				const gain = i => gainAt(i, mine);
-				const next = shortlist.map(s => ({ i: s.i, g: gain(s.i) })).filter(x => !picks.includes(x.i)).reduce((a, b) => !a || b.g > a.g ? b : a, null);
-				if (!next?.g) break;
-				picks.push(next.i);
-				added.push(next);
-			}
-			await save();
-			if (added.length) chosen.set(pair, { picks: added.map(x => ({ i: x.i })), won: 0 });
-			console.log(`  pair ${n}/${rowsOf.size} (${mine.length} motif sizes, ${list.length} candidates): ${added.length ? added.map(x => `${candidates[x.i].from}${candidates[x.i].recipe.held ? ' held' : ''} better at ${x.g}`).join(' + ') : 'shipped kept alone'} (${((performance.now() - started) / 1000).toFixed(0)} s)`);
-			continue;
-		}
 		const picks = judged[0]?.won || ties && judged[0]?.drawn ? [judged[0]] : [];
 		for (let now = together(picks); picks.length && picks.length < perPair;) {
 			const next = judged.filter(s => !picks.includes(s)).map(s => ({ s, t: together([...picks, s]) }))
@@ -288,7 +301,7 @@ try {
 	const rounded = frame => frame && JSON.parse(JSON.stringify(frame, (_, v) => typeof v === 'number' ? +v.toFixed(6) : v));
 	const recipes = [...chosen.values()].flatMap(({ picks }) => picks.map(pick => {
 		const c = candidates[pick.i], { solved: _solved, ...recipe } = c.recipe;
-		return { ...recipe, style: 'board', strips: c.strips, steps: [], frame: rounded(outlineFrame(c.board)) };
+		return { ...recipe, style: 'board', strips: c.strips, steps: [], frame: rounded(outlineFrame(c.board)), ...pick.extra ? { extra: true } : {} };
 	})).filter(r => r.frame);
 	recipes.unshift(...base);
 	const won = [...chosen.values()].reduce((s, b) => s + b.won, 0);
