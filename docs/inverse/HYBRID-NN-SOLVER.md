@@ -774,6 +774,17 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     gallery mask (0.26% and 0.04% off, `even/weavevsmask.mjs`), so mask and template are the same
     picture: its designer did not keep our rules either, and a template keeping them may need the
     picture moved. Neither search draws anything there, even with the symmetry off.
+    Why (2026-11-03, a filter relaxing one section of the model's rows at a time before the first
+    solve, 8 s each, in a copy of the engine: `tmp/e2e/even/filt`, `SECTION_FILTER=1`):
+    davidsstjerne-circ's model on its traced outline, its symmetry tied (antiTranspose and rotate180,
+    though the outline is not quite symmetric under the first), is proven infeasible, and stays so with
+    any one section relaxed but the ties: the symmetric search cannot succeed there. Without the ties
+    the solver draws, but only drawings breaking many rules (as the designer's cuts do on our outline,
+    penalty 27). hjerte-i-hjerte-i-hjerte has no symmetry: its model is not proven infeasible, the
+    solver just finds no point keeping its hard rows (80 s), and with the flows or the crossings
+    relaxed it finds one at once. One exists: the designer's cuts read onto our outline keep every
+    hard row (penalty 20 from the lazily checked rules). There a better start would help, not looser
+    rules; whether any start leads to a template keeping every rule is not known.
 
 - **How often the answer is proven best** (syn1v's ladder alone, the 127 test pictures, 2026-11-02): of
   its 93 templates passing every check, 75 have exactly as many hidden segments as the lower bound on
