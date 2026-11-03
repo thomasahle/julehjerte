@@ -835,8 +835,9 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   while cuts bent as much elsewhere have straight candidates between their ends. One-bend candidates
   (the middle pushed 0.5 to 1.5 mm either way where the straight one fails, `BENT=1` in the copy) add
   2,552 to the 5,146 straight ones on jul-tern and change nothing (18 segments, rules broken); the
-  pruning that keeps each point's 8 cheapest probably drops them (a bend costs). Untried: keeping them
-  through the pruning, then the 127-picture comparison.
+  pruning that keeps each point's 8 cheapest might drop them, but kept through it (`BENT_KEEP=1`) they
+  change nothing either: the solver still settles at 18 segments, rules broken. With the candidates
+  there, it does not find a drawing keeping the rules above the count's bound in its time.
 
 - **How often the answer is proven best** (syn1v's ladder alone, the 127 test pictures, 2026-11-02): of
   its 93 templates passing every check, 75 have exactly as many hidden segments as the lower bound on
