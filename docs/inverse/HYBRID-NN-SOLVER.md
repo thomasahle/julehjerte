@@ -916,7 +916,7 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   On all 26 test pictures where only the fitter has a template (`nudge/fitstart.sh`, `FITTER_START=1`,
   today's search alone): no exact template. The fitter's template is the start on none of them, read
   and then repaired on 2 (vissevasse-arranged-r2c2 and r3c3, both still breaking rules); the others
-  start from the grid or topology (8), find no start in time (3) or end before a start is chosen (13,
+  start from the grid or topology (4), find no start in time (3) or end before a start is chosen (17,
   photographs and vissevasse mostly, whose traced outline gives the search nothing to start on).
 - **The three photographs without a template** are the photo step's, not the search's:
   danish-red-gold's mask splits one patterned paper into both colours; danish-tree-group-top's crop
