@@ -80,6 +80,30 @@ export function holdingWidth(design: HeartDesign,
 	return holds * stepMm <= maxMm ? holds * stepMm : null;
 }
 
+/**
+ * The narrowest neck, in millimetres on templates printed `widthMm` wide, any
+ * piece of paper hangs by from the ear (paper a tenth of a millimetre wider
+ * than its neck, as `paperFaults` sees a piece; bulges too), on either
+ * template: how far paper that holds is from tearing, and how near paper that
+ * tears is to holding. Infinity where nothing hangs by a neck. Where `at` is
+ * given, the neck's place in the design's coordinates is noted there.
+ */
+export function thinnestNeck(design: HeartDesign, options: PaperOptions & { at?: WeakPiece[] } = {}): number {
+	const rect = inferOverlapRect(design.fingers, design.gridSize);
+	const { widthMm = PRINT_WIDTH_MM, neckMm = PAPER_NECK_MM, pxPerMm = 5 } = options;
+	let least = Infinity, place: WeakPiece | undefined;
+	for (const lobe of ['left', 'right'] as const) {
+		const grid = templateGrid(design.fingers.filter((f) => f.lobe === lobe), lobe, rect, widthMm, neckMm, pxPerMm);
+		const { mm, from } = neckOn(grid, pxPerMm);
+		if (mm >= least) continue;
+		least = mm;
+		const i = options.at ? neckFrom(grid, from) : -1;
+		place = i >= 0 ? cellAt(grid, lobe, rect, i) : undefined;
+	}
+	if (place) options.at!.push(place);
+	return least;
+}
+
 /** What the heart's paper is like printed `widthMm` wide, and the narrowest width up to `maxMm` where it would hold. */
 export type PaperReport = { widthMm: number; faults: PaperFaults; holdsMm: number | null };
 
@@ -106,16 +130,13 @@ export function papersAt(reports: readonly PaperReport[]): { widthMm: number; lo
 function templateFaults(fingers: Finger[], lobe: LobeId,
 	rect: { left: number; top: number; width: number; height: number }, options: PaperOptions): PaperFaults {
 	const { widthMm = PRINT_WIDTH_MM, neckMm = PAPER_NECK_MM, bulgeMm = 0.85 * PAPER_NECK_MM, pxPerMm = 5 } = options;
-	const grid = templateGrid(fingers, lobe, rect, widthMm, neckMm, pxPerMm), { W, H, cut, ear, px } = grid, n = W * H;
+	const grid = templateGrid(fingers, lobe, rect, widthMm, neckMm, pxPerMm), { W, H, cut } = grid, n = W * H;
 	// Paper: what the knife left. Held: joined to the ear's band, the top row.
 	const paper = new Uint8Array(n);
 	for (let i = 0; i < n; i++) paper[i] = cut[i] ? 0 : 1;
 	const loose = components(paper, W, H).list.filter((c) => !c.top && c.size > pxPerMm * pxPerMm / 4).length;
 	const { weakPieces, neck, widestAt } = weakOn(grid, neckMm, bulgeMm, pxPerMm), weak = weakPieces.length;
-	const at = (i: number): WeakPiece => {
-		const u = (i % W - .5) / px, v = (Math.floor(i / W) - ear + .5) / px;
-		return lobe === 'left' ? { lobe, x: v + rect.left, y: u + rect.top } : { lobe, x: u + rect.left, y: v + rect.top };
-	};
+	const at = (i: number) => cellAt(grid, lobe, rect, i);
 	if (options.where) for (const piece of weakPieces) options.where.push(at(widestAt[neck.labels[piece.first]!]!));
 	if (options.necks) for (const piece of weakPieces) {
 		const i = neckFrom(grid, widestAt[neck.labels[piece.first]!]!);
@@ -207,6 +228,44 @@ function neckFrom(grid: ReturnType<typeof templateGrid>, from: number): number {
 		for (const j of neighbours(i)) if (j >= 0 && back[j] === -2 && width(j) >= narrowest) { back[j] = i; queue.push(j); }
 	}
 	return -1;
+}
+
+/** A template grid's cell (see `templateGrid`) in the design's coordinates. */
+function cellAt(grid: ReturnType<typeof templateGrid>, lobe: LobeId, rect: { left: number; top: number }, i: number): WeakPiece {
+	const { W, ear, px } = grid, u = (i % W - .5) / px, v = (Math.floor(i / W) - ear + .5) / px;
+	return lobe === 'left' ? { lobe, x: v + rect.left, y: u + rect.top } : { lobe, x: u + rect.left, y: v + rect.top };
+}
+
+/** The narrowest neck a template's paper hangs by (see `thinnestNeck`), in
+ * millimetres, and a cell of the piece it holds: every cell's widest way to
+ * the ear's band, found as `neckFrom` finds one cell's, from the band down,
+ * the widest ways first. */
+function neckOn(grid: ReturnType<typeof templateGrid>, pxPerMm: number): { mm: number; from: number } {
+	const { W, dist } = grid, n = dist.length, width = (i: number) => Math.round(dist[i]!);
+	// As wide as twice its distance from the cuts, and half a cell's diagonal each side (see `weakOn`).
+	const mm = (w: number) => 2 * (Math.sqrt(w) + Math.SQRT1_2) / pxPerMm;
+	let most = 0;
+	for (let i = 0; i < W; i++) most = Math.max(most, width(i));
+	const reached = new Int32Array(n).fill(-1), buckets: number[][] = Array.from({ length: most + 1 }, () => []);
+	for (let i = 0; i < W; i++) if (dist[i]) { reached[i] = width(i); buckets[width(i)]!.push(i); }
+	let least = { mm: Infinity, from: -1 };
+	for (let key = most; key > 0; key--) {
+		const bucket = buckets[key]!;
+		while (bucket.length) {
+			const i = bucket.pop()!;
+			if (reached[i] !== key) continue;
+			// Paper wider than the way it is held by: a piece, hanging by a neck as wide as the way (narrower
+			// than any found before, the ways found widest first).
+			if (mm(width(i)) >= mm(key) + .2) least = { mm: mm(key), from: i };
+			const x = i % W;
+			for (const j of [x > 0 ? i - 1 : -1, x < W - 1 ? i + 1 : -1, i >= W ? i - W : -1, i + W < n ? i + W : -1]) {
+				if (j < 0 || !dist[j]) continue;
+				const k = Math.min(key, width(j));
+				if (k > reached[j]!) { reached[j] = k; buckets[k]!.push(j); }
+			}
+		}
+	}
+	return least;
 }
 
 /** The pieces of a template's paper (see `templateGrid`) held by a neck

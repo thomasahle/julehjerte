@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { bendShared, sharedPieces, slideSwitch, switchesOf } from './cutMoves';
+import { bendShared, sharedPieces, slideSwitch, straightenShared, switchesOf } from './cutMoves';
 import type { Edge, Point } from './geometry';
 
 // A square ring cut by one shared cut from its top side to its bottom side: on
@@ -43,5 +43,11 @@ describe('moves of a construction\'s cuts', () => {
 		expect(Math.hypot(bend[0] - 4, bend[1] - 5)).toBeCloseTo(1);
 		expect(bend[0]).toBeLessThan(4);
 		expect(switchesOf(moved)).toHaveLength(2);
+	});
+
+	it('straightens a bend of a shared cut, and nothing else', () => {
+		const bent = bendShared(edges, [5, 0], [5, 10], 1)!;
+		expect(sharedPieces(straightenShared(bent, [4, 5])!)).toEqual([[[5, 0], [5, 10]]]);
+		expect(straightenShared(edges, [5, 0])).toBeUndefined();
 	});
 });

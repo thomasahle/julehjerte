@@ -6,6 +6,7 @@ import { fromTopology, generate, knownOf, spurless, storedHearts } from './gener
 import { betterCuts, cutMeasures } from './cutQuality';
 import { picture } from './picture';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
+import { thinnestNeck } from '$lib/geometry/paperNecks';
 import { slow } from './slow.test-helpers';
 import type { Point, Ring } from './geometry';
 import heart from '../../../static/generator/motifs/heart.json';
@@ -226,6 +227,12 @@ describe('stored recipes', () => {
 		const asked = { mode: 'figure' as const, name: 'House', contours: house.contours as Ring[], colors: { left: '#ffffff', right: '#b91313' }, style: 'board' as const, frame: 'circle' as const, frameSize: 70, scale: .99, gap: 3 };
 		const own = generate(asked), made = generate({ ...asked, recipes: (board as unknown as RecipeFile).recipes });
 		expect(cutMeasures(made.design, picture(spurless(asked), knownOf(own, .99))!.rings)[0]).toBe(0);
+	});
+
+	slow('tidies the star on three strips at 75% where its paper held by a sliver by a hidden cut, moving the cut', () => {
+		const asked = { mode: 'figure' as const, name: 'Star', contours: star.contours as Ring[], colors: { left: '#ffffff', right: '#b91313' }, style: 'board' as const, frame: 'circle' as const, frameSize: 70, scale: .75, gap: 3, board: 3 };
+		// Refined only for firmer paper, it holds by a neck of 1.2 mm where the cut meets the circle by the sheet's edge.
+		expect(thinnestNeck(generate({ ...asked, recipes: (board as unknown as RecipeFile).recipes }).design)).toBeGreaterThan(4);
 	});
 
 	slow('finishes a pair\'s recipe hard to cut where the generator\'s heart is, shown where that cuts better', () => {

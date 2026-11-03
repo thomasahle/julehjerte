@@ -103,3 +103,14 @@ export function bendShared(edges: Edge[], from: Point, to: Point, by: number): E
 	const mid: Point = [(from[0] + to[0]) / 2 + n[0], (from[1] + to[1]) / 2 + n[1]], e = edges[i]!;
 	return [...edges.slice(0, i), { ...e, to: mid, from: e.from }, { ...e, from: mid, to: e.to }, ...edges.slice(i + 1)];
 }
+
+/** The bend of a shared cut at `at` (two shared pieces meeting and nothing
+ * else) straightened: one piece between their far ends. */
+export function straightenShared(edges: Edge[], at: Point): Edge[] | undefined {
+	const ids = incidence(edges).get(key(at));
+	if (!ids || ids.length !== 2 || !ids.every(i => edges[i]!.family === 'AB')) return;
+	const [a, b] = ids.map(i => edges[i]!) as [Edge, Edge];
+	const from = same(a.to, at) ? a.from : a.to, to = same(b.from, at) ? b.to : b.from;
+	if (same(from, to)) return;
+	return [...edges.filter((_, i) => i !== ids[0] && i !== ids[1]), { ...a, from, to }];
+}

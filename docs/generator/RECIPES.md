@@ -187,6 +187,33 @@ busier, holding at a narrower print (the yule goat at 75% on seven strips:
 190 → 110 mm). A size took 7% longer on average (3.1 s → 3.3 s on five
 strips, 3.3 s → 3.5 s on seven), half no longer.
 
+Paper that holds may still hang by a thin neck: a sliver by a hidden cut's
+junction (the star at 75% on three strips: 1.2 mm on an 80 mm print, too
+narrow a piece for `paperFaults` to count), or a weak piece's neck short of
+holding. `thinnestNeck` measures it: the narrowest neck, in millimetres, any
+paper a tenth of a millimetre wider than its neck hangs by from the ear (the
+same bottleneck search). So once its paper is as firm as these moves make it,
+`refined` tidies the heart, hearts that hold from the start too: it
+straightens the shared cuts' bends sharper than `TIDY_BEND`
+(`straightenShared`, the sharpest first), then slides the switches and bends
+the shared cuts by the thinnest neck, and keeps a move whose heart, as torn
+and holding at as narrow a print as the page finds it, hangs by a neck
+`NECK_STEP` wider with cuts no sharper, no busier and at most 2% longer, or
+has better cuts by a neck about as wide; up to `TIDY_DRAWS` hearts since the
+last kept, `TIDY_MOST` in all. `firmerCuts` so also ranks hearts as firm as
+each other by their thinnest neck, up to `NECK_ENOUGH` (4 mm), past which a
+neck is wide enough. The star at 75%: 1.2 mm → 6.7 mm, its cuts a unit longer
+of 597. Against the refining above, on the same featured sizes: thinnest necks
+wider on 58, 56, 48 and 34 hearts on three, five, seven and nine strips (mean
+2.40 → 2.51 mm, 1.83 → 1.93, 1.54 → 1.63, 1.33 → 1.38), on 21, 11, 11 and 2
+of the 30 unseen motifs' every 12th size, and narrower on one heart (the santa
+hat at 69% on nine strips, where its paper tears anyway: 0.85 → 0.68 mm at
+the same print, its cuts 3 units shorter); no heart tears more or holds at a
+wider print, six hold at a narrower one, and the hearts it ranks worse are a
+few units longer for their wider necks. A size took 13–21% longer on average
+(2.0 s → 2.4 s on three strips, 3.3 s → 4.0 s on five, 3.1 s → 3.5 s on nine),
+the median 4–6%.
+
 A recipe whose places lie in mirror pairs across the heart's middle (the
 sheet's diagonal; a solve tied so, its places at the corners nearest each
 other across it) keeps them in mirror pairs on any motif that is its own
