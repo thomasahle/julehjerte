@@ -99,6 +99,7 @@
 	} from '$lib/inverse/engine';
 	import { EngineError, searchTimedOut } from '$lib/inverse/client';
 	import {
+		convertCutGeometry,
 		convertValidatedCutGeometry,
 		cutGeometryToDesign,
 		CutGeometryError,
@@ -725,13 +726,26 @@
 		// ties do not pair up, permo-kroge 1.9 %) they lose what they are for, so
 		// they stay as found, with the rows marked as not held, and the fitter's
 		// symmetric cuts beside them.
-		const convert = (enforce: SymmetrySettings) => convertValidatedCutGeometry(geometry, {
-			name: session.sourceName ? t('paintHeartFromImage', lang) : t('paintHeartFromMask', lang),
-			colors: toHexColors(colors, DEFAULT_COLORS_HEX),
-			enforce,
-			...(kind === 'exact' ? { enforceCostLimit: EXACT_SYMMETRY_COST } : {}),
-			reference: { mask: target, weights: frame.mode === 'free' ? shapeCells(frame, target.size) : undefined }
-		});
+		// A template whose cuts fail Tegn's own checks — the engine's best when
+		// none passes every check (never empty-handed: its cuts may cross, or come
+		// too close) — is shown as found, converted as it is, and marked.
+		const convert = (enforce: SymmetrySettings): ReturnType<typeof convertCutGeometry> & { tooClose?: boolean } => {
+			const options = {
+				name: session.sourceName ? t('paintHeartFromImage', lang) : t('paintHeartFromMask', lang),
+				colors: toHexColors(colors, DEFAULT_COLORS_HEX),
+				enforce,
+				...(kind === 'exact' ? { enforceCostLimit: EXACT_SYMMETRY_COST } : {})
+			};
+			try {
+				return convertValidatedCutGeometry(geometry, {
+					...options,
+					reference: { mask: target, weights: frame.mode === 'free' ? shapeCells(frame, target.size) : undefined }
+				});
+			} catch (err) {
+				if (!(err instanceof CutGeometryError) || err.key !== 'paintErrorGeometryCurves') throw err;
+				return { ...convertCutGeometry(geometry, { ...options, tolerance: 0, preserveShared: true }), tooClose: true };
+			}
+		};
 		let converted = convert(session.symmetry);
 		// An exact template searched under only part of the symmetry, none keeping
 		// all of it, is held to the rows that part carries rather than to none
@@ -781,7 +795,8 @@
 					motifMismatch: regions?.inside,
 					borderChange: regions?.outside,
 					identical: solved.report.solver.matchingPreference?.identical ?? false,
-					stoppedEarly: solved.report.stoppedEarly ?? false
+					stoppedEarly: solved.report.stoppedEarly ?? false,
+					...(converted.tooClose ? { tooClose: true } : {})
 				}
 			}
 		};

@@ -86,7 +86,7 @@ export type PaintResult = {
 		borderChange?: number;
 		/** The heart was read from a picture of its template, not searched for. */
 		read?: boolean;
-		/** Some of its cuts come closer than Tegn allows (a read template, as drawn). */
+		/** Some of its cuts come closer than Tegn allows, or cross (a read template, as drawn; the engine's best where none passes). */
 		tooClose?: boolean;
 	};
 };
