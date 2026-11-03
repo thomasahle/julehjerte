@@ -892,6 +892,14 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   drawings the export then fails. At the defaults nothing changes. 12 library pictures at 0.5 mm
   (`nudge/narrow-ab.sh`): 12 and 12 pass, median 29.0 against 29.3 s, triple-heart 7 hidden cuts
   where 9. The visitor's star picture, rebuilt, fails as before (its best template crosses itself).
+- **Closed slits ruled out in the model (2026-11-03): no gain** (`wip/exact-repair`, `ACYCLIC`). The
+  papers' flows allow a slit closing on itself as a circulation, cut only once a solution has one;
+  an order on each paper's points rising along every arc it takes (as the fitter's paths have,
+  `solver.js`) rules them out in the model (+10k rows on jul-tern's 42k). Alone it changes nothing on
+  jul-tern: its count stage never leaves its start (penalty 47 from rules the start breaks, at the
+  bound 18), with or without it. With the repair pass the 47 no longer falls to 3 (those 3 were closed
+  slits), and with 14 s a round, up to whole faces, no drawing near the start breaks less. A drawing
+  keeping the rules there is not a repair of the start; it needs another start (the designer's has 25).
 - **The three photographs without a template** are the photo step's, not the search's:
   danish-red-gold's mask splits one patterned paper into both colours; danish-tree-group-top's crop
   takes two overlapping hearts; gathering-hanging-trio-middle's fitted template keeps every cutting rule
