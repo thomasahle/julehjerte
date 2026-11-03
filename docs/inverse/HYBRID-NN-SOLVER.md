@@ -824,6 +824,12 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   the designer template is 0.08% from the mask). As on jul-tern, the model's own clearances count that
   hair as broken (penalty 1) and the searches end far from it; what the text hearts need is a search
   that reaches such templates, not looser rules.
+  Where the designer's cuts rank among syn1v's proposals (read onto our outline; `even/refrank.mjs` on
+  the instrumented `timed` copy): jul-tern's 25 among 5,604 candidates, 4 within 100, 12 within 1,000
+  (the ladder's last rung), 11 beyond and 2 not among the candidates at all. But 5star, which the ladder
+  solves, ranks its designer's cuts as low (7 of 12 within 1,000): the ladder finds other cuts keeping
+  the rules there. So the network's ranking is not shown to be what fails on jul-tern; that two of its
+  cuts are not candidates at all is a definite gap.
 
 - **How often the answer is proven best** (syn1v's ladder alone, the 127 test pictures, 2026-11-02): of
   its 93 templates passing every check, 75 have exactly as many hidden segments as the lower bound on
