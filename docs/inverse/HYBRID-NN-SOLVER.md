@@ -802,7 +802,9 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     Lowered on all 127 test pictures (`nudge/tol.sh`): ladder 94 → 92 (venus,
     vissevasse-arranged-r3c2 lost, a return's clearance gone after smoothing), today's search 89 → 89,
     either 97 → 95: not shipped. A search that trades segments for rules beyond the count's bound is
-    what jul-tern needs.
+    what jul-tern needs, and a floor on the count is not it: raised by 4 or 7 segments (the start, at the
+    bound, dropped) the solver finds no drawing at all, aligned or not. It needs a start above the
+    bound, as hjerte-i-hjerte-i-hjerte needs one at all.
 
 - **How often the answer is proven best** (syn1v's ladder alone, the 127 test pictures, 2026-11-02): of
   its 93 templates passing every check, 75 have exactly as many hidden segments as the lower bound on
