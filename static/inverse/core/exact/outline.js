@@ -3,6 +3,7 @@
  * and the cutting rules in the reference frame, from the app's settings. */
 import {PointGrid, angle, cumlen, pointAt, segmentAt} from './polyline.js';
 import {pointKey} from './structure.js';
+import {HEART_CLEARANCE_UNITS} from '../return-search.js';
 
 /** The app's limits in reference units (12 per square width), with the small
  * margins the reference solver keeps. `strictness`: 'tight' (the validator's
@@ -16,8 +17,10 @@ export function rules(cfg, strictness = 'tight') {
     // The validator's outer side clearance is the nominal width at every control point.
     mm, gap, border: (w + Math.min(margin, .055)) * mm,
     // Between two slits of one paper it measures them flattened to the geometry
-    // tolerance and takes that off both: the nominal width and twice it.
-    interGap: Math.max(gap, (w + 2 * cfg.geometryTolerance + margin) * mm),
+    // tolerance and takes that off both: the nominal width and twice it, or the
+    // editor's clearance (HEART_CLEARANCE_UNITS of the square) where that is more,
+    // as below a minimum width of about 1 mm on 100 mm paper or on paper over 170 mm.
+    interGap: Math.max(gap, (Math.max(w, HEART_CLEARANCE_UNITS * cfg.width / 100) + 2 * cfg.geometryTolerance + margin) * mm),
     // Close cuts within `local` of each other along one slit are exempt; the
     // rules use a little less, so that sampling only makes them stricter.
     local: (local - (strictness === 'tight' ? .075 : .475)) * mm,

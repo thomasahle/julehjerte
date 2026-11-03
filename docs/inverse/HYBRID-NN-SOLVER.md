@@ -875,6 +875,23 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   both searches and 15 with one (`nudge/repair-ab.sh`, off and on side by side): ladder alone 23 and
   23 of 56 (median 8.6 s against 9.8 s), today's search alone 18 and 18; two near misses lose a kind of
   failure. The penalty that is left is topological, not local.
+- **Relaxing the rules for hearts whose designers broke them (asked 2026-11-03): not done, why.** The
+  hearts are davidsstjerne-circ, hjerte-i-hjerte-i-hjerte and santa (designer templates turning over
+  150°, clearances 0.2 to 0.5 mm short, santa crossing itself). In Mal a heart carried over from Tegn
+  is shown with its designer's own cuts (`useTemplate`, with the too-close note where Tegn's check says
+  so), and searched from its picture all three get a fitted template passing every check (both kinds,
+  the default). What a relaxation changes is the exact search alone's answer on these three, which the
+  page now shows as a near miss with its problems marked; relaxing the search's rules for every picture
+  to reach them would weaken every visitor's paper. The search's rules were instead brought up to the
+  export's where they were looser (below).
+- **The search's inter-slit gap now includes the editor's clearance (2026-11-03).** The export's final
+  check asks two slits of one paper to stay the larger of the nominal width and 1.5% of the square apart
+  (`validate.js`, HEART_CLEARANCE_UNITS); the search's lazily checked rule (`outline.js` `interGap`)
+  asked only the nominal width. The two differ below a minimum width of about 1 mm on 100 mm paper
+  (0.5 mm: 1.0 against 1.5 mm) and on paper over about 170 mm, where the search could settle on
+  drawings the export then fails. At the defaults nothing changes. 12 library pictures at 0.5 mm
+  (`nudge/narrow-ab.sh`): 12 and 12 pass, median 29.0 against 29.3 s, triple-heart 7 hidden cuts
+  where 9. The visitor's star picture, rebuilt, fails as before (its best template crosses itself).
 - **The three photographs without a template** are the photo step's, not the search's:
   danish-red-gold's mask splits one patterned paper into both colours; danish-tree-group-top's crop
   takes two overlapping hearts; gathering-hanging-trio-middle's fitted template keeps every cutting rule

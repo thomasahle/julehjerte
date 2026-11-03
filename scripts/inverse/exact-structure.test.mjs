@@ -298,3 +298,12 @@ test('the network\'s ranking reads its maps the right way up (the reference fram
   assert.ok(scores.get('top') > .9, `top ${scores.get('top')}`);
   assert.equal(scores.get('bottom'), 0);
 });
+
+test('two slits of one paper keep the editor clearance where it exceeds the nominal width', () => {
+  // The export's final check asks max(nominal width, 1.5% of the square) between two slits of one paper.
+  const gapMm = cfg => { const r = rules(cfg); return r.interGap / r.mm; };
+  const usual = settings({trials: 0}), narrow = settings({trials: 0, minWidth: .5}), wide = settings({trials: 0, width: 200});
+  assert.ok(Math.abs(gapMm(usual) - (usual.nominalWidth + 2 * usual.geometryTolerance + .005)) < 1e-9);
+  assert.ok(narrow.nominalWidth < 1.5 && gapMm(narrow) >= 1.5);
+  assert.ok(gapMm(wide) >= 3);
+});
