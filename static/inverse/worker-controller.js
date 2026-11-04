@@ -59,6 +59,14 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
   const nearMiss=value=>value?.report?.solver?.exactOutline?.nearMiss===true;
   // An exact template's hidden segments and its outline's lower bound.
   const searchOf=value=>value?.report?.solver?.exactOutline?.search,hiddenOf=value=>searchOf(value)?.attempts?.at(-1)?.hidden??searchOf(value)?.hidden;
+  // A held ladder template stands against today's with fewer hidden segments, or as many and closer to
+  // the picture (a user's heart: 7 each, the ladder's 0.1% off, today's 0.3% with a hairline through a motif).
+  const errorOf=value=>value?.report?.imageError?.mismatchFraction??Infinity;
+  const ladderStands=(ladder,today)=>{
+    if(!ladder)return false;if(!today)return true;
+    const mine=hiddenOf(ladder)??Infinity,theirs=hiddenOf(today)??Infinity;
+    return mine<theirs||mine===theirs&&errorOf(ladder)<errorOf(today);
+  };
   // A ladder template today's search cannot better: at its outline's lower
   // bound on the traced outline, without a fallback (made symmetric, untied,
   // part of the symmetry), the bound today's search would stop at too; or, on
@@ -243,10 +251,10 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
           compute.onmessageerror=()=>{disposeFitter();const error=fail('The fitting response could not be read.','ENGINE_UNAVAILABLE');if(job.exact==='running')job.held={error};else finish(job,null,error);};
           if(both){
             // The exact search's answer after the fitter's went out: an alternative.
-            // A held ladder template stands only with fewer hidden segments, or when today's has none.
+            // A held ladder template stands with fewer hidden segments, or as many and closer, or when today's has none.
             const trailed=answer=>{
               clearTimeout(trailing.timer);const ladder=trailing.ladder;trailing=null;disposeLadder();
-              const best=ladder&&!(answer&&hiddenOf(answer)<=(hiddenOf(ladder)??Infinity))?ladder:answer;
+              const best=ladderStands(ladder,answer)?ladder:answer;
               scope.postMessage(best&&passes(best)?{id,type:'alternative',result:best}:{id,type:'alternative',pending:false});
             };
             exactCompute.onmessage=({data:message})=>{
@@ -268,9 +276,9 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
                 if(nearMiss(message.result)){job.nearExact=betterResult(job.nearExact??null,message.result);exactDone();return;}
                 // The fitter's template as a second choice: at once when it is in,
                 // else when it comes (or not, should another request come first).
-                // A held ladder template stands only with fewer hidden segments.
+                // A held ladder template stands with fewer hidden segments, or as many and closer.
                 const ladder=job.ladder;
-                takeExact(ladder&&hiddenOf(ladder)<(hiddenOf(message.result)??Infinity)?ladder:message.result);
+                takeExact(ladderStands(ladder,message.result)?ladder:message.result);
               }
               else exactDone();
             };

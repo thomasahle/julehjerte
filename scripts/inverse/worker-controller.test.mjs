@@ -217,7 +217,7 @@ test('side by side, the fitter\'s template stands once the exact search finds no
 
 // With the network (cutModel), its ladder in a third worker beside them.
 const ladderValue=(hidden,bound,more={})=>({report:{solver:{exactOutline:{chosen:'exact',...more,search:{hidden,bound,ladder:100}}}},files:{'cut_geometry.json':packet.geometry}});
-const todayValue=hidden=>({report:{solver:{exactOutline:{chosen:'exact',search:{hidden,bound:0}}}},files:{'cut_geometry.json':packet.geometry}});
+const todayValue=(hidden,more={})=>({report:{solver:{exactOutline:{chosen:'exact',search:{hidden,bound:0}}},...more},files:{'cut_geometry.json':packet.geometry}});
 async function racing(){
   const h=harness({predictCutMaps:async()=>({size:1})});await h.send(1,'prepare',{input});
   const solving=h.send(2,'solve',{settings:{...both,cutModel:true}});
@@ -240,6 +240,17 @@ test('side by side with the network, a ladder template above its bound waits for
     // Held and shown, today's search still running.
     assert.equal(exact.terminated,0);assert.equal(h.messages.filter(m=>m.type==='result').length,0);
     assert.equal(h.messages.filter(m=>m.type==='progress').at(-1).event.geometry,packet.geometry);
+    h.reply(exact,2,'result',{result:theirs});await solving;
+    assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,wins==='today'?theirs:found);
+  }
+});
+
+test('side by side with the network, of a ladder template and today\'s with as many hidden segments the closer to the picture stands',async()=>{
+  // A user's heart: today's 0.3% off with a hairline through a motif, the ladder's 0.1%.
+  for (const [ladderError, todayError, wins] of [[.001, .003, 'ladder'], [.003, .001, 'today'], [.002, .002, 'today']]) {
+    const {h,solving,ladder,exact}=await racing(),found=ladderValue(7,6,{}),theirs=todayValue(7,{imageError:{mismatchFraction:todayError}});
+    found.report.imageError={mismatchFraction:ladderError};
+    h.reply(ladder,2,'result',{result:found});
     h.reply(exact,2,'result',{result:theirs});await solving;
     assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,wins==='today'?theirs:found);
   }

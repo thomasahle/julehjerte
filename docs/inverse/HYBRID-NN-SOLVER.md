@@ -1010,6 +1010,10 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   heart its alternative (3 + 3 cuts, a third cut on each paper running through the three hearts) clips
   the red checks' corners where it passes between them, 0.5% off and passing. The shadowed-frame crop
   benchmark fails on c51369a4 too, unrelated.
+  On juleflet.dk the race then took a second template of today's search (7 hidden, 0.3% off, a white
+  hairline through a motif, a red sliver from another) over the ladder's (7, 0.1%): a held ladder
+  template stood only with fewer hidden segments. With as many it now stands when closer to the
+  picture (`worker-controller.js` `ladderStands`).
 
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
