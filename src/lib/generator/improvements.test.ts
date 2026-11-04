@@ -129,9 +129,10 @@ describe('figures and complete templates', () => {
 		expect(design.gridSize).toEqual({ x: 5, y: 5 });
 	});
 	it('offers each figure frame once and opens links to the removed centre shapes and plain circle', () => {
-		expect(FIGURE_TEMPLATES.map((t) => t.style)).toEqual(FIGURE_STYLES.filter((style) => !RETIRED_STYLES.includes(style)));
-		expect(FIGURE_TEMPLATES.map((t) => t.style)).not.toContain('silhouette');
-		expect(FIGURE_TEMPLATES).toHaveLength(9);
+		// Three rows of three: the easy frames, the harder circles, the hard alternatives.
+		expect(FIGURE_TEMPLATES.map((t) => t.style)).toEqual(['rays', 'wedges', 'fitted', 'board', 'sunburst', 'layers', 'corners', 'motifs', 'strips']);
+		expect(RETIRED_STYLES).toEqual(['silhouette', 'squares', 'check']);
+		expect([...FIGURE_TEMPLATES.map((t) => t.style), ...RETIRED_STYLES].sort()).toEqual([...FIGURE_STYLES].sort());
 		const link = (value: object) => '#make=' + encodeURIComponent(JSON.stringify(value));
 		const state = { ...defaults, mode: 'figure' as const, style: 'check' as const };
 		const text = { ...defaults, mode: 'text' as const, textFrame: 'circle' as const };

@@ -7,10 +7,16 @@ export type FigureTemplate = {
 	frame: Frame;
 	style: GeneratorState['style'];
 };
+/** The figure frames offered, three to a row of the picker: the easy ones
+ * (Cirkel · Stråler, Kiler, Tæt om figuren), the circles that are harder to
+ * cut (Cirkel · Lige store tern, Cirkel · Strålekrans, Cirkel med dobbelt
+ * bort), and the hard ones that weave the motif otherwise (Tern i spidserne,
+ * Små motiver, Figur i ternene). */
+export const OFFERED_STYLES: readonly FigureStyle[] = ['rays', 'wedges', 'fitted', 'board', 'sunburst', 'layers', 'corners', 'motifs', 'strips'];
 /** The frames no longer offered, being plain (Stor silhuet, Lige store tern and
  * Cirkel · Tern): a link or saved setting that names one still draws it. */
-export const RETIRED_STYLES: readonly FigureStyle[] = ['silhouette', 'squares', 'check'];
-export const FIGURE_TEMPLATES: FigureTemplate[] = FIGURE_STYLES.filter((style) => !RETIRED_STYLES.includes(style)).map((style) => ({
+export const RETIRED_STYLES: readonly FigureStyle[] = FIGURE_STYLES.filter((style) => !OFFERED_STYLES.includes(style));
+export const FIGURE_TEMPLATES: FigureTemplate[] = OFFERED_STYLES.map((style) => ({
 	id: `circle-${style}`,
 	frame: 'circle',
 	style
