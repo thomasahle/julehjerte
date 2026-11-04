@@ -945,9 +945,17 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   the M2 Pro's GPU, a few GB, not the full run's 27). The held-out generator words in that frame mark
   0.92, 0.58 and 0.75 (from 0.87, 0.60, 0.65); the test pictures do not move: jul-tern 0.52 to 0.50,
   mor-far 0.72 to 0.69, the 8 failing 0.500 to 0.507, the 44 passing 0.873 to 0.869. Not run through
-  the ladder, not shipped. The frame is not what the network misses on these hearts; what the gallery's
-  text hearts have that the generator's words do not is still open (they were made with the generator,
-  then edited by hand: necks opened, the repeat-check layout).
+  the ladder, not shipped. The frame as it is today is not what the network misses on these hearts.
+  jul-tern's layout, a letter in every check turned 45 degrees (3 x 3, S-curved hidden cuts), is not
+  what today's checkered frame makes (each letter once, along a diagonal): it is the repeating frame
+  the generator dropped in 83cd8068, so the network never saw it. rpt1 (`nn/gen-repeat.mjs` on the old
+  generator, `nn/rpt1.sh`): 672 such words, the 266 keeping the export's rules, with ck1's and the
+  synthetic pack 25:10:65, syn1v fine-tuned 2 epochs. The designers' hidden cuts marked: 0.884 on the
+  44 passing (from 0.873), 0.540 on the 8 failing (from 0.500), jul-2026 0.55 (0.49), santa 0.55 (0.51),
+  but jul-tern 0.53 (0.52). Through the ladder on all 33 test pictures syn1v's has no template for
+  (`nudge/rpt1-miss.sh`): none gained, 9 near misses, 24 nothing. Not shipped. Adding the missing family
+  moves the maps a little and the templates not at all: on these pictures better maps alone do not
+  lead to a template (the designers' own cuts as the ranking did not either, section 9).
 - **The three photographs without a template** are the photo step's, not the search's:
   danish-red-gold's mask splits one patterned paper into both colours; danish-tree-group-top's crop
   takes two overlapping hearts; gathering-hanging-trio-middle's fitted template keeps every cutting rule
