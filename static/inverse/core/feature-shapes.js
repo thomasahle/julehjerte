@@ -2,7 +2,8 @@
  * Matching source pixels alone cannot distinguish a small opening from an
  * enlarged region or a channel to the background. Measure its whole component.
  */
-import {connectedComponent} from './input.js';
+import {connectedComponent,components} from './input.js';
+import {distanceTransform} from './material.js';
 import {imageFeatures,auditImageFeatures,auditFeatureChange} from './image-features.js';
 import {sourceWeights} from './image-reference.js';
 import {stableInteriorFeatures} from './feature-enclosures.js';
@@ -26,11 +27,59 @@ export function strayRegions(source,woven,width){
   const seen={mask:woven,resolution:source.resolution,...(source.weights?{weights:source.weights}:{}),...(source.validMask?{validMask:source.validMask}:{})};
   return auditImageFeatures(seen,source.mask,width,imageFeatures(seen,width)).missing;
 }
-/** The features check for a finished template (the export's report), with what the weave adds listed
- * as `stray`, for the page to name: reported, not failed, as a photograph's edge noise gives regions
- * there too (a bauble's template, 2.7% off its picture, adds 10 and 28 mm² beside the paper's edge). */
+/** Regions of the picture its weave joins: two regions of one colour (at least MERGE_AREA_MM2, border
+ * ones too) more than MERGE_GAP_MM apart and not linked through nearer ones, mostly inside one region
+ * of the weave once that is narrowed by MERGE_NECK_MM (a sampled cut's one-pixel seams join nothing).
+ * Two hidden cuts drawn apart leave a strip of the other paper between them: a small heart joined to
+ * the check beside it by 3 mm of paper (3.75 mm apart in the picture), 0.3% off its picture, passing
+ * every other check. Nearer ones a weave may join on purpose: the tracer's near touchings
+ * (joinNearTouchings), and a photographed checkerboard's diagonal checks, which the blur leaves up to
+ * 2 mm apart where they meet. [{a, b, gapMm}], the regions' centres in mm. */
+const MERGE_AREA_MM2=3,MERGE_NECK_MM=.5,MERGE_GAP_MM=2.5;
+export function mergedRegions(source,woven,width,gap=MERGE_GAP_MM){
+  if(!source?.mask||woven?.length!==source.mask.length)return [];
+  const n=source.resolution,mm=width/n,mask=Uint8Array.from(source.mask,v=>v?1:0),weave=Uint8Array.from(woven,v=>v?1:0),out=[];
+  const neck=(MERGE_NECK_MM/mm)**2,centre=pixels=>[0,1].map(axis=>pixels.reduce((t,i)=>t+(axis?Math.floor(i/n):i%n)+.5,0)/pixels.length*mm);
+  for(const value of [0,1]){
+    const mine=components(mask,n,value).filter(part=>part.pixels.length*mm*mm>=MERGE_AREA_MM2);
+    if(mine.length<2)continue;
+    // The weave's regions of this colour, narrowed: a pixel deeper than MERGE_NECK_MM inside one.
+    const depth=distanceTransform(Uint8Array.from(weave,v=>Number(v!==value)),n,n),core=Uint8Array.from(depth,(d,i)=>Number(weave[i]===value&&d>neck));
+    const comp=new Int32Array(n*n).fill(-1);
+    components(core,n,1).forEach((part,k)=>{for(const i of part.pixels)comp[i]=k;});
+    const home=mine.map(part=>{const count=new Map();for(const i of part.pixels)if(comp[i]>=0)count.set(comp[i],(count.get(comp[i])||0)+1);let best=-1,most=0;for(const [k,c] of count)if(c>most){best=k;most=c;}return most>=.3*part.pixels.length?best:-1;});
+    // Regions sharing a home, grouped through near ones: a checkerboard's checks meeting at corners join
+    // their diagonal neighbours (0.3 mm), and through them regions far apart, all of it on purpose.
+    // Only the nearest pair of two such groups is reported.
+    const pairs=[],group=mine.map((_,i)=>i),root=i=>group[i]===i?i:(group[i]=root(group[i]));
+    for(let i=0;i<mine.length;i++){
+      let far=null;
+      for(let j=i+1;j<mine.length;j++){
+        if(home[i]<0||home[i]!==home[j])continue;
+        if(!far){const seeds=new Uint8Array(n*n);for(const p of mine[i].pixels)seeds[p]=1;far=distanceTransform(seeds,n,n);}
+        let d=Infinity;for(const p of mine[j].pixels)d=Math.min(d,far[p]);
+        const gapMm=Math.sqrt(d)*mm;
+        if(gapMm>gap)pairs.push([i,j,gapMm]);else group[root(i)]=root(j);
+      }
+    }
+    const nearest=new Map();
+    for(const [i,j,gapMm] of pairs){
+      const a=root(i),b=root(j),key=Math.min(a,b)+' '+Math.max(a,b);
+      if(a!==b&&!(nearest.get(key)?.[2]<=gapMm))nearest.set(key,[i,j,gapMm]);
+    }
+    for(const [i,j,gapMm] of nearest.values())out.push({a:centre(mine[i].pixels),b:centre(mine[j].pixels),gapMm:+gapMm.toFixed(2)});
+  }
+  return out;
+}
+
+/** The features check for a finished template (the export's report): regions of the picture its weave
+ * joins (`merged`) fail it; what the weave adds is listed as `stray`, for the page to name, reported but
+ * not failed, as a photograph's edge noise gives regions there too (a bauble's template, 2.7% off its
+ * picture, adds 10 and 28 mm² beside the paper's edge). */
 export function finalFeatureAudit(source,woven,cfg,features){
-  const audit=auditFeatureFidelity(source,woven,cfg,features),stray=strayRegions(source,woven,cfg.width);
+  let audit=auditFeatureFidelity(source,woven,cfg,features);
+  const merged=mergedRegions(source,woven,cfg.width),stray=strayRegions(source,woven,cfg.width);
+  if(merged.length)audit={...audit,passed:false,merged};
   return stray.length?{...audit,stray}:audit;
 }
 

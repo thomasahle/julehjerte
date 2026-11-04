@@ -986,6 +986,31 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   gone), noise in the photograph that the features check counts as the picture's (at least 3 mm²
   with a 0.5 mm core). Tuning the photo step on test pictures would only tune it to them.
 
+- **Regions a template's weave joins (2026-11-04, shipped).** A user's 3 × 3 generator heart with a small
+  heart in each white check (Små motiver, 79 %): today's exact search drew two hidden cuts about 3 mm
+  apart where both papers' should meet, and the strip of paper between them joined each outer heart to
+  the red check beside it (3.75 mm apart in the picture). 0.3% off its picture, it passed every check
+  and won the race over the ladder's clean template (3 s, 0.1%). `mergedRegions` (`feature-shapes.js`)
+  finds two regions of one colour (each at least 3 mm²) more than 2.5 mm apart that lie mostly inside
+  one region of the weave narrowed by 0.5 mm (one-pixel seams join nothing). Regions linked through
+  nearer ones are one group: a checkerboard's diagonal checks, joined at their corners, link checks far
+  apart (triple-heart's ladder template, flagged at 18.6 mm by a first version without the groups).
+  Nearer than 2.5 mm a weave may join on purpose: the tracer's near touchings, and a photographed
+  checkerboard's diagonal checks, which the blur leaves up to 2 mm apart (a test fixture's at 1.8 mm).
+  It fails the features check in the exact search's own assessment (`stage.js` `assess`) and in the
+  export's (`finalFeatureAudit`): on the user's picture today's template fails and the ladder's is shown.
+  None of the 83 designer templates is flagged. All 127 test pictures, one process
+  (`nudge/merge-ab.sh`, with the first version): the ladder 92 and 92 (venus gained; triple-heart
+  lost, regained with the groups), today's search 89 and 89 (balls gained; vissevasse-arranged-r1c1
+  lost while the run was paused, passing on a rerun). The fitter's templates join regions too and now
+  fail: of the 33 pictures without an exact template, jul-tern (a letter's tail joined to the check
+  below by a 3 mm diamond); four engine-test fixtures (the stacked motif 6.25 mm, the checked crown
+  12 mm, the crown photograph 4.4 mm), whose tests now allow exactly that shortfall
+  (`export-shortfalls.mjs` `passedBut`). Open: the fitter has no term against joins; and on the user's
+  heart its alternative (3 + 3 cuts, a third cut on each paper running through the three hearts) clips
+  the red checks' corners where it passes between them, 0.5% off and passing. The shadowed-frame crop
+  benchmark fails on c51369a4 too, unrelated.
+
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);

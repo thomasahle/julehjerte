@@ -1,6 +1,7 @@
 import {qualityBenchmark as test} from './quality-benchmark.mjs';
 import assert from 'node:assert/strict';
-import {cfg,resolution,mask,input} from './clearance-feature-fixture.mjs';
+import {cfg,resolution,mask,input,knownShortfalls} from './clearance-feature-fixture.mjs';
+import {passedBut} from './export-shortfalls.mjs';
 import {design} from '../../static/inverse/core/engine.js';
 import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
 import {renderExportedWeave} from './export-renderer.mjs';
@@ -25,7 +26,7 @@ test('late clearance comparison can repair its first usable layout before polish
   assert.equal(advanced,true);
   assert.ok(comparison?.repair,JSON.stringify({comparison,stages:report.solver.stages}));
   assert.notEqual(comparison.repair.reason,'insufficient_time');
-  assert.equal(report.templateChecksPassed,true);
+  assert.equal(passedBut(report,knownShortfalls),true);
   assert.equal(report.validation.passed,true);
   assert.equal(report.manufacturing.status,'pass');
   assert.ok(report.solver.seconds<cfg.timeLimit);

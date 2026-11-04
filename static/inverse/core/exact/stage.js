@@ -5,7 +5,7 @@ import {validate, verdict, easeMetrics, sampleWeave} from '../validate.js';
 import {finalMaterialAudit} from '../geometric-material.js';
 import {verifiedPaperSettings} from '../material.js';
 import {verifyPaper} from './paper.js';
-import {auditFeatureFidelity} from '../feature-shapes.js';
+import {auditFeatureFidelity, mergedRegions} from '../feature-shapes.js';
 import {matchingSummary} from '../direct/matching.js';
 import {routedComplexity} from '../direct/routed-refinement.js';
 import {requestedSymmetry} from '../settings.js';
@@ -92,7 +92,8 @@ export function assess(solution, cfg, {material = null} = {}) {
   const source = solution.graph.target.sourceImage, woven = source?.mask && source.resolution ? sampleWeave(solution, source.resolution) : null;
   const error = woven ? maskError(source, woven) : 0;
   let features = true;
-  try { features = !woven || auditFeatureFidelity(source, woven, cfg).passed; } catch { features = true; }
+  // Regions of the picture the weave joins count as one lost (mergedRegions: two hidden cuts drawn apart).
+  try { features = !woven || auditFeatureFidelity(source, woven, cfg).passed && !mergedRegions(source, woven, cfg.width).length; } catch { features = true; }
   // Hidden cut as the weave shows it, alike for the fitter's template and the
   // exact search's (their own counts of hidden runs differ in kind), in steps
   // of 10 mm.

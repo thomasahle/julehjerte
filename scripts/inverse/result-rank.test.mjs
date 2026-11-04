@@ -82,3 +82,44 @@ test('a weave with a substantial region its picture does not have is reported, n
   tiny[40 * n + 40] = 0;
   assert.deepEqual(strayRegions(source, tiny, 100), []);
 });
+
+test('a weave joining two regions of its picture that lie apart fails the features check', async () => {
+  const {finalFeatureAudit, mergedRegions} = await import('../../static/inverse/core/feature-shapes.js');
+  // 50 mm paper at 200 pixels: a pixel is 0.25 mm, as on the page's 400 pixels for 100 mm.
+  const n = 200, width = 50, mask = new Uint8Array(n * n), cfg = {width, nominalWidth: 2.5};
+  // Two 5 mm squares, 3 mm apart (pixel centre to pixel centre).
+  for (let y = 80; y < 100; y++) for (let x = 80; x < 100; x++) mask[y * n + x] = 1;
+  for (let y = 80; y < 100; y++) for (let x = 111; x < 131; x++) mask[y * n + x] = 1;
+  const source = {mask, resolution: n};
+  assert.deepEqual(mergedRegions(source, mask.slice(), width), []);
+  // A bridge 1.25 mm wide between them.
+  const joined = mask.slice();
+  for (let y = 88; y < 93; y++) for (let x = 100; x < 111; x++) joined[y * n + x] = 1;
+  assert.deepEqual(mergedRegions(source, joined, width).map(x => x.gapMm), [3]);
+  assert.equal(finalFeatureAudit(source, joined, cfg).passed, false);
+  // A seam one pixel (0.25 mm) wide joins nothing.
+  const seam = mask.slice();
+  for (let x = 100; x < 111; x++) seam[90 * n + x] = 1;
+  assert.deepEqual(mergedRegions(source, seam, width), []);
+  // Nor does a bridge between regions 2 mm apart (a photographed checkerboard's diagonal checks).
+  const near = mask.slice();
+  for (let y = 80; y < 100; y++) for (let x = 111; x < 131; x++) near[y * n + x] = 0;
+  for (let y = 80; y < 100; y++) for (let x = 107; x < 127; x++) near[y * n + x] = 1;
+  const nearJoined = near.slice();
+  for (let y = 88; y < 93; y++) for (let x = 100; x < 107; x++) nearJoined[y * n + x] = 1;
+  assert.deepEqual(mergedRegions({mask: near, resolution: n}, nearJoined, width), []);
+});
+
+test('regions linked through near ones are not reported as joined, however far apart', async () => {
+  const {mergedRegions} = await import('../../static/inverse/core/feature-shapes.js');
+  // A checkerboard's checks meet their diagonal neighbours at corners, and the weave joins them there:
+  // here three 5 mm squares in a row, 1.25 mm apart, so the outer two (7.25 mm apart) are linked.
+  const n = 200, width = 50, mask = new Uint8Array(n * n), square = x0 => { for (let y = 80; y < 100; y++) for (let x = x0; x < x0 + 20; x++) mask[y * n + x] = 1; };
+  for (const x0 of [40, 64, 88, 130]) square(x0);
+  const source = {mask, resolution: n}, joined = mask.slice(), bridge = (x0, x1) => { for (let y = 88; y < 93; y++) for (let x = x0; x < x1; x++) joined[y * n + x] = 1; };
+  bridge(60, 64); bridge(84, 88);
+  assert.deepEqual(mergedRegions(source, joined, width), []);
+  // A fourth square 5.75 mm on joined to them: one join, between the nearest two of the two groups.
+  bridge(108, 130);
+  assert.deepEqual(mergedRegions(source, joined, width).map(x => x.gapMm), [5.75]);
+});

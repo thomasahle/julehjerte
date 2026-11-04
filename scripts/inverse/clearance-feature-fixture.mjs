@@ -18,6 +18,9 @@ assert.equal(offset,mask.length);
 const hash=b=>createHash('sha256').update(b).digest('hex');
 assert.equal(hash(mask),fixture.source.sha256);
 export const originalMask=mask.slice();
+/** What the fitter's template here fails: its weave joins the motif's heart to the square beside it by a
+ * 3 mm bar, 6.25 mm across the picture (feature-shapes.js mergedRegions, 2026-11-04). */
+export const knownShortfalls=['joined regions'];
 for(const pixel of fixture.source.originalMaskToggles)originalMask[pixel]^=1;
 assert.equal(hash(originalMask),fixture.source.originalMaskSha256);
 export const input=(pixels=mask)=>prepare({type:'mask',mask:pixels.slice(),resolution},{...cfg,invert:false,removeSpecks:0,fillHoles:0}).target;
