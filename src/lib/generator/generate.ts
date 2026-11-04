@@ -125,6 +125,10 @@ export type GeneratorRequest = {
 	layout?: BoardLayout;
 	/** The strips per side of the board a construction must lie on. */
 	board?: number;
+	/** For the small motifs of a motif that is its own mirror image: the
+	 * checkerboard is woven mirrored too, where that cuts as well (one template
+	 * for both lobes, see `checkeredLayouts`). */
+	mirrorCells?: boolean;
 	/** For the figure in the checks: how far down the heart's middle the
 	 * visitor put the motif, and how far across it; otherwise its default
 	 * size chooses, on the middle. */
@@ -1734,10 +1738,13 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
 		// visitor chose are kept, hard to cut if need be; others only where
 		// they can build nothing at all.
 		const board = request.style === 'squares' ? squareChoices(request.board) : motifChoices(request.board);
+		// A motif that is its own mirror image may be woven so (see `mirrorCells`).
+		const xs = contours.flat().map(p => p[0]), cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+		const mirrorCells = request.style === 'motifs' && mirrorSymmetric(contours.map(ring => ring.map(([x, y]): Point => [x - cx, y])));
 		type Choice = { request: GeneratorRequest; retries: boolean; lastResort?: boolean };
 		const choicesAt = (letterScale: number): Choice[] => board.map(({ text, board, retries, lastResort, larger = 1, air, fitted, alone }) => ({
 			retries, lastResort, request: { mode: 'text', name: request.name, colors: request.colors, text, font, letterScale: Math.min(request.style === 'squares' || alone ? 1.1 : Infinity, letterScale * larger),
-				...request.style === 'squares' || alone ? { textFrame: air ? 'air' : 'woven', fittedCells: !!fitted, board: fitted ? undefined : board } : { textFrame: 'checkered', board } }
+				...request.style === 'squares' || alone ? { textFrame: air ? 'air' : 'woven', fittedCells: !!fitted, board: fitted ? undefined : board } : { textFrame: 'checkered', board, ...mirrorCells && { mirrorCells } } }
 		}));
 		const choices = choicesAt(letterScale), layout = request.layout, chosen = layout && choices[layout.alternative];
 		if (!layout || !chosen) return choices;
@@ -2929,15 +2936,62 @@ function generateUsingRecipes(request: GeneratorRequest,
 			// Where that heart's paper tears at print size, larger corner cuts on
 			// its board, in any of its layouts and sizes, and the better of the two
 			// (`cutsBetter`): never another board, and never worse.
+			// A text that is its own mirror image across the heart's middle (the
+			// small copies of a motif that is) is also made mirrored, its layouts'
+			// junctions and cells their own mirror images (see `checkeredLayouts`):
+			// one template for both lobes, kept where its paper tears no more, as
+			// the page ranks hearts (`betterCuts`: pieces hanging by too little paper
+			// and needles first). Of its layouts and connections, the one that tears
+			// least and then cuts best, ending at one that holds with no tip, or at
+			// a layout that builds none (of 283 such searches, on 2–8 strips, no
+			// later layout built one that was kept). As above, its larger corner cuts
+			// only where its paper tears without them: its letters on the middle
+			// crowd the junctions beside them. Three hearts across the middle of
+			// three strips: two templates → one.
+			const mirrored = (made: GeneratorResult): GeneratorResult => {
+				const design = exported(made).design, board = design.gridSize.x;
+				if (!request.mirrorCells || lobesShareTemplate(design.fingers, design.gridSize)) return made;
+				const cache = caches.get(standard)?.[0] ?? checkeredGridCache();
+				const clean = (result: GeneratorResult) => !paperTears(result.design) && !cutTipCounts(result.design).some(Boolean);
+				const torn = (design: HeartDesign) => paperTears(design) + cutTipCounts(design)[0];
+				const better = (a: GeneratorResult, b: GeneratorResult) => torn(a.design) !== torn(b.design) ? torn(a.design) < torn(b.design) : cutsBetter(a, b);
+				let best: GeneratorResult | undefined;
+				const tryCorners = (corners: [number, number]) => {
+					for (const [variant, layout] of checkeredLayouts(text, true).entries()) {
+						if (layout.matrix.length !== board) continue;
+						let built = false, close = false;
+						for (const inset of [.35, .25, .4]) {
+							// Narrower contacts than those whose cuts come too close come closer still.
+							if (inset === .25 && close) continue;
+							try {
+								const candidate = exported(finish(generateCheckeredGrid(text, font, standard, inset, { variant, mirror: true, corners, cache }), 'letters', false));
+								if (!lobesShareTemplate(candidate.design.fingers, candidate.design.gridSize)) continue;
+								built = true;
+								if (!best || better(candidate, best)) best = candidate;
+								if (clean(best)) return;
+							} catch (error) {
+								if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+								close ||= error instanceof CutGeometryError;
+							}
+						}
+						// The next layouts rarely build what one has not.
+						if (!built) return;
+					}
+				};
+				tryCorners(CORNER_INSETS);
+				const print = printCornerInsets(board);
+				if (best && paperTears(best.design) && print[0] !== CORNER_INSETS[0]) tryCorners(print);
+				return best && torn(best.design) <= torn(design) ? best : made;
+			};
 			const plain = search();
 			const board = plain.design.gridSize.x;
-			if (!paperTears(plain.design) || printCornerInsets(board)[0] === CORNER_INSETS[0]) return plain;
+			if (!paperTears(plain.design) || printCornerInsets(board)[0] === CORNER_INSETS[0]) return mirrored(plain);
 			try {
 				const print = search(board);
-				return cutsBetter(print, plain) ? print : plain;
+				return mirrored(cutsBetter(print, plain) ? print : plain);
 			} catch (error) {
 				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-				return plain;
+				return mirrored(plain);
 			}
 		}
 		const text = request.text ?? '';

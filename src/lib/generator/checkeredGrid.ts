@@ -8,7 +8,7 @@ import { PAPER_NECK_MM, PRINT_WIDTH_MM } from '$lib/geometry/paperNecks';
 import { cellTipCounts, fewerCutTips } from './cutQuality';
 import {
 	ConstructionError, type Font, type Ring, type Point, type Edge,
-	twoPortMotif, usableMotif, relieveMotifTips, add, compile
+	twoPortMotif, usableMotif, relieveMotifTips, add, compile, mix
 } from './geometry';
 
 type LetterCell = {
@@ -67,24 +67,28 @@ export function printCornerInsets(n: number): [number, number] {
  * Nothing is repeated; a visitor who wants a pattern types it. Spaces stay
  * plain squares. A later variant keeps the placement and chooses the next best
  * junctions, for letters whose first connections leave narrow paper. */
-export function checkeredLayout(text: string, variant = 0): CheckeredLayout {
-	const layouts = checkeredLayouts(text);
+export function checkeredLayout(text: string, variant = 0, mirror = false): CheckeredLayout {
+	const layouts = checkeredLayouts(text, mirror);
 	if (variant >= layouts.length) throw new ConstructionError('topology', 'No further checkerboard connections');
 	return layouts[variant];
 }
 
 const layoutCache = new Map<string, CheckeredLayout[]>();
-export function checkeredLayouts(text: string): CheckeredLayout[] {
-	let layouts = layoutCache.get(text);
+/** The layouts of a text (see `checkeredLayout`); with `mirror`, those whose
+ * junctions are their own mirror image across the heart's middle (see
+ * `connectLetters`), for a text that is its own mirror image there. */
+export function checkeredLayouts(text: string, mirror = false): CheckeredLayout[] {
+	const id = `${Number(mirror)}:${text}`;
+	let layouts = layoutCache.get(id);
 	if (!layouts) {
-		layouts = placeLetters(text);
+		layouts = placeLetters(text, mirror);
 		if (layoutCache.size > 50) layoutCache.clear();
-		layoutCache.set(text, layouts);
+		layoutCache.set(id, layouts);
 	}
 	return layouts;
 }
 
-function placeLetters(text: string): CheckeredLayout[] {
+function placeLetters(text: string, mirror = false): CheckeredLayout[] {
 	if (!text.trim()) throw new ConstructionError('empty', 'Empty text');
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n').map(line => [...line]);
 	const k = lines.length;
@@ -124,7 +128,7 @@ function placeLetters(text: string): CheckeredLayout[] {
 					const v = top + i, h = centres[i] - (line.length - 1) + 2 * j;
 					if (char.trim()) matrix[(v - h) / 2][(v + h) / 2] = char;
 				}
-				const connections = connectLetters(matrix, neighbours);
+				const connections = connectLetters(matrix, neighbours, mirror);
 				if (!connections.length) continue;
 				if (layouts.length) return [...layouts, { matrix, ...connections[0] }];
 				layouts.push(...connections.map(connection => ({ matrix, ...connection })));
@@ -133,6 +137,13 @@ function placeLetters(text: string): CheckeredLayout[] {
 		};
 		const layouts = connect(false);
 		if (layouts.length) return [...smaller, ...layouts];
+		// Mirrored, a letter on the heart's middle takes a junction on it, which
+		// its neighbours' often share an edge with: on the same board.
+		if (mirror) {
+			const crowded = connect(true);
+			if (crowded.length) return crowded;
+			continue;
+		}
 		// Neighbouring junctions crowd their connections into half an edge each,
 		// so they are only for a board that otherwise cannot connect. The next
 		// board, without them, remains for letters that need the room.
@@ -152,11 +163,20 @@ export function checkeredMatrix(text: string): (string | undefined)[][] {
  * `neighbours`, junctions may share an edge, each keeping its connections in
  * its own half of it (`edgeReach`). Prefer the fewest lettered squares that
  * also need a corner cut, then the fewest junctions and neighbouring pairs;
- * return the few best choices in that order. */
-function connectLetters(matrix: (string | undefined)[][], neighbours = false): Omit<CheckeredLayout, 'matrix'>[] {
+ * return the few best choices in that order. With `mirror`, only choices that
+ * are their own mirror image across the heart's middle. */
+function connectLetters(matrix: (string | undefined)[][], neighbours = false, mirror = false): Omit<CheckeredLayout, 'matrix'>[] {
 	const n = matrix.length;
 	const letters = matrix.flatMap((line, row) => line.flatMap((char, col) => char === undefined ? [] : [[row, col] as [number, number]]));
 	const key = (y: number, x: number) => y * (n + 1) + x;
+	// Mirrored: each letter takes the mirror image of its partner's junction
+	// across the heart's middle (the sheet's diagonal), a letter on the middle
+	// one on it; a text that is not its own mirror image has none.
+	const index = new Map(letters.map(([row, col], i) => [`${row},${col}`, i]));
+	const partner = letters.map(([row, col]) => index.get(`${col},${row}`));
+	if (mirror && letters.some(([row, col], i) => partner[i] === undefined || matrix[row][col] !== matrix[col][row])) return [];
+	const image = (j: number) => key(j % (n + 1), Math.floor(j / (n + 1)));
+	const placed = new Set<number>();
 	// Side corners first: there the neighbouring letters of a line meet.
 	const corners = letters.map(([row, col]) => [[row, col + 1], [row + 1, col], [row, col], [row + 1, col + 1]]
 		.filter(([y, x]) => y > 0 && x > 0 && y < n && x < n).map(([y, x]) => key(y, x)));
@@ -177,9 +197,11 @@ function connectLetters(matrix: (string | undefined)[][], neighbours = false): O
 			best.sort((a, b) => a.cost - b.cost).splice(3);
 			return;
 		}
-		const letter = order[index];
+		const letter = order[index], [row, col] = letters[letter], mate = partner[letter]!;
 		const options = corners[letter].filter(j => chosen.has(j) || !blocked(j))
+			.filter(j => !mirror || (row === col ? j % (n + 1) === Math.floor(j / (n + 1)) : !placed.has(mate) || j === image(assigned[mate])))
 			.sort((a, b) => Number(chosen.has(b)) - Number(chosen.has(a)));
+		placed.add(letter);
 		for (const j of options) {
 			const added = !chosen.has(j);
 			if (added) chosen.add(j);
@@ -187,6 +209,7 @@ function connectLetters(matrix: (string | undefined)[][], neighbours = false): O
 			search(index + 1);
 			if (added) chosen.delete(j);
 		}
+		placed.delete(letter);
 	};
 	search(0);
 	return best.map(({ junctions, assigned: owners }) => {
@@ -247,14 +270,94 @@ export function checkeredLetters(matrix: (string | undefined)[][], font: Font, f
 	};
 }
 
+const ON_MIDDLE = 1e-7;
+const mirrorImage = (p: Point): Point => [p[1], p[0]];
+const swapped: Record<Edge['family'], Edge['family']> = { A: 'B', B: 'A', AB: 'AB' };
+
+/** A letter on the heart's middle (the sheet's diagonal) made exactly its own
+ * mirror image there: each ring's part on one `side` (the sign of x − y) and
+ * that part's image, a ring that crosses the middle twice joined at the two
+ * points; rings on the other side are left to the images. Null where a ring
+ * crosses or touches the middle more often. */
+function mirroredAcross(contours: Ring[], side: number): Ring[] | null {
+	const along = (p: Point) => (p[0] - p[1]) * side;
+	const out: Ring[] = [];
+	for (const ring of contours) {
+		// The ring with the points where it crosses the middle, each on it.
+		const points: Point[] = [], values: number[] = [];
+		for (const [i, p] of ring.entries()) {
+			const q = ring[(i + 1) % ring.length], a = along(p), b = along(q);
+			const on = Math.abs(a) < ON_MIDDLE;
+			points.push(on ? [(p[0] + p[1]) / 2, (p[0] + p[1]) / 2] : p);
+			values.push(on ? 0 : a);
+			if (!on && Math.abs(b) >= ON_MIDDLE && a * b < 0) {
+				const c = mix(p, q, a / (a - b)), m = (c[0] + c[1]) / 2;
+				points.push([m, m]);
+				values.push(0);
+			}
+		}
+		if (values.every(v => v <= 0)) continue;
+		if (values.every(v => v >= 0)) {
+			if (values.filter(v => !v).length > 1) return null;
+			out.push(ring, ring.map(mirrorImage).reverse());
+			continue;
+		}
+		// The one run on this side, from where the ring meets the middle to
+		// where it leaves it.
+		const start = values.findIndex((v, i) => v < 0 && values[(i + 1) % values.length] >= 0);
+		const run: Point[] = [];
+		for (let k = 1; k <= values.length; k++) {
+			const i = (start + k) % values.length;
+			if (values[i] < 0) break;
+			run.push(points[i]);
+		}
+		const ons = values.filter(v => !v).length, positive = values.filter(v => v > 0).length;
+		if (ons !== 2 || run.length !== positive + 2) return null;
+		out.push([...run, ...run.slice(1, -1).map(mirrorImage).reverse()]);
+	}
+	return out;
+}
+
+/** The cut of a letter on the heart's middle that is its own mirror image
+ * there (see `mirroredAcross`): its two-port cut's part on the `side` of its
+ * first connection, that part's image with the sheets swapped, and between
+ * the points where the outline meets the middle, inside the letter, a cut the
+ * two sheets share down the middle. One sheet so cuts each half of the outline
+ * the other cuts of the other half, and the lobes can share a template. Null
+ * where a cut other than the outline crosses or meets the middle. */
+function middleCut(edges: Edge[], side: number): Edge[] | null {
+	const along = (p: Point) => (p[0] - p[1]) * side;
+	const kept: Edge[] = [], meets: Point[] = [];
+	for (const e of edges) {
+		const a = along(e.from), b = along(e.to);
+		if (Math.abs(a) < ON_MIDDLE && Math.abs(b) < ON_MIDDLE) return null;
+		// The other side's cuts are left to this side's images.
+		if (a < ON_MIDDLE && b < ON_MIDDLE) continue;
+		if (a <= -ON_MIDDLE || b <= -ON_MIDDLE) return null;
+		for (const [p, v] of [[e.from, a], [e.to, b]] as const) if (v < ON_MIDDLE) {
+			if (e.kind !== 'outline' || e.family === 'AB') return null;
+			meets.push(p);
+		}
+		kept.push(e);
+	}
+	// Along the middle, the outline's points pair up into the stretches inside
+	// the letter.
+	meets.sort((p, q) => p[0] + p[1] - q[0] - q[1]);
+	if (!meets.length || meets.length % 2) return null;
+	const cut = [...kept, ...kept.map(e => ({ ...e, from: mirrorImage(e.from), to: mirrorImage(e.to), family: swapped[e.family] }))];
+	for (let i = 0; i < meets.length; i += 2) cut.push({ from: meets[i], to: meets[i + 1], family: 'AB', kind: 'shared' });
+	return cut;
+}
+
 /** Scoped to one text/font/fill request; shared by its construction passes. */
 export function checkeredGridCache() {
 	return new Map<string, LetterCell>();
 }
 
 export function generateCheckeredGrid(text: string, font: Font, fill = .82, contactInset = .35,
-	options: { balanced?: boolean; onCrowded?: () => void; repair?: boolean; onRepair?: () => void; optimize?: boolean; relieve?: boolean; cache?: ReturnType<typeof checkeredGridCache>; variant?: number; corners?: [number, number] } = {}) {
-	const { matrix, groups, letterGroup } = checkeredLayout(text, options.variant), n = matrix.length;
+	options: { balanced?: boolean; onCrowded?: () => void; repair?: boolean; onRepair?: () => void; optimize?: boolean; relieve?: boolean; cache?: ReturnType<typeof checkeredGridCache>; variant?: number; corners?: [number, number]; mirror?: boolean } = {}) {
+	const { mirror = false } = options;
+	const { matrix, groups, letterGroup } = checkeredLayout(text, options.variant, mirror), n = matrix.length;
 	const corners = options.corners ?? CORNER_INSETS;
 	const letter = checkeredLetters(matrix, font, fill), cell = 100 / n;
 	const edges: Edge[] = [], artwork: Ring[] = [];
@@ -264,17 +367,44 @@ export function generateCheckeredGrid(text: string, font: Font, fill = .82, cont
 	// Lettered squares share the junctions of their groups, so every cut stays
 	// an open strip. Squares outside every group are the ordinary checkerboard.
 	const flips: { axis: number; line: number; from: number; to: number }[] = [];
+	// Mirrored (see `checkeredLayouts`): the groups on one side of the heart's
+	// middle are made, and copied across it with the sheets swapped; of a group
+	// on the middle, its squares on the middle are made with connections as far
+	// along both their edges, and its square on one side copied to the other.
+	const image = mirrorImage;
 	for (const [g, owner] of groups.entries()) {
+		if (mirror && owner.y > owner.x) continue;
+		const middle = mirror && owner.y === owner.x;
 		const corner = owner.cells.map(([row, col]) => matrix[row][col] !== undefined && letterGroup.get(`${row},${col}`) !== g);
 		const shared = sharedRays(groups, g);
 		for (const [q, [row, col]] of owner.cells.entries()) {
+			if (middle && q === 1) continue;
 			const char = corner[q] ? undefined : matrix[row][col];
+			// On the middle, a square's connections (q 0 and 2) are its own mirror images.
+			const self = middle && q % 2 === 0;
+			const copied = mirror && !self, made = { edges: edges.length, flips: flips.length, artwork: artwork.length };
+			const across = () => {
+				if (!copied) return;
+				edges.push(...edges.slice(made.edges).map(e => ({ ...e, from: image(e.from), to: image(e.to), family: swapped[e.family] })));
+				flips.push(...flips.slice(made.flips).map(f => ({ ...f, axis: 1 - f.axis })));
+				artwork.push(...artwork.slice(made.artwork).map(ring => ring.map(image).reverse()));
+			};
 			// After a corner cut, this square's first connection stays inside it.
-			const first = (inset: number) => corner[(q + 3) % 4] ? Math.min(inset, corners[0]) : inset;
+			// A group's connections otherwise turn one way round its junction, each
+			// square's first near it and its second further out, so neither sheet's
+			// cuts close round it; a group on the middle has no turn of its own: the
+			// squares on the middle connect near the junction on both edges, those
+			// beside it further out on both, beside a corner cut each nearer, and
+			// a corner cut on the middle reaches as far along both edges as one
+			// beside it along its second, so the squares after it connect inside it.
+			const first = (inset: number) => middle ? inset : corner[(q + 3) % 4] ? Math.min(inset, corners[0]) : inset;
+			const both = (inset: number) => corner[(q + 3) % 4] || corner[(q + 1) % 4] ? Math.min(inset, corners[0]) : inset;
+			const pair = (a: number): [number, number] => middle ? self ? [both(a), both(a)] : [both(1 - a), both(1 - a)] : [first(a), 1 - a];
 			// Cells keep their cuts relative to their connections, which differ
 			// beside a neighbouring junction.
 			// The layouts of one text can differ in board size, too.
-			const reach = `${n}:${Number(shared[q])}${Number(shared[(q + 1) % 4])}`;
+			// A letter on the middle is made its own mirror image (`mirroredAcross`).
+			const reach = `${n}:${Number(shared[q])}${Number(shared[(q + 1) % 4])}${self ? ':middle' : ''}`;
 			const contact = (ray: number, inset: number): Point => {
 				const d = cell * edgeReach(inset, shared[ray]);
 				const origin: Point = [owner.x * cell, owner.y * cell];
@@ -291,23 +421,34 @@ export function generateCheckeredGrid(text: string, font: Font, fill = .82, cont
 				}
 			};
 			if (char === undefined) {
-				const insets: [number, number] = corner[q] ? corners : [first(contactInset), 1 - contactInset];
+				const insets: [number, number] = corner[q] ? self ? [corners[1], corners[1]] : corners : pair(contactInset);
 				edges.push(...emptyCell([contact(q, insets[0]), contact((q + 1) % 4, insets[1])]));
 				flip(insets);
+				across();
 				continue;
 			}
-			const contours = letter(char, row, col);
+			// On the middle, the side of its first connection (`middleCut`).
+			const side = q === 0 ? 1 : -1;
+			const contours = self ? mirroredAcross(letter(char, row, col), side) : letter(char, row, col);
+			if (!contours) throw new ConstructionError('topology', 'A letter on the middle that is not its own mirror image');
 			const origin: Point = [col * cell, row * cell];
 			const key = (a: number, b: number, balanced = false, compound = false) =>
 				`${char}:${q}:${reach}:${first(a)},${b}:${Number(balanced)}:${Number(compound)}`;
-			const baseKey = key(contactInset, 1 - contactInset, options.balanced);
+			const [baseA, baseB] = pair(contactInset);
+			const baseKey = key(baseA, baseB, options.balanced);
 			const construct = (a: number, b: number, compound = false): LetterCell => {
 				a = first(a);
 				const id = key(a, b, options.balanced, compound), prior = cache.get(id);
 				if (prior) return prior;
 				const local: Edge[] = [], gates = [contact(q, a), contact((q + 1) % 4, b)];
+				// On the middle, each connection keeps to its own side of it, clear
+				// of where the outline meets it (`middleCut`).
+				const clearOfMiddle = self ? {
+					obstacles: [[origin, [origin[0] + cell, origin[1] + cell]] as Ring],
+					connectionAllowed: (p: Point) => Math.abs(p[0] - p[1]) * Math.SQRT1_2 >= gridClearance(n)
+				} : {};
 				twoPortMotif(local, contours, gates, gridClearance(n), {
-					balanced: options.balanced, onCrowded: options.onCrowded, compound
+					balanced: options.balanced, onCrowded: options.onCrowded, compound, ...clearOfMiddle
 				});
 				const result: LetterCell = { origin, edges: local, gates, insets: [a, b] };
 				cache.set(id, result);
@@ -338,7 +479,7 @@ export function generateCheckeredGrid(text: string, font: Font, fill = .82, cont
 				if (!piece) throw new ConstructionError('clearance', 'No clear letter connections');
 				cache.set(repairKey, piece);
 			}
-			piece ??= construct(contactInset, 1 - contactInset);
+			piece ??= construct(baseA, baseB);
 			if (options.optimize) {
 				// The uniform-spacing passes already built these alternatives. Mix
 				// their best cells without another routing search. Every choice keeps
@@ -368,10 +509,20 @@ export function generateCheckeredGrid(text: string, font: Font, fill = .82, cont
 			if (options.repair && piece !== cache.get(baseKey)) options.onRepair?.();
 			const selected = piece;
 			const move = (p: Point): Point => [p[0] + origin[0] - selected.origin[0], p[1] + origin[1] - selected.origin[1]];
-			edges.push(...(origin[0] === piece.origin[0] && origin[1] === piece.origin[1] ? piece.edges
-				: piece.edges.map(e => ({ ...e, from: move(e.from), to: move(e.to) }))));
-			flip(piece.insets);
+			const placed = origin[0] === piece.origin[0] && origin[1] === piece.origin[1] ? piece.edges
+				: piece.edges.map(e => ({ ...e, from: move(e.from), to: move(e.to) }));
+			if (self) {
+				// Its first connection's side, and that side's image.
+				const cut = middleCut(placed, side);
+				if (!cut) throw new ConstructionError('topology', 'No cut down the middle of a letter on it');
+				edges.push(...cut);
+				flip([piece.insets[0], piece.insets[0]]);
+			} else {
+				edges.push(...placed);
+				flip(piece.insets);
+			}
 			artwork.push(...contours);
+			across();
 		}
 	}
 	for (const axis of [0, 1]) for (let i = 1; i < n; i++) {

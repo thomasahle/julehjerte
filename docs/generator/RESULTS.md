@@ -1,5 +1,37 @@
 # Generator robustness results
 
+## Small motifs cut down the middle: one template for both lobes
+
+In Små motiver the small copies of a motif that is its own mirror image across
+the heart's middle (the heart, the bell, the circle …) were laid where the
+layouts put them, and the lobes needed two templates. Now such a heart is also
+made mirrored: its layout's junctions and cells are their own mirror images
+(`checkeredLayouts`), each copy off the middle has its image across it with the
+sheets swapped, and a copy on the middle is cut down its middle (`middleCut`):
+its connections on one side of the middle, their image on the other, and a
+hidden cut both sheets share from where its outline meets the middle to where
+it leaves it. Its connections keep a margin from the middle, and a corner cut
+on the middle reaches as far along both edges as one beside it. The mirrored
+heart is kept where its paper tears no more, counted as the page counts it
+(weak pieces and needles, `betterCuts`); of its layouts and connections the one
+that tears least, then cuts best, stopping at one that holds with no tip, after
+a layout that builds none, and trying the larger corner cuts only where it
+tears. Where a layout's cuts come too close at the first contact, the narrower
+one is not tried: 34% less time than every layout and contact, no heart lost
+(283 searches replayed, `tools/sym-prune.mjs`).
+
+The 17 symmetric featured motifs on 2–8 strips at 60, 70, 79 and 90% (476
+hearts): 89 share one template (none before), every one better as the page
+ranks hearts and none worse; the circle 24, the heart 19, the bell 17, the
+house 15, the tree 9, the flower 5. Over those 89, weak pieces and needles
+1432 → 920 (the house on 6 strips at 60% 18 → 0, on 8 strips 42 → 22), but
+sharp tips 107 → 196, hidden turns +4% and cuts +3% longer: one template costs
+some tips, which only the tears outrank. The heart at 79% on three strips: two
+templates → one, with no weak piece or tip either way, its hidden cuts 23%
+longer with 15 more turns. Time +16% at the median, 2.6× at the 90th percentile
+(the house on 8 strips at 60%: 0.5 → 11 s, two patterns searched in full
+where nothing it builds holds).
+
 ## Pieces in the rays reached every way
 
 A motif of several pieces in the rays was refused where the rays' own links

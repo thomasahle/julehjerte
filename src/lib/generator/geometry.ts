@@ -1380,7 +1380,7 @@ export function hasCounterContact(rings: Ring[]): boolean {
 /** A checkerboard junction can feed one letter through two shared bridges.
  * Counters may bracket either bridge; they are never removed from the sheet. */
 export function twoPortMotif(edges: Edge[], contours: Ring[], gates: Point[], margin: number,
-	options: { balanced?: boolean; compound?: boolean; onCrowded?: () => void; bentSpokes?: boolean; strokeTips?: boolean; obstacles?: Ring[] } = {}) {
+	options: { balanced?: boolean; compound?: boolean; onCrowded?: () => void; bentSpokes?: boolean; strokeTips?: boolean; obstacles?: Ring[]; connectionAllowed?: (point: Point) => boolean } = {}) {
 	const center = centroid(contours.flat());
 	try {
 		contourMotif(edges, contours, gates, gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0])), margin, [0, 1], undefined, { practical: true, ...options });

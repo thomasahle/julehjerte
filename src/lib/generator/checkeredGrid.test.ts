@@ -5,7 +5,10 @@ import { CORNER_INSETS, generateCheckeredGrid, checkeredGridCache, checkeredLayo
 import { defaults, readGeneratorState } from './state';
 import { geometryKey } from './cache';
 import { templateVariants } from './templates';
-import { usableMotif, type Font } from './geometry';
+import { usableMotif, type Edge, type Font, type Ring } from './geometry';
+import { normalizeContours } from './contours';
+import { lobesShareTemplate } from '$lib/utils/symmetry';
+import heartMotif from '../../../static/generator/motifs/heart.json';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { normalizeHeartDesign, serializeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
 import { intersectionMarginPx } from '$lib/editor/curveIssues';
@@ -182,4 +185,31 @@ describe('typed letters on alternating squares', () => {
 		expect(() => make(' ')).toThrow(/Empty text/);
 		expect(() => make('♥')).toThrow();
 	});
+});
+
+describe('small motifs woven mirrored', () => {
+	// The heart is its own mirror image: the small motifs' text '***' lays three
+	// across the middle of three strips, the middle one on the heart's middle.
+	const motif = { glyphs: { '*': { advance: 1, contours: normalizeContours(heartMotif.contours as Ring[]) }, ' ': { advance: 1, contours: [] } } } as unknown as Font;
+	const key = (e: Edge) => `${[e.from, e.to].map(p => p.map(x => x.toFixed(4)).join(',')).sort().join(';')}:${e.family}`;
+	const image = (e: Edge): Edge => ({ ...e, from: [e.from[1], e.from[0]], to: [e.to[1], e.to[0]], family: ({ A: 'B', B: 'A', AB: 'AB' } as const)[e.family] });
+
+	it('cuts the motif on the middle down its middle, so every cut is its own mirror image with the sheets swapped', () => {
+		const { edges } = generateCheckeredGrid('***', motif, .82, .35, { mirror: true, corners: printCornerInsets(3) });
+		expect(new Set(edges.map(e => key(image(e))))).toEqual(new Set(edges.map(key)));
+		// Both sheets cut the middle heart from its dip to its tip, inside its square.
+		const down = edges.filter(e => e.family === 'AB' && [e.from, e.to].every(p => Math.abs(p[0] - p[1]) < 1e-9));
+		expect(down).toHaveLength(1);
+		for (const p of [down[0].from, down[0].to]) {
+			expect(p[0]).toBeGreaterThan(100 / 3);
+			expect(p[0]).toBeLessThan(200 / 3);
+		}
+	});
+
+	slow('makes one template for both lobes of three hearts across three strips, its paper holding', () => {
+		const { design } = generate({ mode: 'figure', name: 'Heart', contours: heartMotif.contours as Ring[], colors, style: 'motifs', scale: .79, board: 3 });
+		expect(lobesShareTemplate(design.fingers, design.gridSize)).toBe(true);
+		expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
+		expect(cutTipCounts(design)).toEqual([0, 0]);
+	}, 20000);
 });
