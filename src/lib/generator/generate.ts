@@ -35,7 +35,7 @@ import {
 } from '$lib/inverse/toHeartDesign';
 import type { HeartColors, HeartDesign, Vec } from '$lib/types/heart';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
-import { lobesShareTemplate, mapPointBetweenLobes } from '$lib/utils/symmetry';
+import { lobesShareTemplate, mapPointBetweenLobes, mirroredLobes } from '$lib/utils/symmetry';
 import { holdingWidth, paperFaults, paperHolds, PAPER_NECK_MM, PRINT_WIDTH_MM, thinnestNeck, type WeakPiece } from '$lib/geometry/paperNecks';
 import { intersectionMarginPx } from '$lib/editor/curveIssues';
 import { findSearchIssues, searchFingerIssues } from './searchClearance';
@@ -584,7 +584,11 @@ export function fromTopology(request: GeneratorRequest, own?: GeneratorResult): 
 		const ended = endsRefined(request, first, shown!);
 		return [first.heart, ended.heart, refined(request, ended, shown!).heart];
 	}))];
-	const heart = unbent.map(heart => improveSharedConnections(heart, true)).reduce((a, b) => firmerCuts(b.design, measure(b), a.design, measure(a)) ? b : a);
+	const best = unbent.map(heart => improveSharedConnections(heart, true)).reduce((a, b) => firmerCuts(b.design, measure(b), a.design, measure(a)) ? b : a);
+	// Its lobes mirror images but for a hair (a cut split once more on one side), cut from one template where
+	// that is no worse (see `mirroredLobes`): the gingerbread man on five strips at 100%.
+	const mirrored = mirroredLobes(best.design.fingers, SHARED_NEAR), sharing = mirrored && { ...best, design: { ...best.design, fingers: mirrored } };
+	const heart = sharing && betterCuts(measure(sharing), measure(best)) ? sharing : best;
 	if (!own) return heart;
 	const told = { ...heart, scale: own.scale, enclosed: own.enclosed, whole: own.whole, board: own.board ?? heart.board };
 	return own.hardToCut || firmerCuts(heart.design, measure(heart), own.design, measure(own)) ? told : undefined;
@@ -654,6 +658,10 @@ function holdsAt(design: HeartDesign): number {
 	if (!holdingWidths.has(design)) holdingWidths.set(design, holdingWidth(design) ?? HOLDING_MOST + HOLDING_STEP);
 	return holdingWidths.get(design)!;
 }
+
+/** How far apart, as a share of the square, a heart's lobes may lie from
+ * mirror images to be cut from one template (see `mirroredLobes`). */
+const SHARED_NEAR = .01;
 
 /** How many of a heart's narrowest necks are looked at, how far about one
  * found, in millimetres, the next is looked for, and how far about a needle

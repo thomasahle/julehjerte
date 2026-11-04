@@ -306,6 +306,37 @@ export function lobesShareTemplate(fingers: Finger[], gridSize: GridSize): boole
 }
 
 /**
+ * The fingers with each of the left lobe's cuts made its right partner
+ * mirrored across the square's diagonal (paired as `lobesShareTemplate` pairs
+ * them), so one template cuts both lobes, where the two lobes have as many
+ * cuts and each lies within `near` (a share of the square) of its partner's
+ * mirror image: a generated heart whose lobes differ by a hair, or by one cut
+ * split once more on one side than the other. Null otherwise.
+ */
+export function mirroredLobes(fingers: Finger[], near: number): Finger[] | null {
+  const bounds = inferSquareBounds(fingers);
+  if (!bounds) return null;
+  const left = fingers.filter((f) => f.lobe === 'left').sort((a, b) => (fingerToSegments(a)[0]?.p0.y ?? 0) - (fingerToSegments(b)[0]?.p0.y ?? 0));
+  const right = fingers.filter((f) => f.lobe === 'right').sort((a, b) => (fingerToSegments(a)[0]?.p0.x ?? 0) - (fingerToSegments(b)[0]?.p0.x ?? 0));
+  if (left.length !== right.length) return null;
+  const mirror = (p: Vec) => mapPointBetweenLobes(bounds, p);
+  const samples = (segments: Segment[]) => segments.flatMap((seg) => Array.from({ length: 12 }, (_, k) => {
+    const t = k / 12, u = 1 - t;
+    return { x: u * u * u * seg.p0.x + 3 * u * u * t * seg.p1.x + 3 * u * t * t * seg.p2.x + t * t * t * seg.p3.x,
+      y: u * u * u * seg.p0.y + 3 * u * u * t * seg.p1.y + 3 * u * t * t * seg.p2.y + t * t * t * seg.p3.y };
+  }));
+  const apart = (a: Vec[], b: Vec[]) => Math.max(...a.map((p) => Math.min(...b.map((q) => vecDist(p, q)))));
+  const made = new Map<Finger, Finger>();
+  for (const [i, l] of left.entries()) {
+    const mirrored = mapSegments(fingerToSegments(right[i]!), mirror), a = samples(fingerToSegments(l)), b = samples(mirrored);
+    if (Math.max(apart(a, b), apart(b, a)) > near * bounds.size) return null;
+    // Its partner's node types: the anchors are its partner's.
+    made.set(l, { id: l.id, lobe: l.lobe, segments: mirrored, ...right[i]!.nodeTypes && { nodeTypes: right[i]!.nodeTypes } });
+  }
+  return fingers.map((f) => made.get(f) ?? f);
+}
+
+/**
  * The piece printed and cut for a heart whose lobes share a template
  * (`lobesShareTemplate`): the right lobe's. The PDF and the laser export both
  * take it, so a printed and a laser-cut half of one heart match. The two
