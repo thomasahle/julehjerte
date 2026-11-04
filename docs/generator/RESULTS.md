@@ -18,15 +18,18 @@ that tears least, then cuts best, stopping at one that holds with no tip, after
 a layout that builds none, and trying the larger corner cuts only where it
 tears. Where a layout's cuts come too close at the first contact, the narrower
 one is not tried: 34% less time than every layout and contact, no heart lost
-(283 searches replayed, `tools/sym-prune.mjs`).
+(283 searches replayed, `tools/sym-prune.mjs`). The heart kept has its sharp
+tips relieved as the plain search's are (each cell's connections the fewest
+tips of those built, then `relieve`), at no measurable cost: of the 56 with
+tips, the bell on 6 strips at 79 and 90% 6 → 0, the house at 60% 12 → 0.
 
 The 17 symmetric featured motifs on 2–8 strips at 60, 70, 79 and 90% (476
 hearts): 89 share one template (none before), every one better as the page
 ranks hearts and none worse; the circle 24, the heart 19, the bell 17, the
 house 15, the tree 9, the flower 5. Over those 89, weak pieces and needles
 1432 → 920 (the house on 6 strips at 60% 18 → 0, on 8 strips 42 → 22), but
-sharp tips 107 → 196, hidden turns +4% and cuts +3% longer: one template costs
-some tips, which only the tears outrank. The heart at 79% on three strips: two
+sharp tips 107 → 170 (196 before they were relieved), hidden turns +4% and
+cuts +3% longer: one template costs some tips, which only the tears outrank. The heart at 79% on three strips: two
 templates → one, with no weak piece or tip either way, its hidden cuts 23%
 longer with 15 more turns. Time +16% at the median, 2.6× at the 90th percentile
 (the house on 8 strips at 60%: 0.5 → 11 s, two patterns searched in full

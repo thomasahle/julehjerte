@@ -2955,7 +2955,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				const clean = (result: GeneratorResult) => !paperTears(result.design) && !cutTipCounts(result.design).some(Boolean);
 				const torn = (design: HeartDesign) => paperTears(design) + cutTipCounts(design)[0];
 				const better = (a: GeneratorResult, b: GeneratorResult) => torn(a.design) !== torn(b.design) ? torn(a.design) < torn(b.design) : cutsBetter(a, b);
-				let best: GeneratorResult | undefined;
+				let best: GeneratorResult | undefined, bestAt: { variant: number; inset: number; corners: [number, number] } | undefined;
 				const tryCorners = (corners: [number, number]) => {
 					for (const [variant, layout] of checkeredLayouts(text, true).entries()) {
 						if (layout.matrix.length !== board) continue;
@@ -2967,7 +2967,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 								const candidate = exported(finish(generateCheckeredGrid(text, font, standard, inset, { variant, mirror: true, corners, cache }), 'letters', false));
 								if (!lobesShareTemplate(candidate.design.fingers, candidate.design.gridSize)) continue;
 								built = true;
-								if (!best || better(candidate, best)) best = candidate;
+								if (!best || better(candidate, best)) { best = candidate; bestAt = { variant, inset, corners }; }
 								if (clean(best)) return;
 							} catch (error) {
 								if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
@@ -2981,6 +2981,17 @@ function generateUsingRecipes(request: GeneratorRequest,
 				tryCorners(CORNER_INSETS);
 				const print = printCornerInsets(board);
 				if (best && paperTears(best.design) && print[0] !== CORNER_INSETS[0]) tryCorners(print);
+				// Its sharp tips, as the plain search's: each cell's connections the
+				// fewest tips of those built, then those tips relieved.
+				if (best && bestAt && cutTipCounts(best.design)[1]) for (const relieve of [false, true]) try {
+					const candidate = exported(finish(generateCheckeredGrid(text, font, standard, bestAt.inset, { ...bestAt, mirror: true, cache, optimize: true, relieve }), 'letters', false));
+					if (!lobesShareTemplate(candidate.design.fingers, candidate.design.gridSize) || !better(candidate, best)) continue;
+					const rect = inferOverlapRect(candidate.design.fingers, candidate.design.gridSize);
+					const margin = intersectionMarginPx(rect, gridClearanceScale(candidate.design.gridSize.x, candidate.design.gridSize.y));
+					if (!findSearchIssues(candidate.design.fingers, margin * 1.1).size) best = candidate;
+				} catch (error) {
+					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				}
 				return best && torn(best.design) <= torn(design) ? best : made;
 			};
 			const plain = search();
