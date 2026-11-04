@@ -71,7 +71,7 @@
 	} from '$lib/editor/curveIssues';
 	import { nearestAllowed, type Slide } from '$lib/editor/dragSearch';
 	import { LOBE_OUTLINE_COLORS } from '$lib/editor/outlineColors';
-	import { findNearestOppositeAnchor, snapOppositeRadiusPx } from '$lib/editor/snapOpposite';
+	import { snapAnchorTarget, snapOppositeRadiusPx } from '$lib/editor/snapOpposite';
 	import { toggleNumberInList } from '$lib/editor/selection';
 	import { wheelZoomFactor } from '$lib/editor/wheelZoom';
 	import {
@@ -803,11 +803,14 @@
 
 	// The anchor of the other lobe nearest to `pos` within the snap radius, or null. Positions are
 	// the editor's internal coordinates, the same system drag positions are in.
-	function snapTargetForAnchor(lobe: LobeId, pos: Vec): Vec | null {
+	function snapTargetForAnchor(lobe: LobeId, pos: Vec, junction = false): Vec | null {
 		// The Escher tab places the points the lobes share itself: the crossings.
 		if (!snapToOpposite || patternTile) return null;
 		const { width, height } = getOverlapRect();
-		return findNearestOppositeAnchor(fingers, lobe, pos, snapOppositeRadiusPx({ width, height }));
+		// With the lobes mirrored a junction's image follows it: near it, the two meet halfway.
+		// (A curve's end snapped to its image is put back on its own edge: at the corner, where they meet.)
+		const mirror = junction && symmetryBetweenLobes && canSymmetryBetweenLobes() ? (p: Vec) => swapPointBetweenLobesWithMode(p, antiBetweenLobes) : undefined;
+		return snapAnchorTarget(fingers, lobe, pos, snapOppositeRadiusPx({ width, height }), mirror);
 	}
 
 	// Snap a curve endpoint after it has been projected onto its edge: the snap target is
@@ -3303,7 +3306,7 @@
 					const n = segs?.length ?? 0;
 					if (finger && segs && anchorIdx > 0 && anchorIdx < n) {
 						const raw = vecAdd(p, offset);
-						const desired = snapTargetForAnchor(finger.lobe, raw) ?? raw;
+						const desired = snapTargetForAnchor(finger.lobe, raw, true) ?? raw;
 						const tile = patternTile;
 						const ok = updateSegmentControlPoint(dragTarget.fingerId, anchorIdx, 'junction', desired);
 						if (!ok) return;

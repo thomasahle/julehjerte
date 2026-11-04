@@ -657,6 +657,41 @@ describe('the symmetry rows', () => {
 	});
 });
 
+describe('snapping to the other lobe', () => {
+	it("meets a node's own image halfway, on the middle, where the lobes are mirrored, rather than trading places with it", () => {
+		const h = render();
+		h.target.querySelector<HTMLButtonElement>('[aria-label="Symmetry between the two lobes"] [title="Mirrored: one side mirrors the other"]')!.click();
+		flushSync();
+		h.target.querySelector<HTMLInputElement>('label[title^="A point you drag lands"] input')!.click();
+		flushSync();
+		// a node in the middle of L-1, its image added to its mate in the other lobe
+		const at = bezierAt(h.fingers.find((f) => f.id === 'L-1')!.segments[0]!, 0.5);
+		for (let i = 0; i < 2; i++) {
+			send(h.path('L-1'), 'pointerdown', at);
+			send(h.svg, 'pointerup', at);
+		}
+		const node = () => h.fingers.find((f) => f.id === 'L-1')!.segments[1]!.p0;
+		const { left, top, width, height } = getCenteredRectParams(h.gridSize);
+		// how far a point lies off the middle, the line the mirror keeps
+		const off = (p: Vec) => (p.x - left) / width - (p.y - top) / height;
+		expect(Math.abs(off(node()))).toBeGreaterThan(0.1);
+		const start = node();
+		send(h.handles()[1]!, 'pointerdown', start);
+		// dragged along, a few pixels from the middle: its image is as near, and the two meet between
+		const seen: Vec[] = [];
+		for (const k of [0, 1, 2, 3, 4, 5]) {
+			const u = 0.45 + k * 0.01;
+			const pointer = { x: left + u * width + 3, y: top + u * height - 3 };
+			send(h.svg, 'pointermove', pointer);
+			seen.push({ ...node() });
+		}
+		send(h.svg, 'pointerup', seen.at(-1)!);
+		for (const p of seen) expect(Math.abs(off(p))).toBeLessThan(1e-6);
+		// and each step forward, never back and forth
+		for (let k = 1; k < seen.length; k++) expect(seen[k]!.x).toBeGreaterThan(seen[k - 1]!.x);
+	});
+});
+
 describe('the cut under the pointer', () => {
 	it('darkens all along, over the stripes where two cuts share a stroke too', () => {
 		const h = render();

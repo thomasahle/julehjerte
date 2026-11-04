@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import type { Finger, Vec } from '$lib/types/heart';
 import { getCenteredRectParams } from '$lib/utils/overlapRect';
-import { SNAP_OPPOSITE_UNITS, findNearestOppositeAnchor, lobeAnchors, snapOppositeRadiusPx } from './snapOpposite';
+import { SNAP_OPPOSITE_UNITS, findNearestOppositeAnchor, lobeAnchors, snapAnchorTarget, snapOppositeRadiusPx } from './snapOpposite';
 
 // 3x3 heart: overlap square 225 px at (187.5, 187.5); one heart unit is 2.25 px.
 const rect = getCenteredRectParams({ x: 3, y: 3 });
@@ -94,3 +94,24 @@ describe('findNearestOppositeAnchor', () => {
 		expect(hit).not.toBe(rightJunction);
 	});
 });
+
+describe('snapAnchorTarget', () => {
+	// The lobes mirrored across the square's diagonal through (rect.left, rect.top).
+	const mirror = (p: Vec): Vec => ({ x: rect.left + (p.y - rect.top), y: rect.top + (p.x - rect.left) });
+
+	it('meets its own image halfway, on the diagonal, rather than trading places with it', () => {
+		// Dragged a few pixels off the diagonal its image is as far the other way: they meet between.
+		const pos: Vec = { x: 250, y: 256 };
+		const target = snapAnchorTarget(fingers, 'left', pos, radius, mirror)!;
+		expect(target.x).toBeCloseTo(253);
+		expect(target.y).toBeCloseTo(253);
+		expect(mirror(target).x).toBeCloseTo(target.x);
+		expect(mirror(target).y).toBeCloseTo(target.y);
+	});
+
+	it('snaps to the other lobe\'s anchors as before away from its image, and without a mirror', () => {
+		expect(snapAnchorTarget(fingers, 'left', { x: 302, y: 261 }, radius, mirror)).toEqual(rightJunction);
+		expect(snapAnchorTarget(fingers, 'left', { x: 250, y: 256 }, radius)).toEqual(findNearestOppositeAnchor(fingers, 'left', { x: 250, y: 256 }, radius));
+	});
+});
+

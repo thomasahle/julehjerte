@@ -49,3 +49,19 @@ export function findNearestOppositeAnchor(fingers: Finger[], lobe: LobeId, pos: 
 	}
 	return best;
 }
+
+/**
+ * Where an anchor dragged to `pos` snaps (see `findNearestOppositeAnchor`). With the lobes
+ * mirrored, `mirror` maps a point to its image in the other lobe, and the anchor's own image
+ * follows it: snapped onto that image the two would trade places on every move, so near its
+ * image (within `threshold`) the anchor meets it halfway instead, on the mirror's line, where the
+ * two are one point.
+ */
+export function snapAnchorTarget(fingers: Finger[], lobe: LobeId, pos: Vec, threshold: number, mirror?: (p: Vec) => Vec): Vec | null {
+	if (mirror) {
+		const image = mirror(pos);
+		if (vecDist(image, pos) <= threshold) return { x: (pos.x + image.x) / 2, y: (pos.y + image.y) / 2 };
+	}
+	return findNearestOppositeAnchor(fingers, lobe, pos, threshold);
+}
+
