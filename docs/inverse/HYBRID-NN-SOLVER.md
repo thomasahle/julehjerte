@@ -1019,6 +1019,12 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   against a failing one; after the fitter's answer, today's failing answer waits for the ladder; and
   with today's search given up and the fitter's answer passing, the ladder goes on for the alternative
   instead of being ended.
+  Yet runs on the site still showed no exact template: the ladder had not run at all. The search waits
+  at most 1.5 s (`CUT_MODEL_WAIT_MS`) for the cut model, 9.5 MB fetched and compiled at Find snit, and on
+  a fresh page that is often not enough. Side by side, the maps now go on loading and the ladder starts
+  when they come, while no exact template has been taken (also after the fitter's answer went out); its
+  coming is waited for as a running ladder's is, until the search time is up. The model held back 8 s on
+  the page: the ladder starts at 8.8 s and its template (0.03% off) is the answer at 11.7 s.
 
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:

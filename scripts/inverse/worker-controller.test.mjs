@@ -524,3 +524,40 @@ test('the exact search alone runs in one worker, and Stop finishes its drawing',
   await h.send(2,'stop');await solving;
   assert.deepEqual(drawn,[packet.geometry]);assert.deepEqual(h.messages.at(-1).result,exactValue);
 });
+
+// The model not in within its wait (a first visit): its maps come later, and the ladder starts then.
+function lateModel(){
+  let arrive;const maps=new Promise(resolve=>{arrive=resolve;});
+  return {arrive,predictCutMaps:async(source,options)=>options?.wait!==undefined?null:maps};
+}
+
+test('side by side with the network, a model in late starts the ladder then, whose template at its bound is taken',async()=>{
+  const model=lateModel(),h=harness({predictCutMaps:model.predictCutMaps});await h.send(1,'prepare',{input});
+  const solving=h.send(2,'solve',{settings:{...both,cutModel:true}});await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(h.workers.length,2);
+  model.arrive({size:1});await new Promise(resolve=>setImmediate(resolve));
+  const [,exact,ladder]=h.workers;
+  assert.equal(ladder.sent[0].settings.ladderOnly,true);assert.deepEqual(ladder.sent[0].settings.cutMaps,{size:1});
+  const found=ladderValue(4,4);h.reply(ladder,2,'result',{result:found});await solving;
+  assert.equal(exact.terminated,1);assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,found);
+});
+
+test('side by side with the network, after a fitted answer went out the alternative waits for a model in late, and its ladder\'s template stands',async t=>{
+  t.mock.timers.enable({apis:['setTimeout','Date']});
+  const pass=v=>({...v,report:{...v.report,templateChecksPassed:true}}),fitted=pass(value);
+  for (const modelComes of [true, false]) {
+    const model=lateModel(),h=harness({now:()=>Date.now(),predictCutMaps:model.predictCutMaps});await h.send(1,'prepare',{input});
+    const solving=h.send(2,'solve',{settings:{...both,cutModel:true}});await new Promise(resolve=>setImmediate(resolve));
+    const [fitter,exact]=h.workers;
+    t.mock.timers.tick(1000*10);h.reply(fitter,2,'result',{result:fitted});t.mock.timers.tick(1000*11);await solving;
+    assert.deepEqual(h.messages.slice(-2),[{id:2,type:'result',result:fitted},{id:2,type:'alternative',pending:true}]);
+    // Today's near miss waits for the ladder still to start.
+    const near=todayValue(6);near.report.solver.exactOutline.nearMiss=true;
+    h.reply(exact,2,'result',{result:near});assert.equal(h.messages.at(-1).pending,true);
+    model.arrive(modelComes?{size:1}:null);await new Promise(resolve=>setImmediate(resolve));
+    if (!modelComes) {assert.equal(h.workers.length,2);assert.deepEqual(h.messages.at(-1),{id:2,type:'alternative',pending:false});continue;}
+    const ladder=h.workers[2],found=pass(ladderValue(7,6));
+    h.reply(ladder,2,'result',{result:found});
+    assert.deepEqual(h.messages.at(-1),{id:2,type:'alternative',result:found});
+  }
+});

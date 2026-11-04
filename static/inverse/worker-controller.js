@@ -158,15 +158,22 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
         // (neural/cuts.js; Mal asks for it with `cutModel`), when its model is
         // in within CUT_MODEL_WAIT_MS: a search never waits longer for it, and
         // without it runs as before.
+        const network=cfg.exactOutline&&settings.cutModel===true&&prepared.sourceImage?.mask;
         let cutMaps=null;
-        if(cfg.exactOutline&&settings.cutModel===true&&prepared.sourceImage?.mask){
+        if(network){
           try{cutMaps=await predictCutMaps(prepared.sourceImage,{wait:CUT_MODEL_WAIT_MS});}catch{cutMaps=null;}
         }
         // Side by side, the network's ladder runs in a third worker beside
         // today's exact search, which keeps its whole time: the first exact
         // template stands, so the ladder costs no time where it finds none.
         // The exact search alone (Avanceret) runs the ladder before it.
-        const race=both&&cutMaps!==null,exactSettings=cutMaps&&!race?{...settings,cutMaps}:settings;
+        let race=both&&cutMaps!==null;
+        const exactSettings=cutMaps&&!race?{...settings,cutMaps}:settings;
+        // Side by side with the model not yet in (its 9.5 MB on a first visit), its maps go on
+        // loading, and the ladder starts when they come (a user's heart: the fitter's answer
+        // at 24 s and no exact template, the ladder's being the only one).
+        const lateMaps=both&&network&&!race?predictCutMaps(prepared.sourceImage).catch(()=>null):null;
+        let mapsPending=lateMaps!==null;
         compute??=createWorker();
         if(both)exactCompute??=createWorker();
         if(race)ladderCompute??=createWorker();
@@ -182,17 +189,18 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
           // A ladder still searching while the fitter's answer fails the export's
           // checks is waited for (within the search time): today's search giving up
           // ends nothing then.
-          const ladderPending=()=>race&&ladderCompute!==null&&!passes(job.held?.result);
+          const ladderAlive=()=>race&&ladderCompute!==null||mapsPending;
+          const ladderPending=()=>ladderAlive()&&!passes(job.held?.result);
           // With today's search given up and the fitter's answer passing, a ladder still searching goes on
           // for the alternative (trail), as after a fitted answer that went out first.
           const settle=()=>{
             if(!job.held||ladderPending())return;
-            if(job.exact==='failed'&&race&&ladderCompute&&passes(job.held.result)){trail(job.nearExact??null);return;}
+            if(job.exact==='failed'&&ladderAlive()&&passes(job.held.result)){trail(job.nearExact??null);return;}
             finishBest(job.held);
           };
           const exactDone=()=>{if(job.ladder){disposeExact();takeExact(job.ladder);return;}job.exact='failed';job.drawing=null;disposeExact();settle();};
           // The search time is up: today's search ended, and a ladder still waited for.
-          const timeUp=()=>{if(!live())return;if(job.exact==='running')exactDone();if(live()&&job.exact==='failed'&&ladderCompute){disposeLadder();settle();}};
+          const timeUp=()=>{if(!live())return;mapsPending=false;if(job.exact==='running')exactDone();if(live()&&job.exact==='failed'&&ladderCompute){disposeLadder();settle();}};
           // An exact template: the fitter's answer follows as an alternative.
           const takeExact=value=>{
             job.exact='done';
@@ -258,6 +266,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
           };
           compute.onerror=event=>{event.preventDefault?.();disposeFitter();if(trailing?.id===id&&!trailing.exact){trailing=null;scope.postMessage({id,type:'alternative',pending:false});return;}const error=fail(event.message||'The fitting worker could not load.','ENGINE_UNAVAILABLE');if(job.exact==='running')job.held={error};else finish(job,null,error);};
           compute.onmessageerror=()=>{disposeFitter();const error=fail('The fitting response could not be read.','ENGINE_UNAVAILABLE');if(job.exact==='running')job.held={error};else finish(job,null,error);};
+          let startLadder=null;
           if(both){
             // The exact search's answer after the fitter's went out: an alternative.
             // A held ladder template stands with fewer hidden segments, or as many and closer, or when today's has none.
@@ -266,15 +275,15 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
               const best=ladderStands(ladder,answer)?ladder:answer;
               scope.postMessage(best&&passes(best)?{id,type:'alternative',result:best}:{id,type:'alternative',pending:false});
             };
+            // Today's answer after the fitter's went out: one failing the export's checks waits for a
+            // ladder still searching, or still to start.
+            const todayIn=answer=>{
+              if(!passes(answer)&&(ladderCompute||mapsPending)&&!trailing.ladder){trailing.today=answer;disposeExact();return;}
+              trailed(answer);
+            };
             exactCompute.onmessage=({data:message})=>{
               if(message.id!==id)return;
-              if(trailing?.id===id&&trailing.exact){
-                if(message.type!=='result'&&message.type!=='error')return;
-                const answer=message.type==='result'?message.result:null;
-                // Today's answer failing the export's checks waits for a ladder still searching.
-                if(!passes(answer)&&ladderCompute&&!trailing.ladder){trailing.today=answer;disposeExact();return;}
-                trailed(answer);return;
-              }
+              if(trailing?.id===id&&trailing.exact){if(message.type==='result'||message.type==='error')todayIn(message.type==='result'?message.result:null);return;}
               if(!live()||job.exact!=='running')return;
               if(message.type==='progress'){
                 const geometry=message.event?.geometry;
@@ -297,9 +306,10 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
               }
               else exactDone();
             };
-            exactCompute.onerror=event=>{event.preventDefault?.();if(trailing?.id===id&&trailing.exact){disposeExact();trailed(null);return;}if(live()&&job.exact==='running')exactDone();};
-            exactCompute.onmessageerror=()=>{if(trailing?.id===id&&trailing.exact){disposeExact();trailed(null);return;}if(live()&&job.exact==='running')exactDone();};
-            if(race){
+            exactCompute.onerror=event=>{event.preventDefault?.();if(trailing?.id===id&&trailing.exact){disposeExact();todayIn(null);return;}if(live()&&job.exact==='running')exactDone();};
+            exactCompute.onmessageerror=()=>{if(trailing?.id===id&&trailing.exact){disposeExact();todayIn(null);return;}if(live()&&job.exact==='running')exactDone();};
+            startLadder=maps=>{
+              race=true;ladderCompute??=createWorker();
               ladderCompute.onmessage=({data:message})=>{
                 if(message.id!==id||message.type==='progress'||message.type==='candidate')return;
                 // After the fitter's answer went out: the alternative, as in the race.
@@ -335,14 +345,22 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
               const ladderLost=()=>{disposeLadder();if(trailing?.id===id&&trailing.exact&&trailing.today!==undefined)trailed(trailing.today);else if(live()&&job.exact==='failed')settle();};
               ladderCompute.onerror=event=>{event.preventDefault?.();ladderLost();};
               ladderCompute.onmessageerror=ladderLost;
-            }
+              ladderCompute.postMessage({id,target:prepared,settings:{...settings,cutMaps:maps,exactRoute:'exact',ladderOnly:true}});
+            };
+            if(lateMaps)lateMaps.then(maps=>{
+              if(!mapsPending)return;mapsPending=false;
+              const trailingHere=trailing?.id===id&&trailing.exact;
+              if(maps&&(trailingHere||live()&&['running','failed'].includes(job.exact)))try{startLadder(maps);return;}catch{disposeLadder();}
+              // No maps (or no ladder) after all: what waited for them goes on.
+              if(trailingHere&&trailing.today!==undefined)trailed(trailing.today);else if(live()&&job.exact==='failed')settle();
+            });
             // HiGHS can overrun its time limit at its root: the minute is kept here.
             job.timer=setTimeout(timeUp,1000*(cfg.timeLimit+EXACT_GRACE_SECONDS));
           }
           try{
             compute.postMessage({id,target:prepared,settings:both?{...settings,exactRoute:'fitter'}:exactSettings});
             if(both)exactCompute.postMessage({id,target:prepared,settings:{...exactSettings,exactRoute:'exact'}});
-            if(race)ladderCompute.postMessage({id,target:prepared,settings:{...settings,cutMaps,exactRoute:'exact',ladderOnly:true}});
+            if(race)startLadder(cutMaps);
           }catch(error){dispose();finish(job,null,error);}
         });
       }else if(action==='saved'){
