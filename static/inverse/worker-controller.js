@@ -59,11 +59,13 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
   const nearMiss=value=>value?.report?.solver?.exactOutline?.nearMiss===true;
   // An exact template's hidden segments and its outline's lower bound.
   const searchOf=value=>value?.report?.solver?.exactOutline?.search,hiddenOf=value=>searchOf(value)?.attempts?.at(-1)?.hidden??searchOf(value)?.hidden;
-  // A held ladder template stands against today's with fewer hidden segments, or as many and closer to
-  // the picture (a user's heart: 7 each, the ladder's 0.1% off, today's 0.3% with a hairline through a motif).
+  // A held ladder template stands against today's passing where today's fails, else with fewer hidden
+  // segments, or as many and closer to the picture (a user's heart: 7 each, the ladder's 0.1% off,
+  // today's 0.3% with a hairline through a motif).
   const errorOf=value=>value?.report?.imageError?.mismatchFraction??Infinity;
   const ladderStands=(ladder,today)=>{
     if(!ladder)return false;if(!today)return true;
+    if(passes(ladder)!==passes(today))return passes(ladder);
     const mine=hiddenOf(ladder)??Infinity,theirs=hiddenOf(today)??Infinity;
     return mine<theirs||mine===theirs&&errorOf(ladder)<errorOf(today);
   };
@@ -181,7 +183,13 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
           // checks is waited for (within the search time): today's search giving up
           // ends nothing then.
           const ladderPending=()=>race&&ladderCompute!==null&&!passes(job.held?.result);
-          const settle=()=>{if(job.held&&!ladderPending())finishBest(job.held);};
+          // With today's search given up and the fitter's answer passing, a ladder still searching goes on
+          // for the alternative (trail), as after a fitted answer that went out first.
+          const settle=()=>{
+            if(!job.held||ladderPending())return;
+            if(job.exact==='failed'&&race&&ladderCompute&&passes(job.held.result)){trail(job.nearExact??null);return;}
+            finishBest(job.held);
+          };
           const exactDone=()=>{if(job.ladder){disposeExact();takeExact(job.ladder);return;}job.exact='failed';job.drawing=null;disposeExact();settle();};
           // The search time is up: today's search ended, and a ladder still waited for.
           const timeUp=()=>{if(!live())return;if(job.exact==='running')exactDone();if(live()&&job.exact==='failed'&&ladderCompute){disposeLadder();settle();}};
@@ -209,12 +217,13 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
           // The network's ladder goes on with today's search after the fitter's
           // answer (gathering-hanging-trio-top: the ladder's template at 43 s,
           // none from today's), its template the alternative as in the race.
-          const trail=()=>{
+          // `today`: today's answer when it is already in (null when it found none).
+          const trail=today=>{
             job.exact='trailing';
             const timer=setTimeout(()=>{if(trailing?.id===id&&trailing.exact){const ladder=trailing.ladder;trailing=null;disposeExact();disposeLadder();scope.postMessage(ladder&&passes(ladder)?{id,type:'alternative',result:ladder}:{id,type:'alternative',pending:false});}},
               Math.max(0,job.startedAt+1000*(cfg.timeLimit+EXACT_GRACE_SECONDS)-now()));
             finish(job,job.held.result,undefined,true);
-            trailing={id,exact:true,timer,ladder:null};
+            trailing={id,exact:true,timer,ladder:null,...(today!==undefined?{today}:{})};
             scope.postMessage({id,type:'alternative',pending:true});
           };
           compute.onmessage=({data:message})=>{
@@ -259,7 +268,13 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
             };
             exactCompute.onmessage=({data:message})=>{
               if(message.id!==id)return;
-              if(trailing?.id===id&&trailing.exact){if(message.type==='result')trailed(message.result);else if(message.type==='error')trailed(null);return;}
+              if(trailing?.id===id&&trailing.exact){
+                if(message.type!=='result'&&message.type!=='error')return;
+                const answer=message.type==='result'?message.result:null;
+                // Today's answer failing the export's checks waits for a ladder still searching.
+                if(!passes(answer)&&ladderCompute&&!trailing.ladder){trailing.today=answer;disposeExact();return;}
+                trailed(answer);return;
+              }
               if(!live()||job.exact!=='running')return;
               if(message.type==='progress'){
                 const geometry=message.event?.geometry;
@@ -289,7 +304,12 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
                 if(message.id!==id||message.type==='progress'||message.type==='candidate')return;
                 // After the fitter's answer went out: the alternative, as in the race.
                 // After the fitter's passing answer went out, a near miss is no alternative.
-                if(trailing?.id===id&&trailing.exact){disposeLadder();if(message.type!=='result'||nearMiss(message.result))return;if(settles(message.result)){disposeExact();trailed(message.result);}else trailing.ladder=message.result;return;}
+                if(trailing?.id===id&&trailing.exact){
+                  disposeLadder();const waiting=trailing.today!==undefined;
+                  if(message.type!=='result'||nearMiss(message.result)){if(waiting)trailed(trailing.today);return;}
+                  if(waiting){trailing.ladder=message.result;trailed(trailing.today);return;}
+                  if(settles(message.result)){disposeExact();trailed(message.result);}else trailing.ladder=message.result;return;
+                }
                 // Today's search may have given up (job.exact 'failed') while the ladder went on.
                 if(!live()||!['running','failed'].includes(job.exact)){disposeLadder();return;}
                 disposeLadder();
@@ -312,8 +332,9 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
                 const first=!job.drawn;job.drawn=true;
                 if(first&&job.held)wait();
               };
-              ladderCompute.onerror=event=>{event.preventDefault?.();disposeLadder();if(live()&&job.exact==='failed')settle();};
-              ladderCompute.onmessageerror=()=>{disposeLadder();if(live()&&job.exact==='failed')settle();};
+              const ladderLost=()=>{disposeLadder();if(trailing?.id===id&&trailing.exact&&trailing.today!==undefined)trailed(trailing.today);else if(live()&&job.exact==='failed')settle();};
+              ladderCompute.onerror=event=>{event.preventDefault?.();ladderLost();};
+              ladderCompute.onmessageerror=ladderLost;
             }
             // HiGHS can overrun its time limit at its root: the minute is kept here.
             job.timer=setTimeout(timeUp,1000*(cfg.timeLimit+EXACT_GRACE_SECONDS));

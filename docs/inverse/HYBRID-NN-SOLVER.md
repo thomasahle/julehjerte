@@ -1013,7 +1013,12 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   On juleflet.dk the race then took a second template of today's search (7 hidden, 0.3% off, a white
   hairline through a motif, a red sliver from another) over the ladder's (7, 0.1%): a held ladder
   template stood only with fewer hidden segments. With as many it now stands when closer to the
-  picture (`worker-controller.js` `ladderStands`).
+  picture (`worker-controller.js` `ladderStands`). A second run there gave no exact template at all:
+  the fitter's answer went out at 24 s, and once it had, today's failing answer (fewer hidden segments)
+  displaced the ladder's passing one, or ended the ladder before it came. A passing template now stands
+  against a failing one; after the fitter's answer, today's failing answer waits for the ladder; and
+  with today's search given up and the fitter's answer passing, the ladder goes on for the alternative
+  instead of being ended.
 
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:

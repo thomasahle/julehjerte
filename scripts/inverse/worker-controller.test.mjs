@@ -440,11 +440,34 @@ test('side by side with the network, today\'s search giving up waits for the lad
     await solving;
     assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,expect==='ladder'?found:value);
   }
-  // A passing fitted answer goes out as before, the ladder ended.
-  const {h,solving,fitter,exact,ladder}=await racing(),fitted={...value,report:{...value.report,templateChecksPassed:true}};
-  h.reply(fitter,2,'result',{result:fitted});
-  h.reply(exact,2,'error',{message:'none',code:'NO_EXACT_TEMPLATE'});await solving;
-  assert.equal(ladder.terminated,1);assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,fitted);
+  // A passing fitted answer goes out at once, and the ladder goes on: its template is the alternative.
+  for (const ladderSays of ['template', 'none']) {
+    const {h,solving,fitter,exact,ladder}=await racing(),fitted={...value,report:{...value.report,templateChecksPassed:true}};
+    const found={...ladderValue(8,7),report:{...ladderValue(8,7).report,templateChecksPassed:true}};
+    h.reply(fitter,2,'result',{result:fitted});
+    h.reply(exact,2,'error',{message:'none',code:'NO_EXACT_TEMPLATE'});await solving;
+    assert.equal(ladder.terminated,0);
+    assert.deepEqual(h.messages.slice(-2),[{id:2,type:'result',result:fitted},{id:2,type:'alternative',pending:true}]);
+    if (ladderSays==='template') h.reply(ladder,2,'result',{result:found});else h.reply(ladder,2,'error',{message:'none',code:'NO_EXACT_TEMPLATE'});
+    assert.deepEqual(h.messages.at(-1),ladderSays==='template'?{id:2,type:'alternative',result:found}:{id:2,type:'alternative',pending:false});
+  }
+});
+
+test('side by side with the network, after a fitted answer went out a failing answer of today\'s waits for the ladder, whose passing template stands',async t=>{
+  // A user's heart on the site: the fitter's answer at 24 s, today's near miss (6 hidden) before the
+  // ladder's passing template (7): no alternative came.
+  t.mock.timers.enable({apis:['setTimeout','Date']});
+  const pass=v=>({...v,report:{...v.report,templateChecksPassed:true}}),fitted=pass(value);
+  const h=harness({now:()=>Date.now(),predictCutMaps:async()=>({size:1})});await h.send(1,'prepare',{input});
+  const solving=h.send(2,'solve',{settings:{...both,cutModel:true}});await new Promise(resolve=>setImmediate(resolve));
+  const [fitter,exact,ladder]=h.workers;
+  t.mock.timers.tick(1000*10);h.reply(fitter,2,'result',{result:fitted});t.mock.timers.tick(1000*11);await solving;
+  assert.deepEqual(h.messages.slice(-2),[{id:2,type:'result',result:fitted},{id:2,type:'alternative',pending:true}]);
+  const near=todayValue(6);near.report.solver.exactOutline.nearMiss=true;
+  h.reply(exact,2,'result',{result:near});
+  assert.equal(exact.terminated,1);assert.equal(ladder.terminated,0);assert.equal(h.messages.at(-1).pending,true);
+  const found=pass(ladderValue(7,6));h.reply(ladder,2,'result',{result:found});
+  assert.deepEqual(h.messages.at(-1),{id:2,type:'alternative',result:found});
 });
 
 
