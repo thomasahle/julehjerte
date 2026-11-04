@@ -918,6 +918,20 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   and then repaired on 2 (vissevasse-arranged-r2c2 and r3c3, both still breaking rules); the others
   start from the grid or topology (4), find no start in time (3) or end before a start is chosen (17,
   photographs and vissevasse mostly, whose traced outline gives the search nothing to start on).
+- **What the network gets wrong, read from its maps; weights edited without training (2026-11-04): no
+  gain.** On the 52 test pictures with a designer template that has hidden cuts, the share of the
+  designer's hidden cut syn1v marks (its probability within a pixel, median) is 0.87 where its ladder
+  passes (44) and 0.50 where it fails (8: roed-blomst 0.32, hjerte-paa-hjerte 0.39,
+  hjerte-i-hjerte-i-hjerte 0.41, jul-2026 0.49, santa 0.51, jul-tern 0.52, davidsstjerne-circ 0.55,
+  mor-far 0.72); the failing designs have three times the hidden cut (486 pixels against 142) and the
+  network is not unsure there (more pixels over 0.5, not fewer). So it does not know these designs'
+  hidden cuts: text hearts, nested hearts, santa's figure. Without training (`nn/tta.py`, `soup.py`,
+  `agree.py`): the maps averaged over the square's 8 symmetries mark less (0.85 and 0.45); syn1v's
+  weights averaged with ei2's (fine-tuned from it) change nothing (0.88, 0.51); with syn1's (another
+  run, its decoder started elsewhere) the maps go flat (precision 0.29 to 0.06). syn1 alone marks more
+  (0.90, 0.60) at less precision, the trade the 127-picture runs already measured (95 against 93).
+  What is missing has to come from training data with such designs (the generator's text hearts, say),
+  not from editing the weights.
 - **The three photographs without a template** are the photo step's, not the search's:
   danish-red-gold's mask splits one patterned paper into both colours; danish-tree-group-top's crop
   takes two overlapping hearts; gathering-hanging-trio-middle's fitted template keeps every cutting rule
