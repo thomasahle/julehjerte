@@ -1026,6 +1026,17 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   coming is waited for as a running ladder's is, until the search time is up. The model held back 8 s on
   the page: the ladder starts at 8.8 s and its template (0.03% off) is the answer at 11.7 s.
 
+- **The page itself on all 127 test pictures (2026-11-05).** `sweep/sweep.mjs`: each picture through
+  juleflet.dk's Mal page (Chrome headless, one at a time, the page's defaults), the panel's answer and
+  what each worker returned. 121 show a template passing every check; the other 6 have none from any
+  worker (jul-2026, jul-tern, and four photographs whose exact search ends at once). One exact template
+  Node finds is lost in the browser: vissevasse-arranged-r3c4, whose searches take 48–50 s alone in
+  Node and end as near misses beside two other workers. A fitted heart shown while the exact search
+  looked stayed when the exact one, also over 1 %, came closer (balls: the fitter's 1.4 % after 10 s,
+  the ladder's 1.2 % after 52 s); it now gives way (`verdict.ts` `givesWay`). Six photographs show the
+  fitter's heart over a passing exact one 1.3–3 % off (the fitter's 0.4–1.4 %): the page's rule for
+  hearts only close, kept. First answer: median 12 s.
+
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);

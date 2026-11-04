@@ -30,3 +30,22 @@ export function isMediocre(report: { mismatch: number; motifMismatch?: number })
 	const difference = report.motifMismatch ?? report.mismatch;
 	return Math.round(1000 * difference) > 1000 * MEDIOCRE_MISMATCH;
 }
+
+type Shown = { mismatch: number; motifMismatch?: number; kind?: 'exact' | 'smooth' };
+
+/**
+ * Whether a second template, arriving while another is shown, takes its place.
+ * A heart only close (the panel's "close, but not right") gives way to one that
+ * is not: the photographs whose sides the exact search reads deeper than their
+ * edge come out over 1 %, the fitter's under it. The fitter's, shown while the
+ * exact search was still looking, gives way too: it only stood in for an exact
+ * one (Rød blomst: the fitter's corners at 0.7 % after 20 s, the exact template
+ * at 0.2 % after 42 s), also when both are only close and the exact one is no
+ * further from the mask (a bauble photograph: the fitter's 1.4 % after 10 s,
+ * the network's exact template 1.2 % after 52 s, which had stayed hidden).
+ */
+export function givesWay(shown: Shown, found: Shown): boolean {
+	const standIn = shown.kind === 'smooth' && found.kind === 'exact';
+	if (standIn && (found.motifMismatch ?? found.mismatch) <= (shown.motifMismatch ?? shown.mismatch)) return true;
+	return !isMediocre(found) && (isMediocre(shown) || standIn);
+}

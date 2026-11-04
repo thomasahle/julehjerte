@@ -63,7 +63,7 @@
 	import { fingerHasIntersectionIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 	import { inferOverlapRect } from '$lib/utils/overlapRect';
 	import { rasterizeDesign } from '$lib/paint/rasterize';
-	import { isMediocre } from '$lib/paint/verdict';
+	import { givesWay } from '$lib/paint/verdict';
 	import {
 		canRedo as historyCanRedo,
 		canUndo as historyCanUndo,
@@ -859,14 +859,7 @@
 							&& maskMismatch(rasterizeDesign(found.result.design, target.size).data, rasterizeDesign(shown.design, target.size).data) < SAME_HEART;
 						if (!same) {
 							alternative = found;
-							// A heart only close (the panel's "close, but not right") gives way to
-							// one that is not: the photographs whose sides the exact search reads
-							// deeper than their edge come out over 1 %, the fitter's under it.
-							// The fitter's, shown while the exact search was still looking, gives
-							// way too: it only stood in for an exact one (Rød blomst: the fitter's
-							// corners at 0.7 % after 20 s, the exact template at 0.2 % after 42 s).
-							if (shown && !isMediocre(found.result.report)
-								&& (isMediocre(shown.report) || (shown.report.kind === 'smooth' && found.result.report.kind === 'exact'))) swapTemplate();
+							if (shown && givesWay(shown.report, found.result.report)) swapTemplate();
 						}
 					} catch (err) {
 						// A second template that does not convert is simply not offered.
