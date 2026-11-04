@@ -938,8 +938,16 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   gap. By frame, the checkered one is (letters in checks): 0.60, 0.65 and 0.87 on its three, against
   0.70 to 0.95 on the woven, circle and layers ones. jul-tern (a letter in each check) and mor-far
   (checks the size of the letters) are that frame (0.52, 0.72); god-jul (a circle ringed by checks) and
-  jul-2026 (a medallion in bands) are not. A training round with more checkered words is the targeted
-  next step; it needs the training job (27 GB) on its own.
+  jul-2026 (a medallion in bands) are not. A training round with more checkered words (ck1, 2026-11-04,
+  `nn/ck1.sh`): 836 new words in that frame (random letters, a second word now and then, all nine shipped
+  fonts where training had six: `gen-synth.mjs` `CHECKERED=1`), the 354 whose templates keep the
+  export's rules, mixed 3:7 with the synthetic pack, syn1v fine-tuned 2 epochs at lr 2e-4 (4 and 6 min on
+  the M2 Pro's GPU, a few GB, not the full run's 27). The held-out generator words in that frame mark
+  0.92, 0.58 and 0.75 (from 0.87, 0.60, 0.65); the test pictures do not move: jul-tern 0.52 to 0.50,
+  mor-far 0.72 to 0.69, the 8 failing 0.500 to 0.507, the 44 passing 0.873 to 0.869. Not run through
+  the ladder, not shipped. The frame is not what the network misses on these hearts; what the gallery's
+  text hearts have that the generator's words do not is still open (they were made with the generator,
+  then edited by hand: necks opened, the repeat-check layout).
 - **The three photographs without a template** are the photo step's, not the search's:
   danish-red-gold's mask splits one patterned paper into both colours; danish-tree-group-top's crop
   takes two overlapping hearts; gathering-hanging-trio-middle's fitted template keeps every cutting rule
