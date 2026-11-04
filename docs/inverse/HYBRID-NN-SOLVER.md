@@ -932,9 +932,14 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   (0.90, 0.60) at less precision, the trade the 127-picture runs already measured (95 against 93).
   What is missing is not in the weights to be edited out. Nor is it simply more of the training data:
   a quarter of the synthetic designs are already words in random fonts (`gen-synth.mjs`), and syn3's
-  data weighted to the hard kinds, text included, scored 93 against 95. Whether the generator's
-  templates for words resemble these designers' is not checked yet; if not, the network learns hidden
-  cuts unlike those these hearts need.
+  data weighted to the hard kinds, text included, scored 93 against 95. On the generator's own word
+  hearts held out of syn1v's training (9 with hidden cuts) it marks 0.81 of the hidden cut (370 pixels
+  at the median, as large as the failing designs), the figures 0.87 (30): words as such are not the
+  gap. By frame, the checkered one is (letters in checks): 0.60, 0.65 and 0.87 on its three, against
+  0.70 to 0.95 on the woven, circle and layers ones. jul-tern (a letter in each check) and mor-far
+  (checks the size of the letters) are that frame (0.52, 0.72); god-jul (a circle ringed by checks) and
+  jul-2026 (a medallion in bands) are not. A training round with more checkered words is the targeted
+  next step; it needs the training job (27 GB) on its own.
 - **The three photographs without a template** are the photo step's, not the search's:
   danish-red-gold's mask splits one patterned paper into both colours; danish-tree-group-top's crop
   takes two overlapping hearts; gathering-hanging-trio-middle's fitted template keeps every cutting rule
