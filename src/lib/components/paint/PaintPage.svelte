@@ -778,6 +778,7 @@
 		// panel says so, which is the same notice the engine's report would ask
 		// for. The engine's own answer goes to the console, because a search that
 		// surprises someone is diagnosed from what the fitter managed.
+		const features = solved.report.imageFidelity?.features;
 		const asked = solved.report.symmetry;
 		if (asked && asked.honoured.length < asked.requested.length) {
 			console.warn('The engine could not hold every symmetry that was asked of it', asked);
@@ -791,7 +792,9 @@
 					cuts: [solved.report.slits.left, solved.report.slits.right],
 					clearanceMm: solved.report.validation.minimumInterSlitDistanceLower,
 					mismatch,
-					missingFeatures: solved.report.imageFidelity?.features.passed === false,
+					missingFeatures: features?.passed === false,
+					strayFeatures: Boolean(features?.stray?.length),
+					nearest: solved.report.templateChecksPassed === false,
 					motifMismatch: regions?.inside,
 					borderChange: regions?.outside,
 					identical: solved.report.solver.matchingPreference?.identical ?? false,

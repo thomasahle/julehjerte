@@ -17,6 +17,23 @@ export function smallInteriorFeatures(source,features,cfg){
   }));
 }
 
+/** What the weave adds: the same check the other way round. A substantial region of the weave (as
+ * imageFeatures reads one) needs most of its pixels that colour in the picture; pixel counts alone let
+ * specks through (hjerte-i-hjerte-i-hjerte's fitted template: 0.4% off its mask, passing, with three
+ * islands of 10 mm² its picture does not have). */
+export function strayRegions(source,woven,width){
+  if(!source?.mask||woven?.length!==source.mask.length)return [];
+  const seen={mask:woven,resolution:source.resolution,...(source.weights?{weights:source.weights}:{}),...(source.validMask?{validMask:source.validMask}:{})};
+  return auditImageFeatures(seen,source.mask,width,imageFeatures(seen,width)).missing;
+}
+/** The features check for a finished template (the export's report), with what the weave adds listed
+ * as `stray`, for the page to name: reported, not failed, as a photograph's edge noise gives regions
+ * there too (a bauble's template, 2.7% off its picture, adds 10 and 28 mm² beside the paper's edge). */
+export function finalFeatureAudit(source,woven,cfg,features){
+  const audit=auditFeatureFidelity(source,woven,cfg,features),stray=strayRegions(source,woven,cfg.width);
+  return stray.length?{...audit,stray}:audit;
+}
+
 /** Pixel retention is useful while proposing a routing, but cannot certify an
  * opening that has become a channel to the background. Keep that extra final
  * check separate from coarse seed acceptance. This is a raster enclosure

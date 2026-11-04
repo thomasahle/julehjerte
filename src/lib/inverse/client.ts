@@ -78,7 +78,7 @@ export interface DesignResult {
       protectedMismatchFraction?: number | null;
       editableChangeFraction?: number | null;
     } | null;
-    imageFidelity?: { features: { passed: boolean } };
+    imageFidelity?: { features: { passed: boolean; missing?: unknown[]; stray?: unknown[] } };
     settings: { width: number; maxImageError?: number; paperColors: [string, string] };
   };
 }

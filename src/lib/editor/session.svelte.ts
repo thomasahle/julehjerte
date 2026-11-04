@@ -77,6 +77,10 @@ export type PaintResult = {
 		mismatch: number;
 		/** The engine could not retain all substantial regions of the input motif. */
 		missingFeatures?: boolean;
+		/** The weave has substantial regions the motif does not. */
+		strayFeatures?: boolean;
+		/** It fails some of the export's checks: the nearest there is, not a passing template. */
+		nearest?: boolean;
 		identical: boolean;
 		/** The visitor kept a validated checkpoint before the search completed. */
 		stoppedEarly?: boolean;

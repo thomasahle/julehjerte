@@ -3,7 +3,7 @@ import {finalMaterialAudit} from './geometric-material.js';
 import {repairFinalReturns} from './direct/final-return-repair.js';
 /** Shared browser/Node API. Production execution is JavaScript + local WASM. */
 import {prepareAutomatic,solveAutomatic} from './automatic.js';
-import {auditFeatureFidelity} from './feature-shapes.js';
+import {finalFeatureAudit} from './feature-shapes.js';
 import {progressReporter} from './progress.js';
 import {fitDirect} from './direct/fit.js';
 import {transposeTarget} from './symmetry.js';
@@ -52,7 +52,7 @@ export const timeScale=limit=>Math.max(1,limit/EXACT_SECONDS);
  * outline has until ALONE_TRACED_SECONDS and the rounded one the rest. A
  * passing template with tips coming back to themselves has RETURNS_LEAST (or
  * as long as it took) for one with them rounded. */
-const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,LADDER_FIRST_SHARE=.5,LADDER_LEAST=2,ROUNDED_LEAST=6,RETURNS_LEAST=10,TIP_ROUNDING_MM=.8,TIP_SPOT_MM=4,RETURN_REPAIR_SECONDS=4,RETURN_REPAIR_TRIES=2,ROUGH_ONE=1.1,ROUGH_TWO=1.3;
+const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,LADDER_FIRST_SHARE=.5,LADDER_LEAST=2,LOOSE_LEAST=90,LOOSE_MM=.05,STRICT_SECONDS=50,ROUNDED_LEAST=6,RETURNS_LEAST=10,TIP_ROUNDING_MM=.8,TIP_SPOT_MM=4,RETURN_REPAIR_SECONDS=4,RETURN_REPAIR_TRIES=2,ROUGH_ONE=1.1,ROUGH_TWO=1.3;
 /** The fitter's seconds beside the exact search (`exactRoute: 'fitter'`): what
  * it had when it came first, which photographs need to keep their details. */
 const FITTER_SECONDS=45;
@@ -214,13 +214,20 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
     // had on any (design() finishes it as a near miss): the page never gets
     // nothing from the ladder while it found a template.
     let last=null,near=null;
-    for(const [phase,share] of [['first',LADDER_FIRST_SHARE],['second',1]]){
-      const phaseEnd=performance.now()+share*(roundedEnd-performance.now());
+    // With more than LOOSE_LEAST seconds (a longer search chosen under Avanceret), once the ladder has
+    // had what the one-minute search gives it (STRICT_SECONDS, or a third), the rest goes through it again
+    // with the model's clearances LOOSE_MM lower, judged by the export's own (the 0.1 mm it tolerates;
+    // jul-tern: 18 hidden cuts, its count's bound, where the model's limits held every drawing at 16 and
+    // rules broken). Not sooner: lowered from the start they lose vissevasse-arranged-r3c2 and others,
+    // whose returns then fail once smoothed.
+    const total=roundedEnd-performance.now(),strictEnd=total>=1000*LOOSE_LEAST?performance.now()+Math.max(1000*STRICT_SECONDS,total/3):roundedEnd;
+    for(const [cfgPass,passEnd,loose] of [[cfgExact,strictEnd,false],...(strictEnd<roundedEnd?[[{...cfgExact,modelTolerance:LOOSE_MM},roundedEnd,true]]:[])])for(const [phase,share] of [['first',LADDER_FIRST_SHARE],['second',1]]){
+      const phaseEnd=performance.now()+share*(passEnd-performance.now());
       for(const [k,traced] of outlines.entries()){
         const left=phaseEnd-performance.now();
         if(left<1000*LADDER_LEAST)break;
-        last=await exactSearch(traced,null,cfgExact,{...search(performance.now()+left/(outlines.length-k)),reserve:.5,maps,ladderOnly,phase});
-        if(last.found)return{solution:last.found.solution,report:{...last.report,chosen:'exact',ladderOnly:true,outline:k,phase,tracedBound}};
+        last=await exactSearch(traced,null,cfgPass,{...search(performance.now()+left/(outlines.length-k)),reserve:.5,maps,ladderOnly,phase});
+        if(last.found)return{solution:last.found.solution,report:{...last.report,chosen:'exact',ladderOnly:true,outline:k,phase,tracedBound,...(loose?{loose:true}:{})}};
         if(closer(last.near?.assessment,near?.assessment))near={...last.near,outline:k,phase};
       }
     }
@@ -333,7 +340,7 @@ export function finish(solution,cfg,onProgress=()=>{},{refine=true,stoppedEarly=
   solution=paperRepair.solution;
   cfg=verifiedPaperSettings(solution,done.cfg);
   const check=verdict(validate(solution,cfg,{finalGeometry:true}));
-  onProgress({stage:'paper'});const material=paperRepair.material||finalMaterialAudit(solution,cfg,{includeMaps:true}),perturbation=check.passed?perturbationAudit(solution,cfg,{onProgress}):{summary:{trials:0,skipped:'Nominal geometry failed validation.'},trials:[],worst:null},metrics=easeMetrics(solution,cfg),source=solution.graph.target.sourceImage,comparison={resolution:source?.resolution??240,wovenMask:sampleWeave(solution,source?.resolution??240),validMask:source?.validMask,...(source?.weights?{weights:source.weights}:{})},imageError=errorFromSamples(source,comparison.wovenMask),imagePassed=!imageError||imageError.mismatchFraction<=cfg.maxImageError,features=auditFeatureFidelity(source,comparison.wovenMask,cfg),allowTemplates=features.passed&&check.passed&&(!cfg.requireMaterialCore||material.passed)&&imagePassed,symmetry=symmetryReport(solution,cfg.symmetry),warnings=[];
+  onProgress({stage:'paper'});const material=paperRepair.material||finalMaterialAudit(solution,cfg,{includeMaps:true}),perturbation=check.passed?perturbationAudit(solution,cfg,{onProgress}):{summary:{trials:0,skipped:'Nominal geometry failed validation.'},trials:[],worst:null},metrics=easeMetrics(solution,cfg),source=solution.graph.target.sourceImage,comparison={resolution:source?.resolution??240,wovenMask:sampleWeave(solution,source?.resolution??240),validMask:source?.validMask,...(source?.weights?{weights:source.weights}:{})},imageError=errorFromSamples(source,comparison.wovenMask),imagePassed=!imageError||imageError.mismatchFraction<=cfg.maxImageError,features=finalFeatureAudit(source,comparison.wovenMask,cfg),allowTemplates=features.passed&&check.passed&&(!cfg.requireMaterialCore||material.passed)&&imagePassed,symmetry=symmetryReport(solution,cfg.symmetry),warnings=[];
   // A dropped symmetry request belongs in the warnings the app already reads,
   // not only in a report field: the traced routes cannot enforce one at all.
   const unhonoured=symmetry.requested.filter(name=>!symmetry.honoured.includes(name));

@@ -62,3 +62,23 @@ test('the verdict lets a clearance up to 0.1 mm short pass, and nothing else', (
   const clean = {...report, passed: true, issues: []};
   assert.equal(verdict(clean), clean);
 });
+
+test('a weave with a substantial region its picture does not have is reported, not failed', async () => {
+  const {finalFeatureAudit, strayRegions} = await import('../../static/inverse/core/feature-shapes.js');
+  const n = 100, mask = new Uint8Array(n * n), cfg = {width: 100, nominalWidth: 2.5};
+  for (let y = 20; y < 80; y++) for (let x = 20; x < 80; x++) mask[y * n + x] = 1;
+  const source = {mask, resolution: n};
+  assert.deepEqual(strayRegions(source, mask.slice(), 100), []);
+  assert.equal(finalFeatureAudit(source, mask.slice(), cfg).stray, undefined);
+  // A 5 x 5 mm speck of the other colour, inside the square.
+  const speck = mask.slice();
+  for (let y = 40; y < 45; y++) for (let x = 40; x < 45; x++) speck[y * n + x] = 0;
+  const audit = finalFeatureAudit(source, speck, cfg);
+  assert.equal(audit.passed, true);
+  assert.equal(audit.stray.length, 1);
+  assert.equal(audit.stray[0].areaMm2, 25);
+  // One smaller than the picture's own smallest detail (3 mm² on 100 mm paper) stays allowed.
+  const tiny = mask.slice();
+  tiny[40 * n + 40] = 0;
+  assert.deepEqual(strayRegions(source, tiny, 100), []);
+});

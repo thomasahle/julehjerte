@@ -161,7 +161,7 @@ const START_SECONDS = 3;
  * of a search's time it takes, and the short candidates (mm) every rung keeps:
  * 42% of the hidden cuts in the gallery's exact templates were under 3 mm, the
  * stubs of tips and crossings the network's field hardly shows. */
-const LADDER = [[10, 2], [30, 2], [100, 3], [300, 4]], LADDER_SHARE = .25, SHORT_MM = 3, LADDER_BUILD = 8, LADDER_SAMPLES = 2, LADDER_NOISE = .15;
+const LADDER = [[10, 2], [30, 2], [100, 3], [300, 4]], LADDER_SHARE = .25, SHORT_MM = 3, LADDER_BUILD = 8, LADDER_SAMPLES = 2, LADDER_NOISE = .15, LOW_PENALTY = 5;
 // Alone: K, the plain ranking's seconds, a sampled one's.
 const LADDER_ALONE = [[10, 3, 2], [30, 4, 2], [100, 6, 3], [300, 10, 4], [1000, 15, 10]];
 const LADDER_FIRST = [[10, 2, 1], [30, 2, 1], [100, 3, 2], [300, 4, 3]], LADDER_SECOND = [[300, 10, 4], [1000, 15, 10]];
@@ -245,9 +245,12 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
     }
     // A rung's template the export would not take is kept, the nearest of them:
     // never nothing where a cut misses its clearance by a hair (santa's ladder:
-    // 0.083 mm, where today's search has crossing slits).
+    // 0.083 mm, where today's search has crossing slits). One breaking up to
+    // LOW_PENALTY of the model's rules is assessed too: the model's limits are a
+    // hair stricter than the export's (jul-tern's rung at penalty 1 passes every
+    // check, and waited for the ladder's end).
     let ok = false;
-    if (!result.error && !(result.report.penalty > 1e-6)) for (const drawn of [result.solution, result.refined]) {
+    if (!result.error && !(result.report.penalty > LOW_PENALTY)) for (const drawn of [result.solution, result.refined]) {
       const assessment = assessed(drawn, cfg);
       if (exportable(assessment, cfg)) { ok = true; break; }
       if (closer(assessment, nearest?.assessment)) nearest = {solution: drawn, assessment, report: {...result.report, ladder: k}};

@@ -200,6 +200,23 @@ describe('FindCutsPanel', () => {
 				} finally { panel.cleanup(); }
 			});
 		}
+		it(`says a template failing the checks is the nearest there is, and names stray specks (${lang})`, () => {
+			const found = lang === 'en' ? 'The template has been found.' : 'Skabelonen er fundet.';
+			const nearest = lang === 'en' ? 'No template keeps every rule.' : 'Ingen skabelon holder alle regler.';
+			const specks = lang === 'en' ? 'adds small specks' : 'små pletter';
+			const near = render({ lang, result: result({ nearest: true, strayFeatures: true }) });
+			try {
+				expect(near.text).toContain(nearest);
+				expect(near.text).not.toContain(found);
+				expect(near.text).toContain(specks);
+			} finally { near.cleanup(); }
+			const passing = render({ lang, result: result({}) });
+			try {
+				expect(passing.text).toContain(found);
+				expect(passing.text).not.toContain(nearest);
+				expect(passing.text).not.toContain(specks);
+			} finally { passing.cleanup(); }
+		});
 		it(`does not invent a feature failure for clean or older results (${lang})`, () => {
 			for (const missingFeatures of [false, undefined]) {
 				const panel = render({ lang, result: result({ missingFeatures }) });

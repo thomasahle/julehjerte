@@ -956,6 +956,29 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   (`nudge/rpt1-miss.sh`): none gained, 9 near misses, 24 nothing. Not shipped. Adding the missing family
   moves the maps a little and the templates not at all: on these pictures better maps alone do not
   lead to a template (the designers' own cuts as the ranking did not either, section 9).
+- **The ladder takes what the export takes, sooner; a loosened last pass (2026-11-04, shipped).** The
+  ladder assessed a rung only when it broke none of the model's rules, but the model's limits are a hair
+  stricter than the export's: a rung breaking up to `LOW_PENALTY` (5) of them is now assessed too, and
+  taken when the export passes it. With more than 90 s (a longer search under Avanceret), the ladder
+  alone gets what the one-minute search gives it (50 s, or a third), and the rest goes through it again
+  with the model's clearances 0.05 mm lower (`cfg.modelTolerance`: `outline.js` `rules`, `nogoods.js`
+  returns), judged by the export's own. On the 33 test pictures syn1v's ladder has no template for
+  (`nudge/low.sh`): at 60 s none gained (25 end within a second, their traced outline giving the search
+  nothing to start on), at 180 s jul-tern (18 hidden cuts, its count's bound) and
+  vissevasse-arranged-r3c3. All 127 at the default minute (`nudge/low-ab.sh`, old and new alternately,
+  one process): 91 and 92 (stjernerogkors gained, 59 s to 18 s; none lost), median 9.5 against 7.9 s.
+  amy-pinecone and balls failed in one later run and passed in four reruns each (run-to-run variance;
+  the old engine also missed balls once in three). Lowered from the start instead the model's
+  clearances lose venus and vissevasse-arranged-r3c2, whose returns then fail once smoothed.
+- **What a template adds, and saying so (2026-11-04, shipped).** hjerte-i-hjerte-i-hjerte's fitted
+  template passes every check 0.4% from its mask but adds three islands of about 10 mm² its picture does
+  not have (the features check only asks the picture's regions to be kept). `strayRegions`
+  (`feature-shapes.js`) runs the same check the other way round, and the export's report lists them as
+  `features.stray`; reported, not failed: as a failure it took templates from photographs whose edge
+  noise gives such regions too (a bauble, 10 and 28 mm² beside the paper's edge) and failed nine engine
+  tests. Of the 83 designer templates it lists one (fisk, whose template is not its picture's). The page
+  names the specks, and a template failing the export's checks now reads as the nearest there is
+  ("Ingen skabelon holder alle regler. Her er den nærmeste.") instead of "Skabelonen er fundet".
 - **The three photographs without a template** are the photo step's, not the search's:
   danish-red-gold's mask splits one patterned paper into both colours; danish-tree-group-top's crop
   takes two overlapping hearts; gathering-hanging-trio-middle's fitted template keeps every cutting rule

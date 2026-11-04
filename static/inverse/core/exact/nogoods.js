@@ -43,7 +43,7 @@ export function spikes(outline) {
  * [e, lo, hi, wraps, tip], the arcs from lo to hi (past the end of a loop when
  * it wraps) and the vertex turning most between. */
 export function returns(outline) {
-  const R = outline.rules, gap = RETURN_GAP * R.mm, along = RETURN_ALONG * R.mm, out = [];
+  const R = outline.rules, gap = (RETURN_GAP - R.tolerance) * R.mm, along = RETURN_ALONG * R.mm, out = [];
   outline.E.forEach((ed, e) => {
     const idx = [];
     outline.edge.forEach((f, i) => { if (f === e) idx.push(i); });
@@ -310,7 +310,7 @@ export function geometryNogoods(st, outline, cand, labels, used, switches, {gap 
     // `checkLocal` further along, turning by 190 degrees or more between, as
     // visibleNogoods, now through hidden segments too (5star's points). The
     // nogood names every piece of the slit from one point to the other.
-    const gapR = RETURN_GAP * R.mm, along = RETURN_ALONG * R.mm, done = new Set();
+    const gapR = (RETURN_GAP - R.tolerance) * R.mm, along = RETURN_ALONG * R.mm, done = new Set();
     for (const slit of pieces[fam]) {
       const line = [], owner = [];
       for (const {line: poly, piece: item} of slit) for (const p of poly) {

@@ -10,17 +10,19 @@ import {HEART_CLEARANCE_UNITS} from '../return-search.js';
  * own limits, rounding margins only), 'default' (a little more room), 'paper'
  * (3.3 mm passages, for the paper audit's lattice). */
 export function rules(cfg, strictness = 'tight') {
-  const mm = 12 / cfg.width, w = cfg.nominalWidth;
+  // `modelTolerance` (mm): the search's own clearances lowered (engine.js, the ladder's loose pass). Only
+  // here: what the search draws is still judged by the export's limits.
+  const tolerance = cfg.modelTolerance ?? 0, mm = 12 / cfg.width, w = cfg.nominalWidth - tolerance;
   const margin = {tight: .005, default: .055, paper: 3.3 - w}[strictness];
   const gap = (w + margin) * mm, local = cfg.localNeighborhoodFactor * w;  // the validator's, in mm
   return {
     // The validator's outer side clearance is the nominal width at every control point.
-    mm, gap, border: (w + Math.min(margin, .055)) * mm,
+    mm, tolerance, gap, border: (w + Math.min(margin, .055)) * mm,
     // Between two slits of one paper it measures them flattened to the geometry
     // tolerance and takes that off both: the nominal width and twice it, or the
     // editor's clearance (HEART_CLEARANCE_UNITS of the square) where that is more,
     // as below a minimum width of about 1 mm on 100 mm paper or on paper over 170 mm.
-    interGap: Math.max(gap, (Math.max(w, HEART_CLEARANCE_UNITS * cfg.width / 100) + 2 * cfg.geometryTolerance + margin) * mm),
+    interGap: Math.max(gap, (Math.max(w, HEART_CLEARANCE_UNITS * cfg.width / 100 - tolerance) + 2 * cfg.geometryTolerance + margin) * mm),
     // Close cuts within `local` of each other along one slit are exempt; the
     // rules use a little less, so that sampling only makes them stricter.
     local: (local - (strictness === 'tight' ? .075 : .475)) * mm,

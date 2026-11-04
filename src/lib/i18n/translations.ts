@@ -802,6 +802,7 @@ export const translations = {
     paintFinishingBest: 'Gør det bedste resultat klar …',
     paintStoppedEarly: 'Bedste resultat fra den stoppede søgning.',
     paintFound: 'Skabelonen er fundet.',
+    paintFoundNearest: 'Ingen skabelon holder alle regler. Her er den nærmeste.',
     /** {left}, {right} = snit i hver lap; {clearance} = mm; {mismatch} = procent */
     paintFoundSummary: '{left} + {right} snit · mindst {clearance} mm mellem snittene · {mismatch}% forskel fra masken',
     paintTemplatesLabel: 'To skabeloner til samme billede',
@@ -827,6 +828,7 @@ export const translations = {
     paintFoundMediocre:
       'Mønsteret er tæt på, men ikke helt: ret masken, slå en symmetri fra, eller prøv Find snit igen.',
     paintFoundMissingFeatures: 'Nogle detaljer i motivet mangler. Sammenlign skabelonen med masken.',
+    paintFoundStray: 'Skabelonen laver små pletter, som motivet ikke har. Sammenlign den med masken.',
     paintFindCutsAgain: 'Find snit igen',
     paintFoundIdentical: 'Begge lapper klippes efter samme skabelon.',
     paintSymmetryNotHeld: 'Symmetrien kunne ikke holdes helt; hjertet vises som motoren fandt det.',
@@ -2005,6 +2007,7 @@ export const translations = {
     paintFinishingBest: 'Finishing the best result …',
     paintStoppedEarly: 'Best result from the stopped search.',
     paintFound: 'The template has been found.',
+    paintFoundNearest: 'No template keeps every rule. This is the nearest one.',
     /** {left}, {right} = cuts per lobe; {clearance} = mm; {mismatch} = per cent */
     paintFoundSummary: '{left} + {right} cuts · at least {clearance} mm between cuts · {mismatch}% different from the mask',
     paintTemplatesLabel: 'Two templates for the same picture',
@@ -2030,6 +2033,7 @@ export const translations = {
     paintFoundMediocre:
       'The pattern is close, but not exact: change the mask, switch off a symmetry, or try Find the cuts again.',
     paintFoundMissingFeatures: 'Some details of the motif are missing. Compare the template with the mask.',
+    paintFoundStray: 'The template adds small specks the motif does not have. Compare it with the mask.',
     paintFindCutsAgain: 'Find the cuts again',
     paintFoundIdentical: 'Both lobes are cut from the same template.',
     paintSymmetryNotHeld: 'The symmetry could not be held exactly; the heart is shown as the engine found it.',
