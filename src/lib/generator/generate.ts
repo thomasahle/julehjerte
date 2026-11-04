@@ -579,6 +579,10 @@ export function fromTopology(request: GeneratorRequest, own?: GeneratorResult): 
 	const bestOf = (list: typeof measured) => list.length ? [list.reduce((a, b) => betterCuts(b.m, a.m) ? b : a)] : [];
 	// The extra one only where drawn it already tears less or shares a template the other does not: refining costs seconds.
 	const [first] = bestOf(measured.filter(d => !d.of?.extra)), [extra] = bestOf(measured.filter(d => d.of?.extra));
+	const told = (heart: GeneratorResult) => own ? { ...heart, scale: own.scale, enclosed: own.enclosed, whole: own.whole, board: own.board ?? heart.board } : heart;
+	// Shown on the way, before it is refined, where it already cuts better than the generator's heart.
+	const drawnFirst = first && improveSharedConnections(first.heart, true);
+	if (drawnFirst && (!own || own.hardToCut || firmerCuts(drawnFirst.design, measure(drawnFirst), own.design, measure(own)))) progress(told(drawnFirst));
 	const promising = extra && (!first || extra.m[0] < first.m[0] || (extra.m[0] === first.m[0] && extra.m[1] < first.m[1]));
 	const unbent = [...new Set([...first ? [first] : [], ...promising ? [extra!] : []].flatMap(first => {
 		const ended = endsRefined(request, first, shown!);
@@ -590,8 +594,7 @@ export function fromTopology(request: GeneratorRequest, own?: GeneratorResult): 
 	const mirrored = mirroredLobes(best.design.fingers, SHARED_NEAR), sharing = mirrored && { ...best, design: { ...best.design, fingers: mirrored } };
 	const heart = sharing && betterCuts(measure(sharing), measure(best)) ? sharing : best;
 	if (!own) return heart;
-	const told = { ...heart, scale: own.scale, enclosed: own.enclosed, whole: own.whole, board: own.board ?? heart.board };
-	return own.hardToCut || firmerCuts(heart.design, measure(heart), own.design, measure(own)) ? told : undefined;
+	return own.hardToCut || firmerCuts(heart.design, measure(heart), own.design, measure(own)) ? told(heart) : undefined;
 }
 
 /** Where the generator's own heart is hard to cut and no recipe's finishes
@@ -1264,6 +1267,15 @@ function catalogueLayout(request: GeneratorRequest): BoardLayout | undefined {
 /** How many hearts are being made, one inside another (a board's choice at
  * its default size, a text's outline as a figure). */
 let making = 0;
+/** Who hears of each heart found on the way while one is made (the page's
+ * worker, to show it while the cuts are refined), and when. */
+let progressListener: ((heart: GeneratorResult) => void) | undefined;
+export function onProgress(listener?: (heart: GeneratorResult) => void) {
+	progressListener = listener;
+}
+const progress = (heart: GeneratorResult | undefined) => {
+	if (heart && making === 1) progressListener?.(heart);
+};
 export function generate(request: GeneratorRequest): GeneratorResult {
 	// A picture solved once by the exact-outline search keeps the cuts found
 	// for it, where they cut cleanly at this size (see `recipes`); every other
@@ -1282,6 +1294,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		let own: GeneratorResult | undefined, failure: unknown;
 		try {
 			own = generateTried(request);
+			progress(own);
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			failure = error;

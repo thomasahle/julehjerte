@@ -1,5 +1,7 @@
-import { generate, type GeneratorRequest } from './generate';
+import { generate, onProgress, type GeneratorRequest } from './generate';
 import { ConstructionError } from './geometry';
+// Each heart found on the way, shown while its cuts are refined.
+onProgress(heart => self.postMessage({ progress: heart }));
 self.onmessage = (event: MessageEvent<GeneratorRequest>) => {
 	try {
 		self.postMessage({ result: generate(event.data) });

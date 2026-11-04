@@ -175,6 +175,7 @@
 	let displayed = $state<GeneratorResult | null>(null);
 	let result = $state<GeneratorResult | null>(null),
 		busy = $state(false),
+		refining = $state(false),
 		error = $state(''),
 		notice = $state(''),
 		downloadBusy = $state(false),
@@ -291,7 +292,7 @@
 	function generatorWorker(): Worker {
 		if (!worker) {
 			worker = new Worker(new URL('../generator/worker.ts', import.meta.url), { type: 'module' });
-			worker.onmessage = (e) => finishJob(e.data);
+			worker.onmessage = (e) => (e.data.progress ? showProgress(e.data.progress) : finishJob(e.data));
 			worker.onerror = () => {
 				const failed = running;
 				worker?.terminate();
@@ -308,10 +309,19 @@
 		return worker;
 	}
 	function startJob(job: Job) {
+		refining = false;
 		running = { ...job, started: performance.now() };
 		generatorWorker().postMessage(job.request);
 	}
+	/** A heart found on the way to the one asked for: its templates shown at
+	 * once, while its cuts are still refined. */
+	function showProgress(heart: GeneratorResult) {
+		if (running?.token !== revision) return;
+		displayed = heart;
+		refining = true;
+	}
 	function finishJob(data: { result?: GeneratorResult } & Partial<Failure>) {
+		refining = false;
 		const job = running;
 		running = null;
 		if (job) {
@@ -652,7 +662,8 @@
 					background!.postMessage(variantRequest(request, pending[index].state));
 				};
 				background.onmessage = (e) => {
-					if (!live) return;
+					// The thumbnails wait for each heart as it is kept, not the ones on the way.
+					if (!live || e.data.progress) return;
 					const variant = pending[index++],
 						key = geometryKey(variant.state);
 					const thumb: Thumbnail = e.data.result
@@ -991,11 +1002,12 @@
 				{emptyText
 					? t('generatorEmptyText', lang)
 					: busy
-						? t('generatorWorking', lang)
+						? t(refining ? 'generatorRefining' : 'generatorWorking', lang)
 						: result
 							? t('generatorReady', lang)
 							: ''}
 			</div>
+			{#if busy && !emptyText}<div class="working" aria-hidden="true"><span></span></div>{/if}
 			{#if emptyText}<div class="examples start-examples">
 					{#each EXAMPLE_TEXTS as word (word)}<button
 							onclick={() => (config.text = word)}>{word}</button
@@ -1534,6 +1546,30 @@
 		font-weight: 700;
 		color: #4c6542;
 		min-height: 22px;
+	}
+	/* While the cuts are found: a bar running under the status, so a long wait is seen. */
+	.working {
+		width: min(240px, 60%);
+		height: 4px;
+		margin: 2px auto 10px;
+		border-radius: 2px;
+		background: #e3e8dc;
+		overflow: hidden;
+	}
+	.working span {
+		display: block;
+		width: 35%;
+		height: 100%;
+		border-radius: 2px;
+		background: #4c6542;
+		animation: working 1.2s ease-in-out infinite;
+	}
+	@keyframes working {
+		from { transform: translateX(-100%); }
+		to { transform: translateX(290%); }
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.working span { animation: none; width: 100%; opacity: .5; }
 	}
 	.templates {
 		width: 100%;
