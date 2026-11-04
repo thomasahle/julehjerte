@@ -930,8 +930,11 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   weights averaged with ei2's (fine-tuned from it) change nothing (0.88, 0.51); with syn1's (another
   run, its decoder started elsewhere) the maps go flat (precision 0.29 to 0.06). syn1 alone marks more
   (0.90, 0.60) at less precision, the trade the 127-picture runs already measured (95 against 93).
-  What is missing has to come from training data with such designs (the generator's text hearts, say),
-  not from editing the weights.
+  What is missing is not in the weights to be edited out. Nor is it simply more of the training data:
+  a quarter of the synthetic designs are already words in random fonts (`gen-synth.mjs`), and syn3's
+  data weighted to the hard kinds, text included, scored 93 against 95. The generator's templates for
+  words are not the designers' (the designers cut letters along their strokes), so the network learns
+  hidden cuts unlike those these hearts need.
 - **The three photographs without a template** are the photo step's, not the search's:
   danish-red-gold's mask splits one patterned paper into both colours; danish-tree-group-top's crop
   takes two overlapping hearts; gathering-hanging-trio-middle's fitted template keeps every cutting rule
