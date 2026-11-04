@@ -6,7 +6,7 @@ import { generateFittedFigure, mirrorSymmetric } from './fitted';
 import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSide } from './state';
-import { templateVariants } from './templates';
+import { RETIRED_STYLES, templateVariants } from './templates';
 import { inside, uprightToSheet, distance, boardFill, boardLines, boardRangeLines, boardRangePattern, boardRanges, boardWholeRadius, boardWholeTop, layerInset, withVisibleIslands, ConstructionError, WEDGES, type Point, type Ring } from './geometry';
 import { generateTextGrid } from './textGrid';
 import { geometryKey } from './cache';
@@ -291,7 +291,8 @@ describe('complete motif frames', () => {
   it(`shares ${style} as one complete frame selection`, () => {
    const state = { ...defaults, mode: 'figure' as const, style };
    expect(readGeneratorState('#make=' + encodeURIComponent(JSON.stringify(state)))).toEqual(state);
-   expect(templateVariants(state).find(v => v.state.style === style)?.state).toEqual(state);
+   // A frame no longer offered still opens from its link, though the picker has no button for it.
+   if (!RETIRED_STYLES.includes(style)) expect(templateVariants(state).find(v => v.state.style === style)?.state).toEqual(state);
   });
  }
  it('attaches the fitted grid directly to silhouette support points', () => {
@@ -1158,7 +1159,8 @@ describe('frames from real hearts', () => {
   it(`shares ${style} as one complete frame selection`, () => {
    const state = { ...defaults, mode: 'figure' as const, style };
    expect(readGeneratorState('#make=' + encodeURIComponent(JSON.stringify(state)))).toEqual(state);
-   expect(templateVariants(state).find(v => v.state.style === style)?.state).toEqual(state);
+   // A frame no longer offered still opens from its link, though the picker has no button for it.
+   if (!RETIRED_STYLES.includes(style)) expect(templateVariants(state).find(v => v.state.style === style)?.state).toEqual(state);
   });
  it('recomputes the new frames only for the settings they use', () => {
   const state = { ...defaults, mode: 'figure' as const };

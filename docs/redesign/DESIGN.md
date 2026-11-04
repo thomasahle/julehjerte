@@ -936,6 +936,10 @@ else the one keeping the most of the cutting clearance. **The circle with a doub
 frame's largest medallion (80) at 75%; its two outer bands share the room between the fitted
 frame and the paper's edge equally (`layerInset`). Neither has a size slider: the text fills its frame as the
 other text frames do.
+The page no longer offers Large silhouette, Equal squares and the circle with checks (Stor
+silhuet, Lige store tern, Cirkel · Tern), being plain (`RETIRED_STYLES`); they still draw, for the
+links and saved settings that name them, and are described below as such.
+
 Figure frames follow what real hearts use. Next to the circle with rays, checks,
 a sunburst or a double border, and the close-fitting and checked-tip frames, there are four
 frames without a centre panel. **Wedges** (Kiler; a quarter of real figure hearts): from each

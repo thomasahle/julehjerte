@@ -3,7 +3,7 @@ import { slow } from './slow.test-helpers';
 import { generate } from './generate';
 import { type Font, type Ring, FRAMES, FIGURE_STYLES } from './geometry';
 import { defaults, frameGap, readGeneratorState, normalizeText } from './state';
-import { FIGURE_TEMPLATES, templateVariants } from './templates';
+import { FIGURE_TEMPLATES, RETIRED_STYLES, templateVariants } from './templates';
 import { matchingMotifs, motifGroups, motifLabel, motifSource } from './catalog';
 import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
 import { intersectionMarginPx } from '$lib/editor/curveIssues';
@@ -129,7 +129,9 @@ describe('figures and complete templates', () => {
 		expect(design.gridSize).toEqual({ x: 5, y: 5 });
 	});
 	it('offers each figure frame once and opens links to the removed centre shapes and plain circle', () => {
-		expect(FIGURE_TEMPLATES.map((t) => t.style)).toEqual([...FIGURE_STYLES]);
+		expect(FIGURE_TEMPLATES.map((t) => t.style)).toEqual(FIGURE_STYLES.filter((style) => !RETIRED_STYLES.includes(style)));
+		expect(FIGURE_TEMPLATES.map((t) => t.style)).not.toContain('silhouette');
+		expect(FIGURE_TEMPLATES).toHaveLength(9);
 		const link = (value: object) => '#make=' + encodeURIComponent(JSON.stringify(value));
 		const state = { ...defaults, mode: 'figure' as const, style: 'check' as const };
 		const text = { ...defaults, mode: 'text' as const, textFrame: 'circle' as const };
@@ -137,7 +139,10 @@ describe('figures and complete templates', () => {
 			expect(readGeneratorState(link({ ...state, frame }))).toEqual(state);
 			expect(readGeneratorState(link({ ...text, textFrame: frame }))).toEqual(text);
 		}
-		expect(templateVariants(state).find((t) => t.id === 'circle-check')?.state).toEqual(state);
+		// A frame no longer offered opens from its link (above), though the picker has no button for it.
+		expect(templateVariants(state).find((t) => t.id === 'circle-check')).toBeUndefined();
+		const offered = { ...state, style: 'sunburst' as const };
+		expect(templateVariants(offered).find((t) => t.id === 'circle-sunburst')?.state).toEqual(offered);
 		// The circle with a plain edge mostly repeated the rays or the checks.
 		expect(readGeneratorState(link({ ...state, style: 'plain' })).style).toBe('rays');
 	});

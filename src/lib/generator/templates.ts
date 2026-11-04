@@ -1,4 +1,4 @@
-import { FIGURE_STYLES, FRAMES, type Frame, type TextFrame } from './geometry';
+import { FIGURE_STYLES, FRAMES, type FigureStyle, type Frame, type TextFrame } from './geometry';
 import { CELLS, CELL_FRAMES, type Cells, type GeneratorState } from './state';
 import { TEXT_FIGURES } from './textFigure';
 
@@ -7,7 +7,10 @@ export type FigureTemplate = {
 	frame: Frame;
 	style: GeneratorState['style'];
 };
-export const FIGURE_TEMPLATES: FigureTemplate[] = FIGURE_STYLES.map((style) => ({
+/** The frames no longer offered, being plain (Stor silhuet, Lige store tern and
+ * Cirkel · Tern): a link or saved setting that names one still draws it. */
+export const RETIRED_STYLES: readonly FigureStyle[] = ['silhouette', 'squares', 'check'];
+export const FIGURE_TEMPLATES: FigureTemplate[] = FIGURE_STYLES.filter((style) => !RETIRED_STYLES.includes(style)).map((style) => ({
 	id: `circle-${style}`,
 	frame: 'circle',
 	style
