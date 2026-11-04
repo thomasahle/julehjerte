@@ -2,6 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { holdingWidth, paperFaults, paperHolds, paperReport, papersAt, thinnestNeck, type WeakPiece } from './paperNecks';
 import { bentHeart as heart } from './paperNecks.test-helpers';
 import { getCenteredRectParams } from '$lib/utils/overlapRect';
+import { middleNeedles } from '$lib/generator/cutQuality';
+import type { HeartDesign } from '$lib/types/heart';
+import star from '$lib/generator/fixtures/star-board-5-100.json';
+import slid from '$lib/generator/fixtures/star-board-5-100-slid.json';
 
 describe('paper that holds once cut', () => {
 	it('holds on a plain heart', () => {
@@ -73,3 +77,23 @@ describe('paper that holds once cut', () => {
 		expect(papersAt([thin, loose])).toEqual({ widthMm: 80, loose: true, holdsMm: null });
 	});
 });
+
+describe('the paper a neck search leaves out', () => {
+	// The star on five strips at 100%: its top tip's needles, which no cuts keep from being thin.
+	const design = star.design as unknown as HeartDesign, needles = middleNeedles(design);
+
+	it('kept about a needle, makes no neck of the paper between it and a cut nearby, as cut away it would', () => {
+		// 8 mm about the tip reach to within 1.4 mm of the circle above it.
+		const cut = thinnestNeck(design, { spared: needles.map((p) => ({ ...p, mm: 8 })) });
+		const kept = thinnestNeck(design, { spared: needles.map((p) => ({ ...p, mm: 8, kept: true })) });
+		expect(cut).toBeLessThan(1.6);
+		expect(kept).toBeGreaterThan(2.2);
+	});
+
+	it('makes no piece of a single cell a cut stepped across the grid leaves wider by a corner', () => {
+		// Its switches slid 3 units down the tip's flanks: the hidden cut meets each flank at 51°, where a
+		// cell of the grid lies half a cell farther from the stepped cuts than those about it.
+		expect(thinnestNeck(slid as unknown as HeartDesign, { spared: middleNeedles(slid as unknown as HeartDesign).map((p) => ({ ...p, mm: 8, kept: true })) })).toBeGreaterThan(2.5);
+	});
+});
+

@@ -80,22 +80,28 @@ export function holdingWidth(design: HeartDesign,
 	return holds * stepMm <= maxMm ? holds * stepMm : null;
 }
 
+/** A point the paper about which `thinnestNeck` leaves out (see there). */
+export type Spared = Vec & { lobe?: LobeId; mm?: number; kept?: boolean };
+
 /**
  * The narrowest neck, in millimetres on templates printed `widthMm` wide, any
  * piece of paper hangs by from the ear (paper a tenth of a millimetre wider
  * than its neck, as `paperFaults` sees a piece; bulges too), on either
- * template: how far paper that holds is from tearing, and how near paper that
- * tears is to holding. Infinity where nothing hangs by a neck. Where `at` is
+ * template (or those of `lobes`): how far paper that holds is from tearing,
+ * and how near paper that tears is to holding. Infinity where nothing hangs
+ * by a neck. Where `at` is
  * given, the neck's place in the design's coordinates is noted there; the
  * paper within `sparedMm` (SPARED_MM) of a point `spared` names (a tip no cuts
  * can keep from a needle; on its `lobe`'s template alone where it names one,
- * as far as its `mm` where it gives one) is left out, as if cut away.
+ * as far as its `mm` where it gives one) is left out, as if cut away; or,
+ * where it is `kept`, kept, though no piece of it counts (the paper about a
+ * needle: cut away, the paper between it and a cut nearby would look a neck).
  */
-export function thinnestNeck(design: HeartDesign, options: PaperOptions & { at?: WeakPiece[]; spared?: (Vec & { lobe?: LobeId; mm?: number })[]; sparedMm?: number } = {}): number {
+export function thinnestNeck(design: HeartDesign, options: PaperOptions & { at?: WeakPiece[]; spared?: Spared[]; sparedMm?: number; lobes?: readonly LobeId[] } = {}): number {
 	const rect = inferOverlapRect(design.fingers, design.gridSize);
 	const { widthMm = PRINT_WIDTH_MM, neckMm = PAPER_NECK_MM, pxPerMm = 5 } = options;
 	let least = Infinity, place: WeakPiece | undefined;
-	for (const lobe of ['left', 'right'] as const) {
+	for (const lobe of options.lobes ?? ['left', 'right'] as const) {
 		const grid = templateGrid(design.fingers.filter((f) => f.lobe === lobe), lobe, rect, widthMm, neckMm, pxPerMm, options.spared, options.sparedMm);
 		const { mm, from } = neckOn(grid, pxPerMm);
 		if (mm >= least) continue;
@@ -153,7 +159,7 @@ function templateFaults(fingers: Finger[], lobe: LobeId,
  * `widthMm` wide, with an ear's band on top deep enough for necks of
  * `neckMm`: its cut cells, and each cell's squared distance from one. */
 function templateGrid(fingers: Finger[], lobe: LobeId,
-	rect: { left: number; top: number; width: number; height: number }, widthMm: number, neckMm: number, pxPerMm: number, spared: (Vec & { lobe?: LobeId; mm?: number })[] = [], sparedMm = SPARED_MM) {
+	rect: { left: number; top: number; width: number; height: number }, widthMm: number, neckMm: number, pxPerMm: number, spared: Spared[] = [], sparedMm = SPARED_MM) {
 	// Both templates share one scale, the wider side printed `widthMm` wide (as `heartScale`).
 	const px = (widthMm * pxPerMm) / Math.max(rect.width, rect.height);
 	const across = lobe === 'left' ? rect.height : rect.width, along = lobe === 'left' ? rect.width : rect.height;
@@ -178,15 +184,21 @@ function templateGrid(fingers: Finger[], lobe: LobeId,
 		const steps = Math.max(1, Math.ceil(chord(seg) * px * 3));
 		for (let i = 0; i <= steps; i++) mark(...point(i / steps));
 	}
-	// The paper about each spared point, as if cut away.
+	// The paper about each spared point, as if cut away; or, `kept`, kept, though none of it is a piece
+	// (cut away, the paper between it and a cut nearby would look a neck, and the ways round it narrow).
+	const kept = new Uint8Array(W * H);
 	for (const p of spared) {
 		if (p.lobe && p.lobe !== lobe) continue;
 		const reach = Math.ceil((p.mm ?? sparedMm) * pxPerMm);
 		const [u, v] = lobe === 'left' ? [p.y - rect.top, p.x - rect.left] : [p.x - rect.left, p.y - rect.top], [cx, cy] = cell(u, v);
-		for (let dy = -reach; dy <= reach; dy++) for (let dx = -reach; dx <= reach; dx++)
-			if (dx * dx + dy * dy <= reach * reach) mark((cx + dx - 1 + .5) / px, (cy + dy - ear + .5) / px);
+		for (let dy = -reach; dy <= reach; dy++) for (let dx = -reach; dx <= reach; dx++) {
+			if (dx * dx + dy * dy > reach * reach) continue;
+			const x = cx + dx, y = cy + dy;
+			if (!p.kept) mark((x - 1 + .5) / px, (y - ear + .5) / px);
+			else if (x >= 0 && x < W && y >= ear && y < H) kept[y * W + x] = 1;
+		}
 	}
-	return { W, H, cut, ear, px, dist: distances(cut, W, H) };
+	return { W, H, cut, ear, px, kept, dist: distances(cut, W, H) };
 }
 
 /** How far about a spared point (see `thinnestNeck`) the paper is left out, in millimetres. */
@@ -268,11 +280,14 @@ function neckOn(grid: ReturnType<typeof templateGrid>, pxPerMm: number): { mm: n
 		while (bucket.length) {
 			const i = bucket.pop()!;
 			if (reached[i] !== key) continue;
+			const x = i % W, near = [x > 0 ? i - 1 : -1, x < W - 1 ? i + 1 : -1, i >= W ? i - W : -1, i + W < n ? i + W : -1];
 			// Paper wider than the way it is held by: a piece, hanging by a neck as wide as the way (narrower
-			// than any found before, the ways found widest first).
-			if (mm(width(i)) >= mm(key) + .2) least = { mm: mm(key), from: i };
-			const x = i % W;
-			for (const j of [x > 0 ? i - 1 : -1, x < W - 1 ? i + 1 : -1, i >= W ? i - W : -1, i + W < n ? i + W : -1]) {
+			// than any found before, the ways found widest first). More than a cell of it: one cell alone is
+			// as near the grid's own error (a cut stepped across the cells leaves one a little wider than
+			// those about it, where it meets another at a corner).
+			const wider = (j: number) => j >= 0 && dist[j]! > 0 && mm(width(j)) >= mm(key) + .2;
+			if (wider(i) && !grid.kept[i] && near.some(wider)) least = { mm: mm(key), from: i };
+			for (const j of near) {
 				if (j < 0 || !dist[j]) continue;
 				const k = Math.min(key, width(j));
 				if (k > reached[j]!) { reached[j] = k; buckets[k]!.push(j); }

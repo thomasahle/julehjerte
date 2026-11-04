@@ -1,13 +1,17 @@
 import type { CutGeometry } from '$lib/inverse/toHeartDesign';
-import type { HeartDesign, Vec } from '$lib/types/heart';
-import { paperFaults } from '$lib/geometry/paperNecks';
+import type { Finger, HeartDesign, LobeId, Vec } from '$lib/types/heart';
+import { PRINT_WIDTH_MM, paperFaults } from '$lib/geometry/paperNecks';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import type { Edge, Point, Ring } from './geometry';
 
 type Cuts = CutGeometry | Pick<HeartDesign, 'fingers'>;
 
-function visitCutTips(cuts: Cuts, visit: (point: Vec, turn: number) => void) {
+type Segment = Finger['segments'][number];
+
+/** Each join of the cuts' paths that turns more than 135°, with the path and
+ * the index of the segment it starts (the `k`-th path). */
+function visitCutTips(cuts: Cuts, visit: (point: Vec, turn: number, path: Segment[], i: number, k: number) => void) {
 	const paths = 'fingers' in cuts ? cuts.fingers.map(f => f.segments)
 		: [...cuts.A_overlap_paths, ...cuts.B_overlap_paths].map(path => path.map(ref => {
 			const points = cuts.curves[ref.curve].control_points.map(([x, y]) => ({ x, y }));
@@ -21,14 +25,14 @@ function visitCutTips(cuts: Cuts, visit: (point: Vec, turn: number) => void) {
 		}
 		return { x: 0, y: 0 };
 	};
-	for (const path of paths) for (let i = 1; i < path.length; i++) {
+	for (const [k, path] of paths.entries()) for (let i = 1; i < path.length; i++) {
 		const a = path[i - 1], b = path[i];
 		const incoming = tangent(a.p3, [a.p2, a.p1, a.p0]);
 		const outgoing = tangent(b.p0, [b.p1, b.p2, b.p3]);
 		if (!(incoming.x || incoming.y) || !(outgoing.x || outgoing.y)) continue;
 		const turn = Math.atan2(Math.abs(incoming.x * outgoing.y - incoming.y * outgoing.x),
 			-incoming.x * outgoing.x - incoming.y * outgoing.y);
-		if (turn > 3 * Math.PI / 4) visit(b.p0, turn);
+		if (turn > 3 * Math.PI / 4) visit(b.p0, turn, path, i, k);
 	}
 }
 
@@ -128,6 +132,57 @@ export function middleNeedles(design: HeartDesign): Vec[] {
 		if (turn > 5 * Math.PI / 6 && Math.abs(x - y) < MIDDLE_NEEDLE) points.push(p);
 	});
 	return points;
+}
+
+/** How far, from the way a needle's leg leaves its tip, the leg turns where it
+ * turns away (see `middleNeedleBases`). */
+const LEG_TURN = Math.PI / 6;
+
+/**
+ * How wide the paper of each needle its symmetry cuts (see `middleNeedles`) is
+ * held: as far apart as the cut's two legs from the tip are where the first of
+ * them turns away (the star's top tip: where a paper's cut leaves the star's
+ * flank for a hidden cut), in millimetres printed `widthMm` wide, at that turn
+ * and on the lobe whose cut it is. No cuts keep the point from being thin, but
+ * how wide it is held is up to where they leave it.
+ */
+export function middleNeedleBases(design: HeartDesign, widthMm = PRINT_WIDTH_MM): { lobe: LobeId; x: number; y: number; mm: number }[] {
+	if (!lobesShareTemplate(design.fingers, design.gridSize)) return [];
+	const rect = inferOverlapRect(design.fingers, design.gridSize), mm = widthMm / Math.max(rect.width, rect.height);
+	const bases: { lobe: LobeId; x: number; y: number; mm: number }[] = [];
+	const at = (s: Segment, t: number): Vec => {
+		const u = 1 - t, a = u * u * u, b = 3 * u * u * t, c = 3 * u * t * t, d = t * t * t;
+		return { x: a * s.p0.x + b * s.p1.x + c * s.p2.x + d * s.p3.x, y: a * s.p0.y + b * s.p1.y + c * s.p2.y + d * s.p3.y };
+	};
+	const apart = (p: Vec, line: Vec[]) => Math.min(...line.slice(1).map((q, j) => {
+		const o = line[j]!, dx = q.x - o.x, dy = q.y - o.y, l = dx * dx + dy * dy;
+		const t = l ? Math.max(0, Math.min(1, ((p.x - o.x) * dx + (p.y - o.y) * dy) / l)) : 0;
+		return Math.hypot(p.x - o.x - t * dx, p.y - o.y - t * dy);
+	}));
+	visitCutTips(design, (tip, turn, path, i, k) => {
+		const x = (tip.x - rect.left) / rect.width * 100, y = (tip.y - rect.top) / rect.height * 100;
+		if (!(turn > 5 * Math.PI / 6 && Math.abs(x - y) < MIDDLE_NEEDLE)) return;
+		// Each leg from the tip, finely: back through the segments before it, on through those after.
+		const steps = 16, sampled = (order: number[], back: boolean) => [tip, ...order.flatMap(j =>
+			Array.from({ length: steps }, (_, n) => at(path[j]!, back ? 1 - (n + 1) / steps : (n + 1) / steps)))];
+		const legs = [sampled(Array.from({ length: i }, (_, j) => i - 1 - j), true), sampled(Array.from({ length: path.length - i }, (_, j) => i + j), false)];
+		// Each as far as it runs before it turns away from the way it leaves the tip.
+		const straight = legs.map(points => {
+			let from: Vec | undefined;
+			for (let n = 1; n < points.length; n++) {
+				const a = points[n - 1]!, b = points[n]!, dx = b.x - a.x, dy = b.y - a.y;
+				if (Math.hypot(dx, dy) < 1e-9) continue;
+				if (!from) { from = { x: dx, y: dy }; continue; }
+				if (Math.atan2(Math.abs(from.x * dy - from.y * dx), from.x * dx + from.y * dy) > LEG_TURN) return points.slice(0, n);
+			}
+			return points;
+		});
+		const [one, other] = straight as [Vec[], Vec[]];
+		const ends = [{ p: one.at(-1)!, w: apart(one.at(-1)!, other) }, { p: other.at(-1)!, w: apart(other.at(-1)!, one) }];
+		const held = ends[0]!.w <= ends[1]!.w ? ends[0]! : ends[1]!;
+		bases.push({ lobe: design.fingers[k]!.lobe, x: held.p.x, y: held.p.y, mm: held.w * mm });
+	});
+	return bases;
 }
 
 /** Whether cuts measured `a` (see `cutMeasures`) are better than `b`'s:

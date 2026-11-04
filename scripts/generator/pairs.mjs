@@ -28,9 +28,10 @@
 //        UNSOLVED=file    write the pairs no candidate beats the generator's heart in, with their motif sizes
 //        ADD=1 BASE=file  keep the recipes of every pair the file (else the page's) has any for, and choose
 //                         only for the others
-//        EXTRA=1 BASE=file  with ADD: a pair the file has recipes for keeps them and takes, after them, up to EXTRA_MOST
-//                         (2) more: the candidates that make the best of its hearts better (`betterCuts`) at the most
-//                         motif sizes, where the page draws them (in order, until three draw)
+//        EXTRA=1 BASE=file  with ADD: a pair the file has recipes for keeps them and takes, after them, each motif's own
+//                         solve that makes one of its sizes better (`betterCuts`), which the page draws for that motif
+//                         alone; and up to EXTRA_MOST (0) more: the candidates that make the best of its hearts better
+//                         at the most motif sizes, where the page draws them (in order, until three draw)
 //        TIES=1           a pair none of whose candidates beats the generator's heart keeps the one drawn at the
 //                         most of its motif sizes: the page shows it nowhere the generator's heart is better
 import fs from 'node:fs/promises';
@@ -237,7 +238,7 @@ try {
 			// best heart better at the most sizes, screened by that at the middle sizes, not by beating the
 			// generator's. The page draws a pair's first recipes until TRIES of them draw (TOPOLOGY_TRIES in
 			// generate.ts), then up to as many extra ones (`extra`, see `storedDrawings`), refining each.
-			const TRIES = 3, most = Number(process.env.EXTRA_MOST ?? 2);
+			const TRIES = 3, most = Number(process.env.EXTRA_MOST ?? 0);
 			const bestOf = (picks, r) => { const firsts = picks.filter(i => kept.includes(i)).map(i => draw(i, r)).filter(Boolean).slice(0, TRIES), extras = picks.filter(i => !kept.includes(i) && candidates[i].from.startsWith(`${r.id} `)).map(i => draw(i, r)).filter(Boolean).slice(0, TRIES);
 				return [...firsts, ...extras].reduce((a, b) => !a || betterCuts(b, a) ? b : a, null); };
 			const picks = [...kept], added = [];

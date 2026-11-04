@@ -17,6 +17,7 @@ import wreath from '../../../static/generator/motifs/mc-wreath.json';
 import circleMotif from '../../../static/generator/motifs/circle.json';
 import cow from '../../../static/generator/motifs/hi-cow.json';
 import house from '../../../static/generator/motifs/house.json';
+import bird from '../../../static/generator/motifs/mdi-bird.json';
 import heartSolves from '../../../scripts/generator/solves/heart.board.json';
 import nisseSolves from '../../../scripts/generator/solves/nisse.board.json';
 import circleSolves from '../../../scripts/generator/solves/circle.board-5.sym.json';
@@ -229,9 +230,9 @@ describe('stored recipes', () => {
 		expect(cutMeasures(made.design, picture(spurless(asked), knownOf(own, .99))!.rings)[0]).toBe(0);
 	});
 
-	slow('tidies the star on three strips at 75% where its paper held by a sliver by a hidden cut, moving the cut', () => {
-		const asked = { mode: 'figure' as const, name: 'Star', contours: star.contours as Ring[], colors: { left: '#ffffff', right: '#b91313' }, style: 'board' as const, frame: 'circle' as const, frameSize: 70, scale: .75, gap: 3, board: 3 };
-		// Refined only for firmer paper, it holds by a neck of 1.2 mm where the cut meets the circle by the sheet's edge.
+	slow('tidies the bird on three strips at 63% by its narrowest necks', () => {
+		const asked = { mode: 'figure' as const, name: 'Bird', contours: bird.contours as Ring[], colors: { left: '#ffffff', right: '#b91313' }, style: 'board' as const, frame: 'circle' as const, frameSize: 70, scale: .63, gap: 3, board: 3 };
+		// Tidied by its thinnest neck alone, it hung by 2.1 mm; by its narrowest three, by 4.8 mm, its cuts 5 units longer of 581.
 		expect(thinnestNeck(generate({ ...asked, recipes: (board as unknown as RecipeFile).recipes }).design)).toBeGreaterThan(4);
 	});
 

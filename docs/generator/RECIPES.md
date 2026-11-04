@@ -187,10 +187,8 @@ busier, holding at a narrower print (the yule goat at 75% on seven strips:
 190 → 110 mm). A size took 7% longer on average (3.1 s → 3.3 s on five
 strips, 3.3 s → 3.5 s on seven), half no longer.
 
-Paper that holds may still hang by a thin neck: a sliver by a hidden cut's
-junction (the star at 75% on three strips: 1.2 mm on an 80 mm print, too
-narrow a piece for `paperFaults` to count), or a weak piece's neck short of
-holding. `thinnestNeck` measures it: the narrowest neck, in millimetres, any
+Paper that holds may still hang by a thin neck: a sliver too narrow a piece
+for `paperFaults` to count, or a weak piece's neck short of holding. `thinnestNeck` measures it: the narrowest neck, in millimetres, any
 paper a tenth of a millimetre wider than its neck hangs by from the ear (the
 same bottleneck search). So once its paper is as firm as these moves make it,
 `refined` tidies the heart, hearts that hold from the start too: it
@@ -202,8 +200,7 @@ and holding at as narrow a print as the page finds it, hangs by a neck
 has better cuts by a neck about as wide; up to `TIDY_DRAWS` hearts since the
 last kept, `TIDY_MOST` in all. `firmerCuts` so also ranks hearts as firm as
 each other by their thinnest neck, up to `NECK_ENOUGH` (4 mm), past which a
-neck is wide enough. The star at 75%: 1.2 mm → 6.7 mm, its cuts a unit longer
-of 597. Against the refining above, on the same featured sizes: thinnest necks
+neck is wide enough. Against the refining above, on the same featured sizes: thinnest necks
 wider on 58, 56, 48 and 34 hearts on three, five, seven and nine strips (mean
 2.40 → 2.51 mm, 1.83 → 1.93, 1.54 → 1.63, 1.33 → 1.38), on 21, 11, 11 and 2
 of the 30 unseen motifs' every 12th size, and narrower on one heart (the santa
@@ -212,7 +209,10 @@ the same print, its cuts 3 units shorter); no heart tears more or holds at a
 wider print, six hold at a narrower one, and the hearts it ranks worse are a
 few units longer for their wider necks. A size took 13–21% longer on average
 (2.0 s → 2.4 s on three strips, 3.3 s → 4.0 s on five, 3.1 s → 3.5 s on nine),
-the median 4–6%.
+the median 4–6%. Some of those necks were none: the search then read one cell
+of its grid in a plain corner of paper as a piece (see below), and the star at
+75% on three strips, given here as tidied from a neck of 1.2 mm to 6.7 mm,
+hung by 6.7 mm before too.
 
 A heart whose lobes share a template (`lobesShareTemplate`) and a tip of
 whose picture lies on its middle (the sheet's diagonal: the star's top tip)
@@ -222,44 +222,95 @@ needles (`middleNeedles`, within `MIDDLE_NEEDLE` of the middle) as sharp tips
 only, not as places the paper may tear: counted so, the star's symmetric
 solves on five strips at 87–100% lost to a recipe with two templates whose
 hidden cuts zigzag across the circle, and the page drew that (the start
-heart at 100%). Their paper is left out of the neck search (`thinnestNeck`'s
-`spared`, 8 mm about them, where an 18° point is still under 2.5 mm wide), and
-tidying looks at a heart's three narrowest necks (`necksOf`, each next found
-with the paper about those before left out), compared narrowest first and
-its moves tried by the narrowest first: around a star's tip several are thin.
-A wider neck may cost two hidden turns more (`NECK_TURNS`): the star at 100%,
-its paper by the top tip 1.18 mm → 2.84 mm wide, a sharp tip fewer, its cuts
-1.2% longer. Tidying also lays a shared piece whose ends lie on the board
+heart at 100%). Within 8 mm of such a needle, where an 18° point is still
+under 2.5 mm wide, the neck search counts no piece of paper (`thinnestNeck`'s
+`spared`, `kept`: the paper kept, not cut away, where the paper between it
+and a cut nearby would look a neck); how wide the needle is held counts as a
+neck instead (`middleNeedleBases`: how far apart the cut's two legs are where
+the first of them turns away, the star's top tip held where a paper's cut
+leaves its flank for a hidden cut). Tidying looks at a heart's six narrowest
+necks (`necksOf`, each next found with the paper about those before cut away,
+on that lobe's template alone), compared narrowest first, or, none 0.25 mm
+apart, by 0.5 mm wider all told (a neck that widens past others as narrow
+leaves each place in the order a little wider), and its moves tried by the
+narrowest first: around a star's tip several are thin. A wider neck may cost
+two hidden turns more (`NECK_TURNS`). No neck in that order counts narrower
+than the one before it (with the paper about that one cut away, a way round
+it may be narrower than any the heart has); while the paper may tear, only
+the narrowest counts for a wider neck (small gains further down led the dog
+on seven strips at 75% away from the neck that tears); and a move kept for
+better cuts holds the three narrowest about as wide (`NECKS_HELD`; all six
+held, the penguin on seven strips at 75% kept 58 hidden turns of the 34 that
+straightening takes it to). Tidying also lays a shared piece whose ends lie on the board
 circle along it (`followArc`), where the picture shows none of the circle
 there, cuts no sharper, busier or narrower and at most 3% longer: a hidden
 cut is not quite invisible, and looks best along a line the picture shows
-elsewhere.
+elsewhere. A heart whose lobes are mirror images but for a hair (a cut split
+once more on one side than the other) is cut from one template where that
+measures no worse (`mirroredLobes`, within 1% of the square: the gingerbread
+man on five strips at 100%). While the cuts are refined the page shows the
+hearts found on the way (`onProgress`): the generator's own, then a recipe's
+first drawing where that already cuts firmer, under a bar saying it is
+improving the cuts.
+
+The user's report of the star at 100% on five strips: its top tip's paper
+still hung narrow, where a longer hidden cut would hold it wider. The tidying
+above did not move it, for four reasons. The needle's hold was not measured
+(the switch, 7.4 mm from the tip, lay within the 8 mm left out); the 8 mm
+cut away made necks of 1.4 mm of the paper between it and the circle, which
+no move widens, and tidying ranked its moves by those. A move of a heart
+whose lobes share a template moves its mirror image too, and that was looked
+for at the image itself, where the star's lobes, sharing a template while a
+unit apart, have no point: every move came to nothing, undrawn. It now moves
+the points of the cuts nearest the image, within `MIRROR_NEAR`. And a switch
+slid 3 units down the flank met the hidden cut at 51°, where the grid's one
+cell farthest from the stepped cuts was half a cell wider than those about
+it: a piece, hanging by a neck of 1.2 mm. A piece is now more than a cell of
+it. Tidying also kept moves by better cuts and a neck about as wide at each
+step, narrowing a neck by steps (the star's tip 2.48 → 2.28 → 2.21 mm for two
+units shorter): it now keeps them only while its necks are about as wide as
+those it began with; and a bend straightened or a cut laid along the circle
+that it did not keep is not tried again. The star on five strips at 81–100%:
+its top tip held 2.5 mm → 3.6–4.2 mm wide, its cuts up to 1% longer (100%:
+1182 → 1195 units).
 
 A pair's recipes were chosen once; a better one found later for some of its
 motif sizes takes no other's place. `pairs.mjs` with `EXTRA=1` keeps a pair's
-shipped recipes and adds, after them, up to `EXTRA_MOST` (2) candidates that
-make its best heart better (`betterCuts`) at the most motif sizes, and each
-motif's own best solve where that makes one of its sizes better (the page
-draws a motif's own solves first for it, so one helping the star alone loses
-to others helping several motifs otherwise), screened only where the shipped
+shipped recipes and adds, after them, each motif's own best solve where that
+makes one of its sizes better (`betterCuts`), screened only where the shipped
 recipes draw two templates or paper that may tear at a middle size. They are
-marked `extra`: the page draws a pair's first recipes as before, until
-`TOPOLOGY_TRIES` of them draw, and then up to as many extra ones
-(`storedDrawings`), and refines the best of the first and, where drawn it
-already tears less or shares a template the other does not, the best of the
-extras, keeping the firmest (`fromTopology`): the heart it drew before stays
-one to choose from. On the featured motifs, 257 recipes → 447 (186 extra; 208
-pairs with recipes → 212), 524 KB → 775 KB gzipped. The star on five strips
-at 100%: two templates, 29 hidden turns → one template, 26, its paper as
-firm; 87%: one place the paper may tear, two templates, 58 turns → one
-template, 26. Against the page before, on every 6th size of the featured
-motifs: places the paper may tear 437 → 424, 470 → 426, 2127 → 2043 and
-3944 → 3901 on three, five, seven and nine strips, thinnest necks wider on
-25, 39, 39 and 29 hearts and narrower on 0, 2, 1 and 2, none holding at a
-wider print; the hearts ranked worse are as firm with a turn or two more for
-wider necks, or clean where they were hard to cut, with paper that may tear
-in a place or more (the horse and unicorn on seven strips at 45%, the rabbit
-on nine at 51%: hard to cut with 2 → clean with 9).
+marked `extra`, and drawn for the motif they were solved on alone: the page
+draws a pair's first recipes as before, until `TOPOLOGY_TRIES` of them draw,
+and then, where none of those is clean with one template, up to as many of
+the motif's own extra ones (`storedDrawings`), and refines the best of the
+first and, where drawn it already tears less or shares a template the other
+does not, the best of the extras, keeping the firmest (`fromTopology`): the
+heart it drew before stays one to choose from. Candidates that make a pair's
+hearts better at the most motif sizes (`EXTRA_MOST`, 0) placed fewer weak
+pieces still (on five strips 470 → 426, against 450), but six hearts on seven
+and nine strips tore more with them. On the featured motifs, 257 recipes →
+398 (137 extra), 524 KB → 747 KB gzipped. The star on five strips at 99%: two
+templates, 29 hidden turns → one template, 26, its paper as firm; 87%: one
+place the paper may tear, two templates, 58 turns → one template, 26.
+
+With all of the above, against the page before, on every 6th size of the
+featured motifs: places the paper may tear 437 → 436, 470 → 450, 2127 → 2073
+and 3944 → 3862 on three, five, seven and nine strips; thinnest necks, as one
+search finds them on both, wider on 25, 52, 41 and 52 hearts (mean 2.83 →
+2.89 mm, 2.20 → 2.31, 1.87 → 1.95, 1.58 → 1.68) and narrower on one (the
+stocking at 45% on nine strips: 2.28 → 1.18 mm, its cuts a turn fewer: its
+own solve, drawn with 14 hidden turns, beat the pair's recipe refined to a
+2.84 mm neck with 17, more than `NECK_TURNS` busier); 1, 1, 3 and 4 hearts
+holding at a narrower print (the bauble at 51–63% on nine strips: 190 → 110,
+170 → 100, 160 → 90 mm), and four clean that were hard to cut. One heart tears
+in a place less but holds at a wider print and needs two templates (the bell
+at 81% on seven strips: 12 places, 160 mm → 11, 180 mm); the others ranked
+worse are as firm, a turn or two or a few units busier for wider necks (here
+or, as the page does not measure, at a needle's hold or the second or third
+narrowest). The rays at 50, 70, 85 and 100%: five hearts better, none worse.
+A size took 9–16% longer at the median (2.4 s → 3.0 s mean on three strips,
+3.7 → 4.4 on five, 3.7 → 4.3 on seven, 3.3 → 4.0 on nine; the rays as
+before).
 
 A recipe whose places lie in mirror pairs across the heart's middle (the
 sheet's diagonal; a solve tied so, its places at the corners nearest each

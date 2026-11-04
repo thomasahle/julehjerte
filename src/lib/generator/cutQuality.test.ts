@@ -1,6 +1,7 @@
 import { expect, it } from 'vitest';
 import type { Vec, BezierSegment, Finger } from '$lib/types/heart';
-import { cutTipCounts, cutTipPoints, cellTipCounts, fewerCutTips, cutMeasures, middleNeedles } from './cutQuality';
+import { cutTipCounts, cutTipPoints, cellTipCounts, fewerCutTips, cutMeasures, middleNeedleBases, middleNeedles } from './cutQuality';
+import { inferOverlapRect } from '$lib/utils/overlapRect';
 import type { HeartDesign } from '$lib/types/heart';
 import type { Ring } from './geometry';
 import star from './fixtures/star-board-5-100.json';
@@ -72,5 +73,17 @@ it('counts the needles a heart\'s symmetry cuts on its middle as sharp tips, not
 	const [torn, templates, sharp] = cutMeasures(design, rings);
 	expect([torn, templates]).toEqual([0, 0]);
 	expect(sharp).toBe(cutTipCounts(design)[1]);
+});
+
+it("holds the needles a heart's symmetry cuts as wide as their legs are apart where the cuts leave them", () => {
+	// The star on five strips at 100%: each paper's cut leaves the top tip's flank for a hidden cut
+	// 9.3 units from the tip, its point held 2.5 mm wide there, the two lobes' mirror images to within
+	// a unit (its middle cut runs 0.7 units off the diagonal).
+	const design = star.design as unknown as HeartDesign, rect = inferOverlapRect(design.fingers, design.gridSize);
+	const bases = middleNeedleBases(design), unit = (p: Vec) => [(p.x - rect.left) / rect.width * 100, (p.y - rect.top) / rect.height * 100];
+	expect(bases.map(b => b.lobe).sort()).toEqual(['left', 'right']);
+	for (const b of bases) expect(b.mm).toBeCloseTo(2.48, 1);
+	const [l, r] = [bases.find(b => b.lobe === 'left')!, bases.find(b => b.lobe === 'right')!].map(unit);
+	expect(Math.hypot(l![0]! - r![1]!, l![1]! - r![0]!)).toBeLessThan(1);
 });
 
