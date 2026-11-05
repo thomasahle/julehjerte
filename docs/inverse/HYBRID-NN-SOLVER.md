@@ -1050,6 +1050,12 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   joins a letter's tip to the check beside it by a red wedge 4 mm across: it now fails, as do those at
   90 and 120 s. No search time tried gives jul-tern a template; a longer default would gain
   vissevasse-arranged-r3c4 (48–50 s alone in Node), which the page's minute misses.
+  Tried, not shipped: the joins as the solver's own lazy rows. A solution whose weave joins regions
+  (checked on HiGHS's improving solutions at most every 300 ms, and on each run's last) ended the run,
+  its hidden segments within 2 mm of the gap forbidden together at the rules' penalty, and the search
+  went on. The rows came (the user's heart: two; god-jul: one), but no search then found a template
+  without joins in its time: today's search on the user's heart kept its joined drawing at the penalty
+  (where the ladder's candidates hold a clean one, found in 3 s), jul-tern and god-jul ended as before.
 
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
