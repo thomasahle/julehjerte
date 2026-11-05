@@ -16,7 +16,7 @@ import {cheapBounds} from '../../static/inverse/core/exact/bounds.js';
 import {prepare, restorePrepared, design} from '../../static/inverse/core/engine.js';
 import {finishExactStopped} from '../../static/inverse/core/stopped.js';
 import {smoothEdges} from '../../static/inverse/core/exact/refine.js';
-import {turnsOf, subgroupsOf, appSymmetry} from '../../static/inverse/core/exact/stage.js';
+import {turnsOf, subgroupsOf, fallbackTies, appSymmetry} from '../../static/inverse/core/exact/stage.js';
 
 const svgOf = rings => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path fill="#b91313" fill-rule="evenodd" d="${
   rings.map(ring => 'M' + ring.map(([x, y]) => `${x.toFixed(9)},${(12 - y).toFixed(9)}`).join('L') + 'Z').join('')}"/></svg>`;
@@ -332,6 +332,14 @@ test('with none under all of a picture\'s symmetry, its turns are searched, then
   assert.deepEqual(subgroupsOf(['transpose', 'antiTranspose']), [['rotate180'], ['antiTranspose']]);
   assert.deepEqual(subgroupsOf(['transpose']), []);
   assert.deepEqual(subgroupsOf(['rotate90']), []);
+});
+
+test('with none under part of the symmetry either, the search goes on untied; a single tie has no parts to try', () => {
+  // A letter in a hexagon (antiTranspose and its turn): the outline not symmetric enough for either alone, untied 0.5% off.
+  assert.deepEqual(fallbackTies(['antiTranspose', 'rotate180']), [['rotate180'], ['antiTranspose'], []]);
+  assert.deepEqual(fallbackTies(['mirrorX', 'mirrorY', 'antiTranspose']), [['rotate90'], ['antiTranspose'], []]);
+  assert.deepEqual(fallbackTies(['transpose']), []);
+  assert.deepEqual(fallbackTies([]), []);
 });
 
 test('a template under part of the symmetry holds, in the app\'s names, what its ties generate', () => {

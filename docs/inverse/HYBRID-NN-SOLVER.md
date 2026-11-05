@@ -1062,6 +1062,32 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   leave); the features check (3 mm², 0.5 mm core) asks for it. Not changed: a core rule wide enough to let
   it go would let letters' 2 mm strokes go too.
 
+- **Generator hearts on the page; the symmetry fallback ends untied (2026-11-05).** 40 new generator
+  hearts (`nn/gen-synth.mjs`, seed 5150, held out by their seed) through juleflet.dk's Mal page
+  (`sweep/sweep.mjs`, `gensweep/gsum.py`): 32 show a template passing every check. 20 of the 40 have a
+  generator template keeping the export's rules (`even/genvalid.mjs`), so an exact one exists; the page
+  showed one on 11 of them, the fitter's on 7, the nearest on one, and one run ended "Beregningsmotoren
+  kunne ikke indlæses" after 19 minutes on a swapping machine (a rerun: the ladder's at 11 s).
+  Three of the exact misses (a letter and a number in a hexagon, an O) are symmetric twice over
+  (antiTranspose and its turn): under both ties the count has no solution; under the turn alone the
+  outline is not symmetric enough, or the drawing breaks rules and the fallback stopped there, taking
+  it; the diagonal alone was not reached. Untied, today's search passes all three 0.1–0.5% off. The
+  fallback (`stage.js` `fallbackTies`) now takes a drawing under part of the symmetry only when the
+  export takes it, and searches untied for the last share, keeping the closest drawing should none
+  pass. Today's search alone, old and new alternately (`nudge/untied-ab.sh`, `gensweep/untied-ab-gen.sh`):
+  36 generated hearts with two or more symmetries 11 → 21, none lost, median 45.6 → 40.4 s; the 43
+  test pictures with as many 41 → 41, the same fallbacks taken (davidsstjerne-circ's crossing near
+  miss is gone, its fitted template shown as before).
+  Still without an exact template: square-number-7-check, whose middle motif meets at one-pixel
+  diagonal contacts (crossings): the generator's own cuts read onto our traced outline come 1.44–1.495 mm
+  apart (1.5), untied the search comes within one rule, and the outline widened for rounded tips erases
+  the motif (0.65%, a region lost); and two corners-frame hearts (checkered corners round a circle or
+  a rounded square) with no drawing at all, untied too, like davidsstjerne-circ.
+  A ladder template above the traced outline's bound is held while today's search goes on: on the 23
+  pictures of both sweeps where the ladder's came first and both passed, today's had fewer hidden cuts on
+  8 (origami 28 → 4, dagognat 9 → 3), as many on 13, more on 2, after 13 s more at the median. The hold
+  stays; showing the ladder's at once and swapping would be the page's to decide.
+
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);

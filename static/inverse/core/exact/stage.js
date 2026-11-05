@@ -197,6 +197,13 @@ export function subgroupsOf(symmetry) {
   return [...(turns.length ? [turns] : []), ...(mirror ? [[mirror]] : [])];
 }
 
+/** The ties searched under, in turn, once `symmetry` has no template: part of
+ * it (subgroupsOf), then none, where it has parts. */
+export function fallbackTies(symmetry) {
+  const parts = subgroupsOf(symmetry);
+  return parts.length ? [...parts, []] : [];
+}
+
 /** The exact search on the traced `outline` from the fitter's `template`
  * within `deadline`, under the `symmetry` ties: {found: {solution,
  * assessment} or null, report}. */
@@ -384,16 +391,26 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   // each a share of the time left: fejlternet's pinwheel of 12 hidden
   // segments, the designer's count, and roed-blomst's 7 under its diagonal
   // (on its outline with tips rounded, the time left on the traced one too
-  // little for both).
-  const subgroups = fallback && found.error === NO_TEMPLATE ? subgroupsOf(symmetry) : [];
-  for (const [k, ties] of subgroups.entries()) {
+  // little for both). Then, none of them giving a template the export takes,
+  // untied for the last share: a letter or a number in a hexagon has none
+  // under its turn or its diagonal alone (the outline not symmetric enough for
+  // either, or the turn's drawing breaking rules), untied one 0.1-0.5% off; of
+  // 36 generated hearts with two or more symmetries, today's search alone
+  // passed 11, now 21, none lost (the 43 test pictures with as many: 41 and 41).
+  // A drawing the export does not take is kept, the closest, should none follow.
+  const ways = fallback && found.error === NO_TEMPLATE ? fallbackTies(symmetry) : [];
+  let drawn = null;
+  for (const [k, ties] of ways.entries()) {
     const left = (deadline - performance.now()) / 1000 - reserve;
     if (left < TURNS_FLOOR) break;
-    const share = k < subgroups.length - 1 ? Math.max(TURNS_FLOOR, left / (subgroups.length - k)) : left;
+    const share = k < ways.length - 1 ? Math.max(TURNS_FLOOR, left / (ways.length - k)) : left;
     const again = await exactSearch(outline, template, cfg, {deadline: performance.now() + 1000 * (share + reserve), reserve, onProgress, geometry, refine, fallback: false, symmetry: ties, even, multi, ...alone});
-    if (again.found) return {...again, report: {...again.report, subgroup: {from: symmetry, to: ties, error: found.error}}};
-    if (closer(again.near?.assessment, other?.assessment)) other = {...again.near, report: {...again.near.report, subgroup: {from: symmetry, to: ties, error: found.error}}};
+    const part = {subgroup: {from: symmetry, to: ties, error: found.error}, ...(ties.length ? {} : {untied: true})};
+    if (again.found && exportable(again.found.assessment, cfg)) return {...again, report: {...again.report, ...part}};
+    if (again.found && (!drawn || closer(again.found.assessment, drawn.found.assessment))) drawn = {...again, report: {...again.report, ...part}};
+    if (closer(again.near?.assessment, other?.assessment)) other = {...again.near, report: {...again.near.report, ...part}};
   }
+  if (drawn) return drawn;
   // The ladder's nearest reported as exactSearch's own results are. Alone it is
   // `near`, for the outlines after this one (engine.js exactTemplate) to better;
   // with today's search after the ladder, taken where that has none or a farther one.
