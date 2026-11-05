@@ -133,6 +133,16 @@ describe('complete motif frames', () => {
   const { design } = generate({ mode: 'figure', name: 'Circle', contours: circleMotif.contours as Ring[], colors, style: 'rays', frame: 'circle', frameSize: 70, scale: .7, gap: 3 });
   expect(lobesShareTemplate(design.fingers, design.gridSize)).toBe(true);
  });
+ it('cuts small stars with one template for both lobes, their tips on the middle cut down it', () => {
+  // On four strips at 70% four of the eight stars lie on the heart's middle,
+  // each cut down it: its top tip an 18° point of each paper, which the page
+  // counts as sharp tips (see `cutMeasures`). Small motifs had counted them
+  // as tearing, and the star, drawn a unit off its mirror image, is woven as
+  // that image's mean (`mirrorMean`).
+  const { design } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'motifs', board: 4, scale: .7 });
+  expect(lobesShareTemplate(design.fingers, design.gridSize)).toBe(true);
+  expect(paperFaults(design).weak).toBe(0);
+ });
  slow('bends a hard-to-cut figure at sharp tips where its narrowest paper keeps', () => {
   // The cat's tail meets its body in a notch the double border leaves on one
   // sheet (hard to cut); its connections' sharp tips bend as a clean heart's.

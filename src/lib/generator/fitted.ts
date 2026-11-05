@@ -25,6 +25,30 @@ export function mirrorSymmetric(rings: Ring[]): boolean {
 		}
 	return filled > 0 && differ / filled < .02;
 }
+
+/** A motif drawn a hair off its own mirror image across its upright middle,
+ * made exactly its own mirror image: each corner and the image of its pair
+ * averaged, where every corner has one other (or itself) whose image lies
+ * within `near` of the motif's size and pairs with it back (the star, drawn a
+ * unit of 89 off). None where some corner has no such pair. */
+export function mirrorMean(rings: Ring[], near = .02): Ring[] | undefined {
+	const points = rings.flat();
+	if (!points.length) return;
+	const xs = points.map(p => p[0]), ys = points.map(p => p[1]);
+	const cx = (Math.min(...xs) + Math.max(...xs)) / 2, reach = near * Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+	const pair = (p: Point) => points.reduce((best, q) => distance([2 * cx - p[0], p[1]], q) < distance([2 * cx - p[0], p[1]], best) ? q : best);
+	const means: Ring[] = [];
+	for (const ring of rings) {
+		const mean: Ring = [];
+		for (const p of ring) {
+			const q = pair(p);
+			if (distance([2 * cx - p[0], p[1]], q) > reach || pair(q) !== p) return;
+			mean.push([(p[0] + 2 * cx - q[0]) / 2, (p[1] + q[1]) / 2]);
+		}
+		means.push(mean);
+	}
+	return means;
+}
 import { gridClearance } from '$lib/geometry/clearance';
 
 /** How a frame's gates treat separate extremes that tie (see

@@ -2,7 +2,7 @@ import { createExactCurveFitter } from '$lib/inverse/curveFitCache';
 import { simplifyCubicChain } from '$lib/inverse/simplifyCurves';
 import { generateLayeredFigure } from './layers';
 import { CORNER_GAP, generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
-import { generateFittedFigure, mirrorSymmetric, type GateTies } from './fitted';
+import { generateFittedFigure, mirrorMean, mirrorSymmetric, type GateTies } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid, roomOf, squareCellScale } from './textGrid';
 import { NO_WHOLE_STRIPS, STRIPS, crowdedHiddenCutsSetAside, slidePlace, stripFigures, withCrowdedHiddenCuts } from './stripFigure';
@@ -1916,8 +1916,13 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
 			? [square, fitted] : [fitted, square], { request, retries: true, lastResort: true }];
 	}
 	if (request.style === 'motifs' || request.style === 'squares') {
-		const contours = normalizeContours(request.contours ?? []);
-		if (!contours.length) throw new ConstructionError('empty', 'No contour');
+		const given = normalizeContours(request.contours ?? []);
+		if (!given.length) throw new ConstructionError('empty', 'No contour');
+		// Small motifs weave a motif drawn a hair off its own mirror image as
+		// that image's mean, so that it may be woven mirrored too (see
+		// `mirrorCells`): the star, a unit of 89 off, is not otherwise.
+		const centred = (rings: Ring[]) => { const xs = rings.flat().map(p => p[0]), cx = (Math.min(...xs) + Math.max(...xs)) / 2; return rings.map(ring => ring.map(([x, y]): Point => [x - cx, y])); };
+		const contours = request.style === 'motifs' && !mirrorSymmetric(centred(given)) ? mirrorMean(given) ?? given : given;
 		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours }, ' ': { advance: 1, contours: [] } } }, letterScale = boardScale(request);
 		// The motif is the letter of a text frame on a board (see
 		// `motifChoices`, `squareChoices`). Small motifs: the most copies on
@@ -1927,8 +1932,7 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
 		// they can build nothing at all.
 		const board = request.style === 'squares' ? squareChoices(request.board) : motifChoices(request.board);
 		// A motif that is its own mirror image may be woven so (see `mirrorCells`).
-		const xs = contours.flat().map(p => p[0]), cx = (Math.min(...xs) + Math.max(...xs)) / 2;
-		const mirrorCells = request.style === 'motifs' && mirrorSymmetric(contours.map(ring => ring.map(([x, y]): Point => [x - cx, y])));
+		const mirrorCells = request.style === 'motifs' && mirrorSymmetric(centred(contours));
 		type Choice = { request: GeneratorRequest; retries: boolean; lastResort?: boolean };
 		const choicesAt = (letterScale: number): Choice[] => board.map(({ text, board, retries, lastResort, larger = 1, air, fitted, alone }) => ({
 			retries, lastResort, request: { mode: 'text', name: request.name, colors: request.colors, text, font, letterScale: Math.min(request.style === 'squares' || alone ? 1.1 : Infinity, letterScale * larger),
@@ -3129,7 +3133,9 @@ function generateUsingRecipes(request: GeneratorRequest,
 			// junctions and cells their own mirror images (see `checkeredLayouts`):
 			// one template for both lobes, kept where its paper tears no more, as
 			// the page ranks hearts (`betterCuts`: pieces hanging by too little paper
-			// and needles first). Of its layouts and connections, the one that tears
+			// and needles first, the needles its symmetry cuts on the middle only
+			// sharp tips, see `cutMeasures`: a star there has its top tip cut down
+			// its middle). Of its layouts and connections, the one that tears
 			// least and then cuts best, ending at one that holds with no tip, or at
 			// a layout that builds none (of 283 such searches, on 2–8 strips, no
 			// later layout built one that was kept). As above, its larger corner cuts
@@ -3141,7 +3147,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				if (!request.mirrorCells || lobesShareTemplate(design.fingers, design.gridSize)) return made;
 				const cache = caches.get(standard)?.[0] ?? checkeredGridCache();
 				const clean = (result: GeneratorResult) => !paperTears(result.design) && !cutTipCounts(result.design).some(Boolean);
-				const torn = (design: HeartDesign) => paperTears(design) + cutTipCounts(design)[0];
+				const torn = (design: HeartDesign) => paperTears(design) + cutTipCounts(design)[0] - middleNeedles(design).length;
 				const better = (a: GeneratorResult, b: GeneratorResult) => torn(a.design) !== torn(b.design) ? torn(a.design) < torn(b.design) : cutsBetter(a, b);
 				let best: GeneratorResult | undefined, bestAt: { variant: number; inset: number; corners: [number, number] } | undefined;
 				const tryCorners = (corners: [number, number]) => {

@@ -1,5 +1,29 @@
 # Generator robustness results
 
+## Small stars cut with one template
+
+Små motiver cuts the copies of a motif that is its own mirror image from one
+template for both lobes (see "Small motifs cut down the middle"), but not the
+star, the default motif. It is drawn a unit of 89 off its mirror image (its
+top and inner corners centred at 50, its outer points at 49.5), 3% of its area
+apart, and the frame asks a fiftieth. Now a motif drawn a hair off is woven as
+its image's mean, each corner and its pair's image averaged (`mirrorMean`,
+where every corner has a pair within a fiftieth of the motif's size; the
+star's corners move at most 0.6% of it). And the stars on the heart's middle,
+cut down it, have their top tips split into an 18° point of each paper: the
+mirrored search had counted those as needles that tear, where the page counts
+them as sharp tips (see `cutMeasures`), and it now counts them so too.
+
+The star on two to eight strips at 60, 70, 79 and 90% (28 hearts): one
+template at all 28 (none before), weak pieces and needles 243 → 184 (seven
+strips at 79% 27 → 22, six strips 7 → 2), about a second each rather than half
+a second. The other 17 symmetric featured motifs are unchanged, as are the
+other frames: the star keeps its drawing there. Drawn symmetric everywhere, it
+would get one template in the rays, the check, the wedges, the fitted frame,
+the silhouette, the sunburst and equal squares at nearly every size, but its
+stored board circle solves no longer fit the picture (the top tip on the seam)
+and its hearts there tore more: those would need solving again first.
+
 ## The elephant on the board circle
 
 The board circle refused the elephant at every size on every board ("No open
