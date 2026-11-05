@@ -1088,6 +1088,20 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   8 (origami 28 → 4, dagognat 9 → 3), as many on 13, more on 2, after 13 s more at the median. The hold
   stays; showing the ladder's at once and swapping would be the page's to decide.
 
+- **The ladder's plain K300 sooner (2026-11-05, shipped).** A user's 4 × 4 heart of small stars (Små
+  motiver, `star4/`) failed on the page: today's search stalls at its bound (16 hidden cuts, rules
+  broken), and the ladder's template, K300 on the rounded outline in 4–6 s, came only in the second
+  phase, 40–43 s in, after the first had spent each outline's share on the samples before K300 and given
+  K300 4 s. The first phase now runs K10, K10′, K30, K10″, K30′, K100, K300 (6 s), then the remaining
+  samples (`stage.js` `ladderRungs`): star4 11–18 s, god-jul 35–46 → 11–34 s. The ladder alone on 169
+  pictures (`nudge/plain2.sh`: 127 test, 40 generated, the two users' hearts; the 14 that changed run
+  twice more, `nudge/interr-ab.sh`): passing 115 → 114, median 10.7 → 9.4 s where passing; lost
+  brand-discord-corners and battery-4-layers (generated; 2 of 3 runs → none: the samples of K100 on the
+  rounded outline, and the second phase's K300 there, out of time), which today's search passed in the
+  page sweep (28 s, 31 s). The plain rankings first all through (K10 to K300, then the samples) were
+  faster still (median 8.8 s) but lost play-card-j-silhouette, which K30's first sample finds on the
+  wider outline (3 of 3 → 0 of 3). Every reordering trades one picture's rung for another's: the
+  first phase's time is fixed and split over the outlines.
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);

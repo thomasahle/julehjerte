@@ -165,7 +165,18 @@ const START_SECONDS = 3;
 const LADDER = [[10, 2], [30, 2], [100, 3], [300, 4]], LADDER_SHARE = .25, SHORT_MM = 3, LADDER_BUILD = 8, LADDER_SAMPLES = 2, LADDER_NOISE = .15, LOW_PENALTY = 5;
 // Alone: K, the plain ranking's seconds, a sampled one's.
 const LADDER_ALONE = [[10, 3, 2], [30, 4, 2], [100, 6, 3], [300, 10, 4], [1000, 15, 10]];
-const LADDER_FIRST = [[10, 2, 1], [30, 2, 1], [100, 3, 2], [300, 4, 3]], LADDER_SECOND = [[300, 10, 4], [1000, 15, 10]];
+const LADDER_FIRST = [[10, 2, 1], [30, 2, 1], [100, 3, 2], [300, 6, 3]], LADDER_SECOND = [[300, 10, 4], [1000, 15, 10]];
+// The first phase's rungs as [K, ranking] (0 the plain one, then the samples): the plain K300 after the cheap
+// ones, before K100's and K300's samples (ladderRungs).
+const FIRST_ORDER = [[10, 0], [10, 1], [30, 0], [10, 2], [30, 1], [100, 0], [300, 0], [100, 1], [30, 2], [100, 2], [300, 1], [300, 2]];
+
+/** The ladder's rungs alone (`phase` from engine.js, or none: LADDER_ALONE), as [K, seconds, seed]. */
+export function ladderRungs(phase) {
+  if (phase === 'first') return FIRST_ORDER.map(([k, seed]) => { const [, plain, sample] = LADDER_FIRST.find(([K]) => K === k); return [k, seed ? sample : plain, seed]; });
+  const rungs = [];
+  for (const [k, plain, sample] of phase === 'second' ? LADDER_SECOND : LADDER_ALONE) for (let seed = 0; seed <= LADDER_SAMPLES; seed++) rungs.push([k, seed ? sample : plain, seed]);
+  return rungs;
+}
 
 /** Under ties, the share of the search's time the fine grid from no start
  * gets first, if at least BARE_FLOOR seconds are left (exactSearch). */
@@ -232,8 +243,17 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
   // breaking rules still when their time ran out; in 10 s K300 had its template in 3.2 s.
   const rungList = [];
   // Alone over several outlines (engine.js exactTemplate), a `phase`: its cheap rungs (LADDER_FIRST) on each
-  // outline first, then its long ones (LADDER_SECOND).
-  if (alone) for (const [k, plain, sample] of phase === 'first' ? LADDER_FIRST : phase === 'second' ? LADDER_SECOND : LADDER_ALONE) for (let seed = 0; seed <= LADDER_SAMPLES; seed++) rungList.push([k, seed ? sample : plain, seed]);
+  // outline first, then its long ones (LADDER_SECOND). The first phase's plain K300 comes before K100's and
+  // K300's samples, with 6 s (FIRST_ORDER; 2026-11-05): a 4 x 4 heart of small stars (Små motiver) needs K300
+  // on the rounded outline for 4-6 s, which K300's 4 s after every sample there left to the second phase, at
+  // 40-43 s (11-18 s now), god-jul's 35-46 s -> 11-34 s. The ladder alone on 169 pictures (127 test, 40
+  // generated, two users' hearts; `nudge/plain2.sh`, the 14 that changed run twice more): passing 115 -> 114,
+  // median 10.7 -> 9.4 s where passing; lost brand-discord-corners and battery-4-layers (generated, 2 of 3
+  // runs -> none), which the page's sweep passed by today's search (28 s, 31 s; battery's failed it once alone
+  // since, on a loaded machine). The plain rankings first all through
+  // (K10 to K300, then the samples) lost play-card-j-silhouette, found by K30's first sample on the wider
+  // outline (3 of 3 -> 0 of 3).
+  if (alone) rungList.push(...ladderRungs(phase));
   else for (const [k, rungSeconds] of LADDER) rungList.push([k, rungSeconds, 0]);
   for (const [k, rungSeconds, seed] of rungList) {
     const room = Math.min(rungSeconds, (until - performance.now()) / 1000);

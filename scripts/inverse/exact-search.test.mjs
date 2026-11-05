@@ -16,7 +16,7 @@ import {cheapBounds} from '../../static/inverse/core/exact/bounds.js';
 import {prepare, restorePrepared, design} from '../../static/inverse/core/engine.js';
 import {finishExactStopped} from '../../static/inverse/core/stopped.js';
 import {smoothEdges} from '../../static/inverse/core/exact/refine.js';
-import {turnsOf, subgroupsOf, fallbackTies, appSymmetry} from '../../static/inverse/core/exact/stage.js';
+import {turnsOf, subgroupsOf, fallbackTies, appSymmetry, ladderRungs} from '../../static/inverse/core/exact/stage.js';
 
 const svgOf = rings => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path fill="#b91313" fill-rule="evenodd" d="${
   rings.map(ring => 'M' + ring.map(([x, y]) => `${x.toFixed(9)},${(12 - y).toFixed(9)}`).join('L') + 'Z').join('')}"/></svg>`;
@@ -340,6 +340,17 @@ test('with none under part of the symmetry either, the search goes on untied; a 
   assert.deepEqual(fallbackTies(['mirrorX', 'mirrorY', 'antiTranspose']), [['rotate90'], ['antiTranspose'], []]);
   assert.deepEqual(fallbackTies(['transpose']), []);
   assert.deepEqual(fallbackTies([]), []);
+});
+
+test('the ladder\'s first phase reaches the plain K300 before K100\'s samples, and tries every ranking of its rungs once', () => {
+  // The 4 x 4 small-stars heart: K300 on the rounded outline, 4-6 s, left to the second phase after the samples.
+  const first = ladderRungs('first'), at = (k, seed) => first.findIndex(([K, , s]) => K === k && s === seed);
+  assert.ok(at(300, 0) < at(100, 1) && at(300, 0) < at(30, 2));
+  assert.equal(first[at(300, 0)][1], 6);
+  // play-card-j-silhouette: K30's first sample, before K100's plain ranking.
+  assert.ok(at(30, 1) < at(100, 0));
+  assert.deepEqual(first.map(([k, , s]) => `${k}:${s}`).sort(), [10, 30, 100, 300].flatMap(k => [0, 1, 2].map(s => `${k}:${s}`)).sort());
+  assert.deepEqual(ladderRungs('second').map(([k, , s]) => [k, s]), [[300, 0], [300, 1], [300, 2], [1000, 0], [1000, 1], [1000, 2]]);
 });
 
 test('a template under part of the symmetry holds, in the app\'s names, what its ties generate', () => {
