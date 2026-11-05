@@ -47,14 +47,17 @@ jobs:
       # The newest commit whose push run succeeded is the one on the site: a
       # push run deploys only after every job passed, and later push runs
       # cancel older ones. Rebuild runs are not counted, since GitHub records
-      # them under main's tip rather than the commit they built.
+      # them under main's tip rather than the commit they built. The runs are
+      # listed unfiltered and the first that succeeded taken: asked for
+      # status=success, the API left out a run that had succeeded half an hour
+      # before, and the daily rebuild put the commit before it back.
       - name: Find the live commit
         id: live
         if: env.REBUILD_LIVE == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          sha=$(gh api "repos/${{ github.repository }}/actions/workflows/deploy.yml/runs?branch=main&event=push&status=success&per_page=1" --jq '.workflow_runs[0].head_sha // empty')
+          sha=$(gh api "repos/${{ github.repository }}/actions/workflows/deploy.yml/runs?branch=main&event=push&per_page=30" --jq '[.workflow_runs[] | select(.conclusion == "success")][0].head_sha // empty')
           if [ -z "$sha" ]; then echo "No successful push run on main to rebuild" >&2; exit 1; fi
           echo "Rebuilding the live commit $sha (main is at $GITHUB_SHA)"
           echo "sha=$sha" >> "$GITHUB_OUTPUT"
