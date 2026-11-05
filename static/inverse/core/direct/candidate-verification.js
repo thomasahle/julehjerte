@@ -1,7 +1,7 @@
 /** Original-image and paper gates shared by fitted and recovered finalists. */
 import {sampleWeave} from '../validate.js';
 import {materialAudit} from '../material.js';
-import {auditFeatureFidelity,auditFeatureFidelityChange} from '../feature-shapes.js';
+import {auditFeatureFidelityChange,finalFeatureAudit} from '../feature-shapes.js';
 import {maskDisagreement} from './prefer-matching.js';
 
 export function assessCandidate(c,input,cfg,{deadline=Infinity,sourceFeatures,recheckFailed=false,approximationReference=null}={}){
@@ -9,7 +9,9 @@ export function assessCandidate(c,input,cfg,{deadline=Infinity,sourceFeatures,re
   c.approximationImproves=false;
   if(!c.geometryPassed)return false;
   const s=c.graph.solution(c.points,c.phase,input),woven=sampleWeave(s,source.resolution);
-  c.originalImageError=maskDisagreement(source,woven);c.originalFeatures=auditFeatureFidelity(source,woven,cfg,sourceFeatures);
+  // The export's own features check, the regions its weave joins included (feature-shapes.js
+  // mergedRegions): a photograph's fitted template joining three of its regions stopped the search at 10 s.
+  c.originalImageError=maskDisagreement(source,woven);c.originalFeatures=finalFeatureAudit(source,woven,cfg,sourceFeatures);
   if(c.originalImageError>cfg.maxImageError)return false;
   if(!c.originalFeatures.passed){
     // A known unresolved feature still prevents acceptance. It must not also

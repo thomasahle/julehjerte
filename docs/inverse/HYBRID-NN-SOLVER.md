@@ -1036,6 +1036,12 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   the ladder's 1.2 % after 52 s); it now gives way (`verdict.ts` `givesWay`). Six photographs show the
   fitter's heart over a passing exact one 1.3–3 % off (the fitter's 0.4–1.4 %): the page's rule for
   hearts only close, kept. First answer: median 12 s.
+  The fitter accepted a candidate on the features check without the joins, so in the browser it ended
+  at 10 s on gathering-hanging-trio-bottom's template joining three regions (1.6 %), which the export
+  then failed: no template. Its acceptance (`candidate-verification.js`) now uses the export's own
+  check (`finalFeatureAudit`); the page then finds one at 15 s (1.4 %). The page's fitter route in Node
+  on all 127 (`nudge/fitgate-ab.sh`, old and new alternately): 119 and 120 passing (tak gained), none
+  lost, no template's mismatch changed by more than 0.2 points, median 8.2 and 8.4 s.
 
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
