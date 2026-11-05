@@ -1,29 +1,5 @@
 # Generator robustness results
 
-## Motifs kept whole on seven and nine strips stop where their paper holds
-
-On five strips a motif kept whole stops growing in the touching ring where the
-ring's ends beside each gate are as wide as paper that holds printed (see
-"Motifs kept whole stop where their paper holds"). Seven and nine strips kept
-the room for a cut, 1.5 units, under 2 mm printed 80 mm wide: every motif kept
-whole tore in 8 places or more at 75–77% on seven strips and 72–74% on nine.
-Now their ring stops where the paper holds too (`boardWholeTop`): at 74% on
-seven strips (75.4% before) and 71.8% on nine (72.8%), and the motif waits
-there until the completions take it on. Their completions keep the motif's
-sizes as they were drawn, so every size from 78% on seven strips and 75% on
-nine is as before. Lowering where they start from as well tore less over all,
-but made some hearts past 78% worse (the polar star, owl, santa hat and pig).
-
-The motifs the page keeps whole, at the sizes that change: seven strips 54
-hearts (18 motifs at 75–77%), weak pieces and needles 437 fewer (the tree,
-bell, snowflake and moon 8 → 0 at each size, the angel 10 → 0); nine strips 57
-hearts, 467 fewer. Spans never shrink; the step into the completions is at
-most 0.2 units larger than any the motif made before. The pig, hedgehog and
-butterfly at 75–77% on seven strips, and the butterfly at 73–74% on nine, now
-show their heart from just below (hard to cut, as there), with 2–5 places to
-tear instead of 8–13. The kept-whole table is unchanged: past 74% the motifs it
-keeps whole would wait while divided they grow on.
-
 ## The elephant on the board circle
 
 The board circle refused the elephant at every size on every board ("No open
