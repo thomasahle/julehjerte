@@ -1056,6 +1056,11 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   went on. The rows came (the user's heart: two; god-jul: one), but no search then found a template
   without joins in its time: today's search on the user's heart kept its joined drawing at the penalty
   (where the ladder's candidates hold a clean one, found in 3 s), jul-tern and god-jul ended as before.
+  gathering-hanging-trio-middle's exact templates (both searches, 1.4% off) fail on one region: a red
+  strip 1 mm wide and 10 mm² that a one-pixel white seam of the photograph's mask cuts off the red check
+  beside it. The template takes it into the check, as the paper must (a strip narrower than a cut can
+  leave); the features check (3 mm², 0.5 mm core) asks for it. Not changed: a core rule wide enough to let
+  it go would let letters' 2 mm strokes go too.
 
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
