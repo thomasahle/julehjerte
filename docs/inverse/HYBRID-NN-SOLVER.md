@@ -1046,6 +1046,10 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   two papers drawn nearly together: of today's 107 saved templates on the test pictures
   (`sweep/slivers.py`: A's cuts 0.03–0.4 mm from B's in runs over 1.5 mm) three have any
   (hjerte-i-hjerte-i-hjerte, jul-tern, lilje1; 1.7–2.8 mm), the user's heart's none. Rare, not chased.
+  jul-tern's ladder template at 180 s (the loose pass, 18 hidden, 0.47% off), counted solved above,
+  joins a letter's tip to the check beside it by a red wedge 4 mm across: it now fails, as do those at
+  90 and 120 s. No search time tried gives jul-tern a template; a longer default would gain
+  vissevasse-arranged-r3c4 (48–50 s alone in Node), which the page's minute misses.
 
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
