@@ -1,5 +1,26 @@
 # Generator robustness results
 
+## The elephant on the board circle
+
+The board circle refused the elephant at every size on every board ("No open
+four-port construction", after about 30 s). Its last resort reaches a motif's
+pieces every way (`withEveryWay`): kept whole, the gates' spokes go round the
+pieces in their way (`around`), entering and leaving each island where it
+comes nearest. The elephant's front leg comes nearest its gate at a corner the
+gate sees only past the tip of the tail, so every way through crossed a shared
+cut. Now an island is entered and left at the nearest point the way from the
+gate or the last island leaves open (`closestPort` with `open`), and a gate
+whose spoke passes islands may also end on the motif where it comes nearest the
+last of them, tried after every other choice. Only hearts the board refused
+can change: these run only in the last resort, after everything else fails.
+
+The elephant at every third size from 45% to 100% (20 sizes each): three
+strips 15 clean and 5 hard to cut, five strips 8 and 12, seven strips 1 and
+19, nine strips 2 and 18, none refused; 11–20 s at the median (at most 44 s).
+On seven and nine strips past 78% it is kept whole and tears in 18–24 places,
+as the motifs kept whole there do (see "Motifs kept whole past the touching
+circle, up to one size").
+
 ## Motifs kept whole past the touching circle, up to one size
 
 Past 70% the board circle divides a motif in four where it can. Kept whole

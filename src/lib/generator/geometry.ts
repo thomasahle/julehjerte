@@ -352,7 +352,8 @@ export function contourChain(
 	visible = false,
 	nested = false,
 	boundaryGates = false,
-	nearest = false
+	nearest = false,
+	open?: (a: Point, b: Point) => boolean
 ) {
 	const atExtremes = !visible && !nearest && !nearestIslands;
 	if (!visible && nearestIslands) nearest = true;
@@ -373,9 +374,9 @@ export function contourChain(
 		// or, `nearest`, where it comes nearest the way in and the way on: a
 		// long bent one (the back card of a pair) has its extremes at its ends.
 		const entry = visible ? (boundaryGates ? ringPort(node.ring, previous) : undefined) ?? ray(node.ring, previous, Math.atan2(c[1] - previous[1], c[0] - previous[0]))
-				: nearest ? closestPort(node.ring, previous) : support(node.ring, angle + Math.PI),
+				: nearest ? closestPort(node.ring, previous, open) : support(node.ring, angle + Math.PI),
 			exit = visible ? (boundaryGates ? ringPort(node.ring, next) : undefined) ?? ray(node.ring, next, Math.atan2(c[1] - next[1], c[0] - next[0]))
-				: nearest ? closestPort(node.ring, next) : support(node.ring, angle);
+				: nearest ? closestPort(node.ring, next, open) : support(node.ring, angle);
 		if (nearest && near(entry.point, exit.point)) throw new ConstructionError('topology', 'Coincident island ports');
 		if (atExtremes) portsAtExtremes.push(entry.point, exit.point);
 		add(edges, [previous, entry.point], 'AB', 'shared');
@@ -1127,7 +1128,6 @@ function contourMotif(
 	// contour-routing rule, not an inverse image solve: no outline moves, and
 	// every candidate has exactly the same visible boundary and topology.
 	const fan = options.practical ? 8 : 5;
-	const combinations = attachmentOrder(fan, count);
 	// The gate each island is reached from, and the way it is reached, are
 	// the same whatever the ports: found once, not for every choice of them.
 	const extras = Array.from({ length: count }, () => [] as Contour[]);
@@ -1149,6 +1149,14 @@ function contourMotif(
 			: nearest;
 		extras[j].push(node);
 	}
+	// With `around`, a gate whose spoke passes islands may also end on the
+	// piece where it comes nearest the last of them: their way on from there
+	// is the shortest, where the gate's own ports lie behind another part of
+	// the piece (the elephant's leg, a gate's ray meeting the tip of its
+	// tail). Those choices come after every other.
+	const nearer = options.around ? extras.map(group => group.length ? nearestPort(base.ring, group.map(n => n.ring)) : null) : [];
+	nearer.forEach((port, j) => { if (port) candidates[j][fan] = port; });
+	const combinations = nearer.some(Boolean) ? [...attachmentOrder(fan, count), ...attachmentOrder(fan + 1, count).filter(c => c.includes(fan))] : attachmentOrder(fan, count);
 	const islandAngles = extras.map((group, j) => {
 		if (!group.length || !options.visibleIslands) return angles[j];
 		const c = centroid(group.flatMap(n => n.ring)), b = centroid(base.ring);
@@ -1178,7 +1186,7 @@ function contourMotif(
 					// separate an arc from the nearby stem on the same sheet.
 					const first = !!(options.boundaryIslands && j % 2 === 0) !== !!options.islandFlip ? 'B' : 'A';
 					contourChain(exterior, extras[j], angle, gates[j], ports[j].point, first,
-						options.visibleIslands, options.nested, options.boundaryIslands, options.around);
+						options.visibleIslands, options.nested, options.boundaryIslands, options.around, options.around ? open : undefined);
 				}
 				else add(exterior, spokes?.[j][indices[j]] ?? spoke(gates[j], ports[j].point), 'AB', 'shared');
 			}
@@ -1422,18 +1430,33 @@ function ringPort(ring: Ring, point: Point): Port | null {
 	}
 	return null;
 }
-/** The point of a ring nearest to a point. */
-function closestPort(ring: Ring, point: Point): Port {
+/** The point of `ring` nearest any point of `rings`. */
+function nearestPort(ring: Ring, rings: Ring[]): Port {
+	let best: Port = { point: ring[0], index: 0 }, nearest = Infinity;
+	for (const r of rings) for (const q of r) {
+		const port = closestPort(ring, q), d = distance(port.point, q);
+		if (d < nearest) { nearest = d; best = port; }
+	}
+	return best;
+}
+/** The point of `ring` nearest `point`; with `open`, the nearest whose way
+ * from `point` it allows (each side's nearest point, nearest first), where
+ * any is: the elephant's leg, whose nearest corner the gate sees only through
+ * the tip of its tail. */
+function closestPort(ring: Ring, point: Point, open?: (a: Point, b: Point) => boolean): Port {
+	const ports: { port: Port; d: number }[] = [];
 	let best: Port = { point: ring[0], index: 0 }, nearest = Infinity;
 	for (let i = 0; i < ring.length; i++) {
 		const a = ring[i], b = ring[(i + 1) % ring.length], d = sub(b, a), length = dot(d, d);
 		const t = length ? Math.max(0, Math.min(1, dot(sub(point, a), d) / length)) : 0, p = mix(a, b, t);
+		if (open) ports.push({ port: { point: p, index: (i + t) % ring.length }, d: distance(p, point) });
 		if (distance(p, point) < nearest) {
 			nearest = distance(p, point);
 			best = { point: p, index: (i + t) % ring.length };
 		}
 	}
-	return best;
+	if (!open || open(point, best.point)) return best;
+	return ports.sort((x, y) => x.d - y.d).find(({ port }) => open(point, port.point))?.port ?? best;
 }
 /** Whether a point can lie within `EPS` of the segment from `a` to `b`,
  * extended by `EPS` of its length at either end: inside their box widened

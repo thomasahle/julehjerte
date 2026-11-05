@@ -926,11 +926,13 @@ describe('frames from real hearts', () => {
   // (`bases`); islands in a ring's hole are reached round either attachment
   // (`nested`); a back card hiding the front one from two gates is passed
   // round its end, and the polar star's needles, each as near two gates,
-  // take one gate each going round (`around`). The board circle refused all
-  // four.
+  // take one gate each going round (`around`), as the elephant's front leg,
+  // seen from its gate only past the tip of the tail, is entered where the
+  // gate sees it and left where the body comes nearest. The board circle
+  // refused all five.
   const cell = (motif: { contours: unknown }, layout: object) => () => generateTextGrid(MOTIF, { glyphs: { [MOTIF]: { advance: 1, contours: normalizeContours(motif.contours as Ring[]) } } },
    false, 'circle', { padding: .22, ...layout, board: 5, circle: 50, scale: 40 });
-  for (const [motif, layout] of [[columnsPlus, { bases: true }], [peace, { nested: true }], [copyPlus, { around: true }], [polarStar, { around: true }]] as const) {
+  for (const [motif, layout] of [[columnsPlus, { bases: true }], [peace, { nested: true }], [copyPlus, { around: true }], [polarStar, { around: true }], [elephant, { around: true, nested: true }]] as const) {
    expect(cell(motif, {}), JSON.stringify(layout)).toThrow(ConstructionError);
    expect(cell(motif, layout)().edges.length, JSON.stringify(layout)).toBeGreaterThan(0);
   }
