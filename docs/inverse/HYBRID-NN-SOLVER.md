@@ -1042,6 +1042,10 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   check (`finalFeatureAudit`); the page then finds one at 15 s (1.4 %). The page's fitter route in Node
   on all 127 (`nudge/fitgate-ab.sh`, old and new alternately): 119 and 120 passing (tak gained), none
   lost, no template's mismatch changed by more than 0.2 points, median 8.2 and 8.4 s.
+  The hairlines through a motif (the user's heart, a run of today's search on the site) are cuts of the
+  two papers drawn nearly together: of today's 107 saved templates on the test pictures
+  (`sweep/slivers.py`: A's cuts 0.03–0.4 mm from B's in runs over 1.5 mm) three have any
+  (hjerte-i-hjerte-i-hjerte, jul-tern, lilje1; 1.7–2.8 mm), the user's heart's none. Rare, not chased.
 
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
