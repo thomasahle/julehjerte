@@ -992,6 +992,17 @@ describe('frames from real hearts', () => {
   expect(scale).toBeLessThan(.82);
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
  });
+ it('keeps a motif kept whole on seven and nine strips short of where its ring\'s ends would tear too', () => {
+  // On seven strips at 76% and nine at 73% the ring's ends had the room for
+  // a cut, not the paper's: eight places to tear. The motif waits at the
+  // size where they hold.
+  for (const [board, asked, reached] of [[7, .76, .75], [9, .73, .72]]) {
+   const { design, whole, scale } = generate({ mode: 'figure', name: 'Tree', contours: tree.contours as Ring[], colors, style: 'board', board, scale: asked });
+   expect(whole, `${board}`).toBe(true);
+   expect(scale, `${board}`).toBeLessThan(reached);
+   expect(paperFaults(design), `${board}`).toEqual({ weak: 0, loose: 0 });
+  }
+ });
  slow('steps a seven-strip board heart\'s slanting cut straight in to the circle\'s gate where it leaves a needle', () => {
   // At 96% on seven strips the heart's outer gate lies near the paper's edge,
   // and the cut from it met the circle's gate almost along the circle, whose

@@ -2347,7 +2347,10 @@ export function boardWholeFill(radius: number, strips: number): number {
 		const at = along(r), y = Math.min(r, 50) - band;
 		under.set(at, Math.min(under.get(at) ?? Infinity, y));
 	}
-	const from = boardFill(top, strips), end = along(spans.at(-1)!.hi), hull: Point[] = [];
+	// From the motif's size at the touching ring's top, five strips'; finer
+	// boards' completions keep the motif as they were drawn, from its size at
+	// the top a cut has room at, a step past where the paper stops the ring.
+	const from = boardFill(strips === 5 ? top : boardWholeTop(strips, CUT_ROOM), strips), end = along(spans.at(-1)!.hi), hull: Point[] = [];
 	under.delete(0);
 	for (const p of [[0, from], ...[...under].sort((a, b) => a[0] - b[0])] as Point[]) {
 		const turn = () => { const [o, q] = hull.slice(-2); return (q[0] - o[0]) * (p[1] - o[1]) - (q[1] - o[1]) * (p[0] - o[0]); };
@@ -2360,14 +2363,14 @@ export function boardWholeFill(radius: number, strips: number): number {
 /** The completion about a whole motif for a circle, past the touching ring. */
 export const boardWholePattern = (radius: number, strips: number) => radius > boardWholeTop(strips)
 	? WHOLE_PATTERNS.find(({ strips: n, lo, hi }) => n === strips && radius >= lo - 1e-9 && radius <= hi + 1e-9)?.pattern : undefined;
+/** The room for a cut beside a gate, in units of the heart. */
+const CUT_ROOM = 1.5;
 /** The largest circle in the touching ring (`boardRanges`' second range) a
  * motif kept whole can take, the next line out following the circle: where
  * the ring's ends beside its gate (`gateRoom`) are as wide as paper that
- * holds printed (`PAPER_NECK_MM`), more than the room for a cut. Finer
- * boards keep the room for a cut until their completions are checked
- * against the paper. */
-export function boardWholeTop(strips: number): number {
-	const [, large] = boardRanges(strips), d = boardLines(strips), room = strips === 5 ? PAPER_NECK_MM / PRINT_WIDTH_MM * 100 : 1.5;
+ * holds printed (`PAPER_NECK_MM`), more than the room for a cut, or `room`. */
+export function boardWholeTop(strips: number, room = PAPER_NECK_MM / PRINT_WIDTH_MM * 100): number {
+	const [, large] = boardRanges(strips), d = boardLines(strips);
 	if (!large) return 0;
 	let [low, high] = large;
 	if (gateRoom(high, d, true) >= room) return high;
