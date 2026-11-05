@@ -29,7 +29,7 @@ and needles 108 → 33 (moon and stars 55 → 13, the candy 14 → 0, the reinde
 20 → 10, the nisse 4 → 0), hard to cut 14 → 0 (moon and stars at 81–94%),
 sharp tips 134 → 123, hidden turns 7336 → 3631, cuts 1% shorter, time
 947 → 633 s. The nisse and the star have two more sharp tips at some sizes,
-where their hidden cuts turn about ten times fewer: the page counts that as
+where their hidden cuts make about ten fewer turns: the page counts that as
 alike. Most hearts kept whole hang by 2.3 mm, the touching ring's ends (see
 "Motifs kept whole stop where their paper holds"), against 0.85–4.5 mm
 divided.
@@ -40,6 +40,17 @@ any step they make kept whole (at most 1.7–2.2): they are divided from 81%.
 Moon and stars steps 1.7 there, its motif kept whole 2.1. Kept whole on five strips, every
 motif tears in 4 places from 94% (the owl and the heart in 14 at 94%): left
 for later.
+
+Seven strips: 22 motifs are kept whole from 71% (18 to 74%, the unicorn to
+72%, the church, dove and cow at 71%), 77 hearts: firmer kept whole at 75,
+alike at 2. Weak pieces and needles 101 → 25 (the reindeer 21 → 4, the wreath
+22 → 8, the candy 11 → 0, the bird 10 → 0, the nisse 9 → 0), hidden turns
+2534 → 1441, sharp tips 48 → 54, time 737 → 176 s. At 75% a motif kept whole
+tears in 8 places or more, as the motifs the page keeps whole do there: on
+seven and nine strips the touching ring's top still keeps only the room for a
+cut (see "Motifs kept whole stop where their paper holds"). Nine strips: 19
+motifs are kept whole at 71% only, before the same top: weak pieces 60 → 8. On
+three strips no motif can be kept whole past the touching circle.
 
 ## Small motifs cut down the middle: one template for both lobes
 

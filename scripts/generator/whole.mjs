@@ -82,8 +82,10 @@ try {
 					|| span(t, t) - span(t - 1, t) <= Math.max(...at.slice(1, t).map((r, i) => r.whole.span - at[i].whole.span)));
 			let t = first;
 			while (t > 0 && !smooth(t)) t--;
-			if (t) on[board] = t < n ? at[t].p : 101;
-			console.log(`${id} ${board}: ${t ? `divided from ${on[board]}` : 'divided throughout'}${first < n ? ` (may not be kept whole at ${at[first].p})` : ''}`);
+			// Where the page keeps it whole anyway below the switch, it need not be asked to.
+			const asked = t && !at.slice(0, t).every(r => r.divided.whole);
+			if (asked) on[board] = t < n ? at[t].p : 101;
+			console.log(`${id} ${board}: ${!t ? 'divided throughout' : asked ? `divided from ${on[board]}` : `kept whole anyway to ${at[t - 1].p}`}${first < n ? ` (may not be kept whole at ${at[first].p})` : ''}`);
 		} else console.log(`${id} ${board}: ${why}`);
 		if (!Object.keys(on).length) delete whole[id];
 	}
