@@ -1,5 +1,46 @@
 # Generator robustness results
 
+## Motifs kept whole past the touching circle, up to one size
+
+Past 70% the board circle divides a motif in four where it can. Kept whole
+instead (`keepWhole`: the grid's colours flipped behind the circle), it is
+often firmer by the refiner's measure (`firmerCuts`), but chosen size by size
+the grid flipped back and forth along the slider (the star on five strips:
+whole at 71%, divided at 73%, whole at 75–77%, divided from 79%). And past
+about 80% a motif kept whole waits where its completions end while the divided
+one grows on, so a late switch makes it jump. Now each featured motif has, on
+each board, one size from which it is divided (`whole` in the board circle's
+recipe file, chosen by `scripts/generator/whole.mjs`). Below it, from 71%, the
+motif is kept whole, and only where at every size the divided heart is neither
+firmer nor better as the page ranks hearts (`betterCuts`), or the divided heart
+is hard to cut and the whole one is not. The switch comes only just after a
+size where both ways show the motif equally large (to 80%), so the slider grows
+there as it does divided, or where the step it makes is no larger than one the
+motif makes kept whole below it.
+
+Five strips, every size from 71% to 100%, the 49 featured motifs: 22 are kept
+whole from 71% (moon and stars to 94%; 16 to 80%; the fish to 76%; the sleigh,
+church and penguin to 72%; the unicorn at 71%). The page keeps 18 whole anyway, 3 it never
+can (the gift, the candy cane, and the elephant, refused), and for 6 the
+divided heart is better already at 71% (the gingerbread man, bauble, holly,
+wreath, bird and cow). Of the 197 hearts that change, the one kept whole is
+firmer at 162 and alike at 35 (the divided one firmer at none). Weak pieces
+and needles 108 → 33 (moon and stars 55 → 13, the candy 14 → 0, the reindeer
+20 → 10, the nisse 4 → 0), hard to cut 14 → 0 (moon and stars at 81–94%),
+sharp tips 134 → 123, hidden turns 7336 → 3631, cuts 1% shorter, time
+947 → 633 s. The nisse and the star have two more sharp tips at some sizes,
+where their hidden cuts turn about ten times fewer: the page counts that as
+alike. Most hearts kept whole hang by 2.3 mm, the touching ring's ends (see
+"Motifs kept whole stop where their paper holds"), against 0.85–4.5 mm
+divided.
+
+Past 80% the heart, dove, candy, stocking, horse and bear could stay whole up
+to 93%, but the switch to divided there would jump 2.4–6.1 units, more than
+any step they make kept whole (at most 1.7–2.2): they are divided from 81%.
+Moon and stars steps 1.7 there, its motif kept whole 2.1. Kept whole on five strips, every
+motif tears in 4 places from 94% (the owl and the heart in 14 at 94%): left
+for later.
+
 ## Small motifs cut down the middle: one template for both lobes
 
 In Små motiver the small copies of a motif that is its own mirror image across

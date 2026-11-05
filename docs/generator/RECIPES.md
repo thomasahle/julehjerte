@@ -45,6 +45,9 @@ any other, keeping it only where it cuts cleanly. The page ships no motif's
 own: it loads `static/generator/recipes/<style>.json` for the frame chosen
 (its topologies' recipes, below), where `index.json` lists it, and passes them
 in the request.
+The board circle's file also gives, for each featured motif and board, the
+size from which the motif is divided, kept whole below it past the touching
+circle (`whole`, chosen by `scripts/generator/whole.mjs`; see RESULTS.md).
 
 ## A topology's recipe
 

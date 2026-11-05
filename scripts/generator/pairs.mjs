@@ -312,7 +312,7 @@ try {
 	if (process.env.UNSOLVED) await fs.writeFile(process.env.UNSOLVED, JSON.stringify(unsolved));
 	const file = process.env.OUT ?? 'static/generator/recipes/board.json';
 	const old = JSON.parse(await fs.readFile('static/generator/recipes/board.json', 'utf8').catch(() => '{"version":1,"recipes":[]}'));
-	await fs.writeFile(file, JSON.stringify({ version: 1, recipes: [...old.recipes.filter(r => !boards.includes(r.strips)), ...recipes] }));
+	await fs.writeFile(file, JSON.stringify({ version: 1, recipes: [...old.recipes.filter(r => !boards.includes(r.strips)), ...recipes], ...old.whole && { whole: old.whole } }));
 	console.log(`wrote ${file}`);
 } finally {
 	await server.close();

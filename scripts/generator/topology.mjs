@@ -245,7 +245,7 @@ try {
 	const all = process.env.ADD ? [...old.recipes, ...recipes.filter(r => !had.has(topologyKey(r)))]
 		: [...process.env.MERGE ? old.recipes.filter(r => r.strips !== strips) : [], ...recipes];
 	await fs.mkdir(path.dirname(file), { recursive: true });
-	await fs.writeFile(file, JSON.stringify({ version: 1, recipes: all }) + '\n');
+	await fs.writeFile(file, JSON.stringify({ version: 1, recipes: all, ...old.whole && { whole: old.whole } }) + '\n');
 	if (process.env.OUT) process.exit(0);
 	const indexFile = path.join(dir, 'index.json'), index = JSON.parse(await fs.readFile(indexFile, 'utf8').catch(() => '{"files":[]}'));
 	index.files = [...new Set([...index.files, ...all.length ? [style] : []])].sort();

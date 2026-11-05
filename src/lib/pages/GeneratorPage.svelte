@@ -272,10 +272,11 @@
 	const boardWhole = new Map<string, boolean>();
 	// Past the motif in four's reach a motif's circle is decided apart from
 	// the sizes below (see `boardStage`).
-	const onBoard = (motif: string, board = 5, scale = .7) => { const stage = boardStage(scale, board); return `${motif}|${board}${stage ? '|' + stage : ''}`; };
+	// A motif kept whole as asked (`keepWhole`) is apart from the sizes divided.
+	const onBoard = (motif: string, board = 5, scale = .7, whole = false) => { const stage = boardStage(scale, board); return `${motif}|${board}${stage ? '|' + stage : ''}${whole ? '|whole' : ''}`; };
 	function learn(job: Job, result: GeneratorResult) {
 		if (!job.motif || job.request.mode !== 'figure' || job.request.style !== 'board') return;
-		const key = onBoard(job.motif, job.request.board, job.request.scale);
+		const key = onBoard(job.motif, job.request.board, job.request.scale, job.request.keepWhole);
 		const asked = job.request.scale ?? .7, largest = boardCircles.get(key);
 		if (result.scale !== undefined) boardCircles.set(key, result.scale < asked ? result.scale : 'large');
 		else if (typeof largest === 'number' && asked > largest) boardCircles.delete(key);
@@ -389,6 +390,13 @@
 		const recipes = (await asset<RecipeFile>(`recipes/${style}.json`).catch(() => undefined))?.recipes;
 		return recipes?.length ? recipes : undefined;
 	};
+	/** On a board circle, the size from which a featured motif is divided,
+	 * kept whole below it past the touching circle (see `RecipeFile`). */
+	const dividedFrom = async (style: string, motif: string, board: number) => {
+		const index = await asset<{ files: string[] }>('recipes/index.json').catch(() => ({ files: [] as string[] }));
+		if (style !== 'board' || !index.files.includes(style)) return;
+		return (await asset<RecipeFile>(`recipes/${style}.json`).catch(() => undefined))?.whole?.[motif]?.[board];
+	};
 	async function requestFor(
 		snapshot: GeneratorState
 	): Promise<GeneratorRequest> {
@@ -428,6 +436,8 @@
 				await asset<{ contours: Ring[] }>(`motifs/${snapshot.motif}.json`)
 			).contours;
 			request.recipes = await storedRecipes(snapshot.style);
+			const from = await dividedFrom(snapshot.style, snapshot.motif, stripCount(snapshot) ?? BOARD_STRIPS.board.initial);
+			if (from !== undefined && snapshot.scale > 70 && snapshot.scale < from) request.keepWhole = true;
 		}
 		return request;
 	}
@@ -564,9 +574,9 @@
 				if (token !== revision) return;
 				// What the default size's heart, once made, tells the picture.
 				const made = cache.get(geometryKey({ ...snapshot, scale: defaults.scale, place: undefined, side: undefined }));
-				const known = onBoard(snapshot.motif, stripCount(snapshot), request.scale);
+				const known = onBoard(snapshot.motif, stripCount(snapshot), request.scale, request.keepWhole);
 				sketch = picture(request, { place: made?.place, board: made?.board ?? made?.design.gridSize.x, circle: boardCircles.get(known),
-					enclosed: boardEnclosed.get(known), whole: boardWhole.get(known) }) ?? null;
+					enclosed: boardEnclosed.get(known), whole: boardWhole.get(known) ?? request.keepWhole }) ?? null;
 				if (!cached && !failed) queueJob({ request, key, token, motif: snapshot.motif });
 			})
 			.catch(() => {

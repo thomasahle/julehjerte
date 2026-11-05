@@ -972,6 +972,16 @@ describe('frames from real hearts', () => {
   expect(board(star, .8).whole).toBeUndefined();
   expect(board(tree, .6).scale).toBeUndefined();
  });
+ it('keeps a motif that could be divided whole past the touching circle where asked', () => {
+  // The star at 75% on five strips, kept whole (`keepWhole`, as the recipe file's `whole` asks below 81%):
+  // one colour on the grid flipped behind the circle, as large in the picture as divided.
+  const asked = { mode: 'figure' as const, name: 'Star', contours: star.contours as Ring[], colors, style: 'board' as const, scale: .75 };
+  const whole = generate({ ...asked, keepWhole: true }), divided = generate(asked);
+  expect(whole.whole).toBe(true);
+  expect(whole.hardToCut).toBeUndefined();
+  expect(divided.whole).toBeUndefined();
+  expect(whole.scale).toBe(divided.scale);
+ });
  it('keeps a motif kept whole short of where its ring\'s ends would tear in print', () => {
   // At the touching ring's top the ring's ends beside each gate were 1.5
   // units wide, under 2 mm printed 80 mm wide: eight places to tear.

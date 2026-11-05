@@ -24,6 +24,7 @@ import circleSolves from '../../../scripts/generator/solves/circle.board-5.sym.j
 import starRays from '../../../scripts/generator/solves/star.rays.json';
 import board from '../../../static/generator/recipes/board.json';
 import rays from '../../../static/generator/recipes/rays.json';
+import catalog from '../../../static/generator/catalog.json';
 
 const square = (x: number, y: number, size: number): Ring => [[x, y], [x + size, y], [x + size, y + size], [x, y + size]];
 const circle = (c: Point, r: number, n = 64): Ring => Array.from({ length: n }, (_, i): Point =>
@@ -90,6 +91,19 @@ describe('stored recipes', () => {
 		expect(edges[0].to).toEqual([60, 30]);
 		expect(edges[1].from).toEqual([60, 30]);
 		expect(edges.at(-1)!.to).toEqual([90, 30]);
+	});
+
+	it('keeps a featured motif whole on a board circle up to one size, past the touching circle', () => {
+		// Divided from a size of the slider past 70%, on a board the slider offers, or kept whole throughout (101).
+		const ids = new Set(catalog.map(item => item.id)), whole = (board as unknown as RecipeFile).whole ?? {};
+		expect(Object.keys(whole).length).toBeGreaterThan(0);
+		for (const [id, from] of Object.entries(whole)) {
+			expect(ids.has(id), id).toBe(true);
+			for (const [strips, percent] of Object.entries(from)) {
+				expect([3, 5, 7, 9], `${id} ${strips}`).toContain(Number(strips));
+				expect(Number.isInteger(percent) && percent > 71 && percent <= 101, `${id} ${strips}: ${percent}`).toBe(true);
+			}
+		}
 	});
 
 	it('is only chosen at the sizes and space it was checked at, on its own outline', () => {

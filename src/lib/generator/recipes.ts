@@ -125,7 +125,17 @@ export type TopologyRecipe = {
 };
 export type Recipe = MotifRecipe | TopologyRecipe;
 export const isTopology = (recipe: Recipe): recipe is TopologyRecipe => 'outline' in recipe;
-export type RecipeFile = { version: 1; recipes: Recipe[] };
+export type RecipeFile = {
+	version: 1;
+	recipes: Recipe[];
+	/** On a board circle, the size setting, in whole percents, from which each
+	 * featured motif (by its id) is divided on each number of strips, past the
+	 * touching circle kept whole below it (`keepWhole`): one switch along the
+	 * slider, where the heart kept whole is no less firm (`firmerCuts`) nor worse
+	 * (`betterCuts`) at every size below it, and the motif does not jump there
+	 * (scripts/generator/whole.mjs). */
+	whole?: Record<string, Record<string, number>>;
+};
 
 /** The least turn, in degrees, that makes a ring's vertex a corner. */
 export const CORNER_TURN = 20;

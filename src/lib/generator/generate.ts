@@ -111,7 +111,7 @@ export type GeneratorRequest = {
 	recipes?: readonly Recipe[];
 	/** On a board circle past the touching circle: the motif kept whole with the
 	 * grid's colours flipped, where that can be built, though it could be
-	 * divided. */
+	 * divided (asked for up to the size its recipe file's `whole` gives). */
 	keepWhole?: boolean;
 	style?: FigureStyle;
 	textFrame?: TextFrame;
@@ -758,7 +758,7 @@ const neckAsWide = (a: HeartDesign, b: HeartDesign) => Array.from({ length: NECK
  * narrower print, and not sharper or much busier; or, holding as well,
  * hanging by wider narrowest necks (`necksOf`), and no sharper, no busier and
  * hardly longer. */
-function firmerCuts(designA: HeartDesign, a: readonly number[], designB: HeartDesign, b: readonly number[]): boolean {
+export function firmerCuts(designA: HeartDesign, a: readonly number[], designB: HeartDesign, b: readonly number[]): boolean {
 	if (a[0] !== b[0] || a[1] !== b[1]) return betterCuts(a, b);
 	if (a[0]) {
 		const ha = holdsAt(designA), hb = holdsAt(designB);
