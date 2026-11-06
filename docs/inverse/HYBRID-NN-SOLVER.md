@@ -1204,6 +1204,24 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   Left: the network trained longer on strips hearts when the machine is idle (`nn/idle-train.sh`; one
   epoch: strips paper on cuts 0.735 to 0.739); the paper core in the search for the near misses. Not a
   route: a carried-over heart's own template as the start (the user: cheating).
+- **A symmetric picture is taught two answers (2026-11-06).** Why the network's paper map stays near 74%
+  on the strips designs it is trained on: trained on 16 of them alone (8 copies each, 40 epochs,
+  `nn/over/run.sh`), it learns their hidden cuts by heart (recall 1.0, precision 0.62) but their papers
+  only to 86%, the loss still falling slowly. Most strips pictures are symmetric about a diagonal while
+  their generator templates are not; the pack holds the template and its mirror image (`dihedral.mjs`,
+  papers swapped correctly), both valid for the one picture, and on that picture they agree on 49 to 87%
+  of the cut pixels. The paper map can only learn their mean. `train.py --sym-min` teaches each picture
+  the nearest of its valid templates instead (`sym_alternatives`: the row's template moved by each
+  symmetry its picture has, papers swapped where columns become rows, spread a pixel onto the row's own
+  cuts; `min_losses`: every loss per picture against each, the smallest taken), so a symmetric picture
+  gets one consistent template; `synstrips/fitscore.py` scores the paper against the nearest too (today's
+  models: the same as against the template, 0.741). Ruled out on the way: the ladder from its own failing
+  template's switch places (star on 3 strips: its 4 switches lie on other edges than the generator's 4)
+  and with the generator's switch places but the network's maps (no rung passes; with the generator's
+  own maps K30 does), so the maps are the limit. And the order of the ladder's rungs: on the snowflake
+  in corners each of 14 rungs (K10 to K1000, 3 seeds) ends in 1 to 15 s without a template.
+  Where the search finds none, the fitter's template is what the page shows: on the first 21 of the 68
+  missed benchmark hearts it passes on 15, 0.1 to 2.4% from the mask (`bench/fitter.sh`).
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);
