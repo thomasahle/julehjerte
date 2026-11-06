@@ -1134,6 +1134,37 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   no start: only untied and K1000 or K300's samples give one, 13-27 s), star in motifs (5, 6), star on 3
   and 4 strips (regions; one clearance 0.9-1.8 mm short), JUL woven in oswald and kalam, NOEL woven
   letters. Most strips hearts still failing have no template from the generator either.
+- **The generator's hearts the search misses: the start, not the model (2026-11-06).** The 43 hearts
+  failing on regions in either search were solved again with their templates saved (`bench/regions.sh`)
+  and audited as the search judges them, specks under n²/1333 px gone (`bench/featdir.mjs`, the harness's
+  verdict on 68 of 68). 38 have no exportable generator template. The failing templates are fallbacks:
+  plain weaves with no hidden cut (Små motiver: 10 to 24 motifs lost), or drawings of a solution that still
+  breaks a lazily added rule when HiGHS's time ends. A detached loop is drawn by no slit (`slitPiecesOn`
+  walks from the border), so the drawing passes the cutting rules and loses that region (star on 3 strips:
+  its bottom tip, 0.4% of the picture, its whole 0.5% error). The rule is a row; HiGHS had no time left.
+  - Star on 3 strips, traced outline, untied (`bench/islandprobe.mjs`): from the generator's template, a
+    passing template in 5-10 s (2 hidden, 0.04% off). From the topological start, none in 40 s: its
+    witness has 1 hidden cut (the count bound), which no drawing keeping the rules has, and HiGHS ran 3
+    rounds in 37 s, the gap still 99.98%. No help from (`bench/dbg-core`): the fine grid (penalty 15,
+    a model 4 times larger); stopping a run once its improving solutions break rules not yet rows (2
+    stops, the same penalty); a topological witness 1 or 2 above the bound (other topologies, penalty
+    29 and 42). The topological search knows no geometry, and only the generator's topology draws.
+  - The ladder with oracle maps (the generator's own cuts, `nn/oraclemaps.py`), untied: K10 to K100 all
+    fail; with the template's switch positions added to the grid, K30's third sample passes, at 24 s. A
+    rung starts from nothing and uses the maps only to rank hidden cuts; the template start also gives
+    each run's paper and the switch places.
+  - From their generator templates (untied, 30 s), 5 of the 11 missed with one pass: star on 3 and 4
+    strips (5, 16 s), snowflake in corners (20 s), heart on 3 and 4 strips (1-2 s, which the untied
+    fallback above already finds). The other 6 (motifs, text) are not read onto the traced outline.
+    Templates the export rejects are not repaired from their own start either (4 strips hearts: 2 not
+    read, 2 still breaking rules at 30 s), so they give no labels for training this way.
+  - The network (syn1v) on star on 3 strips: of its 104 hidden-cut pixels over 0.5 none lies within a
+    pixel of the generator's hidden cuts (0.09 at most on those), paper right on 71% of the outline. Its
+    training kept 10 of 78 strips designs (13% export) and 17 of 37 motifs ones (`--drop`); new strips and
+    motifs designs with random icons (`gen-synth.mjs` `STYLES`, `EXCLUDE`): 0 of 20 export.
+  So a heart carried over from Tegn has the start the search lacks, its own template (a product
+  question: the user decides). For painted ones a start must know the geometry: the network's paper and
+  switch maps as a rung's start, or a topological search told which chords cannot be drawn.
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);
