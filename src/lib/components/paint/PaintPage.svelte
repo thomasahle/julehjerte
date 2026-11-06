@@ -1011,6 +1011,8 @@
 					{#if showingResult && session.result}
 						<div class="result">
 							{#key session.result.design.id}
+								<!-- In the papers the mask is painted with (the page's `colors`, the
+								     colourful mode's pair too), not the site store's red and white. -->
 								<PaperHeartSVG
 									readonly
 									idPrefix="paint-result"
@@ -1018,6 +1020,7 @@
 									initialGridSize={session.result.design.gridSize}
 									initialWeaveParity={session.result.design.weaveParity ?? 0}
 									size={520}
+									{colors}
 								/>
 							{/key}
 							{#if showMotif && session.result.report.motifMismatch !== undefined}
