@@ -209,10 +209,9 @@ export function subgroupsOf(symmetry) {
 }
 
 /** The ties searched under, in turn, once `symmetry` has no template: part of
- * it (subgroupsOf), then none, where it has parts. */
+ * it (subgroupsOf), then none. */
 export function fallbackTies(symmetry) {
-  const parts = subgroupsOf(symmetry);
-  return parts.length ? [...parts, []] : [];
+  return symmetry.length ? [...subgroupsOf(symmetry), []] : [];
 }
 
 /** The exact search on the traced `outline` from the fitter's `template`
@@ -417,6 +416,9 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   // either, or the turn's drawing breaking rules), untied one 0.1-0.5% off; of
   // 36 generated hearts with two or more symmetries, today's search alone
   // passed 11, now 21, none lost (the 43 test pictures with as many: 41 and 41).
+  // Under a single tie, untied straight after: the strips frame's hearts, mirrored
+  // on a diagonal, have none under it (heart on 3 strips untied at 0 hidden cuts
+  // in 3 s); of 161 generated hearts 92 passed, now 96, none lost.
   // A drawing the export does not take is kept, the closest, should none follow.
   const ways = fallback && found.error === NO_TEMPLATE ? fallbackTies(symmetry) : [];
   let drawn = null;

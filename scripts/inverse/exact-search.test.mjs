@@ -334,11 +334,12 @@ test('with none under all of a picture\'s symmetry, its turns are searched, then
   assert.deepEqual(subgroupsOf(['rotate90']), []);
 });
 
-test('with none under part of the symmetry either, the search goes on untied; a single tie has no parts to try', () => {
+test('with none under part of the symmetry either, the search goes on untied, as it does under a single tie', () => {
   // A letter in a hexagon (antiTranspose and its turn): the outline not symmetric enough for either alone, untied 0.5% off.
   assert.deepEqual(fallbackTies(['antiTranspose', 'rotate180']), [['rotate180'], ['antiTranspose'], []]);
   assert.deepEqual(fallbackTies(['mirrorX', 'mirrorY', 'antiTranspose']), [['rotate90'], ['antiTranspose'], []]);
-  assert.deepEqual(fallbackTies(['transpose']), []);
+  // A heart in the strips frame, mirrored on its diagonal: none tied, untied at 0 hidden cuts in 3 s.
+  assert.deepEqual(fallbackTies(['antiTranspose']), [[]]);
   assert.deepEqual(fallbackTies([]), []);
 });
 

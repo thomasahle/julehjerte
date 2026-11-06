@@ -1102,6 +1102,38 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   faster still (median 8.8 s) but lost play-card-j-silhouette, which K30's first sample finds on the
   wider outline (3 of 3 → 0 of 3). Every reordering trades one picture's rung for another's: the
   first phase's time is fixed and split over the outlines.
+- **A benchmark of the generator's hearts; untied under a single tie (2026-11-06, shipped).** Each
+  picture the user sent was fixed at another's cost: the ~170 test pictures are mostly simple, the
+  generator's hearts the hard ones, and a 1-2 picture A/B moved with the machine's load. Two tools:
+  - The CPU clock (`even/prodcheck3.mjs` `CPU_CLOCK`): every deadline, HiGHS's `time_limit` too (both
+    read `performance.now`), counted in the thread's CPU time. Verdicts repeat at moderate load (14 of
+    14); under load ~14 a marginal picture still flips (fejlternet's ladder, on either core).
+  - 170 hearts from the generator's offered presets (`bench/gen-bench.mjs`): every figure frame with 8
+    motifs, every board and strips size with star, heart and tree, every text frame with 6 words (JUL in
+    3 more fonts); 161 distinct (a board's default size is its 5, motifs' and strips' their 4). Masks as
+    the page imports them (`rasterizeDesign`), each with the generator's own template checked as the
+    export is (`even/genvalid.mjs`: `verdict`, then the paper after `verifyPaper`): 85 export, a proof
+    that the picture has a template. The 9 twins agree in 35 of 36 runs (the other at 53 s, the end of
+    its time).
+
+  Main on the 161, each search alone (`bench/base.sh`, `bench/summary.py`): 92 pass (ladder 89,
+  today's 70), the first template in 5.1 s (median, CPU); 11 of the 85 with a template missed. Of the 69
+  failing (today's/the ladder's reason): no template 30, no template and rules or regions 14, rules 10,
+  regions 9, mixed 6. The strips frame passed 1 of 17 (4 with a template): its hearts are mirrored on a
+  diagonal, one tie, none under it, and `fallbackTies` went untied only after parts of the symmetry, of
+  which a single tie has none. It now goes untied there too (`bench/fix.sh`, `fix-core`), on the 161:
+  92 -> 97 pass (strips 1 -> 4: heart on 3 and 4, flower; NOEL checkered; 2026 woven in a square, with
+  no tie, noise; star on 4 strips in 1 of 2 runs, at 53 s), none lost; with no template from either
+  search 30 -> 15 (the rest a template breaking rules, the nearest); on the 66 with one tie and a
+  template, median where both pass 5.85 -> 5.6 s. Nisse in layers and on the board changed once, and
+  change as much on main's core (`bench/nisse-ab.sh`: layers 48 s, then none twice; board 24 s, then 47 s). The 30 test pictures with no template in some run
+  (`bench/fixab.sh`): unchanged (fejlternet's ladder noise).
+
+  Missed still with a template (9): heart on 5 board strips (12-14 hidden, a cut through itself, 3
+  clearances short), the snowflake in corners (its template, 4 hidden, kept by the model, none found from
+  no start: only untied and K1000 or K300's samples give one, 13-27 s), star in motifs (5, 6), star on 3
+  and 4 strips (regions; one clearance 0.9-1.8 mm short), JUL woven in oswald and kalam, NOEL woven
+  letters. Most strips hearts still failing have no template from the generator either.
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);
