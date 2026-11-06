@@ -1165,6 +1165,43 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   So a heart carried over from Tegn has the start the search lacks, its own template (a product
   question: the user decides). For painted ones a start must know the geometry: the network's paper and
   switch maps as a rung's start, or a topological search told which chords cannot be drawn.
+- **Teaching the network the strips hearts; the network's maps as the start (2026-11-06).** Three
+  routes for the generator's hearts the search misses (the entry above), none winning one.
+  - New designs (`nn/synstrips.sh`: 3 h of `gen-synth.mjs`, styles strips, motifs and board, the
+    benchmark's 8 motifs left out): 1733, of which 309 export (board 172 of 298, strips 101 of 1283,
+    motifs 36 of 152), 2472 with their symmetric copies (`synstrips/pack.npy`). syn1v fine-tuned one
+    epoch with them a fifth of it (ss1, 17 min): the benchmark's readings (`bench/readall.mjs`, the maps
+    read onto the traced outline against the generator template's reading) no nearer, 30 of 89 within a
+    tenth of the edges, the mean share of edges differing 0.342 (syn1v 0.344); motifs 0.84, strips 0.42.
+  - Even on its own training designs the network reads strips hearts 60% off: the paper on visible cuts
+    right on 72% of their pixels (syn1v 70%, chance 50%), motifs 79%, board 93%; hidden cuts found
+    (66% within a pixel on strips, 97% on board) but 7 of 10 predicted ones not the template's. An epoch
+    with the new designs half of it (replay.py: 6000 pictures of the old packs, 1.6 GB, beside them):
+    strips 73.5%. Training on all nine packs reached a 12 GB footprint and made the user's machine slow;
+    on the replay pack 7.7 GB after one epoch, 6.3 GB with the MPS allocator capped (watermarks .4/.25):
+    neither run finished, and longer training waits for an idle machine.
+  - Where the network is sure (paperA under .2 or over .8) it is right: 92-100% of those pixels on all
+    training designs but three (76-80%), covering 20-70% of each heart's cut pixels; the rest near .5. An
+    edge read sure (80% of its samples sure, each switch's hidden cut clearly on one side; dbg-core
+    `mapsReading` `sure`) differs from the template on 2-7% of edges (board, figures, strips; text 0.5%),
+    against 13-38% for all edges; motifs are the exception, sure and wrong on 67%.
+  - The start from the sure edges alone (dbg-core `MAPS_PARTIAL`: the repair holds only their papers,
+    switches and sides; `HOLD_TIGHTEN`: tightened under those, where the plain tightening drops them and
+    collapses to the count bound's topology): star on 4 strips' witness then agrees with its template on
+    32 of 40 edges at its 1 hidden cut, and HiGHS ends one rule short (penalty 1, at 45 s and at 90 s;
+    the fine grid: penalty 17). Holding the unsure edges too, let go first (`MAPS_TIERED`): worse. On
+    the 68 distinct hearts failing today (`bench/partial.sh`): 5 pass, 4 of which the same probe passes
+    without the maps, the fifth (JUL oswald circle) with no start in either run; and the hinted
+    topological search ran out of its 3 s on 58 of them, where the plain one finds a witness (tree in
+    motifs). So no maps start in the core.
+  - The near misses: of the 68, 8 have a template within 0.3 mm of the clearance rules, every one also
+    failing the paper (5 'fail', 3 'uncertain' even at 1000 cells). The final return repair moved 2026's
+    five short returns apart in 0.5 s and was refused on an undecided 360-cell lattice; checked finer as
+    the assessment does (`verifyPaper`; bench/rr-core) it stays undecided, so the export refuses it too.
+    GOD JUL's repair refuses at once ('initial_symmetry': its template keeps less symmetry than the mask
+    asks); heart on a 5 x 5 board has a self-crossing, which the repair does not take.
+  Left: a carried-over heart's own template as the start (the user's decision); the network trained
+  longer on strips hearts when the machine is idle; the paper core in the search for the near misses.
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);
