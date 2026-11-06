@@ -1162,8 +1162,9 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     pixel of the generator's hidden cuts (0.09 at most on those), paper right on 71% of the outline. Its
     training kept 10 of 78 strips designs (13% export) and 17 of 37 motifs ones (`--drop`); new strips and
     motifs designs with random icons (`gen-synth.mjs` `STYLES`, `EXCLUDE`): 0 of 20 export.
-  So a heart carried over from Tegn has the start the search lacks, its own template (a product
-  question: the user decides). For painted ones a start must know the geometry: the network's paper and
+  So a heart carried over from Tegn has the start the search lacks, its own template; but the user
+  ruled that out (2026-11-06: Mal solves from the picture, and starting from the answer it was handed
+  is cheating). Any start must know the geometry: the network's paper and
   switch maps as a rung's start, or a topological search told which chords cannot be drawn.
 - **Teaching the network the strips hearts; the network's maps as the start (2026-11-06).** Three
   routes for the generator's hearts the search misses (the entry above), none winning one.
@@ -1200,8 +1201,9 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     the assessment does (`verifyPaper`; bench/rr-core) it stays undecided, so the export refuses it too.
     GOD JUL's repair refuses at once ('initial_symmetry': its template keeps less symmetry than the mask
     asks); heart on a 5 x 5 board has a self-crossing, which the repair does not take.
-  Left: a carried-over heart's own template as the start (the user's decision); the network trained
-  longer on strips hearts when the machine is idle; the paper core in the search for the near misses.
+  Left: the network trained longer on strips hearts when the machine is idle (`nn/idle-train.sh`; one
+  epoch: strips paper on cuts 0.735 to 0.739); the paper core in the search for the near misses. Not a
+  route: a carried-over heart's own template as the start (the user: cheating).
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);
