@@ -1354,7 +1354,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	}
 	making++;
 	try {
-		if (making > 1 || !request.recipes?.some(isTopology)) return generateTried(request);
+		if (making > 1 || !request.recipes?.some(isTopology)) return withMirrorMean(request);
 		let own: GeneratorResult | undefined, failure: unknown;
 		try {
 			own = generateTried(request);
@@ -1380,6 +1380,35 @@ let fits: ReturnType<typeof createExactCurveFitter> | undefined;
 const FITS_KEPT = 1024;
 const sharedFits: ReturnType<typeof createExactCurveFitter> = (segments, tolerance) =>
 	(fits ?? simplifyCubicChain)(segments, tolerance);
+/** Small motifs of a motif drawn a hair off its own mirror image are made as
+ * that image's mean too (see `mirrorMean`), and the heart the page ranks
+ * better kept (`betterCuts`, each on its own picture): woven so, the motif
+ * may be cut from one template, its lobes alike (the star, a unit of 89 off;
+ * an orange slice, a fifty-thousandth). The motif as drawn is made as before. */
+function withMirrorMean(request: GeneratorRequest): GeneratorResult {
+	const given = request.mode === 'figure' && request.style === 'motifs' && request.contours ? normalizeContours(request.contours) : undefined;
+	const mean = given && mirrorMean(given);
+	if (!given || !mean || mean === given) return generateTried(request);
+	let own: GeneratorResult | undefined, meant: GeneratorResult | undefined, failure: unknown;
+	try {
+		own = generateTried(request);
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		failure = error;
+	}
+	try {
+		meant = generateTried({ ...request, contours: mean });
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
+	if (!own || !meant) {
+		if (own ?? meant) return (own ?? meant)!;
+		throw failure;
+	}
+	const measured = (heart: GeneratorResult, contours: Ring[]) =>
+		cutMeasures(heart.design, picture(spurless({ ...request, contours }), knownOf(heart, request.scale ?? .7))?.rings ?? []);
+	return betterCuts(measured(meant, mean), measured(own, given)) ? meant : own;
+}
 function generateTried(request: GeneratorRequest): GeneratorResult {
 	// A motif's hairline spurs go (see `withoutSpurs`); a text's letters keep
 	// their glyphs. On a board the motif keeps the choice its catalogue
@@ -1916,13 +1945,8 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
 			? [square, fitted] : [fitted, square], { request, retries: true, lastResort: true }];
 	}
 	if (request.style === 'motifs' || request.style === 'squares') {
-		const given = normalizeContours(request.contours ?? []);
-		if (!given.length) throw new ConstructionError('empty', 'No contour');
-		// Small motifs weave a motif drawn a hair off its own mirror image as
-		// that image's mean, so that it may be woven mirrored too (see
-		// `mirrorCells`): the star, a unit of 89 off, is not otherwise.
-		const centred = (rings: Ring[]) => { const xs = rings.flat().map(p => p[0]), cx = (Math.min(...xs) + Math.max(...xs)) / 2; return rings.map(ring => ring.map(([x, y]): Point => [x - cx, y])); };
-		const contours = request.style === 'motifs' && !mirrorSymmetric(centred(given)) ? mirrorMean(given) ?? given : given;
+		const contours = normalizeContours(request.contours ?? []);
+		if (!contours.length) throw new ConstructionError('empty', 'No contour');
 		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours }, ' ': { advance: 1, contours: [] } } }, letterScale = boardScale(request);
 		// The motif is the letter of a text frame on a board (see
 		// `motifChoices`, `squareChoices`). Small motifs: the most copies on
@@ -1932,7 +1956,8 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
 		// they can build nothing at all.
 		const board = request.style === 'squares' ? squareChoices(request.board) : motifChoices(request.board);
 		// A motif that is its own mirror image may be woven so (see `mirrorCells`).
-		const mirrorCells = request.style === 'motifs' && mirrorSymmetric(centred(contours));
+		const xs = contours.flat().map(p => p[0]), cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+		const mirrorCells = request.style === 'motifs' && mirrorSymmetric(contours.map(ring => ring.map(([x, y]): Point => [x - cx, y])));
 		type Choice = { request: GeneratorRequest; retries: boolean; lastResort?: boolean };
 		const choicesAt = (letterScale: number): Choice[] => board.map(({ text, board, retries, lastResort, larger = 1, air, fitted, alone }) => ({
 			retries, lastResort, request: { mode: 'text', name: request.name, colors: request.colors, text, font, letterScale: Math.min(request.style === 'squares' || alone ? 1.1 : Infinity, letterScale * larger),

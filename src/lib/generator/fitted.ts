@@ -2,35 +2,38 @@
  * no separate circle or polygon between the motif and its surrounding strips.
  * The same four gates carry the wedges, each a gap away from the motif. */
 import {
-	add, compile, fourPortMotif, support, uprightToSheet, dot, direction, distance, openLeg, inside, FITTED,
+	add, compile, fourPortMotif, support, uprightToSheet, dot, direction, distance, openLeg, FITTED,
 	ConstructionError, type Ring, type Edge, type Point, type OpenFrame
 } from './geometry';
+import ClipperLib from 'clipper-lib';
 
 /** Whether the motif is its own mirror image across the heart's middle, its
- * upright x = 0, to within a fiftieth of its area: then its frame should be
- * too (see `fittedGates`). */
+ * upright x = 0, to within a fiftieth of its area: the area where it and its
+ * image differ, of the area either covers, even–odd (sampled at points, it
+ * had read the diamond's edges, through them, as 4% apart). Then its frame
+ * should be too (see `fittedGates`). */
 export function mirrorSymmetric(rings: Ring[]): boolean {
 	const points = rings.flat();
 	if (!points.length) return false;
-	const reach = Math.max(...points.map(p => Math.abs(p[0]))), ys = points.map(p => p[1]);
-	const [top, bottom] = [Math.min(...ys), Math.max(...ys)], n = 48;
-	const fill = (p: Point) => rings.reduce((v, ring) => v ^ Number(inside(p, ring)), 0);
-	let differ = 0, filled = 0;
-	for (let i = 0; i < n / 2; i++)
-		for (let j = 0; j < n; j++) {
-			const x = (i + .5) * reach / (n / 2), y = top + (j + .5) * (bottom - top) / n;
-			const [right, left] = [fill([x, y]), fill([-x, y])];
-			filled += right | left;
-			differ += right ^ left;
-		}
-	return filled > 0 && differ / filled < .02;
+	const scale = 1e7 / Math.max(...points.map(p => Math.max(Math.abs(p[0]), Math.abs(p[1])))), shown = rings.filter(ring => ring.length >= 3);
+	const paths = (side: number) => shown.map(ring => ring.map(([x, y]) => ({ X: Math.round(side * x * scale), Y: Math.round(y * scale) })));
+	const area = (type: ClipperLib.ClipType) => {
+		const clipper = new ClipperLib.Clipper(), out: ClipperLib.Paths = [];
+		clipper.AddPaths(paths(1), ClipperLib.PolyType.ptSubject, true);
+		clipper.AddPaths(paths(-1), ClipperLib.PolyType.ptClip, true);
+		clipper.Execute(type, out, ClipperLib.PolyFillType.pftEvenOdd, ClipperLib.PolyFillType.pftEvenOdd);
+		return Math.abs(out.reduce((sum, path) => sum + ClipperLib.Clipper.Area(path), 0));
+	};
+	const either = area(ClipperLib.ClipType.ctUnion);
+	return either > 0 && area(ClipperLib.ClipType.ctXor) / either < .02;
 }
 
 /** A motif drawn a hair off its own mirror image across its upright middle,
  * made exactly its own mirror image: each corner and the image of its pair
  * averaged, where every corner has one other (or itself) whose image lies
  * within `near` of the motif's size and pairs with it back (the star, drawn a
- * unit of 89 off). None where some corner has no such pair. */
+ * unit of 89 off). None where some corner has no such pair, and the motif as
+ * it is where none moves. */
 export function mirrorMean(rings: Ring[], near = .02): Ring[] | undefined {
 	const points = rings.flat();
 	if (!points.length) return;
@@ -47,7 +50,7 @@ export function mirrorMean(rings: Ring[], near = .02): Ring[] | undefined {
 		}
 		means.push(mean);
 	}
-	return means;
+	return means.some((mean, k) => mean.some((p, i) => distance(p, rings[k][i]) > 1e-9)) ? means : rings;
 }
 import { gridClearance } from '$lib/geometry/clearance';
 

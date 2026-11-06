@@ -1,5 +1,29 @@
 # Generator robustness results
 
+## Symmetry measured exactly, and small motifs made as their mirror mean too
+
+Whether a motif is its own mirror image across the heart's middle, to within a
+fiftieth of its area (`mirrorSymmetric`), was sampled at points of a grid, and
+a point on an outline counted on one side and not on the other: the diamond,
+exactly symmetric, read 3.8% apart, a barbell 16%. Now it is the area where
+the motif and its image differ, of the area either covers, exactly (even–odd,
+clipper). Of the 2668 motifs 12 fall on the other side of the fiftieth: the
+diamond, the barbell, an orange slice and a circle with a plus are now
+symmetric, and eight digits and letters in a square lie within 0.7% of the
+line either way. Of the featured motifs only the diamond changes. In the
+frames whose gates follow the symmetry it is cut as before (40 hearts), and
+of the icons there, 10 are cut better and none worse.
+
+And Små motiver makes a motif drawn a hair off its mirror image (`mirrorMean`,
+every corner paired) both as drawn and as its image's mean, keeping the heart
+the page ranks better (`betterCuts`, each on its own picture): a motif exactly
+symmetric is cut with one template far more often. On two to eight strips at
+60, 70, 79 and 90%, of the motifs it can change (168 hearts): 55 better and
+none worse; the polar star one template at 21 more sizes, its weak pieces and
+needles 154 → 105; the diamond one template at 15 (none before); the snowflake
+fewer sharp tips at 10; the orange slice keeps the one template it had. Those
+motifs take about 2.5 times as long there (the owl and the penguin, which
+gain one heart each, from about 10 to 25 s a heart).
 ## The elephant in the fitted frame
 
 The fitted frame refused the elephant at every size: every construction the
@@ -27,7 +51,7 @@ template for both lobes (see "Small motifs cut down the middle"), but not the
 star, the default motif. It is drawn a unit of 89 off its mirror image (its
 top and inner corners centred at 50, its outer points at 49.5), 3% of its area
 apart, and the frame asks a fiftieth. Now a motif drawn a hair off is woven as
-its image's mean, each corner and its pair's image averaged (`mirrorMean`,
+its image's mean too (see above), each corner and its pair's image averaged (`mirrorMean`,
 where every corner has a pair within a fiftieth of the motif's size; the
 star's corners move at most 0.6% of it). And the stars on the heart's middle,
 cut down it, have their top tips split into an 18° point of each paper: the

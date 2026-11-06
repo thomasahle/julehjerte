@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { slow } from './slow.test-helpers';
 import { generate, fillSquare, fitCircle } from './generate';
 import { cutTipCounts } from './cutQuality';
-import { generateFittedFigure, mirrorSymmetric } from './fitted';
+import { generateFittedFigure, mirrorMean, mirrorSymmetric } from './fitted';
 import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSide } from './state';
@@ -22,6 +22,7 @@ import { paperFaults } from '$lib/geometry/paperNecks';
 import tree from '../../../static/generator/motifs/tree.json';
 import deer from '../../../static/generator/motifs/pin-reindeer.json';
 import horse from '../../../static/generator/motifs/ph-horse.json';
+import diamond from '../../../static/generator/motifs/diamond.json';
 import bird from '../../../static/generator/motifs/ph-bird.json';
 import star from '../../../static/generator/motifs/star.json';
 import yuleGoat from '../../../static/generator/motifs/yule-goat.json';
@@ -426,7 +427,16 @@ describe('frames from real hearts', () => {
  }, 20000);
  it('knows a motif that is its own mirror image', () => {
   expect(mirrorSymmetric(normalizeContours(tree.contours as Ring[]))).toBe(true);
+  // Its edges run where points sampled across it had lain, read as 4% apart.
+  expect(mirrorSymmetric(normalizeContours(diamond.contours as Ring[]))).toBe(true);
   expect(mirrorSymmetric(normalizeContours(horse.contours as Ring[]))).toBe(false);
+ });
+ it('makes a motif drawn a hair off its mirror image its own mirror image', () => {
+  // The star is drawn a unit of 89 off: its outer points centred at 49.5.
+  const drawn = normalizeContours(star.contours as Ring[]), mean = mirrorMean(drawn)!;
+  expect(mirrorSymmetric(drawn)).toBe(false);
+  expect(mirrorSymmetric(mean)).toBe(true);
+  expect(Math.max(...mean.flat().map((p, i) => Math.hypot(p[0] - drawn.flat()[i][0], p[1] - drawn.flat()[i][1])))).toBeLessThan(.01);
  });
  slow('gives a motif that is its own mirror image symmetric wedges, where its own gates leave narrow paper too', () => {
   // The flower's two lower petals tie; the gate between them left narrow
