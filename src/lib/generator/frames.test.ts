@@ -7,7 +7,7 @@ import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSide } from './state';
 import { RETIRED_STYLES, templateVariants } from './templates';
-import { inside, uprightToSheet, distance, boardFill, boardLines, boardRangeLines, boardRangePattern, boardRanges, boardWholeRadius, boardWholeTop, layerInset, withVisibleIslands, ConstructionError, WEDGES, type Point, type Ring } from './geometry';
+import { inside, uprightToSheet, distance, boardFill, boardLines, boardRangeLines, boardRangePattern, boardRanges, boardWholeRadius, boardWholeTop, layerInset, withVisibleIslands, fourPortMotif, ConstructionError, FITTED, WEDGES, type Point, type Ring } from './geometry';
 import { generateTextGrid } from './textGrid';
 import { geometryKey } from './cache';
 import { MOTIF, boardRadius, boardSetting, boardSteps, motifChoices, motifPatterns, squareChoices } from './boardMotif';
@@ -62,6 +62,7 @@ import faFish from '../../../static/generator/motifs/fa-fish.json';
 import circleMotif from '../../../static/generator/motifs/circle.json';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
 import elephant from '../../../static/generator/motifs/pin-elephant.json';
+import swan from '../../../static/generator/motifs/gi-swan.json';
 import moonStars from '../../../static/generator/motifs/mc-moon-stars.json';
 import church from '../../../static/generator/motifs/mdi-church.json';
 import mouse from '../../../static/generator/motifs/gi-mouse.json';
@@ -965,6 +966,23 @@ describe('frames from real hearts', () => {
   expect(paperFaults(design).weak).toBe(0);
   expect(hardToCut).toBeDefined();
  }, 60000);
+ it('reaches the swan\'s wing in the bay of its body, round its tail', () => {
+  // No gate sees the wing: the body hides it from the gates below and
+  // beside it, and the fitted frame's gates on the head and the beak lie on
+  // the body, where a way from them would branch its outline. Past the
+  // corners of the body's hull, short of the frame's legs, the gate beside
+  // the tail reaches it.
+  const build = (legs: boolean) => () => generateFittedFigure(normalizeContours(swan.contours as Ring[]), 70, .7, (...args) => {
+   args[7] = { ...args[7], practical: true, compound: true, nested: true, around: true, legs };
+   return fourPortMotif(...args);
+  }, undefined, 0, FITTED, true);
+  expect(build(false)).toThrow(ConstructionError);
+  expect(build(true)().edges.length).toBeGreaterThan(0);
+ });
+ slow('builds the swan in the open frames, where they refused it', () => {
+  for (const style of ['fitted', 'wedges'] as const)
+   expect(generate({ mode: 'figure', name: 'Swan', contours: swan.contours as Ring[], colors, style, frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length, style).toBeGreaterThan(0);
+ }, 120000);
  slow('moves a seam that would run through a corner of the motif beside it', () => {
   // The star's top tip lies nearly on the seam through its centre, which
   // then cannot be built, and the seam through its lower notch halves the

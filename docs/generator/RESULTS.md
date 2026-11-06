@@ -1,5 +1,31 @@
 # Generator robustness results
 
+## The swan in the open frames
+
+The wedges, the fitted frame and the silhouette refused the swan at every
+size, after 49–527 s, though their last resort goes round a motif's pieces
+(see "The elephant in the fitted frame"): its wing lies in a bay of its body,
+and every way from the gate nearest it, the water's below, crosses the body.
+In those frames, whose legs only meet the motif (`legs`), an island now goes
+to a gate that sees some point of it, else to the one with the shortest way
+round to it (`reach`: past the corners of every piece's hull, the body's too,
+anywhere but out beyond a gate where the legs go), never to a gate lying on
+the motif itself (the fitted frame's on the swan's head, where a way would
+branch its outline), and its chain goes that way round. Where none of the
+constructions it ranks passes the routes' check (the water's crescent tips
+are sharp), the cheapest of them is kept, hard to cut, rather than refused.
+
+The swan builds at 50, 70, 85 and 100% in all three: in the fitted frame in
+19–25 s with 6–9 weak pieces, hard to cut at 85 and 100%; in the wedges in
+46–129 s, 5–9 weak, hard; in the silhouette in 52–138 s, 6–15 weak, hard.
+Every other of the 588 featured hearts there is cut the same, none slower.
+On the board circle and in the rays the same rules cut some hearts reached
+every way worse (the elephant on three strips at 75 and 100% hard where it
+was clean; the radar in the rays 3 → 7 weak pieces), so they are left to the
+open frames; there every heart is as it was. The layers and the corners
+still refuse the swan: its pieces are holes of the medallion there, and the
+eye's rays do not alternate with the ways in and out near the body's bottom.
+
 ## Symmetry measured exactly, and small motifs made as their mirror mean too
 
 Whether a motif is its own mirror image across the heart's middle, to within a

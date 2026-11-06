@@ -353,7 +353,8 @@ export function contourChain(
 	nested = false,
 	boundaryGates = false,
 	nearest = false,
-	open?: (a: Point, b: Point) => boolean
+	open?: (a: Point, b: Point) => boolean,
+	reach?: (from: Point, ring: Ring) => { path: Ring; port: Port } | undefined
 ) {
 	const atExtremes = !visible && !nearest && !nearestIslands;
 	if (!visible && nearestIslands) nearest = true;
@@ -370,20 +371,22 @@ export function contourChain(
 	let previous = start;
 	for (const [index, node] of ordered.entries()) {
 		const c = centroid(node.ring), next = index + 1 < ordered.length ? centroid(ordered[index + 1].ring) : end;
+		// With `reach`, the way in may go round what hides the island.
+		const way = !visible && nearest ? reach?.(previous, node.ring) : undefined;
 		// A hidden island is entered and left at its extremes along the chain,
 		// or, `nearest`, where it comes nearest the way in and the way on: a
 		// long bent one (the back card of a pair) has its extremes at its ends.
 		const entry = visible ? (boundaryGates ? ringPort(node.ring, previous) : undefined) ?? ray(node.ring, previous, Math.atan2(c[1] - previous[1], c[0] - previous[0]))
-				: nearest ? closestPort(node.ring, previous, open) : support(node.ring, angle + Math.PI),
+				: way?.port ?? (nearest ? closestPort(node.ring, previous, open) : support(node.ring, angle + Math.PI)),
 			exit = visible ? (boundaryGates ? ringPort(node.ring, next) : undefined) ?? ray(node.ring, next, Math.atan2(c[1] - next[1], c[0] - next[0]))
 				: nearest ? closestPort(node.ring, next, open) : support(node.ring, angle);
 		if (nearest && near(entry.point, exit.point)) throw new ConstructionError('topology', 'Coincident island ports');
 		if (atExtremes) portsAtExtremes.push(entry.point, exit.point);
-		add(edges, [previous, entry.point], 'AB', 'shared');
+		add(edges, way?.path ?? [previous, entry.point], 'AB', 'shared');
 		(nested ? nestedBlock : block)(edges, node, entry, exit, first);
 		previous = exit.point;
 	}
-	add(edges, [previous, end], 'AB', 'shared');
+	add(edges, reach?.(previous, [end])?.path ?? [previous, end], 'AB', 'shared');
 }
 export function frameRing(shape: Frame, size = 70): Ring {
 	const r = size / 2;
@@ -968,7 +971,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; around?: boolean; connectionAllowed?: (point: Point) => boolean; safeAttachments?: boolean; routed?: { fallback?: Edge[] }; obstacles?: Ring[] } = {}
+	options: { root?: Ring; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; around?: boolean; legs?: boolean; lastly?: Edge[]; connectionAllowed?: (point: Point) => boolean; safeAttachments?: boolean; routed?: { fallback?: Edge[] }; obstacles?: Ring[] } = {}
 ) {
 	if (options.alternateIslandGates) {
 		// Different letters can need different gates. Finish each cell locally
@@ -1013,14 +1016,15 @@ function contourMotif(
 	// pair hides the front one from two gates; a bell's ringing arcs).
 	const middle: Point = [gates.reduce((sum, p) => sum + p[0], 0) / count, gates.reduce((sum, p) => sum + p[1], 0) / count],
 		inner = Math.min(...gates.map(p => distance(p, middle))) - margin;
-	const corners = options.around ? nodes.slice(1).flatMap(node => {
+	const envelope = (node: Contour) => {
 		try {
 			return convexEnvelope(node.ring, 2 * margin);
 		} catch (error) {
 			if (!(error instanceof ConstructionError)) throw error;
 			return [];
 		}
-	}).filter(p => distance(p, middle) < inner) : [];
+	};
+	const corners = options.around ? nodes.slice(1).flatMap(envelope).filter(p => distance(p, middle) < inner) : [];
 	const clear = new Map<string, boolean>(), detours = new Map<string, Ring>();
 	const open = (a: Point, b: Point) => {
 		const key = `${a};${b}`;
@@ -1056,25 +1060,66 @@ function contourMotif(
 		detours.set(key, path);
 		return path;
 	};
+	// Where the frame meets the motif with `legs` only (the open frames), an
+	// island no gate sees goes the same way round, past the corners of every
+	// piece's hull, the base's too (the swan's wing lies in a bay of its
+	// body, hidden from every gate), anywhere but out beyond a gate, where
+	// the legs go: the shortest way to a point of it seen from the way's end,
+	// and that point; none where there is none. (On the board circle and in
+	// the rays it cut the elephant and the radar worse.)
+	const beyond = (p: Point) => gates.some((gate, j) => {
+		const v = sub(p, gate);
+		return dot(v, direction(angles[j] + Math.PI)) > Math.hypot(...v) * Math.SQRT1_2;
+	});
+	const passes = options.legs ? nodes.flatMap(envelope).filter(p => !beyond(p)) : [];
+	const reach = (from: Point, ring: Ring): { path: Ring; port: Port; length: number } | undefined => {
+		const seen = (p: Point) => {
+			const port = closestPort(ring, p, open);
+			return open(p, port.point) ? port : undefined;
+		};
+		const points = [from, ...passes], cost = points.map((_, i) => i ? Infinity : 0), back = points.map(() => -1), done = points.map(() => false);
+		let best: { at: number; port: Port; length: number } | undefined;
+		for (;;) {
+			let i = -1;
+			for (let k = 0; k < points.length; k++) if (!done[k] && cost[k] < Infinity && (i < 0 || cost[k] < cost[i])) i = k;
+			if (i < 0 || best && cost[i] >= best.length) break;
+			done[i] = true;
+			const port = seen(points[i]);
+			if (port && (!best || cost[i] + distance(points[i], port.point) < best.length))
+				best = { at: i, port, length: cost[i] + distance(points[i], port.point) };
+			for (let k = 1; k < points.length; k++) {
+				const step = cost[i] + distance(points[i], points[k]);
+				if (!done[k] && step < cost[k] && open(points[i], points[k])) {
+					cost[k] = step;
+					back[k] = i;
+				}
+			}
+		}
+		if (!best) return;
+		const path: Ring = [best.port.point];
+		for (let k = best.at; k >= 0; k = back[k]) path.unshift(points[k]);
+		return { path, port: best.port, length: best.length };
+	};
 	// A clipped quadrilateral may have no usable vertices away from its seams.
 	// Offer points along its unchanged edges when the ordinary fan is blocked.
 	// Replace those blocked choices only; retain the same attachment budget.
 	const safePorts = options.safeAttachments && connectionAllowed ? base.ring.flatMap((point, index) =>
 		[.25, .5, .75].map(t => ({ point: mix(point, base.ring[(index + 1) % base.ring.length], t), index: index + t }))
 	).filter(port => connectionAllowed(port.point)) : [];
-	const candidates = gates.map((p, j) => {
-		// A neighbouring cell may place a gate exactly on a clipped boundary.
-		// Use that attachment directly rather than shooting through the shape.
+	// A neighbouring cell may place a gate exactly on a clipped boundary.
+	// Use that attachment directly rather than shooting through the shape.
+	const onBase = (p: Point): Port | undefined => {
 		for (let i = 0; i < base.ring.length; i++) {
 			const a = base.ring[i],
 				b = base.ring[(i + 1) % base.ring.length],
 				d = sub(b, a);
 			const t = dot(sub(p, a), d) / dot(d, d);
-			if (t >= 0 && t <= 1 && distance(p, mix(a, b, t)) < 1e-5) {
-				const port = { point: mix(a, b, t), index: i + t };
-				return [port, port, port, port, port];
-			}
+			if (t >= 0 && t <= 1 && distance(p, mix(a, b, t)) < 1e-5) return { point: mix(a, b, t), index: i + t };
 		}
+	};
+	const candidates = gates.map((p, j) => {
+		const port = onBase(p);
+		if (port) return [port, port, port, port, port];
 
 		const result: Array<Port | null> = [];
 		for (const offset of [0, -0.28, 0.28])
@@ -1133,11 +1178,20 @@ function contourMotif(
 	const extras = Array.from({ length: count }, () => [] as Contour[]);
 	for (const node of nodes.slice(1)) {
 		const c = centroid(node.ring);
+		// With `legs`, only the gates that see some point of the island,
+		// where any does (the swan's water, whose nearest gate the wing's is
+		// too), else the one with the shortest way round to it; never one on
+		// the base, whose way would branch its outline there, where another
+		// can (the fitted frame's, on the swan's head).
+		const ways = new Map(options.legs ? bridgePorts.filter(i => !onBase(gates[i])).map(i => [i, reach(gates[i], node.ring)]) : []);
+		const seeing = bridgePorts.filter(i => ways.get(i)?.path.length === 2),
+			round = bridgePorts.filter(i => ways.get(i)).sort((a, b) => ways.get(a)!.length - ways.get(b)!.length);
+		const near = seeing.length ? seeing : round.length ? round.slice(0, 1) : bridgePorts;
 		// The nearest gate can put a dot's approach across the letter's
 		// stem. A final retry may use the next nearest active gate instead.
-		const nearest = bridgePorts.reduce(
+		const nearest = near.reduce(
 			(best, i) => distance(c, gates[i]) < distance(c, gates[best]) ? i : best,
-			bridgePorts[0]
+			near[0]
 		);
 		// With `around`, an island about as near two gates (one of a
 		// symmetric motif's, the polar star's needles) takes the one next on
@@ -1145,7 +1199,7 @@ function contourMotif(
 		const turn = (i: number) => (Math.atan2(gates[i][1] - middle[1], gates[i][0] - middle[0]) - Math.atan2(c[1] - middle[1], c[0] - middle[0]) + 4 * Math.PI) % (2 * Math.PI);
 		const j = options.islandRank
 			? [...bridgePorts].sort((a, b) => distance(c, gates[a]) - distance(c, gates[b]))[options.islandRank % bridgePorts.length]
-			: options.around ? bridgePorts.filter(i => distance(c, gates[i]) < distance(c, gates[nearest]) * 1.01).reduce((best, i) => turn(i) < turn(best) ? i : best)
+			: options.around ? near.filter(i => distance(c, gates[i]) < distance(c, gates[nearest]) * 1.01).reduce((best, i) => turn(i) < turn(best) ? i : best)
 			: nearest;
 		extras[j].push(node);
 	}
@@ -1186,7 +1240,7 @@ function contourMotif(
 					// separate an arc from the nearby stem on the same sheet.
 					const first = !!(options.boundaryIslands && j % 2 === 0) !== !!options.islandFlip ? 'B' : 'A';
 					contourChain(exterior, extras[j], angle, gates[j], ports[j].point, first,
-						options.visibleIslands, options.nested, options.boundaryIslands, options.around, options.around ? open : undefined);
+						options.visibleIslands, options.nested, options.boundaryIslands, options.around, options.around ? open : undefined, options.legs ? reach : undefined);
 				}
 				else add(exterior, spokes?.[j][indices[j]] ?? spoke(gates[j], ports[j].point), 'AB', 'shared');
 			}
@@ -1289,13 +1343,18 @@ function contourMotif(
 	if (options.practical) {
 		// Corner attachments are optional improvements. Keep the original
 		// construction when none fits; final fitted cuts still get validated.
-		contourMotif(edges, contours, gates, angles, margin, bridgePorts, acceptRoutes, { ...options, practical: false });
+		// In an open frame, taken every way round, the cheapest of them is
+		// left to that check where the original routes none, hard to cut
+		// rather than refused (the swan's wing, reached round its tail past
+		// the water's sharp tips).
+		const cheapest = options.legs ? ranked.sort((a, b) => a.score - b.score)[0]?.edges : undefined;
+		contourMotif(edges, contours, gates, angles, margin, bridgePorts, acceptRoutes, { ...options, practical: false, ...cheapest && { lastly: cheapest } });
 		return;
 	}
 	if (!options.originalOnly && !options.visibleIslands && nodes.length > 1) {
 		const visible: { fallback?: Edge[] } = {};
 		try {
-			contourMotif(edges, contours, gates, angles, margin, bridgePorts, acceptRoutes, { ...options, visibleIslands: true, strict: true, routed: visible });
+			contourMotif(edges, contours, gates, angles, margin, bridgePorts, acceptRoutes, { ...options, visibleIslands: true, strict: true, routed: visible, lastly: undefined });
 			return;
 		} catch (error) {
 			if (!(error instanceof ConstructionError)) throw error;
@@ -1307,6 +1366,7 @@ function contourMotif(
 		if (visibleIslands) fallback ??= visible.fallback ?? null;
 		else if (!fallback && visible.fallback) setAside++;
 	}
+	fallback ??= options.lastly ?? null;
 	if (options.routed) options.routed.fallback = fallback ?? undefined;
 	// Fitted curves get their own full-sheet clearance check before export.
 	if (fallback && !acceptRoutes && !options.strict) {
