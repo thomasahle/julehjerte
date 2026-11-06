@@ -947,6 +947,14 @@ describe('frames from real hearts', () => {
    expect(cell(motif, layout)().edges.length, JSON.stringify(layout)).toBeGreaterThan(0);
   }
  });
+ slow('reaches the elephant\'s pieces in the fitted frame another way where nothing else builds', () => {
+  // The open frames refused it at every size; their last resort now goes
+  // round the pieces in its way, as the rays' and the board circle's do.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Elephant', contours: elephant.contours as Ring[], colors, style: 'fitted', frame: 'circle', frameSize: 70, scale: .7, gap: 3 });
+  expect(design.fingers.length).toBeGreaterThan(0);
+  expect(paperFaults(design).weak).toBe(0);
+  expect(hardToCut).toBeDefined();
+ }, 60000);
  slow('moves a seam that would run through a corner of the motif beside it', () => {
   // The star's top tip lies nearly on the seam through its centre, which
   // then cannot be built, and the seam through its lower notch halves the

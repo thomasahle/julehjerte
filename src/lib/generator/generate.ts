@@ -3772,6 +3772,18 @@ function generateUsingRecipes(request: GeneratorRequest,
 					if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
 				}
 			}
+			// A motif of several pieces, or with islands in its holes, may still
+			// be reached another way, as in the rays (see `withEveryWay`).
+			const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length));
+			if (pieced && everyWay) for (const around of [true]) try {
+				return finish(generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, (...args) => {
+					args[7] = { ...args[7], practical: true, compound: true, nested: true, around };
+					return fourPortMotif(...args);
+				}, undefined, 0, open, true), 'silhouette');
+			} catch (everyError) {
+				if (!(everyError instanceof ConstructionError) && !(everyError instanceof CutGeometryError)) throw everyError;
+			}
+			if (pieced && !everyWay) everyWayPassed++;
 			throw error;
 		}
 	}

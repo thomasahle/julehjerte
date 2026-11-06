@@ -1,5 +1,25 @@
 # Generator robustness results
 
+## The elephant in the fitted frame
+
+The fitted frame refused the elephant at every size: every construction the
+open frames (the wedges, the fitted frame, the silhouette) try reaches a
+motif's pieces the usual ways. Their last resort, where nothing else
+builds, now goes round the pieces in the way of a gate's spoke, as the rays'
+and the board circle's do (`withEveryWay`, `around`; see "The elephant on the
+board circle"): it builds at 50, 70, 85 and 100%, hard to cut, with 0–2 weak
+pieces, in 10–30 s where its refusal took 17–189 s.
+
+Of the featured motifs at 50/70/85/100% in the three frames (588 hearts),
+nothing else is built that was refused, and every heart built before is the
+same but the santa hat at 50% in the wedges and the silhouette: made now by
+this last resort, at the space asked for, rather than by one after it, with
+3 and 4 weak pieces rather than 2 (hard to cut either way). The swan is still
+refused (its wing lies in the body's bay), 20–35% slower; a heart built by
+a later last resort waits for this one first (the owl in the fitted frame at
+100%, the same heart, 54 → 85 s). Trying it only going round, not also
+straight, halves what it adds.
+
 ## Small stars cut with one template
 
 Små motiver cuts the copies of a motif that is its own mirror image from one
