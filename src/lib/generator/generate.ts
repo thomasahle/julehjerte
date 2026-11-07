@@ -3698,7 +3698,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// One fitting the border narrows the outer strips, a picture of its
 		// own: only where none of the others finish.
 		const fitted = new Set<GeneratorResult>();
-		const layouts = (routeMargin = 0, avoid = false, border?: boolean, wholeLanes = false, stepped = false, ways = false) => bestOfFirst((function* () {
+		const layouts = (routeMargin = 0, avoid = false, border?: boolean, wholeLanes = false, stepped = false, ways = false, walled = false) => bestOfFirst((function* () {
 			let finished = false;
 			for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) for (const holdLegs of [true, false]) {
 				if (fitBorder && finished) return;
@@ -3708,7 +3708,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				if (ways && (routing !== 'practical' || bentSpokes)) continue;
 				try {
 					const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes,
-						undefined, undefined, request.gap, routeMargin > 0, holdLegs, routeMargin, avoid, wholeLanes, stepped, ways);
+						undefined, undefined, request.gap, routeMargin > 0, holdLegs, routeMargin, avoid, wholeLanes, stepped, ways, walled);
 					// Keep the established frame and skip another fit when moving
 					// separate components did not change any lane or connection.
 					if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
@@ -3734,8 +3734,12 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// every way (see `withEveryWay`): the swan's wing in the bay of its
 		// body, its eye across its head.
 		const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.length);
-		let ways = false;
+		let ways = false, walled = false;
 		if (!best && pieced && everyWay) [best, stepped, ways] = [layouts(0, false, undefined, false, false, true), false, true];
+		// Where that finishes none either, a lane's spokes that the motif's
+		// other parts wall off from its largest go round them too (the
+		// stethoscope, the motorcycle).
+		if (!best && pieced && everyWay) [best, walled] = [layouts(0, false, undefined, false, false, true, true), true];
 		if (!best && pieced && !everyWay) everyWayPassed++;
 		// Where its paper tears printed, the layouts with the same border again
 		// with the motif's connections, and the side lanes' legs, a paper's
@@ -3746,7 +3750,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const paper = PAPER_NECK_MM / PRINT_WIDTH_MM * 100, border = fitted.has(best);
 			for (const wholeLanes of [false, true]) {
 				if (wholeLanes && !paperTears(exported(best).design)) break;
-				const again = layouts(paper, avoided, border, wholeLanes, stepped, ways);
+				const again = layouts(paper, avoided, border, wholeLanes, stepped, ways, walled);
 				if (again && cutsBetter(again, best, true)) best = again;
 			}
 		}
@@ -3828,11 +3832,13 @@ function generateUsingRecipes(request: GeneratorRequest,
 			// A motif of several pieces, or with islands in its holes, may still
 			// be reached another way, as in the rays (see `withEveryWay`), and,
 			// the legs only meeting the motif, round its pieces anywhere short
-			// of them (`legs`).
+			// of them (`legs`); where that finishes none, with the spokes the
+			// other pieces wall off from the largest round them too (`walled`:
+			// the note's pencil inside its chevron).
 			const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length));
-			if (pieced && everyWay) for (const around of [true]) try {
+			if (pieced && everyWay) for (const walled of [false, true]) try {
 				return finish(generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, (...args) => {
-					args[7] = { ...args[7], practical: true, compound: true, nested: true, around, legs: true };
+					args[7] = { ...args[7], practical: true, compound: true, nested: true, around: true, legs: true, walled };
 					return fourPortMotif(...args);
 				}, undefined, 0, open, true), 'silhouette');
 			} catch (everyError) {

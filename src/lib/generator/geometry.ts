@@ -971,7 +971,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; around?: boolean; legs?: boolean; bays?: boolean; across?: boolean; lastly?: Edge[]; connectionAllowed?: (point: Point) => boolean; safeAttachments?: boolean; routed?: { fallback?: Edge[] }; obstacles?: Ring[] } = {}
+	options: { root?: Ring; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; around?: boolean; legs?: boolean; walled?: boolean; bays?: boolean; across?: boolean; lastly?: Edge[]; connectionAllowed?: (point: Point) => boolean; safeAttachments?: boolean; routed?: { fallback?: Edge[] }; obstacles?: Ring[] } = {}
 ) {
 	if (options.alternateIslandGates) {
 		// Different letters can need different gates. Finish each cell locally
@@ -1032,13 +1032,10 @@ function contourMotif(
 		if (seen === undefined) clear.set(key, seen = clearSharedCuts([{ from: a, to: b, family: 'AB', kind: 'shared' }]));
 		return seen;
 	};
-	const spoke = (gate: Point, port: Point): Ring => {
-		if (!corners.length || open(gate, port)) return [gate, port];
-		const key = `${gate};${port}`;
-		let path = detours.get(key);
-		if (path) return path;
-		// A* over the corners, each step a shared cut that crosses nothing.
-		const points = [gate, ...corners, port], end = points.length - 1;
+	// A* over `via`, each step a shared cut that crosses nothing; none where
+	// no way is found.
+	const detour = (gate: Point, port: Point, via: Point[]): Ring | undefined => {
+		const points = [gate, ...via, port], end = points.length - 1;
 		const cost = points.map((_, i) => i ? Infinity : 0), from = points.map(() => -1), done = points.map(() => false);
 		for (;;) {
 			let i = -1;
@@ -1054,9 +1051,22 @@ function contourMotif(
 				}
 			}
 		}
-		path = [port];
+		if (from[end] < 0) return;
+		const path: Ring = [port];
 		for (let k = from[end]; k >= 0; k = from[k]) path.unshift(points[k]);
-		if (path.length < 2) path = [gate, port];
+		return path;
+	};
+	const spoke = (gate: Point, port: Point): Ring => {
+		const walled = options.walled ? passes : [];
+		if (!corners.length && !walled.length || open(gate, port)) return [gate, port];
+		const key = `${gate};${port}`;
+		let path = detours.get(key);
+		if (path) return path;
+		// With `walled`, a spoke the other pieces wall off from the base, where
+		// the corners inside the gates give it no way, goes round them as an
+		// island's way does (see `passes`): round the note's chevron, to the
+		// pencil inside it.
+		path = (corners.length ? detour(gate, port, corners) : undefined) ?? (walled.length ? detour(gate, port, walled) : undefined) ?? [gate, port];
 		detours.set(key, path);
 		return path;
 	};
@@ -1454,7 +1464,7 @@ export function hasCounterContact(rings: Ring[]): boolean {
 /** A checkerboard junction can feed one letter through two shared bridges.
  * Counters may bracket either bridge; they are never removed from the sheet. */
 export function twoPortMotif(edges: Edge[], contours: Ring[], gates: Point[], margin: number,
-	options: { balanced?: boolean; compound?: boolean; onCrowded?: () => void; bentSpokes?: boolean; strokeTips?: boolean; obstacles?: Ring[]; connectionAllowed?: (point: Point) => boolean; around?: boolean; legs?: boolean; across?: boolean } = {}) {
+	options: { balanced?: boolean; compound?: boolean; onCrowded?: () => void; bentSpokes?: boolean; strokeTips?: boolean; obstacles?: Ring[]; connectionAllowed?: (point: Point) => boolean; around?: boolean; legs?: boolean; walled?: boolean; across?: boolean } = {}) {
 	const center = centroid(contours.flat());
 	try {
 		contourMotif(edges, contours, gates, gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0])), margin, [0, 1], undefined, { practical: true, ...options });

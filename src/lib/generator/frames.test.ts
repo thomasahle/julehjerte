@@ -70,6 +70,7 @@ import mdiBird from '../../../static/generator/motifs/mdi-bird.json';
 import owl from '../../../static/generator/motifs/mdi-owl.json';
 import wreath from '../../../static/generator/motifs/mc-wreath.json';
 import download from '../../../static/generator/motifs/tb-download.json';
+import notePencil from '../../../static/generator/motifs/ph-note-pencil.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -983,6 +984,13 @@ describe('frames from real hearts', () => {
   for (const style of ['fitted', 'wedges'] as const)
    expect(generate({ mode: 'figure', name: 'Swan', contours: swan.contours as Ring[], colors, style, frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length, style).toBeGreaterThan(0);
  }, 120000);
+ slow('builds the note and pencil in the open frames, a gate reached round the chevron', () => {
+  // The chevron walls the pencil, the base, off from a gate beside it, and
+  // the corners inside the gates give that gate's spoke no way: it goes
+  // round the chevron's arm, past the corners an island's way takes.
+  for (const style of ['wedges', 'silhouette'] as const)
+   expect(generate({ mode: 'figure', name: 'Note', contours: notePencil.contours as Ring[], colors, style, frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length, style).toBeGreaterThan(0);
+ }, 60000);
  slow('builds the swan in the medallion, its wing reached round its body', () => {
   // The swan's pieces are counters of the medallion there, and every
   // straight cut from its circle to the wing crosses the body.
