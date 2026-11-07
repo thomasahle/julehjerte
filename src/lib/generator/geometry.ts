@@ -971,7 +971,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; around?: boolean; legs?: boolean; bays?: boolean; lastly?: Edge[]; connectionAllowed?: (point: Point) => boolean; safeAttachments?: boolean; routed?: { fallback?: Edge[] }; obstacles?: Ring[] } = {}
+	options: { root?: Ring; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; around?: boolean; legs?: boolean; bays?: boolean; across?: boolean; lastly?: Edge[]; connectionAllowed?: (point: Point) => boolean; safeAttachments?: boolean; routed?: { fallback?: Edge[] }; obstacles?: Ring[] } = {}
 ) {
 	if (options.alternateIslandGates) {
 		// Different letters can need different gates. Finish each cell locally
@@ -1060,7 +1060,8 @@ function contourMotif(
 		detours.set(key, path);
 		return path;
 	};
-	// Where the frame meets the motif with `legs` only (the open frames), an
+	// Where the frame meets the motif with `legs` only (the open frames, the
+	// lanes of the checked tips), an
 	// island no gate sees goes the same way round, past the corners of every
 	// piece's hull, the base's too (the swan's wing lies in a bay of its
 	// body, hidden from every gate), anywhere but out beyond a gate, where
@@ -1262,7 +1263,7 @@ function contourMotif(
 			const local = [...interior, ...exterior];
 			return allowedConnections(local) && clearSharedCuts(local);
 		};
-		for (const interior of perforatedOutline(base, ports, bridgePorts, options.practical, options.touching, options.nested, clearInterior, bays)) {
+		for (const interior of perforatedOutline(base, ports, bridgePorts, options.practical, options.touching, options.nested, clearInterior, bays, options.across)) {
 			const local = [...interior, ...exterior];
 			try {
 				const routes = routeLocal(local, gates);
@@ -1453,7 +1454,7 @@ export function hasCounterContact(rings: Ring[]): boolean {
 /** A checkerboard junction can feed one letter through two shared bridges.
  * Counters may bracket either bridge; they are never removed from the sheet. */
 export function twoPortMotif(edges: Edge[], contours: Ring[], gates: Point[], margin: number,
-	options: { balanced?: boolean; compound?: boolean; onCrowded?: () => void; bentSpokes?: boolean; strokeTips?: boolean; obstacles?: Ring[]; connectionAllowed?: (point: Point) => boolean } = {}) {
+	options: { balanced?: boolean; compound?: boolean; onCrowded?: () => void; bentSpokes?: boolean; strokeTips?: boolean; obstacles?: Ring[]; connectionAllowed?: (point: Point) => boolean; around?: boolean; legs?: boolean; across?: boolean } = {}) {
 	const center = centroid(contours.flat());
 	try {
 		contourMotif(edges, contours, gates, gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0])), margin, [0, 1], undefined, { practical: true, ...options });
@@ -1638,9 +1639,10 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
  * Sibling holes share a chain; nested contours use the two-terminal block.
  * `accept` sees each candidate's shared cuts before its outline is drawn, and
  * turns it away there. With `bays`, the shared cuts between the counters go
- * round others in their way. */
+ * round others in their way; with `across`, they may also cross a counter at
+ * right angles to the way to its port. */
 function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly number[], practical = false, touching = false, nested = false,
-	accept: (shared: Edge[]) => boolean = () => true, bays?: (from: Point, ring: Ring) => { path: Ring; port: Port } | undefined): Generator<Edge[]> {
+	accept: (shared: Edge[]) => boolean = () => true, bays?: (from: Point, ring: Ring) => { path: Ring; port: Port } | undefined, across = false): Generator<Edge[]> {
 	if (!node.children.length) {
 		const edges: Edge[] = [];
 		outline(edges, node.ring, ports, 'B');
@@ -1813,7 +1815,8 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 			[0.25, 0.5],
 			[0.5, 0.75],
 			[0.75, 0.5],
-			[0.5, 0.25]
+			[0.5, 0.25],
+			...across ? [[-3, -3]] : []
 		]) {
 			const edges: Edge[] = [],
 				intervals: [Port, Port][] = [];
@@ -1830,11 +1833,24 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 						if (!candidates.length) throw new ConstructionError('topology', 'No counter contact on arc');
 						return candidates.reduce((a, b) => distance(a.point, center) < distance(b.point, center) ? a : b);
 					};
-					const before = left === -2 ? contact(ports[(j + count - 1) % count], ports[j]) :
+					// `across`, last: the base's ring on either side of the port,
+					// at right angles to the way to it from the counters (the
+					// swan's eye, its head's top and throat about the port there).
+					const crossing = (): [Port, Port] => {
+						const toward = Math.atan2(ports[j].point[1] - center[1], ports[j].point[0] - center[0]);
+						const hits = [1, -1].map(side => ray(ring, center, toward + side * Math.PI / 2));
+						const on = (p: Port, a: Port, b: Port) => (p.index - a.index + n) % n < (b.index - a.index + n) % n;
+						const back = ports[(j + count - 1) % count], ahead = ports[(j + 1) % count];
+						if (on(hits[0], back, ports[j]) && on(hits[1], ports[j], ahead)) return [hits[0], hits[1]];
+						if (on(hits[1], back, ports[j]) && on(hits[0], ports[j], ahead)) return [hits[1], hits[0]];
+						throw new ConstructionError('topology', 'No way across beside the port');
+					};
+					const crossed = left === -3 ? crossing() : undefined;
+					const before = crossed ? crossed[0] : left === -2 ? contact(ports[(j + count - 1) % count], ports[j]) :
 						left < 0
 							? closest(ports[(j + count - 1) % count], ports[j], center)
 							: at(ports[(j + count - 1) % count], ports[j], left);
-					const after = right === -2 ? contact(ports[j], ports[(j + 1) % count]) :
+					const after = crossed ? crossed[1] : right === -2 ? contact(ports[j], ports[(j + 1) % count]) :
 						right < 0
 							? closest(ports[j], ports[(j + 1) % count], center)
 							: at(ports[j], ports[(j + 1) % count], right);

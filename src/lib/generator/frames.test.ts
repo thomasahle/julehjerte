@@ -988,6 +988,11 @@ describe('frames from real hearts', () => {
   // straight cut from its circle to the wing crosses the body.
   expect(generate({ mode: 'figure', name: 'Swan', contours: swan.contours as Ring[], colors, style: 'layers', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
  }, 60000);
+ slow('builds the swan in the checked tips, its eye crossed from the top of its head', () => {
+  // The middle lane meets the body at its ends only: the wing in its bay is
+  // reached round it, and the eye across the head about the lane's port.
+  expect(generate({ mode: 'figure', name: 'Swan', contours: swan.contours as Ring[], colors, style: 'corners', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
+ }, 120000);
  slow('moves a seam that would run through a corner of the motif beside it', () => {
   // The star's top tip lies nearly on the seam through its centre, which
   // then cannot be built, and the seam through its lower notch halves the

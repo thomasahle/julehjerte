@@ -3698,14 +3698,17 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// One fitting the border narrows the outer strips, a picture of its
 		// own: only where none of the others finish.
 		const fitted = new Set<GeneratorResult>();
-		const layouts = (routeMargin = 0, avoid = false, border?: boolean, wholeLanes = false, stepped = false) => bestOfFirst((function* () {
+		const layouts = (routeMargin = 0, avoid = false, border?: boolean, wholeLanes = false, stepped = false, ways = false) => bestOfFirst((function* () {
 			let finished = false;
 			for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) for (const holdLegs of [true, false]) {
 				if (fitBorder && finished) return;
 				if (border !== undefined && fitBorder !== border) continue;
+				// Every way, the practical routes only, with straight spokes (a
+				// chain takes no other way).
+				if (ways && (routing !== 'practical' || bentSpokes)) continue;
 				try {
 					const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes,
-						undefined, undefined, request.gap, routeMargin > 0, holdLegs, routeMargin, avoid, wholeLanes, stepped);
+						undefined, undefined, request.gap, routeMargin > 0, holdLegs, routeMargin, avoid, wholeLanes, stepped, ways);
 					// Keep the established frame and skip another fit when moving
 					// separate components did not change any lane or connection.
 					if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
@@ -3727,6 +3730,13 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// the motif in them one at a time (the polar star's wedges, a straight
 		// link between two of which crosses its point).
 		if (!best) [best, avoided, stepped] = [layouts(0, false, undefined, false, true), false, true];
+		// A motif of several pieces, or with counters, may still be reached
+		// every way (see `withEveryWay`): the swan's wing in the bay of its
+		// body, its eye across its head.
+		const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.length);
+		let ways = false;
+		if (!best && pieced && everyWay) [best, stepped, ways] = [layouts(0, false, undefined, false, false, true), false, true];
+		if (!best && pieced && !everyWay) everyWayPassed++;
 		// Where its paper tears printed, the layouts with the same border again
 		// with the motif's connections, and the side lanes' legs, a paper's
 		// width off, kept where they hold better; where that still tears, with
@@ -3736,7 +3746,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const paper = PAPER_NECK_MM / PRINT_WIDTH_MM * 100, border = fitted.has(best);
 			for (const wholeLanes of [false, true]) {
 				if (wholeLanes && !paperTears(exported(best).design)) break;
-				const again = layouts(paper, avoided, border, wholeLanes, stepped);
+				const again = layouts(paper, avoided, border, wholeLanes, stepped, ways);
 				if (again && cutsBetter(again, best, true)) best = again;
 			}
 		}

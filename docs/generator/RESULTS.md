@@ -1,5 +1,26 @@
 # Generator robustness results
 
+## The swan in the checked tips
+
+The checked tips (corners) refused the swan at every size too: the lane
+through the middle meets the body at its ends only, the wing lies in the
+body's bay, and every chain of cuts to the eye, a counter in the head,
+crossed the neck. Where nothing else builds, the frame's last resort (see
+`withEveryWay`) now routes the middle lane as the open frames reach their
+pieces, round them (`around`, `legs`), and crosses a counter at right
+angles to the way to its port as well (`across`): the eye from the top of
+the head to the throat, about the port where the lane meets the head. Only
+the practical layouts with straight spokes are tried so; with the
+medallion's ways round the counters too (`bays`), the owl at 100%, which
+the frame builds otherwise, took more than three times as long.
+
+The swan builds at 50, 70, 85 and 100% in 8–12 s, where its refusal took
+2–29 s, cut cleanly but for its paper: 3, 12, 14 and 52 weak pieces, the
+water's thin crescent and the wing's feathers beside the lane's cuts,
+holding printed 190–200 mm wide. Of the featured motifs at those sizes (196
+hearts) every other is the same, none slower. No featured motif is refused
+in any frame now.
+
 ## The swan in the medallion
 
 The circle with double bands (layers) refused the swan at every size. Its
@@ -16,10 +37,6 @@ motifs at those sizes (196 hearts) every other is the same but the pig at
 85%: the medallion's every way now reaches it at the space asked for, where
 before only the frame without its space built it (the last alternative);
 it keeps its one weak piece and the width it holds at, with a shorter cut.
-The checked tips (corners) still refuse the swan: reaching it there takes
-the open frames' ways round, these, and a way across its eye, and those
-made the frame's slowest hearts, which it builds without them, slower
-still (the owl at 100%, 68 → 700 s).
 
 ## The swan in the open frames
 
