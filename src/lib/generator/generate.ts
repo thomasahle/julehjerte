@@ -60,6 +60,7 @@ import {
 	withExactArcs,
 	arcSlipsSeen,
 	withNearestIslands,
+	withCounterWays,
 	islandsAtExtremesSeen,
 	islandPortsSince,
 	forgetIslandPorts,
@@ -3439,13 +3440,17 @@ function generateUsingRecipes(request: GeneratorRequest,
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			// A motif of several pieces, or with counters, the medallion's
 			// counters then, may still be reached another way (see
-			// `withEveryWay`): round the other counters (`bays`).
+			// `withEveryWay`): round the other counters (`bays`); where that
+			// finishes none, with the cuts between a counter's own counters
+			// round inside it too (see `withCounterWays`): the graph's four
+			// nodes, by its arms and hub.
 			const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.length);
-			if (pieced && everyWay) try {
-				return finish(generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, undefined, (...args) => {
+			if (pieced && everyWay) for (const ways of [false, true]) try {
+				const route = () => generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, undefined, (...args) => {
 					args[7] = { ...args[7], practical: true, compound: true, nested: true, bays: true };
 					return fourPortMotif(...args);
-				}), 'nested');
+				});
+				return finish(ways ? withCounterWays(route) : route(), 'nested');
 			} catch (everyError) {
 				if (!(everyError instanceof ConstructionError) && !(everyError instanceof CutGeometryError)) throw everyError;
 			}
@@ -3767,12 +3772,15 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// every way (see `withEveryWay`): the swan's wing in the bay of its
 		// body, its eye across its head.
 		const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.length);
-		let ways = false, walled = false;
+		let ways = false, walled = false, counter = false;
 		if (!best && pieced && everyWay) [best, stepped, ways] = [layouts(0, false, undefined, false, false, true), false, true];
 		// Where that finishes none either, a lane's spokes that the motif's
 		// other parts wall off from its largest go round them too (the
 		// stethoscope, the motorcycle).
 		if (!best && pieced && everyWay) [best, walled] = [layouts(0, false, undefined, false, false, true, true), true];
+		// Where none finish yet, the cuts between the motif's counters go
+		// round inside it too (see `withCounterWays`): the graph's nodes.
+		if (!best && pieced && everyWay) [best, counter] = [withCounterWays(() => layouts(0, false, undefined, false, false, true, true)), true];
 		if (!best && pieced && !everyWay) everyWayPassed++;
 		// Where its paper tears printed, the layouts with the same border again
 		// with the motif's connections, and the side lanes' legs, a paper's
@@ -3783,7 +3791,8 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const paper = PAPER_NECK_MM / PRINT_WIDTH_MM * 100, border = fitted.has(best);
 			for (const wholeLanes of [false, true]) {
 				if (wholeLanes && !paperTears(exported(best).design)) break;
-				const again = layouts(paper, avoided, border, wholeLanes, stepped, ways, walled);
+				const retry = () => layouts(paper, avoided, border, wholeLanes, stepped, ways, walled);
+				const again = counter ? withCounterWays(retry) : retry();
 				if (again && cutsBetter(again, best, true)) best = again;
 			}
 		}
@@ -4016,12 +4025,14 @@ function generateUsingRecipes(request: GeneratorRequest,
 	}
 	// A motif of several pieces, or with islands in its holes, may still be
 	// reached the ways the board circle's are (see `withEveryWay`): a refused
-	// one tries again so, on the first layouts.
+	// one tries again so, on the first layouts; last with its islands reached
+	// round its pieces as in the open frames (`legs`): the trolley's box in
+	// the bay of its frame, the head in the user icon's ring.
 	const pieces = forest(rings), pieced = pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length));
-	if (pieced && everyWay) for (const around of [false, true]) for (const construct of balancedRecipes) {
+	if (pieced && everyWay) for (const [around, legs] of [[false, false], [true, false], [true, true]]) for (const construct of balancedRecipes) {
 		try {
 			const construction = construct((...args) => {
-				args[7] = { ...args[7], practical: true, compound: true, nested: true, around };
+				args[7] = { ...args[7], practical: true, compound: true, nested: true, around, ...legs ? { legs } : {} };
 				return fourPortMotif(...args);
 			});
 			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested');

@@ -276,6 +276,45 @@ function block(
 }
 
 const nestedBlocks = new WeakMap<Contour, Map<string, Edge[] | null>>();
+/** Whether the cuts between a nested contour's counters, where no straight
+ * chain joins them, go round inside it (see `insideWays`). */
+let counterWays = false;
+export function withCounterWays<T>(build: () => T): T {
+	const before = counterWays;
+	counterWays = true;
+	try {
+		return build();
+	} finally {
+		counterWays = before;
+	}
+}
+/** The ways inside a contour, round its counters and past its own corners
+ * that point into it, a little inside each (see `reachVia`): from one node of
+ * the graph icon through its arm and hub to the next. */
+function insideWays(node: Contour, open: (a: Point, b: Point) => boolean, margin = 1.5) {
+	const ring = node.ring, n = ring.length, turn = Math.sign(area(ring));
+	const within = (p: Point) => inside(p, ring) && !node.children.some(child => inside(p, child.ring));
+	const corners = ring.flatMap((p, i): Point[] => {
+		const u = sub(p, ring[(i + n - 1) % n]), v = sub(ring[(i + 1) % n], p);
+		if (cross(u, v) * turn >= 0) return [];
+		const lu = Math.hypot(...u), lv = Math.hypot(...v);
+		if (!lu || !lv) return [];
+		const w: Point = [-turn * (u[1] / lu + v[1] / lv), turn * (u[0] / lu + v[0] / lv)], lw = Math.hypot(...w);
+		return lw ? [[p[0] + w[0] / lw * margin / 2, p[1] + w[1] / lw * margin / 2]] : [];
+	});
+	// Round a counter by four of its hull's corners: a round hole's 48 made
+	// the graph's medallion take half a minute.
+	const round = node.children.flatMap(child => {
+		try {
+			const hull = convexEnvelope(child.ring, margin), step = Math.max(1, hull.length / 4);
+			return Array.from({ length: Math.min(4, hull.length) }, (_, i) => hull[Math.floor(i * step)]);
+		} catch (error) {
+			if (!(error instanceof ConstructionError)) throw error;
+			return [];
+		}
+	});
+	return reachVia([...corners, ...round].filter(within), open);
+}
 /** A nested contour may have its two external attachments on the same side.
  * The straight sibling chain then cannot alternate with those attachments.
  * Open its counters around either attachment instead, preserving one complete
@@ -284,7 +323,7 @@ function nestedBlock(...args: Parameters<typeof block>) {
 	const [edges, node, entry, exit, first] = args;
 	// A contour's attachments recur across its parent's candidate routes:
 	// each pair is worked out once.
-	const known = nestedBlocks.get(node) ?? new Map<string, Edge[] | null>(), key = `${entry.point};${exit.point};${first}`;
+	const known = nestedBlocks.get(node) ?? new Map<string, Edge[] | null>(), key = `${entry.point};${exit.point};${first}${counterWays ? ';ways' : ''}`;
 	nestedBlocks.set(node, known);
 	if (!known.has(key)) {
 		try {
@@ -315,7 +354,14 @@ function openNestedBlock(...args: Parameters<typeof block>) {
 	const rings = contours(node), routeLocal = createLocalRouter();
 	const clearSharedCuts = createSharedCutValidator(rings);
 	let best: Edge[] | undefined, cost = Infinity;
-	for (const candidate of perforatedOutline(node, [entry, exit], [0, 1], false, false, true)) {
+	const clear = new Map<string, boolean>();
+	const ways = counterWays ? insideWays(node, (a, b) => {
+		const key = `${a};${b}`;
+		let seen = clear.get(key);
+		if (seen === undefined) clear.set(key, seen = clearSharedCuts([{ from: a, to: b, family: 'AB', kind: 'shared' }]));
+		return seen;
+	}) : undefined;
+	for (const candidate of perforatedOutline(node, [entry, exit], [0, 1], false, false, true, undefined, ways)) {
 		const routes = routeLocal(candidate, [entry.point, exit.point]);
 		if (!routes || !clearSharedCuts(candidate)) continue;
 		const score = cuttingCost(routes, 1.5);
@@ -1083,39 +1129,12 @@ function contourMotif(
 		return dot(v, direction(angles[j] + Math.PI)) > Math.hypot(...v) * Math.SQRT1_2;
 	});
 	const passes = options.legs ? nodes.flatMap(envelope).filter(p => !beyond(p)) : [];
-	const reachVia = (passes: Point[]) => (from: Point, ring: Ring): { path: Ring; port: Port; length: number } | undefined => {
-		const seen = (p: Point) => {
-			const port = closestPort(ring, p, open);
-			return open(p, port.point) ? port : undefined;
-		};
-		const points = [from, ...passes], cost = points.map((_, i) => i ? Infinity : 0), back = points.map(() => -1), done = points.map(() => false);
-		let best: { at: number; port: Port; length: number } | undefined;
-		for (;;) {
-			let i = -1;
-			for (let k = 0; k < points.length; k++) if (!done[k] && cost[k] < Infinity && (i < 0 || cost[k] < cost[i])) i = k;
-			if (i < 0 || best && cost[i] >= best.length) break;
-			done[i] = true;
-			const port = seen(points[i]);
-			if (port && (!best || cost[i] + distance(points[i], port.point) < best.length))
-				best = { at: i, port, length: cost[i] + distance(points[i], port.point) };
-			for (let k = 1; k < points.length; k++) {
-				const step = cost[i] + distance(points[i], points[k]);
-				if (!done[k] && step < cost[k] && open(points[i], points[k])) {
-					cost[k] = step;
-					back[k] = i;
-				}
-			}
-		}
-		if (!best) return;
-		const path: Ring = [best.port.point];
-		for (let k = best.at; k >= 0; k = back[k]) path.unshift(points[k]);
-		return { path, port: best.port, length: best.length };
-	};
-	const reach = reachVia(passes);
+	const reach = reachVia(passes, open);
 	// With `bays`, the shared cuts between the base's counters go the same
 	// way round, past the corners of the counters' hulls inside it (the
 	// swan's wing in the bay of its body, in the medallion).
-	const bays = options.bays ? reachVia(base.children.flatMap(envelope).filter(p => inside(p, base.ring))) : undefined;
+	const bays = options.bays ? reachVia(base.children.flatMap(envelope).filter(p => inside(p, base.ring)), open)
+		: counterWays && base.children.length > 1 ? insideWays(base, open) : undefined;
 	// A clipped quadrilateral may have no usable vertices away from its seams.
 	// Offer points along its unchanged edges when the ordinary fan is blocked.
 	// Replace those blocked choices only; retain the same attachment budget.
@@ -1642,6 +1661,38 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
 		yield result;
 	}
 }
+
+/** The shortest way from a point to a ring, each step a shared cut `open`
+ * lets through, past `passes`: the way and the point of the ring it ends at;
+ * none where there is none. */
+const reachVia = (passes: Point[], open: (a: Point, b: Point) => boolean) => (from: Point, ring: Ring): { path: Ring; port: Port; length: number } | undefined => {
+	const seen = (p: Point) => {
+		const port = closestPort(ring, p, open);
+		return open(p, port.point) ? port : undefined;
+	};
+	const points = [from, ...passes], cost = points.map((_, i) => i ? Infinity : 0), back = points.map(() => -1), done = points.map(() => false);
+	let best: { at: number; port: Port; length: number } | undefined;
+	for (;;) {
+		let i = -1;
+		for (let k = 0; k < points.length; k++) if (!done[k] && cost[k] < Infinity && (i < 0 || cost[k] < cost[i])) i = k;
+		if (i < 0 || best && cost[i] >= best.length) break;
+		done[i] = true;
+		const port = seen(points[i]);
+		if (port && (!best || cost[i] + distance(points[i], port.point) < best.length))
+			best = { at: i, port, length: cost[i] + distance(points[i], port.point) };
+		for (let k = 1; k < points.length; k++) {
+			const step = cost[i] + distance(points[i], points[k]);
+			if (!done[k] && step < cost[k] && open(points[i], points[k])) {
+				cost[k] = step;
+				back[k] = i;
+			}
+		}
+	}
+	if (!best) return;
+	const path: Ring = [best.port.point];
+	for (let k = best.at; k >= 0; k = back[k]) path.unshift(points[k]);
+	return { path, port: best.port, length: best.length };
+};
 
 /** Add two shared bridges around one external port. Flipping the intervening
  * outline arcs preserves the four external path pairings. A bridge pair on an

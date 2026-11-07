@@ -72,6 +72,8 @@ import wreath from '../../../static/generator/motifs/mc-wreath.json';
 import download from '../../../static/generator/motifs/tb-download.json';
 import notePencil from '../../../static/generator/motifs/ph-note-pencil.json';
 import award from '../../../static/generator/motifs/tb-award.json';
+import graph from '../../../static/generator/motifs/ph-graph.json';
+import trolley from '../../../static/generator/motifs/ph-trolley.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -998,6 +1000,16 @@ describe('frames from real hearts', () => {
   // Three points where a ribbon meets the medal, which every cut had to go
   // round: as drawn it is refused there, without them it builds.
   expect(generate({ mode: 'figure', name: 'Award', contours: award.contours as Ring[], colors, style: 'corners', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
+ }, 60000);
+ slow('builds the graph in the medallion, its nodes joined through its arms and hub', () => {
+  // The graph is one counter of the medallion with four nodes in it: no
+  // straight cut joins two of them inside it, so they go round its corners.
+  expect(generate({ mode: 'figure', name: 'Graph', contours: graph.contours as Ring[], colors, style: 'layers', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
+ }, 60000);
+ slow('builds the trolley in the sunburst, its box reached round its frame', () => {
+  // The box lies in the bay of the trolley's frame, which walls it off from
+  // every straight way in.
+  expect(generate({ mode: 'figure', name: 'Trolley', contours: trolley.contours as Ring[], colors, style: 'sunburst', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
  }, 60000);
  slow('builds the swan in the medallion, its wing reached round its body', () => {
   // The swan's pieces are counters of the medallion there, and every
