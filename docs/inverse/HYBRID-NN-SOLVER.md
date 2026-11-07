@@ -1274,6 +1274,26 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     3 strips), mostly at 50 to 55 s and after the fitter's own 8 to 37 s. The rest end as before: near
     misses on the strips hearts (the fitter's drawing is not one the outline's candidates can make), lost
     regions on the motifs, no template on the text hearts. Too little for a second ladder after the fitter.
+- **Where the ladder's time went (2026-11-07): shipped.** A CPU profile of one heart passing at 42 s
+  (flower on strips, `node --cpu-prof` on prodcheck3): HiGHS 11.4 s, the paper audit 12.4 s, the
+  candidates' clearance test 6.6 s. The same template's paper was audited up to four times (the model's
+  audit of an incumbent, the search's final check, the ladder's ranking; each `verifyPaper` then
+  `finalMaterialAudit` at the lattice it had just settled on), and `Outline.nearLocally` (27 million calls)
+  formatted a point key for each edge end on every call, where most calls lie past `rules.local` along
+  the route and so have a limit below zero. Now: `materialAudit(..., {reuse: true})` answers from the
+  last six family audits whose chords and fold endpoints are exactly the same (copies, maps kept), asked
+  only by the exact search (`verifyPaper`, `paperSpots`, `assess`); the export's audit and the fitter's
+  never reuse. `nearLocally` keeps each edge's touching ends and returns at once below a zero limit (100
+  million calls on three hearts checked against the old code: no difference). The audit 12.4 to 5.4 s,
+  the clearance test 6.6 to 3.0 s, HiGHS 11.4 to 18 s of the same run.
+  - Measured with `bench/memo-core` (which also reused the export's audit; same verdicts, a little
+    faster): on the 127 test pictures (`nn/memo-full.sh`) 95 against 95, the same pictures, median 5.0 s
+    against 6.4 to the first template (mean 9.8 against 10.4); on the 170 benchmark hearts 102 against
+    104, median 4.8 s against 6.8 on the 101 both pass (mean 11.3 against 12.6).
+  - The 4 benchmark hearts that changed, three runs each on HEAD's core and the shipped one
+    (`bench/memo-confirm.sh`): 5 passes of 12 against 3. Tree on 3 strips passes every time (25 s; 0 of 3
+    before); the other three flip near the deadline in both arms (2026 woven square 1 of 3 each, NOEL on
+    strips 1 of 3 against 2, JUL oswald on strips 0 of 3 each).
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);

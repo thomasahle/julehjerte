@@ -78,7 +78,7 @@ export function assess(solution, cfg, {material = null} = {}) {
   let paper = false;
   try {
     if (check.passed && !material) verifyPaper(solution, cfg);
-    paper = check.passed && (material ?? finalMaterialAudit(solution, verifiedPaperSettings(solution, cfg))).passed;
+    paper = check.passed && (material ?? finalMaterialAudit(solution, verifiedPaperSettings(solution, cfg), {reuse: true})).passed;
   } catch { paper = false; }
   const kinds = new Set(check.issues.map(i => i.type));
   if (check.passed && !paper) kinds.add('paper');

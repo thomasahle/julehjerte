@@ -147,16 +147,16 @@ export class Outline {
     return out;
   }
 
-  /** [touching node key, arc distance] of edge e's touching ends. */
-  ends(e, s) {
-    const ed = this.E[e];
-    if (ed.loop) return [];
-    const out = [];
-    for (const [p, d] of [[ed.u, s], [ed.v, this.L[e] - s]]) {
+  /** [touching node key, whether it is the edge's first end] of edge e's touching ends, once per edge. */
+  touching(e) {
+    const known = (this._touching ??= []);
+    if (known[e]) return known[e];
+    const ed = this.E[e], out = [];
+    if (!ed.loop) for (const [p, first] of [[ed.u, true], [ed.v, false]]) {
       const k = pointKey(p);
-      if (this.nodes.get(k).typ === 'touch') out.push([k, d]);
+      if (this.nodes.get(k).typ === 'touch') out.push([k, first]);
     }
-    return out;
+    return (known[e] = out);
   }
 
   /** {touching: {touching: arc length}} through touchings, up to 1.2 units. */
@@ -186,10 +186,16 @@ export class Outline {
 
   /** Whether two outline points lie within `limit` along the outline (one edge, or through touchings). */
   nearLocally(e, s, f, t, limit) {
+    // Every distance along the outline is at least 0: nothing is nearer than a limit below it.
+    if (limit < 0) return false;
     if (e === f && this.along(e, s, t) <= limit) return true;
+    const te = this.touching(e), tf = this.touching(f);
+    if (!te.length || !tf.length) return false;
     const far = this.nodeDistance();
-    for (const [n1, d1] of this.ends(e, s)) for (const [n2, d2] of this.ends(f, t))
-      if (d1 + (far.get(n1).get(n2) ?? Infinity) + d2 <= limit) return true;
+    for (const [n1, first1] of te) {
+      const d1 = first1 ? s : this.L[e] - s, row = far.get(n1);
+      for (const [n2, first2] of tf) if (d1 + (row.get(n2) ?? Infinity) + (first2 ? t : this.L[f] - t) <= limit) return true;
+    }
     return false;
   }
 }

@@ -219,6 +219,26 @@ test('a traced curve\'s pixel steps are no corners, a corner is, and they read a
   assert.deepEqual(corners(back, cumlen(back), false).map(s => +(L - s).toFixed(9)), forward.map(s => +s.toFixed(9)));
 });
 
+test('two outline points are near along it as the reference reads it: one edge, or through touchings', () => {
+  // nearLocally keeps each edge's touching ends and gives up below a zero limit; the answers stay these.
+  let seed = 1;
+  const random = () => (seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0) / 2 ** 32;
+  for (const [name, ref] of Object.entries(fixtures)) {
+    const o = new Outline(buildStructure(ref.segs, {readingK: ref.readingK}), rules(settings({trials: 0}))), far = o.nodeDistance();
+    const ends = (e, s) => o.E[e].loop ? [] : [[o.E[e].u, s], [o.E[e].v, o.L[e] - s]].filter(([p]) => o.nodes.get(`${p[0]},${p[1]}`).typ === 'touch').map(([p, d]) => [`${p[0]},${p[1]}`, d]);
+    const near = (e, s, f, t, limit) => e === f && o.along(e, s, t) <= limit || ends(e, s).some(([n1, d1]) => ends(f, t).some(([n2, d2]) => d1 + (far.get(n1).get(n2) ?? Infinity) + d2 <= limit));
+    let through = 0;
+    for (let k = 0; k < 3000; k++) {
+      const e = Math.floor(random() * o.E.length), f = random() < .3 ? e : Math.floor(random() * o.E.length);
+      const s = [0, o.L[e], random() * o.L[e]][Math.floor(random() * 3)], t = [0, o.L[f], random() * o.L[f]][Math.floor(random() * 3)];
+      const limit = random() < .2 ? (e === f ? o.along(e, s, t) : 0) : 2.4 * random() - .4, expected = near(e, s, f, t, limit);
+      assert.equal(o.nearLocally(e, s, f, t, limit), expected, `${name}: ${e} ${s} ${f} ${t} ${limit}`);
+      through += expected && e !== f;
+    }
+    assert.ok(through > 0, `${name}: some pairs near through touchings`);
+  }
+});
+
 test('pruned to its nearest partners, a position keeps one along its own edge in each band of distance', () => {
   // Twenty positions round a loop 20 long, a face's only edge (Uret's inner
   // circle), every pair a candidate costing its distance round the loop.

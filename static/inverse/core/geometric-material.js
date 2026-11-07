@@ -46,7 +46,7 @@ export function geometricMaterialAudit(solution,cfg,{includePolygons=false,toler
 
 /** Retain the existing lattice rule as well as the geometric check. Raster
  * maps remain explicitly labelled as lattice diagnostics, not offset results. */
-export function finalMaterialAudit(solution,cfg,{includeMaps=false,...options}={}){
-  const lattice=materialAudit(solution,cfg,{includeMaps}),offset=geometricMaterialAudit(solution,cfg,{includePolygons:includeMaps,...options}),status=statusOf([lattice.status,offset.status]);
+export function finalMaterialAudit(solution,cfg,{includeMaps=false,reuse=false,...options}={}){
+  const lattice=materialAudit(solution,cfg,{includeMaps,reuse}),offset=geometricMaterialAudit(solution,cfg,{includePolygons:includeMaps,...options}),status=statusOf([lattice.status,offset.status]);
   return{...lattice,offset,passed:status==='pass',status,summary:{...lattice.summary,status,method:'Guarded lattice and independent unfolded polygon offsets',latticeStatus:lattice.status,offset:offset.summary,seconds:lattice.summary.seconds+offset.summary.seconds}};
 }

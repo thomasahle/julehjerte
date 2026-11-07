@@ -119,6 +119,24 @@ test('native audits preserve complete historical maps, areas, fold intervals and
   assert.deepEqual(uncertain,withoutTime(materialAudit(fixture('thin'),cfg,{includeMaps:true,native:false})));
 });
 
+test('the exact search\'s reused paper verdicts are fresh audits\' answers, maps included, and own their arrays',async()=>{
+  await loadNumericalKernel();
+  for(const resolution of[80,180])for(const name of['straight','neck','thin','neck']){
+    const cfg=settings({width:60,cutError:0,printShrinkPercent:0,materialResolution:resolution,minWidth:3}),solution=fixture(name);
+    const fresh=withoutTime(materialAudit(solution,cfg,{includeMaps:true})),bare=withoutTime(materialAudit(solution,cfg));
+    // Asked without maps, then with them: the second is the first's audit, its map made with it.
+    assert.deepEqual(withoutTime(materialAudit(solution,cfg,{reuse:true})),bare);
+    const reused=withoutTime(materialAudit(solution,cfg,{includeMaps:true,reuse:true}));
+    assert.deepEqual(reused,fresh);
+    reused.families[0].map.fill(9);reused.families[0].foldIntervals.length=0;
+    assert.deepEqual(withoutTime(materialAudit(solution,cfg,{includeMaps:true,reuse:true})),fresh);
+    // The same cuts a hair wider apart are other inputs, audited afresh.
+    const data=solutionJSON(solution);for(const curve of Object.values(data.curves))curve.control_points=curve.control_points.map(p=>p.map(v=>v*(1+1e-12)));
+    const moved=loadSolutionJSON(data);
+    assert.deepEqual(withoutTime(materialAudit(moved,cfg,{includeMaps:true,reuse:true})),withoutTime(materialAudit(moved,cfg,{includeMaps:true})));
+  }
+});
+
 test('outline reuse preserves audits after width, resolution and cut changes',async()=>{
   await loadNumericalKernel();
   // Complete-map hashes captured from material.js at 0a30976. Revisit inputs

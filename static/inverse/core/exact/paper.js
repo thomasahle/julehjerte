@@ -13,8 +13,8 @@ export function verifyPaper(solution, cfg) {
   for (const resolution of [700, 1000]) {
     const checked = verifiedPaperSettings(solution, cfg);
     if (resolution <= checked.materialResolution) continue;
-    if (materialAudit(solution, checked).status !== 'uncertain') return;
-    const finer = materialAudit(solution, {...cfg, materialResolution: resolution});
+    if (materialAudit(solution, checked, {reuse: true}).status !== 'uncertain') return;
+    const finer = materialAudit(solution, {...cfg, materialResolution: resolution}, {reuse: true});
     solution.report = {...solution.report, paperVerification: {requestedResolution: cfg.materialResolution, resolution, status: finer.status}};
     if (finer.status !== 'uncertain') return;
   }
@@ -27,7 +27,7 @@ export function verifyPaper(solution, cfg) {
 export function paperSpots(solution, cfg, {most = 400, final = false} = {}) {
   if (final) verifyPaper(solution, cfg);
   const checked = verifiedPaperSettings(solution, cfg), w = solution.graph.target.width;
-  const audit = (final ? finalMaterialAudit : materialAudit)(solution, checked, {includeMaps: true});
+  const audit = (final ? finalMaterialAudit : materialAudit)(solution, checked, {includeMaps: true, reuse: true});
   if (audit.status === 'pass') return null;
   // Unfolded sheet k: (u, v), v in [0, 2w], the fold at v = w; B transposed.
   const toReference = (k, u, v) => {
