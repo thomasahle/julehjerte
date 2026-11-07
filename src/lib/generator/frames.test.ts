@@ -966,7 +966,7 @@ describe('frames from real hearts', () => {
   expect(paperFaults(design).weak).toBe(0);
   expect(hardToCut).toBeDefined();
  }, 60000);
- it('reaches the swan\'s wing in the bay of its body, round its tail', () => {
+ slow('reaches the swan\'s wing in the bay of its body, round its tail', () => {
   // No gate sees the wing: the body hides it from the gates below and
   // beside it, and the fitted frame's gates on the head and the beak lie on
   // the body, where a way from them would branch its outline. Past the
@@ -978,7 +978,7 @@ describe('frames from real hearts', () => {
   }, undefined, 0, FITTED, true);
   expect(build(false)).toThrow(ConstructionError);
   expect(build(true)().edges.length).toBeGreaterThan(0);
- });
+ }, 60000);
  slow('builds the swan in the open frames, where they refused it', () => {
   for (const style of ['fitted', 'wedges'] as const)
    expect(generate({ mode: 'figure', name: 'Swan', contours: swan.contours as Ring[], colors, style, frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length, style).toBeGreaterThan(0);
