@@ -74,6 +74,7 @@ import notePencil from '../../../static/generator/motifs/ph-note-pencil.json';
 import award from '../../../static/generator/motifs/tb-award.json';
 import graph from '../../../static/generator/motifs/ph-graph.json';
 import trolley from '../../../static/generator/motifs/ph-trolley.json';
+import lasso from '../../../static/generator/motifs/ph-lasso.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -1010,6 +1011,11 @@ describe('frames from real hearts', () => {
   // The box lies in the bay of the trolley's frame, which walls it off from
   // every straight way in.
   expect(generate({ mode: 'figure', name: 'Trolley', contours: trolley.contours as Ring[], colors, style: 'sunburst', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
+ }, 60000);
+ slow('builds the lasso in the medallion, its loop reached up its rope', () => {
+  // The loop's inside lies in a bay of the square the lasso is cut from,
+  // open only up the rope: no way round the square's hull reaches it.
+  expect(generate({ mode: 'figure', name: 'Lasso', contours: lasso.contours as Ring[], colors, style: 'layers', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
  }, 60000);
  slow('builds the swan in the medallion, its wing reached round its body', () => {
   // The swan's pieces are counters of the medallion there, and every

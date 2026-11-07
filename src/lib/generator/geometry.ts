@@ -1128,12 +1128,15 @@ function contourMotif(
 		const v = sub(p, gate);
 		return dot(v, direction(angles[j] + Math.PI)) > Math.hypot(...v) * Math.SQRT1_2;
 	});
-	const passes = options.legs ? nodes.flatMap(envelope).filter(p => !beyond(p)) : [];
+	// With `withChannels`, the ways also go up the channels between the
+	// pieces (see `channelPoints`).
+	const channel = channels ? channelPoints(contours, margin) : [];
+	const passes = options.legs ? [...nodes.flatMap(envelope), ...channel.filter(p => contours.filter(r => inside(p, r)).length % 2 === 0)].filter(p => !beyond(p)) : [];
 	const reach = reachVia(passes, open);
 	// With `bays`, the shared cuts between the base's counters go the same
 	// way round, past the corners of the counters' hulls inside it (the
 	// swan's wing in the bay of its body, in the medallion).
-	const bays = options.bays ? reachVia(base.children.flatMap(envelope).filter(p => inside(p, base.ring)), open)
+	const bays = options.bays ? reachVia([...base.children.flatMap(envelope), ...channel.filter(p => !base.children.some(child => inside(p, child.ring)))].filter(p => inside(p, base.ring)), open)
 		: counterWays && base.children.length > 1 ? insideWays(base, open) : undefined;
 	// A clipped quadrilateral may have no usable vertices away from its seams.
 	// Offer points along its unchanged edges when the ordinary fan is blocked.
@@ -1662,6 +1665,51 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
 	}
 }
 
+/** Whether a motif's islands are also reached up the channels between its
+ * pieces (see `channelPoints`), where no way round them finishes. */
+let channels = false;
+export function withChannels<T>(build: () => T): T {
+	const before = channels;
+	channels = true;
+	try {
+		return build();
+	} finally {
+		channels = before;
+	}
+}
+/** Points a few units apart along every ring, on both sides of it: midway
+ * across where the way there is narrow, else half a margin off: a way past
+ * them goes up a channel between the pieces rather than round their hulls
+ * (the lasso's rope, up which the loop inside it is reached). */
+function channelPoints(contours: Ring[], margin: number, spacing = 3): Point[] {
+	const points: Point[] = [];
+	for (const ring of contours) {
+		const n = ring.length;
+		let since = Infinity;
+		for (let i = 0; i < n; i++) {
+			const p = ring[i], u = sub(p, ring[(i + n - 1) % n]), v = sub(ring[(i + 1) % n], p), lu = Math.hypot(...u), lv = Math.hypot(...v);
+			since += lu;
+			if (since < spacing || !lu || !lv) continue;
+			const w: Point = [u[1] / lu + v[1] / lv, -(u[0] / lu + v[0] / lv)], lw = Math.hypot(...w);
+			if (!lw) continue;
+			since = 0;
+			for (const side of [1, -1]) {
+				const d: Point = [side * w[0] / lw, side * w[1] / lw];
+				// The nearest wall across.
+				let across = Infinity;
+				for (const other of contours) for (let k = 0; k < other.length; k++) {
+					const a = other[k], e = sub(other[(k + 1) % other.length], a), den = cross(d, e);
+					if (Math.abs(den) < 1e-12) continue;
+					const ap = sub(a, p), t = cross(ap, e) / den, s = cross(ap, d) / den;
+					if (t > 1e-6 && s >= 0 && s <= 1 && t < across) across = t;
+				}
+				const off = across < 4 * margin ? across / 2 : margin / 2;
+				points.push([p[0] + d[0] * off, p[1] + d[1] * off]);
+			}
+		}
+	}
+	return points;
+}
 /** The shortest way from a point to a ring, each step a shared cut `open`
  * lets through, past `passes`: the way and the point of the ring it ends at;
  * none where there is none. */

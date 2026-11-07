@@ -61,6 +61,7 @@ import {
 	arcSlipsSeen,
 	withNearestIslands,
 	withCounterWays,
+	withChannels,
 	islandsAtExtremesSeen,
 	islandPortsSince,
 	forgetIslandPorts,
@@ -1713,6 +1714,20 @@ function withEveryWay<T>(build: () => T): T {
  * crossing those: only a request refused without them tries again with them,
  * so every heart built without them keeps its cuts. */
 let passingLanes = false, passingLanesFailed = 0;
+/** Whether a refused motif of several pieces is reached up the channels
+ * between them (see `withChannels`), and only so: after every other last
+ * resort, so every heart built without it keeps its cuts (a suitcase in
+ * Kiler that passing lanes cut with a sharp tip less). */
+let channelWays = false;
+function withChannelWays<T>(build: () => T): T {
+	const before = channelWays;
+	channelWays = true;
+	try {
+		return build();
+	} finally {
+		channelWays = before;
+	}
+}
 const passingLanesSetAside = () => passingLanesFailed;
 function withPassingLanes<T>(build: () => T): T {
 	const before = passingLanes;
@@ -1729,7 +1744,7 @@ function withPassingLanes<T>(build: () => T): T {
  * that come too close (see `withCrowdedHiddenCuts`), on the board circle
  * every way of reaching a motif's pieces (see `withEveryWay`), and lanes run
  * through parts of the motif they do not hold (see `withPassingLanes`). */
-const LAST_RESORTS = [[withVisibleIslands, visibleIslandsSetAside], [withCrowdedHiddenCuts, crowdedHiddenCutsSetAside], [withEveryWay, everyWaySetAside], [withPassingLanes, passingLanesSetAside]] as const;
+const LAST_RESORTS = [[withVisibleIslands, visibleIslandsSetAside], [withCrowdedHiddenCuts, crowdedHiddenCutsSetAside], [withEveryWay, everyWaySetAside], [withPassingLanes, passingLanesSetAside], [withChannelWays, everyWaySetAside]] as const;
 /** The last resorts allowed while a heart is made (see `allowingLastResort`). */
 const allowed = LAST_RESORTS.map(() => false);
 function allowingLastResort<T>(k: number, build: () => T): T {
@@ -3359,11 +3374,17 @@ function generateUsingRecipes(request: GeneratorRequest,
 			}
 		}
 		// A letter or motif of several pieces is reached every way the board
-		// circle's are (see `withEveryWay`): a refused one tries again so.
+		// circle's are (see `withEveryWay`): a refused one tries again so, and
+		// last with its islands reached round its pieces and up the channels
+		// between them, as in the open frames (see `withChannelWays`: the
+		// lasso's loop).
 		const pieced = [...new Set(text.replace(/\s/g, ''))].some(char => forest(font.glyphs[char]?.contours ?? []).length > 1);
 		if (everyWay && pieced) for (const around of [false, true])
 			recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 				spread: true, practical: true, compound: true, nested: true, bases: true, around }));
+		if (channelWays && pieced)
+			recipes.push(() => withChannels(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+				spread: true, practical: true, compound: true, nested: true, bases: true, around: true, legs: true })));
 		let last: unknown;
 		// The recipes differ in how the letters' cuts spread over panels and
 		// route to their gates, unseen: of a text's first few, the best paper.
@@ -3443,14 +3464,15 @@ function generateUsingRecipes(request: GeneratorRequest,
 			// `withEveryWay`): round the other counters (`bays`); where that
 			// finishes none, with the cuts between a counter's own counters
 			// round inside it too (see `withCounterWays`): the graph's four
-			// nodes, by its arms and hub.
+			// nodes, by its arms and hub; and last up the channels between them
+			// (see `withChannelWays`: the lasso's rope).
 			const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.length);
-			if (pieced && everyWay) for (const ways of [false, true]) try {
+			if (pieced && (everyWay || channelWays)) for (const way of channelWays ? [withChannels] : [undefined, withCounterWays]) try {
 				const route = () => generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, undefined, (...args) => {
 					args[7] = { ...args[7], practical: true, compound: true, nested: true, bays: true };
 					return fourPortMotif(...args);
 				});
-				return finish(ways ? withCounterWays(route) : route(), 'nested');
+				return finish(way ? way(route) : route(), 'nested');
 			} catch (everyError) {
 				if (!(everyError instanceof ConstructionError) && !(everyError instanceof CutGeometryError)) throw everyError;
 			}
@@ -3772,7 +3794,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// every way (see `withEveryWay`): the swan's wing in the bay of its
 		// body, its eye across its head.
 		const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.length);
-		let ways = false, walled = false, counter = false;
+		let ways = false, walled = false, counter = false, channeled = false;
 		if (!best && pieced && everyWay) [best, stepped, ways] = [layouts(0, false, undefined, false, false, true), false, true];
 		// Where that finishes none either, a lane's spokes that the motif's
 		// other parts wall off from its largest go round them too (the
@@ -3781,6 +3803,8 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// Where none finish yet, the cuts between the motif's counters go
 		// round inside it too (see `withCounterWays`): the graph's nodes.
 		if (!best && pieced && everyWay) [best, counter] = [withCounterWays(() => layouts(0, false, undefined, false, false, true, true)), true];
+		// And last up the channels between its pieces (see `withChannelWays`).
+		if (!best && pieced && channelWays) [best, channeled] = [withChannels(() => layouts(0, false, undefined, false, false, true, true)), true];
 		if (!best && pieced && !everyWay) everyWayPassed++;
 		// Where its paper tears printed, the layouts with the same border again
 		// with the motif's connections, and the side lanes' legs, a paper's
@@ -3792,7 +3816,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			for (const wholeLanes of [false, true]) {
 				if (wholeLanes && !paperTears(exported(best).design)) break;
 				const retry = () => layouts(paper, avoided, border, wholeLanes, stepped, ways, walled);
-				const again = counter ? withCounterWays(retry) : retry();
+				const again = counter ? withCounterWays(retry) : channeled ? withChannels(retry) : retry();
 				if (again && cutsBetter(again, best, true)) best = again;
 			}
 		}
@@ -3878,13 +3902,17 @@ function generateUsingRecipes(request: GeneratorRequest,
 			// other pieces wall off from the largest round them too (`walled`:
 			// the note's pencil inside its chevron), and last with the gates a
 			// clearance off the motif, where one on a piece walls off the way
-			// round it (the chevron in Tæt om figuren).
+			// round it (the chevron in Tæt om figuren); and last up the channels
+			// between its pieces (see `withChannelWays`: the lasso's rope), its
+			// gates on the motif and, in Tæt om figuren, a clearance off it.
 			const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length));
-			if (pieced && everyWay) for (const [walled, padding] of [[false, 0], [true, 0], [true, 1]] as const) try {
-				return finish(generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, (...args) => {
+			const tiers = channelWays ? [[true, 0, true], [true, 1, true]] as const : [[false, 0, false], [true, 0, false], [true, 1, false]] as const;
+			if (pieced && (everyWay || channelWays)) for (const [walled, padding, channeled] of tiers) try {
+				const construct = () => generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, (...args) => {
 					args[7] = { ...args[7], practical: true, compound: true, nested: true, around: true, legs: true, walled };
 					return fourPortMotif(...args);
-				}, undefined, padding, open, true), 'silhouette');
+				}, undefined, padding, open, true);
+				return finish(channeled ? withChannels(construct) : construct(), 'silhouette');
 			} catch (everyError) {
 				if (!(everyError instanceof ConstructionError) && !(everyError instanceof CutGeometryError)) throw everyError;
 			}
@@ -4025,16 +4053,19 @@ function generateUsingRecipes(request: GeneratorRequest,
 	}
 	// A motif of several pieces, or with islands in its holes, may still be
 	// reached the ways the board circle's are (see `withEveryWay`): a refused
-	// one tries again so, on the first layouts; last with its islands reached
+	// one tries again so, on the first layouts; then with its islands reached
 	// round its pieces as in the open frames (`legs`): the trolley's box in
-	// the bay of its frame, the head in the user icon's ring.
+	// the bay of its frame, the head in the user icon's ring; and last up the
+	// channels between them too (see `withChannelWays`: the lasso's rope).
 	const pieces = forest(rings), pieced = pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length));
-	if (pieced && everyWay) for (const [around, legs] of [[false, false], [true, false], [true, true]]) for (const construct of balancedRecipes) {
+	const tiers = channelWays ? [[true, true, true]] : [[false, false, false], [true, false, false], [true, true, false]];
+	if (pieced && (everyWay || channelWays)) for (const [around, legs, channeled] of tiers) for (const construct of balancedRecipes) {
 		try {
-			const construction = construct((...args) => {
+			const route = () => construct((...args) => {
 				args[7] = { ...args[7], practical: true, compound: true, nested: true, around, ...legs ? { legs } : {} };
 				return fourPortMotif(...args);
 			});
+			const construction = channeled ? withChannels(route) : route();
 			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested');
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
