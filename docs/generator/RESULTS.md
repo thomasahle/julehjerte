@@ -1,5 +1,26 @@
 # Generator robustness results
 
+## The swan in the medallion
+
+The circle with double bands (layers) refused the swan at every size. Its
+pieces are counters of the medallion there, and the chain of cuts from the
+circle through them ran straight: every one to the wing, in the bay of the
+body, crossed the body. Where nothing else builds, its last resort (see
+`withEveryWay`) now has those cuts go the shortest way round the other
+counters, past the corners of their hulls (`bays`), each counter entered
+where that way meets it and left where the way on to the next does.
+
+The swan builds at 50, 70, 85 and 100%, with 7–9 weak pieces, hard to cut
+but at 85%, in about 4 s, where its refusal took 1–8 s. Of the featured
+motifs at those sizes (196 hearts) every other is the same but the pig at
+85%: the medallion's every way now reaches it at the space asked for, where
+before only the frame without its space built it (the last alternative);
+it keeps its one weak piece and the width it holds at, with a shorter cut.
+The checked tips (corners) still refuse the swan: reaching it there takes
+the open frames' ways round, these, and a way across its eye, and those
+made the frame's slowest hearts, which it builds without them, slower
+still (the owl at 100%, 68 → 700 s).
+
 ## The swan in the open frames
 
 The wedges, the fitted frame and the silhouette refused the swan at every

@@ -971,7 +971,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; around?: boolean; legs?: boolean; lastly?: Edge[]; connectionAllowed?: (point: Point) => boolean; safeAttachments?: boolean; routed?: { fallback?: Edge[] }; obstacles?: Ring[] } = {}
+	options: { root?: Ring; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; around?: boolean; legs?: boolean; bays?: boolean; lastly?: Edge[]; connectionAllowed?: (point: Point) => boolean; safeAttachments?: boolean; routed?: { fallback?: Edge[] }; obstacles?: Ring[] } = {}
 ) {
 	if (options.alternateIslandGates) {
 		// Different letters can need different gates. Finish each cell locally
@@ -1072,7 +1072,7 @@ function contourMotif(
 		return dot(v, direction(angles[j] + Math.PI)) > Math.hypot(...v) * Math.SQRT1_2;
 	});
 	const passes = options.legs ? nodes.flatMap(envelope).filter(p => !beyond(p)) : [];
-	const reach = (from: Point, ring: Ring): { path: Ring; port: Port; length: number } | undefined => {
+	const reachVia = (passes: Point[]) => (from: Point, ring: Ring): { path: Ring; port: Port; length: number } | undefined => {
 		const seen = (p: Point) => {
 			const port = closestPort(ring, p, open);
 			return open(p, port.point) ? port : undefined;
@@ -1100,6 +1100,11 @@ function contourMotif(
 		for (let k = best.at; k >= 0; k = back[k]) path.unshift(points[k]);
 		return { path, port: best.port, length: best.length };
 	};
+	const reach = reachVia(passes);
+	// With `bays`, the shared cuts between the base's counters go the same
+	// way round, past the corners of the counters' hulls inside it (the
+	// swan's wing in the bay of its body, in the medallion).
+	const bays = options.bays ? reachVia(base.children.flatMap(envelope).filter(p => inside(p, base.ring))) : undefined;
 	// A clipped quadrilateral may have no usable vertices away from its seams.
 	// Offer points along its unchanged edges when the ordinary fan is blocked.
 	// Replace those blocked choices only; retain the same attachment budget.
@@ -1257,7 +1262,7 @@ function contourMotif(
 			const local = [...interior, ...exterior];
 			return allowedConnections(local) && clearSharedCuts(local);
 		};
-		for (const interior of perforatedOutline(base, ports, bridgePorts, options.practical, options.touching, options.nested, clearInterior)) {
+		for (const interior of perforatedOutline(base, ports, bridgePorts, options.practical, options.touching, options.nested, clearInterior, bays)) {
 			const local = [...interior, ...exterior];
 			try {
 				const routes = routeLocal(local, gates);
@@ -1632,9 +1637,10 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
  * arc with no external port would instead create a closed cutting cycle.
  * Sibling holes share a chain; nested contours use the two-terminal block.
  * `accept` sees each candidate's shared cuts before its outline is drawn, and
- * turns it away there. */
+ * turns it away there. With `bays`, the shared cuts between the counters go
+ * round others in their way. */
 function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly number[], practical = false, touching = false, nested = false,
-	accept: (shared: Edge[]) => boolean = () => true): Generator<Edge[]> {
+	accept: (shared: Edge[]) => boolean = () => true, bays?: (from: Point, ring: Ring) => { path: Ring; port: Port } | undefined): Generator<Edge[]> {
 	if (!node.children.length) {
 		const edges: Edge[] = [];
 		outline(edges, node.ring, ports, 'B');
@@ -1851,22 +1857,24 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 							k + 1 < children.length
 								? centres.get(children[k + 1])!
 								: after.point;
-						const entry = (left === -2 ? ringPort(h.ring, previous) : undefined) ?? (corners ? support(h.ring, Math.atan2(previous[1] - c[1], previous[0] - c[0])) : ray(
+						const way = bays?.(previous, h.ring), onward = !bays ? undefined :
+							bays(k + 1 < children.length ? nearestPort(children[k + 1].ring, [h.ring]).point : after.point, h.ring);
+						const entry = way?.port ?? (left === -2 ? ringPort(h.ring, previous) : undefined) ?? (corners ? support(h.ring, Math.atan2(previous[1] - c[1], previous[0] - c[0])) : ray(
 							h.ring,
 							previous,
 							Math.atan2(c[1] - previous[1], c[0] - previous[0])
 						));
-						const exit = (right === -2 ? ringPort(h.ring, next) : undefined) ?? (corners ? support(h.ring, Math.atan2(next[1] - c[1], next[0] - c[0])) : ray(
+						const exit = onward?.port ?? (right === -2 ? ringPort(h.ring, next) : undefined) ?? (corners ? support(h.ring, Math.atan2(next[1] - c[1], next[0] - c[0])) : ray(
 							h.ring,
 							next,
 							Math.atan2(c[1] - next[1], c[0] - next[0])
 						));
 						if (near(entry.point, exit.point)) continue candidate;
-						add(edges, [previous, entry.point], 'AB', 'shared');
+						add(edges, way?.path ?? [previous, entry.point], 'AB', 'shared');
 						(nested ? nestedBlock : block)(edges, h, entry, exit, 'A');
 						previous = exit.point;
 					}
-					add(edges, [previous, after.point], 'AB', 'shared');
+					add(edges, bays?.(previous, [after.point])?.path ?? [previous, after.point], 'AB', 'shared');
 				}
 				// Every shared cut is in; the outline adds only A and B arcs.
 				if (!accept(edges)) continue;

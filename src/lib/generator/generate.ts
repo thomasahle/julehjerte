@@ -3386,20 +3386,38 @@ function generateUsingRecipes(request: GeneratorRequest,
 			if (again && cutsBetter(again, best, true)) return again;
 		}
 		if (best) return best;
-		// A motif inside the medallion can have counters whose attachments
-		// cannot alternate along a straight chain. Reconnect those counters
-		// around either attachment while retaining the seven-strip layout.
-		const construction = generateLayeredFigure(request.contours ?? [], request.frameSize,
-			request.scale, undefined, nestedFourPortMotif);
 		try {
-			return finish(construction, 'nested');
+			// A motif inside the medallion can have counters whose attachments
+			// cannot alternate along a straight chain. Reconnect those counters
+			// around either attachment while retaining the seven-strip layout.
+			const construction = generateLayeredFigure(request.contours ?? [], request.frameSize,
+				request.scale, undefined, nestedFourPortMotif);
+			try {
+				return finish(construction, 'nested');
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				// Preserve these connections with curved approaches before the
+				// global retry replaces them with new straight segments.
+				const geometry = curveSharedCuts(construction.geometry);
+				if (!geometry) throw error;
+				return finishConstruction(request, construction, 'nested', geometry, curveFitter);
+			}
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-			// Preserve these connections with curved approaches before the
-			// global retry replaces them with new straight segments.
-			const geometry = curveSharedCuts(construction.geometry);
-			if (!geometry) throw error;
-			return finishConstruction(request, construction, 'nested', geometry, curveFitter);
+			// A motif of several pieces, or with counters, the medallion's
+			// counters then, may still be reached another way (see
+			// `withEveryWay`): round the other counters (`bays`).
+			const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.length);
+			if (pieced && everyWay) try {
+				return finish(generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, undefined, (...args) => {
+					args[7] = { ...args[7], practical: true, compound: true, nested: true, bays: true };
+					return fourPortMotif(...args);
+				}), 'nested');
+			} catch (everyError) {
+				if (!(everyError instanceof ConstructionError) && !(everyError instanceof CutGeometryError)) throw everyError;
+			}
+			if (pieced && !everyWay) everyWayPassed++;
+			throw error;
 		}
 	}
 	if (request.style === 'board') {

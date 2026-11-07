@@ -983,6 +983,11 @@ describe('frames from real hearts', () => {
   for (const style of ['fitted', 'wedges'] as const)
    expect(generate({ mode: 'figure', name: 'Swan', contours: swan.contours as Ring[], colors, style, frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length, style).toBeGreaterThan(0);
  }, 120000);
+ slow('builds the swan in the medallion, its wing reached round its body', () => {
+  // The swan's pieces are counters of the medallion there, and every
+  // straight cut from its circle to the wing crosses the body.
+  expect(generate({ mode: 'figure', name: 'Swan', contours: swan.contours as Ring[], colors, style: 'layers', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
+ }, 60000);
  slow('moves a seam that would run through a corner of the motif beside it', () => {
   // The star's top tip lies nearly on the seam through its centre, which
   // then cannot be built, and the seam through its lower notch halves the
