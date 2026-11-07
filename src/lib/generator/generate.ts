@@ -3834,13 +3834,15 @@ function generateUsingRecipes(request: GeneratorRequest,
 			// the legs only meeting the motif, round its pieces anywhere short
 			// of them (`legs`); where that finishes none, with the spokes the
 			// other pieces wall off from the largest round them too (`walled`:
-			// the note's pencil inside its chevron).
+			// the note's pencil inside its chevron), and last with the gates a
+			// clearance off the motif, where one on a piece walls off the way
+			// round it (the chevron in Tæt om figuren).
 			const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length));
-			if (pieced && everyWay) for (const walled of [false, true]) try {
+			if (pieced && everyWay) for (const [walled, padding] of [[false, 0], [true, 0], [true, 1]] as const) try {
 				return finish(generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, (...args) => {
 					args[7] = { ...args[7], practical: true, compound: true, nested: true, around: true, legs: true, walled };
 					return fourPortMotif(...args);
-				}, undefined, 0, open, true), 'silhouette');
+				}, undefined, padding, open, true), 'silhouette');
 			} catch (everyError) {
 				if (!(everyError instanceof ConstructionError) && !(everyError instanceof CutGeometryError)) throw everyError;
 			}

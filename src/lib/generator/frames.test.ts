@@ -987,8 +987,10 @@ describe('frames from real hearts', () => {
  slow('builds the note and pencil in the open frames, a gate reached round the chevron', () => {
   // The chevron walls the pencil, the base, off from a gate beside it, and
   // the corners inside the gates give that gate's spoke no way: it goes
-  // round the chevron's arm, past the corners an island's way takes.
-  for (const style of ['wedges', 'silhouette'] as const)
+  // round the chevron's arm, past the corners an island's way takes. In the
+  // fitted frame that gate lies on the chevron itself: a clearance off it,
+  // it goes round too.
+  for (const style of ['wedges', 'silhouette', 'fitted'] as const)
    expect(generate({ mode: 'figure', name: 'Note', contours: notePencil.contours as Ring[], colors, style, frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length, style).toBeGreaterThan(0);
  }, 60000);
  slow('builds the swan in the medallion, its wing reached round its body', () => {
