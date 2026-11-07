@@ -4,8 +4,8 @@
  * generated hearts only, none of the gallery's, whose templates keep the export's
  * cutting rules, with the square's symmetries; docs/inverse/HYBRID-NN-SOLVER.md. A search never waits for it:
  * without its maps in time the exact search runs as before. */
-export const CUTS_MODEL_SHA256='7bb7216088e0c643cc4630705cdbf198c12bfdc05b82705be03c91df211d345a';
-const modelURL=new URL('./cuts-7bb72160.onnx',import.meta.url);
+export const CUTS_MODEL_SHA256='4362d1d354b0c05811ecf7272b941b10479857f5f23748830b4220c84ea65cb8';
+const modelURL=new URL('./cuts-4362d1d3.onnx',import.meta.url);
 const runtimeURL=new URL('../vendor/onnxruntime-1.19.2/',import.meta.url);
 const N=128;
 

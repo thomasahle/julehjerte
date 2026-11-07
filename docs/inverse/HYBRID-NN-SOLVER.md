@@ -670,7 +670,7 @@ side: the photo locator's crop, not the search.
 
 | Part | What |
 |---|---|
-| `static/inverse/neural/cuts.js`, `cuts-7bb72160.onnx` | syn1v (trained on synthetic designs only, no gallery heart, without the generated templates our export rejects: section 3a), float16, checksum, loaded like the photo model; NOTICE.txt credits the Apache-2.0 encoder weights |
+| `static/inverse/neural/cuts.js`, `cuts-4362d1d3.onnx` | 0.7 syn1v + 0.3 its fine-tune on the strips, motifs and board designs with `--sym-min` (weights averaged; trained on synthetic designs only, no gallery heart, without the generated templates our export rejects), float16, checksum, loaded like the photo model; NOTICE.txt credits the Apache-2.0 encoder weights |
 | `exact/candidates.js` `rankScores`, `ranked`, `keep` | candidate scores from the maps (hidden field along the route by direction, plus the switches at the ends), the top K plus every candidate under 3 mm |
 | `exact/search.js` `rank`, `reuse`, `buildSeconds` | rank pruning on a copy; candidates built once per ladder; the build's own time |
 | `exact/stage.js` `networkLadder`, `ladderOnly` | rungs (K, s) = (10, 2), (30, 2), (100, 3), (300, 4), plus (1000, 10) when alone, each also with two sampled rankings when alone; at most a quarter of the time before today's search, the whole search time alone (0a3cada0) |
@@ -1220,8 +1220,35 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   and with the generator's switch places but the network's maps (no rung passes; with the generator's
   own maps K30 does), so the maps are the limit. And the order of the ladder's rungs: on the snowflake
   in corners each of 14 rungs (K10 to K1000, 3 seeds) ends in 1 to 15 s without a template.
-  Where the search finds none, the fitter's template is what the page shows: on the first 21 of the 68
-  missed benchmark hearts it passes on 15, 0.1 to 2.4% from the mask (`bench/fitter.sh`).
+  On the 16 designs alone (`nn/over/run-sm.sh`) `--sym-min` reaches 0.908 against the nearest valid
+  template (0.862 without), the paper loss 0.211 (0.272); motifs and board unchanged (few symmetric).
+  Eleven epochs more of the replay and synstrips packs with it, while the machine was idle
+  (`nn/idle-train.sh`, about 4 minutes each), from epoch 1's 0.741: strips 0.765 (hidden recall 0.86,
+  precision 0.40, from 0.71 and 0.31), motifs 0.836, board 0.958; still rising slowly.
+  Where the search finds none, the fitter's template is what the page shows (`bench/fitter.sh`): of the
+  68 missed distinct benchmark hearts it passes on 34, 1.05% from the mask in the median (2.4% at most):
+  every board, corners, layers and sunburst heart, 12 of 15 strips, 6 of 16 motifs (none from 6 motifs a
+  side up), 7 of 28 text hearts (no nunito word on strips, layers or checks). So the page gives a passing
+  template on about 130 of the 161 (96 exact).
+  That network (`idle/m-e12.pt`) on the benchmark, the ladder alone from its maps (`bench/e12.sh`): 103 of
+  170 against the site's 95 (with today's search 106 against 98). Three runs each of the 14 it changed
+  (`bench/e12/confirm.sh`): 26 passes of 42 against 17; held: elephant on the board and reindeer in the
+  corners (3 of 3 against 0, neither found by today's search), JUL oswald in layers, heart on strips;
+  lost: JUL nunito and righteous in a circle (0 of 3 against 3; today's search finds both in 22 s). But on
+  the 127 test pictures through the browser's float16 path (`nn/e12-test.sh`): 91 against the site's 95,
+  none gained; tak and gathering-hanging-trio-top lost 3 of 3 (its K300 rung no longer finds them; epoch
+  1 still does). Not shipped as it is. The two networks' weights averaged (`nn/soup.py`, from the same
+  start): 0.7 of the site's and 0.3 of m-e12 (`m-soup3`) keeps tak, gathering, both circles and kalam's
+  checks and still gains reindeer, elephant in the sunburst, nisse with motifs, the strips hearts, JUL
+  oswald (13 of those 17 pictures; half and half 12, losing tak). hjerte-paa-hjerte fails with both (the
+  site's ends at 52 s). Its full runs (`nn/soup3-full.sh`): the 127 test pictures 95 against the site's
+  95 (venus gained, hjerte-paa-hjerte lost; median 6.2 s against 8.0 where both find a template), the
+  benchmark 104 against 95 (10 gained, flower in the corners lost). Three runs each of those 13
+  (`nn/soup3-confirm.sh`): 29 passes of 39 against 18: reindeer in the corners, JUL oswald in
+  layers 3 of 3 against 0; nisse with motifs and the blank word on a woven square 3 against 1; heart on 2,
+  3 and 4 strips, venus and NOEL on strips 3 against 2; flower in the corners 0 against 2 (today's search
+  finds none either: lost); hjerte-paa-hjerte 0 against 3 (the site's at 52 s), which today's search beside
+  it finds in 16 s. **Shipped** as `cuts-4362d1d3.onnx` (float16, same size), replacing syn1v.
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);
