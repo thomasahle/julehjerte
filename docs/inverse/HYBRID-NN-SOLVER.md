@@ -1249,6 +1249,31 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   3 and 4 strips, venus and NOEL on strips 3 against 2; flower in the corners 0 against 2 (today's search
   finds none either: lost); hjerte-paa-hjerte 0 against 3 (the site's at 52 s), which today's search beside
   it finds in 16 s. **Shipped** as `cuts-4362d1d3.onnx` (float16, same size), replacing syn1v.
+- **After the soup (2026-11-07): nothing more shipped.** What was tried on the benchmark's misses:
+  - Twelve more idle epochs from m-e12 (`nn/idle2-train.sh`, the same packs and `--sym-min`): strips
+    paper on cuts 0.764 (0.775 against the nearest symmetric template), hidden recall 0.834 and precision
+    0.445, motifs 0.841, board 0.977: a plateau. Its soup with syn1v (0.7 and 0.3, `m-soupB`) passes 12 of
+    the 17 deciding pictures against m-soup3's 13 (elephant in the sunburst lost).
+  - Two networks side by side: the ladder from soup3's maps or m-e12's passes 109 benchmark hearts where
+    soup3's alone passes 104, at twice the ladder's time and a second download. Not worth it.
+  - Ties off for the whole run (`NOSYM=1`) on the 14 failing strips hearts: only tree on 3 strips passes
+    (26.5 s); star on 3 strips stays 0.113 mm short.
+  - Proving there is no template under the ties before the ladder (bench/lns-core `PROBE`: one rung on
+    every candidate): HiGHS proves it in 2.3 to 4.2 s on the strips hearts, but the untied fallback needs
+    its own time after it, so no heart ends sooner or differently.
+  - Carrying a rung's rule-breaking solution into the next rungs as their start (bench/lns-core `LNS=1`:
+    its segments kept among the candidates, its papers and chosen cuts the start; the incumbent breaking
+    fewest rules): on the 20 ladder near misses 1 gained (tree on 3 strips); on the 127 test pictures 95
+    against 95, the same pictures; on the benchmark 102 against 104. Three runs each of the 4 hearts it
+    changed (`bench/carry-confirm.sh`): 8 passes of 12 against 7, each heart flipping in both arms (tree
+    on 3 strips 1 of 3 in each). No measurable effect.
+  - The fitter's passing template as the ladder's maps (`bench/fitmaps.sh`: prodcheck3 `SAVE_FITTER`, then
+    `oraclemaps.py` on it, alone or averaged with the network's by `blendmaps.py`), on the 29 benchmark
+    hearts only the fitter passes: 3 exact templates from its maps alone (elephant on the board and in the
+    corners, reindeer in layers), 3 from the mean (heart on a 5 x 5 board, elephant in the corners, tree on
+    3 strips), mostly at 50 to 55 s and after the fitter's own 8 to 37 s. The rest end as before: near
+    misses on the strips hearts (the fitter's drawing is not one the outline's candidates can make), lost
+    regions on the motifs, no template on the text hearts. Too little for a second ladder after the fitter.
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);
