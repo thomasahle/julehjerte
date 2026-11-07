@@ -1317,6 +1317,12 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     9.8 on average; on the 47 over 5 s, 7.5 against 11.3).
   - In Chromium (12 threads) on the flower in the corners: four compute workers, the fitter's template at
     21 s and an exact one (0.7% off) as the alternative some 20 s later, wall clock on a busy machine.
+  - One ladder (machines under 8 threads) now counts the traced outline twice in the first phase
+    (`TRACED_FIRST_WEIGHT`: a third of it with five outlines, as the pair's part 0/2 has; `bench/weight.sh`):
+    the 170 hearts 103 against 102, the 127 test pictures 96 against 95, none lost either way (the two gained
+    late: 2026 woven square at 54 s, fejlternet at 47 s); the first template at 3.5 s against 5.0 at the
+    median on the benchmark, 4.3 s against 5.0 on the test pictures: the traced outline's rungs to K300 fit
+    in the first phase.
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);

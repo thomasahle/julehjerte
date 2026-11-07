@@ -52,7 +52,7 @@ export const timeScale=limit=>Math.max(1,limit/EXACT_SECONDS);
  * outline has until ALONE_TRACED_SECONDS and the rounded one the rest. A
  * passing template with tips coming back to themselves has RETURNS_LEAST (or
  * as long as it took) for one with them rounded. */
-const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,LADDER_FIRST_SHARE=.5,LADDER_LEAST=2,LOOSE_LEAST=90,LOOSE_MM=.05,STRICT_SECONDS=50,ROUNDED_LEAST=6,RETURNS_LEAST=10,TIP_ROUNDING_MM=.8,TIP_SPOT_MM=4,RETURN_REPAIR_SECONDS=4,RETURN_REPAIR_TRIES=2,ROUGH_ONE=1.1,ROUGH_TWO=1.3;
+const TRACED_SECONDS=22,ROUNDED_SECONDS=40,ALONE_TRACED_SECONDS=30,LADDER_FIRST_SHARE=.5,TRACED_FIRST_WEIGHT=2,LADDER_LEAST=2,LOOSE_LEAST=90,LOOSE_MM=.05,STRICT_SECONDS=50,ROUNDED_LEAST=6,RETURNS_LEAST=10,TIP_ROUNDING_MM=.8,TIP_SPOT_MM=4,RETURN_REPAIR_SECONDS=4,RETURN_REPAIR_TRIES=2,ROUGH_ONE=1.1,ROUGH_TWO=1.3;
 /** The fitter's seconds beside the exact search (`exactRoute: 'fitter'`): what
  * it had when it came first, which photographs need to keep their details. */
 const FITTER_SECONDS=45;
@@ -231,10 +231,15 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
       // 170 generator hearts two, every other outline each, passed 110 where one passed 102, the first
       // template at 3.3 s for 4.8 at the median (the traced outline's cheap rungs get more of the first phase).
       const mine=[...outlines.entries()].filter(([k])=>k%part[1]===part[0]);
+      // One ladder over every outline counts the traced one TRACED_FIRST_WEIGHT times in the first phase, a
+      // third of it with five outlines, as the part with it has of two ladders: its rungs to K300 then fit
+      // there (one ladder on the 170 generator hearts 103 against 102, none lost, the first template at 3.5 s
+      // for 5.0 at the median; the 127 test pictures 96 against 95, none lost, 4.3 s for 5.0).
+      const weight=k=>phase==='first'&&k===0&&part[1]===1?TRACED_FIRST_WEIGHT:1;
       for(const [j,[k,traced]] of mine.entries()){
-        const left=phaseEnd-performance.now();
+        const left=phaseEnd-performance.now(),rest=mine.slice(j).reduce((sum,[other])=>sum+weight(other),0);
         if(left<1000*LADDER_LEAST)break;
-        last=await exactSearch(traced,null,cfgPass,{...search(performance.now()+left/(mine.length-j)),reserve:.5,maps,ladderOnly,phase});
+        last=await exactSearch(traced,null,cfgPass,{...search(performance.now()+left*weight(k)/rest),reserve:.5,maps,ladderOnly,phase});
         if(last.found)return{solution:last.found.solution,report:{...last.report,chosen:'exact',ladderOnly:true,outline:k,phase,tracedBound,...(loose?{loose:true}:{})}};
         if(closer(last.near?.assessment,near?.assessment))near={...last.near,outline:k,phase};
       }
