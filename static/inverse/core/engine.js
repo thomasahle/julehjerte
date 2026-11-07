@@ -79,7 +79,7 @@ export async function design(target,raw={},onProgress=()=>{},options={}){const c
   const alone=route==='exact',cfgExact=settings({...raw,symmetry:cfg.symmetry});
   const {solution,nearest,report}=await exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{
     // The ladder alone (beside today's search, in its own worker) has nothing after the traced outline: all the time.
-    tracedEnd:raw.ladderOnly===true?searchEnd:Math.min(searchEnd,start+1000*scale*(alone?ALONE_TRACED_SECONDS:TRACED_SECONDS)),roundedEnd:alone?searchEnd:Math.min(searchEnd,start+1000*scale*ROUNDED_SECONDS),maps:raw.cutMaps??null,ladderOnly:raw.ladderOnly===true});
+    tracedEnd:raw.ladderOnly===true?searchEnd:Math.min(searchEnd,start+1000*scale*(alone?ALONE_TRACED_SECONDS:TRACED_SECONDS)),roundedEnd:alone?searchEnd:Math.min(searchEnd,start+1000*scale*ROUNDED_SECONDS),maps:raw.cutMaps??null,ladderOnly:raw.ladderOnly===true,part:ladderPart(raw.ladderPart)});
   if(solution){solution.report={...solution.report,exactOutline:{...report,chosen:'exact'}};return finish(solution,cfgExact,onProgress,{deadline});}
   // The exact search's best template that misses some check (a clearance by
   // a hair, a lost region) is never thrown away: alone it is the answer, else
@@ -169,7 +169,11 @@ export function firstTrace(rough,traceAt){
   }
   return{outline:null,way:null,cannot};
 }
-async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,roundedEnd,maps=null,ladderOnly=false}){
+/** One of n ladders side by side (worker-controller.js), [i, n], else the only one: [0, 1]. */
+function ladderPart(part){
+  return Array.isArray(part)&&part.length===2&&part.every(Number.isInteger)&&part[0]>=0&&part[0]<part[1]?part:[0,1];
+}
+async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,roundedEnd,maps=null,ladderOnly=false,part=[0,1]}){
   // The outline traced from the mask first (tens of milliseconds): where its
   // cut ends cannot pair up the exact search cannot start.
   // A trace whose curves meet where the pixels only nearly touch (a vertex of
@@ -223,10 +227,14 @@ async function exactTemplate(target,cfg,cfgExact,symmetry,onProgress,{tracedEnd,
     const total=roundedEnd-performance.now(),strictEnd=total>=1000*LOOSE_LEAST?performance.now()+Math.max(1000*STRICT_SECONDS,total/3):roundedEnd;
     for(const [cfgPass,passEnd,loose] of [[cfgExact,strictEnd,false],...(strictEnd<roundedEnd?[[{...cfgExact,modelTolerance:LOOSE_MM},roundedEnd,true]]:[])])for(const [phase,share] of [['first',LADDER_FIRST_SHARE],['second',1]]){
       const phaseEnd=performance.now()+share*(passEnd-performance.now());
-      for(const [k,traced] of outlines.entries()){
+      // One of n ladders side by side searches the outlines k with k % n === i, with all the time: on the
+      // 170 generator hearts two, every other outline each, passed 110 where one passed 102, the first
+      // template at 3.3 s for 4.8 at the median (the traced outline's cheap rungs get more of the first phase).
+      const mine=[...outlines.entries()].filter(([k])=>k%part[1]===part[0]);
+      for(const [j,[k,traced]] of mine.entries()){
         const left=phaseEnd-performance.now();
         if(left<1000*LADDER_LEAST)break;
-        last=await exactSearch(traced,null,cfgPass,{...search(performance.now()+left/(outlines.length-k)),reserve:.5,maps,ladderOnly,phase});
+        last=await exactSearch(traced,null,cfgPass,{...search(performance.now()+left/(mine.length-j)),reserve:.5,maps,ladderOnly,phase});
         if(last.found)return{solution:last.found.solution,report:{...last.report,chosen:'exact',ladderOnly:true,outline:k,phase,tracedBound,...(loose?{loose:true}:{})}};
         if(closer(last.near?.assessment,near?.assessment))near={...last.near,outline:k,phase};
       }

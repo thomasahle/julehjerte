@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {workerController} from '../../static/inverse/worker-controller.js';
+import {workerController,ladderCount} from '../../static/inverse/worker-controller.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {fixture} from './fixtures.mjs';
 import {solutionJSON} from '../../static/inverse/core/graph.js';
@@ -17,7 +17,8 @@ function harness(options={}){
       postMessage(data){this.sent.push(structuredClone(data));},terminate(){this.terminated++;events.push('terminate');}};
     workers.push(worker);return worker;
   };
-  const handle=workerController(scope,{createWorker,...options});
+  // One ladder unless a test asks for more: the default follows the machine's threads.
+  const handle=workerController(scope,{createWorker,ladders:1,...options});
   const send=(id,action,more={})=>handle({data:{id,action,settings:config,...more}});
   const reply=(worker,id,type,extra={})=>worker.onmessage?.({data:structuredClone({id,type,...extra})});
   return{messages,workers,events,send,reply};
@@ -350,6 +351,61 @@ test('side by side with the network, the ladder\'s nearest template is held as a
     await solving;
     assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,{ladder:near,today,fitted}[expect]);
   }
+});
+
+// Two ladders side by side, each on its part of the outlines, where the machine has the threads.
+async function racingTwo(){
+  const h=harness({predictCutMaps:async()=>({size:1}),ladders:2});await h.send(1,'prepare',{input});
+  const solving=h.send(2,'solve',{settings:{...both,cutModel:true}});
+  await new Promise(resolve=>setImmediate(resolve));
+  const [fitter,exact,...parts]=h.workers;
+  assert.deepEqual(parts.map(part=>part.sent[0].settings.ladderPart),[[0,2],[1,2]]);
+  assert.ok(parts.every(part=>part.sent[0].settings.ladderOnly===true&&part.sent[0].settings.cutMaps));
+  return {h,solving,fitter,exact,parts};
+}
+
+test('side by side with the network, two ladders search their parts of the outlines and the first template stands',async()=>{
+  const {h,solving,exact,parts}=await racingTwo(),found=ladderValue(4,4);
+  h.reply(parts[1],2,'progress',{event:{stage:'exactOutline'}});
+  h.reply(parts[1],2,'result',{result:found});await solving;
+  assert.equal(exact.terminated,1);assert.deepEqual(parts.map(part=>part.terminated),[1,1]);
+  assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1),{id:2,type:'result',result:found});
+});
+
+test('side by side with the network, of two ladders without a template the better near miss is held, and two without one are none',async()=>{
+  const close=resultWith({nearMiss:true,issues:[{type:'short_self_clearance',distanceUpper:1.4999,required:1.5}]});
+  const far=resultWith({nearMiss:true,issues:[{type:'short_self_clearance',distanceUpper:1.4,required:1.5}]});
+  const failing=resultWith({issues:[{type:'self_intersection'}]}),none={message:'none',code:'NO_EXACT_TEMPLATE'};
+  for (const [first, second, expect] of [[far, close, close], [close, far, close], [null, far, far], [null, null, failing]]) {
+    const {h,solving,fitter,exact,parts}=await racingTwo();
+    h.reply(exact,2,'error',none);h.reply(fitter,2,'result',{result:failing});
+    for (const [part, said] of [[parts[0], first], [parts[1], second]]) {
+      assert.equal(h.messages.filter(m=>m.type==='result').length,0);
+      if (said) h.reply(part,2,'result',{result:said});else h.reply(part,2,'error',none);
+    }
+    await solving;
+    assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,expect);
+  }
+});
+
+test('side by side with the network, a ladder that cannot load leaves the other\'s answer, and two leave the fitter\'s',async()=>{
+  for (const second of ['template', 'crash']) {
+    const {h,solving,fitter,exact,parts}=await racingTwo(),found=ladderValue(8,7);
+    h.reply(fitter,2,'result',{result:value});h.reply(exact,2,'error',{message:'none',code:'NO_EXACT_TEMPLATE'});
+    parts[0].onerror?.({preventDefault(){}});
+    assert.equal(h.messages.filter(m=>m.type==='result').length,0);
+    if (second==='template') h.reply(parts[1],2,'result',{result:found});else parts[1].onerror?.({preventDefault(){}});
+    // Answered then, not at the search's time limit.
+    await new Promise(resolve=>setImmediate(resolve));assert.equal(h.messages.filter(m=>m.type==='result').length,1);
+    await solving;
+    assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,second==='template'?found:value);
+  }
+});
+
+test('two ladders where the machine reports the threads, unless it reports little memory',()=>{
+  assert.equal(ladderCount({hardwareConcurrency:8}),2);assert.equal(ladderCount({hardwareConcurrency:16,deviceMemory:8}),2);
+  assert.equal(ladderCount({hardwareConcurrency:4}),1);assert.equal(ladderCount({hardwareConcurrency:8,deviceMemory:2}),1);
+  assert.equal(ladderCount(null),1);assert.equal(ladderCount({}),1);
 });
 
 test('side by side with the network, a near miss from the ladder after a passing fitted answer is no alternative',async t=>{

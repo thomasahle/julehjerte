@@ -1294,6 +1294,29 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     (`bench/memo-confirm.sh`): 5 passes of 12 against 3. Tree on 3 strips passes every time (25 s; 0 of 3
     before); the other three flip near the deadline in both arms (2026 woven square 1 of 3 each, NOEL on
     strips 1 of 3 against 2, JUL oswald on strips 0 of 3 each).
+- **Two ladders side by side (2026-11-07): shipped.** After the faster audits a heart still passed when
+  the rungs before it had run out their time: flower on strips at 41 s either way, its template from the
+  second outline's long rungs. The ladder searches up to five outlines (traced, tips rounded, rounded,
+  wider, outer strip), each phase's time shared among them, and 69 of its 102 benchmark templates come
+  from the traced outline's first phase (2.6 s at the median), the second outline's 14 s, the second
+  phase's 30-51 s. Now, where the machine reports 8 threads (and not under 4 GB), the page runs two ladder
+  workers, each on every other outline (engine.js `ladderPart`, worker-controller.js `ladderGroup`: the
+  first template stands at once, else the better near miss once both have answered). Measured with
+  `bench/split-core` (`LADDER_PART`, `bench/split.sh`), the pair counting a pass in either at the earlier
+  CPU time:
+  - 170 benchmark hearts: 110 against 102 (part 0/2 alone 106: the traced outline's cheap rungs get more of
+    the first phase; NOEL woven letters there at 14 s), solvable missed 12 to 9. On the 101 both pass,
+    the first template at 3.3 s against 4.8 at the median (7.3 against 11.3 on average; on the 50 the
+    single ladder took over 5 s for, 8.2 against 14.1).
+  - The 10 hearts that changed, three runs each (`bench/split-confirm.sh`): the pair 30 of 30, one ladder
+    12 of 30. Gained every time: elephant on the board (50 s), tree in small motifs, b3 (13 s), JUL oswald
+    woven square (17 s), NOEL woven letters (14 s), ANNA checkered (34 s) and on strips (50 s); sooner:
+    elephant in the sunburst 52 to 43 s, flower in the corners 52 to 22 s, 2026 woven square 53 to 15 s.
+  - 127 test pictures (`bench/split-confirm.sh`'s second half): 96 against 95, none lost (fejlternet
+    gained, 12 s); on the 95 both pass the first template at 3.0 s against 5.0 at the median (6.3 against
+    9.8 on average; on the 47 over 5 s, 7.5 against 11.3).
+  - In Chromium (12 threads) on the flower in the corners: four compute workers, the fitter's template at
+    21 s and an exact one (0.7% off) as the alternative some 20 s later, wall clock on a busy machine.
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);

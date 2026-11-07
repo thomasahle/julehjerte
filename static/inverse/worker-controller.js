@@ -20,6 +20,14 @@ import {betterResult} from './core/result-rank.js';
 const EXACT_GRACE_SECONDS=5,EXACT_WAIT_SECONDS=40,EXACT_UNDRAWN_SECONDS=20;
 /** The longest a search waits for the cut-proposal network's first load. */
 const CUT_MODEL_WAIT_MS=1500;
+/** The network's ladder in two workers, each on its share of the outlines (engine.js ladderPart), where the
+ * machine has LADDER_CORES threads for them beside the fitter and today's search and does not report less than
+ * LADDER_MEMORY_GB: on the 170 generator hearts two passed 110 where one passed 102, the first template at
+ * 3.3 s for 4.8 at the median (7.3 for 11.3 on average). */
+const LADDER_CORES=8,LADDER_MEMORY_GB=4;
+export function ladderCount(nav=globalThis.navigator){
+  return (nav?.hardwareConcurrency??0)>=LADDER_CORES&&!(nav?.deviceMemory<LADDER_MEMORY_GB)?2:1;
+}
 
 /** One prepared artwork and one public request at a time. The private fitting
  * worker can be terminated without discarding the artwork or the result queue.
@@ -28,7 +36,7 @@ const CUT_MODEL_WAIT_MS=1500;
 export function workerController(scope,{createWorker=()=>new Worker(new URL('./compute-worker.js',import.meta.url),{type:'module'}),finalize=finishStopped,finalizeExact=finishExactStopped,now=()=>performance.now(),
  detectCrops=(input,options)=>import('./neural/photo-crop.js').then(module=>module.detectPhotoCrops(input,options)),
  createCropWorker=()=>new Worker(new URL('./crop-worker.js',import.meta.url),{type:'module'}),
- predictCutMaps=(source,options)=>import('./neural/cuts.js').then(module=>module.predictCutMaps(source,options))}={}){
+ predictCutMaps=(source,options)=>import('./neural/cuts.js').then(module=>module.predictCutMaps(source,options)),ladders=ladderCount()}={}){
   // `trailing`: a side-by-side worker still running after the other's template
   // went out, its passing answer to follow as an alternative: the fitter's, or
   // the exact search's ({exact: true}, with the timer ending it).
@@ -82,6 +90,39 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
     const traced=!outline?.outline&&!['even','unjoined','untied','subgroup'].some(way=>outline?.[way]);
     return Number.isFinite(hidden)&&((traced&&Number.isFinite(bound)&&hidden<=bound)||(Number.isFinite(outline?.tracedBound)&&hidden<=outline.tracedBound));
   };
+  // Several ladders as one worker: each request goes to every one with its part ([i, n]); the first
+  // template is answered at once, else, once all have answered, the better of their near misses, else
+  // the first error. A part that cannot load counts as no answer.
+  const ladderGroup=count=>{
+    const workers=[];let current=null,answers=[],settled=false;
+    const group={onmessage:null,onerror:null,onmessageerror:null,
+      postMessage(message){current=message.id;answers=[];settled=false;workers.forEach((worker,i)=>worker.postMessage({...message,settings:{...message.settings,ladderPart:[i,count]}}));},
+      terminate(){for(const worker of workers)worker.terminate();}};
+    const settle=data=>{settled=true;group.onmessage?.({data});};
+    const answered=(i,answer)=>{
+      if(settled)return;
+      answers[i]=answer;
+      if(answers.filter(Boolean).length<count)return;
+      const results=answers.filter(a=>a.data?.type==='result').map(a=>a.data.result);
+      if(results.length)return settle({id:current,type:'result',result:results.reduce((best,result)=>betterResult(best,result))});
+      const error=answers.find(a=>a.data);
+      if(error)return settle(error.data);
+      settled=true;
+      const failed=answers.find(a=>a.event);
+      if(failed)group.onerror?.(failed.event);else group.onmessageerror?.();
+    };
+    for(let i=0;i<count;i++){
+      const worker=createWorker();workers.push(worker);
+      worker.onmessage=({data})=>{
+        if(settled||data?.id!==current||data.type==='progress'||data.type==='candidate')return;
+        if(data.type==='result'&&!nearMiss(data.result))settle(data);else answered(i,{data});
+      };
+      worker.onerror=event=>{event?.preventDefault?.();answered(i,{event});};
+      worker.onmessageerror=()=>answered(i,{lost:true});
+    }
+    return group;
+  };
+  const createLadder=()=>ladders>1?ladderGroup(ladders):createWorker();
   const failure=(id,error)=>scope.postMessage({id,type:'error',message:error.message||String(error),code:error.code,report:error.report||null});
   const finish=(job,value,error,keepLadder=false)=>{
     if(active!==job)return;
@@ -164,8 +205,9 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
           try{cutMaps=await predictCutMaps(prepared.sourceImage,{wait:CUT_MODEL_WAIT_MS});}catch{cutMaps=null;}
         }
         // Side by side, the network's ladder runs in a third worker beside
-        // today's exact search, which keeps its whole time: the first exact
-        // template stands, so the ladder costs no time where it finds none.
+        // today's exact search (two, each on part of the outlines, where the
+        // machine has the threads: ladderCount), which keeps its whole time: the
+        // first exact template stands, so the ladder costs no time where it finds none.
         // The exact search alone (Avanceret) runs the ladder before it.
         let race=both&&cutMaps!==null;
         const exactSettings=cutMaps&&!race?{...settings,cutMaps}:settings;
@@ -176,7 +218,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
         let mapsPending=lateMaps!==null;
         compute??=createWorker();
         if(both)exactCompute??=createWorker();
-        if(race)ladderCompute??=createWorker();
+        if(race)ladderCompute??=createLadder();
         await new Promise(resolve=>{
           const job={id,cfg,startedAt:now(),candidates:new Map(),phase:'searching',done:resolve,exact:both?'running':'none',drawn:false,drawing:null,held:null,timer:null};active=job;
           const live=()=>active===job&&job.phase==='searching';
@@ -309,7 +351,7 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
             exactCompute.onerror=event=>{event.preventDefault?.();if(trailing?.id===id&&trailing.exact){disposeExact();todayIn(null);return;}if(live()&&job.exact==='running')exactDone();};
             exactCompute.onmessageerror=()=>{if(trailing?.id===id&&trailing.exact){disposeExact();todayIn(null);return;}if(live()&&job.exact==='running')exactDone();};
             startLadder=maps=>{
-              race=true;ladderCompute??=createWorker();
+              race=true;ladderCompute??=createLadder();
               ladderCompute.onmessage=({data:message})=>{
                 if(message.id!==id||message.type==='progress'||message.type==='candidate')return;
                 // After the fitter's answer went out: the alternative, as in the race.
