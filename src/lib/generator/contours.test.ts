@@ -5,6 +5,7 @@ import rabbit from '../../../static/generator/motifs/ph-rabbit.json';
 import sun from '../../../static/generator/motifs/ph-sun.json';
 import butterfly from '../../../static/generator/motifs/ph-butterfly.json';
 import bicycle from '../../../static/generator/motifs/ph-bicycle.json';
+import award from '../../../static/generator/motifs/tb-award.json';
 
 const filled = (rings: Ring[], x: number, y: number) => rings.reduce((a, r) => a ^ Number(inside([x, y], r)), 0);
 
@@ -85,5 +86,13 @@ describe('hairline spurs', () => {
 	it('keeps a thin point of the motif, whose needle trimming only moves', () => {
 		const ring: Ring = [[0, 0], [10, -.5], [10, .5], [.2, .0067]], rings = [ring];
 		expect(withoutSpurs(rings)).toBe(rings);
+	});
+	it('drops a sliver of a ring that thin unless asked to keep it, and keeps a thin stroke', () => {
+		// The award's three points where a ribbon meets the medal.
+		const square: Ring = [[0, 0], [10, 0], [10, 10], [0, 10]], stroke: Ring = [[2, 5], [8, 5], [8, 5.1], [2, 5.1]];
+		const sliver: Ring = [[3, 3], [3.0006, 3.001], [3.0006, 3]];
+		expect(withoutSpurs([square, stroke, sliver])).toEqual([square, stroke]);
+		expect(withoutSpurs([square, stroke, sliver], true)).toEqual([square, stroke, sliver]);
+		expect(withoutSpurs(award.contours as Ring[]).length).toBe(3);
 	});
 });

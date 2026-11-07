@@ -1,4 +1,4 @@
-import { type Ring, type Point, cross, sub, dot, mix, distance, inside } from './geometry';
+import { type Ring, type Point, cross, sub, dot, mix, distance, inside, area } from './geometry';
 
 /** Check complete outline segments against a frame, which need not be convex.
  * Testing vertices or a few samples can miss an excursion between them. */
@@ -55,8 +55,11 @@ export function normalizeContours(rings: Ring[]): Ring[] {
  * needle of paper. Leave out such a vertex, or it and a neighbour, where they
  * lie along the line that replaces them and that leaves fewer needles nearby;
  * trimming the motif's own point would only move its needle along, so a
- * point keeps its vertices. */
-export function withoutSpurs(rings: Ring[]): Ring[] {
+ * point keeps its vertices. A whole ring that thin (twice its area over its
+ * length), a sliver its outlining left, goes too, unless `slivers` are
+ * kept: three points where the award's ribbon meets its medal, which every
+ * cut had to go round. */
+export function withoutSpurs(rings: Ring[], slivers = false): Ring[] {
 	const points = rings.flat();
 	if (!points.length) return rings;
 	const xs = points.map(p => p[0]), ys = points.map(p => p[1]);
@@ -104,5 +107,6 @@ export function withoutSpurs(rings: Ring[]): Ring[] {
 		}
 		return r;
 	});
-	return changed ? result : rings;
+	const kept = slivers ? result : result.filter(ring => 2 * Math.abs(area(ring)) / ring.reduce((length, p, i) => length + distance(p, ring[(i + 1) % ring.length]), 0) >= width);
+	return changed || kept.length < rings.length ? kept : rings;
 }

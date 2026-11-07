@@ -71,6 +71,7 @@ import owl from '../../../static/generator/motifs/mdi-owl.json';
 import wreath from '../../../static/generator/motifs/mc-wreath.json';
 import download from '../../../static/generator/motifs/tb-download.json';
 import notePencil from '../../../static/generator/motifs/ph-note-pencil.json';
+import award from '../../../static/generator/motifs/tb-award.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -992,6 +993,11 @@ describe('frames from real hearts', () => {
   // it goes round too.
   for (const style of ['wedges', 'silhouette', 'fitted'] as const)
    expect(generate({ mode: 'figure', name: 'Note', contours: notePencil.contours as Ring[], colors, style, frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length, style).toBeGreaterThan(0);
+ }, 60000);
+ slow('builds the award in Tern i spidserne without the sliver its outlining left', () => {
+  // Three points where a ribbon meets the medal, which every cut had to go
+  // round: as drawn it is refused there, without them it builds.
+  expect(generate({ mode: 'figure', name: 'Award', contours: award.contours as Ring[], colors, style: 'corners', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
  }, 60000);
  slow('builds the swan in the medallion, its wing reached round its body', () => {
   // The swan's pieces are counters of the medallion there, and every

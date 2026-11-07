@@ -1415,15 +1415,48 @@ function generateTried(request: GeneratorRequest): GeneratorResult {
 	// outline makes at the default size: without them an earlier choice can
 	// build there that is hard to cut larger (three horses for two).
 	if (request.mode === 'figure' && !request.font && request.contours && !keepSpurs) {
-		const contours = withoutSpurs(request.contours);
-		if (contours !== request.contours) {
-			if (BOARD_FRAMES.includes(request.style ?? '') && !request.layout) {
-				const layout = catalogueLayout(request);
-				if (layout) request = { ...request, layout };
+		const asked = request, trimmed = (contours: Ring[]): GeneratorRequest => {
+			if (contours === asked.contours) return asked;
+			const layout = BOARD_FRAMES.includes(asked.style ?? '') && !asked.layout ? catalogueLayout(asked) : undefined;
+			return { ...asked, ...layout ? { layout } : {}, contours };
+		};
+		const freed = trimmed(withoutSpurs(request.contours)), drawn = trimmed(withoutSpurs(request.contours, true));
+		// A motif its outlining left slivers in is made without them, which
+		// is shown on the way, and as drawn, the better kept (`betterCuts`,
+		// on the picture without them), as drawn where neither is: made
+		// without, the award builds in the open frames, the blender's 44 in
+		// every frame, each in a tenth of the time.
+		if (freed.contours!.length < drawn.contours!.length) {
+			let without: GeneratorResult | undefined, own: GeneratorResult | undefined, failure: unknown;
+			try {
+				without = generateMade(freed);
+				progress(without);
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			}
-			request = { ...request, contours };
+			// As drawn it is made as before, its once-a-heart tries fresh.
+			forgetIslandPorts();
+			triedExactly = false;
+			try {
+				own = generateMade(drawn);
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				failure = error;
+			}
+			if (!own || !without) {
+				if (own ?? without) return (own ?? without)!;
+				throw failure;
+			}
+			const measured = (heart: GeneratorResult) =>
+				cutMeasures(heart.design, picture(freed, knownOf(heart, asked.scale ?? .7))?.rings ?? []);
+			return betterCuts(measured(without), measured(own)) ? without : own;
 		}
+		request = freed;
 	}
+	return generateMade(request);
+}
+/** A heart made from the motif as `generateTried` trimmed it. */
+function generateMade(request: GeneratorRequest): GeneratorResult {
 	// A heart refused, hard to cut or with a needle is made again its first
 	// way where a second try applies to how it was made (see `SECOND_TRIES`),
 	// and that one kept where it cuts cleanly at no smaller size with fewer
