@@ -1080,8 +1080,11 @@ function contourMotif(
 	};
 	// A* over `via`, each step a shared cut that crosses nothing; none where
 	// no way is found.
+	const pairs = new WeakMap<Point[], (i: number, k: number) => boolean>();
 	const detour = (gate: Point, port: Point, via: Point[]): Ring | undefined => {
 		const points = [gate, ...via, port], end = points.length - 1;
+		let among = pairs.get(via);
+		if (!among) pairs.set(via, among = pairwise(via, open));
 		const cost = points.map((_, i) => i ? Infinity : 0), from = points.map(() => -1), done = points.map(() => false);
 		for (;;) {
 			let i = -1;
@@ -1091,7 +1094,7 @@ function contourMotif(
 			done[i] = true;
 			for (let k = 1; k <= end; k++) {
 				const step = cost[i] + distance(points[i], points[k]);
-				if (!done[k] && step < cost[k] && open(points[i], points[k])) {
+				if (!done[k] && step < cost[k] && (i && k < end ? among(i - 1, k - 1) : open(points[i], points[k]))) {
 					cost[k] = step;
 					from[k] = i;
 				}
@@ -1714,34 +1717,48 @@ function channelPoints(contours: Ring[], margin: number, spacing = 3, most = 400
 /** The shortest way from a point to a ring, each step a shared cut `open`
  * lets through, past `passes`: the way and the point of the ring it ends at;
  * none where there is none. */
-const reachVia = (passes: Point[], open: (a: Point, b: Point) => boolean) => (from: Point, ring: Ring): { path: Ring; port: Port; length: number } | undefined => {
-	const seen = (p: Point) => {
-		const port = closestPort(ring, p, open);
-		return open(p, port.point) ? port : undefined;
-	};
-	const points = [from, ...passes], cost = points.map((_, i) => i ? Infinity : 0), back = points.map(() => -1), done = points.map(() => false);
-	let best: { at: number; port: Port; length: number } | undefined;
-	for (;;) {
-		let i = -1;
-		for (let k = 0; k < points.length; k++) if (!done[k] && cost[k] < Infinity && (i < 0 || cost[k] < cost[i])) i = k;
-		if (i < 0 || best && cost[i] >= best.length) break;
-		done[i] = true;
-		const port = seen(points[i]);
-		if (port && (!best || cost[i] + distance(points[i], port.point) < best.length))
-			best = { at: i, port, length: cost[i] + distance(points[i], port.point) };
-		for (let k = 1; k < points.length; k++) {
-			const step = cost[i] + distance(points[i], points[k]);
-			if (!done[k] && step < cost[k] && open(points[i], points[k])) {
-				cost[k] = step;
-				back[k] = i;
+const reachVia = (passes: Point[], open: (a: Point, b: Point) => boolean) => {
+	const among = pairwise(passes, open);
+	return (from: Point, ring: Ring): { path: Ring; port: Port; length: number } | undefined => {
+		const seen = (p: Point) => {
+			const port = closestPort(ring, p, open);
+			return open(p, port.point) ? port : undefined;
+		};
+		const points = [from, ...passes], cost = points.map((_, i) => i ? Infinity : 0), back = points.map(() => -1), done = points.map(() => false);
+		let best: { at: number; port: Port; length: number } | undefined;
+		for (;;) {
+			let i = -1;
+			for (let k = 0; k < points.length; k++) if (!done[k] && cost[k] < Infinity && (i < 0 || cost[k] < cost[i])) i = k;
+			if (i < 0 || best && cost[i] >= best.length) break;
+			done[i] = true;
+			const port = seen(points[i]);
+			if (port && (!best || cost[i] + distance(points[i], port.point) < best.length))
+				best = { at: i, port, length: cost[i] + distance(points[i], port.point) };
+			for (let k = 1; k < points.length; k++) {
+				const step = cost[i] + distance(points[i], points[k]);
+				if (!done[k] && step < cost[k] && (i ? among(i - 1, k - 1) : open(points[i], points[k]))) {
+					cost[k] = step;
+					back[k] = i;
+				}
 			}
 		}
-	}
-	if (!best) return;
-	const path: Ring = [best.port.point];
-	for (let k = best.at; k >= 0; k = back[k]) path.unshift(points[k]);
-	return { path, port: best.port, length: best.length };
+		if (!best) return;
+		const path: Ring = [best.port.point];
+		for (let k = best.at; k >= 0; k = back[k]) path.unshift(points[k]);
+		return { path, port: best.port, length: best.length };
+	};
 };
+/** `open` between two of `points`, by their indices, each pair worked out
+ * once: the searches over them asked it millions of times, a string key
+ * each (ten dots round a rectangle spent ten minutes making the keys). */
+function pairwise(points: Point[], open: (a: Point, b: Point) => boolean) {
+	const n = points.length, known = new Uint8Array(n * n);
+	return (i: number, k: number) => {
+		const at = i * n + k;
+		if (!known[at]) known[at] = open(points[i], points[k]) ? 1 : 2;
+		return known[at] === 1;
+	};
+}
 
 /** Add two shared bridges around one external port. Flipping the intervening
  * outline arcs preserves the four external path pairings. A bridge pair on an
