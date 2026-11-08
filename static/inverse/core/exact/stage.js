@@ -320,7 +320,13 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     // symmetricLines).
     const exact = exactOutline(outline, cfg, 'tight', {symmetry: even ? symmetry : []});
     // With the network's maps, its ladder first; today's search after it, in the time left.
-    const ladder = maps ? await networkLadder(outline, template, cfg, exact, {seconds, symmetry, multi, onProgress, geometry, refine, maps, alone: ladderOnly, phase}) : null;
+    // Alone with fallback ties after it (below) and two of their floors' time, the ladder under all the ties
+    // leaves them TURNS_FLOOR, which they otherwise never had: JUL in kalam on a woven square has its template
+    // untied in 0.6 s, where the tied rungs took 20 s of its outline's 24 (two ladders: 3 of 3 runs at 21 s,
+    // against none; the 170 generator hearts 114 against 110, the 127 test pictures 95 against 96, their one
+    // lost passing at 52 s in 2 of 3 runs against 3; three ladders: 115 and 98 as before).
+    const keep = ladderOnly && fallback && fallbackTies(symmetry).length && seconds >= 2 * TURNS_FLOOR ? TURNS_FLOOR : 0;
+    const ladder = maps ? await networkLadder(outline, template, cfg, exact, {seconds: seconds - keep, symmetry, multi, onProgress, geometry, refine, maps, alone: ladderOnly, phase}) : null;
     if (ladder) report.ladder = ladder.rungs;
     near = ladder?.nearest ?? null;
     if (ladder?.found) found = ladder.found;

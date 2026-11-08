@@ -1329,6 +1329,16 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     against never; tree on 3 strips 11 s against 21; star on strips never in either, NOEL on strips once in
     each). The 127 test pictures 98 against 96, none lost (roed-blomst 40 s, vissevasse r4c1 35 s), the
     first template at 5.6 s against 6.4 on average.
+  - The fallback ties' floor kept (stage.js exactSearch; `bench/reserve-core` FALLBACK_RESERVE): alone, the
+    ladder under all the ties took every second of an outline, so the fallbacks after it (part of the
+    symmetry, untied) started only when `TURNS_FLOOR` (6 s) was left, which it rarely was. With 3 minutes
+    (Avanceret) three of the 7 solvable hearts still missed passed: JUL kalam woven square at 22 s and star
+    on strips at 29 s, both untied, snowflake in the corners at 170 s. Now, with at least two floors' time, the
+    tied ladder leaves the fallbacks one. Two ladders: the 170 hearts 114 against 110, the 127 test pictures
+    95 against 96; three runs of the 4 that changed: JUL kalam 3 of 3 at 21 s against none, star on strips b4
+    none in either, NOEL on strips once in each, vissevasse r3c3 2 of 3 at 52 s against 3. Three ladders:
+    115 and 98 as before (JUL kalam gained at 20 s, star on strips, a flip, lost). One ladder rarely has 12 s
+    on an outline.
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);
