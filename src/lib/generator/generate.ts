@@ -1457,8 +1457,25 @@ function generateTried(request: GeneratorRequest): GeneratorResult {
 	}
 	return generateMade(request);
 }
-/** A heart made from the motif as `generateTried` trimmed it. */
+/** A heart made from the motif as `generateTried` trimmed it; one of several
+ * pieces refused every way made again up the channels between them (see
+ * `withChannelWays`). */
 function generateMade(request: GeneratorRequest): GeneratorResult {
+	try {
+		return generateTrimmed(request);
+	} catch (error) {
+		if (channelWays || !(error instanceof ConstructionError || error instanceof CutGeometryError) || request.mode !== 'figure') throw error;
+		const pieces = forest(normalizeContours(request.contours ?? []));
+		if (pieces.length < 2 && !pieces.some(piece => piece.children.length)) throw error;
+		try {
+			return withChannelWays(() => generateTrimmed(request));
+		} catch (channelError) {
+			if (!(channelError instanceof ConstructionError) && !(channelError instanceof CutGeometryError)) throw channelError;
+			throw error;
+		}
+	}
+}
+function generateTrimmed(request: GeneratorRequest): GeneratorResult {
 	// A heart refused, hard to cut or with a needle is made again its first
 	// way where a second try applies to how it was made (see `SECOND_TRIES`),
 	// and that one kept where it cuts cleanly at no smaller size with fewer
@@ -1714,10 +1731,12 @@ function withEveryWay<T>(build: () => T): T {
  * crossing those: only a request refused without them tries again with them,
  * so every heart built without them keeps its cuts. */
 let passingLanes = false, passingLanesFailed = 0;
-/** Whether a refused motif of several pieces is reached up the channels
- * between them (see `withChannels`), and only so: after every other last
- * resort, so every heart built without it keeps its cuts (a suitcase in
- * Kiler that passing lanes cut with a sharp tip less). */
+/** Whether a motif of several pieces, refused every other way, hard to cut
+ * too, is made again with its islands reached up the channels between them
+ * (see `withChannels`), and only so (see `generateMade`): every heart built
+ * without it keeps its cuts and its time. As a last resort before the
+ * hard-to-cut ones it gave a suitcase in Kiler a sharp tip more, and a
+ * rectangle among ten dots, hard in Strålekrans, twice its twenty minutes. */
 let channelWays = false;
 function withChannelWays<T>(build: () => T): T {
 	const before = channelWays;
@@ -1744,7 +1763,7 @@ function withPassingLanes<T>(build: () => T): T {
  * that come too close (see `withCrowdedHiddenCuts`), on the board circle
  * every way of reaching a motif's pieces (see `withEveryWay`), and lanes run
  * through parts of the motif they do not hold (see `withPassingLanes`). */
-const LAST_RESORTS = [[withVisibleIslands, visibleIslandsSetAside], [withCrowdedHiddenCuts, crowdedHiddenCutsSetAside], [withEveryWay, everyWaySetAside], [withPassingLanes, passingLanesSetAside], [withChannelWays, everyWaySetAside]] as const;
+const LAST_RESORTS = [[withVisibleIslands, visibleIslandsSetAside], [withCrowdedHiddenCuts, crowdedHiddenCutsSetAside], [withEveryWay, everyWaySetAside], [withPassingLanes, passingLanesSetAside]] as const;
 /** The last resorts allowed while a heart is made (see `allowingLastResort`). */
 const allowed = LAST_RESORTS.map(() => false);
 function allowingLastResort<T>(k: number, build: () => T): T {

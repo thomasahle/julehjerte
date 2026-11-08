@@ -1680,8 +1680,9 @@ export function withChannels<T>(build: () => T): T {
 /** Points a few units apart along every ring, on both sides of it: midway
  * across where the way there is narrow, else half a margin off: a way past
  * them goes up a channel between the pieces rather than round their hulls
- * (the lasso's rope, up which the loop inside it is reached). */
-function channelPoints(contours: Ring[], margin: number, spacing = 3): Point[] {
+ * (the lasso's rope, up which the loop inside it is reached). At most
+ * `most`, spaced wider for more. */
+function channelPoints(contours: Ring[], margin: number, spacing = 3, most = 400): Point[] {
 	const points: Point[] = [];
 	for (const ring of contours) {
 		const n = ring.length;
@@ -1708,7 +1709,7 @@ function channelPoints(contours: Ring[], margin: number, spacing = 3): Point[] {
 			}
 		}
 	}
-	return points;
+	return points.length > most ? channelPoints(contours, margin, spacing * points.length / most, most) : points;
 }
 /** The shortest way from a point to a ring, each step a shared cut `open`
  * lets through, past `passes`: the way and the point of the ring it ends at;
