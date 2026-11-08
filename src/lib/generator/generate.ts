@@ -63,6 +63,7 @@ import {
 	withNearestIslands,
 	withCounterWays,
 	withChannels,
+	withRemaking,
 	islandsAtExtremesSeen,
 	islandPortsSince,
 	forgetIslandPorts,
@@ -1491,7 +1492,7 @@ function generateMade(request: GeneratorRequest): GeneratorResult {
 		remaking = true;
 		try {
 			for (const made of again) try {
-				return made();
+				return withRemaking(made);
 			} catch (againError) {
 				if (!(againError instanceof ConstructionError) && !(againError instanceof CutGeometryError)) throw againError;
 			}

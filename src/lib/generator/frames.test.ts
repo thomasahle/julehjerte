@@ -78,6 +78,7 @@ import lasso from '../../../static/generator/motifs/ph-lasso.json';
 import crownCross from '../../../static/generator/motifs/ph-crown-cross.json';
 import excludeSquare from '../../../static/generator/motifs/ph-exclude-square.json';
 import microphone from '../../../static/generator/motifs/ph-microphone.json';
+import subway from '../../../static/generator/motifs/ph-subway.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -1030,6 +1031,11 @@ describe('frames from real hearts', () => {
   // Three of the four gates lie on the holder round the capsule: with the
   // capsule, the larger piece, as base their spokes all crossed the holder.
   expect(generate({ mode: 'figure', name: 'Microphone', contours: microphone.contours as Ring[], colors, style: 'fitted', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
+ }, 60000);
+ slow('builds the subway train in Tæt om figuren, a small window left a margin from where it is entered', () => {
+  // Each small square window comes nearest the way in and the way on at one
+  // corner: made again when refused, it is left a margin from there.
+  expect(generate({ mode: 'figure', name: 'Subway', contours: subway.contours as Ring[], colors, style: 'fitted', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
  }, 60000);
  slow('builds the swan in the medallion, its wing reached round its body', () => {
   // The swan's pieces are counters of the medallion there, and every

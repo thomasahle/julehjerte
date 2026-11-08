@@ -423,10 +423,20 @@ export function contourChain(
 		// or, `nearest`, where it comes nearest the way in and the way on: a
 		// long bent one (the back card of a pair) has its extremes at its ends.
 		const entry = visible ? (boundaryGates ? ringPort(node.ring, previous) : undefined) ?? ray(node.ring, previous, Math.atan2(c[1] - previous[1], c[0] - previous[0]))
-				: way?.port ?? (nearest ? closestPort(node.ring, previous, open) : support(node.ring, angle + Math.PI)),
-			exit = visible ? (boundaryGates ? ringPort(node.ring, next) : undefined) ?? ray(node.ring, next, Math.atan2(c[1] - next[1], c[0] - next[0]))
+				: way?.port ?? (nearest ? closestPort(node.ring, previous, open) : support(node.ring, angle + Math.PI));
+		let exit = visible ? (boundaryGates ? ringPort(node.ring, next) : undefined) ?? ray(node.ring, next, Math.atan2(c[1] - next[1], c[0] - next[0]))
 				: nearest ? closestPort(node.ring, next, open) : support(node.ring, angle);
-		if (nearest && near(entry.point, exit.point)) throw new ConstructionError('topology', 'Coincident island ports');
+		// Where it comes nearest both at one point, an island is left, in a
+		// heart made again when refused (see `withRemaking`), where it comes
+		// nearest the way on, a margin from there: a subway train's small
+		// square windows, entered and left at one corner.
+		if (nearest && near(entry.point, exit.point)) {
+			const apart = remaking ? node.ring.map((point, index): Port => ({ point, index }))
+				.filter(port => distance(port.point, entry.point) >= 1.5)
+				.sort((a, b) => distance(a.point, next) - distance(b.point, next))[0] : undefined;
+			if (!apart) throw new ConstructionError('topology', 'Coincident island ports');
+			exit = apart;
+		}
 		if (atExtremes) portsAtExtremes.push(entry.point, exit.point);
 		add(edges, way?.path ?? [previous, entry.point], 'AB', 'shared');
 		(nested ? nestedBlock : block)(edges, node, entry, exit, first);
@@ -1668,6 +1678,18 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
 	}
 }
 
+/** Whether a heart refused every way is being made again (see
+ * `generateMade`): some last ways are taken only then. */
+let remaking = false;
+export function withRemaking<T>(build: () => T): T {
+	const before = remaking;
+	remaking = true;
+	try {
+		return build();
+	} finally {
+		remaking = before;
+	}
+}
 /** Whether a motif's islands are also reached up the channels between its
  * pieces (see `channelPoints`), where no way round them finishes. */
 let channels = false;
