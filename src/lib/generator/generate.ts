@@ -42,6 +42,7 @@ import { findSearchIssues, searchFingerIssues } from './searchClearance';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import {
 	forest,
+	area,
 	ConstructionError,
 	CompilationError,
 	generateFigure,
@@ -192,6 +193,17 @@ const SYMMETRIC_GATES: SymmetricGates[] = [
 	{ axisGap: 2 }, { axisGap: 4 }, { onMiddle: true }, { ties: 'mirror' }, { ties: 'mirror', axisGap: 3 },
 	...[.15, -.15, .3, -.3].flatMap(turn => (['mirror', true] as const).map(ties => ({ ties, angles: [0, turn, 0, -turn] as [number, number, number, number] })))
 ];
+/** The pieces of `contours` but the largest, those most of `gates` meet
+ * first (each the one it lies on or nearest), then the larger: an open
+ * frame's other bases, for when its gates hold other pieces than its
+ * largest (see `generateUsingRecipes`). */
+function otherBases(contours: Ring[], gates: Point[]): Ring[] {
+	const pieces = forest(contours).map(node => node.ring);
+	const gap = (gate: Point, ring: Ring) => Math.min(...ring.map((p, i) => pointDistance(gate, p, ring[(i + 1) % ring.length])));
+	const met = new Map(pieces.map(ring => [ring, gates.filter(gate => pieces.every(other => gap(gate, ring) <= gap(gate, other))).length]));
+	const size = (ring: Ring) => Math.abs(area(ring));
+	return pieces.sort((a, b) => size(b) - size(a)).slice(1).sort((a, b) => met.get(b)! - met.get(a)! || size(b) - size(a));
+}
 /** The frame without a centre panel that a figure request selects, if any. */
 function openFrame(request: GeneratorRequest): OpenFrame | undefined {
 	if (request.mode !== 'figure') return;
@@ -3941,10 +3953,17 @@ function generateUsingRecipes(request: GeneratorRequest,
 			// between its pieces (see `withChannelWays`: the lasso's rope), its
 			// gates on the motif and, in Tæt om figuren, a clearance off it.
 			const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length));
-			const tiers = channelWays ? [[true, 0, true], [true, 1, true]] as const : [[false, 0, false], [true, 0, false], [true, 1, false]] as const;
-			if (pieced && (everyWay || channelWays)) for (const [walled, padding, channeled] of tiers) try {
+			// Made again when refused, the base is also each other piece in
+			// turn, three at most, those most gates meet first: the
+			// microphone's holder, whose stem and tips hold three of Tæt om
+			// figuren's gates; the second of a stack's three chevrons.
+			const tiers = channelWays ? [[true, 0, true, -1], [true, 1, true, -1], [true, 0, false, 0], [true, 0, false, 1], [true, 0, false, 2]] as const
+				: [[false, 0, false, -1], [true, 0, false, -1], [true, 1, false, -1]] as const;
+			if (pieced && (everyWay || channelWays)) for (const [walled, padding, channeled, based] of tiers) try {
 				const construct = () => generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, (...args) => {
-					args[7] = { ...args[7], practical: true, compound: true, nested: true, around: true, legs: true, walled };
+					const root = based < 0 ? undefined : otherBases(args[1], args[2])[based];
+					if (based >= 0 && !root) throw new ConstructionError('topology', 'No other piece for a base');
+					args[7] = { ...args[7], practical: true, compound: true, nested: true, around: true, legs: true, walled, ...root ? { root } : {} };
 					return fourPortMotif(...args);
 				}, undefined, padding, open, true);
 				return finish(channeled ? withChannels(construct) : construct(), 'silhouette');
@@ -4093,11 +4112,16 @@ function generateUsingRecipes(request: GeneratorRequest,
 	// the bay of its frame, the head in the user icon's ring; and last up the
 	// channels between them too (see `withChannelWays`: the lasso's rope).
 	const pieces = forest(rings), pieced = pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length));
-	const tiers = channelWays ? [[true, true, true]] : [[false, false, false], [true, false, false], [true, true, false]];
-	if (pieced && (everyWay || channelWays)) for (const [around, legs, channeled] of tiers) for (const construct of balancedRecipes) {
+	// Made again when refused, the base is also each other piece in turn, as
+	// in the open frames (see `otherBases`).
+	const tiers = channelWays ? [[true, true, true, -1], [true, true, false, 0], [true, true, false, 1], [true, true, false, 2]] as const
+		: [[false, false, false, -1], [true, false, false, -1], [true, true, false, -1]] as const;
+	if (pieced && (everyWay || channelWays)) for (const [around, legs, channeled, based] of tiers) for (const construct of balancedRecipes) {
 		try {
 			const route = () => construct((...args) => {
-				args[7] = { ...args[7], practical: true, compound: true, nested: true, around, ...legs ? { legs } : {} };
+				const root = based < 0 ? undefined : otherBases(args[1], args[2])[based];
+				if (based >= 0 && !root) throw new ConstructionError('topology', 'No other piece for a base');
+				args[7] = { ...args[7], practical: true, compound: true, nested: true, around, ...legs ? { legs } : {}, ...root ? { root } : {} };
 				return fourPortMotif(...args);
 			});
 			const construction = channeled ? withChannels(route) : route();
