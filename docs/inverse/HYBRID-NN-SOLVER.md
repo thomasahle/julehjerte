@@ -1323,6 +1323,12 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     late: 2026 woven square at 54 s, fejlternet at 47 s); the first template at 3.5 s against 5.0 at the
     median on the benchmark, 4.3 s against 5.0 on the test pictures: the traced outline's rungs to K300 fit
     in the first phase.
+  - Three ladders where the machine reports 12 threads (and not under 8 GB; outlines 0 and 3, 1 and 4, 2;
+    `bench/three.sh`, `bench/three-confirm.sh`): the 170 hearts 115 against two's 110, none lost; three runs
+    of the 5 gained: 10 of 15 against 4 (reindeer in layers 44 s and ANNA in the circle 48 s every time,
+    against never; tree on 3 strips 11 s against 21; star on strips never in either, NOEL on strips once in
+    each). The 127 test pictures 98 against 96, none lost (roed-blomst 40 s, vissevasse r4c1 35 s), the
+    first template at 5.6 s against 6.4 on average.
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);

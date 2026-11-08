@@ -20,13 +20,15 @@ import {betterResult} from './core/result-rank.js';
 const EXACT_GRACE_SECONDS=5,EXACT_WAIT_SECONDS=40,EXACT_UNDRAWN_SECONDS=20;
 /** The longest a search waits for the cut-proposal network's first load. */
 const CUT_MODEL_WAIT_MS=1500;
-/** The network's ladder in two workers, each on its share of the outlines (engine.js ladderPart), where the
- * machine has LADDER_CORES threads for them beside the fitter and today's search and does not report less than
- * LADDER_MEMORY_GB: on the 170 generator hearts two passed 110 where one passed 102, the first template at
- * 3.3 s for 4.8 at the median (7.3 for 11.3 on average). */
-const LADDER_CORES=8,LADDER_MEMORY_GB=4;
+/** The network's ladder in several workers, each on its share of the outlines (engine.js ladderPart), where the
+ * machine has the threads for them beside the fitter and today's search and does not report less memory
+ * (LADDER_WORKERS: ladders, threads, GB; the most it qualifies for). On the 170 generator hearts one ladder
+ * passed 103, two 110 (the first template at 3.3 s for 4.8 at the median), three 115; on the 127 test pictures
+ * 96, 96 and 98 (the mean 6.4 s with two, 5.6 with three). */
+const LADDER_WORKERS=[[3,12,8],[2,8,4]];
 export function ladderCount(nav=globalThis.navigator){
-  return (nav?.hardwareConcurrency??0)>=LADDER_CORES&&!(nav?.deviceMemory<LADDER_MEMORY_GB)?2:1;
+  const threads=nav?.hardwareConcurrency??0,memory=nav?.deviceMemory;
+  return LADDER_WORKERS.find(([,least,gb])=>threads>=least&&!(memory<gb))?.[0]??1;
 }
 
 /** One prepared artwork and one public request at a time. The private fitting
@@ -205,8 +207,8 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
           try{cutMaps=await predictCutMaps(prepared.sourceImage,{wait:CUT_MODEL_WAIT_MS});}catch{cutMaps=null;}
         }
         // Side by side, the network's ladder runs in a third worker beside
-        // today's exact search (two, each on part of the outlines, where the
-        // machine has the threads: ladderCount), which keeps its whole time: the
+        // today's exact search (two or three, each on part of the outlines, where
+        // the machine has the threads: ladderCount), which keeps its whole time: the
         // first exact template stands, so the ladder costs no time where it finds none.
         // The exact search alone (Avanceret) runs the ladder before it.
         let race=both&&cutMaps!==null;

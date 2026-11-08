@@ -354,12 +354,12 @@ test('side by side with the network, the ladder\'s nearest template is held as a
 });
 
 // Two ladders side by side, each on its part of the outlines, where the machine has the threads.
-async function racingTwo(){
-  const h=harness({predictCutMaps:async()=>({size:1}),ladders:2});await h.send(1,'prepare',{input});
+async function racingTwo(count=2){
+  const h=harness({predictCutMaps:async()=>({size:1}),ladders:count});await h.send(1,'prepare',{input});
   const solving=h.send(2,'solve',{settings:{...both,cutModel:true}});
   await new Promise(resolve=>setImmediate(resolve));
   const [fitter,exact,...parts]=h.workers;
-  assert.deepEqual(parts.map(part=>part.sent[0].settings.ladderPart),[[0,2],[1,2]]);
+  assert.deepEqual(parts.map(part=>part.sent[0].settings.ladderPart),Array.from({length:count},(_,i)=>[i,count]));
   assert.ok(parts.every(part=>part.sent[0].settings.ladderOnly===true&&part.sent[0].settings.cutMaps));
   return {h,solving,fitter,exact,parts};
 }
@@ -402,8 +402,20 @@ test('side by side with the network, a ladder that cannot load leaves the other\
   }
 });
 
-test('two ladders where the machine reports the threads, unless it reports little memory',()=>{
-  assert.equal(ladderCount({hardwareConcurrency:8}),2);assert.equal(ladderCount({hardwareConcurrency:16,deviceMemory:8}),2);
+test('side by side with the network, three ladders: the last to answer settles it, the better near miss standing',async()=>{
+  const close=resultWith({nearMiss:true,issues:[{type:'short_self_clearance',distanceUpper:1.4999,required:1.5}]});
+  const far=resultWith({nearMiss:true,issues:[{type:'short_self_clearance',distanceUpper:1.4,required:1.5}]});
+  const {h,solving,fitter,exact,parts}=await racingTwo(3);
+  h.reply(exact,2,'error',{message:'none',code:'NO_EXACT_TEMPLATE'});h.reply(fitter,2,'result',{result:resultWith({issues:[{type:'self_intersection'}]})});
+  h.reply(parts[2],2,'result',{result:far});h.reply(parts[0],2,'error',{message:'none',code:'NO_EXACT_TEMPLATE'});
+  assert.equal(h.messages.filter(m=>m.type==='result').length,0);
+  h.reply(parts[1],2,'result',{result:close});await solving;
+  assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,close);
+});
+
+test('two or three ladders where the machine reports the threads, unless it reports little memory',()=>{
+  assert.equal(ladderCount({hardwareConcurrency:8}),2);assert.equal(ladderCount({hardwareConcurrency:12,deviceMemory:4}),2);
+  assert.equal(ladderCount({hardwareConcurrency:12}),3);assert.equal(ladderCount({hardwareConcurrency:16,deviceMemory:8}),3);
   assert.equal(ladderCount({hardwareConcurrency:4}),1);assert.equal(ladderCount({hardwareConcurrency:8,deviceMemory:2}),1);
   assert.equal(ladderCount(null),1);assert.equal(ladderCount({}),1);
 });
