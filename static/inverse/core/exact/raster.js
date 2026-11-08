@@ -34,24 +34,23 @@ export function withoutSlivers(mask, n) {
   return out;
 }
 
-/** Regions of 3 to `limit` pixels (4-connected, not touching the square's
- * edge) taken into their surroundings: the stray dots and holes of a hand
- * painting, which no opening by a pixel or two removes. One or two pixels are
- * checker corners, which stay. With `count`, only how many there are. */
+/** Regions of 3 to `limit` pixels (4-connected) taken into their
+ * surroundings: the stray dots and holes of a hand painting, and its bites
+ * into the square's edge, which no opening by a pixel or two removes. One or
+ * two pixels are checker corners, which stay. With `count`, only how many
+ * there are. */
 export function withoutSpecks(mask, n, limit, count = false) {
   const out = mask.slice(), seen = new Uint8Array(n * n);
   let found = 0;
   for (let s = 0; s < n * n; s++) {
     if (seen[s]) continue;
     const v = mask[s], queue = [s];
-    let edge = false;
     seen[s] = 1;
     for (let k = 0; k < queue.length; k++) {
       const i = queue[k], x = i % n, y = (i - x) / n;
-      if (!x || !y || x === n - 1 || y === n - 1) edge = true;
       for (const j of [x > 0 ? i - 1 : -1, x < n - 1 ? i + 1 : -1, y > 0 ? i - n : -1, y < n - 1 ? i + n : -1]) if (j >= 0 && !seen[j] && mask[j] === v) { seen[j] = 1; queue.push(j); }
     }
-    if (queue.length >= 3 && queue.length <= limit && !edge) { found++; for (const i of queue) out[i] = 1 - v; }
+    if (queue.length >= 3 && queue.length <= limit) { found++; for (const i of queue) out[i] = 1 - v; }
   }
   return count ? found : out;
 }

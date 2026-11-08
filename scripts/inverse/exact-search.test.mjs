@@ -311,15 +311,16 @@ test('a rough mask whose opened trace ends unevenly is read paired next, as an u
   assert.deepEqual(tried, ['1', '1', '2']);
 });
 
-test('stray specks of a hand painting are taken into their surroundings, checker corners and big regions stay', async () => {
+test('stray specks of a hand painting are taken into their surroundings, at the edge too, checker corners and big regions stay', async () => {
   const {maskSpecks} = await import('../../static/inverse/core/engine.js');
   const {withoutSpecks} = await import('../../static/inverse/core/exact/raster.js');
   const n = 400, mask = new Uint8Array(n * n);
   for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) mask[y * n + x] = x < 200 ? 1 : 0;
   assert.equal(maskSpecks({mask, resolution: n}), 0);
   const speckled = mask.slice(), disc = (cx, cy, r, v) => { for (let y = cy - r; y <= cy + r; y++) for (let x = cx - r; x <= cx + r; x++) if ((x - cx) ** 2 + (y - cy) ** 2 <= r * r) speckled[y * n + x] = v; };
-  disc(50, 50, 3, 0); disc(300, 120, 2, 1);
+  disc(50, 50, 3, 0); disc(300, 120, 2, 1); disc(120, 2, 6, 0);
   speckled[200 * n + 20] = 0;
+  for (let y = 388; y < n; y++) for (let x = 300; x < 312; x++) speckled[y * n + x] = 1;
   const limit = maskSpecks({mask: speckled, resolution: n});
   assert.ok(limit > 0);
   const cleaned = withoutSpecks(speckled, n, limit);
@@ -327,7 +328,9 @@ test('stray specks of a hand painting are taken into their surroundings, checker
   assert.equal(cleaned[120 * n + 300], 0);
   assert.equal(cleaned[200 * n + 20], 0, 'a single pixel is a corner of the pixels, not a speck');
   assert.equal(cleaned[200 * n + 80], 1);
-  assert.equal(withoutSpecks(speckled, n, limit, true), 2);
+  assert.equal(cleaned[0 * n + 120], 1, 'a bite into the edge');
+  assert.equal(cleaned[395 * n + 305], 1, 'a square of 3 mm at the edge (the layers frame\'s) stays');
+  assert.equal(withoutSpecks(speckled, n, limit, true), 3);
 });
 
 test('a picture symmetric under mirrors may keep only its turns, the search\'s fallback', () => {

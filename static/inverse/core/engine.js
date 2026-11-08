@@ -134,7 +134,10 @@ function returnRepaired(candidates,cfg){
  * pixels, n²/1333; a blob of 4 pixels' radius is 49, of 6 is 113), 0 when the
  * mask has none. The 211 gallery, library and web masks have no interior region of
  * 121 to 160 pixels but jul-2026's four digit counters (144), which a higher
- * limit would take; blobs of radius 7 (153) are left. */
+ * limit would take; blobs of radius 7 (153) are left. At the square's edge the
+ * same: none of them nor of the generator's 170 hearts has a region there under
+ * 144 pixels (the layers frame's 3 mm squares), and a speck painted there bites
+ * into the edge (puslespil with two: no exact template; without them one in 4 s). */
 export function maskSpecks(source){
   const n=source?.resolution;
   if(!source?.mask||!n)return 0;

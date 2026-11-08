@@ -1359,6 +1359,29 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     of the time so far (2-8 s; worker-controller.js `LADDER_FINE`, `LADDER_GRACE`), and one at least 0.2 points
     closer stands instead. On the baseline's times 6 pictures get the closer template, for 0.35 s more at the
     mean (10 of the 113 passing benchmark hearts wait, 15 of the 95 test pictures).
+- **More time does not crack the hard test pictures (2026-11-08).** The 14 test pictures that search the whole
+  ~50 s without a template, given 3 minutes each (`bench/long-test.sh`, two ladders, the page's core): 3 pass,
+  roed-blomst and the vissevasse r3c3 and r4c1 flips (which pass and fail between runs anyway). The other 11 are
+  not short of time; the cuts they need are not among the candidates (JUL i tern's best template is right but
+  for one whole L, the near miss studied 11-03/04). The 18 test failures that end within a second are uneven
+  photo crops the exact search cannot start on.
+- **Damaged masks (2026-11-08).** The 34 test pictures two ladders pass, damaged 7 ways (`bench/rob.sh`; the
+  masks in `tmp/e2e/even/<kind>`, made from the gallery's masks, so the control is those: `bench/rob-clean.sh`,
+  34 of 34). Two ladders pass, of 34: edges jittered 34, bumps 34, grown by a pixel 33, shrunk by a pixel 33,
+  scratches 33, grown with ragged edges (`c2`) 32, blobs of radius 2 to 7 (`bigspecks`) 27. The losses:
+  - god-jul (scratches, shrunk, `c2`): its letters' necks are at the paper's limit, so any damage there
+    breaks them; the template returned is a near miss.
+  - lilje1 (grown, `c2`): its leaves are split by white lines a few pixels wide, which growing the red
+    closes: a different picture.
+  - blobs: radius-7 blobs (9.3 mm², 149 px) stay in the picture by design (the despeckle limit is 120 px, so
+    that jul-2026's 144 px digit counters stay); amy-pattern, god-jul, hvirvel, plus and lilje1 (that one also
+    a near miss) get a template that drops one or two of them, reported as missing features; amy-weave-2's
+    sit on checker corners and join diagonal cells, a different picture with no exact template. Puslespil lost its template to two blobs biting into the square's edge,
+    which the despeckle did not take: now it does (MAL-PICTURES.md "Larger blobs at the edge"), and puslespil
+    is exact in 3.3 s (blobs 28 of 34).
+  The median distance of the passing templates from their masks: clean 0.27%, jittered edges 1.64% (the
+  jitter itself changes 1.3-2.7% of the pixels, and a template follows the smooth edge; 27 of the 34 still on
+  the traced outline), `c2` 0.69%, the rest 0.25-0.30%.
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);
