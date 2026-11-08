@@ -15,7 +15,8 @@ import {gridWitness} from '../../static/inverse/core/exact/grid.js';
 import {cheapBounds} from '../../static/inverse/core/exact/bounds.js';
 import {prepare, restorePrepared, design} from '../../static/inverse/core/engine.js';
 import {finishExactStopped} from '../../static/inverse/core/stopped.js';
-import {smoothEdges} from '../../static/inverse/core/exact/refine.js';
+import {edgesOnMask, smoothEdges} from '../../static/inverse/core/exact/refine.js';
+import {cumlen} from '../../static/inverse/core/exact/polyline.js';
 import {turnsOf, subgroupsOf, fallbackTies, appSymmetry, ladderRungs} from '../../static/inverse/core/exact/stage.js';
 
 const svgOf = rings => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path fill="#b91313" fill-rule="evenodd" d="${
@@ -211,6 +212,18 @@ test('a mask\'s wavy edge of a circle is drawn as a few cubics, split at its swi
     assert.ok(Math.hypot(split.cubics[i].p[0][0] - pts[k][0], split.cubics[i].p[0][1] - pts[k][1]) * scale < .5);
   }
   assert.ok(off(split.cubics) < .75);
+});
+
+test('an outline traced from an opened mask is redrawn on the mask\'s edge as far as it was opened', () => {
+  // A disc of 40 pixels and an outline 2.5 pixels inside it, as opening the mask by 2 leaves a narrow tip:
+  // out of the redraw's reach unless it knows of the opening.
+  const n = 200, scale = n / 12, mask = new Uint8Array(n * n);
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) mask[y * n + x] = (x + .5 - 100) ** 2 + (y + .5 - 100) ** 2 < 40 ** 2 ? 1 : 0;
+  const pts = Array.from({length: 65}, (_, k) => [6 + 37.5 / scale * Math.cos(Math.PI * k / 32), 6 + 37.5 / scale * Math.sin(Math.PI * k / 32)]);
+  const geo = [cumlen(pts)], outline = {E: [{pts, loop: true}], geo, L: [geo[0].at(-1)]};
+  const off = ([edge]) => Math.max(...edge.map(p => Math.abs(Math.hypot(p[0] - 6, p[1] - 6) * scale - 40)));
+  assert.ok(off(edgesOnMask(outline, mask, n)) > 2, 'as traced');
+  assert.ok(off(edgesOnMask(outline, mask, n, {open: 2})) < .3, `${off(edgesOnMask(outline, mask, n, {open: 2})).toFixed(2)} pixels off`);
 });
 
 test('an edge meeting the square\'s side through the border band\'s leg is drawn on to its end without it', () => {

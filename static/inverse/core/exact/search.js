@@ -167,7 +167,7 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
   const source = target.sourceImage;
   if (refine && source?.mask) {
     try {
-      const moved = edgesOnMask(outline, source.mask, source.resolution);
+      const moved = edgesOnMask(outline, source.mask, source.resolution, {open: target.metadata?.open ?? 0});
       const switches = new Map([...cand.positions].map(([e, grid]) => [e, grid.filter((s, i) => (best.lab.get(`${e},${i}`) ?? 0) !== (best.lab.get(`${e},${i + 1}`) ?? 0))]));
       const smooth = smoothEdges(outline, moved, source.resolution, {switches, positions: cand.positions, sym});
       const drawn = (set, base) => drawingSolution(curveDrawing(slitPiecesOn(st, outline, cand, best.lab, best.chosen,

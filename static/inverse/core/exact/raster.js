@@ -110,7 +110,8 @@ export function fillUnobserved(mask, observed, n) {
 /** A raster target's traced outline, as a target with vector curves, or null.
  * With `open`, traced from the mask opened and closed by a disc of that many
  * pixels (openClose), only within `within` pixels of `spots` when given; its
- * source stays the picture's own mask. Pixels the picture does not show are
+ * source stays the picture's own mask, and its metadata keeps `open` (the
+ * redraw on the mask reaches that much further: refine.js edgesOnMask). Pixels the picture does not show are
  * traced as their nearest shown ones (fillUnobserved). With `paired`, its
  * sides are read as deep as each pair of them needs to end evenly
  * (border.js pairedBorderReading), changing at most the export's allowed
@@ -151,5 +152,5 @@ export function rasterOutline(target, cfg, {tolerance = .35, smoothRadius = 0, b
   const traced = trace(tolerance).target;
   // Corners of the picture nearly touching join (exact/target.js).
   const nearTouch = NEAR_TOUCH_MM * SIZE / (cfg.width || 100);
-  return traced.curves.length ? {...traced, sourceImage: specks ? {...source, mask: withoutSpecks(source.mask, n, specks)} : source, metadata: {...target.metadata, ...traced.metadata, nearTouch}} : null;
+  return traced.curves.length ? {...traced, sourceImage: specks ? {...source, mask: withoutSpecks(source.mask, n, specks)} : source, metadata: {...target.metadata, ...traced.metadata, nearTouch, open}} : null;
 }

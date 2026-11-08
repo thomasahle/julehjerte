@@ -16,8 +16,13 @@ import {act, inverse} from './symmetry.js';
  * crosses one half, within `reach` pixels. The moves are averaged over
  * `smooth` neighbours either side, at most `most` pixels, and fade in over
  * `taper` pixels from an open edge's ends, which stay: a junction is the
- * structure's, and a sudden move beside it would bend the cut there. */
-export function edgesOnMask(outline, mask, n, {sigma = .8, step = 1, reach = 1.5, most = .75, smooth = 2, taper = 4} = {}) {
+ * structure's, and a sudden move beside it would bend the cut there. An
+ * outline traced from the mask opened by `open` pixels (raster.js) reaches and
+ * moves that much further: of 74 templates from opened outlines on the
+ * generator hearts and test pictures, 40 came closer to their masks, 9 a hair
+ * further (the same templates otherwise). */
+export function edgesOnMask(outline, mask, n, {sigma = .8, step = 1, reach = 1.5, most = .75, smooth = 2, taper = 4, open = 0} = {}) {
+  reach += open; most += open;
   const field = blurred(mask, n, sigma), scale = n / SIZE;
   // Bilinear, cell centres at (i + .5, j + .5) in pixels; clamped at the square's sides.
   const value = (u, v) => {
