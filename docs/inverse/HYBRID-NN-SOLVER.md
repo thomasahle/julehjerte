@@ -1382,6 +1382,14 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   The median distance of the passing templates from their masks: clean 0.27%, jittered edges 1.64% (the
   jitter itself changes 1.3-2.7% of the pixels, and a template follows the smooth edge; 27 of the 34 still on
   the traced outline), `c2` 0.69%, the rest 0.25-0.30%.
+- **Crops a little off (2026-11-09).** The same 34 pictures shifted right and down by 3 and 6 px (0.75 and 1.5 mm
+  of the 100 mm square, the edge repeated into the gap) and scaled 2% about the centre (`bench/rob2.sh`, main
+  b77d449a): 33, 32 and 33 of 34, the median distance from the mask 0.27-0.36% as clean. Lost: god-jul at 6 px
+  (its necks, as above) and ball in all three. Ball's circle comes within the outer strip's width of the side
+  (today's search: a template at its bound of 4 hidden cuts, `outer_side_clearance` only), and the outline
+  pulled off the sides (border.js `outerStripBand`) leaves it, as the circle comes closest where a checker
+  line ends on the side, which the band takes for a cut ending there at an angle. No near miss on the 170
+  hearts or the 127 test pictures has that rule broken, so the band's rule stays.
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);
