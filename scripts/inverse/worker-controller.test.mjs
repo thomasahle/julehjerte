@@ -354,8 +354,8 @@ test('side by side with the network, the ladder\'s nearest template is held as a
 });
 
 // Two ladders side by side, each on its part of the outlines, where the machine has the threads.
-async function racingTwo(count=2){
-  const h=harness({predictCutMaps:async()=>({size:1}),ladders:count});await h.send(1,'prepare',{input});
+async function racingTwo(count=2,more={}){
+  const h=harness({predictCutMaps:async()=>({size:1}),ladders:count,...more});await h.send(1,'prepare',{input});
   const solving=h.send(2,'solve',{settings:{...both,cutModel:true}});
   await new Promise(resolve=>setImmediate(resolve));
   const [fitter,exact,...parts]=h.workers;
@@ -411,6 +411,27 @@ test('side by side with the network, three ladders: the last to answer settles i
   assert.equal(h.messages.filter(m=>m.type==='result').length,0);
   h.reply(parts[1],2,'result',{result:close});await solving;
   assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,close);
+});
+
+test('side by side with the network, a ladder template far off its picture waits for the other ladder\'s, the closer standing',async t=>{
+  t.mock.timers.enable({apis:['setTimeout','Date']});
+  const off=mismatch=>{const found=ladderValue(4,4);found.report.imageError={mismatchFraction:mismatch};return found;};
+  const coarse=off(.012),fine=off(.003),hardly=off(.011),none={message:'none',code:'NO_EXACT_TEMPLATE'};
+  // The other's closer template within the grace; its error; nothing within the grace; one not a margin closer.
+  for (const [second, expect] of [[fine, fine], [none, coarse], [null, coarse], [hardly, coarse]]) {
+    const {h,solving,parts}=await racingTwo(2,{now:()=>Date.now()});
+    h.reply(parts[1],2,'result',{result:coarse});
+    t.mock.timers.tick(1999);await new Promise(resolve=>setImmediate(resolve));
+    assert.equal(h.messages.filter(m=>m.type==='result').length,0,'held');
+    if (second===none) h.reply(parts[0],2,'error',none);else if (second) h.reply(parts[0],2,'result',{result:second});else t.mock.timers.tick(1);
+    await solving;
+    assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,expect);
+    assert.deepEqual(parts.map(part=>part.terminated),[1,1]);
+  }
+  // One close to its picture stands at once.
+  const {h,solving,parts}=await racingTwo(2,{now:()=>Date.now()});
+  h.reply(parts[0],2,'result',{result:fine});await solving;
+  assert.deepEqual(h.messages.filter(m=>m.type==='result').at(-1).result,fine);
 });
 
 test('two or three ladders where the machine reports the threads, unless it reports little memory',()=>{

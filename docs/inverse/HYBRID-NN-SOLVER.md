@@ -1339,6 +1339,26 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
     none in either, NOEL on strips once in each, vissevasse r3c3 2 of 3 at 52 s against 3. Three ladders:
     115 and 98 as before (JUL kalam gained at 20 s, star on strips, a flip, lost). One ladder rarely has 12 s
     on an outline.
+- **How far the templates are from their pictures (2026-11-08): two changes shipped.** The bench now logs
+  every exact template's mismatch with its mask (`off`; `bench/off2.sh`, two ladders, the page's core). At the
+  median of the passing ones, on the 170 hearts and the 127 test pictures:
+  traced outline 0.10% and 0.34%, tips rounded 0.19% and 0.55%, rounded 0.54% and 0.69%, wider 1.1% and 1.8%.
+  The opened outlines lose more than an edge's sub-pixel place: opening the mask by two or three pixels cuts off
+  what hangs on a thin neck (the nisse in small motifs, 1.66% off: its hands, feet and pompom), and the
+  redraw on the mask only moves edges, never brings those back.
+  - The redraw reaches as far as the outline was opened (refine.js `edgesOnMask` `open`, raster.js metadata
+    `open`; `bench/unround-core` UNROUND, `bench/unround.sh`): of the 74 templates found again on the same
+    outline and rung, 40 came closer to their masks, 9 a hair further, 25 the same (the 170 hearts' median
+    0.33% to 0.30%; flower in the corners 0.29% to 0.08%). The passes that changed all came on another
+    outline or rung, in both directions (4 gained, 5 lost): the redraw is taken only where it passes, so the
+    flips are the clock's.
+  - Two ladders' first template is often the coarser: in 9 of the 41 pictures both found one, the first came
+    from a more opened outline, and the closer one from the other ladder 0.1-35 s later (star on the board
+    b7: 1.17% off at 15.7 s, 0.33% at 15.8 s; elephant on wedges 1.59% at 16.6 s, 0.64% at 19.6 s; triple-heart
+    1.80% at 26.8 s, 0.73% at 27.6 s). Now a template more than 0.7% off waits for the other ladders a quarter
+    of the time so far (2-8 s; worker-controller.js `LADDER_FINE`, `LADDER_GRACE`), and one at least 0.2 points
+    closer stands instead. On the baseline's times 6 pictures get the closer template, for 0.35 s more at the
+    mean (10 of the 113 passing benchmark hearts wait, 15 of the 95 test pictures).
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);

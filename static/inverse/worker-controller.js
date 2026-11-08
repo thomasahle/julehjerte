@@ -26,6 +26,12 @@ const CUT_MODEL_WAIT_MS=1500;
  * passed 103, two 110 (the first template at 3.3 s for 4.8 at the median), three 115; on the 127 test pictures
  * 96, 96 and 98 (the mean 6.4 s with two, 5.6 with three). */
 const LADDER_WORKERS=[[3,12,8],[2,8,4]];
+/** A ladder's template further than LADDER_FINE off its picture (from an outline with its tips rounded or wider,
+ * which can lose a figure's hands and feet) waits for the other ladders a share of the time so far, at least
+ * LADDER_GRACE[0] and at most LADDER_GRACE[1] seconds, and one LADDER_MARGIN closer stands instead. On the 170
+ * generator hearts and the 127 test pictures 6 templates came 0.5-0.9 points closer (star-board-b7: 1.17% off
+ * to 0.33%), for 0.35 s more at the mean. */
+const LADDER_FINE=.007,LADDER_MARGIN=.002,LADDER_GRACE=[2,8],LADDER_GRACE_SHARE=.25;
 export function ladderCount(nav=globalThis.navigator){
   const threads=nav?.hardwareConcurrency??0,memory=nav?.deviceMemory;
   return LADDER_WORKERS.find(([,least,gb])=>threads>=least&&!(memory<gb))?.[0]??1;
@@ -94,17 +100,20 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
   };
   // Several ladders as one worker: each request goes to every one with its part ([i, n]); the first
   // template is answered at once, else, once all have answered, the better of their near misses, else
-  // the first error. A part that cannot load counts as no answer.
+  // the first error. A part that cannot load counts as no answer. A template further than LADDER_FINE
+  // off its picture is held until the others have answered or its grace is up, the closer standing.
   const ladderGroup=count=>{
-    const workers=[];let current=null,answers=[],settled=false;
+    const workers=[];let current=null,answers=[],settled=false,held=null,timer=null,began=0;
     const group={onmessage:null,onerror:null,onmessageerror:null,
-      postMessage(message){current=message.id;answers=[];settled=false;workers.forEach((worker,i)=>worker.postMessage({...message,settings:{...message.settings,ladderPart:[i,count]}}));},
-      terminate(){for(const worker of workers)worker.terminate();}};
-    const settle=data=>{settled=true;group.onmessage?.({data});};
+      postMessage(message){current=message.id;answers=[];settled=false;held=null;clearTimeout(timer);timer=null;began=now();workers.forEach((worker,i)=>worker.postMessage({...message,settings:{...message.settings,ladderPart:[i,count]}}));},
+      terminate(){clearTimeout(timer);for(const worker of workers)worker.terminate();}};
+    const settle=data=>{settled=true;clearTimeout(timer);group.onmessage?.({data});};
+    const closer=(data,than)=>!than||errorOf(data.result)<errorOf(than.result)-LADDER_MARGIN?data:than;
     const answered=(i,answer)=>{
       if(settled)return;
       answers[i]=answer;
       if(answers.filter(Boolean).length<count)return;
+      if(held)return settle(held);
       const results=answers.filter(a=>a.data?.type==='result').map(a=>a.data.result);
       if(results.length)return settle({id:current,type:'result',result:results.reduce((best,result)=>betterResult(best,result))});
       const error=answers.find(a=>a.data);
@@ -117,7 +126,11 @@ export function workerController(scope,{createWorker=()=>new Worker(new URL('./c
       const worker=createWorker();workers.push(worker);
       worker.onmessage=({data})=>{
         if(settled||data?.id!==current||data.type==='progress'||data.type==='candidate')return;
-        if(data.type==='result'&&!nearMiss(data.result))settle(data);else answered(i,{data});
+        if(data.type!=='result'||nearMiss(data.result))return answered(i,{data});
+        held=closer(data,held);
+        if(!(data.result?.report?.imageError?.mismatchFraction>LADDER_FINE))return settle(held);
+        timer??=setTimeout(()=>settle(held),1000*Math.min(LADDER_GRACE[1],Math.max(LADDER_GRACE[0],LADDER_GRACE_SHARE*(now()-began)/1000)));
+        answered(i,{data});
       };
       worker.onerror=event=>{event?.preventDefault?.();answered(i,{event});};
       worker.onmessageerror=()=>answered(i,{lost:true});
