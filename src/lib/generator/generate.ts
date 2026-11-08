@@ -279,49 +279,48 @@ function hasSeverePinch(g: CutGeometry, factor = 1, fixedOnly = false): boolean 
 				return segment;
 			});
 		});
-		for (let i = 0; i < paths.length; i++)
-			for (let j = i; j < paths.length; j++) {
-				const a = paths[i],
-					b = paths[j];
-				for (let m = 0; m < a.length; m++)
-					for (let n = i === j ? m + 2 : 0; n < b.length; n++) {
-						const u = a[m],
-							v = b[n];
-						if (fixedOnly && (!u.fixed || !v.fixed)) continue;
+		// Every segment by the least x of its box, so that a pair further
+		// apart across than a pinch is passed over without a look: the pairs
+		// looked at, and the answer, are those of every pair.
+		const sorted = paths.flatMap((path, i) => path.map((segment, m) => ({
+			segment, i, m, minX: Math.min(segment.a[0], segment.b[0]), maxX: Math.max(segment.a[0], segment.b[0])
+		}))).sort((p, q) => p.minX - q.minX);
+		for (let x = 0; x < sorted.length; x++)
+			for (let y = x + 1; y < sorted.length && sorted[y].minX < sorted[x].maxX + 0.5 * factor; y++) {
+				// A pair once, the earlier along its path first.
+				let first = sorted[x], second = sorted[y];
+				if (first.i > second.i || first.i === second.i && first.m > second.m) [first, second] = [second, first];
+				if (first.i === second.i && second.m < first.m + 2) continue;
+				const a = paths[first.i], u = first.segment, v = second.segment;
+				if (fixedOnly && (!u.fixed || !v.fixed)) continue;
+				if (
+					Math.max(u.a[1], u.b[1]) + 0.5 * factor <= Math.min(v.a[1], v.b[1]) ||
+					Math.max(v.a[1], v.b[1]) + 0.5 * factor <= Math.min(u.a[1], u.b[1])
+				)
+					continue;
+				const pairs = [
+					[0, project(u.a, v.a, v.b)],
+					[1, project(u.b, v.a, v.b)],
+					[project(v.a, u.a, u.b), 0],
+					[project(v.b, u.a, u.b), 1]
+				];
+				for (const [t, s] of pairs) {
+					const p = mix(u.a, u.b, t),
+						q = mix(v.a, v.b, s);
+					if (distance(p, q) >= 0.5 * factor) continue;
+					if (first.i === second.i) {
+						const along = v.start + s * v.length - u.start - t * u.length;
 						if (
-							[0, 1].some(
-								(axis) =>
-									Math.max(u.a[axis], u.b[axis]) + 0.5 * factor <=
-										Math.min(v.a[axis], v.b[axis]) ||
-									Math.max(v.a[axis], v.b[axis]) + 0.5 * factor <=
-										Math.min(u.a[axis], u.b[axis])
+							along < 3 * factor ||
+							[a[0].a, a.at(-1)!.b].some(
+								(end) =>
+									distance(p, end) < factor || distance(q, end) < factor
 							)
 						)
 							continue;
-						const pairs = [
-							[0, project(u.a, v.a, v.b)],
-							[1, project(u.b, v.a, v.b)],
-							[project(v.a, u.a, u.b), 0],
-							[project(v.b, u.a, u.b), 1]
-						];
-						for (const [t, s] of pairs) {
-							const p = mix(u.a, u.b, t),
-								q = mix(v.a, v.b, s);
-							if (distance(p, q) >= 0.5 * factor) continue;
-							if (i === j) {
-								const along = v.start + s * v.length - u.start - t * u.length;
-								if (
-									along < 3 * factor ||
-									[a[0].a, a.at(-1)!.b].some(
-										(end) =>
-											distance(p, end) < factor || distance(q, end) < factor
-									)
-								)
-									continue;
-							}
-							return true;
-						}
 					}
+					return true;
+				}
 			}
 	}
 	return false;
