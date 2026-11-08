@@ -1436,11 +1436,14 @@ function generateTried(request: GeneratorRequest): GeneratorResult {
 			} catch (error) {
 				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			}
-			// As drawn it is made as before, its once-a-heart tries fresh.
+			// As drawn it is made as before, its once-a-heart tries fresh, and
+			// refused not made again up its channels: that one only makes sure
+			// no heart is worse than before (the Dribbble logo in Tern i
+			// spidserne took twice as long).
 			forgetIslandPorts();
 			triedExactly = false;
 			try {
-				own = generateMade(drawn);
+				own = generateTrimmed(drawn);
 			} catch (error) {
 				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 				failure = error;
