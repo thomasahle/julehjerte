@@ -21,7 +21,7 @@ import { CORNER_INSETS, generateCheckeredGrid, checkeredGridCache, checkeredLayo
 import { generateMixedCheckeredGrid, mixedCheckeredGridCache } from './mixedCheckeredGrid';
 import { betterCuts, cutMeasures, cutTipCounts, cutTipPoints, fewerCutTips, middleNeedleBases, middleNeedles } from './cutQuality';
 import { trickyLetters } from './trickyLetters';
-import { normalizeContours, withoutSpurs } from './contours';
+import { normalizeContours, closedAtContacts, withoutSpurs } from './contours';
 import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
 import { generatePanelFigure, backgroundJunctions, squareJunctions } from './panels';
 import { generateComponentFigure } from './components';
@@ -1459,24 +1459,38 @@ function generateTried(request: GeneratorRequest): GeneratorResult {
 	}
 	return generateMade(request);
 }
-/** A heart made from the motif as `generateTried` trimmed it; one of several
- * pieces refused every way made again up the channels between them (see
- * `withChannelWays`). */
+/** A heart made from the motif as `generateTried` trimmed it; one refused
+ * every way made again, once, where it is the heart asked for (not one
+ * made on the way, a board's default size): of several pieces, up the channels between
+ * them (see `withChannelWays`); with rings that cross or touch, joined there
+ * by a millimetre of paper (see `closedAtContacts`: the crown and the cross
+ * on it, the two squares one excludes from the other). */
 function generateMade(request: GeneratorRequest): GeneratorResult {
 	try {
 		return generateTrimmed(request);
 	} catch (error) {
-		if (channelWays || !(error instanceof ConstructionError || error instanceof CutGeometryError) || request.mode !== 'figure') throw error;
-		const pieces = forest(normalizeContours(request.contours ?? []));
-		if (pieces.length < 2 && !pieces.some(piece => piece.children.length)) throw error;
+		if (remaking || making > 1 || !(error instanceof ConstructionError || error instanceof CutGeometryError) || request.mode !== 'figure') throw error;
+		const contours = request.contours ?? [], pieces = forest(normalizeContours(contours));
+		const closed = closedAtContacts(contours, 1.25 / ((request.frameSize ?? 70) * (request.scale ?? .7)));
+		const again = [
+			...pieces.length > 1 || pieces.some(piece => piece.children.length) ? [() => withChannelWays(() => generateTrimmed(request))] : [],
+			...closed !== contours ? [() => generateTrimmed({ ...request, contours: closed })] : []
+		];
+		remaking = true;
 		try {
-			return withChannelWays(() => generateTrimmed(request));
-		} catch (channelError) {
-			if (!(channelError instanceof ConstructionError) && !(channelError instanceof CutGeometryError)) throw channelError;
-			throw error;
+			for (const made of again) try {
+				return made();
+			} catch (againError) {
+				if (!(againError instanceof ConstructionError) && !(againError instanceof CutGeometryError)) throw againError;
+			}
+		} finally {
+			remaking = false;
 		}
+		throw error;
 	}
 }
+/** Whether a refused heart is being made again (see `generateMade`). */
+let remaking = false;
 function generateTrimmed(request: GeneratorRequest): GeneratorResult {
 	// A heart refused, hard to cut or with a needle is made again its first
 	// way where a second try applies to how it was made (see `SECOND_TRIES`),

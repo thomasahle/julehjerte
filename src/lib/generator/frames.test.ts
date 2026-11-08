@@ -75,6 +75,8 @@ import award from '../../../static/generator/motifs/tb-award.json';
 import graph from '../../../static/generator/motifs/ph-graph.json';
 import trolley from '../../../static/generator/motifs/ph-trolley.json';
 import lasso from '../../../static/generator/motifs/ph-lasso.json';
+import crownCross from '../../../static/generator/motifs/ph-crown-cross.json';
+import excludeSquare from '../../../static/generator/motifs/ph-exclude-square.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -1016,6 +1018,12 @@ describe('frames from real hearts', () => {
   // The loop's inside lies in a bay of the square the lasso is cut from,
   // open only up the rope: no way round the square's hull reaches it.
   expect(generate({ mode: 'figure', name: 'Lasso', contours: lasso.contours as Ring[], colors, style: 'layers', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
+ }, 60000);
+ slow('builds motifs whose rings touch at points, joined there by a neck of paper', () => {
+  // The cross stands on the crown at two points; the two squares cross at
+  // two: refused as drawn, made again with their pieces joined there.
+  expect(generate({ mode: 'figure', name: 'Crown', contours: crownCross.contours as Ring[], colors, style: 'layers', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
+  expect(generate({ mode: 'figure', name: 'Squares', contours: excludeSquare.contours as Ring[], colors, style: 'corners', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
  }, 60000);
  slow('builds the swan in the medallion, its wing reached round its body', () => {
   // The swan's pieces are counters of the medallion there, and every

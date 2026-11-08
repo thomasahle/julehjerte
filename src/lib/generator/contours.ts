@@ -1,3 +1,4 @@
+import ClipperLib from 'clipper-lib';
 import { type Ring, type Point, cross, sub, dot, mix, distance, inside, area } from './geometry';
 
 /** Check complete outline segments against a frame, which need not be convex.
@@ -109,4 +110,60 @@ export function withoutSpurs(rings: Ring[], slivers = false): Ring[] {
 	});
 	const kept = slivers ? result : result.filter(ring => 2 * Math.abs(area(ring)) / ring.reduce((length, p, i) => length + distance(p, ring[(i + 1) % ring.length]), 0) >= width);
 	return changed || kept.length < rings.length ? kept : rings;
+}
+
+/** Where two of the rings cross or touch: the points their segments share. */
+export function ringContacts(rings: Ring[]): Point[] {
+	const boxes = rings.map(ring => {
+		const xs = ring.map(p => p[0]), ys = ring.map(p => p[1]);
+		return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+	});
+	const points: Point[] = [];
+	for (let i = 0; i < rings.length; i++) for (let j = i + 1; j < rings.length; j++) {
+		const [a, b] = [boxes[i], boxes[j]];
+		if (a[2] < b[0] || b[2] < a[0] || a[3] < b[1] || b[3] < a[1]) continue;
+		for (let k = 0; k < rings[i].length; k++) for (let l = 0; l < rings[j].length; l++) {
+			const p = rings[i][k], r = sub(rings[i][(k + 1) % rings[i].length], p),
+				q = rings[j][l], e = sub(rings[j][(l + 1) % rings[j].length], q), den = cross(r, e);
+			if (Math.abs(den) < 1e-15) continue;
+			const t = cross(sub(q, p), e) / den, u = cross(sub(q, p), r) / den;
+			if (t >= 0 && t <= 1 && u >= 0 && u <= 1) points.push(mix(p, rings[i][(k + 1) % rings[i].length], t));
+		}
+	}
+	return points;
+}
+
+/** The even-odd picture of `rings` closed by `by` round the points where its
+ * rings cross or touch (`ringContacts`), and nowhere else: pieces meeting at
+ * a point are joined there by a neck about as wide as `by`, the gap they
+ * shut in becoming a counter (the crown and the cross on it, the two
+ * squares one excludes from the other). As many rings as before where they
+ * neither cross nor touch. */
+export function closedAtContacts(rings: Ring[], by: number): Ring[] {
+	const contacts = ringContacts(rings);
+	if (!contacts.length) return rings;
+	const SCALE = 1e6;
+	const paths = (rs: Ring[]) => rs.map(r => r.map(([x, y]) => ({ X: Math.round(x * SCALE), Y: Math.round(y * SCALE) })));
+	const run = (type: ClipperLib.ClipType, subject: ClipperLib.Paths, clip: ClipperLib.Paths, fill: ClipperLib.PolyFillType) => {
+		const clipper = new ClipperLib.Clipper(), out: ClipperLib.Paths = [];
+		clipper.AddPaths(subject, ClipperLib.PolyType.ptSubject, true);
+		if (clip.length) clipper.AddPaths(clip, ClipperLib.PolyType.ptClip, true);
+		clipper.Execute(type, out, fill, fill);
+		return out;
+	};
+	const offset = (input: ClipperLib.Paths, delta: number) => {
+		const grown = new ClipperLib.ClipperOffset(2, by * SCALE / 50), out: ClipperLib.Paths = [];
+		grown.AddPaths(input, ClipperLib.JoinType.jtRound, ClipperLib.EndType.etClosedPolygon);
+		grown.Execute(out, delta * SCALE);
+		return out;
+	};
+	const picture = run(ClipperLib.ClipType.ctUnion, paths(rings), [], ClipperLib.PolyFillType.pftEvenOdd);
+	const closed = offset(offset(picture, by), -by);
+	const discs = paths(contacts.map(([x, y]) => Array.from({ length: 24 }, (_, i): Point =>
+		[x + 2 * by * Math.cos(i * Math.PI / 12), y + 2 * by * Math.sin(i * Math.PI / 12)])));
+	const patches = run(ClipperLib.ClipType.ctIntersection, closed, run(ClipperLib.ClipType.ctUnion, discs, [], ClipperLib.PolyFillType.pftNonZero), ClipperLib.PolyFillType.pftNonZero);
+	const joined = run(ClipperLib.ClipType.ctUnion, [...picture, ...patches], [], ClipperLib.PolyFillType.pftNonZero);
+	return joined.map(path => path.map(({ X, Y }): Point => [X / SCALE, Y / SCALE]))
+		.filter(r => r.length > 2 && area(r) !== 0)
+		.map(r => area(r) < 0 ? r.reverse() : r);
 }
