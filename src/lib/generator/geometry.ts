@@ -408,12 +408,13 @@ export function contourChain(
 	boundaryGates = false,
 	nearest = false,
 	open?: (a: Point, b: Point) => boolean,
-	reach?: (from: Point, ring: Ring) => { path: Ring; port: Port } | undefined
+	reach?: (from: Point, ring: Ring) => { path: Ring; port: Port } | undefined,
+	inOrder = false
 ) {
 	const atExtremes = !visible && !nearest && !nearestIslands;
 	if (!visible && nearestIslands) nearest = true;
 	const along = new Map(nodes.map(n => [n, dot(centre(n.ring), direction(angle))]));
-	const ordered = nodes.slice().sort((a, b) => along.get(a)! - along.get(b)!);
+	const ordered = inOrder ? nodes.slice() : nodes.slice().sort((a, b) => along.get(a)! - along.get(b)!);
 	if (visible && boundaryGates) {
 		// A clipped island can own the panel's external gate. Enter that
 		// island first, even when its centre projects behind another island.
@@ -1035,7 +1036,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; around?: boolean; legs?: boolean; walled?: boolean; bays?: boolean; across?: boolean; lastly?: Edge[]; connectionAllowed?: (point: Point) => boolean; safeAttachments?: boolean; routed?: { fallback?: Edge[] }; obstacles?: Ring[] } = {}
+	options: { root?: Ring; sweep?: 1 | -1; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; around?: boolean; legs?: boolean; walled?: boolean; bays?: boolean; across?: boolean; lastly?: Edge[]; connectionAllowed?: (point: Point) => boolean; safeAttachments?: boolean; routed?: { fallback?: Edge[] }; obstacles?: Ring[] } = {}
 ) {
 	if (options.alternateIslandGates) {
 		// Different letters can need different gates. Finish each cell locally
@@ -1235,7 +1236,22 @@ function contourMotif(
 	// The gate each island is reached from, and the way it is reached, are
 	// the same whatever the ports: found once, not for every choice of them.
 	const extras = Array.from({ length: count }, () => [] as Contour[]);
+	// With `sweep`, an island goes to the gate on it, else to the first gate
+	// on round the cell from it (the way `sweep` says, never one on the
+	// base), and each gate takes its islands in turn back round to the gate
+	// before: a ring of dashes round a disc, a signal's waves, four of them
+	// under gates, whose chains taken by nearness cross one another.
+	const swept = (ring: Ring, i: number) => {
+		if (distance(closestPort(ring, gates[i]).point, gates[i]) < 1e-6) return -1;
+		const c = centroid(ring), turn = (Math.atan2(gates[i][1] - middle[1], gates[i][0] - middle[0]) - Math.atan2(c[1] - middle[1], c[0] - middle[0]) + 4 * Math.PI) % (2 * Math.PI);
+		return options.sweep! > 0 ? turn : 2 * Math.PI - turn;
+	};
+	const sweeping = options.sweep ? bridgePorts.filter(i => !onBase(gates[i])) : [];
 	for (const node of nodes.slice(1)) {
+		if (sweeping.length) {
+			extras[sweeping.reduce((best, i) => swept(node.ring, i) < swept(node.ring, best) ? i : best)].push(node);
+			continue;
+		}
 		const c = centroid(node.ring);
 		// With `legs`, only the gates that see some point of the island,
 		// where any does (the swan's water, whose nearest gate the wing's is
@@ -1262,6 +1278,7 @@ function contourMotif(
 			: nearest;
 		extras[j].push(node);
 	}
+	if (sweeping.length) extras.forEach((group, j) => group.sort((a, b) => swept(a.ring, j) - swept(b.ring, j)));
 	// With `around`, a gate whose spoke passes islands may also end on the
 	// piece where it comes nearest the last of them: their way on from there
 	// is the shortest, where the gate's own ports lie behind another part of
@@ -1299,7 +1316,7 @@ function contourMotif(
 					// separate an arc from the nearby stem on the same sheet.
 					const first = !!(options.boundaryIslands && j % 2 === 0) !== !!options.islandFlip ? 'B' : 'A';
 					contourChain(exterior, extras[j], angle, gates[j], ports[j].point, first,
-						options.visibleIslands, options.nested, options.boundaryIslands, options.around, options.around ? open : undefined, options.legs ? reach : undefined);
+						options.visibleIslands, options.nested, options.boundaryIslands, options.around, options.around ? open : undefined, options.legs ? reach : undefined, !!options.sweep);
 				}
 				else add(exterior, spokes?.[j][indices[j]] ?? spoke(gates[j], ports[j].point), 'AB', 'shared');
 			}

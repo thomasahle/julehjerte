@@ -7,7 +7,7 @@ import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { defaults, frameGap, readGeneratorState, stripCount, stripPlace, stripSide } from './state';
 import { RETIRED_STYLES, templateVariants } from './templates';
-import { inside, uprightToSheet, distance, boardFill, boardLines, boardRangeLines, boardRangePattern, boardRanges, boardWholeRadius, boardWholeTop, layerInset, withVisibleIslands, fourPortMotif, ConstructionError, FITTED, WEDGES, type Point, type Ring } from './geometry';
+import { inside, uprightToSheet, distance, boardFill, boardLines, boardRangeLines, boardRangePattern, boardRanges, boardWholeRadius, boardWholeTop, layerInset, withVisibleIslands, withRemaking, fourPortMotif, ConstructionError, FITTED, WEDGES, type Point, type Ring } from './geometry';
 import { generateTextGrid } from './textGrid';
 import { geometryKey } from './cache';
 import { MOTIF, boardRadius, boardSetting, boardSteps, motifChoices, motifPatterns, squareChoices } from './boardMotif';
@@ -79,6 +79,7 @@ import crownCross from '../../../static/generator/motifs/ph-crown-cross.json';
 import excludeSquare from '../../../static/generator/motifs/ph-exclude-square.json';
 import microphone from '../../../static/generator/motifs/ph-microphone.json';
 import subway from '../../../static/generator/motifs/ph-subway.json';
+import brandSignal from '../../../static/generator/motifs/tb-brand-signal.json';
 import phTree from '../../../static/generator/motifs/ph-tree.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
@@ -1043,6 +1044,18 @@ describe('frames from real hearts', () => {
   // Each small square window comes nearest the way in and the way on at one
   // corner: made again when refused, it is left a margin from there.
   expect(generate({ mode: 'figure', name: 'Subway', contours: subway.contours as Ring[], colors, style: 'fitted', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
+ }, 60000);
+ slow('builds a signal in Tæt om figuren, each gate taking the dashes on round to the next', () => {
+  // A disc in a ring of sixteen dashes, four of them under the gates: given
+  // out by nearness, the dashes' chains to the disc crossed one another (the
+  // whole heart, in Stor silhouet too, takes minutes).
+  const contours = brandSignal.contours as Ring[];
+  const sized = fillSquare({ mode: 'figure', contours, style: 'fitted', frame: 'circle', frameSize: 70, scale: .7, gap: 3 });
+  const construction = withRemaking(() => generateFittedFigure(contours, sized.frameSize, sized.scale, (...args) => {
+   args[7] = { ...args[7], practical: true, compound: true, nested: true, around: true, legs: true, sweep: 1 };
+   return fourPortMotif(...args);
+  }, undefined, 0, { ...FITTED, gap: 3 }, true));
+  expect(construction.edges.length).toBeGreaterThan(0);
  }, 60000);
  slow('builds the swan in the medallion, its wing reached round its body', () => {
   // The swan's pieces are counters of the medallion there, and every

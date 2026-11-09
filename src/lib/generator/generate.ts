@@ -3957,14 +3957,16 @@ function generateUsingRecipes(request: GeneratorRequest,
 			// Made again when refused, the base is also each other piece in
 			// turn, three at most, those most gates meet first: the
 			// microphone's holder, whose stem and tips hold three of Tæt om
-			// figuren's gates; the second of a stack's three chevrons.
-			const tiers = channelWays ? [[true, 0, true, -1], [true, 1, true, -1], [true, 0, false, 0], [true, 0, false, 1], [true, 0, false, 2]] as const
-				: [[false, 0, false, -1], [true, 0, false, -1], [true, 1, false, -1]] as const;
-			if (pieced && (everyWay || channelWays)) for (const [walled, padding, channeled, based] of tiers) try {
+			// figuren's gates; the second of a stack's three chevrons. Last, each
+			// gate takes the islands on round to the next, one way round or the
+			// other (see `sweep`): a signal's ring of dashes, four under gates.
+			const tiers = channelWays ? [[true, 0, true, -1, 0], [true, 1, true, -1, 0], [true, 0, false, 0, 0], [true, 0, false, 1, 0], [true, 0, false, 2, 0], [false, 0, false, -1, 1], [false, 0, false, -1, -1]] as const
+				: [[false, 0, false, -1, 0], [true, 0, false, -1, 0], [true, 1, false, -1, 0]] as const;
+			if (pieced && (everyWay || channelWays)) for (const [walled, padding, channeled, based, sweep] of tiers) try {
 				const construct = () => generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, (...args) => {
 					const root = based < 0 ? undefined : otherBases(args[1], args[2])[based];
 					if (based >= 0 && !root) throw new ConstructionError('topology', 'No other piece for a base');
-					args[7] = { ...args[7], practical: true, compound: true, nested: true, around: true, legs: true, walled, ...root ? { root } : {} };
+					args[7] = { ...args[7], practical: true, compound: true, nested: true, around: true, legs: true, walled, ...root ? { root } : {}, ...sweep ? { sweep } : {} };
 					return fourPortMotif(...args);
 				}, undefined, padding, open, true);
 				return finish(channeled ? withChannels(construct) : construct(), 'silhouette');
