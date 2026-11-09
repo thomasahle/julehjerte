@@ -1390,6 +1390,73 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   pulled off the sides (border.js `outerStripBand`) leaves it, as the circle comes closest where a checker
   line ends on the side, which the band takes for a cut ending there at an angle. No near miss on the 170
   hearts or the 127 test pictures has that rule broken, so the band's rule stays.
+- **Thin parts widened instead of opened away (2026-11-09): not shipped.** Some near misses are the picture's:
+  heart on strips b5 has two visible slits 2.23 mm apart where the paper needs 2.505. Every part of either
+  colour from 0.75 mm to that width plus 0.1 mm wide made that wide (the distance transform's ridge points
+  grown by a disc, red first, then white; `bench/widen-core` raster.js `widenNecks`, ~20 ms at 400 px), the
+  outlines traced from it pass 5 of the 9 near misses studied (JUL oswald on strips, 2026 woven, tree on strips
+  b5, heart on the board, reindeer in layers; 0.2-2.5% off the painted mask). In the ladder, two ladders:
+  - The opened outlines made from the widened mask instead (`bench/widen.sh`): the first ladder 102 of 170
+    against 106, three gained, nisse in motifs and elephant on wedges lost (found in 16 and 20 s before).
+  - Widened copies added after the five outlines, where they differ (`bench/widen2.sh`; they do on 140 of the
+    170 and 88 of the 127): 90 against 88 of those 140 (heart on the board, elephant in corners and reindeer in
+    layers gained, star on strips b4 and NOEL on strips lost), 78 = 78 test pictures. But seven templates came
+    further from their pictures (tree in motifs b4 0.08% to 1.14%): the outlines share a ladder's time, so
+    with more of them the traced outline's share runs out sooner and a more opened one answers first.
+  Only as a last resort, given time once the picture's own outlines have none, could it keep the precision,
+  for about two of the 170.
+- **What the page shows where the two ladders miss (2026-11-09).** The 56 of the 170 and 31 of the 127 the two
+  ladders give no template the export takes (`bench/off2` with `unround`), searched by the smooth fitter alone, as
+  it runs beside the ladders on the page (`bench/fitter2.sh`, main's core, CPU clock): it passes every check on 24
+  of the 56 and 25 of the 31. The page so gives a passing template on 138 of the 170 and 121 of the 127. The 6 test
+  pictures without one (danish-red-gold, danish-tree-group-top, gathering-hanging-trio-middle, jul-2026, mor-far,
+  vissevasse-scattered-blue-fish) all lose a region in the fitter's template too.
+- **The "features-only" misses are the search's (2026-11-09).** 24 of the 56 end with every cutting rule kept but
+  a region lost. They are not lost in `finish`: the ladder's nearest is a plain weave with every motif or letter
+  region 0% kept, 2-11% off the picture. Only 3 of the 24 have a generator template the export takes (star in
+  motifs b5 and b6, star on strips b3); of all 56, 7 (`bench/genassess56.jsonl`, `even/genassess.mjs`). Ranked as
+  the search ranks a near miss (`exact/stage.js` `assess` `near`; `bench/vsgen.py`), our answer is behind the
+  generator's own template on 45 of the 56 (ahead on 8): the generator keeps the regions and misses clearances
+  by 0.03-2 mm, which the search's model never draws. Lowering the model's clearances by 0.5 mm for the whole
+  ladder (`bench/best-core` `BEST_TOL`) changes none of 8 such hearts; nor does the generator's template as the
+  start (heart in motifs b5: the reader cannot place it on the traced outline). Motif hearts pass from 2x2 to
+  4x4 squares (bound 4-16 hidden cuts, 1-47 s) and none from 5x5 up (bound 24-64): the count of hidden cuts the
+  board needs outgrows the search.
+- **Three ways at the motif boards that did not work (2026-11-09).**
+  - Each motif square tied to its diagonal neighbours (`bench/trans-core` `TRANSLATE=1`: `symmetry.js`
+    `PartialTranslation`, ties only where the step maps an edge onto an edge, the board size found from the
+    outline: 5x5 star 32 of 52 edges, 6x6 heart 52 of 78, 7x7 tree 78 of 108; the plain board none). Worse:
+    heart in motifs 2x2 and 3x3 slower (5.1 and 8.7 s against 1.4 and 2.5), 4x4 lost (its template has 20
+    hidden cuts, not alike in every square), 5x5 to 8x8 still none. A square at the board's edge cannot copy
+    a construction that reaches past it, and the ties chain every square to every other.
+  - The fitter's passing template as the start: the reader drops it, 27-31% of its visible cuts more than
+    1 mm off the traced outline (star and tree in motifs b5, jul-tern); JUL oswald in a circle is read
+    (24% off) but the topological search finds no start from it in 20 s. Its maps as the ladder's (11-07,
+    `bench/fitmaps.sh`) passed 3 of 29, the 5x5 motif hearts none.
+  - The generator's template is read onto the traced outline without stray (0%) but admits no papers
+    (`completeWitness`, at once) on every motif board but 3x3: its converter flags stretches on the checker
+    lines hidden and cuts them twice (the `edge_parity` artefact the export check sets aside), so the reader
+    makes segments that end in two faces. Not a start the page may use anyway (picture-only starts).
+  - More time is not it either: Avanceret's 3 minutes (`bench/long-motifs.sh`, two ladders) leave star, heart
+    and tree in motifs 5x5 and star 6x6 at 0 hidden cuts, as one minute does.
+- **Where the motif boards do get somewhere: the topological witness (2026-11-09).** The SAT search for papers
+  and segments alone (`topology.js` `topologicalWitness`, `bench/topoprobe.mjs`) finds one for heart in motifs
+  4x4 in 4.4 s (28 hidden, bound 16) and star in motifs 5x5 in 26 s (42; 37-51 s tightened to the bound, 24).
+  The search gives it at most `START_SECONDS` (3 s), and the ladder none. From that witness `exactFromTemplate`
+  (`bench/wprobe.mjs`) draws the first 5x5 motif template keeping every star (0.21% off), but with one
+  self-intersection and 0.56 mm of clearance short where three hidden cuts leave right at a star's point
+  (penalty 8): the same template with 40-180 s, 16 neighbours, or a 0.4 or 0.25 grid. On 4x4 at the bound the
+  same (0.97 mm short, a self-intersection); untightened (28 hidden) far worse (9.2 mm). The witness search
+  knows no geometry, so the next step would be a loop: a drawn witness's broken spots back into the SAT
+  search as forbidden pairings, then a new witness.
+  Redrawing only around the broken rules does not mend it either (`bench/lns-core` `LNS=1`: every label and
+  segment further than a reach from the rows with slack held, the rest solved again): with 24 or 13 of the 52
+  edges free, 9-48 s a window, the penalty stays 8. Those three stars cannot be joined within the rules while
+  the rest of the board stays as drawn.
+  Nor does the loop back into the witness (`bench/cegar.mjs`, `diag-core` `forbiddenWitness`: the edge pairs of
+  the segments nearest each broken spot never joined again): penalty 8, then 13, then 37, and the fourth witness
+  not found in 90 s. On jul-2026 (whose designer's cuts lie on our outline 0.025 mm short) the witness search
+  does not even end within its 120 s. The motif boards from 5x5 up stay out of the exact search's reach.
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);
