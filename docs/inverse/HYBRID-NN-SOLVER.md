@@ -1414,6 +1414,9 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   Of the 32 generator hearts left without one, 31 have no template the export takes from the generator either
   (its own breaks the cutting rules there); only star in motifs b6 has one. The generator's own templates pass
   on 93 of the 170, the page on 138.
+  Four of the 32 miss only the image limit with the fitter (every cutting rule kept, 3.8-5.6% off); the fitter
+  with Avanceret's 3 minutes stops early (83-139 s) and stays over 3% on all four (snowflake in layers 3.8%,
+  star in motifs b6 4.1%, tree in motifs b6 and b7 over 4%, b6 now losing a region).
 - **The "features-only" misses are the search's (2026-11-09).** 24 of the 56 end with every cutting rule kept but
   a region lost. They are not lost in `finish`: the ladder's nearest is a plain weave with every motif or letter
   region 0% kept, 2-11% off the picture. Only 3 of the 24 have a generator template the export takes (star in
