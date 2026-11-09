@@ -1463,6 +1463,12 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   the segments nearest each broken spot never joined again): penalty 8, then 13, then 37, and the fourth witness
   not found in 90 s. On jul-2026 (whose designer's cuts lie on our outline 0.025 mm short) the witness search
   does not even end within its 120 s. The motif boards from 5x5 up stay out of the exact search's reach.
+  How the fitter passes star in motifs b5 (`bench/wovenbound.mjs`, its woven picture against the mask): it joins
+  each of the 8 stars in the border squares to the square's edge with a bar about 2.5 mm wide (2.42% of the
+  picture), so 4 of the 12 islands are left; its template reads onto our outline only with a 3.3 mm margin
+  (`readTemplate` `near` .4: 3% stray, 22 hidden cuts against the outline's bound of 24) and then admits no
+  papers. Its picture traced as ours are has a count bound of 48, not fewer: an outline with such bars would
+  not make the exact search's task smaller.
 - **The remaining hard pictures.** Is any template keeping our rules there at all? A proof needs an exact
   infeasibility certificate, which we lack. Possible next steps:
   - "exact except at a few spots" (changing the picture minimally);
