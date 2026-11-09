@@ -1411,6 +1411,9 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   of the 56 and 25 of the 31. The page so gives a passing template on 138 of the 170 and 121 of the 127. The 6 test
   pictures without one (danish-red-gold, danish-tree-group-top, gathering-hanging-trio-middle, jul-2026, mor-far,
   vissevasse-scattered-blue-fish) all lose a region in the fitter's template too.
+  Of the 32 generator hearts left without one, 31 have no template the export takes from the generator either
+  (its own breaks the cutting rules there); only star in motifs b6 has one. The generator's own templates pass
+  on 93 of the 170, the page on 138.
 - **The "features-only" misses are the search's (2026-11-09).** 24 of the 56 end with every cutting rule kept but
   a region lost. They are not lost in `finish`: the ladder's nearest is a plain weave with every motif or letter
   region 0% kept, 2-11% off the picture. Only 3 of the 24 have a generator template the export takes (star in
