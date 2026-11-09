@@ -121,4 +121,15 @@ describe('rings that cross or touch', () => {
 		expect(filled(joined, .2, -.05)).toBe(1);
 		expect(closedAtContacts(excludeSquare.contours as Ring[], 1.25 / 49).length).toBe(2);
 	});
+	it('joins a ring where its own sides touch, and not where a point is given twice running', () => {
+		// Two squares meeting at a corner, drawn round as one ring (a tree's
+		// trunk touching its crown so).
+		const ring: Ring = [[0, 0], [1, 0], [1, 1], [2, 1], [2, 2], [1, 2], [1, 1], [0, 1]];
+		expect(ringContacts([ring]).length).toBeGreaterThan(0);
+		expect(ringContacts([[[0, 0], [1, 0], [1, 0], [1, 1], [0, 1]]])).toEqual([]);
+		const joined = closedAtContacts([ring], .1);
+		expect(ringContacts(joined)).toEqual([]);
+		for (const [x, y, colour] of [[.5, .5, 1], [1.5, 1.5, 1], [1.01, .99, 1], [.99, 1.01, 1], [1.06, .94, 0], [1.5, .5, 0], [.5, 1.5, 0]] as const)
+			expect(filled(joined, x, y), `${x},${y}`).toBe(colour);
+	});
 });

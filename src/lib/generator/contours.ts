@@ -112,22 +112,39 @@ export function withoutSpurs(rings: Ring[], slivers = false): Ring[] {
 	return changed || kept.length < rings.length ? kept : rings;
 }
 
-/** Where two of the rings cross or touch: the points their segments share. */
+/** Where two of the rings cross or touch, or one its own sides away from
+ * their corners: the points their segments share (a tree's trunk touching
+ * its crown at the two corners of its top). */
 export function ringContacts(rings: Ring[]): Point[] {
 	const boxes = rings.map(ring => {
 		const xs = ring.map(p => p[0]), ys = ring.map(p => p[1]);
 		return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
 	});
+	const meet = (p: Point, p1: Point, q: Point, q1: Point): Point | undefined => {
+		const r = sub(p1, p), e = sub(q1, q), den = cross(r, e);
+		if (Math.abs(den) < 1e-15) return;
+		const t = cross(sub(q, p), e) / den, u = cross(sub(q, p), r) / den;
+		return t >= 0 && t <= 1 && u >= 0 && u <= 1 ? mix(p, p1, t) : undefined;
+	};
 	const points: Point[] = [];
 	for (let i = 0; i < rings.length; i++) for (let j = i + 1; j < rings.length; j++) {
 		const [a, b] = [boxes[i], boxes[j]];
 		if (a[2] < b[0] || b[2] < a[0] || a[3] < b[1] || b[3] < a[1]) continue;
 		for (let k = 0; k < rings[i].length; k++) for (let l = 0; l < rings[j].length; l++) {
-			const p = rings[i][k], r = sub(rings[i][(k + 1) % rings[i].length], p),
-				q = rings[j][l], e = sub(rings[j][(l + 1) % rings[j].length], q), den = cross(r, e);
-			if (Math.abs(den) < 1e-15) continue;
-			const t = cross(sub(q, p), e) / den, u = cross(sub(q, p), r) / den;
-			if (t >= 0 && t <= 1 && u >= 0 && u <= 1) points.push(mix(p, rings[i][(k + 1) % rings[i].length], t));
+			const point = meet(rings[i][k], rings[i][(k + 1) % rings[i].length], rings[j][l], rings[j][(l + 1) % rings[j].length]);
+			if (point) points.push(point);
+		}
+	}
+	for (const ring of rings) {
+		// Its corners once each: a point given twice running makes no side.
+		const r = ring.filter((p, k) => {
+			const before = ring[(k + ring.length - 1) % ring.length];
+			return p[0] !== before[0] || p[1] !== before[1];
+		}), n = r.length;
+		for (let k = 0; k < n; k++) for (let l = k + 2; l < n; l++) {
+			if (!k && l === n - 1) continue;
+			const point = meet(r[k], r[(k + 1) % n], r[l], r[(l + 1) % n]);
+			if (point) points.push(point);
 		}
 	}
 	return points;

@@ -79,6 +79,7 @@ import crownCross from '../../../static/generator/motifs/ph-crown-cross.json';
 import excludeSquare from '../../../static/generator/motifs/ph-exclude-square.json';
 import microphone from '../../../static/generator/motifs/ph-microphone.json';
 import subway from '../../../static/generator/motifs/ph-subway.json';
+import phTree from '../../../static/generator/motifs/ph-tree.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -1026,6 +1027,12 @@ describe('frames from real hearts', () => {
   // two: refused as drawn, made again with their pieces joined there.
   expect(generate({ mode: 'figure', name: 'Crown', contours: crownCross.contours as Ring[], colors, style: 'layers', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
   expect(generate({ mode: 'figure', name: 'Squares', contours: excludeSquare.contours as Ring[], colors, style: 'corners', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
+ }, 60000);
+ slow('builds a tree whose outline touches itself, joined there by a neck of paper', () => {
+  // Its trunk meets its crown at the two corners of its top, where the one
+  // ring passes twice: refused in Tern i spidserne as drawn.
+  const heart = generate({ mode: 'figure', name: 'Tree', contours: phTree.contours as Ring[], colors, style: 'corners', frame: 'circle', frameSize: 70, scale: .7, gap: 3 });
+  expect(heart.hardToCut).toBeFalsy();
  }, 60000);
  slow('builds the microphone in Tæt om figuren on its holder, which most gates meet', () => {
   // Three of the four gates lie on the holder round the capsule: with the
