@@ -1745,9 +1745,16 @@ const reachVia = (passes: Point[], open: (a: Point, b: Point) => boolean) => {
 	// dashes round a speech bubble spent an hour asking `open` of every side
 	// of a dash a pass saw none of, way in after way in.
 	const sights = new WeakMap<Ring, (Port | null)[]>();
-	// The distances from a pass to the others, worked out once it is first
-	// settled: a thousand for every step of every way in.
-	const rows: Float64Array[] = [], row = (i: number) => rows[i] ??= Float64Array.from(passes, p => distance(passes[i], p));
+	// The other passes by their distance from a pass, nearest first, worked
+	// out once it is first settled: a step goes no further than the way
+	// already found to the ring (a thousand passes measured each step of
+	// every way in).
+	const rows: { order: Int32Array; apart: Float64Array }[] = [];
+	const row = (i: number) => {
+		if (rows[i]) return rows[i];
+		const all = Float64Array.from(passes, p => distance(passes[i], p)), order = Int32Array.from(passes, (_, k) => k).sort((a, b) => all[a] - all[b]);
+		return rows[i] = { order, apart: Float64Array.from(order, k => all[k]) };
+	};
 	const search = (from: Point, ring: Ring): { path: Ring; port: Port; length: number } | undefined => {
 		let sight = sights.get(ring);
 		if (!sight) sights.set(ring, sight = []);
@@ -1760,23 +1767,64 @@ const reachVia = (passes: Point[], open: (a: Point, b: Point) => boolean) => {
 			return found ?? undefined;
 		};
 		const cost = new Float64Array(n + 1).fill(Infinity), back = new Int32Array(n + 1).fill(-1), done = new Uint8Array(n + 1);
+		// The unsettled passes reached, by cost, then index: one entry each
+		// cost a pass is given, those it has since bettered or been settled
+		// at passed over.
+		const keys: number[] = [], ats: number[] = [];
+		const first = (a: number, k: number, b: number, j: number) => a < b || a === b && k < j;
+		const push = (key: number, at: number) => {
+			let j = keys.length;
+			for (; j && !first(keys[(j - 1) >> 1], ats[(j - 1) >> 1], key, at); j = (j - 1) >> 1) {
+				keys[j] = keys[(j - 1) >> 1];
+				ats[j] = ats[(j - 1) >> 1];
+			}
+			keys[j] = key;
+			ats[j] = at;
+		};
+		const pop = () => {
+			const key = keys.pop()!, at = ats.pop()!;
+			if (!keys.length) return;
+			let j = 0;
+			for (let c = 1; c < keys.length; j = c, c = 2 * c + 1) {
+				if (c + 1 < keys.length && first(keys[c + 1], ats[c + 1], keys[c], ats[c])) c++;
+				if (first(key, at, keys[c], ats[c])) break;
+				keys[j] = keys[c];
+				ats[j] = ats[c];
+			}
+			keys[j] = key;
+			ats[j] = at;
+		};
 		cost[0] = 0;
+		push(0, 0);
 		let best: { at: number; port: Port; length: number } | undefined;
 		for (;;) {
-			let i = -1;
-			for (let k = 0; k <= n; k++) if (!done[k] && cost[k] < Infinity && (i < 0 || cost[k] < cost[i])) i = k;
+			while (keys.length && (done[ats[0]] || keys[0] !== cost[ats[0]])) pop();
+			const i = keys.length ? ats[0] : -1;
 			if (i < 0 || best && cost[i] >= best.length) break;
+			pop();
 			done[i] = 1;
 			const port = seen(i);
 			if (port && (!best || cost[i] + distance(point(i), port.point) < best.length))
 				best = { at: i, port, length: cost[i] + distance(point(i), port.point) };
-			const apart = i ? row(i - 1) : passes.map(p => distance(from, p));
-			for (let k = 1; k <= n; k++) {
-				if (done[k]) continue;
-				const step = cost[i] + apart[k - 1];
-				if (step < cost[k] && (i ? among(i - 1, k - 1) : open(from, passes[k - 1]))) {
+			// A pass no nearer than the way found is never settled.
+			const bound = best?.length ?? Infinity;
+			if (i) {
+				const { order, apart } = row(i - 1);
+				for (let j = 0; j < n; j++) {
+					const step = cost[i] + apart[j], k = order[j] + 1;
+					if (step >= bound) break;
+					if (!done[k] && step < cost[k] && among(i - 1, k - 1)) {
+						cost[k] = step;
+						back[k] = i;
+						push(step, k);
+					}
+				}
+			} else for (let k = 1; k <= n; k++) {
+				const step = distance(from, passes[k - 1]);
+				if (step < bound && step < cost[k] && open(from, passes[k - 1])) {
 					cost[k] = step;
 					back[k] = i;
+					push(step, k);
 				}
 			}
 		}
