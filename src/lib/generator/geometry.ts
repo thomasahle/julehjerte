@@ -1154,7 +1154,7 @@ function contourMotif(
 	// pieces (see `channelPoints`).
 	const channel = channels ? channelPoints(contours, margin) : [];
 	const passes = options.legs ? [...nodes.flatMap(envelope), ...channel.filter(p => contours.filter(r => inside(p, r)).length % 2 === 0)].filter(p => !beyond(p)) : [];
-	const reach = reachVia(passes, open);
+	const reach = sharedReach(contours, options.obstacles, passes, open);
 	// With `bays`, the shared cuts between the base's counters go the same
 	// way round, past the corners of the counters' hulls inside it (the
 	// swan's wing in the bay of its body, in the medallion).
@@ -1787,10 +1787,24 @@ const reachVia = (passes: Point[], open: (a: Point, b: Point) => boolean) => {
 	const rows: { order: Int32Array; apart: Float64Array }[] = [];
 	const row = (i: number) => {
 		if (rows[i]) return rows[i];
-		const all = Float64Array.from(passes, p => distance(passes[i], p)), order = Int32Array.from(passes, (_, k) => k).sort((a, b) => all[a] - all[b]);
+		const all = Float64Array.from(passes, p => distance(passes[i], p)), order = Int32Array.from(passes, (_, k) => k).sort((a, b) => all[a] - all[b] || a - b);
 		return rows[i] = { order, apart: Float64Array.from(order, k => all[k]) };
 	};
-	const search = (from: Point, ring: Ring): { path: Ring; port: Port; length: number } | undefined => {
+	// How far each pass is from a point ways begin at, nearest first, and
+	// whether it sees it (1, 2 where not), worked out once a point: a gate's
+	// or an island's ways to sixteen dashes each asked `open` of every pass,
+	// a string key each.
+	const starts = new Map<string, { order: Int32Array; apart: Float64Array; sees: Uint8Array }>();
+	const search = (from: Point, ring: Ring, key: string): { path: Ring; port: Port; length: number } | undefined => {
+		let start = starts.get(key);
+		if (!start) {
+			const all = Float64Array.from(passes, p => distance(from, p)), order = Int32Array.from(passes, (_, k) => k).sort((a, b) => all[a] - all[b] || a - b);
+			starts.set(key, start = { order, apart: Float64Array.from(order, k => all[k]), sees: new Uint8Array(n) });
+		}
+		const sees = (k: number) => {
+			if (!start.sees[k]) start.sees[k] = open(from, passes[k]) ? 1 : 2;
+			return start.sees[k] === 1;
+		};
 		let sight = sights.get(ring);
 		if (!sight) sights.set(ring, sight = []);
 		const point = (i: number) => i ? passes[i - 1] : from;
@@ -1801,67 +1815,75 @@ const reachVia = (passes: Point[], open: (a: Point, b: Point) => boolean) => {
 			if (i) sight[i - 1] = found;
 			return found ?? undefined;
 		};
-		const cost = new Float64Array(n + 1).fill(Infinity), back = new Int32Array(n + 1).fill(-1), done = new Uint8Array(n + 1);
-		// The unsettled passes reached, by cost, then index: one entry each
-		// cost a pass is given, those it has since bettered or been settled
-		// at passed over.
-		const keys: number[] = [], ats: number[] = [];
-		const first = (a: number, k: number, b: number, j: number) => a < b || a === b && k < j;
-		const push = (key: number, at: number) => {
-			let j = keys.length;
-			for (; j && !first(keys[(j - 1) >> 1], ats[(j - 1) >> 1], key, at); j = (j - 1) >> 1) {
-				keys[j] = keys[(j - 1) >> 1];
-				ats[j] = ats[(j - 1) >> 1];
+		// Each pass settled offers its steps on one length at a time, nearest
+		// first (all those as long together), the next once those are taken:
+		// one step past the way found is as far as any goes. Offering them all
+		// at once, each pass settled before a way was found stepped to all
+		// thousand others. They are taken by length, then pass, then how soon
+		// the pass they are from was settled: the passes are settled, and
+		// reached from, as when every step was offered at once.
+		const cost = new Float64Array(n + 1), back = new Int32Array(n + 1).fill(-1), done = new Uint8Array(n + 1),
+			rank = new Int32Array(n + 1), next = new Int32Array(n + 1), offered = new Int32Array(n + 1);
+		const lengths: number[] = [], tos: number[] = [], froms: number[] = [];
+		const first = (a: number, k: number, i: number, b: number, l: number, h: number) => a < b || a === b && (k < l || k === l && rank[i] < rank[h]);
+		const push = (length: number, k: number, i: number) => {
+			let j = lengths.length;
+			for (; j && !first(lengths[(j - 1) >> 1], tos[(j - 1) >> 1], froms[(j - 1) >> 1], length, k, i); j = (j - 1) >> 1) {
+				lengths[j] = lengths[(j - 1) >> 1];
+				tos[j] = tos[(j - 1) >> 1];
+				froms[j] = froms[(j - 1) >> 1];
 			}
-			keys[j] = key;
-			ats[j] = at;
+			lengths[j] = length;
+			tos[j] = k;
+			froms[j] = i;
 		};
 		const pop = () => {
-			const key = keys.pop()!, at = ats.pop()!;
-			if (!keys.length) return;
+			const length = lengths.pop()!, k = tos.pop()!, i = froms.pop()!;
+			if (!lengths.length) return;
 			let j = 0;
-			for (let c = 1; c < keys.length; j = c, c = 2 * c + 1) {
-				if (c + 1 < keys.length && first(keys[c + 1], ats[c + 1], keys[c], ats[c])) c++;
-				if (first(key, at, keys[c], ats[c])) break;
-				keys[j] = keys[c];
-				ats[j] = ats[c];
+			for (let c = 1; c < lengths.length; j = c, c = 2 * c + 1) {
+				if (c + 1 < lengths.length && first(lengths[c + 1], tos[c + 1], froms[c + 1], lengths[c], tos[c], froms[c])) c++;
+				if (first(length, k, i, lengths[c], tos[c], froms[c])) break;
+				lengths[j] = lengths[c];
+				tos[j] = tos[c];
+				froms[j] = froms[c];
 			}
-			keys[j] = key;
-			ats[j] = at;
+			lengths[j] = length;
+			tos[j] = k;
+			froms[j] = i;
 		};
-		cost[0] = 0;
-		push(0, 0);
-		let best: { at: number; port: Port; length: number } | undefined;
-		for (;;) {
-			while (keys.length && (done[ats[0]] || keys[0] !== cost[ats[0]])) pop();
-			const i = keys.length ? ats[0] : -1;
-			if (i < 0 || best && cost[i] >= best.length) break;
-			pop();
+		let best: { at: number; port: Port; length: number } | undefined, settled = 0;
+		const offer = (i: number) => {
+			const { order, apart } = i ? row(i - 1) : start;
+			let j = next[i];
+			while (j < n && done[order[j] + 1]) j++;
+			// A pass no nearer than the way found is never settled.
+			const step = cost[i] + apart[j];
+			if (j < n && (!best || step < best.length))
+				for (; j < n && cost[i] + apart[j] === step; j++)
+					if (!done[order[j] + 1]) {
+						push(step, order[j] + 1, i);
+						offered[i]++;
+					}
+			next[i] = j;
+		};
+		const settle = (i: number, length: number, from: number) => {
 			done[i] = 1;
+			cost[i] = length;
+			back[i] = from;
+			rank[i] = settled++;
 			const port = seen(i);
 			if (port && (!best || cost[i] + distance(point(i), port.point) < best.length))
 				best = { at: i, port, length: cost[i] + distance(point(i), port.point) };
-			// A pass no nearer than the way found is never settled.
-			const bound = best?.length ?? Infinity;
-			if (i) {
-				const { order, apart } = row(i - 1);
-				for (let j = 0; j < n; j++) {
-					const step = cost[i] + apart[j], k = order[j] + 1;
-					if (step >= bound) break;
-					if (!done[k] && step < cost[k] && among(i - 1, k - 1)) {
-						cost[k] = step;
-						back[k] = i;
-						push(step, k);
-					}
-				}
-			} else for (let k = 1; k <= n; k++) {
-				const step = distance(from, passes[k - 1]);
-				if (step < bound && step < cost[k] && open(from, passes[k - 1])) {
-					cost[k] = step;
-					back[k] = i;
-					push(step, k);
-				}
-			}
+			offer(i);
+		};
+		settle(0, 0, -1);
+		while (lengths.length && !(best && lengths[0] >= best.length)) {
+			const step = lengths[0], k = tos[0], i = froms[0];
+			pop();
+			offered[i]--;
+			if (!done[k] && (i ? among(i - 1, k - 1) : sees(k - 1))) settle(k, step, i);
+			if (!offered[i]) offer(i);
 		}
 		if (!best) return;
 		const path: Ring = [best.port.point];
@@ -1876,11 +1898,34 @@ const reachVia = (passes: Point[], open: (a: Point, b: Point) => boolean) => {
 		if (!known) ways.set(ring, known = new Map());
 		const key = `${from}`, way = known.get(key);
 		if (way !== undefined) return way ? { ...way, path: [from, ...way.path.slice(1)] } : undefined;
-		const found = search(from, ring);
+		const found = search(from, ring, key);
 		known.set(key, found ?? null);
 		return found;
 	};
 };
+/** The ways over `passes` past `contours` and `obstacles` (see `reachVia`),
+ * one for every call with the same: what it has worked out, which passes see
+ * one another, each pass's sight of a ring, the ways found, holds for each,
+ * `open` asking the same of the same outlines. A motif's cells and tiers ask
+ * again and again with the same gates. The sixteen asked last are kept. */
+const reaches = new Map<string, ReturnType<typeof reachVia>>(), ids = new WeakMap<object, number>();
+let lastId = 0;
+function sharedReach(contours: Ring[], obstacles: Ring[] | undefined, passes: Point[], open: (a: Point, b: Point) => boolean) {
+	const id = (o: object) => {
+		let i = ids.get(o);
+		if (i === undefined) ids.set(o, i = ++lastId);
+		return i;
+	};
+	const key = `${id(contours)} ${obstacles ? id(obstacles) : 0} ${passes.join(';')}`;
+	let reach = reaches.get(key);
+	if (reach) reaches.delete(key);
+	else {
+		reach = reachVia(passes, open);
+		if (reaches.size >= 16) reaches.delete(reaches.keys().next().value!);
+	}
+	reaches.set(key, reach);
+	return reach;
+}
 /** `open` between two of `points`, by their indices, each pair worked out
  * once: the searches over them asked it millions of times, a string key
  * each (ten dots round a rectangle spent ten minutes making the keys). */
