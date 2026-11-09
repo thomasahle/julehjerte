@@ -1740,25 +1740,41 @@ function channelPoints(contours: Ring[], margin: number, spacing = 3, most = 400
  * lets through, past `passes`: the way and the point of the ring it ends at;
  * none where there is none. */
 const reachVia = (passes: Point[], open: (a: Point, b: Point) => boolean) => {
-	const among = pairwise(passes, open);
-	return (from: Point, ring: Ring): { path: Ring; port: Port; length: number } | undefined => {
-		const seen = (p: Point) => {
-			const port = closestPort(ring, p, open);
-			return open(p, port.point) ? port : undefined;
+	const among = pairwise(passes, open), n = passes.length;
+	// The point of a ring each pass sees, worked out once a ring: sixteen
+	// dashes round a speech bubble spent an hour asking `open` of every side
+	// of a dash a pass saw none of, way in after way in.
+	const sights = new WeakMap<Ring, (Port | null)[]>();
+	// The distances from a pass to the others, worked out once it is first
+	// settled: a thousand for every step of every way in.
+	const rows: Float64Array[] = [], row = (i: number) => rows[i] ??= Float64Array.from(passes, p => distance(passes[i], p));
+	const search = (from: Point, ring: Ring): { path: Ring; port: Port; length: number } | undefined => {
+		let sight = sights.get(ring);
+		if (!sight) sights.set(ring, sight = []);
+		const point = (i: number) => i ? passes[i - 1] : from;
+		const seen = (i: number) => {
+			const known = i ? sight[i - 1] : undefined;
+			if (known !== undefined) return known ?? undefined;
+			const port = closestPort(ring, point(i), open), found = open(point(i), port.point) ? port : null;
+			if (i) sight[i - 1] = found;
+			return found ?? undefined;
 		};
-		const points = [from, ...passes], cost = points.map((_, i) => i ? Infinity : 0), back = points.map(() => -1), done = points.map(() => false);
+		const cost = new Float64Array(n + 1).fill(Infinity), back = new Int32Array(n + 1).fill(-1), done = new Uint8Array(n + 1);
+		cost[0] = 0;
 		let best: { at: number; port: Port; length: number } | undefined;
 		for (;;) {
 			let i = -1;
-			for (let k = 0; k < points.length; k++) if (!done[k] && cost[k] < Infinity && (i < 0 || cost[k] < cost[i])) i = k;
+			for (let k = 0; k <= n; k++) if (!done[k] && cost[k] < Infinity && (i < 0 || cost[k] < cost[i])) i = k;
 			if (i < 0 || best && cost[i] >= best.length) break;
-			done[i] = true;
-			const port = seen(points[i]);
-			if (port && (!best || cost[i] + distance(points[i], port.point) < best.length))
-				best = { at: i, port, length: cost[i] + distance(points[i], port.point) };
-			for (let k = 1; k < points.length; k++) {
-				const step = cost[i] + distance(points[i], points[k]);
-				if (!done[k] && step < cost[k] && (i ? among(i - 1, k - 1) : open(points[i], points[k]))) {
+			done[i] = 1;
+			const port = seen(i);
+			if (port && (!best || cost[i] + distance(point(i), port.point) < best.length))
+				best = { at: i, port, length: cost[i] + distance(point(i), port.point) };
+			const apart = i ? row(i - 1) : passes.map(p => distance(from, p));
+			for (let k = 1; k <= n; k++) {
+				if (done[k]) continue;
+				const step = cost[i] + apart[k - 1];
+				if (step < cost[k] && (i ? among(i - 1, k - 1) : open(from, passes[k - 1]))) {
 					cost[k] = step;
 					back[k] = i;
 				}
@@ -1766,8 +1782,20 @@ const reachVia = (passes: Point[], open: (a: Point, b: Point) => boolean) => {
 		}
 		if (!best) return;
 		const path: Ring = [best.port.point];
-		for (let k = best.at; k >= 0; k = back[k]) path.unshift(points[k]);
+		for (let k = best.at; k >= 0; k = back[k]) path.unshift(point(k));
 		return { path, port: best.port, length: best.length };
+	};
+	// A way asked again, from the same point to the same ring, is the same
+	// way, begun at the point asked from: four in five of the dashes' were.
+	const ways = new WeakMap<Ring, Map<string, { path: Ring; port: Port; length: number } | null>>();
+	return (from: Point, ring: Ring): { path: Ring; port: Port; length: number } | undefined => {
+		let known = ways.get(ring);
+		if (!known) ways.set(ring, known = new Map());
+		const key = `${from}`, way = known.get(key);
+		if (way !== undefined) return way ? { ...way, path: [from, ...way.path.slice(1)] } : undefined;
+		const found = search(from, ring);
+		known.set(key, found ?? null);
+		return found;
 	};
 };
 /** `open` between two of `points`, by their indices, each pair worked out
