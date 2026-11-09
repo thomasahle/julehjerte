@@ -388,6 +388,14 @@ export const centroid = (r: Ring): Point => {
 	const [minX, minY, maxX, maxY] = ringBox(r);
 	return [(minX + maxX) / 2, (minY + maxY) / 2];
 };
+/** A ring's centre (see `centroid`), worked out once a ring: the chains
+ * order and leave each island by it, chain after chain. */
+const centres = new WeakMap<Ring, Point>();
+const centre = (ring: Ring) => {
+	let c = centres.get(ring);
+	if (!c) centres.set(ring, c = centroid(ring));
+	return c;
+};
 export function contourChain(
 	edges: Edge[],
 	nodes: Contour[],
@@ -404,7 +412,7 @@ export function contourChain(
 ) {
 	const atExtremes = !visible && !nearest && !nearestIslands;
 	if (!visible && nearestIslands) nearest = true;
-	const along = new Map(nodes.map(n => [n, dot(centroid(n.ring), direction(angle))]));
+	const along = new Map(nodes.map(n => [n, dot(centre(n.ring), direction(angle))]));
 	const ordered = nodes.slice().sort((a, b) => along.get(a)! - along.get(b)!);
 	if (visible && boundaryGates) {
 		// A clipped island can own the panel's external gate. Enter that
@@ -416,7 +424,7 @@ export function contourChain(
 	}
 	let previous = start;
 	for (const [index, node] of ordered.entries()) {
-		const c = centroid(node.ring), next = index + 1 < ordered.length ? centroid(ordered[index + 1].ring) : end;
+		const c = centre(node.ring), next = index + 1 < ordered.length ? centre(ordered[index + 1].ring) : end;
 		// With `reach`, the way in may go round what hides the island.
 		const way = !visible && nearest ? reach?.(previous, node.ring) : undefined;
 		// A hidden island is entered and left at its extremes along the chain,
@@ -1555,19 +1563,29 @@ function nearestPort(ring: Ring, rings: Ring[]): Port {
  * any is: the elephant's leg, whose nearest corner the gate sees only through
  * the tip of its tail. */
 function closestPort(ring: Ring, point: Point, open?: (a: Point, b: Point) => boolean): Port {
-	const ports: { port: Port; d: number }[] = [];
+	// Each side's nearest point, by how far along the side it lies (`mix`,
+	// `distance` and `dot` written out: the chains ask it of every island
+	// again and again), made a point only where it is wanted.
+	const n = ring.length, side = (i: number) => {
+		const a = ring[i], b = ring[(i + 1) % n], dx = b[0] - a[0], dy = b[1] - a[1], length = dx * dx + dy * dy;
+		return length ? Math.max(0, Math.min(1, ((point[0] - a[0]) * dx + (point[1] - a[1]) * dy) / length)) : 0;
+	};
+	const at = (i: number, t: number): Point => [ring[i][0] + (ring[(i + 1) % n][0] - ring[i][0]) * t, ring[i][1] + (ring[(i + 1) % n][1] - ring[i][1]) * t];
 	let best: Port = { point: ring[0], index: 0 }, nearest = Infinity;
-	for (let i = 0; i < ring.length; i++) {
-		const a = ring[i], b = ring[(i + 1) % ring.length], d = sub(b, a), length = dot(d, d);
-		const t = length ? Math.max(0, Math.min(1, dot(sub(point, a), d) / length)) : 0, p = mix(a, b, t);
-		if (open) ports.push({ port: { point: p, index: (i + t) % ring.length }, d: distance(p, point) });
-		if (distance(p, point) < nearest) {
-			nearest = distance(p, point);
-			best = { point: p, index: (i + t) % ring.length };
+	for (let i = 0; i < n; i++) {
+		const t = side(i), a = ring[i], b = ring[(i + 1) % n], x = a[0] + (b[0] - a[0]) * t, y = a[1] + (b[1] - a[1]) * t, d = Math.hypot(x - point[0], y - point[1]);
+		if (d < nearest) {
+			nearest = d;
+			best = { point: [x, y], index: (i + t) % n };
 		}
 	}
 	if (!open || open(point, best.point)) return best;
-	return ports.sort((x, y) => x.d - y.d).find(({ port }) => open(point, port.point))?.port ?? best;
+	// Else the nearest the way from `point` allows, nearest first.
+	const sides = Array.from({ length: n }, (_, i) => {
+		const t = side(i), p = at(i, t);
+		return { port: { point: p, index: (i + t) % n }, d: Math.hypot(p[0] - point[0], p[1] - point[1]) };
+	});
+	return sides.sort((x, y) => x.d - y.d).find(({ port }) => open(point, port.point))?.port ?? best;
 }
 /** Whether a point can lie within `EPS` of the segment from `a` to `b`,
  * extended by `EPS` of its length at either end: inside their box widened
