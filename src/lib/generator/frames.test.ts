@@ -1050,7 +1050,7 @@ describe('frames from real hearts', () => {
   // out by nearness, the dashes' chains to the disc crossed one another (the
   // whole heart, in Stor silhouet too, takes minutes).
   const contours = brandSignal.contours as Ring[];
-  const sized = fillSquare({ mode: 'figure', contours, style: 'fitted', frame: 'circle', frameSize: 70, scale: .7, gap: 3 });
+  const sized = fillSquare({ mode: 'figure', name: 'Signal', contours, colors, style: 'fitted', frame: 'circle', frameSize: 70, scale: .7, gap: 3 });
   const construction = withRemaking(() => generateFittedFigure(contours, sized.frameSize, sized.scale, (...args) => {
    args[7] = { ...args[7], practical: true, compound: true, nested: true, around: true, legs: true, sweep: 1 };
    return fourPortMotif(...args);
