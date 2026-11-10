@@ -80,6 +80,7 @@ import excludeSquare from '../../../static/generator/motifs/ph-exclude-square.js
 import microphone from '../../../static/generator/motifs/ph-microphone.json';
 import subway from '../../../static/generator/motifs/ph-subway.json';
 import brandSignal from '../../../static/generator/motifs/tb-brand-signal.json';
+import steam from '../../../static/generator/motifs/ph-steam-logo.json';
 import phTree from '../../../static/generator/motifs/ph-tree.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
@@ -1048,7 +1049,7 @@ describe('frames from real hearts', () => {
  slow('builds a signal in Tæt om figuren, each gate taking the dashes on round to the next', () => {
   // A disc in a ring of sixteen dashes, four of them under the gates: given
   // out by nearness, the dashes' chains to the disc crossed one another (the
-  // whole heart, in Stor silhouet too, takes minutes).
+  // whole heart, in Stor silhuet too, takes minutes).
   const contours = brandSignal.contours as Ring[];
   const sized = fillSquare({ mode: 'figure', name: 'Signal', contours, colors, style: 'fitted', frame: 'circle', frameSize: 70, scale: .7, gap: 3 });
   const construction = withRemaking(() => generateFittedFigure(contours, sized.frameSize, sized.scale, (...args) => {
@@ -1056,6 +1057,11 @@ describe('frames from real hearts', () => {
    return fourPortMotif(...args);
   }, undefined, 0, { ...FITTED, gap: 3 }, true));
   expect(construction.edges.length).toBeGreaterThan(0);
+ }, 60000);
+ slow('builds a steam engine in Cirkel · Lige store tern, its rod and wheel reached up the slit into its disc', () => {
+  // The rod and wheel lie in a bay of the disc, open only up a slit: no
+  // gate's spoke reaches them but up it.
+  expect(generate({ mode: 'figure', name: 'Steam', contours: steam.contours as Ring[], colors, style: 'board', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
  }, 60000);
  slow('builds the swan in the medallion, its wing reached round its body', () => {
   // The swan's pieces are counters of the medallion there, and every

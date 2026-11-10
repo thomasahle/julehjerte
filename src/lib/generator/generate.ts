@@ -3582,8 +3582,12 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// piece in turn (of three in a row, the middle one), islands in a
 		// ring's hole are reached round either attachment, and a motif kept
 		// whole has spokes go round the pieces in their way (a back card hiding
-		// the front one from two gates).
-		const pieces = forest(contours), rest = (layouts: object[]) => everyWay ? [layouts.map(layout => ({ ...compound, nested: true, bases: true, ...layout }))] : [];
+		// the front one from two gates). Made again when refused, last, the
+		// islands are reached round the pieces and up the channels between
+		// them, as in the open frames (see `withChannelWays`): a steam engine's
+		// rod and wheel in the bay of its disc, open only up a slit.
+		const pieces = forest(contours), rest = (layouts: object[]) => everyWay ? [layouts.map(layout => ({ ...compound, nested: true, bases: true, ...layout }))]
+			: channelWays ? [layouts.map(layout => ({ ...compound, nested: true, bases: true, around: true, legs: true, ...layout }))] : [];
 		const layouts = (range: readonly [number, number], { centre }: Placement, whole = false, atSize = false) => {
 			if (whole || panels(range) === 1) return [[{}, compound], ...rest([{}, ...pieces.length > 1 ? [{ around: true }] : []])];
 			const junctions = background.map((p): Point => [p[0] - centre[0], p[1] - centre[1]]);
@@ -3621,7 +3625,8 @@ function generateUsingRecipes(request: GeneratorRequest,
 				list.map(layout => ({ radius, scale, layout: { padding, ...layout, ...placement.enclosed && { centre: placement.centre }, ...covered && { lines }, ...completion && { completion } } }))));
 		};
 		const build = ({ radius, scale, layout }: ReturnType<typeof sizes>[number]): Construction => {
-			const construction = generateTextGrid(MOTIF, font, false, 'circle', { ...layout, board: strips, circle: 2 * radius, scale });
+			const grid = () => generateTextGrid(MOTIF, font, false, 'circle', { ...layout, board: strips, circle: 2 * radius, scale });
+			const construction = 'legs' in layout ? withChannels(grid) : grid();
 			audit(construction.edges);
 			return layout.lines ? { ...construction, strips: 2 * layout.lines.length + 1 } : construction;
 		};
