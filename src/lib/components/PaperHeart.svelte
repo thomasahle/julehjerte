@@ -356,10 +356,6 @@
 	const DOUBLE_CLICK_MS = 350;
 	const DOUBLE_CLICK_DIST = 8;
 
-	let prevWithinCurveMode: SymmetryMode = 'off';
-	let prevWithinLobeMode: SymmetryMode = 'off';
-	let prevBetweenLobesMode: SymmetryMode = 'off';
-
 	type HistorySnapshot = {
 		fingers: Finger[];
 		gridSize: GridSize;
@@ -410,9 +406,6 @@
 		withinCurveMode = s.symmetry.withinCurveMode;
 		withinLobeMode = s.symmetry.withinLobeMode;
 		betweenLobesMode = s.symmetry.betweenLobesMode;
-		prevWithinCurveMode = withinCurveMode;
-		prevWithinLobeMode = withinLobeMode;
-		prevBetweenLobesMode = betweenLobesMode;
 		// The Escher tab always has a type, so the tab comes back with the tile, and goes with it.
 		patternTile = s.patternTile;
 		escherTab = patternTile !== null;
@@ -1368,8 +1361,8 @@
 	/**
 	 * The Normal tab's "Tilfældigt mønster": a new random heart ($lib/editor/randomHeart), one picture over
 	 * the whole square, its grid size and three symmetry rows drawn with it, in one Fortryd step. The rows
-	 * are set with the cuts already symmetric, so the effect that applies a newly chosen row has nothing
-	 * to do; the view is fitted to the heart's size.
+	 * are set as they are (not by `setSymmetry`): the cuts keep to them already. The view is fitted to the
+	 * heart's size.
 	 */
 	function drawRandomHeart() {
 		const heart = randomHeart();
@@ -1379,9 +1372,9 @@
 		escherTab = false;
 		gridSize = heart.gridSize;
 		weaveParity = heart.weaveParity;
-		withinCurveMode = prevWithinCurveMode = heart.symmetry.withinCurveMode;
-		withinLobeMode = prevWithinLobeMode = heart.symmetry.withinLobeMode;
-		betweenLobesMode = prevBetweenLobesMode = heart.symmetry.betweenLobesMode;
+		withinCurveMode = heart.symmetry.withinCurveMode;
+		withinLobeMode = heart.symmetry.withinLobeMode;
+		betweenLobesMode = heart.symmetry.betweenLobesMode;
 		fingers = heart.fingers;
 		selectedFingerId = null;
 		selectedAnchors = [];
@@ -3271,9 +3264,6 @@
 				withinCurveMode = detected.withinCurveMode;
 				withinLobeMode = detected.withinLobeMode;
 				betweenLobesMode = canSymmetryBetweenLobes() ? detected.betweenLobesMode : 'off';
-				prevWithinCurveMode = withinCurveMode;
-				prevWithinLobeMode = withinLobeMode;
-				prevBetweenLobesMode = betweenLobesMode;
 			}
 			// A heart drawn from a tile opens on the Escher tab, its tile taken up: the one it was saved
 			// with, if the cuts are still the tile's, else one the cuts are (a heart like the gallery's Dag
@@ -3295,92 +3285,87 @@
 			} else if (initialEscherTab) openSymmetryTab('escher');
 		});
 
-	$effect(() => {
-		// Only apply when symmetry is enabled/changed (turning off does not mutate).
-		const shouldApply =
-			(withinCurveMode !== 'off' && withinCurveMode !== prevWithinCurveMode) ||
-			(withinLobeMode !== 'off' && withinLobeMode !== prevWithinLobeMode) ||
-			(betweenLobesMode !== 'off' && betweenLobesMode !== prevBetweenLobesMode);
+	/** Every cut as the rows now make it: one side of each pair copied onto the other. */
+	function symmetricFingers(): Finger[] {
+		let updated = fingers.map(cloneFinger);
 
-		const oldSymmetry = {
-			withinCurveMode: prevWithinCurveMode,
-			withinLobeMode: prevWithinLobeMode,
-			betweenLobesMode: prevBetweenLobesMode
-		};
+		if (symmetryWithinCurve) {
+			updated = updated.map((f) => applyWithinCurveSymmetry(f));
+		}
 
-		prevWithinCurveMode = withinCurveMode;
-		prevWithinLobeMode = withinLobeMode;
-		prevBetweenLobesMode = betweenLobesMode;
-
-		if (!shouldApply) return;
-		if (!didInit) return;
-
-		/** Every cut as the rows now make it: one side of each pair copied onto the other. */
-		const symmetricFingers = (): Finger[] => {
-			let updated = fingers.map(cloneFinger);
-
-			if (symmetryWithinCurve) {
-				updated = updated.map((f) => applyWithinCurveSymmetry(f));
+		if (symmetryBetweenLobes) {
+			if (!canSymmetryBetweenLobes()) {
+				betweenLobesMode = 'off';
+			} else {
+				const leftFingers = updated.filter((f) => f.lobe === 'left');
+				for (const leftFinger of leftFingers) {
+					const idx = boundaryIndexFromId(leftFinger.id);
+					const rightId = idForBoundary('right', mateBoundaryIndexBetweenLobes('left', idx));
+					const rightIdx = updated.findIndex((f) => f.id === rightId);
+					if (rightIdx >= 0) {
+						updated[rightIdx] = mapFinger(
+							leftFinger,
+							rightId,
+							'right',
+							(p) => swapPointBetweenLobesWithMode(p, antiBetweenLobes),
+							antiBetweenLobes
+						);
+					}
+				}
 			}
+		}
 
-			if (symmetryBetweenLobes) {
-				if (!canSymmetryBetweenLobes()) {
-					betweenLobesMode = 'off';
-				} else {
-					const leftFingers = updated.filter((f) => f.lobe === 'left');
-					for (const leftFinger of leftFingers) {
-						const idx = boundaryIndexFromId(leftFinger.id);
-						const rightId = idForBoundary('right', mateBoundaryIndexBetweenLobes('left', idx));
-						const rightIdx = updated.findIndex((f) => f.id === rightId);
-						if (rightIdx >= 0) {
-							updated[rightIdx] = mapFinger(
-								leftFinger,
-								rightId,
-								'right',
-								(p) => swapPointBetweenLobesWithMode(p, antiBetweenLobes),
-								antiBetweenLobes
+		if (symmetryWithinLobe) {
+			for (const lobe of ['left', 'right'] as const) {
+				const internal = boundaryCurveCountForLobe(lobe);
+				const lobeFingers = updated.filter((f) => f.lobe === lobe);
+				for (const finger of lobeFingers) {
+					const idx = boundaryIndexFromId(finger.id);
+					const mirrorIdx = mirrorBoundaryIndex(lobe, idx);
+					if (mirrorIdx > idx && mirrorIdx >= 0 && mirrorIdx < internal) {
+						const mirrorId = idForBoundary(lobe, mirrorIdx);
+						const mirrorArrayIdx = updated.findIndex((f) => f.id === mirrorId);
+						if (mirrorArrayIdx >= 0) {
+							updated[mirrorArrayIdx] = mapFinger(
+								finger,
+								mirrorId,
+								lobe,
+								(p) => mirrorPointWithinLobeWithMode(lobe, p, antiWithinLobe),
+								antiWithinLobe
 							);
 						}
 					}
 				}
 			}
+		}
 
-			if (symmetryWithinLobe) {
-				for (const lobe of ['left', 'right'] as const) {
-					const internal = boundaryCurveCountForLobe(lobe);
-					const lobeFingers = updated.filter((f) => f.lobe === lobe);
-					for (const finger of lobeFingers) {
-						const idx = boundaryIndexFromId(finger.id);
-						const mirrorIdx = mirrorBoundaryIndex(lobe, idx);
-						if (mirrorIdx > idx && mirrorIdx >= 0 && mirrorIdx < internal) {
-							const mirrorId = idForBoundary(lobe, mirrorIdx);
-							const mirrorArrayIdx = updated.findIndex((f) => f.id === mirrorId);
-							if (mirrorArrayIdx >= 0) {
-								updated[mirrorArrayIdx] = mapFinger(
-									finger,
-									mirrorId,
-									lobe,
-									(p) => mirrorPointWithinLobeWithMode(lobe, p, antiWithinLobe),
-									antiWithinLobe
-								);
-							}
-						}
-					}
-				}
-			}
+		return updated;
+	}
 
-			return updated;
-		};
+	/**
+	 * The Normal tab's three symmetry rows set (`SymmetryRows`). A row turned on, or turned the other way,
+	 * makes every cut as all the rows now on make it (`symmetricFingers`), in one Fortryd step that also
+	 * takes the rows back; turning one off changes no cut. Not where that would make a red cut (GitHub
+	 * issue #4): the rows then stay as they were, and say why.
+	 */
+	function setSymmetry(next: { curve: SymmetryMode; lobe: SymmetryMode; lobes: SymmetryMode }) {
+		const oldSymmetry = { withinCurveMode, withinLobeMode, betweenLobesMode };
+		withinCurveMode = next.curve;
+		withinLobeMode = next.lobe;
+		betweenLobesMode = next.lobes;
+		const shouldApply =
+			(withinCurveMode !== 'off' && withinCurveMode !== oldSymmetry.withinCurveMode) ||
+			(withinLobeMode !== 'off' && withinLobeMode !== oldSymmetry.withinLobeMode) ||
+			(betweenLobesMode !== 'off' && betweenLobesMode !== oldSymmetry.betweenLobesMode);
+		if (!shouldApply) return;
 
 		const updated = symmetricFingers();
 		// Cuts that keep to the rows already stay as they are, with no Fortryd step for nothing.
 		if (sameCuts(updated, fingers)) return;
-		// A symmetry that would make a red cut is not turned on (GitHub issue #4): the rows go back to
-		// what they were, and say why.
 		if (makesRedCuts({ fingers, gridSize }, updated)) {
-			withinCurveMode = prevWithinCurveMode = oldSymmetry.withinCurveMode;
-			withinLobeMode = prevWithinLobeMode = oldSymmetry.withinLobeMode;
-			betweenLobesMode = prevBetweenLobesMode = oldSymmetry.betweenLobesMode;
+			withinCurveMode = oldSymmetry.withinCurveMode;
+			withinLobeMode = oldSymmetry.withinLobeMode;
+			betweenLobesMode = oldSymmetry.betweenLobesMode;
 			noteRefused(tr('editorSymmetryRefused'));
 			return;
 		}
@@ -3388,7 +3373,7 @@
 		before.symmetry = oldSymmetry;
 		fingers = updated;
 		pushUndo(before);
-	});
+	}
 
 	// Development check: in the Escher tab every change to the cuts goes through the tile, so the
 	// heart's inner cuts are exactly the ones the tile makes. A tool that edits a cut on its own
@@ -4362,11 +4347,7 @@
 								{lang}
 								compact={isMobileLayout}
 								value={{ curve: withinCurveMode, lobe: withinLobeMode, lobes: betweenLobesMode }}
-								onChange={(next) => {
-									withinCurveMode = next.curve;
-									withinLobeMode = next.lobe;
-									betweenLobesMode = next.lobes;
-								}}
+								onChange={setSymmetry}
 								disabled={{ lobes: !canSymmetryBetweenLobes() }}
 							/>
 							<!-- As in the Escher tab: the size, and a way to start over. -->

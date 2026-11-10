@@ -596,6 +596,39 @@ describe('the symmetry rows', () => {
 		expect(undoable || JSON.stringify(h.fingers) === once).toBe(true);
 	});
 
+	it('turned on, copy one side of each pair onto the other, in one Fortryd step that takes the row back too', () => {
+		const h = render();
+		// R-1 bent by a node dragged aside: the lobes no longer mirror each other
+		const at = midpoint(h.fingers.find((f) => f.id === 'R-1')!);
+		for (let i = 0; i < 2; i++) {
+			send(h.path('R-1'), 'pointerdown', at);
+			send(h.svg, 'pointerup', at);
+		}
+		const node = h.fingers.find((f) => f.id === 'R-1')!.segments[1]!.p0;
+		send(h.handles()[1]!, 'pointerdown', node);
+		send(h.svg, 'pointermove', { x: node.x + 12, y: node.y });
+		send(h.svg, 'pointerup', { x: node.x + 12, y: node.y });
+		const drawn = JSON.stringify(h.fingers);
+		row(h, 'Symmetry between the two lobes', 'Mirrored: one side mirrors the other').click();
+		flushSync();
+		expect(chosen(h, 'Symmetry between the two lobes')).toBe('Mirrored: one side mirrors the other');
+		expect(JSON.stringify(h.fingers)).not.toBe(drawn);
+		// the left lobe's cuts copied onto the right's: R-1 is L-1's image, its node gone
+		expect(h.fingers.find((f) => f.id === 'R-1')!.segments).toHaveLength(1);
+		h.button('Undo').click();
+		flushSync();
+		expect(JSON.stringify(h.fingers)).toBe(drawn);
+		expect(chosen(h, 'Symmetry between the two lobes')).toBe('Free: each shaped on its own');
+		h.button('Redo').click();
+		flushSync();
+		expect(chosen(h, 'Symmetry between the two lobes')).toBe('Mirrored: one side mirrors the other');
+		// turned off again: no cut changes
+		const mirrored = JSON.stringify(h.fingers);
+		row(h, 'Symmetry between the two lobes', 'Free: each shaped on its own').click();
+		flushSync();
+		expect(JSON.stringify(h.fingers)).toBe(mirrored);
+	});
+
 	it("give a node type to the node's copies too", () => {
 		const h = render();
 		row(h, 'Symmetry between the two lobes', 'Mirrored: one side mirrors the other').click();
