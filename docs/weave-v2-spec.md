@@ -1,5 +1,8 @@
 # Woven hearts, format version 2 — specification
 
+> Historical in two places (checked 2026-11-10): the editor is plain SVG, with no Paper.js (§5), and a
+> refused drag does not snap back (§7): the point stops at, and slides along, the edge of where it may go (`nearestAllowed`).
+
 Status: agreed direction, implementation postponed (2026-09-07). This document is the
 reference for when the work starts. It replaces nothing yet; the site runs format 1.
 

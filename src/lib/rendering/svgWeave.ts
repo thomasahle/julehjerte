@@ -181,7 +181,8 @@ export function computeWeaveData(
 	// - Areas inside 2 strips (overlapping): not filled (left color shows through)
 	// - This creates the checkerboard weave effect
 
-	// Match Paper.js: left strips use parity 0, right strips use weaveParity
+	// Every other strip of each lobe: the left lobe's even ones, the right lobe's of
+	// weaveParity's parity, so weaveParity alone says which checks show which colour.
 	const leftStrips = buildStrips(fingers, 'left', 0);
 	const rightStrips = buildStrips(fingers, 'right', weaveParity);
 
