@@ -534,13 +534,6 @@ export class ExactModel {
       for (const c of mine) { const trial = bad.filter(d => d !== c); if (!embeddable(cycles, pairs(trial))) bad = trial; }
       // Whether segments embed depends only on the tokens they join, and a
       // token has one segment at most: the row takes every route between them.
-      if (globalThis.DBG_BAD) {
-        const ci = new Map(cycles.flatMap((c, k) => c.map((t, i) => [t, [k, i]])));
-        console.log('BADSET', cycles.map(c => c.length).join('/'), bad.map(c => {
-          const [, a, b] = this.cand.pair.get(c);
-          return `${ci.get(tokenKey(a)).join('.')}-${ci.get(tokenKey(b)).join('.')}`;
-        }).join('  '));
-      }
       out.push(['embedding', bad.flatMap(c => this.joining(c).map(v => [v, 1])), bad.length - 1]);
     }
     if (out.length) return out;
