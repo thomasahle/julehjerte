@@ -104,7 +104,7 @@ describe('the stored collection', () => {
 		}
 	});
 
-	it('keeps what it cannot read when it saves or deletes', () => {
+	it('keeps every other entry as it is when it saves or deletes', () => {
 		storage.setItem(USER_COLLECTION_KEY, `[42,{"id":"other","fingers":"later"},${TILE_JSON}]`);
 		saveUserDesign(heart(DESIGN_JSON));
 		expect(stored()).toBe(`[42,{"id":"other","fingers":"later"},${TILE_JSON},${versioned(DESIGN_JSON)}]`);
