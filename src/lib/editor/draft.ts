@@ -14,7 +14,8 @@
  *   * the stored draft is read **after mount**, never during render, so the
  *     server's markup and the browser's first markup agree;
  *   * anything that does not parse as a heart is treated as no draft at all,
- *     so a half-written or hand-edited value cannot break the editor;
+ *     so a half-written or hand-edited value, or one a later version of the
+ *     site wrote, cannot break the editor;
  *   * storage failures are tolerated. `localStorage` throws outright in a
  *     browser configured to block site data, so even *reaching* it is guarded;
  *     the editor then simply does not remember the draft.
@@ -23,11 +24,15 @@
  */
 
 import type { HeartDesign } from '$lib/types/heart';
-import { normalizeHeartDesign, serializeHeartDesign } from '$lib/utils/heartDesign';
+import { readableVersion } from '$lib/utils/formatVersion';
+import { decodeHeartDesign, encodeHeartDesign } from '$lib/utils/storedDesign';
 import { getLocalStorage, readStorage, removeStorage, writeStorage } from '$lib/utils/safeStorage';
 
 /** localStorage key. Holds one JSON object, shaped like `StoredDraft` below. */
 export const DRAFT_KEY = 'paperheart.draft';
+
+/** The version of the stored draft's form; drafts from before versioning have none. */
+export const DRAFT_VERSION = 1;
 
 /**
  * Where the heart in the draft came from. `'blank'` for an empty editor,
@@ -50,10 +55,32 @@ export type EditorDraft = {
 };
 
 type StoredDraft = {
+	v?: unknown;
 	design?: unknown;
 	source?: unknown;
 	savedAt?: unknown;
 };
+
+/**
+ * The draft in any stored form, or null when it is not a heart we can load,
+ * a draft written by a later site than this one included.
+ */
+export function decodeDraft(raw: unknown): EditorDraft | null {
+	if (!raw || typeof raw !== 'object') return null;
+
+	const { v, design: rawDesign, source, savedAt } = raw as StoredDraft;
+	if (!readableVersion(v, DRAFT_VERSION)) return null;
+	// The same validation the collection uses, so a draft can hold nothing the
+	// collection could not hold either.
+	const design = decodeHeartDesign(rawDesign);
+	if (!design) return null;
+
+	return {
+		design,
+		source: typeof source === 'string' && source ? source : 'blank',
+		savedAt: typeof savedAt === 'number' && Number.isFinite(savedAt) ? savedAt : 0
+	};
+}
 
 /**
  * The stored draft, or null when there is none, when storage fails, or when
@@ -69,19 +96,7 @@ export function readDraft(storage: Storage | null = getLocalStorage()): EditorDr
 	} catch {
 		return null;
 	}
-	if (!raw || typeof raw !== 'object') return null;
-
-	const { design: rawDesign, source, savedAt } = raw as StoredDraft;
-	// The same validation the collection uses, so a draft can hold nothing the
-	// collection could not hold either.
-	const design = normalizeHeartDesign(rawDesign);
-	if (!design) return null;
-
-	return {
-		design,
-		source: typeof source === 'string' && source ? source : 'blank',
-		savedAt: typeof savedAt === 'number' && Number.isFinite(savedAt) ? savedAt : 0
-	};
+	return decodeDraft(raw);
 }
 
 /** Replace the draft. A storage failure is ignored: it only costs persistence. */
@@ -90,7 +105,8 @@ export function writeDraft(draft: EditorDraft, storage: Storage | null = getLoca
 	writeStorage(
 		DRAFT_KEY,
 		JSON.stringify({
-			design: serializeHeartDesign(draft.design),
+			v: DRAFT_VERSION,
+			design: encodeHeartDesign(draft.design),
 			source: draft.source,
 			savedAt: draft.savedAt
 		}),

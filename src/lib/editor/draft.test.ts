@@ -3,7 +3,7 @@ import type { Finger, HeartDesign, Vec } from '$lib/types/heart';
 import { getCenteredRectParams } from '$lib/utils/overlapRect';
 import { normalizeHeartDesign, serializeHeartDesign } from '$lib/utils/heartDesign';
 import { DESIGN_JSON, DRAFT_JSON } from '$lib/utils/fixtures/storedForms';
-import { DRAFT_KEY, clearDraft, gallerySource, readDraft, writeDraft } from './draft';
+import { DRAFT_KEY, DRAFT_VERSION, clearDraft, decodeDraft, gallerySource, readDraft, writeDraft, type EditorDraft } from './draft';
 
 /** A minimal in-memory Storage. */
 function fakeStorage(initial: Record<string, string> = {}): Storage {
@@ -172,14 +172,52 @@ describe('clearDraft', () => {
 	});
 });
 
+/** The draft's reader until 10 Nov 2026 (`readDraft`, given what was stored). */
+function draftReaderBefore(stored: string): EditorDraft | null {
+	let raw: unknown;
+	try {
+		raw = JSON.parse(stored);
+	} catch {
+		return null;
+	}
+	if (!raw || typeof raw !== 'object') return null;
+	const { design: rawDesign, source, savedAt } = raw as { design?: unknown; source?: unknown; savedAt?: unknown };
+	const design = normalizeHeartDesign(rawDesign);
+	if (!design) return null;
+	return {
+		design,
+		source: typeof source === 'string' && source ? source : 'blank',
+		savedAt: typeof savedAt === 'number' && Number.isFinite(savedAt) ? savedAt : 0
+	};
+}
+
 // What a browser holds today must keep opening as the draft it was.
 describe('the stored draft', () => {
 	const heart = () => normalizeHeartDesign(JSON.parse(DESIGN_JSON))!;
 
-	it('is written as the site wrote it on 10 Nov 2026', () => {
+	it('is written as the site wrote it on 10 Nov 2026, the draft and its heart each with its version', () => {
 		const storage = fakeStorage();
 		writeDraft({ design: heart(), source: 'gallery:stjerne', savedAt: 1_762_790_400_000 }, storage);
-		expect(storage.getItem(DRAFT_KEY)).toBe(DRAFT_JSON);
+		expect(DRAFT_VERSION).toBe(1);
+		expect(storage.getItem(DRAFT_KEY)).toBe(DRAFT_JSON.replace('{"design":{', '{"v":1,"design":{"v":1,'));
+	});
+
+	it('is written as the reader from before versioning reads it', () => {
+		const storage = fakeStorage();
+		writeDraft({ design: heart(), source: 'gallery:stjerne', savedAt: 1_762_790_400_000 }, storage);
+		expect(draftReaderBefore(storage.getItem(DRAFT_KEY)!)).toEqual(readDraft(fakeStorage({ [DRAFT_KEY]: DRAFT_JSON })));
+	});
+
+	it('reads any stored form as the reader from before versioning did', () => {
+		const stored = JSON.parse(DRAFT_JSON);
+		for (const raw of [stored, { ...stored, source: 42, savedAt: 'now' }, { ...stored, design: {} }, { ...stored, design: null }, {}, [], 'draft', null])
+			expect(decodeDraft(raw), JSON.stringify(raw)).toEqual(draftReaderBefore(JSON.stringify(raw)));
+	});
+
+	it('finds no draft where a later site wrote the draft, or its heart', () => {
+		const stored = JSON.parse(DRAFT_JSON);
+		for (const later of [{ ...stored, v: 2 }, { ...stored, design: { ...stored.design, v: 2 } }])
+			expect(readDraft(fakeStorage({ [DRAFT_KEY]: JSON.stringify(later) }))).toBeNull();
 	});
 
 	it('reads what the site wrote', () => {
