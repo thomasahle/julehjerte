@@ -117,10 +117,49 @@ function pastMotif(path: Point[], cuts: Point[], room: number, limit: number, sa
 	return kept ? out : path;
 }
 
-export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
-	routing: 'chain' | 'practical' | 'separated' = 'chain', fitBorder = false, bentSpokes = false,
-	contacts?: { tilt: number; invert: boolean }, laneSplit?: number, gap = 0, bendLegs = false, holdLegs = false, routeMargin = 0, avoid = false,
-	wholeLanes = false, stepped = false, everyWay = false, walled = false, nested = false) {
+/** How `generateCornerChecks` divides the motif among its three lanes and
+ * reaches it there. */
+export type CornerOptions = {
+	/** A lane's parts of the motif joined in one chain, or each reached by the
+	 * practical two-port routes; separated, by those routes with the parts
+	 * off the middle given to the side lanes. */
+	routing?: 'chain' | 'practical' | 'separated';
+	/** The outer strips narrow to the room the motif leaves. */
+	fitBorder?: boolean;
+	/** The practical routes' spokes bent (see `bentSpoke`). */
+	bentSpokes?: boolean;
+	/** Near parts joined where they come closest, the line of contact tilted
+	 * and its sheets swapped as given. */
+	contacts?: { tilt: number; invert: boolean };
+	/** One connected motif divided among the three lanes, at this share of
+	 * its width from either side. */
+	laneSplit?: number;
+	/** The space set round the motif (the request's `gap`). */
+	gap?: number;
+	/** A side lane's leg to a checked tip bent out past the motif. */
+	bendLegs?: boolean;
+	/** The legs' turns and ends kept a paper's width inside the outer strips. */
+	holdLegs?: boolean;
+	/** The motif's connections kept this much further off. */
+	routeMargin?: number;
+	/** A lane's approaches pass the other lanes' parts of the motif. */
+	avoid?: boolean;
+	/** An empty lane is one leg from tip to tip (with `bendLegs`). */
+	wholeLanes?: boolean;
+	/** A side lane reaches its parts of the motif one after the other. */
+	stepped?: boolean;
+	/** The motif reached round its parts and across its counters (see
+	 * `withEveryWay`); `walled` and `nested` add further such ways. */
+	everyWay?: boolean;
+	walled?: boolean;
+	nested?: boolean;
+};
+
+export function generateCornerChecks(rings: Ring[], size = 70, scale = .7, {
+	routing = 'chain', fitBorder = false, bentSpokes = false, contacts, laneSplit, gap = 0, bendLegs = false,
+	holdLegs = false, routeMargin = 0, avoid = false, wholeLanes = false, stepped = false, everyWay = false,
+	walled = false, nested = false
+}: CornerOptions = {}) {
 	const points = rings.flat();
 	if (!points.length) throw new ConstructionError('empty', 'No contour');
 	const artwork = rings.map(r => r.map(([x, y]) => uprightToSheet([x * size * scale, y * size * scale])));

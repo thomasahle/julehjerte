@@ -9,14 +9,31 @@ import { gridClearance } from '$lib/geometry/clearance';
 
 const contoursOf = (node: Contour): Ring[] => [node.ring, ...node.children.flatMap(contoursOf)];
 
+/** How `generateComponentFigure` lays the islands in its grid. */
+export type ComponentOptions = {
+	style?: 'rays' | 'check';
+	/** What gives each cell's islands their connections. */
+	route?: typeof fourPortMotif;
+	columns?: 2 | 3 | 4;
+	/** Strips the frame adds round the grid, counted in its clearance. */
+	extraStrips?: number;
+	/** Neighbouring cells may also meet midway across a wide gap. */
+	wideContacts?: boolean;
+	/** Passed to the frame's legs (see `connectCellGrid`). */
+	spread?: boolean;
+	/** Padding of the fitted envelope, in local clearance units. */
+	envelopePadding?: number;
+};
+
 /** Give separate motif islands their own cells instead of clipping all of them
  * with the same rectangular dividers. Counters stay with their parent island.
  * Divide the largest islands until every row is full. A wider grid can keep
  * small neighbouring islands separate while sharing a larger body below them.
  * Optional fitted-envelope padding is measured in local clearance units. */
-export function generateComponentFigure(rings: Ring[], frame: Frame | OpenFrame = 'circle', size = 70, scale = .7,
-	style: 'rays' | 'check' = 'rays', route = fourPortMotif, columns: 2 | 3 | 4 = 2, extraStrips = 0,
-	wideContacts = false, spread = true, envelopePadding = 0) {
+export function generateComponentFigure(rings: Ring[], frame: Frame | OpenFrame = 'circle', size = 70, scale = .7, {
+	style = 'rays', route = fourPortMotif, columns = 2, extraStrips = 0, wideContacts = false, spread = true,
+	envelopePadding = 0
+}: ComponentOptions = {}) {
 	const upright = rings.map(r => r.map(([x, y]): Point => [
 		x * size * scale, y * size * scale
 	]));

@@ -358,21 +358,38 @@ export function panelSeamGuard(gates: Point[], bounds: number[], internal: boole
 	};
 }
 
+/** How `generatePanelFigure` divides the motif into panels and joins them. */
+export type PanelOptions = {
+	columns?: number;
+	rows?: number;
+	style?: 'rays' | 'check';
+	/** Passed to the frame's legs (see `connectCellGrid`). */
+	spread?: boolean;
+	/** What gives each panel's part of the motif its connections. */
+	route?: typeof fourPortMotif;
+	/** How a panel's gates are placed: at its part's support, where a ray
+	 * from the gate meets that part, or on the seams of a filled motif or of
+	 * its separate components. */
+	attachments?: 'support' | 'ray' | 'filled' | 'components';
+	/** The seams placed by the motif (see `panelDividers`), not evenly. */
+	adaptive?: boolean;
+	/** The slope of the horizontal seams. */
+	shear?: number;
+	/** Turns of the four directions an open frame's outer gates look in. */
+	angleOffsets?: readonly [number, number, number, number];
+	/** Where the seams of two by two panels cross. */
+	junction?: Point;
+};
+
 export function generatePanelFigure(
 	rings: Ring[],
 	frame: Frame | OpenFrame | undefined,
 	size: number,
 	scale: number,
-	count = 2,
-	style: 'rays' | 'check' = 'rays',
-	rows = 1,
-	spread = false,
-	route = fourPortMotif,
-	attachments: 'support' | 'ray' | 'filled' | 'components' = 'support',
-	adaptive = false,
-	shear = 0,
-	angleOffsets: readonly [number, number, number, number] = [0, 0, 0, 0],
-	junction?: Point
+	{
+		columns: count = 2, style = 'rays', rows = 1, spread = false, route = fourPortMotif, attachments = 'support',
+		adaptive = false, shear = 0, angleOffsets = [0, 0, 0, 0], junction
+	}: PanelOptions = {}
 ) {
 	// Without a centre panel, the frame is open: its legs meet the paper edges.
 	const open = typeof frame === 'string' ? undefined : frame ?? FITTED;

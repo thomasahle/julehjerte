@@ -23,9 +23,12 @@ export function generateLayeredFigure(rings: Ring[], size = 70, scale = .7,
 		junction = [median(0), median(1)];
 	}
 	const result = panels
-		? generatePanelFigure(shapes, undefined, size, 1, panels.columns, 'check', panels.rows, false, route,
-			panels.counterSeams ? 'components' : panels.filled ? 'filled' : 'ray', panels.adaptive, panels.shear, undefined, junction)
-		: generateFittedFigure(shapes, size, 1, route);
+		? generatePanelFigure(shapes, undefined, size, 1, {
+			columns: panels.columns, style: 'check', rows: panels.rows, route,
+			attachments: panels.counterSeams ? 'components' : panels.filled ? 'filled' : 'ray',
+			adaptive: panels.adaptive, shear: panels.shear, junction
+		})
+		: generateFittedFigure(shapes, size, 1, { route });
 	if (panels) {
 		// The fitted recipe already includes this band. Panel routing must
 		// retain it too, so decomposing the medallion preserves both borders.

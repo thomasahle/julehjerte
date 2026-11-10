@@ -92,7 +92,7 @@ describe('complete motif frames', () => {
   const rings = normalizeContours(crown.contours as Ring[]);
   expect(hasThreeCounterLanes(rings)).toBe(true);
   expect(hasThreeCounterLanes(normalizeContours(cat.contours as Ring[]))).toBe(false);
-  const result = generateCornerChecks(rings, 70, .7, 'separated', true, false, undefined, .25);
+  const result = generateCornerChecks(rings, 70, .7, { routing: 'separated', fitBorder: true, laneSplit: .25 });
   expect(result.artwork).toEqual(rings.map(r => r.map(([x, y]) => uprightToSheet([x * 70 * .7, y * 70 * .7]))));
   expect(result.geometry.A_overlap_paths).toHaveLength(5);
   expect(result.geometry.B_overlap_paths).toHaveLength(5);
@@ -379,7 +379,7 @@ describe('complete motif frames', () => {
 describe('frames from real hearts', () => {
  const corners: Point[] = [[0, 0], [100, 0], [100, 100], [0, 100]];
  it('points a wedge from each corner at the motif, stopping a gap short of it', () => {
-  const result = generateFittedFigure(star.contours as Ring[], 70, .7, undefined, undefined, 0, WEDGES);
+  const result = generateFittedFigure(star.contours as Ring[], 70, .7, { open: WEDGES });
   const legs = result.edges.filter(e => e.kind === 'frame');
   expect(legs).toHaveLength(8);
   for (const [i, corner] of corners.entries()) {
@@ -986,10 +986,10 @@ describe('frames from real hearts', () => {
   // the body, where a way from them would branch its outline. Past the
   // corners of the body's hull, short of the frame's legs, the gate beside
   // the tail reaches it.
-  const build = (legs: boolean) => () => generateFittedFigure(normalizeContours(swan.contours as Ring[]), 70, .7, (...args) => {
+  const build = (legs: boolean) => () => generateFittedFigure(normalizeContours(swan.contours as Ring[]), 70, .7, { route: (...args) => {
    args[7] = { ...args[7], practical: true, compound: true, nested: true, around: true, legs };
    return fourPortMotif(...args);
-  }, undefined, 0, FITTED, true);
+  }, open: FITTED, symmetric: true });
   expect(build(false)).toThrow(ConstructionError);
   expect(build(true)().edges.length).toBeGreaterThan(0);
  }, 60000);
@@ -1054,10 +1054,10 @@ describe('frames from real hearts', () => {
   // whole heart, in Stor silhuet too, takes minutes).
   const contours = brandSignal.contours as Ring[];
   const sized = fillSquare({ mode: 'figure', name: 'Signal', contours, colors, style: 'fitted', frame: 'circle', frameSize: 70, scale: .7, gap: 3 });
-  const construction = withRemaking(() => generateFittedFigure(contours, sized.frameSize, sized.scale, (...args) => {
+  const construction = withRemaking(() => generateFittedFigure(contours, sized.frameSize, sized.scale, { route: (...args) => {
    args[7] = { ...args[7], practical: true, compound: true, nested: true, around: true, legs: true, sweep: 1 };
    return fourPortMotif(...args);
-  }, undefined, 0, { ...FITTED, gap: 3 }, true));
+  }, open: { ...FITTED, gap: 3 }, symmetric: true }));
   expect(construction.edges.length).toBeGreaterThan(0);
  }, 60000);
  slow('builds a steam engine in Cirkel · Lige store tern, its rod and wheel reached up the slit into its disc', () => {

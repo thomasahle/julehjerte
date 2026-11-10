@@ -20,7 +20,7 @@ import sailboat from '../../../static/generator/motifs/ph-sailboat.json';
 
 it('changes fitted attachments without moving the silhouette or adding a surrounding shape', () => {
 	const rings = normalizeContours(moonStars.contours as Ring[]);
-	const c = generateFittedFigure(rings, 70, .7, fourPortMotif, [.15, -.15, .15, -.15]);
+	const c = generateFittedFigure(rings, 70, .7, { angleOffsets: [.15, -.15, .15, -.15] });
 	const expected = rings.map(r => r.map(([x, y]) => uprightToSheet([x * 49, y * 49])));
 	for (const [r, ring] of c.artwork.entries()) for (const [i, point] of ring.entries())
 		for (const axis of [0, 1]) expect(point[axis]).toBeCloseTo(expected[r][i][axis], 12);
@@ -30,7 +30,7 @@ it('changes fitted attachments without moving the silhouette or adding a surroun
 
 it('leaves space for fitted shared joins without moving either sailboat part', () => {
 	const rings = normalizeContours(sailboat.contours as Ring[]);
-	const c = generateFittedFigure(rings, 70, .7, fourPortMotif, undefined, 2);
+	const c = generateFittedFigure(rings, 70, .7, { padding: 2 });
 	const expected = rings.map(r => r.map(([x, y]) => uprightToSheet([x * 49, y * 49])));
 	for (const [r, ring] of c.artwork.entries()) for (const [i, point] of ring.entries())
 		for (const axis of [0, 1]) expect(point[axis]).toBeCloseTo(expected[r][i][axis], 12);

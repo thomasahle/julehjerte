@@ -149,9 +149,28 @@ export function fittedPicture(rings: Ring[], size = 70, scale = .7, open: OpenFr
 	return out;
 }
 
-export function generateFittedFigure(rings: Ring[], size = 70, scale = .7, route = fourPortMotif,
-	angleOffsets: readonly [number, number, number, number] = [0, 0, 0, 0], padding = 0, open: OpenFrame = FITTED,
-	symmetric: GateTies = true, axisGap = 0, onMiddle = false) {
+/** How `generateFittedFigure` places its four gates (see `fittedGates`) and
+ * reaches the motif from them. */
+export type FittedOptions = {
+	/** What gives the motif its connections to the gates. */
+	route?: typeof fourPortMotif;
+	/** Turns of the four diagonal directions the gates look in. */
+	angleOffsets?: readonly [number, number, number, number];
+	/** How far out the gates stand, in clearance units. */
+	padding?: number;
+	open?: OpenFrame;
+	/** How separate extremes that tie share a gate (see `GateTies`). */
+	symmetric?: GateTies;
+	/** How much further out the gates on the heart's middle stand. */
+	axisGap?: number;
+	/** The gates on the heart's middle meet the motif on the middle itself. */
+	onMiddle?: boolean;
+};
+
+export function generateFittedFigure(rings: Ring[], size = 70, scale = .7, {
+	route = fourPortMotif, angleOffsets = [0, 0, 0, 0], padding = 0, open = FITTED, symmetric = true, axisGap = 0,
+	onMiddle = false
+}: FittedOptions = {}) {
 	const artwork = placeFitted(rings, size, scale);
 	const points = artwork.flat();
 	if (!points.length) throw new ConstructionError('empty', 'No contour');

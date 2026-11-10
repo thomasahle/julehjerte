@@ -2393,7 +2393,7 @@ function retryCornerLanes(request: GeneratorRequest, curveFitter: ReturnType<typ
 	for (const [split, routing] of [[.25, 'separated'], [1 / 3, 'chain']] as const) {
 		let construction: Construction;
 		try {
-			construction = generateCornerChecks(rings, request.frameSize, request.scale, routing, true, false, undefined, split, request.gap);
+			construction = generateCornerChecks(rings, request.frameSize, request.scale, { routing, fitBorder: true, laneSplit: split, gap: request.gap });
 		} catch (error) {
 			refusal(error);
 			continue;
@@ -2430,8 +2430,8 @@ const CORNER_LAYOUTS = [
 function retryBentCornerLegs(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
 	if (request.mode !== 'figure' || request.style !== 'corners') return;
 	for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) try {
-		const construction = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes,
-			undefined, undefined, request.gap, true);
+		const construction = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale,
+			{ routing, fitBorder, bentSpokes, gap: request.gap, bendLegs: true });
 		if (!construction.bentLegs || routing === 'separated' && !construction.separated || fitBorder && !construction.borderAdjusted) continue;
 		return improveSharedConnections(finishConstruction(request, construction, 'silhouette', undefined, curveFitter));
 	} catch (error) {
@@ -2449,7 +2449,7 @@ function retryChainContacts(request: GeneratorRequest, curveFitter: ReturnType<t
 	let best: GeneratorResult | undefined;
 	for (const tilt of [-.08, .08]) for (const invert of [false, true]) try {
 		const construction = generateCornerChecks(rings, request.frameSize, request.scale,
-			'chain', true, false, { tilt, invert }, undefined, request.gap);
+			{ routing: 'chain', fitBorder: true, contacts: { tilt, invert }, gap: request.gap });
 		let candidate: GeneratorResult;
 		try {
 			candidate = finishConstruction(request, construction, 'silhouette', undefined, curveFitter);
@@ -2487,7 +2487,7 @@ function retryFittedComponentEnvelope(request: GeneratorRequest, curveFitter: Re
 		let construction: Construction;
 		try {
 			construction = generateComponentFigure(rings, open, request.frameSize, request.scale,
-				'check', route, columns, 0, true, true, padding);
+				{ style: 'check', route, columns, wideContacts: true, envelopePadding: padding });
 		} catch (error) {
 			refusal(error);
 			continue;
@@ -2523,7 +2523,7 @@ function retryFittedGateClearance(request: GeneratorRequest, curveFitter: Return
 	for (const balanced of symmetric ? [true, false] : [false]) for (const padding of [2, 3]) try {
 		if (!balanced && symmetric && best) return best;
 		const construction = generateFittedFigure(rings, request.frameSize, request.scale,
-			fourPortMotif, undefined, padding, open, balanced);
+			{ padding, open, symmetric: balanced });
 		const result = improveSharedConnections(finishConstruction(request, construction, 'silhouette', undefined, curveFitter));
 		const margin = intersectionMarginPx(inferOverlapRect(result.design.fingers, result.design.gridSize),
 			gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
@@ -2548,7 +2548,7 @@ function retrySunburstComponents(request: GeneratorRequest, curveFitter: ReturnT
 	let best: GeneratorResult | undefined;
 	for (const columns of [4, 3, 2] as const) for (const route of [fourPortMotif, balancedFourPortMotif]) try {
 		const inner = generateComponentFigure(rings, 'circle', size * (request.crown ?? .8), request.scale ?? .7,
-			'check', route, columns, 2, true, false), outer = sunburstBorder(inner, size, request.crown);
+			{ style: 'check', route, columns, extraStrips: 2, wideContacts: true, spread: false }), outer = sunburstBorder(inner, size, request.crown);
 		const margin = gridClearance(outer.geometry.A_overlap_paths.length + 1,
 			outer.geometry.B_overlap_paths.length + 1);
 		const leads = inner.edges.filter(e => e.kind === 'frame' &&
@@ -2584,7 +2584,7 @@ function retrySunburstPanels(request: GeneratorRequest, curveFitter: ReturnType<
 		// 'check' selects axial frame projections; sunburstBorder supplies
 		// the same outer circular rays, without changing either circle.
 		const inner = generatePanelFigure(rings, 'circle', size * (request.crown ?? .8), request.scale ?? .7,
-			columns, 'check', rows, false, route, 'components');
+			{ columns, style: 'check', rows, route, attachments: 'components' });
 		const result = improveSharedConnections(finishConstruction(request, sunburstBorder(inner, size, request.crown),
 			'nested', undefined, curveFitter)), design = result.design;
 		const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
@@ -2799,7 +2799,7 @@ function retryWideComponentContacts(request: GeneratorRequest, curveFitter: Retu
 	let best: GeneratorResult | undefined;
 	for (const columns of [4, 3, 2] as const) for (const route of [fourPortMotif, balancedFourPortMotif]) try {
 		const inner = generateComponentFigure(rings, frame, sunburst ? size * (request.crown ?? .8) : size,
-			scale, style, route, columns, sunburst ? 2 : 0, true);
+			scale, { style, route, columns, extraStrips: sunburst ? 2 : 0, wideContacts: true });
 		const construction = sunburst ? sunburstBorder(inner, size, request.crown) : inner;
 		const result = improveSharedConnections(finishConstruction(request, construction,
 			open ? 'silhouette' : 'nested', undefined, curveFitter));
@@ -2835,7 +2835,7 @@ function retryFigureIslandPorts(request: GeneratorRequest, curveFitter: ReturnTy
 			return fourPortMotif(...args);
 		};
 		const inner = style === 'fitted' || style === 'wedges' || style === 'silhouette'
-			? generateFittedFigure(rings, size, scale, route, undefined, 0, openFrame(request), balanced)
+			? generateFittedFigure(rings, size, scale, { route, open: openFrame(request), symmetric: balanced })
 			: generateFourPortFigure(rings, sunburst ? 'circle' : request.frame,
 				sunburst ? size * (request.crown ?? .8) : size, scale, sunburst ? 'rays' : style, route, sunburst ? 2 : 0);
 		const construction = sunburst ? sunburstBorder(inner, size, request.crown) : inner;
@@ -2864,7 +2864,7 @@ function retryFittedSupports(request: GeneratorRequest, curveFitter: ReturnType<
 	// A motif that is its own mirror image turns the gates beside its middle
 	// alike first, with tied tips sharing their gates (see `SYMMETRIC_GATES`).
 	if (mirrorSymmetric(rings)) for (const { ties = true, angles, axisGap, onMiddle } of SYMMETRIC_GATES) try {
-		const construction = generateFittedFigure(rings, request.frameSize, request.scale, fourPortMotif, angles, 0, open, ties, axisGap, onMiddle);
+		const construction = generateFittedFigure(rings, request.frameSize, request.scale, { angleOffsets: angles, open, symmetric: ties, axisGap, onMiddle });
 		const key = JSON.stringify(construction.geometry);
 		if (seen.has(key)) continue;
 		seen.add(key);
@@ -2878,7 +2878,7 @@ function retryFittedSupports(request: GeneratorRequest, curveFitter: ReturnType<
 	for (const offset of [.15, -.15, .3, -.3])
 	for (const signs of [[1, 1, 1, 1], [1, -1, 1, -1], [1, -1, -1, 1], [1, 1, -1, -1]]) try {
 		const angles = signs.map(sign => sign * offset) as [number, number, number, number];
-		const construction = generateFittedFigure(rings, request.frameSize, request.scale, fourPortMotif, angles, 0, open, false);
+		const construction = generateFittedFigure(rings, request.frameSize, request.scale, { angleOffsets: angles, open, symmetric: false });
 		// Several directions may select the same vertices and complete cuts.
 		const key = JSON.stringify(construction.geometry);
 		if (seen.has(key)) continue;
@@ -2899,7 +2899,7 @@ function retryFittedSupports(request: GeneratorRequest, curveFitter: ReturnType<
 		...[.15, -.15].map(turn => [turn, turn, turn, turn])] as [number, number, number, number][]) try {
 		if (symmetric && best && offsets[0] === offsets[1]) break;
 		const construction = generatePanelFigure(rings, open, request.frameSize ?? 70,
-			request.scale ?? .7, 1, 'check', 2, false, fourPortMotif, 'support', false, 0, offsets);
+			request.scale ?? .7, { columns: 1, style: 'check', rows: 2, angleOffsets: offsets });
 		const result = improveSharedConnections(finishConstruction(request, construction, 'silhouette', undefined, curveFitter));
 		if (!best || fewerCutTips(cutTipCounts(result.design), cutTipCounts(best.design))) best = result;
 	} catch (error) {
@@ -3014,14 +3014,14 @@ function retryPanelLayouts(request: GeneratorRequest, curveFitter?: ReturnType<t
 		} else if (request.style === 'fitted' || request.style === 'wedges' || request.style === 'silhouette') {
 			recipe = 'silhouette';
 			recipes.push(() => generatePanelFigure(rings, openFrame(request), size, scale,
-				2, 'check', 1, false, fourPortMotif, 'ray', true));
+				{ columns: 2, style: 'check', rows: 1, attachments: 'ray', adaptive: true }));
 		} else {
 			const sunburst = request.style === 'sunburst', shape = sunburst ? 'circle' : (request.frame ?? 'circle'),
 				style = request.style === 'sunburst' ? 'rays' : (request.style ?? 'rays');
 			recipe = rings.length === 1 ? 'silhouette' : 'nested';
 			recipes.push(() => {
 				const result = generatePanelFigure(rings, shape, sunburst ? size * (request.crown ?? .8) : size,
-					scale, 1, style, 2, true, fourPortMotif, 'ray');
+					scale, { columns: 1, style, rows: 2, spread: true, attachments: 'ray' });
 				return sunburst ? sunburstBorder(result, size, request.crown) : result;
 			});
 		}
@@ -3792,8 +3792,10 @@ function generateUsingRecipes(request: GeneratorRequest,
 				// chain takes no other way).
 				if (ways && (routing !== 'practical' || bentSpokes)) continue;
 				try {
-					const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes,
-						undefined, undefined, request.gap, routeMargin > 0, holdLegs, routeMargin, avoid, wholeLanes, stepped, ways, walled, nested);
+					const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, {
+						routing, fitBorder, bentSpokes, gap: request.gap, bendLegs: routeMargin > 0, holdLegs, routeMargin, avoid,
+						wholeLanes, stepped, everyWay: ways, walled, nested
+					});
 					// Keep the established frame and skip another fit when moving
 					// separate components did not change any lane or connection.
 					if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
@@ -3855,8 +3857,8 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// How each finished heart was made, to make it again a paper's width off.
 		const made = new Map<GeneratorResult, (route: typeof fourPortMotif) => Construction>();
 		const single = (symmetric: GateTies, angles?: [number, number, number, number], axisGap = 0, onMiddle = false) => {
-			const construct = (route: typeof fourPortMotif) => generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, route,
-				angles, 0, open, symmetric, axisGap, onMiddle);
+			const construct = (route: typeof fourPortMotif) => generateFittedFigure(request.contours ?? [], request.frameSize, request.scale,
+				{ route, angleOffsets: angles, open, symmetric, axisGap, onMiddle });
 			for (const route of [fourPortMotif, originalFourPortMotif]) {
 				let constructed = false;
 				try {
@@ -3905,19 +3907,19 @@ function generateUsingRecipes(request: GeneratorRequest,
 		if (extreme) return held(extreme);
 		for (const [columns, rows] of [[2, 1], [2, 2], [3, 1], [3, 2], [3, 3], [4, 2]]) {
 			try {
-				return finish(generatePanelFigure(request.contours ?? [], open, request.frameSize ?? 70, request.scale ?? .7, columns, 'check', rows), 'silhouette');
+				return finish(generatePanelFigure(request.contours ?? [], open, request.frameSize ?? 70, request.scale ?? .7, { columns, style: 'check', rows }), 'silhouette');
 			} catch (error) {
 				refusal(error);
 			}
 		}
 		try {
-			return finish(generatePanelFigure(request.contours ?? [], open, request.frameSize ?? 70, request.scale ?? .7, 3, 'check', 1, false, fourPortMotif, 'support', true), 'silhouette');
+			return finish(generatePanelFigure(request.contours ?? [], open, request.frameSize ?? 70, request.scale ?? .7, { columns: 3, style: 'check', rows: 1, adaptive: true }), 'silhouette');
 		} catch (error) {
 			refusal(error);
 			for (const columns of [2, 3, 4] as const) {
 				try {
 					return finish(generateComponentFigure(request.contours ?? [], open, request.frameSize,
-						request.scale, 'check', fourPortMotif, columns), 'silhouette');
+						request.scale, { style: 'check', columns }), 'silhouette');
 				} catch (retryError) {
 					refusal(retryError);
 				}
@@ -3942,12 +3944,12 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const tiers = channelWays ? [[true, 0, true, -1, 0], [true, 1, true, -1, 0], [true, 0, false, 0, 0], [true, 0, false, 1, 0], [true, 0, false, 2, 0], [false, 0, false, -1, 1], [false, 0, false, -1, -1]] as const
 				: [[false, 0, false, -1, 0], [true, 0, false, -1, 0], [true, 1, false, -1, 0]] as const;
 			if (pieced && (everyWay || channelWays)) for (const [walled, padding, channeled, based, sweep] of tiers) try {
-				const construct = () => generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, (...args) => {
+				const construct = () => generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, { route: (...args) => {
 					const root = based < 0 ? undefined : otherBases(args[1], args[2])[based];
 					if (based >= 0 && !root) throw new ConstructionError('topology', 'No other piece for a base');
 					args[7] = { ...args[7], practical: true, compound: true, nested: true, around: true, legs: true, walled, ...root ? { root } : {}, ...sweep ? { sweep } : {} };
 					return fourPortMotif(...args);
-				}, undefined, padding, open, true);
+				}, padding, open, symmetric: true });
 				return finish(channeled ? withChannels(construct) : construct(), 'silhouette');
 			} catch (everyError) {
 				refusal(everyError);
@@ -3971,8 +3973,8 @@ function generateUsingRecipes(request: GeneratorRequest,
 	const recipes: ((route: typeof fourPortMotif) => ReturnType<typeof generateFigure>)[] =
 		rings.length > 1
 			? [
-					(route) => generatePanelFigure(rings, shape, size, scale, 2, style, 1, false, route),
-					(route) => generatePanelFigure(rings, shape, size, scale, 2, style, 2, false, route),
+					(route) => generatePanelFigure(rings, shape, size, scale, { columns: 2, style, rows: 1, route }),
+					(route) => generatePanelFigure(rings, shape, size, scale, { columns: 2, style, rows: 2, route }),
 					(route) => generateFourPortFigure(rings, shape, size, scale, style, route),
 					baseFigure
 				]
@@ -3984,13 +3986,13 @@ function generateUsingRecipes(request: GeneratorRequest,
 	// animal can have no holes and still need more than four attachment points.
 	// Keep the chosen frame and the exact artwork when distributing its cuts.
 	recipes.push(
-		(route) => generatePanelFigure(rings, shape, size, scale, 3, style, 1, false, route),
-		(route) => generatePanelFigure(rings, shape, size, scale, 3, style, 2, false, route),
-		(route) => generatePanelFigure(rings, shape, size, scale, 3, style, 3, false, route),
-		(route) => generatePanelFigure(rings, shape, size, scale, 2, style, 2, true, route)
+		(route) => generatePanelFigure(rings, shape, size, scale, { columns: 3, style, rows: 1, route }),
+		(route) => generatePanelFigure(rings, shape, size, scale, { columns: 3, style, rows: 2, route }),
+		(route) => generatePanelFigure(rings, shape, size, scale, { columns: 3, style, rows: 3, route }),
+		(route) => generatePanelFigure(rings, shape, size, scale, { columns: 2, style, rows: 2, spread: true, route })
 	);
 	for (const [columns, rows] of [[4, 1], [5, 1], [4, 2], [2, 4], [5, 2], [4, 3], [3, 4], [4, 4]])
-		recipes.push((route) => generatePanelFigure(rings, shape, size, scale, columns, style, rows, true, route));
+		recipes.push((route) => generatePanelFigure(rings, shape, size, scale, { columns, style, rows, spread: true, route }));
 	const errors: Error[] = [];
 	// A local construction failure cannot improve by disabling its extra route.
 	// Retry only pieces that existed but failed joining or full-sheet validation.
@@ -4037,7 +4039,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 	// A uniform seam can graze a motif's tip. Shift one modest three-panel layout
 	// within its cells before refusing the figure, keeping its exact outline.
 	try {
-		const construction = generatePanelFigure(rings, shape, size, scale, 3, style, 1, false, fourPortMotif, 'support', true);
+		const construction = generatePanelFigure(rings, shape, size, scale, { columns: 3, style, rows: 1, adaptive: true });
 		return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested');
 	} catch (error) {
 		refusal(error);
@@ -4056,7 +4058,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 	// neighbours instead use the same widest filled interval of that seam.
 	for (const [columns, rows, spread] of [[2, 2, false], [5, 2, true]] as const) {
 		try {
-			const construction = generatePanelFigure(rings, shape, size, scale, columns, style, rows, spread, fourPortMotif, 'filled');
+			const construction = generatePanelFigure(rings, shape, size, scale, { columns, style, rows, spread, attachments: 'filled' });
 			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested');
 		} catch (error) {
 			refusal(error);
@@ -4079,8 +4081,8 @@ function generateUsingRecipes(request: GeneratorRequest,
 	// earlier two-column recipe before these wider alternatives.
 	for (const columns of [2, 3, 4] as const) {
 		try {
-			const construction = generateComponentFigure(rings, shape, size, scale, style,
-				fourPortMotif, columns, sunburst && columns > 2 ? 2 : 0);
+			const construction = generateComponentFigure(rings, shape, size, scale,
+				{ style, columns, extraStrips: sunburst && columns > 2 ? 2 : 0 });
 			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, 'nested');
 		} catch (error) {
 			refusal(error);
