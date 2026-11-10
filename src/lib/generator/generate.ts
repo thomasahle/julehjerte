@@ -271,7 +271,7 @@ function audit(edges: Edge[]) {
  * moves outlines by at most 0.025 units, so a sub-0.5 gap cannot become a 1.5
  * unit strip. Ignore nearby bends of the same path: only a remote return can
  * pinch paper. Checking these lines directly avoids repeated cubic fits. */
-function hasSeverePinch(g: CutGeometry, factor = 1, fixedOnly = false): boolean {
+function hasSeverePinch(g: CutGeometry, factor = 1, { fixedOnly = false }: { fixedOnly?: boolean } = {}): boolean {
 	const uses = new Map<string, number>();
 	if (fixedOnly) for (const path of [...g.A_overlap_paths, ...g.B_overlap_paths])
 		for (const ref of path) uses.set(ref.curve, (uses.get(ref.curve) ?? 0) + 1);
@@ -460,7 +460,7 @@ export const spurless = (request: GeneratorRequest): GeneratorRequest =>
  * board circle's own does: the motif on its enclosing circle over the corner
  * squares, and the strips where it leaves the middle lines out. */
 export const storedHearts = (request: GeneratorRequest, recipes = request.recipes, topology = false, count = 1, known: Known = {}): GeneratorResult[] =>
-	storedDrawings(request, recipes, topology, count, known).map(drawn => drawn.heart);
+	storedDrawings(request, recipes, { topology, count, known }).map(drawn => drawn.heart);
 
 /** A stored recipe's heart (see `storedHearts`): the topology recipe it drew
  * (`of`), whether its places were found straight, and where they fell (see
@@ -476,7 +476,8 @@ function finishedStored(request: GeneratorRequest, construction: ReturnType<type
 /** See `storedHearts`. Those whose cuts a recipe placed but that do not finish
  * clean (paper too narrow) go to `unfinished` (see `harderStored`). With
  * `ownOnly`, only the recipes solved on this very motif. */
-function storedDrawings(request: GeneratorRequest, recipes = request.recipes, topology = false, count = 1, known: Known = {}, unfinished?: Construction[], ownOnly = false): Drawing[] {
+function storedDrawings(request: GeneratorRequest, recipes = request.recipes,
+	{ topology = false, count = 1, known = {}, unfinished, ownOnly = false }: { topology?: boolean; count?: number; known?: Known; unfinished?: Construction[]; ownOnly?: boolean } = {}): Drawing[] {
 	if (request.mode !== 'figure' || !recipes?.length) return [];
 	// The board the generator builds: the board circle's five strips where the visitor chose none.
 	const strips = request.style === 'board' ? request.board ?? BOARD_STRIPS.board.initial : request.board;
@@ -560,7 +561,7 @@ function fromSolve(request: GeneratorRequest): GeneratorResult | undefined {
 	if (!held || held.hardToCut) return;
 	const others = storedHearts(request, recipes.filter(recipe => !solved.includes(recipe)), true, TOPOLOGY_TRIES - 1).filter(heart => !heart.hardToCut);
 	const measured = [held, ...others].map(heart => ({ heart, m: cutMeasures(heart.design, shown.rings) }));
-	return improveSharedConnections(measured.reduce((a, b) => betterCuts(b.m, a.m) ? b : a).heart, true);
+	return improveSharedConnections(measured.reduce((a, b) => betterCuts(b.m, a.m) ? b : a).heart, { keepTemplate: true });
 }
 
 /** What the generator's own heart tells its picture (see `Known`), as the page
@@ -580,12 +581,12 @@ export const knownOf = (own: GeneratorResult, asked: number): Known => ({
 export function fromTopology(request: GeneratorRequest, own?: GeneratorResult): GeneratorResult | undefined {
 	const known = own ? knownOf(own, request.scale ?? .7) : {}, unfinished: Construction[] = [];
 	const recipes = request.recipes ?? [], usual = recipes.filter(r => !(isTopology(r) && r.extra)), extras = recipes.filter(r => isTopology(r) && r.extra);
-	const firsts = storedDrawings(request, usual, true, TOPOLOGY_TRIES, known, unfinished).filter(({ heart }) => !heart.hardToCut);
+	const firsts = storedDrawings(request, usual, { topology: true, count: TOPOLOGY_TRIES, known, unfinished }).filter(({ heart }) => !heart.hardToCut);
 	const shown = picture(spurless(request), known), measure = (heart: GeneratorResult) => cutMeasures(heart.design, shown!.rings);
 	// A pair's extra recipes, each a motif's own solve (see `pairs.mjs`), for that motif alone, where its others'
 	// best heart tears or needs two templates.
 	const wanting = shown && extras.length && !firsts.some(d => { const m = measure(d.heart); return !m[0] && !m[1]; });
-	const drawn = [...firsts, ...wanting ? storedDrawings(request, extras, true, TOPOLOGY_TRIES, known, undefined, true).filter(({ heart }) => !heart.hardToCut) : []];
+	const drawn = [...firsts, ...wanting ? storedDrawings(request, extras, { topology: true, count: TOPOLOGY_TRIES, known, ownOnly: true }).filter(({ heart }) => !heart.hardToCut) : []];
 	if (!drawn.length) return own?.hardToCut ? harderStored(request, own, unfinished, known) : undefined;
 	// The best heart drawn (as its cuts are, before any refining) refined, by its
 	// hidden cuts' ends, then its construction's cuts; and where a pair's extra
@@ -601,14 +602,14 @@ export function fromTopology(request: GeneratorRequest, own?: GeneratorResult): 
 	const [first] = bestOf(measured.filter(d => !d.of?.extra)), [extra] = bestOf(measured.filter(d => d.of?.extra));
 	const told = (heart: GeneratorResult) => own ? { ...heart, scale: own.scale, enclosed: own.enclosed, whole: own.whole, board: own.board ?? heart.board } : heart;
 	// Shown on the way, before it is refined, where it already cuts better than the generator's heart.
-	const drawnFirst = first && improveSharedConnections(first.heart, true);
+	const drawnFirst = first && improveSharedConnections(first.heart, { keepTemplate: true });
 	if (drawnFirst && (!own || own.hardToCut || firmerCuts(drawnFirst.design, measure(drawnFirst), own.design, measure(own)))) progress(told(drawnFirst));
 	const promising = extra && (!first || extra.m[0] < first.m[0] || (extra.m[0] === first.m[0] && extra.m[1] < first.m[1]));
 	const unbent = [...new Set([...first ? [first] : [], ...promising ? [extra!] : []].flatMap(first => {
 		const ended = endsRefined(request, first, shown!);
 		return [first.heart, ended.heart, refined(request, ended, shown!).heart];
 	}))];
-	const best = unbent.map(heart => improveSharedConnections(heart, true)).reduce((a, b) => firmerCuts(b.design, measure(b), a.design, measure(a)) ? b : a);
+	const best = unbent.map(heart => improveSharedConnections(heart, { keepTemplate: true })).reduce((a, b) => firmerCuts(b.design, measure(b), a.design, measure(a)) ? b : a);
 	// Its lobes mirror images but for a hair (a cut split once more on one side), cut from one template where
 	// that is no worse (see `mirroredLobes`): the gingerbread man on five strips at 100%.
 	const mirrored = mirroredLobes(best.design.fingers, SHARED_NEAR), sharing = mirrored && { ...best, design: { ...best.design, fingers: mirrored } };
@@ -924,7 +925,7 @@ function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest,
 			const unbent = finishedStored(request, construction, strips);
 			if (unbent.hardToCut) return;
 			// Judged as it is shown, its shared connections bent (see `fromTopology`).
-			const heart = improveSharedConnections(unbent, true);
+			const heart = improveSharedConnections(unbent, { keepTemplate: true });
 			return { unbent, heart, m: cutMeasures(heart.design, shown.rings) };
 		} catch (error) {
 			refusal(error);
@@ -1002,7 +1003,7 @@ function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest,
 		const had = new Set(points(before).map(p => p.join(',')));
 		return points(after).find(p => !had.has(p.join(',')));
 	};
-	const bent = improveSharedConnections(drawn.heart, true);
+	const bent = improveSharedConnections(drawn.heart, { keepTemplate: true });
 	let best = { ...drawn, unbent: drawn.heart, heart: bent, m: cutMeasures(bent.design, shown.rings), edges: drawn.construction.edges }, draws = 0, since = 0;
 	// Firmer first, while the paper may tear; then tidier.
 	let firm = !!best.m[0];
@@ -1155,7 +1156,7 @@ export const constructionOf = (design: HeartDesign): Construction | undefined =>
  * connections stay fixed. With `keepTemplate`, lobes sharing one template
  * (see `lobesShareTemplate`) go on sharing it: each tip is bent with its
  * mirror image in the other lobe. */
-function improveSharedConnections(result: GeneratorResult, keepTemplate = false): GeneratorResult {
+function improveSharedConnections(result: GeneratorResult, { keepTemplate = false }: { keepTemplate?: boolean } = {}): GeneratorResult {
 	const shared = keepTemplate && lobesShareTemplate(result.design.fingers, result.design.gridSize);
 	const rect = inferOverlapRect(result.design.fingers, result.design.gridSize);
 	const design = bentWhere(result.design, design => !findSearchIssues(design.fingers, intersectionMarginPx(
@@ -1261,7 +1262,7 @@ function exported(result: GeneratorResult): GeneratorResult {
  * size (`paperTears`). Tips first, as the search always ranked them: a heart
  * mended in its paper may not gain a tip (Nunito ANNA's keep none). With
  * `paperFirst`, the pieces that tear come first. */
-function cutsBetter(a: GeneratorResult, b: GeneratorResult, paperFirst = false): boolean {
+function cutsBetter(a: GeneratorResult, b: GeneratorResult, { paperFirst = false }: { paperFirst?: boolean } = {}): boolean {
 	const x = exported(a).design, y = exported(b).design, [ta, tb] = [cutTipCounts(x), cutTipCounts(y)];
 	const [pa, pb] = [paperTears(x), paperTears(y)];
 	if (paperFirst && pa !== pb) return pa < pb;
@@ -1856,7 +1857,7 @@ function generateAtSize(request: GeneratorRequest): GeneratorResult {
 			if (lastResort || again !== undefined && !setAsideBy.get(index)?.[again]) continue;
 			// Identical small motifs gain little from other junctions; a
 			// smaller board is the better next choice.
-			const tried = alternativeOnce(alternative, `preferred ${retries}`, () => generateOnce(alternative, finish => hard.push([index, finish]), 1, retries));
+			const tried = alternativeOnce(alternative, `preferred ${retries}`, () => generateOnce(alternative, { deferHard: finish => hard.push([index, finish]), variants: 1, retries }));
 			if ('result' in tried) return named(tried.result, index);
 			last = tried.error;
 			if (again === undefined) setAsideBy.set(index, tried.setAside);
@@ -2065,6 +2066,8 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
 	return [{ request: fillSquare(request), retries: true }];
 }
 
+/** How one way of making a heart is tried (see `generateOnce`). */
+type OnceOptions = { deferHard?: (finish: () => GeneratorResult | undefined) => void; variants?: number; retries?: boolean };
 /** Retry completed constructions after all established recipes fail.
  * Moving coincident cuts preserves the artwork and graph endpoints; the entire
  * result must pass the same topology, spacing and fidelity checks again.
@@ -2072,21 +2075,19 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
  * checkerboard tries at most `variants` choices of junctions. Without
  * `retries`, only recipes that keep text cells square run, and no
  * hard-to-cut result is made. */
-function generateOnce(request: GeneratorRequest,
-	deferHard?: (finish: () => GeneratorResult | undefined) => void, variants = Infinity, retries = true): GeneratorResult {
+function generateOnce(request: GeneratorRequest, { deferHard, variants = Infinity, retries = true }: OnceOptions = {}): GeneratorResult {
 	if (quickAgain) {
 		if (madeAgain) throw new ConstructionError('topology', 'Made again its first way only');
 		madeAgain = true;
 	}
-	const result = generateOnceMade(request, quickAgain ? undefined : deferHard, variants, retries && (!quickAgain || retriesAgain));
+	const result = generateOnceMade(request, { deferHard: quickAgain ? undefined : deferHard, variants, retries: retries && (!quickAgain || retriesAgain) });
 	// A clean figure's shared cuts that meet the motif in a sharp tip of paper
 	// bend to cross it instead, however it was made (a retry's too: a candy
 	// cane's nested construction in the rays); the board circle's do as it
 	// keeps them.
 	return request.mode === 'figure' && request.style !== 'board' && !result.hardToCut ? withSpreadPorts(result) : result;
 }
-function generateOnceMade(request: GeneratorRequest,
-	deferHard?: (finish: () => GeneratorResult | undefined) => void, variants = Infinity, retries = true): GeneratorResult {
+function generateOnceMade(request: GeneratorRequest, { deferHard, variants = Infinity, retries = true }: OnceOptions = {}): GeneratorResult {
 	const curveFitter = fits ? sharedFits : createExactCurveFitter();
 	const counterLanes = request.mode === 'figure' && request.style === 'corners' &&
 		hasThreeCounterLanes(normalizeContours(request.contours ?? []));
@@ -2162,7 +2163,7 @@ function generateOnceMade(request: GeneratorRequest,
 			// missing clearance, even at the densest supported grid.
 			const scale = gridClearanceScale(construction.geometry.A_overlap_paths.length + 1,
 				construction.geometry.B_overlap_paths.length + 1);
-			if (hasSeverePinch(construction.geometry, scale, true)) continue;
+			if (hasSeverePinch(construction.geometry, scale, { fixedOnly: true })) continue;
 			const geometry = curveSharedCuts(construction.geometry);
 			if (!geometry) continue;
 			const curved = unlessRefused(() => finishConstruction(request, construction, recipe, geometry, curveFitter));
@@ -2241,7 +2242,7 @@ function generateOnceMade(request: GeneratorRequest,
 			if (triedExactly) return;
 			triedExactly = true;
 			try {
-				const made = withExactArcs(() => generateOnce(request, undefined, variants, retries));
+				const made = withExactArcs(() => generateOnce(request, { variants, retries }));
 				madeExactly.add(made.design);
 				return made;
 			} catch (exactError) {
@@ -2277,10 +2278,10 @@ function withSpreadPorts(result: GeneratorResult): GeneratorResult {
 		{ ...made.construction, edges, geometry: compile(edges) }, result.recipe, undefined, made.curveFitter));
 	let best = result, edges = made.construction.edges;
 	const whole = finished(all.edges);
-	if (whole && cutsBetter(whole, best, true)) best = whole;
+	if (whole && cutsBetter(whole, best, { paperFirst: true })) best = whole;
 	else for (const port of all.ports.slice(0, SPREAD_ONE_BY_ONE)) {
 		const one = spreadPorts(edges, PORT_GAP, p => near(p, port)), next = one && finished(one.edges);
-		if (next && cutsBetter(next, best, true)) {
+		if (next && cutsBetter(next, best, { paperFirst: true })) {
 			best = next;
 			edges = one.edges;
 		}
@@ -3025,7 +3026,7 @@ function retryPanelLayouts(request: GeneratorRequest, curveFitter?: ReturnType<t
  * finished into a heart (a refused one kept for `onRejected`, unless `keep`
  * is off), and how much of the search the caller asked for. */
 type RecipeContext = {
-	finish: (construction: Construction, recipe: GeneratorResult['recipe'], keep?: boolean) => GeneratorResult;
+	finish: (construction: Construction, recipe: GeneratorResult['recipe'], options?: { keep?: boolean }) => GeneratorResult;
 	onRejected: (construction: Construction, recipe: GeneratorResult['recipe']) => void;
 	curveFitter: ReturnType<typeof createExactCurveFitter>;
 	variants: number;
@@ -3039,7 +3040,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		if (!contours.length) throw new ConstructionError('empty', 'No contour');
 		request = { ...request, contours };
 	}
-	const finish = (construction: Construction, recipe: GeneratorResult['recipe'], keep = true) => {
+	const finish = (construction: Construction, recipe: GeneratorResult['recipe'], { keep = true }: { keep?: boolean } = {}) => {
 		try { return finishConstruction(request, construction, recipe, undefined, curveFitter); }
 		catch (error) {
 			refusal(error);
@@ -3191,7 +3192,7 @@ function textRecipes(request: GeneratorRequest, { finish, variants, allRecipes }
 			if (!caches.has(fill)) caches.set(fill, [checkeredGridCache(), mixedCheckeredGridCache()]);
 			const [cache, mixed] = caches.get(fill)!;
 			return checkered(variant, fill, cache, mixed, fill === standard ? finish
-				: (construction, recipe) => finish(construction, recipe, false), corners);
+				: (construction, recipe) => finish(construction, recipe, { keep: false }), corners);
 		};
 		// The first layout and size that weaves, with CORNER_INSETS or, with
 		// `board`, corner cuts as large as paper printed at the download's width
@@ -3253,7 +3254,7 @@ function textRecipes(request: GeneratorRequest, { finish, variants, allRecipes }
 						// Narrower contacts than those whose cuts come too close come closer still.
 						if (inset === .25 && close) continue;
 						try {
-							const candidate = exported(finish(generateCheckeredGrid(text, font, standard, inset, { variant, mirror: true, corners, cache }), 'letters', false));
+							const candidate = exported(finish(generateCheckeredGrid(text, font, standard, inset, { variant, mirror: true, corners, cache }), 'letters', { keep: false }));
 							if (!lobesShareTemplate(candidate.design.fingers, candidate.design.gridSize)) continue;
 							built = true;
 							if (!best || better(candidate, best)) { best = candidate; bestAt = { variant, inset, corners }; }
@@ -3273,7 +3274,7 @@ function textRecipes(request: GeneratorRequest, { finish, variants, allRecipes }
 			// Its sharp tips, as the plain search's: each cell's connections the
 			// fewest tips of those built, then those tips relieved.
 			if (best && bestAt && cutTipCounts(best.design)[1]) for (const relieve of [false, true]) try {
-				const candidate = exported(finish(generateCheckeredGrid(text, font, standard, bestAt.inset, { ...bestAt, mirror: true, cache, optimize: true, relieve }), 'letters', false));
+				const candidate = exported(finish(generateCheckeredGrid(text, font, standard, bestAt.inset, { ...bestAt, mirror: true, cache, optimize: true, relieve }), 'letters', { keep: false }));
 				if (!lobesShareTemplate(candidate.design.fingers, candidate.design.gridSize) || !better(candidate, best)) continue;
 				const rect = inferOverlapRect(candidate.design.fingers, candidate.design.gridSize);
 				const margin = intersectionMarginPx(rect, gridClearanceScale(candidate.design.gridSize.x, candidate.design.gridSize.y));
@@ -3455,12 +3456,12 @@ function layerRecipes(request: GeneratorRequest, { finish, curveFitter }: Recipe
 	if (best && paperTears(exported(best).design)) {
 		const again = bestOfFirst((function* () {
 			for (const panels of layouts) try {
-				yield finish(generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, panels, paperRoute), 'nested', false);
+				yield finish(generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, panels, paperRoute), 'nested', { keep: false });
 			} catch (error) {
 				refusal(error);
 			}
 		})());
-		if (again && cutsBetter(again, best, true)) return again;
+		if (again && cutsBetter(again, best, { paperFirst: true })) return again;
 	}
 	if (best) return best;
 	try {
@@ -3662,7 +3663,7 @@ function boardRecipes(request: GeneratorRequest, { finish, onRejected, curveFitt
 	const deciding = home(mode) === mode ? mode : past;
 	const placement = ranges.indexOf(mode) > 1 && enclosedAlong(request.scale ?? .7) > 0 && sizes(deciding, deciding[1], enclosed).some(attempt => {
 		try {
-			finish(build(attempt), 'nested', false);
+			finish(build(attempt), 'nested', { keep: false });
 			return true;
 		} catch (error) {
 			refusal(error);
@@ -3720,7 +3721,7 @@ function boardRecipes(request: GeneratorRequest, { finish, onRejected, curveFitt
 				rejected.push({ construction, recipe: 'nested' });
 				const candidate = finish(construction, 'nested');
 				if (!pass) worked.push(attempt);
-				if (!best || cutsBetter(candidate, best, true)) [best, rawTips] = [candidate, tips];
+				if (!best || cutsBetter(candidate, best, { paperFirst: true })) [best, rawTips] = [candidate, tips];
 				if (!paperTears(exported(best).design) && !cutTipCounts(exported(best).design)[1] || ++working === 4) break;
 			} catch (error) {
 				refusal(error);
@@ -3733,7 +3734,7 @@ function boardRecipes(request: GeneratorRequest, { finish, onRejected, curveFitt
 		const stepped = worked.map(({ layout, ...attempt }) => ({ ...attempt, layout: { ...layout, stepIn: true } }));
 		if (best && cutTipCounts(exported(best).design)[0]) for (const attempt of stepped) try {
 			const candidate = finish(build(attempt), 'nested');
-			if (cutsBetter(candidate, best, true)) best = candidate;
+			if (cutsBetter(candidate, best, { paperFirst: true })) best = candidate;
 		} catch (error) {
 			refusal(error);
 		}
@@ -3801,7 +3802,7 @@ function cornerRecipes(request: GeneratorRequest, { finish }: RecipeContext): Ge
 				// Keep the established frame and skip another fit when moving
 				// separate components did not change any lane or connection.
 				if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
-				const done = finish(result, 'silhouette', !routeMargin);
+				const done = finish(result, 'silhouette', { keep: !routeMargin });
 				finished = true;
 				if (fitBorder) fitted.add(done);
 				yield done;
@@ -3848,7 +3849,7 @@ function cornerRecipes(request: GeneratorRequest, { finish }: RecipeContext): Ge
 			if (wholeLanes && !paperTears(exported(best).design)) break;
 			const retry = () => layouts({ routeMargin: paper, avoid: avoided, border, wholeLanes, stepped, everyWay: ways, walled, nested: channeled });
 			const again = counter ? withCounterWays(retry) : channeled ? withChannels(retry) : retry();
-			if (again && cutsBetter(again, best, true)) best = again;
+			if (again && cutsBetter(again, best, { paperFirst: true })) best = again;
 		}
 	}
 	if (best) return best;
@@ -3882,8 +3883,8 @@ function openRecipes(request: GeneratorRequest, open: OpenFrame, { finish }: Rec
 		const construct = made.get(result);
 		if (!construct || !paperTears(exported(result).design)) return result;
 		try {
-			const again = finish(construct(paperRoute), 'silhouette', false);
-			return cutsBetter(again, result, true) ? again : result;
+			const again = finish(construct(paperRoute), 'silhouette', { keep: false });
+			return cutsBetter(again, result, { paperFirst: true }) ? again : result;
 		} catch (error) {
 			refusal(error);
 			return result;
@@ -4035,12 +4036,12 @@ function cellRecipes(request: GeneratorRequest, { finish }: RecipeContext): Gene
 		const again = bestOfFirst((function* () {
 			for (const construct of recipes) try {
 				const construction = construct(paperRoute);
-				yield finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested', false);
+				yield finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested', { keep: false });
 			} catch (e) {
 				refusal(e);
 			}
 		})());
-		if (again && again.design.gridSize.x === best.design.gridSize.x && cutsBetter(again, best, true)) best = again;
+		if (again && again.design.gridSize.x === best.design.gridSize.x && cutsBetter(again, best, { paperFirst: true })) best = again;
 	}
 	if (best) return best;
 	// A uniform seam can graze a motif's tip. Shift one modest three-panel layout
