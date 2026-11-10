@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {resultSeverity, betterResult, issueKinds} from '../../static/inverse/core/result-rank.js';
+import {resultSeverity, betterResult, issueKinds, compareTuples} from '../../static/inverse/core/result-rank.js';
 import {closer} from '../../static/inverse/core/exact/stage.js';
 import {verdict, clearanceShortfall} from '../../static/inverse/core/validate.js';
 
@@ -122,4 +122,44 @@ test('regions linked through near ones are not reported as joined, however far a
   // A fourth square 5.75 mm on joined to them: one join, between the nearest two of the two groups.
   bridge(108, 130);
   assert.deepEqual(mergedRegions(source, joined, width).map(x => x.gapMm), [5.75]);
+});
+
+test('tuples compare at the first entry that differs, lower first, a missing or NaN entry ranking first in no order', () => {
+  assert.equal(compareTuples([0, 1, 5], [0, 2, 0]), -1);
+  assert.equal(compareTuples([1, 0], [0, 9]), 1);
+  assert.equal(compareTuples([0, 1], [0, 1]), 0);
+  assert.equal(compareTuples([Infinity, 1], [Infinity, 2]), -1, 'Infinity equals itself');
+  assert.equal(compareTuples([0], [0, 1]), 0, 'b\'s further entries are not read');
+  assert.ok(Number.isNaN(compareTuples([0, 1], [0])), 'an entry b lacks is neither less nor greater');
+  assert.ok(Number.isNaN(compareTuples([NaN, 0], [NaN, 1])), 'NaN differs from itself and is neither');
+  assert.ok(Number.isNaN(compareTuples([undefined, 0], [1, 1])));
+  assert.equal(compareTuples([], [1]), 0);
+});
+
+test('the one comparator answers as each inline tuple comparison it replaced, on every kind of entry', () => {
+  // The old forms, verbatim: stage.js closer and the bare-then-coarse ranking, result-rank.js betterResult,
+  // worker-controller.js ladderStands' tail, and the refined drawing's first nonzero difference.
+  const closerOld = (a, b) => { const k = a.findIndex((v, i) => v !== b[i]); return k >= 0 && a[k] < b[k]; };
+  const findOld = (a, b) => a.find((v, k) => v !== b[k]) !== undefined ? a[a.findIndex((v, k) => v !== b[k])] < b[a.findIndex((v, k) => v !== b[k])] : false;
+  const betterOld = (x, y) => { for (let k = 0; k < x.length; k++) if (x[k] !== y[k]) return x[k] < y[k] ? 'a' : 'b'; return 'a'; };
+  const standsOld = ([p, mine, e], [q, theirs, f]) => p !== q ? p < q : mine < theirs || (mine === theirs && e < f);
+  const diffOld = (a, b) => a.map((v, k) => v - b[k]).find(d => d !== 0) ?? 0;
+  let seed = 7;
+  const random = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+  const values = [0, 1, 2, -0, undefined, NaN, Infinity], entry = () => values[Math.floor(random() * values.length)];
+  const tuple = n => Array.from({length: n}, entry);
+  for (let i = 0; i < 20000; i++) {
+    const n = Math.floor(random() * 4), a = tuple(n), b = random() < .8 ? tuple(n) : tuple(Math.floor(random() * 5));
+    const c = compareTuples(a, b), why = JSON.stringify([a, b].map(t => t.map(String)));
+    assert.equal(c < 0, closerOld(a, b), why);
+    assert.equal(c < 0, findOld(a, b), why);
+    assert.equal(c <= 0 ? 'a' : 'b', betterOld(a, b), why);
+    if (n === 3 && b.length === 3) {
+      const [p, q] = [a[0], b[0]].map(v => v ? 1 : 0), x = [p, a[1], a[2]], y = [q, b[1], b[2]];
+      assert.equal(compareTuples(x, y) < 0, standsOld(x, y), why);
+    }
+    // The refined drawing's entries are small integers: there, sign and zero agree.
+    const ints = tuple(4).map(v => Number.isFinite(v) ? v : 3), other = tuple(4).map(v => Number.isFinite(v) ? v : 3);
+    assert.equal(Math.sign(compareTuples(ints, other)), Math.sign(diffOld(ints, other)), why);
+  }
 });

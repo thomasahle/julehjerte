@@ -17,7 +17,7 @@ import {rasterOutline} from './raster.js';
 import {cheapBounds} from './bounds.js';
 import {returns} from './nogoods.js';
 import {SIZE} from './structure.js';
-import {issueKinds} from '../result-rank.js';
+import {compareTuples, issueKinds} from '../result-rank.js';
 import {noteError} from '../errors.js';
 
 /** The outline the exact search reads: traced from the picture's mask with
@@ -139,8 +139,7 @@ function assessed(solution, cfg) {
 export function closer(a, b) {
   if (!b) return Boolean(a);
   if (!a) return false;
-  const k = a.near.findIndex((v, i) => v !== b.near[i]);
-  return k >= 0 && a.near[k] < b.near[k];
+  return compareTuples(a.near, b.near) < 0;
 }
 
 /** The length (mm) of the solution's cuts the `woven` weave (n x n) does not
@@ -390,7 +389,9 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
           };
           if (!second.error && !(second.report.penalty > 1e-6)) {
             const [a, b] = [rank(second), rank(found)];
-            if (a && b && (a.find((v, k) => v !== b[k]) !== undefined ? a[a.findIndex((v, k) => v !== b[k])] < b[a.findIndex((v, k) => v !== b[k])] : false))
+            // Was `a.find(differs) !== undefined ? a[k] < b[k] : false`: an undefined entry of a's at the first
+            // difference counted as none, which `< 0` keeps (compareTuples: NaN there, never less).
+            if (a && b && compareTuples(a, b) < 0)
               found = {...second, report: {...second.report, bareThenCoarse: true}};
           }
         }
@@ -488,7 +489,9 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     report.refined = finer && {passes: finer.passes, maskError: finer.maskError, issues: finer.issues, rank: finer.rank, traced: assessment.rank};
     // Compared in that order: passing where the traced drawing does not
     // (a tip its pixel steps clear: triple-heart-shot) settles it.
-    const order = [0, 1, 2, 4], diff = order.map(k => finer ? finer.rank[k] - assessment.rank[k] : 1).find(d => d !== 0) ?? 0;
+    // `diff`: its sign and zero are read, as of the old first nonzero difference of these entries (all
+    // small integers, so no Infinity - Infinity).
+    const order = [0, 1, 2, 4], diff = finer ? compareTuples(order.map(k => finer.rank[k]), order.map(k => assessment.rank[k])) : 1;
     const keeps = finer && (diff < 0 || (diff === 0 && finer.rank[5] <= assessment.rank[5] + Math.max(1, Math.round(assessment.rank[5] / 4))
       && finer.maskError <= Math.min(assessment.maskError + SMOOTH_SLACK, Math.max(assessment.maskError, cfg.maxImageError))));
     if (keeps) { solution = found.refined; assessment = finer; report.refined.taken = true; }

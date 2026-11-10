@@ -8,6 +8,17 @@
  * the share of the picture the weave gets wrong. Lower is better. */
 const CLEARANCE = new Set(['short_self_clearance', 'inter_slit_clearance', 'nonlocal_self_clearance', 'outer_side_clearance']);
 
+/** Tuples `a` and `b` compared in order at the first entry of `a` that is not
+ * (!==) b's: negative where a's is less, positive where it is greater, NaN where
+ * it is neither (a NaN or a missing entry: a ranks first in no order then); 0
+ * where none of a's entries differs, b's further entries unread. Lower is
+ * better wherever the solver ranks by tuples, so `compareTuples(a, b) < 0` is
+ * "a ranks first" and `<= 0` "a ranks first or ties". */
+export function compareTuples(a, b) {
+  for (let k = 0; k < a.length; k++) if (a[k] !== b[k]) return a[k] < b[k] ? -1 : a[k] > b[k] ? 1 : NaN;
+  return 0;
+}
+
 /** The validation issues' kinds that are not clearances, and the clearances'
  * total shortfall in mm (to `width`, the nominal width, where an issue does
  * not say what it needs). */
@@ -33,7 +44,6 @@ export function resultSeverity(value) {
 export function betterResult(a, b) {
   if (!a) return b ?? null;
   if (!b) return a;
-  const x = resultSeverity(a), y = resultSeverity(b);
-  for (let k = 0; k < x.length; k++) if (x[k] !== y[k]) return x[k] < y[k] ? a : b;
-  return a;
+  // b where a's severity is greater or neither (NaN): as the old loop, `x[k] < y[k] ? a : b` at the first difference.
+  return compareTuples(resultSeverity(a), resultSeverity(b)) <= 0 ? a : b;
 }

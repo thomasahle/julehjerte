@@ -3,7 +3,7 @@ import {settings as normalizeSettings} from './core/settings.js';
 import {finishStopped, finishExactStopped} from './core/stopped.js';
 import {zipFiles} from './core/zip.js';
 import {refineHeartCrop} from './core/crop.js';
-import {betterResult} from './core/result-rank.js';
+import {betterResult, compareTuples} from './core/result-rank.js';
 
 /** Seconds past its minute before a side-by-side exact search is ended; and
  * from the start, once the fitter's answer waits for it: on the juleflet
@@ -139,12 +139,11 @@ export function workerController(
   // segments, or as many and closer to the picture (a user's heart: 7 each, the ladder's 0.1% off,
   // today's 0.3% with a hairline through a motif).
   const errorOf = value => value?.report?.imageError?.mismatchFraction ?? Infinity;
+  const standing = value => [passes(value) ? 0 : 1, hiddenOf(value) ?? Infinity, errorOf(value)];
   const ladderStands = (ladder, today) => {
     if (!ladder) return false;
     if (!today) return true;
-    if (passes(ladder) !== passes(today)) return passes(ladder);
-    const mine = hiddenOf(ladder) ?? Infinity, theirs = hiddenOf(today) ?? Infinity;
-    return mine < theirs || (mine === theirs && errorOf(ladder) < errorOf(today));
+    return compareTuples(standing(ladder), standing(today)) < 0;
   };
   // A ladder template today's search cannot better: at its outline's lower
   // bound on the traced outline, without a fallback (made symmetric, untied,
