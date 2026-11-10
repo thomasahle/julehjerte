@@ -21,6 +21,7 @@
 		"test:inverse:paint:browser": "node scripts/inverse/paint-browser-test.mjs",
 		"benchmark:inverse:photos": "node scripts/inverse/photo-benchmark.mjs",
 		"benchmark:inverse:robustness": "node scripts/inverse/robustness-benchmark.mjs",
+		"benchmark:inverse:mal": "node scripts/inverse/bench/run.mjs",
 		"test:watch": "vitest",
 		"test:slow": "GENERATOR_SLOW=1 vitest run src/lib/generator",
 		"benchmark:inverse:locator": "node scripts/inverse/locator-benchmark.mjs",
