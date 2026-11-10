@@ -5,8 +5,10 @@ import {exactTemplate} from '../../static/inverse/core/engine.js';
 import * as schedule from '../../static/inverse/core/exact/schedule.js';
 import {traceSchedule} from './search-schedule-harness.mjs';
 
-// The traces of exactTemplate's schedule as it was before it became tables (search-schedule-reference.mjs:
-// the old code from git, driven through the same scripted tools).
+// The traces of exactTemplate's schedule as it was before it became tables (exact/schedule.js), driven through
+// the same scripted tools (search-schedule-harness.mjs): made by search-schedule-reference.mjs from the old code in
+// git, again whenever the harness changes. They hold what the schedule asks of the searches and what it answers,
+// not the searches themselves nor how long real ones take, nor design()'s ends (TRACED_SECONDS...).
 const reference = JSON.parse(fs.readFileSync(new URL('./fixtures/search-schedule-traces.json', import.meta.url)));
 
 test('the exact search schedules every scenario as the code before it did: the same calls, the same answer', async () => {
@@ -30,7 +32,7 @@ test('the scenarios reach every step of both branches', () => {
   has(r => r.ladderOnly && r.loose);
   has(r => r.ladderOnly && r.chosen === 'fitter' && r.outline !== undefined);
   has(r => r.ladderOnly && r.outline >= 4, 3);
-  has(r => r.rounded === 'returns');
+  has(r => r.rounded === 'returns', 3);
   has(r => r.outerStrip && !r.rounded);
   has(r => r.rounded === 'near');
   has(r => r.rounded === true);

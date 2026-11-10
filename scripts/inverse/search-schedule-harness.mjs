@@ -33,7 +33,7 @@ const SYMMETRIES = [[], [], ['mirrorX'], ['mirrorX', 'mirrorY'], ['antiTranspose
 
 /** What a scenario sets: the branch (`ladderOnly`), its budget, and how likely each scripted outcome is. */
 export function scenario(seed) {
-  const r = streamFor(seed, 'scenario'), ladderOnly = r() < 0.5;
+  const r = streamFor(seed, 'scenario'), ladderOnly = r() < 0.4;
   const start = int(r, 1000, 2000);
   let tracedIn, roundedIn;
   if (ladderOnly) {
@@ -42,8 +42,8 @@ export function scenario(seed) {
     roundedIn = kind < 0.45 ? int(r, 500, 89000) : kind < 0.8 ? int(r, 90000, 400000) : int(r, 86000, 94000);
     tracedIn = roundedIn;
   } else {
-    tracedIn = int(r, 200, 45000);
-    roundedIn = tracedIn + int(r, -3000, 60000);
+    tracedIn = int(r, 200, 40000);
+    roundedIn = tracedIn + int(r, -3000, 90000);
   }
   return {
     seed,
@@ -76,11 +76,15 @@ export function scenario(seed) {
             [0.05, 0.35, 0.35, 0.15],
             [0.3, 0.3, 0.2, 0.1],
             [0.6, 0.2, 0.1, 0.05],
+            [0.8, 0.1, 0.05, 0.03],
             [0, 0.5, 0.3, 0.1]
           ]
     ),
     searchThrow: pick(r, [0, 0, 0.03]),
-    repaired: pick(r, [0, 0.5])
+    repaired: pick(r, [0, 0.5]),
+    // Only the searches move the clock, some to exactly a few seconds before the search's end: the time rules'
+    // edges (ROUNDED_LEAST's `>=`) are then met exactly.
+    still: r() < 0.3
   };
 }
 
@@ -128,7 +132,7 @@ export async function traceSchedule(exactTemplate, seed) {
     exactTarget(t, c, options) {
       const n = next('T');
       calls.push(`T ${json(options)}${odd({target: t === target, cfg: c === cfg})}`);
-      clock += int(of('T'), 20, 200);
+      if (!sc.still) clock += int(of('T'), 20, 200);
       const u = r('T');
       if (u < sc.traceThrow) throw new Error(`trace ${n} failed`);
       if (u < sc.traceThrow + sc.traceNull) return null;
@@ -136,7 +140,7 @@ export async function traceSchedule(exactTemplate, seed) {
     },
     whyCannotStart(outline, c) {
       calls.push(`W ${id(outline)}${odd({cfg: c === cfg, scaled: outline.width === cfg.width})}`);
-      clock += 5;
+      if (!sc.still) clock += 5;
       if (r('W') >= sc.why) return null;
       return r('W') < 0.5 ? {code: UNEVEN, message: 'uneven'} : {code: null, message: `cannot ${id(outline)}`};
     },
@@ -146,12 +150,12 @@ export async function traceSchedule(exactTemplate, seed) {
     },
     maskRoughness(source) {
       calls.push(`MR${odd({source: source === target.sourceImage})}`);
-      clock += 3;
+      if (!sc.still) clock += 3;
       return sc.rough;
     },
     returnTips(outline, c) {
       calls.push(`R ${id(outline)}${odd({cfg: c === cfgExact})}`);
-      clock += 10;
+      if (!sc.still) clock += 10;
       const u = r('R');
       if (u < 0.05) throw new Error('no tips');
       if (u < 0.05 + sc.tipsEmpty) return [];
@@ -159,13 +163,13 @@ export async function traceSchedule(exactTemplate, seed) {
     },
     exactOutline(outline, c, mode, options) {
       calls.push(`O ${id(outline)} ${mode} ${json(options)}${odd({cfg: c === cfgExact})}`);
-      clock += 15;
+      if (!sc.still) clock += 15;
       if (r('O') < 0.05) throw new Error('no structure');
       return {st: {$id: `st-${id(outline)}`}, outline: {$id: `ol-${id(outline)}`}};
     },
     cheapBounds(st, outline) {
       calls.push(`B ${id(st)} ${id(outline)}`);
-      clock += 5;
+      if (!sc.still) clock += 5;
       if (r('B') < 0.05) throw new Error('no bound');
       return {lb: int(of('B'), 0, 12)};
     },
@@ -190,20 +194,22 @@ export async function traceSchedule(exactTemplate, seed) {
         clock += 100;
         throw new Error(`search ${n} crashed`);
       }
-      const mode = r('S');
+      const mode = r('S'), edge = sc.start + sc.roundedIn - 1000 * pick(of('S'), [6, 2, 10]);
       clock +=
-        mode < 0.25
+        mode < 0.2
           ? int(of('S'), 50, 2000)
-          : mode < 0.8
-            ? Math.max(0, Math.round(left * (0.3 + 0.7 * r('S'))))
-            : Math.max(0, Math.round(left)) + int(of('S'), 0, 3000);
+          : mode < 0.35 && edge > clock
+            ? edge - clock
+            : mode < 0.8
+              ? Math.max(0, Math.round(left * (0.3 + 0.7 * r('S'))))
+              : Math.max(0, Math.round(left)) + int(of('S'), 0, 3000);
       const v = r('S'), [pass, fail, none, idle] = sc.found;
       const kind = v < pass ? 'pass' : v < pass + fail ? 'fail' : v < pass + fail + none ? 'none' : v < pass + fail + none + idle ? 'idle' : 'error';
       if (kind === 'idle') return {found: null, report: {attempted: false, symmetry: options.symmetry, reason: 'no time left'}};
       const w = r('S');
       const search =
         w < 0.7
-          ? {attempts: [{hidden: int(of('S'), 0, 12)}], ...(r('S') < 0.8 ? {bound: int(of('S'), 0, 8)} : {})}
+          ? {attempts: [{hidden: int(of('S'), 0, 6)}], ...(r('S') < 0.8 ? {bound: int(of('S'), 0, 6)} : {})}
           : w < 0.8
             ? {attempts: []}
             : undefined;
@@ -223,7 +229,7 @@ export async function traceSchedule(exactTemplate, seed) {
     },
     validate(solution, c, options) {
       calls.push(`V ${id(solution)} ${json(options)}${odd({cfg: c === cfgExact})}`);
-      clock += 30;
+      if (!sc.still) clock += 30;
       if (r('V') < 0.02) throw new Error('validate crashed');
       const point = () => [int(of('V'), 0, 99), int(of('V'), 0, 99)];
       return {
@@ -239,7 +245,7 @@ export async function traceSchedule(exactTemplate, seed) {
     },
     returnRepaired(sink, c) {
       calls.push(`RR ${json(sink.map(f => f.report.n))}${odd({sink: sinks.indexOf(sink) === 0, cfg: c === cfgExact})}`);
-      clock += int(of('RR'), 0, 4000);
+      if (!sc.still) clock += int(of('RR'), 0, 4000);
       if (!sink.length || r('RR') >= sc.repaired) return null;
       const chosen = sink[Math.floor(r('RR') * sink.length)];
       return {
