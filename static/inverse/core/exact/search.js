@@ -16,9 +16,14 @@ import {StructureSymmetry, act, group} from './symmetry.js';
 import {solutionJSON} from '../graph.js';
 import {validate} from '../validate.js';
 import {edgesOnMask, geometryOnCurves, smoothEdges} from './refine.js';
+import {noteError} from '../errors.js';
 
 /** exactFromTemplate's error when no solution keeps every rule. */
 export const NO_TEMPLATE = 'No exact template found.';
+
+/** exactFromTemplate's error `code` when the outline is not symmetric enough
+ * for the requested ties (its message says so too, for the page and reports). */
+export const NOT_SYMMETRIC = 'NOT_SYMMETRIC';
 
 /** How often the search's improving solutions are drawn for the live view. */
 const DRAW_INTERVAL_MS = 400;
@@ -45,7 +50,7 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
     positions = exactPositions(outline, {forced: witness.positions, sym, spacing});
     if (sym) ties = sym.ties(positions, sheets);
   } catch (error) {
-    return {error: `The outline is not symmetric enough: ${error.message}`};
+    return {error: `The outline is not symmetric enough: ${error.message}`, code: NOT_SYMMETRIC};
   }
   const indexOf = (e, s) => {
     const grid = positions.get(e);
@@ -141,7 +146,10 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
     const audit = values => {
       const {labels: lab, used: chosen} = model.read(values);
       let spots = null;
-      try { spots = paperSpots(drawingSolution(drawing(slitPiecesOn(st, outline, cand, lab, chosen)), target, cfg), cfg); } catch { spots = null; }
+      try { spots = paperSpots(drawingSolution(drawing(slitPiecesOn(st, outline, cand, lab, chosen)), target, cfg), cfg); } catch (error) {
+        noteError('exact/search.js paper audit of a solution', error);
+        spots = null;
+      }
       if (!spots) return [];
       return tightNogoods(model, values, spots).map(n => model.rowOf(n)).filter(Boolean).map(([terms, rhs]) => ['paper', terms, rhs]);
     };
@@ -151,7 +159,10 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
     const {labels: lab, used: chosen} = model.read(values);
     const xy = drawing(slitPiecesOn(st, outline, cand, lab, chosen)), solution = drawingSolution(xy, target, cfg);
     let spots = null;
-    try { spots = report.penalty > 1e-6 ? null : paperSpots(solution, cfg, {final: true}); } catch { spots = null; }
+    try { spots = report.penalty > 1e-6 ? null : paperSpots(solution, cfg, {final: true}); } catch (error) {
+      noteError('exact/search.js final paper audit', error);
+      spots = null;
+    }
     const result = {solution, xy, report, paperPassed: !spots, lab, chosen};
     if (!best || (result.paperPassed && !best.paperPassed)) best = result;
     if (result.paperPassed || !spots || performance.now() > deadline - 2000) break;
@@ -193,7 +204,10 @@ export async function exactFromTemplate(target, template, cfg, {seconds = 20, ne
         }
       }
       refined = result;
-    } catch { refined = null; }
+    } catch (error) {
+      noteError('exact/search.js redrawing on the mask\'s edge', error);
+      refined = null;
+    }
   }
   return {solution: best.solution, refined, xy: best.xy, report: {...best.report, bound: rank ? outlineBound : bound, attempts, candidates: cand.cost.size, statics: statics.length,
     softStart: soft.size, uncuttableStart: fallback.size, buildSeconds: (built - t0) / 1000, seconds: (performance.now() - t0) / 1000}};

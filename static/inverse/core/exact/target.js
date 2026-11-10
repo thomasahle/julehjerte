@@ -215,6 +215,7 @@ export function targetSegments(target, {tolerance = .002, merge = 1e-4, nearTouc
   try {
     return segmentsOf(lines, target, tolerance, merge);
   } catch {
+    // The joining left no outline to build on (above): as traced.
     return segmentsOf(unjoined, target, tolerance, merge);
   }
 }

@@ -9,7 +9,7 @@ import {auditFeatureFidelity, mergedRegions} from '../feature-shapes.js';
 import {matchingSummary} from '../direct/matching.js';
 import {routedComplexity} from '../direct/routed-refinement.js';
 import {requestedSymmetry} from '../settings.js';
-import {exactFromTemplate, NO_TEMPLATE} from './search.js';
+import {exactFromTemplate, NO_TEMPLATE, NOT_SYMMETRIC} from './search.js';
 import {exactOutline} from './snap.js';
 import {exactStart} from './start.js';
 import {FROM_APP, determinant, group} from './symmetry.js';
@@ -18,6 +18,7 @@ import {cheapBounds} from './bounds.js';
 import {returns} from './nogoods.js';
 import {SIZE} from './structure.js';
 import {issueKinds} from '../result-rank.js';
+import {noteError} from '../errors.js';
 
 /** The outline the exact search reads: traced from the picture's mask with
  * the settings `cfg` (raster.js, `options` its tracing), or null. */
@@ -30,16 +31,26 @@ export function exactTarget(target, cfg, options = {}) {
  * up (bounds.js), and both pairs of sides must have some: each of its slits
  * starts where the outline meets a side, so a figure clear of the sides (a
  * motif painted in the middle) has none, and only the fitter's hidden cuts
- * from the border reach it. Tens of milliseconds. */
-export function exactCannotStart(outline, cfg) {
+ * from the border reach it. Tens of milliseconds. As {code, message}: the
+ * code UNEVEN or NO_SIDES, or null for a structure that does not build. */
+export function whyCannotStart(outline, cfg) {
   try {
     const bounds = cheapBounds(exactOutline(outline, cfg).st);
-    if (bounds.impossible) return 'The outline ends unevenly on opposite sides.';
-    if (!bounds.k || !bounds.ell) return 'The outline does not reach both pairs of sides.';
+    if (bounds.impossible) return {code: UNEVEN, message: 'The outline ends unevenly on opposite sides.'};
+    if (!bounds.k || !bounds.ell) return {code: NO_SIDES, message: 'The outline does not reach both pairs of sides.'};
     return null;
   } catch (error) {
-    return String(error.message || error);
+    return {code: null, message: String(error.message || error)};
   }
+}
+
+/** whyCannotStart's codes: the cut ends on opposite sides do not pair up; the
+ * outline does not reach both pairs of sides. */
+export const UNEVEN = 'UNEVEN', NO_SIDES = 'NO_SIDES';
+
+/** whyCannotStart's message alone, or null when the search can start. */
+export function exactCannotStart(outline, cfg) {
+  return whyCannotStart(outline, cfg)?.message ?? null;
 }
 
 /** The tips where `outline` comes back within 1.5 mm of itself (nogoods.js
@@ -79,7 +90,10 @@ export function assess(solution, cfg, {material = null} = {}) {
   try {
     if (check.passed && !material) verifyPaper(solution, cfg);
     paper = check.passed && (material ?? finalMaterialAudit(solution, verifiedPaperSettings(solution, cfg), {reuse: true})).passed;
-  } catch { paper = false; }
+  } catch (crash) {
+    noteError('exact/stage.js assess: paper audit', crash);
+    paper = false;
+  }
   const kinds = new Set(check.issues.map(i => i.type));
   if (check.passed && !paper) kinds.add('paper');
   const matching = matchingSummary(solution), hiddenRuns = routedComplexity(solution).hiddenRuns;
@@ -93,7 +107,11 @@ export function assess(solution, cfg, {material = null} = {}) {
   const error = woven ? maskError(source, woven) : 0;
   let features = true;
   // Regions of the picture the weave joins count as one lost (mergedRegions: two hidden cuts drawn apart).
-  try { features = !woven || auditFeatureFidelity(source, woven, cfg).passed && !mergedRegions(source, woven, cfg.width).length; } catch { features = true; }
+  try { features = !woven || auditFeatureFidelity(source, woven, cfg).passed && !mergedRegions(source, woven, cfg.width).length; } catch (crash) {
+    // Kept as before: a crash here counts the regions as kept.
+    noteError('exact/stage.js assess: picture regions', crash);
+    features = true;
+  }
   // Hidden cut as the weave shows it, alike for the fitter's template and the
   // exact search's (their own counts of hidden runs differ in kind), in steps
   // of 10 mm.
@@ -111,7 +129,10 @@ export function assess(solution, cfg, {material = null} = {}) {
 
 /** assess, or null for no drawing or one it cannot assess. */
 function assessed(solution, cfg) {
-  try { return solution ? assess(solution, cfg) : null; } catch { return null; }
+  try { return solution ? assess(solution, cfg) : null; } catch (error) {
+    noteError('exact/stage.js assessed', error);
+    return null;
+  }
 }
 
 /** Whether assessment `a` is nearer what the export takes than `b` (assess's `near`). */
@@ -233,7 +254,7 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
   // `broken`: the rung's result breaking the model's rules least, assessed only
   // once the ladder ends without a template (on jul-tern assessing every rung's
   // took 5 s of its 50); `nearest`: the template nearest what the export takes (closer).
-  let error = null, nearest = null, broken = null;
+  let error = null, code = null, nearest = null, broken = null;
   const short = SHORT_MM * SIZE / cfg.width, empty = {positions: new Map(), labels: new Map(), chords: []};
   // Alone, each rung also tries LADDER_SAMPLES sampled rankings of the same maps after the plain one: a
   // sample finds some templates at a smaller K or on an earlier outline. The plain one has longer rungs
@@ -280,13 +301,13 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
     else if (!result.error && !(broken?.report.penalty <= result.report.penalty)) broken = {...result, report: {...result.report, ladder: k}};
     rungs.push({k, seed, seconds: +((performance.now() - began) / 1000).toFixed(2), found: ok, hidden: result.report?.hidden});
     if (ok) return {found: {...result, report: {...result.report, ladder: k}}, rungs};
-    error = result.error ?? error;
+    if (result.error != null) { error = result.error; code = result.code ?? null; }
   }
   for (const drawn of broken ? [broken.solution, broken.refined] : []) {
     const assessment = assessed(drawn, cfg);
     if (closer(assessment, nearest?.assessment)) nearest = {solution: drawn, assessment, report: broken.report};
   }
-  return {found: null, nearest, rungs, error};
+  return {found: null, nearest, rungs, error, code};
 }
 
 /** The exact search on the traced `outline` from the fitter's `template`
@@ -327,7 +348,7 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     // Alone, a ladder without a template goes on as today's search does after one: the outline made
     // symmetric, untied, or part of the symmetry (below), each with the ladder (alhambra's traced outline
     // is not symmetric enough for its mirror, so every rung there stops at once).
-    else if (ladderOnly) found = {error: /not symmetric/.test(ladder?.error ?? "") ? ladder.error : NO_TEMPLATE};
+    else if (ladderOnly) found = ladder?.code === NOT_SYMMETRIC ? {error: ladder.error, code: NOT_SYMMETRIC} : {error: NO_TEMPLATE};
     else {
       const began = performance.now(), budget = (deadline - began) / 1000 - reserve;
       const start = await exactStart(exact, template, {deadline: began + Math.min(START_SECONDS, budget / 4) * 1000});
@@ -348,14 +369,25 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
         report.bare = bare.error ?? bare.report.penalty;
       }
       const bareFound = bare && !bare.error && !(bare.report.penalty > 1e-6);
-      if (bareFound && [bare.solution, bare.refined].some(drawn => { try { return drawn && exportable(assess(drawn, cfg), cfg); } catch { return false; } })) {
+      const bareTakes = drawn => {
+        try { return drawn && exportable(assess(drawn, cfg), cfg); } catch (error) {
+          noteError('exact/stage.js exactSearch: assessing the fine grid\'s drawing', error);
+          return false;
+        }
+      };
+      if (bareFound && [bare.solution, bare.refined].some(bareTakes)) {
         found = {...bare, report: {...bare.report, bare: true}};
         // With more hidden segments than the lower bound, the coarse grid's too,
         // in the time left, the better kept (ramme: the fine grid proves 4
         // hidden its best, where the coarse has the designer's none).
         if (bare.report.hidden > (bare.report.bound ?? 0) && left() >= COARSE_AFTER_BARE) {
           const second = await exactFromTemplate(outline, template, cfg, {multi, seconds: left(), symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
-          const rank = result => { try { return assess(result.solution, cfg).rank; } catch { return null; } };
+          const rank = result => {
+            try { return assess(result.solution, cfg).rank; } catch (error) {
+              noteError('exact/stage.js exactSearch: ranking the coarse grid\'s template', error);
+              return null;
+            }
+          };
           if (!second.error && !(second.report.penalty > 1e-6)) {
             const [a, b] = [rank(second), rank(found)];
             if (a && b && (a.find((v, k) => v !== b[k]) !== undefined ? a[a.findIndex((v, k) => v !== b[k])] < b[a.findIndex((v, k) => v !== b[k])] : false))
@@ -389,16 +421,16 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   // symmetric (target.js symmetricLines). Not before: outlines the ties already
   // hold, made symmetric, gave as many templates but other ones, some worse.
   // (history: docs/inverse/SEARCH-CONSTANTS.md#even)
-  if (found.error && /not symmetric/.test(found.error) && symmetry.length && fallback && !even) {
+  if (found.code === NOT_SYMMETRIC && symmetry.length && fallback && !even) {
     const evened = await exactSearch(outline, template, cfg, {deadline, reserve, onProgress, geometry, refine, symmetry, even: true, ...alone});
-    if (evened.found || !/not symmetric/.test(evened.report.error ?? '')) return {...evened, report: {...evened.report, even: found.error}};
+    if (evened.found || evened.errorCode !== NOT_SYMMETRIC) return {...evened, report: {...evened.report, even: found.error}};
   }
-  if (found.error && /not symmetric/.test(found.error) && symmetry.length && fallback) {
+  if (found.code === NOT_SYMMETRIC && symmetry.length && fallback) {
     const options = {deadline, reserve, onProgress, geometry, refine, fallback: false, ...alone};
     let again = outline.metadata?.nearTouch > 0
       ? await exactSearch({...outline, metadata: {...outline.metadata, nearTouch: 0}}, template, cfg, {...options, symmetry})
-      : {found: null, report: {error: found.error}};
-    if (!again.found && /not symmetric/.test(again.report.error ?? '')) again = {...await exactSearch(outline, template, cfg, {...options, symmetry: []}), untied: true};
+      : {found: null, report: {error: found.error}, errorCode: found.code};
+    if (!again.found && again.errorCode === NOT_SYMMETRIC) again = {...await exactSearch(outline, template, cfg, {...options, symmetry: []}), untied: true};
     return {...again, report: {...again.report, unjoined: found.error, ...(again.untied ? {untied: true} : {})}};
   }
   // A picture symmetric under mirrors whose templates keep only part of its
@@ -434,7 +466,9 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   const own = near && {solution: near.solution, assessment: near.assessment, report: {...report, search: near.report, exactOutline: near.assessment, ladderNearest: true}};
   const best = closer(other?.assessment, own?.assessment) ? other : own;
   if (found.error && best && !ladderOnly) return {found: {solution: best.solution, assessment: best.assessment}, report: best.report};
-  if (found.error) return {found: null, ...(best ? {near: best} : {}), report: {...report, error: found.error, search: found.report}};
+  // `errorCode`: report.error's code, where it has one (NOT_SYMMETRIC), for the fallbacks above.
+  if (found.error) return {found: null, ...(best ? {near: best} : {}), report: {...report, error: found.error, search: found.report},
+    ...(found.code ? {errorCode: found.code} : {})};
   let solution = found.solution, assessment = assess(solution, cfg);
   // Redrawn on the mask's own edge in a few cubics (search.js, refine.js):
   // taken when it does better on passing, its failures, the picture's regions
@@ -447,7 +481,10 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   // more. (history: docs/inverse/SEARCH-CONSTANTS.md#smooth-slack)
   if (found.refined) {
     let finer = null;
-    try { finer = assess(found.refined, cfg); } catch { finer = null; }
+    try { finer = assess(found.refined, cfg); } catch (error) {
+      noteError('exact/stage.js exactSearch: assessing the redrawn template', error);
+      finer = null;
+    }
     report.refined = finer && {passes: finer.passes, maskError: finer.maskError, issues: finer.issues, rank: finer.rank, traced: assessment.rank};
     // Compared in that order: passing where the traced drawing does not
     // (a tip its pixel steps clear: triple-heart-shot) settles it.

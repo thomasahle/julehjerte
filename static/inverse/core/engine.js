@@ -23,6 +23,7 @@ import {openClose, withoutSpecks} from './exact/raster.js';
 import {cheapBounds} from './exact/bounds.js';
 import {betterResult} from './result-rank.js';
 import {exactOutline} from './exact/snap.js';
+import {noteError} from './errors.js';
 import {
   appSymmetry,
   assess,
@@ -30,7 +31,8 @@ import {
   exactSearch as searchExact,
   exactSymmetry,
   exactTarget,
-  exactCannotStart,
+  whyCannotStart,
+  UNEVEN,
   exportable,
   returnTips
 } from './exact/stage.js';
@@ -289,8 +291,9 @@ function returnRepaired(candidates, cfg) {
           found: {solution: done.solution, assessment: repaired},
           report: {...found.report, exactOutline: repaired, repairedReturns: true}
         };
-    } catch {
-      /* the next */
+    } catch (error) {
+      noteError('engine.js returnRepaired', error);
+      // then the next
     }
   }
   return null;
@@ -335,17 +338,24 @@ export function maskRoughness(source) {
  * stands, opened or not, so an uneven crop traced opened is read paired too.
  * (history: docs/inverse/SEARCH-CONSTANTS.md#rough) */
 export function firstTrace(rough, traceAt) {
-  let cannot = 'No outline was traced from the mask.';
+  // `code`: the first trace's reason's code (exact/stage.js whyCannotStart), traceAt's `code`.
+  let cannot = 'No outline was traced from the mask.', code = null;
   for (const [k, way] of [{open: rough}, {open: rough, paired: true}, {open: 1}, {open: 2}].entries()) {
-    if (way.paired && !/unevenly/.test(cannot)) continue;
+    if (way.paired && code !== UNEVEN) continue;
     try {
       const traced = traceAt(way.open, way);
       if (traced) {
         if (!traced.why) return {outline: traced.scaled, way};
-        if (!k) cannot = traced.why;
+        if (!k) {
+          cannot = traced.why;
+          code = traced.code ?? null;
+        }
       }
     } catch (error) {
-      if (!k) cannot = String(error.message || error);
+      if (!k) {
+        cannot = String(error.message || error);
+        code = null;
+      }
     }
   }
   return {outline: null, way: null, cannot};
@@ -379,7 +389,8 @@ async function exactTemplate(
   const traceAt = (open, near = {}) => {
     const traced = exactTarget(target, cfg, {...base, open, ...near}),
       scaled = traced && scaleTarget(traced, cfg.width, cfg.paperColors);
-    return scaled ? {scaled, why: exactCannotStart(scaled, cfg)} : null;
+    const why = scaled && whyCannotStart(scaled, cfg);
+    return scaled ? {scaled, why: why?.message ?? null, code: why?.code ?? null} : null;
   };
   const {outline, way, cannot} = firstTrace(maskRoughness(target.sourceImage), traceAt);
   if (!outline) return {solution: null, report: {chosen: 'fitter', error: cannot}};
@@ -400,7 +411,8 @@ async function exactTemplate(
     let tips = [];
     try {
       tips = returnTips(outline, cfgExact).map(([x, y]) => [x * px, y * px]);
-    } catch {
+    } catch (error) {
+      noteError('engine.js exactTemplate: return tips', error);
       tips = [];
     }
     const outlines = [outline];
@@ -413,7 +425,7 @@ async function exactTemplate(
         const traced = traceAt(way.open, way);
         if (traced && !traced.why) outlines.push(traced.scaled);
       } catch {
-        /* an outline that cannot be traced is left out */
+        // An outline that cannot be traced (exactTarget throws) is left out.
       }
     }
     // The outline moved off the paper's sides where it runs closer to one than
@@ -422,7 +434,7 @@ async function exactTemplate(
       const traced = traceAt(way.open, {outerStrip: true});
       if (traced && !traced.why) outlines.push(traced.scaled);
     } catch {
-      /* none */
+      // An outline that cannot be traced (exactTarget throws): none.
     }
     // The traced outline's lower bound: no template on it has fewer hidden
     // segments, so a ladder template with no more than that (on whichever
@@ -433,7 +445,8 @@ async function exactTemplate(
       tracedBound = cheapBounds(
         ...(ex => [ex.st, ex.outline])(exactOutline(outline, cfgExact, 'tight', {symmetry: []}))
       ).lb;
-    } catch {
+    } catch (error) {
+      noteError('engine.js exactTemplate: the traced outline\'s bound', error);
       tracedBound = null;
     }
     // With no template the export takes on any outline, the nearest the ladder
@@ -524,7 +537,8 @@ async function exactTemplate(
   let tips = [];
   try {
     tips = returnTips(outline, cfgExact).map(([x, y]) => [x * px, y * px]);
-  } catch {
+  } catch (error) {
+    noteError('engine.js exactTemplate: return tips', error);
     tips = [];
   }
   if (
@@ -538,6 +552,7 @@ async function exactTemplate(
       const traced = traceAt(radius, {spots: tips, within: TIP_SPOT_MM * px});
       rounded = traced && !traced.why ? traced.scaled : null;
     } catch {
+      // An outline that cannot be traced (exactTarget throws): none.
       rounded = null;
     }
     const again =
@@ -571,6 +586,7 @@ async function exactTemplate(
       const traced = traceAt(way.open, {outerStrip: true});
       moved = traced && !traced.why ? traced.scaled : null;
     } catch {
+      // An outline that cannot be traced (exactTarget throws): none.
       moved = null;
     }
     if (moved) {
@@ -606,6 +622,7 @@ async function exactTemplate(
         const traced = traceAt(way.open, {...way, ...strip});
         rounded = traced && !traced.why ? traced.scaled : null;
       } catch {
+        // An outline that cannot be traced (exactTarget throws): the next way.
         rounded = null;
       }
       if (!rounded) continue;
