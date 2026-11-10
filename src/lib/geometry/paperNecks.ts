@@ -177,7 +177,7 @@ function templateGrid(fingers: Finger[], lobe: LobeId,
 		if (x >= 0 && x < W && y >= ear && y < H) cut[y * W + x] = 1;
 	};
 	for (const finger of fingers) for (const seg of finger.segments) {
-		// The cut, in template units (as `transformPathData`), stepped through finer than a cell.
+		// The cut, in template units (as `templateSegments`), stepped through finer than a cell.
 		const point = (t: number) => {
 			const p = bezierPoint(seg, t);
 			return lobe === 'left' ? [p.y - rect.top, p.x - rect.left] as const : [p.x - rect.left, p.y - rect.top] as const;

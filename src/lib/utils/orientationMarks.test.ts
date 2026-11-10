@@ -6,13 +6,13 @@ import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { lobesShareTemplate, SHARED_TEMPLATE_LOBE } from '$lib/utils/symmetry';
 import { getTemplateData, type TemplateLobe } from '$lib/utils/templateSvg';
 import { heartScale } from '$lib/laser/unfold';
+import { bezierPoint } from '$lib/geometry/cubic';
 import {
 	cutDistance,
 	distanceToLines,
 	dedupeMarks,
 	markPathData,
 	needsOrientationMarks,
-	samplePathData,
 	shownTemplateMarks,
 	templateMarks,
 	type PlacedMark
@@ -34,6 +34,34 @@ const MARKED = [
 	'puslespil', 'roed-blomst', 'roserude', 'santa', 'sildeben', 'simple-5star', 'skraa-kryds',
 	'snowflake', 'squares', 'stjernefliser', 'stjernegitter', 'sun', 'tak', 'triple-heart', 'tulipan', 'venus'
 ];
+
+/** Absolute M / L / C path data, sampled: a strip's outline, or a template's `cutPaths`. */
+function samplePathData(d: string, steps = 24): Vec[][] {
+	const lines: Vec[][] = [];
+	let current: Vec[] | null = null;
+	let at: Vec = { x: 0, y: 0 };
+	for (const command of d.match(/[MLC][^MLC]*/gi) ?? []) {
+		const n = command.slice(1).trim().split(/[\s,]+/).filter(Boolean).map(Number);
+		const type = command[0]!.toUpperCase();
+		if (type === 'M') {
+			at = { x: n[0]!, y: n[1]! };
+			current = [at];
+			lines.push(current);
+		} else if (type === 'L') {
+			for (let i = 0; i + 1 < n.length; i += 2) {
+				at = { x: n[i]!, y: n[i + 1]! };
+				current?.push(at);
+			}
+		} else {
+			for (let i = 0; i + 5 < n.length; i += 6) {
+				const seg = { p0: at, p1: { x: n[i]!, y: n[i + 1]! }, p2: { x: n[i + 2]!, y: n[i + 3]! }, p3: { x: n[i + 4]!, y: n[i + 5]! } };
+				for (let k = 1; k <= steps; k++) current?.push(bezierPoint(seg, k / steps));
+				at = seg.p3;
+			}
+		}
+	}
+	return lines.filter((line) => line.length > 1);
+}
 
 const allIds = Object.keys(gallerySvgs)
 	.map((key) => key.split('/').pop()!.replace(/\.svg$/, ''))

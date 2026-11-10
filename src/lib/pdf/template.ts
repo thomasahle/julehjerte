@@ -1,11 +1,10 @@
 import { jsPDF } from 'jspdf';
-import type { HeartDesign, Vec } from '$lib/types/heart';
+import type { BezierSegment, HeartDesign, Vec } from '$lib/types/heart';
 import { prerenderHeartImages } from './heartRenderer';
 import { SITE_DOMAIN } from '$lib/config';
-import { segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { bezierPointByPowers } from '$lib/geometry/cubic';
 import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
-import { transformPathData } from '$lib/utils/templateSvg';
+import { templateSegments } from '$lib/utils/templateSvg';
 import { markStrokes, type PlacedMark } from '$lib/utils/orientationMarks';
 import { heartFileStem, slugify } from '$lib/utils/slug';
 import { t, type Language } from '$lib/i18n';
@@ -32,60 +31,23 @@ function inferOverlapRect(design: HeartDesign) {
   };
 }
 
-// Parse SVG path data and draw it
-function drawSVGPath(
+// Draw a cut, in template units, each cubic as 20 straight pieces.
+function drawCut(
   pdf: jsPDF,
-  pathData: string,
+  segments: BezierSegment[],
   offsetX: number,
   offsetY: number,
   scale: number
 ) {
-  const commands = pathData.match(/[MLCQAZ][^MLCQAZ]*/gi) || [];
-  let currentX = 0;
-  let currentY = 0;
-
-  for (const cmd of commands) {
-    const type = cmd[0].toUpperCase();
-    const args = cmd
-      .slice(1)
-      .trim()
-      .split(/[\s,]+/)
-      .map(Number);
-
-    if (type === 'M') {
-      currentX = args[0];
-      currentY = args[1];
-    } else if (type === 'C') {
-      // Cubic bezier: C x1 y1 x2 y2 x y
-      const points: Vec[] = [];
-      const segments = 20;
-      const seg = {
-        p0: { x: currentX, y: currentY },
-        p1: { x: args[0], y: args[1] },
-        p2: { x: args[2], y: args[3] },
-        p3: { x: args[4], y: args[5] }
-      };
-
-      for (let i = 0; i <= segments; i++) {
-        const p = bezierPointByPowers(seg, i / segments);
-        points.push({ x: offsetX + p.x * scale, y: offsetY + p.y * scale });
-      }
-
-      for (let i = 0; i < points.length - 1; i++) {
-        pdf.line(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y);
-      }
-
-      currentX = args[4];
-      currentY = args[5];
-    } else if (type === 'L') {
-      pdf.line(
-        offsetX + currentX * scale,
-        offsetY + currentY * scale,
-        offsetX + args[0] * scale,
-        offsetY + args[1] * scale
-      );
-      currentX = args[0];
-      currentY = args[1];
+  for (const seg of segments) {
+    const points: Vec[] = [];
+    const pieces = 20;
+    for (let i = 0; i <= pieces; i++) {
+      const p = bezierPointByPowers(seg, i / pieces);
+      points.push({ x: offsetX + p.x * scale, y: offsetY + p.y * scale });
+    }
+    for (let i = 0; i < points.length - 1; i++) {
+      pdf.line(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y);
     }
   }
 }
@@ -219,16 +181,8 @@ function drawLobeTemplateAt(
     // Draw cut lines (finger boundaries) - transform from horizontal to vertical
     const leftFingers = design.fingers.filter((f) => f.lobe === 'left');
     for (const finger of leftFingers) {
-      const transformedPath = transformPathData(
-        segmentsToPathData(finger.segments),
-        rect.overlapTop,
-        rect.overlapLeft,
-        overlapWidth,
-        overlapHeight,
-        earRadius,
-        'left'
-      );
-      drawSVGPath(pdf, transformedPath, offsetX, offsetY, scale);
+      const cut = templateSegments(finger.segments, rect.overlapTop, rect.overlapLeft, earRadius, 'left');
+      drawCut(pdf, cut, offsetX, offsetY, scale);
     }
   } else {
     // Right lobe is already oriented correctly (ear at top)
@@ -276,17 +230,9 @@ function drawLobeTemplateAt(
     // Draw cut lines (finger boundaries)
     const rightFingers = design.fingers.filter((f) => f.lobe === 'right');
     for (const finger of rightFingers) {
-      // Transform pathData to local coordinates
-      const transformedPath = transformPathData(
-        segmentsToPathData(finger.segments),
-        rect.overlapTop,
-        rect.overlapLeft,
-        overlapWidth,
-        overlapHeight,
-        earRadius,
-        'right'
-      );
-      drawSVGPath(pdf, transformedPath, offsetX, offsetY, scale);
+      // Transform to local coordinates
+      const cut = templateSegments(finger.segments, rect.overlapTop, rect.overlapLeft, earRadius, 'right');
+      drawCut(pdf, cut, offsetX, offsetY, scale);
     }
   }
 }

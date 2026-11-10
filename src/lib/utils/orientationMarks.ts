@@ -39,7 +39,7 @@
  * Mortensen's Kroge): then the piece used for that lobe goes in turned over,
  * and its mark moves to the right side, (W, R).
  */
-import type { HeartDesign, Vec } from '$lib/types/heart';
+import type { BezierSegment, HeartDesign, Vec } from '$lib/types/heart';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
 import { bezierPoint } from '$lib/geometry/cubic';
 import { getTemplateData, type TemplateLobe } from '$lib/utils/templateSvg';
@@ -77,32 +77,12 @@ const SAME_PIECE_TOLERANCE = 0.02;
 /** Points along a cut, every few hundredths of the template's width. */
 type Polyline = Vec[];
 
-/** The absolute M / L / C path data `getTemplateData` writes, sampled. */
-export function samplePathData(d: string, steps = 24): Polyline[] {
-	const lines: Polyline[] = [];
-	let current: Polyline | null = null;
-	let at: Vec = { x: 0, y: 0 };
-	for (const command of d.match(/[MLC][^MLC]*/gi) ?? []) {
-		const n = command.slice(1).trim().split(/[\s,]+/).filter(Boolean).map(Number);
-		const type = command[0]!.toUpperCase();
-		if (type === 'M') {
-			at = { x: n[0]!, y: n[1]! };
-			current = [at];
-			lines.push(current);
-		} else if (type === 'L') {
-			for (let i = 0; i + 1 < n.length; i += 2) {
-				at = { x: n[i]!, y: n[i + 1]! };
-				current?.push(at);
-			}
-		} else {
-			for (let i = 0; i + 5 < n.length; i += 6) {
-				const seg = { p0: at, p1: { x: n[i]!, y: n[i + 1]! }, p2: { x: n[i + 2]!, y: n[i + 3]! }, p3: { x: n[i + 4]!, y: n[i + 5]! } };
-				for (let k = 1; k <= steps; k++) current?.push(bezierPoint(seg, k / steps));
-				at = seg.p3;
-			}
-		}
-	}
-	return lines.filter((line) => line.length > 1);
+/** A template cut (`getTemplateData`'s `cutSegments`) as points: its start, then `steps` per segment. */
+function sampleCut(segments: BezierSegment[], steps = 24): Polyline[] {
+	if (!segments.length) return [];
+	const line: Polyline = [segments[0]!.p0];
+	for (const seg of segments) for (let k = 1; k <= steps; k++) line.push(bezierPoint(seg, k / steps));
+	return line.length > 1 ? [line] : [];
 }
 
 function distanceToSegment(p: Vec, a: Vec, b: Vec): number {
@@ -190,7 +170,7 @@ interface TemplateCuts {
 
 function templateCuts(design: HeartDesign, lobe: TemplateLobe): TemplateCuts {
 	const data = getTemplateData(design, lobe);
-	return { width: data.templateWidth, lines: data.cutPaths.flatMap((d) => samplePathData(d, 12)) };
+	return { width: data.templateWidth, lines: data.cutSegments.flatMap((cut) => sampleCut(cut, 12)) };
 }
 
 /** Whether a template is the same piece turned over: then it cannot go in the wrong way. */
@@ -336,7 +316,7 @@ function searchMark(design: HeartDesign, printed: TemplateLobe, use: MarkUse, mm
 	const inset = unit(Math.max(...MARK_TIERS.map(({ radiusMm }) => radiusMm)) + SIDE_GAP_MM + 2.4) + reach;
 	const [left, right] = use.side === 'start' ? [-reach, inset] : [W - inset, W + reach];
 	const [top, bottom] = [R - reach, lowest + reach];
-	const lines = data.cutPaths.flatMap((d) => samplePathData(d)).flatMap((line) => line.slice(1).flatMap((b, i) => {
+	const lines = data.cutSegments.flatMap((cut) => sampleCut(cut)).flatMap((line) => line.slice(1).flatMap((b, i) => {
 		const a = line[i]!;
 		return Math.max(a.x, b.x) < left || Math.min(a.x, b.x) > right || Math.max(a.y, b.y) < top || Math.min(a.y, b.y) > bottom
 			? [] : [[a, b]];

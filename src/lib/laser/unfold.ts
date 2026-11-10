@@ -11,7 +11,7 @@
  *
  * Everything here is numbers; the SVG and DXF writers format them.
  */
-import type { HeartDesign, Vec } from '$lib/types/heart';
+import type { BezierSegment, HeartDesign, Vec } from '$lib/types/heart';
 import { getTemplateData, type TemplateLobe } from '$lib/utils/templateSvg';
 import { placeMark, markUses, type PlacedMark } from '$lib/utils/orientationMarks';
 
@@ -79,27 +79,14 @@ const SIDE_TOLERANCE = 0.75;
 
 type Template = ReturnType<typeof getTemplateData>;
 
-/** The absolute M / L / C commands `getTemplateData` writes, as segments. */
-function parseCut(d: string): LaserPath {
-	const commands = d.match(/[MLC][^MLC]*/g) ?? [];
-	let start: Vec | null = null;
-	const segments: LaserSegment[] = [];
-	for (const command of commands) {
-		const n = command.slice(1).trim().split(/[\s,]+/).filter(Boolean).map(Number);
-		const at = (i: number): Vec => ({ x: n[i]!, y: n[i + 1]! });
-		if (command[0] === 'M') {
-			if (start) throw new LaserExportError('A strip cut has more than one subpath.');
-			start = at(0);
-		} else if (command[0] === 'L') {
-			for (let i = 0; i + 1 < n.length; i += 2) segments.push({ kind: 'L', to: at(i) });
-		} else {
-			for (let i = 0; i + 5 < n.length; i += 6) {
-				segments.push({ kind: 'C', c1: at(i), c2: at(i + 2), to: at(i + 4) });
-			}
-		}
-	}
-	if (!start || !segments.length) throw new LaserExportError('A strip cut is empty.');
-	return { start, segments, closed: false };
+/** A template cut (`getTemplateData`'s `cutSegments`) as a path: its start, then its cubics. */
+function cutPath(segments: BezierSegment[]): LaserPath {
+	if (!segments.length) throw new LaserExportError('A strip cut is empty.');
+	return {
+		start: segments[0]!.p0,
+		segments: segments.map((seg): LaserSegment => ({ kind: 'C', c1: seg.p1, c2: seg.p2, to: seg.p3 })),
+		closed: false
+	};
 }
 
 function endPoint(path: LaserPath): Vec {
@@ -223,8 +210,8 @@ function unfoldTemplate(
 		closed: true
 	};
 
-	const cuts = template.cutPaths
-		.map(parseCut)
+	const cuts = template.cutSegments
+		.map(cutPath)
 		.filter((cut) => !isSide(cut, templateWidth))
 		.map((cut) => {
 			const half = mapPath(orientCut(cut, earRadius, templateHeight), s);

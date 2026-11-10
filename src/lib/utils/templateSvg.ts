@@ -1,4 +1,4 @@
-import type { Finger, HeartDesign } from '$lib/types/heart';
+import type { BezierSegment, Finger, HeartDesign, Vec } from '$lib/types/heart';
 import { segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { escapeXml } from '$lib/utils/xml';
@@ -15,6 +15,9 @@ interface TemplateData {
   templateWidth: number;
   templateHeight: number;
   earPath: string;
+  /** Each cut of the lobe in the template's frame, every segment starting where the one before it ends. */
+  cutSegments: BezierSegment[][];
+  /** The same cuts as path data, for the SVG and the preview. */
   cutPaths: string[];
 }
 
@@ -37,9 +40,12 @@ function arcPath(cx: number, cy: number, r: number, startAngle: number, endAngle
   return `M ${startX} ${startY} A ${r} ${r} 0 ${largeArc} 1 ${endX} ${endY}`;
 }
 
+/** A number as path data writes it and reads it back: the same, but −0 is 0. */
+const written = (v: number) => (v === 0 ? 0 : v);
+
 /**
- * Map a finger's path from the editor's overlap square into one lobe's template
- * frame: the rounded end ("ear") at the top, the fold at the bottom.
+ * Map a finger's segments from the editor's overlap square into one lobe's
+ * template frame: the rounded end ("ear") at the top, the fold at the bottom.
  *
  * The right lobe's ear sits above the square, so its fingers run top (ear) to
  * bottom (fold) already and only move. The left lobe's ear sits to the LEFT of
@@ -51,75 +57,31 @@ function arcPath(cx: number, cy: number, r: number, startAngle: number, endAngle
  * at the fold instead of at the lobe.) Which way the template's x axis points
  * is immaterial: a folded piece turned over is its own mirror image, so for a
  * mirror-symmetric heart the two lobes' templates come out identical.
+ *
+ * Each segment starts where the one before it ends, and −0 comes out as 0, so
+ * the numbers are exactly those of the cut's path data (`segmentsToPathData`
+ * of the result): the PDF, the laser file and the marks, which take the
+ * segments, cut what the SVG template draws.
  */
-export function transformPathData(
-  pathData: string,
+export function templateSegments(
+  segments: BezierSegment[],
   overlapTop: number,
   overlapLeft: number,
-  overlapWidth: number,
-  overlapHeight: number,
   earRadius: number,
   lobe: TemplateLobe
-): string {
-  const commands = pathData.match(/[MLCQAZ][^MLCQAZ]*/gi) || [];
-  let result = '';
-
-  for (const cmd of commands) {
-    const type = cmd[0].toUpperCase();
-    const args = cmd
-      .slice(1)
-      .trim()
-      .split(/[\s,]+/)
-      .map(Number);
-
-    if (type === 'M') {
-      const [x, y] = args;
-      if (lobe === 'left') {
-        const newX = y - overlapTop;
-        const newY = x - overlapLeft + earRadius;
-        result += `M ${newX} ${newY} `;
-      } else {
-        const newX = x - overlapLeft;
-        const newY = y - overlapTop + earRadius;
-        result += `M ${newX} ${newY} `;
-      }
-    } else if (type === 'C') {
-      if (lobe === 'left') {
-        const newArgs = [];
-        for (let i = 0; i < args.length; i += 2) {
-          const x = args[i];
-          const y = args[i + 1];
-          const newX = y - overlapTop;
-          const newY = x - overlapLeft + earRadius;
-          newArgs.push(newX, newY);
-        }
-        result += `C ${newArgs.join(' ')} `;
-      } else {
-        const newArgs = [];
-        for (let i = 0; i < args.length; i += 2) {
-          const x = args[i];
-          const y = args[i + 1];
-          const newX = x - overlapLeft;
-          const newY = y - overlapTop + earRadius;
-          newArgs.push(newX, newY);
-        }
-        result += `C ${newArgs.join(' ')} `;
-      }
-    } else if (type === 'L') {
-      const [x, y] = args;
-      if (lobe === 'left') {
-        const newX = y - overlapTop;
-        const newY = x - overlapLeft + earRadius;
-        result += `L ${newX} ${newY} `;
-      } else {
-        const newX = x - overlapLeft;
-        const newY = y - overlapTop + earRadius;
-        result += `L ${newX} ${newY} `;
-      }
-    }
+): BezierSegment[] {
+  const map =
+    lobe === 'left'
+      ? (p: Vec): Vec => ({ x: written(p.y - overlapTop), y: written(p.x - overlapLeft + earRadius) })
+      : (p: Vec): Vec => ({ x: written(p.x - overlapLeft), y: written(p.y - overlapTop + earRadius) });
+  const result: BezierSegment[] = [];
+  let start = segments.length ? map(segments[0]!.p0) : null;
+  for (const seg of segments) {
+    const mapped = { p0: start!, p1: map(seg.p1), p2: map(seg.p2), p3: map(seg.p3) };
+    result.push(mapped);
+    start = mapped.p3;
   }
-
-  return result.trim();
+  return result;
 }
 
 function getTemplateDimensions(
@@ -144,17 +106,8 @@ export function getTemplateData(design: HeartDesign, lobe: TemplateLobe): Templa
   const { earRadius, width, height } = getTemplateDimensions(overlapWidth, overlapHeight, lobe);
   const earPath = arcPath(width / 2, earRadius, earRadius, Math.PI, 2 * Math.PI);
   const lobeFingers = design.fingers.filter((f: Finger) => f.lobe === lobe);
-  const cutPaths = lobeFingers.map((finger) =>
-    transformPathData(
-      segmentsToPathData(finger.segments),
-      rect.top,
-      rect.left,
-      overlapWidth,
-      overlapHeight,
-      earRadius,
-      lobe
-    )
-  );
+  const cutSegments = lobeFingers.map((finger) => templateSegments(finger.segments, rect.top, rect.left, earRadius, lobe));
+  const cutPaths = cutSegments.map(segmentsToPathData);
 
   return {
     lobe,
@@ -166,6 +119,7 @@ export function getTemplateData(design: HeartDesign, lobe: TemplateLobe): Templa
     templateWidth: width,
     templateHeight: height,
     earPath,
+    cutSegments,
     cutPaths
   };
 }
