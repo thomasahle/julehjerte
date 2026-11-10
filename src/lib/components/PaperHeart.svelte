@@ -1311,7 +1311,7 @@
 		const to = getCenteredRectParams(grid, { x: from.left + from.width / 2, y: from.top + from.height / 2 });
 		const next = sameCuts(fingers, createDefaultFingers(gridSize)) ? createDefaultFingers(grid) : restripped(fingers, from, to, n);
 		if (redCount(next, grid) > redCount(fingers, gridSize)) {
-			noteRefused(tr('editorSizeTooTight').replace('{n}', `${n} × ${n}`));
+			noteRefused(translate('editorSizeTooTight', lang, { n: `${n} × ${n}` }));
 			return;
 		}
 		noteRefused(null);
@@ -1436,7 +1436,7 @@
 		if (!patternTile || !escher || n === patternSize) return;
 		const next = escher.resizedTile(patternTile, n);
 		if (!next) {
-			noteRefused(tr('patternSizeTooTight').replace('{n}', `${n} × ${n}`));
+			noteRefused(translate('patternSizeTooTight', lang, { n: `${n} × ${n}` }));
 			return;
 		}
 		noteRefused(null);
@@ -3039,7 +3039,8 @@
 				const anchorIdx = dragTarget.anchorIdx;
 				const anchorsToMove = selectedAnchors.includes(anchorIdx) ? selectedAnchors : [anchorIdx];
 				const offset = dragStartOffset ?? { x: 0, y: 0 };
-				// If a single internal junction is dragged, use QP snapping (matches Paper editor diamond).
+				// A single point inside a cut goes where the pointer is, or to the other lobe's point near it
+				// (`snapTargetForAnchor`), by the junction's own move (`updateSegmentControlPoint`).
 				if (anchorsToMove.length === 1) {
 					const finger = getFingerById(dragTarget.fingerId);
 					const segs = finger ? fingerToSegments(finger) : null;
