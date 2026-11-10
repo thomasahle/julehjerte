@@ -1,7 +1,7 @@
 import { createExactCurveFitter } from '$lib/inverse/curveFitCache';
 import { simplifyCubicChain } from '$lib/inverse/simplifyCurves';
 import { generateLayeredFigure } from './layers';
-import { CORNER_GAP, generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
+import { CORNER_GAP, generateCornerChecks, hasThreeCounterLanes, type CornerOptions } from './cornerChecks';
 import { generateFittedFigure, mirrorMean, mirrorSymmetric, type GateTies } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid, roomOf, squareCellScale } from './textGrid';
@@ -3783,7 +3783,8 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// One fitting the border narrows the outer strips, a picture of its
 		// own: only where none of the others finish.
 		const fitted = new Set<GeneratorResult>();
-		const layouts = (routeMargin = 0, avoid = false, border?: boolean, wholeLanes = false, stepped = false, ways = false, walled = false, nested = false) => bestOfFirst((function* () {
+		const layouts = ({ routeMargin = 0, avoid = false, border, wholeLanes = false, stepped = false, everyWay: ways = false, walled = false, nested = false }:
+			Pick<CornerOptions, 'routeMargin' | 'avoid' | 'wholeLanes' | 'stepped' | 'everyWay' | 'walled' | 'nested'> & { border?: boolean } = {}) => bestOfFirst((function* () {
 			let finished = false;
 			for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) for (const holdLegs of [true, false]) {
 				if (fitBorder && finished) return;
@@ -3812,28 +3813,28 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// The lanes' routes passing the other lanes' parts of the motif only
 		// where none of the plain ones finish (the elephant).
 		let best = layouts(), avoided = false, stepped = false;
-		if (!best) [best, avoided] = [layouts(0, true), true];
+		if (!best) [best, avoided] = [layouts({ avoid: true }), true];
 		// Where none of those finish either, the side lanes reach the parts of
 		// the motif in them one at a time (the polar star's wedges, a straight
 		// link between two of which crosses its point).
-		if (!best) [best, avoided, stepped] = [layouts(0, false, undefined, false, true), false, true];
+		if (!best) [best, avoided, stepped] = [layouts({ stepped: true }), false, true];
 		// A motif of several pieces, or with counters, may still be reached
 		// every way (see `withEveryWay`): the swan's wing in the bay of its
 		// body, its eye across its head.
 		const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.length);
 		let ways = false, walled = false, counter = false, channeled = false;
-		if (!best && pieced && everyWay) [best, stepped, ways] = [layouts(0, false, undefined, false, false, true), false, true];
+		if (!best && pieced && everyWay) [best, stepped, ways] = [layouts({ everyWay: true }), false, true];
 		// Where that finishes none either, a lane's spokes that the motif's
 		// other parts wall off from its largest go round them too (the
 		// stethoscope, the motorcycle).
-		if (!best && pieced && everyWay) [best, walled] = [layouts(0, false, undefined, false, false, true, true), true];
+		if (!best && pieced && everyWay) [best, walled] = [layouts({ everyWay: true, walled: true }), true];
 		// Where none finish yet, the cuts between the motif's counters go
 		// round inside it too (see `withCounterWays`): the graph's nodes.
-		if (!best && pieced && everyWay) [best, counter] = [withCounterWays(() => layouts(0, false, undefined, false, false, true, true)), true];
+		if (!best && pieced && everyWay) [best, counter] = [withCounterWays(() => layouts({ everyWay: true, walled: true })), true];
 		// And last up the channels between its pieces (see `withChannelWays`),
 		// a counter's counters reached round either attachment (the teardrop
 		// in the threads logo's @).
-		if (!best && pieced && channelWays) [best, channeled] = [withChannels(() => layouts(0, false, undefined, false, false, true, true, true)), true];
+		if (!best && pieced && channelWays) [best, channeled] = [withChannels(() => layouts({ everyWay: true, walled: true, nested: true })), true];
 		if (!best && pieced && !everyWay) everyWayPassed++;
 		// Where its paper tears printed, the layouts with the same border again
 		// with the motif's connections, and the side lanes' legs, a paper's
@@ -3844,7 +3845,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const paper = PAPER_NECK_MM / PRINT_WIDTH_MM * 100, border = fitted.has(best);
 			for (const wholeLanes of [false, true]) {
 				if (wholeLanes && !paperTears(exported(best).design)) break;
-				const retry = () => layouts(paper, avoided, border, wholeLanes, stepped, ways, walled, channeled);
+				const retry = () => layouts({ routeMargin: paper, avoid: avoided, border, wholeLanes, stepped, everyWay: ways, walled, nested: channeled });
 				const again = counter ? withCounterWays(retry) : channeled ? withChannels(retry) : retry();
 				if (again && cutsBetter(again, best, true)) best = again;
 			}
@@ -3941,9 +3942,11 @@ function generateUsingRecipes(request: GeneratorRequest,
 			// figuren's gates; the second of a stack's three chevrons. Last, each
 			// gate takes the islands on round to the next, one way round or the
 			// other (see `sweep`): a signal's ring of dashes, four under gates.
-			const tiers = channelWays ? [[true, 0, true, -1, 0], [true, 1, true, -1, 0], [true, 0, false, 0, 0], [true, 0, false, 1, 0], [true, 0, false, 2, 0], [false, 0, false, -1, 1], [false, 0, false, -1, -1]] as const
-				: [[false, 0, false, -1, 0], [true, 0, false, -1, 0], [true, 1, false, -1, 0]] as const;
-			if (pieced && (everyWay || channelWays)) for (const [walled, padding, channeled, based, sweep] of tiers) try {
+			const tiers: { walled?: boolean; padding?: number; channeled?: boolean; based?: number; sweep?: 1 | -1 }[] = channelWays
+				? [{ walled: true, channeled: true }, { walled: true, padding: 1, channeled: true },
+					{ walled: true, based: 0 }, { walled: true, based: 1 }, { walled: true, based: 2 }, { sweep: 1 }, { sweep: -1 }]
+				: [{}, { walled: true }, { walled: true, padding: 1 }];
+			if (pieced && (everyWay || channelWays)) for (const { walled = false, padding = 0, channeled = false, based = -1, sweep } of tiers) try {
 				const construct = () => generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, { route: (...args) => {
 					const root = based < 0 ? undefined : otherBases(args[1], args[2])[based];
 					if (based >= 0 && !root) throw new ConstructionError('topology', 'No other piece for a base');
@@ -4098,9 +4101,10 @@ function generateUsingRecipes(request: GeneratorRequest,
 	const pieces = forest(rings), pieced = pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length));
 	// Made again when refused, the base is also each other piece in turn, as
 	// in the open frames (see `otherBases`).
-	const tiers = channelWays ? [[true, true, true, -1], [true, true, false, 0], [true, true, false, 1], [true, true, false, 2]] as const
-		: [[false, false, false, -1], [true, false, false, -1], [true, true, false, -1]] as const;
-	if (pieced && (everyWay || channelWays)) for (const [around, legs, channeled, based] of tiers) for (const construct of balancedRecipes) {
+	const tiers: { around?: boolean; legs?: boolean; channeled?: boolean; based?: number }[] = channelWays
+		? [{ around: true, legs: true, channeled: true }, { around: true, legs: true, based: 0 }, { around: true, legs: true, based: 1 }, { around: true, legs: true, based: 2 }]
+		: [{}, { around: true }, { around: true, legs: true }];
+	if (pieced && (everyWay || channelWays)) for (const { around = false, legs = false, channeled = false, based = -1 } of tiers) for (const construct of balancedRecipes) {
 		try {
 			const route = () => construct((...args) => {
 				const root = based < 0 ? undefined : otherBases(args[1], args[2])[based];
