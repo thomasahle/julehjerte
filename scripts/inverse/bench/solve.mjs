@@ -40,7 +40,8 @@ if (route.includes('ladder') && !env.MAPS_DIR) {
   const wasm = await fs.readFile(`${V}ort-wasm-simd-threaded.wasm`), model = env.MODEL_FILE ?? `${NEURAL}/${(await fs.readdir(NEURAL)).find(f => /^cuts-.*\.onnx$/.test(f))}`;
   predict = createCutPredictor({loadRuntime: async () => { const m = await import(`${V}ort.module.mjs`), ort = m.ort ?? m.default ?? m; ort.env.wasm.wasmBinary = wasm; return {ort}; }, loadModel: () => fs.readFile(model)});
 }
-const budget = env.BUDGET ? {seconds: +env.BUDGET} : {}, part = env.LADDER_PART ? {ladderPart: env.LADDER_PART.split('/').map(Number)} : {};
+// SETTINGS: design settings over Mal's own, for a switch under trial (run.mjs --settings).
+const budget = env.BUDGET ? {seconds: +env.BUDGET} : {}, trial = env.SETTINGS ? JSON.parse(env.SETTINGS) : {}, part = env.LADDER_PART ? {ladderPart: env.LADDER_PART.split('/').map(Number)} : {};
 const count = issues => Object.entries(issues.reduce((m, i) => (m[i.type] = (m[i.type] ?? 0) + 1, m), {})).map(([k, n]) => `${k}:${n}`).join(' ');
 // An exact answer: `checks` is the engine's verdict (templateChecksPassed: the export's rules with clearances up to
 // 0.1 mm short, the paper, the picture); a near miss also says what it breaks (`near`, the clearance shortfalls in
@@ -66,8 +67,8 @@ for (const file of process.argv.slice(2)) {
     const wall0 = Date.now();
     let line;
     try {
-      if (mode === 'fitter') line = fitted(await design(target, mal.solveSettings({colors: DEFAULT_COLORS, symmetry, method: 'smooth', ...budget})));
-      else line = exact(await design(target, {...mal.solveSettings({colors: DEFAULT_COLORS, symmetry, ...budget}), exactRoute: 'exact', ...(mode === 'ladder' ? {cutMaps: maps, ladderOnly: true, ...part} : {})}));
+      if (mode === 'fitter') line = fitted(await design(target, {...mal.solveSettings({colors: DEFAULT_COLORS, symmetry, method: 'smooth', ...budget}), ...trial}));
+      else line = exact(await design(target, {...mal.solveSettings({colors: DEFAULT_COLORS, symmetry, ...budget}), exactRoute: 'exact', ...(mode === 'ladder' ? {cutMaps: maps, ladderOnly: true, ...part} : {}), ...trial}));
     } catch (error) {
       const x = error.report?.solver?.exactOutline ?? error.report?.exactOutline;
       line = mode === 'fitter' ? {fitter: false, error: String(error.message).slice(0, 50)} : {exact: false, error: String(error.message).slice(0, 50), tracedBound: x?.tracedBound, ...(env.WHY ? {why: JSON.stringify(x ?? error.report ?? null).slice(0, 600)} : {})};

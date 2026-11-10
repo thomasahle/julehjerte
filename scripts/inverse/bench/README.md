@@ -23,6 +23,7 @@ node scripts/inverse/bench/run.mjs --summary tmp/mal-bench/idea --list          
 | `--model FILE` | the shipped `cuts-*.onnx` | another network (float16 ONNX, as `cuts/export.py --fp16` writes it) |
 | `--maps DIR` | | the network's maps from `DIR/<id>.pred.json` (`cuts/predict.py`) instead of a model |
 | `--budget S` | Mal's default | the search's seconds (Mal offers 60, 120, 180) |
+| `--settings JSON` | none | design settings over Mal's own, for a switch under trial (`'{"exactCarry":true}'`) |
 | `--why` | | a failed search's report in its line |
 | `--wall` | | budgets on the wall clock instead of the CPU clock |
 | `--match RE` | | only the masks whose file name matches |

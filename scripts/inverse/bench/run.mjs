@@ -4,7 +4,7 @@
 // clock unless --wall; a run resumes where the same --out stopped. README.md beside this file: the sets, the
 // modes, what counts as a pass, the pitfalls.
 //   node scripts/inverse/bench/run.mjs [--set generator|test|LIST] [MASK.json...] [--mode ladder|today|fitter|both|all]
-//     [--ladders 2] [--core DIR] [--model FILE] [--maps DIR] [--budget S] [--why] [--wall] [--match REGEX]
+//     [--ladders 2] [--core DIR] [--model FILE] [--maps DIR] [--budget S] [--settings JSON] [--why] [--wall] [--match REGEX]
 //     [--data DIR] [--out DIR] [--chunk 10] [--timeout 900] [--min-free-gb 15] [--templates FILE] [--list]
 //   node scripts/inverse/bench/run.mjs --summary DIR [--list] [--templates FILE]
 //   node scripts/inverse/bench/run.mjs --compare A B      (run dirs or jsonl files, old tmp/e2e runs too)
@@ -20,7 +20,7 @@ import {parseArgs} from 'node:util';
 const HERE = path.dirname(fileURLToPath(import.meta.url)), ROOT = path.resolve(HERE, '../../..');
 const text = {type: 'string'}, flag = {type: 'boolean'};
 const {values: o, positionals} = parseArgs({allowPositionals: true, options: {
-  set: text, mode: {...text, default: 'ladder'}, ladders: {...text, default: '2'}, core: text, model: text, maps: text, budget: text,
+  set: text, mode: {...text, default: 'ladder'}, ladders: {...text, default: '2'}, core: text, model: text, maps: text, budget: text, settings: text,
   why: flag, wall: flag, match: text, data: text, out: text, chunk: {...text, default: '10'}, timeout: {...text, default: '900'},
   'min-free-gb': {...text, default: '15'}, templates: text, list: flag, summary: text, compare: flag}});
 const fail = message => { console.error(message); process.exit(2); };
@@ -159,14 +159,14 @@ async function bench() {
   fs.mkdirSync(out, {recursive: true});
   const git = (...args) => { try { return execFileSync('git', ['-C', ROOT, ...args], {encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore']}).trim(); } catch { return null; } };
   const rel = p => p && path.relative(ROOT, p);
-  const info = {set: o.set ?? null, masks: files.length, mode: o.mode, ladders, clock: o.wall ? 'wall' : 'cpu', core: rel(core) ?? null, model: rel(o.model && path.resolve(o.model)) ?? null, maps: rel(o.maps && path.resolve(o.maps)) ?? null, budget: o.budget ? +o.budget : null, why: Boolean(o.why)};
+  const info = {set: o.set ?? null, masks: files.length, mode: o.mode, ladders, clock: o.wall ? 'wall' : 'cpu', core: rel(core) ?? null, model: rel(o.model && path.resolve(o.model)) ?? null, maps: rel(o.maps && path.resolve(o.maps)) ?? null, budget: o.budget ? +o.budget : null, settings: o.settings ? JSON.parse(o.settings) : null, why: Boolean(o.why)};
   const before = fs.existsSync(`${out}/run.json`) ? JSON.parse(fs.readFileSync(`${out}/run.json`, 'utf8')) : null;
-  const differ = before && Object.keys(info).filter(k => k !== 'masks' && JSON.stringify(before[k]) !== JSON.stringify(info[k]));
+  const differ = before && Object.keys(info).filter(k => k !== 'masks' && JSON.stringify(before[k] ?? null) !== JSON.stringify(info[k]));
   if (differ?.length) fail(`${out} holds a run with other settings (${differ.join(', ')}): choose another --out`);
   fs.writeFileSync(`${out}/run.json`, JSON.stringify({...info, commit: git('rev-parse', '--short', 'HEAD'), dirty: Boolean(git('status', '--porcelain', '--', 'static/inverse', 'src/lib')), node: process.version, started: before?.started ?? now.toISOString()}, null, 2) + '\n');
   // solve.mjs's settings come from the flags only, never from the shell's environment.
-  const inherited = Object.fromEntries(Object.entries(process.env).filter(([k]) => !['LADDER_ONLY', 'TODAY_ONLY', 'FITTER_ONLY', 'CPU_CLOCK', 'CORE', 'MODEL_FILE', 'MAPS_DIR', 'BUDGET', 'LADDER_PART', 'WHY', 'VITE_CACHE_DIR'].includes(k)));
-  const env = {...inherited, ...(o.wall ? {} : {CPU_CLOCK: '1'}), ...(core ? {CORE: core} : {}), ...(o.model ? {MODEL_FILE: path.resolve(o.model)} : {}), ...(o.maps ? {MAPS_DIR: path.resolve(o.maps)} : {}), ...(o.budget ? {BUDGET: o.budget} : {}), ...(o.why ? {WHY: '1'} : {})};
+  const inherited = Object.fromEntries(Object.entries(process.env).filter(([k]) => !['LADDER_ONLY', 'TODAY_ONLY', 'FITTER_ONLY', 'CPU_CLOCK', 'CORE', 'MODEL_FILE', 'MAPS_DIR', 'BUDGET', 'SETTINGS', 'LADDER_PART', 'WHY', 'VITE_CACHE_DIR'].includes(k)));
+  const env = {...inherited, ...(o.wall ? {} : {CPU_CLOCK: '1'}), ...(core ? {CORE: core} : {}), ...(o.model ? {MODEL_FILE: path.resolve(o.model)} : {}), ...(o.maps ? {MAPS_DIR: path.resolve(o.maps)} : {}), ...(o.budget ? {BUDGET: o.budget} : {}), ...(o.settings ? {SETTINGS: o.settings} : {}), ...(o.why ? {WHY: '1'} : {})};
   const log = fs.createWriteStream(`${out}/log.txt`, {flags: 'a'}), cache = `${out}/.vite-cache`, freeGB = () => { const s = fs.statfsSync(out); return s.bavail * s.bsize / 2 ** 30; };
   const linesOf = file => fs.existsSync(file) ? listed(file).filter(l => l.startsWith('{')).map(l => JSON.parse(l)) : [];
   let current = null;
