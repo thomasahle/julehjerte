@@ -258,13 +258,6 @@ function exactWeights(source) {
   }
   return missing <= MISSING_SHARE * observed.length;
 }
-/** `exactSearch`, the templates it finds that the export rejects set aside
- * in `options.sink` for exactTemplate's last resort (returnRepaired). */
-async function exactSearch(outline, template, cfg, options) {
-  const found = await searchExact(outline, template, cfg, options);
-  if (found.found && !exportable(found.found.assessment, cfg)) options.sink?.push(found);
-  return found;
-}
 /** The last resort once every stage has failed: a rejected template whose only
  * broken rule is a short return of a cut onto itself, repaired as the export
  * repairs one (repairFinal: the returns moved apart, RETURN_REPAIR_SECONDS each
@@ -366,16 +359,34 @@ function ladderPart(part) {
     ? part
     : [0, 1];
 }
+/** What exactTemplate calls on, passed in so that a test can drive its schedule
+ * on a fake clock with a scripted search (scripts/inverse/search-schedule.test.mjs):
+ * the clock, the tracing and its checks, the exact search, and the last resort. */
+export const SEARCH_TOOLS = {
+  now: () => performance.now(),
+  exactTarget,
+  whyCannotStart,
+  maskSpecks,
+  maskRoughness,
+  returnTips,
+  exactOutline,
+  cheapBounds,
+  exactSearch: searchExact,
+  validate,
+  returnRepaired,
+  noteError
+};
 /** The exact search's template for a picture the export passes, or none:
  * {solution, report}. On the outline traced from the mask until `tracedEnd`,
  * then on it with its tips rounded until `roundedEnd`. */
-async function exactTemplate(
+export async function exactTemplate(
   target,
   cfg,
   cfgExact,
   symmetry,
   onProgress,
-  {tracedEnd, roundedEnd, maps = null, ladderOnly = false, part = [0, 1]}
+  {tracedEnd, roundedEnd, maps = null, ladderOnly = false, part = [0, 1]},
+  tools = SEARCH_TOOLS
 ) {
   // The outline traced from the mask first (tens of milliseconds): where its
   // cut ends cannot pair up the exact search cannot start.
@@ -385,19 +396,26 @@ async function exactTemplate(
   // photograph's crop a little off the square can end it unevenly on opposite
   // sides: then first its sides read as deep as each pair needs (`paired`),
   // as every later trace of it then is.
-  let base = {specks: maskSpecks(target.sourceImage)};
+  let base = {specks: tools.maskSpecks(target.sourceImage)};
   const traceAt = (open, near = {}) => {
-    const traced = exactTarget(target, cfg, {...base, open, ...near}),
+    const traced = tools.exactTarget(target, cfg, {...base, open, ...near}),
       scaled = traced && scaleTarget(traced, cfg.width, cfg.paperColors);
-    const why = scaled && whyCannotStart(scaled, cfg);
+    const why = scaled && tools.whyCannotStart(scaled, cfg);
     return scaled ? {scaled, why: why?.message ?? null, code: why?.code ?? null} : null;
   };
-  const {outline, way, cannot} = firstTrace(maskRoughness(target.sourceImage), traceAt);
+  const {outline, way, cannot} = firstTrace(tools.maskRoughness(target.sourceImage), traceAt);
   if (!outline) return {solution: null, report: {chosen: 'fitter', error: cannot}};
   if (way.paired) base = {...base, paired: true};
   let ties = symmetry;
+  // `exactSearch`, the templates it finds that the export rejects set aside in
+  // `options.sink` for the last resort (returnRepaired).
+  const exactSearch = async (outline, template, cfgUsed, options) => {
+    const found = await tools.exactSearch(outline, template, cfgUsed, options);
+    if (found.found && !exportable(found.found.assessment, cfgUsed)) options.sink?.push(found);
+    return found;
+  };
   const sink = [], search = end => ({deadline: end, onProgress, symmetry: ties, geometry: cfg.progressGeometry, sink});
-  const began = performance.now();
+  const began = tools.now();
   // The ladder alone (a worker beside today's search, worker-controller.js):
   // the traced outline and the ones today's search goes on to, with tips
   // rounded, each searched by the ladder in two phases (exact/stage.js): its
@@ -410,9 +428,9 @@ async function exactTemplate(
       radius = Math.max(1, Math.round((TIP_ROUNDING_MM * n) / target.width));
     let tips = [];
     try {
-      tips = returnTips(outline, cfgExact).map(([x, y]) => [x * px, y * px]);
+      tips = tools.returnTips(outline, cfgExact).map(([x, y]) => [x * px, y * px]);
     } catch (error) {
-      noteError('engine.js exactTemplate: return tips', error);
+      tools.noteError('engine.js exactTemplate: return tips', error);
       tips = [];
     }
     const outlines = [outline];
@@ -442,11 +460,11 @@ async function exactTemplate(
     // not wait for it (worker-controller.js).
     let tracedBound = null;
     try {
-      tracedBound = cheapBounds(
-        ...(ex => [ex.st, ex.outline])(exactOutline(outline, cfgExact, 'tight', {symmetry: []}))
+      tracedBound = tools.cheapBounds(
+        ...(ex => [ex.st, ex.outline])(tools.exactOutline(outline, cfgExact, 'tight', {symmetry: []}))
       ).lb;
     } catch (error) {
-      noteError('engine.js exactTemplate: the traced outline\'s bound', error);
+      tools.noteError('engine.js exactTemplate: the traced outline\'s bound', error);
       tracedBound = null;
     }
     // With no template the export takes on any outline, the nearest the ladder
@@ -458,15 +476,15 @@ async function exactTemplate(
     // with the model's clearances LOOSE_MM lower, judged by the export's own (the 0.1 mm it tolerates).
     // Not sooner: lowered from the start, some templates' returns fail once smoothed.
     // (history: docs/inverse/SEARCH-CONSTANTS.md#loose)
-    const total = roundedEnd - performance.now(),
+    const total = roundedEnd - tools.now(),
       strictEnd =
-        total >= 1000 * LOOSE_LEAST ? performance.now() + Math.max(1000 * STRICT_SECONDS, total / 3) : roundedEnd;
+        total >= 1000 * LOOSE_LEAST ? tools.now() + Math.max(1000 * STRICT_SECONDS, total / 3) : roundedEnd;
     for (const [cfgPass, passEnd, loose] of [
       [cfgExact, strictEnd, false],
       ...(strictEnd < roundedEnd ? [[{...cfgExact, modelTolerance: LOOSE_MM}, roundedEnd, true]] : [])
     ])
       for (const [phase, share] of [['first', LADDER_FIRST_SHARE], ['second', 1]]) {
-        const phaseEnd = performance.now() + share * (passEnd - performance.now());
+        const phaseEnd = tools.now() + share * (passEnd - tools.now());
         // One of n ladders side by side searches the outlines k with k % n === i, with all the time (the
         // traced outline's cheap rungs get more of the first phase).
         // (history: docs/inverse/SEARCH-CONSTANTS.md#ladder-part)
@@ -476,11 +494,11 @@ async function exactTemplate(
         // there. (history: docs/inverse/SEARCH-CONSTANTS.md#traced-first-weight)
         const weight = k => (phase === 'first' && k === 0 && part[1] === 1 ? TRACED_FIRST_WEIGHT : 1);
         for (const [j, [k, traced]] of mine.entries()) {
-          const left = phaseEnd - performance.now(),
+          const left = phaseEnd - tools.now(),
             rest = mine.slice(j).reduce((sum, [other]) => sum + weight(other), 0);
           if (left < 1000 * LADDER_LEAST) break;
           last = await exactSearch(traced, null, cfgPass, {
-            ...search(performance.now() + (left * weight(k)) / rest),
+            ...search(tools.now() + (left * weight(k)) / rest),
             reserve: 0.5,
             maps,
             ladderOnly,
@@ -523,7 +541,7 @@ async function exactTemplate(
   // A template under part of the symmetry (exact/stage.js subgroupsOf): the
   // searches with tips rounded keep to that part.
   if (found.report.subgroup) ties = found.report.subgroup.to;
-  const tracedMs = performance.now() - began,
+  const tracedMs = tools.now() - began,
     n = target.sourceImage.resolution,
     px = n / cfgExact.width,
     radius = Math.max(1, Math.round((TIP_ROUNDING_MM * n) / target.width));
@@ -536,16 +554,16 @@ async function exactTemplate(
   // already), and taken with fewer (tulipan 4 -> 0, its true design's).
   let tips = [];
   try {
-    tips = returnTips(outline, cfgExact).map(([x, y]) => [x * px, y * px]);
+    tips = tools.returnTips(outline, cfgExact).map(([x, y]) => [x * px, y * px]);
   } catch (error) {
-    noteError('engine.js exactTemplate: return tips', error);
+    tools.noteError('engine.js exactTemplate: return tips', error);
     tips = [];
   }
   if (
     tips.length &&
     exportable(found.found?.assessment, cfgExact) &&
     segments(found) > (found.report.search?.bound ?? 0) &&
-    roundedEnd - performance.now() >= 1000 * ROUNDED_LEAST
+    roundedEnd - tools.now() >= 1000 * ROUNDED_LEAST
   ) {
     let rounded = null;
     try {
@@ -561,7 +579,7 @@ async function exactTemplate(
         rounded,
         null,
         cfgExact,
-        search(Math.min(roundedEnd, performance.now() + Math.max(1000 * RETURNS_LEAST, tracedMs)))
+        search(Math.min(roundedEnd, tools.now() + Math.max(1000 * RETURNS_LEAST, tracedMs)))
       ));
     if (again && exportable(again.found?.assessment, cfgExact) && segments(again) < segments(found))
       found = {...again, report: {...again.report, rounded: 'returns'}};
@@ -580,7 +598,7 @@ async function exactTemplate(
   // off the side there, it is searched next, with half the time left, and the
   // outlines with tips rounded after it are moved too. Most pictures have none.
   let strip = {};
-  if (!exportable(found.found?.assessment, cfgExact) && roundedEnd - performance.now() >= 1000 * ROUNDED_LEAST) {
+  if (!exportable(found.found?.assessment, cfgExact) && roundedEnd - tools.now() >= 1000 * ROUNDED_LEAST) {
     let moved = null;
     try {
       const traced = traceAt(way.open, {outerStrip: true});
@@ -595,16 +613,16 @@ async function exactTemplate(
         moved,
         null,
         cfgExact,
-        search(performance.now() + 0.5 * (roundedEnd - performance.now()))
+        search(tools.now() + 0.5 * (roundedEnd - tools.now()))
       );
       if (exportable(again.found?.assessment, cfgExact) || closer(again.found?.assessment, found.found?.assessment))
         found = {...again, report: {...again.report, outerStrip: true}};
     }
   }
-  if (!exportable(found.found?.assessment, cfgExact) && roundedEnd - performance.now() >= 1000 * ROUNDED_LEAST) {
+  if (!exportable(found.found?.assessment, cfgExact) && roundedEnd - tools.now() >= 1000 * ROUNDED_LEAST) {
     const spots = [
       ...(found.found
-        ? validate(found.found.solution, cfgExact, {finalGeometry: true})
+        ? tools.validate(found.found.solution, cfgExact, {finalGeometry: true})
             .issues.filter(i => i.type === 'short_self_clearance' && i.points)
             .flatMap(i => i.points.map(([x, y]) => [x * px, y * px]))
         : []),
@@ -616,7 +634,7 @@ async function exactTemplate(
       {open: 2 * radius, wider: true}
     ];
     for (const [k, way] of ways.entries()) {
-      if (exportable(found.found?.assessment, cfgExact) || roundedEnd - performance.now() < 1000 * ROUNDED_LEAST) break;
+      if (exportable(found.found?.assessment, cfgExact) || roundedEnd - tools.now() < 1000 * ROUNDED_LEAST) break;
       let rounded = null;
       try {
         const traced = traceAt(way.open, {...way, ...strip});
@@ -626,7 +644,7 @@ async function exactTemplate(
         rounded = null;
       }
       if (!rounded) continue;
-      const end = way.spots ? performance.now() + 0.6 * (roundedEnd - performance.now()) : roundedEnd;
+      const end = way.spots ? tools.now() + 0.6 * (roundedEnd - tools.now()) : roundedEnd;
       const again = await exactSearch(rounded, null, cfgExact, search(end));
       if (exportable(again.found?.assessment, cfgExact) || closer(again.found?.assessment, found.found?.assessment))
         found = {
@@ -636,7 +654,7 @@ async function exactTemplate(
     }
   }
   if (!exportable(found.found?.assessment, cfgExact)) {
-    const repaired = returnRepaired(sink, cfgExact);
+    const repaired = tools.returnRepaired(sink, cfgExact);
     if (repaired) found = repaired;
   }
   // `held`: the symmetries the template was searched under, in the app's
