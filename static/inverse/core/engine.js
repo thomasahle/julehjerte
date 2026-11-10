@@ -25,6 +25,28 @@ import {betterResult} from './result-rank.js';
 import {exactOutline} from './exact/snap.js';
 import {noteError} from './errors.js';
 import {
+  ALONE_TRACED_SECONDS,
+  EXACT_FINISH_SECONDS,
+  EXACT_SECONDS,
+  FITTER_SECONDS,
+  LADDER_FIRST_SHARE,
+  LADDER_LEAST,
+  LADDER_RESERVE,
+  LOOSE_LEAST,
+  LOOSE_MM,
+  RETURN_REPAIR_SECONDS,
+  RETURN_REPAIR_TRIES,
+  RETURNS_LEAST,
+  ROUNDED_LEAST,
+  ROUNDED_SECONDS,
+  STRICT_SECONDS,
+  TIP_ROUNDING_MM,
+  TIP_SPOT_MM,
+  TRACED_FIRST_WEIGHT,
+  TRACED_SECONDS,
+  timeScale
+} from './exact/schedule.js';
+import {
   appSymmetry,
   assess,
   closer,
@@ -55,6 +77,8 @@ export function scaleTarget(target, width, colors) {
     metadata: {...target.metadata, paperColors: colorsSafe(colors || target.metadata.paperColors)}
   };
 }
+/** A design's minute and how a longer limit stretches it (exact/schedule.js), for the page. */
+export {EXACT_FINISH_SECONDS, EXACT_SECONDS, timeScale};
 /** The most curves the traced routes take; the automatic route fits more as an image. */
 export const MAX_TRACED_CURVES = 1000;
 export function prepare(input, raw = {}, onProgress = () => {}) {
@@ -131,43 +155,10 @@ export async function solveTarget(target, raw = {}, onProgress = () => {}, {onCa
     coreGate: cfg.requireMaterialCore ? s => materialAudit(s, cfg) : null
   });
 }
-/** The most seconds a design with the exact search takes, fitter included, of
- * which the last EXACT_FINISH_SECONDS are the final checks' and export's. */
-export const EXACT_SECONDS = 60, EXACT_FINISH_SECONDS = 10;
-/** How many minutes' worth of stages a time limit buys: the stages below are
- * written for the standard minute and grow in proportion with a longer limit
- * (the visitor's choice, Avanceret), never shrink with a shorter one. */
-export const timeScale = limit => Math.max(1, limit / EXACT_SECONDS);
-/** In a picture's minute: the exact search on the traced outline until
- * TRACED_SECONDS, then (its template failing) on the outline with tips rounded
- * by TIP_ROUNDING_MM (within TIP_SPOT_MM of where the template comes too close to
- * itself) until ROUNDED_SECONDS, given ROUNDED_LEAST at least: most traced
- * outlines that pass do so within 20 s, and a rounded outline hides more cut
- * and lies further from the mask, so it comes second. The fitter has what is left.
- * Alone (`exactRoute: 'exact'`, the fitter in a worker beside it), the traced
- * outline has until ALONE_TRACED_SECONDS and the rounded one the rest. A
- * passing template with tips coming back to themselves has RETURNS_LEAST (or
- * as long as it took) for one with them rounded. (history: docs/inverse/SEARCH-CONSTANTS.md#traced-seconds) */
-const TRACED_SECONDS = 22,
-  ROUNDED_SECONDS = 40,
-  ALONE_TRACED_SECONDS = 30,
-  LADDER_FIRST_SHARE = 0.5,
-  TRACED_FIRST_WEIGHT = 2,
-  LADDER_LEAST = 2,
-  LOOSE_LEAST = 90,
-  LOOSE_MM = 0.05,
-  STRICT_SECONDS = 50,
-  ROUNDED_LEAST = 6,
-  RETURNS_LEAST = 10,
-  TIP_ROUNDING_MM = 0.8,
-  TIP_SPOT_MM = 4,
-  RETURN_REPAIR_SECONDS = 4,
-  RETURN_REPAIR_TRIES = 2,
-  ROUGH_ONE = 1.1,
-  ROUGH_TWO = 1.3;
-/** The fitter's seconds beside the exact search (`exactRoute: 'fitter'`): what
- * it had when it came first, which photographs need to keep their details. */
-const FITTER_SECONDS = 45;
+/** A mask's boundary over its opening's by a pixel from which it is rough
+ * (maskRoughness): traced opened by a pixel, by two from ROUGH_TWO.
+ * (history: docs/inverse/SEARCH-CONSTANTS.md#rough) */
+const ROUGH_ONE = 1.1, ROUGH_TWO = 1.3;
 export async function design(target, raw = {}, onProgress = () => {}, options = {}) {
   const cfg = settings(raw), symmetry = exactSymmetry(cfg.symmetry);
   // A picture in Mal (`exactOutline`, a mask without curves): the exact search
@@ -499,7 +490,7 @@ export async function exactTemplate(
           if (left < 1000 * LADDER_LEAST) break;
           last = await exactSearch(traced, null, cfgPass, {
             ...search(tools.now() + (left * weight(k)) / rest),
-            reserve: 0.5,
+            reserve: LADDER_RESERVE,
             maps,
             ladderOnly,
             phase

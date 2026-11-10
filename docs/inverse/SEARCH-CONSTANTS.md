@@ -5,7 +5,9 @@ The Mal solver's code comments (`static/inverse/core/exact/*.js`, `core/engine.j
 The measurements behind those choices (benchmark tallies, before/after timings, dates and the
 names of runs) are kept here, one section per constant or function, each linked from its comment as
 `(history: docs/inverse/SEARCH-CONSTANTS.md#anchor)`. The text is as the comments recorded it when
-the measurement was made; a later run on other code may give other numbers.
+the measurement was made; a later run on other code may give other numbers. The search's times and
+the ladder's rungs are declared together in `core/exact/schedule.js`; the sections below are grouped
+by the code that uses them.
 
 The picture sets named: the 128 (or 130) juleflet pictures and the 211 gallery, library and web
 masks; the 170 generator-preset hearts (161 distinct); the 127 test pictures; the 106 broad pictures.

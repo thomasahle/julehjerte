@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {exactTemplate} from '../../static/inverse/core/engine.js';
+import * as schedule from '../../static/inverse/core/exact/schedule.js';
 import {traceSchedule} from './search-schedule-harness.mjs';
 
 // The traces of exactTemplate's schedule as it was before it became tables (search-schedule-reference.mjs:
@@ -41,4 +42,9 @@ test('the scenarios reach every step of both branches', () => {
   has(r => r.error && r.chosen === 'fitter' && !r.attempted);
   const thrown = reference.traces.filter(([, , result]) => result?.thrown);
   assert.ok(thrown.length >= 5 && thrown.length < reference.traces.length / 10);
+});
+
+test('the schedule\'s constants and the ladder\'s rungs are those engine.js and exact/stage.js had', () => {
+  for (const [name, value] of Object.entries(reference.constants)) assert.deepEqual(schedule[name], value, name);
+  assert.deepEqual([null, 'first', 'second'].map(schedule.ladderRungs), reference.rungs);
 });

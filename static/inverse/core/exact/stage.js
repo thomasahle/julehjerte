@@ -19,6 +19,10 @@ import {returns} from './nogoods.js';
 import {SIZE} from './structure.js';
 import {compareTuples, issueKinds} from '../result-rank.js';
 import {noteError} from '../errors.js';
+import {BARE_FLOOR, BARE_SHARE, COARSE_AFTER_BARE, LADDER, LADDER_BUILD, LADDER_SHARE, START_SECONDS, TURNS_FLOOR,
+  ladderRungs} from './schedule.js';
+
+export {ladderRungs};
 
 /** The outline the exact search reads: traced from the picture's mask with
  * the settings `cfg` (raster.js, `options` its tracing), or null. */
@@ -177,42 +181,17 @@ function maskError(source, woven) {
  * cutting rules and paper, the picture's regions kept, and its fidelity. */
 export const exportable = (a, cfg) => Boolean(a?.passes && a.features && a.maskError <= cfg.maxImageError);
 
-/** The most seconds the search for a start takes (exactSearch).
- * (history: docs/inverse/SEARCH-CONSTANTS.md#start-seconds) */
-const START_SECONDS = 3;
-/** The network's ladder (networkLadder): its rungs as [K, seconds], the most
- * of a search's time it takes, and the short candidates (mm) every rung keeps:
- * 42% of the hidden cuts in the gallery's exact templates were under 3 mm, the
- * stubs of tips and crossings the network's field hardly shows. */
-const LADDER = [[10, 2], [30, 2], [100, 3], [300, 4]], LADDER_SHARE = .25, SHORT_MM = 3, LADDER_BUILD = 8, LADDER_SAMPLES = 2, LADDER_NOISE = .15, LOW_PENALTY = 5;
-// Alone: K, the plain ranking's seconds, a sampled one's. (history: docs/inverse/SEARCH-CONSTANTS.md#ladder-samples)
-const LADDER_ALONE = [[10, 3, 2], [30, 4, 2], [100, 6, 3], [300, 10, 4], [1000, 15, 10]];
-const LADDER_FIRST = [[10, 2, 1], [30, 2, 1], [100, 3, 2], [300, 6, 3]], LADDER_SECOND = [[300, 10, 4], [1000, 15, 10]];
-// The first phase's rungs as [K, ranking] (0 the plain one, then the samples): the plain K300 after the cheap
-// ones, before K100's and K300's samples (ladderRungs). (history: docs/inverse/SEARCH-CONSTANTS.md#first-order)
-const FIRST_ORDER = [[10, 0], [10, 1], [30, 0], [10, 2], [30, 1], [100, 0], [300, 0], [100, 1], [30, 2], [100, 2], [300, 1], [300, 2]];
-
-/** The ladder's rungs alone (`phase` from engine.js, or none: LADDER_ALONE), as [K, seconds, seed]. */
-export function ladderRungs(phase) {
-  if (phase === 'first') return FIRST_ORDER.map(([k, seed]) => { const [, plain, sample] = LADDER_FIRST.find(([K]) => K === k); return [k, seed ? sample : plain, seed]; });
-  const rungs = [];
-  for (const [k, plain, sample] of phase === 'second' ? LADDER_SECOND : LADDER_ALONE) for (let seed = 0; seed <= LADDER_SAMPLES; seed++) rungs.push([k, seed ? sample : plain, seed]);
-  return rungs;
-}
-
-/** Under ties, the share of the search's time the fine grid from no start
- * gets first, if at least BARE_FLOOR seconds are left (exactSearch).
- * (history: docs/inverse/SEARCH-CONSTANTS.md#bare) */
-const BARE_SHARE = .5, BARE_FLOOR = 8, COARSE_AFTER_BARE = 4;
+/** The network's ladder (networkLadder; its rungs and their times are in
+ * schedule.js): the short candidates (mm) every rung keeps (42% of the hidden
+ * cuts in the gallery's exact templates were under 3 mm, the stubs of tips and
+ * crossings the network's field hardly shows), a sampled ranking's noise, and
+ * the most of the model's rules a rung's drawing may break and be assessed. */
+const SHORT_MM = 3, LADDER_NOISE = .15, LOW_PENALTY = 5;
 
 /** How much further from the mask (a share of its cells) the exact search's
  * template may lie drawn in a few cubics than on the traced polyline.
  * (history: docs/inverse/SEARCH-CONSTANTS.md#smooth-slack) */
 const SMOOTH_SLACK = .005;
-
-/** The seconds a search under part of the requested symmetry needs at
- * least, once none keeps all of it (exactSearch). (history: docs/inverse/SEARCH-CONSTANTS.md#turns-floor) */
-const TURNS_FLOOR = 6;
 
 /** The turns of the group `symmetry` generates, as their generator (a quarter
  * turn, else a half turn), or none when it has no mirror to drop. */
