@@ -81,6 +81,7 @@ import microphone from '../../../static/generator/motifs/ph-microphone.json';
 import subway from '../../../static/generator/motifs/ph-subway.json';
 import brandSignal from '../../../static/generator/motifs/tb-brand-signal.json';
 import steam from '../../../static/generator/motifs/ph-steam-logo.json';
+import threads from '../../../static/generator/motifs/ph-threads-logo.json';
 import phTree from '../../../static/generator/motifs/ph-tree.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
@@ -1062,6 +1063,11 @@ describe('frames from real hearts', () => {
   // The rod and wheel lie in a bay of the disc, open only up a slit: no
   // gate's spoke reaches them but up it.
   expect(generate({ mode: 'figure', name: 'Steam', contours: steam.contours as Ring[], colors, style: 'board', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
+ }, 60000);
+ slow('builds the threads logo in Tern i spidserne, the teardrop in its @ reached round either attachment', () => {
+  // A counter shaped like an @ in a rounded square, a teardrop counter in
+  // its bowl: no straight chain of them alternates with the lane's ports.
+  expect(generate({ mode: 'figure', name: 'Threads', contours: threads.contours as Ring[], colors, style: 'corners', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
  }, 60000);
  slow('builds the swan in the medallion, its wing reached round its body', () => {
   // The swan's pieces are counters of the medallion there, and every

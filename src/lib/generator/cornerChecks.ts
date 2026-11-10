@@ -120,7 +120,7 @@ function pastMotif(path: Point[], cuts: Point[], room: number, limit: number, sa
 export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 	routing: 'chain' | 'practical' | 'separated' = 'chain', fitBorder = false, bentSpokes = false,
 	contacts?: { tilt: number; invert: boolean }, laneSplit?: number, gap = 0, bendLegs = false, holdLegs = false, routeMargin = 0, avoid = false,
-	wholeLanes = false, stepped = false, everyWay = false, walled = false) {
+	wholeLanes = false, stepped = false, everyWay = false, walled = false, nested = false) {
 	const points = rings.flat();
 	if (!points.length) throw new ConstructionError('empty', 'No contour');
 	const artwork = rings.map(r => r.map(([x, y]) => uprightToSheet([x * size * scale, y * size * scale])));
@@ -206,10 +206,12 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 				// motif: slower, so only where the plain routes are refused. With
 				// `everyWay`, it is reached round its parts as in the open frames,
 				// and across its counters (see `withEveryWay`), and with `walled`
-				// too, its spokes round the parts that wall its largest off.
+				// too, its spokes round the parts that wall its largest off; with
+				// `nested` too, a counter's counters reached round either
+				// attachment (see `nestedBlock`: the teardrop in a logo's @).
 				twoPortMotif(edges, nodes.flatMap(contoursOf), [entry, exit], Math.max(margin, routeMargin), {
 					compound: true, balanced: true, bentSpokes,
-					...everyWay ? { around: true, legs: true, across: true, walled } : {},
+					...everyWay ? { around: true, legs: true, across: true, walled, ...nested ? { nested } : {} } : {},
 					...avoid ? { obstacles: lanes.flatMap((nodes, other) => other === col ? [] : nodes.flatMap(contoursOf)) } : {}
 				});
 			} else add(edges, [entry, exit], 'AB', 'shared');

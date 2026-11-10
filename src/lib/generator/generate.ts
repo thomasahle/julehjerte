@@ -3811,7 +3811,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// One fitting the border narrows the outer strips, a picture of its
 		// own: only where none of the others finish.
 		const fitted = new Set<GeneratorResult>();
-		const layouts = (routeMargin = 0, avoid = false, border?: boolean, wholeLanes = false, stepped = false, ways = false, walled = false) => bestOfFirst((function* () {
+		const layouts = (routeMargin = 0, avoid = false, border?: boolean, wholeLanes = false, stepped = false, ways = false, walled = false, nested = false) => bestOfFirst((function* () {
 			let finished = false;
 			for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) for (const holdLegs of [true, false]) {
 				if (fitBorder && finished) return;
@@ -3821,7 +3821,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				if (ways && (routing !== 'practical' || bentSpokes)) continue;
 				try {
 					const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes,
-						undefined, undefined, request.gap, routeMargin > 0, holdLegs, routeMargin, avoid, wholeLanes, stepped, ways, walled);
+						undefined, undefined, request.gap, routeMargin > 0, holdLegs, routeMargin, avoid, wholeLanes, stepped, ways, walled, nested);
 					// Keep the established frame and skip another fit when moving
 					// separate components did not change any lane or connection.
 					if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
@@ -3856,8 +3856,10 @@ function generateUsingRecipes(request: GeneratorRequest,
 		// Where none finish yet, the cuts between the motif's counters go
 		// round inside it too (see `withCounterWays`): the graph's nodes.
 		if (!best && pieced && everyWay) [best, counter] = [withCounterWays(() => layouts(0, false, undefined, false, false, true, true)), true];
-		// And last up the channels between its pieces (see `withChannelWays`).
-		if (!best && pieced && channelWays) [best, channeled] = [withChannels(() => layouts(0, false, undefined, false, false, true, true)), true];
+		// And last up the channels between its pieces (see `withChannelWays`),
+		// a counter's counters reached round either attachment (the teardrop
+		// in the threads logo's @).
+		if (!best && pieced && channelWays) [best, channeled] = [withChannels(() => layouts(0, false, undefined, false, false, true, true, true)), true];
 		if (!best && pieced && !everyWay) everyWayPassed++;
 		// Where its paper tears printed, the layouts with the same border again
 		// with the motif's connections, and the side lanes' legs, a paper's
@@ -3868,7 +3870,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const paper = PAPER_NECK_MM / PRINT_WIDTH_MM * 100, border = fitted.has(best);
 			for (const wholeLanes of [false, true]) {
 				if (wholeLanes && !paperTears(exported(best).design)) break;
-				const retry = () => layouts(paper, avoided, border, wholeLanes, stepped, ways, walled);
+				const retry = () => layouts(paper, avoided, border, wholeLanes, stepped, ways, walled, channeled);
 				const again = counter ? withCounterWays(retry) : channeled ? withChannels(retry) : retry();
 				if (again && cutsBetter(again, best, true)) best = again;
 			}
