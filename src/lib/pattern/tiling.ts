@@ -40,6 +40,7 @@
 
 import type { BezierSegment, NodeType, Vec } from '$lib/types/heart';
 import { reverseSegments } from '$lib/geometry/bezierSegments';
+import { bezierPoint, cubicAt, splitBezierAt } from '$lib/geometry/cubic';
 import { HEART_CLEARANCE_UNITS } from '$lib/geometry/returnSearch';
 import { halfOf, latticeOf, ruleInfo, stretchSource, type CurveKey, type StretchKind, type StretchSource, type TileRule } from './rules';
 import { cornerFreedom, cornerShift, jointFreedom, meanShift, sameWayAt, type Join } from './corners';
@@ -378,35 +379,7 @@ export function fromFrame(f: StretchFrame, q: Vec): Vec {
 	return { x: (r.x * f.d.x + r.y * f.d.y) / len2, y: (r.x * f.n.x + r.y * f.n.y) / len2 };
 }
 
-const bezierAt = (s: BezierSegment, t: number): Vec => {
-	const u = 1 - t;
-	return {
-		x: u * u * u * s.p0.x + 3 * u * u * t * s.p1.x + 3 * u * t * t * s.p2.x + t * t * t * s.p3.x,
-		y: u * u * u * s.p0.y + 3 * u * u * t * s.p1.y + 3 * u * t * t * s.p2.y + t * t * t * s.p3.y
-	};
-};
-
-function splitAt(s: BezierSegment, t: number): [BezierSegment, BezierSegment] {
-	const lerp = (p: Vec, q: Vec): Vec => ({ x: p.x + (q.x - p.x) * t, y: p.y + (q.y - p.y) * t });
-	const p01 = lerp(s.p0, s.p1);
-	const p12 = lerp(s.p1, s.p2);
-	const p23 = lerp(s.p2, s.p3);
-	const p012 = lerp(p01, p12);
-	const p123 = lerp(p12, p23);
-	const m = lerp(p012, p123);
-	return [
-		{ p0: s.p0, p1: p01, p2: p012, p3: m },
-		{ p0: m, p1: p123, p2: p23, p3: s.p3 }
-	];
-}
-
 const samePoint = (p: Vec, q: Vec) => Math.abs(p.x - q.x) < 1e-6 && Math.abs(p.y - q.y) < 1e-6;
-
-/** Coordinate `axis` of `bezierAt(s, t)`, without the other. */
-const coordAt = (s: BezierSegment, axis: 'x' | 'y', t: number): number => {
-	const u = 1 - t;
-	return u * u * u * s.p0[axis] + 3 * u * u * t * s.p1[axis] + 3 * u * t * t * s.p2[axis] + t * t * t * s.p3[axis];
-};
 
 /** The first parameter at which coordinate `axis` of the segment reaches `v` from below, or null. */
 function firstCrossing(s: BezierSegment, axis: 'x' | 'y', v: number): number | null {
@@ -415,16 +388,16 @@ function firstCrossing(s: BezierSegment, axis: 'x' | 'y', v: number): number | n
 	// well below, rounding and all.
 	if (Math.max(c0, c1, c2, c3) + 1e-9 * (1 + Math.abs(c0) + Math.abs(c1) + Math.abs(c2) + Math.abs(c3)) < v) return null;
 	const STEPS = 64;
-	let prev = coordAt(s, axis, 0);
+	let prev = cubicAt(c0, c1, c2, c3, 0);
 	if (prev >= v) return 0;
 	for (let k = 1; k <= STEPS; k++) {
-		const cur = coordAt(s, axis, k / STEPS);
+		const cur = cubicAt(c0, c1, c2, c3, k / STEPS);
 		if (cur >= v) {
 			let lo = (k - 1) / STEPS;
 			let hi = k / STEPS;
 			for (let it = 0; it < 40; it++) {
 				const mid = (lo + hi) / 2;
-				if (coordAt(s, axis, mid) >= v) hi = mid;
+				if (cubicAt(c0, c1, c2, c3, mid) >= v) hi = mid;
 				else lo = mid;
 			}
 			return hi;
@@ -472,8 +445,8 @@ function clipChain(chain: BezierSegment[], pieces: CutPiece[], axis: 'x' | 'y', 
 	const EPS = 1e-9;
 	// A crossing within a hair of a segment's end is at its end: where a curve meets the edge
 	// nearly along it, the search otherwise finds it a rounding error early.
-	const atStart = (s: BezierSegment, t: number) => t < EPS || samePoint(bezierAt(s, t), s.p0);
-	const atEnd = (s: BezierSegment, t: number) => t > 1 - EPS || samePoint(bezierAt(s, t), s.p3);
+	const atStart = (s: BezierSegment, t: number) => t < EPS || samePoint(bezierPoint(s, t), s.p0);
+	const atEnd = (s: BezierSegment, t: number) => t > 1 - EPS || samePoint(bezierPoint(s, t), s.p3);
 	const out: BezierSegment[] = [];
 	const from: CutPiece[] = [];
 	let k = 0;
@@ -484,7 +457,7 @@ function clipChain(chain: BezierSegment[], pieces: CutPiece[], axis: 'x' | 'y', 
 			out.push(chain[k]!);
 			from.push(pieces[k]!);
 		} else if (!atEnd(chain[k]!, t)) {
-			out.push(splitAt(chain[k]!, t)[1]);
+			out.push(splitBezierAt(chain[k]!, t)[1]);
 			from.push(keepPart(pieces[k]!, t, 'after'));
 		}
 		k++;
@@ -501,7 +474,7 @@ function clipChain(chain: BezierSegment[], pieces: CutPiece[], axis: 'x' | 'y', 
 			out.push(s);
 			from.push(piece);
 		} else if (!atStart(s, t)) {
-			out.push(splitAt(s, t)[0]);
+			out.push(splitBezierAt(s, t)[0]);
 			from.push(keepPart(piece, t, 'before'));
 		}
 		return true;
@@ -658,7 +631,7 @@ function lineFits(tile: PatternTile, kind: StretchKind, line: number): boolean {
 	for (const s of traceLine(tile, kind, line).segments) {
 		for (let k = 0; k <= 12; k++) {
 			// A cut exactly at the margin fits, whichever way the rounding falls.
-			const v = bezierAt(s, k / 12)[axis];
+			const v = bezierPoint(s, k / 12)[axis];
 			if (v < margin - 1e-6 || v > 100 - margin + 1e-6) return false;
 		}
 	}

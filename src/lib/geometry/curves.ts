@@ -1,27 +1,9 @@
 import type { Point, CubicBezierSegment } from "../types";
 import { clamp01 } from "$lib/utils/math";
+import { bezierPointClamped, segmentIntersection } from "$lib/geometry/cubic";
 
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
-}
-
-function cubicAt(p0: number, p1: number, p2: number, p3: number, t: number): number {
-  const u = 1 - t;
-  // Bernstein basis
-  return (
-    u * u * u * p0 +
-    3 * u * u * t * p1 +
-    3 * u * t * t * p2 +
-    t * t * t * p3
-  );
-}
-
-function cubicPointAt(seg: CubicBezierSegment, t: number): Point {
-  const tt = clamp01(t);
-  return {
-    x: cubicAt(seg.p0.x, seg.p1.x, seg.p2.x, seg.p3.x, tt),
-    y: cubicAt(seg.p0.y, seg.p1.y, seg.p2.y, seg.p3.y, tt),
-  };
 }
 
 /** A line with affine parameterization, allowing only floating-point roundoff.
@@ -77,7 +59,7 @@ function sampleBezier(segment: CubicBezierSegment, steps = 50): Point[] {
 
   for (let i = 0; i <= steps; i++) {
     const t = i / steps;
-    points.push(cubicPointAt(segment, t));
+    points.push(bezierPointClamped(segment, t));
   }
 
   return points;
@@ -167,16 +149,6 @@ export function intersectBezierCurves(seg1: CubicBezierSegment, seg2: CubicBezie
   const { points: b, boxes: boxesB } = crossingPolyline(seg2);
 
   const points: Point[] = [];
-  const segIntersect = (p1: Point, p2: Point, p3: Point, p4: Point): Point | null => {
-    const den = (p4.y - p3.y) * (p2.x - p1.x) - (p4.x - p3.x) * (p2.y - p1.y);
-    if (Math.abs(den) < 1e-12) return null;
-    const ua =
-      ((p4.x - p3.x) * (p1.y - p3.y) - (p4.y - p3.y) * (p1.x - p3.x)) / den;
-    const ub =
-      ((p2.x - p1.x) * (p1.y - p3.y) - (p2.y - p1.y) * (p1.x - p3.x)) / den;
-    if (ua < 0 || ua > 1 || ub < 0 || ub > 1) return null;
-    return { x: p1.x + ua * (p2.x - p1.x), y: p1.y + ua * (p2.y - p1.y) };
-  };
 
   // Pieces whose boxes are far apart cannot cross (see `sureGap`), so only the others are tried, in
   // the same order.
@@ -190,7 +162,7 @@ export function intersectBezierCurves(seg1: CubicBezierSegment, seg2: CubicBezie
       if (!near[row + s]) continue;
       for (let j = s * RUN, end = Math.min(b.length - 1, j + RUN); j < end; j++) {
         if (apart(boxesA.piece, 4 * i, boxesB.piece, 4 * j, gap)) continue;
-        const p = segIntersect(a[i]!, a[i + 1]!, b[j]!, b[j + 1]!);
+        const p = segmentIntersection(a[i]!, a[i + 1]!, b[j]!, b[j + 1]!);
         if (p) {
           points.push(p);
           if (first) return points;
@@ -223,7 +195,7 @@ export function bezierBBox(segment: CubicBezierSegment): BBox {
   let maxY = Number.NEGATIVE_INFINITY;
 
   for (const t of ts) {
-    const p = cubicPointAt(segment, t);
+    const p = bezierPointClamped(segment, t);
     minX = Math.min(minX, p.x);
     minY = Math.min(minY, p.y);
     maxX = Math.max(maxX, p.x);

@@ -11,6 +11,7 @@
  * design page's worker ($lib/generator/paperWorker).
  */
 import type { BezierSegment, Finger, HeartDesign, LobeId, Vec } from '$lib/types/heart';
+import { bezierPoint } from '$lib/geometry/cubic';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 
 /** The square's width on the printed templates unless the visitor asks for
@@ -178,7 +179,7 @@ function templateGrid(fingers: Finger[], lobe: LobeId,
 	for (const finger of fingers) for (const seg of finger.segments) {
 		// The cut, in template units (as `transformPathData`), stepped through finer than a cell.
 		const point = (t: number) => {
-			const p = cubic(seg, t);
+			const p = bezierPoint(seg, t);
 			return lobe === 'left' ? [p.y - rect.top, p.x - rect.left] as const : [p.x - rect.left, p.y - rect.top] as const;
 		};
 		const steps = Math.max(1, Math.ceil(chord(seg) * px * 3));
@@ -386,14 +387,6 @@ function distances(cut: Uint8Array, W: number, H: number): Float64Array {
 		for (let x = 0; x < W; x++) d[y * W + x] = out[x]!;
 	}
 	return d;
-}
-
-function cubic(s: BezierSegment, t: number) {
-	const u = 1 - t;
-	return {
-		x: u * u * u * s.p0.x + 3 * u * u * t * s.p1.x + 3 * u * t * t * s.p2.x + t * t * t * s.p3.x,
-		y: u * u * u * s.p0.y + 3 * u * u * t * s.p1.y + 3 * u * t * t * s.p2.y + t * t * t * s.p3.y
-	};
 }
 
 /** A segment's control polygon's length, which its length is no longer than. */

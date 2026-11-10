@@ -7,6 +7,7 @@
  * and its own cards and chips, and asks this module how far down each one has
  * to go to sit on the curve.
  */
+import { cubicAt } from '$lib/geometry/cubic';
 import { LANDSCAPE_WIDTH } from '$lib/landscape';
 
 /** The `snow-field` path's top edge, as drawn in $lib/assets/landscape.svg. */
@@ -49,12 +50,6 @@ function parseHillPath(d: string): Segment[] {
  */
 export const HILL_SEGMENTS = parseHillPath(HILL_PATH);
 
-/** One coordinate of a cubic Bézier at t. */
-export function cubic(a: number, b: number, c: number, d: number, t: number): number {
-	const u = 1 - t;
-	return u * u * u * a + 3 * u * u * t * b + 3 * u * t * t * c + t * t * t * d;
-}
-
 /** The parameter t at which the segment reaches x, by bisection. */
 function solveT(segment: Segment, x: number): number {
 	const [p0, p1, p2, p3] = segment;
@@ -62,7 +57,7 @@ function solveT(segment: Segment, x: number): number {
 	let hi = 1;
 	for (let i = 0; i < 40; i++) {
 		const mid = (lo + hi) / 2;
-		if (cubic(p0[0], p1[0], p2[0], p3[0], mid) < x) lo = mid;
+		if (cubicAt(p0[0], p1[0], p2[0], p3[0], mid) < x) lo = mid;
 		else hi = mid;
 	}
 	return (lo + hi) / 2;
@@ -90,7 +85,7 @@ export function hillY(x: number): number {
 	const segment = segmentAt(clamped);
 	const t = solveT(segment, clamped);
 	const [p0, p1, p2, p3] = segment;
-	return cubic(p0[1], p1[1], p2[1], p3[1], t);
+	return cubicAt(p0[1], p1[1], p2[1], p3[1], t);
 }
 
 /** Real roots in (0, 1) of a t^2 + b t + c. */
@@ -134,8 +129,8 @@ function hillTopWithin(x0: number, x1: number): number {
 		const b = 2 * (y0 - 2 * y1 + y2);
 		const c = y1 - y0;
 		for (const t of rootsInUnit(a, b, c)) {
-			const x = cubic(p0[0], p1[0], p2[0], p3[0], t);
-			if (x >= from && x <= to) top = Math.min(top, cubic(y0, y1, y2, y3, t));
+			const x = cubicAt(p0[0], p1[0], p2[0], p3[0], t);
+			if (x >= from && x <= to) top = Math.min(top, cubicAt(y0, y1, y2, y3, t));
 		}
 	}
 	return top;

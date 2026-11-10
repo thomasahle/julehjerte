@@ -4,7 +4,6 @@ import {
 	CARD_GAP,
 	cardDrop,
 	chipLift,
-	cubic,
 	HILL_PATH,
 	HILL_SEGMENTS,
 	hillPageY,
@@ -45,14 +44,6 @@ describe('HILL_PATH', () => {
 		// Level left of the drawing; mirrored past its right edge (see below).
 		expect(hillY(-50)).toBeCloseTo(523, 6);
 		expect(hillY(3000)).toBeCloseTo(hillY(2 * 2172 - 3000), 6);
-	});
-});
-
-describe('cubic', () => {
-	it('interpolates between its end points', () => {
-		expect(cubic(0, 1, 2, 3, 0)).toBe(0);
-		expect(cubic(0, 1, 2, 3, 1)).toBe(3);
-		expect(cubic(0, 1, 2, 3, 0.5)).toBeCloseTo(1.5, 12);
 	});
 });
 

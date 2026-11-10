@@ -12,7 +12,8 @@
  * the pan), and a turn maps the same cells into it otherwise, so each tile's
  * outline is found once, and a turn and move are a matter of which boxes fit.
  */
-import type { BezierSegment, Vec } from '$lib/types/heart';
+import type { Vec } from '$lib/types/heart';
+import { bezierPoint } from '$lib/geometry/cubic';
 import { ruleRepeat } from './rules';
 import { cellOutline, cellsToRaw, fitLines, heartLines, rawToCells, tileShape, tileTurn, type PatternTile } from './tiling';
 
@@ -34,14 +35,6 @@ interface Tile {
 	area: number;
 }
 
-const at = (s: BezierSegment, t: number): Vec => {
-	const u = 1 - t;
-	return {
-		x: u * u * u * s.p0.x + 3 * u * u * t * s.p1.x + 3 * u * t * t * s.p2.x + t * t * t * s.p3.x,
-		y: u * u * u * s.p0.y + 3 * u * u * t * s.p1.y + 3 * u * t * t * s.p2.y + t * t * t * s.p3.y
-	};
-};
-
 /** A cell's outline on the tiling, in cells: the hull of its points looked at, and its area. */
 interface Outline {
 	hull: Vec[];
@@ -50,7 +43,7 @@ interface Outline {
 
 /** Cell (c, d)'s outline (see `Outline`): its box anywhere in the square is its hull's, as the square is the cells mapped straight. */
 function outlineOf(tile: PatternTile, c: number, d: number): Outline {
-	const points = cellOutline(tile, c, d).flatMap((s) => Array.from({ length: SAMPLES }, (_, k) => at(s, k / SAMPLES)));
+	const points = cellOutline(tile, c, d).flatMap((s) => Array.from({ length: SAMPLES }, (_, k) => bezierPoint(s, k / SAMPLES)));
 	let area = 0;
 	for (let i = 0; i < points.length; i++) {
 		const p = points[i]!, q = points[(i + 1) % points.length]!;

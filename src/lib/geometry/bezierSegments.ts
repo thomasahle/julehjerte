@@ -2,6 +2,7 @@ import type { Finger, FingerPathData, Vec, BezierSegment } from '$lib/types/hear
 import { vecLerp } from '$lib/geometry/vec';
 
 export type { BezierSegment };
+export { splitBezierAt } from '$lib/geometry/cubic';
 
 export function cloneSegments(segments: BezierSegment[]): BezierSegment[] {
   return segments.map((seg) => ({
@@ -461,27 +462,6 @@ export function parsePathDataToSegments(pathData: string): BezierSegment[] {
 
 export function updateFingerSegments(finger: Finger, segments: BezierSegment[]): Finger {
   return { ...finger, segments };
-}
-
-export function splitBezierAt(seg: BezierSegment, t: number): [BezierSegment, BezierSegment] {
-  const p0 = seg.p0;
-  const p1 = seg.p1;
-  const p2 = seg.p2;
-  const p3 = seg.p3;
-
-  const p01 = vecLerp(p0, p1, t);
-  const p12 = vecLerp(p1, p2, t);
-  const p23 = vecLerp(p2, p3, t);
-
-  const p012 = vecLerp(p01, p12, t);
-  const p123 = vecLerp(p12, p23, t);
-
-  const p0123 = vecLerp(p012, p123, t);
-
-  return [
-    { p0, p1: p01, p2: p012, p3: p0123 },
-    { p0: p0123, p1: p123, p2: p23, p3 }
-  ];
 }
 
 export function mergeBezierSegments(seg1: BezierSegment, seg2: BezierSegment): BezierSegment {

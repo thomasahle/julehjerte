@@ -4,7 +4,8 @@ import type { Finger, Vec } from '$lib/types/heart';
 import type { BezierSegment } from '$lib/geometry/bezierSegments';
 import { fingerToSegments } from '$lib/geometry/bezierSegments';
 import { bezierBBox, closestPointOnBezier, closestPointsBetweenBeziers, intersectBezierCurves, perSegment } from '$lib/geometry/curves';
-import { vecDist, vecLerp } from '$lib/geometry/vec';
+import { bezierPointClamped, segmentIntersection, splitBezierAt } from '$lib/geometry/cubic';
+import { vecDist } from '$lib/geometry/vec';
 
 /**
  * Detection of cuts that would ruin a woven heart: curves in the same lobe that cross, touch
@@ -80,19 +81,6 @@ export function segmentsIntersect(a: BezierSegment[], b: BezierSegment[], opts: 
 	return false;
 }
 
-export function bezierPointAt(seg: BezierSegment, t: number): Vec {
-	const tt = Math.max(0, Math.min(1, t));
-	const u = 1 - tt;
-	const b0 = u * u * u;
-	const b1 = 3 * u * u * tt;
-	const b2 = 3 * u * tt * tt;
-	const b3 = tt * tt * tt;
-	return {
-		x: b0 * seg.p0.x + b1 * seg.p1.x + b2 * seg.p2.x + b3 * seg.p3.x,
-		y: b0 * seg.p0.y + b1 * seg.p1.y + b2 * seg.p2.y + b3 * seg.p3.y
-	};
-}
-
 function cross(a: Vec, b: Vec): number {
 	return a.x * b.y - a.y * b.x;
 }
@@ -157,8 +145,8 @@ function cubicSelfIntersectionParams(seg: BezierSegment): { t1: number; t2: numb
 function cubicSelfIntersectionLoopSize(seg: BezierSegment): number | null {
 	const params = cubicSelfIntersectionParams(seg);
 	if (!params) return null;
-	const p1 = bezierPointAt(seg, params.t1);
-	const p2 = bezierPointAt(seg, params.t2);
+	const p1 = bezierPointClamped(seg, params.t1);
+	const p2 = bezierPointClamped(seg, params.t2);
 	if (vecDist(p1, p2) > SELF_INTERSECTION_EPS) return null;
 	const t1 = Math.min(params.t1, params.t2);
 	const t2 = Math.max(params.t1, params.t2);
@@ -166,29 +154,6 @@ function cubicSelfIntersectionLoopSize(seg: BezierSegment): number | null {
 	if (total <= 0) return null;
 	const part = cubicArcLength(seg, t1, t2);
 	return Math.min(part, total - part);
-}
-
-function splitBezierSegment(seg: BezierSegment, t: number): [BezierSegment, BezierSegment] {
-	const tt = Math.max(0, Math.min(1, t));
-	const a = vecLerp(seg.p0, seg.p1, tt);
-	const b = vecLerp(seg.p1, seg.p2, tt);
-	const c = vecLerp(seg.p2, seg.p3, tt);
-	const d = vecLerp(a, b, tt);
-	const e = vecLerp(b, c, tt);
-	const p = vecLerp(d, e, tt);
-	return [
-		{ p0: seg.p0, p1: a, p2: d, p3: p },
-		{ p0: p, p1: e, p2: c, p3: seg.p3 }
-	];
-}
-
-function lineSegmentIntersection(p1: Vec, p2: Vec, p3: Vec, p4: Vec): Vec | null {
-	const den = (p4.y - p3.y) * (p2.x - p1.x) - (p4.x - p3.x) * (p2.y - p1.y);
-	if (Math.abs(den) < 1e-12) return null;
-	const ua = ((p4.x - p3.x) * (p1.y - p3.y) - (p4.y - p3.y) * (p1.x - p3.x)) / den;
-	const ub = ((p2.x - p1.x) * (p1.y - p3.y) - (p2.y - p1.y) * (p1.x - p3.x)) / den;
-	if (ua < 0 || ua > 1 || ub < 0 || ub > 1) return null;
-	return { x: p1.x + ua * (p2.x - p1.x), y: p1.y + ua * (p2.y - p1.y) };
 }
 
 function hasAdjacentIntersection(segA: BezierSegment, segB: BezierSegment, join: Vec, minDist: number): boolean {
@@ -204,17 +169,17 @@ function hasAdjacentIntersection(segA: BezierSegment, segB: BezierSegment, join:
 		const sizeA = Math.max(ba.width, ba.height);
 		const sizeB = Math.max(bb.width, bb.height);
 		if (depth >= MAX_INTERSECTION_DEPTH || (sizeA <= INTERSECTION_EPS && sizeB <= INTERSECTION_EPS)) {
-			const hit = lineSegmentIntersection(a.p0, a.p3, b.p0, b.p3);
+			const hit = segmentIntersection(a.p0, a.p3, b.p0, b.p3);
 			if (!hit) continue;
 			if (vecDist(hit, join) < minDist) continue;
 			return true;
 		}
 
 		if (sizeA >= sizeB) {
-			const [a0, a1] = splitBezierSegment(a, 0.5);
+			const [a0, a1] = splitBezierAt(a, 0.5);
 			stack.push({ a: a0, b, depth: depth + 1 }, { a: a1, b, depth: depth + 1 });
 		} else {
-			const [b0, b1] = splitBezierSegment(b, 0.5);
+			const [b0, b1] = splitBezierAt(b, 0.5);
 			stack.push({ a, b: b0, depth: depth + 1 }, { a, b: b1, depth: depth + 1 });
 		}
 	}

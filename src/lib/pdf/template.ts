@@ -3,6 +3,7 @@ import type { HeartDesign, Vec } from '$lib/types/heart';
 import { prerenderHeartImages } from './heartRenderer';
 import { SITE_DOMAIN } from '$lib/config';
 import { segmentsToPathData } from '$lib/geometry/bezierSegments';
+import { bezierPointByPowers } from '$lib/geometry/cubic';
 import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
 import { transformPathData } from '$lib/utils/templateSvg';
 import { markStrokes, type PlacedMark } from '$lib/utils/orientationMarks';
@@ -58,23 +59,16 @@ function drawSVGPath(
       // Cubic bezier: C x1 y1 x2 y2 x y
       const points: Vec[] = [];
       const segments = 20;
-      const p0 = { x: currentX, y: currentY };
-      const p1 = { x: args[0], y: args[1] };
-      const p2 = { x: args[2], y: args[3] };
-      const p3 = { x: args[4], y: args[5] };
+      const seg = {
+        p0: { x: currentX, y: currentY },
+        p1: { x: args[0], y: args[1] },
+        p2: { x: args[2], y: args[3] },
+        p3: { x: args[4], y: args[5] }
+      };
 
       for (let i = 0; i <= segments; i++) {
-        const t = i / segments;
-        const t2 = t * t;
-        const t3 = t2 * t;
-        const mt = 1 - t;
-        const mt2 = mt * mt;
-        const mt3 = mt2 * mt;
-
-        points.push({
-          x: offsetX + (mt3 * p0.x + 3 * mt2 * t * p1.x + 3 * mt * t2 * p2.x + t3 * p3.x) * scale,
-          y: offsetY + (mt3 * p0.y + 3 * mt2 * t * p1.y + 3 * mt * t2 * p2.y + t3 * p3.y) * scale
-        });
+        const p = bezierPointByPowers(seg, i / segments);
+        points.push({ x: offsetX + p.x * scale, y: offsetY + p.y * scale });
       }
 
       for (let i = 0; i < points.length - 1; i++) {

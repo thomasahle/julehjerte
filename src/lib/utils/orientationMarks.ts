@@ -41,6 +41,7 @@
  */
 import type { HeartDesign, Vec } from '$lib/types/heart';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
+import { bezierPoint } from '$lib/geometry/cubic';
 import { getTemplateData, type TemplateLobe } from '$lib/utils/templateSvg';
 
 export type MarkKind = 'circled' | 'plain';
@@ -76,15 +77,6 @@ const SAME_PIECE_TOLERANCE = 0.02;
 /** Points along a cut, every few hundredths of the template's width. */
 type Polyline = Vec[];
 
-function cubicPoint(p0: Vec, p1: Vec, p2: Vec, p3: Vec, t: number): Vec {
-	const u = 1 - t;
-	const a = u * u * u;
-	const b = 3 * u * u * t;
-	const c = 3 * u * t * t;
-	const d = t * t * t;
-	return { x: a * p0.x + b * p1.x + c * p2.x + d * p3.x, y: a * p0.y + b * p1.y + c * p2.y + d * p3.y };
-}
-
 /** The absolute M / L / C path data `getTemplateData` writes, sampled. */
 export function samplePathData(d: string, steps = 24): Polyline[] {
 	const lines: Polyline[] = [];
@@ -104,11 +96,9 @@ export function samplePathData(d: string, steps = 24): Polyline[] {
 			}
 		} else {
 			for (let i = 0; i + 5 < n.length; i += 6) {
-				const c1 = { x: n[i]!, y: n[i + 1]! };
-				const c2 = { x: n[i + 2]!, y: n[i + 3]! };
-				const to = { x: n[i + 4]!, y: n[i + 5]! };
-				for (let k = 1; k <= steps; k++) current?.push(cubicPoint(at, c1, c2, to, k / steps));
-				at = to;
+				const seg = { p0: at, p1: { x: n[i]!, y: n[i + 1]! }, p2: { x: n[i + 2]!, y: n[i + 3]! }, p3: { x: n[i + 4]!, y: n[i + 5]! } };
+				for (let k = 1; k <= steps; k++) current?.push(bezierPoint(seg, k / steps));
+				at = seg.p3;
 			}
 		}
 	}

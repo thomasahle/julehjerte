@@ -1,5 +1,6 @@
 import type { HeartDesign, Finger, GridSize } from '$lib/types/heart';
 import { fingerToSegments, type BezierSegment } from '$lib/geometry/bezierSegments';
+import { bezierPointByPowers } from '$lib/geometry/cubic';
 import { STRIP_WIDTH } from '$lib/constants';
 import { vecSub, vecLength } from '$lib/geometry/vec';
 import type { TranslationKey } from '$lib/i18n/translations';
@@ -298,25 +299,9 @@ function sampleBezierPoints(segments: BezierSegment[], samplesPerSegment: number
   for (const seg of segments) {
     for (let i = 0; i <= samplesPerSegment; i++) {
       const t = i / samplesPerSegment;
-      points.push(evaluateBezier(seg, t));
+      points.push(bezierPointByPowers(seg, t));
     }
   }
 
   return points;
-}
-
-/**
- * Evaluate a cubic bezier at parameter t
- */
-function evaluateBezier(seg: BezierSegment, t: number): { x: number; y: number } {
-  const t2 = t * t;
-  const t3 = t2 * t;
-  const mt = 1 - t;
-  const mt2 = mt * mt;
-  const mt3 = mt2 * mt;
-
-  return {
-    x: mt3 * seg.p0.x + 3 * mt2 * t * seg.p1.x + 3 * mt * t2 * seg.p2.x + t3 * seg.p3.x,
-    y: mt3 * seg.p0.y + 3 * mt2 * t * seg.p1.y + 3 * mt * t2 * seg.p2.y + t3 * seg.p3.y
-  };
 }

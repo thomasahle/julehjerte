@@ -6,7 +6,7 @@
  */
 import type { BezierSegment, Finger, LobeId, Vec } from '$lib/types/heart';
 import type { OverlapRect } from '$lib/utils/overlapRect';
-import { splitBezierAt } from '$lib/geometry/bezierSegments';
+import { bezierPoint, splitBezierAt } from '$lib/geometry/cubic';
 
 /** Nodes nearer than this along their cuts (`progress`) are one node when two cuts are lined up. */
 const SAME_NODE = 1e-3;
@@ -85,7 +85,7 @@ function lineUp(a: BezierSegment[], b: BezierSegment[]): [BezierSegment[], Bezie
 type Progress = { table: number[][]; across: ((p: Vec) => number) | null };
 
 function progress(segs: BezierSegment[]): Progress {
-	const points = segs.map((seg) => Array.from({ length: SAMPLES + 1 }, (_, i) => at(seg, i / SAMPLES)));
+	const points = segs.map((seg) => Array.from({ length: SAMPLES + 1 }, (_, i) => bezierPoint(seg, i / SAMPLES)));
 	const start = segs[0]!.p0;
 	const end = segs[segs.length - 1]!.p3;
 	const chord = { x: end.x - start.x, y: end.y - start.y };
@@ -110,7 +110,7 @@ function splitAt(segs: BezierSegment[], { table, across }: Progress, parts: numb
 		const row = table[k]!;
 		const ts = parts
 			.filter((f) => f > row[0]! + SAME_NODE && f < row[SAMPLES]! - SAME_NODE && !own.some((o) => Math.abs(o - f) < SAME_NODE))
-			.map((f) => paramAt(row, f, across && ((t: number) => across(at(seg, t)))))
+			.map((f) => paramAt(row, f, across && ((t: number) => across(bezierPoint(seg, t)))))
 			.sort((x, y) => x - y);
 		let rest = seg;
 		let done = 0;
@@ -153,7 +153,7 @@ function lengthOf(seg: BezierSegment): number {
 	let length = 0;
 	let prev = seg.p0;
 	for (let i = 1; i <= SAMPLES; i++) {
-		const p = at(seg, i / SAMPLES);
+		const p = bezierPoint(seg, i / SAMPLES);
 		length += Math.hypot(p.x - prev.x, p.y - prev.y);
 		prev = p;
 	}
@@ -164,12 +164,4 @@ function halveLongest(segs: BezierSegment[]): BezierSegment[] {
 	const lengths = segs.map(lengthOf);
 	const k = lengths.indexOf(Math.max(...lengths));
 	return [...segs.slice(0, k), ...splitBezierAt(segs[k]!, 0.5), ...segs.slice(k + 1)];
-}
-
-function at(s: BezierSegment, t: number): Vec {
-	const u = 1 - t;
-	return {
-		x: u * u * u * s.p0.x + 3 * u * u * t * s.p1.x + 3 * u * t * t * s.p2.x + t * t * t * s.p3.x,
-		y: u * u * u * s.p0.y + 3 * u * u * t * s.p1.y + 3 * u * t * t * s.p2.y + t * t * t * s.p3.y
-	};
 }

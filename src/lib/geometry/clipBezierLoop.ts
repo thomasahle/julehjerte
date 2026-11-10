@@ -1,5 +1,6 @@
 import type { BezierSegment, Vec } from '$lib/types/heart';
-import { reverseSegments, splitBezierAt } from './bezierSegments';
+import { reverseSegments } from './bezierSegments';
+import { cubicAt, splitBezierAt } from './cubic';
 import { cubicDerivativeRoots } from './curves';
 
 type Rectangle = { left: number; right: number; top: number; bottom: number };
@@ -11,8 +12,7 @@ export function straightBezier(p0: Vec, p3: Vec): BezierSegment {
 }
 
 function coordinateAt(values: number[], t: number) {
-	const u = 1 - t;
-	return u * u * u * values[0]! + 3 * u * u * t * values[1]! + 3 * u * t * t * values[2]! + t * t * t * values[3]!;
+	return cubicAt(values[0]!, values[1]!, values[2]!, values[3]!, t);
 }
 
 /** All crossings and tangencies, partitioned into monotone scalar intervals. */
