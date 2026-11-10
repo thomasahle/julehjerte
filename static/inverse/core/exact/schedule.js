@@ -149,3 +149,60 @@ export const OUTLINES = {
 /** The ladder alone's outlines after the traced one, in order, the spots its tips that come back to themselves.
  * (history: docs/inverse/SEARCH-CONSTANTS.md#ladder-outlines) */
 export const LADDER_OUTLINES = ['near', 'everywhere', 'wider', 'outerStrip'];
+
+// The network's ladder alone over several outlines (engine.js ladderAlone).
+
+/** The ladder alone's passes over its outlines, in order: under the model's own clearances until the strict pass
+ * ends (`ends.strict`: ladderStrictEnd), then, where that leaves time before the search's end (`ends.rounded`), the
+ * rest again with them LOOSE_MM lower, judged by the export's own (the 0.1 mm it tolerates); a template the loose
+ * pass finds is marked so. (history: docs/inverse/SEARCH-CONSTANTS.md#loose) */
+export const LADDER_PASSES = [
+  {name: 'strict', end: ends => ends.strict, cfg: cfg => cfg},
+  {
+    name: 'loose',
+    when: ends => ends.strict < ends.rounded,
+    end: ends => ends.rounded,
+    cfg: cfg => ({...cfg, modelTolerance: LOOSE_MM}),
+    mark: {loose: true}
+  }
+];
+
+/** When the ladder alone's strict pass ends, read on the clock `now`, in a search ending at `end`: then, but with
+ * LOOSE_LEAST seconds or more once it has had what the one-minute search gives it (STRICT_SECONDS, or a third).
+ * Not sooner: lowered from the start, the clearances lose some templates' returns once smoothed.
+ * (history: docs/inverse/SEARCH-CONSTANTS.md#loose) */
+export function ladderStrictEnd(now, end) {
+  const total = end - now();
+  return total >= 1000 * LOOSE_LEAST ? now() + Math.max(1000 * STRICT_SECONDS, total / 3) : end;
+}
+
+/** Each pass's phases, in order (exact/stage.js ladderRungs): the ladder's cheap rungs on every outline first, in
+ * `share` of the time left in the pass, then its long ones in all the rest. In a phase outline k (of the ladder
+ * `part`) has `weight(k, part)` times another's share of the time: one ladder over every outline counts the traced
+ * one TRACED_FIRST_WEIGHT times in the first phase. (history: docs/inverse/SEARCH-CONSTANTS.md#first-order,
+ * docs/inverse/SEARCH-CONSTANTS.md#traced-first-weight) */
+export const LADDER_PHASES = [
+  {
+    phase: 'first',
+    share: LADDER_FIRST_SHARE,
+    weight: (k, part) => (k === 0 && part[1] === 1 ? TRACED_FIRST_WEIGHT : 1)
+  },
+  {phase: 'second', share: 1, weight: () => 1}
+];
+
+/** Searches `items` in turn until `end` (ms on the clock `now`), while at least `least` ms are left: each until its
+ * share of the time left, in proportion to its `weight` among the items not yet searched. The first result `takes`
+ * holds is returned at once, with its item ({result, item}); else null, `kept.near` holding the nearest of the
+ * results (`nearer(result, than)`, `than` the nearest so far), with its item, and `kept.last` the last result. */
+export async function timeSliced(items, end, {now, least, weight, search, takes, nearer}, kept) {
+  for (const [j, item] of items.entries()) {
+    const left = end - now(),
+      rest = items.slice(j).reduce((sum, other) => sum + weight(other), 0);
+    if (left < least) break;
+    const result = await search(item, now() + (left * weight(item)) / rest);
+    kept.last = result;
+    if (takes(result)) return {result, item};
+    if (nearer(result, kept.near?.result)) kept.near = {result, item};
+  }
+  return null;
+}

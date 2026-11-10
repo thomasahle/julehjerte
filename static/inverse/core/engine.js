@@ -29,23 +29,22 @@ import {
   EXACT_FINISH_SECONDS,
   EXACT_SECONDS,
   FITTER_SECONDS,
-  LADDER_FIRST_SHARE,
   LADDER_LEAST,
   LADDER_OUTLINES,
+  LADDER_PASSES,
+  LADDER_PHASES,
   LADDER_RESERVE,
-  LOOSE_LEAST,
-  LOOSE_MM,
   OUTLINES,
   RETURN_REPAIR_SECONDS,
   RETURN_REPAIR_TRIES,
   RETURNS_LEAST,
   ROUNDED_LEAST,
   ROUNDED_SECONDS,
-  STRICT_SECONDS,
   TIP_ROUNDING_MM,
-  TRACED_FIRST_WEIGHT,
   TRACED_SECONDS,
-  timeScale
+  ladderStrictEnd,
+  timeScale,
+  timeSliced
 } from './exact/schedule.js';
 import {
   appSymmetry,
@@ -424,106 +423,35 @@ export async function exactTemplate(
   };
   const sink = [], search = end => ({deadline: end, onProgress, symmetry: ties, geometry: cfg.progressGeometry, sink});
   const began = tools.now();
-  // The ladder alone (a worker beside today's search, worker-controller.js):
-  // the traced outline and the ones today's search goes on to, with tips
-  // rounded, each searched by the ladder in two phases (exact/stage.js): its
-  // cheap rungs on every outline first, then its long ones: some templates
-  // (5star's) lie on a rounded outline, most on the traced one.
-  // (history: docs/inverse/SEARCH-CONSTANTS.md#ladder-outlines)
-  if (ladderOnly) {
-    let tips = [];
-    try {
-      tips = tools.returnTips(outline, cfgExact).map(([x, y]) => [x * px, y * px]);
-    } catch (error) {
-      tools.noteError('engine.js exactTemplate: return tips', error);
-      tips = [];
-    }
-    const outlines = [outline];
-    for (const name of LADDER_OUTLINES) {
-      const traced = trace(OUTLINES[name](shape, tips));
-      if (traced) outlines.push(traced);
-    }
-    // The traced outline's lower bound: no template on it has fewer hidden
-    // segments, so a ladder template with no more than that (on whichever
-    // outline) is as good as today's search can find there, and the page need
-    // not wait for it (worker-controller.js).
-    let tracedBound = null;
-    try {
-      tracedBound = tools.cheapBounds(
-        ...(ex => [ex.st, ex.outline])(tools.exactOutline(outline, cfgExact, 'tight', {symmetry: []}))
-      ).lb;
-    } catch (error) {
-      tools.noteError('engine.js exactTemplate: the traced outline\'s bound', error);
-      tracedBound = null;
-    }
-    // With no template the export takes on any outline, the nearest the ladder
-    // had on any (design() finishes it as a near miss): the page never gets
-    // nothing from the ladder while it found a template.
-    let last = null, near = null;
-    // With more than LOOSE_LEAST seconds (a longer search chosen under Avanceret), once the ladder has
-    // had what the one-minute search gives it (STRICT_SECONDS, or a third), the rest goes through it again
-    // with the model's clearances LOOSE_MM lower, judged by the export's own (the 0.1 mm it tolerates).
-    // Not sooner: lowered from the start, some templates' returns fail once smoothed.
-    // (history: docs/inverse/SEARCH-CONSTANTS.md#loose)
-    const total = roundedEnd - tools.now(),
-      strictEnd =
-        total >= 1000 * LOOSE_LEAST ? tools.now() + Math.max(1000 * STRICT_SECONDS, total / 3) : roundedEnd;
-    for (const [cfgPass, passEnd, loose] of [
-      [cfgExact, strictEnd, false],
-      ...(strictEnd < roundedEnd ? [[{...cfgExact, modelTolerance: LOOSE_MM}, roundedEnd, true]] : [])
-    ])
-      for (const [phase, share] of [['first', LADDER_FIRST_SHARE], ['second', 1]]) {
-        const phaseEnd = tools.now() + share * (passEnd - tools.now());
-        // One of n ladders side by side searches the outlines k with k % n === i, with all the time (the
-        // traced outline's cheap rungs get more of the first phase).
-        // (history: docs/inverse/SEARCH-CONSTANTS.md#ladder-part)
-        const mine = [...outlines.entries()].filter(([k]) => k % part[1] === part[0]);
-        // One ladder over every outline counts the traced one TRACED_FIRST_WEIGHT times in the first phase, a
-        // third of it with five outlines, as the part with it has of two ladders: its rungs to K300 then fit
-        // there. (history: docs/inverse/SEARCH-CONSTANTS.md#traced-first-weight)
-        const weight = k => (phase === 'first' && k === 0 && part[1] === 1 ? TRACED_FIRST_WEIGHT : 1);
-        for (const [j, [k, traced]] of mine.entries()) {
-          const left = phaseEnd - tools.now(),
-            rest = mine.slice(j).reduce((sum, [other]) => sum + weight(other), 0);
-          if (left < 1000 * LADDER_LEAST) break;
-          last = await exactSearch(traced, null, cfgPass, {
-            ...search(tools.now() + (left * weight(k)) / rest),
-            reserve: LADDER_RESERVE,
-            maps,
-            ladderOnly,
-            phase
-          });
-          if (last.found)
-            return {
-              solution: last.found.solution,
-              report: {
-                ...last.report,
-                chosen: 'exact',
-                ladderOnly: true,
-                outline: k,
-                phase,
-                tracedBound,
-                ...(loose ? {loose: true} : {})
-              }
-            };
-          if (closer(last.near?.assessment, near?.assessment)) near = {...last.near, outline: k, phase};
-        }
+  // What the schedule's tables read (exact/schedule.js): the traced outline,
+  // its way and its tips' rounding (OUTLINES), the search's ends, the clock.
+  const state = {
+    tools,
+    cfgExact,
+    outline,
+    way,
+    radius,
+    px,
+    roundedEnd,
+    maps,
+    part,
+    now: tools.now,
+    tips: [],
+    trace,
+    // The search on `on` until `end`, with `cfg` and `more` options.
+    search: (on, end, {cfg: cfgUsed = cfgExact, ...more} = {}) =>
+      exactSearch(on, null, cfgUsed, {...search(end), ...more}),
+    // The outline's tips that come back to themselves (exact/stage.js returnTips), in the mask's pixels.
+    returnTips: () => {
+      try {
+        return tools.returnTips(outline, cfgExact).map(([x, y]) => [x * px, y * px]);
+      } catch (error) {
+        tools.noteError('engine.js exactTemplate: return tips', error);
+        return [];
       }
-    if (near)
-      return {
-        solution: null,
-        nearest: near.solution,
-        report: {
-          ...near.report,
-          chosen: 'fitter',
-          ladderOnly: true,
-          outline: near.outline,
-          phase: near.phase,
-          tracedBound
-        }
-      };
-    return {solution: null, report: {...(last?.report ?? {}), chosen: 'fitter', ladderOnly: true}};
-  }
+    }
+  };
+  if (ladderOnly) return ladderAlone(state);
   // The cut-proposal network's maps (raw.cutMaps, made by the worker from the
   // mask: neural/cuts.js) give the traced outline's search its ladder first.
   let found = await exactSearch(outline, null, cfgExact, {...search(tracedEnd), maps, ladderOnly});
@@ -538,13 +466,7 @@ export async function exactTemplate(
   // is searched for again with those tips rounded (within TIP_SPOT_MM), for as
   // long as the first search took (RETURNS_LEAST at least: it has a template
   // already), and taken with fewer (tulipan 4 -> 0, its true design's).
-  let tips = [];
-  try {
-    tips = tools.returnTips(outline, cfgExact).map(([x, y]) => [x * px, y * px]);
-  } catch (error) {
-    tools.noteError('engine.js exactTemplate: return tips', error);
-    tips = [];
-  }
+  const tips = state.returnTips();
   if (
     tips.length &&
     exportable(found.found?.assessment, cfgExact) &&
@@ -633,6 +555,97 @@ export async function exactTemplate(
     nearest: !passing && found.found?.solution ? found.found.solution : null,
     report
   };
+}
+/** The ladder alone (a worker beside today's search, worker-controller.js) on
+ * exactTemplate's `state`: the traced outline and the ones today's search goes
+ * on to (exact/schedule.js LADDER_OUTLINES), each searched by the ladder in
+ * each pass (LADDER_PASSES) in two phases (LADDER_PHASES): its cheap rungs on
+ * every outline first, then its long ones; some templates (5star's) lie on a
+ * rounded outline, most on the traced one. The first template stands; with
+ * none the export takes on any outline, the nearest the ladder had on any
+ * (design() finishes it as a near miss): the page never gets nothing from the
+ * ladder while it found a template.
+ * (history: docs/inverse/SEARCH-CONSTANTS.md#ladder-outlines) */
+async function ladderAlone(state) {
+  const {tools, cfgExact, part} = state;
+  state.tips = state.returnTips();
+  const outlines = [state.outline];
+  for (const name of LADDER_OUTLINES) {
+    const traced = state.trace(OUTLINES[name](state, state.tips));
+    if (traced) outlines.push(traced);
+  }
+  // The traced outline's lower bound: no template on it has fewer hidden
+  // segments, so a ladder template with no more than that (on whichever
+  // outline) is as good as today's search can find there, and the page need
+  // not wait for it (worker-controller.js).
+  let tracedBound = null;
+  try {
+    tracedBound = tools.cheapBounds(
+      ...(ex => [ex.st, ex.outline])(tools.exactOutline(state.outline, cfgExact, 'tight', {symmetry: []}))
+    ).lb;
+  } catch (error) {
+    tools.noteError('engine.js exactTemplate: the traced outline\'s bound', error);
+    tracedBound = null;
+  }
+  const ends = {strict: ladderStrictEnd(state.now, state.roundedEnd), rounded: state.roundedEnd};
+  // One of n ladders side by side searches the outlines k with k % n === i,
+  // with all the time. (history: docs/inverse/SEARCH-CONSTANTS.md#ladder-part)
+  const mine = [...outlines.entries()].filter(([k]) => k % part[1] === part[0]);
+  const kept = {last: null, near: null};
+  for (const pass of LADDER_PASSES.filter(pass => !pass.when || pass.when(ends))) {
+    const cfgPass = pass.cfg(cfgExact), passEnd = pass.end(ends);
+    for (const {phase, share, weight} of LADDER_PHASES) {
+      const taken = await timeSliced(
+        mine.map(([k, outline]) => ({k, outline, phase})),
+        state.now() + share * (passEnd - state.now()),
+        {
+          now: state.now,
+          least: 1000 * LADDER_LEAST,
+          weight: ({k}) => weight(k, part),
+          search: ({outline}, deadline) =>
+            state.search(outline, deadline, {
+              cfg: cfgPass,
+              reserve: LADDER_RESERVE,
+              maps: state.maps,
+              ladderOnly: true,
+              phase
+            }),
+          takes: result => result.found,
+          nearer: (result, than) => closer(result.near?.assessment, than?.near?.assessment)
+        },
+        kept
+      );
+      if (taken)
+        return {
+          solution: taken.result.found.solution,
+          report: {
+            ...taken.result.report,
+            chosen: 'exact',
+            ladderOnly: true,
+            outline: taken.item.k,
+            phase,
+            tracedBound,
+            ...(pass.mark ?? {})
+          }
+        };
+    }
+  }
+  if (kept.near) {
+    const near = kept.near.result.near;
+    return {
+      solution: null,
+      nearest: near.solution,
+      report: {
+        ...near.report,
+        chosen: 'fitter',
+        ladderOnly: true,
+        outline: kept.near.item.k,
+        phase: kept.near.item.phase,
+        tracedBound
+      }
+    };
+  }
+  return {solution: null, report: {...(kept.last?.report ?? {}), chosen: 'fitter', ladderOnly: true}};
 }
 export function inspectSaved(text, raw = {}, onProgress = () => {}) {
   const cfg = settings(raw), solution = loadSolutionJSON(text), factor = cfg.width / solution.graph.target.width;
