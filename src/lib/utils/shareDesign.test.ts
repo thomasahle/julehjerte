@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import type { HeartDesignJson } from '$lib/types/heart';
-import { decodeSharedDesign, encodeSharedDesign, sharedDesignUrl, SHARED_HEART_ID } from './shareDesign';
+import type { HeartDesign, HeartDesignJson } from '$lib/types/heart';
+import { decodeDesignLink, decodeSharedDesign, encodeDesignLink, encodeSharedDesign, sharedDesignUrl, SHARED_HEART_ID } from './shareDesign';
 import { normalizeHeartDesign, serializeHeartDesign } from './heartDesign';
 import { DESIGN_JSON, EDITOR_LINK, SHARE_DEFLATED, SHARE_PLAIN } from './fixtures/storedForms';
 
@@ -36,7 +36,7 @@ describe('shareDesign', () => {
   it('round-trips a design through a compressed, URL-safe payload', async () => {
     const payload = await encodeSharedDesign(design);
     expect(payload).toMatch(/^[A-Za-z0-9_-]+$/);
-    expect(await decodeSharedDesign(payload)).toEqual(rounded);
+    expect(await decodeSharedDesign(payload)).toEqual({ v: 1, ...rounded });
   });
 
   it('falls back to plain base64url JSON without CompressionStream and reads it back', async () => {
@@ -45,11 +45,11 @@ describe('shareDesign', () => {
     const plain = await encodeSharedDesign(design);
     expect(plain).toMatch(/^[A-Za-z0-9_-]+$/);
     expect(atob(plain.replace(/-/g, '+').replace(/_/g, '/')).startsWith('{')).toBe(true);
-    expect(await decodeSharedDesign(plain)).toEqual(rounded);
+    expect(await decodeSharedDesign(plain)).toEqual({ v: 1, ...rounded });
     // Plain payloads need no DecompressionStream either.
     // @ts-expect-error simulate a browser without DecompressionStream
     globalThis.DecompressionStream = undefined;
-    expect(await decodeSharedDesign(plain)).toEqual(rounded);
+    expect(await decodeSharedDesign(plain)).toEqual({ v: 1, ...rounded });
   });
 
   it('compresses to a shorter payload than the plain form', async () => {
@@ -103,16 +103,18 @@ function plainJson(payload: string): unknown {
 // Every link shared so far must keep opening the heart it was made for.
 describe('shared links', () => {
   const heart = () => normalizeHeartDesign(JSON.parse(DESIGN_JSON))!;
-  /** The heart's JSON as a link carries it: coordinates to 1/1000. */
+  /** The heart's JSON as a link carried it before versioning: coordinates to 1/1000. */
   const shared = () => plainJson(SHARE_PLAIN) as HeartDesignJson;
+  const plain = (value: unknown) => btoa(JSON.stringify(value)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
-  it('are written as the site wrote them on 10 Nov 2026', async () => {
+  it('are written as the site wrote them on 10 Nov 2026, with the version added in front', async () => {
     expect(shared().fingers[0].pathData).toBe('M 100 33.333 C 66.667 47.619 33.333 19.048 0 33.333');
     expect({ ...shared(), fingers: undefined }).toEqual({ ...JSON.parse(DESIGN_JSON), fingers: undefined });
-    expect(await decodeSharedDesign(await encodeSharedDesign(serializeHeartDesign(heart())))).toEqual(shared());
+    expect(await decodeSharedDesign(await encodeSharedDesign(serializeHeartDesign(heart())))).toEqual({ v: 1, ...shared() });
     // @ts-expect-error simulate a browser without CompressionStream
     globalThis.CompressionStream = undefined;
-    expect(await encodeSharedDesign(serializeHeartDesign(heart()))).toBe(SHARE_PLAIN);
+    const payload = await encodeSharedDesign(serializeHeartDesign(heart()));
+    expect(JSON.stringify(plainJson(payload))).toBe('{"v":1,' + JSON.stringify(shared()).slice(1));
   });
 
   it('read what the site wrote: deflated, plain, and Tegn\'s own JSON, percent-encoded or not', async () => {
@@ -125,16 +127,85 @@ describe('shared links', () => {
     expect(await decodeSharedDesign(encodeURIComponent(EDITOR_LINK))).toBeNull();
   });
 
-  it('carry fields the reader does not know past it, such as a version', async () => {
-    const versioned = await encodeSharedDesign({ v: 1, ...serializeHeartDesign(heart()) } as HeartDesignJson);
-    expect(normalizeHeartDesign(await decodeSharedDesign(versioned))).toEqual(normalizeHeartDesign(shared()));
+  it('are written as the readers from before versioning read them', async () => {
+    const payload = await encodeSharedDesign(serializeHeartDesign(heart()));
+    // Those handed the JSON to normalizeHeartDesign, which reads past the version.
+    expect(normalizeHeartDesign(await decodeSharedDesign(payload))).toEqual(normalizeHeartDesign(shared()));
+  });
+
+  it('from a later site open as a broken link does', async () => {
+    const later = { ...shared(), v: 2 };
+    expect(await decodeSharedDesign(plain(later))).toBeNull();
+    expect(await decodeSharedDesign(JSON.stringify(later))).toBeNull();
+    expect(await decodeSharedDesign(encodeURIComponent(JSON.stringify(later)))).toBeNull();
+    expect(await decodeSharedDesign(plain({ ...shared(), v: 1 }))).toEqual({ ...shared(), v: 1 });
   });
 
   it('hand back the object they carry, heart or not, for normalizeHeartDesign to judge', async () => {
-    const plain = (value: unknown) => btoa(JSON.stringify(value)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
     expect(await decodeSharedDesign(plain({}))).toEqual({});
     expect(await decodeSharedDesign('{"later":true}')).toEqual({ later: true });
     expect(await decodeSharedDesign(plain([1, 2]))).toBeNull();
     expect(await decodeSharedDesign('{}')).toEqual({});
+  });
+});
+
+/** Tegn's reader of its own address until 10 Nov 2026 (EditorPage's `parseDesignPayload`, less its log). */
+function editorReaderBefore(raw: string): HeartDesign | null {
+  const candidates = [raw];
+  try {
+    candidates.push(decodeURIComponent(raw));
+  } catch {
+    // Not double-encoded.
+  }
+  for (const candidate of candidates) {
+    try {
+      const design = normalizeHeartDesign(JSON.parse(candidate) as unknown);
+      if (design) return design;
+    } catch {
+      // Try the next candidate.
+    }
+  }
+  return null;
+}
+
+// Tegn's address after "Gem" (`?edit=true#design=`) opens the heart again on reload.
+describe("Tegn's own links", () => {
+  const heart = () => normalizeHeartDesign(JSON.parse(DESIGN_JSON))!;
+  /** The payload as Tegn reads it: URLSearchParams decodes it once. */
+  const asRead = (payload: string) => new URLSearchParams(`edit=true&design=${payload}`).get('design')!;
+
+  it('are written as Tegn wrote them on 10 Nov 2026, with the version added in front', () => {
+    expect(encodeDesignLink(heart())).toBe(encodeURIComponent('{"v":1,' + DESIGN_JSON.slice(1)));
+    expect(EDITOR_LINK).toBe(encodeURIComponent(DESIGN_JSON));
+  });
+
+  it("are written as Tegn's reader from before versioning reads them", () => {
+    expect(editorReaderBefore(asRead(encodeDesignLink(heart())))).toEqual(heart());
+  });
+
+  it('read what Tegn wrote, and everything its reader read before, as it read it', () => {
+    for (const raw of [
+      asRead(EDITOR_LINK),
+      EDITOR_LINK,
+      asRead(encodeDesignLink(heart())),
+      DESIGN_JSON,
+      JSON.stringify({ ...JSON.parse(DESIGN_JSON), gridSize: 3 }),
+      '{}',
+      '[]',
+      '5',
+      '"heart"',
+      'null',
+      'not json',
+      '%E0%A4%A',
+      ''
+    ])
+      expect(decodeDesignLink(raw), raw).toEqual(editorReaderBefore(raw));
+    expect(decodeDesignLink(asRead(EDITOR_LINK))).toEqual(heart());
+  });
+
+  it('from a later site open as a broken one does', () => {
+    const later = JSON.stringify({ ...JSON.parse(DESIGN_JSON), v: 2 });
+    expect(decodeDesignLink(later)).toBeNull();
+    expect(decodeDesignLink(encodeURIComponent(later))).toBeNull();
   });
 });

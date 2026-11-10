@@ -1,9 +1,11 @@
 import { browser } from '$app/environment';
 import { base } from '$app/paths';
-import type { HeartDesignJson } from '$lib/types/heart';
+import type { HeartDesign, HeartDesignJson } from '$lib/types/heart';
 import type { Language } from '$lib/i18n';
 import { heartPath } from '$lib/i18n/routes';
 import { SITE_URL } from '$lib/config';
+import { readableVersion } from './formatVersion';
+import { DESIGN_VERSION, decodeHeartDesign, encodeHeartDesign } from './storedDesign';
 
 /**
  * Sharing a user-created heart without a server: the serialised design travels in the
@@ -15,7 +17,9 @@ import { SITE_URL } from '$lib/config';
  * Both are accepted on read: a raw deflate stream of our JSON can never start with the
  * byte '{' (0x7b would mean a final fixed-Huffman block whose first code is not '{'),
  * so the first decoded byte tells the two apart. The editor's legacy
- * encodeURIComponent(JSON) form is accepted as well.
+ * encodeURIComponent(JSON) form is accepted as well. The JSON is the heart's own
+ * (`$lib/utils/storedDesign`), with its version; a link from a later site than the
+ * one reading it opens as a broken link does.
  *
  * Path coordinates (0-100 units) are rounded to 1/1000 before encoding: that is at most
  * 0.006 px at the largest grid, and it makes the links about three times shorter.
@@ -26,7 +30,7 @@ export const SHARED_HEART_ID = 'delt';
 
 const COORD_DECIMALS = 3;
 
-function roundPathData(json: HeartDesignJson): HeartDesignJson {
+function roundPathData<T extends HeartDesignJson>(json: T): T {
   return {
     ...json,
     fingers: json.fingers.map((finger) => ({
@@ -82,16 +86,22 @@ async function pipe(
 
 /** Encode a serialised design for the #design= fragment. */
 export async function encodeSharedDesign(json: HeartDesignJson): Promise<string> {
-  const bytes = new TextEncoder().encode(JSON.stringify(roundPathData(json)));
+  const bytes = new TextEncoder().encode(JSON.stringify(roundPathData({ v: DESIGN_VERSION, ...json })));
   if (typeof CompressionStream === 'function') {
     return bytesToBase64Url(await pipe(bytes, new CompressionStream('deflate-raw')));
   }
   return bytesToBase64Url(bytes);
 }
 
+/** The JSON a payload carried, unless it is a heart from a later site than this one. */
+function readable(json: unknown): unknown | null {
+  return json && typeof json === 'object' && !readableVersion((json as { v?: unknown }).v, DESIGN_VERSION) ? null : json;
+}
+
 /**
  * Decode a #design= payload back to the raw JSON value (run it through
- * normalizeHeartDesign). Returns null for anything that is not a valid payload.
+ * normalizeHeartDesign). Returns null for anything that is not a valid payload,
+ * and for a heart written by a later site than this one.
  */
 export async function decodeSharedDesign(payload: string): Promise<unknown | null> {
   const text = payload.trim();
@@ -101,7 +111,7 @@ export async function decodeSharedDesign(payload: string): Promise<unknown | nul
     for (const candidate of [text, safeDecodeUriComponent(text)]) {
       if (candidate === null) continue;
       try {
-        return JSON.parse(candidate) as unknown;
+        return readable(JSON.parse(candidate) as unknown);
       } catch {
         // Try the next candidate.
       }
@@ -114,10 +124,42 @@ export async function decodeSharedDesign(payload: string): Promise<unknown | nul
       if (typeof DecompressionStream !== 'function') return null;
       bytes = await pipe(bytes, new DecompressionStream('deflate-raw'));
     }
-    return JSON.parse(new TextDecoder().decode(bytes)) as unknown;
+    return readable(JSON.parse(new TextDecoder().decode(bytes)) as unknown);
   } catch {
     return null;
   }
+}
+
+/**
+ * The payload of Tegn's own address for a heart, `?edit=true#design=<payload>`:
+ * the heart's JSON, percent-encoded, as Tegn has always written it. Tegn reads
+ * its address before its first render, with no time to wait for a
+ * DecompressionStream, so the shared links' shorter form is no use there.
+ */
+export function encodeDesignLink(design: HeartDesign): string {
+  return encodeURIComponent(JSON.stringify(encodeHeartDesign(design)));
+}
+
+/**
+ * The heart in Tegn's address, `#design=` or an older link's `?design=`, as
+ * URLSearchParams hands it over (percent-decoded once), or encoded once more.
+ * Null where it holds no heart this site can read.
+ */
+export function decodeDesignLink(raw: string): HeartDesign | null {
+  // URLSearchParams has already percent-decoded once; fall back to a second decode for
+  // links that were encoded twice.
+  const candidates = [raw];
+  const decoded = safeDecodeUriComponent(raw);
+  if (decoded !== null) candidates.push(decoded);
+  for (const candidate of candidates) {
+    try {
+      const design = decodeHeartDesign(JSON.parse(candidate) as unknown);
+      if (design) return design;
+    } catch {
+      // Try the next candidate.
+    }
+  }
+  return null;
 }
 
 function safeDecodeUriComponent(text: string): string | null {

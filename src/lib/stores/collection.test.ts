@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { normalizeHeartDesign } from '$lib/utils/heartDesign';
 import { DESIGN_JSON, TILE_JSON } from '$lib/utils/fixtures/storedForms';
-import { USER_COLLECTION_KEY, deleteUserDesign, getUserCollection, loadStaticHeartById, saveUserDesign } from './collection';
+import { USER_COLLECTION_KEY, decodeCollection, deleteUserDesign, getUserCollection, loadStaticHeartById, saveUserDesign } from './collection';
 
 // The collection only touches storage in the browser.
 vi.mock('$app/environment', () => ({ browser: true }));
@@ -53,23 +53,37 @@ describe('the stored collection', () => {
 	});
 	const heart = (json: string) => normalizeHeartDesign(JSON.parse(json))!;
 	const stored = () => storage.getItem(USER_COLLECTION_KEY);
+	/** A heart's JSON from before versioning, as the site writes it now. */
+	const versioned = (json: string) => '{"v":1,' + json.slice(1);
 
-	it('is written as the site wrote it on 10 Nov 2026: an array of hearts', () => {
+	it('is written as the site wrote it on 10 Nov 2026, each heart with its version', () => {
 		saveUserDesign(heart(DESIGN_JSON));
-		expect(stored()).toBe(`[${DESIGN_JSON}]`);
+		expect(stored()).toBe(`[${versioned(DESIGN_JSON)}]`);
 		saveUserDesign(heart(TILE_JSON));
-		expect(stored()).toBe(`[${DESIGN_JSON},${TILE_JSON}]`);
+		expect(stored()).toBe(`[${versioned(DESIGN_JSON)},${versioned(TILE_JSON)}]`);
 		// Saving a heart again replaces it where it is.
 		saveUserDesign({ ...heart(DESIGN_JSON), name: 'Til mor' });
 		expect(JSON.parse(stored()!).map((d: { name: string }) => d.name)).toEqual(['Til mor', 'Fisk']);
 	});
 
-	it('reads what the site wrote', () => {
+	it('reads what the site wrote, before versioning and since', () => {
 		storage.setItem(USER_COLLECTION_KEY, `[${DESIGN_JSON},${TILE_JSON}]`);
 		expect(getUserCollection().map((d) => [d.id, d.name])).toEqual([
 			['user-5b0c9a7e', 'Mit hjerte'],
 			['user-escher', 'Fisk']
 		]);
+		saveUserDesign(heart(DESIGN_JSON));
+		expect(getUserCollection()).toEqual([heart(DESIGN_JSON), heart(TILE_JSON)]);
+		expect(decodeCollection(JSON.parse(stored()!))).toEqual([heart(DESIGN_JSON), heart(TILE_JSON)]);
+	});
+
+	it('leaves out a heart a later site wrote, as it does what is no heart, but keeps it stored', () => {
+		const later = JSON.stringify({ ...JSON.parse(DESIGN_JSON), v: 2, id: 'later' });
+		storage.setItem(USER_COLLECTION_KEY, `[${later},${TILE_JSON}]`);
+		expect(getUserCollection().map((d) => d.id)).toEqual(['user-escher']);
+		saveUserDesign(heart(DESIGN_JSON));
+		deleteUserDesign('user-escher');
+		expect(stored()).toBe(`[${later},${versioned(DESIGN_JSON)}]`);
 	});
 
 	it('reads past fields it does not know, such as a version', () => {
@@ -93,13 +107,13 @@ describe('the stored collection', () => {
 	it('keeps what it cannot read when it saves or deletes', () => {
 		storage.setItem(USER_COLLECTION_KEY, `[42,{"id":"other","fingers":"later"},${TILE_JSON}]`);
 		saveUserDesign(heart(DESIGN_JSON));
-		expect(stored()).toBe(`[42,{"id":"other","fingers":"later"},${TILE_JSON},${DESIGN_JSON}]`);
+		expect(stored()).toBe(`[42,{"id":"other","fingers":"later"},${TILE_JSON},${versioned(DESIGN_JSON)}]`);
 		deleteUserDesign('user-escher');
-		expect(stored()).toBe(`[42,{"id":"other","fingers":"later"},${DESIGN_JSON}]`);
+		expect(stored()).toBe(`[42,{"id":"other","fingers":"later"},${versioned(DESIGN_JSON)}]`);
 		// What is stored is no array: a save starts one.
 		storage.setItem(USER_COLLECTION_KEY, '{"hearts":[]}');
 		saveUserDesign(heart(DESIGN_JSON));
-		expect(stored()).toBe(`[${DESIGN_JSON}]`);
+		expect(stored()).toBe(`[${versioned(DESIGN_JSON)}]`);
 	});
 
 	it('tells the caller a save failed', () => {

@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { normalizeHeartDesign, serializeHeartDesign } from './heartDesign';
+import { readableVersion } from './formatVersion';
+import { DESIGN_VERSION, decodeHeartDesign, encodeHeartDesign } from './storedDesign';
 import { DESIGN_JSON, TILE_JSON } from './fixtures/storedForms';
 
 // A heart's JSON form (`HeartDesignJson`) is what "Mine hjerter", the editor's
@@ -59,5 +61,41 @@ describe("a heart's stored JSON", () => {
 		// An object with nothing of a heart in it is a blank one.
 		expect(normalizeHeartDesign({})).toMatchObject({ id: '', name: 'Untitled', gridSize: { x: 2, y: 2 } });
 		expect(normalizeHeartDesign([])).toMatchObject({ id: '', name: 'Untitled' });
+	});
+});
+
+/** A form written before versioning, with the version the site writes now. */
+const versioned = (json: string) => '{"v":1,' + json.slice(1);
+
+describe('encodeHeartDesign and decodeHeartDesign', () => {
+	const heart = (json: string) => normalizeHeartDesign(parsed(json))!;
+
+	it('write what the site wrote before, with the version added in front', () => {
+		expect(DESIGN_VERSION).toBe(1);
+		expect(JSON.stringify(encodeHeartDesign(heart(DESIGN_JSON)))).toBe(versioned(DESIGN_JSON));
+		expect(JSON.stringify(encodeHeartDesign(heart(TILE_JSON)))).toBe(versioned(TILE_JSON));
+	});
+
+	it('write what the readers from before versioning read as they did', () => {
+		for (const json of [DESIGN_JSON, TILE_JSON])
+			expect(normalizeHeartDesign(JSON.parse(JSON.stringify(encodeHeartDesign(heart(json)))))).toEqual(heart(json));
+	});
+
+	it('read every form written so far as normalizeHeartDesign does', () => {
+		for (const raw of [parsed(DESIGN_JSON), parsed(versioned(DESIGN_JSON)), parsed(TILE_JSON), { ...parsed(DESIGN_JSON), gridSize: 3 }, {}, []])
+			expect(decodeHeartDesign(raw)).toEqual(normalizeHeartDesign(raw));
+		for (const junk of [null, undefined, 42, 'heart', true]) expect(decodeHeartDesign(junk)).toBeNull();
+	});
+
+	it('leave a heart from a later site unread, as they do what is no heart', () => {
+		for (const v of [2, 1.5, 0, -1, '1', null, true])
+			expect(decodeHeartDesign({ ...parsed(DESIGN_JSON), v }), String(v)).toBeNull();
+	});
+});
+
+describe('readableVersion', () => {
+	it('takes no version and every version up to the current one', () => {
+		expect([undefined, 1, 2, 3].map((v) => readableVersion(v, 3))).toEqual([true, true, true, true]);
+		expect([4, 0, 2.5, NaN, Infinity, '2', null, {}].map((v) => readableVersion(v, 3))).toEqual(Array(8).fill(false));
 	});
 });

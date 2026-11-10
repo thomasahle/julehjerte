@@ -1,24 +1,35 @@
 import { browser } from '$app/environment';
 import type { HeartDesign } from '$lib/types/heart';
-import { normalizeHeartDesign, serializeHeartDesign, parseHeartFromSVG } from '$lib/utils/heartDesign';
+import { parseHeartFromSVG } from '$lib/utils/heartDesign';
+import { decodeHeartDesign, encodeHeartDesign } from '$lib/utils/storedDesign';
 import { readStorage, writeStorage } from '$lib/utils/safeStorage';
 import { trackHeartLoadError, trackSvgParseError } from '$lib/analytics';
 import { ALL_HEART_IDS } from '$lib/data/categories';
 
-/** Where the visitor's own hearts are kept; the front page's inline strand script reads it too. */
+/**
+ * Where the visitor's own hearts are kept: an array of their JSON, each with
+ * its version (`encodeHeartDesign`). It stays a bare array, which is what the
+ * front page's inline strand script counts and what every earlier reader reads.
+ */
 export const USER_COLLECTION_KEY = 'julehjerte-collection';
 const STORAGE_KEY = USER_COLLECTION_KEY;
+
+/**
+ * The hearts in any stored collection: what is not an array has none, and an
+ * entry that is no heart this site can read (one a later site wrote, say) is
+ * left out. It stays in storage all the same (see `saveUserDesign`).
+ */
+export function decodeCollection(raw: unknown): HeartDesign[] {
+  if (!Array.isArray(raw)) return [];
+  return raw.map((entry) => decodeHeartDesign(entry)).filter((d): d is HeartDesign => d !== null);
+}
 
 export function getUserCollection(): HeartDesign[] {
   if (!browser) return [];
 
   const stored = readStorage(STORAGE_KEY);
   try {
-    const raw = stored ? (JSON.parse(stored) as unknown[]) : [];
-    if (!Array.isArray(raw)) return [];
-    return raw
-      .map(normalizeHeartDesign)
-      .filter((d): d is HeartDesign => d !== null);
+    return decodeCollection(stored ? JSON.parse(stored) : []);
   } catch {
     return [];
   }
@@ -42,7 +53,7 @@ function readUserCollectionRaw(): unknown[] {
 export function saveUserDesign(design: HeartDesign): void {
   if (!browser) return;
 
-  const serialized = serializeHeartDesign(design);
+  const serialized = encodeHeartDesign(design);
   const raw = readUserCollectionRaw();
   const existingIndex = raw.findIndex(
     (d) => d && typeof d === 'object' && 'id' in d && (d as { id?: unknown }).id === serialized.id
