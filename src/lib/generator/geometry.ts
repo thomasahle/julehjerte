@@ -446,7 +446,10 @@ export function contourChain(
 			if (!apart) throw new ConstructionError('topology', 'Coincident island ports');
 			exit = apart;
 		}
-		if (atExtremes) portsAtExtremes.push(entry.point, exit.point);
+		if (atExtremes) {
+			keepPort(entry.point);
+			keepPort(exit.point);
+		}
 		add(edges, way?.path ?? [previous, entry.point], 'AB', 'shared');
 		(nested ? nestedBlock : block)(edges, node, entry, exit, first);
 		previous = exit.point;
@@ -963,10 +966,18 @@ export function withExactArcs<T>(build: () => T): T {
  * tip at a port where an island was entered so is made again (see
  * `generate`), so the ports are kept, from the start of each heart. */
 let nearestIslands = false;
-const portsAtExtremes: Point[] = [];
-export const islandsAtExtremesSeen = () => portsAtExtremes.length;
-export const islandPortsSince = (from: number) => portsAtExtremes.slice(from);
-export const forgetIslandPorts = () => { portsAtExtremes.length = 0; };
+// Each port once, with how many had been kept when it last was: a blender's
+// small motifs entered the same ports again and again, past the most an
+// array holds.
+const portsAtExtremes = new Map<string, { point: Point; at: number }>();
+let portsKept = 0;
+const keepPort = (point: Point) => portsAtExtremes.set(`${point}`, { point, at: portsKept++ });
+export const islandsAtExtremesSeen = () => portsKept;
+export const islandPortsSince = (from: number) => [...portsAtExtremes.values()].filter(({ at }) => at >= from).map(({ point }) => point);
+export const forgetIslandPorts = () => {
+	portsAtExtremes.clear();
+	portsKept = 0;
+};
 export function withNearestIslands<T>(build: () => T): T {
 	const before = nearestIslands;
 	nearestIslands = true;

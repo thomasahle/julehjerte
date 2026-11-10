@@ -19,7 +19,12 @@ import {
 	type Point,
 	framedGate,
 	frameRing,
-	spreadPorts
+	spreadPorts,
+	contourChain,
+	forest,
+	forgetIslandPorts,
+	islandPortsSince,
+	islandsAtExtremesSeen
 } from './geometry';
 import {
 	normalizeHeartDesign,
@@ -389,4 +394,24 @@ it('preserves the font baseline across accents and lowercase letters', () => {
 		for (let i = 0; i < source.length; i++)
 			expect(actual[i]).toBeCloseTo(source[i][1] * scale + offset, 5);
 	}
+});
+
+describe('island ports entered at their extremes', () => {
+	it('keeps each port once, as last entered', () => {
+		// The small motifs enter the same ports again and again: kept as often,
+		// a blender's ran past the most an array holds.
+		forgetIslandPorts();
+		const island = forest([[[40, 40], [44, 40], [44, 44], [40, 44]]])[0];
+		const chain = () => contourChain([], [island], 0, [30, 42], [60, 42]);
+		chain();
+		const seen = islandsAtExtremesSeen();
+		expect(seen).toBe(2);
+		chain();
+		expect(islandsAtExtremesSeen()).toBe(2 * seen);
+		expect(islandPortsSince(0)).toHaveLength(seen);
+		expect(islandPortsSince(seen)).toHaveLength(seen);
+		expect(islandPortsSince(2 * seen)).toEqual([]);
+		forgetIslandPorts();
+		expect(islandsAtExtremesSeen()).toBe(0);
+	});
 });
