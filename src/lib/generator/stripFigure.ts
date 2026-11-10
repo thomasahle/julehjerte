@@ -8,6 +8,7 @@
  * paper to the other. Where no such choice exists, a hidden cut shared by both
  * sheets crosses one of the motif's pieces of board: the visible cut beside
  * each of its ends changes sheet there. */
+import { ambientSwitch } from './ambient';
 import {
 	ConstructionError,
 	add,
@@ -707,8 +708,8 @@ export function arrangement(rings: Ring[], strips: number, reach: 'motif' | 'nea
 			for (let k = 1; k < line.length; k++) if (crosses(p, q, line[k - 1], line[k])) return false;
 		}
 		if (!within(room)) return true;
-		if (!within(room / 10)) crowdedOnly ||= !crowdedHiddenCuts;
-		return crowdedHiddenCuts && !within(room / 10);
+		if (!within(room / 10)) crowdedOnly ||= !crowdedHiddenCuts.on;
+		return crowdedHiddenCuts.on && !within(room / 10);
 	};
 	// Whether a hidden cut was left out only for coming too close, which
 	// crowded hidden cuts allow (see `withCrowdedHiddenCuts`).
@@ -906,19 +907,12 @@ export function arrangement(rings: Ring[], strips: number, reach: 'motif' | 'nea
  * request has been refused without it, so that every heart built without it
  * keeps its cuts, and the letters or motif are hard to cut rather than
  * refused. */
-let crowdedHiddenCuts = false, setAside = 0;
+const crowdedHiddenCuts = ambientSwitch();
+let setAside = 0;
 /** How many searches without it failed where it could have helped: a request
  * that failed none would fail the same way again. */
 export const crowdedHiddenCutsSetAside = () => setAside;
-export function withCrowdedHiddenCuts<T>(build: () => T): T {
-	const before = crowdedHiddenCuts;
-	crowdedHiddenCuts = true;
-	try {
-		return build();
-	} finally {
-		crowdedHiddenCuts = before;
-	}
-}
+export const withCrowdedHiddenCuts = crowdedHiddenCuts.during;
 
 /** What the last `solve` did: strips learned, crowded pairs and hidden cuts
  * left, searches run, and how it ended. */
@@ -949,9 +943,9 @@ export function solve(graph: StripGraph, budget: number): Value[] | undefined {
 			clauses.push([2 * c + 1, 2 * h, 2 * k], [2 * c + 1, 2 * h + 1, 2 * k + 1], [2 * c, 2 * h + 1, 2 * k], [2 * c, 2 * h, 2 * k + 1]);
 		}
 	}
-	const soft = crowdedHiddenCuts ? graph.exclusive.filter((_, k) => graph.crowdedOnly[k]) : [];
+	const soft = crowdedHiddenCuts.on ? graph.exclusive.filter((_, k) => graph.crowdedOnly[k]) : [];
 	for (const [k, [a, b]] of graph.exclusive.entries())
-		if (!crowdedHiddenCuts || !graph.crowdedOnly[k]) clauses.push([2 * a + 1, 2 * b + 1]);
+		if (!crowdedHiddenCuts.on || !graph.crowdedOnly[k]) clauses.push([2 * a + 1, 2 * b + 1]);
 	for (const loop of graph.loops)
 		for (const sheet of loop.not) {
 			if (loop.pieces.some(q => pieces[q].fixed && pieces[q].fixed !== sheet)) continue;
@@ -1025,7 +1019,7 @@ export function solve(graph: StripGraph, budget: number): Value[] | undefined {
 	const first = attempt([], budget);
 	if (!first || first === 'budget') {
 		stripStats.end = first ?? 'exhausted';
-		if (!crowdedHiddenCuts && (graph.crowdedOnly.includes(true) || graph.crowdedLeftOut)) setAside++;
+		if (!crowdedHiddenCuts.on && (graph.crowdedOnly.includes(true) || graph.crowdedLeftOut)) setAside++;
 		return undefined;
 	}
 	let best = first;

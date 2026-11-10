@@ -1,3 +1,4 @@
+import { ambientSwitch } from './ambient';
 import { createLocalRouter } from './localRoutes';
 import { completionLegs } from './boardCompletion';
 import { BOARD_PATTERNS, WHOLE_PATTERNS, type BoardPattern } from './boardPatterns';
@@ -278,16 +279,8 @@ function block(
 const nestedBlocks = new WeakMap<Contour, Map<string, Edge[] | null>>();
 /** Whether the cuts between a nested contour's counters, where no straight
  * chain joins them, go round inside it (see `insideWays`). */
-let counterWays = false;
-export function withCounterWays<T>(build: () => T): T {
-	const before = counterWays;
-	counterWays = true;
-	try {
-		return build();
-	} finally {
-		counterWays = before;
-	}
-}
+const counterWays = ambientSwitch();
+export const withCounterWays = counterWays.during;
 /** The ways inside a contour, round its counters and past its own corners
  * that point into it, a little inside each (see `reachVia`): from one node of
  * the graph icon through its arm and hub to the next. */
@@ -323,7 +316,7 @@ function nestedBlock(...args: Parameters<typeof block>) {
 	const [edges, node, entry, exit, first] = args;
 	// A contour's attachments recur across its parent's candidate routes:
 	// each pair is worked out once.
-	const known = nestedBlocks.get(node) ?? new Map<string, Edge[] | null>(), key = `${entry.point};${exit.point};${first}${counterWays ? ';ways' : ''}`;
+	const known = nestedBlocks.get(node) ?? new Map<string, Edge[] | null>(), key = `${entry.point};${exit.point};${first}${counterWays.on ? ';ways' : ''}`;
 	nestedBlocks.set(node, known);
 	if (!known.has(key)) {
 		try {
@@ -355,7 +348,7 @@ function openNestedBlock(...args: Parameters<typeof block>) {
 	const clearSharedCuts = createSharedCutValidator(rings);
 	let best: Edge[] | undefined, cost = Infinity;
 	const clear = new Map<string, boolean>();
-	const ways = counterWays ? insideWays(node, (a, b) => {
+	const ways = counterWays.on ? insideWays(node, (a, b) => {
 		const key = `${a};${b}`;
 		let seen = clear.get(key);
 		if (seen === undefined) clear.set(key, seen = clearSharedCuts([{ from: a, to: b, family: 'AB', kind: 'shared' }]));
@@ -411,8 +404,8 @@ export function contourChain(
 	reach?: (from: Point, ring: Ring) => { path: Ring; port: Port } | undefined,
 	inOrder = false
 ) {
-	const atExtremes = !visible && !nearest && !nearestIslands;
-	if (!visible && nearestIslands) nearest = true;
+	const atExtremes = !visible && !nearest && !nearestIslands.on;
+	if (!visible && nearestIslands.on) nearest = true;
 	const along = new Map(nodes.map(n => [n, dot(centre(n.ring), direction(angle))]));
 	const ordered = inOrder ? nodes.slice() : nodes.slice().sort((a, b) => along.get(a)! - along.get(b)!);
 	if (visible && boundaryGates) {
@@ -440,7 +433,7 @@ export function contourChain(
 		// nearest the way on, a margin from there: a subway train's small
 		// square windows, entered and left at one corner.
 		if (nearest && near(entry.point, exit.point)) {
-			const apart = remaking ? node.ring.map((point, index): Port => ({ point, index }))
+			const apart = remaking.on ? node.ring.map((point, index): Port => ({ point, index }))
 				.filter(port => distance(port.point, entry.point) >= 1.5)
 				.sort((a, b) => distance(a.point, next) - distance(b.point, next))[0] : undefined;
 			if (!apart) throw new ConstructionError('topology', 'Coincident island ports');
@@ -947,17 +940,10 @@ function attachmentOrder(fan: number, count: number) {
  * point, so the outline arc from there doubled back on itself. Hearts built
  * so keep their cuts; one that came out refused, hard to cut or with a needle
  * after such a slip is made again with exact indices (see `generate`). */
-let exactArcs = false, arcSlips = 0;
+const exactArcs = ambientSwitch();
+let arcSlips = 0;
 export const arcSlipsSeen = () => arcSlips;
-export function withExactArcs<T>(build: () => T): T {
-	const before = exactArcs;
-	exactArcs = true;
-	try {
-		return build();
-	} finally {
-		exactArcs = before;
-	}
-}
+export const withExactArcs = exactArcs.during;
 /** Whether hidden islands are entered and left where they come nearest the
  * way in and the way on, rather than at their extremes along the chain (see
  * `contourChain`). Parallel stripes entered at their extremes are joined by
@@ -965,7 +951,7 @@ export function withExactArcs<T>(build: () => T): T {
  * Hearts built so keep their cuts; a clean one that came out with a sharp
  * tip at a port where an island was entered so is made again (see
  * `generate`), so the ports are kept, from the start of each heart. */
-let nearestIslands = false;
+const nearestIslands = ambientSwitch();
 // Each port once, with how many had been kept when it last was: a blender's
 // small motifs entered the same ports again and again, past the most an
 // array holds.
@@ -978,32 +964,17 @@ export const forgetIslandPorts = () => {
 	portsAtExtremes.clear();
 	portsKept = 0;
 };
-export function withNearestIslands<T>(build: () => T): T {
-	const before = nearestIslands;
-	nearestIslands = true;
-	try {
-		return build();
-	} finally {
-		nearestIslands = before;
-	}
-}
+export const withNearestIslands = nearestIslands.during;
 /** Whether a construction whose islands only route along visible spokes is
  * kept for the final check (see `contourMotif`). Earlier, it can stand where
  * a later construction would be clean, so only a request refused without it
  * tries again with it: every heart built without it keeps its cuts. */
-let visibleIslands = false, setAside = 0;
+const visibleIslands = ambientSwitch();
+let setAside = 0;
 /** How many such constructions were set aside so far: a request that set
  * none aside would fail the same way again. */
 export const visibleIslandsSetAside = () => setAside;
-export function withVisibleIslands<T>(build: () => T): T {
-	const before = visibleIslands;
-	visibleIslands = true;
-	try {
-		return build();
-	} finally {
-		visibleIslands = before;
-	}
-}
+export const withVisibleIslands = visibleIslands.during;
 /** The points' convex hull, its sides moved out by `padding`: the outer
  * connections of a fitted grid clear every island, including the ones in
  * other cells, along their common envelope (see `generateComponentLanes`). */
@@ -1163,7 +1134,7 @@ function contourMotif(
 	});
 	// With `withChannels`, the ways also go up the channels between the
 	// pieces (see `channelPoints`).
-	const channel = channels ? channelPoints(contours, margin) : [];
+	const channel = channels.on ? channelPoints(contours, margin) : [];
 	const passes = options.legs ? [...nodes.flatMap(envelope), ...channel.filter(p => contours.filter(r => inside(p, r)).length % 2 === 0)].filter(p => !beyond(p)) : [];
 	// Shared (see `sharedReach`), the ways ask `clearSharedCuts` itself: they
 	// keep each answer they need, and the keys `open` keeps them under would
@@ -1173,7 +1144,7 @@ function contourMotif(
 	// way round, past the corners of the counters' hulls inside it (the
 	// swan's wing in the bay of its body, in the medallion).
 	const bays = options.bays ? reachVia([...base.children.flatMap(envelope), ...channel.filter(p => !base.children.some(child => inside(p, child.ring)))].filter(p => inside(p, base.ring)), open)
-		: counterWays && base.children.length > 1 ? insideWays(base, open) : undefined;
+		: counterWays.on && base.children.length > 1 ? insideWays(base, open) : undefined;
 	// A clipped quadrilateral may have no usable vertices away from its seams.
 	// Offer points along its unchanged edges when the ordinary fan is blocked.
 	// Replace those blocked choices only; retain the same attachment budget.
@@ -1453,7 +1424,7 @@ function contourMotif(
 		// sun's rays) can still be entered along visible spokes. Where only
 		// those route, their first construction is the one left to the final
 		// check, hard to cut rather than refused (see `withVisibleIslands`).
-		if (visibleIslands) fallback ??= visible.fallback ?? null;
+		if (visibleIslands.on) fallback ??= visible.fallback ?? null;
 		else if (!fallback && visible.fallback) setAside++;
 	}
 	fallback ??= options.lastly ?? null;
@@ -1729,28 +1700,12 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
 
 /** Whether a heart refused every way is being made again (see
  * `generateMade`): some last ways are taken only then. */
-let remaking = false;
-export function withRemaking<T>(build: () => T): T {
-	const before = remaking;
-	remaking = true;
-	try {
-		return build();
-	} finally {
-		remaking = before;
-	}
-}
+const remaking = ambientSwitch();
+export const withRemaking = remaking.during;
 /** Whether a motif's islands are also reached up the channels between its
  * pieces (see `channelPoints`), where no way round them finishes. */
-let channels = false;
-export function withChannels<T>(build: () => T): T {
-	const before = channels;
-	channels = true;
-	try {
-		return build();
-	} finally {
-		channels = before;
-	}
-}
+const channels = ambientSwitch();
+export const withChannels = channels.during;
 /** Points a few units apart along every ring, on both sides of it: midway
  * across where the way there is narrow, else half a margin off: a way past
  * them goes up a channel between the pieces rather than round their hulls
@@ -2062,7 +2017,7 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 		return found;
 	};
 	const at = (a: Port, b: Port, fraction: number): Port => {
-		if (exactArcs) return exactAt(a, b, fraction);
+		if (exactArcs.on) return exactAt(a, b, fraction);
 		const { points, lengths, total } = arcBetween(a, b);
 		let remaining = total * fraction;
 		for (let i = 0; i < lengths.length; i++) {
@@ -2083,7 +2038,7 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 		throw new ConstructionError('topology', 'Empty contour arc');
 	};
 	const closest = (a: Port, b: Port, point: Point): Port => {
-		if (exactArcs) return exactClosest(a, b, point);
+		if (exactArcs.on) return exactClosest(a, b, point);
 		const { points } = arcBetween(a, b);
 		let best = a,
 			distanceSquared = Infinity;

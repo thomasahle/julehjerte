@@ -3,6 +3,7 @@
  * space settings, before anything is built: shared by the generator and the
  * pictures drawn before the cuts (see `picture`).
  */
+import { ambientSwitch } from './ambient';
 import type { GeneratorRequest } from './generate';
 import type { FigureStyle } from './geometry';
 import { normalizeContours } from './contours';
@@ -31,16 +32,8 @@ const LARGEST_CIRCLE = 80;
  * room for: only for a heart refused, hard to cut or kept smaller with the
  * crown as it is (see `generate`), so every heart cut cleanly keeps its
  * frame. */
-let narrowCrown = false;
-export function withNarrowCrown<T>(build: () => T): T {
-	const before = narrowCrown;
-	narrowCrown = true;
-	try {
-		return build();
-	} finally {
-		narrowCrown = before;
-	}
-}
+const narrowCrown = ambientSwitch();
+export const withNarrowCrown = narrowCrown.during;
 /** Whether the sunburst's crown would narrow for the request (see
  * `withNarrowCrown`). */
 export const crowdsCrown = (request: GeneratorRequest) => request.style === 'sunburst' && withNarrowCrown(() => (fitCircle(request).crown ?? .8) > .8);
@@ -67,6 +60,6 @@ export function fitCircle(request: GeneratorRequest): GeneratorRequest {
 	// The sunburst's crown may narrow, its circle up to nine tenths of the
 	// frame, where the frame has reached the largest the outer strips have
 	// room for (see `withNarrowCrown`).
-	const crown = request.style === 'sunburst' && narrowCrown ? Math.min(.9, Math.max(.8, need / frameSize)) : undefined;
+	const crown = request.style === 'sunburst' && narrowCrown.on ? Math.min(.9, Math.max(.8, need / frameSize)) : undefined;
 	return { ...request, frameSize, scale: size / (frameSize * (crown ?? inner)), ...crown !== undefined && crown > .8 ? { crown } : {} };
 }

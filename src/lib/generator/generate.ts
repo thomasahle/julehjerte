@@ -1,3 +1,4 @@
+import { ambientSwitch } from './ambient';
 import { createExactCurveFitter } from '$lib/inverse/curveFitCache';
 import { simplifyCubicChain } from '$lib/inverse/simplifyCurves';
 import { generateLayeredFigure } from './layers';
@@ -1739,49 +1740,27 @@ function generateTextFigure(request: GeneratorRequest): GeneratorResult {
  * several pieces they could not build at their size without: only a request
  * refused without them tries again with them, so every heart built without
  * them keeps its cuts. */
-let everyWay = false, everyWayPassed = 0;
+const everyWay = ambientSwitch();
+let everyWayPassed = 0;
 const everyWaySetAside = () => everyWayPassed;
-function withEveryWay<T>(build: () => T): T {
-	const before = everyWay;
-	everyWay = true;
-	try {
-		return build();
-	} finally {
-		everyWay = before;
-	}
-}
+const withEveryWay = everyWay.during;
 /** Whether lanes holding no part of the motif move past the parts reaching
  * across them, and a sunburst's lanes keep inside its border (see
  * `generateComponentLanes`), and how many lane constructions failed for
  * crossing those: only a request refused without them tries again with them,
  * so every heart built without them keeps its cuts. */
-let passingLanes = false, passingLanesFailed = 0;
+const passingLanes = ambientSwitch();
+let passingLanesFailed = 0;
 /** Whether a motif of several pieces, refused every other way, hard to cut
  * too, is made again with its islands reached up the channels between them
  * (see `withChannels`), and only so (see `generateMade`): every heart built
  * without it keeps its cuts and its time. As a last resort before the
  * hard-to-cut ones it gave a suitcase in Kiler a sharp tip more, and a
  * rectangle among ten dots, hard in Strålekrans, twice its twenty minutes. */
-let channelWays = false;
-function withChannelWays<T>(build: () => T): T {
-	const before = channelWays;
-	channelWays = true;
-	try {
-		return build();
-	} finally {
-		channelWays = before;
-	}
-}
+const channelWays = ambientSwitch();
+const withChannelWays = channelWays.during;
 const passingLanesSetAside = () => passingLanesFailed;
-function withPassingLanes<T>(build: () => T): T {
-	const before = passingLanes;
-	passingLanes = true;
-	try {
-		return build();
-	} finally {
-		passingLanes = before;
-	}
-}
+const withPassingLanes = passingLanes.during;
 /** Constructions set aside where a clean one might follow, each with how
  * many it set aside so far: islands entered along visible spokes where
  * nothing else routes (see `withVisibleIslands`), in the checks hidden cuts
@@ -2925,14 +2904,14 @@ function retryComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<
 	// A completed construction that fails its checks stays a hard-to-cut candidate.
 	const recipe = open ? 'silhouette' : 'nested';
 	// Passing lanes an open frame cannot cut are left out (see `generateComponentLanes`).
-	for (const [aligned, drop] of open ? passingLanes ? [[true, false], [true, true]] : [[true, false]] : [[false, false], [true, false]]) {
+	for (const [aligned, drop] of open ? passingLanes.on ? [[true, false], [true, true]] : [[true, false]] : [[false, false], [true, false]]) {
 		let passes = false;
 		try {
 			const inner = generateComponentLanes(rings, frame, sunburst ? size * (request.crown ?? .8) : size,
-				request.scale, style, aligned, sunburst ? 2 : 0, passingLanes, drop);
+				request.scale, style, aligned, sunburst ? 2 : 0, passingLanes.on, drop);
 			passes = inner.passes;
 			// Passing lanes that pass nothing were made already, but in a sunburst.
-			if (passingLanes && !passes && !sunburst) continue;
+			if (passingLanes.on && !passes && !sunburst) continue;
 			const construction = sunburst ? sunburstBorder(inner, size, request.crown) : inner;
 			rejected.push({ construction, recipe });
 			const result = improveSharedConnections(finishConstruction(request, construction, recipe, undefined, curveFitter));
@@ -2946,7 +2925,7 @@ function retryComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<
 			refusal(error);
 			// A lane run through the motif crosses its outline, or one round a
 			// sunburst's corner its border (see `withPassingLanes`).
-			if ((passes || sunburst) && !passingLanes && error.message === CUTS_CROSS) passingLanesFailed++;
+			if ((passes || sunburst) && !passingLanes.on && error.message === CUTS_CROSS) passingLanesFailed++;
 		}
 	}
 	return best;
@@ -3421,10 +3400,10 @@ function textRecipes(request: GeneratorRequest, { finish, variants, allRecipes }
 	// between them, as in the open frames (see `withChannelWays`: the
 	// lasso's loop).
 	const pieced = [...new Set(text.replace(/\s/g, ''))].some(char => forest(font.glyphs[char]?.contours ?? []).length > 1);
-	if (everyWay && pieced) for (const around of [false, true])
+	if (everyWay.on && pieced) for (const around of [false, true])
 		recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 			spread: true, practical: true, compound: true, nested: true, bases: true, around }));
-	if (channelWays && pieced)
+	if (channelWays.on && pieced)
 		recipes.push(() => withChannels(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 			spread: true, practical: true, compound: true, nested: true, bases: true, around: true, legs: true })));
 	let last: unknown;
@@ -3454,7 +3433,7 @@ function textRecipes(request: GeneratorRequest, { finish, variants, allRecipes }
 		}
 	})(), request.letterScale === undefined ? 4 : 3, true);
 	if (best) return best;
-	if (!everyWay && pieced) everyWayPassed++;
+	if (!everyWay.on && pieced) everyWayPassed++;
 	throw last;
 }
 /** A figure in the circle with a double border. */
@@ -3510,7 +3489,7 @@ function layerRecipes(request: GeneratorRequest, { finish, curveFitter }: Recipe
 		// nodes, by its arms and hub; and last up the channels between them
 		// (see `withChannelWays`: the lasso's rope).
 		const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.length);
-		if (pieced && (everyWay || channelWays)) for (const way of channelWays ? [withChannels] : [undefined, withCounterWays]) try {
+		if (pieced && (everyWay.on || channelWays.on)) for (const way of channelWays.on ? [withChannels] : [undefined, withCounterWays]) try {
 			const route = () => generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, undefined, (...args) => {
 				args[7] = { ...args[7], practical: true, compound: true, nested: true, bays: true };
 				return fourPortMotif(...args);
@@ -3519,7 +3498,7 @@ function layerRecipes(request: GeneratorRequest, { finish, curveFitter }: Recipe
 		} catch (everyError) {
 			refusal(everyError);
 		}
-		if (pieced && !everyWay) everyWayPassed++;
+		if (pieced && !everyWay.on) everyWayPassed++;
 		throw error;
 	}
 }
@@ -3582,8 +3561,8 @@ function boardRecipes(request: GeneratorRequest, { finish, onRejected, curveFitt
 	// islands are reached round the pieces and up the channels between
 	// them, as in the open frames (see `withChannelWays`): a steam engine's
 	// rod and wheel in the bay of its disc, open only up a slit.
-	const pieces = forest(contours), rest = (layouts: object[]) => everyWay ? [layouts.map(layout => ({ ...compound, nested: true, bases: true, ...layout }))]
-		: channelWays ? [layouts.map(layout => ({ ...compound, nested: true, bases: true, around: true, legs: true, ...layout }))] : [];
+	const pieces = forest(contours), rest = (layouts: object[]) => everyWay.on ? [layouts.map(layout => ({ ...compound, nested: true, bases: true, ...layout }))]
+		: channelWays.on ? [layouts.map(layout => ({ ...compound, nested: true, bases: true, around: true, legs: true, ...layout }))] : [];
 	const layouts = (range: readonly [number, number], { centre }: Placement, whole = false, atSize = false) => {
 		if (whole || panels(range) === 1) return [[{}, compound], ...rest([{}, ...pieces.length > 1 ? [{ around: true }] : []])];
 		const junctions = background.map((p): Point => [p[0] - centre[0], p[1] - centre[1]]);
@@ -3774,7 +3753,7 @@ function boardRecipes(request: GeneratorRequest, { finish, onRejected, curveFitt
 	}
 	// A motif of several pieces, or with islands in its holes, may still
 	// be reached another way (see `withEveryWay`).
-	if (!everyWay && (pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length)))) everyWayPassed++;
+	if (!everyWay.on && (pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length)))) everyWayPassed++;
 	// Over the corner squares, a motif that cannot be built at all at its
 	// size keeps the largest circle short of them, at 85% on five strips, and
 	// so on past each junction further out; with more space than usual, one
@@ -3845,19 +3824,19 @@ function cornerRecipes(request: GeneratorRequest, { finish }: RecipeContext): Ge
 	// body, its eye across its head.
 	const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.length);
 	let ways = false, walled = false, counter = false, channeled = false;
-	if (!best && pieced && everyWay) [best, stepped, ways] = [layouts({ everyWay: true }), false, true];
+	if (!best && pieced && everyWay.on) [best, stepped, ways] = [layouts({ everyWay: true }), false, true];
 	// Where that finishes none either, a lane's spokes that the motif's
 	// other parts wall off from its largest go round them too (the
 	// stethoscope, the motorcycle).
-	if (!best && pieced && everyWay) [best, walled] = [layouts({ everyWay: true, walled: true }), true];
+	if (!best && pieced && everyWay.on) [best, walled] = [layouts({ everyWay: true, walled: true }), true];
 	// Where none finish yet, the cuts between the motif's counters go
 	// round inside it too (see `withCounterWays`): the graph's nodes.
-	if (!best && pieced && everyWay) [best, counter] = [withCounterWays(() => layouts({ everyWay: true, walled: true })), true];
+	if (!best && pieced && everyWay.on) [best, counter] = [withCounterWays(() => layouts({ everyWay: true, walled: true })), true];
 	// And last up the channels between its pieces (see `withChannelWays`),
 	// a counter's counters reached round either attachment (the teardrop
 	// in the threads logo's @).
-	if (!best && pieced && channelWays) [best, channeled] = [withChannels(() => layouts({ everyWay: true, walled: true, nested: true })), true];
-	if (!best && pieced && !everyWay) everyWayPassed++;
+	if (!best && pieced && channelWays.on) [best, channeled] = [withChannels(() => layouts({ everyWay: true, walled: true, nested: true })), true];
+	if (!best && pieced && !everyWay.on) everyWayPassed++;
 	// Where its paper tears printed, the layouts with the same border again
 	// with the motif's connections, and the side lanes' legs, a paper's
 	// width off, kept where they hold better; where that still tears, with
@@ -3964,11 +3943,11 @@ function openRecipes(request: GeneratorRequest, open: OpenFrame, { finish }: Rec
 		// figuren's gates; the second of a stack's three chevrons. Last, each
 		// gate takes the islands on round to the next, one way round or the
 		// other (see `sweep`): a signal's ring of dashes, four under gates.
-		const tiers: { walled?: boolean; padding?: number; channeled?: boolean; based?: number; sweep?: 1 | -1 }[] = channelWays
+		const tiers: { walled?: boolean; padding?: number; channeled?: boolean; based?: number; sweep?: 1 | -1 }[] = channelWays.on
 			? [{ walled: true, channeled: true }, { walled: true, padding: 1, channeled: true },
 				{ walled: true, based: 0 }, { walled: true, based: 1 }, { walled: true, based: 2 }, { sweep: 1 }, { sweep: -1 }]
 			: [{}, { walled: true }, { walled: true, padding: 1 }];
-		if (pieced && (everyWay || channelWays)) for (const { walled = false, padding = 0, channeled = false, based = -1, sweep } of tiers) try {
+		if (pieced && (everyWay.on || channelWays.on)) for (const { walled = false, padding = 0, channeled = false, based = -1, sweep } of tiers) try {
 			const construct = () => generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, { route: (...args) => {
 				const root = based < 0 ? undefined : otherBases(args[1], args[2])[based];
 				if (based >= 0 && !root) throw new ConstructionError('topology', 'No other piece for a base');
@@ -3979,7 +3958,7 @@ function openRecipes(request: GeneratorRequest, open: OpenFrame, { finish }: Rec
 		} catch (everyError) {
 			refusal(everyError);
 		}
-		if (pieced && !everyWay) everyWayPassed++;
+		if (pieced && !everyWay.on) everyWayPassed++;
 		throw error;
 	}
 }
@@ -4126,10 +4105,10 @@ function cellRecipes(request: GeneratorRequest, { finish }: RecipeContext): Gene
 	const pieces = forest(rings), pieced = pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length));
 	// Made again when refused, the base is also each other piece in turn, as
 	// in the open frames (see `otherBases`).
-	const tiers: { around?: boolean; legs?: boolean; channeled?: boolean; based?: number }[] = channelWays
+	const tiers: { around?: boolean; legs?: boolean; channeled?: boolean; based?: number }[] = channelWays.on
 		? [{ around: true, legs: true, channeled: true }, { around: true, legs: true, based: 0 }, { around: true, legs: true, based: 1 }, { around: true, legs: true, based: 2 }]
 		: [{}, { around: true }, { around: true, legs: true }];
-	if (pieced && (everyWay || channelWays)) for (const { around = false, legs = false, channeled = false, based = -1 } of tiers) for (const construct of balancedRecipes) {
+	if (pieced && (everyWay.on || channelWays.on)) for (const { around = false, legs = false, channeled = false, based = -1 } of tiers) for (const construct of balancedRecipes) {
 		try {
 			const route = () => construct((...args) => {
 				const root = based < 0 ? undefined : otherBases(args[1], args[2])[based];
@@ -4144,7 +4123,7 @@ function cellRecipes(request: GeneratorRequest, { finish }: RecipeContext): Gene
 			errors.push(error);
 		}
 	}
-	if (pieced && !everyWay) everyWayPassed++;
+	if (pieced && !everyWay.on) everyWayPassed++;
 	const last = errors.at(-1)!;
 	throw new ConstructionError(
 		last instanceof ConstructionError ? last.code : 'clearance',
