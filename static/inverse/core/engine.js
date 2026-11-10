@@ -155,10 +155,6 @@ export async function solveTarget(target, raw = {}, onProgress = () => {}, {onCa
     coreGate: cfg.requireMaterialCore ? s => materialAudit(s, cfg) : null
   });
 }
-/** A mask's boundary over its opening's by a pixel from which it is rough
- * (maskRoughness): traced opened by a pixel, by two from ROUGH_TWO.
- * (history: docs/inverse/SEARCH-CONSTANTS.md#rough) */
-const ROUGH_ONE = 1.1, ROUGH_TWO = 1.3;
 export async function design(target, raw = {}, onProgress = () => {}, options = {}) {
   const cfg = settings(raw), symmetry = exactSymmetry(cfg.symmetry);
   // A picture in Mal (`exactOutline`, a mask without curves): the exact search
@@ -293,6 +289,10 @@ export function maskSpecks(source) {
   const limit = Math.round((n * n) / 1333);
   return withoutSpecks(source.mask, n, limit, true) ? limit : 0;
 }
+/** The boundary of a mask over its opening's by a pixel from which the mask is
+ * rough (maskRoughness): traced opened by a pixel, by two from ROUGH_TWO.
+ * (history: docs/inverse/SEARCH-CONSTANTS.md#rough) */
+const ROUGH_ONE = 1.1, ROUGH_TWO = 1.3;
 /** Pixels of boundary of a mask over those of its opening by a pixel (1 for a
  * smooth one): 0 when the mask is smooth enough, else the pixels to open by. */
 export function maskRoughness(source) {
