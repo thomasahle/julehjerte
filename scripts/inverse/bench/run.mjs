@@ -80,7 +80,7 @@ const modesIn = (...runs) => ['ladder', 'today', 'fitter'].filter(m => runs.ever
 function summary(dir) {
   const runs = load(dir), info = fs.existsSync(`${dir}/run.json`) ? JSON.parse(fs.readFileSync(`${dir}/run.json`, 'utf8')) : null, modes = modesIn(runs), out = [];
   // Which hearts have a template the export takes (check-templates.mjs `exports`): the generator's own.
-  const tf = o.templates ?? `${DATA}/bench/genvalid.jsonl`, solvable = fs.existsSync(tf) ? new Map(listed(tf).map(l => JSON.parse(l)).map(t => [t.id, t.exports === true])) : null;
+  const tf = o.templates ?? `${HERE}/sets/generator-templates.jsonl`, solvable = fs.existsSync(tf) ? new Map(listed(tf).map(l => JSON.parse(l)).map(t => [t.id, t.exports === true])) : null;
   const known = solvable && [...runs.keys()].some(id => solvable.has(id));
   // Twins (one mask under two names) count once, as the first name.
   const pictures = new Map();

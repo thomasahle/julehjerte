@@ -31,7 +31,7 @@ node scripts/inverse/bench/run.mjs --summary tmp/mal-bench/idea --list          
 | `--chunk N` | `10` | masks per process (HiGHS's wasm memory only grows) |
 | `--timeout S` | `900` | wall seconds a process may go without a result before it is killed |
 | `--min-free-gb` | `15` | stop (resumably) when the disk has less free |
-| `--templates FILE` | `DATA/bench/genvalid.jsonl` | the generator templates' verdicts (`check-templates.mjs`): the "solvable" column |
+| `--templates FILE` | `sets/generator-templates.jsonl` | the generator templates' verdicts (`check-templates.mjs`): the "solvable" column |
 
 The modes are the page's workers: **ladder** is the network's ladder alone (`ladderOnly`, the maps from the
 model), as `--ladders` workers each on its share of the outlines (`engine.js` `ladderPart`). The first part
@@ -77,7 +77,7 @@ The lists name masks relative to the data root (`--data`, default `tmp/e2e` in t
   `git worktree add ../jh-20e1ea97 20e1ea97`, link its `node_modules`, then
   `E2E_ROOT=../jh-20e1ea97 node scripts/inverse/bench/generator-set.mjs tmp/e2e/bench/designs`
   (not tried: the masks of 11-05 were kept). Their verdicts: `node scripts/inverse/bench/check-templates.mjs
-  tmp/e2e/bench/designs/*.cut.json > tmp/e2e/bench/genvalid.jsonl` (2026-11-05: 85 of the 161 pictures export).
+  tmp/e2e/bench/designs/*.cut.json > scripts/inverse/bench/sets/generator-templates.jsonl` (2026-11-05: 85 of the 161 pictures export).
 - **Twins:** 9 of the 170 are the same picture under two names (the board frame's default is 5 strips, the
   motifs' and strips' 4, for star, heart and tree). The summary counts pictures by mask hash (161) and names
   twins whose verdicts differ.
