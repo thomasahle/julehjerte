@@ -25,7 +25,10 @@ export function transposeTarget(target, maximumChange = .01) {
   }
   const sampled = sampleTarget({ ...target, curves }, n);
   const changes = sampled.reduce((s, c, i) => s + Number(c !== source.mask[i]), 0);
-  return { ...target, curves, metadata: { ...target.metadata, preprocessing: { ...target.metadata.preprocessing, totalChangedPixels: changes, totalChangeFraction: changes / (n * n) }, identicalSheets: { transform: 'transpose', sourceDifferenceFraction: difference / (n * n), method: 'Reflect one half of the traced artwork; exported weave remains checked against the original classified image.' } } };
+  return { ...target, curves, metadata: { ...target.metadata,
+    preprocessing: { ...target.metadata.preprocessing, totalChangedPixels: changes, totalChangeFraction: changes / (n * n) },
+    identicalSheets: { transform: 'transpose', sourceDifferenceFraction: difference / (n * n),
+      method: 'Reflect one half of the traced artwork; exported weave remains checked against the original classified image.' } } };
 }
 
 export const transposedKey = c => c.p.map(([x, y]) => [y, x]);

@@ -263,7 +263,8 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
     // positions take more than a rung's share).
     let result;
     try {
-      result = await exactFromTemplate(outline, template, cfg, {multi, seconds: room, symmetry, exact, witness: empty, onProgress, geometry, refine, spacing: .75, neighbours: 8, rank: {maps, k, short, seed, noise: LADDER_NOISE}, reuse,
+      result = await exactFromTemplate(outline, template, cfg, {multi, seconds: room, symmetry, exact, witness: empty, onProgress,
+        geometry, refine, spacing: .75, neighbours: 8, rank: {maps, k, short, seed, noise: LADDER_NOISE}, reuse,
         buildSeconds: reuse.cand ? null : Math.max(room * .4, Math.min(LADDER_BUILD, (until - performance.now()) / 1000))});
     } catch (error) {
       // A rung that fails ends the ladder, never the search: today's runs after it.
@@ -294,7 +295,8 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
   return {found: null, nearest, rungs, error};
 }
 
-export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false, refine = true, fallback = true, even = false, multi = 'auto', maps = null, ladderOnly = false, phase = null} = {}) {
+export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false,
+  refine = true, fallback = true, even = false, multi = 'auto', maps = null, ladderOnly = false, phase = null} = {}) {
   const seconds = (deadline - performance.now()) / 1000 - reserve;
   const report = {attempted: false, symmetry}, alone = ladderOnly ? {maps, ladderOnly, phase} : {};
   if (seconds < 1) return {found: null, report: {...report, reason: 'no time left'}};
@@ -366,7 +368,8 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
           const rank = result => { try { return assess(result.solution, cfg).rank; } catch { return null; } };
           if (!second.error && !(second.report.penalty > 1e-6)) {
             const [a, b] = [rank(second), rank(found)];
-            if (a && b && (a.find((v, k) => v !== b[k]) !== undefined ? a[a.findIndex((v, k) => v !== b[k])] < b[a.findIndex((v, k) => v !== b[k])] : false)) found = {...second, report: {...second.report, bareThenCoarse: true}};
+            if (a && b && (a.find((v, k) => v !== b[k]) !== undefined ? a[a.findIndex((v, k) => v !== b[k])] < b[a.findIndex((v, k) => v !== b[k])] : false))
+              found = {...second, report: {...second.report, bareThenCoarse: true}};
           }
         }
       } else {
@@ -404,7 +407,9 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   }
   if (found.error && /not symmetric/.test(found.error) && symmetry.length && fallback) {
     const options = {deadline, reserve, onProgress, geometry, refine, fallback: false, ...alone};
-    let again = outline.metadata?.nearTouch > 0 ? await exactSearch({...outline, metadata: {...outline.metadata, nearTouch: 0}}, template, cfg, {...options, symmetry}) : {found: null, report: {error: found.error}};
+    let again = outline.metadata?.nearTouch > 0
+      ? await exactSearch({...outline, metadata: {...outline.metadata, nearTouch: 0}}, template, cfg, {...options, symmetry})
+      : {found: null, report: {error: found.error}};
     if (!again.found && /not symmetric/.test(again.report.error ?? '')) again = {...await exactSearch(outline, template, cfg, {...options, symmetry: []}), untied: true};
     return {...again, report: {...again.report, unjoined: found.error, ...(again.untied ? {untied: true} : {})}};
   }
@@ -432,7 +437,8 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     const left = (deadline - performance.now()) / 1000 - reserve;
     if (left < TURNS_FLOOR) break;
     const share = k < ways.length - 1 ? Math.max(TURNS_FLOOR, left / (ways.length - k)) : left;
-    const again = await exactSearch(outline, template, cfg, {deadline: performance.now() + 1000 * (share + reserve), reserve, onProgress, geometry, refine, fallback: false, symmetry: ties, even, multi, ...alone});
+    const again = await exactSearch(outline, template, cfg, {deadline: performance.now() + 1000 * (share + reserve), reserve, onProgress,
+      geometry, refine, fallback: false, symmetry: ties, even, multi, ...alone});
     const part = {subgroup: {from: symmetry, to: ties, error: found.error}, ...(ties.length ? {} : {untied: true})};
     if (again.found && exportable(again.found.assessment, cfg)) return {...again, report: {...again.report, ...part}};
     if (again.found && (!drawn || closer(again.found.assessment, drawn.found.assessment))) drawn = {...again, report: {...again.report, ...part}};

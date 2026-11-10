@@ -3,147 +3,560 @@
  * polyline distances near the threshold. It reports PASS / FAIL / UNCERTAIN,
  * not an unsupported claim that a discretized mask proves tensile strength.
  */
-import {pathPolyline,distance,mix,Cubic,add,mul} from './bezier.js';
+import {pathPolyline, distance, mix, Cubic, add, mul} from './bezier.js';
 import {prepareChord} from './chord-distance.js';
-import {paperCoreMasks,paperClearanceChoices} from './paper-clearance.js';
+import {paperCoreMasks, paperClearanceChoices} from './paper-clearance.js';
 import {curvesOf} from './graph.js';
-import {segments,lineSimple,lineDistance,keyPoint,pointInRing} from './geometry.js';
-import {closedRings,sampleRings} from './validate.js';
-import {nativeDistanceTransform,nativeCoreLabels,numericalKernel} from './numerical-kernel.js';
-import {paperBackend,sameArray,sameCore} from './paper-backend.js';
-const distanceBackend=paperBackend(sameArray),componentBackend=paperBackend(sameCore);
-export const paperKernelChoices=()=>({distanceTransform:distanceBackend.report(),components:componentBackend.report(),clearance:paperClearanceChoices()});
+import {segments, lineSimple, lineDistance, keyPoint, pointInRing} from './geometry.js';
+import {closedRings, sampleRings} from './validate.js';
+import {nativeDistanceTransform, nativeCoreLabels, numericalKernel} from './numerical-kernel.js';
+import {paperBackend, sameArray, sameCore} from './paper-backend.js';
+const distanceBackend = paperBackend(sameArray), componentBackend = paperBackend(sameCore);
+export const paperKernelChoices = () => ({
+  distanceTransform: distanceBackend.report(),
+  components: componentBackend.report(),
+  clearance: paperClearanceChoices()
+});
 /** Carry an explicitly verified finer paper lattice through final cleanup and
  * export. Every changed geometry is audited again; only the exact search's
  * repeated verdicts on unchanged cuts are reused (auditFamily), never the export's.
  * Physical tolerances and all other requested settings stay unchanged.
  */
-export function verifiedPaperSettings(solution,cfg){
-  const resolution=solution.report?.paperVerification?.resolution;
-  return Number.isInteger(resolution)&&resolution>cfg.materialResolution&&resolution<=1000?{...cfg,materialResolution:resolution}:cfg;
+export function verifiedPaperSettings(solution, cfg) {
+  const resolution = solution.report?.paperVerification?.resolution;
+  return Number.isInteger(resolution) && resolution > cfg.materialResolution && resolution <= 1000
+    ? {...cfg, materialResolution: resolution}
+    : cfg;
 }
 // Only the capsule outline and pixel positions are fixed across fitted cuts.
 // Bound retained grids; never cache cut clearances, components or decisions.
-const paperLattices=new Map();
-function paperLattice(width,nx){
-  const key=width+','+nx;
-  if(paperLattices.has(key)){const value=paperLattices.get(key);paperLattices.delete(key);paperLattices.set(key,value);return value;}
-  const ny=3*nx,h=width/nx,originY=-width/2,x=Float64Array.from({length:nx},(_,i)=>(i+.5)*h),y=Float64Array.from({length:ny},(_,i)=>originY+(i+.5)*h),outline=new Float64Array(nx*ny);
-  for(let j=0;j<ny;j++)for(let i=0;i<nx;i++)outline[j*nx+i]=width/2-Math.hypot(x[i]-width/2,Math.max(0,-y[j],y[j]-2*width));
-  const value={x,y,outline};paperLattices.set(key,value);
-  if(paperLattices.size>2)paperLattices.delete(paperLattices.keys().next().value);
+const paperLattices = new Map();
+function paperLattice(width, nx) {
+  const key = width + ',' + nx;
+  if (paperLattices.has(key)) {
+    const value = paperLattices.get(key);
+    paperLattices.delete(key);
+    paperLattices.set(key, value);
+    return value;
+  }
+  const ny = 3 * nx,
+    h = width / nx,
+    originY = -width / 2,
+    x = Float64Array.from({length: nx}, (_, i) => (i + 0.5) * h),
+    y = Float64Array.from({length: ny}, (_, i) => originY + (i + 0.5) * h),
+    outline = new Float64Array(nx * ny);
+  for (let j = 0; j < ny; j++)
+    for (let i = 0; i < nx; i++)
+      outline[j * nx + i] = width / 2 - Math.hypot(x[i] - width / 2, Math.max(0, -y[j], y[j] - 2 * width));
+  const value = {x, y, outline};
+  paperLattices.set(key, value);
+  if (paperLattices.size > 2) paperLattices.delete(paperLattices.keys().next().value);
   return value;
 }
-export function distanceTransform(seeds,nx,ny,{native='auto'}={}){
-  if(native==='auto'){
-    if(nx*ny>=16384&&nx>0&&ny>0&&seeds instanceof Uint8Array&&seeds.length===nx*ny&&Number.isInteger(nx)&&Number.isInteger(ny)&&numericalKernel()?.distance_transform)
-      return distanceBackend.run(nx*ny,()=>distanceTransform(seeds,nx,ny,{native:false}),()=>nativeDistanceTransform(seeds,nx,ny));
-    native=false;
+export function distanceTransform(seeds, nx, ny, {native = 'auto'} = {}) {
+  if (native === 'auto') {
+    if (
+      nx * ny >= 16384 &&
+      nx > 0 &&
+      ny > 0 &&
+      seeds instanceof Uint8Array &&
+      seeds.length === nx * ny &&
+      Number.isInteger(nx) &&
+      Number.isInteger(ny) &&
+      numericalKernel()?.distance_transform
+    )
+      return distanceBackend.run(
+        nx * ny,
+        () => distanceTransform(seeds, nx, ny, {native: false}),
+        () => nativeDistanceTransform(seeds, nx, ny)
+      );
+    native = false;
   }
-  const accelerated=native&&nativeDistanceTransform(seeds,nx,ny);if(accelerated)return accelerated;
-  const count=nx*ny,big=1e12,first=new Float64Array(count),out=new Float64Array(count),size=Math.max(nx,ny),f=new Float64Array(size),d=new Float64Array(size),v=new Int32Array(size),z=new Float64Array(size+1);
-  function edt(n){let k=0;v[0]=0;z[0]=-Infinity;z[1]=Infinity;for(let q=1;q<n;q++){let s=((f[q]+q*q)-(f[v[k]]+v[k]*v[k]))/(2*(q-v[k]));while(s<=z[k]&&k>0){k--;s=((f[q]+q*q)-(f[v[k]]+v[k]*v[k]))/(2*(q-v[k]));}k++;v[k]=q;z[k]=s;z[k+1]=Infinity;}k=0;for(let q=0;q<n;q++){while(z[k+1]<q)k++;d[q]=(q-v[k])**2+f[v[k]];}}
-  for(let x=0;x<nx;x++){for(let y=0;y<ny;y++)f[y]=seeds[y*nx+x]?0:big;edt(ny);for(let y=0;y<ny;y++)first[y*nx+x]=d[y];}
-  for(let y=0;y<ny;y++){for(let x=0;x<nx;x++)f[x]=first[y*nx+x];edt(nx);for(let x=0;x<nx;x++)out[y*nx+x]=d[x];}return out;
+  const accelerated = native && nativeDistanceTransform(seeds, nx, ny);
+  if (accelerated) return accelerated;
+  const count = nx * ny,
+    big = 1e12,
+    first = new Float64Array(count),
+    out = new Float64Array(count),
+    size = Math.max(nx, ny),
+    f = new Float64Array(size),
+    d = new Float64Array(size),
+    v = new Int32Array(size),
+    z = new Float64Array(size + 1);
+  function edt(n) {
+    let k = 0;
+    v[0] = 0;
+    z[0] = -Infinity;
+    z[1] = Infinity;
+    for (let q = 1; q < n; q++) {
+      let s = (f[q] + q * q - (f[v[k]] + v[k] * v[k])) / (2 * (q - v[k]));
+      while (s <= z[k] && k > 0) {
+        k--;
+        s = (f[q] + q * q - (f[v[k]] + v[k] * v[k])) / (2 * (q - v[k]));
+      }
+      k++;
+      v[k] = q;
+      z[k] = s;
+      z[k + 1] = Infinity;
+    }
+    k = 0;
+    for (let q = 0; q < n; q++) {
+      while (z[k + 1] < q) k++;
+      d[q] = (q - v[k]) ** 2 + f[v[k]];
+    }
+  }
+  for (let x = 0; x < nx; x++) {
+    for (let y = 0; y < ny; y++) f[y] = seeds[y * nx + x] ? 0 : big;
+    edt(ny);
+    for (let y = 0; y < ny; y++) first[y * nx + x] = d[y];
+  }
+  for (let y = 0; y < ny; y++) {
+    for (let x = 0; x < nx; x++) f[x] = first[y * nx + x];
+    edt(nx);
+    for (let x = 0; x < nx; x++) out[y * nx + x] = d[x];
+  }
+  return out;
 }
-export function unfoldedPolylines(solution,k,tol=.01){const w=solution.graph.target.width;return solution.paths[k].map((_,i)=>{let p=pathPolyline(curvesOf(solution,k,i),tol);if(k===1)p=p.map(([x,y])=>[y,x]);return[...p,...p.slice(0,-1).reverse().map(([x,y])=>[x,2*w-y])];});}
-function labelCore(mask,nx,ny,originY,h,w,offset,minArea,native='auto',diagonal=false){
-  if(native==='auto'){
-    if(nx*ny>=16384&&numericalKernel()?.[diagonal?'label_core_diagonal':'label_core'])return componentBackend.run(nx*ny,
-      ()=>labelCore(mask,nx,ny,originY,h,w,offset,minArea,false,diagonal),()=>labelCore(mask,nx,ny,originY,h,w,offset,minArea,true,diagonal));
-    native=false;
+export function unfoldedPolylines(solution, k, tol = 0.01) {
+  const w = solution.graph.target.width;
+  return solution.paths[k].map((_, i) => {
+    let p = pathPolyline(curvesOf(solution, k, i), tol);
+    if (k === 1) p = p.map(([x, y]) => [y, x]);
+    return [
+      ...p,
+      ...p
+        .slice(0, -1)
+        .reverse()
+        .map(([x, y]) => [x, 2 * w - y])
+    ];
+  });
+}
+function labelCore(mask, nx, ny, originY, h, w, offset, minArea, native = 'auto', diagonal = false) {
+  if (native === 'auto') {
+    if (nx * ny >= 16384 && numericalKernel()?.[diagonal ? 'label_core_diagonal' : 'label_core'])
+      return componentBackend.run(
+        nx * ny,
+        () => labelCore(mask, nx, ny, originY, h, w, offset, minArea, false, diagonal),
+        () => labelCore(mask, nx, ny, originY, h, w, offset, minArea, true, diagonal)
+      );
+    native = false;
   }
-  const accelerated=native&&nativeCoreLabels(mask,nx,ny,originY,h,w,offset,diagonal);
-  if(accelerated){
-    const {labels,sizes,anchored}=accelerated,parts=Array.from(sizes,(size,i)=>({id:i+1,anchored:!!anchored[i],area:size*h*h,significant:size*h*h>=minArea}));
-    return{labels,parts,anchors:new Set(parts.filter(p=>p.anchored).map(p=>p.id)),floating:parts.filter(p=>!p.anchored&&p.significant)};
+  const accelerated = native && nativeCoreLabels(mask, nx, ny, originY, h, w, offset, diagonal);
+  if (accelerated) {
+    const {labels, sizes, anchored} = accelerated,
+      parts = Array.from(sizes, (size, i) => ({
+        id: i + 1,
+        anchored: !!anchored[i],
+        area: size * h * h,
+        significant: size * h * h >= minArea
+      }));
+    return {
+      labels,
+      parts,
+      anchors: new Set(parts.filter(p => p.anchored).map(p => p.id)),
+      floating: parts.filter(p => !p.anchored && p.significant)
+    };
   }
-  const labels=new Int32Array(mask.length),queue=new Int32Array(mask.length),parts=[];let id=0;
-  for(let i=0;i<mask.length;i++){
-    if(!mask[i]||labels[i])continue;
-    id++;let tail=1;queue[0]=i;labels[i]=id;let anchored=false;
-    for(let head=0;head<tail;head++){
-      const p=queue[head],x=p%nx,y=Math.floor(p/nx),yy=originY+(y+.5)*h;
-      if(yy<-offset*1.1||yy>2*w+offset*1.1)anchored=true;
-      let q=p-1;if(x>0&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
-      q=p+1;if(x<nx-1&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
-      q=p-nx;if(y>0&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
-      q=p+nx;if(y<ny-1&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
-      if(diagonal){
-        q=p-nx-1;if(x>0&&y>0&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
-        q=p-nx+1;if(x<nx-1&&y>0&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
-        q=p+nx-1;if(x>0&&y<ny-1&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
-        q=p+nx+1;if(x<nx-1&&y<ny-1&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
+  const labels = new Int32Array(mask.length), queue = new Int32Array(mask.length), parts = [];
+  let id = 0;
+  for (let i = 0; i < mask.length; i++) {
+    if (!mask[i] || labels[i]) continue;
+    id++;
+    let tail = 1;
+    queue[0] = i;
+    labels[i] = id;
+    let anchored = false;
+    for (let head = 0; head < tail; head++) {
+      const p = queue[head], x = p % nx, y = Math.floor(p / nx), yy = originY + (y + 0.5) * h;
+      if (yy < -offset * 1.1 || yy > 2 * w + offset * 1.1) anchored = true;
+      let q = p - 1;
+      if (x > 0 && mask[q] && !labels[q]) {
+        labels[q] = id;
+        queue[tail++] = q;
+      }
+      q = p + 1;
+      if (x < nx - 1 && mask[q] && !labels[q]) {
+        labels[q] = id;
+        queue[tail++] = q;
+      }
+      q = p - nx;
+      if (y > 0 && mask[q] && !labels[q]) {
+        labels[q] = id;
+        queue[tail++] = q;
+      }
+      q = p + nx;
+      if (y < ny - 1 && mask[q] && !labels[q]) {
+        labels[q] = id;
+        queue[tail++] = q;
+      }
+      if (diagonal) {
+        q = p - nx - 1;
+        if (x > 0 && y > 0 && mask[q] && !labels[q]) {
+          labels[q] = id;
+          queue[tail++] = q;
+        }
+        q = p - nx + 1;
+        if (x < nx - 1 && y > 0 && mask[q] && !labels[q]) {
+          labels[q] = id;
+          queue[tail++] = q;
+        }
+        q = p + nx - 1;
+        if (x > 0 && y < ny - 1 && mask[q] && !labels[q]) {
+          labels[q] = id;
+          queue[tail++] = q;
+        }
+        q = p + nx + 1;
+        if (x < nx - 1 && y < ny - 1 && mask[q] && !labels[q]) {
+          labels[q] = id;
+          queue[tail++] = q;
+        }
       }
     }
-    parts.push({id,anchored,area:tail*h*h,significant:tail*h*h>=minArea});
+    parts.push({id, anchored, area: tail * h * h, significant: tail * h * h >= minArea});
   }
-  const anchors=new Set(parts.filter(p=>p.anchored).map(p=>p.id)),floating=parts.filter(p=>!p.anchored&&p.significant);
-  return{labels,parts,anchors,floating};
+  const anchors = new Set(parts.filter(p => p.anchored).map(p => p.id)),
+    floating = parts.filter(p => !p.anchored && p.significant);
+  return {labels, parts, anchors, floating};
 }
-function paperInput(solution,k,tol){
-  const w=solution.graph.target.width;
-  return{lines:unfoldedPolylines(solution,k,tol),foldCuts:[0,w,...solution.paths[k].map((_,i)=>curvesOf(solution,k,i).at(-1).p[3][k===0?0:1])].sort((a,b)=>a-b)};
+function paperInput(solution, k, tol) {
+  const w = solution.graph.target.width;
+  return {
+    lines: unfoldedPolylines(solution, k, tol),
+    foldCuts: [0, w, ...solution.paths[k].map((_, i) => curvesOf(solution, k, i).at(-1).p[3][k === 0 ? 0 : 1])].sort(
+      (a, b) => a - b
+    )
+  };
 }
-function samePaperInput(a,b){
+function samePaperInput(a, b) {
   // Compare the actual audit inputs in local sheet coordinates. A matching
   // label or nearly equal Bézier controls do not establish equal paper cores.
-  return a.foldCuts.length===b.foldCuts.length&&a.foldCuts.every((x,i)=>Object.is(x,b.foldCuts[i]))&&
-    a.lines.length===b.lines.length&&a.lines.every((line,i)=>line.length===b.lines[i].length&&line.every((p,j)=>Object.is(p[0],b.lines[i][j][0])&&Object.is(p[1],b.lines[i][j][1])));
+  return (
+    a.foldCuts.length === b.foldCuts.length &&
+    a.foldCuts.every((x, i) => Object.is(x, b.foldCuts[i])) &&
+    a.lines.length === b.lines.length &&
+    a.lines.every(
+      (line, i) =>
+        line.length === b.lines[i].length &&
+        line.every((p, j) => Object.is(p[0], b.lines[i][j][0]) && Object.is(p[1], b.lines[i][j][1]))
+    )
+  );
 }
-function copyFamily(family,k){
+function copyFamily(family, k) {
   // Both results own their mutable arrays, including maps requested by export.
-  return{...family,family:k,resolution:family.resolution.slice(),foldIntervals:family.foldIntervals.map(f=>({...f,interval:f.interval.slice()})),map:family.map?.slice()??null};
+  return {
+    ...family,
+    family: k,
+    resolution: family.resolution.slice(),
+    foldIntervals: family.foldIntervals.map(f => ({...f, interval: f.interval.slice()})),
+    map: family.map?.slice() ?? null
+  };
 }
 // The exact search asks for one template's verdict again and again (its model's audit of an incumbent,
 // its final check, the ladder's ranking, each at the lattice the last one settled on). With `reuse` the
 // last few family audits answer for exactly their inputs, every chord and fold endpoint compared, made
 // with their maps so a request with maps is answered too. The export's audit never passes `reuse`.
-const reusedFamilies=[];
-function auditFamily(input,k,w,cfg,includeMap,native,reuse){
-  if(!reuse)return materialFamily(input,k,w,cfg,includeMap,native);
-  const key=[w,cfg.materialResolution,cfg.geometryTolerance,cfg.nominalWidth,cfg.minFeatureArea,native],i=reusedFamilies.findIndex(e=>key.every((v,j)=>Object.is(v,e.key[j]))&&samePaperInput(input,e.input));
-  const entry=i>=0?reusedFamilies.splice(i,1)[0]:{key,input:{foldCuts:input.foldCuts.slice(),lines:input.lines.map(line=>line.map(p=>p.slice()))},result:materialFamily(input,k,w,cfg,true,native)};
-  reusedFamilies.push(entry);if(reusedFamilies.length>6)reusedFamilies.shift();
-  return copyFamily(includeMap?entry.result:{...entry.result,map:null},k);
+const reusedFamilies = [];
+function auditFamily(input, k, w, cfg, includeMap, native, reuse) {
+  if (!reuse) return materialFamily(input, k, w, cfg, includeMap, native);
+  const key = [w, cfg.materialResolution, cfg.geometryTolerance, cfg.nominalWidth, cfg.minFeatureArea, native],
+    i = reusedFamilies.findIndex(e => key.every((v, j) => Object.is(v, e.key[j])) && samePaperInput(input, e.input));
+  const entry =
+    i >= 0
+      ? reusedFamilies.splice(i, 1)[0]
+      : {
+          key,
+          input: {foldCuts: input.foldCuts.slice(), lines: input.lines.map(line => line.map(p => p.slice()))},
+          result: materialFamily(input, k, w, cfg, true, native)
+        };
+  reusedFamilies.push(entry);
+  if (reusedFamilies.length > 6) reusedFamilies.shift();
+  return copyFamily(includeMap ? entry.result : {...entry.result, map: null}, k);
 }
-function materialFamily({lines,foldCuts},k,w,cfg,includeMap,native){
-  const nx=cfg.materialResolution,ny=3*nx,h=w/nx,originY=-w/2,tol=cfg.geometryTolerance,R=cfg.nominalWidth/2,guard=Math.SQRT2*h/2+tol,ss=lines.flatMap(segments),seeds=new Uint8Array(nx*ny),cell=Math.max(R+5*h,4*h);
+function materialFamily({lines, foldCuts}, k, w, cfg, includeMap, native) {
+  const nx = cfg.materialResolution,
+    ny = 3 * nx,
+    h = w / nx,
+    originY = -w / 2,
+    tol = cfg.geometryTolerance,
+    R = cfg.nominalWidth / 2,
+    guard = (Math.SQRT2 * h) / 2 + tol,
+    ss = lines.flatMap(segments),
+    seeds = new Uint8Array(nx * ny),
+    cell = Math.max(R + 5 * h, 4 * h);
   // Index each chord in every tile that can contain a centre within R+guard.
   // Only the two core thresholds matter here, not distances above both. The
   // extra tolerance makes the index conservative at rounded tile boundaries;
   // it does not change the distance calculation or either acceptance threshold.
   // Restrict the index to the padded capsule, retaining each chord unchanged.
-  const columns=Math.ceil(w/cell)+3,rows=Math.ceil(3*w/cell)+3,firstRow=Math.floor(originY/cell)-1;
-  const tiles=new Array(columns*rows),reach=R+guard+tol;
-  for(let si=0;si<ss.length;si++){const s=ss[si],steps=Math.max(1,Math.ceil(distance(s.a,s.b)/(h/3)));for(let t=0;t<=steps;t++){const p=mix(s.a,s.b,t/steps),ix=Math.round(p[0]/h-.5),iy=Math.round((p[1]-originY)/h-.5);if(ix>=0&&ix<nx&&iy>=0&&iy<ny)seeds[iy*nx+ix]=1;}const[ax,ay,bx,by]=s.box;for(let ty=Math.max(firstRow,Math.floor((ay-reach)/cell));ty<=Math.min(firstRow+rows-1,Math.floor((by+reach)/cell));ty++)for(let tx=Math.max(-1,Math.floor((ax-reach)/cell));tx<=Math.min(columns-2,Math.floor((bx+reach)/cell));tx++){const key=(ty-firstRow)*columns+tx+1;if(!tiles[key])tiles[key]=[];tiles[key].push(si);}}
-  const chords=ss.map(s=>prepareChord(s.a,s.b));
+  const columns = Math.ceil(w / cell) + 3,
+    rows = Math.ceil((3 * w) / cell) + 3,
+    firstRow = Math.floor(originY / cell) - 1;
+  const tiles = new Array(columns * rows), reach = R + guard + tol;
+  for (let si = 0; si < ss.length; si++) {
+    const s = ss[si], steps = Math.max(1, Math.ceil(distance(s.a, s.b) / (h / 3)));
+    for (let t = 0; t <= steps; t++) {
+      const p = mix(s.a, s.b, t / steps), ix = Math.round(p[0] / h - 0.5), iy = Math.round((p[1] - originY) / h - 0.5);
+      if (ix >= 0 && ix < nx && iy >= 0 && iy < ny) seeds[iy * nx + ix] = 1;
+    }
+    const [ax, ay, bx, by] = s.box;
+    for (
+      let ty = Math.max(firstRow, Math.floor((ay - reach) / cell));
+      ty <= Math.min(firstRow + rows - 1, Math.floor((by + reach) / cell));
+      ty++
+    )
+      for (
+        let tx = Math.max(-1, Math.floor((ax - reach) / cell));
+        tx <= Math.min(columns - 2, Math.floor((bx + reach) / cell));
+        tx++
+      ) {
+        const key = (ty - firstRow) * columns + tx + 1;
+        if (!tiles[key]) tiles[key] = [];
+        tiles[key].push(si);
+      }
+  }
+  const chords = ss.map(s => prepareChord(s.a, s.b));
   // Each queried tile already contains all potentially relevant chords, once
   // each and in input order. No neighbouring lists or duplicate removal needed.
-  const lattice=paperLattice(w,nx),tileX=lattice.x.map(x=>Math.floor(x/cell)+1),tileY=lattice.y.map(y=>(Math.floor(y/cell)-firstRow)*columns);
-  const edt=distanceTransform(seeds,nx,ny,{native});
-  const {certain,possible,paper}=paperCoreMasks({lattice,edt,tiles,tileX,tileY,chords,h,R,guard,tol,includeMap},{native});
+  const lattice = paperLattice(w, nx),
+    tileX = lattice.x.map(x => Math.floor(x / cell) + 1),
+    tileY = lattice.y.map(y => (Math.floor(y / cell) - firstRow) * columns);
+  const edt = distanceTransform(seeds, nx, ny, {native});
+  const {certain, possible, paper} = paperCoreMasks(
+    {lattice, edt, tiles, tileX, tileY, chords, h, R, guard, tol, includeMap},
+    {native}
+  );
   // Every certain centre clears R by more than half the cell diagonal plus
   // the flattening tolerance. Its entire closed cell therefore clears R on
   // the actual curves (distance is 1-Lipschitz). Diagonally adjacent certain
   // cells share a safe corner, so their disk-centre paths really connect.
   // Possible cells lack that certificate and retain their existing adjacency.
-  const c=labelCore(certain,nx,ny,originY,h,w,R,cfg.minFeatureArea,native,true),p=labelCore(possible,nx,ny,originY,h,w,R,cfg.minFeatureArea,native),foldY=Math.min(ny-1,Math.round((w-originY)/h-.5)),fold=[];
-  for(let j=1;j<foldCuts.length;j++){let certainLength=0,possibleLength=0;for(let x=0;x<nx;x++){const xx=(x+.5)*h;if(xx<=foldCuts[j-1]||xx>=foldCuts[j])continue;const index=foldY*nx+x;if(c.anchors.has(c.labels[index]))certainLength+=h;if(p.anchors.has(p.labels[index]))possibleLength+=h;}fold.push({interval:[foldCuts[j-1],foldCuts[j]],certainCoreLength:certainLength,possibleCoreLength:possibleLength});}
-  const certainBad=c.floating.length+fold.filter(f=>f.certainCoreLength<h/2).length,possibleBad=p.floating.length+fold.filter(f=>f.possibleCoreLength<h/2).length,status=possibleBad?'fail':certainBad?'uncertain':'pass';
-  let map=null;if(includeMap){map=new Uint8Array(nx*ny);for(let i=0;i<map.length;i++){if(!paper[i])continue;if(certain[i])map[i]=c.anchors.has(c.labels[i])?1:3;else if(possible[i])map[i]=2;else map[i]=4;}}
-  return{family:k,status,detachedCertainCoreIslands:c.floating.length,detachedPossibleCoreIslands:p.floating.length,detachedPossibleArea:p.floating.reduce((s,x)=>s+x.area,0),foldIntervals:fold,gridSpacing:h,clearanceGuard:guard,resolution:[nx,ny],originY,map,minimumDiameter:cfg.nominalWidth};
-}
-export function materialAudit(solution,cfg,{includeMaps=false,native='auto',reuse=false}={}){const start=performance.now(),w=solution.graph.target.width,inputs=[0,1].map(k=>paperInput(solution,k,cfg.geometryTolerance)),first=auditFamily(inputs[0],0,w,cfg,includeMaps,native,reuse),families=[first,samePaperInput(inputs[0],inputs[1])?copyFamily(first,1):auditFamily(inputs[1],1,w,cfg,includeMaps,native,reuse)],status=families.some(f=>f.status==='fail')?'fail':families.some(f=>f.status==='uncertain')?'uncertain':'pass';return{passed:status==='pass',status,families,summary:{status,requiredRemainingWidth:cfg.minWidth,nominalDiameter:cfg.nominalWidth,gridSpacing:families[0].gridSpacing,clearanceGuard:families[0].clearanceGuard,families:families.map(({family,status,detachedCertainCoreIslands,detachedPossibleCoreIslands,detachedPossibleArea,foldIntervals})=>({family,status,detachedCertainCoreIslands,detachedPossibleCoreIslands,detachedPossibleArea,foldIntervals})),method:'Guarded disk-centre lattice on the unfolded capsule. Eight-neighbour certified core and four-neighbour possible core; analytic outline and chord-distance refinement near threshold.',seconds:(performance.now()-start)/1000,limitations:['This replaces the Python GEOS offset implementation; numerical results are not identical.','Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.','Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.','Small tips and features below the explicitly stated area threshold are not certified.']}};}
-export function seededRandom(seed=1729){let a=seed>>>0;return()=>{a+=0x6D2B79F5;let t=Math.imul(a^(a>>>15),1|a);t^=t+Math.imul(t^(t>>>7),61|t);return((t^(t>>>14))>>>0)/4294967296;};}
-export function perturbationAudit(solution,cfg,{onProgress=()=>{},resolution=121}={}){
-  const w=solution.graph.target.width,baseRings=closedRings(solution,cfg.geometryTolerance),phase=solution.graph.target.phase^(solution.paths[0].length%2)^(solution.paths[1].length%2),baseline=sampleRings(baseRings.flat(),w,phase,resolution),random=seededRandom(cfg.seed),trials=[];let worst=null;
-  const offset=()=>{const r=cfg.cutError*Math.sqrt(random()),t=random()*Math.PI*2;return[r*Math.cos(t),r*Math.sin(t)];};
-  for(let trial=0;trial<cfg.trials;trial++){const transformed=[],allLines=[],issues=[],dx=(2*random()-1)*cfg.registration,dy=(2*random()-1)*cfg.registration,rot=(2*random()-1)*cfg.rotation*Math.PI/180,scale=1+(2*random()-1)*cfg.relativeScalePercent/100,transform=p=>{const x=(p[0]-w/2)*scale,y=(p[1]-w/2)*scale;return[w/2+dx+x*Math.cos(rot)-y*Math.sin(rot),w/2+dy+x*Math.sin(rot)+y*Math.cos(rot)];};
-    for(const k of[0,1]){const nodeOffsets=new Map(),family=[];for(let pi=0;pi<solution.paths[k].length;pi++){const cs=curvesOf(solution,k,pi).map(c=>new Cubic(c.p.map((p,i)=>{let d;if(i===0||i===3){const key=keyPoint(p,6);if(!nodeOffsets.has(key))nodeOffsets.set(key,offset());d=nodeOffsets.get(key).slice();const axis=k===0?1:0;if(Math.abs(p[axis])<1e-5||Math.abs(p[axis]-w)<1e-5)d[axis]=0;}else d=offset();return add(p,d);}))),line=pathPolyline(cs,cfg.geometryTolerance);if(!lineSimple(line))issues.push({type:'self_intersection',family:k,slit:pi});family.push(line);const ring=[[0,0],...line,k===0?[0,w]:[w,0],[0,0]];transformed.push(k===1?ring.map(transform):ring);}for(let a=0;a<family.length;a++)for(let b=a+1;b<family.length;b++){const d=lineDistance(family[a],family[b]);if(d<1e-8)issues.push({type:'slit_intersection',family:k});else if(d<cfg.minWidth)issues.push({type:'spacing_below_remaining_target',family:k,distance:d});}allLines.push(family);}
-    const invalid=issues.some(x=>x.type.endsWith('intersection')),entry={trial:trial+1,invalidTopology:invalid,issues,translation:[dx,dy],rotationDegrees:rot*180/Math.PI,relativeScale:scale};
-    if(!invalid){const sample=sampleRings(transformed,w,phase,resolution),bSquare=[[0,0],[w,0],[w,w],[0,w]].map(transform);let mismatch=0,uncovered=0,covered=0;const difference=new Uint8Array(baseline.length);for(let y=0;y<resolution;y++)for(let x=0;x<resolution;x++){const i=y*resolution+x,p=[(x+.5)*w/resolution,(y+.5)*w/resolution];if(!pointInRing(p,bSquare)){uncovered++;difference[i]=2;}else{covered++;if(sample[i]!==baseline[i]){mismatch++;difference[i]=1;}}}entry.overlapMismatchFraction=covered?mismatch/covered:null;entry.uncoveredSquareFraction=uncovered/baseline.length;if(!worst||mismatch+uncovered>worst.score)worst={trial:trial+1,score:mismatch+uncovered,map:difference,resolution};}
-    trials.push(entry);onProgress({stage:'tolerances',trial:trial+1,total:cfg.trials});
+  const c = labelCore(certain, nx, ny, originY, h, w, R, cfg.minFeatureArea, native, true),
+    p = labelCore(possible, nx, ny, originY, h, w, R, cfg.minFeatureArea, native),
+    foldY = Math.min(ny - 1, Math.round((w - originY) / h - 0.5)),
+    fold = [];
+  for (let j = 1; j < foldCuts.length; j++) {
+    let certainLength = 0, possibleLength = 0;
+    for (let x = 0; x < nx; x++) {
+      const xx = (x + 0.5) * h;
+      if (xx <= foldCuts[j - 1] || xx >= foldCuts[j]) continue;
+      const index = foldY * nx + x;
+      if (c.anchors.has(c.labels[index])) certainLength += h;
+      if (p.anchors.has(p.labels[index])) possibleLength += h;
+    }
+    fold.push({
+      interval: [foldCuts[j - 1], foldCuts[j]],
+      certainCoreLength: certainLength,
+      possibleCoreLength: possibleLength
+    });
   }
-  const valid=trials.filter(t=>!t.invalidTopology);return{summary:{trials:cfg.trials,seed:cfg.seed,invalidTopologyTrials:trials.length-valid.length,validTopologyTrials:valid.length,maximumSampledOverlapMismatchFraction:valid.length?Math.max(...valid.map(t=>t.overlapMismatchFraction||0)):null,maximumSampledUncoveredFraction:valid.length?Math.max(...valid.map(t=>t.uncoveredSquareFraction)):null,measurementResolution:resolution,cutError:cfg.cutError,registration:cfg.registration,kerfAppliedInWidthAllowanceNotDriftSimulation:true,limitations:['Finite synthetic samples, not probabilities or a worst-case robustness proof.','Independent control-point drift on the two physical sheets. Shared nominal cuts are not artificially kept identical.','Invalid topology is a failed trial, not zero image error.','Misregistration is relative rigid placement of sheet B; it does not reduce within-sheet paper width.']},trials,worst};
+  const certainBad = c.floating.length + fold.filter(f => f.certainCoreLength < h / 2).length,
+    possibleBad = p.floating.length + fold.filter(f => f.possibleCoreLength < h / 2).length,
+    status = possibleBad ? 'fail' : certainBad ? 'uncertain' : 'pass';
+  let map = null;
+  if (includeMap) {
+    map = new Uint8Array(nx * ny);
+    for (let i = 0; i < map.length; i++) {
+      if (!paper[i]) continue;
+      if (certain[i]) map[i] = c.anchors.has(c.labels[i]) ? 1 : 3;
+      else if (possible[i]) map[i] = 2;
+      else map[i] = 4;
+    }
+  }
+  return {
+    family: k,
+    status,
+    detachedCertainCoreIslands: c.floating.length,
+    detachedPossibleCoreIslands: p.floating.length,
+    detachedPossibleArea: p.floating.reduce((s, x) => s + x.area, 0),
+    foldIntervals: fold,
+    gridSpacing: h,
+    clearanceGuard: guard,
+    resolution: [nx, ny],
+    originY,
+    map,
+    minimumDiameter: cfg.nominalWidth
+  };
+}
+export function materialAudit(solution, cfg, {includeMaps = false, native = 'auto', reuse = false} = {}) {
+  const start = performance.now(),
+    w = solution.graph.target.width,
+    inputs = [0, 1].map(k => paperInput(solution, k, cfg.geometryTolerance)),
+    first = auditFamily(inputs[0], 0, w, cfg, includeMaps, native, reuse),
+    families = [
+      first,
+      samePaperInput(inputs[0], inputs[1])
+        ? copyFamily(first, 1)
+        : auditFamily(inputs[1], 1, w, cfg, includeMaps, native, reuse)
+    ],
+    status = families.some(f => f.status === 'fail')
+      ? 'fail'
+      : families.some(f => f.status === 'uncertain')
+        ? 'uncertain'
+        : 'pass';
+  return {
+    passed: status === 'pass',
+    status,
+    families,
+    summary: {
+      status,
+      requiredRemainingWidth: cfg.minWidth,
+      nominalDiameter: cfg.nominalWidth,
+      gridSpacing: families[0].gridSpacing,
+      clearanceGuard: families[0].clearanceGuard,
+      families: families.map(
+        ({
+          family,
+          status,
+          detachedCertainCoreIslands,
+          detachedPossibleCoreIslands,
+          detachedPossibleArea,
+          foldIntervals
+        }) => ({
+          family,
+          status,
+          detachedCertainCoreIslands,
+          detachedPossibleCoreIslands,
+          detachedPossibleArea,
+          foldIntervals
+        })
+      ),
+      method:
+        'Guarded disk-centre lattice on the unfolded capsule. Eight-neighbour certified core and four-neighbour possible core; analytic outline and chord-distance refinement near threshold.',
+      seconds: (performance.now() - start) / 1000,
+      limitations: [
+        'This replaces the Python GEOS offset implementation; numerical results are not identical.',
+        'Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.',
+        'Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.',
+        'Small tips and features below the explicitly stated area threshold are not certified.'
+      ]
+    }
+  };
+}
+export function seededRandom(seed = 1729) {
+  let a = seed >>> 0;
+  return () => {
+    a += 0x6d2b79f5;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t ^= t + Math.imul(t ^ (t >>> 7), 61 | t);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+export function perturbationAudit(solution, cfg, {onProgress = () => {}, resolution = 121} = {}) {
+  const w = solution.graph.target.width,
+    baseRings = closedRings(solution, cfg.geometryTolerance),
+    phase = solution.graph.target.phase ^ (solution.paths[0].length % 2) ^ (solution.paths[1].length % 2),
+    baseline = sampleRings(baseRings.flat(), w, phase, resolution),
+    random = seededRandom(cfg.seed),
+    trials = [];
+  let worst = null;
+  const offset = () => {
+    const r = cfg.cutError * Math.sqrt(random()), t = random() * Math.PI * 2;
+    return [r * Math.cos(t), r * Math.sin(t)];
+  };
+  for (let trial = 0; trial < cfg.trials; trial++) {
+    const transformed = [],
+      allLines = [],
+      issues = [],
+      dx = (2 * random() - 1) * cfg.registration,
+      dy = (2 * random() - 1) * cfg.registration,
+      rot = ((2 * random() - 1) * cfg.rotation * Math.PI) / 180,
+      scale = 1 + ((2 * random() - 1) * cfg.relativeScalePercent) / 100,
+      transform = p => {
+        const x = (p[0] - w / 2) * scale, y = (p[1] - w / 2) * scale;
+        return [w / 2 + dx + x * Math.cos(rot) - y * Math.sin(rot), w / 2 + dy + x * Math.sin(rot) + y * Math.cos(rot)];
+      };
+    for (const k of [0, 1]) {
+      const nodeOffsets = new Map(), family = [];
+      for (let pi = 0; pi < solution.paths[k].length; pi++) {
+        const cs = curvesOf(solution, k, pi).map(
+            c =>
+              new Cubic(
+                c.p.map((p, i) => {
+                  let d;
+                  if (i === 0 || i === 3) {
+                    const key = keyPoint(p, 6);
+                    if (!nodeOffsets.has(key)) nodeOffsets.set(key, offset());
+                    d = nodeOffsets.get(key).slice();
+                    const axis = k === 0 ? 1 : 0;
+                    if (Math.abs(p[axis]) < 1e-5 || Math.abs(p[axis] - w) < 1e-5) d[axis] = 0;
+                  } else d = offset();
+                  return add(p, d);
+                })
+              )
+          ),
+          line = pathPolyline(cs, cfg.geometryTolerance);
+        if (!lineSimple(line)) issues.push({type: 'self_intersection', family: k, slit: pi});
+        family.push(line);
+        const ring = [[0, 0], ...line, k === 0 ? [0, w] : [w, 0], [0, 0]];
+        transformed.push(k === 1 ? ring.map(transform) : ring);
+      }
+      for (let a = 0; a < family.length; a++)
+        for (let b = a + 1; b < family.length; b++) {
+          const d = lineDistance(family[a], family[b]);
+          if (d < 1e-8) issues.push({type: 'slit_intersection', family: k});
+          else if (d < cfg.minWidth) issues.push({type: 'spacing_below_remaining_target', family: k, distance: d});
+        }
+      allLines.push(family);
+    }
+    const invalid = issues.some(x => x.type.endsWith('intersection')),
+      entry = {
+        trial: trial + 1,
+        invalidTopology: invalid,
+        issues,
+        translation: [dx, dy],
+        rotationDegrees: (rot * 180) / Math.PI,
+        relativeScale: scale
+      };
+    if (!invalid) {
+      const sample = sampleRings(transformed, w, phase, resolution),
+        bSquare = [[0, 0], [w, 0], [w, w], [0, w]].map(transform);
+      let mismatch = 0, uncovered = 0, covered = 0;
+      const difference = new Uint8Array(baseline.length);
+      for (let y = 0; y < resolution; y++)
+        for (let x = 0; x < resolution; x++) {
+          const i = y * resolution + x, p = [((x + 0.5) * w) / resolution, ((y + 0.5) * w) / resolution];
+          if (!pointInRing(p, bSquare)) {
+            uncovered++;
+            difference[i] = 2;
+          } else {
+            covered++;
+            if (sample[i] !== baseline[i]) {
+              mismatch++;
+              difference[i] = 1;
+            }
+          }
+        }
+      entry.overlapMismatchFraction = covered ? mismatch / covered : null;
+      entry.uncoveredSquareFraction = uncovered / baseline.length;
+      if (!worst || mismatch + uncovered > worst.score)
+        worst = {trial: trial + 1, score: mismatch + uncovered, map: difference, resolution};
+    }
+    trials.push(entry);
+    onProgress({stage: 'tolerances', trial: trial + 1, total: cfg.trials});
+  }
+  const valid = trials.filter(t => !t.invalidTopology);
+  return {
+    summary: {
+      trials: cfg.trials,
+      seed: cfg.seed,
+      invalidTopologyTrials: trials.length - valid.length,
+      validTopologyTrials: valid.length,
+      maximumSampledOverlapMismatchFraction: valid.length
+        ? Math.max(...valid.map(t => t.overlapMismatchFraction || 0))
+        : null,
+      maximumSampledUncoveredFraction: valid.length ? Math.max(...valid.map(t => t.uncoveredSquareFraction)) : null,
+      measurementResolution: resolution,
+      cutError: cfg.cutError,
+      registration: cfg.registration,
+      kerfAppliedInWidthAllowanceNotDriftSimulation: true,
+      limitations: [
+        'Finite synthetic samples, not probabilities or a worst-case robustness proof.',
+        'Independent control-point drift on the two physical sheets. Shared nominal cuts are not artificially kept identical.',
+        'Invalid topology is a failed trial, not zero image error.',
+        'Misregistration is relative rigid placement of sheet B; it does not reduce within-sheet paper width.'
+      ]
+    },
+    trials,
+    worst
+  };
 }

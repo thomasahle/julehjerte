@@ -310,7 +310,11 @@ function refineFrom({rgba, imageWidth: W, imageHeight: H}, quad, {lobes = 0, rou
   // outline's edge has it outside, which tells a faint edge there (a white
   // lobe on white paper) from a stronger one between cells just inside.
   const rim = [];
-  for (let i = 0; i < 400; i++) { const t = i / 400; for (const [x, y] of [[t * (W - 1), 0], [t * (W - 1), H - 1], [0, t * (H - 1)], [W - 1, t * (H - 1)]]) rim.push(colour(Math.min(x, W - 1.01) + .5, Math.min(y, H - 1.01) + .5)); }
+  for (let i = 0; i < 400; i++) {
+    const t = i / 400;
+    for (const [x, y] of [[t * (W - 1), 0], [t * (W - 1), H - 1], [0, t * (H - 1)], [W - 1, t * (H - 1)]])
+      rim.push(colour(Math.min(x, W - 1.01) + .5, Math.min(y, H - 1.01) + .5));
+  }
   const background = [0, 1, 2].map(c => rim.filter(Boolean).map(x => x[c]).sort((a, b) => a - b)[rim.length >> 1] ?? 0);
   const bgDistance = c => Math.hypot(c[0] - background[0], c[1] - background[1], c[2] - background[2]);
   let params = [...quad.flat(), lobes], last = null;
@@ -389,7 +393,8 @@ function refineFrom({rgba, imageWidth: W, imageHeight: H}, quad, {lobes = 0, rou
     const inliers = r.filter(x => Math.abs(x) <= 1.5), per = [0, 0, 0, 0, 0], total = [0, 0, 0, 0, 0];
     for (const [u, v] of samples) total[u === 1 ? 0 : v === 1 ? 1 : v === 0 ? 2 : u === 0 ? 3 : 4]++;
     found.forEach((f, i) => { if (Math.abs(r[i]) <= 1.5) per[f.edge]++; });
-    last = {rms: Math.sqrt(inliers.reduce((s, x) => s + x * x, 0) / Math.max(1, inliers.length)), inliers: inliers.length / samples.length, edges: per.map((k, e) => total[e] ? k / total[e] : 0), step: Math.max(...delta.slice(0, 8).map(Math.abs))};
+    last = {rms: Math.sqrt(inliers.reduce((s, x) => s + x * x, 0) / Math.max(1, inliers.length)), inliers: inliers.length / samples.length,
+      edges: per.map((k, e) => total[e] ? k / total[e] : 0), step: Math.max(...delta.slice(0, 8).map(Math.abs))};
     if (round >= 4 && last.step < .05) break;
   }
   const out = [[params[0], params[1]], [params[2], params[3]], [params[4], params[5]], [params[6], params[7]]];

@@ -534,7 +534,13 @@ export class ExactModel {
       for (const c of mine) { const trial = bad.filter(d => d !== c); if (!embeddable(cycles, pairs(trial))) bad = trial; }
       // Whether segments embed depends only on the tokens they join, and a
       // token has one segment at most: the row takes every route between them.
-      if (globalThis.DBG_BAD) { const ci = new Map(cycles.flatMap((c, k) => c.map((t, i) => [t, [k, i]]))); console.log('BADSET', cycles.map(c => c.length).join('/'), bad.map(c => { const [, a, b] = this.cand.pair.get(c); return `${ci.get(tokenKey(a)).join('.')}-${ci.get(tokenKey(b)).join('.')}`; }).join('  ')); }
+      if (globalThis.DBG_BAD) {
+        const ci = new Map(cycles.flatMap((c, k) => c.map((t, i) => [t, [k, i]])));
+        console.log('BADSET', cycles.map(c => c.length).join('/'), bad.map(c => {
+          const [, a, b] = this.cand.pair.get(c);
+          return `${ci.get(tokenKey(a)).join('.')}-${ci.get(tokenKey(b)).join('.')}`;
+        }).join('  '));
+      }
       out.push(['embedding', bad.flatMap(c => this.joining(c).map(v => [v, 1])), bad.length - 1]);
     }
     if (out.length) return out;
@@ -597,7 +603,10 @@ export class ExactModel {
       for (let j = 0; j < n; j++) {
         const label = live.findIndex(y => at[j][y].some(v => val[v] > .5));
         for (let yi = 0; yi < live.length; yi++) {
-          if (j) { val[seen[yi][j]] = st[yi].seen ? 1 : 0; val[closed[yi][j]] = st[yi].closed ? 1 : 0; for (let zi = 0; zi < live.length; zi++) if (zi !== yi) val[f[yi][zi][j]] = since[yi][zi] ? 1 : 0; }
+          if (j) {
+            val[seen[yi][j]] = st[yi].seen ? 1 : 0; val[closed[yi][j]] = st[yi].closed ? 1 : 0;
+            for (let zi = 0; zi < live.length; zi++) if (zi !== yi) val[f[yi][zi][j]] = since[yi][zi] ? 1 : 0;
+          }
         }
         if (label < 0) continue;
         for (let yi = 0; yi < live.length; yi++) {
@@ -608,7 +617,10 @@ export class ExactModel {
         for (let zi = 0; zi < live.length; zi++) if (zi !== label) since[label][zi] = true;
         st[label].seen = true;
       }
-      for (let yi = 0; yi < live.length; yi++) { val[seen[yi][n]] = st[yi].seen ? 1 : 0; val[closed[yi][n]] = st[yi].closed ? 1 : 0; for (let zi = 0; zi < live.length; zi++) if (zi !== yi) val[f[yi][zi][n]] = since[yi][zi] ? 1 : 0; }
+      for (let yi = 0; yi < live.length; yi++) {
+        val[seen[yi][n]] = st[yi].seen ? 1 : 0; val[closed[yi][n]] = st[yi].closed ? 1 : 0;
+        for (let zi = 0; zi < live.length; zi++) if (zi !== yi) val[f[yi][zi][n]] = since[yi][zi] ? 1 : 0;
+      }
     }
     for (const {U, wrap, len, segments} of this.annuli) {
       // Along the outer cycle, a used segment wraps once its inner position falls behind.

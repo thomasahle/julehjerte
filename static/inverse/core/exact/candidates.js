@@ -222,7 +222,13 @@ export class Candidates {
     // A sampled ranking (seed > 0): Gumbel noise of scale `noise` on each score, so one network gives several
     // different top-K sets (seeded, so a picture's samples repeat).
     let state = seed * 2654435761 >>> 0;
-    const next = () => { state = (state + 0x6D2B79F5) >>> 0; let t = state; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+    const next = () => {
+      state = (state + 0x6D2B79F5) >>> 0;
+      let t = state;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
     const gumbel = () => -Math.log(-Math.log(Math.min(1 - 1e-9, Math.max(1e-9, next()))));
     const scores = [...rankScores(this, maps)].map(([key, score]) => [key, seed && noise ? score + noise * gumbel() : score]);
     const chosen = new Set(scores.sort((x, y) => y[1] - x[1]).slice(0, k).map(([key]) => key));

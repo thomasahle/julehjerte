@@ -528,7 +528,9 @@ export function checkReadingN(input) {
     }
     if (vertex.sides.length === 1) {
       sideVertices.push(id);
-      if (degree !== 1) return reject('side_endpoint_degree', `Side contact ${id} has degree ${degree}; each Reading-N side contact must end exactly one visible edge.`, {vertex: id, side: vertex.sides[0], degree});
+      if (degree !== 1) return reject('side_endpoint_degree',
+        `Side contact ${id} has degree ${degree}; each Reading-N side contact must end exactly one visible edge.`,
+        {vertex: id, side: vertex.sides[0], degree});
     } else if (vertex.sides.length === 0) {
       if (degree !== 2 && degree !== 4) return reject('interior_vertex_degree', `Interior vertex ${id} has degree ${degree}; Reading N permits only degree 2 or 4.`, {vertex: id, degree});
     }
@@ -544,7 +546,9 @@ export function checkReadingN(input) {
   const summaries = components.map(component => componentSummary(component, graph, degrees));
   const k = sideCounts.T, l = sideCounts.L;
   if (l === 0 && k === 0 && edges.length > 0) {
-    return reject('nonempty_without_transitions', 'A mask with no side transitions must be uniform (the visible boundary cannot be an interior cycle when both families are absent).', {sideCounts, components: summaries});
+    return reject('nonempty_without_transitions',
+      'A mask with no side transitions must be uniform (the visible boundary cannot be an interior cycle when both families are absent).',
+      {sideCounts, components: summaries});
   }
   if (l === 0 && k > 0) {
     for (const summary of summaries) {

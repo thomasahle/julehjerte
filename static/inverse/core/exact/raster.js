@@ -151,5 +151,6 @@ export function rasterOutline(target, cfg, {tolerance = .35, smoothRadius = 0, b
   const traced = trace(tolerance).target;
   // Corners of the picture nearly touching join (exact/target.js).
   const nearTouch = NEAR_TOUCH_MM * SIZE / (cfg.width || 100);
-  return traced.curves.length ? {...traced, sourceImage: specks ? {...source, mask: withoutSpecks(source.mask, n, specks)} : source, metadata: {...target.metadata, ...traced.metadata, nearTouch, open}} : null;
+  return traced.curves.length ? {...traced, sourceImage: specks ? {...source, mask: withoutSpecks(source.mask, n, specks)} : source,
+    metadata: {...target.metadata, ...traced.metadata, nearTouch, open}} : null;
 }

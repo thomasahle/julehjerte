@@ -203,7 +203,8 @@ export function regionFromQuad(input, quad) {
     points.push([0.5 - 0.5 * Math.cos(angle), -0.5 * Math.sin(angle)], [-0.5 * Math.sin(angle), 0.5 + 0.5 * Math.cos(angle)]);
   }
   const mapped = points.map(p => project(H, p));
-  return [Math.max(0, Math.min(...mapped.map(p => p[0]))), Math.max(0, Math.min(...mapped.map(p => p[1]))), Math.min(input.imageWidth, Math.max(...mapped.map(p => p[0]))), Math.min(input.imageHeight, Math.max(...mapped.map(p => p[1])))];
+  return [Math.max(0, Math.min(...mapped.map(p => p[0]))), Math.max(0, Math.min(...mapped.map(p => p[1]))),
+    Math.min(input.imageWidth, Math.max(...mapped.map(p => p[0]))), Math.min(input.imageHeight, Math.max(...mapped.map(p => p[1])))];
 }
 
 export function refineHeartCrop(input, quad) {

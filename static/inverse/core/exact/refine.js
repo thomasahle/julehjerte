@@ -126,7 +126,8 @@ function fitRun(q, tol, t0, t1, reach, depth = 0) {
     const x = solve(M);
     const fallback = Math.hypot(b[0] - a[0], b[1] - a[1]) / 3;
     let k = 0;
-    const p1 = t0 ? (v => [a[0] + v * t0[0], a[1] + v * t0[1]])(x && x[k] > 0 && x[k] < 3 * total ? x[k++] : (k++, fallback)) : x ? [x[k++], x[k++]] : [a[0] + (b[0] - a[0]) / 3, a[1] + (b[1] - a[1]) / 3];
+    const p1 = t0 ? (v => [a[0] + v * t0[0], a[1] + v * t0[1]])(x && x[k] > 0 && x[k] < 3 * total ? x[k++] : (k++, fallback))
+      : x ? [x[k++], x[k++]] : [a[0] + (b[0] - a[0]) / 3, a[1] + (b[1] - a[1]) / 3];
     const p2 = t1 ? (v => [b[0] - v * t1[0], b[1] - v * t1[1]])(x && x[k] > 0 && x[k] < 3 * total ? x[k] : fallback) : x ? [x[k], x[k + 1]] : [b[0] - (b[0] - a[0]) / 3, b[1] - (b[1] - a[1]) / 3];
     c = new Cubic([a, p1, p2, b]);
     const next = ts.map((t, i) => {

@@ -2,133 +2,245 @@
  * The original crop and its mask are never reflected or changed for scoring.
  */
 import {curvesOf} from '../graph.js';
-import {sampleWeave,validate} from '../validate.js';
+import {sampleWeave, validate} from '../validate.js';
 import {materialAudit} from '../material.js';
 import {imageFeatures} from '../image-features.js';
-import {auditFeatureFidelity,auditFeatureFidelityChange} from '../feature-shapes.js';
+import {auditFeatureFidelity, auditFeatureFidelityChange} from '../feature-shapes.js';
 import {CurveGraph} from './curves.js';
 import {refineCurves} from './refine.js';
-import {matchingGrid,matchingPaths,matchingSummary,symmetryEvidence} from './matching.js';
+import {matchingGrid, matchingPaths, matchingSummary, symmetryEvidence} from './matching.js';
 import {gridPaths} from './grid.js';
-import {referenceError,sourceWeights,createMaskDisagreement} from '../image-reference.js';
+import {referenceError, sourceWeights, createMaskDisagreement} from '../image-reference.js';
 
-export function matchingErrorLimit(baseline,cfg){
+export function matchingErrorLimit(baseline, cfg) {
   // Reusing a template has an absolute accuracy allowance. Crossing the
   // image-fidelity warning must not silently shrink that preference budget.
   // Geometry, paper support and substantial image features are checked below.
-  return Math.min(1,baseline+(cfg.matchingErrorAllowance??.01));
+  return Math.min(1, baseline + (cfg.matchingErrorAllowance ?? 0.01));
 }
 
-export function maskDisagreement(source,woven){
-  return referenceError(source,woven).mismatchFraction;
+export function maskDisagreement(source, woven) {
+  return referenceError(source, woven).mismatchFraction;
 }
 
 /** Each sheet can be copied even when counts or subdivisions differ. */
-export function matchingProposals(solution){
-  const paths=solution.paths.map((family,f)=>family.map((_,i)=>curvesOf(solution,f,i).map(c=>c.p)));
-  const transpose=family=>family.map(p=>p.map(c=>c.map(([x,y])=>[y,x])));
-  const proposals=[];
-  if(paths[0].length)proposals.push({name:'copy-first-sheet',paths:[paths[0],transpose(paths[0])]});
-  if(paths[1].length)proposals.push({name:'copy-second-sheet',paths:[transpose(paths[1]),paths[1]]});
-  const blend=matchingPaths(paths,.5);if(blend)proposals.push({name:'average-sheets',paths:blend});
+export function matchingProposals(solution) {
+  const paths = solution.paths.map((family, f) => family.map((_, i) => curvesOf(solution, f, i).map(c => c.p)));
+  const transpose = family => family.map(p => p.map(c => c.map(([x, y]) => [y, x])));
+  const proposals = [];
+  if (paths[0].length) proposals.push({name: 'copy-first-sheet', paths: [paths[0], transpose(paths[0])]});
+  if (paths[1].length) proposals.push({name: 'copy-second-sheet', paths: [transpose(paths[1]), paths[1]]});
+  const blend = matchingPaths(paths, 0.5);
+  if (blend) proposals.push({name: 'average-sheets', paths: blend});
   return proposals;
 }
 
-export function preferMatchingSolution(solution,cfg,{deadline=Infinity,steps=200,onProgress=()=>{},gridSeeds=[]}={}){
-  const start=performance.now(),source=solution.graph.target.sourceImage;
-  const score=source?createMaskDisagreement(source):null;
-  const summary=matchingSummary(solution),baseline=source?score(sampleWeave(solution,source.resolution)):null;
-  const report={enabled:cfg.preferMatchingSheets,...summary,...(source?symmetryEvidence(source):{}),baselineImageError:baseline,
-    baselineCounts:solution.paths.map(f=>f.length),baselinePhase:solution.graph.target.phase,
-    maximumAdditionalImageError:cfg.matchingErrorAllowance??.01,maximumMatchingImageError:baseline===null?null:matchingErrorLimit(baseline,cfg),attempts:[]};
-  const finish=(selected,status)=>{
-    report.status=status;report.seconds=(performance.now()-start)/1000;
-    Object.assign(report,matchingSummary(selected));
-    report.selectedImageError=source?score(sampleWeave(selected,source.resolution)):null;
-    report.additionalImageError=source?report.selectedImageError-baseline:null;
-    selected.report={...solution.report,selectedCounts:selected.paths.map(f=>f.length),matchingPreference:report};
+export function preferMatchingSolution(
+  solution,
+  cfg,
+  {deadline = Infinity, steps = 200, onProgress = () => {}, gridSeeds = []} = {}
+) {
+  const start = performance.now(), source = solution.graph.target.sourceImage;
+  const score = source ? createMaskDisagreement(source) : null;
+  const summary = matchingSummary(solution), baseline = source ? score(sampleWeave(solution, source.resolution)) : null;
+  const report = {
+    enabled: cfg.preferMatchingSheets,
+    ...summary,
+    ...(source ? symmetryEvidence(source) : {}),
+    baselineImageError: baseline,
+    baselineCounts: solution.paths.map(f => f.length),
+    baselinePhase: solution.graph.target.phase,
+    maximumAdditionalImageError: cfg.matchingErrorAllowance ?? 0.01,
+    maximumMatchingImageError: baseline === null ? null : matchingErrorLimit(baseline, cfg),
+    attempts: []
+  };
+  const finish = (selected, status) => {
+    report.status = status;
+    report.seconds = (performance.now() - start) / 1000;
+    Object.assign(report, matchingSummary(selected));
+    report.selectedImageError = source ? score(sampleWeave(selected, source.resolution)) : null;
+    report.additionalImageError = source ? report.selectedImageError - baseline : null;
+    selected.report = {
+      ...solution.report,
+      selectedCounts: selected.paths.map(f => f.length),
+      matchingPreference: report
+    };
     return selected;
   };
-  if(!cfg.preferMatchingSheets)return finish(solution,'disabled');
-  if(!source)return finish(solution,'no_image_reference');
-  if(summary.identical)return finish(solution,'already_identical');
-  const limit=report.maximumMatchingImageError;
-  if(report.minimumIdenticalImageError>limit)return finish(solution,'image_bound_exceeds_allowance');
-  onProgress({stage:'directMatching'});
-  const features=imageFeatures(source,cfg.width),phase=solution.graph.target.phase?-1:1,input=solution.graph.target,before=sampleWeave(solution,source.resolution);
-  const inspect=(candidate,attempt)=>{
-    const woven=sampleWeave(candidate,source.resolution),error=score(woven);
-    Object.assign(attempt,{imageError:error,withinAllowance:error<=limit});
-    if(error>limit)return false;
-    attempt.featuresPassed=auditFeatureFidelity(source,woven,cfg,features).passed;
-    attempt.featureChange=auditFeatureFidelityChange(source,before,woven,cfg,features);
-    attempt.featuresPassed&&=attempt.featureChange.passed;
-    attempt.geometryPassed=validate(candidate,cfg).passed;
-    attempt.paperPassed=!cfg.requireMaterialCore||attempt.geometryPassed&&materialAudit(candidate,cfg).passed;
-    return attempt.featuresPassed&&attempt.geometryPassed&&attempt.paperPassed&&matchingSummary(candidate).identical;
+  if (!cfg.preferMatchingSheets) return finish(solution, 'disabled');
+  if (!source) return finish(solution, 'no_image_reference');
+  if (summary.identical) return finish(solution, 'already_identical');
+  const limit = report.maximumMatchingImageError;
+  if (report.minimumIdenticalImageError > limit) return finish(solution, 'image_bound_exceeds_allowance');
+  onProgress({stage: 'directMatching'});
+  const features = imageFeatures(source, cfg.width),
+    phase = solution.graph.target.phase ? -1 : 1,
+    input = solution.graph.target,
+    before = sampleWeave(solution, source.resolution);
+  const inspect = (candidate, attempt) => {
+    const woven = sampleWeave(candidate, source.resolution), error = score(woven);
+    Object.assign(attempt, {imageError: error, withinAllowance: error <= limit});
+    if (error > limit) return false;
+    attempt.featuresPassed = auditFeatureFidelity(source, woven, cfg, features).passed;
+    attempt.featureChange = auditFeatureFidelityChange(source, before, woven, cfg, features);
+    attempt.featuresPassed &&= attempt.featureChange.passed;
+    attempt.geometryPassed = validate(candidate, cfg).passed;
+    attempt.paperPassed = !cfg.requireMaterialCore || (attempt.geometryPassed && materialAudit(candidate, cfg).passed);
+    return (
+      attempt.featuresPassed && attempt.geometryPassed && attempt.paperPassed && matchingSummary(candidate).identical
+    );
   };
-  const proposals=matchingProposals(solution).map(({name,paths})=>{
-    const graph=new CurveGraph(paths,cfg.width),candidate=graph.solution(graph.points,phase,input);
-    return{name,graph,candidate,phase,error:score(sampleWeave(candidate,source.resolution))};
-  }).sort((a,b)=>a.error-b.error);
+  const proposals = matchingProposals(solution)
+    .map(({name, paths}) => {
+      const graph = new CurveGraph(paths, cfg.width), candidate = graph.solution(graph.points, phase, input);
+      return {name, graph, candidate, phase, error: score(sampleWeave(candidate, source.resolution))};
+    })
+    .sort((a, b) => a.error - b.error);
   // Evaluate every exact proposal before checking the remaining gradient budget.
   // A known valid matching pair must never be skipped just because time ran out.
-  for(const p of proposals){
-    const attempt={proposal:p.name,refined:false};report.attempts.push(attempt);
-    if(inspect(p.candidate,attempt))return finish(p.candidate,'matched');
+  for (const p of proposals) {
+    const attempt = {proposal: p.name, refined: false};
+    report.attempts.push(attempt);
+    if (inspect(p.candidate, attempt)) return finish(p.candidate, 'matched');
   }
   // The two copied sheets can both be the wrong topology for a matching
   // solution. Reuse the already computed equal-count grids, including their
   // colour phases, and rank their tied geometry against the original source.
   // No count initialization is repeated and the same deadline still applies.
-  for(const seed of gridSeeds){
-    if(performance.now()>=deadline-80)break;
-    const model=matchingGrid(seed.model);if(!model)continue;
-    const graph=new CurveGraph(gridPaths(model,cfg.width,seed.floor),cfg.width),candidate=graph.solution(graph.points,seed.phase,input);
-    proposals.push({name:'matching-grid',graph,candidate,phase:seed.phase,counts:model.counts,error:score(sampleWeave(candidate,source.resolution))});
+  for (const seed of gridSeeds) {
+    if (performance.now() >= deadline - 80) break;
+    const model = matchingGrid(seed.model);
+    if (!model) continue;
+    const graph = new CurveGraph(gridPaths(model, cfg.width, seed.floor), cfg.width),
+      candidate = graph.solution(graph.points, seed.phase, input);
+    proposals.push({
+      name: 'matching-grid',
+      graph,
+      candidate,
+      phase: seed.phase,
+      counts: model.counts,
+      error: score(sampleWeave(candidate, source.resolution))
+    });
   }
-  const finalists=proposals.sort((a,b)=>a.error-b.error).slice(0,3);
-  let nearLimit=null;
-  for(let i=0;i<finalists.length&&performance.now()<deadline-80;i++){
-    const p=finalists[i],remaining=deadline-performance.now(),end=performance.now()+remaining/(finalists.length-i);
-    const c=refineCurves(p.graph,Float64Array.from(source.mask),source.resolution,p.phase,{...cfg,preferMatchingSheets:false},
-      {input,identicalSheets:true,steps,rate:p.counts ? .04 : .012,deadline:end,selection:'mask',weights:sourceWeights(source)});
-    const candidate=c.graph.solution(c.points,p.phase,input),attempt={proposal:p.name,...(p.counts?{counts:p.counts,phase:p.phase}:{}),refined:true,steps:c.steps};report.attempts.push(attempt);
-    if(inspect(candidate,attempt)){
+  const finalists = proposals.sort((a, b) => a.error - b.error).slice(0, 3);
+  let nearLimit = null;
+  for (let i = 0; i < finalists.length && performance.now() < deadline - 80; i++) {
+    const p = finalists[i],
+      remaining = deadline - performance.now(),
+      end = performance.now() + remaining / (finalists.length - i);
+    const c = refineCurves(
+      p.graph,
+      Float64Array.from(source.mask),
+      source.resolution,
+      p.phase,
+      {...cfg, preferMatchingSheets: false},
+      {
+        input,
+        identicalSheets: true,
+        steps,
+        rate: p.counts ? 0.04 : 0.012,
+        deadline: end,
+        selection: 'mask',
+        weights: sourceWeights(source)
+      }
+    );
+    const candidate = c.graph.solution(c.points, p.phase, input),
+      attempt = {
+        proposal: p.name,
+        ...(p.counts ? {counts: p.counts, phase: p.phase} : {}),
+        refined: true,
+        steps: c.steps
+      };
+    report.attempts.push(attempt);
+    if (inspect(candidate, attempt)) {
       // The exploration slice is shared with alternatives that are no longer
       // needed once this pair passes. Finish its remaining steps within the
       // original matching deadline, retaining the checked pair as a fallback.
       // Starting from that checkpoint also prevents an invalid last excursion
       // from displacing it. This never increases the per-candidate step cap.
-      if(c.steps<steps&&performance.now()<deadline-160){
-        const graph=new CurveGraph(c.graph.nested(c.points),cfg.width);
-        const refined=refineCurves(graph,Float64Array.from(source.mask),source.resolution,p.phase,{...cfg,preferMatchingSheets:false},
-          {input,identicalSheets:true,steps:steps-c.steps,rate:.012,deadline,selection:'mask',weights:sourceWeights(source)});
-        const polished=refined.graph.solution(refined.points,p.phase,input),continuation={proposal:p.name,...(p.counts?{counts:p.counts,phase:p.phase}:{}),refined:true,continuation:true,steps:refined.steps};
+      if (c.steps < steps && performance.now() < deadline - 160) {
+        const graph = new CurveGraph(c.graph.nested(c.points), cfg.width);
+        const refined = refineCurves(
+          graph,
+          Float64Array.from(source.mask),
+          source.resolution,
+          p.phase,
+          {...cfg, preferMatchingSheets: false},
+          {
+            input,
+            identicalSheets: true,
+            steps: steps - c.steps,
+            rate: 0.012,
+            deadline,
+            selection: 'mask',
+            weights: sourceWeights(source)
+          }
+        );
+        const polished = refined.graph.solution(refined.points, p.phase, input),
+          continuation = {
+            proposal: p.name,
+            ...(p.counts ? {counts: p.counts, phase: p.phase} : {}),
+            refined: true,
+            continuation: true,
+            steps: refined.steps
+          };
         report.attempts.push(continuation);
-        continuation.accepted=inspect(polished,continuation)&&continuation.imageError<attempt.imageError;
-        if(continuation.accepted)return finish(polished,'matched');
+        continuation.accepted = inspect(polished, continuation) && continuation.imageError < attempt.imageError;
+        if (continuation.accepted) return finish(polished, 'matched');
       }
-      return finish(candidate,'matched');
+      return finish(candidate, 'matched');
     }
     // Keep the closest physically valid miss after every ordinary start has
     // had its exploration slice. A fixed step cap is not convergence: a
     // nearly matching template may still improve with unused caller time.
-    if(c.geometryPassed&&c.paperPassed&&attempt.imageError>limit&&attempt.imageError-limit<=report.maximumAdditionalImageError*.25
-      &&(!nearLimit||attempt.imageError<nearLimit.attempt.imageError))nearLimit={proposal:p,refined:c,attempt};
+    if (
+      c.geometryPassed &&
+      c.paperPassed &&
+      attempt.imageError > limit &&
+      attempt.imageError - limit <= report.maximumAdditionalImageError * 0.25 &&
+      (!nearLimit || attempt.imageError < nearLimit.attempt.imageError)
+    )
+      nearLimit = {proposal: p, refined: c, attempt};
   }
-  if(nearLimit&&steps>0&&performance.now()<deadline-600){
-    const {proposal:p,refined:c,attempt:previous}=nearLimit,graph=new CurveGraph(c.graph.nested(c.points),cfg.width);
+  if (nearLimit && steps > 0 && performance.now() < deadline - 600) {
+    const {proposal: p, refined: c, attempt: previous} = nearLimit,
+      graph = new CurveGraph(c.graph.nested(c.points), cfg.width);
     // Only one near-limit candidate receives this bounded tail. Keep the
     // original hard deadline and recheck the exact same source allowance,
     // feature preservation, geometry and paper before replacing either sheet.
-    const maximumSteps=Math.min(600,3*steps);
-    const refined=refineCurves(graph,Float64Array.from(source.mask),source.resolution,p.phase,{...cfg,preferMatchingSheets:false},
-      {input,identicalSheets:true,steps:maximumSteps,rate:.012,deadline:deadline-80,selection:'mask',weights:sourceWeights(source)});
-    const candidate=refined.graph.solution(refined.points,p.phase,input),attempt={proposal:p.name,...(p.counts?{counts:p.counts,phase:p.phase}:{}),
-      refined:true,nearLimitRecovery:true,explorationSteps:c.steps,maximumSteps,steps:refined.steps,previousImageError:previous.imageError};
+    const maximumSteps = Math.min(600, 3 * steps);
+    const refined = refineCurves(
+      graph,
+      Float64Array.from(source.mask),
+      source.resolution,
+      p.phase,
+      {...cfg, preferMatchingSheets: false},
+      {
+        input,
+        identicalSheets: true,
+        steps: maximumSteps,
+        rate: 0.012,
+        deadline: deadline - 80,
+        selection: 'mask',
+        weights: sourceWeights(source)
+      }
+    );
+    const candidate = refined.graph.solution(refined.points, p.phase, input),
+      attempt = {
+        proposal: p.name,
+        ...(p.counts ? {counts: p.counts, phase: p.phase} : {}),
+        refined: true,
+        nearLimitRecovery: true,
+        explorationSteps: c.steps,
+        maximumSteps,
+        steps: refined.steps,
+        previousImageError: previous.imageError
+      };
     report.attempts.push(attempt);
-    if(inspect(candidate,attempt))return finish(candidate,'matched');
+    if (inspect(candidate, attempt)) return finish(candidate, 'matched');
   }
-  return finish(solution,performance.now()>=deadline-80?'matching_budget_exhausted':'no_valid_matching_candidate');
+  return finish(
+    solution,
+    performance.now() >= deadline - 80 ? 'matching_budget_exhausted' : 'no_valid_matching_candidate'
+  );
 }
