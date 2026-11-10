@@ -19,7 +19,15 @@
   import { noteSaved } from '$lib/editor/savedNotice.svelte';
   import type { Finger, GridSize, HeartDesign, HeartPattern } from '$lib/types/heart';
   import { normalizeHeartDesign, parseHeartFromSVGWithReport, serializeHeartDesign } from '$lib/utils/heartDesign';
-  import { heartName as nameIn } from '$lib/utils/heartName';
+  import {
+    blankOpened,
+    draftOpened,
+    galleryOpened,
+    importOpened,
+    linkOpened,
+    sessionOpened,
+    type OpenedDesign
+  } from '$lib/editor/openedDesign';
   import { importSummary } from '$lib/utils/svgImportSummary';
   import { downloadHeartSvg, downloadTemplateSvg } from '$lib/editor/svgDownloads';
   import { sanitizeHtml } from '$lib/utils';
@@ -180,26 +188,35 @@
   const sessionDesign = urlFromSession ? takeHandoff() : null;
   const urlDesign = sessionDesign ?? urlDesignFromLink;
 
-  // State for the loaded design - initialize with URL values
-  let initialDesign = $state<HeartDesign | null>(urlDesign);
+  let lang = $derived(langFromParam($page.params.lang));
+  // What the page opens on, from its address, named in the page's language. The name goes into its
+  // field after mount, so the server's markup and the browser's first agree.
+  const openingLang = langFromParam($page.params.lang);
+  const opening = sessionDesign
+    ? sessionOpened(sessionDesign, openingLang)
+    : urlDesignFromLink
+      ? linkOpened(urlDesignFromLink, urlEditMode, openingLang)
+      : blankOpened(openingLang);
+
+  // The design that rides along into what is saved (see `openDesign`).
+  let initialDesign = $state<HeartDesign | null>(opening.initial);
   // A shared link opens the heart it carries for editing; the heart Mal hands
   // over is a new unsaved one, so the page is "create", not "edit".
   let editingExisting = $state(urlDesignFromLink !== null);
-  let isEditMode = $state(urlEditMode); // true = editing custom heart, false = creating copy
+  let isEditMode = $state(opening.editMode); // true = editing custom heart, false = creating copy
   let editorKey = $state(0); // Key to force PaperHeart remount
 
-  // Initialize fingers/gridSize with URL design if available
-  let currentFingers: Finger[] = $state(urlDesign?.fingers ?? []);
-  let currentGridSize: GridSize = $state(urlDesign?.gridSize ?? { x: 3, y: 3 });
-  let currentWeaveParity: 0 | 1 = $state((urlDesign?.weaveParity ?? 0) as 0 | 1);
+  // The heart PaperHeart opens on, and then the cuts as it last told them (`takeCuts`).
+  let currentFingers: Finger[] = $state(opening.heart.fingers);
+  let currentGridSize: GridSize = $state(opening.heart.gridSize);
+  let currentWeaveParity: 0 | 1 = $state(opening.heart.weaveParity);
   // The Escher tab's tile, while the cuts are its own (HeartDesign.pattern).
-  let currentPattern: HeartPattern | undefined = $state(urlDesign?.pattern);
+  let currentPattern: HeartPattern | undefined = $state(opening.heart.pattern);
 
-  // Form fields - initialize with URL design if available
+  // Form fields
   let heartName = $state('');
-  let authorName = $state(urlDesign?.author ?? '');
-  let description = $state(urlDesign?.description ?? '');
-  let lang = $derived(langFromParam($page.params.lang));
+  let authorName = $state(opening.author);
+  let description = $state(opening.description);
   // Viewing colours come from the header's shared controls and never schedule an edit.
   let colors = $state<HeartColors>({ ...DEFAULT_COLORS });
   let editorEl: HTMLDivElement | null = $state(null);
@@ -255,25 +272,7 @@
     colors = getColors();
     const unsubscribeColors = subscribeColors((c) => { colors = c; });
 
-    // Set heart name (needs lang to be initialized)
-    if (sessionDesign) {
-      // Not a copy of anything: Mal made this heart, and it is the visitor's own.
-      // The name is Mal's to set, on the design it hands over: it is the side
-      // that knows whether the mask came from star.png, a photo or the visitor's
-      // own brush, and `cutGeometryToDesign` takes `name` from its caller for
-      // exactly that (PAINT.md §3: "Stjerne fra billede" / "Heart from image").
-      // Never `session.sourceName` — that is the file the mask came from, so
-      // reading it here would make a Tegn → Mal → Tegn round trip rename the
-      // heart after itself. The fallback is only for a design that reaches us
-      // unnamed; then it is a new heart like any other.
-      heartName = sessionDesign.name || t('myHeart', lang);
-    } else if (urlDesign) {
-      // In edit mode, keep original name; in copy mode, append "(Copy)"
-      // A copy is named after the heart's name in this language ("Flet 1 kopi").
-      heartName = isEditMode ? urlDesign.name : `${nameIn(urlDesign, lang)} ${t('copy', lang)}`;
-    } else if (!heartName) {
-      heartName = t('myHeart', lang);
-    }
+    heartName = opening.name;
 
     if (!isEditMode && !draftId) {
       draftId = generateId();
@@ -416,6 +415,26 @@
     scheduleAutosave();
   }
 
+  /**
+   * Tegn on another heart, drawn afresh (PaperHeart remounts): its cuts, its details, the design that
+   * rides along, and whether it is one of "Mine hjerter". What the page keeps of the heart before it (the
+   * changes noted, a drag going on) goes. Where it is saved, and what else the way it came sets, is the
+   * caller's.
+   */
+  function openDesign(opened: OpenedDesign): void {
+    currentFingers = opened.heart.fingers;
+    currentGridSize = opened.heart.gridSize;
+    currentWeaveParity = opened.heart.weaveParity;
+    currentPattern = opened.heart.pattern;
+    heartName = opened.name;
+    authorName = opened.author;
+    description = opened.description;
+    isEditMode = opened.editMode;
+    initialDesign = opened.initial;
+    resetDesignBaseline();
+    editorKey++;
+  }
+
   // Reset the autosave baseline before remounting PaperHeart with a new design.
   function resetDesignBaseline(): void {
     designBaseline = null;
@@ -435,31 +454,9 @@
       showStatus('load', 'error', t('heartNotFound', lang));
       return;
     }
-    currentFingers = design.fingers;
-    currentGridSize = design.gridSize;
-    currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
-    currentPattern = design.pattern;
-    heartName = `${nameIn(design, lang)} ${t('copy', lang)}`;
-    // The copy is the visitor's own heart: it is not by the gallery heart's author, nor described,
-    // published or dated as that one is (user test, 2026-10-22: a copy saved as "af Thomas").
-    authorName = '';
-    description = '';
+    openDesign(galleryOpened(design, lang));
     editingExisting = true;
-    isEditMode = false;
-    initialDesign = {
-      ...design,
-      author: '',
-      authorUrl: undefined,
-      publisher: undefined,
-      publisherUrl: undefined,
-      source: undefined,
-      date: undefined,
-      description: undefined,
-      descriptions: undefined
-    };
-    resetDesignBaseline();
     unsaved = false;
-    editorKey++;
   }
 
   /**
@@ -632,20 +629,9 @@
     // The draft is work that never went into "Mine hjerter".
     unsaved = true;
     cameUnsaved = true;
-    const design = draft.design;
-    currentFingers = design.fingers;
-    currentGridSize = design.gridSize;
-    currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
-    currentPattern = design.pattern;
-    heartName = design.name;
-    authorName = design.author ?? '';
-    description = design.description ?? '';
-    draftId = design.id || generateId();
+    draftId = draft.design.id || generateId();
     draftSource = draft.source;
-    isEditMode = false;
-    initialDesign = design;
-    resetDesignBaseline();
-    editorKey++;
+    openDesign(draftOpened(draft.design));
   }
 
   // "Start forfra": the draft is abandoned in favour of the heart on screen, which
@@ -758,24 +744,14 @@
 
         // What the importer made of the file, so the author sees it at once.
         showStatus('import', 'info', importSummary(design, report, lang).text);
-        currentFingers = design.fingers;
-        currentGridSize = design.gridSize;
-        currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
-        currentPattern = design.pattern;
-        heartName = design.name || t('importedHeart', lang);
-        authorName = design.author || '';
-        description = design.description || '';
+        openDesign(importOpened(design, lang));
         editingExisting = false;
-        isEditMode = false;
-        initialDesign = design;
         draftId = generateId();
         // An imported file is another new heart: it replaces the draft on the next
         // autosave, and it stays out of "Mine hjerter" until "Gem".
         savesToCollection = false;
         draftSource = 'import';
         pendingDraft = null;
-        resetDesignBaseline();
-        editorKey++;
         scheduleAutosave();
       } catch (err) {
         trackImportError(file.name, err instanceof Error ? err.message : 'Unknown parse error');
