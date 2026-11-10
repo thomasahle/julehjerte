@@ -11,6 +11,7 @@
 	import { computeWeaveData } from '$lib/rendering/svgWeave';
 	import { BASE_CANVAS_SIZE, BASE_CENTER, MIN_GRID_SIZE, MAX_GRID_SIZE } from '$lib/constants';
 	import { clampInt } from '$lib/utils/math';
+	import { normalizeWeaveParity } from '$lib/utils/heartDesign';
 	import { computeHeartViewBoxFromOverlap } from '$lib/rendering/heartSvg';
 
 	// Props - same interface as PaperHeart.svelte
@@ -59,11 +60,6 @@
 			};
 		}
 		return { x: 3, y: 3 };
-	}
-
-	function normalizeWeaveParity(raw: unknown): 0 | 1 {
-		const v = typeof raw === 'number' && Number.isFinite(raw) ? Math.round(raw) : 0;
-		return v % 2 === 1 ? 1 : 0;
 	}
 
 	// Geometry props are large; keep them out of deeply reactive `$state` proxies.

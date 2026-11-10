@@ -90,7 +90,8 @@ function normalizeGridSize(raw: unknown): GridSize {
   return { x: 3, y: 3 };
 }
 
-function normalizeWeaveParity(raw: unknown): 0 | 1 {
+/** Which way the checks fall, from whatever a file or a prop says: 1 for a finite number that rounds to a positive odd one, else 0. */
+export function normalizeWeaveParity(raw: unknown): 0 | 1 {
   const v = typeof raw === 'number' && Number.isFinite(raw) ? Math.round(raw) : 0;
   return v % 2 === 1 ? 1 : 0;
 }
