@@ -195,6 +195,8 @@ export async function design(target, raw = {}, onProgress = () => {}, options = 
   const alone = route === 'exact', cfgExact = settings({...raw, symmetry: cfg.symmetry});
   const {solution, nearest, report} = await exactTemplate(target, cfg, cfgExact, symmetry, onProgress, {
     // The ladder alone (beside today's search, in its own worker) has nothing after the traced outline: all the time.
+    // Kept as it was: ladderAlone reads only roundedEnd, all the time with `exactRoute: 'exact'` (as
+    // worker-controller.js runs it), else ROUNDED_SECONDS.
     tracedEnd:
       raw.ladderOnly === true
         ? searchEnd

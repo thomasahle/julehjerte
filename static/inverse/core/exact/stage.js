@@ -310,7 +310,8 @@ const ASYMMETRIC = [
   // An outline not symmetric enough for the ties even so (a traced lily's
   // petals): searched untied, the converter makes the cuts symmetric where that
   // costs little. Kept as it was: neither this search nor the two above get the
-  // caller's `multi` (the subgroups' do).
+  // caller's `multi` (the subgroups' do), and `untied` is on the result itself
+  // too, where nothing reads it.
   {outline: h => h.outline, options: h => ({...h.base, fallback: false, ...h.alone, symmetry: []}), stands: () => true,
     adds: {untied: true}, mark: error => ({unjoined: error, untied: true})}
 ];
