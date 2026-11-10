@@ -65,6 +65,8 @@ for (const file of process.argv.slice(2)) {
     if (mode === 'ladder') { maps = env.MAPS_DIR ? JSON.parse(await fs.readFile(`${env.MAPS_DIR}/${name}.pred.json`, 'utf8')) : await predict(target.sourceImage); predictMs = Math.round(performance.now() - t); }
     t = performance.now();
     const wall0 = Date.now();
+    // `noted`: the crashes the engine survived on this picture (core/errors.js), by place.
+    globalThis.__malErrors = [];
     let line;
     try {
       if (mode === 'fitter') line = fitted(await design(target, {...mal.solveSettings({colors: DEFAULT_COLORS, symmetry, method: 'smooth', ...budget}), ...trial}));
@@ -73,7 +75,8 @@ for (const file of process.argv.slice(2)) {
       const x = error.report?.solver?.exactOutline ?? error.report?.exactOutline;
       line = mode === 'fitter' ? {fitter: false, error: String(error.message).slice(0, 50)} : {exact: false, error: String(error.message).slice(0, 50), tracedBound: x?.tracedBound, carry: x?.carry, ...(env.WHY ? {why: JSON.stringify(x ?? error.report ?? null).slice(0, 600)} : {})};
     }
-    console.log(JSON.stringify({id, mode, withMaps: mode === 'ladder', ...(predictMs === undefined ? {} : {predictMs}), seconds: +((performance.now() - t) / 1000).toFixed(1), wall: +((Date.now() - wall0) / 1000).toFixed(1), ...line}));
+    console.log(JSON.stringify({id, mode, withMaps: mode === 'ladder', ...(predictMs === undefined ? {} : {predictMs}), seconds: +((performance.now() - t) / 1000).toFixed(1), wall: +((Date.now() - wall0) / 1000).toFixed(1), ...line,
+      ...(globalThis.__malErrors.length ? {noted: [...new Set(globalThis.__malErrors.map(e => `${e.where}: ${e.message}`.slice(0, 120)))]} : {})}));
   }
 }
 await server.close();
