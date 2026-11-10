@@ -94,13 +94,10 @@
 	import { generatorHref } from '$lib/i18n/routes';
 
 		interface Props {
-			readonly?: boolean;
-			idPrefix?: string;
 			lang?: Language;
 			initialFingers?: Finger[];
 			initialGridSize?: GridSize | number;
 			initialWeaveParity?: 0 | 1 | number;
-			size?: number;
 			fullPage?: boolean;
 			/**
 			 * Extra sections for the right-hand panel (docs/redesign/DESIGN.md §7).
@@ -144,13 +141,10 @@
 		}
 
 	let {
-		readonly = false,
-		idPrefix = undefined,
 			lang = 'da',
 			initialFingers,
 			initialGridSize = 3,
 			initialWeaveParity = 0,
-			size = 800,
 			fullPage = false,
 			panelExtra,
 			notice,
@@ -160,7 +154,9 @@
 		}: Props = $props();
 
 	// Stable ID for clip paths (avoid Math.random which breaks SSR/hydration).
-	const componentId = $derived.by(() => (idPrefix && idPrefix.length > 0 ? idPrefix : 'heart-editor'));
+	const componentId = 'heart-editor';
+	/** The canvas's side in pixels where the page does not size it (`fullPage`), and before it is measured. */
+	const size = 800;
 	// UI strings in the language of the page hosting the editor.
 	const tr = (key: TranslationKey) => translate(key, lang);
 	const HANDLE_COLLAPSE_EPS = 0.25;
@@ -1253,7 +1249,7 @@
 	 * its axis, and only where the cuts it makes weave.
 	 */
 	function turnPattern(degrees: number) {
-		if (readonly || !patternTile || !escher) return;
+		if (!patternTile || !escher) return;
 		const next = escher.turnedTile(patternTile, degrees);
 		if (!next) return;
 		const before = turnSnapshot ?? snapshotState();
@@ -1316,7 +1312,7 @@
 	 * size. Not where that would make red cuts.
 	 */
 	function setHeartSize(n: number) {
-		if (readonly || patternTile || (gridSize.x === n && gridSize.y === n)) return;
+		if (patternTile || (gridSize.x === n && gridSize.y === n)) return;
 		const grid = { x: n, y: n };
 		const from = getOverlapRect();
 		const to = getCenteredRectParams(grid, { x: from.left + from.width / 2, y: from.top + from.height / 2 });
@@ -1335,7 +1331,7 @@
 
 	/** The Normal tab's "Start forfra": a plain heart of the same size; nothing, where it is one already. */
 	function restartHeart() {
-		if (readonly || patternTile) return;
+		if (patternTile) return;
 		const fresh = createDefaultFingers(gridSize);
 		if (sameCuts(fresh, fingers)) return;
 		const before = snapshotState();
@@ -1376,7 +1372,6 @@
 	 * to do; the view is fitted to the heart's size.
 	 */
 	function drawRandomHeart() {
-		if (readonly) return;
 		const heart = randomHeart();
 		const before = snapshotState();
 		if (patternTile) lastEscherTile = patternTile;
@@ -1409,7 +1404,6 @@
 	 * heart in one Fortryd step, as choosing a type is.
 	 */
 	function drawRandomTile() {
-		if (readonly) return;
 		void loadEscher().then((module) => {
 			const { tile, rule } = module.randomTile();
 			const before = snapshotState();
@@ -1478,7 +1472,7 @@
 	 * line above the heart, where the tiles are too close for that.
 	 */
 	function openEscherCrossings(opening: 'red' | 'white' | 'level' | 'upright' | null) {
-		if (readonly || !patternTile || !escher || escher.openingOf(patternTile) === opening) return;
+		if (!patternTile || !escher || escher.openingOf(patternTile) === opening) return;
 		const next = escher.withOpening(patternTile, opening);
 		if (!next) {
 			noteRefused(tr('patternFloatTooTight'));
@@ -1581,7 +1575,7 @@
 	// Curves that cross, touch or come within the physical margin of another curve in their lobe.
 	// (The margin from inferOverlapRect directly: weaveData is declared further down, which matters for SSR.)
 	let issueFingerIds = $derived.by(() => {
-		if (readonly || !showCurves) return new Set<string>();
+		if (!showCurves) return new Set<string>();
 		const { fingers, gridSize } = checkedCuts;
 		return findFingersWithIssues(fingers, clearanceMargin(fingers, gridSize));
 	});
@@ -1848,7 +1842,6 @@
 	}
 
 	function deleteSelectedAnchors() {
-		if (readonly) return;
 		const fingerId = selectedFingerId;
 		if (!fingerId) return;
 		const finger = getEditableFingerById(fingerId);
@@ -1910,7 +1903,6 @@
 	}
 
 	function insertNodeBetweenSelectedAnchors() {
-		if (readonly) return;
 		if (!selectedFingerId) return;
 		if (selectedAnchors.length !== 2) return;
 		const finger = getEditableFingerById(selectedFingerId);
@@ -1932,7 +1924,6 @@
 	}
 
 	function insertNodeAtCurveHit(hitInfo: CurveHit) {
-		if (readonly) return;
 		const fingerId = hitInfo.fingerId;
 		const finger = getEditableFingerById(fingerId);
 		if (!finger) return;
@@ -2071,7 +2062,6 @@
 	}
 
 	function makeSelectedSegmentsStraight() {
-		if (readonly) return;
 		const fingerId = selectedFingerId;
 		if (!fingerId) return;
 		const finger = getEditableFingerById(fingerId);
@@ -2098,7 +2088,6 @@
 	}
 
 	function makeSelectedSegmentsCurved() {
-		if (readonly) return;
 		const fingerId = selectedFingerId;
 		if (!fingerId) return;
 		const finger = getEditableFingerById(fingerId);
@@ -2153,7 +2142,6 @@
 	}
 
 	function makeSelectedAnchorsCurved() {
-		if (readonly) return;
 		const fingerId = selectedFingerId;
 		if (!fingerId) return;
 		const finger = getEditableFingerById(fingerId);
@@ -2230,7 +2218,6 @@
 	}
 
 	function setSelectedAnchorsNodeType(type: NodeType) {
-		if (readonly) return;
 		const fingerId = selectedFingerId;
 		if (!fingerId) return;
 		const finger = getEditableFingerById(fingerId);
@@ -2462,7 +2449,6 @@
 		}
 
 	function handleWheel(event: WheelEvent) {
-		if (readonly) return;
 		if (!svgEl) return;
 		// Trackpad pinch gestures fire wheel events with ctrlKey=true.
 		// Mouse wheels often report deltaMode=1 (lines) and should zoom by default.
@@ -2514,7 +2500,6 @@
 	}
 
 	function handleTouchStart(event: TouchEvent) {
-		if (readonly) return;
 		if (!svgEl) return;
 		if (event.touches.length >= 2) {
 			beginMultiTouch();
@@ -2531,7 +2516,6 @@
 	}
 
 	function handleTouchMove(event: TouchEvent) {
-		if (readonly) return;
 		// (No preventDefault: Svelte registers touch handlers as passive, and the svg's
 		// touch-action: none already keeps the browser from scrolling or zooming the page.)
 		if (event.touches.length === 2 && pinchStartDistance > 0) {
@@ -2555,7 +2539,6 @@
 	}
 
 	function handleTouchEnd(event: TouchEvent) {
-		if (readonly) return;
 		if (event.touches.length < 2) pinchStartDistance = 0;
 		// touchend always reaches the element the touch started on, so this is the reliable
 		// place to notice that the whole gesture is over.
@@ -2595,7 +2578,6 @@
 	// Runs before the curve/anchor/handle handlers (capture phase) so a second finger cannot
 	// select or start dragging anything: from then on the gesture is pan/zoom only.
 	function handleSvgPointerDownCapture(e: PointerEvent) {
-		if (readonly) return;
 		if (e.pointerType === 'mouse') {
 			// A point is small: a press just beside one of the chosen cut's takes hold of it, rather than of
 			// the cut under the pointer, which would move whole (user test, 2026-10-22).
@@ -2700,7 +2682,6 @@
 	}
 
 	function beginDrag(e: PointerEvent, target: DragTarget) {
-		if (readonly) return;
 		// A nudge by the arrow keys going on ends first.
 		if (activePointerId === KEY_POINTER) finishDrag(KEY_POINTER);
 		activePointerId = e.pointerId;
@@ -2768,7 +2749,6 @@
 	}
 
 	function handleFingerPointerDown(e: PointerEvent, fingerId: string) {
-		if (readonly) return;
 		e.stopPropagation();
 		const p = localPointFromClient(e.clientX, e.clientY);
 		if (!p) return;
@@ -2889,7 +2869,7 @@
 	let coarsePointer = $state(false);
 
 	function handleAnchorPointerDown(e: PointerEvent, fingerId: string, anchorIdx: number) {
-		if (readonly || !getEditableFingerById(fingerId)) return;
+		if (!getEditableFingerById(fingerId)) return;
 		e.stopPropagation();
 		selectedFingerId = fingerId;
 		selectedSegments = [];
@@ -2920,7 +2900,7 @@
 		segmentIndex: number,
 		handle: 'p1' | 'p2'
 	) {
-		if (readonly || !getEditableFingerById(fingerId)) return;
+		if (!getEditableFingerById(fingerId)) return;
 		e.stopPropagation();
 		const p = localPointFromClient(e.clientX, e.clientY);
 		if (p && insertOnSecondClick(fingerId, p)) return;
@@ -2939,7 +2919,6 @@
 
 	// Pointer down on empty canvas (curves, anchors and handles stop propagation before this).
 	function handleSvgPointerDown(e: PointerEvent) {
-		if (readonly) return;
 		if (multiTouch) return;
 		if (e.pointerType !== 'mouse') {
 			// One finger on empty canvas pans; whether it was a tap (deselect) is known on release.
@@ -2950,7 +2929,6 @@
 	}
 
 	function handleSvgPointerMove(e: PointerEvent) {
-		if (readonly) return;
 		if (panPointer && e.pointerId === panPointer.id) {
 			const dx = e.clientX - panPointer.startX;
 			const dy = e.clientY - panPointer.startY;
@@ -3135,7 +3113,6 @@
 	}
 
 	function handleSvgPointerUp(e: PointerEvent) {
-		if (readonly) return;
 		if (e.pointerType !== 'mouse') {
 			touchPointerIds.delete(e.pointerId);
 			if (touchPointerIds.size === 0) multiTouch = false;
@@ -3336,7 +3313,7 @@
 		prevBetweenLobesMode = betweenLobesMode;
 
 		if (!shouldApply) return;
-		if (readonly || !didInit) return;
+		if (!didInit) return;
 
 		/** Every cut as the rows now make it: one side of each pair copied onto the other. */
 		const symmetricFingers = (): Finger[] => {
@@ -3474,7 +3451,6 @@
 	}
 
 	function handleKeyDown(e: KeyboardEvent) {
-		if (readonly) return;
 		// Leave text fields alone: Backspace/Delete/undo/redo there belong to the field.
 		if (isEditableTarget(e.target)) return;
 		if (e.key === 'Escape') {
@@ -3529,7 +3505,7 @@
 	onMount(() => {
 		heartColors = getColors();
 		const unsub = subscribeColors((c) => (heartColors = c));
-		if (!readonly && typeof window !== 'undefined') {
+		if (typeof window !== 'undefined') {
 			window.addEventListener('keydown', handleKeyDown);
 			window.addEventListener('keyup', handleKeyUp);
 			// Keys let go elsewhere: a nudge going on ends.
@@ -3549,7 +3525,7 @@
 			}
 		}
 		return () => {
-			if (!readonly && typeof window !== 'undefined') {
+			if (typeof window !== 'undefined') {
 				window.removeEventListener('keydown', handleKeyDown);
 				window.removeEventListener('keyup', handleKeyUp);
 				window.removeEventListener('blur', endNudge);
@@ -3724,30 +3700,17 @@
 			.sort((a, b) => a - b);
 	});
 
-	// Mobile layout: make the canvas area fill the remaining viewport height below the header,
-	// so bottom controls sit at the bottom of the screen (but scroll away with the canvas).
-		let canvasAreaEl: HTMLDivElement | null = null;
-		let mobileCanvasMinHeight = $state<string | null>(null);
-		let isMobileLayout = $state(false);
+	// Below 900px the editor keeps its stacked layout (NARROW_QUERY), followed as the window is resized.
+	let isMobileLayout = $state(false);
 
-	function updateMobileCanvasMinHeight() {
-		if (!canvasAreaEl) return;
-		if (typeof window === 'undefined') return;
+	function updateMobileLayout() {
 		isMobileLayout = window.matchMedia(NARROW_QUERY).matches;
-		if (!isMobileLayout) {
-			mobileCanvasMinHeight = null;
-			return;
-		}
-
-		const top = canvasAreaEl.getBoundingClientRect().top;
-		const available = Math.max(0, window.innerHeight - top);
-		mobileCanvasMinHeight = `${available}px`;
 	}
 
 	onMount(() => {
-		updateMobileCanvasMinHeight();
-		window.addEventListener('resize', updateMobileCanvasMinHeight, { passive: true });
-		return () => window.removeEventListener('resize', updateMobileCanvasMinHeight);
+		updateMobileLayout();
+		window.addEventListener('resize', updateMobileLayout, { passive: true });
+		return () => window.removeEventListener('resize', updateMobileLayout);
 	});
 
 </script>
@@ -3825,11 +3788,10 @@
 	<TooltipProvider delayDuration={250}>
 		<div
 			class="paper-heart"
-			class:readonly
 			class:fullPage={fullPage}
 			class:panel-collapsed={panelCollapsed}
 		>
-			<div class="canvas-area" bind:this={canvasAreaEl} style:min-height={fullPage ? undefined : mobileCanvasMinHeight ?? undefined}>
+			<div class="canvas-area">
 				<div class="canvas-box">
 				<!-- Only the fixed-size instance is sized inline. In the full-page editor the
 				     wrapper fills the canvas area, and an inline width would over-constrain it
@@ -3914,7 +3876,6 @@
 									</g>
 								{/if}
 
-								{#if !readonly}
 									{#each fingers as finger (finger.id)}
 											{@const isSelected = finger.id === selectedFingerId}
 											{@const hidden = !showCurves}
@@ -4182,7 +4143,6 @@
 											</rect>
 										{/each}
 									{/if}
-								{/if}
 							</g>
 						</g>
 					{:else}
@@ -4191,7 +4151,6 @@
 				</svg>
 			</div>
 
-			{#if !readonly}
 				<!-- Canvas chrome (DESIGN.md §7): the line that says what can be done with what is
 				     chosen (`canvasHint`), what is selected and the strip count. Desktop only — the
 				     mobile editor keeps its stacked panels, and the same line comes as a tip there. -->
@@ -4228,10 +4187,8 @@
 						</div>
 					{/if}
 				</div>
-				{/if}
 				</div>
 
-			{#if !readonly}
 				<!-- Tool rail. Every tool stays an icon button with a tooltip; nothing is
 				     removed and no labels are printed under the icons (DESIGN.md §7). -->
 				<div class="segment-controls" class:floating={fullPage} aria-label={tr('editorCurveTools')}>
@@ -4369,7 +4326,6 @@
 								aria-label={tr('symmetry')}
 								value={escherTab ? 'escher' : 'normal'}
 								onValueChange={(v) => v && openSymmetryTab(v === 'escher' ? 'escher' : 'normal')}
-								disabled={readonly}
 							>
 								<ToggleGroupItem value="normal" {...keepChosen(!escherTab)}>{tr('symmetryTabNormal')}</ToggleGroupItem>
 								<ToggleGroupItem value="escher" {...keepChosen(escherTab)}>{tr('symmetryTabEscher')}</ToggleGroupItem>
@@ -4396,7 +4352,6 @@
 									onRandom={drawRandomTile}
 									onCentre={centreEscherTile}
 									compact={isMobileLayout}
-									disabled={readonly}
 								/>
 							{/if}
 						{:else}
@@ -4421,12 +4376,11 @@
 								name={tr('editorStrips')}
 								label
 								onSize={setHeartSize}
-								disabled={readonly}
 							/>
 							<!-- A new heart drawn at random, its grid and rows too; the Escher tab has its own, for a random tile. -->
 							<div class="heart-actions">
-								<RestartButton label={tr('patternRestart')} title={tr('editorRestartHint')} onclick={restartHeart} disabled={readonly} />
-								<RandomButton label={tr('editorRandomHeart')} title={tr('editorRandomHeartHint')} onclick={drawRandomHeart} disabled={readonly} />
+								<RestartButton label={tr('patternRestart')} title={tr('editorRestartHint')} onclick={restartHeart} />
+								<RandomButton label={tr('editorRandomHeart')} title={tr('editorRandomHeartHint')} onclick={drawRandomHeart} />
 							</div>
 						{/if}
 					</section>
@@ -4475,7 +4429,6 @@
 					<ChevronRightIcon size={14} />
 					<span>{tr('editorShowPanel')}</span>
 				</button>
-			{/if}
 			</div>
 		</div>
 	</TooltipProvider>
@@ -5194,14 +5147,14 @@
 
 			/* The three !importants below beat the inline width/height
 			   updateCanvasSize() writes on .canvas-wrapper for the desktop layout. */
-			.paper-heart:not(.readonly) .canvas-wrapper {
+			.paper-heart .canvas-wrapper {
 				width: 100% !important;
 				height: auto !important;
 				aspect-ratio: 1;
 				max-width: 500px;
 			}
 
-			.paper-heart.fullPage:not(.readonly) .canvas-wrapper {
+			.paper-heart.fullPage .canvas-wrapper {
 				position: relative;
 				inset: auto;
 				flex: none;
