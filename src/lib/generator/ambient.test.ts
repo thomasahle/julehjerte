@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ambientSwitch } from './ambient';
+import { ambientSwitch, switchesOn } from './ambient';
 
 describe('ambientSwitch', () => {
 	it('is on only for what is built inside during', () => {
@@ -33,5 +33,24 @@ describe('ambientSwitch', () => {
 	it('keeps switches apart', () => {
 		const one = ambientSwitch(), other = ambientSwitch();
 		expect(one.during(() => other.on)).toBe(false);
+	});
+});
+
+describe('switchesOn', () => {
+	// Other tests' switches are all off here, and stay so.
+	const walled = ambientSwitch('test walled'), around = ambientSwitch('test around'), unnamed = ambientSwitch();
+
+	it('names none while none is on', () => {
+		expect(switchesOn()).toEqual([]);
+	});
+
+	it('names those on, in the alphabet\'s order, and only while they are', () => {
+		expect(walled.during(() => around.during(switchesOn))).toEqual(['test around', 'test walled']);
+		expect(around.during(switchesOn)).toEqual(['test around']);
+		expect(switchesOn()).toEqual([]);
+	});
+
+	it('leaves out a switch without a name', () => {
+		expect(unnamed.during(switchesOn)).toEqual([]);
 	});
 });

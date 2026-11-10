@@ -32,7 +32,7 @@ const LARGEST_CIRCLE = 80;
  * room for: only for a heart refused, hard to cut or kept smaller with the
  * crown as it is (see `generate`), so every heart cut cleanly keeps its
  * frame. */
-const narrowCrown = ambientSwitch();
+const narrowCrown = ambientSwitch('narrowCrown');
 export const withNarrowCrown = narrowCrown.during;
 /** Whether the sunburst's crown would narrow for the request (see
  * `withNarrowCrown`). */

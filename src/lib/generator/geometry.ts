@@ -280,7 +280,7 @@ function block(
 const nestedBlocks = new WeakMap<Contour, Map<string, Edge[] | null>>();
 /** Whether the cuts between a nested contour's counters, where no straight
  * chain joins them, go round inside it (see `insideWays`). */
-const counterWays = ambientSwitch();
+const counterWays = ambientSwitch('counterWays');
 export const withCounterWays = counterWays.during;
 /** The ways inside a contour, round its counters and past its own corners
  * that point into it, a little inside each (see `reachVia`): from one node of
@@ -941,7 +941,7 @@ function attachmentOrder(fan: number, count: number) {
  * point, so the outline arc from there doubled back on itself. Hearts built
  * so keep their cuts; one that came out refused, hard to cut or with a needle
  * after such a slip is made again with exact indices (see `generate`). */
-const exactArcs = ambientSwitch();
+const exactArcs = ambientSwitch('exactArcs');
 let arcSlips = 0;
 export const arcSlipsSeen = () => arcSlips;
 export const withExactArcs = exactArcs.during;
@@ -952,7 +952,7 @@ export const withExactArcs = exactArcs.during;
  * Hearts built so keep their cuts; a clean one that came out with a sharp
  * tip at a port where an island was entered so is made again (see
  * `generate`), so the ports are kept, from the start of each heart. */
-const nearestIslands = ambientSwitch();
+const nearestIslands = ambientSwitch('nearestIslands');
 // Each port once, with how many had been kept when it last was: a blender's
 // small motifs entered the same ports again and again, past the most an
 // array holds.
@@ -970,7 +970,7 @@ export const withNearestIslands = nearestIslands.during;
  * kept for the final check (see `contourMotif`). Earlier, it can stand where
  * a later construction would be clean, so only a request refused without it
  * tries again with it: every heart built without it keeps its cuts. */
-const visibleIslands = ambientSwitch();
+const visibleIslands = ambientSwitch('visibleIslands');
 let setAside = 0;
 /** How many such constructions were set aside so far: a request that set
  * none aside would fail the same way again. */
@@ -1701,11 +1701,11 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
 
 /** Whether a heart refused every way is being made again (see
  * `generateMade`): some last ways are taken only then. */
-const remaking = ambientSwitch();
+const remaking = ambientSwitch('remaking');
 export const withRemaking = remaking.during;
 /** Whether a motif's islands are also reached up the channels between its
  * pieces (see `channelPoints`), where no way round them finishes. */
-const channels = ambientSwitch();
+const channels = ambientSwitch('channels');
 export const withChannels = channels.during;
 /** Points a few units apart along every ring, on both sides of it: midway
  * across where the way there is narrow, else half a margin off: a way past

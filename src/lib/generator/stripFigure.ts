@@ -907,7 +907,7 @@ export function arrangement(rings: Ring[], strips: number, reach: 'motif' | 'nea
  * request has been refused without it, so that every heart built without it
  * keeps its cuts, and the letters or motif are hard to cut rather than
  * refused. */
-const crowdedHiddenCuts = ambientSwitch();
+const crowdedHiddenCuts = ambientSwitch('crowdedHiddenCuts');
 let setAside = 0;
 /** How many searches without it failed where it could have helped: a request
  * that failed none would fail the same way again. */

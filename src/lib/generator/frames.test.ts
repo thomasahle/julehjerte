@@ -149,6 +149,10 @@ describe('complete motif frames', () => {
   const { design } = generate({ mode: 'figure', name: 'Circle', contours: circleMotif.contours as Ring[], colors, style: 'rays', frame: 'circle', frameSize: 70, scale: .7, gap: 3 });
   expect(lobesShareTemplate(design.fingers, design.gridSize)).toBe(true);
  });
+ it('tells of no other way for a heart made its frame\'s first way', () => {
+  // Only a heart made again some other way says how (see `via`).
+  expect(generate({ mode: 'figure', name: 'Circle', contours: circleMotif.contours as Ring[], colors, style: 'rays', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).via).toBeUndefined();
+ });
  it('cuts small stars with one template for both lobes, their tips on the middle cut down it', () => {
   // On four strips at 70% four of the eight stars lie on the heart's middle,
   // each cut down it: its top tip an 18° point of each paper, which the page
@@ -1019,12 +1023,16 @@ describe('frames from real hearts', () => {
  slow('builds the trolley in the sunburst, its box reached round its frame', () => {
   // The box lies in the bay of the trolley's frame, which walls it off from
   // every straight way in.
-  expect(generate({ mode: 'figure', name: 'Trolley', contours: trolley.contours as Ring[], colors, style: 'sunburst', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
+  const heart = generate({ mode: 'figure', name: 'Trolley', contours: trolley.contours as Ring[], colors, style: 'sunburst', frame: 'circle', frameSize: 70, scale: .7, gap: 3 });
+  expect(heart.design.fingers.length).toBeGreaterThan(0);
+  expect(heart.via?.switches).toContain('everyWay');
  }, 60000);
  slow('builds the lasso in the medallion, its loop reached up its rope', () => {
   // The loop's inside lies in a bay of the square the lasso is cut from,
   // open only up the rope: no way round the square's hull reaches it.
-  expect(generate({ mode: 'figure', name: 'Lasso', contours: lasso.contours as Ring[], colors, style: 'layers', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
+  const heart = generate({ mode: 'figure', name: 'Lasso', contours: lasso.contours as Ring[], colors, style: 'layers', frame: 'circle', frameSize: 70, scale: .7, gap: 3 });
+  expect(heart.design.fingers.length).toBeGreaterThan(0);
+  expect(heart.via?.tier).toEqual({ channeled: true });
  }, 60000);
  slow('builds motifs whose rings touch at points, joined there by a neck of paper', () => {
   // The cross stands on the crown at two points; the two squares cross at
@@ -1041,7 +1049,9 @@ describe('frames from real hearts', () => {
  slow('builds the microphone in Tæt om figuren on its holder, which most gates meet', () => {
   // Three of the four gates lie on the holder round the capsule: with the
   // capsule, the larger piece, as base their spokes all crossed the holder.
-  expect(generate({ mode: 'figure', name: 'Microphone', contours: microphone.contours as Ring[], colors, style: 'fitted', frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
+  const heart = generate({ mode: 'figure', name: 'Microphone', contours: microphone.contours as Ring[], colors, style: 'fitted', frame: 'circle', frameSize: 70, scale: .7, gap: 3 });
+  expect(heart.design.fingers.length).toBeGreaterThan(0);
+  expect(heart.via?.tier).toMatchObject({ based: 0 });
  }, 60000);
  slow('builds the subway train in Tæt om figuren, a small window left a margin from where it is entered', () => {
   // Each small square window comes nearest the way in and the way on at one

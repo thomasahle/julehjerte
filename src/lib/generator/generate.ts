@@ -1,4 +1,4 @@
-import { ambientSwitch } from './ambient';
+import { ambientSwitch, switchesOn } from './ambient';
 import { createExactCurveFitter } from '$lib/inverse/curveFitCache';
 import { simplifyCubicChain } from '$lib/inverse/simplifyCurves';
 import { generateLayeredFigure } from './layers';
@@ -185,7 +185,31 @@ export type GeneratorResult = {
 	 * strips its squares show, the heart leaving those lines out (see
 	 * `boardRanges`). */
 	board?: number;
+	/** How it was made, where not its frame's first way, for whoever asks why
+	 * a heart looks as it does (the page reads none of it): the switches on
+	 * as its cuts were finished (see `ambientSwitch`), and what the tier of
+	 * its frame's recipes that built it turns on (see `Tier`), where the
+	 * heart is made straight from that tier's cuts: a later retry that draws
+	 * its own names none. */
+	via?: { switches?: string[]; tier?: Tier };
 };
+/** A tier of a frame's recipes: what it turns on of the frame's options, the
+ * first way turning on none. */
+export type Tier = Record<string, boolean | number | undefined>;
+/** A heart with the tier that built it (see `GeneratorResult.via`). */
+function builtBy(heart: GeneratorResult, tier: Tier = {}): GeneratorResult {
+	const on = Object.fromEntries(Object.entries(tier).filter(([, value]) => value !== undefined && value !== false));
+	return Object.keys(on).length ? { ...heart, via: { ...heart.via, tier: on } } : heart;
+}
+/** The tier that built each construction kept unfinished (see
+ * `RecipeContext`), for the hard-to-cut heart made of it. */
+const tiersOf = new WeakMap<object, Tier>();
+/** A construction made of another's cuts: built by the same tier. */
+function madeOf<T extends object>(from: object, construction: T): T {
+	const tier = tiersOf.get(from);
+	if (tier) tiersOf.set(construction, tier);
+	return construction;
+}
 /** Symmetric gates for a motif that is its own mirror image, after its own
  * (see `fittedGates`): those on the heart's middle further out or meeting the
  * motif on the middle itself, those beside it on the upper of two tied tips
@@ -1130,6 +1154,8 @@ function finishConstruction(request: GeneratorRequest, r: Construction, recipe: 
 	fidelity(design, r.artwork, domain, r.edges, r.background);
 	if (!curved && spacing === 1) madeFrom.set(design, { request, construction: r, curveFitter });
 	if (!curved) builtFrom.set(design, r);
+	const switches = switchesOn();
+	if (switches.length) return { design, recipe, via: { switches } };
 	return { design, recipe };
 }
 
@@ -1696,16 +1722,8 @@ function generateAtSizeOrSmaller(request: GeneratorRequest): GeneratorResult {
 /** Set while a sunburst's size ladder keeps the space around the motif (see
  * `generateAtSizeOrSmaller`): its circle does not then keep the frame's own
  * size at a smaller size (see `frameAlternatives`). */
-let spaceKept = false;
-function keepingSpace<T>(build: () => T): T {
-	const before = spaceKept;
-	spaceKept = true;
-	try {
-		return build();
-	} finally {
-		spaceKept = before;
-	}
-}
+const spaceKept = ambientSwitch('spaceKept');
+const keepingSpace = spaceKept.during;
 
 /** A text in a frame that is a figure frame (see `textFigure`). The letters
  * in the checks keep the strips the visitor chose, hard to cut if need be;
@@ -1741,7 +1759,7 @@ function generateTextFigure(request: GeneratorRequest): GeneratorResult {
  * several pieces they could not build at their size without: only a request
  * refused without them tries again with them, so every heart built without
  * them keeps its cuts. */
-const everyWay = ambientSwitch();
+const everyWay = ambientSwitch('everyWay');
 let everyWayPassed = 0;
 const everyWaySetAside = () => everyWayPassed;
 const withEveryWay = everyWay.during;
@@ -1750,7 +1768,7 @@ const withEveryWay = everyWay.during;
  * `generateComponentLanes`), and how many lane constructions failed for
  * crossing those: only a request refused without them tries again with them,
  * so every heart built without them keeps its cuts. */
-const passingLanes = ambientSwitch();
+const passingLanes = ambientSwitch('passingLanes');
 let passingLanesFailed = 0;
 /** Whether a motif of several pieces, refused every other way, hard to cut
  * too, is made again with its islands reached up the channels between them
@@ -1758,7 +1776,7 @@ let passingLanesFailed = 0;
  * without it keeps its cuts and its time. As a last resort before the
  * hard-to-cut ones it gave a suitcase in Kiler a sharp tip more, and a
  * rectangle among ten dots, hard in Strålekrans, twice its twenty minutes. */
-const channelWays = ambientSwitch();
+const channelWays = ambientSwitch('channelWays');
 const withChannelWays = channelWays.during;
 const passingLanesSetAside = () => passingLanesFailed;
 const withPassingLanes = passingLanes.during;
@@ -2060,7 +2078,7 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
 	// (see `generateAtSizeOrSmaller`).
 	if (request.gap !== undefined && CIRCLE_STYLES.includes(style)) {
 		const spaced = [request.gap, request.gap + 4].map((gap, i) => ({ request: fitCircle({ ...request, gap }), retries: true, lastResort: i > 0 }));
-		if (style === 'sunburst' && spaceKept) return spaced;
+		if (style === 'sunburst' && spaceKept.on) return spaced;
 		return [...spaced, { request: { ...request, gap: undefined }, retries: true, lastResort: true, ...style === 'sunburst' ? { smaller: .8 } : {} }];
 	}
 	return [{ request: fillSquare(request), retries: true }];
@@ -2128,8 +2146,8 @@ function generateOnceMade(request: GeneratorRequest, { deferHard, variants = Inf
 			if (edges === construction.edges) continue;
 			let retry: Construction | undefined;
 			try {
-				retry = { ...construction, edges, geometry: compile(edges) };
-				return finishConstruction(request, retry, recipe, undefined, curveFitter);
+				retry = madeOf(construction, { ...construction, edges, geometry: compile(edges) });
+				return builtBy(finishConstruction(request, retry, recipe, undefined, curveFitter), tiersOf.get(retry));
 			} catch (retryError) {
 				refusal(retryError);
 				if (retry) curvedCandidates.push({ construction: retry, recipe });
@@ -2167,7 +2185,7 @@ function generateOnceMade(request: GeneratorRequest, { deferHard, variants = Inf
 			const geometry = curveSharedCuts(construction.geometry);
 			if (!geometry) continue;
 			const curved = unlessRefused(() => finishConstruction(request, construction, recipe, geometry, curveFitter));
-			if (curved) return curved;
+			if (curved) return builtBy(curved, tiersOf.get(construction));
 		}
 		const panels = retryPanelLayouts(request, curveFitter);
 		if (panels) return improveTextPanelTips(request, panels, curveFitter);
@@ -2310,10 +2328,10 @@ function hardToCutResult(request: GeneratorRequest,
 	type Choice = { result: GeneratorResult; construction: Construction; recipe: GeneratorResult['recipe']; spacing: number; narrow: number; tears: number; tips: [number, number] };
 	let best: Choice | undefined;
 	const seen = new Set<string>(), lowest = HARD_TO_CUT_SPACINGS.at(-1)!;
-	const choice = (construction: Construction, recipe: GeneratorResult['recipe']): Choice | undefined => {
+	const choice = (construction: Construction, recipe: GeneratorResult['recipe'], tier = tiersOf.get(construction)): Choice | undefined => {
 		try {
 			// Finish once at the narrowest spacing, then record the widest one kept.
-			const result = finishConstruction(request, construction, recipe, undefined, curveFitter, lowest),
+			const result = builtBy(finishConstruction(request, construction, recipe, undefined, curveFitter, lowest), tier),
 				{ design } = result, rect = inferOverlapRect(design.fingers, design.gridSize),
 				full = intersectionMarginPx(rect, gridClearanceScale(design.gridSize.x, design.gridSize.y)),
 				narrow = findSearchIssues(design.fingers, full).size,
@@ -2343,7 +2361,7 @@ function hardToCutResult(request: GeneratorRequest,
 		const all = spreadPorts(kept.construction.edges, PORT_GAP);
 		const better = (next: Choice | undefined): next is Choice => !!next && next.spacing >= kept.spacing &&
 			next.narrow <= kept.narrow && next.tears < kept.tears;
-		const spread = (edges: Edge[]) => choice({ ...kept.construction, edges, geometry: compile(edges) }, kept.recipe);
+		const spread = (edges: Edge[]) => choice({ ...kept.construction, edges, geometry: compile(edges) }, kept.recipe, kept.result.via?.tier);
 		const whole = all && spread(all.edges);
 		if (better(whole)) kept = whole;
 		else if (all) for (const port of all.ports.slice(0, SPREAD_ONE_BY_ONE)) {
@@ -3026,7 +3044,7 @@ function retryPanelLayouts(request: GeneratorRequest, curveFitter?: ReturnType<t
  * finished into a heart (a refused one kept for `onRejected`, unless `keep`
  * is off), and how much of the search the caller asked for. */
 type RecipeContext = {
-	finish: (construction: Construction, recipe: GeneratorResult['recipe'], options?: { keep?: boolean }) => GeneratorResult;
+	finish: (construction: Construction, recipe: GeneratorResult['recipe'], options?: { keep?: boolean; tier?: Tier }) => GeneratorResult;
 	onRejected: (construction: Construction, recipe: GeneratorResult['recipe']) => void;
 	curveFitter: ReturnType<typeof createExactCurveFitter>;
 	variants: number;
@@ -3040,10 +3058,11 @@ function generateUsingRecipes(request: GeneratorRequest,
 		if (!contours.length) throw new ConstructionError('empty', 'No contour');
 		request = { ...request, contours };
 	}
-	const finish = (construction: Construction, recipe: GeneratorResult['recipe'], { keep = true }: { keep?: boolean } = {}) => {
-		try { return finishConstruction(request, construction, recipe, undefined, curveFitter); }
+	const finish = (construction: Construction, recipe: GeneratorResult['recipe'], { keep = true, tier }: { keep?: boolean; tier?: Tier } = {}) => {
+		try { return builtBy(finishConstruction(request, construction, recipe, undefined, curveFitter), tier); }
 		catch (error) {
 			refusal(error);
+			if (keep && tier) tiersOf.set(construction, tier);
 			if (keep) onRejected(construction, recipe);
 			throw error;
 		}
@@ -3401,11 +3420,13 @@ function textRecipes(request: GeneratorRequest, { finish, variants, allRecipes }
 	// between them, as in the open frames (see `withChannelWays`: the
 	// lasso's loop).
 	const pieced = [...new Set(text.replace(/\s/g, ''))].some(char => forest(font.glyphs[char]?.contours ?? []).length > 1);
+	const tiers = new Map<(typeof recipes)[number], Tier>();
+	const tiered = (tier: Tier, recipe: (typeof recipes)[number]) => { recipes.push(recipe); tiers.set(recipe, tier); };
 	if (everyWay.on && pieced) for (const around of [false, true])
-		recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+		tiered({ around }, () => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 			spread: true, practical: true, compound: true, nested: true, bases: true, around }));
 	if (channelWays.on && pieced)
-		recipes.push(() => withChannels(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+		tiered({ around: true, legs: true, channeled: true }, () => withChannels(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
 			spread: true, practical: true, compound: true, nested: true, bases: true, around: true, legs: true })));
 	let last: unknown;
 	// The recipes differ in how the letters' cuts spread over panels and
@@ -3421,7 +3442,7 @@ function textRecipes(request: GeneratorRequest, { finish, variants, allRecipes }
 			try {
 				const result = construct();
 				if (result) {
-					const done = finish(result, 'letters');
+					const done = finish(result, 'letters', { tier: tiers.get(construct) });
 					look ??= looks.get(construct) ?? '';
 					yield done;
 				}
@@ -3495,7 +3516,7 @@ function layerRecipes(request: GeneratorRequest, { finish, curveFitter }: Recipe
 				args[7] = { ...args[7], practical: true, compound: true, nested: true, bays: true };
 				return fourPortMotif(...args);
 			});
-			return finish(way ? way(route) : route(), 'nested');
+			return finish(way ? way(route) : route(), 'nested', { tier: { channeled: way === withChannels, counterWays: way === withCounterWays } });
 		} catch (everyError) {
 			refusal(everyError);
 		}
@@ -3785,8 +3806,8 @@ function cornerRecipes(request: GeneratorRequest, { finish }: RecipeContext): Ge
 	// One fitting the border narrows the outer strips, a picture of its
 	// own: only where none of the others finish.
 	const fitted = new Set<GeneratorResult>();
-	const layouts = ({ routeMargin = 0, avoid = false, border, wholeLanes = false, stepped = false, everyWay: ways = false, walled = false, nested = false }:
-		Pick<CornerOptions, 'routeMargin' | 'avoid' | 'wholeLanes' | 'stepped' | 'everyWay' | 'walled' | 'nested'> & { border?: boolean } = {}) => bestOfFirst((function* () {
+	const layouts = (tier: Pick<CornerOptions, 'routeMargin' | 'avoid' | 'wholeLanes' | 'stepped' | 'everyWay' | 'walled' | 'nested'> & { border?: boolean } = {}) => bestOfFirst((function* () {
+		const { routeMargin = 0, avoid = false, border, wholeLanes = false, stepped = false, everyWay: ways = false, walled = false, nested = false } = tier;
 		let finished = false;
 		for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) for (const holdLegs of [true, false]) {
 			if (fitBorder && finished) return;
@@ -3802,7 +3823,7 @@ function cornerRecipes(request: GeneratorRequest, { finish }: RecipeContext): Ge
 				// Keep the established frame and skip another fit when moving
 				// separate components did not change any lane or connection.
 				if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
-				const done = finish(result, 'silhouette', { keep: !routeMargin });
+				const done = finish(result, 'silhouette', { keep: !routeMargin, tier });
 				finished = true;
 				if (fitBorder) fitted.add(done);
 				yield done;
@@ -3948,14 +3969,15 @@ function openRecipes(request: GeneratorRequest, open: OpenFrame, { finish }: Rec
 			? [{ walled: true, channeled: true }, { walled: true, padding: 1, channeled: true },
 				{ walled: true, based: 0 }, { walled: true, based: 1 }, { walled: true, based: 2 }, { sweep: 1 }, { sweep: -1 }]
 			: [{}, { walled: true }, { walled: true, padding: 1 }];
-		if (pieced && (everyWay.on || channelWays.on)) for (const { walled = false, padding = 0, channeled = false, based = -1, sweep } of tiers) try {
+		if (pieced && (everyWay.on || channelWays.on)) for (const tier of tiers) try {
+			const { walled = false, padding = 0, channeled = false, based = -1, sweep } = tier;
 			const construct = () => generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, { route: (...args) => {
 				const root = based < 0 ? undefined : otherBases(args[1], args[2])[based];
 				if (based >= 0 && !root) throw new ConstructionError('topology', 'No other piece for a base');
 				args[7] = { ...args[7], practical: true, compound: true, nested: true, around: true, legs: true, walled, ...root ? { root } : {}, ...sweep ? { sweep } : {} };
 				return fourPortMotif(...args);
 			}, padding, open, symmetric: true });
-			return finish(channeled ? withChannels(construct) : construct(), 'silhouette');
+			return finish(channeled ? withChannels(construct) : construct(), 'silhouette', { tier });
 		} catch (everyError) {
 			refusal(everyError);
 		}
@@ -4109,8 +4131,9 @@ function cellRecipes(request: GeneratorRequest, { finish }: RecipeContext): Gene
 	const tiers: { around?: boolean; legs?: boolean; channeled?: boolean; based?: number }[] = channelWays.on
 		? [{ around: true, legs: true, channeled: true }, { around: true, legs: true, based: 0 }, { around: true, legs: true, based: 1 }, { around: true, legs: true, based: 2 }]
 		: [{}, { around: true }, { around: true, legs: true }];
-	if (pieced && (everyWay.on || channelWays.on)) for (const { around = false, legs = false, channeled = false, based = -1 } of tiers) for (const construct of balancedRecipes) {
+	if (pieced && (everyWay.on || channelWays.on)) for (const tier of tiers) for (const construct of balancedRecipes) {
 		try {
+			const { around = false, legs = false, channeled = false, based = -1 } = tier;
 			const route = () => construct((...args) => {
 				const root = based < 0 ? undefined : otherBases(args[1], args[2])[based];
 				if (based >= 0 && !root) throw new ConstructionError('topology', 'No other piece for a base');
@@ -4118,7 +4141,7 @@ function cellRecipes(request: GeneratorRequest, { finish }: RecipeContext): Gene
 				return fourPortMotif(...args);
 			});
 			const construction = channeled ? withChannels(route) : route();
-			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested');
+			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested', { tier });
 		} catch (error) {
 			refusal(error);
 			errors.push(error);

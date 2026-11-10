@@ -7,7 +7,11 @@ export type AmbientSwitch = {
 	during<T>(build: () => T): T;
 };
 
-export function ambientSwitch(): AmbientSwitch {
+/** The switches that have a name, for saying which are on (see `switchesOn`). */
+const named: [string, AmbientSwitch][] = [];
+
+/** A switch; with a `name`, one that `switchesOn` tells of while it is on. */
+export function ambientSwitch(name?: string): AmbientSwitch {
 	const state = {
 		on: false,
 		during<T>(build: () => T): T {
@@ -20,5 +24,10 @@ export function ambientSwitch(): AmbientSwitch {
 			}
 		}
 	};
+	if (name) named.push([name, state]);
 	return state;
 }
+
+/** The names of the switches on now, in the alphabet's order: how what is
+ * built now differs from what is built with none (see `GeneratorResult.via`). */
+export const switchesOn = (): string[] => named.filter(([, state]) => state.on).map(([name]) => name).sort();
