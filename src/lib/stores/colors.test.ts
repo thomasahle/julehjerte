@@ -73,7 +73,7 @@ describe('colour store', () => {
 			const store = await freshStore();
 			const seen: unknown[] = [];
 			store.subscribeColors((c) => seen.push(c));
-			expect(() => store.setLeftColor('#00aa00')).not.toThrow();
+			expect(() => store.setColors({ left: '#00aa00', right: store.DEFAULT_COLORS.right })).not.toThrow();
 			expect(store.getColors()).toEqual({ left: '#00aa00', right: store.DEFAULT_COLORS.right });
 			expect(() => store.flipColors()).not.toThrow();
 			expect(store.getColors()).toEqual({ left: store.DEFAULT_COLORS.right, right: '#00aa00' });

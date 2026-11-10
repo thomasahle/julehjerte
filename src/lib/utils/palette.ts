@@ -11,11 +11,12 @@
  * ribbon (cut from the right-hand paper) is always the strong colour.
  *
  * Rules every pair keeps (palette.test.ts checks them):
- *   - the two papers are at least PAIR_CONTRAST_MIN apart in luminance
- *     contrast, so the weave reads;
- *   - a light paper that is almost the page's own snow (#f9f9f3) carries
- *     `edge: true`: the mode draws a faint outline round such a heart, since
- *     its edge would otherwise be its drop shadow alone (ochre and white).
+ *   - the two papers are at least 2.2 apart in WCAG contrast, so the weave
+ *     reads;
+ *   - a light paper that is almost the page's own snow (#f9f9f3, contrast
+ *     below 1.15) carries `edge: true`: the mode draws a faint outline round
+ *     such a heart, since its edge would otherwise be its drop shadow alone
+ *     (ochre and white).
  *   - none of them is the site's own red and white: it is too bright beside
  *     the rest, and the header has a button of its own for it.
  *
@@ -50,15 +51,6 @@ export interface PalettePair extends HeartColors {
 	/** The light paper is close to the page background: outline the heart. */
 	edge?: boolean;
 }
-
-/** The page background (`--page` in app.css), which the light papers are checked against. */
-export const PAGE_BACKGROUND = '#f9f9f3';
-
-/** The least luminance contrast between a pair's two papers. */
-export const PAIR_CONTRAST_MIN = 2.2;
-
-/** Below this contrast against the page, a light paper needs `edge`. */
-export const PAGE_CONTRAST_MIN = 1.15;
 
 /**
  * Ordered so that walking it one step at a time, as the gallery does,
@@ -140,23 +132,6 @@ export const PALETTE: readonly PalettePair[] = [
 		left: '#efdfe6', right: '#7d5a7e'
 	}
 ];
-
-/** WCAG relative luminance of a `#rrggbb` colour. */
-export function luminance(hex: string): number {
-	const m = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex);
-	if (!m) throw new Error(`luminance: not a #rrggbb colour: ${hex}`);
-	const [r, g, b] = m.slice(1).map((h) => {
-		const c = parseInt(h, 16) / 255;
-		return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
-	});
-	return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-
-/** WCAG contrast ratio between two `#rrggbb` colours, 1 to 21. */
-export function contrastRatio(a: string, b: string): number {
-	const [lo, hi] = [luminance(a), luminance(b)].sort((x, y) => x - y);
-	return (hi + 0.05) / (lo + 0.05);
-}
 
 const GALLERY_POSITION = new Map(ALL_HEART_IDS.map((id, i) => [id, i]));
 

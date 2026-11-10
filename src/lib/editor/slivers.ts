@@ -248,35 +248,6 @@ export function smallestPiece(
 export const MIN_PIECE = 0.08;
 
 /**
- * How much of the woven picture is thinner than `width` cells, in cells: the parts a disc of that width
- * cannot reach while staying inside its own colour (a morphological opening of the picture, sampled
- * RESOLUTION times each way), so the long thin strips and narrow necks of a piece, which paper does not
- * survive, whatever the piece's size. `n` is the heart's strips.
- */
-export function thinArea(
-	fingers: Finger[],
-	rect: { left: number; top: number; width: number; height: number },
-	n: number,
-	width: number
-): number {
-	const R = PIECE_RESOLUTION;
-	const colour = sampleColours(fingers, rect, R);
-	const radius = (width / 2) * (R / n);
-	// Distance to the other colour, then to the cores (samples at least `radius` inside): a sample is in a
-	// thin part when no core is within `radius` of it.
-	const toOther = chamfer(R, (i) => {
-		const r = (i / R) | 0;
-		const c = i % R;
-		const other = (j: number) => colour[j] !== colour[i];
-		return (r > 0 && other(i - R)) || (r < R - 1 && other(i + R)) || (c > 0 && other(i - 1)) || (c < R - 1 && other(i + 1));
-	});
-	const toCore = chamfer(R, (i) => toOther[i]! / 3 >= radius);
-	let thin = 0;
-	for (let i = 0; i < R * R; i++) if (toCore[i]! / 3 > radius + 1) thin++;
-	return (thin / (R * R)) * n * n;
-}
-
-/**
  * The widest band along the square's edge that no cut of the lobe across it enters, in cells: for each
  * point of an edge, how far in the first cut is, the most of these. A moved, stretched or turned tiling can
  * leave such a band empty, which looks unfinished. `n` is the heart's strips.

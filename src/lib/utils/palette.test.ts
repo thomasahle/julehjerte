@@ -5,41 +5,48 @@ import { describe, expect, it } from 'vitest';
 import { CATEGORIES } from '$lib/data/categories';
 import { DEFAULT_COLORS_HEX } from '$lib/stores/colors';
 import {
-	PAGE_BACKGROUND,
-	PAGE_CONTRAST_MIN,
-	PAIR_CONTRAST_MIN,
 	PALETTE,
 	EDGE_COLOR,
 	IDENTITY,
-	contrastRatio,
 	iconPairs,
 	isPermutation,
 	paletteVariables,
 	randomPermutation,
-	luminance,
 	pairAttributes,
 	pairIndex
 } from './palette';
+
+/** The page background (`--page` in app.css), which the light papers are checked against. */
+const PAGE_BACKGROUND = '#f9f9f3';
+
+/** The least luminance contrast between a pair's two papers. */
+const PAIR_CONTRAST_MIN = 2.2;
+
+/** Below this contrast against the page, a light paper needs `edge`. */
+const PAGE_CONTRAST_MIN = 1.15;
+
+/** WCAG relative luminance of a `#rrggbb` colour. */
+function luminance(hex: string): number {
+	const m = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex);
+	if (!m) throw new Error(`luminance: not a #rrggbb colour: ${hex}`);
+	const [r, g, b] = m.slice(1).map((h) => {
+		const c = parseInt(h, 16) / 255;
+		return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+	});
+	return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+/** WCAG contrast ratio between two `#rrggbb` colours, 1 to 21. */
+function contrastRatio(a: string, b: string): number {
+	const [lo, hi] = [luminance(a), luminance(b)].sort((x, y) => x - y);
+	return (hi + 0.05) / (lo + 0.05);
+}
 
 /** Chroma, max(r, g, b) - min(r, g, b) on 0..1: 1 is neon, 0 is grey. */
 function chroma(hex: string): number {
 	const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
 	return Math.max(r, g, b) - Math.min(r, g, b);
 }
-
-describe('contrast', () => {
-	it('measures as WCAG does', () => {
-		expect(luminance('#000000')).toBe(0);
-		expect(luminance('#ffffff')).toBeCloseTo(1, 10);
-		expect(contrastRatio('#000000', '#ffffff')).toBeCloseTo(21, 10);
-		expect(contrastRatio('#777777', '#ffffff')).toBeCloseTo(4.48, 2);
-		expect(contrastRatio('#123456', '#123456')).toBe(1);
-	});
-
-	it('refuses what is not #rrggbb', () => {
-		expect(() => luminance('rgb(1, 2, 3)')).toThrow();
-	});
-});
 
 describe('the palette', () => {
 	it('has ten to twelve pairs, all different', () => {

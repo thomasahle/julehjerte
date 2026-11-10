@@ -100,14 +100,6 @@ export function setColors(colors: HeartColors) {
   subscribers.forEach(fn => fn({ ...currentColors }));
 }
 
-export function setLeftColor(color: string) {
-  setColors({ ...currentColors, left: color });
-}
-
-export function setRightColor(color: string) {
-  setColors({ ...currentColors, right: color });
-}
-
 /** Swap the two paper colours: the header's red-and-white button and its colour dialog. */
 export function flipColors() {
   const { left, right } = getColors();

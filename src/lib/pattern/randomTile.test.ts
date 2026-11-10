@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { isFigure, randomTileDraw, randomTileKind, tileFigure } from './randomTile';
 import { randomTile, tileFingers, tileGrid } from './escherTab';
 import { freeSides, halfOf, ruleInfo } from './rules';
-import { EXAMPLES, exampleTile } from './examples';
+import { EXAMPLES, exampleTile } from './examples.test-helpers';
 import { straightCurve, type PatternTile } from './tiling';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { gridClearanceScale } from '$lib/geometry/clearance';

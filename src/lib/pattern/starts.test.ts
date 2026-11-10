@@ -2,9 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { ALL_RULES, freeSides, halfOf, neighbours, opposite, ruleInfo, ruleKey, sameRule } from './rules';
-import { patternToDesign, shapeFields, straightCurve, tileShape, tileTurn, unturnedShape, type PatternTile } from './tiling';
+import { shapeFields, straightCurve, tileShape, tileTurn, unturnedShape, type PatternTile } from './tiling';
 import { carryCurves, isStraightTile, ruleStart, switchRule } from './starts';
-import { EXAMPLES, exampleTile, knobTile } from './examples';
+import { EXAMPLES, exampleTile, knobTile } from './examples.test-helpers';
+import { patternToDesign } from './tiling.test-helpers';
 
 const problems = (tile: PatternTile) => {
 	const design = patternToDesign(tile, { name: ruleKey(tile.rule) });

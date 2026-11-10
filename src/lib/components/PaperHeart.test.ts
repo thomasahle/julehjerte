@@ -9,7 +9,7 @@ import { fitLines } from '$lib/pattern/tiling';
 import { ruleStart } from '$lib/pattern/starts';
 import { dragTile, restartedTile, savedPattern, startPanDrag, tileFingers, tileGrid, turnedTile, weaveParityOf } from '$lib/pattern/escherTab';
 import { getCenteredRectParams } from '$lib/utils/overlapRect';
-import { knobTile } from '$lib/pattern/examples';
+import { knobTile } from '$lib/pattern/examples.test-helpers';
 // The Escher tab's panel, which Tegn loads when a heart opens on the tab, loaded ahead.
 import '$lib/components/pattern/EscherPanel.svelte';
 

@@ -4,11 +4,12 @@ import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIs
 import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
 import { splitBezierAt } from '$lib/geometry/bezierSegments';
 import { ALL_RULES, freeSides, halfOf, latticeOf, neighbours, opposite, ruleRepeat, ruleInfo, ruleKey, stretchSource, type CurveKey, type TileRule } from './rules';
-import { cellsToRaw, crossing, cutCounts, firstLine, fitLines, patternCuts, patternToDesign, rawToCells, sourceCurve, straightCurve, tileShape, tileTurn, unturnedShape, type PatternTile, type SideCurve } from './tiling';
+import { cellsToRaw, crossing, cutCounts, firstLine, fitLines, patternCuts, rawToCells, sourceCurve, straightCurve, tileShape, tileTurn, unturnedShape, type PatternTile, type SideCurve } from './tiling';
 import { ruleStart } from './starts';
 import { arrowheadsOn, templateStretches } from './template';
 import { cornerClass, cornerFreedom, jointFreedom, jointsOfLength } from './corners';
-import { EXAMPLES, exampleTile, knobTile } from './examples';
+import { EXAMPLES, exampleTile, knobTile } from './examples.test-helpers';
+import { patternToDesign } from './tiling.test-helpers';
 import {
 	cellOverlay,
 	cutOfFinger,

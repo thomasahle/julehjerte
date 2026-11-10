@@ -9,7 +9,7 @@ import { ALL_RULES, COMMON_RULES, freeSides, neighbours, opposite, ruleInfo, rul
 import { carryNodeTypes, cutCounts, fitLines, tileTurn, unturnedShape, type PatternTile, type SideCurve } from './tiling';
 import { splitBezierAt } from '$lib/geometry/bezierSegments';
 import { ruleStart } from './starts';
-import { knobTile } from './examples';
+import { knobTile } from './examples.test-helpers';
 import { wholeTileArea } from './centre';
 import {
 	centredTile,
