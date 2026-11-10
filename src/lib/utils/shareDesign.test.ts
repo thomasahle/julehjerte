@@ -1,7 +1,8 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import type { HeartDesignJson } from '$lib/types/heart';
 import { decodeSharedDesign, encodeSharedDesign, sharedDesignUrl, SHARED_HEART_ID } from './shareDesign';
-import { normalizeHeartDesign } from './heartDesign';
+import { normalizeHeartDesign, serializeHeartDesign } from './heartDesign';
+import { DESIGN_JSON, EDITOR_LINK, SHARE_DEFLATED, SHARE_PLAIN } from './fixtures/storedForms';
 
 const design: HeartDesignJson = {
   id: 'heart-123-abc',
@@ -90,5 +91,50 @@ describe('shareDesign', () => {
   it('builds the share URL for both languages', () => {
     expect(sharedDesignUrl('abc', 'da')).toBe(`https://juleflet.dk/hjerte/${SHARED_HEART_ID}/#design=abc`);
     expect(sharedDesignUrl('abc', 'en')).toBe(`https://juleflet.dk/en/hjerte/${SHARED_HEART_ID}/#design=abc`);
+  });
+});
+
+/** The JSON a plain payload carries. */
+function plainJson(payload: string): unknown {
+  const binary = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+  return JSON.parse(new TextDecoder().decode(Uint8Array.from(binary, (c) => c.charCodeAt(0))));
+}
+
+// Every link shared so far must keep opening the heart it was made for.
+describe('shared links', () => {
+  const heart = () => normalizeHeartDesign(JSON.parse(DESIGN_JSON))!;
+  /** The heart's JSON as a link carries it: coordinates to 1/1000. */
+  const shared = () => plainJson(SHARE_PLAIN) as HeartDesignJson;
+
+  it('are written as the site wrote them on 10 Nov 2026', async () => {
+    expect(shared().fingers[0].pathData).toBe('M 100 33.333 C 66.667 47.619 33.333 19.048 0 33.333');
+    expect({ ...shared(), fingers: undefined }).toEqual({ ...JSON.parse(DESIGN_JSON), fingers: undefined });
+    expect(await decodeSharedDesign(await encodeSharedDesign(serializeHeartDesign(heart())))).toEqual(shared());
+    // @ts-expect-error simulate a browser without CompressionStream
+    globalThis.CompressionStream = undefined;
+    expect(await encodeSharedDesign(serializeHeartDesign(heart()))).toBe(SHARE_PLAIN);
+  });
+
+  it('read what the site wrote: deflated, plain, and Tegn\'s own JSON, percent-encoded or not', async () => {
+    expect(await decodeSharedDesign(SHARE_DEFLATED)).toEqual(shared());
+    expect(await decodeSharedDesign(SHARE_PLAIN)).toEqual(shared());
+    expect(await decodeSharedDesign(EDITOR_LINK)).toEqual(JSON.parse(DESIGN_JSON));
+    expect(await decodeSharedDesign(decodeURIComponent(EDITOR_LINK))).toEqual(JSON.parse(DESIGN_JSON));
+    expect(await decodeSharedDesign(`  ${SHARE_PLAIN}\n`)).toEqual(shared());
+    // Encoded twice, Tegn's JSON is no payload here.
+    expect(await decodeSharedDesign(encodeURIComponent(EDITOR_LINK))).toBeNull();
+  });
+
+  it('carry fields the reader does not know past it, such as a version', async () => {
+    const versioned = await encodeSharedDesign({ v: 1, ...serializeHeartDesign(heart()) } as HeartDesignJson);
+    expect(normalizeHeartDesign(await decodeSharedDesign(versioned))).toEqual(normalizeHeartDesign(shared()));
+  });
+
+  it('hand back the object they carry, heart or not, for normalizeHeartDesign to judge', async () => {
+    const plain = (value: unknown) => btoa(JSON.stringify(value)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    expect(await decodeSharedDesign(plain({}))).toEqual({});
+    expect(await decodeSharedDesign('{"later":true}')).toEqual({ later: true });
+    expect(await decodeSharedDesign(plain([1, 2]))).toBeNull();
+    expect(await decodeSharedDesign('{}')).toEqual({});
   });
 });

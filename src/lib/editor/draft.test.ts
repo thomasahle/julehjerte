@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import type { Finger, HeartDesign, Vec } from '$lib/types/heart';
 import { getCenteredRectParams } from '$lib/utils/overlapRect';
+import { normalizeHeartDesign, serializeHeartDesign } from '$lib/utils/heartDesign';
+import { DESIGN_JSON, DRAFT_JSON } from '$lib/utils/fixtures/storedForms';
 import { DRAFT_KEY, clearDraft, gallerySource, readDraft, writeDraft } from './draft';
 
 /** A minimal in-memory Storage. */
@@ -167,5 +169,48 @@ describe('clearDraft', () => {
 	it('does not throw when storage does, or when there is none', () => {
 		expect(() => clearDraft(throwingStorage())).not.toThrow();
 		expect(() => clearDraft(null)).not.toThrow();
+	});
+});
+
+// What a browser holds today must keep opening as the draft it was.
+describe('the stored draft', () => {
+	const heart = () => normalizeHeartDesign(JSON.parse(DESIGN_JSON))!;
+
+	it('is written as the site wrote it on 10 Nov 2026', () => {
+		const storage = fakeStorage();
+		writeDraft({ design: heart(), source: 'gallery:stjerne', savedAt: 1_762_790_400_000 }, storage);
+		expect(storage.getItem(DRAFT_KEY)).toBe(DRAFT_JSON);
+	});
+
+	it('reads what the site wrote', () => {
+		const draft = readDraft(fakeStorage({ [DRAFT_KEY]: DRAFT_JSON }))!;
+		expect(draft.source).toBe('gallery:stjerne');
+		expect(draft.savedAt).toBe(1_762_790_400_000);
+		expect(JSON.stringify(serializeHeartDesign(draft.design))).toBe(DESIGN_JSON);
+	});
+
+	it("reads a draft whose heart is in one of the heart's older forms", () => {
+		const stored = JSON.parse(DRAFT_JSON);
+		stored.design.gridSize = 3;
+		delete stored.design.colors;
+		const draft = readDraft(fakeStorage({ [DRAFT_KEY]: JSON.stringify(stored) }))!;
+		expect(draft.design.gridSize).toEqual({ x: 3, y: 3 });
+		expect(draft.design.colors).toBeUndefined();
+	});
+
+	it('reads past fields it does not know, such as a version', () => {
+		const stored = JSON.parse(DRAFT_JSON);
+		const versioned = { v: 1, ...stored, design: { v: 1, ...stored.design }, later: true };
+		const draft = readDraft(fakeStorage({ [DRAFT_KEY]: JSON.stringify(versioned) }))!;
+		expect(draft.source).toBe('gallery:stjerne');
+		expect(JSON.stringify(serializeHeartDesign(draft.design))).toBe(DESIGN_JSON);
+	});
+
+	it('finds no draft where the heart is not an object, and a blank heart where the object holds none', () => {
+		for (const design of [null, 42, 'heart'])
+			expect(readDraft(fakeStorage({ [DRAFT_KEY]: JSON.stringify({ ...JSON.parse(DRAFT_JSON), design }) }))).toBeNull();
+		const blank = readDraft(fakeStorage({ [DRAFT_KEY]: JSON.stringify({ ...JSON.parse(DRAFT_JSON), design: {} }) }))!;
+		expect(blank.design).toMatchObject({ id: '', name: 'Untitled' });
+		expect(blank.source).toBe('gallery:stjerne');
 	});
 });
