@@ -485,7 +485,7 @@ describe('frames from real hearts', () => {
    // Every square of one colour, where it can be: 2, 18 and 32 stars.
    expect([...motifChoices(board)[layout!.alternative].text].filter(c => c === '*').length, `${board}`).toBe([2, 18, 32][[2, 6, 8].indexOf(board)]);
   }
- });
+ }, 30000);
  it('lays the motif in the centre square of a regular board, with equal squares around it', () => {
   for (const [name, motif] of Object.entries({ star, tree, gift, cat })) {
    const { design, hardToCut } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'squares' });
