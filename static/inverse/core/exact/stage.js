@@ -288,6 +288,33 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
   return {found: null, nearest, rungs, error, code};
 }
 
+/** exactSearch's searches, in order, once its outline is not symmetric enough
+ * for the ties (NOT_SYMMETRIC): each, where `when` holds, exactSearch again on
+ * `outline` with `options` (from the search's `base` ones and `alone`'s); the
+ * first whose result `stands` is the answer, with `adds`, its report marked with
+ * `mark` of the error the ties met. The made-symmetric outline's search has the
+ * fallbacks of its own, the others none. */
+const ASYMMETRIC = [
+  // An outline not symmetric enough for the ties, its curves fitted from one
+  // end on a symmetric mask (balls, davidsstjerne-circ, amy-flowering): made
+  // symmetric (target.js symmetricLines). Not before: outlines the ties already
+  // hold, made symmetric, gave as many templates but other ones, some worse.
+  // (history: docs/inverse/SEARCH-CONSTANTS.md#even)
+  {when: h => !h.even, outline: h => h.outline, options: h => ({...h.base, symmetry: h.symmetry, even: true, ...h.alone}),
+    stands: again => again.found || again.errorCode !== NOT_SYMMETRIC, mark: error => ({even: error})},
+  // Corners joined on one side of a mirror but not on the other (exact/target.js
+  // joinNearTouchings) leave the outline not quite symmetric: then without them.
+  {when: h => h.outline.metadata?.nearTouch > 0, outline: h => ({...h.outline, metadata: {...h.outline.metadata, nearTouch: 0}}),
+    options: h => ({...h.base, fallback: false, ...h.alone, symmetry: h.symmetry}),
+    stands: again => again.found || again.errorCode !== NOT_SYMMETRIC, mark: error => ({unjoined: error})},
+  // An outline not symmetric enough for the ties even so (a traced lily's
+  // petals): searched untied, the converter makes the cuts symmetric where that
+  // costs little. Kept as it was: neither this search nor the two above get the
+  // caller's `multi` (the subgroups' do).
+  {outline: h => h.outline, options: h => ({...h.base, fallback: false, ...h.alone, symmetry: []}), stands: () => true,
+    adds: {untied: true}, mark: error => ({unjoined: error, untied: true})}
+];
+
 /** What exactSearch calls on, passed in so that a test can drive its steps and
  * fallbacks on a fake clock with scripted searches (scripts/inverse/search-schedule.test.mjs). */
 export const STAGE_TOOLS = {now: () => performance.now(), exactOutline, networkLadder, exactStart, exactFromTemplate, assess, noteError};
@@ -395,27 +422,15 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   } catch (error) {
     return {found: null, report: {...report, error: String(error.message || error)}};
   }
-  // Corners joined on one side of a mirror but not on the other (exact/target.js
-  // joinNearTouchings) leave the outline not quite symmetric: then without them.
-  // An outline not symmetric enough for the ties even so (a traced lily's
-  // petals): searched untied, the converter makes the cuts symmetric where that
-  // costs little.
-  // An outline not symmetric enough for the ties, its curves fitted from one
-  // end on a symmetric mask (balls, davidsstjerne-circ, amy-flowering): made
-  // symmetric (target.js symmetricLines). Not before: outlines the ties already
-  // hold, made symmetric, gave as many templates but other ones, some worse.
-  // (history: docs/inverse/SEARCH-CONSTANTS.md#even)
-  if (found.code === NOT_SYMMETRIC && symmetry.length && fallback && !even) {
-    const evened = await exactSearch(outline, template, cfg, {deadline, reserve, onProgress, geometry, refine, symmetry, even: true, ...alone}, tools);
-    if (evened.found || evened.errorCode !== NOT_SYMMETRIC) return {...evened, report: {...evened.report, even: found.error}};
-  }
+  // An outline not symmetric enough for the ties: ASYMMETRIC's searches in
+  // turn, the first that stands the answer (the last always does).
   if (found.code === NOT_SYMMETRIC && symmetry.length && fallback) {
-    const options = {deadline, reserve, onProgress, geometry, refine, fallback: false, ...alone};
-    let again = outline.metadata?.nearTouch > 0
-      ? await exactSearch({...outline, metadata: {...outline.metadata, nearTouch: 0}}, template, cfg, {...options, symmetry}, tools)
-      : {found: null, report: {error: found.error}, errorCode: found.code};
-    if (!again.found && again.errorCode === NOT_SYMMETRIC) again = {...await exactSearch(outline, template, cfg, {...options, symmetry: []}, tools), untied: true};
-    return {...again, report: {...again.report, unjoined: found.error, ...(again.untied ? {untied: true} : {})}};
+    const here = {outline, symmetry, even, base: {deadline, reserve, onProgress, geometry, refine}, alone};
+    for (const step of ASYMMETRIC) {
+      if (step.when && !step.when(here)) continue;
+      const again = await exactSearch(step.outline(here), template, cfg, step.options(here), tools);
+      if (step.stands(again)) return {...again, ...step.adds, report: {...again.report, ...step.mark(found.error)}};
+    }
   }
   // A picture symmetric under mirrors whose templates keep only part of its
   // symmetry: fejlternet's hidden cuts wheel round its middle square, the
