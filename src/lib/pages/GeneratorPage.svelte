@@ -37,7 +37,7 @@
 	import { saveUserDesign } from '$lib/stores/collection';
 	import { createJobQueue } from '$lib/generator/jobQueue';
 	import { generatorRequest, variantRequest } from '$lib/generator/request';
-	import { defaults, readGeneratorState, normalizeText, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, stripCount, ROOM_RANGE, CELL_FRAMES, largestScale, SPACED_STYLES } from '$lib/generator/state';
+	import { defaults, generatorLink, readGeneratorAddress, readGeneratorState, normalizeText, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, stripCount, ROOM_RANGE, CELL_FRAMES, largestScale, SPACED_STYLES } from '$lib/generator/state';
 	import { clampPlace } from '$lib/generator/stripFigure';
 	import { BOARD_STRIPS, boardStage, type BoardStyle } from '$lib/generator/boardMotif';
 	import { isTextFigure } from '$lib/generator/textFigure';
@@ -393,11 +393,7 @@
 		const unsubscribe = subscribeColors((next) => {
 			colors = next;
 		});
-		config = readGeneratorState(window.location.hash);
-		// A link's own state wins; else the page's address, and an older link's `?mode=` over both.
-		if (config.mode === 'start' && pageMode) config.mode = pageMode;
-		const asked = new URLSearchParams(window.location.search).get('mode');
-		if (asked === 'figure' || asked === 'text') config.mode = asked;
+		config = readGeneratorAddress(window.location.hash, window.location.search, pageMode);
 		// A shared link pasted into an open generator changes only the hash.
 		// The page's own replaceState below never fires this event.
 		const follow = () => (config = readGeneratorState(window.location.hash));
@@ -432,10 +428,7 @@
 		url.searchParams.delete('mode');
 		// The address names what the page makes: /design/figure/, /design/text/, or /design/ at the start.
 		url.pathname = snapshot.mode === 'start' ? href('generator', lang) : generatorHref(lang, snapshot.mode);
-		url.hash =
-			snapshot.mode === 'start'
-				? ''
-				: 'make=' + encodeURIComponent(JSON.stringify(snapshot));
+		url.hash = snapshot.mode === 'start' ? '' : generatorLink(snapshot);
 		// The router finishes mounting after this first effect. Defer one task so
 		// direct links can initialise before synchronising their shareable state.
 		const timer = setTimeout(() => replaceState(url, {}), 0);
@@ -636,7 +629,7 @@
 	 */
 	let languageUrl = $derived(
 		generatorHref(otherLanguage(lang), config.mode === 'start' ? undefined : config.mode) +
-			(config.mode === 'start' || !mounted ? '' : '#make=' + encodeURIComponent(JSON.stringify(config)))
+			(config.mode === 'start' || !mounted ? '' : '#' + generatorLink(config))
 	);
 	function chooseMode(mode: GeneratorState['mode']) {
 		config.mode = mode;

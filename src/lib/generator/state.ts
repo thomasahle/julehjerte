@@ -3,6 +3,7 @@ import { BOARD_STRIPS, type BoardStyle } from './boardMotif';
 import { TEXT_FIGURES } from './textFigure';
 import { isGoogleFont } from './googleFonts';
 import { INVISIBLE } from './fontFaces';
+import { readableVersion } from '$lib/utils/formatVersion';
 export type GeneratorState = {
 	mode: 'start' | 'figure' | 'text';
 	motif: string;
@@ -109,12 +110,26 @@ export const defaults: GeneratorState = {
 	room: 11,
 	strips: 4
 };
+/** The version of the state a `#make=` link carries; links from before versioning have none. */
+export const GENERATOR_LINK_VERSION = 1;
+
+/** The address's fragment, without its `#`, that makes `state` again. */
+export function generatorLink(state: GeneratorState): string {
+	return 'make=' + encodeURIComponent(JSON.stringify({ v: GENERATOR_LINK_VERSION, ...state }));
+}
+
+/**
+ * The state a `#make=` link makes, from any link the generator has written:
+ * a fresh heart's for anything else, a link from a later generator than this
+ * one included.
+ */
 export function readGeneratorState(hash: string): GeneratorState {
 	const s = { ...defaults };
 	try {
 		const raw = JSON.parse(
 			new URLSearchParams(hash.replace(/^#/, '')).get('make') ?? ''
 		);
+		if (!readableVersion(raw.v, GENERATOR_LINK_VERSION)) return s;
 		// Older links name the checkerboard by its former repeating layout,
 		// and text panels by centre shapes the generator no longer draws.
 		if (raw.textFrame === 'repeat-check') raw.textFrame = 'checkered';
@@ -159,6 +174,19 @@ export function readGeneratorState(hash: string): GeneratorState {
 		/* An absent or malformed link starts a fresh heart. */
 	}
 	return s;
+}
+
+/**
+ * What the generator's address asks for as the page opens: its link's state
+ * (`#make=`), the mode of the page's own address (`/design/figure/`) where the
+ * link has none, and an older address's `?mode=` over both.
+ */
+export function readGeneratorAddress(hash: string, search: string, pageMode?: 'figure' | 'text'): GeneratorState {
+	const state = readGeneratorState(hash);
+	if (state.mode === 'start' && pageMode) state.mode = pageMode;
+	const asked = new URLSearchParams(search).get('mode');
+	if (asked === 'figure' || asked === 'text') state.mode = asked;
+	return state;
 }
 
 /** The longest text the generator takes: lines, and characters per line. */
