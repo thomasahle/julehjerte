@@ -14,7 +14,7 @@ import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {traceExactSearch, traceSchedule} from './search-schedule-harness.mjs';
 
-const BASE = process.argv[2] ?? '2d709bafbb741c82ec1cfa2cdafd057a039eb741',
+const BASE = process.argv[2] ?? 'a80373a7758a2e5357b2d9eed60633f4c287b784',
   SCENARIOS = Number(process.argv[3] ?? 600),
   STAGE_SCENARIOS = Number(process.argv[4] ?? 400);
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
