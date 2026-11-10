@@ -2,7 +2,7 @@
 /**
  * Read an SVG heart — a drawing from Inkscape or another editor, an exported file,
  * or a gallery file — with the same importer as the editor's "Importér SVG"
- * (parseHeartFromSVGWithReport in src/lib/utils/heartDesign.ts), print what it made
+ * (parseHeartFromSVGWithReport in src/lib/utils/svgImport.ts), print what it made
  * of it, and write either the HeartDesign JSON or, with --gallery, the gallery SVG.
  *
  * The importer reads <path>, <line> and <polyline> elements with every path command

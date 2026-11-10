@@ -9,7 +9,8 @@ import {
   tokenizePathData,
   type BezierSegment
 } from '$lib/geometry/bezierSegments';
-import { parseHeartFromSVG, parseHeartFromSVGWithReport, serializeHeartToSVG } from '$lib/utils/heartDesign';
+import { serializeHeartToSVG } from '$lib/utils/heartDesign';
+import { parseHeartFromSVG, parseHeartFromSVGWithReport } from '$lib/utils/svgImport';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { importSummary } from '$lib/utils/svgImportSummary';

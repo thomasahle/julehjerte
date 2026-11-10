@@ -7,7 +7,8 @@ import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { intersectionMarginPx } from '$lib/editor/curveIssues';
 import { findSearchIssues } from './searchClearance';
-import { normalizeHeartDesign, serializeHeartDesign, parseHeartFromSVG, serializeHeartToSVG } from '$lib/utils/heartDesign';
+import { normalizeHeartDesign, serializeHeartDesign, serializeHeartToSVG } from '$lib/utils/heartDesign';
+import { parseHeartFromSVG } from '$lib/utils/svgImport';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { shippedFont } from './fonts.test-helpers';
 

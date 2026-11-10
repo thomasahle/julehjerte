@@ -12,7 +12,7 @@ import { describe, expect, it } from 'vitest';
 import { ALL_HEART_IDS } from './categories';
 import meta from './heart-meta.json';
 import cards from './heart-cards.json';
-import { parseHeartFromSVG } from '$lib/utils/heartDesign';
+import { parseHeartFromSVG } from '$lib/utils/svgImport';
 import { heartName } from '$lib/utils/heartName';
 import type { HeartNames } from '$lib/types/heart';
 

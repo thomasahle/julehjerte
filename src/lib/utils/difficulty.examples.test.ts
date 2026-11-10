@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import explosionSvg from '../../../static/hearts/explosion.svg?raw';
 import davidSvg from './fixtures/david.svg?raw';
-import { parseHeartFromSVG } from '$lib/utils/heartDesign';
+import { parseHeartFromSVG } from '$lib/utils/svgImport';
 import { calculateDifficulty } from '$lib/utils/difficulty';
 
 describe('difficulty examples', () => {

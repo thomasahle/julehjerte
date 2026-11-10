@@ -9,7 +9,7 @@
 import { describe, expect, it } from 'vitest';
 import { ALL_HEART_IDS } from './categories';
 import generated from './heart-descriptions.json';
-import { parseHeartFromSVG } from '$lib/utils/heartDesign';
+import { parseHeartFromSVG } from '$lib/utils/svgImport';
 
 const SVG_TEXT = import.meta.glob<string>('/static/hearts/*.svg', {
 	query: '?raw',

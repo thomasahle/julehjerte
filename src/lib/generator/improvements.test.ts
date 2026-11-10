@@ -12,9 +12,9 @@ import { inferOverlapRect } from '$lib/utils/overlapRect';
 import {
 	normalizeHeartDesign,
 	serializeHeartDesign,
-	serializeHeartToSVG,
-	parseHeartFromSVG
+	serializeHeartToSVG
 } from '$lib/utils/heartDesign';
+import { parseHeartFromSVG } from '$lib/utils/svgImport';
 import catalog from '../../../static/generator/catalog.json';
 import tree from '../../../static/generator/motifs/tree.json';
 import gift from '../../../static/generator/motifs/gift.json';

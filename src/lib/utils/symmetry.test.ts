@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import classicSvg from '../../../static/hearts/classic-3x3.svg?raw';
 import sunSvg from '../../../static/hearts/sun.svg?raw';
 import santaSvg from '../../../static/hearts/santa.svg?raw';
-import { parseHeartFromSVG } from '$lib/utils/heartDesign';
+import { parseHeartFromSVG } from '$lib/utils/svgImport';
 import { lobesShareTemplate, lobeTemplateSymmetry } from '$lib/utils/symmetry';
 
 function load(svg: string, filename: string) {

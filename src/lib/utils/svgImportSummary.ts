@@ -1,6 +1,6 @@
 import { stripsLabel, t, type Language } from '$lib/i18n';
 import type { HeartDesign } from '$lib/types/heart';
-import type { SvgImportReport } from '$lib/utils/heartDesign';
+import type { SvgImportReport } from '$lib/utils/svgImport';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 

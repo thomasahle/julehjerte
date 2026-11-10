@@ -29,9 +29,9 @@ import {
 import {
 	normalizeHeartDesign,
 	serializeHeartDesign,
-	serializeHeartToSVG,
-	parseHeartFromSVG
+	serializeHeartToSVG
 } from '$lib/utils/heartDesign';
+import { parseHeartFromSVG } from '$lib/utils/svgImport';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { gridClearanceScale } from '$lib/geometry/clearance';

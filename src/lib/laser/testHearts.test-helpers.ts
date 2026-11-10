@@ -3,7 +3,7 @@
  */
 import { vi } from 'vitest';
 import type { HeartDesign } from '$lib/types/heart';
-import { parseHeartFromSVG } from '$lib/utils/heartDesign';
+import { parseHeartFromSVG } from '$lib/utils/svgImport';
 
 export const gallerySvgs = import.meta.glob('/static/hearts/*.svg', {
 	query: '?raw',

@@ -5,10 +5,10 @@ import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect'
 import { heartName } from '$lib/utils/heartName';
 import {
   normalizeHeartDesign,
-  parseHeartFromSVG,
   serializeHeartDesign,
   serializeHeartToSVG
 } from './heartDesign';
+import { parseHeartFromSVG } from './svgImport';
 
 // Build an n x n design the way the editor holds it: n + 1 boundary curves per lobe,
 // including the two outer edges, evenly spaced across the overlap square.
