@@ -11,26 +11,23 @@ import {betterResult} from './core/result-rank.js';
  * on waited out the whole minute. Until the exact search has drawn a template
  * keeping every rule, a passing answer of the fitter's waits only until
  * EXACT_UNDRAWN_SECONDS, then goes out (the exact search's to follow as an
- * alternative): a search that finds none draws none. With the exact search's
- * start at most 3 s, as many exact templates came first by 20 s as by 30 on
- * the juleflet pictures (91) and the scraped photographs (14), which then
- * took 22 s at the median instead of 30. Both waits are for a fitted answer
+ * alternative): a search that finds none draws none, and as many exact
+ * templates came first by 20 s as by 30. Both waits are for a fitted answer
  * that passes: one failing the export's checks leaves the exact search and the
- * network's ladder their whole search time. */
+ * network's ladder their whole search time. (history: docs/inverse/SEARCH-CONSTANTS.md#exact-waits) */
 const EXACT_GRACE_SECONDS = 5, EXACT_WAIT_SECONDS = 40, EXACT_UNDRAWN_SECONDS = 20;
 /** The longest a search waits for the cut-proposal network's first load. */
 const CUT_MODEL_WAIT_MS = 1500;
 /** The network's ladder in several workers, each on its share of the outlines (engine.js ladderPart), where the
  * machine has the threads for them beside the fitter and today's search and does not report less memory
- * (LADDER_WORKERS: ladders, threads, GB; the most it qualifies for). On the 170 generator hearts one ladder
- * passed 103, two 110 (the first template at 3.3 s for 4.8 at the median), three 115; on the 127 test pictures
- * 96, 96 and 98 (the mean 6.4 s with two, 5.6 with three). */
+ * (LADDER_WORKERS: ladders, threads, GB; the most it qualifies for). More ladders pass more pictures, and
+ * sooner. (history: docs/inverse/SEARCH-CONSTANTS.md#ladder-workers) */
 const LADDER_WORKERS = [[3, 12, 8], [2, 8, 4]];
 /** A ladder's template further than LADDER_FINE off its picture (from an outline with its tips rounded or wider,
  * which can lose a figure's hands and feet) waits for the other ladders a share of the time so far, at least
- * LADDER_GRACE[0] and at most LADDER_GRACE[1] seconds, and one LADDER_MARGIN closer stands instead. On the 170
- * generator hearts and the 127 test pictures 6 templates came 0.5-0.9 points closer (star-board-b7: 1.17% off
- * to 0.33%), for 0.35 s more at the mean. */
+ * LADDER_GRACE[0] and at most LADDER_GRACE[1] seconds, and one LADDER_MARGIN closer stands instead: a few
+ * templates come much closer, for a fraction of a second more.
+ * (history: docs/inverse/SEARCH-CONSTANTS.md#ladder-fine) */
 const LADDER_FINE = 0.007, LADDER_MARGIN = 0.002, LADDER_GRACE = [2, 8], LADDER_GRACE_SHARE = 0.25;
 export function ladderCount(nav = globalThis.navigator) {
   const threads = nav?.hardwareConcurrency ?? 0, memory = nav?.deviceMemory;
@@ -153,10 +150,9 @@ export function workerController(
   // bound on the traced outline, without a fallback (made symmetric, untied,
   // part of the symmetry), the bound today's search would stop at too; or, on
   // any outline, with no more hidden segments than the traced outline's bound
-  // (exactTemplate's tracedBound). On an outline with tips rounded koelbuer's
-  // ladder has 16 at its bound 16, today's search 2 on the traced one; within
-  // the traced bound were 16 of the 35 the 106 broad pictures held, none of
-  // them beaten by today's.
+  // (exactTemplate's tracedBound). Not its own outline's bound: on an outline
+  // with tips rounded koelbuer's ladder has 16 at its bound 16, today's search
+  // 2 on the traced one. (history: docs/inverse/SEARCH-CONSTANTS.md#settles)
   const settles = value => {
     const hidden = hiddenOf(value), outline = value?.report?.solver?.exactOutline, bound = outline?.search?.bound;
     const traced = !outline?.outline && !['even', 'unjoined', 'untied', 'subgroup'].some(way => outline?.[way]);

@@ -139,14 +139,13 @@ export const timeScale = limit => Math.max(1, limit / EXACT_SECONDS);
 /** In a picture's minute: the exact search on the traced outline until
  * TRACED_SECONDS, then (its template failing) on the outline with tips rounded
  * by TIP_ROUNDING_MM (within TIP_SPOT_MM of where the template comes too close to
- * itself) until ROUNDED_SECONDS, given ROUNDED_LEAST at least. On
- * the 128 juleflet pictures 79 of the 82 traced outlines passing did so within
- * 20 s, and 49 of the 54 rounded ones; a rounded outline hides more cut and lies
- * further from the mask, so it comes second. The fitter has what is left.
+ * itself) until ROUNDED_SECONDS, given ROUNDED_LEAST at least: most traced
+ * outlines that pass do so within 20 s, and a rounded outline hides more cut
+ * and lies further from the mask, so it comes second. The fitter has what is left.
  * Alone (`exactRoute: 'exact'`, the fitter in a worker beside it), the traced
  * outline has until ALONE_TRACED_SECONDS and the rounded one the rest. A
  * passing template with tips coming back to themselves has RETURNS_LEAST (or
- * as long as it took) for one with them rounded. */
+ * as long as it took) for one with them rounded. (history: docs/inverse/SEARCH-CONSTANTS.md#traced-seconds) */
 const TRACED_SECONDS = 22,
   ROUNDED_SECONDS = 40,
   ALONE_TRACED_SECONDS = 30,
@@ -266,12 +265,10 @@ async function exactSearch(outline, template, cfg, options) {
 }
 /** The last resort once every stage has failed: a rejected template whose only
  * broken rule is a short return of a cut onto itself, repaired as the export
- * repairs one (repairFinal: the returns moved apart, 0.4 to 3.3 s on the near
- * misses, RETURN_REPAIR_SECONDS each whatever the stages have left) and taken
- * when it then passes the export: hanefod-shot, khatam, triple-heart, 0.1 to
- * 0.4% from their masks, where the fitter's was the only one. First, not
- * instead of the rounded outline's, whose templates hide less (stjernerogkors,
- * 0 against the traced one's 8). */
+ * repairs one (repairFinal: the returns moved apart, RETURN_REPAIR_SECONDS each
+ * whatever the stages have left) and taken when it then passes the export,
+ * where the fitter's would be the only one. First, not instead of the rounded
+ * outline's, whose templates hide less. (history: docs/inverse/SEARCH-CONSTANTS.md#return-repair) */
 function returnRepaired(candidates, cfg) {
   const near = candidates
     .filter(c => {
@@ -298,22 +295,19 @@ function returnRepaired(candidates, cfg) {
   }
   return null;
 }
-/** Pixels of boundary of a mask over those of its opening by a pixel (1 for a
- * smooth one): 0 when the mask is smooth enough, else the pixels to open by. */
 /** Pixels below which a region is a stray speck of a hand painting (120 of 400²
  * pixels, n²/1333; a blob of 4 pixels' radius is 49, of 6 is 113), 0 when the
- * mask has none. The 211 gallery, library and web masks have no interior region of
- * 121 to 160 pixels but jul-2026's four digit counters (144), which a higher
- * limit would take; blobs of radius 7 (153) are left. At the square's edge the
- * same: none of them nor of the generator's 170 hearts has a region there under
- * 144 pixels (the layers frame's 3 mm squares), and a speck painted there bites
- * into the edge (puslespil with two: no exact template; without them one in 4 s). */
+ * mask has none: below the smallest real region of the gallery's, library's, web
+ * and generator masks (144 pixels), inside and at the square's edge, where a
+ * speck painted bites into the edge. (history: docs/inverse/SEARCH-CONSTANTS.md#mask-specks) */
 export function maskSpecks(source) {
   const n = source?.resolution;
   if (!source?.mask || !n) return 0;
   const limit = Math.round((n * n) / 1333);
   return withoutSpecks(source.mask, n, limit, true) ? limit : 0;
 }
+/** Pixels of boundary of a mask over those of its opening by a pixel (1 for a
+ * smooth one): 0 when the mask is smooth enough, else the pixels to open by. */
 export function maskRoughness(source) {
   const n = source?.resolution,
     limit = maskSpecks(source),
@@ -332,18 +326,14 @@ export function maskRoughness(source) {
   const ratio = opened ? edges(mask) / opened : 1;
   return ratio >= ROUGH_TWO ? 2 : ratio >= ROUGH_ONE ? 1 : 0;
 }
-/** The exact search's template for a picture the export passes, or none:
- * {solution, report}. On the outline traced from the mask until `tracedEnd`,
- * then on it with its tips rounded until `roundedEnd`. */
 /** The first outline the exact search can start from, traced by `traceAt(open, way)`
  * ({scaled, why} or null), and the way that traced it; else why the first trace
  * cannot start. A mask with wobbling edges (hand-painted, its boundary a tenth
  * longer than after opening by a pixel) is traced opened by `rough` pixels (1, or
- * 2 from a third longer: its model otherwise grows with every wobble, h4h2 at 40%
- * jitter 43 s with none found, 3 s opened); one ending unevenly then read paired;
- * then opened by 1 and 2. The first trace's reason stands, opened or not (the
- * photographs' uneven crops were never read paired while only an unopened one
- * counted: danish-tree-dots, gathering-hanging-trio-middle). */
+ * 2 from a third longer: its model otherwise grows with every wobble); one ending
+ * unevenly then read paired; then opened by 1 and 2. The first trace's reason
+ * stands, opened or not, so an uneven crop traced opened is read paired too.
+ * (history: docs/inverse/SEARCH-CONSTANTS.md#rough) */
 export function firstTrace(rough, traceAt) {
   let cannot = 'No outline was traced from the mask.';
   for (const [k, way] of [{open: rough}, {open: rough, paired: true}, {open: 1}, {open: 2}].entries()) {
@@ -366,6 +356,9 @@ function ladderPart(part) {
     ? part
     : [0, 1];
 }
+/** The exact search's template for a picture the export passes, or none:
+ * {solution, report}. On the outline traced from the mask until `tracedEnd`,
+ * then on it with its tips rounded until `roundedEnd`. */
 async function exactTemplate(
   target,
   cfg,
@@ -397,10 +390,9 @@ async function exactTemplate(
   // The ladder alone (a worker beside today's search, worker-controller.js):
   // the traced outline and the ones today's search goes on to, with tips
   // rounded, each searched by the ladder in two phases (exact/stage.js): its
-  // cheap rungs on every outline first, then its long ones. 5star's 12 hidden
-  // cuts are on the rounded outline (today's search: 37 s; the ladder, once
-  // there: 3 s), and of its 54 templates on the 106 broad pictures the ladder
-  // on the traced outline found 48 within 12 s.
+  // cheap rungs on every outline first, then its long ones: some templates
+  // (5star's) lie on a rounded outline, most on the traced one.
+  // (history: docs/inverse/SEARCH-CONSTANTS.md#ladder-outlines)
   if (ladderOnly) {
     const n = target.sourceImage.resolution,
       px = n / cfgExact.width,
@@ -450,10 +442,9 @@ async function exactTemplate(
     let last = null, near = null;
     // With more than LOOSE_LEAST seconds (a longer search chosen under Avanceret), once the ladder has
     // had what the one-minute search gives it (STRICT_SECONDS, or a third), the rest goes through it again
-    // with the model's clearances LOOSE_MM lower, judged by the export's own (the 0.1 mm it tolerates;
-    // jul-tern: 18 hidden cuts, its count's bound, where the model's limits held every drawing at 16 and
-    // rules broken). Not sooner: lowered from the start they lose vissevasse-arranged-r3c2 and others,
-    // whose returns then fail once smoothed.
+    // with the model's clearances LOOSE_MM lower, judged by the export's own (the 0.1 mm it tolerates).
+    // Not sooner: lowered from the start, some templates' returns fail once smoothed.
+    // (history: docs/inverse/SEARCH-CONSTANTS.md#loose)
     const total = roundedEnd - performance.now(),
       strictEnd =
         total >= 1000 * LOOSE_LEAST ? performance.now() + Math.max(1000 * STRICT_SECONDS, total / 3) : roundedEnd;
@@ -463,14 +454,13 @@ async function exactTemplate(
     ])
       for (const [phase, share] of [['first', LADDER_FIRST_SHARE], ['second', 1]]) {
         const phaseEnd = performance.now() + share * (passEnd - performance.now());
-        // One of n ladders side by side searches the outlines k with k % n === i, with all the time: on the
-        // 170 generator hearts two, every other outline each, passed 110 where one passed 102, the first
-        // template at 3.3 s for 4.8 at the median (the traced outline's cheap rungs get more of the first phase).
+        // One of n ladders side by side searches the outlines k with k % n === i, with all the time (the
+        // traced outline's cheap rungs get more of the first phase).
+        // (history: docs/inverse/SEARCH-CONSTANTS.md#ladder-part)
         const mine = [...outlines.entries()].filter(([k]) => k % part[1] === part[0]);
         // One ladder over every outline counts the traced one TRACED_FIRST_WEIGHT times in the first phase, a
         // third of it with five outlines, as the part with it has of two ladders: its rungs to K300 then fit
-        // there (one ladder on the 170 generator hearts 103 against 102, none lost, the first template at 3.5 s
-        // for 5.0 at the median; the 127 test pictures 96 against 95, none lost, 4.3 s for 5.0).
+        // there. (history: docs/inverse/SEARCH-CONSTANTS.md#traced-first-weight)
         const weight = k => (phase === 'first' && k === 0 && part[1] === 1 ? TRACED_FIRST_WEIGHT : 1);
         for (const [j, [k, traced]] of mine.entries()) {
           const left = phaseEnd - performance.now(),

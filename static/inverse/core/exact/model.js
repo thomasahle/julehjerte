@@ -13,15 +13,15 @@ import {pointKey} from './structure.js';
 import {tokenKey} from './candidates.js';
 import {geometryNogoods, nogoodKey} from './nogoods.js';
 
-/** HiGHS presolve rules left out (its presolve_rule_off bits): dependent free
- * columns (11), parallel rows and columns (13), sparsify (14), probing (15) and
- * enumeration (16). On some models presolve spent 41 s in them, beyond its own
- * time limit, which it checks only between passes (amy-weave-1: 44 s, now
- * 2 s); on the others they took seconds and changed no template. */
 /** The most variables the rows for faces with holes may add to one face, and the
  * most rows a model has had when it gets them by itself (ExactModel, `multi`: 'auto'; the
  * larger models lost more time than the rows saved). */
 const MULTI_HOLE_BITS = 1500, MULTI_AUTO_ROWS = 10000;
+/** HiGHS presolve rules left out (its presolve_rule_off bits): dependent free
+ * columns (11), parallel rows and columns (13), sparsify (14), probing (15) and
+ * enumeration (16). On some models presolve spent tens of seconds in them,
+ * beyond its own time limit, which it checks only between passes; on the others
+ * they changed no template. (history: docs/inverse/SEARCH-CONSTANTS.md#slow-presolve) */
 const SLOW_PRESOLVE_RULES = (1 << 11) | (1 << 13) | (1 << 14) | (1 << 15) | (1 << 16);
 
 /** Whether a face's hidden segments can be drawn without crossing (sat_weave.embeddable). */

@@ -157,17 +157,19 @@ function maskError(source, woven) {
  * cutting rules and paper, the picture's regions kept, and its fidelity. */
 export const exportable = (a, cfg) => Boolean(a?.passes && a.features && a.maskError <= cfg.maxImageError);
 
+/** The most seconds the search for a start takes (exactSearch).
+ * (history: docs/inverse/SEARCH-CONSTANTS.md#start-seconds) */
 const START_SECONDS = 3;
 /** The network's ladder (networkLadder): its rungs as [K, seconds], the most
  * of a search's time it takes, and the short candidates (mm) every rung keeps:
  * 42% of the hidden cuts in the gallery's exact templates were under 3 mm, the
  * stubs of tips and crossings the network's field hardly shows. */
 const LADDER = [[10, 2], [30, 2], [100, 3], [300, 4]], LADDER_SHARE = .25, SHORT_MM = 3, LADDER_BUILD = 8, LADDER_SAMPLES = 2, LADDER_NOISE = .15, LOW_PENALTY = 5;
-// Alone: K, the plain ranking's seconds, a sampled one's.
+// Alone: K, the plain ranking's seconds, a sampled one's. (history: docs/inverse/SEARCH-CONSTANTS.md#ladder-samples)
 const LADDER_ALONE = [[10, 3, 2], [30, 4, 2], [100, 6, 3], [300, 10, 4], [1000, 15, 10]];
 const LADDER_FIRST = [[10, 2, 1], [30, 2, 1], [100, 3, 2], [300, 6, 3]], LADDER_SECOND = [[300, 10, 4], [1000, 15, 10]];
 // The first phase's rungs as [K, ranking] (0 the plain one, then the samples): the plain K300 after the cheap
-// ones, before K100's and K300's samples (ladderRungs).
+// ones, before K100's and K300's samples (ladderRungs). (history: docs/inverse/SEARCH-CONSTANTS.md#first-order)
 const FIRST_ORDER = [[10, 0], [10, 1], [30, 0], [10, 2], [30, 1], [100, 0], [300, 0], [100, 1], [30, 2], [100, 2], [300, 1], [300, 2]];
 
 /** The ladder's rungs alone (`phase` from engine.js, or none: LADDER_ALONE), as [K, seconds, seed]. */
@@ -179,15 +181,17 @@ export function ladderRungs(phase) {
 }
 
 /** Under ties, the share of the search's time the fine grid from no start
- * gets first, if at least BARE_FLOOR seconds are left (exactSearch). */
+ * gets first, if at least BARE_FLOOR seconds are left (exactSearch).
+ * (history: docs/inverse/SEARCH-CONSTANTS.md#bare) */
 const BARE_SHARE = .5, BARE_FLOOR = 8, COARSE_AFTER_BARE = 4;
 
 /** How much further from the mask (a share of its cells) the exact search's
- * template may lie drawn in a few cubics than on the traced polyline. */
+ * template may lie drawn in a few cubics than on the traced polyline.
+ * (history: docs/inverse/SEARCH-CONSTANTS.md#smooth-slack) */
 const SMOOTH_SLACK = .005;
 
 /** The seconds a search under part of the requested symmetry needs at
- * least, once none keeps all of it (exactSearch). */
+ * least, once none keeps all of it (exactSearch). (history: docs/inverse/SEARCH-CONSTANTS.md#turns-floor) */
 const TURNS_FLOOR = 6;
 
 /** The turns of the group `symmetry` generates, as their generator (a quarter
@@ -214,19 +218,15 @@ export function fallbackTies(symmetry) {
   return symmetry.length ? [...subgroupsOf(symmetry), []] : [];
 }
 
-/** The exact search on the traced `outline` from the fitter's `template`
- * within `deadline`, under the `symmetry` ties: {found: {solution,
- * assessment} or null, report}. */
 /** The cut-proposal network's ladder: the exact model from no start on the
  * fine grid, its hidden segments only the K candidates the network's `maps`
  * rank best (candidates.js rankScores) and every one up to SHORT_MM, K
  * growing (LADDER: K and the rung's seconds), the candidates built once; the
  * first template the export takes, within LADDER_SHARE of `seconds` at most,
  * stands. A rung without one costs little: a model without the right
- * candidates has no solution, which HiGHS finds in a second or two. On 21
- * gallery designs held out of the network's training (2026-10-31) the ladder
- * found the template of today's search, or one as good, on most in a tenth to
- * a third of its time (5star 37.6 s to 3.6, roed-blomst 43.6 to 1.4). */
+ * candidates has no solution, which HiGHS finds in a second or two. The
+ * ladder mostly finds today's search's template, or one as good, in a
+ * fraction of its time. (history: docs/inverse/SEARCH-CONSTANTS.md#network-ladder) */
 async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, multi, onProgress, geometry, refine, maps, alone = false, phase = null}) {
   // Alone (a worker beside today's search) it may take all the time, and a wider last rung.
   const until = performance.now() + 1000 * seconds * (alone ? 1 : LADDER_SHARE), reuse = {}, rungs = [];
@@ -235,23 +235,17 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
   // took 5 s of its 50); `nearest`: the template nearest what the export takes (closer).
   let error = null, nearest = null, broken = null;
   const short = SHORT_MM * SIZE / cfg.width, empty = {positions: new Map(), labels: new Map(), chords: []};
-  // Alone, each rung also tries LADDER_SAMPLES sampled rankings of the same maps after the plain one: on the
-  // hard pictures (2026-11-01) samples found khatam at K100 in 18 s where the plain ranking needed the
-  // second outline and 36 s, and venus at K100 where it needed K300. The plain one has the held-out
-  // benchmark's times there (LADDER_ALONE): 5star's rungs to K300 found 12 hidden cuts in LADDER's, but
-  // breaking rules still when their time ran out; in 10 s K300 had its template in 3.2 s.
+  // Alone, each rung also tries LADDER_SAMPLES sampled rankings of the same maps after the plain one: a
+  // sample finds some templates at a smaller K or on an earlier outline. The plain one has longer rungs
+  // there (LADDER_ALONE): in LADDER's, 5star's K300 still broke rules when its time ran out.
+  // (history: docs/inverse/SEARCH-CONSTANTS.md#ladder-samples)
   const rungList = [];
   // Alone over several outlines (engine.js exactTemplate), a `phase`: its cheap rungs (LADDER_FIRST) on each
   // outline first, then its long ones (LADDER_SECOND). The first phase's plain K300 comes before K100's and
-  // K300's samples, with 6 s (FIRST_ORDER; 2026-11-05): a 4 x 4 heart of small stars (Små motiver) needs K300
-  // on the rounded outline for 4-6 s, which K300's 4 s after every sample there left to the second phase, at
-  // 40-43 s (11-18 s now), god-jul's 35-46 s -> 11-34 s. The ladder alone on 169 pictures (127 test, 40
-  // generated, two users' hearts; `nudge/plain2.sh`, the 14 that changed run twice more): passing 115 -> 114,
-  // median 10.7 -> 9.4 s where passing; lost brand-discord-corners and battery-4-layers (generated, 2 of 3
-  // runs -> none), which the page's sweep passed by today's search (28 s, 31 s; battery's failed it once alone
-  // since, on a loaded machine). The plain rankings first all through
-  // (K10 to K300, then the samples) lost play-card-j-silhouette, found by K30's first sample on the wider
-  // outline (3 of 3 -> 0 of 3).
+  // K300's samples, with 6 s (FIRST_ORDER): a 4 x 4 heart of small stars (Små motiver) needs K300 on the
+  // rounded outline for 4-6 s, which a shorter K300 after every sample left to the second phase. Not every
+  // plain ranking first: some templates only a cheap sample finds.
+  // (history: docs/inverse/SEARCH-CONSTANTS.md#first-order)
   if (alone) rungList.push(...ladderRungs(phase));
   else for (const [k, rungSeconds] of LADDER) rungList.push([k, rungSeconds, 0]);
   for (const [k, rungSeconds, seed] of rungList) {
@@ -295,6 +289,9 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
   return {found: null, nearest, rungs, error};
 }
 
+/** The exact search on the traced `outline` from the fitter's `template`
+ * within `deadline`, under the `symmetry` ties: {found: {solution,
+ * assessment} or null, report}. */
 export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false,
   refine = true, fallback = true, even = false, multi = 'auto', maps = null, ladderOnly = false, phase = null} = {}) {
   const seconds = (deadline - performance.now()) / 1000 - reserve;
@@ -309,24 +306,19 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     // The start: the template's reading where it holds on this outline, else
     // a topological witness (start.js). One that is not the template's breaks
     // rules wherever its switches were spread: HiGHS gets a coarser model then,
-    // hidden segments between positions 3 units apart to their 2 nearest. On
-    // the 128 juleflet pictures that found the same templates as 1.5 and 4 in
-    // two thirds of the time; HiGHS's root, which overruns its time limit,
-    // grows faster than the model (dagognat-shot: 65k rows 57 s, 34k 3 s).
-    // The start gets START_SECONDS at most: on 160 traced outlines the grid's
-    // took 0.07 s at the median, 4 s at most, and 19 of 24 topological ones
-    // under 1 s, while 28 found none in 30 s; on those and the one taking
-    // 5.5 s, the search found as many templates (9) with 3 s for the start as
-    // with 9, in half the time (10.8 s for 21 at the median).
+    // hidden segments between positions 3 units apart to their 2 nearest, which
+    // finds the same templates sooner (HiGHS's root, which overruns its time
+    // limit, grows faster than the model). The start gets START_SECONDS at most:
+    // most starts take well under a second, and a longer wait found no more
+    // templates. (history: docs/inverse/SEARCH-CONSTANTS.md#start-seconds)
     // With `even`, on the outline made symmetric under the ties (target.js
     // symmetricLines).
     const exact = exactOutline(outline, cfg, 'tight', {symmetry: even ? symmetry : []});
     // With the network's maps, its ladder first; today's search after it, in the time left.
     // Alone with fallback ties after it (below) and two of their floors' time, the ladder under all the ties
     // leaves them TURNS_FLOOR, which they otherwise never had: JUL in kalam on a woven square has its template
-    // untied in 0.6 s, where the tied rungs took 20 s of its outline's 24 (two ladders: 3 of 3 runs at 21 s,
-    // against none; the 170 generator hearts 114 against 110, the 127 test pictures 95 against 96, their one
-    // lost passing at 52 s in 2 of 3 runs against 3; three ladders: 115 and 98 as before).
+    // only untied, where the tied rungs took nearly all its outline's time.
+    // (history: docs/inverse/SEARCH-CONSTANTS.md#turns-floor)
     const keep = ladderOnly && fallback && fallbackTies(symmetry).length && seconds >= 2 * TURNS_FLOOR ? TURNS_FLOOR : 0;
     const ladder = maps ? await networkLadder(outline, template, cfg, exact, {seconds: seconds - keep, symmetry, multi, onProgress, geometry, refine, maps, alone: ladderOnly, phase}) : null;
     if (ladder) report.ladder = ladder.rungs;
@@ -348,10 +340,8 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
       const left = () => budget - (performance.now() - began) / 1000, coarse = start.how !== 'template' ? {spacing: 3, neighbours: 2} : {};
       // Under ties, first the fine grid from no start, for a share of the time:
       // a start's switches each bring their images as positions, and one not the
-      // template's spreads them where no template has them (Uret's juleflet
-      // picture: 74k rows, crossing cuts after 30 s; the fine grid from none:
-      // 45k, a template in 6 s). Taken when the export would take it. On the 130
-      // juleflet pictures, 87 templates the export takes instead of 84.
+      // template's spreads them where no template has them, a larger model.
+      // Taken when the export would take it. (history: docs/inverse/SEARCH-CONSTANTS.md#bare)
       let bare = null;
       if (symmetry.length && start.how !== 'template' && left() >= BARE_FLOOR) {
         bare = await exactFromTemplate(outline, template, cfg, {multi, seconds: left() * BARE_SHARE, symmetry, exact, witness: empty, onProgress, geometry, refine, spacing: .75, neighbours: 4});
@@ -395,12 +385,10 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   // petals): searched untied, the converter makes the cuts symmetric where that
   // costs little.
   // An outline not symmetric enough for the ties, its curves fitted from one
-  // end on a symmetric mask (balls, davidsstjerne-circ; amy-flowering, 12
-  // hidden segments where untied 32): made symmetric (target.js
-  // symmetricLines). Not before: on the 109 pictures with ties, outlines the
-  // ties already hold made symmetric gave as many templates but other ones
-  // (hermanngitter-shot's failing the paper, hvirvel's of 12 hidden segments,
-  // not 8).
+  // end on a symmetric mask (balls, davidsstjerne-circ, amy-flowering): made
+  // symmetric (target.js symmetricLines). Not before: outlines the ties already
+  // hold, made symmetric, gave as many templates but other ones, some worse.
+  // (history: docs/inverse/SEARCH-CONSTANTS.md#even)
   if (found.error && /not symmetric/.test(found.error) && symmetry.length && fallback && !even) {
     const evened = await exactSearch(outline, template, cfg, {deadline, reserve, onProgress, geometry, refine, symmetry, even: true, ...alone});
     if (evened.found || !/not symmetric/.test(evened.report.error ?? '')) return {...evened, report: {...evened.report, even: found.error}};
@@ -417,20 +405,15 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   // symmetry: fejlternet's hidden cuts wheel round its middle square, the
   // designer's and every other, and under its mirrors the search proves there
   // is none in seconds; roed-blomst's designer keeps one diagonal, and under
-  // all eight there is none in 20 s. Then under part of it (subgroupsOf),
-  // each a share of the time left: fejlternet's pinwheel of 12 hidden
-  // segments, the designer's count, and roed-blomst's 7 under its diagonal
-  // (on its outline with tips rounded, the time left on the traced one too
-  // little for both). Then, none of them giving a template the export takes,
-  // untied for the last share: a letter or a number in a hexagon has none
-  // under its turn or its diagonal alone (the outline not symmetric enough for
-  // either, or the turn's drawing breaking rules), untied one 0.1-0.5% off; of
-  // 36 generated hearts with two or more symmetries, today's search alone
-  // passed 11, now 21, none lost (the 43 test pictures with as many: 41 and 41).
-  // Under a single tie, untied straight after: the strips frame's hearts, mirrored
-  // on a diagonal, have none under it (heart on 3 strips untied at 0 hidden cuts
-  // in 3 s); of 161 generated hearts 92 passed, now 96, none lost.
-  // A drawing the export does not take is kept, the closest, should none follow.
+  // all eight there is none. Then under part of it (subgroupsOf), each a share
+  // of the time left: fejlternet's pinwheel, the designer's count, and
+  // roed-blomst's template under its diagonal. Then, none of them giving a
+  // template the export takes, untied for the last share: a letter or a number
+  // in a hexagon has none under its turn or its diagonal alone (the outline not
+  // symmetric enough for either, or the turn's drawing breaking rules). Under a
+  // single tie, untied straight after: the strips frame's hearts, mirrored on a
+  // diagonal, have none under it. A drawing the export does not take is kept,
+  // the closest, should none follow. (history: docs/inverse/SEARCH-CONSTANTS.md#subgroups)
   const ways = fallback && found.error === NO_TEMPLATE ? fallbackTies(symmetry) : [];
   let drawn = null;
   for (const [k, ties] of ways.entries()) {
@@ -458,11 +441,10 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   // or one template, or as well, with hidden cut within a quarter (a step at
   // least) and at most SMOOTH_SLACK further from the mask, within the
   // export's limit. The same solution drawn so, its hidden cut as the weave
-  // shows it grows where cuts run closer beside a junction (amy-pinecone 9
-  // steps to 11, 0.86% from its mask to 0.52%). The traced outline it replaces
-  // is a polyline the editor shows as a node a pixel; on a photograph's jagged
-  // staircase a smooth edge misses a few boundary pixels more (amy-pattern-shot
-  // 0.58% from its mask, its pixel steps 0.16%).
+  // shows it grows where cuts run closer beside a junction. The traced outline
+  // it replaces is a polyline the editor shows as a node a pixel; on a
+  // photograph's jagged staircase a smooth edge misses a few boundary pixels
+  // more. (history: docs/inverse/SEARCH-CONSTANTS.md#smooth-slack)
   if (found.refined) {
     let finer = null;
     try { finer = assess(found.refined, cfg); } catch { finer = null; }

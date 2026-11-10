@@ -8,10 +8,8 @@ import {SIZE} from './structure.js';
 
 /** Two corners of a picture's outline this close (mm) are one touching:
  * sampled checker corners open 0.04-0.5 mm; at 0.8-1 mm a design's own gaps
- * (lilje1's petals) began to close, which costs a mask error of at most 0.12%
- * at 0.9 mm and 0.13% at 1.2 (lilje1 0.40 to 0.52%). On the 128 library masks
- * the hidden segments in all fell from 820 (0.6 mm) to 607 (0.9), 548 (1.2),
- * 543 (1.8, two pictures lost); 0.36 lost two and cost 190 more. */
+ * (lilje1's petals) began to close, at a small cost in mask error, while the
+ * hidden segments fall. (history: docs/inverse/SEARCH-CONSTANTS.md#near-touch) */
 const NEAR_TOUCH_MM = .9;
 
 /** The mask without features one pixel thin, of either colour: a pixel stays

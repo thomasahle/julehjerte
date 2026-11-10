@@ -18,9 +18,8 @@ import {act, inverse} from './symmetry.js';
  * `taper` pixels from an open edge's ends, which stay: a junction is the
  * structure's, and a sudden move beside it would bend the cut there. An
  * outline traced from the mask opened by `open` pixels (raster.js) reaches and
- * moves that much further: of 74 templates from opened outlines on the
- * generator hearts and test pictures, 40 came closer to their masks, 9 a hair
- * further (the same templates otherwise). */
+ * moves that much further, which brings most such templates closer to their
+ * masks. (history: docs/inverse/SEARCH-CONSTANTS.md#edges-on-mask) */
 export function edgesOnMask(outline, mask, n, {sigma = .8, step = 1, reach = 1.5, most = .75, smooth = 2, taper = 4, open = 0} = {}) {
   reach += open; most += open;
   const field = blurred(mask, n, sigma), scale = n / SIZE;
@@ -169,15 +168,19 @@ function solve(M) {
   return M.map((row, i) => row[n] / row[i]);
 }
 
+/** How near an end on the square's side a corner is the border band's leg,
+ * and how far before it the edge is drawn straight on to the side (reference
+ * units: 1.7 and 0.5 mm of a 100 mm heart). */
+const SIDE_LEG = .2, LEG_LEAD = .06;
+
 /** Each edge's points (edgesOnMask's: count + 1 at even arcs of the outline's
  * edge) as cubics within `tolerance` pixels (`n` across the square), split at
  * the outline's corners and at the `switches` (edge -> arcs), sharing one
  * tangent at every join but a corner, which the fit turns as it needs: the
  * visible cuts as a designer draws them, each run between switches whole
  * cubics; per edge a Chain, each of its `positions` (edge -> arcs) placed. Drawn as
- * the points' polyline, an edge is a node a pixel in the editor (Uret's inner
- * ring 338 cubics a cut; now one a run, 11.5 a cut, 0.23% off its mask
- * against the polyline's 0.0%). The mask's edge waves with its pixels'
+ * the points' polyline, an edge is a node a pixel in the editor
+ * (history: docs/inverse/SEARCH-CONSTANTS.md#smooth-edges). The mask's edge waves with its pixels'
  * staircase, by up to 0.6 pixels over a step: so the points are first
  * averaged along the edge over a Gaussian as wide as moves them at most
  * `bias` pixels where it curves (sigma^2 k / 2 at curvature k), up to
@@ -190,11 +193,6 @@ function solve(M) {
  * image, and its other edges are drawn as that fit's images: fitted one by
  * one, a picture's two sheets no longer had the one template it was searched
  * for (5star-shot). */
-/** How near an end on the square's side a corner is the border band's leg,
- * and how far before it the edge is drawn straight on to the side (reference
- * units: 1.7 and 0.5 mm of a 100 mm heart). */
-const SIDE_LEG = .2, LEG_LEAD = .06;
-
 export function smoothEdges(outline, edges, n, {switches = new Map(), positions = new Map(), sym = null, tolerance = .75, bias = .1, widest = 3, reach = 8} = {}) {
   const scale = n / SIZE, tol = tolerance / scale;
   const info = edges.map((raw, e) => {
