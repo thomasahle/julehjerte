@@ -1,0 +1,37 @@
+name: Slow tests
+
+# The tests the deploy leaves out because they take too long for a push:
+# the generator's regressions that build whole hearts (marked `slow`, run by
+# GENERATOR_SLOW). Nothing is deployed from here.
+# Started by hand for now (Actions → Slow tests → Run workflow); a nightly
+# schedule can be added once a run is green.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: 'slow-tests-${{ github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  generator:
+    name: Generator hearts (${{ matrix.shard }}/4)
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - name: Generator tests with the slow ones
+        run: npx vitest run src/lib/generator --shard=${{ matrix.shard }}/4
+        env:
+          GENERATOR_SLOW: 1

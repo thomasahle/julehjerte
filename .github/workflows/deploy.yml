@@ -102,6 +102,11 @@ jobs:
         if: env.REBUILD_LIVE != 'true'
         run: npx vitest run
 
+      # The public source index must still be what its reviewed inputs build.
+      - name: Archive index tests
+        if: env.REBUILD_LIVE != 'true'
+        run: node --test scripts/archive/*.test.mjs
+
       - name: Build
         run: npm run build
         env:
