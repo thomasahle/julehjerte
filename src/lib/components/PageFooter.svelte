@@ -44,8 +44,7 @@
 	<p class="made-by">
 		{t('madeBy', lang)}
 		<a href="https://thomasahle.com" target="_blank" rel="noopener">Thomas Ahle</a>,
-		{lang === 'da' ? 'julen' : 'Christmas'}
-		{seasons}
+		{t('christmasYears', lang, { years: seasons })}
 	</p>
 </footer>
 

@@ -72,6 +72,15 @@ describe('PageHeader', () => {
 		expect(links('Templates')[0]!.getAttribute('href')).toBe('/en/#skabeloner');
 	});
 
+	it('names the other language in the bar and in the burger menu', () => {
+		const da = render('/om/', 'da', 'about').links;
+		expect(da('EN').map((a) => a.getAttribute('href'))).toEqual(['/en/about/']);
+		expect(da('English').map((a) => a.getAttribute('href'))).toEqual(['/en/about/']);
+		const en = render('/en/about/', 'en', 'about').links;
+		expect(en('DA').map((a) => a.getAttribute('href'))).toEqual(['/om/']);
+		expect(en('Dansk').map((a) => a.getAttribute('href'))).toEqual(['/om/']);
+	});
+
 	it("keeps aria-current=page on the front page, and true on a heart's page", () => {
 		for (const a of render('/', 'da', 'templates').links('Skabeloner')) {
 			expect(a.getAttribute('aria-current')).toBe('page');

@@ -4,7 +4,7 @@
 	import { browser, dev } from "$app/environment";
 	import { afterNavigate } from "$app/navigation";
 	import { page } from "$app/stores";
-	import { SITE_NAME, SITE_DESCRIPTION, SITE_DESCRIPTION_EN, SITE_KEYWORDS, SITE_URL, GA_MEASUREMENT_ID, PLAUSIBLE_SCRIPT_URL } from "$lib/config";
+	import { SITE_NAME, SITE_KEYWORDS, SITE_URL, GA_MEASUREMENT_ID, PLAUSIBLE_SCRIPT_URL } from "$lib/config";
 	import { FRONT_PAGE_SOCIAL_IMAGE, ROBOTS_INDEX, pageTitle, socialImage } from "$lib/seo";
 	import { langFromPathname, t } from "$lib/i18n";
 	import { alternatePaths, routeKeyFromPathname } from "$lib/i18n/routes";
@@ -57,9 +57,7 @@
 				? t("aboutMetaDescription", lang)
 				: routeKey === "editor"
 					? t("editorMetaDescription", lang)
-					: lang === "en"
-						? SITE_DESCRIPTION_EN
-						: SITE_DESCRIPTION,
+					: t("siteMetaDescription", lang),
 	);
 
 	let ogTitle = $derived(pageTitle(routeKey, lang));

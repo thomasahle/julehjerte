@@ -21,6 +21,22 @@ describe('translations', () => {
     expect(daKeys).toEqual(enKeys);
   });
 
+  it('has the same placeholders in both languages', () => {
+    // `t` leaves a `{name}` it has no value for in the text as written, so a
+    // placeholder spelled differently in one language reaches the page as
+    // literal braces, and one missing from a language silently drops a value.
+    const placeholders = (value: string | readonly string[]) =>
+      [...new Set((typeof value === 'string' ? value : value.join('\n')).match(/\{\w+\}/g))].sort();
+    const differ = (Object.keys(translations.da) as TranslationKey[])
+      .map((key) => ({
+        key,
+        da: placeholders(translations.da[key]),
+        en: placeholders(translations.en[key])
+      }))
+      .filter(({ da, en }) => da.join() !== en.join());
+    expect(differ).toEqual([]);
+  });
+
   it('has non-empty values for all keys', () => {
     for (const lang of languages) {
       for (const [key, value] of Object.entries(translations[lang])) {

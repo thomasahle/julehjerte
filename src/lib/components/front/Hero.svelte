@@ -81,8 +81,7 @@
 			<h1>{t('heroTagline', lang)}</h1>
 			<p>
 				{t('heroIntro', lang)}
-				<a href={routeHref('howTo', lang)}>{t('heroGuideLink', lang)}</a>{lang === 'en' ? ',' : ''}
-				{t('heroIntroEnd', lang)}
+				<a href={routeHref('howTo', lang)}>{t('heroGuideLink', lang)}</a>{t('heroIntroEnd', lang)}
 			</p>
 			<div class="hero-btns">
 				<a class="btn btn-primary" href="#skabeloner">

@@ -32,8 +32,6 @@
   import { FIR_FILLS } from "$lib/landscape";
   import { getUserCollection, saveUserDesign } from "$lib/stores/collection";
   import {
-    SITE_DESCRIPTION,
-    SITE_DESCRIPTION_EN,
     SITE_DOMAIN,
     SITE_NAME,
     SITE_URL,
@@ -188,7 +186,7 @@
       : heartPageTitle(heartId, info?.name ?? t("template", lang), lang),
   );
   let metaDescription = $derived.by(() => {
-    if (!info) return lang === "en" ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION;
+    if (!info) return t("siteMetaDescription", lang);
     // As many whole sentences of the panel's paragraph as fit in a search
     // result; the paragraph on the page keeps all of them.
     return heartMetaDescription(

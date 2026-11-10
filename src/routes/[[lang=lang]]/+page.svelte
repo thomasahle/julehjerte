@@ -23,14 +23,13 @@
   import Gallery from "$lib/components/front/Gallery.svelte";
   import { deleteUserDesign, getUserCollection } from "$lib/stores/collection";
   import { toGalleryHeart, type GalleryHeart, type HeroHeart } from "$lib/front/galleryHearts";
-  import { SITE_TITLE, SITE_TITLE_EN } from "$lib/config";
   import { langFromParam, t, type Language } from "$lib/i18n";
   import { heartAnchorFromHash, sectionAnchorToLand } from "$lib/utils/heartAnchors";
   import { focusSectionHeading } from "$lib/front/deleteFocus";
   import { ALL_HEART_IDS, MY_HEARTS_CATEGORY_ID } from "$lib/data/categories";
   import heartCards from "$lib/data/heart-cards.json";
   import { heartName } from "$lib/utils/heartName";
-  import { frontPageJsonLd, jsonLdScript } from "$lib/seo";
+  import { frontPageJsonLd, jsonLdScript, pageTitle } from "$lib/seo";
   import { keepKnown, parseSelected, selectionSearch, toggleSelected } from "$lib/front/selection";
   import {
     LEVEL_PARAM,
@@ -65,7 +64,7 @@
   /** `levels` has been read from the URL or the tab's storage (onMount). */
   let levelsRestored = $state(false);
   let lang = $derived(langFromParam($page.params.lang));
-  let metaTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
+  let metaTitle = $derived(pageTitle("home", lang));
   // Structured data: the gallery as a schema.org ItemList of the heart pages
   // and their square pictures ($lib/seo). heart-cards.json is the file the
   // load function already imports for the cards' names.

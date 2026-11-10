@@ -210,7 +210,7 @@
 		     links nor a footer to reach the other one from. Below 900px the site
 		     variant hides it (see the stylesheet) because the drawer carries it. -->
 		<a class="pill" href={languageHref} title={t('switchLanguage', lang)}>
-			{lang === 'da' ? 'EN' : 'DA'}
+			{t('switchLanguageCode', lang)}
 		</a>
 		{#if variant === 'site'}
 			<GitHubLink class="nav-github" />
@@ -253,7 +253,7 @@
 			{/each}
 			<ColorControls {lang} variant="menu" />
 			<a class="menu-link" href={languageHref}>
-				{lang === 'da' ? 'English' : 'Dansk'}
+				{t('switchLanguageName', lang)}
 			</a>
 			<GitHubLink variant="plain" class="menu-link" />
 		</div>

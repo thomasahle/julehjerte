@@ -56,7 +56,7 @@
 								<p>{t('noPrinterScreenHelpTrace', lang)}</p>
 								<a href={heartHref('classic-3x3', lang)}>{t('noPrinterScreenHelpTraceLink', lang)} <span aria-hidden="true">→</span></a>
 								<p>{t('noPrinterScreenHelpText', lang)}</p>
-								<a href="https://support.apple.com/{lang === 'da' ? 'da-dk' : 'en-us'}/111795">{t('noPrinterScreenHelpLink', lang)} <span aria-hidden="true">↗</span></a>
+								<a href={t('noPrinterScreenHelpUrl', lang)}>{t('noPrinterScreenHelpLink', lang)} <span aria-hidden="true">↗</span></a>
 							</details>
 						{/if}
 					</div>

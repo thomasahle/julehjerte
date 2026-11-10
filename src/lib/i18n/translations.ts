@@ -187,6 +187,12 @@ export const translations = {
     aboutTopologyCaution: "En tegning af snittene fortæller ikke alt: Der skal også være plads til at klippe, og strimlerne skal kunne føres gennem hinanden. De viste konstruktioner er kontrolleret digitalt; de er ikke alle afprøvet i papir.",
     aboutTopologyTry: "Prøv med dit eget motiv",
     aboutTopologyDiagramAlt: "Det flettede hjerte og de snit, der danner motivet",
+
+    // The site's own browser title and search description: the front page's,
+    // and the fallback for any page without its own
+    siteBrowserTitle: 'Flettede julehjerter – skabeloner til print',
+    siteMetaDescription: 'Find skabeloner til flettede julehjerter, print dem på A4, og følg vejledningen til at klippe og flette. Du kan også designe dit eget mønster.',
+
     // Site navigation, the header and the skip link
     siteNavigation: 'Hovedmenu',
     navTemplates: 'Skabeloner',
@@ -203,7 +209,8 @@ export const translations = {
     heroGoToHeart: 'Gå til {name} i galleriet',
     heroIntro: 'Vælg et julehjerte, hent skabelonen som PDF, og print på A4.',
     heroGuideLink: 'Følg vejledningen',
-    heroIntroEnd: 'til at klippe og flette, eller tegn dit eget mønster i editoren.',
+    /** Follows the guide link with nothing between, so it starts with its own space or comma */
+    heroIntroEnd: ' til at klippe og flette, eller tegn dit eget mønster i editoren.',
     heroSeeTemplates: 'Se skabeloner',
     heroScrollHint: 'Scroll for at udforske skabeloner',
 
@@ -1117,6 +1124,7 @@ export const translations = {
     noPrinterScreenHelpTraceLink: 'Åbn det klassiske hjerte',
     noPrinterScreenHelpText: 'På iPad kan Forenklet adgang midlertidigt slå berøring fra. Indstil først PDF-visningen og størrelsen, og følg Apples vejledning for at starte og afslutte funktionen. Slå berøring til igen, når du skal flytte til en anden skabelon.',
     noPrinterScreenHelpLink: 'Apples vejledning til Forenklet adgang',
+    noPrinterScreenHelpUrl: 'https://support.apple.com/da-dk/111795',
     noPrinterQuestionsTitle: 'Hvilket papir kan du tegne på?',
     noPrinterQuestions: [
       'Kan jeg bruge almindeligt papir?',
@@ -1151,7 +1159,10 @@ export const translations = {
     // Labels drawn inside the guide illustrations (guideSvg() in the mockup generator)
     guideLabelFoldLine: 'stiplet linje på folden',
     guideLabelFromFold: 'fra folden',
+    // The language toggle, which names the other language in that language
     switchLanguage: 'Switch to English',
+    switchLanguageCode: 'EN',
+    switchLanguageName: 'English',
 
     // "Om" / "About" page
     aboutTitle: 'Om Juleflet.dk',
@@ -1198,6 +1209,8 @@ export const translations = {
     rightColor: 'Højre farve',
     suggestHeart: 'Foreslå et hjerte',
     madeBy: '©',
+    /** {years} = the Christmases the site has been up, "2025, 2026" */
+    christmasYears: 'julen {years}',
     paperColors: 'Farver',
     swapColors: 'Byt farver',
     colorfulMode: 'Farverig',
@@ -1396,6 +1409,12 @@ export const translations = {
     aboutTopologyCaution: "A drawing of the cuts does not tell the whole story: there must also be room to cut and to pass the strips through one another. These constructions have been checked digitally; they have not all been assembled in paper.",
     aboutTopologyTry: "Try your own motif",
     aboutTopologyDiagramAlt: "The woven heart and the cuts that create the motif",
+
+    // The site's own browser title and search description: the front page's,
+    // and the fallback for any page without its own
+    siteBrowserTitle: 'Woven Christmas hearts – printable templates',
+    siteMetaDescription: 'Explore woven Christmas heart templates, print them on A4, and follow the cutting and weaving guide. You can also design your own pattern.',
+
     // Site navigation, the header and the skip link
     siteNavigation: 'Main navigation',
     navTemplates: 'Templates',
@@ -1412,7 +1431,8 @@ export const translations = {
     heroGoToHeart: 'Go to {name} in the gallery',
     heroIntro: 'Choose a heart, download the PDF template, and print on A4.',
     heroGuideLink: 'Follow the cutting and weaving guide',
-    heroIntroEnd: 'or draw your own pattern in the editor.',
+    /** Follows the guide link with nothing between, so it starts with its own space or comma */
+    heroIntroEnd: ', or draw your own pattern in the editor.',
     heroSeeTemplates: 'Browse templates',
     heroScrollHint: 'Scroll to explore templates',
 
@@ -2321,6 +2341,7 @@ export const translations = {
     noPrinterScreenHelpTraceLink: 'Open the classic heart',
     noPrinterScreenHelpText: 'On iPad, Guided Access can temporarily disable touch. Set the PDF view and size first, then follow Apple’s instructions to start and end the session. Enable touch again when you need to move to another template.',
     noPrinterScreenHelpLink: 'Apple’s guide to Guided Access',
+    noPrinterScreenHelpUrl: 'https://support.apple.com/en-us/111795',
     noPrinterQuestionsTitle: 'Which paper can you trace onto?',
     noPrinterQuestions: [
       'Can I use ordinary paper?',
@@ -2355,7 +2376,10 @@ export const translations = {
     // Labels drawn inside the guide illustrations (guideSvg() in the mockup generator)
     guideLabelFoldLine: 'dashed line on the fold',
     guideLabelFromFold: 'from the fold',
+    // The language toggle, which names the other language in that language
     switchLanguage: 'Skift til dansk',
+    switchLanguageCode: 'DA',
+    switchLanguageName: 'Dansk',
 
     // "Om" / "About" page
     aboutTitle: 'About Juleflet.dk',
@@ -2402,6 +2426,8 @@ export const translations = {
     rightColor: 'Right colour',
     suggestHeart: 'Suggest a heart',
     madeBy: '©',
+    /** {years} = the Christmases the site has been up, "2025, 2026" */
+    christmasYears: 'Christmas {years}',
     paperColors: 'Colours',
     swapColors: 'Swap colours',
     colorfulMode: 'Colourful',

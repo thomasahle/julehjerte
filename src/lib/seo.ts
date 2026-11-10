@@ -1,4 +1,4 @@
-import { SITE_DESCRIPTION, SITE_DESCRIPTION_EN, SITE_NAME, SITE_TITLE, SITE_TITLE_EN, SITE_URL } from '$lib/config';
+import { SITE_NAME, SITE_URL } from '$lib/config';
 import { t, type Language } from '$lib/i18n';
 import { ROUTES, heartPath, type RouteKey } from '$lib/i18n/routes';
 import { HEART_IMAGE_SIZE, heartImagePath } from '$lib/heartImage';
@@ -20,7 +20,7 @@ export function pageTitle(route: RouteKey | null, lang: Language): string {
 	if (route === 'generator') return `${t('generatorTitle', lang)} | ${SITE_NAME}`;
 	if (route === 'editor') return `${t('heroDesignHeart', lang)} | ${SITE_NAME}`;
 	if (route === 'paint') return `${t('paintPageTitle', lang)} | ${SITE_NAME}`;
-	return lang === 'en' ? SITE_TITLE_EN : SITE_TITLE;
+	return `${t('siteBrowserTitle', lang)} | ${SITE_NAME}`;
 }
 
 export function heartPageTitle(id: string, name: string, lang: Language): string {
@@ -219,7 +219,7 @@ export function frontPageJsonLd(
 		'@context': 'https://schema.org',
 		'@type': 'CollectionPage',
 		name: pageTitle('home', lang),
-		description: lang === 'en' ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION,
+		description: t('siteMetaDescription', lang),
 		url,
 		inLanguage: lang,
 		image: FRONT_PAGE_SOCIAL_IMAGE,

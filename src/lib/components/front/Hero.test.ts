@@ -39,6 +39,27 @@ describe('Hero', () => {
 		expect(hint.getAttribute('href')).toBe('#skabeloner');
 	});
 
+	// The guide link sits inside the sentence: Danish goes on after a space,
+	// English after a comma.
+	it('runs the intro on from the guide link in each language', () => {
+		const intro = (lang: 'da' | 'en') => {
+			const target = document.createElement('div');
+			document.body.append(target);
+			component = mount(Hero, { target, props: { lang, desktop: [], mobile: [] } });
+			flushSync();
+			const text = target.querySelector('.hero-text p')!.textContent!.replace(/\s+/g, ' ').trim();
+			unmount(component);
+			component = null;
+			return text;
+		};
+		expect(intro('da')).toBe(
+			'Vælg et julehjerte, hent skabelonen som PDF, og print på A4. Følg vejledningen til at klippe og flette, eller tegn dit eget mønster i editoren.'
+		);
+		expect(intro('en')).toBe(
+			'Choose a heart, download the PDF template, and print on A4. Follow the cutting and weaving guide, or draw your own pattern in the editor.'
+		);
+	});
+
 	// The desktop hero hides the drawing's stars and dots that fall inside its
 	// text column by position in their groups (Hero.svelte's stylesheet). If the
 	// drawing is ever reordered, the rule would hide the wrong ones.
