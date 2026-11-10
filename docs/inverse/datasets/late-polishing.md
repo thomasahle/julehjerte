@@ -46,12 +46,12 @@ it passes with the values above. Local evidence is under
 Before this correction, all 24 focused tests covering the five outstanding
 full-suite failures passed without a production change: two late-routing
 tests plus 22 feature-seed, dense-count and late-initialization tests. Their
-earlier failures remain recorded in `interior-count-release-results.json`.
+earlier failures remain recorded in `interior-count-release-results.json` (removed).
 These reruns do not establish a cause or clear the full suite. The separate
 polishing bug above was found by controlling the remaining refinement time;
 it is not claimed to explain all five failures.
 
-The [completed broader QA for `8149da2`](late-polishing-release-qa.json) passes
+The completed broader QA for `8149da2` (`late-polishing-release-qa.json`, removed) passes
 type checking, lint, build, 874 application tests (one skipped) and 1,037/1,038
 inverse tests. All five earlier unresolved failures pass, without establishing
 their earlier causes. One repaired-initializer handoff fails instead: its
@@ -106,7 +106,7 @@ Error is measured against unchanged classified masks, not unknown original
 cutting paths. These are previously inspected development cases, and the
 faster observed timings cannot be attributed to this deadline fix alone.
 
-The [release record](late-polishing-release-qa.json) includes the comparison,
+The release record (`late-polishing-release-qa.json`, removed) includes the comparison,
 source/log hashes and stage results under `qa-handoff/`. Full inverse
 verification now passes **1,039/1,039 tests** with no failures, skips or
 cancellations. The controller verifies all 1,018 pinned source files unchanged.
@@ -118,7 +118,7 @@ free-space floor. Nothing has been pushed or deployed.
 
 ## Complete-photograph replay
 
-The [paired photo record](late-polishing-photo-qa.json) runs all 31 complete
+The paired photo record (`late-polishing-photo-qa.json`, removed) runs all 31 complete
 heart cases from their original photographs and rough selections, with fresh
 automatic cropping and binary Mal fitting. Fifteen incomplete hearts and one
 obscured heart remain in the inventory. All 27 current candidate passes survive
@@ -166,7 +166,7 @@ and crop detection, preparation, export and independent checks take extra time.
 
 ## Remaining shared-cut gaps
 
-An [offline additional-cleanup probe](post-release-shared-gap-probe.json) tests
+An offline additional-cleanup probe (`post-release-shared-gap-probe.json`, removed) tests
 bird, crown, puppy and Viking from their saved exports, without new fitting.
 One more ordinary sharing pass gets 6, 4, 1 and 10 additional alignments,
 respectively. Final geometry, lattice, unfolded-paper offsets and source-feature
@@ -181,3 +181,12 @@ These are native diagnostic candidates, not fresh solves or editable/browser
 validation. No extra pass was added to production. The next investigation
 should inspect missing alignment proposals and their rejection reasons rather
 than simply extending cleanup time.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/interior-count-release-results.json`
+- `docs/inverse/datasets/late-polishing-release-qa.json`
+- `docs/inverse/datasets/late-polishing-photo-qa.json`
+- `docs/inverse/datasets/post-release-shared-gap-probe.json`

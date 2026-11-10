@@ -103,7 +103,7 @@ tests pass**, with one existing application skip. Type checking has zero errors
 and seven existing warnings; lint and build pass. Browser QA has **12 passes
 and two new failures**, detailed below.
 
-The [measurement ledger](JUNCTION-RECOVERY-VALIDATION.json) records every case,
+The measurement ledger (`JUNCTION-RECOVERY-VALIDATION.json`, removed) records every case,
 before/after values, source hashes, browser failures and diagnostic ablations.
 Local visual panels and exported curves are in
 `tmp/circular-junction-web-all/report.html`.
@@ -162,3 +162,9 @@ INVERSE_TEST_URL=http://127.0.0.1:5232 INVERSE_TEST_BROWSERS=chromium,webkit INV
 Set `PLAYWRIGHT_MODULE` to an installed standalone Playwright module when needed.
 As in the other photograph benchmarks, agreement is measured against the
 classified crop, not unavailable original artwork or physically tested templates.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/JUNCTION-RECOVERY-VALIDATION.json`

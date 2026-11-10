@@ -147,7 +147,7 @@ stay equal in 14 and increase in one. The WebKit large house changes from
 fit. As with the Node results, that distinction is retained in the report.
 
 All **50 served engine files** match the tested source hashes.
-[PRIMITIVE-SELECTION-VALIDATION.json](PRIMITIVE-SELECTION-VALIDATION.json) records
+`PRIMITIVE-SELECTION-VALIDATION.json` (removed) records
 the fixed-output and fresh comparisons, source and downloaded-artifact hashes,
 timings, rejected experiments and numerical qualifications. The preview used
 for these checks is `http://127.0.0.1:5232/en/editor/paint/`.
@@ -178,3 +178,9 @@ complete symmetry groups, overlapping edits, exact pixel-centre ties and moved
 endpoint closures, and preservation of native SVG geometry. The full-suite
 concurrency limit changes scheduling only; quality assertions and solver
 deadlines retain their existing limits.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/PRIMITIVE-SELECTION-VALIDATION.json`

@@ -133,7 +133,7 @@ All **718 application tests and 236 engine tests** pass. Lint and the production
 build pass; Svelte checking reports zero errors and seven existing warnings.
 The Firefox hat preview and drawing, and the Chromium star preview, were
 visually inspected. All **49 served engine files** match the tested sources.
-[BOUNDARY-VALUES-VALIDATION.json](BOUNDARY-VALUES-VALIDATION.json) records the
+`BOUNDARY-VALUES-VALIDATION.json` (removed) records the
 comparisons, source and artifact hashes, original and corrected scalar timing
 scopes, profiles, per-case release results and retained variations.
 
@@ -144,3 +144,9 @@ INVERSE_TEST_URL=http://127.0.0.1:5232 \
   INVERSE_TEST_BROWSERS=firefox,chromium,webkit \
   node scripts/inverse/boundary-value-benchmark.mjs
 ```
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/BOUNDARY-VALUES-VALIDATION.json`

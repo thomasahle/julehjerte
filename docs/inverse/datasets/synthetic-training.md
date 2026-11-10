@@ -213,6 +213,12 @@ Each selected view receives six variants: baseline, red/cream palette, zero blur
 
 The optional `--profile=glare` instead generates four variants: baseline, centered glare at amounts 0.55 and 0.85, and offset glare at amount 0.85. Both widths are 0.22 of the photograph dimensions; centers are `[0.5, 0.5]` or `[0.65, 0.38]`. The default `standard` profile retains the original six variants. Both profiles require exact baseline replay and unchanged targets.
 
-The first run reproduced six previously selected difficult views and generated **36 controlled rows in 4.885 seconds**. All **36 baseline image hashes** matched the original; all **258 saved assets** passed verification. [Replay evidence](synthetic-intervention-probe.json)
+The first run reproduced six previously selected difficult views and generated **36 controlled rows in 4.885 seconds**. All **36 baseline image hashes** matched the original; all **258 saved assets** passed verification. Replay evidence (`synthetic-intervention-probe.json`, removed)
 
 These six views were selected from earlier model errors. They support paired diagnosis of those cases, not an unbiased estimate of generalization or a new independent test set. Exact-crop variants have different crop-coordinate targets and must be evaluated against those corresponding labels. Any reconstruction/model comparison belongs in a separate report.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/synthetic-intervention-probe.json`

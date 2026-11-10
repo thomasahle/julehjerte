@@ -7,7 +7,7 @@ the 31 real inputs. The new bauble result loses much of its photographed frame,
 while the eight-point star loses its crop proposal. The model remains offline;
 the production benchmark remains 24/31.
 
-The [machine-readable audit](foreground-scene-learning.json) verifies 23,446
+The machine-readable audit (`foreground-scene-learning.json`, removed) verifies 23,446
 referenced artifacts, matching input windows, training budgets and background
 draws. Raw photographs, predictions, crops, masks, exported geometry and logs
 are preserved under `tmp/heart-learning/foreground-scene-v1/`. The complete
@@ -146,7 +146,7 @@ equal replay inputs and pipeline settings, and referenced artifact hashes.
 
 ## Validation
 
-The [validation record](foreground-scene-validation.json) preserves passing
+The validation record (`foreground-scene-validation.json`, removed) preserves passing
 serial runs of 744 inverse tests, 855 application tests (one existing skip),
 45 offline Python tests, type checks, lint and the production build. Type checking
 reports zero errors and seven existing warnings; lint retains one existing warning.
@@ -158,3 +158,10 @@ errors or broken images; all 16 inverted display masks are independently checked
 pixel-by-pixel against their frozen originals. Neither masks nor scores are altered
 for display. The owned preview was restarted after the build and remains available
 at `http://127.0.0.1:5232/editor/mal/`.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/foreground-scene-learning.json`
+- `docs/inverse/datasets/foreground-scene-validation.json`

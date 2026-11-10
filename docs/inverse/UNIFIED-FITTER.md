@@ -41,7 +41,7 @@ Fresh four-cell motif runs use the same main fitter with a ten-second budget:
 
 All pass geometry and paper-core checks. These timings include preparation, fitting, validation, export and independent rendering on this machine. Centre disagreement excludes the supporting checker border. Curved spans include hidden routing sections; the count is not a count of visible motif arcs. The hat and house retain the preceding specialized route's measured quality, now within the main fitting process.
 
-[Recorded results, settings, source hashes and exported-template hashes](UNIFIED-FITTER-VALIDATION.json) accompany these measurements. CPU contention and runtime differences can affect a search with a wall-clock budget.
+Recorded results, settings, source hashes and exported-template hashes (`UNIFIED-FITTER-VALIDATION.json`, removed) accompany these measurements. CPU contention and runtime differences can affect a search with a wall-clock budget.
 
 The full test suite passes: 132 Vitest tests and 150 inverse-engine tests. Lint and the production build pass. Svelte checking reports zero errors and eight existing editor warnings.
 
@@ -59,3 +59,9 @@ PLAYWRIGHT_MODULE=/path/to/playwright/index.mjs INVERSE_TEST_URL=http://127.0.0.
 The focused unit test places a noisy straight span and a real S-curve in the same candidate, then checks that one becomes exactly straight and the other remains unchanged. Integration tests start from fresh hat, house and circle masks, including resize and subpixel-translation preparation tests. Browser replays upload PNGs, solve through the actual worker, download the template ZIP, independently render the exported cuts, and visit both templates and all comparison views in Chromium, Firefox and WebKit.
 
 The Hunodan benchmark uses the frozen photograph crops and compares independent export-renderer errors with the existing release baseline. Its quality criterion allows the already requested one percentage point additional error when the selected sheets are identical. Timing covers preparation, fitting, validation and export; decoding and external rendering are measured separately.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/UNIFIED-FITTER-VALIDATION.json`

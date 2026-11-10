@@ -72,7 +72,7 @@ has small notches and complicated hidden routing around two inner bends. The
 Viking's bottom routing remains complex. Passing the checks does not establish
 the original cutting paths, a simple pattern, or physical assembly suitability.
 
-The [release record](junction-retry-release.json) preserves all scores, timings,
+The release record (`junction-retry-release.json`, removed) preserves all scores, timings,
 visual observations, 464 source hashes and 990 artifact hashes. An independent
 replay verified those hashes, and all 153 built assets were compared with their
 HTTP-served bytes. The preview at `http://127.0.0.1:5232/editor/mal/` now serves
@@ -83,3 +83,9 @@ The new focused regression can be rerun with:
 ```sh
 node --test --test-concurrency=1 scripts/inverse/junction-routing.test.mjs
 ```
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/junction-retry-release.json`

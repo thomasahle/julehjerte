@@ -26,8 +26,14 @@ also evaluates every shared orientation hypothesis without the app's two-second
 cutoff; its proposal count is not a new automatic-crop speed or accuracy result.
 No model is trained and no template fitting is rerun here.
 
-The [evidence record](locator-support-consistency.json) verifies implementation
+The evidence record (`locator-support-consistency.json`, removed) verifies implementation
 and input-manifest hashes, equality of candidate fits, all paired outcomes and
 the archived artifacts. The executable probe and complete candidate/support
 logs are in `tmp/heart-learning/locator-support-consistency-v1/`. Production
 cropping and the verified preview remain unchanged.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/locator-support-consistency.json`

@@ -25,7 +25,7 @@ coarse error is 7.8232%, just outside the raw-image shortlist ceiling of
 places it near the leading candidates. This is a separate shortlist cliff,
 not a reason to increase MILP time or loosen geometry validation.
 
-The [record](clearance-window.json) retains all 24 outcomes and artifact hashes;
+The record (`clearance-window.json`, removed) retains all 24 outcomes and artifact hashes;
 all 207 pinned source files remain unchanged. Small timing-dependent error
 changes remain on other cases, and the upward failure is not hidden. These
 six inspected development masks do not establish a global success rate.
@@ -34,3 +34,9 @@ The next isolated study compares using the existing 0.005-per-cut score for
 the low-cut shortlist reservation, alone and with the earlier comparison.
 It still uses three finalist slots and preserves the best seed and any
 opposite-border reservation. No policy from either experiment is adopted yet.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/clearance-window.json`

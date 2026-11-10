@@ -114,16 +114,23 @@ arc neighbourhoods, leaving periodic projection to repair recurring defects.
 All ten focused tests and focused lint pass. Tests cover captured returns,
 ordinary bends, reflection, random subdivisions, projection immutability/fixed
 endpoints, and the existing MILP rejection regression. No app/runtime files were
-changed. Subsequent [complete verification](short-return-export-validation.json)
+changed. Subsequent complete verification (`short-return-export-validation.json`, removed)
 passes **826 inverse tests**, **855 application tests** (one skipped), type
 checking, lint and build. All 822 checked source files retain their hashes.
 The refreshed preview serves 153 verified build assets, and all thirteen new
 Chromium flows pass. Their screenshots have not all been visually re-reviewed.
 The app runtime remains unchanged; these checks do not deploy the proposal.
 
-The [evidence record](short-return-export-audit.json) preserves the full native
+The evidence record (`short-return-export-audit.json`, removed) preserves the full native
 comparison, actual SVG audits, intermediate counterexamples, unsuccessful
 fitting trials and source/artifact hashes. Reusable entry points are
 `diagnostics/hunodan-editor-input.mjs`, `hard-photo-editor-replay.mjs`,
 `diagnostics/editable-return-study.mjs` and `self-return-subdivision-study.mjs`,
 all under `scripts/inverse/`. No changes have been pushed or deployed.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/short-return-export-validation.json`
+- `docs/inverse/datasets/short-return-export-audit.json`

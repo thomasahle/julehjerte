@@ -75,7 +75,7 @@ the named commit's implementation. Omitting the two calibration selection
 variables compares the four timing policies. Set `PLAYWRIGHT_MODULE` when
 Playwright is available outside the repository. Snapshot checksums, source
 hashes and exact commands are recorded in
-[KERNEL-CALIBRATION-VALIDATION.json](KERNEL-CALIBRATION-VALIDATION.json).
+`KERNEL-CALIBRATION-VALIDATION.json` (removed).
 
 ## Fresh fitting and shared-cut regression checks
 
@@ -112,3 +112,9 @@ blocked, exercising the JavaScript fallback. All **50 served engine files**
 match the source hashes used in the calibration comparison and fresh Node
 fits. Browser timings include the UI workflow and remain different from the
 Node benchmark; the ten-second claim above applies to the Node measurements.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/KERNEL-CALIBRATION-VALIDATION.json`

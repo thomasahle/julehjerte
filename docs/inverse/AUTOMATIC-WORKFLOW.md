@@ -22,7 +22,7 @@ comparison overlays remain available after solving.
 
 ## Measurements
 
-`AUTOMATIC-VALIDATION.json` records all 22 regular Hunodan photo cases passing
+`AUTOMATIC-VALIDATION.json` (removed) records all 22 regular Hunodan photo cases passing
 geometry, paper and feature checks in 5.15–9.98 seconds, including preparation,
 validation and export. Decoding and independent external rendering are separate.
 The source photographs and crops are frozen; no reference paths initialize fits.
@@ -34,7 +34,7 @@ or improve it. This intentionally uses the subsequently requested matching
 allowance; it is different from the earlier strict no-error-increase criterion.
 Timing is local evidence, not a guarantee for every device.
 
-`AUTOMATIC-BROWSER-VALIDATION.json` records 130 successful checks across the
+`AUTOMATIC-BROWSER-VALIDATION.json` (removed) records 130 successful checks across the
 reference, matching, photo-upload recovery, candidate-review, general generator
 and comparison suites. The reference suite uses Chromium and Firefox; the other
 five also use WebKit. Checks include actual worker solves, independently rendered
@@ -59,3 +59,10 @@ fits. Automatic detection was subsequently added in
 [ORANGE-CROPPER.md](ORANGE-CROPPER.md).
 The final code passes 269 automated tests, lint, a production build, and type
 checking with zero errors and eight pre-existing warnings.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/AUTOMATIC-VALIDATION.json`
+- `docs/inverse/AUTOMATIC-BROWSER-VALIDATION.json`

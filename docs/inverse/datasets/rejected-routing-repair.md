@@ -167,7 +167,13 @@ Local experiment artifacts are under `tmp/heart-learning/routing-repair-v1/`.
 `matrix/results.json` records all sixteen independent audits; `matrix-editor/`
 contains actual exported SVGs and their complete checks. `cases.json` freezes
 the RGB source hash and crop coordinates; original failed experiments are
-retained. The [committed evidence record](rejected-routing-repair.json) includes
+retained. The committed evidence record (`rejected-routing-repair.json`, removed) includes
 the full paired audit, both Hunodan runs, browser results, source hashes and an
 artifact ledger. The five remaining sloth perturbations and seven unresolved
 complete photographs remain open algorithmic work.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/rejected-routing-repair.json`

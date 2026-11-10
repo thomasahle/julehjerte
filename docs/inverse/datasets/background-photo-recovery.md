@@ -173,10 +173,10 @@ node --test --test-concurrency=1 scripts/inverse/background-crop.test.mjs
 Image bytes and full logs stay outside Git. Selection metadata, source and
 artifact hashes, per-case outcomes and validation are retained in the reports.
 
-The [results record](background-photo-results.json) includes all 30 full
+The results record (`background-photo-results.json`, removed) includes all 30 full
 replays, the 24 before/after crop comparisons, common-coordinate errors for
 the diagnostic cases and the unresolved issues. The
-[validation record](background-validation.json) retains the complete QA run:
+validation record (`background-validation.json`, removed) retains the complete QA run:
 855 application tests (one skipped), 670 inverse tests, 33 learning tests and
 13 collector tests passed, as did type checking, lint and build. Type checking
 has seven existing warnings and no errors.
@@ -188,3 +188,10 @@ times were 4.80–7.65 seconds in that browser run. Its normal 400-pixel masks
 produce separate results from the 384-pixel Node replay; screenshots, exported
 geometry and worker responses are retained. No page errors occurred. The
 preview remains available at `http://127.0.0.1:5232/editor/mal/`.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/background-photo-results.json`
+- `docs/inverse/datasets/background-validation.json`

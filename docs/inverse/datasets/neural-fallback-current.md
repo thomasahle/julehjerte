@@ -95,7 +95,7 @@ fallback is still offline; browser integration and ONNX export remain untested.
 
 ## Verification and artifacts
 
-The [machine-readable audit](neural-fallback-current.json) verifies 602 retained
+The machine-readable audit (`neural-fallback-current.json`, removed) verifies 602 retained
 artifacts and 94 current source hashes. All 31 production crop outcomes,
 coordinates and classified/fitting mask hashes match the last released photo
 benchmark. The new fitter runs cover only the three named failures; this is not
@@ -130,3 +130,9 @@ node scripts/inverse/learning/foreground-replay.mjs \
 The existing `audit-fresh.mjs` script verifies the saved study without rerunning
 inference, cropping, fitting or tests. Nothing was pushed or deployed. The owned
 preview remains at `http://127.0.0.1:5232/editor/mal/`.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/neural-fallback-current.json`

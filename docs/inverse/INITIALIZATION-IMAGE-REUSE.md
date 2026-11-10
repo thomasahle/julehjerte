@@ -147,7 +147,7 @@ Hunodan target above is a separate Node benchmark.
 All **718 application tests and 207 engine tests** pass. Svelte checking reports
 zero errors and seven existing warnings; lint and the production build pass.
 The preview serves the same **45 engine files** as the complete-fit benchmarks.
-[INITIALIZATION-IMAGE-REUSE-VALIDATION.json](INITIALIZATION-IMAGE-REUSE-VALIDATION.json)
+`INITIALIZATION-IMAGE-REUSE-VALIDATION.json` (removed)
 records source and log hashes, per-case measurements, the failed initial
 Hunodan batch, paired diagnostic fits, and the intentionally interrupted first
 browser run alongside the completed replay.
@@ -167,3 +167,9 @@ node scripts/inverse/prepare-preview-benchmark.mjs \
   --weighted=tmp/phase-robustness-final --browser=tmp/phase-browser-final \
   --output=tmp/prepare-preview
 ```
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/INITIALIZATION-IMAGE-REUSE-VALIDATION.json`

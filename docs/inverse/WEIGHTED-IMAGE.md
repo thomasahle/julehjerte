@@ -238,13 +238,20 @@ uncertainty weights, and broader photo testing remain separate work. A weighted
 mask is already rectified; arbitrary photograph-coordinate weights are not
 silently mapped through crop or colour conversion.
 
-[WEIGHTED-IMAGE-VALIDATION.json](WEIGHTED-IMAGE-VALIDATION.json) preserves the
+`WEIGHTED-IMAGE-VALIDATION.json` (removed) preserves the
 earlier primitive/refinement results. The full-solve integration results and
 release checks are recorded in
-[WEIGHTED-SOLVE-VALIDATION.json](WEIGHTED-SOLVE-VALIDATION.json).
+`WEIGHTED-SOLVE-VALIDATION.json` (removed).
 
 ```sh
 node --test scripts/inverse/weighted-image.test.mjs scripts/inverse/weighted-pipeline.test.mjs
 node scripts/inverse/weighted-border-benchmark.mjs --output=tmp/weighted-border
 node scripts/inverse/weighted-solve-benchmark.mjs --output=tmp/weighted-solve
 ```
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/WEIGHTED-IMAGE-VALIDATION.json`
+- `docs/inverse/WEIGHTED-SOLVE-VALIDATION.json`

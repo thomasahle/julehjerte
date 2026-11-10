@@ -67,7 +67,7 @@ fallback. Visual inspection still finds kinks and small seams in the fitted
 bands. Sparse observations and aggregate error do not certify original cutting
 paths or physical assembly.
 
-The [probe record](interior-palette-probe.json) pins the diagnostic sources,
+The probe record (`interior-palette-probe.json`, removed) pins the diagnostic sources,
 prototype fitting, 73 tests and automatic crop comparison across all 31 complete
 photographs. Only the blue outlined star changes: the 28 existing crops and
 classified masks remain identical, and nested squares/Santa still lack crops.
@@ -121,7 +121,7 @@ node --test --test-concurrency=1 scripts/inverse/interior-palette-crop.test.mjs
 
 ## Completed release verification
 
-The [release record](interior-palette-release.json) pins runtime `4469b9f`,
+The release record (`interior-palette-release.json`, removed) pins runtime `4469b9f`,
 458 source hashes and 925 retained artifacts. All ten serial release stages
 completed successfully under `tmp/heart-learning/interior-palette-release-v2/`.
 The browser report names the later data-only commit `cefa7ca`; its runtime and
@@ -171,3 +171,10 @@ failure has a single cause. No acceptance gate was relaxed to raise the pass rat
 
 The verified build is available at `http://127.0.0.1:5232/editor/mal/`. Nothing
 has been pushed or deployed. Physical assembly remains untested.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/interior-palette-probe.json`
+- `docs/inverse/datasets/interior-palette-release.json`

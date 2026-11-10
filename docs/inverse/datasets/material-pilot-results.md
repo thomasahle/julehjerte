@@ -54,7 +54,7 @@ modules** pass after source promotion, as do three coordinate/phase regression
 tests for the experimental material adapter. Passing these checks establishes
 experiment integrity, not model quality.
 
-The [evidence record](material-pilot-results.json) pins the runs, audit and exact
+The evidence record (`material-pilot-results.json`, removed) pins the runs, audit and exact
 source promotion. The tested helper, tests and CLI now live in
 `scripts/inverse/learning/`. Reproduce with a new output directory:
 
@@ -80,3 +80,9 @@ successful rate, 0.001, is fixed for the [next grouped photo pilot](material-pil
 whose [completed results](material-pilot-v2-results.md) improve material separation
 but not complete reconstruction reliably. No new-rate real-photo scores selected that rate. No ONNX model
 or website inference has been added, and nothing has been pushed or deployed.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/material-pilot-results.json`

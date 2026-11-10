@@ -154,8 +154,14 @@ production build pass. The two additional real puppy uploads both display the
 notice and still complete SVG download, with no feature loss introduced during
 conversion. The checked page and engine hashes match the local production build.
 
-The [complete validation ledger](REFINEMENT-SCHEDULING-VALIDATION.json) records
+The complete validation ledger (`REFINEMENT-SCHEDULING-VALIDATION.json`, removed) records
 every corpus result, including degradations and unsuccessful reconstructions,
 the gradient diagnostic, source hashes, 16 initial browser checks, two post-fix
 notice checks and 59 editable SVG replays. Algorithm commit: `877c62e`. Notice
 and browser-test commit: `fa49356`. No push or deployment was performed.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/REFINEMENT-SCHEDULING-VALIDATION.json`

@@ -101,7 +101,7 @@ the browser run. The preview is running at
 `http://127.0.0.1:5232/editor/mal/`.
 
 Per-case corners, errors, cut counts, symmetry decisions, timings, source
-hashes and verification logs are in [the results record](shadow-edge-results.json).
+hashes and verification logs are in the results record (`shadow-edge-results.json`, removed).
 The local visual report is
 `tmp/heart-learning/shadow-evidence-v1/report.html`.
 
@@ -121,3 +121,9 @@ node scripts/inverse/learning/photo-alignment.mjs \
 The covariance distance is an empirical model, not a guarantee that every
 shadow or texture can be separated from paper. The remaining crop and
 symmetry tradeoffs above remain part of the recorded evidence.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/shadow-edge-results.json`

@@ -111,7 +111,7 @@ All **49 served engine files** match the previous release and the workspace.
 The 22/22 Hunodan and 32/32 weighted-border Node benchmark results are therefore
 retained from [IDENTICAL-PAPER.md](IDENTICAL-PAPER.md), explicitly as previous
 measurements; these benchmarks were not rerun for the QA-only change.
-[BROWSER-TIMING-VALIDATION.json](BROWSER-TIMING-VALIDATION.json) records every
+`BROWSER-TIMING-VALIDATION.json` (removed) records every
 new browser timing and quality result, the comparison, source and artifact
 hashes, smoke runs and reused Node evidence.
 
@@ -125,3 +125,9 @@ INVERSE_TEST_URL=http://127.0.0.1:5232 \
   INVERSE_TEST_CASES=star,top-hat,top-hat-independent \
   node scripts/inverse/paint-browser-test.mjs
 ```
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/BROWSER-TIMING-VALIDATION.json`

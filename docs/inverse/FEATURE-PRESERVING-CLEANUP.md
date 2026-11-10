@@ -51,7 +51,7 @@ measure fresh end-to-end speed or automatic crop quality. Raw local records:
 
 ## Fresh full-pipeline verification
 
-The [paired validation record](FEATURE-CLEANUP-VALIDATION.json) compares commit
+The paired validation record (`FEATURE-CLEANUP-VALIDATION.json`, removed) compares commit
 `58b50ba` with the preceding `c79d9d6` release. It includes the shared endpoint
 preflight changes as well as cleanup. All photo sources, automatic crop
 coordinates and preparation metadata match the earlier run.
@@ -95,3 +95,9 @@ Raw runs are in `tmp/feature-cleanup-{hunodan,web-all,browser}/`; the photo repo
 contains original selections, rectified inputs, masks, exported weaves and
 difference panels. The committed record keeps outcomes, source hashes, boundary
 rejection reasons, cleanup decisions and before/after measurements.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/FEATURE-CLEANUP-VALIDATION.json`

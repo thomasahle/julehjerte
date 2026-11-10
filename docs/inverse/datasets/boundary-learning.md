@@ -53,7 +53,7 @@ this small timing sample is not evidence that pretrained weights inherently
 run faster. Both models have 880,466 parameters and 3,630,203-byte PyTorch
 checkpoints. This is one seed and one training budget, not a convergence study.
 
-[Committed measurements and hashes](boundary-learning-results.json) include
+Committed measurements and hashes (`boundary-learning-results.json`, removed) include
 pooled precision/recall, macro scores, thresholds, training history and source
 identity. Full per-image reports and unselected six-view comparisons are at
 `tmp/heart-learning/imagenet-final/` and `tmp/heart-learning/random-final/`.
@@ -190,3 +190,9 @@ and current source hashes. Original failed reports remain intact.
 Even a successful synthetic comparison needs held-out real-photo annotations,
 new motif families, graph coverage measurements and full solver validation
 before it could justify a production change.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/boundary-learning-results.json`

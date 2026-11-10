@@ -169,7 +169,7 @@ All **718 application tests and 201 engine tests** pass, along with lint and
 the production build. Svelte checking reports zero errors and seven existing
 warnings.
 
-[FREE-BORDER-PHASES-VALIDATION.json](FREE-BORDER-PHASES-VALIDATION.json) contains
+`FREE-BORDER-PHASES-VALIDATION.json` (removed) contains
 the source hashes, per-case measurements, topology diagnostics and release
 checks. These tests do not establish a global optimum or physical assembly.
 
@@ -178,3 +178,9 @@ node --test scripts/inverse/topology-phases.test.mjs
 node scripts/inverse/weighted-solve-benchmark.mjs --strategies=weighted \
   --variants=original,inverted,shifted,free-noise --output=tmp/free-border-phases
 ```
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/FREE-BORDER-PHASES-VALIDATION.json`

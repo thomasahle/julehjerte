@@ -66,7 +66,7 @@ green tree keeps independent sheets because matching exceeds the allowance.
 The explicit opt-out, import, Reset, symmetry changes and undo/redo checks pass.
 Firefox was not repeated after its previously recorded native launch failure.
 
-[The validation ledger](MATCHING-SEEDS-VALIDATION.json) records the source hashes,
+The validation ledger (`MATCHING-SEEDS-VALIDATION.json`, removed) records the source hashes,
 settings, timings, failed initial probe, comparisons and local artifacts.
 
 The matching preference is a bounded search, not a proof that no other matching
@@ -84,3 +84,9 @@ INVERSE_TEST_CASES=top-hat-preferred,top-hat-independent,web-danish-tree-green I
 
 Configure `PLAYWRIGHT_MODULE` for the existing installation and
 `INVERSE_TEST_URL` for the local preview. Run CPU benchmarks serially.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/MATCHING-SEEDS-VALIDATION.json`

@@ -5,7 +5,7 @@ resolves the two shifted-eye regressions. Repository QA now passes 849/849 inver
 tests and all 857 application tests, with type checking, lint and build passing.
 Fresh full-corpus validation retains 22/22 Hunodan and 25/31 hard-photo passes;
 all 47 accepted editable pairs and 16 browser workflows pass. See the
-[release measurements](small-feature-release.json), including small photo-error
+release measurements (`small-feature-release.json`, removed), including small photo-error
 increases and remaining visual defects. The historical intermediate failures
 below remain part of the diagnostic record.
 
@@ -72,7 +72,7 @@ are absent from this replay. This does not increase the 25/31 photo benchmark.
 | Hunodan bird | 0.904296% → 0.904296% |
 | Collage gift | 2.309375% → 2.306250% |
 
-The [evidence record](final-return-integration.json) contains per-case results,
+The evidence record (`final-return-integration.json`, removed) contains per-case results,
 repair gates, source hashes, the earlier mismatched-width probes and the final
 probes. These are saved-output finalization tests, not fresh reconstruction,
 browser timing or physical assembly tests.
@@ -118,7 +118,7 @@ two shifted-bird searches. All seven fail the final template-check assertion.
 The final-export integration is therefore **not release-ready**. Fresh full-corpus
 solving, actual editable SVG replay and browser QA are still pending. Earlier
 complete QA for the standalone shared module is recorded
-[separately](shared-return-geometry-validation.json).
+separately (`shared-return-geometry-validation.json`, removed).
 
 Fresh captures reproduce three representative failures with the original
 classified-mask hashes. Giving final repair five seconds does not recover them:
@@ -193,7 +193,7 @@ remain available for diagnosis; they are not claimed as improvements.
 The diagnostic runtime builder now copies the production implementation. Its
 obsolete predicate replacement and default-changing patch were removed; the
 same isolated symmetry and projection tests exercise the actual shared rule.
-See the [follow-up measurements](consistent-geometry-fitting.json).
+See the follow-up measurements (`consistent-geometry-fitting.json`, removed).
 
 
 Reproduce the focused contract checks and the native photograph benchmark:
@@ -261,7 +261,7 @@ The replay tool supports `--bounded=true` to exercise production repair rather
 than only the standalone optimizer. These are saved-route measurements, not
 fresh total-solve timings or physical assembly tests.
 
-The [evidence record](bounded-routing-followup.json) pins sources, focused
+The evidence record (`bounded-routing-followup.json`, removed) pins sources, focused
 results and the editable replay. Both complete native benchmarks and fresh
 browser verification remain pending. The two shifted-bird eye-retention
 regressions remain unresolved by the evidence in this follow-up.
@@ -278,3 +278,13 @@ again, and both repaired sloth pairs pass the actual editable-SVG replay.
 All 840 captured source files retain their recorded hashes. Only the shifted
 bird fails, at the unchanged 90% eye-retention assertion, with both ten- and
 180-second allowances. The earlier failed application run remains recorded.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/small-feature-release.json`
+- `docs/inverse/datasets/final-return-integration.json`
+- `docs/inverse/datasets/shared-return-geometry-validation.json`
+- `docs/inverse/datasets/consistent-geometry-fitting.json`
+- `docs/inverse/datasets/bounded-routing-followup.json`

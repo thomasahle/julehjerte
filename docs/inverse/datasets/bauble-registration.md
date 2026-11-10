@@ -75,7 +75,7 @@ earlier current-classifier error of 4.375% used a ten-second request; its
 improvement here is not evidence of a same-budget solver improvement.
 
 The diagnostic probes above did not change production crop code. Measurements, source hashes and experiment
-identifiers are in [bauble-registration.json](bauble-registration.json).
+identifiers are in `bauble-registration.json` (removed).
 Local probe artifacts are under
 `tmp/heart-learning/bauble-segmentation-2026-10-18/`.
 
@@ -634,3 +634,9 @@ The local preview now serves the validated `3865cf1` code. Homepage and Paint
 load in Chrome without page errors or failed local requests, and HTTP checks pass
 through `localhost`, IPv4 and IPv6. Served locator asset hashes match the tested
 source. No remote push or deployment was performed.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/bauble-registration.json`

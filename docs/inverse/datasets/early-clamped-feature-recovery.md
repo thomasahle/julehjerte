@@ -56,4 +56,10 @@ Type checking reports zero errors and seven existing warnings; lint passes; **85
 
 The tested build remains available at `http://127.0.0.1:5232/`. The vertical perturbation still fails in ten seconds, and the ordinary browser run is still longer than that target. This is a measured reduction of unnecessary search, not completion of the broader robustness work.
 
-The [machine-readable report](early-clamped-feature-recovery.json) compares current results with `41f16c6`. Raw diagnostics and replay artifacts are under `tmp/heart-learning/early-clamp-recovery-v1/`. No code is pushed or deployed.
+The machine-readable report (`early-clamped-feature-recovery.json`, removed) compares current results with `41f16c6`. Raw diagnostics and replay artifacts are under `tmp/heart-learning/early-clamp-recovery-v1/`. No code is pushed or deployed.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/early-clamped-feature-recovery.json`

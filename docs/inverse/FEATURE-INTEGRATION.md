@@ -121,7 +121,7 @@ Finer paper verification establishes the stated discrete rolling-disk model,
 not physical cutting, threading or tear resistance.
 
 Measurements and final QA are recorded in
-[the validation ledger](FEATURE-INTEGRATION-VALIDATION.json).
+the validation ledger (`FEATURE-INTEGRATION-VALIDATION.json`, removed).
 
 - All **22 regular Hunodan** cases pass. Their independent errors are unchanged;
   the slowest preparation + solve + validation + export takes **8.31 seconds**.
@@ -155,3 +155,9 @@ npm run check
 npm run lint
 npm run build
 ```
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/FEATURE-INTEGRATION-VALIDATION.json`

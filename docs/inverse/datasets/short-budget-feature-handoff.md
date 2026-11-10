@@ -79,7 +79,7 @@ The first browser attempt failed to load the newly built entry modules because t
 
 ## Evidence and reproduction
 
-The [machine-readable comparison](short-budget-feature-handoff.json) records final corpus comparisons, prototype outcomes, input hashes, perturbation measurements and verification logs. Raw crops, masks, exported SVGs and independent renders remain in the ignored experiment directory. Prototype source copies are research artifacts, not alternate application fitters.
+The machine-readable comparison (`short-budget-feature-handoff.json`, removed) records final corpus comparisons, prototype outcomes, input hashes, perturbation measurements and verification logs. Raw crops, masks, exported SVGs and independent renders remain in the ignored experiment directory. Prototype source copies are research artifacts, not alternate application fitters.
 
 ```sh
 node scripts/inverse/hard-photo-benchmark.mjs \
@@ -93,3 +93,9 @@ node --test --test-concurrency=1 scripts/inverse/feature-seeds.test.mjs
 The ten-second setting is a search allowance. Crop detection, preparation, independent replay and file writing are separately timed in the complete-pipeline report. Browser checks use the ordinary 180-second setting; their results are not evidence of a ten-second browser solve.
 
 The [follow-up routing investigation](feature-routing-perturbations.md) captures the horizontal-shift failure through all 160 local-detail steps. It identifies rejected self-crossing geometry and explains why the earlier last-attempt-only report could not establish time starvation. That investigation adds diagnostics; it does not fix the remaining shifted bird.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/short-budget-feature-handoff.json`

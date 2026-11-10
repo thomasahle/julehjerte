@@ -49,7 +49,7 @@ step 84, but their reported initial checkpoint geometries already differ (206 ve
 Both retain the same photographed input and mask. No cause is assigned solely
 from a changed wall time or a passing unit test.
 
-The [evidence record](clearance-repair-release.json) pins full QA, native corpus
+The evidence record (`clearance-repair-release.json`, removed) pins full QA, native corpus
 and editable-export reports, including failures and checkpoint observations.
 The diagnostic browser replay continues despite the failed native comparison;
 all eighteen main workflows pass. Five of six additional budget flows pass.
@@ -67,3 +67,9 @@ Application source code is unchanged. A separate fresh-context check passes
 for both Draw and Paint: served bytes match the build and neither loads solver
 code or WASM initially. Raw initial totals are 473,487 and 503,388 bytes. The
 original size-check failure is retained. No push or deployment occurred.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/clearance-repair-release.json`

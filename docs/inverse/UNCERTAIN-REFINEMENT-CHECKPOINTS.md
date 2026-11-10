@@ -198,9 +198,15 @@ in **5.32 seconds in Chromium** and **5.02 seconds in WebKit**, with 2.36% edita
 mask disagreement and the required 700-cell paper recheck. SVG and PDF export
 continue to work for this stopped result.
 
-The committed [validation ledger](UNCERTAIN-CHECKPOINT-VALIDATION.json) records
+The committed validation ledger (`UNCERTAIN-CHECKPOINT-VALIDATION.json`, removed) records
 per-case errors, input and artifact hashes, timing definitions, browser versions,
 Stop evidence, controlled experiments and the interrupted pre-cap timing run.
 Dataset runs used the checkpoint fix before the continuation cap; their 10- and
 25-second deadlines are unchanged by that cap. The full checks and browser/Stop
 runs exercise the final production code.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/UNCERTAIN-CHECKPOINT-VALIDATION.json`

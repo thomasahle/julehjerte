@@ -223,7 +223,7 @@ has four straight boundary segments and four circular arcs meeting at one point:
 degree eight. In unit-cell coordinates, a circle of radius `rho`, with
 `0 < rho < 1/2`, centred on `(1,1)` crosses one grid ray and one circular boundary
 in each quadrant. Their angular separation is `asin(rho)`. The
-[diagnostic record](curved-triangles-topology.json) cross-checks this count at four
+diagnostic record (`curved-triangles-topology.json`, removed) cross-checks this count at four
 radii; tile-centre tangencies instead have four branches. This ideal construction
 is a diagnostic, never an input to the fitter.
 
@@ -305,7 +305,7 @@ paths belong to the same sheet**. Their distances from the centre are about
 those two paths together cannot close the contact while preserving the current
 routing and physical constraints. This supports rerouting as the next problem
 to solve, rather than merely increasing curve resolution. The
-[path-distance measurements](curved-triangles-contacts.json) pin the exported
+path-distance measurements (`curved-triangles-contacts.json`, removed) pin the exported
 geometry hash; their nine nominal cell centres are diagnostic annotations,
 never inputs to fitting. They do not prove that another routing can reproduce
 the artwork exactly.
@@ -358,3 +358,10 @@ Local investigation root: `tmp/heart-learning/curved-mask-2026-10-17/`.
 Residual visual defects remain open even though the new regression and nominal
 checks pass. The result is compared with the observed screenshot, not unavailable
 original cutting paths or a hand-cleaned ideal pattern.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/curved-triangles-topology.json`
+- `docs/inverse/datasets/curved-triangles-contacts.json`

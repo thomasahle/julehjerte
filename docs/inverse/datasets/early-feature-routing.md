@@ -6,7 +6,7 @@ from the preceding implementation. All 26 sparse source-photo observations
 survive the new export; previously 23 did. Geometry, paper and feature checks
 pass without changing their thresholds.
 
-[Measurements, source hashes and check results](early-feature-routing.json)
+Measurements, source hashes and check results (`early-feature-routing.json`, removed)
 record the paired runs and broader verification.
 
 This isolates **fitting on the same experimental mask**. The automatic photo
@@ -154,3 +154,9 @@ INVERSE_TEST_CASES=faded-frame-mask \
 The browser harness also needs its usual owned preview URL and Playwright
 configuration. It uploads the derived mask as pixels and exercises the real
 worker, editable conversion and SVG/PDF export, without importing cutting paths.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/early-feature-routing.json`

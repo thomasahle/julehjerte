@@ -38,7 +38,7 @@ Fresh replays start from the original photograph, apply the same one-pixel verti
 
 **2/3 runs pass.** These wall-clock-limited results do not establish reliable ten-second reconstruction across hardware or runtime conditions. Failed outcomes remain in the report. The short search can arrive at a different detail checkpoint before its deadline.
 
-With a thirty-second allowance, the same vertical crop gives **2.3531%** independent disagreement in **27.615 s**, compared with **2.3556%** in **26.777 s** previously. Eye component overlap is **57.4257%**. The per-attempt records show which corrected candidates finish verification and which are discarded before selection. Original and horizontally shifted controls, including any error regressions, are retained individually in [the measurements](polished-feature-recovery.json).
+With a thirty-second allowance, the same vertical crop gives **2.3531%** independent disagreement in **27.615 s**, compared with **2.3556%** in **26.777 s** previously. Eye component overlap is **57.4257%**. The per-attempt records show which corrected candidates finish verification and which are discarded before selection. Original and horizontally shifted controls, including any error regressions, are retained individually in the measurements (`polished-feature-recovery.json`, removed).
 
 All **22/22 regular Hunodan designs pass under ten seconds**, the slowest at **9.139 s**. Their independent errors are exactly unchanged. The full-photo benchmark remains **24/31**, with the same outcomes, automatic crop coordinates and source-mask/probability hashes.
 
@@ -59,3 +59,9 @@ All **855 application tests** pass with one existing skip; all **712 inverse tes
 The browser uses the ordinary longer allowance, not a ten-second timeout. Its inputs and settings are unchanged from the preceding replay. The preview was restarted after building, and its served entry modules and fitter source bytes were checked against this worktree. It remains available at `http://127.0.0.1:5232/`.
 
 Raw diagnostics, rejected outputs, fresh runs and logs are under `tmp/heart-learning/polish-clearance-v1/`. The preceding results remain in [the early-correction report](early-clamped-feature-recovery.md). No saved cutting template is supplied to the fresh fitter. Image agreement is measured against classified photographs, not unavailable original cutting paths. No physical assembly has been tested. No code was pushed or deployed.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/polished-feature-recovery.json`

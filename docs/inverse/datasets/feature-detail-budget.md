@@ -12,7 +12,7 @@ the rejected-boundary rerouting branch. Unaccepted candidates retain the full
 1.7-second reserve for possible rerouting; longer requests retain three seconds.
 The 160-step detail cap, original mask, geometry and paper gates are unchanged.
 
-The [recorded comparisons](feature-detail-budget.json) independently render
+The recorded comparisons (`feature-detail-budget.json`, removed) independently render
 the exported curves against the same frozen source mask:
 
 | Fresh-process fit | Error at 400 px | Opening area | Opening intersection-over-union |
@@ -89,3 +89,9 @@ The subsequent [indexed scalar-loss experiment](indexed-boundary-loss.md)
 reduces repeated segment scans without changing the loss values. All nine
 failures pass its targeted replay; it still requires complete-suite and browser
 verification and does not replace the failed full-run record above.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/feature-detail-budget.json`

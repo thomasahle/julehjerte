@@ -76,7 +76,13 @@ annotation-assisted crop and is not an automatic-photo success. All 153 served
 assets match the build. The app/solver sources remain unchanged from the
 previous release, so this is no new Hunodan or 31-photo benchmark run.
 
-The [frozen record](joint-border-profiles.json) pins local experiments, reports,
+The frozen record (`joint-border-profiles.json`, removed) pins local experiments, reports,
 screenshots and source hashes. Nothing is pushed or deployed. Next, controlled
 noise on known-valid cutting geometries can distinguish profile-repair failures
 from crop uncertainty and missing routing connections.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/joint-border-profiles.json`

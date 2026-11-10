@@ -18,7 +18,7 @@ that cheaper rejection. The implementation now checks cutting quality first.
 Every accepted proposal still passes the same geometry, image, feature,
 symmetry and paper gates. Budgets and thresholds are unchanged.
 
-The [measurement record](shared-alignment-speed.json) contains two comparisons:
+The measurement record (`shared-alignment-speed.json`, removed) contains two comparisons:
 
 | Frozen-export replay | Previous order | Quality first |
 | --- | ---: | ---: |
@@ -85,3 +85,9 @@ the preview restart were skipped by the release gate. The dependent scheduling
 experiment therefore did not run. Runtime `c000d30` remains the latest fully
 validated release; the faster local pass has not established unchanged quality
 for fresh deadline-bounded fits.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/shared-alignment-speed.json`

@@ -180,8 +180,14 @@ unsuccessful traced recovery. That fixture now succeeds earlier, so the regressi
 uses the unresolved half-resolution perturbation to keep testing recovery-budget
 reservation. The corrected full suite was rerun successfully.
 
-The [machine-readable validation ledger](FEATURE-CHECKPOINT-VALIDATION.json)
+The machine-readable validation ledger (`FEATURE-CHECKPOINT-VALIDATION.json`, removed)
 records per-case outcomes, unchanged inputs, source hashes, independent component
 measurements, rejected prototypes and artifact checksums. Scores measure agreement
 with classified photographs, not original cutting paths. Paper checks remain
 nominal geometric tests; these fitted hearts have not been physically assembled.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/FEATURE-CHECKPOINT-VALIDATION.json`

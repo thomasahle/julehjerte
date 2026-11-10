@@ -151,6 +151,12 @@ request or a browser end-to-end ten-second limit.
 
 All 62 served engine and worker files match the benchmarked source. The
 preview remains at <http://127.0.0.1:5232/en/editor/paint/>.
-[MOVING-CHORDS-VALIDATION.json](MOVING-CHORDS-VALIDATION.json) records individual
+`MOVING-CHORDS-VALIDATION.json` (removed) records individual
 study and browser results, source hashes and artifact hashes, including the
 initial application-test timeout and the successful reruns.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/MOVING-CHORDS-VALIDATION.json`

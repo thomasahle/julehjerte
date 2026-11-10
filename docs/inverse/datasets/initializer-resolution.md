@@ -9,7 +9,7 @@ This follows the [retained-start diagnosis](retained-grid-starts.md). That study
 showed an acceptable fit existed by refining saved geometry from a neighboring
 crop. Here every solve starts from the photograph and fixed crop coordinates.
 No fitted templates are read. The machine-readable evidence is in
-[initializer-resolution.json](initializer-resolution.json).
+`initializer-resolution.json` (removed).
 
 ## Fixed-count experiment
 
@@ -159,3 +159,9 @@ files**, including exploratory failures and the canonical 30-run replay. The
 preview remains available at `http://127.0.0.1:5232/editor/mal/`. No new browser
 flow is claimed for this diagnostic-only change; the preceding production
 browser/export checks are recorded in the retained-start report.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/initializer-resolution.json`

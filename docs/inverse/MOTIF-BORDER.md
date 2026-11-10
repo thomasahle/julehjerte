@@ -33,7 +33,7 @@ The first six runs used a ten-second solver budget and took 6.9–11.2 seconds e
 
 ![Original silhouette, prepared target with border, and exported weave](motif-border-preview.png)
 
-The preview comes from a fresh replay of the four-cell seed. [Measurements](MOTIF-BORDER-VALIDATION.json) retain the first six runs and replay results. Numerical outcomes may vary with the time budget and host load.
+The preview comes from a fresh replay of the four-cell seed. Measurements (`MOTIF-BORDER-VALIDATION.json`, removed) retain the first six runs and replay results. Numerical outcomes may vary with the time budget and host load.
 
 ## What the experiment establishes
 
@@ -55,3 +55,9 @@ Keep the original, proposed target and exported weave available for comparison. 
 For the general hybrid algorithm, border targets can start with a small set of grid phases/counts, followed by refinement with a separate penalty on border edits. A neutral probability of 0.5 is **not** sufficient to make the existing optimizer ignore a region: its squared-error grid loss still attracts predictions toward 0.5, and several ranking stages threshold probabilities. Explicit loss weights and consistent scoring through initialization, refinement, matching and export validation are needed before offering unrestricted border repair.
 
 The new [photo corpus](WEB-PHOTOS.md) also shows failures that this operation would not address: printed-paper decorations and poor colour separation inside the protected centre. Those remain preprocessing problems.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/MOTIF-BORDER-VALIDATION.json`

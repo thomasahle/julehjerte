@@ -133,7 +133,7 @@ All **718 application tests and 242 engine tests** pass, together with lint and
 the production build. Svelte checking reports zero errors and seven existing
 warnings. The hat preview and drawing, and the star preview, were visually
 inspected. All **49 served engine files** match the benchmark sources.
-[GRID-PARITY-VALIDATION.json](GRID-PARITY-VALIDATION.json) records per-case
+`GRID-PARITY-VALIDATION.json` (removed) records per-case
 timings, comparisons, source and artifact hashes, profiles, and the downstream
 variation. Full seed records remain in the hashed local benchmark artifact;
 the committed report stores per-case digests and selected-seed details.
@@ -146,3 +146,9 @@ node scripts/inverse/initialization-image-benchmark.mjs \
 INVERSE_TEST_URL=http://127.0.0.1:5232 \
   node scripts/inverse/grid-parity-browser-benchmark.mjs
 ```
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/GRID-PARITY-VALIDATION.json`

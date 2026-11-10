@@ -124,7 +124,7 @@ PDF download. The previously failing anti-symmetric hat reports zero forward
 sample mismatches. The six uploads take 4.83–7.83 seconds to templates in this
 browser run. The preview is running at `http://127.0.0.1:5232/editor/mal/`.
 
-The [results record](shared-cut-order-results.json) retains per-case measurements,
+The results record (`shared-cut-order-results.json`, removed) retains per-case measurements,
 code and artifact hashes, command outcomes, both failing browser replays, the
 final passing browser results and the earlier timing overrun. Independent
 1536-pixel exported-curve renders reduce the pale frame's fractional coverage
@@ -137,3 +137,9 @@ alignment will be found, that photographed corners are exact, or that aggregate
 image agreement proves the intended design. The extra-cut frame is addressed
 by the later [shadow-edge study](shadow-edge-recovery.md). Strong
 paper-shading failures from the background study remain separate issues.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/shared-cut-order-results.json`

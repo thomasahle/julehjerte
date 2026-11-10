@@ -64,4 +64,10 @@ PLAYWRIGHT_MODULE=/path/to/playwright/index.mjs node scripts/inverse/reference-b
 
 Browser QA exercises the actual Star button, PNG decoding, preparation, real worker/WASM solve, downloaded ZIP contents, reference path comparison, independent rendering, all result tabs, restoration of general settings for Waves, and the Danish example. Physical assembly and strength have not been tested.
 
-Final checks: 205 tests pass; `check` reports zero errors and eight existing accessibility warnings; lint and static build pass. Production Chromium/Firefox QA passes 72 workflow checks in total, including 10 star reference-quality checks. Current evidence links and hashes are recorded in `VALIDATION.json`; earlier failures remain available.
+Final checks: 205 tests pass; `check` reports zero errors and eight existing accessibility warnings; lint and static build pass. Production Chromium/Firefox QA passes 72 workflow checks in total, including 10 star reference-quality checks. Current evidence links and hashes are recorded in `VALIDATION.json` (removed); earlier failures remain available.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/VALIDATION.json`

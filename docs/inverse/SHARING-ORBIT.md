@@ -91,7 +91,13 @@ Hunodan photo, circle, and matching, independent and anti-paired hats. Their
 exported geometry and source-mask errors match the preceding release exactly;
 the matching hat retains 41 shared spans through editor conversion.
 
-[SHARING-ORBIT-VALIDATION.json](SHARING-ORBIT-VALIDATION.json) records the browser
+`SHARING-ORBIT-VALIDATION.json` (removed) records the browser
 measurements, source and artifact hashes, and comparison criteria. All 59 served
 engine/worker source files match the benchmarked checkout. The preview remains
 available at `http://127.0.0.1:5232/en/editor/paint/`.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/SHARING-ORBIT-VALIDATION.json`

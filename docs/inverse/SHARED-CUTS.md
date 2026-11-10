@@ -92,7 +92,7 @@ export replay are recorded separately and excluded from that timing.
 
 All **717 application tests and 174 engine tests** pass, along with lint and
 the production build. Svelte checking reports zero errors and seven existing
-warnings. [SHARED-CUTS-VALIDATION.json](SHARED-CUTS-VALIDATION.json) records the
+warnings. `SHARED-CUTS-VALIDATION.json` (removed) records the
 per-case measurements, criteria and source hashes, including verification that
 the tested browser build contains the same engine source as the benchmark.
 
@@ -112,3 +112,9 @@ The subsequent [shared-run simplification](SHARED-SIMPLIFICATION.md) removes
 redundant subdivisions after alignment. It fits each shared run once, preserves
 paired and self-mirrored copies, and retains the exact visible curves and woven
 mask while reducing the amount of geometry carried into the editor.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/SHARED-CUTS-VALIDATION.json`

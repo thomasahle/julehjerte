@@ -92,7 +92,7 @@ not a claim of verified photographic corners or original artwork.
 
 ## Browser comparison and release checks
 
-The [verification ledger](verified-fit-comparison.json) records source hashes,
+The verification ledger (`verified-fit-comparison.json`, removed) records source hashes,
 commands, input identity, exported artifacts and both benchmark stages.
 
 The current UI was also replayed with the preceding engine (`87e3eb4`) served
@@ -141,3 +141,9 @@ application skip. Type checking, lint and the build pass; existing warnings
 are unchanged. Served geometry, count-search and fitter bytes match the
 verified workspace. The rebuilt owned preview remains available at
 `http://127.0.0.1:5232/editor/mal/`.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/verified-fit-comparison.json`

@@ -48,7 +48,7 @@ The retained fitter change works on fixed artwork regardless of how it was cropp
 
 ## Broader comparison
 
-The [machine-readable evidence](feature-near-miss.json) records the paired corpus and perturbation runs, unchanged input hashes, crop experiments and exported artifacts. Fresh old/new runs both accept **24/31 complete photographs**, with no changed acceptance outcomes. Fifteen clipped and one obscured heart remain separately inventoried. Crops, masks and fitting probabilities match exactly. None of these existing cases needs the new retry; the new frozen-crop regression exercises it separately.
+The machine-readable evidence (`feature-near-miss.json`, removed) records the paired corpus and perturbation runs, unchanged input hashes, crop experiments and exported artifacts. Fresh old/new runs both accept **24/31 complete photographs**, with no changed acceptance outcomes. Fifteen clipped and one obscured heart remain separately inventoried. Crops, masks and fitting probabilities match exactly. None of these existing cases needs the new retry; the new frozen-crop regression exercises it separately.
 
 Wall-clock-limited fitting still gives slightly different errors on some unchanged paths. The largest increase is 0.081875 percentage points for the gift, which remains accepted. Those per-case differences remain in the evidence rather than being presented as identical reconstructions.
 
@@ -83,3 +83,9 @@ node scripts/inverse/hard-photo-benchmark.mjs \
 ```
 
 Raw before/after outputs, crop-model experiments and logs are preserved under `tmp/heart-learning/foreground-locator-v1/`.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/feature-near-miss.json`

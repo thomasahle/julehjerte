@@ -2,7 +2,7 @@
 
 Changing the synthetic training backgrounds recovers **six supported real-photo crops and five numerically accepted template pairs**, compared with zero from the original frozen foreground model. One is the previously unresolved blue outlined star. This is useful progress, but **the model remains offline**: every collage crop still fails, one synthetic crop regresses, and visual defects remain in some accepted reconstructions. The production application and its previously established 24/31 benchmark are unchanged.
 
-The [machine-readable evidence](foreground-background-learning.json) verifies 1,110 referenced model, prediction and replay artifacts. Complete outputs and the 43-case gallery are under `tmp/heart-learning/foreground-refinement-v1/`. All source photographs, existing masks, split assignments and acceptance thresholds remain unchanged.
+The machine-readable evidence (`foreground-background-learning.json`, removed) verifies 1,110 referenced model, prediction and replay artifacts. Complete outputs and the 43-case gallery are under `tmp/heart-learning/foreground-refinement-v1/`. All source photographs, existing masks, split assignments and acceptance thresholds remain unchanged.
 
 ## Controlled diagnosis
 
@@ -114,6 +114,13 @@ The final command audits the preserved study, checks identical training budgets 
 
 ## Validation
 
-The [validation record](foreground-background-validation.json) records successful serial runs of 726 inverse tests, 855 application tests (one existing skip), 41 offline Python tests, lint and the build. Type checking has zero errors and seven existing warnings. The background tests preserve legacy generator hashes and exact geometry labels; training-import tests reject held-out data and changed camera or non-background parameters. Foreground-refinement tests cover bounded updates, insufficient seeds and preservation of exterior-connected gaps.
+The validation record (`foreground-background-validation.json`, removed) records successful serial runs of 726 inverse tests, 855 application tests (one existing skip), 41 offline Python tests, lint and the build. Type checking has zero errors and seven existing warnings. The background tests preserve legacy generator hashes and exact geometry labels; training-import tests reject held-out data and changed camera or non-background parameters. Foreground-refinement tests cover bounded updates, insufficient seeds and preservation of exterior-connected gaps.
 
 Chromium loads all 43 gallery cases and 177 images without broken images or page errors. All 16 display-only inverted masks were independently checked pixel-by-pixel; source masks and scores are unchanged. After restarting the owned preview following the build, the paint page renders successfully and three served core/locator modules match their source hashes. The local preview is at `http://127.0.0.1:5232/editor/mal/`.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/foreground-background-learning.json`
+- `docs/inverse/datasets/foreground-background-validation.json`

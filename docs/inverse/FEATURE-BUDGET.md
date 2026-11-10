@@ -1,7 +1,7 @@
 # Reserving fitting time for photographic detail
 
 This continues the full-pipeline investigation in
-[SHARING-SOURCE-VALIDATION.json](SHARING-SOURCE-VALIDATION.json). The production
+`SHARING-SOURCE-VALIDATION.json` (removed). The production
 changes are `7db1655`, `b8f2191` and `2bf8171`. Cropping, colour classification, source masks
 and final acceptance thresholds are unchanged.
 
@@ -70,7 +70,7 @@ SVG are therefore retained as separate evidence.
 
 ## Final engine and export replay
 
-The [validation ledger](FEATURE-BUDGET-VALIDATION.json) records the complete
+The validation ledger (`FEATURE-BUDGET-VALIDATION.json`, removed) records the complete
 results, input and implementation hashes, rejected experiments and timings.
 
 The latest ten-second hard-photo replay is **22/31**, up from 21/31, with every
@@ -163,7 +163,7 @@ with the page clock and audit the downloaded editable geometry.
 
 Commits `1991e27` and `4c6f1a7` extend the scheduling fix to longer requests and
 remove a premature polishing cutoff. The complete follow-up measurements are
-in [DEFERRED-ROUTING-VALIDATION.json](DEFERRED-ROUTING-VALIDATION.json).
+in `DEFERRED-ROUTING-VALIDATION.json` (removed).
 
 When feature protection selects a different grid that retains the source
 regions, a longer search now tries a short routing probe before refining that
@@ -224,3 +224,11 @@ are observed stages, not complete causal diagnoses. Ranking existing hidden
 connectors alone cannot affect the six failures before graph search. Oracle
 experiments should therefore separate crop/mask/endpoint corrections, candidate
 coverage, graph pruning and curve initialization. No neural model was trained.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/SHARING-SOURCE-VALIDATION.json`
+- `docs/inverse/FEATURE-BUDGET-VALIDATION.json`
+- `docs/inverse/DEFERRED-ROUTING-VALIDATION.json`

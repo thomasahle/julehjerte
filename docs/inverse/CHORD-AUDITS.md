@@ -119,7 +119,7 @@ Its independent-sheet version drops from 11.68 to 10.75 seconds and improves
 mask agreement. Browser solve times still exceed the separate Node benchmark
 on some motifs. Per-case timings are retained, including cases that run slower.
 
-[CHORD-AUDITS-VALIDATION.json](CHORD-AUDITS-VALIDATION.json) records the checks,
+`CHORD-AUDITS-VALIDATION.json` (removed) records the checks,
 measurements, complete-report hashes, rejected variant and profiling evidence.
 All **48 served engine files** match the source used by the final benchmarks.
 
@@ -129,3 +129,9 @@ node scripts/inverse/material-kernel-benchmark.mjs --reference=6b672af \
   --output=tmp/chord-exit-benchmark
 INVERSE_PAPER_REFERENCE=6b672af node scripts/inverse/material-browser-benchmark.mjs
 ```
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/CHORD-AUDITS-VALIDATION.json`

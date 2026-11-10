@@ -105,10 +105,16 @@ rather than scoring itself against the repaired seed. All 23 focused tests and
 lint, repository lint, type checking and build. All 657 recorded source hashes
 remain unchanged. The previous full inverse-suite run is preserved; it was not
 repeated for this helper with no production callers. Experiment evidence and
-check results are pinned in the [JSON record](enclosure-corner-study.json).
+check results are pinned in the JSON record (`enclosure-corner-study.json`, removed).
 
 Next work is to improve routing and continuous refinement of the newly reachable
 integer candidates, and to distinguish stable motif openings from ambiguous
 pixel contacts before expanding production feature acceptance checks. The
 helper is used by the offline experiment and regression tests; it is not yet
 scheduled by the automatic fitter.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/enclosure-corner-study.json`

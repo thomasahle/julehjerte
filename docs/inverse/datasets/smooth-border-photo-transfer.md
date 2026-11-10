@@ -67,7 +67,7 @@ interiors. The preceding full 807-test QA belongs to `f1c602b`; it is not a clai
 that the full suite was repeated after this correction.
 
 A fresh full photo/Hunodan replay of the corrected helper has completed separately
-under `tmp/heart-learning/smooth-border-supported-v1/`. Its [completed record](supported-border-replay.json)
+under `tmp/heart-learning/smooth-border-supported-v1/`. Its completed record (`supported-border-replay.json`, removed)
 retains 25/31 native photo passes with no changed pass status and 22/22 Hunodan
 passes with exactly unchanged release errors, maximum 8.36 seconds. The photo
 run generates only one proposal, which is rejected; median border-stage overhead
@@ -75,7 +75,14 @@ falls to 1.33 ms. Photo errors still fluctuate: eight passing cases increase,
 at most 0.110625 percentage points, and two improve. These are fresh native
 fits, not a claim of identical outputs or new editable/browser verification.
 
-The helper and its proposed early integration remain offline. The [frozen record](smooth-border-photo-transfer.json)
+The helper and its proposed early integration remain offline. The frozen record (`smooth-border-photo-transfer.json`, removed)
 retains the unsuccessful broad trial and the 61-mask evidence replay; later
 results must not overwrite those experiments. No acceptance limits were relaxed,
 no neural model was trained, and nothing was pushed or deployed.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/supported-border-replay.json`
+- `docs/inverse/datasets/smooth-border-photo-transfer.json`

@@ -119,7 +119,7 @@ designs before changing the main search.
 
 ## Evidence and reproduction
 
-[Complete measurements](FEATURE-SEED-VALIDATION.json) include source and fitting
+Complete measurements (`FEATURE-SEED-VALIDATION.json`, removed) include source and fitting
 hashes, all 31 outcomes, all 28 editable replays, all eight weighted experiments,
 their finer paper audits, feature connectivity and eight experimental editable
 replays. None of the experimental candidates counts as a production pass.
@@ -140,3 +140,9 @@ code are unchanged in this study. After rebuilding and restarting port 5232,
 Chromium and WebKit also pass the free-border independent-hat workflow, including
 editable SVG download. Their click-to-ready times are 5.95 and 6.19 seconds.
 Served page and fitter hashes match the local build and source.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/FEATURE-SEED-VALIDATION.json`

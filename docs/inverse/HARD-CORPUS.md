@@ -114,7 +114,7 @@ See the [input README](../../scripts/inverse/fixtures/hard-photos/README.md) for
 commands for both crop tracks and the editor replay. Reports preserve unsuccessful
 cases, effective coordinates, source/mask/probability hashes, individual settings,
 stage times and independent render checks. The committed
-[validation ledger](HARD-CORPUS-VALIDATION.json) records all cases and source hashes.
+validation ledger (`HARD-CORPUS-VALIDATION.json`, removed) records all cases and source hashes.
 
 The full QA run passed: 845 application tests, one pre-existing skip, 554 inverse
 tests, lint and production build. Type checking reported zero errors and seven
@@ -131,3 +131,9 @@ the same 31 complete hearts through Mal's binary preparation and editable SVG
 conversion. It records the unchanged 11/31 production result and an experimental
 5+3 puppy routing, including the finer paper analysis needed to resolve its
 coarse-grid uncertainty.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/HARD-CORPUS-VALIDATION.json`

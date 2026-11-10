@@ -96,7 +96,7 @@ replay with the numerical kernel blocked passes using the JavaScript fallback.
 The ten-second dataset results above are Node measurements; Firefox's matching
 hat still takes 16.15 seconds from clicking Find to the editable result.
 
-[PAPER-INDEX-VALIDATION.json](PAPER-INDEX-VALIDATION.json) records the summaries,
+`PAPER-INDEX-VALIDATION.json` (removed) records the summaries,
 served-source hashes, changed synthetic case, browser measurements and hashes
 of the raw artifacts. The paired diagnostic harness is derived from
 `scripts/inverse/curve-penalty-solve-benchmark.mjs` and retained at
@@ -117,3 +117,9 @@ Saved templates are inputs only to the audit microbenchmark. The Hunodan and
 weighted fitting benchmarks start from images/masks and fresh initializations.
 This remains the same guarded numerical paper model, with its existing physical
 and geometric limitations; a faster audit adds no physical certification.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/PAPER-INDEX-VALIDATION.json`

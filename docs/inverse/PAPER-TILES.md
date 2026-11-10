@@ -111,10 +111,16 @@ claim for a claim about every newly fitted template.
 All **722 application tests and 254 engine tests** pass. Type checking reports
 zero errors and seven existing warnings; lint and the production build pass.
 All **50 served engine files** match the source hashes in the Node benchmarks.
-[PAPER-TILES-VALIDATION.json](PAPER-TILES-VALIDATION.json) records the comparisons,
+`PAPER-TILES-VALIDATION.json` (removed) records the comparisons,
 fresh results, profiles, source hashes and exported-artifact hashes.
 
 The subsequent [kernel-calibration investigation](KERNEL-CALIBRATION.md)
 measures the ambiguous-clock opportunity directly. Longer paper calibration
 remains optional after mixed results; exact numeric comparisons became cheaper
 without changing the audit criteria or the production timing policy.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/PAPER-TILES-VALIDATION.json`

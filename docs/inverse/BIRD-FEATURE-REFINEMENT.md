@@ -134,7 +134,7 @@ automatic cropping from the original photograph. These are distinct checks.
 
 Full input/source hashes, paired results, rejected experiments, intermediate
 failures and validation records are in
-[`BIRD-FEATURE-VALIDATION.json`](BIRD-FEATURE-VALIDATION.json).
+`BIRD-FEATURE-VALIDATION.json` (removed).
 
 ## Reproduction
 
@@ -153,3 +153,9 @@ time is recorded separately from the isolated refinement timings. The stage
 study has fixed iteration counts without a production deadline. Production
 benchmarks include their own fresh initialization and independently render the
 exported cuts.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/BIRD-FEATURE-VALIDATION.json`

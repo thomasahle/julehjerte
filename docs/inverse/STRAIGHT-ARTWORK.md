@@ -29,7 +29,7 @@ The new exports contain 60 and 49 straight spans respectively, including hidden 
 
 ![Same input mask, previous exported weave, and new straight-line reconstruction](straight-artwork-comparison.png)
 
-All six production-browser replays pass. The hat takes 0.76/3.42/1.06 seconds in Chromium/Firefox/WebKit; the house takes 0.62/2.31/0.92 seconds. Those times cover the solve button through the checked-result heading, with normal UI defaults. Downloaded cuts have the same centre errors in every browser. [Recorded measurements and source hashes](STRAIGHT-ARTWORK-VALIDATION.json).
+All six production-browser replays pass. The hat takes 0.76/3.42/1.06 seconds in Chromium/Firefox/WebKit; the house takes 0.62/2.31/0.92 seconds. Those times cover the solve button through the checked-result heading, with normal UI defaults. Downloaded cuts have the same centre errors in every browser. Recorded measurements and source hashes (`STRAIGHT-ARTWORK-VALIDATION.json`, removed).
 
 The broader six-seed experiment still exposes routing limitations. The three-cell house now also reconstructs with 0.004% centre error. The three-cell hat exhausts its line-routing budget after candidates fail the slit-neck checks; the five-cell hat times out without a candidate; the five-cell house's finite candidate graph is infeasible. Their direct fallbacks have 3.27%, 7.01% and 3.10% centre disagreement respectively. These are retained in the measurements, not presented as successful clean reconstructions. The four-cell seed is therefore still the selected hat candidate. This change fixes the shown conversion problem, not arbitrary border topology.
 
@@ -50,3 +50,9 @@ The browser replay uploads generated PNGs, selects the whole square, prepares an
 Browser QA also caught premature fallback in Firefox. The traced geometry and every normalized MILP coefficient matched Chromium exactly, but Firefox took about 2.9 seconds to solve that model, close to the old three-second cutoff. The independent-line attempt now gets up to five seconds (at most half the requested total budget), rather than discarding a clean reconstruction just before completion. Other routing budgets are unchanged.
 
 The original [motif-border study](MOTIF-BORDER.md) remains the historical baseline. These are synthetic motif experiments, not evidence that arbitrary photographs or every supporting border can be solved exactly.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/STRAIGHT-ARTWORK-VALIDATION.json`

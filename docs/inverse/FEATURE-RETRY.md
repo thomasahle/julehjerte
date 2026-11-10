@@ -5,7 +5,7 @@ horizontal-shift failure was in template fitting: the unchanged classified mask
 contained a substantial opening, but the final woven result erased it. Moving
 all four crop coordinates one pixel horizontally is enough to trigger this case.
 The runtime change is committed as `af43639`; the
-[validation ledger](FEATURE-RETRY-VALIDATION.json) records per-case results,
+validation ledger (`FEATURE-RETRY-VALIDATION.json`, removed) records per-case results,
 source hashes and browser evidence.
 
 ## Where the pipeline failed
@@ -94,3 +94,9 @@ but their opening IoUs differ: 0.649 and 0.603. The browser harness verifies the
 same classified pixels and measures shape separately from global error. The
 25-second Node experiment and these browser timings measure different workflows;
 neither is a ten-second speed claim.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/FEATURE-RETRY-VALIDATION.json`

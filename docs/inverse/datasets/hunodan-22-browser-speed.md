@@ -68,4 +68,10 @@ source and output after any coverage or near-miss assertion fails, without
 adding capture work to a successful solve or changing any acceptance limit.
 The stable preview has not been refreshed.
 
-[Full measurements, input identities and evidence hashes](hunodan-22-browser-speed.json).
+Full measurements, input identities and evidence hashes (`hunodan-22-browser-speed.json`, removed).
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/hunodan-22-browser-speed.json`

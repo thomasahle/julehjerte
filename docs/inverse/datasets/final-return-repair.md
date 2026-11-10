@@ -65,15 +65,22 @@ validity after exact subdivision/reflection. A separate regression requires
 all three captured ordinary SVG bends to remain accepted by the complete
 experimental return search; the existing captured returns remain rejected.
 
-The [evidence record](final-return-repair.json) preserves failures, selected and
+The evidence record (`final-return-repair.json`, removed) preserves failures, selected and
 rejected repairs, target/geometry hashes, SVG audits, the rejected editor source
 and visual observations. The preceding complete cache QA (830 inverse and 855
 application tests) is recorded separately; it does not cover these new tests.
 No application code was changed, pushed or deployed by this experiment.
 
-The subsequent [complete verification](final-return-repair-validation.json) passes
+The subsequent complete verification (`final-return-repair-validation.json`, removed) passes
 832 inverse tests and 855 application tests (one existing skip), type checking,
 lint and the production build. All 827 recorded source-file hashes remain
 unchanged through the run. Rebuilding the isolated runtime from the committed
 patch reproduces both selected repaired geometries byte for byte. This verifies
 the recorded unconstrained experiment; symmetry-aware integration remains open.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/final-return-repair.json`
+- `docs/inverse/datasets/final-return-repair-validation.json`

@@ -1,6 +1,6 @@
 # Faster paper classification with unchanged checked masks
 
-Commit `9195d1d` avoids computing a full point-to-cut distance when the paper audit only needs to know which of two clearance thresholds it exceeds. The image objective, optimizer, iteration limits, deadlines, checkpoints, geometry constraints and paper thresholds are unchanged. The [machine-readable evidence](paper-clearance-classification.json) compares it with `3b3f58a`.
+Commit `9195d1d` avoids computing a full point-to-cut distance when the paper audit only needs to know which of two clearance thresholds it exceeds. The image objective, optimizer, iteration limits, deadlines, checkpoints, geometry constraints and paper thresholds are unchanged. The machine-readable evidence (`paper-clearance-classification.json`, removed) compares it with `3b3f58a`.
 
 ## What the profile showed
 
@@ -57,3 +57,9 @@ Type checking, lint, all **855 application tests** with one existing skip, all *
 The browser replay uses the ordinary longer allowance; it is not a ten-second browser claim. Its vertical-shift bird has higher disagreement than the previous run, despite the improvement in the separate ten-second replays. These measurements do not show uniform image-error improvements. The rebuilt preview's entry modules respond successfully and its served material and distance-helper bytes match the tested sources. It remains at `http://127.0.0.1:5232/`.
 
 Raw profiles, measurements, exports and logs are under `tmp/heart-learning/penalty-profile-v1/`. Agreement is measured against classified photographs, not unavailable original cutting geometry. No physical assembly has been tested. Changes are committed locally; nothing was pushed or deployed.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/paper-clearance-classification.json`

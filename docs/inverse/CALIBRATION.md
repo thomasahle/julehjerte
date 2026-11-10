@@ -117,7 +117,7 @@ house by 0.0122 points, and WebKit's small hat by 0.0015 points. The contour
 deviations visible at the matching hat's corners remain; exact hidden cuts do
 not imply perfect recovery of the original silhouette.
 
-[CALIBRATION-VALIDATION.json](CALIBRATION-VALIDATION.json) retains per-case
+`CALIBRATION-VALIDATION.json` (removed) retains per-case
 measurements, the timing failure and replay, backend choices, log hashes and
 source hashes. Repeated whole-solve backend records are stored once and
 referenced by zero-based indexes. All **49 served engine files** match the
@@ -133,3 +133,9 @@ INVERSE_TEST_URL=http://127.0.0.1:5232 INVERSE_GRADIENT_REFERENCE=a420139 \
 
 The fixture geometries are only used for comparing gradient computations.
 Complete image workflows start fresh and receive no saved fitted templates.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/CALIBRATION-VALIDATION.json`

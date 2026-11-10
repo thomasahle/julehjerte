@@ -71,7 +71,7 @@ node scripts/inverse/shared-simplification-benchmark.mjs
 
 The benchmark accepts `INVERSE_SIMPLIFY_HUNODAN`, `INVERSE_SIMPLIFY_WEIGHTED`,
 `INVERSE_SIMPLIFY_BROWSER`, and `INVERSE_SIMPLIFY_OUT` for alternate artifact
-locations. [SHARED-SIMPLIFICATION-VALIDATION.json](SHARED-SIMPLIFICATION-VALIDATION.json)
+locations. `SHARED-SIMPLIFICATION-VALIDATION.json` (removed)
 records exact source/input hashes, per-case changes and timings.
 
 ## Fresh fitting and browser verification
@@ -109,3 +109,9 @@ All **984 tests** pass: 722 application tests and 262 engine tests. Svelte
 checking reports zero errors and seven existing warnings; lint and the
 production build pass. All **51 served engine files** match the source hashes
 used in the fixed replay and the fresh Node fits.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/SHARED-SIMPLIFICATION-VALIDATION.json`

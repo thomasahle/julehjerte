@@ -4,7 +4,7 @@ The perturbed sloth sometimes reaches its routing deadline before HiGHS returns
 the first integer candidate. These experiments test equivalent formulations of
 the existing finite graph. None is enabled in production.
 
-The [recorded results](datasets/milp-formulation-study.json) retain graph and mask
+The recorded results (`milp-formulation-study.json`, removed) retain graph and mask
 hashes, timings, and hashes of the original diagnostic artifacts. First-candidate
 trials use two one-pixel perturbations, two repetitions in reversed arm order,
 and a 3.5-second allowance. All original residual checks remain active. A returned
@@ -58,3 +58,9 @@ nice -n 15 node scripts/inverse/experiments/milp-formulation-study.mjs flow-boun
 The script modifies private in-memory module copies, verifies mutation anchors,
 and rebuilds graphs from masks. It never uses the fixtures' saved template curves
 as initializers. Timings will vary with machine load and runtime versions.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/milp-formulation-study.json`

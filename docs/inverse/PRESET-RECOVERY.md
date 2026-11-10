@@ -48,7 +48,7 @@ The initial QA run incorrectly expected four corners without a region selection;
 all three browsers instead requested a rough rectangle around one heart. The
 completed run follows that visible selection workflow, then uses the locator's
 corners without manual adjustment. Both attempts are recorded in
-[PRESET-RECOVERY-VALIDATION.json](PRESET-RECOVERY-VALIDATION.json).
+`PRESET-RECOVERY-VALIDATION.json` (removed).
 
 These uploads and crops differ from the frozen release benchmark. Their errors
 and internal fitting times must not be substituted for that benchmark's
@@ -69,3 +69,9 @@ INVERSE_TEST_URL=http://127.0.0.1:4174 \
 ```
 
 Set `PLAYWRIGHT_MODULE` if Playwright is installed outside the repository.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/PRESET-RECOVERY-VALIDATION.json`

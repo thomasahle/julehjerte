@@ -5,7 +5,7 @@ Neural release status reviewed on **2026-10-20**; dataset counts last audited on
 fallback.** It runs locally in the browser; the existing colour classifier and
 geometric solver still produce the cutting templates. The experimental
 paper-identity heads remain rejected for production. The
-[outline-only extension](u2netp-outline-upload-results.json) is also deployed
+outline-only extension (`u2netp-outline-upload-results.json`, removed) is also deployed
 and passes all 11 live browser checks after merging PR #17.
 
 ## Current results and limits
@@ -54,7 +54,7 @@ offline research: the next step is replacing source injection with an explicit
 locator field-provider API and checking model loading, cancellation and the
 actual user flow before production integration.
 
-The initial [expanded photo evaluation](u2netp-expanded-evaluation-results.json) tests
+The initial expanded photo evaluation (`u2netp-expanded-evaluation-results.json`, removed) tests
 the existing 16-photo-adapted checkpoint without further training. All 18
 eligible additional photos remain in the denominator, including two variants
 of the Santa photograph already assigned to the same duplicate group. This is
@@ -83,7 +83,7 @@ exactly. The original raw numerical gates still fail (maximum probability
 difference 0.0001524 and one changed half-threshold pixel against PyTorch).
 This remains an offline experiment; no model is included in the website.
 
-The [latest palette-to-template comparison](u2netp-material-palette-pipeline-results.json)
+The latest palette-to-template comparison (`u2netp-material-palette-pipeline-results.json`, removed)
 holds all 25 crops fixed and retains seven unresolved inputs. Both colour methods
 use original photograph pixels, then the unchanged fitter with a ten-second search
 allowance. All 50 exported candidates pass editable conversion and geometry;
@@ -102,7 +102,7 @@ claiming the omitted grid is a valid template or the original cutting design.
 No production code or acceptance limit changes in this experiment. The diagnostic
 now accepts `--reference-method` and `--candidate-method` for paired runs.
 
-The [discarded-grid follow-up](displaced-finalist-results.json) exactly replays
+The discarded-grid follow-up (`displaced-finalist-results.json`, removed) exactly replays
 968 coarse scores and 150 initial fine-grid scores across all 50 targets, including
 the ten partially observed crops. A bounded extra-grid rule triggers on 14 targets.
 Fresh baseline/proposal fits improve the nativity from **6.89% to 2.85%** mask
@@ -125,7 +125,7 @@ These are assistant annotations without independent human review, exact artwork
 or cutting-path labels. Both the original and expanded pools have now trained
 fresh U2NETP body models under the same predeclared 120-update budget.
 
-The [fixed-model probe on those eight photos](diverse-paper-probe-results.json)
+The fixed-model probe on those eight photos (`diverse-paper-probe-results.json`, removed)
 separates two problems. The body model often includes handles, a detached paper
 strip, pinecones or chocolates. The material head rounds checker cells and loses
 small openings, even where its sparse labelled patches score perfectly. Existing
@@ -136,7 +136,7 @@ probability fields reproduce every reported metric exactly. These photos share
 sources with training; they are development diagnostics, not generalization
 results or template successes.
 
-The [completed paired body experiment](u2netp-body-expanded-results.json) uses
+The completed paired body experiment (`u2netp-body-expanded-results.json`, removed) uses
 the same pretrained initialization, synthetic inputs/draws and reflections;
 every real photo is visited. Both checkpoint audits reproduce initial and final
 predictions exactly and verify unchanged frozen encoder weights and BatchNorm
@@ -175,7 +175,7 @@ This motivated a follow-up separating reduced training exposure from
 representation/loss limitations. No network, support threshold or solver change
 was deployed from that study; the ten focused palette/crop regression tests pass.
 
-The [completed added-exposure comparison](u2netp-body-exposure-results.json)
+The completed added-exposure comparison (`u2netp-body-exposure-results.json`, removed)
 preserves every original 120-update control draw, then inserts 60 updates.
 The 16-photo control spends the added real visits on old photos; the 24-photo
 candidate spends them on the new eight. Both use identical synthetic inputs and
@@ -200,7 +200,7 @@ recorded; no production rasterizer or acceptance limit was changed. The next
 comparison needs consistent rendering precision before selecting models on
 borderline scores. These models have not undergone browser/runtime release QA.
 
-A [31-output precision replay](u2netp-body-renderer-cohort-results.json) now
+A 31-output precision replay (`u2netp-body-renderer-cohort-results.json`, removed) now
 covers all 21 production exports and ten fresh neural exports from that study.
 Every saved editable mask is reproduced exactly before changing precision;
 editor intersections and paper/geometry checks are rerun. The stacked-heart
@@ -209,7 +209,7 @@ At the two finest tolerances, masks differ by at most four pixels and no
 classification changes. Both models therefore recover the same twelve designs
 in this diagnostic; the original benchmark counts remain recorded separately.
 
-The [completed late-encoder experiment](u2netp-body-encoder-results.json) tests
+The completed late-encoder experiment (`u2netp-body-encoder-results.json`, removed) tests
 whether fixed pretrained features limit whole-paper recognition. It trains
 encoder stages 4–6 at one quarter the decoder learning rate, retaining the same
 24 photos, all 180 draws, synthetic examples, loss and publisher initialization.
@@ -230,7 +230,7 @@ omissions persist. Better training segmentation alone has not fixed those
 problems. This candidate is retained as an experiment, without browser export
 or production promotion.
 
-The [known-outline-loss follow-up](u2netp-body-outline-results.json) keeps that
+The known-outline-loss follow-up (`u2netp-body-outline-results.json`, removed) keeps that
 training setup fixed and adds balanced supervision near known paper/background
 boundaries, excluding uncertain pixels. The independent audit regenerates all
 88 real/synthetic outline fields. Training-band error falls from **5.34% to
@@ -253,7 +253,7 @@ threshold was relaxed. Better segmentation scores alone have not established
 better usable templates; broader evaluation is also needed beyond this
 repeatedly inspected development cohort.
 
-The [outer-boundary sampling replay](u2netp-outer-boundary-results.json) now tests
+The outer-boundary sampling replay (`u2netp-outer-boundary-results.json`, removed) now tests
 that fix on both saved models. It ignores enclosed background holes only while
 sampling the lower edges; original probabilities, distance fields, foreground
 selection, colour evidence and cutting targets remain unchanged. Open and
@@ -278,7 +278,7 @@ decoded RGB are pinned; no photographs were copied or train/test groups changed.
 Inference and full reconstruction on this extension remain to be run before
 claiming a broader improvement from the browser-tested NN candidate.
 
-The [complete balanced-epoch follow-up](u2netp-material-complete-epochs-results.json)
+The complete balanced-epoch follow-up (`u2netp-material-complete-epochs-results.json`, removed)
 adds 384 updates to the fixed relative-colour head, visiting every synthetic
 view four times. Known-region real training error falls from **5.06% to 2.78%**.
 However, boundary-band error increases on all three synthetic groups: clean
@@ -289,7 +289,7 @@ Print confusion, lost checker squares and rounded/disconnected joins remain.
 This head is rejected for integration; these are development diagnostics, not
 held-out reconstruction scores.
 
-The [paired boundary-weighted continuation](u2netp-material-boundary-results.json)
+The paired boundary-weighted continuation (`u2netp-material-boundary-results.json`, removed)
 keeps those inputs, initial weights and all 384 draws fixed, giving known paper
 boundaries four times the loss weight. Boundary error improves to **9.38%** on
 clean views, **21.54%** on printed views and **19.55%** in scenes. Scene interiors
@@ -301,7 +301,7 @@ No new template fits, browser export or production changes were justified.
 Fifteen focused tests pass, and historical checkpoint reloads reproduce both
 older models' stored predictions exactly.
 
-The [output-grid capacity diagnostic](u2netp-material-grid-results.json) fits
+The output-grid capacity diagnostic (`u2netp-material-grid-results.json`, removed) fits
 free 160-by-160 logits directly to all 32 synthetic training masks, then uses
 the identity head's exact float32 bilinear upsampling convention. Its **1.067%
 expected classification error** is close to the **1.059%** optimum of an
@@ -318,7 +318,7 @@ every fine real motif. The following experiment tests paired print invariance
 while preserving clean-paper boundaries. No model or app behavior changes in
 this diagnostic.
 
-The [paired consistency experiment](u2netp-paired-results.json) starts both arms
+The paired consistency experiment (`u2netp-paired-results.json`, removed) starts both arms
 from the same 120-update identity head. Each receives the same 256 batches:
 one real photo and two synthetic views of identical geometry, with identical
 reflections, supervised loss and optimizer. The candidate additionally penalizes
@@ -357,7 +357,7 @@ local artifacts and downloads no photos. Each learned head is 77 KB. No
 browser model export or new template fit was justified. The following diagnostic
 tests conditioning on examples of each paper in its exposed lobe.
 
-The [lobe-example experiment](paper-exemplar-results.json) fits a small linear
+The lobe-example experiment (`paper-exemplar-results.json`, removed) fits a small linear
 classifier separately on each image. Its labels come only from inset parts of
 the two exposed lobes; it never fits labels inside the woven square. Both arms
 use the same samples and ridge penalty. One uses RGB and local colour statistics;
@@ -403,7 +403,7 @@ tests pass, and 384 saved-field errors were independently recomputed. No neural
 weights changed, no source images were copied, and the two experiments added
 about **43.5 MiB** of local artifacts.
 
-The subsequent [complete pipeline comparison](paper-exemplar-pipeline-results.json)
+The subsequent complete pipeline comparison (`paper-exemplar-pipeline-results.json`, removed)
 uses the **actual deployed RGB classifier**, the same 26 automatic quads and all
 six unresolved crops. All 26 production masks reproduce their earlier hashes
 exactly. The two lobe classifiers reuse their saved scores without refitting.
@@ -454,7 +454,7 @@ checksums for 152 editable SVG/preview artifacts. The experiment adds about
 photos or model weights. Application and solver files match the successful main
 CI build exactly.
 
-The [resolution diagnostic](paper-exemplar-native-results.json) now isolates
+The resolution diagnostic (`paper-exemplar-native-results.json`, removed) now isolates
 sampling losses while keeping the lobe samples, normalization, ridge penalty
 and fitted coefficients fixed. All **122 RGB-texture and 122 RGB-only fields**
 and their fit metadata replay exactly after separating fitting from scoring.
@@ -505,7 +505,7 @@ transfer from exposed lobes into the overlap. Search stability under small mask
 changes remains a separate problem. No new neural weights were trained in this
 diagnostic, and none of these classifier alternatives has been deployed.
 
-The subsequent [learned feature-transfer experiment](exemplar-projection-results.json)
+The subsequent learned feature-transfer experiment (`exemplar-projection-results.json`, removed)
 trains **1,536 weights** through the per-photo classifier itself. A linear
 projection reduces the frozen U2NETP decoder's 192 channels to eight context
 channels. Those channels and RGB enter a lobe-fitted ridge classifier; gradients
@@ -632,7 +632,7 @@ does not establish which representation or richer labels will resolve that gap.
 
 ### Border fragments and provisional geometry repair
 
-The [controlled repair study](border-fragment-repair-results.json) retains
+The controlled repair study (`border-fragment-repair-results.json`, removed) retains
 24 repeated fits, fixed-work initialization, the full 32-photo cohort and
 eight additional timing comparisons. Removing just 142 pixels (0.08875% of
 the mask) recovered the dinosaur. The fragment does change routing priority,
@@ -674,7 +674,7 @@ up. No neural weights or crop rules change; the material projection remains
 experimental. Study artifacts occupy about **37.9 MiB**, with no new source
 photographs.
 
-The [first-candidate follow-up](first-paper-recovery-results.json) retains eight
+The first-candidate follow-up (`first-paper-recovery-results.json`, removed) retains eight
 fixed-work refinements and twelve fresh deadline-pressure fits. The first MILP
 pair passes cut geometry and polygon offsets but remains uncertain at lattice
 resolutions 360, 500, 700 and 1,000. After 40 or 80 ordinary fitting steps, the
@@ -703,7 +703,7 @@ new remote run; it is stronger evidence than the local clock simulation alone.
 
 ### Keeping colour evidence when adding neural context
 
-The [residual-context experiment](context-residual-results.json) compares the
+The residual-context experiment (`context-residual-results.json`, removed) compares the
 same three frozen projections with two per-photo classifiers. The original fits
 RGB and neural features together. The alternative first fits RGB, then fits
 neural context to the remaining regression error on the **same exposed-lobe
@@ -745,7 +745,7 @@ including residual-gradient and unchanged-RGB checks. The experiments add about
 
 ### Residual context on the complete real-photo cohort
 
-The [real-photo follow-up](context-residual-real-results.json) keeps all 32
+The real-photo follow-up (`context-residual-real-results.json`, removed) keeps all 32
 development photos, their 26 fixed automatic crops and six unresolved crops.
 All three frozen projections are evaluated with both classifiers. The 78 saved
 joint masks and 26 native RGB masks replay exactly. Fitting still uses only
@@ -787,7 +787,7 @@ these results do not justify releasing the material classifier.
 
 ### Training through the residual classifier
 
-The [matched continuation](context-residual-training-results.json) starts both
+The matched continuation (`context-residual-training-results.json`, removed) starts both
 1,536-parameter projections from the same checkpoint, with the same 96 draws
 from 32 synthetic geometries, optimizer and frozen U2NETP body. One differentiates
 through the joint colour/context fit; the other fits neural context to the
@@ -842,7 +842,7 @@ upstream generator change, all **65 focused frame tests** also pass.
 
 ### Feature-priority counterexample from the NN comparison
 
-The [follow-up scheduling experiment](feature-priority-results.json) tests a
+The follow-up scheduling experiment (`feature-priority-results.json`, removed) tests a
 simple proposed guard: when colour retention promotes a grid with worse raw
 image error, keep the previous first grid ahead of it. This changes scheduling
 only; all finalists and final fidelity/paper checks remain available.
@@ -880,7 +880,7 @@ mask error does not establish a better template or faster search.
 
 ### Keeping native NN confidence during fitting
 
-The [continuous-score comparison](native-confidence-results.json) keeps the
+The continuous-score comparison (`native-confidence-results.json`, removed) keeps the
 same frozen joint-trained residual classifier, crops, binary masks and observed
 pixels. Its [predeclared plan](native-confidence-plan.json) compares fresh
 hard-mask fitting with `sigmoid(4 * score)` as the fitting objective. Four is
@@ -936,7 +936,7 @@ also pass. No new training, downloads or source-photo copies were needed.
 
 ### Isolating confidence refinement from cut selection
 
-The [fixed-path follow-up](native-confidence-refinement-results.json) starts
+The fixed-path follow-up (`native-confidence-refinement-results.json`, removed) starts
 both arms from the same 26 hard-control fits. Its
 [predeclared plan](native-confidence-refinement-plan.json) gives each candidate
 160 gradient steps, with unchanged crops, masks, cut counts, shared-curve
@@ -980,7 +980,7 @@ on these same photos. Production model, solver and acceptance gates are unchange
 
 ### Real-photo corner proposals and paper-label exchange
 
-The [corner-proposal probe](real-junction-phase-results.json) evaluates the
+The corner-proposal probe (`real-junction-phase-results.json`, removed) evaluates the
 existing 880,466-parameter MobileNetV3 model on the same 26 fixed crops, retaining
 the six unresolved photos. This is the earlier synthetic-trained boundary/corner
 network, separate from the deployed U2NETP cropper and the experimental material
@@ -1019,7 +1019,7 @@ Material-aware supervision and full solver/export tests remain necessary.
 
 ### A label-invariant corner readout
 
-The [fixed-average study](junction-phase-average-results.json) evaluates the
+The fixed-average study (`junction-phase-average-results.json`, removed) evaluates the
 same checkpoint and thresholds on all **308 synthetic views from 77 designs**.
 Its [predeclared protocol](junction-phase-average-plan.json) averages the two
 phase heatmaps before extracting peaks. Swapping their order now produces
@@ -1067,7 +1067,7 @@ whose targets retain physical sheet boundaries.
 
 ### Training with printed paper and exchanged mask labels
 
-The [matched continuation experiment](junction-augmentation-results.json)
+The matched continuation experiment (`junction-augmentation-results.json`, removed)
 trains four terminal models from the same existing MobileNetV3 checkpoint.
 Every arm receives the same 128 updates, original-view draws and reflections.
 Two factors vary: printed-paper inputs and binary mask-label exchange. All
@@ -1144,7 +1144,7 @@ these are retained separately from correctness. Main commit `d0b882b5` passed
 [CI and deployment](https://github.com/thomasahle/julehjerte/actions/runs/39324904486),
 rechecked on 20 October. No neural network is deployed in that release.
 
-The [upload integration audit](u2netp-upload-integration-results.json) records
+The upload integration audit (`u2netp-upload-integration-results.json`, removed) records
 the NN crop integration, **deployed and live-verified on 20 October** at
 `127dc3c1`. Its [release workflow](https://github.com/thomasahle/julehjerte/actions/runs/39363520948)
 passed, including 2,374 application tests and 1,175 inverse correctness tests.
@@ -1168,7 +1168,7 @@ WASM-versus-Torch probability tolerance remains failed and has not been relaxed.
 Output-level parity is checked separately; the development cohorts and desktop
 browser checks do not establish mobile performance or unseen-photo accuracy.
 
-The subsequent [outline-only diagnostic](u2netp-outline-only-diagnostic-results.json)
+The subsequent outline-only diagnostic (`u2netp-outline-only-diagnostic-results.json`, removed)
 keeps all 18 additional photos and their saved browser NN predictions. Nine
 rejected learned proposals fail lobe-outline support; five also fail the
 uniform-lobe colour check. Removing only that acceptance check would therefore
@@ -1187,7 +1187,7 @@ hand, and unusual swan-shaped caps still fail outline support. The next step
 was full reconstruction of the five new proposals while preserving strong
 existing crops.
 
-The [completed reconstruction experiment](u2netp-outline-reconstruction-results.json)
+The completed reconstruction experiment (`u2netp-outline-reconstruction-results.json`, removed)
 freezes those five crops before fitting, retains the other 13 cases through
 the pinned baseline, and uses the unchanged RGB classifier and 10-second
 automatic solver. Three new results pass exported-mask and editable-template
@@ -1207,7 +1207,7 @@ and 42 missing features. The reflective bird misses four features despite
 margin study and the original 32-photo regression followed before any promotion.
 No model was retrained or application behavior changed in this experiment.
 
-The [32-photo regression](u2netp-outline-regression-results.json) replays all
+The 32-photo regression (`u2netp-outline-regression-results.json`, removed) replays all
 current crop decisions exactly and inspects all seven comparison galleries.
 Preserving strong current crops and retaining the existing 0.05 whole-body
 Dice improvement requirement leaves **all 32 original selections unchanged**.
@@ -1215,17 +1215,17 @@ The same rule selects exactly the five tested alternatives in the expanded
 18-photo set. That offline selection simulation is now reproduced by the
 application migration below.
 
-The [paired inset comparison](u2netp-outline-inset-results.json) tests all five
+The paired inset comparison (`u2netp-outline-inset-results.json`, removed) tests all five
 new proposals against the same original photographic coordinates. One-percent
 cropping worsens common-interior disagreement in three cases and improves two,
 while the number of checked derived masks stays at three. The checker loses
 some background rim, but retains the handle/notch intrusion; the newspaper
 remains a material-classification failure. All five before/after panels were
 inspected. **No default inset is enabled.** This agrees with the
-[earlier 26-case study](automatic-crop-inset-2026-10-19.json), where 24 cases
+earlier 26-case study (`automatic-crop-inset-2026-10-19.json`, removed), where 24 cases
 worsened. Future border refinement must follow evidence for individual edges.
 
-The [production migration audit](u2netp-outline-upload-results.json) now verifies
+The production migration audit (`u2netp-outline-upload-results.json`, removed) now verifies
 an explicit body-outline fallback after both existing crop attempts. Measured
 colour evidence and body-only evidence are separate; absent colour measurements
 cannot pass the colour-support check. The same model and classifier are retained.
@@ -1255,7 +1255,7 @@ closed after QA.
 
 #### Latest neural experiments
 
-The [whole-paper adaptation](u2netp-body-adaptation-results.json) trains the
+The whole-paper adaptation (`u2netp-body-adaptation-results.json`, removed) trains the
 U2NETP decoder for 120 updates on 16 reviewed photos from 14 separate source
 groups, mixed with 64 existing synthetic views. The encoder and normalization
 statistics stay fixed. Training takes about six minutes on one low-priority CPU
@@ -1273,7 +1273,7 @@ and candlestick still lose large paper regions, and printed decoration still
 confuses material classification. These historical native counts use inverse
 code from `3762b82c`.
 
-The [adapted browser follow-up](u2netp-body-adapted-browser-results.json) uses
+The adapted browser follow-up (`u2netp-body-adapted-browser-results.json`, removed) uses
 actual WASM fields and fresh controls after merging main at `8f22315d`. It adds
 the same three recognizable checked pairs: **12/32 versus 9/32**, with 25 crop
 proposals versus 21. All 25 distinct exports pass conversion and geometry;
@@ -1292,21 +1292,21 @@ their classified masks. Other crop outputs, including the three gains, agree
 exactly. The numerical gates remain failed. These remain development results on an
 already inspected cohort, not a production release.
 
-The [causal crop-drift diagnostic](u2netp-crop-drift-results.json) reproduces
+The causal crop-drift diagnostic (`u2netp-crop-drift-results.json`, removed) reproduces
 those two differences before substituting individual intermediate fields.
 In one photo, a single resampled sample crosses the 95% palette cutoff;
 replacing only the resulting chroma field restores the reference crop exactly.
 In the other, one foreground pixel changes 589 paper-distance samples;
 replacing only that distance field restores the reference crop. Component-mask
 and colour-field substitutions do not. Continuous palette weighting and subpixel
-distance geometry were then [tested separately and together](u2netp-continuous-fields-results.json).
+distance geometry were then tested separately and together (`u2netp-continuous-fields-results.json`, removed).
 Confidence-weighted colour sampling preserves all original crop/support decisions
 and reduces maximum export-induced corner drift from 1.94 to 0.19 pixels.
 Distance-only processing worsens it to 7.47 pixels; the combined variant loses
 one existing crop. Both unsuccessful variants are retained. Colour weighting
 also changes some corners by 5–9 pixels relative to the old algorithm.
 
-The [fresh original-versus-weighted reconstruction comparison](u2netp-continuous-pipeline-results.json)
+The fresh original-versus-weighted reconstruction comparison (`u2netp-continuous-pipeline-results.json`, removed)
 is now complete: both retain **12/32** formally checked pairs. All eight new
 exports pass editable conversion, geometry and nominal paper checks; six pass
 the image/feature checks. All eight were visually inspected. The three accepted
@@ -1327,14 +1327,14 @@ diagnostic is `scripts/inverse/learning/crop-count-sensitivity.mjs`; inputs and
 checksums are in the linked result. Candidate scheduling and printed-paper
 identity remain separate problems to address before release.
 
-A [fresh cut-count capacity check](u2netp-count-alternative-results.json)
+A fresh cut-count capacity check (`u2netp-count-alternative-results.json`, removed)
 confirms that the overlooked 8-by-8 layout improves the **same** weighted-crop
 mask from 2.69% to 2.20% exported disagreement. All eight comparison exports
 pass editable geometry and paper checks. Their small squares remain distorted,
 however. Restricting the count search is an oracle experiment, not a new
 automatic selection rule; production scheduling remains unchanged.
 
-The subsequent [paper-identity head pilot](u2netp-material-results.json) adds
+The subsequent paper-identity head pilot (`u2netp-material-results.json`, removed) adds
 18,193 trainable parameters to the frozen adapted U2NETP. It trains for 120
 updates on 16 real photos and 96 synthetic original/scene/printed views from
 32 geometries, in 106 seconds on one CPU thread. All 32 evaluation input tensors
@@ -1349,7 +1349,7 @@ printed stripes, dots and flowers still appear as weave boundaries. The three
 body-crop gains would lose their motifs. These native results do not justify
 browser export or template-quality claims.
 
-The [paired relative-colour experiment](u2netp-relative-material-results.json)
+The paired relative-colour experiment (`u2netp-relative-material-results.json`, removed)
 keeps the body, head size, initial weights, training inputs, sampling order and
 120-update budget identical. Its fresh raw control exactly reproduces the
 earlier head checkpoint, training losses and all 32 evaluation fields. Centring
@@ -1368,7 +1368,7 @@ Cached normalized body fields have small cross-process differences (maximum
 1.20e-7, no changes at 0.5); fresh body outputs match their parent exactly in each
 probe. No numerical gate has been relaxed.
 
-The subsequent [fixed-crop reconstruction check](u2netp-material-fixed-crop-results.json)
+The subsequent fixed-crop reconstruction check (`u2netp-material-fixed-crop-results.json`, removed)
 keeps all 25 crop selections and seven unresolved cases unchanged. It yields
 **14/32 checked derived-mask pairs**, versus 12 for historical RGB fits at those
 same crops. All 25 exports pass editable geometry; 24 pass the nominal paper
@@ -1390,7 +1390,7 @@ also hurt the frozen body detector. These observations motivate better training
 coverage and preservation of original RGB boundaries, rather than longer fitting
 against an incorrect neural mask.
 
-The original [fresh 32-photo evaluation](u2netp-fresh-results.json) freezes the model and
+The original fresh 32-photo evaluation (`u2netp-fresh-results.json`, removed) freezes the model and
 crop policy before inference. It keeps every existing production crop and adds
 a review-required neural proposal only where none exists. Crop proposals rise
 from **21 to 24**, and checked pairs from **10 to 12**. The new checker-heart and
@@ -1415,7 +1415,7 @@ reaches 0.000145, and four photos each change one threshold pixel. Actual browse
 fields feed the reported crop/fitting results. Downstream consequences of those
 small numerical differences need checking before any tolerance change.
 
-A [separate diagnostic of all five weak production crops](u2netp-weak-crop-results.json)
+A separate diagnostic of all five weak production crops (`u2netp-weak-crop-results.json`, removed)
 finds only one additional neural crop, whose mask still traces printed dots and
 stripes. On the house and candlestick, generic saliency emphasizes the interior
 motif and misses surrounding paper. On the printed HO HO heart, the body mask
@@ -1427,12 +1427,12 @@ No new templates were fitted in this diagnostic.
 Earlier experiments remain recorded below with their original policies and
 denominators.
 
-The [fixed material candidate](preserved-candidate-results.json) preserves its
+The fixed material candidate (`preserved-candidate-results.json`, removed) preserves its
 foreground network exactly but adds no checked recovery on the separately
 selected sixteen Sabrina photographs. Using the foreground only as a
-[rough RGB search region](foreground-region-pipeline-results.json) also adds none.
+rough RGB search region (`foreground-region-pipeline-results.json`, removed) also adds none.
 
-The new [official pretrained U2NETP baseline](u2netp-pipeline-results.json) uses
+The new official pretrained U2NETP baseline (`u2netp-pipeline-results.json`, removed) uses
 1,131,181 parameters and no heart fine-tuning. Its clearer outlines produce two
 additional checked approximate pairs: stacked hearts and a black/gold grid.
 Their photographed overlap coverage is 99.994% and 99.828%, respectively, but
@@ -1442,7 +1442,7 @@ partial-photo proposals are a separate development finding, not a retrospectivel
 improved held-out score. The third new fit loses small features and is rejected.
 Visible rounding and thin seams remain even in the two checked results.
 
-The [ONNX/browser audit](u2netp-runtime-results.json) verifies identical decoded
+The ONNX/browser audit (`u2netp-runtime-results.json`, removed) verifies identical decoded
 RGB and model input tensors for all sixteen original JPEGs. All six resulting
 crop proposals, corners and classified masks are exactly unchanged. Browser
 inference takes 1.12 seconds plus 0.12 seconds median preprocessing on this
@@ -1457,7 +1457,7 @@ This is not mobile validation, a new unseen cohort, or a production model.
 The **18 October validated revision** (`1921279a`) passes type checking, lint,
 build, **874 application tests** (one skipped), and **1,109/1,109 inverse tests**.
 All 1,124 pinned source files remained unchanged throughout the full run.
-The [complete QA record](finalist-release-qa.json) includes the failed preceding
+The complete QA record (`finalist-release-qa.json`, removed) includes the failed preceding
 run, the captured defect, and the regression that fails before its fix.
 
 All **34 actual Chromium workflows** pass: 22 regular Hunodan photographs,
@@ -1497,11 +1497,11 @@ above.
 
 ### Earlier solver experiments
 
-The [interior-supported count proposal](interior-count-fit-results.json) retains
+The interior-supported count proposal (`interior-count-fit-results.json`, removed) retains
 all original hypotheses and adds denser starts only with repeated interior
 support. In four development inputs from two photographs it improves three
 checker fits and leaves the star unchanged. Two checker variants still exceed
-the image limit. The [integrated release record](interior-count-release-results.json)
+the image limit. The integrated release record (`interior-count-release-results.json`, removed)
 records 1,028/1,035 inverse tests passing before subsequent fixes; it is not a
 current full-suite pass.
 
@@ -1512,7 +1512,7 @@ exceeded the image acceptance limit. Its [deterministic regression](late-polishi
 improves independently rendered export error from **4.89% to 4.02%**, while
 keeping the mismatch warning and geometry, paper and feature checks.
 
-The [complete QA run for the polishing fix](late-polishing-release-qa.json)
+The complete QA run for the polishing fix (`late-polishing-release-qa.json`, removed)
 passes type checking, lint, build, **874 application tests** (one skipped) and
 **1,037/1,038 inverse tests**. The remaining failure discards a useful clearance
 initializer before its final checks can begin, despite time remaining before
@@ -1527,7 +1527,7 @@ result). Compared with the preceding complete browser run, all crops and masks
 are identical; 18 editable exports are byte-identical and four have lower mask
 error. None has higher mask error. Small edge irregularities remain visible.
 Full inverse verification of `b7daccc` now passes **1,039/1,039 tests**, with
-1,018 source files checked unchanged. The [fresh photo replay](late-polishing-photo-qa.json)
+1,018 source files checked unchanged. The fresh photo replay (`late-polishing-photo-qa.json`, removed)
 passes the current derived-mask checks for **27/31 complete heart cases**,
 including their editable exports, with no lost previous passes. Jigsaw improves
 from **5.64% to 1.00%** on an unchanged crop and target. Crossed ribbons also
@@ -1537,8 +1537,8 @@ false gaps and uneven edges remain in some accepted outputs. Evidence is under
 `tmp/heart-learning/late-polishing-release-v1/`. Nothing has been pushed or
 deployed.
 
-Earlier [30-workflow browser validation](late-feature-browser-qa.json) and
-[later slower follow-up](base-count-release-qa.json) describe their respective
+Earlier 30-workflow browser validation (`late-feature-browser-qa.json`, removed) and
+later slower follow-up (`base-count-release-qa.json`, removed) describe their respective
 revisions. Those timing differences are observations from a separate run,
 not evidence that the deadline correction caused the speed difference. These
 are development workflows, not a fresh holdout. The separate photo comparison
@@ -1559,8 +1559,8 @@ the learned arms each produce **3/19** checked derived-mask reconstructions,
 versus **6/19** for the existing pipeline. Sixteen learned attempts fail before
 fitting. These are repeatedly inspected development photos, and agreement with
 a derived mask is not agreement with unavailable original artwork. The
-[body-only ROI experiment](foreground-roi-results.json) and
-[MobileSAM foreground experiment](mobilesam-foreground-results.json) retain
+body-only ROI experiment (`foreground-roi-results.json`, removed) and
+MobileSAM foreground experiment (`mobilesam-foreground-results.json`, removed) retain
 separate results and limitations.
 
 The October 19 [frozen-model resolution comparison](material-inference-scale.md)
@@ -1571,14 +1571,14 @@ change is rejected; source photos and checkpoints are reused, with no retraining
 or website change. The failure begins in foreground/material prediction before
 template search, and does not establish the outcome of multiscale training.
 
-The [context/detail follow-up](material-context-detail-results.json) retains
+The context/detail follow-up (`material-context-detail-results.json`, removed) retains
 256-pixel whole-heart features while using finer RGB detail. It avoids the large
 foreground regression, but supported crops still fall from three to one. Better
 average pixel scores do not compensate for losing crop support at the paper edges.
 
 ### Encoder adaptation and separating crop errors from mask errors
 
-The [October 19 controlled study](material-encoder-tail-results.json) trains a
+The October 19 controlled study (`material-encoder-tail-results.json`, removed) trains a
 fresh frozen-encoder control and a model with the last three MobileNet blocks
 unfrozen. Both use the same initialization, draws, 240 updates and two connected
 source/motif folds. Three historical photos now belong to the QA-reserved Sabrina
@@ -1636,7 +1636,7 @@ still need validation. A better segmentation score alone does not meet that gate
 
 ### Preserving foreground during adaptation and exporting to ONNX
 
-The [runtime study](preserved-material-runtime-results.json) packages the two
+The runtime study (`preserved-material-runtime-results.json`, removed) packages the two
 previously audited held-out models with an immutable foreground branch. Both
 branches share the first nine encoder blocks; only the material tail and decoder
 can train. Unit tests verify that optimization changes material predictions while
@@ -1674,7 +1674,7 @@ dependencies and outputs occupy about **170 MiB**, with no new source-photo copi
 the test browser and its temporary server were closed. Latest observed main CI
 run `39287794295` is green, independently of these unpushed research commits.
 
-The [final site checks](preserved-material-site-qa.json) pass type checking, lint,
+The final site checks (`preserved-material-site-qa.json`, removed) pass type checking, lint,
 build and **1,599 application tests** (one skipped). Actual Chromium checks cover
 both archive languages, all three newly preserved reference records, pagination,
 filtering, a saved PDF and mobile overflow. The first browser assertion mistakenly
@@ -1684,7 +1684,7 @@ photo and still forbids unavailable templates. The rebuilt local preview is at
 
 ### Production-first neural crop fallback
 
-The [fixed-policy experiment](photo-crop-fallback-results.json) keeps a supported
+The fixed-policy experiment (`photo-crop-fallback-results.json`, removed) keeps a supported
 production crop, otherwise tries the held-out WASM neural fields through the
 existing locator. A neural replacement must pass the original outline checks
 and have all four corners inside the photograph. Both arms use the existing RGB
@@ -1719,7 +1719,7 @@ is still an offline experiment.
 
 ### Matching photo preprocessing in the browser
 
-The [full-photo preprocessing audit](photo-preprocessing-results.json) found
+The full-photo preprocessing audit (`photo-preprocessing-results.json`, removed) found
 that Canvas high-quality resizing does not match the Python training transform.
 Across sixteen photos, the average difference is only **0.92 RGB levels per
 channel**, but **6,581 foreground pixels and 17,787 material pixels** change
@@ -1733,7 +1733,7 @@ In actual Chromium, all **sixteen full-photo RGB inputs, normalized tensors and
 both output fields match exactly**. The final audit hardlinks the identical
 prediction files to avoid duplicating them. Full source photos are reused.
 
-The [original JPEG follow-up](photo-decoding-results.json) invokes the website's
+The original JPEG follow-up (`photo-decoding-results.json`, removed) invokes the website's
 actual `decodeImageFile` importer, including `createImageBitmap`, in Chromium.
 All **sixteen original photographs and eight independent EXIF orientation
 fixtures** match Pillow's oriented RGB and the portable neural input exactly.
@@ -1873,7 +1873,7 @@ tests all three hearts in the window photograph, including cropping and
 downstream feature failures. These additions are QA-reserved, not new training
 labels; no automatic border inset has been enabled.
 
-The subsequent [chromatic-paper crop study](chromatic-crop-results.json) recovers
+The subsequent chromatic-paper crop study (`chromatic-crop-results.json`, removed) recovers
 the blue/orange window heart through automatic cropping, fresh fitting and a
 downloaded editable SVG. Reflections had interrupted the foreground scanlines
 and reduced edge-confidence scores despite visible physical edges. The new
@@ -1971,3 +1971,76 @@ preserves every prior paragraph and report link. The
 [earlier experiment history](experiment-history.md) retains older snapshots.
 Their historical “current” and “pending” statements refer to those snapshots,
 not to this status page.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/u2netp-outline-upload-results.json`
+- `docs/inverse/datasets/u2netp-expanded-evaluation-results.json`
+- `docs/inverse/datasets/u2netp-material-palette-pipeline-results.json`
+- `docs/inverse/datasets/displaced-finalist-results.json`
+- `docs/inverse/datasets/diverse-paper-probe-results.json`
+- `docs/inverse/datasets/u2netp-body-expanded-results.json`
+- `docs/inverse/datasets/u2netp-body-exposure-results.json`
+- `docs/inverse/datasets/u2netp-body-renderer-cohort-results.json`
+- `docs/inverse/datasets/u2netp-body-encoder-results.json`
+- `docs/inverse/datasets/u2netp-body-outline-results.json`
+- `docs/inverse/datasets/u2netp-outer-boundary-results.json`
+- `docs/inverse/datasets/u2netp-material-complete-epochs-results.json`
+- `docs/inverse/datasets/u2netp-material-boundary-results.json`
+- `docs/inverse/datasets/u2netp-material-grid-results.json`
+- `docs/inverse/datasets/u2netp-paired-results.json`
+- `docs/inverse/datasets/paper-exemplar-results.json`
+- `docs/inverse/datasets/paper-exemplar-pipeline-results.json`
+- `docs/inverse/datasets/paper-exemplar-native-results.json`
+- `docs/inverse/datasets/exemplar-projection-results.json`
+- `docs/inverse/datasets/border-fragment-repair-results.json`
+- `docs/inverse/datasets/first-paper-recovery-results.json`
+- `docs/inverse/datasets/context-residual-results.json`
+- `docs/inverse/datasets/context-residual-real-results.json`
+- `docs/inverse/datasets/context-residual-training-results.json`
+- `docs/inverse/datasets/feature-priority-results.json`
+- `docs/inverse/datasets/native-confidence-results.json`
+- `docs/inverse/datasets/native-confidence-refinement-results.json`
+- `docs/inverse/datasets/real-junction-phase-results.json`
+- `docs/inverse/datasets/junction-phase-average-results.json`
+- `docs/inverse/datasets/junction-augmentation-results.json`
+- `docs/inverse/datasets/u2netp-upload-integration-results.json`
+- `docs/inverse/datasets/u2netp-outline-only-diagnostic-results.json`
+- `docs/inverse/datasets/u2netp-outline-reconstruction-results.json`
+- `docs/inverse/datasets/u2netp-outline-regression-results.json`
+- `docs/inverse/datasets/u2netp-outline-inset-results.json`
+- `docs/inverse/datasets/automatic-crop-inset-2026-10-19.json`
+- `docs/inverse/datasets/u2netp-body-adaptation-results.json`
+- `docs/inverse/datasets/u2netp-body-adapted-browser-results.json`
+- `docs/inverse/datasets/u2netp-crop-drift-results.json`
+- `docs/inverse/datasets/u2netp-continuous-fields-results.json`
+- `docs/inverse/datasets/u2netp-continuous-pipeline-results.json`
+- `docs/inverse/datasets/u2netp-count-alternative-results.json`
+- `docs/inverse/datasets/u2netp-material-results.json`
+- `docs/inverse/datasets/u2netp-relative-material-results.json`
+- `docs/inverse/datasets/u2netp-material-fixed-crop-results.json`
+- `docs/inverse/datasets/u2netp-fresh-results.json`
+- `docs/inverse/datasets/u2netp-weak-crop-results.json`
+- `docs/inverse/datasets/preserved-candidate-results.json`
+- `docs/inverse/datasets/foreground-region-pipeline-results.json`
+- `docs/inverse/datasets/u2netp-pipeline-results.json`
+- `docs/inverse/datasets/u2netp-runtime-results.json`
+- `docs/inverse/datasets/finalist-release-qa.json`
+- `docs/inverse/datasets/interior-count-fit-results.json`
+- `docs/inverse/datasets/interior-count-release-results.json`
+- `docs/inverse/datasets/late-polishing-release-qa.json`
+- `docs/inverse/datasets/late-polishing-photo-qa.json`
+- `docs/inverse/datasets/late-feature-browser-qa.json`
+- `docs/inverse/datasets/base-count-release-qa.json`
+- `docs/inverse/datasets/foreground-roi-results.json`
+- `docs/inverse/datasets/mobilesam-foreground-results.json`
+- `docs/inverse/datasets/material-context-detail-results.json`
+- `docs/inverse/datasets/material-encoder-tail-results.json`
+- `docs/inverse/datasets/preserved-material-runtime-results.json`
+- `docs/inverse/datasets/preserved-material-site-qa.json`
+- `docs/inverse/datasets/photo-crop-fallback-results.json`
+- `docs/inverse/datasets/photo-preprocessing-results.json`
+- `docs/inverse/datasets/photo-decoding-results.json`
+- `docs/inverse/datasets/chromatic-crop-results.json`

@@ -134,5 +134,11 @@ benchmark byte-for-byte, and Chrome loaded the homepage and Paint editor without
 page errors or failed local requests. IPv4 and IPv6 loopback checks also passed.
 
 Machine-readable measurements, hashes, and outstanding verification are in
-[deferred-routing.json](deferred-routing.json). Local diagnostic artifacts are in
+`deferred-routing.json` (removed). Local diagnostic artifacts are in
 `tmp/heart-learning/deferred-routing-2026-10-18/`.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/deferred-routing.json`

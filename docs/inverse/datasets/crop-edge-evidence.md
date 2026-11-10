@@ -98,7 +98,7 @@ the fitter itself has not changed. This timer covers preparation, fitting,
 validation and export, excluding decoding and independent replay. Browser
 latency is measured separately.
 
-The [release audit](crop-edge-evidence.json) records the source hashes, paired
+The release audit (`crop-edge-evidence.json`, removed) records the source hashes, paired
 photo results, rejected crop variants and a hashed inventory of 1,371 local
 artifacts. Verification passed:
 
@@ -121,3 +121,9 @@ upper tips. No perfect-detail or physical-assembly claim is made.
 
 The preview remains running at `http://127.0.0.1:5232/editor/mal/`. Nothing was
 pushed or deployed.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/crop-edge-evidence.json`

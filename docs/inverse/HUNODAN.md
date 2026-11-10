@@ -12,7 +12,7 @@ The required set passes **22/22**, with **0.39–1.78%** independent image error
 
 The complete run used commit `6081719`. The only case invoking feature recovery, the anchor, was rerun from scratch after the browser coefficient/budget fix at `04269b1`; the other 21 cases do not execute that changed branch. `HUNODAN-VALIDATION.json` records both source revisions and per-case provenance. Local combined artifacts are in `tmp/inverse-hunodan/2026-09-08-release/`, including `visual-report/index.html` and `reference-review/index.html`. All 22 visual comparisons were inspected.
 
-The production build passes **48/48 checks** for four actual photo uploads in Chromium, Firefox and WebKit: automatic corners, fresh fitting, independently checked downloaded curves, and retained original-mask/difference views. The anchor's eye is present in every browser. Three additional browser model replays produce exactly the same canonical linear model as Node. Cancellation, stale-result invalidation, and the previously failing 60-second Firefox flag are also verified. `HUNODAN-BROWSER-VALIDATION.json` retains the passing results, earlier failures, and an explained harness artifact-name collision; the harness now names parallel outputs uniquely.
+The production build passes **48/48 checks** for four actual photo uploads in Chromium, Firefox and WebKit: automatic corners, fresh fitting, independently checked downloaded curves, and retained original-mask/difference views. The anchor's eye is present in every browser. Three additional browser model replays produce exactly the same canonical linear model as Node. Cancellation, stale-result invalidation, and the previously failing 60-second Firefox flag are also verified. `HUNODAN-BROWSER-VALIDATION.json` (removed) retains the passing results, earlier failures, and an explained harness artifact-name collision; the harness now names parallel outputs uniquely.
 
 All **249 tests** pass (131 application tests and 118 inverse tests). Type checking has zero errors and eight existing warnings; lint and production build pass. No changes were pushed or deployed.
 
@@ -48,3 +48,9 @@ In the website select **Pattern style → Fit curves to image**. The General sty
 Photographic agreement is measured against the two-colour estimate, not unavailable original vector artwork. Concealed cutting routes can differ while yielding the same visible weave. The paper model has not been physically assembled or strength-tested.
 
 Extra perturbation tests of the first flag remain mixed: a 75% resize, JPEG recompression and deterministic RGB noise failed the most recent replay (4.09%, 3.86% and 3.58% independent error). The noise variant passed an earlier replay at 2.05%; this is still a timing-sensitive initialization/refinement problem. None of these attempts invoked feature recovery. They are fresh crop-and-fit attempts, separate from the original 22-photo denominator. Passing the original corpus does not imply complete perturbation robustness. The image files and rejected attempts remain in local artifacts.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/HUNODAN-BROWSER-VALIDATION.json`

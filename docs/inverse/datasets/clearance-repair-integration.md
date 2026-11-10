@@ -52,7 +52,7 @@ The first paired experiment remains in
 `tmp/heart-learning/clearance-repair-integration-v1/`; its flower diagnosis is in
 `tmp/heart-learning/clearance-repair-flower-v1/`. The corrected paired replay is
 in `tmp/heart-learning/clearance-repair-integration-v2/` with 208 pinned source
-files. The [completed evidence record](clearance-repair-integration.json) retains
+files. The completed evidence record (`clearance-repair-integration.json`, removed) retains
 both paired studies and the rejected flower comparison.
 
 ## Corrected paired replay
@@ -75,3 +75,9 @@ startup and independent rendering are recorded separately; the maximum native
 time is 9.522 seconds. These are the same six fixed masks, not twelve independent
 photographs. Full corpus, editable-export and browser QA are pending. These
 development cases do not update the published 25/31 photographic success rate.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/clearance-repair-integration.json`

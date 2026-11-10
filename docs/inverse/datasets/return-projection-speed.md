@@ -14,7 +14,7 @@ before returning any repaired coordinates. The caller's image, feature and
 paper checks remain in place. Iteration counts, time budgets, movement bounds,
 fixed controls and symmetry constraints are unchanged.
 
-The [measurements](return-projection-speed.json) compare frozen runtime copies
+The measurements (`return-projection-speed.json`, removed) compare frozen runtime copies
 in serial processes:
 
 | Check | Previous loop | New loop |
@@ -125,7 +125,7 @@ The shared editor/worker cubic evaluator now avoids temporary axis arrays and
 callbacks while retaining arithmetic order. A paired, fixed-work projection of
 one captured rejected routing takes 28.6% less time at the median and returns
 identical coordinates. This is a local benchmark, not a whole-pipeline speedup.
-The [measurements](return-arithmetic-speed.json) retain both favourable and
+The measurements (`return-arithmetic-speed.json`, removed) retain both favourable and
 unfavourable browser outcomes.
 
 For the original Art e Sta artwork, the 30-second browser request improves from
@@ -159,7 +159,7 @@ before launch to investigate the repair-budget variation. The preview on port
 
 The subsequent complete suite on runtime `0b67ca9` finishes with **1,042 passes
 and 14 failures**, in 1,657.81 seconds. All 1,037 source hashes match after the
-run. The [failure records and paired measurements](clearance-repair-budget.json)
+run. The failure records and paired measurements (`clearance-repair-budget.json`, removed)
 preserve the failures; this revision has not passed release QA. Some assertions
 stop at an expected search route, but others directly reject geometry, image
 error or a missing usable checkpoint. They cannot all be dismissed as test
@@ -222,3 +222,11 @@ The subsequent [spacing-continuation correction](clearance-continuation.md)
 reproduces that discarded intermediate result with fixed work. It extends the
 same checked handoff rule to spacing repair and passes all 23 focused tests;
 the other failures from the complete suite remain a separate investigation.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/return-projection-speed.json`
+- `docs/inverse/datasets/return-arithmetic-speed.json`
+- `docs/inverse/datasets/clearance-repair-budget.json`

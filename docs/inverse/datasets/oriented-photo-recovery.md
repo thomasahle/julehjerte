@@ -110,7 +110,7 @@ literal equality of these raw counts.
 ## Reproduce
 
 The frozen input probe is documented in
-[synthetic-intervention-probe.json](synthetic-intervention-probe.json). Every
+`synthetic-intervention-probe.json` (removed). Every
 output directory must be new. Downloaded or generated image bytes remain
 outside Git; the reports preserve their hashes and paths.
 
@@ -137,7 +137,7 @@ unequal lobes, rough selections and the real orange-heart photograph.
 The complete regression run passed 855 application tests (one skipped), 662
 inverse tests, 33 offline learning tests and 13 collector tests, along with
 type checking, lint and build. Type checking retains seven existing warnings
-and no errors. The [validation record](orientation-validation.json) includes
+and no errors. The validation record (`orientation-validation.json`, removed) includes
 the command logs and hashes.
 
 A fresh Chromium session tested the built English Paint editor at
@@ -153,5 +153,13 @@ attempt used the wrong translated route and then encountered a stopped preview
 server; after correcting the route and restarting preview, the complete run
 passed. It is preserved as a harness failure, not counted as a failed crop.
 
-[The compact results](oriented-photo-results.json) retain all six outcomes,
+The compact results (`oriented-photo-results.json`, removed) retain all six outcomes,
 the aligned comparison, source hashes, timings and oracle-pose diagnosis.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/synthetic-intervention-probe.json`
+- `docs/inverse/datasets/orientation-validation.json`
+- `docs/inverse/datasets/oriented-photo-results.json`

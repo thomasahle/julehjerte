@@ -85,9 +85,9 @@ also pass at `99399ff`. The complete inverse suite passes **849/849 tests** in
 846.96 seconds. All 840 recorded source-file hashes remain unchanged through
 the serial verification run.
 
-The [measurements and artifact hashes](small-feature-polishing.json) preserve
+The measurements and artifact hashes (`small-feature-polishing.json`, removed) preserve
 the negative trials, captured boundary, runtime variants, fresh exports and
-focused test log. The [complete release record](small-feature-release.json)
+focused test log. The complete release record (`small-feature-release.json`, removed)
 adds the fresh corpus, editable SVG and browser results. No changes have been
 pushed or deployed.
 
@@ -143,10 +143,18 @@ to 1.20 seconds including completion of the final audit.
 None of the 47 standard release outputs has an eligible short-span proposal.
 The proposal therefore remains outside the application: it has not established
 a broader reconstruction or fresh-solve benefit. The
-[six trials and 47-case inventory](short-shared-span-study.json) retain this
+six trials and 47-case inventory (`short-shared-span-study.json`, removed) retain this
 negative result alongside the local improvements.
 
 ```sh
 node --test --test-concurrency=1 scripts/inverse/feature-details.test.mjs \
   scripts/inverse/fitted-rerouting.test.mjs
 ```
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/small-feature-polishing.json`
+- `docs/inverse/datasets/small-feature-release.json`
+- `docs/inverse/datasets/short-shared-span-study.json`

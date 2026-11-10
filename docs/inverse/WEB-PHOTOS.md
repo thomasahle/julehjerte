@@ -13,7 +13,7 @@ retain **11 passing, 18 needing review and 15 without a crop** in a fresh full
 replay. All passing errors are unchanged. The five-point star improves from
 3.26375% to 3.165% disagreement through exact shared-cut recovery, but still loses
 two regions and remains flagged. Five approximate fits improve and five worsen;
-the [paired record](FEATURE-CLEANUP-VALIDATION.json) retains both directions, the
+the paired record (`FEATURE-CLEANUP-VALIDATION.json`, removed) retains both directions, the
 unchanged source/crop evidence, all 22 Hunodan cases and 14 browser runs. This
 follow-up identifies separate boundary feasibility, count-shortlist and final
 cleanup issues; it does not attribute all failures to cropping.
@@ -25,7 +25,7 @@ failure: Chromium/WebKit now find valid 3+3 templates in 6.12/6.71 seconds rathe
 than 75/81 seconds, with unchanged crop coordinates and input mask. Engine error
 falls from 5.250625% to 2.376250%; editable SVG replay measures 2.385000%.
 
-[Paired full-pipeline measurements](OPPOSITE-EDGE-VALIDATION.json) include all
+Paired full-pipeline measurements (`OPPOSITE-EDGE-VALIDATION.json`, removed) include all
 44 photo outcomes, all 22 regular Hunodan designs, 14 browser runs and explicit
 perturbation probes. This improves template initialization and refinement without
 changing the cropper or final acceptance limits. Interior routing failures remain.
@@ -82,7 +82,7 @@ still needed review because of a classified fragment near the edge, and the
 browser spent too long trying other layouts. The follow-up below addresses
 that specific source of instability; these historical failures remain recorded.
 
-[Current measurements and source hashes](CURVE-DEGREES-VALIDATION.json) include
+Current measurements and source hashes (`CURVE-DEGREES-VALIDATION.json`, removed) include
 all 44 outcomes. Full visual panels and exported candidates are generated at
 `tmp/adaptive-primitives-web-all/report.html`. The fresh all-case run is a new
 baseline for further pipeline work; it does not isolate the effect of one recent
@@ -92,7 +92,7 @@ fixed-output experiment for that purpose.
 A subsequent [cut-count refinement replay](COUNT-FINALISTS.md) retains the same
 9/20/15 outcomes and all automatic crops across the 44 cases, while reducing the
 blue/green checker's cuts from 3+3 to 2+2 and its independent error to 1.4375%.
-Its [measurement ledger](COUNT-FINALISTS-VALIDATION.json) keeps before/after values
+Its measurement ledger (`COUNT-FINALISTS-VALIDATION.json`, removed) keeps before/after values
 for every case, including the failures. This is improved template selection
 inside the full pipeline, not an increase in the number of passing photographs.
 
@@ -112,7 +112,7 @@ to 4.56–4.60 seconds with unchanged editable error. Overall, 28 of 29 exported
 errors are exactly unchanged; `vissevasse-arranged-r2c1` increases by three
 pixels (0.001875 percentage points) and still needs review. All 29 generated
 pairs retain valid geometry and guarded paper checks. The
-[complete follow-up ledger](BORDER-FEATURE-VALIDATION.json) includes these
+complete follow-up ledger (`BORDER-FEATURE-VALIDATION.json`, removed) includes these
 limitations alongside the 22 regular Hunodan speed checks and 12 browser runs.
 
 The subsequent [closed-contour and tracing-seed correction](JUNCTION-RECOVERY.md)
@@ -122,7 +122,7 @@ tree in the group photograph improves from 5.973125% to 1.9225% exported error
 and from 4+4 to 3+3 cuts. This additional pass comes from a better reconstruction
 under unchanged acceptance criteria. The green tree also improves from 1.1375%
 to 1.075%. All 29 generated pairs retain valid geometry and guarded paper checks;
-the [complete ledger](JUNCTION-RECOVERY-VALIDATION.json) preserves two smaller
+the complete ledger (`JUNCTION-RECOVERY-VALIDATION.json`, removed) preserves two smaller
 time-budget variations in printed-paper cases, including one error increase.
 
 The new browser test exposes a separate unresolved crop variant: uploading
@@ -172,3 +172,14 @@ Three predetermined examples were run with a ten-second solver budget, followed 
 The checker example demonstrates why candidate checks cannot substitute for visual or published-template evaluation. All three runs checked exported geometry; the numerical scores compare with the estimated image mask, not the original cutting paths. Border/unknown pixels are excluded from error only when the source validity mask says they are unobserved.
 
 Full initial visual reports are generated locally at `tmp/inverse-web-photos/initial-prepare/report.html` and `tmp/inverse-web-photos/solve-smoke/report.html`. Rerun with the documented commands to recreate them; source inputs are committed and the benchmark requires no network.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/FEATURE-CLEANUP-VALIDATION.json`
+- `docs/inverse/OPPOSITE-EDGE-VALIDATION.json`
+- `docs/inverse/CURVE-DEGREES-VALIDATION.json`
+- `docs/inverse/COUNT-FINALISTS-VALIDATION.json`
+- `docs/inverse/BORDER-FEATURE-VALIDATION.json`
+- `docs/inverse/JUNCTION-RECOVERY-VALIDATION.json`

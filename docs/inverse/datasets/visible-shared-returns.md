@@ -6,7 +6,7 @@ edges can double back even though neither paper's cutting path does. The
 previous proposal generator only inspected consecutive edges within a sheet,
 so it never inspected those visible joins.
 
-The [completed probe record](visible-shared-returns-probe.json) pins the fixed
+The completed probe record (`visible-shared-returns-probe.json`, removed) pins the fixed
 source mask, saved-geometry diagnosis, fresh solve and actual browser comparison.
 The implementation and regression coverage are committed as `86901fd`.
 
@@ -101,7 +101,7 @@ notch because of raster phase; the midpoint check fixes that regression.
 
 All nineteen short-return tests now pass, including one-pixel source shifts
 and unknown-image regions. The fresh blue-star solve regression also passes.
-The final guard is committed as `14e6dbf`; its [diagnostic record](visible-shared-returns-guard-probe.json)
+The final guard is committed as `14e6dbf`; its diagnostic record (`visible-shared-returns-guard-probe.json`, removed)
 pins the source, tests and subsequent fresh replays. Both `hjhih-01` and
 `hjsta-01` retain exactly their previous-release independent scores. This also
 rejects the unguarded cleanup's tiny `hjsta-01` improvement: boundary support
@@ -151,7 +151,7 @@ the refiner's existing 200 ms verification reserve. Existing single-sheet
 repairs keep their original allowance. A completed checkpoint can still be
 accepted before the overall export reserve, with every physical and source
 check unchanged. The change is committed as `fa7774c`. Twenty-one short-return
-tests and the fresh blue-star regression pass. The [budget probe](visible-shared-returns-budget-probe.json)
+tests and the fresh blue-star regression pass. The budget probe (`visible-shared-returns-budget-probe.json`, removed)
 records two controlled allowances applied to the same frozen Viking geometry
 and original source pixels:
 
@@ -175,7 +175,7 @@ subsequently completed under `visible-return-budget-v1/`, as recorded below.
 
 ### Completed release verification
 
-The [release record](visible-shared-returns-release.json) pins runtime `fa7774c`,
+The release record (`visible-shared-returns-release.json`, removed) pins runtime `fa7774c`,
 all eighteen successful driver stages, source hashes and retained artifacts.
 All eight fixed crop variants pass their two-percent and ten-second gates;
 all sixteen old/new editable conversions retain geometry and paper checks.
@@ -216,3 +216,12 @@ JavaScript/WASM files also match current source. The final audit rechecks
 source and artifact hashes, actual exported-pair checks, the historical Hunodan
 exception, pass retention and browser outcomes. No learned model is deployed,
 and nothing has been pushed.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/visible-shared-returns-probe.json`
+- `docs/inverse/datasets/visible-shared-returns-guard-probe.json`
+- `docs/inverse/datasets/visible-shared-returns-budget-probe.json`
+- `docs/inverse/datasets/visible-shared-returns-release.json`

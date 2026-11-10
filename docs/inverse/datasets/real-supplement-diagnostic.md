@@ -91,7 +91,7 @@ node scripts/inverse/learning/foreground-replay.mjs \
   --methods=production,learned --target=mask --solve-ids=all --seconds=10
 ```
 
-The [evidence record](real-supplement-diagnostic.json) pins the merged annotation
+The evidence record (`real-supplement-diagnostic.json`, removed) pins the merged annotation
 parents, checkpoints, inputs, predictions, implementation and generated assets.
 It independently recomputes segmentation scores from archived float32 fields,
 checks probe pixels/transforms, and verifies all 18 reconstruction records and
@@ -108,3 +108,9 @@ launch; using the existing owned Playwright shim fixed that harness error.
 No production algorithm, neural deployment or source photograph changed in this
 diagnostic. The verified fitter preview remains at port 5232. Nothing was pushed
 or deployed, and no physical cutting/assembly test was performed.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/real-supplement-diagnostic.json`

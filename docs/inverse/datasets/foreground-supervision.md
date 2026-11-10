@@ -31,7 +31,7 @@ Seven prototype variants were tested on the same six cases in both file variants
 
 Only the final mixture variants return a supported proposal for the larger-source bauble. Its estimated tip still lies outside the photograph. The full fitter on that fixed proposal has **5.074% disagreement** and loses a source feature; geometry and paper checks alone pass. It is rejected. No colour-model prototype was promoted into the application, and no proposed real-photo mask or crop became a training label.
 
-The local archive contains the executable prototypes, registration, masks, crop proposals, complete fitting outputs and logs. Its inventory and checksum are in [the evidence record](foreground-supervision.json). These experiments support separating physical paper boundaries from visible motif boundaries; they do not establish that colour modelling alone can solve touching hearts, occlusion or non-planar paper.
+The local archive contains the executable prototypes, registration, masks, crop proposals, complete fitting outputs and logs. Its inventory and checksum are in the evidence record (`foreground-supervision.json`, removed). These experiments support separating physical paper boundaries from visible motif boundaries; they do not establish that colour modelling alone can solve touching hearts, occlusion or non-planar paper.
 
 ## New target and data integrity
 
@@ -64,3 +64,9 @@ The 12-view gallery covers all three recipe groups and the corner supplement. Ea
 This makes a full-photo foreground network trainable with existing synthetic data. It is not evidence of improved neural inference or a solved real-photo cropper. The simulator still uses planar paper, fixed semicircular lobes and one heart per scene; neighbouring hearts and non-planar paper require further data and evaluation. Real-photo instance annotations remain necessary, and the existing diagnostic photographs stay reserved for QA.
 
 Raw outputs and the gallery are under `tmp/heart-learning/real-edge-v1/`. The implementation is committed locally; nothing was pushed or deployed.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/foreground-supervision.json`

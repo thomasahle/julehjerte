@@ -189,7 +189,7 @@ workflows. The small hat preserves about 85.65 mm of shared curves with
 anchor uploads, Firefox passes and Chromium/WebKit reject the narrow return.
 Thus the expanded result is **31/33**, not a universally passing upload suite.
 
-[CONTROL-IDENTITY-VALIDATION.json](CONTROL-IDENTITY-VALIDATION.json) records the
+`CONTROL-IDENTITY-VALIDATION.json` (removed) records the
 controlled, automatic, dataset and browser results, source provenance, artifact
 hashes, final check logs and served-source verification. Reproductions are
 saved under the paths listed there; no reference cutting paths are used as
@@ -200,3 +200,9 @@ application test skipped), lint and build. Svelte checking reports zero errors
 and seven existing warnings. All 62 served engine/worker files match the
 committed production source. The restarted isolated preview remains at
 <http://127.0.0.1:5232/en/editor/paint/>.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/CONTROL-IDENTITY-VALIDATION.json`

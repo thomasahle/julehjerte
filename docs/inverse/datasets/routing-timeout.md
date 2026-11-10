@@ -29,7 +29,7 @@ application and recording the actual engine requests. The unchanged baseline
 is `0ff2baf`. Exact bytes, browser reports, prepared masks, SVG/PDF downloads and
 screenshots are retained under `tmp/heart-learning/routing-timeout-v1/`.
 The earlier discovery remains under `routing-scheduling-v1/browser/`.
-The [controlled-probe evidence](routing-timeout-probe.json) records all twelve
+The controlled-probe evidence (`routing-timeout-probe.json`, removed) records all twelve
 browser flows, verifies identical prepared inputs and requested settings,
 checks that only the allocation expression differs between the two snapshots,
 and pins 117 completed artifacts by hash.
@@ -124,9 +124,16 @@ shared exported spans, and the vertical sloth retains its finer 700-cell paper
 audit through export. All source masks are identical to the preceding browser
 run. None of the acceptance rules or physical tolerances changed.
 
-The [complete release record](routing-timeout.json) pins 103 current source files
+The complete release record (`routing-timeout.json`, removed) pins 103 current source files
 and 1,048 release artifacts, plus the 117 controlled-probe artifacts. An
 independent audit verifies their hashes, paired inputs, all required checks and
 the recorded outcomes. The owned preview is running the verified build at
 `http://127.0.0.1:5232/editor/mal/`; the served changed modules and page match the
 build bytes. Nothing has been pushed or deployed.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/routing-timeout-probe.json`
+- `docs/inverse/datasets/routing-timeout.json`

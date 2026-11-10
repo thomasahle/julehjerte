@@ -17,11 +17,11 @@ and verified pretrained encoder checkpoints. Offline studies cover synthetic
 proposal learning and a small real-photo adaptation pilot. No learned model
 has been added to the website.
 
-A [rough-selection bounds correction](selection-bounds-reconstruction.json) now recovers the full red/green star instead of a narrow interior strip. In nine development workflows on seven photos, the star passes native and editable checks (2.27% editable disagreement); a newly located dense checker still fails image quality (5.13%). Four other selected photos remain unresolved, and the cross still has a small false central diamond. All 76 focused crop tests and eight browser workflows passed. [Full QA](selection-bounds-release-qa.json) passes check/lint/build and 874 application tests (one skip), but one of 1,020 inverse tests fails: under an accelerated clock, a fixed-crop fitter skips its feature initializer. All eleven captured follow-up tests pass. A controlled delay reproduces the skipped initializer; merely lowering its cutoff helps at 4.8 seconds remaining but worsens the 4.2-second case, so that change is rejected. A cheaper same-count sampling proposal improves candidate passes from 0/8 to 4/8 across four fixed crop variants and two tight budgets, leaving the other errors unchanged. It is now integrated only where the ordinary initializer was skipped, after 25 focused tests pass (including two deterministic scheduling regressions); full follow-up QA now passes 874 application tests (one skip), 1,022 inverse tests, check/lint/build and all 30 browser workflows. Some ray detail and the original/horizontal variants remain unresolved under that pressure. These are separate development cases, not changes to the existing 31-photo or 55-mask benchmark.
+A [rough-selection bounds correction](selection-bounds-reconstruction.json) now recovers the full red/green star instead of a narrow interior strip. In nine development workflows on seven photos, the star passes native and editable checks (2.27% editable disagreement); a newly located dense checker still fails image quality (5.13%). Four other selected photos remain unresolved, and the cross still has a small false central diamond. All 76 focused crop tests and eight browser workflows passed. Full QA (`selection-bounds-release-qa.json`, removed) passes check/lint/build and 874 application tests (one skip), but one of 1,020 inverse tests fails: under an accelerated clock, a fixed-crop fitter skips its feature initializer. All eleven captured follow-up tests pass. A controlled delay reproduces the skipped initializer; merely lowering its cutoff helps at 4.8 seconds remaining but worsens the 4.2-second case, so that change is rejected. A cheaper same-count sampling proposal improves candidate passes from 0/8 to 4/8 across four fixed crop variants and two tight budgets, leaving the other errors unchanged. It is now integrated only where the ordinary initializer was skipped, after 25 focused tests pass (including two deterministic scheduling regressions); full follow-up QA now passes 874 application tests (one skip), 1,022 inverse tests, check/lint/build and all 30 browser workflows. Some ray detail and the original/horizontal variants remain unresolved under that pressure. These are separate development cases, not changes to the existing 31-photo or 55-mask benchmark.
 
-The [previous-runtime browser checks](late-feature-browser-qa.json) passed all 30 workflows. Its 22 regular Hunodan cases stayed below ten seconds (5.99 s median, 8.85 s maximum), with byte-identical masks, cut geometry and editable SVGs, and unchanged image error. The complete 1,022-test inverse suite and 874 application tests passed (one application skip), as did check/lint/build. All 1,041 pinned source files verified unchanged. The newer runtime's slower follow-up is recorded below; these historical timings do not establish its current speed.
+The previous-runtime browser checks (`late-feature-browser-qa.json`, removed) passed all 30 workflows. Its 22 regular Hunodan cases stayed below ten seconds (5.99 s median, 8.85 s maximum), with byte-identical masks, cut geometry and editable SVGs, and unchanged image error. The complete 1,022-test inverse suite and 874 application tests passed (one application skip), as did check/lint/build. All 1,041 pinned source files verified unchanged. The newer runtime's slower follow-up is recorded below; these historical timings do not establish its current speed.
 
-Three [offline follow-up diagnostics](selected-photo-initialization-diagnostics.json)
+Three offline follow-up diagnostics (`selected-photo-initialization-diagnostics.json`, removed)
 separate the remaining failures. Under the controlled tight budgets, trying an
 existing near-miss or alternate start at the same cut counts after sampling
 fails increases checked fits from **4/8 to 8/8**. This is not a speed benchmark;
@@ -34,8 +34,8 @@ The preceding count experiment had a driver error and supplied no expanded-count
 quality result. Finally, smoothing at four scales with three palette models
 recovers **0/12** pale printed-checker crops. The unsmoothed mask loses much of
 the pale sheet, while smoothed candidates still fail outline support. The same-count rescue is now integrated after six deterministic scheduling
-regressions and 23 existing photographic/budget tests pass. Its [full release
-QA](base-count-release-qa.json) now completes all 22 Hunodan browser workflows
+regressions and 23 existing photographic/budget tests pass. Its full release
+QA (`base-count-release-qa.json`, removed) now completes all 22 Hunodan browser workflows
 with passing functional checks, but only **5/22 meet ten seconds** (13.23 s
 median, 20.73 s maximum). Eighteen native geometries remain identical; four
 change and have slightly higher editable painting error, at most 0.09625
@@ -54,9 +54,9 @@ clearance projection. They ran sequentially at low process priority; the
 projection took 2.95 seconds after exhausting its ten-second repair allowance
 in the interrupted run. This supports sensitivity to runtime conditions but
 does not establish the cause of all sixteen failures or clear the full suite.
-The [release record](base-count-release-qa.json) retains both observations.
+The release record (`base-count-release-qa.json`, removed) retains both observations.
 
-A [57-input interior-transition diagnostic](interior-count-evidence-results.json)
+A 57-input interior-transition diagnostic (`interior-count-evidence-results.json`, removed)
 finds more than eight transitions in 97% and 88% of the dense checker's
 interior bands, despite its edge-based ceiling remaining eight. An exploratory
 rule would expand that case to twelve while leaving all 55 existing corpus
@@ -66,12 +66,12 @@ inspecting these development profiles; no new fitting, editable validation or
 production policy change was made in that diagnostic. Interior transitions can exceed the true
 cut count when curves turn back, so they are proposals, not constraints.
 
-The [saved expanded-count checker now passes editable validation](selected-checker-editable-results.json):
+The saved expanded-count checker now passes editable validation (`selected-checker-editable-results.json`, removed):
 5.59% disagreement falls to 2.66%, with ten/eleven cuts and passing geometry
 and paper checks. Its distorted interior cells improve, while border bends
 and thin seams remain. The star control's geometry and error stay unchanged.
 
-A [fresh interior-supported proposal](interior-count-fit-results.json) caps
+A fresh interior-supported proposal (`interior-count-fit-results.json`, removed) caps
 new starts at eleven cuts and retains every original count/phase. Across four
 paired development inputs from two photographs, it improves the three checker
 fits and leaves the star unchanged. Editable checker errors change from
@@ -85,7 +85,7 @@ The proposal is now in the main fitter's initialization, with unchanged
 recovery limits, deadlines and acceptance rules. Six focused regressions pass,
 including the dense binary target, preservation of simpler starts and both
 phases, uncertain/noisy inputs, missing coverage, symmetry and strip width.
-The [integrated QA follow-up](interior-count-release-results.json) passes check,
+The integrated QA follow-up (`interior-count-release-results.json`, removed) passes check,
 lint, build and 874 application tests (one skipped), but only 1,028/1,035 inverse
 tests pass. Seven failures remain recorded, including the new dense target.
 The production proposal leaves all 55 existing corpus hypothesis sets unchanged
@@ -110,7 +110,7 @@ full-suite failures also pass across 24 focused tests without a production
 change, but their causes remain unresolved. Broader serial QA is in progress;
 this is not a new full-suite pass or a speed benchmark.
 
-The [paired selected-box MobileSAM replay](selected-sam-prompt-results.json)
+The paired selected-box MobileSAM replay (`selected-sam-prompt-results.json`, removed)
 now completes on seven fixed development photos. Automatic boxes produce four
 crops and two checked masks, but one is the wrong heart in the star scene.
 Supplied selection boxes produce five crops and three checked masks of the
@@ -127,7 +127,7 @@ the incorrectly selected background, leaving a nearly uniform target. This is
 a material-stage failure despite less than 1% mask error. Full follow-up QA is pending. No model is deployed,
 and these seven source-assisted examples are not a new held-out benchmark.
 
-A [paired material-calibration follow-up](selected-sam-calibration-results.json)
+A paired material-calibration follow-up (`selected-sam-calibration-results.json`, removed)
 now uses each saved SAM body to choose paper-color samples, while keeping the
 photograph, crop, coverage and color model fixed. All seven old calibrations
 and nine old masks reproduce exactly before the intervention. On the printed
@@ -151,10 +151,10 @@ inputs and denominators. Their latest completed comparisons are:
 
 | Comparison | Result | Scope |
 | --- | ---: | --- |
-| [Established photo benchmark](refinement-checkpoint-corpus-results.json) | 27/31 | The latest fixed-mask replay retains 27/29 cropped inputs; two historical no-crop cases remain failures. Cropping was not rerun in that replay. |
-| [Mixed fixed-mask corpus](refinement-checkpoint-corpus-results.json) | 53/55 | Includes Hunodan, the 29 photo masks and four additional variants; not 55 independent photographs. |
+| Established photo benchmark (`refinement-checkpoint-corpus-results.json`, removed) | 27/31 | The latest fixed-mask replay retains 27/29 cropped inputs; two historical no-crop cases remain failures. Cropping was not rerun in that replay. |
+| Mixed fixed-mask corpus (`refinement-checkpoint-corpus-results.json`, removed) | 53/55 | Includes Hunodan, the 29 photo masks and four additional variants; not 55 independent photographs. |
 | [Small-CNN corrected-family study](material-corrected-scenes-results.json) | 3/19 learned; 6/19 production | Body/material predictions alone did not improve complete recovery. |
-| [Offline SAM plus projective-outline pipeline](projective-real-results.json) | 15/22 earlier-development; 9/20 additional-source | The later geometric fallback improves the earlier 4/20 policy result. These inspected photos are now development cases; this is not a new independent retest. |
+| Offline SAM plus projective-outline pipeline (`projective-real-results.json`, removed) | 15/22 earlier-development; 9/20 additional-source | The later geometric fallback improves the earlier 4/20 policy result. These inspected photos are now development cases; this is not a new independent retest. |
 
 These are checked reconstructions of extracted masks, not ground-truth cutting
 accuracy. In the 9/20 result, visible defects include clipped cap motifs,
@@ -216,7 +216,7 @@ cues, not blinded human prompts. The five additional photos add palette/backgrou
 variation within existing source groups; no new labels, splits or independent
 motif-family counts are claimed.
 
-A [current-label task audit](real-photo-instance-task-audit.json) found one
+A current-label task audit (`real-photo-instance-task-audit.json`, removed) found one
 identifiable woven basket in each of the existing 24 body-annotated photographs,
 so the draft ambiguity does not explain the completed single-heart model failures.
 Neither current labels nor drafts supply an independent model input selection cue.
@@ -229,7 +229,7 @@ training results changed.
 
 ## Current results and limits
 
-A [checkpoint repair allowance](refinement-checkpoint-completion.json) is now
+A checkpoint repair allowance (`refinement-checkpoint-completion.json`, removed) is now
 integrated after **35 focused tests**. Provisional recovered routings retain
 their gradient-step cutoff but may finish a short-return repair for up to
 400 ms more, capped by the existing enclosing search deadline. Fourteen fresh
@@ -250,7 +250,7 @@ cuts. Its visible thin seams and frame defects remain. Check, lint and build
 pass. Full release verification is now complete: **874 application tests plus one
 skip and 1,007 inverse tests pass**, with all **1,018 pinned sources unchanged**.
 
-A [controlled puppy alignment study](puppy-shared-cut-probes.json) rejects
+A controlled puppy alignment study (`puppy-shared-cut-probes.json`, removed) rejects
 three proposed fixes: hidden-return repair adds no accepted alignment, reserving
 half the sharing allowance for after degree reduction gives no image gain in
 three paired replays, and quarter-position blend proposals add time without
@@ -262,7 +262,7 @@ reproduces a selection defect: later accepted alignment can discard the best
 source-image checkpoint even though earlier temporary regressions enable later
 gains. The checkpoint-selection correction is described below.
 
-[Shared-cut checkpoint selection](sharing-best-checkpoint.json) now retains the
+Shared-cut checkpoint selection (`sharing-best-checkpoint.json`, removed) now retains the
 lowest original-source error while still exploring complementary alignments.
 Its regression fixture requires temporary score increases before later gains,
 and keeps the later checkpoint when scores tie. All **112 focused tests** pass.
@@ -272,7 +272,7 @@ feature-change comparisons pass. Independent rendering improves two changed
 cases but worsens the already failing bauble by two pixels and the historical
 floral checker by one; those small sampling disagreements remain recorded.
 All four changed pairs were inspected and retain their broader visual defects.
-The [fresh release replay](sharing-best-checkpoint-release-qa.json) passes all
+The fresh release replay (`sharing-best-checkpoint-release-qa.json`, removed) passes all
 29 browser workflows; the 22 Hunodan cases take **5.76 s median / 8.86 s maximum**
 from click to editable result. The 55 native fits retain **53 passing cases** and
 the same two failures; all 55 editable conversions pass fidelity, geometry and
@@ -285,7 +285,7 @@ Full QA passes: type checking, lint, build, **874 application tests** (one
 skipped), and **1,008 inverse tests**. All 1,025 pinned source files verify.
 
 A [coverage perturbation study](coverage-perturbation-plan.json) now has
-[48 completed native fits](coverage-perturbation-results.json):
+48 completed native fits (`coverage-perturbation-results.json`, removed):
 mark just one corner pixel as unobserved while keeping all mask colours fixed.
 Two implementation discontinuities are confirmed before fitting. Feature
 emphasis restores a positive weight at ignored pixels, so its existing
@@ -300,7 +300,7 @@ regression confirm larger changes: puppy 3+5 → 5+5 cuts; Hunodan hjfig-05
 All-valid controls retain identical geometry. Feature recovery restores puppy
 counts and the bird eye, while native grid resampling alone does not. The
 combined correction still fails to restore the Hunodan route and slightly
-increases total bird error despite improving its eye shape. The [weighted traced-recovery and wider checks](coverage-recovery-validation.json)
+increases total bird error despite improving its eye shape. The weighted traced-recovery and wider checks (`coverage-recovery-validation.json`, removed)
 are now complete: all sixteen targeted runs and 47 focused tests pass, restoring
 the affected Hunodan case to **4+4 cuts in 5.27–5.35 s**. Seven of eight
 ignored-colour pairs retain identical geometry; the remaining puppy pair has
@@ -311,8 +311,8 @@ The four partial-bauble comparisons expose a promotion blocker: observed error
 improves from **4.34–4.38% to 2.00–2.15%**, but the candidate fails self-clearance
 and paper checks. Its initially illegal feature grid consumes the budget before
 an ordinary legal fallback is retained. Both arms remain failed cases; better
-image resemblance is not a legality improvement. The [subsequent selection
-comparison and integration](coverage-recovery-integration.json) resolve that
+image resemblance is not a legality improvement. The subsequent selection
+comparison and integration (`coverage-recovery-integration.json`, removed) resolve that
 regression: an existing geometry-valid ordinary finalist now receives the first
 refinement window ahead of the illegal feature seed, which remains queued.
 All fourteen comparison outputs pass geometry and paper checks; the two bauble
@@ -320,7 +320,7 @@ repeats still fail fidelity at **4.38–4.40%**, near the old baseline. A shorte
 fallback pass was rejected because it lost more image accuracy. The puppy also
 spends more time on the ordinary candidate (13.5–14.0 s in this targeted replay),
 so this is not a uniform speed improvement. All 55 isolated focused tests and
-eight new tests on the integrated sources pass. The [completed release audit](coverage-recovery-release-qa.json)
+eight new tests on the integrated sources pass. The completed release audit (`coverage-recovery-release-qa.json`, removed)
 adds 874 application tests (one skipped), 1,016 inverse tests, check/lint/build,
 32 browser workflows and all 55 native/editable replays. Geometry and paper
 checks pass for all 55; the same two quality failures remain (53/55). All 22
@@ -329,7 +329,7 @@ Nineteen native outputs differ slightly: seven errors improve and twelve worsen,
 by at most 0.080625 percentage points. All changed outputs were visually reviewed;
 this is not a uniform quality or speed gain, nor a new raw-photo success count.
 
-The [completed paired corpus and editable audits](refinement-checkpoint-corpus-results.json)
+The completed paired corpus and editable audits (`refinement-checkpoint-corpus-results.json`, removed)
 retain **53/55 passing masks** in both arms, including all 22 Hunodan and four
 hard-photo variants. All 55 slit-count pairs are unchanged; 41 cutting geometries
 are byte-identical. Six errors decrease, 42 are unchanged and seven increase
@@ -341,7 +341,7 @@ that every changed output improved. All **110 editable conversions** preserve
 the required fidelity and pass geometry/paper checks; **106** also pass complete
 candidate checks, reflecting the same two failed inputs in each arm.
 
-[Inspection of the two remaining mask failures](refinement-remaining-failures.json)
+Inspection of the two remaining mask failures (`refinement-remaining-failures.json`, removed)
 separates their causes. The outline star preserves its main motif but loses a
 4.25 mm² classified region near the noisy bottom crop edge; its physical identity
 is not established. The bauble's automatic crop visibly includes background and
@@ -350,7 +350,7 @@ also disables the current feature-initialization/recovery branches. No corrected
 crop or changed recovery policy has been tested here. The two historical missing
 crops remain outside this fixed-mask replay, so the photo result stays **27/31**.
 
-The [completed four-fit crop intervention](remaining-photo-crop-ablation-results.json)
+The completed four-fit crop intervention (`remaining-photo-crop-ablation-results.json`, removed)
 produces **no accepted candidate** with either the saved automatic or historical
 visual coordinates. Both original automatic targets and coverage reproduce
 exactly. The star retains its main motif but loses a small lower-edge region in
@@ -360,7 +360,7 @@ classified correctly, versus 21/26 with the automatic crop. Several red-frame
 samples are misclassified before solving in both arms. Source overlays, crops,
 masks and all four reconstructions were inspected; historical coordinates remain
 disputed, and their different targets prevent a direct error ranking. A separate
-[completed classifier comparison](remaining-photo-color-ablation-results.json)
+completed classifier comparison (`remaining-photo-color-ablation-results.json`, removed)
 passes three of four changed-mask checks, but worsens bauble source-material
 agreement: **21/26 to 18/26** on the automatic crop, and **19/26 to 18/26** on the
 historical crop (three samples remain outside that crop). All eight reviewed
@@ -371,7 +371,7 @@ review: a lower error against a damaged target is not better reconstruction.
 The fitter still receives binary masks. Neither diagnostic changes the runtime
 or automatic benchmark.
 
-A [saved-field junction diagnostic](material-junction-diagnostic.json) separates
+A saved-field junction diagnostic (`material-junction-diagnostic.json`, removed) separates
 three possible causes of the learned checkers' gaps. Both 400px masks reproduce
 exactly before fitting from the saved 256px predictions; the experiment then
 passes only binary cells to the fitter. All **625 pixels** in the 25 inspected
@@ -390,7 +390,7 @@ control rather than attributing every gap to the network. At the time of that au
 and explicit contact supervision were untested alternatives; no runtime model,
 new reconstruction success, or exact photographed junction label is claimed.
 
-The [completed binary-versus-soft replay](material-soft-objective-results.json)
+The completed binary-versus-soft replay (`material-soft-objective-results.json`, removed)
 finds **no useful improvement from the soft-field handoff**. All sixteen fits
 pass their derived-mask/geometry/paper checks, but the two learned-photo errors
 increase from **0.8000% to 1.1575%** and **0.445625% to 0.4900%**. Both render
@@ -404,7 +404,7 @@ were visually reviewed. Original targets, settings and checks stayed fixed;
 part of this pipeline comparison. No runtime change or neural gain is adopted;
 finite raster scores still cannot certify exact contacts.
 
-A [bounded gradient index](gradient-row-bins-runtime.json) is now integrated
+A bounded gradient index (`gradient-row-bins-runtime.json`, removed) is now integrated
 locally after **27 focused tests**. Sparse designs retain 128 row buckets;
 larger graphs use eight per cubic, capped at 1,024. Across 75 saved/analytic
 geometries, **2,700 gradient comparisons / 1,498,608 scalar values** agree
@@ -424,7 +424,7 @@ slightly lower mask errors in this run, but the puppy still takes **20.52 s**
 and visual review still shows thin false seams and frame defects. These are
 single-run timings, not a guarantee for all machines or photographs.
 
-The [completed 110-fit / 55-mask comparison](gradient-row-bins-corpus-results.json)
+The completed 110-fit / 55-mask comparison (`gradient-row-bins-corpus-results.json`, removed)
 retains **53/55 passing masks** in both arms: 22 Hunodan, four hard-photo variants
 and 27 of the 29 cropped photo cases. The outline star and bauble still fail
 source-feature checks; the two earlier no-crop cases were not rerun here. All
@@ -441,7 +441,7 @@ The increases expose a remaining scheduling issue. On the gift, faster early
 refinement gives a losing alternative more time, leaving the winning fit only
 89 polishing steps instead of 124. On the half-size star, an improved candidate
 can miss its short-return repair near the deadline. The completed
-[18-run timing diagnostic](refinement-repair-clock-results.json) confirms that
+18-run timing diagnostic (`refinement-repair-clock-results.json`, removed) confirms that
 two instrumented half-star runs reach the improved step-200 checkpoint with
 **14–26 ms already beyond** their 700 ms refinement phase. Its only failure is
 short self-clearance, but that phase's repair gate prevents an attempt despite
@@ -461,10 +461,10 @@ threshold error by fourteen pixels, and fractional-coverage error also rises.
 Thus exact gradients and a better engine score do not establish unchanged
 exported-image quality. These small increases remain in the comparison.
 
-The [fresh dense-case profile](dense-solver-profile-results.json) identifies the
+The fresh dense-case profile (`dense-solver-profile-results.json`, removed) identifies the
 boundary-gradient kernel as the largest cost: **2.21 s** sampled self time.
 Both fresh control/profile solves reproduce the browser's exact cutting
-geometry. An [offline row-bin experiment](gradient-row-bins-results.json)
+geometry. An offline row-bin experiment (`gradient-row-bins-results.json`, removed)
 reduces the dense case's median complete gradient call from **2.57 ms to
 1.56 ms** using 1,024 instead of 128 segment-row buckets. All **880 gradient
 comparisons / 614,240 scalar coordinates** agree exactly with the existing
@@ -485,7 +485,7 @@ result. The fresh solver profile above now directs the next speed experiment.
 The hard-photo fits retain timing sensitivity:
 the half-size star's painting error rises from 1.8394% to 2.0081%, while the
 compressed star improves. These changes are preserved in the
-[browser comparison](native-conversion-fidelity-results.json), not described as
+browser comparison (`native-conversion-fidelity-results.json`, removed), not described as
 unchanged photo quality.
 
 The combined count-bound and curve-cache **actual-browser** run completes all
@@ -496,13 +496,13 @@ previous native-import browser run. The combined QA run then stopped on a hard
 puppy photograph: editable simplification kept its 400px painting error but
 introduced six additional wrong pixels on the original 390px source. This
 conversion gap predates the curve cache. The
-[native conversion fix](native-conversion-fidelity-results.json) now requires
+native conversion fix (`native-conversion-fidelity-results.json`, removed) now requires
 both grids to pass while an imported mask is unchanged, preserving free-border
 weights and observation coverage. Its regression, SVG round trip and related
 checks pass (80 focused tests); the completed renewed QA is above. The earlier
 failed run remains recorded separately.
 
-[Cached curve evaluation](curve-evaluation-cache-results.json) reduces the
+Cached curve evaluation (`curve-evaluation-cache-results.json`, removed) reduces the
 editable-conversion stage by **33%** across 110 saved inputs (65 distinct fitted
 geometries), preserving every converted coordinate, validation result and SVG
 byte. The dense Hunodan conversion falls from roughly **0.86 s to 0.55 s**.
@@ -510,7 +510,7 @@ This reuses the same arithmetic instead of changing tolerances or fitting
 iterations. It is integrated locally alongside the count-search bound; the
 combined browser timing and completed full repository QA are reported above.
 
-The [supported-count search bound](supported-count-bound-results.json) is now
+The supported-count search bound (`supported-count-bound-results.json`, removed) is now
 integrated locally. It skips other counts only when they cannot displace an
 already valid boundary-supported fit under the existing one-percentage-point
 preference. All **22 Hunodan mask pairs retain byte-identical cutting geometry**;
@@ -525,7 +525,7 @@ report. The pruning bound did not activate in any increased-error case. The new
 Hunodan regression and the existing candle regression both pass. The completed
 combined repository QA is recorded above.
 
-The [native import sampling fix](native-import-sampling-results.json) keeps the
+The native import sampling fix (`native-import-sampling-results.json`, removed) keeps the
 400px painting surface but reuses the original photographic raster only while
 its exact enlargement still matches every colour and coverage cell. Real browser
 erasing switches back to the edited 400px mask; Undo restores the native raster.
@@ -538,7 +538,7 @@ and **871 application tests** (one skip) pass. Full inverse QA also passes
 **1,002 tests**, with all 936 pinned source files unchanged.
 The changes are committed locally, with no push or deployment.
 
-A [selective boundary-cleanup candidate](primitive-boundary-groups-results.json)
+A selective boundary-cleanup candidate (`primitive-boundary-groups-results.json`, removed)
 keeps useful straightening edits when an unrelated subpixel-supported bend makes
 the whole batch fail its objective. Fourteen focused tests pass. An untimed
 64-fit replay isolates additional reductions on the faceted star and Hunodan
@@ -557,7 +557,7 @@ is not an additional reconstruction pass or a fix for the flower photograph's
 hidden centre.
 
 
-A [controlled import-resolution replay](browser-hunodan-resolution-results.json)
+A controlled import-resolution replay (`browser-hunodan-resolution-results.json`, removed)
 finds a concrete browser/native discrepancy on Hunodan hjfig-05. The crop corners
 are identical, but the import helper enlarges a **337px** classified mask to
 **400px** before solving. With otherwise identical browser settings in fresh
@@ -568,7 +568,7 @@ grid also has lower error against the same 400px target (**1.09% versus 1.59%
 and 1.47%**). All four editable exports pass existing checks. This is one
 controlled diagnostic, not a deployed fix or a general browser-speed claim.
 
-A [fixed-mask ribbon diagnosis](flower-occlusion-results.json) separates input
+A fixed-mask ribbon diagnosis (`flower-occlusion-results.json`, removed) separates input
 agreement from recovering the underlying weave. The synthetic ribbon-corrupted
 grid fits within **0.37%** but differs from its known clean design by **5.25%**.
 Supplying the correct ribbon uncertainty recovers the clean grid exactly in this
@@ -578,7 +578,7 @@ despite **0.25%** observed-region error. All eight diagnostic outputs convert to
 editable SVG without editor issues; no real-photograph pass is added. These are
 manual uncertainty interventions, not automatic segmentation or deployed changes. A [later annotation review](ribbon-coverage-plan.json)
 shows the vertical polygon clips the ribbon edge. The completed
-[coverage experiment](ribbon-coverage-results.json) removes both large hooks at
+coverage experiment (`ribbon-coverage-results.json`, removed) removes both large hooks at
 the widest exclusion, supporting input contamination as a cause. However, that
 same exclusion distorts the known synthetic grid: its editable output has
 **2.70% clean-design error** despite **0.00146% observed-region error**. Narrower
@@ -586,7 +586,7 @@ exclusions recover the synthetic grid exactly after editable conversion. All
 six outputs pass geometry/paper and editor checks; no real-photo pass is added.
 Accurate visibility evidence matters more than simply excluding a wider band.
 
-A [one-photo color-residual probe](ribbon-color-residual.json) does not support
+A one-photo color-residual probe (`ribbon-color-residual.json`, removed) does not support
 using a global residual threshold to exclude the ribbon automatically. With
 automatically estimated palettes, the sampled gold and white-paper residuals
 nearly coincide. Manual paper-patch calibration separates these samples, but
@@ -594,7 +594,7 @@ this is not an automatic or held-out detection result; no masks were changed.
 
 
 
-An [existing-finalist comparison](finalist-retention-fit-results.json) improves
+An existing-finalist comparison (`finalist-retention-fit-results.json`, removed) improves
 the fixed brown checker from **9.59% to 2.48%** mask disagreement and the bicycle
 from **4.69% to 3.29%**, with geometry and nominal-paper checks passing. It prefers
 an already available, lower-error grid only when it recovers missing features
@@ -610,7 +610,7 @@ optimization.
 A cold regression exposed another scheduling defect: the clearance stage could
 promote the old simpler grid again using its cut-count bonus. The follow-up
 checks feature retention on the actual clearance masks before changing priority.
-The [clearance follow-up](finalist-retention-clearance-results.json) improves
+The clearance follow-up (`finalist-retention-clearance-results.json`, removed) improves
 the checker further to **2.14%**, with the bicycle at **3.29%**. All thirteen
 exports retain geometry/paper passes, all five checked controls remain checked,
 and all seven changed outputs were inspected. Three focused regressions pass
@@ -630,16 +630,16 @@ nothing was pushed or deployed. The [plan](finalist-retention-fit-plan.json)
 records the cold failure and the separate synthetic-fixture correction.
 
 
-A [thirteen-mask solver experiment](feature-finalist-fit-results.json) rejects
+A thirteen-mask solver experiment (`feature-finalist-fit-results.json`, removed) rejects
 alternate-base feature seeding as a runtime change. Although the initial
-[seed diagnostic](feature-finalist-results.json) retained missing regions for
+seed diagnostic (`feature-finalist-results.json`, removed) retained missing regions for
 two cases, full fitting adds **zero checked templates**. The bicycle worsens
 from **4.69% to 7.25%** mask error and its paper core becomes uncertain; the
 flower improves only from **3.40% to 3.26%**, still failing. All seven changed
 exports were inspected. The patch was reversed; the app's solver is unchanged.
 The existing-finalist comparison above follows that rejection.
 
-The [fixed real-photo projective comparison](projective-real-results.json)
+The fixed real-photo projective comparison (`projective-real-results.json`, removed)
 adds ten crop proposals and five checked derived masks: the additional-photo
 cohort moves from **4/20 to 9/20**, while the earlier group remains **15/22**.
 All 22 prior crops, masks, coverage and statuses are unchanged. All 32 exported
@@ -659,7 +659,7 @@ alternate count bases independently of cropping. Check, lint, build and twenty
 focused tests pass. Full repository QA also passes: **865 application tests**
 (one skipped) and **998 inverse tests**; all 896 pinned sources verify unchanged.
 
-A [projective body-only crop comparison](projective-body-results.json) now
+A projective body-only crop comparison (`projective-body-results.json`, removed) now
 recovers all sixteen controlled synthetic overlaps behind small notch occluders
 within 5% maximum corner error. With frozen predicted segmentation, median
 maximum corner error is **1.22% original / 1.50% occluded**, with **15/16 and
@@ -672,7 +672,7 @@ not held-out photo accuracy. Crop fitting alone takes roughly 0.2 seconds
 median, excluding neural inference and template solving. The adapter remains
 offline; the fixed real-photo and export comparison above records its limits.
 
-A [separate shape/visibility experiment](shape-visibility-results.json) rejects
+A separate shape/visibility experiment (`shape-visibility-results.json`, removed) rejects
 the known false small-checker notch, but **adds no accepted real-photo crops**.
 All 22 original supported crops, masks, coverage and pass/fail results remain
 unchanged: **15/22** earlier-development and **4/20** additional-photo fits pass;
@@ -691,7 +691,7 @@ and build pass. Full repository QA passes: 865 application tests (one skipped)
 and 994 inverse tests, with all 896 pinned sources verified unchanged.
 
 
-A [foreground-occlusion pilot](foreground-occlusion-results.json) adds sixteen
+A foreground-occlusion pilot (`foreground-occlusion-results.json`, removed) adds sixteen
 ribbon-covered views from sixteen existing training geometries. It supplies
 separate complete-paper, visible-paper, hidden-paper and foreground-object
 coverage, and masks material observation where paper is covered. Every ribbon
@@ -701,7 +701,7 @@ assets verify. All sixteen panels were inspected and seven focused tests pass.
 These are raster-composited training examples from one procedural family; no
 retraining or real-photo reconstruction gain is claimed.
 
-The [paired frozen-model diagnostic](foreground-occlusion-inference-results.json)
+The paired frozen-model diagnostic (`foreground-occlusion-inference-results.json`, removed)
 then isolates the visibility assumption. The small CNN retains most covered
 paper (mean probability **97.88% → 89.32%**). MobileSAM drops from **98.31% to
 14.57%** with its original box and point held fixed; recomputing prompts gives
@@ -713,8 +713,8 @@ are controlled perturbations of training-source images, not held-out recovery
 results. No model was retrained.
 
 
-An [affine notch/edge prototype](notch-overlap-results.json) produces no new
-accepted crops. A subsequent [local-support variant](notch-local-support-results.json)
+An affine notch/edge prototype (`notch-overlap-results.json`, removed) produces no new
+accepted crops. A subsequent local-support variant (`notch-local-support-results.json`, removed)
 adds five crop proposals across the two cohorts. Previous development remains
 **15/22** checked masks; the new-source cohort rises from **4/20 to 7/20** derived-mask
 checks, but **one new pass has a visibly wrong crop**. This is not a verified
@@ -730,11 +730,11 @@ with a **30px** notch error while passing the prototype's local checks. The
 current synthetic scenes explicitly forbid foreground occlusion of the selected
 heart. Further work needs visibility/occlusion supervision and independent
 perspective evidence; lower target-mask error does not resolve either issue.
-Both prototypes remain offline. Eleven focused checks and [full repository
-QA](notch-overlap-qa.json) pass: 865 application tests (one skipped), 989 inverse
+Both prototypes remain offline. Eleven focused checks and full repository
+QA (`notch-overlap-qa.json`, removed) pass: 865 application tests (one skipped), 989 inverse
 tests, type checking, lint and build. All 880 pinned source files are unchanged.
 
-The [frozen new-photo comparison](new-photo-generalization-results.json) completes
+The frozen new-photo comparison (`new-photo-generalization-results.json`, removed) completes
 on twenty additional source photographs: **4/20** checked reconstructions with
 the learned policy versus **3/20** with production. The learned pipeline adds the
 yellow/white cross and retains the three shared passes; all seven accepted
@@ -748,7 +748,7 @@ paper, reflections and wrong-object selection remain upstream failures. The
 production flower-cap crop is visibly oversized and its reconstruction fails.
 No learned model is integrated.
 
-The [rejected-crop diagnostic](new-photo-rejected-crops-results.json) then fits
+The rejected-crop diagnostic (`new-photo-rejected-crops-results.json`, removed) then fits
 all ten available final rejected quadrilaterals, with no manual corner changes.
 **Six produce checked editable masks**, and all ten candidates convert. All ten
 outputs were inspected and all 884 pinned sources remain unchanged. This does
@@ -760,7 +760,7 @@ image/paper quality or retained features. Crop evidence must be evaluated
 separately from downstream mask fit; printed paper and reflections still need
 material supervision.
 
-A [conditional two-paper segmentation fallback](locator-paper-fallback-results.json)
+A conditional two-paper segmentation fallback (`locator-paper-fallback-results.json`, removed)
 raises the offline development result from **13/22 to 15/22 checked
 reconstructions**. It retains all sixteen existing crop geometries, classified
 masks and source observations, and calls the alternative segmentation only for
@@ -775,7 +775,7 @@ development set, not held-out artwork accuracy. Model fields are cached and no
 learned model is integrated into the website. Additional independent photographs
 are the next validation step.
 
-A [controlled border-fragment experiment](border-feature-routing-results.json)
+A controlled border-fragment experiment (`border-feature-routing-results.json`, removed)
 isolates a fitter scheduling failure. On the rabbit, changing only 61 of 160,000
 mask pixels recovers the main motif; that diagnostic does not count as a fit to
 the original photo. The production fix instead keeps every target pixel and
@@ -792,7 +792,7 @@ errors change slightly; all changed previews were inspected. The orb uses two
 additional cuts and has more border protrusions despite lower disagreement.
 All 876 pinned sources remain unchanged.
 
-The [fixed-input material replay](border-feature-material-replay-results.json)
+The fixed-input material replay (`border-feature-material-replay-results.json`, removed)
 then repeats all 44 fits with the guarded retry. Rabbit improves from 6.36% to
 **1.34%**, and now converts into editable geometry. The counts remain **13/22
 coarse and 12/22 crop-RGB** because its original border-feature warning remains.
@@ -803,7 +803,7 @@ features, while a worse coarse-candle proposal is correctly rejected. All five
 changed weave images were inspected; the other 27 PNGs are byte-identical.
 All 878 pinned sources and all frozen input masks remain unchanged.
 
-The [completed material-resolution comparison](material-resolution-results.json)
+The completed material-resolution comparison (`material-resolution-results.json`, removed)
 runs 44 fresh fits on the same 22 fixed crops, with identical frozen paper
 colours. Classifying the actual crop RGB instead of interpolating the coarse
 full-photo material field improves the star, but reduces complete checked
@@ -814,7 +814,7 @@ editable checks. Two already rejected candidates fail editor conversion. The
 global classification change is rejected. These results precede the guarded
 fitter retry above; the subsequent fixed-input replay measures it separately.
 
-A [conditional crop fallback](locator-contrast-fallback-results.json) improves
+A conditional crop fallback (`locator-contrast-fallback-results.json`, removed) improves
 the SAM-assisted development pipeline from **12/22 to 13/22 checked
 reconstructions**, retaining all twelve previous passes and adding rabbit.
 It preserves all fourteen supported primary crops and their classified masks
@@ -828,7 +828,7 @@ and engine export take a median 7.69 s and maximum 9.63 s separately. This is
 an actual fixed-policy replay, not a union selected by template quality. It
 remains offline; the subsequent material-resolution test is described above.
 
-A [component-wise locator study](locator-diameter-components-results.json)
+A component-wise locator study (`locator-diameter-components-results.json`, removed)
 separates cap-side colour purity from the reward for a visible colour step at
 the lobe diameter. Removing only the contrast reward recovers the rotated star
 and rabbit, but loses aircraft: **14 to 15 crop proposals, 12 to 11 checked
@@ -850,7 +850,7 @@ Full repository QA also passes: 865 application tests (one skipped), 972 inverse
 tests, type checking, lint and build, with all 870 pinned source files unchanged.
 No learned model or locator-objective change is integrated into the website.
 
-A [single-star resolution diagnostic](material-resolution-diagnostic.json)
+A single-star resolution diagnostic (`material-resolution-diagnostic.json`, removed)
 identifies a separate preprocessing effect. Interpolating the 256-pixel
 full-photo material map leaves the dark edge strip as an isolated 151-pixel
 component. Applying the same frozen paper colours to the actual 400-pixel crop
@@ -860,7 +860,7 @@ target rises from 0.75% to 1.25%. Six diagnostic artifacts reproduce exactly.
 This is a fixed-output re-score on one inspected photo; the full-dataset fitting
 comparison above subsequently rejected a global classification replacement.
 
-A [locator-objective isolation](locator-diameter-isolation-results.json) confirms
+A locator-objective isolation (`locator-diameter-isolation-results.json`, removed) confirms
 that the strong colour-step term at the two lobe diameters can pull an accurate
 silhouette into a poor crop fit. With identical SAM fields, removing only that
 term raises rabbit lobe support from 47%/83% to 97%/86%, recovers its crop and
@@ -872,14 +872,14 @@ All six crop panels and eight reconstruction panels were inspected. The editable
 audit converts 29/30 outputs; the one rejection is a bicycle candidate already
 rejected by the engine. All 24 accepted outputs pass editable checks. The global
 objective change is not adopted, and no combined best-arm success rate is
-claimed. The [production RGB-only replay](production-diameter-isolation-results.json)
+claimed. The production RGB-only replay (`production-diameter-isolation-results.json`, removed)
 produces one extra crop (9 to 10), but its yellow/teal checker corners are visibly
 wrong: the maximum offset is 14.94% of side length against an existing approximate
 visible reference, versus 1.31% for the SAM baseline. Its partial body-outline
 IoU of 97.5% therefore does not certify overlap corners. All six panels were
 reviewed, and no full fitting gain or production change is claimed.
 
-A [pretrained MobileSAM experiment](mobilesam-foreground-results.json) improves
+A pretrained MobileSAM experiment (`mobilesam-foreground-results.json`, removed) improves
 the difficult 22-photo development replay from 7 checked derived-mask fits with
 production and 3 with the earlier neural pipeline to **12 with automatically
 prompted segmentation**. The existing neural silhouette supplies a padded box
@@ -898,7 +898,7 @@ proposal-network inference, startup and browser execution are not included.
 All 26 exports convert to editable SVG, with the same 22 complete passes across
 the three arms and no editor geometry issues. No model is integrated.
 
-The [two-paper prompt follow-up](mobilesam-paper-prompts-results.json) completes
+The two-paper prompt follow-up (`mobilesam-paper-prompts-results.json`, removed) completes
 another 66 crop attempts. It recovers the hand-held printed checker and foliage
 checker, but loses the aircraft and ribbon checker, leaving 14/22 proposals.
 On the ribbon checker, one positive prompt lands on blue background wrongly
@@ -918,7 +918,7 @@ A [published-template review](bicycle-template-review.json) qualifies the
 bicycle failure: the designer's matching PDF requires additional enclosed
 cutouts in the green sheet, outside the regular slit-chain model. This does
 not prove that no regular alternative exists. Historical benchmark counts and
-training splits remain unchanged. An [independent paper-label replay](neural-palette-source-paper-results.json)
+training splits remain unchanged. An independent paper-label replay (`neural-palette-source-paper-results.json`, removed)
 also exposes an evaluation gap: the bicycle's 296 known reference-interior
 pixels omit its fine strokes, so their zero error cannot certify the motif.
 For the printed-heart checker, the exported weave disagrees with 23.87% of
@@ -927,7 +927,7 @@ the classifier already disagrees with 23.82%. Decorative print and paper
 identity are different targets. This diagnostic covers six photos with prior
 approximate overlap references and leaves sixteen unscored.
 
-[Shared-cut fine-scale scoring](sharing-original-scale-results.json) now uses the
+Shared-cut fine-scale scoring (`sharing-original-scale-results.json`, removed) now uses the
 original classified mask and coverage directly, avoiding enlargement of the
 reduced fitting mask. All 49 fixed-export alignment replays pass geometry,
 paper and feature checks; all 22 Hunodan geometries remain byte-identical.
@@ -947,7 +947,7 @@ All 29 photographic exports convert to editable SVG; 27 pass the complete
 checks, with no editor geometry issues. The slower area-recovery
 proposal remains offline and no uniform photographic improvement is claimed.
 
-The [partial-body intervention](known-body-crop-intervention-results.json) is
+The partial-body intervention (`known-body-crop-intervention-results.json`, removed) is
 complete: unchanged predictions produce 3/22 crop proposals, correcting only
 known background produces 13, only known paper produces 7, and both produces
 16. Material probabilities and unknown pixels remain unchanged. All six panels
@@ -955,14 +955,14 @@ were inspected, the unchanged controls reproduce exactly, and all 99 pinned
 files match. This identifies background leakage as the strongest tested cause,
 but the paper corrections lose the candle and six cases still fail with both
 corrections. These are annotation-assisted crop counts, not model or template
-success rates. A [fixed foreground-probability offset](body-threshold-crop-results.json)
+success rates. A fixed foreground-probability offset (`body-threshold-crop-results.json`, removed)
 was then tested without annotations in the detector. It improves partial-label
 body IoU from 79.85% to 83.66%, but reduces crop proposals from 3/22 to 2/22 and
 is rejected. The lost foliage checker fails lower-edge support, despite good
 lobe and cap-colour evidence. Better pixel overlap alone does not establish
 better corner detection; no neural change is integrated.
 
-[Initial narrow-neck recovery](initial-paper-separation-results.json) reuses the
+Initial narrow-neck recovery (`initial-paper-separation-results.json`, removed) reuses the
 existing local separation retry after a complete paper-failed refinement block,
 only when the best safe fitting error still exceeds the image target. A fixed-work
 Viking replay improves independently rendered disagreement from 3.00% to 2.51%;
@@ -982,7 +982,7 @@ later paper-check outcomes, so its cause is not yet isolated. This is not a clai
 of uniform photographic-error improvement. Two unresolved crops, the outlined
 star's lost edge feature and the bauble's image error remain failures.
 
-An [offline palette calibration](neural-palette-calibration-results.json) now
+An offline palette calibration (`neural-palette-calibration-results.json`, removed) now
 compares all 22 annotated photos using frozen family-held-out predictions. Mean
 paper-identity error on the known annotated patches is 16.90% for the network,
 8.12% when its paper predictions seed an illumination-aware RGB mixture, and
@@ -992,7 +992,7 @@ candle, bicycle and checker interiors, but substantial foreground leakage and
 printed-paper errors remain. These partial-label scores do not certify boundaries
 or cutting templates. Seven analytical tests pass; the evaluated calibration
 helper is committed for offline use. The completed
-[full-pipeline replay](neural-palette-pipeline-results.json) produces checked
+full-pipeline replay (`neural-palette-pipeline-results.json`, removed) produces checked
 results for 3/22 with RGB correction, 3/22 with the uncorrected network and 7/22
 with production. RGB gains the candle but loses the rabbit crop. Both learned
 arms fail 19 times before fitting. All 15 exported candidates survive editable
@@ -1006,7 +1006,7 @@ narrow contacts remain unknown; no hidden cut connectivity is asserted. Final
 256/768-pixel compilation reproduces all eight reviewed PNGs exactly. The source
 remains unassigned and unused in training pending motif-family grouping.
 
-[Preserving photographic coverage](photo-observation-results.json) now separates
+Preserving photographic coverage (`photo-observation-results.json`, removed) now separates
 real source pixels from crop padding through colour estimation, editing and
 fitting. Missing areas are hatched; painting specifies their colour, and
 Undo/Redo preserves that distinction. The real collage browser replay retains
@@ -1022,7 +1022,7 @@ expectation corrected in the follow-up below. All 22 regular Hunodan fits pass
 within ten seconds (maximum 8.81 seconds), with every error unchanged from the
 preceding run. No full photographic-corpus improvement is claimed yet.
 
-[Irregular red/white mixtures](irregular-mixture-results.json) keep the original
+Irregular red/white mixtures (`irregular-mixture-results.json`, removed) keep the original
 square layout while excluding missing pixels from palette estimation. Compacting
 those pixels previously caused clipped photos to throw or moved the estimator's
 inset. All eighteen focused tests, type checking, lint and build pass. A private
@@ -1034,7 +1034,7 @@ inverse tests; the five pre-existing fitter assertions remain. Type checking,
 lint and build pass. This does not establish a quality improvement from changing
 classification.
 
-[Fresh regression outcome checks](fitter-regression-outcomes.json) independently
+Fresh regression outcome checks (`fitter-regression-outcomes.json`, removed) independently
 validate the blue-star and horizontally shifted puppy exports. Both pass geometry
 and paper checks, retaining the original error and small-opening requirements.
 Three focused tests now check those outcomes instead of requiring historical
@@ -1042,7 +1042,7 @@ uncertain intermediate states; all three pass. The full-run count above remains
 the earlier frozen run; the gift/Viking follow-up is recorded in the initial
 narrow-neck recovery study above.
 
-[Keeping the best valid rollback point](best-safe-rollback-results.json) restores
+Keeping the best valid rollback point (`best-safe-rollback-results.json`, removed) restores
 the shifted bird's small eye while preserving exploration through worse valid
 checkpoints. Fresh isolated fits pass in 9.79 seconds with a ten-second allowance
 and 13.98 seconds with a longer allowance, versus roughly 87 seconds and an open
@@ -1098,7 +1098,7 @@ RGB/body/material/overlay PNGs exactly. Counts rise to 23 body and 21 material
 instances; neither source has been allocated or used in training. Related motif
 families still require cross-corpus review before allocation.
 
-[A bounded finer finalist check](finalist-paper-resolution-results.json) restores
+A bounded finer finalist check (`finalist-paper-resolution-results.json`, removed) restores
 the round-checker candidate without changing its cuts, classified image or
 physical tolerances. The candidate is still uncertain at resolution 700, but
 passes at 1000 and under independent polygon offsets. A fresh ten-second fit
@@ -1116,7 +1116,7 @@ the pre-diagonal baseline. All fifteen changed photographic outputs were
 visually reviewed; round-checker is restored, while fine-checker, jigsaw,
 maple-leaf and Viking remain worse by the measured mask error.
 
-[Bird routing alternatives](bird-reroute-candidate-results.json) expose a deeper
+Bird routing alternatives (`bird-reroute-candidate-results.json`, removed) expose a deeper
 optimization issue. A newly certified early checkpoint changes the subsequent
 rollback trajectory. Trying a second rejected checkpoint within the original
 1.5-second routing allowance closes the eye, but enlarges it: independent eye
@@ -1125,7 +1125,7 @@ checkpoints also fail. Neither experiment is integrated. Fixed-work gift and
 Viking replays show changed exploration and inferior retained alternatives too;
 these failures must not be fixed by merely updating historical hashes or
 loosening image/feature bounds.
-The [twenty-fit rollback comparison](refinement-rollback-study.json) is complete.
+The twenty-fit rollback comparison (`refinement-rollback-study.json`, removed) is complete.
 Keeping the best valid fallback recovers the useful bird boundary at a later
 checkpoint, without forbidding uphill exploration. Selected and retained gift,
 floral and Viking results are unchanged in this arm. Continuing without rollback
@@ -1133,7 +1133,7 @@ finds useful finer-verifiable alternatives in gift and Viking, but worsens the
 ordinary Viking incumbent; that diagnostic is not integrated. The study covers
 four source motifs; two floral step counts are related trials, not extra photos.
 
-[A guarded diagonal-connectivity correction](diagonal-paper-core-results.json)
+A guarded diagonal-connectivity correction (`diagonal-paper-core-results.json`, removed)
 addresses valid paper checkpoints discarded by four-neighbour lattice labelling.
 The existing clearance guard certifies the whole cell, so diagonally touching
 certain-core cells can connect through their shared safe corner. Only that
@@ -1171,7 +1171,7 @@ the unchanged 0.25 mm² threshold. The same controls pass the current lattice at
 described above restores this candidate without changing the threshold or mask.
 
 
-[Thirty-six fresh graph-order comparisons](topology-graph-budget-results.json)
+Thirty-six fresh graph-order comparisons (`topology-graph-budget-results.json`, removed)
 finish below ten seconds and pass the actual template and feature checks in all
 three arms. Trying detailed recovery first saves about two seconds on a shifted
 photo and the outlined star, but worsens the tree and larger individual-photo
@@ -1183,7 +1183,7 @@ policy is integrated. A saved-mask polarity mismatch stopped one harness attempt
 before fitting; the original hash caught it, the failure is preserved, and the
 remaining cases resumed with the correct original mask. Six cases include related
 perturbations and are not six independent photographs.
-The [combined-policy follow-up](topology-graph-hybrid-results.json) completed 24
+The combined-policy follow-up (`topology-graph-hybrid-results.json`, removed) completed 24
 fresh fits. It gives sparse coarse preparation/routing at most 1.1 seconds, then
 tries detailed recovery, with guided coarse fallback limited to the unused
 original coarse allowance. The [runtime patch](topology-graph-hybrid.patch) is
@@ -1197,7 +1197,7 @@ This universal order is not integrated; the next diagnosis captures the actual
 paper-uncertain polishing checkpoints instead of inferring their validity from
 their image scores.
 
-[A contact-supervision audit](contact-supervision-audit.json) maps the nine reviewed
+A contact-supervision audit (`contact-supervision-audit.json`, removed) maps the nine reviewed
 orange/yellow checker junctions into the existing material labels. All 97 sampled
 pixels in those boxes at 256 resolution are known heart body but unknown paper
 identity; rerasterizing at 768 leaves all 831 sampled pixels unknown too. Eight
@@ -1290,7 +1290,7 @@ The rabbit retains frame defects, and the green/pale star's material prediction
 worsens despite a better body outline. No learned model is integrated. Historical
 metrics are not replaced or directly compared across the different splits.
 
-The [body-only ROI experiment](foreground-roi-results.json) is also complete.
+The body-only ROI experiment (`foreground-roi-results.json`, removed) is also complete.
 It keeps original RGB for the cropper, classifier and fitter, using only the
 largest predicted body component plus fixed padding as a rough rectangle.
 Across 38 fresh attempts, each arm has six checked derived-mask pairs out of
@@ -1313,7 +1313,7 @@ but do not replace the failed suite. The vertical case receives ten outline
 polishing steps in the failing run versus eighty-five in its replay. Timed
 search and refinement variability remains unresolved; no acceptance rule changes.
 
-A [refinement checkpoint profile](refinement-checkpoint-cost.json) localizes
+A refinement checkpoint profile (`refinement-checkpoint-cost.json`, removed) localizes
 most refinement time to geometry and paper checks. In particular, the first
 finer paper audit repeats JavaScript and WebAssembly to calibrate the new lattice
 size. An offline native-first prototype reduces first-audit time by roughly 60%
@@ -1322,7 +1322,7 @@ audits preserve every non-time field and paper-map pixel. Twelve fresh solves
 retain six checked pairs per arm, but the native-first policy worsens the
 stacked and diagonal image errors in both repetitions. Visual review confirms
 less complete sun rays in the diagonal case. It remains offline. A follow-up
-[limits the native preference to polishing](polishing-native-kernels.json).
+limits the native preference to polishing (`polishing-native-kernels.json`, removed).
 A fixed 41-step crown replay preserves all 874 coordinates, checkpoint history
 and audit decisions while taking 1.07 s rather than 1.66 s. Twelve fresh solves
 improve five paired errors but worsen one vertical result, which loses sun rays
@@ -1343,7 +1343,7 @@ chained inverse suite from starting. The separate run passes all 945 inverse
 tests, and the anchor passes in isolation. Neither replaces the original failed
 suite. The experimental polishing policy has been removed from the runtime.
 
-A [fixed-geometry clock replay](anchor-projection-clock-results.json) reproduces
+A fixed-geometry clock replay (`anchor-projection-clock-results.json`, removed) reproduces
 the anchor failure at 4x and 8x virtual clock speed: local repairs exhaust their
 400 ms allowance despite an infinite overall refinement deadline. The diagnostic
 fixed-work policy repairs all eight cases with identical exported coordinates;
@@ -1359,7 +1359,7 @@ passes. This suite failure is retained, and the finite-deadline search needs fur
 diagnosis. The change fixes fixed-work repeatability, not the broader timed fitting
 problem or the ten-second speed goal.
 
-A [return-audit reuse experiment](return-audit-reuse-results.json) preserves all
+A return-audit reuse experiment (`return-audit-reuse-results.json`, removed) preserves all
 1,344 complete-witness comparisons and every fixed-work projection report and
 coordinate. Median local projection time falls about 33% with whole-path reuse
 and 39% with additional curve preparation reuse. Neither improves the four-of-eight
@@ -1370,13 +1370,13 @@ The Viking recovery cannot be attributed to this cache: its relevant refinement
 records no return projection, and the repeated baseline also passes. Neither
 runtime change is integrated.
 
-A [fixed-input Viking checkpoint study](viking-checkpoint-cliff-results.json)
+A fixed-input Viking checkpoint study (`viking-checkpoint-cliff-results.json`, removed)
 finds a separate retention problem. After 395 steps, the refiner returns an older
 candidate with 3.2406% mask error; after 401 steps it retains one at 2.6938%.
 Both pass the independent finer paper check. More significantly, checkpoints
 280/320/360 already pass the 700-pixel paper audit and have errors below 3%, yet
 are discarded because the 360-pixel audit calls them failed. A
-[bounded alternative-retention change](coarse-paper-recheck-results.json) retains
+bounded alternative-retention change (`coarse-paper-recheck-results.json`, removed) retains
 one such checkpoint separately, checks the original image and features, and then
 requires an actual finer paper audit. At a controlled 395-step ceiling the baseline
 fails twice at 3.2094%; the candidate passes twice at 2.2269–2.2775%, below ten
@@ -1397,7 +1397,7 @@ checker-contact defects and thin seams remain. The twelve earlier uncapped fresh
 trials also contain paired error increases. Prior failed runs remain recorded;
 the current candidate is not a clean release result.
 
-The [initializer handoff regression](clearance-handoff-regression-results.json)
+The initializer handoff regression (`clearance-handoff-regression-results.json`, removed)
 isolates one of those failures: a completed, independently verified repair was
 discarded at 1.248 seconds because its local cap was 1.2 seconds, even though the
 caller still had search time. Final verification now retains that continuation
@@ -1426,7 +1426,7 @@ route wins; the deterministic repair-specific tests remain. All eight focused
 tests pass. This later replay cannot establish the uncaptured earlier output's
 quality, and the full-suite failure record remains intact.
 
-A [fixed routing-checkpoint follow-up](routing-paper-continuation-results.json)
+A fixed routing-checkpoint follow-up (`routing-paper-continuation-results.json`, removed)
 finds that the 81-step repair passes actual paper verification at 1000 pixels;
 120 further steps at 700 improve its independently rendered error to 1.0944%.
 That offline result does not fit the existing timing allocation. A bounded finer-
@@ -1449,7 +1449,7 @@ coarse attempt with guided fallback, and detailed routing before coarse fallback
 The six-case repeated experiment is queued after full QA, preserves all source
 hashes and the ten-second request, and has no results or production integration yet.
 
-A [controlled photo-border experiment](border-fragment-perturbation-results.json)
+A controlled photo-border experiment (`border-fragment-perturbation-results.json`, removed)
 replays 228 crop/resolution combinations with both re-estimated and frozen colour
 clusters. All four original 400-pixel masks reproduce exactly. The outline-star
 and crossed-ribbons failures each contain a small bottom fragment excluded at
@@ -1462,7 +1462,7 @@ reconstructions or justify deleting genuine small drawn features. No masks, imag
 error pixels, feature gates or benchmark denominators change. The timed Viking
 failure is a separate issue; its source opening is stable in this experiment.
 
-The [source-pixel support diagnostic](photo-sampling-support-results.json) checks
+The source-pixel support diagnostic (`photo-sampling-support-results.json`, removed) checks
 all 228 rectifications and the unchanged 47-entry corpus (29 classified masks,
 98 mandatory features). The star and ribbons failure fragments include bilinear
 samples outside their proposed crops; the four tracked genuine interior features
@@ -1503,7 +1503,7 @@ sixteen renders were reviewed. The delayed fine checker also varies despite
 neither run entering the changed branch, so that failure is recorded as
 remaining timing sensitivity rather than attributed to the candidate change.
 
-A [fixed-crop material diagnosis](fixed-crop-material-diagnosis.json) separates
+A fixed-crop material diagnosis (`fixed-crop-material-diagnosis.json`, removed) separates
 the learned mask from crop placement on the stacked-heart photograph. With
 identical corners and source RGB, red coverage is 47.82% in the resampled neural
 mask and 59.75% with existing RGB classification. All 19,078 disagreements are
@@ -1522,7 +1522,7 @@ two hearts to the border, while neural fitting splits one and joins another to
 the border. Both results were visually inspected. Neither is faithful motif
 recovery; the shared RGB reference remains a proxy, not original artwork.
 
-An [inspection of those two RGB-fit connections](fixed-crop-neck-diagnosis.json)
+An inspection of those two RGB-fit connections (`fixed-crop-neck-diagnosis.json`, removed)
 finds that each is bounded by different cuts in the same sheet, about 3 mm
 apart. Snapping them together would violate same-sheet clearance. Closing
 these motifs requires a different routing or cut assignment. The four large
@@ -1531,7 +1531,7 @@ gate's area limit; source-stability analysis detects the lost enclosures.
 The proposed RGB-boundary routing experiment was retired before execution
 after the publisher confirmed that these motifs are printed decoration.
 
-A [clearance-initializer robustness fix](clearance-feature-recovery.json)
+A clearance-initializer robustness fix (`clearance-feature-recovery.json`, removed)
 addresses a 116-pixel change in a fixed 400-pixel stacked-heart mask. A valid
 but incomplete alternative previously missed a useful bounded refinement;
 coarse paper uncertainty then repeatedly erased progress. The helper verifies
@@ -1587,7 +1587,7 @@ reach routing but time out without an integer candidate, even as simplification
 reduces the graph's visible curves from 124 to 51. Correcting endpoint counts
 alone therefore does not provide a useful fit within this routing allowance.
 
-The [guided-field experiment](guided-material-fields.json) is complete and
+The guided-field experiment (`guided-material-fields.json`, removed) is complete and
 remains offline. Across seventeen development photos, RGB-guided sharpening
 produces 2--4 supported crops depending on radius, versus three baseline crops.
 All eleven available reconstructions and editable conversions were inspected.
@@ -1604,7 +1604,7 @@ and 256/768-pixel overlays were reviewed; admission reproduces all 28
 reviewed PNGs exactly. Existing annotations and QA allocation are unchanged.
 These two source groups are not yet used in training.
 
-A [guarded-clearance WASM follow-up](paper-clearance-kernel.json) accelerates the
+A guarded-clearance WASM follow-up (`paper-clearance-kernel.json`, removed) accelerates the
 remaining paper-mask classification loop. Threshold ties and extreme distances
 return to the existing JavaScript `hypot` calculation. All 37 fixed-geometry cases
 retain every map pixel and audit field; complete audits are 18.8% faster at the
@@ -1623,14 +1623,14 @@ lower error. The Hunodan change also exposes internal point-sampling versus
 independent antialias scoring differences when more polishing steps fit
 within the budget. This is not a no-regression release claim.
 
-A [fixed-input polishing study](polishing-work-study.json) isolates the Viking
+A fixed-input polishing study (`polishing-work-study.json`, removed) isolates the Viking
 checkpoint from crop and initialization changes. With the production numerical
 WASM backend and 160 updates, the old and strengthened checks choose identical
 coordinates at the existing 40-step interval. Halving that interval adds work
 without improving this fit; checking every ten steps slightly worsens independent
 rendered error. No cadence change is integrated.
 
-The [expanded material experiment](material-expanded-results.json) completes the
+The expanded material experiment (`material-expanded-results.json`, removed) completes the
 [seventeen-photo plan](material-expanded-plan.json), independent checkpoint audit,
 visual review and 85 full-pipeline attempts. Evaluating both the previous and new
 models on the same seventeen photos reduces observed material disagreement from
@@ -1649,7 +1649,7 @@ and rounded cells remain visible in some accepted outputs. These counts measure
 derived-mask and paper checks, not faithful recovery of original artwork. The
 model remains offline, and this experiment does not replace the corpus benchmarks.
 
-A [body/material swap diagnostic](material-crop-swaps.json) now separates the
+A body/material swap diagnostic (`material-crop-swaps.json`, removed) now separates the
 two predicted fields across all seventeen photographs (68 crop attempts).
 Both diagonal controls reproduce their historical crop decisions and
 coordinates exactly. The rabbit and stacked hearts require both expanded
@@ -1663,7 +1663,7 @@ around the displaced crop. The two fits use different targets, so their
 error percentages are not a paired artwork-accuracy comparison. No
 ensemble, replacement model or additional corpus success is claimed.
 
-A [fixed appearance-sensitivity diagnostic](material-appearance-sensitivity.json)
+A fixed appearance-sensitivity diagnostic (`material-appearance-sensitivity.json`, removed)
 checks 357 predictions: seventeen photos, three frozen models, and the original
 image plus six small exposure, gamma and saturation changes. Padding, geometry
 and labels stay fixed; all original predictions reproduce exactly. In the
@@ -1674,7 +1674,7 @@ reviewed. These changes isolate appearance sensitivity, while persistent missing
 motifs and foreground errors show that it cannot explain every failure. No
 per-photo variant is selected for fitting, and no model is retrained or deployed.
 
-The [latest export-audit QA](editable-paper-qa.json) passes all 60 saved SVGs
+The latest export-audit QA (`editable-paper-qa.json`, removed) passes all 60 saved SVGs
 through the stronger paper check, 857 application tests, type checking, lint,
 build and two fresh browser workflows. The full inverse suite is **924/925**:
 one ten-second sloth-routing case timed out before HiGHS found an integer
@@ -1788,7 +1788,7 @@ and 857 application tests, type checking, lint and build. Eleven browser
 workflows and fresh entry-loading checks pass. The historical error gate still
 fails, so this is not a validated release replacement.
 
-The following [feature-analysis reuse experiment](feature-analysis-reuse.json)
+The following feature-analysis reuse experiment (`feature-analysis-reuse.json`, removed)
 avoids recomputing unchanged interior components. It verifies source bytes and
 returns independent arrays; weighted and partially observed inputs keep the
 original computation. All 112 semantic comparisons and 24 focused tests pass.
@@ -1806,7 +1806,7 @@ historical photo-error gate still fails for crown: 2.411875% previously versus
 increases relative to the immediately preceding runtime are retained in the
 record; the cache does not make a timed optimizer's output invariant to speed.
 
-A [final-polishing diagnostic](paper-polishing-resolution.json) finds that a
+A final-polishing diagnostic (`paper-polishing-resolution.json`, removed) finds that a
 better crown checkpoint remains uncertain even at the existing 700-cell paper
 resolution. Its unchanged curves pass post-fit 1000- and 1400-cell rechecks
 at 2.241875% mask disagreement. An isolated fresh solve that verifies such a
@@ -1837,7 +1837,7 @@ That production repair limitation remains; fixing the unit test does not cure
 it. Default resolution and physical tolerances are unchanged. The timed
 historical error regressions remain recorded, not explained away by this test.
 
-A [paper-calibration change](paper-calibration-calls.json) spreads backend
+A paper-calibration change (`paper-calibration-calls.json`, removed) spreads backend
 measurements across two real audit requests, comparing both outputs on each
 input before selecting WebAssembly. It retains only timings. Across seven
 geometries, four alternating-order rounds in Node and Chromium preserve every
@@ -1846,7 +1846,7 @@ median first-audit saving ranges from 21% to 43%; the first audit plus four
 follow-ups saves 10% to 20%. Deferred work makes some follow-up batches slower,
 so these are not uniform per-call gains. Eight cold leaf-repair runs are faster
 with the new policy but all still fail the 700-resolution paper check. The
-change is integrated locally after 33 focused tests. Its [full QA run failed](paper-calibration-release-failures.json):
+change is integrated locally after 33 focused tests. Its full QA run failed (`paper-calibration-release-failures.json`, removed):
 880/895 inverse tests pass, while type checking, lint, application tests and build
 pass. Corpus and browser stages did not start. Paired replays expose a frozen-clock
 geometry test contaminating later backend selection, plus a tree test that rejects
@@ -1858,7 +1858,7 @@ All eight affected tests pass. Other failures remain unresolved. This does not
 establish additional successful reconstructions or fix the repair's finer-verification
 limitation.
 
-A [repair-budget correction](available-repair-tail.json) now includes the
+A repair-budget correction (`available-repair-tail.json`, removed) now includes the
 caller-provided verification tail when deciding whether continuous repair can
 start. The previous guard ignored this already allocated time. Two fresh
 silhouette fits improve from rejection at 5.3472% mask disagreement to checked
@@ -1879,7 +1879,7 @@ repeatably resolve the primary failure. The calibration comparison's remaining
 with failures shared across revisions. Those focused runs do not replace the
 failed full-suite record.
 
-A [matching-stage preparation optimization](matching-preparation.json) reuses
+A matching-stage preparation optimization (`matching-preparation.json`, removed) reuses
 spline interval bases and snapshots the observed image objective once per
 selection stage. All 216 old/new control-coordinate comparisons and 481 image
 score comparisons are exactly equal. A fixed 200-step matching replay returns
@@ -1896,7 +1896,7 @@ regression passes in this run, but earlier timing failures remain unresolved.
 The floating-point correction passes both real-MILP tests with all geometry
 and paper assertions retained; native corpus and browser stages did not start.
 
-A [late-matching deadline correction](late-matching-finalization.json) now
+A late-matching deadline correction (`late-matching-finalization.json`, removed) now
 uses the requested allowance after the independent fit's initial ten-second
 phase. Two isolated twenty-second handoffs that previously skipped matching
 now find identical templates at 0.4013% independent mask disagreement. Each
@@ -1905,7 +1905,7 @@ more seconds. Expired requests still skip refinement; ten-second deadlines are
 unchanged. This is not a fresh-photo speed result or a demonstrated cure for
 the separate ten-second matching timeout.
 
-A [cropped-tree repair correction](cropped-tree-handoff.json) now lets a bounded
+A cropped-tree repair correction (`cropped-tree-handoff.json`, removed) now lets a bounded
 provisional trace improve against the original pixels before requiring final
 image accuracy. Its first routing has 3.80125% mask error and two small clearance
 violations; the old code rejected it before any gradient step. Final error,
@@ -1916,8 +1916,8 @@ and 2.29875%, taking 8.39 and 8.66 seconds for design and export. Independent
 alternating-order rounds, acceptance rises from 6/8 to 8/8; all three controls
 retain passes, but one increases from 0.6000% to 0.6544% error. The frame still
 has visible small defects. All eighteen focused integration tests pass, including
-the old ten-second matching regression. The subsequent [full run and paired
-diagnosis](feature-recovery-release-failures.json) record 902/905 inverse passes;
+the old ten-second matching regression. The subsequent full run and paired
+diagnosis (`feature-recovery-release-failures.json`, removed) record 902/905 inverse passes;
 type checking, lint, application tests and build pass. Two failed assertions
 required an intermediate rejection or a raw MILP success even when continuous
 repair had already supplied a valid pair. Those assertions now recognize the
@@ -1928,7 +1928,7 @@ file replay each reach 1.341875%, but the original timing-sensitive failure is
 not explained. Corpus and browser stages did not start. These experiments do not
 increase the published 31-photo benchmark count.
 
-A subsequent [complete QA and captured replay](timed-feature-diagnosis.json)
+A subsequent complete QA and captured replay (`timed-feature-diagnosis.json`, removed)
 passes 904/905 inverse tests, along with application tests, type checking, lint
 and build. The remaining accelerated-clock near-miss fit reaches 3.035% error
 at the independent 800-pixel scale, exceeding the unchanged 3% limit. Two
@@ -1941,17 +1941,17 @@ source arrays, the solver report and byte-identical cut geometry on failure.
 Neither the successful replays nor this diagnostic helper cancel the failed
 full-suite result. Native corpus and browser stages have not run.
 
-The [count-order comparison](base-count-near-miss-probe.json) retains all 28
+The count-order comparison (`base-count-near-miss-probe.json`, removed) retains all 28
 checked outputs but does not repeatably improve the difficult short-budget
 case, so that shortcut is not integrated. A separate
-[checkpoint capture](near-miss-paper-checkpoints.json) reproduces the failure
+checkpoint capture (`near-miss-paper-checkpoints.json`, removed) reproduces the failure
 and locates a pinched hook whose paper-core failure persists at 1400 cells.
 The automatic fit's separation force ignores nearby portions of one slit over
 eight nominal widths. A shorter exclusion recovers quality in an equal-work
-replay, but [applying it throughout polishing](outline-separation-force-probe.json)
+replay, but applying it throughout polishing (`outline-separation-force-probe.json`, removed)
 damages neighbouring motifs. That version is rejected.
 
-The [conditional paper-separation retry](conditional-paper-separation.json)
+The conditional paper-separation retry (`conditional-paper-separation.json`, removed)
 now activates only after a complete geometry-valid, paper-failed block during
 outline polishing. In the fixed 120-step regression, independent error falls
 from 3.0536% to 2.3316%, with paper checks passing at both 360 and 1000 cells.
@@ -1972,7 +1972,7 @@ first two changes are one and two pixels at 400 squared; Viking rises from
 2.0244% to 2.2181%. The distorted jigsaw crop remains a fidelity limitation.
 The strict error gate fails; this is not a validated-release replacement.
 
-An [independent polygon-offset audit](paper-offset-cross-check.json) now
+An independent polygon-offset audit (`paper-offset-cross-check.json`, removed) now
 confirms three resolution-sensitive photographic false passes. At intermediate
 offset radii, a connection can close before its island becomes too small; the
 coarse guard endpoints can both look acceptable. A second case is a thin
@@ -1985,12 +1985,12 @@ and four passing tests. It is offline; the production lattice, acceptance
 settings and fitting remain unchanged. Nominal fine-offset checks take a median
 67 ms per pair in this run, excluding fitting.
 
-The [post-diagnostic repository QA](paper-offset-qa.json) passes all 911 inverse
+The post-diagnostic repository QA (`paper-offset-qa.json`, removed) passes all 911 inverse
 tests, 857 application tests (one existing skip), type checking, lint and build.
 All 817 pinned files remained unchanged throughout the run. This verifies the
 diagnostic additions; it does not integrate the geometric gate or repair.
 
-A [fold-aware repair experiment](folded-cut-repair-probe.json) then runs 22
+A fold-aware repair experiment (`folded-cut-repair-probe.json`, removed) then runs 22
 fixed-work continuations. Adding separation from the mirrored cut repairs the
 Hunodan fold defect and both vertical-crop failures; the independent GEOS
 radius probes confirm all three. Hunodan disagreement rises from 0.9259% to
@@ -2000,7 +2000,7 @@ core passes, but the coarse lattice still reports uncertain. Always applying
 the new force slightly worsens valid controls, so it is not integrated as a
 blanket change. These are saved-fit continuations, not fresh ten-second solves.
 
-The geometric check and a [conditional repair](geometric-paper-integration.json)
+The geometric check and a conditional repair (`geometric-paper-integration.json`, removed)
 are now integrated into final export. Both the old lattice rule and fine
 unfolded polygon offsets must pass; loading or numerical uncertainty never
 silently certifies a candidate. Detected fold defects add a mirrored-cut force
@@ -2026,7 +2026,7 @@ is the next step to distinguish deadline exhaustion from inadequate repair.
 The native/photo and remaining browser release stages were not run after that
 failure; this candidate is not a new validated release.
 
-A [polishing-stage repair](polishing-fold-recovery.json) identifies the cause:
+A polishing-stage repair (`polishing-fold-recovery.json`, removed) identifies the cause:
 the detailed fitter froze the border band even when the coarse paper check
 missed a fold island. Geometric checks now run during detailed polishing,
 activate separation on affected sheets and release only their temporary fold
@@ -2057,13 +2057,13 @@ the regions can be discarded. Reference masks and feature rules are unchanged.
 This is not a new validated release replacement.
 
 The latest validated solver revision is `c000d30`. Its
-[release record](return-projection-speed.json) passes **22/22 regular Hunodan
+release record (`return-projection-speed.json`, removed) passes **22/22 regular Hunodan
 designs below ten seconds**, with a maximum of **8.100 seconds**. Automatic
 cropping and fitting pass **25/31 hard photographs**. All 47 accepted editable
 SVG pairs pass independent checks; all sixteen main Chromium workflows and
 four additional budget comparisons pass. Full QA passes 853 inverse tests,
 857 application tests (one existing skip), type checking, lint and build.
-The preceding `99399ff` [release record](small-feature-release.json) is preserved.
+The preceding `99399ff` release record (`small-feature-release.json`, removed) is preserved.
 
 These are complete-pipeline results on fixed development benchmarks, not all
 573 collected photo files. The six photographic failures remain unresolved.
@@ -2179,8 +2179,8 @@ the return constraints; the complete geometry validator still gates every
 returned repair. The full QA run includes the previously failing anchor case.
 This is a local-operation speed result, not whole-pipeline or browser latency.
 
-Earlier failed checks remain in the [routing](routing-budget-blend.json),
-[retry](routing-retry-budget.json) and
+Earlier failed checks remain in the routing (`routing-budget-blend.json`, removed),
+retry (`routing-retry-budget.json`, removed) and
 [clock/initialization](routing-initialization-budget.md) records. The separate
 initialization and repair-budget experiments remain unadopted.
 
@@ -2333,9 +2333,9 @@ The Node dataset tests are included in `npm run test:inverse`. The Python
 collector tests are offline and require Pillow, which is already present in
 the collection environment. No new project dependencies were installed.
 
-The [latest completed release record](small-feature-release.json) pins
+The latest completed release record (`small-feature-release.json`, removed) pins
 its solver, application and browser checks. The newer runtime passes full QA
-in [its separate record](return-projection-speed.json), with passing native
+in its separate record (`return-projection-speed.json`, removed), with passing native
 corpus and editable-export comparisons; browser checks remain pending.
 Earlier and interrupted validation runs remain in the
 [experiment history](experiment-history.md).
@@ -2346,3 +2346,134 @@ browser checks are recorded in the real-photo collection report.
 Whole-pipeline comparisons must report time, valid-template recovery, mask and
 feature error, candidate graph size, and sensitivity to crop, color and noise.
 A lower aggregate pixel error must not conceal missing rays or false seams.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/selection-bounds-release-qa.json`
+- `docs/inverse/datasets/late-feature-browser-qa.json`
+- `docs/inverse/datasets/selected-photo-initialization-diagnostics.json`
+- `docs/inverse/datasets/base-count-release-qa.json`
+- `docs/inverse/datasets/interior-count-evidence-results.json`
+- `docs/inverse/datasets/selected-checker-editable-results.json`
+- `docs/inverse/datasets/interior-count-fit-results.json`
+- `docs/inverse/datasets/interior-count-release-results.json`
+- `docs/inverse/datasets/selected-sam-prompt-results.json`
+- `docs/inverse/datasets/selected-sam-calibration-results.json`
+- `docs/inverse/datasets/refinement-checkpoint-corpus-results.json`
+- `docs/inverse/datasets/projective-real-results.json`
+- `docs/inverse/datasets/real-photo-instance-task-audit.json`
+- `docs/inverse/datasets/refinement-checkpoint-completion.json`
+- `docs/inverse/datasets/puppy-shared-cut-probes.json`
+- `docs/inverse/datasets/sharing-best-checkpoint.json`
+- `docs/inverse/datasets/sharing-best-checkpoint-release-qa.json`
+- `docs/inverse/datasets/coverage-perturbation-results.json`
+- `docs/inverse/datasets/coverage-recovery-validation.json`
+- `docs/inverse/datasets/coverage-recovery-integration.json`
+- `docs/inverse/datasets/coverage-recovery-release-qa.json`
+- `docs/inverse/datasets/refinement-remaining-failures.json`
+- `docs/inverse/datasets/remaining-photo-crop-ablation-results.json`
+- `docs/inverse/datasets/remaining-photo-color-ablation-results.json`
+- `docs/inverse/datasets/material-junction-diagnostic.json`
+- `docs/inverse/datasets/material-soft-objective-results.json`
+- `docs/inverse/datasets/gradient-row-bins-runtime.json`
+- `docs/inverse/datasets/gradient-row-bins-corpus-results.json`
+- `docs/inverse/datasets/refinement-repair-clock-results.json`
+- `docs/inverse/datasets/dense-solver-profile-results.json`
+- `docs/inverse/datasets/gradient-row-bins-results.json`
+- `docs/inverse/datasets/native-conversion-fidelity-results.json`
+- `docs/inverse/datasets/curve-evaluation-cache-results.json`
+- `docs/inverse/datasets/supported-count-bound-results.json`
+- `docs/inverse/datasets/native-import-sampling-results.json`
+- `docs/inverse/datasets/primitive-boundary-groups-results.json`
+- `docs/inverse/datasets/browser-hunodan-resolution-results.json`
+- `docs/inverse/datasets/flower-occlusion-results.json`
+- `docs/inverse/datasets/ribbon-coverage-results.json`
+- `docs/inverse/datasets/ribbon-color-residual.json`
+- `docs/inverse/datasets/finalist-retention-fit-results.json`
+- `docs/inverse/datasets/finalist-retention-clearance-results.json`
+- `docs/inverse/datasets/feature-finalist-fit-results.json`
+- `docs/inverse/datasets/feature-finalist-results.json`
+- `docs/inverse/datasets/projective-body-results.json`
+- `docs/inverse/datasets/shape-visibility-results.json`
+- `docs/inverse/datasets/foreground-occlusion-results.json`
+- `docs/inverse/datasets/foreground-occlusion-inference-results.json`
+- `docs/inverse/datasets/notch-overlap-results.json`
+- `docs/inverse/datasets/notch-local-support-results.json`
+- `docs/inverse/datasets/notch-overlap-qa.json`
+- `docs/inverse/datasets/new-photo-generalization-results.json`
+- `docs/inverse/datasets/new-photo-rejected-crops-results.json`
+- `docs/inverse/datasets/locator-paper-fallback-results.json`
+- `docs/inverse/datasets/border-feature-routing-results.json`
+- `docs/inverse/datasets/border-feature-material-replay-results.json`
+- `docs/inverse/datasets/material-resolution-results.json`
+- `docs/inverse/datasets/locator-contrast-fallback-results.json`
+- `docs/inverse/datasets/locator-diameter-components-results.json`
+- `docs/inverse/datasets/material-resolution-diagnostic.json`
+- `docs/inverse/datasets/locator-diameter-isolation-results.json`
+- `docs/inverse/datasets/production-diameter-isolation-results.json`
+- `docs/inverse/datasets/mobilesam-foreground-results.json`
+- `docs/inverse/datasets/mobilesam-paper-prompts-results.json`
+- `docs/inverse/datasets/neural-palette-source-paper-results.json`
+- `docs/inverse/datasets/sharing-original-scale-results.json`
+- `docs/inverse/datasets/known-body-crop-intervention-results.json`
+- `docs/inverse/datasets/body-threshold-crop-results.json`
+- `docs/inverse/datasets/initial-paper-separation-results.json`
+- `docs/inverse/datasets/neural-palette-calibration-results.json`
+- `docs/inverse/datasets/neural-palette-pipeline-results.json`
+- `docs/inverse/datasets/photo-observation-results.json`
+- `docs/inverse/datasets/irregular-mixture-results.json`
+- `docs/inverse/datasets/fitter-regression-outcomes.json`
+- `docs/inverse/datasets/best-safe-rollback-results.json`
+- `docs/inverse/datasets/finalist-paper-resolution-results.json`
+- `docs/inverse/datasets/bird-reroute-candidate-results.json`
+- `docs/inverse/datasets/refinement-rollback-study.json`
+- `docs/inverse/datasets/diagonal-paper-core-results.json`
+- `docs/inverse/datasets/topology-graph-budget-results.json`
+- `docs/inverse/datasets/topology-graph-hybrid-results.json`
+- `docs/inverse/datasets/contact-supervision-audit.json`
+- `docs/inverse/datasets/foreground-roi-results.json`
+- `docs/inverse/datasets/refinement-checkpoint-cost.json`
+- `docs/inverse/datasets/polishing-native-kernels.json`
+- `docs/inverse/datasets/anchor-projection-clock-results.json`
+- `docs/inverse/datasets/return-audit-reuse-results.json`
+- `docs/inverse/datasets/viking-checkpoint-cliff-results.json`
+- `docs/inverse/datasets/coarse-paper-recheck-results.json`
+- `docs/inverse/datasets/clearance-handoff-regression-results.json`
+- `docs/inverse/datasets/routing-paper-continuation-results.json`
+- `docs/inverse/datasets/border-fragment-perturbation-results.json`
+- `docs/inverse/datasets/photo-sampling-support-results.json`
+- `docs/inverse/datasets/fixed-crop-material-diagnosis.json`
+- `docs/inverse/datasets/fixed-crop-neck-diagnosis.json`
+- `docs/inverse/datasets/clearance-feature-recovery.json`
+- `docs/inverse/datasets/guided-material-fields.json`
+- `docs/inverse/datasets/paper-clearance-kernel.json`
+- `docs/inverse/datasets/polishing-work-study.json`
+- `docs/inverse/datasets/material-expanded-results.json`
+- `docs/inverse/datasets/material-crop-swaps.json`
+- `docs/inverse/datasets/material-appearance-sensitivity.json`
+- `docs/inverse/datasets/editable-paper-qa.json`
+- `docs/inverse/datasets/feature-analysis-reuse.json`
+- `docs/inverse/datasets/paper-polishing-resolution.json`
+- `docs/inverse/datasets/paper-calibration-calls.json`
+- `docs/inverse/datasets/paper-calibration-release-failures.json`
+- `docs/inverse/datasets/available-repair-tail.json`
+- `docs/inverse/datasets/matching-preparation.json`
+- `docs/inverse/datasets/late-matching-finalization.json`
+- `docs/inverse/datasets/cropped-tree-handoff.json`
+- `docs/inverse/datasets/feature-recovery-release-failures.json`
+- `docs/inverse/datasets/timed-feature-diagnosis.json`
+- `docs/inverse/datasets/base-count-near-miss-probe.json`
+- `docs/inverse/datasets/near-miss-paper-checkpoints.json`
+- `docs/inverse/datasets/outline-separation-force-probe.json`
+- `docs/inverse/datasets/conditional-paper-separation.json`
+- `docs/inverse/datasets/paper-offset-cross-check.json`
+- `docs/inverse/datasets/paper-offset-qa.json`
+- `docs/inverse/datasets/folded-cut-repair-probe.json`
+- `docs/inverse/datasets/geometric-paper-integration.json`
+- `docs/inverse/datasets/polishing-fold-recovery.json`
+- `docs/inverse/datasets/return-projection-speed.json`
+- `docs/inverse/datasets/small-feature-release.json`
+- `docs/inverse/datasets/routing-budget-blend.json`
+- `docs/inverse/datasets/routing-retry-budget.json`

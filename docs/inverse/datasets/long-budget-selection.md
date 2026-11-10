@@ -93,6 +93,12 @@ disagreement with the ordinary 180-second allowance. It takes about 15.7 seconds
 in this test, versus 7.1 seconds for the poorer result; the change improves
 quality rather than promising a faster answer for this input. All eleven focused
 clearance, photo-budget and protected-feature tests pass, including the Viking
-with a sixty-second allowance. The [integration record](long-budget-integration.json)
+with a sixty-second allowance. The integration record (`long-budget-integration.json`, removed)
 retains the failing and passing logs. Full corpus and browser QA are queued;
 these focused results do not replace the last fully validated release.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/long-budget-integration.json`

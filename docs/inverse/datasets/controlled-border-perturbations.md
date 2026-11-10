@@ -80,11 +80,11 @@ leave interior/source pixels unchanged. The committed smooth helper reproduces
 all sixty proposal masks from the frozen prototype exactly. Its metadata records
 the actual outer transitions separately from the initial averaged-profile ones.
 
-The [frozen diagnostic record](controlled-border-perturbations.json) includes
+The frozen diagnostic record (`controlled-border-perturbations.json`, removed) includes
 all fifty native attempts across baseline and four development variants, twenty
 editable replays, rejected source geometry and source/artifact hashes. Local
 scripts and outputs are under `tmp/heart-learning/border-perturbation-v1/`.
-The subsequent [completed full QA](controlled-border-qa.json) passes **807
+The subsequent completed full QA (`controlled-border-qa.json`, removed) passes **807
 inverse tests**, **855 application tests** with one existing skip, type checking,
 lint and build. The preview was refreshed on port 5232 and all 153 served assets
 match the build. Application/static source hashes still match the prior three
@@ -95,3 +95,10 @@ Next steps are additional fringe positions and real-photograph comparisons,
 including checking whether the wider proposal band damages legitimate near-edge
 motifs. Promotion must preserve the current image/feature/geometry checks and
 the Hunodan timing/error results. No files have been pushed or deployed.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/controlled-border-perturbations.json`
+- `docs/inverse/datasets/controlled-border-qa.json`

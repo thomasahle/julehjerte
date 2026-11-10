@@ -60,4 +60,10 @@ These browser runs use the ordinary 180-second search allowance. The vertical ca
 
 The photographic replays upload masks prepared from the recorded crops to hold classification fixed while exercising the actual worker, editable SVG conversion and PDF export. Automatic cropping is covered separately by the unchanged full-photo benchmark. Heavy benchmarks, tests and browser runs were serial. The tested preview remains running at `http://127.0.0.1:5232/`.
 
-The [machine-readable report](clamped-feature-recovery.json) and raw artifacts under `tmp/heart-learning/clamped-feature-recovery-v1/` distinguish frozen-proposal diagnostics from fresh reconstruction. No code is pushed or deployed.
+The machine-readable report (`clamped-feature-recovery.json`, removed) and raw artifacts under `tmp/heart-learning/clamped-feature-recovery-v1/` distinguish frozen-proposal diagnostics from fresh reconstruction. No code is pushed or deployed.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/clamped-feature-recovery.json`

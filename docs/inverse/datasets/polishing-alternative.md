@@ -66,10 +66,10 @@ checkpoint-selection omission addressed by this change.
 
 ## Validation status
 
-The [completed probe record](polishing-alternative-probe.json) pins 152 artifacts
+The completed probe record (`polishing-alternative-probe.json`, removed) pins 152 artifacts
 from the controlled experiments and browser comparison.
 
-The [completed release record](polishing-alternative.json) verifies 106 source
+The completed release record (`polishing-alternative.json`, removed) verifies 106 source
 hashes and 1,078 retained artifacts. All eight fixed crop perturbations pass
 within ten seconds and survive editable conversion. All 22 regular Hunodan
 designs pass within ten seconds (maximum 8.91 seconds). Four errors improve and
@@ -132,7 +132,7 @@ or deployed. The neural models remain offline.
 
 ## Remaining notches: short shared spans
 
-A [saved-geometry probe](shared-corner-probe.json) checks another possible cause
+A saved-geometry probe (`shared-corner-probe.json`, removed) checks another possible cause
 of the visible star notches. The current sharing proposal requires at least
 3 mm of still-independent geometry. It finds no remaining candidates in the
 controlled browser export, despite thirteen already shared segments. Lowering
@@ -156,3 +156,11 @@ notches remain. Neither prototype is adopted. This rules out simply lowering
 the span-length threshold as a sufficient correction; coordinated endpoint
 movement and local routing remain hypotheses to investigate. The probe retains
 the source mask and original geometry, and makes no new full-pipeline claim.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/polishing-alternative-probe.json`
+- `docs/inverse/datasets/polishing-alternative.json`
+- `docs/inverse/datasets/shared-corner-probe.json`

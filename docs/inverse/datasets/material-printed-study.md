@@ -45,7 +45,7 @@ python3 scripts/inverse/learning/audit-material-pilot.py \
 
 Training, independent audit and all four full-pipeline arms completed. All nine
 real prediction comparisons, seven reconstruction rows and six synthetic
-diagnostic rows were visually reviewed. The [results record](material-printed-results.json)
+diagnostic rows were visually reviewed. The results record (`material-printed-results.json`, removed)
 pins the reports and figures. Initial weights, real inputs, base synthetic replay,
 folds and original draw/reflection schedule match the second pilot exactly.
 Independent model inference reproduces all archived predictions exactly.
@@ -106,3 +106,9 @@ production build pass. All **866 inverse tests** now pass, and all 866 pinned
 source files remain unchanged throughout repository QA. The initial
 explicit renderer lint run caught a sparse-array test fixture; its equivalent
 construction now passes lint and the focused tests. The failed record is retained.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/material-printed-results.json`

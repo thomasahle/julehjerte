@@ -55,7 +55,7 @@ checkpoint projection or cached return force is included.
   parsing. All **47 accepted pairs** retain the image, feature, current geometry
   and paper checks after editable conversion: 22 Hunodan and 25 photographs.
 
-The [evidence record](turn-limit-refinement.json) preserves case-level results,
+The evidence record (`turn-limit-refinement.json`, removed) preserves case-level results,
 failed-before/passing-after tests, the fixed-start gift comparison and artifact
 hashes. Native timings do not establish browser click-to-ready latency.
 
@@ -70,7 +70,7 @@ builder: the projection patch still assumes the previous import block.
 Commit `6874c18` updates that context. The affected projection test and all three
 turning-limit tests then pass. The failed run is preserved in the evidence record.
 
-The [complete rerun](turn-limit-validation.json) passes **829 inverse tests**,
+The complete rerun (`turn-limit-validation.json`, removed) passes **829 inverse tests**,
 **855 application tests** (one existing skip), type checking, lint and build.
 All 824 recorded source-file hashes are verified. The refreshed preview at
 <http://127.0.0.1:5232/editor/mal/> serves **154 verified build assets**, including
@@ -82,3 +82,10 @@ the regular star and free-border hat use matching templates; the photographic
 star and flower retain visible contour imperfections. Browser click-to-ready
 timings range from 1.72 to 28.39 seconds, so the native Hunodan timing remains a
 separate measurement. Nothing was pushed or deployed.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/turn-limit-refinement.json`
+- `docs/inverse/datasets/turn-limit-validation.json`

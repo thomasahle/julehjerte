@@ -55,7 +55,7 @@ Inverse test files now run serially because their solvers have wall-clock
 budgets. The first concurrent full run exposed a yellow-star timeout under CPU
 contention; its isolated replay passed without changing the solver or budget.
 
-Full evidence and browser measurements are in `ORANGE-CROPPER-VALIDATION.json`.
+Full evidence and browser measurements are in `ORANGE-CROPPER-VALIDATION.json` (removed).
 The source screenshot's embedded colour profile can produce slightly different
 classified masks across browser engines; the normal review notices and checks
 remain in force.
@@ -73,3 +73,9 @@ region warnings remain visible where a browser's classified mask includes them.
 Reload the generator before retrying: an existing page can retain its previously
 loaded worker code. The proposed corners remain draggable and numerically
 editable; the new detector does not lock them or alter the accepted crop later.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/ORANGE-CROPPER-VALIDATION.json`

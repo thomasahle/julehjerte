@@ -59,7 +59,7 @@ tasks outside that interval are retained in the report; this is not a claim
 that the entire workflow is free of long tasks.
 
 The full release replay and per-case source hashes are recorded in
-[LIVE-GEOMETRY-VALIDATION.json](LIVE-GEOMETRY-VALIDATION.json). Raw controls,
+`LIVE-GEOMETRY-VALIDATION.json` (removed). Raw controls,
 photograph, perturbation and export artifacts use `tmp/live-geometry-` prefixes.
 
 All **1,049 tests** pass, with one optional fixture-recording test skipped.
@@ -124,3 +124,9 @@ node scripts/inverse/weighted-solve-benchmark.mjs \
   --strategies=weighted --variants=original,inverted,shifted,free-noise \
   --progress-geometry=true
 ```
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/LIVE-GEOMETRY-VALIDATION.json`

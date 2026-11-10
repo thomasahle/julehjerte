@@ -39,7 +39,7 @@ Thin one-to-one boundary F1 at one / three pixels:
 
 The current initializer has better one-pixel boundary localization on all
 three groups and better three-pixel F1 on both diagnostic recipe groups.
-[Scores and hashes](app-baseline-results.json) preserve the corrected
+Scores and hashes (`app-baseline-results.json`, removed) preserve the corrected
 comparison. Previous reports remain historical records with the older trace;
 the CNN counts match the previous frozen replay exactly.
 
@@ -160,11 +160,11 @@ do not guarantee that a different final cleanup sequence beats the previous
 sequence. The comparison retains that regression rather than claiming a
 uniform improvement.
 
-[Per-view measurements, source hashes and all three solver replays](photographic-intervention-results.json)
+Per-view measurements, source hashes and all three solver replays (`photographic-intervention-results.json`, removed)
 retain the evidence. The straight-radius correction produces the same 36
 exported geometries as the paired-knot-only replay; its separate procedural
 regression exercises the newly repaired case. The
-[validation record](intervention-validation.json) includes 646 inverse tests,
+validation record (`intervention-validation.json`, removed) includes 646 inverse tests,
 855 application tests, 33 learning tests, 13 collector tests, type checking,
 lint, build, and two regressions using the shipped browser modules.
 
@@ -193,3 +193,11 @@ Model replays use the frozen `balanced-corners-v1` checkpoint by default.
 All outputs require new destinations. Per-proposal coordinates, original
 references, file hashes and rejected experimental choices are retained for
 inspection. No new model is trained in this diagnosis.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/app-baseline-results.json`
+- `docs/inverse/datasets/photographic-intervention-results.json`
+- `docs/inverse/datasets/intervention-validation.json`

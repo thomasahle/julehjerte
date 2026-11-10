@@ -5,7 +5,7 @@ the fitter retained the right 3+3 slit hypothesis but spent almost all its
 refinement time on 2+4. The latter looked better before enforcing strip width;
 after that preparation, its grid error was 5.003%, versus 3.668% for 3+3.
 The old order gave the two candidates 3.131 and 0.114 seconds, respectively.
-The [original diagnostic](flower-budget-diagnostic.json) remains unchanged.
+The original diagnostic (`flower-budget-diagnostic.json`, removed) remains unchanged.
 
 The main fitter now compares one existing alternative after the first
 candidate's minimum-width preparation worsens its score. The alternative
@@ -104,7 +104,7 @@ pass separately with their original criteria, and fresh unchanged/current
 control replays pass the four photographic variants. Those repeats do not
 replace the failed full suite.
 
-The [deadline diagnostic](feature-deadline-diagnostic.json) reproduces a
+The deadline diagnostic (`feature-deadline-diagnostic.json`, removed) reproduces a
 specific scheduling cliff without changing the inputs. With a monotonic
 clock advancing 1.5 times faster, both unchanged and current engines skip the
 feature initializer and reject all four images. The ordinary fine grids have
@@ -130,7 +130,7 @@ Build and browser validation have not run after these failures. The owned
 preview remains on its previously checked build; this is not an all-green
 release.
 
-The [native evidence record](clearance-order-native.json) records 466 source
+The native evidence record (`clearance-order-native.json`, removed) records 466 source
 hashes from that benchmark run and pins 697 local artifacts, including the rejected prototype
 and unchanged-code control. The local study is
 `tmp/heart-learning/clearance-order-v2/`. It contains the
@@ -139,3 +139,11 @@ reports, three inspected photo comparison sheets, the full Hunodan results,
 the unchanged/current paired control and `hunodan-variance.json`, and both
 QA attempts. The rejected larger-grid prototype is preserved in
 `tmp/heart-learning/clearance-order-v1/`. Nothing is pushed or deployed.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/flower-budget-diagnostic.json`
+- `docs/inverse/datasets/feature-deadline-diagnostic.json`
+- `docs/inverse/datasets/clearance-order-native.json`

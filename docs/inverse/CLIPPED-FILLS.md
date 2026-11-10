@@ -81,7 +81,13 @@ node scripts/inverse/heart-clipping-editor-browser-test.mjs
 Reports and screenshots are in the two output directories. The one-off gallery
 comparison is `tmp/clipped-gallery-results.json`; check logs are
 `tmp/clipped-{test,check,lint,build}.log`. The committed evidence summary is
-[CLIPPED-FILLS-VALIDATION.json](CLIPPED-FILLS-VALIDATION.json).
+`CLIPPED-FILLS-VALIDATION.json` (removed).
 
 The branch is `codex/solver-initialization`. Nothing was pushed or deployed,
 and neither the main nor redesign checkout was edited.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/CLIPPED-FILLS-VALIDATION.json`

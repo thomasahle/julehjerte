@@ -16,7 +16,7 @@ source hashes are retained rather than represented as hashes of the final tree.
 
 ## Why faster initialization alone was insufficient
 
-The previous [deadline diagnostic](feature-deadline-diagnostic.json) found a
+The previous deadline diagnostic (`feature-deadline-diagnostic.json`, removed) found a
 scheduling cutoff: a ten-second request could skip feature initialization and
 spend the remaining time on unsuccessful traced recovery. The availability
 test subtracted clearance and polishing reserves before requiring another 3.5
@@ -62,7 +62,7 @@ related adjacency exclusions. No validation rule was weakened to accept this
 proposal. A representation-independent treatment of these tight bends remains
 unresolved and requires separate geometry/editor regression coverage.
 
-The [evidence record](row-initialization.json) preserves the successful and failed
+The evidence record (`row-initialization.json`, removed) preserves the successful and failed
 replays and the captured pre/post-subdivision geometry. Raw artifacts and frozen
 prototype sources remain under `tmp/heart-learning/row-kernel-v1/`.
 
@@ -103,7 +103,7 @@ Against the preceding full photo run, 12 accepted errors improve, 11 are equal,
 and two increase; the largest increase is 0.00375 percentage points for the orb.
 The checker measures 2.168% in this full run. Visual review still finds rounded
 cell corners and thin border details, so the pass count is not a claim of exact
-artwork recovery. The [native evidence](row-initialization-native.json) pins 217
+artwork recovery. The native evidence (`row-initialization-native.json`, removed) pins 217
 artifacts and the checked 553-file source manifest.
 
 The corrected run completes all **822 inverse tests**, **855 application
@@ -122,9 +122,18 @@ retain their previous counts and initial/clearance grid results. Differences
 arise during subsequent refinement/polishing; the evidence is consistent with
 time-allocation sensitivity but does not prove the cause of every changed pixel.
 
-The [complete validation record](row-initialization-validation.json) verifies
+The complete validation record (`row-initialization-validation.json`, removed) verifies
 the native artifacts, current runtime source hashes, all thirteen browser
 results and 153 served assets against the build. The refreshed preview is
 available at `http://127.0.0.1:5232/editor/mal/`. Browser timings use each flow's
 recorded settings and remain distinct from the native ten-second benchmark.
 Nothing is pushed or deployed.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/feature-deadline-diagnostic.json`
+- `docs/inverse/datasets/row-initialization.json`
+- `docs/inverse/datasets/row-initialization-native.json`
+- `docs/inverse/datasets/row-initialization-validation.json`

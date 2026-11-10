@@ -111,7 +111,13 @@ The full release checks pass: 842 application tests and 496 engine tests
 Svelte checking reports zero errors and seven existing warnings. All 63 served
 engine and worker files match the committed source byte for byte.
 
-[RECOVERY-BUDGET-VALIDATION.json](RECOVERY-BUDGET-VALIDATION.json) records the
+`RECOVERY-BUDGET-VALIDATION.json` (removed) records the
 measurements, source provenance, rejected experiments and artifact hashes.
 The checked preview is at <http://127.0.0.1:5232/en/editor/paint/>. All changes
 are local commits on `codex/solver-initialization`; nothing was pushed or deployed.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/RECOVERY-BUDGET-VALIDATION.json`

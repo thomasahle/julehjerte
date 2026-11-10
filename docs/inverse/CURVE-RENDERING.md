@@ -122,5 +122,11 @@ seven existing warnings, successful lint and a production build. Lint was
 rerun after improving the timing harness; runtime sources remained unchanged
 through that rerun. All **50 served engine files** match the source hashes used
 by the fresh Node benchmarks.
-[CURVE-RENDERING-VALIDATION.json](CURVE-RENDERING-VALIDATION.json) records the
+`CURVE-RENDERING-VALIDATION.json` (removed) records the
 source, artifact and export hashes, timing methods and per-case results.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/CURVE-RENDERING-VALIDATION.json`

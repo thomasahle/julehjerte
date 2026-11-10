@@ -16,7 +16,13 @@ Four focused tests cover retained predictions, non-aliased parameters and
 buffers, a material-training update with a frozen encoder, double precision,
 independent provenance metadata and rejection of an already expanded model.
 All 81 tests across fourteen offline learning modules pass. The
-[record](material-transfer.json) pins the source and test log.
+record (`material-transfer.json`, removed) pins the source and test log.
 
 This is the model handoff for the next training experiment. It does not add a
 trained material model, establish improved reconstruction, or change the app.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/material-transfer.json`

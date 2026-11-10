@@ -74,7 +74,7 @@ These native timings include the editor's other geometry checks; they do not
 measure browser interaction or solving. The port does not establish a speedup
 over the earlier whole-cut prototype. Source hashes, case outcomes, scale-probe
 counts, commands and artifact hashes are in the
-[evidence record](shared-return-geometry.json). An initial replay invocation
+evidence record (`shared-return-geometry.json`, removed). An initial replay invocation
 used the wrong Hunodan result wrapper and stopped before auditing any SVG;
 the corrected run and original failure log are both retained.
 
@@ -95,14 +95,22 @@ node scripts/inverse/diagnostics/build-whole-return-editor.mjs --output=tmp/new-
 ```
 
 The complete repository QA recorded for the preceding experiment is
-[separate](whole-cut-editor-validation.json). A fresh full run is required for
+separate (`whole-cut-editor-validation.json`, removed). A fresh full run is required for
 these modules. Production activation still needs the final repair and editor
 check together, followed by fresh solving and browser checks. In particular,
 the experimental finite search is not a completeness proof or physical assembly
 test, and this work does not increase the automatic 25/31 photo result.
 
-The subsequent [full QA](shared-return-geometry-validation.json) passes all 838
+The subsequent full QA (`shared-return-geometry-validation.json`, removed) passes all 838
 inverse tests and 857 application tests (one existing skip), type checking,
 lint and build. All 837 recorded source files remained unchanged through the run.
 This covers the shared modules and isolated builder, not their subsequent
 activation in final export.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/shared-return-geometry.json`
+- `docs/inverse/datasets/whole-cut-editor-validation.json`
+- `docs/inverse/datasets/shared-return-geometry-validation.json`

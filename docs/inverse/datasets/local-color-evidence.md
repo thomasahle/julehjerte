@@ -129,10 +129,10 @@ panels are retained under `rejected-reviews/`. The corrected panels use the
 renderer binary mask and the committed comparison helper. All thirteen
 native/editable comparisons match their recorded disagreement scores exactly.
 
-The [measurement record](local-color-evidence.json) pins the source and results.
+The measurement record (`local-color-evidence.json`, removed) pins the source and results.
 Raw proposals, rejected variants, plots, templates and logs are under
 `tmp/heart-learning/local-color-evidence-v1/`. The separate
-[completed QA record](local-color-qa.json) passes 812 inverse tests, 855 application
+completed QA record (`local-color-qa.json`, removed) passes 812 inverse tests, 855 application
 tests (one existing skip), type checking, lint and build. An independent audit
 reloads 768 predicted masks and verifies all recorded synthetic disagreements
 against pinned material/validity images, checking 1,344 prediction/target files.
@@ -140,3 +140,10 @@ The refreshed preview at `http://127.0.0.1:5232/editor/mal/` serves 153 verified
 assets. No new browser interaction run is claimed; all tracked app/static source
 files remain unchanged since the last production release.
 No neural weights or data allocations changed, and nothing was pushed or deployed.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/local-color-evidence.json`
+- `docs/inverse/datasets/local-color-qa.json`

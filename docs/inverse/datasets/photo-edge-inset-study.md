@@ -1,7 +1,7 @@
 # Photo-edge fringe and new window-heart cases
 
 2026-10-17 diagnostic on unchanged production runtime `b7daccc`.
-[Measurements](photo-edge-inset-study.json) and
+Measurements (`photo-edge-inset-study.json`, removed) and
 [committed input photographs](../../../scripts/inverse/fixtures/user-photos-2026-10-17/README.md)
 retain failures alongside successes. No neural model or new inset policy is
 enabled in the website.
@@ -89,7 +89,7 @@ the previous full release checks cover the unchanged production source.
 
 ## Automatic-crop paired comparison, 2026-10-19
 
-[Complete paired results and runtime/input hashes](automatic-crop-inset-2026-10-19.json)
+Complete paired results and runtime/input hashes (`automatic-crop-inset-2026-10-19.json`, removed)
 cover all 22 regular Hunodan photographs, the reported stacked-heart fringe,
 and three window hearts. Every case starts with fresh automatic corner detection;
 the physical corners stay fixed during both fits. Each arm gets a ten-second
@@ -129,3 +129,10 @@ The diagnostic uses raw locator corners explicitly, so it tests the same pair
 with or without an automatic inset adapter. It saves compact metrics, two fringe
 geometries and a photo/mask/export comparison, and checks that all pinned sources
 remain unchanged during the run. No NN was trained or enabled in this experiment.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/photo-edge-inset-study.json`
+- `docs/inverse/datasets/automatic-crop-inset-2026-10-19.json`

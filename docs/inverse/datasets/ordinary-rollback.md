@@ -36,7 +36,13 @@ alternatives with skipping enabled or disabled. Short-budget leaf/star recovery
 and refinement-budget checks also pass. Full QA and corpus/browser replays for
 this new runtime remain to be completed.
 
-The [record](ordinary-rollback.json) retains the paired runs, CPU profile,
+The record (`ordinary-rollback.json`, removed) retains the paired runs, CPU profile,
 stage-labelled progress, source hashes and test log. The earlier release's
 photographic and ordinary-budget browser failures remain in
 [their separate record](clearance-repair-release.md).
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/ordinary-rollback.json`

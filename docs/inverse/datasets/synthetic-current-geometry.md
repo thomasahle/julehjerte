@@ -31,7 +31,7 @@ of the current geometry predicate. Paper checks are rerun on originals only.
 The entire audit takes 21.01 seconds locally, including reading and saving
 records. It does not run the inverse solver or measure browser performance.
 
-The [evidence record](synthetic-current-geometry.json) retains every design's
+The evidence record (`synthetic-current-geometry.json`, removed) retains every design's
 hash, current verdict, nominal clearance measurements and transformed checks.
 It pins the current geometry sources and the complete local audit. All 844
 files in that audit's source snapshot remain unchanged during the run.
@@ -75,3 +75,9 @@ regression and source files. Independent root verification checked all 192
 graph hashes, 768 label hashes and 37 source/audit artifacts. All 38 gallery
 designs already overlap reference evaluations; the proposed five-design
 admission experiment is diagnostic only and allocates zero training families.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/synthetic-current-geometry.json`

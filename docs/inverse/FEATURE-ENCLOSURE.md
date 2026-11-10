@@ -68,7 +68,7 @@ checking reports no errors and seven existing warnings; lint and build pass.
 ## Fresh full-pipeline results
 
 Production code: `d7c46c7`, including `ca1df9b` and `0e6a208`. The complete
-[measurement ledger](FEATURE-ENCLOSURE-VALIDATION.json) records source hashes,
+measurement ledger (`FEATURE-ENCLOSURE-VALIDATION.json`, removed) records source hashes,
 per-case outcomes and timings. Crops and all classified/fitting mask and
 probability hashes match the preceding release across the three photo replays.
 No ground-truth cuts are supplied to fitting.
@@ -125,3 +125,9 @@ changing its crop or classification. It does not improve the aggregate 21/31
 photo count, resolve all perturbations or establish agreement with unavailable
 original cutting paths. Geometry and paper checks remain numerical; no physical
 cutting, threading or assembly test has been performed.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/FEATURE-ENCLOSURE-VALIDATION.json`

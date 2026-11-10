@@ -96,7 +96,7 @@ shows better recovery of the lower frame. Its complete native solve/export
 takes 9.062 seconds. Smaller changes on other photos need not be caused by
 the new policy: several finish routing before either budget expires, or use an
 unchanged feature-reserving path. All per-case differences remain in the
-[validation record](routing-budget-blend.json).
+validation record (`routing-budget-blend.json`, removed).
 
 All **11 experimental focused tests** pass, including long-budget routing
 fallbacks, the tree with hidden endpoints, and the new shifted-star regression.
@@ -164,7 +164,7 @@ SVGs, paper checks and feature checks remain the test inputs and outputs.
 
 The next complete suite passes 848/850 inverse tests. The two failures expose
 additional limits of the scheduling policy. Both are retained in the
-[follow-up record](routing-retry-budget.json); this is not a completed release.
+follow-up record (`routing-retry-budget.json`, removed); this is not a completed release.
 
 For the blue outlined star, a fixed 0.75-second eligibility cutoff skips a
 simpler junction interpretation even after the ordinary sparse graphs are
@@ -206,10 +206,18 @@ node scripts/inverse/diagnostics/photo-feature-stability.mjs \
   --output=tmp/photo-feature-stability-replay
 ```
 
-The [measurements and hashes](photo-feature-stability.json) retain all 36
+The measurements and hashes (`photo-feature-stability.json`, removed) retain all 36
 classification variants, three fresh prototype fits, both sets of editable
 checks, the frozen prototype and its runner. The initial diagnostic attempt
 stopped before writing results because report settings omit tracing resolution;
 the tool now takes the actual prepared source resolution. The corrected run
 completed all 36 variants. The classification tool remains an offline diagnostic;
 no new cropper, classifier or neural model is deployed.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/routing-budget-blend.json`
+- `docs/inverse/datasets/routing-retry-budget.json`
+- `docs/inverse/datasets/photo-feature-stability.json`

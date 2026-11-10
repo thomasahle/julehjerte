@@ -75,7 +75,7 @@ without checking out, modifying or mixing another worktree's files.
 
 ## Measured validation
 
-[The validation ledger](LOBE-SHAPES-VALIDATION.json) records source hashes,
+The validation ledger (`LOBE-SHAPES-VALIDATION.json`, removed) records source hashes,
 reference-detector bytes, per-case corners, errors, timings and browser results.
 
 Both automatic Hunodan tracks pass **22/22**. All 22 crop coordinates and
@@ -133,3 +133,9 @@ INVERSE_TEST_CASES=unequal-lobes INVERSE_TEST_BROWSERS=chromium,webkit node scri
 
 Run CPU benchmarks serially. Set `PLAYWRIGHT_MODULE` and `INVERSE_TEST_URL` for
 the existing Playwright installation and local preview.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/LOBE-SHAPES-VALIDATION.json`

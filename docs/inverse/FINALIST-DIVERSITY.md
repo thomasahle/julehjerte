@@ -18,7 +18,7 @@ still retains 3+3, but on the downsampled photo it receives only 0.114 seconds
 of free refinement after 3.131 seconds for 2+4. Minimum-width clearance has
 already reversed their fine-grid error ordering. The final 4+2 export passes
 geometry/paper checks at 1.332% mask disagreement, but fails this regression.
-The [fresh replay and timing record](datasets/flower-budget-diagnostic.json)
+The fresh replay and timing record (`flower-budget-diagnostic.json`, removed)
 preserve both input-mask hashes and the original ten-second settings. The
 [clearance-order correction](datasets/clearance-order.md) now compares one
 existing alternative before committing the refinement budget. A fresh replay
@@ -26,7 +26,7 @@ recovers checked 3+3 pairs at 0.450% and 0.615%, and the complete photo replay
 retains all 25 previous successes. Full inverse QA passes this flower test,
 but finishes at 809/813: one obsolete candle scheduling assertion has since
 been corrected, and three existing near-miss checks expose a separately
-reproduced [deadline cutoff](datasets/feature-deadline-diagnostic.json).
+reproduced deadline cutoff (`feature-deadline-diagnostic.json`, removed).
 Build/browser validation and the preview update remain pending.
 Two Hunodan errors rise slightly in the full run despite all 22 finishing
 under ten seconds; the stricter unchanged-error goal remains unproven.
@@ -152,8 +152,16 @@ All five flows report no JavaScript errors. The native flower editor result
 was also inspected visually.
 
 Source hashes, measurements and saved artifact locations are in
-[the evidence record](FINALIST-DIVERSITY.json). The local experiment archive
+the evidence record (`FINALIST-DIVERSITY.json`, removed). The local experiment archive
 includes the resolution inputs, rejected color models, alternative finalist
 trials and their source scripts; its member hashes are checked separately
 from the actual production replays. None of the unresolved automatic crops
 is promoted to a training label or treated as verified reconstruction.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/flower-budget-diagnostic.json`
+- `docs/inverse/datasets/feature-deadline-diagnostic.json`
+- `docs/inverse/FINALIST-DIVERSITY.json`

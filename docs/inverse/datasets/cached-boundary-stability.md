@@ -67,4 +67,10 @@ These browser cases use the ordinary 180-second allowance; their timings are dis
 
 The preview was restarted after the build at `http://127.0.0.1:5232/`. Both advertised entry modules return HTTP 200, and the served topology initializer, fitter and rerouting module exactly match their tested source bytes. No code was pushed or deployed.
 
-The [machine-readable report](cached-boundary-stability.json) records the experiments, source and artifact hashes, benchmark comparisons and verification. Raw artifacts remain under `tmp/heart-learning/input-stability-v1/`. The production change is cache isolation only; the targeted clearance intervention remains a research result.
+The machine-readable report (`cached-boundary-stability.json`, removed) records the experiments, source and artifact hashes, benchmark comparisons and verification. Raw artifacts remain under `tmp/heart-learning/input-stability-v1/`. The production change is cache isolation only; the targeted clearance intervention remains a research result.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/cached-boundary-stability.json`

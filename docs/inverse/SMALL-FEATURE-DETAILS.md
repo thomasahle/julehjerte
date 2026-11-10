@@ -111,7 +111,7 @@ mask and probability hashes inspectable.
 
 ## Release QA
 
-[Machine-readable evidence](SMALL-FEATURE-VALIDATION.json) records paired results,
+Machine-readable evidence (`SMALL-FEATURE-VALIDATION.json`, removed) records paired results,
 source hashes, renderer resolutions and browser timings. Production code is
 `aef8405`; later commits add QA and this report.
 
@@ -151,3 +151,9 @@ Crop coordinates, classified masks and fitting-probability hashes are identical
 in the paired photo sweeps. Small changes in a few unchanged fitting paths are
 consistent with their time-bounded refinement; they are not attributed to the
 new local-detail method.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/SMALL-FEATURE-VALIDATION.json`

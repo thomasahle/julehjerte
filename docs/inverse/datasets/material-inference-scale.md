@@ -15,7 +15,7 @@ three to one. No model or crop change is added to the website.
 | Median single-image CPU inference | 30.7 ms | 95.6 ms |
 
 The [plan](material-inference-scale-plan.json) was written before inference.
-The [results](material-inference-scale-results.json) retain paired per-photo
+The results (`material-inference-scale-results.json`, removed) retain paired per-photo
 scores, crop outcomes, source/checkpoint hashes and visual-review notes.
 
 ## Controlled comparison
@@ -101,7 +101,7 @@ archive metadata, not the production solver.
 
 ## Follow-up: keep the encoder at its trained scale
 
-The [context/detail follow-up](material-context-detail-results.json) keeps the
+The context/detail follow-up (`material-context-detail-results.json`, removed) keeps the
 encoder and its whole-heart feature maps at 256 pixels, while feeding 512-pixel
 RGB to the shallow detail branch and final head. It uses the same nineteen
 historical development photos, original held-out checkpoints and unchanged
@@ -123,3 +123,10 @@ near the lower paper edges and colored lobes can flip the geometric support
 checks. Those checks were not relaxed. This inference variant remains offline
 and is rejected for deployment; the subsequent encoder-tail study uses a new
 sixteen-photo training-eligible subset and must be assessed separately.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/material-inference-scale-results.json`
+- `docs/inverse/datasets/material-context-detail-results.json`

@@ -68,4 +68,10 @@ opportunity remains in the photographed star: its original, half-resolution
 and JPEG inputs each spend about 12 seconds on rejected coarse MILP routing
 before a successful grid fit. Neither issue is resolved by this change.
 
-[Measurements, input identities and evidence hashes](geometry-recovery-budget.json).
+Measurements, input identities and evidence hashes (`geometry-recovery-budget.json`, removed).
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/geometry-recovery-budget.json`

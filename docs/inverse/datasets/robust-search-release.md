@@ -38,7 +38,7 @@ geometry: 206 curved/one straight piece in the validated baseline, 211/one in th
 previous release and 208/two here. The final iteration count therefore does not
 explain its regression. Stage-labelled fresh replays are needed to isolate it.
 
-The [evidence record](robust-search-release.json) pins completed QA, native corpus
+The evidence record (`robust-search-release.json`, removed) pins completed QA, native corpus
 comparisons and editable-export audits. It records the failed gate rather than
 relaxing the error threshold. All **18 main browser workflows** pass, as do the three ordinary-budget and
 three explicit ten-second leaf/star flows. All six actual downloaded editable
@@ -60,3 +60,9 @@ four-byte build-identifier failure remains in its original record. All 862
 browser/runtime/harness source pins are verified. The native no-higher-error
 comparison still fails; browser success does not override those two photographic
 regressions. No push or deployment occurred.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/robust-search-release.json`

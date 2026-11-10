@@ -66,7 +66,7 @@ After:
 ![Ten-slit reconstruction](hard-orange-after.png)
 
 Run `node scripts/inverse/hard-user-benchmark.mjs` to repeat detection and fitting.
-`HARD-ORANGE-VALIDATION.json` records source checksum, settings, counts, timings and
+`HARD-ORANGE-VALIDATION.json` (removed) records source checksum, settings, counts, timings and
 region errors. SVGs, geometry and full reports are saved under the printed output
 directory. Automatic cropping remains a known failure; the web app's manual
 corner flow is the current way to use this photograph.
@@ -94,3 +94,9 @@ All three pass the geometry and paper checks and retain the mask, comparison
 and downloads. Chromium and WebKit still fail the unchanged feature-retention
 audit for the stated tiny region; their results remain marked for review.
 Browser timings above are solver time, excluding preparation and final export.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/HARD-ORANGE-VALIDATION.json`

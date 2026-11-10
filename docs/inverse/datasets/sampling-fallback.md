@@ -56,7 +56,7 @@ node scripts/inverse/initializer-resolution-replay.mjs \
   --output=tmp/heart-learning/sampling-replay-new
 ```
 
-The [machine-readable audit](sampling-fallback.json) records paired input hashes,
+The machine-readable audit (`sampling-fallback.json`, removed) records paired input hashes,
 unchanged targets, source snapshots, failed earlier attempts and the final checks:
 
 - 736 inverse tests and 855 application tests pass; one existing application test is skipped.
@@ -68,3 +68,9 @@ unchanged targets, source snapshots, failed earlier attempts and the final check
 Browser visual review confirms the missing sun rays described above. The puppy
 also retains rough border details despite passing the numerical checks. None of
 the templates has been physically assembled as part of this experiment.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/sampling-fallback.json`

@@ -17,7 +17,7 @@ template rendering, with known artwork as a separate reference.
 
 The supplied archive's integrity tool verified all 165 payload files. Its own 66 tests passed locally, including 32 known-homography analytic fixtures and the JUL/checkerboard discrimination regression. These are development fixtures, not held-out real-photo accuracy measurements. Four compact synthetic fixtures are retained in this repository: clean, blurred/uneven lighting, handle, and occlusion. The integrated suite adds tests for ROI selection, malformed regions, blank/transparent images, rectifier agreement, fitting from a rough region recovered from existing corners, and provenance retention. User photographs are not redistributed.
 
-The production browser test runs over actual HTTP with the real worker in Chromium and Firefox. It checks automatic fitting, a rectangle selecting the second heart in a scene, numeric and pointer edits, preview pixels, source hashes, invalidation and mobile layout. Optional local-photo checks verify that the sRGB collage decodes to exactly the same RGBA bytes used by the benchmark. See `VALIDATION.json` for fresh results and evidence paths.
+The production browser test runs over actual HTTP with the real worker in Chromium and Firefox. It checks automatic fitting, a rectangle selecting the second heart in a scene, numeric and pointer edits, preview pixels, source hashes, invalidation and mobile layout. Optional local-photo checks verify that the sRGB collage decodes to exactly the same RGBA bytes used by the benchmark. See `VALIDATION.json` (removed) for fresh results and evidence paths.
 
 ```sh
 PLAYWRIGHT_MODULE=/path/to/playwright/index.mjs node scripts/inverse/locator-browser-test.mjs
@@ -54,3 +54,9 @@ INVERSE_LOCATOR_RUN=tmp/inverse-locator/<run>/results.json npm run benchmark:inv
 ```
 
 These commands require the locally retained source files listed in `collage-rois.json`. Each run creates a new directory and records code/input hashes. The bounded interpretation-search and relaxed-routing prototypes were archived locally; they are not exposed in the web application. The tracing presets still treat traced visible edges as constraints. The optional **Fit curves to image** preset now fits independent sheet curves directly; see [DIRECT-FITTER.md](DIRECT-FITTER.md) for its separate 31-case benchmark. The 40-case reconstruction results above remain historical tracing results.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/VALIDATION.json`

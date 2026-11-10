@@ -137,7 +137,13 @@ conversion** and no crossing warning. The photograph's WebKit replay takes
 10.19 seconds; the browser suite does not claim every end-to-end replay is
 under ten seconds.
 
-[REDESIGN-VALIDATION.json](REDESIGN-VALIDATION.json) retains the per-case
+`REDESIGN-VALIDATION.json` (removed) retains the per-case
 measurements, browser versions, source hashes, settings and paths to the local
 screenshots and exported files. The browser replays exercise the rebuilt site
 at port 5200, including the final corner-preservation change.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/REDESIGN-VALIDATION.json`

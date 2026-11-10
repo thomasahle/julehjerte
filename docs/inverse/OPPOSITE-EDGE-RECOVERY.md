@@ -136,7 +136,7 @@ lint and production build pass. The 14 browser runs cover seven inputs in two
 engines, including source-mask replay, editable conversion, retained shared spans
 and downloaded SVG checks.
 
-[Complete measurements, source hashes and paired outcomes](OPPOSITE-EDGE-VALIDATION.json)
+Complete measurements, source hashes and paired outcomes (`OPPOSITE-EDGE-VALIDATION.json`, removed)
 include every case, failures and perturbations. Local visual artifacts are in
 `tmp/opposite-edge-browser/` and `tmp/opposite-edge-web-all/report.html`.
 
@@ -158,3 +158,9 @@ INVERSE_TEST_CASES=web-danish-tree-group-right,web-danish-tree-red,web-danish-tr
 INVERSE_TEST_OUTPUT=tmp/opposite-edge-browser \
 node scripts/inverse/paint-browser-test.mjs
 ```
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/OPPOSITE-EDGE-VALIDATION.json`

@@ -62,7 +62,7 @@ UI merge. Every engine file is unchanged from that release. The production
 preview's 52 engine files also match the committed source byte for byte.
 
 Per-case results and source checks are recorded in
-[REDESIGN-INTEGRATION-VALIDATION.json](REDESIGN-INTEGRATION-VALIDATION.json).
+`REDESIGN-INTEGRATION-VALIDATION.json` (removed).
 Raw artifacts are under `tmp/redesign-integration-{controls,browser,fallback}`;
 check logs use the same `tmp/redesign-integration-` prefix.
 
@@ -80,3 +80,9 @@ node scripts/inverse/paint-browser-test.mjs
 Restart the preview after building: an already-running preview can retain old
 HTML asset names after those files have been replaced. The checked preview is
 <http://127.0.0.1:5232/en/editor/paint/>.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/REDESIGN-INTEGRATION-VALIDATION.json`

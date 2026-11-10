@@ -96,7 +96,13 @@ repository run and thirteen browser flows cover the unchanged app runtime;
 they precede the new projection test and do not substitute for broader testing
 of the proposed runtime.
 
-The [evidence record](short-return-projection.json) retains the successful and
+The evidence record (`short-return-projection.json`, removed) retains the successful and
 unsuccessful variants, exact source identities, four editable replays and 154
 local artifact hashes. The next gates are the full Hunodan/photo corpus and
 consistent independent editor checks before considering runtime promotion.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/short-return-projection.json`

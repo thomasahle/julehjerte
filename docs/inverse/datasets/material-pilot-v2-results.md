@@ -3,7 +3,7 @@
 The fixed higher-rate follow-up learns paper separation but does not improve
 complete reconstruction reliably. All three training runs, independent inference
 audits, nine-photo pipeline comparisons and seven available editable conversions
-completed. No model is deployed. The [evidence record](material-pilot-v2-results.json)
+completed. No model is deployed. The evidence record (`material-pilot-v2-results.json`, removed)
 pins the inputs, reports and visual review.
 
 Only the learning rate changed from the first pilot: 0.0001 to 0.001, selected
@@ -55,3 +55,9 @@ outline evidence and downstream cutting feasibility remain separate issues.
 
 The next controlled intervention adds sheet-attached procedural prints to
 synthetic photographs while preserving their exact material and geometry labels.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/material-pilot-v2-results.json`

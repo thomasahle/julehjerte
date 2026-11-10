@@ -96,7 +96,7 @@ node scripts/inverse/diagnostics/editable-return-study.mjs \
 
 The optional baseline comparison alternates evaluation order. The editor manifest
 pins the generated files and direct builder inputs, which are verified before
-and after the replay. The [evidence record](whole-cut-editor.json) contains all
+and after the replay. The evidence record (`whole-cut-editor.json`, removed) contains all
 case outcomes, timing distributions, failed experiments, source hashes and
 artifact hashes. Two new Node tests verify the exclusion preconditions and exact
 witness agreement against the original predicate using identical canonical curves.
@@ -107,8 +107,15 @@ browser/solver checks. The stricter editor must be integrated with final repair:
 enabling it alone would correctly reject the current bird and gift outputs.
 The current application and its 25/31 photographic benchmark are unchanged.
 
-The subsequent [complete QA](whole-cut-editor-validation.json) passes all 835
+The subsequent complete QA (`whole-cut-editor-validation.json`, removed) passes all 835
 inverse tests and 855 application tests (one existing skip), type checking,
 lint and the production build. All 831 recorded source files remained unchanged
 through the run. This covers the committed prototype and its replay tests;
 it does not establish app integration or browser interaction latency.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/whole-cut-editor.json`
+- `docs/inverse/datasets/whole-cut-editor-validation.json`

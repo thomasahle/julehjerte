@@ -75,7 +75,7 @@ ten-second performance claim follows from this recovery.
 Runtime commit `8ca7c42` passes **883 inverse tests**, **857 application tests**
 (one existing skip), type checking, explicit core lint, repository lint and
 the production build. All 732 pinned source files remained unchanged during
-that QA run. The [evidence record](enclosure-recovery.json) retains the separate
+that QA run. The evidence record (`enclosure-recovery.json`, removed) retains the separate
 corpus, export and browser measurements, including failed comparisons.
 
 All **22 Hunodan designs** retain exactly the validated baseline's error, with
@@ -118,7 +118,7 @@ original strict failure is retained rather than overwritten.
 
 ## Refinement rollback follow-up
 
-The [rollback study](paper-rollback.json) isolates another loss of useful work.
+The rollback study (`paper-rollback.json`, removed) isolates another loss of useful work.
 A coarse paper audit can remain uncertain on curves that pass the independent
 700-cell audit. Refinement then repeatedly restores an older, much poorer safe
 checkpoint. Waiting until the stage ends to resolve that uncertainty wastes
@@ -218,7 +218,7 @@ input. The 25 observations remain separate from the common benchmark's existing
 78 samples while release QA runs on its pinned files. No production crop or
 acceptance gate has changed.
 
-A [review of the recorded edge samples](jigsaw-edge-diagnosis.json) identifies
+A review of the recorded edge samples (`jigsaw-edge-diagnosis.json`, removed) identifies
 why the current shape refinement cannot fix this crop. The left scanline edge
 follows background outside the visible paper. Three reviewed background pixels
 have raw paper probabilities of 0.937, 0.677 and 0.798; the colour model admits
@@ -229,7 +229,7 @@ uses that same intersection and those same lower lines. More lobe optimization
 therefore cannot correct the underlying edge choice. This is a read-only
 diagnosis from saved evidence, not a repaired crop or a new benchmark pass.
 
-Two subsequent [RGB-gradient proposal experiments](gradient-edge-crops.json)
+Two subsequent RGB-gradient proposal experiments (`gradient-edge-crops.json`, removed)
 replace the threshold-mask line proposals while keeping the existing shape
 fitter. One weights gradients by the inside/outside paper-probability change;
 the other uses RGB gradients alone. Both use the same eight rough ROIs, fixed
@@ -238,3 +238,12 @@ or review points. Neither produces a lobe-qualified jigsaw candidate, and both
 also fail qualification on the flower and dense-checker controls. Their bauble
 candidate loses three of the existing 26 artwork observations. These prototypes
 are rejected; no crop or acceptance rule changes.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/enclosure-recovery.json`
+- `docs/inverse/datasets/paper-rollback.json`
+- `docs/inverse/datasets/jigsaw-edge-diagnosis.json`
+- `docs/inverse/datasets/gradient-edge-crops.json`

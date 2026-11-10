@@ -54,7 +54,7 @@ node scripts/inverse/diagnostics/clearance-refinement-study.mjs \
 It verifies the source-mask hash, exact recorded input, runtime and generated
 output geometry, refuses to overwrite an output directory, and retains both
 the initial and finer paper audits. Its ESLint check and all three actual
-replays pass. The [evidence record](clearance-candidate-repair.json) pins all
+replays pass. The evidence record (`clearance-candidate-repair.json`, removed) pins all
 36 fresh results and the subsequent diagnostic outputs.
 
 This establishes that the existing refiner can repair this rejected seed. It
@@ -63,3 +63,9 @@ change should reserve a bounded repair attempt for a promising alternative,
 carry its finer verified paper resolution forward, retain the existing
 candidates and keep every final acceptance gate. No scheduling variant or
 repair policy in this study has been integrated into the app yet.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/clearance-candidate-repair.json`

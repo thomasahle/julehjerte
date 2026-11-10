@@ -19,6 +19,12 @@ not a browser or solver speed claim.
 
 The two changed files pass all **46 tests** in 2.17 seconds wall time (1.29
 seconds reported test time). Full repository validation is pending. The
-[evidence record](shape-render-validation.json) preserves the original timeout,
+evidence record (`shape-render-validation.json`, removed) preserves the original timeout,
 isolated replay, input/output hashes and per-render timings. No application
 code or font-bearing SVG exporter changes.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/shape-render-validation.json`

@@ -111,7 +111,7 @@ of the circle and house confirms the main curved outline and square joins remain
 All **845 application tests** and **534 inverse-engine tests** pass, with one
 existing application skip. Type checking reports zero errors and seven existing
 warnings. Lint and the production build pass. Served preview bytes match the
-tested source. [The validation ledger](CURVE-DEGREES-VALIDATION.json) retains
+tested source. The validation ledger (`CURVE-DEGREES-VALIDATION.json`, removed) retains
 source hashes, per-case measurements and artifact hashes.
 
 The complete **44-case web-photo corpus** was also replayed from source images,
@@ -135,3 +135,9 @@ node scripts/inverse/web-photo-benchmark.mjs --stage=solve --seconds=10 --output
 Saved-output replay isolates final geometry cleanup; the Hunodan run starts fresh
 from photographs and frozen overlap coordinates. Browser uploads exercise the
 automatic corner proposal and actual worker separately. Run CPU workloads serially.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/CURVE-DEGREES-VALIDATION.json`

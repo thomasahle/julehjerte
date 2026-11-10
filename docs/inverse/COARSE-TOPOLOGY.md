@@ -97,7 +97,7 @@ settings and the two export renderers are recorded separately. A later
 when the imported photo has no detected symmetry. Both browser outputs
 preserve the branches and pass the editor's curve checks; the converted geometry has no sampled weave drift at 400 or 800 pixels.
 
-[The validation ledger](COARSE-TOPOLOGY-VALIDATION.json) records source hashes,
+The validation ledger (`COARSE-TOPOLOGY-VALIDATION.json`, removed) records source hashes,
 settings, crop coordinates, rejected probes, timings and local artifacts. Firefox
 was not repeated after its previously recorded native launch failure.
 
@@ -115,3 +115,9 @@ cut counts, template validity, and source immutability. Browser replays use the
 original photograph, automatic crop detection, the actual compute worker, and
 editable SVG/PDF downloads. Configure `INVERSE_TEST_URL` and `PLAYWRIGHT_MODULE`
 for the local preview and existing Playwright installation.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/COARSE-TOPOLOGY-VALIDATION.json`

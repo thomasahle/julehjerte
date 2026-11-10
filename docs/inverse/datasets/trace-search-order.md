@@ -39,10 +39,10 @@ has been added for worker, editable SVG and PDF verification.
 All **13 focused tests pass**. The completed fixed Hunodan replay retains
 **22/22 successes**, with every error exactly unchanged from the preceding
 release and a maximum time of **8.22 seconds**. The
-[focused evidence record](trace-search-order-focused.json) pins the inputs,
+focused evidence record (`trace-search-order-focused.json`, removed) pins the inputs,
 prototype measurements, final runtime hashes, test logs and all 22 timings.
 
-The [completed native-photo checks](trace-search-order-native.json) retain all
+The completed native-photo checks (`trace-search-order-native.json`, removed) retain all
 **25/31** previous successes, and all 25 pairs pass editable export. Source
 photographs, crop coordinates, masks and fitting probabilities remain unchanged.
 Five accepted cases have lower measured errors; the Viking increases by one
@@ -83,7 +83,15 @@ The built-in star and free-border hat retain matching sheets and aligned shared
 cuts. Passing checks does not establish original cutting paths or physical
 cutting and assembly performance.
 
-The [release evidence](trace-order-release.json) checks 467 implementation
+The release evidence (`trace-order-release.json`, removed) checks 467 implementation
 hashes, 972 local artifacts and all 153 built/HTTP-served assets. The preview at
 `http://127.0.0.1:5232/editor/mal/` serves the verified build. Nothing has been
 pushed or deployed, and no neural model has been added to the app.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/trace-search-order-focused.json`
+- `docs/inverse/datasets/trace-search-order-native.json`
+- `docs/inverse/datasets/trace-order-release.json`

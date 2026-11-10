@@ -151,9 +151,15 @@ application tests** (one existing skip), type checking, lint and build, with
 728 pinned source files verified. The later optional refinement/multiscale
 extension changes only the offline replay CLI; its fresh solve and editable
 audit pass. Post-extension application checks are recorded separately in the
-[measurement record](corner-clearance-repair.json); no engine or inverse-test
+measurement record (`corner-clearance-repair.json`, removed); no engine or inverse-test
 source changed after the full inverse run.
 
 Next work is automatic scheduling within the common search budget, followed by
 the full fixed-photo/Hunodan comparison. The broader option is deliberately not
 counted as a production improvement until that integration is measured.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/corner-clearance-repair.json`

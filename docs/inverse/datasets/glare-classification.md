@@ -2,7 +2,7 @@
 
 A broader paired test rejects the proposed full-covariance color classifier as a replacement for the current automatic classifier. It can recover washed-out motifs, but it also displaces clean boundaries, changes the inferred cut count, and sometimes collapses into an illumination segmentation. The application classifier and fitter are unchanged by this experiment.
 
-The reusable change is an optional localized glare intervention in the synthetic renderer and a `glare` replay profile. They provide known material labels under a previously missing photographic disturbance. See [the renderer controls](synthetic-training.md#controlled-photographic-interventions), [measurements](glare-classification.json), and the local experiment at `tmp/heart-learning/glare-colors-v1/`.
+The reusable change is an optional localized glare intervention in the synthetic renderer and a `glare` replay profile. They provide known material labels under a previously missing photographic disturbance. See [the renderer controls](synthetic-training.md#controlled-photographic-interventions), measurements (`glare-classification.json`, removed), and the local experiment at `tmp/heart-learning/glare-colors-v1/`.
 
 ## Controlled inputs
 
@@ -69,7 +69,7 @@ The lattice is an especially useful counterexample to selecting whichever classi
 
 Repository verification passed: 855 application tests, one existing skipped test, and all 688 serial inverse tests. Check reported zero errors and seven existing warnings; lint and build passed. The focused glare tests also verify increasing photographic brightness, unchanged material targets, input validation and byte-identical default/zero-glare renders. The archive contains 1,983 files; every member was re-read and hash-verified. That verifies archive integrity, not a fresh execution of every experiment.
 
-The local experiment retains the selection, generated inputs, production masks, per-image Gaussian parameters, calibrated variants, independent renderings, and full fitting reports. Its archived inventory and repository checks are recorded in [the evidence file](glare-classification.json). Default dataset generation still produces the previous image and label bytes; the glare intervention is opt-in.
+The local experiment retains the selection, generated inputs, production masks, per-image Gaussian parameters, calibrated variants, independent renderings, and full fitting reports. Its archived inventory and repository checks are recorded in the evidence file (`glare-classification.json`, removed). Default dataset generation still produces the previous image and label bytes; the glare intervention is opt-in.
 
 ```sh
 node scripts/inverse/datasets/synthetic-intervention-probe.mjs \
@@ -83,3 +83,9 @@ node scripts/inverse/datasets/synthetic-intervention-probe.mjs \
 The experiment scripts under `tmp/heart-learning/glare-colors-v1/` are preserved in the archive with their hashes. They use the current local NumPy, SciPy, Pillow and canvas installations. `prepare.mjs` runs production conversion, `score.py` fits/scores covariance models, `calibrate.py` tries the two alternative decision thresholds, `diagnose.py` measures boundary displacement, `components.py` diagnoses the two background collapses, and `fit.mjs` performs the nine fixed-mask solves. Replay these experimental scripts in an isolated copy: they retain experiment-specific paths, and some overwrite intermediate outputs. The archive preserves the recorded run. Deadline-limited fitting may select a different final refinement stage on another run.
 
 A promising next direction is a spatial illumination model that preserves transitions between material colors, or learned boundary proposals trained with these controlled corruptions. Both need fixed-artwork scoring and paired regression checks. This experiment provides evidence against replacing two-means with a global Gaussian posterior or choosing color models solely by their downstream fitting error.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/glare-classification.json`

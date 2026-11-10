@@ -17,9 +17,15 @@ Eight analytic tests cover these cases, including an all-missing body, hiding
 exactly the wrong material prediction, local versus global label exchange,
 fractional boundaries, unknown pixels and invalid data. All **90 offline
 learning tests across fifteen modules** pass, including the concurrent source
-profile-preservation fix. The [evidence record](material-evaluation.json) pins
+profile-preservation fix. The evidence record (`material-evaluation.json`, removed) pins
 the sources and complete log.
 
 These metrics measure partial known regions. They do not establish complete
 boundary localization, a correct crop, or valid reconstructed cutting paths.
 No new model has been trained or deployed by this change.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/material-evaluation.json`

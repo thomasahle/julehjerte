@@ -3,7 +3,7 @@
 The previous star diagnosis found a manually added 3+4 hypothesis with lower
 final error than the original shortlist. A bounded, image-only expansion was
 therefore tested before changing production count selection. Its measurements
-are retained in [COUNT-NEIGHBOURS.json](COUNT-NEIGHBOURS.json).
+are retained in `COUNT-NEIGHBOURS.json` (removed).
 
 The experiment first runs the unchanged initializer. If opposite inset bands
 have no consistent count pair and the best initialized grid exceeds the ordinary
@@ -54,3 +54,9 @@ The screening times (about 0.91–1.17 seconds to initialize original plus extra
 hypotheses) are individual measurements, not a repeated speed study. Final
 photographic mask error is not ground-truth cutting-path recovery. The more
 extensive earlier speed comparison remains in [COUNT-STRATEGIES.md](COUNT-STRATEGIES.md).
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/COUNT-NEIGHBOURS.json`

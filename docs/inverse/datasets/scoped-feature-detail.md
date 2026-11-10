@@ -67,4 +67,10 @@ nice -n 15 node --test --test-concurrency=1 \
   scripts/inverse/coverage-recovery.test.mjs
 ```
 
-[Measurements and evidence hashes](scoped-feature-detail.json).
+Measurements and evidence hashes (`scoped-feature-detail.json`, removed).
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/scoped-feature-detail.json`

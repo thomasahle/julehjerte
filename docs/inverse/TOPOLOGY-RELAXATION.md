@@ -132,7 +132,7 @@ All **718 application tests and 239 engine tests** pass. Lint and the production
 build pass, and Svelte checking reports zero errors and seven existing warnings.
 The hat preview and drawing, the star preview, and the old/new house previews
 were visually inspected. All **49 served engine files** match the benchmark
-sources. [TOPOLOGY-RELAXATION-VALIDATION.json](TOPOLOGY-RELAXATION-VALIDATION.json)
+sources. `TOPOLOGY-RELAXATION-VALIDATION.json` (removed)
 records source hashes, actual reference HTTP requests, all per-case results,
 the rejected formulations and the invalid first comparison.
 
@@ -143,3 +143,9 @@ INVERSE_TEST_URL=http://127.0.0.1:5232 \
   INVERSE_TEST_REPEATS=5 INVERSE_TEST_ENGINE_REFERENCE=ab91958 \
   node scripts/inverse/paint-browser-test.mjs
 ```
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/TOPOLOGY-RELAXATION-VALIDATION.json`

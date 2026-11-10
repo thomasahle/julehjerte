@@ -81,18 +81,26 @@ node scripts/inverse/diagnostics/final-return-repair-study.mjs \
 
 The study verifies runtime hashes, source geometry immutability and the
 independent render of the reconstructed graph. Its report records failed repair
-attempts as well as selected candidates. The [evidence record](final-return-symmetry.json)
+attempts as well as selected candidates. The evidence record (`final-return-symmetry.json`, removed)
 contains the before/after symmetry diagnosis, all corpus outcomes, source hashes
 and retained artifact hashes.
 
 Eight focused projection/representation tests pass, and focused ESLint passes.
 The preceding full QA passed 832 inverse and 855 application tests; it predates
-this symmetry change and is recorded [separately](final-return-repair-validation.json).
+this symmetry change and is recorded separately (`final-return-repair-validation.json`, removed).
 Production integration still needs a consistent editor validator and fresh
 end-to-end speed/quality checks within the existing budgets.
 
-The subsequent [complete QA](final-return-symmetry-validation.json) passes all
+The subsequent complete QA (`final-return-symmetry-validation.json`, removed) passes all
 833 inverse tests and 855 application tests (one existing skip), type checking,
 lint and the production build. All recorded source hashes remain unchanged
 through the run. This covers the committed repair and regression cases; it does
 not certify the later editor prototype or fresh integrated reconstruction.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/final-return-symmetry.json`
+- `docs/inverse/datasets/final-return-repair-validation.json`
+- `docs/inverse/datasets/final-return-symmetry-validation.json`

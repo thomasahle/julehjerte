@@ -104,7 +104,7 @@ regressions. Type checking reports zero errors and seven existing warnings; lint
 and the production build pass. The application tests and browser checks were
 rerun after the control fixes. The Node benchmarks use the same unchanged engine
 sources, and all **50 served engine files** match their hashes.
-[ANTI-SHARING-VALIDATION.json](ANTI-SHARING-VALIDATION.json) records the source,
+`ANTI-SHARING-VALIDATION.json` (removed) records the source,
 artifact and exported-geometry hashes, numerical comparisons and timings.
 
 ```sh
@@ -120,3 +120,9 @@ selects the real **Free** border and between-lobes **Anti** controls, and reads
 the actual worker result and downloaded editable SVG. It requires the requested
 symmetry and shared controls to survive conversion, along with the existing
 image-fidelity, crossing, spacing and export checks.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/ANTI-SHARING-VALIDATION.json`

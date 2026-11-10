@@ -7,7 +7,7 @@ repairs at forty-step checkpoints. Exactly shared and reversed controls receive
 accumulated Bernstein coefficients. Fixed coordinates and the ordinary final
 geometry, paper, image and symmetry checks remain in force.
 
-The [evidence record](short-return-active-forces.json) preserves the outputs,
+The evidence record (`short-return-active-forces.json`, removed) preserves the outputs,
 source hashes and visual review. Two finite-difference/invariance tests pass. Fresh paired fits use the same
 source pixels, fixed crops, classified masks, time allowances and cached
 absolute-turning checker. They start from image-derived grids, not saved paths.
@@ -58,3 +58,9 @@ and 320 refinement steps with every time cap removed in both arms. Both select
 All eight representations pass experimental geometry. This isolates no benefit
 at that late stage; the fresh whole-pipeline difference may arise earlier in
 routing/refinement and does not prove that every stage benefits from the force.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/short-return-active-forces.json`

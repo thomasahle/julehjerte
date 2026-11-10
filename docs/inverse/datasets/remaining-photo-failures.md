@@ -92,7 +92,7 @@ that the preceding crop preserved the photographed design.
 
 ## Evidence and next work
 
-The [frozen record](remaining-photo-failures.json) pins 248 local artifacts,
+The frozen record (`remaining-photo-failures.json`, removed) pins 248 local artifacts,
 including the five executable prototypes, all forty crop-probe records, nine
 complete fitting/export replays, the pre-fit selection rule and the visual
 review. Data live under `tmp/heart-learning/remaining-photo-failures-v1/`.
@@ -113,3 +113,9 @@ for crop candidates, photographic classification that retains the bauble's
 pale frame, and routing initialization that can tolerate missing or noisy
 border transitions without changing the input artwork. Santa is now a concrete
 fixed-crop case for that last investigation.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/remaining-photo-failures.json`

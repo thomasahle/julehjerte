@@ -61,7 +61,7 @@ rejected in 0.061 and 0.016 seconds. These were finite candidate-graph failures,
 not HiGHS timeouts or proofs that the patterns cannot be woven. Coarsening must
 preserve necessary routing choices before this approach can be reliable.
 
-Complete experiment records are in `HUNODAN-COARSE-MILP.json`. The module is an
+Complete experiment records are in `HUNODAN-COARSE-MILP.json` (removed). The module is an
 experiment and is not selected by the website. Further seed ranking,
 original-resolution refinement and timing work is ongoing.
 
@@ -71,7 +71,7 @@ All 22 cases pass in `tmp/inverse-speed/native-integrated`: 3.47–9.49 seconds,
 median 7.67 seconds. Every case retains or improves its release error; the
 maximum is unchanged at 1.776%, and median error is 0.647%. All 22 keep their
 release slit counts and pass geometry, guarded paper and feature checks.
-`HUNODAN-SPEED-VALIDATION.json` records every result and its provenance.
+`HUNODAN-SPEED-VALIDATION.json` (removed) records every result and its provenance.
 
 The final policy completes every count/phase seed, gives the best three a short
 grid refinement, then concentrates free-curve fitting on the strongest one.
@@ -104,7 +104,7 @@ The full Chromium batch met all error, geometry and paper requirements on
 22/22 designs. Twenty finished below 10 seconds. Two timing overruns (10.13 s
 and 11.54 s) passed replays at 6.89 s and 9.07 s. These are observed local
 timings, not a guarantee for every machine or background workload. The first
-batch and replays are both retained in `HUNODAN-SPEED-BROWSER.json`.
+batch and replays are both retained in `HUNODAN-SPEED-BROWSER.json` (removed).
 
 Firefox initially exhausted its short anchor MILP budget. Keeping the original
 60 visible edges and first trying eight connector neighbors with one variant
@@ -149,3 +149,11 @@ every original mask pixel. All downloaded test ZIPs were independently checked.
 | hjsta-03 | 9.19 | 1.268% | 1.235% |
 | hjsta-04 | 9.08 | 0.617% | 0.509% |
 | hjsta-05 | 9.49 | 1.273% | 1.079% |
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/HUNODAN-COARSE-MILP.json`
+- `docs/inverse/HUNODAN-SPEED-VALIDATION.json`
+- `docs/inverse/HUNODAN-SPEED-BROWSER.json`

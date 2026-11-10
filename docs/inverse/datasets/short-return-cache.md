@@ -22,7 +22,7 @@ It fails when the cache is deliberately made global: stale roots change the
 reported turning angles. Earlier bird-only perturbations did not expose that
 bug; the retained regression uses the captured gift's curved spans.
 
-The [evidence record](short-return-cache.json) pins the comparison, source files,
+The evidence record (`short-return-cache.json`, removed) pins the comparison, source files,
 focused test log and deliberately failing cache-lifetime control. The reusable
 comparison accepts an earlier predicate source and a saved native corpus:
 
@@ -38,7 +38,14 @@ The output directory must be new. This numerical speedup does not resolve the
 experimental rule's physical interpretation or the current editor's subdivision
 inconsistency. Fresh fitting and actual SVG checks remain separate gates.
 
-The [complete repository run](short-return-cache-validation.json) passes type
+The complete repository run (`short-return-cache-validation.json`, removed) passes type
 checking, lint, **855 application tests** (one existing skip), **830 inverse
 tests** and build. All 825 recorded source-file hashes match. The app runtime
 remains unchanged; these are not new browser workflow results.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/short-return-cache.json`
+- `docs/inverse/datasets/short-return-cache-validation.json`

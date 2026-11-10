@@ -14,4 +14,10 @@ Evidence:
 - `tmp/inverse-browser/2026-09-07T13-57-57-422Z-examples/results.json`
 - `tmp/inverse-browser/2026-09-07T13-57-57-422Z-locator/results.json`
 
-Each directory retains screenshots and failures are retained in earlier timestamped runs. `VALIDATION.json` records current hashes and detailed checks. These fixes do not change the numerical reconstruction success rate documented in `LOCATOR.md`.
+Each directory retains screenshots and failures are retained in earlier timestamped runs. `VALIDATION.json` (removed) records current hashes and detailed checks. These fixes do not change the numerical reconstruction success rate documented in `LOCATOR.md`.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/VALIDATION.json`

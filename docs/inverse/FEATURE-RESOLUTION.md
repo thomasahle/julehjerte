@@ -218,7 +218,7 @@ existing datasets.
 All **855 application tests** (one existing skip) and **580 inverse tests** pass.
 Type checking reports zero errors and seven existing warnings; lint and build
 pass. The failing new browser cases are reported separately, not hidden by
-those successful automated checks. See the [measurement ledger](FEATURE-RESOLUTION-VALIDATION.json).
+those successful automated checks. See the measurement ledger (`FEATURE-RESOLUTION-VALIDATION.json`, removed).
 The local preview serves 65 checked engine/worker JavaScript assets with hashes
 identical to the source tree. No changes were pushed or deployed.
 
@@ -226,3 +226,9 @@ Dataset, editable-export and browser measurements are recorded separately from
 these focused tests. A low mask error or an engine-only pass is not an editable
 template success. Paper measurements remain nominal geometric checks; these
 templates have not been physically assembled.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/FEATURE-RESOLUTION-VALIDATION.json`

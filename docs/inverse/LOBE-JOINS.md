@@ -101,6 +101,12 @@ node scripts/inverse/paint-browser-test.mjs
 
 Raw screenshots and reports live in `tmp/lobe-render-browser/` and
 `tmp/lobe-paint-browser/`. Check logs are `tmp/lobe-{test,check,lint,build}.log`.
-The committed summary is [LOBE-JOINS-VALIDATION.json](LOBE-JOINS-VALIDATION.json).
+The committed summary is `LOBE-JOINS-VALIDATION.json` (removed).
 The implementation commit is `c82131f` on `codex/solver-initialization`.
 Nothing was pushed or deployed; the main and redesign checkouts were not edited.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/LOBE-JOINS-VALIDATION.json`

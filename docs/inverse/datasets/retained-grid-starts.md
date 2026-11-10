@@ -74,7 +74,7 @@ Next, each saved geometry receives the same 160-step continuation against the **
 
 This supplies a checked example within the existing limits for that mask. It supports investigating the starting shape, curve routing and parameterization; all starts have three cuts per sheet, but their fitted shapes and segment counts differ. It does not prove the crop is physically correct or that a fresh solver can discover that example within ten seconds. The diagnostic uses saved image-derived fits, before the normal final cleanup, and is **not** a production warm start or an additional benchmark success. The three resulting geometries reproduce byte-for-byte from the tracked study scripts; adding the finer renderer audit leaves them unchanged.
 
-The [machine-readable evidence](retained-grid-starts.json) preserves the paired inputs and scores, rejected first proposal, final test results, browser checks and these continuation controls. The local artifact manifest records checksums for the raw reports and generated files.
+The machine-readable evidence (`retained-grid-starts.json`, removed) preserves the paired inputs and scores, rejected first proposal, final test results, browser checks and these continuation controls. The local artifact manifest records checksums for the raw reports and generated files.
 
 ## Reproduction
 
@@ -96,3 +96,9 @@ node scripts/inverse/crop-transfer-refinement-study.mjs
 ```
 
 The paper and crop-transfer studies use saved image-derived fits. They cannot establish fresh solve latency or initialization success. Raw probes, continuations, fresh benchmarks and logs are retained under `tmp/heart-learning/near-miss-paper-v1/`.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/retained-grid-starts.json`

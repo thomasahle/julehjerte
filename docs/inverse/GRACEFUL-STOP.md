@@ -119,7 +119,7 @@ in `f6356a9` and the isolated control-test cache in `1bce9f0`. No push or deploy
 was made. The checked preview is <http://127.0.0.1:5232/en/editor/paint/>.
 
 The full regression measurements and served-source hashes are recorded in
-[GRACEFUL-STOP-VALIDATION.json](GRACEFUL-STOP-VALIDATION.json).
+`GRACEFUL-STOP-VALIDATION.json` (removed).
 
 ```sh
 node --test scripts/inverse/{progress,worker-controller,compute-worker,stopped}.test.mjs
@@ -135,3 +135,9 @@ Browser replays also take `INVERSE_TEST_URL` for the preview and
 `PLAYWRIGHT_MODULE` for the locally installed standalone Playwright module.
 The two Node benchmarks include checkpoint serialization/retention but exclude
 worker startup and message transfer; the browser workflows include both.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/GRACEFUL-STOP-VALIDATION.json`

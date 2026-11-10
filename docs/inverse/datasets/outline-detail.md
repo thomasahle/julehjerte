@@ -154,7 +154,7 @@ node --test --test-concurrency=1 \
   scripts/inverse/clamped-features.test.mjs
 ```
 
-The [machine-readable audit](outline-detail.json) records the paired inputs,
+The machine-readable audit (`outline-detail.json`, removed) records the paired inputs,
 source and artifact hashes, rejected experiments and completed validation:
 
 - All 740 inverse tests and 855 application tests pass; one existing application
@@ -173,3 +173,9 @@ source and artifact hashes, rejected experiments and completed validation:
 
 The preview remains at `http://127.0.0.1:5232/editor/mal/`. No physical assembly
 test is claimed.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/outline-detail.json`

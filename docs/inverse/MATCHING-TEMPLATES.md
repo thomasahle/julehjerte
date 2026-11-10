@@ -76,6 +76,12 @@ The full dataset replay includes checkpoint retention. All **22 Hunodan** and
 release. Their median/maximum Node times are **4.95/8.04 seconds** and
 **4.51/7.60 seconds**, respectively. The ordinary dataset keeps its existing
 quality limits; the over-threshold policy cases are separate controlled tests.
-[MATCHING-ALLOWANCE-VALIDATION.json](MATCHING-ALLOWANCE-VALIDATION.json) records
+`MATCHING-ALLOWANCE-VALIDATION.json` (removed) records
 the measurements, source hashes and raw artifact hashes. No push or deployment
 was made; the preview is <http://127.0.0.1:5232/en/editor/paint/>.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/MATCHING-ALLOWANCE-VALIDATION.json`

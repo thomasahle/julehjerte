@@ -88,7 +88,7 @@ under the wall-clock budget, so that small difference is not attributed to the
 new successful-candidate exit rule. All 29 generated pairs still pass nominal
 geometry and paper checks, including those whose image fidelity needs review.
 
-[Machine-readable measurements](COUNT-FINALISTS-VALIDATION.json) retain the
+Machine-readable measurements (`COUNT-FINALISTS-VALIDATION.json`, removed) retain the
 individual outcomes, original source hashes, changed engine hash, browser
 counterfactual and stage-specific error measurements. The broad corpus's pass
 rate has not increased: this fix improves one previously passing candidate's
@@ -123,7 +123,14 @@ INVERSE_TEST_URL=http://127.0.0.1:5232 INVERSE_TEST_BROWSERS=chromium,webkit INV
 ```
 
 The previous production full-photo result is recorded in
-`docs/inverse/CURVE-DEGREES-VALIDATION.json`; its source commit is
+`docs/inverse/CURVE-DEGREES-VALIDATION.json` (removed); its source commit is
 `5c8d753a2ef03ecb702290aebdc112359ef3cf57`. The isolated known-count probe is a
 diagnostic only; correctness is enforced by the normal image-only regression
 and full production replays.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/COUNT-FINALISTS-VALIDATION.json`
+- `docs/inverse/CURVE-DEGREES-VALIDATION.json`

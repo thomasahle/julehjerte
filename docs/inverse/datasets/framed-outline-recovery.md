@@ -162,12 +162,19 @@ remaining issue. No artwork or solver score selected either crop.
 The complete inverse suite is currently running. Its final result and a preview
 refresh are still pending. Source hashes are pinned for that run. Exact release
 measurements and artifact hashes are in
-[framed-outline-integration.json](framed-outline-integration.json).
+`framed-outline-integration.json` (removed).
 
 Investigate renderer-dependent enclosure diagnostics separately. Physical
 cutting, threading and assembly remain untested.
 
 Exact measurements, input and artifact hashes, the retained raster failures,
-and polygon results are in [framed-outline-recovery.json](framed-outline-recovery.json).
+and polygon results are in `framed-outline-recovery.json` (removed).
 Local diagnostic code and raw artifacts remain under
 `tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/`.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/framed-outline-integration.json`
+- `docs/inverse/datasets/framed-outline-recovery.json`

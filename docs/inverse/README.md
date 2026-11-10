@@ -30,7 +30,7 @@ It also separates the unresolved crop and color-classification failures.
 Current full-pipeline investigations are recorded in
 [FEATURE-BUDGET.md](FEATURE-BUDGET.md) (giving feature-preserving template layouts
 time to refine without cutting off useful traced routing),
-[SHARING-SOURCE-VALIDATION.json](SHARING-SOURCE-VALIDATION.json) (checking each
+`SHARING-SOURCE-VALIDATION.json` (removed) (checking each
 shared-cut repair against the original mask, and separating crop, classification
 and template-fitting failures),
 [FEATURE-RETRY.md](FEATURE-RETRY.md) (recovering an opening lost after a one-pixel
@@ -87,7 +87,7 @@ reference information to selected experimental variants. **These results are
 not blind reconstructions, a trained network, or new application success rates.**
 The initial study did not change the browser engine. The experiment and five
 regressions are committed in `e8bc579`; per-case outcomes, exclusions, timings, source hashes and
-export hashes are in [GRAPH-ORACLE-VALIDATION.json](GRAPH-ORACLE-VALIDATION.json).
+export hashes are in `GRAPH-ORACLE-VALIDATION.json` (removed).
 
 All 38 gallery identifiers were attempted. Twenty-four imported square
 references passed the existing geometry/paper checks and reproduced the gallery
@@ -184,7 +184,7 @@ both `buildGraph` and the new adjacency helper for that case. Instrumentation
 substantially slows that diagnostic, so its timing and error are excluded from
 the production benchmark. The variation is retained in the evidence rather
 than described as unchanged quality. See
-[CONNECTOR-SUBDIVISION-VALIDATION.json](CONNECTOR-SUBDIVISION-VALIDATION.json).
+`CONNECTOR-SUBDIVISION-VALIDATION.json` (removed).
 
 Validation passed all 601 inverse tests and 855 application tests (one existing
 skip), lint and the production build. Type checking has no errors and seven
@@ -249,7 +249,7 @@ and seven existing warnings. Fourteen Chromium/WebKit workflows pass, including
 the star, closed circle, independent-sheet free-border hat, Viking and Stonehenge
 photos, Hunodan `hjfig-05`, and bird mask. All 65 served engine/worker JavaScript
 hashes match the source. See the per-case results and unchanged acceptance
-criteria in [CLOSED-BOUNDARY-VALIDATION.json](CLOSED-BOUNDARY-VALIDATION.json).
+criteria in `CLOSED-BOUNDARY-VALIDATION.json` (removed).
 
 ### Follow-up: boundary quality versus junction placement
 
@@ -347,7 +347,7 @@ covering star, circle, independently fitted free-border hat, Viking, Stonehenge,
 Hunodan `hjfig-05` and bird mask. All 65 served engine/worker files match the
 validated source hashes. Per-case outcomes, timings, source hashes, input
 identity checks and the candidate-pool audit are recorded in
-[BOUNDARY-JUNCTION-VALIDATION.json](BOUNDARY-JUNCTION-VALIDATION.json).
+`BOUNDARY-JUNCTION-VALIDATION.json` (removed).
 
 ### Follow-up: retry an exhausted graph with more useful neighbor slots
 
@@ -380,7 +380,7 @@ release replay was deliberately stopped during Hunodan testing and is not used
 as completed release evidence. All 192 visible boundary variants are unchanged.
 The rejected experiment, paired outcomes, solver histories for changed cases,
 and restored-connector diagnostic are preserved in
-[CONNECTOR-EXPANSION-EXPERIMENT.json](CONNECTOR-EXPANSION-EXPERIMENT.json).
+`CONNECTOR-EXPANSION-EXPERIMENT.json` (removed).
 
 The next implementation (`ca030d4`) preserves the established smaller graph
 first. Only a `candidate_graph_exhausted` result, with time remaining, permits a
@@ -493,7 +493,7 @@ application budgets rather than the ten-second benchmark budget. Visual review
 still finds fine seams in the Viking and missing small rays in Stonehenge;
 passing aggregate image error is not sufficient evidence of motif fidelity.
 The complete results, paired repeats, source hashes and limitations are recorded
-in [CONNECTOR-RETRY-VALIDATION.json](CONNECTOR-RETRY-VALIDATION.json).
+in `CONNECTOR-RETRY-VALIDATION.json` (removed).
 
 ### Candidate learning tasks
 
@@ -685,13 +685,13 @@ PLAYWRIGHT_MODULE=/tmp/juleflet-browser/node_modules/playwright/index.mjs npm ru
 
 The browser test defaults to Chromium and Firefox against `http://127.0.0.1:4173`. Override with `INVERSE_TEST_URL` and `INVERSE_TEST_BROWSERS` (comma-separated `chromium,firefox,webkit`). It uses real HTTP assets and no solver fixture injection. It checks both languages, fresh SVG and PNG solves, file/ZIP/print export, four-corner cropping, the simplification preset, cancellation/restart, saved-template audit labelling, rejection of active SVG, explicit timeouts, responsive layout and existing gallery/editor navigation. Each run preserves reports, downloads, screenshots and failures under a fresh `tmp/inverse-browser/<run-id>/` directory. External analytics and the GitHub star widget are blocked during these tests. Restart the preview server after rebuilding so its cached asset manifest matches the new files.
 
-The imported test counts are engineering regressions, not counts of successfully reconstructed gallery designs. `PROVENANCE.json` records the source archive and original/integrated asset hashes. `VALIDATION.json` records this integration's checks and browser evidence.
+The imported test counts are engineering regressions, not counts of successfully reconstructed gallery designs. `PROVENANCE.json` records the source archive and original/integrated asset hashes. `VALIDATION.json` (removed) records this integration's checks and browser evidence.
 
 ## Photo comparisons
 
 `npm run benchmark:inverse:photos` downloads seven finished-heart photos from the two sites suggested during testing and compares the detailed and simplified presets. `scripts/inverse/photo-cases.json` records source URLs, manually selected corners and small crop insets used to exclude outer paper/background fringes. Both presets receive the same effective crop. No cutting templates are inputs. Runs preserve original photo hashes, effective crops, engine hashes, settings, target previews, successful exports and every failure in a fresh `tmp/inverse-photo-benchmark/<run-id>/` directory. Photos are local test material and are not bundled into the public site.
 
-The initial recorded run below predates crop-border stabilization. It uses a five-second solver budget, 100 mm overlap, 400-pixel tracing, strict material checks, no hidden-cut rounding and zero perturbation trials. `INVERSE_PHOTO_SECONDS` changes the budget. Times below include preparation and checks, so they can exceed the solver budget. The current script explicitly enables the 1 mm border band; its later run and outcomes are recorded in `VALIDATION.json`.
+The initial recorded run below predates crop-border stabilization. It uses a five-second solver budget, 100 mm overlap, 400-pixel tracing, strict material checks, no hidden-cut rounding and zero perturbation trials. `INVERSE_PHOTO_SECONDS` changes the budget. Times below include preparation and checks, so they can exceed the solver budget. The current script explicitly enables the 1 mm border band; its later run and outcomes are recorded in `VALIDATION.json` (removed).
 
 | Photo | Detailed segments / result | Simplified segments / result |
 | --- | --- | --- |
@@ -826,3 +826,16 @@ still work. A timed-out Bézier fit provides no impossibility certificate. A
 future diagnostic should distinguish an exact source-boundary obstruction,
 a failure under the chosen physical width, an exhausted candidate graph and an
 unresolved search, and show the offending geometry when claiming an obstruction.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/SHARING-SOURCE-VALIDATION.json`
+- `docs/inverse/GRAPH-ORACLE-VALIDATION.json`
+- `docs/inverse/CONNECTOR-SUBDIVISION-VALIDATION.json`
+- `docs/inverse/CLOSED-BOUNDARY-VALIDATION.json`
+- `docs/inverse/BOUNDARY-JUNCTION-VALIDATION.json`
+- `docs/inverse/CONNECTOR-EXPANSION-EXPERIMENT.json`
+- `docs/inverse/CONNECTOR-RETRY-VALIDATION.json`
+- `docs/inverse/VALIDATION.json`

@@ -73,8 +73,14 @@ These repeat existing QA cases; the gold mask's crop remains annotation-assisted
 The 113 application/static source files pinned by the earlier full release are
 unchanged. Nothing has been pushed or deployed.
 
-The [evidence record](synthetic-radial-pipeline.json) retains corrected per-case
+The evidence record (`synthetic-radial-pipeline.json`, removed) retains corrected per-case
 scores, mask/cut identity checks, editable checks, source hashes, browser results
 and 386 local artifacts. The [generation record](synthetic-radial-motifs.json)
 preserves the earlier checkpoint when full QA was still pending. No neural model
 was trained or deployed, and physical assembly remains untested.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/synthetic-radial-pipeline.json`

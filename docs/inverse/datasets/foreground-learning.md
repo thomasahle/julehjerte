@@ -2,7 +2,7 @@
 
 The pretrained model improved synthetic paper segmentation, but this experiment **does not justify changing the application**. It produced no supported crops on the 31 real benchmark cases. The production algorithms and the previously established 24/31 checked-template result remain unchanged; this is not a new full solver benchmark claiming that rate.
 
-The [machine-readable evidence](foreground-learning.json) records both runs, input and checkpoint hashes, all crop outcomes, and independent reconstruction scores. Local artifacts, model weights, probabilities and the comparison gallery are in `tmp/heart-learning/foreground-v1/`. The model is not exported to ONNX or loaded by the website.
+The machine-readable evidence (`foreground-learning.json`, removed) records both runs, input and checkpoint hashes, all crop outcomes, and independent reconstruction scores. Local artifacts, model weights, probabilities and the comparison gallery are in `tmp/heart-learning/foreground-v1/`. The model is not exported to ONNX or loaded by the website.
 
 ## Training and selection
 
@@ -95,3 +95,9 @@ The checked evidence verifies 537 referenced model, probability and replay artif
 Validation passes **721 inverse tests, 855 application tests** (one existing skip), **38 offline Python tests**, lint and the build. Type checking has zero errors and seven existing warnings. Chromium loads all 43 gallery cases and 346 images without broken images or page errors, and opens the rebuilt paint page successfully. Three served core/locator modules match the tested source hashes.
 
 The first browser check caught a stale dynamic entry in the long-running preview after the build; restarting the owned server resolved it. Visual review also caught opposite black/white conventions in the initial mask and woven previews. The final gallery uses dark paper A in both, with 62 display-only mask copies independently verified pixel-by-pixel. Original mask files, targets and reported errors are unchanged. Both corrections and the initial failure log remain recorded.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/foreground-learning.json`

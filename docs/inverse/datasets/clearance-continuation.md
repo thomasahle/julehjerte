@@ -39,7 +39,13 @@ All 23 focused tests pass, including fresh Viking, stacked-heart and shifted
 leaf fits, the delayed comparison, and the formerly failing handoff test.
 Type checking, lint, build and all 874 application tests pass (one existing
 skip). All 1,040 source hashes match after the checks. The
-[measurements](clearance-continuation.json) distinguish this fixed-work
+measurements (`clearance-continuation.json`, removed) distinguish this fixed-work
 regression from real-time fresh fitting. These results do not establish that
 the remaining full-suite failures or the Hunodan browser speed misses are
 resolved. The preview remains on its previously validated snapshot.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/clearance-continuation.json`

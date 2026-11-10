@@ -158,6 +158,12 @@ build. Served bytes for all three modified runtime modules equal the tested
 source hashes. Local diagnostic scripts, all 24 routing attempts, fifteen
 refinement experiments, full export audits and release logs are under
 `tmp/heart-learning/routing-perturbations-v1/`. The committed
-[evidence ledger](clearance-routing-repair.json) records the inputs, comparisons,
+evidence ledger (`clearance-routing-repair.json`, removed) records the inputs, comparisons,
 source hashes, browser results and local artifact hashes. Nothing was pushed
 or deployed.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/clearance-routing-repair.json`

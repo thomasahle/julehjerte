@@ -34,7 +34,7 @@ for channel; 87.43% versus 84.44% for frame). Together these scores show why
 one generous tolerance is insufficient to characterize the result. They do
 not support replacing the geometric preprocessing with this neural model.
 
-[Full metric summaries and hashes](boundary-localization-results.json) retain
+Full metric summaries and hashes (`boundary-localization-results.json`, removed) retain
 all three tolerances, precision/recall and macro scores. Per-view records and
 the first six comparisons from each split are in
 `tmp/heart-learning/localization-v3/`. Old reports remain intact. The recipe
@@ -106,7 +106,7 @@ in 13/52, 7/128 and 0/128 views. False proposals remain counted separately.
 Boundary localization also gets worse with the balanced loss: its three-pixel
 thin F1 is 97.82%, 87.95% and 95.40% on those splits, respectively. This is a
 tradeoff between the two jointly trained heads, not a universal improvement.
-The [committed summaries and hashes](junction-loss-results.json) retain the
+The committed summaries and hashes (`junction-loss-results.json`, removed) retain the
 full comparison; per-view records are at `tmp/heart-learning/localization-v5/`.
 
 ## Training coverage gap
@@ -175,9 +175,9 @@ junctions and false proposals still make this unsuitable as a hard graph
 filter. The result favors investigating learned corner proposals alongside
 the existing trace, not replacing the geometric boundary representation.
 
-[Comparison records](corner-training-results.json) retain model/checkpoint
+Comparison records (`corner-training-results.json`, removed) retain model/checkpoint
 hashes, the complete training history, all three localization tolerances and
-native inference timings. [Coverage records](corner-training-coverage.json)
+native inference timings. Coverage records (`corner-training-coverage.json`, removed)
 retain per-design geometry hashes and junction types. Exact equality checks
 confirm the original evaluation design lists and the independently rerun trace
 and Harris baseline records. Full per-view results and first-six comparisons
@@ -237,8 +237,18 @@ The original objective remains the default `weighted-mse`. The experimental
 criterion and classical detector are offline tools; neither is exposed as a
 new user-facing mode.
 
-The final [validation record](localization-validation.json) includes all 31
+The final validation record (`localization-validation.json`, removed) includes all 31
 learning tests, 635 inverse tests, 855 application tests, 13 collector tests,
 type checking, lint and build. All passed; one application test is skipped
 and seven existing type-check warnings remain. All work is committed locally;
 no push or deployment was performed.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/boundary-localization-results.json`
+- `docs/inverse/datasets/junction-loss-results.json`
+- `docs/inverse/datasets/corner-training-results.json`
+- `docs/inverse/datasets/corner-training-coverage.json`
+- `docs/inverse/datasets/localization-validation.json`

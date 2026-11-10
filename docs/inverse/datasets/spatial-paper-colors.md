@@ -52,7 +52,7 @@ Paint normally resamples imports to 400 × 400. The browser test uploads the ori
 
 The 22-design Hunodan run passes all existing quality and speed criteria, with a maximum of 9.23 seconds and exactly the same independently rendered errors as the previous run. Check and lint pass; the application suite passes 855 tests with one existing skip, the inverse suite passes 698 tests, and the production build succeeds. Type checking reports zero errors and seven existing warnings. All five selected browser cases pass after correcting the anchor resampling assertion.
 
-Machine-readable evidence is in [spatial-paper-colors.json](spatial-paper-colors.json). Raw predictions, fixed inputs, rejected experiments, code snapshots, benchmark reports, screenshots and logs are under `tmp/heart-learning/spatial-colors-v1/`. The 337-pixel mask and provenance are committed under `scripts/inverse/fixtures/photographic-anchor-perturbation.*`.
+Machine-readable evidence is in `spatial-paper-colors.json` (removed). Raw predictions, fixed inputs, rejected experiments, code snapshots, benchmark reports, screenshots and logs are under `tmp/heart-learning/spatial-colors-v1/`. The 337-pixel mask and provenance are committed under `scripts/inverse/fixtures/photographic-anchor-perturbation.*`.
 
 ```sh
 node --test --test-concurrency=1 scripts/inverse/self-intersections.test.mjs scripts/inverse/anchor-perturbation.test.mjs
@@ -61,3 +61,9 @@ INVERSE_TEST_URL=http://127.0.0.1:5232 INVERSE_TEST_BROWSERS=chromium INVERSE_TE
 ```
 
 The browser harness needs Playwright and the local production preview. `PLAYWRIGHT_MODULE` can point to the existing workspace installation; no new package installation is needed. Timing evidence is specific to this machine and serial run. Passing numerical geometry/paper checks is not a physical assembly test.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/spatial-paper-colors.json`

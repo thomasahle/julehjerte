@@ -127,7 +127,7 @@ Fixed batches resolve the coarse-clock problem but can spend more time than
 needed on an already expensive individual gradient call. Future changes should
 measure that startup cost separately and preserve the exact-equality requirement.
 
-[GRADIENT-BACKENDS-VALIDATION.json](GRADIENT-BACKENDS-VALIDATION.json) records
+`GRADIENT-BACKENDS-VALIDATION.json` (removed) records
 per-case results, backend choices, before/after timings, source hashes and the
 retained initial benchmark. All **49 served engine files** match the sources
 used by the final benchmarks.
@@ -136,3 +136,9 @@ used by the final benchmarks.
 node --test scripts/inverse/kernel-choice.test.mjs scripts/inverse/native-boundary.test.mjs
 INVERSE_TEST_URL=http://127.0.0.1:5232 node scripts/inverse/boundary-kernel-benchmark.mjs
 ```
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/GRADIENT-BACKENDS-VALIDATION.json`

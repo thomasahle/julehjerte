@@ -33,6 +33,12 @@ the intended heart. Crop placement, paper/background classification and legal
 routing remain distinct possibilities. This diagnostic supplies no evidence for
 relaxing feature retention or automatically discarding those regions.
 
-The [measurements and hashes](remaining-photo-coverage.json) retain the executable
+The measurements and hashes (`remaining-photo-coverage.json`, removed) retain the executable
 local probe and its inputs. This is a three-case input diagnosis, not a new solve
 benchmark or an increase over 25/31.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/remaining-photo-coverage.json`

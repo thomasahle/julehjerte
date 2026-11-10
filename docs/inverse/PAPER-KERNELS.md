@@ -1,6 +1,6 @@
 # Faster guarded paper-core checks
 
-The [October clearance follow-up](datasets/paper-clearance-kernel.json) adds
+The October clearance follow-up (`paper-clearance-kernel.json`, removed) adds
 native paper-mask classification with JavaScript fallback for ambiguous threshold
 comparisons. Its current validation status is recorded separately. The timings
 and suite counts below describe the initial distance/component-kernel release.
@@ -157,7 +157,7 @@ JavaScript `Math.tanh`, to preserve the reference arithmetic. It accelerates
 the pixel surrogate when paired measurements show a gain and identical losses,
 predictions and gradients; other workloads retain JavaScript. Current numerical
 comparisons and the still-failing Linux photo regressions are recorded under
-`gridLossAcceleration` in [LINUX-CI-RECOVERY.json](LINUX-CI-RECOVERY.json).
+`gridLossAcceleration` in `LINUX-CI-RECOVERY.json` (removed).
 The historical browser results below do not validate this later change.
 
 All **24 production browser workflows** pass in Chromium 145, Firefox 146 and
@@ -174,7 +174,7 @@ same workflow using JavaScript, including SVG/PDF export. The Firefox hat
 preview and editable drawing, and the Chromium star preview, were also
 visually inspected.
 
-[PAPER-KERNELS-VALIDATION.json](PAPER-KERNELS-VALIDATION.json) records the timings,
+`PAPER-KERNELS-VALIDATION.json` (removed) records the timings,
 output hashes, backend choices, retained earlier runs and Firefox diagnosis.
 All **47 engine files** served by the final preview match the source hashes
 from the final audit comparisons and fresh-fit benchmarks.
@@ -193,3 +193,11 @@ These improvements preserve the guarded discrete paper model, which does not
 establish physical tear strength or assembly feasibility. The full fitter also
 remains deadline-dependent: identical validation results do not force identical
 final curves when more refinement can run within the available time.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/paper-clearance-kernel.json`
+- `docs/inverse/LINUX-CI-RECOVERY.json`
+- `docs/inverse/PAPER-KERNELS-VALIDATION.json`

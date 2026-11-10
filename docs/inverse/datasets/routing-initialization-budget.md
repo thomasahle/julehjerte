@@ -1,7 +1,7 @@
 # MILP clocks, initialization and rejected-candidate timing
 
 These are offline experiments based on `523c377`, not a new validated solver
-release. The [measurements](routing-initialization-budget.json) retain failures
+release. The measurements (`routing-initialization-budget.json`, removed) retain failures
 as well as successful trials. The production initialization and repair budgets
 remain unchanged; the separate cumulative-native-clock bug below is corrected.
 
@@ -94,3 +94,9 @@ The native-clock correction is the separate behavior change described above.
 The last fully validated complete-pipeline revision remains `99399ff`. Neither
 the 22-design Hunodan corpus nor the 31-photo corpus has been replayed with these
 experimental budgets.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/routing-initialization-budget.json`

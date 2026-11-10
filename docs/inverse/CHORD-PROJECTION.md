@@ -134,7 +134,13 @@ photograph decoding and independent export rendering are measured separately.
 The 18 established browser outputs also retain exactly the preceding geometry
 and source-image errors.
 
-[CHORD-PROJECTION-VALIDATION.json](CHORD-PROJECTION-VALIDATION.json) records the
+`CHORD-PROJECTION-VALIDATION.json` (removed) records the
 per-case browser results, original UI failure, source hashes and artifact
 hashes. All 60 served engine/worker source files match the benchmarked checkout.
 The preview remains at `http://127.0.0.1:5232/en/editor/paint/`.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/CHORD-PROJECTION-VALIDATION.json`

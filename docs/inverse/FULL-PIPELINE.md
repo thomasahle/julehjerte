@@ -67,7 +67,7 @@ web-photo selections and both supplied orange photographs, with automatic and
 manual diagnostic crops for the latter. Source fixtures were already committed;
 no reference cutting paths enter the solver.
 
-[Measurements](FULL-PIPELINE-VALIDATION.json) retain the exact crop coordinates,
+Measurements (`FULL-PIPELINE-VALIDATION.json`, removed) retain the exact crop coordinates,
 pass/failure stages and candidates. A passed template check is not a claim of
 recovering the original artwork or of physical assembly.
 
@@ -256,3 +256,9 @@ and sharp-feature recovery under paper-support constraints. These experiments
 distinguish the stages: a better crop solves the photographed tree in the
 diagnostic replay, while edge-noise recovery prevents tiny mask changes from
 unnecessarily discarding an otherwise useful topology seed.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/FULL-PIPELINE-VALIDATION.json`

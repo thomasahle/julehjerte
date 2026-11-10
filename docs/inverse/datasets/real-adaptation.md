@@ -190,7 +190,7 @@ the opportunity, not that production fallback policy.
 
 ## Evidence and QA
 
-The [evidence record](real-adaptation-results.json) pins the protocol, models,
+The evidence record (`real-adaptation-results.json`, removed) pins the protocol, models,
 source hashes, per-case segmentation and reconstruction measurements, both
 smoothing failures, and the positive/negative continuous-refinement controls.
 It verifies all 144 saved pipeline assets and records earlier diagnostic-harness
@@ -215,3 +215,9 @@ upload interaction. The rebuilt preview is running at
 `http://127.0.0.1:5232/editor/mal/`; served geometry, count-search and fitter files
 match the worktree. Models and routing repair remain offline. Nothing was pushed
 or deployed.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/real-adaptation-results.json`

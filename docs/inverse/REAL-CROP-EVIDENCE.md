@@ -120,7 +120,7 @@ node --test --test-concurrency=1 \
 ```
 
 Source hashes, saved corners, per-case outcomes, experiment inventory and
-validation are in [the evidence record](REAL-CROP-EVIDENCE.json).
+validation are in the evidence record (`REAL-CROP-EVIDENCE.json`, removed).
 
 Validation passed: 684 inverse tests, 855 application tests (one skipped),
 type checking, lint and the production build. Type checking retains seven
@@ -130,3 +130,9 @@ no JavaScript errors. The rendered report was also inspected visually.
 The local archive's 39 members and archive checksum were verified against
 its inventory; this is byte-integrity verification, not an execution replay
 of every rejected prototype.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/REAL-CROP-EVIDENCE.json`

@@ -192,11 +192,11 @@ pass, including both independent and matching free-border hats, whose exact
 shared spans survive conversion and export. The regular Hunodan benchmark's
 median is 4.944 s and its maximum is 8.370 s; all 22 errors are unchanged.
 
-[Follow-up measurements and source hashes](BORDER-FEATURE-VALIDATION.json)
+Follow-up measurements and source hashes (`BORDER-FEATURE-VALIDATION.json`, removed)
 record every photo, speed and browser outcome for this correction. Full local
 visual panels and exports are in `tmp/border-feature-web-all/report.html`.
 
-[Earlier routing-retention measurements](PROVISIONAL-ROUTING-VALIDATION.json)
+Earlier routing-retention measurements (`PROVISIONAL-ROUTING-VALIDATION.json`, removed)
 retain all 44 outcomes, the 22 speed checks, 12 browser runs and the diagnostic
 refinement probes from before the border-stability correction. Browser stage
 timings separate the original search cost from crop and renderer time.
@@ -219,6 +219,14 @@ INVERSE_TEST_URL=http://127.0.0.1:5232 INVERSE_TEST_BROWSERS=chromium,webkit INV
 Set `PLAYWRIGHT_MODULE` to an installed standalone Playwright module when needed.
 
 The previous complete pipeline baseline is recorded in
-[COUNT-FINALISTS-VALIDATION.json](COUNT-FINALISTS-VALIDATION.json), from commit
+`COUNT-FINALISTS-VALIDATION.json` (removed), from commit
 `ee468d2`. The image-only benchmark retains failed and uncertain cases in its
 denominator; a better approximation does not automatically increase its pass rate.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/BORDER-FEATURE-VALIDATION.json`
+- `docs/inverse/PROVISIONAL-ROUTING-VALIDATION.json`
+- `docs/inverse/COUNT-FINALISTS-VALIDATION.json`

@@ -56,7 +56,7 @@ The next routing experiment should therefore constrain graph growth—for exampl
 
 ## Verification and artifacts
 
-The [machine-readable report](feature-routing-perturbations.json) records source hashes, all experiment summaries, rejected-attempt provenance and verification results. The local directory `tmp/heart-learning/feature-perturbations-v1/` retains instrumented source copies, full seed coordinates, checkpoint diagnostics, exported debug curves and independent images. Invalid proposals are explicitly research artifacts.
+The machine-readable report (`feature-routing-perturbations.json`, removed) records source hashes, all experiment summaries, rejected-attempt provenance and verification results. The local directory `tmp/heart-learning/feature-perturbations-v1/` retains instrumented source copies, full seed coordinates, checkpoint diagnostics, exported debug curves and independent images. Invalid proposals are explicitly research artifacts.
 
 The actual cropped-mask replay uses the ordinary production fitter after the reporting change. It verifies mask hashes, unchanged source pixels, paper-resolution reporting and preservation of rejected checkpoint evidence. The earlier complete hard-photo benchmark remains **24/31**; this study does not claim another corpus improvement.
 
@@ -67,3 +67,9 @@ The Chromium bird-mask replay passes the ordinary import, worker, editable-templ
 The preview was restarted after building at `http://127.0.0.1:5232/`. Both advertised entry modules return HTTP 200, and the served fitter bytes match the committed source exactly. Verification logs, browser screenshots, exported templates and report hashes are included in the local artifact inventory.
 
 The [subsequent fitted-boundary rerouting study](fitted-boundary-rerouting.md) implements the smaller-graph experiment suggested here. It recovers the horizontal-shift case and also identifies and fixes a separate long-budget initialization problem found by browser QA. The failed experiments and unresolved results above remain historical evidence.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/feature-routing-perturbations.json`

@@ -92,7 +92,7 @@ away from the constraint; simply rejecting more checkpoints loses useful progres
 
 ## Reproduction and verification
 
-The [evidence record](self-return-subdivision.json) includes all sixty verdict
+The evidence record (`self-return-subdivision.json`, removed) includes all sixty verdict
 sequences, four fresh fits, four editable replays and 85 hashed local artifacts.
 The rejected prototype, isolated runtime and complete per-pair diagnostics remain
 under `tmp/heart-learning/self-return-subdivision-v1/`.
@@ -102,7 +102,7 @@ two new experimental subdivision checks. Completed repository QA passes all
 **824 inverse tests**, **855 application tests** (one existing skip), type
 checking, lint and build. The build assigned new bundle filenames; the owned
 preview was refreshed and all **thirteen Chromium flows** rerun successfully.
-The [validation record](self-return-subdivision-validation.json) verifies 814
+The validation record (`self-return-subdivision-validation.json`, removed) verifies 814
 source files and 153 served assets. The app runtime remains unchanged; neither
 experimental geometry rule is enabled in the preview.
 
@@ -114,3 +114,10 @@ node scripts/inverse/self-return-subdivision-study.mjs \
   --output=tmp/heart-learning/new-subdivision-study
 # Add --corpus=<saved release directory> to include its hunodan/ and photos/ exports.
 ```
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/self-return-subdivision.json`
+- `docs/inverse/datasets/self-return-subdivision-validation.json`

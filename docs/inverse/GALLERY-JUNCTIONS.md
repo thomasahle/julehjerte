@@ -3,7 +3,7 @@
 On 18 October 2026, the [live gallery](https://juleflet.dk/) showed 55 designs.
 Visual inspection and a numerical screen of their rendered SVG colour boundaries
 found no genuine interior junction of degree greater than four. The
-[snapshot](datasets/gallery-visible-junctions-2026-10-18.json) records every design,
+snapshot (`gallery-visible-junctions-2026-10-18.json`, removed) records every design,
 source hashes, method and maximum degree found. This is not an exact algebraic
 proof or an audit of minimum paper widths and physical assembly.
 
@@ -40,3 +40,9 @@ Inspection showed collinear retracing and differently parameterized overlapping
 straight segments, not six distinct visible branches. Straight-span normalization
 removed the false positives. Counting serialized segment ends or crossings of a
 fixed-size circle is therefore insufficient to certify a genuine junction.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/gallery-visible-junctions-2026-10-18.json`

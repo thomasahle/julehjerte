@@ -7,7 +7,7 @@ linked reports retain commands, measurements, source hashes and limitations.
 
 ## Subsequent studies archived on 2026-10-14
 
-The earlier [interior-palette release record](interior-palette-release.json)
+The earlier interior-palette release record (`interior-palette-release.json`, removed)
 retains its 153 served-asset checks, interrupted attempts and visual limitations.
 It is superseded by the release identified in the current overview.
 
@@ -17,7 +17,7 @@ whole-cut checker and bounded repair to fitting, export and the editor. The
 shifted-bird eye regressions. Complete QA passes **849/849 inverse tests**, all
 **857 application tests** (one existing skip), type checking, lint and build.
 
-The [fresh release validation](small-feature-release.json) passes **22/22 regular
+The fresh release validation (`small-feature-release.json`, removed) passes **22/22 regular
 Hunodan designs below ten seconds**, with a maximum of **7.915 seconds**.
 Twenty-one mask errors are unchanged from the previous validated release and
 the bird improves. Automatic cropping and fitting retain **25/31 hard-photo
@@ -31,7 +31,7 @@ allowance. The checked preview runs on port 5232, with no solver/WASM requests
 on initial Draw or Paint load. Visible contour defects and six unresolved
 photographs remain.
 
-An offline [short shared-span experiment](short-shared-span-study.json) improves
+An offline short shared-span experiment (`short-shared-span-study.json`, removed) improves
 two saved shifted-bird outputs but finds no eligible proposal in the 47 standard
 release outputs. It remains outside the application. The studies below preserve
 earlier experiments, failures and release measurements; the current results are
@@ -46,7 +46,7 @@ editable exports; all eleven focused tests pass. Original benchmark failures
 remain unchanged. The first full production run exposed a missing-region routing regression.
 The correction preserves that routing allowance and reserves time for checking
 a repaired proposal, within the original search deadline. Its full verification
-is pending in [the separate record](routing-budget-blend.json).
+is pending in the separate record (`routing-budget-blend.json`, removed).
 
 The [row-initialization and scheduling release](row-initialization.md) now
 passes all 22 regular Hunodan designs below ten seconds (maximum 7.827 seconds,
@@ -57,7 +57,7 @@ tests, 855 application tests and thirteen Chromium flows, plus type checking,
 lint and build. The preview serves 153 hash-verified build assets. Visible
 contour defects and six unresolved photographs remain; these native timings
 do not establish a universal ten-second browser latency. See the
-[full validation record](row-initialization-validation.json).
+full validation record (`row-initialization-validation.json`, removed).
 
 An offline [cut-subdivision audit](self-return-subdivision.md) exposes a limit
 of those geometry checks: five saved exports change their short-return verdict
@@ -76,7 +76,7 @@ Fresh fitting trials have not recovered their quality with consistent validity.
 The proposal remains offline; current editor reconciliation and optimization
 under the stronger constraints are still required.
 
-The [subsequent full QA](short-return-export-validation.json) passes 826 inverse
+The subsequent full QA (`short-return-export-validation.json`, removed) passes 826 inverse
 tests, 855 application tests and thirteen fresh Chromium flows, plus type
 checking, lint and build. The refreshed preview serves 153 verified build
 assets. The experimental geometry and optimizer remain outside the app.
@@ -87,7 +87,7 @@ controlled regression retains a better valid approximation. The full native
 replay retains 22/22 Hunodan results below ten seconds with identical errors and
 25/31 photographic passes; all 47 accepted editable pairs pass current checks.
 Four photo errors improve and four worsen slightly. Its
-[completed validation](turn-limit-validation.json) passes 829 inverse tests,
+completed validation (`turn-limit-validation.json`, removed) passes 829 inverse tests,
 855 application tests and thirteen fresh Chromium workflows, plus checking,
 lint and build. The refreshed preview serves 154 verified assets. This correction
 does not resolve the subdivision inconsistency or include the experimental
@@ -263,7 +263,7 @@ training must also be evaluated on outlines, narrow features and exported cuts.
 
 The material study's QA passes 77 learning tests, 855 application tests,
 type checking, lint, build and both annotation galleries. The inverse suite is
-**811/812**, exposing a [flower scheduling regression](flower-budget-diagnostic.json)
+**811/812**, exposing a flower scheduling regression (`flower-budget-diagnostic.json`, removed)
 reproduced using unchanged production code. Both classified-mask hashes remain
 fixed. Minimum-width clearance makes the initially preferred 2+4 grid worse
 than 3+3, but the first grid receives 3.13 seconds of curve refinement and the
@@ -281,7 +281,7 @@ unnecessary system-font scanning from a path-only clipping test, preserving
 every checked pixel and geometry assertion. Full inverse QA passes the flower
 but finishes at 809/813. The obsolete candle scheduling assertion is corrected
 and passes with the same output limits. The other three failures expose an
-existing [feature-initialization deadline cutoff](feature-deadline-diagnostic.json):
+existing feature-initialization deadline cutoff (`feature-deadline-diagnostic.json`, removed):
 both unchanged/current engines lose the four near-miss variants when a scaled
 clock models slower computation, despite unchanged initial grids and masks.
 All seven focused near-miss tests pass without the slowdown; this does not
@@ -398,7 +398,7 @@ checked crop variants, 22/22 regular Hunodan designs with unchanged errors, and
 24/31 hard photographs. All 772 inverse tests, 855 application tests and ten
 rebuilt Chromium flows pass; eight flows also check PDF download signatures.
 The final production replay recovers the shifted mask in 8.75 seconds with
-1.48% editable disagreement. The [release record](routing-timeout.json) pins
+1.48% editable disagreement. The release record (`routing-timeout.json`, removed) pins
 the full verification; no new corpus-wide improvement is claimed.
 
 The [polishing checkpoint follow-up](polishing-alternative.md) finds and fixes
@@ -650,28 +650,28 @@ not evidence of a better complete solver or real-photo reconstruction.
 
 ## Earlier verification records
 
-The [shadow-edge follow-up](shadow-edge-results.json) passed 855 application
+The shadow-edge follow-up (`shadow-edge-results.json`, removed) passed 855 application
 tests (one skipped), 681 inverse tests and eight Chromium flows, along with
 type checking, lint and build. All 30 synthetic pipeline replays pass, all 24
 coverage cases recover their source cut counts, and all 22 real Hunodan crops
 are unchanged. Common-coordinate errors include two channel regressions,
 documented alongside the corrected frame.
 
-The earlier [shared-cut follow-up](shared-cut-order-results.json) passed 855 application
+The earlier shared-cut follow-up (`shared-cut-order-results.json`, removed) passed 855 application
 tests (one skipped), 677 inverse tests and 16 Chromium cases, along with type
 checking, lint and build. Type checking retains seven existing warnings and no
-errors. The [preceding background validation](background-validation.json) also
+errors. The preceding background validation (`background-validation.json`, removed) also
 records 33 offline learning tests and 13 collector tests. The
-[previous orientation validation](orientation-validation.json),
-[intervention validation](intervention-validation.json),
-[localization validation](localization-validation.json)
-and [earlier snapshot validation](learning-validation.json) remain
+previous orientation validation (`orientation-validation.json`, removed),
+intervention validation (`intervention-validation.json`, removed),
+localization validation (`localization-validation.json`, removed)
+and earlier snapshot validation (`learning-validation.json`, removed) remain
 available. The synthetic verifiers checked all 5,952 referenced assets across
 the original batch and corner supplement, and the real-image audit checked
 all 1,034 source files and decoded image identities.
 Gallery browser checks are recorded in the real-photo collection report.
 The earlier application/solver release checks are recorded in
-[the solver validation report](../CONNECTOR-RETRY-VALIDATION.json). Neural
+the solver validation report (`CONNECTOR-RETRY-VALIDATION.json`, removed). Neural
 inference remains offline; the shared-cut fixes change geometric fitting and
 the orientation and background models change photographic crop proposals.
 
@@ -681,3 +681,26 @@ The selected synthetic interventions now include full solves. Next, report
 whole-pipeline time, valid-solution recall, mask and feature error, candidate
 graph size, and sensitivity to crop/color/noise perturbations on held-out real
 photographs. A lower pixel error must not conceal missing rays or false seams.
+
+## Removed outputs
+
+The machine-written JSON outputs marked "(removed)" above were deleted from the repository on 2026-11-10 to keep it small. They record one-off runs on the code of the day, so rerunning a script this note names measures today's code instead. Restore one from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/interior-palette-release.json`
+- `docs/inverse/datasets/small-feature-release.json`
+- `docs/inverse/datasets/short-shared-span-study.json`
+- `docs/inverse/datasets/routing-budget-blend.json`
+- `docs/inverse/datasets/row-initialization-validation.json`
+- `docs/inverse/datasets/short-return-export-validation.json`
+- `docs/inverse/datasets/turn-limit-validation.json`
+- `docs/inverse/datasets/flower-budget-diagnostic.json`
+- `docs/inverse/datasets/feature-deadline-diagnostic.json`
+- `docs/inverse/datasets/routing-timeout.json`
+- `docs/inverse/datasets/shadow-edge-results.json`
+- `docs/inverse/datasets/shared-cut-order-results.json`
+- `docs/inverse/datasets/background-validation.json`
+- `docs/inverse/datasets/orientation-validation.json`
+- `docs/inverse/datasets/intervention-validation.json`
+- `docs/inverse/datasets/localization-validation.json`
+- `docs/inverse/datasets/learning-validation.json`
+- `docs/inverse/CONNECTOR-RETRY-VALIDATION.json`

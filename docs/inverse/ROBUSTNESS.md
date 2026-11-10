@@ -29,7 +29,7 @@ The independent check reads `cut_geometry.json`, constructs the two sheet parity
 
 Run `npm run benchmark:inverse:robustness` with the local source images identified in `scripts/inverse/robustness-cases.json`. Source images are not redistributed in the repository. `INVERSE_ROBUST_SECONDS` controls each solver budget; `INVERSE_ROBUST_GROUP=bell` or `collage` limits the group. Every run preserves all source hashes, crops, failures, target previews, reports, exports, independent renders and a contact sheet in a new timestamped folder. The original seven-photo benchmark still produces three checked simplified pairs with the new border setting.
 
-See `VALIDATION.json` for the exact evidence paths and current checks. Saved paper-error simulations remain separate from the input-crop perturbations tested here.
+See `VALIDATION.json` (removed) for the exact evidence paths and current checks. Saved paper-error simulations remain separate from the input-crop perturbations tested here.
 
 ## A broader optimization approach
 
@@ -44,3 +44,9 @@ A practical design would make the following distinctions:
 5. **Validate the actual exports.** Re-render the exported cubics with an independent renderer at a finer scale, report their error against the original crop, and rerun geometry and material checks on those curves. Coarse optimization success is not final validation.
 
 This direct gradient optimizer is not implemented in this change. The implemented contribution is bounded boundary inference, explicit original-input error measurement, independent export-render tests and a reproducible set of perturbed/cropped failures for evaluating that next solver. It does not claim general robustness to all photographs or input perturbations.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/VALIDATION.json`

@@ -13,7 +13,7 @@ segments, bin boundaries, backward-running curves, out-of-square controls,
 disconnected joins, perturbed controls, both phases and weighted observations.
 Every compared scalar is exactly equal, including the one-call API.
 
-The [recorded study](indexed-boundary-loss.json) uses 40 combinations of fixed
+The recorded study (`indexed-boundary-loss.json`, removed) uses 40 combinations of fixed
 geometry, image resolution and weights, with four alternating timing orders.
 Both implementations prepare image integrals once. The committed reproducer
 measures a **47% median reduction in evaluation time**; dense-grid reductions
@@ -101,3 +101,9 @@ all pass the unchanged test, including the finer verification and strict
 record. The test now measures the output before checking search provenance
 and preserves its complete report and cuts on failure. No existing assertion
 or acceptance threshold has been removed. This remains unresolved.
+
+## Removed outputs
+
+The machine-written JSON output marked "(removed)" above was deleted from the repository on 2026-11-10 to keep it small. It records a one-off run on the code of the day, so rerunning a script this note names measures today's code instead. Restore it from git history with `git show 829d01a4:<path> > <path>`:
+
+- `docs/inverse/datasets/indexed-boundary-loss.json`
