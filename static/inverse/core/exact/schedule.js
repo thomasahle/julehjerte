@@ -125,3 +125,27 @@ export function ladderRungs(phase) {
     for (let seed = 0; seed <= LADDER_SAMPLES; seed++) rungs.push([k, seed ? sample : plain, seed]);
   return rungs;
 }
+
+// The outlines searched (engine.js exactTemplate).
+
+/** The outlines the exact search goes on to after the one traced from the mask, each as the way to trace it
+ * (engine.js traceAt's options), or none: from the tips' rounding `radius` in the mask's pixels, its `px` a mm, the
+ * traced outline's `way`, and the `spots` to round near. */
+export const OUTLINES = {
+  /** Its tips rounded by TIP_ROUNDING_MM, only within TIP_SPOT_MM of the spots (where its template comes too
+   * close to itself, or it comes back to itself): sharp corners elsewhere stay sharp (5star, triple-heart). */
+  near: ({radius, px}, spots) => (spots.length ? {open: radius, spots, within: TIP_SPOT_MM * px} : null),
+  /** Its tips rounded everywhere (fisk-kors-shot). */
+  everywhere: ({radius}) => ({open: radius}),
+  /** Its tips rounded everywhere, twice as much (mor-og-barn: a template 0.52% from its mask in 4 s, where
+   * 0.8 mm left its chin and its child's nose closer than a slit may come). */
+  wider: ({radius}) => ({open: 2 * radius, wider: true}),
+  /** Moved off the paper's sides where it runs closer to one than the outer strip may be wide (border.js
+   * outerStripBand), opened as the traced one was. An outline running so close without reaching the side has no
+   * template keeping the rules (balls' circles 2.14 mm from the edge, against 2.5); most pictures have none. */
+  outerStrip: ({way}) => ({open: way.open, outerStrip: true})
+};
+
+/** The ladder alone's outlines after the traced one, in order, the spots its tips that come back to themselves.
+ * (history: docs/inverse/SEARCH-CONSTANTS.md#ladder-outlines) */
+export const LADDER_OUTLINES = ['near', 'everywhere', 'wider', 'outerStrip'];

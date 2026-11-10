@@ -18,7 +18,7 @@ test('the exact search schedules every scenario as the code before it did: the s
   }
   if (differing.length) {
     const [seed, calls, result] = reference.traces.find(([s]) => s === differing[0]);
-    assert.deepEqual(await traceSchedule(exactTemplate, seed), {calls, result}, `seeds ${differing.join(', ')} differ`);
+    assert.deepEqual(await traceSchedule(exactTemplate, seed), {calls, result}, `${differing.length} scenarios differ: seeds ${differing.slice(0, 12).join(', ')}`);
   }
 });
 

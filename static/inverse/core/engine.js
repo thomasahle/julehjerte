@@ -31,9 +31,11 @@ import {
   FITTER_SECONDS,
   LADDER_FIRST_SHARE,
   LADDER_LEAST,
+  LADDER_OUTLINES,
   LADDER_RESERVE,
   LOOSE_LEAST,
   LOOSE_MM,
+  OUTLINES,
   RETURN_REPAIR_SECONDS,
   RETURN_REPAIR_TRIES,
   RETURNS_LEAST,
@@ -41,7 +43,6 @@ import {
   ROUNDED_SECONDS,
   STRICT_SECONDS,
   TIP_ROUNDING_MM,
-  TIP_SPOT_MM,
   TRACED_FIRST_WEIGHT,
   TRACED_SECONDS,
   timeScale
@@ -397,6 +398,22 @@ export async function exactTemplate(
   const {outline, way, cannot} = firstTrace(tools.maskRoughness(target.sourceImage), traceAt);
   if (!outline) return {solution: null, report: {chosen: 'fitter', error: cannot}};
   if (way.paired) base = {...base, paired: true};
+  const n = target.sourceImage.resolution,
+    px = n / cfgExact.width,
+    radius = Math.max(1, Math.round((TIP_ROUNDING_MM * n) / target.width)),
+    shape = {way, radius, px};
+  // An outline after the traced one (exact/schedule.js OUTLINES) traced the
+  // way `rounding` says, with `more`; none for no way, or where it cannot be
+  // traced (exactTarget throws) or the search cannot start on it.
+  const trace = (rounding, more = {}) => {
+    if (!rounding) return null;
+    try {
+      const traced = traceAt(rounding.open, {...rounding, ...more});
+      return traced && !traced.why ? traced.scaled : null;
+    } catch {
+      return null;
+    }
+  };
   let ties = symmetry;
   // `exactSearch`, the templates it finds that the export rejects set aside in
   // `options.sink` for the last resort (returnRepaired).
@@ -414,9 +431,6 @@ export async function exactTemplate(
   // (5star's) lie on a rounded outline, most on the traced one.
   // (history: docs/inverse/SEARCH-CONSTANTS.md#ladder-outlines)
   if (ladderOnly) {
-    const n = target.sourceImage.resolution,
-      px = n / cfgExact.width,
-      radius = Math.max(1, Math.round((TIP_ROUNDING_MM * n) / target.width));
     let tips = [];
     try {
       tips = tools.returnTips(outline, cfgExact).map(([x, y]) => [x * px, y * px]);
@@ -425,25 +439,9 @@ export async function exactTemplate(
       tips = [];
     }
     const outlines = [outline];
-    for (const way of [
-      ...(tips.length ? [{open: radius, spots: tips, within: TIP_SPOT_MM * px}] : []),
-      {open: radius},
-      {open: 2 * radius, wider: true}
-    ]) {
-      try {
-        const traced = traceAt(way.open, way);
-        if (traced && !traced.why) outlines.push(traced.scaled);
-      } catch {
-        // An outline that cannot be traced (exactTarget throws) is left out.
-      }
-    }
-    // The outline moved off the paper's sides where it runs closer to one than
-    // the outer strip may be wide (border.js outerStripBand), when it does.
-    try {
-      const traced = traceAt(way.open, {outerStrip: true});
-      if (traced && !traced.why) outlines.push(traced.scaled);
-    } catch {
-      // An outline that cannot be traced (exactTarget throws): none.
+    for (const name of LADDER_OUTLINES) {
+      const traced = trace(OUTLINES[name](shape, tips));
+      if (traced) outlines.push(traced);
     }
     // The traced outline's lower bound: no template on it has fewer hidden
     // segments, so a ladder template with no more than that (on whichever
@@ -532,10 +530,7 @@ export async function exactTemplate(
   // A template under part of the symmetry (exact/stage.js subgroupsOf): the
   // searches with tips rounded keep to that part.
   if (found.report.subgroup) ties = found.report.subgroup.to;
-  const tracedMs = tools.now() - began,
-    n = target.sourceImage.resolution,
-    px = n / cfgExact.width,
-    radius = Math.max(1, Math.round((TIP_ROUNDING_MM * n) / target.width));
+  const tracedMs = tools.now() - began;
   const segments = f => f.report.search?.attempts?.at(-1)?.hidden ?? Infinity;
   // A tip that comes back within 1.5 mm of itself (mostly one or two pixels
   // wide, traced as a box) makes the slit along it change papers there, which
@@ -556,14 +551,7 @@ export async function exactTemplate(
     segments(found) > (found.report.search?.bound ?? 0) &&
     roundedEnd - tools.now() >= 1000 * ROUNDED_LEAST
   ) {
-    let rounded = null;
-    try {
-      const traced = traceAt(radius, {spots: tips, within: TIP_SPOT_MM * px});
-      rounded = traced && !traced.why ? traced.scaled : null;
-    } catch {
-      // An outline that cannot be traced (exactTarget throws): none.
-      rounded = null;
-    }
+    const rounded = trace(OUTLINES.near(shape, tips));
     const again =
       rounded &&
       (await exactSearch(
@@ -590,14 +578,7 @@ export async function exactTemplate(
   // outlines with tips rounded after it are moved too. Most pictures have none.
   let strip = {};
   if (!exportable(found.found?.assessment, cfgExact) && roundedEnd - tools.now() >= 1000 * ROUNDED_LEAST) {
-    let moved = null;
-    try {
-      const traced = traceAt(way.open, {outerStrip: true});
-      moved = traced && !traced.why ? traced.scaled : null;
-    } catch {
-      // An outline that cannot be traced (exactTarget throws): none.
-      moved = null;
-    }
+    const moved = trace(OUTLINES.outerStrip(shape));
     if (moved) {
       strip = {outerStrip: true};
       const again = await exactSearch(
@@ -619,21 +600,9 @@ export async function exactTemplate(
         : []),
       ...tips
     ];
-    const ways = [
-      ...(spots.length ? [{open: radius, spots, within: TIP_SPOT_MM * px}] : []),
-      {open: radius},
-      {open: 2 * radius, wider: true}
-    ];
-    for (const [k, way] of ways.entries()) {
+    for (const way of ['near', 'everywhere', 'wider'].map(name => OUTLINES[name](shape, spots)).filter(Boolean)) {
       if (exportable(found.found?.assessment, cfgExact) || roundedEnd - tools.now() < 1000 * ROUNDED_LEAST) break;
-      let rounded = null;
-      try {
-        const traced = traceAt(way.open, {...way, ...strip});
-        rounded = traced && !traced.why ? traced.scaled : null;
-      } catch {
-        // An outline that cannot be traced (exactTarget throws): the next way.
-        rounded = null;
-      }
+      const rounded = trace(way, strip);
       if (!rounded) continue;
       const end = way.spots ? tools.now() + 0.6 * (roundedEnd - tools.now()) : roundedEnd;
       const again = await exactSearch(rounded, null, cfgExact, search(end));
