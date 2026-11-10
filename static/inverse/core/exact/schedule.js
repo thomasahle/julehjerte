@@ -146,7 +146,7 @@ export const OUTLINES = {
   outerStrip: ({way}) => ({open: way.open, outerStrip: true})
 };
 
-/** The ladder alone's outlines after the traced one, in order, the spots its tips that come back to themselves.
+/** The ladder alone's outlines after the traced one, in order: `near` rounds the tips that come back to themselves.
  * (history: docs/inverse/SEARCH-CONSTANTS.md#ladder-outlines) */
 export const LADDER_OUTLINES = ['near', 'everywhere', 'wider', 'outerStrip'];
 
@@ -269,7 +269,7 @@ export const TODAY = [
   // A template failing the cutting rules mostly follows a tip narrower than a cut's clearance: then the outline
   // with its tips rounded, first only near the spots where the template comes too close to itself, when the check
   // says, and the tips that come back to themselves, with 3/5 of the time; then everywhere, in what time that
-  // leaves; then everywhere twice as much. The steps from here run only where `spots` ran.
+  // leaves; then everywhere twice as much. The three run only where `spots`, which finds those spots, ran.
   {
     name: 'spots',
     when: failing,
