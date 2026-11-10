@@ -1154,7 +1154,10 @@ function contourMotif(
 	// pieces (see `channelPoints`).
 	const channel = channels ? channelPoints(contours, margin) : [];
 	const passes = options.legs ? [...nodes.flatMap(envelope), ...channel.filter(p => contours.filter(r => inside(p, r)).length % 2 === 0)].filter(p => !beyond(p)) : [];
-	const reach = sharedReach(contours, options.obstacles, passes, open);
+	// Shared (see `sharedReach`), the ways ask `clearSharedCuts` itself: they
+	// keep each answer they need, and the keys `open` keeps them under would
+	// pile up in the call that first asked, as long as the ways are kept.
+	const reach = sharedReach(contours, options.obstacles, passes, (a, b) => clearSharedCuts([{ from: a, to: b, family: 'AB', kind: 'shared' }]));
 	// With `bays`, the shared cuts between the base's counters go the same
 	// way round, past the corners of the counters' hulls inside it (the
 	// swan's wing in the bay of its body, in the medallion).
@@ -1776,6 +1779,8 @@ function channelPoints(contours: Ring[], margin: number, spacing = 3, most = 400
  * none where there is none. */
 const reachVia = (passes: Point[], open: (a: Point, b: Point) => boolean) => {
 	const among = pairwise(passes, open), n = passes.length;
+	// About how many bytes it holds (see `sharedReach`).
+	let bytes = n * n;
 	// The point of a ring each pass sees, worked out once a ring: sixteen
 	// dashes round a speech bubble spent an hour asking `open` of every side
 	// of a dash a pass saw none of, way in after way in.
@@ -1788,6 +1793,7 @@ const reachVia = (passes: Point[], open: (a: Point, b: Point) => boolean) => {
 	const row = (i: number) => {
 		if (rows[i]) return rows[i];
 		const all = Float64Array.from(passes, p => distance(passes[i], p)), order = Int32Array.from(passes, (_, k) => k).sort((a, b) => all[a] - all[b] || a - b);
+		bytes += 12 * n;
 		return rows[i] = { order, apart: Float64Array.from(order, k => all[k]) };
 	};
 	// How far each pass is from a point ways begin at, nearest first, and
@@ -1800,6 +1806,7 @@ const reachVia = (passes: Point[], open: (a: Point, b: Point) => boolean) => {
 		if (!start) {
 			const all = Float64Array.from(passes, p => distance(from, p)), order = Int32Array.from(passes, (_, k) => k).sort((a, b) => all[a] - all[b] || a - b);
 			starts.set(key, start = { order, apart: Float64Array.from(order, k => all[k]), sees: new Uint8Array(n) });
+			bytes += 13 * n;
 		}
 		const sees = (k: number) => {
 			if (!start.sees[k]) start.sees[k] = open(from, passes[k]) ? 1 : 2;
@@ -1893,7 +1900,15 @@ const reachVia = (passes: Point[], open: (a: Point, b: Point) => boolean) => {
 	// A way asked again, from the same point to the same ring, is the same
 	// way, begun at the point asked from: four in five of the dashes' were.
 	const ways = new WeakMap<Ring, Map<string, { path: Ring; port: Port; length: number } | null>>();
-	return (from: Point, ring: Ring): { path: Ring; port: Port; length: number } | undefined => {
+	// A point asked for as a ring of its own (a chain's end, see
+	// `contourChain`), a new one each time, is one ring for every time.
+	const points = new Map<string, Ring>();
+	return Object.assign((from: Point, ring: Ring): { path: Ring; port: Port; length: number } | undefined => {
+		if (ring.length === 1) {
+			const at = `${ring[0]}`, same = points.get(at);
+			if (same) ring = same;
+			else points.set(at, ring);
+		}
 		let known = ways.get(ring);
 		if (!known) ways.set(ring, known = new Map());
 		const key = `${from}`, way = known.get(key);
@@ -1901,13 +1916,16 @@ const reachVia = (passes: Point[], open: (a: Point, b: Point) => boolean) => {
 		const found = search(from, ring, key);
 		known.set(key, found ?? null);
 		return found;
-	};
+	}, { bytes: () => bytes });
 };
 /** The ways over `passes` past `contours` and `obstacles` (see `reachVia`),
  * one for every call with the same: what it has worked out, which passes see
  * one another, each pass's sight of a ring, the ways found, holds for each,
  * `open` asking the same of the same outlines. A motif's cells and tiers ask
- * again and again with the same gates. The sixteen asked last are kept. */
+ * again and again with the same gates. The sixteen asked last are kept, or
+ * as many as hold a quarter of a gigabyte between them, and the one asked:
+ * with thousands of passes, up the channels between a motif's pieces, one
+ * holds tens of megabytes. */
 const reaches = new Map<string, ReturnType<typeof reachVia>>(), ids = new WeakMap<object, number>();
 let lastId = 0;
 function sharedReach(contours: Ring[], obstacles: Ring[] | undefined, passes: Point[], open: (a: Point, b: Point) => boolean) {
@@ -1919,9 +1937,13 @@ function sharedReach(contours: Ring[], obstacles: Ring[] | undefined, passes: Po
 	const key = `${id(contours)} ${obstacles ? id(obstacles) : 0} ${passes.join(';')}`;
 	let reach = reaches.get(key);
 	if (reach) reaches.delete(key);
-	else {
-		reach = reachVia(passes, open);
-		if (reaches.size >= 16) reaches.delete(reaches.keys().next().value!);
+	else reach = reachVia(passes, open);
+	let bytes = reach.bytes();
+	for (const other of reaches.values()) bytes += other.bytes();
+	for (const [old, other] of reaches) {
+		if (bytes <= 2 ** 28 && reaches.size < 16) break;
+		bytes -= other.bytes();
+		reaches.delete(old);
 	}
 	reaches.set(key, reach);
 	return reach;
