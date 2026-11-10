@@ -3042,6 +3042,16 @@ function retryPanelLayouts(request: GeneratorRequest, curveFitter?: ReturnType<t
 	}
 }
 
+/** What the frames' recipes share for one request: how a construction is
+ * finished into a heart (a refused one kept for `onRejected`, unless `keep`
+ * is off), and how much of the search the caller asked for. */
+type RecipeContext = {
+	finish: (construction: Construction, recipe: GeneratorResult['recipe'], keep?: boolean) => GeneratorResult;
+	onRejected: (construction: Construction, recipe: GeneratorResult['recipe']) => void;
+	curveFitter: ReturnType<typeof createExactCurveFitter>;
+	variants: number;
+	allRecipes: boolean;
+};
 function generateUsingRecipes(request: GeneratorRequest,
 	onRejected: (construction: Construction, recipe: GeneratorResult['recipe']) => void,
 	curveFitter: ReturnType<typeof createExactCurveFitter>, variants = Infinity, allRecipes = true): GeneratorResult {
@@ -3058,909 +3068,924 @@ function generateUsingRecipes(request: GeneratorRequest,
 			throw error;
 		}
 	};
-	if (request.mode === 'text') {
-		if (!request.font) throw new ConstructionError('empty', 'No font');
-		const frame = request.textFrame ?? 'woven';
-		if (frame === 'checkered') {
-			const text = request.text ?? '', font = request.font;
-			// The first junctions usually work. When their letters leave narrow
-			// paper, the next choices attach the letters at other square corners.
-			// Layouts on a smaller board, through neighbouring junctions, come
-			// before the next board's layouts, which follow as the fallback.
-			const layouts = checkeredLayouts(text);
-			const checkered = (variant: number, fill: number, cache: ReturnType<typeof checkeredGridCache>,
-				mixed: ReturnType<typeof mixedCheckeredGridCache>, finish: (construction: Construction, recipe: GeneratorResult['recipe']) => GeneratorResult,
-				corners: [number, number]): GeneratorResult => {
-				// Of the working cuts, the one that cuts best (`cutsBetter`).
-				let best: GeneratorResult | undefined;
-				let bestInset = .35;
-				let rawTips: [number, number] | undefined;
-				let crowded = false;
-				let last: unknown;
-				// Keep the established layout (including the detached-accent fallback),
-				// then try slightly wider connections only when they improve its cuts.
-				const small = [...text.normalize('NFC').replace(/\s/g, '')].length <= 2;
-				for (const inset of small ? [.35, .25, .4, .46] : [.35, .4, .46]) {
-					if (inset === .25 && best) continue;
-					// This is a quality improvement for working cuts. Unsupported
-					// topology should still return promptly instead of trying it twice.
-					if (inset >= .4 && !best) break;
-					try {
-						const construction = generateCheckeredGrid(text, font, fill, inset, { cache, variant, corners, onCrowded: () => { crowded = true; } });
-						const tips = cutTipCounts(construction.geometry);
-						// Reject worse candidates before the more expensive curve fitting,
-						// unless the best so far tears: wider connections can leave the
-						// letters' bridges too narrow, and narrower ones fix that.
-						if (rawTips && best && !paperTears(exported(best).design) && !fewerCutTips(tips, rawTips)) continue;
+	const context: RecipeContext = { finish, onRejected, curveFitter, variants, allRecipes };
+	if (request.mode === 'text') return textRecipes(request, context);
+	if (request.style === 'layers') return layerRecipes(request, context);
+	if (request.style === 'board') return boardRecipes(request, context);
+	if (request.style === 'corners') return cornerRecipes(request, context);
+	const open = openFrame(request);
+	return open ? openRecipes(request, open, context) : cellRecipes(request, context);
+}
+/** A text, in the frame its request names. */
+function textRecipes(request: GeneratorRequest, { finish, variants, allRecipes }: RecipeContext): GeneratorResult {
+	if (!request.font) throw new ConstructionError('empty', 'No font');
+	const frame = request.textFrame ?? 'woven';
+	if (frame === 'checkered') {
+		const text = request.text ?? '', font = request.font;
+		// The first junctions usually work. When their letters leave narrow
+		// paper, the next choices attach the letters at other square corners.
+		// Layouts on a smaller board, through neighbouring junctions, come
+		// before the next board's layouts, which follow as the fallback.
+		const layouts = checkeredLayouts(text);
+		const checkered = (variant: number, fill: number, cache: ReturnType<typeof checkeredGridCache>,
+			mixed: ReturnType<typeof mixedCheckeredGridCache>, finish: (construction: Construction, recipe: GeneratorResult['recipe']) => GeneratorResult,
+			corners: [number, number]): GeneratorResult => {
+			// Of the working cuts, the one that cuts best (`cutsBetter`).
+			let best: GeneratorResult | undefined;
+			let bestInset = .35;
+			let rawTips: [number, number] | undefined;
+			let crowded = false;
+			let last: unknown;
+			// Keep the established layout (including the detached-accent fallback),
+			// then try slightly wider connections only when they improve its cuts.
+			const small = [...text.normalize('NFC').replace(/\s/g, '')].length <= 2;
+			for (const inset of small ? [.35, .25, .4, .46] : [.35, .4, .46]) {
+				if (inset === .25 && best) continue;
+				// This is a quality improvement for working cuts. Unsupported
+				// topology should still return promptly instead of trying it twice.
+				if (inset >= .4 && !best) break;
+				try {
+					const construction = generateCheckeredGrid(text, font, fill, inset, { cache, variant, corners, onCrowded: () => { crowded = true; } });
+					const tips = cutTipCounts(construction.geometry);
+					// Reject worse candidates before the more expensive curve fitting,
+					// unless the best so far tears: wider connections can leave the
+					// letters' bridges too narrow, and narrower ones fix that.
+					if (rawTips && best && !paperTears(exported(best).design) && !fewerCutTips(tips, rawTips)) continue;
+					const candidate = finish(construction, 'letters');
+					if (!best || cutsBetter(candidate, best)) {
+						best = candidate;
+						bestInset = inset;
+						rawTips = tips;
+					}
+					if (best && !paperTears(exported(best).design) && !cutTipCounts(best.design)[1]) break;
+				} catch (error) {
+					refusal(error);
+					if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
+					last = error;
+				}
+			}
+			if (best) {
+				if (rawTips?.[1] && cutTipCounts(best.design)[1]) try {
+					const construction = generateCheckeredGrid(text, font, fill, bestInset, { cache, variant, corners, optimize: true });
+					// Skip fitting unchanged or worse combinations. A local improvement
+					// still has to pass every full-sheet check and cut better.
+					if (fewerCutTips(cutTipCounts(construction.geometry), rawTips)) {
 						const candidate = finish(construction, 'letters');
-						if (!best || cutsBetter(candidate, best)) {
-							best = candidate;
-							bestInset = inset;
-							rawTips = tips;
+						if (cutsBetter(candidate, best)) best = candidate;
+					}
+				} catch (error) {
+					refusal(error);
+				}
+				let bestTips = cutTipCounts(exported(best).design);
+				// A further chord can split the narrow notch of a solid letter such
+				// as N. Reuse cached cells, then try one wider pair of grid contacts.
+				// The original remains available if the joined cuts lose clearance.
+				if (bestTips[1]) for (const inset of [bestInset, .2]) {
+					try {
+						const construction = generateCheckeredGrid(text, font, fill, inset,
+							{ cache, variant, corners, optimize: true, relieve: true });
+						const candidate = finish(construction, 'letters');
+						const rounded = exported(candidate).design, tips = cutTipCounts(rounded);
+						if (cutsBetter(candidate, best)) {
+							const rect = inferOverlapRect(rounded.fingers, rounded.gridSize);
+							const margin = intersectionMarginPx(rect, gridClearanceScale(rounded.gridSize.x, rounded.gridSize.y));
+							// A smaller tip count alone can hide a new thin neck. Leave a
+							// clearance reserve for the additional cuts on both sheets.
+							if (!findSearchIssues(rounded.fingers, margin * 1.1).size) { best = candidate; bestTips = tips; }
 						}
-						if (best && !paperTears(exported(best).design) && !cutTipCounts(best.design)[1]) break;
+						if (!bestTips[1]) break;
+					} catch (error) {
+						refusal(error);
+					}
+				}
+				return best;
+			}
+			if (crowded) for (const inset of small ? [.35, .25] : [.35]) {
+				try {
+					return finish(generateCheckeredGrid(text, font, fill, inset, { cache, variant, corners, balanced: true }), 'letters');
+				} catch (error) {
+					refusal(error);
+					last = error;
+				}
+			}
+			for (const inset of small ? [.35, .25] : [.35]) {
+				let repaired = false;
+				try {
+					const construction = generateCheckeredGrid(text, font, fill, inset, {
+						cache, variant, corners, repair: true, onRepair: () => { repaired = true; }
+					});
+					// All local cells can be clear while their joined paths fail.
+					// An unchanged construction does not need another global fit.
+					if (repaired) return finish(construction, 'letters');
+				} catch (error) {
+					refusal(error);
+					last = error;
+				}
+			}
+			// Keep the existing successful cuts: a four-port layout can be more
+			// intricate. Add connections only after the two-port repairs fail.
+			// Individual stroke ends can separate several legs that a single
+			// support point leaves on the same paper. Reuse clear earlier cells.
+			for (const strokeTips of [false, true]) for (const balanced of [false, true]) {
+				try {
+					return finish(generateMixedCheckeredGrid(text, font, { cache: mixed, previous: cache, variant, balanced, strokeTips, fill, corners }), 'letters');
+				} catch (error) {
+					refusal(error);
+					last = error;
+				}
+			}
+			throw last;
+		};
+		// Every letter has the size of the text's widest. When no layout weaves
+		// cleanly, the first may have all of them a little larger, as on the
+		// regular board, before a hard-to-cut heart: narrow letters then keep
+		// wider details. Only the standard size leaves its rejected cuts to
+		// that fallback. A result with narrow paper tips is compared with the
+		// first layout 5% larger, which can route a letter that shrank to
+		// match a wider one without them (Nunito ANNA's N).
+		const caches = new Map<number, [ReturnType<typeof checkeredGridCache>, ReturnType<typeof mixedCheckeredGridCache>]>();
+		// Small motifs on the board have the visitor's size, which these larger
+		// retries and comparisons would override, at the cost of every pattern
+		// they try; typed letters have none.
+		const standard = .82 * (request.letterScale ?? 1), sized = request.letterScale !== undefined;
+		const attempt = (variant: number, fill: number, corners: [number, number]) => {
+			if (!caches.has(fill)) caches.set(fill, [checkeredGridCache(), mixedCheckeredGridCache()]);
+			const [cache, mixed] = caches.get(fill)!;
+			return checkered(variant, fill, cache, mixed, fill === standard ? finish
+				: (construction, recipe) => finish(construction, recipe, false), corners);
+		};
+		// The first layout and size that weaves, with CORNER_INSETS or, with
+		// `board`, corner cuts as large as paper printed at the download's width
+		// asks for (`printCornerInsets`) on layouts of that board only.
+		const search = (board?: number): GeneratorResult => {
+			const corners = board ? printCornerInsets(board) : CORNER_INSETS;
+			let last: unknown = new ConstructionError('clearance', 'No layout on this board');
+			for (const fill of sized ? [standard] : [standard, standard * 1.05, standard * 1.1])
+				for (let variant = 0; variant < Math.min(fill === standard ? variants : 1, layouts.length); variant++) {
+					if (board && layouts[variant].matrix.length !== board) continue;
+					try {
+						// Compared as exported, after their shared connections are improved.
+						const result = exported(attempt(variant, fill, corners));
+						if (!sized && cutTipCounts(result.design)[1]) try {
+							const larger = exported(attempt(0, standard * 1.05, corners));
+							if (cutsBetter(larger, result)) return larger;
+						} catch (error) {
+							refusal(error);
+						}
+						return result;
 					} catch (error) {
 						refusal(error);
 						if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
 						last = error;
 					}
 				}
-				if (best) {
-					if (rawTips?.[1] && cutTipCounts(best.design)[1]) try {
-						const construction = generateCheckeredGrid(text, font, fill, bestInset, { cache, variant, corners, optimize: true });
-						// Skip fitting unchanged or worse combinations. A local improvement
-						// still has to pass every full-sheet check and cut better.
-						if (fewerCutTips(cutTipCounts(construction.geometry), rawTips)) {
-							const candidate = finish(construction, 'letters');
-							if (cutsBetter(candidate, best)) best = candidate;
-						}
-					} catch (error) {
-						refusal(error);
-					}
-					let bestTips = cutTipCounts(exported(best).design);
-					// A further chord can split the narrow notch of a solid letter such
-					// as N. Reuse cached cells, then try one wider pair of grid contacts.
-					// The original remains available if the joined cuts lose clearance.
-					if (bestTips[1]) for (const inset of [bestInset, .2]) {
-						try {
-							const construction = generateCheckeredGrid(text, font, fill, inset,
-								{ cache, variant, corners, optimize: true, relieve: true });
-							const candidate = finish(construction, 'letters');
-							const rounded = exported(candidate).design, tips = cutTipCounts(rounded);
-							if (cutsBetter(candidate, best)) {
-								const rect = inferOverlapRect(rounded.fingers, rounded.gridSize);
-								const margin = intersectionMarginPx(rect, gridClearanceScale(rounded.gridSize.x, rounded.gridSize.y));
-								// A smaller tip count alone can hide a new thin neck. Leave a
-								// clearance reserve for the additional cuts on both sheets.
-								if (!findSearchIssues(rounded.fingers, margin * 1.1).size) { best = candidate; bestTips = tips; }
-							}
-							if (!bestTips[1]) break;
-						} catch (error) {
-							refusal(error);
-						}
-					}
-					return best;
-				}
-				if (crowded) for (const inset of small ? [.35, .25] : [.35]) {
-					try {
-						return finish(generateCheckeredGrid(text, font, fill, inset, { cache, variant, corners, balanced: true }), 'letters');
-					} catch (error) {
-						refusal(error);
-						last = error;
-					}
-				}
-				for (const inset of small ? [.35, .25] : [.35]) {
-					let repaired = false;
-					try {
-						const construction = generateCheckeredGrid(text, font, fill, inset, {
-							cache, variant, corners, repair: true, onRepair: () => { repaired = true; }
-						});
-						// All local cells can be clear while their joined paths fail.
-						// An unchanged construction does not need another global fit.
-						if (repaired) return finish(construction, 'letters');
-					} catch (error) {
-						refusal(error);
-						last = error;
-					}
-				}
-				// Keep the existing successful cuts: a four-port layout can be more
-				// intricate. Add connections only after the two-port repairs fail.
-				// Individual stroke ends can separate several legs that a single
-				// support point leaves on the same paper. Reuse clear earlier cells.
-				for (const strokeTips of [false, true]) for (const balanced of [false, true]) {
-					try {
-						return finish(generateMixedCheckeredGrid(text, font, { cache: mixed, previous: cache, variant, balanced, strokeTips, fill, corners }), 'letters');
-					} catch (error) {
-						refusal(error);
-						last = error;
-					}
-				}
-				throw last;
-			};
-			// Every letter has the size of the text's widest. When no layout weaves
-			// cleanly, the first may have all of them a little larger, as on the
-			// regular board, before a hard-to-cut heart: narrow letters then keep
-			// wider details. Only the standard size leaves its rejected cuts to
-			// that fallback. A result with narrow paper tips is compared with the
-			// first layout 5% larger, which can route a letter that shrank to
-			// match a wider one without them (Nunito ANNA's N).
-			const caches = new Map<number, [ReturnType<typeof checkeredGridCache>, ReturnType<typeof mixedCheckeredGridCache>]>();
-			// Small motifs on the board have the visitor's size, which these larger
-			// retries and comparisons would override, at the cost of every pattern
-			// they try; typed letters have none.
-			const standard = .82 * (request.letterScale ?? 1), sized = request.letterScale !== undefined;
-			const attempt = (variant: number, fill: number, corners: [number, number]) => {
-				if (!caches.has(fill)) caches.set(fill, [checkeredGridCache(), mixedCheckeredGridCache()]);
-				const [cache, mixed] = caches.get(fill)!;
-				return checkered(variant, fill, cache, mixed, fill === standard ? finish
-					: (construction, recipe) => finish(construction, recipe, false), corners);
-			};
-			// The first layout and size that weaves, with CORNER_INSETS or, with
-			// `board`, corner cuts as large as paper printed at the download's width
-			// asks for (`printCornerInsets`) on layouts of that board only.
-			const search = (board?: number): GeneratorResult => {
-				const corners = board ? printCornerInsets(board) : CORNER_INSETS;
-				let last: unknown = new ConstructionError('clearance', 'No layout on this board');
-				for (const fill of sized ? [standard] : [standard, standard * 1.05, standard * 1.1])
-					for (let variant = 0; variant < Math.min(fill === standard ? variants : 1, layouts.length); variant++) {
-						if (board && layouts[variant].matrix.length !== board) continue;
-						try {
-							// Compared as exported, after their shared connections are improved.
-							const result = exported(attempt(variant, fill, corners));
-							if (!sized && cutTipCounts(result.design)[1]) try {
-								const larger = exported(attempt(0, standard * 1.05, corners));
-								if (cutsBetter(larger, result)) return larger;
-							} catch (error) {
-								refusal(error);
-							}
-							return result;
-						} catch (error) {
-							refusal(error);
-							if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
-							last = error;
-						}
-					}
-				throw last;
-			};
-			// Where that heart's paper tears at print size, larger corner cuts on
-			// its board, in any of its layouts and sizes, and the better of the two
-			// (`cutsBetter`): never another board, and never worse.
-			// A text that is its own mirror image across the heart's middle (the
-			// small copies of a motif that is) is also made mirrored, its layouts'
-			// junctions and cells their own mirror images (see `checkeredLayouts`):
-			// one template for both lobes, kept where its paper tears no more, as
-			// the page ranks hearts (`betterCuts`: pieces hanging by too little paper
-			// and needles first, the needles its symmetry cuts on the middle only
-			// sharp tips, see `cutMeasures`: a star there has its top tip cut down
-			// its middle). Of its layouts and connections, the one that tears
-			// least and then cuts best, ending at one that holds with no tip, or at
-			// a layout that builds none (of 283 such searches, on 2–8 strips, no
-			// later layout built one that was kept). As above, its larger corner cuts
-			// only where its paper tears without them: its letters on the middle
-			// crowd the junctions beside them. Three hearts across the middle of
-			// three strips: two templates → one.
-			const mirrored = (made: GeneratorResult): GeneratorResult => {
-				const design = exported(made).design, board = design.gridSize.x;
-				if (!request.mirrorCells || lobesShareTemplate(design.fingers, design.gridSize)) return made;
-				const cache = caches.get(standard)?.[0] ?? checkeredGridCache();
-				const clean = (result: GeneratorResult) => !paperTears(result.design) && !cutTipCounts(result.design).some(Boolean);
-				const torn = (design: HeartDesign) => paperTears(design) + cutTipCounts(design)[0] - middleNeedles(design).length;
-				const better = (a: GeneratorResult, b: GeneratorResult) => torn(a.design) !== torn(b.design) ? torn(a.design) < torn(b.design) : cutsBetter(a, b);
-				let best: GeneratorResult | undefined, bestAt: { variant: number; inset: number; corners: [number, number] } | undefined;
-				const tryCorners = (corners: [number, number]) => {
-					for (const [variant, layout] of checkeredLayouts(text, true).entries()) {
-						if (layout.matrix.length !== board) continue;
-						let built = false, close = false;
-						for (const inset of [.35, .25, .4]) {
-							// Narrower contacts than those whose cuts come too close come closer still.
-							if (inset === .25 && close) continue;
-							try {
-								const candidate = exported(finish(generateCheckeredGrid(text, font, standard, inset, { variant, mirror: true, corners, cache }), 'letters', false));
-								if (!lobesShareTemplate(candidate.design.fingers, candidate.design.gridSize)) continue;
-								built = true;
-								if (!best || better(candidate, best)) { best = candidate; bestAt = { variant, inset, corners }; }
-								if (clean(best)) return;
-							} catch (error) {
-								refusal(error);
-								close ||= error instanceof CutGeometryError;
-							}
-						}
-						// The next layouts rarely build what one has not.
-						if (!built) return;
-					}
-				};
-				tryCorners(CORNER_INSETS);
-				const print = printCornerInsets(board);
-				if (best && paperTears(best.design) && print[0] !== CORNER_INSETS[0]) tryCorners(print);
-				// Its sharp tips, as the plain search's: each cell's connections the
-				// fewest tips of those built, then those tips relieved.
-				if (best && bestAt && cutTipCounts(best.design)[1]) for (const relieve of [false, true]) try {
-					const candidate = exported(finish(generateCheckeredGrid(text, font, standard, bestAt.inset, { ...bestAt, mirror: true, cache, optimize: true, relieve }), 'letters', false));
-					if (!lobesShareTemplate(candidate.design.fingers, candidate.design.gridSize) || !better(candidate, best)) continue;
-					const rect = inferOverlapRect(candidate.design.fingers, candidate.design.gridSize);
-					const margin = intersectionMarginPx(rect, gridClearanceScale(candidate.design.gridSize.x, candidate.design.gridSize.y));
-					if (!findSearchIssues(candidate.design.fingers, margin * 1.1).size) best = candidate;
-				} catch (error) {
-					refusal(error);
-				}
-				return best && torn(best.design) <= torn(design) ? best : made;
-			};
-			const plain = search();
-			const board = plain.design.gridSize.x;
-			if (!paperTears(plain.design) || printCornerInsets(board)[0] === CORNER_INSETS[0]) return mirrored(plain);
-			try {
-				const print = search(board);
-				return mirrored(cutsBetter(print, plain) ? print : plain);
-			} catch (error) {
-				refusal(error);
-				return mirrored(plain);
-			}
-		}
-		const text = request.text ?? '';
-		const font = request.font;
-		const shape = textPanel(frame);
-		const size = request.letterScale ?? 1;
-		const recipes: Array<() => ReturnType<typeof generateTextGrid> | ReturnType<typeof generateCheckedText> | undefined> = text.includes('\n') ? [] : [
-			() => generateCheckedText(text, font, textRoom(request), shape, request.fittedCells, size)
-		];
-		recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: size }));
-		// On the regular board the cells cannot grow, but a letter can be a
-		// little larger inside its cell; its connections then meet it elsewhere.
-		// A figure keeps the size the visitor asked for (see `frameAlternatives`).
-		const regularGrid = !request.fittedCells && (frame === 'woven' || frame === 'air');
-		// How a recipe shows the letters, where it differs from as asked.
-		const looks = new Map<(typeof recipes)[number], string>();
-		if (regularGrid && request.letterScale === undefined) for (const letterScale of [1.05 * size, 1.1 * size]) {
-			recipes.push(text.includes('\n')
-				? () => generateTextGrid(text, font, textRoom(request), shape, { letterScale })
-				: () => generateCheckedText(text, font, textRoom(request), shape, false, letterScale));
-			looks.set(recipes.at(-1)!, `larger ${letterScale}`);
-		}
-		// Give difficult counters/shoulders more room, and spread the projections
-		// around the frame. The requested font, frame and text are retained.
-		// Text with that much room already has it, and no decorative frame. On
-		// the regular board more room makes a letter smaller in its cell, so a
-		// figure there keeps the size asked for instead.
-		if (roomOf(textRoom(request)) < .5 && !(regularGrid && request.letterScale !== undefined)) {
-			recipes.push(() => generateTextGrid(text, font, false, shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
-				padding: .5,
-				spread: true
-			}));
-			looks.set(recipes.at(-1)!, 'padded');
-		}
-		// A quick attempt keeps every cell square and skips the slow attachment
-		// searches: panels that split letters unevenly, moved gates and bent
-		// spokes follow, for fitted cells, when it fails. Square cells on the
-		// regular checkerboard never take them: they would make uneven squares.
-		const fittedOnly = new Set<(typeof recipes)[number]>();
-		for (const [columns, slices] of [[2, 1], [1, 2], [2, 2], [1, 3]]) {
-			const recipe = () => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale, columns, slices, spread: true });
-			recipes.push(recipe);
-			if (columns !== slices) fittedOnly.add(recipe);
-		}
-		let usedCompound = false;
-		let crowded = false;
-		recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
-			spread: true, practical: true, compound: true, onCompound: () => { usedCompound = true; }, onCrowded: () => { crowded = true; }
-		}));
-		// A locally improved route can still conflict with a neighbouring cell.
-		// Retain the established recipe, but only rerun it if a chord changed.
-		recipes.push(() => usedCompound
-			? generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale, spread: true, practical: true, onCrowded: () => { crowded = true; } })
-			: undefined);
-		recipes.push(() => crowded ? generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
-			spread: true, practical: true, compound: true, balanced: true
-		}) : undefined);
-		let gateCrowded = false;
-		const adaptGates = (balanced = false) => {
-			let moved = false;
-			const result = generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
-				spread: true, practical: true, compound: true, balanced, adaptGates: true,
-				onGateChange: () => { moved = true; }, onCrowded: () => { gateCrowded = true; }
-			});
-			// The unchanged recipe has already failed its full-sheet check.
-			return moved ? result : undefined;
+			throw last;
 		};
-		const searches = [() => adaptGates(), () => gateCrowded ? adaptGates(true) : undefined];
-		recipes.push(...searches);
-		for (const search of searches) fittedOnly.add(search);
-		for (const columns of [1, 2]) recipes.push(() => {
-			if (!allRecipes || regularGrid) return undefined;
-			let moved = false;
-			const result = generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
-				columns, slices: 3, spread: true, filled: true, onSeamChange: () => { moved = true; }
-			});
-			// The one-column layout was already tried with centred contacts.
-			return columns > 1 || moved ? result : undefined;
-		});
-		// A deeper grid divides the ink itself, retaining the ordinary margin
-		// outside it. Count the resulting strips before attempting construction.
-		const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n'),
-			letters = Math.max(...lines.map(line => [...line].length));
-		if (2 * letters + 5 * lines.length + 1 <= 20 && allRecipes && !regularGrid)
-			recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
-				columns: 2, slices: 5, spread: true, filled: true, inkPanels: true
-			}));
-		// A serif can need a more square approach than a straight shared spoke.
-		// Try bent connections only after the established constructions fail.
-		for (const padding of roomOf(textRoom(request)) >= .5 ? [undefined] : [undefined, .5]) {
-			let bentCrowded = false;
-			for (const balanced of [false, true]) {
-				const bent = () => !balanced || bentCrowded
-					? generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
-						padding, spread: true, practical: true, compound: true, adaptGates: true,
-						bentSpokes: true, balanced, onCrowded: () => { bentCrowded = true; }
-					}) : undefined;
-				recipes.push(bent);
-				fittedOnly.add(bent);
-				if (padding) looks.set(bent, 'padded');
-			}
-		}
-		// A letter or motif of several pieces is reached every way the board
-		// circle's are (see `withEveryWay`): a refused one tries again so, and
-		// last with its islands reached round its pieces and up the channels
-		// between them, as in the open frames (see `withChannelWays`: the
-		// lasso's loop).
-		const pieced = [...new Set(text.replace(/\s/g, ''))].some(char => forest(font.glyphs[char]?.contours ?? []).length > 1);
-		if (everyWay && pieced) for (const around of [false, true])
-			recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
-				spread: true, practical: true, compound: true, nested: true, bases: true, around }));
-		if (channelWays && pieced)
-			recipes.push(() => withChannels(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
-				spread: true, practical: true, compound: true, nested: true, bases: true, around: true, legs: true })));
-		let last: unknown;
-		// The recipes differ in how the letters' cuts spread over panels and
-		// route to their gates, unseen: of a text's first few, the best paper.
-		// A motif in the board frames' cells (sized by `letterScale`) compares
-		// its first three: its several choices each make more.
-		const tried = allRecipes && !regularGrid ? recipes : recipes.filter(recipe => !fittedOnly.has(recipe));
-		// Only those that show the letters as the first to finish does.
-		let look: string | undefined;
-		const best = bestOfFirst((function* () {
-			for (const construct of tried) {
-				if (look !== undefined && (looks.get(construct) ?? '') !== look) continue;
-				try {
-					const result = construct();
-					if (result) {
-						const done = finish(result, 'letters');
-						look ??= looks.get(construct) ?? '';
-						yield done;
+		// Where that heart's paper tears at print size, larger corner cuts on
+		// its board, in any of its layouts and sizes, and the better of the two
+		// (`cutsBetter`): never another board, and never worse.
+		// A text that is its own mirror image across the heart's middle (the
+		// small copies of a motif that is) is also made mirrored, its layouts'
+		// junctions and cells their own mirror images (see `checkeredLayouts`):
+		// one template for both lobes, kept where its paper tears no more, as
+		// the page ranks hearts (`betterCuts`: pieces hanging by too little paper
+		// and needles first, the needles its symmetry cuts on the middle only
+		// sharp tips, see `cutMeasures`: a star there has its top tip cut down
+		// its middle). Of its layouts and connections, the one that tears
+		// least and then cuts best, ending at one that holds with no tip, or at
+		// a layout that builds none (of 283 such searches, on 2–8 strips, no
+		// later layout built one that was kept). As above, its larger corner cuts
+		// only where its paper tears without them: its letters on the middle
+		// crowd the junctions beside them. Three hearts across the middle of
+		// three strips: two templates → one.
+		const mirrored = (made: GeneratorResult): GeneratorResult => {
+			const design = exported(made).design, board = design.gridSize.x;
+			if (!request.mirrorCells || lobesShareTemplate(design.fingers, design.gridSize)) return made;
+			const cache = caches.get(standard)?.[0] ?? checkeredGridCache();
+			const clean = (result: GeneratorResult) => !paperTears(result.design) && !cutTipCounts(result.design).some(Boolean);
+			const torn = (design: HeartDesign) => paperTears(design) + cutTipCounts(design)[0] - middleNeedles(design).length;
+			const better = (a: GeneratorResult, b: GeneratorResult) => torn(a.design) !== torn(b.design) ? torn(a.design) < torn(b.design) : cutsBetter(a, b);
+			let best: GeneratorResult | undefined, bestAt: { variant: number; inset: number; corners: [number, number] } | undefined;
+			const tryCorners = (corners: [number, number]) => {
+				for (const [variant, layout] of checkeredLayouts(text, true).entries()) {
+					if (layout.matrix.length !== board) continue;
+					let built = false, close = false;
+					for (const inset of [.35, .25, .4]) {
+						// Narrower contacts than those whose cuts come too close come closer still.
+						if (inset === .25 && close) continue;
+						try {
+							const candidate = exported(finish(generateCheckeredGrid(text, font, standard, inset, { variant, mirror: true, corners, cache }), 'letters', false));
+							if (!lobesShareTemplate(candidate.design.fingers, candidate.design.gridSize)) continue;
+							built = true;
+							if (!best || better(candidate, best)) { best = candidate; bestAt = { variant, inset, corners }; }
+							if (clean(best)) return;
+						} catch (error) {
+							refusal(error);
+							close ||= error instanceof CutGeometryError;
+						}
 					}
+					// The next layouts rarely build what one has not.
+					if (!built) return;
 				}
-				catch (error) {
-					refusal(error);
-					if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
-					last = error;
-				}
-			}
-		})(), request.letterScale === undefined ? 4 : 3, true);
-		if (best) return best;
-		if (!everyWay && pieced) everyWayPassed++;
-		throw last;
-	}
-	if (request.style === 'layers') {
-		const layouts = [undefined, ...[false, true].flatMap(filled =>
-			[[1, 2], [2, 1], [2, 2], [3, 2]].map(([columns, rows]) => ({ columns, rows, filled })))];
-		// The panels divide the motif unseen: of the first few, the best paper.
-		const best = bestOfFirst((function* () {
-			for (const panels of layouts) {
-				try {
-					yield finish(generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, panels), 'nested');
-				} catch (error) {
-					refusal(error);
-				}
-			}
-		})());
-		// Where its paper tears printed, the panels again with the motif's
-		// connections a paper's width off; kept only where they hold better.
-		if (best && paperTears(exported(best).design)) {
-			const again = bestOfFirst((function* () {
-				for (const panels of layouts) try {
-					yield finish(generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, panels, paperRoute), 'nested', false);
-				} catch (error) {
-					refusal(error);
-				}
-			})());
-			if (again && cutsBetter(again, best, true)) return again;
-		}
-		if (best) return best;
-		try {
-			// A motif inside the medallion can have counters whose attachments
-			// cannot alternate along a straight chain. Reconnect those counters
-			// around either attachment while retaining the seven-strip layout.
-			const construction = generateLayeredFigure(request.contours ?? [], request.frameSize,
-				request.scale, undefined, nestedFourPortMotif);
-			try {
-				return finish(construction, 'nested');
+			};
+			tryCorners(CORNER_INSETS);
+			const print = printCornerInsets(board);
+			if (best && paperTears(best.design) && print[0] !== CORNER_INSETS[0]) tryCorners(print);
+			// Its sharp tips, as the plain search's: each cell's connections the
+			// fewest tips of those built, then those tips relieved.
+			if (best && bestAt && cutTipCounts(best.design)[1]) for (const relieve of [false, true]) try {
+				const candidate = exported(finish(generateCheckeredGrid(text, font, standard, bestAt.inset, { ...bestAt, mirror: true, cache, optimize: true, relieve }), 'letters', false));
+				if (!lobesShareTemplate(candidate.design.fingers, candidate.design.gridSize) || !better(candidate, best)) continue;
+				const rect = inferOverlapRect(candidate.design.fingers, candidate.design.gridSize);
+				const margin = intersectionMarginPx(rect, gridClearanceScale(candidate.design.gridSize.x, candidate.design.gridSize.y));
+				if (!findSearchIssues(candidate.design.fingers, margin * 1.1).size) best = candidate;
 			} catch (error) {
 				refusal(error);
-				// Preserve these connections with curved approaches before the
-				// global retry replaces them with new straight segments.
-				const geometry = curveSharedCuts(construction.geometry);
-				if (!geometry) throw error;
-				return finishConstruction(request, construction, 'nested', geometry, curveFitter);
 			}
+			return best && torn(best.design) <= torn(design) ? best : made;
+		};
+		const plain = search();
+		const board = plain.design.gridSize.x;
+		if (!paperTears(plain.design) || printCornerInsets(board)[0] === CORNER_INSETS[0]) return mirrored(plain);
+		try {
+			const print = search(board);
+			return mirrored(cutsBetter(print, plain) ? print : plain);
 		} catch (error) {
 			refusal(error);
-			// A motif of several pieces, or with counters, the medallion's
-			// counters then, may still be reached another way (see
-			// `withEveryWay`): round the other counters (`bays`); where that
-			// finishes none, with the cuts between a counter's own counters
-			// round inside it too (see `withCounterWays`): the graph's four
-			// nodes, by its arms and hub; and last up the channels between them
-			// (see `withChannelWays`: the lasso's rope).
-			const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.length);
-			if (pieced && (everyWay || channelWays)) for (const way of channelWays ? [withChannels] : [undefined, withCounterWays]) try {
-				const route = () => generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, undefined, (...args) => {
-					args[7] = { ...args[7], practical: true, compound: true, nested: true, bays: true };
-					return fourPortMotif(...args);
-				});
-				return finish(way ? way(route) : route(), 'nested');
-			} catch (everyError) {
-				refusal(everyError);
-			}
-			if (pieced && !everyWay) everyWayPassed++;
-			throw error;
+			return mirrored(plain);
 		}
 	}
-	if (request.style === 'board') {
-		// The circle on a regular board of five strips, every square outside it
-		// equally large, at the radii the board allows (`boardRanges`). Up to the
-		// circle touching the outer ring of squares, the outer lines cross the
-		// paper whole or follow the circle, and the undivided motif meets the
-		// middle lines like a letter in the circle frame. Reaching into the outer
-		// ring, like the gallery's santa, the circle meets every line, and the
-		// motif, divided like a letter into four panels, meets the lines' ends in
-		// pairs. The panels meet at its centre, or else at a point of background
-		// near it, so their seams cross its paper but not each other. On finer
-		// boards a larger circle reaches a third line a side, which follows it
-		// (see `boardLegs`).
-		const contours = normalizeContours(request.contours ?? []);
-		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } };
-		const xs = contours.flat().map(p => p[0]), ys = contours.flat().map(p => p[1]);
-		const middle: Point = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2];
-		const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
-		const gap = request.gap ?? 3, compound = { practical: true, compound: true };
-		// The size setting sizes the circle (see `boardRadius`); the motif fills
-		// the circle up to the space asked for.
-		// The board's strips, five unless the visitor chose (see `boardRanges`).
-		const strips = request.board ?? 5, ranges = boardRanges(strips), panels = (range: readonly [number, number]) => boardPanels(range, strips);
-		const [small, large, past] = ranges, { radius, range } = boardRadius(request.scale ?? .7, strips);
-		// The motif sits on its box's centre, or over the corner squares, where
-		// it cuts cleanly so in the largest circle, on its smallest enclosing
-		// circle's, which lets it fill the circle further (see below).
-		type Placement = { centre: Point; reach: number; enclosed?: boolean };
-		const boxed: Placement = { centre: middle, reach: Math.max(...contours.flat().map(p => distance(p, middle))) / box };
-		// The slower compound routing only where the panels meet at the centre.
-		const background = backgroundJunctions(contours);
-		let squared: Point[] | undefined;
-		// Panels holding separate pieces of the motif (an animal's legs) join
-		// them like a letter's dots and islands. These come after every other
-		// division, so a motif that divides without them keeps its cuts.
-		const islands = { ...compound, boundaryIslands: true, contourApproaches: true, guardedAttachments: true, filled: true, guardSeams: true };
-		// A seam through a corner of the outline, or nearly (a star's tip
-		// straight above its centre), cannot be built, or halves the tip into
-		// slivers: at the size itself, after every other division, it is tried
-		// a fiftieth of the motif beside the corner, either way. A last resort,
-		// it decides nothing below (whether the motif is divided, where it
-		// sits).
-		const near = .02 * box, corners = contours.flat();
-		const beside = (centre: Point, junction: Point): Point[] => ([0, 1] as const).flatMap(axis => {
-			const at = centre[axis] + junction[axis], corner = corners.reduce((best, p) => Math.abs(p[axis] - at) < Math.abs(best - at) ? p[axis] : best, Infinity);
-			if (Math.abs(corner - at) >= near) return [];
-			return [-1, 1].map(side => corner + side * near - centre[axis])
-				.filter(moved => corners.every(p => Math.abs(p[axis] - centre[axis] - moved) >= near / 2))
-				.map((moved): Point => axis ? [junction[0], moved] : [moved, junction[1]]);
+	const text = request.text ?? '';
+	const font = request.font;
+	const shape = textPanel(frame);
+	const size = request.letterScale ?? 1;
+	const recipes: Array<() => ReturnType<typeof generateTextGrid> | ReturnType<typeof generateCheckedText> | undefined> = text.includes('\n') ? [] : [
+		() => generateCheckedText(text, font, textRoom(request), shape, request.fittedCells, size)
+	];
+	recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: size }));
+	// On the regular board the cells cannot grow, but a letter can be a
+	// little larger inside its cell; its connections then meet it elsewhere.
+	// A figure keeps the size the visitor asked for (see `frameAlternatives`).
+	const regularGrid = !request.fittedCells && (frame === 'woven' || frame === 'air');
+	// How a recipe shows the letters, where it differs from as asked.
+	const looks = new Map<(typeof recipes)[number], string>();
+	if (regularGrid && request.letterScale === undefined) for (const letterScale of [1.05 * size, 1.1 * size]) {
+		recipes.push(text.includes('\n')
+			? () => generateTextGrid(text, font, textRoom(request), shape, { letterScale })
+			: () => generateCheckedText(text, font, textRoom(request), shape, false, letterScale));
+		looks.set(recipes.at(-1)!, `larger ${letterScale}`);
+	}
+	// Give difficult counters/shoulders more room, and spread the projections
+	// around the frame. The requested font, frame and text are retained.
+	// Text with that much room already has it, and no decorative frame. On
+	// the regular board more room makes a letter smaller in its cell, so a
+	// figure there keeps the size asked for instead.
+	if (roomOf(textRoom(request)) < .5 && !(regularGrid && request.letterScale !== undefined)) {
+		recipes.push(() => generateTextGrid(text, font, false, shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+			padding: .5,
+			spread: true
+		}));
+		looks.set(recipes.at(-1)!, 'padded');
+	}
+	// A quick attempt keeps every cell square and skips the slow attachment
+	// searches: panels that split letters unevenly, moved gates and bent
+	// spokes follow, for fitted cells, when it fails. Square cells on the
+	// regular checkerboard never take them: they would make uneven squares.
+	const fittedOnly = new Set<(typeof recipes)[number]>();
+	for (const [columns, slices] of [[2, 1], [1, 2], [2, 2], [1, 3]]) {
+		const recipe = () => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale, columns, slices, spread: true });
+		recipes.push(recipe);
+		if (columns !== slices) fittedOnly.add(recipe);
+	}
+	let usedCompound = false;
+	let crowded = false;
+	recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+		spread: true, practical: true, compound: true, onCompound: () => { usedCompound = true; }, onCrowded: () => { crowded = true; }
+	}));
+	// A locally improved route can still conflict with a neighbouring cell.
+	// Retain the established recipe, but only rerun it if a chord changed.
+	recipes.push(() => usedCompound
+		? generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale, spread: true, practical: true, onCrowded: () => { crowded = true; } })
+		: undefined);
+	recipes.push(() => crowded ? generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+		spread: true, practical: true, compound: true, balanced: true
+	}) : undefined);
+	let gateCrowded = false;
+	const adaptGates = (balanced = false) => {
+		let moved = false;
+		const result = generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+			spread: true, practical: true, compound: true, balanced, adaptGates: true,
+			onGateChange: () => { moved = true; }, onCrowded: () => { gateCrowded = true; }
 		});
-		// Every way of reaching the motif's pieces, after every other way, as a
-		// last resort (see `withEveryWay`): the gates' spokes meet each other
-		// piece in turn (of three in a row, the middle one), islands in a
-		// ring's hole are reached round either attachment, and a motif kept
-		// whole has spokes go round the pieces in their way (a back card hiding
-		// the front one from two gates). Made again when refused, last, the
-		// islands are reached round the pieces and up the channels between
-		// them, as in the open frames (see `withChannelWays`): a steam engine's
-		// rod and wheel in the bay of its disc, open only up a slit.
-		const pieces = forest(contours), rest = (layouts: object[]) => everyWay ? [layouts.map(layout => ({ ...compound, nested: true, bases: true, ...layout }))]
-			: channelWays ? [layouts.map(layout => ({ ...compound, nested: true, bases: true, around: true, legs: true, ...layout }))] : [];
-		const layouts = (range: readonly [number, number], { centre }: Placement, whole = false, atSize = false) => {
-			if (whole || panels(range) === 1) return [[{}, compound], ...rest([{}, ...pieces.length > 1 ? [{ around: true }] : []])];
-			const junctions = background.map((p): Point => [p[0] - centre[0], p[1] - centre[1]]);
-			const moved = atSize ? [[0, 0] as Point, ...junctions].flatMap(junction => beside(centre, junction)) : [];
-			return [[{ columns: 2, slices: 2 }, { ...compound, columns: 2, slices: 2 }, ...junctions.map(junction => ({ columns: 2, slices: 2, junction }))],
-				[undefined, ...junctions].map(junction => ({ ...islands, columns: 2, slices: 2, ...junction && { junction } })),
-				...moved.length ? [moved.map(junction => ({ columns: 2, slices: 2, junction }))] : [],
-				// A seam through the motif's farthest point in a panel's direction
-				// (a star's point on its axis) can meet that panel's gate there;
-				// with the seams guarded, the gate keeps off it. Only at the size
-				// itself, after the others, so no heart cut without them changes.
-				...atSize ? [[undefined, ...junctions, ...moved].map(junction => ({ columns: 2, slices: 2, guardSeams: true, ...junction && { junction } }))] : [],
-				// Then through the points of its background where the seams cross
-				// its outline most nearly square (a dove's wing otherwise meets one
-				// almost along it), with the seams guarded or not.
-				...atSize ? [(squared ??= squareJunctions(contours)).map((p): Point => [p[0] - centre[0], p[1] - centre[1]])
-					.flatMap(junction => [{ columns: 2, slices: 2, junction }, { columns: 2, slices: 2, guardSeams: true, junction }])] : [],
-				...rest([undefined, ...junctions].map(junction => ({ columns: 2, slices: 2, ...junction && { junction } })))];
-		};
-		// A circle wider than the paper leaves the motif no more room than the paper.
-		const fills = (radius: number, { reach }: Placement, factor = 1, space = gap, whole = false) =>
-			((whole ? boardWholeFill : boardFill)(radius, strips) - Math.max(space, 1.5)) * factor / reach / box;
-		// Only the invisible partition varies: where four panels meet, the
-		// routing, and the padding of the motif's cell, which gives its
-		// connections room: the usual, else little. (Gates the circle passes
-		// inside of move in, see `generateTextGrid`.)
-		// Where the circle covers the middle lines whole, only the outer ones
-		// remain (see `boardRanges`).
-		const sizes = (range: readonly [number, number], radius: number, placement = boxed, given?: number, whole = false, atSize = false) => {
-			const scale = given ?? fills(radius, placement, 1, gap, whole);
-			// A motif kept whole keeps every line (see `WHOLE_PATTERNS`).
-			const lines = whole ? boardLines(strips) : boardRangeLines(range, strips), covered = lines.length < boardLines(strips).length;
-			const completion = whole ? boardWholePattern(radius, strips) : boardRangePattern(range);
-			return layouts(range, placement, whole, atSize).flatMap(list => [.22, .05].flatMap(padding =>
-				list.map(layout => ({ radius, scale, layout: { padding, ...layout, ...placement.enclosed && { centre: placement.centre }, ...covered && { lines }, ...completion && { completion } } }))));
-		};
-		const build = ({ radius, scale, layout }: ReturnType<typeof sizes>[number]): Construction => {
-			const grid = () => generateTextGrid(MOTIF, font, false, 'circle', { ...layout, board: strips, circle: 2 * radius, scale });
-			const construction = 'legs' in layout ? withChannels(grid) : grid();
-			audit(construction.edges);
-			return layout.lines ? { ...construction, strips: 2 * layout.lines.length + 1 } : construction;
-		};
-		// Whether the motif can be built this way at all is decided once, at
-		// sizes of the range's own: one that cannot be kept whole, or divided in
-		// four at both, takes the other construction at its size nearest the
-		// touching circle, whatever the slider. Its shape decides, not the
-		// space asked for: more than the usual would leave it too small there.
-		// Where the circle covers the middle lines, the motif is divided at its
-		// size there, more than twice that in the touching ring on finer boards.
-		const home = (range: readonly [number, number]) => panels(range) === 1 ? small
-			: boardRangeLines(range, strips).length < boardLines(strips).length || boardRangePattern(range) ? range : large ?? small;
-		const references = (range: readonly [number, number]) => {
-			const [low, high] = home(range);
-			return home(range) === small ? [Math.round((low + high) / 2)] : [.25, .75].map(t => Math.round(low + t * (high - low)));
-		};
-		const buildable = (range: readonly [number, number]) => references(range)
-			.every(reference => sizes(home(range), reference, boxed, fills(reference, boxed, 1, Math.min(gap, 3))).some(attempt => {
-				try {
-					build(attempt);
-					return true;
-				} catch (error) {
-					if (!(error instanceof ConstructionError)) throw error;
-					return false;
-				}
-			}));
-		// One that cannot be divided in four is kept whole in the touching ring
-		// too, the outer lines following the circle while the other sheet's
-		// middle lines cross them to the motif, out to the corner junctions,
-		// and there past them; else it keeps the touching circle.
-		const wholeBuildable = () => !!large && references(large).every(reference =>
-			sizes(large, reference, boxed, fills(reference, boxed, 1, Math.min(gap, 3)), true).some(attempt => {
-				try {
-					build(attempt);
-					return true;
-				} catch (error) {
-					if (!(error instanceof ConstructionError)) throw error;
-					return false;
-				}
-			}));
-		// Where the middle lines are left out, it is divided only if it is in
-		// every range further out too, so it does not shrink back.
-		const covered = boardRangeLines(range, strips).length < boardLines(strips).length || !!boardRangePattern(range);
-		const keptWhole = !!request.keepWhole && !!large && range !== small && wholeBuildable();
-		const divided = !keptWhole && (!large || (covered ? ranges.slice(ranges.indexOf(range)).reverse().every(buildable) : buildable(range)));
-		const whole = keptWhole || (!divided && range !== small && wholeBuildable());
-		const [mode, size] = divided ? [range, radius] : range === small ? [large, large[0] + .6]
-			: whole ? [large, boardWholeRadius(radius, strips)] : [small, small[1]];
-		// Over the corner squares, whether the motif sits on its enclosing
-		// circle is decided once, in the largest circle, so it only grows with
-		// the setting: there a deer's antler and hooves reach equally far, but a
-		// star's five tips all come close to the circle's connections.
-		// It moves there over the sizes from 85%, so it does not jump; on finer
-		// boards the circle short of the next lines out decides.
-		const enclosed: Placement = { ...boardPlacement(contours), enclosed: true };
-		// Out past the paper's edges, where the middle lines are left out, the
-		// largest circle there decides.
-		const deciding = home(mode) === mode ? mode : past;
-		const placement = ranges.indexOf(mode) > 1 && enclosedAlong(request.scale ?? .7) > 0 && sizes(deciding, deciding[1], enclosed).some(attempt => {
+		// The unchanged recipe has already failed its full-sheet check.
+		return moved ? result : undefined;
+	};
+	const searches = [() => adaptGates(), () => gateCrowded ? adaptGates(true) : undefined];
+	recipes.push(...searches);
+	for (const search of searches) fittedOnly.add(search);
+	for (const columns of [1, 2]) recipes.push(() => {
+		if (!allRecipes || regularGrid) return undefined;
+		let moved = false;
+		const result = generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+			columns, slices: 3, spread: true, filled: true, onSeamChange: () => { moved = true; }
+		});
+		// The one-column layout was already tried with centred contacts.
+		return columns > 1 || moved ? result : undefined;
+	});
+	// A deeper grid divides the ink itself, retaining the ordinary margin
+	// outside it. Count the resulting strips before attempting construction.
+	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n'),
+		letters = Math.max(...lines.map(line => [...line].length));
+	if (2 * letters + 5 * lines.length + 1 <= 20 && allRecipes && !regularGrid)
+		recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+			columns: 2, slices: 5, spread: true, filled: true, inkPanels: true
+		}));
+	// A serif can need a more square approach than a straight shared spoke.
+	// Try bent connections only after the established constructions fail.
+	for (const padding of roomOf(textRoom(request)) >= .5 ? [undefined] : [undefined, .5]) {
+		let bentCrowded = false;
+		for (const balanced of [false, true]) {
+			const bent = () => !balanced || bentCrowded
+				? generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+					padding, spread: true, practical: true, compound: true, adaptGates: true,
+					bentSpokes: true, balanced, onCrowded: () => { bentCrowded = true; }
+				}) : undefined;
+			recipes.push(bent);
+			fittedOnly.add(bent);
+			if (padding) looks.set(bent, 'padded');
+		}
+	}
+	// A letter or motif of several pieces is reached every way the board
+	// circle's are (see `withEveryWay`): a refused one tries again so, and
+	// last with its islands reached round its pieces and up the channels
+	// between them, as in the open frames (see `withChannelWays`: the
+	// lasso's loop).
+	const pieced = [...new Set(text.replace(/\s/g, ''))].some(char => forest(font.glyphs[char]?.contours ?? []).length > 1);
+	if (everyWay && pieced) for (const around of [false, true])
+		recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+			spread: true, practical: true, compound: true, nested: true, bases: true, around }));
+	if (channelWays && pieced)
+		recipes.push(() => withChannels(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+			spread: true, practical: true, compound: true, nested: true, bases: true, around: true, legs: true })));
+	let last: unknown;
+	// The recipes differ in how the letters' cuts spread over panels and
+	// route to their gates, unseen: of a text's first few, the best paper.
+	// A motif in the board frames' cells (sized by `letterScale`) compares
+	// its first three: its several choices each make more.
+	const tried = allRecipes && !regularGrid ? recipes : recipes.filter(recipe => !fittedOnly.has(recipe));
+	// Only those that show the letters as the first to finish does.
+	let look: string | undefined;
+	const best = bestOfFirst((function* () {
+		for (const construct of tried) {
+			if (look !== undefined && (looks.get(construct) ?? '') !== look) continue;
 			try {
-				finish(build(attempt), 'nested', false);
+				const result = construct();
+				if (result) {
+					const done = finish(result, 'letters');
+					look ??= looks.get(construct) ?? '';
+					yield done;
+				}
+			}
+			catch (error) {
+				refusal(error);
+				if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
+				last = error;
+			}
+		}
+	})(), request.letterScale === undefined ? 4 : 3, true);
+	if (best) return best;
+	if (!everyWay && pieced) everyWayPassed++;
+	throw last;
+}
+/** A figure in the circle with a double border. */
+function layerRecipes(request: GeneratorRequest, { finish, curveFitter }: RecipeContext): GeneratorResult {
+	const layouts = [undefined, ...[false, true].flatMap(filled =>
+		[[1, 2], [2, 1], [2, 2], [3, 2]].map(([columns, rows]) => ({ columns, rows, filled })))];
+	// The panels divide the motif unseen: of the first few, the best paper.
+	const best = bestOfFirst((function* () {
+		for (const panels of layouts) {
+			try {
+				yield finish(generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, panels), 'nested');
+			} catch (error) {
+				refusal(error);
+			}
+		}
+	})());
+	// Where its paper tears printed, the panels again with the motif's
+	// connections a paper's width off; kept only where they hold better.
+	if (best && paperTears(exported(best).design)) {
+		const again = bestOfFirst((function* () {
+			for (const panels of layouts) try {
+				yield finish(generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, panels, paperRoute), 'nested', false);
+			} catch (error) {
+				refusal(error);
+			}
+		})());
+		if (again && cutsBetter(again, best, true)) return again;
+	}
+	if (best) return best;
+	try {
+		// A motif inside the medallion can have counters whose attachments
+		// cannot alternate along a straight chain. Reconnect those counters
+		// around either attachment while retaining the seven-strip layout.
+		const construction = generateLayeredFigure(request.contours ?? [], request.frameSize,
+			request.scale, undefined, nestedFourPortMotif);
+		try {
+			return finish(construction, 'nested');
+		} catch (error) {
+			refusal(error);
+			// Preserve these connections with curved approaches before the
+			// global retry replaces them with new straight segments.
+			const geometry = curveSharedCuts(construction.geometry);
+			if (!geometry) throw error;
+			return finishConstruction(request, construction, 'nested', geometry, curveFitter);
+		}
+	} catch (error) {
+		refusal(error);
+		// A motif of several pieces, or with counters, the medallion's
+		// counters then, may still be reached another way (see
+		// `withEveryWay`): round the other counters (`bays`); where that
+		// finishes none, with the cuts between a counter's own counters
+		// round inside it too (see `withCounterWays`): the graph's four
+		// nodes, by its arms and hub; and last up the channels between them
+		// (see `withChannelWays`: the lasso's rope).
+		const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.length);
+		if (pieced && (everyWay || channelWays)) for (const way of channelWays ? [withChannels] : [undefined, withCounterWays]) try {
+			const route = () => generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, undefined, (...args) => {
+				args[7] = { ...args[7], practical: true, compound: true, nested: true, bays: true };
+				return fourPortMotif(...args);
+			});
+			return finish(way ? way(route) : route(), 'nested');
+		} catch (everyError) {
+			refusal(everyError);
+		}
+		if (pieced && !everyWay) everyWayPassed++;
+		throw error;
+	}
+}
+/** A figure in the circle on a board of equally large squares. */
+function boardRecipes(request: GeneratorRequest, { finish, onRejected, curveFitter, variants, allRecipes }: RecipeContext): GeneratorResult {
+	// The circle on a regular board of five strips, every square outside it
+	// equally large, at the radii the board allows (`boardRanges`). Up to the
+	// circle touching the outer ring of squares, the outer lines cross the
+	// paper whole or follow the circle, and the undivided motif meets the
+	// middle lines like a letter in the circle frame. Reaching into the outer
+	// ring, like the gallery's santa, the circle meets every line, and the
+	// motif, divided like a letter into four panels, meets the lines' ends in
+	// pairs. The panels meet at its centre, or else at a point of background
+	// near it, so their seams cross its paper but not each other. On finer
+	// boards a larger circle reaches a third line a side, which follows it
+	// (see `boardLegs`).
+	const contours = normalizeContours(request.contours ?? []);
+	const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } };
+	const xs = contours.flat().map(p => p[0]), ys = contours.flat().map(p => p[1]);
+	const middle: Point = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2];
+	const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+	const gap = request.gap ?? 3, compound = { practical: true, compound: true };
+	// The size setting sizes the circle (see `boardRadius`); the motif fills
+	// the circle up to the space asked for.
+	// The board's strips, five unless the visitor chose (see `boardRanges`).
+	const strips = request.board ?? 5, ranges = boardRanges(strips), panels = (range: readonly [number, number]) => boardPanels(range, strips);
+	const [small, large, past] = ranges, { radius, range } = boardRadius(request.scale ?? .7, strips);
+	// The motif sits on its box's centre, or over the corner squares, where
+	// it cuts cleanly so in the largest circle, on its smallest enclosing
+	// circle's, which lets it fill the circle further (see below).
+	type Placement = { centre: Point; reach: number; enclosed?: boolean };
+	const boxed: Placement = { centre: middle, reach: Math.max(...contours.flat().map(p => distance(p, middle))) / box };
+	// The slower compound routing only where the panels meet at the centre.
+	const background = backgroundJunctions(contours);
+	let squared: Point[] | undefined;
+	// Panels holding separate pieces of the motif (an animal's legs) join
+	// them like a letter's dots and islands. These come after every other
+	// division, so a motif that divides without them keeps its cuts.
+	const islands = { ...compound, boundaryIslands: true, contourApproaches: true, guardedAttachments: true, filled: true, guardSeams: true };
+	// A seam through a corner of the outline, or nearly (a star's tip
+	// straight above its centre), cannot be built, or halves the tip into
+	// slivers: at the size itself, after every other division, it is tried
+	// a fiftieth of the motif beside the corner, either way. A last resort,
+	// it decides nothing below (whether the motif is divided, where it
+	// sits).
+	const near = .02 * box, corners = contours.flat();
+	const beside = (centre: Point, junction: Point): Point[] => ([0, 1] as const).flatMap(axis => {
+		const at = centre[axis] + junction[axis], corner = corners.reduce((best, p) => Math.abs(p[axis] - at) < Math.abs(best - at) ? p[axis] : best, Infinity);
+		if (Math.abs(corner - at) >= near) return [];
+		return [-1, 1].map(side => corner + side * near - centre[axis])
+			.filter(moved => corners.every(p => Math.abs(p[axis] - centre[axis] - moved) >= near / 2))
+			.map((moved): Point => axis ? [junction[0], moved] : [moved, junction[1]]);
+	});
+	// Every way of reaching the motif's pieces, after every other way, as a
+	// last resort (see `withEveryWay`): the gates' spokes meet each other
+	// piece in turn (of three in a row, the middle one), islands in a
+	// ring's hole are reached round either attachment, and a motif kept
+	// whole has spokes go round the pieces in their way (a back card hiding
+	// the front one from two gates). Made again when refused, last, the
+	// islands are reached round the pieces and up the channels between
+	// them, as in the open frames (see `withChannelWays`): a steam engine's
+	// rod and wheel in the bay of its disc, open only up a slit.
+	const pieces = forest(contours), rest = (layouts: object[]) => everyWay ? [layouts.map(layout => ({ ...compound, nested: true, bases: true, ...layout }))]
+		: channelWays ? [layouts.map(layout => ({ ...compound, nested: true, bases: true, around: true, legs: true, ...layout }))] : [];
+	const layouts = (range: readonly [number, number], { centre }: Placement, whole = false, atSize = false) => {
+		if (whole || panels(range) === 1) return [[{}, compound], ...rest([{}, ...pieces.length > 1 ? [{ around: true }] : []])];
+		const junctions = background.map((p): Point => [p[0] - centre[0], p[1] - centre[1]]);
+		const moved = atSize ? [[0, 0] as Point, ...junctions].flatMap(junction => beside(centre, junction)) : [];
+		return [[{ columns: 2, slices: 2 }, { ...compound, columns: 2, slices: 2 }, ...junctions.map(junction => ({ columns: 2, slices: 2, junction }))],
+			[undefined, ...junctions].map(junction => ({ ...islands, columns: 2, slices: 2, ...junction && { junction } })),
+			...moved.length ? [moved.map(junction => ({ columns: 2, slices: 2, junction }))] : [],
+			// A seam through the motif's farthest point in a panel's direction
+			// (a star's point on its axis) can meet that panel's gate there;
+			// with the seams guarded, the gate keeps off it. Only at the size
+			// itself, after the others, so no heart cut without them changes.
+			...atSize ? [[undefined, ...junctions, ...moved].map(junction => ({ columns: 2, slices: 2, guardSeams: true, ...junction && { junction } }))] : [],
+			// Then through the points of its background where the seams cross
+			// its outline most nearly square (a dove's wing otherwise meets one
+			// almost along it), with the seams guarded or not.
+			...atSize ? [(squared ??= squareJunctions(contours)).map((p): Point => [p[0] - centre[0], p[1] - centre[1]])
+				.flatMap(junction => [{ columns: 2, slices: 2, junction }, { columns: 2, slices: 2, guardSeams: true, junction }])] : [],
+			...rest([undefined, ...junctions].map(junction => ({ columns: 2, slices: 2, ...junction && { junction } })))];
+	};
+	// A circle wider than the paper leaves the motif no more room than the paper.
+	const fills = (radius: number, { reach }: Placement, factor = 1, space = gap, whole = false) =>
+		((whole ? boardWholeFill : boardFill)(radius, strips) - Math.max(space, 1.5)) * factor / reach / box;
+	// Only the invisible partition varies: where four panels meet, the
+	// routing, and the padding of the motif's cell, which gives its
+	// connections room: the usual, else little. (Gates the circle passes
+	// inside of move in, see `generateTextGrid`.)
+	// Where the circle covers the middle lines whole, only the outer ones
+	// remain (see `boardRanges`).
+	const sizes = (range: readonly [number, number], radius: number, placement = boxed, given?: number, whole = false, atSize = false) => {
+		const scale = given ?? fills(radius, placement, 1, gap, whole);
+		// A motif kept whole keeps every line (see `WHOLE_PATTERNS`).
+		const lines = whole ? boardLines(strips) : boardRangeLines(range, strips), covered = lines.length < boardLines(strips).length;
+		const completion = whole ? boardWholePattern(radius, strips) : boardRangePattern(range);
+		return layouts(range, placement, whole, atSize).flatMap(list => [.22, .05].flatMap(padding =>
+			list.map(layout => ({ radius, scale, layout: { padding, ...layout, ...placement.enclosed && { centre: placement.centre }, ...covered && { lines }, ...completion && { completion } } }))));
+	};
+	const build = ({ radius, scale, layout }: ReturnType<typeof sizes>[number]): Construction => {
+		const grid = () => generateTextGrid(MOTIF, font, false, 'circle', { ...layout, board: strips, circle: 2 * radius, scale });
+		const construction = 'legs' in layout ? withChannels(grid) : grid();
+		audit(construction.edges);
+		return layout.lines ? { ...construction, strips: 2 * layout.lines.length + 1 } : construction;
+	};
+	// Whether the motif can be built this way at all is decided once, at
+	// sizes of the range's own: one that cannot be kept whole, or divided in
+	// four at both, takes the other construction at its size nearest the
+	// touching circle, whatever the slider. Its shape decides, not the
+	// space asked for: more than the usual would leave it too small there.
+	// Where the circle covers the middle lines, the motif is divided at its
+	// size there, more than twice that in the touching ring on finer boards.
+	const home = (range: readonly [number, number]) => panels(range) === 1 ? small
+		: boardRangeLines(range, strips).length < boardLines(strips).length || boardRangePattern(range) ? range : large ?? small;
+	const references = (range: readonly [number, number]) => {
+		const [low, high] = home(range);
+		return home(range) === small ? [Math.round((low + high) / 2)] : [.25, .75].map(t => Math.round(low + t * (high - low)));
+	};
+	const buildable = (range: readonly [number, number]) => references(range)
+		.every(reference => sizes(home(range), reference, boxed, fills(reference, boxed, 1, Math.min(gap, 3))).some(attempt => {
+			try {
+				build(attempt);
 				return true;
 			} catch (error) {
-				refusal(error);
+				if (!(error instanceof ConstructionError)) throw error;
 				return false;
 			}
-		}) ? { ...boardPlacement(contours, enclosedAlong(request.scale ?? .7)), enclosed: true } : boxed;
-		// The size setting the other construction's circle stands for, and
-		// whether the motif sits on its enclosing circle, for the picture.
-		// A clean heart's shared cuts that meet the motif in a sharp tip of
-		// paper bend to cross it instead, where that leaves fewer such tips and
-		// every strip as wide (see `improveSharedConnections`).
-		const kept = (cut: GeneratorResult): GeneratorResult => {
-			const result = cut.hardToCut ? cut : improveSharedConnections(cut);
-			return {
-				...size === radius && (mode === range || whole) ? result : { ...result, scale: boardSetting(size, strips) },
-				...placement.enclosed && { enclosed: true },
-				...whole && { whole: true },
-				...result.design.gridSize.x !== strips && { board: strips }
-			};
-		};
-		// The circle and the motif keep the sizes the setting gives them, so
-		// both only grow with it: cut cleanly if they can be, else as hard to
-		// cut. Only where nothing at all can be finished at those sizes does the
-		// motif shrink a little, and then the circle grow a little.
-		const nearby = [size + 1.5, size + 3].map(other => Math.min(mode[1], other))
-			.filter(other => other - size > .5 && boardLines(strips).every(line => Math.abs(other - line) > .1));
-		// Of the first few working cuts, the one whose paper holds best, then
-		// with the fewest tips (`cutsBetter`): the attempts differ only in the
-		// invisible partition, so the picture stays. Tips first would leave the
-		// star at 73% on five strips needing a print 170 mm wide rather than 140.
-		let last: unknown;
-		for (const attempts of [sizes(mode, size, placement, undefined, whole, true), [.85, .7].flatMap(factor => sizes(mode, size, placement, fills(size, placement, factor, gap, whole), whole, true)),
-			nearby.flatMap(other => sizes(mode, other, placement, undefined, whole, true))]) {
-			const rejected: Parameters<typeof hardToCutResult>[1] = [];
-			let best: GeneratorResult | undefined, rawTips: [number, number] | undefined;
-			// Where the best of them tears, those that worked again with the
-			// motif's connections kept as far from it as paper holds printed;
-			// where it still does, with the circle's legs meeting the motif a
-			// third or two thirds of the way out from it rather than halfway.
-			const worked: typeof attempts = [];
-			const again = (pass: number) => pass === 1
-				? worked.map(({ layout, ...attempt }) => ({ ...attempt, layout: { ...layout, margin: PAPER_NECK_MM / PRINT_WIDTH_MM * 100 } }))
-				: worked.flatMap(({ layout, ...attempt }) => [.3, .7].map(gate => ({ ...attempt, layout: { ...layout, gate } })));
-			// The gates move on five strips only: on finer boards, where most
-			// tear printed whatever they do, that bought little for its time.
-			for (const pass of strips === 5 ? [0, 1, 2] : [0, 1]) {
-				if (pass && (!best || !paperTears(exported(best).design))) break;
-				let working = 0;
-				for (const attempt of pass ? again(pass) : attempts) try {
-					const construction = build(attempt);
-					// Worse tips before the curve fitting are skipped, unless the
-					// best so far tears.
-					const tips = cutTipCounts(construction.geometry);
-					if (rawTips && best && !paperTears(exported(best).design) && !fewerCutTips(tips, rawTips)) continue;
-					rejected.push({ construction, recipe: 'nested' });
-					const candidate = finish(construction, 'nested');
-					if (!pass) worked.push(attempt);
-					if (!best || cutsBetter(candidate, best, true)) [best, rawTips] = [candidate, tips];
-					if (!paperTears(exported(best).design) && !cutTipCounts(exported(best).design)[1] || ++working === 4) break;
-				} catch (error) {
-					refusal(error);
-					last = error;
-				}
-			}
-			// Where it still has a needle, those that worked again with the cuts
-			// that would meet the circle's gates at a slant stepping in to them
-			// straight (see `boardLegs`); kept only where they cut better.
-			const stepped = worked.map(({ layout, ...attempt }) => ({ ...attempt, layout: { ...layout, stepIn: true } }));
-			if (best && cutTipCounts(exported(best).design)[0]) for (const attempt of stepped) try {
-				const candidate = finish(build(attempt), 'nested');
-				if (cutsBetter(candidate, best, true)) best = candidate;
-			} catch (error) {
-				refusal(error);
-			}
-			if (best) return kept(best);
-			const hard = hardToCutResult(request, rejected, curveFitter);
-			// Shared cuts meeting the motif's outline in a narrow point can bend
-			// to cross it instead (see `curveSharedCuts`), where only that keeps
-			// the heart from being hard to cut: in the first few constructions
-			// tried, where it nearly always does if it can.
-			if (hard?.hardToCut) for (const { construction, recipe } of rejected.slice(0, 4)) {
-				const geometry = curveSharedCuts(construction.geometry);
-				if (!geometry) continue;
-				const curved = unlessRefused(() => kept(finishConstruction(request, construction, recipe, geometry, curveFitter)));
-				if (curved) return curved;
-			}
-			if (hard) return kept(hard);
-		}
-		// A motif of several pieces, or with islands in its holes, may still
-		// be reached another way (see `withEveryWay`).
-		if (!everyWay && (pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length)))) everyWayPassed++;
-		// Over the corner squares, a motif that cannot be built at all at its
-		// size keeps the largest circle short of them, at 85% on five strips, and
-		// so on past each junction further out; with more space than usual, one
-		// divided in four that fits nowhere in its circle keeps the touching
-		// circle, as one that cannot be divided does.
-		const smaller = (scale: number) => {
-			const result = generateUsingRecipes({ ...request, scale }, onRejected, curveFitter, variants, allRecipes);
-			return { ...result, scale: result.scale ?? scale };
-		};
-		try {
-			const at = ranges.indexOf(mode);
-			if (at > 1) return smaller(boardSteps(strips)[at - 2][1] / 100);
-			if (mode === large && (gap > 3 || whole)) return smaller(.7);
-		} catch (error) {
-			if (!isRefusal(error) || strips === 5) throw error;
-			last = error;
-		}
-		// A motif that cannot be built at all on the strips the visitor chose
-		// (on three, one that must be divided) is shown on the frame's own five,
-		// as the page then says.
-		if (strips !== 5) return generateUsingRecipes({ ...request, board: undefined }, onRejected, curveFitter, variants, allRecipes);
-		throw last;
-	}
-	if (request.style === 'corners') {
-		let last: unknown;
-		// The layouts route the lanes unseen: of the first few, the best paper.
-		// One fitting the border narrows the outer strips, a picture of its
-		// own: only where none of the others finish.
-		const fitted = new Set<GeneratorResult>();
-		const layouts = ({ routeMargin = 0, avoid = false, border, wholeLanes = false, stepped = false, everyWay: ways = false, walled = false, nested = false }:
-			Pick<CornerOptions, 'routeMargin' | 'avoid' | 'wholeLanes' | 'stepped' | 'everyWay' | 'walled' | 'nested'> & { border?: boolean } = {}) => bestOfFirst((function* () {
-			let finished = false;
-			for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) for (const holdLegs of [true, false]) {
-				if (fitBorder && finished) return;
-				if (border !== undefined && fitBorder !== border) continue;
-				// Every way, the practical routes only, with straight spokes (a
-				// chain takes no other way).
-				if (ways && (routing !== 'practical' || bentSpokes)) continue;
-				try {
-					const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, {
-						routing, fitBorder, bentSpokes, gap: request.gap, bendLegs: routeMargin > 0, holdLegs, routeMargin, avoid,
-						wholeLanes, stepped, everyWay: ways, walled, nested
-					});
-					// Keep the established frame and skip another fit when moving
-					// separate components did not change any lane or connection.
-					if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
-					const done = finish(result, 'silhouette', !routeMargin);
-					finished = true;
-					if (fitBorder) fitted.add(done);
-					yield done;
-				} catch (error) {
-					refusal(error);
-					if (!routeMargin) last = error;
-				}
-			}
-		})());
-		// The lanes' routes passing the other lanes' parts of the motif only
-		// where none of the plain ones finish (the elephant).
-		let best = layouts(), avoided = false, stepped = false;
-		if (!best) [best, avoided] = [layouts({ avoid: true }), true];
-		// Where none of those finish either, the side lanes reach the parts of
-		// the motif in them one at a time (the polar star's wedges, a straight
-		// link between two of which crosses its point).
-		if (!best) [best, avoided, stepped] = [layouts({ stepped: true }), false, true];
-		// A motif of several pieces, or with counters, may still be reached
-		// every way (see `withEveryWay`): the swan's wing in the bay of its
-		// body, its eye across its head.
-		const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.length);
-		let ways = false, walled = false, counter = false, channeled = false;
-		if (!best && pieced && everyWay) [best, stepped, ways] = [layouts({ everyWay: true }), false, true];
-		// Where that finishes none either, a lane's spokes that the motif's
-		// other parts wall off from its largest go round them too (the
-		// stethoscope, the motorcycle).
-		if (!best && pieced && everyWay) [best, walled] = [layouts({ everyWay: true, walled: true }), true];
-		// Where none finish yet, the cuts between the motif's counters go
-		// round inside it too (see `withCounterWays`): the graph's nodes.
-		if (!best && pieced && everyWay) [best, counter] = [withCounterWays(() => layouts({ everyWay: true, walled: true })), true];
-		// And last up the channels between its pieces (see `withChannelWays`),
-		// a counter's counters reached round either attachment (the teardrop
-		// in the threads logo's @).
-		if (!best && pieced && channelWays) [best, channeled] = [withChannels(() => layouts({ everyWay: true, walled: true, nested: true })), true];
-		if (!best && pieced && !everyWay) everyWayPassed++;
-		// Where its paper tears printed, the layouts with the same border again
-		// with the motif's connections, and the side lanes' legs, a paper's
-		// width off, kept where they hold better; where that still tears, with
-		// an empty side lane's whole line bent too (a mitten's thumb against
-		// it), which elsewhere can bend into another part (a bird's wing).
-		if (best && paperTears(exported(best).design)) {
-			const paper = PAPER_NECK_MM / PRINT_WIDTH_MM * 100, border = fitted.has(best);
-			for (const wholeLanes of [false, true]) {
-				if (wholeLanes && !paperTears(exported(best).design)) break;
-				const retry = () => layouts({ routeMargin: paper, avoid: avoided, border, wholeLanes, stepped, everyWay: ways, walled, nested: channeled });
-				const again = counter ? withCounterWays(retry) : channeled ? withChannels(retry) : retry();
-				if (again && cutsBetter(again, best, true)) best = again;
-			}
-		}
-		if (best) return best;
-		throw last;
-	}
-	const open = openFrame(request);
-	if (open) {
-		// How each finished heart was made, to make it again a paper's width off.
-		const made = new Map<GeneratorResult, (route: typeof fourPortMotif) => Construction>();
-		const single = (symmetric: GateTies, angles?: [number, number, number, number], axisGap = 0, onMiddle = false) => {
-			const construct = (route: typeof fourPortMotif) => generateFittedFigure(request.contours ?? [], request.frameSize, request.scale,
-				{ route, angleOffsets: angles, open, symmetric, axisGap, onMiddle });
-			for (const route of [fourPortMotif, originalFourPortMotif]) {
-				let constructed = false;
-				try {
-					const construction = construct(route);
-					constructed = true;
-					const result = finish(construction, 'silhouette');
-					made.set(result, construct);
-					return result;
-				}
-				catch (error) {
-					refusal(error);
-					if (!constructed && !(error instanceof CompilationError)) break;
-				}
-			}
-		};
-		// Where its paper tears printed, the same gates with the motif's
-		// connections a paper's width off; kept only where they hold better.
-		const held = (result: GeneratorResult) => {
-			const construct = made.get(result);
-			if (!construct || !paperTears(exported(result).design)) return result;
+		}));
+	// One that cannot be divided in four is kept whole in the touching ring
+	// too, the outer lines following the circle while the other sheet's
+	// middle lines cross them to the motif, out to the corner junctions,
+	// and there past them; else it keeps the touching circle.
+	const wholeBuildable = () => !!large && references(large).every(reference =>
+		sizes(large, reference, boxed, fills(reference, boxed, 1, Math.min(gap, 3)), true).some(attempt => {
 			try {
-				const again = finish(construct(paperRoute), 'silhouette', false);
-				return cutsBetter(again, result, true) ? again : result;
+				build(attempt);
+				return true;
 			} catch (error) {
-				refusal(error);
-				return result;
+				if (!(error instanceof ConstructionError)) throw error;
+				return false;
 			}
-		};
-		// Symmetric gates come first, kept only without needle-sharp paper.
-		// A motif that is its own mirror image keeps symmetric gates wherever
-		// any finish: those on the heart's middle further out, or those beside
-		// it turned alike, with the fewest needle-sharp tips. Otherwise every
-		// construction uses the motif's own extreme points.
-		const balanced = single(true);
-		if (balanced && !cutTipCounts(balanced.design)[0]) return held(balanced);
-		if (mirrorSymmetric(normalizeContours(request.contours ?? []))) {
-			let best = balanced;
-			for (const { ties = true, angles, axisGap, onMiddle } of SYMMETRIC_GATES) {
-				const result = single(ties, angles, axisGap, onMiddle);
-				if (result && (!best || fewerCutTips(cutTipCounts(result.design), cutTipCounts(best.design)))) best = result;
-				if (best && !cutTipCounts(best.design)[0]) break;
-			}
-			if (best) return held(best);
-		}
-		const extreme = single(false);
-		if (extreme) return held(extreme);
-		for (const [columns, rows] of [[2, 1], [2, 2], [3, 1], [3, 2], [3, 3], [4, 2]]) {
-			try {
-				return finish(generatePanelFigure(request.contours ?? [], open, request.frameSize ?? 70, request.scale ?? .7, { columns, style: 'check', rows }), 'silhouette');
-			} catch (error) {
-				refusal(error);
-			}
-		}
+		}));
+	// Where the middle lines are left out, it is divided only if it is in
+	// every range further out too, so it does not shrink back.
+	const covered = boardRangeLines(range, strips).length < boardLines(strips).length || !!boardRangePattern(range);
+	const keptWhole = !!request.keepWhole && !!large && range !== small && wholeBuildable();
+	const divided = !keptWhole && (!large || (covered ? ranges.slice(ranges.indexOf(range)).reverse().every(buildable) : buildable(range)));
+	const whole = keptWhole || (!divided && range !== small && wholeBuildable());
+	const [mode, size] = divided ? [range, radius] : range === small ? [large, large[0] + .6]
+		: whole ? [large, boardWholeRadius(radius, strips)] : [small, small[1]];
+	// Over the corner squares, whether the motif sits on its enclosing
+	// circle is decided once, in the largest circle, so it only grows with
+	// the setting: there a deer's antler and hooves reach equally far, but a
+	// star's five tips all come close to the circle's connections.
+	// It moves there over the sizes from 85%, so it does not jump; on finer
+	// boards the circle short of the next lines out decides.
+	const enclosed: Placement = { ...boardPlacement(contours), enclosed: true };
+	// Out past the paper's edges, where the middle lines are left out, the
+	// largest circle there decides.
+	const deciding = home(mode) === mode ? mode : past;
+	const placement = ranges.indexOf(mode) > 1 && enclosedAlong(request.scale ?? .7) > 0 && sizes(deciding, deciding[1], enclosed).some(attempt => {
 		try {
-			return finish(generatePanelFigure(request.contours ?? [], open, request.frameSize ?? 70, request.scale ?? .7, { columns: 3, style: 'check', rows: 1, adaptive: true }), 'silhouette');
+			finish(build(attempt), 'nested', false);
+			return true;
 		} catch (error) {
 			refusal(error);
-			for (const columns of [2, 3, 4] as const) {
-				try {
-					return finish(generateComponentFigure(request.contours ?? [], open, request.frameSize,
-						request.scale, { style: 'check', columns }), 'silhouette');
-				} catch (retryError) {
-					refusal(retryError);
-				}
+			return false;
+		}
+	}) ? { ...boardPlacement(contours, enclosedAlong(request.scale ?? .7)), enclosed: true } : boxed;
+	// The size setting the other construction's circle stands for, and
+	// whether the motif sits on its enclosing circle, for the picture.
+	// A clean heart's shared cuts that meet the motif in a sharp tip of
+	// paper bend to cross it instead, where that leaves fewer such tips and
+	// every strip as wide (see `improveSharedConnections`).
+	const kept = (cut: GeneratorResult): GeneratorResult => {
+		const result = cut.hardToCut ? cut : improveSharedConnections(cut);
+		return {
+			...size === radius && (mode === range || whole) ? result : { ...result, scale: boardSetting(size, strips) },
+			...placement.enclosed && { enclosed: true },
+			...whole && { whole: true },
+			...result.design.gridSize.x !== strips && { board: strips }
+		};
+	};
+	// The circle and the motif keep the sizes the setting gives them, so
+	// both only grow with it: cut cleanly if they can be, else as hard to
+	// cut. Only where nothing at all can be finished at those sizes does the
+	// motif shrink a little, and then the circle grow a little.
+	const nearby = [size + 1.5, size + 3].map(other => Math.min(mode[1], other))
+		.filter(other => other - size > .5 && boardLines(strips).every(line => Math.abs(other - line) > .1));
+	// Of the first few working cuts, the one whose paper holds best, then
+	// with the fewest tips (`cutsBetter`): the attempts differ only in the
+	// invisible partition, so the picture stays. Tips first would leave the
+	// star at 73% on five strips needing a print 170 mm wide rather than 140.
+	let last: unknown;
+	for (const attempts of [sizes(mode, size, placement, undefined, whole, true), [.85, .7].flatMap(factor => sizes(mode, size, placement, fills(size, placement, factor, gap, whole), whole, true)),
+		nearby.flatMap(other => sizes(mode, other, placement, undefined, whole, true))]) {
+		const rejected: Parameters<typeof hardToCutResult>[1] = [];
+		let best: GeneratorResult | undefined, rawTips: [number, number] | undefined;
+		// Where the best of them tears, those that worked again with the
+		// motif's connections kept as far from it as paper holds printed;
+		// where it still does, with the circle's legs meeting the motif a
+		// third or two thirds of the way out from it rather than halfway.
+		const worked: typeof attempts = [];
+		const again = (pass: number) => pass === 1
+			? worked.map(({ layout, ...attempt }) => ({ ...attempt, layout: { ...layout, margin: PAPER_NECK_MM / PRINT_WIDTH_MM * 100 } }))
+			: worked.flatMap(({ layout, ...attempt }) => [.3, .7].map(gate => ({ ...attempt, layout: { ...layout, gate } })));
+		// The gates move on five strips only: on finer boards, where most
+		// tear printed whatever they do, that bought little for its time.
+		for (const pass of strips === 5 ? [0, 1, 2] : [0, 1]) {
+			if (pass && (!best || !paperTears(exported(best).design))) break;
+			let working = 0;
+			for (const attempt of pass ? again(pass) : attempts) try {
+				const construction = build(attempt);
+				// Worse tips before the curve fitting are skipped, unless the
+				// best so far tears.
+				const tips = cutTipCounts(construction.geometry);
+				if (rawTips && best && !paperTears(exported(best).design) && !fewerCutTips(tips, rawTips)) continue;
+				rejected.push({ construction, recipe: 'nested' });
+				const candidate = finish(construction, 'nested');
+				if (!pass) worked.push(attempt);
+				if (!best || cutsBetter(candidate, best, true)) [best, rawTips] = [candidate, tips];
+				if (!paperTears(exported(best).design) && !cutTipCounts(exported(best).design)[1] || ++working === 4) break;
+			} catch (error) {
+				refusal(error);
+				last = error;
 			}
-			// A motif of several pieces, or with islands in its holes, may still
-			// be reached another way, as in the rays (see `withEveryWay`), and,
-			// the legs only meeting the motif, round its pieces anywhere short
-			// of them (`legs`); where that finishes none, with the spokes the
-			// other pieces wall off from the largest round them too (`walled`:
-			// the note's pencil inside its chevron), and last with the gates a
-			// clearance off the motif, where one on a piece walls off the way
-			// round it (the chevron in Tæt om figuren); and last up the channels
-			// between its pieces (see `withChannelWays`: the lasso's rope), its
-			// gates on the motif and, in Tæt om figuren, a clearance off it.
-			const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length));
-			// Made again when refused, the base is also each other piece in
-			// turn, three at most, those most gates meet first: the
-			// microphone's holder, whose stem and tips hold three of Tæt om
-			// figuren's gates; the second of a stack's three chevrons. Last, each
-			// gate takes the islands on round to the next, one way round or the
-			// other (see `sweep`): a signal's ring of dashes, four under gates.
-			const tiers: { walled?: boolean; padding?: number; channeled?: boolean; based?: number; sweep?: 1 | -1 }[] = channelWays
-				? [{ walled: true, channeled: true }, { walled: true, padding: 1, channeled: true },
-					{ walled: true, based: 0 }, { walled: true, based: 1 }, { walled: true, based: 2 }, { sweep: 1 }, { sweep: -1 }]
-				: [{}, { walled: true }, { walled: true, padding: 1 }];
-			if (pieced && (everyWay || channelWays)) for (const { walled = false, padding = 0, channeled = false, based = -1, sweep } of tiers) try {
-				const construct = () => generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, { route: (...args) => {
-					const root = based < 0 ? undefined : otherBases(args[1], args[2])[based];
-					if (based >= 0 && !root) throw new ConstructionError('topology', 'No other piece for a base');
-					args[7] = { ...args[7], practical: true, compound: true, nested: true, around: true, legs: true, walled, ...root ? { root } : {}, ...sweep ? { sweep } : {} };
-					return fourPortMotif(...args);
-				}, padding, open, symmetric: true });
-				return finish(channeled ? withChannels(construct) : construct(), 'silhouette');
-			} catch (everyError) {
-				refusal(everyError);
+		}
+		// Where it still has a needle, those that worked again with the cuts
+		// that would meet the circle's gates at a slant stepping in to them
+		// straight (see `boardLegs`); kept only where they cut better.
+		const stepped = worked.map(({ layout, ...attempt }) => ({ ...attempt, layout: { ...layout, stepIn: true } }));
+		if (best && cutTipCounts(exported(best).design)[0]) for (const attempt of stepped) try {
+			const candidate = finish(build(attempt), 'nested');
+			if (cutsBetter(candidate, best, true)) best = candidate;
+		} catch (error) {
+			refusal(error);
+		}
+		if (best) return kept(best);
+		const hard = hardToCutResult(request, rejected, curveFitter);
+		// Shared cuts meeting the motif's outline in a narrow point can bend
+		// to cross it instead (see `curveSharedCuts`), where only that keeps
+		// the heart from being hard to cut: in the first few constructions
+		// tried, where it nearly always does if it can.
+		if (hard?.hardToCut) for (const { construction, recipe } of rejected.slice(0, 4)) {
+			const geometry = curveSharedCuts(construction.geometry);
+			if (!geometry) continue;
+			const curved = unlessRefused(() => kept(finishConstruction(request, construction, recipe, geometry, curveFitter)));
+			if (curved) return curved;
+		}
+		if (hard) return kept(hard);
+	}
+	// A motif of several pieces, or with islands in its holes, may still
+	// be reached another way (see `withEveryWay`).
+	if (!everyWay && (pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length)))) everyWayPassed++;
+	// Over the corner squares, a motif that cannot be built at all at its
+	// size keeps the largest circle short of them, at 85% on five strips, and
+	// so on past each junction further out; with more space than usual, one
+	// divided in four that fits nowhere in its circle keeps the touching
+	// circle, as one that cannot be divided does.
+	const smaller = (scale: number) => {
+		const result = generateUsingRecipes({ ...request, scale }, onRejected, curveFitter, variants, allRecipes);
+		return { ...result, scale: result.scale ?? scale };
+	};
+	try {
+		const at = ranges.indexOf(mode);
+		if (at > 1) return smaller(boardSteps(strips)[at - 2][1] / 100);
+		if (mode === large && (gap > 3 || whole)) return smaller(.7);
+	} catch (error) {
+		if (!isRefusal(error) || strips === 5) throw error;
+		last = error;
+	}
+	// A motif that cannot be built at all on the strips the visitor chose
+	// (on three, one that must be divided) is shown on the frame's own five,
+	// as the page then says.
+	if (strips !== 5) return generateUsingRecipes({ ...request, board: undefined }, onRejected, curveFitter, variants, allRecipes);
+	throw last;
+}
+/** A figure with checks in the heart's corners. */
+function cornerRecipes(request: GeneratorRequest, { finish }: RecipeContext): GeneratorResult {
+	let last: unknown;
+	// The layouts route the lanes unseen: of the first few, the best paper.
+	// One fitting the border narrows the outer strips, a picture of its
+	// own: only where none of the others finish.
+	const fitted = new Set<GeneratorResult>();
+	const layouts = ({ routeMargin = 0, avoid = false, border, wholeLanes = false, stepped = false, everyWay: ways = false, walled = false, nested = false }:
+		Pick<CornerOptions, 'routeMargin' | 'avoid' | 'wholeLanes' | 'stepped' | 'everyWay' | 'walled' | 'nested'> & { border?: boolean } = {}) => bestOfFirst((function* () {
+		let finished = false;
+		for (const [routing, fitBorder, bentSpokes] of CORNER_LAYOUTS) for (const holdLegs of [true, false]) {
+			if (fitBorder && finished) return;
+			if (border !== undefined && fitBorder !== border) continue;
+			// Every way, the practical routes only, with straight spokes (a
+			// chain takes no other way).
+			if (ways && (routing !== 'practical' || bentSpokes)) continue;
+			try {
+				const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, {
+					routing, fitBorder, bentSpokes, gap: request.gap, bendLegs: routeMargin > 0, holdLegs, routeMargin, avoid,
+					wholeLanes, stepped, everyWay: ways, walled, nested
+				});
+				// Keep the established frame and skip another fit when moving
+				// separate components did not change any lane or connection.
+				if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
+				const done = finish(result, 'silhouette', !routeMargin);
+				finished = true;
+				if (fitBorder) fitted.add(done);
+				yield done;
+			} catch (error) {
+				refusal(error);
+				if (!routeMargin) last = error;
 			}
-			if (pieced && !everyWay) everyWayPassed++;
-			throw error;
+		}
+	})());
+	// The lanes' routes passing the other lanes' parts of the motif only
+	// where none of the plain ones finish (the elephant).
+	let best = layouts(), avoided = false, stepped = false;
+	if (!best) [best, avoided] = [layouts({ avoid: true }), true];
+	// Where none of those finish either, the side lanes reach the parts of
+	// the motif in them one at a time (the polar star's wedges, a straight
+	// link between two of which crosses its point).
+	if (!best) [best, avoided, stepped] = [layouts({ stepped: true }), false, true];
+	// A motif of several pieces, or with counters, may still be reached
+	// every way (see `withEveryWay`): the swan's wing in the bay of its
+	// body, its eye across its head.
+	const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.length);
+	let ways = false, walled = false, counter = false, channeled = false;
+	if (!best && pieced && everyWay) [best, stepped, ways] = [layouts({ everyWay: true }), false, true];
+	// Where that finishes none either, a lane's spokes that the motif's
+	// other parts wall off from its largest go round them too (the
+	// stethoscope, the motorcycle).
+	if (!best && pieced && everyWay) [best, walled] = [layouts({ everyWay: true, walled: true }), true];
+	// Where none finish yet, the cuts between the motif's counters go
+	// round inside it too (see `withCounterWays`): the graph's nodes.
+	if (!best && pieced && everyWay) [best, counter] = [withCounterWays(() => layouts({ everyWay: true, walled: true })), true];
+	// And last up the channels between its pieces (see `withChannelWays`),
+	// a counter's counters reached round either attachment (the teardrop
+	// in the threads logo's @).
+	if (!best && pieced && channelWays) [best, channeled] = [withChannels(() => layouts({ everyWay: true, walled: true, nested: true })), true];
+	if (!best && pieced && !everyWay) everyWayPassed++;
+	// Where its paper tears printed, the layouts with the same border again
+	// with the motif's connections, and the side lanes' legs, a paper's
+	// width off, kept where they hold better; where that still tears, with
+	// an empty side lane's whole line bent too (a mitten's thumb against
+	// it), which elsewhere can bend into another part (a bird's wing).
+	if (best && paperTears(exported(best).design)) {
+		const paper = PAPER_NECK_MM / PRINT_WIDTH_MM * 100, border = fitted.has(best);
+		for (const wholeLanes of [false, true]) {
+			if (wholeLanes && !paperTears(exported(best).design)) break;
+			const retry = () => layouts({ routeMargin: paper, avoid: avoided, border, wholeLanes, stepped, everyWay: ways, walled, nested: channeled });
+			const again = counter ? withCounterWays(retry) : channeled ? withChannels(retry) : retry();
+			if (again && cutsBetter(again, best, true)) best = again;
 		}
 	}
+	if (best) return best;
+	throw last;
+}
+/** A figure in a frame without a centre panel (see `openFrame`). */
+function openRecipes(request: GeneratorRequest, open: OpenFrame, { finish }: RecipeContext): GeneratorResult {
+	// How each finished heart was made, to make it again a paper's width off.
+	const made = new Map<GeneratorResult, (route: typeof fourPortMotif) => Construction>();
+	const single = (symmetric: GateTies, angles?: [number, number, number, number], axisGap = 0, onMiddle = false) => {
+		const construct = (route: typeof fourPortMotif) => generateFittedFigure(request.contours ?? [], request.frameSize, request.scale,
+			{ route, angleOffsets: angles, open, symmetric, axisGap, onMiddle });
+		for (const route of [fourPortMotif, originalFourPortMotif]) {
+			let constructed = false;
+			try {
+				const construction = construct(route);
+				constructed = true;
+				const result = finish(construction, 'silhouette');
+				made.set(result, construct);
+				return result;
+			}
+			catch (error) {
+				refusal(error);
+				if (!constructed && !(error instanceof CompilationError)) break;
+			}
+		}
+	};
+	// Where its paper tears printed, the same gates with the motif's
+	// connections a paper's width off; kept only where they hold better.
+	const held = (result: GeneratorResult) => {
+		const construct = made.get(result);
+		if (!construct || !paperTears(exported(result).design)) return result;
+		try {
+			const again = finish(construct(paperRoute), 'silhouette', false);
+			return cutsBetter(again, result, true) ? again : result;
+		} catch (error) {
+			refusal(error);
+			return result;
+		}
+	};
+	// Symmetric gates come first, kept only without needle-sharp paper.
+	// A motif that is its own mirror image keeps symmetric gates wherever
+	// any finish: those on the heart's middle further out, or those beside
+	// it turned alike, with the fewest needle-sharp tips. Otherwise every
+	// construction uses the motif's own extreme points.
+	const balanced = single(true);
+	if (balanced && !cutTipCounts(balanced.design)[0]) return held(balanced);
+	if (mirrorSymmetric(normalizeContours(request.contours ?? []))) {
+		let best = balanced;
+		for (const { ties = true, angles, axisGap, onMiddle } of SYMMETRIC_GATES) {
+			const result = single(ties, angles, axisGap, onMiddle);
+			if (result && (!best || fewerCutTips(cutTipCounts(result.design), cutTipCounts(best.design)))) best = result;
+			if (best && !cutTipCounts(best.design)[0]) break;
+		}
+		if (best) return held(best);
+	}
+	const extreme = single(false);
+	if (extreme) return held(extreme);
+	for (const [columns, rows] of [[2, 1], [2, 2], [3, 1], [3, 2], [3, 3], [4, 2]]) {
+		try {
+			return finish(generatePanelFigure(request.contours ?? [], open, request.frameSize ?? 70, request.scale ?? .7, { columns, style: 'check', rows }), 'silhouette');
+		} catch (error) {
+			refusal(error);
+		}
+	}
+	try {
+		return finish(generatePanelFigure(request.contours ?? [], open, request.frameSize ?? 70, request.scale ?? .7, { columns: 3, style: 'check', rows: 1, adaptive: true }), 'silhouette');
+	} catch (error) {
+		refusal(error);
+		for (const columns of [2, 3, 4] as const) {
+			try {
+				return finish(generateComponentFigure(request.contours ?? [], open, request.frameSize,
+					request.scale, { style: 'check', columns }), 'silhouette');
+			} catch (retryError) {
+				refusal(retryError);
+			}
+		}
+		// A motif of several pieces, or with islands in its holes, may still
+		// be reached another way, as in the rays (see `withEveryWay`), and,
+		// the legs only meeting the motif, round its pieces anywhere short
+		// of them (`legs`); where that finishes none, with the spokes the
+		// other pieces wall off from the largest round them too (`walled`:
+		// the note's pencil inside its chevron), and last with the gates a
+		// clearance off the motif, where one on a piece walls off the way
+		// round it (the chevron in Tæt om figuren); and last up the channels
+		// between its pieces (see `withChannelWays`: the lasso's rope), its
+		// gates on the motif and, in Tæt om figuren, a clearance off it.
+		const pieces = forest(request.contours ?? []), pieced = pieces.length > 1 || pieces.some(piece => piece.children.some(hole => hole.children.length));
+		// Made again when refused, the base is also each other piece in
+		// turn, three at most, those most gates meet first: the
+		// microphone's holder, whose stem and tips hold three of Tæt om
+		// figuren's gates; the second of a stack's three chevrons. Last, each
+		// gate takes the islands on round to the next, one way round or the
+		// other (see `sweep`): a signal's ring of dashes, four under gates.
+		const tiers: { walled?: boolean; padding?: number; channeled?: boolean; based?: number; sweep?: 1 | -1 }[] = channelWays
+			? [{ walled: true, channeled: true }, { walled: true, padding: 1, channeled: true },
+				{ walled: true, based: 0 }, { walled: true, based: 1 }, { walled: true, based: 2 }, { sweep: 1 }, { sweep: -1 }]
+			: [{}, { walled: true }, { walled: true, padding: 1 }];
+		if (pieced && (everyWay || channelWays)) for (const { walled = false, padding = 0, channeled = false, based = -1, sweep } of tiers) try {
+			const construct = () => generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, { route: (...args) => {
+				const root = based < 0 ? undefined : otherBases(args[1], args[2])[based];
+				if (based >= 0 && !root) throw new ConstructionError('topology', 'No other piece for a base');
+				args[7] = { ...args[7], practical: true, compound: true, nested: true, around: true, legs: true, walled, ...root ? { root } : {}, ...sweep ? { sweep } : {} };
+				return fourPortMotif(...args);
+			}, padding, open, symmetric: true });
+			return finish(channeled ? withChannels(construct) : construct(), 'silhouette');
+		} catch (everyError) {
+			refusal(everyError);
+		}
+		if (pieced && !everyWay) everyWayPassed++;
+		throw error;
+	}
+}
+/** A figure in a panel of its own: among the rays or the checks, or in the
+ * sunburst. */
+function cellRecipes(request: GeneratorRequest, { finish }: RecipeContext): GeneratorResult {
 	const sunburst = request.style === 'sunburst';
 	const outerSize = request.frameSize ?? 70;
 	const rings = request.contours ?? [],
