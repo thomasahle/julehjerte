@@ -18,7 +18,8 @@
   } from '$lib/editor/draft';
   import { noteSaved } from '$lib/editor/savedNotice.svelte';
   import type { Finger, GridSize, HeartDesign, HeartPattern } from '$lib/types/heart';
-  import { normalizeHeartDesign, parseHeartFromSVGWithReport, serializeHeartDesign } from '$lib/utils/heartDesign';
+  import { parseHeartFromSVGWithReport } from '$lib/utils/heartDesign';
+  import { decodeDesignLink, encodeDesignLink } from '$lib/utils/shareDesign';
   import {
     blankOpened,
     draftOpened,
@@ -103,29 +104,14 @@
   // The editor accepts these URL inputs:
   //   /editor/?from=<gallery-id>   loads /hearts/<id>.svg (like the detail page) and edits a copy
   //   /editor/?from=session        takes the heart Mal found out of the editor session (PAINT.md §3)
-  //   /editor/#design=<payload>    user-created heart; payload = encodeURIComponent(JSON.stringify(serializeHeartDesign(d)))
+  //   /editor/#design=<payload>    user-created heart; payload = encodeDesignLink(d)
   //   /editor/?design=<payload>    legacy form of the same payload (kept so old links keep working)
   // edit=true is read from the query string (also accepted in the hash): the heart is one of "Mine
   // hjerter", opened as it is saved there now (it autosaves), the payload standing in where it is not.
   function parseDesignPayload(raw: string): HeartDesign | null {
-    // URLSearchParams has already percent-decoded once; fall back to a second decode for
-    // links that were encoded twice.
-    const candidates = [raw];
-    try {
-      candidates.push(decodeURIComponent(raw));
-    } catch {
-      // Not double-encoded.
-    }
-    for (const candidate of candidates) {
-      try {
-        const design = normalizeHeartDesign(JSON.parse(candidate) as unknown);
-        if (design) return design;
-      } catch {
-        // Try the next candidate.
-      }
-    }
-    console.error('Failed to parse design from URL');
-    return null;
+    const design = decodeDesignLink(raw);
+    if (!design) console.error('Failed to parse design from URL');
+    return design;
   }
 
   /** `escher`: the page's own address opens Tegn on its Escher tab (`/editor/escher/`). */
@@ -719,7 +705,7 @@
     isEditMode = true;
     editingExisting = true;
     initialDesign = design;
-    const payload = encodeURIComponent(JSON.stringify(serializeHeartDesign(design)));
+    const payload = encodeDesignLink(design);
     replaceState(editorHref(lang, `?edit=true#design=${payload}`), {});
     noteSaved(design.name || t('myHeart', lang), homeAnchorHref(makeHeartAnchorId(design.id), lang));
   }

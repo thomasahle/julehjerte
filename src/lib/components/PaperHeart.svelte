@@ -33,6 +33,7 @@
 	import { readPanelCollapsed, writePanelCollapsed } from '$lib/editor/panelState';
 	import type { Finger, GridSize, HeartPattern, Vec, LobeId, NodeType } from '$lib/types/heart';
 	import { clamp, clampInt } from '$lib/utils/math';
+	import { normalizeWeaveParity } from '$lib/utils/heartDesign';
 	import { dampenColors } from '$lib/utils/heartColors';
 	import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
 	import { BASE_CANVAS_SIZE, CENTER, MAX_GRID_SIZE, MIN_GRID_SIZE, PRECISION_GRID_SIZE, STRIP_WIDTH } from '$lib/constants';
@@ -174,11 +175,6 @@
 			return { x: clampInt(x, MIN_GRID_SIZE, MAX_GRID_SIZE), y: clampInt(y, MIN_GRID_SIZE, MAX_GRID_SIZE) };
 		}
 		return { x: 3, y: 3 };
-	}
-
-	function normalizeWeaveParity(raw: unknown): 0 | 1 {
-		const v = typeof raw === 'number' && Number.isFinite(raw) ? Math.round(raw) : 0;
-		return v % 2 === 1 ? 1 : 0;
 	}
 
 	function isHandleCollapsed(handle: Vec, anchor: Vec): boolean {
