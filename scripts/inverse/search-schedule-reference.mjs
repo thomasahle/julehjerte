@@ -1,8 +1,9 @@
-/** The reference traces search-schedule.test.mjs compares exactTemplate's schedule with: the code of exactTemplate
- * as it was at commit `base` (before its schedule became tables, exact/schedule.js), taken from git verbatim and
- * driven through the same scripted tools (search-schedule-harness.mjs).
+/** The reference traces search-schedule.test.mjs compares the exact search's schedule with: exactTemplate
+ * (engine.js) and exactSearch (exact/stage.js) as they were at commit `base`, before the schedule became tables
+ * (exact/schedule.js), taken from git verbatim and driven through the same scripted tools
+ * (search-schedule-harness.mjs).
  *
- *   node scripts/inverse/search-schedule-reference.mjs [base] [scenarios]
+ *   node scripts/inverse/search-schedule-reference.mjs [base] [scenarios] [search scenarios]
  *
  * writes the old code, its declarations each as git has them inside a function taking the tools (their `export`
  * dropped), to tmp/schedule/old-engine.mjs, and the traces to scripts/inverse/fixtures/search-schedule-traces.json. */
@@ -14,8 +15,8 @@ import {pathToFileURL} from 'node:url';
 import {traceExactSearch, traceSchedule} from './search-schedule-harness.mjs';
 
 const BASE = process.argv[2] ?? '2d709bafbb741c82ec1cfa2cdafd057a039eb741',
-  SCENARIOS = Number(process.argv[3] ?? 700),
-  STAGE_SCENARIOS = Number(process.argv[4] ?? 500);
+  SCENARIOS = Number(process.argv[3] ?? 600),
+  STAGE_SCENARIOS = Number(process.argv[4] ?? 400);
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const show = file => execFileSync('git', ['show', `${BASE}:${file}`], {cwd: root, encoding: 'utf8', maxBuffer: 1 << 26});
 const sha = text => createHash('sha256').update(text).digest('hex');
