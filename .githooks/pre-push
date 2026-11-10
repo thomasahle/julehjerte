@@ -1,0 +1,13 @@
+#!/bin/sh
+# A push to main is a deploy, and the deploy's first job fails on the type
+# check or the linter eight minutes in. Run both here first.
+# Turn on once per clone: git config core.hooksPath .githooks
+# Skip for one push: git push --no-verify
+while read -r _local _sha remote _rest; do
+	if [ "$remote" = refs/heads/main ]; then
+		echo "pre-push: npm run verify (git push --no-verify skips it)" >&2
+		npm run --silent verify </dev/null >&2 || exit 1
+		break
+	fi
+done
+exit 0

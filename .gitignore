@@ -17,6 +17,10 @@ __pycache__/
 # Generated OG images (built by CI)
 /static/og/
 
+# Test and browser-tool output
+/coverage/
+/.playwright-mcp/
+
 # OS
 .DS_Store
 Thumbs.db

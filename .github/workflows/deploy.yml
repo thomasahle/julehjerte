@@ -44,21 +44,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # The newest commit whose push run succeeded is the one on the site: a
-      # push run deploys only after every job passed, and later push runs
-      # cancel older ones. Rebuild runs are not counted, since GitHub records
-      # them under main's tip rather than the commit they built. The runs are
-      # listed unfiltered and the first that succeeded taken: asked for
-      # status=success, the API left out a run that had succeeded half an hour
-      # before, and the daily rebuild put the commit before it back.
+      # The newest commit whose push run deployed is the one on the site. The
+      # run's own conclusion does not say: the advisory benchmarks outlast the
+      # deploy, so a later push can cancel a run that had already deployed.
+      # So each push run is asked for its deploy job, newest first. Rebuild
+      # runs are not counted, since GitHub records them under main's tip
+      # rather than the commit they built. The runs are listed unfiltered:
+      # asked for status=success, the API left out a run that had succeeded
+      # half an hour before, and the daily rebuild put the commit before it
+      # back.
       - name: Find the live commit
         id: live
         if: env.REBUILD_LIVE == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          sha=$(gh api "repos/${{ github.repository }}/actions/workflows/deploy.yml/runs?branch=main&event=push&per_page=30" --jq '[.workflow_runs[] | select(.conclusion == "success")][0].head_sha // empty')
-          if [ -z "$sha" ]; then echo "No successful push run on main to rebuild" >&2; exit 1; fi
+          sha=
+          while read -r id head; do
+            deployed=$(gh api "repos/${{ github.repository }}/actions/runs/$id/jobs?per_page=100" --jq '[.jobs[] | select(.name == "deploy" and .conclusion == "success")] | length')
+            if [ "${deployed:-0}" != "0" ]; then sha=$head; break; fi
+          done < <(gh api "repos/${{ github.repository }}/actions/workflows/deploy.yml/runs?branch=main&event=push&per_page=30" --jq '.workflow_runs[] | "\(.id) \(.head_sha)"')
+          if [ -z "$sha" ]; then echo "No push run on main that deployed to rebuild" >&2; exit 1; fi
           echo "Rebuilding the live commit $sha (main is at $GITHUB_SHA)"
           echo "sha=$sha" >> "$GITHUB_OUTPUT"
 
@@ -139,6 +145,10 @@ jobs:
     name: Timed quality benchmarks (advisory ${{ matrix.shard }}/2)
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # Advisory: the deploy does not wait for these, and a shard that fails
+    # (its harness, not a missed target: those only show in its report) does
+    # not fail the run.
+    continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
@@ -175,17 +185,28 @@ jobs:
 
   deploy:
     # A rebuild skips the test jobs, so it deploys after the build alone;
-    # every other run needs all three jobs to have passed.
+    # every other run needs the build and the correctness tests to have
+    # passed. The timed benchmarks are advisory and not waited for.
     if: >-
       !cancelled() && github.ref == 'refs/heads/main' && needs.build.result == 'success' &&
       (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.rebuild_live) ||
-       (needs.inverse.result == 'success' && needs.benchmarks.result == 'success'))
+       needs.inverse.result == 'success')
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.again.outputs.page_url || steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: [build, inverse, benchmarks]
+    needs: [build, inverse]
     steps:
+      # Pages now and then leaves an upload hanging until the action gives up
+      # (it deploys in ten seconds otherwise). Give the first try three
+      # minutes, then deploy the same build once more.
       - name: Deploy to GitHub Pages
         id: deployment
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+        with:
+          timeout: 180000
+      - name: Deploy again after a failed upload
+        id: again
+        if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v4

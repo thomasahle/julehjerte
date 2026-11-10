@@ -33,8 +33,13 @@ correctness tests and a production build. Fresh image searches with strict
 wall-clock quality or routing expectations are registered with `qualityBenchmark`.
 They run separately with their original budgets and assertions; misses appear in
 the workflow summary and the `inverse-timed-quality-1` / `-2` artifacts (kept seven days).
-They do not block deploying an otherwise valid improvement. A missing or broken
-benchmark run still fails its reporting job.
+They do not block deploying an otherwise valid improvement, and the deploy does
+not wait for them. A missing or broken benchmark run still fails its reporting
+job (shown red in the run), without failing the run.
+
+A push to `main` deploys. `npm run verify` runs the type check and the linter,
+the two checks the deploy's first job most often fails on; `git config
+core.hooksPath .githooks` (once per clone) runs it before every push to `main`.
 
 Fixed-work geometry, paper connectivity, feature/image-loss and exported-rendering
 regressions remain blocking, as do the longer functional photo fits. This does
