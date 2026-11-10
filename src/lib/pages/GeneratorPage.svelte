@@ -36,7 +36,8 @@
 	import { handoffToDraw } from '$lib/editor/handoff';
 	import { saveUserDesign } from '$lib/stores/collection';
 	import { createJobQueue } from '$lib/generator/jobQueue';
-	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, stripCount, stripPlace, stripSide, textRoom, ROOM_RANGE, CELL_FRAMES, largestScale, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
+	import { generatorRequest, variantRequest } from '$lib/generator/request';
+	import { defaults, readGeneratorState, normalizeText, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, stripCount, ROOM_RANGE, CELL_FRAMES, largestScale, SPACED_STYLES } from '$lib/generator/state';
 	import { clampPlace } from '$lib/generator/stripFigure';
 	import { BOARD_STRIPS, boardStage, type BoardStyle } from '$lib/generator/boardMotif';
 	import { isTextFigure } from '$lib/generator/textFigure';
@@ -57,7 +58,6 @@
 		GeneratorRequest
 	} from '$lib/generator/generate';
 	import type { Ring } from '$lib/generator/geometry';
-	import type { RecipeFile } from '$lib/generator/recipes';
 	import type { PaperReport } from '$lib/geometry/paperNecks';
 	import type { HeartDesign } from '$lib/types/heart';
 	import {
@@ -345,65 +345,8 @@
 			);
 		return requests.get(path)! as Promise<T>;
 	};
-	/** The hidden cuts found once for a frame's topologies (see `recipes`),
-	 * where the index lists any. */
-	const storedRecipes = async (style: string) => {
-		const index = await asset<{ files: string[] }>('recipes/index.json').catch(() => ({ files: [] as string[] }));
-		if (!index.files.includes(style)) return;
-		const recipes = (await asset<RecipeFile>(`recipes/${style}.json`).catch(() => undefined))?.recipes;
-		return recipes?.length ? recipes : undefined;
-	};
-	/** On a board circle, the size from which a featured motif is divided,
-	 * kept whole below it past the touching circle (see `RecipeFile`). */
-	const dividedFrom = async (style: string, motif: string, board: number) => {
-		const index = await asset<{ files: string[] }>('recipes/index.json').catch(() => ({ files: [] as string[] }));
-		if (style !== 'board' || !index.files.includes(style)) return;
-		return (await asset<RecipeFile>(`recipes/${style}.json`).catch(() => undefined))?.whole?.[motif]?.[board];
-	};
-	async function requestFor(
-		snapshot: GeneratorState
-	): Promise<GeneratorRequest> {
-		const request: GeneratorRequest = {
-			mode: snapshot.mode as 'figure' | 'text',
-			name:
-				snapshot.mode === 'text'
-					? snapshot.text
-					: motifLabel(
-							{ id: snapshot.motif, name: snapshot.motif, art: '', box: 24 },
-							lang
-						),
-			// Geometry is colour independent; only the preview reads the header's colour preference.
-			colors: DEFAULT_COLORS_HEX,
-			text: snapshot.text,
-			frame: snapshot.frame,
-			frameSize: snapshot.frameSize,
-			scale: snapshot.scale / 100,
-			style: snapshot.style,
-			textFrame: snapshot.textFrame,
-			fittedCells: fittedCells(snapshot),
-			gap: frameGap(snapshot),
-			board: stripCount(snapshot),
-			place: stripPlace(snapshot),
-			side: stripSide(snapshot),
-			room: textRoom(snapshot)
-		};
-		// A motif on a board keeps the choice its default size made.
-		if (snapshot.mode === 'figure' && BOARD_STYLES.includes(snapshot.style))
-			request.layout = cache.get(geometryKey({ ...snapshot, scale: defaults.scale }))?.layout;
-		if (snapshot.mode === 'text') {
-			// The generator's worker loads while the letters are read.
-			jobs.warm();
-			request.font = await fontFor(snapshot.font, snapshot.text);
-		} else {
-			request.contours = (
-				await asset<{ contours: Ring[] }>(`motifs/${snapshot.motif}.json`)
-			).contours;
-			request.recipes = await storedRecipes(snapshot.style);
-			const from = await dividedFrom(snapshot.style, snapshot.motif, stripCount(snapshot) ?? BOARD_STRIPS.board.initial);
-			if (from !== undefined && snapshot.scale > 70 && snapshot.scale < from) request.keepWhole = true;
-		}
-		return request;
-	}
+	const requestFor = (snapshot: GeneratorState) =>
+		generatorRequest(snapshot, lang, { asset, font: fontFor, made: cache, readingFont: () => jobs.warm() });
 	const label = (item: CatalogItem) => motifLabel(item, lang);
 	let matches = $derived(matchingMotifs(catalog, query));
 	let groups = $derived(motifGroups(catalog));
@@ -687,21 +630,6 @@
 			checker?.terminate();
 		};
 	});
-	/** The request for one frame's thumbnail, the page's request in that frame. */
-	function variantRequest(request: GeneratorRequest, state: GeneratorState): GeneratorRequest {
-		return {
-			...request,
-			frame: state.frame,
-			style: state.style,
-			textFrame: state.textFrame,
-			fittedCells: fittedCells(state),
-			gap: frameGap(state),
-			board: stripCount(state),
-			place: stripPlace(state),
-			side: stripSide(state),
-			room: textRoom(state)
-		};
-	}
 	/**
 	 * The same page in the other language, making the same. The state joins it once the page is live:
 	 * the prerender would read a `#make=` in the HTML as an anchor it must find on that page.
