@@ -16,7 +16,8 @@ In Mal's default mode the ladder runs in a worker of its own, beside today's exa
 export-valid template wins. A picture therefore never waits for the network, and today's search keeps its
 whole time.
 
-**The shipped model** (2026-11-02, `cuts-7bb72160.onnx`, syn1v): trained on generated hearts only, none of
+**The shipped model** (2026-11-07, `cuts-4362d1d3.onnx`: syn1v of 2026-11-02 averaged 0.7/0.3 with its
+fine-tune, section 9; the recipe is in `scripts/inverse/cuts/README.md`): trained on generated hearts only, none of
 the gallery's, and only on those whose templates keep the export's cutting rules (41% of the generator's
 do not: section 3a). Every gallery and library heart and every photograph is test. Without a template the
 export takes, the ladder hands back its nearest (section 5b), and the page never ends the search early on a
