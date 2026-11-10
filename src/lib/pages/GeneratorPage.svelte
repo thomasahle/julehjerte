@@ -35,6 +35,7 @@
 	import { picture, type Picture } from '$lib/generator/picture';
 	import { handoffToDraw } from '$lib/editor/handoff';
 	import { saveUserDesign } from '$lib/stores/collection';
+	import { createJobQueue } from '$lib/generator/jobQueue';
 	import { defaults, readGeneratorState, normalizeText, fittedCells, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, frameGap, stripCount, stripPlace, stripSide, textRoom, ROOM_RANGE, CELL_FRAMES, largestScale, SPACED_STYLES, BOARD_STYLES } from '$lib/generator/state';
 	import { clampPlace } from '$lib/generator/stripFigure';
 	import { BOARD_STRIPS, boardStage, type BoardStyle } from '$lib/generator/boardMotif';
@@ -258,9 +259,8 @@
 					colors: toHexColors(colors, DEFAULT_COLORS_HEX)
 				}
 			: null;
-	/** The preview worker's job and the newest one waiting for it. While a
-	 * slider moves, only its latest value waits, and every finished result is
-	 * kept, for moving back; a long job for a value already left is abandoned. */
+	/** A job for the preview worker (see `$lib/generator/jobQueue`): every
+	 * finished result is kept under its key, for moving back. */
 	type Job = { request: GeneratorRequest; key: string; token: number; motif?: string };
 	/** What the board circle's hearts said of each motif on each board: a size
 	 * kept below the one asked for is the largest it takes (the touching
@@ -283,85 +283,48 @@
 		if ((job.request.scale ?? .7) > .85) boardEnclosed.set(key, !!result.enclosed);
 		if ((job.request.scale ?? .7) > .7) boardWhole.set(key, !!result.whole);
 	}
-	let running: (Job & { started: number }) | null = null,
-		waiting: Job | null = null;
-	let worker: Worker | null = null,
-		revision = 0,
-		savedId: string | null = null;
-	const ABANDON_MS = 400;
-	/** The generator's worker, started once: by the first job, or while a text's font is read. */
-	function generatorWorker(): Worker {
-		if (!worker) {
-			worker = new Worker(new URL('../generator/worker.ts', import.meta.url), { type: 'module' });
-			worker.onmessage = (e) => (e.data.progress ? showProgress(e.data.progress) : finishJob(e.data));
-			worker.onerror = () => {
-				const failed = running;
-				worker?.terminate();
-				worker = null;
-				running = null;
-				if (failed?.token === revision) {
+	let savedId: string | null = null;
+	/** The preview worker's jobs. The worker is started once: by the first job, or while a text's font is read. */
+	const jobs = createJobQueue<Job, GeneratorResult, { result?: GeneratorResult } & Partial<Failure>>(
+		() => new Worker(new URL('../generator/worker.ts', import.meta.url), { type: 'module' }),
+		{
+			started() {
+				refining = false;
+			},
+			/** A heart found on the way to the one asked for: its templates shown at
+			 * once, while its cuts are still refined. */
+			progress(heart) {
+				displayed = heart;
+				refining = true;
+			},
+			finished(data, job, current) {
+				refining = false;
+				if (!job) return;
+				if (data.result) {
+					cache.set(job.key, data.result);
+					learn(job, data.result);
+				} else failures.set(job.key, data as Failure);
+				if (current) {
+					busy = false;
+					if (data.result) {
+						result = data.result;
+						displayed = data.result;
+					} else {
+						displayed = null;
+						error = errorText(data as Failure, job.request.mode === 'figure' ? job.request.style : undefined, job.request.textFrame);
+					}
+					// A nearby value finished on the way shows while the newest is prepared.
+				} else if (data.result && busy) displayed = data.result;
+			},
+			failed(_job, current) {
+				if (current) {
 					busy = false;
 					error = t('generatorLoadError', lang);
 					displayed = null;
 				}
-				nextJob();
-			};
-		}
-		return worker;
-	}
-	function startJob(job: Job) {
-		refining = false;
-		running = { ...job, started: performance.now() };
-		generatorWorker().postMessage(job.request);
-	}
-	/** A heart found on the way to the one asked for: its templates shown at
-	 * once, while its cuts are still refined. */
-	function showProgress(heart: GeneratorResult) {
-		if (running?.token !== revision) return;
-		displayed = heart;
-		refining = true;
-	}
-	function finishJob(data: { result?: GeneratorResult } & Partial<Failure>) {
-		refining = false;
-		const job = running;
-		running = null;
-		if (job) {
-			if (data.result) {
-				cache.set(job.key, data.result);
-				learn(job, data.result);
-			} else failures.set(job.key, data as Failure);
-			if (job.token === revision) {
-				busy = false;
-				if (data.result) {
-					result = data.result;
-					displayed = data.result;
-				} else {
-					displayed = null;
-					error = errorText(data as Failure, job.request.mode === 'figure' ? job.request.style : undefined, job.request.textFrame);
-				}
-				// A nearby value finished on the way shows while the newest is prepared.
-			} else if (data.result && busy) displayed = data.result;
-		}
-		nextJob();
-	}
-	function nextJob() {
-		if (running || !waiting) return;
-		const job = waiting;
-		waiting = null;
-		startJob(job);
-	}
-	function queueJob(job: Job) {
-		if (!running) return startJob(job);
-		waiting = job;
-		setTimeout(() => {
-			if (running && running.token !== revision && waiting === job) {
-				worker?.terminate();
-				worker = null;
-				running = null;
-				nextJob();
 			}
-		}, Math.max(0, ABANDON_MS - (performance.now() - running.started)));
-	}
+		}
+	);
 	/** The glyphs of the text's characters, read from the font's files (and a symbol or emoji font's) in a worker. */
 	const fontFor = (font: string, text: string) =>
 		textFont(new URL(`${base}/generator/fonts/`, window.location.href).href, font, text);
@@ -429,7 +392,7 @@
 			request.layout = cache.get(geometryKey({ ...snapshot, scale: defaults.scale }))?.layout;
 		if (snapshot.mode === 'text') {
 			// The generator's worker loads while the letters are read.
-			generatorWorker();
+			jobs.warm();
 			request.font = await fontFor(snapshot.font, snapshot.text);
 		} else {
 			request.contours = (
@@ -500,10 +463,7 @@
 		return () => {
 			window.removeEventListener('hashchange', follow);
 			unsubscribe();
-			revision++;
-			worker?.terminate();
-			worker = null;
-			running = waiting = null;
+			jobs.stop();
 		};
 	});
 	$effect(() => {
@@ -545,8 +505,7 @@
 		void retry;
 		// Keep the last preview while calculating, but disable export immediately.
 		// Only the newest request may become the downloadable result.
-		const token = ++revision;
-		waiting = null;
+		const token = jobs.next();
 		result = null;
 		sketch = null;
 		notice = '';
@@ -571,16 +530,16 @@
 		// the motif can go.
 		requestFor(snapshot)
 			.then((request) => {
-				if (token !== revision) return;
+				if (!jobs.isCurrent(token)) return;
 				// What the default size's heart, once made, tells the picture.
 				const made = cache.get(geometryKey({ ...snapshot, scale: defaults.scale, place: undefined, side: undefined }));
 				const known = onBoard(snapshot.motif, stripCount(snapshot), request.scale, request.keepWhole);
 				sketch = picture(request, { place: made?.place, board: made?.board ?? made?.design.gridSize.x, circle: boardCircles.get(known),
 					enclosed: boardEnclosed.get(known), whole: boardWhole.get(known) ?? request.keepWhole }) ?? null;
-				if (!cached && !failed) queueJob({ request, key, token, motif: snapshot.motif });
+				if (!cached && !failed) jobs.push({ request, key, token, motif: snapshot.motif });
 			})
 			.catch(() => {
-				if (token === revision && !cached && !failed) {
+				if (jobs.isCurrent(token) && !cached && !failed) {
 					busy = false;
 					error = t('generatorLoadError', lang);
 					displayed = null;
