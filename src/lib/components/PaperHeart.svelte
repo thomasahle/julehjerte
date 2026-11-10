@@ -60,6 +60,7 @@
 	} from '$lib/geometry/bezierSegments';
 	import { dot, midpoint, normalize, perp, vecAdd, vecDist, vecLerp, vecScale, vecSub } from '$lib/geometry/vec';
 	import { insertNodeInFinger, shiftNodeTypesOnDelete } from '$lib/editor/commands';
+	import { emptyHistory, recorded, redone, undone, type History } from '$lib/editor/history';
 	import { randomHeart } from '$lib/editor/randomHeart';
 	import { trackRandomHeart } from '$lib/analytics';
 	import {
@@ -352,7 +353,7 @@
 
 	let dragTarget = $state<DragTarget>(null);
 	let dragDirty = $state(false);
-	let dragSnapshot = $state<HistorySnapshot | null>(null);
+	let dragSnapshot = $state.raw<HistorySnapshot | null>(null);
 	let activePointerId = $state<number | null>(null);
 	let dragStartPointer = $state<Vec | null>(null);
 	let dragStartOffset = $state<Vec | null>(null);
@@ -388,18 +389,22 @@
 		lastCurveHit: CurveHit | null;
 	};
 
-	let undoStack = $state<HistorySnapshot[]>([]);
-	let redoStack = $state<HistorySnapshot[]>([]);
-	let canUndo = $derived(undoStack.length > 0);
-	let canRedo = $derived(redoStack.length > 0);
+	/** Fortryd and Gentag (`$lib/editor/history`). */
+	let undoHistory = $state.raw<History<HistorySnapshot>>(emptyHistory());
+	let canUndo = $derived(undoHistory.undo.length > 0);
+	let canRedo = $derived(undoHistory.redo.length > 0);
 
 		function cloneFinger(f: Finger): Finger {
 			return { id: f.id, lobe: f.lobe, segments: cloneSegments(f.segments), nodeTypes: f.nodeTypes ? { ...f.nodeTypes } : undefined };
 		}
 
+	/**
+	 * The editor's state, for the history: the cuts, the grid and the tile as they are, no copies (an edit
+	 * replaces them, it never changes them in place); the selection, a few numbers in deep state, copied.
+	 */
 	function snapshotState(): HistorySnapshot {
 		return {
-			fingers: fingers.map(cloneFinger),
+			fingers,
 			gridSize,
 			weaveParity,
 			symmetry: { withinCurveMode, withinLobeMode, betweenLobesMode },
@@ -412,7 +417,7 @@
 	}
 
 	function restoreSnapshot(s: HistorySnapshot) {
-		fingers = s.fingers.map(cloneFinger);
+		fingers = s.fingers;
 		gridSize = s.gridSize;
 		weaveParity = s.weaveParity;
 		withinCurveMode = s.symmetry.withinCurveMode;
@@ -421,9 +426,8 @@
 		prevWithinCurveMode = withinCurveMode;
 		prevWithinLobeMode = withinLobeMode;
 		prevBetweenLobesMode = betweenLobesMode;
-		// The history is deep state, so the tile comes back proxied; the tile is plain data. The Escher tab
-		// always has a type, so the tab comes back with the tile, and goes with it.
-		patternTile = s.patternTile ? $state.snapshot(s.patternTile) : null;
+		// The Escher tab always has a type, so the tab comes back with the tile, and goes with it.
+		patternTile = s.patternTile;
 		escherTab = patternTile !== null;
 		selectedFingerId = s.selectedFingerId;
 		selectedAnchors = s.selectedAnchors.slice();
@@ -433,24 +437,21 @@
 	}
 
 	function pushUndo(before: HistorySnapshot) {
-		undoStack = [...undoStack, before];
-		redoStack = [];
+		undoHistory = recorded(undoHistory, before);
 	}
 
 	function undo() {
-		const prev = undoStack[undoStack.length - 1];
-		if (!prev) return;
-		undoStack = undoStack.slice(0, -1);
-		redoStack = [...redoStack, snapshotState()];
-		restoreSnapshot(prev);
+		const step = undone(undoHistory, snapshotState);
+		if (!step) return;
+		undoHistory = step.history;
+		restoreSnapshot(step.to);
 	}
 
 	function redo() {
-		const next = redoStack[redoStack.length - 1];
-		if (!next) return;
-		redoStack = redoStack.slice(0, -1);
-		undoStack = [...undoStack, snapshotState()];
-		restoreSnapshot(next);
+		const step = redone(undoHistory, snapshotState);
+		if (!step) return;
+		undoHistory = step.history;
+		restoreSnapshot(step.to);
 	}
 
 	function updateFinger(fingerId: string, update: (f: Finger) => Finger) {
