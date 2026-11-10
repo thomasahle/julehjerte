@@ -288,12 +288,16 @@ async function networkLadder(outline, template, cfg, exact, {seconds, symmetry, 
   return {found: null, nearest, rungs, error, code};
 }
 
+/** What exactSearch calls on, passed in so that a test can drive its steps and
+ * fallbacks on a fake clock with scripted searches (scripts/inverse/search-schedule.test.mjs). */
+export const STAGE_TOOLS = {now: () => performance.now(), exactOutline, networkLadder, exactStart, exactFromTemplate, assess, noteError};
+
 /** The exact search on the traced `outline` from the fitter's `template`
  * within `deadline`, under the `symmetry` ties: {found: {solution,
  * assessment} or null, report}. */
 export async function exactSearch(outline, template, cfg, {deadline, reserve = 4, onProgress = () => {}, symmetry = [], geometry = false,
-  refine = true, fallback = true, even = false, multi = 'auto', maps = null, ladderOnly = false, phase = null} = {}) {
-  const seconds = (deadline - performance.now()) / 1000 - reserve;
+  refine = true, fallback = true, even = false, multi = 'auto', maps = null, ladderOnly = false, phase = null} = {}, tools = STAGE_TOOLS) {
+  const seconds = (deadline - tools.now()) / 1000 - reserve;
   const report = {attempted: false, symmetry}, alone = ladderOnly ? {maps, ladderOnly, phase} : {};
   if (seconds < 1) return {found: null, report: {...report, reason: 'no time left'}};
   report.attempted = true;
@@ -312,14 +316,14 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     // templates. (history: docs/inverse/SEARCH-CONSTANTS.md#start-seconds)
     // With `even`, on the outline made symmetric under the ties (target.js
     // symmetricLines).
-    const exact = exactOutline(outline, cfg, 'tight', {symmetry: even ? symmetry : []});
+    const exact = tools.exactOutline(outline, cfg, 'tight', {symmetry: even ? symmetry : []});
     // With the network's maps, its ladder first; today's search after it, in the time left.
     // Alone with fallback ties after it (below) and two of their floors' time, the ladder under all the ties
     // leaves them TURNS_FLOOR, which they otherwise never had: JUL in kalam on a woven square has its template
     // only untied, where the tied rungs took nearly all its outline's time.
     // (history: docs/inverse/SEARCH-CONSTANTS.md#turns-floor)
     const keep = ladderOnly && fallback && fallbackTies(symmetry).length && seconds >= 2 * TURNS_FLOOR ? TURNS_FLOOR : 0;
-    const ladder = maps ? await networkLadder(outline, template, cfg, exact, {seconds: seconds - keep, symmetry, multi, onProgress, geometry, refine, maps, alone: ladderOnly, phase}) : null;
+    const ladder = maps ? await tools.networkLadder(outline, template, cfg, exact, {seconds: seconds - keep, symmetry, multi, onProgress, geometry, refine, maps, alone: ladderOnly, phase}) : null;
     if (ladder) report.ladder = ladder.rungs;
     near = ladder?.nearest ?? null;
     if (ladder?.found) found = ladder.found;
@@ -328,28 +332,28 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
     // is not symmetric enough for its mirror, so every rung there stops at once).
     else if (ladderOnly) found = ladder?.code === NOT_SYMMETRIC ? {error: ladder.error, code: NOT_SYMMETRIC} : {error: NO_TEMPLATE};
     else {
-      const began = performance.now(), budget = (deadline - began) / 1000 - reserve;
-      const start = await exactStart(exact, template, {deadline: began + Math.min(START_SECONDS, budget / 4) * 1000});
+      const began = tools.now(), budget = (deadline - began) / 1000 - reserve;
+      const start = await tools.exactStart(exact, template, {deadline: began + Math.min(START_SECONDS, budget / 4) * 1000});
       report.start = start.how ?? start.error;
       // No start found in time: HiGHS finds the papers itself from an empty one,
       // on the coarser grid (amy-flowering, david4, where the search for a
       // start runs out of time even in 30 s).
       const empty = {positions: new Map(), labels: new Map(), chords: []}, witness = start.witness ?? empty;
       if (start.error) report.start = `none (${start.error})`;
-      const left = () => budget - (performance.now() - began) / 1000, coarse = start.how !== 'template' ? {spacing: 3, neighbours: 2} : {};
+      const left = () => budget - (tools.now() - began) / 1000, coarse = start.how !== 'template' ? {spacing: 3, neighbours: 2} : {};
       // Under ties, first the fine grid from no start, for a share of the time:
       // a start's switches each bring their images as positions, and one not the
       // template's spreads them where no template has them, a larger model.
       // Taken when the export would take it. (history: docs/inverse/SEARCH-CONSTANTS.md#bare)
       let bare = null;
       if (symmetry.length && start.how !== 'template' && left() >= BARE_FLOOR) {
-        bare = await exactFromTemplate(outline, template, cfg, {multi, seconds: left() * BARE_SHARE, symmetry, exact, witness: empty, onProgress, geometry, refine, spacing: .75, neighbours: 4});
+        bare = await tools.exactFromTemplate(outline, template, cfg, {multi, seconds: left() * BARE_SHARE, symmetry, exact, witness: empty, onProgress, geometry, refine, spacing: .75, neighbours: 4});
         report.bare = bare.error ?? bare.report.penalty;
       }
       const bareFound = bare && !bare.error && !(bare.report.penalty > 1e-6);
       const bareTakes = drawn => {
-        try { return drawn && exportable(assess(drawn, cfg), cfg); } catch (error) {
-          noteError('exact/stage.js exactSearch: assessing the fine grid\'s drawing', error);
+        try { return drawn && exportable(tools.assess(drawn, cfg), cfg); } catch (error) {
+          tools.noteError('exact/stage.js exactSearch: assessing the fine grid\'s drawing', error);
           return false;
         }
       };
@@ -359,10 +363,10 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
         // in the time left, the better kept (ramme: the fine grid proves 4
         // hidden its best, where the coarse has the designer's none).
         if (bare.report.hidden > (bare.report.bound ?? 0) && left() >= COARSE_AFTER_BARE) {
-          const second = await exactFromTemplate(outline, template, cfg, {multi, seconds: left(), symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
+          const second = await tools.exactFromTemplate(outline, template, cfg, {multi, seconds: left(), symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
           const rank = result => {
-            try { return assess(result.solution, cfg).rank; } catch (error) {
-              noteError('exact/stage.js exactSearch: ranking the coarse grid\'s template', error);
+            try { return tools.assess(result.solution, cfg).rank; } catch (error) {
+              tools.noteError('exact/stage.js exactSearch: ranking the coarse grid\'s template', error);
               return null;
             }
           };
@@ -375,7 +379,7 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
           }
         }
       } else {
-        found = await exactFromTemplate(outline, template, cfg, {multi, seconds: left(), symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
+        found = await tools.exactFromTemplate(outline, template, cfg, {multi, seconds: left(), symmetry, exact, witness, onProgress, geometry, refine, ...coarse});
         // The bare one where it breaks fewer of the model's rules.
         if (bare && !bare.error && (found.error || bare.report.penalty < found.report.penalty)) found = {...bare, report: {...bare.report, bare: true}};
       }
@@ -384,7 +388,7 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
       // in a second): then four, 1.5 units apart, in the time left.
       const rest = left();
       if (found.error === NO_TEMPLATE && start.how !== 'template' && rest >= 4) {
-        const finer = await exactFromTemplate(outline, template, cfg, {multi, seconds: rest, symmetry, exact, witness, onProgress, geometry, refine, spacing: 1.5, neighbours: 4});
+        const finer = await tools.exactFromTemplate(outline, template, cfg, {multi, seconds: rest, symmetry, exact, witness, onProgress, geometry, refine, spacing: 1.5, neighbours: 4});
         found = finer.error ? found : {...finer, report: {...finer.report, finer: true}};
       }
     }
@@ -402,15 +406,15 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   // hold, made symmetric, gave as many templates but other ones, some worse.
   // (history: docs/inverse/SEARCH-CONSTANTS.md#even)
   if (found.code === NOT_SYMMETRIC && symmetry.length && fallback && !even) {
-    const evened = await exactSearch(outline, template, cfg, {deadline, reserve, onProgress, geometry, refine, symmetry, even: true, ...alone});
+    const evened = await exactSearch(outline, template, cfg, {deadline, reserve, onProgress, geometry, refine, symmetry, even: true, ...alone}, tools);
     if (evened.found || evened.errorCode !== NOT_SYMMETRIC) return {...evened, report: {...evened.report, even: found.error}};
   }
   if (found.code === NOT_SYMMETRIC && symmetry.length && fallback) {
     const options = {deadline, reserve, onProgress, geometry, refine, fallback: false, ...alone};
     let again = outline.metadata?.nearTouch > 0
-      ? await exactSearch({...outline, metadata: {...outline.metadata, nearTouch: 0}}, template, cfg, {...options, symmetry})
+      ? await exactSearch({...outline, metadata: {...outline.metadata, nearTouch: 0}}, template, cfg, {...options, symmetry}, tools)
       : {found: null, report: {error: found.error}, errorCode: found.code};
-    if (!again.found && again.errorCode === NOT_SYMMETRIC) again = {...await exactSearch(outline, template, cfg, {...options, symmetry: []}), untied: true};
+    if (!again.found && again.errorCode === NOT_SYMMETRIC) again = {...await exactSearch(outline, template, cfg, {...options, symmetry: []}, tools), untied: true};
     return {...again, report: {...again.report, unjoined: found.error, ...(again.untied ? {untied: true} : {})}};
   }
   // A picture symmetric under mirrors whose templates keep only part of its
@@ -429,11 +433,11 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   const ways = fallback && found.error === NO_TEMPLATE ? fallbackTies(symmetry) : [];
   let drawn = null;
   for (const [k, ties] of ways.entries()) {
-    const left = (deadline - performance.now()) / 1000 - reserve;
+    const left = (deadline - tools.now()) / 1000 - reserve;
     if (left < TURNS_FLOOR) break;
     const share = k < ways.length - 1 ? Math.max(TURNS_FLOOR, left / (ways.length - k)) : left;
-    const again = await exactSearch(outline, template, cfg, {deadline: performance.now() + 1000 * (share + reserve), reserve, onProgress,
-      geometry, refine, fallback: false, symmetry: ties, even, multi, ...alone});
+    const again = await exactSearch(outline, template, cfg, {deadline: tools.now() + 1000 * (share + reserve), reserve, onProgress,
+      geometry, refine, fallback: false, symmetry: ties, even, multi, ...alone}, tools);
     const part = {subgroup: {from: symmetry, to: ties, error: found.error}, ...(ties.length ? {} : {untied: true})};
     if (again.found && exportable(again.found.assessment, cfg)) return {...again, report: {...again.report, ...part}};
     if (again.found && (!drawn || closer(again.found.assessment, drawn.found.assessment))) drawn = {...again, report: {...again.report, ...part}};
@@ -449,7 +453,7 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   // `errorCode`: report.error's code, where it has one (NOT_SYMMETRIC), for the fallbacks above.
   if (found.error) return {found: null, ...(best ? {near: best} : {}), report: {...report, error: found.error, search: found.report},
     ...(found.code ? {errorCode: found.code} : {})};
-  let solution = found.solution, assessment = assess(solution, cfg);
+  let solution = found.solution, assessment = tools.assess(solution, cfg);
   // Redrawn on the mask's own edge in a few cubics (search.js, refine.js):
   // taken when it does better on passing, its failures, the picture's regions
   // or one template, or as well, with hidden cut within a quarter (a step at
@@ -461,8 +465,8 @@ export async function exactSearch(outline, template, cfg, {deadline, reserve = 4
   // more. (history: docs/inverse/SEARCH-CONSTANTS.md#smooth-slack)
   if (found.refined) {
     let finer = null;
-    try { finer = assess(found.refined, cfg); } catch (error) {
-      noteError('exact/stage.js exactSearch: assessing the redrawn template', error);
+    try { finer = tools.assess(found.refined, cfg); } catch (error) {
+      tools.noteError('exact/stage.js exactSearch: assessing the redrawn template', error);
       finer = null;
     }
     report.refined = finer && {passes: finer.passes, maskError: finer.maskError, issues: finer.issues, rank: finer.rank, traced: assessment.rank};

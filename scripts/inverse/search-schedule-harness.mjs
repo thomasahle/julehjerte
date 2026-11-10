@@ -4,6 +4,7 @@
  * schedule are the same where their traces are (search-schedule.test.mjs). Not the searches themselves: each
  * scripted search moves the clock and returns an outcome drawn for it. */
 import {UNEVEN} from '../../static/inverse/core/exact/stage.js';
+import {NO_TEMPLATE, NOT_SYMMETRIC} from '../../static/inverse/core/exact/search.js';
 
 /** A stream of numbers in [0, 1) from a 32-bit seed (mulberry32). */
 function stream(seed) {
@@ -57,7 +58,7 @@ export function scenario(seed) {
     rough: int(r, 0, 2),
     specks: r() < 0.3 ? 120 : 0,
     targetWidth: pick(r, [90, 100, 120]),
-    resolution: pick(r, [240, 400]),
+    resolution: pick(r, [200, 400]),
     geometry: r() < 0.5,
     traceNull: pick(r, [0, 0.15, 0.4]),
     traceThrow: pick(r, [0, 0.1]),
@@ -126,7 +127,7 @@ export async function traceSchedule(exactTemplate, seed) {
     const off = Object.entries(checks).filter(([, ok]) => !ok).map(([what]) => what);
     return off.length ? ` !${off.join(',')}` : '';
   };
-  const json = value => JSON.stringify(value);
+  const json = value => JSON.stringify(value)?.replace(/"/g, '');
   const tools = {
     now: () => clock,
     exactTarget(t, c, options) {
@@ -282,4 +283,173 @@ export async function traceSchedule(exactTemplate, seed) {
   const plain = value =>
     JSON.parse(JSON.stringify(value, (key, v) => (v && typeof v === 'object' && Object.hasOwn(v, '$id') ? `$${v.$id}` : v)) ?? 'null');
   return {calls: plain(calls), result: plain(result)};
+}
+
+const TIES = [[], ['mirrorX'], ['mirrorX', 'mirrorY'], ['mirrorX', 'mirrorY', 'antiTranspose'], ['transpose', 'antiTranspose'], ['rotate180'], ['antiTranspose']];
+
+/** What a scenario of one outline's search (exact/stage.js exactSearch) sets: its options, and how likely each
+ * scripted outcome is. */
+export function stageScenario(seed) {
+  const r = streamFor(seed, 'stage'), maps = r() < 0.5 ? {$id: 'maps'} : null, ladderOnly = Boolean(maps) && r() < 0.6;
+  const span = r();
+  return {
+    seed,
+    symmetry: pick(r, TIES),
+    nearTouch: pick(r, [0, 0.9]),
+    template: r() < 0.3 ? {$id: 'template'} : null,
+    start: int(r, 1000, 2000),
+    seconds: span < 0.3 ? int(r, 500, 9000) : span < 0.7 ? int(r, 9000, 30000) : int(r, 30000, 120000),
+    reserve: pick(r, [undefined, undefined, 0.5]),
+    maps,
+    ladderOnly,
+    phase: ladderOnly ? pick(r, ['first', 'second', null]) : null,
+    fallback: r() < 0.85 ? undefined : false,
+    even: r() < 0.1 ? true : undefined,
+    multi: pick(r, [undefined, true]),
+    geometry: pick(r, [undefined, true]),
+    // How often a search under ties finds the outline not symmetric enough, finds no template, the ladder one.
+    notSymmetric: pick(r, [0, 0.4, 0.8]),
+    noTemplate: pick(r, [0.2, 0.5]),
+    ladderFound: pick(r, [0.1, 0.4]),
+    passes: pick(r, [0.1, 0.4, 0.8]),
+    still: r() < 0.3
+  };
+}
+
+/** The trace of `exactSearch` (exact/stage.js's signature, its tools last) on the scenario of `seed`, its
+ * collaborators scripted (STAGE_TOOLS): {calls, result}, plain data. Its own fallbacks run as they do, each a
+ * call of itself, so they show in the calls their searches make. */
+export async function traceExactSearch(exactSearch, seed) {
+  const sc = stageScenario(seed), calls = [], count = {}, streams = {};
+  const r = kind => (streams[kind] ??= streamFor(seed, kind))(), of = kind => () => r(kind);
+  const next = kind => (count[kind] = (count[kind] ?? 0) + 1) - 1;
+  let clock = sc.start;
+  const cfg = {width: 100, maxImageError: 0.01}, onProgress = event => calls.push(`P ${event?.stage}`);
+  const outline = {$id: 'outline', metadata: {nearTouch: sc.nearTouch}};
+  const id = value =>
+    value && typeof value === 'object'
+      ? value.metadata
+        ? `${value.$id}~${value.metadata.nearTouch}`
+        : (value.$id ?? (value.positions instanceof Map ? 'empty' : '?'))
+      : (value ?? null);
+  const json = value => JSON.stringify(value)?.replace(/"/g, '');
+  const odd = checks => {
+    const off = Object.entries(checks).filter(([, ok]) => !ok).map(([what]) => what);
+    return off.length ? ` !${off.join(',')}` : '';
+  };
+  const spend = (kind, seconds) => {
+    const u = r(kind);
+    if (u < 0.3) clock += int(of(kind), 10, 1500);
+    else if (u < 0.9) clock += Math.max(0, Math.round(1000 * seconds * (0.2 + 0.8 * r(kind))));
+    else clock += Math.max(0, Math.round(1000 * seconds)) + int(of(kind), 0, 3000);
+  };
+  const assessment = n => {
+    const a = of('assessment'), passes = r('assessment') < sc.passes, k = passes ? -1 : int(a, 0, 2);
+    return {
+      $id: `as${n}`,
+      passes: k !== 0,
+      features: k !== 1,
+      maskError: k === 2 ? 0.02 : int(a, 0, 9) / 1000,
+      issues: k === 0 ? ['short_self_clearance'] : [],
+      rank: [k === 0 ? 1 : 0, k === 0 ? 1 : 0, k === 1 ? 1 : 0, int(a, 0, 3), int(a, 0, 1), int(a, 0, 4), int(a, 20, 22)],
+      near: [passes ? 0 : 1, int(a, 0, 2), int(a, 0, 3) / 10, int(a, 0, 3), int(a, 0, 4), 30]
+    };
+  };
+  // How likely a search finds the outline not symmetric enough for its ties: less made symmetric (`even`), and
+  // rarely untied (exactPositions failing: search.js).
+  const asymmetric = (symmetry, exact) => (!symmetry.length ? 0.02 : exact.tied ? sc.notSymmetric / 3 : sc.notSymmetric);
+  // A template's drawing and, sometimes, its redrawing in a few cubics (search.js).
+  const drawn = (n, report) => ({
+    solution: {$id: `d${n}`},
+    ...(r('F') < 0.5 ? {refined: {$id: `d${n}r`}} : {}),
+    report: {n, penalty: pick(of('F'), [0, 0, 0, 0.5, 2]), hidden: int(of('F'), 0, 8), ...report}
+  });
+  const tools = {
+    now: () => clock,
+    exactOutline(on, c, mode, options) {
+      const n = next('X');
+      calls.push(`X ${id(on)} ${mode} ${json(options)}${odd({cfg: c === cfg})}`);
+      if (!sc.still) clock += 20;
+      if (r('X') < 0.03) throw new Error('no structure');
+      return {$id: `ex${n}`, tied: options.symmetry.length > 0};
+    },
+    async networkLadder(on, template, c, exact, options) {
+      const n = next('L');
+      const {seconds, symmetry, multi, geometry, refine, maps, alone, phase, onProgress: progress, ...rest} = options;
+      calls.push(
+        `L ${id(on)} ${id(exact)} ${seconds} ${json(symmetry)} ${multi} ${geometry} ${refine} ${id(maps)} ${alone} ${phase}` +
+          odd({template: template === sc.template, cfg: c === cfg, progress: progress === onProgress, [`keys:${Object.keys(rest)}`]: !Object.keys(rest).length})
+      );
+      spend('L', seconds);
+      if (r('L') < 0.03) throw new Error('ladder crashed');
+      const rungs = [{k: 10, n}];
+      if (r('L') < sc.ladderFound) return {found: drawn(`L${n}`, {ladder: 10}), rungs};
+      const nearest = r('L') < 0.5 ? {solution: {$id: `ln${n}`}, assessment: assessment(`ln${n}`), report: {n, ladder: 30}} : null;
+      const notSymmetric = r('L') < asymmetric(symmetry, exact);
+      return {found: null, nearest, rungs, error: notSymmetric ? 'not symmetric' : 'none', code: notSymmetric ? NOT_SYMMETRIC : null};
+    },
+    async exactStart(exact, template, {deadline, ...rest}) {
+      const n = next('ST');
+      calls.push(`ST ${id(exact)} ${deadline - clock}${odd({template: template === sc.template, [`keys:${Object.keys(rest)}`]: !Object.keys(rest).length})}`);
+      spend('ST', Math.max(0, (deadline - clock) / 1000));
+      const u = r('ST');
+      if (u < 0.03) throw new Error('start crashed');
+      if (template && u < 0.5) return {how: 'template', witness: {$id: `w${n}`}};
+      if (u < 0.75) return {how: 'topology', witness: {$id: `w${n}`}};
+      return {error: 'timed out'};
+    },
+    async exactFromTemplate(on, template, c, options) {
+      const n = next('F');
+      const {multi, seconds, symmetry, exact, witness, onProgress: progress, geometry, refine, spacing, neighbours, ...rest} = options;
+      calls.push(
+        `F ${id(on)} ${id(exact)} ${seconds} ${json(symmetry)} ${spacing ?? '-'} ${neighbours ?? '-'} ${id(witness)} ${multi} ` +
+          `${geometry} ${refine}` +
+          odd({template: template === sc.template, cfg: c === cfg, progress: progress === onProgress, [`keys:${Object.keys(rest)}`]: !Object.keys(rest).length})
+      );
+      spend('F', seconds);
+      const u = r('F');
+      if (u < 0.03) throw new Error('model crashed');
+      if (u < 0.03 + asymmetric(symmetry, exact))
+        return {error: 'not symmetric', code: NOT_SYMMETRIC, report: {n}};
+      if (r('F') < sc.noTemplate) return {error: NO_TEMPLATE, report: {n}};
+      if (r('F') < 0.05) return {error: 'model failed', report: {n}};
+      return drawn(n, r('F') < 0.7 ? {bound: int(of('F'), 0, 8)} : {});
+    },
+    assess(solution) {
+      const n = next('A');
+      calls.push(`A ${id(solution)}`);
+      if (!sc.still) clock += 40;
+      if (r('A') < 0.02) throw new Error('assess crashed');
+      return assessment(n);
+    },
+    noteError(where, error) {
+      calls.push(`E ${where}: ${error?.message ?? error}`);
+    }
+  };
+  const options = {
+    deadline: sc.start + sc.seconds,
+    onProgress,
+    symmetry: sc.symmetry,
+    ...Object.fromEntries(
+      Object.entries({
+        reserve: sc.reserve,
+        maps: sc.maps,
+        ladderOnly: sc.ladderOnly || undefined,
+        phase: sc.phase ?? undefined,
+        fallback: sc.fallback,
+        even: sc.even,
+        multi: sc.multi,
+        geometry: sc.geometry
+      }).filter(([, v]) => v !== undefined)
+    )
+  };
+  let result;
+  try {
+    result = await exactSearch(outline, sc.template, cfg, options, tools);
+  } catch (error) {
+    result = {thrown: String(error?.message ?? error)};
+  }
+  const plain = value =>
+    JSON.parse(JSON.stringify(value, (key, v) => (v && typeof v === 'object' && Object.hasOwn(v, '$id') ? `$${v.$id}` : v)) ?? 'null');
+  return {calls, result: plain(result)};
 }
