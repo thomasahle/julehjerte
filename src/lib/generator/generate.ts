@@ -15,6 +15,7 @@ import { blobsOf, carryTopology } from './topologyTransfer';
 import { alongEdge, boardOutline } from './boardOutline';
 import { bendShared, followArc, sharedPieces, slideSwitch, straightenShared, switchesOf } from './cutMoves';
 import { picture, type Known } from './picture';
+import { isRefusal, refusal, unlessRefused } from './refusal';
 export { fillSquare, fitCircle } from './frameFit';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
 import { CORNER_INSETS, generateCheckeredGrid, checkeredGridCache, checkeredLayouts, printCornerInsets } from './checkeredGrid';
@@ -525,7 +526,7 @@ function storedDrawings(request: GeneratorRequest, recipes = request.recipes, to
 			if (of) drew.add(of);
 			if (!of?.extra) drawnFirst++;
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			if (construction && unfinished) unfinished.push({ ...construction, ...request.style === 'board' ? { domain: [SHEET] } : {} });
 		}
 	}
@@ -831,7 +832,7 @@ function endsRefined<T extends Drawing & { m: number[] }>(request: GeneratorRequ
 			const heart = finishedStored(request, construction, strips);
 			return heart.hardToCut ? undefined : { heart, places: construction.places, construction, m: cutMeasures(heart.design, shown.rings) };
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 		}
 	};
 	type End = { e: number; t: number } | { m: number; i: number };
@@ -925,7 +926,7 @@ function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest,
 			const heart = improveSharedConnections(unbent, true);
 			return { unbent, heart, m: cutMeasures(heart.design, shown.rings) };
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) && !(error instanceof CompilationError)) throw error;
+			refusal(error);
 		}
 	};
 	type Drawn = { heart: GeneratorResult; m: number[] };
@@ -1309,12 +1310,7 @@ function withLayout(request: GeneratorRequest): GeneratorRequest {
 		return request;
 	const key = `${request.style} ${request.board ?? ''} ${JSON.stringify(request.contours ?? [])}`;
 	if (!layouts.has(key)) {
-		let layout: BoardLayout | undefined;
-		try {
-			layout = generate({ ...request, scale: .7 }).layout;
-		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-		}
+		const layout = unlessRefused(() => generate({ ...request, scale: .7 }).layout);
 		if (layouts.size > 64) layouts.clear();
 		layouts.set(key, layout);
 	}
@@ -1332,7 +1328,7 @@ function catalogueLayout(request: GeneratorRequest): BoardLayout | undefined {
 		try {
 			layout = generate({ ...request, scale: .7 }).layout;
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 		} finally {
 			keepSpurs = false;
 		}
@@ -1374,7 +1370,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			own = generateTried(request);
 			progress(own);
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			failure = error;
 		}
 		const heart = fromTopology(request, own) ?? own;
@@ -1407,13 +1403,13 @@ function withMirrorMean(request: GeneratorRequest): GeneratorResult {
 	try {
 		own = generateTried(request);
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 		failure = error;
 	}
 	try {
 		meant = generateTried({ ...request, contours: mean });
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 	}
 	if (!own || !meant) {
 		if (own ?? meant) return (own ?? meant)!;
@@ -1446,7 +1442,7 @@ function generateTried(request: GeneratorRequest): GeneratorResult {
 				without = generateMade(freed);
 				progress(without);
 			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				refusal(error);
 			}
 			// As drawn it is made as before, its once-a-heart tries fresh, and
 			// refused not made again up its channels: that one only makes sure
@@ -1457,7 +1453,7 @@ function generateTried(request: GeneratorRequest): GeneratorResult {
 			try {
 				own = generateTrimmed(drawn);
 			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				refusal(error);
 				failure = error;
 			}
 			if (!own || !without) {
@@ -1482,7 +1478,7 @@ function generateMade(request: GeneratorRequest): GeneratorResult {
 	try {
 		return generateTrimmed(request);
 	} catch (error) {
-		if (remaking || making > 1 || !(error instanceof ConstructionError || error instanceof CutGeometryError) || request.mode !== 'figure') throw error;
+		if (remaking || making > 1 || !isRefusal(error) || request.mode !== 'figure') throw error;
 		const contours = request.contours ?? [], pieces = forest(normalizeContours(contours));
 		const closed = closedAtContacts(contours, 1.25 / ((request.frameSize ?? 70) * (request.scale ?? .7)));
 		const again = [
@@ -1494,7 +1490,7 @@ function generateMade(request: GeneratorRequest): GeneratorResult {
 			for (const made of again) try {
 				return withRemaking(made);
 			} catch (againError) {
-				if (!(againError instanceof ConstructionError) && !(againError instanceof CutGeometryError)) throw againError;
+				refusal(againError);
 			}
 		} finally {
 			remaking = false;
@@ -1515,7 +1511,7 @@ function generateTrimmed(request: GeneratorRequest): GeneratorResult {
 	try {
 		result = generateAsAsked(request);
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 		failure = error;
 	}
 	const made = SECOND_TRIES.map(([, seen]) => seen());
@@ -1534,7 +1530,7 @@ function generateTrimmed(request: GeneratorRequest): GeneratorResult {
 			if (!result || size(other) >= size(result) && (!other.hardToCut ? result.hardToCut || fewer()
 				: result.hardToCut && other.hardToCut.spacing >= result.hardToCut.spacing && fewer())) result = other;
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 		} finally {
 			quickAgain = false;
 			retriesAgain = false;
@@ -1552,7 +1548,7 @@ function generateTrimmed(request: GeneratorRequest): GeneratorResult {
 		if (!result || size(other) > size(result) + 1e-9 || result.hardToCut && !other.hardToCut && size(other) >= size(result) - 1e-9 &&
 			paperTears(exported(other).design) <= paperTears(exported(result).design)) result = other;
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 	} finally {
 		atSizeOnly = false;
 	}
@@ -1610,14 +1606,14 @@ function generateAsAsked(request: GeneratorRequest): GeneratorResult {
 		// for, at any size, shows it on the nearest that can (the finer of two),
 		// as the page then says.
 		const range = request.mode === 'figure' ? BOARD_STRIPS[request.style as BoardStyle] : undefined;
-		if (!range || !(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		if (!range || !isRefusal(error)) throw error;
 		const asked = request.board ?? range.initial, boards: number[] = [];
 		for (let n = range.min; n <= range.max; n += range.step) if (n !== asked) boards.push(n);
 		boards.sort((a, b) => Math.abs(a - asked) - Math.abs(b - asked) || b - a);
 		for (const board of boards) try {
 			return generateAtSizeOrSmaller({ ...request, board });
 		} catch (otherError) {
-			if (!(otherError instanceof ConstructionError) && !(otherError instanceof CutGeometryError)) throw otherError;
+			refusal(otherError);
 		}
 		throw error;
 	}
@@ -1637,7 +1633,7 @@ function generateAtSizeOrSmaller(request: GeneratorRequest): GeneratorResult {
 		if (!sunburst || (result.scale ?? scale) >= scale - 1e-9) return result;
 		drawnSmaller = result;
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 		failure = error;
 	}
 	if (scale <= .7 || request.mode === 'figure' && request.style === 'board' || quickAgain || atSizeOnly) {
@@ -1661,7 +1657,7 @@ function generateAtSizeOrSmaller(request: GeneratorRequest): GeneratorResult {
 			const result = way();
 			return { ...result, scale: result.scale ?? size };
 		} catch (smallerError) {
-			if (!(smallerError instanceof ConstructionError) && !(smallerError instanceof CutGeometryError)) throw smallerError;
+			refusal(smallerError);
 		}
 	};
 	const largestAbove = (floor: number) => {
@@ -1724,7 +1720,7 @@ function generateTextFigure(request: GeneratorRequest): GeneratorResult {
 		if (!result.hardToCut || board === asked) return result;
 		if (!hard || result.hardToCut.spacing > hard.hardToCut!.spacing) hard = result;
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 		last ??= error;
 	}
 	if (hard) return hard;
@@ -1733,7 +1729,7 @@ function generateTextFigure(request: GeneratorRequest): GeneratorResult {
 	for (const board of TEXT_LAST_STRIPS) try {
 		return generateAtSizeOrSmaller({ ...figure, board });
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 	}
 	throw last;
 }
@@ -1821,7 +1817,7 @@ function alternativeOnce(request: GeneratorRequest, kind: string, build: () => G
 	try {
 		return { result: build() };
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 		const failed = { allowed: [...allowed], setAside: LAST_RESORTS.map(([, setAside], k) => setAside() !== before[k]), error };
 		if (failedAtSize) failedAtSize.set(key, [...failedAtSize.get(key) ?? [], failed]);
 		return failed;
@@ -1836,14 +1832,11 @@ function generateAtSizeOrLastResort(request: GeneratorRequest): GeneratorResult 
 	try {
 		return generateAtSize(request);
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) || quickAgain) throw error;
+		if (!isRefusal(error) || quickAgain) throw error;
 		for (const [k, [, setAside]] of LAST_RESORTS.entries()) {
 			if (setAside() === before[k]) continue;
-			try {
-				return allowingLastResort(k, () => generateAtSize(request));
-			} catch (lastError) {
-				if (!(lastError instanceof ConstructionError) && !(lastError instanceof CutGeometryError)) throw lastError;
-			}
+			const made = unlessRefused(() => allowingLastResort(k, () => generateAtSize(request)));
+			if (made) return made;
 		}
 		throw error;
 	} finally {
@@ -1895,18 +1888,12 @@ function generateAtSize(request: GeneratorRequest): GeneratorResult {
 		}
 		throw last ?? new ConstructionError('topology', 'No alternative');
 	};
-	try {
-		return preferred();
-	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-	}
+	const made = unlessRefused(() => preferred());
+	if (made) return made;
 	for (const k of LAST_RESORTS.keys()) {
 		if (![...setAsideBy.values()].some(aside => aside[k])) continue;
-		try {
-			return allowingLastResort(k, () => preferred(k));
-		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-		}
+		const resorted = unlessRefused(() => allowingLastResort(k, () => preferred(k)));
+		if (resorted) return resorted;
 	}
 	for (const [index, { request: alternative, lastResort }] of alternatives.entries()) {
 		if (!lastResort) continue;
@@ -1956,7 +1943,7 @@ function generateStrips(request: GeneratorRequest): GeneratorResult {
 		try {
 			return stripsAt(request, key, at(size), where, curveFitter, placeAt(at(size)));
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			last ??= error;
 			// Where nothing at all could be built there, which is quickly known,
 			// the nearest place where the motif keeps its size; where cuts there
@@ -2007,7 +1994,7 @@ function stripsAt(request: GeneratorRequest, key: string, scale: number,
 		try {
 			return named(finishConstruction(request, construction, 'nested', undefined, curveFitter));
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			last = error;
 			rejected.push({ construction, recipe: 'nested' });
 		}
@@ -2149,7 +2136,7 @@ function generateOnceMade(request: GeneratorRequest,
 		if (request.mode === 'figure') return result;
 		return request.textFrame === 'checkered' ? result : improveTextPanelTips(request, result, curveFitter);
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 		if (!retries) throw error;
 		const curvedCandidates = [...rejected];
 		for (const { construction, recipe } of request.mode === 'figure' ? rejected : []) {
@@ -2164,7 +2151,7 @@ function generateOnceMade(request: GeneratorRequest,
 				retry = { ...construction, edges, geometry: compile(edges) };
 				return finishConstruction(request, retry, recipe, undefined, curveFitter);
 			} catch (retryError) {
-				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
+				refusal(retryError);
 				if (retry) curvedCandidates.push({ construction: retry, recipe });
 			}
 		}
@@ -2180,7 +2167,7 @@ function generateOnceMade(request: GeneratorRequest,
 				retry = sunburstBorder(construction, size, request.crown);
 				return finishConstruction(request, retry, 'nested', undefined, curveFitter);
 			} catch (retryError) {
-				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
+				refusal(retryError);
 				if (retry) curvedCandidates.push({ construction: retry, recipe: 'nested' });
 			}
 		}
@@ -2199,11 +2186,8 @@ function generateOnceMade(request: GeneratorRequest,
 			if (hasSeverePinch(construction.geometry, scale, true)) continue;
 			const geometry = curveSharedCuts(construction.geometry);
 			if (!geometry) continue;
-			try {
-				return finishConstruction(request, construction, recipe, geometry, curveFitter);
-			} catch (retryError) {
-				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
-			}
+			const curved = unlessRefused(() => finishConstruction(request, construction, recipe, geometry, curveFitter));
+			if (curved) return curved;
 		}
 		const panels = retryPanelLayouts(request, curveFitter);
 		if (panels) return improveTextPanelTips(request, panels, curveFitter);
@@ -2219,7 +2203,7 @@ function generateOnceMade(request: GeneratorRequest,
 					{ columns: 2, rows: 2, filled: false, adaptive: true, shear });
 				return improveSharedConnections(finishConstruction(request, construction, 'nested', undefined, curveFitter));
 			} catch (retryError) {
-				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
+				refusal(retryError);
 			}
 		}
 		// Frames without a centre panel try their own retries before lanes.
@@ -2238,7 +2222,7 @@ function generateOnceMade(request: GeneratorRequest,
 				request.frameSize, request.scale, { columns: 2, rows: 2, filled: true, counterSeams: true });
 			return improveSharedConnections(finishConstruction(request, construction, 'nested', undefined, curveFitter));
 		} catch (retryError) {
-			if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
+			refusal(retryError);
 		}
 		const sunburstPanels = retrySunburstPanels(request, curveFitter);
 		if (sunburstPanels) return sunburstPanels;
@@ -2282,7 +2266,7 @@ function generateOnceMade(request: GeneratorRequest,
 				madeExactly.add(made.design);
 				return made;
 			} catch (exactError) {
-				if (!(exactError instanceof ConstructionError) && !(exactError instanceof CutGeometryError)) throw exactError;
+				refusal(exactError);
 			}
 		};
 		const finishHard = () => hardToCutResult(request, [...curvedCandidates,
@@ -2310,14 +2294,8 @@ function withSpreadPorts(result: GeneratorResult): GeneratorResult {
 	if (!made || !paperTears(shown.design)) return shown;
 	const all = spreadPorts(made.construction.edges, PORT_GAP);
 	if (!all) return shown;
-	const finished = (edges: Edge[]) => {
-		try {
-			return finishConstruction(made.request, { ...made.construction, edges, geometry: compile(edges) }, result.recipe,
-				undefined, made.curveFitter);
-		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-		}
-	};
+	const finished = (edges: Edge[]) => unlessRefused(() => finishConstruction(made.request,
+		{ ...made.construction, edges, geometry: compile(edges) }, result.recipe, undefined, made.curveFitter));
 	let best = result, edges = made.construction.edges;
 	const whole = finished(all.edges);
 	if (whole && cutsBetter(whole, best, true)) best = whole;
@@ -2364,7 +2342,7 @@ function hardToCutResult(request: GeneratorRequest,
 				tips = cutTipCounts(design), tears = paperTears(exported(result).design);
 			return { result, construction, recipe, spacing, narrow, tears, tips };
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 		}
 	};
 	for (const { construction, recipe } of candidates) {
@@ -2417,7 +2395,7 @@ function retryCornerLanes(request: GeneratorRequest, curveFitter: ReturnType<typ
 		try {
 			construction = generateCornerChecks(rings, request.frameSize, request.scale, routing, true, false, undefined, split, request.gap);
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			continue;
 		}
 		for (const fraction of [0, .2, .4]) try {
@@ -2431,7 +2409,7 @@ function retryCornerLanes(request: GeneratorRequest, curveFitter: ReturnType<typ
 			if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 			if (!tips[1]) return best;
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 		}
 	}
 	return best;
@@ -2457,7 +2435,7 @@ function retryBentCornerLegs(request: GeneratorRequest, curveFitter: ReturnType<
 		if (!construction.bentLegs || routing === 'separated' && !construction.separated || fitBorder && !construction.borderAdjusted) continue;
 		return improveSharedConnections(finishConstruction(request, construction, 'silhouette', undefined, curveFitter));
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 	}
 }
 
@@ -2476,7 +2454,7 @@ function retryChainContacts(request: GeneratorRequest, curveFitter: ReturnType<t
 		try {
 			candidate = finishConstruction(request, construction, 'silhouette', undefined, curveFitter);
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			const geometry = curveSharedCuts(construction.geometry);
 			if (!geometry) continue;
 			candidate = finishConstruction(request, construction, 'silhouette', geometry, curveFitter);
@@ -2489,7 +2467,7 @@ function retryChainContacts(request: GeneratorRequest, curveFitter: ReturnType<t
 		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 		if (!tips[1]) return best;
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 	}
 	return best;
 }
@@ -2511,7 +2489,7 @@ function retryFittedComponentEnvelope(request: GeneratorRequest, curveFitter: Re
 			construction = generateComponentFigure(rings, open, request.frameSize, request.scale,
 				'check', route, columns, 0, true, true, padding);
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			continue;
 		}
 		for (const handleFraction of [.1, .2]) try {
@@ -2525,7 +2503,7 @@ function retryFittedComponentEnvelope(request: GeneratorRequest, curveFitter: Re
 			if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 			if (!tips[0] && !tips[1]) return best;
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 		}
 	}
 	return best;
@@ -2554,7 +2532,7 @@ function retryFittedGateClearance(request: GeneratorRequest, curveFitter: Return
 		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 		if (!tips[1]) return best;
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 	}
 	return best;
 }
@@ -2585,7 +2563,7 @@ function retrySunburstComponents(request: GeneratorRequest, curveFitter: ReturnT
 		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 		if (!tips[0] && !tips[1]) return best;
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 	}
 	return best;
 }
@@ -2616,7 +2594,7 @@ function retrySunburstPanels(request: GeneratorRequest, curveFitter: ReturnType<
 		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 		if (!tips[1]) return best;
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 	}
 	return best;
 }
@@ -2644,7 +2622,7 @@ function retryTextPanelIslands(request: GeneratorRequest, curveFitter: ReturnTyp
 				try {
 					candidate = finishConstruction(request, construction, 'letters', undefined, curveFitter);
 				} catch (error) {
-					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					refusal(error);
 					const geometry = curveSharedCuts(construction.geometry);
 					if (!geometry) continue;
 					candidate = finishConstruction(request, construction, 'letters', geometry, curveFitter);
@@ -2660,7 +2638,7 @@ function retryTextPanelIslands(request: GeneratorRequest, curveFitter: ReturnTyp
 				if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 				if (!tips[1]) return best;
 			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				refusal(error);
 			}
 		}
 		// Keep the established fit when any of its layouts works. Only a
@@ -2692,7 +2670,7 @@ function retryPanelReserve(request: GeneratorRequest, candidates: Construction[]
 			if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 			if (!tips[1]) return best;
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 		}
 	}
 	return best;
@@ -2719,7 +2697,7 @@ function retryGuardedPanels(request: GeneratorRequest, curveFitter: ReturnType<t
 					contourApproaches: true, guardedAttachments: true
 				});
 			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				refusal(error);
 				continue;
 			}
 			for (const fraction of [0, .2, .4]) try {
@@ -2733,7 +2711,7 @@ function retryGuardedPanels(request: GeneratorRequest, curveFitter: ReturnType<t
 				if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 				if (!tips[1]) return best;
 			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				refusal(error);
 			}
 		}
 	return best;
@@ -2751,7 +2729,7 @@ function retryBranchedText(request: GeneratorRequest, curveFitter: ReturnType<ty
 		try {
 			candidate = finishConstruction(request, construction, 'letters', undefined, curveFitter);
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			const geometry = curveSharedCuts(construction.geometry);
 			if (!geometry) continue;
 			candidate = finishConstruction(request, construction, 'letters', geometry, curveFitter);
@@ -2764,7 +2742,7 @@ function retryBranchedText(request: GeneratorRequest, curveFitter: ReturnType<ty
 		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 		if (!tips[1]) return best;
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 	}
 	if (best || !hasOverlappingTextBranches(text, font)) return best;
 	// A neighbouring V-shaped stroke needs aligned columns and higher row
@@ -2783,7 +2761,7 @@ function retryBranchedText(request: GeneratorRequest, curveFitter: ReturnType<ty
 			try {
 				construction = generateBranchedText(text, font, frame, .55, true, rows, frameFill, guardedJunctions);
 			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				refusal(error);
 				continue;
 			}
 			for (const fraction of [0, .2, .4]) try {
@@ -2797,7 +2775,7 @@ function retryBranchedText(request: GeneratorRequest, curveFitter: ReturnType<ty
 				if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 				if (!tips[1]) return best;
 			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				refusal(error);
 			}
 		}
 		if (best) return best;
@@ -2832,7 +2810,7 @@ function retryWideComponentContacts(request: GeneratorRequest, curveFitter: Retu
 		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 		if (!tips[0] && !tips[1]) return best;
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 	}
 	return best;
 }
@@ -2870,7 +2848,7 @@ function retryFigureIslandPorts(request: GeneratorRequest, curveFitter: ReturnTy
 		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 		if (!tips[0] && !tips[1]) return best;
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 	}
 	return best;
 }
@@ -2894,7 +2872,7 @@ function retryFittedSupports(request: GeneratorRequest, curveFitter: ReturnType<
 		if (!best || fewerCutTips(cutTipCounts(result.design), cutTipCounts(best.design))) best = result;
 		if (!cutTipCounts(best.design)[0]) return best;
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 	}
 	if (best) return best;
 	for (const offset of [.15, -.15, .3, -.3])
@@ -2910,7 +2888,7 @@ function retryFittedSupports(request: GeneratorRequest, curveFitter: ReturnType<
 		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 		if (tips[0] === 0 && tips[1] === 0) return best;
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 	}
 	if (best) return best;
 	// Divide a deeply concave silhouette into two rows. Adjust only its outer
@@ -2925,7 +2903,7 @@ function retryFittedSupports(request: GeneratorRequest, curveFitter: ReturnType<
 		const result = improveSharedConnections(finishConstruction(request, construction, 'silhouette', undefined, curveFitter));
 		if (!best || fewerCutTips(cutTipCounts(result.design), cutTipCounts(best.design))) best = result;
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 	}
 	return best;
 }
@@ -2965,7 +2943,7 @@ function retryComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<
 			if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 			if (tips[0] === 0 && tips[1] === 0) return best;
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			// A lane run through the motif crosses its outline, or one round a
 			// sunburst's corner its border (see `withPassingLanes`).
 			if ((passes || sunburst) && !passingLanes && error.message === CUTS_CROSS) passingLanesFailed++;
@@ -3005,7 +2983,7 @@ function improveTextPanelTips(request: GeneratorRequest, original: GeneratorResu
 		if (after.reduce((sum, pixel, i) => sum + Number(pixel !== before[i]), 0) / after.length <= .002)
 			return result;
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 	}
 	return original;
 }
@@ -3054,16 +3032,13 @@ function retryPanelLayouts(request: GeneratorRequest, curveFitter?: ReturnType<t
 			result = construct();
 			return finishConstruction(request, result, recipe, undefined, curveFitter);
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 		}
 		if (!result) continue;
 		const geometry = curveSharedCuts(result.geometry);
 		if (!geometry) continue;
-		try {
-			return finishConstruction(request, result, recipe, geometry, curveFitter);
-		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-		}
+		const curved = unlessRefused(() => finishConstruction(request, result, recipe, geometry, curveFitter));
+		if (curved) return curved;
 	}
 }
 
@@ -3078,7 +3053,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 	const finish = (construction: Construction, recipe: GeneratorResult['recipe'], keep = true) => {
 		try { return finishConstruction(request, construction, recipe, undefined, curveFitter); }
 		catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			if (keep) onRejected(construction, recipe);
 			throw error;
 		}
@@ -3125,7 +3100,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 						}
 						if (best && !paperTears(exported(best).design) && !cutTipCounts(best.design)[1]) break;
 					} catch (error) {
-						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+						refusal(error);
 						if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
 						last = error;
 					}
@@ -3140,7 +3115,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 							if (cutsBetter(candidate, best)) best = candidate;
 						}
 					} catch (error) {
-						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+						refusal(error);
 					}
 					let bestTips = cutTipCounts(exported(best).design);
 					// A further chord can split the narrow notch of a solid letter such
@@ -3161,7 +3136,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 							}
 							if (!bestTips[1]) break;
 						} catch (error) {
-							if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+							refusal(error);
 						}
 					}
 					return best;
@@ -3170,7 +3145,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 					try {
 						return finish(generateCheckeredGrid(text, font, fill, inset, { cache, variant, corners, balanced: true }), 'letters');
 					} catch (error) {
-						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+						refusal(error);
 						last = error;
 					}
 				}
@@ -3184,7 +3159,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 						// An unchanged construction does not need another global fit.
 						if (repaired) return finish(construction, 'letters');
 					} catch (error) {
-						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+						refusal(error);
 						last = error;
 					}
 				}
@@ -3196,7 +3171,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 					try {
 						return finish(generateMixedCheckeredGrid(text, font, { cache: mixed, previous: cache, variant, balanced, strokeTips, fill, corners }), 'letters');
 					} catch (error) {
-						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+						refusal(error);
 						last = error;
 					}
 				}
@@ -3236,11 +3211,11 @@ function generateUsingRecipes(request: GeneratorRequest,
 								const larger = exported(attempt(0, standard * 1.05, corners));
 								if (cutsBetter(larger, result)) return larger;
 							} catch (error) {
-								if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+								refusal(error);
 							}
 							return result;
 						} catch (error) {
-							if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+							refusal(error);
 							if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
 							last = error;
 						}
@@ -3286,7 +3261,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 								if (!best || better(candidate, best)) { best = candidate; bestAt = { variant, inset, corners }; }
 								if (clean(best)) return;
 							} catch (error) {
-								if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+								refusal(error);
 								close ||= error instanceof CutGeometryError;
 							}
 						}
@@ -3306,7 +3281,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 					const margin = intersectionMarginPx(rect, gridClearanceScale(candidate.design.gridSize.x, candidate.design.gridSize.y));
 					if (!findSearchIssues(candidate.design.fingers, margin * 1.1).size) best = candidate;
 				} catch (error) {
-					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					refusal(error);
 				}
 				return best && torn(best.design) <= torn(design) ? best : made;
 			};
@@ -3317,7 +3292,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				const print = search(board);
 				return mirrored(cutsBetter(print, plain) ? print : plain);
 			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				refusal(error);
 				return mirrored(plain);
 			}
 		}
@@ -3453,7 +3428,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 					}
 				}
 				catch (error) {
-					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					refusal(error);
 					if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
 					last = error;
 				}
@@ -3472,7 +3447,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				try {
 					yield finish(generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, panels), 'nested');
 				} catch (error) {
-					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					refusal(error);
 				}
 			}
 		})());
@@ -3483,7 +3458,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				for (const panels of layouts) try {
 					yield finish(generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, panels, paperRoute), 'nested', false);
 				} catch (error) {
-					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					refusal(error);
 				}
 			})());
 			if (again && cutsBetter(again, best, true)) return again;
@@ -3498,7 +3473,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			try {
 				return finish(construction, 'nested');
 			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				refusal(error);
 				// Preserve these connections with curved approaches before the
 				// global retry replaces them with new straight segments.
 				const geometry = curveSharedCuts(construction.geometry);
@@ -3506,7 +3481,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				return finishConstruction(request, construction, 'nested', geometry, curveFitter);
 			}
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			// A motif of several pieces, or with counters, the medallion's
 			// counters then, may still be reached another way (see
 			// `withEveryWay`): round the other counters (`bays`); where that
@@ -3522,7 +3497,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				});
 				return finish(way ? way(route) : route(), 'nested');
 			} catch (everyError) {
-				if (!(everyError instanceof ConstructionError) && !(everyError instanceof CutGeometryError)) throw everyError;
+				refusal(everyError);
 			}
 			if (pieced && !everyWay) everyWayPassed++;
 			throw error;
@@ -3690,7 +3665,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				finish(build(attempt), 'nested', false);
 				return true;
 			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				refusal(error);
 				return false;
 			}
 		}) ? { ...boardPlacement(contours, enclosedAlong(request.scale ?? .7)), enclosed: true } : boxed;
@@ -3748,7 +3723,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 					if (!best || cutsBetter(candidate, best, true)) [best, rawTips] = [candidate, tips];
 					if (!paperTears(exported(best).design) && !cutTipCounts(exported(best).design)[1] || ++working === 4) break;
 				} catch (error) {
-					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					refusal(error);
 					last = error;
 				}
 			}
@@ -3760,7 +3735,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				const candidate = finish(build(attempt), 'nested');
 				if (cutsBetter(candidate, best, true)) best = candidate;
 			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				refusal(error);
 			}
 			if (best) return kept(best);
 			const hard = hardToCutResult(request, rejected, curveFitter);
@@ -3771,11 +3746,8 @@ function generateUsingRecipes(request: GeneratorRequest,
 			if (hard?.hardToCut) for (const { construction, recipe } of rejected.slice(0, 4)) {
 				const geometry = curveSharedCuts(construction.geometry);
 				if (!geometry) continue;
-				try {
-					return kept(finishConstruction(request, construction, recipe, geometry, curveFitter));
-				} catch (error) {
-					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-				}
+				const curved = unlessRefused(() => kept(finishConstruction(request, construction, recipe, geometry, curveFitter)));
+				if (curved) return curved;
 			}
 			if (hard) return kept(hard);
 		}
@@ -3796,7 +3768,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			if (at > 1) return smaller(boardSteps(strips)[at - 2][1] / 100);
 			if (mode === large && (gap > 3 || whole)) return smaller(.7);
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError) || strips === 5) throw error;
+			if (!isRefusal(error) || strips === 5) throw error;
 			last = error;
 		}
 		// A motif that cannot be built at all on the strips the visitor chose
@@ -3830,7 +3802,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 					if (fitBorder) fitted.add(done);
 					yield done;
 				} catch (error) {
-					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					refusal(error);
 					if (!routeMargin) last = error;
 				}
 			}
@@ -3895,7 +3867,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 					return result;
 				}
 				catch (error) {
-					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					refusal(error);
 					if (!constructed && !(error instanceof CompilationError)) break;
 				}
 			}
@@ -3909,7 +3881,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				const again = finish(construct(paperRoute), 'silhouette', false);
 				return cutsBetter(again, result, true) ? again : result;
 			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				refusal(error);
 				return result;
 			}
 		};
@@ -3935,19 +3907,19 @@ function generateUsingRecipes(request: GeneratorRequest,
 			try {
 				return finish(generatePanelFigure(request.contours ?? [], open, request.frameSize ?? 70, request.scale ?? .7, columns, 'check', rows), 'silhouette');
 			} catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				refusal(error);
 			}
 		}
 		try {
 			return finish(generatePanelFigure(request.contours ?? [], open, request.frameSize ?? 70, request.scale ?? .7, 3, 'check', 1, false, fourPortMotif, 'support', true), 'silhouette');
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			for (const columns of [2, 3, 4] as const) {
 				try {
 					return finish(generateComponentFigure(request.contours ?? [], open, request.frameSize,
 						request.scale, 'check', fourPortMotif, columns), 'silhouette');
 				} catch (retryError) {
-					if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
+					refusal(retryError);
 				}
 			}
 			// A motif of several pieces, or with islands in its holes, may still
@@ -3978,7 +3950,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				}, undefined, padding, open, true);
 				return finish(channeled ? withChannels(construct) : construct(), 'silhouette');
 			} catch (everyError) {
-				if (!(everyError instanceof ConstructionError) && !(everyError instanceof CutGeometryError)) throw everyError;
+				refusal(everyError);
 			}
 			if (pieced && !everyWay) everyWayPassed++;
 			throw error;
@@ -4041,7 +4013,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 					rings.length === 1 ? 'silhouette' : 'nested'
 				);
 			} catch (e) {
-				if (!(e instanceof ConstructionError) && !(e instanceof CutGeometryError)) throw e;
+				refusal(e);
 				if (constructed || e instanceof CompilationError) retryOriginal.add(construct);
 				errors.push(e);
 			}
@@ -4056,7 +4028,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				const construction = construct(paperRoute);
 				yield finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested', false);
 			} catch (e) {
-				if (!(e instanceof ConstructionError) && !(e instanceof CutGeometryError)) throw e;
+				refusal(e);
 			}
 		})());
 		if (again && again.design.gridSize.x === best.design.gridSize.x && cutsBetter(again, best, true)) best = again;
@@ -4068,7 +4040,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 		const construction = generatePanelFigure(rings, shape, size, scale, 3, style, 1, false, fourPortMotif, 'support', true);
 		return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested');
 	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		refusal(error);
 		errors.push(error);
 	}
 	if (hasCounterContact(rings)) for (const construct of balancedRecipes) {
@@ -4076,7 +4048,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const construction = construct(touchingFourPortMotif);
 			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, 'nested');
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			errors.push(error);
 		}
 	}
@@ -4087,7 +4059,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const construction = generatePanelFigure(rings, shape, size, scale, columns, style, rows, spread, fourPortMotif, 'filled');
 			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested');
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			errors.push(error);
 		}
 	}
@@ -4098,7 +4070,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const construction = construct(bentFourPortMotif);
 			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested');
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			errors.push(error);
 		}
 	}
@@ -4111,7 +4083,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				fourPortMotif, columns, sunburst && columns > 2 ? 2 : 0);
 			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, 'nested');
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			errors.push(error);
 		}
 	}
@@ -4137,7 +4109,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const construction = channeled ? withChannels(route) : route();
 			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested');
 		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			refusal(error);
 			errors.push(error);
 		}
 	}
