@@ -37,12 +37,12 @@ import {
   OUTLINES,
   RETURN_REPAIR_SECONDS,
   RETURN_REPAIR_TRIES,
-  RETURNS_LEAST,
-  ROUNDED_LEAST,
   ROUNDED_SECONDS,
   TIP_ROUNDING_MM,
+  TODAY,
   TRACED_SECONDS,
   ladderStrictEnd,
+  runSteps,
   timeScale,
   timeSliced
 } from './exact/schedule.js';
@@ -368,8 +368,10 @@ export const SEARCH_TOOLS = {
   noteError
 };
 /** The exact search's template for a picture the export passes, or none:
- * {solution, report}. On the outline traced from the mask until `tracedEnd`,
- * then on it with its tips rounded until `roundedEnd`. */
+ * {solution, nearest, report}. On the outline traced from the mask until
+ * `tracedEnd`, then on the outlines after it until `roundedEnd`, by the
+ * schedule in exact/schedule.js: today's search (TODAY), or with `ladderOnly`
+ * the network's ladder alone over them (ladderAlone). */
 export async function exactTemplate(
   target,
   cfg,
@@ -398,49 +400,65 @@ export async function exactTemplate(
   if (!outline) return {solution: null, report: {chosen: 'fitter', error: cannot}};
   if (way.paired) base = {...base, paired: true};
   const n = target.sourceImage.resolution,
-    px = n / cfgExact.width,
-    radius = Math.max(1, Math.round((TIP_ROUNDING_MM * n) / target.width)),
-    shape = {way, radius, px};
-  // An outline after the traced one (exact/schedule.js OUTLINES) traced the
-  // way `rounding` says, with `more`; none for no way, or where it cannot be
-  // traced (exactTarget throws) or the search cannot start on it.
-  const trace = (rounding, more = {}) => {
-    if (!rounding) return null;
-    try {
-      const traced = traceAt(rounding.open, {...rounding, ...more});
-      return traced && !traced.why ? traced.scaled : null;
-    } catch {
-      return null;
-    }
-  };
-  let ties = symmetry;
-  // `exactSearch`, the templates it finds that the export rejects set aside in
-  // `options.sink` for the last resort (returnRepaired).
-  const exactSearch = async (outline, template, cfgUsed, options) => {
-    const found = await tools.exactSearch(outline, template, cfgUsed, options);
-    if (found.found && !exportable(found.found.assessment, cfgUsed)) options.sink?.push(found);
-    return found;
-  };
-  const sink = [], search = end => ({deadline: end, onProgress, symmetry: ties, geometry: cfg.progressGeometry, sink});
-  const began = tools.now();
-  // What the schedule's tables read (exact/schedule.js): the traced outline,
-  // its way and its tips' rounding (OUTLINES), the search's ends, the clock.
+    px = n / cfgExact.width;
+  // The search's state: what its schedule reads (exact/schedule.js OUTLINES,
+  // TODAY; ladderAlone) and its steps change.
   const state = {
     tools,
     cfgExact,
     outline,
     way,
-    radius,
-    px,
+    tracedEnd,
     roundedEnd,
     maps,
+    ladderOnly,
     part,
-    now: tools.now,
+    // The tips' rounding in the mask's pixels (TIP_ROUNDING_MM), and its pixels a mm.
+    radius: Math.max(1, Math.round((TIP_ROUNDING_MM * n) / target.width)),
+    px,
+    // The ties the searches keep: the symmetry's, or part of them (TODAY's traced step).
+    ties: symmetry,
+    // The templates the searches found that the export rejects, for the last resort (returnRepaired).
+    sink: [],
+    // The search's template so far, the traced outline's search's milliseconds, the outline's tips that come
+    // back to themselves, the spots to round tips near, and the outer strip's move for the outlines after it.
+    found: null,
+    tracedMs: 0,
     tips: [],
-    trace,
-    // The search on `on` until `end`, with `cfg` and `more` options.
-    search: (on, end, {cfg: cfgUsed = cfgExact, ...more} = {}) =>
-      exactSearch(on, null, cfgUsed, {...search(end), ...more}),
+    spots: null,
+    strip: {},
+    now: tools.now,
+    began: tools.now(),
+    left: () => roundedEnd - tools.now(),
+    // An outline after the traced one (OUTLINES) traced the way `rounding` says, with `more`; none for no way,
+    // or where it cannot be traced (exactTarget throws) or the search cannot start on it.
+    trace: (rounding, more = {}) => {
+      if (!rounding) return null;
+      try {
+        const traced = traceAt(rounding.open, {...rounding, ...more});
+        return traced && !traced.why ? traced.scaled : null;
+      } catch {
+        return null;
+      }
+    },
+    // The exact search on `on` until `end` under the ties kept, with `cfg` and `more` options; a template it
+    // finds that the export rejects set aside in the sink.
+    search: async (on, end, {cfg: cfgUsed = cfgExact, ...more} = {}) => {
+      const found = await tools.exactSearch(on, null, cfgUsed, {
+        deadline: end,
+        onProgress,
+        symmetry: state.ties,
+        geometry: cfg.progressGeometry,
+        sink: state.sink,
+        ...more
+      });
+      if (found.found && !exportable(found.found.assessment, cfgUsed)) state.sink.push(found);
+      return found;
+    },
+    passes: found => exportable(found?.found?.assessment, cfgExact),
+    nearer: (found, than) => closer(found.found?.assessment, than.found?.assessment),
+    // A search's hidden segments, its last attempt's.
+    segments: found => found.report.search?.attempts?.at(-1)?.hidden ?? Infinity,
     // The outline's tips that come back to themselves (exact/stage.js returnTips), in the mask's pixels.
     returnTips: () => {
       try {
@@ -449,96 +467,23 @@ export async function exactTemplate(
         tools.noteError('engine.js exactTemplate: return tips', error);
         return [];
       }
-    }
-  };
-  if (ladderOnly) return ladderAlone(state);
-  // The cut-proposal network's maps (raw.cutMaps, made by the worker from the
-  // mask: neural/cuts.js) give the traced outline's search its ladder first.
-  let found = await exactSearch(outline, null, cfgExact, {...search(tracedEnd), maps, ladderOnly});
-  // A template under part of the symmetry (exact/stage.js subgroupsOf): the
-  // searches with tips rounded keep to that part.
-  if (found.report.subgroup) ties = found.report.subgroup.to;
-  const tracedMs = tools.now() - began;
-  const segments = f => f.report.search?.attempts?.at(-1)?.hidden ?? Infinity;
-  // A tip that comes back within 1.5 mm of itself (mostly one or two pixels
-  // wide, traced as a box) makes the slit along it change papers there, which
-  // takes hidden segments: a template with more than the count's lower bound
-  // is searched for again with those tips rounded (within TIP_SPOT_MM), for as
-  // long as the first search took (RETURNS_LEAST at least: it has a template
-  // already), and taken with fewer (tulipan 4 -> 0, its true design's).
-  const tips = state.returnTips();
-  if (
-    tips.length &&
-    exportable(found.found?.assessment, cfgExact) &&
-    segments(found) > (found.report.search?.bound ?? 0) &&
-    roundedEnd - tools.now() >= 1000 * ROUNDED_LEAST
-  ) {
-    const rounded = trace(OUTLINES.near(shape, tips));
-    const again =
-      rounded &&
-      (await exactSearch(
-        rounded,
-        null,
-        cfgExact,
-        search(Math.min(roundedEnd, tools.now() + Math.max(1000 * RETURNS_LEAST, tracedMs)))
-      ));
-    if (again && exportable(again.found?.assessment, cfgExact) && segments(again) < segments(found))
-      found = {...again, report: {...again.report, rounded: 'returns'}};
-  }
-  // A template failing the cutting rules mostly follows a tip narrower than
-  // a cut's clearance: again on the outline with its tips rounded, first only
-  // within TIP_SPOT_MM of where it comes too close to itself when it says, or
-  // comes back to itself (sharp corners elsewhere stay sharp: 5star,
-  // triple-heart), then everywhere (fisk-kors-shot), the first with 3/5 of the
-  // time when both are to run; in what time that leaves, everywhere twice as
-  // much (mor-og-barn: a template 0.52% from its mask in 4 s, where 0.8 mm
-  // left its chin and its child's nose closer than a slit may come).
-  // An outline running closer to a side than the outer strip may be wide
-  // without reaching it has no template keeping the rules (border.js
-  // outerStripBand: balls' circles 2.14 mm from the edge, against 2.5): moved
-  // off the side there, it is searched next, with half the time left, and the
-  // outlines with tips rounded after it are moved too. Most pictures have none.
-  let strip = {};
-  if (!exportable(found.found?.assessment, cfgExact) && roundedEnd - tools.now() >= 1000 * ROUNDED_LEAST) {
-    const moved = trace(OUTLINES.outerStrip(shape));
-    if (moved) {
-      strip = {outerStrip: true};
-      const again = await exactSearch(
-        moved,
-        null,
-        cfgExact,
-        search(tools.now() + 0.5 * (roundedEnd - tools.now()))
-      );
-      if (exportable(again.found?.assessment, cfgExact) || closer(again.found?.assessment, found.found?.assessment))
-        found = {...again, report: {...again.report, outerStrip: true}};
-    }
-  }
-  if (!exportable(found.found?.assessment, cfgExact) && roundedEnd - tools.now() >= 1000 * ROUNDED_LEAST) {
-    const spots = [
-      ...(found.found
-        ? tools.validate(found.found.solution, cfgExact, {finalGeometry: true})
+    },
+    // Where the template so far comes too close to itself, when the check says, in the mask's pixels.
+    tooClose: () =>
+      state.found.found
+        ? tools
+            .validate(state.found.found.solution, cfgExact, {finalGeometry: true})
             .issues.filter(i => i.type === 'short_self_clearance' && i.points)
             .flatMap(i => i.points.map(([x, y]) => [x * px, y * px]))
-        : []),
-      ...tips
-    ];
-    for (const way of ['near', 'everywhere', 'wider'].map(name => OUTLINES[name](shape, spots)).filter(Boolean)) {
-      if (exportable(found.found?.assessment, cfgExact) || roundedEnd - tools.now() < 1000 * ROUNDED_LEAST) break;
-      const rounded = trace(way, strip);
-      if (!rounded) continue;
-      const end = way.spots ? tools.now() + 0.6 * (roundedEnd - tools.now()) : roundedEnd;
-      const again = await exactSearch(rounded, null, cfgExact, search(end));
-      if (exportable(again.found?.assessment, cfgExact) || closer(again.found?.assessment, found.found?.assessment))
-        found = {
-          ...again,
-          report: {...again.report, ...strip, rounded: way.spots ? 'near' : way.wider ? 'wider' : true}
-        };
-    }
-  }
-  if (!exportable(found.found?.assessment, cfgExact)) {
-    const repaired = tools.returnRepaired(sink, cfgExact);
-    if (repaired) found = repaired;
-  }
+        : [],
+    returnRepaired: () => tools.returnRepaired(state.sink, cfgExact)
+  };
+  return ladderOnly ? ladderAlone(state) : todaysSearch(state, base);
+}
+/** Today's search (exact/schedule.js TODAY) on exactTemplate's `state`: its
+ * template where the export passes it, else the nearest it drew, and its report. */
+async function todaysSearch(state, base) {
+  const found = await runSteps(TODAY, state);
   // `held`: the symmetries the template was searched under, in the app's
   // names, for the page to hold the rows it can when that is only part of
   // those asked for (roed-blomst: its two lobes alike, not their mirrors).
@@ -549,7 +494,7 @@ export async function exactTemplate(
     ...(base.paired ? {paired: true} : {}),
     ...(base.specks ? {specks: base.specks} : {})
   };
-  const passing = exportable(found.found?.assessment, cfgExact);
+  const passing = state.passes(found);
   return {
     solution: passing ? found.found.solution : null,
     nearest: !passing && found.found?.solution ? found.found.solution : null,
@@ -615,6 +560,9 @@ async function ladderAlone(state) {
         },
         kept
       );
+      // Kept as it was: a template a search returns stands unchecked, though
+      // exactSearch's fallbacks can return one the export rejects (exact/stage.js
+      // `drawn`, `best`); design() then finishes it as the exact search's.
       if (taken)
         return {
           solution: taken.result.found.solution,
@@ -630,6 +578,7 @@ async function ladderAlone(state) {
         };
     }
   }
+  // Kept as it was: a near miss of the loose pass is not marked `loose`.
   if (kept.near) {
     const near = kept.near.result.near;
     return {

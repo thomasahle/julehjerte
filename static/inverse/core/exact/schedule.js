@@ -206,3 +206,121 @@ export async function timeSliced(items, end, {now, least, weight, search, takes,
   }
   return null;
 }
+
+// Today's search (engine.js todaysSearch).
+
+/** Whether today's search has no template the export takes yet, with at least ROUNDED_LEAST seconds left. */
+const failing = s => !s.passes(s.found) && s.left() >= 1000 * ROUNDED_LEAST;
+/** Whether a step's template `again` replaces the search's so far: the export takes it, or it is nearer that. */
+const better = (s, again) => s.passes(again) || s.nearer(again, s.found);
+
+/** Today's search, in steps run in order by runSteps on the search's state `s` (engine.js exactTemplate): each
+ * where `when` holds, on `outline` (null, none traced: nothing searched) until `end` with `options`, or with
+ * `result` instead of a search; its result is the search's template from then on where `accept` holds, its report
+ * marked with `mark`; `after` notes what the steps after it read. */
+export const TODAY = [
+  {
+    // The traced outline, until its end; the cut-proposal network's maps (raw.cutMaps, made by the worker from
+    // the mask: neural/cuts.js) give its search the ladder first.
+    name: 'traced',
+    outline: s => s.outline,
+    end: s => s.tracedEnd,
+    options: s => ({maps: s.maps, ladderOnly: s.ladderOnly}),
+    accept: () => true,
+    after: s => {
+      // A template under part of the symmetry (exact/stage.js subgroupsOf): the searches after it keep to that
+      // part. Theirs do not change it.
+      if (s.found.report.subgroup) s.ties = s.found.report.subgroup.to;
+      s.tracedMs = s.now() - s.began;
+      s.tips = s.returnTips();
+    }
+  },
+  {
+    // A tip that comes back within 1.5 mm of itself (mostly one or two pixels wide, traced as a box) makes the
+    // slit along it change papers there, which takes hidden segments: a passing template with more than the
+    // count's lower bound is searched for again with those tips rounded, for as long as the first search took
+    // (RETURNS_LEAST at least: it has a template already), and taken with fewer (tulipan 4 -> 0, its true
+    // design's).
+    name: 'returns',
+    when: s =>
+      s.tips.length &&
+      s.passes(s.found) &&
+      s.segments(s.found) > (s.found.report.search?.bound ?? 0) &&
+      s.left() >= 1000 * ROUNDED_LEAST,
+    outline: s => s.trace(OUTLINES.near(s, s.tips)),
+    end: s => Math.min(s.roundedEnd, s.now() + Math.max(1000 * RETURNS_LEAST, s.tracedMs)),
+    accept: (s, again) => s.passes(again) && s.segments(again) < s.segments(s.found),
+    mark: () => ({rounded: 'returns'})
+  },
+  {
+    // Failing, the outline moved off the outer strip where it runs too close to a side (OUTLINES.outerStrip),
+    // with half the time left; the outlines with tips rounded after it are moved too.
+    name: 'outerStrip',
+    when: failing,
+    outline: s => {
+      const moved = s.trace(OUTLINES.outerStrip(s));
+      if (moved) s.strip = {outerStrip: true};
+      return moved;
+    },
+    end: s => s.now() + 0.5 * (s.roundedEnd - s.now()),
+    accept: better,
+    mark: () => ({outerStrip: true})
+  },
+  // A template failing the cutting rules mostly follows a tip narrower than a cut's clearance: then the outline
+  // with its tips rounded, first only near the spots where the template comes too close to itself, when the check
+  // says, and the tips that come back to themselves, with 3/5 of the time; then everywhere, in what time that
+  // leaves; then everywhere twice as much. The steps from here run only where `spots` ran.
+  {
+    name: 'spots',
+    when: failing,
+    after: s => (s.spots = [...s.tooClose(), ...s.tips])
+  },
+  {
+    name: 'near',
+    when: s => s.spots && failing(s),
+    outline: s => s.trace(OUTLINES.near(s, s.spots), s.strip),
+    end: s => s.now() + 0.6 * (s.roundedEnd - s.now()),
+    accept: better,
+    mark: s => ({...s.strip, rounded: 'near'})
+  },
+  {
+    name: 'everywhere',
+    when: s => s.spots && failing(s),
+    outline: s => s.trace(OUTLINES.everywhere(s), s.strip),
+    end: s => s.roundedEnd,
+    accept: better,
+    mark: s => ({...s.strip, rounded: true})
+  },
+  {
+    name: 'wider',
+    when: s => s.spots && failing(s),
+    outline: s => s.trace(OUTLINES.wider(s), s.strip),
+    end: s => s.roundedEnd,
+    accept: better,
+    mark: s => ({...s.strip, rounded: 'wider'})
+  },
+  {
+    // The last resort once every step has failed: a rejected template whose only broken rule is a short return of
+    // a cut onto itself, repaired as the export repairs one (engine.js returnRepaired).
+    name: 'repaired',
+    when: s => !s.passes(s.found),
+    result: s => s.returnRepaired(),
+    accept: () => true
+  }
+];
+
+/** Runs `steps` (as TODAY's) in order on the search's state `s`, and returns its template then, `s.found`. */
+export async function runSteps(steps, s) {
+  for (const step of steps) {
+    if (step.when && !step.when(s)) continue;
+    let again = null;
+    if (step.outline) {
+      const outline = step.outline(s);
+      if (outline) again = await s.search(outline, step.end(s), step.options?.(s));
+    } else if (step.result) again = await step.result(s);
+    if (again && step.accept(s, again))
+      s.found = step.mark ? {...again, report: {...again.report, ...step.mark(s)}} : again;
+    step.after?.(s);
+  }
+  return s.found;
+}
