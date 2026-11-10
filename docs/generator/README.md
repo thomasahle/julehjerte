@@ -1,5 +1,8 @@
 # Generator robustness checks
 
+How the generator is built, and how to tell that a change left its hearts as
+they were: [ARCHITECTURE.md](ARCHITECTURE.md).
+
 Run `npm run test:generator:robustness` from the worktree. The offline corpus uses
 36 texts, six bundled fonts, and 51 authored, Phosphor and Tabler motifs.
 Every font is tested in all six text frames of the picker: close and spacious,
