@@ -51,7 +51,7 @@ function exact(answer) {
   return {exact: true, checks: rep.templateChecksPassed === true, off: +(rep.imageError?.mismatchFraction ?? -1).toFixed(4),
     ...(rep.templateChecksPassed ? {} : {near: count(issues), shortfalls: issues.filter(i => /clearance/.test(i.type)).map(i => +((i.required ?? rep.settings?.nominalWidth ?? 0) - (i.distanceUpper ?? i.distanceLower ?? i.distance ?? 0)).toFixed(3)).sort((a, b) => b - a).slice(0, 5), mismatch, features: rep.imageFidelity?.features?.passed, paper: rep.manufacturing?.status}),
     tracedBound: x?.tracedBound ?? null, outline: x?.outline ?? null, phase: x?.phase ?? null, fallback: ['even', 'unjoined', 'untied', 'subgroup'].filter(f => x?.[f]).join(',') || null,
-    bound: x?.search?.bound ?? null, hidden: x?.search?.attempts?.at(-1)?.hidden ?? x?.search?.hidden, ladder: x?.ladder?.map(r => `K${r.k}${r.seed ? 's' + r.seed : ''}:${r.found ? 'OK' : '--'} ${r.seconds}s`).join(' '), passes: rep.validation?.passed};
+    bound: x?.search?.bound ?? null, hidden: x?.search?.attempts?.at(-1)?.hidden ?? x?.search?.hidden, ladder: x?.ladder?.map(r => `K${r.k}${r.seed ? 's' + r.seed : ''}:${r.found ? 'OK' : '--'} ${r.seconds}s`).join(' '), passes: rep.validation?.passed, carry: x?.carry};
 }
 // The fitter's answer: `fitter` is its verdict (templateChecksPassed).
 const fitted = ({report: rep}) => ({fitter: rep.templateChecksPassed === true, kinds: [...new Set((rep.validation?.issues ?? []).map(i => i.type))], off: rep.imageError?.mismatchFraction, mismatch: rep.imageError?.mismatchFraction, features: rep.imageFidelity?.features?.passed, paper: rep.manufacturing?.status});
@@ -71,7 +71,7 @@ for (const file of process.argv.slice(2)) {
       else line = exact(await design(target, {...mal.solveSettings({colors: DEFAULT_COLORS, symmetry, ...budget}), exactRoute: 'exact', ...(mode === 'ladder' ? {cutMaps: maps, ladderOnly: true, ...part} : {}), ...trial}));
     } catch (error) {
       const x = error.report?.solver?.exactOutline ?? error.report?.exactOutline;
-      line = mode === 'fitter' ? {fitter: false, error: String(error.message).slice(0, 50)} : {exact: false, error: String(error.message).slice(0, 50), tracedBound: x?.tracedBound, ...(env.WHY ? {why: JSON.stringify(x ?? error.report ?? null).slice(0, 600)} : {})};
+      line = mode === 'fitter' ? {fitter: false, error: String(error.message).slice(0, 50)} : {exact: false, error: String(error.message).slice(0, 50), tracedBound: x?.tracedBound, carry: x?.carry, ...(env.WHY ? {why: JSON.stringify(x ?? error.report ?? null).slice(0, 600)} : {})};
     }
     console.log(JSON.stringify({id, mode, withMaps: mode === 'ladder', ...(predictMs === undefined ? {} : {predictMs}), seconds: +((performance.now() - t) / 1000).toFixed(1), wall: +((Date.now() - wall0) / 1000).toFixed(1), ...line}));
   }
