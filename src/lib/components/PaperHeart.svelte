@@ -50,7 +50,6 @@
 	import { ToggleGroup, ToggleGroupItem, keepChosen } from '$lib/components/ui/toggle-group';
 	import {
 		cloneSegments,
-		fingerToSegments,
 		mergeBezierSegments,
 		reverseSegments,
 		segmentsToPathData,
@@ -458,7 +457,7 @@
 
 		function clampEndpoints(fingerId: string) {
 			updateFinger(fingerId, (f) => {
-				const segments = cloneSegments(fingerToSegments(f));
+				const segments = cloneSegments(f.segments);
 				if (!segments.length) return f;
 				const first = segments[0]!;
 				const last = segments[segments.length - 1]!;
@@ -480,7 +479,7 @@
 
 	function translateFinger(fingerId: string, delta: Vec) {
 		updateFinger(fingerId, (f) => {
-			const segs = cloneSegments(fingerToSegments(f));
+			const segs = cloneSegments(f.segments);
 			for (const seg of segs) {
 				seg.p0 = vecAdd(seg.p0, delta);
 				seg.p1 = vecAdd(seg.p1, delta);
@@ -506,11 +505,11 @@
 		const left = fingers
 			.filter((f) => f.lobe === 'left')
 			.slice()
-			.sort((a, b) => (fingerToSegments(a)[0]?.p0.y ?? 0) - (fingerToSegments(b)[0]?.p0.y ?? 0));
+			.sort((a, b) => (a.segments[0]?.p0.y ?? 0) - (b.segments[0]?.p0.y ?? 0));
 		const right = fingers
 			.filter((f) => f.lobe === 'right')
 			.slice()
-			.sort((a, b) => (fingerToSegments(a)[0]?.p0.x ?? 0) - (fingerToSegments(b)[0]?.p0.x ?? 0));
+			.sort((a, b) => (a.segments[0]?.p0.x ?? 0) - (b.segments[0]?.p0.x ?? 0));
 
 		const nextLeft = left.map((f, i) => {
 			const nextId = idForBoundary('left', i);
@@ -562,7 +561,7 @@
 		const { left, right, top, bottom } = getOverlapRect();
 
 		const endpoints = (f: Finger) => {
-			const segs = fingerToSegments(f);
+			const segs = f.segments;
 			if (!segs.length) return null;
 			return { p0: segs[0]!.p0, p3: segs[segs.length - 1]!.p3 };
 		};
@@ -595,10 +594,10 @@
 			return best;
 		};
 
-		const topFinger = minBy(leftCurves, (f) => fingerToSegments(f)[0]?.p0.y ?? 0);
-		const bottomFinger = maxBy(leftCurves, (f) => fingerToSegments(f)[0]?.p0.y ?? 0);
-		const leftFinger = minBy(rightCurves, (f) => fingerToSegments(f)[0]?.p0.x ?? 0);
-		const rightFinger = maxBy(rightCurves, (f) => fingerToSegments(f)[0]?.p0.x ?? 0);
+		const topFinger = minBy(leftCurves, (f) => f.segments[0]?.p0.y ?? 0);
+		const bottomFinger = maxBy(leftCurves, (f) => f.segments[0]?.p0.y ?? 0);
+		const leftFinger = minBy(rightCurves, (f) => f.segments[0]?.p0.x ?? 0);
+		const rightFinger = maxBy(rightCurves, (f) => f.segments[0]?.p0.x ?? 0);
 
 		const topE = topFinger ? endpoints(topFinger) : null;
 		const bottomE = bottomFinger ? endpoints(bottomFinger) : null;
@@ -695,7 +694,7 @@
 			const { left, right, top, bottom } = getOverlapRect();
 
 			const endpointsMatch = (finger: Finger, axis: 'x' | 'y', pos: number, tol: number) => {
-				const segs = fingerToSegments(finger);
+				const segs = finger.segments;
 				if (!segs.length) return false;
 				const first = segs[0]!;
 				const last = segs[segs.length - 1]!;
@@ -707,11 +706,11 @@
 			const sortedLeft = fingers
 				.filter((f) => f.lobe === 'left')
 				.slice()
-				.sort((a, b) => (fingerToSegments(a)[0]?.p0.y ?? 0) - (fingerToSegments(b)[0]?.p0.y ?? 0));
+				.sort((a, b) => (a.segments[0]?.p0.y ?? 0) - (b.segments[0]?.p0.y ?? 0));
 			const sortedRight = fingers
 				.filter((f) => f.lobe === 'right')
 				.slice()
-				.sort((a, b) => (fingerToSegments(a)[0]?.p0.x ?? 0) - (fingerToSegments(b)[0]?.p0.x ?? 0));
+				.sort((a, b) => (a.segments[0]?.p0.x ?? 0) - (b.segments[0]?.p0.x ?? 0));
 
 			const toRemove = new Set<string>();
 
@@ -1038,7 +1037,7 @@
 	}
 
 	function applyWithinCurveSymmetry(finger: Finger, segmentIndex?: number, driver: 'p1' | 'p2' = 'p1'): Finger {
-		const segments = cloneSegments(fingerToSegments(finger));
+		const segments = cloneSegments(finger.segments);
 		if (!segments.length) return finger;
 
 		if (segmentIndex != null) {
@@ -1078,7 +1077,7 @@
 		mapPoint: (p: Vec) => Vec,
 		reverseDirection = false
 	): Finger {
-		const segments = fingerToSegments(source);
+		const segments = source.segments;
 			let mappedSegments = segments.map((seg) => ({
 				p0: mapPoint(seg.p0),
 				p1: mapPoint(seg.p1),
@@ -1737,7 +1736,7 @@
 	): boolean {
 		const finger = getFingerById(fingerId);
 		if (!finger) return false;
-		const segments = fingerToSegments(finger);
+		const segments = finger.segments;
 		if (segmentIndex < 0 || segmentIndex >= segments.length) return false;
 
 		const isP1 = pointKey === 'p1';
@@ -1812,7 +1811,7 @@
 
 		const overridesOf = (candidate: Finger) => {
 			if (!symmetryWithinCurve) return deriveSymmetryOverrides(candidate);
-			const segs = cloneSegments(fingerToSegments(candidate));
+			const segs = cloneSegments(candidate.segments);
 			if (isP1 || isP2) {
 				applyWithinCurveSymmetryForControlInSegments(segs, segmentIndex, isP1 ? 'p1' : 'p2');
 			} else {
@@ -1841,7 +1840,7 @@
 		if (!finger) return;
 
 		const before = snapshotState();
-		const segments = fingerToSegments(finger);
+		const segments = finger.segments;
 		const segLen = segments.length;
 
 		// Check if both endpoints are selected (i.e., the whole curve is selected)
@@ -1900,7 +1899,7 @@
 		if (selectedAnchors.length !== 2) return;
 		const finger = getEditableFingerById(selectedFingerId);
 		if (!finger) return;
-		const segs = fingerToSegments(finger);
+		const segs = finger.segments;
 		const a = selectedAnchors[0]!;
 		const b = selectedAnchors[1]!;
 		if (Math.abs(a - b) !== 1) return;
@@ -1921,7 +1920,7 @@
 		const finger = getEditableFingerById(fingerId);
 		if (!finger) return;
 
-		const n = fingerToSegments(finger).length;
+		const n = finger.segments.length;
 		if (!n) return;
 		const segIdx = Math.max(0, Math.min(n - 1, hitInfo.segmentIndex));
 		const t = Math.min(0.999, Math.max(0.001, hitInfo.t));
@@ -2004,7 +2003,7 @@
 
 		// The Escher tab keeps a bent curve as it is, the node smooth on it: its types start as bent
 		// curves to add nodes to. A straight piece becomes two, the node a corner, as in Normal.
-		const seg = fingerToSegments(finger)[segIdx]!;
+		const seg = finger.segments[segIdx]!;
 		const keepShape = !!patternTile && !(isHandleCollapsed(seg.p1, seg.p0) && isHandleCollapsed(seg.p2, seg.p3));
 		const inserted = insertNodeInFinger(finger, segIdx, t, keepShape);
 		if (!inserted) return;
@@ -2019,7 +2018,7 @@
 		// of the same cut too: the node added is the one where it was put.
 		const at = getAnchorPositions(candidate.segments)[inserted.insertedAnchorIdx]!;
 		const made = getFingerById(fingerId);
-		const anchorsNow = made ? getAnchorPositions(fingerToSegments(made)) : [];
+		const anchorsNow = made ? getAnchorPositions(made.segments) : [];
 		const found = anchorsNow.findIndex((q) => vecDist(q, at) < 1e-6);
 		selectedAnchors = [found >= 0 ? found : inserted.insertedAnchorIdx];
 		selectedSegments = [];
@@ -2061,7 +2060,7 @@
 		if (!finger) return;
 
 		const before = snapshotState();
-		const segs = cloneSegments(fingerToSegments(finger));
+		const segs = cloneSegments(finger.segments);
 		const targets = getSelectedSegmentIndexes(segs.length);
 		if (!targets.length) return;
 
@@ -2087,7 +2086,7 @@
 		if (!finger) return;
 
 		const before = snapshotState();
-		const segs = cloneSegments(fingerToSegments(finger));
+		const segs = cloneSegments(finger.segments);
 		const targets = getSelectedSegmentIndexes(segs.length);
 		if (!targets.length) return;
 
@@ -2140,7 +2139,7 @@
 		const finger = getEditableFingerById(fingerId);
 		if (!finger) return;
 
-		const segs = cloneSegments(fingerToSegments(finger));
+		const segs = cloneSegments(finger.segments);
 		const n = segs.length;
 		if (!n) return;
 
@@ -2215,7 +2214,7 @@
 		if (!fingerId) return;
 		const finger = getEditableFingerById(fingerId);
 		if (!finger) return;
-		const segCount = fingerToSegments(finger).length;
+		const segCount = finger.segments.length;
 		const targets = selectedAnchors.filter((idx) => idx >= 0 && idx <= segCount);
 		if (!targets.length) return;
 		const before = snapshotState();
@@ -2230,7 +2229,7 @@
 
 			for (const idx of anchors) nextNodeTypes[String(idx)] = type;
 
-			const segs = cloneSegments(fingerToSegments(f));
+			const segs = cloneSegments(f.segments);
 			for (const anchorIdx of internal) {
 				if (anchorIdx <= 0 || anchorIdx >= segs.length) continue;
 				// A node without handles gets them first, as Kurvepunkt gives them, for the type to line up.
@@ -2658,7 +2657,7 @@
 	function computeCurveHit(fingerId: string, p: Vec): CurveHit | null {
 		const finger = getFingerById(fingerId);
 		if (!finger) return null;
-		const segs = fingerToSegments(finger);
+		const segs = finger.segments;
 		if (!segs.length) return null;
 		let bestIdx = 0;
 		let bestT = 0;
@@ -2698,7 +2697,7 @@
 		closeAtStart = new Map();
 		if (dragStartPointer && target?.kind === 'control') {
 			const baseFinger = getDragBaseFinger(target.fingerId);
-			const baseSegs = baseFinger ? fingerToSegments(baseFinger) : null;
+			const baseSegs = baseFinger ? baseFinger.segments : null;
 			if (baseSegs) {
 				if (typeof target.anchorIdx === 'number') {
 					const anchors = getAnchorPositions(baseSegs);
@@ -2765,7 +2764,7 @@
 		selectedFingerId = fingerId;
 
 		const finger = getFingerById(fingerId);
-		const segLen = finger ? fingerToSegments(finger).length : 0;
+		const segLen = finger ? finger.segments.length : 0;
 		const hit = computeCurveHit(fingerId, p);
 		lastCurveHit = hit;
 
@@ -2813,7 +2812,7 @@
 		let bestD = Infinity;
 		for (const f of fingers) {
 			if (f.lobe !== lobe || !getEditableFingerById(f.id)) continue;
-			for (const seg of fingerToSegments(f)) {
+			for (const seg of f.segments) {
 				const d = closestPointOnBezier(seg, p).distance;
 				if (d < bestD) {
 					bestD = d;
@@ -2855,7 +2854,7 @@
 	function onCurve(fingerId: string, p: Vec): boolean {
 		const finger = getFingerById(fingerId);
 		if (!finger) return false;
-		return fingerToSegments(finger).some((seg) => closestPointOnBezier(seg, p).distance <= 6 * curveUiScale);
+		return finger.segments.some((seg) => closestPointOnBezier(seg, p).distance <= 6 * curveUiScale);
 	}
 	/** On a touch screen a cut is easier to hit: a finger is wider than a mouse pointer. */
 	const TOUCH_HIT_STROKE_WIDTH = 26;
@@ -2966,7 +2965,7 @@
 				selectedSegments = [];
 			} else {
 				const moved = getFingerById(tileDrag.fingerId);
-				selectedAnchors = tileDrag.end === 'first' ? [0] : moved ? [fingerToSegments(moved).length] : [];
+				selectedAnchors = tileDrag.end === 'first' ? [0] : moved ? [moved.segments.length] : [];
 			}
 			dragDirty = true;
 			return;
@@ -2981,7 +2980,7 @@
 				dragTarget.fingerId,
 				(current, fraction) => {
 				const { left: minX, right: maxX, top: minY, bottom: maxY } = getOverlapRect();
-				const segs = cloneSegments(fingerToSegments(current));
+				const segs = cloneSegments(current.segments);
 				if (!segs.length) return current;
 				const first = segs[0]!;
 				const last = segs[segs.length - 1]!;
@@ -3043,7 +3042,7 @@
 				// (`snapTargetForAnchor`), by the junction's own move (`updateSegmentControlPoint`).
 				if (anchorsToMove.length === 1) {
 					const finger = getFingerById(dragTarget.fingerId);
-					const segs = finger ? fingerToSegments(finger) : null;
+					const segs = finger ? finger.segments : null;
 					const n = segs?.length ?? 0;
 					if (finger && segs && anchorIdx > 0 && anchorIdx < n) {
 						const raw = vecAdd(p, offset);
@@ -3060,7 +3059,7 @@
 				if (!dragStartPointer) return;
 				const delta = vecSub(p, dragStartPointer);
 				const finger = getDragBaseFinger(dragTarget.fingerId);
-				const baseSegs = finger ? fingerToSegments(finger) : null;
+				const baseSegs = finger ? finger.segments : null;
 				if (finger && baseSegs && baseSegs.length) {
 					const snapped = searchAnchorDelta(finger, baseSegs, anchorsToMove, anchorIdx, delta);
 					if (snapped) {
@@ -3074,7 +3073,7 @@
 				const ok = applyConstrainedUpdate(
 					dragTarget.fingerId,
 					(current, fraction) => {
-						const segs = cloneSegments(fingerToSegments(current));
+						const segs = cloneSegments(current.segments);
 						if (!segs.length) return current;
 						const d = vecScale(delta, fraction);
 						applyDeltaToAnchorsInSegments(current, segs, anchorsToMove, d);
@@ -3133,7 +3132,7 @@
 			const { fingerId, segmentIndex, handle: handleKey } = dragTarget;
 			const finger = getFingerById(fingerId);
 			if (finger) {
-				const segs = fingerToSegments(finger);
+				const segs = finger.segments;
 				const seg = segs[segmentIndex];
 				if (seg) {
 					const anchor = handleKey === 'p1' ? seg.p0 : seg.p3;
@@ -3173,8 +3172,8 @@
 	function edgePull(fingerId: string): number {
 		const base = dragSnapshot?.fingers.find((f) => f.id === fingerId);
 		const moved = getFingerById(fingerId);
-		const was = base ? fingerToSegments(base)[0]?.p0 : undefined;
-		const now = moved ? fingerToSegments(moved)[0]?.p0 : undefined;
+		const was = base ? base.segments[0]?.p0 : undefined;
+		const now = moved ? moved.segments[0]?.p0 : undefined;
 		const ctm = rotatedGroup?.getScreenCTM?.();
 		if (!was || !now || !ctm) return 0;
 		const a = new DOMPoint(was.x, was.y).matrixTransform(ctm);
@@ -3198,7 +3197,7 @@
 		if (!selectedFingerId || !getEditableFingerById(selectedFingerId) || selectedAnchors.length === 0) return;
 		const anchorIdx = selectedAnchors[selectedAnchors.length - 1]!;
 		const finger = getFingerById(selectedFingerId);
-		const anchor = finger ? getAnchorPositions(fingerToSegments(finger))[anchorIdx] : undefined;
+		const anchor = finger ? getAnchorPositions(finger.segments)[anchorIdx] : undefined;
 		if (!anchor) return;
 		// A screen pixel, in the heart's units: the heart is drawn turned and zoomed.
 		const ctm = rotatedGroup?.getScreenCTM?.();
@@ -3234,7 +3233,7 @@
 		if (!selectedFingerId) return;
 		const finger = getFingerById(selectedFingerId);
 		if (!finger) return;
-		const count = fingerToSegments(finger).length + 1;
+		const count = finger.segments.length + 1;
 		const current = selectedAnchors.length ? selectedAnchors[selectedAnchors.length - 1]! : by > 0 ? -1 : 0;
 		selectedAnchors = [(((current + by) % count) + count) % count];
 		selectedSegments = [];
@@ -3388,8 +3387,8 @@
 			const close = (p: Vec, q: Vec) => Math.abs(p.x - q.x) < READ_TOLERANCE && Math.abs(p.y - q.y) < READ_TOLERANCE;
 			for (const g of module.generateEditorFingers(tile, getOverlapRect())) {
 				const f = current.find((x) => x.id === g.id);
-				const segs = f ? fingerToSegments(f) : [];
-				const want = fingerToSegments(g);
+				const segs = f ? f.segments : [];
+				const want = g.segments;
 				const same = segs.length === want.length && segs.every((seg, k) => close(seg.p0, want[k]!.p0) && close(seg.p1, want[k]!.p1) && close(seg.p2, want[k]!.p2) && close(seg.p3, want[k]!.p3));
 				if (!same) {
 					console.warn(`[escher] cut ${g.id} is not the one the tile makes (${segs.length} segments, the tile's ${want.length})`);
@@ -3576,7 +3575,7 @@
 
 	// UI derived
 	let selectedFinger = $derived(selectedFingerId ? getEditableFingerById(selectedFingerId) : undefined);
-	let selectedSegCount = $derived(selectedFinger ? fingerToSegments(selectedFinger).length : 0);
+	let selectedSegCount = $derived(selectedFinger ? selectedFinger.segments.length : 0);
 	let canInsertNode = $derived(selectedAnchors.length === 2 && Math.abs(selectedAnchors[0]! - selectedAnchors[1]!) === 1);
 	let canDeleteNode = $derived(selectedAnchors.some((idx) => idx >= 1 && idx <= selectedSegCount - 1));
 	let validAnchors = $derived(selectedAnchors.filter((idx) => idx >= 0 && idx <= selectedSegCount));
@@ -3649,7 +3648,7 @@
 		if (!selectedFingerId) return escher ? 'hintEscherNothing' : 'hintNothing';
 		const cut = getEditableFingerById(selectedFingerId);
 		if (!cut) return escher ? 'hintEscherEdge' : 'hintEdge';
-		const last = fingerToSegments(cut).length;
+		const last = cut.segments.length;
 		if (selectedSegments.length || selectedAnchors.length === 0) return escher ? 'hintEscherCut' : 'hintCut';
 		if (selectedAnchors.length > 1) return 'hintNodes';
 		const node = selectedAnchors[0]!;
@@ -3680,7 +3679,7 @@
 
 	let visibleAnchorsSorted = $derived.by(() => {
 		if (!selectedFinger) return [];
-		const n = fingerToSegments(selectedFinger).length;
+		const n = selectedFinger.segments.length;
 		return Array.from(visibleAnchorSet)
 			.filter((idx) => idx >= 0 && idx <= n)
 			.sort((a, b) => a - b);
@@ -3941,7 +3940,7 @@
 									{/if}
 
 									{#if selectedFinger}
-										{@const segs = fingerToSegments(selectedFinger)}
+										{@const segs = selectedFinger.segments}
 										{@const n = segs.length}
 										{@const selectedHasIssues = issueFingerIds.has(selectedFinger.id)}
 

@@ -2,7 +2,6 @@ import { hasSelfReturn } from '$lib/geometry/curveReturns';
 import { HEART_CLEARANCE_UNITS } from '$lib/geometry/returnSearch';
 import type { Finger, Vec } from '$lib/types/heart';
 import type { BezierSegment } from '$lib/geometry/bezierSegments';
-import { fingerToSegments } from '$lib/geometry/bezierSegments';
 import { bezierBBox, closestPointOnBezier, closestPointsBetweenBeziers, intersectBezierCurves, perSegment } from '$lib/geometry/curves';
 import { bezierPointClamped, segmentIntersection, splitBezierAt } from '$lib/geometry/cubic';
 import { vecDist } from '$lib/geometry/vec';
@@ -315,7 +314,7 @@ function segmentsHaveIssues(
  * part of one cut. It defaults to `minDistance`; a narrower spacing check keeps the usual one.
  */
 export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], minDistance: number, resolution = minDistance): boolean {
-	const segs = fingerToSegments(finger);
+	const segs = finger.segments;
 	const n = segs.length;
 	if (!n) return false;
 	const start = segs[0]!.p0;
@@ -350,7 +349,7 @@ export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], m
 	for (const other of fingers) {
 		if (other.id === finger.id) continue;
 		if (other.lobe !== finger.lobe) continue;
-		const otherSegs = fingerToSegments(other);
+		const otherSegs = other.segments;
 		const m = otherSegs.length;
 		if (!m) continue;
 		const otherBBoxes = otherSegs.map(segmentBox);
@@ -374,7 +373,7 @@ export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], m
  * Callers may reuse a cut's separate self-check when comparing new neighbours. */
 export function fingerPairHasIntersectionIssues(finger: Finger, other: Finger, minDistance: number): boolean {
 	if (finger.id === other.id || finger.lobe !== other.lobe) return false;
-	const segs = fingerToSegments(finger), otherSegs = fingerToSegments(other);
+	const segs = finger.segments, otherSegs = other.segments;
 	if (!segs.length || !otherSegs.length) return false;
 	// No endpoint exemption between different curves, as in `fingerHasIntersectionIssues`.
 	return segmentsHaveIssues(segs, segs.map(segmentBox), { start: segs[0]!.p0, end: segs.at(-1)!.p3 },

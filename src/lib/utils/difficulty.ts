@@ -1,5 +1,5 @@
 import type { HeartDesign, Finger, GridSize } from '$lib/types/heart';
-import { fingerToSegments, type BezierSegment } from '$lib/geometry/bezierSegments';
+import type { BezierSegment } from '$lib/geometry/bezierSegments';
 import { bezierPointByPowers } from '$lib/geometry/cubic';
 import { STRIP_WIDTH } from '$lib/constants';
 import { vecSub, vecLength } from '$lib/geometry/vec';
@@ -89,7 +89,7 @@ function calculatePathCurvature(fingers: Finger[]): number {
   let totalSegments = 0;
 
   for (const finger of fingers) {
-    const segments = fingerToSegments(finger);
+    const segments = finger.segments;
     totalSegments += segments.length;
 
     for (const seg of segments) {
@@ -135,7 +135,7 @@ function calculateNonMonotonicity(fingers: Finger[]): number {
   let totalSamples = 0;
 
   for (const finger of fingers) {
-    const segments = fingerToSegments(finger);
+    const segments = finger.segments;
     const points = sampleBezierPoints(segments, 20);
 
     if (points.length < 3) continue;
@@ -187,7 +187,7 @@ function calculateCornerDifficulty(fingers: Finger[]): number {
   const TURN_THRESHOLD = 0.05; // ≈ 25° ( (1 - cosθ)/2 )
 
   for (const finger of fingers) {
-    const segments = fingerToSegments(finger);
+    const segments = finger.segments;
     if (segments.length < 2) continue;
 
     for (let i = 0; i < segments.length - 1; i++) {
@@ -256,8 +256,8 @@ function calculateMinThickness(fingers: Finger[]): number {
 
   // Sort fingers by their starting position to compare adjacent ones
   const sortedFingers = [...fingers].sort((a, b) => {
-    const segsA = fingerToSegments(a);
-    const segsB = fingerToSegments(b);
+    const segsA = a.segments;
+    const segsB = b.segments;
     if (!segsA.length || !segsB.length) return 0;
     // Sort by y for left lobe (horizontal), x for right lobe (vertical)
     if (a.lobe === 'left') {
@@ -271,8 +271,8 @@ function calculateMinThickness(fingers: Finger[]): number {
     const finger1 = sortedFingers[i];
     const finger2 = sortedFingers[i + 1];
 
-    const segs1 = fingerToSegments(finger1);
-    const segs2 = fingerToSegments(finger2);
+    const segs1 = finger1.segments;
+    const segs2 = finger2.segments;
 
     // Sample points along each finger
     const points1 = sampleBezierPoints(segs1, 10);

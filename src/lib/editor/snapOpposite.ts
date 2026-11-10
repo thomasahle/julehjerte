@@ -1,5 +1,4 @@
 import type { Finger, LobeId, Vec } from '$lib/types/heart';
-import { fingerToSegments } from '$lib/geometry/bezierSegments';
 import { vecDist } from '$lib/geometry/vec';
 
 /**
@@ -24,7 +23,7 @@ export function lobeAnchors(fingers: Finger[], lobe: LobeId): Vec[] {
 	const anchors: Vec[] = [];
 	for (const finger of fingers) {
 		if (finger.lobe !== lobe) continue;
-		const segs = fingerToSegments(finger);
+		const segs = finger.segments;
 		if (!segs.length) continue;
 		anchors.push(segs[0]!.p0);
 		for (const seg of segs) anchors.push(seg.p3);

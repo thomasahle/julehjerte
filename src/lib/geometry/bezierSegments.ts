@@ -25,10 +25,6 @@ export function reverseSegments(segments: BezierSegment[]): BezierSegment[] {
     }));
 }
 
-export function fingerToSegments(finger: Finger): BezierSegment[] {
-  return finger.segments;
-}
-
 export function fingerToPathData(finger: Finger): string {
   return segmentsToPathData(finger.segments);
 }

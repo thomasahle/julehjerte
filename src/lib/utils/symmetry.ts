@@ -1,5 +1,5 @@
 import type { Finger, GridSize, Vec } from '$lib/types/heart';
-import { fingerToSegments, reverseSegments, type BezierSegment } from '$lib/geometry/bezierSegments';
+import { reverseSegments, type BezierSegment } from '$lib/geometry/bezierSegments';
 import { vecDist } from '$lib/geometry/vec';
 
 const TOLERANCE = 5; // pixels
@@ -84,7 +84,7 @@ interface SquareBounds {
 function inferSquareBounds(fingers: Finger[]): SquareBounds | null {
   const endpoints: Vec[] = [];
   for (const finger of fingers) {
-    const segs = fingerToSegments(finger);
+    const segs = finger.segments;
     if (!segs.length) continue;
     endpoints.push(segs[0]!.p0, segs[segs.length - 1]!.p3);
   }
@@ -127,7 +127,7 @@ function mapPointRotatedBetweenLobes(bounds: { minX: number; minY: number; size:
 }
 
 function isCurveSymmetricUnder(finger: Finger, anti: boolean): boolean {
-  const segments = fingerToSegments(finger);
+  const segments = finger.segments;
   const n = segments.length;
   if (n === 0) return true;
 
@@ -167,7 +167,7 @@ function areLobesInternallySymmetricUnder(fingers: Finger[], anti: boolean): boo
     const used = new Set<number>();
     for (let i = 0; i < lobeFingers.length; i++) {
       if (used.has(i)) continue;
-      const s1 = fingerToSegments(lobeFingers[i]!);
+      const s1 = lobeFingers[i]!.segments;
       const mapped = mapSegments(s1, (p) => mapPointWithinLobe(bounds, lobe, p, anti), anti);
       // Check if it's self-symmetric
       if (segmentsEqual(mapped, s1)) {
@@ -178,7 +178,7 @@ function areLobesInternallySymmetricUnder(fingers: Finger[], anti: boolean): boo
       let foundPair = false;
       for (let j = i + 1; j < lobeFingers.length; j++) {
         if (used.has(j)) continue;
-        const s2 = fingerToSegments(lobeFingers[j]!);
+        const s2 = lobeFingers[j]!.segments;
         if (segmentsEqual(mapped, s2)) {
           used.add(i);
           used.add(j);
@@ -214,21 +214,21 @@ function areLobesRelatedUnder(
   const sortedMatch = (): boolean => {
     // Sort left by y of start point (top to bottom)
     const sortedLeft = leftFingers.slice().sort((a, b) => {
-      const aSegs = fingerToSegments(a);
-      const bSegs = fingerToSegments(b);
+      const aSegs = a.segments;
+      const bSegs = b.segments;
       return (aSegs[0]?.p0.y ?? 0) - (bSegs[0]?.p0.y ?? 0);
     });
 
     // Sort right by x of start point (left to right) - diagonal mirror of y
     const sortedRight = rightFingers.slice().sort((a, b) => {
-      const aSegs = fingerToSegments(a);
-      const bSegs = fingerToSegments(b);
+      const aSegs = a.segments;
+      const bSegs = b.segments;
       return (aSegs[0]?.p0.x ?? 0) - (bSegs[0]?.p0.x ?? 0);
     });
 
     for (let i = 0; i < sortedLeft.length; i++) {
-      const lSegs = fingerToSegments(sortedLeft[i]!);
-      const rSegs = fingerToSegments(sortedRight[i]!);
+      const lSegs = sortedLeft[i]!.segments;
+      const rSegs = sortedRight[i]!.segments;
       const mapped = mapSegments(lSegs, (p) => mapPoint(bounds, p), reverseDirection);
       if (!segmentsEqual(mapped, rSegs)) return false;
     }
@@ -239,12 +239,12 @@ function areLobesRelatedUnder(
   const greedyMatch = (): boolean => {
     const used = new Set<number>();
     for (let i = 0; i < leftFingers.length; i++) {
-      const lSegs = fingerToSegments(leftFingers[i]!);
+      const lSegs = leftFingers[i]!.segments;
       const mapped = mapSegments(lSegs, (p) => mapPoint(bounds, p), reverseDirection);
       let found = false;
       for (let j = 0; j < rightFingers.length; j++) {
         if (used.has(j)) continue;
-        const rSegs = fingerToSegments(rightFingers[j]!);
+        const rSegs = rightFingers[j]!.segments;
         if (segmentsEqual(mapped, rSegs)) {
           used.add(j);
           found = true;
@@ -316,8 +316,8 @@ export function lobesShareTemplate(fingers: Finger[], gridSize: GridSize): boole
 export function mirroredLobes(fingers: Finger[], near: number): Finger[] | null {
   const bounds = inferSquareBounds(fingers);
   if (!bounds) return null;
-  const left = fingers.filter((f) => f.lobe === 'left').sort((a, b) => (fingerToSegments(a)[0]?.p0.y ?? 0) - (fingerToSegments(b)[0]?.p0.y ?? 0));
-  const right = fingers.filter((f) => f.lobe === 'right').sort((a, b) => (fingerToSegments(a)[0]?.p0.x ?? 0) - (fingerToSegments(b)[0]?.p0.x ?? 0));
+  const left = fingers.filter((f) => f.lobe === 'left').sort((a, b) => (a.segments[0]?.p0.y ?? 0) - (b.segments[0]?.p0.y ?? 0));
+  const right = fingers.filter((f) => f.lobe === 'right').sort((a, b) => (a.segments[0]?.p0.x ?? 0) - (b.segments[0]?.p0.x ?? 0));
   if (left.length !== right.length) return null;
   const mirror = (p: Vec) => mapPointBetweenLobes(bounds, p);
   const samples = (segments: Segment[]) => segments.flatMap((seg) => Array.from({ length: 12 }, (_, k) => {
@@ -328,7 +328,7 @@ export function mirroredLobes(fingers: Finger[], near: number): Finger[] | null 
   const apart = (a: Vec[], b: Vec[]) => Math.max(...a.map((p) => Math.min(...b.map((q) => vecDist(p, q)))));
   const made = new Map<Finger, Finger>();
   for (const [i, l] of left.entries()) {
-    const mirrored = mapSegments(fingerToSegments(right[i]!), mirror), a = samples(fingerToSegments(l)), b = samples(mirrored);
+    const mirrored = mapSegments(right[i]!.segments, mirror), a = samples(l.segments), b = samples(mirrored);
     if (Math.max(apart(a, b), apart(b, a)) > near * bounds.size) return null;
     // Its partner's node types: the anchors are its partner's.
     made.set(l, { id: l.id, lobe: l.lobe, segments: mirrored, ...right[i]!.nodeTypes && { nodeTypes: right[i]!.nodeTypes } });
@@ -349,7 +349,7 @@ export const SHARED_TEMPLATE_LOBE: Finger['lobe'] = 'right';
 // Check if it's a "classic" design (all straight lines, no curves)
 function isClassicDesign(fingers: Finger[]): boolean {
   for (const finger of fingers) {
-    const segments = fingerToSegments(finger);
+    const segments = finger.segments;
     for (const seg of segments) {
       // A straight line has control points on the line between endpoints.
       const dx = seg.p3.x - seg.p0.x;

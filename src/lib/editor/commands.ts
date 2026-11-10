@@ -1,7 +1,6 @@
 import type { Finger, NodeType } from "$lib/types/heart";
 import {
   cloneSegments,
-  fingerToSegments,
   splitBezierAt,
   updateFingerSegments,
 } from "$lib/geometry/bezierSegments";
@@ -48,7 +47,7 @@ export function insertNodeInFinger(
   t: number,
   keepShape = false,
 ): { finger: Finger; insertedAnchorIdx: number } | null {
-  const segments = fingerToSegments(finger);
+  const segments = finger.segments;
   if (!segments.length) return null;
   if (segmentIndex < 0 || segmentIndex >= segments.length) return null;
 

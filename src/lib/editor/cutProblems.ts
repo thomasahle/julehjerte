@@ -8,7 +8,6 @@ import type { Finger, GridSize, Vec } from '$lib/types/heart';
 import { inferOverlapRect, type OverlapRect } from '$lib/utils/overlapRect';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { bezierPathBBox } from '$lib/geometry/curves';
-import { fingerToSegments } from '$lib/geometry/bezierSegments';
 import {
 	fingerHasIntersectionIssues,
 	fingerPairHasIntersectionIssues,
@@ -68,14 +67,14 @@ export function candidateProblem(
 			? (overrides?.get(idForBoundary(candidate.lobe, idx + 1)) ?? byId(idForBoundary(candidate.lobe, idx + 1)))
 			: undefined;
 
-	const candidateSegments = fingerToSegments(candidate);
+	const candidateSegments = candidate.segments;
 	const candidateFirst = candidateSegments[0];
 	const candidateLast = candidateSegments[candidateSegments.length - 1];
 	if (!candidateFirst || !candidateLast) return 'self';
 
 	if (checks !== 'crossings') {
-		const prevSegments = prev ? fingerToSegments(prev) : null;
-		const nextSegments = next ? fingerToSegments(next) : null;
+		const prevSegments = prev ? prev.segments : null;
+		const nextSegments = next ? next.segments : null;
 		const prevFirst = prevSegments?.[0];
 		const prevLast = prevSegments?.[prevSegments.length - 1];
 		const nextFirst = nextSegments?.[0];
@@ -115,7 +114,7 @@ export function candidateProblem(
 		if (otherBase.id === fingerId || checked?.has(otherBase.id)) continue;
 		const other = overrides?.get(otherBase.id) ?? otherBase;
 		if (other.lobe !== candidate.lobe) continue;
-		const otherSegments = fingerToSegments(other);
+		const otherSegments = other.segments;
 		if (segmentsIntersect(candidateSegments, otherSegments)) return 'cross';
 	}
 
@@ -189,8 +188,8 @@ export function sameCuts(a: Finger[], b: Finger[]): boolean {
 		a.length === b.length &&
 		a.every((f, i) => {
 			const g = b[i]!;
-			const fs = fingerToSegments(f);
-			const gs = fingerToSegments(g);
+			const fs = f.segments;
+			const gs = g.segments;
 			return f.id === g.id && fs.length === gs.length && fs.every((seg, k) => close(seg.p0, gs[k]!.p0) && close(seg.p1, gs[k]!.p1) && close(seg.p2, gs[k]!.p2) && close(seg.p3, gs[k]!.p3));
 		})
 	);

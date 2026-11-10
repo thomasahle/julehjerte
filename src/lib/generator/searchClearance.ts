@@ -12,7 +12,6 @@
  */
 import type { Finger, Vec } from '$lib/types/heart';
 import type { BezierSegment } from '$lib/geometry/bezierSegments';
-import { fingerToSegments } from '$lib/geometry/bezierSegments';
 import { bezierBBox, closestPointOnBezier, closestPointsBetweenBeziers, intersectBezierCurves, isLinearBezier } from '$lib/geometry/curves';
 import { bezierPointClamped, segmentIntersection, splitBezierAt } from '$lib/geometry/cubic';
 import { vecDist } from '$lib/geometry/vec';
@@ -360,7 +359,7 @@ export function searchFingerIssues(finger: Finger, fingers: Finger[], minDistanc
 /** A curve's segments, their boxes and its ends, for the checks below. */
 export type SearchCurve = { segs: BezierSegment[]; boxes: BBox[]; endpoints: { start: Vec; end: Vec } };
 export function searchCurve(finger: Finger): SearchCurve {
-	const segs = fingerToSegments(finger);
+	const segs = finger.segments;
 	return { segs, boxes: segs.map(bezierBBox), endpoints: segs.length ? { start: segs[0]!.p0, end: segs.at(-1)!.p3 } : { start: { x: 0, y: 0 }, end: { x: 0, y: 0 } } };
 }
 

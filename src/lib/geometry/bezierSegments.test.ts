@@ -2,13 +2,11 @@ import { describe, it, expect } from 'vitest';
 import {
 	parsePathDataToSegments,
 	segmentsToPathData,
-	fingerToSegments,
 	fingerFromPathData,
 	cloneSegments,
 	splitBezierAt,
 	type BezierSegment
 } from './bezierSegments';
-import type { Finger } from '$lib/types/heart';
 
 describe('parsePathDataToSegments', () => {
 	it('parses simple M...C path', () => {
@@ -157,14 +155,7 @@ describe('segmentsToPathData', () => {
 	});
 });
 
-describe('fingerToSegments', () => {
-	it('returns the segments stored on the finger', () => {
-		const segments = parsePathDataToSegments('M 0 0 C 10 10 20 20 30 30');
-		const finger: Finger = { id: 'test', lobe: 'left', segments };
-		expect(fingerToSegments(finger)).toBe(segments);
-		expect(fingerToSegments(finger)).toHaveLength(1);
-	});
-
+describe('fingerFromPathData', () => {
 	it('fingerFromPathData parses pathData into segments', () => {
 		const finger = fingerFromPathData({
 			id: 'test',
@@ -182,7 +173,7 @@ describe('fingerToSegments', () => {
 			lobe: 'right',
 			pathData: 'M 100 100 C 150 100 150 200 100 200'
 		});
-		expect(fingerToSegments(finger)).toBe(finger.segments);
+		expect(finger.segments).toBe(finger.segments);
 	});
 });
 

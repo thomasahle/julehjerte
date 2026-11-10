@@ -5,7 +5,7 @@
  */
 
 import type { Finger, GridSize, LobeId } from '$lib/types/heart';
-import { fingerToSegments, segmentsToPathData, type BezierSegment } from '$lib/geometry/bezierSegments';
+import { segmentsToPathData, type BezierSegment } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect, type OverlapRect } from '$lib/utils/overlapRect';
 
 /**
@@ -42,8 +42,8 @@ function segmentsToBackwardPath(segments: BezierSegment[]): string {
  * The ribbon goes forward along fingerA, then backward along fingerB.
  */
 function buildRibbonPath(fingerA: Finger, fingerB: Finger): string {
-	const segsA = fingerToSegments(fingerA);
-	const segsB = fingerToSegments(fingerB);
+	const segsA = fingerA.segments;
+	const segsB = fingerB.segments;
 
 	if (!segsA.length || !segsB.length) return '';
 
@@ -66,7 +66,7 @@ function getSortedFingers(fingers: Finger[], lobe: LobeId): Finger[] {
 	return fingers
 		.filter(f => f.lobe === lobe)
 		.map(finger => {
-			const segs = fingerToSegments(finger);
+			const segs = finger.segments;
 			const p0 = segs[0]?.p0 ?? { x: 0, y: 0 };
 			return { finger, p0 };
 		})
