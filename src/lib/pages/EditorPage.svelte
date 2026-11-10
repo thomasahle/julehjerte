@@ -343,12 +343,53 @@
     return () => mq.removeEventListener('change', sync);
   });
 
-  function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1, pattern: HeartPattern | null, isStart: () => boolean) {
-    currentFingers = fingers;
-    currentGridSize = gridSize;
-    currentWeaveParity = weaveParity;
+  /** The heart as PaperHeart tells it (`onFingersChange`). */
+  type Told = { fingers: Finger[]; gridSize: GridSize; weaveParity: 0 | 1; pattern: () => HeartPattern | null; isStart: () => boolean };
+
+  // The last step of the drag going on, as PaperHeart told it: taken when the drag is let go, or the
+  // page left before that.
+  let dragStep: Told | null = null;
+
+  function handleFingersChange(
+    fingers: Finger[],
+    gridSize: GridSize,
+    weaveParity: 0 | 1,
+    pattern: () => HeartPattern | null,
+    isStart: () => boolean,
+    settled: boolean
+  ) {
+    const told = { fingers, gridSize, weaveParity, pattern, isStart };
+    // Nothing is worked out at a step of a drag: the drag would pay for it at every move.
+    if (!settled) {
+      dragStep = told;
+      return;
+    }
+    // Its last step is noted first: a drag that ends where it began (an edge pulled in too little for a
+    // strip goes back) is an edit all the same.
+    const step = dragStep;
+    dragStep = null;
+    if (step) noteCuts(step);
+    takeCuts(told);
+  }
+
+  /** The drag going on, as far as it has got: the page is left in the middle of it. */
+  function takeDragStep(): void {
+    const step = dragStep;
+    dragStep = null;
+    if (step) takeCuts(step);
+  }
+
+  function takeCuts(told: Told): void {
+    currentFingers = told.fingers;
+    currentGridSize = told.gridSize;
+    currentWeaveParity = told.weaveParity;
     // The tile alone is not an edit: it comes and goes with the tab, and is saved with the next change.
-    currentPattern = pattern ?? undefined;
+    currentPattern = told.pattern() ?? undefined;
+    noteCuts(told);
+  }
+
+  /** Whether the cuts told are an edit, to be saved, or the heart as it opened. */
+  function noteCuts({ fingers, gridSize, weaveParity, isStart }: Told): void {
     // PaperHeart emits once on mount (with reconciled boundary curves). That is not a
     // user edit, so only autosave once the design actually differs from that baseline.
     const snapshot = JSON.stringify({ fingers, gridSize, weaveParity });
@@ -381,6 +422,8 @@
     hasDesignEdits = false;
     lastCuts = null;
     fieldsEdited = false;
+    // A drag in the heart going away is not the new heart's.
+    dragStep = null;
   }
 
   // ?from=<gallery-id>: fetch the static heart and edit it as a copy (same flow as ?design= links).
@@ -745,6 +788,7 @@
   $effect(() => {
     if (!browser) return;
     const handler = () => {
+      takeDragStep();
       clearAutosaveTimer();
       flushAutosave();
     };
@@ -754,6 +798,7 @@
 
   beforeNavigate((navigation) => {
     if (!browser || !navigation) return;
+    takeDragStep();
     clearAutosaveTimer();
     flushAutosave();
   });

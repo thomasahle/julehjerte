@@ -117,11 +117,20 @@
 			/** Open on the Escher tab, for a link that asks for it (the design start's Escher card). */
 			initialEscherTab?: boolean;
 			/**
-			 * Told the cuts after every change, and the Escher tab's tile while the cuts are its own, so the route saves both;
-			 * and asked, if the route wants to know, whether the heart is just its Escher type's start, which the tab draws
-			 * itself as it opens: no work of the visitor's.
+			 * Told the cuts after every change, so the route saves them; asked, if the route wants to know, for the
+			 * Escher tab's tile while the cuts are its own (`pattern`), and whether the heart is just its Escher type's
+			 * start, which the tab draws itself as it opens: no work of the visitor's. Both answer for the heart as it is
+			 * when they are asked, so they are asked at once or not at all. A drag tells each of its steps with `settled`
+			 * false and then what it made, settled, once it is let go: what the route keeps of a step it can work out then.
 			 */
-			onFingersChange?: (fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1, pattern: HeartPattern | null, isStart: () => boolean) => void;
+			onFingersChange?: (
+				fingers: Finger[],
+				gridSize: GridSize,
+				weaveParity: 0 | 1,
+				pattern: () => HeartPattern | null,
+				isStart: () => boolean,
+				settled: boolean
+			) => void;
 		}
 
 	let {
@@ -3678,11 +3687,24 @@
 		});
 	});
 
-		$effect(() => {
-			if (!didInit) return;
-			const tile = patternTile;
-			if (onFingersChange) onFingersChange(fingers, gridSize, weaveParity, savedTile(), () => tile !== null && escher !== null && escher.isStartTile(tile));
-		});
+	/** The heart as `onFingersChange` was last told it, by reference: the same heart again is not told. */
+	type Told = { to: Props['onFingersChange']; fingers: Finger[]; gridSize: GridSize; weaveParity: 0 | 1; tile: PatternTile | null; escher: typeof escher; settled: boolean };
+	let told: Told | null = null;
+	$effect(() => {
+		if (!didInit) return;
+		// A drag is settled when it is let go: until then each of its steps is told at no cost to it, and
+		// the tile the heart is saved with is worked out only if the route asks.
+		const now: Told = { to: onFingersChange, fingers, gridSize, weaveParity, tile: patternTile, escher, settled: activePointerId === null };
+		const last = told;
+		const same = (a: Told) => a.to === now.to && a.fingers === now.fingers && a.gridSize === now.gridSize && a.weaveParity === now.weaveParity && a.tile === now.tile && a.escher === now.escher;
+		// A press that moved nothing is no change; a drag that did is told again as it settles.
+		if (last && same(last) && (last.settled || !now.settled)) return;
+		told = now;
+		const tile = now.tile;
+		const isStart = () => tile !== null && escher !== null && escher.isStartTile(tile);
+		// What the route reads as it is told is its own, not this effect's to follow.
+		untrack(() => now.to?.(now.fingers, now.gridSize, now.weaveParity, savedTile, isStart, now.settled));
+	});
 
 	function isEditableTarget(target: EventTarget | null): boolean {
 		if (!(target instanceof HTMLElement)) return false;

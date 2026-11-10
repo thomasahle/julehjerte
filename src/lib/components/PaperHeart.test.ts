@@ -43,15 +43,17 @@ function render(opened?: Partial<Opened> & { initialEscherTab?: boolean }) {
 	let fingers: Finger[] = [];
 	let gridSize: GridSize = { x: 0, y: 0 };
 	let isStart = () => false;
+	const told: { fingers: Finger[]; settled: boolean }[] = [];
 	const component = mount(PaperHeart, {
 		target,
 		props: {
 			lang: 'en',
 			...opened,
-			onFingersChange(nextFingers, nextGrid, _parity, _pattern, nextIsStart) {
+			onFingersChange(nextFingers, nextGrid, _parity, _pattern, nextIsStart, settled) {
 				fingers = nextFingers;
 				gridSize = nextGrid;
 				isStart = nextIsStart;
+				told.push({ fingers: nextFingers, settled });
 			}
 		}
 	});
@@ -62,6 +64,8 @@ function render(opened?: Partial<Opened> & { initialEscherTab?: boolean }) {
 		svg: target.querySelector<SVGSVGElement>('.canvas-wrapper > svg')!,
 		get fingers() { return fingers; },
 		get gridSize() { return gridSize; },
+		/** Every time the route was told the cuts, and whether a drag was let go by then. */
+		told,
 		/** Whether the heart is just its Escher type's start, as the route is told. */
 		isStart: () => isStart(),
 		path(id: string) {
@@ -689,6 +693,38 @@ describe('snapping to the other lobe', () => {
 		for (const p of seen) expect(Math.abs(off(p))).toBeLessThan(1e-6);
 		// and each step forward, never back and forth
 		for (let k = 1; k < seen.length; k++) expect(seen[k]!.x).toBeGreaterThan(seen[k - 1]!.x);
+	});
+});
+
+describe('the route', () => {
+	it("is told a drag's steps unsettled and what it made once, settled, as it is let go, and no step of a press that moves nothing", () => {
+		const h = render();
+		expect(h.told.map((t) => t.settled)).toEqual([true]);
+		// a press on a cut that moves nothing, and a click on the empty canvas: no step of a drag told,
+		// and the cuts as they were
+		const opened = JSON.stringify(h.fingers);
+		const at = midpoint(h.fingers.find((f) => f.id === 'R-1')!);
+		send(h.path('R-1'), 'pointerdown', at);
+		send(h.svg, 'pointerup', at);
+		send(h.svg, 'pointerdown', { x: 0, y: 0 });
+		send(h.svg, 'pointerup', { x: 0, y: 0 });
+		expect(h.told.every((t) => t.settled && JSON.stringify(t.fingers) === opened)).toBe(true);
+		// R-2 dragged in two steps: both told unsettled, and the cut as it was let go, settled
+		const told = h.told.length;
+		const was = h.fingers.find((f) => f.id === 'R-2')!.segments[0]!;
+		const from = bezierAt(was, 0.25);
+		send(h.path('R-2'), 'pointerdown', from);
+		send(h.svg, 'pointermove', { x: from.x + 4, y: from.y });
+		send(h.svg, 'pointermove', { x: from.x + 8, y: from.y });
+		send(h.svg, 'pointerup', { x: from.x + 8, y: from.y });
+		expect(h.told.slice(told).map((t) => t.settled)).toEqual([false, false, true]);
+		expect(h.told.at(-1)!.fingers).toBe(h.fingers);
+		expect(h.fingers.find((f) => f.id === 'R-2')!.segments[0]!.p0.x - was.p0.x).toBeCloseTo(8);
+		// a button's edit is settled at once
+		h.button('Undo').click();
+		flushSync();
+		expect(h.told.slice(told).map((t) => t.settled)).toEqual([false, false, true, true]);
+		expect(JSON.stringify(h.fingers)).toBe(opened);
 	});
 });
 
