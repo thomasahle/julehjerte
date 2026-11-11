@@ -30,7 +30,8 @@ def load_cuts_old(svg_path, per_seg=14):
 def load_cuts(svg_path, per_seg=14):
     """-> {'A': [polyline...], 'B': [...]} in each half's own (s,t): s runs from the fold (0) to the lobe (3).
     Reads a heart the way juleflet does: every path in the file, whatever its colour, with its own and its groups' transforms applied, in the
-    0-100 square of the viewBox; a cut that runs across (left-right) belongs to one half, one that runs up-down to the other."""
+    square its cuts end on (the 0-100 of the viewBox in almost every file); a cut that runs across (left-right) belongs to one half, one
+    that runs up-down to the other."""
     import xml.etree.ElementTree as ET
     from svgelements import Matrix
     root = ET.parse(svg_path).getroot(); tag = lambda e: e.tag.split('}')[-1]
@@ -73,6 +74,17 @@ def load_cuts(svg_path, per_seg=14):
     # may share an end point on the square's side or lie along each other, and they are still separate cuts in separate papers
     lo, hi = np.array(vb[:2]), np.array(vb[:2]) + np.array(vb[2:])
     loose = joined(loose, lambda p: (p - lo).min() > tol and (hi - p).min() > tol)
+    # the woven square is where the cuts end, as juleflet draws the heart (the median of the cuts' ends each way): the viewBox, unless
+    # the cuts of a file run on past it (Mor og barn's from -12.5 to 112.5) and the square is that much larger
+    ends = [[], []]
+    for P in loose:
+        d = np.abs(P[-1] - P[0]) / vb[2:]
+        if np.hypot(*d) >= 0.5: ends[int(d[1] > d[0])].append(sorted((P[0, int(d[1] > d[0])], P[-1, int(d[1] > d[0])])))
+    for ax in (0, 1):
+        e = ends[ax] or ends[1 - ax]                     # a heart drawn with one half's cuts only is as wide as it is long
+        if not e: continue
+        a, b = np.median(np.array(e), axis=0)
+        if max(abs(a - lo[ax]), abs(b - hi[ax])) > tol and b - a > 0.5 * vb[2 + ax]: vb[ax], vb[2 + ax] = a, b - a
     for P in loose:
         P = (P - vb[:2]) / vb[2:]; d = np.abs(P[-1] - P[0])
         if np.linalg.norm(P[-1] - P[0]) < 0.5: continue              # closed or decorative: not a cut from the fold to the lobe
