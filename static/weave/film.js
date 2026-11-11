@@ -288,7 +288,9 @@ function updateTools(st){
 
 /* ---- one moment of the film ---- */
 var curState=null,P0=null,lastCh=-2;
-function frameInto(P,t,pk){var n=B.nframes,f=clamp(t*B.fps,0,n-1),i0=Math.floor(f),i1=Math.min(n-1,i0+1),u=f-i0,per=B.nv*3,a=i0*per,b=i1*per,fr=B.frames,qq=B.q,mn=B.min,sg=B.sign;
+/* A film without frames (src/lib/weave/sketch.ts) says where its points are itself. */
+function poseInto(P,t,pk){B.pose(P,t);if(pk>0)for(var j=0,k=0,sg=B.sign;j<P.length;j+=3,k++)if(sg[k]!==0)P[j+2]+=sg[k]*pocket(P[j],P[j+1],pk);}
+function frameInto(P,t,pk){if(B.pose)return poseInto(P,t,pk);var n=B.nframes,f=clamp(t*B.fps,0,n-1),i0=Math.floor(f),i1=Math.min(n-1,i0+1),u=f-i0,per=B.nv*3,a=i0*per,b=i1*per,fr=B.frames,qq=B.q,mn=B.min,sg=B.sign;
   for(var j=0,k=0;j<per;j+=3,k++){var x=mn[0]+qq*(fr[a+j]+(fr[b+j]-fr[a+j])*u),y=mn[1]+qq*(fr[a+j+1]+(fr[b+j+1]-fr[a+j+1])*u),z=mn[2]+qq*(fr[a+j+2]+(fr[b+j+2]-fr[a+j+2])*u);
     if(pk>0&&sg[k]!==0)z+=sg[k]*pocket(x,y,pk);P[j]=x;P[j+1]=y;P[j+2]=z;}}
 function apply(st){
@@ -386,7 +388,7 @@ raf=requestAnimationFrame(loop);
 /* ---- what the page gets ---- */
 return {
   /* a .jhb as an ArrayBuffer -> the film's steps, when each starts and how long it all is (seconds) */
-  open:function(buf){return parse(buf).then(function(hd){if(gone)return null;build(hd);
+  open:function(buf){return (buf instanceof ArrayBuffer?parse(buf):Promise.resolve(buf)).then(function(hd){if(gone)return null;build(hd);
     return {steps:steps.map(function(s,i){return {id:s.id||'',tag:s.tag||'',n:s.n||null,straight:!!s.straight,title:s.t,text:s.x,start:stepStart[i]};}),total:TOTAL,weave:[tI,tW],stats:hd.stats||{}};});},
   toggle:toggle,
   play:function(p){if(B){if(p&&T>=TOTAL-1e-3)T=0;setPlaying(!!p);}},

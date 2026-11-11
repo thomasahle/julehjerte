@@ -5,9 +5,10 @@
 
   Views, in order: the woven heart, a photo of the finished heart (only the seven
   gallery hearts that have one), the printable template(s) — one when the two
-  lobes share a template, otherwise left and right — and the weaving film (the
-  gallery hearts that have one: WeaveFilm.svelte). The film's tile is a drawing,
-  the same for every heart; the film itself is fetched when the tile is chosen.
+  lobes share a template, otherwise left and right — and the weaving film
+  (WeaveFilm.svelte: a recording where the heart has one, otherwise worked out in
+  the browser). The film's tile is a drawing, the same for every heart; the film
+  itself is fetched when the tile is chosen.
 
   The thumbnails are real <button>s with aria-pressed, so the view can be swapped
   from the keyboard.
@@ -44,7 +45,7 @@
 		design: HeartDesign | null;
 		/** Photo of the finished heart, if this gallery heart has one. */
 		photo?: { src: string; width: number; height: number; alt: string } | null;
-		/** The heart's weaving film, if this gallery heart has one. */
+		/** The heart's recorded weaving film, if this gallery heart has one; other hearts get one worked out in the browser. */
 		film?: (WeaveFilmEntry & { id: string }) | null;
 		/** False when the lobes need one template each. */
 		sharedTemplate?: boolean;
@@ -69,7 +70,7 @@
 				label: sharedTemplate ? t('template', lang) : t('templateLeft', lang)
 			});
 			if (!sharedTemplate) list.push({ id: 'right', label: t('templateRight', lang) });
-			if (film) list.push({ id: 'film', label: t('weaveView', lang) });
+			list.push({ id: 'film', label: t('weaveView', lang) });
 		}
 		return list;
 	});
@@ -103,10 +104,10 @@
 				alt={photo.alt}
 			/>
 		</div>
-	{:else if shownView === 'film' && film}
+	{:else if shownView === 'film'}
 		<!-- Keyed: going on to another heart's page while the film is shown starts that heart's film. -->
-		{#key film.id}
-			<WeaveFilm id={film.id} entry={film} {lang} />
+		{#key film?.id ?? design.id}
+			<WeaveFilm id={film?.id ?? design.id} entry={film} {design} {lang} />
 		{/key}
 	{:else}
 		<div class="stage-media">

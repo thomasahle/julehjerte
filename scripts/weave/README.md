@@ -6,6 +6,12 @@ per heart; the page only plays it. A recording holds the paper's shape through t
 nothing of how it looks: the page draws it live, so the visitor can turn and zoom it, and it is
 drawn in the paper colours the heart has on the page (`src/lib/weave/papers.ts`).
 
+A heart without a recording (a visitor's own heart, a shared one, a gallery heart the simulator
+has not done) gets a film all the same: `src/lib/weave/sketch.ts` works one out in the browser
+from the heart's cuts, in a few milliseconds. It has the same steps and words and ends as the
+same weave, but its movements are a formula, not simulated paper: strips are laid one crossing
+at a time and may pass through each other on the way. It never refuses a heart.
+
     static/hearts/<id>.svg --unweave.py--> run.npz --pack.py--> static/weave/<id>.jhb
 
 - `unweave.py`, `cutmesh.py`, `labels.py`, `verify.py`: the simulator. It reads the cuts of a

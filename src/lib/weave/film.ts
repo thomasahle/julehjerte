@@ -7,6 +7,7 @@
  * (static/weave/<id>.jhb) is made offline, one per heart, by scripts/weave/films.mjs.
  */
 import { base } from '$app/paths';
+import type { SketchFilm } from './sketch';
 
 /** One step of a film, as the player reports it. `id` or `tag` says which step it is ($lib/weave/words). */
 export interface WeaveStep {
@@ -38,8 +39,8 @@ export interface WeaveFilmEvents {
 }
 
 export interface WeaveFilmPlayer {
-	/** Null when the player was destroyed while the recording was unpacked. */
-	open(recording: ArrayBuffer): Promise<WeaveFilmInfo | null>;
+	/** A recording, or a film worked out here ($lib/weave/sketch). Null when the player was destroyed while the recording was unpacked. */
+	open(recording: ArrayBuffer | SketchFilm): Promise<WeaveFilmInfo | null>;
 	toggle(): void;
 	play(playing: boolean): void;
 	seek(seconds: number): void;
@@ -81,11 +82,11 @@ export interface WeaveFilmEntry {
 }
 
 // Bumped when film.js or three.js changes, so a browser never pairs an old player with a new page.
-const PLAYER_VERSION = '1';
+const PLAYER_VERSION = '2';
 
 /** Whether this browser can unpack a recording at all. */
-export function canPlayWeaveFilm(): boolean {
-	return typeof DecompressionStream === 'function' && typeof ResizeObserver === 'function';
+export function canPlayWeaveFilm(recorded = true): boolean {
+	return (!recorded || typeof DecompressionStream === 'function') && typeof ResizeObserver === 'function';
 }
 
 let three: Promise<unknown> | null = null;

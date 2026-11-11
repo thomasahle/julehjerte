@@ -5,7 +5,9 @@
   The recording (static/weave/<id>.jhb) is a simulation of the paper made offline
   (scripts/weave); the player that draws it (static/weave/film.js) and three.js are fetched
   with it, when this view is first shown, so a heart page pays nothing for the film until
-  it is asked for ($lib/weave/film).
+  it is asked for ($lib/weave/film). A heart without a recording (a visitor's own, or one the
+  simulator has not made) gets a film worked out in the browser from its cuts, with the same
+  steps and simpler movements ($lib/weave/sketch).
 
   The film is a card filling the stage, kept as plain as the page around it: a band at the top
   names the step, a band at the bottom has play, the position, the speed and full screen, and
@@ -28,6 +30,7 @@
 	import PlayIcon from '@lucide/svelte/icons/play';
 	import { t, type Language } from '$lib/i18n';
 	import { DEFAULT_COLORS } from '$lib/stores/colors';
+	import type { HeartDesign } from '$lib/types/heart';
 	import { pairAttributes } from '$lib/utils/palette';
 	import {
 		canPlayWeaveFilm,
@@ -43,11 +46,13 @@
 	interface Props {
 		/** The heart's id: its recording is static/weave/<id>.jhb. */
 		id: string;
-		entry: WeaveFilmEntry;
+		/** The heart's recording; without one the film is worked out here from `design`. */
+		entry: WeaveFilmEntry | null;
+		design: HeartDesign | null;
 		lang: Language;
 	}
 
-	let { id, entry, lang }: Props = $props();
+	let { id, entry, design, lang }: Props = $props();
 
 	// The simulator's red half is the heart's right-hand paper, its white half the left-hand one.
 	interface Papers {
@@ -103,11 +108,16 @@
 	async function load() {
 		status = 'loading';
 		fetched = 0;
-		if (!canPlayWeaveFilm()) {
+		if (!canPlayWeaveFilm(!!entry) || (!entry && !design)) {
 			status = 'no3d';
 			return;
 		}
-		const recording = fetchWeaveRecording(id, entry, (fraction) => (fetched = fraction));
+		const drawn = design;
+		const recording = entry
+			? fetchWeaveRecording(id, entry, (fraction) => (fetched = fraction))
+			: import('$lib/weave/sketch').then(({ designLines, sketchFilm }) =>
+					sketchFilm(designLines(drawn!), drawn!.weaveParity ?? 0, WEAVE_PACE)
+				);
 		// Silenced here, heard below: the player may fail first.
 		recording.catch(() => {});
 		// A player from before a recording that did not arrive is kept: its canvas takes no second one.
