@@ -8,6 +8,7 @@
   "amy-weave-1": {"design":"3dae3bd20b2456cf","outcome":"unclean","v":"e490514256","bytes":3971503,"seconds":559,"crossings":56,"stretch":140,"magic":30,"magicFrames":8224,"bad":0,"retries":31,"simSeconds":442,"made":"2026-11-11"},
   "amy-weave-2": {"design":"7eb3475bd05b6319","outcome":"unclean","v":"7e487ae8d1","bytes":3501389,"seconds":578,"crossings":64,"stretch":132,"magic":28,"magicFrames":8590,"bad":0,"retries":39,"simSeconds":408,"made":"2026-11-11"},
   "andreaskors": {"design":"953307bee8bfed52","outcome":"failed","reason":"the paper has no next step (the solve gave no numbers): a strip is not where the weaving expects it","made":"2026-11-11"},
+  "angel": {"design":"d9dad11e9055333a","outcome":"unclean","v":"a6e393cda4","bytes":2005391,"seconds":109,"crossings":9,"stretch":59,"magic":3,"magicFrames":676,"bad":0,"retries":3,"simSeconds":509,"made":"2026-11-11"},
   "balls": {"design":"d1f696e6af1f5721","outcome":"unclean","v":"41b55cfd54","bytes":5939978,"seconds":484,"crossings":49,"stretch":103,"magic":13,"magicFrames":4176,"bad":0,"retries":17,"simSeconds":896,"made":"2026-11-11"},
   "blomster-hjerte": {"design":"e6fd15837cae8d88","outcome":"unclean","v":"c0fb36067e","bytes":3305413,"seconds":243,"crossings":25,"stretch":43,"magic":1,"magicFrames":142,"bad":0,"retries":1,"simSeconds":346,"made":"2026-11-11"},
   "boelgebrud": {"design":"9b085ef91a9dab5c","outcome":"unclean","v":"411acb3c2c","bytes":5468771,"seconds":385,"crossings":36,"stretch":69,"magic":4,"magicFrames":2097,"bad":0,"retries":8,"simSeconds":637,"made":"2026-11-11"},
@@ -26,6 +27,7 @@
   "firkanthjerte": {"design":"d75fe446442e7cbe","outcome":"unclean","v":"fdd79839e6","bytes":8249636,"seconds":958,"crossings":100,"stretch":81,"magic":15,"magicFrames":5880,"bad":0,"retries":24,"simSeconds":978,"made":"2026-11-11"},
   "firkloever-hjerte": {"design":"ff550f5abc170874","outcome":"unclean","v":"6454d76ce6","bytes":4247143,"seconds":340,"crossings":36,"stretch":74,"magic":1,"magicFrames":63,"bad":0,"retries":2,"simSeconds":371,"made":"2026-11-11"},
   "fiskeskael": {"design":"d6636531c37e71eb","outcome":"clean","v":"b978e067fa","bytes":3568829,"seconds":254,"crossings":25,"stretch":89,"magic":0,"magicFrames":0,"bad":0,"retries":6,"simSeconds":431,"made":"2026-11-11"},
+  "flower": {"design":"0c9eed925040770f","outcome":"unclean","v":"05cc1579d0","bytes":3437932,"seconds":221,"crossings":16,"stretch":98,"magic":10,"magicFrames":3131,"bad":0,"retries":7,"simSeconds":371,"made":"2026-11-11"},
   "flyvendegaes": {"design":"623184187af2aaaa","outcome":"unclean","v":"c1934fcd03","bytes":5341925,"seconds":373,"crossings":36,"stretch":114,"magic":8,"magicFrames":4247,"bad":0,"retries":10,"simSeconds":503,"made":"2026-11-11"},
   "gaver": {"design":"6f77c4a263737461","outcome":"clean","v":"075ef3f2f1","bytes":2625790,"seconds":281,"crossings":36,"stretch":21,"magic":0,"magicFrames":0,"bad":0,"retries":5,"simSeconds":243,"made":"2026-11-11"},
   "gitterhjerte": {"design":"4f0c9f1e092279ff","outcome":"unclean","v":"a583f104f0","bytes":3229983,"seconds":257,"crossings":25,"stretch":79,"magic":6,"magicFrames":2586,"bad":0,"retries":8,"simSeconds":363,"made":"2026-11-11"},
@@ -39,6 +41,7 @@
   "hjertekloever": {"design":"aaff3f08b8b05623","outcome":"unclean","v":"ade953029d","bytes":2538405,"seconds":166,"crossings":16,"stretch":28,"magic":1,"magicFrames":164,"bad":0,"retries":2,"simSeconds":261,"made":"2026-11-11"},
   "hvirvel": {"design":"e6daf12e79dbbb02","outcome":"unclean","v":"2a44951800","bytes":3450423,"seconds":266,"crossings":25,"stretch":45,"magic":6,"magicFrames":2855,"bad":0,"retries":7,"simSeconds":379,"made":"2026-11-11"},
   "jul": {"design":"2ecbd5acf62dee29","outcome":"failed","reason":"  return pypardiso.spsolve(A, b) if pypardiso is not None else spla.spsolve(A.tocsc(), b)","made":"2026-11-11"},
+  "juletrae": {"design":"5543522314d423aa","outcome":"unclean","v":"69d05b4de1","bytes":3078258,"seconds":225,"crossings":16,"stretch":111,"magic":20,"magicFrames":3292,"bad":0,"retries":13,"simSeconds":527,"made":"2026-11-11"},
   "kagome": {"design":"dbb2d9d8f3925b31","outcome":"unclean","v":"94ae432332","bytes":5458150,"seconds":454,"crossings":36,"stretch":73,"magic":24,"magicFrames":6658,"bad":0,"retries":22,"simSeconds":548,"made":"2026-11-11"},
   "khatam": {"design":"13af7bcd86c57c71","outcome":"unsupported","reason":"the finished weave of this design could not be laid out without paper passing through paper (--force to run anyway)","made":"2026-11-11"},
   "koelbuer": {"design":"c37d4ec95e76b8aa","outcome":"clean","v":"2481efee03","bytes":3608712,"seconds":239,"crossings":25,"stretch":16,"magic":0,"magicFrames":0,"bad":0,"retries":0,"simSeconds":386,"made":"2026-11-11"},
@@ -75,5 +78,6 @@
   "stjernerogkors": {"design":"acdf6d287986c82d","outcome":"clean","v":"64b6b8bd8b","bytes":3537609,"seconds":236,"crossings":25,"stretch":35,"magic":0,"magicFrames":0,"bad":0,"retries":3,"simSeconds":384,"made":"2026-11-11"},
   "sun": {"design":"86521dc3d88f5c8f","outcome":"unsupported","reason":"3 and 3 cuts give 3 and 1 pieces; the cuts touch, cross or do not run from the fold to the lobe","made":"2026-11-11"},
   "tragt": {"design":"e461d57057f11bd8","outcome":"unclean","v":"828ba2b8b9","bytes":4763470,"seconds":847,"crossings":100,"stretch":55,"magic":28,"magicFrames":6986,"bad":0,"retries":32,"simSeconds":542,"made":"2026-11-11"},
-  "triple-heart": {"design":"e7bc5d66391ea022","outcome":"failed","reason":"the paper has no next step (the solve gave no numbers): a strip is not where the weaving expects it","made":"2026-11-11"}
+  "triple-heart": {"design":"e7bc5d66391ea022","outcome":"failed","reason":"the paper has no next step (the solve gave no numbers): a strip is not where the weaving expects it","made":"2026-11-11"},
+  "venus": {"design":"d04911cc2acf9b74","outcome":"unclean","v":"42e62c7060","bytes":6313771,"seconds":497,"crossings":49,"stretch":112,"magic":14,"magicFrames":7309,"bad":0,"retries":26,"simSeconds":784,"made":"2026-11-11"}
 }

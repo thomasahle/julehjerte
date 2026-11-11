@@ -2314,7 +2314,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "69d05b4de1",
+      "bytes": 3078258
+    }
   },
   "flower": {
     "name": "Blomst",
@@ -2341,7 +2344,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "05cc1579d0",
+      "bytes": 3437932
+    }
   },
   "venus": {
     "name": "Venus",
@@ -2369,7 +2375,10 @@
       "width": 990,
       "height": 1070
     },
-    "film": null
+    "film": {
+      "v": "42e62c7060",
+      "bytes": 6313771
+    }
   },
   "angel": {
     "name": "Engel",
@@ -2396,7 +2405,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "a6e393cda4",
+      "bytes": 2005391
+    }
   },
   "snowflake": {
     "name": "Snowflake",
