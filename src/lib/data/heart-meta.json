@@ -1881,7 +1881,10 @@
       "width": 1065,
       "height": 1200
     },
-    "film": null
+    "film": {
+      "v": "703949c081",
+      "bytes": 5205708
+    }
   },
   "skraa-kryds": {
     "name": "Skrå kryds",
@@ -1908,7 +1911,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "a25e4b5163",
+      "bytes": 2485238
+    }
   },
   "plus": {
     "name": "Plus",
@@ -1932,7 +1938,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "e11d91247f",
+      "bytes": 2277416
+    }
   },
   "plus3": {
     "name": "Plus 3",
@@ -1956,7 +1965,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "7e6d775002",
+      "bytes": 3413652
+    }
   },
   "koelbuer": {
     "name": "Kølbuer",
@@ -1983,7 +1995,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "2481efee03",
+      "bytes": 3608712
+    }
   },
   "hanefod": {
     "name": "Hanefod",
@@ -2010,7 +2025,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "c134a2f121",
+      "bytes": 3870853
+    }
   },
   "permo-draaber": {
     "name": "Dråber",
