@@ -1766,7 +1766,10 @@
       "width": 374,
       "height": 343
     },
-    "film": null
+    "film": {
+      "v": "465f0a20df",
+      "bytes": 4195479
+    }
   },
   "dagognat": {
     "name": "Dag og nat",
