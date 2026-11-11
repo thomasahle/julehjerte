@@ -372,6 +372,8 @@ export class ExactModel {
     // The static rules; those a start breaks are soft (a slack at `penalty`).
     this.slacks = [];
     this.slackRows = [];
+    // Each slack's kind of rule, for the report's `broken`: 'static', or the lazy rule's own.
+    this.slackKind = new Map();
     this.softKeys = soft;
     const pairs = [];
     for (const n of statics) {
@@ -382,6 +384,7 @@ export class ExactModel {
       if (soft.has(nogoodKey(n))) {
         const slack = m.variable({cost: penalty, lo: 0, hi: terms.length});
         this.slacks.push(slack);
+        this.slackKind.set(slack, 'static');
         this.slackRows.push([slack, terms, rhs]);
         terms = [...terms, [slack, -1]];
       }
@@ -636,6 +639,15 @@ export class ExactModel {
     return this.slacks.reduce((s, v) => s + val[v], 0) + [...this.invalid].reduce((s, k) => s + (this.x.has(k) ? val[this.x.get(k)] : 0), 0);
   }
 
+  /** The rules a solution vector breaks, counted by kind: the static ones ('static'), the lazy ones by their
+   * own, the segments without a candidate ('uncuttable'). */
+  brokenOf(val) {
+    const out = {}, add = (kind, n) => { if (n > 1e-6) out[kind] = +((out[kind] ?? 0) + n).toFixed(3); };
+    for (const v of this.slacks) add(this.slackKind.get(v) ?? 'static', val[v]);
+    for (const k of this.invalid) if (this.x.has(k)) add('uncuttable', val[this.x.get(k)]);
+    return out;
+  }
+
   /** Labels and used segments of a solution vector. */
   read(val) {
     return {labels: new Map([...this.lab].map(([k, v]) => [k, val[v] > .5 ? 1 : 0])), used: [...this.x].filter(([, v]) => val[v] > .5).map(([k]) => k)};
@@ -696,6 +708,7 @@ export class ExactModel {
         m.row(row, -Infinity, rhs);
         native.addRow(-Infinity, rhs, {indices: Int32Array.from(row.map(([v]) => v)), values: Float64Array.from(row.map(([, c]) => c))});
         (paper ? this.paperSlacks : this.slacks).push(slack);
+        this.slackKind.set(slack, kind);
         this.slackRows.push([slack, terms, rhs]);
         mixed.push(costs[0]);
         stageLengths.push(costs[1]);
@@ -841,6 +854,7 @@ export class ExactModel {
     report.hidden = hidden;
     report.cost = best.objective;
     report.penalty = this.penaltyOf(best.values);
+    if (report.penalty > 1e-6) report.broken = this.brokenOf(best.values);
     if (Number.isFinite(length.bound)) report.gap = Math.max(0, (best.objective - length.bound) / Math.max(1e-12, best.objective));
     return {values: best.values, report: {...report, status: report.penalty > 1e-6 ? 'rules violated' : 'found'}};
   }
