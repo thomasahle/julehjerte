@@ -1,22 +1,24 @@
 <!--
   The weaving film on a heart's page: the heart being cut, woven and hung, in 3D, as a
-  recording the visitor can play, step through, scrub and look around in.
+  recording the visitor can play, scrub and look around in.
 
   The recording (static/weave/<id>.jhb) is a simulation of the paper made offline
   (scripts/weave); the player that draws it (static/weave/film.js) and three.js are fetched
   with it, when this view is first shown, so a heart page pays nothing for the film until
   it is asked for ($lib/weave/film).
 
-  The film is a card filling the stage. The caption (which step, what happens in it) and the
-  transport lie over the picture, and the player keeps the heart between them (`insets`).
+  The film is a card filling the stage, kept as plain as the page around it: a band at the top
+  names the step, a band at the bottom has play, the position, the speed and full screen, and
+  the player keeps the heart between them (`insets`). What happens in the step is written out
+  for screen readers only.
   The two papers have the colours the heart has on the page: the header's pair, or the heart's
   own pair in colourful mode, and they follow it when it changes. The film reads them where the
   page's hearts do, from --paper-left / --paper-right, and the captions name the strips by them
   ($lib/weave/papers).
 
-  A drag turns the view (two fingers or shift: move it; pinch: zoom). Outside full screen a
-  finger moving up or down scrolls the page, and the wheel zooms only with ctrl or cmd, so
-  the film never traps the page's scrolling.
+  A drag turns the view (two fingers or shift: move it; pinch: zoom; a double click puts it
+  back). Outside full screen a finger moving up or down scrolls the page, and the wheel zooms
+  only with ctrl or cmd, so the film never traps the page's scrolling.
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
@@ -24,11 +26,6 @@
 	import MinimizeIcon from '@lucide/svelte/icons/minimize';
 	import PauseIcon from '@lucide/svelte/icons/pause';
 	import PlayIcon from '@lucide/svelte/icons/play';
-	import RotateCcwIcon from '@lucide/svelte/icons/rotate-ccw';
-	import SkipBackIcon from '@lucide/svelte/icons/skip-back';
-	import SkipForwardIcon from '@lucide/svelte/icons/skip-forward';
-	import ZoomInIcon from '@lucide/svelte/icons/zoom-in';
-	import ZoomOutIcon from '@lucide/svelte/icons/zoom-out';
 	import { t, type Language } from '$lib/i18n';
 	import { DEFAULT_COLORS } from '$lib/stores/colors';
 	import { pairAttributes } from '$lib/utils/palette';
@@ -210,83 +207,45 @@
 			<p class="film-count">
 				{t('weaveStepOf', lang, { n: stepIndex + 1, total: steps.length })}
 			</p>
-			<p class="film-title" aria-live="polite">{words.title}</p>
-			<p class="film-text">{words.text}</p>
+			<p class="film-title" aria-live="polite">{words.title}<span class="sr-only">. {words.text}</span></p>
 		</div>
 
 		<div class="film-bar" bind:this={bar}>
-			<div class="film-scrub">
-				<div class="film-ticks" aria-hidden="true">
-					{#each steps as step, index (index)}
-						{#if index > 0}
-							<span style="left: {(step.start / total) * 100}%"></span>
-						{/if}
-					{/each}
-				</div>
-				<input
-					type="range"
-					min="0"
-					max={total}
-					step="0.05"
-					value={time}
-					style="--played: {total ? (time / total) * 100 : 0}%"
-					aria-label={t('weavePosition', lang)}
-					aria-valuetext={`${clock(time)} / ${clock(total)}`}
-					oninput={(event) => player?.seek(Number(event.currentTarget.value))}
-				/>
-			</div>
-			<div class="film-buttons">
-				<button type="button" aria-label={t('weavePreviousStep', lang)} onclick={() => player?.step(-1)}>
-					<SkipBackIcon size={18} aria-hidden="true" />
-				</button>
+			<button type="button" aria-label={t(playing ? 'weavePause' : 'weavePlay', lang)} onclick={() => player?.toggle()}>
+				{#if playing}
+					<PauseIcon size={18} fill="currentColor" aria-hidden="true" />
+				{:else}
+					<PlayIcon size={18} fill="currentColor" aria-hidden="true" />
+				{/if}
+			</button>
+			<span class="film-clock">{clock(time)} / {clock(total)}</span>
+			<input
+				type="range"
+				min="0"
+				max={total}
+				step="0.05"
+				value={time}
+				style="--played: {total ? (time / total) * 100 : 0}%"
+				aria-label={t('weavePosition', lang)}
+				aria-valuetext={`${clock(time)} / ${clock(total)}`}
+				oninput={(event) => player?.seek(Number(event.currentTarget.value))}
+			/>
+			<button type="button" aria-label={`${t('weaveSpeed', lang)}: ${speed}×`} onclick={nextSpeed}>
+				{speed === 0.5 ? '½' : speed}×
+			</button>
+			{#if canFullscreen}
 				<button
 					type="button"
-					class="film-play"
-					aria-label={t(playing ? 'weavePause' : 'weavePlay', lang)}
-					onclick={() => player?.toggle()}
+					aria-label={t(fullscreen ? 'weaveExitFullscreen' : 'weaveFullscreen', lang)}
+					onclick={toggleFullscreen}
 				>
-					{#if playing}
-						<PauseIcon size={20} aria-hidden="true" />
+					{#if fullscreen}
+						<MinimizeIcon size={18} aria-hidden="true" />
 					{:else}
-						<PlayIcon size={20} aria-hidden="true" />
+						<MaximizeIcon size={18} aria-hidden="true" />
 					{/if}
 				</button>
-				<button type="button" aria-label={t('weaveNextStep', lang)} onclick={() => player?.step(1)}>
-					<SkipForwardIcon size={18} aria-hidden="true" />
-				</button>
-				<span class="film-clock">{clock(time)} / {clock(total)}</span>
-				<span class="film-gap"></span>
-				<button
-					type="button"
-					class="film-speed"
-					aria-label={`${t('weaveSpeed', lang)}: ${speed}×`}
-					onclick={nextSpeed}
-				>
-					{speed === 0.5 ? '½' : speed}×
-				</button>
-				<button type="button" aria-label={t('weaveZoomOut', lang)} onclick={() => player?.zoom(1.2)}>
-					<ZoomOutIcon size={18} aria-hidden="true" />
-				</button>
-				<button type="button" aria-label={t('weaveZoomIn', lang)} onclick={() => player?.zoom(1 / 1.2)}>
-					<ZoomInIcon size={18} aria-hidden="true" />
-				</button>
-				<button type="button" aria-label={t('weaveResetView', lang)} onclick={() => player?.reset()}>
-					<RotateCcwIcon size={18} aria-hidden="true" />
-				</button>
-				{#if canFullscreen}
-					<button
-						type="button"
-						aria-label={t(fullscreen ? 'weaveExitFullscreen' : 'weaveFullscreen', lang)}
-						onclick={toggleFullscreen}
-					>
-						{#if fullscreen}
-							<MinimizeIcon size={18} aria-hidden="true" />
-						{:else}
-							<MaximizeIcon size={18} aria-hidden="true" />
-						{/if}
-					</button>
-				{/if}
-			</div>
+			{/if}
 		</div>
 	{:else if status === 'loading'}
 		<div class="film-wait" role="status">
@@ -308,7 +267,7 @@
 <style>
 	/* The cutting mat's own green, so the card looks the same before the first frame is drawn. */
 	.film {
-		--glass: rgb(14 40 31 / 0.78);
+		--band: rgb(11 33 25 / 0.72);
 		--on-mat: #f4f7f2;
 		--on-mat-soft: #c9d8cd;
 		position: absolute;
@@ -354,19 +313,23 @@
 		box-shadow: none;
 	}
 
+	/* Two bands across the card, a shade darker than the mat. */
 	.film-caption,
 	.film-bar {
 		position: absolute;
-		left: 10px;
-		right: 10px;
-		border-radius: 10px;
-		background: var(--glass);
-		backdrop-filter: blur(6px);
+		left: 0;
+		right: 0;
+		display: flex;
+		align-items: center;
+		background: var(--band);
 	}
 
 	.film-caption {
-		top: 10px;
-		padding: 9px 14px 10px;
+		top: 0;
+		gap: 14px;
+		/* Room for a title of two lines: the heart does not jump when the step changes. */
+		min-height: 56px;
+		padding: 8px 18px;
 		/* Looking around starts anywhere on the picture, also under the words. */
 		pointer-events: none;
 	}
@@ -376,67 +339,42 @@
 	}
 
 	.film-count {
+		flex: none;
 		font-size: 12px;
 		font-weight: 600;
-		letter-spacing: 0.04em;
+		letter-spacing: 0.08em;
 		text-transform: uppercase;
 		color: var(--on-mat-soft);
 	}
 
 	.film-title {
+		padding-left: 14px;
+		border-left: 1px solid rgb(244 247 242 / 0.25);
 		font-size: 16px;
 		font-weight: 600;
-		line-height: 1.3;
-	}
-
-	.film-text {
-		margin-top: 2px;
-		font-size: 13.5px;
-		line-height: 1.4;
-		color: var(--on-mat-soft);
-		/* Room for two lines, as most steps take: the heart does not jump when the step changes.
-		   A longer text at a narrow stage grows the caption, and the heart moves clear of it. */
-		min-height: calc(2 * 1.4em);
+		line-height: 1.25;
 	}
 
 	.film-bar {
-		bottom: 10px;
-		padding: 6px 8px 6px;
+		bottom: 0;
+		gap: 4px;
+		padding: 6px 10px;
 	}
 
-	.film-scrub {
-		position: relative;
+	.film-bar input {
+		flex: 1;
+		min-width: 0;
 		height: 22px;
-		margin: 0 6px;
-	}
-
-	.film-ticks span {
-		position: absolute;
-		top: 8px;
-		width: 2px;
-		height: 6px;
-		margin-left: -1px;
-		border-radius: 1px;
-		background: var(--glass);
-		pointer-events: none;
-		z-index: 1;
-	}
-
-	.film-scrub input {
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		margin: 0;
+		margin: 0 8px;
 		background: none;
 		appearance: none;
 		-webkit-appearance: none;
 		cursor: pointer;
 	}
 
-	.film-scrub input::-webkit-slider-runnable-track {
-		height: 6px;
-		border-radius: 3px;
+	.film-bar input::-webkit-slider-runnable-track {
+		height: 2px;
+		border-radius: 1px;
 		background: linear-gradient(
 			to right,
 			var(--on-mat) var(--played),
@@ -444,9 +382,9 @@
 		);
 	}
 
-	.film-scrub input::-moz-range-track {
-		height: 6px;
-		border-radius: 3px;
+	.film-bar input::-moz-range-track {
+		height: 2px;
+		border-radius: 1px;
 		background: linear-gradient(
 			to right,
 			var(--on-mat) var(--played),
@@ -454,81 +392,60 @@
 		);
 	}
 
-	.film-scrub input::-webkit-slider-thumb {
+	.film-bar input::-webkit-slider-thumb {
 		-webkit-appearance: none;
-		width: 14px;
-		height: 14px;
-		margin-top: -4px;
-		border: 0;
-		border-radius: 50%;
-		background: var(--on-mat);
-		position: relative;
-		z-index: 2;
-	}
-
-	.film-scrub input::-moz-range-thumb {
-		width: 14px;
-		height: 14px;
+		width: 12px;
+		height: 12px;
+		margin-top: -5px;
 		border: 0;
 		border-radius: 50%;
 		background: var(--on-mat);
 	}
 
-	.film-buttons {
-		display: flex;
-		align-items: center;
-		gap: 2px;
+	.film-bar input::-moz-range-thumb {
+		width: 12px;
+		height: 12px;
+		border: 0;
+		border-radius: 50%;
+		background: var(--on-mat);
 	}
 
-	.film-buttons button {
+	.film-bar button {
 		display: inline-flex;
+		flex: none;
 		align-items: center;
 		justify-content: center;
-		min-width: 34px;
-		height: 34px;
+		min-width: 36px;
+		height: 36px;
 		padding: 0 6px;
 		border: 0;
 		border-radius: 8px;
 		background: none;
 		color: inherit;
 		font: inherit;
-		font-size: 13px;
+		font-size: 14px;
 		font-weight: 600;
 		cursor: pointer;
 	}
 
-	.film-buttons button:hover {
+	.film-bar button:hover {
 		background: rgb(244 247 242 / 0.14);
 	}
 
-	/* The page's ring is drawn for light ground; here it sits on the dark glass. */
-	.film-buttons button:focus-visible,
-	.film-scrub input:focus-visible,
+	/* The page's ring is drawn for light ground; here it sits on the dark band. */
+	.film-bar button:focus-visible,
+	.film-bar input:focus-visible,
 	.film-retry:focus-visible {
 		outline: 2px solid var(--on-mat);
 		outline-offset: 1px;
 		box-shadow: none;
 	}
 
-	.film-buttons .film-play {
-		background: var(--on-mat);
-		color: #163a2d;
-	}
-
-	.film-buttons .film-play:hover {
-		background: #ffffff;
-	}
-
 	.film-clock {
-		margin-left: 8px;
-		font-size: 12.5px;
+		margin-left: 4px;
+		font-size: 13px;
 		font-variant-numeric: tabular-nums;
-		color: var(--on-mat-soft);
 		white-space: nowrap;
-	}
-
-	.film-gap {
-		flex: 1;
 	}
 
 	.film-wait {
@@ -569,37 +486,19 @@
 		background: rgb(244 247 242 / 0.14);
 	}
 
-	/* A phone: the clock gives way first, then the buttons close up. */
 	@media (max-width: 599px) {
-		.film-caption,
-		.film-bar {
-			left: 6px;
-			right: 6px;
-		}
-
 		.film-caption {
-			top: 6px;
-			padding: 7px 10px 8px;
-		}
-
-		.film-bar {
-			bottom: 6px;
+			gap: 10px;
+			padding: 8px 12px;
 		}
 
 		.film-title {
+			padding-left: 10px;
 			font-size: 15px;
 		}
 
-		.film-text {
-			font-size: 13px;
-		}
-
-		.film-buttons {
-			gap: 0;
-		}
-
-		.film-clock {
-			display: none;
+		.film-bar {
+			padding: 4px 6px;
 		}
 	}
 </style>
