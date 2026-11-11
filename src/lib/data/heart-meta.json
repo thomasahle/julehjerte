@@ -82,7 +82,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "075ef3f2f1",
+      "bytes": 2625790
+    }
   },
   "jul": {
     "name": "JUL",

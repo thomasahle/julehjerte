@@ -1,5 +1,6 @@
 {
   "classic-3x3": {"design":"a17c1e930f18a2ba","outcome":"clean","v":"ebf2d4f8fc","bytes":1884160,"seconds":87,"crossings":9,"stretch":14,"magic":0,"magicFrames":0,"bad":0,"retries":0,"simSeconds":325,"made":"2026-11-11"},
+  "gaver": {"design":"6f77c4a263737461","outcome":"clean","v":"075ef3f2f1","bytes":2625790,"seconds":281,"crossings":36,"stretch":21,"magic":0,"magicFrames":0,"bad":0,"retries":5,"simSeconds":243,"made":"2026-11-11"},
   "nemt-hjerte": {"design":"0f28fe4aa062ff75","outcome":"clean","v":"f793235fa2","bytes":1273773,"seconds":98,"crossings":9,"stretch":15,"magic":0,"magicFrames":0,"bad":0,"retries":0,"simSeconds":425,"made":"2026-11-11"},
   "puslespil": {"design":"65eb744618d8cd1e","outcome":"clean","v":"a1a4b55574","bytes":3530474,"seconds":168,"crossings":16,"stretch":21,"magic":0,"magicFrames":0,"bad":0,"retries":0,"simSeconds":1457,"made":"2026-11-11"}
 }
