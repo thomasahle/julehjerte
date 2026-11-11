@@ -1434,7 +1434,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "a583f104f0",
+      "bytes": 3229983
+    }
   },
   "ni-ruder": {
     "name": "Ni ruder",
@@ -1462,7 +1465,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "37e928ea1a",
+      "bytes": 3686071
+    }
   },
   "ni-firkanter": {
     "name": "Ni firkanter",
@@ -1490,7 +1496,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "b0956628b3",
+      "bytes": 3389061
+    }
   },
   "firkant-i-firkant": {
     "name": "Firkant i firkant",
@@ -1518,7 +1527,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "95596ed3d6",
+      "bytes": 2771762
+    }
   },
   "fejlternet": {
     "name": "Fejlternet hjerte",
