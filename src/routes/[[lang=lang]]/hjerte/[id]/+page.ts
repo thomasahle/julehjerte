@@ -6,6 +6,7 @@ import type { HeartDesign, HeartNames } from '$lib/types/heart';
 import { heartName } from '$lib/utils/heartName';
 import { SHARED_HEART_ID } from '$lib/utils/shareDesign';
 import { langFromParam } from '$lib/i18n';
+import type { WeaveFilmEntry } from '$lib/weave/film';
 
 export const prerender = true;
 
@@ -33,6 +34,8 @@ export type HeartMeta = {
 		sharedTemplate: boolean;
 	};
 	photo: HeartPhoto | null;
+	/** The heart's weaving film, when one has been made of it as it is drawn now (scripts/weave). */
+	film: WeaveFilmEntry | null;
 };
 
 /** One entry in the detail page's "Flere {kategori}" row. */

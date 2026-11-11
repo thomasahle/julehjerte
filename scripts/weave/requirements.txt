@@ -1,0 +1,10 @@
+numpy
+scipy
+shapely>=2.0
+svgelements
+triangle
+ipctk==1.6.1
+# optional
+pypardiso; platform_machine == "x86_64"
+playwright
+pillow

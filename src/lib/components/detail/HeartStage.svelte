@@ -4,8 +4,10 @@
   (docs/redesign/DESIGN.md §4).
 
   Views, in order: the woven heart, a photo of the finished heart (only the seven
-  gallery hearts that have one), and the printable template(s) — one when the two
-  lobes share a template, otherwise left and right.
+  gallery hearts that have one), the printable template(s) — one when the two
+  lobes share a template, otherwise left and right — and the weaving film (the
+  gallery hearts that have one: WeaveFilm.svelte). The film's tile is a drawing,
+  the same for every heart; the film itself is fetched when the tile is chosen.
 
   The thumbnails are real <button>s with aria-pressed, so the view can be swapped
   from the keyboard.
@@ -28,18 +30,22 @@
 	import HangingHeart from '$lib/components/HangingHeart.svelte';
 	import PaperHeartSVG from '$lib/components/PaperHeartSVG.svelte';
 	import TemplatePreview from '$lib/components/TemplatePreview.svelte';
+	import WeaveFilm from '$lib/components/detail/WeaveFilm.svelte';
 	import { t, type Language } from '$lib/i18n';
 	import type { HeartDesign } from '$lib/types/heart';
 	import { pairAttributes } from '$lib/utils/palette';
 	import { heartImageFit, heartImageRibbonBand } from '$lib/heartImage';
+	import type { WeaveFilmEntry } from '$lib/weave/film';
 
-	type ViewId = 'heart' | 'photo' | 'left' | 'right';
+	type ViewId = 'heart' | 'photo' | 'left' | 'right' | 'film';
 
 	interface Props {
 		/** Null while a user/shared heart is still being read in the browser. */
 		design: HeartDesign | null;
 		/** Photo of the finished heart, if this gallery heart has one. */
 		photo?: { src: string; width: number; height: number; alt: string } | null;
+		/** The heart's weaving film, if this gallery heart has one. */
+		film?: (WeaveFilmEntry & { id: string }) | null;
 		/** False when the lobes need one template each. */
 		sharedTemplate?: boolean;
 		lang: Language;
@@ -49,7 +55,7 @@
 		image?: { src: string; alt: string } | null;
 	}
 
-	let { design, photo = null, sharedTemplate = true, lang, idPrefix, image = null }: Props = $props();
+	let { design, photo = null, film = null, sharedTemplate = true, lang, idPrefix, image = null }: Props = $props();
 
 	const fit = heartImageFit();
 	const imageStyle = `width: ${fit.width}; margin-left: ${fit.left}; margin-top: ${fit.top}; clip-path: inset(${Number((heartImageRibbonBand() * 100).toFixed(3))}% 0 0 0);`;
@@ -63,6 +69,7 @@
 				label: sharedTemplate ? t('template', lang) : t('templateLeft', lang)
 			});
 			if (!sharedTemplate) list.push({ id: 'right', label: t('templateRight', lang) });
+			if (film) list.push({ id: 'film', label: t('weaveView', lang) });
 		}
 		return list;
 	});
@@ -96,6 +103,11 @@
 				alt={photo.alt}
 			/>
 		</div>
+	{:else if shownView === 'film' && film}
+		<!-- Keyed: going on to another heart's page while the film is shown starts that heart's film. -->
+		{#key film.id}
+			<WeaveFilm id={film.id} entry={film} {lang} />
+		{/key}
 	{:else}
 		<div class="stage-media">
 			<div class="stage-template">
@@ -105,7 +117,7 @@
 	{/if}
 </div>
 
-<div class="thumbs">
+<div class="thumbs" class:is-many={views.length > 3}>
 	{#each views as v (v.id)}
 		{@const pair = v.id === 'heart' && design ? pairAttributes(design.id) : undefined}
 		<button
@@ -121,6 +133,7 @@
 			<span
 				class="thumb"
 				class:thumb-heart={v.id === 'heart'}
+				class:thumb-film={v.id === 'film'}
 				aria-hidden="true"
 				data-pair={pair?.['data-pair']}
 				style={pair?.style}
@@ -151,6 +164,23 @@
 					<!-- Alt text for search engines: until the photo is chosen, this
 					     is the only <img> of it on the page. -->
 					<img class="thumb-photo" src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
+				{:else if v.id === 'film'}
+					<!-- The two halves on the cutting mat, about to be woven, and a play mark. The heart
+					     stands on its point, so each half is drawn in the square's own frame, turned 45°. -->
+					<svg viewBox="0 0 100 100">
+						<g transform="translate(50 50) rotate(45)">
+							<g transform="translate(-9 9)">
+								<path d="M-17 -17 H17 V17 H-17 A17 17 0 0 1 -17 -17 Z" fill="#f4f1e9" />
+								<path d="M-21 -5.7 H17 M-21 5.7 H17" stroke="#b9c2b6" stroke-width="1.2" fill="none" />
+							</g>
+							<g transform="translate(9 -9)">
+								<path d="M-17 17 V-17 A17 17 0 0 1 17 -17 V17 Z" fill="#b91313" />
+								<path d="M-5.7 -21 V17 M5.7 -21 V17" stroke="#7d0c0c" stroke-width="1.2" fill="none" />
+							</g>
+						</g>
+						<circle cx="50" cy="52" r="15" fill="#ffffff" />
+						<path d="M45.5 44.5 L58 52 L45.5 59.5 Z" fill="#1c3329" />
+					</svg>
 				{:else if design}
 					<TemplatePreview {design} lobe={v.id === 'right' ? 'right' : 'left'} size={200} marks={false} />
 				{/if}
@@ -271,6 +301,12 @@
 		background: var(--sky);
 	}
 
+	/* The film's tile is the cutting mat the film is shot on, edge to edge. */
+	.thumb-film {
+		background: #1f4d3b;
+		padding: 0;
+	}
+
 	.thumb-btn.is-active .thumb {
 		border-width: 2.5px;
 		border-color: var(--red);
@@ -360,6 +396,32 @@
 		.thumb-label {
 			font-size: 12px;
 			padding: 3px 8px;
+		}
+
+		/* Four or five tiles still share one row: they shrink together, and a long
+		   label takes two lines. */
+		.thumbs.is-many {
+			flex-wrap: nowrap;
+			gap: 8px;
+		}
+
+		.thumbs.is-many .thumb-btn {
+			flex: 0 1 96px;
+			width: auto;
+			min-width: 0;
+		}
+
+		.thumbs.is-many .thumb {
+			width: 100%;
+			max-width: 88px;
+			height: auto;
+			aspect-ratio: 1;
+		}
+
+		.thumbs.is-many .thumb-label {
+			white-space: normal;
+			border-radius: 10px;
+			padding: 3px 6px;
 		}
 	}
 </style>

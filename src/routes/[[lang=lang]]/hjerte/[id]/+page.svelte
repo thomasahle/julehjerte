@@ -174,6 +174,9 @@
     !isUserCreated && meta?.photo && info ? { ...meta.photo, alt: t("photoAlt", lang, { name: info.name }) } : null,
   );
 
+  // The heart's weaving film (gallery hearts only; made offline, scripts/weave).
+  let film = $derived(!isUserCreated && meta?.film ? { id: heartId, ...meta.film } : null);
+
   // A gallery heart's paragraph is written in both languages and resolved in +page.ts.
   // Anything else — a heart the visitor drew or one shared by link — shows whatever
   // description its maker typed, in whatever language that is.
@@ -468,6 +471,7 @@
           <HeartStage
             {design}
             {photo}
+            {film}
             {sharedTemplate}
             {lang}
             idPrefix={heartId}

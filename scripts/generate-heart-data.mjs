@@ -11,8 +11,10 @@
  *                                    the hearts at prerender time without fetching or
  *                                    parsing SVG in the browser
  *   src/lib/data/heart-meta.json     name/names/author/description/date/grid size/
- *                                    difficulty/symmetry/photo per heart for head tags and
- *                                    headers. `names` is the name per site language from
+ *                                    difficulty/symmetry/photo/film per heart for head tags and
+ *                                    headers. `film` is the heart's weaving film, when
+ *                                    scripts/weave/films.mjs has made one of the heart as it
+ *                                    is drawn now (scripts/weave/films-data.mjs). `names` is the name per site language from
  *                                    the SVG's <title xml:lang="da"> / <title xml:lang="en">,
  *                                    present only when the SVG has one; `name` (the plain
  *                                    <title>) is the fallback ($lib/utils/heartName)
@@ -65,6 +67,7 @@ import { Resvg } from '@resvg/resvg-js';
 import { socialCardBuilder } from './social-cards.mjs';
 import { parseJsonc } from '../src/lib/utils/jsonc.js';
 import { restoreResavedHearts, warn } from './restore-resaved-hearts.mjs';
+import { filmFor, readFilms } from './weave/films-data.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const heartsJsonPath = path.join(root, 'hearts.jsonc');
@@ -145,6 +148,15 @@ function findPhoto(id) {
     return { src: `/hearts/photos/${id}.${ext}`, ...size };
   }
   return null;
+}
+
+// The heart's weaving film, if it has one that can be shown. A film left behind by a
+// redrawn heart is not an error: the page goes without until the film is made again.
+const films = readFilms(root);
+function findFilm(id, svgText) {
+  const { film, why } = filmFor(root, films, id, svgText);
+  if (why) warn(`static/hearts/${id}.svg`, `${id} has no weaving film: ${why} (node scripts/weave/films.mjs ${id})`);
+  return film;
 }
 
 function roundCoord(value) {
@@ -273,7 +285,8 @@ try {
       if (!fs.existsSync(svgPath)) {
         throw new Error(`hearts.jsonc lists "${id}" but ${path.relative(root, svgPath)} does not exist`);
       }
-      const parsed = parseHeartFromSVG(fs.readFileSync(svgPath, 'utf8'), `${id}.svg`);
+      const svgText = fs.readFileSync(svgPath, 'utf8');
+      const parsed = parseHeartFromSVG(svgText, `${id}.svg`);
       if (!parsed) {
         throw new Error(`Failed to parse ${path.relative(root, svgPath)}`);
       }
@@ -311,7 +324,8 @@ try {
           mirrorSymmetry: symmetry.mirrorSymmetry,
           sharedTemplate: lobesShareTemplate(design.fingers, design.gridSize)
         },
-        photo: findPhoto(id)
+        photo: findPhoto(id),
+        film: findFilm(id, svgText)
       };
     }
   } finally {
@@ -353,8 +367,9 @@ try {
   const designsChanged = writeIfChanged(designsPath, formatDesigns(designs));
   const descriptionsChanged = writeIfChanged(descriptionsPath, `${JSON.stringify(descriptions, null, 2)}\n`);
   const withPhoto = Object.values(meta).filter((m) => m.photo).length;
+  const withFilm = Object.values(meta).filter((m) => m.film).length;
   console.log(
-    `heart-data: ${ids.length} hearts (${withPhoto} with photo) -> ` +
+    `heart-data: ${ids.length} hearts (${withPhoto} with photo, ${withFilm} with weaving film) -> ` +
       `${path.relative(root, metaPath)}${metaChanged ? '' : ' (unchanged)'}, ` +
       `${path.relative(root, cardsPath)}${cardsChanged ? '' : ' (unchanged)'}, ` +
       `${path.relative(root, designsPath)}${designsChanged ? '' : ' (unchanged)'}, ` +
