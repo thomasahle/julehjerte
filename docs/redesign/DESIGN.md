@@ -497,14 +497,16 @@ about mistakes, the final strip, paper choice, printing, enlargement and other p
 Four preparation cards and three weaving cards become single-column cards on phones. Text remains
 in the initial HTML. All interface copy is translated in `src/lib/i18n/translations.ts`.
 
-The companion guide at `/julehjerter-uden-printer/` (English
-`/en/christmas-hearts-without-a-printer/`) explains tracing a PDF from a screen onto thin paper.
-Seven `GuideTrace` SVGs show choosing the scale, securing and tracing paper, cutting out the loose
-template on a table, aligning it with folded coloured paper, and cutting the two halves. It distinguishes
-cutting the loose template's bottom edge from preserving the fold in the coloured paper. Paper advice
-starts with a small test; the optional iPad touch-lock tip links to Apple's instructions. Links from the
-main guide and heart detail panels make it discoverable, and its final link jumps to the weaving steps.
-The route table, metadata and sitemap include both language versions.
+Under the four preparation cards a second row of four shows the same preparation without a printer:
+open the heart and tap "Tegn af" (the tracing mode of `TRACE.md`), lock the screen and tape thin paper
+onto it, place the tracing's dashed line on the fold, and cut. `GuideStep` takes `way="screen"` for these
+drawings. Wider screens show both rows; a phone shows one, chosen with "Med printer" / "Uden printer".
+The row replaced a page of its own (`/julehjerter-uden-printer/`, English
+`/en/christmas-hearts-without-a-printer/`), whose addresses are now two small static pages (`static/julehjerter-uden-printer/index.html` and its
+English twin) that send visitors on to the row (`#trace-heading`).
+
+All the guide's drawings are data: `src/lib/guide/drawings.ts` draws each scene with the wavering pen of
+`src/lib/guide/sketch.ts`, and `GuideDrawing.svelte` renders them in the page's colours.
 
 ### Titles and social previews
 

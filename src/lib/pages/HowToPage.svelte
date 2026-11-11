@@ -7,9 +7,25 @@
 	import { t, tArray, type Language } from '$lib/i18n';
 	import { href, heartPath } from '$lib/i18n/routes';
 	import { base } from '$app/paths';
+	import { onMount, tick } from 'svelte';
 
 	let { lang }: { lang: Language } = $props();
-	let steps = $derived(tArray('instructions', lang));
+	// The two halves are made with a printed template or one traced from a
+	// screen: two rows, of which a phone shows the chosen one.
+	let ways = $derived([
+		{ way: 'print' as const, id: 'prepare-heading', title: t('guidePrepareTitle', lang), steps: tArray('instructions', lang), note: '' },
+		{ way: 'screen' as const, id: 'trace-heading', title: t('guideTraceTitle', lang), steps: tArray('guideTraceSteps', lang), note: t('guideTraceNote', lang) }
+	]);
+	let way = $state<'print' | 'screen'>('print');
+	async function showScreen() {
+		way = 'screen';
+		await tick();
+		document.getElementById('trace-heading')?.scrollIntoView();
+	}
+	// Links to the old page without a printer arrive at the row that replaced it.
+	onMount(() => {
+		if (location.hash === '#trace-heading') void showScreen();
+	});
 	let weaveTitles = $derived(tArray('guideWeaveStepTitles', lang));
 	let weaveTexts = $derived(tArray('guideWeaveStepTexts', lang));
 	let questions = $derived(tArray('guideQuestions', lang));
@@ -23,7 +39,7 @@
 	<header class="intro">
 		<h1>{t('howToTitle', lang)}</h1>
 		<p>{t('howToIntro', lang)}</p>
-		<a href={href('noPrinter', lang)}>{t('noPrinterLink', lang)} <span aria-hidden="true">→</span></a>
+		<a href="#trace-heading" onclick={() => (way = 'screen')}>{t('guideTraceLink', lang)} <span aria-hidden="true">↓</span></a>
 	</header>
 
 	<div class="before-you-start">
@@ -38,21 +54,30 @@
 		</aside>
 	</div>
 
-	<section aria-labelledby="prepare-heading">
-		<h2 id="prepare-heading">{t('guidePrepareTitle', lang)}</h2>
-		<ol class="steps">
-			{#each steps as step, i (i)}
-				<li class="card">
-					<div class="art"><GuideStep step={i + 1} {lang} /></div>
-					<div class="caption">
-						<span class="number" aria-hidden="true">{i + 1}</span>
-						<p><span class="sr-only">{t('howToStepLabel', lang, { n: i + 1 })}: </span>{step}</p>
-					</div>
-				</li>
-			{/each}
-		</ol>
+	<div class="prepare">
+		<div class="ways" role="radiogroup" aria-label={t('guideWayLabel', lang)}>
+			<label><input type="radio" name="way" value="print" bind:group={way} /><span>{t('guideWayPrint', lang)}</span></label>
+			<label><input type="radio" name="way" value="screen" bind:group={way} /><span>{t('guideWayScreen', lang)}</span></label>
+		</div>
+		{#each ways as row (row.way)}
+			<section data-way={row.way} aria-labelledby={row.id}>
+				<h2 id={row.id}>{row.title}</h2>
+				<ol class="steps">
+					{#each row.steps as step, i (i)}
+						<li class="card">
+							<div class="art"><GuideStep step={i + 1} way={row.way} {lang} /></div>
+							<div class="caption">
+								<span class="number" aria-hidden="true">{i + 1}</span>
+								<p><span class="sr-only">{t('howToStepLabel', lang, { n: i + 1 })}: </span>{step}</p>
+							</div>
+						</li>
+					{/each}
+				</ol>
+				{#if row.note}<p class="diagram-note">{row.note}</p>{/if}
+			</section>
+		{/each}
 		<p class="note">{t('guidePrepareNote', lang)}</p>
-	</section>
+	</div>
 
 	<section class="weaving" aria-labelledby="weave-heading">
 		<h2 id="weave-heading">{t('guideWeaveTitle', lang)}</h2>
@@ -79,8 +104,11 @@
 	</section>
 
 	<section class="finish" aria-labelledby="finish-heading">
-		<h2 id="finish-heading">{t('guideFinishTitle', lang)}</h2>
-		<p class="reading-width">{t('guideFinishText', lang)}</p>
+		<div>
+			<h2 id="finish-heading">{t('guideFinishTitle', lang)}</h2>
+			<p class="reading-width">{t('guideFinishText', lang)}</p>
+		</div>
+		<div class="finished"><GuideWeave variant="finished" /></div>
 	</section>
 
 	<section class="questions" aria-labelledby="questions-heading">
@@ -192,6 +220,49 @@
 	.steps {
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
+	.prepare {
+		display: grid;
+		gap: 40px;
+	}
+	.prepare .note {
+		margin-top: 0;
+	}
+	/* The choice between the two rows is a phone's; wider screens show both. */
+	.ways {
+		display: none;
+		border: 1.5px solid var(--line);
+		border-radius: 8px;
+		overflow: hidden;
+		background: var(--white);
+	}
+	.ways label {
+		flex: 1 1 0;
+		position: relative;
+	}
+	.ways input {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		margin: 0;
+		cursor: pointer;
+	}
+	.ways span {
+		display: block;
+		padding: 10px 8px;
+		text-align: center;
+		font-size: 15px;
+		font-weight: 600;
+		color: var(--green);
+	}
+	.ways input:checked + span {
+		background: var(--green);
+		color: var(--white);
+	}
+	.ways input:focus-visible + span {
+		box-shadow:
+			inset 0 0 0 3px var(--blue),
+			inset 0 0 0 5px var(--white);
+	}
 	.weave-steps {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 		margin-top: 28px;
@@ -276,8 +347,15 @@
 		max-width: 800px;
 	}
 	.finish {
+		display: flex;
+		align-items: center;
+		gap: 32px;
 		border-left: 3px solid var(--gold);
 		padding-left: 24px;
+	}
+	.finished {
+		flex: none;
+		width: 220px;
 	}
 	.question-grid {
 		display: grid;
@@ -332,14 +410,30 @@
 		.before-you-start {
 			gap: 24px;
 		}
+		.prepare {
+			gap: 24px;
+		}
+		.ways {
+			display: flex;
+		}
+		.prepare:has(input[value='print']:checked) section[data-way='screen'],
+		.prepare:has(input[value='screen']:checked) section[data-way='print'] {
+			display: none;
+		}
 		.loop-lesson {
 			padding: 20px 16px;
 		}
 		.weave-steps .card {
 			display: flex;
+			align-items: stretch;
 		}
 		.weave-caption {
 			padding: 20px;
+		}
+		.finish {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 16px;
 		}
 	}
 </style>

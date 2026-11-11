@@ -49,8 +49,6 @@
 			? t("archiveMetaDescription", lang)
 			: routeKey === "generator"
 			? t("generatorMetaDescription", lang)
-			: routeKey === "noPrinter"
-			? t("noPrinterMetaDescription", lang)
 			: routeKey === "howTo"
 			? t("howToMetaDescription", lang)
 			: routeKey === "about"

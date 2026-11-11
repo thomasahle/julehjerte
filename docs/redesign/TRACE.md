@@ -1,7 +1,8 @@
 # "Tegn af fra skærmen" — tracing mode on the heart page
 
 A visitor without a printer lays thin paper on a tablet or phone and traces the
-cutting template (see `/julehjerter-uden-printer/`). Today the guide tells them
+cutting template (when this was written the guide for it was a page of its own,
+`/julehjerter-uden-printer/`; since 2026-11 it is the second row of `/saadan-goer-du/`). Today the guide tells them
 to open the PDF and use iPad's Guided Access so the picture does not move. This
 feature builds the lightbox into the site: a full-screen white surface showing
 one lobe's template, sized and placed by the visitor, then **locked** so touches

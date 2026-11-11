@@ -391,7 +391,7 @@ export const translations = {
     done: 'Færdig',
     traceCalibrated: 'Kalibreret til denne skærm',
     traceLock: 'Lås skærmen',
-    traceHint: 'Skru lysstyrken op, læg tyndt papir på skærmen, og lås, før du tegner.',
+    traceHint: 'Skru lysstyrken op, og lås skærmen. Tape så tyndt papir fast på den, før du tegner.',
     traceUnlock: 'Lås op',
     traceHoldToUnlock: 'Hold 2 sek. for at låse op',
     traceLockedAnnouncement: 'Skærmen er låst. Hold knappen nederst til højre i 2 sekunder, eller tryk Escape, for at låse op.',
@@ -1079,10 +1079,24 @@ export const translations = {
     guideMaterialsTitle: 'Det skal du bruge',
     guideMaterials: [
       'Papir i to farver, fx glanspapir eller almindeligt farvet papir på 80 g/m².',
-      'En printet skabelon, en saks og evt. papirclips til at holde skabelonen fast.',
+      'En printet skabelon, en saks og evt. papirclips til at holde skabelonen fast. Uden printer: tyndt papir, en blyant og lidt tape, så du kan tegne skabelonen af fra en skærm.',
       'En ekstra papirstrimmel og lidt lim til hanken.'
     ],
     guidePrepareTitle: 'Print, fold og klip',
+    // The same four steps without a printer: the heart page's "Tegn af" (traceFromScreen)
+    guideTraceLink: 'Ingen printer? Tegn skabelonen af fra skærmen',
+    guideTraceTitle: 'Uden printer: tegn af, fold og klip',
+    guideTraceSteps: [
+      'Åbn hjertet på en tablet eller telefon, og tryk på »Tegn af«. Vælg en bredde, der passer til dit papir.',
+      'Lås skærmen, og tape så tyndt papir fast på den, så det ligger stille. Tegn alle linjerne af med blyant, også den stiplede.',
+      'Fold det farvede papir på midten. Læg tegningens stiplede linje langs folden.',
+      'Klip omridset gennem begge lag. Klip så fra folden langs hver indre linje, helt til linjens endepunkt.'
+    ],
+    guideTraceNote: 'Kalkepapir eller et tyndt, lyst ark er nemmest at se igennem; skru op for skærmens lys. Har hjertet to forskellige skabeloner, så tegn begge af i samme bredde.',
+    /** The choice between the two rows on a phone */
+    guideWayLabel: 'Har du en printer?',
+    guideWayPrint: 'Med printer',
+    guideWayScreen: 'Uden printer',
     guidePrepareNote: 'Lav én halvdel i hver farve. Behold papiret foldet: hver strimmel skal være en løkke med to lag, som hænger sammen ved folden.',
     guideWeaveTitle: 'Sådan fletter du løkkerne sammen',
     guideWeaveIntro: 'Læg den hvide halvdel fra venstre og den røde oppefra, så de står vinkelret på hinanden. De runde ender vender væk fra hinanden. Begynd med den hvide strimmel nærmest den røde, og arbejd én strimmel helt igennem ad gangen.',
@@ -1122,86 +1136,6 @@ export const translations = {
       'Forstør begge halvdele med samme procent. Ved 150 % bliver alle længder halvanden gang så store: 8 cm bliver fx 12 cm. Brug større papir eller udskriv fordelt på flere ark, hvis skabelonen ikke kan være på A4.',
       'Princippet med hele løkker er det samme. Flere strimler, buer og smalle hjørner kræver mere plads og tålmodighed. Følg den enkelte skabelons klippelinjer og råd; nogle mønstre har forskellige skabeloner til de to halvdele.'
     ],
-
-    // Tracing a template without a printer
-    noPrinterLink: 'Ingen printer? Tegn skabelonen af fra skærmen',
-    noPrinterTitle: 'Julehjerter uden printer',
-    noPrinterMetaDescription: 'Lav julehjerter uden printer: tegn skabelonen af fra en skærm, læg den på foldet papir, og klip. Syv trin med illustrationer og råd om papir og størrelse.',
-    noPrinterIntro: 'Brug en tablet som lysbord: læg tyndt papir over skabelonen på skærmen, og tegn linjerne af. Bagefter bruger du tegningen som klippeskabelon på dit julepapir. Her følger vi det klassiske hjerte med tre strimler.',
-    noPrinterMaterials: [
-      'En tablet eller en computerskærm, der kan vise hele skabelonen.',
-      'Kalkepapir eller et tyndt, lyst ark papir, som du kan se linjerne igennem.',
-      'En blød blyant, en lineal og eventuelt lidt tape til et cover, der tåler det.',
-      'Papir i to farver, en saks og papirclips. En papirstrimmel og lim til hanken.'
-    ],
-    noPrinterStartTitle: 'Prøv først et lille hjørne',
-    noPrinterStartText: 'Læg et stykke af dit papir over en klippelinje på skærmen. Kan du se den tydeligt og tegne let på papiret? Hvis ikke, så prøv tyndere papir eller dæmp lyset i rummet. Papir og skærme er forskellige.',
-    noPrinterStepsTitle: 'Fra skærm til klippeskabelon',
-    noPrinterStepTitles: [
-      'Åbn skabelonen på skærmen',
-      'Vælg størrelsen én gang',
-      'Læg papiret fast',
-      'Tegn alle linjerne af',
-      'Lav en løs papirskabelon',
-      'Læg skabelonen på foldet julepapir',
-      'Klip to halvdele, og flet hjertet'
-    ],
-    noPrinterStepTexts: [
-      'Vælg et hjerte i galleriet, tryk på »Hent skabelon«, og hent PDF’en. Åbn den hentede PDF på din tablet eller computer. Du skal bruge tegningen med klippelinjer og foldelinje, ikke billedet af det færdige hjerte.',
-      'Zoom, indtil hele skabelonen kan være på skærmen. For det klassiske hjerte kan du fx vælge en bredde på 6 cm og måle den med en lineal. Læg tabletten fladt og stabilt. Indstil skærmens lys, så linjerne er tydelige gennem dit papir.',
-      'Læg et enkelt lag kalkepapir over skabelonen. Hold det med den frie hånd. Har tabletten et cover, der tåler tape, kan du fastgøre papiret til coveret med to små stykker. Sæt ikke tape direkte på skærmen. Tjek, at papiret ikke forskubber sig.',
-      'Tegn først den runde top og de lige sider. Tegn så hver indre klippelinje helt til dens endepunkt. Tegn foldelinjen stiplet, og skriv »fold« ved den. Brug lette blyantsstreger uden at presse. Løft forsigtigt et hjørne, og kontrollér, at du har alle linjer med.',
-      'Tag papiret helt væk fra skærmen, og læg det på bordet. Klip den tegnede skabelon fri langs den runde top, siderne og den lige bund ved foldelinjen. Lad de indre klippelinjer være urørte, så skabelonen stadig er ét stykke.',
-      'Fold det farvede papir på midten. Læg papirskabelonens lige bund præcis langs folden, med den runde top ind mod papiret. Hold den fast med papirclips væk fra klippelinjerne. Skabelonen ligger oven på begge lag af det foldede papir.',
-      'Klip rundt om den runde top og de to sider gennem skabelonen og begge lag julepapir. Klip derefter fra folden ind langs hver klippelinje til dens endepunkt. Fjern skabelonen, og behold julepapiret foldet. Lav den anden halvdel i den anden farve, og følg flettevejledningen.'
-    ],
-    noPrinterStepNotes: [
-      'Begynd med det klassiske 3×3-hjerte. Det har lige snit og bruger samme skabelon til begge farver.',
-      'Behold samme zoom, skærmretning og visning, når du tegner en anden skabelonhalvdel. »100 %« på en skærm er ikke en garanti for et bestemt centimetermål.',
-      'På en lodret computerskærm skal du kunne holde papiret roligt uden at trykke mod skærmen. En tablet, der ligger fladt, er lettere at arbejde ved.',
-      'Har hjertet to forskellige skabeloner, så tegn begge af i samme målestok, og mærk dem »venstre« og »højre«. Tilpas dem ikke hver for sig til skærmens størrelse.',
-      'Her klipper du kun i det løse skabelonpapir. Det farvede papir kommer først med i næste trin. Saks og hobbykniv skal altid bruges væk fra skærmen.',
-      'Folden er dér, hvor de to lag hænger sammen. Den må ikke forveksles med arkets to løse kanter.',
-      'Klip ikke folden af det farvede papir. Hver strimmel skal ende som en løkke. Til det klassiske hjerte kan den første halvdel, stadig foldet, også bruges som skabelon til den anden.'
-    ],
-    noPrinterCaptions: [
-      'Åbn PDF-skabelonen, også selv om du ikke vil printe.',
-      'Mål bredden på skærmen. Behold derefter samme zoom.',
-      'Tyndt papir over skærmen. Tape sidder på coveret.',
-      'Omrids, klippelinjer og stiplet foldelinje skal alle med.',
-      'På bordet: klip kun omridset på det løse skabelonpapir.',
-      'Skabelonens lige bund ligger præcis på folden.',
-      'Klip fra folden. De to papirlag bliver til løkker.'
-    ],
-    noPrinterScreenHelpTitle: 'Flytter billedet sig, når du tegner?',
-    noPrinterScreenHelpTrace: 'Nemmest: åbn hjertet på juleflet.dk, og tryk på »Tegn af«. Siden låser skabelonen, så den ikke flytter sig, mens du tegner.',
-    noPrinterScreenHelpTraceLink: 'Åbn det klassiske hjerte',
-    noPrinterScreenHelpText: 'På iPad kan Forenklet adgang midlertidigt slå berøring fra. Indstil først PDF-visningen og størrelsen, og følg Apples vejledning for at starte og afslutte funktionen. Slå berøring til igen, når du skal flytte til en anden skabelon.',
-    noPrinterScreenHelpLink: 'Apples vejledning til Forenklet adgang',
-    noPrinterScreenHelpUrl: 'https://support.apple.com/da-dk/111795',
-    noPrinterQuestionsTitle: 'Hvilket papir kan du tegne på?',
-    noPrinterQuestions: [
-      'Kan jeg bruge almindeligt papir?',
-      'Hvad med bagepapir eller smørrebrødspapir?',
-      'Kan jeg tegne direkte på glanspapir?',
-      'Kan jeg bruge overheadplast og tusch?',
-      'Hvad hvis jeg kun har en telefon?'
-    ],
-    noPrinterAnswers: [
-      'Prøv med et tyndt, hvidt ark. Om du kan se linjerne, afhænger af papiret, skærmens lys og lyset i rummet. Kalkepapir er lavet til at tegne igennem og er et oplagt sted at starte. Brug ikke hårdere tryk som løsning på utydelige linjer.',
-      'Bagepapir kan være glat, skride rundt og være svært at tegne på med blyant. Pergament- og smørrebrødspapir kan også have forskellige overflader. Prøv en lille rest, før du tegner hele mønsteret. Vælg det papir, du både kan se og tegne tydeligt igennem.',
-      'Kun hvis du kan se alle linjer tydeligt gennem ét lag. Prøv på bagsiden, før du begynder. Glanspapir kan være for tæt til lyset; så er en separat papirskabelon nemmere. Der skal være plads til begge lag på arket. Fold først efter aftegningen, så folden rammer den markerede linje præcist.',
-      'Gennemsigtig plast lader dig se skabelonen, men kræver en pen, der hæfter på plast. Tuschen må ikke komme på skærmen eller smitte af. En plastskabelon kræver også et ekstra trin for at overføre de indre snit til julepapiret. Guiden bruger derfor papir, som du kan klippe igennem sammen med julepapiret.',
-      'En telefon giver mindre plads. Vælg et enkelt mønster, hvor hele skabelonen og dens linjer kan ses tydeligt på én gang. Meget små strimler er sværere at klippe og flette. Hvis det bliver for småt, så brug en større skærm eller få PDF\'en printet hos nogen med en printer.'
-    ],
-    noPrinterFinishTitle: 'Nu er du klar til at flette',
-    noPrinterFinishText: 'Du har to foldede halvdele med hele løkker. Fortsæt direkte til fletningen i den almindelige vejledning.',
-    noPrinterFinishLink: 'Se, hvordan du fletter løkkerne sammen',
-    noPrinterFoldLabel: 'fold',
-    noPrinterCoverLabel: 'cover',
-    noPrinterTableLabel: 'på bordet',
-    noPrinterLayersLabel: 'to lag',
-    noPrinterSizeLabel: 'fx 6 cm',
 
     // "Sådan gør du" / "How to" page
     howToTitle: 'Sådan fletter du et julehjerte',
@@ -1664,7 +1598,7 @@ export const translations = {
     done: 'Done',
     traceCalibrated: 'Calibrated for this screen',
     traceLock: 'Lock screen',
-    traceHint: 'Turn the brightness up, lay thin paper on the screen, and lock it before you draw.',
+    traceHint: 'Turn the brightness up and lock the screen. Then tape thin paper onto it before you draw.',
     traceUnlock: 'Unlock',
     traceHoldToUnlock: 'Hold 2 s to unlock',
     traceLockedAnnouncement: 'The screen is locked. Hold the button in the bottom right corner for 2 seconds, or press Escape, to unlock.',
@@ -2348,10 +2282,24 @@ export const translations = {
     guideMaterialsTitle: 'What you need',
     guideMaterials: [
       'Paper in two colours, such as glossy craft paper or ordinary 80 gsm coloured paper.',
-      'A printed template, scissors and optional paper clips to hold the template in place.',
+      'A printed template, scissors and optional paper clips to hold the template in place. Without a printer: thin paper, a pencil and a little tape, so you can trace the template from a screen.',
       'An extra strip of paper and a little glue for the handle.'
     ],
     guidePrepareTitle: 'Print, fold and cut',
+    // The same four steps without a printer: the heart page's "Trace" (traceFromScreen)
+    guideTraceLink: 'No printer? Trace the template from your screen',
+    guideTraceTitle: 'Without a printer: trace, fold and cut',
+    guideTraceSteps: [
+      'Open the heart on a tablet or phone and tap “Trace”. Choose a width that suits your paper.',
+      'Lock the screen, then tape thin paper onto it so it can’t move. Trace every line in pencil, including the dashed one.',
+      'Fold the coloured paper in half. Place your tracing’s dashed line along the fold.',
+      'Cut the outline through both layers. Then cut from the fold along each inner line, right to its endpoint.'
+    ],
+    guideTraceNote: 'Tracing paper or a thin, light sheet is easiest to see through; turn the screen brightness up. If the heart has two different templates, trace both at the same width.',
+    /** The choice between the two rows on a phone */
+    guideWayLabel: 'Do you have a printer?',
+    guideWayPrint: 'With a printer',
+    guideWayScreen: 'Without a printer',
     guidePrepareNote: 'Make one half in each colour. Keep the paper folded: each strip must be a two-layer loop, joined at the fold.',
     guideWeaveTitle: 'How to interlock the loops',
     guideWeaveIntro: 'Place the white half from the left and the red half from above, at right angles. The rounded ends point away from each other. Start with the white strip nearest the red half, and weave one whole strip at a time.',
@@ -2391,86 +2339,6 @@ export const translations = {
       'Enlarge both halves by the same percentage. At 150%, every length becomes one and a half times as large: 8 cm becomes 12 cm, for example. Use larger paper or tiled printing if the template no longer fits on A4.',
       'The principle of weaving complete loops stays the same. More strips, curves and narrow corners take more room and patience. Follow each template’s cutting lines and advice; some patterns use a different template for each half.'
     ],
-
-    // Tracing a template without a printer
-    noPrinterLink: 'No printer? Trace the template from your screen',
-    noPrinterTitle: 'Christmas hearts without a printer',
-    noPrinterMetaDescription: 'Make woven Christmas hearts without a printer: trace a template from your screen, place it on folded paper and cut. Seven illustrated steps with paper and sizing tips.',
-    noPrinterIntro: 'Use a tablet as a lightbox: lay thin paper over the template on screen and trace the lines. Then use your tracing as a cutting template on coloured paper. This guide follows the classic heart with three strips.',
-    noPrinterMaterials: [
-      'A tablet or computer screen large enough to display the whole template.',
-      'Tracing paper or a thin, light sheet through which you can see the lines.',
-      'A soft pencil, a ruler and optional tape for a tablet case that can tolerate it.',
-      'Paper in two colours, scissors and paper clips. An extra paper strip and glue for the handle.'
-    ],
-    noPrinterStartTitle: 'Try a small piece first',
-    noPrinterStartText: 'Place a scrap of your paper over a cutting line on screen. Can you see it clearly and trace it with light pressure? If not, try thinner paper or dim the room lighting. Papers and screens vary.',
-    noPrinterStepsTitle: 'From screen to cutting template',
-    noPrinterStepTitles: [
-      'Open the template on screen',
-      'Choose the size once',
-      'Keep the paper still',
-      'Trace every line',
-      'Cut out your paper template',
-      'Place the template on folded paper',
-      'Cut two halves and weave the heart'
-    ],
-    noPrinterStepTexts: [
-      'Choose a heart in the gallery, select “Get template” and download the PDF. Open the downloaded PDF on your tablet or computer. You need the drawing with cutting lines and a fold line, rather than the picture of the finished heart.',
-      'Zoom until the whole template fits on screen. For the classic heart, you might choose a width of 6 cm and check it with a ruler. Lay the tablet flat on a stable surface. Adjust the screen brightness until the lines show clearly through your paper.',
-      'Place a single sheet of tracing paper over the template. Hold it with your free hand. If your tablet has a case that tolerates tape, attach the paper to the case with two small pieces. Keep tape off the screen itself. Check that the paper stays in place.',
-      'Trace the rounded top and straight sides first. Then trace each internal cutting line all the way to its endpoint. Draw the fold line as dashes and write “fold” next to it. Use light pencil strokes without pressing. Carefully lift a corner to check you have copied every line.',
-      'Take the paper completely off the screen and put it on the table. Cut out the traced template around the rounded top, sides and straight bottom at the fold line. Leave the internal cutting lines uncut so the template stays in one piece.',
-      'Fold your coloured paper in half. Place the straight bottom of the paper template exactly along the fold, with the rounded top pointing into the paper. Hold it with paper clips away from the cutting lines. The template sits on top of both layers of folded paper.',
-      'Cut around the rounded top and both sides, through the template and both layers of coloured paper. Then cut from the fold along each internal line to its endpoint. Remove the template and keep the coloured paper folded. Make the other half in the second colour, then follow the weaving guide.'
-    ],
-    noPrinterStepNotes: [
-      'Start with the classic 3×3 heart. Its cuts are straight and both colours use the same template.',
-      'Keep the same zoom, screen orientation and view when tracing a second template half. “100%” on screen does not guarantee a particular measurement in centimetres.',
-      'On an upright computer screen, you need to hold the paper still without pressing against the display. A tablet lying flat is easier to work on.',
-      'If the heart has two different templates, trace both at the same scale and label them “left” and “right”. Do not resize each one separately to fill the screen.',
-      'You are only cutting the loose tracing paper here. The coloured paper comes in the next step. Always use scissors and craft knives away from the screen.',
-      'The fold is where the two layers are joined. Do not confuse it with the two loose edges of the sheet.',
-      'Do not cut the fold off the coloured paper. Each strip must remain a loop. For the classic heart, you can also use the first half, still folded, as a template for the second.'
-    ],
-    noPrinterCaptions: [
-      'Open the PDF template, even though you will not print it.',
-      'Measure the width on screen, then keep the same zoom.',
-      'Thin paper over the screen. Tape attaches to the case.',
-      'Copy the outline, cutting lines and dashed fold line.',
-      'On the table: cut only the outline of the loose tracing.',
-      'The straight bottom of the template sits on the fold.',
-      'Cut in from the fold. Both paper layers form loops.'
-    ],
-    noPrinterScreenHelpTitle: 'Does the image move as you trace?',
-    noPrinterScreenHelpTrace: 'Easiest: open the heart on juleflet.dk and tap “Trace”. The page locks the template so it does not move while you draw.',
-    noPrinterScreenHelpTraceLink: 'Open the classic heart',
-    noPrinterScreenHelpText: 'On iPad, Guided Access can temporarily disable touch. Set the PDF view and size first, then follow Apple’s instructions to start and end the session. Enable touch again when you need to move to another template.',
-    noPrinterScreenHelpLink: 'Apple’s guide to Guided Access',
-    noPrinterScreenHelpUrl: 'https://support.apple.com/en-us/111795',
-    noPrinterQuestionsTitle: 'Which paper can you trace onto?',
-    noPrinterQuestions: [
-      'Can I use ordinary paper?',
-      'What about baking paper or sandwich paper?',
-      'Can I trace directly onto glossy craft paper?',
-      'Can I use transparency film and a marker?',
-      'What if I only have a phone?'
-    ],
-    noPrinterAnswers: [
-      'Try a thin sheet of white paper. Visibility depends on the paper, screen brightness and room lighting. Tracing paper is made for copying lines through a sheet and is a useful starting point. Pressing harder will not help if the lines are hard to see.',
-      'Baking paper can be slippery, slide around and resist pencil marks. Parchment and sandwich papers also come with different surfaces. Test a scrap before tracing the whole pattern. Choose paper that lets you both see and draw the lines clearly.',
-      'Only if every line shows clearly through one layer. Try the reverse side before starting. Glossy paper may be too opaque; a separate paper template is then easier. Leave enough paper for both layers. Fold only after tracing so the crease meets the marked fold line exactly.',
-      'Clear film lets you see the template but needs a pen that writes on plastic. Keep ink off the screen and avoid smudging. A plastic template also needs an extra step to transfer its internal cuts onto the coloured paper. This guide uses paper so you can cut through it together with the coloured sheet.',
-      'A phone gives you less room. Choose a simple pattern whose whole template and lines are clearly visible at once. Tiny strips are harder to cut and weave. If it is too small, use a larger screen or ask someone with a printer to print the PDF.'
-    ],
-    noPrinterFinishTitle: 'Ready to weave',
-    noPrinterFinishText: 'You now have two folded halves with intact loops. Go straight to the weaving steps in the main guide.',
-    noPrinterFinishLink: 'See how to weave the loops together',
-    noPrinterFoldLabel: 'fold',
-    noPrinterCoverLabel: 'case',
-    noPrinterTableLabel: 'on the table',
-    noPrinterLayersLabel: 'two layers',
-    noPrinterSizeLabel: 'e.g. 6 cm',
 
     // "Sådan gør du" / "How to" page
     howToTitle: 'How to weave a Christmas heart',
