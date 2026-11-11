@@ -1228,7 +1228,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "828ba2b8b9",
+      "bytes": 4763470
+    }
   },
   "amy-pinecone": {
     "name": "Pinecone",

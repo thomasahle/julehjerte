@@ -40,5 +40,6 @@
   "stjerne": {"design":"86f97bdb56dd199e","outcome":"unclean","v":"f3b2ebff25","bytes":2100079,"seconds":104,"crossings":9,"stretch":59,"magic":2,"magicFrames":832,"bad":0,"retries":2,"simSeconds":486,"made":"2026-11-11"},
   "stjerne-ramme": {"design":"23dcff85418f6334","outcome":"unclean","v":"37d935ae0e","bytes":6778870,"seconds":926,"crossings":81,"stretch":114,"magic":41,"magicFrames":13660,"bad":0,"retries":53,"simSeconds":899,"made":"2026-11-11"},
   "sun": {"design":"86521dc3d88f5c8f","outcome":"unsupported","reason":"3 and 3 cuts give 3 and 1 pieces; the cuts touch, cross or do not run from the fold to the lobe","made":"2026-11-11"},
+  "tragt": {"design":"e461d57057f11bd8","outcome":"unclean","v":"828ba2b8b9","bytes":4763470,"seconds":847,"crossings":100,"stretch":55,"magic":28,"magicFrames":6986,"bad":0,"retries":32,"simSeconds":542,"made":"2026-11-11"},
   "triple-heart": {"design":"e7bc5d66391ea022","outcome":"failed","reason":"the paper has no next step (the solve gave no numbers): a strip is not where the weaving expects it","made":"2026-11-11"}
 }
