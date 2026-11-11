@@ -377,10 +377,16 @@ def shape(La, alpha):
     th = np.minimum(us / RBEND, ab) + dl * np.clip((us - u0) / max(La - u0, 1e-6), 0, 1)
     thm = (th[1:] + th[:-1]) / 2; du = np.diff(us); al = np.r_[0, np.cumsum(np.cos(thm) * du)]; hi = np.r_[0, np.cumsum(np.sin(thm) * du)]
     return lambda u: (np.interp(u, us, al), np.interp(u, us, hi), np.interp(u, us, th))
+def leaving(isA, k, La):
+    """the points of a strip where it leaves the weave, at La along it. A strip with straight sides has no points just there (the mesh is
+    coarser than the first reach), so the reach grows until it holds some"""
+    lay = free_end(isA, k, 0)[:NP] & (SIGN != 0) & (S_ < La + 0.15); w = 0.02
+    while not (lay & (S_ > La - w)).any() and w < SQ: w *= 2
+    return lay & (S_ > La - w)
 def hover(isA, k, La, alpha, X, s0=0.0, slack=0.97, s1=None):
     """where a held stretch of a strip (from s0 to s1 along it; by default its folded end) is when the strip is held up at the angle alpha:
     the point at s0 and the direction toward the root"""
-    r, a = axes(isA); m = free_end(isA, k, 0)[:NP] & (SIGN != 0) & (S_ > La - 0.02) & (S_ < La + 0.15)
+    r, a = axes(isA); m = leaving(isA, k, La)
     Apt = X[:NP][m].mean(0); Apt = Apt + r * (La - S_[m].mean()); Apt[2] = ZHOME * sm(1 - alpha / 0.5)
     up = np.array([0, 0, 1.0]); d = -r; sh = shape(La, alpha)
     def at(s):
@@ -393,7 +399,7 @@ def pose(isA, k, La, alpha, wt=0.12, yaw=0.0, roll=0.0, smin=None):
     beyond: a light hand along the whole strip, so that it keeps the shape of paper rather than of cloth. yaw swings the end a little to the side
     (away from what is already woven), roll tilts up the edge that faces its own lobe; both come on gradually away from the weave."""
     r, a = axes(isA); ids = np.where((PIECE == isA) & (OWN == k) & (S_ < La - 0.02) & ((S_ >= smin) if smin is not None else True))[0]; lay = SIGN[ids] != 0
-    m = free_end(isA, k, 0)[:NP] & (SIGN != 0) & (S_ > La - 0.02) & (S_ < La + 0.15)
+    m = leaving(isA, k, La)
     Apt = X[:NP][m].mean(0) + r * (La - S_[m].mean()); base = Apt - a * (Apt @ a); base[2] = ZHOME * sm(1 - alpha / 0.5)
     d = -r; u = La - np.where(lay, S_[ids], -0.6 * ZI); al_, hi_, phi = shape(La, alpha)(u * 0.97)
     vc = VC[(isA, k)]; w = CF[ids] * (V_[ids] - vc); off = SIGN[ids] * ZI; g = sm(u / 0.5); ro = roll * g
