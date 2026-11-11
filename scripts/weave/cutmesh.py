@@ -36,35 +36,43 @@ def load_cuts(svg_path, per_seg=14):
     root = ET.parse(svg_path).getroot(); tag = lambda e: e.tag.split('}')[-1]
     vb = [float(v) for v in re.split(r'[ ,]+', root.get('viewBox', '0 0 100 100').strip())]
     out = {'A': [], 'B': []}; loose = []
+    tol = 1e-2 * max(vb[2:])                             # juleflet's own reader joins strokes that end within 1 of its 100
+    def joined(pieces, free=lambda p: True):
+        """pieces that meet end to end (at ends `free` allows) made into one line each"""
+        pieces = list(pieces); again = True
+        while again:
+            again = False
+            for i in range(len(pieces)):
+                for j in range(len(pieces)):
+                    if i == j: continue
+                    A, B = pieces[i], pieces[j]
+                    for A2, B2 in ((A, B), (A, B[::-1]), (A[::-1], B)):
+                        if np.linalg.norm(A2[-1] - B2[0]) < tol and np.linalg.norm(A2[0] - B2[-1]) > tol and free(A2[-1]) and free(B2[0]):
+                            pieces[i] = np.vstack([A2, B2[1:]]); del pieces[j]; again = True; break
+                    if again: break
+                if again: break
+        return pieces
     def walk(el, M):
         if tag(el) in ('defs', 'metadata', 'clipPath', 'mask', 'pattern', 'symbol'): return
         if el.get('transform'): M = Matrix(el.get('transform')) * M
         if tag(el) == 'path' and el.get('d'):
-            pts = []
+            pts = []; own = []
             pth = Path(el.get('d')) * M; pth.reify()
             for seg in pth:
                 if isinstance(seg, Move):                # a new sub-path: a separate piece of line
-                    if len(pts) > 1: loose.append(np.array(pts))
+                    if len(pts) > 1: own.append(np.array(pts))
                     pts = []; continue
                 for k in range(per_seg + 1):
                     p = seg.point(k / per_seg)
                     if not pts or abs(p.x - pts[-1][0]) + abs(p.y - pts[-1][1]) > 1e-9: pts.append((p.x, p.y))
-            if len(pts) > 1: loose.append(np.array(pts))
+            if len(pts) > 1: own.append(np.array(pts))
+            loose.extend(joined(own))                    # one path drawn in several strokes is one cut
         for ch in el: walk(ch, M)
     walk(root, Matrix())
-    # pieces drawn separately that meet end to end are one cut (a cut is sometimes drawn in two strokes)
-    tol = 1e-3 * max(vb[2:]); again = True
-    while again:
-        again = False
-        for i in range(len(loose)):
-            for j in range(len(loose)):
-                if i == j: continue
-                A, B = loose[i], loose[j]
-                for A2, B2 in ((A, B), (A, B[::-1]), (A[::-1], B)):
-                    if np.abs(A2[-1] - B2[0]).sum() < tol and np.linalg.norm(A2[0] - B2[-1]) > tol:
-                        loose[i] = np.vstack([A2, B2[1:]]); del loose[j]; again = True; break
-                if again: break
-            if again: break
+    # a cut is sometimes split over two paths: join those too, but only where both stop inside the square. Cuts of the two halves
+    # may share an end point on the square's side or lie along each other, and they are still separate cuts in separate papers
+    lo, hi = np.array(vb[:2]), np.array(vb[:2]) + np.array(vb[2:])
+    loose = joined(loose, lambda p: (p - lo).min() > tol and (hi - p).min() > tol)
     for P in loose:
         P = (P - vb[:2]) / vb[2:]; d = np.abs(P[-1] - P[0])
         if np.linalg.norm(P[-1] - P[0]) < 0.5: continue              # closed or decorative: not a cut from the fold to the lobe
