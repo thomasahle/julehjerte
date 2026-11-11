@@ -937,7 +937,7 @@
     "difficulty": "hard",
     "symmetry": {
       "isClassic": false,
-      "curveSymmetry": false,
+      "curveSymmetry": true,
       "lobeSymmetry": true,
       "mirrorSymmetry": true,
       "sharedTemplate": true
