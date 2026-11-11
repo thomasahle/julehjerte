@@ -10,8 +10,10 @@
  *   --force       also hearts whose outcome is already noted for the cuts as they are
  *   --dry         only read each design and lay out its finished weave (seconds a heart):
  *                 says which hearts the simulator supports, changes nothing
- *   --jobs N      hearts simulated at a time (default 1); each is one single-threaded process
+ *   --jobs N      hearts simulated at a time (default 1); a heart is mostly one core, its collision
+ *                 checks every core
  *   --until HH:MM stop starting hearts at that time of day and stop the ones still running
+ *   --quiet MIN   give up a heart whose simulation has written nothing for this long (default 10)
  *   --keep        keep each heart's working files (tmp/weave/<id>/: the raw run, its log)
  *   --list        print what films.json holds and what is stale; do nothing
  *
@@ -57,6 +59,7 @@ const keep = flag('--keep');
 const list = flag('--list');
 const jobs = Number(option('--jobs') ?? 1);
 const until = option('--until');
+const quiet = Number(option('--quiet') ?? 10);
 const unknown = args.find((a) => a.startsWith('--'));
 if (unknown || !(jobs >= 1)) {
   console.error(`films: unknown option ${unknown ?? '--jobs'}`);
@@ -107,15 +110,25 @@ function freeGb() {
 const env = { ...process.env, PYTHONDONTWRITEBYTECODE: '1', OMP_NUM_THREADS: '1', OPENBLAS_NUM_THREADS: '1', VECLIB_MAXIMUM_THREADS: '1', MKL_NUM_THREADS: '1' };
 const running = new Set();
 
-function run(command, argv, logFile) {
+/** When anything in a heart's working folder was last written: the simulator saves its place every few seconds. */
+const lastWritten = (dir) => Math.max(...fs.readdirSync(dir).map((name) => fs.statSync(path.join(dir, name)).mtimeMs));
+
+function run(command, argv, logFile, quietMs = Infinity) {
   return new Promise((resolve) => {
     const out = fs.openSync(logFile, 'w');
     const child = spawn(command, argv, { cwd: here, env, stdio: ['ignore', out, out] });
     running.add(child);
+    let hung = false;
+    const watch = setInterval(() => {
+      if (Date.now() - lastWritten(path.dirname(logFile)) < quietMs) return;
+      hung = true;
+      child.kill('SIGKILL');
+    }, 30000);
     child.on('close', (code, signal) => {
       running.delete(child);
+      clearInterval(watch);
       fs.closeSync(out);
-      resolve({ code, signal });
+      resolve({ code, signal, hung });
     });
     child.on('error', () => {});
   });
@@ -150,8 +163,12 @@ async function make(id) {
     console.log(`${new Date().toTimeString().slice(0, 5)} ${id.padEnd(28)} ${entry.outcome}${entry.reason ? `: ${entry.reason}` : ''} (${mins} min)`);
   };
 
-  const sim = await run(PYTHON, ['unweave.py', svgOf(id), npz, ...SIM_ARGS], logFile);
+  const sim = await run(PYTHON, ['unweave.py', svgOf(id), npz, ...SIM_ARGS], logFile, quiet * 60000);
   if (stopping) return;
+  if (sim.hung) {
+    fs.rmSync(path.join(root, FILMS_DIR, `${id}.jhb`), { force: true });
+    return note({ outcome: 'failed', reason: `the simulation wrote nothing for ${quiet} minutes` });
+  }
   const log = fs.readFileSync(logFile, 'utf8');
   if (sim.code !== 0) {
     fs.rmSync(path.join(root, FILMS_DIR, `${id}.jhb`), { force: true });

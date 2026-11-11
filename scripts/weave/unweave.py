@@ -292,6 +292,7 @@ class Local:
         for it in range(iters):
             E0, g, Hm = self.energy(Xc, xp, soft, True)
             d = np.zeros(3 * self.n); d[fd] = self.solve(Hm[fd][:, fd], -g[fd]); D3 = d.reshape(-1, 3)
+            if not np.isfinite(d).all(): sys.exit('the paper has no next step (the solve gave no numbers): a strip is not where the weaving expects it')
             Xa, Xb = (Xc, Xc + D3) if self.cx is None else (Xc[self.cx], (Xc + D3)[self.cx])
             a = ipctk.compute_collision_free_stepsize(self.mesh, Xa, Xb, narrow_phase_ccd=ACCD); a = 1.0 if a >= 1 else 0.95 * a
             for _ in range(8):                  # never further in one go than the still paper around was gathered for
