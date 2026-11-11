@@ -2435,7 +2435,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "0f5813b2fe",
+      "bytes": 3912325
+    }
   },
   "santa": {
     "name": "Santa",
@@ -2462,7 +2465,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "3c4739a54b",
+      "bytes": 5004621
+    }
   },
   "ball": {
     "name": "Kugle",
@@ -2489,7 +2495,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "89962e4e52",
+      "bytes": 4090378
+    }
   },
   "fisk": {
     "name": "Fisk",
