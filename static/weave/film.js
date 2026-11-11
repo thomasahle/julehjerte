@@ -4,7 +4,8 @@
  * This is the script of scripts/weave/viewer.html, the simulator's own viewer, with its page taken off: the canvas and the
  * stage come from the caller (src/lib/components/detail/WeaveFilm.svelte), the caption and the transport are the caller's (it hears about them through
  * `on`), and each step says what it is (`id`, or a chapter's `tag` from pack.py) so the page can word it in Danish and English.
- * The weaving itself can be shown faster than it was recorded (`opt.weave`), at the pace of the steps around it.
+ * The weaving itself can be shown faster than it was recorded (`opt.weave`), at the pace of the steps around it, and the two papers take
+ * the page's colours (`opt.red`, `opt.white`, `papers`).
  * Everything else is as the viewer has it, in the viewer's style, so that a newer viewer can be carried over line by line.
  *
  * It lives here, served as it is and loaded when a film is first asked for ($lib/weave/film.ts), like Mal's engine in static/inverse.
@@ -28,10 +29,20 @@ var ZT=-0.058;
   g.strokeStyle='rgba(200,235,215,.42)';g.lineWidth=2;g.strokeRect(0,0,256,256);
   var tex=new THREE.CanvasTexture(c);tex.wrapS=tex.wrapT=THREE.RepeatWrapping;tex.repeat.set(80,80);tex.encoding=THREE.sRGBEncoding;tex.anisotropy=R.capabilities.getMaxAnisotropy();
   var m=new THREE.Mesh(new THREE.PlaneGeometry(80,80),new THREE.MeshStandardMaterial({map:tex,roughness:.95}));m.position.z=ZT;m.receiveShadow=true;scene.add(m);})();
-var paperB=new THREE.MeshStandardMaterial({color:new THREE.Color(0xf3f0e8).convertSRGBToLinear(),roughness:.85,side:THREE.DoubleSide});
-var paperA=new THREE.MeshStandardMaterial({color:new THREE.Color(opt&&opt.red||0xc8102e).convertSRGBToLinear(),roughness:.78,side:THREE.DoubleSide});
+var paperB=new THREE.MeshStandardMaterial({color:new THREE.Color(opt&&opt.white!=null?opt.white:0xf3f0e8).convertSRGBToLinear(),roughness:.85,side:THREE.DoubleSide});
+var paperA=new THREE.MeshStandardMaterial({color:new THREE.Color(opt&&opt.red!=null?opt.red:0xc8102e).convertSRGBToLinear(),roughness:.78,side:THREE.DoubleSide});
 var mats=[paperB,paperA];
 function graphite(){return new THREE.MeshBasicMaterial({color:0x101312,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false});}
+/* The two papers can be any colours (`opt.red`, `opt.white`: the papers the simulator calls red and white) and can change while a film is
+   open (`papers`): what is cut from a paper, the offcuts and the handle, follows it, and a pencil line on a dark paper is drawn light. */
+function pencilOn(c){return 0.2126*c.r+0.7152*c.g+0.0722*c.b<0.09?0xd9d6cc:0x101312;}
+function repaint(){
+  offcuts.forEach(function(o){o.rib.mesh.material.color.copy((o.isA?paperA:paperB).color);});
+  var inkA=pencilOn(paperA.color),inkB=pencilOn(paperB.color);
+  arcs.concat(marks).forEach(function(o){o.rib.mesh.material.color.setHex(o.isA?inkA:inkB);});
+  handle.mesh.material.color.copy(paperA.color);wake=40;
+}
+function papers(red,white){paperA.color.set(red).convertSRGBToLinear();paperB.color.set(white).convertSRGBToLinear();repaint();}
 
 /* The heart group H is what is lifted, stood up and turned at the end. Inside it: W holds the simulated paper in the weave's own axes
    (red strips along x, white along y, the point of the heart at the origin); gA and gB carry each half while it is drawn on, cut and laid out. */
@@ -165,7 +176,7 @@ function build(hd){clear();B=hd;pos=new THREE.BufferAttribute(new Float32Array(h
         put(mk.pos,q,isA,0,sp[2*i]-nx,ZI+.004,sp[2*i+1]-ny,1,0);put(mk.pos,q+3,isA,0,sp[2*i]+nx,ZI+.004,sp[2*i+1]+ny,1,0);q+=6;}
       finish(mk);mk.mesh.castShadow=false;mk.mesh.receiveShadow=false;extra.push(mk);marks.push({isA:isA,j:j,rib:mk,quads:c.NM});});
   });
-  cutD=new Float32Array(cuts.length);
+  cutD=new Float32Array(cuts.length);repaint();
   T=0;camReady=false;lastCh=-2;show(0);}
 function updateOffcut(O,st){
   var l=seqL(st.trim,cumArc,O.isA?0:1),vis=l<0.999;O.rib.mesh.visible=vis;if(!vis)return;
@@ -385,6 +396,8 @@ return {
   zoom:zoomBy,
   reset:resetView,
   insets:function(top,bottom){padT=top;padB=bottom;wake=40;},
+  /* the two papers' colours, 0xRRGGBB, changed while the film is open */
+  papers:papers,
   /* for tests: jump to a moment and draw it at once */
   set:function(t){T=clamp(t,0,TOTAL);camReady=false;show(0);},
   destroy:function(){gone=true;cancelAnimationFrame(raf);ro.disconnect();clear();R.dispose();R.forceContextLoss();}

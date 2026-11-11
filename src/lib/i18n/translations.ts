@@ -322,6 +322,8 @@ export const translations = {
     // "første" is strip 1 … ; the counts start at two ("to strimler")
     weaveOrdinals: ['første', 'anden', 'tredje', 'fjerde', 'femte', 'sjette', 'syvende', 'ottende', 'niende', 'tiende'],
     weaveCounts: ['to', 'tre', 'fire', 'fem', 'seks', 'syv', 'otte', 'ni', 'ti', 'elleve', 'tolv'],
+    // What a paper is called by its colour, as in "den røde strimmel", in the order of $lib/weave/papers PAPER_NAMES
+    weavePaperNames: ['røde', 'lyserøde', 'orange', 'brune', 'gule', 'grønne', 'blå', 'lilla', 'hvide', 'sorte', 'grå', 'lyse', 'mørke'],
     weaveStripsTitle: 'Klip to stykker papir',
     weaveStripsText: 'Klip ét stykke i hver farve, tre gange så langt som det er bredt, fx 7,5 × 23 cm. Tyndt papir er lettest at flette: glanspapir eller almindeligt farvet papir.',
     weaveFoldTitle: 'Fold hvert stykke på midten',
@@ -330,23 +332,24 @@ export const translations = {
     weaveRoundText: 'Tegn en halvcirkel på den åbne ende, og klip langs buen gennem begge lag. Lad den foldede ende være.',
     /** {n} = the number of strips in words ("tre") */
     weaveCutTitle: 'Klip {n} strimler fra folden',
-    /** {a}, {b} = the number of strips in the red and the white half, in words */
+    /** {a}, {b} = the number of strips in the two halves, in words */
     weaveCutTitleTwo: 'Klip {a} og {b} strimler fra folden',
     weaveCutTextRuler: 'Mål strimlerne op med en lineal. Klip fra folden mod buen gennem begge lag, og stop, hvor buen begynder.',
     weaveCutTextTemplate: 'Tegn snittene af efter skabelonen. Klip fra folden mod buen gennem begge lag, og stop, hvor buen begynder. Klip hver linje i ét stræk, så kanten bliver glat.',
     weaveLayTitle: 'Læg de to halvdele klar',
-    weaveLayText: 'Læg den hvide halvdel, hvor hjertet skal være, og læg den røde vinkelret på den med folderne mod hinanden.',
+    /** In these steps {red} and {white} = the two papers by the colours the visitor has them in (weavePaperNames): "røde", "hvide" */
+    weaveLayText: 'Læg den {white} halvdel, hvor hjertet skal være, og læg den {red} vinkelret på den med folderne mod hinanden.',
     weaveStartTitle: 'Før de to halvdele sammen',
-    weaveStartText: 'De røde strimler bøjes tilbage, så de er af vejen, og den røde halvdel skubbes ind ved siden af den hvide.',
+    weaveStartText: 'De {red} strimler bøjes tilbage, så de er af vejen, og den {red} halvdel skubbes ind ved siden af den {white}.',
     /** {n} = the strip's ordinal ("første") */
-    weaveRowTitle: 'Hent den {n} røde strimmel',
-    weaveRowText: 'Den bøjes ned fra bunken, og de hvide strimler, som skal igennem den, løftes og venter.',
-    /** {n} = the red strip's ordinal with a capital, {m} = the white strip's */
-    weaveRedTitle: '{n} røde strimmel gennem den {m} hvide',
-    weaveRedText: 'Den hvide strimmel løftes lidt, den røde ende føres gennem dens løkke, og begge falder på plads.',
-    /** {m} = the white strip's ordinal with a capital, {n} = the red strip's */
-    weaveWhiteTitle: '{m} hvide strimmel gennem den {n} røde',
-    weaveWhiteText: 'Den røde strimmel sænkes ned over den, den hvide ende føres gennem den røde løkke, og den røde strimmel rejses igen.',
+    weaveRowTitle: 'Hent den {n} {red} strimmel',
+    weaveRowText: 'Den bøjes ned fra bunken, og de {white} strimler, som skal igennem den, løftes og venter.',
+    /** {n} = the {red} strip's ordinal with a capital, {m} = the {white} strip's */
+    weaveRedTitle: '{n} {red} strimmel gennem den {m} {white}',
+    weaveRedText: 'Den {white} strimmel løftes lidt, den {red} ende føres gennem dens løkke, og begge falder på plads.',
+    /** {m} = the {white} strip's ordinal with a capital, {n} = the {red} strip's */
+    weaveWhiteTitle: '{m} {white} strimmel gennem den {n} {red}',
+    weaveWhiteText: 'Den {red} strimmel sænkes ned over den, den {white} ende føres gennem den {red} løkke, og den {red} strimmel rejses igen.',
     weaveHandleTitle: 'Sæt en hank på',
     weaveHandleText: 'Klip en papirstrimmel på ca. 20 cm, og lim den ene ende indvendigt på forsiden og den anden indvendigt på bagsiden.',
     weaveHangTitle: 'Fyld hjertet, og hæng det op',
@@ -1594,6 +1597,7 @@ export const translations = {
     // "first" is strip 1 … ; the counts start at two ("two strips")
     weaveOrdinals: ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth'],
     weaveCounts: ['two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'],
+    weavePaperNames: ['red', 'pink', 'orange', 'brown', 'yellow', 'green', 'blue', 'purple', 'white', 'black', 'grey', 'light', 'dark'],
     weaveStripsTitle: 'Cut two pieces of paper',
     weaveStripsText: 'Cut one piece from each colour, three times as long as it is wide, for example 7.5 × 23 cm. Thin paper weaves best: glazed paper or ordinary coloured paper.',
     weaveFoldTitle: 'Fold each piece in half',
@@ -1602,23 +1606,23 @@ export const translations = {
     weaveRoundText: 'Draw a half circle on the open end and cut along the curve through both layers. Leave the folded end alone.',
     /** {n} = the number of strips in words ("three") */
     weaveCutTitle: 'Cut {n} strips from the fold',
-    /** {a}, {b} = the number of strips in the red and the white half, in words */
+    /** {a}, {b} = the number of strips in the two halves, in words */
     weaveCutTitleTwo: 'Cut {a} and {b} strips from the fold',
     weaveCutTextRuler: 'Mark the strips with a ruler. Cut from the fold toward the curve, through both layers, and stop where the curve begins.',
     weaveCutTextTemplate: 'Trace the cuts from the template. Cut from the fold toward the curve, through both layers, and stop where the curve begins. Follow each line in one go so the edge stays smooth.',
     weaveLayTitle: 'Lay the two halves out',
-    weaveLayText: 'Lay the white half where the heart will be and bring the red half in at a right angle, folds toward each other.',
+    weaveLayText: 'Lay the {white} half where the heart will be and bring the {red} half in at a right angle, folds toward each other.',
     weaveStartTitle: 'Bring the two halves together',
-    weaveStartText: 'The red strips are folded back out of the way and the red half slides in beside the white one.',
+    weaveStartText: 'The {red} strips are folded back out of the way and the {red} half slides in beside the {white} one.',
     /** {n} = the strip's ordinal ("first") */
-    weaveRowTitle: 'Bring the {n} red strip over',
-    weaveRowText: 'It swings down from the pile, and the white strips that will go through it are lifted to wait.',
-    /** {n} = the red strip's ordinal with a capital, {m} = the white strip's */
-    weaveRedTitle: '{n} red strip through the {m} white',
-    weaveRedText: 'The white strip rises a little to meet it, the red end is fed through its loop, and both settle.',
-    /** {m} = the white strip's ordinal with a capital, {n} = the red strip's */
-    weaveWhiteTitle: '{m} white strip through the {n} red',
-    weaveWhiteText: 'The red strip comes down low over it, the white end is fed through the red loop, and the red strip stands up again.',
+    weaveRowTitle: 'Bring the {n} {red} strip over',
+    weaveRowText: 'It swings down from the pile, and the {white} strips that will go through it are lifted to wait.',
+    /** {n} = the {red} strip's ordinal with a capital, {m} = the {white} strip's */
+    weaveRedTitle: '{n} {red} strip through the {m} {white}',
+    weaveRedText: 'The {white} strip rises a little to meet it, the {red} end is fed through its loop, and both settle.',
+    /** {m} = the {white} strip's ordinal with a capital, {n} = the {red} strip's */
+    weaveWhiteTitle: '{m} {white} strip through the {n} {red}',
+    weaveWhiteText: 'The {red} strip comes down low over it, the {white} end is fed through the {red} loop, and the {red} strip stands up again.',
     weaveHandleTitle: 'Add a handle',
     weaveHandleText: 'Cut a strip of paper about 20 cm long, and glue one end inside the front of the heart and the other inside the back.',
     weaveHangTitle: 'Fill the heart and hang it',

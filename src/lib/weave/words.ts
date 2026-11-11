@@ -4,9 +4,12 @@
  * The player (static/weave/film.js) only says which step it is: one of the fixed steps before
  * and after the weaving by `id`, a weaving step by the `tag` scripts/weave/pack.py stored in the
  * recording. A recording that names neither keeps its own English words.
+ *
+ * The steps name the two papers by the colours the visitor has them in (`papers`: $lib/weave/papers).
  */
 import { t, tArray, type Language } from '$lib/i18n';
 import type { WeaveStep } from './film';
+import type { PaperWords } from './papers';
 
 export interface StepWords {
 	title: string;
@@ -25,7 +28,7 @@ function count(n: number, lang: Language): string {
 	return tArray('weaveCounts', lang)[n - 2] ?? String(n);
 }
 
-function fixedStep(step: WeaveStep, lang: Language): StepWords | null {
+function fixedStep(step: WeaveStep, lang: Language, papers: PaperWords): StepWords | null {
 	switch (step.id) {
 		case 'strips':
 			return { title: t('weaveStripsTitle', lang), text: t('weaveStripsText', lang) };
@@ -45,7 +48,7 @@ function fixedStep(step: WeaveStep, lang: Language): StepWords | null {
 			};
 		}
 		case 'lay':
-			return { title: t('weaveLayTitle', lang), text: t('weaveLayText', lang) };
+			return { title: t('weaveLayTitle', lang), text: t('weaveLayText', lang, { ...papers }) };
 		case 'handle':
 			return { title: t('weaveHandleTitle', lang), text: t('weaveHandleText', lang) };
 		case 'hang':
@@ -55,13 +58,15 @@ function fixedStep(step: WeaveStep, lang: Language): StepWords | null {
 	}
 }
 
-function weavingStep(tag: string, lang: Language): StepWords | null {
-	if (tag === 'start') return { title: t('weaveStartTitle', lang), text: t('weaveStartText', lang) };
+function weavingStep(tag: string, lang: Language, papers: PaperWords): StepWords | null {
+	if (tag === 'start') {
+		return { title: t('weaveStartTitle', lang), text: t('weaveStartText', lang, { ...papers }) };
+	}
 	const parts = tag.split(',');
 	if (parts[0] === 'row' && /^\d+$/.test(parts[1] ?? '')) {
 		return {
-			title: t('weaveRowTitle', lang, { n: ordinal(Number(parts[1]), lang) }),
-			text: t('weaveRowText', lang)
+			title: t('weaveRowTitle', lang, { n: ordinal(Number(parts[1]), lang), ...papers }),
+			text: t('weaveRowText', lang, { ...papers })
 		};
 	}
 	if (parts.length !== 3 || !/^\d+$/.test(parts[0]) || !/^\d+$/.test(parts[1])) return null;
@@ -69,21 +74,22 @@ function weavingStep(tag: string, lang: Language): StepWords | null {
 	const white = ordinal(Number(parts[1]), lang);
 	if (parts[2] === 'R') {
 		return {
-			title: t('weaveRedTitle', lang, { n: capital(red), m: white }),
-			text: t('weaveRedText', lang)
+			title: t('weaveRedTitle', lang, { n: capital(red), m: white, ...papers }),
+			text: t('weaveRedText', lang, { ...papers })
 		};
 	}
 	if (parts[2] === 'W') {
 		return {
-			title: t('weaveWhiteTitle', lang, { m: capital(white), n: red }),
-			text: t('weaveWhiteText', lang)
+			title: t('weaveWhiteTitle', lang, { m: capital(white), n: red, ...papers }),
+			text: t('weaveWhiteText', lang, { ...papers })
 		};
 	}
 	return null;
 }
 
-export function stepWords(step: WeaveStep, lang: Language): StepWords {
+export function stepWords(step: WeaveStep, lang: Language, papers: PaperWords): StepWords {
 	return (
-		fixedStep(step, lang) ?? weavingStep(step.tag, lang) ?? { title: step.title, text: step.text }
+		fixedStep(step, lang, papers) ??
+		weavingStep(step.tag, lang, papers) ?? { title: step.title, text: step.text }
 	);
 }

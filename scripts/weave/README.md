@@ -2,7 +2,9 @@
 
 Each gallery heart's page can show the heart being cut, woven and hung, in 3D (the "Fletning"
 tile under the heart). The film is a recording of a paper simulation, made here, offline, once
-per heart; the page only plays it.
+per heart; the page only plays it. A recording holds the paper's shape through the film and
+nothing of how it looks: the page draws it live, so the visitor can turn and zoom it, and it is
+drawn in the paper colours the heart has on the page (`src/lib/weave/papers.ts`).
 
     static/hearts/<id>.svg --unweave.py--> run.npz --pack.py--> static/weave/<id>.jhb
 

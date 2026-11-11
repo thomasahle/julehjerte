@@ -9,8 +9,10 @@
 
   The film is a card filling the stage. The caption (which step, what happens in it) and the
   transport lie over the picture, and the player keeps the heart between them (`insets`).
-  The paper is always red and white, whatever the page's paper colours: the captions name the
-  strips by those colours.
+  The two papers have the colours the heart has on the page: the header's pair, or the heart's
+  own pair in colourful mode, and they follow it when it changes. The film reads them where the
+  page's hearts do, from --paper-left / --paper-right, and the captions name the strips by them
+  ($lib/weave/papers).
 
   A drag turns the view (two fingers or shift: move it; pinch: zoom). Outside full screen a
   finger moving up or down scrolls the page, and the wheel zooms only with ctrl or cmd, so
@@ -28,6 +30,8 @@
 	import ZoomInIcon from '@lucide/svelte/icons/zoom-in';
 	import ZoomOutIcon from '@lucide/svelte/icons/zoom-out';
 	import { t, type Language } from '$lib/i18n';
+	import { DEFAULT_COLORS } from '$lib/stores/colors';
+	import { pairAttributes } from '$lib/utils/palette';
 	import {
 		canPlayWeaveFilm,
 		createWeaveFilm,
@@ -36,6 +40,7 @@
 		type WeaveFilmPlayer,
 		type WeaveStep
 	} from '$lib/weave/film';
+	import { paperNumber, paperWords, parsePaper, type Rgb } from '$lib/weave/papers';
 	import { stepWords } from '$lib/weave/words';
 
 	interface Props {
@@ -47,8 +52,15 @@
 
 	let { id, entry, lang }: Props = $props();
 
-	// The site's red paper (--paper-right), as the player wants a colour.
-	const RED = 0xb91313;
+	// The simulator's red half is the heart's right-hand paper, its white half the left-hand one.
+	interface Papers {
+		red: Rgb;
+		white: Rgb;
+	}
+	const DEFAULT_PAPERS: Papers = {
+		red: parsePaper(DEFAULT_COLORS.right) ?? [185, 19, 19],
+		white: parsePaper(DEFAULT_COLORS.left) ?? [255, 255, 255]
+	};
 	// The simulated weaving is slow and careful; shown this many times faster it keeps the pace
 	// of the cutting before it and the hanging after it.
 	const WEAVE_PACE = 2.5;
@@ -70,10 +82,23 @@
 	let fullscreen = $state(false);
 	let canFullscreen = $state(false);
 
+	let papers = $state<Papers>(DEFAULT_PAPERS);
+
 	let player: WeaveFilmPlayer | null = null;
 	let gone = false;
 
-	let words = $derived(steps[stepIndex] ? stepWords(steps[stepIndex], lang) : null);
+	let paperNames = $derived(paperWords(papers.red, papers.white, lang));
+	let words = $derived(steps[stepIndex] ? stepWords(steps[stepIndex], lang, paperNames) : null);
+
+	/** The papers as the page has them now, to the film too if they are new. */
+	function readPapers() {
+		const style = getComputedStyle(stage);
+		const red = parsePaper(style.getPropertyValue('--paper-right')) ?? DEFAULT_PAPERS.red;
+		const white = parsePaper(style.getPropertyValue('--paper-left')) ?? DEFAULT_PAPERS.white;
+		if (String(red) === String(papers.red) && String(white) === String(papers.white)) return;
+		papers = { red, white };
+		player?.papers(paperNumber(red), paperNumber(white));
+	}
 
 	const clock = (seconds: number) =>
 		`${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
@@ -99,10 +124,12 @@
 						time: (seconds) => (time = seconds),
 						playing: (now) => (playing = now)
 					},
-					{ red: RED, weave: WEAVE_PACE }
+					{ red: paperNumber(papers.red), white: paperNumber(papers.white), weave: WEAVE_PACE }
 				);
 				if (gone) return made.destroy();
 				player = made;
+				// The colours may have changed while the player was on its way.
+				made.papers(paperNumber(papers.red), paperNumber(papers.white));
 			} catch {
 				// No WebGL, or the player itself did not arrive.
 				if (!gone) status = navigator.onLine === false ? 'failed' : 'no3d';
@@ -127,9 +154,18 @@
 		canFullscreen = document.fullscreenEnabled === true;
 		const onFullscreen = () => (fullscreen = document.fullscreenElement === stage);
 		document.addEventListener('fullscreenchange', onFullscreen);
+		// The header's colours and the colourful mode both reach the page through <html>'s class
+		// and variables (src/routes/+layout.svelte, $lib/stores/colorMode).
+		readPapers();
+		const onColours = new MutationObserver(readPapers);
+		onColours.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ['class', 'style']
+		});
 		void load();
 		return () => {
 			gone = true;
+			onColours.disconnect();
 			document.removeEventListener('fullscreenchange', onFullscreen);
 			player?.destroy();
 			player = null;
@@ -160,7 +196,7 @@
 	}
 </script>
 
-<div class="film" class:is-fullscreen={fullscreen} bind:this={stage}>
+<div class="film" class:is-fullscreen={fullscreen} bind:this={stage} {...pairAttributes(id)}>
 	<!-- The canvas takes the keyboard itself (arrows turn, + and − zoom, space plays). -->
 	<canvas
 		bind:this={canvas}

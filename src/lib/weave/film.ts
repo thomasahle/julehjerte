@@ -50,14 +50,17 @@ export interface WeaveFilmPlayer {
 	reset(): void;
 	/** How much of the stage's top and bottom the page covers, in px; the heart is kept between them. */
 	insets(top: number, bottom: number): void;
+	/** The two papers' colours, 0xRRGGBB: the simulator's red half and its white one ($lib/weave/papers). */
+	papers(red: number, white: number): void;
 	/** Show one moment without playing. */
 	set(seconds: number): void;
 	destroy(): void;
 }
 
 export interface WeaveFilmOptions {
-	/** The red paper's colour, 0xRRGGBB. */
+	/** The two papers' colours, 0xRRGGBB: the simulator's red half and its white one. */
 	red?: number;
+	white?: number;
 	/** How many times faster than it was recorded the weaving itself is shown (1 when left out). */
 	weave?: number;
 }

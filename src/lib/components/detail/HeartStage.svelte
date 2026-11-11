@@ -119,7 +119,8 @@
 
 <div class="thumbs" class:is-many={views.length > 3}>
 	{#each views as v (v.id)}
-		{@const pair = v.id === 'heart' && design ? pairAttributes(design.id) : undefined}
+		{@const pair =
+			(v.id === 'heart' || v.id === 'film') && design ? pairAttributes(design.id) : undefined}
 		<button
 			type="button"
 			class="thumb-btn"
@@ -129,7 +130,8 @@
 		>
 			<!-- Decorative: the button is named by its label below. The heart's
 			     thumbnail carries its colourful-mode pair, like the big heart above
-			     it (HangingHeart), so the two show the same papers. -->
+			     it (HangingHeart), so the two show the same papers; so does the film's
+			     tile, as the film itself is in the heart's papers. -->
 			<span
 				class="thumb"
 				class:thumb-heart={v.id === 'heart'}
@@ -166,16 +168,18 @@
 					<img class="thumb-photo" src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
 				{:else if v.id === 'film'}
 					<!-- The two halves on the cutting mat, about to be woven, and a play mark. The heart
-					     stands on its point, so each half is drawn in the square's own frame, turned 45°. -->
+					     stands on its point, so each half is drawn in the square's own frame, turned 45°.
+					     They are in the heart's papers, and each half's cuts are tinted with the other paper,
+					     which shows on any pair. -->
 					<svg viewBox="0 0 100 100">
 						<g transform="translate(50 50) rotate(45)">
 							<g transform="translate(-9 9)">
-								<path d="M-17 -17 H17 V17 H-17 A17 17 0 0 1 -17 -17 Z" fill="#f4f1e9" />
-								<path d="M-21 -5.7 H17 M-21 5.7 H17" stroke="#b9c2b6" stroke-width="1.2" fill="none" />
+								<path d="M-17 -17 H17 V17 H-17 A17 17 0 0 1 -17 -17 Z" fill="var(--paper-left)" />
+								<path class="film-cuts-left" d="M-21 -5.7 H17 M-21 5.7 H17" stroke-width="1.2" fill="none" />
 							</g>
 							<g transform="translate(9 -9)">
-								<path d="M-17 17 V-17 A17 17 0 0 1 17 -17 V17 Z" fill="#b91313" />
-								<path d="M-5.7 -21 V17 M5.7 -21 V17" stroke="#7d0c0c" stroke-width="1.2" fill="none" />
+								<path d="M-17 17 V-17 A17 17 0 0 1 17 -17 V17 Z" fill="var(--paper-right)" />
+								<path class="film-cuts-right" d="M-5.7 -21 V17 M5.7 -21 V17" stroke-width="1.2" fill="none" />
 							</g>
 						</g>
 						<circle cx="50" cy="52" r="15" fill="#ffffff" />
@@ -305,6 +309,14 @@
 	.thumb-film {
 		background: #1f4d3b;
 		padding: 0;
+	}
+
+	.film-cuts-left {
+		stroke: color-mix(in srgb, var(--paper-left) 70%, var(--paper-right));
+	}
+
+	.film-cuts-right {
+		stroke: color-mix(in srgb, var(--paper-right) 70%, var(--paper-left));
 	}
 
 	.thumb-btn.is-active .thumb {
