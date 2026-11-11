@@ -411,7 +411,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "37d935ae0e",
+      "bytes": 6778870
+    }
   },
   "5star": {
     "name": "5-Stjerne",
@@ -443,7 +446,10 @@
       "width": 1156,
       "height": 1200
     },
-    "film": null
+    "film": {
+      "v": "a1ba70936c",
+      "bytes": 3908925
+    }
   },
   "simple-5star": {
     "name": "5-stjerne simpel",
@@ -471,7 +477,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "28bb3d3b4b",
+      "bytes": 1767715
+    }
   },
   "davidsstjerne-circ": {
     "name": "Davidsstjerne Cirkel",
@@ -499,7 +508,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "459923c1d0",
+      "bytes": 7783225
+    }
   },
   "david4": {
     "name": "David 4",
@@ -531,7 +543,10 @@
       "width": 904,
       "height": 1200
     },
-    "film": null
+    "film": {
+      "v": "8ffb248c81",
+      "bytes": 3700870
+    }
   },
   "nemt-hjerte": {
     "name": "Nemt Hjerte",
@@ -593,7 +608,10 @@
       "width": 900,
       "height": 1200
     },
-    "film": null
+    "film": {
+      "v": "617a938b30",
+      "bytes": 5578446
+    }
   },
   "triple-heart": {
     "name": "Triple Hjerte",
@@ -652,7 +670,10 @@
       "width": 1200,
       "height": 1116
     },
-    "film": null
+    "film": {
+      "v": "ade953029d",
+      "bytes": 2538405
+    }
   },
   "firkloever-hjerte": {
     "name": "Firkløver-hjerte",
@@ -679,7 +700,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "6454d76ce6",
+      "bytes": 4247143
+    }
   },
   "mor-og-barn": {
     "name": "Mor og barn",
@@ -733,7 +757,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "be1deb279e",
+      "bytes": 2823847
+    }
   },
   "hjerte-paa-hjerte": {
     "name": "Hjerte på hjerte",
@@ -760,7 +787,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "e7be815cbd",
+      "bytes": 3309364
+    }
   },
   "hjerte-i-hjerte-i-hjerte": {
     "name": "Hjerte i hjerte i hjerte",
