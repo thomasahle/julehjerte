@@ -65,13 +65,14 @@ for name, data in [('faces', faces), ('piece', piece.tobytes()), ('sign', sign.t
 # chapters for the viewer: what is being woven when, in the order the film plays (the simulation ran backwards)
 # each is [seconds, title, text, tag]; the page (src/lib/weave/words.ts) words the step itself, in Danish and English, from the tag
 ORD = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth']
+ordinal = lambda i: ORD[i] if i < len(ORD) else '%d.' % (i + 1)        # the number itself beyond the words, as the page writes it
 def chapter(tag):
     q = tag.split(',')
     if tag == 'start': return 'Bring the two halves together', 'The red strips are folded back out of the way and the red half slides in beside the white one.'
-    if q[0] == 'row': return 'Bring the %s red strip over' % ORD[int(q[1])], 'It swings down from the pile, and the white strips that will go through it are lifted to wait.'
+    if q[0] == 'row': return 'Bring the %s red strip over' % ordinal(int(q[1])), 'It swings down from the pile, and the white strips that will go through it are lifted to wait.'
     n, m = int(q[0]), int(q[1])
-    if q[2] == 'R': return '%s red strip through the %s white' % (ORD[n].capitalize(), ORD[m]), 'The white strip rises a little to meet it, the red end is fed through its loop, and both settle.'
-    return '%s white strip through the %s red' % (ORD[m].capitalize(), ORD[n]), 'The red strip comes down low over it, the white end is fed through the red loop, and the red strip stands up again.'
+    if q[2] == 'R': return '%s red strip through the %s white' % (ordinal(n).capitalize(), ordinal(m)), 'The white strip rises a little to meet it, the red end is fed through its loop, and both settle.'
+    return '%s white strip through the %s red' % (ordinal(m).capitalize(), ordinal(n)), 'The red strip comes down low over it, the white end is fed through the red loop, and the red strip stands up again.'
 chapters = []
 if 'labels' in d:
     lab = [str(x) for x in d['labels']]
