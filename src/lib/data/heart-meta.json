@@ -1557,7 +1557,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "7bbea7b62e",
+      "bytes": 3758477
+    }
   },
   "kagome": {
     "name": "Kagome",
@@ -1585,7 +1588,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "94ae432332",
+      "bytes": 5458150
+    }
   },
   "stjernefliser": {
     "name": "Stjernefliser",
