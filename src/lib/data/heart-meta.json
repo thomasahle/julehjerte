@@ -2059,7 +2059,10 @@
       "width": 381,
       "height": 348
     },
-    "film": null
+    "film": {
+      "v": "8d5f6f7ee5",
+      "bytes": 3798475
+    }
   },
   "fiskeskael": {
     "name": "Fiskeskæl",
@@ -2086,7 +2089,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "b978e067fa",
+      "bytes": 3568829
+    }
   },
   "boelger": {
     "name": "Bølger",
@@ -2191,7 +2197,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "64b6b8bd8b",
+      "bytes": 3537609
+    }
   },
   "sildeben": {
     "name": "Sildeben",
