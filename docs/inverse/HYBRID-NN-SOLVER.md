@@ -1480,6 +1480,37 @@ State on 2026-11-02 (syn1v; the 127 test pictures, ladder alone):
   curved ones common. Straight lines stay the first representation; one or two bent variants along the
   predicted direction would come later.
 - **Reranker:** a candidate-conditioned reranker trained on whole-design splits.
+- **The review's measured questions (night of 2026-11-10; `npm run benchmark:inverse:mal`, CPU clock, two
+  ladders, one minute; runs in `tmp/night-1110/`).** The baselines on main's engine: 112 of the 170 generator
+  pictures (median 3.9 s; of the 85 whose own template exports, 6 missed) and 95 of the 127 test pictures
+  (gallery 15/21, library 62/64, photos 18/42; median 3.1 s). No picture of either set met a crash the engine
+  survives (`noted`). Borderline pictures (a first template at 40-55 s) are not pinned by the CPU clock: flower in
+  corners passes inside the full run and fails run alone, so two or three pictures either way between runs is
+  noise.
+  - *Is today's search still needed beside the ladder?* Yes. Alone it passes 89 of the test pictures against the
+    ladder's 95, three of them the ladder misses (hjerte-paa-hjerte, roed-blomst, vissevasse-arranged-r4c1), and
+    on 11 of the 86 both pass its template hides less (triple-heart 7 hidden cuts against 19, dagognat 3 against
+    9, fejlternet 12 against 20); the ladder is three times as fast there (430 s against 1234 s). On the
+    generator pictures the stored runs said the same (72 of 170 alone, reindeer in strips only by it).
+  - *Rows carried between the rungs* (`exactCarry`, branch `claude/mal-trials`): every lazy row a rung learned,
+    translated into the next rung's model where it is sound there. 113 against 112 (three gained, two lost:
+    noise), 448 623 rows adopted on 150 of the pictures; the pictures both pass take 918 s against 984 s in sum,
+    but 27 are slower and 19 faster (median 4.0 to 4.5 s), and the templates hide more on 5 and less on 3. Not
+    shipped.
+  - *The switch map's peaks as grid positions* (`exactSwitchPositions` 0.5, same branch): 111 against 112, five
+    gained and six lost, median 3.6 to 4.7 s. All five gains are on the second outline or later; four of the six
+    losses are pictures the plain grid solves on the first outline in 7-17 s. Not shipped as it is; the peaks
+    only from the second outline on is untried.
+  - *One clearance definition.* The model already takes its limits from the export's settings with the
+    validator's own margins (`rules(cfg, 'tight')`), so the difference is not a margin. It shows in what the
+    export takes: of the passing lines, 16 of 97 on the generator pictures and 19 of 113 on the test pictures
+    come from a rung's drawing that breaks one to five of the model's rules (`LOW_PENALTY`), none from the last
+    resort's return repair, and today's search, which assesses whatever it draws, exports drawings the model
+    counts far over that (the elephant on a board: penalty 111, 82 of it static rules a start broke, 26
+    `connect`, 3 `cycle`). The penalty is the sum of the rows' slacks, not a count. The loose pass is never
+    reached within a minute (it needs 90 s). The benchmark's lines now say what made each template (`penalty`,
+    `broken` by kind, `repaired`, `loose`). Open: the ladder assessing every rung's drawing
+    (`tmp/cores/low-inf`), and none but the clean ones (`low-0`), against a second baseline (`marks`).
 
 ## 9a. Next architecture: looping over the solver's answers
 
