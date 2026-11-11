@@ -1,6 +1,8 @@
 import type { Finger, GridSize, Vec } from '$lib/types/heart';
 import { reverseSegments, type BezierSegment } from '$lib/geometry/bezierSegments';
 import { vecDist } from '$lib/geometry/vec';
+import { bezierPoint } from '$lib/geometry/cubic';
+import { PRINT_WIDTH_MM } from '$lib/geometry/paperNecks';
 
 const TOLERANCE = 5; // pixels
 
@@ -274,6 +276,59 @@ function areLobesRotated(fingers: Finger[]): boolean {
 }
 
 /**
+ * How far apart two cut patterns may lie and still be one shape, as a share of
+ * the square's side: a millimetre on templates printed at the usual width.
+ * Less is the slack of a hand drawing two halves (and of the scissors after),
+ * and does not make a heart unsymmetric.
+ */
+const SAME_SHAPE = 1 / PRINT_WIDTH_MM;
+/** The straight pieces a cut's curve is taken as when shapes are compared: a quarter circle across the whole square is then a twentieth of a millimetre off. */
+const SHAPE_PIECES = 24;
+
+/**
+ * Whether the left lobe's cuts under `mapPoint` and the right lobe's are one
+ * shape (SAME_SHAPE): every point of each lies that near the other. The cuts
+ * are compared as lines on the paper, not as drawn, so the two lobes may be
+ * drawn with different nodes, or as differently many curves.
+ */
+function areLobesSameShapeUnder(fingers: Finger[], mapPoint: (bounds: SquareBounds, p: Vec) => Vec): boolean {
+  const bounds = inferSquareBounds(fingers);
+  if (!bounds) return false;
+  // Each curve's points, the mapped left lobe's and the right lobe's: SHAPE_PIECES + 1 a curve, as x, y.
+  const points = (lobe: Finger['lobe'], map?: (p: Vec) => Vec) => {
+    const curves = fingers.filter((f) => f.lobe === lobe).flatMap((f) => f.segments);
+    const out = new Float64Array(curves.length * (SHAPE_PIECES + 1) * 2);
+    let i = 0;
+    for (const seg of curves) for (let k = 0; k <= SHAPE_PIECES; k++) {
+      const at = bezierPoint(seg, k / SHAPE_PIECES), p = map ? map(at) : at;
+      out[i++] = p.x; out[i++] = p.y;
+    }
+    return out;
+  };
+  const left = points('left', (p) => mapPoint(bounds, p)), right = points('right');
+  if (!left.length || !right.length) return left.length === right.length;
+  const near = (SAME_SHAPE * bounds.size) ** 2, row = (SHAPE_PIECES + 1) * 2;
+  // Every point of `a` within reach of one of `b`'s pieces. The piece that held the last point is tried first: it mostly holds the next.
+  const within = (a: Float64Array, b: Float64Array) => {
+    const reaches = (x: number, y: number, j: number) => {
+      const dx = b[j + 2]! - b[j]!, dy = b[j + 3]! - b[j + 1]!, l = dx * dx + dy * dy;
+      const t = l ? Math.max(0, Math.min(1, ((x - b[j]!) * dx + (y - b[j + 1]!) * dy) / l)) : 0;
+      return (x - b[j]! - t * dx) ** 2 + (y - b[j + 1]! - t * dy) ** 2 <= near;
+    };
+    let last = 0;
+    points: for (let i = 0; i < a.length; i += 2) {
+      const x = a[i]!, y = a[i + 1]!;
+      if (reaches(x, y, last)) continue;
+      // A curve's last point starts no piece.
+      for (let j = 0; j < b.length; j += 2) if (j % row !== row - 2 && reaches(x, y, j)) { last = j; continue points; }
+      return false;
+    }
+    return true;
+  };
+  return within(left, right) && within(right, left);
+}
+
+/**
  * Why a single printed template can be used for both lobes, or null when it
  * cannot.
  *
@@ -285,13 +340,20 @@ function areLobesRotated(fingers: Finger[]): boolean {
  * piece goes in turned over, as in Kroge). Anti-diagonal mirroring is *not*
  * enough: it swaps the ear and fold ends of the cut pattern. A heart with both
  * counts as 'mirror'.
+ *
+ * The two lobes drawn alike, node for node, are asked first; then their cuts
+ * as shapes, where less than a millimetre on the printed template does not
+ * count (SAME_SHAPE): two halves drawn by hand are never the same to the hair,
+ * and nobody cuts that finely.
  */
 export type TemplateSymmetry = 'mirror' | 'rotation' | null;
 
 export function lobeTemplateSymmetry(fingers: Finger[], gridSize: GridSize): TemplateSymmetry {
   if (gridSize.x !== gridSize.y) return null;
   if (fingers.length === 0 || areLobesMirroredUnder(fingers, false)) return 'mirror';
-  return areLobesRotated(fingers) ? 'rotation' : null;
+  if (areLobesRotated(fingers)) return 'rotation';
+  if (areLobesSameShapeUnder(fingers, (bounds, p) => mapPointBetweenLobes(bounds, p))) return 'mirror';
+  return areLobesSameShapeUnder(fingers, mapPointRotatedBetweenLobes) ? 'rotation' : null;
 }
 
 /**
