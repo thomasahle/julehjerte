@@ -2257,7 +2257,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "c1934fcd03",
+      "bytes": 5341925
+    }
   },
   "origami": {
     "name": "Origami",
@@ -2281,7 +2284,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "366db85671",
+      "bytes": 5306659
+    }
   },
   "juletrae": {
     "name": "Juletræ",
