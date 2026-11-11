@@ -1,14 +1,17 @@
 {
+  "andreaskors": {"design":"953307bee8bfed52","outcome":"failed","reason":"the paper has no next step (the solve gave no numbers): a strip is not where the weaving expects it","made":"2026-11-11"},
   "classic-3x3": {"design":"a17c1e930f18a2ba","outcome":"clean","v":"ebf2d4f8fc","bytes":1884160,"seconds":87,"crossings":9,"stretch":14,"magic":0,"magicFrames":0,"bad":0,"retries":0,"simSeconds":325,"made":"2026-11-11"},
   "explosion": {"design":"d9ec020c881c679d","outcome":"unsupported","reason":"the finished weave of this design could not be laid out without paper passing through paper (--force to run anyway)","made":"2026-11-11"},
   "gaver": {"design":"6f77c4a263737461","outcome":"clean","v":"075ef3f2f1","bytes":2625790,"seconds":281,"crossings":36,"stretch":21,"magic":0,"magicFrames":0,"bad":0,"retries":5,"simSeconds":243,"made":"2026-11-11"},
   "groen-stjerne": {"design":"bc7ee103cbd21fa6","outcome":"unclean","v":"53a12810ef","bytes":3193395,"seconds":255,"crossings":25,"stretch":50,"magic":2,"magicFrames":1559,"bad":0,"retries":5,"simSeconds":499,"made":"2026-11-11"},
   "jul": {"design":"2ecbd5acf62dee29","outcome":"failed","reason":"  return pypardiso.spsolve(A, b) if pypardiso is not None else spla.spsolve(A.tocsc(), b)","made":"2026-11-11"},
   "kompasrose": {"design":"d5437a0e237985d3","outcome":"unsupported","reason":"the finished weave of this design could not be laid out without paper passing through paper (--force to run anyway)","made":"2026-11-11"},
+  "kors-i-ramme": {"design":"20644d3af2f311bf","outcome":"unclean","v":"886f7bc84d","bytes":2819316,"seconds":270,"crossings":25,"stretch":131,"magic":13,"magicFrames":3527,"bad":0,"retries":14,"simSeconds":309,"made":"2026-11-11"},
   "nemt-hjerte": {"design":"0f28fe4aa062ff75","outcome":"clean","v":"f793235fa2","bytes":1273773,"seconds":98,"crossings":9,"stretch":15,"magic":0,"magicFrames":0,"bad":0,"retries":0,"simSeconds":425,"made":"2026-11-11"},
   "nihon": {"design":"116b423226e15224","outcome":"unsupported","reason":"the finished weave of this design could not be laid out without paper passing through paper (--force to run anyway)","made":"2026-11-11"},
   "permo-sol": {"design":"4042a17deb08a337","outcome":"clean","v":"5c28c5a384","bytes":2058711,"seconds":101,"crossings":9,"stretch":44,"magic":0,"magicFrames":0,"bad":0,"retries":1,"simSeconds":274,"made":"2026-11-11"},
   "puslespil": {"design":"65eb744618d8cd1e","outcome":"clean","v":"a1a4b55574","bytes":3530474,"seconds":168,"crossings":16,"stretch":21,"magic":0,"magicFrames":0,"bad":0,"retries":0,"simSeconds":1457,"made":"2026-11-11"},
   "ramme": {"design":"2aa8e907bfcf0a5e","outcome":"unclean","v":"bcec305f50","bytes":3358370,"seconds":267,"crossings":25,"stretch":90,"magic":11,"magicFrames":3528,"bad":0,"retries":9,"simSeconds":462,"made":"2026-11-11"},
+  "stjerne": {"design":"86f97bdb56dd199e","outcome":"unclean","v":"f3b2ebff25","bytes":2100079,"seconds":104,"crossings":9,"stretch":59,"magic":2,"magicFrames":832,"bad":0,"retries":2,"simSeconds":486,"made":"2026-11-11"},
   "sun": {"design":"86521dc3d88f5c8f","outcome":"unsupported","reason":"3 and 3 cuts give 3 and 1 pieces; the cuts touch, cross or do not run from the fold to the lobe","made":"2026-11-11"}
 }

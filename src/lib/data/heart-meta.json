@@ -204,7 +204,10 @@
       "width": 900,
       "height": 1200
     },
-    "film": null
+    "film": {
+      "v": "f3b2ebff25",
+      "bytes": 2100079
+    }
   },
   "explosion": {
     "name": "Eksplosion",
@@ -377,7 +380,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "886f7bc84d",
+      "bytes": 2819316
+    }
   },
   "stjerne-ramme": {
     "name": "Stjerne Ramme",
