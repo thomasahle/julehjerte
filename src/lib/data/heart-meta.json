@@ -1286,7 +1286,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "3ce2edec87",
+      "bytes": 8512675
+    }
   },
   "firkanthjerte": {
     "name": "Firkanthjerte",
