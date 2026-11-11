@@ -16,6 +16,7 @@ import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js'
 import {imageFeatures} from '../../static/inverse/core/image-features.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {qualityBenchmark} from './quality-benchmark.mjs';
 
 async function sourceImage(){
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-bird-fit.json'));
@@ -104,7 +105,7 @@ test('a correction cannot silently discard a requested cutting symmetry',async()
   assert.deepEqual(solutionJSON(result),serialized);
 });
 
-test('an early checked correction bounds a long photographic search and survives export',async t=>{
+qualityBenchmark('an early checked correction bounds a long photographic search and survives export',async t=>{
   const input=await sourceImage(),before=structuredClone(input.sourceImage),snapshots=[];
   // Only the original photograph and shifted crop enter this fresh fit.
   // The frozen proposal used by the helper tests above is not supplied here.
