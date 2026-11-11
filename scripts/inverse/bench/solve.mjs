@@ -51,7 +51,10 @@ function exact(answer) {
   return {exact: true, checks: rep.templateChecksPassed === true, off: +(rep.imageError?.mismatchFraction ?? -1).toFixed(4),
     ...(rep.templateChecksPassed ? {} : {near: count(issues), shortfalls: issues.filter(i => /clearance/.test(i.type)).map(i => +((i.required ?? rep.settings?.nominalWidth ?? 0) - (i.distanceUpper ?? i.distanceLower ?? i.distance ?? 0)).toFixed(3)).sort((a, b) => b - a).slice(0, 5), mismatch, features: rep.imageFidelity?.features?.passed, paper: rep.manufacturing?.status}),
     tracedBound: x?.tracedBound ?? null, outline: x?.outline ?? null, phase: x?.phase ?? null, fallback: ['even', 'unjoined', 'untied', 'subgroup'].filter(f => x?.[f]).join(',') || null,
-    bound: x?.search?.bound ?? null, hidden: x?.search?.attempts?.at(-1)?.hidden ?? x?.search?.hidden, ladder: x?.ladder?.map(r => `K${r.k}${r.seed ? 's' + r.seed : ''}:${r.found ? 'OK' : '--'} ${r.seconds}s`).join(' '), passes: rep.validation?.passed, carry: x?.carry};
+    bound: x?.search?.bound ?? null, hidden: x?.search?.attempts?.at(-1)?.hidden ?? x?.search?.hidden, ladder: x?.ladder?.map(r => `K${r.k}${r.seed ? 's' + r.seed : ''}:${r.found ? 'OK' : '--'} ${r.seconds}s`).join(' '), passes: rep.validation?.passed, carry: x?.carry,
+    // What made the template: the model's rules its drawing broke (a rung's is taken at a small penalty,
+    // stage.js LOW_PENALTY), the last resort's return repair, the loose pass.
+    penalty: x?.search?.penalty == null ? undefined : +x.search.penalty.toFixed(3), repaired: x?.repairedReturns, loose: x?.loose};
 }
 // The fitter's answer: `fitter` is its verdict (templateChecksPassed).
 const fitted = ({report: rep}) => ({fitter: rep.templateChecksPassed === true, kinds: [...new Set((rep.validation?.issues ?? []).map(i => i.type))], off: rep.imageError?.mismatchFraction, mismatch: rep.imageError?.mismatchFraction, features: rep.imageFidelity?.features?.passed, paper: rep.manufacturing?.status});
