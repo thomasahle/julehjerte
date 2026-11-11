@@ -39,7 +39,6 @@
 	<header class="intro">
 		<h1>{t('howToTitle', lang)}</h1>
 		<p>{t('howToIntro', lang)}</p>
-		<a href="#trace-heading" onclick={() => (way = 'screen')}>{t('guideTraceLink', lang)} <span aria-hidden="true">↓</span></a>
 	</header>
 
 	<div class="before-you-start">

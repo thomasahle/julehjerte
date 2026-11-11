@@ -1079,7 +1079,6 @@ export const translations = {
     ],
     guidePrepareTitle: 'Print, fold og klip',
     // The same four steps without a printer: the heart page's "Tegn af" (traceFromScreen)
-    guideTraceLink: 'Ingen printer? Tegn skabelonen af fra skærmen',
     guideTraceTitle: 'Uden printer: tegn af, fold og klip',
     guideTraceSteps: [
       'Åbn hjertet på en tablet eller telefon, og tryk på »Tegn af«. Vælg en bredde, der passer til dit papir.',
@@ -2277,7 +2276,6 @@ export const translations = {
     ],
     guidePrepareTitle: 'Print, fold and cut',
     // The same four steps without a printer: the heart page's "Trace" (traceFromScreen)
-    guideTraceLink: 'No printer? Trace the template from your screen',
     guideTraceTitle: 'Without a printer: trace, fold and cut',
     guideTraceSteps: [
       'Open the heart on a tablet or phone and tap “Trace”. Choose a width that suits your paper.',
