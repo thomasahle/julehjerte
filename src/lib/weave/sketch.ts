@@ -17,6 +17,7 @@
 import { parsePathDataToSegments } from '$lib/geometry/bezierSegments';
 import type { HeartDesign } from '$lib/types/heart';
 import { serializeHeartDesign } from '$lib/utils/heartDesign';
+import { median } from '$lib/utils/math';
 
 export type Point = [number, number];
 
@@ -97,9 +98,13 @@ export function halvesCuts(lines: Point[][]): { a: Point[][]; b: Point[][] } {
 	return { a: sorted(a.length ? a : b), b: sorted(b.length ? b : a) };
 }
 
-/** A heart's cuts as lines in its 0–100 square, as its file has them (the two outer edges of each half left out). */
+/**
+ * A heart's cuts as lines in the 0–100 of its square (the two outer edges of each half left
+ * out). The square is where the cuts end, as the page draws the heart (inferOverlapRect): a
+ * file's cuts may run on past its own 0–100 ("Mor og barn" is drawn from −12.5 to 112.5).
+ */
 export function designLines(design: HeartDesign): Point[][] {
-	return serializeHeartDesign(design).fingers.map((finger) => {
+	const lines = serializeHeartDesign(design).fingers.map((finger) => {
 		const line: Point[] = [];
 		for (const { p0, p1, p2, p3 } of parsePathDataToSegments(finger.pathData))
 			for (let k = line.length ? 1 : 0; k <= 12; k++) {
@@ -112,6 +117,29 @@ export function designLines(design: HeartDesign): Point[][] {
 			}
 		return line;
 	});
+	// A line that runs across ends on the square's left and right sides, one that runs up-down on its top and bottom.
+	const ends: [number[], number[]][] = [
+		[[], []],
+		[[], []]
+	];
+	for (const line of lines) {
+		const first = line[0];
+		const last = line[line.length - 1];
+		if (!first || !last) continue;
+		const axis = Math.abs(last[1] - first[1]) > Math.abs(last[0] - first[0]) ? 1 : 0;
+		ends[axis]![0].push(Math.min(first[axis], last[axis]));
+		ends[axis]![1].push(Math.max(first[axis], last[axis]));
+	}
+	const side = (axis: number): [number, number] => {
+		// A heart drawn with one half's cuts is as wide as it is long.
+		const [lows, highs] = ends[axis]![0].length ? ends[axis]! : ends[1 - axis]!;
+		const lo = lows.length ? median(lows) : 0;
+		const hi = highs.length ? median(highs) : 100;
+		return hi - lo < 50 || (Math.abs(lo) < 1e-6 && Math.abs(hi - 100) < 1e-6) ? [0, 100] : [lo, hi];
+	};
+	const [x0, x1] = side(0);
+	const [y0, y1] = side(1);
+	return lines.map((line) => line.map(([x, y]): Point => [(100 * (x - x0)) / (x1 - x0), (100 * (y - y0)) / (y1 - y0)]));
 }
 
 /** Which strip a place lies in: the number of cuts on the notch's side of it. */

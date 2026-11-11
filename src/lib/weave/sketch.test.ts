@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import classicSvg from '../../../static/hearts/classic-3x3.svg?raw';
+import morOgBarnSvg from '../../../static/hearts/mor-og-barn.svg?raw';
 import sunSvg from '../../../static/hearts/sun.svg?raw';
 import tulipanSvg from '../../../static/hearts/tulipan.svg?raw';
 import { parseHeartFromSVG } from '$lib/utils/svgImport';
@@ -51,6 +52,17 @@ describe('halvesCuts', () => {
 	it('reads a cut drawn as stubs and an arc as one cut ("Sol")', () => {
 		const { a, b } = halvesCuts(designLines(load(sunSvg, 'sun.svg')));
 		expect([a.length, b.length]).toEqual([3, 3]);
+	});
+
+	it('takes the square from where the cuts end when a file draws them past its 0–100 ("Mor og barn")', () => {
+		const lines = designLines(load(morOgBarnSvg, 'mor-og-barn.svg'));
+		// The file's cuts run from −12.5 to 112.5, and its middle cut leaves the lobe at 55.68.
+		expect(lines.map((line) => Math.max(line[0]![0], line[0]![1]))).toEqual(lines.map(() => 100));
+		expect(lines.some((line) => Math.abs(Math.min(line[0]![0], line[0]![1]) - (100 * (55.68 + 12.5)) / 125) < 0.01)).toBe(true);
+		const { a, b } = halvesCuts(lines);
+		expect([a.length, b.length]).toEqual([3, 3]);
+		// No cut is carried on to the fold or the lobe: each already ends on both.
+		expect([...a, ...b].reduce((n, cut) => n + cut.length, 0)).toBe(lines.reduce((n, line) => n + line.length, 0));
 	});
 
 	it('lends a half without cuts the other half’s', () => {
