@@ -817,7 +817,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "42ed4e2202",
+      "bytes": 5735027
+    }
   },
   "lilje1": {
     "name": "Lilje 1",
@@ -871,7 +874,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "7975697a7b",
+      "bytes": 5335614
+    }
   },
   "amy-rosette": {
     "name": "Rosette",
@@ -895,7 +901,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "48757d3576",
+      "bytes": 3362870
+    }
   },
   "amy-pattern": {
     "name": "Klokke",
@@ -1003,7 +1012,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "c0fb36067e",
+      "bytes": 3305413
+    }
   },
   "circle": {
     "name": "Uret v2",
@@ -1035,7 +1047,10 @@
       "width": 1000,
       "height": 1000
     },
-    "film": null
+    "film": {
+      "v": "516c552d2a",
+      "bytes": 3509436
+    }
   },
   "balls": {
     "name": "Polka",
@@ -1059,7 +1074,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "41b55cfd54",
+      "bytes": 5939978
+    }
   },
   "permo-cirkler": {
     "name": "Cirkler",
@@ -1090,7 +1108,10 @@
       "width": 380,
       "height": 348
     },
-    "film": null
+    "film": {
+      "v": "363cef446d",
+      "bytes": 2385585
+    }
   },
   "glaskuppel": {
     "name": "Glaskuppel",
@@ -1117,7 +1138,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "09fd176eae",
+      "bytes": 4841322
+    }
   },
   "amy-weave-1": {
     "name": "Weave 1",
@@ -1144,7 +1168,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "e490514256",
+      "bytes": 3971503
+    }
   },
   "amy-weave-2": {
     "name": "Weave 2",
@@ -1171,7 +1198,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "7e487ae8d1",
+      "bytes": 3501389
+    }
   },
   "tragt": {
     "name": "Tragt",
