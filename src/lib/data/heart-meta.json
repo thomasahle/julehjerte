@@ -1702,7 +1702,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "411acb3c2c",
+      "bytes": 5468771
+    }
   },
   "hvirvel": {
     "name": "Hvirvel",
@@ -1729,7 +1732,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "2a44951800",
+      "bytes": 3450423
+    }
   },
   "permo-kroge": {
     "name": "Kroge",
