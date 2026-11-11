@@ -1316,7 +1316,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "fdd79839e6",
+      "bytes": 8249636
+    }
   },
   "fire-stjerner": {
     "name": "Fire stjerner",
@@ -1374,7 +1377,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "ebc9d517f0",
+      "bytes": 1438544
+    }
   },
   "hermanngitter": {
     "name": "Hermann-gitter",
