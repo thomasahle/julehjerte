@@ -2227,7 +2227,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "3530ca4f49",
+      "bytes": 3641335
+    }
   },
   "flyvendegaes": {
     "name": "Flyvende gæs",

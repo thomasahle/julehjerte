@@ -62,6 +62,7 @@
   "puslespil": {"design":"65eb744618d8cd1e","outcome":"clean","v":"a1a4b55574","bytes":3530474,"seconds":168,"crossings":16,"stretch":21,"magic":0,"magicFrames":0,"bad":0,"retries":0,"simSeconds":1457,"made":"2026-11-11"},
   "ramme": {"design":"2aa8e907bfcf0a5e","outcome":"unclean","v":"bcec305f50","bytes":3358370,"seconds":267,"crossings":25,"stretch":90,"magic":11,"magicFrames":3528,"bad":0,"retries":9,"simSeconds":462,"made":"2026-11-11"},
   "roserude": {"design":"453400ab5dbcb085","outcome":"unsupported","reason":"the finished weave of this design could not be laid out without paper passing through paper (--force to run anyway)","made":"2026-11-11"},
+  "sildeben": {"design":"8f16911a4e71e54f","outcome":"clean","v":"3530ca4f49","bytes":3641335,"seconds":321,"crossings":36,"stretch":30,"magic":0,"magicFrames":0,"bad":0,"retries":1,"simSeconds":319,"made":"2026-11-11"},
   "simple-5star": {"design":"9e547f9a601b3b3e","outcome":"clean","v":"28bb3d3b4b","bytes":1767715,"seconds":100,"crossings":9,"stretch":23,"magic":0,"magicFrames":0,"bad":0,"retries":1,"simSeconds":235,"made":"2026-11-11"},
   "skraa-kryds": {"design":"9bd9ae946d2f41b2","outcome":"unclean","v":"a25e4b5163","bytes":2485238,"seconds":174,"crossings":16,"stretch":53,"magic":3,"magicFrames":1074,"bad":0,"retries":5,"simSeconds":369,"made":"2026-11-11"},
   "squares": {"design":"5d1935e728db1928","outcome":"unclean","v":"ebc9d517f0","bytes":1438544,"seconds":57,"crossings":4,"stretch":45,"magic":2,"magicFrames":193,"bad":0,"retries":3,"simSeconds":305,"made":"2026-11-11"},
