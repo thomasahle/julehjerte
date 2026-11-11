@@ -129,12 +129,60 @@ describe('sketchFilm', () => {
 			expect(laidTo(poseAt(film, next - 1e-3))).toBeGreaterThan(cut - 0.2);
 			expect(laidTo(poseAt(film, next - 1e-3))).toBeLessThan(cut + 0.2);
 		});
-		// The second strip still stands while the first is laid.
+		// The second strip waits folded back over its lobe while the first is woven.
 		const second = poseAt(film, starts[tags.indexOf('0,2,R')]!);
-		let highest = 0;
 		for (let k = 0; k < film.nv; k++)
-			if (film.piece[k] === 1 && Math.abs(film.rest[2 * k + 1]! - 1.5) < 0.2) highest = Math.max(highest, second[3 * k + 2]!);
-		expect(highest).toBeGreaterThan(1);
+			if (film.piece[k] === 1 && film.rest[2 * k]! < SQ - 0.5 && Math.abs(film.rest[2 * k + 1]! - 1.5) < 0.2) expect(second[3 * k]!).toBeGreaterThan(SQ);
+	});
+
+	it('feeds a strip through the other as a loop, tip first, without stretching it', () => {
+		const film = sketchFilm(designLines(load(classicSvg, 'classic-3x3.svg')), 0);
+		const starts = film.chapters.map((chapter) => chapter[0]);
+		const tags = film.chapters.map((chapter) => chapter[3]);
+		const during = (tag: string, u: number) => {
+			const at = tags.indexOf(tag);
+			return poseAt(film, starts[at]! + (starts[at + 1]! - starts[at]!) * u);
+		};
+		// The fold-side points of a strip's middle row, from its tip to its root.
+		const row = (red: number, across: number) => {
+			const points: number[] = [];
+			for (let k = 0; k < film.nv; k++)
+				if (film.piece[k] === red && film.sign[k] !== -1 && film.rest[2 * k]! < SQ && Math.abs(film.rest[2 * k + 1]! - across) < 0.01) points.push(k);
+			return points.sort((p, q) => film.rest[2 * p]! - film.rest[2 * q]!);
+		};
+		const height = (pose: Float32Array, points: number[]) => Math.max(...points.map((k) => pose[3 * k + 2]!));
+		const firstRed = row(1, 2.475);
+		const secondWhite = row(0, 1.5);
+		expect(firstRed.length).toBeGreaterThan(30);
+		expect(secondWhite.length).toBeGreaterThan(30);
+
+		// The first red strip stands as a loop when its tip goes into the first white strip, and is flat after.
+		const fed = during('0,0,R', 0.4);
+		expect(height(fed, firstRed)).toBeGreaterThan(0.5);
+		expect(height(during('0,0,R', 0.95), firstRed)).toBeLessThan(0.08);
+		// Its tip is by the white strip's edge then, not out at the fold where it ends up.
+		expect(fed[3 * firstRed[0]!]!).toBeGreaterThan(1.9);
+		// The white strip opens over it.
+		let opened = 0;
+		for (let k = 0; k < film.nv; k++)
+			if (film.piece[k] === 0 && film.sign[k] === 1 && film.rest[2 * k]! < SQ) opened = Math.max(opened, fed[3 * k + 2]!);
+		expect(opened).toBeGreaterThan(0.1);
+		// The second white strip, which goes through the red one next, waits lifted off the table.
+		expect(height(fed, secondWhite)).toBeGreaterThan(0.5);
+		expect(height(during('0,1,W', 0.95), secondWhite)).toBeLessThan(0.05);
+
+		// Paper bends but keeps its length, in every pose.
+		for (const [tag, u] of [['start', 0.3], ['row,0', 0.7], ['0,0,R', 0.15], ['0,0,R', 0.5], ['0,1,W', 0.2], ['0,1,W', 0.6], ['row,1', 0.3]] as const) {
+			const pose = during(tag, u);
+			for (const points of [firstRed, secondWhite])
+				for (let i = 1; i < points.length; i++) {
+					const [p, q] = [points[i - 1]!, points[i]!];
+					const length = Math.hypot(pose[3 * q]! - pose[3 * p]!, pose[3 * q + 1]! - pose[3 * p + 1]!, pose[3 * q + 2]! - pose[3 * p + 2]!);
+					const flat = film.rest[2 * q]! - film.rest[2 * p]!;
+					expect(length, `${tag} ${u}`).toBeGreaterThan(flat * 0.55);
+					expect(length, `${tag} ${u}`).toBeLessThan(flat * 1.25 + 0.01);
+				}
+		}
 	});
 
 	it('lays a curved heart flat inside the heart’s outline ("Tulipan")', () => {

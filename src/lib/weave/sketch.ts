@@ -3,10 +3,12 @@
  *
  * A recording (static/weave/<id>.jhb) comes from the weave simulator, which takes minutes per
  * heart and knows only the gallery. A visitor's own heart gets this instead: the same paper,
- * steps and player, but the strips are moved by rule, not by physics. Each red strip waits
- * folded back over its lobe and is laid across the white strips one at a time; where it goes
- * inside a white strip, that strip's upper layer rises over it. Paper passes through paper at
- * the place a strip is being laid, which the simulator never allows.
+ * steps and player, but the strips are moved by rule, not by physics. The red strips wait
+ * folded back over their lobe. For each one in turn, the white strips that go through it are
+ * lifted, it is rolled over onto the rest, and at each crossing one strip opens and the other
+ * is fed through it as a loop, tip first, the way the hands do it. A loose end bends but never
+ * stretches. Paper may still pass through paper where a loop goes in and along curved cuts,
+ * which the simulator never allows.
  *
  * The result has the shape of a parsed recording (static/weave/film.js, `parse`) with a `pose`
  * function in place of its frames. Strips, levels and step tags follow scripts/weave/unweave.py:
@@ -270,41 +272,97 @@ function meshHalf(cuts: Point[][], flip: boolean): HalfMesh {
 	return mesh;
 }
 
-// How a strip stands while it waits: up from where it leaves the weave, over, and down again
-// behind, so that a whole strip is no taller than the simulator's. Each part is a length and
-// the angle it turns through when the strip stands fully (`amount` 1); at 0 the strip lies flat.
-const STAND: [number, number][] = [
-	[0.12 * (Math.PI / 2), Math.PI / 2],
-	[1.1, 0],
-	[0.15 * Math.PI, Math.PI],
-	[Infinity, 0]
-];
-/** How far a waiting strip leans in when its turn comes. */
-const LEAN = 0.8;
-/** How high a white strip's upper layer rises over the red strip that goes inside it. */
-const TENT = 0.07;
+// A strip's loose end is a ribbon bent along its length only: the direction it runs in at each
+// of SAMPLES places from where it leaves the weave (0 flat on towards its fold, π/2 straight
+// up, π back over the woven part). Bending a ribbon this way never stretches it.
+const SAMPLES = 128;
+const STEP = SQ / SAMPLES;
+/** How far back a waiting red strip is folded over its lobe, and the length its fold takes. */
+const FOLD = (150 * Math.PI) / 180;
+const CREASE = 0.2;
+/** How far the bend runs ahead along a strip that is brought over: 0 swings it stiffly. */
+const ROLL = 1.5;
+/** The tightest a strip bends where it leaves the weave, and how far its tip stops from there. */
+const BEND = 0.05;
+const FEET = 0.03;
+/** How far a loop waiting for its turn tips back, on top of what a loop being fed tips. */
+const TIP_BACK = (22 * Math.PI) / 180;
+/** How high a red strip lies over the white strips it has not been woven with yet. */
+const ZF = 0.05;
+/** How high a strip's upper layer rises over the strip that is fed into it. */
+const LENS = 0.15;
 
-/** Where the standing part's pieces begin for an `amount`: x, z and direction, per piece. */
-function standing(amount: number): number[] {
-	const starts: number[] = [];
-	let x = 0;
-	let z = 0;
-	let angle = 0;
-	for (const [length, turn] of STAND) {
-		starts.push(x, z, angle);
-		if (!Number.isFinite(length)) break;
-		const by = turn * amount;
-		if (by < 1e-6) {
-			x -= Math.cos(angle) * length;
-			z += Math.sin(angle) * length;
-		} else {
-			const radius = length / by;
-			x -= radius * (Math.sin(angle + by) - Math.sin(angle));
-			z += radius * (Math.cos(angle) - Math.cos(angle + by));
-			angle += by;
-		}
+/** A strip folded back, brought over by `u` (0 folded back, 1 flat) with the bend running from its root to its tip. */
+function fillFold(out: Float64Array, length: number, u: number): void {
+	for (let i = 0; i <= SAMPLES; i++) {
+		const d = i * STEP;
+		out[i] = FOLD * Math.min(1, d / CREASE) * (1 - smooth(u * (1 + ROLL) - (ROLL * d) / Math.max(length, 1e-6)));
 	}
-	return starts;
+}
+
+/**
+ * A strip's first `length` stood up as a loop that comes back down beside where it started,
+ * ready to be fed on tip first; the rest of the strip runs on flat from there. The loop tips
+ * back so that it comes down straight, and by `back` more. Returns how far from its start it
+ * comes down.
+ */
+function fillLoop(out: Float64Array, length: number, back: number): number {
+	out.fill(0);
+	if (length < 2 * STEP) return 0;
+	const feet = Math.min(FEET, 0.3 * length);
+	const round = clamp(0.1 * length, 0.02, 0.27);
+	// Up by θ, a straight leg, over the top by −2θ, a leg, and θ back to flat: the legs' length and
+	// θ follow from the loop's length and from its two feet standing `feet` apart.
+	const most = Math.min(Math.PI - 0.05, length / (2 * round));
+	const gap = (theta: number) => round * Math.sin(theta) + (length / 2 - round * theta) * Math.cos(theta) - feet / 2;
+	let theta: number;
+	let radius = round;
+	if (most > Math.PI / 2 && gap(most) <= 0) {
+		let lo = Math.PI / 2;
+		let hi = most;
+		for (let i = 0; i < 30; i++) {
+			const mid = (lo + hi) / 2;
+			if (gap(mid) > 0) lo = mid;
+			else hi = mid;
+		}
+		theta = (lo + hi) / 2;
+	} else {
+		// Too short for legs: one round loop, sin θ / θ = feet / length.
+		let lo = 0;
+		let hi = Math.PI;
+		for (let i = 0; i < 30; i++) {
+			const mid = (lo + hi) / 2;
+			if (Math.sin(mid) / mid > feet / length) lo = mid;
+			else hi = mid;
+		}
+		theta = (lo + hi) / 2;
+		radius = length / (2 * theta);
+	}
+	const bend = Math.min(BEND, radius / 3) * theta;
+	const top = 2 * (radius - bend / theta) * theta;
+	const leg = Math.max(0, (length - 2 * bend - top) / 2);
+	const lean = clamp(theta - (85 * Math.PI) / 180, 0, (40 * Math.PI) / 180) + back;
+	const parts: [number, number][] = [
+		[bend, theta + lean],
+		[leg, 0],
+		[top, -2 * theta],
+		[leg, 0],
+		[bend, theta - lean]
+	];
+	let part = 0;
+	let before = 0;
+	let angle = 0;
+	for (let i = 0; i <= SAMPLES; i++) {
+		const d = i * STEP;
+		if (d >= length) break;
+		while (part < parts.length - 1 && d > before + parts[part]![0]) {
+			angle += parts[part]![1];
+			before += parts[part++]![0];
+		}
+		const [span, turn] = parts[part]!;
+		out[i] = angle + (span > 1e-9 ? (turn * (d - before)) / span : turn);
+	}
+	return feet;
 }
 
 const ORDINALS = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth'];
@@ -350,25 +408,30 @@ export function sketchFilm(lines: Point[][], parity: number, pace = 1): SketchFi
 		for (const f of half.faces) faces.push(from + f);
 	});
 
-	// Where red strip n has come to when it has passed white strip m: halfway between the two
-	// white strips' reaches under it, from the lobe's side (SQ) to the fold (0).
+	// Where a strip has come to when it has passed the other half's strip number j: halfway
+	// between the two strips' reaches along it, from the lobe's side (SQ) to the fold (0). The
+	// strips are numbered through both halves: red strip n is n, white strip m is reds + m.
+	const count = reds + whites;
 	const reach: number[][] = [];
-	for (let n = 0; n < reds; n++) {
-		const low = new Array<number>(whites).fill(Infinity);
-		const high = new Array<number>(whites).fill(-Infinity);
-		for (let k = 0; k < redCount; k++) {
-			if (strip[k] !== n || other[k]! < 0) continue;
+	for (let s = 0; s < count; s++) {
+		const [from, to, own, others] = s < reds ? [0, redCount, s, whites] : [redCount, nv, s - reds, reds];
+		const low = new Array<number>(others).fill(Infinity);
+		const high = new Array<number>(others).fill(-Infinity);
+		for (let k = from; k < to; k++) {
+			if (strip[k] !== own || other[k]! < 0) continue;
 			low[other[k]!] = Math.min(low[other[k]!]!, rest[2 * k]!);
 			high[other[k]!] = Math.max(high[other[k]!]!, rest[2 * k]!);
 		}
 		const stops = [SQ];
-		for (let m = 0; m + 1 < whites; m++) {
-			const between = Number.isFinite(low[m]!) && Number.isFinite(high[m + 1]!) ? (low[m]! + high[m + 1]!) / 2 : SQ * (1 - (m + 1) / whites);
-			stops.push(clamp(between, 0, stops[m]!));
+		for (let j = 0; j + 1 < others; j++) {
+			const between = Number.isFinite(low[j]!) && Number.isFinite(high[j + 1]!) ? (low[j]! + high[j + 1]!) / 2 : SQ * (1 - (j + 1) / others);
+			stops.push(clamp(between, 0, stops[j]!));
 		}
 		stops.push(0);
 		reach.push(stops);
 	}
+	/** Whether red strip n goes inside white strip m (the white one inside the red otherwise). */
+	const inside = (n: number, m: number) => ((n + m + parity) & 1) === 0;
 
 	// The steps, in the film's own seconds: the halves come together, then strip by strip.
 	const crossing = clamp(48 / (reds * whites), 0.45, 1.5) * pace;
@@ -382,11 +445,10 @@ export function sketchFilm(lines: Point[][], parity: number, pace = 1): SketchFi
 	};
 	add(3.2 * pace, -1, -1, 'start', 'Bring the two halves together', 'The red strips are folded back out of the way and the red half slides in beside the white one.');
 	for (let n = 0; n < reds; n++) {
-		add(pace, n, -1, `row,${n}`, `Bring the ${ordinal(n)} red strip over`, 'It leans in over the white strips.');
+		add(1.5 * pace, n, -1, `row,${n}`, `Bring the ${ordinal(n)} red strip over`, 'The white strips that go through it are lifted first.');
 		for (let m = 0; m < whites; m++) {
-			if (((n + m + parity) & 1) === 0)
-				add(crossing, n, m, `${n},${m},R`, `${capital(ordinal(n))} red strip through the ${ordinal(m)} white`, 'The white strip opens and the red strip is laid inside it.');
-			else add(crossing, n, m, `${n},${m},W`, `${capital(ordinal(m))} white strip through the ${ordinal(n)} red`, 'The red strip opens and is laid around the white strip.');
+			if (inside(n, m)) add(crossing, n, m, `${n},${m},R`, `${capital(ordinal(n))} red strip through the ${ordinal(m)} white`, 'The white strip opens and the red strip is fed through it, tip first.');
+			else add(crossing, n, m, `${n},${m},W`, `${capital(ordinal(m))} white strip through the ${ordinal(n)} red`, 'The red strip opens and the white strip is fed through it, tip first.');
 		}
 	}
 	const fps = 10;
@@ -394,13 +456,79 @@ export function sketchFilm(lines: Point[][], parity: number, pace = 1): SketchFi
 	const span = (nframes - 1) / fps;
 	chapters.push([span, 'The woven heart', 'Every strip is in place.', 'woven']);
 
-	const hinge = new Float64Array(reds);
-	const amount = new Float64Array(reds);
-	/** Per red strip: 0 waiting, 1 being laid, 2 laid. */
-	const state = new Uint8Array(reds);
-	const stands: number[][] = [];
-	const lengths = STAND.map((part) => part[0]);
-	const turns = STAND.map((part) => part[1]);
+	// Per strip, as the frame being drawn has it: where it leaves the weave, whether its loose end
+	// is bent (and then where each of its samples is: on along the strip, up, and its direction),
+	// and how high its loose end lies where it is flat (`floor`, from `edge` on).
+	const hinge = new Float64Array(count);
+	const bent = new Uint8Array(count);
+	const xs = new Float64Array(count * (SAMPLES + 1));
+	const zs = new Float64Array(count * (SAMPLES + 1));
+	const as = new Float64Array(count * (SAMPLES + 1));
+	const edge = new Float64Array(count);
+	const floor = new Float64Array(count);
+	const angles = new Float64Array(SAMPLES + 1);
+	/** The strip that is open for another to be fed through, where along it, and how far open. */
+	const lens = { strip: -1, lo: 0, hi: 0, open: 0 };
+
+	/**
+	 * Bends strip s as `angles` says. A loop of `length` is made to come down `feet` from where
+	 * it started, by `settled` (1 wholly): the samples do not close it to the last hundredth.
+	 */
+	const bend = (s: number, length = 0, feet = 0, settled = 0) => {
+		const base = s * (SAMPLES + 1);
+		let x = 0;
+		let z = 0;
+		xs[base] = 0;
+		zs[base] = 0;
+		as[base] = angles[0]!;
+		for (let i = 1; i <= SAMPLES; i++) {
+			const mid = (angles[i - 1]! + angles[i]!) / 2;
+			x += STEP * Math.cos(mid);
+			z += STEP * Math.sin(mid);
+			xs[base + i] = x;
+			zs[base + i] = z;
+			as[base + i] = angles[i]!;
+		}
+		bent[s] = 1;
+		if (settled <= 0 || length <= 0) return;
+		const at = Math.min(SAMPLES - 1e-6, length / STEP);
+		const i0 = Math.floor(at);
+		const dz = settled * (zs[base + i0]! + (zs[base + i0 + 1]! - zs[base + i0]!) * (at - i0));
+		const dx = smooth((settled - 0.8) / 0.2) * (xs[base + i0]! + (xs[base + i0 + 1]! - xs[base + i0]!) * (at - i0) - feet);
+		for (let i = 1; i <= SAMPLES; i++) {
+			const share = Math.min(1, (i * STEP) / length);
+			zs[base + i] = zs[base + i]! - dz * share;
+			xs[base + i] = xs[base + i]! - dx * share;
+		}
+	};
+	const scale = (by: number) => {
+		for (let i = 0; i <= SAMPLES; i++) angles[i] = angles[i]! * by;
+	};
+	/** Strip s is fed through the strip beside it, from where it has come to (`near`) to `far`. */
+	const thread = (s: number, near: number, far: number, u: number, waiting: boolean) => {
+		hinge[s] = near;
+		edge[s] = near + (far - near) * smooth((u - 0.18) / 0.14);
+		if (u < 0.32) {
+			// A red strip lies flat and is stood up as a loop; a white one waits as a loop, tipped back.
+			const up = smooth(u / 0.25);
+			const feet = fillLoop(angles, near, waiting ? TIP_BACK * (1 - up) : 0);
+			if (!waiting) scale(up);
+			bend(s, near, feet, up);
+			return;
+		}
+		const left = near * (1 - smooth((u - 0.32) / 0.5));
+		if (left < 2 * STEP) return;
+		bend(s, left, fillLoop(angles, left, 0), 1);
+	};
+	/** Strip s opens between `near` and `far` for the strip that is fed through it there. */
+	const host = (s: number, near: number, far: number, u: number) => {
+		hinge[s] = near + (far - near) * smooth(u / 0.3);
+		edge[s] = hinge[s]!;
+		lens.strip = s;
+		lens.lo = far;
+		lens.hi = near;
+		lens.open = smooth((u - 0.18) / 0.14) * (1 - smooth((u - 0.84) / 0.16));
+	};
 
 	function pose(into: Float32Array, seconds: number): void {
 		const t = clamp(seconds, 0, span);
@@ -413,72 +541,86 @@ export function sketchFilm(lines: Point[][], parity: number, pace = 1): SketchFi
 		const step = steps[at]!;
 		const u = t >= step.to ? 1 : (t - step.from) / (step.to - step.from);
 		const coming = step.row < 0;
-		// While the halves come together: the strips stand up, the red half slides in, both rise off the table.
+		const done = t >= span;
+		// While the halves come together: the red strips fold back, the red half slides in, both rise off the table.
 		const offset = coming ? REDOFF * (1 - smooth((u - 0.45) / 0.55)) : 0;
 		const lifted = coming ? smooth(u) : 1;
 		const ground = ZM * (1 - lifted);
-		for (let n = 0; n < reds; n++) {
-			const done = t >= span || (!coming && n < step.row);
-			const current = !coming && !done && n === step.row;
-			state[n] = done ? 2 : current ? 1 : 0;
-			hinge[n] = done ? 0 : current && step.white >= 0 ? reach[n]![step.white]! + (reach[n]![step.white + 1]! - reach[n]![step.white]!) * smooth(u) : SQ;
-			amount[n] = coming ? smooth(u / 0.55) : current ? (step.white < 0 ? 1 - (1 - LEAN) * smooth(u) : LEAN) : 1;
-			stands[n] = standing(amount[n]!);
+		lens.strip = -1;
+		bent.fill(0);
+		for (let s = 0; s < count; s++) {
+			hinge[s] = done ? 0 : SQ;
+			edge[s] = hinge[s]!;
+			floor[s] = 0;
+			if (done) continue;
+			if (s < reds) {
+				if (coming) {
+					fillFold(angles, SQ, 1 - smooth((u - (0.1 * s) / reds) / 0.4));
+					bend(s);
+				} else if (s < step.row) hinge[s] = edge[s] = 0;
+				else if (s > step.row) {
+					fillFold(angles, SQ, 0);
+					bend(s);
+				} else {
+					floor[s] = ZF;
+					if (step.white < 0) {
+						fillFold(angles, SQ, smooth((u - 0.4) / 0.6));
+						bend(s);
+					} else if (inside(s, step.white)) thread(s, reach[s]![step.white]!, reach[s]![step.white + 1]!, u, false);
+					else host(s, reach[s]![step.white]!, reach[s]![step.white + 1]!, u);
+				}
+				continue;
+			}
+			if (coming) continue;
+			const m = s - reds;
+			const near = reach[s]![step.row]!;
+			const far = reach[s]![step.row + 1]!;
+			hinge[s] = edge[s] = m < step.white ? far : near;
+			if (m < step.white) continue;
+			if (m === step.white) {
+				if (inside(step.row, m)) host(s, near, far, u);
+				else thread(s, near, far, u, true);
+			} else if (!inside(step.row, m)) {
+				// A white strip that is to go through this red strip waits as a loop, tipped back.
+				const up = step.white < 0 ? smooth(u / 0.5) : 1;
+				const feet = fillLoop(angles, near, TIP_BACK);
+				scale(up);
+				bend(s, near, feet, up);
+			}
 		}
 		for (let k = 0, j = 0; k < nv; k++, j += 3) {
 			const along = rest[2 * k]!;
 			const across = rest[2 * k + 1]!;
 			const g = sign[k]!;
+			const red = piece[k] === 1;
 			const n = strip[k]!;
-			if (piece[k] === 1) {
-				const h = n < 0 ? 0 : hinge[n]!;
-				if (n < 0 || along >= h) {
-					into[j] = offset + along;
-					into[j + 1] = across;
-					into[j + 2] = ground + g * (ZI + (level[k]! - ZI) * lifted);
-					continue;
+			let place = along;
+			let z: number;
+			if (n < 0) z = g * (ZI + (level[k]! - ZI) * lifted);
+			else {
+				const s = red ? n : reds + n;
+				const h = hinge[s]!;
+				if (along >= h) z = g * (ZI + (level[k]! - ZI) * smooth((along - h) / 0.1));
+				else if (bent[s] === 0) z = g * ZI + floor[s]! * smooth((edge[s]! - along) / 0.2);
+				else {
+					// `d` along the loose end from where it leaves the weave.
+					const d = (h - along) / STEP;
+					const i = Math.min(SAMPLES - 1, Math.floor(d));
+					const base = s * (SAMPLES + 1) + i;
+					const w = d - i;
+					const angle = as[base]! + (as[base + 1]! - as[base]!) * w;
+					place = h - (xs[base]! + (xs[base + 1]! - xs[base]!) * w);
+					z = zs[base]! + (zs[base + 1]! - zs[base]!) * w + floor[s]! * smooth((edge[s]! - place) / 0.2) + g * ZI * Math.cos(angle);
+					place += g * ZI * Math.sin(angle);
 				}
-				// The part not yet laid: `d` along the standing strip from where it leaves the weave.
-				const d = h - along;
-				const starts = stands[n]!;
-				let part = 0;
-				let before = 0;
-				while (part < 3 && d > before + lengths[part]!) before += lengths[part++]!;
-				const x0 = starts[3 * part]!;
-				const z0 = starts[3 * part + 1]!;
-				const a0 = starts[3 * part + 2]!;
-				const by = turns[part]! * amount[n]!;
-				let x: number, z: number, angle: number;
-				if (by < 1e-6) {
-					angle = a0;
-					x = x0 - Math.cos(a0) * (d - before);
-					z = z0 + Math.sin(a0) * (d - before);
-				} else {
-					const radius = lengths[part]! / by;
-					angle = a0 + (d - before) / radius;
-					x = x0 - radius * (Math.sin(angle) - Math.sin(a0));
-					z = z0 + radius * (Math.cos(a0) - Math.cos(angle));
-				}
-				into[j] = offset + h + x + g * ZI * Math.sin(angle);
-				into[j + 1] = across;
-				into[j + 2] = ground + z + g * ZI * Math.cos(angle);
-				continue;
-			}
-			// White paper stays where it is; its layers move apart where a red strip has come inside.
-			const red = other[k]!;
-			let height = n < 0 ? ZI + (level[k]! - ZI) * lifted : ZI;
-			let tent = 0;
-			if (n >= 0 && red >= 0 && state[red] !== 0) {
-				const past = state[red] === 2 ? 1 : smooth((across - hinge[red]!) / 0.15 + 1);
-				height = ZI + (level[k]! - ZI) * past;
-				if (state[red] === 1 && g > 0 && level[k]! > ZL) {
-					const from = (across - hinge[red]!) / 0.22;
-					tent = TENT * Math.exp(-from * from) * smooth(Math.min(hinge[red]!, SQ - hinge[red]!) / 0.25);
+				if (s === lens.strip && g > 0 && along > lens.lo && along < lens.hi) {
+					const bump = Math.sin((Math.PI * (along - lens.lo)) / (lens.hi - lens.lo));
+					z += lens.open * LENS * bump * bump;
 				}
 			}
-			into[j] = across;
-			into[j + 1] = along;
-			into[j + 2] = ground + g * height + tent;
+			into[j] = red ? offset + place : across;
+			into[j + 1] = red ? across : place;
+			into[j + 2] = ground + z;
 		}
 	}
 
