@@ -55,7 +55,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "bcec305f50",
+      "bytes": 3358370
+    }
   },
   "gaver": {
     "name": "Gaver",
@@ -167,7 +170,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "53a12810ef",
+      "bytes": 3193395
+    }
   },
   "stjerne": {
     "name": "Stjerne",
@@ -284,7 +290,10 @@
       "width": 383,
       "height": 350
     },
-    "film": null
+    "film": {
+      "v": "5c28c5a384",
+      "bytes": 2058711
+    }
   },
   "nihon": {
     "name": "Nihon",
