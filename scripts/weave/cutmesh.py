@@ -79,6 +79,9 @@ def load_cuts(svg_path, per_seg=14):
         x, y = SQ * (1 - P[:, 1]), SQ * (1 - P[:, 0])
         pl = np.c_[x, y] if d[1] > d[0] else np.c_[y, x]             # up-down in the file: red half (strips along x); across: white half (along y)
         if pl[0, 0] > pl[-1, 0]: pl = pl[::-1]
+        # a cut drawn to within 1 of the 100 of the fold or the lobe ends on it: stopping a hair short it would leave its two strips joined
+        if 0 < pl[0, 0] <= 1e-2 * SQ: pl = np.vstack([[0.0, pl[0, 1]], pl])
+        if 0 < SQ - pl[-1, 0] <= 1e-2 * SQ: pl = np.vstack([pl, [SQ, pl[-1, 1]]])
         out['A' if d[1] > d[0] else 'B'].append(pl)
     # a symmetric heart is drawn with the cuts of one half only: the other half is its mirror image, which in each half's own
     # coordinates is the same set of lines
