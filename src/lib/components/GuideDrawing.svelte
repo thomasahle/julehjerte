@@ -23,7 +23,13 @@
 		<path class="fill-{shape.fill} line-{shape.line}" d={shape.d} />
 	{/each}
 	{#each drawing.labels as label, i (i)}
-		<text class={label.tone} x={label.x} y={label.y} text-anchor={label.anchor}>
+		<text
+			class={label.tone}
+			x={label.x}
+			y={label.y}
+			text-anchor={label.anchor}
+			transform={label.turn ? `rotate(${label.turn} ${label.x} ${label.y})` : undefined}
+		>
 			{label.key ? t(label.text as TranslationKey, lang) : label.text}
 		</text>
 	{/each}

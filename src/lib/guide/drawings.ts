@@ -113,6 +113,46 @@ function placing(s: Sketch, drawn = false) {
 	});
 }
 
+/**
+ * The cut-out half, still folded and with the template still on it, as the inner lines are cut
+ * up from the fold: the first is cut, the second on its way.
+ */
+function cutLines(s: Sketch, drawn = false) {
+	// Turned as you hold it to cut: the fold towards the scissors.
+	const see = camera(35, 58, 1.25, 91, 71);
+	const w = 66;
+	const reach = 52 - w * 0.42;
+	const cutting = (part: 'under' | 'over') =>
+		s.with(see.flat(5), () => s.with(moved(w / 6 + 0.6, reach + 43), () => s.with(turned(3), () => scissors(s, 18, part))));
+	// Each strip is a loop with its fold nearest, at `foot`.
+	const strips = (gap: number, foot = 52) => {
+		let d = `M${-w / 2} ${foot}`;
+		for (const [i, x] of [-w / 6, w / 6].entries()) d += `H${x - gap}L${x} ${i === 0 ? 52 - w : reach}L${x + gap} ${foot}`;
+		return `${d}H${w / 2}V${52 - w}A${w / 2} ${w / 2} 0 0 0 ${-w / 2} ${52 - w}Z`;
+	};
+	cutting('under');
+	s.with(see.flat(0), () => s.with(moved(-1.8, -1.2), () => s.path(strips(0.4), 'red-shade')));
+	s.with(see.flat(1.5), () => {
+		s.path(strips(1.3), 'red');
+		for (const x of [-w / 2, -w / 6, w / 6]) foldMarks(s, x + 3, x + w / 3 - 3, 52);
+	});
+	s.with(see.flat(3), () => {
+		// The template was cut out with the paper, and lies on it as it did: its lines show where to cut.
+		s.with(turned(-1.2, 0, 52), () => {
+			s.path(strips(1.3, 49), drawn ? 'sheer' : 'white');
+			// The second line is still to be cut to its end.
+			s.path(`M${w / 6} ${reach}V${52 - w}`, 'none', drawn ? 'thin' : 'print');
+		});
+		s.with(moved(-9, 52 - w - w / 2 - 1), () => s.with(turned(8), () => paperclip(s)));
+		s.arrow([
+			[w / 2 + 12, 50],
+			[w / 2 + 12, 4]
+		]);
+	});
+	cutting('over');
+	s.label(196, 106, 'guideLabelFromFold', 'note', 34);
+}
+
 /** The finished heart's front, lying flat with its point towards +y: `cell` is one check. */
 function woven(s: Sketch, cell: number, line: Line = 'ink') {
 	const edge = 1.5 * cell;
@@ -131,7 +171,6 @@ function woven(s: Sketch, cell: number, line: Line = 'ink') {
  * tablet, trace it onto thin paper, and use the tracing as the template.
  */
 export function trace(step: number): Drawing {
-	if (step === 4) return prepare(4);
 	const s = new Sketch(240, 180, 7 + step);
 	const see = camera(-12, 58, 1.2, 120, 92);
 	if (step === 1) {
@@ -168,8 +207,10 @@ export function trace(step: number): Drawing {
 		});
 		const [x, y] = see([-w * 0.35, -(34 - w - w * 0.357), 3.5]);
 		s.with(moved(x, y), () => s.with(turned(38), () => pencil(s)));
-	} else {
+	} else if (step === 3) {
 		placing(s, true);
+	} else {
+		cutLines(s, true);
 	}
 	return s.done(10);
 }
@@ -280,32 +321,7 @@ export function prepare(step: number): Drawing {
 		});
 		cutting('over');
 	} else {
-		// Turned as you hold it to cut: the fold towards the scissors.
-		const see = camera(35, 58, 1.25, 91, 71);
-		const w = 66;
-		const reach = 52 - w * 0.42;
-		const cutting = (part: 'under' | 'over') =>
-			s.with(see.flat(4), () => s.with(moved(w / 6 + 0.6, reach + 43), () => s.with(turned(3), () => scissors(s, 18, part))));
-		// The cut-out half, still folded: each strip is a loop with its fold nearest.
-		const strips = (gap: number) => {
-			let d = `M${-w / 2} 52`;
-			for (const [i, x] of [-w / 6, w / 6].entries()) d += `H${x - gap}L${x} ${i === 0 ? 52 - w : reach}L${x + gap} 52`;
-			return `${d}H${w / 2}V${52 - w}A${w / 2} ${w / 2} 0 0 0 ${-w / 2} ${52 - w}Z`;
-		};
-		cutting('under');
-		s.with(see.flat(0), () => s.with(moved(-1.8, -1.2), () => s.path(strips(0.4), 'red-shade')));
-		s.with(see.flat(1.5), () => {
-			s.path(strips(1.3), 'red');
-			for (const x of [-w / 2, -w / 6, w / 6]) foldMarks(s, x + 3, x + w / 3 - 3, 52);
-			// The second line is still to be cut to its end.
-			s.path(`M${w / 6} ${reach}V${52 - w}`, 'none', 'print-dash');
-			s.arrow([
-				[w / 2 + 12, 50],
-				[w / 2 + 12, 4]
-			]);
-		});
-		cutting('over');
-		s.label(196, 106, 'guideLabelFromFold', 'note', 34);
+		cutLines(s);
 	}
 	return s.done(10);
 }

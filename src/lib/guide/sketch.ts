@@ -26,6 +26,8 @@ export interface Label {
 	anchor: 'start' | 'middle' | 'end';
 	/** `light` is for text on red paper, `strong` for the strip being woven, `button` for a button of the site. */
 	tone: 'ink' | 'light' | 'strong' | 'note' | 'button';
+	/** Degrees the text is turned about (x, y): a button's text lies as its button does, the rest is level. */
+	turn: number;
 }
 
 export interface Drawing {
@@ -298,7 +300,9 @@ export class Sketch {
 	/** A label; `room` is half the width to keep free for its text. */
 	label(x: number, y: number, text: string, tone: Label['tone'] = 'ink', room = this.width / 30, anchor: Label['anchor'] = 'middle') {
 		const [px, py] = this.place([x, y]);
-		this.labels.push({ x: px, y: py, text, key: tone === 'note' || tone === 'button', anchor, tone, room });
+		const [ax, ay] = this.place([x + 1, y]);
+		const turn = tone === 'button' ? +((Math.atan2(ay - py, ax - px) * 180) / Math.PI).toFixed(1) : 0;
+		this.labels.push({ x: px, y: py, text, key: tone === 'note' || tone === 'button', anchor, tone, turn, room });
 	}
 
 	/** Keep room for these points when the drawing is fitted to its frame, without drawing them. */

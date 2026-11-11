@@ -11,6 +11,7 @@ const all = {
 	'trace 1': trace(1),
 	'trace 2': trace(2),
 	'trace 3': trace(3),
+	'trace 4': trace(4),
 	'crossing red': crossing('red'),
 	'crossing white': crossing('white'),
 	'rows 1': rows(1),
@@ -47,6 +48,20 @@ describe('guide drawings', () => {
 		}
 	});
 
+	it('turns a button\'s text with its button, and leaves the notes level', () => {
+		const labels = Object.values(all).flatMap((drawing) => drawing.labels);
+		for (const label of labels) {
+			if (label.tone === 'button') expect(Math.abs(label.turn)).toBeGreaterThan(1);
+			else expect(label.turn).toBe(0);
+		}
+		expect(labels.some((label) => label.tone === 'button')).toBe(true);
+	});
+
+	it('shows the template on the paper while the inner lines are cut', () => {
+		expect(prepare(4).shapes.map((shape) => shape.fill)).toContain('white');
+		expect(trace(4).shapes.map((shape) => shape.fill)).toContain('sheer');
+	});
+
 	it('keeps the heart in the same place through the three rows', () => {
 		// The red half's round end is drawn second in each.
 		const cap = [1, 2, 3].map((row) => rows(row).shapes[1].d);
@@ -56,6 +71,6 @@ describe('guide drawings', () => {
 
 	it('is small enough to send with the page', () => {
 		const bytes = Object.values(all).reduce((sum, drawing) => sum + drawing.shapes.reduce((n, shape) => n + shape.d.length, 0), 0);
-		expect(bytes).toBeLessThan(60_000);
+		expect(bytes).toBeLessThan(70_000);
 	});
 });
