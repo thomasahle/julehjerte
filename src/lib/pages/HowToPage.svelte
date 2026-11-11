@@ -26,8 +26,11 @@
 	onMount(() => {
 		if (location.hash === '#trace-heading') void showScreen();
 	});
-	let weaveTitles = $derived(tArray('guideWeaveStepTitles', lang));
-	let weaveTexts = $derived(tArray('guideWeaveStepTexts', lang));
+	// One card for each white strip, and one for the heart they end as.
+	let weaveSteps = $derived([
+		...tArray('guideWeaveStepTitles', lang).map((title, i) => ({ title, text: tArray('guideWeaveStepTexts', lang)[i], row: i + 1, id: undefined })),
+		{ title: t('guideFinishTitle', lang), text: t('guideFinishText', lang), row: 0, id: 'finish-heading' }
+	]);
 	let questions = $derived(tArray('guideQuestions', lang));
 	let answers = $derived(tArray('guideAnswers', lang));
 </script>
@@ -92,22 +95,14 @@
 			<p class="diagram-note">{t('guideLoopCaption', lang)}</p>
 		</div>
 		<ol class="weave-steps">
-			{#each weaveTitles as title, i (i)}
+			{#each weaveSteps as step (step.title)}
 				<li class="card">
-					<div class="art"><GuideWeave variant="rows" row={i + 1} /></div>
-					<div class="weave-caption"><h3>{title}</h3><p>{weaveTexts[i]}</p></div>
+					<div class="art"><GuideWeave variant={step.row ? 'rows' : 'finished'} row={step.row} /></div>
+					<div class="weave-caption"><h3 id={step.id}>{step.title}</h3><p>{step.text}</p></div>
 				</li>
 			{/each}
 		</ol>
 		<p class="diagram-note">{t('guideWeaveDiagramCaption', lang)}</p>
-	</section>
-
-	<section class="finish" aria-labelledby="finish-heading">
-		<div>
-			<h2 id="finish-heading">{t('guideFinishTitle', lang)}</h2>
-			<p class="reading-width">{t('guideFinishText', lang)}</p>
-		</div>
-		<div class="finished"><GuideWeave variant="finished" /></div>
 	</section>
 
 	<section class="questions" aria-labelledby="questions-heading">
@@ -216,7 +211,7 @@
 		padding: 0;
 		list-style: none;
 	}
-	.steps {
+	.steps, .weave-steps {
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
 	.prepare {
@@ -263,7 +258,6 @@
 			inset 0 0 0 5px var(--white);
 	}
 	.weave-steps {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
 		margin-top: 28px;
 	}
 	.card {
@@ -345,17 +339,6 @@
 		margin-top: 16px;
 		max-width: 800px;
 	}
-	.finish {
-		display: flex;
-		align-items: center;
-		gap: 32px;
-		border-left: 3px solid var(--gold);
-		padding-left: 24px;
-	}
-	.finished {
-		flex: none;
-		width: 220px;
-	}
 	.question-grid {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -428,11 +411,6 @@
 		}
 		.weave-caption {
 			padding: 20px;
-		}
-		.finish {
-			flex-direction: column;
-			align-items: flex-start;
-			gap: 16px;
 		}
 	}
 </style>

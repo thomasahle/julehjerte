@@ -466,7 +466,8 @@ function weave(s: Sketch, row: number) {
 
 /** The finished heart, opened a little as the basket it is, with its handle. */
 export function finished(): Drawing {
-	const s = new Sketch(240, 200, 9);
+	// Framed as the rows are: it is the last drawing of their row.
+	const s = new Sketch(280, 180, 9);
 	const cell = 26;
 	const edge = 1.5 * cell;
 	const cap = (colour: Fill, flip: boolean) =>
