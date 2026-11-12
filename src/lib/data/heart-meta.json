@@ -240,7 +240,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "57c87c78c1",
+      "bytes": 2579504
+    }
   },
   "kompasrose": {
     "name": "Kompasrose",
@@ -268,7 +271,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "a5915575cf",
+      "bytes": 3230529
+    }
   },
   "permo-sol": {
     "name": "Solstråler",
@@ -1826,7 +1832,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "93d4a21b0d",
+      "bytes": 4440368
+    }
   },
   "puslespil": {
     "name": "Puslespil",
