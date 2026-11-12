@@ -662,6 +662,33 @@
       "bytes": 4467669
     }
   },
+  "hjertepude": {
+    "name": "Hjertepude",
+    "names": {
+      "en": "Heart cushion"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": "2026-11-12",
+    "description": null,
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null,
+    "film": null
+  },
   "hjertekloever": {
     "name": "Hjertekløver",
     "names": {
@@ -815,33 +842,6 @@
       "v": "e7be815cbd",
       "bytes": 3309364
     }
-  },
-  "hjertepude": {
-    "name": "Hjertepude",
-    "names": {
-      "en": "Heart cushion"
-    },
-    "author": "Thomas Ahle & Claude",
-    "authorUrl": null,
-    "publisher": null,
-    "publisherUrl": null,
-    "source": null,
-    "date": "2026-11-12",
-    "description": null,
-    "gridSize": {
-      "x": 6,
-      "y": 6
-    },
-    "difficulty": "medium",
-    "symmetry": {
-      "isClassic": false,
-      "curveSymmetry": false,
-      "lobeSymmetry": false,
-      "mirrorSymmetry": true,
-      "sharedTemplate": true
-    },
-    "photo": null,
-    "film": null
   },
   "hjerte-i-hjerte-i-hjerte": {
     "name": "Hjerte i hjerte i hjerte",

@@ -151,6 +151,13 @@
     },
     "difficulty": "medium"
   },
+  "hjertepude": {
+    "name": "Hjertepude",
+    "names": {
+      "en": "Heart cushion"
+    },
+    "difficulty": "medium"
+  },
   "hjertekloever": {
     "name": "Hjertekløver",
     "names": {
@@ -185,13 +192,6 @@
       "en": "Heart on heart"
     },
     "difficulty": "hard"
-  },
-  "hjertepude": {
-    "name": "Hjertepude",
-    "names": {
-      "en": "Heart cushion"
-    },
-    "difficulty": "medium"
   },
   "hjerte-i-hjerte-i-hjerte": {
     "name": "Hjerte i hjerte i hjerte",
