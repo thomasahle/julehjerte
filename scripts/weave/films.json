@@ -44,6 +44,7 @@
   "hjertekloever": {"design":"aaff3f08b8b05623","outcome":"unclean","v":"ade953029d","bytes":2538405,"seconds":166,"crossings":16,"stretch":28,"magic":1,"magicFrames":164,"bad":0,"retries":2,"simSeconds":261,"made":"2026-11-11"},
   "hvirvel": {"design":"e6daf12e79dbbb02","outcome":"unclean","v":"2a44951800","bytes":3450423,"seconds":266,"crossings":25,"stretch":45,"magic":6,"magicFrames":2855,"bad":0,"retries":7,"simSeconds":379,"made":"2026-11-11"},
   "jul": {"design":"2ecbd5acf62dee29","outcome":"failed","reason":"  return pypardiso.spsolve(A, b) if pypardiso is not None else spla.spsolve(A.tocsc(), b)","made":"2026-11-11"},
+  "jul-2026": {"design":"794900754af26354","outcome":"unclean","v":"e1157ab18e","bytes":7592923,"seconds":547,"crossings":49,"stretch":109,"magic":32,"magicFrames":7836,"bad":0,"retries":39,"simSeconds":1468,"made":"2026-11-12"},
   "jul-tern": {"design":"3c8d3958df84c7fa","outcome":"unclean","v":"18fae50e00","bytes":4408101,"seconds":131,"crossings":9,"stretch":65,"magic":9,"magicFrames":1877,"bad":0,"retries":8,"simSeconds":861,"made":"2026-11-12"},
   "juletrae": {"design":"5543522314d423aa","outcome":"unclean","v":"69d05b4de1","bytes":3078258,"seconds":225,"crossings":16,"stretch":111,"magic":20,"magicFrames":3292,"bad":0,"retries":13,"simSeconds":527,"made":"2026-11-11"},
   "kagome": {"design":"dbb2d9d8f3925b31","outcome":"unclean","v":"94ae432332","bytes":5458150,"seconds":454,"crossings":36,"stretch":73,"magic":24,"magicFrames":6658,"bad":0,"retries":22,"simSeconds":548,"made":"2026-11-11"},

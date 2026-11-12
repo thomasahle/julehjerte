@@ -2817,7 +2817,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "e1157ab18e",
+      "bytes": 7592923
+    }
   },
   "mor-far": {
     "name": "MOR & FAR",
