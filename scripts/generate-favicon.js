@@ -84,17 +84,18 @@ function generateHeartSvg(size, colors, outlineColor = '#666666') {
     }
   }
 
-  // Calculate viewBox to fit the rotated heart
+  // The viewBox is the rotated heart's own bounding box, made square, with room for the
+  // outline only: the heart fills the icon from side to side.
   const cx = CENTER, cy = CENTER;
-
-  // Approximate bounding box after 45-degree rotation
-  const halfDiag = (overlapWidth + overlapHeight) / 2 * 1.1;
-  const viewBoxSize = halfDiag * 2;
-  const viewBoxMin = CENTER - halfDiag;
+  const reach = (overlapWidth / 2) * Math.SQRT1_2 + topRadius; // from the centre to a lobe's far side
+  const tip = (overlapWidth / 2) * Math.SQRT2; // from the centre down to the point
+  const viewBoxSize = 2 * reach + 4;
+  const viewBoxMinX = CENTER - viewBoxSize / 2;
+  const viewBoxMinY = CENTER + (tip - reach) / 2 - viewBoxSize / 2;
 
   const outlineWidth = Math.max(overlapWidth, overlapHeight) * 0.012;
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="${viewBoxMin} ${viewBoxMin} ${viewBoxSize} ${viewBoxSize}" preserveAspectRatio="xMidYMid meet">
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="${viewBoxMinX} ${viewBoxMinY} ${viewBoxSize} ${viewBoxSize}" preserveAspectRatio="xMidYMid meet">
   <g transform="rotate(45, ${cx}, ${cy})">
     <defs>
       <clipPath id="overlap-clip">
