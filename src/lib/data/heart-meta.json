@@ -352,7 +352,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "774c87c664",
+      "bytes": 1702512
+    }
   },
   "kors-i-ramme": {
     "name": "Kors i ramme",
