@@ -1018,7 +1018,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "0fa8f3778b",
+      "bytes": 3235533
+    }
   },
   "blomster-hjerte": {
     "name": "Blomster-hjerte",
@@ -1446,7 +1449,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "b43dbc2f50",
+      "bytes": 4752366
+    }
   },
   "gitterhjerte": {
     "name": "Gitterhjerte",
@@ -1686,7 +1692,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "0dca075944",
+      "bytes": 4981623
+    }
   },
   "penrose-stjerner": {
     "name": "Penrose-stjerner",
