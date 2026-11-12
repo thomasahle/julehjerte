@@ -1895,7 +1895,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "3af7e1680c",
+      "bytes": 2843816
+    }
   },
   "alhambra": {
     "name": "Alhambra",
@@ -2218,7 +2221,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "0a810ca840",
+      "bytes": 5471987
+    }
   },
   "stjernerogkors": {
     "name": "Stjerner og kors",
