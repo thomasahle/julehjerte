@@ -1,0 +1,29 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="0">
+  <title>Hjertepude</title>
+  <title xml:lang="en">Heart cushion</title>
+  <desc xml:lang="da">Et ternet hjerte, der buler op af det flettede felt som en pude. Rundt om hjertet er ternene hele og lige store, og hjertet ligger oven på dem: det dækker hjørnerne af ternene langs siderne og tager et lille hak af det nederste tern. Seks striber i hver halvdel, lige uden for hjertet og buede hen over det. Halvdelene er spejlvendte, så én skabelon er nok. Sværhedsgraden er mellem; klip hver bue i ét træk, og flet forsigtigt ved hjertets top, hvor den yderste stribe er smal. I familie med Kugle og inspireret af en tegning, hvor et skakbræt buler op til et hjerte.</desc>
+  <desc xml:lang="en">A chequered heart that swells out of the woven field like a cushion. Around it the squares are whole and the same size, and the heart lies on top of them: it covers the corners of the squares along its sides and takes a small bite of the bottom one. Six strips in each half, straight outside the heart and curved across it. The halves mirror each other, so one template is enough. Medium difficulty: cut each curve in one stroke, and weave gently at the top of the heart, where the outer strip is narrow. A relative of the Bauble, inspired by a drawing in which a chequerboard swells into a heart.</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Hjertepude</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Thomas Ahle &amp; Claude</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:date>2026-11-12</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 100 16.667 C 94.444 16.667 88.889 16.667 83.333 16.667 C 77.872 8.15 68.451 3 58.333 3 C 48.216 3 38.795 8.15 33.333 16.667 C 22.222 16.667 11.111 16.667 0 16.667" stroke="orange" fill="none"/>
+  <path d="M 100 33.333 C 96.614 33.333 93.228 33.333 89.842 33.333 C 89.089 32.858 88.002 32.441 87.166 32.069 C 85.155 31.171 83.123 30.32 81.068 29.529 C 75.609 27.426 69.985 25.736 64.2 24.811 C 54.364 23.237 43.846 24.006 34.221 26.529 C 32.76 26.912 30.323 27.534 29.085 28.361 C 28.534 28.729 28.954 28.37 28.881 28.881 C 24.53 29.445 20.359 30.965 16.667 33.333 C 11.111 33.333 5.556 33.333 0 33.333" stroke="orange" fill="none"/>
+  <path d="M 100 50 C 97.184 50 94.368 50 91.552 50 C 90.195 49.584 88.57 49.317 87.164 49.02 C 84.051 48.362 80.928 47.758 77.794 47.214 C 73.585 46.483 69.354 45.85 65.113 45.34 C 61.443 44.898 57.743 44.532 54.046 44.448 C 50.406 44.365 46.762 44.563 43.134 44.833 C 39.152 45.128 35.174 45.524 31.207 45.978 C 25.17 46.669 19.141 47.501 13.141 48.463 C 10.165 48.939 7.148 49.415 4.193 50 C 2.795 50 1.398 50 0 50" stroke="orange" fill="none"/>
+  <path d="M 100 66.667 C 96.968 66.667 93.936 66.667 90.904 66.667 C 89.519 67.19 87.856 67.558 86.409 67.919 C 83.432 68.662 80.425 69.301 77.408 69.866 C 68.101 71.609 58.668 72.661 49.19 72.56 C 39.21 72.454 29.267 71.106 19.436 69.476 C 16.141 68.93 12.853 68.346 9.571 67.73 C 7.8 67.397 5.937 67.097 4.193 66.667 C 2.795 66.667 1.398 66.667 0 66.667" stroke="orange" fill="none"/>
+  <path d="M 100 83.333 C 96.341 83.333 92.681 83.333 89.022 83.333 C 88.797 85.007 88.566 86.675 88.333 88.333 C 86.675 88.566 85.007 88.797 83.333 89.022 C 59.149 92.264 33.634 94.215 16.667 83.333 C 11.111 83.333 5.556 83.333 0 83.333" stroke="orange" fill="none"/>
+  <path d="M 16.667 100 C 16.667 94.444 16.667 88.889 16.667 83.333 C 8.15 77.872 3 68.451 3 58.333 C 3 48.216 8.15 38.795 16.667 33.333 C 16.667 22.222 16.667 11.111 16.667 0" stroke="green" fill="none"/>
+  <path d="M 33.333 100 C 33.333 96.614 33.333 93.228 33.333 89.842 C 32.858 89.089 32.441 88.002 32.069 87.166 C 31.171 85.155 30.32 83.123 29.529 81.068 C 27.426 75.609 25.736 69.985 24.811 64.2 C 23.237 54.364 24.006 43.846 26.529 34.221 C 26.912 32.76 27.534 30.323 28.361 29.085 C 28.729 28.534 28.37 28.954 28.881 28.881 C 29.445 24.53 30.965 20.359 33.333 16.667 C 33.333 11.111 33.333 5.556 33.333 0" stroke="green" fill="none"/>
+  <path d="M 50 100 C 50 97.184 50 94.368 50 91.552 C 49.584 90.195 49.317 88.57 49.02 87.164 C 48.362 84.051 47.758 80.928 47.214 77.794 C 46.483 73.585 45.85 69.354 45.34 65.113 C 44.898 61.443 44.532 57.743 44.448 54.046 C 44.365 50.406 44.563 46.762 44.833 43.134 C 45.128 39.152 45.524 35.174 45.978 31.207 C 46.669 25.17 47.501 19.141 48.463 13.141 C 48.939 10.165 49.415 7.148 50 4.193 C 50 2.795 50 1.398 50 0" stroke="green" fill="none"/>
+  <path d="M 66.667 100 C 66.667 96.968 66.667 93.936 66.667 90.904 C 67.19 89.519 67.558 87.856 67.919 86.409 C 68.662 83.432 69.301 80.425 69.866 77.408 C 71.609 68.101 72.661 58.668 72.56 49.19 C 72.454 39.21 71.106 29.267 69.476 19.436 C 68.93 16.141 68.346 12.853 67.73 9.571 C 67.397 7.8 67.097 5.937 66.667 4.193 C 66.667 2.795 66.667 1.398 66.667 0" stroke="green" fill="none"/>
+  <path d="M 83.333 100 C 83.333 96.341 83.333 92.681 83.333 89.022 C 85.007 88.797 86.675 88.566 88.333 88.333 C 88.566 86.675 88.797 85.007 89.022 83.333 C 92.264 59.149 94.215 33.634 83.333 16.667 C 83.333 11.111 83.333 5.556 83.333 0" stroke="green" fill="none"/>
+</svg>

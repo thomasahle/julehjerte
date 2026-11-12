@@ -186,6 +186,13 @@
     },
     "difficulty": "hard"
   },
+  "hjertepude": {
+    "name": "Hjertepude",
+    "names": {
+      "en": "Heart cushion"
+    },
+    "difficulty": "medium"
+  },
   "hjerte-i-hjerte-i-hjerte": {
     "name": "Hjerte i hjerte i hjerte",
     "names": {
