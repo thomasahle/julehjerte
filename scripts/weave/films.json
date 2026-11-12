@@ -1,7 +1,7 @@
 {
   "5star": {"design":"64b8f9a540aa8c50","outcome":"unclean","v":"a1ba70936c","bytes":3908925,"seconds":262,"crossings":25,"stretch":51,"magic":6,"magicFrames":1915,"bad":0,"retries":11,"simSeconds":534,"made":"2026-11-11"},
   "alhambra": {"design":"89301955bfa9bcd9","outcome":"unclean","v":"703949c081","bytes":5205708,"seconds":412,"crossings":36,"stretch":46,"magic":18,"magicFrames":6091,"bad":0,"retries":10,"simSeconds":445,"made":"2026-11-11"},
-  "amy-flowering": {"design":"94793a8cd0e0d291","outcome":"unsupported","reason":"6 and 6 cuts give 1 and 1 pieces; the cuts touch, cross or do not run from the fold to the lobe","made":"2026-11-11"},
+  "amy-flowering": {"design":"94793a8cd0e0d291","outcome":"unclean","v":"20b30195e0","bytes":5341262,"seconds":487,"crossings":49,"stretch":135,"magic":11,"magicFrames":7081,"bad":0,"retries":18,"simSeconds":560,"made":"2026-11-12"},
   "amy-pattern": {"design":"ccffdccf7754e074","outcome":"unsupported","reason":"6 and 6 cuts give 1 and 7 pieces; the cuts touch, cross or do not run from the fold to the lobe","made":"2026-11-11"},
   "amy-pinecone": {"design":"337c9418f1907e74","outcome":"unsupported","reason":"the finished weave of this design could not be laid out without paper passing through paper (--force to run anyway)","made":"2026-11-12"},
   "amy-rosette": {"design":"7540f37614b37765","outcome":"unclean","v":"48757d3576","bytes":3362870,"seconds":255,"crossings":25,"stretch":67,"magic":3,"magicFrames":879,"bad":0,"retries":6,"simSeconds":362,"made":"2026-11-11"},

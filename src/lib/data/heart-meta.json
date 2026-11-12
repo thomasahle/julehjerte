@@ -970,7 +970,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "20b30195e0",
+      "bytes": 5341262
+    }
   },
   "roserude": {
     "name": "Roserude",
