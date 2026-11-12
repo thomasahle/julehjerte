@@ -22,6 +22,12 @@
 	import type { DifficultyLevel } from '$lib/utils/difficulty';
 	import { matchesLevels } from '$lib/front/levelFilter';
 
+	/**
+	 * How many of the first category's cards carry a real image of their heart
+	 * under the SVG, for search engines (HeartCard's `picture`).
+	 */
+	const PICTURED = 6;
+
 	interface Props {
 		/** Category id; also the anchor the front page scrolls to. */
 		id: string;
@@ -129,6 +135,7 @@
 					{index}
 					strand={columns > 0 && shownIndex[index] >= 0 ? shownIndex[index] % columns : undefined}
 					hidden={shownIndex[index] < 0}
+					picture={first && index < PICTURED}
 					selected={selectedIds.has(heart.id)}
 					{onSelect}
 					{onClick}

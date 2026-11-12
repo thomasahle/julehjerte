@@ -29,6 +29,11 @@
   A heart that is already drawn in the prerendered HTML is given as `markup`
   instead of being drawn from `design` — see $lib/front/galleryHearts.
 
+  `picture` lays the heart's PNG ($lib/heartImage) under a heart given as
+  `markup`: a real <img> for search engines, which do not take an inline SVG
+  for a picture. It is clipped to well inside the heart's outline, so the SVG
+  covers all of it, in any papers.
+
   A heart that follows the site's pair also carries its pair for the colourful
   mode ($lib/utils/palette, picked by `heartId`): its slot, `data-pair`, and
   the custom properties that read the shuffle on <html>, always, so the mode
@@ -56,6 +61,7 @@
 	import { swayAnimationDelay } from '$lib/utils/sway';
 	import type { HeartDesign } from '$lib/types/heart';
 	import { pairAttributes } from '$lib/utils/palette';
+	import { HEART_IMAGE_SIZE, heartImageFit, heartImageInside } from '$lib/heartImage';
 
 	interface Props {
 		/** The design to draw the heart from. Not needed when `markup` is given. */
@@ -71,6 +77,8 @@
 		 * `markup` has to name it.
 		 */
 		heartId?: string;
+		/** The heart's PNG, laid under a heart given as `markup` — see the note above. */
+		picture?: { src: string; alt: string };
 		/** Width of the block in px. The heart box is size x size. */
 		size?: number;
 		/** Visible ribbon length in px, above the heart. */
@@ -105,6 +113,7 @@
 		design,
 		markup = undefined,
 		heartId = undefined,
+		picture = undefined,
 		size = 168,
 		ribbon = 40,
 		delay = 0,
@@ -152,6 +161,8 @@
 	// The ribbon disappears into the cleft between the lobes; the overlap is a
 	// share of the width so it survives the max-width: 100% shrink.
 	let dip = $derived(Math.round(size * 0.24));
+	const fit = heartImageFit();
+	const pictureStyle = `width: ${fit.width}; margin-left: ${fit.left}; margin-top: ${fit.top}; clip-path: ${heartImageInside()};`;
 	let ribbonWidth = $derived(Math.max(8, Math.round(size * 0.055)));
 </script>
 
@@ -166,6 +177,18 @@
 	></div>
 	<div class="heart" class:site-paper={sitePaper}>
 		{#if markup !== undefined}
+			{#if picture}
+				<img
+					class="picture"
+					src={picture.src}
+					alt={picture.alt}
+					width={HEART_IMAGE_SIZE}
+					height={HEART_IMAGE_SIZE}
+					loading="lazy"
+					decoding="async"
+					style={pictureStyle}
+				/>
+			{/if}
 			<!-- svelte-ignore hydration_html_changed -->
 			{@html markup}
 		{:else if design && Paper}
@@ -223,6 +246,16 @@
 
 	.heart.site-paper :global(svg [fill='rgb(185, 19, 19)']) {
 		fill: var(--paper-right);
+	}
+
+	/* Under the heart's own SVG, which covers all of it (see the note at the top). */
+	.picture {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: -1;
+		max-width: none;
+		height: auto;
 	}
 
 	/* Overrides PaperHeartSVG's own `max-width: 100%; height: auto` so the heart

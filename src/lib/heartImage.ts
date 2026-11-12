@@ -55,3 +55,33 @@ export function heartImageRibbonBand(): number {
 	const { top, size } = HEART_IMAGE_BOX;
 	return (top + (HEART_IMAGE_RIBBON.dip + 0.02) * size) / HEART_IMAGE_SIZE;
 }
+
+/**
+ * A clip for the PNG, as a CSS `clip-path`, that keeps only what lies well inside every heart's
+ * outline: the square on its point drawn in a little, and each lobe as a polygon inside its
+ * half circle. The front page lays the picture under a card's own heart (HangingHeart), which
+ * then covers all of it, in whatever papers the heart is shown. In % of the image.
+ */
+export function heartImageInside(): string {
+	const { left, top, size } = HEART_IMAGE_BOX;
+	// In the box's own unit: the square's corners are at 0.128 (cleft), 0.937 (point) and
+	// 0.096 / 0.904 (sides, at 0.5325 down); a lobe's half circle has radius 0.286.
+	const lobe: [number, number][] = [
+		[0.14, 0.54],
+		[0.121, 0.507],
+		[0.048, 0.33],
+		[0.121, 0.153],
+		[0.298, 0.08],
+		[0.475, 0.153]
+	];
+	const points: [number, number][] = [
+		[0.5, 0.9],
+		...lobe,
+		[0.5, 0.18],
+		...lobe.map(([x, y]): [number, number] => [1 - x, y]).reverse()
+	];
+	const pct = (v: number) => `${Number((v * 100).toFixed(2))}%`;
+	return `polygon(${points
+		.map(([x, y]) => `${pct((left + x * size) / HEART_IMAGE_SIZE)} ${pct((top + y * size) / HEART_IMAGE_SIZE)}`)
+		.join(', ')})`;
+}

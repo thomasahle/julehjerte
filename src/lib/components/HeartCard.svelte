@@ -50,6 +50,8 @@
 	import DifficultyDots from '$lib/components/DifficultyDots.svelte';
 	import { TrashIcon } from '$lib/components/icons';
 	import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
+	import { base } from '$app/paths';
+	import { heartImagePath } from '$lib/heartImage';
 
 	interface Props {
 		heart: GalleryHeart;
@@ -77,6 +79,11 @@
 		 * SVG cannot be drawn again in the browser.
 		 */
 		hidden?: boolean;
+		/**
+		 * Lay the heart's PNG under its SVG: a real image of the heart for search
+		 * engines (HangingHeart). Only a gallery heart given as `markup` has one.
+		 */
+		picture?: boolean;
 	}
 
 	let {
@@ -90,7 +97,8 @@
 		onDelete,
 		index = 0,
 		strand = undefined,
-		hidden = false
+		hidden = false,
+		picture = false
 	}: Props = $props();
 
 	let ribbon = $derived(cardRibbon(index));
@@ -98,6 +106,11 @@
 	let href = $derived(heartHref(heart.id, lang));
 	let pickId = $derived(`pick-${heart.id}`);
 	let nameId = $derived(`${makeHeartAnchorId(heart.id)}-name`);
+	let image = $derived(
+		picture && markup !== undefined && !heart.isUserCreated
+			? { src: `${base}${heartImagePath(heart.id)}`, alt: t('heartImageAlt', lang, { name: heart.name }) }
+			: undefined
+	);
 
 	function handleOpen() {
 		onClick?.(heart);
@@ -131,6 +144,7 @@
 		<HangingHeart
 			{design}
 			{markup}
+			picture={image}
 			loadPaper={loadPaperHeart}
 			heartId={heart.id}
 			size={CARD_HEART_SIZE}
