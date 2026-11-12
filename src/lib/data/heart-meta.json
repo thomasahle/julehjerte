@@ -2790,7 +2790,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "18fae50e00",
+      "bytes": 4408101
+    }
   },
   "jul-2026": {
     "name": "JUL 2026",
