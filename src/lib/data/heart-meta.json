@@ -112,7 +112,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "af7f947924",
+      "bytes": 3263169
+    }
   },
   "sun": {
     "name": "Sol",
