@@ -9,18 +9,7 @@
     <path d="M 225 225 A 75 75 0 1 1 375 225 L 375 375 L 225 375 L 225 225 Z" fill="#c41e2a" />
     <g clip-path="url(#overlap-clip)">
       <rect x="225" y="225" width="150" height="150" fill="#ffffff" />
-      <path d="
-    M 300 225
-    L 375 225
-    L 375 300
-    L 300 300
-    Z
-    M 225 300
-    L 300 300
-    L 300 375
-    L 225 375
-    Z
-  " fill="#c41e2a" fill-rule="evenodd" />
+      <path d="M 275 225 L 325 225 L 325 275 L 275 275 Z M 225 275 L 275 275 L 275 325 L 225 325 Z M 325 275 L 375 275 L 375 325 L 325 325 Z M 275 325 L 325 325 L 325 375 L 275 375 Z" fill="#c41e2a" />
     </g>
     <path d="M 225 225 A 75 75 0 1 1 375 225 L 375 375 L 225 375 A 75 75 0 1 1 225 225 Z" fill="none" stroke="#999999" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" />
   </g>

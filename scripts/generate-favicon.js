@@ -1,5 +1,5 @@
 /**
- * Generate favicon PNG from a 2x2 heart.
+ * Generate the favicons from a 3x3 heart.
  *
  * This script generates the heart SVG inline (without depending on TypeScript modules)
  * and converts it to PNG using the canvas package.
@@ -16,10 +16,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.join(__dirname, '..');
 
 /**
- * Generate a 2x2 woven heart SVG.
+ * Generate a 3x3 woven heart SVG, the site's Klassisk 3×3.
  *
  * The heart consists of:
- * - Two lobes (left=white, right=red) that overlap in a 2x2 grid
+ * - Two lobes (left=white, right=red) that overlap in a 3x3 grid
  * - The weave pattern creates a checkerboard in the overlap area
  * - Rotated 45 degrees to form the classic heart shape
  */
@@ -27,10 +27,10 @@ function generateHeartSvg(size, colors, outlineColor = '#666666') {
   const { left, right } = colors;
 
   // Heart geometry constants (matching the project's rendering)
-  // For a 2x2 heart: overlap rectangle with 2 strips per lobe
-  const STRIP_WIDTH = 75;
+  // For a 3x3 heart: overlap rectangle with 3 strips per lobe, the heart as large as it was
+  const STRIP_WIDTH = 50;
   const CENTER = 300;
-  const gridX = 2, gridY = 2;
+  const gridX = 3, gridY = 3;
 
   const overlapWidth = gridX * STRIP_WIDTH;  // 150
   const overlapHeight = gridY * STRIP_WIDTH; // 150
@@ -72,25 +72,17 @@ function generateHeartSvg(size, colors, outlineColor = '#666666') {
     'Z'
   ].join(' ');
 
-  // Strip paths for weave effect (2x2 grid)
-  // For parity 0: top-left and bottom-right show right lobe on top
-  const stripY = overlapTop + STRIP_WIDTH; // y = 300 (middle horizontal line)
-  const stripX = overlapLeft + STRIP_WIDTH; // x = 300 (middle vertical line)
-
-  // Vertical strips (right lobe) that appear on top in certain cells
-  // For correct weave: red on top in top-right and bottom-left quadrants
-  const rightOnTopStrips = `
-    M ${stripX} ${overlapTop}
-    L ${overlapRight} ${overlapTop}
-    L ${overlapRight} ${stripY}
-    L ${stripX} ${stripY}
-    Z
-    M ${overlapLeft} ${stripY}
-    L ${stripX} ${stripY}
-    L ${stripX} ${overlapBottom}
-    L ${overlapLeft} ${overlapBottom}
-    Z
-  `;
+  // The squares where the right lobe's strip lies on top: every other one, with the
+  // left lobe's paper in the corners (and so in the square at the cleft), as on the site.
+  const rightOnTopStrips = [];
+  for (let row = 0; row < gridY; row++) {
+    for (let col = 0; col < gridX; col++) {
+      if ((col + row) % 2 === 0) continue;
+      const x = overlapLeft + col * STRIP_WIDTH;
+      const y = overlapTop + row * STRIP_WIDTH;
+      rightOnTopStrips.push(`M ${x} ${y} L ${x + STRIP_WIDTH} ${y} L ${x + STRIP_WIDTH} ${y + STRIP_WIDTH} L ${x} ${y + STRIP_WIDTH} Z`);
+    }
+  }
 
   // Calculate viewBox to fit the rotated heart
   const cx = CENTER, cy = CENTER;
@@ -113,7 +105,7 @@ function generateHeartSvg(size, colors, outlineColor = '#666666') {
     <path d="${rightLobeClip}" fill="${right}" />
     <g clip-path="url(#overlap-clip)">
       <rect x="${overlapLeft}" y="${overlapTop}" width="${overlapWidth}" height="${overlapHeight}" fill="${left}" />
-      <path d="${rightOnTopStrips}" fill="${right}" fill-rule="evenodd" />
+      <path d="${rightOnTopStrips.join(' ')}" fill="${right}" />
     </g>
     <path d="${outlinePath}" fill="none" stroke="${outlineColor}" stroke-width="${outlineWidth}" stroke-linejoin="round" stroke-linecap="round" />
   </g>
@@ -123,7 +115,7 @@ function generateHeartSvg(size, colors, outlineColor = '#666666') {
 // Colors
 const colors = {
   left: '#ffffff',
-  right: '#cc0000'
+  right: '#c41e2a'
 };
 
 // Generate PNGs at different sizes
@@ -160,6 +152,28 @@ async function generateFavicons() {
   const svgFavicon = generateHeartSvg(64, colors, '#999999');
   fs.writeFileSync(path.join(projectRoot, 'static/favicon.svg'), svgFavicon);
   console.log('Generated favicon.svg');
+
+  // favicon.ico: the three small PNGs in one file (an .ico may hold PNGs as they are).
+  const icons = [16, 32, 48].map((size) => ({
+    size,
+    data: fs.readFileSync(path.join(projectRoot, 'static', `favicon-${size}.png`))
+  }));
+  const header = Buffer.alloc(6 + 16 * icons.length);
+  header.writeUInt16LE(1, 2);
+  header.writeUInt16LE(icons.length, 4);
+  let offset = header.length;
+  icons.forEach(({ size, data }, i) => {
+    const at = 6 + 16 * i;
+    header.writeUInt8(size, at);
+    header.writeUInt8(size, at + 1);
+    header.writeUInt16LE(1, at + 4);
+    header.writeUInt16LE(32, at + 6);
+    header.writeUInt32LE(data.length, at + 8);
+    header.writeUInt32LE(offset, at + 12);
+    offset += data.length;
+  });
+  fs.writeFileSync(path.join(projectRoot, 'static/favicon.ico'), Buffer.concat([header, ...icons.map((icon) => icon.data)]));
+  console.log('Generated favicon.ico');
 
   console.log('\nDone! Generated all favicon files.');
 }
