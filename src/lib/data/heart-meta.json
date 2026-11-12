@@ -645,7 +645,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "23f3d5b597",
+      "bytes": 4467669
+    }
   },
   "hjertekloever": {
     "name": "Hjertekløver",
@@ -1356,7 +1359,10 @@
       "width": 900,
       "height": 1200
     },
-    "film": null
+    "film": {
+      "v": "a178ba8795",
+      "bytes": 7774544
+    }
   },
   "squares": {
     "name": "Squares",

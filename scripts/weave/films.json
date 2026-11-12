@@ -23,7 +23,7 @@
   "drageskael": {"design":"c397cd3484607474","outcome":"unsupported","reason":"the finished weave of this design could not be laid out without paper passing through paper (--force to run anyway)","made":"2026-11-11"},
   "explosion": {"design":"d9ec020c881c679d","outcome":"unsupported","reason":"the finished weave of this design could not be laid out without paper passing through paper (--force to run anyway)","made":"2026-11-11"},
   "fejlternet": {"design":"31888575400abed9","outcome":"unclean","v":"7bbea7b62e","bytes":3758477,"seconds":301,"crossings":25,"stretch":53,"magic":9,"magicFrames":3967,"bad":0,"retries":11,"simSeconds":431,"made":"2026-11-11"},
-  "fire-stjerner": {"design":"087558a17f8a5658","outcome":"failed","reason":"pack.py: IndexError: list index out of range","made":"2026-11-11"},
+  "fire-stjerner": {"design":"087558a17f8a5658","outcome":"unclean","v":"a178ba8795","bytes":7774544,"seconds":1116,"crossings":121,"stretch":150,"magic":24,"magicFrames":16440,"bad":0,"retries":42,"simSeconds":941,"made":"2026-11-12"},
   "firkant-i-firkant": {"design":"438001dd36203109","outcome":"unclean","v":"95596ed3d6","bytes":2771762,"seconds":242,"crossings":25,"stretch":47,"magic":6,"magicFrames":1242,"bad":0,"retries":9,"simSeconds":321,"made":"2026-11-11"},
   "firkanthjerte": {"design":"d75fe446442e7cbe","outcome":"unclean","v":"fdd79839e6","bytes":8249636,"seconds":958,"crossings":100,"stretch":81,"magic":15,"magicFrames":5880,"bad":0,"retries":24,"simSeconds":978,"made":"2026-11-11"},
   "firkloever-hjerte": {"design":"ff550f5abc170874","outcome":"unclean","v":"6454d76ce6","bytes":4247143,"seconds":340,"crossings":36,"stretch":74,"magic":1,"magicFrames":63,"bad":0,"retries":2,"simSeconds":371,"made":"2026-11-11"},
@@ -92,7 +92,7 @@
   "sun": {"design":"86521dc3d88f5c8f","outcome":"unsupported","reason":"3 and 3 cuts give 3 and 1 pieces; the cuts touch, cross or do not run from the fold to the lobe","made":"2026-11-11"},
   "tak": {"design":"9655bbd41578a516","outcome":"unclean","v":"a027b37282","bytes":3756171,"seconds":268,"crossings":25,"stretch":62,"magic":8,"magicFrames":2409,"bad":0,"retries":11,"simSeconds":448,"made":"2026-11-12"},
   "tragt": {"design":"e461d57057f11bd8","outcome":"unclean","v":"828ba2b8b9","bytes":4763470,"seconds":847,"crossings":100,"stretch":55,"magic":28,"magicFrames":6986,"bad":0,"retries":32,"simSeconds":542,"made":"2026-11-11"},
-  "triple-heart": {"design":"e7bc5d66391ea022","outcome":"failed","reason":"the paper has no next step (the solve gave no numbers): a strip is not where the weaving expects it","made":"2026-11-11"},
+  "triple-heart": {"design":"e7bc5d66391ea022","outcome":"unclean","v":"23f3d5b597","bytes":4467669,"seconds":386,"crossings":36,"stretch":60,"magic":17,"magicFrames":5663,"bad":0,"retries":16,"simSeconds":537,"made":"2026-11-12"},
   "tulipan": {"design":"ea6df231e38bbccc","outcome":"unclean","v":"de316fecd4","bytes":3012273,"seconds":227,"crossings":16,"stretch":69,"magic":12,"magicFrames":2963,"bad":0,"retries":7,"simSeconds":349,"made":"2026-11-12"},
   "venus": {"design":"d04911cc2acf9b74","outcome":"unclean","v":"42e62c7060","bytes":6313771,"seconds":497,"crossings":49,"stretch":112,"magic":14,"magicFrames":7309,"bad":0,"retries":26,"simSeconds":784,"made":"2026-11-11"}
 }
