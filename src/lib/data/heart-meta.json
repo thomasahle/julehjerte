@@ -2732,7 +2732,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "53c4e9fad0",
+      "bytes": 5568409
+    }
   },
   "tak": {
     "name": "TAK",
@@ -2756,7 +2759,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "a027b37282",
+      "bytes": 3756171
+    }
   },
   "jul-tern": {
     "name": "JUL i tern",
