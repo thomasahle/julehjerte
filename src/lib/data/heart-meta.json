@@ -2146,7 +2146,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "208ddfd00c",
+      "bytes": 2917828
+    }
   },
   "khatam": {
     "name": "Khatam",
