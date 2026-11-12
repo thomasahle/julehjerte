@@ -1283,7 +1283,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "e438628622",
+      "bytes": 6155334
+    }
   },
   "cirkelhjerte": {
     "name": "Cirkelhjerte",
