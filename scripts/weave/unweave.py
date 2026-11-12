@@ -97,10 +97,11 @@ def half(isA):
 # ---------------------------------------------------------------- mesh: two layers per half, joined along the fold
 t_build = time.time()
 P_, S_, V_, PIECE, SIGN, OWN, RANK, LEV, Fs, crease, restE, hinges = [], [], [], [], [], [], [], [], [], set(), {}, []
-nv = 0
+nv = 0; ON = []
+level = lambda isA, k, j: ZI if ((((k + j + PAR) & 1) == 0) == bool(isA)) else ZO      # of strip k of a half where it lies on strip j of the other
 for isA in (1, 0):
     V2, F2 = half(isA); n = len(V2); onf = V2[:, 0] < 1e-7
-    own = -np.ones(n, int); lev = np.full(n, ZI); rank = np.zeros(n, int)
+    own = -np.ones(n, int); lev = np.full(n, ZI); rank = np.zeros(n, int); on = [set() for _ in range(n)]
     mine = [prepared.prep(g.buffer(1.8 * WELD)) for g in STRIPS[isA]]; oth = [prepared.prep(g.buffer(WELD)) for g in OTH[isA]]
     # which strip of the other half each triangle lies on. A point on the edge of its own strip takes its height from the triangles it belongs to,
     # not from where the point itself is: where cuts of the two halves run along the same curve (a ring made of arcs from both), the point is on
@@ -123,13 +124,7 @@ for isA in (1, 0):
         rank[i] = r
         if own[i] >= 0:
             hit = sorted(votes[i]) or [j for j, g in enumerate(oth) if g.contains(p)]
-            if hit:
-                ls = []
-                for j in hit:
-                    nn, mm = (own[i], j) if isA else (j, own[i])
-                    ls.append(ZI if ((((nn + mm + PAR) & 1) == 0) == bool(isA)) else ZO)
-                lev[i] = np.mean(ls)
-            else: lev[i] = (ZI + ZO) / 2
+            on[i] = set(hit); lev[i] = np.mean([level(isA, own[i], j) for j in hit]) if hit else (ZI + ZO) / 2
     dirE = {}
     for f in F2:
         for a in range(3): dirE[(int(f[a]), int(f[(a + 1) % 3]))] = int(f[(a + 2) % 3])
@@ -141,7 +136,7 @@ for isA in (1, 0):
     nm = len(ids)
     P_ += [isA] * (2 * n + nm); SIGN_l = [-1] * n + [1] * n + [0] * nm; SIGN += SIGN_l
     S_ += list(V2[:, 0]) * 2 + [0.0] * nm; V_ += list(V2[:, 1]) * 2 + [V2[v, 1] for v in ids]
-    OWN += list(own) * 2 + [own[v] for v in ids]; RANK += list(rank) * 2 + [len(oth)] * nm; LEV += list(lev) * 2 + [lev[v] for v in ids]
+    OWN += list(own) * 2 + [own[v] for v in ids]; RANK += list(rank) * 2 + [len(oth)] * nm; LEV += list(lev) * 2 + [lev[v] for v in ids]; ON += on * 2 + [on[v] for v in ids]
     crease |= {nv + v for v in ids} | {nv + v + n for v in ids} | {nv + m for m in mid.values()}
     cot = lambda a, b: np.dot(a, b) / (abs(a[0] * b[1] - a[1] * b[0]) + 1e-12)
     for (i, j), o in dirE.items():
@@ -156,10 +151,23 @@ for isA in (1, 0):
 NP = nv                                                                 # paper vertices; the table comes after
 F = np.vstack(Fs).astype(np.int32)
 PIECE, SIGN, S_, V_, OWN, RANK, LEV = map(np.array, (P_, SIGN, S_, V_, OWN, RANK, LEV))
+# the welding grid can put a point of each half on the same spot (the corners of slits, mostly). The two must then lie at different heights,
+# the right one on top: a point whose own triangles all lie elsewhere also counts the strip it meets there among those it lies on
+spot = {}
+for k in np.where((PIECE == 0) & (OWN >= 0))[0]: spot.setdefault((round(V_[k] * 1e6), round(S_[k] * 1e6), SIGN[k]), []).append(k)
+for i in np.where((PIECE == 1) & (OWN >= 0))[0]:
+    for k in spot.get((round(S_[i] * 1e6), round(V_[i] * 1e6), SIGN[i]), []):
+        if (LEV[i] - LEV[k]) * (level(1, OWN[i], OWN[k]) - level(0, OWN[k], OWN[i])) > 1e-9: continue
+        for v, isA, j in ((i, 1, OWN[k]), (k, 0, OWN[i])): ON[v] = ON[v] | {j}; LEV[v] = np.mean([level(isA, OWN[v], j) for j in ON[v]])
 for isA in (1, 0):
     lob = np.where((PIECE == isA) & (OWN < 0) & (S_ < SQ + 0.4))[0]; root = np.where((PIECE == isA) & (OWN >= 0) & (S_ > SQ - 0.12) & (SIGN != 0))[0]
+    # a point of the lobe follows the strip root nearest to it on its own side of the cuts (their last stretch, drawn on a little into the
+    # lobe): where a cut reaches the lobe at a slant, a corner of the slit's end lies nearer, across, to the strip on the other side, and
+    # the lobe would twist through the other half's edge there
+    ends = [LineString([*c[max(0, min(len(c) - 2, int(np.argmax(c[:, 0] > SQ - 0.2)))):], c[-1] + 0.3 * (c[-1] - c[-2]) / np.linalg.norm(c[-1] - c[-2])]) for c in CUTS['A' if isA else 'B']]
     for i in lob:
-        j = root[np.argmin(np.abs(V_[root] - V_[i]) + 0.2 * np.abs(S_[root] - SQ))]
+        near = root[np.argsort(np.abs(V_[root] - V_[i]) + 0.2 * np.abs(S_[root] - SQ), kind='stable')[:12]]
+        j = next((j for j in near if not any(LineString([(S_[i], V_[i]), (S_[j], V_[j])]).intersects(e) for e in ends)), near[0])
         u = np.clip((S_[i] - SQ - 0.1) / 0.28, 0, 1); LEV[i] = LEV[j] + (ZI - LEV[j]) * u * u * (3 - 2 * u)
 X = np.zeros((NP, 3))
 isA_ = PIECE == 1
