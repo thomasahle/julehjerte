@@ -742,7 +742,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "de2c1de16f",
+      "bytes": 2480122
+    }
   },
   "h4h2": {
     "name": "Hjerte i hjerte",
@@ -859,7 +862,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "e35b2f70b5",
+      "bytes": 4131749
+    }
   },
   "lilje2": {
     "name": "Lilje 2",
@@ -943,7 +949,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "0c98f843c4",
+      "bytes": 5941087
+    }
   },
   "amy-flowering": {
     "name": "Flowering",
