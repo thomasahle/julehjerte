@@ -2188,7 +2188,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "041804d5f5",
+      "bytes": 5229337
+    }
   },
   "stjernegitter": {
     "name": "Stjernegitter",
@@ -2661,7 +2664,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "a71290ba87",
+      "bytes": 3470976
+    }
   },
   "potteplante": {
     "name": "Potteplante",
