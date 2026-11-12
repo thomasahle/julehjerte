@@ -217,19 +217,51 @@ def tuck(isA, k, La, lo, hi, amount, Xg):
     L0[ek] = np.sqrt(np.maximum(L0B[ek] ** 2 - dv ** 2 + dn ** 2, 1e-10))
 
 CAP = 0.2; ACCD = ipctk.AdditiveCCD()
-# ---------------------------------------------------------------- magic: when a strip is caught and cannot get where it has to go, it is allowed
-# to pass through paper (it stops counting as an obstacle, and nothing is an obstacle to it) until it is clear of everything again
+# ---------------------------------------------------------------- magic: a strip that cannot get where it has to go any other way is allowed to pass
+# through paper (it stops counting as an obstacle, and nothing is an obstacle to it); afterwards only the patch of it that is still in other paper
+# stays that way, until it is clear of everything again (NOTES.md, 13)
 GHOST = np.zeros(N, bool); GSTRIPS = {}
 def ghost(isA, k, idx, why):
     if (isA, k) not in GSTRIPS: print('    (%s strip %d %s: passed through by magic)' % ('red' if isA else 'white', k + 1, why), flush=True); stats['magic'] = stats.get('magic', 0) + 1
-    m = GSTRIPS.get((isA, k), np.zeros(N, bool)) | free_end(isA, k, idx); GSTRIPS[(isA, k)] = m; GHOST[:] |= m
+    m = GSTRIPS.get((isA, k), np.zeros(N, bool)) | free_end(isA, k, idx); GSTRIPS[(isA, k)] = m; GHOST[:] |= m; WHOLE.add((isA, k))
+def tangle(mask, rest):
+    """which points of the paper in `mask` are on an edge or a triangle that passes through other paper or through itself (the paper in `rest` left out)"""
+    Fp = F[~rest[F].any(1)]; Ep = ipctk.edges(Fp); T = X[Fp]; cen = T.mean(1); rad = np.linalg.norm(T - cen[:, None], axis=2).max(1)
+    p, q = X[Ep[:, 0]], X[Ep[:, 1]]; mid = (p + q) / 2; half = np.linalg.norm(q - p, axis=1) / 2
+    pr = cKDTree(mid).sparse_distance_matrix(cKDTree(cen), half.max() + rad.max(), output_type='coo_matrix'); e, t = pr.row, pr.col
+    ok = (pr.data <= half[e] + rad[t]) & (mask[Ep[e]].any(1) | mask[Fp[t]].any(1)); e, t = e[ok], t[ok]
+    ok = ~(Ep[e][:, :, None] == Fp[t][:, None, :]).any((1, 2)); e, t = e[ok], t[ok]
+    A = T[t, 0]; e1, e2 = T[t, 1] - A, T[t, 2] - A; o, dd = p[e], q[e] - p[e]; h = np.cross(dd, e2); det = (e1 * h).sum(1); okd = np.abs(det) > 1e-14; det = np.where(okd, det, 1)
+    sv = o - A; u = (sv * h).sum(1) / det; qv = np.cross(sv, e1); v = (dd * qv).sum(1) / det; w = (e2 * qv).sum(1) / det
+    hit = okd & (u > -1e-9) & (v > -1e-9) & (u + v < 1 + 1e-9) & (w > -1e-9) & (w < 1 + 1e-9)
+    bad = np.zeros(N, bool); bad[Ep[e[hit]].ravel()] = True; bad[Fp[t[hit]].ravel()] = True
+    return bad & mask
+WHOLE = set()                                   # the strips that are passing through paper as a whole right now
+HOME = X.copy()                                 # where every point lay in the finished weave (the red half's are moved along when the halves come apart)
 def rejoin():
+    """paper that was passed through other paper counts again as soon as it can. All of a strip does once it intersects nothing; until then only the
+    patch of it that is still in other paper (where it stands with its foot through a neighbour's edge, mostly) stays out of the collisions, so
+    that nothing else can pass through the rest of the strip meanwhile"""
     for q in list(GSTRIPS):
         rest = np.zeros(N, bool)
         for r_ in GSTRIPS:
             if r_ != q: rest |= GSTRIPS[r_]
         Fs = FALL[~rest[FALL].any(1)]
-        if not ipctk.has_intersections(ipctk.CollisionMesh(X, ipctk.edges(Fs), Fs), X): del GSTRIPS[q]
+        if not ipctk.has_intersections(ipctk.CollisionMesh(X, ipctk.edges(Fs), Fs), X): del GSTRIPS[q]; WHOLE.discard(q); continue
+        if q not in WHOLE:
+            # a patch whose strip is back where it lay in the finished weave: its points are put back exactly there, if that frees it
+            m = GSTRIPS[q]
+            if np.linalg.norm(X[m] - HOME[m], axis=1).max() < 0.08:
+                Xt = X.copy(); Xt[m] = HOME[m]
+                if not ipctk.has_intersections(ipctk.CollisionMesh(Xt, ipctk.edges(Fs), Fs), Xt): X[m] = HOME[m]; del GSTRIPS[q]; continue
+        m = GSTRIPS[q]; bad = tangle(m, rest)
+        if not bad.any(): continue
+        tree = cKDTree(X[bad]); R = 0.1
+        for _ in range(5):
+            near = m & (tree.query(X, distance_upper_bound=R)[0] <= R); Fk = FALL[~(rest | near)[FALL].any(1)]
+            if not ipctk.has_intersections(ipctk.CollisionMesh(X, ipctk.edges(Fk), Fk), X):
+                GSTRIPS[q] = near; WHOLE.discard(q); break
+            R *= 1.6
     GHOST[:] = False
     for q in GSTRIPS: GHOST[:] |= GSTRIPS[q]
 class Local:
@@ -462,7 +494,7 @@ def stage(name, active, moves, holds=(), nfr=None, settle=0, press=None, dyn=Non
         stats['steps'] += 1
         if nf_: cur = float(np.linalg.norm(X[fid[:nf_]] - tg[:nf_], axis=1).max()); lag = max(lag, cur)
         frames.append(X[:NP].astype(np.float32)); labels.append(CUR[0] + '|' + name)
-        if GHOST.any(): stats['magicf'] = stats.get('magicf', 0) + 1
+        if GHOST.any(): stats['magicf' if WHOLE else 'footf'] = stats.get('magicf' if WHOLE else 'footf', 0) + 1
         elif not A_.nocheck and ipctk.has_intersections(GMESH, X): stats['badf'] = stats.get('badf', 0) + 1
     was = bool(GHOST.any()); rejoin(); stage.cur = cur; stage.done = bool(until is not None and f < nfr + settle)
     hit = (not GHOST.any()) and ipctk.has_intersections(GMESH, X); stats['bad'] += int(hit); stats['lag'] = max(stats.get('lag', 0), lag)
@@ -529,6 +561,29 @@ def rail(isA, k, Lt, beta, wt=0.3):
         return q, X[q] - np.outer((p[far] @ nrm) - off[far], nrm) - 0.03 * e, np.full(len(q), wt)
     return at
 
+def chaikin(p, n=3):
+    for _ in range(n): p = np.vstack([p[:1], np.c_[0.75 * p[:-1] + 0.25 * p[1:], 0.25 * p[:-1] + 0.75 * p[1:]].reshape(-1, 2), p[-1:]])
+    return p
+def feeder(isA, k, idx, La, alpha, nfr):
+    """a strip that will not be pulled out of a loop is taken out along its own path instead, as a hand feeds it in (seen forwards): the held strip
+    bends over into a hairpin, puts its head down at the mouth of the loop, and the head goes in first while the hairpin gets lower and the rest
+    follows where the head went. Every point of the free end is told where to be: the side view is the standing strip up to a height h, over the
+    top, down to the mouth, and from there the line the strip lies along now; h grows from nothing to the whole length. The strip keeps to its
+    own lane, so it passes through paper only where it is too wide for the loop."""
+    r, a = axes(isA); d = -r; ids = np.where((PIECE == isA) & (OWN == k) & (S_ < La - 0.02))[0]; lay = SIGN[ids] != 0
+    m = leaving(isA, k, La); Apt = X[:NP][m].mean(0) + r * (La - S_[m].mean()); base = Apt - a * (Apt @ a); base[2] = ZHOME * sm(1 - alpha / 0.5)
+    ss, C, _ = trail(X, isA, k, idx); q = ss < La - 0.03; tv = La - ss[q][::-1]; tp = np.c_[(C[q][::-1] - base) @ d, (C[q][::-1] - base) @ UP]
+    sh = shape(La, alpha); vc = VC[(isA, k)]; u = La - np.where(lay, S_[ids], -0.6 * ZI); off = SIGN[ids] * ZI
+    def at(f, nfr_):
+        h = La * sm((f + 1) / nfr); us = np.linspace(0, h, max(2, int(h / 0.04) + 2)); al, hi, _ = sh(us * 0.97); left = np.c_[al, hi]
+        v0 = min(0.3, 0.5 * tv[-1]); land = np.array([np.interp(v0, tv, tp[:, 0]), np.interp(v0, tv, tp[:, 1])]); g = min(0.2, 0.7 * h)
+        pts = chaikin(np.vstack([left, left[-1] + [g, 0.0], land, tp[tv > v0 + 0.02]]))
+        cl = np.r_[0, np.cumsum(np.linalg.norm(np.diff(pts, axis=0), axis=1))]; w = np.minimum(0.97 * u, cl[-1])
+        P = np.c_[np.interp(w, cl, pts[:, 0]), np.interp(w, cl, pts[:, 1])]; w1 = np.minimum(w + 0.02, cl[-1]); w0 = np.maximum(w1 - 0.04, 0)
+        T = np.c_[np.interp(w1, cl, pts[:, 0]) - np.interp(w0, cl, pts[:, 0]), np.interp(w1, cl, pts[:, 1]) - np.interp(w0, cl, pts[:, 1])]; T /= np.linalg.norm(T, axis=1)[:, None] + 1e-12
+        tg = base + np.outer(P[:, 0] - off * T[:, 1], d) + np.outer(P[:, 1] + off * T[:, 0], UP) + np.outer(vc + CF[ids] * (V_[ids] - vc), a)
+        return ids, tg, 0.6 * sm((u - 0.02) / 0.25)             # (loosely near where it leaves the weave: there the paper finds its own way round its neighbours' edges)
+    return at
 def draw_out(isA, k, idx, La, act, hw, host, LaH, hidx, tail=None):
     """take strip (isA, k) out of the loop of strip `host` that it is threaded through. Seen forwards: the host strip rises a little, swung slightly
     aside with its near edge tilted up, to meet the strip coming in; the strip is fed into its loop; then both settle.
@@ -564,7 +619,7 @@ def draw_out(isA, k, idx, La, act, hw, host, LaH, hidx, tail=None):
         # the folded end is out once most of it has been between the host's two layers and none of it is any more
         ins = inside(Xg, tipv); been[:] |= ins; isout[0] = bool(been.mean() > 0.6 and not ins.any() and (Xg[tipv, ax] > Lm - 0.3).all())
         return isout[0]
-    keep = (X.copy(), L0.copy(), CF.copy(), len(frames), len(labels), GHOST.copy(), dict(GSTRIPS), dict(stats))
+    keep = (X.copy(), L0.copy(), CF.copy(), len(frames), len(labels), GHOST.copy(), dict(GSTRIPS), dict(stats), set(WHOLE))
     if A_.hand:
         # a hand that travels: it grips the strip where it comes out of the loop and carries that point to where it will be when the strip stands
         # clear; then the next bit, and so on up the strip, while a light hand keeps what is already out straight. The rest follows through the loop.
@@ -584,19 +639,25 @@ def draw_out(isA, k, idx, La, act, hw, host, LaH, hidx, tail=None):
     if not A_.hand: by_traction()
     elif not out(X):
         # the hand let it slip. Go back to before the draw and pull at the mouth of the loop instead, which is cruder but gets more strips through
-        X[:] = keep[0]; L0[:] = keep[1]; CF[:] = keep[2]; del frames[keep[3]:]; del labels[keep[4]:]; GHOST[:] = keep[5]; GSTRIPS.clear(); GSTRIPS.update(keep[6])
+        X[:] = keep[0]; L0[:] = keep[1]; CF[:] = keep[2]; del frames[keep[3]:]; del labels[keep[4]:]; GHOST[:] = keep[5]; GSTRIPS.clear(); GSTRIPS.update(keep[6]); WHOLE.clear(); WHOLE.update(keep[8])
         t0_ = stats['t0']; stats.clear(); stats.update(keep[7]); stats['t0'] = t0_; stats['retry'] = stats.get('retry', 0) + 1; been[:] = False; isout[0] = False
         print('    (%s strip %d slipped out of the hand: drawn again by pulling at the loop)' % (col, k + 1), flush=True)
         by_traction()
-    if not out(X): ghost(isA, k, idx, 'would not come out of the loop')
+    if not out(X):
+        # it will not come out by pulling either. Go back once more, and take it out along its own path (see feeder)
+        r_ = stats.get('retry', 0)
+        X[:] = keep[0]; L0[:] = keep[1]; CF[:] = keep[2]; del frames[keep[3]:]; del labels[keep[4]:]; GHOST[:] = keep[5]; GSTRIPS.clear(); GSTRIPS.update(keep[6]); WHOLE.clear(); WHOLE.update(keep[8])
+        t0_ = stats['t0']; stats.clear(); stats.update(keep[7]); stats['t0'] = t0_; stats['retry'] = r_
+        ghost(isA, k, idx, 'would not come out of the loop'); nf_ = nframes(2.5 * La, 40)
+        stage(col + ' end drawn out of the loop', act, [], holds=grip, nfr=nf_, settle=2, press=hw, pre=(lambda f, n_: tuck(isA, k, La, lo, hi, 1.0, X)) if tucked else None, soft=[room, feeder(isA, k, idx, La, ALPHA, nf_)])
     # the strip is held up clear, and at the same time the host goes back: a white one down flat, a red one up to where it waits for its next crossing
     P0, t0 = tip_frame(X, isA, k); P1, t1 = hover(isA, k, La, ALPHA, X); nfr = nframes(np.linalg.norm(P1 - P0), 16)
     moves = lift_moves(X, isA, k, La, None, ALPHA, nfr); soft = [swing(isA, k, La, ALPHA, ALPHA, ramp=True)]
     if isH: moves += lift_moves(X, isH, kH, LaH, None, ALPHA, nfr); soft.append(swing(isH, kH, LaH, GAMMA, ALPHA, 0.12, yaw=(YAW, 0), roll=(ROLL, 0)))
     else: soft.append(swing(isH, kH, LaH, GAMMA, 1e-3, 0.25, yaw=(YAW, 0), roll=(ROLL, 0)))
     stage(col + ' end lifted clear', act, moves, settle=4, press=hw, soft=soft, pre=(lambda f, n_: tuck(isA, k, La, lo, hi, 1 - sm((f + 2) / n_), X)) if tucked else None)
-    force(isA, k, idx, La, ALPHA, act, col + ' end lifted clear', hw)
-    if isH: force(isH, kH, hidx, LaH, ALPHA, act, colH + ' end lifted clear', hw)
+    for q_, L_ in (((isA, k), La),) + ((((isH, kH), LaH),) if isH else ()):
+        if far_from(q_[0], q_[1], L_, ALPHA) >= 0.35: print('    (%s strip %d is held where it got to, %.2f from where it should be)' % ('red' if q_[0] else 'white', q_[1] + 1, far_from(q_[0], q_[1], L_, ALPHA)), flush=True)
 
 def far_from(isA, k, La, alpha):
     b = Block(X, isA, k); return float(np.linalg.norm(X[b.ids] - b.at(*hover(isA, k, La, alpha, X)), axis=1).max())
@@ -668,8 +729,8 @@ if done == len(order):
     # the two halves come apart: red slides away with its strips folded back, then the strips are laid out flat
     red = np.r_[PIECE == 1, np.zeros(4, bool)]; CUR[0] = 'start'
     for f in range(1, 31):
-        Xn = X.copy(); Xn[red, 0] += 3.4 * (sm(f / 30) - sm((f - 1) / 30)); X = Xn; frames.append(X[:NP].astype(np.float32)); labels.append('start|halves apart')
-        if GHOST.any(): stats['magicf'] = stats.get('magicf', 0) + 1
+        Xn = X.copy(); Xn[red, 0] += 3.4 * (sm(f / 30) - sm((f - 1) / 30)); HOME[red, 0] += 3.4 * (sm(f / 30) - sm((f - 1) / 30)); X = Xn; frames.append(X[:NP].astype(np.float32)); labels.append('start|halves apart')
+        if GHOST.any(): stats['magicf' if WHOLE else 'footf'] = stats.get('magicf' if WHOLE else 'footf', 0) + 1
         elif not A_.nocheck and ipctk.has_intersections(GMESH, X): stats['badf'] = stats.get('badf', 0) + 1
     act = np.zeros(N, bool); moves = []; soft = []
     for k in range(NA): act |= free_end(1, k, 0); moves += lift_moves(X, 1, k, SQ, FOLD, 1e-3, 36); soft.append(swing(1, k, SQ, FOLD, 1e-3, 0.2))
@@ -681,5 +742,5 @@ if done == len(order):
     for k in range(NB): force(0, k, 0, free_len(0, k, 0), 1e-3, act, 'white strips laid out flat')
     if GSTRIPS: print('still passing through paper at the end:', sorted(GSTRIPS))
 el = time.time() - stats['t0']
-print('%d crossings undone, %d frames in %.0f s (%.2f s/frame); most stretch (99th percentile of edges) %.0f%%; strips passed through by magic: %d (%d frames); other frames intersecting: %s; draws done again by pulling: %d' % (done, len(frames) - 1, el, el / max(1, len(frames) - 1), 100 * stats.get('strain', 0), stats.get('magic', 0), stats.get('magicf', 0), 'not checked' if A_.nocheck else stats.get('badf', 0), stats.get('retry', 0)))
+print('%d crossings undone, %d frames in %.0f s (%.2f s/frame); most stretch (99th percentile of edges) %.0f%%; strips passed through by magic: %d (%d frames); other frames intersecting: %s; draws done again by pulling: %d; frames with only a patch of a strip in other paper: %d' % (done, len(frames) - 1, el, el / max(1, len(frames) - 1), 100 * stats.get('strain', 0), stats.get('magic', 0), stats.get('magicf', 0), 'not checked' if A_.nocheck else stats.get('badf', 0), stats.get('retry', 0), stats.get('footf', 0)))
 save()

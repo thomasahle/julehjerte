@@ -21,7 +21,8 @@ export const SIM_VERSION = '1';
 /**
  * The outcomes a heart's page shows a film for. `clean`: paper never passed through paper.
  * `unclean`: the simulator got a strip through a loop only by letting it pass through paper
- * for a while (its "magic", `magic` strips over `magicFrames` frames), or some frames have
+ * for a while (its "magic", `magic` strips over `magicFrames` frames; `patchFrames` more in which
+ * only a patch of a strip, mostly the foot of a standing one, was in other paper), or some frames have
  * paper in paper (`bad`). The simulator counts neither as a failure and the film still shows
  * every step, so both are shown; take `unclean` out here to show only the clean ones.
  */

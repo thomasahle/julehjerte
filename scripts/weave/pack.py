@@ -10,8 +10,8 @@ def opt(name):
         i = sys.argv.index(name); v = sys.argv[i + 1]; del sys.argv[i:i + 2]; return v
 logf, note = opt('--log'), opt('--note'); stats = {}
 if logf:
-    m = re.search(r'(\d+) crossings undone, (\d+) frames in (\d+) s .*?most stretch.*? (\d+)%; strips passed through by magic: (\d+) \((\d+) frames\); other frames intersecting: (\w+)(?:; draws done again by pulling: (\d+))?', open(logf).read())
-    if m: stats = dict(crossings=int(m[1]), simframes=int(m[2]), seconds=int(m[3]), stretch=int(m[4]), magic=int(m[5]), magicFrames=int(m[6])); stats.update(bad=int(m[7])) if m[7].isdigit() else None; stats.update(retries=int(m[8])) if m[8] else None
+    m = re.search(r'(\d+) crossings undone, (\d+) frames in (\d+) s .*?most stretch.*? (\d+)%; strips passed through by magic: (\d+) \((\d+) frames\); other frames intersecting: (\w+)(?:; draws done again by pulling: (\d+))?(?:; frames with only a patch of a strip in other paper: (\d+))?', open(logf).read())
+    if m: stats = dict(crossings=int(m[1]), simframes=int(m[2]), seconds=int(m[3]), stretch=int(m[4]), magic=int(m[5]), magicFrames=int(m[6])); stats.update(bad=int(m[7])) if m[7].isdigit() else None; stats.update(retries=int(m[8])) if m[8] else None; stats.update(patchFrames=int(m[9])) if m[9] else None
 if note: stats['note'] = note
 d = np.load(sys.argv[1]); out = sys.argv[2]; every = int(sys.argv[3]) if len(sys.argv) > 3 else 1
 fr = d['frames'].astype(np.float64)

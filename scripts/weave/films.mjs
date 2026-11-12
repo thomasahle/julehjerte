@@ -8,6 +8,8 @@
  *   node scripts/weave/films.mjs                 every heart in hearts.jsonc without an up-to-date film
  *   node scripts/weave/films.mjs nemt-hjerte …   these hearts
  *   --force       also hearts whose outcome is already noted for the cuts as they are
+ *   --better      with --force: a heart that has a film keeps it unless the new one lets less paper
+ *                 pass through paper (and a new run that fails takes nothing away)
  *   --dry         only read each design and lay out its finished weave (seconds a heart):
  *                 says which hearts the simulator supports, changes nothing
  *   --jobs N      hearts simulated at a time (default 1); a heart is mostly one core, its collision
@@ -54,6 +56,7 @@ const option = (name) => {
   return args.splice(at, 2)[1];
 };
 const force = flag('--force');
+const better = flag('--better');
 const dry = flag('--dry');
 const keep = flag('--keep');
 const list = flag('--list');
@@ -163,8 +166,19 @@ async function make(id) {
     console.log(`${new Date().toTimeString().slice(0, 5)} ${id.padEnd(28)} ${entry.outcome}${entry.reason ? `: ${entry.reason}` : ''} (${mins} min)`);
   };
 
+  // With --better the film a heart already has stays unless the new one is no worse.
+  const earlier = films[id];
+  const had = better && earlier?.design === hashes[id] && (earlier.outcome === 'clean' || earlier.outcome === 'unclean') && fs.existsSync(path.join(root, FILMS_DIR, `${id}.jhb`));
+  const kept = (why) => {
+    if (!keep) fs.rmSync(work, { recursive: true, force: true });
+    console.log(`${new Date().toTimeString().slice(0, 5)} ${id.padEnd(28)} kept the earlier film: ${why} (${((Date.now() - started) / 60000).toFixed(1)} min)`);
+  };
+  // Whole strips passing through paper count in full, a patch of one (the foot of a standing strip) a quarter.
+  const through = (s) => (s.magicFrames ?? 0) + (s.patchFrames ?? 0) / 4;
+
   const sim = await run(PYTHON, ['unweave.py', svgOf(id), npz, ...SIM_ARGS], logFile, quiet * 60000);
   if (stopping) return;
+  if (had && (sim.hung || sim.code !== 0)) return kept(sim.hung ? 'the new run hung' : `the new run failed: ${lastLine(fs.readFileSync(logFile, 'utf8'))}`);
   if (sim.hung) {
     fs.rmSync(path.join(root, FILMS_DIR, `${id}.jhb`), { force: true });
     return note({ outcome: 'failed', reason: `the simulation wrote nothing for ${quiet} minutes` });
@@ -183,13 +197,18 @@ async function make(id) {
   const packLog = path.join(work, 'pack.log');
   const pack = await run(PYTHON, ['pack.py', npz, fresh, PACK_EVERY, '--log', logFile], packLog);
   if (stopping) return;
-  if (pack.code !== 0) return note({ outcome: 'failed', reason: `pack.py: ${lastLine(fs.readFileSync(packLog, 'utf8'))}` });
+  if (pack.code !== 0) {
+    const reason = `pack.py: ${lastLine(fs.readFileSync(packLog, 'utf8'))}`;
+    return had ? kept(reason) : note({ outcome: 'failed', reason });
+  }
 
   const header = readRecordingHeader(fresh);
   const stats = header.stats ?? {};
-  if (!Number.isInteger(stats.crossings)) return note({ outcome: 'failed', reason: 'the run left no summary' });
+  if (!Number.isInteger(stats.crossings)) return had ? kept('the new run left no summary') : note({ outcome: 'failed', reason: 'the run left no summary' });
   // Clean: no strip was passed through paper to get it through, and no frame has paper in paper.
   const outcome = stats.magic === 0 && stats.bad === 0 ? 'clean' : 'unclean';
+  if (had && ((stats.bad ?? 0) > (earlier.bad ?? 0) || through(stats) > through(earlier)))
+    return kept(`${stats.magicFrames} + ${stats.patchFrames ?? 0} frames with paper through paper against ${earlier.magicFrames} + ${earlier.patchFrames ?? 0}`);
   const bytes = fs.statSync(fresh).size;
   const v = createHash('sha256').update(fs.readFileSync(fresh)).digest('hex').slice(0, 10);
   fs.copyFileSync(fresh, recording);
@@ -203,6 +222,7 @@ async function make(id) {
     stretch: stats.stretch,
     magic: stats.magic,
     magicFrames: stats.magicFrames,
+    ...(stats.patchFrames === undefined ? {} : { patchFrames: stats.patchFrames }),
     bad: stats.bad,
     retries: stats.retries ?? 0,
     simSeconds: stats.seconds

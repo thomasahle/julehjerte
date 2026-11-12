@@ -65,10 +65,24 @@ Needs: numpy scipy ipctk triangle shapely svgelements (pypardiso optional; playw
     instead of 36-55%, about 20% more frames.
 12. If the hand does not get the strip out (`out` still false when it has travelled the whole length), the state is put
     back to before the draw and the strip is pulled out by traction instead (item 2). Logged as "slipped out of the hand".
-13. Magic (`ghost`, `rejoin`, `force`): if the strip is still not out, or a strip is more than 0.35 from where it should be
-    held after a lift or fold, it stops colliding (it is no obstacle and nothing is an obstacle to it), is carried to where
-    it belongs, and collides again as soon as it intersects nothing. Nothing stops or fails because a strip is stuck. The
-    log names each strip and the summary counts strips and frames; frames with a ghost are not counted as intersecting.
+13. When a strip is stuck (`ghost`, `rejoin`, `feeder`, `force`). Nothing stops or fails because a strip is stuck, but paper is passed
+    through paper as little and as briefly as can be:
+    - A strip that is more than 0.35 from where it should be held after `end lifted clear` is simply held where it got to (the log says
+      so). With curved cuts the two straight lines that a strip and its host would bend up along often cross, so both cannot stand where
+      they are told; the paper finds a place of its own, leaning on its neighbour, and the next steps pick it up from there.
+    - A strip that will not come out of a loop, by the travelling hand or by pulling at the mouth, is taken back to before the draw and
+      fed along its own path (`feeder`): seen forwards, the held strip bends over into a hairpin, puts its head down at the mouth of the
+      loop and goes in head first, the rest following where the head went. During those frames it does not collide (it is too wide for
+      the loop, which is why it stuck), but it keeps to its own lane and its own line.
+    - A strip that is still more than 0.35 from where it should lie after `red strip folded back`, `white ends laid flat` or the laying
+      out at the end is carried there (`force`), as before.
+    - After any of these, `rejoin` makes the strip count again at once, except for the patch of it that is still in other paper (within
+      0.1 of the edges and triangles that intersect, growing until the rest is free): mostly the foot of a standing strip, where the
+      straight line it bends along runs under the edge of a neighbour. Nothing can pass through the rest of the strip meanwhile. A
+      patch ends when it intersects nothing, or when its strip is back where it lay in the finished weave (its points are then put
+      back exactly there).
+    The log names each strip; the summary counts strips and the frames in which a whole strip was not colliding (`magic`), and separately
+    the frames in which only a patch was. Frames with either are not counted as intersecting.
 14. Labels are `TAG|stage name`, TAG = `n,m,R` / `n,m,W` (crossing of red n and white m, R or W is the strip that goes
     inside), `row,n`, `start`; pack.py turns runs of equal TAG into the viewer's step captions.
 
