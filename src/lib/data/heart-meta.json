@@ -2525,7 +2525,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "86f91cd403",
+      "bytes": 2123751
+    }
   },
   "tulipan": {
     "name": "Tulipan",
@@ -2552,7 +2555,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "de316fecd4",
+      "bytes": 3012273
+    }
   },
   "roed-blomst": {
     "name": "Rød blomst",
