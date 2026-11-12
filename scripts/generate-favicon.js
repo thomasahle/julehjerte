@@ -23,7 +23,7 @@ const projectRoot = path.join(__dirname, '..');
  * - The weave pattern creates a checkerboard in the overlap area
  * - Rotated 45 degrees to form the classic heart shape
  */
-function generateHeartSvg(size, colors, outlineColor = '#666666') {
+function generateHeartSvg(size, colors, outlineColor = '#666666', margin = 0) {
   const { left, right } = colors;
 
   // Heart geometry constants (matching the project's rendering)
@@ -85,11 +85,12 @@ function generateHeartSvg(size, colors, outlineColor = '#666666') {
   }
 
   // The viewBox is the rotated heart's own bounding box, made square, with room for the
-  // outline only: the heart fills the icon from side to side.
+  // outline only: the heart fills the icon from side to side. `margin` adds a share of the
+  // heart's width on every side, for the app icons, which a phone may crop to a circle.
   const cx = CENTER, cy = CENTER;
   const reach = (overlapWidth / 2) * Math.SQRT1_2 + topRadius; // from the centre to a lobe's far side
   const tip = (overlapWidth / 2) * Math.SQRT2; // from the centre down to the point
-  const viewBoxSize = 2 * reach + 4;
+  const viewBoxSize = (2 * reach + 4) * (1 + 2 * margin);
   const viewBoxMinX = CENTER - viewBoxSize / 2;
   const viewBoxMinY = CENTER + (tip - reach) / 2 - viewBoxSize / 2;
 
@@ -124,13 +125,13 @@ const sizes = [
   { name: 'favicon-16.png', size: 16, outline: '#888888' },
   { name: 'favicon-32.png', size: 32, outline: '#777777' },
   { name: 'favicon-48.png', size: 48, outline: '#666666' },
-  { name: 'icon-192.png', size: 192, outline: '#555555' },
-  { name: 'icon-512.png', size: 512, outline: '#444444' },
+  { name: 'icon-192.png', size: 192, outline: '#555555', margin: 0.14 },
+  { name: 'icon-512.png', size: 512, outline: '#444444', margin: 0.14 },
 ];
 
 async function generateFavicons() {
-  for (const { name, size, outline } of sizes) {
-    const svgMarkup = generateHeartSvg(size, colors, outline);
+  for (const { name, size, outline, margin } of sizes) {
+    const svgMarkup = generateHeartSvg(size, colors, outline, margin);
 
     // Convert SVG to PNG using canvas
     const canvas = createCanvas(size, size);
