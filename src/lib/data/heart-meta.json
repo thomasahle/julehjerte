@@ -2585,7 +2585,10 @@
       "sharedTemplate": false
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "f92fac7bdb",
+      "bytes": 2677657
+    }
   },
   "stjerneblomst": {
     "name": "Stjerneblomst",
@@ -2641,7 +2644,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "8bbaefb21c",
+      "bytes": 3467553
+    }
   },
   "kronblade": {
     "name": "Kronblade",
@@ -2669,7 +2675,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "5f4a8ef6ec",
+      "bytes": 1748640
+    }
   },
   "kloeverblad-hjerte": {
     "name": "Kløverblads-hjerte",
@@ -2696,7 +2705,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "5a2517d0d5",
+      "bytes": 2510134
+    }
   },
   "god-jul": {
     "name": "GOD JUL",
