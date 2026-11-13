@@ -94,5 +94,5 @@
   "tragt": {"design":"e461d57057f11bd8","outcome":"unclean","v":"b79a01515d","bytes":4568443,"seconds":723,"crossings":100,"stretch":57,"magic":9,"magicFrames":458,"patchFrames":6760,"bad":0,"retries":28,"simSeconds":819,"made":"2026-11-13"},
   "triple-heart": {"design":"e7bc5d66391ea022","outcome":"unclean","v":"113ffdc066","bytes":3787591,"seconds":325,"crossings":36,"stretch":63,"magic":13,"magicFrames":1067,"patchFrames":3742,"bad":0,"retries":11,"simSeconds":912,"made":"2026-11-13"},
   "tulipan": {"design":"ea6df231e38bbccc","outcome":"unclean","v":"ba2bc905b4","bytes":2508382,"seconds":184,"crossings":16,"stretch":47,"magic":13,"magicFrames":601,"patchFrames":1666,"bad":0,"retries":7,"simSeconds":642,"made":"2026-11-12"},
-  "venus": {"design":"d04911cc2acf9b74","outcome":"unclean","v":"42e62c7060","bytes":6313771,"seconds":497,"crossings":49,"stretch":112,"magic":14,"magicFrames":7309,"bad":0,"retries":26,"simSeconds":784,"made":"2026-11-11"}
+  "venus": {"design":"d04911cc2acf9b74","outcome":"unclean","v":"6fd0e61543","bytes":5495262,"seconds":439,"crossings":49,"stretch":100,"magic":12,"magicFrames":866,"patchFrames":5546,"bad":0,"retries":27,"simSeconds":1092,"made":"2026-11-13"}
 }
