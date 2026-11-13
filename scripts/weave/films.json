@@ -1,7 +1,7 @@
 {
   "5star": {"design":"64b8f9a540aa8c50","outcome":"unclean","v":"49ce3f1587","bytes":3493263,"seconds":239,"crossings":25,"stretch":61,"magic":4,"magicFrames":189,"patchFrames":1876,"bad":0,"retries":10,"simSeconds":929,"made":"2026-11-13"},
   "alhambra": {"design":"89301955bfa9bcd9","outcome":"unclean","v":"a5a4ff8baf","bytes":4935052,"seconds":365,"crossings":36,"stretch":34,"magic":15,"magicFrames":528,"patchFrames":4919,"bad":0,"retries":6,"simSeconds":838,"made":"2026-11-13"},
-  "amy-flowering": {"design":"94793a8cd0e0d291","outcome":"unclean","v":"20b30195e0","bytes":5341262,"seconds":487,"crossings":49,"stretch":135,"magic":11,"magicFrames":7081,"bad":0,"retries":18,"simSeconds":560,"made":"2026-11-12"},
+  "amy-flowering": {"design":"94793a8cd0e0d291","outcome":"unclean","v":"0986a8ff1d","bytes":5079100,"seconds":453,"crossings":49,"stretch":81,"magic":10,"magicFrames":585,"patchFrames":6110,"bad":0,"retries":16,"simSeconds":873,"made":"2026-11-13"},
   "amy-pattern": {"design":"ccffdccf7754e074","outcome":"unclean","v":"0c98f843c4","bytes":5941087,"seconds":531,"crossings":49,"stretch":70,"magic":16,"magicFrames":7878,"bad":0,"retries":21,"simSeconds":622,"made":"2026-11-12"},
   "amy-pinecone": {"design":"337c9418f1907e74","outcome":"unclean","v":"e438628622","bytes":6155334,"seconds":582,"crossings":49,"stretch":95,"magic":28,"magicFrames":8569,"bad":0,"retries":25,"simSeconds":690,"made":"2026-11-12"},
   "amy-rosette": {"design":"7540f37614b37765","outcome":"unclean","v":"fc0cc44b93","bytes":3242318,"seconds":243,"crossings":25,"stretch":39,"magic":3,"magicFrames":143,"patchFrames":824,"bad":0,"retries":7,"simSeconds":455,"made":"2026-11-12"},
