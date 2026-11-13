@@ -1691,7 +1691,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "1868bd49c1",
+      "bytes": 6215093
+    }
   },
   "penrose-ring": {
     "name": "Penrose-ring",
