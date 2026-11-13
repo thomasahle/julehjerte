@@ -259,8 +259,7 @@
 		</div>
 	{:else if status === 'loading'}
 		<div class="film-wait" role="status">
-			<p>{t('weaveLoading', lang)}</p>
-			<progress max="1" value={fetched}></progress>
+			<progress max="1" value={fetched} aria-label={t('weaveLoading', lang)}></progress>
 		</div>
 	{:else if status === 'failed'}
 		<div class="film-wait" role="alert">
