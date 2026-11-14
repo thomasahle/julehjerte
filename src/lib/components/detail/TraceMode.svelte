@@ -86,6 +86,8 @@
 	let cardPx = $state(Math.round(cardWidthPx(DEFAULT_PX_PER_MM)));
 	/** The template's width when calibration began, restored at the new scale. */
 	let calibrateFromMm = 0;
+	/** The card frame's size when calibration began: its top left corner stays where that put it. */
+	let cardFromPx = $state(Math.round(cardWidthPx(DEFAULT_PX_PER_MM)));
 	let announcement = $state('');
 
 	let vw = $state(0);
@@ -309,14 +311,19 @@
 	// The card lies the way the screen does: 85.6 mm does not fit across a phone
 	// held upright, so there it stands on its short edge.
 	const cardPortrait = $derived(freeArea.height > freeArea.width);
+	// The frame grows and shrinks from its top left corner, which stays where it was when
+	// calibration began (the frame centred then): the real card can lie still against that
+	// corner while the slider is dragged.
+	const cardSides = (px: number) => {
+		const short = (px * CARD_HEIGHT_MM) / CARD_WIDTH_MM;
+		return cardPortrait ? { width: short, height: px } : { width: px, height: short };
+	};
 	const card = $derived.by(() => {
-		const long = cardPx;
-		const short = (cardPx * CARD_HEIGHT_MM) / CARD_WIDTH_MM;
-		const width = cardPortrait ? short : long;
-		const height = cardPortrait ? long : short;
+		const { width, height } = cardSides(cardPx);
+		const from = cardSides(cardFromPx);
 		return {
-			x: freeArea.left + (freeArea.width - width) / 2,
-			y: freeArea.top + (freeArea.height - height) / 2,
+			x: Math.max(freeArea.left + 8, freeArea.left + (freeArea.width - from.width) / 2),
+			y: Math.max(freeArea.top + 8, freeArea.top + (freeArea.height - from.height) / 2),
 			width,
 			height,
 			r: (CARD_CORNER_MM * cardPx) / CARD_WIDTH_MM
@@ -326,6 +333,7 @@
 	function startCalibration(): void {
 		calibrateFromMm = widthMm;
 		cardPx = Math.min(MAX_CARD_PX, Math.max(MIN_CARD_PX, Math.round(cardWidthPx(pxPerMm))));
+		cardFromPx = cardPx;
 		mode = 'calibrate';
 		tick().then(measureChrome);
 	}
