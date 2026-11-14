@@ -1,7 +1,7 @@
 import type { CutGeometry } from '$lib/inverse/toHeartDesign';
 import type { Finger, HeartDesign, LobeId, Vec } from '$lib/types/heart';
 import { PRINT_WIDTH_MM, paperFaults } from '$lib/geometry/paperNecks';
-import { lobesShareTemplate } from '$lib/utils/symmetry';
+import { lobesDrawnAlike } from '$lib/utils/symmetry';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import type { Edge, Point, Ring } from './geometry';
 
@@ -65,7 +65,7 @@ export function fewerCutTips(a: [number, number], b: [number, number]): boolean 
 /** A heart's cuts as hearts drawn by different means are compared: the places
  * its paper may tear (pieces hanging by less than 2 mm printed 80 mm wide, see
  * `paperFaults`, and needles), whether its two lobes need templates of their
- * own (1) rather than sharing one (0, see `lobesShareTemplate`), its sharp
+ * own (1) rather than sharing one (0, see `lobesDrawnAlike`), its sharp
  * tips, its turns of more than 25° along hidden cuts (where its picture, the
  * even–odd `rings` in the sheet's 100 units, has one colour on both sides),
  * and the length of all its cuts in those units. */
@@ -112,7 +112,7 @@ export function cutMeasures(design: HeartDesign, rings: Ring[]): [number, number
 	// (the sheet's diagonal) is cut down its middle by both papers: the star's
 	// top tip, its 36° an 18° point of each paper. No such heart is without
 	// those needles, so they count as its sharp tips only.
-	const shared = lobesShareTemplate(design.fingers, design.gridSize);
+	const shared = lobesDrawnAlike(design.fingers, design.gridSize);
 	const onMiddle = (p: Vec) => { const [x, y] = unit(p.x, p.y); return Math.abs(x - y) < MIDDLE_NEEDLE; };
 	const [needles, sharp] = cutTipCounts(design, shared ? onMiddle : undefined);
 	return [paperFaults(design).weak + needles, shared ? 0 : 1, sharp, turns, Math.round(length)];
@@ -125,7 +125,7 @@ const MIDDLE_NEEDLE = 1;
 /** The needles a heart's symmetry cuts (see `cutMeasures`), in its design's
  * coordinates: none where its lobes do not share a template. */
 export function middleNeedles(design: HeartDesign): Vec[] {
-	if (!lobesShareTemplate(design.fingers, design.gridSize)) return [];
+	if (!lobesDrawnAlike(design.fingers, design.gridSize)) return [];
 	const rect = inferOverlapRect(design.fingers, design.gridSize), points: Vec[] = [];
 	visitCutTips(design, (p, turn) => {
 		const x = (p.x - rect.left) / rect.width * 100, y = (p.y - rect.top) / rect.height * 100;
@@ -147,7 +147,7 @@ const LEG_TURN = Math.PI / 6;
  * how wide it is held is up to where they leave it.
  */
 export function middleNeedleBases(design: HeartDesign, widthMm = PRINT_WIDTH_MM): { lobe: LobeId; x: number; y: number; mm: number }[] {
-	if (!lobesShareTemplate(design.fingers, design.gridSize)) return [];
+	if (!lobesDrawnAlike(design.fingers, design.gridSize)) return [];
 	const rect = inferOverlapRect(design.fingers, design.gridSize), mm = widthMm / Math.max(rect.width, rect.height);
 	const bases: { lobe: LobeId; x: number; y: number; mm: number }[] = [];
 	const at = (s: Segment, t: number): Vec => {

@@ -1907,7 +1907,7 @@
       "curveSymmetry": false,
       "lobeSymmetry": false,
       "mirrorSymmetry": false,
-      "sharedTemplate": false
+      "sharedTemplate": true
     },
     "photo": null,
     "film": {
@@ -2206,7 +2206,7 @@
       "curveSymmetry": false,
       "lobeSymmetry": false,
       "mirrorSymmetry": false,
-      "sharedTemplate": false
+      "sharedTemplate": true
     },
     "photo": null,
     "film": {

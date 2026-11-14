@@ -368,6 +368,18 @@ export function lobesShareTemplate(fingers: Finger[], gridSize: GridSize): boole
 }
 
 /**
+ * Whether the two lobes are drawn alike, node for node (to the editor's
+ * tolerance), mirrored or turned: `lobesShareTemplate` without the millimetre
+ * of slack. The generator asks this of its own hearts while it chooses between
+ * them: it draws a shared template exactly, so a near miss is two templates
+ * that happen to lie close, and its choices stay what they were.
+ */
+export function lobesDrawnAlike(fingers: Finger[], gridSize: GridSize): boolean {
+  if (gridSize.x !== gridSize.y) return false;
+  return fingers.length === 0 || areLobesMirroredUnder(fingers, false) || areLobesRotated(fingers);
+}
+
+/**
  * The fingers with each of the left lobe's cuts made its right partner
  * mirrored across the square's diagonal (paired as `lobesShareTemplate` pairs
  * them), so one template cuts both lobes, where the two lobes have as many

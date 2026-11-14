@@ -37,7 +37,7 @@ import {
 } from '$lib/inverse/toHeartDesign';
 import type { HeartColors, HeartDesign, LobeId, Vec } from '$lib/types/heart';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
-import { lobesShareTemplate, mapPointBetweenLobes, mirroredLobes } from '$lib/utils/symmetry';
+import { lobesDrawnAlike, mapPointBetweenLobes, mirroredLobes } from '$lib/utils/symmetry';
 import { holdingWidth, paperFaults, paperHolds, PAPER_NECK_MM, PRINT_WIDTH_MM, thinnestNeck, type Spared, type WeakPiece } from '$lib/geometry/paperNecks';
 import { intersectionMarginPx } from '$lib/editor/curveIssues';
 import { findSearchIssues, searchFingerIssues } from './searchClearance';
@@ -1180,14 +1180,14 @@ export const constructionOf = (design: HeartDesign): Construction | undefined =>
  * actual exported cuts: all at once, else tip by tip (a polar star in the
  * rays from twelve sharp tips to six). Visible outlines, strip count and
  * connections stay fixed. With `keepTemplate`, lobes sharing one template
- * (see `lobesShareTemplate`) go on sharing it: each tip is bent with its
+ * (see `lobesDrawnAlike`) go on sharing it: each tip is bent with its
  * mirror image in the other lobe. */
 function improveSharedConnections(result: GeneratorResult, { keepTemplate = false }: { keepTemplate?: boolean } = {}): GeneratorResult {
-	const shared = keepTemplate && lobesShareTemplate(result.design.fingers, result.design.gridSize);
+	const shared = keepTemplate && lobesDrawnAlike(result.design.fingers, result.design.gridSize);
 	const rect = inferOverlapRect(result.design.fingers, result.design.gridSize);
 	const design = bentWhere(result.design, design => !findSearchIssues(design.fingers, intersectionMarginPx(
 		inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(design.gridSize.x, design.gridSize.y))).size &&
-		(!shared || lobesShareTemplate(design.fingers, design.gridSize)),
+		(!shared || lobesDrawnAlike(design.fingers, design.gridSize)),
 	shared ? p => mapPointBetweenLobes({ minX: rect.left, minY: rect.top, size: rect.width }, p) : undefined);
 	// Endpoints, visible curves and strip connections are unchanged. Each moved
 	// curve is still exactly coincident on both sheets, preserving the weave.
@@ -1226,7 +1226,7 @@ function improveHardConnections(result: GeneratorResult): GeneratorResult {
 
 /** How near (in the design's pixels) a sharp tip lies to another's mirror
  * image in the other lobe to be bent with it (see `bentWhere`), as near as
- * lobes sharing a template may differ (see `lobesShareTemplate`). */
+ * lobes sharing a template may differ (see `lobesDrawnAlike`). */
 const MIRROR_TIP = 5;
 
 /** The design bent at its sharp tips of paper where `kept` keeps it: all at
@@ -3259,7 +3259,7 @@ function textRecipes(request: GeneratorRequest, { finish, variants, allRecipes }
 		// three strips: two templates → one.
 		const mirrored = (made: GeneratorResult): GeneratorResult => {
 			const design = exported(made).design, board = design.gridSize.x;
-			if (!request.mirrorCells || lobesShareTemplate(design.fingers, design.gridSize)) return made;
+			if (!request.mirrorCells || lobesDrawnAlike(design.fingers, design.gridSize)) return made;
 			const cache = caches.get(standard)?.[0] ?? checkeredGridCache();
 			const clean = (result: GeneratorResult) => !paperTears(result.design) && !cutTipCounts(result.design).some(Boolean);
 			const torn = (design: HeartDesign) => paperTears(design) + cutTipCounts(design)[0] - middleNeedles(design).length;
@@ -3274,7 +3274,7 @@ function textRecipes(request: GeneratorRequest, { finish, variants, allRecipes }
 						if (inset === .25 && close) continue;
 						try {
 							const candidate = exported(finish(generateCheckeredGrid(text, font, standard, inset, { variant, mirror: true, corners, cache }), 'letters', { keep: false }));
-							if (!lobesShareTemplate(candidate.design.fingers, candidate.design.gridSize)) continue;
+							if (!lobesDrawnAlike(candidate.design.fingers, candidate.design.gridSize)) continue;
 							built = true;
 							if (!best || better(candidate, best)) { best = candidate; bestAt = { variant, inset, corners }; }
 							if (clean(best)) return;
@@ -3294,7 +3294,7 @@ function textRecipes(request: GeneratorRequest, { finish, variants, allRecipes }
 			// fewest tips of those built, then those tips relieved.
 			if (best && bestAt && cutTipCounts(best.design)[1]) for (const relieve of [false, true]) try {
 				const candidate = exported(finish(generateCheckeredGrid(text, font, standard, bestAt.inset, { ...bestAt, mirror: true, cache, optimize: true, relieve }), 'letters', { keep: false }));
-				if (!lobesShareTemplate(candidate.design.fingers, candidate.design.gridSize) || !better(candidate, best)) continue;
+				if (!lobesDrawnAlike(candidate.design.fingers, candidate.design.gridSize) || !better(candidate, best)) continue;
 				const rect = inferOverlapRect(candidate.design.fingers, candidate.design.gridSize);
 				const margin = intersectionMarginPx(rect, gridClearanceScale(candidate.design.gridSize.x, candidate.design.gridSize.y));
 				if (!findSearchIssues(candidate.design.fingers, margin * 1.1).size) best = candidate;
