@@ -687,7 +687,10 @@
       "sharedTemplate": true
     },
     "photo": null,
-    "film": null
+    "film": {
+      "v": "99d2149a81",
+      "bytes": 3591966
+    }
   },
   "hjertekloever": {
     "name": "Hjertekløver",
