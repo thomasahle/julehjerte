@@ -311,19 +311,23 @@
 	// The card lies the way the screen does: 85.6 mm does not fit across a phone
 	// held upright, so there it stands on its short edge.
 	const cardPortrait = $derived(freeArea.height > freeArea.width);
-	// The frame grows and shrinks from its top left corner, which stays where it was when
-	// calibration began (the frame centred then): the real card can lie still against that
+	// The frame grows and shrinks from its top left corner, which stays where the frame's size at
+	// the start of calibration put it (cardCorner): the real card can lie still against that
 	// corner while the slider is dragged.
 	const cardSides = (px: number) => {
 		const short = (px * CARD_HEIGHT_MM) / CARD_WIDTH_MM;
 		return cardPortrait ? { width: short, height: px } : { width: px, height: short };
 	};
+	/** Where the fixed corner goes along one axis: centred, but nearer the edge when that is
+	 *  needed for a frame half as large again to stay on the screen. */
+	const cardCorner = (start: number, room: number, side: number) =>
+		start + Math.max(8, Math.min((room - side) / 2, room - 8 - 1.5 * side));
 	const card = $derived.by(() => {
 		const { width, height } = cardSides(cardPx);
 		const from = cardSides(cardFromPx);
 		return {
-			x: Math.max(freeArea.left + 8, freeArea.left + (freeArea.width - from.width) / 2),
-			y: Math.max(freeArea.top + 8, freeArea.top + (freeArea.height - from.height) / 2),
+			x: cardCorner(freeArea.left, freeArea.width, from.width),
+			y: cardCorner(freeArea.top, freeArea.height, from.height),
 			width,
 			height,
 			r: (CARD_CORNER_MM * cardPx) / CARD_WIDTH_MM
