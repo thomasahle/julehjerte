@@ -3,7 +3,8 @@
   mockup generator: what Juleflet.dk is, the editor, open source, who drew the
   templates, the history (the old printed pages some hearts are drawn after),
   "Mangler der et hjerte?", contact, and the credits list of other
-  good sites about woven hearts in the right-hand column.
+  good sites about woven hearts in the right-hand column. A line under the
+  open-source note links the guide for AI agents (static/agents.md).
 
   Same shape as HowToPage.svelte: /om/ and /en/about/ sit OUTSIDE the
   [[lang=lang]] tree because their slugs differ per language, so `lang` is a
@@ -13,6 +14,7 @@
   table (aboutMetaDescription), so <svelte:head> here carries only the title.
 -->
 <script lang="ts">
+	import { base } from '$app/paths';
 	import TopologyExamples from '$lib/components/TopologyExamples.svelte';
 	import HistorySection from '$lib/components/HistorySection.svelte';
 	import GitHubLink from '$lib/components/GitHubLink.svelte';
@@ -81,6 +83,7 @@
 			<p>{t('aboutOpenSource', lang)}</p>
 			<GitHubLink />
 		</div>
+		<p><a href="{base}/agents.md">{t('aboutAgents', lang)}</a></p>
 		<p>{t('aboutDesigners', lang)}</p>
 		<TopologyExamples {lang} />
 		<HistorySection {lang} />

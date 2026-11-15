@@ -1,0 +1,20 @@
+# Juleflet
+
+> Free printable templates for Danish woven paper Christmas hearts (julehjerter), with tools to design your own: an editor, a painter that finds the cuts for a picture, and a generator for figures and text. Danish at /, English under /en/.
+
+## For AI agents
+
+- [Making a woven heart](https://juleflet.dk/agents.md): how to design a new pattern, check that it can be cut and woven, improve it, and put it in the visitor's own collection ("Mine hjerter"). Can be saved as a skill file.
+
+## Pages
+
+- [Templates](https://juleflet.dk/en/): the gallery of hearts, each with a printable template and a film of the weaving
+- [Design](https://juleflet.dk/en/design/): make a heart from a figure or a word
+- [Editor](https://juleflet.dk/en/editor/): draw the cuts yourself
+- [Paint](https://juleflet.dk/en/editor/paint/): paint the woven picture and let the site find the cuts
+- [How to](https://juleflet.dk/en/how-to/): cutting and weaving, step by step
+- [About](https://juleflet.dk/en/about/): the history of the craft and of the site
+
+## Source
+
+- [GitHub](https://github.com/thomasahle/julehjerte): the site's code, MIT licence

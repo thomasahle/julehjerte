@@ -1,6 +1,7 @@
 <!--
   The site footer — docs/redesign/DESIGN.md §3 "Footer": one quiet centred
-  line with the copyright. The paper colours, the language toggle and GitHub
+  line with the copyright and the guide for AI agents (static/agents.md: an
+  agent that reads a page's text finds it here). The paper colours, the language toggle and GitHub
   are in the header (PageHeader, ColorControls).
 
   Rendered once by the root layout on every page, including the design tools,
@@ -45,6 +46,7 @@
 		{t('madeBy', lang)}
 		<a href="https://thomasahle.com" target="_blank" rel="noopener">Thomas Ahle</a>,
 		{t('christmasYears', lang, { years: seasons })}
+		· <a href="{base}/agents.md">{t('forAgents', lang)}</a>
 	</p>
 </footer>
 
