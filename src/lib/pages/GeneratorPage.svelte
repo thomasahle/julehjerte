@@ -10,7 +10,8 @@
 		type CatalogItem,
 		type MotifGroup
 	} from '$lib/generator/catalog';
-	import { findIcons } from '$lib/generator/iconSearch';
+	import { findIcons, iconCredit, iconSetUrl } from '$lib/generator/iconSearch';
+	import { isIconId } from '$lib/generator/iconId';
 	import {
 		DEFAULT_COLORS,
 		DEFAULT_COLORS_HEX,
@@ -383,6 +384,31 @@
 			})
 			.catch(() => {
 				/* The heart reports the font that cannot be fetched. */
+			});
+		return () => {
+			live = false;
+		};
+	});
+	// The chosen figure's author, set and licence, shown under the list: several
+	// licences ask for the credit, and a tooltip is not showing it.
+	let credit = $state<{ text: string; href: string } | null>(null);
+	$effect(() => {
+		const id = config.motif;
+		credit = null;
+		if (config.mode !== 'figure') return;
+		const href = isIconId(id) ? iconSetUrl(id) : `${base}/generator/SOURCES.txt`;
+		if (!isIconId(id)) {
+			const item = catalog.find((i) => i.id === id);
+			if (item && item.package && item.package !== 'juleflet') credit = { text: motifSource(item), href };
+			return;
+		}
+		let live = true;
+		iconCredit(id)
+			.then((text) => {
+				if (live) credit = { text, href };
+			})
+			.catch(() => {
+				if (live) credit = { text: id.split(':')[0], href };
 			});
 		return () => {
 			live = false;
@@ -888,6 +914,10 @@
 							</p>{/if}
 					{/if}
 				</div>
+				{#if credit}<p class="figure-credit">
+						{t('generatorFigureBy', lang)}
+						<a href={credit.href} target="_blank" rel="noopener">{credit.text}</a>
+					</p>{/if}
 				<a
 					class="credit"
 					href={`${base}/generator/SOURCES.txt`}
@@ -1271,6 +1301,14 @@
 	}
 	.panel .motif-heading:first-child {
 		margin-top: 0;
+	}
+	.figure-credit {
+		font-size: 11px;
+		color: #6f7d68;
+		margin: 12px 0 0;
+	}
+	.figure-credit a {
+		color: inherit;
 	}
 	.search-hint {
 		font-size: 11px;

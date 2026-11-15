@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { area } from './geometry';
 import { contourArt, iconOutline, IconOutlineError } from './iconOutline';
-import { findIcons, iconContours, SOLID_ENOUGH } from './iconSearch';
+import { findIcons, iconContours, iconCredit, iconSetUrl, SOLID_ENOUGH } from './iconSearch';
 import { isIconId } from './iconId';
 import { englishWords } from './danishWords';
 import { generatorLink, readGeneratorState, defaults } from './state';
@@ -60,6 +60,7 @@ function iconify() {
 				}
 			},
 			'/mdi.json': { width: 24, height: 24, icons: { box: { body: SOLID }, 'box-outline': { body: LINES } } },
+			'/collections': { other: { name: 'Other', author: { name: 'Someone' }, license: { title: 'CC BY 4.0', spdx: 'CC-BY-4.0' } } },
 			'/other.json': { width: 24, height: 24, icons: { box: { body: SOLID } } }
 		};
 		return { ok: path in sets, json: async () => sets[path] };
@@ -84,6 +85,11 @@ describe('findIcons', () => {
 		expect(await iconContours('other:box', fetcher)).toEqual(iconOutline(SOLID, 24, 24).contours);
 		expect(asked).toEqual(['/other.json?icons=box']);
 		await expect(iconContours('mdi:gone', fetcher)).rejects.toThrow();
+		// And its credit, once.
+		expect(await iconCredit('other:box', fetcher)).toBe('Someone, Other, CC BY 4.0');
+		expect(await iconCredit('other:lid', fetcher)).toBe('Someone, Other, CC BY 4.0');
+		expect(asked).toEqual(['/other.json?icons=box', '/mdi.json?icons=gone', '/collections?prefixes=other']);
+		expect(iconSetUrl('other:box')).toBe('https://icon-sets.iconify.design/other/');
 		await expect(iconContours('../x', fetcher)).rejects.toThrow();
 	});
 

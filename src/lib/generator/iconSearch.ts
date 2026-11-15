@@ -29,6 +29,23 @@ type Fetch = (url: string, init?: { signal?: AbortSignal }) => Promise<{ ok: boo
 type IconSet = { width?: number; height?: number; icons?: Record<string, { body: string; width?: number; height?: number }> };
 
 const outlines = new Map<string, Ring[]>();
+const credits = new Map<string, string>();
+/** Who made a set, its name and its licence, as the credit the licences ask for. */
+const creditOf = (set: Collection) => [set.author?.name, set.name, set.license?.title].filter(Boolean).join(', ');
+
+/** Where a set's icons, authors and licence are shown. */
+export const iconSetUrl = (id: string) => `https://icon-sets.iconify.design/${id.split(':')[0]}/`;
+
+/** The credit of an icon of the open sets: its author, set and licence, as a search found them or asked of Iconify for a link. */
+export async function iconCredit(id: string, fetcher: Fetch = fetch): Promise<string> {
+	const prefix = id.split(':')[0], known = credits.get(prefix);
+	if (known) return known;
+	if (!isIconId(id)) throw new Error('Not an icon');
+	const set = (await json<Record<string, Collection>>(fetcher, `/collections?prefixes=${prefix}`))[prefix];
+	if (!set) throw new Error('Set not found');
+	credits.set(prefix, creditOf(set));
+	return credits.get(prefix)!;
+}
 /** An icon's name as a label: "ear-fill" is an Ear; the sets' words for their solid style say nothing more. */
 const title = (name: string) =>
 	(name.replace(/-(fill|filled|solid|sharp|bold)$/, '') || name)
@@ -98,12 +115,13 @@ export async function findIcons(query: string, signal?: AbortSignal, fetcher: Fe
 			if (solid < SOLID_ENOUGH || seen.has(art)) continue;
 			seen.add(art);
 			outlines.set(id, contours);
+			credits.set(prefix, creditOf(set));
 			items.push({
 				id,
 				name: title(name),
 				art,
 				box: 100,
-				source: [set.author?.name, set.name, set.license?.title].filter(Boolean).join(', ')
+				source: creditOf(set)
 			});
 		} catch {
 			/* A body the outliner does not read is not offered. */
