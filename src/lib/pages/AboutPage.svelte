@@ -67,6 +67,18 @@
 			key: 'creditJohansHjerter'
 		}
 	] as const;
+
+	// Books of woven hearts, oldest first. Titles and names are as printed, in
+	// both languages; they are in copyright, so the page names them and shows
+	// nothing from them.
+	const BOOKS = [
+		{ author: 'Jes Lottrup Knudsen', title: 'Julehjerter', by: 'Borgen, 1975' },
+		{ author: 'Jes Lottrup Knudsen & Bo Frydendahl', title: 'Julehjerter på mange måder', by: 'Klematis, 1996' },
+		{ author: 'Francis Jordt', title: 'Flettede julehjerter', by: '2002' },
+		{ author: 'Knud Vægter', title: 'Sådan lærte min mor mig at flette julehjerter', by: 'Museet Falsters Minder, 2003' },
+		{ author: 'Anna & Lene Schepper', title: 'The Art of Paper Weaving', by: 'Quarry, 2015' },
+		{ author: 'Johan Rosenkilde', title: 'Johans julehjerter', by: 'Frydenlund, 2019' }
+	] as const;
 </script>
 
 <svelte:head>
@@ -129,6 +141,15 @@
 						<ExternalIcon size={14} />
 					</a>
 					<span>{t(credit.key, lang)}</span>
+				</li>
+			{/each}
+		</ul>
+		<h2 id="books-heading" class="section-title books-title">{t('aboutBooksTitle', lang)}</h2>
+		<ul aria-labelledby="books-heading">
+			{#each BOOKS as book (book.title)}
+				<li>
+					<cite>{book.title}</cite>
+					<span>{book.author} · {book.by}</span>
 				</li>
 			{/each}
 		</ul>
@@ -297,6 +318,17 @@
 
 	.links a:hover {
 		color: var(--red);
+	}
+
+	.links cite {
+		font-size: 16px;
+		font-weight: 600;
+		font-style: normal;
+		color: var(--ink, inherit);
+	}
+
+	.books-title {
+		margin-top: 28px;
 	}
 
 	.links span {
