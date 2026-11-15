@@ -160,6 +160,7 @@
 	// UI strings in the language of the page hosting the editor.
 	const tr = (key: TranslationKey) => translate(key, lang);
 	const HANDLE_COLLAPSE_EPS = 0.25;
+	/** A handle let go this near its node, in screen pixels, is folded into it: the two circles touch. */
 	const HANDLE_SNAP_EPS = 8;
 	const OUTER_EDGE_TOL = 0.75;
 	const OUTER_EDGE_REMOVE_TOL = 5;
@@ -3133,7 +3134,9 @@
 				if (seg) {
 					const anchor = handleKey === 'p1' ? seg.p0 : seg.p3;
 					const handle = handleKey === 'p1' ? seg.p1 : seg.p2;
-					if (vecDist(handle, anchor) <= HANDLE_SNAP_EPS) {
+					// Measured on screen: in the heart's units a zoomed-in visitor lost handles
+					// that lay far from their node.
+					if (vecDist(handle, anchor) <= HANDLE_SNAP_EPS * Math.min(1, curveUiScale)) {
 						const snapped = updateSegmentControlPoint(fingerId, segmentIndex, handleKey, anchor);
 						if (snapped) dragDirty = true;
 					}
