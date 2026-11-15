@@ -2,6 +2,7 @@
   The "Om" / "About" page — docs/redesign/DESIGN.md §6, following `om()` in the
   mockup generator: what Juleflet.dk is, the editor, open source, who drew the
   templates, the history (the old printed pages some hearts are drawn after),
+  then how the cuts work (the history comes first: user, 2026-11-15),
   "Mangler der et hjerte?", contact, and the credits list of other
   good sites about woven hearts in the right-hand column. A line under the
   open-source note links the guide for AI agents (static/agents.md).
@@ -85,8 +86,8 @@
 		</div>
 		<p><a href="{base}/agents.md">{t('aboutAgents', lang)}</a></p>
 		<p>{t('aboutDesigners', lang)}</p>
-		<TopologyExamples {lang} />
 		<HistorySection {lang} />
+		<TopologyExamples {lang} />
 
 		<section class="callout" aria-labelledby="missing-heading">
 			<h2 id="missing-heading">{t('aboutMissingTitle', lang)}</h2>
