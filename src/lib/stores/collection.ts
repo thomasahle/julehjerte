@@ -24,12 +24,28 @@ export function decodeCollection(raw: unknown): HeartDesign[] {
   return raw.map((entry) => decodeHeartDesign(entry)).filter((d): d is HeartDesign => d !== null);
 }
 
+/** An id for a heart of the visitor's own: its page is `/hjerte/<id>/`. */
+export function newHeartId(): string {
+  return `heart-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+}
+
+const lacksId = (entry: unknown): entry is Record<string, unknown> =>
+  !!entry && typeof entry === 'object' && !(typeof (entry as { id?: unknown }).id === 'string' && (entry as { id: string }).id);
+
 export function getUserCollection(): HeartDesign[] {
   if (!browser) return [];
 
   const stored = readStorage(STORAGE_KEY);
   try {
-    return decodeCollection(stored ? JSON.parse(stored) : []);
+    const raw: unknown = stored ? JSON.parse(stored) : [];
+    // A heart saved without an id (a shared link written by hand carried none, and
+    // until 15 Nov 2026 it was saved as it came) has no page: `/hjerte//`. Give it
+    // one, and keep it, so the heart opens from now on.
+    if (Array.isArray(raw) && raw.some(lacksId)) {
+      for (const entry of raw) if (lacksId(entry)) entry.id = newHeartId();
+      writeStorage(STORAGE_KEY, JSON.stringify(raw));
+    }
+    return decodeCollection(raw);
   } catch {
     return [];
   }
@@ -53,7 +69,8 @@ function readUserCollectionRaw(): unknown[] {
 export function saveUserDesign(design: HeartDesign): void {
   if (!browser) return;
 
-  const serialized = encodeHeartDesign(design);
+  // Never without an id: the heart's page and its place in the collection go by it.
+  const serialized = encodeHeartDesign(design.id ? design : { ...design, id: newHeartId() });
   const raw = readUserCollectionRaw();
   const existingIndex = raw.findIndex(
     (d) => d && typeof d === 'object' && 'id' in d && (d as { id?: unknown }).id === serialized.id

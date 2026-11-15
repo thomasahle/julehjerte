@@ -30,7 +30,7 @@
   import PageHeader from "$lib/components/PageHeader.svelte";
   import StatusPage from "$lib/components/StatusPage.svelte";
   import { FIR_FILLS } from "$lib/landscape";
-  import { getUserCollection, saveUserDesign } from "$lib/stores/collection";
+  import { getUserCollection, newHeartId, saveUserDesign } from "$lib/stores/collection";
   import {
     SITE_DOMAIN,
     SITE_NAME,
@@ -113,6 +113,8 @@
       const raw = payload ? await decodeSharedDesign(payload) : null;
       const shared = raw ? normalizeHeartDesign(raw) : null;
       if (shared) {
+        // A link written by hand may carry no id; saved without one the heart would have no page.
+        if (!shared.id) shared.id = newHeartId();
         clientDesign = shared;
         savedShared = getUserCollection().some((h) => h.id === shared.id);
       } else {

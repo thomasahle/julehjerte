@@ -95,7 +95,7 @@ describe('the stored collection', () => {
 		storage.setItem(USER_COLLECTION_KEY, `[null,42,"heart",${DESIGN_JSON},{}]`);
 		expect(getUserCollection().map((d) => [d.id, d.name])).toEqual([
 			['user-5b0c9a7e', 'Mit hjerte'],
-			['', 'Untitled']
+			[expect.stringMatching(/^heart-/), 'Untitled']
 		]);
 		// Nor is anything stored that is no array of them.
 		for (const junk of ['{"0":' + DESIGN_JSON + '}', '"hearts"', 'not json [', '']) {
@@ -123,5 +123,20 @@ describe('the stored collection', () => {
 		expect(() => saveUserDesign(heart(DESIGN_JSON))).toThrow('full');
 		// A delete fails silently.
 		expect(() => deleteUserDesign('user-5b0c9a7e')).not.toThrow();
+	});
+
+	it('gives a heart saved without an id one, and keeps it, so it has a page', () => {
+		// As a shared link written by hand left it: no id at all, or an empty one.
+		const noId = JSON.parse(DESIGN_JSON) as Record<string, unknown>;
+		delete noId.id;
+		storage.setItem(USER_COLLECTION_KEY, JSON.stringify([noId, { ...JSON.parse(TILE_JSON), id: '' }]));
+		const ids = getUserCollection().map((d) => d.id);
+		expect(ids.every((id) => /^heart-\d+-[a-z0-9]+$/.test(id))).toBe(true);
+		expect(new Set(ids).size).toBe(2);
+		// Read again, the ids are the same: they were written back.
+		expect(getUserCollection().map((d) => d.id)).toEqual(ids);
+
+		saveUserDesign({ ...heart(DESIGN_JSON), id: '', name: 'Uden id' });
+		expect(getUserCollection().find((d) => d.name === 'Uden id')?.id).toMatch(/^heart-/);
 	});
 });
