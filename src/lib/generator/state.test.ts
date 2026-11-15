@@ -1,20 +1,19 @@
 import { describe, expect, it } from 'vitest';
-import { MAKE_FIGURE, MAKE_TEXT } from '$lib/utils/fixtures/storedForms';
+import { linkOf } from './fixtures/link';
 import { GENERATOR_LINK_VERSION, defaults, generatorLink, readGeneratorAddress, readGeneratorState, type GeneratorState } from './state';
 
-// The generator's address carries what it makes, so a link shared once must
-// keep making the same heart: the whole state as JSON in `#make=` until
-// 15 Nov 2026, one field after the other (`#motif=ph-cat&style=strips`) since.
+// The generator's address carries what it makes, one field after the other
+// (`#motif=ph-cat&style=strips`), so a link shared once must keep making the
+// same heart.
 
 const figure: GeneratorState = { ...defaults, mode: 'figure', motif: 'ph-cat', style: 'strips', strips: 5, place: 7.625, side: -4.125, scale: 90 };
 const text: GeneratorState = { ...defaults, mode: 'text', text: 'GOD\nJUL', font: 'gf:lobster:400', textFrame: 'woven', cells: 'letters', room: 20 };
-/** A link as the page wrote it before versioning, or a hand-made one. */
-const link = (state: object) => '#make=' + encodeURIComponent(JSON.stringify(state));
+/** A hand-made link, with every field written out. */
+const link = linkOf;
 
 describe('the generator’s links', () => {
 	it('are written short: only what differs from a fresh heart, without the mode the address names', () => {
 		expect(GENERATOR_LINK_VERSION).toBe(1);
-		expect(link(figure)).toBe('#' + MAKE_FIGURE);
 		expect(generatorLink(figure)).toBe('motif=ph-cat&scale=90&style=strips&strips=5&place=7.625&side=-4.125');
 		expect(generatorLink(text)).toBe('text=GOD%0AJUL&font=gf%3Alobster%3A400&cells=letters&room=20');
 		expect(generatorLink({ ...defaults, mode: 'figure', motif: 'ph-ear' })).toBe('motif=ph-ear');
@@ -31,22 +30,14 @@ describe('the generator’s links', () => {
 		expect(readGeneratorState('#mode=text&text=HEJ')).toEqual({ ...defaults, mode: 'text', text: 'HEJ' });
 	});
 
-	it('written short read each field on its own, clamped, as the older ones do', () => {
-		expect(readGeneratorState('#motif=../x&style=nope&scale=200&board=20&spacing=-3&strips=abc&side=2&later=1')).toEqual({ ...defaults, scale: 100, board: 9, spacing: 0 });
+	it('read a version only if it is theirs', () => {
+		expect(readGeneratorState('#motif=ph-cat&strips=abc&scale=').motif).toBe('ph-cat');
 		for (const v of ['2', '0', 'x']) expect(readGeneratorState('#v=' + v + '&motif=ph-cat'), v).toEqual(defaults);
 		expect(readGeneratorState('#v=1&motif=ph-cat').motif).toBe('ph-cat');
 	});
 
 	it('from a later generator start a fresh heart, as a broken one does', () => {
-		for (const v of [2, 0, 1.5, '1', null]) expect(readGeneratorState(link({ ...figure, v })), String(v)).toEqual(defaults);
-	});
-
-	it('read what the page wrote', () => {
-		expect(readGeneratorState('#' + MAKE_FIGURE)).toEqual(figure);
-		expect(readGeneratorState('#' + MAKE_TEXT)).toEqual(text);
-		// The hash as the browser hands it, and a link percent-encoded once less.
-		expect(readGeneratorState(MAKE_FIGURE)).toEqual(figure);
-		expect(readGeneratorState('#make=' + JSON.stringify(text))).toEqual(text);
+		for (const v of [2, 0, 1.5, 'x']) expect(readGeneratorState(link({ ...figure, v })), String(v)).toEqual(defaults);
 	});
 
 	it('read what they do not know as nothing', () => {
@@ -80,13 +71,13 @@ describe('the generator’s links', () => {
 
 describe('readGeneratorAddress', () => {
 	it('opens what the link makes, else what the page’s address does, an older ?mode= over both', () => {
-		expect(readGeneratorAddress('#' + MAKE_TEXT, '', 'figure')).toEqual(text);
+		expect(readGeneratorAddress(link(text), '', 'figure')).toEqual(text);
 		expect(readGeneratorAddress('', '', 'figure')).toEqual({ ...defaults, mode: 'figure' });
 		expect(readGeneratorAddress('', '')).toEqual(defaults);
 		expect(readGeneratorAddress(link({ ...text, mode: 'start' }), '', 'figure')).toEqual({ ...text, mode: 'figure' });
-		expect(readGeneratorAddress('#' + MAKE_TEXT, '?mode=figure', 'text')).toEqual({ ...text, mode: 'figure' });
+		expect(readGeneratorAddress(link(text), '?mode=figure', 'text')).toEqual({ ...text, mode: 'figure' });
 		expect(readGeneratorAddress('', '?mode=text&x=1')).toEqual({ ...defaults, mode: 'text' });
-		expect(readGeneratorAddress('#' + MAKE_TEXT, '?mode=start')).toEqual(text);
+		expect(readGeneratorAddress(link(text), '?mode=start')).toEqual(text);
 		// A link from a later generator opens the page's own start.
 		expect(readGeneratorAddress(link({ ...text, v: 2 }), '', 'text')).toEqual({ ...defaults, mode: 'text' });
 	});

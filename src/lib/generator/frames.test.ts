@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { linkOf } from './fixtures/link';
 import { slow } from './slow.test-helpers';
 import { generate, fillSquare, fitCircle } from './generate';
 import { cutTipCounts } from './cutQuality';
@@ -320,7 +321,7 @@ describe('complete motif frames', () => {
   }
   it(`shares ${style} as one complete frame selection`, () => {
    const state = { ...defaults, mode: 'figure' as const, style };
-   expect(readGeneratorState('#make=' + encodeURIComponent(JSON.stringify(state)))).toEqual(state);
+   expect(readGeneratorState(linkOf(state))).toEqual(state);
    // A frame no longer offered still opens from its link, though the picker has no button for it.
    if (!RETIRED_STYLES.includes(style)) expect(templateVariants(state).find(v => v.state.style === style)?.state).toEqual(state);
   });
@@ -1255,7 +1256,7 @@ describe('frames from real hearts', () => {
  }, 30000);
  slow('lets the figure in the checks grow to the paper\'s edge, like the frames with room for it', () => {
   const state = { ...defaults, mode: 'figure' as const, style: 'strips' as const, scale: 100 };
-  const link = (s: typeof state | (Omit<typeof state, 'style'> & { style: 'rays' | 'silhouette' })) => '#make=' + encodeURIComponent(JSON.stringify(s));
+  const link = (s: typeof state | (Omit<typeof state, 'style'> & { style: 'rays' | 'silhouette' })) => linkOf(s);
   expect(readGeneratorState(link(state)).scale).toBe(100);
   expect(readGeneratorState(link({ ...state, style: 'rays' })).scale).toBe(100);
   // The silhouette fills the square at 85% already.
@@ -1323,7 +1324,7 @@ describe('frames from real hearts', () => {
  for (const style of ['wedges', 'silhouette', 'motifs', 'squares', 'board', 'strips'] as const)
   it(`shares ${style} as one complete frame selection`, () => {
    const state = { ...defaults, mode: 'figure' as const, style };
-   expect(readGeneratorState('#make=' + encodeURIComponent(JSON.stringify(state)))).toEqual(state);
+   expect(readGeneratorState(linkOf(state))).toEqual(state);
    // A frame no longer offered still opens from its link, though the picker has no button for it.
    if (!RETIRED_STYLES.includes(style)) expect(templateVariants(state).find(v => v.state.style === style)?.state).toEqual(state);
   });
@@ -1346,11 +1347,11 @@ describe('frames from real hearts', () => {
    expect(geometryKey({ ...state, style, [field]: 5 }) !== key, style).toBe(board);
    expect(stripCount({ ...state, style, [field]: 5 }), style).toBe(board ? 5 : undefined);
   }
-  expect(readGeneratorState('#make=' + JSON.stringify({ ...state, spacing: 40 })).spacing).toBe(15);
+  expect(readGeneratorState(linkOf({ ...state, spacing: 40 })).spacing).toBe(15);
   // Each takes the strips it offers, the nearest below: the equal squares an
   // odd number.
   const strips = (style: 'strips' | 'motifs' | 'squares', n: number) =>
-   stripCount(readGeneratorState('#make=' + JSON.stringify({ ...state, style, [style === 'strips' ? 'strips' : 'board']: n })));
+   stripCount(readGeneratorState(linkOf({ ...state, style, [style === 'strips' ? 'strips' : 'board']: n })));
   expect([strips('strips', 9), strips('strips', 2), strips('motifs', 1), strips('motifs', 12), strips('squares', 4), strips('squares', 8)])
    .toEqual([6, 3, 2, 8, 3, 7]);
   // Until the visitor chooses, the small motifs and equal squares choose
@@ -1360,16 +1361,16 @@ describe('frames from real hearts', () => {
   // Where the visitor dragged the figure in the checks: kept in links, in
   // eighths, on the paper, and only in that frame's key.
   const placed = { ...state, style: 'strips' as const, place: 7.6 };
-  expect(readGeneratorState('#make=' + JSON.stringify(placed)).place).toBe(7.625);
-  expect(readGeneratorState('#make=' + JSON.stringify({ ...placed, place: -99 })).place).toBe(-66);
-  expect(readGeneratorState('#make=' + JSON.stringify({ ...state, style: 'strips' })).place).toBeUndefined();
+  expect(readGeneratorState(linkOf(placed)).place).toBe(7.625);
+  expect(readGeneratorState(linkOf({ ...placed, place: -99 })).place).toBe(-66);
+  expect(readGeneratorState(linkOf({ ...state, style: 'strips' })).place).toBeUndefined();
   expect(geometryKey(placed) !== geometryKey({ ...placed, place: undefined })).toBe(true);
   expect(geometryKey({ ...placed, style: 'rays' }) === geometryKey({ ...placed, style: 'rays', place: undefined })).toBe(true);
   expect(stripPlace({ ...placed, style: 'rays' })).toBeUndefined();
   // And across the heart's middle, with a place to move across from.
   const aside = { ...placed, side: -4.1 };
-  expect(readGeneratorState('#make=' + JSON.stringify(aside)).side).toBe(-4.125);
-  expect(readGeneratorState('#make=' + JSON.stringify({ ...aside, place: undefined })).side).toBeUndefined();
+  expect(readGeneratorState(linkOf(aside)).side).toBe(-4.125);
+  expect(readGeneratorState(linkOf({ ...aside, place: undefined })).side).toBeUndefined();
   expect(geometryKey(aside) !== geometryKey(placed)).toBe(true);
   expect(stripSide(aside)).toBe(-4.1);
   expect(stripSide({ ...aside, style: 'rays' })).toBeUndefined();

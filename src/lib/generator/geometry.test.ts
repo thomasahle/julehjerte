@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { linkOf } from './fixtures/link';
 import { slow } from './slow.test-helpers';
 import { generate } from './generate';
 import {
@@ -331,12 +332,10 @@ describe('saved generator inputs', () => {
 			font: 'kalam'
 		};
 		expect(
-			readGeneratorState('#make=' + encodeURIComponent(JSON.stringify(value)))
+			readGeneratorState(linkOf(value))
 		).toEqual(value);
 		const bad = readGeneratorState(
-			'#make=' +
-				encodeURIComponent(
-					JSON.stringify({
+			linkOf({
 						motif: '../../secret',
 						font: '<script>',
 						scale: 999,
@@ -344,14 +343,13 @@ describe('saved generator inputs', () => {
 						palette: -1,
 						text: 'ABCDEFGHIJKLM'
 					})
-				)
 		);
 		expect(bad.motif).toBe('star');
 		expect(bad.font).toBe('nunito');
 		expect(bad.scale).toBe(largestScale(bad.style));
 		expect(bad).not.toHaveProperty('paperWidth');
 		expect(bad.text).toBe('ABCDEFGHIJ');
-		expect(readGeneratorState('#make=broken')).toEqual(defaults);
+		expect(readGeneratorState('#scale=broken&style=')).toEqual(defaults);
 	});
 });
 

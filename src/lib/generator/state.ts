@@ -132,18 +132,18 @@ export function generatorLink(state: GeneratorState): string {
 }
 
 /**
- * The state a link makes, from any link the generator has written, the
- * whole state as JSON in `#make=` until 15 Nov 2026 and one field after the
- * other since: a fresh heart's for anything else, a link from a later
- * generator than this one included.
+ * The state a link makes, each field read on its own: a fresh heart's for
+ * anything else, a link from a later generator than this one included. The
+ * links from before 15 Nov 2026 (the whole state as JSON in `#make=`) are no
+ * longer read.
  */
 export function readGeneratorState(hash: string): GeneratorState {
 	const s = { ...defaults };
 	try {
 		const params = new URLSearchParams(hash.replace(/^#/, ''));
-		const raw = params.has('make')
-			? JSON.parse(params.get('make') ?? '')
-			: Object.fromEntries([...params].map(([k, value]) => [k, NUMBERS.includes(k) && value.trim() ? Number(value) : value]));
+		// Anything may stand in a link: each field is checked below.
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const raw: Record<string, any> = Object.fromEntries([...params].map(([k, value]) => [k, NUMBERS.includes(k) && value.trim() ? Number(value) : value]));
 		if (!readableVersion(raw.v, GENERATOR_LINK_VERSION)) return s;
 		// Older links name the checkerboard by its former repeating layout,
 		// and text panels by centre shapes the generator no longer draws.

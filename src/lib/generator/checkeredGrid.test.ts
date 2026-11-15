@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { linkOf } from './fixtures/link';
 import { slow } from './slow.test-helpers';
 import { generate } from './generate';
 import { CORNER_INSETS, generateCheckeredGrid, checkeredGridCache, checkeredLayout, checkeredLayouts, checkeredMatrix, printCornerInsets } from './checkeredGrid';
@@ -173,7 +174,7 @@ describe('typed letters on alternating squares', () => {
 
 	it('is a distinct shareable frame and opens links to the former repeating frames', () => {
 		const state = { ...defaults, mode: 'text' as const, textFrame: 'checkered' as const };
-		const link = (value: object) => '#make=' + encodeURIComponent(JSON.stringify(value));
+		const link = (value: object) => linkOf(value);
 		expect(readGeneratorState(link(state))).toEqual(state);
 		expect(readGeneratorState(link({ ...state, textFrame: 'repeat-check' }))).toEqual(state);
 		expect(readGeneratorState(link({ ...state, textFrame: 'repeat' })).textFrame).toBe(defaults.textFrame);

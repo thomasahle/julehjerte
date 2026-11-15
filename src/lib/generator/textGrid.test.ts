@@ -1,4 +1,5 @@
 import { it, expect } from 'vitest';
+import { linkOf } from './fixtures/link';
 import { slow } from './slow.test-helpers';
 import { generateTextGrid, squareCellScale } from './textGrid';
 import { generateCheckedText, type Font } from './geometry';
@@ -63,8 +64,8 @@ it('offers square and letter-sized cells as a pair, with a slider for the space 
 	expect(TEXT_TEMPLATES.map(t => t.id)).toEqual(['woven-square', 'woven-letters', 'checkered', 'circle', 'strips', 'layers']);
 	const state = { ...defaults, mode: 'text' as const };
 	expect(state.cells).toBe('square');
-	expect(readGeneratorState('#make=' + JSON.stringify({ ...state, cells: 'letters' })).cells).toBe('letters');
-	expect(readGeneratorState('#make=' + JSON.stringify({ ...state, cells: 'round' })).cells).toBe('square');
+	expect(readGeneratorState(linkOf({ ...state, cells: 'letters' })).cells).toBe('letters');
+	expect(readGeneratorState(linkOf({ ...state, cells: 'round' })).cells).toBe('square');
 	expect(geometryKey({ ...state, cells: 'letters' })).not.toBe(geometryKey(state));
 	// The circle and the checkerboard do not depend on the choice.
 	for (const textFrame of ['circle', 'checkered'] as const) {
@@ -76,9 +77,9 @@ it('offers square and letter-sized cells as a pair, with a slider for the space 
 	// former airy frame's in its older links.
 	expect(textRoom(state)).toBeCloseTo(.22, 9);
 	const { room: _, ...older } = state;
-	const airy = readGeneratorState('#make=' + JSON.stringify({ ...older, textFrame: 'air' }));
+	const airy = readGeneratorState(linkOf({ ...older, textFrame: 'air' }));
 	expect([airy.textFrame, textRoom(airy)]).toEqual(['woven', .5]);
-	expect(readGeneratorState('#make=' + JSON.stringify({ ...state, room: 90 })).room).toBe(35);
+	expect(readGeneratorState(linkOf({ ...state, room: 90 })).room).toBe(35);
 	expect(geometryKey({ ...state, room: 20 })).not.toBe(geometryKey(state));
 	for (const textFrame of ['circle', 'checkered'] as const) {
 		expect(geometryKey({ ...state, textFrame, room: 20 })).toBe(geometryKey({ ...state, textFrame }));

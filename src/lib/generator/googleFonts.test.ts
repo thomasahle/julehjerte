@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { linkOf } from './fixtures/link';
 import { SHIPPED, familyName, fontSample, googleFontChoice, googleFontUrl, isGoogleFont, matchingFamilies, type GoogleFamily } from './googleFonts';
 import { readGeneratorState } from './state';
 import type { Font } from './geometry';
@@ -8,7 +9,7 @@ import { shippedFont } from './fonts.test-helpers';
 const righteous = await shippedFont('righteous');
 
 const index = families as unknown as GoogleFamily[];
-const link = (font: string) => '#make=' + encodeURIComponent(JSON.stringify({ mode: 'text', font }));
+const link = (font: string) => linkOf({ mode: 'text', font });
 
 describe('Google fonts', () => {
 	it('lists the families with the weight fetched, the popular first', () => {

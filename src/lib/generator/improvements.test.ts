@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { linkOf } from './fixtures/link';
 import { slow } from './slow.test-helpers';
 import { generate } from './generate';
 import { type Font, type Ring, FRAMES, FIGURE_STYLES } from './geometry';
@@ -85,7 +86,7 @@ describe('longer and multiline text', () => {
 		const text = 'GLÆDELIG\r\nJUL';
 		expect(
 			readGeneratorState(
-				'#make=' + encodeURIComponent(JSON.stringify({ text }))
+				linkOf({ text })
 			).text
 		).toBe('GLÆDELIG\nJUL');
 		expect(normalizeText('12345678901\nA\nB\nC\nD\nE\nF')).toBe('1234567890\nA\nB\nC\nD\nE');
@@ -133,7 +134,7 @@ describe('figures and complete templates', () => {
 		expect(FIGURE_TEMPLATES.map((t) => t.style)).toEqual(['rays', 'wedges', 'fitted', 'board', 'sunburst', 'layers', 'corners', 'motifs', 'strips']);
 		expect(RETIRED_STYLES).toEqual(['silhouette', 'squares', 'check']);
 		expect([...FIGURE_TEMPLATES.map((t) => t.style), ...RETIRED_STYLES].sort()).toEqual([...FIGURE_STYLES].sort());
-		const link = (value: object) => '#make=' + encodeURIComponent(JSON.stringify(value));
+		const link = (value: object) => linkOf(value);
 		const state = { ...defaults, mode: 'figure' as const, style: 'check' as const };
 		const text = { ...defaults, mode: 'text' as const, textFrame: 'circle' as const };
 		for (const frame of ['diamond', 'hexagon', 'oval', 'rounded', 'scalloped']) {

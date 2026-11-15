@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { linkOf } from './fixtures/link';
 import { slow } from './slow.test-helpers';
 import { generate, type GeneratorRequest, type GeneratorResult } from './generate';
 import { picture } from './picture';
@@ -92,7 +93,7 @@ describe('text in a figure frame', () => {
 		expect(TEXT_TEMPLATES.map(t => t.id).slice(-2)).toEqual([...TEXT_FIGURES]);
 		const state = { ...defaults, mode: 'text' as const };
 		for (const textFrame of TEXT_FIGURES)
-			expect(readGeneratorState('#make=' + JSON.stringify({ ...state, textFrame })).textFrame).toBe(textFrame);
+			expect(readGeneratorState(linkOf({ ...state, textFrame })).textFrame).toBe(textFrame);
 		const checks = { ...state, textFrame: 'strips' as const };
 		// The frame chooses until the visitor does, within the figure in the
 		// checks' three to six strips.
