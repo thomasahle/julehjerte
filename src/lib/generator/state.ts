@@ -110,25 +110,40 @@ export const defaults: GeneratorState = {
 	room: 11,
 	strips: 4
 };
-/** The version of the state a `#make=` link carries; links from before versioning have none. */
+/** The version of the state a link carries; a link without one is of version 1. */
 export const GENERATOR_LINK_VERSION = 1;
+/** The state's numbers; a link writes the rest as words. */
+const NUMBERS: readonly string[] = ['v', 'frameSize', 'scale', 'spacing', 'room', 'strips', 'board', 'place', 'side'];
 
-/** The address's fragment, without its `#`, that makes `state` again. */
+/**
+ * The address's fragment, without its `#`, that makes `state` again:
+ * `motif=ph-ear&style=check`, only what differs from a fresh heart, so a link
+ * stays short enough to read and to pass on. The page's own address names the
+ * mode (`/design/figure/`), so the link leaves it out (`readGeneratorAddress`
+ * joins the two again). The version is written once it is no longer 1; a
+ * change to `defaults` is such a change, since these links lean on them.
+ */
 export function generatorLink(state: GeneratorState): string {
-	return 'make=' + encodeURIComponent(JSON.stringify({ v: GENERATOR_LINK_VERSION, ...state }));
+	const params = new URLSearchParams();
+	if (GENERATOR_LINK_VERSION !== 1) params.set('v', String(GENERATOR_LINK_VERSION));
+	for (const [k, value] of Object.entries(state))
+		if (k !== 'mode' && value !== undefined && value !== defaults[k as keyof GeneratorState]) params.set(k, String(value));
+	return params.toString();
 }
 
 /**
- * The state a `#make=` link makes, from any link the generator has written:
- * a fresh heart's for anything else, a link from a later generator than this
- * one included.
+ * The state a link makes, from any link the generator has written, the
+ * whole state as JSON in `#make=` until 15 Nov 2026 and one field after the
+ * other since: a fresh heart's for anything else, a link from a later
+ * generator than this one included.
  */
 export function readGeneratorState(hash: string): GeneratorState {
 	const s = { ...defaults };
 	try {
-		const raw = JSON.parse(
-			new URLSearchParams(hash.replace(/^#/, '')).get('make') ?? ''
-		);
+		const params = new URLSearchParams(hash.replace(/^#/, ''));
+		const raw = params.has('make')
+			? JSON.parse(params.get('make') ?? '')
+			: Object.fromEntries([...params].map(([k, value]) => [k, NUMBERS.includes(k) && value.trim() ? Number(value) : value]));
 		if (!readableVersion(raw.v, GENERATOR_LINK_VERSION)) return s;
 		// Older links name the checkerboard by its former repeating layout,
 		// and text panels by centre shapes the generator no longer draws.
@@ -178,7 +193,7 @@ export function readGeneratorState(hash: string): GeneratorState {
 
 /**
  * What the generator's address asks for as the page opens: its link's state
- * (`#make=`), the mode of the page's own address (`/design/figure/`) where the
+ * (`#motif=…`), the mode of the page's own address (`/design/figure/`) where the
  * link has none, and an older address's `?mode=` over both.
  */
 export function readGeneratorAddress(hash: string, search: string, pageMode?: 'figure' | 'text'): GeneratorState {

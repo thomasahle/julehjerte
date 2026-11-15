@@ -37,7 +37,7 @@
 	import { saveUserDesign } from '$lib/stores/collection';
 	import { createJobQueue } from '$lib/generator/jobQueue';
 	import { generatorRequest, variantRequest } from '$lib/generator/request';
-	import { defaults, generatorLink, readGeneratorAddress, readGeneratorState, normalizeText, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, stripCount, ROOM_RANGE, CELL_FRAMES, largestScale, SPACED_STYLES } from '$lib/generator/state';
+	import { defaults, generatorLink, readGeneratorAddress, normalizeText, TEXT_LINES, TEXT_LINE_LENGTH, type GeneratorState, stripCount, ROOM_RANGE, CELL_FRAMES, largestScale, SPACED_STYLES } from '$lib/generator/state';
 	import { clampPlace } from '$lib/generator/stripFigure';
 	import { BOARD_STRIPS, boardStage, type BoardStyle } from '$lib/generator/boardMotif';
 	import { isTextFigure } from '$lib/generator/textFigure';
@@ -396,7 +396,8 @@
 		config = readGeneratorAddress(window.location.hash, window.location.search, pageMode);
 		// A shared link pasted into an open generator changes only the hash.
 		// The page's own replaceState below never fires this event.
-		const follow = () => (config = readGeneratorState(window.location.hash));
+		// Such a link names no mode (the address does): the page goes on making what it makes.
+		const follow = () => (config = readGeneratorAddress(window.location.hash, '', config.mode === 'start' ? undefined : config.mode));
 		window.addEventListener('hashchange', follow);
 		mounted = true;
 		return () => {
@@ -625,11 +626,11 @@
 	});
 	/**
 	 * The same page in the other language, making the same. The state joins it once the page is live:
-	 * the prerender would read a `#make=` in the HTML as an anchor it must find on that page.
+	 * the prerender would read a `#motif=` in the HTML as an anchor it must find on that page.
 	 */
 	let languageUrl = $derived(
 		generatorHref(otherLanguage(lang), config.mode === 'start' ? undefined : config.mode) +
-			(config.mode === 'start' || !mounted ? '' : '#' + generatorLink(config))
+			(config.mode === 'start' || !mounted || !generatorLink(config) ? '' : '#' + generatorLink(config))
 	);
 	function chooseMode(mode: GeneratorState['mode']) {
 		config.mode = mode;

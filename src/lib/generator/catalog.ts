@@ -1,3 +1,4 @@
+import { danishName, danishWords } from './danishWords';
 export const localNames: Record<string, [string, string]> = {
 	star: ['Stjerne', 'star jul'],
 	tree: ['Juletræ', 'christmas tree gran jul'],
@@ -182,7 +183,7 @@ const names = (id: string) =>
 	localNames[id] ?? localNames[bare(id)] ?? aliases[bare(id)];
 export function motifLabel(item: CatalogItem, lang: 'da' | 'en') {
 	return lang === 'da'
-		? (names(item.id)?.[0] ?? item.name)
+		? (names(item.id)?.[0] ?? danishName(item.name) ?? item.name)
 		: bare(item.id).replaceAll('-', ' ');
 }
 const normal = (s: string) =>
@@ -198,20 +199,54 @@ export function motifGroups(items: CatalogItem[]) {
 		items: ids.flatMap((id) => byId.get(id) ?? [])
 	}));
 }
-/** Every item matching all the words, the grouped figures first. */
+/** The words an item is found by: its id, names in both languages, set, author and group. */
+function searchWords(item: CatalogItem): string[] {
+	const group = featured.get(item.id);
+	return normal(
+		`${item.id} ${item.name} ${names(item.id)?.join(' ') ?? ''} ${danishWords(item.name)} ${item.package ?? ''} ${item.author ?? ''} ${group ? groupWords[group] : ''}`
+	)
+		.split(/[^\p{L}\p{N}]+/u)
+		.filter(Boolean);
+}
+/** How well a word finds an item: 0 as a whole word of it, 1 as a word's start, 2 inside a word; none if it does not. */
+function rank(words: string[], word: string): number | undefined {
+	let best: number | undefined;
+	for (const w of words) {
+		const at = w.indexOf(word);
+		if (at < 0) continue;
+		const r = w === word ? 0 : at === 0 ? 1 : 2;
+		if (r === 0) return 0;
+		if (best === undefined || r < best) best = r;
+	}
+	return best;
+}
+/**
+ * Every item matching all the words, the best matches first: "ear" finds the
+ * ear before the gear, and both before the bear and the heart, which only
+ * have the letters inside them. Among equals the grouped figures lead.
+ */
 export function matchingMotifs(items: CatalogItem[], query: string) {
-	const words = normal(query.trim()).split(/\s+/).filter(Boolean);
-	return items
-		.filter((item) => {
-			const group = featured.get(item.id);
-			const text = normal(
-				`${item.id} ${item.name} ${names(item.id)?.join(' ') ?? ''} ${item.package ?? ''} ${item.author ?? ''} ${group ? groupWords[group] : ''}`
-			);
-			return words.every((word) => text.includes(word));
-		})
+	const asked = normal(query.trim()).split(/\s+/).filter(Boolean);
+	const found: { item: CatalogItem; rank: number }[] = [];
+	for (const item of items) {
+		const words = searchWords(item);
+		let worst = 0;
+		for (const word of asked) {
+			const r = rank(words, word);
+			if (r === undefined) {
+				worst = -1;
+				break;
+			}
+			worst = Math.max(worst, r);
+		}
+		if (worst >= 0) found.push({ item, rank: worst });
+	}
+	return found
 		.sort(
 			(a, b) =>
-				(order.get(a.id) ?? 1000) - (order.get(b.id) ?? 1000) ||
-				a.name.localeCompare(b.name)
-		);
+				a.rank - b.rank ||
+				(order.get(a.item.id) ?? 1000) - (order.get(b.item.id) ?? 1000) ||
+				a.item.name.localeCompare(b.item.name)
+		)
+		.map((f) => f.item);
 }

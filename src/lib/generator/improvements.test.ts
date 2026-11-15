@@ -170,6 +170,18 @@ describe('figures and complete templates', () => {
 		expect(matchingMotifs(catalog, 'kat').some((i) => i.id === 'ph-cat')).toBe(true);
 		expect(matchingMotifs(catalog, 'dyr').length).toBeGreaterThanOrEqual(groups[1].items.length);
 		expect(matchingMotifs(catalog, 'airplay').length).toBeGreaterThan(0);
+		// The best matches lead: the ear, never the bear or the heart before it.
+		const ids = (q: string) => matchingMotifs(catalog, q).map((i) => i.id);
+		expect(ids('ear').slice(0, 2)).toEqual(['ph-ear', 'ph-ear-slash']);
+		expect(ids('ear')).toContain('pin-bear');
+		// A whole word comes before a word's start, and that before letters inside one.
+		const rain = ['ph-cloud-rain', 'ph-rainbow', 'ph-train'].map((id) => ids('rain').indexOf(id));
+		expect(rain[0]).toBeGreaterThanOrEqual(0);
+		expect(rain).toEqual([...rain].sort((a, b) => a - b));
+		// The large sets are found in Danish too, and a one-word name is shown in it.
+		expect(ids('øre')[0]).toMatch(/-ear$/);
+		expect(ids('cykel')).toContain('ph-bicycle');
+		expect(motifLabel(catalog.find((i) => i.id === 'ph-ear')!, 'da')).toBe('Øre');
 		expect(
 			matchingMotifs(catalog, 'tabler juletræ').some(
 				(i) => i.id === 'tb-christmas-tree'

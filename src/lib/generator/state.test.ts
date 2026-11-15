@@ -2,29 +2,39 @@ import { describe, expect, it } from 'vitest';
 import { MAKE_FIGURE, MAKE_TEXT } from '$lib/utils/fixtures/storedForms';
 import { GENERATOR_LINK_VERSION, defaults, generatorLink, readGeneratorAddress, readGeneratorState, type GeneratorState } from './state';
 
-// The generator's address carries what it makes (`#make=`), so a link shared
-// once must keep making the same heart.
+// The generator's address carries what it makes, so a link shared once must
+// keep making the same heart: the whole state as JSON in `#make=` until
+// 15 Nov 2026, one field after the other (`#motif=ph-cat&style=strips`) since.
 
 const figure: GeneratorState = { ...defaults, mode: 'figure', motif: 'ph-cat', style: 'strips', strips: 5, place: 7.625, side: -4.125, scale: 90 };
 const text: GeneratorState = { ...defaults, mode: 'text', text: 'GOD\nJUL', font: 'gf:lobster:400', textFrame: 'woven', cells: 'letters', room: 20 };
 /** A link as the page wrote it before versioning, or a hand-made one. */
 const link = (state: object) => '#make=' + encodeURIComponent(JSON.stringify(state));
-/** A link from before versioning, as the page writes it now. */
-const versioned = (fragment: string) => fragment.replace('make=%7B', 'make=%7B%22v%22%3A1%2C');
 
 describe('the generator’s links', () => {
-	it('are written as the page wrote them on 10 Nov 2026, with the version added in front', () => {
+	it('are written short: only what differs from a fresh heart, without the mode the address names', () => {
 		expect(GENERATOR_LINK_VERSION).toBe(1);
 		expect(link(figure)).toBe('#' + MAKE_FIGURE);
-		expect(generatorLink(figure)).toBe(versioned(MAKE_FIGURE));
-		expect(generatorLink(text)).toBe(versioned(MAKE_TEXT));
+		expect(generatorLink(figure)).toBe('motif=ph-cat&scale=90&style=strips&strips=5&place=7.625&side=-4.125');
+		expect(generatorLink(text)).toBe('text=GOD%0AJUL&font=gf%3Alobster%3A400&cells=letters&room=20');
+		expect(generatorLink({ ...defaults, mode: 'figure', motif: 'ph-ear' })).toBe('motif=ph-ear');
+		expect(generatorLink({ ...defaults, mode: 'figure' })).toBe('');
 		// Fields left undefined are not written.
 		expect(generatorLink({ ...figure, board: undefined, place: undefined, side: undefined })).not.toMatch(/board|place|side/);
 	});
 
-	it('read what the page writes', () => {
-		for (const state of [figure, text, defaults, { ...defaults, mode: 'figure' as const, style: 'board' as const, board: 7 }])
-			expect(readGeneratorState('#' + generatorLink(state))).toEqual(state);
+	it('read what the page writes, with the mode of its address', () => {
+		for (const state of [figure, text, { ...defaults, mode: 'figure' as const, style: 'board' as const, board: 7 }, { ...text, text: 'A+B & C=D\n#É♥' }])
+			expect(readGeneratorAddress('#' + generatorLink(state), '', state.mode as 'figure' | 'text')).toEqual(state);
+		expect(readGeneratorState('#' + generatorLink(defaults))).toEqual(defaults);
+		// A link may name its mode itself.
+		expect(readGeneratorState('#mode=text&text=HEJ')).toEqual({ ...defaults, mode: 'text', text: 'HEJ' });
+	});
+
+	it('written short read each field on its own, clamped, as the older ones do', () => {
+		expect(readGeneratorState('#motif=../x&style=nope&scale=200&board=20&spacing=-3&strips=abc&side=2&later=1')).toEqual({ ...defaults, scale: 100, board: 9, spacing: 0 });
+		for (const v of ['2', '0', 'x']) expect(readGeneratorState('#v=' + v + '&motif=ph-cat'), v).toEqual(defaults);
+		expect(readGeneratorState('#v=1&motif=ph-cat').motif).toBe('ph-cat');
 	});
 
 	it('from a later generator start a fresh heart, as a broken one does', () => {
