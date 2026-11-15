@@ -85,6 +85,8 @@ export type CatalogItem = {
 	package?: string;
 	/** The icon's author, where its licence asks for a credit. */
 	author?: string;
+	/** Where an icon found in the open sets comes from: author, set and licence. */
+	source?: string;
 };
 /** The figures on show before any search. The rest of the catalogue is found by searching. */
 export const MOTIF_GROUPS = {
@@ -166,7 +168,7 @@ export const PACKAGES: Record<string, string> = {
 };
 /** Where a motif comes from, for its tooltip: the set, and the author when the licence asks. */
 export const motifSource = (item: CatalogItem) =>
-	[item.author, PACKAGES[item.package ?? 'juleflet']].filter(Boolean).join(', ');
+	item.source ?? [item.author, PACKAGES[item.package ?? 'juleflet']].filter(Boolean).join(', ');
 const aliases: Record<string, [string, string]> = {
 	candle: ['Stearinlys', 'lys jul christmas candle'],
 	'christmas-tree': ['Juletræ', 'gran træ jul christmas tree'],
@@ -180,11 +182,11 @@ const aliases: Record<string, [string, string]> = {
 };
 const bare = (id: string) => id.replace(/^(ph|tb|fa|gi|pin|mdi|ms|mc|hi|fe)-/, '');
 const names = (id: string) =>
-	localNames[id] ?? localNames[bare(id)] ?? aliases[bare(id)];
+	id.includes(':') ? undefined : (localNames[id] ?? localNames[bare(id)] ?? aliases[bare(id)]);
 export function motifLabel(item: CatalogItem, lang: 'da' | 'en') {
 	return lang === 'da'
 		? (names(item.id)?.[0] ?? danishName(item.name) ?? item.name)
-		: bare(item.id).replaceAll('-', ' ');
+		: bare(item.id.split(':').pop()!).replaceAll('-', ' ');
 }
 const normal = (s: string) =>
 	s

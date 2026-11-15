@@ -76,3 +76,11 @@ https://cs.au.dk/~gerth/julehjerter/slides.pdf
 No code, glyphs or templates from that site are copied.
 
 Enclosed regions use paired coincident cuts in both sheets, never removed paper.
+
+Figures found in the search over open icon sets are not part of this site: the
+visitor's browser asks Iconify (https://iconify.design, api.iconify.design)
+for the icons matching the search, and outlines them there. Only sets under
+MIT, ISC, Apache-2.0, CC0, CC BY, OFL, BSD or MPL licences are asked for, and
+only icons that are solid shapes are shown. Each figure's button names its
+author, set and licence; the sets and their licences are listed at
+https://icon-sets.iconify.design.

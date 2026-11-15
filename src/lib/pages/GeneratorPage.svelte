@@ -10,6 +10,7 @@
 		type CatalogItem,
 		type MotifGroup
 	} from '$lib/generator/catalog';
+	import { findIcons } from '$lib/generator/iconSearch';
 	import {
 		DEFAULT_COLORS,
 		DEFAULT_COLORS_HEX,
@@ -90,6 +91,10 @@
 		query = $state(''),
 		limit = $state(24),
 		retry = $state(0);
+	// What the open icon sets have for the search, beyond the site's own figures.
+	let found = $state<CatalogItem[]>([]),
+		finding = $state(false),
+		foundLimit = $state(24);
 	// The font search over Google Fonts, and the last family chosen there,
 	// which keeps a button beside the fonts we ship.
 	let fontQuery = $state(''),
@@ -381,6 +386,33 @@
 			});
 		return () => {
 			live = false;
+		};
+	});
+	// The open sets are asked once the visitor pauses, for a word of two letters or more.
+	$effect(() => {
+		const asked = query.trim();
+		found = [];
+		foundLimit = 24;
+		const ask = config.mode === 'figure' && asked.length > 1;
+		finding = ask;
+		if (!ask) return;
+		const stop = new AbortController();
+		const timer = setTimeout(
+			() =>
+				findIcons(asked, stop.signal)
+					.then((items) => {
+						if (stop.signal.aborted) return;
+						found = items;
+						finding = false;
+					})
+					.catch(() => {
+						if (!stop.signal.aborted) finding = false;
+					}),
+			400
+		);
+		return () => {
+			clearTimeout(timer);
+			stop.abort();
 		};
 	});
 	// Each family found shows its name in its own letters.
@@ -823,7 +855,7 @@
 									item
 								)}{/each}
 						</div>
-						{#if catalog.length && !matches.length}<p>
+						{#if catalog.length && !matches.length && !found.length && !finding}<p>
 								{t('generatorNoMatches', lang)}
 							</p>{/if}
 						{#if matches.length > limit}<button
@@ -831,6 +863,20 @@
 								onclick={() => (limit += 24)}
 								>{t('generatorMore', lang)} ({matches.length})</button
 							>{/if}
+						{#if found.length}<h2 class="motif-heading">{t('generatorOpenSets', lang)}</h2>
+							<div class="motifs">
+								{#each found.slice(0, foundLimit) as item (item.id)}{@render motifButton(
+										item
+									)}{/each}
+							</div>
+							{#if found.length > foundLimit}<button
+									class="more"
+									onclick={() => (foundLimit += 24)}
+									>{t('generatorMore', lang)} ({found.length})</button
+								>{/if}
+						{:else if finding}<p class="search-hint">
+								{t('generatorOpenSetsSearching', lang)}
+							</p>{/if}
 					{:else}{#each groups as { group, items } (group)}<h2 class="motif-heading">
 								{t(GROUP_TITLES[group], lang)}
 							</h2>

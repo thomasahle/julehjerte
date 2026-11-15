@@ -3,6 +3,7 @@ import { BOARD_STRIPS, type BoardStyle } from './boardMotif';
 import { TEXT_FIGURES } from './textFigure';
 import { isGoogleFont } from './googleFonts';
 import { INVISIBLE } from './fontFaces';
+import { isIconId } from './iconId';
 import { readableVersion } from '$lib/utils/formatVersion';
 export type GeneratorState = {
 	mode: 'start' | 'figure' | 'text';
@@ -128,7 +129,8 @@ export function generatorLink(state: GeneratorState): string {
 	if (GENERATOR_LINK_VERSION !== 1) params.set('v', String(GENERATOR_LINK_VERSION));
 	for (const [k, value] of Object.entries(state))
 		if (k !== 'mode' && value !== undefined && value !== defaults[k as keyof GeneratorState]) params.set(k, String(value));
-	return params.toString();
+	// A colon needs no escape in a fragment: `motif=mdi:cat`, `font=gf:lobster:400`.
+	return params.toString().replaceAll('%3A', ':');
 }
 
 /**
@@ -167,7 +169,7 @@ export function readGeneratorState(hash: string): GeneratorState {
 			if (allowed.includes(raw[k])) Object.assign(s, { [k]: raw[k] });
 		if (typeof raw.font === 'string' && isGoogleFont(raw.font)) s.font = raw.font;
 		if (typeof raw.text === 'string') s.text = normalizeText(raw.text);
-		if (typeof raw.motif === 'string' && /^[a-z0-9-]{1,80}$/.test(raw.motif))
+		if (typeof raw.motif === 'string' && (/^[a-z0-9-]{1,80}$/.test(raw.motif) || isIconId(raw.motif)))
 			s.motif = raw.motif;
 		// A side only with the place down the middle it moves across from.
 		for (const k of ['place', 'side'] as const)

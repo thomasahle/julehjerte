@@ -3,6 +3,8 @@ import { DEFAULT_COLORS_HEX } from '$lib/stores/colors';
 import { BOARD_STRIPS } from './boardMotif';
 import { geometryKey } from './cache';
 import { motifLabel } from './catalog';
+import { isIconId } from './iconId';
+import { iconContours } from './iconSearch';
 import type { BoardLayout, GeneratorRequest } from './generate';
 import type { Font, Ring } from './geometry';
 import type { RecipeFile } from './recipes';
@@ -16,6 +18,8 @@ export type RequestSources = {
 	font: (font: string, text: string) => Promise<Font>;
 	/** The hearts made so far, by `geometryKey`. */
 	made: { get(key: string): { layout?: BoardLayout } | undefined };
+	/** The contours of a figure from the open icon sets (`mdi:cat`); the page's own search and fetch if none is given. */
+	icon?: (id: string) => Promise<Ring[]>;
 	/** The text's font is about to be read: the page starts the generator's worker meanwhile. */
 	readingFont?: () => void;
 };
@@ -41,7 +45,7 @@ async function dividedFrom(style: string, motif: string, board: number, asset: R
 export async function generatorRequest(
 	snapshot: GeneratorState,
 	lang: Language,
-	{ asset, font, made, readingFont }: RequestSources
+	{ asset, font, made, readingFont, icon }: RequestSources
 ): Promise<GeneratorRequest> {
 	const request: GeneratorRequest = {
 		mode: snapshot.mode as 'figure' | 'text',
@@ -74,9 +78,9 @@ export async function generatorRequest(
 		readingFont?.();
 		request.font = await font(snapshot.font, snapshot.text);
 	} else {
-		request.contours = (
-			await asset<{ contours: Ring[] }>(`motifs/${snapshot.motif}.json`)
-		).contours;
+		request.contours = isIconId(snapshot.motif)
+			? await (icon ?? iconContours)(snapshot.motif)
+			: (await asset<{ contours: Ring[] }>(`motifs/${snapshot.motif}.json`)).contours;
 		request.recipes = await storedRecipes(snapshot.style, asset);
 		const from = await dividedFrom(snapshot.style, snapshot.motif, stripCount(snapshot) ?? BOARD_STRIPS.board.initial, asset);
 		if (from !== undefined && snapshot.scale > 70 && snapshot.scale < from) request.keepWhole = true;

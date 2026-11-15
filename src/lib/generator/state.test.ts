@@ -15,7 +15,7 @@ describe('the generator’s links', () => {
 	it('are written short: only what differs from a fresh heart, without the mode the address names', () => {
 		expect(GENERATOR_LINK_VERSION).toBe(1);
 		expect(generatorLink(figure)).toBe('motif=ph-cat&scale=90&style=strips&strips=5&place=7.625&side=-4.125');
-		expect(generatorLink(text)).toBe('text=GOD%0AJUL&font=gf%3Alobster%3A400&cells=letters&room=20');
+		expect(generatorLink(text)).toBe('text=GOD%0AJUL&font=gf:lobster:400&cells=letters&room=20');
 		expect(generatorLink({ ...defaults, mode: 'figure', motif: 'ph-ear' })).toBe('motif=ph-ear');
 		expect(generatorLink({ ...defaults, mode: 'figure' })).toBe('');
 		// Fields left undefined are not written.

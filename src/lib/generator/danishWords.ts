@@ -2,7 +2,9 @@
  * Danish words for the English words of the large icon sets' names, so a
  * visitor finds the ear by "øre" and the bicycle by "cykel". One line per
  * English word: the first Danish word is its plain translation (a one-word
- * icon's Danish label), the rest are other words a visitor may try. Words of
+ * icon's Danish label), the rest are other words a visitor may try. The list
+ * also holds words the site's own figures do not have, for the search over the
+ * open icon sets, which is asked in English (`englishWords`). Words of
  * brands, file types and interface parts have none: they are searched as they
  * are written.
  */
@@ -570,6 +572,103 @@ wrench skruenøgle svensknøgle
 yarn garn
 zeppelin zeppeliner luftskib
 zero nul
+nose næse
+mouth mund
+lips læber
+tongue tunge
+foot fod
+leg ben
+arm arm
+finger finger
+kidney nyre
+stomach mave
+liver lever
+skeleton skelet
+dragon drage
+pretzel kringle
+dinosaur dinosaur dino
+frog frø
+fox ræv
+wolf ulv
+deer hjort rådyr
+moose elg
+duck and
+goose gås
+chicken høne kylling
+rooster hane
+sheep får lam
+goat ged
+snake slange
+turtle skildpadde
+whale hval
+dolphin delfin
+shark haj
+octopus blæksprutte
+crab krabbe
+bee bi
+ant myre
+ladybug mariehøne
+snail snegl
+lion løve
+tiger tiger
+monkey abe
+giraffe giraf
+zebra zebra
+camel kamel
+kangaroo kænguru
+bat flagermus
+eagle ørn
+parrot papegøje
+peacock påfugl
+stork stork
+banana banan
+strawberry jordbær
+pear pære
+grapes vindruer druer
+pineapple ananas
+pumpkin græskar
+potato kartoffel
+onion løg
+corn majs
+witch heks
+wizard troldmand
+troll trold
+elf alf nisse
+fairy fe
+mermaid havfrue
+princess prinsesse
+prince prins
+pirate pirat sørøver
+viking viking
+ship skib
+submarine ubåd
+handball håndbold
+violin violin
+trumpet trompet
+drum tromme
+flute fløjte
+harp harpe
+accordion harmonika
+skate skøjte
+sled kælk
+kite drage
+swing gynge
+lollipop slikkepind
+chocolate chokolade
+sausage pølse
+hotdog hotdog
+pancake pandekage
+waffle vaffel
+bench bænk
+well brønd
+stroller barnevogn
+pacifier sut
+teddy bamse
+doll dukke
+ring ring
+necklace halskæde
+glasses briller
+shoe sko
 `;
 
 const byWord = new Map(
@@ -594,4 +693,20 @@ export function danishWords(name: string): string {
 export function danishName(name: string): string | undefined {
 	const word = byWord.get(name.toLowerCase())?.[0];
 	return word && word[0].toLocaleUpperCase('da') + word.slice(1);
+}
+
+const byDanish = new Map<string, string>();
+// A word's plain translation first: "kort" is the card before it is the map's other word.
+for (const first of [true, false])
+	for (const [word, danish] of byWord)
+		for (const d of first ? danish.slice(0, 1) : danish.slice(1)) if (!byDanish.has(d)) byDanish.set(d, word);
+
+/** A search's words in English, for the sets that only know that: the Danish ones of the list translated, the rest as written. */
+export function englishWords(query: string): string {
+	return query
+		.toLocaleLowerCase('da')
+		.split(/\s+/)
+		.filter(Boolean)
+		.map((word) => byDanish.get(word) ?? word)
+		.join(' ');
 }
