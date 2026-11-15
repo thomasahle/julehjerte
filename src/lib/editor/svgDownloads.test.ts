@@ -4,10 +4,9 @@
  * download after the click handler returns saves nothing.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { DEFAULT_COLORS } from '$lib/stores/colors';
 import { loadHeart } from '$lib/laser/testHearts.test-helpers';
 import { REVOKE_DELAY_MS } from '$lib/utils/download';
-import { downloadHeartSvg, downloadTemplateSvg } from './svgDownloads';
+import { downloadHeartSvg } from './svgDownloads';
 
 let blobs: Blob[];
 let revoked: string[];
@@ -34,8 +33,7 @@ afterEach(() => {
 });
 
 describe.each([
-	['Eksportér SVG', (d: ReturnType<typeof loadHeart>) => downloadHeartSvg(d), '.svg'],
-	['template SVG', (d: ReturnType<typeof loadHeart>) => downloadTemplateSvg(d, DEFAULT_COLORS), '-template.svg']
+	['Eksportér SVG', (d: ReturnType<typeof loadHeart>) => downloadHeartSvg(d), '.svg']
 ])('%s', (_label, run, suffix) => {
 	it('does not revoke the URL before the click has been handled', async () => {
 		const design = loadHeart('classic-3x3');

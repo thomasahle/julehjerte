@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { beforeNavigate, goto, replaceState } from '$app/navigation';
-  import { onMount, tick } from 'svelte';
+  import { onMount, tick, type Component } from 'svelte';
   import PaperHeart from '$lib/components/PaperHeart.svelte';
   import { pageTitle } from '$lib/seo';
   import { langFromParam, t, tArray } from '$lib/i18n';
@@ -30,7 +30,7 @@
     type OpenedDesign
   } from '$lib/editor/openedDesign';
   import { importSummary } from '$lib/utils/svgImportSummary';
-  import { downloadHeartSvg, downloadTemplateSvg } from '$lib/editor/svgDownloads';
+  import { downloadHeartSvg } from '$lib/editor/svgDownloads';
   import { sanitizeHtml } from '$lib/utils';
   import { trackImportError } from '$lib/analytics';
   import CanvasBackdrop from '$lib/components/editor/CanvasBackdrop.svelte';
@@ -656,20 +656,28 @@
     withName(() => downloadHeartSvg(createHeartDesign()));
   }
 
-  function downloadTemplateSVG() {
-    downloadTemplateSvg(createHeartDesign(), colors);
-  }
-
-  // Top bar: the templates as a PDF, as the gallery's and the heart page's download prints them.
-  // jsPDF is loaded on demand, so it stays out of the editor's initial bundle.
-  async function downloadTemplatePDF() {
+  // "Hent skabelon", in the panel and the top bar: the dialog the heart's own page opens, with the
+  // PDF for a printer and the file for a laser cutter. Loaded on demand, with jsPDF behind it.
+  type DialogProps = { designs: readonly HeartDesign[]; lang: typeof lang; open: boolean; onClose: () => void };
+  let DownloadDialog = $state.raw<Component<DialogProps> | null>(null);
+  let downloadDesigns = $state.raw<HeartDesign[]>([]);
+  let downloadOpen = $state(false);
+  let downloadOpener: HTMLElement | null = null;
+  async function openDownload() {
+    downloadOpener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     try {
-      const { downloadDesignPDF } = await import('$lib/pdf/template');
-      await downloadDesignPDF(createHeartDesign(), lang);
+      DownloadDialog ??= (await import('$lib/components/detail/DownloadDialog.svelte')).default as unknown as Component<DialogProps>;
+      downloadDesigns = [createHeartDesign()];
+      downloadOpen = true;
     } catch (err) {
-      console.error('Generating the PDF failed', err);
+      console.error('Opening the download dialog failed', err);
       showStatus('pdf', 'error', t('pdfFailed', lang));
     }
+  }
+  function closeDownload() {
+    downloadOpen = false;
+    downloadOpener?.focus();
+    downloadOpener = null;
   }
 
   /**
@@ -882,7 +890,7 @@
         onchange={handleImport}
         hidden
       />
-      <button type="button" class="btn btn-ghost action" onclick={downloadTemplateSVG}>
+      <button type="button" class="btn btn-ghost action" onclick={openDownload}>
         <PrinterIcon size={16} />
         {t('downloadTemplate', lang)}
       </button>
@@ -910,12 +918,13 @@
     <button
       type="button"
       class="btn btn-sm btn-primary top-action"
-      onclick={downloadTemplatePDF}
-      title={t('editorDownloadPdf', lang)}
-      aria-label={t('editorDownloadPdf', lang)}
+      onclick={openDownload}
+      title={t('downloadTemplate', lang)}
+      aria-label={t('downloadTemplate', lang)}
+      aria-haspopup="dialog"
     >
       <DownloadIcon size={18} />
-      <span class="top-action-label">{t('editorDownloadPdf', lang)}</span>
+      <span class="top-action-label">{t('downloadTemplate', lang)}</span>
     </button>
     <button
       type="button"
@@ -1071,6 +1080,10 @@
     </div>
   </Modal>
 </div>
+
+{#if DownloadDialog}
+  <DownloadDialog designs={downloadDesigns} {lang} open={downloadOpen} onClose={closeDownload} />
+{/if}
 
 <style>
   #name-title { margin: 0 0 12px; font-size: 1.1rem; }
