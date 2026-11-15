@@ -1539,7 +1539,11 @@
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
-    "photo": null,
+    "photo": {
+      "src": "/hearts/photos/ni-ruder.jpg",
+      "width": 1199,
+      "height": 1200
+    },
     "film": {
       "v": "f1c8c9a185",
       "bytes": 3085453
@@ -1724,7 +1728,11 @@
       "mirrorSymmetry": false,
       "sharedTemplate": false
     },
-    "photo": null,
+    "photo": {
+      "src": "/hearts/photos/penrose-ring.jpg",
+      "width": 1199,
+      "height": 1200
+    },
     "film": {
       "v": "a8d5cd1066",
       "bytes": 4430807
@@ -1879,7 +1887,11 @@
       "mirrorSymmetry": false,
       "sharedTemplate": false
     },
-    "photo": null,
+    "photo": {
+      "src": "/hearts/photos/dagognat.jpg",
+      "width": 1199,
+      "height": 1200
+    },
     "film": {
       "v": "1f5a67ad80",
       "bytes": 4393480
@@ -2593,7 +2605,11 @@
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
-    "photo": null,
+    "photo": {
+      "src": "/hearts/photos/ball.jpg",
+      "width": 1198,
+      "height": 1200
+    },
     "film": {
       "v": "a56df78027",
       "bytes": 3649577
