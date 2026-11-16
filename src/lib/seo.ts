@@ -3,7 +3,6 @@ import { t, type Language } from '$lib/i18n';
 import { ROUTES, heartPath, type RouteKey } from '$lib/i18n/routes';
 import { HEART_IMAGE_SIZE, heartImagePath } from '$lib/heartImage';
 import { ALL_HEART_IDS, categoryOfHeart, categoryTitle } from '$lib/data/categories';
-import { categoryHref } from '$lib/i18n/routes';
 import { plainDescription } from '$lib/utils/descriptionLinks';
 import { truncateAtSentence, truncateAtWord } from '$lib/utils/text';
 
@@ -219,10 +218,12 @@ export function heartWebPageJsonLd(heart: { id: string; name: string; lang: Lang
 export function heartBreadcrumbJsonLd(heart: { id: string; name: string; lang: Language }): JsonLd {
 	const { id, lang } = heart;
 	const category = categoryOfHeart(id);
+	// Built from SITE_URL: the page's own link helpers give relative paths.
+	const home = `${SITE_URL}${ROUTES.home[lang]}`;
 	const crumbs = [
-		{ name: SITE_NAME, url: `${SITE_URL}${ROUTES.home[lang]}` },
+		{ name: SITE_NAME, url: home },
 		...(category
-			? [{ name: categoryTitle(category.id, lang), url: `${SITE_URL}${categoryHref(category.id, lang)}` }]
+			? [{ name: categoryTitle(category.id, lang), url: `${home}#${category.id}` }]
 			: []),
 		{ name: heart.name, url: `${SITE_URL}${heartPath(id, lang)}` }
 	];
