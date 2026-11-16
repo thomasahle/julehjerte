@@ -2,6 +2,8 @@ import { SITE_NAME, SITE_URL } from '$lib/config';
 import { t, type Language } from '$lib/i18n';
 import { ROUTES, heartPath, type RouteKey } from '$lib/i18n/routes';
 import { HEART_IMAGE_SIZE, heartImagePath } from '$lib/heartImage';
+import { ALL_HEART_IDS, categoryOfHeart, categoryTitle } from '$lib/data/categories';
+import { categoryHref } from '$lib/i18n/routes';
 import { plainDescription } from '$lib/utils/descriptionLinks';
 import { truncateAtSentence, truncateAtWord } from '$lib/utils/text';
 
@@ -19,7 +21,12 @@ export function pageTitle(route: RouteKey | null, lang: Language): string {
 	if (route === 'generator') return `${t('generatorTitle', lang)} | ${SITE_NAME}`;
 	if (route === 'editor') return `${t('heroDesignHeart', lang)} | ${SITE_NAME}`;
 	if (route === 'paint') return `${t('paintPageTitle', lang)} | ${SITE_NAME}`;
-	return `${t('siteBrowserTitle', lang)} | ${SITE_NAME}`;
+	return `${t('siteBrowserTitle', lang, { count: ALL_HEART_IDS.length })} | ${SITE_NAME}`;
+}
+
+/** The front page's description; it states how many hearts the gallery holds. */
+export function siteMetaDescription(lang: Language): string {
+	return t('siteMetaDescription', lang, { count: ALL_HEART_IDS.length });
 }
 
 export function heartPageTitle(id: string, name: string, lang: Language): string {
@@ -206,6 +213,32 @@ export function heartWebPageJsonLd(heart: { id: string; name: string; lang: Lang
 }
 
 /**
+ * The heart page's place in the site: front page, its category, the heart.
+ * A search result then shows these names instead of the raw address.
+ */
+export function heartBreadcrumbJsonLd(heart: { id: string; name: string; lang: Language }): JsonLd {
+	const { id, lang } = heart;
+	const category = categoryOfHeart(id);
+	const crumbs = [
+		{ name: SITE_NAME, url: `${SITE_URL}${ROUTES.home[lang]}` },
+		...(category
+			? [{ name: categoryTitle(category.id, lang), url: `${SITE_URL}${categoryHref(category.id, lang)}` }]
+			: []),
+		{ name: heart.name, url: `${SITE_URL}${heartPath(id, lang)}` }
+	];
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: crumbs.map((crumb, i) => ({
+			'@type': 'ListItem',
+			position: i + 1,
+			name: crumb.name,
+			item: crumb.url
+		}))
+	};
+}
+
+/**
  * The front page's structured data: a CollectionPage whose main entity is the
  * gallery, every heart in gallery order with its page and square picture.
  */
@@ -218,7 +251,7 @@ export function frontPageJsonLd(
 		'@context': 'https://schema.org',
 		'@type': 'CollectionPage',
 		name: pageTitle('home', lang),
-		description: t('siteMetaDescription', lang),
+		description: siteMetaDescription(lang),
 		url,
 		inLanguage: lang,
 		image: FRONT_PAGE_SOCIAL_IMAGE,

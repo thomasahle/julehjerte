@@ -194,14 +194,10 @@ describe('frontPageJsonLd', () => {
 
 	it("names the front page by the site's own title and description", () => {
 		const da = parse(jsonLdScript(frontPageJsonLd([], 'da')));
-		expect(da.name).toBe('Flettede julehjerter – skabeloner til print | Juleflet');
-		expect(da.description).toBe(
-			'Find skabeloner til flettede julehjerter, print dem på A4, og følg vejledningen til at klippe og flette. Du kan også designe dit eget mønster.'
-		);
+		expect(da.name).toBe(`Julehjerte skabeloner – ${ALL_HEART_IDS.length} gratis til print (PDF) | Juleflet`);
+		expect(da.description).toMatch(new RegExp(`^${ALL_HEART_IDS.length} gratis skabeloner til flettede julehjerter`));
 		const en = parse(jsonLdScript(frontPageJsonLd([], 'en')));
-		expect(en.name).toBe('Woven Christmas hearts – printable templates | Juleflet');
-		expect(en.description).toBe(
-			'Explore woven Christmas heart templates, print them on A4, and follow the cutting and weaving guide. You can also design your own pattern.'
-		);
+		expect(en.name).toBe(`Christmas heart templates – ${ALL_HEART_IDS.length} free printable PDFs | Juleflet`);
+		expect(en.description).toMatch(new RegExp(`^${ALL_HEART_IDS.length} free templates for woven Danish Christmas hearts`));
 	});
 });

@@ -36,7 +36,7 @@
     SITE_NAME,
     SITE_URL,
   } from "$lib/config";
-  import { ROBOTS_INDEX, heartHowToJsonLd, heartMetaDescription, heartPageTitle, heartWebPageJsonLd, jsonLdScript, socialImage } from "$lib/seo";
+  import { ROBOTS_INDEX, heartBreadcrumbJsonLd, heartHowToJsonLd, heartMetaDescription, heartPageTitle, heartWebPageJsonLd, jsonLdScript, siteMetaDescription, socialImage } from "$lib/seo";
   import { langFromParam, stripsLabel as formatStrips, t } from "$lib/i18n";
   import { slugify } from "$lib/utils/slug";
   import { editorHref, heartPath, homeAnchorHref, href as routeHref } from "$lib/i18n/routes";
@@ -191,7 +191,7 @@
       : heartPageTitle(heartId, info?.name ?? t("template", lang), lang),
   );
   let metaDescription = $derived.by(() => {
-    if (!info) return t("siteMetaDescription", lang);
+    if (!info) return siteMetaDescription(lang);
     // As many whole sentences of the panel's paragraph as fit in a search
     // result; the paragraph on the page keeps all of them.
     return heartMetaDescription(
@@ -222,7 +222,9 @@
             authorUrl: meta.authorUrl,
             lang,
           }),
-        ) + jsonLdScript(heartWebPageJsonLd({ id: heartId, name: info.name, lang }))
+        ) +
+        jsonLdScript(heartWebPageJsonLd({ id: heartId, name: info.name, lang })) +
+        jsonLdScript(heartBreadcrumbJsonLd({ id: heartId, name: info.name, lang }))
       : "",
   );
 

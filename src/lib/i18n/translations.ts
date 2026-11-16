@@ -193,8 +193,8 @@ export const translations = {
 
     // The site's own browser title and search description: the front page's,
     // and the fallback for any page without its own
-    siteBrowserTitle: 'Flettede julehjerter – skabeloner til print',
-    siteMetaDescription: 'Find skabeloner til flettede julehjerter, print dem på A4, og følg vejledningen til at klippe og flette. Du kan også designe dit eget mønster.',
+    siteBrowserTitle: 'Julehjerte skabeloner – {count} gratis til print (PDF)',
+    siteMetaDescription: '{count} gratis skabeloner til flettede julehjerter, fra helt nemme til svære. Hent som PDF til A4, og se trin for trin, hvordan du klipper og fletter. Du kan også designe dit eget.',
 
     // Site navigation, the header and the skip link
     siteNavigation: 'Hovedmenu',
@@ -1402,8 +1402,8 @@ export const translations = {
 
     // The site's own browser title and search description: the front page's,
     // and the fallback for any page without its own
-    siteBrowserTitle: 'Woven Christmas hearts – printable templates',
-    siteMetaDescription: 'Explore woven Christmas heart templates, print them on A4, and follow the cutting and weaving guide. You can also design your own pattern.',
+    siteBrowserTitle: 'Christmas heart templates – {count} free printable PDFs',
+    siteMetaDescription: '{count} free templates for woven Danish Christmas hearts, from very easy to hard. Download as A4 PDFs and follow the step-by-step cutting and weaving guide. You can also design your own.',
 
     // Site navigation, the header and the skip link
     siteNavigation: 'Main navigation',

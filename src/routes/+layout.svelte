@@ -5,7 +5,7 @@
 	import { afterNavigate } from "$app/navigation";
 	import { page } from "$app/stores";
 	import { SITE_NAME, SITE_KEYWORDS, SITE_URL, GA_MEASUREMENT_ID, PLAUSIBLE_SCRIPT_URL } from "$lib/config";
-	import { FRONT_PAGE_SOCIAL_IMAGE, ROBOTS_INDEX, pageTitle, socialImage } from "$lib/seo";
+	import { FRONT_PAGE_SOCIAL_IMAGE, ROBOTS_INDEX, pageTitle, siteMetaDescription, socialImage } from "$lib/seo";
 	import { langFromPathname, t } from "$lib/i18n";
 	import { alternatePaths, routeKeyFromPathname } from "$lib/i18n/routes";
 	import PageFooter from "$lib/components/PageFooter.svelte";
@@ -55,7 +55,7 @@
 				? t("aboutMetaDescription", lang)
 				: routeKey === "editor"
 					? t("editorMetaDescription", lang)
-					: t("siteMetaDescription", lang),
+					: siteMetaDescription(lang),
 	);
 
 	let ogTitle = $derived(pageTitle(routeKey, lang));

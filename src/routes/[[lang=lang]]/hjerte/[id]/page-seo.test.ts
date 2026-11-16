@@ -69,7 +69,10 @@ describe('heart page search appearance', () => {
 	])('writes the HowTo, the robots directive and the image (lang %s)', async (lang, inLanguage) => {
 		const target = await render('jul', lang);
 		const scripts = ldJson();
-		expect(scripts).toHaveLength(2);
+		expect(scripts).toHaveLength(3);
+		expect(scripts[2]).toMatchObject({ '@type': 'BreadcrumbList' });
+		expect(scripts[2].itemListElement.map((c: { name: string }) => c.name)).toEqual(['Juleflet', inLanguage === 'en' ? 'Classic' : 'Klassiske', 'JUL']);
+		expect(scripts[2].itemListElement[2].item).toBe(scripts[0].url);
 		expect(scripts[0]).toMatchObject({ '@type': 'HowTo', name: 'JUL', inLanguage });
 		expect(scripts[0].image[0].url).toBe('https://juleflet.dk/og/hearts/jul.png');
 		expect(scripts[1]).toMatchObject({ '@type': 'WebPage', inLanguage, mainEntity: { '@id': scripts[0]['@id'] } });
