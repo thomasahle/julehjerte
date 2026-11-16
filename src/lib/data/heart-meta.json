@@ -692,6 +692,33 @@
       "bytes": 3591966
     }
   },
+  "bauhaus-hjerte": {
+    "name": "Bauhaushjerte",
+    "names": {
+      "en": "Bauhaus heart"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-11-16",
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null,
+    "film": null
+  },
   "hjertekloever": {
     "name": "Hjertekløver",
     "names": {
@@ -1208,6 +1235,30 @@
       "v": "3d51eef71e",
       "bytes": 4712893
     }
+  },
+  "bauhaus": {
+    "name": "Bauhaus",
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2026-11-16",
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null,
+    "film": null
   },
   "amy-weave-1": {
     "name": "Weave 1",

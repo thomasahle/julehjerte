@@ -158,6 +158,13 @@
     },
     "difficulty": "medium"
   },
+  "bauhaus-hjerte": {
+    "name": "Bauhaushjerte",
+    "names": {
+      "en": "Bauhaus heart"
+    },
+    "difficulty": "medium"
+  },
   "hjertekloever": {
     "name": "Hjertekløver",
     "names": {
@@ -270,6 +277,10 @@
     "names": {
       "en": "Glass dome"
     },
+    "difficulty": "medium"
+  },
+  "bauhaus": {
+    "name": "Bauhaus",
     "difficulty": "medium"
   },
   "amy-weave-1": {

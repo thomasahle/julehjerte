@@ -1,0 +1,26 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="0">
+  <title>Bauhaushjerte</title>
+  <title xml:lang="en">Bauhaus heart</title>
+  <desc xml:lang="da">Et lille hjerte midt i et mønster af halvcirkler i Bauhaus-stil. Halvcirklerne er præcis lige så brede som ternene, og hvor to af dem mødes i samme tern, står der en smal linse tilbage. Fire striber i hver halvdel, klippet med halvcirkler. Halvdelene er spejlvendte, så én skabelon er nok. Sværhedsgraden er mellem; klip hver halvcirkel i ét træk, og vær forsigtig med de små spidser, hvor to halvcirkler mødes.</desc>
+  <desc xml:lang="en">A small heart in the middle of a pattern of half-circles in the Bauhaus style. The half-circles are exactly as wide as the squares, and where two of them meet in the same square a narrow lens is left. Four strips in each half, cut with half-circles. The halves mirror each other, so one template is enough. Medium difficulty: cut each half-circle in one stroke, and take care with the small points where two half-circles meet.</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Bauhaushjerte</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Thomas Ahle &amp; Claude</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:source>juleflet.dk</dc:source>
+        <dc:date>2026-11-16</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path d="M 100 25 C 91.66666666666666 25 83.33333333333334 25 75 25 C 66.66666666666666 25 58.333333333333336 25 50 25 C 50 31.857297129435796 44.35729712943578 37.5 37.5 37.5 C 30.642702870564204 37.5 25 31.857297129435796 25 25 C 25 18.142702870564204 19.357297129435796 12.5 12.5 12.5 C 5.642702870564203 12.5 0 18.142702870564204 0 25" stroke="orange" fill="none"/>
+  <path d="M 100 50 C 100 56.85729712943578 94.3572971294358 62.5 87.5 62.5 C 80.64270287056422 62.5 75 56.85729712943578 75 50 C 75 43.14270287056422 69.35729712943578 37.5 62.5 37.5 C 55.64270287056422 37.5 50 43.14270287056422 50 50 C 41.66666666666667 50 33.33333333333333 50 25 50 C 16.666666666666664 50 8.333333333333332 50 0 50" stroke="orange" fill="none"/>
+  <path d="M 100 75 C 100 81.85729712943578 94.3572971294358 87.5 87.5 87.5 C 80.64270287056422 87.5 75 81.85729712943578 75 75 C 66.66666666666666 75 58.333333333333336 75 50 75 C 50 81.85729712943578 44.35729712943578 87.5 37.5 87.5 C 30.642702870564204 87.5 25 81.85729712943578 25 75 C 25 68.14270287056422 19.357297129435796 62.5 12.5 62.5 C 5.642702870564203 62.5 0 68.14270287056422 0 75" stroke="orange" fill="none"/>
+  <path d="M 25 100 C 25 91.66666666666666 25 83.33333333333334 25 75 C 25 66.66666666666666 25 58.333333333333336 25 50 C 31.857297129435796 50 37.5 44.35729712943578 37.5 37.5 C 37.5 30.642702870564204 31.857297129435796 25 25 25 C 18.142702870564204 25 12.5 19.357297129435796 12.5 12.5 C 12.5 5.642702870564203 18.142702870564204 0 25 0" stroke="green" fill="none"/>
+  <path d="M 50 100 C 56.85729712943578 100 62.5 94.3572971294358 62.5 87.5 C 62.5 80.64270287056422 56.85729712943578 75 50 75 C 43.14270287056422 75 37.5 69.35729712943578 37.5 62.5 C 37.5 55.64270287056422 43.14270287056422 50 50 50 C 50 41.66666666666667 50 33.33333333333333 50 25 C 50 16.666666666666664 50 8.333333333333332 50 0" stroke="green" fill="none"/>
+  <path d="M 75 100 C 81.85729712943578 100 87.5 94.3572971294358 87.5 87.5 C 87.5 80.64270287056422 81.85729712943578 75 75 75 C 75 66.66666666666666 75 58.333333333333336 75 50 C 81.85729712943578 50 87.5 44.35729712943578 87.5 37.5 C 87.5 30.642702870564204 81.85729712943578 25 75 25 C 68.14270287056422 25 62.5 19.357297129435796 62.5 12.5 C 62.5 5.642702870564203 68.14270287056422 0 75 0" stroke="green" fill="none"/>
+</svg>
