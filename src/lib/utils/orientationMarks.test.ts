@@ -24,7 +24,7 @@ import {
  * redrawn gallery heart that changes it is noticed.
  */
 const MARKED = [
-	'5star', 'alhambra', 'amy-weave-1', 'amy-weave-2', 'angel', 'boelgebrud', 'boelger',
+	'5star', 'alhambra', 'amy-weave-1', 'amy-weave-2', 'angel', 'bauhaus', 'bauhaus-hjerte', 'boelgebrud', 'boelger',
 	'dagognat', 'david4', 'davidsstjerne-circ', 'fejlternet', 'fisk', 'fiskeskael', 'flower',
 	'flyvendegaes', 'god-jul', 'h4h2', 'hanefod', 'hermanngitter', 'hjerte-i-hjerte-i-hjerte', 'hjerte-paa-hjerte', 'hjertepude',
 	'hvirvel', 'jul', 'jul-2026', 'jul-tern',
