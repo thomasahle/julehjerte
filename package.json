@@ -22,7 +22,7 @@
 		"benchmark:inverse:robustness": "node scripts/inverse/robustness-benchmark.mjs",
 		"benchmark:inverse:mal": "node scripts/inverse/bench/run.mjs",
 		"test:watch": "vitest",
-		"test:slow": "GENERATOR_SLOW=1 vitest run src/lib/generator",
+		"test:slow": "GENERATOR_SLOW=1 vitest run src/lib/generator --maxWorkers=2",
 		"benchmark:inverse:locator": "node scripts/inverse/locator-benchmark.mjs",
 		"benchmark:inverse:located-photos": "node scripts/inverse/locator-reconstruction-benchmark.mjs",
 		"benchmark:inverse:references": "node scripts/inverse/reference-benchmark.mjs",

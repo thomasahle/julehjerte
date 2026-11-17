@@ -109,15 +109,24 @@ outline between the gates. Cells that are neighbours share a gate, and
 - with no ring, two legs straight to the two edges at its corner (`openLeg`:
   the woven text frames, the open figure frames);
 - on a ring, a gate on the ring (`framedGate`) with an arc and two legs
-  (the circle frames: `gateAngle` says where on the ring);
+  (the circle frames: `gateAngle` says where on the ring). One function cuts
+  every such gate, with a rule for its legs: square to the paper's edge (the
+  checks), leaning away from the heart's middle (the rays, where a side has
+  several gates) or straight out from the centre (the rays' four gates of a
+  figure in one cell, `outerFrame`);
 - on a regular board, the board's own lines (`boardLegs`, `completionLegs`).
 
-A text is such a grid with a letter in each cell (`textGrid.ts`); a figure is
+A text is such a grid with a letter in each cell (`textGrid.ts`, and the one
+row of `generateCheckedText`); a figure is
 one cell (`generateFourPortFigure`), its panels (`panels.ts`) or its pieces
 (`components.ts`). The two meet in both directions: a figure on a board is
 the one letter of a text (`boardMotif.ts`), and a text in Figur i ternene or
 Cirkel med dobbelt bort is a figure whose outline is the letters'
 (`textFigure.ts`).
+
+The retries for a figure of several parts (wider contacts, other island
+ports, lanes between the parts) belong to the frames that hold the whole
+motif in one field, with or without a ring: `inOneField` names them.
 
 Builders take their choices as a named options object (`CornerOptions`,
 `ComponentOptions`, `FittedOptions`, `PanelOptions`, …), not as positional flags; a new
@@ -191,7 +200,12 @@ The quick figures seldom need a last resort. A change to the retries, the
 second tries or the last resorts should also be run on hearts that do; the
 slow tests in `frames.test.ts` name them (the trolley in Strålekrans, the
 lasso in Cirkel med dobbelt bort, the microphone in Tæt om figuren), and
-`npm run test:slow` runs those.
+`npm run test:slow` runs those. It runs two test files at a time: with one
+for every core, some twenty tests run out of time on a laptop before they
+reach what they check (ten minutes either way). A change to geometry that
+frames share (the gates, the legs, the cell grid) is run through it before
+it is pushed: the quick figures and texts did not have a branched text when
+the legs were straightened, and five Cinzel hearts came out hard to cut.
 
 A change that is meant to alter hearts is judged by the same comparison, read
 the other way: every heart that differs is looked at, and none may be worse.

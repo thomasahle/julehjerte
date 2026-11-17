@@ -1384,6 +1384,19 @@ weak places are the same but for LOVE's 37 → 34. The identity run has these
 texts now (`text-branched`), and the lesson stands: a change to shared
 geometry is run through the slow tests before it is pushed, not after.
 
+## One letter in the circle frame: four equal checks
+
+A text on one line in the circle frame was joined to its ring by code of its
+own, which cut the gates above and below a single letter 0.15π to either side
+and those beside it π/8: the checks round the circle were of two widths. The
+row is now a cell grid of one row, joined as every other grid is
+(`connectCellGrid`), and a single letter's four gates are all cut π/8 to
+either side, as a figure's are. Of forty one-letter texts (eight letters in
+Nunito, Bree Serif, Kalam, Oswald and Cinzel) twenty change, by that width
+alone: status, strips, weak places, tips, thinnest neck and the number of cut
+segments are each heart's own as before. Texts of two letters or more are cut
+exactly as before (the identity run's 49 circle-frame texts).
+
 ## Nine strips at 85%: no specks in hidden cuts
 
 At a completion range's end (nine strips at 35.6, the 85% setting) a hidden
