@@ -168,3 +168,16 @@ recent items stay consistent while round 2 starts.
 The photo pins in `docs/pinterest/` (pins.json, publishing-copy.csv) are a
 separate, manual set made from photographed hearts with UTM-tagged links; the
 feed does not use them.
+
+## The link back from a heart's page
+
+A heart that has a Pin gets a Pinterest button next to "Del" on its page, which opens the
+Pin, where visitors can comment. Pinterest does not tell us which Pin a feed item became, so
+`node scripts/pinterest-pins.mjs` reads the board's public listing and writes the Pin numbers
+to `src/lib/data/pinterest-pins.json`. Run it now and then and commit the file: a heart gets
+its button at the first deploy after that. The listing only has the board's newest Pins, so
+do not let more than a few weeks pass between runs.
+
+A heart that leaves the gallery after its Pin is out keeps a dead link on Pinterest. Give
+its address a heart to go on to in `MOVED_HEARTS` (the heart page's `+page.ts`), as Kogle
+goes on to Grankogle.

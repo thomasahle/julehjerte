@@ -50,6 +50,7 @@
   import type { HeartDesign, HeartInfo } from "$lib/types/heart";
   import { heartName } from "$lib/utils/heartName";
   import { heartImagePath } from "$lib/heartImage";
+  import { pinterestPinUrl } from "$lib/pinterestPins";
   import { trackHeartShare, trackHeartEdit } from "$lib/analytics";
 
   let { data }: PageProps = $props();
@@ -507,6 +508,7 @@
               errorNote={saveError}
               galleryHref={design ? homeAnchorHref(makeHeartAnchorId(design.id), lang) : ''}
               {shareStatus}
+              pinHref={isGalleryPage ? pinterestPinUrl(heartId) : null}
               onDownload={handleDownload}
               onEdit={handleEdit}
               onShare={handleShare}

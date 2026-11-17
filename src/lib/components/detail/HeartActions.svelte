@@ -26,6 +26,8 @@
 		/** Where "Vis i galleriet" goes once a shared heart has been saved. */
 		galleryHref?: string;
 		shareStatus: 'idle' | 'copied' | 'error';
+		/** The heart's Pin on Pinterest, where it can be commented on; null for a heart without one. */
+		pinHref?: string | null;
 		/** Opens the "Hent skabelon" dialog. */
 		onDownload: (event: MouseEvent) => void;
 		onEdit: () => void;
@@ -44,6 +46,7 @@
 		errorNote = null,
 		galleryHref = '',
 		shareStatus,
+		pinHref = null,
 		onDownload,
 		onEdit,
 		onShare,
@@ -64,8 +67,9 @@
 
 <!-- One row: the two ways to get the template (download it, or trace it from
      the screen) carry labels; editing and sharing are glyph-only, with their
-     names as tooltips and for screen readers, so the four fit on one line. -->
-<div class="actions">
+     names as tooltips and for screen readers, so the four fit on one line (five with the
+     link to the heart's Pin). -->
+<div class="actions" class:has-pin={!!pinHref}>
 	{#if isShared && hasDesign}
 		{#if savedShared}
 			<a class="btn btn-dark" href={galleryHref}>{t('showInGallery', lang)}</a>
@@ -119,6 +123,23 @@
 			<ShareIcon size={18} />
 		{/if}
 	</button>
+	{#if pinHref}
+		<!-- The heart's Pin: the place to leave a comment on it. -->
+		<a
+			class="btn btn-ghost btn-icon"
+			href={pinHref}
+			target="_blank"
+			rel="noopener"
+			title={t('commentOnPinterest', lang)}
+			aria-label={t('commentOnPinterest', lang)}
+		>
+			<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+				<path
+					d="M12 0C5.37 0 0 5.37 0 12c0 5.08 3.16 9.42 7.62 11.17-.1-.95-.2-2.4.04-3.44.22-.94 1.4-5.96 1.4-5.96s-.35-.72-.35-1.78c0-1.66.97-2.9 2.17-2.9 1.02 0 1.52.77 1.52 1.69 0 1.03-.66 2.57-1 4-.28 1.2.6 2.17 1.78 2.17 2.13 0 3.77-2.25 3.77-5.5 0-2.87-2.06-4.88-5.01-4.88-3.41 0-5.42 2.56-5.42 5.2 0 1.03.4 2.14.9 2.74.1.12.11.22.08.34-.09.38-.3 1.2-.34 1.36-.05.22-.17.27-.4.16-1.5-.7-2.43-2.88-2.43-4.64 0-3.77 2.74-7.24 7.9-7.24 4.15 0 7.38 2.96 7.38 6.91 0 4.12-2.6 7.44-6.21 7.44-1.21 0-2.35-.63-2.74-1.37l-.75 2.84c-.27 1.04-1 2.35-1.49 3.14C9.57 23.81 10.76 24 12 24c6.63 0 12-5.37 12-12S18.63 0 12 0z"
+				/>
+			</svg>
+		</a>
+	{/if}
 	<!-- The share button is a glyph, so its outcome is announced here. -->
 	<span class="sr-only" role="status">
 		{#if shareStatus === 'copied'}{t('copied', lang)}{:else if shareStatus === 'error'}{t('failed', lang)}{/if}
@@ -165,6 +186,12 @@
 			gap: 6px;
 			padding: 0 10px;
 			font-size: 14px;
+		}
+
+		/* A fifth button, the heart's Pin: the labelled two give up their icons
+		   so the row is still one line on a 390px phone. */
+		.actions.has-pin .btn:not(.btn-icon) :global(svg) {
+			display: none;
 		}
 	}
 

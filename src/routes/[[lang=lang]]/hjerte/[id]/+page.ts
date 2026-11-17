@@ -1,3 +1,4 @@
+import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import heartMeta from '$lib/data/heart-meta.json';
 import { ALL_HEART_IDS, categoryOfHeart, siblingHeartIds, type CategoryId } from '$lib/data/categories';
@@ -6,6 +7,7 @@ import type { HeartDesign, HeartNames } from '$lib/types/heart';
 import { heartName } from '$lib/utils/heartName';
 import { SHARED_HEART_ID } from '$lib/utils/shareDesign';
 import { langFromParam } from '$lib/i18n';
+import { heartPath } from '$lib/i18n/routes';
 import type { WeaveFilmEntry } from '$lib/weave/film';
 
 export const prerender = true;
@@ -48,13 +50,21 @@ export type RelatedHeart = { id: string; name: string; design: HeartDesign };
  */
 const RELATED_LIMIT = 6;
 
+/**
+ * Hearts that have left the gallery while links to them are still out, and the heart each
+ * address goes on to. Kogle left on 2026-10-27, after its Pin was made ($lib/pinterest); the
+ * Pin's link now reaches the gallery's pinecone heart. Prerendered, each is a small page
+ * that forwards the browser.
+ */
+const MOVED_HEARTS: Record<string, string> = { kogle: 'amy-pinecone' };
+
 const HEART_META = heartMeta as Record<string, HeartMeta>;
 
 // Generate all possible heart page URLs for prerendering
 export function entries() {
 	// Generate entries for both languages (da = default/no lang, en). /hjerte/delt/
 	// renders a user heart shared in the URL fragment (see $lib/utils/shareDesign).
-	const ids = [...ALL_HEART_IDS, SHARED_HEART_ID];
+	const ids = [...ALL_HEART_IDS, SHARED_HEART_ID, ...Object.keys(MOVED_HEARTS)];
 	return [
 		...ids.map((id) => ({ lang: undefined, id })), // Danish (default)
 		...ids.map((id) => ({ lang: 'en', id })) // English
@@ -76,6 +86,8 @@ export const load: PageLoad = async ({ params }) => {
 	const { heartDescription } = await import('$lib/data/heartDescriptions');
 
 	const lang = langFromParam(params.lang);
+	const movedTo = MOVED_HEARTS[params.id];
+	if (movedTo) redirect(308, heartPath(movedTo, lang));
 	const category = categoryOfHeart(params.id);
 	const related: RelatedHeart[] = [];
 	for (const id of siblingHeartIds(params.id)) {
