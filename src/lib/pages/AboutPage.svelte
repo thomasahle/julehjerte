@@ -17,6 +17,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import TopologyExamples from '$lib/components/TopologyExamples.svelte';
+	import WeavingMaths from '$lib/components/WeavingMaths.svelte';
 	import HistorySection from '$lib/components/HistorySection.svelte';
 	import GitHubLink from '$lib/components/GitHubLink.svelte';
 	import PageHeader from '$lib/components/PageHeader.svelte';
@@ -100,6 +101,7 @@
 		<p>{t('aboutDesigners', lang)}</p>
 		<HistorySection {lang} />
 		<TopologyExamples {lang} />
+		<WeavingMaths {lang} />
 
 		<section class="callout" aria-labelledby="missing-heading">
 			<h2 id="missing-heading">{t('aboutMissingTitle', lang)}</h2>
