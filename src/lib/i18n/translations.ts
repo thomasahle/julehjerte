@@ -1158,7 +1158,7 @@ export const translations = {
 
     // "Sådan gør du" / "How to" page
     howToTitle: 'Sådan fletter du et julehjerte',
-    howToIntro: 'Et julehjerte flettes af to foldede stykker papir. Strimlerne føres skiftevis ind i og uden om hinanden, så hjertet bliver en lille kurv. Her viser vi det med det klassiske hjerte med tre strimler i hver halvdel.',
+    howToIntro: 'Et julehjerte, eller en julekurv som det hedder på norsk, flettes af to foldede stykker papir. Strimlerne føres skiftevis ind i og uden om hinanden, så hjertet bliver en lille kurv. Her viser vi det med det klassiske hjerte med tre strimler i hver halvdel.',
     /** {n} = preparation step number, 1-4 */
     howToStepLabel: 'Trin {n}',
     howToMetaDescription: 'Lær at flette et julehjerte med en illustreret vejledning: print, fold, klip og flet løkkerne sammen. Få råd om papir, størrelse og de typiske fejl.',
@@ -1173,7 +1173,7 @@ export const translations = {
 
     // "Om" / "About" page
     aboutTitle: 'Om Juleflet.dk',
-    aboutIntro: 'Juleflet.dk samler skabeloner til flettede julehjerter, så du kan printe dem i 100% størrelse på A4.',
+    aboutIntro: 'Juleflet.dk samler skabeloner til flettede julehjerter, så du kan printe dem i 100% størrelse på A4. I Norge hedder de julekurver, og på engelsk woven heart baskets.',
     aboutEditorText: 'I editoren kan du tegne dit eget mønster: træk i kurverne, tilføj striber og hent skabelonen som PDF. Dine hjerter gemmes i din egen browser, og du kan dele dem med et link.',
     aboutOpenSource: 'Siden er lavet af Thomas Ahle. Den er open source, og koden ligger på GitHub under MIT-licens.',
     forAgents: 'For AI-agenter',
@@ -1449,7 +1449,7 @@ export const translations = {
     // The site's own browser title and search description: the front page's,
     // and the fallback for any page without its own
     siteBrowserTitle: 'Christmas heart templates – {count} free printable PDFs',
-    siteMetaDescription: '{count} free templates for woven Danish Christmas hearts, from very easy to hard. Download as A4 PDFs and follow the step-by-step cutting and weaving guide. You can also design your own.',
+    siteMetaDescription: '{count} free woven heart basket templates: Danish Christmas hearts (julehjerter), from very easy to hard. Print them as A4 PDFs and follow the step-by-step weaving guide, or design your own.',
 
     // Site navigation, the header and the skip link
     siteNavigation: 'Main navigation',
@@ -2383,10 +2383,10 @@ export const translations = {
 
     // "Sådan gør du" / "How to" page
     howToTitle: 'How to weave a Christmas heart',
-    howToIntro: 'A woven Christmas heart starts with two folded pieces of paper. Pass the strips alternately through and around each other to make a little basket. This guide uses the classic heart with three strips in each half.',
+    howToIntro: 'A woven Christmas heart, also known as a woven heart basket or Danish heart basket, starts with two folded pieces of paper. Pass the strips alternately through and around each other to make a little basket. This guide uses the classic heart with three strips in each half.',
     /** {n} = preparation step number, 1-4 */
     howToStepLabel: 'Step {n}',
-    howToMetaDescription: 'Learn to weave a Christmas heart with illustrated steps: print, fold, cut and interlock the loops. Includes paper advice, sizing and troubleshooting.',
+    howToMetaDescription: 'Learn to weave a paper heart basket, the Danish Christmas heart, with illustrated steps: print, fold, cut and interlock the loops. Includes paper advice, sizing and troubleshooting.',
 
     // Labels drawn inside the guide illustrations (guideSvg() in the mockup generator)
     guideLabelFoldLine: 'dashed line on the fold',
@@ -2398,7 +2398,7 @@ export const translations = {
 
     // "Om" / "About" page
     aboutTitle: 'About Juleflet.dk',
-    aboutIntro: 'Juleflet.dk collects templates for woven Christmas hearts so you can print them at 100% size on A4.',
+    aboutIntro: 'Juleflet.dk collects templates for woven Christmas hearts so you can print them at 100% size on A4. In English they go by many names: woven heart baskets, woven paper hearts, Danish, Swedish or Scandinavian heart baskets. In Danish they are julehjerter, in Norwegian julekurver.',
     aboutEditorText: 'In the editor you can draw your own pattern: drag the curves, add strips and download the template as a PDF. Your hearts are saved in your own browser and you can share them with a link.',
     aboutOpenSource: 'The site is made by Thomas Ahle. It is open source, and the code is on GitHub under the MIT licence.',
     forAgents: 'For AI agents',

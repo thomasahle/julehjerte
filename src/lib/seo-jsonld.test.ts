@@ -198,6 +198,6 @@ describe('frontPageJsonLd', () => {
 		expect(da.description).toMatch(new RegExp(`^${ALL_HEART_IDS.length} gratis skabeloner til flettede julehjerter`));
 		const en = parse(jsonLdScript(frontPageJsonLd([], 'en')));
 		expect(en.name).toBe(`Christmas heart templates – ${ALL_HEART_IDS.length} free printable PDFs | Juleflet`);
-		expect(en.description).toMatch(new RegExp(`^${ALL_HEART_IDS.length} free templates for woven Danish Christmas hearts`));
+		expect(en.description).toMatch(new RegExp(`^${ALL_HEART_IDS.length} free woven heart basket templates`));
 	});
 });
