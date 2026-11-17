@@ -7,9 +7,10 @@
   link to `#<category>` too; `scroll-margin-top` keeps an anchored row clear of
   the sticky bar.
 
-  A gallery category shows no heading (docs/redesign/GALLERY-CURVE.md): its
-  name stays in the page as a screen-reader-only <h3>, and the chips in the
-  bar name the rows. "Mine hjerter" (`apart`) keeps its visible heading.
+  Every category but the first shows its name between the rows: a centred
+  heading with a thin line under it. The first one starts on the hill line
+  right behind the gallery bar (docs/redesign/GALLERY-CURVE.md), so its name
+  stays in the page as a screen-reader-only <h3>; the chips in the bar name it.
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
@@ -115,13 +116,7 @@
 	style:display={filteredAway ? 'none' : undefined}
 	data-filtered={filteredAway ? '' : undefined}
 >
-	{#if apart}
-		<div class="cat-head">
-			<h3>{title}</h3>
-		</div>
-	{:else}
-		<h3 class="sr-only">{title}</h3>
-	{/if}
+	<h3 class={first ? 'sr-only' : 'cat-title'}>{title}</h3>
 	{#if hearts.length === 0 && empty}
 		{@render empty()}
 	{:else}
@@ -165,9 +160,9 @@
 		   "just under the bar", and the spy would switch chips while the
 		   previous row's last hearts still filled the screen. The gallery is a
 		   flex column, so the margins do not collapse and nothing moves.
-		   With no visible heading, one category's last row and the next one's
-		   first row are the grid's own row-gap apart. */
-		margin-top: 28px;
+		   The heading stands midway between one category's last row and the
+		   next one's first. */
+		margin-top: 40px;
 		/* The bar is sticky, so a category anchor must not land behind it. Its
 		   height is measured (Gallery.svelte); 49px is the one-row bar, for the
 		   prerendered page before it is. The 8px is ANCHOR_GAP in
@@ -192,7 +187,6 @@
 
 	.cat.apart {
 		margin-top: 48px;
-		gap: 12px;
 	}
 
 	/* The strands (Gallery.svelte, GALLERY-CURVE.md amendment 3) hang every
@@ -290,22 +284,35 @@
 		}
 	}
 
-	.cat-head {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		gap: 12px;
-		padding-bottom: 4px;
-		margin-bottom: 10px;
-	}
-
-	.cat-head h3 {
-		margin: 0;
+	/* The category's name, centred, with a thin line across the column under it. */
+	.cat-title {
+		margin: 0 0 24px;
+		padding-bottom: 10px;
+		border-bottom: 1px solid var(--line);
+		text-align: center;
 		font-size: 15px;
 		font-weight: 600;
 		letter-spacing: 0.06em;
 		text-transform: uppercase;
 		color: var(--green);
+	}
+
+	/* Only the first category's cards step down along the hill line. Under a
+	   heading the cards hang level from the start, --strand-room (D) below
+	   their layout, which is where the first category's end up once the bar
+	   has pushed them level; the heading hangs there with them, so its line is
+	   straight and no card crosses it. This overrules the column a card was
+	   given (HeartCard's inline --strand and the first-paint rules above).
+	   "Mine hjerter" is no strand: its whole section is moved down instead. */
+	@media (min-width: 900px) {
+		.cat:not(.apart) .cat-title {
+			position: relative;
+			top: var(--strand-room, 0px);
+		}
+
+		.cat:not(.first):not(.apart) .cat-grid > :global(*) {
+			--strand: var(--strand-room, 0px) !important;
+		}
 	}
 
 	.cat-grid {
@@ -322,7 +329,11 @@
 
 	@media (max-width: 599px) {
 		.cat {
-			margin-top: 32px;
+			margin-top: 36px;
+		}
+
+		.cat-title {
+			margin-bottom: 20px;
 		}
 
 		.cat-grid {

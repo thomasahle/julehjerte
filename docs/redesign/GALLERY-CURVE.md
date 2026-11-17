@@ -274,3 +274,14 @@ on hydration; a selection or a "Mine hjerter" count that changes the chips'
 span differently from the estimate (a `?selected=` naming hearts this browser
 does not have) moves that column by 54px on hydration; if the app never
 loads, the chips stay hidden on the desktop layout.
+
+## Amendment: category headings are back (2026-11-17)
+
+Every category but the first shows its name again: a centred heading with a thin line across
+the column under it (`CategorySection`'s `.cat-title`). The first category has no visible
+heading, because its row starts on the hill line right behind the gallery bar.
+
+A straight line cannot sit between rows that step along the hill, so only the first category's
+cards are strands now. The cards under a heading hang level from the start, `--strand-room`
+below their layout, where the first category's cards end up once the bar has pushed them level,
+and the heading hangs there with them.
