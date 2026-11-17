@@ -6,8 +6,10 @@
   (scripts/weave); the player that draws it (static/weave/film.js) and three.js are fetched
   with it, in the background by the heart's page (HeartStage) or at the latest when this view
   is first shown ($lib/weave/film). The film never waits for the recording: shown before it has
-  arrived, it is the one worked out in the browser, and the recording is used the next time. Leaving the view and coming back goes on from the same
-  moment of the film. A heart without a recording (a visitor's own, or one the
+  arrived, it is the one worked out in the browser, and the recording is used the next time.
+  While another view is on the stage the film stays as it is, paused and out of sight (`shown`),
+  so coming back shows the same moment at once; after going on to another page and back it is
+  opened again at that moment. A heart without a recording (a visitor's own, or one the
   simulator has not made) gets a film worked out in the browser from its cuts, with the same
   steps and simpler movements ($lib/weave/sketch).
 
@@ -56,9 +58,11 @@
 		entry: WeaveFilmEntry | null;
 		design: HeartDesign | null;
 		lang: Language;
+		/** False while another view is on the stage: the film is kept, paused and out of sight, so coming back shows it at once. */
+		shown?: boolean;
 	}
 
-	let { id, entry, design, lang }: Props = $props();
+	let { id, entry, design, lang, shown = true }: Props = $props();
 
 	// The simulator's red half is the heart's right-hand paper, its white half the left-hand one.
 	interface Papers {
@@ -95,6 +99,10 @@
 	/** Whether the film shown is the heart's recording. */
 	let recorded = false;
 	let gone = false;
+	/** Whether the film goes on playing when it comes back into view. */
+	let resume = false;
+	/** The waiting bar only shows when the film takes a while: with everything fetched it is a flash. */
+	let slow = $state(false);
 
 	let paperNames = $derived(paperWords(papers.red, papers.white, lang));
 	let words = $derived(steps[stepIndex] ? stepWords(steps[stepIndex], lang, paperNames) : null);
@@ -114,6 +122,8 @@
 
 	async function load() {
 		status = 'loading';
+		slow = false;
+		setTimeout(() => (slow = true), 600);
 		// The recording if it is already here; the film never waits for it. Until it has arrived
 		// (the page fetches it in the background) the film is worked out here from the cuts.
 		const kept = entry && canPlayWeaveFilm(true) ? weaveRecordingReady(id, entry) : null;
@@ -167,7 +177,9 @@
 			const seconds = left ? weaveFilmSeconds(left, film, recorded) : 0;
 			if (seconds > 0 && seconds < film.total) made.seek(seconds);
 			const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-			if (!still && (left?.playing ?? true)) made.play(true);
+			const play = !still && (left?.playing ?? true);
+			if (shown) made.play(play);
+			else resume = play;
 		} catch {
 			if (!gone) status = 'failed';
 		}
@@ -211,6 +223,20 @@
 		};
 	});
 
+	// Another view takes the stage: the film stops where it is, and goes on when it is back.
+	let wasShown = true;
+	$effect(() => {
+		const now = shown;
+		if (now === wasShown) return;
+		wasShown = now;
+		if (!now) {
+			resume = playing;
+			player?.play(false);
+		} else if (resume) {
+			player?.play(true);
+		}
+	});
+
 	// The heart is kept clear of the caption and the transport, whatever their height is.
 	$effect(() => {
 		if (status !== 'ready' || !caption || !bar) return;
@@ -235,7 +261,7 @@
 	}
 </script>
 
-<div class="film" class:is-fullscreen={fullscreen} bind:this={stage} {...pairAttributes(id)}>
+<div class="film" class:is-away={!shown} class:is-fullscreen={fullscreen} bind:this={stage} {...pairAttributes(id)}>
 	<!-- The canvas takes the keyboard itself (arrows turn, + and − zoom, space plays). -->
 	<canvas
 		bind:this={canvas}
@@ -289,7 +315,7 @@
 				</button>
 			{/if}
 		</div>
-	{:else if status === 'loading'}
+	{:else if status === 'loading' && slow}
 		<div class="film-wait" role="status">
 			<progress aria-label={t('weaveLoading', lang)}></progress>
 		</div>
@@ -318,6 +344,11 @@
 		background: #163a2d;
 		box-shadow: 0 8px 20px var(--shadow-color);
 		color: var(--on-mat);
+	}
+
+	/* Out of sight but still laid out, so the picture keeps its size. */
+	.film.is-away {
+		visibility: hidden;
 	}
 
 	.film.is-fullscreen {

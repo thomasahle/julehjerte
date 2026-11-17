@@ -100,6 +100,9 @@
 	// A user heart's design only arrives after hydration, and a symmetric heart
 	// drops the "right" view, so the clicked view can stop existing. Deriving the
 	// fallback rather than writing `view` back keeps the click state pure.
+	/** The heart whose film has been opened on this page: it is kept while other views are shown. */
+	let filmOpened = $state<string | null>(null);
+
 	let shownView = $derived(views.some((v) => v.id === view) ? view : 'heart');
 </script>
 
@@ -126,16 +129,20 @@
 			/>
 		</div>
 	{:else if shownView === 'film'}
-		<!-- Keyed: going on to another heart's page while the film is shown starts that heart's film. -->
-		{#key film?.id ?? design.id}
-			<WeaveFilm id={film?.id ?? design.id} entry={film} {design} {lang} />
-		{/key}
+		<!-- The film itself is below: it stays when another view is chosen. -->
 	{:else}
 		<div class="stage-media">
 			<div class="stage-template">
 				<TemplatePreview {design} lobe={shownView === 'right' ? 'right' : 'left'} size={380} />
 			</div>
 		</div>
+	{/if}
+	{#if design && (shownView === 'film' || filmOpened === (film?.id ?? design.id))}
+		<!-- Once opened the film is kept behind the other views, so coming back to it is instant.
+		     Keyed: going on to another heart's page while the film is shown starts that heart's film. -->
+		{#key film?.id ?? design.id}
+			<WeaveFilm id={film?.id ?? design.id} entry={film} {design} {lang} shown={shownView === 'film'} />
+		{/key}
 	{/if}
 </div>
 
@@ -148,7 +155,10 @@
 			class="thumb-btn"
 			class:is-active={shownView === v.id}
 			aria-pressed={shownView === v.id}
-			onclick={() => (view = v.id)}
+			onclick={() => {
+				view = v.id;
+				if (v.id === 'film' && design) filmOpened = film?.id ?? design.id;
+			}}
 		>
 			<!-- Decorative: the button is named by its label below. The heart's
 			     thumbnail carries its colourful-mode pair, like the big heart above
@@ -196,24 +206,23 @@
 						loading="lazy"
 						decoding="async"
 					/>
-				{:else if v.id === 'film'}
-					<!-- The two halves on the cutting mat, about to be woven, and a play mark. The heart
-					     stands on its point, so each half is drawn in the square's own frame, turned 45°.
-					     They are in the heart's papers, and each half's cuts are tinted with the other paper,
-					     which shows on any pair. -->
-					<svg viewBox="0 0 100 100">
-						<g transform="translate(50 50) rotate(45)">
-							<g transform="translate(-9 9)">
-								<path d="M-17 -17 H17 V17 H-17 A17 17 0 0 1 -17 -17 Z" fill="var(--paper-left)" />
-								<path class="film-cuts-left" d="M-21 -5.7 H17 M-21 5.7 H17" stroke-width="1.2" fill="none" />
-							</g>
-							<g transform="translate(9 -9)">
-								<path d="M-17 17 V-17 A17 17 0 0 1 17 -17 V17 Z" fill="var(--paper-right)" />
-								<path class="film-cuts-right" d="M-5.7 -21 V17 M5.7 -21 V17" stroke-width="1.2" fill="none" />
-							</g>
-						</g>
-						<circle cx="50" cy="52" r="15" fill="#ffffff" />
-						<path d="M45.5 44.5 L58 52 L45.5 59.5 Z" fill="#1c3329" />
+				{:else if v.id === 'film' && design}
+					<!-- The finished heart lying on the cutting mat, as the film's last picture shows it:
+					     the heart's own woven picture, leaned back, with its shadow, and a play mark in
+					     the corner so the pattern stays in view. -->
+					<span class="film-heart">
+						<PaperHeartSVG
+							readonly
+							idPrefix="film-thumb-{idPrefix}"
+							initialFingers={design.fingers}
+							initialGridSize={design.gridSize}
+							initialWeaveParity={design.weaveParity ?? 0}
+							size={200}
+						/>
+					</span>
+					<svg class="film-play" viewBox="0 0 30 30">
+						<circle cx="15" cy="15" r="15" fill="#ffffff" />
+						<path d="M11 8 L23 15 L11 22 Z" fill="#1c3329" />
 					</svg>
 				{:else if design}
 					<TemplatePreview {design} lobe={v.id === 'right' ? 'right' : 'left'} size={200} marks={false} />
@@ -292,11 +301,25 @@
 	}
 
 	/* thumbnails */
+	/* Always one row. The tiles shrink a little first (a long label then takes
+	   two lines); when they cannot shrink further the row scrolls sideways.
+	   The auto margins centre a row that fits and, unlike justify-content,
+	   leave the first tile reachable in a row that scrolls. */
 	.thumbs {
 		display: flex;
 		gap: 16px;
-		justify-content: center;
-		flex-wrap: wrap;
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		scrollbar-width: thin;
+	}
+
+	.thumbs > :first-child {
+		margin-left: auto;
+	}
+
+	.thumbs > :last-child {
+		margin-right: auto;
 	}
 
 	.thumb-btn {
@@ -304,7 +327,8 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 6px;
-		width: 120px;
+		flex: 0 1 120px;
+		min-width: 92px;
 		padding: 0;
 		margin: 0;
 		border: 0;
@@ -317,8 +341,9 @@
 	.thumb {
 		position: relative;
 		display: block;
-		width: 104px;
-		height: 104px;
+		width: 100%;
+		max-width: 104px;
+		aspect-ratio: 1;
 		border-radius: 12px;
 		background: var(--white);
 		border: 1.5px solid var(--line);
@@ -341,12 +366,28 @@
 		padding: 0;
 	}
 
-	.film-cuts-left {
-		stroke: color-mix(in srgb, var(--paper-left) 70%, var(--paper-right));
+	/* The mat's ruled squares, faint, and the heart leaned back on it. */
+	.thumb-film {
+		background-image:
+			linear-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1px),
+			linear-gradient(90deg, rgb(255 255 255 / 0.07) 1px, transparent 1px);
+		background-size: 12.5% 12.5%;
 	}
 
-	.film-cuts-right {
-		stroke: color-mix(in srgb, var(--paper-right) 70%, var(--paper-left));
+	.film-heart {
+		position: absolute;
+		inset: 9% 11% 13%;
+		transform: perspective(260px) rotateX(32deg) rotateZ(-6deg);
+		filter: drop-shadow(5px 7px 3px rgb(0 0 0 / 0.4));
+	}
+
+	.thumb .film-play {
+		position: absolute;
+		right: 6%;
+		bottom: 6%;
+		width: 28%;
+		height: 28%;
+		filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.35));
 	}
 
 	.thumb-btn.is-active .thumb {
@@ -413,7 +454,6 @@
 		border-radius: 999px;
 		padding: 3px 10px;
 		line-height: 1.2;
-		white-space: nowrap;
 	}
 
 	.thumb-btn.is-active .thumb-label {
@@ -427,12 +467,12 @@
 		}
 
 		.thumb-btn {
-			width: 96px;
+			flex-basis: 96px;
+			min-width: 0;
 		}
 
 		.thumb {
-			width: 88px;
-			height: 88px;
+			max-width: 88px;
 		}
 
 		.thumb-label {
@@ -440,28 +480,17 @@
 			padding: 3px 8px;
 		}
 
-		/* Four or five tiles still share one row: they shrink together, and a long
-		   label takes two lines. */
+		/* Four or five tiles still share the phone's width: they shrink together
+		   down to 60px before the row scrolls. */
 		.thumbs.is-many {
-			flex-wrap: nowrap;
 			gap: 8px;
 		}
 
 		.thumbs.is-many .thumb-btn {
-			flex: 0 1 96px;
-			width: auto;
-			min-width: 0;
-		}
-
-		.thumbs.is-many .thumb {
-			width: 100%;
-			max-width: 88px;
-			height: auto;
-			aspect-ratio: 1;
+			min-width: 60px;
 		}
 
 		.thumbs.is-many .thumb-label {
-			white-space: normal;
 			border-radius: 10px;
 			padding: 3px 6px;
 		}
