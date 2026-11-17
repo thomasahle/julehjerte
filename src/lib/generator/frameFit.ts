@@ -25,6 +25,15 @@ export function fillSquare(request: GeneratorRequest): GeneratorRequest {
 }
 /** The circle frames, whose circle can follow the motif's outline. */
 export const CIRCLE_STYLES: readonly FigureStyle[] = ['rays', 'check', 'sunburst', 'layers'];
+/** The frames with one field for the whole motif, which hangs in it by hidden
+ * cuts to the frame's gates: inside a circle (rays, checks, the sunburst) or
+ * with no ring at all (fitted, wedges, silhouette). The others set the motif
+ * on a board, in nested rings or between corner checks, and have retries of
+ * their own; these share the ones for a motif of several parts. */
+export const FIELD_STYLES = ['rays', 'check', 'sunburst', 'fitted', 'wedges', 'silhouette'] as const satisfies readonly FigureStyle[];
+/** Whether a request is for a figure in one of the `FIELD_STYLES`. */
+export const inOneField = <R extends Pick<GeneratorRequest, 'mode' | 'style'>>(request: R): request is R & { style?: (typeof FIELD_STYLES)[number] } =>
+	request.mode === 'figure' && (FIELD_STYLES as readonly FigureStyle[]).includes(request.style ?? 'rays');
 /** The largest circle frame the outer strips have room for. */
 const LARGEST_CIRCLE = 80;
 /** Whether the sunburst's crown may narrow, its circle more than four fifths

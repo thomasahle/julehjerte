@@ -9,7 +9,7 @@ import { generateTextGrid, roomOf, squareCellScale, type TextGridOptions } from 
 import { NO_WHOLE_STRIPS, STRIPS, crowdedHiddenCutsSetAside, slidePlace, stripFigures, withCrowdedHiddenCuts } from './stripFigure';
 import { BOARD_STRIPS, MOTIF, boardPlacement, boardRadius, boardScale, boardSetting, boardSteps, enclosedAlong, motifChoices, squareChoices, type BoardStyle } from './boardMotif';
 import { TEXT_LAST_STRIPS, TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
-import { CIRCLE_STYLES, fillSquare, fitCircle, withNarrowCrown, crowdsCrown } from './frameFit';
+import { CIRCLE_STYLES, fillSquare, fitCircle, inOneField, withNarrowCrown, crowdsCrown } from './frameFit';
 import { isTopology, outlineFor, recipeConstruction, recipesAt, type Recipe, type TopologyRecipe } from './recipes';
 import { FALLBACK_WORK, MIRROR_NEAR, hiddenCuts, motifFit, movedEnd, nestingOf, topologyConstruction } from './topologyRecipes';
 import { blobsOf, carryTopology } from './topologyTransfer';
@@ -2791,8 +2791,7 @@ function retryBranchedText(request: GeneratorRequest, curveFitter: ReturnType<ty
  * distance between their outlines. Preserve existing designs and try wider
  * contacts only after their established constructions have failed. */
 function retryWideComponentContacts(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
-	if (request.mode !== 'figure' || request.style === 'corners' || request.style === 'layers' || request.style === 'motifs' ||
-		request.style === 'squares' || request.style === 'board' || request.style === 'strips') return;
+	if (!inOneField(request)) return;
 	const rings = normalizeContours(request.contours ?? []), count = forest(rings).length;
 	if (count < 2 || count > 8) return;
 	const size = request.frameSize ?? 70, scale = request.scale ?? .7,
@@ -2822,8 +2821,7 @@ function retryWideComponentContacts(request: GeneratorRequest, curveFitter: Retu
 /** A disconnected part need not use its nearest gate. Another attachment can
  * keep its approach clear of the main silhouette, retaining the same frame. */
 function retryFigureIslandPorts(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
-	if (request.mode !== 'figure' || request.style === 'corners' || request.style === 'layers' || request.style === 'motifs' ||
-		request.style === 'squares' || request.style === 'board' || request.style === 'strips') return;
+	if (!inOneField(request)) return;
 	const rings = normalizeContours(request.contours ?? []);
 	if (forest(rings).length < 2) return;
 	const size = request.frameSize ?? 70, scale = request.scale ?? .7,
@@ -2917,8 +2915,7 @@ function retryFittedSupports(request: GeneratorRequest, curveFitter: ReturnType<
  * neighbouring paper after curve fitting and rounding. */
 function retryComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>,
 	rejected: { construction: Construction; recipe: GeneratorResult['recipe'] }[] = []): GeneratorResult | undefined {
-	if (request.mode !== 'figure' || request.style === 'corners' || request.style === 'layers' ||
-		request.style === 'motifs' || request.style === 'squares' || request.style === 'board' || request.style === 'strips') return;
+	if (!inOneField(request)) return;
 	const rings = normalizeContours(request.contours ?? []), size = request.frameSize ?? 70,
 		sunburst = request.style === 'sunburst', open = openFrame(request),
 		frame = open ?? (sunburst ? 'circle' : (request.frame ?? 'circle')),
@@ -3008,12 +3005,12 @@ function retryPanelLayouts(request: GeneratorRequest, curveFitter?: ReturnType<t
 			}));
 	} else {
 		const rings = normalizeContours(request.contours ?? []), size = request.frameSize ?? 70, scale = request.scale ?? .7;
-		if (request.style === 'corners' || request.style === 'motifs' || request.style === 'squares' || request.style === 'board' || request.style === 'strips') return;
 		if (request.style === 'layers') {
 			recipe = 'nested';
 			recipes.push(() => generateLayeredFigure(rings, size, scale,
 				{ columns: 2, rows: 1, filled: true, adaptive: true }));
-		} else if (request.style === 'fitted' || request.style === 'wedges' || request.style === 'silhouette') {
+		} else if (!inOneField(request)) return;
+		else if (request.style === 'fitted' || request.style === 'wedges' || request.style === 'silhouette') {
 			recipe = 'silhouette';
 			recipes.push(() => generatePanelFigure(rings, openFrame(request), size, scale,
 				{ columns: 2, style: 'check', rows: 1, attachments: 'ray', adaptive: true }));
