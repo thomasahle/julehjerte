@@ -4,8 +4,9 @@
 
   The recording (static/weave/<id>.jhb) is a simulation of the paper made offline
   (scripts/weave); the player that draws it (static/weave/film.js) and three.js are fetched
-  with it, when this view is first shown, so a heart page pays nothing for the film until
-  it is asked for ($lib/weave/film). A heart without a recording (a visitor's own, or one the
+  with it, in the background by the heart's page (HeartStage) or at the latest when this view
+  is first shown ($lib/weave/film). Leaving the view and coming back goes on from the same
+  moment of the film. A heart without a recording (a visitor's own, or one the
   simulator has not made) gets a film worked out in the browser from its cuts, with the same
   steps and simpler movements ($lib/weave/sketch).
 
@@ -36,6 +37,8 @@
 		canPlayWeaveFilm,
 		createWeaveFilm,
 		fetchWeaveRecording,
+		keepWeaveFilmPlace,
+		weaveFilmPlace,
 		type WeaveFilmEntry,
 		type WeaveFilmPlayer,
 		type WeaveStep
@@ -151,7 +154,11 @@
 			total = film.total;
 			made.speed(speed);
 			status = 'ready';
-			if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) made.play(true);
+			// Back from another view: the film goes on from where it was left, playing or not.
+			const left = weaveFilmPlace(id);
+			if (left && left.seconds > 0 && left.seconds < film.total) made.seek(left.seconds);
+			const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			if (!still && (left?.playing ?? true)) made.play(true);
 		} catch {
 			if (!gone) status = 'failed';
 		}
@@ -172,6 +179,7 @@
 		void load();
 		return () => {
 			gone = true;
+			if (status === 'ready') keepWeaveFilmPlace(id, { seconds: time, playing });
 			onColours.disconnect();
 			document.removeEventListener('fullscreenchange', onFullscreen);
 			player?.destroy();

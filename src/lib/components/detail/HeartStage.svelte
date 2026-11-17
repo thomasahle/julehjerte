@@ -36,7 +36,7 @@
 	import type { HeartDesign } from '$lib/types/heart';
 	import { pairAttributes } from '$lib/utils/palette';
 	import { heartImageFit, heartImageRibbonBand } from '$lib/heartImage';
-	import type { WeaveFilmEntry } from '$lib/weave/film';
+	import { preloadWeaveFilm, type WeaveFilmEntry } from '$lib/weave/film';
 
 	type ViewId = 'heart' | 'photo' | 'left' | 'right' | 'film';
 
@@ -73,6 +73,21 @@
 			list.push({ id: 'film', label: t('weaveView', lang) });
 		}
 		return list;
+	});
+
+	// The film's player and recording are fetched once the page has settled, so the film starts
+	// at once when its tile is chosen; again for the next heart when the page goes on to one.
+	$effect(() => {
+		const filmId = film?.id ?? design?.id;
+		if (!filmId) return;
+		const entry = film;
+		const fetchNow = () => preloadWeaveFilm(filmId, entry);
+		if (typeof requestIdleCallback === 'function') {
+			const waiting = requestIdleCallback(fetchNow, { timeout: 4000 });
+			return () => cancelIdleCallback(waiting);
+		}
+		const waiting = setTimeout(fetchNow, 1500);
+		return () => clearTimeout(waiting);
 	});
 
 	/** Which thumbnail was clicked. What is *shown* is `shownView` below. */

@@ -2,9 +2,11 @@
  * The weaving film's player and its recordings, fetched when a film is first asked for.
  *
  * The player (static/weave/film.js) is the weave simulator's own viewer with its page taken
- * off; it draws with three.js (static/weave/vendor). Neither is part of the site's bundle: a
- * heart page costs nothing for them until "Fletning" is chosen. A recording
- * (static/weave/<id>.jhb) is made offline, one per heart, by scripts/weave/films.mjs.
+ * off; it draws with three.js (static/weave/vendor). Neither is part of the site's bundle. A
+ * recording (static/weave/<id>.jhb) is made offline, one per heart, by scripts/weave/films.mjs.
+ *
+ * A heart page fetches all three in the background once it has settled (preloadWeaveFilm), so
+ * the film starts at once when "Fletning" is chosen; nothing here delays the page itself.
  */
 import { base } from '$app/paths';
 import type { SketchFilm } from './sketch';
@@ -107,6 +109,10 @@ function loadThree(): Promise<unknown> {
 	return three;
 }
 
+function loadPlayer(): Promise<{ createWeaveFilm: CreateWeaveFilm }> {
+	return import(/* @vite-ignore */ `${base}/weave/film.js?v=${PLAYER_VERSION}`);
+}
+
 /** A player drawing on `canvas`, sized by `stage`. Throws when the browser has no WebGL. */
 export async function createWeaveFilm(
 	canvas: HTMLCanvasElement,
@@ -114,49 +120,108 @@ export async function createWeaveFilm(
 	on: WeaveFilmEvents,
 	options?: WeaveFilmOptions
 ): Promise<WeaveFilmPlayer> {
-	const [THREE, module] = await Promise.all([
-		loadThree(),
-		import(/* @vite-ignore */ `${base}/weave/film.js?v=${PLAYER_VERSION}`) as Promise<{
-			createWeaveFilm: CreateWeaveFilm;
-		}>
-	]);
+	const [THREE, module] = await Promise.all([loadThree(), loadPlayer()]);
 	return module.createWeaveFilm(THREE, canvas, stage, on, options);
 }
 
 const recordings = new Map<string, ArrayBuffer>();
+/** Recordings on their way, with everyone who wants to hear how far they are. */
+const arriving = new Map<
+	string,
+	{ whole: Promise<ArrayBuffer>; hearers: Set<(fraction: number) => void>; fraction: number }
+>();
 
 /**
  * A heart's recording. `progress` hears the fraction fetched, 0 to 1. Kept for the rest of the
- * visit, so going back to the film does not fetch it again.
+ * visit, so going back to the film does not fetch it again; asked for twice while it is on its
+ * way, it is fetched once.
  */
-export async function fetchWeaveRecording(
+export function fetchWeaveRecording(
 	id: string,
 	entry: WeaveFilmEntry,
 	progress?: (fraction: number) => void
 ): Promise<ArrayBuffer> {
 	const key = `${id}@${entry.v}`;
 	const kept = recordings.get(key);
-	if (kept) return kept;
+	if (kept) return Promise.resolve(kept);
+	let coming = arriving.get(key);
+	if (!coming) {
+		const hearers = new Set<(fraction: number) => void>();
+		const made = {
+			hearers,
+			fraction: 0,
+			whole: download(id, entry, (fraction) => {
+				made.fraction = fraction;
+				for (const hear of hearers) hear(fraction);
+			})
+				.then((buffer) => {
+					recordings.set(key, buffer);
+					return buffer;
+				})
+				.finally(() => arriving.delete(key))
+		};
+		coming = made;
+		arriving.set(key, made);
+	}
+	if (progress) {
+		coming.hearers.add(progress);
+		progress(coming.fraction);
+	}
+	return coming.whole;
+}
+
+async function download(
+	id: string,
+	entry: WeaveFilmEntry,
+	progress: (fraction: number) => void
+): Promise<ArrayBuffer> {
 	const response = await fetch(`${base}/weave/${id}.jhb?v=${entry.v}`);
 	if (!response.ok) throw new Error(`recording ${id}: ${response.status}`);
-	let buffer: ArrayBuffer;
-	if (response.body && progress) {
-		const reader = response.body.getReader();
-		const whole = new Uint8Array(entry.bytes);
-		let got = 0;
-		for (;;) {
-			const { done, value } = await reader.read();
-			if (done) break;
-			if (got + value.length > whole.length) throw new Error(`recording ${id}: longer than listed`);
-			whole.set(value, got);
-			got += value.length;
-			progress(got / entry.bytes);
-		}
-		if (got !== entry.bytes) throw new Error(`recording ${id}: ${got} of ${entry.bytes} bytes`);
-		buffer = whole.buffer;
-	} else {
-		buffer = await response.arrayBuffer();
+	if (!response.body) return response.arrayBuffer();
+	const reader = response.body.getReader();
+	const whole = new Uint8Array(entry.bytes);
+	let got = 0;
+	for (;;) {
+		const { done, value } = await reader.read();
+		if (done) break;
+		if (got + value.length > whole.length) throw new Error(`recording ${id}: longer than listed`);
+		whole.set(value, got);
+		got += value.length;
+		progress(got / entry.bytes);
 	}
-	recordings.set(key, buffer);
-	return buffer;
+	if (got !== entry.bytes) throw new Error(`recording ${id}: ${got} of ${entry.bytes} bytes`);
+	return whole.buffer;
+}
+
+/**
+ * Fetch what a heart's film needs before it is asked for: the player, three.js and the
+ * recording (or, for a heart without one, the code that works a film out). Quiet when anything
+ * fails: the film asks again, and reports, when it is opened. Left alone for a visitor who has
+ * asked the browser to save data or is on a very slow line (a recording is a few megabytes).
+ */
+export function preloadWeaveFilm(id: string, entry: WeaveFilmEntry | null): void {
+	if (typeof window === 'undefined' || !canPlayWeaveFilm(!!entry)) return;
+	const line = (navigator as { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+	if (line?.saveData || /(^|-)2g$/.test(line?.effectiveType ?? '')) return;
+	const quiet = () => {};
+	loadThree().catch(quiet);
+	loadPlayer().catch(quiet);
+	if (entry) fetchWeaveRecording(id, entry).catch(quiet);
+	else import('./sketch').catch(quiet);
+}
+
+/** Where a heart's film was left, so that coming back to it goes on from there. */
+export interface WeaveFilmPlace {
+	seconds: number;
+	playing: boolean;
+}
+
+const places = new Map<string, WeaveFilmPlace>();
+
+export function keepWeaveFilmPlace(id: string, place: WeaveFilmPlace): void {
+	places.set(id, place);
+}
+
+export function weaveFilmPlace(id: string): WeaveFilmPlace | null {
+	return places.get(id) ?? null;
 }
