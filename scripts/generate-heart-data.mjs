@@ -68,6 +68,7 @@ import { socialCardBuilder } from './social-cards.mjs';
 import { parseJsonc } from '../src/lib/utils/jsonc.js';
 import { restoreResavedHearts, warn } from './restore-resaved-hearts.mjs';
 import { filmFor, readFilms } from './weave/films-data.mjs';
+import { makeSmallImages } from './small-images.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const heartsJsonPath = path.join(root, 'hearts.jsonc');
@@ -366,6 +367,9 @@ try {
   const cardsChanged = writeIfChanged(cardsPath, `${JSON.stringify(cards, null, 2)}\n`);
   const designsChanged = writeIfChanged(designsPath, formatDesigns(designs));
   const descriptionsChanged = writeIfChanged(descriptionsPath, `${JSON.stringify(descriptions, null, 2)}\n`);
+  const small = await makeSmallImages(root);
+  console.log(`small-images: ${small.pictures} pictures, ${small.written} files written -> static/small`);
+
   const withPhoto = Object.values(meta).filter((m) => m.photo).length;
   const withFilm = Object.values(meta).filter((m) => m.film).length;
   console.log(

@@ -17,6 +17,9 @@ __pycache__/
 # Generated OG images (built by CI)
 /static/og/
 
+# Smaller copies of the photographs (scripts/small-images.mjs, built by CI)
+/static/small/
+
 # Test and browser-tool output
 /coverage/
 /.playwright-mcp/

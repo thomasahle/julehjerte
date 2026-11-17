@@ -36,6 +36,7 @@
 	import type { HeartDesign } from '$lib/types/heart';
 	import { pairAttributes } from '$lib/utils/palette';
 	import { heartImageFit, heartImageRibbonBand } from '$lib/heartImage';
+	import { smallSrcset } from '$lib/smallImages';
 	import { preloadWeaveFilm, type WeaveFilmEntry } from '$lib/weave/film';
 
 	type ViewId = 'heart' | 'photo' | 'left' | 'right' | 'film';
@@ -90,6 +91,9 @@
 		return () => clearTimeout(waiting);
 	});
 
+	// The photo's smaller copies: the thumbnail and the stage each fetch the one that fits.
+	let photoSrcset = $derived(photo ? smallSrcset(photo.src, photo.width) : undefined);
+
 	/** Which thumbnail was clicked. What is *shown* is `shownView` below. */
 	let view = $state<ViewId>('heart');
 
@@ -112,6 +116,8 @@
 			<img
 				class="stage-photo"
 				src={photo.src}
+				srcset={photoSrcset}
+				sizes="(max-width: 599px) 90vw, 440px"
 				width={photo.width}
 				height={photo.height}
 				loading="lazy"
@@ -181,7 +187,15 @@
 				{:else if v.id === 'photo' && photo}
 					<!-- Alt text for search engines: until the photo is chosen, this
 					     is the only <img> of it on the page. -->
-					<img class="thumb-photo" src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
+					<img
+						class="thumb-photo"
+						src={photo.src}
+						srcset={photoSrcset}
+						sizes="80px"
+						alt={photo.alt}
+						loading="lazy"
+						decoding="async"
+					/>
 				{:else if v.id === 'film'}
 					<!-- The two halves on the cutting mat, about to be woven, and a play mark. The heart
 					     stands on its point, so each half is drawn in the square's own frame, turned 45°.

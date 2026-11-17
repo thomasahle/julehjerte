@@ -20,6 +20,7 @@
 	import { heartImagePath } from '$lib/heartImage';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import { heartHref } from '$lib/i18n/routes';
+	import { smallSrcset } from '$lib/smallImages';
 	import { parseDescription } from '$lib/utils/descriptionLinks';
 	import { heartName, type Named } from '$lib/utils/heartName';
 
@@ -129,12 +130,15 @@
 
 	{#each SOURCES as source (source.id)}
 		{@const src = `${base}/about/history/${source.image}`}
+		{@const srcset = smallSrcset(`/about/history/${source.image}`, source.width, base)}
 		<article class="source" class:floated={source.small} aria-labelledby={`history-${source.id}`}>
 			<h3 id={`history-${source.id}`}>{t(source.title, lang)}</h3>
 			<figure class:portrait={source.height > source.width} class:small={source.small}>
 				{#if source.small}
 					<img
 						{src}
+						{srcset}
+						sizes="200px"
 						alt={t(source.alt, lang)}
 						width={source.width}
 						height={source.height}
@@ -144,6 +148,8 @@
 					<a href={src} target="_blank" rel="noopener">
 						<img
 							{src}
+							{srcset}
+							sizes={source.height > source.width ? '(max-width: 480px) 92vw, 420px' : '(max-width: 760px) 92vw, 720px'}
 							alt={t(source.alt, lang)}
 							width={source.width}
 							height={source.height}
