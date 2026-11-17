@@ -6,7 +6,9 @@
  * recording (static/weave/<id>.jhb) is made offline, one per heart, by scripts/weave/films.mjs.
  *
  * A heart page fetches all three in the background once it has settled (preloadWeaveFilm), so
- * the film starts at once when "Fletning" is chosen; nothing here delays the page itself.
+ * the film starts at once when "Fletning" is chosen; nothing here delays the page itself. A
+ * film asked for before its recording has arrived is worked out in the browser instead
+ * ($lib/weave/sketch), and never waits for the recording.
  */
 import { base } from '$app/paths';
 import type { SketchFilm } from './sketch';
@@ -170,6 +172,11 @@ export function fetchWeaveRecording(
 	return coming.whole;
 }
 
+/** A heart's recording if it has already arrived, without fetching anything. */
+export function weaveRecordingReady(id: string, entry: WeaveFilmEntry): ArrayBuffer | null {
+	return recordings.get(`${id}@${entry.v}`) ?? null;
+}
+
 async function download(
 	id: string,
 	entry: WeaveFilmEntry,
@@ -194,8 +201,8 @@ async function download(
 }
 
 /**
- * Fetch what a heart's film needs before it is asked for: the player, three.js and the
- * recording (or, for a heart without one, the code that works a film out). Quiet when anything
+ * Fetch what a heart's film needs before it is asked for: the player, three.js, the code that
+ * works a film out and, for a heart that has one, the recording. Quiet when anything
  * fails: the film asks again, and reports, when it is opened. Left alone for a visitor who has
  * asked the browser to save data or is on a very slow line (a recording is a few megabytes).
  */
@@ -206,14 +213,35 @@ export function preloadWeaveFilm(id: string, entry: WeaveFilmEntry | null): void
 	const quiet = () => {};
 	loadThree().catch(quiet);
 	loadPlayer().catch(quiet);
+	import('./sketch').catch(quiet);
 	if (entry) fetchWeaveRecording(id, entry).catch(quiet);
-	else import('./sketch').catch(quiet);
 }
 
-/** Where a heart's film was left, so that coming back to it goes on from there. */
+/**
+ * Where a heart's film was left, so that coming back to it goes on from there. The film may by
+ * then be another one (the recording has arrived since), so the step is kept too.
+ */
 export interface WeaveFilmPlace {
 	seconds: number;
 	playing: boolean;
+	/** Whether the film was the recording, not one worked out in the browser. */
+	recorded: boolean;
+	/** The step it was in, how far into it (0 to 1), and how many steps and seconds that film had. */
+	step: number;
+	into: number;
+	steps: number;
+	total: number;
+}
+
+/** The moment of `film` that `place` stands for: the same seconds in the same film, otherwise the same place in the same step. */
+export function weaveFilmSeconds(place: WeaveFilmPlace, film: WeaveFilmInfo, recorded: boolean): number {
+	if (place.recorded === recorded) return place.seconds;
+	if (place.steps !== film.steps.length || !film.steps[place.step]) {
+		return place.total > 0 ? (place.seconds / place.total) * film.total : 0;
+	}
+	const start = film.steps[place.step].start;
+	const end = film.steps[place.step + 1]?.start ?? film.total;
+	return start + place.into * (end - start);
 }
 
 const places = new Map<string, WeaveFilmPlace>();

@@ -5,7 +5,8 @@
   The recording (static/weave/<id>.jhb) is a simulation of the paper made offline
   (scripts/weave); the player that draws it (static/weave/film.js) and three.js are fetched
   with it, in the background by the heart's page (HeartStage) or at the latest when this view
-  is first shown ($lib/weave/film). Leaving the view and coming back goes on from the same
+  is first shown ($lib/weave/film). The film never waits for the recording: shown before it has
+  arrived, it is the one worked out in the browser, and the recording is used the next time. Leaving the view and coming back goes on from the same
   moment of the film. A heart without a recording (a visitor's own, or one the
   simulator has not made) gets a film worked out in the browser from its cuts, with the same
   steps and simpler movements ($lib/weave/sketch).
@@ -36,9 +37,11 @@
 	import {
 		canPlayWeaveFilm,
 		createWeaveFilm,
-		fetchWeaveRecording,
 		keepWeaveFilmPlace,
+		preloadWeaveFilm,
 		weaveFilmPlace,
+		weaveFilmSeconds,
+		weaveRecordingReady,
 		type WeaveFilmEntry,
 		type WeaveFilmPlayer,
 		type WeaveStep
@@ -77,7 +80,6 @@
 	let bar = $state<HTMLDivElement>();
 
 	let status = $state<'loading' | 'ready' | 'failed' | 'no3d'>('loading');
-	let fetched = $state(0);
 	let steps = $state<WeaveStep[]>([]);
 	let stepIndex = $state(0);
 	let time = $state(0);
@@ -90,6 +92,8 @@
 	let papers = $state<Papers>(DEFAULT_PAPERS);
 
 	let player: WeaveFilmPlayer | null = null;
+	/** Whether the film shown is the heart's recording. */
+	let recorded = false;
 	let gone = false;
 
 	let paperNames = $derived(paperWords(papers.red, papers.white, lang));
@@ -110,14 +114,18 @@
 
 	async function load() {
 		status = 'loading';
-		fetched = 0;
-		if (!canPlayWeaveFilm(!!entry) || (!entry && !design)) {
+		// The recording if it is already here; the film never waits for it. Until it has arrived
+		// (the page fetches it in the background) the film is worked out here from the cuts.
+		const kept = entry && canPlayWeaveFilm(true) ? weaveRecordingReady(id, entry) : null;
+		if (!canPlayWeaveFilm(!!kept) || (!kept && !design)) {
 			status = 'no3d';
 			return;
 		}
+		if (entry && !kept) preloadWeaveFilm(id, entry);
+		recorded = !!kept;
 		const drawn = design;
-		const recording = entry
-			? fetchWeaveRecording(id, entry, (fraction) => (fetched = fraction))
+		const recording = kept
+			? Promise.resolve(kept)
 			: import('$lib/weave/sketch').then(({ designLines, sketchFilm }) =>
 					sketchFilm(designLines(drawn!), drawn!.weaveParity ?? 0, WEAVE_PACE)
 				);
@@ -156,12 +164,28 @@
 			status = 'ready';
 			// Back from another view: the film goes on from where it was left, playing or not.
 			const left = weaveFilmPlace(id);
-			if (left && left.seconds > 0 && left.seconds < film.total) made.seek(left.seconds);
+			const seconds = left ? weaveFilmSeconds(left, film, recorded) : 0;
+			if (seconds > 0 && seconds < film.total) made.seek(seconds);
 			const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 			if (!still && (left?.playing ?? true)) made.play(true);
 		} catch {
 			if (!gone) status = 'failed';
 		}
+	}
+
+	/** Where the film is now, for coming back to. */
+	function place() {
+		const start = steps[stepIndex]?.start ?? 0;
+		const end = steps[stepIndex + 1]?.start ?? total;
+		return {
+			seconds: time,
+			playing,
+			recorded,
+			step: stepIndex,
+			into: end > start ? Math.min(1, Math.max(0, (time - start) / (end - start))) : 0,
+			steps: steps.length,
+			total
+		};
 	}
 
 	onMount(() => {
@@ -179,7 +203,7 @@
 		void load();
 		return () => {
 			gone = true;
-			if (status === 'ready') keepWeaveFilmPlace(id, { seconds: time, playing });
+			if (status === 'ready') keepWeaveFilmPlace(id, place());
 			onColours.disconnect();
 			document.removeEventListener('fullscreenchange', onFullscreen);
 			player?.destroy();
@@ -267,7 +291,7 @@
 		</div>
 	{:else if status === 'loading'}
 		<div class="film-wait" role="status">
-			<progress max="1" value={fetched} aria-label={t('weaveLoading', lang)}></progress>
+			<progress aria-label={t('weaveLoading', lang)}></progress>
 		</div>
 	{:else if status === 'failed'}
 		<div class="film-wait" role="alert">
