@@ -3,7 +3,8 @@
 // page makes them, with the frame's stored recipes and the motif's: a row for each with a hash of its
 // cuts and of its picture and whether it is hard to cut, or its refusal. A row also says how the heart
 // was made (`via`) and how long it took; the comparison reads neither. And a few dozen texts in each
-// text frame (identity-text.json: frames named text-…, each text in each of its fonts), likewise.
+// text frame (identity-text.json: frames named text-…, each text in each of its fonts), likewise;
+// text-branched is the circle frame's texts with overlapping serifs, which are cut another way.
 //
 //   node scripts/generator/identity.mjs run <dir> [frame...]      rows into <dir>/<frame>.jsonl, going on from those there
 //   node scripts/generator/identity.mjs compare <dir> <baseline>  each heart against the baseline's; exits 1 where one differs
@@ -55,10 +56,12 @@ if (command === 'run' && dir) {
 				const { defaults } = await server.ssrLoadModule('/src/lib/generator/state.ts');
 				const { shippedFont } = await server.ssrLoadModule('/src/lib/generator/fonts.test-helpers.ts');
 				const noAsset = async name => { throw new Error(`A text asked for ${name}`); };
-				for (const font of texts.fonts.slice(0, first)) for (const text of texts.texts) {
+				// A frame's own fonts and texts, where it names them, else those of all.
+				const { fonts = texts.fonts, texts: list = texts.texts, ...state } = texts.frames[style];
+				for (const font of fonts.slice(0, first)) for (const text of list) {
 					const id = `${font}:${text.replace(/\n/g, '/')}`;
 					if (done.has(`${id} 70`)) continue;
-					const request = await generatorRequest({ ...defaults, mode: 'text', text, font, ...texts.frames[style] }, 'da',
+					const request = await generatorRequest({ ...defaults, mode: 'text', text, font, ...state }, 'da',
 						{ asset: noAsset, font: name => shippedFont(name), made: new Map() });
 					await fs.appendFile(out, JSON.stringify(heartRow(id, 70, request)) + '\n');
 				}

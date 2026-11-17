@@ -1369,6 +1369,21 @@ Stråler, 20 featured in Strålekrans): jogs 12 → 0, weak places (36) and tips
 unchanged heart for heart. Hearts whose gates are not spread are cut exactly
 as before.
 
+That survey had no text with overlapping serifs, and those were hurt: a
+branched text (Cinzel LOVE, MEME, MILLE, EMMA, Hej! in the circle frame) ends
+its outer cells on the ring itself, midway along each gate's arc. Where the
+ring's gate had moved, the cell's stayed, and a hidden cut joined the two
+along the ring's own cut; the cut check refused that, every branched layout
+failed, and the heart came out of a later retry on six strips, hard to cut
+and ten seconds in the making (Hej! with four loose pieces). The slow tests
+found it the same evening: five that expect those hearts' 10–12 strips. A
+branched text now asks where the ring's gate will be (`ringGate`) and ends
+its cell there. All five are as they were before the legs changed (clean,
+10–12 strips, under four seconds, the same tips and thinnest neck, no jogs);
+weak places are the same but for LOVE's 37 → 34. The identity run has these
+texts now (`text-branched`), and the lesson stands: a change to shared
+geometry is run through the slow tests before it is pushed, not after.
+
 ## Nine strips at 85%: no specks in hidden cuts
 
 At a completion range's end (nine strips at 35.6, the 85% setting) a hidden

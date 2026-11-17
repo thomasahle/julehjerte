@@ -168,9 +168,10 @@ it does: `scripts/generator/identity.mjs` writes it into each row.
 The rule is that no heart gets worse, and a refactoring must leave every heart
 exactly as it was. The tests cannot show that: they pin a few hundred
 properties, not the cuts. `scripts/generator/identity.mjs` does. It makes 711
-quick figures over the twelve figure frames and 234 texts over the six text
-frames (13 texts in three fonts), as the page makes them, and writes a hash of
-each heart's cuts and picture.
+quick figures over the twelve figure frames and 244 texts over the six text
+frames (13 texts in three fonts, and ten in Cinzel in the circle frame, whose
+overlapping serifs are cut as branches), as the page makes them, and writes a
+hash of each heart's cuts and picture.
 
 ```sh
 # the baseline, from a worktree of the commit before the change

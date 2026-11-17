@@ -1,7 +1,7 @@
 import {
-	forest, area, centroid, sub, dot, inside, distance, mix, frameRing, ray,
+	forest, area, centroid, sub, dot, inside, distance, mix, frameRing,
 	uprightToSheet, fourPortMotif, connectCellGrid, compile, ConstructionError,
-	type Ring, type Point, type Edge, type Frame, type Font, contoursOf, gateAngle
+	type Ring, type Point, type Edge, type Frame, type Font, contoursOf, ringGate
 } from './geometry';
 import { normalizeContours, contoursWithinBoundary } from './contours';
 import { clipContours, stitch, filledSeamGate, panelSeamGuard, panelDividers } from './panels';
@@ -238,7 +238,8 @@ export function generateBranchedText(text: string, font: Font, frame: Frame,
 		}
 		return uprightToSheet(point);
 	};
-	const exterior = (side: number, index: number, count: number) => ray(boundary, [50, 50], gateAngle(side, index, count)).point;
+	// An outer cell's gate is the ring's own (the grid's gates are spread: see `connectCellGrid` below).
+	const exterior = (side: number, index: number, count: number) => ringGate(boundary, side, index, count, 'check', true);
 	for (let row = 0; row < rows; row++) for (let col = 0; col < columns; col++) {
 		const gates = cells[row][col], part = matrix[row][col];
 		gates[0] = row ? cells[row - 1][col][2] : exterior(0, col, columns);

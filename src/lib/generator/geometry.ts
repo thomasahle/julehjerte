@@ -2855,6 +2855,23 @@ export function gateAngle(side: number, index: number, count: number): number {
 				: (3 * Math.PI) / 2 + (index + 0.5) * step;
 }
 
+/** How an outer cell's gate is cut on the frame's ring (see `framedGate`):
+ * where, how far to either side, with which legs, and the angle to the gates
+ * beside it where a side's gates are spread. */
+function cellGate(side: number, index: number, count: number, style: 'rays' | 'check' | 'board', spread: boolean) {
+	const step = Math.PI / (2 * count);
+	return { angle: gateAngle(side, index, count), half: count === 1 ? Math.PI / 8 : step * 0.3,
+		fan: style === 'rays' ? 0.72 : 1, beside: spread ? step : undefined };
+}
+
+/** Where `connectCellGrid` sets the ring's gate of an outer cell: for a cell
+ * whose own gate lies on the ring (a branched text's), so that its hidden
+ * cuts end at the ring's gate and not beside it. */
+export function ringGate(ring: Ring, side: number, index: number, count: number, style: 'rays' | 'check' = 'check', spread = false): Point {
+	const { angle, half, fan, beside } = cellGate(side, index, count, style, spread);
+	return framedGate([], ring, angle, half, fan, beside);
+}
+
 /** Join neighbouring motif cells with coincident cuts, and give every outer
  * cell its own connection to the paper edge or the decorative frame. On a
  * regular board of `strips` strips (`board`), the frame's legs lie on its lines. */
@@ -2873,8 +2890,6 @@ export function connectCellGrid(
 ) {
 	const rows = cells.length,
 		cols = cells[0].length;
-	const fan = style === 'rays' ? 0.72 : 1,
-		band = 0.3;
 	if (style === 'board' && cols !== rows) throw new ConstructionError('topology', 'A regular board needs as many rows as columns');
 	// Past the radii the motif in four can meet every line at, a completion
 	// found for the board routes the lines instead (see `boardCompletion`).
@@ -2884,11 +2899,11 @@ export function connectCellGrid(
 		: style === 'board' && boundary ? boardLegs(edges, boundary, strips, cols, around, lines, stepIn) : undefined;
 	const connect = (gate: Point, side: number, index: number, count: number) => {
 		if (boundary) {
-			const step = Math.PI / (2 * count);
-			const framed = (angle: number, half: number) => framedGate(edges, boundary, angle, half, fan, spread ? step : undefined);
+			const { angle, half, fan, beside } = cellGate(side, index, count, style, spread);
+			const framed = (angle: number, half: number) => framedGate(edges, boundary, angle, half, fan, beside);
 			add(
 				edges,
-				[gate, ...legs ? legs(side, index, framed, gate) : [framed(gateAngle(side, index, count), count === 1 ? Math.PI / 8 : step * band)]],
+				[gate, ...legs ? legs(side, index, framed, gate) : [framed(angle, half)]],
 				'AB',
 				'shared'
 			);

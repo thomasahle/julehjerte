@@ -19,6 +19,8 @@ import {
 	type Edge,
 	type Point,
 	framedGate,
+	ringGate,
+	connectCellGrid,
 	frameRing,
 	spreadPorts,
 	contourChain,
@@ -248,6 +250,23 @@ describe('constructive figure generator', () => {
 		expect(eight[1]).toBeGreaterThan(.2 * step * .3);
 		expect(eight[6]).toBeLessThan(-.2 * step * .3);
 		for (const moved of eight) expect(Math.abs(moved)).toBeLessThan(step * .3);
+	});
+	it('gives a cell whose gate lies on the ring the ring\'s own gate, moved or not', () => {
+		// A branched text's outer cells end on the ring. Where a crowded gate
+		// moves along its arc the cell's gate must move with it: left midway,
+		// a hidden cut would join the two along the ring's own cut, which the
+		// cut check refuses (Cinzel LOVE in the circle then came out hard to cut).
+		const ring = frameRing('circle', 80), inner = (k: number): Point => [50 + k, 50 - k];
+		for (const count of [3, 8]) {
+			const cells = [Array.from({ length: count }, (_, col) => [
+				ringGate(ring, 0, col, count, 'check', true), col === count - 1 ? ringGate(ring, 1, 0, 1, 'check', true) : inner(col + .5),
+				ringGate(ring, 2, col, count, 'check', true), col ? inner(col - .5) : ringGate(ring, 3, 0, 1, 'check', true)])];
+			const edges: Edge[] = [];
+			connectCellGrid(edges, cells, ring, 'check', true);
+			// Neighbouring cells share their gate here, so no hidden cut is left at all.
+			expect(edges.filter(e => e.family === 'AB')).toHaveLength(0);
+			expect(edges.length).toBeGreaterThan(0);
+		}
 	});
 });
 

@@ -7,6 +7,7 @@
 		"text-checkered": { "textFrame": "checkered" },
 		"text-circle": { "textFrame": "circle" },
 		"text-strips": { "textFrame": "strips" },
-		"text-layers": { "textFrame": "layers" }
+		"text-layers": { "textFrame": "layers" },
+		"text-branched": { "textFrame": "circle", "fonts": ["cinzel"], "texts": ["LOVE", "MEME", "MILLE", "EMMA", "Hej!", "EM", "ME", "JUL", "ANNA", "WILLIAM"] }
 	}
 }
