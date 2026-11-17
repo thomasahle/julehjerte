@@ -1,0 +1,12 @@
+{
+	"fonts": ["nunito", "breeserif", "kalam"],
+	"texts": ["JUL", "ANNA", "MOR", "FAR", "Hej", "IDA", "Åse", "EMMA", "OSCAR", "WILLIAM", "GOD\nJUL", "JULE\nMAND", "GLÆDELIG\nJUL"],
+	"frames": {
+		"text-squares": { "textFrame": "woven", "cells": "square" },
+		"text-letters": { "textFrame": "woven", "cells": "letters" },
+		"text-checkered": { "textFrame": "checkered" },
+		"text-circle": { "textFrame": "circle" },
+		"text-strips": { "textFrame": "strips" },
+		"text-layers": { "textFrame": "layers" }
+	}
+}

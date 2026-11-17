@@ -2,12 +2,13 @@
 // (identity.json: the nine offered and the three retired, motifs that take under a second), made as the
 // page makes them, with the frame's stored recipes and the motif's: a row for each with a hash of its
 // cuts and of its picture and whether it is hard to cut, or its refusal. A row also says how the heart
-// was made (`via`) and how long it took; the comparison reads neither.
+// was made (`via`) and how long it took; the comparison reads neither. And a few dozen texts in each
+// text frame (identity-text.json: frames named text-…, each text in each of its fonts), likewise.
 //
 //   node scripts/generator/identity.mjs run <dir> [frame...]      rows into <dir>/<frame>.jsonl, going on from those there
 //   node scripts/generator/identity.mjs compare <dir> <baseline>  each heart against the baseline's; exits 1 where one differs
 //   env: SIZES=50,70   the sizes in percent (else 70, and the first six of each frame at 50 and 100 too)
-//        FIRST=n       only the first n motifs of each frame
+//        FIRST=n       only the first n motifs of each frame (the first n fonts of each text frame)
 //
 // The hearts are those of the checkout it is run from, which need not be the script's own: a commit from
 // before the script is measured from its worktree (cd ../before && node ../after/scripts/generator/identity.mjs run ...).
@@ -18,6 +19,8 @@ import { fileURLToPath } from 'node:url';
 
 const [command, dir, ...rest] = process.argv.slice(2);
 const frames = JSON.parse(await fs.readFile(fileURLToPath(new URL('./identity.json', import.meta.url)), 'utf8'));
+const texts = JSON.parse(await fs.readFile(fileURLToPath(new URL('./identity-text.json', import.meta.url)), 'utf8'));
+const every = [...Object.keys(frames), ...Object.keys(texts.frames)];
 const rows = async file => (await fs.readFile(file, 'utf8').catch(() => '')).split('\n').filter(Boolean).map(line => JSON.parse(line));
 const sha = (data, length) => crypto.createHash('sha1').update(data).digest('hex').slice(0, length);
 
@@ -33,9 +36,34 @@ if (command === 'run' && dir) {
 		const recipeFile = async name => index.files.includes(name) ? JSON.parse(await fs.readFile(`${stored}/${name}.json`, 'utf8')) : undefined;
 		const sizes = process.env.SIZES?.split(',').map(Number), first = Number(process.env.FIRST ?? Infinity);
 		await fs.mkdir(dir, { recursive: true });
-		for (const style of rest.length ? rest : Object.keys(frames)) {
-			if (!frames[style]) throw new Error(`No frame ${style}: ${Object.keys(frames).join(' ')}`);
+		const heartRow = (id, p, request) => {
+			const from = performance.now();
+			try {
+				const heart = generate(request);
+				return { id, p, cut: sha(JSON.stringify(heart.design.fingers), 10), px: sha(rasterizeDesign(heart.design, 160).data, 12), hard: !!heart.hardToCut,
+					ms: Math.round(performance.now() - from), ...heart.via ? { via: heart.via } : {} };
+			} catch (error) {
+				return { id, p, refused: String(error?.message).slice(0, 80), ms: Math.round(performance.now() - from) };
+			}
+		};
+		for (const style of rest.length ? rest : every) {
+			if (!every.includes(style)) throw new Error(`No frame ${style}: ${every.join(' ')}`);
 			const out = path.join(dir, `${style}.jsonl`), done = new Set((await rows(out)).map(row => `${row.id} ${row.p}`));
+			if (texts.frames[style]) {
+				// A text as the page asks for it: its state in this frame, in a font we ship.
+				const { generatorRequest } = await server.ssrLoadModule('/src/lib/generator/request.ts');
+				const { defaults } = await server.ssrLoadModule('/src/lib/generator/state.ts');
+				const { shippedFont } = await server.ssrLoadModule('/src/lib/generator/fonts.test-helpers.ts');
+				const noAsset = async name => { throw new Error(`A text asked for ${name}`); };
+				for (const font of texts.fonts.slice(0, first)) for (const text of texts.texts) {
+					const id = `${font}:${text.replace(/\n/g, '/')}`;
+					if (done.has(`${id} 70`)) continue;
+					const request = await generatorRequest({ ...defaults, mode: 'text', text, font, ...texts.frames[style] }, 'da',
+						{ asset: noAsset, font: name => shippedFont(name), made: new Map() });
+					await fs.appendFile(out, JSON.stringify(heartRow(id, 70, request)) + '\n');
+				}
+				continue;
+			}
 			const ofFrame = await recipeFile(style);
 			for (const [k, id] of frames[style].slice(0, first).entries()) {
 				const { contours } = JSON.parse(await fs.readFile(`static/generator/motifs/${id}.json`, 'utf8'));
@@ -46,16 +74,7 @@ if (command === 'run' && dir) {
 					if (done.has(`${id} ${p}`)) continue;
 					const request = { mode: 'figure', name: id, contours, style, frame: 'circle', frameSize: 70, scale: p / 100, gap: 3,
 						colors: { left: '#ffffff', right: '#b91313' }, ...recipes.length ? { recipes } : {}, ...style === 'board' && p > 70 && p < dividedFrom ? { keepWhole: true } : {} };
-					const from = performance.now();
-					let row;
-					try {
-						const heart = generate(request);
-						row = { id, p, cut: sha(JSON.stringify(heart.design.fingers), 10), px: sha(rasterizeDesign(heart.design, 160).data, 12), hard: !!heart.hardToCut,
-							ms: Math.round(performance.now() - from), ...heart.via ? { via: heart.via } : {} };
-					} catch (error) {
-						row = { id, p, refused: String(error?.message).slice(0, 80), ms: Math.round(performance.now() - from) };
-					}
-					await fs.appendFile(out, JSON.stringify(row) + '\n');
+					await fs.appendFile(out, JSON.stringify(heartRow(id, p, request)) + '\n');
 				}
 			}
 		}
@@ -69,7 +88,7 @@ if (command === 'run' && dir) {
 	const made = await read(dir), baseline = await read(rest[0]);
 	const shown = row => row.refused !== undefined ? `refused: ${row.refused}` : `${row.cut}${row.hard ? ' hard' : ''} ${row.px}`;
 	let differing = 0, same = 0;
-	for (const style of Object.keys(frames)) {
+	for (const style of every) {
 		const mine = [...made].filter(([key]) => key.startsWith(`${style} `)), theirs = [...baseline].filter(([key]) => key.startsWith(`${style} `));
 		if (!mine.length && !theirs.length) continue;
 		const both = mine.filter(([key]) => baseline.has(key)), different = both.filter(([key, row]) => shown(row) !== shown(baseline.get(key)));
