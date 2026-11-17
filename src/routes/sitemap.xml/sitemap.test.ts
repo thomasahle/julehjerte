@@ -64,10 +64,10 @@ describe('sitemap.xml images', () => {
 		expect(heartImages).toHaveLength(2 * ALL_HEART_IDS.length);
 	});
 
-	it('gives the front pages and the other pages no images', async () => {
+	it('gives the front pages their own picture and the other pages none', async () => {
 		const pages = imagesByPage(await sitemap());
-		expect(pages.get('https://juleflet.dk/')).toEqual([]);
-		expect(pages.get('https://juleflet.dk/en/')).toEqual([]);
+		expect(pages.get('https://juleflet.dk/')).toEqual(['https://juleflet.dk/og/front.png']);
+		expect(pages.get('https://juleflet.dk/en/')).toEqual(['https://juleflet.dk/og/front.png']);
 		expect(pages.get('https://juleflet.dk/om/')).toEqual([]);
 	});
 });

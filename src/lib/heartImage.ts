@@ -30,6 +30,17 @@ export const HEART_IMAGE_BACKGROUND = '#d6e1d0';
 /** The paper pair, the site's default (--paper-left / --paper-right). */
 export const HEART_IMAGE_COLORS = { left: '#ffffff', right: '#b91313' } as const;
 
+/**
+ * The front page's own picture, for the small image a search result can carry: the gallery's
+ * first heart, drawn like its square picture but on another ground, so it is a different image
+ * from that heart's own. Each heart's picture is named only on the heart's page; a picture the
+ * front page also named was shown in image search as the front page's. It lies under the
+ * first card's SVG (HeartCard) and is the page's primary image in its structured data.
+ */
+export const FRONT_IMAGE_PATH = '/og/front.png';
+export const FRONT_IMAGE_HEART = 'classic-3x3';
+export const FRONT_IMAGE_BACKGROUND = '#2f5b47';
+
 /** Root-relative URL of a gallery heart's square picture. */
 export function heartImagePath(id: string): string {
 	return `/og/hearts/${id}.png`;

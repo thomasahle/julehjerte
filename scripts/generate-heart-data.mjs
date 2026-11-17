@@ -431,6 +431,12 @@ try {
     squareBytes += png.length;
     fs.writeFileSync(path.join(root, 'static', heartImage.heartImagePath(id)), png);
   }
+  // The front page's own picture: the first heart on another ground (src/lib/heartImage.ts).
+  if (designs[heartImage.FRONT_IMAGE_HEART]) {
+    const heart = renderHeartSvgInline(designs[heartImage.FRONT_IMAGE_HEART], heartImage.HEART_IMAGE_COLORS, { idPrefix: 'sq-front' });
+    const onFrontGround = { ...heartImage, HEART_IMAGE_BACKGROUND: heartImage.FRONT_IMAGE_BACKGROUND };
+    fs.writeFileSync(path.join(root, 'static', heartImage.FRONT_IMAGE_PATH), renderPng(squareHeartSvg(heart, onFrontGround), heartImage.HEART_IMAGE_SIZE));
+  }
   console.log(
     `heart-data: ${ids.length} square heart images (${Math.round(squareBytes / ids.length / 1024)} KB each on average) -> ` +
       `${path.relative(root, squaresDir)}/ (${((performance.now() - squaresStarted) / 1000).toFixed(1)}s)`

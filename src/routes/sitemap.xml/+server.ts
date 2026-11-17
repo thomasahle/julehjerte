@@ -1,7 +1,7 @@
 import { SITE_URL } from '$lib/config';
 import { ALL_HEART_IDS } from '$lib/data/categories';
 import { ROUTES, heartPath, type RouteKey } from '$lib/i18n/routes';
-import { heartImageUrl } from '$lib/seo';
+import { FRONT_PAGE_IMAGE, heartImageUrl } from '$lib/seo';
 import { readLastModified } from '$lib/server/lastModified';
 import type { RequestHandler } from './$types';
 
@@ -11,8 +11,9 @@ export const prerender = true;
 // slugs differ for the guide and about pages, so a single language-neutral path
 // is not enough. Paths always carry a trailing slash (trailingSlash = 'always',
 // so URLs without one 301-redirect on the live site).
-// Only the heart pages list images, each its own heart's picture: a picture also listed
-// under the front page was shown in image search as the front page's, and "Visit" led there.
+// The heart pages list their own heart's picture, and the front page a picture of its own
+// ($lib/heartImage): a heart's picture also listed under the front page was shown in image
+// search as the front page's, and "Visit" led there.
 
 const staticPages: { key: RouteKey; priority: string }[] = [
 	{ key: 'home', priority: '1.0' },
@@ -36,7 +37,7 @@ export const GET: RequestHandler = async () => {
 			en: ROUTES[key].en,
 			priority,
 			lastmod: key === 'home' ? (dates?.gallery ?? null) : null,
-			images: [] as string[]
+			images: key === 'home' ? [FRONT_PAGE_IMAGE] : []
 		})),
 		...ALL_HEART_IDS.map((heartId) => ({
 			da: heartPath(heartId, 'da'),

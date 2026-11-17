@@ -124,6 +124,7 @@
 					{index}
 					strand={columns > 0 && shownIndex[index] >= 0 ? shownIndex[index] % columns : undefined}
 					hidden={shownIndex[index] < 0}
+					picture={first}
 					selected={selectedIds.has(heart.id)}
 					{onSelect}
 					{onClick}

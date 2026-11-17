@@ -51,7 +51,7 @@
 	import { TrashIcon } from '$lib/components/icons';
 	import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
 	import { base } from '$app/paths';
-	import { heartImagePath } from '$lib/heartImage';
+	import { FRONT_IMAGE_HEART, FRONT_IMAGE_PATH } from '$lib/heartImage';
 
 	interface Props {
 		heart: GalleryHeart;
@@ -80,8 +80,9 @@
 		 */
 		hidden?: boolean;
 		/**
-		 * Lay the heart's PNG under its SVG: a real image of the heart for search
-		 * engines (HangingHeart). Only a gallery heart given as `markup` has one.
+		 * Lay the front page's own picture ($lib/heartImage, FRONT_IMAGE_PATH) under
+		 * this heart's SVG: a real image on the page for search engines
+		 * (HangingHeart). Only for the heart it shows, given as `markup`.
 		 */
 		picture?: boolean;
 	}
@@ -107,8 +108,8 @@
 	let pickId = $derived(`pick-${heart.id}`);
 	let nameId = $derived(`${makeHeartAnchorId(heart.id)}-name`);
 	let image = $derived(
-		picture && markup !== undefined && !heart.isUserCreated
-			? { src: `${base}${heartImagePath(heart.id)}`, alt: t('heartImageAlt', lang, { name: heart.name }) }
+		picture && markup !== undefined && !heart.isUserCreated && heart.id === FRONT_IMAGE_HEART
+			? { src: `${base}${FRONT_IMAGE_PATH}`, alt: t('heartImageAlt', lang, { name: heart.name }) }
 			: undefined
 	);
 

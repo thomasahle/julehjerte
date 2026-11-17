@@ -1,7 +1,7 @@
 import { SITE_NAME, SITE_URL } from '$lib/config';
 import { t, type Language } from '$lib/i18n';
 import { ROUTES, heartPath, type RouteKey } from '$lib/i18n/routes';
-import { HEART_IMAGE_SIZE, heartImagePath } from '$lib/heartImage';
+import { FRONT_IMAGE_PATH, HEART_IMAGE_SIZE, heartImagePath } from '$lib/heartImage';
 import { ALL_HEART_IDS, categoryOfHeart, categoryTitle } from '$lib/data/categories';
 import { plainDescription } from '$lib/utils/descriptionLinks';
 import { truncateAtSentence, truncateAtWord } from '$lib/utils/text';
@@ -49,6 +49,9 @@ export function socialImage(lang: Language, heartId?: string): string {
 export const FRONT_PAGE_SOCIAL_IMAGE = `${SITE_URL}/og/social/gallery.png`;
 
 /** Absolute URL of a gallery heart's square picture ($lib/heartImage). */
+/** Absolute URL of the front page's own picture ($lib/heartImage). */
+export const FRONT_PAGE_IMAGE = `${SITE_URL}${FRONT_IMAGE_PATH}`;
+
 export function heartImageUrl(id: string): string {
 	return `${SITE_URL}${heartImagePath(id)}`;
 }
@@ -256,6 +259,12 @@ export function frontPageJsonLd(
 		url,
 		inLanguage: lang,
 		image: FRONT_PAGE_SOCIAL_IMAGE,
+		primaryImageOfPage: {
+			'@type': 'ImageObject',
+			url: FRONT_PAGE_IMAGE,
+			width: HEART_IMAGE_SIZE,
+			height: HEART_IMAGE_SIZE
+		},
 		mainEntity: {
 			'@type': 'ItemList',
 			numberOfItems: hearts.length,
