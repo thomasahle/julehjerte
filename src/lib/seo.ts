@@ -263,8 +263,9 @@ export function frontPageJsonLd(
 				'@type': 'ListItem',
 				position: i + 1,
 				url: `${SITE_URL}${heartPath(heart.id, lang)}`,
-				name: heart.name,
-				image: heartImageUrl(heart.id)
+				// No image here: the heart's picture belongs to its own page, and naming it on the
+				// front page too made image search send its visitors to the front page.
+				name: heart.name
 			}))
 		}
 	};

@@ -11,11 +11,8 @@ export const prerender = true;
 // slugs differ for the guide and about pages, so a single language-neutral path
 // is not enough. Paths always carry a trailing slash (trailingSlash = 'always',
 // so URLs without one 301-redirect on the live site).
-/**
- * How many of the gallery's hearts, in gallery order, the front page lists as
- * its images in the image sitemap. Each heart page lists its own.
- */
-const FRONT_PAGE_SITEMAP_IMAGES = 5;
+// Only the heart pages list images, each its own heart's picture: a picture also listed
+// under the front page was shown in image search as the front page's, and "Visit" led there.
 
 const staticPages: { key: RouteKey; priority: string }[] = [
 	{ key: 'home', priority: '1.0' },
@@ -39,7 +36,7 @@ export const GET: RequestHandler = async () => {
 			en: ROUTES[key].en,
 			priority,
 			lastmod: key === 'home' ? (dates?.gallery ?? null) : null,
-			images: key === 'home' ? ALL_HEART_IDS.slice(0, FRONT_PAGE_SITEMAP_IMAGES).map(heartImageUrl) : []
+			images: [] as string[]
 		})),
 		...ALL_HEART_IDS.map((heartId) => ({
 			da: heartPath(heartId, 'da'),

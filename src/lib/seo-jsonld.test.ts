@@ -185,8 +185,7 @@ describe('frontPageJsonLd', () => {
 				'@type': 'ListItem',
 				position: i + 1,
 				url: `${SITE_URL}${lang === 'en' ? '/en' : ''}/hjerte/${id}/`,
-				name: heartName(META[id], lang),
-				image: `${SITE_URL}/og/hearts/${id}.png`
+				name: heartName(META[id], lang)
 			});
 		});
 		for (const url of urls(data)) expect(url).toMatch(/^https:\/\/juleflet\.dk\//);
