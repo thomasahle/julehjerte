@@ -468,8 +468,10 @@ const boxPort = (t: number): Point => {
 		r = 50 / Math.max(...d.map(Math.abs));
 	return [50 + r * d[0], 50 + r * d[1]];
 };
-const edgeFamily = (p: Point): 'A' | 'B' =>
-	Math.abs(p[1]) < EPS || Math.abs(p[1] - 100) < EPS ? 'A' : 'B';
+/** The gates of a frame with one field for the motif (see `FIELD_STYLES`):
+ * one in the middle of each of `sectors`, the ring's quarters, cut an eighth
+ * of a turn wide. In the rays their legs run straight out from the centre; in
+ * the checks, square to the paper's edge. */
 export function outerFrame(
 	edges: Edge[],
 	frame: Ring,
@@ -477,23 +479,8 @@ export function outerFrame(
 	style: 'rays' | 'check'
 ) {
 	return sectors.map((i) => {
-		const t = Math.PI / 4 + (i * Math.PI) / 2,
-			low = ray(frame, [50, 50], t - Math.PI / 8),
-			mid = ray(frame, [50, 50], t),
-			high = ray(frame, [50, 50], t + Math.PI / 8);
-		let lp = boxPort(t - Math.PI / 8),
-			hp = boxPort(t + Math.PI / 8);
-		if (style === 'check') {
-			lp =
-				edgeFamily(lp) === 'A' ? [low.point[0], lp[1]] : [lp[0], low.point[1]];
-			hp =
-				edgeFamily(hp) === 'A'
-					? [high.point[0], hp[1]]
-					: [hp[0], high.point[1]];
-		}
-		add(edges, [lp, ...arc(frame, low, mid)], edgeFamily(lp), 'frame');
-		add(edges, [...arc(frame, mid, high), hp], edgeFamily(hp), 'frame');
-		return { point: mid.point, low, high, lp, hp, angle: t };
+		const angle = Math.PI / 4 + (i * Math.PI) / 2;
+		return { ...gateCuts(edges, frame, angle, Math.PI / 8, style === 'rays' ? 'radial' : 1), angle };
 	});
 }
 export function compile(edges: Edge[], phase: 0 | 1 = 1): CutGeometry {
@@ -2260,9 +2247,10 @@ const GATE_ROOM = 1.2 * PAPER_NECK_MM / PRINT_WIDTH_MM * 100;
  * A gate on the frame's ring at `angle`: the ring is cut from `half` before it
  * to `half` after it, on one sheet up to the gate and on the other from it,
  * and each sheet's cut leaves the ring's end in one straight leg to the
- * paper's edge. The legs meet the edge square in the checks; in the rays
- * (`fan` under 1) they lean away from the heart's middle. Returns the gate,
- * where the hidden cut to the motif starts.
+ * paper's edge. The legs meet the edge square in the checks; in the rays they
+ * lean away from the heart's middle (`fan` under 1, where a side has several
+ * gates) or run straight out from the centre (`radial`, a gate in the middle
+ * of its quarter). Returns the gate, where the hidden cut to the motif starts.
  *
  * With `beside`, the angle to the gates on either side, many gates share a
  * corner the heart's middle runs through (a pig's panels in the rays, a
@@ -2280,33 +2268,39 @@ export function framedGate(
 	ring: Ring,
 	angle: number,
 	half: number,
-	fan = 1,
+	fan: number | 'radial' = 1,
 	beside?: number
 ): Point {
+	return gateCuts(edges, ring, angle, half, fan, beside).point;
+}
+
+/** A gate's two cuts (see `framedGate`): the gate (`point`), the ends of its
+ * arc on the ring (`low`, `high`) and of its legs on the paper's edge (`lp`,
+ * `hp`). */
+function gateCuts(edges: Edge[], ring: Ring, angle: number, half: number, fan: number | 'radial', beside?: number) {
 	const quadrant = Math.floor(angle / (Math.PI / 2)), start = (quadrant * Math.PI) / 2;
 	const first: 'A' | 'B' = quadrant % 2 ? 'A' : 'B', other = first === 'A' ? 'B' : 'A';
 	const crowded = beside !== undefined && !(quadrant % 2);
 	const right = Math.cos(angle) > 0, down = Math.sin(angle) > 0;
-	// Where the leg of the gate at `at` that leaves the ring at `p` meets the edge.
-	const end = (p: Point, family: 'A' | 'B', at = angle): Point => {
+	const port = (at: number) => ray(ring, [50, 50], at);
+	// Where the leg that leaves the ring at the angle `to`, of the gate at `at`, meets the edge.
+	const end = (to: number, family: 'A' | 'B', at = angle): Point => {
+		if (fan === 'radial') return boxPort(to);
 		if (crowded && fan !== 1) {
 			const along = 50 * (family === 'A' ? (at - start) / (Math.PI / 2) : 1 - (at - start) / (Math.PI / 2));
 			return family === 'A' ? [right ? 100 - along : along, down ? 100 : 0] : [right ? 100 : 0, down ? 100 - along : along];
 		}
+		const p = port(to).point;
 		return family === 'A'
 			? [right ? 100 - (100 - p[0]) * fan : p[0] * fan, down ? 100 : 0]
 			: [right ? 100 : 0, down ? 100 - (100 - p[1]) * fan : p[1] * fan];
 	};
-	const port = (at: number) => ray(ring, [50, 50], at);
 	const low = port(angle - half), high = port(angle + half);
 	let mid = port(angle);
 	if (crowded) {
 		// The legs of the gates beside this one that are cut on the same sheet
 		// as the arc on that side of it: the last gate's second, the next's first.
-		const leg = (at: number, to: number, family: 'A' | 'B'): [Point, Point] => {
-			const from = port(to).point;
-			return [from, end(from, family, at)];
-		};
+		const leg = (at: number, to: number, family: 'A' | 'B'): [Point, Point] => [port(to).point, end(to, family, at)];
 		const legs = [
 			...angle - beside! > start ? [leg(angle - beside!, angle - beside! + half, other)] : [],
 			...angle + beside! < start + Math.PI / 2 ? [leg(angle + beside!, angle + beside! - half, first)] : []
@@ -2325,9 +2319,10 @@ export function framedGate(
 	}
 	// Both legs of a gate at a board junction on the ring end at the gate itself.
 	const along = (a: Port, b: Port) => near(a.point, b.point) ? [a.point] : arc(ring, a, b);
-	add(edges, [end(low.point, first), ...along(low, mid)], first, 'frame');
-	add(edges, [...along(mid, high), end(high.point, other)], other, 'frame');
-	return mid.point;
+	const lp = end(angle - half, first), hp = end(angle + half, other);
+	add(edges, [lp, ...along(low, mid)], first, 'frame');
+	add(edges, [...along(mid, high), hp], other, 'frame');
+	return { point: mid.point, low, high, lp, hp };
 }
 
 /** Where an open frame's leg from `gate` meets the paper edge through `corner`:
