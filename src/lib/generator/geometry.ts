@@ -840,46 +840,12 @@ export function generateCheckedText(
 			edges.push(...local);
 		}
 		cells.push(gates);
-		if (boundary) {
-			if (previous) add(edges, [previous, gates[3]], 'AB', 'shared');
-			previous = gates[1];
-		} else previous = connectLetterRow(edges, gates, previous);
+		// In a frame the cells are a grid of one row (see `connectCellGrid`).
+		previous = boundary ? gates[1] : connectLetterRow(edges, gates, previous);
 	}
 	if (!previous) throw new ConstructionError('empty', 'Empty text');
 	if (boundary) {
-		const step = Math.PI / (2 * cells.length),
-			half = step * 0.3;
-		for (const [i, gates] of cells.entries()) {
-			const north = framedGate(
-				edges,
-				boundary,
-				Math.PI + (i + 0.5) * step,
-				half
-			);
-			const south = framedGate(
-				edges,
-				boundary,
-				Math.PI / 2 - (i + 0.5) * step,
-				half
-			);
-			add(edges, [gates[0], north], 'AB', 'shared');
-			add(edges, [gates[2], south], 'AB', 'shared');
-		}
-		add(
-			edges,
-			[
-				cells[0][3],
-				framedGate(edges, boundary, (3 * Math.PI) / 4, Math.PI / 8)
-			],
-			'AB',
-			'shared'
-		);
-		add(
-			edges,
-			[previous, framedGate(edges, boundary, (7 * Math.PI) / 4, Math.PI / 8)],
-			'AB',
-			'shared'
-		);
+		connectCellGrid(edges, [cells], boundary);
 	} else {
 		add(edges, [[previous[0], 0], previous], 'A', 'frame');
 		add(edges, [previous, [100, previous[1]]], 'B', 'frame');
