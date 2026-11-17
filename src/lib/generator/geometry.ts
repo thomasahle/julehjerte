@@ -2248,72 +2248,81 @@ export function generateFramedText(text: string, font: Font, frame: Frame) {
 	return generateCheckedText(text, font, false, frame);
 }
 
+/** The paper beside a gate's cuts that is enough for it to stay midway along
+ * its arc: a paper's width and a fifth, as the paper check measures it. */
+const GATE_ROOM = 1.2 * PAPER_NECK_MM / PRINT_WIDTH_MM * 100;
+
+/**
+ * A gate on the frame's ring at `angle`: the ring is cut from `half` before it
+ * to `half` after it, on one sheet up to the gate and on the other from it,
+ * and each sheet's cut leaves the ring's end in one straight leg to the
+ * paper's edge. The legs meet the edge square in the checks; in the rays
+ * (`fan` under 1) they lean away from the heart's middle. Returns the gate,
+ * where the hidden cut to the motif starts.
+ *
+ * With `beside`, the angle to the gates on either side, many gates share a
+ * corner the heart's middle runs through (a pig's panels in the rays, a
+ * text's letters in the circle). A leg there runs close along the ring and
+ * the next gate's arc, which is cut on the same sheet, so the paper between
+ * the two is narrow at that arc's start: the gate. The gate then sits where
+ * that paper is widest, midway along its arc wherever there is room enough
+ * (`GATE_ROOM`); and in the rays the legs' ends are spread along the edge in
+ * the gates' order. Legs of one sheet never cross. (The legs once stepped
+ * aside off the ring before turning to the edge, which drew a jog in every
+ * check beside the circle.)
+ */
 export function framedGate(
 	edges: Edge[],
 	ring: Ring,
 	angle: number,
 	half: number,
 	fan = 1,
-	spread = false
+	beside?: number
 ): Point {
-	const low = ray(ring, [50, 50], angle - half),
-		mid = ray(ring, [50, 50], angle),
-		high = ray(ring, [50, 50], angle + half);
-	const quadrant = Math.floor(angle / (Math.PI / 2));
-	const first: 'A' | 'B' = quadrant % 2 ? 'A' : 'B';
-	const edge = (p: Point, family: 'A' | 'B'): Point =>
-		family === 'A'
-			? [
-					Math.cos(angle) > 0 ? 100 - (100 - p[0]) * fan : p[0] * fan,
-					Math.sin(angle) > 0 ? 100 : 0
-				]
-			: [
-					Math.cos(angle) > 0 ? 100 : 0,
-					Math.sin(angle) > 0 ? 100 - (100 - p[1]) * fan : p[1] * fan
-				];
-	const route = (point: Point, family: 'A' | 'B'): Ring => {
-		if (!spread || quadrant % 2) return [point, edge(point, family)];
-		// Where many gates share a corner the heart's middle runs through, a
-		// direct projection would run a leg along the circle. Each leg steps a
-		// quarter of the margin off it instead, then runs straight to the edge:
-		// square in the checks, fanned to ends spread in the gates' order in
-		// the rays, so legs of one sheet never cross. (Routes stepping round
-		// the corner nested every leg in the next, boxes in boxes.) Reflect
-		// every quadrant into the upper-left corner, reversing the angular
-		// order for a single-axis reflection.
-		const reflect = (p: Point): Point =>
-			[quadrant === 0 || quadrant === 3 ? 100 - p[0] : p[0],
-				quadrant === 0 || quadrant === 1 ? 100 - p[1] : p[1]];
-		const p = reflect(point),
-			rawFraction = (angle - (quadrant * Math.PI) / 2) / (Math.PI / 2),
-			fraction = quadrant % 2 ? 1 - rawFraction : rawFraction;
-		const aside = Math.min(...ring.map((p) => p[0])) / 4;
-		const topRoute = (p: Point, t: number): Ring => {
-			if (fan === 1) return p[0] < p[1] - EPS ? [p, [p[0] - aside, p[1]], [p[0] - aside, 0]] : [p, [p[0], 0]];
-			const r = distance(p, [50, 50]);
-			return [p, [50 + (p[0] - 50) * (r + aside) / r, 50 + (p[1] - 50) * (r + aside) / r], [50 * t, 0]];
-		};
-		const points =
-			family === 'A'
-				? topRoute(p, fraction)
-				: topRoute([p[1], p[0]], 1 - fraction).map(([x, y]) => [y, x] as Point);
-		return points.map(reflect);
+	const quadrant = Math.floor(angle / (Math.PI / 2)), start = (quadrant * Math.PI) / 2;
+	const first: 'A' | 'B' = quadrant % 2 ? 'A' : 'B', other = first === 'A' ? 'B' : 'A';
+	const crowded = beside !== undefined && !(quadrant % 2);
+	const right = Math.cos(angle) > 0, down = Math.sin(angle) > 0;
+	// Where the leg of the gate at `at` that leaves the ring at `p` meets the edge.
+	const end = (p: Point, family: 'A' | 'B', at = angle): Point => {
+		if (crowded && fan !== 1) {
+			const along = 50 * (family === 'A' ? (at - start) / (Math.PI / 2) : 1 - (at - start) / (Math.PI / 2));
+			return family === 'A' ? [right ? 100 - along : along, down ? 100 : 0] : [right ? 100 : 0, down ? 100 - along : along];
+		}
+		return family === 'A'
+			? [right ? 100 - (100 - p[0]) * fan : p[0] * fan, down ? 100 : 0]
+			: [right ? 100 : 0, down ? 100 - (100 - p[1]) * fan : p[1] * fan];
 	};
+	const port = (at: number) => ray(ring, [50, 50], at);
+	const low = port(angle - half), high = port(angle + half);
+	let mid = port(angle);
+	if (crowded) {
+		// The legs of the gates beside this one that are cut on the same sheet
+		// as the arc on that side of it: the last gate's second, the next's first.
+		const leg = (at: number, to: number, family: 'A' | 'B'): [Point, Point] => {
+			const from = port(to).point;
+			return [from, end(from, family, at)];
+		};
+		const legs = [
+			...angle - beside! > start ? [leg(angle - beside!, angle - beside! + half, other)] : [],
+			...angle + beside! < start + Math.PI / 2 ? [leg(angle + beside!, angle + beside! - half, first)] : []
+		];
+		const room = (p: Point) => Math.min(...legs.map(([a, b]) => {
+			const d = sub(b, a), t = Math.max(0, Math.min(1, dot(sub(p, a), d) / dot(d, d)));
+			return distance(p, mix(a, b, t));
+		}));
+		// Midway, else the nearest place to it with room enough, else the roomiest.
+		let best = room(mid.point);
+		for (let k = 1; k < 8 && best < GATE_ROOM; k++) for (const side of [-1, 1]) {
+			const candidate = port(angle + (side * k * half) / 8), found = room(candidate.point);
+			if (found > best + EPS) { best = found; mid = candidate; }
+			if (best >= GATE_ROOM) break;
+		}
+	}
 	// Both legs of a gate at a board junction on the ring end at the gate itself.
 	const along = (a: Port, b: Port) => near(a.point, b.point) ? [a.point] : arc(ring, a, b);
-	add(
-		edges,
-		[...route(low.point, first).reverse(), ...along(low, mid).slice(1)],
-		first,
-		'frame'
-	);
-	const other = first === 'A' ? 'B' : 'A';
-	add(
-		edges,
-		[...along(mid, high), ...route(high.point, other).slice(1)],
-		other,
-		'frame'
-	);
+	add(edges, [end(low.point, first), ...along(low, mid)], first, 'frame');
+	add(edges, [...along(mid, high), end(high.point, other)], other, 'frame');
 	return mid.point;
 }
 
@@ -2855,7 +2864,7 @@ export function connectCellGrid(
 	const connect = (gate: Point, side: number, index: number, count: number) => {
 		if (boundary) {
 			const step = Math.PI / (2 * count);
-			const framed = (angle: number, half: number) => framedGate(edges, boundary, angle, half, fan, spread);
+			const framed = (angle: number, half: number) => framedGate(edges, boundary, angle, half, fan, spread ? step : undefined);
 			add(
 				edges,
 				[gate, ...legs ? legs(side, index, framed, gate) : [framed(

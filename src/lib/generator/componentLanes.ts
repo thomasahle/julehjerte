@@ -85,11 +85,12 @@ export function generateComponentLanes(rings: Ring[], frame: Frame | OpenFrame, 
 	// corners, where the legs stepping round them cross it: passing, its lanes
 	// leave the circle nearer the diagonals and run straight to the edges.
 	const diagonal = pass && extraStrips > 0;
+	const beside = diagonal ? undefined : Math.PI / (2 * columns);
 	for (let col = 0; col < columns; col++) {
 		const angle = diagonal ? Math.PI / 4 + (col - 1) * .25 + .05 : (col + .5) * Math.PI / (2 * columns);
 		const outside = [
-			framedGate(edges, boundary, Math.PI + angle, half, fan, !diagonal),
-			framedGate(edges, boundary, Math.PI / 2 - angle, half, fan, !diagonal)
+			framedGate(edges, boundary, Math.PI + angle, half, fan, beside),
+			framedGate(edges, boundary, Math.PI / 2 - angle, half, fan, beside)
 		];
 		// Aligned approaches run above and below the artwork before meeting the
 		// frame. The direct variant can be better when the frame is very flat.

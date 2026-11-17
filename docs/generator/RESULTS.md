@@ -1343,6 +1343,32 @@ hearts change, none in status, each with fewer corners and fewer weak places
 150 library motifs in Stråler and Tern at 70% and 100% (600 hearts) 54 change,
 none in status or tips, each with 8–40 fewer corners.
 
+## Many gates in a corner: no step aside
+
+The step a quarter of the margin off the circle drew a jog in the picture:
+every check beside the circle had a small notch where its side met the arc
+(four on Jul in the circle frame, sixteen on Glædelig Jul, eight on the pig
+in Stråler). Each leg is now one straight cut from the end of its arc to the
+paper's edge, as the legs of a single gate always were.
+
+The step had a use: a leg runs close along the circle near the corner's two
+ends, and the next gate's arc there is cut on the same sheet, so the paper
+between leg and arc is narrowest at that arc's start, the gate. Run straight,
+the 7- and 8-letter texts lost paper there (William 14 → 19 weak places,
+Glædelig Jul 37 → 41). So a gate in such a corner now sits where the paper
+beside its two cuts is widest: midway along its arc wherever there is a
+paper's width and a fifth (3 units), else moved along the arc away from the
+leg it lies beside. The move is unseen: the arc is the same, only the sheet
+that cuts each part of it changes.
+
+Sixty texts in the circle frame (15 texts of 3–8 letters on one to three
+lines, in Nunito, Bree Serif, Kalam and Oswald): the jogs go from 284 to 0;
+weak places (413), needle tips (103) and sharp tips (277) are each heart's
+own as before, as is every thinnest neck. Seventy figures (50 motifs in
+Stråler, 20 featured in Strålekrans): jogs 12 → 0, weak places (36) and tips
+unchanged heart for heart. Hearts whose gates are not spread are cut exactly
+as before.
+
 ## Nine strips at 85%: no specks in hidden cuts
 
 At a completion range's end (nine strips at 35.6, the 85% setting) a hidden

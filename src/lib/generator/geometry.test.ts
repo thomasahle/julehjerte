@@ -204,9 +204,10 @@ describe('constructive figure generator', () => {
 	});
 	it('runs many gates\' legs straight from the circle to the paper\'s edge', () => {
 		// Five gates in a corner the heart's middle runs through (a pig's
-		// panels in the rays): their legs stepped round the corner, every leg
-		// nested in the next. Now each leaves the circle in two stretches at
-		// most, and legs of one sheet never cross.
+		// panels in the rays, a text's letters in the circle): each leg is one
+		// straight cut from the circle to the paper's edge, with no step
+		// aside on the way (a jog in the picture), square to the edge in the
+		// checks, and legs of one sheet never cross.
 		const ring = frameRing('circle', 70), count = 5, step = Math.PI / 2 / count;
 		const crosses = (a: Edge, b: Edge) => {
 			const side = (p: Point, q: Point, r: Point) => Math.sign((q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]));
@@ -215,12 +216,38 @@ describe('constructive figure generator', () => {
 		for (const fan of [.72, 1]) for (const quadrant of [0, 2]) {
 			const edges: Edge[] = [];
 			for (let i = 0; i < count; i++)
-				framedGate(edges, ring, quadrant * Math.PI / 2 + (i + .5) * step, step * .3, fan, true);
+				framedGate(edges, ring, quadrant * Math.PI / 2 + (i + .5) * step, step * .3, fan, step);
 			const legs = edges.filter(e => [e.from, e.to].some(p => Math.hypot(p[0] - 50, p[1] - 50) > 35 + 1e-6));
-			expect(legs.length, `${fan} ${quadrant}`).toBeLessThanOrEqual(4 * count);
+			expect(legs.length, `${fan} ${quadrant}`).toBe(2 * count);
+			for (const leg of legs) {
+				const [on, out] = Math.hypot(leg.from[0] - 50, leg.from[1] - 50) < 35 + 1e-6 ? [leg.from, leg.to] : [leg.to, leg.from];
+				expect(Math.hypot(on[0] - 50, on[1] - 50), `${fan} ${quadrant}`).toBeCloseTo(35, 1);
+				expect(out[leg.family === 'A' ? 1 : 0] % 100, `${fan} ${quadrant}`).toBeCloseTo(0, 6);
+				if (fan === 1) expect(out[leg.family === 'A' ? 0 : 1], `${quadrant}`).toBeCloseTo(on[leg.family === 'A' ? 0 : 1], 6);
+			}
 			for (const [i, a] of legs.entries()) for (const b of legs.slice(i + 1))
 				if (a.family === b.family) expect(crosses(a, b), `${fan} ${quadrant}`).toBe(false);
-		}
+		}	});
+	it('sets a crowded gate where the paper beside its cuts is widest', () => {
+		// Eight letters' gates in one corner of the circle frame: the second
+		// gate's arc starts 1.2 units from the first gate's leg where the gate
+		// is midway along it, and both are cut on one sheet. The gate moves
+		// along its arc, away from that leg, as far as the paper needs; three
+		// gates have room enough and stay midway.
+		const ring = frameRing('circle', 80);
+		const gates = (count: number) => {
+			const step = Math.PI / 2 / count, edges: Edge[] = [];
+			return Array.from({ length: count }, (_, i) => {
+				const angle = Math.PI + (i + .5) * step, gate = framedGate(edges, ring, angle, step * .3, 1, step);
+				return Math.atan2(gate[1] - 50, gate[0] - 50) + (gate[1] < 50 ? 2 * Math.PI : 0) - angle;
+			});
+		};
+		for (const moved of gates(3)) expect(moved).toBeCloseTo(0, 6);
+		const eight = gates(8), step = Math.PI / 2 / 8;
+		// Away from the leg it runs along: the first gates forward, the last back.
+		expect(eight[1]).toBeGreaterThan(.2 * step * .3);
+		expect(eight[6]).toBeLessThan(-.2 * step * .3);
+		for (const moved of eight) expect(Math.abs(moved)).toBeLessThan(step * .3);
 	});
 });
 
