@@ -1,11 +1,10 @@
 import { gridClearance } from '$lib/geometry/clearance';
 import {
-	ConstructionError, type Ring, type Point, type Edge, type Frame, type Contour, type OpenFrame,
-	forest, centroid, uprightToSheet, frameRing, framedGate, twoPortMotif, openLeg, add, compile
+	ConstructionError, type Ring, type Point, type Edge, type Frame, type OpenFrame,
+	forest, centroid, uprightToSheet, frameRing, framedGate, twoPortMotif, openLeg, add, compile, contoursOf
 } from './geometry';
 import { rerouteSharedCuts } from './sharedCuts';
 
-const contoursOf = (node: Contour): Ring[] => [node.ring, ...node.children.flatMap(contoursOf)];
 
 /** Three parallel lanes keep separate islands with their own open cutting paths.
  * A counter stays with its parent; two coincident connections open it into the

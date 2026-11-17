@@ -8,7 +8,7 @@ import { PAPER_NECK_MM, PRINT_WIDTH_MM } from '$lib/geometry/paperNecks';
 import { cellTipCounts, fewerCutTips } from './cutQuality';
 import {
 	ConstructionError, type Font, type Ring, type Point, type Edge,
-	twoPortMotif, usableMotif, relieveMotifTips, add, compile, mix
+	twoPortMotif, usableMotif, relieveMotifTips, add, compile, mix, textLines
 } from './geometry';
 
 type LetterCell = {
@@ -90,7 +90,7 @@ export function checkeredLayouts(text: string, mirror = false): CheckeredLayout[
 
 function placeLetters(text: string, mirror = false): CheckeredLayout[] {
 	if (!text.trim()) throw new ConstructionError('empty', 'Empty text');
-	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n').map(line => [...line]);
+	const lines = textLines(text).map(line => [...line]);
 	const k = lines.length;
 	let smaller: CheckeredLayout[] = [];
 	for (let n = 2; n <= MAX_GRID_SIZE; n++) {

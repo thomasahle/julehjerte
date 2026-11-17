@@ -1,13 +1,12 @@
 import {
 	forest, centroid, area, sub, dot, inside, distance, mix, frameRing, ray,
 	uprightToSheet, fourPortMotif, connectCellGrid, compile, convexEnvelope, ConstructionError,
-	type Ring, type Point, type Edge, type Contour, type Frame, type OpenFrame
+	type Ring, type Point, type Edge, type Frame, type OpenFrame, contoursOf, gateAngle
 } from './geometry';
 import { clipContours, stitch, filledSeamGate } from './panels';
 import { rerouteSharedCuts } from './sharedCuts';
 import { gridClearance } from '$lib/geometry/clearance';
 
-const contoursOf = (node: Contour): Ring[] => [node.ring, ...node.children.flatMap(contoursOf)];
 
 /** How `generateComponentFigure` lays the islands in its grid. */
 export type ComponentOptions = {
@@ -147,12 +146,7 @@ export function generateComponentFigure(rings: Ring[], frame: Frame | OpenFrame 
 		envelope.reduce((sum, p) => sum + p[0], 0) / envelope.length,
 		envelope.reduce((sum, p) => sum + p[1], 0) / envelope.length
 	];
-	const exterior = (side: number, index: number, count: number) => {
-		const step = Math.PI / (2 * count), angle = side === 0 ? Math.PI + (index + .5) * step
-			: side === 2 ? Math.PI / 2 - (index + .5) * step
-				: side === 3 ? Math.PI - (index + .5) * step : 3 * Math.PI / 2 + (index + .5) * step;
-		return ray(envelope, origin, angle).point;
-	};
+	const exterior = (side: number, index: number, count: number) => ray(envelope, origin, gateAngle(side, index, count)).point;
 	for (let row = 0; row < rows; row++) for (let col = 0; col < columns; col++) {
 		const gates = cells[row][col], part = matrix[row][col];
 		gates[0] = row ? cells[row - 1][col][2] : exterior(0, col, columns);

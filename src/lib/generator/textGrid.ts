@@ -18,7 +18,8 @@ import {
 	compile,
 	connectCellGrid,
 	forest,
-	area
+	area,
+	textLines
 } from './geometry';
 import { gridClearance } from '$lib/geometry/clearance';
 import type { BoardPattern } from './boardCompletion';
@@ -35,7 +36,7 @@ export const roomOf = (air: boolean | number) => typeof air === 'number' ? air :
  * divides, for each kind of cell. Narrow letters such as i, l and j make
  * square cells much wider than they need. */
 export function squareCellScale(text: string, font: Font, air: boolean | number = false): number {
-	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n').map(line => [...line]);
+	const lines = textLines(text).map(line => [...line]);
 	const cols = Math.max(...lines.map(line => line.length)), rows = lines.length;
 	const glyphs = lines.flat().flatMap(char => font.glyphs[char] ? [font.glyphs[char]] : []);
 	const ys = glyphs.flatMap(glyph => glyph.contours.flat().map(p => p[1]));
@@ -56,6 +57,62 @@ export function squareCellScale(text: string, font: Font, air: boolean | number 
 	return fitted / ((cols + rows) * cell);
 }
 
+/** How `generateTextGrid` lays out a text's cells, divides its letters into
+ * panels, and joins them. */
+export type TextGridOptions = {
+	// The cells: as wide as their letters or square, the room around a letter
+	// in its cell and how far the block fills its frame, a letter's size in
+	// its cell, and the block's own scale where the caller has measured it.
+	fittedCells?: boolean;
+	padding?: number;
+	frameFill?: number;
+	letterScale?: number;
+	scale?: number;
+	/** Where a motif sits in its cell, if not on its box's centre. */
+	centre?: Point;
+	// The panels each letter is divided into, and where their seams lie:
+	// evenly over the cell, over the ink only, by the letter's own shape, or
+	// through one chosen point.
+	columns?: number;
+	slices?: number;
+	inkPanels?: boolean;
+	adaptivePanels?: boolean;
+	junction?: Point;
+	// Where the cuts between panels and cells meet the letters.
+	filled?: boolean;
+	onSeamChange?: () => void;
+	adaptGates?: boolean;
+	onGateChange?: () => void;
+	guardSeams?: boolean;
+	guardedAttachments?: boolean;
+	contourApproaches?: boolean;
+	// How a cell's hidden cuts reach its letter (see `fourPortMotif`).
+	practical?: boolean;
+	compound?: boolean;
+	onCompound?: () => void;
+	balanced?: boolean;
+	onCrowded?: () => void;
+	bentSpokes?: boolean;
+	boundaryIslands?: boolean;
+	nested?: boolean;
+	bases?: boolean;
+	around?: boolean;
+	legs?: boolean;
+	/** The room the hidden cuts keep, where not the grid's own clearance. */
+	margin?: number;
+	/** Passed to the frame's legs (see `connectCellGrid`). */
+	spread?: boolean;
+	// A motif in a circle on a regular board (see `boardRecipes`): its
+	// strips, the circle's width, the lines its legs lie on, the pattern that
+	// completes them, and how far out the circle's gates sit.
+	board?: number;
+	circle?: number;
+	lines?: number[];
+	completion?: BoardPattern;
+	gate?: number;
+	stepIn?: boolean;
+};
+
 /** The text grid's cells and the letters' scale, before anything is routed:
  * shared by `generateTextGrid` and the picture drawn before its cuts. */
 export function measureTextGrid(
@@ -63,9 +120,9 @@ export function measureTextGrid(
 	font: Font,
 	air: boolean | number = false,
 	frame?: Frame,
-	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; nested?: boolean; bases?: boolean; around?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point; completion?: BoardPattern } = {}
+	layout: TextGridOptions = {}
 ) {
-	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
+	const lines = textLines(text);
 	const cols = Math.max(...lines.map((l) => [...l].length)),
 		rows = lines.length;
 	if (!text.trim()) throw new ConstructionError('empty', 'Empty text');
@@ -163,7 +220,7 @@ export function generateTextGrid(
 	font: Font,
 	air: boolean | number = false,
 	frame?: Frame,
-	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; nested?: boolean; bases?: boolean; around?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; legs?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; lines?: number[]; junction?: Point; circle?: number; scale?: number; centre?: Point; completion?: BoardPattern; margin?: number; gate?: number; stepIn?: boolean } = {}
+	layout: TextGridOptions = {}
 ) {
 	const { matrix, rows, cols, height, cy, padding, cellHeight, widths, inkWidths, shifts, span, fullHeight, scale, boundary, points } =
 		measureTextGrid(text, font, air, frame, layout);

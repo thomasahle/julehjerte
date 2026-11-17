@@ -77,6 +77,48 @@ from the gates to every piece and island. How those cuts get round what is in
 their way is a shortest-path search in `reach.ts`, which knows nothing of
 hearts.
 
+### The retries
+
+Where a frame's recipes all refuse, `generateOnceMade` tries the retries in one
+fixed order. Each returns at once for a frame that is not its own, so a frame
+meets only its own, in the order of this table:
+
+| Retry | Frames it serves |
+| --- | --- |
+| cuts rerouted (`rerouteSharedCuts`), then curved (`curveSharedCuts`), on the constructions the recipes left unfinished; between the two, Strålekrans' medallion routed again at its border's clearance | every figure frame; curved also for text |
+| `retryPanelLayouts` | text in cells or the circle; Cirkel med dobbelt bort; the open frames; Stråler, Strålekrans |
+| `retryFittedSupports` | the open frames (Tæt om figuren, Kiler, the retired silhouette) |
+| the seam tilted, later split through the counters (inline) | Cirkel med dobbelt bort |
+| `retryComponentLanes`, `retryFigureIslandPorts`, `retryWideComponentContacts` | Stråler, Strålekrans and the open frames (their lanes after the frame's own retries) |
+| `retrySunburstPanels`, `retrySunburstComponents` | Strålekrans |
+| `retryFittedComponentEnvelope`, `retryFittedGateClearance` | the open frames |
+| `retryChainContacts`, `retryCornerLanes`, `retryBentCornerLegs` | Tern i spidserne |
+| `retryTextPanelIslands`, then `retryBranchedText` (one word in the circle), `retryPanelReserve`, `retryGuardedPanels` | text in cells or the circle |
+| `hardToCutResult` | every frame: the best unfinished construction, with the warning |
+
+A text that finishes is looked at once more by `improveTextPanelTips`.
+
+### What the frames share
+
+Every frame but Figur i ternene and Tern i spidserne is a grid of **cells**.
+A cell holds an outline (a letter, a motif, or the part of one that a panel
+clips out) and has four gates, one on each side; `fourPortMotif` cuts the
+outline between the gates. Cells that are neighbours share a gate, and
+`connectCellGrid` gives each outer gate its way to the paper's edge:
+
+- with no ring, two legs straight to the two edges at its corner (`openLeg`:
+  the woven text frames, the open figure frames);
+- on a ring, a gate on the ring (`framedGate`) with an arc and two legs
+  (the circle frames: `gateAngle` says where on the ring);
+- on a regular board, the board's own lines (`boardLegs`, `completionLegs`).
+
+A text is such a grid with a letter in each cell (`textGrid.ts`); a figure is
+one cell (`generateFourPortFigure`), its panels (`panels.ts`) or its pieces
+(`components.ts`). The two meet in both directions: a figure on a board is
+the one letter of a text (`boardMotif.ts`), and a text in Figur i ternene or
+Cirkel med dobbelt bort is a figure whose outline is the letters'
+(`textFigure.ts`).
+
 Builders take their choices as a named options object (`CornerOptions`,
 `ComponentOptions`, `FittedOptions`, `PanelOptions`, …), not as positional flags; a new
 choice is a new field with the old behaviour as its default.
@@ -125,9 +167,10 @@ it does: `scripts/generator/identity.mjs` writes it into each row.
 
 The rule is that no heart gets worse, and a refactoring must leave every heart
 exactly as it was. The tests cannot show that: they pin a few hundred
-properties, not the cuts. `scripts/generator/identity.mjs` does. It makes 567
-quick figures over the twelve frames, as the page makes them, and writes a
-hash of each heart's cuts and picture.
+properties, not the cuts. `scripts/generator/identity.mjs` does. It makes 711
+quick figures over the twelve figure frames and 234 texts over the six text
+frames (13 texts in three fonts), as the page makes them, and writes a hash of
+each heart's cuts and picture.
 
 ```sh
 # the baseline, from a worktree of the commit before the change
@@ -138,8 +181,10 @@ node scripts/generator/identity.mjs compare tmp/generator/identity ../before/tmp
 ```
 
 `compare` prints each frame's count and every heart that differs, and exits 1
-where one does. `FIRST=4 SIZES=70` makes a first check of 48 hearts in under a
-minute; the whole set takes a few minutes.
+where one does. `FIRST=4 SIZES=70` with the figure frames' names makes a first
+check of 48 figures in under a minute, `FIRST=1` with the text frames' names
+(`text-squares`, `text-letters`, `text-checkered`, `text-circle`, `text-strips`,
+`text-layers`) one of 78 texts; the whole set takes several minutes.
 
 The quick figures seldom need a last resort. A change to the retries, the
 second tries or the last resorts should also be run on hearts that do; the

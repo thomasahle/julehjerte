@@ -135,6 +135,8 @@ export function forest(rings: Ring[]): Contour[] {
 	}
 	return roots;
 }
+/** A contour with all that lies in it: its ring, then its holes and their islands. */
+export const contoursOf = (node: Contour): Ring[] => [node.ring, ...node.children.flatMap(contoursOf)];
 export function arc(r: Ring, a: Port, b: Port): Ring {
 	const end = b.index <= a.index + EPS ? b.index + r.length : b.index,
 		points = [a.point];
@@ -687,6 +689,8 @@ export function generateFigure(
 export type Font = {
 	glyphs: Record<string, { advance: number; contours: Ring[] }>;
 };
+/** A text's lines, as every text frame reads them. */
+export const textLines = (text: string): string[] => text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 /** A row of four-port letter cells, following the construction illustrated in
  * Brodal's slides (independent code and OFL font outlines). Adjacent E/W ports
  * share a cut; N/S ports continue as the ordinary A/B checkerboard. Counters
@@ -2834,6 +2838,23 @@ function overlapGates(edges: Edge[], ring: Ring, ends: End[], pairs: [End, End][
 	return gates.map(gate => gate && { point: gate.port.point, low: gate.low, high: gate.high });
 }
 
+/** Where on the frame's ring the gate of an outer cell lies: the `index`th of
+ * the `count` cells along the grid's top (side 0), right (1), bottom (2) or
+ * left (3). Each side has a quarter of the ring, its cells' gates evenly along
+ * it: the top's quarter is the corner at the heart's notch, the bottom's the
+ * corner at its tip, where the grid, upright in the heart, has its top and
+ * bottom. */
+export function gateAngle(side: number, index: number, count: number): number {
+	const step = Math.PI / (2 * count);
+	return side === 0
+		? Math.PI + (index + 0.5) * step
+		: side === 2
+			? Math.PI / 2 - (index + 0.5) * step
+			: side === 3
+				? Math.PI - (index + 0.5) * step
+				: (3 * Math.PI) / 2 + (index + 0.5) * step;
+}
+
 /** Join neighbouring motif cells with coincident cuts, and give every outer
  * cell its own connection to the paper edge or the decorative frame. On a
  * regular board of `strips` strips (`board`), the frame's legs lie on its lines. */
@@ -2867,16 +2888,7 @@ export function connectCellGrid(
 			const framed = (angle: number, half: number) => framedGate(edges, boundary, angle, half, fan, spread ? step : undefined);
 			add(
 				edges,
-				[gate, ...legs ? legs(side, index, framed, gate) : [framed(
-					side === 0
-						? Math.PI + (index + 0.5) * step
-						: side === 2
-							? Math.PI / 2 - (index + 0.5) * step
-							: side === 3
-								? Math.PI - (index + 0.5) * step
-								: (3 * Math.PI) / 2 + (index + 0.5) * step,
-					count === 1 ? Math.PI / 8 : step * band
-				)]],
+				[gate, ...legs ? legs(side, index, framed, gate) : [framed(gateAngle(side, index, count), count === 1 ? Math.PI / 8 : step * band)]],
 				'AB',
 				'shared'
 			);

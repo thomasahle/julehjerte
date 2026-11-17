@@ -2,14 +2,13 @@
  * components, with empty outer lanes travelling beside the central artwork. */
 import {
 	add, compile, contourChain, twoPortMotif, forest, uprightToSheet,
-	ConstructionError, type Contour, type Ring, type Edge, type Point
+	ConstructionError, type Ring, type Edge, type Point, contoursOf
 } from './geometry';
 import { gridClearance } from '$lib/geometry/clearance';
 import { PAPER_NECK_MM, PRINT_WIDTH_MM } from '$lib/geometry/paperNecks';
 import { contactChains, type ContourChain } from './chainContacts';
 import { clipContours, stitch } from './panels';
 
-const contoursOf = (node: Contour): Ring[] => [node.ring, ...node.children.flatMap(contoursOf)];
 
 /** Three separate counters across one silhouette naturally belong to the
  * three lanes. Detect their positions so editing need not exhaust one-lane

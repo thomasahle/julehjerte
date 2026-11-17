@@ -5,7 +5,7 @@ import { generateLayeredFigure } from './layers';
 import { CORNER_GAP, generateCornerChecks, hasThreeCounterLanes, type CornerOptions } from './cornerChecks';
 import { generateFittedFigure, mirrorMean, mirrorSymmetric, type GateTies } from './fitted';
 import { sunburstBorder } from './sunburst';
-import { generateTextGrid, roomOf, squareCellScale } from './textGrid';
+import { generateTextGrid, roomOf, squareCellScale, type TextGridOptions } from './textGrid';
 import { NO_WHOLE_STRIPS, STRIPS, crowdedHiddenCutsSetAside, slidePlace, stripFigures, withCrowdedHiddenCuts } from './stripFigure';
 import { BOARD_STRIPS, MOTIF, boardPlacement, boardRadius, boardScale, boardSetting, boardSteps, enclosedAlong, motifChoices, squareChoices, type BoardStyle } from './boardMotif';
 import { TEXT_LAST_STRIPS, TEXT_STRIPS, isTextFigure, textFigureRequest } from './textFigure';
@@ -98,7 +98,8 @@ import {
 	type TextFrame,
 	type Font,
 	type Point,
-	type Edge
+	type Edge,
+	textLines
 } from './geometry';
 export type GeneratorRequest = {
 	mode: 'figure' | 'text';
@@ -151,6 +152,11 @@ export type GeneratorRequest = {
 /** The room a text asks around each letter in its cell (see `roomOf`): the
  * visitor's, else the airy or woven frame's own. */
 const textRoom = (request: GeneratorRequest) => request.room ?? request.textFrame === 'air';
+/** The request's text in cells in its frame (`generateTextGrid`): the cells
+ * and letter size it asks for, laid out and joined as `layout` says besides. */
+const textGridOf = (request: GeneratorRequest, layout: TextGridOptions = {}) =>
+	generateTextGrid(request.text ?? '', request.font!, textRoom(request), textPanel(request.textFrame ?? 'woven'),
+		{ fittedCells: request.fittedCells, letterScale: request.letterScale, ...layout });
 /** The choice a motif on a board (small motifs, equal squares) made at its
  * default size: which of its `frameAlternatives`, on a board of how many
  * strips per side. */
@@ -2604,7 +2610,7 @@ function retrySunburstPanels(request: GeneratorRequest, curveFitter: ReturnType<
 function retryTextPanelIslands(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>, closePanels: Construction[]): GeneratorResult | undefined {
 	const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
 	if (request.mode !== 'text' || !font || !text.trim() || frame === 'checkered') return;
-	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n'),
+	const lines = textLines(text),
 		letters = Math.max(...lines.map(line => [...line].length)),
 		shape = textPanel(frame);
 	for (const frameFill of shape ? [.88, .94] : [.88]) {
@@ -2612,7 +2618,7 @@ function retryTextPanelIslands(request: GeneratorRequest, curveFitter: ReturnTyp
 		for (const padding of [.16, .12]) for (const [columns, slices] of [[1, 2], [2, 1]]) {
 			if (columns * letters + slices * lines.length + 1 > 20) continue;
 			try {
-				const construction = generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+				const construction = textGridOf(request, {
 					padding, frameFill, columns, slices, spread: true, filled: true, adaptivePanels: true,
 					guardSeams: true, practical: true, compound: true, boundaryIslands: true
 				});
@@ -2680,7 +2686,7 @@ function retryPanelReserve(request: GeneratorRequest, candidates: Construction[]
 function retryGuardedPanels(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
 	const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
 	if (request.mode !== 'text' || !font || !text.trim() || frame === 'checkered') return;
-	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n'),
+	const lines = textLines(text),
 		letters = Math.max(...lines.map(line => [...line].length)),
 		shape = textPanel(frame);
 	let best: GeneratorResult | undefined;
@@ -2689,7 +2695,7 @@ function retryGuardedPanels(request: GeneratorRequest, curveFitter: ReturnType<t
 			if (columns * letters + slices * lines.length + 1 > 20) continue;
 			let construction: Construction;
 			try {
-				construction = generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+				construction = textGridOf(request, {
 					padding, frameFill, columns, slices, spread: true, filled: true, adaptivePanels: true,
 					guardSeams: true, practical: true, compound: true, boundaryIslands: true,
 					contourApproaches: true, guardedAttachments: true
@@ -2958,12 +2964,11 @@ function improveTextPanelTips(request: GeneratorRequest, original: GeneratorResu
 	const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
 	if (request.mode !== 'text' || !font || !cutTipCounts(original.design)[1] ||
 		frame === 'checkered') return original;
-	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
+	const lines = textLines(text);
 	const strips = 2 * Math.max(...lines.map(line => [...line].length)) + 3 * lines.length + 1;
 	if (strips > Math.min(20, original.design.gridSize.x, original.design.gridSize.y)) return original;
 	try {
-		const shape = textPanel(frame);
-		const construction = generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+		const construction = textGridOf(request, {
 			columns: 2, slices: 3, spread: true, filled: true, inkPanels: true,
 			guardSeams: true, practical: true, compound: true, balanced: true,
 			boundaryIslands: true, contourApproaches: true
@@ -2994,11 +2999,10 @@ function retryPanelLayouts(request: GeneratorRequest, curveFitter?: ReturnType<t
 	if (request.mode === 'text') {
 		const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
 		if (!font || !text.trim() || frame === 'checkered') return;
-		const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
+		const lines = textLines(text);
 		if (2 * Math.max(...lines.map(line => [...line].length)) + 3 * lines.length + 1 > 20) return;
-		const shape = textPanel(frame);
 		for (const adaptivePanels of [false, true]) recipes.push(() =>
-			generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+			textGridOf(request, {
 				columns: 2, slices: 3, filled: true, spread: true,
 				practical: true, compound: true, guardSeams: true, adaptivePanels
 			}));
@@ -3352,27 +3356,27 @@ function textRecipes(request: GeneratorRequest, { finish, variants, allRecipes }
 	// regular checkerboard never take them: they would make uneven squares.
 	const fittedOnly = new Set<(typeof recipes)[number]>();
 	for (const [columns, slices] of [[2, 1], [1, 2], [2, 2], [1, 3]]) {
-		const recipe = () => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale, columns, slices, spread: true });
+		const recipe = () => textGridOf(request, { columns, slices, spread: true });
 		recipes.push(recipe);
 		if (columns !== slices) fittedOnly.add(recipe);
 	}
 	let usedCompound = false;
 	let crowded = false;
-	recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+	recipes.push(() => textGridOf(request, {
 		spread: true, practical: true, compound: true, onCompound: () => { usedCompound = true; }, onCrowded: () => { crowded = true; }
 	}));
 	// A locally improved route can still conflict with a neighbouring cell.
 	// Retain the established recipe, but only rerun it if a chord changed.
 	recipes.push(() => usedCompound
-		? generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale, spread: true, practical: true, onCrowded: () => { crowded = true; } })
+		? textGridOf(request, { spread: true, practical: true, onCrowded: () => { crowded = true; } })
 		: undefined);
-	recipes.push(() => crowded ? generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+	recipes.push(() => crowded ? textGridOf(request, {
 		spread: true, practical: true, compound: true, balanced: true
 	}) : undefined);
 	let gateCrowded = false;
 	const adaptGates = (balanced = false) => {
 		let moved = false;
-		const result = generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+		const result = textGridOf(request, {
 			spread: true, practical: true, compound: true, balanced, adaptGates: true,
 			onGateChange: () => { moved = true; }, onCrowded: () => { gateCrowded = true; }
 		});
@@ -3385,7 +3389,7 @@ function textRecipes(request: GeneratorRequest, { finish, variants, allRecipes }
 	for (const columns of [1, 2]) recipes.push(() => {
 		if (!allRecipes || regularGrid) return undefined;
 		let moved = false;
-		const result = generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+		const result = textGridOf(request, {
 			columns, slices: 3, spread: true, filled: true, onSeamChange: () => { moved = true; }
 		});
 		// The one-column layout was already tried with centred contacts.
@@ -3393,10 +3397,10 @@ function textRecipes(request: GeneratorRequest, { finish, variants, allRecipes }
 	});
 	// A deeper grid divides the ink itself, retaining the ordinary margin
 	// outside it. Count the resulting strips before attempting construction.
-	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n'),
+	const lines = textLines(text),
 		letters = Math.max(...lines.map(line => [...line].length));
 	if (2 * letters + 5 * lines.length + 1 <= 20 && allRecipes && !regularGrid)
-		recipes.push(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+		recipes.push(() => textGridOf(request, {
 			columns: 2, slices: 5, spread: true, filled: true, inkPanels: true
 		}));
 	// A serif can need a more square approach than a straight shared spoke.
@@ -3405,7 +3409,7 @@ function textRecipes(request: GeneratorRequest, { finish, variants, allRecipes }
 		let bentCrowded = false;
 		for (const balanced of [false, true]) {
 			const bent = () => !balanced || bentCrowded
-				? generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+				? textGridOf(request, {
 					padding, spread: true, practical: true, compound: true, adaptGates: true,
 					bentSpokes: true, balanced, onCrowded: () => { bentCrowded = true; }
 				}) : undefined;
@@ -3423,10 +3427,10 @@ function textRecipes(request: GeneratorRequest, { finish, variants, allRecipes }
 	const tiers = new Map<(typeof recipes)[number], Tier>();
 	const tiered = (tier: Tier, recipe: (typeof recipes)[number]) => { recipes.push(recipe); tiers.set(recipe, tier); };
 	if (everyWay.on && pieced) for (const around of [false, true])
-		tiered({ around }, () => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+		tiered({ around }, () => textGridOf(request, {
 			spread: true, practical: true, compound: true, nested: true, bases: true, around }));
 	if (channelWays.on && pieced)
-		tiered({ around: true, legs: true, channeled: true }, () => withChannels(() => generateTextGrid(text, font, textRoom(request), shape, { fittedCells: request.fittedCells, letterScale: request.letterScale,
+		tiered({ around: true, legs: true, channeled: true }, () => withChannels(() => textGridOf(request, {
 			spread: true, practical: true, compound: true, nested: true, bases: true, around: true, legs: true })));
 	let last: unknown;
 	// The recipes differ in how the letters' cuts spread over panels and
@@ -3999,6 +4003,10 @@ function cellRecipes(request: GeneratorRequest, { finish }: RecipeContext): Gene
 			: ((request.style as 'rays' | 'check') ?? 'rays');
 	// Spread complex artwork over a larger grid before considering a single cell.
 	// Each routing variant is attempted once; invalid recipes never become exports.
+	// A sunburst is its circle's construction with the border round it.
+	const bordered = <T extends { edges: Edge[]; artwork: Ring[] }>(construction: T) =>
+		sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction;
+	const kind: GeneratorResult['recipe'] = rings.length === 1 ? 'silhouette' : 'nested';
 	const baseFigure = () => generateFigure(rings, shape, size, scale, style);
 	const recipes: ((route: typeof fourPortMotif) => ReturnType<typeof generateFigure>)[] =
 		rings.length > 1
@@ -4041,8 +4049,8 @@ function cellRecipes(request: GeneratorRequest, { finish }: RecipeContext): Gene
 				const construction = construct(route);
 				constructed = true;
 				yield finish(
-					sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction,
-					rings.length === 1 ? 'silhouette' : 'nested'
+					bordered(construction),
+					kind
 				);
 			} catch (e) {
 				refusal(e);
@@ -4058,7 +4066,7 @@ function cellRecipes(request: GeneratorRequest, { finish }: RecipeContext): Gene
 		const again = bestOfFirst((function* () {
 			for (const construct of recipes) try {
 				const construction = construct(paperRoute);
-				yield finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested', { keep: false });
+				yield finish(bordered(construction), kind, { keep: false });
 			} catch (e) {
 				refusal(e);
 			}
@@ -4070,7 +4078,7 @@ function cellRecipes(request: GeneratorRequest, { finish }: RecipeContext): Gene
 	// within its cells before refusing the figure, keeping its exact outline.
 	try {
 		const construction = generatePanelFigure(rings, shape, size, scale, { columns: 3, style, rows: 1, adaptive: true });
-		return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested');
+		return finish(bordered(construction), kind);
 	} catch (error) {
 		refusal(error);
 		errors.push(error);
@@ -4078,7 +4086,7 @@ function cellRecipes(request: GeneratorRequest, { finish }: RecipeContext): Gene
 	if (hasCounterContact(rings)) for (const construct of balancedRecipes) {
 		try {
 			const construction = construct(touchingFourPortMotif);
-			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, 'nested');
+			return finish(bordered(construction), 'nested');
 		} catch (error) {
 			refusal(error);
 			errors.push(error);
@@ -4089,7 +4097,7 @@ function cellRecipes(request: GeneratorRequest, { finish }: RecipeContext): Gene
 	for (const [columns, rows, spread] of [[2, 2, false], [5, 2, true]] as const) {
 		try {
 			const construction = generatePanelFigure(rings, shape, size, scale, { columns, style, rows, spread, attachments: 'filled' });
-			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested');
+			return finish(bordered(construction), kind);
 		} catch (error) {
 			refusal(error);
 			errors.push(error);
@@ -4100,7 +4108,7 @@ function cellRecipes(request: GeneratorRequest, { finish }: RecipeContext): Gene
 	for (const construct of balancedRecipes) {
 		try {
 			const construction = construct(bentFourPortMotif);
-			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested');
+			return finish(bordered(construction), kind);
 		} catch (error) {
 			refusal(error);
 			errors.push(error);
@@ -4113,7 +4121,7 @@ function cellRecipes(request: GeneratorRequest, { finish }: RecipeContext): Gene
 		try {
 			const construction = generateComponentFigure(rings, shape, size, scale,
 				{ style, columns, extraStrips: sunburst && columns > 2 ? 2 : 0 });
-			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, 'nested');
+			return finish(bordered(construction), 'nested');
 		} catch (error) {
 			refusal(error);
 			errors.push(error);
@@ -4141,7 +4149,7 @@ function cellRecipes(request: GeneratorRequest, { finish }: RecipeContext): Gene
 				return fourPortMotif(...args);
 			});
 			const construction = channeled ? withChannels(route) : route();
-			return finish(sunburst ? sunburstBorder(construction, outerSize, request.crown) : construction, rings.length === 1 ? 'silhouette' : 'nested', { tier });
+			return finish(bordered(construction), kind, { tier });
 		} catch (error) {
 			refusal(error);
 			errors.push(error);
