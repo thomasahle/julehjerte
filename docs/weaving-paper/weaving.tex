@@ -657,7 +657,7 @@ Hamilton cycle through $e'$ if and only if $H$ is Hamiltonian.
 \foreach \p/\n/\q in {x/x/below left,y/y/below right,z/z/above,w/w/right}
   {\fill (\p) circle (2pt); \node[font=\small,\q] at (\p) {$\n$};}
 \node[font=\scriptsize] at (2,-.3) {$e$};
-\node[font=\small] at (2,-.9) {$H=K_4$, a cycle through $e$};
+\node[font=\small] at (2,-1.05) {$H=K_4$, a cycle through $e$};
 \end{scope}
 \begin{scope}[xshift=6.2cm]
 \coordinate (x) at (0,0); \coordinate (y) at (4,0);
@@ -665,19 +665,24 @@ Hamilton cycle through $e'$ if and only if $H$ is Hamiltonian.
 \coordinate (xy) at (2,0); \coordinate (yz) at (3,1.7);
 \coordinate (zx) at (1,1.7); \coordinate (wx) at (1,.625);
 \coordinate (wy) at (3,.625); \coordinate (wz) at (2,2.325);
-\fill[paper!55] (xy)--(zx)--(wx)--cycle;
-\fill[paper!55] (xy)--(yz)--(wy)--cycle;
-\fill[paper!55] (yz)--(zx)--(wz)--cycle;
+% The triangles of x, y and z each have one side in the outer face: it runs
+% round the outside of its vertex.
+\fill[paper!55] (zx) .. controls (-1,-.433) and (-.667,-1) .. (xy)--(wx)--cycle;
+\fill[paper!55] (xy) .. controls (4.667,-1) and (5,-.433) .. (yz)--(wy)--cycle;
+\fill[paper!55] (yz) .. controls (2.333,4.3) and (1.667,4.3) .. (zx)--(wz)--cycle;
 \fill[paper!55] (wx)--(wy)--(wz)--cycle;
-\draw[cutA,line width=1.5pt] (zx)--(xy)--(yz)--(wz)--(wy)--(wx)--cycle;
-\draw[cutB,line width=1.5pt] (xy)--(wx)--(wz)--(zx)--(yz)--(wy)--cycle;
+\draw[cutA,line width=1.5pt] (xy) .. controls (-.667,-1) and (-1,-.433) .. (zx)
+  --(wx)--(wy)--(wz)--(yz) .. controls (5,-.433) and (4.667,-1) .. (xy);
+\draw[cutB,line width=1.5pt] (yz) .. controls (2.333,4.3) and (1.667,4.3) .. (zx)
+  --(wz)--(wx)--(xy)--(wy)--cycle;
 \foreach \p in {xy,yz,zx,wx,wy,wz} {\fill (\p) circle (1.6pt);}
-\node[font=\scriptsize] at (2,-.3) {midpoint of $e$};
-\node[font=\small] at (2,-.9) {the triangles, shared out};
+\node[font=\scriptsize] at (2,-.55) {midpoint of $e$};
+\node[font=\small] at (2,-1.05) {the triangles, shared out};
 \end{scope}
 \end{tikzpicture}
 \caption{The reduction for $H=K_4$. Each vertex becomes a triangle, and two
-triangles touch at the middle of their common edge. Opened at the midpoint
+triangles touch at the middle of their common edge; the triangles of $x$,
+$y$ and $z$ reach round the outside of their vertices. Opened at the midpoint
 of $e$ and stretched to the four sides of $Q$, this is a picture. Its
 boundary can be shared between the two sheets, blue and orange, exactly
 when $H$ has a Hamilton cycle through $e$: each sheet's cut follows the
