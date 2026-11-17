@@ -2,6 +2,7 @@
 	import { base } from '$app/paths';
 	import { t, type Language } from '$lib/i18n';
 	import { href } from '$lib/i18n/routes';
+	import WeavingMaths from './WeavingMaths.svelte';
 	let { lang }: { lang: Language } = $props();
 	const examples = [
 		['star', 'aboutTopologyStar', 'aboutTopologyStarText'],
@@ -40,6 +41,7 @@
 	</div>
 	<p class="legend">{t('aboutTopologyLegend', lang)}</p>
 	<p class="caution">{t('aboutTopologyCaution', lang)}</p>
+	<WeavingMaths {lang} />
 	<a class="btn btn-outline" href={href('generator', lang)}
 		>{t('aboutTopologyTry', lang)} →</a
 	>
