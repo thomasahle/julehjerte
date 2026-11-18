@@ -46,8 +46,10 @@
 		caption: TranslationKey;
 		/** How the page's own numbering of a heart reads, "Kochs nr. 3". */
 		number?: TranslationKey;
-		/** Our hearts drawn after the page, with the source's own number (3, or 365e). */
-		hearts: { id: string; number: number | string }[];
+		/** What the hearts below are, where they are not our versions of the page's own. */
+		heartsTitle?: TranslationKey;
+		/** Our hearts drawn after the page, with the source's own number (3, or 365e) where it has one. */
+		hearts: { id: string; number?: number | string }[];
 	}
 
 	const SOURCES: Source[] = [
@@ -128,7 +130,9 @@
 			text: 'historyKnudsenText',
 			alt: 'historyKnudsenAlt',
 			caption: 'historyKnudsenCaption',
-			hearts: []
+			// The gallery's hearts from Per V. Mortensen's site, which the text names.
+			heartsTitle: 'historyPermoHearts',
+			hearts: [{ id: 'sun' }, { id: 'permo-sol' }, { id: 'permo-kroge' }, { id: 'permo-draaber' }]
 		},
 		{
 			id: 'papermatrix',
@@ -188,9 +192,9 @@
 				<figcaption>{@render linked(t(source.caption, lang))}</figcaption>
 			</figure>
 			<p>{@render linked(t(source.text, lang))}</p>
-			{#if source.hearts.length && source.number}
+			{#if source.hearts.length}
 				{@const number = source.number}
-				<h4>{t('historyOurVersions', lang)}</h4>
+				<h4>{t(source.heartsTitle ?? 'historyOurVersions', lang)}</h4>
 				<ul class="hearts">
 					{#each source.hearts as heart (heart.id)}
 						<li>
@@ -203,7 +207,9 @@
 									loading="lazy"
 								/>
 								<span class="name">{heartName(CARDS[heart.id]!, lang)}</span>
-								<span class="number">{t(number, lang, { n: String(heart.number) })}</span>
+								{#if number && heart.number !== undefined}
+									<span class="number">{t(number, lang, { n: String(heart.number) })}</span>
+								{/if}
 							</a>
 						</li>
 					{/each}
@@ -329,6 +335,11 @@
 		margin: 0;
 		padding: 0;
 		list-style: none;
+	}
+
+	/* Beside a small picture the row is narrower: four hearts still stand in it. */
+	.source.floated .hearts {
+		grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
 	}
 
 	.hearts a {
