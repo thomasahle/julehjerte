@@ -328,5 +328,25 @@
       960,
       "/small/about/history/hjerter-til-juletraeet-1924-960.jpg"
     ]
+  ],
+  "/about/history/julehjerter-1975.jpg": [
+    [
+      160,
+      "/small/about/history/julehjerter-1975-160.jpg"
+    ]
+  ],
+  "/about/history/papermatrix-heart-043.jpg": [
+    [
+      160,
+      "/small/about/history/papermatrix-heart-043-160.jpg"
+    ],
+    [
+      480,
+      "/small/about/history/papermatrix-heart-043-480.jpg"
+    ],
+    [
+      720,
+      "/small/about/history/papermatrix-heart-043-720.jpg"
+    ]
   ]
 }

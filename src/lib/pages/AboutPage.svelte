@@ -69,8 +69,7 @@
 	] as const;
 
 	// Books of woven hearts, oldest first. Titles and names are as printed, in
-	// both languages; they are in copyright, so the page names them and shows
-	// nothing from them.
+	// both languages. (The history shows the first one's cover, with its source.)
 	const BOOKS = [
 		{ author: 'Jes Lottrup Knudsen', title: 'Julehjerter', by: 'Borgen, 1975' },
 		{ author: 'Jes Lottrup Knudsen & Bo Frydendahl', title: 'Julehjerter på mange måder', by: 'Klematis, 1996' },

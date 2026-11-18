@@ -10,9 +10,13 @@
   no designer, and the designer of Alfred Jacobsen's 1924 sheet signed only
   "ThLL" (Jacobsen himself died in 1924). Their scans are copies, with the
   metadata stripped, of the ones aldus.dk and the Papermatrix blog publish,
-  credited and linked under each picture. Later sources (Per V. Mortensen's drawings, the books of the
-  1970s–90s) are still under copyright, so the last paragraph names and links
-  them without pictures.
+  credited and linked under each picture.
+
+  After 1924 come two later pictures, each with a line under it saying where it
+  is from, as the site's owner chose: the cover of Jes Lottrup Knudsen's book
+  of 1975 (papirfoldning.dk's scan) and one of Papermatrix's own hearts (their
+  photograph, from the post it links to). Both are in copyright, shown small,
+  with the metadata stripped.
 -->
 <script lang="ts">
 	import { base } from '$app/paths';
@@ -113,6 +117,30 @@
 				{ id: 'firkant-i-firkant', number: '366g' },
 				{ id: 'flower', number: '366h' }
 			]
+		},
+		{
+			id: 'knudsen-1975',
+			image: 'julehjerter-1975.jpg',
+			width: 450,
+			height: 689,
+			small: true,
+			title: 'historyKnudsenTitle',
+			text: 'historyKnudsenText',
+			alt: 'historyKnudsenAlt',
+			caption: 'historyKnudsenCaption',
+			hearts: []
+		},
+		{
+			id: 'papermatrix',
+			image: 'papermatrix-heart-043.jpg',
+			width: 900,
+			height: 1172,
+			small: true,
+			title: 'historyPapermatrixTitle',
+			text: 'historyPapermatrixText',
+			alt: 'historyPapermatrixAlt',
+			caption: 'historyPapermatrixCaption',
+			hearts: []
 		}
 	];
 </script>
@@ -159,7 +187,7 @@
 				{/if}
 				<figcaption>{@render linked(t(source.caption, lang))}</figcaption>
 			</figure>
-			<p>{t(source.text, lang)}</p>
+			<p>{@render linked(t(source.text, lang))}</p>
 			{#if source.hearts.length && source.number}
 				{@const number = source.number}
 				<h4>{t('historyOurVersions', lang)}</h4>
@@ -184,7 +212,6 @@
 		</article>
 	{/each}
 
-	<p>{@render linked(t('historyMore', lang))}</p>
 </section>
 
 <style>
