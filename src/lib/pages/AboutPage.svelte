@@ -65,6 +65,11 @@
 			name: 'Johan’s Hjerter',
 			url: 'https://johansjulehjerter.dk/',
 			key: 'creditJohansHjerter'
+		},
+		{
+			name: 'flettedehjerter.dk',
+			url: 'https://flettedehjerter.dk/',
+			key: 'creditFlettedeHjerter'
 		}
 	] as const;
 
