@@ -241,8 +241,11 @@
 		</script>`}
 	{/if}
 
-	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-	<link rel="alternate icon" href="/favicon.ico" />
+	<!-- The .ico first: Bing takes a page's first icon and does not read SVG, so with the
+	     SVG first its results showed a blank globe. Browsers that read SVG still choose it:
+	     the .ico names its sizes, and the SVG fits any. -->
+	<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+	<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
 	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 	<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
