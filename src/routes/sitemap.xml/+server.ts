@@ -20,6 +20,7 @@ const staticPages: { key: RouteKey; priority: string }[] = [
 	{ key: 'editor', priority: '0.8' },
 	{ key: 'paint', priority: '0.7' },
 	{ key: 'howTo', priority: '0.7' },
+	{ key: 'history', priority: '0.6' },
 	{ key: 'about', priority: '0.5' }
 ];
 

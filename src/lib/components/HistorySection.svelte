@@ -1,5 +1,5 @@
 <!--
-  The about page's history: H.C. Andersen's heart, the oldest known, then the
+  The history page's sources ($lib/pages/HistoryPage, which has the heading and the lead): H.C. Andersen's heart, the oldest known, then the
   old printed pages some gallery hearts are drawn after, each with our
   versions of its hearts beside it.
 
@@ -156,15 +156,13 @@
 	{/each}
 {/snippet}
 
-<section class="history" aria-labelledby="history-heading">
-	<h2 id="history-heading">{t('historyTitle', lang)}</h2>
-	<p>{t('historyIntro', lang)}</p>
+<div class="history">
 
 	{#each SOURCES as source (source.id)}
 		{@const src = `${base}/about/history/${source.image}`}
 		{@const srcset = smallSrcset(`/about/history/${source.image}`, source.width, base)}
 		<article class="source" class:floated={source.small} aria-labelledby={`history-${source.id}`}>
-			<h3 id={`history-${source.id}`}>{t(source.title, lang)}</h3>
+			<h2 id={`history-${source.id}`}>{t(source.title, lang)}</h2>
 			<figure class:portrait={source.height > source.width} class:small={source.small}>
 				{#if source.small}
 					<img
@@ -194,7 +192,7 @@
 			<p>{@render linked(t(source.text, lang))}</p>
 			{#if source.hearts.length}
 				{@const number = source.number}
-				<h4>{t(source.heartsTitle ?? 'historyOurVersions', lang)}</h4>
+				<h3>{t(source.heartsTitle ?? 'historyOurVersions', lang)}</h3>
 				<ul class="hearts">
 					{#each source.hearts as heart (heart.id)}
 						<li>
@@ -218,24 +216,13 @@
 		</article>
 	{/each}
 
-</section>
+</div>
 
 <style>
 	.history {
 		display: flex;
 		flex-direction: column;
 		gap: 16px;
-		margin: 12px 0;
-		padding: 28px 0;
-		border-top: 1px solid var(--line, #dce3d5);
-		border-bottom: 1px solid var(--line, #dce3d5);
-	}
-
-	h2 {
-		margin: 0;
-		font-size: 25px;
-		line-height: 1.25;
-		color: var(--ink, #294033);
 	}
 
 	p {
@@ -255,17 +242,18 @@
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
-		padding-top: 12px;
+		padding-top: 20px;
+		border-top: 1px solid var(--line);
 	}
 
-	h3 {
+	h2 {
 		margin: 0;
-		font-size: 19px;
+		font-size: 21px;
 		font-weight: 600;
 		color: var(--deep);
 	}
 
-	h4 {
+	h3 {
 		margin: 4px 0 0;
 		font-size: 14px;
 		font-weight: 600;

@@ -51,6 +51,8 @@
 			? t("generatorMetaDescription", lang)
 			: routeKey === "howTo"
 			? t("howToMetaDescription", lang)
+			: routeKey === "history"
+			? t("historyMetaDescription", lang)
 			: routeKey === "about"
 				? t("aboutMetaDescription", lang)
 				: routeKey === "editor"

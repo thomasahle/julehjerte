@@ -108,6 +108,8 @@ describe('language mirroring', () => {
 		expect(routeKeyFromPathname('/en/all/')).toBe('archive');
 		expect(routeKeyFromPathname('/saadan-goer-du/')).toBe('howTo');
 		expect(routeKeyFromPathname('/en/about/')).toBe('about');
+		expect(routeKeyFromPathname('/historie/')).toBe('history');
+		expect(routeKeyFromPathname('/en/history/')).toBe('history');
 		expect(routeKeyFromPathname('/hjerte/stjerne/')).toBe(null);
 	});
 

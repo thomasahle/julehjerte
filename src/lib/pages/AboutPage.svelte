@@ -1,10 +1,10 @@
 <!--
   The "Om" / "About" page — docs/redesign/DESIGN.md §6, following `om()` in the
   mockup generator: what Juleflet.dk is, the editor, open source, who drew the
-  templates, the history (the old printed pages some hearts are drawn after),
-  then how the cuts work (the history comes first: user, 2026-11-15),
+  templates, a short word on the history with a link to its own page ($lib/pages/HistoryPage,
+  since 2026-11-19), then how the cuts work,
   "Mangler der et hjerte?", contact, and the credits list of other
-  good sites about woven hearts in the right-hand column. A line under the
+  good sites about woven hearts in the right-hand column (the books are on the history page). A line under the
   open-source note links the guide for AI agents (static/agents.md).
 
   Same shape as HowToPage.svelte: /om/ and /en/about/ sit OUTSIDE the
@@ -17,7 +17,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import TopologyExamples from '$lib/components/TopologyExamples.svelte';
-	import HistorySection from '$lib/components/HistorySection.svelte';
 	import GitHubLink from '$lib/components/GitHubLink.svelte';
 	import PageHeader from '$lib/components/PageHeader.svelte';
 	import { ExternalIcon, PencilIcon, PlusIcon } from '$lib/components/icons';
@@ -73,16 +72,6 @@
 		}
 	] as const;
 
-	// Books of woven hearts, oldest first. Titles and names are as printed, in
-	// both languages. (The history shows the first one's cover, with its source.)
-	const BOOKS = [
-		{ author: 'Jes Lottrup Knudsen', title: 'Julehjerter', by: 'Borgen, 1975' },
-		{ author: 'Jes Lottrup Knudsen & Bo Frydendahl', title: 'Julehjerter på mange måder', by: 'Klematis, 1996' },
-		{ author: 'Francis Jordt', title: 'Flettede julehjerter', by: '2002' },
-		{ author: 'Knud Vægter', title: 'Sådan lærte min mor mig at flette julehjerter', by: 'Museet Falsters Minder, 2003' },
-		{ author: 'Anna & Lene Schepper', title: 'The Art of Paper Weaving', by: 'Quarry, 2015' },
-		{ author: 'Johan Rosenkilde', title: 'Johans julehjerter', by: 'Frydenlund, 2019' }
-	] as const;
 </script>
 
 <svelte:head>
@@ -102,7 +91,11 @@
 		</div>
 		<p><a href="{base}/agents.md">{t('aboutAgents', lang)}</a></p>
 		<p>{t('aboutDesigners', lang)}</p>
-		<HistorySection {lang} />
+		<section class="history-teaser" aria-labelledby="history-heading">
+			<h2 id="history-heading" class="section-title">{t('aboutHistoryTitle', lang)}</h2>
+			<p>{t('aboutHistoryText', lang)}</p>
+			<a class="site-link" href={href('history', lang)}>{t('aboutHistoryLink', lang)} →</a>
+		</section>
 		<TopologyExamples {lang} />
 
 		<section class="callout" aria-labelledby="missing-heading">
@@ -145,15 +138,6 @@
 						<ExternalIcon size={14} />
 					</a>
 					<span>{t(credit.key, lang)}</span>
-				</li>
-			{/each}
-		</ul>
-		<h2 id="books-heading" class="section-title books-title">{t('aboutBooksTitle', lang)}</h2>
-		<ul aria-labelledby="books-heading">
-			{#each BOOKS as book (book.title)}
-				<li>
-					<cite>{book.title}</cite>
-					<span>{book.author} · {book.by}</span>
 				</li>
 			{/each}
 		</ul>
@@ -243,10 +227,24 @@
 		padding-top: 6px;
 	}
 
-	.contact {
+	.contact,
+	.history-teaser {
 		display: flex;
 		flex-direction: column;
+		align-items: flex-start;
 		gap: 12px;
+	}
+
+	.contact .section-title,
+	.history-teaser .section-title {
+		align-self: stretch;
+	}
+
+	.history-teaser p {
+		margin: 0;
+		font-size: 16px;
+		line-height: 1.55;
+		color: var(--ink);
 	}
 
 	.contact p {
@@ -322,17 +320,6 @@
 
 	.links a:hover {
 		color: var(--red);
-	}
-
-	.links cite {
-		font-size: 16px;
-		font-weight: 600;
-		font-style: normal;
-		color: var(--ink, inherit);
-	}
-
-	.books-title {
-		margin-top: 28px;
 	}
 
 	.links span {
