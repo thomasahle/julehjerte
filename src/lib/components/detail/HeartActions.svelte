@@ -35,6 +35,12 @@
 		onSaveShared: () => void;
 		/** Gets the click, so the page knows which button to return focus to. */
 		onTrace: (event: MouseEvent) => void;
+		/**
+		 * On a phone the row is in two parts (the heart page renders both): `top`, under the
+		 * thumbnails, is a wide "Tegn af" with sharing beside it and shows on phones only;
+		 * `rest`, under the heart's text, is the whole row, of which a phone shows what `top` lacks.
+		 */
+		part?: 'top' | 'rest';
 	}
 
 	let {
@@ -51,7 +57,8 @@
 		onEdit,
 		onShare,
 		onSaveShared,
-		onTrace
+		onTrace,
+		part = 'rest'
 	}: Props = $props();
 
 	// Both buttons open something the page's script draws (the dialog, the
@@ -68,9 +75,9 @@
 <!-- One row: the two ways to get the template (download it, or trace it from
      the screen) carry labels; editing and sharing are glyph-only, with their
      names as tooltips and for screen readers, so the four fit on one line (five with the
-     link to the heart's Pin). -->
-<div class="actions" class:has-pin={!!pinHref}>
-	{#if isShared && hasDesign}
+     link to the heart's Pin). On a phone it is two rows, see `part`. -->
+<div class="actions" class:is-top={part === 'top'} class:is-rest={part === 'rest'}>
+	{#if part === 'rest' && isShared && hasDesign}
 		{#if savedShared}
 			<a class="btn btn-dark" href={galleryHref}>{t('showInGallery', lang)}</a>
 		{:else}
@@ -79,6 +86,7 @@
 			</button>
 		{/if}
 	{/if}
+	{#if part === 'rest'}
 	<button
 		class="btn btn-primary get"
 		type="button"
@@ -91,6 +99,7 @@
 		<span class="wide">{t('getTemplate', lang)}</span>
 		<span class="narrow">{t('getTemplatePhone', lang)}</span>
 	</button>
+	{/if}
 	<button
 		class="btn btn-outline trace"
 		type="button"
@@ -101,8 +110,9 @@
 		<TabletIcon size={18} />
 		{t('traceFromScreen', lang)}
 	</button>
+	{#if part === 'rest'}
 	<a
-		class="btn btn-outline btn-icon"
+		class="btn btn-outline btn-icon edit"
 		href={editHref}
 		onclick={onEdit}
 		title={t('openInEditor', lang)}
@@ -110,8 +120,9 @@
 	>
 		<PencilIcon size={18} />
 	</a>
+	{/if}
 	<button
-		class="btn btn-ghost btn-icon"
+		class="btn btn-ghost btn-icon share"
 		type="button"
 		onclick={onShare}
 		title={t('share', lang)}
@@ -128,7 +139,7 @@
 	{#if pinHref}
 		<!-- The heart's Pin: the place to leave a comment on it. -->
 		<a
-			class="btn btn-ghost btn-icon"
+			class="btn btn-ghost btn-icon pin"
 			href={pinHref}
 			target="_blank"
 			rel="noopener"
@@ -148,7 +159,9 @@
 	</span>
 </div>
 
-{#if isShared && savedShared}
+{#if part === 'top'}
+	<!-- The notes belong to the whole row. -->
+{:else if isShared && savedShared}
 	<p class="save-note" role="status">{t('savedToMyHearts', lang)}</p>
 {:else if errorNote}
 	<p class="save-note save-error" role="alert">{errorNote}</p>
@@ -183,20 +196,35 @@
 	   the row's gap drops to 8px, so all four still sit on one line on a 390px
 	   or 412px phone (348px of the 358px a 390 screen leaves). The two glyph
 	   buttons keep their 44px. */
+	/* The phone's top part is not shown on wider screens. */
+	.actions.is-top {
+		display: none;
+	}
+
+	/* A phone (below 600px) has the row in two parts. Under the thumbnails:
+	   "Tegn af", red and as wide as the row allows, since few phones have a
+	   printer at hand and tracing from the screen needs none, with sharing
+	   beside it. Under the heart's text: the PDF and the editor. */
 	@media (max-width: 599px) {
 		.actions {
 			gap: 8px;
+			flex-wrap: nowrap;
 		}
 
-		.actions .btn:not(.btn-icon) {
-			gap: 6px;
-			padding: 0 10px;
-			font-size: 14px;
+		.actions.is-top {
+			display: flex;
 		}
 
-		/* On a phone the red button is "Tegn af": few phones have a printer at
-		   hand, and tracing from the screen is the way that needs none. */
+		.actions.is-rest .trace,
+		.actions.is-rest .share,
+		.actions.is-rest .pin {
+			display: none;
+		}
+
 		.actions .trace {
+			flex: 1;
+			height: 52px;
+			font-size: 17px;
 			background: var(--red);
 			border-color: var(--red);
 			color: var(--white);
@@ -208,7 +236,13 @@
 			color: var(--white);
 		}
 
+		.actions.is-top .btn-icon {
+			width: 52px;
+			height: 52px;
+		}
+
 		.actions .get {
+			flex: 1;
 			background: var(--white);
 			border: 1.5px solid var(--green);
 			color: var(--green);
@@ -225,12 +259,6 @@
 
 		.narrow {
 			display: inline;
-		}
-
-		/* A fifth button, the heart's Pin: the PDF button gives up its icon so
-		   the row is still one line on a 390px phone. "Tegn af" keeps its screen. */
-		.actions.has-pin .get :global(svg) {
-			display: none;
 		}
 	}
 

@@ -462,6 +462,16 @@
 	}
 
 	@media (max-width: 599px) {
+		/* A phone's heart is a little smaller, so the buttons and the first
+		   lines about the heart are on the first screen. */
+		.stage {
+			height: 370px;
+		}
+
+		.stage-hang > :global(*) {
+			max-width: 290px;
+		}
+
 		.thumbs {
 			gap: 10px;
 		}

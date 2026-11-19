@@ -258,8 +258,15 @@
 			gap: 18px;
 		}
 
+		/* A phone has the name above the picture (the heart page's .phone-title);
+		   here it stays for screen readers only. */
 		.panel h1 {
-			font-size: 30px;
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			clip-path: inset(50%);
+			white-space: nowrap;
 		}
 
 		.description {

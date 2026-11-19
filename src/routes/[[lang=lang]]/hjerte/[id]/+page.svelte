@@ -473,6 +473,9 @@
         </div>
       {:else if info}
         <div class="stage-col">
+          <!-- A phone shows the name before the picture; the panel's own
+               heading, further down, is then for screen readers only. -->
+          <p class="phone-title" aria-hidden="true">{info.name}</p>
           <HeartStage
             {design}
             {photo}
@@ -488,6 +491,25 @@
              under it and flush with its left edge, and when the columns stack
              below 1100 they follow it down. -->
         <div class="panel-col">
+          <!-- The phone's "Tegn af" and sharing, between the thumbnails and the
+               text (HeartActions' `part`). -->
+          <HeartActions
+            {lang}
+            hasDesign={design !== null}
+            {editHref}
+            {isShared}
+            {savedShared}
+            errorNote={saveError}
+            galleryHref={design ? homeAnchorHref(makeHeartAnchorId(design.id), lang) : ''}
+            {shareStatus}
+            pinHref={isGalleryPage ? pinterestPinUrl(heartId) : null}
+            onDownload={handleDownload}
+            onEdit={handleEdit}
+            onShare={handleShare}
+            onSaveShared={handleSaveShared}
+            onTrace={handleTrace}
+            part="top"
+          />
           <HeartPanel
             {lang}
             {info}
@@ -614,6 +636,16 @@
     color: var(--red);
   }
 
+  .phone-title {
+    display: none;
+    margin: 0;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--deep);
+  }
+
   .stage-col {
     position: relative;
     display: flex;
@@ -664,12 +696,12 @@
       padding: 32px 16px 28px;
     }
 
-    /* On a phone the buttons come before the name and description: the
-       panel can be a screen tall, and the buttons are what the visitor
-       came for. */
-    .actions-slot {
-      order: -1;
-      margin-top: 0;
+    .phone-title {
+      display: block;
+    }
+
+    .stage-col {
+      gap: 14px;
     }
   }
 </style>
