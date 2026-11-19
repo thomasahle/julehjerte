@@ -166,7 +166,7 @@
 			     tile, as the film itself is in the heart's papers. -->
 			<span
 				class="thumb"
-				class:thumb-heart={v.id === 'heart'}
+				class:thumb-heart={v.id === 'heart' || v.id === 'left' || v.id === 'right'}
 				class:thumb-film={v.id === 'film'}
 				aria-hidden="true"
 				data-pair={pair?.['data-pair']}
@@ -225,7 +225,7 @@
 						<path d="M11 8 L23 15 L11 22 Z" fill="#1c3329" />
 					</svg>
 				{:else if design}
-					<TemplatePreview {design} lobe={v.id === 'right' ? 'right' : 'left'} size={200} marks={false} />
+					<TemplatePreview {design} lobe={v.id === 'right' ? 'right' : 'left'} size={200} marks={false} paper />
 				{/if}
 			</span>
 			<span class="thumb-label">{v.label}</span>
@@ -352,8 +352,9 @@
 	}
 
 	/* The heart tile is sky-coloured, as in the hero: on white the white lobe
-	   would vanish and the tile show half a heart. Line art and photos keep
-	   the white tile. */
+	   would vanish and the tile show half a heart. The template tiles are too:
+	   the piece is drawn as white paper (TemplatePreview's `paper`). Photos
+	   keep the white tile. */
 	.thumb-heart {
 		background: var(--sky);
 	}
