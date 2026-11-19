@@ -108,7 +108,9 @@
 		title={waitTitle}
 	>
 		<TabletIcon size={18} />
-		{t('traceFromScreen', lang)}
+		<!-- A phone's wide button has room to say what is traced. -->
+		<span class="wide">{t('traceFromScreen', lang)}</span>
+		<span class="narrow">{t('traceFromScreenPhone', lang)}</span>
 	</button>
 	{#if part === 'rest'}
 	<a

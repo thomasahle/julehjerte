@@ -395,6 +395,7 @@ export const translations = {
 
     // Heart page: tracing mode ("Tegn af fra skærmen", docs/redesign/TRACE.md)
     traceFromScreen: 'Tegn af',
+    traceFromScreenPhone: 'Tegn skabelon',
     /** Title on the heart page's download and trace buttons until the page's script has started. */
     needsJavaScript: 'Kræver JavaScript',
     /** {name} = heart name */
@@ -1650,6 +1651,7 @@ export const translations = {
 
     // Heart page: tracing mode ("Tegn af fra skærmen", docs/redesign/TRACE.md)
     traceFromScreen: 'Trace',
+    traceFromScreenPhone: 'Trace template',
     /** Title on the heart page's download and trace buttons until the page's script has started. */
     needsJavaScript: 'Needs JavaScript',
     /** {name} = heart name */
