@@ -663,5 +663,13 @@
     .detail-main {
       padding: 32px 16px 28px;
     }
+
+    /* On a phone the buttons come before the name and description: the
+       panel can be a screen tall, and the buttons are what the visitor
+       came for. */
+    .actions-slot {
+      order: -1;
+      margin-top: 0;
+    }
   }
 </style>

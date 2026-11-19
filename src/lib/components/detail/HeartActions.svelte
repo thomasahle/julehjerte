@@ -80,7 +80,7 @@
 		{/if}
 	{/if}
 	<button
-		class="btn btn-primary"
+		class="btn btn-primary get"
 		type="button"
 		onclick={onDownload}
 		disabled={!hasDesign || !hydrated}
@@ -90,7 +90,7 @@
 		{t('getTemplate', lang)}
 	</button>
 	<button
-		class="btn btn-outline"
+		class="btn btn-outline trace"
 		type="button"
 		onclick={onTrace}
 		disabled={!hasDesign || !hydrated}
@@ -186,6 +186,31 @@
 			gap: 6px;
 			padding: 0 10px;
 			font-size: 14px;
+		}
+
+		/* On a phone the red button is "Tegn af": few phones have a printer at
+		   hand, and tracing from the screen is the way that needs none. */
+		.actions .trace {
+			background: var(--red);
+			border-color: var(--red);
+			color: var(--white);
+		}
+
+		.actions .trace:hover:not(:disabled) {
+			background: var(--red-hover);
+			border-color: var(--red-hover);
+			color: var(--white);
+		}
+
+		.actions .get {
+			background: var(--white);
+			border: 1.5px solid var(--green);
+			color: var(--green);
+		}
+
+		.actions .get:hover:not(:disabled) {
+			background: var(--cream2);
+			color: var(--green);
 		}
 
 		/* A fifth button, the heart's Pin: the labelled two give up their icons

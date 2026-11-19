@@ -1106,7 +1106,7 @@ export const translations = {
     guideTraceTitle: 'Uden printer: tegn af, fold og klip',
     guideTraceSteps: [
       'Åbn hjertet på en tablet eller telefon, og tryk på »Tegn af«. Vælg en bredde, der passer til dit papir.',
-      'Lås skærmen, og tape så tyndt papir fast på den, så det ligger stille. Tegn alle linjerne af med blyant, også den stiplede.',
+      'Tryk på knappen »Lås skærmen«, og tape så tyndt papir fast på skærmen, så det ligger stille. Tegn alle linjerne af med blyant, også den stiplede.',
       'Fold det farvede papir på midten. Læg tegningens stiplede linje langs folden.',
       'Klip omridset gennem begge lag. Klip så fra folden langs hver indre linje, helt til linjens endepunkt.'
     ],
@@ -2355,7 +2355,7 @@ export const translations = {
     guideTraceTitle: 'Without a printer: trace, fold and cut',
     guideTraceSteps: [
       'Open the heart on a tablet or phone and tap “Trace”. Choose a width that suits your paper.',
-      'Lock the screen, then tape thin paper onto it so it can’t move. Trace every line in pencil, including the dashed one.',
+      'Press the “Lock screen” button, then tape thin paper onto the screen so it can’t move. Trace every line in pencil, including the dashed one.',
       'Fold the coloured paper in half. Place your tracing’s dashed line along the fold.',
       'Cut the outline through both layers. Then cut from the fold along each inner line, right to its endpoint.'
     ],

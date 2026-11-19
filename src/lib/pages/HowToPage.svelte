@@ -16,7 +16,9 @@
 		{ way: 'print' as const, id: 'prepare-heading', title: t('guidePrepareTitle', lang), steps: tArray('instructions', lang), note: '' },
 		{ way: 'screen' as const, id: 'trace-heading', title: t('guideTraceTitle', lang), steps: tArray('guideTraceSteps', lang), note: t('guideTraceNote', lang) }
 	]);
-	let way = $state<'print' | 'screen'>('print');
+	// Only a phone has the choice (a wider screen shows both rows), and on a phone the way
+	// without a printer comes first: few phones have a printer at hand.
+	let way = $state<'print' | 'screen'>('screen');
 	async function showScreen() {
 		way = 'screen';
 		await tick();
