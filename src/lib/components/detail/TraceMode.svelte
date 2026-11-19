@@ -109,7 +109,7 @@
 	 * screen's "Lås op" button, its ring and its line of words stand there, and a template
 	 * under them could not be traced.
 	 */
-	const UNLOCK_ROOM = 156;
+	const UNLOCK_ROOM = 184;
 	const freeArea = $derived<Area>({
 		left: 0,
 		top: chromeBottom,
@@ -301,6 +301,18 @@
 		return () => node.removeEventListener('wheel', onWheel);
 	};
 
+	/**
+	 * A dragged slider stops on the whole 5 mm when it is within a millimetre of one: a
+	 * millimetre is about a pixel of the slider, and round widths are the ones asked for.
+	 * The arrow keys still go by single millimetres.
+	 */
+	let sliderDragged = false;
+	function roundWidthMm(mm: number): number {
+		if (!sliderDragged) return mm;
+		const round = Math.round(mm / 5) * 5;
+		return Math.abs(mm - round) <= 1 ? round : mm;
+	}
+
 	function setWidthMm(mm: number): void {
 		adjusted = true;
 		const s = scaleFromWidthMm(size.width, mm, pxPerMm);
@@ -438,7 +450,7 @@
 	// ---- The two-second hold -------------------------------------------------
 
 	// Well outside the button, and thick: the ring has to show round a thumb.
-	const RING_RADIUS = 50;
+	const RING_RADIUS = 62;
 	const RING_LENGTH = 2 * Math.PI * RING_RADIUS;
 
 	let hold: HoldState = HOLD_IDLE;
@@ -639,17 +651,16 @@
 
 			<div class="unlock" {@attach swallowTouches}>
 				<div class="unlock-button-wrap">
-					<svg class="hold-ring" width="112" height="112" viewBox="0 0 112 112" aria-hidden="true">
+					<svg class="hold-ring" width="140" height="140" viewBox="0 0 140 140" aria-hidden="true">
 						<circle
-							cx="56"
-							cy="56"
+							cx="70"
+							cy="70"
 							r={RING_RADIUS}
 							fill="none"
-							stroke-width="9"
-							stroke-linecap="round"
+							stroke-width="14"
 							stroke-dasharray={RING_LENGTH}
 							stroke-dashoffset={RING_LENGTH * (1 - progress)}
-							transform="rotate(-90 56 56)"
+							transform="rotate(-90 70 70)"
 						/>
 					</svg>
 					<button
@@ -719,7 +730,11 @@
 								step="1"
 								value={Math.round(widthMm)}
 								aria-valuetext={readout}
-								oninput={(e) => setWidthMm(Number(e.currentTarget.value))}
+								onpointerdown={() => (sliderDragged = true)}
+								onpointerup={() => (sliderDragged = false)}
+								onpointercancel={() => (sliderDragged = false)}
+								onkeydown={() => (sliderDragged = false)}
+								oninput={(e) => setWidthMm(roundWidthMm(Number(e.currentTarget.value)))}
 							/>
 							<output class="readout">{readout}</output>
 						</label>
@@ -986,8 +1001,8 @@
 
 	.unlock-button-wrap {
 		position: relative;
-		width: 112px;
-		height: 112px;
+		width: 140px;
+		height: 140px;
 		display: grid;
 		place-items: center;
 	}

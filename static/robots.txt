@@ -3,3 +3,6 @@ User-agent: *
 Disallow:
 
 Sitemap: https://juleflet.dk/sitemap.xml
+
+# AI agents: the guide to making a woven heart on this site is https://juleflet.dk/agents.md
+# (see also https://juleflet.dk/llms.txt)

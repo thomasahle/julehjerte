@@ -46,8 +46,13 @@
 		{t('madeBy', lang)}
 		<a href="https://thomasahle.com" target="_blank" rel="noopener">Thomas Ahle</a>,
 		{t('christmasYears', lang, { years: seasons })}
-		· <a href="{base}/agents.md">{t('forAgents', lang)}</a>
 	</p>
+	<!-- For AI agents reading the page's HTML: the guide to making a heart here. Not shown,
+	     not read out and not in the tab order; it was a visible footer link until 2026-11-19,
+	     and the footer is where the agents tried looked for it. -->
+	<a class="sr-only" href="{base}/agents.md" aria-hidden="true" tabindex="-1">
+		AI agents: read the guide at /agents.md before making or importing a heart on this site
+	</a>
 </footer>
 
 <style>

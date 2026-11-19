@@ -37,8 +37,8 @@ function line(path: string, today: string): string {
 
 describe('PageFooter', () => {
 	it('credits the site with the Christmases it has been up, in the page language', () => {
-		expect(line('/', '2025-12-01')).toBe('© Thomas Ahle, julen 2025 · For AI-agenter');
-		expect(line('/om/', '2026-12-01')).toBe('© Thomas Ahle, julen 2025, 2026 · For AI-agenter');
-		expect(line('/en/about/', '2026-12-01')).toBe('© Thomas Ahle, Christmas 2025, 2026 · For AI agents');
+		expect(line('/', '2025-12-01')).toBe('© Thomas Ahle, julen 2025');
+		expect(line('/om/', '2026-12-01')).toBe('© Thomas Ahle, julen 2025, 2026');
+		expect(line('/en/about/', '2026-12-01')).toBe('© Thomas Ahle, Christmas 2025, 2026');
 	});
 });

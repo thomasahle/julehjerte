@@ -133,7 +133,7 @@
 	{:else}
 		<div class="stage-media">
 			<div class="stage-template">
-				<TemplatePreview {design} lobe={shownView === 'right' ? 'right' : 'left'} size={380} />
+				<TemplatePreview {design} lobe={shownView === 'right' ? 'right' : 'left'} size={380} paper />
 			</div>
 		</div>
 	{/if}
@@ -290,14 +290,12 @@
 		box-shadow: 0 8px 20px var(--shadow-color);
 	}
 
+	/* No card: the piece is drawn as white paper and lies on the sky, as the
+	   heart hangs on it (TemplatePreview's `paper`). */
 	.stage-template {
 		width: min(100%, 420px);
 		padding: 12px;
 		box-sizing: border-box;
-		border-radius: 14px;
-		background: var(--white);
-		border: 1px solid var(--line);
-		box-shadow: 0 8px 20px var(--shadow-color);
 	}
 
 	/* thumbnails */

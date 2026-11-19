@@ -23,9 +23,14 @@
      * thumbnails leave them out: a cross of a pixel or two reads as dirt.
      */
     marks?: boolean;
+    /**
+     * Draw the piece as white paper with a shadow, to lie on a surface that is
+     * not white (the heart page's stage, on the sky).
+     */
+    paper?: boolean;
   }
 
-  let { design, lobe, size = 300, label, marks = true }: Props = $props();
+  let { design, lobe, size = 300, label, marks = true, paper = false }: Props = $props();
 
   /** The download dialog's default width (DEFAULT_WIDTH_MM in $lib/laser/export, not imported to keep the laser writers off this page). */
   const PRINT_WIDTH_MM = 80;
@@ -53,11 +58,17 @@
     <div class="template-label">{label}</div>
   {/if}
   <svg
+    class:paper
     width={size}
     height={size}
     viewBox="0 0 {size} {size}"
   >
     <g transform="translate({offsetX}, {offsetY}) scale({scale})">
+      {#if paper}
+        <!-- The piece itself: the ear and the rectangle under it. -->
+        <path d={earPath} fill="#fff" stroke="none" />
+        <rect x={0} y={earRadius} width={templateWidth} height={templateHeight - earRadius} fill="#fff" />
+      {/if}
       <!-- Semicircle ear at top -->
       <path
         d={earPath}
@@ -144,5 +155,11 @@
     border-radius: 8px;
     max-width: 100%;
     height: auto;
+  }
+
+  /* The same soft shadow the hanging heart casts. */
+  svg.paper {
+    overflow: visible;
+    filter: drop-shadow(0 8px 14px var(--shadow-color));
   }
 </style>
