@@ -759,8 +759,13 @@
       display: flex;
     }
 
+    /* A phone has it on the plain sky: no pill, centred under the row. */
     .guide-link {
       order: 0;
+      align-self: center;
+      margin-top: -6px;
+      padding: 0;
+      background: none;
     }
 
     .stage-col {
