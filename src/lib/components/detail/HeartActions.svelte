@@ -87,7 +87,9 @@
 		title={waitTitle}
 	>
 		<DownloadIcon size={18} />
-		{t('getTemplate', lang)}
+		<!-- A phone says what the button gives, a PDF, next to the red "Tegn af". -->
+		<span class="wide">{t('getTemplate', lang)}</span>
+		<span class="narrow">{t('getTemplatePhone', lang)}</span>
 	</button>
 	<button
 		class="btn btn-outline trace"
@@ -172,6 +174,10 @@
 		background: var(--cream2);
 	}
 
+	.narrow {
+		display: none;
+	}
+
 	/* At 600px and up the row fits as the shared .btn draws it. Below that the
 	   two labelled buttons tighten (10px padding, 6px icon gap, 14px text) and
 	   the row's gap drops to 8px, so all four still sit on one line on a 390px
@@ -213,9 +219,17 @@
 			color: var(--green);
 		}
 
-		/* A fifth button, the heart's Pin: the labelled two give up their icons
-		   so the row is still one line on a 390px phone. */
-		.actions.has-pin .btn:not(.btn-icon) :global(svg) {
+		.wide {
+			display: none;
+		}
+
+		.narrow {
+			display: inline;
+		}
+
+		/* A fifth button, the heart's Pin: the PDF button gives up its icon so
+		   the row is still one line on a 390px phone. "Tegn af" keeps its screen. */
+		.actions.has-pin .get :global(svg) {
 			display: none;
 		}
 	}

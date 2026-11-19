@@ -34,7 +34,8 @@ describe('HeartActions', () => {
 		document.body.append(target);
 		component = mount(HeartActions, { target, props });
 		const buttons = [...target.querySelectorAll('button')].slice(0, 2);
-		expect(buttons.map((b) => b.textContent?.trim())).toEqual(['Hent skabelon', 'Tegn af']);
+		// The first button carries its wide label and its phone label; CSS shows one of them.
+		expect(buttons.map((b) => b.textContent?.replace(/\s+/g, ' ').trim())).toEqual(['Hent skabelon Hent PDF', 'Tegn af']);
 		for (const button of buttons) {
 			expect(button.disabled).toBe(true);
 			expect(button.title).toBe('Kræver JavaScript');

@@ -419,6 +419,7 @@ export const translations = {
     // Heart page: the download dialog ("Hent skabelon", docs/redesign/DOWNLOAD.md),
     // for the printer PDF and the laser file (docs/redesign/LASER.md)
     getTemplate: 'Hent skabelon',
+    getTemplatePhone: 'Hent PDF',
     getTemplateTitle: 'Hent skabelon',
     getTemplatesTitle: 'Hent skabeloner',
     downloadMode: 'Til',
@@ -1672,6 +1673,7 @@ export const translations = {
     // Heart page: the download dialog ("Hent skabelon", docs/redesign/DOWNLOAD.md),
     // for the printer PDF and the laser file (docs/redesign/LASER.md)
     getTemplate: 'Get template',
+    getTemplatePhone: 'Get PDF',
     getTemplateTitle: 'Get template',
     getTemplatesTitle: 'Get templates',
     downloadMode: 'For',
