@@ -35,6 +35,42 @@
       "/small/hearts/photos/alhambra-960.jpg"
     ]
   ],
+  "/hearts/photos/amy-flowering.jpg": [
+    [
+      160,
+      "/small/hearts/photos/amy-flowering-160.jpg"
+    ],
+    [
+      480,
+      "/small/hearts/photos/amy-flowering-480.jpg"
+    ],
+    [
+      720,
+      "/small/hearts/photos/amy-flowering-720.jpg"
+    ],
+    [
+      960,
+      "/small/hearts/photos/amy-flowering-960.jpg"
+    ]
+  ],
+  "/hearts/photos/amy-rosette.jpg": [
+    [
+      160,
+      "/small/hearts/photos/amy-rosette-160.jpg"
+    ],
+    [
+      480,
+      "/small/hearts/photos/amy-rosette-480.jpg"
+    ],
+    [
+      720,
+      "/small/hearts/photos/amy-rosette-720.jpg"
+    ],
+    [
+      960,
+      "/small/hearts/photos/amy-rosette-960.jpg"
+    ]
+  ],
   "/hearts/photos/ball.jpg": [
     [
       160,
@@ -133,6 +169,24 @@
     [
       960,
       "/small/hearts/photos/hjertekloever-960.jpg"
+    ]
+  ],
+  "/hearts/photos/kompasrose.jpg": [
+    [
+      160,
+      "/small/hearts/photos/kompasrose-160.jpg"
+    ],
+    [
+      480,
+      "/small/hearts/photos/kompasrose-480.jpg"
+    ],
+    [
+      720,
+      "/small/hearts/photos/kompasrose-720.jpg"
+    ],
+    [
+      960,
+      "/small/hearts/photos/kompasrose-960.jpg"
     ]
   ],
   "/hearts/photos/ni-hjerter-i-tern.jpg": [

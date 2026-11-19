@@ -270,7 +270,11 @@
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
-    "photo": null,
+    "photo": {
+      "src": "/hearts/photos/kompasrose.jpg",
+      "width": 1199,
+      "height": 1200
+    },
     "film": {
       "v": "d6429bef7e",
       "bytes": 3041763
@@ -984,7 +988,11 @@
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
-    "photo": null,
+    "photo": {
+      "src": "/hearts/photos/amy-rosette.jpg",
+      "width": 1199,
+      "height": 1200
+    },
     "film": {
       "v": "fc0cc44b93",
       "bytes": 3242318
@@ -1044,7 +1052,11 @@
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
-    "photo": null,
+    "photo": {
+      "src": "/hearts/photos/amy-flowering.jpg",
+      "width": 1199,
+      "height": 1200
+    },
     "film": {
       "v": "0986a8ff1d",
       "bytes": 5079100
