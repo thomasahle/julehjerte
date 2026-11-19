@@ -236,7 +236,7 @@ export const translations = {
     /** Follows the guide link with nothing between, so it starts with its own space or comma */
     heroIntroEnd: ' til at klippe og flette, eller tegn dit eget mønster i editoren.',
     heroSeeTemplates: 'Se skabeloner',
-    heroScrollHint: 'Scroll for at udforske skabeloner',
+    heroScrollHint: 'Skabelonerne er herunder',
 
     // Gallery: the sticky bar and the cards
     createNewHeart: 'Lav nyt hjerte',
@@ -1493,7 +1493,7 @@ export const translations = {
     /** Follows the guide link with nothing between, so it starts with its own space or comma */
     heroIntroEnd: ', or draw your own pattern in the editor.',
     heroSeeTemplates: 'Browse templates',
-    heroScrollHint: 'Scroll to explore templates',
+    heroScrollHint: 'The templates are below',
 
     // Gallery: the sticky bar and the cards
     createNewHeart: 'Create new heart',

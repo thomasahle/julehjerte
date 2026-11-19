@@ -1,15 +1,15 @@
 <!--
-  "Scroll for at udforske skabeloner" — the stacked hero's scroll hint
-  (docs/redesign/DESIGN.md §3 "Hero (< 900px)").
+  "Skabelonerne er herunder" — the stacked hero's hint that the gallery is
+  further down (docs/redesign/DESIGN.md §3 "Hero (< 900px)").
 
   Only shown below 900px, where it is the last item of the stacked hero's text
   column, centred 18px under the buttons (the column's 12px gap plus the 6px
   margin here): in the sky, above the landscape band, which <Scene> lays out in
-  flow after the hero's content. It used to sit absolutely at the scene's foot,
-  which put it on the snow under the hills.
+  flow after the hero's content.
 
-  The mouse outline is 22x34 rather than the icon set's 24x24 square, so it is
-  drawn here instead of reusing MouseIcon.
+  Two arrowheads pointing down, and no word of scrolling: these widths are
+  mostly phones, which have no mouse (it was a mouse outline and "Scroll for at
+  udforske skabeloner" until 2026-11-19).
 -->
 <script lang="ts">
 	import { t, type Language } from '$lib/i18n';
@@ -25,18 +25,19 @@
 
 <a class="scroll-hint" {href}>
 	<svg
-		width="22"
-		height="34"
-		viewBox="0 0 22 34"
+		width="26"
+		height="22"
+		viewBox="0 0 26 22"
 		fill="none"
 		stroke="var(--green)"
 		stroke-width="1.8"
 		stroke-linecap="round"
+		stroke-linejoin="round"
 		aria-hidden="true"
 		focusable="false"
 	>
-		<rect x="1" y="1" width="20" height="32" rx="10" />
-		<path d="M11 8v6" />
+		<path d="M4 3l9 7 9-7" />
+		<path d="M4 12l9 7 9-7" />
 	</svg>
 	<span>{t('heroScrollHint', lang)}</span>
 </a>
