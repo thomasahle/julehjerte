@@ -269,6 +269,16 @@
 			white-space: nowrap;
 		}
 
+		/* The credit line is in that box too. With nothing else to show, the
+		   head takes no room. */
+		.credit {
+			display: none;
+		}
+
+		.panel-head:not(:has(.credit-extra)) {
+			display: contents;
+		}
+
 		.description {
 			font-size: 16px;
 		}

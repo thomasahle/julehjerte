@@ -473,9 +473,24 @@
         </div>
       {:else if info}
         <div class="stage-col">
-          <!-- A phone shows the name before the picture; the panel's own
-               heading, further down, is then for screen readers only. -->
-          <p class="phone-title" aria-hidden="true">{info.name}</p>
+          <!-- A phone shows the name and who drew it before the picture, in a
+               box of their own; the panel's own heading, further down, is then
+               for screen readers only, and its credit line is left out. -->
+          <div class="phone-title">
+            <p class="phone-name" aria-hidden="true">{info.name}</p>
+            <p class="phone-credit">
+              {#if info.author}
+                {t('by', lang)}
+                {#if info.authorUrl}
+                  <a href={info.authorUrl} target="_blank" rel="noopener noreferrer">{info.author}</a>
+                {:else}
+                  {info.author}
+                {/if}
+                &middot;
+              {/if}
+              {stripsLabel}
+            </p>
+          </div>
           <HeartStage
             {design}
             {photo}
@@ -638,12 +653,32 @@
 
   .phone-title {
     display: none;
-    margin: 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    background: var(--white);
     text-align: center;
+  }
+
+  .phone-name {
+    margin: 0;
     font-size: 28px;
     font-weight: 600;
     line-height: 1.15;
     color: var(--deep);
+  }
+
+  .phone-credit {
+    margin: 0;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .phone-credit a {
+    color: var(--green);
+    font-weight: 600;
   }
 
   .stage-col {
@@ -697,7 +732,7 @@
     }
 
     .phone-title {
-      display: block;
+      display: flex;
     }
 
     .stage-col {
