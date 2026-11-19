@@ -283,7 +283,10 @@
 			font-size: 16px;
 		}
 
+		/* The box's own edge ends the list. */
 		.facts {
+			padding-bottom: 0;
+			border-bottom: 0;
 			grid-template-columns: minmax(0, 1fr);
 		}
 	}

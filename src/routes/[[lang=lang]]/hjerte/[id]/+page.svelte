@@ -728,7 +728,7 @@
 
   @media (max-width: 599px) {
     .detail-main {
-      padding: 32px 16px 28px;
+      padding: 14px 16px 28px;
     }
 
     .phone-title {

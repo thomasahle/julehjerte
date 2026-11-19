@@ -119,6 +119,8 @@
 		aria-label={t('openInEditor', lang)}
 	>
 		<PencilIcon size={18} />
+		<!-- A phone has room for the word: there the button stands beside "Hent PDF" alone. -->
+		<span class="narrow">{t('editShort', lang)}</span>
 	</a>
 	{/if}
 	<button
@@ -241,8 +243,27 @@
 			height: 52px;
 		}
 
+		/* Sharing stands before "Tegn af". */
+		.actions.is-top .share,
+		.actions.is-top .pin {
+			order: -1;
+		}
+
+		/* "Hent PDF" and the editor, with its word, share the row equally. */
+		.actions .edit {
+			flex: 1 1 0;
+			aspect-ratio: auto;
+			gap: 8px;
+		}
+
+		.actions .get,
+		.actions .edit {
+			min-width: 0;
+			padding: 0 10px;
+		}
+
 		.actions .get {
-			flex: 1;
+			flex: 1 1 0;
 			background: var(--white);
 			border: 1.5px solid var(--green);
 			color: var(--green);
