@@ -20,6 +20,7 @@
   import PageHeader from "$lib/components/PageHeader.svelte";
   import Hero from "$lib/components/front/Hero.svelte";
   import HeroBootstrap from "$lib/components/front/HeroBootstrap.svelte";
+  import AboutHearts from "$lib/components/front/AboutHearts.svelte";
   import Gallery from "$lib/components/front/Gallery.svelte";
   import { deleteUserDesign, getUserCollection } from "$lib/stores/collection";
   import { toGalleryHeart, type GalleryHeart, type HeroHeart } from "$lib/front/galleryHearts";
@@ -393,6 +394,8 @@
        out of the cards above, so it belongs after the gallery and nowhere
        else — see $lib/front/heroBootstrap. -->
   <HeroBootstrap script={data.heroScript} />
+
+  <AboutHearts {lang} />
 </main>
 
 {#if DownloadDialog}

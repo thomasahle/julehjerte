@@ -1080,7 +1080,7 @@ export const translations = {
 
     // Search titles, social previews and the illustrated weaving guide
     heroDesignHeart: 'Design dit eget hjerte',
-    howToBrowserTitle: 'Sådan fletter du julehjerter – trin for trin',
+    howToBrowserTitle: 'Flet julehjerter selv – sådan gør du, trin for trin',
     classicHeartBrowserTitle: 'Klassisk julehjerte – skabelon med 3 strimler',
     starHeartBrowserTitle: 'Julehjerte med stjerne – skabelon til print',
     heartBrowserTitle: '{name} – skabelon til julehjerte',
@@ -1116,7 +1116,7 @@ export const translations = {
     guideWayPrint: 'Med printer',
     guideWayScreen: 'Uden printer',
     guidePrepareNote: 'Lav én halvdel i hver farve. Behold papiret foldet: hver strimmel skal være en løkke med to lag, som hænger sammen ved folden.',
-    guideWeaveTitle: 'Sådan fletter du løkkerne sammen',
+    guideWeaveTitle: 'Sådan fletter du julehjertet',
     guideWeaveIntro: 'Læg den hvide halvdel fra venstre og den røde oppefra, så de står vinkelret på hinanden. De runde ender vender væk fra hinanden. Begynd med den hvide strimmel nærmest den røde, og arbejd én strimmel helt igennem ad gangen.',
     guideMarksNote: 'Har skabelonen et lille kryds, så læg halvdelene, så krydserne ligger oven på hinanden, hvor de runde ender mødes, med ⊗ på venstre halvdel.',
     guideLoopTitle: 'En strimmel består af to lag',
@@ -1157,10 +1157,10 @@ export const translations = {
 
     // "Sådan gør du" / "How to" page
     howToTitle: 'Sådan fletter du et julehjerte',
-    howToIntro: 'Et julehjerte, eller en julekurv som det hedder på norsk, flettes af to foldede stykker papir. Strimlerne føres skiftevis ind i og uden om hinanden, så hjertet bliver en lille kurv. Her viser vi det med det klassiske hjerte med tre strimler i hver halvdel.',
+    howToIntro: 'Vil du flette julehjerter selv? Et julehjerte, eller en julekurv som det hedder på norsk, flettes af to foldede stykker papir. Strimlerne føres skiftevis ind i og uden om hinanden, så hjertet bliver en lille kurv. Her viser vi det med det klassiske hjerte med tre strimler i hver halvdel.',
     /** {n} = preparation step number, 1-4 */
     howToStepLabel: 'Trin {n}',
-    howToMetaDescription: 'Lær at flette et julehjerte med en illustreret vejledning: print, fold, klip og flet løkkerne sammen. Få råd om papir, størrelse og de typiske fejl.',
+    howToMetaDescription: 'Hvordan fletter man julehjerter? Følg den illustrerede vejledning trin for trin: print, fold, klip og flet. Med råd om papir, størrelse og de typiske fejl.',
 
     // Labels drawn inside the guide illustrations (guideSvg() in the mockup generator)
     guideLabelFoldLine: 'stiplet linje på folden',
@@ -1185,6 +1185,14 @@ export const translations = {
     historyToGallery: 'Se alle skabelonerne',
     historyToGuide: 'Sådan fletter du et julehjerte',
     aboutHistoryTitle: 'Historie',
+    frontAboutTitle: 'Om flettede julehjerter',
+    frontWhatTitle: 'Hvad er et flettet julehjerte?',
+    frontWhatText: 'Et julehjerte er to stykker foldet papir, klippet i strimler og flettet sammen til en lille kurv, som kan hænge på juletræet. Det er en dansk skik, og de fleste julehjerter er røde og hvide.',
+    frontHowTitle: 'Sådan fletter du julehjerter',
+    frontHowText: 'Vælg en skabelon, print den på A4, klip langs stregerne, og flet strimlerne skiftevis ind i og uden om hinanden. Begynd med et nemt hjerte med tre strimler.',
+    frontHowLink: 'Se vejledningen trin for trin',
+    frontHistoryText: 'Det ældste julehjerte, man kender, flettede H.C. Andersen, og de første trykte skabeloner kom i 1916.',
+    frontHistoryLink: 'Læs historien',
     aboutHistoryText: 'Flettede julehjerter er langt ældre end skabelonerne her: det ældste, man kender, flettede H.C. Andersen, og nogle af galleriets hjerter er tegnet efter sider trykt i 1916, 1922 og 1924.',
     aboutHistoryLink: 'Læs julehjertets historie',
     historyIntro: 'Flettede julehjerter er langt ældre end skabelonerne her. I begyndelsen af 1900-tallet trykte blade og forlag hjerter med mønstre og skabeloner, og nogle af galleriets hjerter er tegnet efter de gamle sider herunder. Men først det ældste hjerte, man kender.',
@@ -2426,6 +2434,14 @@ export const translations = {
     historyToGallery: 'See all the templates',
     historyToGuide: 'How to weave a Christmas heart',
     aboutHistoryTitle: 'History',
+    frontAboutTitle: 'About woven Christmas hearts',
+    frontWhatTitle: 'What is a woven Christmas heart?',
+    frontWhatText: 'A woven Christmas heart, or woven heart basket, is two pieces of folded paper, cut into strips and woven together into a small basket to hang on the Christmas tree. It is a Danish custom, and most hearts are red and white.',
+    frontHowTitle: 'How to weave a heart',
+    frontHowText: 'Choose a template, print it on A4, cut along the lines, and pass the strips alternately through and around each other. Start with an easy heart with three strips.',
+    frontHowLink: 'See the step-by-step guide',
+    frontHistoryText: 'The oldest woven heart known was made by Hans Christian Andersen, and the first printed templates came in 1916.',
+    frontHistoryLink: 'Read the history',
     aboutHistoryText: 'Woven Christmas hearts are far older than the templates here: the oldest one known was woven by Hans Christian Andersen, and some of the gallery\'s hearts are drawn after pages printed in 1916, 1922 and 1924.',
     aboutHistoryLink: 'Read the history of the woven heart',
     historyIntro: 'Woven Christmas hearts are far older than the templates here. In the early 1900s magazines and publishers printed hearts with patterns and templates, and some of the gallery\'s hearts are drawn after the old pages below. But first the oldest heart we know of.',
