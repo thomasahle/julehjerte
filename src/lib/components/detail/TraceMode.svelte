@@ -104,11 +104,17 @@
 	const template = $derived(getTemplateData(design, shownLobe));
 	const size = $derived({ width: template.templateWidth, height: template.templateHeight });
 	const viewport = $derived({ width: vw, height: vh });
+	/**
+	 * Room kept free at the foot of the screen when the template is first placed: the locked
+	 * screen's "Lås op" button, its ring and its line of words stand there, and a template
+	 * under them could not be traced.
+	 */
+	const UNLOCK_ROOM = 156;
 	const freeArea = $derived<Area>({
 		left: 0,
 		top: chromeBottom,
 		width: vw,
-		height: Math.max(0, vh - chromeBottom)
+		height: Math.max(0, vh - chromeBottom - UNLOCK_ROOM)
 	});
 
 	const widthMm = $derived(widthMmFromScale(size.width, view.s, pxPerMm));
@@ -431,7 +437,8 @@
 
 	// ---- The two-second hold -------------------------------------------------
 
-	const RING_RADIUS = 31;
+	// Well outside the button, and thick: the ring has to show round a thumb.
+	const RING_RADIUS = 50;
 	const RING_LENGTH = 2 * Math.PI * RING_RADIUS;
 
 	let hold: HoldState = HOLD_IDLE;
@@ -632,16 +639,17 @@
 
 			<div class="unlock" {@attach swallowTouches}>
 				<div class="unlock-button-wrap">
-					<svg class="hold-ring" width="68" height="68" viewBox="0 0 68 68" aria-hidden="true">
+					<svg class="hold-ring" width="112" height="112" viewBox="0 0 112 112" aria-hidden="true">
 						<circle
-							cx="34"
-							cy="34"
+							cx="56"
+							cy="56"
 							r={RING_RADIUS}
 							fill="none"
-							stroke-width="4"
+							stroke-width="9"
+							stroke-linecap="round"
 							stroke-dasharray={RING_LENGTH}
 							stroke-dashoffset={RING_LENGTH * (1 - progress)}
-							transform="rotate(-90 34 34)"
+							transform="rotate(-90 56 56)"
 						/>
 					</svg>
 					<button
@@ -978,8 +986,8 @@
 
 	.unlock-button-wrap {
 		position: relative;
-		width: 68px;
-		height: 68px;
+		width: 112px;
+		height: 112px;
 		display: grid;
 		place-items: center;
 	}
