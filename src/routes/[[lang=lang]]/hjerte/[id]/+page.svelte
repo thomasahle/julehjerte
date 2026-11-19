@@ -525,6 +525,11 @@
             onTrace={handleTrace}
             part="top"
           />
+          <!-- For the visitor who has the template and not yet the craft: under
+               the row with "Tegn af", which on a phone is the row above and on
+               wider screens the one below the panel (`order`). -->
+          <a class="guide-link" href={routeHref('howTo', lang)}>{t('heartGuideLink', lang)} →</a>
+
           <HeartPanel
             {lang}
             {info}
@@ -708,6 +713,25 @@
     gap: 10px;
   }
 
+  /* On the landscape, like the thumbnails' captions: a translucent white pill
+     keeps it readable where a fir comes through. */
+  .guide-link {
+    order: 1;
+    margin-top: -8px;
+    align-self: flex-start;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.8);
+    color: var(--green);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .guide-link:hover {
+    color: var(--red);
+  }
+
   /* Stacked below 1100: the big fir has no room next to the text. */
   @media (max-width: 1099px) {
     .detail-main {
@@ -733,6 +757,10 @@
 
     .phone-title {
       display: flex;
+    }
+
+    .guide-link {
+      order: 0;
     }
 
     .stage-col {

@@ -255,7 +255,9 @@
 			<a class="menu-link" href={languageHref}>
 				{t('switchLanguageName', lang)}
 			</a>
-			<GitHubLink variant="plain" class="menu-link" />
+			<!-- In a row of its own: the menu's row style is scoped to this file and does not
+			     reach the link inside GitHubLink. -->
+			<div class="menu-link"><GitHubLink variant="plain" /></div>
 		</div>
 	{/if}
 </header>
@@ -448,6 +450,12 @@
 
 	.menu-link:last-child {
 		border-bottom: 0;
+	}
+
+	/* The GitHub row reads like the other rows. */
+	.menu-link :global(.gh) {
+		font-size: 16px;
+		font-weight: 500;
 	}
 
 	.menu-link.active {

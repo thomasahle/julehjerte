@@ -209,9 +209,9 @@
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: 16px;
-		padding: 16px 0;
+		/* No line under the list: the box's own edge ends it. */
+		padding: 16px 0 0;
 		border-top: 1px solid var(--line);
-		border-bottom: 1px solid var(--line);
 	}
 
 	.fact {
@@ -283,10 +283,7 @@
 			font-size: 16px;
 		}
 
-		/* The box's own edge ends the list. */
 		.facts {
-			padding-bottom: 0;
-			border-bottom: 0;
 			grid-template-columns: minmax(0, 1fr);
 		}
 	}

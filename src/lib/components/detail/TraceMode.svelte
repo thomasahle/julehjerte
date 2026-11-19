@@ -109,7 +109,7 @@
 	 * screen's "Lås op" button, its ring and its line of words stand there, and a template
 	 * under them could not be traced.
 	 */
-	const UNLOCK_ROOM = 184;
+	const UNLOCK_ROOM = 208;
 	const freeArea = $derived<Area>({
 		left: 0,
 		top: chromeBottom,
@@ -651,16 +651,16 @@
 
 			<div class="unlock" {@attach swallowTouches}>
 				<div class="unlock-button-wrap">
-					<svg class="hold-ring" width="140" height="140" viewBox="0 0 140 140" aria-hidden="true">
+					<svg class="hold-ring" width="164" height="164" viewBox="0 0 164 164" aria-hidden="true">
 						<circle
-							cx="70"
-							cy="70"
+							cx="82"
+							cy="82"
 							r={RING_RADIUS}
 							fill="none"
-							stroke-width="14"
+							stroke-width="36"
 							stroke-dasharray={RING_LENGTH}
 							stroke-dashoffset={RING_LENGTH * (1 - progress)}
-							transform="rotate(-90 70 70)"
+							transform="rotate(-90 82 82)"
 						/>
 					</svg>
 					<button
@@ -1001,8 +1001,8 @@
 
 	.unlock-button-wrap {
 		position: relative;
-		width: 140px;
-		height: 140px;
+		width: 164px;
+		height: 164px;
 		display: grid;
 		place-items: center;
 	}
