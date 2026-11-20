@@ -157,7 +157,7 @@ function drawn(l,fr){return sm(l/(fr||DRAW));}
 var arcs=[],marks=[],offcuts=[],extra=[],NO=16,cutD=[];
 function clear(){meshes.forEach(function(m){W.remove(m);m.geometry.dispose();});meshes=[];
   extra.forEach(function(r){r.mesh.parent.remove(r.mesh);r.geo.dispose();});extra=[];arcs=[];marks=[];offcuts=[];B=null;}
-function build(hd){clear();B=hd;pos=new THREE.BufferAttribute(new Float32Array(hd.nv*3),3);pos.setUsage(THREE.DynamicDrawUsage);
+function build(hd){clear();B=hd;zMid=null;pos=new THREE.BufferAttribute(new Float32Array(hd.nv*3),3);pos.setUsage(THREE.DynamicDrawUsage);
   [1,0].forEach(function(pc){var idx=[],f=hd.faces;for(var i=0;i<f.length;i+=3)if(hd.piece[f[i]]===pc)idx.push(f[i],f[i+1],f[i+2]);
     var g=new THREE.BufferGeometry();g.setAttribute('position',pos);g.setIndex(idx);var m=new THREE.Mesh(g,mats[pc]);m.castShadow=m.receiveShadow=true;m.frustumCulled=false;W.add(m);meshes.push(m);});
   buildSteps(hd);
@@ -203,12 +203,24 @@ function introPos(st,P){
 
 /* handle: a ribbon whose two ends go down inside the pocket, one against each face */
 var NTAB=14,NTEAR=64,handle=ribbon(NTAB+NTEAR+NTAB+1,paperA.clone(),H);handle.mesh.material.transparent=true;handle.mesh.visible=false;
+/* The middle of the finished heart, between its back and its front layers. It is not ZM, the middle of one
+   strip lying on the table, which the handle was once placed from: its back end then lay outside the inner of
+   the two back layers and showed on the lobe. Each side's layers lie at the same two distances from the
+   middle, so it is halfway between the two sides' median heights (a few points of a recording stray). */
+var zMid=null;
+function middle(){
+  if(zMid!==null)return zMid;
+  var P=new Float32Array(B.nv*3),sg=B.sign,back=[],front=[],k;frameInto(P,(tW-tI)*WEAVE,0);
+  for(k=0;k<B.nv;k++){if(sg[k]<0)back.push(P[3*k+2]);else if(sg[k]>0)front.push(P[3*k+2]);}
+  function med(a){a.sort(function(x,y){return x-y;});return a[a.length>>1];}
+  zMid=back.length&&front.length?(med(back)+med(front))/2:ZM;return zMid;
+}
 function updateHandle(st){
-  var vis=st.hOp>0.001;handle.mesh.visible=vis;if(!vis)return;
+  var vis=st.hOp>0.001;handle.mesh.visible=vis;if(!vis)return;var ZC=middle();
   handle.mesh.material.opacity=st.hOp;
   var dy=(1-st.hIn)*2.7,arr=handle.pos,p=0,HW=0.33,yb=2.3,y0=0.95,HH=2.45,WW=0.7,i;
   function pk(x,y){var c=(y-T0y)/Math.SQRT2,d=x/Math.SQRT2;return pocket(c+d,c-d,st.P)+0.003;}
-  function sec(y,zl,zr){arr[p]=-HW;arr[p+1]=y;arr[p+2]=zl+ZM;arr[p+3]=HW;arr[p+4]=y;arr[p+5]=zr+ZM;p+=6;}
+  function sec(y,zl,zr){arr[p]=-HW;arr[p+1]=y;arr[p+2]=zl+ZC;arr[p+3]=HW;arr[p+4]=y;arr[p+5]=zr+ZC;p+=6;}
   for(i=0;i<NTAB;i++){var y=lerp(y0,yb,i/NTAB)+dy;sec(y,pk(-HW,y),pk(HW,y));}
   var dl=pk(-HW,yb+dy),dr=pk(HW,yb+dy);
   for(i=0;i<=NTEAR;i++){var ph=2*PI*i/NTEAR,sh=Math.sin(ph/2),zt=WW*Math.sin(ph)*sh*sh,cc=Math.cos(ph/2);sec(yb+dy+HH*(1-Math.cos(ph))/2,zt+dl*cc,zt+dr*cc);}

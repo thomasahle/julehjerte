@@ -86,7 +86,7 @@ export interface WeaveFilmEntry {
 }
 
 // Bumped when film.js or three.js changes, so a browser never pairs an old player with a new page.
-const PLAYER_VERSION = '2';
+const PLAYER_VERSION = '3';
 
 /** Whether this browser can unpack a recording at all. */
 export function canPlayWeaveFilm(recorded = true): boolean {
