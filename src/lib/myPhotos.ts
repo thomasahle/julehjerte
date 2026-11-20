@@ -20,10 +20,10 @@ import { readStorage, writeStorage } from '$lib/utils/safeStorage';
 /** Where visitors may send a photo for the site. */
 export const PHOTO_MAIL = 'foto@juleflet.dk';
 /**
- * Whether that address receives mail yet. Off until the domain's mail forwarding is set up:
- * the offer to mail a photo in is not shown while it is.
+ * Whether that address receives mail (it is forwarded by the domain's DNS host). When off, the
+ * offer to mail a photo in is not shown.
  */
-export const PHOTO_MAIL_READY = false;
+export const PHOTO_MAIL_READY = true;
 
 /** The longer side of a stored photo, in px: enough for the heart page's big view on a sharp screen. */
 export const PHOTO_MAX_SIDE = 1600;
