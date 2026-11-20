@@ -16,6 +16,9 @@
     - selection shows as a red ring around the heart plus a check badge, and the
       name turns red;
     - a user-created heart also gets a delete button, top right.
+  A heart the visitor has made and photographed ("Jeg har lavet det her" on its
+  page, $lib/myPhotos) shows that photo in place of the drawing: laid over the
+  heart, which stays in the page under it for the hero and the PDF.
   The controls are siblings over the link rather than inside it — nothing
   interactive is nested in anything else interactive, so the card stays keyboard
   and screen-reader friendly.
@@ -52,6 +55,8 @@
 	import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
 	import { base } from '$app/paths';
 	import { FRONT_IMAGE_HEART, FRONT_IMAGE_PATH } from '$lib/heartImage';
+	import { onMount } from 'svelte';
+	import { loadMyPhotos, myPhotos } from '$lib/myPhotos';
 
 	interface Props {
 		heart: GalleryHeart;
@@ -113,6 +118,11 @@
 			: undefined
 	);
 
+	let myPhoto = $derived($myPhotos[heart.id]);
+	onMount(() => {
+		void loadMyPhotos();
+	});
+
 	function handleOpen() {
 		onClick?.(heart);
 	}
@@ -158,6 +168,9 @@
 			     a text glyph, not an icon: the hero clones the first <svg> in the
 			     card, which has to stay the heart's own. -->
 			{#snippet badge()}
+				{#if myPhoto}
+					<img class="my-photo" src={myPhoto} alt={t('myPhotoAlt', lang, { name: heart.name })} decoding="async" />
+				{/if}
 				<span class="pick">
 					<!-- Named by aria-label, not an sr-only <label>: a label's text
 					     stays in the reading order, so browse mode read the name
@@ -227,6 +240,25 @@
 		z-index: 1;
 		border-radius: 14px;
 		background: transparent;
+	}
+
+	/* The visitor's own photo of the heart, over the drawing: a print with a white
+	   edge, hung a little askew. Clicks go through it to the card's link. */
+	.my-photo {
+		position: absolute;
+		/* A little bigger than the heart box, so no lobe shows past its edge. */
+		inset: -2%;
+		z-index: 1;
+		width: 104%;
+		height: 104%;
+		max-width: none;
+		box-sizing: border-box;
+		object-fit: cover;
+		border: 5px solid var(--white);
+		border-radius: 6px;
+		box-shadow: 0 8px 14px var(--shadow-color);
+		rotate: -2deg;
+		pointer-events: none;
 	}
 
 	/* The PDF checkbox: a real input, restyled, with the tick laid over it.

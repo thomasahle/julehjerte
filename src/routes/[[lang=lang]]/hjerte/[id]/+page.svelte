@@ -20,6 +20,7 @@
   import { browser } from "$app/environment";
   import type { PageProps } from "./$types";
   import HeartActions from "$lib/components/detail/HeartActions.svelte";
+  import { myPhotos } from "$lib/myPhotos";
   import HeartPanel from "$lib/components/detail/HeartPanel.svelte";
   import HeartStage from "$lib/components/detail/HeartStage.svelte";
   import RelatedHearts from "$lib/components/detail/RelatedHearts.svelte";
@@ -212,6 +213,8 @@
   // WebPage naming that picture as its primary image); a heart that only lives
   // in a browser has neither.
   let isGalleryPage = $derived(meta !== null && !isShared && !notFound);
+  // The visitor's own photo of this heart, if they have added one ("Jeg har lavet det her").
+  let myPhotoSrc = $derived(isShared ? undefined : $myPhotos[heartId]);
   let jsonLd = $derived(
     isGalleryPage && meta && info
       ? jsonLdScript(
@@ -499,6 +502,9 @@
             {lang}
             idPrefix={heartId}
             image={isGalleryPage && info ? { src: heartImagePath(heartId), alt: t("heartImageAlt", lang, { name: info.name }) } : null}
+            ownPhotoId={design && info && !isShared ? heartId : null}
+            heartName={info?.name ?? ""}
+            myPhoto={myPhotoSrc ? { src: myPhotoSrc, alt: t("myPhotoAlt", lang, { name: info?.name ?? "" }) } : null}
           />
         </div>
 
