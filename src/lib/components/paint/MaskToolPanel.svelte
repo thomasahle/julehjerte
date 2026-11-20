@@ -344,7 +344,7 @@
 							</button>
 						{/each}
 					</span>
-					<output>{t('paintBrushRadius', lang, { size: formatMm(brushSize, lang) })}</output>
+					<output>{t('paintBrushSize', lang, { size: formatMm(brushSize, lang) })}</output>
 				</span>
 				<!-- The slider moves the size by ratio (see `sizeOfSlider`): a pen
 				     reaches 200 cells, and a fine one must stay easy to set. -->

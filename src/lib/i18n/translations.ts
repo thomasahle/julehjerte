@@ -772,6 +772,7 @@ export const translations = {
     paintBrush: 'Pensel',
     /** {size} = penslens radius i mm, når det vævede kvadrat regnes som 100 mm */
     paintBrushRadius: 'Radius: {size} mm',
+    paintBrushSize: '{size} mm',
     paintBrushShape: 'Penselspids',
     paintBrushRound: 'Rund pensel',
     paintBrushSquare: 'Firkantet pensel, langs strimlerne',
@@ -2027,6 +2028,7 @@ export const translations = {
     paintBrush: 'Brush',
     /** {size} = the brush's radius in mm, the woven square taken as 100 mm */
     paintBrushRadius: 'Radius: {size} mm',
+    paintBrushSize: '{size} mm',
     paintsWith: 'Paints with',
     paintsWithLeft: 'The left lobe\'s colour',
     paintsWithRight: 'The right lobe\'s colour',
