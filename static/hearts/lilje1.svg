@@ -20,8 +20,8 @@
   <title
      id="title1">Lilje 1</title>
   <title xml:lang="en">Lily 1</title>
-  <desc xml:lang="da">Spejderliljen tegnet i rødt på hvid bund, med brede røde bånd på kryds bag den. Fem striber i hver halvdel, og knap halvdelen af klippene er buer, som former de tre blade. Halvdelene er spejlvendte, og én skabelon dækker begge. Bladene er smalle, hvor de mødes; klip buerne i lange, ubrudte træk, så kanten ikke bliver takket.</desc>
-  <desc xml:lang="en">The scout lily drawn in red on white, with wide red bands crossing behind it. Five strips in each half, and just under half the cuts are curves that shape the three leaves. The halves mirror each other, and one template covers both. The leaves are narrow where they meet, so cut the curves in long unbroken strokes and the edge will not come out jagged.</desc>
+  <desc xml:lang="da">Spejderliljen tegnet i rødt på hvid bund, med brede røde bånd på kryds bag den. Fem striber i hver halvdel, og knap halvdelen af klippene er buer, som former de tre blade. Halvdelene er spejlvendte, og én skabelon dækker begge. Bladene er smalle, hvor de mødes; klip buerne i lange, ubrudte træk, så kanten ikke bliver takket. Niels Thygesen tegnede mønsteret til [Spejderjul 1980](http://jubi100.dk/bibliotek/1980-SJ.pdf#page=18), hvor det står på side 18 under overskriften Spejder-julehjerter.</desc>
+  <desc xml:lang="en">The scout lily drawn in red on white, with wide red bands crossing behind it. Five strips in each half, and just under half the cuts are curves that shape the three leaves. The halves mirror each other, and one template covers both. The leaves are narrow where they meet, so cut the curves in long unbroken strokes and the edge will not come out jagged. Niels Thygesen drew the pattern for [Spejderjul 1980](http://jubi100.dk/bibliotek/1980-SJ.pdf#page=18), the Danish scouts’ Christmas annual, where it is on page 18.</desc>
   <sodipodi:namedview
      id="namedview1"
      pagecolor="#ffffff"
@@ -157,9 +157,11 @@
         </dc:creator>
         <dc:publisher>
           <cc:Agent>
-            <dc:title>Spejderliv</dc:title>
+            <dc:title>Spejderjul</dc:title>
           </cc:Agent>
         </dc:publisher>
+        <dc:source>http://jubi100.dk/bibliotek/1980-SJ.pdf#page=18</dc:source>
+        <dc:date>1980</dc:date>
       </cc:Work>
     </rdf:RDF>
   </metadata>

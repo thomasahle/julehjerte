@@ -2331,7 +2331,9 @@
     "name": "Lilje 1",
     "names": {"en":"Lily 1"},
     "author": "Niels Thygesen",
-    "publisher": "Spejderliv",
+    "publisher": "Spejderjul",
+    "source": "http://jubi100.dk/bibliotek/1980-SJ.pdf#page=18",
+    "date": "1980",
     "weaveParity": 0,
     "gridSize": {"x":5,"y":5},
     "fingers": [
@@ -2432,7 +2434,9 @@
     "name": "Lilje 2",
     "names": {"en":"Lily 2"},
     "author": "Niels Thygesen",
-    "publisher": "Spejderliv",
+    "publisher": "Spejderjul",
+    "source": "http://jubi100.dk/bibliotek/1980-SJ.pdf#page=18",
+    "date": "1980",
     "weaveParity": 0,
     "gridSize": {"x":7,"y":7},
     "fingers": [

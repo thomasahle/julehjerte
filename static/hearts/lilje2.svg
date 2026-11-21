@@ -20,8 +20,8 @@
   <title
      id="title1">Lilje 2</title>
   <title xml:lang="en">Lily 2</title>
-  <desc xml:lang="da">En større udgave af spejderliljen med flere detaljer i bladene og et felt af tern omkring. Syv striber i hver halvdel, og to femtedele af klippene er buer. Halvdelene er spejlvendte, så der er kun én skabelon. Sværhedsgraden er ekspert: mange af felterne er smallere end en stribe, og de tåler ikke, at papiret trækkes skævt under klipningen.</desc>
-  <desc xml:lang="en">A larger version of the scout lily with more detail in the leaves and a field of checks around it. Seven strips in each half, and two fifths of the cuts are curves. The halves mirror each other, so there is only one template. It is rated expert: many of the fields are narrower than a strip, and they will not survive the paper being pulled out of shape while you cut.</desc>
+  <desc xml:lang="da">En større udgave af spejderliljen med flere detaljer i bladene og et felt af tern omkring. Syv striber i hver halvdel, og to femtedele af klippene er buer. Halvdelene er spejlvendte, så der er kun én skabelon. Sværhedsgraden er ekspert: mange af felterne er smallere end en stribe, og de tåler ikke, at papiret trækkes skævt under klipningen. Niels Thygesen tegnede mønsteret til [Spejderjul 1980](http://jubi100.dk/bibliotek/1980-SJ.pdf#page=18), hvor det står på side 18 under overskriften Spejder-julehjerter.</desc>
+  <desc xml:lang="en">A larger version of the scout lily with more detail in the leaves and a field of checks around it. Seven strips in each half, and two fifths of the cuts are curves. The halves mirror each other, so there is only one template. It is rated expert: many of the fields are narrower than a strip, and they will not survive the paper being pulled out of shape while you cut. Niels Thygesen drew the pattern for [Spejderjul 1980](http://jubi100.dk/bibliotek/1980-SJ.pdf#page=18), the Danish scouts’ Christmas annual, where it is on page 18.</desc>
   <sodipodi:namedview
      id="namedview1"
      pagecolor="#ffffff"
@@ -156,9 +156,11 @@
         </dc:creator>
         <dc:publisher>
           <cc:Agent>
-            <dc:title>Spejderliv</dc:title>
+            <dc:title>Spejderjul</dc:title>
           </cc:Agent>
         </dc:publisher>
+        <dc:source>http://jubi100.dk/bibliotek/1980-SJ.pdf#page=18</dc:source>
+        <dc:date>1980</dc:date>
       </cc:Work>
     </rdf:RDF>
   </metadata>
