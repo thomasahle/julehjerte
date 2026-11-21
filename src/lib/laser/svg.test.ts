@@ -66,33 +66,17 @@ describe('serializeLaserSvg', () => {
 		expect(doc.querySelectorAll('g')).toHaveLength(1);
 	});
 
-	it('puts orientation marks in a blue group of their own, never with the cuts', () => {
+	it('leaves the orientation marks out: a laser would cut them out of the piece', () => {
 		const jul = loadHeart('jul');
 		for (const lobe of ['left', 'right'] as const) {
 			const julPlan = planLaserSheet(jul, { widthMm: 80, count: 2, sheet: SHEETS.A4, lobe });
-			const doc = parse(serializeLaserSvg(julPlan, options));
-			const cut = doc.getElementById('cut')!;
 			const piece = julPlan.pieces[0]!.piece;
-			// The cut group holds exactly the outlines and cuts, as before.
-			expect(cut.querySelectorAll('path')).toHaveLength(2 * (1 + piece.cuts.length));
-			const mark = doc.getElementById('mark')!;
-			expect(mark.getAttribute('stroke')).toBe('#0000ff');
-			expect(mark.getAttribute('stroke-width')).toBe('0.01');
-			expect(mark.getAttribute('fill')).toBe('none');
-			const paths = [...mark.querySelectorAll('path')].map((p) => p.getAttribute('d')!);
-			expect(paths).toHaveLength(2);
-			// ⊗ (with its circle's arcs) on the left piece, × on the right.
-			expect(paths.every((d) => d.includes(' A ') === (lobe === 'left'))).toBe(true);
-			expect(doc.querySelectorAll('g')).toHaveLength(2);
+			for (const look of ['laser', 'preview'] as const) {
+				const doc = parse(serializeLaserSvg(julPlan, { ...options, look }));
+				// One group, holding exactly the outlines and the cuts.
+				expect(doc.querySelectorAll('g')).toHaveLength(1);
+				expect(doc.querySelectorAll('path')).toHaveLength(2 * (1 + piece.cuts.length));
+			}
 		}
-		// The classic heart's file is unchanged: one group, no mark.
-		expect(parse(serializeLaserSvg(plan, options)).getElementById('mark')).toBeNull();
-	});
-
-	it("draws the preview's marks with a class, for the dialog to colour", () => {
-		const julPlan = planLaserSheet(loadHeart('jul'), { widthMm: 80, count: 1, sheet: SHEETS.A4, lobe: 'left' });
-		const doc = parse(serializeLaserSvg(julPlan, { ...options, look: 'preview' }));
-		expect(doc.querySelector('g.mark')!.getAttribute('stroke')).toBeNull();
-		expect(doc.querySelectorAll('g.mark path')).toHaveLength(1);
 	});
 });

@@ -354,8 +354,8 @@ of each other. Juleflet does the same (`$lib/utils/orientationMarks`).
   either: every way a piece can go in is right.
 - **Drawn:** the printer PDF (0.2 mm black) and its preview, the editor's
   nine-up PDF, the tracing mode, the heart page's large template view (not
-  its 104 px thumbnails), and the laser file as a separate non-cut layer
-  (LASER.md). The guide has one sentence on it (`guideMarksNote`).
+  its 104 px thumbnails). Not the laser file, where a cross would be cut out
+  of the piece (LASER.md). The guide has one sentence on it (`guideMarksNote`).
 - **Tests:** `orientationMarks.test.ts` lists the marked hearts and checks,
   for every one, that a piece laid with its mark at the top of the rendered
   heart (svgWeave's frame turned 45°) has exactly the cuts of the woven lobe

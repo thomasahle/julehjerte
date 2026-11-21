@@ -11,8 +11,7 @@
  * One layer, CUT (red, 1), and the same colour on every entity as well, for
  * the programs (xTool's among them) that sort by entity colour and never look
  * at the layer table. Every CUT line is a cut; the fold is not drawn (see
- * svg.ts). A heart whose pieces can go in the wrong way round also gets a
- * MARK layer (blue, 5) with its orientation marks, to engrave or switch off.
+ * svg.ts), and neither are the orientation marks, which would be cut out.
  *
  * DXF's y axis points up, the page's down: every point is written as
  * `y = sheetHeight − y`, which keeps the picture the right way up.
@@ -22,15 +21,14 @@ import { dropCollinear, flattenCubic, FLATTEN_TOLERANCE_MM } from './flatten';
 import { coord } from './format';
 import type { LaserSheet } from './sheet';
 import type { LaserPath } from './unfold';
-import { markStrokes } from '$lib/utils/orientationMarks';
 
 export interface LaserDxfOptions {
 	/** Chord error allowed when flattening a curved cut. */
 	toleranceMm?: number;
 }
 
-/** CUT red (1); MARK blue (5), the orientation marks, written only when there are any. */
-const LAYERS = { CUT: 1, MARK: 5 } as const;
+/** CUT red (1). */
+const LAYERS = { CUT: 1 } as const;
 type Layer = keyof typeof LAYERS;
 
 interface Vertex extends Vec {
@@ -136,24 +134,6 @@ export function serializeLaserDxf(layout: LaserSheet, options: LaserDxfOptions =
 		for (const cut of piece.cuts) addPath(cut, x, y);
 	}
 
-	// The orientation marks, on their own MARK layer: the cross as two lines,
-	// ⊗'s circle as a closed polyline of two half circles (bulge 1).
-	for (const { piece, x, y } of layout.pieces) {
-		for (const mark of piece.marks) {
-			for (const [a, b] of markStrokes(mark)) {
-				polylines.push({
-					layer: 'MARK',
-					closed: false,
-					vertices: [a, b].map((p) => ({ ...toDxf(p, x, y), bulge: 0 }))
-				});
-			}
-			if (mark.kind === 'circled') {
-				const west = toDxf({ x: mark.x - mark.r, y: mark.y }, x, y);
-				const east = toDxf({ x: mark.x + mark.r, y: mark.y }, x, y);
-				polylines.push({ layer: 'MARK', closed: true, vertices: [{ ...west, bulge: 1 }, { ...east, bulge: 1 }] });
-			}
-		}
-	}
 	const layers = (Object.keys(LAYERS) as Layer[]).filter(
 		(layer) => layer === 'CUT' || polylines.some((p) => p.layer === layer)
 	);
