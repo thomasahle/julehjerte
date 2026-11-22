@@ -223,8 +223,8 @@
 		<!-- The film itself is below: it stays when another view is chosen. -->
 	{:else}
 		<div class="stage-media">
-			<div class="stage-template">
-				<TemplatePreview {design} lobe={shownView === 'right' ? 'right' : 'left'} size={380} paper />
+			<div class="stage-template" {...pairAttributes(design.id)}>
+				<TemplatePreview {design} lobe={shownView === 'right' ? 'right' : 'left'} size={380} paper shared={sharedTemplate} />
 			</div>
 		</div>
 	{/if}
@@ -251,8 +251,7 @@
 
 <div class="thumbs" class:is-many={views.length > 3}>
 	{#each views as v (v.id)}
-		{@const pair =
-			(v.id === 'heart' || v.id === 'film') && design ? pairAttributes(design.id) : undefined}
+		{@const pair = v.id !== 'photo' && v.id !== 'mine' && design ? pairAttributes(design.id) : undefined}
 		<button
 			type="button"
 			class="thumb-btn"
@@ -330,7 +329,7 @@
 						<path d="M11 8 L23 15 L11 22 Z" fill="#1c3329" />
 					</svg>
 				{:else if design}
-					<TemplatePreview {design} lobe={v.id === 'right' ? 'right' : 'left'} size={200} marks={false} paper />
+					<TemplatePreview {design} lobe={v.id === 'right' ? 'right' : 'left'} size={200} marks={false} paper shared={sharedTemplate} />
 				{/if}
 			</span>
 			<span class="thumb-label">{v.label}</span>
@@ -422,7 +421,7 @@
 		box-shadow: 0 8px 20px var(--shadow-color);
 	}
 
-	/* No card: the piece is drawn as white paper and lies on the sky, as the
+	/* No card: the piece is drawn as paper in its lobe's colour and lies on the sky, as the
 	   heart hangs on it (TemplatePreview's `paper`). */
 	.stage-template {
 		width: min(100%, 420px);
@@ -485,7 +484,7 @@
 
 	/* The heart tile is sky-coloured, as in the hero: on white the white lobe
 	   would vanish and the tile show half a heart. The template tiles are too:
-	   the piece is drawn as white paper (TemplatePreview's `paper`). Photos
+	   the piece is drawn as paper in its lobe's colour (TemplatePreview's `paper`). Photos
 	   keep the white tile. */
 	.thumb-heart {
 		background: var(--sky);
