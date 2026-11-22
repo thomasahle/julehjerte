@@ -32,8 +32,8 @@
      * in the heart (the site's paper pair, --paper-left / --paper-right), on
      * the heart page's stage: the heart pulled apart. Each piece lies as it
      * does in the woven heart, the left lobe's leaning left and turned over,
-     * the right lobe's leaning right, slid back along its own strips until the
-     * two are clear of each other (see `placement`). The colours say which
+     * the right lobe's leaning right, slid back along its own strips until only
+     * the strip ends still overlap (see `placement`). The colours say which
      * sheet a piece is cut from, the picture shows which way up each goes
      * also when both are cut from one template, and it does not look like
      * something to trace: those lines are in "Tegn af" and the PDF.
@@ -52,8 +52,8 @@
   /** The download dialog's default width (DEFAULT_WIDTH_MM in $lib/laser/export, not imported to keep the laser writers off this page). */
   const PRINT_WIDTH_MM = 80;
 
-  /** How far each piece is slid out of the heart, in overlap squares: a little more than clear. */
-  const PULL = 1.06;
+  /** How far each piece is slid out of the heart, in overlap squares: the strip ends still lie over each other. */
+  const PULL = 0.8;
   /** How much larger than fitting a cropped picture is drawn. */
   const CROP = 1.5;
 
@@ -124,13 +124,14 @@
     <div class="template-label">{label}</div>
   {/if}
   <svg class:paper class:crop width={size} height={size} viewBox="0 0 {size} {size}">
-    <g transform={placement.transform}>
-      {#each placement.pieces as piece (piece.side)}
+    {#each placement.pieces as piece (piece.side)}
         {@const data = piece.data}
         {@const W = data.templateWidth}
         {@const H = data.templateHeight}
         {@const R = data.earRadius}
-        <g transform={piece.transform} class={paper ? `piece ink-${piece.side}` : undefined}>
+        <!-- The shadow is cast by the outer group, so it falls down the page, not along the turned piece. -->
+        <g class={paper ? `piece ink-${piece.side}` : undefined}>
+        <g transform="{placement.transform} {piece.transform}">
           {#if paper}
             <!-- The paper itself: the ear and the rectangle under it. -->
             <g class="fill-{piece.side}">
@@ -178,8 +179,8 @@
             {/each}
           {/if}
         </g>
-      {/each}
-    </g>
+        </g>
+    {/each}
   </svg>
 </div>
 
@@ -232,9 +233,12 @@
     }
   }
 
-  /* The same soft shadow the hanging heart casts. */
+  /* The same soft shadow the hanging heart casts, from each piece: the upper one's falls on the lower. */
   svg.paper {
     overflow: visible;
+  }
+
+  .piece {
     filter: drop-shadow(0 8px 14px var(--shadow-color));
   }
 

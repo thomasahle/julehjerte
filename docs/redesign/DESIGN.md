@@ -415,7 +415,7 @@ big fir; the photo and template views are top-aligned in the same box. Under it 
 thumbnails (white, radius 12, 1.5px `--line`, active
 2.5px red) with captions in light pills (`rgb(255 255 255 / .8)`, radius 999, 13px, nowrap): **Hjerte**,
 **Foto** (the design's photo, only if it exists), **Skabelon** (both template pieces as paper, pulled apart:
-each lies as in the woven heart, in its lobe's colour, slid back along its strips until the two are clear, so the
+each lies as in the woven heart, in its lobe's colour, slid back along its strips until only the strip ends overlap, so the
 picture shows which way up each piece goes also when both are cut from one template; the thumbnail crops the
 ears' outer ends to fill its square), **Fletning** (the weaving film);
 clicking a thumbnail swaps the big view. A heart with no photo shows one tile fewer.
