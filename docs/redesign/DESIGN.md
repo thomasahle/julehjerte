@@ -414,11 +414,11 @@ template card), so nothing floats — with the hanging heart (size 340, ribbon 7
 big fir; the photo and template views are top-aligned in the same box. Under it a row of four 104px
 thumbnails (white, radius 12, 1.5px `--line`, active
 2.5px red) with captions in light pills (`rgb(255 255 255 / .8)`, radius 999, 13px, nowrap): **Hjerte**,
-**Foto** (the design's photo, only if it exists), **Skabelon venstre**, **Skabelon højre** (the template previews);
-clicking a thumbnail swaps the big view. The mockup's four-up row is the maximum, not the norm: a heart whose
-lobes mirror each other needs one template, so most hearts show three tiles (Hjerte · Foto · Skabelon) and a
-heart with no photo shows two. Only an asymmetric heart *with* a photo would draw four, and no gallery heart
-is currently both (`jul` renders Skabelon venstre + Skabelon højre, `stjerne` renders Hjerte · Foto · Skabelon).
+**Foto** (the design's photo, only if it exists), **Skabelon** (both template pieces as paper, pulled apart:
+each lies as in the woven heart, in its lobe's colour, slid back along its strips until the two are clear, so the
+picture shows which way up each piece goes also when both are cut from one template; the thumbnail crops the
+ears' outer ends to fill its square), **Fletning** (the weaving film);
+clicking a thumbnail swaps the big view. A heart with no photo shows one tile fewer.
 
 Right column: panel `rgb(255 255 255 / .9)` (it was .55, which let the moon, stag and stars show through the text; .9 keeps `--muted` at 4.5:1 over the darkest fir behind it), radius 16, padding 24px 28px, gap 22: h1 name 44px/600; meta
 "af {author} · {grid} striber" 16px muted; the heart's own description paragraph with the link

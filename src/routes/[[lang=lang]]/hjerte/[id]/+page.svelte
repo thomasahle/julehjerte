@@ -359,7 +359,6 @@
         ? "mirror"
         : null,
   );
-  let sharedTemplate = $derived(templateSymmetry !== null);
 
   // "af Thomas · 3 × 3 striber" — the panel's one-line credit (DESIGN.md §4).
   let stripsLabel = $derived(info ? formatStrips(info.gridSize, lang) : "");
@@ -498,7 +497,6 @@
             {design}
             {photo}
             {film}
-            {sharedTemplate}
             {lang}
             idPrefix={heartId}
             image={isGalleryPage && info ? { src: heartImagePath(heartId), alt: t("heartImageAlt", lang, { name: info.name }) } : null}

@@ -5,8 +5,8 @@
 
   Views, in order: the visitor's own photo of the heart, if they have added one
   ($lib/myPhotos), which is then also what the stage shows first; the woven heart, a photo of the finished heart (only the seven
-  gallery hearts that have one), the printable template(s) — one when the two
-  lobes share a template, otherwise left and right — and the weaving film
+  gallery hearts that have one), the two template pieces as paper, pulled
+  apart (TemplatePreview's `paper`), and the weaving film
   (WeaveFilm.svelte: a recording where the heart has one, otherwise worked out in
   the browser). The film's tile is a drawing, the same for every heart; the film
   itself is fetched when the tile is chosen.
@@ -51,7 +51,7 @@
 	import { CameraIcon, CloseIcon } from '$lib/components/icons';
 	import { PHOTO_MAIL, PHOTO_MAIL_READY, loadMyPhotos, photoMailHref, removeMyPhoto, saveMyPhoto, shouldSuggestMail } from '$lib/myPhotos';
 
-	type ViewId = 'mine' | 'heart' | 'photo' | 'left' | 'right' | 'film';
+	type ViewId = 'mine' | 'heart' | 'photo' | 'template' | 'film';
 
 	interface Props {
 		/** Null while a user/shared heart is still being read in the browser. */
@@ -60,8 +60,6 @@
 		photo?: { src: string; width: number; height: number; alt: string } | null;
 		/** The heart's recorded weaving film, if this gallery heart has one; other hearts get one worked out in the browser. */
 		film?: (WeaveFilmEntry & { id: string }) | null;
-		/** False when the lobes need one template each. */
-		sharedTemplate?: boolean;
 		lang: Language;
 		/** Unique per page — see the note above. */
 		idPrefix: string;
@@ -75,7 +73,7 @@
 		heartName?: string;
 	}
 
-	let { design, photo = null, film = null, sharedTemplate = true, lang, idPrefix, image = null, myPhoto = null, ownPhotoId = null, heartName = '' }: Props = $props();
+	let { design, photo = null, film = null, lang, idPrefix, image = null, myPhoto = null, ownPhotoId = null, heartName = '' }: Props = $props();
 
 	const fit = heartImageFit();
 	const imageStyle = `width: ${fit.width}; margin-left: ${fit.left}; margin-top: ${fit.top}; clip-path: inset(${Number((heartImageRibbonBand() * 100).toFixed(3))}% 0 0 0);`;
@@ -86,11 +84,7 @@
 		list.push({ id: 'heart', label: t('viewHeart', lang) });
 		if (photo) list.push({ id: 'photo', label: t('photo', lang) });
 		if (design) {
-			list.push({
-				id: 'left',
-				label: sharedTemplate ? t('template', lang) : t('templateLeft', lang)
-			});
-			if (!sharedTemplate) list.push({ id: 'right', label: t('templateRight', lang) });
+			list.push({ id: 'template', label: t('template', lang) });
 			list.push({ id: 'film', label: t('weaveView', lang) });
 		}
 		return list;
@@ -124,8 +118,8 @@
 		if (myPhoto?.src) view = 'mine';
 	});
 
-	// A user heart's design only arrives after hydration, and a symmetric heart
-	// drops the "right" view, so the clicked view can stop existing. Deriving the
+	// A user heart's design only arrives after hydration, and a photo can be
+	// removed, so the clicked view can stop existing. Deriving the
 	// fallback rather than writing `view` back keeps the click state pure.
 	/** The heart whose film has been opened on this page: it is kept while other views are shown. */
 	let filmOpened = $state<string | null>(null);
@@ -224,7 +218,7 @@
 	{:else}
 		<div class="stage-media">
 			<div class="stage-template" {...pairAttributes(design.id)}>
-				<TemplatePreview {design} lobe={shownView === 'right' ? 'right' : 'left'} size={380} paper shared={sharedTemplate} />
+				<TemplatePreview {design} size={380} paper />
 			</div>
 		</div>
 	{/if}
@@ -268,7 +262,7 @@
 			     tile, as the film itself is in the heart's papers. -->
 			<span
 				class="thumb"
-				class:thumb-heart={v.id === 'heart' || v.id === 'left' || v.id === 'right'}
+				class:thumb-heart={v.id === 'heart' || v.id === 'template'}
 				class:thumb-film={v.id === 'film'}
 				aria-hidden="true"
 				data-pair={pair?.['data-pair']}
@@ -329,7 +323,7 @@
 						<path d="M11 8 L23 15 L11 22 Z" fill="#1c3329" />
 					</svg>
 				{:else if design}
-					<TemplatePreview {design} lobe={v.id === 'right' ? 'right' : 'left'} size={200} marks={false} paper shared={sharedTemplate} />
+					<TemplatePreview {design} size={200} marks={false} paper crop />
 				{/if}
 			</span>
 			<span class="thumb-label">{v.label}</span>
@@ -421,7 +415,7 @@
 		box-shadow: 0 8px 20px var(--shadow-color);
 	}
 
-	/* No card: the piece is drawn as paper in its lobe's colour and lies on the sky, as the
+	/* No card: the pieces are drawn as paper in their lobes' colours and lie on the sky, as the
 	   heart hangs on it (TemplatePreview's `paper`). */
 	.stage-template {
 		width: min(100%, 420px);
@@ -483,8 +477,8 @@
 	}
 
 	/* The heart tile is sky-coloured, as in the hero: on white the white lobe
-	   would vanish and the tile show half a heart. The template tiles are too:
-	   the piece is drawn as paper in its lobe's colour (TemplatePreview's `paper`). Photos
+	   would vanish and the tile show half a heart. The template tile is too:
+	   the pieces are drawn as paper in their lobes' colours (TemplatePreview's `paper`). Photos
 	   keep the white tile. */
 	.thumb-heart {
 		background: var(--sky);
