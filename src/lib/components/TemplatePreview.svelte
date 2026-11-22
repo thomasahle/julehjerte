@@ -41,7 +41,8 @@
     paper?: boolean;
     /**
      * With `paper`: fill a small square tile. The picture is twice as wide as
-     * it is high, so it is drawn larger than fits and runs out over the
+     * it is high, so it is drawn with its paper as large as the heart tile's
+     * (HEART_SPAN), which is larger than fits, and runs out over the
      * <svg>'s sides: the tile, which clips, cuts the ears' outer ends off at
      * its border.
      */
@@ -55,8 +56,13 @@
 
   /** How far each piece is slid out of the heart, in overlap squares: the strip ends still lie over each other. */
   const PULL = 0.8;
-  /** How much larger than fitting a cropped picture is drawn. */
-  const CROP = 1.5;
+  /**
+   * A cropped picture's paper is the size of the woven heart's in a picture of
+   * the same size (PaperHeartSVG, the tile beside it): there the heart, one
+   * overlap square times 1 + √½ wide, fills the picture but for a margin of
+   * 0.021 of its width on each side (computeHeartViewBoxFromOverlap's default).
+   */
+  const HEART_SPAN = (1 + Math.SQRT1_2) * (1 + 2 * 0.021);
 
   /**
    * The pieces and where they lie, as SVG transforms. Flat, the one piece
@@ -111,7 +117,7 @@
     const minY = Math.min(...ys);
     const maxY = Math.max(...ys);
     const fit = Math.min((size * 0.9) / (maxX - minX), (size * 0.9) / (maxY - minY));
-    const k = crop ? Math.min(fit * CROP, (size * 0.9) / (maxY - minY)) : fit;
+    const k = crop ? size / (pieces[0].data.templateWidth * HEART_SPAN) : fit;
     const tx = size / 2 - ((minX + maxX) / 2) * k;
     const ty = size / 2 - ((minY + maxY) / 2) * k;
     return { scale: k, transform: `translate(${tx}, ${ty}) scale(${k})`, pieces };
