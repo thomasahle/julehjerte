@@ -41,8 +41,9 @@
     paper?: boolean;
     /**
      * With `paper`: fill a small square tile. The picture is twice as wide as
-     * it is high, so it is drawn larger and the ears' outer ends are left to
-     * the tile to cut off.
+     * it is high, so it is drawn larger than fits and runs out over the
+     * <svg>'s sides: the tile, which clips, cuts the ears' outer ends off at
+     * its border.
      */
     crop?: boolean;
   }
@@ -123,7 +124,7 @@
   {#if label}
     <div class="template-label">{label}</div>
   {/if}
-  <svg class:paper class:crop width={size} height={size} viewBox="0 0 {size} {size}">
+  <svg class:paper width={size} height={size} viewBox="0 0 {size} {size}">
     {#each placement.pieces as piece (piece.side)}
         {@const data = piece.data}
         {@const W = data.templateWidth}
@@ -240,10 +241,5 @@
 
   .piece {
     filter: drop-shadow(0 8px 14px var(--shadow-color));
-  }
-
-  /* A cropped picture ends at its tile. */
-  svg.paper.crop {
-    overflow: hidden;
   }
 </style>
