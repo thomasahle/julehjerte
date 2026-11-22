@@ -28,11 +28,13 @@
      * heart (the site's paper pair, --paper-left / --paper-right), on the heart
      * page's stage. The colour says which sheet the piece is cut from, and that
      * the picture is a picture: the lines to trace are in "Tegn af" and the PDF.
+     * The piece also lies as it does in the woven heart: the left lobe's leaning
+     * left and turned over, the right lobe's leaning right (see `placement`).
      */
     paper?: boolean;
     /**
      * With `paper`: the one template both lobes are cut from. It is drawn in
-     * the right lobe's colour with a piece in the left lobe's behind it.
+     * the right lobe's colour and place, with a piece in the left lobe's colour behind it.
      */
     shared?: boolean;
   }
@@ -45,17 +47,51 @@
   /** The download dialog's default width (DEFAULT_WIDTH_MM in $lib/laser/export, not imported to keep the laser writers off this page). */
   const PRINT_WIDTH_MM = 80;
 
-  const templateData = $derived(getTemplateData(design, lobe));
+  const templateData = $derived(getTemplateData(design, paper ? side : lobe));
   const earRadius = $derived(templateData.earRadius);
   const templateWidth = $derived(templateData.templateWidth);
   const templateHeight = $derived(templateData.templateHeight);
 
-  // Scale to fit in size
-  const scale = $derived(Math.min((size * 0.9) / templateWidth, (size * 0.9) / templateHeight));
-  const scaledWidth = $derived(templateWidth * scale);
-  const scaledHeight = $derived(templateHeight * scale);
-  const offsetX = $derived((size - scaledWidth) / 2);
-  const offsetY = $derived((size - scaledHeight) / 2);
+  /**
+   * Where the piece lies, as an SVG transform. Flat, it stands upright and is
+   * scaled to fit. As paper it lies as in the heart: the editor's frame has
+   * the left lobe's ear to the left of the overlap square and the right
+   * lobe's above it, with the left lobe's template taking the square's y as
+   * its x ($lib/utils/orientationMarks), and the heart is that frame turned
+   * 45° clockwise. So the right lobe's piece is turned 45°, and the left
+   * lobe's has x and y swapped first.
+   */
+  const placement = $derived.by(() => {
+    const W = templateWidth;
+    const H = templateHeight;
+    const R = earRadius;
+    if (!paper) {
+      const k = Math.min((size * 0.9) / W, (size * 0.9) / H);
+      return { scale: k, transform: `translate(${(size - W * k) / 2}, ${(size - H * k) / 2}) scale(${k})` };
+    }
+    const c = Math.SQRT1_2;
+    const swap = side === 'left';
+    const place = (x: number, y: number) => {
+      const [a, b] = swap ? [y, x] : [x, y];
+      return { x: (a - b) * c, y: (a + b) * c };
+    };
+    const corners = [place(0, R), place(W, R), place(0, H), place(W, H)];
+    const ear = place(W / 2, R);
+    const xs = [...corners.map((p) => p.x), ear.x - W / 2, ear.x + W / 2];
+    const ys = [...corners.map((p) => p.y), ear.y - W / 2, ear.y + W / 2];
+    const minX = Math.min(...xs);
+    const maxX = Math.max(...xs);
+    const minY = Math.min(...ys);
+    const maxY = Math.max(...ys);
+    const k = Math.min((size * 0.9) / (maxX - minX), (size * 0.9) / (maxY - minY));
+    const tx = size / 2 - ((minX + maxX) / 2) * k;
+    const ty = size / 2 - ((minY + maxY) / 2) * k;
+    return {
+      scale: k,
+      transform: `translate(${tx}, ${ty}) scale(${k}) rotate(45)${swap ? ' matrix(0 1 1 0 0 0)' : ''}`
+    };
+  });
+  const scale = $derived(placement.scale);
   const earPath = $derived(templateData.earPath);
   const transformedPaths = $derived(templateData.cutPaths);
   const orientationMarks = $derived(
@@ -75,7 +111,7 @@
     height={size}
     viewBox="0 0 {size} {size}"
   >
-    <g transform="translate({offsetX}, {offsetY}) scale({scale})">
+    <g transform={placement.transform}>
       {#if paper}
         {#if shared}
           <!-- The other colour's piece, cut from the same template, behind and a little aside. -->
