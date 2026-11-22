@@ -264,6 +264,7 @@
 				class="thumb"
 				class:thumb-heart={v.id === 'heart' || v.id === 'template'}
 				class:thumb-film={v.id === 'film'}
+				class:thumb-full={v.id === 'photo' || v.id === 'mine'}
 				aria-hidden="true"
 				data-pair={pair?.['data-pair']}
 				style={pair?.style}
@@ -484,6 +485,11 @@
 		background: var(--sky);
 	}
 
+	/* A photo fills its tile to the border. */
+	.thumb-full {
+		padding: 0;
+	}
+
 	/* The film's tile is the cutting mat the film is shot on, edge to edge. */
 	.thumb-film {
 		background: #1f4d3b;
@@ -667,7 +673,6 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		border-radius: 6px;
 	}
 
 	.thumb-label {
