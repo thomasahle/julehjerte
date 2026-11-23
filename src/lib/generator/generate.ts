@@ -14,7 +14,7 @@ import { isTopology, outlineFor, recipeConstruction, recipesAt, type Recipe, typ
 import { FALLBACK_WORK, MIRROR_NEAR, hiddenCuts, motifFit, movedEnd, nestingOf, topologyConstruction } from './topologyRecipes';
 import { blobsOf, carryTopology } from './topologyTransfer';
 import { alongEdge, boardOutline } from './boardOutline';
-import { bendShared, followArc, redrawShared, sharedCuts, sharedPieces, slideSwitch, slideToCorner, straightenShared, switchesOf } from './cutMoves';
+import { bendShared, followArc, redrawShared, sharedCuts, sharedPieces, slideNearest, slideSwitch, slideToCorner, straightenShared, switchesOf } from './cutMoves';
 import { picture, type Known } from './picture';
 import { isRefusal, refusal, unlessRefused } from './refusal';
 export { fillSquare, fitCircle } from './frameFit';
@@ -1116,15 +1116,21 @@ function refined<T extends Drawing & { m: number[] }>(request: GeneratorRequest,
 	return { ...best, heart: best.unbent };
 }
 
-/** How many hearts are drawn at most to shorten one's hidden cuts (see `shortened`). */
-const SHORTEN_DRAWS = 8;
+/** How many hearts are drawn at most to shorten one's hidden cuts, and how many of them not kept (see `shortened`). */
+const SHORTEN_DRAWS = 6, SHORTEN_FAILS = 3;
 /** How far along its outline, in the sheet's units, a hidden cut's end is slid to a corner (see `shortened`). */
 const SHORTEN_REACH = 30;
 /** The least a hidden cut drawn anew must gain, in the sheet's units (see `shortened`). */
-const SHORTEN_GAIN = .25;
+const SHORTEN_GAIN = 1;
+/** What a bend of a hidden cut counts as, in the sheet's units of length (see `shortened`). */
+const BEND_COST = 1;
 /** Under how many degrees between an outline and the hidden cut leaving it a paper's line turns back on
  * itself there, and what each degree under it counts as, in the sheet's units of length (see `shortened`). */
 const HAIRPIN = 60, HAIRPIN_COST = .25;
+/** How far along the motif's outline, in the sheet's units, a hidden cut's end is slid to the point nearest its other end (see `shortened`). */
+const SHORTEN_NEAR = 15;
+/** How near another cut a hidden cut drawn anew may pass, in the sheet's units, and how far from its own ends that is asked (see `shortened`). */
+const SHORTEN_CLEAR = 1.2, SHORTEN_CLEAR_ENDS = 2.5;
 
 /**
  * A board heart with its hidden cuts drawn shorter and straighter, where that
@@ -1132,13 +1138,15 @@ const HAIRPIN = 60, HAIRPIN_COST = .25;
  * through bends, and each of its ends put on the next corner of the outline
  * it ends on (the corner of a square where the circle meets its line, a tip
  * or notch of the motif) where that is nearer its other end or meets the
- * outline less sharply. An end in the middle of a side makes one paper's line
+ * outline less sharply, or on the point of the motif's outline nearest its
+ * other end. An end in the middle of a side makes one paper's line
  * come along the side and turn back into the cut; from the corner that line
- * runs straight on. An end on the heart's middle line stays there (the lobes
- * could not share a template else). Every cut's best such drawing is tried at once; where
- * that heart cuts worse or cannot be built, one cut at a time, the most
- * gained first (with its mirror image where the lobes share a template), up
- * to SHORTEN_DRAWS hearts drawn. A heart is kept only where no paper tears
+ * runs straight on. An end on the heart's middle line stays there, and
+ * where the lobes share a template a cut is drawn anew only with its mirror
+ * image, the mirrored way (the lobes could not share it else). Every cut's
+ * best such drawing is tried at once; where that heart cuts worse or cannot
+ * be built, one cut at a time, the most gained first, up to SHORTEN_DRAWS
+ * hearts drawn or SHORTEN_FAILS of them not kept. A heart is kept only where no paper tears
  * that held, no neck is narrower, it needs no second template, has no more
  * tips or turns, and its cuts are shorter.
  */
@@ -1157,10 +1165,11 @@ function shortened(request: GeneratorRequest, heart: GeneratorResult): Generator
 			refusal(error);
 		}
 	};
+	// The measures first, which are at hand; then the tips and the necks.
 	const noWorse = (a: Drawn, b: Drawn) => a.m[0] <= b.m[0] && a.m[1] <= b.m[1] && a.m[2] <= b.m[2] && a.m[3] <= b.m[3] && a.m[4] < b.m[4]
-		&& cutTipCounts(a.heart.design)[0] <= cutTipCounts(b.heart.design)[0] && neckAsWide(a.heart.design, b.heart.design)
-		&& (!a.m[0] || holdsAt(a.heart.design) <= holdsAt(b.heart.design));
+		&& cutTipCounts(a.heart.design)[0] <= cutTipCounts(b.heart.design)[0] && neckAsWide(a.heart.design, b.heart.design);
 	const at = (p: Point) => `${p[0].toFixed(6)},${p[1].toFixed(6)}`, apart = (p: Point, q: Point) => Math.hypot(p[0] - q[0], p[1] - q[1]);
+	const onAxis = (p: Point) => Math.abs(p[0] - p[1]) < MIRROR_NEAR, flip = (p: Point): Point => [p[1], p[0]];
 	// What a cut's end costs where a paper's line turns back on itself into it: the edges at `p`, the cut leaving towards `to`.
 	const hairpin = (edges: Edge[], p: Point, to: Point) => {
 		let cost = 0;
@@ -1172,19 +1181,21 @@ function shortened(request: GeneratorRequest, heart: GeneratorResult): Generator
 		}
 		return cost;
 	};
-	const onAxis = (p: Point) => Math.abs(p[0] - p[1]) < MIRROR_NEAR;
-	// How an end is moved: to the next corner of that paper's outline, or not.
-	type Slide = 'A' | 'B' | undefined;
-	type Option = { ends: [Point, Point]; slides: [Slide, Slide]; gain: number; points: Point[] };
-	// A cut (its points) drawn straight, each end moved or left: the edges, and its ends.
+	// How an end is moved: to the next corner of that paper's outline, along the motif's outline to the point
+	// nearest the cut's other end, or not.
+	type Slide = 'A' | 'B' | 'near' | undefined;
+	const image = (slide: Slide): Slide => slide === 'A' ? 'B' : slide === 'B' ? 'A' : slide;
+	type Option = { ends: [Point, Point]; slides: [Slide, Slide]; gain: number };
+	// A cut (its points) drawn straight, each end moved or left: the edges, and its ends. The ends put on
+	// corners first; one put nearest the other is then nearest where that one went.
 	const redrawn = (edges: Edge[], points: Point[], slides: Option['slides']) => {
 		let pts = points;
-		for (const k of [0, 1] as const) {
+		for (const near of [false, true]) for (const k of [0, 1] as const) {
 			const slide = slides[k], p = k ? pts[pts.length - 1] : pts[0];
-			if (!slide) continue;
+			if (!slide || (slide === 'near') !== near) continue;
 			// An end on the heart's middle line stays on it.
 			if (onAxis(p)) return;
-			const slid = slideToCorner(edges, p, slide, SHORTEN_REACH);
+			const slid = slide === 'near' ? slideNearest(edges, p, k ? pts[0] : pts[pts.length - 1], SHORTEN_NEAR) : slideToCorner(edges, p, slide, SHORTEN_REACH);
 			if (!slid) return;
 			edges = slid.edges;
 			pts = k ? [...pts.slice(0, -1), slid.to] : [slid.to, ...pts.slice(1)];
@@ -1192,50 +1203,111 @@ function shortened(request: GeneratorRequest, heart: GeneratorResult): Generator
 		const ends: [Point, Point] = [pts[0], pts[pts.length - 1]], out = redrawShared(edges, pts, ...ends);
 		return out && { edges: out, ends };
 	};
-	const slides: Slide[] = [undefined, 'A', 'B'];
-	// The drawings of a cut that were not kept (the cut by its ends, the drawing by its own): not tried again.
-	const failed = new Set<string>(), named = (points: Point[], ends: [Point, Point]) => `${at(points[0])}|${at(points[points.length - 1])}>${at(ends[0])}|${at(ends[1])}`;
-	// The best way to draw each cut anew, by what it gains: length, and the turns back at its ends.
-	const options = (edges: Edge[]): Option[] => sharedCuts(edges).flatMap(points => {
-		const before = points.slice(1).reduce((sum, p, k) => sum + apart(points[k], p), 0)
-			+ hairpin(edges, points[0], points[1]) + hairpin(edges, points[points.length - 1], points[points.length - 2]);
-		const tried = (pair: [Slide, Slide]): Option | undefined => {
-			const made = redrawn(edges, points, pair);
-			if (!made) return;
-			const [p, q] = made.ends;
-			// Not one drawn before and not kept; and across no other cut.
-			if (failed.has(named(points, made.ends))) return;
-			if (made.edges.some(e => ![e.from, e.to].some(r => at(r) === at(p) || at(r) === at(q)) && linesCross(p, q, e.from, e.to))) return;
-			return { ends: made.ends, slides: pair, points, gain: before - apart(p, q) - hairpin(made.edges, p, q) - hairpin(made.edges, q, p) };
-		};
-		const best = slides.flatMap(a => slides.map(b => points.length === 2 && !a && !b ? undefined : tried([a, b])))
-			.reduce((x, y) => !y || (x && x.gain >= y.gain) ? x : y, undefined);
-		return best && best.gain >= SHORTEN_GAIN ? [best] : [];
-	}).sort((x, y) => y.gain - x.gain);
-	let best: Drawn = { heart, m: cutMeasures(heart.design, shown.rings), edges: construction.edges }, draws = 0;
-	const first = options(best.edges);
-	if (!first.length) return heart;
-	// All at once.
-	let all: Edge[] | undefined = best.edges;
-	for (const option of first) all = all && (redrawn(all, option.points, option.slides)?.edges ?? all);
-	const whole = all && draw(all);
-	draws++;
-	if (whole && noWorse(whole, best)) return whole.heart;
-	// One at a time, the most gained first.
-	const flip = (p: Point): Point => [p[1], p[0]];
-	while (draws < SHORTEN_DRAWS) {
-		const [option] = options(best.edges);
-		if (!option) break;
-		let edges = redrawn(best.edges, option.points, option.slides)?.edges;
-		// Where the lobes share a template, with its mirror image: the cut whose new ends are this one's, mirrored.
-		if (edges && !best.m[1]) {
-			const image = options(edges).find(other => other.ends.every((p, k) => apart(p, flip(option.ends[k])) < MIRROR_NEAR) || other.ends.every((p, k) => apart(p, flip(option.ends[1 - k])) < MIRROR_NEAR));
-			if (image) edges = redrawn(edges, image.points, image.slides)?.edges;
+	// Whether a cut from `p` to `q` keeps clear of the other edges: across none, and past its first and last
+	// SHORTEN_CLEAR_ENDS not within SHORTEN_CLEAR of one it does not end on (paper as narrow would tear, or
+	// the heart not build at all).
+	const clear = (edges: Edge[], p: Point, q: Point) => {
+		const l = apart(p, q), reach = l / 2 + SHORTEN_CLEAR, mid: Point = [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2];
+		const others = edges.filter(e => pointDistance(mid, e.from, e.to) < reach && ![e.from, e.to].some(r => at(r) === at(p) || at(r) === at(q)));
+		if (others.some(e => linesCross(p, q, e.from, e.to))) return false;
+		for (let d = SHORTEN_CLEAR_ENDS; d <= l - SHORTEN_CLEAR_ENDS; d += 1) {
+			const x: Point = [p[0] + (q[0] - p[0]) * d / l, p[1] + (q[1] - p[1]) * d / l];
+			if (others.some(e => pointDistance(x, e.from, e.to) < SHORTEN_CLEAR)) return false;
 		}
-		const next = edges && draw(edges);
+		return true;
+	};
+	// The checks a heart's building begins with, which cost little: its cuts compile, cross nowhere and pinch no paper.
+	const quick = (edges: Edge[]) => {
+		try {
+			const geometry = compile(edges);
+			audit(edges);
+			return !hasSeverePinch(geometry, gridClearanceScale(geometry.A_overlap_paths.length + 1, geometry.B_overlap_paths.length + 1));
+		} catch (error) {
+			refusal(error);
+			return false;
+		}
+	};
+	const slides: Slide[] = [undefined, 'A', 'B', 'near'];
+	// Each cut worth drawing anew, with the ways to, the most gained first: by its length, its bends and the
+	// turns back at its ends.
+	type Cut = { points: Point[]; ways: Option[] };
+	const cutsOf = (edges: Edge[]): Cut[] => sharedCuts(edges).flatMap(points => {
+		const last = points.length - 1, length = points.slice(1).reduce((sum, p, k) => sum + apart(points[k], p), 0);
+		if (length < SHORTEN_GAIN) return [];
+		const before = length + (points.length - 2) * BEND_COST + hairpin(edges, points[0], points[1]) + hairpin(edges, points[last], points[last - 1]);
+		const way = (pair: [Slide, Slide]): Option | undefined => {
+			const made = redrawn(edges, points, pair);
+			if (!made || !clear(made.edges, ...made.ends)) return;
+			const [p, q] = made.ends;
+			return { ends: made.ends, slides: pair, gain: before - apart(p, q) - hairpin(made.edges, p, q) - hairpin(made.edges, q, p) };
+		};
+		const kept = slides.flatMap(a => slides.map(b => points.length === 2 && !a && !b ? undefined : way([a, b])))
+			.filter((option): option is Option => !!option && option.gain >= SHORTEN_GAIN).sort((x, y) => y.gain - x.gain);
+		return kept.length ? [{ points, ways: kept }] : [];
+	});
+	// A cut's best way that passes the builder's quick checks (those that do not are dropped); `plain`: its best
+	// that only straightens it and puts ends on corners.
+	const wayOf = (edges: Edge[], cut: Cut, plain = false) => {
+		for (let k = 0; k < cut.ways.length;) {
+			const way = cut.ways[k];
+			if (plain && way.slides.includes('near')) k++;
+			else if (quick(redrawn(edges, cut.points, way.slides)!.edges)) return way;
+			else cut.ways.splice(k, 1);
+		}
+	};
+	const cutName = (points: Point[]) => [at(points[0]), at(points[points.length - 1])].sort().join('|');
+	// The edges with a cut drawn anew one way, and, where the lobes share a template, its mirror image's the
+	// mirrored way (the papers trade places); the cuts drawn. None where the image cannot be drawn so too: one
+	// alone would cost the shared template.
+	const applied = (edges: Edge[], points: Point[], way: Option, shared: boolean): { edges: Edge[]; cuts: string[] } | undefined => {
+		const made = redrawn(edges, points, way.slides);
+		if (!made) return;
+		if (!shared) return { edges: made.edges, cuts: [cutName(points)] };
+		const [a, b] = [points[0], points[points.length - 1]];
+		// A cut its own mirror image: drawn alike at both ends, or not at all.
+		if (apart(a, flip(b)) < MIRROR_NEAR) return way.slides[0] === image(way.slides[1]) ? { edges: made.edges, cuts: [cutName(points)] } : undefined;
+		const partner = sharedCuts(made.edges).find(other => [other[0], other[other.length - 1]].every(p => apart(p, flip(a)) < MIRROR_NEAR || apart(p, flip(b)) < MIRROR_NEAR));
+		if (!partner) return;
+		const mirrored: Option['slides'] = apart(partner[0], flip(a)) < MIRROR_NEAR ? [image(way.slides[0]), image(way.slides[1])] : [image(way.slides[1]), image(way.slides[0])];
+		const both = redrawn(made.edges, partner, mirrored);
+		return both && { edges: both.edges, cuts: [cutName(points), cutName(partner)] };
+	};
+	let best: Drawn = { heart, m: cutMeasures(heart.design, shown.rings), edges: construction.edges }, draws = 0, fails = 0;
+	let cuts = cutsOf(best.edges);
+	const ranked = (plain = false) => cuts.map(cut => ({ cut, way: wayOf(best.edges, cut, plain) }))
+		.filter((x): x is { cut: Cut; way: Option } => !!x.way).sort((x, y) => y.way.gain - x.way.gain);
+	// All at once, the most gained first, each with its image: every cut's best way, then, where that heart
+	// is not kept, every cut's best plain way (an end put nearest the other may land by a corner of the motif).
+	for (const plain of [false, true]) {
+		const done = new Set<string>();
+		let all = best.edges, bold = false;
+		for (const { cut, way } of ranked(plain)) {
+			if (done.has(cutName(cut.points))) continue;
+			const made = applied(all, cut.points, way, !best.m[1]);
+			if (!made || !quick(made.edges)) continue;
+			all = made.edges;
+			bold ||= way.slides.includes('near');
+			for (const name of made.cuts) done.add(name);
+		}
+		if (!done.size) return heart;
+		const whole = draw(all);
 		draws++;
-		if (next && noWorse(next, best)) best = next;
-		else failed.add(named(option.points, option.ends));
+		if (whole && noWorse(whole, best)) return whole.heart;
+		if (!bold) break;
+	}
+	// One at a time, the most gained first, until SHORTEN_FAILS were drawn and not kept; a way not kept is dropped.
+	while (draws < SHORTEN_DRAWS && fails < SHORTEN_FAILS) {
+		const [top] = ranked();
+		if (!top) break;
+		const made = applied(best.edges, top.cut.points, top.way, !best.m[1]), next = made && draw(made.edges);
+		if (made) draws++;
+		if (next && noWorse(next, best)) {
+			best = next;
+			cuts = cutsOf(best.edges);
+		} else {
+			top.cut.ways.shift();
+			if (made) fails++;
+		}
 	}
 	return best.heart;
 }

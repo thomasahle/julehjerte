@@ -127,6 +127,57 @@ export function slideToCorner(edges: Edge[], at: Point, towards: 'A' | 'B', reac
 	}
 }
 
+/**
+ * The switch at `at` slid along its outline to the point nearest `target`
+ * (the cut's other end: the cut is then as short as its end's outline lets
+ * it be, and meets it squarely), no farther than `reach` either way and
+ * only where the outline runs on alone, as in `slideSwitch`; put on a vertex
+ * of the outline where that is the nearest point. With the edges, the point.
+ * None where the switch is nearest as it is.
+ */
+export function slideNearest(edges: Edge[], at: Point, target: Point, reach = Infinity): { edges: Edge[]; to: Point } | undefined {
+	const near = incidence(edges), ids = near.get(key(at));
+	if (!ids || !isSwitch(edges, ids)) return;
+	const apart = (p: Point) => Math.hypot(p[0] - target[0], p[1] - target[1]);
+	// Each way along: the edges passed whole, then the edge the nearest point lies on and how far along it.
+	let best: { d: number; towards: 'A' | 'B'; passed: number[]; edge: number; from: Point; t: number } | undefined, least = apart(at) - 1e-6;
+	for (const towards of ['A', 'B'] as const) {
+		const passed: number[] = [];
+		let gone = 0, point = at, edge = ids.find(i => edges[i]!.family === towards)!;
+		for (;;) {
+			const e = edges[edge]!, far = same(e.from, point) ? e.to : e.from, l = length(e);
+			const next = near.get(key(far))!.filter(i => i !== edge), on = next.length === 1 && edges[next[0]!]!.family === towards && edges[next[0]!]!.kind === 'outline';
+			// On this edge, short of its end where the outline does not run on alone beyond it.
+			const most = Math.min(on ? 1 : 1 - 1e-3, (reach - gone) / l);
+			const t = Math.max(0, Math.min(most, ((target[0] - point[0]) * (far[0] - point[0]) + (target[1] - point[1]) * (far[1] - point[1])) / (l * l)));
+			const d = apart([point[0] + (far[0] - point[0]) * t, point[1] + (far[1] - point[1]) * t]);
+			if (t > 0 && d < least) { least = d; best = { d, towards, passed: [...passed], edge, from: point, t }; }
+			gone += l;
+			if (gone >= reach || !on) break;
+			passed.push(edge);
+			point = far;
+			edge = next[0]!;
+		}
+	}
+	if (!best) return;
+	const other = best.towards === 'A' ? 'B' : 'A', out = edges.map(e => ({ ...e })), shared = ids.find(i => edges[i]!.family === 'AB')!;
+	for (const i of best.passed) out[i] = { ...out[i]!, family: other };
+	const e = edges[best.edge]!, far = same(e.from, best.from) ? e.to : e.from;
+	let to: Point;
+	if (best.t > 1 - 1e-9) {
+		// On the edge's far vertex: the whole edge changes paper.
+		out[best.edge] = { ...e, family: other };
+		to = far;
+	} else {
+		to = [best.from[0] + (far[0] - best.from[0]) * best.t, best.from[1] + (far[1] - best.from[1]) * best.t];
+		out[best.edge] = { from: to, to: far, family: best.towards, kind: 'outline' };
+		out.push({ from: best.from, to, family: other, kind: 'outline' });
+	}
+	const s = out[shared]!;
+	out[shared] = same(s.from, at) ? { ...s, from: to } : { ...s, to };
+	return { edges: out, to };
+}
+
 /** A construction's shared cuts, each from end to end through its bends (two
  * shared pieces meeting and nothing else): its points in order. */
 export function sharedCuts(edges: Edge[]): Point[][] {
