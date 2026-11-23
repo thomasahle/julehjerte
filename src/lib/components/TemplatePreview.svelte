@@ -82,6 +82,7 @@
       const k = Math.min((size * 0.9) / W, (size * 0.9) / H);
       return {
         scale: k,
+        height: size,
         transform: `translate(${(size - W * k) / 2}, ${(size - H * k) / 2}) scale(${k})`,
         pieces: [{ side: lobe, data, transform: '' }]
       };
@@ -116,11 +117,13 @@
     const maxX = Math.max(...xs);
     const minY = Math.min(...ys);
     const maxY = Math.max(...ys);
-    const fit = Math.min((size * 0.9) / (maxX - minX), (size * 0.9) / (maxY - minY));
-    const k = crop ? size / (pieces[0].data.templateWidth * HEART_SPAN) : fit;
+    // Uncropped, the picture is `size` wide and only as high as the pieces need,
+    // so it can take the width its place has.
+    const k = crop ? size / (pieces[0].data.templateWidth * HEART_SPAN) : (size * 0.94) / (maxX - minX);
+    const height = crop ? size : (maxY - minY) * k + size * 0.06;
     const tx = size / 2 - ((minX + maxX) / 2) * k;
-    const ty = size / 2 - ((minY + maxY) / 2) * k;
-    return { scale: k, transform: `translate(${tx}, ${ty}) scale(${k})`, pieces };
+    const ty = height / 2 - ((minY + maxY) / 2) * k;
+    return { scale: k, height, transform: `translate(${tx}, ${ty}) scale(${k})`, pieces };
   });
   const scale = $derived(placement.scale);
   const printScale = $derived(marks ? heartScale(design, PRINT_WIDTH_MM) : 1);
@@ -130,7 +133,7 @@
   {#if label}
     <div class="template-label">{label}</div>
   {/if}
-  <svg class:paper width={size} height={size} viewBox="0 0 {size} {size}">
+  <svg class:paper width={size} height={placement.height} viewBox="0 0 {size} {placement.height}">
     {#each placement.pieces as piece (piece.side)}
         {@const data = piece.data}
         {@const W = data.templateWidth}

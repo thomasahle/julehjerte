@@ -218,7 +218,7 @@
 	{:else}
 		<div class="stage-media">
 			<div class="stage-template" {...pairAttributes(design.id)}>
-				<TemplatePreview {design} size={380} paper />
+				<TemplatePreview {design} size={640} paper />
 			</div>
 		</div>
 	{/if}
@@ -419,9 +419,11 @@
 	/* No card: the pieces are drawn as paper in their lobes' colours and lie on the sky, as the
 	   heart hangs on it (TemplatePreview's `paper`). */
 	.stage-template {
-		width: min(100%, 420px);
+		width: min(100%, 640px);
 		padding: 12px;
 		box-sizing: border-box;
+		/* The picture is wide and low: in the middle of the stage's height. */
+		align-self: center;
 	}
 
 	/* thumbnails */
